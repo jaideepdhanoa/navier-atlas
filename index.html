@@ -92,17 +92,35 @@ html, body { margin:0; padding:0; height:100%; background:var(--bg-0); color:var
 #legend .head { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; margin-bottom:6px; }
 #legend .row { display:flex; align-items:center; gap:8px; padding:2px 0; }
 #legend .dot { width:9px; height:9px; border-radius:50%; box-shadow:0 0 8px currentColor; }
-#legend .dot.city   { background:var(--accent); color:var(--accent); }
-#legend .dot.locale { background:var(--coral);  color:var(--coral); }
-#legend .dot.poi    { background:var(--steel);  color:var(--steel); }
+#legend .dot.city   { background:#6ee7b7; color:#6ee7b7; }
+#legend .dot.locale { background:#fb7185; color:#fb7185; }
+#legend .dot.bp.marina    { background:#60a5fa; color:#60a5fa; }
+#legend .dot.bp.ferry     { background:#fb7185; color:#fb7185; }
+#legend .dot.bp.yacht     { background:#fbbf24; color:#fbbf24; }
+#legend .dot.bp.hotel     { background:#6ee7b7; color:#6ee7b7; }
+#legend .dot.bp.seaplane  { background:#a78bfa; color:#a78bfa; }
+#legend .dot.bp.watertaxi { background:#22d3ee; color:#22d3ee; }
+#legend .dot.bp.harbour   { background:#94a3b8; color:#94a3b8; }
+#legend .muted { color:var(--text-2); font-size:10px; }
 #legend .line { width:18px; height:0; border-top:2px solid var(--accent); }
 #legend .line.qlr { border-top:2px dashed var(--steel); }
+#legend .help { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%; background:var(--bg-3); color:var(--text-1); font-size:9px; font-weight:700; cursor:help; margin-left:6px; position:relative; }
+#legend .help:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:0; width:260px; background:rgba(10,14,20,0.97); border:1px solid var(--line-strong); border-radius:8px; padding:10px 12px; font:400 11px Inter; color:var(--text-0); line-height:1.5; text-transform:none; letter-spacing:0; z-index:30; box-shadow:0 8px 24px rgba(0,0,0,0.5); }
 
-/* Footer */
-#footer { position:absolute; bottom:24px; right:444px; z-index:10; font-size:10px; color:var(--text-2); letter-spacing:0.12em; text-transform:uppercase; background:rgba(17,22,30,0.6); padding:6px 12px; border-radius:6px; border:1px solid var(--line); }
+/* Footer — moved to top-right above panel so it stops eating clicks */
+#footer { position:absolute; top:18px; right:444px; z-index:10; font-size:10px; color:var(--text-2); letter-spacing:0.12em; text-transform:uppercase; background:rgba(17,22,30,0.6); padding:6px 12px; border-radius:6px; border:1px solid var(--line); pointer-events:none; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
+body.panel-hidden #footer { right:24px; }
 
-/* Side panel */
-#panel { position:absolute; top:0; right:0; bottom:0; width:420px; background:var(--bg-1); border-left:1px solid var(--line-strong); overflow-y:auto; }
+/* Side panel + collapse */
+#panel { position:absolute; top:0; right:0; bottom:0; width:420px; background:var(--bg-1); border-left:1px solid var(--line-strong); overflow-y:auto; transition:transform 0.32s cubic-bezier(.4,0,.2,1); }
+body.panel-hidden #panel { transform:translateX(100%); }
+#panel-toggle { position:absolute; top:50%; right:420px; transform:translateY(-50%); z-index:11; width:24px; height:48px; border-radius:6px 0 0 6px; background:rgba(17,22,30,0.92); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-right:none; color:var(--text-1); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
+#panel-toggle:hover { color:var(--accent); }
+body.panel-hidden #panel-toggle { right:0; border-radius:6px 0 0 6px; }
+#presets { transition:max-width 0.32s; }
+body.panel-hidden #presets { max-width:calc(100vw - 420px - 40px); }
+/* Pull legend up so it doesn't sit under the toggle row */
+body.panel-hidden #footer { display:block; }
 #panel::-webkit-scrollbar { width:6px; }
 #panel::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:3px; }
 .panel-empty { padding:48px 32px; color:var(--text-2); font-size:13px; line-height:1.6; }
@@ -224,27 +242,35 @@ html, body { margin:0; padding:0; height:100%; background:var(--bg-0); color:var
   <button class="toggle on" id="t-routes">Routes</button>
   <button class="toggle on" id="t-p2">Pioneer II</button>
   <button class="toggle steel on" id="t-qlr">Quanta-LR</button>
-  <button class="toggle on" id="t-locales">Locales</button>
-  <button class="toggle steel on" id="t-pois">POIs</button>
+  <button class="toggle on" id="t-locales" title="Sub-areas / districts / island groups inside a city cluster (e.g. Palm Jumeirah inside Dubai)">Areas</button>
+  <button class="toggle steel on" id="t-pois" title="Boarding points: marinas, ferry terminals, hotel jetties, water-taxi stops">Boarding pts</button>
 </div>
 
 <div id="legend">
-  <div class="head">Network</div>
-  <div class="row"><span class="dot city"></span>City</div>
-  <div class="row"><span class="dot locale"></span>Locale</div>
-  <div class="row"><span class="dot poi"></span>POI</div>
-  <div class="row" style="margin-top:6px"><span class="line"></span>Pioneer II (≤70 nm)</div>
-  <div class="row"><span class="line qlr"></span>Quanta-LR (≤2,000 nm)</div>
+  <div class="head">Nodes <span class="help" data-tip="Cities = whole markets. Areas = sub-districts/islands inside a city. Boarding points = real coastal pickup spots (marina, jetty, ferry terminal, water-taxi stop).">?</span></div>
+  <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
+  <div class="row"><span class="dot locale"></span>Area <span class="muted">— sub-district</span></div>
+  <div class="row" style="margin-top:8px"><span class="dot bp marina"></span>Marina / yacht basin</div>
+  <div class="row"><span class="dot bp ferry"></span>Ferry / cruise / water-bus</div>
+  <div class="row"><span class="dot bp yacht"></span>Yacht club</div>
+  <div class="row"><span class="dot bp hotel"></span>Hotel / resort / beach-club jetty</div>
+  <div class="row"><span class="dot bp seaplane"></span>Seaplane base</div>
+  <div class="row"><span class="dot bp watertaxi"></span>Water-taxi / abra / public pier</div>
+  <div class="row"><span class="dot bp harbour"></span>Working harbour</div>
+  <div class="row" style="margin-top:8px"><span class="line"></span>Pioneer II route <span class="muted">— ≤70 nm electric</span></div>
+  <div class="row"><span class="line qlr"></span>Quanta-LR route <span class="muted">— ≤2,000 nm hybrid</span></div>
 </div>
 
 <div id="footer">Navier Mobility · 2026</div>
 
+<button id="panel-toggle" title="Show / hide side panel">‹</button>
 <div id="panel"><div class="panel-empty">
   <h2>Select a node</h2>
-  <p>Cities cluster at world view. Zoom in to reveal locales and POIs.</p>
+  <p>Cities cluster at world view. Zoom in to reveal areas and boarding points.</p>
   <div class="hint"><div class="hint-num">1</div><div>Use <b>Stories ▾</b> to walk a partner pitch.</div></div>
   <div class="hint"><div class="hint-num">2</div><div>Search or use preset chips to fly to a market.</div></div>
   <div class="hint"><div class="hint-num">3</div><div>Click any node for context and range rings.</div></div>
+  <div class="hint"><div class="hint-num">4</div><div>Hide this panel with the <b>‹</b> tab on its edge to give the map full width.</div></div>
 </div></div>
 
 <script>
@@ -266,7 +292,7 @@ const CAMERAS = {
   phuket:{ center:[98.35,7.95], zoom:10 },
 };
 
-const map = new maplibregl.Map({
+const map = window.map = new maplibregl.Map({
   container:'map',
   style:{
     version:8,
@@ -327,8 +353,35 @@ map.on('load', () => {
     paint:{ 'circle-color':'#60a5fa','circle-radius':['step',['get','point_count'],10,5,15,20,20],'circle-opacity':0.6,'circle-stroke-width':1.2,'circle-stroke-color':'rgba(255,255,255,0.4)' }});
   map.addLayer({ id:'poi-cluster-count', type:'symbol', source:'pois', filter:['has','point_count'], minzoom:8,
     layout:{ 'text-field':['get','point_count_abbreviated'],'text-font':['Noto Sans Bold'],'text-size':10 }, paint:{'text-color':'#0a0e14'} });
+  const BP_COLOR = ['match', ['coalesce', ['get','bp_type'], 'default'],
+    'marina','#60a5fa',
+    'working_harbour','#94a3b8',
+    'ferry_terminal','#fb7185',
+    'cruise_terminal','#fb7185',
+    'water_bus_terminal','#fb7185',
+    'yacht_club','#fbbf24',
+    'hotel_jetty','#6ee7b7',
+    'resort_jetty','#6ee7b7',
+    'beach_club_jetty','#6ee7b7',
+    'seaplane_base','#a78bfa',
+    'water_taxi_stop','#22d3ee',
+    'abra_station','#22d3ee',
+    'public_pier','#22d3ee',
+    'floating_pontoon','#22d3ee',
+    'floating_helipad','#a78bfa',
+    '#60a5fa'  // default
+  ];
+  const BP_RADIUS = ['match', ['coalesce', ['get','bp_type'], 'default'],
+    'marina',5, 'working_harbour',4.5, 'ferry_terminal',5, 'cruise_terminal',5,
+    'water_bus_terminal',4.5, 'yacht_club',4.5, 'hotel_jetty',4, 'resort_jetty',4,
+    'beach_club_jetty',4, 'seaplane_base',4.5, 'water_taxi_stop',3.5,
+    'abra_station',3.5, 'public_pier',3.5, 'floating_pontoon',3.5, 'floating_helipad',4,
+    3.5
+  ];
+  map.addLayer({ id:'poi-halo', type:'circle', source:'pois', filter:['!',['has','point_count']], minzoom:10,
+    paint:{ 'circle-color':BP_COLOR, 'circle-opacity':0.22, 'circle-radius':12, 'circle-blur':0.6 }});
   map.addLayer({ id:'poi-points', type:'circle', source:'pois', filter:['!',['has','point_count']], minzoom:9,
-    paint:{ 'circle-color':'#60a5fa','circle-radius':3.5,'circle-stroke-width':1,'circle-stroke-color':'#0a0e14' }});
+    paint:{ 'circle-color':BP_COLOR, 'circle-radius':BP_RADIUS, 'circle-stroke-width':1.2, 'circle-stroke-color':'#0a0e14' }});
   map.addLayer({ id:'poi-labels', type:'symbol', source:'pois', filter:['!',['has','point_count']], minzoom:11,
     layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Regular'],'text-size':10,'text-offset':[0,0.8],'text-anchor':'top' }, paint:{ 'text-color':'#bfdbfe','text-halo-color':'#0a0e14','text-halo-width':1.4 }});
 
@@ -342,7 +395,7 @@ map.on('load', () => {
     paint:{ 'fill-color':'#6ee7b7','fill-opacity':0.06 }});
 
   // Click handlers — include halo layers so the visible glow is clickable too
-  for (const layer of ['city-points','city-halo','locale-points','locale-halo','poi-points']) {
+  for (const layer of ['city-points','city-halo','city-clusters','city-cluster-halo','locale-points','locale-halo','locale-clusters','poi-points','poi-halo','poi-clusters']) {
     map.on('click', layer, (e) => {
       const f = e.features[0];
       if (f.properties.cluster) return;
@@ -431,7 +484,7 @@ function showDetail(props, coords) {
 
   let html = `<div class="panel-hero">
     <div class="type-row">
-      <span class="type-pill ${type}">${type||'node'}</span>
+      <span class="type-pill ${type}">${type==='locale'?'area':(type==='poi'?(props.bp_type_label||'boarding pt'):(type||'node'))}</span>
       ${props.platform_class ? `<span class="badge platform">${escapeHtml(props.platform_class)}</span>`:''}
     </div>
     <h2>${escapeHtml(name)}</h2>
@@ -647,7 +700,16 @@ document.getElementById('t-routes').addEventListener('click', () => {
   setLayerVis('route-qlr', on && document.getElementById('t-qlr').classList.contains('on'));
 });
 bindToggle('t-locales', ['locale-clusters','locale-cluster-count','locale-halo','locale-points','locale-labels']);
-bindToggle('t-pois',    ['poi-clusters','poi-cluster-count','poi-points','poi-labels']);
+bindToggle('t-pois',    ['poi-clusters','poi-cluster-count','poi-points','poi-halo','poi-labels']);
+
+// Panel collapse toggle
+const panelToggle = document.getElementById('panel-toggle');
+panelToggle.addEventListener('click', () => {
+  document.body.classList.toggle('panel-hidden');
+  panelToggle.textContent = document.body.classList.contains('panel-hidden') ? '›' : '‹';
+  // force MapLibre to recompute size
+  setTimeout(() => map.resize(), 340);
+});
 
 // ============ URL state ============
 function updateUrlState() {
