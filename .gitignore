@@ -1,0 +1,41 @@
+# ── Confidentiality defense-in-depth ──────────────────────────────────────────
+# This repo holds ONLY the sanitized, gate-passed render surface. Nothing internal
+# may ever enter git history. These patterns block the most common leak sources even
+# if a file is accidentally copied into the repo.
+
+# Secrets / tokens
+.secrets/
+*.key
+*.token
+.env
+.vercel/
+
+# Tasklet-internal pipeline (lives in atlas-external/, NEVER in this repo)
+build.py
+route_network.py
+build_safe.sh
+partition/
+output-external/
+output-internal/
+boarding-points/
+route-demand-config.json
+routing/
+
+# Internal source-of-truth & logs
+*humans*.json
+_subagent-learnings.md
+_conveyor-learnings.md
+conveyor-runs/
+city-dossiers/
+reference/
+world-map/
+
+# Absolute-exclusion canaries (any file whose name carries these never belongs here)
+*data-spine-SCHEMA*
+*internal*
+*-quarantine-*
+
+# Build artifacts you may want to keep out of merge churn
+_dist/
+node_modules/
+*.zip
