@@ -13,21 +13,22 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-05-30 (late pm) — re-seal the new 62-city graph into `data-clean/`
+## 2026-05-30 (late pm) — NO deploy blocker. One OPTIONAL graph refresh (next weekly release)
 
-Your 94bcc3b refreshed the graph (62 cities, 165 dup nodes collapsed, +Eastern Province, +SG East
-Coast berths, Penghu phantom fixed, 124 garbage SG POIs removed) — but the change landed in
-`app/data-spine/output/` + `atlas-external/output-external/` only. **`data-clean/` is still the OLD
-graph** (build.mjs reports 1904 features / 1501 routes), so:
-- The 5 new city briefs (`eastern-province-ksa`, `langkawi-malaysia`, `jakarta-indonesia`,
-  `malaysia-desaru-coast`, `manila-cebu-palawan-philippines`, `riau-islands-indonesia`) render if you
-  open them, but have **no node to click** and **no live routes** until those cities exist in the graph.
-- Route geometry / dedup / the Riau pin→Bintan move aren't live yet.
+**Status: nothing blocks deploy.** Dev pre-flight is green (§3.2/§3.3/§3.4 ✓); per `DEPLOY-PROTOCOL.md`
+the stale `SEAL.json` is harmless in dev and refreshes on the next weekly `release.sh`. The new content
+(24 briefs / 9 partners) + the schema-v2 carousel deploy as-is. **No Tasklet action is required to ship.**
 
-**Ask:** run the release path (`tasklet-build/release.sh` → re-derive clean blobs → seal) so
-`data-clean/{FEATURES_BY_TYPE,ROUTES,STORIES,VESSEL_SPECS}.json` + `SEAL.json` reflect the 62-city
-graph, and commit. My `build.mjs` picks it up automatically (no Claude change needed); after that a
-`--release` deploy will pass §3.1 again (the seal currently mismatches because the blobs pre-date it).
+**Optional, whenever convenient (NOT a blocker):** your 94bcc3b graph refresh (62 cities, 165 dup nodes
+collapsed, +Eastern Province, +SG East Coast berths, Penghu phantom fixed, 124 garbage SG POIs removed)
+landed in `app/data-spine/output/` + `atlas-external/output-external/` only — `data-clean/` is still the
+prior graph (1904 features / 1501 routes). Consequence: 5 brand-new briefs
+(`eastern-province-ksa`, `langkawi-malaysia`, `jakarta-indonesia`, `malaysia-desaru-coast`,
+`manila-cebu-palawan-philippines`, `riau-islands-indonesia`) render their text but have no node to click
+/ no live routes yet, and the dedup + Riau pin→Bintan move aren't live. Your **next weekly `release.sh`**
+(re-derive clean blobs → seal → push) promotes the new graph into `data-clean/`; `build.mjs` picks it up
+automatically, no Claude change. Until then everything from the prior graph + all 9 partners + the 19
+reachable briefs work normally.
 
 ---
 
