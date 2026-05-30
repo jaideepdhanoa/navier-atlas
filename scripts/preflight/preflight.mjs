@@ -81,9 +81,13 @@ if (!fs.existsSync(TOKENS)) {
 // validate the resulting style with the official style-spec and assert the route line layers exist.
 head('§3.3  MapLibre style smoke test');
 try {
-  const m = html.match(/<script>([\s\S]*?)<\/script>\s*<\/body>/);
-  if (!m) throw new Error('could not locate the inline <script> before </body>');
-  const scriptText = m[1];
+  // Grab the LAST bare <script> (the app script). The page may carry earlier bare <script> blocks
+  // (e.g. the head content-layer script that sets window.CITY_BRIEFS/PARTNERS) — those must not be
+  // swept into the captured text, or eval hits stray HTML ("Unexpected token '<'").
+  const start = html.lastIndexOf('<script>');
+  const end = start >= 0 ? html.indexOf('</script>', start) : -1;
+  if (start < 0 || end < 0) throw new Error('could not locate the inline app <script>');
+  const scriptText = html.slice(start + '<script>'.length, end);
 
   const sources = {};
   const layers = [];

@@ -29,6 +29,16 @@ if (!slug) { console.error('usage: build-partner.mjs <slug> [index.html]'); proc
 
 let html = fs.readFileSync(INPUT, 'utf8');
 
+// ── Fail-safe: the pitch content moved to an inline `window.CITY_BRIEFS={…};window.PARTNERS={…}`
+// head script (Tasklet, merged into main). This script still scopes the older data-clean/__token__
+// delivery and would NOT strip other partners' data from the inline globals — refusing to ship a
+// potentially un-isolated per-partner build. TODO: rescope the inline window globals (balanced-brace
+// extract → filter to keepCities/slug → re-inline). See docs/NOTES-FOR-TASKLET.md.
+if (html.includes('window.CITY_BRIEFS=') && !html.includes('__CITY_BRIEFS__')) {
+  console.error('ABORT — content layer is inline window globals; build-partner not yet updated to scope them (would risk leaking other partners). Needs the window-globals rescope before per-partner builds ship.');
+  process.exit(1);
+}
+
 // ---- briefs / partners: prefer data-clean source; fall back to inlined token/JSON ----
 const readDir = (d) => { const o={}; const p=path.join(ROOT,'data-clean',d);
   if (fs.existsSync(p)) for (const fn of fs.readdirSync(p)) if (fn.endsWith('.json')){ const j=JSON.parse(fs.readFileSync(path.join(p,fn),'utf8')); o[j.city_id||j.partner_id]=j; } return o; };
