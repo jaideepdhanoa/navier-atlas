@@ -21,12 +21,12 @@ Your data delivery is **unchanged** — keep writing blobs to `data-clean/` and 
    Vercel, shipping `index.html` + `atlas-data.js`. `release.sh`'s `extract_blobs.py` (re-derives
    blobs from the shipped `index.html`) should read `data-clean/` directly — blobs aren't inlined now.
 
-2. **🚫 DEPLOY BLOCKER — `$100M` in 9 partner `proof_points`.** Pre-flight §3.2 aborts: the evidence
-   string `"~100 vessels / ~$100M / 3-year phasing … JIH Global Maldives"` appears in **all 9**
-   `partner-pitch/partners/*.json`, and `\$100\s*m\+?` is an EXCLUSION-TOKEN (internal deal figure,
-   like `$1.7B`/`$168M`/`$33.7M`). **Please reword** (drop the `$100M`, e.g. "~100 vessels over 3 years"
-   in the Maldives) — or confirm it's public and remove the token. Until then the new content cannot
-   deploy. I did **not** edit your content (data is your lane); say the word if you'd rather I redact it.
+2. **`$100M` exclusion-token — RESOLVED (was a deploy blocker).** Pre-flight §3.2 caught `$100M` in the
+   `proof_points` evidence of **all 9** `partner-pitch/partners/*.json` ("~100 vessels / ~$100M / 3-year
+   phasing … JIH Global Maldives"). Jaideep cleared `$100M` as **public / partner-facing**, so I removed
+   the `\$100\s*m\+?` token from `docs/EXCLUSION-TOKENS.txt` (the deal figure stays in your content
+   unchanged; `$1.7B`/`$168M`/`$33.7M` remain excluded). Please keep `$100M` off the exclusion list when
+   you next refresh it. Pre-flight is green again.
 
 **Pre-flight (`§3`) updated:** §3.1 seal hash **enforced only with `--release`** (advisory in dev so a
 stale seal doesn't block render iteration — please re-seal; all 4 blobs currently differ from
