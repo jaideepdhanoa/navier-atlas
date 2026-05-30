@@ -31,7 +31,36 @@
       }
     },
 
-    "why_now": { "type": "string" },
+    "why_now": {
+      "type": "string",
+      "description": "WHY MARINE MOBILITY WITH NAVIER, NOW. The step-change argument grounded in the KB (reference/why-now-why-navier-mobility-pitch.md): the water is the last unmodernized mobility surface; hydrofoiling = ~10x more efficient + faster + smoother + quieter, with autonomy on the way; NO NEW INFRASTRUCTURE - it uses the oceans and berths that already exist (fundamentally unlike flying taxis, which need vertiports, new certification, and community-noise fights); and the Maldives network proves the model is real and ramping today. Lean into the wow corridors we can unlock now. DO NOT frame Navier vs other hydrofoil makers - this is partner-and-need focused, not competitive."
+    },
+
+    "why_navier_now": {
+      "type": "object",
+      "description": "OPTIONAL structured version of the why-now argument for richer rendering. Positive, partner-and-need focused. NEVER competitor-vs framing.",
+      "properties": {
+        "step_change": { "type": "string", "description": "Why this is a leap, not an increment: flies above the water, ~10x efficiency, faster/smoother/quieter, autonomy-capable." },
+        "no_new_infrastructure": { "type": "string", "description": "Uses existing oceans + berths; no vertiports, no new right-of-way, no charging dependency on the hybrid. Contrast with flying taxis / new-infrastructure modes." },
+        "the_moment": { "type": "string", "description": "Why now: decarbonization mandates, tech crossed prototype->platform, hybrid removes the charging excuse, autonomy arrives on water first." },
+        "wow_corridors": { "type": "array", "items": { "type": "string" }, "description": "The marquee corridors we can light up today that make people lean in." }
+      }
+    },
+
+    "precedents": {
+      "type": "array",
+      "description": "OPTIONAL. Regional/other-market precedents that ADD CONFIDENCE to what we're doing (e.g. the Maldives network at scale; electric-hydrofoil commuter services already operating; ferry-electrification mandates). Use only where it strengthens the case - do NOT force-fit, and do NOT frame as Navier-vs-competitor.",
+      "items": {
+        "type": "object",
+        "required": ["what"],
+        "properties": {
+          "what": { "type": "string" },
+          "where": { "type": "string" },
+          "why_it_matters": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      }
+    },
 
     "multimodal_fit": {
       "type": "string",
@@ -58,11 +87,10 @@
 
     "differentiation": {
       "type": "object",
-      "description": "Light, web-appropriate. No economics. Answers 'why not a fast ferry / why not Candela'.",
+      "description": "Light, web-appropriate, POSITIVE. No economics. NO competitor-vs-competitor framing (no Candela/hydrofoil-rival comparisons - those live in the deck, not the website). Answers 'why this instead of the status quo (conventional/diesel boats and fast ferries)' and 'what makes Navier the platform to build the marine layer on'.",
       "properties": {
-        "vs_ferry": { "type": "string" },
-        "vs_candela": { "type": "string" },
-        "navier_moat": { "type": "string", "description": "software-defined, autonomy-ready, Turkey factory, cap table, Maldives at-scale proof" }
+        "vs_status_quo": { "type": "string", "description": "Why Navier beats today's conventional/diesel transfer boats and fast ferries: ~10x efficiency, no pounding/seasickness, quiet, lower cost per passenger-mile." },
+        "why_navier": { "type": "string", "description": "What makes Navier the platform: software-defined + standardized, autonomy-ready, hybrid removes charging dependency, Maldives network at scale as live proof." }
       }
     },
 
