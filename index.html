@@ -1034,21 +1034,28 @@ function showDetail(props, coords) {
 // ============ Stories ============
 const STORY_BY_SLUG = {}; for (const s of STORIES) STORY_BY_SLUG[s.slug]=s;
 
-// ============ Partner views (v11 Item 4) ============
-// A partner view is a small, data-driven config: which story slugs it surfaces, optional
-// regions, and optional label/intro/accent for copy + branding. Selected via ?partner=<slug>.
-// The default (no param) is the admin/all view — every story, no scope filter. Adding a new
-// partner view needs NO code changes, only a PARTNER_VIEWS entry (Tasklet owns the real roster).
+// ============ Partner views (v11 Item 4 · schema + build contract v17) ============
+// A partner view is a small, data-driven config selecting which shipped stories a partner sees,
+// plus optional branding. Full schema + the `--partner` build-mode contract: docs/PARTNER-VIEWS.md.
+//
 //   PARTNER_VIEWS[slug] = {
-//     story_slugs: [string],   // required — which shipped stories this partner sees
-//     regions:     [string],   // optional — informational; story scope already drives the map
-//     label:       string,     // optional — branding text (else first story's partner name)
-//     intro:       string,     // optional — copy shown on the partner's landing panel
-//     accent:      string,     // optional — emerald|coral|gold|steel|violet|teal|amber|rose|sky
+//     story_slugs: [string],   // REQUIRED — slugs of shipped STORIES this partner surfaces (≥1 valid)
+//     label:       string,     // optional — branding text (default: first story's partner_org_canonical_name)
+//     intro:       string,     // optional — copy on the partner landing panel
+//     accent:      string,     // optional — one of ACCENTS (default: first story's accent_class)
+//     regions:     [string],   // optional — informational only; story scope already drives the map
 //   }
-// PRIVACY NOTE: in a static single file, a per-partner URL is unguessable-link privacy, NOT
-// enforced access control, and ALL data is still embedded. True isolation = a per-partner
-// build on the Tasklet side that ships only that partner's data. See HANDOFF.
+// Two delivery modes (same config, different isolation guarantee):
+//   1. RUNTIME view  — ?partner=<slug> on the full admin build. Unguessable-link soft privacy only:
+//                      ALL data is still embedded in the file. Good for internal review / quick shares.
+//   2. BUILD lock    — a per-partner Tasklet build ships ONLY that partner's data + PARTNER_VIEWS entry
+//                      and injects `window.__PARTNER_BUILD__ = '<slug>'` ahead of this script. The atlas
+//                      then boots LOCKED to that partner: the ?partner= override and the admin/all view
+//                      are disabled. This is the only mode that gives true data isolation.
+// Adding or changing a partner needs NO render code change — only a PARTNER_VIEWS entry (+ a Tasklet build).
+const ACCENTS = ['emerald','coral','gold','steel','violet','teal','amber','rose','sky'];
+// Build-mode lock — set by a per-partner Tasklet build (see contract). null on the admin/all build.
+const BUILD_PARTNER = (typeof window !== 'undefined' && window.__PARTNER_BUILD__) || null;
 const PARTNER_VIEWS = {
   // DEMO entries — reference EXISTING public stories only (no invented identities).
   'grab':         { story_slugs:['grab'] },
@@ -1062,7 +1069,11 @@ const PARTNER_VIEWS = {
                     story_slugs:['careem','uae-waterfront','qatar-transport','red-sea-global'] },
 };
 let PARTNER_ACTIVE = null;
-function _partnerSlug(){ try { return new URLSearchParams(location.search).get('partner'); } catch(e){ return null; } }
+// A build lock wins over the URL param (and disables it); else fall back to ?partner=<slug>.
+function _partnerSlug(){
+  if (BUILD_PARTNER) return BUILD_PARTNER;
+  try { return new URLSearchParams(location.search).get('partner'); } catch(e){ return null; }
+}
 function _viewStories(v){ return (v.story_slugs||[]).map(s=>STORY_BY_SLUG[s]).filter(Boolean); }
 function _viewScopeCities(v){
   const set=new Set();
@@ -1075,7 +1086,12 @@ function _viewScopeCities(v){
 function _activeStories(){ return PARTNER_ACTIVE ? PARTNER_ACTIVE.stories : STORIES; }
 function initPartnerView(){
   const slug=_partnerSlug();
-  if (!slug || !PARTNER_VIEWS[slug]) return;       // unknown/absent -> admin/all view
+  if (!slug || !PARTNER_VIEWS[slug]){
+    // unknown/absent -> admin/all view. In a build lock that's a build error (data may be scoped
+    // to a partner while the view falls open) — surface it loudly so the build is caught, not shipped.
+    if (BUILD_PARTNER) console.error('[partner-build] __PARTNER_BUILD__="'+BUILD_PARTNER+'" has no PARTNER_VIEWS entry — shipping unlocked.');
+    return;
+  }
   const view=PARTNER_VIEWS[slug];
   const stories=_viewStories(view);
   if (!stories.length) return;
