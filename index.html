@@ -97,7 +97,19 @@ body.panel-hidden #panel { width:0 !important; }
 .grp-sep { width:1px; height:14px; background:var(--line-strong); margin:0 4px; }
 
 /* Legend */
-#legend { position:absolute; bottom:24px; left:24px; z-index:10; background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-radius:12px; padding:11px 14px; font-size:11px; color:var(--text-1); }
+#legend { position:absolute; bottom:24px; left:24px; z-index:10; background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-radius:12px; padding:11px 14px; font-size:11px; color:var(--text-1); max-height:calc(100vh - 230px); overflow-y:auto; }
+#legend::-webkit-scrollbar { width:5px; }
+#legend::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:3px; }
+/* Collapsible key: header toggles the whole card; boarding points is a collapsed disclosure. */
+#legend .head { display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; margin-bottom:8px; }
+#legend .caret { font-size:11px; line-height:1; color:var(--text-2); transition:transform 0.18s; display:inline-block; }
+#legend.collapsed #legend-body { display:none; }
+#legend.collapsed .head { margin-bottom:0; }
+#legend.collapsed .head .caret { transform:rotate(-90deg); }
+#legend .sub.disclosure { display:flex; align-items:center; gap:7px; cursor:pointer; user-select:none; }
+#legend .sub.disclosure .caret { transition:transform 0.18s; }
+#legend .sub.disclosure.open .caret { transform:rotate(90deg); }
+#bp-list.collapsed { display:none; }
 #legend .head { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; margin-bottom:6px; }
 #legend .sub { font-size:8.5px; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); font-weight:600; opacity:0.75; margin:10px 0 4px; padding-top:8px; border-top:1px solid var(--line); }
 #legend .row { display:flex; align-items:center; gap:8px; padding:2px 0; }
@@ -113,7 +125,7 @@ body.panel-hidden #panel { width:0 !important; }
 #legend .dot.bp.harbour   { background:#94a3b8; color:#94a3b8; }
 #legend .gly { display:inline-block; width:14px; text-align:center; font-family:'Noto Sans','Inter',sans-serif; font-weight:700; font-size:14px; text-shadow:0 0 6px currentColor; }
 #legend .muted { color:var(--text-2); font-size:10px; }
-#legend .line { width:18px; height:0; border-top:2px solid var(--text-1); }
+#legend .line { width:18px; height:0; border-top:2px solid #6ee7b7; }
 #legend .line.qlr { border-top:2px dashed var(--gold); }
 /* Route weight key (demand → line weight); bars mirror the trunk/regional/local rendering. */
 #legend .wline { display:inline-block; width:18px; border-radius:2px; }
@@ -278,30 +290,24 @@ body.panel-hidden #footer { display:block; }
 
 <!-- Fix 5 (v10): legend glyphs match map symbol-layer (Noto Sans-safe Unicode) -->
 <div id="legend">
-  <div class="head">Map key <span class="help" data-tip="Cities = whole markets. Boarding points = real coastal pickup spots; glyphs match those drawn on the map.">?</span></div>
-  <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
-  <div class="sub">Boarding points</div>
-  <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina / working harbour</div>
-  <div class="row"><span class="gly" style="color:#fb7185">▲</span>Ferry / cruise terminal</div>
-  <div class="row"><span class="gly" style="color:#fbbf24">★</span>Yacht club</div>
-  <div class="row"><span class="gly" style="color:#6ee7b7">■</span>Hotel / resort jetty</div>
-  <div class="row"><span class="gly" style="color:#a78bfa">✦</span>Seaplane base</div>
-  <div class="row"><span class="gly" style="color:#22d3ee">◆</span>Water taxi / abra / public pier</div>
-  <div class="row"><span class="gly" style="color:#cbd5e1">⬢</span>MRO / shipyard</div>
-  <div class="row"><span class="gly" style="color:#fde68a">⬟</span>Refuel mid-node</div>
-  <div class="sub">Route weight <span class="help" data-tip="Line weight & glow scale with traffic_weight — a grounded demand thesis (ferry pax, air O&D, border crossings), not graph degree. Heavy glowing trunks = proven mass; light lines = local capillaries.">?</span></div>
-  <div class="row"><span class="wline trunk"></span>Trunk <span class="muted">— high-traffic backbone</span></div>
-  <div class="row"><span class="wline regional"></span>Regional <span class="muted">— cross-cluster</span></div>
-  <div class="row"><span class="wline local"></span>Local <span class="muted">— capillary</span></div>
-  <div class="sub">Trip purpose <span class="help" data-tip="Pioneer II routes are coloured by trip_purpose so commuter / tourism / luxury / local read at a glance. Quanta-LR stays amber (platform identity).">?</span></div>
-  <div class="row"><span class="pline" style="background:#38bdf8;color:#38bdf8"></span>Commuter</div>
-  <div class="row"><span class="pline" style="background:#a78bfa;color:#a78bfa"></span>Business</div>
-  <div class="row"><span class="pline" style="background:#fb7185;color:#fb7185"></span>Tourism</div>
-  <div class="row"><span class="pline" style="background:#f0abfc;color:#f0abfc"></span>Luxury</div>
-  <div class="row"><span class="pline" style="background:#6ee7b7;color:#6ee7b7"></span>Local / water-taxi</div>
-  <div class="sub">Platform</div>
-  <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm electric (solid)</span></div>
-  <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤2,000 nm hybrid (amber)</span></div>
+  <div class="head" id="legend-head">Map key <span class="caret">⌄</span></div>
+  <div id="legend-body">
+    <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
+    <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤2,000 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
+    <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
+    <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤2,000 nm</span></div>
+    <div class="sub disclosure" id="bp-toggle"><span class="caret">›</span>Boarding points</div>
+    <div id="bp-list" class="collapsed">
+      <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina</div>
+      <div class="row"><span class="gly" style="color:#fb7185">▲</span>Ferry / cruise</div>
+      <div class="row"><span class="gly" style="color:#fbbf24">★</span>Yacht club</div>
+      <div class="row"><span class="gly" style="color:#6ee7b7">■</span>Hotel jetty</div>
+      <div class="row"><span class="gly" style="color:#a78bfa">✦</span>Seaplane</div>
+      <div class="row"><span class="gly" style="color:#22d3ee">◆</span>Water taxi / pier</div>
+      <div class="row"><span class="gly" style="color:#cbd5e1">⬢</span>Shipyard / MRO</div>
+      <div class="row"><span class="gly" style="color:#fde68a">⬟</span>Refuel</div>
+    </div>
+  </div>
 </div>
 
 <div id="footer">Navier Mobility · 2026</div>
@@ -521,33 +527,55 @@ const PURPOSE_COLOR = ['match',['coalesce',['get','trip_purpose'],'none'],
   'commuter','#38bdf8', 'business','#a78bfa', 'tourism','#fb7185',
   'luxury','#f0abfc', 'local','#6ee7b7', 'mixed','#94a3b8',
   '#6ee7b7'];   // no purpose → brand mint (Pioneer II default)
-const GLOW_COLOR = ['case',['==',['get','platform'],'Quanta-LR'],'#fbbf24', PURPOSE_COLOR];
-// Zoom-band reveal by tier: trunks lead at world view; regional fade in mid-zoom; local
-// capillaries fade in on zoom-in — clean at world view, rich at city view.
-const O_TIER = ['match',['get','render_tier'],
-  'trunk',    ['interpolate',['linear'],['zoom'], 1.5,0.6,  4,0.86, 11,0.92, 14,0.95],
-  'regional', ['interpolate',['linear'],['zoom'], 3,0.0,   5,0.32, 7,0.72, 11,0.88],
-              /* local */ ['interpolate',['linear'],['zoom'], 6.5,0.0, 8.5,0.4, 11,0.82, 14,0.95]];
-const O_TIER_QLR = ['*', O_TIER, 0.85];
-// Line WEIGHT by demand: heavy trunks (high traffic_weight) vs light local capillaries; grows with zoom.
-const W_ROUTE = ['interpolate',['linear'],['zoom'],
-  2,  ['+',0.5,['*',['coalesce',['get','render_tw'],0.25],2.4]],
-  6,  ['+',0.8,['*',['coalesce',['get','render_tw'],0.25],5.0]],
-  11, ['+',1.1,['*',['coalesce',['get','render_tw'],0.25],7.0]],
-  14, ['+',1.5,['*',['coalesce',['get','render_tw'],0.25],8.5]]];
-// Density glow — restrained two-pass bloom (v17). Where high-traffic corridors overlap they
-// accumulate into one bright braided trunk; capillaries stay clean. Demand is SQUARED (_TW2) so the
-// wide bloom concentrates on genuine trunks and all but vanishes on locals — premium, not neon.
-const _TW   = ['coalesce',['get','render_tw'],0.25];
-const _TW2  = ['*', _TW, _TW];                          // demand² emphasis → bloom hugs the heavy lanes
-// (a) wide soft halo: the corridor "bloom" that merges parallel high-traffic lanes
-const W_GLOW_BLOOM = ['*', W_ROUTE, 3.2];
-const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,3, 8,5, 13,7];   // more bloom as you zoom in
-const O_GLOW_BLOOM = ['*', O_TIER, ['*', _TW2, 0.30]];                       // trunk≈0.20 · regional≈0.10 · local≈0
-// (b) tight bright core: a crisp seat under every line; gentle on locals, bright on trunks
-const W_GLOW_CORE  = ['*', W_ROUTE, 1.6];
+const GLOW_COLOR = ['case',['==',['get','platform'],'Quanta-LR'],'#fbbf24', '#6ee7b7'];  // platform: QLR amber · Pioneer II mint
+// Zoom-band reveal by tier + demand glow. MapLibre REJECTS a `zoom` interpolation unless it is the
+// TOP-LEVEL input of the property's step/interpolate — nesting zoom inside match / × / case drops the
+// whole layer at load (that rejection is exactly what hid every route line until this fix). So we
+// express tier reveal as a single top-level zoom curve whose per-stop outputs are a data-driven
+// `match` on render_tier, and fold demand / QLR / highlight factors into those stop outputs via
+// `wrap` — zoom never leaves the top level, and there is only ever one zoom curve per property.
+const _TW  = ['coalesce',['get','render_tw'],0.25];
+const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy lanes
+// per-zoom [trunk, regional, local] opacity on shared zoom stops (trunks lead; regional mid; local late).
+// Trunk floor lifted at world view (z1.5–4) so the demand backbone reads when zoomed out (#2 legibility).
+const _TIER_STOPS = [[1.5,0.78,0.00,0.00],[4,0.90,0.20,0.00],[6.5,0.90,0.64,0.00],
+                     [8.5,0.92,0.80,0.42],[11,0.93,0.88,0.82],[14,0.95,0.88,0.95]];
+// Quanta-LR is the trans-regional ≤2,000 nm backbone — the network's headline reach. It gets its OWN
+// brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
+const _QLR_STOPS  = [[1.5,0.92,0.62,0.00],[4,0.94,0.70,0.00],[6.5,0.92,0.74,0.20],
+                     [8.5,0.92,0.82,0.50],[11,0.93,0.88,0.82],[14,0.95,0.90,0.95]];
+// Build a top-level zoom interpolate from a stops table; `wrap(tierMatch)` maps the per-zoom tier
+// value to the final stop output (×demand / highlight case). Stop outputs are feature-driven but
+// zoom-free — zoom never leaves the top level (the MapLibre rule the F-01 fix established).
+function tierOpacityFrom(stops, wrap){
+  wrap = wrap || (m=>m);
+  const e = ['interpolate',['linear'],['zoom']];
+  for (const s of stops) e.push(s[0], wrap(['match',['get','render_tier'],'trunk',s[1],'regional',s[2], s[3]]));
+  return e;
+}
+const tierOpacity = (wrap)=>tierOpacityFrom(_TIER_STOPS, wrap);   // Pioneer II / shared default
+const qlrOpacity  = (wrap)=>tierOpacityFrom(_QLR_STOPS,  wrap);   // Quanta-LR hero curve
+// Line WEIGHT by demand (grows with zoom); `mult` scales the whole curve for the glow passes so the
+// zoom curve stays top-level instead of `['*', W_ROUTE, k]` (which nested zoom and dropped the layer).
+// Base widths lifted at low zoom so lines aren't sub-pixel at world view.
+function wRoute(mult){
+  return ['interpolate',['linear'],['zoom'],
+    2,  ['+',0.7*mult, ['*',_TW,3.0*mult]],
+    6,  ['+',1.0*mult, ['*',_TW,5.4*mult]],
+    11, ['+',1.2*mult, ['*',_TW,7.0*mult]],
+    14, ['+',1.5*mult, ['*',_TW,8.5*mult]]];
+}
+const O_TIER     = tierOpacity();
+const O_TIER_QLR = qlrOpacity();
+const W_ROUTE    = wRoute(1);
+const W_QLR      = wRoute(1.25);   // Quanta-LR drawn a touch heavier (platform hero)
+// Density glow — restrained two-pass bloom (v17): wide halo + tight core, demand folded into stops.
+const W_GLOW_BLOOM = wRoute(3.2);
+const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,3, 8,5, 13,7];        // more bloom as you zoom in
+const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.30]]);                   // trunk≈0.20 · regional≈0.10 · local≈0
+const W_GLOW_CORE  = wRoute(1.6);
 const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,1, 11,1.6, 14,2];
-const O_GLOW_CORE  = ['*', O_TIER, ['+', 0.05, ['*', _TW, 0.16]]];
+const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.05,['*',_TW,0.16]]]);         // crisp seat under every line
 const O_RLABEL   = ['interpolate',['linear'],['zoom'], 11,0, 12,0.9];
 const O_POIGLYPH = ['case',['get','on_route'],1,0.5];   // connected boarding points lead; tail recedes
 
@@ -568,7 +596,24 @@ const HUB_RADIUS = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,
 const HUB_HALO_R = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,11, 3,14, 8,20, 16,30];
 const HUB_HALO_O = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,0.12, 4,0.2, 10,0.32, 16,0.42];
 const HUB_LABEL  = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,11, 4,12, 10,14, 16,15.5];
+// Label SIZE encodes TIER, not raw degree (degree-scaled sizes read as arbitrary, #1 feedback).
+// Two clear tiers: marquee (priority) cities always larger than market cities, gentle zoom growth.
+const LABEL_PRIO = ['interpolate',['linear'],['zoom'], 2,12, 6,13, 11,14];
+const LABEL_CITY = ['interpolate',['linear'],['zoom'], 2,10.5, 6,11.5, 11,12.5];
 const O_HUBGLOW  = ['interpolate',['linear'],['coalesce',['get','degree'],0], 6,0.06, 16,0.16];
+// Hub-glow radius = degree-driven base × a zoom factor. Same MapLibre rule: keep zoom at the TOP
+// level (a zoom interpolate whose stops scale the degree base), not `['*', degreeInterp, zoomInterp]`
+// — that nested zoom and dropped the layer (F-12).
+const _HUB_GLOW_BASE = ['interpolate',['linear'],['coalesce',['get','degree'],0], 6,18, 10,26, 16,40];
+const HUB_GLOW_R = ['interpolate',['linear'],['zoom'],
+  3, ['*',_HUB_GLOW_BASE,0.7], 7, _HUB_GLOW_BASE, 11, ['*',_HUB_GLOW_BASE,1.25]];
+// Priority (marquee) cities glow from degree 0 (always-on). Same top-level-zoom rule as HUB_GLOW_R —
+// the original priority-hub-glow used ['*', degreeInterp, zoomInterp] (nested zoom) and was being
+// dropped by MapLibre exactly like the old city-hub-glow (F-12 class); the pre-flight smoke test caught it.
+const _PRIO_GLOW_BASE = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,18, 10,26, 16,40];
+// Low-zoom radius pulled down hard so neighbouring marquee hubs don't bloom into one blob (#1).
+const PRIO_GLOW_R = ['interpolate',['linear'],['zoom'],
+  2, ['*',_PRIO_GLOW_BASE,0.35], 5, ['*',_PRIO_GLOW_BASE,0.6], 8, _PRIO_GLOW_BASE, 11, ['*',_PRIO_GLOW_BASE,1.2]];
 
 // Header stat counts are data-driven so they stay correct at live scale (60+/1,900/470+).
 (function(){
@@ -602,10 +647,15 @@ const map = window.map = new maplibregl.Map({
       'https://c.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
       'https://d.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'
     ], tileSize:256, attribution:'© OpenStreetMap · © CARTO' }},
-    // Lift the near-black base slightly + add saturation so coastlines/waterbodies read as
-    // distinct navy against the grey land, while keeping label & route contrast (v17 look-feel).
-    layers:[{ id:'basemap', type:'raster', source:'carto-dark',
-      paint:{ 'raster-brightness-min':0.07, 'raster-saturation':0.22, 'raster-contrast':0.04 } }]
+    // A brand-dark background paints instantly so the canvas isn't pure black while the third-party
+    // CARTO tiles load (softens the cold-load blank window — F-13/F-06). Then the basemap on top:
+    // lift the near-black base slightly + add saturation so coastlines/waterbodies read as distinct
+    // navy against the grey land, while keeping label & route contrast (v17 look-feel).
+    layers:[
+      { id:'bg', type:'background', paint:{ 'background-color':'#0b1017' } },
+      { id:'basemap', type:'raster', source:'carto-dark',
+        paint:{ 'raster-brightness-min':0.07, 'raster-saturation':0.22, 'raster-contrast':0.04 } }
+    ]
   },
   center:CAMERAS.global.center,
   zoom:CAMERAS.global.zoom,
@@ -631,10 +681,11 @@ map.on('load', () => {
     paint:{ 'line-color':GLOW_COLOR, 'line-width':W_GLOW_CORE, 'line-opacity':O_GLOW_CORE, 'line-blur':B_GLOW_CORE }});
   // Quanta-LR — amber + dashed (platform lock); under Pioneer II so electric reads on top in-cluster.
   map.addLayer({ id:'route-qlr', type:'line', source:'routes', filter:_isQ, layout:_rline,
-    paint:{ 'line-color':'#fbbf24','line-width':W_ROUTE,'line-opacity':O_TIER_QLR,'line-dasharray':[2,2.2] }});
-  // Pioneer II — colour by trip_purpose, weight by demand (traffic_weight).
+    paint:{ 'line-color':'#fbbf24','line-width':W_QLR,'line-opacity':O_TIER_QLR,'line-dasharray':[2,2.2] }});
+  // Pioneer II — colour = PLATFORM (mint), weight by demand. Trip purpose surfaces on hover/select,
+  // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
   map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
-    paint:{ 'line-color':PURPOSE_COLOR,'line-width':W_ROUTE,'line-opacity':O_TIER }});
+    paint:{ 'line-color':'#6ee7b7','line-width':W_ROUTE,'line-opacity':O_TIER }});
   // Terminus connector nodes — a dot at EVERY route endpoint so no line dangles into empty
   // water. Bridges the band gap (visible z7+) before boarding-point glyphs appear (z10), then
   // fades as glyphs take over. Coloured by platform to match the line meeting it.
@@ -662,8 +713,7 @@ map.on('load', () => {
   map.addLayer({ id:'city-hub-glow', type:'circle', source:'cities',
     filter:['all',['!',['has','point_count']],['>=',['coalesce',['get','degree'],0],6]],
     paint:{ 'circle-color':'#6ee7b7','circle-blur':1,
-            'circle-radius':['*',['interpolate',['linear'],['coalesce',['get','degree'],0],6,18,10,26,16,40],
-                                 ['interpolate',['linear'],['zoom'],3,0.7,7,1,11,1.25]],
+            'circle-radius':HUB_GLOW_R,
             'circle-opacity':O_HUBGLOW }});
   map.addLayer({ id:'city-halo', type:'circle', source:'cities', filter:['!',['has','point_count']],
     paint:{ 'circle-color':'#6ee7b7','circle-opacity':HUB_HALO_O,'circle-radius':HUB_HALO_R,'circle-blur':0.5 }});
@@ -673,7 +723,7 @@ map.on('load', () => {
   // City (market-tier) labels — collision-thinned by degree: low zoom shows only hubs
   // (curated), zoom in progressively reveals the rest. Hubs win placement via sort-key.
   map.addLayer({ id:'city-labels', type:'symbol', source:'cities', filter:['!',['has','point_count']],
-    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':HUB_LABEL,'text-offset':[0,1.2],'text-anchor':'top',
+    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':LABEL_CITY,'text-offset':[0,1.2],'text-anchor':'top',
              'text-allow-overlap': false, 'text-ignore-placement': false, 'text-padding': 2,
              'symbol-sort-key': ['-',0,['coalesce',['get','degree'],0]] },
     paint:{ 'text-color':'#e8ecf1','text-halo-color':'#0a0e14','text-halo-width':1.5 }, minzoom:2 });
@@ -684,16 +734,18 @@ map.on('load', () => {
   map.addSource('priority-cities', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.priority_city||[]} });
   map.addLayer({ id:'priority-hub-glow', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-blur':1,
-            'circle-radius':['*',['interpolate',['linear'],['coalesce',['get','degree'],0],0,18,10,26,16,40],
-                                 ['interpolate',['linear'],['zoom'],3,0.7,7,1,11,1.25]],
+            'circle-radius':PRIO_GLOW_R,
             'circle-opacity':O_HUBGLOW }});
   map.addLayer({ id:'priority-halo', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-opacity':HUB_HALO_O,'circle-radius':HUB_HALO_R,'circle-blur':0.5 }});
   map.addLayer({ id:'priority-points', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-radius':HUB_RADIUS,'circle-stroke-width':2,'circle-stroke-color':'#0a0e14' }});
   map.addLayer({ id:'priority-labels', type:'symbol', source:'priority-cities',
-    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':HUB_LABEL,'text-offset':[0,1.2],'text-anchor':'top',
-             'text-allow-overlap': true, 'text-ignore-placement': true, 'text-padding': 2 },
+    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':LABEL_PRIO,'text-offset':[0,1.2],'text-anchor':'top',
+             // Collision-thinned (was allow-overlap:true → flagships piled up at world view, #1).
+             // Highest-degree priority city wins placement, so the marquee hubs still lead.
+             'text-allow-overlap': false, 'text-ignore-placement': false, 'text-padding': 2, 'text-optional': true,
+             'symbol-sort-key': ['-',0,['coalesce',['get','degree'],0]] },
     paint:{ 'text-color':'#ffffff','text-halo-color':'#0a0e14','text-halo-width':1.9 }});
 
   // Areas (sub-districts) intentionally not rendered — the network reads as Cities → Boarding points (v17).
@@ -855,6 +907,22 @@ map.on('load', () => {
 
   // Route hover tooltips (Fix 8 v10) — both platform line layers
   ['route-p2','route-qlr'].forEach(_bindRouteHover);
+  // Route click → select: focus the route + its two endpoints, dim the rest, fill the panel (v18 #4).
+  ['route-p2','route-qlr'].forEach(layer => {
+    map.on('click', layer, (e) => {
+      if (!e.features || !e.features.length) return;
+      _ROUTE_CLICK = true;
+      selectRoute(e.features[0]);
+    });
+    map.on('mouseenter', layer, () => map.getCanvas().style.cursor='pointer');
+  });
+  // Click on empty water (nothing interactive under the cursor) clears a route selection.
+  map.on('click', (e) => {
+    if (_ROUTE_CLICK) { _ROUTE_CLICK = false; return; }       // a route handler already handled this click
+    const layers = _INTERACTIVE_LAYERS.filter(l => map.getLayer(l));
+    const hits = map.queryRenderedFeatures(e.point, { layers });
+    if (!hits.length && SELECTED_ROUTE) clearSelection();
+  });
 
   // URL state
   applyUrlState();
@@ -972,16 +1040,108 @@ function setRouteHighlight(id){
   if (!id) return clearRouteHighlight();
   const hit=['any',['==',['get','from'],id],['==',['get','to'],id]];
   try {
-    map.setPaintProperty('route-p2','line-opacity',['case',hit,['max',O_TIER,0.85],['*',O_TIER,0.12]]);
-    map.setPaintProperty('route-qlr','line-opacity',['case',hit,['max',O_TIER_QLR,0.82],['*',O_TIER_QLR,0.12]]);
-    map.setPaintProperty('route-glow-bloom','line-opacity',['case',hit,['max',O_GLOW_BLOOM,0.22],['*',O_GLOW_BLOOM,0.04]]);
-    map.setPaintProperty('route-glow-core','line-opacity',['case',hit,['max',O_GLOW_CORE,0.22],['*',O_GLOW_CORE,0.05]]);
+    // Rebuild via tierOpacity so the highlight case lives in the stop outputs and zoom stays top-level.
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.22],['*',['*',m,['*',_TW2,0.30]],0.04]]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.22],['*',['*',m,['+',0.05,['*',_TW,0.16]]],0.05]]));
   } catch(e){}
+}
+
+// ============ Route selection (v18): click a route → focus it + its two endpoints, context panel ============
+// Delivers the "context-aware panel" feedback: the clicked route + its POIs stay lit, everything else
+// dims, and the right panel describes the route (platform, distance, ETA, demand tier, trip purpose).
+const PANEL_EMPTY_HTML = (typeof document!=='undefined' && document.getElementById('panel')) ? document.getElementById('panel').innerHTML : null;
+const _INTERACTIVE_LAYERS = ['route-p2','route-qlr','priority-points','priority-halo','city-points','city-halo','city-clusters','poi-points','poi-halo','poi-clusters'];
+let SELECTED_ROUTE = null;
+let _ROUTE_CLICK = false;
+function _dimNodesToEndpoints(fromId, toId){
+  const ep = ['in',['get','id'],['literal',[fromId||'__',toId||'__']]];
+  try {
+    map.setPaintProperty('city-points','circle-opacity',['case',ep,1,0.12]);
+    map.setPaintProperty('city-halo','circle-opacity',['case',ep,0.4,0.03]);
+    map.setPaintProperty('city-hub-glow','circle-opacity',['case',ep,O_HUBGLOW,0]);
+    map.setPaintProperty('city-labels','text-opacity',['case',ep,1,0.18]);
+    map.setPaintProperty('priority-points','circle-opacity',['case',ep,1,0.4]);
+    map.setPaintProperty('priority-halo','circle-opacity',['case',ep,0.4,0.04]);
+    map.setPaintProperty('priority-hub-glow','circle-opacity',['case',ep,O_HUBGLOW,0]);
+    map.setPaintProperty('priority-labels','text-opacity',['case',ep,1,0.4]);
+    map.setPaintProperty('poi-points','text-opacity',['case',ep,1,0.18]);
+    map.setPaintProperty('poi-labels','text-opacity',['case',ep,1,0.25]);
+  } catch(e){}
+}
+function selectRoute(feature){
+  if (!feature) return;
+  const p = feature.properties || {};
+  SELECTED_ROUTE = p.id || null;
+  const hit = ['==',['get','id'], p.id];
+  try {
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.05]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.05]]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.4],0]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.5],0]));
+    map.setPaintProperty('route-labels','text-opacity',['interpolate',['linear'],['zoom'],8,0,9.5,['case',hit,1,0]]);
+  } catch(e){}
+  _dimNodesToEndpoints(p.from, p.to);
+  showRouteDetail(p);
+  try {
+    const g = feature.geometry;
+    if (g && g.coordinates && g.coordinates.length){
+      const b = new maplibregl.LngLatBounds();
+      for (const c of g.coordinates) b.extend(c);
+      map.fitBounds(b, { padding:{top:90,bottom:90,left:120,right:460}, maxZoom:9, duration:900 });
+    }
+  } catch(e){}
+}
+function clearSelection(){
+  SELECTED_ROUTE = null;
+  ROUTE_POPUP.remove();
+  try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
+  if (!_focusEngaged()) applyStoryFocus(null);   // reset every route + node opacity to default
+  const panel = document.getElementById('panel');
+  if (PANEL_EMPTY_HTML != null) { panel.innerHTML = PANEL_EMPTY_HTML; panel.scrollTop = 0; }
+}
+function showRouteDetail(p){
+  const panel = document.getElementById('panel');
+  const a = _shortById(p.from), b = _shortById(p.to);
+  const plat = p.platform || '';
+  const isQ = plat === 'Quanta-LR';
+  const platColor = isQ ? '#fbbf24' : '#6ee7b7';
+  const dist = (p.distance_nm!=null) ? `${Math.round(p.distance_nm)} nm` : '—';
+  const kts = CRUISE_KTS[plat] || 22;
+  const hrs = (p.distance_nm!=null) ? (p.distance_nm/kts) : null;
+  const time = hrs!=null ? (hrs<1?`${Math.round(hrs*60)} min`:`${hrs.toFixed(1)} hr`) : '—';
+  const tier = p.render_tier || p.edge_class || null;
+  const purpose = p.trip_purpose || null;
+  const pColor = PURPOSE_HEX[purpose] || '#94a3b8';
+  let html = `<div class="panel-hero">
+    <div class="type-row">
+      <span class="type-pill" style="background:${platColor}22;color:${platColor};">route</span>
+      <span class="badge platform" style="color:${platColor};border-color:${platColor}66;">${escapeHtml(plat)}</span>
+    </div>
+    <h2 style="font-size:18px;">${escapeHtml(a)} <span style="color:var(--text-2)">→</span> ${escapeHtml(b)}</h2>
+    <div class="subtitle">${isQ?'≤2,000 nm hybrid':'≤70 nm electric'} · ${dist} · ${time} @ ${kts} kts</div>
+    <button class="ring-toggle" id="route-clear">Clear selection</button>
+  </div>`;
+  const kv = [['distance',dist,false],['est. time',`${time} @ ${kts} kts`,false]];
+  if (tier) kv.push(['demand tier', tier, true]);
+  if (p.traffic_weight!=null) kv.push(['traffic weight', (+p.traffic_weight).toFixed(2), false]);
+  html += `<div class="panel-section"><h3>Route</h3><div class="kv-grid">`;
+  for (const [k,v,cap] of kv) html += `<dt>${escapeHtml(k)}</dt><dd${cap?' style="text-transform:capitalize"':''}>${escapeHtml(String(v))}</dd>`;
+  html += `</div></div>`;
+  if (purpose) html += `<div class="panel-section"><h3>Trip purpose</h3><div class="what-distinct"><span style="color:${pColor};font-weight:600;text-transform:capitalize">● ${escapeHtml(purpose)}</span></div></div>`;
+  html += `<div class="panel-section"><h3>Endpoints</h3><div class="kv-grid"><dt>from</dt><dd>${escapeHtml(a)}</dd><dt>to</dt><dd>${escapeHtml(b)}</dd></div></div>`;
+  panel.innerHTML = html;
+  panel.scrollTop = 0;
+  const cl = document.getElementById('route-clear');
+  if (cl) cl.addEventListener('click', clearSelection);
 }
 function showDetail(props, coords) {
   const p = document.getElementById('panel');
   const name = props.fullName || props.name || 'Unnamed';
   const type = (props.type||'').toLowerCase();
+  // Selecting a node supersedes a route selection — restore node opacities to default first.
+  if (SELECTED_ROUTE && !_focusEngaged()) { SELECTED_ROUTE = null; try { applyStoryFocus(null); map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){} }
   if (!_focusEngaged()) { if (type==='city') setRouteHighlight(props.id); else clearRouteHighlight(); }
   const meta = [];
   if (props.poi_class) meta.push(props.poi_class);
@@ -1057,16 +1217,23 @@ const ACCENTS = ['emerald','coral','gold','steel','violet','teal','amber','rose'
 // Build-mode lock — set by a per-partner Tasklet build (see contract). null on the admin/all build.
 const BUILD_PARTNER = (typeof window !== 'undefined' && window.__PARTNER_BUILD__) || null;
 const PARTNER_VIEWS = {
-  // DEMO entries — reference EXISTING public stories only (no invented identities).
-  'grab':         { story_slugs:['grab'] },
-  'careem':       { story_slugs:['careem'] },
-  'red-sea':      { story_slugs:['red-sea-global'] },
-  'sea-transit':  { label:'Southeast Asia Transit', accent:'teal', regions:['Southeast Asia'],
-                    intro:'A focused view of coastal and inter-island mobility across the Southeast Asian archipelago.',
-                    story_slugs:['grab','singapore-mpa'] },
-  'gulf-transit': { label:'Gulf Waterborne Transit', accent:'amber', regions:['MENA'],
-                    intro:'Waterborne transit and tourism corridors across the Gulf and Red Sea.',
-                    story_slugs:['careem','uae-waterfront','qatar-transport','red-sea-global'] },
+  // Roster — references EXISTING shipped STORIES only (never invents partner identities).
+  // For a real per-partner build, Tasklet ships ONLY the matching slug here (see PARTNER-VIEWS.md §"Roster + routing").
+  // — single-partner views (one story each) —
+  'grab':            { story_slugs:['grab'] },
+  'careem':          { story_slugs:['careem'] },
+  'uae-waterfront':  { story_slugs:['uae-waterfront'] },
+  'red-sea':         { story_slugs:['red-sea-global'] },
+  'singapore-mpa':   { story_slugs:['singapore-mpa'] },
+  'maldives':        { story_slugs:['maldives-hospitality'] },
+  'qatar-transport': { story_slugs:['qatar-transport'] },
+  // — curated regional bundles (multi-story) —
+  'sea-transit':     { label:'Southeast Asia Transit', accent:'teal', regions:['Southeast Asia'],
+                       intro:'A focused view of coastal and inter-island mobility across the Southeast Asian archipelago.',
+                       story_slugs:['grab','singapore-mpa'] },
+  'gulf-transit':    { label:'Gulf Waterborne Transit', accent:'amber', regions:['MENA'],
+                       intro:'Waterborne transit and tourism corridors across the Gulf and Red Sea.',
+                       story_slugs:['careem','uae-waterfront','qatar-transport','red-sea-global'] },
 };
 let PARTNER_ACTIVE = null;
 // A build lock wins over the URL param (and disables it); else fall back to ?partner=<slug>.
@@ -1144,11 +1311,12 @@ function applyStoryFocus(cityIds) {
   const inSet = ['in', ['get','id'], ['literal', cityIds]];
   const routeIn = ['any', ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
   try {
-    map.setPaintProperty('route-p2','line-opacity', ['case', routeIn, O_TIER, 0.035]);
-    map.setPaintProperty('route-qlr','line-opacity', ['case', routeIn, O_TIER_QLR, 0.035]);
-    map.setPaintProperty('route-glow-bloom','line-opacity', ['case', routeIn, O_GLOW_BLOOM, 0]);
-    map.setPaintProperty('route-glow-core','line-opacity', ['case', routeIn, O_GLOW_CORE, 0]);
-    map.setPaintProperty('route-labels','text-opacity', ['case', routeIn, O_RLABEL, 0]);
+    // Fold the focus case into the stop outputs so the top-level zoom curve stays MapLibre-valid.
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, 0.035]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, 0.035]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], 0]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], 0]));
+    map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case', routeIn, 0.9, 0]]);
     map.setPaintProperty('city-points','circle-opacity', ['case', inSet, 1, 0.18]);
     map.setPaintProperty('city-halo','circle-opacity', ['case', inSet, 0.4, 0.04]);
     map.setPaintProperty('city-hub-glow','circle-opacity', ['case', inSet, O_HUBGLOW, 0]);
@@ -1302,6 +1470,15 @@ document.querySelectorAll('.chip').forEach(b => {
 // Layer toggles removed (v17) — all layers are always on; the map key explains them, so the
 // bottom toggle bar was overhead. Routes/Pioneer II/Quanta-LR/Boarding points render by default.
 
+// Map key — keep it lean: header collapses the whole card; the boarding-point glyph list is a
+// disclosure (collapsed by default), since each glyph's meaning is also on the marker click-through.
+(function(){
+  const head=document.getElementById('legend-head'), legend=document.getElementById('legend');
+  if (head&&legend) head.addEventListener('click', ()=>legend.classList.toggle('collapsed'));
+  const bt=document.getElementById('bp-toggle'), bl=document.getElementById('bp-list');
+  if (bt&&bl) bt.addEventListener('click', ()=>{ bl.classList.toggle('collapsed'); bt.classList.toggle('open'); });
+})();
+
 // Panel collapse toggle
 const panelToggle = document.getElementById('panel-toggle');
 panelToggle.addEventListener('click', () => {
@@ -1323,7 +1500,14 @@ function applyUrlState() {
   const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
   if (m) map.jumpTo({ center:[parseFloat(m[1]),parseFloat(m[2])], zoom:parseFloat(m[3]) });
 }
-window.addEventListener('hashchange', () => { if (window.location.hash.startsWith('#/story/')) showStory(window.location.hash.replace('#/story/','')); });
+// React to hash changes: stories deep-link, and a #camera=lng,lat,zoom hash now restores the view too
+// (previously only stories were handled, so pasting/setting a camera hash did nothing — F-02).
+window.addEventListener('hashchange', () => {
+  const h = window.location.hash;
+  if (h.startsWith('#/story/')) { showStory(h.replace('#/story/','')); return; }
+  const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
+  if (m) map.flyTo({ center:[parseFloat(m[1]),parseFloat(m[2])], zoom:parseFloat(m[3]), duration:900, essential:true });
+});
 </script>
 </body>
 </html>

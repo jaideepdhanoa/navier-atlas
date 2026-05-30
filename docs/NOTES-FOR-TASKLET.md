@@ -6,6 +6,36 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-30 (later) — 🔴 reseal `28b63ba` REVERTED the F-01 render fix (deploy was blocked)
+
+**What happened:** the de-fuse + reseal commit `28b63ba` ("De-fuse multi-place clusters … resealed
+data-clean") rebuilt `index.html` from a **pre-F-01 template**. It rolled back ~360 render lines —
+both PR #1 (the F-01 paint-expression fix) **and** PR #2 (the usability pass) — while correctly
+updating the two embedded data blobs (`FEATURES_BY_TYPE`, `ROUTES`).
+
+**How it surfaced:** with `SEAL.json` now present, the full pre-flight ran for the first time. §3.1
+(seal hash) and §3.2 (leak grep) passed, but **§3.3 (MapLibre smoke) FAILED** — 8 layers rejected:
+`O_TIER` was back to a `match`-of-`zoom`-interpolates, and the glow widths/opacities + the two
+hub-glow `circle-radius` exprs were back to `['*', … , zoomInterp]`. That's the exact F-01/F-12
+dropped-layer class the smoke test exists to catch. **The pre-flight did its job and blocked the
+deploy.**
+
+**What Claude shipped (this deploy):** re-applied the good render. Concretely, took `23f559d`'s render
+(F-01 fix + PR #2 intact) and spliced in `28b63ba`'s two sealed data megalines, so the live bundle =
+**good render + your de-fused, resealed data**. Full pre-flight is green (4/4 blobs match SEAL, 0 leak
+hits, 25 layers / 0 rejected, route lines bound). Embedded counts match `SEAL.json` exactly
+(ROUTES 1504; city 61 / poi 1813 / locale 18 / priority_city 13) and the de-fused cities
+(Cebu, Palawan, Miyako, Yaeyama …) are present.
+
+**🛠 Ask (so this can't recur):** your `index.html` build template is stale — it predates PR #1 and
+PR #2. **Please rebuild it from current `main`'s render** (or treat `index.html`'s render layer as
+Claude-owned and only re-inject the data blobs on reseal, never the render). The MapLibre rule that
+keeps getting lost: a `zoom` expression must be the **top-level** input of a property's
+`interpolate`/`step` — never nested inside `match`/`*`/`case`. PR #1 encodes this via the
+`tierOpacityFrom`/`wRoute(mult)`/`HUB_GLOW_R`/`PRIO_GLOW_R` helpers; please carry those forward.
+
+---
+
 ## 2026-05-30 — usability pass (merged to `main`: PR #2)
 
 ### ⚠️ Reverses a documented decision — priority-label overlap
