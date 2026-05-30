@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Navier City Brief",
+  "version": "2026-05-30b",
+  "description": "Partner-neutral, reusable city intelligence. Fills the side panel for every visitor. v2 adds sourced demand, competitive landscape, seasonality, regulatory note, and vivid journeys. All v2 fields optional / backward-compatible.",
+  "type": "object",
+  "required": ["city_id", "display", "tagline", "demand_signals", "use_cases", "navier_fit"],
+  "properties": {
+    "city_id": { "type": "string", "description": "Canonical node id, e.g. dubai-uae (MUST match map node feature id)" },
+    "display": { "type": "string", "description": "Clean label, e.g. Dubai" },
+    "region": { "type": "string", "enum": ["MENA", "SEA", "Europe", "North America", "LatAm", "Oceania", "South Asia", "East Asia"] },
+    "tagline": { "type": "string", "description": "One-line hook" },
+    "summary": { "type": "string", "description": "2-3 sentence why-marine-mobility-here" },
+    "demand_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "value"],
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "string" },
+          "note": { "type": "string" },
+          "archetype": { "type": "string" },
+          "source": { "type": "string", "description": "where the number/claim comes from" }
+        }
+      }
+    },
+    "use_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["archetype", "title", "body"],
+        "properties": {
+          "archetype": { "type": "string", "enum": ["public_transit", "super_app", "tourism", "luxury_charter", "corporate"] },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "platform": { "type": "string", "enum": ["Pioneer II", "Quanta-LR", "both"] }
+        }
+      }
+    },
+    "journeys": {
+      "type": "array",
+      "description": "Vivid local A->B journeys: today's pain vs the Navier trip. Shows we know the local map.",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "with_navier"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "today": { "type": "string" },
+          "with_navier": { "type": "string" },
+          "distance_nm": { "type": "number" },
+          "platform": { "type": "string", "enum": ["Pioneer II", "Quanta-LR", "both"] }
+        }
+      }
+    },
+    "navier_fit": {
+      "type": "object",
+      "properties": {
+        "pioneer_ii": { "type": "string" },
+        "quanta_lr": { "type": "string" }
+      }
+    },
+    "competitive_landscape": { "type": "string", "description": "who runs the water today (ferries/operators) + any foiling competitor presence (Candela etc.) framed as market validation" },
+    "seasonality": { "type": "string", "description": "monsoon / sea-state / wind windows and how the platform handles them" },
+    "regulatory_note": { "type": "string", "description": "certification / authority / clean-fleet mandate angle" },
+    "marquee_routes": { "type": "array", "items": { "type": "string" }, "description": "route ids into ROUTES" },
+    "signature_routes": { "type": "array", "items": { "type": "string" }, "description": "human-readable marquee routes (alias used in files)" },
+    "key_pois": { "type": "array", "items": { "type": "string" }, "description": "boarding-point ids" },
+    "transit_planning": { "type": "string", "description": "public-transport-authority planning angle" },
+    "sources": {
+      "type": "array",
+      "description": "Citations backing the demand numbers.",
+      "items": {
+        "type": "object",
+        "required": ["label"],
+        "properties": { "label": { "type": "string" }, "url": { "type": "string" } }
+      }
+    },
+    "partner_overlays": {
+      "type": "object",
+      "description": "optional per-partner emphasis keyed by partner_id",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "lead_with": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

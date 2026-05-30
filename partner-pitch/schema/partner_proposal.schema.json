@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Navier Partner Proposal",
+  "version": "2026-05-30b",
+  "description": "Partner-facing pitch document. WEB FOCUS: showcase the NEED for marine mobility, the JOURNEYS unlocked, the MULTIMODAL fit, and that we know their LOCAL use cases. Commercial model / unit economics live in the deck, NOT here. All v2 fields are optional and backward-compatible.",
+  "type": "object",
+  "required": ["partner_id", "display", "archetype", "hero", "phases"],
+  "properties": {
+    "partner_id": { "type": "string", "description": "slug used in ?partner= and /slug URL" },
+    "display": { "type": "string" },
+    "archetype": { "type": "string", "enum": ["super_app", "public_transit", "hospitality", "corporate", "charter", "sovereign", "ridehail"] },
+    "region": { "type": "string" },
+
+    "partner_context": {
+      "type": "object",
+      "description": "OPEN WITH THEIR WORLD, not our product. Their ambition + the pressure they're under + where Navier slots in.",
+      "properties": {
+        "their_ambition": { "type": "string" },
+        "their_pressure": { "type": "string" },
+        "where_navier_fits": { "type": "string" }
+      }
+    },
+
+    "hero": {
+      "type": "object",
+      "required": ["title", "what_we_do_together"],
+      "properties": {
+        "title": { "type": "string", "description": "e.g. Grab x Navier - the black-car network, on the water" },
+        "subtitle": { "type": "string" },
+        "what_we_do_together": { "type": "string", "description": "partner-facing; sells the joint venture" }
+      }
+    },
+
+    "why_now": { "type": "string" },
+
+    "multimodal_fit": {
+      "type": "string",
+      "description": "How Navier slots into the partner's EXISTING multimodal footprint (app/booking, last-mile, intermodal hubs). The water layer of a stack they already run."
+    },
+
+    "journeys_unlocked": {
+      "type": "array",
+      "description": "THE hero feature. Concrete local A->B journeys that prove we know their use cases: today's pain vs the Navier trip. Keep these vivid and specific.",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "with_navier"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "today": { "type": "string", "description": "how the journey is made today + the pain" },
+          "with_navier": { "type": "string", "description": "the transformed trip (time / experience)" },
+          "distance_nm": { "type": "number" },
+          "platform": { "type": "string", "enum": ["Pioneer II", "Quanta-LR", "both"] },
+          "archetype": { "type": "string" }
+        }
+      }
+    },
+
+    "differentiation": {
+      "type": "object",
+      "description": "Light, web-appropriate. No economics. Answers 'why not a fast ferry / why not Candela'.",
+      "properties": {
+        "vs_ferry": { "type": "string" },
+        "vs_candela": { "type": "string" },
+        "navier_moat": { "type": "string", "description": "software-defined, autonomy-ready, Turkey factory, cap table, Maldives at-scale proof" }
+      }
+    },
+
+    "proof_points": {
+      "type": "array",
+      "description": "Sourced credibility. Every external number should carry evidence.",
+      "items": {
+        "type": "object",
+        "required": ["claim"],
+        "properties": {
+          "claim": { "type": "string" },
+          "evidence": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      }
+    },
+
+    "objections": {
+      "type": "array",
+      "description": "FAQ: range, sea-state/weather, safety & first-of-class certification, charging infra, seasonality.",
+      "items": {
+        "type": "object",
+        "required": ["concern", "response"],
+        "properties": {
+          "concern": { "type": "string" },
+          "response": { "type": "string" }
+        }
+      }
+    },
+
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "description": "An operating sequence, not a brochure. Each phase explains WHY this, WHY now, WHY this order.",
+      "items": {
+        "type": "object",
+        "required": ["n", "label", "cities", "narrative"],
+        "properties": {
+          "n": { "type": "integer" },
+          "label": { "type": "string", "description": "e.g. Phase 1 - Singapore beachhead" },
+          "boats": { "type": "integer", "description": "cumulative fleet at this phase" },
+          "cities": { "type": "array", "items": { "type": "string" }, "description": "city_ids lit in this phase (MUST match map node feature IDs)" },
+          "routes": { "type": "array", "items": { "type": "string" }, "description": "route ids lit in this phase" },
+          "route_scope": { "type": "string", "enum": ["intra", "all", "cross_border", "regional"], "description": "which routes to highlight for the phase cities" },
+          "featured_routes": { "type": "array", "items": { "type": "string" }, "description": "human-readable marquee routes for the side panel" },
+          "timeline": { "type": "string", "description": "e.g. 2026 H2 - the momentum cue (NOT financials)" },
+          "rationale": { "type": "string", "description": "why this phase sits here in the sequence" },
+          "use_cases": { "type": "array", "items": { "type": "string" }, "description": "local journey/use-case types proven in this phase" },
+          "narrative": { "type": "string", "description": "partner-facing side-panel copy" },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "value"],
+              "properties": { "label": { "type": "string" }, "value": { "type": "string" } }
+            }
+          },
+          "map_focus": {
+            "type": "object",
+            "properties": {
+              "camera": {
+                "type": "object",
+                "properties": {
+                  "lng": { "type": "number" }, "lat": { "type": "number" }, "zoom": { "type": "number" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "markets": {
+      "type": "array",
+      "description": "OPTIONAL multi-market tabs (e.g. Uber: MENA / US / Global). When present, render shows market tabs; each market carries its own hero/why_now/journeys/phases/close. Top-level phases may stay as the default/first market.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "phases"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "region": { "type": "string" },
+          "hero": { "type": "object" },
+          "partner_context": { "type": "object" },
+          "why_now": { "type": "string" },
+          "multimodal_fit": { "type": "string" },
+          "journeys_unlocked": { "type": "array" },
+          "differentiation": { "type": "object" },
+          "proof_points": { "type": "array" },
+          "objections": { "type": "array" },
+          "phases": { "type": "array" },
+          "close": { "type": "object" }
+        }
+      }
+    },
+
+    "the_ask": {
+      "type": "object",
+      "description": "Division of labour + the concrete next step. Web-safe (no economics).",
+      "properties": {
+        "navier_brings": { "type": "string" },
+        "partner_brings": { "type": "string" },
+        "next_step": { "type": "string" }
+      }
+    },
+
+    "close": {
+      "type": "object",
+      "properties": { "title": { "type": "string" }, "body": { "type": "string" } }
+    }
+  }
+}
