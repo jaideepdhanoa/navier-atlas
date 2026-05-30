@@ -243,6 +243,54 @@ body.panel-hidden #footer { display:block; }
 /* Glassmorphic route hover popup */
 .route-popup .maplibregl-popup-content { background:rgba(17,22,30,0.92) !important; backdrop-filter:blur(20px) saturate(140%); border:1px solid var(--line-strong); border-radius:10px; padding:8px 12px !important; box-shadow:0 8px 24px rgba(0,0,0,0.45); }
 .route-popup .maplibregl-popup-tip { display:none; }
+/* ---- Rich city pitch panel (CITY_BRIEFS) ---- */
+.brief-overlay { background:linear-gradient(135deg,rgba(110,231,183,0.10),rgba(96,165,250,0.04)); }
+.brief-lead { display:inline-block; font-size:10px; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; color:var(--accent); margin-right:6px; }
+.brief-arch { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; color:var(--text-2); padding:2px 7px; border:1px solid var(--line-strong); border-radius:999px; white-space:nowrap; }
+.brief-signal { padding:10px 0; border-bottom:1px solid var(--line); }
+.brief-signal:last-child { border-bottom:none; }
+.brief-sig-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.brief-sig-label { font-size:12px; font-weight:600; color:var(--text-0); }
+.brief-sig-val { font-size:13px; color:var(--accent); margin-top:2px; }
+.brief-sig-note { font-size:11px; color:var(--text-2); margin-top:3px; line-height:1.5; }
+.brief-uc { padding:10px 0; border-bottom:1px solid var(--line); }
+.brief-uc:last-child { border-bottom:none; }
+.brief-uc-top { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px; }
+.brief-uc-title { font-size:13px; font-weight:600; color:var(--text-0); }
+.brief-uc-body { font-size:12px; color:var(--text-1); line-height:1.55; margin-top:2px; }
+.brief-fit { margin-bottom:12px; font-size:12px; color:var(--text-1); line-height:1.55; }
+.brief-fit:last-child { margin-bottom:0; }
+.brief-fit-tag { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; margin-bottom:3px; }
+.brief-sigroute { font-size:12px; color:var(--text-1); padding:5px 0 5px 14px; position:relative; line-height:1.5; }
+.brief-sigroute::before { content:'↔'; position:absolute; left:0; color:var(--text-2); }
+.brief-live-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin:10px 0 4px; }
+.brief-live { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-0); padding:6px 8px; margin:0 -8px; border-radius:8px; cursor:pointer; }
+.brief-live:hover { background:rgba(110,231,183,0.08); }
+.brief-live-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.brief-live-d { margin-left:auto; font-size:11px; color:var(--text-2); font-family:'JetBrains Mono'; }
+/* ---- Partner phase carousel (PARTNERS) ---- */
+.pcaro-hero-cta { font-size:12px; color:var(--text-1); line-height:1.55; margin-top:8px; }
+.pcaro-why { font-size:12px; color:var(--text-1); line-height:1.6; }
+.pcaro-nav { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.pcaro-btn { width:30px; height:30px; border-radius:8px; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center; }
+.pcaro-btn:hover:not(:disabled) { color:var(--accent); border-color:rgba(110,231,183,0.4); }
+.pcaro-btn:disabled { opacity:0.35; cursor:default; }
+.pcaro-dots { display:flex; gap:6px; }
+.pcaro-dot { width:8px; height:8px; border-radius:50%; background:var(--line-strong); cursor:pointer; transition:background .2s; }
+.pcaro-dot.active { background:var(--accent); }
+.pcaro-phase-label { font-size:15px; font-weight:700; color:var(--text-0); letter-spacing:-0.01em; }
+.pcaro-boats { font-size:11px; color:var(--accent); font-weight:600; margin:2px 0 8px; }
+.pcaro-narr { font-size:12px; color:var(--text-1); line-height:1.6; margin-bottom:12px; }
+.pcaro-kpis { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.pcaro-kpi { background:var(--bg-3); border:1px solid var(--line); border-radius:10px; padding:8px 10px; }
+.pcaro-kpi .v { font-size:13px; font-weight:700; color:var(--text-0); }
+.pcaro-kpi .l { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); margin-top:2px; }
+.pcaro-routes-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin:4px 0; }
+.pcaro-route { font-size:12px; color:var(--text-1); padding:4px 0 4px 14px; position:relative; line-height:1.5; }
+.pcaro-route::before { content:'→'; position:absolute; left:0; color:var(--text-2); }
+.pcaro-close { padding:14px 0 4px; border-top:1px solid var(--line); margin-top:6px; }
+.pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
+.pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
 </style>
 </head>
 <body>
@@ -1168,13 +1216,73 @@ function showRouteDetail(p){
   const cl = document.getElementById('route-clear');
   if (cl) cl.addEventListener('click', clearSelection);
 }
+// ---- Rich city pitch panel (CITY_BRIEFS) ----
+const _ARCH = {public_transit:'Public transit', super_app:'Super-app', tourism:'Tourism', luxury_charter:'Luxury charter', corporate:'Corporate', charter:'Charter', hospitality:'Hospitality'};
+function _archLabel(a){ return _ARCH[a] || (a ? String(a).replace(/_/g,' ') : ''); }
+function _platColor(plat){ return plat==='Quanta-LR' ? '#fbbf24' : (plat==='Pioneer II' ? '#6ee7b7' : '#94a3b8'); }
+function _cityBriefHtml(brief, props, coords){
+  const cid = props.id;
+  const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
+  const live = ROUTE_FC.features.filter(f=>f.properties._cfrom===cid || f.properties._cto===cid)
+    .sort((a,b)=>(b.properties.render_tw||0)-(a.properties.render_tw||0)).slice(0,6);
+  let h = `<div class="panel-hero">
+    <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
+    <h2>${escapeHtml(brief.display||props.shortName||props.name||cid)}</h2>
+    ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
+    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 2,000 nm)</button>
+  </div>`;
+  if (ov){
+    const plabel=(PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.label)||(PARTNERS[PARTNER_ACTIVE.slug]&&PARTNERS[PARTNER_ACTIVE.slug].display)||(PARTNER_ACTIVE.stories&&PARTNER_ACTIVE.stories[0]&&PARTNER_ACTIVE.stories[0].partner_org_canonical_name)||PARTNER_ACTIVE.slug;
+    h+=`<div class="panel-section brief-overlay"><h3>For ${escapeHtml(plabel)}</h3><div class="what-distinct"><span class="brief-lead">${escapeHtml(_archLabel(ov.lead_with))}</span>${escapeHtml(ov.note||'')}</div></div>`;
+  }
+  if (brief.summary) h+=`<div class="panel-section"><div class="what-distinct">${escapeHtml(brief.summary)}</div></div>`;
+  if (brief.demand_signals&&brief.demand_signals.length){
+    h+=`<div class="panel-section"><h3>Why marine mobility here</h3>`;
+    for (const d of brief.demand_signals) h+=`<div class="brief-signal"><div class="brief-sig-top"><span class="brief-sig-label">${escapeHtml(d.label||'')}</span>${d.archetype?`<span class="brief-arch">${escapeHtml(_archLabel(d.archetype))}</span>`:''}</div>${d.value?`<div class="brief-sig-val">${escapeHtml(d.value)}</div>`:''}${d.note?`<div class="brief-sig-note">${escapeHtml(d.note)}</div>`:''}</div>`;
+    h+=`</div>`;
+  }
+  if (brief.use_cases&&brief.use_cases.length){
+    h+=`<div class="panel-section"><h3>Use cases</h3>`;
+    for (const u of brief.use_cases){ const pc=_platColor(u.platform);
+      h+=`<div class="brief-uc"><div class="brief-uc-top"><span class="brief-arch">${escapeHtml(_archLabel(u.archetype))}</span>${u.platform?`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(u.platform)}</span>`:''}</div><div class="brief-uc-title">${escapeHtml(u.title||'')}</div>${u.body?`<div class="brief-uc-body">${escapeHtml(u.body)}</div>`:''}</div>`; }
+    h+=`</div>`;
+  }
+  if (brief.navier_fit&&(brief.navier_fit.pioneer_ii||brief.navier_fit.quanta_lr)){
+    h+=`<div class="panel-section"><h3>How Navier fits</h3>`;
+    if (brief.navier_fit.pioneer_ii) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#6ee7b7">Pioneer II · ≤70 nm electric</span><div>${escapeHtml(brief.navier_fit.pioneer_ii)}</div></div>`;
+    if (brief.navier_fit.quanta_lr) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#fbbf24">Quanta-LR · ≤2,000 nm hybrid</span><div>${escapeHtml(brief.navier_fit.quanta_lr)}</div></div>`;
+    h+=`</div>`;
+  }
+  if ((brief.signature_routes&&brief.signature_routes.length)||live.length){
+    h+=`<div class="panel-section"><h3>Signature routes</h3>`;
+    for (const r of (brief.signature_routes||[])) h+=`<div class="brief-sigroute">${escapeHtml(r)}</div>`;
+    if (live.length){ h+=`<div class="brief-live-h">Live in the network</div>`;
+      for (const f of live){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
+    }
+    h+=`</div>`;
+  }
+  if (brief.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(brief.transit_planning)}</div></div>`;
+  return h;
+}
+function _renderCityBrief(brief, props, coords){
+  const p = document.getElementById('panel');
+  p.innerHTML = _cityBriefHtml(brief, props, coords);
+  p.scrollTop = 0;
+  const rt = p.querySelector('.ring-toggle');
+  if (rt) rt.addEventListener('click', ()=>{ const c=rt.dataset.coords.split(',').map(Number); toggleRings(c); rt.classList.toggle('active'); });
+  p.querySelectorAll('.brief-live[data-rid]').forEach(el=>el.addEventListener('click', ()=>{
+    const f = ROUTE_FC.features.find(x=>x.properties.id===el.dataset.rid); if (f) selectRoute(f);
+  }));
+}
 function showDetail(props, coords) {
   const p = document.getElementById('panel');
   const name = props.fullName || props.name || 'Unnamed';
   const type = (props.type||'').toLowerCase();
   // Selecting a node supersedes a route selection — restore node opacities to default first.
   if (SELECTED_ROUTE && !_focusEngaged()) { SELECTED_ROUTE = null; try { applyStoryFocus(null); map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){} }
-  if (!_focusEngaged()) { if (type==='city') setRouteHighlight(props.id); else clearRouteHighlight(); }
+  const _brief = (typeof CITY_BRIEFS!=='undefined') ? CITY_BRIEFS[props.id] : null;
+  if (!_focusEngaged()) { if (type==='city' || _brief) setRouteHighlight(props.id); else clearRouteHighlight(); }
+  if (_brief && coords) { _renderCityBrief(_brief, props, coords); return; }
   const meta = [];
   if (props.poi_class) meta.push(props.poi_class);
   if (props.country) meta.push(props.country);
