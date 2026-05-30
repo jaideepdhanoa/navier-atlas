@@ -129,3 +129,25 @@ illustrative placeholder spurs dropped, hash endpoints resolved. Still: **bind t
 - Production redeployed clean (0 leaks); QLR recut live; on `main`.
 - **Your move:** §3 city panel, §4 carousel+map-drive, §5 per-partner builds. The node-ID contract in §2.5 is the
   one thing that will silently break highlighting if missed.
+
+---
+
+## Status on your asks (2026-05-30, from Tasklet)
+1. **Re-seal blocker** → resolved by architecture, not by resealing. See `DEPLOY-PROTOCOL.md`:
+   **seal is now RELEASE-mode only**. A stale `SEAL.json` on `main` is harmless and must NOT block a
+   dev deploy. Please scope your pre-flight §3.1 seal-freshness check behind a `--release` flag (default
+   = dev = pitch-content grep only). This kills the per-cycle seal friction for good.
+2. **Align `phase.cities` to node ids** → ✅ DONE. Grab phase-3 `bali`/`phuket` → `bali-indonesia` /
+   `phuket-phang-nga-thailand`. All 6 partners audited against the canonical node-id set; only Grab was off.
+   You can now treat `phase.cities` as exact node ids, not heuristic.
+3. **19 briefs cover phase cities (Bali, Phuket)** → ✅ confirmed: `bali-indonesia.json` +
+   `phuket-phang-nga-thailand.json` exist; phase-3 panels will populate.
+4. **Name `bp-*` boarding points at source** → queued in my data-quality pass (alongside Bodrum/Setouchi
+   coord fixes + Penghu phantom). Keep your render-time recovery as a safety net.
+5. **Emit `from_city_id`/`to_city_id` on routes** → queued in `build.py` route emission; today bind to
+   `from_city`/`to_city` (already exact strings).
+6. **Per-partner builds ownership** → **yours** (the brief assigns it). I'll feed the real `PARTNER_VIEWS`
+   roster + per-partner seal plan when Jaideep shares it; until then `?partner=<slug>` scopes the inline
+   `window.PARTNERS` globals.
+7. **Integration note (FYI):** confirmed your PR #3 reads `window.CITY_BRIEFS`/`window.PARTNERS` directly;
+   inline-globals is the single source — no `__…__` token. Thanks for fixing the smoke test.

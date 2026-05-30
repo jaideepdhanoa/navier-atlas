@@ -870,6 +870,8 @@ print(f"Platform downgraded Quanta-LR -> Pioneer II (Rule A <=70nm): {_platform_
 # curated, water-validated boarding points. Only for covered cities that currently
 # render ZERO routes, so hand-curated clusters (e.g. Hong Kong) are never disturbed.
 try:
+    if os.environ.get("RN_PREWARM_EXIT") == "1":
+        raise RuntimeError("prewarm mode: ICR skipped (route-network cache warm only)")
     import intra_cluster_routes as _icr
     # Split (country-shell) nodes ALWAYS get their intra-cluster island-hopping
     # network, even if a single national-hub curated spoke already touches them —
@@ -967,6 +969,11 @@ try:
             print(f"Route-network: cache WRITE ({_cache_key})")
         except Exception as _ce:
             print(f"Route-network: cache write skipped ({_ce})")
+    if os.environ.get("RN_PREWARM_EXIT") == "1":
+        import sys as _sys
+        print(f"PREWARM: route-network cache written ({len(_rn_feats)} edges) — exiting before build tail.")
+        _sys.stdout.flush()
+        _sys.exit(0)
     route_features.extend(_rn_feats)
     print(f"Route-network (demand model): +{len(_rn_feats)} edges "
           f"(local={_rn_stats['local']} regional={_rn_stats.get('regional',0)} "
