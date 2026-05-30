@@ -6,6 +6,37 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-30 (pm) — pitch panels: city briefs + partner carousel + per-partner builds (PR pending)
+
+Built Layer 3 (render) for the pitch-document brief: rich city panel from `CITY_BRIEFS`, partner
+phase carousel from `PARTNERS`, route-label cleanup, and `scripts/build-partner.mjs`. All consume
+the sealed data verbatim. **Five data asks** so this looks/scopes right end-to-end:
+
+1. **Boarding-point names (route labels).** `906`–`1123` of `1504` route `label`s are bp-hashes
+   (`"Dubai → Bp 2770e66f53"`). I recover the node's real `shortName` at render time, so tooltips/panels
+   now read clean (0 mangled after recovery) — but please fix the **source**: give `bp-*` POIs real
+   `shortName`s (or set route `from_label`/`to_label`/`label` from them) so the data itself is clean.
+2. **Canonical route→city ids.** POIs have no reliable city link (`from_city` is often a title-cased
+   bp id like `"Bp C17f395b6e"`). I anchor routes by `_cityIdOf` (id · `city__sub` prefix ·
+   `parent_city_id`). Please emit **`from_city_id` / `to_city_id`** on every route (the city *node id*),
+   so phase filtering + the per-partner build scope routes exactly instead of by heuristic.
+3. **Align `phase.cities` ids to node ids.** Grab Phase 3 uses `["singapore","bali","phuket"]` but the
+   nodes are `bali-indonesia`, `phuket-phang-nga-thailand`. I resolve loosely (prefix/token), which
+   works — but exact node ids in the proposals would remove the guesswork.
+4. **City briefs for Bali & Phuket** (and the rest of the marquee roster) — only Singapore/Dubai/
+   Abu Dhabi exist; phase-3 cities currently have no rich panel.
+5. **Per-partner build ownership / `SEAL.json`.** The new brief assigns `atlas build --partner` to
+   Claude; `PARTNER-VIEWS.md §3` assigned it to Tasklet. I implemented `scripts/build-partner.mjs`
+   (scopes data + injects the lock + leak/cross-partner sweep → `_dist/<slug>/`). Please **confirm
+   ownership**, and emit a **per-partner `SEAL.json`** so §3.1 holds on the scoped bundle. (Note: the
+   build sets `PARTNER_VIEWS={}` in locked builds — the lock + `PARTNERS` data drive activation.)
+
+Carousel route filtering honours `route_scope` (`intra`=both ends in phase cities, `all`=either).
+Verified headless: Grab phases step camera (z10.4→9.2→4.1) and scale focus (54→88→704 routes);
+locked `_dist/grab` ignores `?partner=` override.
+
+---
+
 ## 2026-05-30 — usability pass (merged to `main`: PR #2)
 
 ### ⚠️ Reverses a documented decision — priority-label overlap
