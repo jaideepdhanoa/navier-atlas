@@ -8,9 +8,14 @@ plain `index.html` regenerate that ignores them will silently drop them — plea
 - `build.py` emits a separate **`priority_city`** bucket in `FEATURES_BY_TYPE` (currently 13: Singapore,
   Dubai, Abu Dhabi, Doha, Hong Kong, Bangkok, Jakarta, Malé, Muscat, Jeddah, Manila, Phuket, Bali).
 - The render adds a dedicated **`priority-cities`** geojson source with **unclustered, always-on** layers
-  (`priority-hub-glow`, `priority-halo`, `priority-points`, `priority-labels`) using
-  `text-allow-overlap:true` + `text-ignore-placement:true` so these flagship hubs are **never** absorbed
-  into a cluster or lose label placement to dense neighbours (Singapore was being swallowed by Riau/Johor).
+  (`priority-hub-glow`, `priority-halo`, `priority-points`, `priority-labels`) so these flagship hubs are
+  **never** absorbed into a cluster or lose label placement to dense neighbours (Singapore was being
+  swallowed by Riau/Johor).
+  - **⚠️ Updated 2026-05-30 (PR #2):** `priority-labels` no longer uses `text-allow-overlap:true` /
+    `text-ignore-placement:true` — at world view the flagships piled on top of each other. They are now
+    collision-thinned with `symbol-sort-key: ['-',0,degree]`, so the highest-degree marquee hub wins
+    placement (Singapore still labels) without stacking. **Do not restore allow-overlap:true.** See
+    `NOTES-FOR-TASKLET.md`.
 - Wired into: the degree-max loop, the `stat-cities` count, the click-handler layer list, `DEFAULT_OPACITY`,
   and the story focus/dim block. If you add/rename layers, keep `priority-*` in those five places.
 
