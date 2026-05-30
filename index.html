@@ -1386,17 +1386,18 @@ function _viewScopeCities(v){
 function _activeStories(){ return PARTNER_ACTIVE ? PARTNER_ACTIVE.stories : STORIES; }
 function initPartnerView(){
   const slug=_partnerSlug();
-  if (!slug || !PARTNER_VIEWS[slug]){
+  const proposal = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[slug] : null;
+  if (!slug || (!PARTNER_VIEWS[slug] && !proposal)){
     // unknown/absent -> admin/all view. In a build lock that's a build error (data may be scoped
     // to a partner while the view falls open) — surface it loudly so the build is caught, not shipped.
-    if (BUILD_PARTNER) console.error('[partner-build] __PARTNER_BUILD__="'+BUILD_PARTNER+'" has no PARTNER_VIEWS entry — shipping unlocked.');
+    if (BUILD_PARTNER) console.error('[partner-build] __PARTNER_BUILD__="'+BUILD_PARTNER+'" has no PARTNER_VIEWS/PARTNERS entry — shipping unlocked.');
     return;
   }
-  const view=PARTNER_VIEWS[slug];
+  const view=PARTNER_VIEWS[slug]||{};
   const stories=_viewStories(view);
-  if (!stories.length) return;
-  PARTNER_ACTIVE={ slug, view, stories, scopeCities:_viewScopeCities(view) };
-  const label=view.label || stories[0].partner_org_canonical_name || slug;
+  if (!stories.length && !proposal) return;   // a proposal can drive the carousel without stories
+  PARTNER_ACTIVE={ slug, view, stories, scopeCities:_viewScopeCities(view), proposal };
+  const label=view.label || (proposal&&proposal.display) || (stories[0]&&stories[0].partner_org_canonical_name) || slug;
   const tag=document.querySelector('#header .brand-text .tag');
   if (tag) tag.textContent = label + ' · Mobility Network';
   document.title = 'Navier Atlas · ' + label;
@@ -1418,8 +1419,101 @@ function _partnerEmptyHtml(){
   }
   return h;
 }
+// ---- Partner phase carousel (PARTNERS[slug].phases drive the side panel + map) ----
+// Resolve loose phase city ids ("bali") to real node ids ("bali-indonesia") so focus + filtering work
+// despite the id mismatch flagged to Tasklet. Tolerant: exact · prefix · token match.
+function _resolvePhaseCities(cities){
+  const out=new Set();
+  for (const c of (cities||[])){
+    if (CITY_IDS.has(c)){ out.add(c); continue; }
+    const x=String(c).toLowerCase();
+    for (const id of CITY_IDS){ const a=id.toLowerCase();
+      if (a===x || a.startsWith(x+'-') || a.startsWith(x+'_') || a.split(/[-_]/).includes(x)) out.add(id); }
+  }
+  return [...out];
+}
+// Light a phase: its cities + the routes scoped to them (route_scope intra=both ends, all=either end),
+// dim the rest. Reuses the F-01-safe tierOpacity/qlrOpacity wrap so zoom stays top-level.
+function applyPhaseFocus(phase){
+  if (!phase){ applyStoryFocus(null); return; }
+  const cities=_resolvePhaseCities(phase.cities);
+  if (!cities.length){ applyStoryFocus(null); return; }
+  const inSet=['in',['get','id'],['literal',cities]];
+  const cf=['in',['get','_cfrom'],['literal',cities]], ct=['in',['get','_cto'],['literal',cities]];
+  const routeIn=(phase.route_scope==='intra')?['all',cf,ct]:['any',cf,ct];
+  try{
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',routeIn,m,0.03]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',routeIn,m,0.03]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',routeIn,['*',m,['*',_TW2,0.30]],0]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',routeIn,['*',m,['+',0.05,['*',_TW,0.16]]],0]));
+    map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'],11,0,12,['case',routeIn,0.9,0]]);
+    map.setPaintProperty('city-points','circle-opacity',['case',inSet,1,0.12]);
+    map.setPaintProperty('city-halo','circle-opacity',['case',inSet,0.4,0.03]);
+    map.setPaintProperty('city-hub-glow','circle-opacity',['case',inSet,O_HUBGLOW,0]);
+    map.setPaintProperty('city-labels','text-opacity',['case',inSet,1,0.2]);
+    map.setPaintProperty('priority-points','circle-opacity',['case',inSet,1,0.35]);
+    map.setPaintProperty('priority-halo','circle-opacity',['case',inSet,0.4,0.05]);
+    map.setPaintProperty('priority-hub-glow','circle-opacity',['case',inSet,O_HUBGLOW,0]);
+    map.setPaintProperty('priority-labels','text-opacity',['case',inSet,1,0.4]);
+    map.setPaintProperty('poi-points','text-opacity',0.18);
+    map.setPaintProperty('poi-labels','text-opacity',0.2);
+  }catch(e){ console.warn('phase focus',e); }
+}
+let _CARO=null;
+function _carouselHtml(partner,i){
+  const ph=partner.phases||[], cur=ph[i]||{};
+  const accent=(PARTNER_ACTIVE&&PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.accent)||({super_app:'emerald',public_transit:'steel',hospitality:'rose',corporate:'violet',charter:'gold'})[partner.archetype]||'emerald';
+  const hero=partner.hero||{};
+  let h=`<div class="story-header accent-${accent}">
+    <div class="partner-mark">Partner proposal</div>
+    <h2>${escapeHtml(hero.title||partner.display||'')}</h2>
+    ${hero.subtitle?`<div class="subtitle">${escapeHtml(hero.subtitle)}</div>`:''}
+    ${hero.what_we_do_together?`<div class="pcaro-hero-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}
+  </div>`;
+  if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
+  if (ph.length){
+    h+=`<div class="panel-section"><h3>Phased rollout</h3>
+      <div class="pcaro-nav"><button class="pcaro-btn" id="caro-prev" ${i<=0?'disabled':''}>‹</button>
+        <div class="pcaro-dots">${ph.map((_,k)=>`<span class="pcaro-dot ${k===i?'active':''}" data-i="${k}"></span>`).join('')}</div>
+        <button class="pcaro-btn" id="caro-next" ${i>=ph.length-1?'disabled':''}>›</button></div>
+      <div class="pcaro-phase-label">${escapeHtml(cur.label||('Phase '+(cur.n||(i+1))))}</div>
+      ${cur.boats!=null?`<div class="pcaro-boats">${escapeHtml(String(cur.boats))} vessels at this phase</div>`:''}
+      ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
+      ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
+      ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(r=>`<div class="pcaro-route">${escapeHtml(r)}</div>`).join('')}`:''}
+    </div>`;
+  }
+  if (partner.close) h+=`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`;
+  return h;
+}
+function _renderCarousel(){
+  const panel=document.getElementById('panel');
+  panel.innerHTML=_carouselHtml(_CARO.partner,_CARO.i); panel.scrollTop=0;
+  const prev=document.getElementById('caro-prev'), next=document.getElementById('caro-next');
+  if (prev) prev.addEventListener('click',()=>showPhase(_CARO.i-1));
+  if (next) next.addEventListener('click',()=>showPhase(_CARO.i+1));
+  panel.querySelectorAll('.pcaro-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showPhase(+d.dataset.i)));
+}
+function showPhase(i){
+  if (!_CARO) return;
+  const ph=_CARO.partner.phases||[]; if(!ph.length) return;
+  i=Math.max(0,Math.min(i,ph.length-1)); _CARO.i=i;
+  const cur=ph[i];
+  if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
+  applyPhaseFocus(cur);
+  _renderCarousel();
+  try{ history.replaceState(null,'','#/partner/'+_CARO.partner.partner_id+'/phase/'+(i+1)); }catch(e){}
+}
+function startPartnerCarousel(partner){
+  _CARO={partner,i:0};
+  let start=0;
+  try{ const m=(location.hash||'').match(/#\/partner\/[^/]+\/phase\/(\d+)/); if(m) start=Math.max(0,(+m[1])-1); }catch(e){}
+  showPhase(start);
+}
 function applyPartnerView(){
   if (!PARTNER_ACTIVE) return;
+  const partner = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[PARTNER_ACTIVE.slug] : null;
+  if (partner && partner.phases && partner.phases.length){ startPartnerCarousel(partner); return; }
   applyStoryFocus(PARTNER_ACTIVE.scopeCities);
   const p=document.getElementById('panel');
   p.innerHTML=_partnerEmptyHtml(); p.scrollTop=0;
