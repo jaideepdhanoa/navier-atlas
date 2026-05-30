@@ -157,6 +157,27 @@ try {
   fail('smoke test threw: ' + (e && e.message ? e.message : e));
 }
 
+// ─── §3.4 · Pitch-render presence ───────────────────────────────────────────────
+// Guards the recurring failure where a build.py regen re-emits index.html WITHOUT the PR#3
+// render: the window.CITY_BRIEFS/PARTNERS data still loads, but nothing renders it (dead UI).
+// If the content is inlined, the render that consumes it MUST be present — else abort the deploy.
+head('§3.4  pitch-render layer present');
+{
+  const hasContent = /window\.CITY_BRIEFS\s*=/.test(html) || /window\.PARTNERS\s*=/.test(html);
+  if (!hasContent) {
+    ok('no inline pitch content (CITY_BRIEFS/PARTNERS) — render check skipped');
+  } else {
+    const need = [
+      ['city pitch panel (CITY_BRIEFS read)', /CITY_BRIEFS\s*\[/],
+      ['partner phase carousel',              /function\s+applyPhaseFocus|_renderCarousel|showPhase\s*\(/],
+      ['route-label recovery',                /_routeLabel\s*\(/],
+    ];
+    const gone = need.filter(([, re]) => !re.test(html)).map(([n]) => n);
+    if (gone.length) fail(`pitch content is inlined but its render is MISSING: ${gone.join(' · ')} — a build regen likely dropped the PR#3 render (re-apply it, then run claude_to_template.py so the template keeps it)`);
+    else ok('city panel + partner carousel + route-label recovery all present');
+  }
+}
+
 // ─── verdict ──────────────────────────────────────────────────────────────────
 console.log('');
 if (failed) { console.error('PRE-FLIGHT FAILED — deploy ABORTED.'); process.exit(1); }
