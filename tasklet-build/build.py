@@ -2255,5 +2255,20 @@ out = (HTML
   .replace("__N_POI__", str(n_poi))
   .replace("__N_ROUTE__", str(len(route_features))))
 
+# Guaranteed availability of the pitch content layer: if the render template has not yet
+# wired the __CITY_BRIEFS__ / __PARTNERS__ placeholders, inject the data as window globals
+# so the front-end (Claude's city panels + phase carousel) can read it immediately and the
+# data ships live regardless of template state. Idempotent: skipped if a const already exists.
+if "window.CITY_BRIEFS" not in out and "const CITY_BRIEFS" not in out:
+    _inject = ("<script>window.CITY_BRIEFS=" + json.dumps(_city_briefs) +
+               ";window.PARTNERS=" + json.dumps(_partners) + ";</script>")
+    if "</head>" in out:
+        out = out.replace("</head>", _inject + "</head>", 1)
+    elif "</body>" in out:
+        out = out.replace("</body>", _inject + "</body>", 1)
+    else:
+        out += _inject
+    print(f"Injected pitch content as window globals ({len(_city_briefs)} briefs, {len(_partners)} partners)")
+
 (HERE / "index.html").write_text(out)
 print(f"Wrote index.html — {len(out):,} bytes")

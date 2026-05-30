@@ -26,15 +26,19 @@ _Last updated 2026-05-30 (overnight session)._
   Lombok→Komodo (237), Bangkok→Koh Samui (205), Doha→Dubai (196)…
 - Full curation log: `docs/QUANTA-LR-CURATION-REVIEW.md`.
 
-### Partner pitch content layer (new — for Claude's render)
-- `partner-pitch/city_briefs/{dubai-uae,abu-dhabi-uae,singapore}.json` — partner-neutral
-  pitch synthesis (demand, use-cases by archetype, routes, POIs, PT angle, vessel fit) with
-  per-partner overlays.
-- `partner-pitch/partners/{grab,dubai-rta}.json` — phased narrative arcs (hero, why-now,
-  ordered phases w/ city subsets + routes + camera + KPIs).
-- More partner proposals authoring now: **abu-dhabi-itc, careem, singapore-mpa, red-sea-global**.
-- Build bakes these into `index.html` as `CITY_BRIEFS` / `PARTNERS` (placeholders
-  `__CITY_BRIEFS__` / `__PARTNERS__` are no-ops until template wires them).
+### Partner pitch content layer (expanded — for Claude's render)
+- **19 city briefs** (`partner-pitch/city_briefs/*.json`) — partner-neutral pitch synthesis
+  (demand, use-cases by archetype, routes, POIs, PT angle, vessel fit) with per-partner overlays:
+  MENA — dubai, abu-dhabi, doha, manama, muscat, jeddah, red-sea-global, neom, sharm-el-sheikh;
+  SEA — singapore, bali, lombok, komodo, phuket, bangkok, hong-kong, maldives, jakarta-batam, colombo.
+- **6 partner proposals** (`partner-pitch/partners/*.json`) — phased narrative arcs (hero,
+  why-now, ordered phases w/ city subsets + routes + camera + KPIs):
+  grab, dubai-rta, careem, abu-dhabi-itc, singapore-mpa, red-sea-global.
+- **Now live in the page**: build injects `window.CITY_BRIEFS` and `window.PARTNERS` globals
+  (guaranteed, idempotent) so the front-end can read them immediately. If/when the template
+  adds `__CITY_BRIEFS__` / `__PARTNERS__` placeholders, the build uses those instead.
+- **Claude action**: read `window.CITY_BRIEFS[cityId]` for the rich city panel; read
+  `window.PARTNERS[slug]` (phases[]) for the phase carousel + `?partner=<slug>` scoping.
 - Render specs: `docs/BRIEF-FOR-CLAUDE-pitch-panels.md`, test brief `docs/BRIEF-FOR-COWORK-pitch-flow.md`.
 
 ### Build architecture v4 — fast dev path vs weekly release gate
