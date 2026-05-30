@@ -1177,6 +1177,8 @@ function clearSelection(){
   SELECTED_ROUTE = null;
   ROUTE_POPUP.remove();
   try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
+  // In a partner carousel, deselecting returns to the active phase (panel + focus), not admin empty.
+  if (_CARO){ const cur=(_CARO.partner.phases||[])[_CARO.i]; if (cur) applyPhaseFocus(cur); _renderCarousel(); return; }
   if (!_focusEngaged()) applyStoryFocus(null);   // reset every route + node opacity to default
   const panel = document.getElementById('panel');
   if (PANEL_EMPTY_HTML != null) { panel.innerHTML = PANEL_EMPTY_HTML; panel.scrollTop = 0; }
