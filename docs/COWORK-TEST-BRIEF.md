@@ -1,6 +1,10 @@
 # Claude Cowork — Test Brief (round 2)
 _2026-05-30 · re-test after the route-render fix ships_
 
+> **⚠️ Superseded by `BRIEF-FOR-COWORK-pitch-flow.md` (round 3).** Round 2's route-correctness and
+> POI-placement checks are folded into round 3 §A/§D/§E. Kept here for history. Note: round 2's
+> "trip-purpose colour" check is obsolete — route colour is now **platform** (Pioneer II / Quanta-LR).
+
 **URL:** https://navier-atlas.vercel.app · **Role:** demanding first-time partner-facing viewer; observe-and-report only.
 
 ## Why round 2
