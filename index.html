@@ -291,6 +291,36 @@ body.panel-hidden #footer { display:block; }
 .pcaro-close { padding:14px 0 4px; border-top:1px solid var(--line); margin-top:6px; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
+/* schema-v2 partner sections */
+.pcaro-lp { margin-bottom:12px; }
+.pcaro-lp:last-child { margin-bottom:0; }
+.pcaro-lp .l { display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--text-2); margin-bottom:3px; }
+.pcaro-lp p { margin:0; font-size:12px; color:var(--text-1); line-height:1.6; }
+.pcaro-jrn { background:var(--bg-3); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:8px; }
+.pcaro-jrn-route { font-size:13px; font-weight:700; color:var(--text-0); }
+.pcaro-jrn-route span { color:var(--text-2); font-weight:400; }
+.pcaro-jrn-line { font-size:12px; line-height:1.55; margin-top:6px; color:var(--text-1); }
+.pcaro-jrn-line span { display:inline-block; font-size:9px; text-transform:uppercase; letter-spacing:0.06em; font-weight:700; margin-right:6px; padding:1px 6px; border-radius:4px; vertical-align:baseline; }
+.pcaro-jrn-line.today { color:var(--text-2); }
+.pcaro-jrn-line.today span { color:var(--text-2); background:rgba(255,255,255,0.05); }
+.pcaro-jrn-line.nav { color:var(--text-0); }
+.pcaro-jrn-line.nav span { color:#06281d; background:var(--accent); }
+.pcaro-jrn-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; align-items:center; }
+.pcaro-jchip { font-size:10px; color:var(--text-2); background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:999px; padding:2px 8px; }
+.pcaro-proof { padding:8px 0; border-bottom:1px solid var(--line); }
+.pcaro-proof:last-child { border-bottom:none; }
+.pcaro-proof .claim { font-size:12px; font-weight:600; color:var(--text-0); }
+.pcaro-proof .ev { font-size:12px; color:var(--text-1); line-height:1.55; margin-top:3px; }
+.pcaro-proof .src { font-size:10px; color:var(--text-2); margin-top:3px; font-style:italic; }
+.pcaro-faq { padding:8px 0; border-bottom:1px solid var(--line); }
+.pcaro-faq:last-child { border-bottom:none; }
+.pcaro-faq .q { font-size:12px; font-weight:600; color:var(--text-0); }
+.pcaro-faq .a { font-size:12px; color:var(--text-1); line-height:1.55; margin-top:3px; }
+.pcaro-ask { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.pcaro-ask-col span { display:block; font-size:9px; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--accent); margin-bottom:3px; }
+.pcaro-ask-col p { margin:0; font-size:11px; color:var(--text-1); line-height:1.5; }
+.pcaro-next { font-size:12px; color:var(--text-0); line-height:1.55; padding:8px 10px; background:rgba(110,231,183,0.08); border-radius:8px; }
+.pcaro-next span { display:block; font-size:9px; text-transform:uppercase; letter-spacing:0.08em; font-weight:700; color:var(--accent); margin-bottom:2px; }
 </style>
 <script src="atlas-data.js"></script></head>
 <body>
@@ -1457,6 +1487,46 @@ function applyPhaseFocus(phase){
   }catch(e){ console.warn('phase focus',e); }
 }
 let _CARO=null;
+// schema-v2 partner-level sections (render once, around the phase carousel).
+function _labeled(label, body){ return body ? `<div class="pcaro-lp"><span class="l">${escapeHtml(label)}</span><p>${escapeHtml(body)}</p></div>` : ''; }
+function _ctxHtml(c){
+  if (!c) return '';
+  const inner = _labeled('Their ambition', c.their_ambition) + _labeled('The pressure they’re under', c.their_pressure) + _labeled('Where Navier fits', c.where_navier_fits);
+  return inner ? `<div class="panel-section"><h3>Their world</h3>${inner}</div>` : '';
+}
+function _journeysHtml(js){
+  if (!js || !js.length) return '';
+  const card = (j)=>{ const pc=_platColor(j.platform); const chips=[];
+    if (j.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(j.platform)}</span>`);
+    if (j.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(j.distance_nm)} nm</span>`);
+    if (j.archetype) chips.push(`<span class="pcaro-jchip" style="text-transform:capitalize">${escapeHtml(String(j.archetype).replace(/_/g,' '))}</span>`);
+    return `<div class="pcaro-jrn">
+      <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}</div>
+      ${j.today?`<div class="pcaro-jrn-line today"><span>Today</span>${escapeHtml(j.today)}</div>`:''}
+      ${j.with_navier?`<div class="pcaro-jrn-line nav"><span>With Navier</span>${escapeHtml(j.with_navier)}</div>`:''}
+      ${chips.length?`<div class="pcaro-jrn-chips">${chips.join('')}</div>`:''}
+    </div>`; };
+  return `<div class="panel-section"><h3>Journeys we unlock</h3>${js.map(card).join('')}</div>`;
+}
+function _diffHtml(d){
+  if (!d) return '';
+  const inner = _labeled('vs a fast ferry', d.vs_ferry) + _labeled('vs Candela', d.vs_candela) + _labeled('Navier’s moat', d.navier_moat);
+  return inner ? `<div class="panel-section"><h3>Why Navier</h3>${inner}</div>` : '';
+}
+function _proofHtml(ps){
+  if (!ps || !ps.length) return '';
+  return `<div class="panel-section"><h3>Proof points</h3>${ps.map(p=>`<div class="pcaro-proof">${p.claim?`<div class="claim">${escapeHtml(p.claim)}</div>`:''}${p.evidence?`<div class="ev">${escapeHtml(p.evidence)}</div>`:''}${p.source?`<div class="src">${escapeHtml(p.source)}</div>`:''}</div>`).join('')}</div>`;
+}
+function _objHtml(os){
+  if (!os || !os.length) return '';
+  return `<div class="panel-section"><h3>Questions you might have</h3>${os.map(o=>`<div class="pcaro-faq"><div class="q">${escapeHtml(o.concern||'')}</div>${o.response?`<div class="a">${escapeHtml(o.response)}</div>`:''}</div>`).join('')}</div>`;
+}
+function _askHtml(a){
+  if (!a) return '';
+  const cols = (a.navier_brings?`<div class="pcaro-ask-col"><span>Navier brings</span><p>${escapeHtml(a.navier_brings)}</p></div>`:'') + (a.partner_brings?`<div class="pcaro-ask-col"><span>You bring</span><p>${escapeHtml(a.partner_brings)}</p></div>`:'');
+  if (!cols && !a.next_step) return '';
+  return `<div class="panel-section"><h3>The ask</h3>${cols?`<div class="pcaro-ask">${cols}</div>`:''}${a.next_step?`<div class="pcaro-next"><span>Next step</span>${escapeHtml(a.next_step)}</div>`:''}</div>`;
+}
 function _carouselHtml(partner,i){
   const ph=partner.phases||[], cur=ph[i]||{};
   const accent=(PARTNER_ACTIVE&&PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.accent)||({super_app:'emerald',public_transit:'steel',hospitality:'rose',corporate:'violet',charter:'gold'})[partner.archetype]||'emerald';
@@ -1467,7 +1537,10 @@ function _carouselHtml(partner,i){
     ${hero.subtitle?`<div class="subtitle">${escapeHtml(hero.subtitle)}</div>`:''}
     ${hero.what_we_do_together?`<div class="pcaro-hero-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}
   </div>`;
+  h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
+  h+=_journeysHtml(partner.journeys_unlocked);
+  if (partner.multimodal_fit) h+=`<div class="panel-section"><h3>Into your stack</h3><div class="pcaro-why">${escapeHtml(partner.multimodal_fit)}</div></div>`;
   if (ph.length){
     h+=`<div class="panel-section"><h3>Phased rollout</h3>
       <div class="pcaro-nav"><button class="pcaro-btn" id="caro-prev" ${i<=0?'disabled':''}>‹</button>
@@ -1480,12 +1553,18 @@ function _carouselHtml(partner,i){
       ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(r=>`<div class="pcaro-route">${escapeHtml(r)}</div>`).join('')}`:''}
     </div>`;
   }
+  h+=_diffHtml(partner.differentiation);
+  h+=_proofHtml(partner.proof_points);
+  h+=_objHtml(partner.objections);
+  h+=_askHtml(partner.the_ask);
   if (partner.close) h+=`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`;
   return h;
 }
 function _renderCarousel(){
   const panel=document.getElementById('panel');
-  panel.innerHTML=_carouselHtml(_CARO.partner,_CARO.i); panel.scrollTop=0;
+  // Preserve scroll across phase steps (the panel is long now); only the first render starts at top.
+  const sc = _CARO._rendered ? panel.scrollTop : 0;
+  panel.innerHTML=_carouselHtml(_CARO.partner,_CARO.i); panel.scrollTop=sc; _CARO._rendered=true;
   const prev=document.getElementById('caro-prev'), next=document.getElementById('caro-next');
   if (prev) prev.addEventListener('click',()=>showPhase(_CARO.i-1));
   if (next) next.addEventListener('click',()=>showPhase(_CARO.i+1));
