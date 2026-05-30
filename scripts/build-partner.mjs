@@ -99,7 +99,12 @@ const sub = (token, reAssign, value) => {
 sub('__CITY_BRIEFS__', /(CITY_BRIEFS = )(?:\{[\s\S]*?\}|\[[\s\S]*?\]);(?= \} catch)/, scopedBriefs);
 sub('__PARTNERS__',    /(PARTNERS = )(?:\{[\s\S]*?\}|\[[\s\S]*?\]);(?= \} catch)/,    scopedPartners);
 // Locked build: drop other partners' PARTNER_VIEWS entries (the lock + PARTNERS data drive activation).
-out = out.replace(/const PARTNER_VIEWS = \{[\s\S]*?\n\};/, 'const PARTNER_VIEWS = {};');
+{ const before = out;
+  out = out.replace(/const PARTNER_VIEWS = \{[\s\S]*?\n\s*\};/, 'const PARTNER_VIEWS = {};');
+  if (out === before || !out.includes('const PARTNER_VIEWS = {};')) {
+    console.error('ABORT — could not scope PARTNER_VIEWS (regex did not match); refusing to ship a build that may list other partners.');
+    process.exit(1);
+  } }
 
 // ---- inject the build lock ahead of the first <script> ----
 const lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};</script>\n`;
@@ -118,7 +123,7 @@ if (fs.existsSync(tokFile)) for (const line of fs.readFileSync(tokFile,'utf8').s
 // another partner's hero.title (long, unique) or its partner_id used as a JSON/object key.
 const crossHits = [];
 for (const [pid,pr] of Object.entries(PARTNERS)){ if(pid===slug) continue;
-  if ((pr.hero && pr.hero.title && out.includes(pr.hero.title)) || out.includes('"'+pid+'":')) crossHits.push(pid); }
+  if ((pr.hero && pr.hero.title && out.includes(pr.hero.title)) || out.includes('"'+pid+'":') || out.includes("'"+pid+"':")) crossHits.push(pid); }
 
 const report = { slug, input:path.relative(ROOT,INPUT), keptCities:[...keepCities],
   counts:{ cities:(scopedFBT.city||[]).length, priority:(scopedFBT.priority_city||[]).length, pois:(scopedFBT.poi||[]).length,
