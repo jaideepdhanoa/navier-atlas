@@ -1217,16 +1217,23 @@ const ACCENTS = ['emerald','coral','gold','steel','violet','teal','amber','rose'
 // Build-mode lock — set by a per-partner Tasklet build (see contract). null on the admin/all build.
 const BUILD_PARTNER = (typeof window !== 'undefined' && window.__PARTNER_BUILD__) || null;
 const PARTNER_VIEWS = {
-  // DEMO entries — reference EXISTING public stories only (no invented identities).
-  'grab':         { story_slugs:['grab'] },
-  'careem':       { story_slugs:['careem'] },
-  'red-sea':      { story_slugs:['red-sea-global'] },
-  'sea-transit':  { label:'Southeast Asia Transit', accent:'teal', regions:['Southeast Asia'],
-                    intro:'A focused view of coastal and inter-island mobility across the Southeast Asian archipelago.',
-                    story_slugs:['grab','singapore-mpa'] },
-  'gulf-transit': { label:'Gulf Waterborne Transit', accent:'amber', regions:['MENA'],
-                    intro:'Waterborne transit and tourism corridors across the Gulf and Red Sea.',
-                    story_slugs:['careem','uae-waterfront','qatar-transport','red-sea-global'] },
+  // Roster — references EXISTING shipped STORIES only (never invents partner identities).
+  // For a real per-partner build, Tasklet ships ONLY the matching slug here (see PARTNER-VIEWS.md §"Roster + routing").
+  // — single-partner views (one story each) —
+  'grab':            { story_slugs:['grab'] },
+  'careem':          { story_slugs:['careem'] },
+  'uae-waterfront':  { story_slugs:['uae-waterfront'] },
+  'red-sea':         { story_slugs:['red-sea-global'] },
+  'singapore-mpa':   { story_slugs:['singapore-mpa'] },
+  'maldives':        { story_slugs:['maldives-hospitality'] },
+  'qatar-transport': { story_slugs:['qatar-transport'] },
+  // — curated regional bundles (multi-story) —
+  'sea-transit':     { label:'Southeast Asia Transit', accent:'teal', regions:['Southeast Asia'],
+                       intro:'A focused view of coastal and inter-island mobility across the Southeast Asian archipelago.',
+                       story_slugs:['grab','singapore-mpa'] },
+  'gulf-transit':    { label:'Gulf Waterborne Transit', accent:'amber', regions:['MENA'],
+                       intro:'Waterborne transit and tourism corridors across the Gulf and Red Sea.',
+                       story_slugs:['careem','uae-waterfront','qatar-transport','red-sea-global'] },
 };
 let PARTNER_ACTIVE = null;
 // A build lock wins over the URL param (and disables it); else fall back to ?partner=<slug>.

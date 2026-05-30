@@ -125,3 +125,53 @@ const BUILD_PARTNER = (typeof window !== 'undefined' && window.__PARTNER_BUILD__
 | Runtime selection | `?partner=<slug>` → `initPartnerView()` → `applyPartnerView()` |
 | Story definitions | `index.html` → `const STORIES` (Tasklet-owned content) |
 | This contract | `docs/PARTNER-VIEWS.md` |
+
+---
+
+## 5 · Concrete roster + routing target  _(2026-05-30 — precise target for Tasklet)_
+
+### Roster (every entry references a shipped `STORIES` slug — no invented identities)
+
+Derived from the 7 shipped stories. This is exactly the `PARTNER_VIEWS` now in `index.html`; for a
+locked per-partner build, ship **only** the matching row.
+
+| Partner slug (URL key) | Stories | Org (from story) | Region |
+|---|---|---|---|
+| `grab` | `grab` | Grab | SEA (19 cities) |
+| `careem` | `careem` | Careem (Uber subsidiary) | MENA (10) |
+| `uae-waterfront` | `uae-waterfront` | UAE Transport Authorities (Dubai RTA + Abu Dhabi ITC) | Gulf (2) |
+| `red-sea` | `red-sea-global` | Red Sea Global | Red Sea (3) |
+| `singapore-mpa` | `singapore-mpa` | Maritime & Port Authority of Singapore | SG (3) |
+| `maldives` | `maldives-hospitality` | Maldives luxury resorts | Maldives (1) |
+| `qatar-transport` | `qatar-transport` | Qatar transport authorities | Qatar (1) |
+| `sea-transit` _(bundle)_ | `grab` + `singapore-mpa` | Southeast Asia Transit | SEA |
+| `gulf-transit` _(bundle)_ | `careem` + `uae-waterfront` + `qatar-transport` + `red-sea-global` | Gulf Waterborne Transit | MENA |
+
+Add/remove partners by editing this table + `PARTNER_VIEWS` — no other render change.
+
+### Routing — recommended: a separate **public** Vercel project for partner builds
+
+The admin/all build (root `index.html`) embeds **every** partner's data and must stay **internal**
+(it's behind the current project's SSO Deployment Protection). Partner builds are meant to be sent
+**out**, so they must be **public** — and that's safe only because each ships **only its own data**.
+Vercel Deployment Protection is per-project, so the clean split is **two projects**:
+
+| Project | Contents | Protection | URLs |
+|---|---|---|---|
+| `navier-atlas` (existing) | admin/all `index.html` | **SSO on** (internal) | `navier-atlas.vercel.app` |
+| `navier-partners` (new) | `_dist/<slug>/index.html` for each roster slug | **off** (public) | `navier-partners.vercel.app/<slug>` (e.g. `/grab`, `/gulf-transit`) |
+
+- **Tasklet build output:** `_dist/<slug>/index.html` per roster slug (per §3), plus a `_dist/vercel.json`
+  with `{ "cleanUrls": true }` so `/grab` serves `/grab/index.html`.
+- **Deploy:** `vercel deploy --prod` **from `_dist/`** for the partner project → no repo `.vercelignore`
+  juggling (the deploy root *is* `_dist/`, which contains only gated per-partner files).
+- **`.vercelignore`:** the repo's allowlist (`index.html` + `vercel.json`) stays as-is for the internal
+  project. If you'd rather deploy partner builds from the repo root instead of `_dist/`, add
+  `!_dist/**` to `.vercelignore` — but deploying from `_dist/` is cleaner and the recommendation.
+- **Pre-flight per partner:** run §3 (hash vs that partner's `SEAL.json` · exclusion grep · MapLibre
+  smoke) on each `_dist/<slug>/index.html`, plus the §3.5 cross-partner sweep (no *other* partner's
+  identifiers in the file).
+
+Alternatives considered: path-based on the **same** project (rejected — can't make `/` protected but
+`/grab` public on one project); custom domains per partner (fine later, but more setup). Final call on
+project layout + custom domains is Jaideep's.
