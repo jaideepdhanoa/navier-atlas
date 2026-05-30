@@ -39,7 +39,7 @@ body.panel-hidden #panel { width:0 !important; }
 #header .brand-text .tag { font-size:10px; color:var(--text-2); letter-spacing:0.08em; text-transform:uppercase; font-weight:500; display:block; margin-top:2px;}
 #header .stats { margin-top:12px; padding-top:10px; border-top:1px solid var(--line); display:flex; gap:18px; }
 #header .stat .v { font-family:'JetBrains Mono',monospace; font-size:17px; font-weight:600; line-height:1; }
-#header .stat .k { font-size:9px; color:var(--text-2); margin-top:4px; letter-spacing:0.1em; text-transform:uppercase; }
+#header .stat .k { font-size:9px; color:var(--text-2); margin-top:4px; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
 #header .stat.accent .v { color:var(--accent); }
 #header .stat.coral  .v { color:var(--coral); }
 #header .stat.steel  .v { color:var(--steel); }
@@ -78,27 +78,23 @@ body.panel-hidden #panel { width:0 !important; }
 #story-menu .item .t { font-size:13px; font-weight:600; color:var(--text-0); }
 #story-menu .item .s { font-size:11px; color:var(--text-2); margin-top:2px; }
 
-/* Presets */
-#presets { position:absolute; top:84px; left:420px; z-index:10; display:flex; flex-wrap:wrap; gap:6px; max-width:calc(100vw - 420px - 440px); }
-.chip { background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); color:var(--text-1); font:500 12px Inter; padding:7px 13px; border-radius:999px; cursor:pointer; }
+/* Region nav — three tiers (network · macro-region · market). Primary chips lead;
+   markets sit under their region as smaller, lighter secondary chips. */
+#presets { position:absolute; top:84px; left:420px; z-index:10; display:flex; flex-direction:column; gap:7px; max-width:calc(100vw - 420px - 440px); }
+.preset-tier { display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+.chip { background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); color:var(--text-1); font:500 12px Inter; padding:7px 13px; border-radius:999px; cursor:pointer; transition:background 0.16s, border-color 0.16s, color 0.16s; }
 .chip:hover { background:rgba(110,231,183,0.12); border-color:rgba(110,231,183,0.35); color:var(--text-0); }
 .chip.active { background:var(--accent); border-color:var(--accent); color:#0a0e14; }
-
-/* Layer toggles (right of presets) — Fix 7 (v10): per-toggle distinct color, filled-vs-outlined on/off */
-#toggles { position:absolute; bottom:24px; left:50%; transform:translateX(-50%); z-index:10; display:flex; gap:6px; }
-.toggle { background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1.5px solid var(--line-strong); color:var(--text-2); font:500 11px Inter; padding:7px 12px; border-radius:999px; cursor:pointer; letter-spacing:0.02em; transition:background 0.18s, color 0.18s, border-color 0.18s; }
-.toggle::before { content:'○ '; opacity:0.6; }
-.toggle.on::before { content:'● '; opacity:1; }
-/* Routes — white */
-#t-routes.on { background:rgba(255,255,255,0.18); color:#ffffff; border-color:rgba(255,255,255,0.55); }
-/* Pioneer II — cyan/mint */
-#t-p2.on     { background:rgba(110,231,183,0.20); color:#6ee7b7; border-color:rgba(110,231,183,0.55); }
-/* Quanta-LR — steel/amber per spec → amber */
-#t-qlr.on    { background:rgba(251,191,36,0.20); color:#fbbf24; border-color:rgba(251,191,36,0.55); }
-/* Areas — coral (matches the coral area markers + header stat) */
-#t-locales.on{ background:rgba(251,113,133,0.18); color:#fb7185; border-color:rgba(251,113,133,0.55); }
-/* Boarding pts — steel (matches the dominant marina glyph + header stat) */
-#t-pois.on   { background:rgba(96,165,250,0.18); color:#60a5fa; border-color:rgba(96,165,250,0.55); }
+/* Primary tier — network + macro-regions read first */
+.chip.lead   { font-weight:600; border-color:rgba(110,231,183,0.4); color:var(--text-0); }
+.chip.region { font-weight:600; }
+/* Secondary tier — specific markets, quieter and smaller */
+.preset-tier.markets { padding-left:2px; opacity:0.92; }
+.chip.market { font-size:11px; padding:5px 11px; background:rgba(17,22,30,0.6); border-color:var(--line); color:var(--text-2); }
+.chip.market:hover { color:var(--text-0); }
+.chip.market.active { background:var(--accent); border-color:var(--accent); color:#0a0e14; }
+.grp-label { font:600 9px Inter; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); opacity:0.7; padding:0 2px; }
+.grp-sep { width:1px; height:14px; background:var(--line-strong); margin:0 4px; }
 
 /* Legend */
 #legend { position:absolute; bottom:24px; left:24px; z-index:10; background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-radius:12px; padding:11px 14px; font-size:11px; color:var(--text-1); }
@@ -141,7 +137,6 @@ body.panel-hidden #panel { transform:translateX(100%); }
 body.panel-hidden #panel-toggle { right:0; border-radius:6px 0 0 6px; }
 #presets { transition:max-width 0.32s; }
 body.panel-hidden #presets { max-width:calc(100vw - 420px - 40px); }
-/* Pull legend up so it doesn't sit under the toggle row */
 body.panel-hidden #footer { display:block; }
 #panel::-webkit-scrollbar { width:6px; }
 #panel::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:3px; }
@@ -248,44 +243,43 @@ body.panel-hidden #footer { display:block; }
   </div>
   <div class="stats">
     <div class="stat accent"><span class="v" id="stat-cities">61</span><span class="k">Cities</span></div>
-    <div class="stat coral"><span class="v" id="stat-areas">67</span><span class="k">Areas</span></div>
     <div class="stat steel"><span class="v" id="stat-bps">1870</span><span class="k">Boarding pts</span></div>
     <div class="stat gold"><span class="v" id="stat-routes">467</span><span class="k">Routes</span></div>
   </div>
 </div>
 
 <div id="searchwrap">
-  <input id="search" placeholder="Search cities, areas, boarding points…" autocomplete="off" />
+  <input id="search" placeholder="Search cities, boarding points…" autocomplete="off" />
   <button id="story-trigger">Stories ▾</button>
   <div id="story-menu"></div>
   <div id="suggest"></div>
 </div>
 
+<!-- Region nav, three tiers: network (Global) · macro-region (MENA / SEA) · market (cities/areas).
+     Primary chips lead; markets sit under their region as smaller secondary chips. -->
 <div id="presets">
-  <button class="chip" data-c="global">Global</button>
-  <button class="chip" data-c="mena">MENA</button>
-  <button class="chip" data-c="sea">Southeast Asia</button>
-  <button class="chip" data-c="dubai">Dubai</button>
-  <button class="chip" data-c="ad">Abu Dhabi</button>
-  <button class="chip" data-c="sg">Singapore</button>
-  <button class="chip" data-c="bali">Bali</button>
-  <button class="chip" data-c="rsg">Red Sea Global</button>
-  <button class="chip" data-c="phuket">Phuket</button>
-</div>
-
-<div id="toggles">
-  <button class="toggle on" id="t-routes">Routes</button>
-  <button class="toggle on" id="t-p2">Pioneer II</button>
-  <button class="toggle on" id="t-qlr">Quanta-LR</button>
-  <button class="toggle on" id="t-locales" title="Sub-areas / districts / island groups inside a city cluster (e.g. Palm Jumeirah inside Dubai)">Areas</button>
-  <button class="toggle on" id="t-pois" title="Boarding points: marinas, ferry terminals, hotel jetties, water-taxi stops">Boarding pts</button>
+  <div class="preset-tier primary">
+    <button class="chip lead" data-c="global">Global</button>
+    <button class="chip region" data-c="mena">MENA</button>
+    <button class="chip region" data-c="sea">Southeast Asia</button>
+  </div>
+  <div class="preset-tier markets">
+    <span class="grp-label">MENA</span>
+    <button class="chip market" data-c="dubai">Dubai</button>
+    <button class="chip market" data-c="ad">Abu Dhabi</button>
+    <button class="chip market" data-c="rsg">Red Sea Global</button>
+    <span class="grp-sep"></span>
+    <span class="grp-label">SEA</span>
+    <button class="chip market" data-c="sg">Singapore</button>
+    <button class="chip market" data-c="bali">Bali</button>
+    <button class="chip market" data-c="phuket">Phuket</button>
+  </div>
 </div>
 
 <!-- Fix 5 (v10): legend glyphs match map symbol-layer (Noto Sans-safe Unicode) -->
 <div id="legend">
-  <div class="head">Map key <span class="help" data-tip="Cities = whole markets. Areas = sub-districts/islands inside a city. Boarding points = real coastal pickup spots; glyphs match those drawn on the map.">?</span></div>
+  <div class="head">Map key <span class="help" data-tip="Cities = whole markets. Boarding points = real coastal pickup spots; glyphs match those drawn on the map.">?</span></div>
   <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
-  <div class="row"><span class="dot locale"></span>Area <span class="muted">— sub-district</span></div>
   <div class="sub">Boarding points</div>
   <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina / working harbour</div>
   <div class="row"><span class="gly" style="color:#fb7185">▲</span>Ferry / cruise terminal</div>
@@ -580,7 +574,6 @@ const O_HUBGLOW  = ['interpolate',['linear'],['coalesce',['get','degree'],0], 6,
 (function(){
   const set=(id,n)=>{ const e=document.getElementById(id); if(e) e.textContent=(n||0).toLocaleString(); };
   set('stat-cities',((FEATURES_BY_TYPE.city||[]).length)+((FEATURES_BY_TYPE.priority_city||[]).length));
-  set('stat-areas',(FEATURES_BY_TYPE.locale||[]).length);
   set('stat-bps',(FEATURES_BY_TYPE.poi||[]).length);
   set('stat-routes',(ROUTES||[]).length);
 })();
@@ -609,7 +602,10 @@ const map = window.map = new maplibregl.Map({
       'https://c.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
       'https://d.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'
     ], tileSize:256, attribution:'© OpenStreetMap · © CARTO' }},
-    layers:[{ id:'basemap', type:'raster', source:'carto-dark' }]
+    // Lift the near-black base slightly + add saturation so coastlines/waterbodies read as
+    // distinct navy against the grey land, while keeping label & route contrast (v17 look-feel).
+    layers:[{ id:'basemap', type:'raster', source:'carto-dark',
+      paint:{ 'raster-brightness-min':0.07, 'raster-saturation':0.22, 'raster-contrast':0.04 } }]
   },
   center:CAMERAS.global.center,
   zoom:CAMERAS.global.zoom,
@@ -700,18 +696,7 @@ map.on('load', () => {
              'text-allow-overlap': true, 'text-ignore-placement': true, 'text-padding': 2 },
     paint:{ 'text-color':'#ffffff','text-halo-color':'#0a0e14','text-halo-width':1.9 }});
 
-  // Locales (clustered at mid zoom)
-  map.addSource('locales', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.locale||[]}, cluster:true, clusterMaxZoom:8, clusterRadius:36 });
-  map.addLayer({ id:'locale-clusters', type:'circle', source:'locales', filter:['has','point_count'], minzoom:6,
-    paint:{ 'circle-color':'#fb7185','circle-radius':['step',['get','point_count'],12,5,18,15,24],'circle-opacity':0.7,'circle-stroke-width':1.5,'circle-stroke-color':'rgba(255,255,255,0.5)' }});
-  map.addLayer({ id:'locale-cluster-count', type:'symbol', source:'locales', filter:['has','point_count'], minzoom:6,
-    layout:{ 'text-field':['get','point_count_abbreviated'],'text-font':['Noto Sans Bold'],'text-size':11 }, paint:{'text-color':'#0a0e14'} });
-  map.addLayer({ id:'locale-halo', type:'circle', source:'locales', filter:['!',['has','point_count']], minzoom:6,
-    paint:{ 'circle-color':'#fb7185','circle-opacity':0.2,'circle-radius':10,'circle-blur':0.6 }});
-  map.addLayer({ id:'locale-points', type:'circle', source:'locales', filter:['!',['has','point_count']], minzoom:6,
-    paint:{ 'circle-color':'#fb7185','circle-radius':4.5,'circle-stroke-width':1.5,'circle-stroke-color':'#0a0e14' }});
-  map.addLayer({ id:'locale-labels', type:'symbol', source:'locales', filter:['!',['has','point_count']], minzoom:9,
-    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Regular'],'text-size':11,'text-offset':[0,0.95],'text-anchor':'top' }, paint:{ 'text-color':'#fcd0d6','text-halo-color':'#0a0e14','text-halo-width':1.4 }});
+  // Areas (sub-districts) intentionally not rendered — the network reads as Cities → Boarding points (v17).
 
   // POIs (clustered at mid zoom)
   map.addSource('pois', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.poi||[]}, cluster:true, clusterMaxZoom:10, clusterRadius:30 });
@@ -842,21 +827,21 @@ map.on('load', () => {
     paint:{ 'fill-color':'#6ee7b7','fill-opacity':0.06 }});
 
   // Click handlers — include halo layers so the visible glow is clickable too
-  for (const layer of ['priority-points','priority-halo','priority-hub-glow','city-points','city-halo','city-hub-glow','city-clusters','city-cluster-halo','locale-points','locale-halo','locale-clusters','poi-points','poi-halo','poi-clusters']) {
+  for (const layer of ['priority-points','priority-halo','priority-hub-glow','city-points','city-halo','city-hub-glow','city-clusters','city-cluster-halo','poi-points','poi-halo','poi-clusters']) {
     map.on('click', layer, (e) => {
       const f = e.features[0];
       if (f.properties.cluster) return;
       const coords = f.geometry.coordinates;
       const type = f.properties.type;
-      const zoom = type==='city' ? 10 : type==='locale' ? 12 : 14;
+      const zoom = type==='city' ? 10 : 14;
       map.flyTo({ center:coords, zoom:Math.max(zoom, map.getZoom()), duration:1200, essential:true });
       showDetail(f.properties, coords);
     });
     map.on('mouseenter', layer, () => map.getCanvas().style.cursor='pointer');
     map.on('mouseleave', layer, () => map.getCanvas().style.cursor='');
   }
-  for (const layer of ['city-clusters','city-cluster-halo','locale-clusters','poi-clusters']) {
-    const src = layer.startsWith('city') ? 'cities' : layer.startsWith('locale') ? 'locales' : 'pois';
+  for (const layer of ['city-clusters','city-cluster-halo','poi-clusters']) {
+    const src = layer.startsWith('city') ? 'cities' : 'pois';
     map.on('click', layer, (e) => {
       const features = map.queryRenderedFeatures(e.point,{layers:[layer]});
       const f = features[0]; if (!f || !f.properties.cluster_id) return;
@@ -1129,7 +1114,6 @@ const DEFAULT_OPACITY = {
   'route-glow-bloom': O_GLOW_BLOOM, 'route-glow-core': O_GLOW_CORE, 'route-labels': O_RLABEL,
   'city-points': 0.95, 'city-halo': HUB_HALO_O, 'city-hub-glow': O_HUBGLOW, 'city-labels': 1,
   'priority-points': 0.95, 'priority-halo': HUB_HALO_O, 'priority-hub-glow': O_HUBGLOW, 'priority-labels': 1,
-  'locale-points': 0.9, 'locale-halo': 0.2, 'locale-labels': 1,
   'poi-points': O_POIGLYPH, 'poi-labels': 1
 };
 function applyStoryFocus(cityIds) {
@@ -1157,9 +1141,6 @@ function applyStoryFocus(cityIds) {
     map.setPaintProperty('priority-halo','circle-opacity', ['case', inSet, 0.4, 0.06]);
     map.setPaintProperty('priority-hub-glow','circle-opacity', ['case', inSet, O_HUBGLOW, 0]);
     map.setPaintProperty('priority-labels','text-opacity', ['case', inSet, 1, 0.55]);
-    map.setPaintProperty('locale-points','circle-opacity', 0.25);
-    map.setPaintProperty('locale-halo','circle-opacity', 0.05);
-    map.setPaintProperty('locale-labels','text-opacity', 0.3);
     map.setPaintProperty('poi-points','text-opacity', 0.22);
     map.setPaintProperty('poi-labels','text-opacity', 0.25);
   } catch(e) { console.warn('focus', e); }
@@ -1265,6 +1246,7 @@ document.addEventListener('click', () => { sm.style.display='none'; });
 // ============ Search ============
 const SEARCH_INDEX = [];
 for (const t of Object.keys(FEATURES_BY_TYPE)) {
+  if (t === 'locale') continue;   // areas are no longer rendered (v17) — keep them out of search too
   for (const f of FEATURES_BY_TYPE[t]) {
     const p = f.properties;
     SEARCH_INDEX.push({ id:p.id, name:p.fullName||p.name||'', type:t, coords:f.geometry.coordinates, ref:f });
@@ -1301,29 +1283,8 @@ document.querySelectorAll('.chip').forEach(b => {
   });
 });
 
-// ============ Layer toggles ============
-function setLayerVis(id, on) { try { map.setLayoutProperty(id,'visibility', on?'visible':'none'); } catch(e){} }
-function bindToggle(btnId, layers) {
-  const b = document.getElementById(btnId);
-  b.addEventListener('click', () => {
-    const on = !b.classList.contains('on');
-    b.classList.toggle('on', on);
-    for (const l of layers) setLayerVis(l, on);
-  });
-}
-bindToggle('t-p2',  ['route-p2']);
-bindToggle('t-qlr', ['route-qlr']);
-document.getElementById('t-routes').addEventListener('click', () => {
-  const b = document.getElementById('t-routes'); const on = !b.classList.contains('on');
-  b.classList.toggle('on', on);
-  const p2 = document.getElementById('t-p2').classList.contains('on');
-  const qlr = document.getElementById('t-qlr').classList.contains('on');
-  setLayerVis('route-p2',  on && p2); setLayerVis('route-qlr', on && qlr);
-  setLayerVis('route-glow-bloom', on); setLayerVis('route-glow-core', on);
-  setLayerVis('route-labels', on); setLayerVis('route-nodes', on);
-});
-bindToggle('t-locales', ['locale-clusters','locale-cluster-count','locale-halo','locale-points','locale-labels']);
-bindToggle('t-pois',    ['poi-clusters','poi-cluster-count','poi-points','poi-halo','poi-labels']);
+// Layer toggles removed (v17) — all layers are always on; the map key explains them, so the
+// bottom toggle bar was overhead. Routes/Pioneer II/Quanta-LR/Boarding points render by default.
 
 // Panel collapse toggle
 const panelToggle = document.getElementById('panel-toggle');

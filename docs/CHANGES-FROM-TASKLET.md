@@ -1,42 +1,29 @@
 # Changes from Tasklet — render-layer additions you must preserve
 
-_Pushed to `main` so your next `claude/*` branch starts from a render that already includes these.
-`index.html` is a build artifact — when you regenerate it, **re-apply these template blocks** (same
-rule as your own handoff §7)._
+`main`'s `index.html` is the **fused production baseline** (Tasklet build + your render). Branch
+from `main` so your next render starts with these already in place. They are render-layer code, so a
+plain `index.html` regenerate that ignores them will silently drop them — please keep them.
 
-## 1 · Marquee always-on city layer (`priority-cities` source)
-**Problem solved:** Singapore (and other P0 hubs) were absorbed into numbered clusters at default
-zoom (`clusterMaxZoom:5` swallowed SG + Riau/Batam/Bintan/Johor), and lost label placement to dense
-neighbours. Jaideep flagged it twice.
+## Priority (marquee) cities — always-on label layer  **(KEEP)**
+- `build.py` emits a separate **`priority_city`** bucket in `FEATURES_BY_TYPE` (currently 13: Singapore,
+  Dubai, Abu Dhabi, Doha, Hong Kong, Bangkok, Jakarta, Malé, Muscat, Jeddah, Manila, Phuket, Bali).
+- The render adds a dedicated **`priority-cities`** geojson source with **unclustered, always-on** layers
+  (`priority-hub-glow`, `priority-halo`, `priority-points`, `priority-labels`) using
+  `text-allow-overlap:true` + `text-ignore-placement:true` so these flagship hubs are **never** absorbed
+  into a cluster or lose label placement to dense neighbours (Singapore was being swallowed by Riau/Johor).
+- Wired into: the degree-max loop, the `stat-cities` count, the click-handler layer list, `DEFAULT_OPACITY`,
+  and the story focus/dim block. If you add/rename layers, keep `priority-*` in those five places.
 
-**Fix:** a dedicated **unclustered, always-on** source + layers for 13 marquee cities:
-- Source: `map.addSource('priority-cities', {type:'geojson', data:{...features:FEATURES_BY_TYPE.priority_city||[]}})`
-- Layers (added after `city-labels`, before locales): `priority-hub-glow`, `priority-halo`,
-  `priority-points`, `priority-labels`.
-- `priority-labels` uses `text-allow-overlap:true` + `text-ignore-placement` so the label is **never
-  decluttered or clustered** — visible at every zoom.
+## Named-hub pin promotions  **(data — survives automatically)**
+- Cebu, Bohol, El Nido, Coron, Puerto Princesa, Amanpulo, Boracay, Siargao, Sir Bani Yas, Daymaniyat are
+  promoted to named `city` pins in the data spine — no render change needed.
 
-**Data contract (new feature bucket):** `build.py` now splits the 13 marquee cities out of
-`FEATURES_BY_TYPE.city` into **`FEATURES_BY_TYPE.priority_city`**. Each carries `priority_city:true`.
-Render reads from that bucket. The 13: Singapore, Dubai, Abu Dhabi, Doha, Hong Kong, Bangkok,
-Jakarta, Malé, Muscat, Jeddah, Manila, Phuket, Bali.
-- Stat counters + degree-normalisation loops were updated to fold both `city` and `priority_city`
-  buckets (`stat-cities`, `MAX_CITY_DEG`).
+## Your v17 look-feel — fused and live
+- Basemap lift (raster brightness-min/saturation/contrast), Areas/locale tier removed end-to-end, bottom
+  toggle bar deleted, region nav re-tiered. All preserved in `main`. (`locale` features may still appear in
+  `FEATURES_BY_TYPE` — render-side correctly ignores them per your v17 skip code.)
 
-## 2 · Named-pin hub promotions
-Island sub-hubs that were POIs-without-labels are now labelled pins: Cebu, Bohol/Panglao, El Nido,
-Coron, Puerto Princesa, Amanpulo, Boracay, Siargao, Sir Bani Yas, Daymaniyat. Handled data-side in
-`build.py` (promotion table + corrected coords). No render change required beyond §1 layers.
-
-## 3 · Handlers updated (don't drop these layers from control logic)
-The priority layers were wired into **all** route/feature control structures — if you restructure
-layers, keep them in:
-- `DEFAULT_OPACITY` map (`priority-points`, `priority-halo`, `priority-hub-glow`, `priority-labels`)
-- the focus/dim loop (`for (const layer of [...])`)
-- city-select highlight + story-focus dim handlers
-
-## 4 · Merge mechanics going forward (per Jaideep)
-Tasklet now pushes each gated production `index.html` back to `main` after deploy, so your branch
-inherits Tasklet's render + data changes — no more 3-way hand-merges. Your v17 density-glow
-(`route-glow-bloom`/`route-glow-core`, demand width/colour, edge-bundling) is **fully fused** into
-this `main` and live on production. Branch from `main`, not from an older snapshot.
+## Merge protocol
+- After every gated deploy, Tasklet pushes the production build back to `main` (index.html + data-clean/ +
+  this note). Branch from `main` to avoid 3-way merges. If you ever branch from an older point, Tasklet
+  re-applies the priority layers via a 3-way merge — but branching from `main` keeps it clean.
