@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Navier City Brief",
+  "version": "2026-05-30",
+  "type": "object",
+  "required": ["city_id", "display", "tagline", "demand_signals", "use_cases", "navier_fit"],
+  "properties": {
+    "city_id": { "type": "string", "description": "Canonical node id, e.g. dubai-uae" },
+    "display": { "type": "string", "description": "Clean label, e.g. Dubai" },
+    "region": { "type": "string", "enum": ["MENA", "SEA", "Europe", "North America", "LatAm", "Oceania", "South Asia", "East Asia"] },
+    "tagline": { "type": "string", "description": "One-line hook" },
+    "summary": { "type": "string", "description": "2-3 sentence why-marine-mobility-here" },
+    "demand_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["label", "value"],
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "string" },
+          "note": { "type": "string" },
+          "archetype": { "type": "string" }
+        }
+      }
+    },
+    "use_cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["archetype", "title", "body"],
+        "properties": {
+          "archetype": { "type": "string", "enum": ["public_transit", "super_app", "tourism", "luxury_charter", "corporate"] },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "platform": { "type": "string", "enum": ["Pioneer II", "Quanta-LR", "both"] }
+        }
+      }
+    },
+    "navier_fit": {
+      "type": "object",
+      "properties": {
+        "pioneer_ii": { "type": "string" },
+        "quanta_lr": { "type": "string" }
+      }
+    },
+    "marquee_routes": { "type": "array", "items": { "type": "string" }, "description": "route ids into ROUTES" },
+    "key_pois": { "type": "array", "items": { "type": "string" }, "description": "boarding-point ids" },
+    "transit_planning": { "type": "string", "description": "public-transport-authority planning angle" },
+    "partner_overlays": {
+      "type": "object",
+      "description": "optional per-partner emphasis keyed by partner_id",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "lead_with": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

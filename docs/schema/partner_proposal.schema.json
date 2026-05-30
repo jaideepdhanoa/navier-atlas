@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Navier Partner Proposal",
+  "version": "2026-05-30",
+  "type": "object",
+  "required": ["partner_id", "display", "archetype", "hero", "phases"],
+  "properties": {
+    "partner_id": { "type": "string", "description": "slug used in ?partner= and /slug URL" },
+    "display": { "type": "string" },
+    "archetype": { "type": "string", "enum": ["super_app", "public_transit", "hospitality", "corporate", "charter"] },
+    "region": { "type": "string" },
+    "hero": {
+      "type": "object",
+      "required": ["title", "what_we_do_together"],
+      "properties": {
+        "title": { "type": "string", "description": "e.g. Grab x Navier - the black-car network, on the water" },
+        "subtitle": { "type": "string" },
+        "what_we_do_together": { "type": "string", "description": "partner-facing; sells the joint venture" }
+      }
+    },
+    "why_now": { "type": "string" },
+    "phases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["n", "label", "cities", "narrative"],
+        "properties": {
+          "n": { "type": "integer" },
+          "label": { "type": "string", "description": "e.g. Phase 1 - Singapore beachhead" },
+          "boats": { "type": "integer", "description": "cumulative fleet at this phase" },
+          "cities": { "type": "array", "items": { "type": "string" }, "description": "city_ids lit in this phase" },
+          "routes": { "type": "array", "items": { "type": "string" }, "description": "route ids lit in this phase" },
+          "narrative": { "type": "string", "description": "partner-facing side-panel copy" },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "value"],
+              "properties": { "label": { "type": "string" }, "value": { "type": "string" } }
+            }
+          },
+          "map_focus": {
+            "type": "object",
+            "properties": {
+              "camera": {
+                "type": "object",
+                "properties": {
+                  "lng": { "type": "number" }, "lat": { "type": "number" }, "zoom": { "type": "number" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "close": {
+      "type": "object",
+      "properties": { "title": { "type": "string" }, "body": { "type": "string" } }
+    }
+  }
+}
