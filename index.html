@@ -593,6 +593,12 @@ const O_HUBGLOW  = ['interpolate',['linear'],['coalesce',['get','degree'],0], 6,
 const _HUB_GLOW_BASE = ['interpolate',['linear'],['coalesce',['get','degree'],0], 6,18, 10,26, 16,40];
 const HUB_GLOW_R = ['interpolate',['linear'],['zoom'],
   3, ['*',_HUB_GLOW_BASE,0.7], 7, _HUB_GLOW_BASE, 11, ['*',_HUB_GLOW_BASE,1.25]];
+// Priority (marquee) cities glow from degree 0 (always-on). Same top-level-zoom rule as HUB_GLOW_R —
+// the original priority-hub-glow used ['*', degreeInterp, zoomInterp] (nested zoom) and was being
+// dropped by MapLibre exactly like the old city-hub-glow (F-12 class); the pre-flight smoke test caught it.
+const _PRIO_GLOW_BASE = ['interpolate',['linear'],['coalesce',['get','degree'],0], 0,18, 10,26, 16,40];
+const PRIO_GLOW_R = ['interpolate',['linear'],['zoom'],
+  3, ['*',_PRIO_GLOW_BASE,0.7], 7, _PRIO_GLOW_BASE, 11, ['*',_PRIO_GLOW_BASE,1.25]];
 
 // Header stat counts are data-driven so they stay correct at live scale (60+/1,900/470+).
 (function(){
@@ -712,8 +718,7 @@ map.on('load', () => {
   map.addSource('priority-cities', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.priority_city||[]} });
   map.addLayer({ id:'priority-hub-glow', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-blur':1,
-            'circle-radius':['*',['interpolate',['linear'],['coalesce',['get','degree'],0],0,18,10,26,16,40],
-                                 ['interpolate',['linear'],['zoom'],3,0.7,7,1,11,1.25]],
+            'circle-radius':PRIO_GLOW_R,
             'circle-opacity':O_HUBGLOW }});
   map.addLayer({ id:'priority-halo', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-opacity':HUB_HALO_O,'circle-radius':HUB_HALO_R,'circle-blur':0.5 }});
