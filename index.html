@@ -100,6 +100,16 @@ body.panel-hidden #panel { width:0 !important; }
 #legend { position:absolute; bottom:24px; left:24px; z-index:10; background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-radius:12px; padding:11px 14px; font-size:11px; color:var(--text-1); max-height:calc(100vh - 230px); overflow-y:auto; }
 #legend::-webkit-scrollbar { width:5px; }
 #legend::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:3px; }
+/* Collapsible key: header toggles the whole card; boarding points is a collapsed disclosure. */
+#legend .head { display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; margin-bottom:8px; }
+#legend .caret { font-size:11px; line-height:1; color:var(--text-2); transition:transform 0.18s; display:inline-block; }
+#legend.collapsed #legend-body { display:none; }
+#legend.collapsed .head { margin-bottom:0; }
+#legend.collapsed .head .caret { transform:rotate(-90deg); }
+#legend .sub.disclosure { display:flex; align-items:center; gap:7px; cursor:pointer; user-select:none; }
+#legend .sub.disclosure .caret { transition:transform 0.18s; }
+#legend .sub.disclosure.open .caret { transform:rotate(90deg); }
+#bp-list.collapsed { display:none; }
 #legend .head { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; margin-bottom:6px; }
 #legend .sub { font-size:8.5px; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); font-weight:600; opacity:0.75; margin:10px 0 4px; padding-top:8px; border-top:1px solid var(--line); }
 #legend .row { display:flex; align-items:center; gap:8px; padding:2px 0; }
@@ -280,30 +290,24 @@ body.panel-hidden #footer { display:block; }
 
 <!-- Fix 5 (v10): legend glyphs match map symbol-layer (Noto Sans-safe Unicode) -->
 <div id="legend">
-  <div class="head">Map key <span class="help" data-tip="Cities = whole markets. Boarding points = real coastal pickup spots; glyphs match those drawn on the map.">?</span></div>
-  <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
-  <div class="sub">Boarding points</div>
-  <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina / working harbour</div>
-  <div class="row"><span class="gly" style="color:#fb7185">▲</span>Ferry / cruise terminal</div>
-  <div class="row"><span class="gly" style="color:#fbbf24">★</span>Yacht club</div>
-  <div class="row"><span class="gly" style="color:#6ee7b7">■</span>Hotel / resort jetty</div>
-  <div class="row"><span class="gly" style="color:#a78bfa">✦</span>Seaplane base</div>
-  <div class="row"><span class="gly" style="color:#22d3ee">◆</span>Water taxi / abra / public pier</div>
-  <div class="row"><span class="gly" style="color:#cbd5e1">⬢</span>MRO / shipyard</div>
-  <div class="row"><span class="gly" style="color:#fde68a">⬟</span>Refuel mid-node</div>
-  <div class="sub">Route weight <span class="help" data-tip="Line weight & glow scale with traffic_weight — a grounded demand thesis (ferry pax, air O&D, border crossings), not graph degree. Heavy glowing trunks = proven mass; light lines = local capillaries.">?</span></div>
-  <div class="row"><span class="wline trunk"></span>Trunk <span class="muted">— high-traffic backbone</span></div>
-  <div class="row"><span class="wline regional"></span>Regional <span class="muted">— cross-cluster</span></div>
-  <div class="row"><span class="wline local"></span>Local <span class="muted">— capillary</span></div>
-  <div class="sub">Trip purpose <span class="help" data-tip="Pioneer II routes are coloured by trip_purpose so commuter / tourism / luxury / local read at a glance. Quanta-LR stays amber (platform identity).">?</span></div>
-  <div class="row"><span class="pline" style="background:#38bdf8;color:#38bdf8"></span>Commuter</div>
-  <div class="row"><span class="pline" style="background:#a78bfa;color:#a78bfa"></span>Business</div>
-  <div class="row"><span class="pline" style="background:#fb7185;color:#fb7185"></span>Tourism</div>
-  <div class="row"><span class="pline" style="background:#f0abfc;color:#f0abfc"></span>Luxury</div>
-  <div class="row"><span class="pline" style="background:#6ee7b7;color:#6ee7b7"></span>Local / water-taxi</div>
-  <div class="sub">Platform</div>
-  <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm electric (solid)</span></div>
-  <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤2,000 nm hybrid (amber)</span></div>
+  <div class="head" id="legend-head">Map key <span class="caret">⌄</span></div>
+  <div id="legend-body">
+    <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
+    <div class="sub">Routes <span class="help" data-tip="Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Line COLOUR = trip purpose: commuter (blue), business (violet), tourism (rose), luxury (pink), local / water-taxi (mint). Quanta-LR stays amber (platform identity).">?</span></div>
+    <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
+    <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤2,000 nm</span></div>
+    <div class="sub disclosure" id="bp-toggle"><span class="caret">›</span>Boarding points</div>
+    <div id="bp-list" class="collapsed">
+      <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina</div>
+      <div class="row"><span class="gly" style="color:#fb7185">▲</span>Ferry / cruise</div>
+      <div class="row"><span class="gly" style="color:#fbbf24">★</span>Yacht club</div>
+      <div class="row"><span class="gly" style="color:#6ee7b7">■</span>Hotel jetty</div>
+      <div class="row"><span class="gly" style="color:#a78bfa">✦</span>Seaplane</div>
+      <div class="row"><span class="gly" style="color:#22d3ee">◆</span>Water taxi / pier</div>
+      <div class="row"><span class="gly" style="color:#cbd5e1">⬢</span>Shipyard / MRO</div>
+      <div class="row"><span class="gly" style="color:#fde68a">⬟</span>Refuel</div>
+    </div>
+  </div>
 </div>
 
 <div id="footer">Navier Mobility · 2026</div>
@@ -1327,6 +1331,15 @@ document.querySelectorAll('.chip').forEach(b => {
 
 // Layer toggles removed (v17) — all layers are always on; the map key explains them, so the
 // bottom toggle bar was overhead. Routes/Pioneer II/Quanta-LR/Boarding points render by default.
+
+// Map key — keep it lean: header collapses the whole card; the boarding-point glyph list is a
+// disclosure (collapsed by default), since each glyph's meaning is also on the marker click-through.
+(function(){
+  const head=document.getElementById('legend-head'), legend=document.getElementById('legend');
+  if (head&&legend) head.addEventListener('click', ()=>legend.classList.toggle('collapsed'));
+  const bt=document.getElementById('bp-toggle'), bl=document.getElementById('bp-list');
+  if (bt&&bl) bt.addEventListener('click', ()=>{ bl.classList.toggle('collapsed'); bt.classList.toggle('open'); });
+})();
 
 // Panel collapse toggle
 const panelToggle = document.getElementById('panel-toggle');
