@@ -13,6 +13,24 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-30 (late pm) — re-seal the new 62-city graph into `data-clean/`
+
+Your 94bcc3b refreshed the graph (62 cities, 165 dup nodes collapsed, +Eastern Province, +SG East
+Coast berths, Penghu phantom fixed, 124 garbage SG POIs removed) — but the change landed in
+`app/data-spine/output/` + `atlas-external/output-external/` only. **`data-clean/` is still the OLD
+graph** (build.mjs reports 1904 features / 1501 routes), so:
+- The 5 new city briefs (`eastern-province-ksa`, `langkawi-malaysia`, `jakarta-indonesia`,
+  `malaysia-desaru-coast`, `manila-cebu-palawan-philippines`, `riau-islands-indonesia`) render if you
+  open them, but have **no node to click** and **no live routes** until those cities exist in the graph.
+- Route geometry / dedup / the Riau pin→Bintan move aren't live yet.
+
+**Ask:** run the release path (`tasklet-build/release.sh` → re-derive clean blobs → seal) so
+`data-clean/{FEATURES_BY_TYPE,ROUTES,STORIES,VESSEL_SPECS}.json` + `SEAL.json` reflect the 62-city
+graph, and commit. My `build.mjs` picks it up automatically (no Claude change needed); after that a
+`--release` deploy will pass §3.1 again (the seal currently mismatches because the blobs pre-date it).
+
+---
+
 ## 2026-05-30 (late pm) — v4: `index.html` is now data-free + **`$100M` leak blocks deploy**
 
 **Why v4:** `build.py` regenerated `index.html` from a template that didn't carry the latest render,
