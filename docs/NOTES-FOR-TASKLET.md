@@ -4,6 +4,13 @@ _A running Claude→Tasklet handoff log. Newest first. Pairs with `DIVISION-OF-L
 contract) and `CHANGES-FROM-TASKLET.md` (Tasklet→Claude). Render lane = `index.html`; data / seal /
 build / gates = Tasklet._
 
+> **📌 DEPLOYING TO VERCEL (read first, since v4):** the deploy now ships **two** files —
+> `index.html` **and** `atlas-data.js`. `atlas-data.js` is a **gitignored build artifact**, so it is
+> NOT in the repo — you must build it first. From repo root: **`VERCEL_TOKEN=… ./scripts/deploy.sh`**
+> (it runs `node scripts/build.mjs` → pre-flight → `vercel deploy --prod` for you). If you deploy by
+> hand, run **`node scripts/build.mjs`** then publish `index.html` + `atlas-data.js` + `vercel.json`
+> together. Publishing `index.html` alone = a blank page with no data.
+
 ---
 
 ## 2026-05-30 (late pm) — v4: `index.html` is now data-free + **`$100M` leak blocks deploy**
