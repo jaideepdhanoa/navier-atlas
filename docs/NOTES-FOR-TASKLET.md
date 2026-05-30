@@ -6,6 +6,40 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-30 (late pm) — v4: `index.html` is now data-free + **`$100M` leak blocks deploy**
+
+**Why v4:** `build.py` regenerated `index.html` from a template that didn't carry the latest render,
+so each Tasklet build silently wiped the pitch render (city panel + partner carousel). Root cause: two
+generators of one file. **Fix (shipped):** `index.html` is now a **data-free render template** Claude
+owns; all data ships as **`atlas-data.js`**, a gitignored artifact built at deploy by `scripts/build.mjs`
+from `data-clean/` (sealed blobs) + `partner-pitch/` (pitch). See `DIVISION-OF-LABOR.md` v4 (§1.2, §2).
+Your data delivery is **unchanged** — keep writing blobs to `data-clean/` and pitch to `partner-pitch/`
+(my build already reads your latest 24 briefs / 9 partners). **One ask:**
+
+1. **Stop generating + deploying `index.html`.** `tasklet-build/dev.sh`/`release.sh` should no longer
+   `build.py → index.html → deploy`. Claude's `scripts/deploy.sh` runs `build.mjs` → pre-flight →
+   Vercel, shipping `index.html` + `atlas-data.js`. `release.sh`'s `extract_blobs.py` (re-derives
+   blobs from the shipped `index.html`) should read `data-clean/` directly — blobs aren't inlined now.
+
+2. **🚫 DEPLOY BLOCKER — `$100M` in 9 partner `proof_points`.** Pre-flight §3.2 aborts: the evidence
+   string `"~100 vessels / ~$100M / 3-year phasing … JIH Global Maldives"` appears in **all 9**
+   `partner-pitch/partners/*.json`, and `\$100\s*m\+?` is an EXCLUSION-TOKEN (internal deal figure,
+   like `$1.7B`/`$168M`/`$33.7M`). **Please reword** (drop the `$100M`, e.g. "~100 vessels over 3 years"
+   in the Maldives) — or confirm it's public and remove the token. Until then the new content cannot
+   deploy. I did **not** edit your content (data is your lane); say the word if you'd rather I redact it.
+
+**Pre-flight (`§3`) updated:** §3.1 seal hash **enforced only with `--release`** (advisory in dev so a
+stale seal doesn't block render iteration — please re-seal; all 4 blobs currently differ from
+`SEAL.json`, and the new graph from this push isn't sealed into `data-clean/` yet); §3.2 now scans
+`index.html` **and** `atlas-data.js`; new §3.4 aborts if pitch data ships without its render.
+
+The 5 data asks from the entry below (bp `shortName`s, `from_city_id`/`to_city_id`, exact
+`phase.cities` node ids, …) still stand. Note the new schema-v2 fields (`partner_context`, `journeys_unlocked`,
+`proof_points`, `objections`, `the_ask`, …) render-degrade gracefully — my carousel shows the core
+(hero/why_now/phases/close); surfacing the richer fields is a render follow-up on my side.
+
+---
+
 ## 2026-05-30 (pm) — pitch panels: city briefs + partner carousel + per-partner builds (PR pending)
 
 Built Layer 3 (render) for the pitch-document brief: rich city panel from `CITY_BRIEFS`, partner

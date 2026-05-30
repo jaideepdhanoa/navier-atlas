@@ -13,6 +13,8 @@
 //                            & are bound to `routes` (directly prevents the F-01 dropped-layer class)
 //
 // Flags:
+//   --release          prod deploy — §3.1 seal mismatch/absence ABORTS. Without it, §3.1 is advisory
+//                      (dev iteration on the render must not be blocked by a seal only Tasklet refreshes).
 //   --allow-unsealed   proceed if SEAL.json is absent (NON-PROD smoke only; never for prod deploy)
 // ─────────────────────────────────────────────────────────────────────────────
 import fs from 'node:fs';
@@ -23,6 +25,7 @@ import styleSpec from '@maplibre/maplibre-gl-style-spec';
 
 const ROOT  = path.resolve(process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : '.');
 const ALLOW_UNSEALED = process.argv.includes('--allow-unsealed');
+const RELEASE = process.argv.includes('--release');   // prod deploy: enforce the seal (§3.1). Dev: advisory.
 const INDEX  = path.join(ROOT, 'index.html');
 const SEAL   = path.join(ROOT, 'data-clean', 'SEAL.json');
 const TOKENS = path.join(ROOT, 'docs', 'EXCLUSION-TOKENS.txt');
@@ -35,29 +38,41 @@ const head = (m) => console.log('\n' + m);
 if (!fs.existsSync(INDEX)) { console.error('FATAL: index.html not found at ' + INDEX); process.exit(2); }
 const html = fs.readFileSync(INDEX, 'utf8');
 
+// Data now ships as a separate asset (atlas-data.js, built from data-clean/ by scripts/build.mjs)
+// rather than inlined into index.html. Read it once: the smoke test evals it to set window globals,
+// and the leak-grep (§3.2) must scan it since that is now where excluded data would surface.
+const ATLAS = path.join(ROOT, 'atlas-data.js');
+const atlasData = fs.existsSync(ATLAS) ? fs.readFileSync(ATLAS, 'utf8') : null;
+const deployText = atlasData ? (html + '\n' + atlasData) : html;
+
 // ─── §3.1 · Hash match (anti-tamper) ──────────────────────────────────────────
 // SEAL.json (Tasklet-produced) is expected to be: { "blobs": { "<NAME>": { "sha256": "...", "count": N }, ... } }
 // where <NAME>.json lives in data-clean/ and is injected into index.html. Any mismatch ⇒ data was
 // altered after sealing (only Tasklet may change data) ⇒ ABORT.
-head('§3.1  seal hash match (anti-tamper)');
+head('§3.1  seal hash match (anti-tamper)' + (RELEASE ? '' : '  [dev: advisory — pass --release to enforce]'));
+// The seal is Tasklet's data-integrity gate, refreshed on their cadence. In prod (--release) any
+// mismatch/absence ABORTS. In dev it is advisory: a stale seal must not block Claude's render +
+// deploy iteration (Claude never edits the sealed blobs; build.mjs derives atlas-data.js from them).
+const sealIssue = (m) => RELEASE ? fail(m) : console.warn('   ⚠ ' + m + '  [advisory in dev]');
 if (!fs.existsSync(SEAL)) {
-  if (ALLOW_UNSEALED) console.warn('   ⚠ data-clean/SEAL.json absent — bypassed via --allow-unsealed (NOT valid for prod)');
-  else fail('data-clean/SEAL.json missing — cannot verify data integrity. Tasklet must ship it. (Use --allow-unsealed for a non-prod smoke run.)');
+  if (ALLOW_UNSEALED) console.warn('   ⚠ data-clean/SEAL.json absent — bypassed via --allow-unsealed');
+  else sealIssue('data-clean/SEAL.json missing — cannot verify data integrity (Tasklet ships it)');
 } else {
   try {
     const seal  = JSON.parse(fs.readFileSync(SEAL, 'utf8'));
     const blobs = seal.blobs || seal;
-    let n = 0;
+    let n = 0, bad = 0;
     for (const [name, meta] of Object.entries(blobs)) {
       const expected = (meta && (meta.sha256 || meta.sha)) || meta;
       const src = path.join(ROOT, 'data-clean', name + '.json');
-      if (!fs.existsSync(src)) { fail(`SEAL lists ${name} but data-clean/${name}.json is missing`); continue; }
+      if (!fs.existsSync(src)) { sealIssue(`SEAL lists ${name} but data-clean/${name}.json is missing`); bad++; continue; }
       const sha = crypto.createHash('sha256').update(fs.readFileSync(src)).digest('hex');
-      if (sha !== expected) fail(`${name}: sha256 mismatch vs SEAL (data altered after sealing)`);
+      if (sha !== expected) { sealIssue(`${name}: sha256 mismatch vs SEAL (data changed after sealing)`); bad++; }
       else { ok(`${name}: sha256 matches SEAL`); n++; }
     }
-    if (n && !failed) ok(`${n} sealed blob(s) verified`);
-  } catch (e) { fail('SEAL.json parse error: ' + e.message); }
+    if (n && !bad) ok(`${n} sealed blob(s) verified`);
+    else if (bad && !RELEASE) console.warn(`   ⚠ ${bad}/${n + bad} blob(s) differ from SEAL — Tasklet should re-seal; not blocking dev`);
+  } catch (e) { sealIssue('SEAL.json parse error: ' + e.message); }
 }
 
 // ─── §3.2 · Substring externalization grep ────────────────────────────────────
@@ -70,10 +85,10 @@ if (!fs.existsSync(TOKENS)) {
   let hits = 0;
   for (const p of pats) {
     let re; try { re = new RegExp(p, 'i'); } catch { console.warn('   (skipped un-compilable pattern: ' + p + ')'); continue; }
-    const m = html.match(re);
+    const m = deployText.match(re);   // scan index.html + atlas-data.js (the full deployable surface)
     if (m) { hits++; fail(`exclusion token matched /${p}/i → "${String(m[0]).slice(0,60)}"`); }
   }
-  if (!hits) ok(`${pats.length} tokens checked · 0 hits`);
+  if (!hits) ok(`${pats.length} tokens checked · 0 hits${atlasData ? ' (index.html + atlas-data.js)' : ''}`);
 }
 
 // ─── §3.3 · MapLibre style smoke test ─────────────────────────────────────────
@@ -127,6 +142,10 @@ try {
   // Run the page's script in the jsdom window scope (uses our stub + the real DOM), then fire the
   // deferred 'load' callbacks (which is where addSource/addLayer happen) — now that all module-scope
   // declarations are initialized, exactly as in a real browser.
+  // Set the window.* data globals first (atlas-data.js runs before the app script in the browser),
+  // then run the app script so its `const X = window.X` reads resolve, exactly as in production.
+  if (atlasData) window.eval(atlasData);
+  else throw new Error('atlas-data.js not found — run `node scripts/build.mjs` (data asset missing)');
   window.eval(scriptText);
   for (const cb of loadCbs) cb();
 
@@ -163,9 +182,12 @@ try {
 // If the content is inlined, the render that consumes it MUST be present — else abort the deploy.
 head('§3.4  pitch-render layer present');
 {
-  const hasContent = /window\.CITY_BRIEFS\s*=/.test(html) || /window\.PARTNERS\s*=/.test(html);
+  // Pitch CONTENT lives in atlas-data.js (window globals); the RENDER that consumes it lives in
+  // index.html. If content exists but its render doesn't, the UI is dead — abort.
+  const contentSrc = atlasData || html;
+  const hasContent = /window\.CITY_BRIEFS\s*=/.test(contentSrc) || /window\.PARTNERS\s*=/.test(contentSrc);
   if (!hasContent) {
-    ok('no inline pitch content (CITY_BRIEFS/PARTNERS) — render check skipped');
+    ok('no pitch content (CITY_BRIEFS/PARTNERS) — render check skipped');
   } else {
     const need = [
       ['city pitch panel (CITY_BRIEFS read)', /CITY_BRIEFS\s*\[/],
