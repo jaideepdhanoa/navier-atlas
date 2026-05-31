@@ -1362,7 +1362,7 @@ function _cityBriefHtml(brief, props, coords){
   let h = (PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '';
   h += `<div class="panel-hero">
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
-    <h2>${escapeHtml(brief.display||props.shortName||props.name||cid)}</h2>
+    <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
     <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 2,000 nm)</button>
   </div>`;
