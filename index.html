@@ -368,6 +368,8 @@ body.panel-hidden #footer { display:block; }
 /* Journey cards become clickable when they resolve to a corridor on the map */
 .pcaro-jrn.clickable { cursor:pointer; transition:border-color .15s,background .15s; }
 .pcaro-jrn.clickable:hover { border-color:rgba(110,231,183,0.45); background:rgba(110,231,183,0.05); }
+.pcaro-jrn-go { float:right; font-size:10px; font-weight:600; color:var(--text-2); opacity:0; transition:opacity .15s; }
+.pcaro-jrn.clickable:hover .pcaro-jrn-go { opacity:1; color:var(--accent); }
 
 /* Opening / "About this proposal" dialogue — large, readable; reuses .story-dialog shell */
 .intro-dialog { width:min(720px,94vw); max-height:88vh; }
@@ -1617,8 +1619,10 @@ function _journeysHtml(js){
     if (j.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(j.platform)}</span>`);
     if (j.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(j.distance_nm)} nm</span>`);
     if (j.archetype) chips.push(`<span class="pcaro-jchip" style="text-transform:capitalize">${escapeHtml(String(j.archetype).replace(/_/g,' '))}</span>`);
-    return `<div class="pcaro-jrn">
-      <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}</div>
+    const rid=j.route_id||'', fn=j.from_node_id||'', tn=j.to_node_id||'';
+    const click = !!(rid || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
+    return `<div class="pcaro-jrn${click?' clickable':''}"${rid?` data-route="${escapeHtml(rid)}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
+      <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
       ${j.today?`<div class="pcaro-jrn-line today"><span>Today</span>${escapeHtml(j.today)}</div>`:''}
       ${j.with_navier?`<div class="pcaro-jrn-line nav"><span>With Navier</span>${escapeHtml(j.with_navier)}</div>`:''}
       ${chips.length?`<div class="pcaro-jrn-chips">${chips.join('')}</div>`:''}
@@ -1663,14 +1667,21 @@ function _chapterTitle(ch, partner){
   return '';
 }
 function _endstateHtml(partner){
+  const es=partner.end_state||null;   // authored TAM (Tasklet) — preferred over live counts
   const cities=_unionPhaseCities(partner), ph=partner.phases||[];
-  const boats=ph.reduce((m,p)=>Math.max(m,(+p.boats||0)),0);
   const netCount=(typeof CITY_IDS!=='undefined'&&CITY_IDS.size)?CITY_IDS.size:cities.length;
+  const M=(es&&es.addressable_market_count)||netCount;
+  const headline=(es&&es.headline)||(partner.close&&partner.close.title)||((partner.display||'The')+' — the whole water network');
+  const blurb=(es&&es.narrative)||(partner.hero&&partner.hero.subtitle)||'';
   let h=`<div class="chap-cap"><div class="eyebrow">Where this goes — the full picture</div>
-    <h2>${escapeHtml((partner.close&&partner.close.title)||((partner.display||'The')+' — the whole water network'))}</h2>
-    ${partner.hero&&partner.hero.subtitle?`<p>${escapeHtml(partner.hero.subtitle)}</p>`:''}
-    <p class="chap-potential">The map shows the wider network this becomes — your phased rollout lights up <b>${cities.length}</b> of <b>${netCount}</b> markets${boats?`, scaling toward <b>${boats}</b> vessels`:''}, across <b>${ph.length}</b> phases.</p>
-    <div class="stats"><div><div class="n">${netCount}</div><div class="k">markets in network</div></div><div><div class="n">${cities.length}</div><div class="k">in your rollout</div></div><div><div class="n">${ph.length}</div><div class="k">rollout phases</div></div></div></div>`;
+    <h2>${escapeHtml(headline)}</h2>
+    ${blurb?`<p>${escapeHtml(blurb)}</p>`:''}
+    <p class="chap-potential">Your phased rollout lights up <b>${cities.length}</b> of <b>${escapeHtml(String(M))}</b> addressable markets${es&&es.addressable_footprint?` — ${escapeHtml(es.addressable_footprint)}`:''}, across <b>${ph.length}</b> phases.</p></div>`;
+  const ss=es&&es.steady_state;
+  if (ss){
+    const rows=[ss.total_markets,ss.total_corridors,ss.vessels_at_scale,ss.platform_mix].filter(Boolean);
+    h+=`<div class="panel-section"><h3>At steady state</h3>${rows.map(v=>`<div class="pcaro-route">${escapeHtml(v)}</div>`).join('')}${ss.tam_framing?`<div class="pcaro-narr" style="margin-top:8px">${escapeHtml(ss.tam_framing)}</div>`:''}</div>`;
+  }
   if (partner.multimodal_fit) h+=`<div class="panel-section"><h3>Into your stack</h3><div class="pcaro-why">${escapeHtml(partner.multimodal_fit)}</div></div>`;
   h+=_journeysHtml(partner.journeys_unlocked);
   return h;
@@ -1716,6 +1727,16 @@ function _renderChapter(){
   if (next) next.addEventListener('click',()=>showChapter(_CARO.i+1));
   const cta=panel.querySelector('#chap-next-cta'); if (cta) cta.addEventListener('click',()=>showChapter(_CARO.i+1));
   panel.querySelectorAll('.chap-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showChapter(+d.dataset.i)));
+  _wireJourneys(panel);
+}
+// Journey card → highlight its route (by route_id) or frame the corridor (from/to node ids).
+function _wireJourneys(panel){
+  panel.querySelectorAll('.pcaro-jrn.clickable').forEach(el=>el.addEventListener('click',()=>{
+    const rid=el.dataset.route;
+    if (rid){ const f=(ROUTE_FC.features||[]).find(x=>x.properties && x.properties.id===rid); if (f){ selectRoute(f); return; } }
+    const ids=[el.dataset.from, el.dataset.to].filter(Boolean);
+    if (ids.length) _fitCities(ids, 160);
+  }));
 }
 function _fitCities(cities, pad){
   let b=null;
