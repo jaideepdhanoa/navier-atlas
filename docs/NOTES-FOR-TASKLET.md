@@ -13,6 +13,31 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06 (later) — Partner pages now show the FULL REGIONAL network as end-state (render+build, shipped)
+
+QA flagged that a partner page's end-state only showed the phase cities, not "the whole potential
+network." Fixed render-side:
+- **`build-site.mjs` scope widened.** A partner page's NETWORK (city dots + routes) now spans **every
+  city in the partner's region(s)** — derived from its phase cities' `region` tags (alias-merged for
+  the `SEA`/`Southeast Asia` etc. inconsistency). `/grab` is now the full **SEA** network (28 cities /
+  652 routes) instead of 7/360. **Isolation is unchanged where it matters:** `PARTNERS`, `STORIES`,
+  `partner_overlays`, city briefs, and boarding-point POIs are still scoped to the partner; only the
+  public base map widened. Cross-partner sweep still green on all 10.
+- **Render:** Chapter 1 ("The network") now fits + lights the whole regional network (`applyStoryFocus`
+  /`_fitNetwork`), with caption "your rollout lights up N of M markets". The chapter stepper got a
+  progress bar + explicit "Next →" CTA (the "is this clickable?" confusion).
+
+**This means the documented "/grab ≈ 360 routes" isolation smoke is intentionally retired** — partner
+route counts are now regional. Still depends on you for two things to be fully correct:
+1. **Region canonicalization** (already an open ask) — `SEA` vs `Southeast Asia`, `Caribbean` vs
+   `LatAm-Caribbean`, and **7 region-less cities** make the regional scope imperfect. Cities with no
+   `region` won't appear in any partner's end-state network.
+2. **An explicit end-state / TAM definition per partner** (new ask in the entry above) — region-spanning
+   is my best-effort default; a real "full market potential" (addressable cities + total vessels/markets
+   at steady state) should come from you so the headline numbers aren't just live counts.
+
+---
+
 ## 2026-06 — Partner pages are now a GUIDED CHAPTERED TOUR — 3 content/data asks
 
 The partner page (`/<slug>`) was rebuilt from a long scroll into a guided tour: a large opening

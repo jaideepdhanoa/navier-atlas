@@ -82,18 +82,32 @@ function scoper(FBT) {
 function scopeForPartner(data, slug) {
   const partner = data.PARTNERS[slug];
   const { cityIdOf, resolve } = scoper(data.FEATURES_BY_TYPE);
-  const keep = new Set();
+  const keep = new Set();   // the partner's actual ROLLOUT footprint (phase cities)
   for (const ph of (partner.phases || [])) for (const c of resolve(ph.cities)) keep.add(c);
   if (!keep.size) return { error: 'no cities resolved' };
 
-  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; return keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to)); });
-  const endpointIds = new Set();
-  for (const f of ROUTES) { const p = f.properties || {}; if (p.from) endpointIds.add(p.from); if (p.to) endpointIds.add(p.to); }
+  // End-state network = every city in the same REGION(s) as the rollout. The base atlas
+  // (cities + routes) is public / non-partner-private, so a partner page can show the whole regional
+  // network it could become — only the PITCH (PARTNERS/STORIES/overlays/briefs) stays scoped. Region
+  // labels are inconsistent upstream (SEA vs Southeast Asia, …), so alias-merge before comparing.
+  const normReg = (r) => { const k = String(r || '').trim().toLowerCase();
+    return ({ 'sea': 'sea', 'southeast asia': 'sea', 'caribbean': 'latam-caribbean', 'latam-caribbean': 'latam-caribbean' })[k] || k; };
+  const cityRegion = {};
+  for (const t of ['city', 'priority_city']) for (const f of (data.FEATURES_BY_TYPE[t] || [])) { const p = f.properties || {}; if (p.id) cityRegion[p.id] = normReg(p.region); }
+  const partnerRegions = new Set([...keep].map(id => cityRegion[id]).filter(Boolean));
+  const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ all cities in those regions
+  if (partnerRegions.size) for (const [id, reg] of Object.entries(cityRegion)) if (reg && partnerRegions.has(reg)) net.add(id);
+
+  // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
+  // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
+  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; return net.has(cityIdOf(p.from)) || net.has(cityIdOf(p.to)); });
+  const phaseEndpoints = new Set();
+  for (const f of (data.ROUTES || [])) { const p = f.properties || {}; if (keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to))) { if (p.from) phaseEndpoints.add(p.from); if (p.to) phaseEndpoints.add(p.to); } }
   const FEATURES_BY_TYPE = {};
   for (const t of Object.keys(data.FEATURES_BY_TYPE)) {
     FEATURES_BY_TYPE[t] = data.FEATURES_BY_TYPE[t].filter(f => { const p = f.properties || {};
-      if (t === 'city' || t === 'priority_city') return keep.has(p.id);
-      return keep.has(p.parent_city_id) || endpointIds.has(p.id); });
+      if (t === 'city' || t === 'priority_city') return net.has(p.id);          // full regional network of city dots
+      return keep.has(p.parent_city_id) || phaseEndpoints.has(p.id); });        // POIs: partner footprint only
   }
   // Keep this partner's cities' briefs, but STRIP partner_overlays to only this partner's overlay
   // (a brief carries overlays for every partner — others must not leak onto an isolated partner page).
@@ -108,7 +122,7 @@ function scopeForPartner(data, slug) {
   const STORIES = (data.STORIES || []).filter(s => s.slug === slug);
   const scoped = { FEATURES_BY_TYPE, ROUTES, STORIES, VESSEL_SPECS: data.VESSEL_SPECS, CITY_BRIEFS, PARTNERS: { [slug]: partner } };
   const cityCount = (FEATURES_BY_TYPE.city || []).length + (FEATURES_BY_TYPE.priority_city || []).length;
-  return { scoped, keep: [...keep], counts: { cities: cityCount, pois: (FEATURES_BY_TYPE.poi || []).length, routes: ROUTES.length, briefs: Object.keys(CITY_BRIEFS).length, stories: STORIES.length } };
+  return { scoped, keep: [...keep], counts: { cities: cityCount, rollout: keep.size, pois: (FEATURES_BY_TYPE.poi || []).length, routes: ROUTES.length, briefs: Object.keys(CITY_BRIEFS).length, stories: STORIES.length } };
 }
 
 // ---- safety sweep on the emitted data text ----
@@ -161,7 +175,7 @@ for (const slug of Object.keys(data.PARTNERS)) {
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
   fs.writeFileSync(path.join(outDir, 'atlas-data.js'), dataText);
   const c = r.counts;
-  console.log(`  ✓ /${slug}  cities:${c.cities} pois:${c.pois} routes:${c.routes} briefs:${c.briefs} stories:${c.stories}`);
+  console.log(`  ✓ /${slug}  network cities:${c.cities} (rollout ${c.rollout}) pois:${c.pois} routes:${c.routes} briefs:${c.briefs} stories:${c.stories}`);
 }
 if (failed) { console.error(`\nbuild-site: ${failed} partner build(s) failed — see above.`); process.exit(1); }
 console.log(`\n_dist/ ready: 1 aggregate + ${Object.keys(data.PARTNERS).length} partner pages.`);

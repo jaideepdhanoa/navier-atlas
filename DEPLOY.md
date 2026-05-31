@@ -76,10 +76,17 @@ cd _dist && vercel deploy --prod --yes --token <token>   # deploy the _dist DIRE
   marquee cities (Abu Dhabi · Doha · Dubai · Jeddah · Muscat) with a **‹ MENA** back chip; click a city
   (Dubai) → it flies there and opens its brief; the back chip / **Global** return to the region row.
 - **Partner guided tour:** `/grab` opens a **large dialogue** (hero + "Your world"), then "Take the
-  tour →" lands on **Chapter 1 "The network"** (whole network lit) with a **‹ Chapter X of N ›**
-  stepper; stepping flies the camera per phase; **"About ▾"** reopens the dialogue.
-- **Isolation:** `/grab` loads **only Grab's** data (~360 routes, not ~1,567); `/grab?partner=uber`
-  must **stay Grab**; panning shows no other markets.
+  tour →" lands on **Chapter 1 "The network"** with a clear **Step X of N** stepper — a progress bar
+  and an explicit **"Next · ‹title› →"** button (plus dots) so it reads as a walkthrough; stepping
+  flies the camera per phase; **"About ▾"** reopens the dialogue.
+- **End-state shows the FULL regional network:** Chapter 1 (and the close) render the whole network the
+  partner could run — `/grab` = the full **Southeast Asia** network (~28 cities / ~650 routes), with the
+  caption "your rollout lights up N of M markets". The per-phase chapters then highlight subsets.
+- **Isolation (pitch, not the base map):** a partner page contains **only that partner's PITCH** —
+  `PARTNERS` = just the slug, only its own story, overlays stripped — verified by the `__PARTNER_BUILD__`
+  lock and the cross-partner sweep. `/grab?partner=uber` must **stay Grab**. (The *map* deliberately spans
+  the partner's whole region now — that's the public atlas, not partner-private; route counts are
+  regional, no longer ~360.)
 - Cold load shows the **"Charting the network…"** overlay, not a blank map.
 
 ---
