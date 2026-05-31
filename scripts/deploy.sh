@@ -38,6 +38,13 @@ echo "→ running deploy pre-flight…"
 node scripts/preflight/preflight.mjs "$ROOT" ${RELEASE:+--release}
 
 # 4 · publish the _dist/ tree to Vercel prod (aggregate at /, each partner at /<slug>).
+#     Carry the project link INTO _dist (build-site wiped it) so the deploy targets the existing
+#     navier-atlas project — else Vercel would create a new one. (VERCEL_ORG_ID/VERCEL_PROJECT_ID
+#     env vars also work and take precedence if the .vercel/ link file isn't present.)
+if [ -f "$ROOT/.vercel/project.json" ]; then
+  mkdir -p "$ROOT/_dist/.vercel"
+  cp "$ROOT/.vercel/project.json" "$ROOT/_dist/.vercel/project.json"
+fi
 echo "→ pre-flight clean; deploying _dist/ to Vercel prod…"
 URL="$(cd "$ROOT/_dist" && npx --yes vercel@54 deploy --prod --yes --token "$VERCEL_TOKEN")"
 echo "✅ deployed: $URL"
