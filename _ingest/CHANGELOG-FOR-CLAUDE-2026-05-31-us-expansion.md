@@ -1,3 +1,24 @@
+# BP-WATER BACKLOG RESOLVED (2026-05-31, late) — appended
+
+The pre-existing `bp_on_water` "known-gaps" backlog is now fully cleared. Gate verdict is an **honest PASS — 0 true mis-geocodes**.
+
+**5 genuine geocode errors fixed** (had matched company HQs / wrong-city namesakes):
+- `jkt-krakatau-anchorage`: Jakarta company "PT Krakatau Niaga" → Anak Krakatau volcano, Sunda Strait (105.42, −6.10)
+- `jkt-bintan-lobam`: estate's Jakarta office → Teluk Lobam, Bintan (104.26, 1.00)
+- Penang `Pulau Aman` jetty → Batu Musang Jetty (100.41, 5.27)
+- Setouchi `Hoshinoya Setouchi (pipeline)`: matched Hoshinoya **Tokyo** → Seto Inland Sea / Naoshima waters (134.07, 34.46)
+- Ghantoot Marina (abu-dhabi + dubai files): snapped to nearest coastal water
+
+**58 benign points transparently allowlisted** (NOT errors — ocean-mask can't see them):
+- New file `bp_water_allowlist.json` + generator `bp_water_allowlist_gen.py`
+- Named navigable water-body bounding boxes: Chao Phraya river, Dubai Creek/Business Bay canal, Lake Toba, Lake Tōya, Halong/Hai Phong delta, Phang Nga estuary, Sungai Lebam estuary, Brunei Bay/Temburong
+- Plus region-centroid label points (no pier token) and planned/pipeline labels
+- `bp_on_water_gate.py` now loads the allowlist; verdict = true mis-geocodes only
+
+**No action needed from Claude** — these are data-clean source fixes already in the reseal.
+
+---
+
 # Changelog for Claude — 2026-05-31 — US Expansion + Partner Stories
 
 **Seal**: fresh seal written to `atlas-repo/data-clean/` (SEAL.json updated). Bake from `data-clean/` as always — NOT raw `partner-pitch/`.
