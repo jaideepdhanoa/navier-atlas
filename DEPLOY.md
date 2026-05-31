@@ -71,9 +71,16 @@ cd _dist && vercel deploy --prod --yes --token <token>   # deploy the _dist DIRE
 
 ## After deploy — 30-second smoke
 
-- `/` loads the aggregate (stats ≈ 84 cities / 1,567 routes); the `Region ▾` dropdown jumps to regions.
-- `/grab` and `/hawaii` each load their own carousel with **only their** data.
-- Isolation: `/grab?partner=uber` must **stay Grab** (the build lock ignores the param).
+- `/` loads the aggregate (stats ≈ 84 cities / 1,567 routes) with **region chips** next to Global.
+- **Region → city drill-down:** click a region chip (e.g. **MENA**) → the row swaps to that region's
+  marquee cities (Abu Dhabi · Doha · Dubai · Jeddah · Muscat) with a **‹ MENA** back chip; click a city
+  (Dubai) → it flies there and opens its brief; the back chip / **Global** return to the region row.
+- **Partner guided tour:** `/grab` opens a **large dialogue** (hero + "Your world"), then "Take the
+  tour →" lands on **Chapter 1 "The network"** (whole network lit) with a **‹ Chapter X of N ›**
+  stepper; stepping flies the camera per phase; **"About ▾"** reopens the dialogue.
+- **Isolation:** `/grab` loads **only Grab's** data (~360 routes, not ~1,567); `/grab?partner=uber`
+  must **stay Grab**; panning shows no other markets.
+- Cold load shows the **"Charting the network…"** overlay, not a blank map.
 
 ---
 
