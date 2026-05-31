@@ -1,3 +1,10 @@
+> ⚠️ **SUPERSEDED — do not run this version.** The current QA plan (v5: 10 partners, 78 briefs,
+> per-partner `/<slug>` pages, region dropdown, US expansion) is the canonical
+> [`docs/BRIEF-FOR-COWORK-pitch-flow.md`](../docs/BRIEF-FOR-COWORK-pitch-flow.md). The text below is the
+> earlier (6-partner / 19-city) round, kept for history.
+
+---
+
 # Claude Cowork — Front-End Test Brief (Pitch-Document Flow)
 
 **From:** Tasklet + Claude Code · updated 2026-05-30 (post PR #3, post node-id fix)
