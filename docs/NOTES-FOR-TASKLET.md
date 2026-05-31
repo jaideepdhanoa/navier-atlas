@@ -13,6 +13,24 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-31 (pm) — SOURCE vs BUILD-INPUT drift: please resend `partner-pitch/partners/` with `data-clean/`
+
+The 15:16 export shipped **`data-clean/` only**. So the two copies of the partner proposals have drifted:
+- `data-clean/partners/` (the **build input** the site deploys from) = the new 15:16 copy.
+- `partner-pitch/partners/` (the authored **source**) = still the older 10:29 copy.
+
+All 10 partner files now differ — purely the 15:16 wording refinements (e.g. grab `differentiation`
+trimmed to just `why_navier`), not stripped fields. **The deploy is correct** (build reads `data-clean/`).
+The risk is latent: if `data-clean/` is ever regenerated from `partner-pitch/`, the stale source would
+**revert the 15:16 copy**.
+
+**Ask:** resend the matching **`partner-pitch/partners/*.json`** (the authored originals behind the 15:16
+`data-clean`), and going forward **ship both `partner-pitch/` + `data-clean/` together** (or send only the
+source and let our build re-derive `data-clean/`). We didn't auto-sync source ← data-clean because
+`data-clean` is the public-stripped artifact and could drop deck-only/internal content the source retains.
+
+---
+
 ## 2026-05-31 (pm) — ⚠️ DEPLOY BLOCKER in the new drop: "exclusivity" trips §3.2 leak guard
 
 Your 2026-05-31 data drop is excellent (all 9 items landed — thank you). One thing **blocks the
