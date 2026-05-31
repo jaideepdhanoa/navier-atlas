@@ -124,6 +124,8 @@ body.panel-hidden #panel { width:0 !important; }
 .region-more-item { display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
   color:var(--text-1); font:500 12px Inter; padding:7px 10px; border-radius:7px; }
 .region-more-item:hover { background:rgba(110,231,183,0.1); color:var(--text-0); }
+.chip.region.back { color:var(--text-2); font-weight:600; }
+.chip.region.back:hover { color:var(--text-0); }
 .grp-label { font:600 9px Inter; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); opacity:0.7; padding:0 2px; }
 .grp-sep { width:1px; height:14px; background:var(--line-strong); margin:0 4px; }
 
@@ -1975,6 +1977,7 @@ document.querySelectorAll('.chip').forEach(b => {
   // Locked partner page: drop the aggregate region/Global nav entirely (the page is one market).
   if (BUILD_PARTNER){ const p=document.getElementById('presets'); if (p) p.style.display='none'; return; }
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America & Caribbean', 'Caribbean':'Latin America & Caribbean' };
+  const norm = r => ALIAS[r] || r;
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
     const r0 = f.properties && f.properties.region; if (!r0) continue;
@@ -1984,32 +1987,54 @@ document.querySelectorAll('.chip').forEach(b => {
     const b = regions[r] || (regions[r] = {minX:x,minY:y,maxX:x,maxY:y,n:0});
     b.minX=Math.min(b.minX,x); b.minY=Math.min(b.minY,y); b.maxX=Math.max(b.maxX,x); b.maxY=Math.max(b.maxY,y); b.n++;
   }
+  // Marquee cities per region = the priority_city tier (Dubai, Singapore, …), grouped by region.
+  const cityGroups = {};
+  for (const f of (FEATURES_BY_TYPE.priority_city||[])){
+    const r0=f.properties && f.properties.region; const co=f.geometry && f.geometry.coordinates; if(!r0||!co) continue;
+    (cityGroups[norm(r0)] = cityGroups[norm(r0)] || []).push({ name:f.properties.shortName||f.properties.name||f.properties.id, coords:co, props:f.properties });
+  }
+  for (const k in cityGroups) cityGroups[k].sort((a,b)=>a.name.localeCompare(b.name));
   const clearActive = ()=>document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-  const jump = (label)=>{ const b=regions[label]; if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true }); };
-  // Biggest markets stay inline; the long tail collapses under a "More" popover so the chip row
-  // never overflows as Tasklet seals more regions. Bump MAX_INLINE if you want more chips inline.
+  const fitRegion = (label)=>{ const b=regions[label]; if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true }); };
+  // Biggest markets inline; long tail under "More" so the row never overflows as regions are added.
   const labels = Object.keys(regions).sort((a,b)=> regions[b].n - regions[a].n || a.localeCompare(b));
   const MAX_INLINE = 6;
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
-  labels.slice(0, MAX_INLINE).forEach(label=>{
-    const btn = document.createElement('button'); btn.className='chip region'; btn.textContent=label;
-    btn.addEventListener('click', ()=>{ clearActive(); btn.classList.add('active'); jump(label); closeMore(); });
-    host.appendChild(btn);
-  });
-  const overflow = labels.slice(MAX_INLINE);
-  if (overflow.length){
-    const wrap = document.createElement('span'); wrap.className='region-more';
-    const moreBtn = document.createElement('button'); moreBtn.className='chip region more'; moreBtn.textContent='More ▾'; moreBtn.setAttribute('aria-haspopup','true');
-    moreMenu = document.createElement('div'); moreMenu.className='region-more-menu'; moreMenu.style.display='none';
-    overflow.forEach(label=>{
-      const it = document.createElement('button'); it.className='region-more-item'; it.textContent=label;
-      it.addEventListener('click', (e)=>{ e.stopPropagation(); clearActive(); moreBtn.classList.add('active'); jump(label); closeMore(); });
-      moreMenu.appendChild(it);
+
+  // Tier 1: regions (Global resets). Clicking a region fits it AND drills into its marquee cities.
+  function renderRegions(){
+    closeMore(); host.innerHTML='';
+    const open=(label,btn)=>{ clearActive(); if(btn) btn.classList.add('active'); fitRegion(label); if((cityGroups[label]||[]).length) renderCities(label); };
+    labels.slice(0,MAX_INLINE).forEach(label=>{
+      const btn=document.createElement('button'); btn.className='chip region'; btn.textContent=label;
+      btn.addEventListener('click',()=>open(label,btn)); host.appendChild(btn);
     });
-    moreBtn.addEventListener('click', (e)=>{ e.stopPropagation(); moreMenu.style.display = moreMenu.style.display==='none'?'block':'none'; });
-    document.addEventListener('click', closeMore);
-    wrap.appendChild(moreBtn); wrap.appendChild(moreMenu); host.appendChild(wrap);
+    const overflow=labels.slice(MAX_INLINE);
+    if (overflow.length){
+      const wrap=document.createElement('span'); wrap.className='region-more';
+      const moreBtn=document.createElement('button'); moreBtn.className='chip region more'; moreBtn.textContent='More ▾'; moreBtn.setAttribute('aria-haspopup','true');
+      moreMenu=document.createElement('div'); moreMenu.className='region-more-menu'; moreMenu.style.display='none';
+      overflow.forEach(label=>{ const it=document.createElement('button'); it.className='region-more-item'; it.textContent=label;
+        it.addEventListener('click',(e)=>{ e.stopPropagation(); open(label,moreBtn); }); moreMenu.appendChild(it); });
+      moreBtn.addEventListener('click',(e)=>{ e.stopPropagation(); moreMenu.style.display=moreMenu.style.display==='none'?'block':'none'; });
+      wrap.appendChild(moreBtn); wrap.appendChild(moreMenu); host.appendChild(wrap);
+    }
   }
+  // Tier 2: a region's marquee cities + a "‹ Regions" back chip. Clicking a city flies + opens its brief.
+  function renderCities(label){
+    host.innerHTML='';
+    const back=document.createElement('button'); back.className='chip region back'; back.textContent='‹ '+label; back.title='Back to regions';
+    back.addEventListener('click',()=>{ clearActive(); fitRegion(label); renderRegions(); });
+    host.appendChild(back);
+    (cityGroups[label]||[]).forEach(c=>{
+      const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
+      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); map.flyTo({center:c.coords, zoom:10, duration:1400, essential:true}); try{ showDetail(c.props, c.coords); }catch(e){} });
+      host.appendChild(btn);
+    });
+  }
+  document.addEventListener('click', closeMore);
+  const g=document.querySelector('.chip.lead[data-c="global"]'); if (g) g.addEventListener('click', renderRegions);  // Global resets to the region row
+  renderRegions();
 })();
 
 // Layer toggles removed (v17) — all layers are always on; the map key explains them, so the
