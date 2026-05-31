@@ -82,10 +82,17 @@ if (!fs.existsSync(TOKENS)) {
 } else {
   const pats = fs.readFileSync(TOKENS, 'utf8').split('\n')
     .map(l => l.trim()).filter(l => l && !l.startsWith('#'));
+  // Allowlist: neutralize vetted partner-facing phrases (e.g. hospitality "guest privacy and
+  // exclusivity") so the token is still caught everywhere else. Keep tiny + specific.
+  let scanText = deployText;
+  const ALLOWFILE = path.join(ROOT, 'docs', 'EXCLUSION-ALLOWLIST.txt');
+  if (fs.existsSync(ALLOWFILE)) for (const phrase of fs.readFileSync(ALLOWFILE, 'utf8').split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))) {
+    scanText = scanText.replace(new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
+  }
   let hits = 0;
   for (const p of pats) {
     let re; try { re = new RegExp(p, 'i'); } catch { console.warn('   (skipped un-compilable pattern: ' + p + ')'); continue; }
-    const m = deployText.match(re);   // scan index.html + atlas-data.js (the full deployable surface)
+    const m = scanText.match(re);   // scan index.html + atlas-data.js (the full deployable surface), allowlist-neutralized
     if (m) { hits++; fail(`exclusion token matched /${p}/i → "${String(m[0]).slice(0,60)}"`); }
   }
   if (!hits) ok(`${pats.length} tokens checked · 0 hits${atlasData ? ' (index.html + atlas-data.js)' : ''}`);

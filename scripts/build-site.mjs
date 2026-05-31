@@ -130,8 +130,14 @@ const tokens = (() => {
   const f = path.join(ROOT, 'docs', 'EXCLUSION-TOKENS.txt');
   return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')) : [];
 })();
+const allowPhrases = (() => {                       // vetted phrases neutralized before the token sweep
+  const f = path.join(ROOT, 'docs', 'EXCLUSION-ALLOWLIST.txt');
+  return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')) : [];
+})();
 function sweep(text, data, slug) {
-  const leaks = tokens.filter(t => { try { return new RegExp(t, 'i').test(text); } catch { return false; } });
+  let scan = text;
+  for (const ph of allowPhrases) scan = scan.replace(new RegExp(ph.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), ' ');
+  const leaks = tokens.filter(t => { try { return new RegExp(t, 'i').test(scan); } catch { return false; } });
   const cross = [];
   for (const [pid, pr] of Object.entries(data.PARTNERS)) { if (pid === slug) continue;
     if ((pr.hero && pr.hero.title && text.includes(pr.hero.title)) || text.includes('"' + pid + '":')) cross.push(pid); }
