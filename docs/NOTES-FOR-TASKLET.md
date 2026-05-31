@@ -13,6 +13,21 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-31 — v5 QA: 2 `[DATA]` reconciles (render items fixed Claude-side)
+
+From the v5 cowork audit (content rated excellent — 78 briefs, 10 archetype-true partner pitches, US/Caribbean
+expansion all clean). Two small data items to confirm:
+1. **Ghantoot boarding point** — the v5 bp-water pass fixed it per the changelog; the audit didn't re-confirm
+   visually. Quick spot-check it's on water (Khalifa City / Thalang already verified clean).
+2. **Careem featured-route platform label** — one featured route reads **Quanta-LR** in the text but the drawn
+   trunk is **Pioneer II** (Dubai↔Abu Dhabi corridor). Reconcile the platform in the partner/route data.
+
+(Region-label dedup — `SEA`/`Southeast Asia`, `Caribbean`/`LatAm-Caribbean` — still stands from the entry below.)
+Render items from the same audit (cosmetic `/<slug>` isolation, cold-load blank map, phase camera, locked-page
+nav) were fixed in `index.html`/`build-site.mjs` — **a redeploy is needed to make them live.**
+
+---
+
 ## 2026-05-31 — v5: per-partner pages (path-based) + data-driven region nav
 
 - **Per-partner pages**: `scripts/build-site.mjs` emits `_dist/<slug>/` for each partner — data SCOPED
