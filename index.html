@@ -91,6 +91,12 @@ body.panel-hidden #panel { width:0 !important; }
 .story-grid .card .t { font:600 14px Inter; color:var(--text-0); margin-bottom:5px; }
 .story-grid .card .s { font:400 12px/1.5 Inter; color:var(--text-2); }
 .story-grid .empty { grid-column:1/-1; padding:24px; text-align:center; color:var(--text-2); font:400 13px Inter; }
+/* Cold-load overlay — a state instead of a blank map while tiles + 27 layers build. */
+#loading { position:fixed; inset:0; z-index:1100; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  background:#0a0e14; color:var(--text-2); font:500 13px Inter; letter-spacing:0.02em; transition:opacity .5s ease; }
+#loading.done { opacity:0; pointer-events:none; }
+#loading .spin { width:30px; height:30px; border-radius:50%; border:2.5px solid rgba(110,231,183,0.2); border-top-color:var(--accent); animation:atlas-spin .8s linear infinite; }
+@keyframes atlas-spin { to { transform:rotate(360deg); } }
 
 /* Region nav — three tiers (network · macro-region · market). Primary chips lead;
    markets sit under their region as smaller, lighter secondary chips. */
@@ -352,6 +358,7 @@ body.panel-hidden #footer { display:block; }
 <script src="atlas-data.js"></script></head>
 <body>
 <div id="map"></div>
+<div id="loading"><div class="spin"></div><span>Charting the network…</span></div>
 
 <div id="header">
   <div class="brand">
@@ -1044,6 +1051,12 @@ map.on('load', () => {
   map.on('moveend', updateUrlState);
 });
 
+// Hide the cold-load overlay once the map has settled (tiles + layers built); safety-timeout so it never sticks.
+(function(){ const l=document.getElementById('loading'); if(!l) return;
+  const hide=()=>{ if(!l.classList.contains('done')){ l.classList.add('done'); setTimeout(()=>l.remove(),600); } };
+  map.once('idle', hide); setTimeout(hide, 12000);
+})();
+
 // ============ Fix 8 (v10): Route hover tooltip ============
 const ROUTE_POPUP = new maplibregl.Popup({ closeButton:false, closeOnClick:false, className:'route-popup', offset:8 });
 const CRUISE_KTS = { 'Pioneer II': 25, 'Quanta-LR': 20 };
@@ -1589,12 +1602,23 @@ function _renderCarousel(){
   if (next) next.addEventListener('click',()=>showPhase(_CARO.i+1));
   panel.querySelectorAll('.pcaro-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showPhase(+d.dataset.i)));
 }
+function _fitPhaseCities(phase){
+  let b=null;
+  for (const id of _resolvePhaseCities(phase && phase.cities)){
+    const n=NODE_INDEX[id]; if(!n) continue; const [x,y]=n.coords;
+    b = b ? {minX:Math.min(b.minX,x),minY:Math.min(b.minY,y),maxX:Math.max(b.maxX,x),maxY:Math.max(b.maxY,y)} : {minX:x,minY:y,maxX:x,maxY:y};
+  }
+  if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], {padding:120, maxZoom:9, duration:1100, essential:true});
+}
 function showPhase(i){
   if (!_CARO) return;
   const ph=_CARO.partner.phases||[]; if(!ph.length) return;
   i=Math.max(0,Math.min(i,ph.length-1)); _CARO.i=i;
   const cur=ph[i];
+  // Fly to the phase's framing — provided camera if any, else fit to the phase's cities (never leave
+  // the map at world view on initial/deep load or for a phase that ships no camera).
   if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
+  else { _fitPhaseCities(cur); }
   applyPhaseFocus(cur);
   _renderCarousel();
   try{ const pid=_CARO.partner.partner_id||(PARTNER_ACTIVE&&PARTNER_ACTIVE.slug)||'partner'; history.replaceState(null,'','#/partner/'+pid+'/phase/'+(i+1)); }catch(e){}
@@ -1801,6 +1825,8 @@ document.querySelectorAll('.chip').forEach(b => {
 (function(){
   const host = document.getElementById('region-chips');
   if (!host) return;
+  // Locked partner page: drop the aggregate region/Global nav entirely (the page is one market).
+  if (BUILD_PARTNER){ const p=document.getElementById('presets'); if (p) p.style.display='none'; return; }
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America & Caribbean', 'Caribbean':'Latin America & Caribbean' };
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){

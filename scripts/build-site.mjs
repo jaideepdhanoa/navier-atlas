@@ -144,7 +144,10 @@ for (const slug of Object.keys(data.PARTNERS)) {
   // emit data text first, sweep it, then write only if clean
   const dataText = banner + Object.entries(r.scoped).map(([k, v]) => `window.${k}=${JSON.stringify(v)};`).join('\n') + '\n';
   const lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};</script>\n`;
-  let html = indexHtml.replace('<script src="atlas-data.js"></script>', lock + '<script src="atlas-data.js"></script>');
+  // Load the SCOPED data by ABSOLUTE path. With cleanUrls (no trailing slash) the page is served at
+  // /<slug>, where a relative "atlas-data.js" would resolve to /atlas-data.js (the full aggregate) —
+  // defeating isolation and bloating the payload. /<slug>/atlas-data.js loads this partner's data only.
+  let html = indexHtml.replace('<script src="atlas-data.js"></script>', lock + `<script src="/${slug}/atlas-data.js"></script>`);
   if (html === indexHtml) { console.error(`  ✗ ${slug}: could not inject lock (atlas-data.js script tag not found)`); failed++; continue; }
   // Zero PARTNER_VIEWS — the aggregate config names other partners (grab/careem/red-sea); the lock +
   // scoped PARTNERS[slug] drive activation, so a locked build needs none. Abort if it can't be scoped.
