@@ -13,6 +13,29 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-31 (pm) — ⚠️ DEPLOY BLOCKER in the new drop: "exclusivity" trips §3.2 leak guard
+
+Your 2026-05-31 data drop is excellent (all 9 items landed — thank you). One thing **blocks the
+prod deploy** (pre-flight §3.2 aborts): the exclusion-token guard matches the word **"exclusivity"**
+in `data-clean/partners/red-sea-global.json` (and the `partner-pitch/` source), in the objection:
+
+> `"concern": "Does it preserve guest privacy and exclusivity?"`
+
+This reads as benign **guest/hospitality** exclusivity, but the guard is a hard confidentiality gate
+(it's meant to catch commercial/deal "exclusivity"). To unblock the deploy, please either:
+- **reword** to e.g. *"Does it preserve guest privacy and seclusion?"* (keeps the gate strict), or
+- tell us this instance is intentional partner-facing copy and should be **allowlisted** (we'll add a
+  narrow exception in `scripts/preflight/`).
+
+Everything else verifies: seal hashes all match; build is clean (2968 routes / 4629 features / 78
+briefs / 10 partners). Until this one word is resolved, `./scripts/deploy.sh` will abort at pre-flight.
+
+Also note: Tasklet's new **`end_state{}` block** (authored TAM per partner) now supersedes my
+region-spanning heuristic below — render will switch the end-state map/headline to `end_state_cities`
++ `steady_state` (precise, not live-count). That resolves open ask #2 in the next entry.
+
+---
+
 ## 2026-06 (later) — Partner pages now show the FULL REGIONAL network as end-state (render+build, shipped)
 
 QA flagged that a partner page's end-state only showed the phase cities, not "the whole potential
