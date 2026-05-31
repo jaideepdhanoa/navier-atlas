@@ -93,11 +93,9 @@ body.panel-hidden #panel { width:0 !important; }
 .chip.market { font-size:11px; padding:5px 11px; background:rgba(17,22,30,0.6); border-color:var(--line); color:var(--text-2); }
 .chip.market:hover { color:var(--text-0); }
 .chip.market.active { background:var(--accent); border-color:var(--accent); color:#0a0e14; }
-/* Data-driven region menu — one compact, accessible control (native select); auto-fills from data. */
-.region-select { background:rgba(17,22,30,0.86); backdrop-filter:blur(20px); border:1px solid var(--line-strong); color:var(--text-0); font:600 12px Inter; padding:7px 12px; border-radius:999px; cursor:pointer; }
-.region-select:hover { border-color:rgba(110,231,183,0.35); }
-.region-select:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
-.region-select option { background:#0f1620; color:var(--text-0); }
+/* Region chips are injected from the data (see region nav JS) and styled by .chip.region above —
+   data-driven, so a new market sealed by Tasklet appears as a chip with no code change. */
+#region-chips { display:contents; }
 .grp-label { font:600 9px Inter; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); opacity:0.7; padding:0 2px; }
 .grp-sep { width:1px; height:14px; background:var(--line-strong); margin:0 4px; }
 
@@ -357,9 +355,7 @@ body.panel-hidden #footer { display:block; }
 <div id="presets">
   <div class="preset-tier primary">
     <button class="chip lead active" data-c="global">Global</button>
-    <select id="region-select" class="region-select" aria-label="Jump to a region">
-      <option value="">Region ▾</option>
-    </select>
+    <span id="region-chips"></span><!-- region chips injected from the data (see region nav JS) -->
   </div>
 </div>
 
@@ -1761,12 +1757,12 @@ document.querySelectorAll('.chip').forEach(b => {
   });
 });
 
-// Region jump — auto-populated from the DATA's regions (no hardcoded per-region chip/camera).
-// A new market sealed by Tasklet appears here automatically; each option flies to the region's
-// computed bounds. Light alias-merge folds inconsistent source labels (e.g. SEA == Southeast Asia).
+// Region chips — built from the DATA's regions (no hardcoded per-region chip/camera). A new market
+// sealed by Tasklet appears as a chip automatically; each fits the map to that region's computed
+// bounds. Light alias-merge folds inconsistent source labels (e.g. SEA == Southeast Asia).
 (function(){
-  const sel = document.getElementById('region-select');
-  if (!sel) return;
+  const host = document.getElementById('region-chips');
+  if (!host) return;
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America & Caribbean', 'Caribbean':'Latin America & Caribbean' };
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
@@ -1778,14 +1774,16 @@ document.querySelectorAll('.chip').forEach(b => {
     b.minX=Math.min(b.minX,x); b.minY=Math.min(b.minY,y); b.maxX=Math.max(b.maxX,x); b.maxY=Math.max(b.maxY,y);
   }
   for (const label of Object.keys(regions).sort()){
-    const o=document.createElement('option'); o.value=label; o.textContent=label; sel.appendChild(o);
+    const btn = document.createElement('button');
+    btn.className = 'chip region'; btn.textContent = label;
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      const b = regions[label];
+      map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true });
+    });
+    host.appendChild(btn);
   }
-  sel.addEventListener('change', ()=>{
-    const b = regions[sel.value]; if (!b){ return; }
-    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-    map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true });
-    sel.selectedIndex = 0;   // reset to the "Region ▾" label — it's an action menu, not a sticky filter
-  });
 })();
 
 // Layer toggles removed (v17) — all layers are always on; the map key explains them, so the

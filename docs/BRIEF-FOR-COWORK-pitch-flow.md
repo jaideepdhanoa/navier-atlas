@@ -17,20 +17,20 @@
 - **Per-partner pages at `/<slug>`** — isolation is now testable (was deferred last round).
 - **10 partners** (added `uber`, `qatar`, `saudi-pif`, `hawaii`; `careem` is UAE-only now); **phase counts vary (2–4)** — don't assume 3.
 - **78 city briefs** incl. **US expansion** (Hawaii, Florida, SF Bay) + Caribbean.
-- **Region nav is now a single `Region ▾` dropdown** (was MENA/SEA chips).
+- **Region nav: data-driven chips next to Global** (auto-built from the data — was just MENA/SEA).
 - **Richer partner sections** (schema v2): Their world · Why now · Journeys we unlock · Into your stack · Phased rollout · Why Navier · Proof points · Questions you might have · The ask.
 - **Boarding-point geocoding pass** — several old inland-BP offenders should now be fixed (re-check in §E.2).
 
 ---
 
 ## Gate 0 — confirm you're on the v5 build (60s)
-1. `/` → click **Singapore** → a **rich pitch panel** (demand signals / use-cases), and the top nav shows a **`Region ▾` dropdown** (not MENA/SEA chips). Routes draw: **mint solid (Pioneer II)** + **amber dashed (Quanta-LR)**.
+1. `/` → click **Singapore** → a **rich pitch panel** (demand signals / use-cases), and the top nav shows **region chips next to Global** (East Asia / MENA / North America / … — more than just MENA/SEA). Routes draw: **mint solid (Pioneer II)** + **amber dashed (Quanta-LR)**.
 2. `/grab` (the partner page) → loads a **Grab pitch carousel** with **only Grab** in view; the URL has no `?partner=`.
 - If `/` shows a plain name panel or chips, hard-refresh (Cmd/Ctrl-Shift-R). If `/grab` 404s or shows other partners, **stop and report** "v5 not served / isolation broken".
 
 ## A. Region nav (new — quick)
-1. Open the **`Region ▾`** dropdown. **PASS** = it lists the live regions (expect ~7: MENA, Southeast Asia, East Asia, South Asia, Turkey, North America, Latin America & Caribbean). Selecting one **flies/fits to that region**; it then resets to the "Region ▾" label.
-2. Spot-check a **new** region jump (e.g. **North America** → US coasts/Hawaii frame; **Turkey** → Aegean/Marmara). `[RENDER]` if a region is missing or jumps to the wrong place; `[DATA]` if a region label looks wrong/duplicated.
+1. **Region chips next to Global** (data-driven). **PASS** = a chip per live region (expect ~7: MENA, Southeast Asia, East Asia, South Asia, Turkey, North America, Latin America & Caribbean). Click one → map **fits to that region** and the chip goes **active** (Global de-activates).
+2. Spot-check a **new** region (e.g. **North America** → US coasts/Hawaii frame; **Turkey** → Aegean/Marmara). `[RENDER]` if a region chip is missing or jumps to the wrong place; `[DATA]` if a region label looks wrong/duplicated.
 
 ## B. Route-label correctness (on `/`)
 3. Hover/click ~15 routes across regions. **PASS** = clean `Origin → Destination`; no underscores, raw slugs, or `Bp 643f1f62a7`. A bare **"boarding point"** endpoint = acceptable `[DATA]` "name this BP", not a render bug.
