@@ -68,15 +68,29 @@ body.panel-hidden #panel { width:0 !important; }
   font:500 13px Inter; cursor:pointer; margin-left:10px;
 }
 #story-trigger:hover { border-color:rgba(110,231,183,0.45); color:var(--accent); }
-#story-menu {
-  position:absolute; margin-top:6px; background:rgba(17,22,30,0.96); border:1px solid var(--line-strong);
-  border-radius:10px; min-width:280px; display:none; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,0.45);
-}
-#story-menu .item { padding:12px 16px; cursor:pointer; border-bottom:1px solid var(--line); }
-#story-menu .item:last-child { border-bottom:none; }
-#story-menu .item:hover { background:rgba(110,231,183,0.08); }
-#story-menu .item .t { font-size:13px; font-weight:600; color:var(--text-0); }
-#story-menu .item .s { font-size:11px; color:var(--text-2); margin-top:2px; }
+/* Stories browser dialog — filterable card grid (scales past a dropdown). */
+#story-modal { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center;
+  padding:40px; background:rgba(6,10,16,0.72); backdrop-filter:blur(6px); }
+#story-modal[hidden] { display:none; }
+.story-dialog { width:min(960px,92vw); max-height:84vh; display:flex; flex-direction:column;
+  background:rgba(15,22,32,0.98); border:1px solid var(--line-strong); border-radius:16px; overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.55); }
+.story-dialog-head { display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--line); }
+.story-dialog-title { font:700 15px Inter; color:var(--text-0); white-space:nowrap; }
+#story-filter { flex:1; background:rgba(17,22,30,0.86); border:1px solid var(--line-strong); border-radius:999px;
+  color:var(--text-0); font:500 13px Inter; padding:8px 14px; }
+#story-filter:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+#story-close { width:32px; height:32px; flex-shrink:0; border-radius:8px; border:1px solid var(--line-strong);
+  background:var(--bg-3); color:var(--text-1); font-size:18px; line-height:1; cursor:pointer; }
+#story-close:hover { color:var(--accent); border-color:rgba(110,231,183,0.4); }
+.story-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:18px 20px; overflow-y:auto; }
+@media (max-width:680px){ .story-grid { grid-template-columns:1fr; } }
+.story-grid .card { text-align:left; background:rgba(17,22,30,0.6); border:1px solid var(--line); border-radius:12px;
+  padding:14px 16px; cursor:pointer; }
+.story-grid .card:hover { border-color:rgba(110,231,183,0.4); background:rgba(110,231,183,0.06); }
+.story-grid .card .t { font:600 14px Inter; color:var(--text-0); margin-bottom:5px; }
+.story-grid .card .s { font:400 12px/1.5 Inter; color:var(--text-2); }
+.story-grid .empty { grid-column:1/-1; padding:24px; text-align:center; color:var(--text-2); font:400 13px Inter; }
 
 /* Region nav — three tiers (network · macro-region · market). Primary chips lead;
    markets sit under their region as smaller, lighter secondary chips. */
@@ -94,8 +108,16 @@ body.panel-hidden #panel { width:0 !important; }
 .chip.market:hover { color:var(--text-0); }
 .chip.market.active { background:var(--accent); border-color:var(--accent); color:#0a0e14; }
 /* Region chips are injected from the data (see region nav JS) and styled by .chip.region above —
-   data-driven, so a new market sealed by Tasklet appears as a chip with no code change. */
+   data-driven, so a new market sealed by Tasklet appears as a chip with no code change. The long
+   tail collapses under a "More" popover so the row never overflows. */
 #region-chips { display:contents; }
+.region-more { position:relative; display:inline-block; }
+.region-more-menu { position:absolute; top:calc(100% + 6px); left:0; z-index:50; min-width:190px;
+  background:rgba(17,22,30,0.97); border:1px solid var(--line-strong); border-radius:10px; padding:5px;
+  box-shadow:0 12px 32px rgba(0,0,0,0.45); }
+.region-more-item { display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  color:var(--text-1); font:500 12px Inter; padding:7px 10px; border-radius:7px; }
+.region-more-item:hover { background:rgba(110,231,183,0.1); color:var(--text-0); }
 .grp-label { font:600 9px Inter; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); opacity:0.7; padding:0 2px; }
 .grp-sep { width:1px; height:14px; background:var(--line-strong); margin:0 4px; }
 
@@ -346,8 +368,18 @@ body.panel-hidden #footer { display:block; }
 <div id="searchwrap">
   <input id="search" placeholder="Search cities, boarding points…" autocomplete="off" />
   <button id="story-trigger">Stories ▾</button>
-  <div id="story-menu"></div>
   <div id="suggest"></div>
+</div>
+<!-- Stories browser: a filterable card-grid dialog (scales past a dropdown as the roster grows). -->
+<div id="story-modal" hidden>
+  <div class="story-dialog" role="dialog" aria-modal="true" aria-label="Stories">
+    <div class="story-dialog-head">
+      <span class="story-dialog-title">Stories</span>
+      <input id="story-filter" placeholder="Filter stories…" autocomplete="off" aria-label="Filter stories" />
+      <button id="story-close" aria-label="Close">×</button>
+    </div>
+    <div id="story-grid" class="story-grid"></div>
+  </div>
 </div>
 
 <!-- Region nav: Global reset + one data-driven "Region" menu (auto-populated from the data's
@@ -1702,20 +1734,26 @@ document.body.appendChild(emptyTpl);
 // ever sees their own stories; admin/all view (no param) sees every story.
 initPartnerView();
 
-// Story menu
-const sm = document.getElementById('story-menu');
-for (const s of _activeStories()) {
-  const d = document.createElement('div');
-  d.className = 'item';
-  d.innerHTML = `<div class="t">${escapeHtml(s.title)}</div><div class="s">${escapeHtml(s.subtitle||'')}</div>`;
-  d.addEventListener('click', () => { showStory(s.slug); sm.style.display='none'; });
-  sm.appendChild(d);
+// Stories browser — a filterable card-grid dialog (scannable as the roster grows past a dropdown).
+const storyModal = document.getElementById('story-modal');
+const storyGrid  = document.getElementById('story-grid');
+const storyFilter = document.getElementById('story-filter');
+const _STORIES_LIST = _activeStories();
+function _renderStoryGrid(q){
+  q = (q||'').trim().toLowerCase();
+  const items = _STORIES_LIST.filter(s => !q || (s.title + ' ' + (s.subtitle||'')).toLowerCase().includes(q));
+  storyGrid.innerHTML = items.length
+    ? items.map(s => `<button class="card" data-slug="${escapeHtml(s.slug)}"><div class="t">${escapeHtml(s.title)}</div>${s.subtitle?`<div class="s">${escapeHtml(s.subtitle)}</div>`:''}</button>`).join('')
+    : `<div class="empty">No stories match “${escapeHtml(q)}”.</div>`;
+  storyGrid.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => { closeStoryModal(); showStory(c.dataset.slug); }));
 }
-document.getElementById('story-trigger').addEventListener('click', (e) => {
-  e.stopPropagation();
-  sm.style.display = sm.style.display==='block'?'none':'block';
-});
-document.addEventListener('click', () => { sm.style.display='none'; });
+function openStoryModal(){ storyFilter.value=''; _renderStoryGrid(''); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
+function closeStoryModal(){ storyModal.hidden=true; }
+document.getElementById('story-trigger').addEventListener('click', (e)=>{ e.stopPropagation(); storyModal.hidden ? openStoryModal() : closeStoryModal(); });
+document.getElementById('story-close').addEventListener('click', closeStoryModal);
+storyModal.addEventListener('click', (e)=>{ if (e.target===storyModal) closeStoryModal(); });
+storyFilter.addEventListener('input', ()=>_renderStoryGrid(storyFilter.value));
+document.addEventListener('keydown', (e)=>{ if (e.key==='Escape' && !storyModal.hidden) closeStoryModal(); });
 
 // ============ Search ============
 const SEARCH_INDEX = [];
@@ -1770,19 +1808,34 @@ document.querySelectorAll('.chip').forEach(b => {
     const r = ALIAS[r0] || r0;
     const co = f.geometry && f.geometry.coordinates; if (!co) continue;
     const [x,y] = co;
-    const b = regions[r] || (regions[r] = {minX:x,minY:y,maxX:x,maxY:y});
-    b.minX=Math.min(b.minX,x); b.minY=Math.min(b.minY,y); b.maxX=Math.max(b.maxX,x); b.maxY=Math.max(b.maxY,y);
+    const b = regions[r] || (regions[r] = {minX:x,minY:y,maxX:x,maxY:y,n:0});
+    b.minX=Math.min(b.minX,x); b.minY=Math.min(b.minY,y); b.maxX=Math.max(b.maxX,x); b.maxY=Math.max(b.maxY,y); b.n++;
   }
-  for (const label of Object.keys(regions).sort()){
-    const btn = document.createElement('button');
-    btn.className = 'chip region'; btn.textContent = label;
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
-      btn.classList.add('active');
-      const b = regions[label];
-      map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true });
-    });
+  const clearActive = ()=>document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  const jump = (label)=>{ const b=regions[label]; if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true }); };
+  // Biggest markets stay inline; the long tail collapses under a "More" popover so the chip row
+  // never overflows as Tasklet seals more regions. Bump MAX_INLINE if you want more chips inline.
+  const labels = Object.keys(regions).sort((a,b)=> regions[b].n - regions[a].n || a.localeCompare(b));
+  const MAX_INLINE = 6;
+  let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
+  labels.slice(0, MAX_INLINE).forEach(label=>{
+    const btn = document.createElement('button'); btn.className='chip region'; btn.textContent=label;
+    btn.addEventListener('click', ()=>{ clearActive(); btn.classList.add('active'); jump(label); closeMore(); });
     host.appendChild(btn);
+  });
+  const overflow = labels.slice(MAX_INLINE);
+  if (overflow.length){
+    const wrap = document.createElement('span'); wrap.className='region-more';
+    const moreBtn = document.createElement('button'); moreBtn.className='chip region more'; moreBtn.textContent='More ▾'; moreBtn.setAttribute('aria-haspopup','true');
+    moreMenu = document.createElement('div'); moreMenu.className='region-more-menu'; moreMenu.style.display='none';
+    overflow.forEach(label=>{
+      const it = document.createElement('button'); it.className='region-more-item'; it.textContent=label;
+      it.addEventListener('click', (e)=>{ e.stopPropagation(); clearActive(); moreBtn.classList.add('active'); jump(label); closeMore(); });
+      moreMenu.appendChild(it);
+    });
+    moreBtn.addEventListener('click', (e)=>{ e.stopPropagation(); moreMenu.style.display = moreMenu.style.display==='none'?'block':'none'; });
+    document.addEventListener('click', closeMore);
+    wrap.appendChild(moreBtn); wrap.appendChild(moreMenu); host.appendChild(wrap);
   }
 })();
 

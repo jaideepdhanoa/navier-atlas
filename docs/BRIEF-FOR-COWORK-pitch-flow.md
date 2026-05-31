@@ -28,9 +28,10 @@
 2. `/grab` (the partner page) → loads a **Grab pitch carousel** with **only Grab** in view; the URL has no `?partner=`.
 - If `/` shows a plain name panel or chips, hard-refresh (Cmd/Ctrl-Shift-R). If `/grab` 404s or shows other partners, **stop and report** "v5 not served / isolation broken".
 
-## A. Region nav (new — quick)
-1. **Region chips next to Global** (data-driven). **PASS** = a chip per live region (expect ~7: MENA, Southeast Asia, East Asia, South Asia, Turkey, North America, Latin America & Caribbean). Click one → map **fits to that region** and the chip goes **active** (Global de-activates).
+## A. Region nav + Stories browser (new — quick)
+1. **Region chips next to Global** (data-driven). **PASS** = a chip per live region (expect ~7: MENA, Southeast Asia, East Asia, South Asia, Turkey, North America, Latin America & Caribbean). Click one → map **fits to that region** and the chip goes **active** (Global de-activates). The least-populated regions collapse under a **More ▾** chip — open it and confirm those jump too.
 2. Spot-check a **new** region (e.g. **North America** → US coasts/Hawaii frame; **Turkey** → Aegean/Marmara). `[RENDER]` if a region chip is missing or jumps to the wrong place; `[DATA]` if a region label looks wrong/duplicated.
+3. **Stories ▾** opens a **filterable card dialog** (not a long dropdown). **PASS** = a grid of all stories (~12), the filter box narrows by title, clicking a card opens that story, and ✕ / Esc / click-outside close it.
 
 ## B. Route-label correctness (on `/`)
 3. Hover/click ~15 routes across regions. **PASS** = clean `Origin → Destination`; no underscores, raw slugs, or `Bp 643f1f62a7`. A bare **"boarding point"** endpoint = acceptable `[DATA]` "name this BP", not a render bug.
