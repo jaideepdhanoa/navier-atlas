@@ -3,12 +3,13 @@
 // build.mjs — Claude-owned build step (render lives in index.html; this injects DATA).
 //
 // OWNERSHIP CONTRACT (see DIVISION-OF-LABOR / DEPLOY-PROTOCOL):
-//   • Tasklet delivers DATA: the 4 sealed blobs in data-clean/ (FEATURES_BY_TYPE, ROUTES,
-//     STORIES, VESSEL_SPECS) + the pitch content under partner-pitch/ (city_briefs/*.json,
-//     partners/*.json — keyed by city_id / partner_id). Tasklet NEVER emits index.html.
+//   • Tasklet delivers DATA into data-clean/: the 4 sealed blobs (FEATURES_BY_TYPE, ROUTES,
+//     STORIES, VESSEL_SPECS) + the PUBLIC-STRIPPED pitch surface (city_briefs/*.json, partners/*.json,
+//     keyed by city_id / partner_id). Per SEAL.json the website build MUST bake the pitch from
+//     data-clean/ — NOT partner-pitch/ (the internal, un-stripped authoring tree). Tasklet never emits index.html.
 //   • Claude owns index.html (the render) + this build + deploy.
 //
-// This reads data-clean/ + partner-pitch/ and emits atlas-data.js — a single static asset that
+// This reads data-clean/ and emits atlas-data.js — a single static asset that
 // sets the window.* globals index.html consumes. index.html loads it via <script src>.
 // One generator of the deployable data, so a build regen can't clobber the render.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -43,11 +44,14 @@ for (const name of blobs) {
   if (!existsSync(p)) { console.error(`[build] FATAL: missing sealed blob data-clean/${name}.json`); process.exit(1); }
   data[name] = readJson(p);
 }
-// Pitch content — narrative, not sealed (leak-scanned at deploy by pre-flight §3.2). Keyed by
-// city_id / partner_id. Sourced from partner-pitch/ (Tasklet's authoring tree); falls back to
-// the legacy data-clean/ location if partner-pitch/ is absent.
-const briefsDir = existsSync(join(PITCH, 'city_briefs')) ? join(PITCH, 'city_briefs') : join(DC, 'city_briefs');
-const partnersDir = existsSync(join(PITCH, 'partners')) ? join(PITCH, 'partners') : join(DC, 'partners');
+// Pitch content — keyed by city_id / partner_id. MUST bake from data-clean/{city_briefs,partners}/:
+// these are the PUBLIC-STRIPPED, sealed ship surface (internal + deck_only tiers removed, per
+// SEAL.json.pitch.note). partner-pitch/ is the INTERNAL, un-stripped authoring tree and is also stale
+// — it is only a last-resort dev fallback when the data-clean pitch surface is absent.
+const briefsDir   = existsSync(join(DC, 'city_briefs')) ? join(DC, 'city_briefs') : join(PITCH, 'city_briefs');
+const partnersDir = existsSync(join(DC, 'partners'))    ? join(DC, 'partners')    : join(PITCH, 'partners');
+if (briefsDir.startsWith(PITCH) || partnersDir.startsWith(PITCH))
+  console.warn('[build] ⚠ data-clean pitch surface missing — falling back to partner-pitch/ (INTERNAL, un-stripped). NOT valid for prod.');
 data.CITY_BRIEFS = assembleDir(briefsDir, 'city_id');
 data.PARTNERS = assembleDir(partnersDir, 'partner_id');
 
