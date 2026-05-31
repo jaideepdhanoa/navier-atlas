@@ -42,11 +42,16 @@
 6. Click a spread incl. **new markets**: **US** Honolulu (Oʻahu), Maui, SF Bay, Palm Beach; **MENA** Dubai, Abu Dhabi, Doha, Jeddah; **SEA** Singapore, Bali, Phuket, Bangkok; **Red Sea** NEOM/Sindalah, Red Sea Global. **PASS** = hook/tagline, demand signals, use-cases (archetype-badged), Navier fit (Pioneer II + Quanta-LR), signature routes + live routes, transport-authority angle.
 7. A city with **no clickable node** (some future-market briefs exist without a graph node yet — Turkey/Korea/Japan/etc.) is **known state**, not a bug. A clicked city that shows the **lightweight** panel (no brief) → `[DATA]` "missing brief".
 
-## D. Partner-page ISOLATION + function (new headline — all 10)
-8. For each `/<slug>`: **PASS** = loads that partner's hero + phased carousel, and the map shows **only that partner's** cities/routes. **Isolation probe:** append `?partner=<other>` (e.g. `/grab?partner=uber`) — it must **stay the original partner** (the build lock ignores the param). Any other partner's name/data visible on a `/<slug>` page = **`[RENDER]` isolation leak — flag loudly.**
-9. Phase stepping (‹ › / dots): each step **flies the camera**, **lights that phase's cities/routes & dims the rest**, and swaps narrative/KPIs/featured-routes. Deep-link `…/<slug>#/partner/<slug>/phase/2` + reload restores that phase.
-10. On `/` (aggregate), `?partner=<slug>` shows an **"Open <partner>'s dedicated page →"** link to `/<slug>`. Confirm it appears on the aggregate and is **absent** on the locked `/<slug>` page.
-11. Schema-v2 sections render and read well: **Their world**, **Journeys we unlock** (Today → With Navier cards), **Why Navier** (vs ferry / vs Candela), **Proof points**, **Questions you might have**, **The ask**. Empty/garbled section → note which partner + section.
+## D. Partner page = GUIDED CHAPTERED TOUR (rebuilt — test the flow on each `/<slug>`)
+The partner page is no longer a long scroll. It opens with a **large dialogue**, then steps through chapters.
+8. **Opening dialogue** auto-opens on load: hero + **"Your world"** (second-person) + "Why now", large and readable. **PASS** = "Take the tour →" closes it to the map; **"About ▾"** (top, where "Stories" sits on the aggregate) **reopens** it; Esc / "Skip to the map" / click-outside also close.
+9. **End-state first:** the first chapter is **"The network"** — the **whole** partner network lit (all markets), with a markets/vessels/phases stat strip. **PASS** = noticeably more cities/routes lit here than in any single phase (this is the "where this goes" wow).
+10. **Chapter spine:** a sticky **‹ Chapter X of N ›** stepper + dots drives both panel and map: end-state → **phase 1..N** (each flies the camera, lights that phase, dims the rest, swaps narrative/KPIs/featured-routes) → **Why Navier · your questions** (differentiation + proof + FAQ) → **The ask** (+ close). Deep-link `…/<slug>#/partner/<slug>/phase/2` (and `…/chapter/ask`) + reload restores that chapter and **skips** the opening dialogue.
+11. **Isolation probe (still critical):** `/grab` loads **only Grab's** data (~360 routes, not ~1,567); `/grab?partner=uber` must **stay Grab**. Any other partner's data/name = **`[RENDER]` leak — flag loudly.**
+12. **City drill-down + return:** click a lit city → its brief opens with a **"← Back to the proposal"** button at the top → returns to the current chapter. (Clicking empty water also returns.)
+13. **Panel ergonomics:** drag the panel's **left edge** to resize (persists on reload); the collapse chevron shows **›** when open (hides it) and **‹** when hidden (reveals it).
+14. On `/` (aggregate) `?partner=<slug>`: the opening dialogue carries an **"Open <partner>'s dedicated page →"** link to `/<slug>`; it's **absent** on the locked page.
+15. **Known gap:** journey cards are **not yet clickable** (pending route ids from data) — not a bug this round.
 
 ## E. ⭐ Partner-page QUALITY — the core (judge on each `/<slug>`)
 For **each partner × phase**, decide: *could the partner present this page as-is?* Read the panel, then inspect the lit map (zoom in, hover/click lit routes, zoom to endpoint POIs). Score 1–5:

@@ -13,6 +13,31 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06 — Partner pages are now a GUIDED CHAPTERED TOUR — 3 content/data asks
+
+The partner page (`/<slug>`) was rebuilt from a long scroll into a guided tour: a large opening
+dialogue (hero + "Your world" + why-now), then an **end-state-first** map (the whole network), then
+the rollout as **chapters** (phase 1..N), then proof/FAQ, then the ask. Three data items would make
+this materially better/more correct (render is done Claude-side):
+
+1. **Voice → second person (highest impact).** The body copy in `partner_context`
+   (`their_ambition`/`their_pressure`/`where_navier_fits`), `why_now`, `differentiation`, and `the_ask`
+   is written in **third person about the partner** ("Grab is Southeast Asia's super-app…"). The page
+   is now addressed TO the partner, so it should read in **second person** ("You own the demand…",
+   "Where you are today…", "What you're up against…"). I relabeled the section headers second-person;
+   the sentences themselves are yours to rewrite. (Schema field names can stay; just the copy.)
+2. **Journeys need map linkage.** `journeys_unlocked[]` carries only display strings (`from`/`to`).
+   Add **`from_node_id` + `to_node_id`** (ideally a `route_id`) per journey so a partner can click a
+   journey card and see that corridor highlight/fly on the map. Without ids I've left journey cards
+   non-clickable (a fragile name match could highlight the wrong route — worse than nothing).
+3. **Stale final-phase city id.** grab's last phase `cities=["manila-cebu-palawan-philippines"]` is a
+   pre-rename composite (now `manila-philippines` + split cebu/palawan) and is Philippines-only despite
+   the "whole coastal map" label. Fix to canonical ids; clarify whether the finale is a Philippines
+   step or the region-wide end-state. (The render's end-state chapter already shows the union of all
+   phases, so the finale looks right regardless — but the phase data should be correct.)
+
+---
+
 ## 2026-05-31 — v5 QA: 2 `[DATA]` reconciles (render items fixed Claude-side)
 
 From the v5 cowork audit (content rated excellent — 78 briefs, 10 archetype-true partner pitches, US/Caribbean

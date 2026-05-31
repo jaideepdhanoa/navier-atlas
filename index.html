@@ -19,7 +19,7 @@
 }
 * { box-sizing:border-box; }
 html, body { margin:0; padding:0; height:100%; background:var(--bg-0); color:var(--text-0); font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-#map { position:absolute; top:0; bottom:0; left:0; right:420px; background:var(--bg-0); transition:right 0.32s cubic-bezier(.4,0,.2,1); }
+#map { position:absolute; top:0; bottom:0; left:0; right:var(--panel-w,420px); background:var(--bg-0); transition:right 0.32s cubic-bezier(.4,0,.2,1); }
 /* Fix 1 (v10): when side panel is collapsed, map fills the viewport */
 body.panel-hidden #map { right:0 !important; }
 body.panel-hidden #panel { width:0 !important; }
@@ -69,9 +69,9 @@ body.panel-hidden #panel { width:0 !important; }
 }
 #story-trigger:hover { border-color:rgba(110,231,183,0.45); color:var(--accent); }
 /* Stories browser dialog — filterable card grid (scales past a dropdown). */
-#story-modal { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center;
+#story-modal, #intro-modal { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center;
   padding:40px; background:rgba(6,10,16,0.72); backdrop-filter:blur(6px); }
-#story-modal[hidden] { display:none; }
+#story-modal[hidden], #intro-modal[hidden] { display:none; }
 .story-dialog { width:min(960px,92vw); max-height:84vh; display:flex; flex-direction:column;
   background:rgba(15,22,32,0.98); border:1px solid var(--line-strong); border-radius:16px; overflow:hidden;
   box-shadow:0 24px 80px rgba(0,0,0,0.55); }
@@ -169,17 +169,21 @@ body.panel-hidden #panel { width:0 !important; }
 #legend .help:hover::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:0; width:260px; background:rgba(10,14,20,0.97); border:1px solid var(--line-strong); border-radius:8px; padding:10px 12px; font:400 11px Inter; color:var(--text-0); line-height:1.5; text-transform:none; letter-spacing:0; z-index:30; box-shadow:0 8px 24px rgba(0,0,0,0.5); }
 
 /* Footer — moved to top-right above panel so it stops eating clicks */
-#footer { position:absolute; top:18px; right:444px; z-index:10; font-size:10px; color:var(--text-2); letter-spacing:0.12em; text-transform:uppercase; background:rgba(17,22,30,0.6); padding:6px 12px; border-radius:6px; border:1px solid var(--line); pointer-events:none; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
+#footer { position:absolute; top:18px; right:calc(var(--panel-w,420px) + 24px); z-index:10; font-size:10px; color:var(--text-2); letter-spacing:0.12em; text-transform:uppercase; background:rgba(17,22,30,0.6); padding:6px 12px; border-radius:6px; border:1px solid var(--line); pointer-events:none; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
 body.panel-hidden #footer { right:24px; }
 
-/* Side panel + collapse */
-#panel { position:absolute; top:0; right:0; bottom:0; width:420px; background:var(--bg-1); border-left:1px solid var(--line-strong); overflow-y:auto; transition:transform 0.32s cubic-bezier(.4,0,.2,1); }
+/* Side panel + collapse + drag-resize (width = --panel-w, persisted) */
+#panel { position:absolute; top:0; right:0; bottom:0; width:var(--panel-w,420px); background:var(--bg-1); border-left:1px solid var(--line-strong); overflow-y:auto; transition:transform 0.32s cubic-bezier(.4,0,.2,1); }
 body.panel-hidden #panel { transform:translateX(100%); }
-#panel-toggle { position:absolute; top:50%; right:420px; transform:translateY(-50%); z-index:11; width:24px; height:48px; border-radius:6px 0 0 6px; background:rgba(17,22,30,0.92); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-right:none; color:var(--text-1); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
+#panel-resize { position:absolute; top:0; bottom:0; right:var(--panel-w,420px); width:8px; margin-right:-4px; z-index:12; cursor:col-resize; }
+#panel-resize::after { content:''; position:absolute; top:0; bottom:0; left:3px; width:2px; background:transparent; transition:background .15s; }
+#panel-resize:hover::after, #panel-resize.drag::after { background:rgba(110,231,183,0.5); }
+body.panel-hidden #panel-resize { display:none; }
+#panel-toggle { position:absolute; top:50%; right:var(--panel-w,420px); transform:translateY(-50%); z-index:11; width:24px; height:48px; border-radius:6px 0 0 6px; background:rgba(17,22,30,0.92); backdrop-filter:blur(20px); border:1px solid var(--line-strong); border-right:none; color:var(--text-1); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:14px; transition:right 0.32s cubic-bezier(.4,0,.2,1); }
 #panel-toggle:hover { color:var(--accent); }
 body.panel-hidden #panel-toggle { right:0; border-radius:6px 0 0 6px; }
 #presets { transition:max-width 0.32s; }
-body.panel-hidden #presets { max-width:calc(100vw - 420px - 40px); }
+body.panel-hidden #presets { max-width:calc(100vw - var(--panel-w,420px) - 40px); }
 body.panel-hidden #footer { display:block; }
 #panel::-webkit-scrollbar { width:6px; }
 #panel::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:3px; }
@@ -321,9 +325,49 @@ body.panel-hidden #footer { display:block; }
 .pcaro-routes-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin:4px 0; }
 .pcaro-route { font-size:12px; color:var(--text-1); padding:4px 0 4px 14px; position:relative; line-height:1.5; }
 .pcaro-route::before { content:'→'; position:absolute; left:0; color:var(--text-2); }
-.pcaro-close { padding:14px 0 4px; border-top:1px solid var(--line); margin-top:6px; }
+.pcaro-close { padding:16px 28px 28px; border-top:1px solid var(--line); margin-top:6px; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
+
+/* Chapter spine (guided tour): sticky stepper + dots that drive panel + map */
+.chap-nav { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(15,22,32,0.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+.chap-nav .pcaro-btn { flex-shrink:0; }
+.chap-meta { flex:1; text-align:center; min-width:0; }
+.chap-step { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; }
+.chap-title { font-size:13px; font-weight:700; color:var(--text-0); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.chap-dots { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; padding:10px 16px 0; }
+.chap-dot { width:7px; height:7px; border-radius:50%; background:var(--line-strong); cursor:pointer; transition:background .2s,transform .2s; }
+.chap-dot:hover { background:var(--text-2); }
+.chap-dot.active { background:var(--accent); transform:scale(1.25); }
+.chap-cap { padding:18px 28px 4px; }
+.chap-cap .eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); font-weight:700; }
+.chap-cap h2 { font-size:19px; font-weight:700; color:var(--text-0); margin:6px 0 8px; line-height:1.25; }
+.chap-cap p { font-size:13px; color:var(--text-1); line-height:1.6; }
+.chap-cap .stats { display:flex; gap:18px; margin-top:12px; }
+.chap-cap .stats .n { font-size:20px; font-weight:700; color:var(--accent); }
+.chap-cap .stats .k { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); }
+
+/* "← Back to the proposal" when a city is opened mid-tour */
+.pcaro-back { display:block; width:100%; text-align:left; background:rgba(110,231,183,0.08); border:none; border-bottom:1px solid var(--line); color:var(--accent); font:600 12px Inter; padding:11px 28px; cursor:pointer; }
+.pcaro-back:hover { background:rgba(110,231,183,0.16); }
+
+/* Journey cards become clickable when they resolve to a corridor on the map */
+.pcaro-jrn.clickable { cursor:pointer; transition:border-color .15s,background .15s; }
+.pcaro-jrn.clickable:hover { border-color:rgba(110,231,183,0.45); background:rgba(110,231,183,0.05); }
+
+/* Opening / "About this proposal" dialogue — large, readable; reuses .story-dialog shell */
+.intro-dialog { width:min(720px,94vw); max-height:88vh; }
+.intro-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; padding:30px 34px 8px; }
+.intro-mark { font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); font-weight:700; }
+.intro-title { font-size:26px; font-weight:700; color:var(--text-0); line-height:1.2; margin:8px 0 0; }
+.intro-sub { font-size:15px; color:var(--text-1); line-height:1.5; margin-top:10px; }
+.intro-cta { font-size:13px; color:var(--text-1); line-height:1.6; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
+.intro-scroll .panel-section { padding-left:0; padding-right:0; }
+.intro-foot { display:flex; justify-content:flex-end; gap:10px; padding:14px 24px; border-top:1px solid var(--line); }
+.intro-skip { background:none; border:none; color:var(--text-2); font:500 13px Inter; cursor:pointer; padding:9px 14px; }
+.intro-skip:hover { color:var(--text-0); }
+.intro-start { background:var(--accent); border:none; color:#06281c; font:700 13px Inter; cursor:pointer; padding:9px 18px; border-radius:9px; }
+.intro-start:hover { filter:brightness(1.08); }
 /* schema-v2 partner sections */
 .pcaro-lp { margin-bottom:12px; }
 .pcaro-lp:last-child { margin-bottom:0; }
@@ -388,6 +432,16 @@ body.panel-hidden #footer { display:block; }
     <div id="story-grid" class="story-grid"></div>
   </div>
 </div>
+<!-- Opening / "About this proposal" dialogue (partner pages): large, readable; reopenable. -->
+<div id="intro-modal" hidden>
+  <div class="story-dialog intro-dialog" role="dialog" aria-modal="true" aria-label="Partner proposal">
+    <div class="intro-scroll" id="intro-body"></div>
+    <div class="intro-foot">
+      <button id="intro-skip" class="intro-skip">Skip to the map</button>
+      <button id="intro-start" class="intro-start">Take the tour →</button>
+    </div>
+  </div>
+</div>
 
 <!-- Region nav: Global reset + one data-driven "Region" menu (auto-populated from the data's
      regions, each jumps to that region's computed bounds). New markets appear with no code change. -->
@@ -422,7 +476,8 @@ body.panel-hidden #footer { display:block; }
 
 <div id="footer">Navier Mobility · 2026</div>
 
-<button id="panel-toggle" title="Show / hide side panel">‹</button>
+<div id="panel-resize" title="Drag to resize"></div>
+<button id="panel-toggle" title="Hide / show side panel">›</button>
 <div id="panel"><div class="panel-empty">
   <h2>Select a node</h2>
   <p>Cities cluster at world view. Zoom in to reveal areas and boarding points.</p>
@@ -1238,7 +1293,7 @@ function clearSelection(){
   try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
   // Deselect restores the CURRENT context (not always the admin-empty panel):
   if (typeof CURRENT_STORY!=='undefined' && CURRENT_STORY){ showStory(CURRENT_STORY); return; }   // an open story
-  if (typeof _CARO!=='undefined' && _CARO){ const cur=(_CARO.partner.phases||[])[_CARO.i]; if (cur) applyPhaseFocus(cur); _renderCarousel(); return; } // partner carousel phase
+  if (typeof _CARO!=='undefined' && _CARO){ showChapter(_CARO.i); return; } // return to the current tour chapter
   if (PARTNER_ACTIVE){ applyPartnerView(); return; }   // partner story-list landing
   applyStoryFocus(null);                               // admin: reset all opacity
   const panel = document.getElementById('panel');
@@ -1288,7 +1343,8 @@ function _cityBriefHtml(brief, props, coords){
   const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
   const live = ROUTE_FC.features.filter(f=>f.properties._cfrom===cid || f.properties._cto===cid)
     .sort((a,b)=>(b.properties.render_tw||0)-(a.properties.render_tw||0)).slice(0,6);
-  let h = `<div class="panel-hero">
+  let h = (PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '';
+  h += `<div class="panel-hero">
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
@@ -1331,6 +1387,8 @@ function _renderCityBrief(brief, props, coords){
   const p = document.getElementById('panel');
   p.innerHTML = _cityBriefHtml(brief, props, coords);
   p.scrollTop = 0;
+  const bk = p.querySelector('#brief-back');
+  if (bk) bk.addEventListener('click', clearSelection);
   const rt = p.querySelector('.ring-toggle');
   if (rt) rt.addEventListener('click', ()=>{ const c=rt.dataset.coords.split(',').map(Number); toggleRings(c); rt.classList.toggle('active'); });
   p.querySelectorAll('.brief-live[data-rid]').forEach(el=>el.addEventListener('click', ()=>{
@@ -1446,7 +1504,7 @@ function _viewScopeCities(v){
   }
   return [...set];
 }
-function _activeStories(){ return PARTNER_ACTIVE ? PARTNER_ACTIVE.stories : STORIES; }
+function _activeStories(){ return (PARTNER_ACTIVE && PARTNER_ACTIVE.stories && PARTNER_ACTIVE.stories.length) ? PARTNER_ACTIVE.stories : STORIES; }
 function initPartnerView(){
   const slug=_partnerSlug();
   const proposal = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[slug] : null;
@@ -1491,13 +1549,11 @@ function _resolvePhaseCities(cities){
   }
   return [...out];
 }
-function applyPhaseFocus(phase){
-  if (!phase){ applyStoryFocus(null); return; }
-  const cities=_resolvePhaseCities(phase.cities);
-  if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
+function _focusCities(cities, routeScope){
+  if (!cities || !cities.length){ applyStoryFocus(null); return; }
   const inSet=['in',['get','id'],['literal',cities]];
   const cf=['in',['get','_cfrom'],['literal',cities]], ct=['in',['get','_cto'],['literal',cities]];
-  const routeIn=(phase.route_scope==='intra')?['all',cf,ct]:['any',cf,ct];
+  const routeIn=(routeScope==='intra')?['all',cf,ct]:['any',cf,ct];
   try{
     map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',routeIn,m,0.03]));
     map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',routeIn,m,0.03]));
@@ -1514,15 +1570,32 @@ function applyPhaseFocus(phase){
     map.setPaintProperty('priority-labels','text-opacity',['case',inSet,1,0.4]);
     map.setPaintProperty('poi-points','text-opacity',0.18);
     map.setPaintProperty('poi-labels','text-opacity',0.2);
-  }catch(e){ console.warn('phase focus',e); }
+  }catch(e){ console.warn('focus',e); }
+}
+function applyPhaseFocus(phase){
+  if (!phase){ applyStoryFocus(null); return; }
+  const cities=_resolvePhaseCities(phase.cities);
+  if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
+  _focusCities(cities, phase.route_scope);
+}
+// End-state: the WHOLE partner network — union of every phase's cities (any route touching one is lit).
+function _unionPhaseCities(partner){
+  const set=new Set();
+  for (const ph of (partner.phases||[])) for (const c of _resolvePhaseCities(ph.cities)) set.add(c);
+  return [...set];
+}
+function applyUnionFocus(partner){
+  const cities=_unionPhaseCities(partner);
+  if (!cities.length){ applyStoryFocus(null); return; }
+  _focusCities(cities, 'all');
 }
 let _CARO=null;
 // schema-v2 partner-level sections (render once, around the phase carousel).
 function _labeled(label, body){ return body ? `<div class="pcaro-lp"><span class="l">${escapeHtml(label)}</span><p>${escapeHtml(body)}</p></div>` : ''; }
 function _ctxHtml(c){
   if (!c) return '';
-  const inner = _labeled('Their ambition', c.their_ambition) + _labeled('The pressure they’re under', c.their_pressure) + _labeled('Where Navier fits', c.where_navier_fits);
-  return inner ? `<div class="panel-section"><h3>Their world</h3>${inner}</div>` : '';
+  const inner = _labeled('Where you are today', c.their_ambition) + _labeled('What you’re up against', c.their_pressure) + _labeled('Where Navier fits for you', c.where_navier_fits);
+  return inner ? `<div class="panel-section"><h3>Your world</h3>${inner}</div>` : '';
 }
 function _journeysHtml(js){
   if (!js || !js.length) return '';
@@ -1557,78 +1630,138 @@ function _askHtml(a){
   if (!cols && !a.next_step) return '';
   return `<div class="panel-section"><h3>The ask</h3>${cols?`<div class="pcaro-ask">${cols}</div>`:''}${a.next_step?`<div class="pcaro-next"><span>Next step</span>${escapeHtml(a.next_step)}</div>`:''}</div>`;
 }
-function _carouselHtml(partner,i){
-  const ph=partner.phases||[], cur=ph[i]||{};
-  const accent=(PARTNER_ACTIVE&&PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.accent)||({super_app:'emerald',public_transit:'steel',hospitality:'rose',corporate:'violet',charter:'gold'})[partner.archetype]||'emerald';
-  const hero=partner.hero||{};
-  let h=`<div class="story-header accent-${accent}">
-    <div class="partner-mark">Partner proposal</div>
-    <h2>${escapeHtml(hero.title||partner.display||'')}</h2>
-    ${hero.subtitle?`<div class="subtitle">${escapeHtml(hero.subtitle)}</div>`:''}
-    ${hero.what_we_do_together?`<div class="pcaro-hero-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}
+// ===== Guided tour: chapters drive BOTH the panel and the map =====
+// Chapter spine: end-state (whole network) → phase 1..N → proof/FAQ → the ask. The opening hero +
+// "Your world" + why-now live in the intro dialogue (openIntroDialog), not in this scroll.
+function _buildChapters(partner){
+  const ch=[]; const ph=partner.phases||[];
+  if (ph.length) ch.push({kind:'endstate'});
+  ph.forEach((phase,idx)=>ch.push({kind:'phase', phaseIndex:idx, phase}));
+  if (partner.differentiation || (partner.proof_points&&partner.proof_points.length) || (partner.objections&&partner.objections.length)) ch.push({kind:'proof'});
+  if (partner.the_ask || partner.close) ch.push({kind:'ask'});
+  return ch.length ? ch : [{kind:'endstate'}];
+}
+function _chapterTitle(ch, partner){
+  if (ch.kind==='endstate') return 'The network';
+  if (ch.kind==='phase')    return ch.phase.label || ('Phase '+(ch.phase.n||(ch.phaseIndex+1)));
+  if (ch.kind==='proof')    return 'Why Navier · your questions';
+  if (ch.kind==='ask')      return 'The ask';
+  return '';
+}
+function _endstateHtml(partner){
+  const cities=_unionPhaseCities(partner), ph=partner.phases||[];
+  const boats=ph.reduce((m,p)=>Math.max(m,(+p.boats||0)),0);
+  let h=`<div class="chap-cap"><div class="eyebrow">Where this goes</div>
+    <h2>${escapeHtml((partner.close&&partner.close.title)||((partner.display||'The')+' — the whole water network'))}</h2>
+    ${partner.hero&&partner.hero.subtitle?`<p>${escapeHtml(partner.hero.subtitle)}</p>`:''}
+    <div class="stats"><div><div class="n">${cities.length}</div><div class="k">markets</div></div>${boats?`<div><div class="n">${boats}</div><div class="k">vessels at scale</div></div>`:''}<div><div class="n">${ph.length}</div><div class="k">rollout phases</div></div></div></div>`;
+  if (partner.multimodal_fit) h+=`<div class="panel-section"><h3>Into your stack</h3><div class="pcaro-why">${escapeHtml(partner.multimodal_fit)}</div></div>`;
+  h+=_journeysHtml(partner.journeys_unlocked);
+  return h;
+}
+function _phaseBlockHtml(cur){
+  cur=cur||{};
+  return `<div class="panel-section">
+    ${cur.timeline?`<div class="pcaro-routes-h">${escapeHtml(cur.timeline)}</div>`:''}
+    ${cur.boats!=null?`<div class="pcaro-boats">${escapeHtml(String(cur.boats))} vessels at this phase</div>`:''}
+    ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
+    ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
+    ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(r=>`<div class="pcaro-route">${escapeHtml(r)}</div>`).join('')}`:''}
   </div>`;
+}
+function _chapterHtml(ch, partner){
+  if (ch.kind==='endstate') return _endstateHtml(partner);
+  if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
+  if (ch.kind==='proof')    return _diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
+  if (ch.kind==='ask')      return _askHtml(partner.the_ask)+(partner.close?`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`:'');
+  return '';
+}
+function _chapterStepperHtml(){
+  const n=_CARO.chapters.length, i=_CARO.i;
+  const dots=_CARO.chapters.map((c,k)=>`<span class="chap-dot ${k===i?'active':''}" data-i="${k}" title="${escapeHtml(_chapterTitle(c,_CARO.partner))}"></span>`).join('');
+  return `<div class="chap-nav">
+    <button class="pcaro-btn" id="chap-prev" ${i<=0?'disabled':''} aria-label="Previous chapter">‹</button>
+    <div class="chap-meta"><div class="chap-step">Chapter ${i+1} of ${n}</div><div class="chap-title">${escapeHtml(_chapterTitle(_CARO.chapters[i],_CARO.partner))}</div></div>
+    <button class="pcaro-btn" id="chap-next" ${i>=n-1?'disabled':''} aria-label="Next chapter">›</button>
+  </div><div class="chap-dots">${dots}</div>`;
+}
+function _renderChapter(){
+  const panel=document.getElementById('panel');
+  const ch=_CARO.chapters[_CARO.i];
+  panel.innerHTML=_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner);
+  panel.scrollTop=0; _CARO._rendered=true;   // each chapter starts at top (progressive disclosure)
+  const prev=panel.querySelector('#chap-prev'), next=panel.querySelector('#chap-next');
+  if (prev) prev.addEventListener('click',()=>showChapter(_CARO.i-1));
+  if (next) next.addEventListener('click',()=>showChapter(_CARO.i+1));
+  panel.querySelectorAll('.chap-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showChapter(+d.dataset.i)));
+}
+function _fitCities(cities, pad){
+  let b=null;
+  for (const id of (cities||[])){ const n=NODE_INDEX[id]; if(!n) continue; const [x,y]=n.coords;
+    b = b ? {minX:Math.min(b.minX,x),minY:Math.min(b.minY,y),maxX:Math.max(b.maxX,x),maxY:Math.max(b.maxY,y)} : {minX:x,minY:y,maxX:x,maxY:y}; }
+  if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], {padding:pad||120, maxZoom:9, duration:1100, essential:true});
+}
+function _fitUnionCities(partner){
+  const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
+  _fitCities(_unionPhaseCities(partner), {top:80,right:pw+40,bottom:80,left:120});
+}
+function _fitPhaseCities(phase){ _fitCities(_resolvePhaseCities(phase && phase.cities), 120); }
+function _writeChapterHash(){
+  try{ const ch=_CARO.chapters[_CARO.i]; const pid=_CARO.partner.partner_id||(PARTNER_ACTIVE&&PARTNER_ACTIVE.slug)||'partner';
+    const frag = ch.kind==='phase' ? 'phase/'+(ch.phaseIndex+1) : 'chapter/'+ch.kind;
+    history.replaceState(null,'','#/partner/'+pid+'/'+frag); }catch(e){}
+}
+function showChapter(i){
+  if (!_CARO) return;
+  const n=_CARO.chapters.length; i=Math.max(0,Math.min(i,n-1)); _CARO.i=i;
+  const ch=_CARO.chapters[i];
+  if (ch.kind==='phase'){
+    const cur=ch.phase;
+    if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
+    else _fitPhaseCities(cur);
+    applyPhaseFocus(cur);
+  } else {                                   // end-state / proof / ask all show the whole network
+    applyUnionFocus(_CARO.partner); _fitUnionCities(_CARO.partner);
+  }
+  _renderChapter();
+  _writeChapterHash();
+}
+// Back-compat: a phase deep-link (or any caller) maps a 0-based phase index to its chapter.
+function showPhase(i){
+  if (!_CARO) return;
+  const ci=_CARO.chapters.findIndex(c=>c.kind==='phase'&&c.phaseIndex===i);
+  showChapter(ci>=0?ci:0);
+}
+function startPartnerCarousel(partner){
+  _CARO={partner, chapters:_buildChapters(partner), i:0};
+  let start=0, deep=false;
+  const h=location.hash||'';
+  let m=h.match(/#\/partner\/[^/]+\/phase\/(\d+)/);
+  if (m){ const p=Math.max(0,(+m[1])-1); const ci=_CARO.chapters.findIndex(c=>c.kind==='phase'&&c.phaseIndex===p); if(ci>=0){start=ci;deep=true;} }
+  else { m=h.match(/#\/partner\/[^/]+\/chapter\/([a-z]+)/); if(m){ const ci=_CARO.chapters.findIndex(c=>c.kind===m[1]); if(ci>=0){start=ci;deep=true;} } }
+  showChapter(start);
+  if (!deep) openIntroDialog(partner);       // first landing → open the proposal dialogue
+}
+// Opening / "About this proposal" dialogue — hero + Your world + Why now, large and readable.
+function _introHtml(partner){
+  const hero=partner.hero||{};
+  let h=`<div class="intro-mark">Partner proposal</div>
+    <h2 class="intro-title">${escapeHtml(hero.title||partner.display||'')}</h2>
+    ${hero.subtitle?`<div class="intro-sub">${escapeHtml(hero.subtitle)}</div>`:''}
+    ${hero.what_we_do_together?`<div class="intro-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}`;
   // On the internal aggregate only, offer the partner's standalone (scoped + locked) page.
   if (!BUILD_PARTNER && partner.partner_id) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
   h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
-  h+=_journeysHtml(partner.journeys_unlocked);
-  if (partner.multimodal_fit) h+=`<div class="panel-section"><h3>Into your stack</h3><div class="pcaro-why">${escapeHtml(partner.multimodal_fit)}</div></div>`;
-  if (ph.length){
-    h+=`<div class="panel-section"><h3>Phased rollout</h3>
-      <div class="pcaro-nav"><button class="pcaro-btn" id="caro-prev" ${i<=0?'disabled':''}>‹</button>
-        <div class="pcaro-dots">${ph.map((_,k)=>`<span class="pcaro-dot ${k===i?'active':''}" data-i="${k}"></span>`).join('')}</div>
-        <button class="pcaro-btn" id="caro-next" ${i>=ph.length-1?'disabled':''}>›</button></div>
-      <div class="pcaro-phase-label">${escapeHtml(cur.label||('Phase '+(cur.n||(i+1))))}</div>
-      ${cur.boats!=null?`<div class="pcaro-boats">${escapeHtml(String(cur.boats))} vessels at this phase</div>`:''}
-      ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
-      ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
-      ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(r=>`<div class="pcaro-route">${escapeHtml(r)}</div>`).join('')}`:''}
-    </div>`;
-  }
-  h+=_diffHtml(partner.differentiation);
-  h+=_proofHtml(partner.proof_points);
-  h+=_objHtml(partner.objections);
-  h+=_askHtml(partner.the_ask);
-  if (partner.close) h+=`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`;
   return h;
 }
-function _renderCarousel(){
-  const panel=document.getElementById('panel');
-  // Preserve scroll across phase steps (the panel is long now); only the first render starts at top.
-  const sc = _CARO._rendered ? panel.scrollTop : 0;
-  panel.innerHTML=_carouselHtml(_CARO.partner,_CARO.i); panel.scrollTop=sc; _CARO._rendered=true;
-  const prev=document.getElementById('caro-prev'), next=document.getElementById('caro-next');
-  if (prev) prev.addEventListener('click',()=>showPhase(_CARO.i-1));
-  if (next) next.addEventListener('click',()=>showPhase(_CARO.i+1));
-  panel.querySelectorAll('.pcaro-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showPhase(+d.dataset.i)));
+function openIntroDialog(partner){
+  partner = partner || (_CARO&&_CARO.partner); if(!partner) return;
+  const m=document.getElementById('intro-modal'); if(!m) return;
+  document.getElementById('intro-body').innerHTML=_introHtml(partner);
+  m.hidden=false;
 }
-function _fitPhaseCities(phase){
-  let b=null;
-  for (const id of _resolvePhaseCities(phase && phase.cities)){
-    const n=NODE_INDEX[id]; if(!n) continue; const [x,y]=n.coords;
-    b = b ? {minX:Math.min(b.minX,x),minY:Math.min(b.minY,y),maxX:Math.max(b.maxX,x),maxY:Math.max(b.maxY,y)} : {minX:x,minY:y,maxX:x,maxY:y};
-  }
-  if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], {padding:120, maxZoom:9, duration:1100, essential:true});
-}
-function showPhase(i){
-  if (!_CARO) return;
-  const ph=_CARO.partner.phases||[]; if(!ph.length) return;
-  i=Math.max(0,Math.min(i,ph.length-1)); _CARO.i=i;
-  const cur=ph[i];
-  // Fly to the phase's framing — provided camera if any, else fit to the phase's cities (never leave
-  // the map at world view on initial/deep load or for a phase that ships no camera).
-  if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
-  else { _fitPhaseCities(cur); }
-  applyPhaseFocus(cur);
-  _renderCarousel();
-  try{ const pid=_CARO.partner.partner_id||(PARTNER_ACTIVE&&PARTNER_ACTIVE.slug)||'partner'; history.replaceState(null,'','#/partner/'+pid+'/phase/'+(i+1)); }catch(e){}
-}
-function startPartnerCarousel(partner){
-  _CARO={partner,i:0};
-  let start=0;
-  try{ const m=(location.hash||'').match(/#\/partner\/[^/]+\/phase\/(\d+)/); if(m) start=Math.max(0,(+m[1])-1); }catch(e){}
-  showPhase(start);
-}
+function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(m) m.hidden=true; }
 function applyPartnerView(){
   if (!PARTNER_ACTIVE) return;
   const partner = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[PARTNER_ACTIVE.slug] : null;
@@ -1773,11 +1906,25 @@ function _renderStoryGrid(q){
 }
 function openStoryModal(){ storyFilter.value=''; _renderStoryGrid(''); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
 function closeStoryModal(){ storyModal.hidden=true; }
-document.getElementById('story-trigger').addEventListener('click', (e)=>{ e.stopPropagation(); storyModal.hidden ? openStoryModal() : closeStoryModal(); });
+const _storyTrigger=document.getElementById('story-trigger');
+if (BUILD_PARTNER){
+  // On a locked partner page the tour replaces the story list: repurpose the control as the
+  // "About this proposal" reopener (the opening dialogue / chapter context).
+  _storyTrigger.textContent='About ▾'; _storyTrigger.title='About this proposal';
+  _storyTrigger.addEventListener('click',(e)=>{ e.stopPropagation(); const m=document.getElementById('intro-modal'); (m&&!m.hidden)?closeIntroDialog():openIntroDialog(); });
+} else {
+  _storyTrigger.addEventListener('click', (e)=>{ e.stopPropagation(); storyModal.hidden ? openStoryModal() : closeStoryModal(); });
+}
 document.getElementById('story-close').addEventListener('click', closeStoryModal);
 storyModal.addEventListener('click', (e)=>{ if (e.target===storyModal) closeStoryModal(); });
 storyFilter.addEventListener('input', ()=>_renderStoryGrid(storyFilter.value));
-document.addEventListener('keydown', (e)=>{ if (e.key==='Escape' && !storyModal.hidden) closeStoryModal(); });
+// Intro / "About this proposal" dialogue controls
+document.getElementById('intro-start').addEventListener('click', closeIntroDialog);
+document.getElementById('intro-skip').addEventListener('click', closeIntroDialog);
+document.getElementById('intro-modal').addEventListener('click', (e)=>{ if (e.target.id==='intro-modal') closeIntroDialog(); });
+document.addEventListener('keydown', (e)=>{ if (e.key!=='Escape') return;
+  if (!storyModal.hidden) closeStoryModal();
+  const im=document.getElementById('intro-modal'); if (im && !im.hidden) closeIntroDialog(); });
 
 // ============ Search ============
 const SEARCH_INDEX = [];
@@ -1877,18 +2024,35 @@ document.querySelectorAll('.chip').forEach(b => {
   if (bt&&bl) bt.addEventListener('click', ()=>{ bl.classList.toggle('collapsed'); bt.classList.toggle('open'); });
 })();
 
-// Panel collapse toggle
+// Panel collapse toggle — glyph points the way it MOVES the panel: › hides it (toward the edge),
+// ‹ brings it back. (Markup starts at › since the panel is open.)
 const panelToggle = document.getElementById('panel-toggle');
 panelToggle.addEventListener('click', () => {
   document.body.classList.toggle('panel-hidden');
-  panelToggle.textContent = document.body.classList.contains('panel-hidden') ? '›' : '‹';
-  // force MapLibre to recompute size
-  setTimeout(() => map.resize(), 340);
+  panelToggle.textContent = document.body.classList.contains('panel-hidden') ? '‹' : '›';
+  setTimeout(() => map.resize(), 340);   // force MapLibre to recompute size
 });
+
+// Panel drag-resize — wider on big screens to read more; width persists (CSS var --panel-w).
+(function(){
+  const root=document.documentElement, handle=document.getElementById('panel-resize'); if(!handle) return;
+  const MIN=360, maxW=()=>Math.round(window.innerWidth*0.6);
+  const saved=parseInt(localStorage.getItem('atlas-panel-w')||'',10);
+  if (saved>=MIN) root.style.setProperty('--panel-w', Math.min(saved,maxW())+'px');
+  let drag=false;
+  const onMove=(e)=>{ if(!drag) return; const x=(e.touches?e.touches[0].clientX:e.clientX);
+    const w=Math.max(MIN, Math.min(window.innerWidth-x, maxW())); root.style.setProperty('--panel-w', Math.round(w)+'px'); };
+  const stop=()=>{ if(!drag) return; drag=false; handle.classList.remove('drag'); document.body.style.userSelect='';
+    const w=parseInt(getComputedStyle(root).getPropertyValue('--panel-w'),10); if(w) localStorage.setItem('atlas-panel-w',w);
+    try{ map.resize(); }catch(e){} };
+  handle.addEventListener('mousedown',(e)=>{ drag=true; handle.classList.add('drag'); document.body.style.userSelect='none'; e.preventDefault(); });
+  window.addEventListener('mousemove', onMove); window.addEventListener('mouseup', stop);
+})();
 
 // ============ URL state ============
 function updateUrlState() {
   if (window.location.hash.startsWith('#/story/')) return;
+  if (typeof _CARO!=='undefined' && _CARO) return;   // a partner tour owns the hash (chapter deep-link)
   const c = map.getCenter(); const z = map.getZoom();
   history.replaceState(null,'',`#camera=${c.lng.toFixed(3)},${c.lat.toFixed(3)},${z.toFixed(2)}`);
 }
