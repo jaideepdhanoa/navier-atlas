@@ -23,19 +23,22 @@ if [ ! -d scripts/preflight/node_modules ]; then
   ( cd scripts/preflight && npm install --silent --no-audit --no-fund )
 fi
 
-# 2 · build the data asset from data-clean/ (Claude owns render+build; Tasklet delivers DATA only).
-#     atlas-data.js sets the window.* globals index.html consumes. One generator ⇒ no clobber.
-echo "→ building atlas-data.js from data-clean/…"
+# 2 · build the full deploy tree _dist/ from data-clean/ (Claude owns render+build; Tasklet delivers DATA).
+#     build.mjs writes the root atlas-data.js the pre-flight gates; build-site.mjs assembles the tree:
+#       _dist/index.html + atlas-data.js          aggregate (all partners; internal)
+#       _dist/<slug>/index.html + atlas-data.js   per-partner: data SCOPED to that partner + render lock
+#     Each per-partner build runs an exclusion-token grep + cross-partner sweep (aborts on any hit).
+echo "→ building deploy tree (_dist/) from data-clean/…"
 node scripts/build.mjs
+node scripts/build-site.mjs
 
-# 3 · §3 pre-flight (seal hash · exclusion grep · MapLibre smoke · pitch-render presence).
+# 3 · §3 pre-flight on the gated surface (seal hash · exclusion grep · MapLibre smoke · pitch-render).
 #     Set RELEASE=1 for a prod cut to ENFORCE the seal (§3.1); non-zero ⇒ abort the deploy.
 echo "→ running deploy pre-flight…"
 node scripts/preflight/preflight.mjs "$ROOT" ${RELEASE:+--release}
 
-# 4 · publish to Vercel prod (static site; index.html + atlas-data.js + assets at repo root,
-#     governed by the .vercelignore allowlist)
-echo "→ pre-flight clean; deploying to Vercel prod…"
-URL="$(npx --yes vercel@54 deploy --prod --yes --token "$VERCEL_TOKEN")"
+# 4 · publish the _dist/ tree to Vercel prod (aggregate at /, each partner at /<slug>).
+echo "→ pre-flight clean; deploying _dist/ to Vercel prod…"
+URL="$(cd "$ROOT/_dist" && npx --yes vercel@54 deploy --prod --yes --token "$VERCEL_TOKEN")"
 echo "✅ deployed: $URL"
 echo "   (post to #tasklet-jaideep:  ✅ deployed $(git rev-parse --short HEAD) · routes rendering · pre-flight clean)"

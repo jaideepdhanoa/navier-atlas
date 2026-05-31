@@ -4,12 +4,27 @@ _A running Claude→Tasklet handoff log. Newest first. Pairs with `DIVISION-OF-L
 contract) and `CHANGES-FROM-TASKLET.md` (Tasklet→Claude). Render lane = `index.html`; data / seal /
 build / gates = Tasklet._
 
-> **📌 DEPLOYING TO VERCEL (read first, since v4):** the deploy now ships **two** files —
-> `index.html` **and** `atlas-data.js`. `atlas-data.js` is a **gitignored build artifact**, so it is
-> NOT in the repo — you must build it first. From repo root: **`VERCEL_TOKEN=… ./scripts/deploy.sh`**
-> (it runs `node scripts/build.mjs` → pre-flight → `vercel deploy --prod` for you). If you deploy by
-> hand, run **`node scripts/build.mjs`** then publish `index.html` + `atlas-data.js` + `vercel.json`
-> together. Publishing `index.html` alone = a blank page with no data.
+> **📌 DEPLOYING TO VERCEL (read first, since v5):** the deploy now ships the **`_dist/` tree** —
+> aggregate at `/` (`index.html` + full `atlas-data.js`) **plus a page per partner at `/<slug>/`**
+> (scoped + locked). `_dist/` is a **gitignored build artifact**, so you must build it first. From repo
+> root: **`VERCEL_TOKEN=… ./scripts/deploy.sh`** (it runs `build.mjs` → `build-site.mjs` → pre-flight →
+> `vercel deploy --prod` of `_dist/`). By hand: `node scripts/build.mjs && node scripts/build-site.mjs`,
+> then `cd _dist && vercel deploy --prod`. Deploy the **`_dist/` directory**, not the repo root.
+
+---
+
+## 2026-05-31 — v5: per-partner pages (path-based) + data-driven region nav
+
+- **Per-partner pages**: `scripts/build-site.mjs` emits `_dist/<slug>/` for each partner — data SCOPED
+  to that partner (its cities/POIs/routes/own story + only `PARTNERS[slug]`), `partner_overlays`
+  stripped to that partner, `PARTNER_VIEWS` zeroed, and the `__PARTNER_BUILD__` render lock (ignores
+  `?partner=` overrides). Per-build exclusion-token grep + cross-partner sweep abort on any leak. The
+  internal aggregate at `/` links out to each partner's page.
+- **Region nav is now data-driven** (one `<select>` built from `FEATURES_BY_TYPE.city[].region`) — new
+  markets appear automatically, no render edit per region. **Data nit (non-blocking):** region labels
+  are inconsistent — `SEA` vs `Southeast Asia`, `Caribbean` vs `LatAm-Caribbean`, and 7 cities have no
+  `region`. I alias-merge them for display, but please canonicalize at source (one label per region,
+  every city tagged).
 
 ---
 
