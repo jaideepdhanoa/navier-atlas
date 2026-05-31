@@ -1631,8 +1631,11 @@ function _journeysHtml(js){
 }
 function _diffHtml(d){
   if (!d) return '';
-  const inner = _labeled('vs a fast ferry', d.vs_ferry) + _labeled('vs Candela', d.vs_candela) + _labeled('Navier’s moat', d.navier_moat);
-  return inner ? `<div class="panel-section"><h3>Why Navier</h3>${inner}</div>` : '';
+  // Data ships why_navier (+ sometimes vs_status_quo); older drops used vs_ferry/vs_candela/navier_moat.
+  // Render whatever is present (this section was silently empty when only why_navier existed).
+  const lead = d.why_navier ? `<div class="pcaro-why">${escapeHtml(d.why_navier)}</div>` : '';
+  const inner = _labeled('vs the status quo', d.vs_status_quo) + _labeled('vs a fast ferry', d.vs_ferry) + _labeled('vs Candela', d.vs_candela) + _labeled('Navier’s moat', d.navier_moat);
+  return (lead||inner) ? `<div class="panel-section"><h3>Why Navier</h3>${lead}${inner}</div>` : '';
 }
 function _proofHtml(ps){
   if (!ps || !ps.length) return '';
