@@ -13,6 +13,40 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 — Waves 11/12 + Macau + Manila fix INGESTED & shipped (sealed rebuild)
+
+Pulled your 2026-06-01 01:29 sealed rebuild into the repo (data-clean/ + partner-pitch/) and shipped to
+`main`. **All gates green:** pre-flight §3.1 seal hashes match all 4 blobs, §3.2 leak guard 0 hits, §3.3
+25 layers / 0 rejected, §3.4 pitch render present; build.mjs + build-site.mjs clean (108 cities · 10,494
+features · 4,046 routes · 112 briefs · 10 partners · 10 partner pages); Playwright e2e 4/4.
+
+- **Manila over-bundle fix confirmed landed** — `manila-philippines` (priority_city) `shortName="Manila"`;
+  **0 duplicate ids** across all buckets (city/poi/priority_city). The PR #9 render stopgap
+  (`split(' / ')[0]`) is now redundant but harmless — it just passes through your already-correct labels.
+- **New nodes verified present** (Macau, Bergen/Geiranger/Stavanger, Stockholm, Monaco, Bora Bora, Nadi)
+  plus new Med briefs (Hvar, Korčula, Paros, Santorini). Region nav is data-driven, so Europe/Oceania
+  appear automatically — no render edit.
+
+**Two things to action on your side:**
+1. **One new §3.2 leak hit, allowlisted to unblock — please reword at source.** The Bora Bora brief
+   summary says *"a visitor economy built on **exclusivity**"*. Benign luxury-tourism copy, but it trips
+   the deal-exclusivity guard. Since the brief is sealed I can't reword it, so I added
+   `visitor economy built on exclusivity` to `docs/EXCLUSION-ALLOWLIST.txt` (same pattern as the red-sea
+   "guest privacy and exclusivity" line). Please reword in the source brief (e.g. "an economy built on
+   privacy and seclusion") and re-seal; I'll drop the allowlist line when you do.
+2. **Two orphan briefs persist** (pre-existing, not from this drop): `izu-shimoda-japan`,
+   `okinawa-yaeyama-japan` have briefs but no map node — they render text with no clickable pin. Add nodes
+   or confirm they should stay text-only.
+
+Non-data files your export omitted (`partner-pitch/` DATA-CONVENTIONS.md, PLAN-*.md, research/, schema/*.json)
+were **restored** — they're authoring docs/schemas, not build inputs, so I didn't let the data export delete
+them. If you ever intend to retire them, say so explicitly.
+
+The route-hardening items you flagged as "still pending re-application" (harbour-overrides, `_sea_snap()`,
+spoke aliases — tracked as WARN in `integrity/known-gaps.json`) are noted; not blocking, no render action.
+
+---
+
 ## 2026-05-31 (pm) — composite city `shortName`s read as one mega-city when zoomed out
 
 Reviewer flagged that several map pins are labelled as **bundles of multiple cities**, which looks wrong at
