@@ -438,6 +438,17 @@ body.panel-hidden #footer { display:block; }
 .intro-sub { font-size:15px; color:var(--text-1); line-height:1.5; margin-top:10px; }
 .intro-cta { font-size:13px; color:var(--text-1); line-height:1.6; margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
 .intro-scroll .panel-section { padding-left:0; padding-right:0; }
+/* "Your world" / "Why now" inside the dialogue should read like the body copy above them — not the
+   narrow 12px / 62ch panel-rail form (the ≥1440px .panel-section p cap was making this column narrower). */
+.intro-scroll .pcaro-lp p, .intro-scroll .pcaro-why { font-size:13.5px; line-height:1.6; color:var(--text-1); max-width:none; }
+.intro-scroll .panel-section p { max-width:none; }
+.intro-scroll .pcaro-lp .l { font-size:10.5px; }
+/* Subtle scrollbar — the default light bar looked harsh on the dark card. */
+.intro-scroll { scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent; }
+.intro-scroll::-webkit-scrollbar { width:10px; }
+.intro-scroll::-webkit-scrollbar-track { background:transparent; }
+.intro-scroll::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:5px; border:3px solid transparent; background-clip:content-box; }
+.intro-scroll::-webkit-scrollbar-thumb:hover { background:var(--text-2); background-clip:content-box; }
 .intro-foot { display:flex; justify-content:flex-end; gap:10px; padding:14px 24px; border-top:1px solid var(--line); }
 .intro-skip { background:none; border:none; color:var(--text-2); font:500 13px Inter; cursor:pointer; padding:9px 14px; }
 .intro-skip:hover { color:var(--text-0); }
@@ -2117,7 +2128,10 @@ function _introHtml(partner){
   return h;
 }
 function openIntroDialog(partner){
-  partner = partner || (_CARO&&_CARO.partner); if(!partner) return;
+  // Fall back through the active context: carousel partner/market → hub index → the active aggregate partner.
+  partner = partner || (_CARO&&_CARO.partner) || (_HUB&&_HUB.partner)
+    || (PARTNER_ACTIVE && typeof PARTNERS!=='undefined' && PARTNERS && PARTNERS[PARTNER_ACTIVE.slug]);
+  if(!partner) return;
   const m=document.getElementById('intro-modal'); if(!m) return;
   document.getElementById('intro-body').innerHTML=_introHtml(partner);
   m.hidden=false;
@@ -2276,9 +2290,11 @@ function _renderStoryGrid(q){
 function openStoryModal(){ storyFilter.value=''; _renderStoryGrid(''); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
 function closeStoryModal(){ storyModal.hidden=true; }
 const _storyTrigger=document.getElementById('story-trigger');
-if (BUILD_PARTNER){
-  // On a locked partner page the tour replaces the story list: repurpose the control as the
-  // "About this proposal" reopener (the opening dialogue / chapter context).
+// "About" reopener whenever a partner proposal is in view — a locked partner page OR the aggregate with
+// ?partner=<slug> active. (Previously only locked pages got it, so dismissing the intro on the aggregate
+// left no way back.) The tour replaces the story list in a partner context, so the control reopens the
+// opening dialogue instead.
+if (BUILD_PARTNER || (PARTNER_ACTIVE && PARTNER_ACTIVE.proposal)){
   _storyTrigger.textContent='About ▾'; _storyTrigger.title='About this proposal';
   _storyTrigger.addEventListener('click',(e)=>{ e.stopPropagation(); const m=document.getElementById('intro-modal'); (m&&!m.hidden)?closeIntroDialog():openIntroDialog(); });
 } else {
