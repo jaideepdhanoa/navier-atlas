@@ -401,7 +401,11 @@ body.panel-hidden #footer { display:block; }
 .hub-stat .l { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); margin-top:2px; }
 .hub-stat .s { font-size:10.5px; color:var(--text-2); margin-top:3px; max-width:160px; line-height:1.35; }
 .hub-howto { font-size:12px; color:var(--text-2); line-height:1.5; margin-top:14px; padding-top:12px; border-top:1px solid var(--line); }
-.hub-grid-h { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:700; padding:18px 26px 10px; }
+.hub-grid-h { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:700; padding:18px 26px 6px; }
+/* "these are examples, not the full footprint" framing under the market grid */
+.hub-coverage { font-size:11.5px; line-height:1.5; color:var(--text-2); font-style:italic; padding:0 26px 12px; }
+/* gentle "this is a representative set" sub-line under a section heading (e.g. Journeys we unlock) */
+.pcaro-sub { font-size:11px; line-height:1.45; color:var(--text-2); font-style:italic; margin:-2px 0 10px; }
 .hub-grid { display:grid; grid-template-columns:1fr; gap:10px; padding:0 18px 18px; }
 .hub-card { position:relative; display:block; width:100%; text-align:left; background:var(--bg-3); border:1px solid var(--line-strong); border-radius:11px; padding:14px 15px; cursor:pointer; transition:border-color .15s,background .15s,transform .12s; }
 .hub-card:hover { border-color:rgba(224,203,143,0.55); background:rgba(224,203,143,0.06); transform:translateY(-1px); }
@@ -1824,7 +1828,7 @@ function _journeysHtml(js){
       ${j.with_navier?`<div class="pcaro-jrn-line nav"><span>With Navier</span>${escapeHtml(j.with_navier)}</div>`:''}
       ${chips.length?`<div class="pcaro-jrn-chips">${chips.join('')}</div>`:''}
     </div>`; };
-  return `<div class="panel-section"><h3>Journeys we unlock</h3>${js.map(card).join('')}</div>`;
+  return `<div class="panel-section"><h3>Journeys we unlock</h3><div class="pcaro-sub">A few of the corridors this opens — illustrative, not the full map.</div>${js.map(card).join('')}</div>`;
 }
 function _diffHtml(d){
   if (!d) return '';
@@ -2037,8 +2041,9 @@ function _marketAsPartner(partner, market){
 function startPartnerHub(partner){
   const mslug=(typeof window!=='undefined' && window.__PARTNER_MARKET__) || _hubMarketFromHash();
   const market=mslug ? (partner.markets||[]).find(m=>m.slug===mslug) : null;
-  if (market) openHubMarket(partner, market, false);   // arriving via URL → show the market (with intro)
-  else renderHubIndex(partner);
+  if (market){ openHubMarket(partner, market, false); return; }   // arriving via URL → show the market (with intro)
+  renderHubIndex(partner);
+  openIntroDialog(partner);   // first landing on the hub index → set the scene, same as the spoke pages
 }
 function renderHubIndex(partner){
   _CARO=null; _HUB={partner};
@@ -2075,7 +2080,8 @@ function _hubIndexHtml(partner){
       ${stats?`<div class="hub-stats">${stats}</div>`:''}
       ${nt.how_to_read?`<div class="hub-howto">${escapeHtml(nt.how_to_read)}</div>`:''}
     </div>
-    <div class="hub-grid-h">${mk.length} markets — pick a coastline</div>
+    <div class="hub-grid-h">Pick a coastline to explore</div>
+    <div class="hub-coverage">${escapeHtml(nt.coverage_note || (mk.length+' representative launch markets — illustrative, not the full footprint. The same software-defined fleet and in-app water tier extend to any coastline; these are the densest-demand starts.'))}</div>
     <div class="hub-grid">${cards}</div>
   </div>`;
 }
