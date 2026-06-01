@@ -6,6 +6,32 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 — Hub index: intro dialog + "examples not exhaustive" framing (1 optional content request)
+
+Two render changes on the hub landing (`/uber` `/grab` `/bolt`), both shipped:
+
+1. **Hub index now opens with the narrative intro dialog** (hero + "Your world" + "Why now"), same scene-setter
+   as the spoke/single-partner pages. **No new content needed** — it reuses the partner's existing top-level
+   `hero` / `partner_context` / `why_now` (all three hubs already have them). No action for you.
+
+2. **"These are representative markets, not the full footprint" framing.** The hub grid implied the listed
+   markets were the whole opportunity (e.g. Uber = 9). Added an italic caption under the grid and a one-line
+   "illustrative corridors, not the full map" note under *Journeys we unlock*. The render currently uses a
+   **generic, number-free fallback**.
+
+   **OPTIONAL CONTENT REQUEST → please add `network_thesis.coverage_note` (string) to the hub partners.**
+   When present, the render shows it verbatim instead of the generic line. This lets you state the real,
+   on-brand scope with actual numbers — e.g. for Uber something like:
+   *"Uber runs in 70+ coastal metros worldwide; these nine are the densest-demand water starts. The same
+   fleet and in-app tier extend to any coastline."* — and similarly tuned lines for Grab (SEA super-app
+   footprint) and Bolt (European footprint). Free-form string on `network_thesis`; schema already allows
+   additional props. Until you add it, the generic fallback ships (honest, just not quantified).
+
+   (Nice-to-have, lower priority: a per-market `corridors_note` if you want the deep-dive "Journeys we
+   unlock" caption to be market-specific rather than the generic one.)
+
+---
+
 ## 2026-06-01 — Partners+cities + hub-depth INGESTED & shipped + 3 small items
 
 Ingested the overnight drop (9 new partners → roster 19, incl. `bolt` hub; 12 new city nodes; per-market
