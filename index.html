@@ -2011,7 +2011,7 @@ function startPartnerCarousel(partner){
   if (m){ const p=Math.max(0,(+m[1])-1); const ci=_CARO.chapters.findIndex(c=>c.kind==='phase'&&c.phaseIndex===p); if(ci>=0){start=ci;deep=true;} }
   else { m=h.match(/#\/partner\/[^/]+\/chapter\/([a-z]+)/); if(m){ const ci=_CARO.chapters.findIndex(c=>c.kind===m[1]); if(ci>=0){start=ci;deep=true;} } }
   showChapter(start);
-  if (!deep) openIntroDialog(partner);       // first landing → open the proposal dialogue
+  if (!deep) _autoIntro(partner, partner.partner_id||'partner');       // first landing → open the proposal dialogue (once/session)
 }
 
 // ============ HUB layout (multi-market platform partners: uber, grab) ============
@@ -2043,7 +2043,7 @@ function startPartnerHub(partner){
   const market=mslug ? (partner.markets||[]).find(m=>m.slug===mslug) : null;
   if (market){ openHubMarket(partner, market, false); return; }   // arriving via URL → show the market (with intro)
   renderHubIndex(partner);
-  openIntroDialog(partner);   // first landing on the hub index → set the scene, same as the spoke pages
+  _autoIntro(partner, partner.partner_id||'hub');   // first landing on the hub index → set the scene (once/session)
 }
 function renderHubIndex(partner){
   _CARO=null; _HUB={partner};
@@ -2095,7 +2095,7 @@ function openHubMarket(partner, market, fromLanding){
   const mp=_marketAsPartner(partner, market);
   _CARO={partner:mp, chapters:_buildChapters(mp), i:0, hub:partner, market};
   showChapter(0);
-  if (!fromLanding) openIntroDialog(mp);                // URL arrival → open the market hero; card click → straight in
+  if (!fromLanding) _autoIntro(mp, (partner.partner_id||'hub')+'/'+market.slug);   // URL arrival → market hero (once/session); card click → straight in
 }
 function _backToHub(){
   const partner=(_CARO&&_CARO.hub) || (_HUB&&_HUB.partner); if(!partner) return;
@@ -2121,6 +2121,13 @@ function openIntroDialog(partner){
   const m=document.getElementById('intro-modal'); if(!m) return;
   document.getElementById('intro-body').innerHTML=_introHtml(partner);
   m.hidden=false;
+}
+// Auto-open the scene-setting intro ONCE PER SESSION per page (keyed by partner/market). Returning to a
+// page you've already seen this session skips straight to the map; a new tab/session shows it again. The
+// manual "About" trigger always opens regardless (openIntroDialog directly).
+function _autoIntro(partner, key){
+  try { if (sessionStorage.getItem('atlas-intro:'+key)==='1') return; sessionStorage.setItem('atlas-intro:'+key,'1'); } catch(e){}
+  openIntroDialog(partner);
 }
 function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(m) m.hidden=true; }
 function applyPartnerView(){
