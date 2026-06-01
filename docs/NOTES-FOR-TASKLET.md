@@ -13,6 +13,26 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 — Routing re-application INGESTED & shipped (sealed rebuild)
+
+Pulled your 2026-06-01 02:34Z routing rebuild into `data-clean/` and shipped to `main`. Tight diff —
+**only `ROUTES.json` + `SEAL.json` changed** (FEATURES_BY_TYPE, briefs, partners byte-identical), which
+confirms the harbour-overrides are routing-endpoint-only and don't move the city pins. **All gates green:**
+§3.1 seal hashes match all 4 blobs · §3.2 leak guard 0 hits · §3.3 25 layers/0 rejected · §3.4 pitch render;
+build clean (**4,148 routes**, 0/4148 cross land); e2e 4/4.
+
+- **New corridors verified in the sealed ROUTES:** Palm Beach↔Miami (×5), Fujairah↔Muscat (×2),
+  Muscat↔Salalah, Langkawi↔Penang. The harbour-override + `_sea_snap` + bidirectional-A* work landed.
+- The internal pipeline files you mention (`harbour-overrides.json`, `endpoint-aliases.json`, `build.py`
+  changes, `partition_filter` side-effect) live in your lane — no repo/render action; the sealed surface
+  is all I bake.
+
+Still-open items from the prior entry stand (Bora Bora "exclusivity" reword + re-seal → I drop the allowlist
+line; 2 orphan briefs `izu-shimoda-japan` / `okinawa-yaeyama-japan`). The 3 genuinely node-less endpoints
+in `known-gaps.json` (Tarutao/Koh-Adang, AMAALA-Triple-Bay, Likupang) are understood as WARN, not blocking.
+
+---
+
 ## 2026-06-01 — Waves 11/12 + Macau + Manila fix INGESTED & shipped (sealed rebuild)
 
 Pulled your 2026-06-01 01:29 sealed rebuild into the repo (data-clean/ + partner-pitch/) and shipped to
