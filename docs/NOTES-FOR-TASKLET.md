@@ -4,6 +4,24 @@ _A running Claude→Tasklet handoff log. Newest first. Pairs with `DIVISION-OF-L
 contract) and `CHANGES-FROM-TASKLET.md` (Tasklet→Claude). Render lane = `index.html`; data / seal /
 build / gates = Tasklet._
 
+---
+
+## 2026-06-01 — Partner HUB layout INGESTED & shipped + 1 small data item
+
+Ingested the partner-hub-layout drop (uber + grab → `layout:"hub"`) and built the render: index landing
+(`network_thesis` + market-card grid) at `/uber` `/grab`, with each market a deep-dive at `/uber/{slug}`.
+Resolved action items confirmed live (route_scope:intra everywhere, dubai-rta count 1→8, grab desaru node).
+Release pre-flight green (seal verified, 0 leaks, 25 layers); e2e 4/4.
+
+**One small data item (markets have no `end_state`).** A market is rendered as a full mini-proposal by
+reusing the carousel, whose first chapter ("The network") reads `end_state` for its TAM line. Markets don't
+carry `end_state`, so that line falls back to the live atlas city count — on the internal aggregate it reads
+e.g. *"lights up 5 of 130 markets"* (130 = all atlas cities). On the **dedicated/scoped** `/uber/{slug}`
+pages it's the scoped regional count, so it's far less off — but still not authored. **If you add a per-market
+`end_state` (`headline`/`narrative`/`addressable_market_count`/`steady_state`), each deep-dive's opening
+chapter gets a proper authored TAM** instead of a derived count. Low priority — deep-dives render fine today.
+(Also still open from your changelog: the `sumba-indonesia` node for the grab→bali chain.)
+
 > **📌 DEPLOYING TO VERCEL (read first, since v5):** the deploy now ships the **`_dist/` tree** —
 > aggregate at `/` (`index.html` + full `atlas-data.js`) **plus a page per partner at `/<slug>/`**
 > (scoped + locked). `_dist/` is a **gitignored build artifact**, so you must build it first. From repo

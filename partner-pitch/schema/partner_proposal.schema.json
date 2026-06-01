@@ -11,6 +11,30 @@
     "archetype": { "type": "string", "enum": ["super_app", "public_transit", "hospitality", "corporate", "charter", "sovereign", "ridehail"] },
     "region": { "type": "string" },
 
+    "layout": {
+      "type": "string",
+      "enum": ["single", "hub"],
+      "description": "RENDER MODE. 'single' = flat one-page proposal (default; single-territory partners). 'hub' = index landing page (global thesis + map + market grid) with per-market deep-dives at /{partner_id}/{market.slug}. Bare /{partner_id} renders the index. Use 'hub' for multi-market platforms (Uber, Bolt, Grab)."
+    },
+
+    "network_thesis": {
+      "type": "object",
+      "description": "INDEX-ONLY (layout=hub). The global network argument shown on the landing page above the market grid. Scale + optionality, partner-and-need framed.",
+      "properties": {
+        "headline": { "type": "string" },
+        "body": { "type": "string" },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": { "label": { "type": "string" }, "value": { "type": "string" }, "sub": { "type": "string" } }
+          }
+        },
+        "how_to_read": { "type": "string", "description": "One line telling the partner they can pick one market or the whole network." }
+      }
+    },
+
     "partner_context": {
       "type": "object",
       "description": "OPEN WITH THEIR WORLD, not our product. Their ambition + the pressure they're under + where Navier slots in.",
@@ -165,14 +189,19 @@
 
     "markets": {
       "type": "array",
-      "description": "OPTIONAL multi-market tabs (e.g. Uber: MENA / US / Global). When present, render shows market tabs; each market carries its own hero/why_now/journeys/phases/close. Top-level phases may stay as the default/first market.",
+      "description": "Multi-market deep-dives (layout=hub). Each market is a full mini-proposal reachable at /{partner_id}/{slug}. The index renders one card per market from {label, summary, anchor_cities}; clicking opens the deep-dive. ALL markets are presented as equal, real opportunities — do NOT tier or hedge them as 'optionality only'. Content depth may vary, but framing is uniform. Each market should aim for the gold-standard bar (6 journeys / 4 proof / 4 objections / 4 phases) where research supports it.",
       "items": {
         "type": "object",
         "required": ["id", "label", "phases"],
         "properties": {
           "id": { "type": "string" },
-          "label": { "type": "string" },
+          "slug": { "type": "string", "description": "URL segment for /{partner_id}/{slug}; defaults to id." },
+          "label": { "type": "string", "description": "card + tab title, e.g. 'MENA / Gulf'" },
           "region": { "type": "string" },
+          "summary": { "type": "string", "description": "one-to-two sentence card blurb for the index grid" },
+          "recommended_entry": { "type": "boolean", "description": "marks the suggested starting market on the index (avoids choice paralysis); does NOT diminish the others" },
+          "status": { "type": "string", "description": "freeform momentum cue, e.g. 'live network adjacency', 'ready now' — NOT exclusivity or commitment language" },
+          "anchor_cities": { "type": "array", "items": { "type": "string" }, "description": "city_ids used for the card thumbnail + market map focus (MUST match map node feature IDs)" },
           "hero": { "type": "object" },
           "partner_context": { "type": "object" },
           "why_now": { "type": "string" },

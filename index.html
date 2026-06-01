@@ -390,6 +390,29 @@ body.panel-hidden #footer { display:block; }
 .pcaro-back { display:block; width:100%; text-align:left; background:rgba(224,203,143,0.08); border:none; border-bottom:1px solid var(--line); color:var(--accent); font:600 12px Inter; padding:11px 28px; cursor:pointer; }
 .pcaro-back:hover { background:rgba(224,203,143,0.16); }
 
+/* HUB landing (multi-market platform partners: uber, grab) — network thesis + market-card grid */
+.hub-wrap { padding:0 0 8px; }
+.hub-thesis { padding:22px 26px 6px; }
+.hub-thesis .eyebrow { font-size:10px; text-transform:uppercase; letter-spacing:0.14em; color:var(--accent); font-weight:700; }
+.hub-thesis h1 { font-size:22px; line-height:1.22; font-weight:700; color:var(--text-0); margin:8px 0 10px; letter-spacing:-0.01em; }
+.hub-thesis p { font-size:13.5px; line-height:1.6; color:var(--text-1); margin:0; }
+.hub-stats { display:flex; flex-wrap:wrap; gap:16px 22px; margin:16px 0 4px; }
+.hub-stat .v { font-size:18px; font-weight:700; color:var(--accent); line-height:1.1; }
+.hub-stat .l { font-size:9px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-2); margin-top:2px; }
+.hub-stat .s { font-size:10.5px; color:var(--text-2); margin-top:3px; max-width:160px; line-height:1.35; }
+.hub-howto { font-size:12px; color:var(--text-2); line-height:1.5; margin-top:14px; padding-top:12px; border-top:1px solid var(--line); }
+.hub-grid-h { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:700; padding:18px 26px 10px; }
+.hub-grid { display:grid; grid-template-columns:1fr; gap:10px; padding:0 18px 18px; }
+.hub-card { position:relative; display:block; width:100%; text-align:left; background:var(--bg-3); border:1px solid var(--line-strong); border-radius:11px; padding:14px 15px; cursor:pointer; transition:border-color .15s,background .15s,transform .12s; }
+.hub-card:hover { border-color:rgba(224,203,143,0.55); background:rgba(224,203,143,0.06); transform:translateY(-1px); }
+.hub-card.rec { border-color:rgba(224,203,143,0.5); }
+.hub-rec { display:inline-block; font-size:8.5px; text-transform:uppercase; letter-spacing:0.12em; font-weight:700; color:#1a1a1a; background:var(--accent); padding:2px 7px; border-radius:99px; margin-bottom:8px; }
+.hub-card-h { font-size:15px; font-weight:700; color:var(--text-0); }
+.hub-card-status { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent); font-weight:600; margin-top:3px; }
+.hub-card-sum { font-size:12px; line-height:1.5; color:var(--text-2); margin-top:7px; }
+.hub-card-go { display:inline-block; font-size:11px; font-weight:600; color:var(--text-2); margin-top:9px; transition:color .15s; }
+.hub-card:hover .hub-card-go { color:var(--accent); }
+
 /* Journey cards become clickable when they resolve to a corridor on the map */
 .pcaro-jrn.clickable { cursor:pointer; transition:border-color .15s,background .15s; }
 .pcaro-jrn.clickable:hover { border-color:rgba(224,203,143,0.45); background:rgba(224,203,143,0.05); }
@@ -1885,8 +1908,11 @@ function _chapterFooterHtml(){
 function _renderChapter(){
   const panel=document.getElementById('panel');
   const ch=_CARO.chapters[_CARO.i];
-  panel.innerHTML=_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner)+_chapterFooterHtml();
+  // On a hub market deep-dive, lead with a "← all markets" return to the index.
+  const back = _CARO.hub ? `<button class="pcaro-back" id="hub-back">← All ${escapeHtml(_CARO.hub.display||'')} markets</button>` : '';
+  panel.innerHTML=back+_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner)+_chapterFooterHtml();
   panel.scrollTop=0; _CARO._rendered=true;   // each chapter starts at top (progressive disclosure)
+  const hb=panel.querySelector('#hub-back'); if (hb) hb.addEventListener('click',()=>_backToHub());
   const prev=panel.querySelector('#chap-prev'), next=panel.querySelector('#chap-next');
   if (prev) prev.addEventListener('click',()=>showChapter(_CARO.i-1));
   if (next) next.addEventListener('click',()=>showChapter(_CARO.i+1));
@@ -1929,7 +1955,9 @@ function _fitPhaseCities(phase){ _fitCities(_resolvePhaseCities(phase && phase.c
 function _writeChapterHash(){
   try{ const ch=_CARO.chapters[_CARO.i]; const pid=_CARO.partner.partner_id||(PARTNER_ACTIVE&&PARTNER_ACTIVE.slug)||'partner';
     const frag = ch.kind==='phase' ? 'phase/'+(ch.phaseIndex+1) : 'chapter/'+ch.kind;
-    history.replaceState(null,'','#/partner/'+pid+'/'+frag); }catch(e){}
+    // A hub market keeps its market segment in the hash so a reload re-opens the same deep-dive.
+    const base = _CARO.market ? '#/partner/'+pid+'/market/'+_CARO.market.slug : '#/partner/'+pid+'/'+frag;
+    history.replaceState(null,'',base); }catch(e){}
 }
 function showChapter(i){
   if (!_CARO) return;
@@ -1963,6 +1991,93 @@ function startPartnerCarousel(partner){
   showChapter(start);
   if (!deep) openIntroDialog(partner);       // first landing → open the proposal dialogue
 }
+
+// ============ HUB layout (multi-market platform partners: uber, grab) ============
+// layout:"hub" → an INDEX landing (network_thesis + market-card grid) at the bare route; each market is a
+// full mini-proposal (same field shape as a single partner) reached at /<slug>/<market.slug>. On the
+// aggregate a market opens in place (#/partner/<slug>/market/<mslug>); on a dedicated build each market is
+// its own scoped page (__PARTNER_MARKET__ lock).
+let _HUB=null;
+function _hubMarketFromHash(){ const m=(location.hash||'').match(/#\/partner\/[^/]+\/market\/([a-z0-9-]+)/i); return m?m[1]:null; }
+function _hubAnchors(partner){
+  const set=new Set();
+  for (const mk of (partner.markets||[])){
+    for (const c of _resolvePhaseCities(mk.anchor_cities||[])) set.add(c);
+    for (const ph of (mk.phases||[])) for (const c of _resolvePhaseCities(ph.cities||[])) set.add(c);
+  }
+  return [...set];
+}
+// A market carries hero/why_now/phases/journeys/proof/objections/differentiation/close — exactly the
+// single-partner shape — so the existing carousel renders it verbatim once wrapped as a "partner".
+function _marketAsPartner(partner, market){
+  return Object.assign({}, market, {
+    partner_id: partner.partner_id,
+    display: market.label || (market.hero&&market.hero.title) || partner.display,
+    _hubOf: partner, _hubMarketSlug: market.slug
+  });
+}
+function startPartnerHub(partner){
+  const mslug=(typeof window!=='undefined' && window.__PARTNER_MARKET__) || _hubMarketFromHash();
+  const market=mslug ? (partner.markets||[]).find(m=>m.slug===mslug) : null;
+  if (market) openHubMarket(partner, market, false);   // arriving via URL → show the market (with intro)
+  else renderHubIndex(partner);
+}
+function renderHubIndex(partner){
+  _CARO=null; _HUB={partner};
+  const anchors=_hubAnchors(partner);
+  applyStoryFocus(anchors.length?anchors:null);        // spotlight every market's footprint (global reach)
+  const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
+  _fitCities(anchors, {top:80,right:pw+40,bottom:80,left:120});
+  const panel=document.getElementById('panel');
+  panel.innerHTML=_hubIndexHtml(partner); panel.scrollTop=0;
+  panel.querySelectorAll('.hub-card[data-mslug]').forEach(el=>{
+    const m=(partner.markets||[]).find(x=>x.slug===el.dataset.mslug);
+    el.addEventListener('mouseenter',()=>{ const a=_resolvePhaseCities((m&&m.anchor_cities)||[]); if(a.length) applyStoryFocus(a); });
+    el.addEventListener('mouseleave',()=>applyStoryFocus(anchors.length?anchors:null));
+    el.addEventListener('click',()=>openHubMarket(partner,m,true));
+  });
+  try{ history.replaceState(null,'','#/partner/'+(partner.partner_id||'')); }catch(e){}
+}
+function _hubIndexHtml(partner){
+  const nt=partner.network_thesis||{}, mk=partner.markets||[];
+  const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
+  const stats=(nt.stats||[]).map(s=>`<div class="hub-stat"><div class="v">${escapeHtml(s.value||'')}</div><div class="l">${escapeHtml(s.label||'')}</div>${s.sub?`<div class="s">${escapeHtml(s.sub)}</div>`:''}</div>`).join('');
+  const cards=ordered.map(m=>`<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
+      ${m.recommended_entry?`<span class="hub-rec">Recommended start</span>`:''}
+      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}</div>
+      ${m.status?`<div class="hub-card-status">${escapeHtml(m.status)}</div>`:''}
+      ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
+      <span class="hub-card-go">Explore →</span>
+    </button>`).join('');
+  return `<div class="hub-wrap">
+    <div class="hub-thesis">
+      <div class="eyebrow">${escapeHtml(partner.display||'')} · network thesis</div>
+      ${nt.headline?`<h1>${escapeHtml(nt.headline)}</h1>`:''}
+      ${nt.body?`<p>${escapeHtml(nt.body)}</p>`:''}
+      ${stats?`<div class="hub-stats">${stats}</div>`:''}
+      ${nt.how_to_read?`<div class="hub-howto">${escapeHtml(nt.how_to_read)}</div>`:''}
+    </div>
+    <div class="hub-grid-h">${mk.length} markets — pick a coastline</div>
+    <div class="hub-grid">${cards}</div>
+  </div>`;
+}
+function openHubMarket(partner, market, fromLanding){
+  if (!market) return;
+  // On a dedicated HUB-INDEX build, each market is its own scoped page → navigate (don't render in place
+  // with the index's all-markets data). The aggregate has every market's data, so it opens in place.
+  if (BUILD_PARTNER && !window.__PARTNER_MARKET__ && fromLanding){
+    location.href='/'+encodeURIComponent(partner.partner_id)+'/'+encodeURIComponent(market.slug); return;
+  }
+  const mp=_marketAsPartner(partner, market);
+  _CARO={partner:mp, chapters:_buildChapters(mp), i:0, hub:partner, market};
+  showChapter(0);
+  if (!fromLanding) openIntroDialog(mp);                // URL arrival → open the market hero; card click → straight in
+}
+function _backToHub(){
+  const partner=(_CARO&&_CARO.hub) || (_HUB&&_HUB.partner); if(!partner) return;
+  if (BUILD_PARTNER && window.__PARTNER_MARKET__){ location.href='/'+encodeURIComponent(partner.partner_id); return; }
+  renderHubIndex(partner);
+}
 // Opening / "About this proposal" dialogue — hero + Your world + Why now, large and readable.
 function _introHtml(partner){
   const hero=partner.hero||{};
@@ -1970,8 +2085,9 @@ function _introHtml(partner){
     <h2 class="intro-title">${escapeHtml(hero.title||partner.display||'')}</h2>
     ${hero.subtitle?`<div class="intro-sub">${escapeHtml(hero.subtitle)}</div>`:''}
     ${hero.what_we_do_together?`<div class="intro-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}`;
-  // On the internal aggregate only, offer the partner's standalone (scoped + locked) page.
-  if (!BUILD_PARTNER && partner.partner_id) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
+  // On the internal aggregate only, offer the partner's standalone (scoped + locked) page. Suppressed for
+  // a hub market (its own dedicated page is /<partner>/<market> and the back-bar already returns to the hub).
+  if (!BUILD_PARTNER && partner.partner_id && !partner._hubOf) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
   h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
   return h;
@@ -1986,6 +2102,7 @@ function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(
 function applyPartnerView(){
   if (!PARTNER_ACTIVE) return;
   const partner = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[PARTNER_ACTIVE.slug] : null;
+  if (partner && partner.layout==='hub' && partner.markets && partner.markets.length){ startPartnerHub(partner); return; }
   if (partner && partner.phases && partner.phases.length){ startPartnerCarousel(partner); return; }
   applyStoryFocus(PARTNER_ACTIVE.scopeCities);
   const p=document.getElementById('panel');
