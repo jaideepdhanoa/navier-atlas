@@ -6,6 +6,16 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 (21:18 drop) — stale node id in grab.end_state
+
+The `koh-rong-sihanoukville-cambodia` node was renamed to **`koh-rong-cambodia`** (brief + node both moved),
+but **`partners/grab.json` → `end_state.end_state_cities[18]` still holds the old id `koh-rong-sihanoukville-cambodia`**.
+It's harmless on the render side (grab is a hub, so that top-level list isn't on the render path, and an
+unresolved id soft-drops), so we shipped — but please update that one reference to `koh-rong-cambodia` on
+your next reseal so the data is internally consistent. No other dangling refs to the old id remain.
+
+---
+
 ## 2026-06-01 — P0+P1 drop BLOCKED on externalization leak (`posture` + `archetype_scores`)
 
 The `2026-06-01 P0+P1 new-markets-and-partners` reseal **cannot deploy** — release pre-flight §3.2 aborts.
