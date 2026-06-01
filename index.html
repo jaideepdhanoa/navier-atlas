@@ -353,23 +353,27 @@ body.panel-hidden #footer { display:block; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
 
 /* Chapter spine (guided tour): sticky stepper + dots that drive panel + map */
-.chap-nav { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(24,24,27,0.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+.chap-nav { position:sticky; top:0; z-index:5; display:flex; align-items:flex-start; gap:10px; padding:14px 16px 12px; background:rgba(24,24,27,0.96); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
 .chap-nav .pcaro-btn { flex-shrink:0; }
 .chap-meta { flex:1; text-align:center; min-width:0; }
-.chap-step { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; }
-.chap-title { font-size:13px; font-weight:700; color:var(--text-0); margin-top:1px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* Current chapter is the headline — the eyebrow says where you are, the title is large + wraps. */
+.chap-step { font-size:9px; text-transform:uppercase; letter-spacing:0.14em; color:var(--accent); font-weight:700; }
+.chap-title { font-size:17px; font-weight:700; color:var(--text-0); margin-top:3px; line-height:1.2; letter-spacing:-0.01em; }
 .chap-dots { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; padding:10px 16px 0; }
 .chap-dot { width:7px; height:7px; border-radius:50%; background:var(--line-strong); cursor:pointer; transition:background .2s,transform .2s; }
 .chap-dot:hover { background:var(--text-2); }
 .chap-dot.active { background:var(--accent); transform:scale(1.25); }
-/* progress + explicit "next chapter" CTA so it reads as a step-through walkthrough */
-.chap-progress { height:3px; margin:0 16px; border-radius:2px; background:var(--line-strong); overflow:hidden; }
+.chap-progress { height:3px; margin:10px 16px 0; border-radius:2px; background:var(--line-strong); overflow:hidden; }
 .chap-progress span { display:block; height:100%; background:var(--accent); border-radius:2px; transition:width .35s ease; }
-.chap-next-cta { display:flex; align-items:center; justify-content:space-between; gap:10px; width:calc(100% - 32px); margin:12px 16px 2px; padding:11px 14px; border-radius:9px; background:rgba(224,203,143,0.1); border:1px solid rgba(224,203,143,0.4); color:var(--accent); font:700 12.5px Inter; cursor:pointer; text-align:left; transition:background .15s,border-color .15s; }
-.chap-next-cta:hover { background:rgba(224,203,143,0.18); border-color:rgba(224,203,143,0.62); }
+/* "Up next" preview — pinned to the BOTTOM of the panel so it's always reachable but never read as the
+   current heading. Muted (not the bright accent box it used to be) so it reads as a secondary control. */
+.chap-footer { position:sticky; bottom:0; z-index:5; padding:10px 16px 12px; background:rgba(24,24,27,0.97); backdrop-filter:blur(10px); border-top:1px solid var(--line); }
+.chap-next-cta { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; padding:10px 14px; border-radius:9px; background:var(--bg-3); border:1px solid var(--line-strong); color:var(--text-1); font:600 13px Inter; cursor:pointer; text-align:left; transition:background .15s,border-color .15s,color .15s; }
+.chap-next-cta:hover { background:rgba(224,203,143,0.12); border-color:rgba(224,203,143,0.5); color:var(--text-0); }
 .chap-next-cta .nx { font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-2); display:block; margin-bottom:2px; }
-.chap-next-cta .arr { font-size:16px; flex-shrink:0; }
-.chap-end-note { text-align:center; font-size:11px; color:var(--text-2); padding:12px 16px 2px; }
+.chap-next-cta .nx-title { color:var(--text-0); font-weight:700; }
+.chap-next-cta .arr { font-size:16px; flex-shrink:0; color:var(--accent); }
+.chap-end-note { text-align:center; font-size:11px; color:var(--text-2); padding:2px 4px; }
 @keyframes chapPulse { 0%,100%{ box-shadow:0 0 0 0 rgba(224,203,143,0); } 50%{ box-shadow:0 0 0 4px rgba(224,203,143,0.16); } }
 .chap-next-cta.pulse { animation:chapPulse 2.2s ease-in-out 3; }
 .chap-cap .chap-potential { font-size:12px; color:var(--text-2); margin-top:8px; line-height:1.55; }
@@ -389,8 +393,10 @@ body.panel-hidden #footer { display:block; }
 /* Journey cards become clickable when they resolve to a corridor on the map */
 .pcaro-jrn.clickable { cursor:pointer; transition:border-color .15s,background .15s; }
 .pcaro-jrn.clickable:hover { border-color:rgba(224,203,143,0.45); background:rgba(224,203,143,0.05); }
+/* Active journey = the one isolated on the map (others faded). Click again to release. */
+.pcaro-jrn.clickable.active { border-color:var(--accent); background:rgba(224,203,143,0.1); }
 .pcaro-jrn-go { float:right; font-size:10px; font-weight:600; color:var(--text-2); opacity:0; transition:opacity .15s; }
-.pcaro-jrn.clickable:hover .pcaro-jrn-go { opacity:1; color:var(--accent); }
+.pcaro-jrn.clickable:hover .pcaro-jrn-go, .pcaro-jrn.clickable.active .pcaro-jrn-go { opacity:1; color:var(--accent); }
 
 /* Opening / "About this proposal" dialogue — large, readable; reuses .story-dialog shell */
 .intro-dialog { width:min(720px,94vw); max-height:88vh; }
@@ -1719,7 +1725,12 @@ function applyPhaseFocus(phase){
   if (!phase){ applyStoryFocus(null); return; }
   const cities=_resolvePhaseCities(phase.cities);
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
-  _focusCities(cities, phase.route_scope);
+  // Safety-net: a single-city phase has no meaningful "all" — route_scope:'all' would light every
+  // long-haul corridor that merely TOUCHES the city, which belong to later multi-city phases (e.g. the
+  // "inner-Dubai" phase leaking the Dubai↔Abu Dhabi/Gulf trunk). Force intra so only in-city routes light.
+  // (Tasklet: the clean fix is route_scope:'intra' on these phases at source — see NOTES-FOR-TASKLET.)
+  const scope = (cities.length<=1) ? 'intra' : phase.route_scope;
+  _focusCities(cities, scope);
 }
 // End-state: the WHOLE partner network — union of every phase's cities (any route touching one is lit).
 function _unionPhaseCities(partner){
@@ -1731,6 +1742,24 @@ function applyUnionFocus(partner){
   const cities=_unionPhaseCities(partner);
   if (!cities.length){ applyStoryFocus(null); return; }
   _focusCities(cities, 'all');
+}
+// The partner's FULL POTENTIAL network: authored end_state_cities (Tasklet) if present, else the union of
+// every phase's cities. This is what "The network" chapter should frame — NOT the whole regional base map
+// (CITY_IDS), which on a partner page spans the partner's entire region (e.g. the Gulf for a Dubai partner).
+function _endStateCities(partner){
+  const es=partner&&partner.end_state;
+  const ids=(es&&es.end_state_cities&&es.end_state_cities.length)?_resolvePhaseCities(es.end_state_cities):[];
+  return ids.length?ids:_unionPhaseCities(partner);
+}
+function applyEndStateFocus(partner){
+  const c=_endStateCities(partner);
+  if(!c.length){ applyStoryFocus(null); return; }
+  // intra: light the in-network grid + the trunks BETWEEN end-state cities, but not long-haul beyond them.
+  _focusCities(c, 'intra');
+}
+function _fitEndStateCities(partner){
+  const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
+  _fitCities(_endStateCities(partner), {top:80,right:pw+40,bottom:80,left:120});
 }
 let _CARO=null;
 // schema-v2 partner-level sections (render once, around the phase carousel).
@@ -1806,7 +1835,7 @@ function _endstateHtml(partner){
   let h=`<div class="chap-cap"><div class="eyebrow">Where this goes — the full picture</div>
     <h2>${escapeHtml(headline)}</h2>
     ${blurb?`<p>${escapeHtml(blurb)}</p>`:''}
-    <p class="chap-potential">Your phased rollout lights up <b>${cities.length}</b> of <b>${escapeHtml(String(M))}</b> addressable markets${es&&es.addressable_footprint?` — ${escapeHtml(es.addressable_footprint)}`:''}, across <b>${ph.length}</b> phases.</p></div>`;
+    <p class="chap-potential">Your phased rollout lights up <b>${cities.length}</b>${(M&&M>=cities.length)?` of <b>${escapeHtml(String(M))}</b>`:''} ${cities.length===1?'market':'markets'}${es&&es.addressable_footprint?` — ${escapeHtml(es.addressable_footprint)}`:''}, across <b>${ph.length}</b> phases.</p></div>`;
   const ss=es&&es.steady_state;
   if (ss){
     const rows=[ss.total_markets,ss.total_corridors,ss.vessels_at_scale,ss.platform_mix].filter(Boolean);
@@ -1833,24 +1862,30 @@ function _chapterHtml(ch, partner){
   if (ch.kind==='ask')      return _askHtml(partner.the_ask)+(partner.close?`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`:'');
   return '';
 }
+// Top bar: prev/next arrows + the PROMINENT current chapter title + progress + dots.
 function _chapterStepperHtml(){
   const n=_CARO.chapters.length, i=_CARO.i;
   const dots=_CARO.chapters.map((c,k)=>`<span class="chap-dot ${k===i?'active':''}" data-i="${k}" title="${escapeHtml(_chapterTitle(c,_CARO.partner))}"></span>`).join('');
   const pct=Math.round(((i+1)/n)*100);
-  const nextTitle = i<n-1 ? _chapterTitle(_CARO.chapters[i+1],_CARO.partner) : '';
-  const cta = nextTitle
-    ? `<button class="chap-next-cta ${i===0?'pulse':''}" id="chap-next-cta"><span><span class="nx">Next · step ${i+2} of ${n}</span>${escapeHtml(nextTitle)}</span><span class="arr">→</span></button>`
-    : `<div class="chap-end-note">End of the walkthrough — use ‹ or the dots to revisit</div>`;
   return `<div class="chap-nav">
     <button class="pcaro-btn" id="chap-prev" ${i<=0?'disabled':''} aria-label="Previous chapter">‹</button>
     <div class="chap-meta"><div class="chap-step">Step ${i+1} of ${n}</div><div class="chap-title">${escapeHtml(_chapterTitle(_CARO.chapters[i],_CARO.partner))}</div></div>
     <button class="pcaro-btn" id="chap-next" ${i>=n-1?'disabled':''} aria-label="Next chapter">›</button>
-  </div><div class="chap-progress"><span style="width:${pct}%"></span></div><div class="chap-dots">${dots}</div>${cta}`;
+  </div><div class="chap-progress"><span style="width:${pct}%"></span></div><div class="chap-dots">${dots}</div>`;
+}
+// Footer: the "up next" preview, pinned to the bottom of the panel (sticky) — secondary to the title above.
+function _chapterFooterHtml(){
+  const n=_CARO.chapters.length, i=_CARO.i;
+  const nextTitle = i<n-1 ? _chapterTitle(_CARO.chapters[i+1],_CARO.partner) : '';
+  const inner = nextTitle
+    ? `<button class="chap-next-cta ${i===0?'pulse':''}" id="chap-next-cta"><span><span class="nx">Up next · step ${i+2} of ${n}</span><span class="nx-title">${escapeHtml(nextTitle)}</span></span><span class="arr">→</span></button>`
+    : `<div class="chap-end-note">End of the walkthrough — use ‹ or the dots to revisit</div>`;
+  return `<div class="chap-footer">${inner}</div>`;
 }
 function _renderChapter(){
   const panel=document.getElementById('panel');
   const ch=_CARO.chapters[_CARO.i];
-  panel.innerHTML=_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner);
+  panel.innerHTML=_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner)+_chapterFooterHtml();
   panel.scrollTop=0; _CARO._rendered=true;   // each chapter starts at top (progressive disclosure)
   const prev=panel.querySelector('#chap-prev'), next=panel.querySelector('#chap-next');
   if (prev) prev.addEventListener('click',()=>showChapter(_CARO.i-1));
@@ -1859,13 +1894,20 @@ function _renderChapter(){
   panel.querySelectorAll('.chap-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showChapter(+d.dataset.i)));
   _wireJourneys(panel);
 }
-// Journey card → highlight its route (by route_id) or frame the corridor (from/to node ids).
+// Journey card → ISOLATE that corridor on the map (others faded), and mark the card active. Click the
+// active card again to release back to the chapter's full view.
 function _wireJourneys(panel){
-  panel.querySelectorAll('.pcaro-jrn.clickable').forEach(el=>el.addEventListener('click',()=>{
+  const cards=[...panel.querySelectorAll('.pcaro-jrn.clickable')];
+  cards.forEach(el=>el.addEventListener('click',()=>{
+    const wasActive=el.classList.contains('active');
+    cards.forEach(c=>c.classList.remove('active'));
+    if (wasActive){ showChapter(_CARO.i); return; }   // toggle off → re-render chapter (resets focus + camera)
+    el.classList.add('active');
     const rid=el.dataset.route;
     if (rid){ const f=(ROUTE_FC.features||[]).find(x=>x.properties && x.properties.id===rid); if (f){ selectRoute(f); return; } }
-    const ids=[el.dataset.from, el.dataset.to].filter(Boolean);
-    if (ids.length) _fitCities(ids, 160);
+    // No route_id (e.g. an intra-city journey): fade everything except this corridor's cities, then frame it.
+    const ids=[...new Set([el.dataset.from, el.dataset.to].filter(Boolean))];
+    if (ids.length){ _focusCities(ids, 'intra'); _fitCities(ids, 160); }
   }));
 }
 function _fitCities(cities, pad){
@@ -1898,10 +1940,9 @@ function showChapter(i){
     if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
     else _fitPhaseCities(cur);
     applyPhaseFocus(cur);
-  } else if (ch.kind==='endstate'){          // end-state: the WHOLE network this could become (full region)
-    applyStoryFocus(null); _fitNetwork();
-  } else {                                   // proof / ask: keep the rollout union in view
-    applyUnionFocus(_CARO.partner); _fitUnionCities(_CARO.partner);
+  } else {                                   // endstate / proof / ask: frame the partner's FULL POTENTIAL
+    applyEndStateFocus(_CARO.partner);        // network (end_state_cities ∪ phases) — not the whole regional
+    _fitEndStateCities(_CARO.partner);        // base map, which was making chapter 1 read as a global view.
   }
   _renderChapter();
   _writeChapterHash();

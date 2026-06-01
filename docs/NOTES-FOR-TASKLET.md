@@ -13,6 +13,36 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 — Partner-tour UX fixes (render) + 2 data items for you
+
+Shipped a render pass on the partner guided-tour (`index.html`) fixing four issues a reviewer hit on
+`/dubai-rta` (they apply to every partner, since the tour render is shared). Three were pure render; two
+data items are yours:
+
+1. **`route_scope:'all'` on single-city phases lights long-haul corridors that belong to later phases.**
+   Every partner's **phase 2** ("full inner-<city> network") is a single-city phase
+   (`cities:['dubai-uae']` etc.) with `route_scope:'all'`. 'all' = "any route touching the city", so the
+   inner-Dubai phase was drawing the Dubai↔Abu Dhabi / Gulf trunk that really belongs to phases 3–4.
+   Affected: **abu-dhabi-itc, dubai-rta, qatar, red-sea-global, saudi-pif, singapore-mpa** (all ph2; phase 1
+   is correctly `'intra'`).
+   **Render safety-net shipped:** a phase that resolves to ≤1 city is now forced to `'intra'` regardless of
+   the field. **Please also set `route_scope:'intra'` on those phase-2s at source** so the data matches the
+   intent (then the safety-net is just belt-and-suspenders).
+
+2. **`end_state.addressable_market_count` reads below the phase-city count → "lights up 2 of 1 markets".**
+   dubai-rta has `addressable_market_count:1` but the phase-union is 2 nodes (dubai-uae + abu-dhabi-uae), so
+   the end-state line rendered the nonsensical "**2 of 1** addressable markets". Render now drops the "of M"
+   when M < the lit count (shows "2 markets"). Please reconcile the semantics — is `addressable_market_count`
+   counting *markets* (metros) or *nodes*? If metros, it's probably fine to make it ≥ the node count or
+   reword; we just need it self-consistent with `end_state_cities`/phase cities.
+
+Render-only fixes (no data needed, FYI): chapter-1 now frames the partner's **end-state network**
+(`end_state_cities` ∪ phases) instead of the whole regional base map; the **current** chapter title is now
+the prominent heading (the "next" preview moved to a muted sticky footer); journey cards now **isolate** their
+corridor on click (others fade, click again to release).
+
+---
+
 ## 2026-06-01 — Routing re-application INGESTED & shipped (sealed rebuild)
 
 Pulled your 2026-06-01 02:34Z routing rebuild into `data-clean/` and shipped to `main`. Tight diff —
