@@ -79,11 +79,14 @@ function scoper(FBT) {
 }
 
 // ---- scope the full data object to one partner ----
-function scopeForPartner(data, slug) {
+// opts: { keepCities?, expandRegion=true, routesWithin=false } — a hub index passes all markets' cities
+// (anchors-only, no region expansion, intra-anchor routes); a market deep-dive passes that market's cities.
+function scopeForPartner(data, slug, opts = {}) {
   const partner = data.PARTNERS[slug];
   const { cityIdOf, resolve } = scoper(data.FEATURES_BY_TYPE);
-  const keep = new Set();   // the partner's actual ROLLOUT footprint (phase cities)
-  for (const ph of (partner.phases || [])) for (const c of resolve(ph.cities)) keep.add(c);
+  const keep = new Set();   // the page's footprint (phase cities by default; markets' cities for a hub)
+  const citySrc = opts.keepCities || [].concat(...((partner.phases || []).map(ph => ph.cities || [])));
+  for (const c of resolve(citySrc)) keep.add(c);
   if (!keep.size) return { error: 'no cities resolved' };
 
   // End-state network = every city in the same REGION(s) as the rollout. The base atlas
@@ -96,11 +99,11 @@ function scopeForPartner(data, slug) {
   for (const t of ['city', 'priority_city']) for (const f of (data.FEATURES_BY_TYPE[t] || [])) { const p = f.properties || {}; if (p.id) cityRegion[p.id] = normReg(p.region); }
   const partnerRegions = new Set([...keep].map(id => cityRegion[id]).filter(Boolean));
   const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ all cities in those regions
-  if (partnerRegions.size) for (const [id, reg] of Object.entries(cityRegion)) if (reg && partnerRegions.has(reg)) net.add(id);
+  if (opts.expandRegion !== false && partnerRegions.size) for (const [id, reg] of Object.entries(cityRegion)) if (reg && partnerRegions.has(reg)) net.add(id);
 
   // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
   // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
-  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; return net.has(cityIdOf(p.from)) || net.has(cityIdOf(p.to)); });
+  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return opts.routesWithin ? (a && b) : (a || b); });
   const phaseEndpoints = new Set();
   for (const f of (data.ROUTES || [])) { const p = f.properties || {}; if (keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to))) { if (p.from) phaseEndpoints.add(p.from); if (p.to) phaseEndpoints.add(p.to); } }
   const FEATURES_BY_TYPE = {};
@@ -156,32 +159,47 @@ emitDataJs(path.join(DIST, 'atlas-data.js'), data);
 fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({ cleanUrls: true, trailingSlash: false }, null, 2) + '\n');
 console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${Object.keys(data.PARTNERS).length} partners · ${data.ROUTES.length} routes)`);
 
-// per-partner (path-based: _dist/<slug>/)
-let failed = 0;
-for (const slug of Object.keys(data.PARTNERS)) {
-  const r = scopeForPartner(data, slug);
-  if (r.error) { console.error(`  ✗ ${slug}: ${r.error}`); failed++; continue; }
-  // emit data text first, sweep it, then write only if clean
+// per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)
+let failed = 0, pages = 0;
+// Emit one scoped+locked page. subdir '' = bare /<slug>; marketSlug sets the __PARTNER_MARKET__ lock so
+// the render opens that market's deep-dive directly. Sweeps the data text; writes only if clean.
+function emitPage(slug, subdir, r, marketSlug) {
+  const tag = `/${slug}${subdir ? '/' + subdir : ''}`;
+  if (r.error) { console.error(`  ✗ ${tag}: ${r.error}`); failed++; return; }
   const dataText = banner + Object.entries(r.scoped).map(([k, v]) => `window.${k}=${JSON.stringify(v)};`).join('\n') + '\n';
-  const lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};</script>\n`;
-  // Load the SCOPED data by ABSOLUTE path. With cleanUrls (no trailing slash) the page is served at
-  // /<slug>, where a relative "atlas-data.js" would resolve to /atlas-data.js (the full aggregate) —
-  // defeating isolation and bloating the payload. /<slug>/atlas-data.js loads this partner's data only.
-  let html = indexHtml.replace('<script src="atlas-data.js"></script>', lock + `<script src="/${slug}/atlas-data.js"></script>`);
-  if (html === indexHtml) { console.error(`  ✗ ${slug}: could not inject lock (atlas-data.js script tag not found)`); failed++; continue; }
-  // Zero PARTNER_VIEWS — the aggregate config names other partners (grab/careem/red-sea); the lock +
-  // scoped PARTNERS[slug] drive activation, so a locked build needs none. Abort if it can't be scoped.
+  // Load the SCOPED data by ABSOLUTE path. With cleanUrls (no trailing slash) a relative "atlas-data.js"
+  // would resolve to /atlas-data.js (the full aggregate) — defeating isolation. Use the page's own path.
+  let lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};`;
+  if (marketSlug) lock += `window.__PARTNER_MARKET__=${JSON.stringify(marketSlug)};`;
+  lock += `</script>\n`;
+  let html = indexHtml.replace('<script src="atlas-data.js"></script>', lock + `<script src="${tag}/atlas-data.js"></script>`);
+  if (html === indexHtml) { console.error(`  ✗ ${tag}: could not inject lock (atlas-data.js script tag not found)`); failed++; return; }
+  // Zero PARTNER_VIEWS — the lock + scoped PARTNERS[slug] drive activation, so a locked build needs none.
   const beforePV = html;
   html = html.replace(/const PARTNER_VIEWS = \{[\s\S]*?\n\};/, 'const PARTNER_VIEWS = {};');
-  if (html === beforePV) { console.error(`  ✗ ${slug}: could not scope PARTNER_VIEWS (regex no match)`); failed++; continue; }
+  if (html === beforePV) { console.error(`  ✗ ${tag}: could not scope PARTNER_VIEWS (regex no match)`); failed++; return; }
   const { leaks, cross } = sweep(dataText, data, slug);
-  if (leaks.length || cross.length) { console.error(`  ✗ ${slug}: ABORT sweep — tokens:[${leaks.join(',')}] cross-partner:[${cross.join(',')}]`); failed++; continue; }
-  const outDir = path.join(DIST, slug);
+  if (leaks.length || cross.length) { console.error(`  ✗ ${tag}: ABORT sweep — tokens:[${leaks.join(',')}] cross-partner:[${cross.join(',')}]`); failed++; return; }
+  const outDir = path.join(DIST, slug, subdir || '');
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
   fs.writeFileSync(path.join(outDir, 'atlas-data.js'), dataText);
   const c = r.counts;
-  console.log(`  ✓ /${slug}  network cities:${c.cities} (rollout ${c.rollout}) pois:${c.pois} routes:${c.routes} briefs:${c.briefs} stories:${c.stories}`);
+  console.log(`  ✓ ${tag}  network cities:${c.cities} (rollout ${c.rollout}) pois:${c.pois} routes:${c.routes} briefs:${c.briefs} stories:${c.stories}`);
+  pages++;
 }
-if (failed) { console.error(`\nbuild-site: ${failed} partner build(s) failed — see above.`); process.exit(1); }
-console.log(`\n_dist/ ready: 1 aggregate + ${Object.keys(data.PARTNERS).length} partner pages.`);
+const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []).map(ph => ph.cities || [])));
+for (const slug of Object.keys(data.PARTNERS)) {
+  const partner = data.PARTNERS[slug];
+  if (partner.layout === 'hub' && partner.markets && partner.markets.length) {
+    // index landing: every market's cities (anchors only, no region sprawl, intra-anchor routes) → global map
+    const anchors = [].concat(...partner.markets.map(marketCities));
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, expandRegion: false, routesWithin: true }), null);
+    // each market = its own scoped deep-dive page (regional network like a single partner)
+    for (const m of partner.markets) emitPage(slug, m.slug, scopeForPartner(data, slug, { keepCities: marketCities(m) }), m.slug);
+  } else {
+    emitPage(slug, '', scopeForPartner(data, slug), null);
+  }
+}
+if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
+console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market pages.`);
