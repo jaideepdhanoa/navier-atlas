@@ -104,12 +104,28 @@ body.panel-hidden #panel { width:0 !important; }
 #story-close:hover { color:var(--accent); border-color:rgba(224,203,143,0.4); }
 .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:18px 20px; overflow-y:auto; }
 @media (max-width:680px){ .story-grid { grid-template-columns:1fr; } }
-.story-grid .card { text-align:left; background:rgba(23,23,23,0.6); border:1px solid var(--line); border-radius:12px;
+.story-grid .card, .pidx-cards .card { text-align:left; background:rgba(23,23,23,0.6); border:1px solid var(--line); border-radius:12px;
   padding:14px 16px; cursor:pointer; }
-.story-grid .card:hover { border-color:rgba(224,203,143,0.4); background:rgba(224,203,143,0.06); }
-.story-grid .card .t { font:600 14px Inter; color:var(--text-0); margin-bottom:5px; }
-.story-grid .card .s { font:400 12px/1.5 Inter; color:var(--text-2); }
-.story-grid .empty { grid-column:1/-1; padding:24px; text-align:center; color:var(--text-2); font:400 13px Inter; }
+.story-grid .card:hover, .pidx-cards .card:hover { border-color:rgba(224,203,143,0.4); background:rgba(224,203,143,0.06); }
+.story-grid .card .t, .pidx-cards .card .t { font:600 14px Inter; color:var(--text-0); margin-bottom:5px; }
+.story-grid .card .s, .pidx-cards .card .s { font:400 12px/1.5 Inter; color:var(--text-2); }
+.story-grid .empty, #partner-grid .empty { grid-column:1/-1; padding:24px; text-align:center; color:var(--text-2); font:400 13px Inter; }
+/* Browse modal: tabs + the partner index (grouped by category, reusing the card visuals above) */
+.browse-tabs { display:flex; gap:4px; flex:1; }
+.browse-tab { background:none; border:none; color:var(--text-2); font:600 13px Inter; padding:6px 12px; border-radius:8px; cursor:pointer; }
+.browse-tab:hover { color:var(--text-0); }
+.browse-tab.active { color:var(--text-0); background:rgba(224,203,143,0.12); }
+#partner-grid { overflow-y:auto; padding:8px 20px 18px; }
+.pidx-group { margin-top:16px; }
+.pidx-group:first-child { margin-top:8px; }
+.pidx-cat { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); font-weight:700; margin:0 0 9px; }
+.pidx-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:680px){ .pidx-cards { grid-template-columns:1fr; } }
+.pidx-card .t { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.pidx-badge { font-size:9px; font-weight:700; letter-spacing:0.04em; color:var(--accent); background:rgba(224,203,143,0.12); border-radius:99px; padding:1px 7px; text-transform:uppercase; }
+/* "Open the full proposal" link on a story panel */
+.story-to-partner { display:block; margin:0 0 4px; padding:11px 28px; background:rgba(224,203,143,0.08); border:none; border-bottom:1px solid var(--line); color:var(--accent); font:600 12.5px Inter; cursor:pointer; text-align:left; width:100%; }
+.story-to-partner:hover { background:rgba(224,203,143,0.16); }
 /* Cold-load overlay — a state instead of a blank map while tiles + 27 layers build. */
 #loading { position:fixed; inset:0; z-index:1100; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
   background:var(--bg-0); color:var(--text-2); font:500 13px Inter; letter-spacing:0.02em; transition:opacity .5s ease; }
@@ -607,15 +623,19 @@ body.panel-hidden #footer { display:block; }
   <button id="story-trigger">Stories ▾</button>
   <div id="suggest"></div>
 </div>
-<!-- Stories browser: a filterable card-grid dialog (scales past a dropdown as the roster grows). -->
+<!-- Browse: partners (grouped by category) + stories, filterable card-grid dialog. -->
 <div id="story-modal" hidden>
-  <div class="story-dialog" role="dialog" aria-modal="true" aria-label="Stories">
+  <div class="story-dialog" role="dialog" aria-modal="true" aria-label="Browse partners and stories">
     <div class="story-dialog-head">
-      <span class="story-dialog-title">Stories</span>
-      <input id="story-filter" placeholder="Filter stories…" autocomplete="off" aria-label="Filter stories" />
+      <div class="browse-tabs">
+        <button class="browse-tab active" data-tab="partners">Partners</button>
+        <button class="browse-tab" data-tab="stories">Stories</button>
+      </div>
+      <input id="story-filter" placeholder="Filter partners…" autocomplete="off" aria-label="Filter" />
       <button id="story-close" aria-label="Close">×</button>
     </div>
-    <div id="story-grid" class="story-grid"></div>
+    <div id="partner-grid"></div>
+    <div id="story-grid" class="story-grid" hidden></div>
   </div>
 </div>
 <!-- Opening / "About this proposal" dialogue (partner pages): large, readable; reopenable. -->
@@ -2210,6 +2230,9 @@ function showStory(slug) {
     <h2>${escapeHtml(s.title)}</h2>
     <div class="subtitle">${escapeHtml(s.subtitle||'')}</div>
   </div>`;
+  // If this story maps to a full partner proposal (slug == partner_id), offer the jump into it.
+  const _sp = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[slug] : null;
+  if (_sp) html += `<button class="story-to-partner" onclick="location.search='?partner=${encodeURIComponent(slug)}'">Open the full ${escapeHtml(_sp.display||'partner')} proposal →</button>`;
   if (s.headline_metrics && s.headline_metrics.length) {
     html += `<div class="story-metrics">`;
     for (const m of s.headline_metrics) html += `<div class="story-metric"><div class="v">${escapeHtml(m.value)}</div><div class="l">${escapeHtml(m.label)}</div><div class="s">${escapeHtml(m.sub||'')}</div></div>`;
@@ -2277,8 +2300,13 @@ initPartnerView();
 // Stories browser — a filterable card-grid dialog (scannable as the roster grows past a dropdown).
 const storyModal = document.getElementById('story-modal');
 const storyGrid  = document.getElementById('story-grid');
+const partnerGrid = document.getElementById('partner-grid');
 const storyFilter = document.getElementById('story-filter');
 const _STORIES_LIST = _activeStories();
+let _browseTab = 'partners';
+// Humanized labels + display order for the partner taxonomy (PARTNERS[].category).
+const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
+const CAT_ORDER = ['ridehail','super_app','hospitality_brand','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
 function _renderStoryGrid(q){
   q = (q||'').trim().toLowerCase();
   const items = _STORIES_LIST.filter(s => !q || (s.title + ' ' + (s.subtitle||'')).toLowerCase().includes(q));
@@ -2287,7 +2315,37 @@ function _renderStoryGrid(q){
     : `<div class="empty">No stories match “${escapeHtml(q)}”.</div>`;
   storyGrid.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => { closeStoryModal(); showStory(c.dataset.slug); }));
 }
-function openStoryModal(){ storyFilter.value=''; _renderStoryGrid(''); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
+// Partner INDEX — every partner grouped by its category; a card opens that partner's proposal.
+function _renderPartnerGrid(q){
+  q = (q||'').trim().toLowerCase();
+  const all = Object.values((typeof PARTNERS!=='undefined' && PARTNERS) || {});
+  const groups = {}; for (const p of all){ const c=p.category||'other'; (groups[c]=groups[c]||[]).push(p); }
+  const order = CAT_ORDER.filter(c=>groups[c]).concat(Object.keys(groups).filter(c=>!CAT_ORDER.includes(c)).sort());
+  let html='', n=0;
+  for (const c of order){
+    const items = groups[c]
+      .filter(p => !q || ((p.display||'')+' '+((p.hero&&p.hero.subtitle)||'')).toLowerCase().includes(q))
+      .sort((a,b)=>(a.display||a.partner_id).localeCompare(b.display||b.partner_id));
+    if (!items.length) continue; n+=items.length;
+    html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(CAT_LABELS[c]||c)}</div><div class="pidx-cards">` + items.map(p=>{
+      const blurb=(p.hero&&p.hero.subtitle)||(p.network_thesis&&p.network_thesis.headline)||'';
+      const mk=(p.layout==='hub'&&p.markets&&p.markets.length)?`<span class="pidx-badge">${p.markets.length} markets</span>`:'';
+      return `<button class="card pidx-card" data-partner="${escapeHtml(p.partner_id)}"><div class="t">${escapeHtml(p.display||p.partner_id)}${mk}</div>${blurb?`<div class="s">${escapeHtml(blurb)}</div>`:''}</button>`;
+    }).join('') + `</div></div>`;
+  }
+  partnerGrid.innerHTML = n ? html : `<div class="empty">No partners match “${escapeHtml(q)}”.</div>`;
+  partnerGrid.querySelectorAll('.pidx-card').forEach(c => c.addEventListener('click', () => { location.search='?partner='+encodeURIComponent(c.dataset.partner); }));
+}
+function _renderBrowse(q){ (_browseTab==='partners' ? _renderPartnerGrid : _renderStoryGrid)(q); }
+function _setBrowseTab(tab){
+  _browseTab = tab;
+  document.querySelectorAll('.browse-tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  partnerGrid.hidden = tab!=='partners'; storyGrid.hidden = tab!=='stories';
+  storyFilter.placeholder = tab==='partners' ? 'Filter partners…' : 'Filter stories…';
+  _renderBrowse(storyFilter.value);
+}
+document.querySelectorAll('.browse-tab').forEach(b=>b.addEventListener('click', ()=>_setBrowseTab(b.dataset.tab)));
+function openStoryModal(){ storyFilter.value=''; _setBrowseTab('partners'); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
 function closeStoryModal(){ storyModal.hidden=true; }
 const _storyTrigger=document.getElementById('story-trigger');
 // "About" reopener whenever a partner proposal is in view — a locked partner page OR the aggregate with
@@ -2298,11 +2356,13 @@ if (BUILD_PARTNER || (PARTNER_ACTIVE && PARTNER_ACTIVE.proposal)){
   _storyTrigger.textContent='About ▾'; _storyTrigger.title='About this proposal';
   _storyTrigger.addEventListener('click',(e)=>{ e.stopPropagation(); const m=document.getElementById('intro-modal'); (m&&!m.hidden)?closeIntroDialog():openIntroDialog(); });
 } else {
+  // Plain aggregate: the control browses the roster (partners grouped by category + stories).
+  _storyTrigger.textContent='Browse ▾'; _storyTrigger.title='Browse partners & stories';
   _storyTrigger.addEventListener('click', (e)=>{ e.stopPropagation(); storyModal.hidden ? openStoryModal() : closeStoryModal(); });
 }
 document.getElementById('story-close').addEventListener('click', closeStoryModal);
 storyModal.addEventListener('click', (e)=>{ if (e.target===storyModal) closeStoryModal(); });
-storyFilter.addEventListener('input', ()=>_renderStoryGrid(storyFilter.value));
+storyFilter.addEventListener('input', ()=>_renderBrowse(storyFilter.value));
 // Intro / "About this proposal" dialogue controls
 document.getElementById('intro-start').addEventListener('click', closeIntroDialog);
 document.getElementById('intro-skip').addEventListener('click', closeIntroDialog);
