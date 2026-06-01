@@ -47,6 +47,11 @@ function loadData() {
   };
   data.CITY_BRIEFS = dir('city_briefs', 'city_id');
   data.PARTNERS = dir('partners', 'partner_id');
+  // Defensive strip of internal classification fields (see build.mjs) — keeps the deployed aggregate AND
+  // every scoped partner page clean of `posture`/`archetype_scores`; the render never uses them.
+  for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
+    for (const f of (data.FEATURES_BY_TYPE[t] || []))
+      if (f && f.properties) { delete f.properties.posture; delete f.properties.archetype_scores; }
   return data;
 }
 
@@ -143,7 +148,10 @@ function sweep(text, data, slug) {
   const leaks = tokens.filter(t => { try { return new RegExp(t, 'i').test(scan); } catch { return false; } });
   const cross = [];
   for (const [pid, pr] of Object.entries(data.PARTNERS)) { if (pid === slug) continue;
-    if ((pr.hero && pr.hero.title && text.includes(pr.hero.title)) || text.includes('"' + pid + '":')) cross.push(pid); }
+    // Detect another partner's RECORD leaking in (its identity prose, or its keyed partner_id). Match on
+    // "partner_id":"<pid>" — NOT a bare "<pid>": key — so a city that shares an id with a partner (e.g. the
+    // Hong Kong city vs the hong-kong partner) doesn't false-positive when a page legitimately includes it.
+    if ((pr.hero && pr.hero.title && text.includes(pr.hero.title)) || text.includes('"partner_id":"' + pid + '"')) cross.push(pid); }
   return { leaks, cross };
 }
 

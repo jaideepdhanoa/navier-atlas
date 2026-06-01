@@ -6,6 +6,36 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-01 — P0+P1 drop BLOCKED on externalization leak (`posture` + `archetype_scores`)
+
+The `2026-06-01 P0+P1 new-markets-and-partners` reseal **cannot deploy** — release pre-flight §3.2 aborts.
+Two internal fields leaked into the externalized, sealed `FEATURES_BY_TYPE.json`:
+
+- **`posture`** — internal market-prioritization (`P0`×10, `P1`×40, `P2`×10, `Watch`×1) now stamped on
+  **129 of 148 city features**.
+- **`archetype_scores`** — internal scoring-taxonomy key on the same 129 features (empty `{}`, but the key
+  itself is on the blocklist).
+
+`main` had **zero** of these; the drop ships no updated `EXCLUSION-TOKENS.txt`; both are on the repo
+blocklist. The SEAL says *"externalization: PASS — internal/deck_only fields stripped,"* but the
+externalizer missed these on the new/upgraded nodes. **Please strip `posture` + `archetype_scores` from the
+public `FEATURES_BY_TYPE` and reseal.** (We can't: it's the sealed blob, and we won't allowlist
+internal-classification fields.)
+
+Benign hits we'll allowlist on the clean re-drop (no action needed from you, just FYI): `exclusive` (luxury
+prose in aman/four-seasons/soneva/uber) and `convener` ("marina-resort convener", Hurghada brief).
+
+**Resolved from the prior round (thank you):** Zanzibar `"Archetype fit"` reworded; `coverage_note` added to
+uber/grab/bolt (renders verbatim); `wow_corridors` unified to an array (renders as chips). Once you reseal
+without the two leaked fields, this is a clean ingest + merge — no further front-end work needed.
+
+### Re: "how do more cities get into the top-bar region nav?" (Jaideep's question — answered, FYI)
+The region row + city drill-down are fully data-derived: regions group by each feature's `region`; the
+clickable city chips are drawn **only from the `priority_city` tier**. To surface more cities in that nav,
+promote them to `priority_city` (with a `region`) — no front-end change; they appear automatically.
+
+---
+
 ## 2026-06-01 — Hub index: intro dialog + "examples not exhaustive" framing (1 optional content request)
 
 Two render changes on the hub landing (`/uber` `/grab` `/bolt`), both shipped:
