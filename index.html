@@ -639,6 +639,10 @@ var PARTNERS    = (typeof window!=='undefined' && window.PARTNERS)    || {};
 
 const NODE_INDEX = {}; // id -> {coords, props}
 for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[t]) { const p=f.properties; if (p.id) NODE_INDEX[p.id]={coords:f.geometry.coordinates, props:p}; }
+// Map labels show only the PRIMARY place: several nodes carry a bundled "A / B / C" shortName
+// (e.g. "Manila / Cebu / Palawan / Boracay / Siargao") that reads as one mega-city when zoomed out.
+// The full bundled name is preserved in the brief/panel; this is render-only (data-clean is untouched).
+for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])) { const p=f.properties||{}; p.labelPrimary = ((p.shortName||'').split(' / ')[0].trim()) || p.shortName; }
 // City-id resolution: map any route endpoint (city id · "city__sub" · bp-* POI) to its parent city id,
 // so pitch views anchor to cities by DATA. Used by phase focus + city panels.
 const CITY_IDS = new Set([...(FEATURES_BY_TYPE.city||[]), ...(FEATURES_BY_TYPE.priority_city||[])].map(f=>f.properties && f.properties.id).filter(Boolean));
@@ -1037,7 +1041,7 @@ map.on('load', () => {
   // City (market-tier) labels — collision-thinned by degree: low zoom shows only hubs
   // (curated), zoom in progressively reveals the rest. Hubs win placement via sort-key.
   map.addLayer({ id:'city-labels', type:'symbol', source:'cities', filter:['!',['has','point_count']],
-    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':LABEL_CITY,'text-offset':[0,1.2],'text-anchor':'top',
+    layout:{ 'text-field':['get','labelPrimary'],'text-font':['Noto Sans Bold'],'text-size':LABEL_CITY,'text-offset':[0,1.2],'text-anchor':'top',
              'text-allow-overlap': false, 'text-ignore-placement': false, 'text-padding': 6,
              'symbol-sort-key': ['-',0,['coalesce',['get','degree'],0]] },
     paint:{ 'text-color':'#e8ecf1','text-halo-color':'#0a0e14','text-halo-width':1.5 }, minzoom:3.5 });
@@ -1055,7 +1059,7 @@ map.on('load', () => {
   map.addLayer({ id:'priority-points', type:'circle', source:'priority-cities',
     paint:{ 'circle-color':'#6ee7b7','circle-radius':HUB_RADIUS,'circle-stroke-width':2,'circle-stroke-color':'#0a0e14' }});
   map.addLayer({ id:'priority-labels', type:'symbol', source:'priority-cities',
-    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Bold'],'text-size':LABEL_PRIO,'text-offset':[0,1.2],'text-anchor':'top',
+    layout:{ 'text-field':['get','labelPrimary'],'text-font':['Noto Sans Bold'],'text-size':LABEL_PRIO,'text-offset':[0,1.2],'text-anchor':'top',
              // Collision-thinned (was allow-overlap:true → flagships piled up at world view, #1).
              // Highest-degree priority city wins placement, so the marquee hubs still lead.
              'text-allow-overlap': false, 'text-ignore-placement': false, 'text-padding': 6, 'text-optional': true,

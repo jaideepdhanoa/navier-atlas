@@ -13,6 +13,35 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-05-31 (pm) — composite city `shortName`s read as one mega-city when zoomed out
+
+Reviewer flagged that several map pins are labelled as **bundles of multiple cities**, which looks wrong at
+world/region zoom (people expect individual cities). It traces to the sealed node fields, not the render
+(map label = `shortName`; panel title = brief `display`). Two cases:
+
+1. **Reasonable market bundles (most — leave as-is):** a single anchor named for 2–3 *contiguous* sub-places
+   that have **no own node** — e.g. `Boracay / Caticlan` (Caticlan = Boracay's mainland jetty), `Cebu / Mactan`,
+   `Da Nang / Hoi An / Lăng Cô`, `Busan / Geoje`. Genuinely one market; fine.
+2. **One broken over-bundle (please fix):** `priority_city` **`manila-philippines`** has
+   `shortName = "Manila / Cebu / Palawan / Boracay / Siargao"` — but **Cebu, Palawan, Boracay, Siargao all
+   exist as their own separate nodes** (`cebu-philippines`, `palawan-philippines`, `boracay-philippines`,
+   `siargao-philippines`), so the rollup label sits on the Manila pin *and* duplicates the individual pins.
+   It's also internally inconsistent: feature `shortName` = 5 names, brief `display` = 3 (`"Manila / Cebu /
+   Palawan"`).
+
+**Asks:**
+- For over-bundled nodes, set `shortName` to the **primary city** (`"Manila"`) and keep the rollup only in
+  `name`/the brief narrative; **reconcile `shortName` ↔ brief `display`** so map and panel agree.
+- Keep the legit 2-part market names as they are.
+- **Dedupe:** `FEATURES_BY_TYPE` has duplicate city entries (e.g. `palawan-philippines`, `cebu-philippines`,
+  `manila-philippines` each appear twice) — same class as the hong-kong dupe; please collapse at build.
+
+**Render stopgap already shipped (so the live map reads cleanly meanwhile):** map labels now show only the
+**primary** segment of `shortName` (`split(' / ')[0]`); the full bundled name is preserved in the brief/panel.
+This is presentational only — `data-clean` is untouched — so the source fix above is still the real cleanup.
+
+---
+
 ## 2026-05-31 (pm) — SOURCE vs BUILD-INPUT drift: please resend `partner-pitch/partners/` with `data-clean/`
 
 The 15:16 export shipped **`data-clean/` only**. So the two copies of the partner proposals have drifted:
