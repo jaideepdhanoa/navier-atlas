@@ -413,6 +413,11 @@ body.panel-hidden #footer { display:block; }
 .hub-card-go { display:inline-block; font-size:11px; font-weight:600; color:var(--text-2); margin-top:9px; transition:color .15s; }
 .hub-card:hover .hub-card-go { color:var(--accent); }
 
+/* "Why Navier, now" → showcase-corridor chips */
+.pcaro-wow-h { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:700; margin:12px 0 7px; }
+.pcaro-wow { display:flex; flex-wrap:wrap; gap:6px; }
+.pcaro-wow-chip { font-size:11px; color:var(--text-1); background:rgba(224,203,143,0.08); border:1px solid rgba(224,203,143,0.25); border-radius:99px; padding:3px 10px; }
+
 /* Journey cards become clickable when they resolve to a corridor on the map */
 .pcaro-jrn.clickable { cursor:pointer; transition:border-color .15s,background .15s; }
 .pcaro-jrn.clickable:hover { border-color:rgba(224,203,143,0.45); background:rgba(224,203,143,0.05); }
@@ -1792,6 +1797,19 @@ function _ctxHtml(c){
   const inner = _labeled('Where you are today', c.their_ambition) + _labeled('What you’re up against', c.their_pressure) + _labeled('Where Navier fits for you', c.where_navier_fits);
   return inner ? `<div class="panel-section"><h3>Your world</h3>${inner}</div>` : '';
 }
+// "Why Navier, now" — the structured step-change / no-new-infra / timing block + showcase corridors.
+// Authored on every partner and (post-enrichment) every hub market; was previously never rendered.
+function _whyNavierHtml(w){
+  if (!w) return '';
+  const parts = _labeled('The step change', w.step_change) + _labeled('No new infrastructure', w.no_new_infrastructure) + _labeled('Why now', w.the_moment);
+  // wow_corridors is an ARRAY of route names on top-level partners but a PROSE STRING on hub markets —
+  // handle both: chips for a (capped) list, a labelled paragraph for a sentence.
+  const wc = w.wow_corridors;
+  let wow = '';
+  if (Array.isArray(wc) && wc.length) wow = `<div class="pcaro-wow-h">Showcase corridors</div><div class="pcaro-wow">${wc.slice(0,8).map(c=>`<span class="pcaro-wow-chip">${escapeHtml(String(c))}</span>`).join('')}</div>`;
+  else if (typeof wc === 'string' && wc.trim()) wow = _labeled('Showcase corridors', wc);
+  return (parts||wow) ? `<div class="panel-section"><h3>Why Navier, now</h3>${parts}${wow}</div>` : '';
+}
 function _journeysHtml(js){
   if (!js || !js.length) return '';
   const card = (j)=>{ const pc=_platColor(j.platform); const chips=[];
@@ -1837,7 +1855,7 @@ function _buildChapters(partner){
   const ch=[]; const ph=partner.phases||[];
   if (ph.length) ch.push({kind:'endstate'});
   ph.forEach((phase,idx)=>ch.push({kind:'phase', phaseIndex:idx, phase}));
-  if (partner.differentiation || (partner.proof_points&&partner.proof_points.length) || (partner.objections&&partner.objections.length)) ch.push({kind:'proof'});
+  if (partner.why_navier_now || partner.differentiation || (partner.proof_points&&partner.proof_points.length) || (partner.objections&&partner.objections.length)) ch.push({kind:'proof'});
   if (partner.the_ask || partner.close) ch.push({kind:'ask'});
   return ch.length ? ch : [{kind:'endstate'}];
 }
@@ -1881,7 +1899,7 @@ function _phaseBlockHtml(cur){
 function _chapterHtml(ch, partner){
   if (ch.kind==='endstate') return _endstateHtml(partner);
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
-  if (ch.kind==='proof')    return _diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
+  if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
   if (ch.kind==='ask')      return _askHtml(partner.the_ask)+(partner.close?`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`:'');
   return '';
 }
