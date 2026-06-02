@@ -142,7 +142,7 @@
   {
    "n": 2,
    "label": "Phase 2 — the full Mediterranean",
-   "boats": 24,
+   "boats": 365,
    "cities": [
     "athens-saronic-greece",
     "mykonos-greece",
@@ -171,7 +171,7 @@
   {
    "n": 3,
    "label": "Phase 3 — the Gulf",
-   "boats": 28,
+   "boats": 730,
    "cities": [
     "dubai-uae",
     "abu-dhabi-uae",
@@ -371,7 +371,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Athens & the Saronic",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "athens-saronic-greece"
      ],
@@ -380,9 +380,27 @@
      "timeline": "2027 H1",
      "rationale": "Start in Bolt's home demand base with year-round Saronic and Riviera trips.",
      "featured_routes": [
-      "Athens ↔ Hydra / Spetses",
-      "Athens ↔ Aegina / Poros",
-      "Athens Riviera coastal hops"
+      {
+       "label": "Athens (Marina Alimos / Piraeus) ↔ Hydra / Spetses (Saronic)",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Athens ↔ Aegina / Poros day-trip",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Athens Riviera (Glyfada / Vouliagmeni) ↔ Athens centre / Piraeus",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "island day-trip",
@@ -393,7 +411,7 @@
     {
      "n": 2,
      "label": "Phase 2 — the Cyclades core",
-     "boats": 10,
+     "boats": 53,
      "cities": [
       "mykonos-greece",
       "santorini-greece"
@@ -403,9 +421,27 @@
      "timeline": "2028",
      "rationale": "Capture peak-season Cyclades demand where ferry capacity saturates.",
      "featured_routes": [
-      "Mykonos ↔ Santorini",
-      "Mykonos ↔ Paros / Naxos",
-      "Santorini ↔ Ios"
+      {
+       "label": "Mykonos ↔ Santorini",
+       "from_node_id": "mykonos-greece",
+       "to_node_id": "santorini-greece",
+       "distance_nm": 65,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Mykonos ↔ Paros / Naxos",
+       "from_node_id": "mykonos-greece",
+       "to_node_id": "santorini-greece",
+       "distance_nm": 22,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Santorini (Athinios) ↔ Ios / Naxos",
+       "from_node_id": "santorini-greece",
+       "to_node_id": "santorini-greece",
+       "distance_nm": 28,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "island hopping",
@@ -416,7 +452,7 @@
     {
      "n": 3,
      "label": "Phase 3 — wider Aegean & Ionian",
-     "boats": 16,
+     "boats": 106,
      "cities": [
       "athens-saronic-greece",
       "mykonos-greece",
@@ -427,9 +463,27 @@
      "timeline": "2029",
      "rationale": "Scale to a national island-hopping layer once the core islands are proven.",
      "featured_routes": [
-      "Wider Aegean island mesh",
-      "Ionian (Corfu) extension",
-      "National on-demand island network"
+      {
+       "label": "Athens (Marina Alimos / Piraeus) ↔ Hydra / Spetses (Saronic)",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Athens ↔ Aegina / Poros day-trip",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Mykonos ↔ Santorini",
+       "from_node_id": "mykonos-greece",
+       "to_node_id": "santorini-greece",
+       "distance_nm": 65,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "national island network",
@@ -443,7 +497,6 @@
     "body": "Bolt owns the demand; Navier supplies the fleet. Together we turn slow seasonal ferries into fast, in-app island-hopping across the Saronic and the Cyclades."
    },
    "recommended_entry": true,
-   "status": "active",
    "end_state": {
     "headline": "Premium Aegean island-hopping in the Bolt app — the Saronic and the Cyclades, on foils.",
     "addressable_market_count": 3,
@@ -470,7 +523,14 @@
     ]
    },
    "corridors_note": "Crossings that mean a long ferry or scarce helicopter today — booked in the Bolt app.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 264,
+   "committed_fleet": 106,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Greece — Athens, the Saronic & the Cyclades as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   },
   {
    "id": "croatia",
@@ -587,9 +647,27 @@
      "timeline": "2026 H2 / 2027 season",
      "rationale": "Highest-density island-transfer demand on the central Dalmatian coast.",
      "featured_routes": [
-      "Split ↔ Hvar",
-      "Split ↔ Brac",
-      "Split ↔ Korcula"
+      {
+       "label": "Split ↔ Hvar Town",
+       "from_node_id": "split-croatia",
+       "to_node_id": "split-croatia__hvar-town-harbour",
+       "distance_nm": 20,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Split ↔ Korcula / Brac",
+       "from_node_id": "split-croatia",
+       "to_node_id": "split-croatia__bol",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Split ↔ Dubrovnik",
+       "from_node_id": "split-croatia",
+       "to_node_id": "dubrovnik-croatia",
+       "distance_nm": 120,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "island transfer",
@@ -599,7 +677,7 @@
     {
      "n": 2,
      "label": "Phase 2 — the Dubrovnik run (Quanta-LR)",
-     "boats": 6,
+     "boats": 41,
      "cities": [
       "split-croatia",
       "dubrovnik-croatia"
@@ -609,9 +687,13 @@
      "timeline": "2027",
      "rationale": "The Split-Dubrovnik corridor is the coast's signature long transfer.",
      "featured_routes": [
-      "Split ↔ Dubrovnik",
-      "Hvar ↔ Dubrovnik",
-      "Korcula ↔ Dubrovnik"
+      {
+       "label": "Dubrovnik ↔ Korcula / Mljet (Elaphiti)",
+       "from_node_id": "dubrovnik-croatia",
+       "to_node_id": "dubrovnik-croatia__korčula-town",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "coastal crossing",
@@ -621,7 +703,7 @@
     {
      "n": 3,
      "label": "Phase 3 — the south Dalmatian network",
-     "boats": 5,
+     "boats": 82,
      "cities": [
       "dubrovnik-croatia"
      ],
@@ -630,9 +712,27 @@
      "timeline": "2027-2028",
      "rationale": "South Dalmatia rounds out the coastal network.",
      "featured_routes": [
-      "Dubrovnik ↔ Korcula",
-      "Dubrovnik ↔ Mljet",
-      "Elaphiti hops"
+      {
+       "label": "Split ↔ Hvar Town",
+       "from_node_id": "split-croatia",
+       "to_node_id": "split-croatia__hvar-town-harbour",
+       "distance_nm": 20,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Split ↔ Korcula / Brac",
+       "from_node_id": "split-croatia",
+       "to_node_id": "split-croatia__bol",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Split ↔ Dubrovnik",
+       "from_node_id": "split-croatia",
+       "to_node_id": "dubrovnik-croatia",
+       "distance_nm": 120,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "island hopping",
@@ -645,7 +745,6 @@
     "body": "Bolt demand meets the Adriatic's densest island chain — fast, in-app foiling island-hopping from Split to Dubrovnik."
    },
    "recommended_entry": false,
-   "status": "active",
    "end_state": {
     "headline": "The Dalmatian coast in the Bolt app — Split and the central islands to the Quanta-LR run to Dubrovnik.",
     "addressable_market_count": 3,
@@ -671,7 +770,14 @@
     ]
    },
    "corridors_note": "The headline open-Adriatic run, in the Bolt app.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 206,
+   "committed_fleet": 82,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Croatia — the Dalmatian coast as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   },
   {
    "id": "italy",
@@ -789,9 +895,27 @@
      "timeline": "2026 H2 / 2027 season",
      "rationale": "Iconic, dense, year-round water-transfer demand.",
      "featured_routes": [
-      "Marco Polo ↔ San Marco",
-      "Tronchetto ↔ islands",
-      "lagoon hops"
+      {
+       "label": "Venice (Marco Polo / Tronchetto) ↔ San Marco / the islands",
+       "from_node_id": "venice-italy",
+       "to_node_id": "venice-italy",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Venice ↔ Dalmatian coast (Croatia)",
+       "from_node_id": "venice-italy",
+       "to_node_id": "split-croatia",
+       "distance_nm": 120,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Naples ↔ Capri / Positano",
+       "from_node_id": "amalfi-coast-italy",
+       "to_node_id": "amalfi-coast-italy__marina-grande-capri",
+       "distance_nm": 17,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "water-taxi",
@@ -801,7 +925,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Bay of Naples & Amalfi",
-     "boats": 5,
+     "boats": 41,
      "cities": [
       "amalfi-coast-italy"
      ],
@@ -810,9 +934,13 @@
      "timeline": "2027 season",
      "rationale": "Highest-value transfer demand on the Amalfi Coast.",
      "featured_routes": [
-      "Naples ↔ Capri",
-      "Capri ↔ Positano",
-      "Positano ↔ Amalfi"
+      {
+       "label": "Amalfi Coast ↔ Positano / Amalfi town",
+       "from_node_id": "amalfi-coast-italy__marina-grande-capri",
+       "to_node_id": "amalfi-coast-italy__positano",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "luxury transfer",
@@ -822,7 +950,7 @@
     {
      "n": 3,
      "label": "Phase 3 — the cross-Adriatic link (Quanta-LR)",
-     "boats": 6,
+     "boats": 82,
      "cities": [
       "venice-italy",
       "split-croatia"
@@ -832,9 +960,27 @@
      "timeline": "2027-2028",
      "rationale": "Quanta-LR creates a cross-Adriatic corridor unique to Bolt's two-shore footprint.",
      "featured_routes": [
-      "Venice ↔ Dalmatia",
-      "Venice ↔ Split",
-      "Adriatic crossing"
+      {
+       "label": "Venice (Marco Polo / Tronchetto) ↔ San Marco / the islands",
+       "from_node_id": "venice-italy",
+       "to_node_id": "venice-italy",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Naples ↔ Capri / Positano",
+       "from_node_id": "amalfi-coast-italy",
+       "to_node_id": "amalfi-coast-italy__marina-grande-capri",
+       "distance_nm": 17,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Venice ↔ Dalmatian coast (Croatia)",
+       "from_node_id": "venice-italy",
+       "to_node_id": "split-croatia",
+       "distance_nm": 120,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity crossing",
@@ -847,7 +993,6 @@
     "body": "Italy's most congested luxury coast and its most wake-sensitive city, both answered by one foiling tier — fast on Amalfi, near-silent and zero-wake in the Venice lagoon."
    },
    "recommended_entry": false,
-   "status": "active",
    "end_state": {
     "headline": "Italy's iconic water in the Bolt app — the Venice lagoon and Amalfi, plus the Quanta-LR cross-Adriatic link.",
     "addressable_market_count": 3,
@@ -875,7 +1020,14 @@
     ]
    },
    "corridors_note": "Fast, clean water-taxi in the lagoon — and a cross-Adriatic crossing no one else offers.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 206,
+   "committed_fleet": 82,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Italy — Amalfi, Capri & the Venice lagoon as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   },
   {
    "id": "france-riviera",
@@ -984,7 +1136,7 @@
     {
      "n": 1,
      "label": "Phase 1 — the Riviera coast (Pioneer II)",
-     "boats": 5,
+     "boats": 4,
      "cities": [
       "cote-dazur-france",
       "monaco-monaco"
@@ -994,9 +1146,27 @@
      "timeline": "2026 H2 / 2027 season",
      "rationale": "Europe's densest, most congested premium-transfer coast.",
      "featured_routes": [
-      "Nice ↔ Monaco",
-      "Cannes ↔ Saint-Tropez",
-      "Monaco ↔ Antibes"
+      {
+       "label": "Nice (Airport / Port) ↔ Monaco",
+       "from_node_id": "cote-dazur-france",
+       "to_node_id": "monaco-monaco",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Monaco ↔ Cannes / Antibes",
+       "from_node_id": "monaco-monaco",
+       "to_node_id": "cote-dazur-france",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Cote d'Azur (Nice/Monaco) ↔ Costa Smeralda, Sardinia",
+       "from_node_id": "cote-dazur-france",
+       "to_node_id": "costa-smeralda-italy",
+       "distance_nm": 150,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "luxury transfer",
@@ -1006,7 +1176,7 @@
     {
      "n": 2,
      "label": "Phase 2 — event mode",
-     "boats": 4,
+     "boats": 41,
      "cities": [
       "monaco-monaco",
       "cote-dazur-france"
@@ -1016,9 +1186,13 @@
      "timeline": "2027 events",
      "rationale": "Event weeks are peak premium demand with the worst land options.",
      "featured_routes": [
-      "Airport ↔ Monaco (GP week)",
-      "Cannes ↔ Monaco",
-      "event shuttles"
+      {
+       "label": "Cannes ↔ Saint-Tropez",
+       "from_node_id": "cote-dazur-france__vieux-port-cannes",
+       "to_node_id": "cote-dazur-france__port-de-saint-tropez",
+       "distance_nm": 22,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "event surge",
@@ -1028,7 +1202,7 @@
     {
      "n": 3,
      "label": "Phase 3 — the offshore crossing (Quanta-LR)",
-     "boats": 6,
+     "boats": 82,
      "cities": [
       "cote-dazur-france",
       "costa-smeralda-italy"
@@ -1038,9 +1212,27 @@
      "timeline": "2027-2028",
      "rationale": "Quanta-LR matches the superyacht corridor the clientele already travels.",
      "featured_routes": [
-      "Riviera ↔ Costa Smeralda",
-      "Monaco ↔ Porto Cervo",
-      "Nice ↔ Sardinia"
+      {
+       "label": "Nice (Airport / Port) ↔ Monaco",
+       "from_node_id": "cote-dazur-france",
+       "to_node_id": "monaco-monaco",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Cannes ↔ Saint-Tropez",
+       "from_node_id": "cote-dazur-france__vieux-port-cannes",
+       "to_node_id": "cote-dazur-france__port-de-saint-tropez",
+       "distance_nm": 22,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Monaco ↔ Cannes / Antibes",
+       "from_node_id": "monaco-monaco",
+       "to_node_id": "cote-dazur-france",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "intercity crossing",
@@ -1053,7 +1245,6 @@
     "body": "Bolt demand meets Europe's densest luxury coast — a silent foiling waterway from Nice to Saint-Tropez, gliding past the Corniche traffic."
    },
    "recommended_entry": false,
-   "status": "active",
    "end_state": {
     "headline": "The Cote d'Azur in the Bolt app — Nice, Monaco, Cannes and Saint-Tropez, with the Quanta-LR crossing to Sardinia.",
     "addressable_market_count": 2,
@@ -1080,7 +1271,14 @@
     ]
    },
    "corridors_note": "Over the bay while the Corniche gridlocks.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 206,
+   "committed_fleet": 82,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and France — the Côte d'Azur as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   },
   {
    "id": "uae",
@@ -1189,7 +1387,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Dubai creek, Marina & islands (Pioneer II)",
-     "boats": 5,
+     "boats": 7,
      "cities": [
       "dubai-uae"
      ],
@@ -1198,9 +1396,27 @@
      "timeline": "2026 H2 / 2027",
      "rationale": "Highest-density waterfront demand in the Gulf's busiest ride-hail metro.",
      "featured_routes": [
-      "Marina ↔ Downtown",
-      "Harbour ↔ Palm",
-      "Harbour ↔ World Islands"
+      {
+       "label": "Dubai Marina ↔ Downtown / Dubai Creek",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai (Harbour) ↔ Palm Jumeirah / World Islands / Bluewaters",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai ↔ Abu Dhabi (coastal trunk)",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 70,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "coastal commute",
@@ -1210,7 +1426,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Abu Dhabi islands",
-     "boats": 4,
+     "boats": 74,
      "cities": [
       "abu-dhabi-uae"
      ],
@@ -1219,9 +1435,13 @@
      "timeline": "2027",
      "rationale": "Abu Dhabi's island geography suits a foiling tier directly.",
      "featured_routes": [
-      "Corniche ↔ Saadiyat",
-      "Corniche ↔ Yas",
-      "Corniche ↔ Lulu"
+      {
+       "label": "Abu Dhabi (Corniche) ↔ Saadiyat / Yas / Lulu",
+       "from_node_id": "abu-dhabi-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 9,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "island hop",
@@ -1231,7 +1451,7 @@
     {
      "n": 3,
      "label": "Phase 3 — the inter-emirate trunk (Quanta-LR)",
-     "boats": 6,
+     "boats": 148,
      "cities": [
       "dubai-uae",
       "abu-dhabi-uae"
@@ -1241,9 +1461,27 @@
      "timeline": "2027-2028",
      "rationale": "Quanta-LR range turns the inter-emirate run into a water corridor.",
      "featured_routes": [
-      "Dubai ↔ Abu Dhabi",
-      "Marina ↔ Saadiyat",
-      "coastal trunk"
+      {
+       "label": "Dubai Marina ↔ Downtown / Dubai Creek",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai (Harbour) ↔ Palm Jumeirah / World Islands / Bluewaters",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai ↔ Abu Dhabi (coastal trunk)",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 70,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity crossing",
@@ -1256,7 +1494,6 @@
     "body": "Dubai proves it; the full-UAE network scales it — Bolt demand on the one Gulf surface no ride-hail player has claimed."
    },
    "recommended_entry": false,
-   "status": "active",
    "end_state": {
     "headline": "The UAE's water in the Bolt app — Dubai's creek and islands, Abu Dhabi's island grid, and the Quanta-LR trunk between them.",
     "addressable_market_count": 2,
@@ -1282,7 +1519,14 @@
     ]
    },
    "corridors_note": "Minutes across the water where the road means a crawl.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 370,
+   "committed_fleet": 148,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and UAE — Dubai & Abu Dhabi as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~8 vessels) on the entry corridor, building to ~190 vessels as the network matures (addressable ceiling ~475)."
+   }
   },
   {
    "id": "saudi",
@@ -1392,7 +1636,7 @@
     {
      "n": 1,
      "label": "Phase 1 — intra-destination hops (Pioneer II)",
-     "boats": 5,
+     "boats": 4,
      "cities": [
       "red-sea-global-ksa",
       "neom-sindalah-ksa"
@@ -1402,9 +1646,27 @@
      "timeline": "2027",
      "rationale": "Resorts open with built-in water demand and no legacy transport.",
      "featured_routes": [
-      "Shura ↔ Nujuma",
-      "Sindalah ↔ NEOM coast",
-      "intra-resort hops"
+      {
+       "label": "Red Sea destination (Shura) ↔ Nujuma / the outer islands",
+       "from_node_id": "red-sea-global-ksa",
+       "to_node_id": "red-sea-global-ksa",
+       "distance_nm": 25,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "NEOM (Sindalah) ↔ Magna / Sharma / the NEOM coast",
+       "from_node_id": "neom-sindalah-ksa",
+       "to_node_id": "neom-sindalah-ksa",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Jeddah ↔ the Red Sea destinations",
+       "from_node_id": "jeddah-ksa",
+       "to_node_id": "red-sea-global-ksa",
+       "distance_nm": 180,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "resort transfer",
@@ -1414,7 +1676,7 @@
     {
      "n": 2,
      "label": "Phase 2 — the Jeddah ↔ Red Sea line-haul (Quanta-LR)",
-     "boats": 6,
+     "boats": 41,
      "cities": [
       "jeddah-ksa",
       "red-sea-global-ksa"
@@ -1424,9 +1686,13 @@
      "timeline": "2027-2028",
      "rationale": "Quanta-LR connects the gateway city to the destinations over water.",
      "featured_routes": [
-      "Jeddah ↔ Red Sea destinations",
-      "Jeddah ↔ AMAALA",
-      "coastal line-haul"
+      {
+       "label": "the Red Sea destinations ↔ NEOM",
+       "from_node_id": "red-sea-global-ksa",
+       "to_node_id": "neom-sindalah-ksa",
+       "distance_nm": 200,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity line-haul",
@@ -1436,7 +1702,7 @@
     {
      "n": 3,
      "label": "Phase 3 — the full Red Sea coast to NEOM",
-     "boats": 8,
+     "boats": 82,
      "cities": [
       "jeddah-ksa",
       "red-sea-global-ksa",
@@ -1447,9 +1713,27 @@
      "timeline": "2028+",
      "rationale": "Quanta-LR range makes the whole giga-project coast one water network.",
      "featured_routes": [
-      "Red Sea ↔ NEOM",
-      "Jeddah → Red Sea → NEOM",
-      "full coast corridor"
+      {
+       "label": "Red Sea destination (Shura) ↔ Nujuma / the outer islands",
+       "from_node_id": "red-sea-global-ksa",
+       "to_node_id": "red-sea-global-ksa",
+       "distance_nm": 25,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "NEOM (Sindalah) ↔ Magna / Sharma / the NEOM coast",
+       "from_node_id": "neom-sindalah-ksa",
+       "to_node_id": "neom-sindalah-ksa",
+       "distance_nm": 30,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Jeddah ↔ the Red Sea destinations",
+       "from_node_id": "jeddah-ksa",
+       "to_node_id": "red-sea-global-ksa",
+       "distance_nm": 180,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "national corridor",
@@ -1462,7 +1746,6 @@
     "body": "Saudi is building a greenfield premium coastline — Bolt demand and a clean foiling layer install together, with no legacy fleet to displace."
    },
    "recommended_entry": false,
-   "status": "active",
    "end_state": {
     "headline": "The Saudi Red Sea coast in the Bolt app — intra-destination hops and the Quanta-LR line-hauls joining Jeddah, the Red Sea and NEOM.",
     "addressable_market_count": 3,
@@ -1489,7 +1772,14 @@
     ]
    },
    "corridors_note": "Intra-destination hops plus the headline Red Sea trunk over open water.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 206,
+   "committed_fleet": 82,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Saudi Arabia — Jeddah & the Red Sea as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   },
   {
    "id": "egypt",
@@ -1614,7 +1904,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Hurghada / El Gouna Riviera (Pioneer II)",
-     "boats": 3,
+     "boats": 7,
      "cities": [
       "hurghada-el-gouna-egypt"
      ],
@@ -1623,8 +1913,27 @@
      "timeline": "2026 H2",
      "rationale": "The densest Red Sea resort cluster and a differentiated product for Bolt's scaling Egyptian base.",
      "featured_routes": [
-      "Hurghada ↔ El Gouna ↔ Sahl Hasheesh",
-      "Hurghada ↔ Giftun Islands"
+      {
+       "label": "Hurghada Marina ↔ El Gouna / Sahl Hasheesh",
+       "from_node_id": "hurghada-el-gouna-egypt",
+       "to_node_id": "hurghada-el-gouna-egypt",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Hurghada ↔ Giftun Islands",
+       "from_node_id": "hurghada-el-gouna-egypt",
+       "to_node_id": "hurghada-el-gouna-egypt",
+       "distance_nm": 9,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Hurghada ↔ Sharm el-Sheikh",
+       "from_node_id": "hurghada-el-gouna-egypt",
+       "to_node_id": "sharm-el-sheikh-egypt",
+       "distance_nm": 55,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "resort transfer",
@@ -1634,7 +1943,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Sharm & Marsa Alam reef runs (Pioneer II)",
-     "boats": 3,
+     "boats": 74,
      "cities": [
       "sharm-el-sheikh-egypt"
      ],
@@ -1643,8 +1952,13 @@
      "timeline": "2027 H1",
      "rationale": "Marquee dive destinations where zero-wake foiling is an environmental differentiator.",
      "featured_routes": [
-      "Sharm ↔ Ras Mohammed",
-      "Marsa Alam ↔ Port Ghalib"
+      {
+       "label": "Sharm el-Sheikh (Naama Bay) ↔ Ras Mohammed National Park",
+       "from_node_id": "sharm-el-sheikh-egypt",
+       "to_node_id": "sharm-el-sheikh-egypt",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "dive tourism",
@@ -1654,7 +1968,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Cross-gulf line-haul (Quanta-LR)",
-     "boats": 2,
+     "boats": 148,
      "cities": [
       "hurghada-el-gouna-egypt",
       "sharm-el-sheikh-egypt"
@@ -1664,7 +1978,27 @@
      "timeline": "2027 H2",
      "rationale": "A long cross-gulf corridor served today only by ferry or flight — the natural Quanta-LR showcase.",
      "featured_routes": [
-      "Hurghada ↔ Sharm el-Sheikh"
+      {
+       "label": "Hurghada Marina ↔ El Gouna / Sahl Hasheesh",
+       "from_node_id": "hurghada-el-gouna-egypt",
+       "to_node_id": "hurghada-el-gouna-egypt",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Sharm el-Sheikh (Naama Bay) ↔ Ras Mohammed National Park",
+       "from_node_id": "sharm-el-sheikh-egypt",
+       "to_node_id": "sharm-el-sheikh-egypt",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Hurghada ↔ Giftun Islands",
+       "from_node_id": "hurghada-el-gouna-egypt",
+       "to_node_id": "hurghada-el-gouna-egypt",
+       "distance_nm": 9,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "intercity line-haul"
@@ -1686,9 +2020,17 @@
     "body": "The Hurghada Riviera first, then Sharm and Marsa Alam and the cross-gulf line-haul — Bolt's differentiated water layer on Egypt's Red Sea, foiling and in-app."
    },
    "recommended_entry": false,
-   "status": "new high-growth market (launched Oct 2024)",
    "corridors_note": "From a Hurghada↔El Gouna hop to Sharm reef runs and a Quanta-LR cross-gulf line-haul.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 370,
+   "committed_fleet": 148,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Egypt — Cairo & the Red Sea as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   }
- ]
+ ],
+ "steady_state_ceiling": 1828,
+ "committed_fleet": 730
 }
