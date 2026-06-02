@@ -125,6 +125,14 @@ body.panel-hidden #panel { width:0 !important; }
 @media (max-width:680px){ .pidx-cards { grid-template-columns:1fr; } }
 .pidx-card .t { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .pidx-badge { font-size:9px; font-weight:700; letter-spacing:0.04em; color:var(--accent); background:rgba(224,203,143,0.12); border-radius:99px; padding:1px 7px; text-transform:uppercase; }
+.pidx-badge.flag { color:#1a1a1a; background:var(--accent); }
+/* Tier filter (Flagship / Priority / All) above the partner index — defaults to Flagship. */
+.pidx-tierbar { display:flex; gap:6px; padding:4px 0 12px; position:sticky; top:0; }
+.pidx-tier { background:var(--bg-3); border:1px solid var(--line-strong); color:var(--text-2); font:600 11px Inter; padding:5px 12px; border-radius:99px; cursor:pointer; transition:color .15s,border-color .15s,background .15s; }
+.pidx-tier:hover { color:var(--text-0); }
+.pidx-tier.active { color:#1a1a1a; background:var(--accent); border-color:var(--accent); }
+.pidx-tier-n { opacity:0.6; font-weight:700; margin-left:2px; }
+.pidx-tier.active .pidx-tier-n { opacity:0.7; }
 /* "Open the full proposal" link on a story panel */
 .story-to-partner { display:block; margin:0 0 4px; padding:11px 28px; background:rgba(224,203,143,0.08); border:none; border-bottom:1px solid var(--line); color:var(--accent); font:600 12.5px Inter; cursor:pointer; text-align:left; width:100%; }
 .story-to-partner:hover { background:rgba(224,203,143,0.16); }
@@ -2325,8 +2333,11 @@ const storyFilter = document.getElementById('story-filter');
 const _STORIES_LIST = _activeStories();
 let _browseTab = 'partners';
 // Humanized labels + display order for the partner taxonomy (PARTNERS[].category).
-const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', luxury_portfolio:'Luxury portfolios', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
-const CAT_ORDER = ['ridehail','super_app','hospitality_brand','luxury_portfolio','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
+const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', luxury_portfolio:'Luxury portfolios', investment_jv:'Investment JVs', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
+const CAT_ORDER = ['ridehail','super_app','hospitality_brand','luxury_portfolio','investment_jv','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
+// Partner tier (PARTNERS[].tier) — the index defaults to flagship, per Tasklet's category × tier spec.
+let _partnerTier = 'flagship';
+const TIER_FILTERS = [['flagship','Flagship'],['priority','Priority'],['','All']];
 function _renderStoryGrid(q){
   q = (q||'').trim().toLowerCase();
   const items = _STORIES_LIST.filter(s => !q || (s.title + ' ' + (s.subtitle||'')).toLowerCase().includes(q));
@@ -2339,7 +2350,12 @@ function _renderStoryGrid(q){
 function _renderPartnerGrid(q){
   q = (q||'').trim().toLowerCase();
   const all = Object.values((typeof PARTNERS!=='undefined' && PARTNERS) || {});
-  const groups = {}; for (const p of all){ const c=p.category||'other'; (groups[c]=groups[c]||[]).push(p); }
+  const counts = { flagship:0, priority:0 }; for (const p of all){ if (counts[p.tier]!=null) counts[p.tier]++; }
+  const tierBar = `<div class="pidx-tierbar">${TIER_FILTERS.map(([v,l])=>{
+    const c = v==='flagship'?counts.flagship : v==='priority'?counts.priority : all.length;
+    return `<button class="pidx-tier${_partnerTier===v?' active':''}" data-tier="${v}">${l} <span class="pidx-tier-n">${c}</span></button>`;
+  }).join('')}</div>`;
+  const groups = {}; for (const p of all){ if (_partnerTier && (p.tier||'')!==_partnerTier) continue; const c=p.category||'other'; (groups[c]=groups[c]||[]).push(p); }
   const order = CAT_ORDER.filter(c=>groups[c]).concat(Object.keys(groups).filter(c=>!CAT_ORDER.includes(c)).sort());
   let html='', n=0;
   for (const c of order){
@@ -2350,10 +2366,13 @@ function _renderPartnerGrid(q){
     html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(CAT_LABELS[c]||c)}</div><div class="pidx-cards">` + items.map(p=>{
       const blurb=(p.hero&&p.hero.subtitle)||(p.network_thesis&&p.network_thesis.headline)||'';
       const mk=(p.layout==='hub'&&p.markets&&p.markets.length)?`<span class="pidx-badge">${p.markets.length} markets</span>`:'';
-      return `<button class="card pidx-card" data-partner="${escapeHtml(p.partner_id)}"><div class="t">${escapeHtml(p.display||p.partner_id)}${mk}</div>${blurb?`<div class="s">${escapeHtml(blurb)}</div>`:''}</button>`;
+      // In the All view, flag the flagship partners so the tier reads at a glance.
+      const fl=(_partnerTier===''&&p.tier==='flagship')?`<span class="pidx-badge flag">flagship</span>`:'';
+      return `<button class="card pidx-card" data-partner="${escapeHtml(p.partner_id)}"><div class="t">${escapeHtml(p.display||p.partner_id)}${mk}${fl}</div>${blurb?`<div class="s">${escapeHtml(blurb)}</div>`:''}</button>`;
     }).join('') + `</div></div>`;
   }
-  partnerGrid.innerHTML = n ? html : `<div class="empty">No partners match “${escapeHtml(q)}”.</div>`;
+  partnerGrid.innerHTML = tierBar + (n ? html : `<div class="empty">No partners match “${escapeHtml(q)}”.</div>`);
+  partnerGrid.querySelectorAll('.pidx-tier').forEach(btn => btn.addEventListener('click', () => { _partnerTier=btn.dataset.tier; _renderPartnerGrid(storyFilter.value); }));
   partnerGrid.querySelectorAll('.pidx-card').forEach(c => c.addEventListener('click', () => { location.search='?partner='+encodeURIComponent(c.dataset.partner); }));
 }
 function _renderBrowse(q){ (_browseTab==='partners' ? _renderPartnerGrid : _renderStoryGrid)(q); }
