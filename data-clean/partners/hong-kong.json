@@ -21,49 +21,97 @@
     {
       "from": "Central (Hong Kong Island)",
       "to": "Tsim Sha Tsui (Kowloon)",
-      "today": "The iconic Star Ferry — beloved but slow and diesel.",
-      "with_navier": "A silent, zero-emission foiling Star Ferry — the heritage crossing, modernized.",
+      "today": "The diesel Star Ferry across Victoria Harbour.",
+      "with_navier": "A near-silent zero-wake Pioneer II cross-harbour hop — modernizing the iconic crossing.",
       "distance_nm": 1.5,
       "platform": "Pioneer II",
-      "archetype": "public_transport",
-      "from_node_id": "hong-kong",
-      "to_node_id": "hong-kong",
+      "archetype": "commute",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
       "route_id": null
     },
     {
       "from": "Central / Sheung Wan",
       "to": "Macau (Outer Harbour)",
-      "today": "~60 min by diesel high-speed ferry across the Pearl River estuary.",
-      "with_navier": "A faster, far smoother foiling crossing of the estuary — defending the sea route against the bridge.",
+      "today": "A ~55–60 min diesel jetfoil.",
+      "with_navier": "A faster, near-silent Quanta-LR foiling crossing of the Pearl River estuary.",
       "distance_nm": 37,
       "platform": "Quanta-LR",
-      "archetype": "premium_crossing",
+      "archetype": "intercity",
       "from_node_id": "hong-kong",
       "to_node_id": "macau-china",
-      "route_id": "rn-hk-mfm"
+      "route_id": null
     },
     {
       "from": "Central",
       "to": "Outlying islands — Lamma, Cheung Chau, Mui Wo",
-      "today": "Slow diesel ferries on fixed schedules.",
-      "with_navier": "Fast, frequent, silent foiling links to the outlying islands — commuter and leisure.",
+      "today": "Slow diesel ferries to the outlying islands.",
+      "with_navier": "A silent zero-wake Pioneer II island hop from the Central piers.",
       "distance_nm": 10,
       "platform": "Pioneer II",
-      "archetype": "public_transport",
-      "from_node_id": "hong-kong",
-      "to_node_id": "hong-kong",
+      "archetype": "commute",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
       "route_id": null
     },
     {
       "from": "HKIA SkyPier",
-      "to": "Shenzhen-Shekou / Zhuhai (PRD)",
-      "today": "Diesel cross-boundary ferry from the airport.",
-      "with_navier": "A clean, fast foiling cross-boundary link knitting the Greater Bay Area together.",
-      "distance_nm": 30,
+      "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
+      "today": "Cross-border coach over the HKZM bridge or a diesel ferry.",
+      "with_navier": "A clean Quanta-LR airport-to-PRD foiling connection with no charging dependence.",
+      "distance_nm": 22,
       "platform": "Quanta-LR",
-      "archetype": "premium_crossing",
-      "from_node_id": "hong-kong",
-      "to_node_id": "hong-kong",
+      "archetype": "intercity",
+      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+      "route_id": null
+    },
+    {
+      "from": "Central",
+      "to": "Discovery Bay / Lantau",
+      "today": "A diesel commuter ferry.",
+      "with_navier": "A silent zero-wake Pioneer II commuter run to Discovery Bay and Lantau.",
+      "distance_nm": 9,
+      "platform": "Pioneer II",
+      "archetype": "commute",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__discovery-bay-lantau",
+      "route_id": null
+    },
+    {
+      "from": "Central",
+      "to": "Sai Kung / Clearwater Bay archipelago",
+      "today": "A long road trip then a sampan to the inner islands.",
+      "with_navier": "A direct foiling run to the Sai Kung archipelago and Hebe Haven for leisure and dining.",
+      "distance_nm": 14,
+      "platform": "Pioneer II",
+      "archetype": "tourism",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__sai-kung-clear-water-bay-inner-archipelago-hebe-haven",
+      "route_id": null
+    },
+    {
+      "from": "Kai Tak cruise terminal / event pontoon",
+      "to": "Central / Tsim Sha Tsui",
+      "today": "Road shuttle from the cruise terminal into town.",
+      "with_navier": "A quiet zero-wake Pioneer II shuttle from Kai Tak to the harbourfront piers — surge-capable on event days.",
+      "distance_nm": 3,
+      "platform": "Pioneer II",
+      "archetype": "tourism",
+      "from_node_id": "hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon",
+      "to_node_id": "hong-kong__central-ferry-piers",
+      "route_id": null
+    },
+    {
+      "from": "Macau (Outer Harbour)",
+      "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
+      "today": "A diesel ferry across the western delta.",
+      "with_navier": "A direct Quanta-LR cross-delta run linking Macau to the western PRD ports.",
+      "distance_nm": 16,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "macau-china",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
       "route_id": null
     }
   ],
@@ -116,17 +164,18 @@
       "label": "Phase 1 — Victoria Harbour modernization",
       "boats": 4,
       "cities": [
-        "hong-kong"
+        "hong-kong",
+        "macau-china"
       ],
-      "route_scope": "intra",
+      "route_scope": "all",
       "narrative": "Launch foiling-electric vessels on the Star Ferry and inner-harbour routes — the most visible, highest-frequency, decarbonization-mandated waters in the city.",
       "timeline": "2027",
       "rationale": "Start on the iconic harbour where the decarbonization mandate is loudest and visibility is highest.",
       "featured_routes": [
         {
           "label": "Central (Hong Kong Island) ↔ Tsim Sha Tsui (Kowloon)",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__central-ferry-piers",
+          "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
           "distance_nm": 1.5,
           "platform": "Pioneer II"
         },
@@ -139,8 +188,8 @@
         },
         {
           "label": "Central ↔ Outlying islands — Lamma, Cheung Chau, Mui Wo",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__central-ferry-piers",
+          "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
           "distance_nm": 10,
           "platform": "Pioneer II"
         }
@@ -165,8 +214,8 @@
       "featured_routes": [
         {
           "label": "HKIA SkyPier ↔ Shenzhen-Shekou / Zhuhai (PRD)",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 30,
           "platform": "Quanta-LR"
         }
@@ -192,8 +241,8 @@
       "featured_routes": [
         {
           "label": "Central (Hong Kong Island) ↔ Tsim Sha Tsui (Kowloon)",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__central-ferry-piers",
+          "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
           "distance_nm": 1.5,
           "platform": "Pioneer II"
         },
@@ -206,8 +255,8 @@
         },
         {
           "label": "Central ↔ Outlying islands — Lamma, Cheung Chau, Mui Wo",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__central-ferry-piers",
+          "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
           "distance_nm": 10,
           "platform": "Pioneer II"
         }
