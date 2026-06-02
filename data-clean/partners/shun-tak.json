@@ -23,7 +23,7 @@
       "from": "Hong Kong (Sheung Wan)",
       "to": "Macau (Outer Harbour)",
       "today": "A ~55–60 min diesel jetfoil, fuel-hungry and aging.",
-      "with_navier": "A faster, near-silent foiling crossing of the Pearl River estuary — far lower fuel cost and emissions.",
+      "with_navier": "A faster, near-silent foiling crossing of the Pearl River estuary — far lower fuel cost and emissions, on the franchise's iconic backbone.",
       "distance_nm": 37,
       "platform": "Quanta-LR",
       "archetype": "intercity",
@@ -33,38 +33,86 @@
     },
     {
       "from": "Hong Kong",
-      "to": "Zhuhai / Shenzhen (PRD)",
-      "today": "Diesel fast ferries across the busy delta.",
-      "with_navier": "A clean Quanta-LR hybrid run across the Pearl River Delta — no charging dependence.",
-      "distance_nm": 40,
+      "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
+      "today": "Aging diesel fast ferries across the busy delta.",
+      "with_navier": "A clean Quanta-LR hybrid run to the PRD mainland ports — no charging dependence on a high-frequency duty cycle.",
+      "distance_nm": 22,
       "platform": "Quanta-LR",
       "archetype": "intercity",
       "from_node_id": "hong-kong",
-      "to_node_id": "macau-china",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
       "route_id": null
     },
     {
       "from": "HK Airport (SkyPier)",
-      "to": "Macau / PRD ports",
+      "to": "Macau (Outer Harbour / Taipa)",
       "today": "A diesel cross-border ferry from the airport.",
-      "with_navier": "A fast clean foiling airport-to-PRD connection within the existing SkyPier model.",
+      "with_navier": "A fast clean foiling airport-to-Macau connection within the existing SkyPier transit model.",
       "distance_nm": 35,
       "platform": "Quanta-LR",
       "archetype": "intercity",
-      "from_node_id": "hong-kong",
+      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
       "to_node_id": "macau-china",
       "route_id": null
     },
     {
-      "from": "Hong Kong (Central)",
-      "to": "HK outlying islands / waterfront",
+      "from": "Hong Kong (Central piers)",
+      "to": "Outlying islands (Lamma / Cheung Chau / Mui Wo)",
       "today": "Diesel ferries and walla-wallas.",
-      "with_navier": "A silent zero-wake Pioneer II hop across Victoria Harbour and to the outlying islands.",
+      "with_navier": "A silent zero-wake Pioneer II hop to the outlying islands from the Central piers.",
       "distance_nm": 8,
       "platform": "Pioneer II",
       "archetype": "commute",
-      "from_node_id": "hong-kong",
-      "to_node_id": "hong-kong",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
+      "route_id": null
+    },
+    {
+      "from": "Macau (Outer Harbour)",
+      "to": "Shenzhen-Shekou / Zhuhai (cross-delta west)",
+      "today": "A separate diesel ferry hop across the western delta.",
+      "with_navier": "A direct Quanta-LR cross-delta run linking Macau to the western PRD ports.",
+      "distance_nm": 16,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "macau-china",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+      "route_id": null
+    },
+    {
+      "from": "HK Airport (SkyPier)",
+      "to": "Shenzhen-Shekou (PRD mainland)",
+      "today": "Cross-border coach or a diesel ferry.",
+      "with_navier": "A clean foiling airport-to-PRD connection feeding the SkyPier intermodal model.",
+      "distance_nm": 20,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+      "route_id": null
+    },
+    {
+      "from": "Macau (Outer Harbour)",
+      "to": "Taipa / Cotai",
+      "today": "Road shuttle through Macau traffic.",
+      "with_navier": "A short silent zero-wake Pioneer II hop across the harbour to the Cotai resorts.",
+      "distance_nm": 4,
+      "platform": "Pioneer II",
+      "archetype": "commute",
+      "from_node_id": "macau-china",
+      "to_node_id": "hong-kong__macau-outer-harbour-taipa",
+      "route_id": null
+    },
+    {
+      "from": "Hong Kong (Central piers)",
+      "to": "Tsim Sha Tsui / Victoria Harbour",
+      "today": "The diesel Star Ferry and cross-harbour traffic.",
+      "with_navier": "A near-silent zero-wake Pioneer II cross-harbour run from Central to Tsim Sha Tsui.",
+      "distance_nm": 2,
+      "platform": "Pioneer II",
+      "archetype": "commute",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
       "route_id": null
     }
   ],
@@ -117,9 +165,10 @@
       "label": "Phase 1 — HK ↔ Macau pilot (Quanta-LR)",
       "boats": 8,
       "cities": [
-        "hong-kong"
+        "hong-kong",
+        "macau-china"
       ],
-      "route_scope": "intra",
+      "route_scope": "all",
       "narrative": "Launch a foiling pilot on the flagship HK–Macau Outer Harbour route — proving faster crossings, far lower fuel cost and near-silent operation on TurboJET's busiest backbone.",
       "timeline": "2027 H1",
       "rationale": "The franchise backbone and the clearest modernization case.",
@@ -134,14 +183,14 @@
         {
           "label": "Hong Kong ↔ Zhuhai / Shenzhen (PRD)",
           "from_node_id": "hong-kong",
-          "to_node_id": "macau-china",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 40,
           "platform": "Quanta-LR"
         },
         {
           "label": "HK Airport (SkyPier) ↔ Macau / PRD ports",
           "from_node_id": "hong-kong",
-          "to_node_id": "macau-china",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 35,
           "platform": "Quanta-LR"
         }
@@ -165,8 +214,8 @@
       "featured_routes": [
         {
           "label": "Hong Kong (Central) ↔ HK outlying islands / waterfront",
-          "from_node_id": "hong-kong",
-          "to_node_id": "hong-kong",
+          "from_node_id": "hong-kong__central-ferry-piers",
+          "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
           "distance_nm": 8,
           "platform": "Pioneer II"
         }
@@ -180,9 +229,10 @@
       "label": "Phase 3 — Harbour + outlying islands + fleet modernization (Pioneer II + Quanta-LR)",
       "boats": 154,
       "cities": [
-        "hong-kong"
+        "hong-kong",
+        "macau-china"
       ],
-      "route_scope": "intra",
+      "route_scope": "all",
       "narrative": "Add silent zero-wake Pioneer II Victoria Harbour and outlying-island services and scale the foiling fleet as the network's modernization backbone.",
       "timeline": "2028+",
       "rationale": "A modernized, decarbonized PRD ferry network.",
@@ -197,14 +247,14 @@
         {
           "label": "Hong Kong ↔ Zhuhai / Shenzhen (PRD)",
           "from_node_id": "hong-kong",
-          "to_node_id": "macau-china",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 40,
           "platform": "Quanta-LR"
         },
         {
           "label": "HK Airport (SkyPier) ↔ Macau / PRD ports",
           "from_node_id": "hong-kong",
-          "to_node_id": "macau-china",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 35,
           "platform": "Quanta-LR"
         }

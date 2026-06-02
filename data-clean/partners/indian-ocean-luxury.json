@@ -20,21 +20,45 @@
   "journeys_unlocked": [
     {
       "from": "Mahé (Seychelles airport)",
-      "to": "Praslin / La Digue",
-      "today": "A weather-limited inter-island plane or a slow, rough ferry.",
-      "with_navier": "A smooth, silent, all-weather foiling transfer to the inner islands.",
+      "to": "Praslin (Côte d'Or / Baie Ste Anne)",
+      "today": "A weather-limited inter-island plane or a slow, rough ferry — and guest luggage handled twice.",
+      "with_navier": "A smooth, silent, all-weather N35 transfer with level dockside boarding and luggage stowed — arriving direct at the Praslin resort jetty, threading the Ste Anne / Curieuse marine park at zero wake.",
       "distance_nm": 24,
-      "platform": "Pioneer II",
+      "platform": "N35",
       "archetype": "tourism",
       "from_node_id": "mahe-seychelles",
-      "to_node_id": "mahe-seychelles",
+      "to_node_id": "mahe-seychelles__baie-ste-anne",
+      "route_id": null
+    },
+    {
+      "from": "Mahé (Seychelles airport)",
+      "to": "La Digue (La Passe)",
+      "today": "A two-leg ferry via Praslin, weather-bound and slow.",
+      "with_navier": "A direct silent N35 run to La Digue's La Passe jetty — all-weather, after the last plane, with luggage and bikes aboard.",
+      "distance_nm": 26,
+      "platform": "N35",
+      "archetype": "tourism",
+      "from_node_id": "mahe-seychelles",
+      "to_node_id": "mahe-seychelles__la-passe",
+      "route_id": null
+    },
+    {
+      "from": "Praslin",
+      "to": "La Digue",
+      "today": "A short but rough inter-island ferry.",
+      "with_navier": "A silent, zero-wake Pioneer II hop between the inner islands — reef-safe through the marine park, on guest demand.",
+      "distance_nm": 5,
+      "platform": "Pioneer II",
+      "archetype": "luxury_charter",
+      "from_node_id": "mahe-seychelles__baie-ste-anne",
+      "to_node_id": "mahe-seychelles__la-passe",
       "route_id": null
     },
     {
       "from": "Mahé",
-      "to": "Inner-island private resorts",
+      "to": "Inner-island private resorts & reef",
       "today": "Rough diesel speedboat transfers, rough in any swell.",
-      "with_navier": "An on-demand premium low-wake island-hop between resorts and reef.",
+      "with_navier": "An on-demand premium low-wake island-hop between resorts and reef — quiet enough to protect the dive sites.",
       "distance_nm": 15,
       "platform": "Pioneer II",
       "archetype": "luxury_charter",
@@ -44,23 +68,35 @@
     },
     {
       "from": "Port Louis / airport (Mauritius)",
-      "to": "East-coast lagoon resorts & Île aux Cerfs",
-      "today": "A long road transfer then a tender.",
-      "with_navier": "A fast foiling coastal run direct to the lagoon resorts.",
+      "to": "North-coast lagoon resorts (Grand Baie)",
+      "today": "A long road transfer then a tender to the resort.",
+      "with_navier": "A fast N35 coastal run direct to the Grand Baie lagoon resorts — level boarding, luggage aboard, no road leg.",
       "distance_nm": 30,
-      "platform": "Pioneer II",
+      "platform": "N35",
       "archetype": "tourism",
       "from_node_id": "port-louis-mauritius",
-      "to_node_id": "port-louis-mauritius",
+      "to_node_id": "port-louis-mauritius__grand-baie",
+      "route_id": null
+    },
+    {
+      "from": "Grand Baie",
+      "to": "Northern islets (Île Plate / Gabriel) & reef",
+      "today": "A diesel catamaran day-charter, noisy over the reef.",
+      "with_navier": "A silent zero-wake Pioneer II run to the northern islets and marine reserve — gentle on the lagoon and the coral.",
+      "distance_nm": 12,
+      "platform": "Pioneer II",
+      "archetype": "luxury_charter",
+      "from_node_id": "port-louis-mauritius__grand-baie",
+      "to_node_id": "port-louis-mauritius__île-plate",
       "route_id": null
     },
     {
       "from": "Zanzibar (Stone Town)",
       "to": "Nungwi / Mnemba",
       "today": "A long bumpy road or a rough speedboat.",
-      "with_navier": "A direct, silent, reef-safe foiling resort transfer.",
+      "with_navier": "A direct, silent, reef-safe N35 resort transfer — low-wake into the Mnemba conservation area where high-impact craft are restricted.",
       "distance_nm": 30,
-      "platform": "Pioneer II",
+      "platform": "N35",
       "archetype": "luxury_charter",
       "from_node_id": "zanzibar-tanzania",
       "to_node_id": "zanzibar-tanzania",
@@ -70,7 +106,7 @@
       "from": "Dar es Salaam",
       "to": "Stone Town (Zanzibar)",
       "today": "A ~2-hour diesel fast-ferry, weather-limited.",
-      "with_navier": "A faster, smoother, all-weather foiling crossing.",
+      "with_navier": "A faster, smoother, all-weather Quanta-LR foiling crossing of the channel — no charging at the island end.",
       "distance_nm": 38,
       "platform": "Quanta-LR",
       "archetype": "public_transport",
@@ -102,6 +138,11 @@
       "claim": "Reef protection favours low-wake zero-emission vessels.",
       "evidence": "Mnemba and Seychelles marine parks restrict high-impact craft — foiling's low wake and zero emissions align with conservation mandates.",
       "source": "Regional marine authorities"
+    },
+    {
+      "claim": "Foiling is built for protected reefs.",
+      "evidence": "Seychelles (Ste Anne, Curieuse, Aldabra) and Zanzibar (Mnemba) marine parks restrict high-wake craft; a near-silent, zero-wake, zero-emission foil is conservation-aligned by design.",
+      "source": "Regional marine-park authorities, 2026"
     }
   ],
   "objections": [
@@ -115,7 +156,7 @@
     },
     {
       "concern": "Does it replace planes and helicopters?",
-      "response": "No — it complements them. Foiling takes the high-frequency near and mid legs (all-weather, after-dark, lower cost); air keeps the longest outer hops. Together they raise network reliability."
+      "response": "No — it complements them. Foiling takes the high-frequency near and mid legs (all-weather, after-dark, lower cost); air keeps the longest outer hops. Together they improve network reliability."
     },
     {
       "concern": "Is it deliverable across three countries?",
@@ -137,8 +178,8 @@
       "featured_routes": [
         {
           "label": "Mahé (Seychelles airport) ↔ Praslin / La Digue",
-          "from_node_id": "mahe-seychelles",
-          "to_node_id": "mahe-seychelles",
+          "from_node_id": "mahe-seychelles__baie-ste-anne",
+          "to_node_id": "mahe-seychelles__la-passe",
           "distance_nm": 24,
           "platform": "Pioneer II"
         },
@@ -152,7 +193,7 @@
         {
           "label": "Port Louis / airport (Mauritius) ↔ East-coast lagoon resorts & Île aux Cerfs",
           "from_node_id": "port-louis-mauritius",
-          "to_node_id": "port-louis-mauritius",
+          "to_node_id": "port-louis-mauritius__grand-baie",
           "distance_nm": 30,
           "platform": "Pioneer II"
         }
@@ -160,7 +201,8 @@
       "use_cases": [
         "airport transfer",
         "resort access",
-        "island hopping"
+        "island hopping",
+        "reef-safe transfer"
       ]
     },
     {
@@ -212,8 +254,8 @@
       "featured_routes": [
         {
           "label": "Mahé (Seychelles airport) ↔ Praslin / La Digue",
-          "from_node_id": "mahe-seychelles",
-          "to_node_id": "mahe-seychelles",
+          "from_node_id": "mahe-seychelles__baie-ste-anne",
+          "to_node_id": "mahe-seychelles__la-passe",
           "distance_nm": 24,
           "platform": "Pioneer II"
         },
@@ -227,7 +269,7 @@
         {
           "label": "Port Louis / airport (Mauritius) ↔ East-coast lagoon resorts & Île aux Cerfs",
           "from_node_id": "port-louis-mauritius",
-          "to_node_id": "port-louis-mauritius",
+          "to_node_id": "port-louis-mauritius__grand-baie",
           "distance_nm": 30,
           "platform": "Pioneer II"
         }
@@ -251,7 +293,8 @@
   "why_navier_now": {
     "step_change": "Hydrofoiling lifts the hull clear of the water, so a Navier vessel flies instead of plowing through chop - roughly 10x more efficient than a conventional planing boat, faster (30+ kt cruise), and dramatically smoother and quieter. It's software-defined and autonomy-ready, so the same fleet keeps getting better and cheaper to run over time.",
     "no_new_infrastructure": "Navier rides on infrastructure that already exists - the open water and the berths and jetties already in use. No vertiports, no new rights-of-way. Pioneer II needs only a berth pedestal; the Quanta-LR hybrid needs no charging infrastructure at all.",
-    "the_moment": "Three forces just converged: the technology crossed from prototype to platform (10 vessels delivered, 4,000+ flight hours, 2025 production sold out), decarbonization mandates turned legacy diesel fleets into stranded liabilities, and the hybrid removed the 'no charging' excuse. The marine layer is being claimed cluster-by-cluster right now."
+    "the_moment": "Three forces just converged: the technology crossed from prototype to platform (10 vessels delivered, 4,000+ flight hours, 2025 production sold out), decarbonization mandates turned legacy diesel fleets into stranded liabilities, and the hybrid removed the 'no charging' excuse. The marine layer is being claimed cluster-by-cluster right now.",
+    "n35_note": "Resort arrivals run on the N35 Shuttle — 12–15 guests plus luggage, level dockside boarding, an all-weather enclosed cabin and a shallow 1.5 ft draft for lagoon and reef-flat approaches; the low-wake foil is gentle on the marine parks these islands depend on."
   },
   "end_state": {
     "headline": "A western-Indian-Ocean foiling luxury network across three flagship archipelagos.",
