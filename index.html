@@ -366,6 +366,11 @@ body.panel-hidden #footer { display:block; }
 .pcaro-routes-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin:4px 0; }
 .pcaro-route { font-size:12px; color:var(--text-1); padding:4px 0 4px 14px; position:relative; line-height:1.5; }
 .pcaro-route::before { content:'→'; position:absolute; left:0; color:var(--text-2); }
+.pcaro-route.clickable { cursor:pointer; }
+.pcaro-route.clickable:hover .pcaro-route-l { color:var(--accent); }
+.pcaro-route-chips { display:inline-flex; gap:5px; margin-left:7px; vertical-align:middle; }
+.pcaro-rationale { font-size:12px; color:var(--text-2); font-style:italic; line-height:1.5; margin:2px 0 10px; }
+.pcaro-uc { font-size:12px; color:var(--text-1); line-height:1.5; margin:6px 0; padding-left:12px; border-left:2px solid var(--line-strong); }
 .pcaro-close { padding:16px 28px 28px; border-top:1px solid var(--line); margin-top:6px; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
@@ -665,9 +670,9 @@ body.panel-hidden #footer { display:block; }
   <div class="head" id="legend-head">Map key <span class="caret">⌄</span></div>
   <div id="legend-body">
     <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
-    <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤2,000 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
+    <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤700 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
     <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
-    <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤2,000 nm</span></div>
+    <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤700 nm</span></div>
     <div class="sub disclosure" id="bp-toggle"><span class="caret">›</span>Boarding points</div>
     <div id="bp-list" class="collapsed">
       <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina</div>
@@ -935,7 +940,7 @@ const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy la
 // Trunk floor lifted at world view (z1.5–4) so the demand backbone reads when zoomed out (#2 legibility).
 const _TIER_STOPS = [[1.5,0.78,0.00,0.00],[4,0.90,0.20,0.00],[6.5,0.90,0.64,0.00],
                      [8.5,0.92,0.80,0.42],[11,0.93,0.88,0.82],[14,0.95,0.88,0.95]];
-// Quanta-LR is the trans-regional ≤2,000 nm backbone — the network's headline reach. It gets its OWN
+// Quanta-LR is the trans-regional ≤700 nm backbone — the network's headline reach. It gets its OWN
 // brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
 const _QLR_STOPS  = [[1.5,0.92,0.62,0.00],[4,0.94,0.70,0.00],[6.5,0.92,0.74,0.20],
                      [8.5,0.92,0.82,0.50],[11,0.93,0.88,0.82],[14,0.95,0.90,0.95]];
@@ -1412,7 +1417,7 @@ function toggleRings(coords) {
   RING_ACTIVE = key;
   const fc = { type:'FeatureCollection', features:[
     { type:'Feature', properties:{platform:'Pioneer II'}, geometry:{type:'Polygon', coordinates:[ringPolygon(coords[0],coords[1],70)]} },
-    { type:'Feature', properties:{platform:'Quanta-LR'}, geometry:{type:'LineString', coordinates:ringPolygon(coords[0],coords[1],2000)} },
+    { type:'Feature', properties:{platform:'Quanta-LR'}, geometry:{type:'LineString', coordinates:ringPolygon(coords[0],coords[1],700)} },
   ]};
   map.getSource('rings').setData(fc);
   document.querySelectorAll('.ring-toggle').forEach(b=>b.classList.add('active'));
@@ -1532,7 +1537,7 @@ function showRouteDetail(p){
       <span class="badge platform" style="color:${platColor};border-color:${platColor}66;">${escapeHtml(plat)}</span>
     </div>
     <h2 style="font-size:18px;">${escapeHtml(a)} <span style="color:var(--text-2)">→</span> ${escapeHtml(b)}</h2>
-    <div class="subtitle">${isQ?'≤2,000 nm hybrid':'≤70 nm electric'} · ${dist} · ${time} @ ${kts} kts</div>
+    <div class="subtitle">${isQ?'≤700 nm hybrid':'≤70 nm electric'} · ${dist} · ${time} @ ${kts} kts</div>
     <button class="ring-toggle" id="route-clear">Clear selection</button>
   </div>`;
   const kv = [['distance',dist,false],['est. time',`${time} @ ${kts} kts`,false]];
@@ -1551,7 +1556,7 @@ function showRouteDetail(p){
 // ---- Rich city pitch panel (CITY_BRIEFS) ----
 const _ARCH = {public_transit:'Public transit', super_app:'Super-app', tourism:'Tourism', luxury_charter:'Luxury charter', corporate:'Corporate', charter:'Charter', hospitality:'Hospitality'};
 function _archLabel(a){ return _ARCH[a] || (a ? String(a).replace(/_/g,' ') : ''); }
-function _platColor(plat){ return plat==='Quanta-LR' ? '#fbbf24' : (plat==='Pioneer II' ? '#6ee7b7' : '#94a3b8'); }
+function _platColor(plat){ return plat==='Quanta-LR' ? '#fbbf24' : plat==='Pioneer II' ? '#6ee7b7' : plat==='N35 Shuttle' ? '#7dd3fc' : '#94a3b8'; }
 function _cityBriefHtml(brief, props, coords){
   const cid = props.id;
   const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
@@ -1562,7 +1567,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 2,000 nm)</button>
+    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 700 nm)</button>
   </div>`;
   if (ov){
     const plabel=(PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.label)||(PARTNERS[PARTNER_ACTIVE.slug]&&PARTNERS[PARTNER_ACTIVE.slug].display)||(PARTNER_ACTIVE.stories&&PARTNER_ACTIVE.stories[0]&&PARTNER_ACTIVE.stories[0].partner_org_canonical_name)||PARTNER_ACTIVE.slug;
@@ -1583,7 +1588,7 @@ function _cityBriefHtml(brief, props, coords){
   if (brief.navier_fit&&(brief.navier_fit.pioneer_ii||brief.navier_fit.quanta_lr)){
     h+=`<div class="panel-section"><h3>How Navier fits</h3>`;
     if (brief.navier_fit.pioneer_ii) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#6ee7b7">Pioneer II · ≤70 nm electric</span><div>${escapeHtml(brief.navier_fit.pioneer_ii)}</div></div>`;
-    if (brief.navier_fit.quanta_lr) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#fbbf24">Quanta-LR · ≤2,000 nm hybrid</span><div>${escapeHtml(brief.navier_fit.quanta_lr)}</div></div>`;
+    if (brief.navier_fit.quanta_lr) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#fbbf24">Quanta-LR · ≤700 nm hybrid</span><div>${escapeHtml(brief.navier_fit.quanta_lr)}</div></div>`;
     h+=`</div>`;
   }
   if ((brief.signature_routes&&brief.signature_routes.length)||live.length){
@@ -1631,7 +1636,7 @@ function showDetail(props, coords) {
     </div>
     <h2>${escapeHtml(name)}</h2>
     <div class="subtitle">${escapeHtml(meta.join(' · ')||'—')}</div>
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 2,000 nm)</button>
+    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 700 nm)</button>
   </div>`;
   // one-line value (external_safe, partner-neutral)
   if (props.one_line_value) html += `<div class="panel-section"><div class="what-distinct">${escapeHtml(props.one_line_value)}</div></div>`;
@@ -1923,14 +1928,27 @@ function _endstateHtml(partner){
   h+=_journeysHtml(partner.journeys_unlocked);
   return h;
 }
+// featured_routes are node-linked objects {label, from_node_id, to_node_id, distance_nm, platform}
+// (older data shipped plain strings — handle both). Clickable when ids resolve them to the map.
+function _featuredRouteHtml(r){
+  if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
+  const rid=r.route_id||'', fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rid||(fn&&tn)), pc=_platColor(r.platform);
+  const chips=[];
+  if (r.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(r.distance_nm)} nm</span>`);
+  if (r.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(r.platform)}</span>`);
+  return `<div class="pcaro-route${click?' clickable':''}"${rid?` data-route="${escapeHtml(rid)}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
+}
 function _phaseBlockHtml(cur){
   cur=cur||{};
+  const uc=(cur.use_cases||[]).map(u=>`<div class="pcaro-uc">${escapeHtml(typeof u==='string'?u:(u.title?u.title+(u.body?' — '+u.body:''):(u.body||'')))}</div>`).join('');
   return `<div class="panel-section">
     ${cur.timeline?`<div class="pcaro-routes-h">${escapeHtml(cur.timeline)}</div>`:''}
     ${cur.boats!=null?`<div class="pcaro-boats">${escapeHtml(String(cur.boats))} vessels at this phase</div>`:''}
     ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
+    ${cur.rationale?`<div class="pcaro-rationale">${escapeHtml(cur.rationale)}</div>`:''}
     ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
-    ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(r=>`<div class="pcaro-route">${escapeHtml(r)}</div>`).join('')}`:''}
+    ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(_featuredRouteHtml).join('')}`:''}
+    ${uc?`<div class="pcaro-routes-h">Use cases</div>${uc}`:''}
   </div>`;
 }
 function _chapterHtml(ch, partner){
@@ -1978,7 +1996,7 @@ function _renderChapter(){
 // Journey card → ISOLATE that corridor on the map (others faded), and mark the card active. Click the
 // active card again to release back to the chapter's full view.
 function _wireJourneys(panel){
-  const cards=[...panel.querySelectorAll('.pcaro-jrn.clickable')];
+  const cards=[...panel.querySelectorAll('.pcaro-jrn.clickable, .pcaro-route.clickable')];
   cards.forEach(el=>el.addEventListener('click',()=>{
     const wasActive=el.classList.contains('active');
     cards.forEach(c=>c.classList.remove('active'));
@@ -2307,8 +2325,8 @@ const storyFilter = document.getElementById('story-filter');
 const _STORIES_LIST = _activeStories();
 let _browseTab = 'partners';
 // Humanized labels + display order for the partner taxonomy (PARTNERS[].category).
-const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
-const CAT_ORDER = ['ridehail','super_app','hospitality_brand','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
+const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', luxury_portfolio:'Luxury portfolios', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
+const CAT_ORDER = ['ridehail','super_app','hospitality_brand','luxury_portfolio','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
 function _renderStoryGrid(q){
   q = (q||'').trim().toLowerCase();
   const items = _STORIES_LIST.filter(s => !q || (s.title + ' ' + (s.subtitle||'')).toLowerCase().includes(q));

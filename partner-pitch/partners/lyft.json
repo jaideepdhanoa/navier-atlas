@@ -63,7 +63,7 @@
   {
    "n": 1,
    "label": "Phase 1 — Proven US clusters",
-   "boats": 5,
+   "boats": 8,
    "cities": [
     "new-york-harbor-usa",
     "miami-florida-usa"
@@ -86,7 +86,7 @@
   {
    "n": 2,
    "label": "Phase 2 — US coastal metros",
-   "boats": 14,
+   "boats": 276,
    "cities": [
     "san-francisco-bay-area-usa",
     "seattle-puget-sound-usa",
@@ -110,7 +110,7 @@
   {
    "n": 3,
    "label": "Phase 3 — The European frontier",
-   "boats": 22,
+   "boats": 552,
    "cities": [
     "athens-saronic-greece"
    ],
@@ -139,7 +139,6 @@
    "anchor_cities": [
     "new-york-harbor-usa"
    ],
-   "status": "flagship US market",
    "summary": "New York is Lyft's flagship US market and the home of Citi Bike, the largest bikeshare system in North America, run by Lyft Urban Solutions. It is also the most water-defined major city in America — Manhattan is an island, the metro spans the East River, the Hudson, the Upper Bay and the Sound, and NYC Ferry has proven that New Yorkers will commute on the water when it's fast and frequent. This is the water layer of Lyft's biggest market: an in-app foiling tier that turns the rivers and the harbour into a fast, smooth commuter and leisure spine, integrated with the rides and bikes Lyft already runs across the five boroughs.",
    "hero": {
     "title": "New York's rivers and harbour, in the app.",
@@ -261,7 +260,7 @@
     {
      "n": 1,
      "label": "Phase 1 — East River & Hudson commuter spine (Pioneer II)",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "new-york-harbor-usa"
      ],
@@ -270,9 +269,27 @@
      "timeline": "2026 H2",
      "rationale": "Proven NYC Ferry demand, structural bridge congestion, and Lyft's own Citi Bike network at the docks.",
      "featured_routes": [
-      "Pier 11 ↔ LIC/Williamsburg",
-      "Midtown ↔ Hoboken",
-      "Wall St ↔ Brooklyn waterfront"
+      {
+       "label": "Wall St / Pier 11 ↔ Long Island City / Williamsburg",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Midtown (W 39th) ↔ Hoboken / Jersey City waterfront",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 3,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Manhattan (E 34th) ↔ Montauk / the Hamptons",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 95,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "commute",
@@ -282,7 +299,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Harbour & island leisure (Pioneer II)",
-     "boats": 3,
+     "boats": 47,
      "cities": [
       "new-york-harbor-usa"
      ],
@@ -291,9 +308,20 @@
      "timeline": "2027 H1",
      "rationale": "Strong seasonal leisure demand and a marquee airport-access story.",
      "featured_routes": [
-      "Lower Manhattan ↔ Governors Island",
-      "Manhattan ↔ Rockaway",
-      "LaGuardia ↔ Manhattan"
+      {
+       "label": "Lower Manhattan ↔ Governors Island / Rockaway",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "LaGuardia (Marine Air) ↔ Wall St / Midtown",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 9,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "leisure",
@@ -303,7 +331,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Hamptons / Montauk line-haul (Quanta-LR)",
-     "boats": 3,
+     "boats": 94,
      "cities": [
       "new-york-harbor-usa"
      ],
@@ -312,8 +340,27 @@
      "timeline": "2027 H2",
      "rationale": "A famous, high-margin corridor with proven willingness to pay — the natural Quanta-LR showcase for New York.",
      "featured_routes": [
-      "Manhattan ↔ Montauk",
-      "Manhattan ↔ Sag Harbor"
+      {
+       "label": "Wall St / Pier 11 ↔ Long Island City / Williamsburg",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Midtown (W 39th) ↔ Hoboken / Jersey City waterfront",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 3,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Manhattan (E 34th) ↔ Montauk / the Hamptons",
+       "from_node_id": "new-york-harbor-usa",
+       "to_node_id": "new-york-harbor-usa",
+       "distance_nm": 95,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -336,7 +383,14 @@
     "narrative": "Starting from the East River commuter spine, Lyft activates New York's water as a first-class multimodal mode: a river highway that skips the bridge-and-tunnel crawl, harbour and island leisure hops, an airport water shuttle, and a Quanta-LR Hamptons run — congestion-beating and premium-monetizing, clean and silent, stitched to Citi Bike and the rides New Yorkers already book in Lyft."
    },
    "corridors_note": "From an East River commute to harbour-island hops and the Quanta-LR Hamptons run.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 235,
+   "committed_fleet": 94,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and New York as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~94 vessels as the network matures (addressable ceiling ~235)."
+   }
   },
   {
    "id": "miami",
@@ -346,7 +400,6 @@
    "anchor_cities": [
     "miami-florida-usa"
    ],
-   "status": "marquee coastal market",
    "summary": "Miami is a top US rideshare market and one of the most water-defined cities in America — Biscayne Bay, the Intracoastal, Miami Beach, Key Biscayne and a string of barrier islands, with the Florida Keys and the Bahamas just offshore. Today the bay is crossed by car over congested causeways and the offshore runs are the domain of private yachts. This is a marquee water-mobility market for Lyft: an in-app foiling tier that turns Biscayne Bay into a fast commuter and leisure spine and opens the Keys and a Quanta-LR Bahamas crossing — premium mobility on water Lyft already serves on land.",
    "hero": {
     "title": "Biscayne Bay and beyond, in the app.",
@@ -468,7 +521,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Biscayne Bay spine (Pioneer II)",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "miami-florida-usa"
      ],
@@ -477,8 +530,27 @@
      "timeline": "2026 H2",
      "rationale": "Chronic causeway congestion and a dense, water-loving market with no in-app water tier.",
      "featured_routes": [
-      "Downtown ↔ Miami Beach",
-      "Downtown ↔ Key Biscayne"
+      {
+       "label": "Downtown Miami / Bayside ↔ Miami Beach / South Beach",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 4,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Downtown ↔ Key Biscayne",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Miami ↔ Bimini / Nassau (Bahamas)",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 110,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "commute",
@@ -488,7 +560,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Intracoastal & Keys line-haul (Quanta-LR)",
-     "boats": 3,
+     "boats": 47,
      "cities": [
       "miami-florida-usa"
      ],
@@ -497,8 +569,20 @@
      "timeline": "2027 H1",
      "rationale": "Two notorious road corridors (I-95 north, US-1 to the Keys) with proven demand for an alternative.",
      "featured_routes": [
-      "Miami ↔ Fort Lauderdale",
-      "Miami ↔ Key Largo"
+      {
+       "label": "Miami ↔ Key Largo / the Upper Keys",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 50,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Miami ↔ Fort Lauderdale",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 22,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -508,7 +592,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Bahamas crossing (Quanta-LR)",
-     "boats": 3,
+     "boats": 94,
      "cities": [
       "miami-florida-usa"
      ],
@@ -517,8 +601,27 @@
      "timeline": "2027 H2",
      "rationale": "A premium offshore flow limited today to private boats and flights — the marquee Quanta-LR showcase for Miami.",
      "featured_routes": [
-      "Miami ↔ Bimini",
-      "Miami ↔ Nassau"
+      {
+       "label": "Downtown Miami / Bayside ↔ Miami Beach / South Beach",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 4,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Downtown ↔ Key Biscayne",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Miami ↔ Bimini / Nassau (Bahamas)",
+       "from_node_id": "miami-florida-usa",
+       "to_node_id": "miami-florida-usa",
+       "distance_nm": 110,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -541,7 +644,14 @@
     "narrative": "Starting from Biscayne Bay, Lyft turns South Florida's water into a first-class mode: a bay spine that skips the causeways, Intracoastal and Keys line-hauls that beat the road, and a Quanta-LR Bahamas crossing that opens an offshore corridor today reserved for yachts — premium, clean, in-app mobility on the water Miami riders already live beside."
    },
    "corridors_note": "From a Biscayne Bay commute to the Keys line-haul and the Quanta-LR Bahamas crossing.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 235,
+   "committed_fleet": 94,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Miami & South Florida as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~4 vessels) on the entry corridor, building to ~70 vessels as the network matures (addressable ceiling ~176)."
+   }
   },
   {
    "id": "bay-area",
@@ -551,7 +661,6 @@
    "anchor_cities": [
     "san-francisco-bay-area-usa"
    ],
-   "status": "founding-city market",
    "summary": "The Bay Area is Lyft's founding city and a defining market — and it is built around a bay. San Francisco, Oakland, Marin, the Peninsula and the South Bay ring 1,600 square kilometres of water, with bridge congestion among the worst in the US and a proven WETA/Bay Ferry commuter base. Through Lyft Urban Solutions, Lyft also operates Bay Wheels bikeshare across the region. This is the water layer of Lyft's home market: an in-app foiling tier that turns the bay into a fast cross-water commuter spine and opens a Quanta-LR Monterey/Sacramento run — integrated with the rides and bikes Lyft already runs.",
    "hero": {
     "title": "San Francisco Bay, in the app.",
@@ -673,7 +782,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Cross-bay commuter spine (Pioneer II)",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "san-francisco-bay-area-usa"
      ],
@@ -682,9 +791,27 @@
      "timeline": "2026 H2",
      "rationale": "National-worst bridge congestion, proven WETA demand, and Lyft's own Bay Wheels network at the docks.",
      "featured_routes": [
-      "SF ↔ Oakland/Alameda",
-      "SF ↔ Sausalito/Larkspur",
-      "SF ↔ Redwood City"
+      {
+       "label": "SF Ferry Building ↔ Oakland / Alameda",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 5,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "SF Ferry Building ↔ Sausalito / Larkspur",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "SF ↔ Redwood City / South Bay",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "commute",
@@ -694,7 +821,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Bay islands & leisure (Pioneer II)",
-     "boats": 2,
+     "boats": 47,
      "cities": [
       "san-francisco-bay-area-usa"
      ],
@@ -703,8 +830,20 @@
      "timeline": "2027 H1",
      "rationale": "Strong seasonal leisure demand on a bay with iconic islands and waterfront.",
      "featured_routes": [
-      "SF ↔ Angel Island",
-      "SF ↔ Tiburon"
+      {
+       "label": "SF ↔ Monterey",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 75,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "SF ↔ Tiburon / Angel Island",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 7,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "leisure",
@@ -714,7 +853,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Monterey coastal run (Quanta-LR)",
-     "boats": 3,
+     "boats": 94,
      "cities": [
       "san-francisco-bay-area-usa"
      ],
@@ -723,8 +862,27 @@
      "timeline": "2027 H2",
      "rationale": "A famous coastal corridor with proven leisure and business demand — the natural Quanta-LR showcase for the Bay.",
      "featured_routes": [
-      "SF ↔ Monterey",
-      "SF ↔ Half Moon Bay"
+      {
+       "label": "SF Ferry Building ↔ Oakland / Alameda",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 5,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "SF Ferry Building ↔ Sausalito / Larkspur",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "SF ↔ Redwood City / South Bay",
+       "from_node_id": "san-francisco-bay-area-usa",
+       "to_node_id": "san-francisco-bay-area-usa",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -747,7 +905,14 @@
     "narrative": "Starting from a cross-bay commuter spine, Lyft activates San Francisco Bay as a first-class mode: foiling commutes that skip the worst bridge congestion in America, island leisure hops, and a Quanta-LR coastal run to Monterey — congestion-beating, clean, stitched to Bay Wheels and the rides Lyft has booked in its home city since day one."
    },
    "corridors_note": "From a cross-bay commute to the bay islands and the Quanta-LR Monterey run.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 235,
+   "committed_fleet": 94,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and San Francisco Bay Area as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~4 vessels) on the entry corridor, building to ~82 vessels as the network matures (addressable ceiling ~206)."
+   }
   },
   {
    "id": "seattle",
@@ -757,7 +922,6 @@
    "anchor_cities": [
     "seattle-puget-sound-usa"
    ],
-   "status": "ferry-dependent market",
    "summary": "Seattle is a strong US rideshare market in the most ferry-dependent region in America — Puget Sound, where Washington State Ferries runs the largest ferry system in the country and where Elliott Bay, Bainbridge, the Kitsap Peninsula and the San Juan Islands shape daily life around the water. Today the cross-sound commute means long waits in car-ferry queues. This is the water layer of Lyft's Seattle market: an in-app foiling tier that turns the cross-sound commute into a fast passenger hop and opens a Quanta-LR run to the San Juans and Victoria.",
    "hero": {
     "title": "Puget Sound, in the app.",
@@ -877,9 +1041,27 @@
      "timeline": "2026 H2",
      "rationale": "Daily car-ferry-queue pain and a region that already commutes by water.",
      "featured_routes": [
-      "Seattle ↔ Bainbridge",
-      "Seattle ↔ Bremerton",
-      "Seattle ↔ Kingston"
+      {
+       "label": "Seattle (Elliott Bay) ↔ Bainbridge Island",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Seattle ↔ Bremerton / Kitsap Peninsula",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Seattle ↔ Friday Harbor / the San Juans",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 75,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "commute",
@@ -889,7 +1071,7 @@
     {
      "n": 2,
      "label": "Phase 2 — San Juan Islands run (Quanta-LR)",
-     "boats": 3,
+     "boats": 41,
      "cities": [
       "seattle-puget-sound-usa"
      ],
@@ -898,8 +1080,13 @@
      "timeline": "2027 H1",
      "rationale": "A marquee island destination with a long, painful multi-leg access journey today.",
      "featured_routes": [
-      "Seattle ↔ Friday Harbor",
-      "Seattle ↔ Orcas Island"
+      {
+       "label": "Seattle ↔ Victoria BC",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 65,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -909,7 +1096,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Victoria cross-border (Quanta-LR)",
-     "boats": 2,
+     "boats": 82,
      "cities": [
       "seattle-puget-sound-usa"
      ],
@@ -918,7 +1105,27 @@
      "timeline": "2027 H2",
      "rationale": "A proven cross-border leisure-and-business corridor (the Victoria Clipper) ripe for a clean foiling upgrade.",
      "featured_routes": [
-      "Seattle ↔ Victoria BC"
+      {
+       "label": "Seattle (Elliott Bay) ↔ Bainbridge Island",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 8,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Seattle ↔ Bremerton / Kitsap Peninsula",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Seattle ↔ Friday Harbor / the San Juans",
+       "from_node_id": "seattle-puget-sound-usa",
+       "to_node_id": "seattle-puget-sound-usa",
+       "distance_nm": 75,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -941,7 +1148,14 @@
     "narrative": "Starting from fast cross-sound passenger commutes, Lyft layers a foiling tier over the busiest ferry region in America: hops that skip the car-ferry queue, a Quanta-LR run to the San Juans, and a cross-border line-haul to Victoria — fast, clean mobility for foot commuters and island travellers, booked in the app Seattle already uses."
    },
    "corridors_note": "From a cross-sound commute to the Quanta-LR San Juans and Victoria runs.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 206,
+   "committed_fleet": 82,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Seattle & Puget Sound as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~4 vessels) on the entry corridor, building to ~70 vessels as the network matures (addressable ceiling ~176)."
+   }
   },
   {
    "id": "boston",
@@ -951,7 +1165,6 @@
    "anchor_cities": [
     "boston-new-england-usa"
    ],
-   "status": "harbour-city market",
    "summary": "Boston is a core US rideshare market and the home of Bluebikes, the regional bikeshare system run by Lyft Urban Solutions. It is also one of America's great harbour cities — the Inner Harbor, the Harbor Islands, the South Shore, and Cape Cod and the Islands (Provincetown, Martha's Vineyard, Nantucket) just down the coast. Today the harbour has a small commuter-boat network and the Cape corridor is a summer traffic legend. This is the water layer of Lyft's Boston market: an in-app foiling tier that turns the Inner Harbor into a commuter spine and opens fast Quanta-LR runs to the Cape and Islands.",
    "hero": {
     "title": "Boston Harbor and the Islands, in the app.",
@@ -1073,7 +1286,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Inner Harbor commuter spine (Pioneer II)",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "boston-new-england-usa"
      ],
@@ -1082,9 +1295,27 @@
      "timeline": "2026 H2",
      "rationale": "Chronic road congestion, an existing harbour commuter-boat base, and Lyft's own Bluebikes network at the docks.",
      "featured_routes": [
-      "Long Wharf ↔ Hingham",
-      "Long Wharf ↔ Logan",
-      "Long Wharf ↔ South Shore"
+      {
+       "label": "Long Wharf / Seaport ↔ Hingham / South Shore",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Long Wharf ↔ Logan Airport",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 3,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Boston ↔ Provincetown",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 45,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "commute",
@@ -1094,7 +1325,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Harbor Islands & leisure (Pioneer II)",
-     "boats": 2,
+     "boats": 47,
      "cities": [
       "boston-new-england-usa"
      ],
@@ -1103,7 +1334,20 @@
      "timeline": "2027 H1",
      "rationale": "A scenic, under-served island park minutes from downtown.",
      "featured_routes": [
-      "Long Wharf ↔ Harbor Islands"
+      {
+       "label": "Boston ↔ Martha's Vineyard / Nantucket",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 75,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Long Wharf ↔ Boston Harbor Islands",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 7,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "leisure",
@@ -1113,7 +1357,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Cape & Islands line-haul (Quanta-LR)",
-     "boats": 3,
+     "boats": 94,
      "cities": [
       "boston-new-england-usa"
      ],
@@ -1122,9 +1366,27 @@
      "timeline": "2027 H2",
      "rationale": "A famous, high-margin seasonal corridor with proven willingness to pay — the natural Quanta-LR showcase for Boston.",
      "featured_routes": [
-      "Boston ↔ Provincetown",
-      "Boston ↔ Martha's Vineyard",
-      "Boston ↔ Nantucket"
+      {
+       "label": "Long Wharf / Seaport ↔ Hingham / South Shore",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Long Wharf ↔ Logan Airport",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 3,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Boston ↔ Provincetown",
+       "from_node_id": "boston-new-england-usa",
+       "to_node_id": "boston-new-england-usa",
+       "distance_nm": 45,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -1147,7 +1409,14 @@
     "narrative": "Starting from an Inner Harbor commuter spine, Lyft activates Boston's water as a first-class mode: harbour commutes that skip the tunnels, a Logan water shuttle, island leisure hops, and Quanta-LR runs to the Cape and Islands — congestion-beating and seasonally premium, clean, stitched to Bluebikes and the rides Boston already books in Lyft."
    },
    "corridors_note": "From an Inner Harbor commute to the Harbor Islands and the Quanta-LR Cape & Islands runs.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 235,
+   "committed_fleet": 94,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Boston & New England as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~4 vessels) on the entry corridor, building to ~82 vessels as the network matures (addressable ceiling ~206)."
+   }
   },
   {
    "id": "athens-cyclades",
@@ -1157,7 +1426,6 @@
    "anchor_cities": [
     "athens-saronic-greece"
    ],
-   "status": "European frontier flagship (FreeNow)",
    "summary": "Athens is the flagship of Lyft's new European frontier. Through the FreeNow acquisition (completed July 2025), Lyft now operates across nine European countries and 180+ cities — and Greece is its marquee water market. The Saronic Gulf rings Athens with islands (Aegina, Hydra, Poros, Spetses) and the Cyclades — Mykonos, Santorini, Paros and dozens more — are the most iconic island-hopping geography on earth, served today by slow, crowded, weather-cancelled diesel ferries. This is the proof that Lyft's water tier travels: an in-app foiling layer on the Saronic commute and a Quanta-LR Cyclades network, distributed through FreeNow.",
    "hero": {
     "title": "The Cyclades, in the app.",
@@ -1279,7 +1547,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Saronic Gulf commute (Pioneer II)",
-     "boats": 4,
+     "boats": 5,
      "cities": [
       "athens-saronic-greece"
      ],
@@ -1288,8 +1556,27 @@
      "timeline": "2026 H2",
      "rationale": "A high-volume island commute-and-leisure flow minutes from Athens, run on slow ferries.",
      "featured_routes": [
-      "Piraeus ↔ Aegina/Hydra/Poros",
-      "Athens ↔ Cape Sounion"
+      {
+       "label": "Piraeus / Athens ↔ Aegina / Hydra / Poros (Saronic)",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Athens (Piraeus / Lavrio) ↔ Mykonos",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 85,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Athens ↔ Santorini",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 130,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "tourism",
@@ -1299,7 +1586,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Athens ↔ Cyclades line-haul (Quanta-LR)",
-     "boats": 4,
+     "boats": 47,
      "cities": [
       "athens-saronic-greece"
      ],
@@ -1308,8 +1595,20 @@
      "timeline": "2027 H1",
      "rationale": "The world's most iconic island corridor, run on slow weather-bound ferries — the flagship Quanta-LR showcase in Europe.",
      "featured_routes": [
-      "Athens ↔ Mykonos",
-      "Athens ↔ Santorini"
+      {
+       "label": "Mykonos ↔ Paros / Naxos",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 25,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Athens (Glyfada / coast) ↔ Athenian Riviera / Cape Sounion",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 22,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "intercity",
@@ -1319,7 +1618,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Cyclades island-hopping network (Quanta-LR + Pioneer II)",
-     "boats": 4,
+     "boats": 94,
      "cities": [
       "athens-saronic-greece"
      ],
@@ -1328,8 +1627,27 @@
      "timeline": "2027 H2",
      "rationale": "Inter-island hopping is the core of the Cyclades experience and the most schedule-constrained today.",
      "featured_routes": [
-      "Mykonos ↔ Paros ↔ Naxos",
-      "central Cyclades inter-island"
+      {
+       "label": "Piraeus / Athens ↔ Aegina / Hydra / Poros (Saronic)",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 18,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Athens (Piraeus / Lavrio) ↔ Mykonos",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 85,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Athens ↔ Santorini",
+       "from_node_id": "athens-saronic-greece",
+       "to_node_id": "athens-saronic-greece",
+       "distance_nm": 130,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "network",
@@ -1352,10 +1670,19 @@
     "narrative": "Starting from the Saronic Gulf commute, Lyft proves its water tier travels to Europe: a fast in-app foiling layer across the Saronic islands and a Quanta-LR network through the Cyclades — replacing slow, weather-cancelled diesel ferries on the world's most iconic island-hopping geography, distributed through FreeNow across Lyft's new nine-country European footprint."
    },
    "corridors_note": "From a Saronic Gulf commute to the Quanta-LR Athens↔Cyclades line-haul and inter-island network.",
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 235,
+   "committed_fleet": 94,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and Athens & the Cyclades as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~4 vessels) on the entry corridor, building to ~70 vessels as the network matures (addressable ceiling ~176)."
+   }
   }
  ],
  "deck_only": {
   "note": "Commercial model, unit economics, and competitive framing vs. the US rideshare incumbent live in the deck, not on the partner page."
- }
+ },
+ "steady_state_ceiling": 1381,
+ "committed_fleet": 552
 }

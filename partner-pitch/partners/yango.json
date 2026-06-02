@@ -111,7 +111,7 @@
   {
    "n": 1,
    "label": "Phase 1 — Dubai coastal hops (UAE, Pioneer II)",
-   "boats": 4,
+   "boats": 8,
    "cities": [
     "dubai-uae"
    ],
@@ -130,7 +130,7 @@
   {
    "n": 2,
    "label": "Phase 2 — Lagos lagoon commuter spine (Africa, Pioneer II)",
-   "boats": 4,
+   "boats": 148,
    "cities": [
     "lagos-nigeria"
    ],
@@ -150,7 +150,7 @@
   {
    "n": 3,
    "label": "Phase 3 — Quanta-LR line-hauls (both regions)",
-   "boats": 4,
+   "boats": 296,
    "cities": [
     "dubai-uae"
    ],
@@ -212,7 +212,6 @@
     "dubai-uae",
     "abu-dhabi-uae"
    ],
-   "status": "opportunity",
    "summary": "Yango is a major ride-hail and super-app player in the UAE, where the Dubai and Abu Dhabi coastlines, creeks and islands are heavily under-used for mobility. A foiling water tier in-app turns the Gulf coast into a congestion-beating transport layer.",
    "hero": {
     "title": "The Gulf coast, in the Yango app.",
@@ -326,7 +325,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Dubai coastal + creek hops (Pioneer II)",
-     "boats": 4,
+     "boats": 7,
      "cities": [
       "dubai-uae"
      ],
@@ -335,9 +334,27 @@
      "timeline": "2027 H1",
      "rationale": "Huge captive congestion demand and a world-class under-used coast.",
      "featured_routes": [
-      "Marina ↔ Downtown",
-      "Marina ↔ Palm",
-      "JBR ↔ Creek"
+      {
+       "label": "Dubai Marina ↔ Downtown / Dubai Creek",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai ↔ Abu Dhabi (Corniche)",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 70,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Abu Dhabi (city) ↔ Saadiyat / Yas Islands",
+       "from_node_id": "abu-dhabi-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "commute",
@@ -347,7 +364,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Dubai ↔ Abu Dhabi line-haul (Quanta-LR)",
-     "boats": 3,
+     "boats": 74,
      "cities": [
       "dubai-uae"
      ],
@@ -356,7 +373,13 @@
      "timeline": "2027 H2",
      "rationale": "A heavy intercity corridor with the coast untapped.",
      "featured_routes": [
-      "Dubai ↔ Abu Dhabi"
+      {
+       "label": "Abu Dhabi ↔ Sir Bani Yas Island",
+       "from_node_id": "abu-dhabi-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 90,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "intercity"
@@ -365,7 +388,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Abu Dhabi islands network (Pioneer II + Quanta-LR)",
-     "boats": 4,
+     "boats": 148,
      "cities": [
       "abu-dhabi-uae"
      ],
@@ -374,8 +397,27 @@
      "timeline": "2028",
      "rationale": "An island-rich capital with under-used water.",
      "featured_routes": [
-      "AD ↔ Saadiyat / Yas",
-      "AD ↔ Sir Bani Yas"
+      {
+       "label": "Dubai Marina ↔ Downtown / Dubai Creek",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "dubai-uae",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Dubai ↔ Abu Dhabi (Corniche)",
+       "from_node_id": "dubai-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 70,
+       "platform": "Quanta-LR"
+      },
+      {
+       "label": "Abu Dhabi (city) ↔ Saadiyat / Yas Islands",
+       "from_node_id": "abu-dhabi-uae",
+       "to_node_id": "abu-dhabi-uae",
+       "distance_nm": 10,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "island access",
@@ -397,7 +439,14 @@
     ],
     "narrative": "Yango activates the UAE coast as in-app transport — Dubai coastal hops, an inter-emirate line-haul, and Abu Dhabi island connections — congestion-beating premium mobility on the Gulf's under-used water."
    },
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 370,
+   "committed_fleet": 148,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and UAE (Dubai + Abu Dhabi) as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~6 vessels) on the entry corridor, building to ~127 vessels as the network matures (addressable ceiling ~317)."
+   }
   },
   {
    "id": "west-africa",
@@ -407,7 +456,6 @@
    "anchor_cities": [
     "lagos-nigeria"
    ],
-   "status": "government tailwind",
    "summary": "Yango operates across Sub-Saharan Africa, and Lagos — a 20M+ megacity strangled by gridlock and bisected by a vast lagoon — is arguably the single largest commuter-ferry opportunity on earth. An in-app foiling tier turns the lagoon into a congestion-beating transport layer.",
    "hero": {
     "title": "The Lagos lagoon, in the Yango app.",
@@ -521,7 +569,7 @@
     {
      "n": 1,
      "label": "Phase 1 — Lagoon commuter spine (Pioneer II)",
-     "boats": 4,
+     "boats": 7,
      "cities": [
       "lagos-nigeria"
      ],
@@ -530,9 +578,27 @@
      "timeline": "2027 H2",
      "rationale": "Possibly the world's largest captive commuter-ferry demand.",
      "featured_routes": [
-      "VI/Lekki ↔ Ikorodu",
-      "Island ↔ Apapa",
-      "Lekki ↔ CBD"
+      {
+       "label": "Victoria Island / Lekki ↔ Ikorodu (mainland)",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Lagos Island ↔ Apapa / mainland",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Lekki / Ajah ↔ Lagos Island (CBD)",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "commute",
@@ -542,7 +608,7 @@
     {
      "n": 2,
      "label": "Phase 2 — Lagoon network expansion (Pioneer II)",
-     "boats": 6,
+     "boats": 74,
      "cities": [
       "lagos-nigeria"
      ],
@@ -551,7 +617,13 @@
      "timeline": "2028",
      "rationale": "Scale the proven spine across the metro.",
      "featured_routes": [
-      "Metro-wide lagoon routes"
+      {
+       "label": "Lagos ↔ Regional coast (Badagry / offshore)",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 45,
+       "platform": "Quanta-LR"
+      }
      ],
      "use_cases": [
       "commute"
@@ -560,7 +632,7 @@
     {
      "n": 3,
      "label": "Phase 3 — Regional coastal corridors (Quanta-LR)",
-     "boats": 3,
+     "boats": 148,
      "cities": [
       "lagos-nigeria"
      ],
@@ -569,7 +641,27 @@
      "timeline": "2028+",
      "rationale": "Extend beyond the lagoon.",
      "featured_routes": [
-      "Lagos ↔ regional coast"
+      {
+       "label": "Victoria Island / Lekki ↔ Ikorodu (mainland)",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 14,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Lagos Island ↔ Apapa / mainland",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 6,
+       "platform": "Pioneer II"
+      },
+      {
+       "label": "Lekki / Ajah ↔ Lagos Island (CBD)",
+       "from_node_id": "lagos-nigeria",
+       "to_node_id": "lagos-nigeria",
+       "distance_nm": 12,
+       "platform": "Pioneer II"
+      }
      ],
      "use_cases": [
       "intercity"
@@ -589,7 +681,16 @@
     ],
     "narrative": "Yango activates the Lagos lagoon as in-app commuter transport — turning the world's most gridlocked megacity's biggest under-used asset into the fastest way across the city."
    },
-   "category": "ridehail"
+   "category": "ridehail",
+   "steady_state_ceiling": 370,
+   "committed_fleet": 148,
+   "the_ask": {
+    "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+    "partner_brings": "Demand, the rider/guest relationship, and West Africa (Lagos) as the launch market to prove the on-water tier.",
+    "next_step": "Scope a Phase-1 pilot (~5 vessels) on the entry corridor, building to ~106 vessels as the network matures (addressable ceiling ~264)."
+   }
   }
- ]
+ ],
+ "steady_state_ceiling": 740,
+ "committed_fleet": 296
 }
