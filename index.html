@@ -2337,7 +2337,7 @@ const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hos
 const CAT_ORDER = ['ridehail','super_app','hospitality_brand','luxury_portfolio','investment_jv','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
 // Partner tier (PARTNERS[].tier) — the index defaults to flagship, per Tasklet's category × tier spec.
 let _partnerTier = 'flagship';
-const TIER_FILTERS = [['flagship','Flagship'],['priority','Priority'],['','All']];
+const TIER_FILTERS = [['flagship','Flagship'],['priority','Priority'],['watch','Watch'],['','All']];
 function _renderStoryGrid(q){
   q = (q||'').trim().toLowerCase();
   const items = _STORIES_LIST.filter(s => !q || (s.title + ' ' + (s.subtitle||'')).toLowerCase().includes(q));
@@ -2350,9 +2350,9 @@ function _renderStoryGrid(q){
 function _renderPartnerGrid(q){
   q = (q||'').trim().toLowerCase();
   const all = Object.values((typeof PARTNERS!=='undefined' && PARTNERS) || {});
-  const counts = { flagship:0, priority:0 }; for (const p of all){ if (counts[p.tier]!=null) counts[p.tier]++; }
+  const counts = { flagship:0, priority:0, watch:0 }; for (const p of all){ if (counts[p.tier]!=null) counts[p.tier]++; }
   const tierBar = `<div class="pidx-tierbar">${TIER_FILTERS.map(([v,l])=>{
-    const c = v==='flagship'?counts.flagship : v==='priority'?counts.priority : all.length;
+    const c = counts[v]!=null ? counts[v] : all.length;
     return `<button class="pidx-tier${_partnerTier===v?' active':''}" data-tier="${v}">${l} <span class="pidx-tier-n">${c}</span></button>`;
   }).join('')}</div>`;
   const groups = {}; for (const p of all){ if (_partnerTier && (p.tier||'')!==_partnerTier) continue; const c=p.category||'other'; (groups[c]=groups[c]||[]).push(p); }
