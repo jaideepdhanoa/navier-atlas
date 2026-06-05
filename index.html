@@ -1628,7 +1628,14 @@ function _cityBriefHtml(brief, props, coords){
     // intra-harbour BP routes that aren't yet given distinct labels). Keep only legible, distinct corridors.
     const liveClean = live.filter(f=>{ const p=f.properties||{}; const a=(p.from_label||p.from_city||'').trim().toLowerCase(), b=(p.to_label||p.to_city||'').trim().toLowerCase(); return a && b && a!==b; });
     h+=`<div class="panel-section"><h3>Signature routes</h3>`;
-    for (const r of (brief.signature_routes||[])) h+=`<div class="pcaro-route"><span class="pcaro-route-l">${escapeHtml(String(r).replace(/^[↔→\s]+/,''))}</span></div>`;
+    for (const r of (brief.signature_routes||[])){
+      // signature_routes are now {label, route_id} objects (were bare strings — handle both). Clickable
+      // when the route_id resolves to a route in this bundle (→ opens it like a live route).
+      const o = (typeof r==='string') ? {label:r} : (r||{});
+      const lbl = String(o.label||'').replace(/^[↔→\s]+/,'');
+      const rids = _routeIdsOf(o).filter(id=>ROUTE_ID_SET.has(id));
+      h+=`<div class="pcaro-route${rids.length?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
+    }
     if (liveClean.length){ h+=`<div class="brief-live-h">On the map · click a route to highlight it</div>`;
       for (const f of liveClean){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
     }
@@ -1647,6 +1654,11 @@ function _renderCityBrief(brief, props, coords){
   if (rt) rt.addEventListener('click', ()=>{ const c=rt.dataset.coords.split(',').map(Number); toggleRings(c); rt.classList.toggle('active'); });
   p.querySelectorAll('.brief-live[data-rid]').forEach(el=>el.addEventListener('click', ()=>{
     const f = ROUTE_FC.features.find(x=>x.properties.id===el.dataset.rid); if (f) selectRoute(f);
+  }));
+  // Clickable signature routes (those whose route_id resolved) → open the route, like the "on the map" rows.
+  p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
+    const id=(el.dataset.routes||'').split(',')[0];
+    const f = ROUTE_FC.features.find(x=>x.properties && x.properties.id===id); if (f) selectRoute(f);
   }));
 }
 function showDetail(props, coords) {
