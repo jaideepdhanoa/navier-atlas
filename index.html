@@ -1476,6 +1476,14 @@ function setRouteHighlight(id){
 // Delivers the "context-aware panel" feedback: the clicked route + its POIs stay lit, everything else
 // dims, and the right panel describes the route (platform, distance, ETA, demand tier, trip purpose).
 const PANEL_EMPTY_HTML = (typeof document!=='undefined' && document.getElementById('panel')) ? document.getElementById('panel').innerHTML : null;
+// ---- Panel back-stack: chain of detail views (city/POI brief · route detail · story) so a viewer can step
+// back through the panels they opened (city → route → …) without re-finding the node on the map. ----
+let _navStack = [], _navCurrent = null, _navReplaying = false;
+function _navEnter(desc){ if (_navReplaying) return; if (_navCurrent && _navCurrent.key !== desc.key) _navStack.push(_navCurrent); _navCurrent = desc; }
+function _navBack(){ if (!_navStack.length) return; _navReplaying = true; _navCurrent = _navStack.pop(); try { _navCurrent.render(); } finally { _navReplaying = false; } }
+function _navReset(){ _navStack = []; _navCurrent = null; }
+function _navBackHtml(){ if (!_navStack.length) return ''; const prev=_navStack[_navStack.length-1]; const l=(prev&&prev.label)?String(prev.label).slice(0,40):'Back'; return `<button class="pcaro-back" id="nav-back">← ${escapeHtml(l)}</button>`; }
+(function(){ const pnl=(typeof document!=='undefined')&&document.getElementById('panel'); if (pnl) pnl.addEventListener('click', e=>{ if (e.target.closest('#nav-back')){ e.stopPropagation(); _navBack(); } }); })();
 const _INTERACTIVE_LAYERS = ['route-p2','route-qlr','priority-points','priority-halo','city-points','city-halo','city-clusters','poi-points','poi-halo','poi-clusters'];
 let SELECTED_ROUTE = null;
 let _ROUTE_CLICK = false;
@@ -1497,6 +1505,7 @@ function _dimNodesToEndpoints(fromId, toId){
 function selectRoute(feature){
   if (!feature) return;
   const p = feature.properties || {};
+  _navEnter({ key:'route:'+(p.id||''), label:_routeLabel(p), render:()=>selectRoute(feature) });
   SELECTED_ROUTE = p.id || null;
   const hit = ['==',['get','id'], p.id];
   try {
@@ -1520,6 +1529,7 @@ function selectRoute(feature){
 }
 function clearSelection(){
   SELECTED_ROUTE = null;
+  _navReset();
   ROUTE_POPUP.remove();
   try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
   // Deselect restores the CURRENT context (not always the admin-empty panel):
@@ -1543,7 +1553,7 @@ function showRouteDetail(p){
   const tier = p.render_tier || p.edge_class || null;
   const purpose = p.trip_purpose || null;
   const pColor = PURPOSE_HEX[purpose] || '#94a3b8';
-  let html = `<div class="panel-hero">
+  let html = _navBackHtml() + `<div class="panel-hero">
     <div class="type-row">
       <span class="type-pill" style="background:${platColor}22;color:${platColor};">route</span>
       <span class="badge platform" style="color:${platColor};border-color:${platColor}66;">${escapeHtml(plat)}</span>
@@ -1574,7 +1584,9 @@ function _cityBriefHtml(brief, props, coords){
   const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
   const live = ROUTE_FC.features.filter(f=>f.properties._cfrom===cid || f.properties._cto===cid)
     .sort((a,b)=>(b.properties.render_tw||0)-(a.properties.render_tw||0)).slice(0,6);
-  let h = (PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '';
+  // A detail-chain back (nav-back) takes precedence; once the chain is exhausted, fall back to the
+  // "← Back to the proposal" exit when a partner/carousel context is active.
+  let h = _navStack.length ? _navBackHtml() : ((PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '');
   h += `<div class="panel-hero">
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
@@ -1633,6 +1645,7 @@ function showDetail(props, coords) {
   const p = document.getElementById('panel');
   const name = props.fullName || props.name || 'Unnamed';
   const type = (props.type||'').toLowerCase();
+  _navEnter({ key:'node:'+(props.id||name), label:name, render:()=>showDetail(props,coords) });
   // Selecting a node supersedes a route selection — restore node opacities to default first.
   if (SELECTED_ROUTE && !_focusEngaged()) { SELECTED_ROUTE = null; try { applyStoryFocus(null); map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){} }
   const _brief = (typeof CITY_BRIEFS!=='undefined') ? CITY_BRIEFS[props.id] : null;
@@ -1644,7 +1657,7 @@ function showDetail(props, coords) {
   if (props.region) meta.push(props.region);
   if (props.parent_city_id || props.parent_city) meta.push(`parent: ${props.parent_city_id || props.parent_city}`);
 
-  let html = `<div class="panel-hero">
+  let html = _navBackHtml() + `<div class="panel-hero">
     <div class="type-row">
       <span class="type-pill ${type}">${type==='locale'?'area':(type==='poi'?(props.bp_type_label||'boarding pt'):(type||'node'))}</span>
       ${props.platform_class ? `<span class="badge platform">${escapeHtml(props.platform_class)}</span>`:''}
@@ -2096,6 +2109,8 @@ function _writeChapterHash(){
 function showChapter(i){
   if (!_CARO) return;
   const n=_CARO.chapters.length; i=Math.max(0,Math.min(i,n-1)); _CARO.i=i;
+  // The chapter is a back-stack ROOT: drilling into a map node/route from here can step back to it.
+  _navStack=[]; _navCurrent={ key:'chapter:'+i, label:_chapterTitle(_CARO.chapters[i],_CARO.partner), render:()=>showChapter(i) };
   const ch=_CARO.chapters[i];
   if (ch.kind==='phase'){
     const cur=ch.phase;
@@ -2161,6 +2176,8 @@ function startPartnerHub(partner){
 }
 function renderHubIndex(partner){
   _CARO=null; _HUB={partner};
+  // Hub index is a back-stack ROOT (drilling a map node from here can step back to it).
+  _navStack=[]; _navCurrent={ key:'hubindex:'+(partner.partner_id||''), label:(partner.display||'markets'), render:()=>renderHubIndex(partner) };
   const anchors=_hubAnchors(partner);
   applyStoryFocus(anchors.length?anchors:null);        // spotlight every market's footprint (global reach)
   const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
@@ -2248,6 +2265,7 @@ function _autoIntro(partner, key){
 }
 function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(m) m.hidden=true; }
 function applyPartnerView(){
+  _navReset();
   if (!PARTNER_ACTIVE) return;
   const partner = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[PARTNER_ACTIVE.slug] : null;
   if (partner && (partner.layout==='hub'||partner.layout==='network') && partner.markets && partner.markets.length){ startPartnerHub(partner); return; }
@@ -2317,10 +2335,11 @@ function closeStory() {
 window.closeStory = closeStory;
 function showStory(slug) {
   const s = STORY_BY_SLUG[slug]; if (!s) return;
+  _navEnter({ key:'story:'+slug, label:s.title, render:()=>showStory(slug) });
   CURRENT_STORY = slug;
   const p = document.getElementById('panel');
   const accent = s.accent_class || 'emerald';
-  let html = `<div class="story-header accent-${accent}">
+  let html = _navBackHtml() + `<div class="story-header accent-${accent}">
     <button class="close" onclick="closeStory()">×</button>
     <div class="partner-mark">${escapeHtml(s.partner_org_canonical_name || 'Partner')}</div>
     <h2>${escapeHtml(s.title)}</h2>
