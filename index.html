@@ -1776,11 +1776,7 @@ function _resolvePhaseCities(cities){
   }
   return [...out];
 }
-function _focusCities(cities, routeScope){
-  if (!cities || !cities.length){ applyStoryFocus(null); return; }
-  const inSet=['in',['get','id'],['literal',cities]];
-  const cf=['in',['get','_cfrom'],['literal',cities]], ct=['in',['get','_cto'],['literal',cities]];
-  const routeIn=(routeScope==='intra')?['all',cf,ct]:['any',cf,ct];
+function _applyFocusPaint(routeIn, inSet){
   try{
     map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',routeIn,m,0.03]));
     map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',routeIn,m,0.03]));
@@ -1800,6 +1796,26 @@ function _focusCities(cities, routeScope){
     _dimClusters(true);
   }catch(e){ console.warn('focus',e); }
 }
+function _focusCities(cities, routeScope){
+  if (!cities || !cities.length){ applyStoryFocus(null); return; }
+  const cf=['in',['get','_cfrom'],['literal',cities]], ct=['in',['get','_cto'],['literal',cities]];
+  _applyFocusPaint((routeScope==='intra')?['all',cf,ct]:['any',cf,ct], ['in',['get','id'],['literal',cities]]);
+}
+// Route-LEVEL focus: light ONLY the given route ids (a phase's / journey's featured routes), dim the rest,
+// and spotlight just those routes' endpoint cities. The precise alternative to city-level focus, now that
+// featured_routes / journeys carry route_id. Returns false if none resolve (caller falls back to cities).
+const ROUTE_ID_SET = new Set((ROUTE_FC.features||[]).map(f=>f.properties && f.properties.id).filter(Boolean));
+function _routeFeats(ids){ const s=new Set(ids); return (ROUTE_FC.features||[]).filter(f=>f.properties && s.has(f.properties.id)); }
+function _focusRoutes(routeIds){
+  const ids=[...new Set(routeIds)].filter(id=>ROUTE_ID_SET.has(id));
+  if (!ids.length) return false;
+  const cset=new Set(); for(const f of _routeFeats(ids)){const p=f.properties||{}; if(p._cfrom)cset.add(p._cfrom); if(p._cto)cset.add(p._cto);}
+  _applyFocusPaint(['in',['get','id'],['literal',ids]], ['in',['get','id'],['literal',[...cset]]]);
+  return true;
+}
+// Collect the route ids referenced by a list item (featured_route or journey): route_id (string) and/or
+// route_ids[] (array, for multi-leg corridors — Tasklet ships both forms).
+function _routeIdsOf(o){ const out=[]; if(!o) return out; if(o.route_id) out.push(o.route_id); if(Array.isArray(o.route_ids)) for(const x of o.route_ids) if(x) out.push(x); return out; }
 // A phase's focus set = its cities PLUS the resolved endpoints of its featured_routes. For multi-node
 // markets this surfaces the specific corridor(s) (and gives the camera something distinct per phase);
 // for single-node markets it collapses to the one city (correct, given the data granularity).
@@ -1809,8 +1825,17 @@ function _phaseFocusCities(phase){
     for (const id of [r&&r.from_node_id, r&&r.to_node_id]) if (id) for (const c of _resolvePhaseCities([id])) set.add(c);
   return [...set];
 }
+// A phase's referenced route ids (featured_routes route_id / route_ids[]), filtered to ones present here.
+function _phaseRouteIds(phase){
+  const out=[];
+  for (const r of ((phase&&phase.featured_routes)||[])) for (const id of _routeIdsOf(r)) out.push(id);
+  return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
+}
 function applyPhaseFocus(phase){
   if (!phase){ applyStoryFocus(null); return; }
+  // Route-LEVEL when the phase's featured_routes carry ids → light exactly those routes (the precise
+  // "this phase = these corridors" view). Falls back to city-level for legacy / bare-string phases.
+  if (_focusRoutes(_phaseRouteIds(phase))) return;
   const cities=_phaseFocusCities(phase);
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   // Safety-net: a single-city phase has no meaningful "all" — route_scope:'all' would light every
@@ -1876,9 +1901,9 @@ function _journeysHtml(js){
     if (j.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(j.platform)}</span>`);
     if (j.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(j.distance_nm)} nm</span>`);
     if (j.archetype) chips.push(`<span class="pcaro-jchip" style="text-transform:capitalize">${escapeHtml(String(j.archetype).replace(/_/g,' '))}</span>`);
-    const rid=j.route_id||'', fn=j.from_node_id||'', tn=j.to_node_id||'';
-    const click = !!(rid || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
-    return `<div class="pcaro-jrn${click?' clickable':''}"${rid?` data-route="${escapeHtml(rid)}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
+    const rids=_routeIdsOf(j), fn=j.from_node_id||'', tn=j.to_node_id||'';
+    const click = !!(rids.length || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
+    return `<div class="pcaro-jrn${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
       <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
       ${j.today?`<div class="pcaro-jrn-line today"><span>Today</span>${escapeHtml(j.today)}</div>`:''}
       ${j.with_navier?`<div class="pcaro-jrn-line nav"><span>With Navier</span>${escapeHtml(j.with_navier)}</div>`:''}
@@ -1950,11 +1975,11 @@ function _endstateHtml(partner){
 // (older data shipped plain strings — handle both). Clickable when ids resolve them to the map.
 function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
-  const rid=r.route_id||'', fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rid||(fn&&tn)), pc=_platColor(r.platform);
+  const rids=_routeIdsOf(r), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
   const chips=[];
   if (r.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(r.distance_nm)} nm</span>`);
   if (r.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(r.platform)}</span>`);
-  return `<div class="pcaro-route${click?' clickable':''}"${rid?` data-route="${escapeHtml(rid)}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
+  return `<div class="pcaro-route${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
 function _phaseBlockHtml(cur){
   cur=cur||{};
@@ -2020,12 +2045,23 @@ function _wireJourneys(panel){
     cards.forEach(c=>c.classList.remove('active'));
     if (wasActive){ showChapter(_CARO.i); return; }   // toggle off → re-render chapter (resets focus + camera)
     el.classList.add('active');
-    const rid=el.dataset.route;
-    if (rid){ const f=(ROUTE_FC.features||[]).find(x=>x.properties && x.properties.id===rid); if (f){ selectRoute(f); return; } }
-    // No route_id (e.g. an intra-city journey): fade everything except this corridor's cities, then frame it.
+    // Route-level isolate IN PLACE: light only this corridor's route(s) + fit camera to its geometry (keeps
+    // the deep-dive panel). route_id(s) via data-routes; falls back to from/to city focus for legacy items.
+    const rids=(el.dataset.routes?el.dataset.routes.split(','):[]).filter(Boolean);
+    if (rids.length && _focusRoutes(rids)){ _fitRoutes(_routeFeats(rids), 200); return; }
     const ids=[...new Set([el.dataset.from, el.dataset.to].filter(Boolean))];
     if (ids.length){ _focusCities(ids, 'intra'); _fitCities(ids, 160); }
   }));
+}
+// Fit the camera to the geometry of specific route features (their line coords) — used for phase / journey
+// route-level focus so the camera frames the actual corridor, not just the endpoint city.
+function _fitRoutes(feats, pad){
+  let b=null;
+  for (const f of (feats||[])){ const g=f.geometry; if(!g) continue;
+    const lines = g.type==='LineString' ? [g.coordinates] : g.type==='MultiLineString' ? g.coordinates : [];
+    for (const line of lines) for (const [x,y] of line){
+      b = b ? {minX:Math.min(b.minX,x),minY:Math.min(b.minY,y),maxX:Math.max(b.maxX,x),maxY:Math.max(b.maxY,y)} : {minX:x,minY:y,maxX:x,maxY:y}; } }
+  if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], {padding:pad||140, maxZoom:12, duration:1100, essential:true});
 }
 function _fitCities(cities, pad){
   let b=null;
@@ -2056,7 +2092,9 @@ function showChapter(i){
   const ch=_CARO.chapters[i];
   if (ch.kind==='phase'){
     const cur=ch.phase;
+    const rids=_phaseRouteIds(cur);
     if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
+    else if (rids.length){ _fitRoutes(_routeFeats(rids), 160); }   // frame the phase's actual corridors
     else _fitPhaseCities(cur);
     applyPhaseFocus(cur);
   } else {                                   // endstate / proof / ask: frame the partner's FULL POTENTIAL

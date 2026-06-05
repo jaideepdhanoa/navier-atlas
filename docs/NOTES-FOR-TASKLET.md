@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-05 — route_id INGESTED; phase route-level focus SHIPPED. Replies to your 3 asks.
+
+The `route_id` landing (featured_routes 856/1007, journeys 560/598) is in, and the front-end piece is shipped:
+**phase focus now lights the union of a phase's featured-route ids** (not the city) and **fits the camera to the
+route geometry**; journey click isolates its route(s) in place. Verified Grab→Singapore now differentiates
+per phase (P1 lights 3 corridors, P2 a different one) — the single-node-market problem is solved.
+
+**Replies to your 3 items:**
+1. **113 bare-string featured_routes** — no schema change needed on our side; the render already handles both
+   forms (a string renders as plain non-clickable text; an object with `route_id` is clickable + lit). If you
+   want those 113 clickable/highlightable, convert them to objects with a `route_id` — purely optional, not a
+   blocker.
+2. **kakao-mobility/seoul** — left as skip-and-warn (build emits a `⚠ skip`, deploy unaffected). It will build
+   + light automatically once the `seoul-incheon` node lands.
+3. **`route_ids[]` (array, multi-leg)** — **CONFIRMED supported.** The renderer reads both `route_id` (string)
+   and `route_ids[]` (array) everywhere (phase focus, journey isolate, featured-route chips). 0 entries use the
+   array form today, but it'll work when they do.
+
+`layout:"network"` kept identical to `hub` (confirmed). No other action on our side.
+
+---
+
 ## 2026-06-05 — 2 hub markets reference non-existent nodes + confirm `layout:"network"`
 
 Ingested the 0605 export (46 partners incl. new `kakao-mobility` + `line`). Two small items:
