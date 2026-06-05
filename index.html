@@ -2205,7 +2205,7 @@ function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(
 function applyPartnerView(){
   if (!PARTNER_ACTIVE) return;
   const partner = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[PARTNER_ACTIVE.slug] : null;
-  if (partner && partner.layout==='hub' && partner.markets && partner.markets.length){ startPartnerHub(partner); return; }
+  if (partner && (partner.layout==='hub'||partner.layout==='network') && partner.markets && partner.markets.length){ startPartnerHub(partner); return; }
   if (partner && partner.phases && partner.phases.length){ startPartnerCarousel(partner); return; }
   applyStoryFocus(PARTNER_ACTIVE.scopeCities);
   const p=document.getElementById('panel');
@@ -2388,7 +2388,7 @@ function _renderPartnerGrid(q){
     if (!items.length) continue; n+=items.length;
     html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(CAT_LABELS[c]||c)}</div><div class="pidx-cards">` + items.map(p=>{
       const blurb=(p.hero&&p.hero.subtitle)||(p.network_thesis&&p.network_thesis.headline)||'';
-      const mk=(p.layout==='hub'&&p.markets&&p.markets.length)?`<span class="pidx-badge">${p.markets.length} markets</span>`:'';
+      const mk=((p.layout==='hub'||p.layout==='network')&&p.markets&&p.markets.length)?`<span class="pidx-badge">${p.markets.length} markets</span>`:'';
       // In the All view, flag the flagship partners so the tier reads at a glance.
       const fl=(_partnerTier===''&&p.tier==='flagship')?`<span class="pidx-badge flag">flagship</span>`:'';
       return `<button class="card pidx-card" data-partner="${escapeHtml(p.partner_id)}"><div class="t">${escapeHtml(p.display||p.partner_id)}${mk}${fl}</div>${blurb?`<div class="s">${escapeHtml(blurb)}</div>`:''}</button>`;

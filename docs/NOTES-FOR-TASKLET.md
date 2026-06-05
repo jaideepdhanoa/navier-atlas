@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-05 — 2 hub markets reference non-existent nodes + confirm `layout:"network"`
+
+Ingested the 0605 export (46 partners incl. new `kakao-mobility` + `line`). Two small items:
+
+1. **Two market `anchor_cities` point at nodes that don't exist** → their dedicated sub-pages can't be
+   scoped. The build now **skips them with a warning** (deploy isn't blocked; the hub index still lists them
+   and the in-aggregate deep-dive still renders), but please repoint the `anchor_cities`/phase `cities` at
+   real atlas nodes (or add the nodes):
+   - `kakao-mobility/seoul-han-river` → `korea__seoul-han-river-incheon-bay` (no such node).
+   - `line/japan` → `hiroshima-japan`, `takamatsu-japan`, `yokohama-japan` (none exist; the real Japan nodes
+     are `setouchi-japan`, `tokyo-bay-japan`). Once repointed, the sub-pages build automatically.
+
+2. **New `layout:"network"` value (on `line`).** It's structurally identical to a hub (network_thesis +
+   markets[] of full mini-proposals), so the render treats `network` exactly like `hub` (index landing +
+   market deep-dives). If `network` was meant to render differently, let us know — otherwise we'll keep
+   treating them the same.
+
+(Still open from 2026-06-03: populate `route_id` on `featured_routes`/`journeys_unlocked` for phase-specific
+route focus — featured_routes still 0/1007, journeys 68/598.)
+
+---
+
 ## 2026-06-03 — Populate `route_id` so phases can light SPECIFIC routes within a city
 
 We shipped a front-end fix so partner-page focus is visible (the city/POI **cluster circles** now dim on
