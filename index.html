@@ -1797,11 +1797,21 @@ function _focusCities(cities, routeScope){
     map.setPaintProperty('priority-labels','text-opacity',['case',inSet,1,0.4]);
     map.setPaintProperty('poi-points','text-opacity',0.18);
     map.setPaintProperty('poi-labels','text-opacity',0.2);
+    _dimClusters(true);
   }catch(e){ console.warn('focus',e); }
+}
+// A phase's focus set = its cities PLUS the resolved endpoints of its featured_routes. For multi-node
+// markets this surfaces the specific corridor(s) (and gives the camera something distinct per phase);
+// for single-node markets it collapses to the one city (correct, given the data granularity).
+function _phaseFocusCities(phase){
+  const set=new Set(_resolvePhaseCities(phase&&phase.cities));
+  for (const r of ((phase&&phase.featured_routes)||[]))
+    for (const id of [r&&r.from_node_id, r&&r.to_node_id]) if (id) for (const c of _resolvePhaseCities([id])) set.add(c);
+  return [...set];
 }
 function applyPhaseFocus(phase){
   if (!phase){ applyStoryFocus(null); return; }
-  const cities=_resolvePhaseCities(phase.cities);
+  const cities=_phaseFocusCities(phase);
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   // Safety-net: a single-city phase has no meaningful "all" — route_scope:'all' would light every
   // long-haul corridor that merely TOUCHES the city, which belong to later multi-city phases (e.g. the
@@ -2032,7 +2042,7 @@ function _fitNetwork(){
   const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
   _fitCities([...CITY_IDS], {top:80,right:pw+40,bottom:80,left:120});
 }
-function _fitPhaseCities(phase){ _fitCities(_resolvePhaseCities(phase && phase.cities), 120); }
+function _fitPhaseCities(phase){ _fitCities(_phaseFocusCities(phase), 120); }
 function _writeChapterHash(){
   try{ const ch=_CARO.chapters[_CARO.i]; const pid=_CARO.partner.partner_id||(PARTNER_ACTIVE&&PARTNER_ACTIVE.slug)||'partner';
     const frag = ch.kind==='phase' ? 'phase/'+(ch.phaseIndex+1) : 'chapter/'+ch.kind;
@@ -2216,6 +2226,7 @@ function applyStoryFocus(cityIds) {
       const prop = (layer.includes('label') || layer==='poi-points') ? 'text-opacity' : (layer.startsWith('route')||layer.includes('ring')) ? 'line-opacity' : 'circle-opacity';
       try { map.setPaintProperty(layer, prop, op); } catch(e){}
     }
+    _dimClusters(false);
     return;
   }
   const inSet = ['in', ['get','id'], ['literal', cityIds]];
@@ -2237,7 +2248,19 @@ function applyStoryFocus(cityIds) {
     map.setPaintProperty('priority-labels','text-opacity', ['case', inSet, 1, 0.55]);
     map.setPaintProperty('poi-points','text-opacity', 0.22);
     map.setPaintProperty('poi-labels','text-opacity', 0.25);
+    _dimClusters(true);
   } catch(e) { console.warn('focus', e); }
+}
+// City + POI cluster circles are aggregate counts that don't respond to a focus by themselves — and at
+// partner/phase/hover zooms they're the DOMINANT visual. Fade them during any focus so the lit corridors
+// and focus nodes actually read; restore defaults on reset. (This is what made focus look like a no-op.)
+function _dimClusters(on){
+  const set=(layer,prop,v)=>{ try{ map.setPaintProperty(layer,prop,v); }catch(e){} };
+  set('city-clusters','circle-opacity', on?0.12:0.95);
+  set('city-cluster-halo','circle-opacity', on?0.03:0.18);
+  set('city-cluster-count','text-opacity', on?0.18:1);
+  set('poi-clusters','circle-opacity', on?0.08:0.6);
+  set('poi-cluster-count','text-opacity', on?0.15:1);
 }
 function closeStory() {
   window.location.hash = '';
