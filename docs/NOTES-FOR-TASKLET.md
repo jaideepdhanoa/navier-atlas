@@ -6,35 +6,40 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-03 — Hub-market sub-nodes needed for per-corridor focus on partner pages
+## 2026-06-03 — Populate `route_id` so phases can light SPECIFIC routes within a city
 
 We shipped a front-end fix so partner-page focus is visible (the city/POI **cluster circles** now dim on
 hover/phase/journey focus — they were masking everything). That solves "nothing goes inactive."
 
-The remaining half is a **data-granularity dependency only Tasklet can close.** Hub markets are authored at
-**city granularity**, so the front-end has no distinct geometry to isolate or fly between:
+The remaining half: **a phase is a set of specific routes, not a whole city** — but today the render can only
+focus at *city* granularity, so entering a phase lights/zooms the entire city instead of that phase's routes.
 
-- Example — Grab → Singapore: **every** journey is `from_node_id = to_node_id = "singapore"`, `route_id =
-  null`, and every phase is `cities: ["singapore"]`. Marina Bay / Sentosa / East Coast / Changi / Pulau Ubin
-  are **not distinct nodes** — they all collapse to the single `singapore` node.
-- Effect: clicking any journey, or moving between phases, can only dim/zoom to *Singapore as a whole*. We
-  can't highlight "Marina Bay ↔ Sentosa" as its own corridor, and the camera can't differentiate phases,
-  because there's nothing distinct to point at.
+**Root cause — the authored routes aren't linked to the route graph.** The `ROUTES` blob already contains the
+granular corridors (e.g. **112 intra-Singapore route features**, each with a stable `properties.id` like
+`rn-5a57c8d42629`), but the authored content doesn't reference them:
+- `featured_routes[]`: **0 of 968** carry a `route_id`.
+- `journeys_unlocked[]`: **12 of 568** carry a `route_id` (the rest `null`).
+- And `from_node_id`/`to_node_id` are the city (`singapore`), so there's no other handle either.
 
-**What unblocks it (per hub market):**
-1. **Sub-nodes** for the named places in journeys/featured_routes (`marina-bay-singapore`, `sentosa-singapore`,
-   `east-coast-singapore`, …) with real coords, OR
-2. **`route_id`s** on `journeys_unlocked` + `featured_routes` that resolve to specific routes in the `ROUTES`
-   blob, with `from_node_id`/`to_node_id` pointing at distinct nodes rather than both being the city.
+So the front-end has no way to know *which* of a city's 112 routes belong to "Phase 1 — Marina Bay & Sentosa".
 
-Same **"intra-market sub-nodes coming"** pattern already flagged for Discovery Land — just generalized to the
-hub markets (Uber, Grab, Bolt, the new ride-hail hubs, hospitality brands, etc.).
+**THE ASK (precise, and the field already exists in the schema):**
+1. **Populate `route_id` on every `featured_routes[]` entry and every `journeys_unlocked[]` entry**, matching
+   `ROUTES[].properties.id`. Use a `route_ids[]` array if a corridor is multi-leg. That's the whole unlock —
+   the render then lights exactly those route features for the phase/journey, dims the rest of the city, and
+   fits the camera to that route's geometry (no sub-node coords needed — the route line provides the extent).
+2. **Only if a named corridor has no matching route in the blob** (the authored route doesn't correspond to an
+   existing `ROUTES` edge), add/route it so it has an `id` to reference. This is where new boarding-point pairs
+   / sub-nodes come in — but it's the exception, not the primary need; most corridors already exist as routes.
 
-**No coordination needed once it lands:** the render already keys phase focus/camera off `featured_routes`
-endpoints and isolates journeys by node/route id, so per-corridor highlighting + per-phase camera moves light
-up automatically. Multi-node markets already work today (e.g. Uber MENA phases differ: P1 Dubai+Abu Dhabi →
-P2 +Sharjah+Doha → P3 +RAK); the single-node markets are the ones waiting on this. Suggest flagship hub
-markets first (Grab→Singapore, Uber→Miami/Bay Area).
+This supersedes the earlier "sub-nodes" framing: **sub-nodes are not the operative requirement — the `route_id`
+linkage is.** Sub-nodes only help when a corridor isn't already a route.
+
+**Front-end status:** journeys already isolate by `route_id` (selectRoute) and `featured_routes` already render
+a clickable chip when `route_id` is present — so the moment these are populated, click-to-isolate works. I'll
+add the one remaining piece (phase focus lighting the union of its featured-route `route_id`s, rather than the
+city) as soon as the ids land. Multi-node markets already differentiate today (Uber MENA: P1 Dubai+Abu Dhabi →
+P2 +Sharjah+Doha → P3 +RAK). Suggest flagship hub markets first (Grab→Singapore, Uber→Miami/Bay Area).
 
 ---
 
