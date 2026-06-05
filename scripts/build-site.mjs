@@ -168,12 +168,15 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({ cleanUrls: tru
 console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${Object.keys(data.PARTNERS).length} partners · ${data.ROUTES.length} routes)`);
 
 // per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)
-let failed = 0, pages = 0;
+let failed = 0, pages = 0, skipped = 0;
 // Emit one scoped+locked page. subdir '' = bare /<slug>; marketSlug sets the __PARTNER_MARKET__ lock so
 // the render opens that market's deep-dive directly. Sweeps the data text; writes only if clean.
-function emitPage(slug, subdir, r, marketSlug) {
+function emitPage(slug, subdir, r, marketSlug, optional) {
   const tag = `/${slug}${subdir ? '/' + subdir : ''}`;
-  if (r.error) { console.error(`  ✗ ${tag}: ${r.error}`); failed++; return; }
+  // A hub MARKET sub-page that can't resolve its cities (market anchor_cities reference nodes not in the
+  // atlas) is skipped with a warning rather than failing the whole deploy — the hub index still lists the
+  // market and the in-aggregate deep-dive still renders from pitch. (Flag the bad anchor_cities to Tasklet.)
+  if (r.error) { if (optional) { console.warn(`  ⚠ skip ${tag}: ${r.error}`); skipped++; } else { console.error(`  ✗ ${tag}: ${r.error}`); failed++; } return; }
   const dataText = banner + Object.entries(r.scoped).map(([k, v]) => `window.${k}=${JSON.stringify(v)};`).join('\n') + '\n';
   // Load the SCOPED data by ABSOLUTE path. With cleanUrls (no trailing slash) a relative "atlas-data.js"
   // would resolve to /atlas-data.js (the full aggregate) — defeating isolation. Use the page's own path.
@@ -199,15 +202,15 @@ function emitPage(slug, subdir, r, marketSlug) {
 const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []).map(ph => ph.cities || [])));
 for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
-  if (partner.layout === 'hub' && partner.markets && partner.markets.length) {
+  if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
     // index landing: every market's cities (anchors only, no region sprawl, intra-anchor routes) → global map
     const anchors = [].concat(...partner.markets.map(marketCities));
     emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, expandRegion: false, routesWithin: true }), null);
     // each market = its own scoped deep-dive page (regional network like a single partner)
-    for (const m of partner.markets) emitPage(slug, m.slug, scopeForPartner(data, slug, { keepCities: marketCities(m) }), m.slug);
+    for (const m of partner.markets) emitPage(slug, m.slug, scopeForPartner(data, slug, { keepCities: marketCities(m) }), m.slug, true);
   } else {
     emitPage(slug, '', scopeForPartner(data, slug), null);
   }
 }
 if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
-console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market pages.`);
+console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market pages${skipped?` (${skipped} market sub-page(s) skipped — unresolved anchor_cities)`:''}.`);
