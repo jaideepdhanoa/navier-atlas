@@ -6,6 +6,38 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-03 — Hub-market sub-nodes needed for per-corridor focus on partner pages
+
+We shipped a front-end fix so partner-page focus is visible (the city/POI **cluster circles** now dim on
+hover/phase/journey focus — they were masking everything). That solves "nothing goes inactive."
+
+The remaining half is a **data-granularity dependency only Tasklet can close.** Hub markets are authored at
+**city granularity**, so the front-end has no distinct geometry to isolate or fly between:
+
+- Example — Grab → Singapore: **every** journey is `from_node_id = to_node_id = "singapore"`, `route_id =
+  null`, and every phase is `cities: ["singapore"]`. Marina Bay / Sentosa / East Coast / Changi / Pulau Ubin
+  are **not distinct nodes** — they all collapse to the single `singapore` node.
+- Effect: clicking any journey, or moving between phases, can only dim/zoom to *Singapore as a whole*. We
+  can't highlight "Marina Bay ↔ Sentosa" as its own corridor, and the camera can't differentiate phases,
+  because there's nothing distinct to point at.
+
+**What unblocks it (per hub market):**
+1. **Sub-nodes** for the named places in journeys/featured_routes (`marina-bay-singapore`, `sentosa-singapore`,
+   `east-coast-singapore`, …) with real coords, OR
+2. **`route_id`s** on `journeys_unlocked` + `featured_routes` that resolve to specific routes in the `ROUTES`
+   blob, with `from_node_id`/`to_node_id` pointing at distinct nodes rather than both being the city.
+
+Same **"intra-market sub-nodes coming"** pattern already flagged for Discovery Land — just generalized to the
+hub markets (Uber, Grab, Bolt, the new ride-hail hubs, hospitality brands, etc.).
+
+**No coordination needed once it lands:** the render already keys phase focus/camera off `featured_routes`
+endpoints and isolates journeys by node/route id, so per-corridor highlighting + per-phase camera moves light
+up automatically. Multi-node markets already work today (e.g. Uber MENA phases differ: P1 Dubai+Abu Dhabi →
+P2 +Sharjah+Doha → P3 +RAK); the single-node markets are the ones waiting on this. Suggest flagship hub
+markets first (Grab→Singapore, Uber→Miami/Bay Area).
+
+---
+
 ## 2026-06-01 (21:18 drop) — stale node id in grab.end_state
 
 The `koh-rong-sihanoukville-cambodia` node was renamed to **`koh-rong-cambodia`** (brief + node both moved),
