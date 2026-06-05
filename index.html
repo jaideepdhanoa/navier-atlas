@@ -1311,6 +1311,10 @@ map.on('load', () => {
   ['route-p2','route-qlr'].forEach(layer => {
     map.on('click', layer, (e) => {
       if (!e.features || !e.features.length) return;
+      // A city / priority point or a cluster under the cursor takes priority — don't hijack the click into a
+      // route (made it hard to select a city at clustered zooms). Let the city/cluster handler run instead.
+      const nodeLayers = ['city-points','priority-points','city-clusters','poi-clusters'].filter(l=>map.getLayer(l));
+      if (nodeLayers.length && map.queryRenderedFeatures(e.point, { layers: nodeLayers }).length) return;
       _ROUTE_CLICK = true;
       selectRoute(e.features[0]);
     });
@@ -1575,7 +1579,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 700 nm)</button>
+    <button class="ring-toggle" data-coords="${coords.join(',')}">Show vessel range from here · 70 nm Pioneer II + 700 nm Quanta-LR</button>
   </div>`;
   if (ov){
     const plabel=(PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.label)||(PARTNERS[PARTNER_ACTIVE.slug]&&PARTNERS[PARTNER_ACTIVE.slug].display)||(PARTNER_ACTIVE.stories&&PARTNER_ACTIVE.stories[0]&&PARTNER_ACTIVE.stories[0].partner_org_canonical_name)||PARTNER_ACTIVE.slug;
@@ -1600,10 +1604,13 @@ function _cityBriefHtml(brief, props, coords){
     h+=`</div>`;
   }
   if ((brief.signature_routes&&brief.signature_routes.length)||live.length){
+    // Drop degenerate live routes whose endpoints render identically (e.g. "Sydney Harbour → Sydney Harbour" —
+    // intra-harbour BP routes that aren't yet given distinct labels). Keep only legible, distinct corridors.
+    const liveClean = live.filter(f=>{ const p=f.properties||{}; const a=(p.from_label||p.from_city||'').trim().toLowerCase(), b=(p.to_label||p.to_city||'').trim().toLowerCase(); return a && b && a!==b; });
     h+=`<div class="panel-section"><h3>Signature routes</h3>`;
-    for (const r of (brief.signature_routes||[])) h+=`<div class="brief-sigroute">${escapeHtml(r)}</div>`;
-    if (live.length){ h+=`<div class="brief-live-h">Live in the network</div>`;
-      for (const f of live){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
+    for (const r of (brief.signature_routes||[])) h+=`<div class="pcaro-route"><span class="pcaro-route-l">${escapeHtml(String(r).replace(/^[↔→\s]+/,''))}</span></div>`;
+    if (liveClean.length){ h+=`<div class="brief-live-h">On the map · click a route to highlight it</div>`;
+      for (const f of liveClean){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
     }
     h+=`</div>`;
   }
@@ -1644,7 +1651,7 @@ function showDetail(props, coords) {
     </div>
     <h2>${escapeHtml(name)}</h2>
     <div class="subtitle">${escapeHtml(meta.join(' · ')||'—')}</div>
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Toggle range rings (70 nm + 700 nm)</button>
+    <button class="ring-toggle" data-coords="${coords.join(',')}">Show vessel range from here · 70 nm Pioneer II + 700 nm Quanta-LR</button>
   </div>`;
   // one-line value (external_safe, partner-neutral)
   if (props.one_line_value) html += `<div class="panel-section"><div class="what-distinct">${escapeHtml(props.one_line_value)}</div></div>`;
@@ -2541,7 +2548,7 @@ document.querySelectorAll('.chip').forEach(b => {
   const fitRegion = (label)=>{ const b=regions[label]; if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true }); };
   // Biggest markets inline; long tail under "More" so the row never overflows as regions are added.
   const labels = Object.keys(regions).sort((a,b)=> regions[b].n - regions[a].n || a.localeCompare(b));
-  const MAX_INLINE = 6;
+  const MAX_INLINE = 99;   // show every region inline (the row flex-wraps) — no "More" dropdown
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
 
   // Tier 1: regions (Global resets). Clicking a region fits it AND drills into its marquee cities.

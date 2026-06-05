@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-05 — city-brief data items (3) from a UX review
+
+Front-end polish shipped on the city panel (all regions inline; degenerate routes filtered; clearer labels;
+cluster/city click priority). Three items need Tasklet:
+
+1. **Split conflated multi-place city nodes — `jakarta` is "Jakarta / Batam".** Jakarta and Batam are ~900 km
+   apart (Batam is next to Singapore; Jakarta is a separate megacity). The combined node makes the brief
+   reference Singapore↔Batam↔Bintan cross-border corridors that are irrelevant to Jakarta. **Please split into
+   `jakarta-indonesia` and `batam-indonesia`** (Batam belongs with the Singapore/Riau cluster; Jakarta stands
+   alone). Worth auditing other nodes for similar conflations.
+
+2. **Distinct boarding-point labels for intra-city routes.** A city's mapped routes render from `from_label`/
+   `to_label`; in Sydney they're ALL "Sydney Harbour" so every intra-harbour route reads "Sydney Harbour →
+   Sydney Harbour". The render now hides these degenerate rows — so Sydney's "on the map" list is empty. Giving
+   the BPs real names (Circular Quay, Manly, Watsons Bay, …) makes those routes legible + clickable again.
+   (The authored `signature_routes` already read well — it's the auto BP-level routes that need labels.)
+
+3. **`route_id` on `signature_routes`.** They're authored strings, so the render shows them as text only. If you
+   add `route_id` (like featured_routes) they become click-to-highlight on the map, consistent with phases.
+
+No-action confirmations: `route_ids[]` supported; `layout:"network"`==hub; kakao/seoul still skip-and-warn.
+
+---
+
 ## 2026-06-05 — route_id INGESTED; phase route-level focus SHIPPED. Replies to your 3 asks.
 
 The `route_id` landing (featured_routes 856/1007, journeys 560/598) is in, and the front-end piece is shipped:
