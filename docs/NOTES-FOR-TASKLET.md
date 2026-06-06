@@ -6,6 +6,81 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 — SPEC: two missing geographic tiers — `cluster` (above city) + tighten `locale` (below city)
+
+**Ask (data-only; front-end is additive and lands the moment the fields do — same play as region-nav and
+`route_id`).** The atlas has only two navigable tiers above boarding points — `region` (9 continental
+buckets) and `city`/`priority_city` (197 nodes). Two tiers are missing/loose. Both want the same fix: a
+**stable `*_id` + a normalized `*_label`, nullable, tagged on the right features.**
+
+Target spine: **`region ⊃ cluster ⊃ city ⊃ locale ⊃ poi`**
+
+### A) `cluster` — a named multi-city destination ABOVE the city (NEW tier)
+
+Places that are *primarily referred to as the cluster*, with cities inside them. **Include both
+archipelagos AND coastal regions** — they behave identically (one named container over several towns):
+- archipelagos: Hawaiʻi, Maldives, Seychelles, the Cyclades, Galápagos, the Balearics, Whitsundays, Andaman
+- coastal regions: Amalfi Coast, French Riviera / Côte d'Azur, Riviera Maya, Ligurian Riviera, Costa del Sol…
+
+Today these are modeled **three inconsistent ways**: (a) bundled into one city node
+(`mahe-seychelles`="Mahé & the Inner Islands", `mallorca-spain`="Mallorca & the Balearics",
+`santorini-greece`="Santorini & the South Cyclades", `andaman-india`); (b) loose sibling nodes with no
+parent (Hawaii = `kauai`/`maui-county`/`oahu`/`kona-hilo`; Galápagos = `santa-cruz`/`san-cristobal`/`isabela`;
+Cyclades = `santorini`/`milos`/`naxos`/`mykonos`); (c) nothing (Maldives = one `male-maldives` node + resort
+POIs scattered by free-text `linked_locale`).
+
+**Field contract** — on every `city`/`priority_city` node, nullable (mainland cities stay null and sit
+directly under their region):
+- `cluster_id` — stable slug, e.g. `hawaii-usa`, `maldives`, `cyclades-greece`, `amalfi-coast-italy`,
+  `cote-dazur-france`, `seychelles`, `galapagos-ecuador`, `whitsundays-australia`
+- `cluster_label` — display, e.g. `Hawaiʻi`, `The Maldives`, `The Cyclades`, `Amalfi Coast`
+
+- **Phase 1 (do first):** just the two attributes above. Unblocks region-nav drill (Region → Cluster →
+  City), breadcrumb, a "part of {cluster}" panel line, and cluster-level focus (light + fit member cities).
+- **Phase 2 (optional, only where a cluster earns its own landing — Maldives/Hawaii/Seychelles):** a
+  `CLUSTERS` lookup `{cluster_id → label, region, anchor coords, short blurb}` → clickable cluster pin + brief.
+- **Also reconcile the bundling nodes** (Mahé/Inner Islands, Mallorca/Balearics, Santorini/South Cyclades,
+  Andaman/Nicobar) — same pattern as Jakarta/Batam & Manila: keep as one node *tagged* with its cluster where
+  the constituents don't merit separate pins, or split into cluster + child city nodes where they do.
+
+### B) `locale` — tighten the sub-city tier so it's searchable / referenceable / displayable
+
+`linked_locale` exists on POIs but is **label-only free text** and the front-end can't use it: **1,810
+distinct labels, 324 POIs have none, no stable id, 62 normalized-collision groups** (same place written
+≥2 ways — "Dubai Marina" vs "Dubai Marina (north entrance)"; "Yas Island" vs "Yas Island (West Yas)"),
+and **3 labels span >1 parent city** so a bare label can't be a key (`Gili Trawangan`/`Gili Air` → Bali +
+Lombok; `Khorfakkan` → Sharjah + Fujairah). (The old first-class `locale` *node* type was retired in v17;
+we'd be reviving the concept as a clean dimension, not the old node.)
+
+**Field contract** — on every `poi`:
+- `locale_id` — stable slug, **keyed within its parent city** to dodge the cross-parent clash. Match the
+  existing POI id convention `{city_id}__{sub}`: e.g. `bali-indonesia__gili-trawangan` vs
+  `lombok-indonesia__gili-trawangan`; `dubai-uae__dubai-marina`.
+- `locale_label` — **normalized** display (collapse the 62 drift groups → one label per locale; push the
+  berth nuance like "(north entrance)" into the POI's own name, not the locale label).
+- **Fill the 324 nulls** — every POI rolls up to a locale (if it's just the city's main waterfront, give
+  it a `{city}-waterfront` locale rather than null).
+- **Optional `LOCALES` lookup** `{locale_id → label, parent_city_id, region, centroid coords, poi_count}`
+  → lets the front-end search locales as first-class hits, fly to a locale centroid, and show "N boarding
+  points in {locale}".
+
+### Front-end consumption (our lane — additive, ships when the fields land)
+- **Search:** index clusters + locales as first-class results ("Maldives" → cluster; "Dubai Marina" →
+  locale → fly to centroid + list its BPs), alongside today's cities/POIs.
+- **Nav + breadcrumb:** Region → Cluster → City → Locale drill-down.
+- **Display:** city panel shows "part of {cluster}" + a locale list/section; POI panel reads "{locale} · {city}".
+- **Focus:** cluster lights its member cities + routes; locale lights its boarding points.
+
+### Three decisions for you to make explicit
+1. `cluster` scope = geographic **and** coastal-brand stretches (Jaideep: yes, include both).
+2. `locale_id` keying = scoped `{city_id}__{slug}` (recommended) vs a global slug + explicit `parent_city_id`.
+3. Which clusters/locales become first-class (coords + brief) vs tag-only.
+
+Nothing here blocks deploy and there's no front-end prerequisite — deliver the fields and the renderer
+absorbs them incrementally.
+
+---
+
 ## 2026-06-06 — status check (nothing blocking); counts vs current sealed `data-clean/` (post-PR #43)
 
 Nothing here gates a deploy, and none of it needs front-end work — each item lights up the moment the
