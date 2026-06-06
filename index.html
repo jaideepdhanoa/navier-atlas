@@ -304,6 +304,18 @@ body.panel-hidden #footer { display:block; }
 .panel-hero .ring-toggle { margin-top:10px; padding:6px 12px; font:500 11px Inter; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); border-radius:8px; cursor:pointer; }
 .panel-hero .ring-toggle:hover { color:var(--accent); border-color:rgba(224,203,143,0.4); }
 .panel-hero .ring-toggle.active { background:rgba(224,203,143,0.16); color:var(--accent); border-color:rgba(224,203,143,0.5); }
+/* Vessel-range control: two zoom-to-radius buttons (off ⇄ 70 nm ⇄ 700 nm). Each button frames the
+   matching ring and tints to its platform colour when active (mint Pioneer II / amber Quanta-LR). */
+.panel-hero .range-ctrl { margin-top:10px; }
+.panel-hero .range-label { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2); margin-bottom:5px; }
+.panel-hero .range-btns { display:flex; gap:6px; }
+.panel-hero .range-btn { flex:1 1 0; padding:6px 10px; font:500 11px Inter; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); border-radius:8px; cursor:pointer; transition:background .15s, border-color .15s, color .15s; }
+.panel-hero .range-btn:hover { color:var(--text-0); border-color:var(--text-2); }
+.panel-hero .range-btn .rb-nm { font-weight:700; }
+.panel-hero .range-btn .rb-plat { display:block; font-size:9px; color:var(--text-2); margin-top:1px; }
+.panel-hero .range-btn[data-nm="70"].active  { background:rgba(110,231,183,0.16); color:#6ee7b7; border-color:rgba(110,231,183,0.5); }
+.panel-hero .range-btn[data-nm="700"].active { background:rgba(251,191,36,0.16); color:#fbbf24; border-color:rgba(251,191,36,0.5); }
+.panel-hero .range-btn.active .rb-plat { color:inherit; opacity:0.85; }
 .panel-section { padding:16px 28px; border-bottom:1px solid var(--line); }
 .panel-section h3 { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; margin:0 0 10px; position:relative; padding-bottom:8px; }
 /* Navier signature move: a thin amber rule beneath the tracked-out section label. */
@@ -1420,23 +1432,72 @@ function ringPolygon(lng, lat, nm, npts=64) {
   }
   return pts;
 }
-let RING_ACTIVE = null;
-function toggleRings(coords) {
+// Vessel-range control. The rings are unreadable when you're zoomed into a city, so a tap doesn't just
+// draw them — it frames them. Three states per node: off ⇄ 70 nm (Pioneer II, mint) ⇄ 700 nm (Quanta-LR,
+// amber). Both rings are always drawn (green inside amber for context); the camera fits whichever radius
+// the tapped button selects. Re-tapping the active radius toggles off and eases back to the prior camera.
+let RING_STATE = null;          // { key, nm } — which node + radius is framed, or null
+let RING_PRIOR_CAMERA = null;   // camera saved on first activation, restored on toggle-off
+function _rangePad(){
+  // Mobile panel is a bottom sheet → pad bottom; desktop panel is a right rail → pad right (mirrors selectRoute).
+  return window.matchMedia('(max-width:720px)').matches
+    ? {top:70, bottom:Math.round(window.innerHeight*0.30), left:40, right:40}
+    : {top:90, bottom:90, left:120, right:460};
+}
+function _syncRangeButtons(){
+  document.querySelectorAll('.range-ctrl').forEach(ctrl=>{
+    const onNode = RING_STATE && RING_STATE.key === ctrl.dataset.coords;
+    ctrl.querySelectorAll('.range-btn').forEach(b=>
+      b.classList.toggle('active', !!onNode && Number(b.dataset.nm) === RING_STATE.nm));
+  });
+}
+function clearVesselRange(restore){
+  if (!RING_STATE) return;
+  try { map.getSource('rings').setData({type:'FeatureCollection', features:[]}); } catch(e){}
+  if (restore && RING_PRIOR_CAMERA) try {
+    map.easeTo({ center:RING_PRIOR_CAMERA.center, zoom:RING_PRIOR_CAMERA.zoom,
+                 bearing:RING_PRIOR_CAMERA.bearing, pitch:RING_PRIOR_CAMERA.pitch, duration:800, essential:true });
+  } catch(e){}
+  RING_STATE = null; RING_PRIOR_CAMERA = null;
+  _syncRangeButtons();
+}
+function setVesselRange(coords, nm){
   if (!coords) return;
   const key = coords.join(',');
-  if (RING_ACTIVE === key) {
-    map.getSource('rings').setData({type:'FeatureCollection',features:[]});
-    RING_ACTIVE = null;
-    document.querySelectorAll('.ring-toggle').forEach(b=>b.classList.remove('active'));
-    return;
-  }
-  RING_ACTIVE = key;
-  const fc = { type:'FeatureCollection', features:[
+  // Re-tapping the active radius for this node turns it off and returns to where the user was.
+  if (RING_STATE && RING_STATE.key === key && RING_STATE.nm === nm){ clearVesselRange(true); return; }
+  // Remember the camera we're leaving (only on first activation, so switching radii then toggling off
+  // returns all the way to the starting view rather than to an intermediate ring zoom).
+  if (!RING_STATE) RING_PRIOR_CAMERA = { center:map.getCenter(), zoom:map.getZoom(), bearing:map.getBearing(), pitch:map.getPitch() };
+  RING_STATE = { key, nm };
+  map.getSource('rings').setData({ type:'FeatureCollection', features:[
     { type:'Feature', properties:{platform:'Pioneer II'}, geometry:{type:'Polygon', coordinates:[ringPolygon(coords[0],coords[1],70)]} },
     { type:'Feature', properties:{platform:'Quanta-LR'}, geometry:{type:'LineString', coordinates:ringPolygon(coords[0],coords[1],700)} },
-  ]};
-  map.getSource('rings').setData(fc);
-  document.querySelectorAll('.ring-toggle').forEach(b=>b.classList.add('active'));
+  ]});
+  const ring = ringPolygon(coords[0], coords[1], nm);
+  const b = new maplibregl.LngLatBounds();
+  for (const c of ring) b.extend(c);
+  try { map.fitBounds(b, { padding:_rangePad(), duration:900, essential:true }); } catch(e){}
+  _syncRangeButtons();
+}
+// Markup for the two-button range control (shared by the city brief + generic node panels).
+function _rangeCtrlHtml(coords){
+  return `<div class="range-ctrl" data-coords="${coords.join(',')}">
+    <div class="range-label">Vessel range from here</div>
+    <div class="range-btns">
+      <button class="range-btn" data-nm="70"><span class="rb-nm">70 nm</span><span class="rb-plat">Pioneer II</span></button>
+      <button class="range-btn" data-nm="700"><span class="rb-nm">700 nm</span><span class="rb-plat">Quanta-LR</span></button>
+    </div>
+  </div>`;
+}
+// Wire a freshly-rendered range control's buttons + reflect any active state for this node.
+function _wireRangeCtrl(scope){
+  const ctrl = scope.querySelector('.range-ctrl');
+  if (!ctrl) return;
+  const coords = ctrl.dataset.coords.split(',').map(Number);
+  ctrl.querySelectorAll('.range-btn').forEach(btn=>
+    btn.addEventListener('click', ()=> setVesselRange(coords, Number(btn.dataset.nm))));
+  _syncRangeButtons();
 }
 
 // ============ Detail panel ============
@@ -1536,6 +1597,7 @@ function selectRoute(feature){
 }
 function clearSelection(){
   SELECTED_ROUTE = null;
+  clearVesselRange(false);   // drop any range rings (the context restore below handles the camera)
   _navReset();
   ROUTE_POPUP.remove();
   try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
@@ -1599,7 +1661,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Show vessel range from here · 70 nm Pioneer II + 700 nm Quanta-LR</button>
+    ${_rangeCtrlHtml(coords)}
   </div>`;
   if (ov){
     const plabel=(PARTNER_ACTIVE.view&&PARTNER_ACTIVE.view.label)||(PARTNERS[PARTNER_ACTIVE.slug]&&PARTNERS[PARTNER_ACTIVE.slug].display)||(PARTNER_ACTIVE.stories&&PARTNER_ACTIVE.stories[0]&&PARTNER_ACTIVE.stories[0].partner_org_canonical_name)||PARTNER_ACTIVE.slug;
@@ -1650,8 +1712,7 @@ function _renderCityBrief(brief, props, coords){
   p.scrollTop = 0;
   const bk = p.querySelector('#brief-back');
   if (bk) bk.addEventListener('click', clearSelection);
-  const rt = p.querySelector('.ring-toggle');
-  if (rt) rt.addEventListener('click', ()=>{ const c=rt.dataset.coords.split(',').map(Number); toggleRings(c); rt.classList.toggle('active'); });
+  _wireRangeCtrl(p);
   p.querySelectorAll('.brief-live[data-rid]').forEach(el=>el.addEventListener('click', ()=>{
     const f = ROUTE_FC.features.find(x=>x.properties.id===el.dataset.rid); if (f) selectRoute(f);
   }));
@@ -1685,7 +1746,7 @@ function showDetail(props, coords) {
     </div>
     <h2>${escapeHtml(name)}</h2>
     <div class="subtitle">${escapeHtml(meta.join(' · ')||'—')}</div>
-    <button class="ring-toggle" data-coords="${coords.join(',')}">Show vessel range from here · 70 nm Pioneer II + 700 nm Quanta-LR</button>
+    ${_rangeCtrlHtml(coords)}
   </div>`;
   // one-line value (external_safe, partner-neutral)
   if (props.one_line_value) html += `<div class="panel-section"><div class="what-distinct">${escapeHtml(props.one_line_value)}</div></div>`;
@@ -1711,13 +1772,7 @@ function showDetail(props, coords) {
   if (coords) html += `<div class="panel-section"><h3>Coordinates</h3><div class="kv-grid"><dt>lat</dt><dd style="font-family:'JetBrains Mono'">${coords[1].toFixed(4)}</dd><dt>lng</dt><dd style="font-family:'JetBrains Mono'">${coords[0].toFixed(4)}</dd></div></div>`;
   p.innerHTML = html;
   p.scrollTop = 0;
-  // Wire up ring toggle
-  const rt = p.querySelector('.ring-toggle');
-  if (rt) rt.addEventListener('click', () => {
-    const c = rt.dataset.coords.split(',').map(Number);
-    toggleRings(c);
-    rt.classList.toggle('active');
-  });
+  _wireRangeCtrl(p);
 }
 
 // ============ Stories ============
