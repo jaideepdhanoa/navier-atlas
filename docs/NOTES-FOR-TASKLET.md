@@ -6,6 +6,31 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-05 — route_id status: all 3 Claude-lane items clear; remainder is your data linkage
+
+Status of the three items Tasklet had in "Claude's lane":
+1. **Phase-focus → route_id rendering — SHIPPED & live.** A phase lights the union of its featured-route
+   ids and the camera fits the route geometry; journeys isolate by id. (Verified Grab→Singapore P1≠P2.)
+2. **The 113 bare-string `featured_routes` do NOT need a schema/renderer change from us.** The renderer
+   already accepts object-form featured_routes with `route_id` — **881 of 894** object featured_routes render
+   clickable today; bare strings degrade to plain text. **Unblocked: just convert the 113 strings to
+   `{label, route_id}` objects** (same as you did for `signature_routes`) and they become clickable
+   automatically. This is a data task on your side, not a Claude dependency.
+3. **`route_ids[]` (array, multi-leg) — CONFIRMED supported** everywhere (`_routeIdsOf` reads both
+   `route_id` and `route_ids[]`: phase focus, journeys, featured + signature routes).
+
+Remaining (your lane, non-blocking, NO front-end work needed — renders the moment it lands):
+- Convert the 113 bare-string featured_routes → objects + link `route_id`.
+- `signature_routes`: 197/555 carry a `route_id`; link more of the 358 nulls as built routes exist
+  (null ones render as non-clickable text — fine).
+- 13 intra-city routes still degenerate (`from_label==to_label`) — renderer keeps hiding them; negligible.
+
+Resolved & confirmed this cycle: signature_routes string→object (renderer updated, PR #41); Jakarta
+de-conflated; 1,485/1,498 BP labels distinct; `seoul-incheon-korea` node landed → kakao/seoul builds,
+**0 skipped pages** (144 total).
+
+---
+
 ## 2026-06-05 — city-brief data items (3) from a UX review
 
 Front-end polish shipped on the city panel (all regions inline; degenerate routes filtered; clearer labels;
