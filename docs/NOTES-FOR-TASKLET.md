@@ -17,10 +17,13 @@ Target spine: **`region ⊃ cluster ⊃ city ⊃ locale ⊃ poi`**
 
 ### A) `cluster` — a named multi-city destination ABOVE the city (NEW tier)
 
-Places that are *primarily referred to as the cluster*, with cities inside them. **Include both
-archipelagos AND coastal regions** — they behave identically (one named container over several towns):
+Places that are *primarily referred to as the cluster*, with cities inside them. **Include archipelagos,
+coastal regions, AND countries** — they behave identically (one named container over several cities):
 - archipelagos: Hawaiʻi, Maldives, Seychelles, the Cyclades, Galápagos, the Balearics, Whitsundays, Andaman
 - coastal regions: Amalfi Coast, French Riviera / Côte d'Azur, Riviera Maya, Ligurian Riviera, Costa del Sol…
+- **countries** (where the national maritime story is the headline and several cities sit under it):
+  Philippines, Vietnam, Greece, Croatia, Indonesia, Thailand… A country cluster nests under its `region`
+  (e.g. Philippines/Vietnam under `SEA`) and groups that country's city nodes.
 
 Today these are modeled **three inconsistent ways**: (a) bundled into one city node
 (`mahe-seychelles`="Mahé & the Inner Islands", `mallorca-spain`="Mallorca & the Balearics",
@@ -29,16 +32,23 @@ parent (Hawaii = `kauai`/`maui-county`/`oahu`/`kona-hilo`; Galápagos = `santa-c
 Cyclades = `santorini`/`milos`/`naxos`/`mykonos`); (c) nothing (Maldives = one `male-maldives` node + resort
 POIs scattered by free-text `linked_locale`).
 
-**Field contract** — on every `city`/`priority_city` node, nullable (mainland cities stay null and sit
-directly under their region):
+**Field contract** — on every `city`/`priority_city` node, nullable (cities with no cluster stay null and
+sit directly under their region):
 - `cluster_id` — stable slug, e.g. `hawaii-usa`, `maldives`, `cyclades-greece`, `amalfi-coast-italy`,
-  `cote-dazur-france`, `seychelles`, `galapagos-ecuador`, `whitsundays-australia`
-- `cluster_label` — display, e.g. `Hawaiʻi`, `The Maldives`, `The Cyclades`, `Amalfi Coast`
+  `cote-dazur-france`, `seychelles`, `galapagos-ecuador`, `whitsundays-australia`, `philippines`, `vietnam`
+- `cluster_label` — display, e.g. `Hawaiʻi`, `The Maldives`, `The Cyclades`, `Amalfi Coast`, `Philippines`
 
 - **Phase 1 (do first):** just the two attributes above. Unblocks region-nav drill (Region → Cluster →
   City), breadcrumb, a "part of {cluster}" panel line, and cluster-level focus (light + fit member cities).
-- **Phase 2 (optional, only where a cluster earns its own landing — Maldives/Hawaii/Seychelles):** a
-  `CLUSTERS` lookup `{cluster_id → label, region, anchor coords, short blurb}` → clickable cluster pin + brief.
+- **Phase 2 — cluster BRIEFS (high value, please plan for it):** author a **`cluster_briefs/` surface
+  parallel to `city_briefs/`, keyed by `cluster_id`**, every bit as impactful and exciting as the city
+  briefs — a national/archipelago-scale marine-mobility narrative (tagline, summary, "why marine mobility
+  here", demand_signals, use_cases, navier_fit Pioneer II / Quanta-LR, signature_routes with `route_id`,
+  transit_planning). This is where a country like the **Philippines** or **Vietnam** gets its own
+  headline story (the inter-island / coastal thesis the individual city briefs can't tell), rendered with
+  the **same panel as a city brief** — so it lands the moment the file ships, no new render. Pair it with a
+  small `CLUSTERS` lookup `{cluster_id → label, region, anchor coords}` so the cluster is clickable (pin +
+  brief) and the camera can frame it.
 - **Also reconcile the bundling nodes** (Mahé/Inner Islands, Mallorca/Balearics, Santorini/South Cyclades,
   Andaman/Nicobar) — same pattern as Jakarta/Batam & Manila: keep as one node *tagged* with its cluster where
   the constituents don't merit separate pins, or split into cluster + child city nodes where they do.
@@ -65,16 +75,20 @@ we'd be reviving the concept as a clean dimension, not the old node.)
   points in {locale}".
 
 ### Front-end consumption (our lane — additive, ships when the fields land)
-- **Search:** index clusters + locales as first-class results ("Maldives" → cluster; "Dubai Marina" →
-  locale → fly to centroid + list its BPs), alongside today's cities/POIs.
+- **Search:** index clusters + locales as first-class results ("Maldives"/"Philippines" → cluster;
+  "Dubai Marina" → locale → fly to centroid + list its BPs), alongside today's cities/POIs.
 - **Nav + breadcrumb:** Region → Cluster → City → Locale drill-down.
 - **Display:** city panel shows "part of {cluster}" + a locale list/section; POI panel reads "{locale} · {city}".
+- **Cluster brief:** a `cluster_briefs/{cluster_id}` renders through the **same panel as a city brief** —
+  so a Philippines/Vietnam national story lands with no new render code.
 - **Focus:** cluster lights its member cities + routes; locale lights its boarding points.
 
 ### Three decisions for you to make explicit
-1. `cluster` scope = geographic **and** coastal-brand stretches (Jaideep: yes, include both).
+1. `cluster` scope = geographic, coastal-brand, **and country** (Jaideep: yes — include archipelagos,
+   coastal stretches, and countries like the Philippines / Vietnam).
 2. `locale_id` keying = scoped `{city_id}__{slug}` (recommended) vs a global slug + explicit `parent_city_id`.
-3. Which clusters/locales become first-class (coords + brief) vs tag-only.
+3. Which clusters become first-class with a **cluster brief** (e.g. Philippines, Vietnam, Maldives, Hawaiʻi)
+   vs tag-only; same call for which locales get a `LOCALES` lookup entry.
 
 Nothing here blocks deploy and there's no front-end prerequisite — deliver the fields and the renderer
 absorbs them incrementally.
