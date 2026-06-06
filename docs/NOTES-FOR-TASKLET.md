@@ -46,6 +46,18 @@ map" live-routes list, which is filtered-by-city real geometry, never matched �
 non-clickable — never a confidently-wrong corridor. The ~32% plausible links still highlight their route.
 This is a patch over the data; the re-link above is the real fix and will restore precise click-to-highlight.
 
+**Related — featured routes are also mis-FILED across phases (distinct from mis-linked).** Some featured
+routes sit under the wrong phase: e.g. saudi-pif **phase 2 "Jeddah urban gateway"** (`cities:["jeddah-ksa"]`)
+contains a **"Khobar / Dammam (Eastern Province) ↔ Manama, Bahrain"** route — wrong region entirely. **19% of
+phases (82/440)** have a featured route whose endpoint node-ids fall outside the phase's own `cities`, and
+**28 partners repeat the same featured-route label across multiple phases** (e.g. abu-dhabi-itc lists the same
+3 corridors in phases 1, 3 *and* 4). Please ensure each phase's `featured_routes` actually belong to that
+phase (endpoints among its `cities`), and that a corridor is featured in the phase it's introduced in (repeat
+across phases only if intentional). **Front-end interim shipped:** phase map-focus now uses the phase's
+declared `cities` and only lights featured routes with an endpoint inside them — so a Jeddah phase no longer
+pulls Bahrain into view — but the panel still *lists* whatever routes are filed under the phase, so the
+mis-filing should be fixed at source.
+
 ---
 
 ## 2026-06-06 — partner-page review: 1 data bug to reconcile + 1 light copy-consistency flag
