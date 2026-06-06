@@ -1,12 +1,12 @@
 {
-  "sealed_at": "2026-06-06T04:53:00.143625Z",
+  "sealed_at": "2026-06-06T21:29:49.867760Z",
   "schema": "navier-atlas/seal/v1",
   "gates": {
-    "externalization": "PASS \u2014 delta corridor splice; rn- corridors carry no internal props; source externalized by prior full build",
-    "land_crossing": "PASS \u2014 0/4 changed corridors cross land @1.0km (delta)",
+    "externalization": "PASS",
+    "land_crossing": "PASS",
     "bp_on_water": "NOT_RUN",
-    "referential_integrity": "PASS \u2014 unchanged (corridor delta touches ROUTES only)",
-    "brief_conformance": "PASS \u2014 unchanged (corridor delta does not touch briefs)"
+    "referential_integrity": "PASS \u2014 gate run pre-seal (build_manifest.py); 0 new dangling joins",
+    "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)"
   },
   "blobs": {
     "FEATURES_BY_TYPE": {
@@ -31,6 +31,12 @@
     }
   },
   "pitch": {
-    "note": "unchanged by corridor delta; not re-externalized"
+    "city_briefs": 167,
+    "partners": 46,
+    "tiers_stripped": [
+      "internal",
+      "deck_only"
+    ],
+    "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/"
   }
 }
