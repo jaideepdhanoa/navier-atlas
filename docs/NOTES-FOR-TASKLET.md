@@ -6,6 +6,47 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 (21:36Z export) — VERIFICATION: the partner re-link did NOT fix route accuracy (distance gate still missing)
+
+Ingested + measured the `20260606T213646Z` export. The `route_id`s **changed** (you re-ran linking — thank
+you), but accuracy is essentially unmoved and the distance/endpoint gates from the prior note were **not
+applied**:
+
+| Metric | Prior | This export | Target |
+|---|---|---|---|
+| featured_routes within ±25% of label distance | 17% | **21%** | ≥90% |
+| journeys within ±25% | 19% | **23%** | ≥90% |
+| boats vs "Vessels" KPI mismatch | 28 phases | **28** (unchanged) | 0 |
+
+**Concrete regression — saudi-pif phase 1 (now):**
+- "Shura ↔ Outer-island resorts" (**25 nm**) → `Fairmont Shura Island → Jumeirah Red Sea` **[0 nm]**
+- "Red Sea ↔ AMAALA (Triple Bay)" (**80 nm**) → **the *same* 0 nm route** (two distinct labels collapsed onto one id)
+- "NEOM — Sindalah ↔ Magna/Oxagon" (**40 nm**) → `Sindalah Marina → JETTY 2` **[0 nm]**
+
+The single-distinctive-token matcher stopped the cross-region drift (no more Egypt), but it now lands on
+**0 nm intra-marina micro-hops** and maps **different labels to the same route**. Coverage ("all 1,007
+accounted for") is not the same as correctness. **The two gates are mandatory, not optional:**
+1. **Distance gate** — reject any candidate whose route length isn't within ±25% of the label's `distance_nm`.
+   (This one test would have caught every example above — a 0 nm route can never satisfy a 25/40/80 nm label.)
+2. **Endpoint gate** — both endpoints must match the named places; and **no two different labels may resolve
+   to the same route_id**.
+3. When nothing passes → `route_id: null` (honest non-clickable text), don't force a 0 nm hop.
+Re-report the ±25% pass rate after; it must clear ≥90%, not 21%.
+
+**Still open (unchanged this export):**
+- `boats` vs "Vessels" KPI still mismatched in **28 phases** — the careem changelog reconciled Careem's
+  platform *prose* (good, legitimate), but not the vessel-count numbers. Still needs the define/relabel fix.
+- featured routes still **mis-filed across phases** (19% reach outside their phase cities) — unaddressed.
+- **New orphan brief:** `catalina-channel-islands-usa` has a city brief but **no map node** (text-only, no pin).
+
+**Good this export (no action):** Careem copy-vs-geometry reconcile; 5 empty proposals (didi/indrive/lyft/
+ola/rapido) now full 6-field cores; discovery-land/bolt/uber + 5 Maldives resorts deepened.
+
+Front-end guard (±50% plausibility + phase-focus scoping) remains the only thing keeping these pages from
+showing wrong corridors live — so there's no visible regression, but the data is still the blocker.
+
+---
+
 ## 2026-06-06 — DATA BUG: partner featured_routes/journeys route_id mis-linked ~80% (re-link needed)
 
 **The single biggest data-quality issue on the partner pages.** The `route_id`s on partner
