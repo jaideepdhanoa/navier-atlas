@@ -6,6 +6,48 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 — DATA BUG: partner featured_routes/journeys route_id mis-linked ~80% (re-link needed)
+
+**The single biggest data-quality issue on the partner pages.** The `route_id`s on partner
+`featured_routes` and `journeys_unlocked` resolve to **real routes, but the wrong ones** — so clicking a
+journey/route, and the per-phase map focus, light a corridor that has nothing to do with the label.
+
+**Measured (current sealed data):**
+- featured_routes: **83% mis-linked** (resolved route distance is >25% off the label's `distance_nm`); only 17% plausible.
+- journeys_unlocked: **81% mis-linked**; only 19% plausible.
+
+**Examples (saudi-pif phase 1):**
+- "Shura Island ↔ Outer-island resorts (St Regis, Nujuma, Shebara)" **25 nm** → links to a **2 nm** route (Red Sea Global → Jumeirah Red Sea).
+- "Red Sea ↔ AMAALA (Triple Bay)" **80 nm** → links to a **29 nm** route.
+- "NEOM — Sindalah ↔ Magna/Oxagon" **40 nm** → links to a **2 nm** route (NEOM Bay Marina → Port of NEOM).
+- journey "NEOM — Sindalah → Magna/Oxagon" → links to a route starting in **Dahab, EGYPT** (wrong country).
+
+**Why city-brief `signature_routes` are fine but these aren't** — different linkers. signature_routes used
+**distinctive-terminal match scoped to one city's route set** (per your 06-05 changelog) → reliable.
+featured/journeys were matched **network-wide by bilateral-endpoint + generic-token, with no distance gate**
+→ grabbed *a* route in roughly the right area, usually the wrong one. (City briefs also have the "on the
+map" live-routes list, which is filtered-by-city real geometry, never matched — so it's always correct.)
+
+**THE ASK — re-link featured_routes/journeys with the signature_routes-grade method + two gates:**
+1. **Scope the candidate set to the partner's / phase's cities** (use the same distinctive-terminal matcher
+   that produced the good signature_routes), not the whole network.
+2. **Distance gate:** the chosen route's length must be within ~±25% of the label's `distance_nm`.
+3. **Endpoint gate:** both endpoints must correspond to the named places in the label (not just be in the
+   region); reject cross-cluster / cross-country matches.
+4. **When no single built route matches** — a one-to-many bundle ("Shura ↔ St Regis/Nujuma/Shebara") or an
+   aspirational/long-haul corridor with no built edge — **leave `route_id` null** (renders as honest
+   non-clickable text) or model it as a `network_chip` with the actual constituent leg ids. Do NOT mis-link.
+5. Sanity check after: report the % of featured/journey labels whose linked route is within ±25% of the
+   stated distance — target should be ≥90%, not today's ~18%.
+
+**Front-end interim shipped (so the live pages don't mislead meanwhile):** a plausibility guard keeps a
+`route_id` only when its route length is within ±50% of the label distance; the ~68% gross mismatches now
+**fall back to endpoint-city focus** (via `from_node_id`/`to_node_id`, which are correct) or render
+non-clickable — never a confidently-wrong corridor. The ~32% plausible links still highlight their route.
+This is a patch over the data; the re-link above is the real fix and will restore precise click-to-highlight.
+
+---
+
 ## 2026-06-06 — partner-page review: 1 data bug to reconcile + 1 light copy-consistency flag
 
 From a `/saudi-pif` partner-page review. Two front-end fixes shipped (travel-time badge replacing the
