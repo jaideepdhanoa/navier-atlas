@@ -6,6 +6,45 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 — status check (nothing blocking); counts vs current sealed `data-clean/` (post-PR #43)
+
+Nothing here gates a deploy, and none of it needs front-end work — each item lights up the moment the
+data lands. Counts measured against the current sealed `data-clean/`.
+
+**✅ Cleared since the last note — thank you:**
+- All bare-string `featured_routes` **and** `signature_routes` are now `{label, route_id}` objects — **0
+  bare strings** left. Clickable rendering is automatic.
+- **0 build skips** — the market nodes that used to skip-and-warn (`kakao-mobility/seoul`, `line/japan`)
+  now resolve; 144 pages build clean.
+
+**1. Route-linkage gaps** (add `route_id` → item becomes click-to-highlight on the map; missing = plain text):
+- `featured_routes` (in `phases[]` / `markets[].phases[]`): **910 / 1007** linked → **97 still null**.
+- `journeys_unlocked`: **607 / 616** linked → **9 still null**.
+- `signature_routes` (city briefs): **197 / 555** linked → **358 still null** (render fine as text; linking
+  just makes them clickable).
+- Use a `route_ids[]` array for multi-leg corridors — the renderer reads both `route_id` and `route_ids[]`.
+
+**2. Degenerate routes (cosmetic).** **40 of 5150** routes have `from_label == to_label` (e.g. "Sydney
+Harbour → Sydney Harbour"). The renderer hides them, so they don't appear in a city's "on the map" list.
+Distinct boarding-point labels (Circular Quay / Manly / …) would make them legible + clickable again.
+
+**3. Orphan city briefs (brief text, but no map node to click) — 5:** `bandar-seri-begawan-brunei`,
+`muara-brunei-bay-brunei`, `temburong-bangar-brunei`, `okinawa-yaeyama-japan`, `shanghai-china`. Add nodes
+or confirm they should stay text-only.
+
+**4. Standing low-priority items:**
+- **Region-label canonicalization** — `SEA` vs `Southeast Asia`, `Caribbean` vs `LatAm-Caribbean`, plus a
+  few region-less cities. We alias-merge for display, but it affects which cities surface in the region nav
+  and in partner end-state scope.
+- **Optional content:** `network_thesis.coverage_note` per hub (renders verbatim if present); Bora Bora
+  "exclusivity" reword (currently allowlisted to ship — drop the allowlist line once reworded); Careem
+  featured-route platform label (text says Quanta-LR, drawn trunk is Pioneer II — reconcile).
+
+Big-ticket work (phase route-level focus, hub rendering, route_id ingestion) is all done and live. What's
+left is incremental linkage + a few orphan/cosmetic cleanups.
+
+---
+
 ## 2026-06-05 — route_id status: all 3 Claude-lane items clear; remainder is your data linkage
 
 Status of the three items Tasklet had in "Claude's lane":
