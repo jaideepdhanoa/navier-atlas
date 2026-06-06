@@ -1941,17 +1941,34 @@ function _routeIdsOf(o){ const out=[]; if(!o) return out; if(o.route_id) out.pus
 // markets this surfaces the specific corridor(s) (and gives the camera something distinct per phase);
 // for single-node markets it collapses to the one city (correct, given the data granularity).
 function _phaseFocusCities(phase){
-  const set=new Set(_resolvePhaseCities(phase&&phase.cities));
+  // The phase's DECLARED cities are the authored scope — use them as-is. We deliberately do NOT expand by
+  // featured_routes' from/to node-ids: those are mis-filed often enough (19% of phases reach outside their
+  // own cities — e.g. a "Jeddah" phase pulling in Bahrain via an Eastern Province↔Manama route) that the
+  // expansion balloons the focus/camera into the wrong region. Falls back to the node-ids only when a phase
+  // declares no resolvable cities (3 phases), so those still light something. (Tasklet: re-file phase routes.)
+  const declared = _resolvePhaseCities(phase&&phase.cities);
+  if (declared.length) return declared;
+  const set=new Set();
   for (const r of ((phase&&phase.featured_routes)||[]))
     for (const id of [r&&r.from_node_id, r&&r.to_node_id]) if (id) for (const c of _resolvePhaseCities([id])) set.add(c);
   return [...set];
 }
 // A phase's referenced route ids (featured_routes route_id / route_ids[]), filtered to ones present here.
 function _phaseRouteIds(phase){
+  const declared = new Set(_resolvePhaseCities(phase&&phase.cities));
   const out=[];
-  // Only light ids that plausibly match their label distance — drop the mis-linked ones so a phase lights
-  // its real corridors or, if none survive, falls back to city-level focus (handled by applyPhaseFocus).
-  for (const r of ((phase&&phase.featured_routes)||[])) for (const id of _plausibleRouteIds(r.distance_nm, _routeIdsOf(r))) out.push(id);
+  for (const r of ((phase&&phase.featured_routes)||[])){
+    // Only light a featured route that BELONGS to this phase — at least one endpoint node within the phase's
+    // declared cities. Drops routes mis-filed into the wrong phase (e.g. an Eastern Province↔Bahrain route
+    // sitting under a "Jeddah" phase), which the distance guard alone can't catch.
+    if (declared.size){
+      const ends=[r&&r.from_node_id, r&&r.to_node_id].filter(Boolean).flatMap(id=>_resolvePhaseCities([id]));
+      if (ends.length && !ends.some(c=>declared.has(c))) continue;
+    }
+    // Then keep only ids that plausibly match their label distance (drop mis-linked corridors); if none
+    // survive, the phase falls back to city-level focus (handled by applyPhaseFocus).
+    for (const id of _plausibleRouteIds(r.distance_nm, _routeIdsOf(r))) out.push(id);
+  }
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
 function applyPhaseFocus(phase){
@@ -2021,9 +2038,15 @@ function _whyNavierHtml(w){
 function _journeysHtml(js){
   if (!js || !js.length) return '';
   const card = (j)=>{ const pc=_platColor(j.platform); const chips=[];
-    if (j.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(j.platform)}</span>`);
-    if (j.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(j.distance_nm)} nm</span>`);
+    // Same treatment as featured routes: lead with travel time, keep nm muted, drop the verbose
+    // "both"/"Pioneer II" platform label, flag only the Quanta-LR long-range exception.
+    if (j.distance_nm!=null){
+      const eta=_etaStr(j.distance_nm, j.platform);
+      if (eta) chips.push(`<span class="pcaro-jchip eta" title="${Math.round(j.distance_nm)} nm at ${_etaKts(j.platform)} kts cruise">~${eta}</span>`);
+      chips.push(`<span class="pcaro-jchip dim">${Math.round(j.distance_nm)} nm</span>`);
+    }
     if (j.archetype) chips.push(`<span class="pcaro-jchip" style="text-transform:capitalize">${escapeHtml(String(j.archetype).replace(/_/g,' '))}</span>`);
+    if (j.platform==='Quanta-LR') chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">Quanta-LR</span>`);
     // Drop mis-linked ids (route length far off the label distance); clicking then falls back to endpoint-city
     // focus via from/to node rather than highlighting the wrong corridor (see _plausibleRouteIds).
     const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j)), fn=j.from_node_id||'', tn=j.to_node_id||'';
