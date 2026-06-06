@@ -392,6 +392,10 @@ body.panel-hidden #footer { display:block; }
 .pcaro-route::before { content:'→'; position:absolute; left:0; color:var(--text-2); }
 .pcaro-route.clickable { cursor:pointer; }
 .pcaro-route.clickable:hover .pcaro-route-l { color:var(--accent); }
+/* A network chip is a BUNDLE of corridors, not one route — distinct branching glyph + a corridor-count
+   badge so it reads as "lights the whole bundle" (clicking lights/frames all its legs). */
+.pcaro-route.network::before { content:'⇶'; color:var(--accent); }
+.pcaro-netbadge { font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent); background:rgba(224,203,143,0.12); border:1px solid rgba(224,203,143,0.32); border-radius:999px; padding:2px 8px; }
 .pcaro-route-chips { display:inline-flex; gap:5px; margin-left:7px; vertical-align:middle; }
 .pcaro-rationale { font-size:12px; color:var(--text-2); font-style:italic; line-height:1.5; margin:2px 0 10px; }
 .pcaro-uc { font-size:12px; color:var(--text-1); line-height:1.5; margin:6px 0; padding-left:12px; border-left:2px solid var(--line-strong); }
@@ -2072,10 +2076,13 @@ function _endstateHtml(partner){
 function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
   const rids=_routeIdsOf(r), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
+  const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
-  if (r.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(r.distance_nm)} nm</span>`);
+  if (isNet && n) chips.push(`<span class="pcaro-netbadge">${n} corridor${n===1?'':'s'}</span>`);
+  if (!isNet && r.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(r.distance_nm)} nm</span>`);
   if (r.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(r.platform)}</span>`);
-  return `<div class="pcaro-route${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
+  return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
 function _phaseBlockHtml(cur){
   cur=cur||{};
