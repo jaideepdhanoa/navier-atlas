@@ -1,12 +1,12 @@
 {
-  "sealed_at": "2026-06-06T01:29:48.030195Z",
+  "sealed_at": "2026-06-06T04:53:00.143625Z",
   "schema": "navier-atlas/seal/v1",
   "gates": {
-    "externalization": "PASS \u2014 content reseal; internal/deck_only stripped by _externalize_pitch; source externalized by prior full build",
-    "land_crossing": "PASS \u2014 content-only change (113 featured_routes string\u2192object + 29 route_id links + Grab citation); geometry frozen, 0 corridors changed",
+    "externalization": "PASS \u2014 delta corridor splice; rn- corridors carry no internal props; source externalized by prior full build",
+    "land_crossing": "PASS \u2014 0/4 changed corridors cross land @1.0km (delta)",
     "bp_on_water": "NOT_RUN",
-    "referential_integrity": "PASS \u2014 gate run pre-seal (build_manifest.py); 0 new dangling joins",
-    "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)"
+    "referential_integrity": "PASS \u2014 unchanged (corridor delta touches ROUTES only)",
+    "brief_conformance": "PASS \u2014 unchanged (corridor delta does not touch briefs)"
   },
   "blobs": {
     "FEATURES_BY_TYPE": {
@@ -18,8 +18,8 @@
       }
     },
     "ROUTES": {
-      "sha256": "136ddc13c332458bcdfe04e2923b8cf076795428bf572c4490ecc55fcd209c18",
-      "count": 5150
+      "sha256": "dac87d0f2d4bb9b45c652e7d5d37ab51ef995931d05f3b1149664ee21d1b8de2",
+      "count": 5154
     },
     "STORIES": {
       "sha256": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe",
@@ -31,12 +31,6 @@
     }
   },
   "pitch": {
-    "city_briefs": 166,
-    "partners": 46,
-    "tiers_stripped": [
-      "internal",
-      "deck_only"
-    ],
-    "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/"
+    "note": "unchanged by corridor delta; not re-externalized"
   }
 }
