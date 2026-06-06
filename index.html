@@ -1913,6 +1913,19 @@ function _focusCities(cities, routeScope){
 // and spotlight just those routes' endpoint cities. The precise alternative to city-level focus, now that
 // featured_routes / journeys carry route_id. Returns false if none resolve (caller falls back to cities).
 const ROUTE_ID_SET = new Set((ROUTE_FC.features||[]).map(f=>f.properties && f.properties.id).filter(Boolean));
+// Length (nm) per route id — used to sanity-check partner featured_route/journey links.
+const ROUTE_NM_BY_ID = new Map((ROUTE_FC.features||[]).map(f=>[f.properties && f.properties.id, f.properties && f.properties.distance_nm]));
+// Linkage guard for partner featured_routes / journeys. Their route_id is frequently mis-resolved to the
+// WRONG corridor (a Tasklet linker gap: ~80% land on a route whose length is wildly off the label's stated
+// distance — e.g. a "25 nm" corridor linked to a 2 nm route, even the wrong country). Keep only ids whose
+// route length is within tolerance of the label distance, so the map lights the right line OR falls back to
+// endpoint-city focus — never a confidently-wrong corridor. label_nm null (e.g. network-chip bundles, which
+// have no single distance) → can't validate, keep as-is. The real fix is re-linking at source (NOTES-FOR-TASKLET).
+const _ROUTE_LINK_TOL = 0.5;   // ±50%: only drops gross mismatches, preserves correct-but-approximate links
+function _plausibleRouteIds(label_nm, ids){
+  if (label_nm == null) return ids;
+  return ids.filter(id=>{ const nm = ROUTE_NM_BY_ID.get(id); return nm == null || Math.abs(nm - label_nm)/Math.max(label_nm,1) <= _ROUTE_LINK_TOL; });
+}
 function _routeFeats(ids){ const s=new Set(ids); return (ROUTE_FC.features||[]).filter(f=>f.properties && s.has(f.properties.id)); }
 function _focusRoutes(routeIds){
   const ids=[...new Set(routeIds)].filter(id=>ROUTE_ID_SET.has(id));
@@ -1936,7 +1949,9 @@ function _phaseFocusCities(phase){
 // A phase's referenced route ids (featured_routes route_id / route_ids[]), filtered to ones present here.
 function _phaseRouteIds(phase){
   const out=[];
-  for (const r of ((phase&&phase.featured_routes)||[])) for (const id of _routeIdsOf(r)) out.push(id);
+  // Only light ids that plausibly match their label distance — drop the mis-linked ones so a phase lights
+  // its real corridors or, if none survive, falls back to city-level focus (handled by applyPhaseFocus).
+  for (const r of ((phase&&phase.featured_routes)||[])) for (const id of _plausibleRouteIds(r.distance_nm, _routeIdsOf(r))) out.push(id);
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
 function applyPhaseFocus(phase){
@@ -2009,7 +2024,9 @@ function _journeysHtml(js){
     if (j.platform) chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(j.platform)}</span>`);
     if (j.distance_nm!=null) chips.push(`<span class="pcaro-jchip">${Math.round(j.distance_nm)} nm</span>`);
     if (j.archetype) chips.push(`<span class="pcaro-jchip" style="text-transform:capitalize">${escapeHtml(String(j.archetype).replace(/_/g,' '))}</span>`);
-    const rids=_routeIdsOf(j), fn=j.from_node_id||'', tn=j.to_node_id||'';
+    // Drop mis-linked ids (route length far off the label distance); clicking then falls back to endpoint-city
+    // focus via from/to node rather than highlighting the wrong corridor (see _plausibleRouteIds).
+    const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j)), fn=j.from_node_id||'', tn=j.to_node_id||'';
     const click = !!(rids.length || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
     return `<div class="pcaro-jrn${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
       <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
@@ -2083,7 +2100,9 @@ function _endstateHtml(partner){
 // (older data shipped plain strings — handle both). Clickable when ids resolve them to the map.
 function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
-  const rids=_routeIdsOf(r), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  // Drop mis-linked ids (route length far off the label distance) so a click lights the right line or falls
+  // back to endpoint-city focus via from/to node — never a confidently-wrong corridor (see _plausibleRouteIds).
+  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r)), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
