@@ -6,6 +6,35 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 — partner-page review: 1 data bug to reconcile + 1 light copy-consistency flag
+
+From a `/saudi-pif` partner-page review. Two front-end fixes shipped (travel-time badge replacing the
+verbose "both"/"Pioneer II" platform label — now computed from distance ÷ cruise like the route hover;
+and use-case presentation: sentence-cased + structured). Two items touch your lane:
+
+1. **DATA BUG — `phase.boats` disagrees with the phase's "Vessels" KPI (28 phases).** A phase carries
+   both a `boats` integer (rendered as "N vessels at this phase") AND a `kpis[]` entry
+   `{label:"Vessels", value:"…"}`, and they don't match. Example — `saudi-pif` phase 1: `boats:5` but
+   `kpis[0]={Vessels:"12"}` and the narrative says "**Twelve** vessels across PIF's flagship Red Sea
+   coast." So three places, two numbers. Pervasive: **28 phases across 12 partners** mismatch (e.g.
+   grab `boats:177` vs KPI `~18`; careem `boats:47` vs `~12`; dubai-rta `boats:60` vs `~12`). They read
+   as **two different metrics sharing the word "vessels."** Please define what each means and reconcile:
+   - If they're the same thing → make them equal (and we can drop one).
+   - If `boats` is a distinct metric (cumulative fleet? region-wide total vs at-this-phase?) → **rename
+     its label** so it doesn't collide with the per-phase "Vessels" KPI.
+   **Front-end interim:** when a phase has a Vessels/fleet KPI we now suppress the standalone `boats`
+   line (the KPI + narrative agree), so the contradiction no longer shows. The 408 phases that have
+   `boats` only (no KPI) still render it. This is a display patch over a data inconsistency — the source
+   numbers should still be reconciled.
+
+2. **Copy consistency (light, non-blocking) — `phase.use_cases` shape + case.** They're all strings, but
+   inconsistent: some are terse lowercase tags (`"luxury island transfers"`, `"coastal spine"`), others
+   are full `"Route → Route: A sentence."` (up to ~186 chars). We now sentence-case them (CSS) and
+   emphasise the `Title: body` split where present, so both forms render cleanly — but a consistent
+   authored shape (either all tags or all "Title: body") would read better. No rush.
+
+---
+
 ## 2026-06-06 — SPEC: two missing geographic tiers — `cluster` (above city) + tighten `locale` (below city)
 
 **Ask (data-only; front-end is additive and lands the moment the fields do — same play as region-nav and
