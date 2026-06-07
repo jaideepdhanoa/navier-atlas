@@ -1,42 +1,57 @@
 {
-  "sealed_at": "2026-06-06T21:29:49.867760Z",
-  "schema": "navier-atlas/seal/v1",
-  "gates": {
-    "externalization": "PASS",
-    "land_crossing": "PASS",
-    "bp_on_water": "NOT_RUN",
-    "referential_integrity": "PASS \u2014 gate run pre-seal (build_manifest.py); 0 new dangling joins",
-    "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)"
+ "_junk_remediation": "2026-06-07: CLEANUP C Option B executed. Removed 106 conservatively-classified junk POIs (restaurants/cafes/salons/spas/medical/trading/car-rental mis-tagged as marinas) + 77 local density routes referencing them by ID. ID-based matching only. Featured corridors clean (0 affected). Geometry-invariant intentionally broken (documented): 5154->5077 routes, 11351->11245 POIs.",
+ "_p01b_relink": "CLEANUP D: 12 unambiguous phase-relinks applied (featured routes moved to phase whose city-scope contains their endpoints) across 8 partners 2026-06-07",
+ "_p0_relink": {
+  "applied": "2026-06-07",
+  "p0_1_gated_relink": "featured_routes + journeys_unlocked re-linked with distance gate (\u00b125% of label distance_nm), endpoint gate (unordered city-pair ID match; intra-cluster requires both-endpoint name match else stays network-chip), per-corridor uniqueness (journey\u2194featured mirrors of same corridor may share; different corridors may not). Result: featured 45 linked / 100% pass \u00b125%; journeys 45 linked / 100% pass; 0 different-corridor collisions; 0 zero-nm links. Remaining nulls honest (no gold route within gate). Tool: partner-pitch/_tools/gated_relink.py",
+  "p0_2_phase_refile": "10 featured_routes re-homed to the sibling phase whose cities contain an endpoint (incl. saudi-pif Eastern-Province\u2194Bahrain moved Jeddah\u2192EP phase). Only clean single-home moves applied; null-endpoint text routes left in place.",
+  "p1_3_boats_vs_kpi": "FLAGGED not auto-fixed (inconsistent direction across partners). See partner-pitch/P1-3-BOATS-VS-KPI-FLAG.md"
+ },
+ "_uae_luxury_correction": "careem+bolt growth_case regenerated on corrected UAE luxury-network base (10 water-served island corridors added) 2026-06-07",
+ "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt \u2014 growth_case blocks added 2026-06-07",
+ "blobs": {
+  "FEATURES_BY_TYPE": {
+   "count": {
+    "city": 160,
+    "poi": 11297,
+    "priority_city": 37
+   },
+   "sha256": "9dc12cc4170e6a8350bd69eef5a6870be5acc891482185672c4b44caefd497f0"
   },
-  "blobs": {
-    "FEATURES_BY_TYPE": {
-      "sha256": "0ac628231522b5f6053f880aa1b67d486ec9d989a8f6d7e68b5445b5f3bf16b3",
-      "count": {
-        "city": 160,
-        "poi": 11351,
-        "priority_city": 37
-      }
-    },
-    "ROUTES": {
-      "sha256": "dac87d0f2d4bb9b45c652e7d5d37ab51ef995931d05f3b1149664ee21d1b8de2",
-      "count": 5154
-    },
-    "STORIES": {
-      "sha256": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe",
-      "count": 20
-    },
-    "VESSEL_SPECS": {
-      "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643",
-      "count": 3
-    }
+  "ROUTES": {
+   "count": 5142,
+   "sha256": "e19147ffa36562d271d6b4d3a372e95af11d39c09a1ca8476ff285b49438e0f4"
   },
-  "pitch": {
-    "city_briefs": 167,
-    "partners": 46,
-    "tiers_stripped": [
-      "internal",
-      "deck_only"
-    ],
-    "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/"
+  "STORIES": {
+   "count": 20,
+   "sha256": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe"
+  },
+  "VESSEL_SPECS": {
+   "count": 3,
+   "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
   }
+ },
+ "gates": {
+  "bp_on_water": "PASS \u2014 9 new greenfield clusters (Naxos, Milos, Naples\u2013Capri, Malta\u2013Gozo, Menorca, Corsica, Costa Brava, Djerba, Marseille): 42 web-verified boarding points (provenance in source files). Routes water-validated in-generate (SeaGrid, 23 land-crossers dropped) + post scrub_land_routes (5 dropped). 0 Pioneer II routes >70nm.",
+  "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)",
+  "externalization": "PASS \u2014 P0 content re-link (gated featured_routes/journeys + phase re-file); deck_only/internal stripped",
+  "land_crossing": "PASS \u2014 geometry delta (add_market.py / LB-25): +42 BP POIs, +53 intra-cluster routes for 9 web-sourced Mediterranean clusters, append-only onto gold #9. All routes SeaGrid+scrub clean. Gold #9 5077 -> gold #10 5130 routes; 11245 -> 11287 POIs.",
+  "referential_integrity": "PASS \u2014 append-only delta; 0 id collisions with gold; new POIs parent_city_id \u2208 9 existing city nodes; new routes endpoints \u2208 9 existing clusters."
+ },
+ "meta": {
+  "gold": "#11",
+  "note": "new-market geometry: +4 French Polynesia clusters (10 BP POIs, 12 water-clean routes incl. Papeete-Moorea hero hop); append-only over Gold #10",
+  "updated": "2026-06-07T14:53:14.915228+00:00"
+ },
+ "pitch": {
+  "city_briefs": 167,
+  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/",
+  "partners": 46,
+  "tiers_stripped": [
+   "internal",
+   "deck_only"
+  ]
+ },
+ "schema": "navier-atlas/seal/v1",
+ "sealed_at": "2026-06-07T10:50:13.501001+00:00"
 }
