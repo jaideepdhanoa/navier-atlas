@@ -117,7 +117,7 @@ body.panel-hidden #panel { width:0 !important; }
 .browse-tab.active { color:var(--text-0); background:rgba(224,203,143,0.12); }
 #partner-grid { overflow-y:auto; padding:8px 20px 18px; }
 /* The `hidden` attr must win over .story-grid's display:grid (class > UA [hidden]) when toggling tabs. */
-#partner-grid[hidden], #story-grid[hidden] { display:none; }
+#partner-grid[hidden], #story-grid[hidden], #cluster-grid[hidden] { display:none; }
 .pidx-group { margin-top:16px; }
 .pidx-group:first-child { margin-top:8px; }
 .pidx-cat { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); font-weight:700; margin:0 0 9px; }
@@ -299,6 +299,7 @@ body.panel-hidden #footer { display:block; }
 .type-pill.city   { background:rgba(224,203,143,0.13); color:var(--accent); border:1px solid rgba(224,203,143,0.3); }
 .type-pill.locale { background:rgba(251,113,133,0.13); color:var(--coral);  border:1px solid rgba(251,113,133,0.3); }
 .type-pill.poi    { background:rgba(96,165,250,0.13);  color:var(--steel);  border:1px solid rgba(96,165,250,0.3); }
+.type-pill.cluster{ background:rgba(125,211,252,0.13); color:#7dd3fc; border:1px solid rgba(125,211,252,0.32); }
 .panel-hero h2 { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin:0 0 4px; }
 .panel-hero .subtitle { font-size:12px; color:var(--text-1); }
 .panel-hero .ring-toggle { margin-top:10px; padding:6px 12px; font:500 11px Inter; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); border-radius:8px; cursor:pointer; }
@@ -716,12 +717,14 @@ body.panel-hidden #footer { display:block; }
     <div class="story-dialog-head">
       <div class="browse-tabs">
         <button class="browse-tab active" data-tab="partners">Partners</button>
+        <button class="browse-tab" data-tab="clusters">Regions</button>
         <button class="browse-tab" data-tab="stories">Stories</button>
       </div>
       <input id="story-filter" placeholder="Filter partners…" autocomplete="off" aria-label="Filter" />
       <button id="story-close" aria-label="Close">×</button>
     </div>
     <div id="partner-grid"></div>
+    <div id="cluster-grid" class="story-grid" hidden></div>
     <div id="story-grid" class="story-grid" hidden></div>
   </div>
 </div>
@@ -1781,6 +1784,71 @@ function _renderCityBrief(brief, props, coords){
     const f = ROUTE_FC.features.find(x=>x.properties && x.properties.id===id); if (f) selectRoute(f);
   }));
 }
+// ---- Cluster pitch panel (CLUSTER_BRIEFS) — country / archipelago scale, one tier above the city brief.
+// Same panel vocabulary as a city brief plus the cluster-only analytical fields (competitive landscape,
+// regulatory, seasonality, precedents). signature_routes carry route_id, so the heroes click through to the
+// map; tag-only clusters (no built hero yet) render their text without clickable routes.
+function _clusterBriefHtml(cb){
+  const cid = cb.cluster_id;
+  let h = (_navStack.length ? _navBackHtml() : '') + `<div class="panel-hero">
+    <div class="type-row"><span class="type-pill cluster">cluster</span>${cb.region?`<span class="brief-arch">${escapeHtml(cb.region)}</span>`:''}${cb.tier==='tag-only'?`<span class="brief-arch" style="opacity:.7">map &amp; pins — heroes coming</span>`:''}</div>
+    <h2>${escapeHtml(cb.display||cb.display_name||cid)}</h2>
+    ${cb.tagline?`<div class="subtitle">${escapeHtml(cb.tagline)}</div>`:''}
+  </div>`;
+  if (cb.summary) h+=`<div class="panel-section"><div class="what-distinct">${escapeHtml(cb.summary)}</div></div>`;
+  if (cb.why_marine_mobility) h+=`<div class="panel-section"><h3>Why marine mobility here</h3><div class="what-distinct">${escapeHtml(cb.why_marine_mobility)}</div></div>`;
+  if (cb.demand_signals&&cb.demand_signals.length){
+    h+=`<div class="panel-section"><h3>Demand signals</h3>`;
+    for (const d of cb.demand_signals) h+=`<div class="brief-signal"><div class="brief-sig-top"><span class="brief-sig-label">${escapeHtml(d.label||'')}</span>${d.archetype?`<span class="brief-arch">${escapeHtml(_archLabel(d.archetype))}</span>`:''}</div>${d.value?`<div class="brief-sig-val">${escapeHtml(d.value)}</div>`:''}${d.note?`<div class="brief-sig-note">${escapeHtml(d.note)}</div>`:''}</div>`;
+    h+=`</div>`;
+  }
+  if (cb.use_cases&&cb.use_cases.length){
+    h+=`<div class="panel-section"><h3>Use cases</h3>`;
+    for (const u of cb.use_cases){ const pc=_platColor(u.platform);
+      h+=`<div class="brief-uc"><div class="brief-uc-top"><span class="brief-arch">${escapeHtml(_archLabel(u.archetype))}</span>${u.platform?`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(u.platform)}</span>`:''}</div><div class="brief-uc-title">${escapeHtml(u.title||'')}</div>${u.body?`<div class="brief-uc-body">${escapeHtml(u.body)}</div>`:''}</div>`; }
+    h+=`</div>`;
+  }
+  if (cb.navier_fit&&(cb.navier_fit.pioneer_ii||cb.navier_fit.quanta_lr)){
+    h+=`<div class="panel-section"><h3>How Navier fits</h3>`;
+    if (cb.navier_fit.pioneer_ii) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#6ee7b7">Pioneer II · ≤70 nm electric</span><div>${escapeHtml(cb.navier_fit.pioneer_ii)}</div></div>`;
+    if (cb.navier_fit.quanta_lr) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#fbbf24">Quanta-LR · ≤700 nm hybrid</span><div>${escapeHtml(cb.navier_fit.quanta_lr)}</div></div>`;
+    h+=`</div>`;
+  }
+  if (cb.signature_routes&&cb.signature_routes.length){
+    h+=`<div class="panel-section"><h3>Signature routes</h3>`;
+    for (const r of cb.signature_routes){
+      const o = (typeof r==='string') ? {label:r} : (r||{});
+      const lbl = String(o.label||'').replace(/^[↔→\s]+/,'');
+      const rids = _routeIdsOf(o).filter(id=>ROUTE_ID_SET.has(id));
+      h+=`<div class="pcaro-route${rids.length?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
+    }
+    h+=`</div>`;
+  }
+  if (cb.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(cb.transit_planning)}</div></div>`;
+  if (cb.competitive_landscape) h+=`<div class="panel-section"><h3>Competitive landscape</h3><div class="what-distinct">${escapeHtml(cb.competitive_landscape)}</div></div>`;
+  if (cb.seasonality) h+=`<div class="panel-section"><h3>Seasonality</h3><div class="what-distinct">${escapeHtml(cb.seasonality)}</div></div>`;
+  if (cb.regulatory_note) h+=`<div class="panel-section"><h3>Regulatory</h3><div class="what-distinct">${escapeHtml(cb.regulatory_note)}</div></div>`;
+  if (cb.precedents&&cb.precedents.length){ h+=`<div class="panel-section"><h3>Precedents</h3>${cb.precedents.map(x=>`<div class="pcaro-route">${escapeHtml(typeof x==='string'?x:(x.label||x.name||''))}</div>`).join('')}</div>`; }
+  return h;
+}
+function showClusterBrief(cid){
+  const cb = (typeof CLUSTER_BRIEFS!=='undefined') ? CLUSTER_BRIEFS[cid] : null;
+  if (!cb) return;
+  const label = cb.display||cb.display_name||cid;
+  _navEnter({ key:'cluster:'+cid, label, render:()=>showClusterBrief(cid) });
+  const p = document.getElementById('panel');
+  p.innerHTML = _clusterBriefHtml(cb);
+  p.scrollTop = 0;
+  const bk = p.querySelector('#nav-back'); // handled by delegated back-stack; no-op otherwise
+  // Frame + light the cluster's hero corridors (first-class clusters resolve ≥1 signature route_id).
+  const heroIds=[]; for (const r of (cb.signature_routes||[])) for (const id of _routeIdsOf(r)) if (ROUTE_ID_SET.has(id)) heroIds.push(id);
+  if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
+  // Clickable signature routes → open the route on the map.
+  p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
+    const id=(el.dataset.routes||'').split(',')[0];
+    const f = ROUTE_FC.features.find(x=>x.properties && x.properties.id===id); if (f) selectRoute(f);
+  }));
+}
 function showDetail(props, coords) {
   const p = document.getElementById('panel');
   const name = props.fullName || props.name || 'Unnamed';
@@ -2690,6 +2758,7 @@ initPartnerView();
 const storyModal = document.getElementById('story-modal');
 const storyGrid  = document.getElementById('story-grid');
 const partnerGrid = document.getElementById('partner-grid');
+const clusterGrid = document.getElementById('cluster-grid');
 const storyFilter = document.getElementById('story-filter');
 const _STORIES_LIST = _activeStories();
 let _browseTab = 'partners';
@@ -2736,12 +2805,31 @@ function _renderPartnerGrid(q){
   partnerGrid.querySelectorAll('.pidx-tier').forEach(btn => btn.addEventListener('click', () => { _partnerTier=btn.dataset.tier; _renderPartnerGrid(storyFilter.value); }));
   partnerGrid.querySelectorAll('.pidx-card').forEach(c => c.addEventListener('click', () => { location.search='?partner='+encodeURIComponent(c.dataset.partner); }));
 }
-function _renderBrowse(q){ (_browseTab==='partners' ? _renderPartnerGrid : _renderStoryGrid)(q); }
+// Regions INDEX — every cluster brief (country/archipelago), grouped by continental region; a card opens
+// that cluster's pitch panel. First-class clusters (resolving hero corridors) lead; tag-only are flagged.
+function _renderClusterGrid(q){
+  q = (q||'').trim().toLowerCase();
+  const all = Object.values((typeof CLUSTER_BRIEFS!=='undefined' && CLUSTER_BRIEFS) || {})
+    .filter(c => !q || ((c.display||c.cluster_id||'')+' '+(c.region||'')+' '+(c.tagline||'')).toLowerCase().includes(q));
+  const groups = {}; for (const c of all){ const r=c.region||'Other'; (groups[r]=groups[r]||[]).push(c); }
+  const regions = Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length || a.localeCompare(b));
+  let html='';
+  for (const r of regions){
+    const items = groups[r].sort((a,b)=>(a.tier==='tag-only')-(b.tier==='tag-only') || (a.display||a.cluster_id).localeCompare(b.display||b.cluster_id));
+    html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(r)}</div><div class="pidx-cards">` + items.map(c=>{
+      const tag = c.tier==='tag-only' ? `<span class="pidx-badge" style="opacity:.7">early</span>` : '';
+      return `<button class="card pidx-card" data-cluster="${escapeHtml(c.cluster_id)}"><div class="t">${escapeHtml(c.display||c.cluster_id)}${tag}</div>${c.tagline?`<div class="s">${escapeHtml(c.tagline)}</div>`:''}</button>`;
+    }).join('') + `</div></div>`;
+  }
+  clusterGrid.innerHTML = all.length ? html : `<div class="empty">No regions match “${escapeHtml(q)}”.</div>`;
+  clusterGrid.querySelectorAll('.pidx-card').forEach(c => c.addEventListener('click', () => { closeStoryModal(); showClusterBrief(c.dataset.cluster); }));
+}
+function _renderBrowse(q){ (_browseTab==='partners' ? _renderPartnerGrid : _browseTab==='clusters' ? _renderClusterGrid : _renderStoryGrid)(q); }
 function _setBrowseTab(tab){
   _browseTab = tab;
   document.querySelectorAll('.browse-tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  partnerGrid.hidden = tab!=='partners'; storyGrid.hidden = tab!=='stories';
-  storyFilter.placeholder = tab==='partners' ? 'Filter partners…' : 'Filter stories…';
+  partnerGrid.hidden = tab!=='partners'; clusterGrid.hidden = tab!=='clusters'; storyGrid.hidden = tab!=='stories';
+  storyFilter.placeholder = tab==='partners' ? 'Filter partners…' : tab==='clusters' ? 'Filter regions…' : 'Filter stories…';
   _renderBrowse(storyFilter.value);
 }
 document.querySelectorAll('.browse-tab').forEach(b=>b.addEventListener('click', ()=>_setBrowseTab(b.dataset.tab)));
@@ -2780,6 +2868,12 @@ for (const t of Object.keys(FEATURES_BY_TYPE)) {
     SEARCH_INDEX.push({ id:p.id, name:p.fullName||p.name||'', type:t, coords:f.geometry.coordinates, ref:f });
   }
 }
+// Cluster briefs are searchable too (country/archipelago names) — no map coords, so a hit opens the panel
+// and frames its hero corridors instead of flying to a point.
+if (typeof CLUSTER_BRIEFS!=='undefined') for (const cid in CLUSTER_BRIEFS) {
+  const cb=CLUSTER_BRIEFS[cid];
+  SEARCH_INDEX.push({ id:cid, name:cb.display||cb.display_name||cid, type:'cluster' });
+}
 const searchBox = document.getElementById('search');
 const suggest = document.getElementById('suggest');
 searchBox.addEventListener('input', () => {
@@ -2792,8 +2886,11 @@ searchBox.addEventListener('input', () => {
   suggest.querySelectorAll('div').forEach((d,i) => {
     d.addEventListener('click', () => {
       const h = hits[i];
-      map.flyTo({ center:h.coords, zoom: h.type==='city'?10: h.type==='locale'?12: 14, duration:1300, essential:true });
-      showDetail(h.ref.properties, h.coords);
+      if (h.type==='cluster') { showClusterBrief(h.id); }
+      else {
+        map.flyTo({ center:h.coords, zoom: h.type==='city'?10: h.type==='locale'?12: 14, duration:1300, essential:true });
+        showDetail(h.ref.properties, h.coords);
+      }
       suggest.style.display='none';
       searchBox.value = h.name;
     });

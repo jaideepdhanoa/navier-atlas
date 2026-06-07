@@ -54,6 +54,10 @@ if (briefsDir.startsWith(PITCH) || partnersDir.startsWith(PITCH))
   console.warn('[build] ⚠ data-clean pitch surface missing — falling back to partner-pitch/ (INTERNAL, un-stripped). NOT valid for prod.');
 data.CITY_BRIEFS = assembleDir(briefsDir, 'city_id');
 data.PARTNERS = assembleDir(partnersDir, 'partner_id');
+// Cluster briefs (NEW surface — country/archipelago-scale, keyed by cluster_id; each carries a `tier`:
+// first-class iff a signature_route resolves to a built route, else tag-only). Baked like city_briefs.
+const clusterDir = existsSync(join(DC, 'cluster_briefs')) ? join(DC, 'cluster_briefs') : join(PITCH, 'cluster_briefs');
+data.CLUSTER_BRIEFS = assembleDir(clusterDir, 'cluster_id');
 
 // Defensive strip: internal classification fields that must never reach the public artifact. The render
 // never reads these. Belt-and-suspenders over Tasklet's externalizer — the 2026-06-01 P0+P1 reseal leaked
@@ -76,4 +80,4 @@ const fc = data.FEATURES_BY_TYPE, ftypes = Object.keys(fc);
 const nodes = ftypes.reduce((n, t) => n + (fc[t] ? fc[t].length : 0), 0);
 console.log(`[build] atlas-data.js written (${(readFileSync(OUT).length / 1e6).toFixed(2)} MB)`);
 console.log(`[build]   features: ${nodes} across ${ftypes.length} types · routes: ${data.ROUTES.length} · stories: ${data.STORIES.length}`);
-console.log(`[build]   city briefs: ${Object.keys(data.CITY_BRIEFS).length} · partners: ${Object.keys(data.PARTNERS).length}`);
+console.log(`[build]   city briefs: ${Object.keys(data.CITY_BRIEFS).length} · partners: ${Object.keys(data.PARTNERS).length} · cluster briefs: ${Object.keys(data.CLUSTER_BRIEFS).length}`);
