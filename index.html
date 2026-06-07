@@ -405,6 +405,53 @@ body.panel-hidden #footer { display:block; }
 .pcaro-jchip.eta { color:var(--text-0); font-weight:600; }
 .pcaro-jchip.dim { color:var(--text-2); }
 .pcaro-close { padding:16px 28px 28px; border-top:1px solid var(--line); margin-top:6px; }
+/* Growth case (revenue ladder · economic horizons · vessel sizing) */
+.gc-lead { font-size:12.5px; color:var(--text-0); margin:10px 0 4px; line-height:1.5; }
+.gc-lead .gc-lead-n { font-size:17px; font-weight:700; color:var(--accent); }
+.gc-anchor { font-size:12px; color:var(--text-1); line-height:1.55; font-style:italic; margin:6px 0 0; }
+.gc-money-axis { --c-navier:#6ee7b7; --c-wallet:#60a5fa; --c-partner:#e0cb8f; }
+.gc-ladder { display:flex; flex-direction:column; gap:8px; }
+/* whose-money colour axis */
+.gc-m-navier  { --gc:#6ee7b7; }
+.gc-m-wallet  { --gc:#60a5fa; }
+.gc-m-partner { --gc:#e0cb8f; }
+.gc-rung { border:1px solid var(--line-strong); border-left:3px solid var(--gc,#6ee7b7); border-radius:0 9px 9px 0; padding:10px 13px; background:rgba(255,255,255,0.02); }
+.gc-rung-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.gc-rung-label { font-size:11px; font-weight:600; color:var(--text-1); letter-spacing:0.01em; }
+.gc-rung-fig { display:flex; align-items:baseline; gap:9px; margin:3px 0 2px; }
+.gc-rung-mid { font-size:21px; font-weight:700; color:var(--gc,#6ee7b7); letter-spacing:-0.02em; }
+.gc-rung-range { font-size:11px; color:var(--text-2); }
+.gc-rung-basis { font-size:11px; color:var(--text-2); line-height:1.45; }
+.gc-money-chip { display:inline-block; margin-top:7px; font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:var(--gc,#6ee7b7); background:color-mix(in srgb, var(--gc,#6ee7b7) 13%, transparent); border:1px solid color-mix(in srgb, var(--gc,#6ee7b7) 35%, transparent); }
+.gc-conf { font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; white-space:nowrap; }
+.gc-conf-grounded { color:#6ee7b7; background:rgba(110,231,183,0.12); border:1px solid rgba(110,231,183,0.32); }
+.gc-conf-med { color:var(--text-1); background:rgba(255,255,255,0.05); border:1px solid var(--line-strong); }
+.gc-conf-medlow, .gc-conf-medlowbanded { color:#e0cb8f; background:rgba(224,203,143,0.1); border:1px solid rgba(224,203,143,0.28); }
+.gc-legend { margin-top:12px; display:flex; flex-direction:column; gap:6px; }
+.gc-legend-row { font-size:11px; color:var(--text-2); line-height:1.45; }
+.gc-legend-row b { color:var(--text-1); font-weight:600; }
+.gc-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--gc,#6ee7b7); margin-right:6px; vertical-align:middle; }
+.gc-cite { margin-top:10px; font-size:10.5px; color:var(--text-2); font-style:italic; line-height:1.5; }
+.gc-horizons { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.gc-hz { border:1px solid var(--line-strong); border-radius:10px; padding:11px 12px; background:rgba(255,255,255,0.02); }
+.gc-hz-prove { border-top:2px solid #6ee7b7; }
+.gc-hz-scale { border-top:2px solid #60a5fa; }
+.gc-hz-mature { border-top:2px solid #e0cb8f; }
+.gc-hz-top { display:flex; flex-direction:column; gap:1px; margin-bottom:5px; }
+.gc-hz-name { font-size:13px; font-weight:700; color:var(--text-0); }
+.gc-hz-when { font-size:10px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.06em; }
+.gc-hz-scope { font-size:11px; color:var(--text-1); line-height:1.45; margin-bottom:8px; }
+.gc-hz-dl { display:grid; grid-template-columns:auto 1fr; gap:3px 8px; margin:0 0 8px; }
+.gc-hz-dl dt { font-size:9.5px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.04em; }
+.gc-hz-dl dd { font-size:11px; color:var(--text-0); margin:0; font-weight:500; }
+@media (max-width:720px){ .gc-horizons { grid-template-columns:1fr; } }
+.gc-vessels { display:flex; flex-direction:column; gap:8px; }
+.gc-vessel { border:1px solid var(--line-strong); border-left:3px solid #6ee7b7; border-radius:0 9px 9px 0; padding:9px 12px; background:rgba(255,255,255,0.02); }
+.gc-vessel-qlr { border-left:3px dashed #fbbf24; }
+.gc-vessel-name { font-size:12.5px; font-weight:700; color:var(--text-0); }
+.gc-vessel-qlr .gc-vessel-name { color:#fbbf24; }
+.gc-vessel-meta { font-size:10.5px; color:var(--text-2); margin:1px 0 4px; }
+.gc-vessel-role { font-size:11px; color:var(--text-1); line-height:1.45; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
 
@@ -2088,6 +2135,7 @@ function _buildChapters(partner){
   const ch=[]; const ph=partner.phases||[];
   if (ph.length) ch.push({kind:'endstate'});
   ph.forEach((phase,idx)=>ch.push({kind:'phase', phaseIndex:idx, phase}));
+  if (partner.growth_case) ch.push({kind:'growth'});   // economic horizons (WHAT it's worth) — distinct from the geographic phases above
   if (partner.why_navier_now || partner.differentiation || (partner.proof_points&&partner.proof_points.length) || (partner.objections&&partner.objections.length)) ch.push({kind:'proof'});
   if (partner.the_ask || partner.close) ch.push({kind:'ask'});
   return ch.length ? ch : [{kind:'endstate'}];
@@ -2095,6 +2143,7 @@ function _buildChapters(partner){
 function _chapterTitle(ch, partner){
   if (ch.kind==='endstate') return 'The network';
   if (ch.kind==='phase')    return ch.phase.label || ('Phase '+(ch.phase.n||(ch.phaseIndex+1)));
+  if (ch.kind==='growth')   return 'The growth case';
   if (ch.kind==='proof')    return 'Why Navier · your questions';
   if (ch.kind==='ask')      return 'The ask';
   return '';
@@ -2164,9 +2213,84 @@ function _phaseBlockHtml(cur){
     ${uc?`<div class="pcaro-routes-h">Use cases</div>${uc}`:''}
   </div>`;
 }
+// Growth case (Tasklet `growth_case` block, per RENDER-SPEC-growth-case.md): the "floor and the prize"
+// financial layer — a revenue ladder, economic horizons (Prove/Scale/Mature), and vessel sizing. Honesty
+// rules are HARD: lead with the floor + the ID-traceable corridor COUNT, headline the MID (never the high
+// band), always show the whose-money legend, Quanta-LR renders amber-dashed.
+function _gcNum(n){ return (n==null||isNaN(n))?'':Number(n).toLocaleString('en-US'); }
+function _gcMoneyClass(w){ const s=String(w||'').toLowerCase();
+  if (/journey wallet|gmv/.test(s)) return 'wallet';
+  if (/partner|p&l|platform/.test(s)) return 'partner';
+  return 'navier'; }
+function _gcFleet(h){
+  const band=h.fleet_boats_band;
+  if (h.fleet_boats!=null) return _gcNum(h.fleet_boats)+' boats';
+  if (h.fleet_boats_est!=null) return _gcNum(h.fleet_boats_est)+' boats'+(band?` <span class="muted">(${_gcNum(band.low)}–${_gcNum(band.high)})</span>`:'');
+  if (h.fleet_boats_est_pioneer_equiv!=null) return _gcNum(h.fleet_boats_est_pioneer_equiv)+' <span class="muted">Pioneer-equiv</span>';
+  return '';
+}
+function _growthCaseHtml(gc){
+  if (!gc) return '';
+  const rp=gc.revenue_potential||{}, pe=gc.phase_economics||{}, vs=gc.vessel_sizing||{}, pv=gc._provenance||{};
+  let h='';
+  // Lead: hard evidence first — corridor count (ID-traceable) + the published floor.
+  const floor=(rp.rungs||[]).find(r=>/floor/i.test(r.label||'')||r.confidence==='grounded');
+  const nCorr=(pv.greenfield_corridors!=null&&pv.sourced_corridors!=null)?(pv.greenfield_corridors+pv.sourced_corridors):null;
+  h+=`<div class="chap-cap"><div class="eyebrow">The growth case — the floor and the prize</div>
+    <h2>${escapeHtml(rp.headline||'Revenue potential')}</h2>
+    ${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
+    ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
+  // 1) Revenue ladder — prize at top, floor at bottom (render rungs reversed).
+  if ((rp.rungs||[]).length){
+    h+=`<div class="panel-section"><h3>Revenue potential</h3><div class="gc-ladder">`;
+    for (const r of rp.rungs.slice().reverse()){
+      const d=r.display||{}, cls=_gcMoneyClass(r.whose_money), range=(d.low&&d.high)?`${escapeHtml(d.low)} – ${escapeHtml(d.high)}`:'';
+      h+=`<div class="gc-rung gc-m-${cls}">
+        <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${r.confidence?`<span class="gc-conf gc-conf-${escapeHtml(String(r.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(r.confidence)}</span>`:''}</div>
+        <div class="gc-rung-fig"><span class="gc-rung-mid">${escapeHtml(d.mid||'')}</span>${range?`<span class="gc-rung-range">${range}</span>`:''}</div>
+        ${r.basis?`<div class="gc-rung-basis">${escapeHtml(r.basis)}</div>`:''}
+        ${r.whose_money?`<span class="gc-money-chip gc-m-${cls}">${escapeHtml(r.whose_money)}</span>`:''}
+      </div>`;
+    }
+    h+=`</div>`;
+    const L=rp.whose_money_legend;
+    if (L){ h+=`<div class="gc-legend">${[['navier','Navier transport revenue',L.navier_transport_revenue],['wallet','Journey GMV',L.journey_gmv],['partner','Partner platform revenue',L.platform_take]].filter(x=>x[2]).map(([c,t,desc])=>`<div class="gc-legend-row"><span class="gc-dot gc-m-${c}"></span><b>${escapeHtml(t)}</b> — ${escapeHtml(desc)}</div>`).join('')}</div>`; }
+    if (rp.cite_rule) h+=`<div class="gc-cite">${escapeHtml(rp.cite_rule)}</div>`;
+    h+=`</div>`;
+  }
+  // 2) Economic horizons — Prove / Scale / Mature.
+  if ((pe.horizons||[]).length){
+    h+=`<div class="panel-section"><h3>Revenue potential by phase</h3>${pe.headline?`<div class="pcaro-narr">${escapeHtml(pe.headline)}</div>`:''}<div class="gc-horizons">`;
+    for (const z of pe.horizons){
+      const rows=[['Capture',z.capture],['Vessel',z.vessel],['Fleet',_gcFleet(z)],['Navier rev/yr',z.navier_transport_rev_display],['Partner rev/yr',z.partner_platform_rev_display],['CO₂ saved',z.co2_saved_t_yr!=null?_gcNum(z.co2_saved_t_yr)+' t/yr':'']].filter(x=>x[1]);
+      h+=`<div class="gc-hz gc-hz-${escapeHtml(z.id||'')}">
+        <div class="gc-hz-top"><span class="gc-hz-name">${escapeHtml(z.name||'')}</span><span class="gc-hz-when">${escapeHtml(z.horizon||'')}</span></div>
+        ${z.scope?`<div class="gc-hz-scope">${escapeHtml(z.scope)}</div>`:''}
+        <dl class="gc-hz-dl">${rows.map(([k,v])=>`<dt>${escapeHtml(k)}</dt><dd>${k==='Fleet'?v:escapeHtml(String(v))}</dd>`).join('')}</dl>
+        ${z.confidence?`<span class="gc-conf gc-conf-${escapeHtml(String(z.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(z.confidence)}</span>`:''}
+      </div>`;
+    }
+    h+=`</div>${pe.conversion_note?`<div class="gc-cite">${escapeHtml(pe.conversion_note)}</div>`:''}</div>`;
+  }
+  // 3) Vessel sizing — card row; Quanta-LR amber-dashed.
+  if ((vs.classes||[]).length){
+    h+=`<div class="panel-section"><h3>Vessel sizing</h3>${vs.headline?`<div class="pcaro-narr">${escapeHtml(vs.headline)}</div>`:''}<div class="gc-vessels">`;
+    for (const c of vs.classes){
+      const dashed=/dash/.test(c.render||'')||/quanta/i.test(c.class||'');
+      h+=`<div class="gc-vessel${dashed?' gc-vessel-qlr':''}">
+        <div class="gc-vessel-name">${escapeHtml(c.class||'')}</div>
+        <div class="gc-vessel-meta">${escapeHtml(String(c.pax||''))} pax · ≤${escapeHtml(String(c.range_nm||''))} nm${c.status?` · ${escapeHtml(c.status)}`:''}</div>
+        ${c.role?`<div class="gc-vessel-role">${escapeHtml(c.role)}</div>`:''}
+      </div>`;
+    }
+    h+=`</div>${vs.range_gate_note?`<div class="gc-cite">${escapeHtml(vs.range_gate_note)}</div>`:''}</div>`;
+  }
+  return h;
+}
 function _chapterHtml(ch, partner){
   if (ch.kind==='endstate') return _endstateHtml(partner);
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
+  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case);
   if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
   if (ch.kind==='ask')      return _askHtml(partner.the_ask)+(partner.close?`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`:'');
   return '';
