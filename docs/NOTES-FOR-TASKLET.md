@@ -6,6 +6,55 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-06 (22:00Z) — OPEN ITEMS SNAPSHOT — what's pending / needed from Tasklet
+
+Measured against current sealed `data-clean/` on `main` (167 briefs · 46 partners · 5,154 routes). Nothing
+below blocks deploy (front-end guards keep the live pages honest), but P0 is what's holding back the partner
+pages' core value. Newest-detail entries below this one.
+
+### P0 — Partner route accuracy (the headline issue; re-link attempt did NOT land)
+1. **Re-link `featured_routes` + `journeys_unlocked` WITH the two gates.** Current accuracy: featured **21%**,
+   journeys **23%** within ±25% of the label distance (target **≥90%**). The 21:36Z re-link changed ids but
+   didn't help — saudi-pif now links two different labels to the **same 0 nm route**. Required:
+   - **Distance gate:** reject any candidate whose route length isn't within **±25%** of the label `distance_nm`
+     (a 0 nm route can't satisfy a 25/40/80 nm label).
+   - **Endpoint gate:** both endpoints must match the named places; **no two labels may share one `route_id`**.
+   - No pass → **`route_id: null`** (honest non-clickable text), never a forced 0 nm hop.
+   - Re-report the ±25% pass rate; must clear ≥90%.
+2. **Re-file featured routes into the correct phase.** 19% of phases (82/440) carry a featured route whose
+   endpoints fall outside the phase's `cities` (e.g. a "Jeddah" phase holding an Eastern Province↔Bahrain
+   route). Each phase's routes should have ≥1 endpoint in that phase's cities.
+
+### P1 — Data inconsistencies (small, well-scoped)
+3. **`boats` vs "Vessels" KPI** disagree in **28 phases** (e.g. saudi-pif boats:5 vs KPI/narrative 12). Define
+   what each means and either equalise them or **relabel `boats`** so two different "vessel" numbers don't show.
+4. **6 orphan briefs** (brief exists, no map node → text-only, no clickable pin): `bandar-seri-begawan-brunei`,
+   `muara-brunei-bay-brunei`, `temburong-bangar-brunei`, `okinawa-yaeyama-japan`, `shanghai-china`,
+   `catalina-channel-islands-usa`. Add nodes or confirm text-only.
+
+### P2 — Incremental linkage (non-blocking; renders the moment it lands)
+5. **`signature_routes` `route_id`** — 197/555 linked; the rest render as non-clickable text (fine). Link more
+   where a built route exists, using the same gated matcher as P0.
+
+### P3 — New geographic tiers (spec already logged in full below — still pending)
+6. **`cluster` tier** (region ⊃ cluster ⊃ city): tag city nodes with `cluster_id`/`cluster_label`. Include
+   archipelagos, coastal regions, **and countries** (Philippines, Vietnam…). Phase 2: **cluster briefs**
+   (`cluster_briefs/`, parallel to city_briefs, renders through the same panel).
+7. **Tighten `locale`** (city ⊃ locale ⊃ poi): stable `locale_id` (`{city_id}__{slug}`) + normalised
+   `locale_label`; fill the 324 null POIs; optional `LOCALES` lookup → searchable/displayable.
+
+### P4 — Light / optional
+8. **Region-label canonicalization** — `SEA` vs `Southeast Asia`, `Caribbean` vs `LatAm-Caribbean`, region-less cities.
+9. **`use_cases` shape** — mixed terse-tag vs "Title: sentence" (front-end already sentence-cases/structures).
+10. **Optional content** — `network_thesis.coverage_note` per hub; Bora Bora "exclusivity" reword (allowlisted).
+
+### ✅ Recently landed (no action)
+Careem copy-vs-geometry reconcile; 5 empty proposals filled (didi/indrive/lyft/ola/rapido); discovery-land/
+bolt/uber + 5 Maldives resorts deepened; +4 spliced corridors; all bare-string featured/signature routes →
+objects; 0 build skips.
+
+---
+
 ## 2026-06-06 (21:36Z export) — VERIFICATION: the partner re-link did NOT fix route accuracy (distance gate still missing)
 
 Ingested + measured the `20260606T213646Z` export. The `route_id`s **changed** (you re-ran linking — thank
