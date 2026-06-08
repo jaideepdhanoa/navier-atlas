@@ -27,8 +27,8 @@
    "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
   },
   "CLUSTERS": {
-   "count": 32,
-   "sha256": "5240aa5ddd8758ade0598b05592ef526dfe333e52ec5a7dc7a91bdef981d6353"
+   "count": 75,
+   "sha256": "852c4c2d4ffee490c7c17461f0af2f94e487ed31b9baaf580f23734fac122769"
   }
  },
  "gates": {
@@ -51,14 +51,14 @@
    "internal",
    "deck_only"
   ],
-  "economics_records": 37
+  "economics_records": 71
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T07:55:04.241377Z",
+ "sealed_at": "2026-06-08T18:26:53.170604Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "count": 69,
-   "sha256": "78e84f79619733a6e4507b6caca21f2ad74a0e58afa20c05aff2d97903bce116"
+   "count": 71,
+   "sha256": "2cdc398da89edc536bf9ee8a12aebde3409cb65947225f5b98e051fbe5288460"
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -256,5 +256,18 @@
   ],
   "upstream_root_causes_flagged": "FLAG-FOR-CLAUDE-upstream-geo-mistags.md — needs Musandam node + Montenegro boarding points.",
   "error_class": "label-vs-route geographic mismatch (route+distance+node_ids self-consistent but disagree with human label); distance/endpoint gates structurally blind."
+ },
+ "_gold34_cluster_id_completion": {
+  "applied_at": "2026-06-08T18:16:16.922183Z",
+  "note": "cluster_id on every city node: 0 untagged (was 51 unmapped of 192). +43 new clusters (32->75). 2 attach-to-existing (Fukuoka node->japan, Sir Bani Yas BP->uae). Method: zip-patch (LB-23); geometry & sidecar untouched.",
+  "clusters_total": 75,
+  "nodes_tagged": 192,
+  "untagged": 0
+ },
+ "_gold35_sidecar_uae_pin": {
+  "applied_at": "2026-06-08T18:26:53.170604Z",
+  "note": "Pinned 2 Careem UAE managed corridors to gold routes (exact single-match, ID-only): Dubai<->Abu Dhabi rn-25065af2bcb4, Dubai<->Sharjah rn-461399dfc4d5. Root cause: corridor node_ids used bare 'dubai'/'abu-dhabi' vs gold '-uae' suffix; fixed at source (finance/model/corridors.json). Records 69->71, pending 25->23. Other 23 pending stay null (intra-city/resort-level ambiguous) per ID-only mandate. Confirmed: no UAE-as-Singapore mislabel in source (already resolved).",
+  "records": 71,
+  "pending": 23
  }
 }
