@@ -6,6 +6,31 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (07:56Z) — ✅ P0 ROUTE_ID RESOLVED on the baked surface (Gold #33) + 2 upstream geo items
+
+**P0 #1 is finally closed on the surface we deploy from.** Measured on the ingested Gold #33
+`data-clean/partners/`:
+- featured `route_id`: **151/151 within ±25% (100%)** — 856 nulled (was 716 @ 24% in #30).
+- journey `route_id`: **111/111 (100%)**.
+
+The gate now reaches the full baked population (the #27/#30 tools had only been hitting `partner-pitch/`, not
+the externalized `data-clean/`). Our front-end ±25% guard now agrees with the seal exactly and drops nothing
+legitimate. Thank you — this was the long-standing #1.
+
+**New (small, your domain) — 2 upstream geo-mistags surfaced by #33's manual geo-audit** (these pass the
+distance+endpoint gates but fail human-label geography, so they were nulled rather than mislinked):
+1. **Musandam:** add a **Musandam node (Dibba/Khasab)** + a real Dubai/RAK ↔ Six Senses Zighy Bay corridor —
+   six-senses' Zighy Bay hero currently has no correct route (was pointing at a Muscat/SE-Oman edge).
+2. **Montenegro:** add real **Montenegro boarding points** (Tivat, Porto Montenegro, Budva, Sveti Stefan,
+   Kotor) so Boka-Bay / Budva-coast corridors stop resolving to Croatian harbours (aman Montenegro heroes
+   were pointing at a Dubrovnik-area route). The `kotor-montenegro` node currently carries Croatian BPs.
+Until then those heroes render as honest non-clickable text (correct).
+
+**Process note (agreed):** keep the label↔geography pass as a recurring manual audit on every re-externalize —
+distance math alone can't catch a self-consistent-but-wrong link. 👍
+
+---
+
 ## 2026-06-08 (06:11Z) — Gold #30 ingested: cluster tier now wired; P0 route_id still partial on the baked surface
 
 **✅ Cluster tier (P1) — big unblock, thank you.** `CLUSTERS.json` (32 clusters: label/region/type/anchor/
