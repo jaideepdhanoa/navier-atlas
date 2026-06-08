@@ -3,12 +3,12 @@
  "_p01b_relink": "CLEANUP D: 12 unambiguous phase-relinks applied (featured routes moved to phase whose city-scope contains their endpoints) across 8 partners 2026-06-07",
  "_p0_relink": {
   "applied": "2026-06-07",
-  "p0_1_gated_relink": "featured_routes + journeys_unlocked re-linked with distance gate (\u00b125% of label distance_nm), endpoint gate (unordered city-pair ID match; intra-cluster requires both-endpoint name match else stays network-chip), per-corridor uniqueness (journey\u2194featured mirrors of same corridor may share; different corridors may not). Result: featured 45 linked / 100% pass \u00b125%; journeys 45 linked / 100% pass; 0 different-corridor collisions; 0 zero-nm links. Remaining nulls honest (no gold route within gate). Tool: partner-pitch/_tools/gated_relink.py",
-  "p0_2_phase_refile": "10 featured_routes re-homed to the sibling phase whose cities contain an endpoint (incl. saudi-pif Eastern-Province\u2194Bahrain moved Jeddah\u2192EP phase). Only clean single-home moves applied; null-endpoint text routes left in place.",
+  "p0_1_gated_relink": "featured_routes + journeys_unlocked re-linked with distance gate (±25% of label distance_nm), endpoint gate (unordered city-pair ID match; intra-cluster requires both-endpoint name match else stays network-chip), per-corridor uniqueness (journey↔featured mirrors of same corridor may share; different corridors may not). Result: featured 45 linked / 100% pass ±25%; journeys 45 linked / 100% pass; 0 different-corridor collisions; 0 zero-nm links. Remaining nulls honest (no gold route within gate). Tool: partner-pitch/_tools/gated_relink.py",
+  "p0_2_phase_refile": "10 featured_routes re-homed to the sibling phase whose cities contain an endpoint (incl. saudi-pif Eastern-Province↔Bahrain moved Jeddah→EP phase). Only clean single-home moves applied; null-endpoint text routes left in place.",
   "p1_3_boats_vs_kpi": "FLAGGED not auto-fixed (inconsistent direction across partners). See partner-pitch/P1-3-BOATS-VS-KPI-FLAG.md"
  },
  "_uae_luxury_correction": "careem+bolt growth_case regenerated on corrected UAE luxury-network base (10 water-served island corridors added) 2026-06-07",
- "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt \u2014 growth_case blocks added 2026-06-07",
+ "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt — growth_case blocks added 2026-06-07",
  "blobs": {
   "FEATURES_BY_TYPE": {
    "count": {
@@ -32,11 +32,11 @@
   }
  },
  "gates": {
-  "bp_on_water": "PASS \u2014 9 new greenfield clusters (Naxos, Milos, Naples\u2013Capri, Malta\u2013Gozo, Menorca, Corsica, Costa Brava, Djerba, Marseille): 42 web-verified boarding points (provenance in source files). Routes water-validated in-generate (SeaGrid, 23 land-crossers dropped) + post scrub_land_routes (5 dropped). 0 Pioneer II routes >70nm.",
-  "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)",
-  "externalization": "PASS \u2014 P0 content re-link (gated featured_routes/journeys + phase re-file); deck_only/internal stripped",
-  "land_crossing": "PASS \u2014 geometry delta (add_market.py / LB-25): +42 BP POIs, +53 intra-cluster routes for 9 web-sourced Mediterranean clusters, append-only onto gold #9. All routes SeaGrid+scrub clean. Gold #9 5077 -> gold #10 5130 routes; 11245 -> 11287 POIs.",
-  "referential_integrity": "PASS \u2014 append-only delta; 0 id collisions with gold; new POIs parent_city_id \u2208 9 existing city nodes; new routes endpoints \u2208 9 existing clusters."
+  "bp_on_water": "PASS — 9 new greenfield clusters (Naxos, Milos, Naples–Capri, Malta–Gozo, Menorca, Corsica, Costa Brava, Djerba, Marseille): 42 web-verified boarding points (provenance in source files). Routes water-validated in-generate (SeaGrid, 23 land-crossers dropped) + post scrub_land_routes (5 dropped). 0 Pioneer II routes >70nm.",
+  "brief_conformance": "PASS — all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)",
+  "externalization": "PASS — P0 content re-link (gated featured_routes/journeys + phase re-file); deck_only/internal stripped",
+  "land_crossing": "PASS — geometry delta (add_market.py / LB-25): +42 BP POIs, +53 intra-cluster routes for 9 web-sourced Mediterranean clusters, append-only onto gold #9. All routes SeaGrid+scrub clean. Gold #9 5077 -> gold #10 5130 routes; 11245 -> 11287 POIs.",
+  "referential_integrity": "PASS — append-only delta; 0 id collisions with gold; new POIs parent_city_id ∈ 9 existing city nodes; new routes endpoints ∈ 9 existing clusters."
  },
  "meta": {
   "gold": "#18",
@@ -45,7 +45,7 @@
  "pitch": {
   "city_briefs": 164,
   "cluster_briefs": 32,
-  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) \u2014 website build MUST bake from these.",
+  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) — website build MUST bake from these. | #27: partner route_id + route_ids chips gated to 100% precision (gate_chips.py)",
   "partners": 46,
   "tiers_stripped": [
    "internal",
@@ -54,7 +54,7 @@
   "economics_records": 37
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T02:02:00Z",
+ "sealed_at": "2026-06-08T05:41:39Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 69,
@@ -117,12 +117,12 @@
   "sidecar": "69 (unchanged; geometry-only autonomous-lane hero, no finance corridor)"
  },
  "_gold20_galapagos": {
-  "market": "Gal\u00e1pagos inter-island heroes (Ecuador)",
+  "market": "Galápagos inter-island heroes (Ecuador)",
   "new_routes": 2,
   "routes": "5213->5215",
-  "heroes": "Puerto Ayora (Santa Cruz) <-> Puerto Villamil (Isabela) 42.5nm; <-> Puerto Baquerizo Moreno (San Crist\u00f3bal) 44.0nm",
+  "heroes": "Puerto Ayora (Santa Cruz) <-> Puerto Villamil (Isabela) 42.5nm; <-> Puerto Baquerizo Moreno (San Cristóbal) 44.0nm",
   "method": "_solve_corridor_waypoints offline A*+simplify; both PASS land<=1.0km; both Pioneer II (<70nm)",
-  "note": "authentic hub-and-spoke lancha network through Santa Cruz; Isabela<->San Crist\u00f3bal (81nm) omitted \u2014 exceeds Pioneer range & not a real direct public lancha route (null beats confidently-wrong)",
+  "note": "authentic hub-and-spoke lancha network through Santa Cruz; Isabela<->San Cristóbal (81nm) omitted — exceeds Pioneer range & not a real direct public lancha route (null beats confidently-wrong)",
   "ports": "3 existing gold POIs (no new pins/POIs); orphan-pin nodes now connected",
   "sidecar": "69 unchanged (geometry-only hero, no finance corridor)"
  },
@@ -133,7 +133,7 @@
   "heroes": "Belize City Water-Taxi Terminal <-> San Pedro (Ambergris Caye) 30.2nm; San Pedro <-> Caye Caulker 12.8nm",
   "method": "_solve_corridor_waypoints; both PASS land<=1.0km; both Pioneer II",
   "ports": "existing gold POIs; Ambergris orphan pin now connected",
-  "kenya_note": "Lamu<->Mokowe (2.6nm) already in gold; Mombasa/Lamu otherwise short intra-creek or out-of-range \u2014 no new heroes",
+  "kenya_note": "Lamu<->Mokowe (2.6nm) already in gold; Mombasa/Lamu otherwise short intra-creek or out-of-range — no new heroes",
   "sidecar": "69 unchanged (geometry-only)"
  },
  "_gold22_dar_zanzibar": {
@@ -160,7 +160,7 @@
    "Nantucket<->Vineyard Haven 27.1nm"
   ],
   "method": "_solve_corridor_waypoints solver-splice; all gate-pass <=1.0km land",
-  "deferred": "Anacortes<->Orcas direct (WSF real) \u2014 A* exceeded solver budget in dense archipelago; Orcas already connected via Friday Harbor<->Orcas; curated-waypoint follow-up",
+  "deferred": "Anacortes<->Orcas direct (WSF real) — A* exceeded solver budget in dense archipelago; Orcas already connected via Friday Harbor<->Orcas; curated-waypoint follow-up",
   "ports": "all pre-existing gold POIs under seattle-puget-sound-usa / boston-new-england-usa clusters; were orphan-unconnected",
   "sidecar": "69 unchanged (geometry-only)"
  },
@@ -204,5 +204,14 @@
    "Likoni Ferry crossing 0.3nm (direct)"
   ],
   "note": "mombasa-kenya node was orphan (5 POIs, 0 routes); now connected. Shanghai DEFERRED (Huangpu River not in ocean mask - curated river-waypoint follow-up)."
+ },
+ "_gold27_partner_relink": {
+  "applied": "2026-06-08",
+  "what": "Re-ran gated_relink.py on Gold #26 geometry (more corridors now exist) + NEW gate_chips.py pass to prune the plural route_ids chip arrays by the same distance(+/-25%)+endpoint(ID) gates.",
+  "result": "BAKED data-clean/partners now 100% precise: featured 49 route_id linked (was 45) all pass; journeys 47 linked (was 45) all pass; route_ids chips 1830->107, every survivor in-gate. 193 chip-items honestly nulled (no in-gate corridor), 37 keep tight sets.",
+  "root_cause": "Prior relink set route_id correctly but left route_ids chip arrays ungated; render lane resolves chips for click-to-highlight -> only 67/1702 chips were in-gate, matching Claude's reported 31%/23%.",
+  "tools": "partner-pitch/_tools/gated_relink.py (route_id) + partner-pitch/_tools/gate_chips.py (route_ids, NEW)",
+  "principle": "exactness over coverage; null beats confidently-wrong; ID-based only",
+  "geometry": "UNCHANGED from #26 (FEATURES/ROUTES/STORIES/VESSEL_SPECS hashes identical)"
  }
 }
