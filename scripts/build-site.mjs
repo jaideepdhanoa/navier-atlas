@@ -47,6 +47,9 @@ function loadData() {
   };
   data.CITY_BRIEFS = dir('city_briefs', 'city_id');
   data.PARTNERS = dir('partners', 'partner_id');
+  // Cluster lookup — used to scope a partner's network by the countries/clusters it touches. Optional.
+  const clp = path.join(DC, 'CLUSTERS.json');
+  data.CLUSTERS = fs.existsSync(clp) ? readJson(clp) : { clusters: [] };
   // Defensive strip of internal classification fields (see build.mjs) — keeps the deployed aggregate AND
   // every scoped partner page clean of `posture`/`archetype_scores`; the render never uses them.
   for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
@@ -102,6 +105,9 @@ function scopeForPartner(data, slug, opts = {}) {
     return ({ 'sea': 'sea', 'southeast asia': 'sea', 'caribbean': 'latam-caribbean', 'latam-caribbean': 'latam-caribbean' })[k] || k; };
   const cityRegion = {}, cityCluster = {};
   for (const t of ['city', 'priority_city']) for (const f of (data.FEATURES_BY_TYPE[t] || [])) { const p = f.properties || {}; if (p.id) { cityRegion[p.id] = normReg(p.region); cityCluster[p.id] = p.cluster_id || null; } }
+  // CLUSTERS.member_city_ids is the authoritative, 100%-complete city→cluster map (the city-node cluster_id
+  // property lags it). Prefer it so EVERY city resolves to a cluster, then fall back to the node property.
+  for (const c of ((data.CLUSTERS && data.CLUSTERS.clusters) || [])) for (const id of (c.member_city_ids || [])) if (id in cityCluster) cityCluster[id] = c.cluster_id;
   // Expand the NETWORK footprint precisely: by CLUSTER (country/archipelago) where the rollout cities are
   // cluster-tagged — so a Grab Taiwan market doesn't drag in all of Japan/Korea the way coarse continental
   // region-expansion did. Fall back to region ONLY for rollout cities not yet cluster-tagged upstream

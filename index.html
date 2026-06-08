@@ -826,6 +826,10 @@ for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[
 // Cluster lookup (CLUSTERS.json): cluster_id -> {cluster_label, region, type, anchor, member_city_ids}.
 // Pairs with cluster_id on city nodes + the cluster_briefs surface to drive Region → Cluster → City nav.
 const CLUSTER_BY_ID = {}; if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])) if (c && c.cluster_id) CLUSTER_BY_ID[c.cluster_id]=c;
+// Authoritative city→cluster map from CLUSTERS.member_city_ids (100% coverage; the city-node cluster_id
+// property lags it). Use this everywhere we resolve a city's cluster so no city is missed.
+const CITY_TO_CLUSTER = {}; for (const c of Object.values(CLUSTER_BY_ID)) for (const id of (c.member_city_ids||[])) CITY_TO_CLUSTER[id]=c.cluster_id;
+const _clusterOf = (id, fallback) => CITY_TO_CLUSTER[id] || fallback || null;
 // Map labels show only the PRIMARY place: several nodes carry a bundled "A / B / C" shortName
 // (e.g. "Manila / Cebu / Palawan / Boracay / Siargao") that reads as one mega-city when zoomed out.
 // The full bundled name is preserved in the brief/panel; this is render-only (data-clean is untouched).
@@ -1859,7 +1863,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    ${(props.cluster_id && CLUSTER_BY_ID[props.cluster_id])?`<button class="brief-cluster" data-cluster="${escapeHtml(props.cluster_id)}">Part of ${escapeHtml(CLUSTER_BY_ID[props.cluster_id].cluster_label)} ↗</button>`:''}
+    ${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(c.cluster_label)} ↗</button>`:''; })()}
     ${_rangeCtrlHtml(coords)}
   </div>`;
   if (ov){
