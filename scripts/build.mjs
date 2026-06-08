@@ -58,6 +58,12 @@ data.PARTNERS = assembleDir(partnersDir, 'partner_id');
 // first-class iff a signature_route resolves to a built route, else tag-only). Baked like city_briefs.
 const clusterDir = existsSync(join(DC, 'cluster_briefs')) ? join(DC, 'cluster_briefs') : join(PITCH, 'cluster_briefs');
 data.CLUSTER_BRIEFS = assembleDir(clusterDir, 'cluster_id');
+// Route unit-economics sidecar (economics_by_route_id.json) → keyed by route_id for O(1) join at render
+// time. Presence of a record => the route has economics; absent => none (never invent). The grounding
+// artifact (CORRIDOR-ENDPOINT-GROUNDING.json) is internal QA provenance — deliberately not baked.
+const econPath = join(DC, 'economics_by_route_id.json');
+data.ROUTE_ECONOMICS = {};
+if (existsSync(econPath)) { const econ = readJson(econPath); for (const r of (econ.records || [])) if (r && r.route_id) data.ROUTE_ECONOMICS[r.route_id] = r; }
 
 // Defensive strip: internal classification fields that must never reach the public artifact. The render
 // never reads these. Belt-and-suspenders over Tasklet's externalizer — the 2026-06-01 P0+P1 reseal leaked
@@ -80,4 +86,4 @@ const fc = data.FEATURES_BY_TYPE, ftypes = Object.keys(fc);
 const nodes = ftypes.reduce((n, t) => n + (fc[t] ? fc[t].length : 0), 0);
 console.log(`[build] atlas-data.js written (${(readFileSync(OUT).length / 1e6).toFixed(2)} MB)`);
 console.log(`[build]   features: ${nodes} across ${ftypes.length} types · routes: ${data.ROUTES.length} · stories: ${data.STORIES.length}`);
-console.log(`[build]   city briefs: ${Object.keys(data.CITY_BRIEFS).length} · partners: ${Object.keys(data.PARTNERS).length} · cluster briefs: ${Object.keys(data.CLUSTER_BRIEFS).length}`);
+console.log(`[build]   city briefs: ${Object.keys(data.CITY_BRIEFS).length} · partners: ${Object.keys(data.PARTNERS).length} · cluster briefs: ${Object.keys(data.CLUSTER_BRIEFS).length} · route-economics: ${Object.keys(data.ROUTE_ECONOMICS).length}`);
