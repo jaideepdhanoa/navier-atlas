@@ -12,15 +12,15 @@
  "blobs": {
   "FEATURES_BY_TYPE": {
    "count": {
-    "city": 162,
-    "poi": 11353,
+    "city": 164,
+    "poi": 11362,
     "priority_city": 37
    },
-   "sha256": "5ce74522193f344d95c7c33a4992f17b3805d02adf05b3fc91719e83bd79a68c"
+   "sha256": "50575e8e1677aa4ac3b4b03672e08d056dc9478ff5d0da534eb5ec04fa72892a"
   },
   "ROUTES": {
-   "count": 5218,
-   "sha256": "1bf358e28c56e70b7901c9ed5e83c3bc5955437ac91f6b5d8d7a751282acf647"
+   "count": 5229,
+   "sha256": "c855c52c888a865c2dac49f3fdddfbd119292c9e881f2a7d9ea53303895f3bab"
   },
   "STORIES": {
    "count": 20,
@@ -54,7 +54,7 @@
   "economics_records": 37
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T01:00:48Z",
+ "sealed_at": "2026-06-08T02:02:00Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 69,
@@ -144,5 +144,65 @@
   "method": "_solve_corridor_waypoints; PASS land=0.0km",
   "ports": "both existing gold POIs; orphan Dar pin now connected",
   "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold23_us_islands": {
+  "markets": "San Juan Islands (Puget Sound) + Cape Cod & the Islands",
+  "new_routes": 6,
+  "routes": "5218->5224",
+  "san_juan": [
+   "Anacortes<->Friday Harbor 21.2nm",
+   "Friday Harbor<->Orcas 5.2nm",
+   "Anacortes<->Lopez 19.9nm"
+  ],
+  "cape_cod": [
+   "Hyannis<->Nantucket 24.1nm",
+   "Hyannis<->Oak Bluffs(MV) 17.7nm",
+   "Nantucket<->Vineyard Haven 27.1nm"
+  ],
+  "method": "_solve_corridor_waypoints solver-splice; all gate-pass <=1.0km land",
+  "deferred": "Anacortes<->Orcas direct (WSF real) \u2014 A* exceeded solver budget in dense archipelago; Orcas already connected via Friday Harbor<->Orcas; curated-waypoint follow-up",
+  "ports": "all pre-existing gold POIs under seattle-puget-sound-usa / boston-new-england-usa clusters; were orphan-unconnected",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold24_hamptons_chicago": {
+  "markets": "The Hamptons & East End (NY/RI) + Chicago & Lake Michigan",
+  "new_cities": 2,
+  "new_pois": 9,
+  "new_routes": 4,
+  "routes": "5224->5228",
+  "collisions": [],
+  "hamptons": [
+   "Montauk<->Block Island 17.3nm (Viking Fast Ferry)",
+   "Greenport<->Shelter Island 1.4nm (North Ferry)",
+   "North Haven<->Shelter Island 0.9nm (South Ferry)"
+  ],
+  "chicago": [
+   "DuSable Harbor<->New Buffalo 38.9nm (open Lake Michigan crossing to Harbor Country)"
+  ],
+  "method": "saltwater heroes via clean straight-line (gate 0.0km); Chicago manual straight-line (Great Lakes NOT in ocean mask; path verified offshore of Indiana shore)",
+  "sourcing": "NEW boarding points web-sourced (Viking Fleet, North/South Ferry, Chicago Harbors, New Buffalo Municipal Marina); 2 new city nodes minted",
+  "deferred": "Greenport<->Sag Harbor (channel-locked around Shelter Island, curated-waypoint follow-up); Sag<->Montauk dropped (no real direct ferry)",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold25_housekeeping": {
+  "degenerate_relabels": 12,
+  "self_loops_removed": 1,
+  "method": "exact endpoint-coordinate->POI identity match (6dp); Palm Beach duplicate-name disambiguated by locale",
+  "routes": "5228->5227",
+  "skipped": []
+ },
+ "_gold26_region_cleanup": {
+  "poi_region_fills": 35,
+  "method": "inherit region from parent_city_id (exact ID match); 34 Europe + 1 LatAm-Caribbean"
+ },
+ "_gold26_mombasa_orphan_fill": {
+  "new_routes": 2,
+  "routes": "5227->5229",
+  "collisions": [],
+  "heroes": [
+   "Mombasa Old Port <-> Mtwapa Creek 11.4nm",
+   "Likoni Ferry crossing 0.3nm (direct)"
+  ],
+  "note": "mombasa-kenya node was orphan (5 POIs, 0 routes); now connected. Shanghai DEFERRED (Huangpu River not in ocean mask - curated river-waypoint follow-up)."
  }
 }
