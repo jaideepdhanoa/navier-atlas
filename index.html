@@ -304,6 +304,11 @@ body.panel-hidden #footer { display:block; }
 .type-pill.locale { background:rgba(251,113,133,0.13); color:var(--coral);  border:1px solid rgba(251,113,133,0.3); }
 .type-pill.poi    { background:rgba(96,165,250,0.13);  color:var(--steel);  border:1px solid rgba(96,165,250,0.3); }
 .type-pill.cluster{ background:rgba(125,211,252,0.13); color:#7dd3fc; border:1px solid rgba(125,211,252,0.32); }
+.panel-hero .brief-cluster { display:inline-block; margin-top:8px; font:600 11px Inter; color:#7dd3fc; background:rgba(125,211,252,0.1); border:1px solid rgba(125,211,252,0.3); border-radius:999px; padding:4px 11px; cursor:pointer; }
+.panel-hero .brief-cluster:hover { background:rgba(125,211,252,0.18); }
+.cl-cities { display:flex; flex-wrap:wrap; gap:6px; }
+.cl-city { font:500 12px Inter; color:var(--text-1); background:var(--bg-3); border:1px solid var(--line-strong); border-radius:8px; padding:5px 11px; cursor:pointer; }
+.cl-city:hover { color:#7dd3fc; border-color:rgba(125,211,252,0.45); }
 .panel-hero h2 { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin:0 0 4px; }
 .panel-hero .subtitle { font-size:12px; color:var(--text-1); }
 .panel-hero .ring-toggle { margin-top:10px; padding:6px 12px; font:500 11px Inter; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); border-radius:8px; cursor:pointer; }
@@ -818,6 +823,9 @@ var PARTNERS    = (typeof window!=='undefined' && window.PARTNERS)    || {};
 
 const NODE_INDEX = {}; // id -> {coords, props}
 for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[t]) { const p=f.properties; if (p.id) NODE_INDEX[p.id]={coords:f.geometry.coordinates, props:p}; }
+// Cluster lookup (CLUSTERS.json): cluster_id -> {cluster_label, region, type, anchor, member_city_ids}.
+// Pairs with cluster_id on city nodes + the cluster_briefs surface to drive Region → Cluster → City nav.
+const CLUSTER_BY_ID = {}; if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])) if (c && c.cluster_id) CLUSTER_BY_ID[c.cluster_id]=c;
 // Map labels show only the PRIMARY place: several nodes carry a bundled "A / B / C" shortName
 // (e.g. "Manila / Cebu / Palawan / Boracay / Siargao") that reads as one mega-city when zoomed out.
 // The full bundled name is preserved in the brief/panel; this is render-only (data-clean is untouched).
@@ -1818,6 +1826,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
+    ${(props.cluster_id && CLUSTER_BY_ID[props.cluster_id])?`<button class="brief-cluster" data-cluster="${escapeHtml(props.cluster_id)}">Part of ${escapeHtml(CLUSTER_BY_ID[props.cluster_id].cluster_label)} ↗</button>`:''}
     ${_rangeCtrlHtml(coords)}
   </div>`;
   if (ov){
@@ -1870,6 +1879,8 @@ function _renderCityBrief(brief, props, coords){
   const bk = p.querySelector('#brief-back');
   if (bk) bk.addEventListener('click', clearSelection);
   _wireRangeCtrl(p);
+  const cl = p.querySelector('.brief-cluster[data-cluster]');
+  if (cl) cl.addEventListener('click', ()=> showClusterBrief(cl.dataset.cluster));
   p.querySelectorAll('.brief-live[data-rid]').forEach(el=>el.addEventListener('click', ()=>{
     const f = ROUTE_FC.features.find(x=>x.properties.id===el.dataset.rid); if (f) selectRoute(f);
   }));
@@ -1919,6 +1930,14 @@ function _clusterBriefHtml(cb){
     }
     h+=`</div>`;
   }
+  // Cities in this cluster (from CLUSTERS.member_city_ids) — clickable into each city brief.
+  const _cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[cid] : null;
+  const _members = _cl ? (_cl.member_city_ids||[]).filter(id=>NODE_INDEX[id]) : [];
+  if (_members.length){
+    h+=`<div class="panel-section"><h3>Cities in this cluster</h3><div class="cl-cities">`;
+    for (const id of _members){ const np=NODE_INDEX[id].props; h+=`<button class="cl-city" data-city="${escapeHtml(id)}">${escapeHtml(np.shortName||np.name||id)}</button>`; }
+    h+=`</div></div>`;
+  }
   if (cb.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(cb.transit_planning)}</div></div>`;
   if (cb.competitive_landscape) h+=`<div class="panel-section"><h3>Competitive landscape</h3><div class="what-distinct">${escapeHtml(cb.competitive_landscape)}</div></div>`;
   if (cb.seasonality) h+=`<div class="panel-section"><h3>Seasonality</h3><div class="what-distinct">${escapeHtml(cb.seasonality)}</div></div>`;
@@ -1934,14 +1953,22 @@ function showClusterBrief(cid){
   const p = document.getElementById('panel');
   p.innerHTML = _clusterBriefHtml(cb);
   p.scrollTop = 0;
-  const bk = p.querySelector('#nav-back'); // handled by delegated back-stack; no-op otherwise
-  // Frame + light the cluster's hero corridors (first-class clusters resolve ≥1 signature route_id).
+  // Frame the cluster: prefer its member cities (CLUSTERS.member_city_ids — the true extent); fall back to
+  // the hero corridors' geometry, then the cluster anchor point.
+  const cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[cid] : null;
+  const members = cl ? (cl.member_city_ids||[]).filter(id=>NODE_INDEX[id]) : [];
   const heroIds=[]; for (const r of (cb.signature_routes||[])) for (const id of _routeIdsOf(r)) if (ROUTE_ID_SET.has(id)) heroIds.push(id);
-  if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
+  if (members.length){ try { _focusCities(members,'intra'); _fitCities(members, 140); } catch(e){} }
+  else if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
+  else if (cl && Array.isArray(cl.anchor)){ try { map.flyTo({center:cl.anchor, zoom:6.5, duration:1100, essential:true}); } catch(e){} }
   // Clickable signature routes → open the route on the map.
   p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
     const id=(el.dataset.routes||'').split(',')[0];
     const f = ROUTE_FC.features.find(x=>x.properties && x.properties.id===id); if (f) selectRoute(f);
+  }));
+  // Member-city chips → open that city's brief.
+  p.querySelectorAll('.cl-city[data-city]').forEach(el=>el.addEventListener('click', ()=>{
+    const n=NODE_INDEX[el.dataset.city]; if (n){ try{ map.flyTo({center:n.coords, zoom:Math.max(9,map.getZoom()), duration:900, essential:true}); }catch(e){} showDetail(n.props, n.coords); }
   }));
 }
 function showDetail(props, coords) {
@@ -2131,7 +2158,8 @@ const ROUTE_NM_BY_ID = new Map((ROUTE_FC.features||[]).map(f=>[f.properties && f
 // route length is within tolerance of the label distance, so the map lights the right line OR falls back to
 // endpoint-city focus — never a confidently-wrong corridor. label_nm null (e.g. network-chip bundles, which
 // have no single distance) → can't validate, keep as-is. The real fix is re-linking at source (NOTES-FOR-TASKLET).
-const _ROUTE_LINK_TOL = 0.5;   // ±50%: only drops gross mismatches, preserves correct-but-approximate links
+const _ROUTE_LINK_TOL = 0.25;  // ±25%: matches Tasklet's seal gate (distance ±25% + endpoint), so the render
+                               // drops exactly the links the data should have nulled and never a legit one.
 function _plausibleRouteIds(label_nm, ids){
   if (label_nm == null) return ids;
   return ids.filter(id=>{ const nm = ROUTE_NM_BY_ID.get(id); return nm == null || Math.abs(nm - label_nm)/Math.max(label_nm,1) <= _ROUTE_LINK_TOL; });

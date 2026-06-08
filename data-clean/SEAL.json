@@ -11,16 +11,12 @@
  "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt — growth_case blocks added 2026-06-07",
  "blobs": {
   "FEATURES_BY_TYPE": {
-   "count": {
-    "city": 164,
-    "poi": 11362,
-    "priority_city": 37
-   },
-   "sha256": "50575e8e1677aa4ac3b4b03672e08d056dc9478ff5d0da534eb5ec04fa72892a"
+   "count": 11563,
+   "sha256": "ab5fa9f3606356e5fff54fc446879c38ffb9655a5aff5cc52b81831a22ba2ebc"
   },
   "ROUTES": {
-   "count": 5229,
-   "sha256": "c855c52c888a865c2dac49f3fdddfbd119292c9e881f2a7d9ea53303895f3bab"
+   "count": 5201,
+   "sha256": "a096a1f0dda7ef1af8dfec77d88ae5cf733141c4d17c61d99a2c38d8fdc242b0"
   },
   "STORIES": {
    "count": 20,
@@ -29,6 +25,10 @@
   "VESSEL_SPECS": {
    "count": 3,
    "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
+  },
+  "CLUSTERS": {
+   "count": 32,
+   "sha256": "5240aa5ddd8758ade0598b05592ef526dfe333e52ec5a7dc7a91bdef981d6353"
   }
  },
  "gates": {
@@ -54,11 +54,11 @@
   "economics_records": 37
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T05:41:39Z",
+ "sealed_at": "2026-06-08T06:10:37.435763Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 69,
-   "sha256": "1bc2a5f9aa6cbd105c682f65c98d3089fe5ac7af0dc8bce3f3af1e1bd7704ce5"
+   "sha256": "78e84f79619733a6e4507b6caca21f2ad74a0e58afa20c05aff2d97903bce116"
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -213,5 +213,22 @@
   "tools": "partner-pitch/_tools/gated_relink.py (route_id) + partner-pitch/_tools/gate_chips.py (route_ids, NEW)",
   "principle": "exactness over coverage; null beats confidently-wrong; ID-based only",
   "geometry": "UNCHANGED from #26 (FEATURES/ROUTES/STORIES/VESSEL_SPECS hashes identical)"
- }
+ },
+ "gold_build": 29,
+ "notes": [
+  "Gold #28: A2 country fix (UAE Singapore->UAE in sidecar) + B1 cluster_id/cluster_label on 150 city nodes + B2 CLUSTERS.json lookup (32 clusters w/ anchors). galapagos/belize/kenya first-class.",
+  "Gold #29: P2b exact-duplicate route collapse (5229->5201, 28 removed) + mislabeled fort-lauderdale-las-olas id fixed. Downstream refs remapped across partners/stories/cluster_briefs. A<->B mirror collapse intentionally deferred (front-end de-dupes; source authoring stays directional).",
+  "Gold #30: route_id null-on-fail gate (gate_route_id.py) — nulled 3 mislabeled hawaii ids (Molokaʻi journey pointing at maui→honolulu). Baked surface 100% clean: featured 47/47, journeys 46/46, chips 107/107 all pass ±25%+endpoint gate. Routes/clusters/sidecar unchanged from #29 (5,201)."
+ ],
+ "_gold29_dedup": {
+  "method": "exact endpoint+geometry duplicate collapse with downstream reference remapping",
+  "features_removed": 28,
+  "routes_before": 5229,
+  "routes_after": 5201,
+  "dupe_groups": 21,
+  "references_remapped": 6,
+  "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
+  "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
+ },
+ "gold_seq": 30
 }
