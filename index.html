@@ -453,6 +453,16 @@ body.panel-hidden #footer { display:block; }
 .gc-vessel-qlr .gc-vessel-name { color:#fbbf24; }
 .gc-vessel-meta { font-size:10.5px; color:var(--text-2); margin:1px 0 4px; }
 .gc-vessel-role { font-size:11px; color:var(--text-1); line-height:1.45; }
+/* Route unit-economics block */
+.rec-tags { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px; }
+.rec-vessel { font-size:10px; color:var(--text-2); border:1px solid var(--line-strong); border-radius:999px; padding:2px 8px; }
+.rec-fare { font-size:12px; color:var(--text-1); margin-bottom:10px; }
+.rec-fare b { color:var(--text-0); }
+.rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.rec-fig { border:1px solid var(--line-strong); border-radius:9px; padding:9px 11px; background:rgba(255,255,255,0.02); }
+.rec-v { font-size:17px; font-weight:700; color:#6ee7b7; letter-spacing:-0.01em; }
+.rec-l { font-size:10px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+.rec-b { font-size:10px; color:var(--text-2); margin-top:3px; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
 
@@ -1673,6 +1683,37 @@ function clearSelection(){
   const panel = document.getElementById('panel');
   if (PANEL_EMPTY_HTML != null) { panel.innerHTML = PANEL_EMPTY_HTML; panel.scrollTop = 0; }
 }
+// Route unit-economics block (ROUTE_ECONOMICS sidecar, keyed by route_id). Headline the MID; carry the
+// THIN/MID/FULL spread as a faint range; surface status (grounded/estimated) + demand confidence. Rendered
+// only when a record exists for the selected route — an absent record means "no economics yet", never zero.
+function _econMoney(n){ if(n==null||isNaN(n))return ''; const a=Math.abs(n);
+  if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
+function _econRange(arr, fmt){ if(!Array.isArray(arr)||arr.length<2)return ''; const f=fmt||(x=>x), lo=Math.min(...arr), hi=Math.max(...arr);
+  return lo===hi ? '' : `<div class="rec-b">${f(lo)}–${f(hi)}</div>`; }
+function _routeEconHtml(rec){
+  if (!rec) return '';
+  const m=rec.mid||{}, band=rec.band||{}, figs=[];
+  if (m.rev_per_boat_yr!=null) figs.push(['Revenue / boat / yr', _econMoney(m.rev_per_boat_yr), '']);
+  if (m.margin!=null) figs.push(['Operating margin', Math.round(m.margin*100)+'%', '']);
+  if (m.payback_years!=null) figs.push(['Payback', m.payback_years.toFixed(2)+' yr', _econRange(band.payback_years, x=>x.toFixed(2)+' yr')]);
+  if (m.co2_saved_t_per_boat_yr!=null) figs.push(['CO₂ saved / boat / yr', Math.round(m.co2_saved_t_per_boat_yr)+' t', '']);
+  if (m.vessels_10pct!=null) figs.push(['Vessels · 10% capture', String(m.vessels_10pct), _econRange(band.vessels_10pct, x=>String(x))]);
+  if (m.market_rev_yr!=null) figs.push(['Market revenue / yr', _econMoney(m.market_rev_yr), '']);
+  if (!figs.length) return '';
+  const st=String(rec.status||''), dc=String(rec.demand_confidence||'');
+  const stCls = st==='grounded' ? 'gc-conf-grounded' : 'gc-conf-medlow';
+  let h=`<div class="panel-section"><h3>Unit economics</h3>`;
+  h+=`<div class="rec-tags">${st?`<span class="gc-conf ${stCls}">${escapeHtml(st)}</span>`:''}${dc?`<span class="gc-conf gc-conf-med">demand: ${escapeHtml(dc)}</span>`:''}${rec.vessel?`<span class="rec-vessel">${escapeHtml(rec.vessel)}</span>`:''}</div>`;
+  const fare = rec.navier_fare_usd!=null?rec.navier_fare_usd:rec.fare_today_usd;
+  if (fare!=null) h+=`<div class="rec-fare">Fare <b>$${escapeHtml(String(fare))}</b>/seat${rec.market?` · ${escapeHtml(rec.market)}`:''}</div>`;
+  h+=`<div class="rec-grid">`;
+  for (const [k,v,b] of figs) h+=`<div class="rec-fig"><div class="rec-v">${escapeHtml(v)}</div><div class="rec-l">${escapeHtml(k)}</div>${b||''}</div>`;
+  h+=`</div>`;
+  const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
+  if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}</div>`;
+  h+=`</div>`;
+  return h;
+}
 function showRouteDetail(p){
   const panel = document.getElementById('panel');
   const a = _endpointName('from','from_label','from_city',p), b = _endpointName('to','to_label','to_city',p);
@@ -1700,6 +1741,8 @@ function showRouteDetail(p){
   html += `<div class="panel-section"><h3>Route</h3><div class="kv-grid">`;
   for (const [k,v,cap] of kv) html += `<dt>${escapeHtml(k)}</dt><dd${cap?' style="text-transform:capitalize"':''}>${escapeHtml(String(v))}</dd>`;
   html += `</div></div>`;
+  // Unit economics, if this corridor has a record (route-keyed sidecar). Absent record => no block (never invent).
+  html += _routeEconHtml((typeof ROUTE_ECONOMICS!=='undefined') ? ROUTE_ECONOMICS[p.id] : null);
   if (purpose) html += `<div class="panel-section"><h3>Trip purpose</h3><div class="what-distinct"><span style="color:${pColor};font-weight:600;text-transform:capitalize">● ${escapeHtml(purpose)}</span></div></div>`;
   html += `<div class="panel-section"><h3>Endpoints</h3><div class="kv-grid"><dt>from</dt><dd>${escapeHtml(a)}</dd><dt>to</dt><dd>${escapeHtml(b)}</dd></div></div>`;
   panel.innerHTML = html;

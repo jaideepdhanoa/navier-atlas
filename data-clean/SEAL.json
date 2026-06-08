@@ -12,15 +12,15 @@
  "blobs": {
   "FEATURES_BY_TYPE": {
    "count": {
-    "city": 161,
-    "poi": 11337,
+    "city": 162,
+    "poi": 11353,
     "priority_city": 37
    },
-   "sha256": "2feff483acb0953282002bef90e531cb3ce6d31d5f6d21e7cd213cbd84855878"
+   "sha256": "5ce74522193f344d95c7c33a4992f17b3805d02adf05b3fc91719e83bd79a68c"
   },
   "ROUTES": {
-   "count": 5167,
-   "sha256": "09bcfa2b5655acb3c4beef316b598e88be4c1f2c317ff7adadba3477e4a46387"
+   "count": 5218,
+   "sha256": "1bf358e28c56e70b7901c9ed5e83c3bc5955437ac91f6b5d8d7a751282acf647"
   },
   "STORIES": {
    "count": 20,
@@ -39,8 +39,8 @@
   "referential_integrity": "PASS \u2014 append-only delta; 0 id collisions with gold; new POIs parent_city_id \u2208 9 existing city nodes; new routes endpoints \u2208 9 existing clusters."
  },
  "meta": {
-  "gold": "#12",
-  "note": "new-market geometry +11 cities (Okinawa/Yaeyama, Shanghai pin, Galapagos, Kenya, Belize: 40 BP POIs, 25 water-clean routes) + boats=KPI consistency + P0.1B re-files + Brunei removal + 32 cluster briefs sealed"
+  "gold": "#18",
+  "note": "Maldives inter-island expansion: +31 real open-water edges across 9 atoll gateways (South Ari, Baa, Noonu, Raa, Dhaalu, Gaafu, Laamu, Addu, Lhaviyani); de-Male-ified. Finance layer: capex 20yr, A-prime capture, Saudi/RedSea forward-SAM, R-FLOOR-2 network-sum. Maldives 19->39 boats/$87.5M. All 31 gate-passing @1.0km."
  },
  "pitch": {
   "city_briefs": 164,
@@ -50,8 +50,99 @@
   "tiers_stripped": [
    "internal",
    "deck_only"
-  ]
+  ],
+  "economics_records": 37
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-07T17:07:28.909647+00:00"
+ "sealed_at": "2026-06-08T01:00:48Z",
+ "sidecars": {
+  "economics_by_route_id.json": {
+   "count": 69,
+   "sha256": "1bc2a5f9aa6cbd105c682f65c98d3089fe5ac7af0dc8bce3f3af1e1bd7704ce5"
+  }
+ },
+ "_uae_luxury_corridor_edges": {
+  "gold": "#15",
+  "built": 6,
+  "market": "uae-luxury / careem",
+  "route_ids": [
+   "rn-fe3fdf5c23c4",
+   "rn-f1a7150d087e",
+   "rn-06eef0dc0a9a",
+   "rn-a0295522defb",
+   "rn-9d65d29a88ec",
+   "rn-444748135d1b"
+  ],
+  "method": "add_corridor.py gate-verified -> corridor_layer.py emit (gold FEATURES) -> splice onto gold -> scrub(0 crossers)",
+  "note": "intra-emirate BP->BP luxury transfers; Wynn cross-cluster + 2 id-collisions + Saudi/Maldives deferred (see CORRIDOR-ENDPOINT-GROUNDING.json)"
+ },
+ "_fare_sanity_cascade": {
+  "applied": "2026-06-07T21:26:46Z",
+  "rule": "R5-EXT premium-anchor-validity",
+  "cascaded": [
+   "penang: George Town (Swettenham) -> Butterworth (mainland) ($0.47/2.1M public ferry)",
+   "taiwan: Kaohsiung -> Cijin Island ($2.50/3.18M public ferry)",
+   "taiwan: Donggang -> Xiaoliuqiu ($7/1.12M standard tourist ferry, no premium tier)",
+   "vietnam: Bach Dang -> Thu Duc/Grand Park ($8/900k Saigon Waterbus commuter)",
+   "borneo: Kota Kinabalu -> Tunku Abdul Rahman park ($8/546k budget island-hop)"
+  ],
+  "effect": "fare+demand nulled; excluded from grounded floor & estimation. Geometry retained. Grab floor 165->134 boats / $42.4M->$39.8M.",
+  "sidecar_records": "37 -> 36"
+ },
+ "_uae_origin_aware_edges": {
+  "applied": "2026-06-07T21:40:59Z",
+  "added": [
+   "rn-bb2eb160c1a5 Yas Marina -> Zaya Nurai Island Jetty (12.6nm)",
+   "rn-1fa02768ddc4 Jebel Dhanna/Ruwais -> Sir Bani Yas Anantara Jetty (9.8nm)"
+  ],
+  "fix": "route_id seed made origin-aware (add_corridor.py + corridor_layer.py + route_network.py) so origin-distinct corridors sharing a destination no longer collide. Unblocked the 2 deferred UAE-luxury edges. Existing 6 edges keep legacy ids (splice-maintained, no churn).",
+  "routes": "5173 -> 5175",
+  "sidecar_records": "36 -> 38"
+ },
+ "_gold18_maldives_expansion": {
+  "new_edges": 31,
+  "routes": "5175->5206",
+  "sidecar": "38->69",
+  "solver": "_solve_corridor_waypoints (offline A*+visibility-simplify), all PASS land<=1.0km",
+  "finance": "20yr capex + A-prime capture + Saudi forward-SAM + R-FLOOR-2 network-sum fleet basis"
+ },
+ "_gold19_catalina": {
+  "market": "Catalina Island & the L.A. Channel (catalina-channel-islands-usa)",
+  "new_city_node": 1,
+  "new_pois": 16,
+  "new_routes": 7,
+  "routes": "5206->5213",
+  "heroes": "Cabrillo Mole (Avalon) <-> Long Beach 26nm; <-> Newport 26.3nm",
+  "method": "add_market.py delta (gen+label isolated) + scrub_land_routes (dropped 5 land-crossers); all Pioneer-class <=70nm",
+  "sidecar": "69 (unchanged; geometry-only autonomous-lane hero, no finance corridor)"
+ },
+ "_gold20_galapagos": {
+  "market": "Gal\u00e1pagos inter-island heroes (Ecuador)",
+  "new_routes": 2,
+  "routes": "5213->5215",
+  "heroes": "Puerto Ayora (Santa Cruz) <-> Puerto Villamil (Isabela) 42.5nm; <-> Puerto Baquerizo Moreno (San Crist\u00f3bal) 44.0nm",
+  "method": "_solve_corridor_waypoints offline A*+simplify; both PASS land<=1.0km; both Pioneer II (<70nm)",
+  "note": "authentic hub-and-spoke lancha network through Santa Cruz; Isabela<->San Crist\u00f3bal (81nm) omitted \u2014 exceeds Pioneer range & not a real direct public lancha route (null beats confidently-wrong)",
+  "ports": "3 existing gold POIs (no new pins/POIs); orphan-pin nodes now connected",
+  "sidecar": "69 unchanged (geometry-only hero, no finance corridor)"
+ },
+ "_gold21_belize": {
+  "market": "Belize water-taxi heroes",
+  "new_routes": 2,
+  "routes": "5215->5217",
+  "heroes": "Belize City Water-Taxi Terminal <-> San Pedro (Ambergris Caye) 30.2nm; San Pedro <-> Caye Caulker 12.8nm",
+  "method": "_solve_corridor_waypoints; both PASS land<=1.0km; both Pioneer II",
+  "ports": "existing gold POIs; Ambergris orphan pin now connected",
+  "kenya_note": "Lamu<->Mokowe (2.6nm) already in gold; Mombasa/Lamu otherwise short intra-creek or out-of-range \u2014 no new heroes",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold22_dar_zanzibar": {
+  "market": "Dar es Salaam <-> Zanzibar (Swahili coast)",
+  "new_routes": 1,
+  "routes": "5217->5218",
+  "hero": "Dar es Salaam Ferry Terminal <-> Stone Town Ferry Terminal (Malindi) 41.7nm, Pioneer II",
+  "method": "_solve_corridor_waypoints; PASS land=0.0km",
+  "ports": "both existing gold POIs; orphan Dar pin now connected",
+  "sidecar": "69 unchanged (geometry-only)"
+ }
 }
