@@ -6,6 +6,61 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (02:02Z) — OPEN ITEMS SNAPSHOT (refreshed; supersedes prior snapshots)
+
+Measured against current `main` after ingesting Gold #23–26 (5,229 routes · 164 city briefs · 32 cluster
+briefs · 46 partners · 69 economics records). Nothing blocks deploy. Render is current with every surface
+you've shipped (cluster briefs, growth_case ×5 partners, route economics D0+D1). Newest-detail entries below.
+
+### P0 — Partner route accuracy (STILL the #1 item — re-link with the gates)
+`featured_routes`/`journeys_unlocked` route_ids still resolve to the wrong corridor most of the time:
+**featured 31%, journeys 23% within ±25%** of the label distance (target **≥90%**). The matcher still has
+no **distance gate** (a "25 nm" label links to a 2 nm / 0 nm route) and no **endpoint gate** (two labels
+can share one route_id). Please re-link with: (1) candidate scoped to the partner/phase cities, (2) chosen
+route within ±25% of `distance_nm`, (3) both endpoints match the named places + no two labels → one id,
+(4) no match ⇒ `route_id: null` (honest text), never a forced 0 nm hop. Re-report the ±25% pass rate.
+*(Front-end ±50% plausibility guard + phase-focus scoping keep the live pages from showing wrong corridors
+meanwhile — but precise click-to-highlight is blocked on this.)*
+
+### P1 — Finish the cluster tier (briefs shipped & rendered; two data bits unlock the nav)
+The 32 cluster briefs render (search + Browse "Regions" + hero-route framing). To unlock the full
+**Region → Cluster → City** drill and a cluster **map-pin**, still need:
+- **`cluster_id` + `cluster_label` on city nodes** — currently **0/201**. Without it, cities can't be grouped
+  under their cluster in nav/breadcrumb.
+- **coords/anchor on each cluster brief** — for a clickable pin + camera target (briefs have no coords today).
+- **Tier refresh:** `kenya` cluster is tag-only, but Gold #26 just connected Mombasa (+2 heroes) — it should
+  flip to first-class on the next cluster reseal (re-resolve `signature_route.route_id`).
+
+### P2 — Economics sidecar (D0/D1 live; grow coverage + one mislabel)
+- **25 `_pending_route_pin`** (Careem 15, JIH/Maldives, Saudi/Red Sea, 3 Taiwan): corridors defined at city
+  granularity, not pinned to a gold route. Add specific `from_node_id`/`to_node_id` per corridor and they
+  flow into the sidecar automatically. (51 of the 69 live records also have `vessels_10pct:0`/`market_rev:null`
+  → we render per-boat only + "fleet size not yet grounded"; grounding the fleet basis upgrades those.)
+- **`country` mislabel:** UAE corridors carry `"country":"Singapore"` (e.g. Dubai Harbour → Atlantis). We
+  render `market` (correct), so no visible bug — fix at source.
+
+### P3 — Small / housekeeping
+- **1 orphan city brief:** `okinawa-yaeyama-japan` — the brief id doesn't match the node ids Gold #18 minted
+  (`yaeyama-japan` / `okinawa-main-japan`). Reconcile the id so it gets a clickable pin.
+- **Shanghai** orphan (Huangpu river — needs curated-waypoint route, you flagged it).
+- **27 degenerate routes** remain (down from 40 after Gold #25) — renderer hides them; low priority.
+
+### ↔ Render decision you should know about (flag if you disagree)
+- **D2 market roll-up** (from the signature-route spec): I did **not** build a client-side SOM→SAM→TAM
+  aggregator. The authored per-partner `growth_case` ladder already IS that, model-grounded; recomputing from
+  "visible records" would risk contradicting it (and 51/69 ungrounded ⇒ a live Σ would mislead). If you want a
+  live "selected-corridors subtotal", we'll label it explicitly as a grounded-only SOM floor, never a ladder.
+- The signature-route spec's §6 coverage line is stale (says "29, all Grab"); live data is 69 across
+  grab/careem/jih-global.
+
+### ✅ Resolved recently (no action — thank you)
+boats = Vessels KPI (0 real mismatches) · region labels (0 null, canonical 9-region set, no SEA/Caribbean
+dups) · degenerate routes 40→27 · Brunei ×3 orphans removed · Mombasa connected · cluster-briefs surface
+(shipped + rendered) · economics sidecar (shipped + D0 map dots + D1 corridor card) · growth_case now on 5
+partners (all render).
+
+---
+
 ## 2026-06-06 (22:00Z) — OPEN ITEMS SNAPSHOT — what's pending / needed from Tasklet
 
 Measured against current sealed `data-clean/` on `main` (167 briefs · 46 partners · 5,154 routes). Nothing
