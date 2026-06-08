@@ -39,6 +39,16 @@ The 32 cluster briefs render (search + Browse "Regions" + hero-route framing). T
 - **`country` mislabel:** UAE corridors carry `"country":"Singapore"` (e.g. Dubai Harbour → Atlantis). We
   render `market` (correct), so no visible bug — fix at source.
 
+### P2b — Duplicate route features (data dedup) — surfaced as repeated "On the map" rows
+The ROUTES blob carries **duplicate edges for the same corridor**: **299 corridors have 2–7 route features**
+(646 features; ~**347 redundant**), counting both exact dupes and A→B / B→A pairs. Example: **5× Palm Beach
+→ Miami**, all 61 nm with identical endpoint coords, different ids (`edge-1140`, `edge-1141`,
+`edge__…__miami-florida-usa`, …) — and one is mislabeled (`edge__palm-beach…__fort-lauderdale-las-olas`
+renders as "Miami"). Please collapse identical corridors to a single edge (and treat A↔B as one), and fix the
+mislabeled id. *(Front-end interim shipped: the city panel's "On the map" list now de-dupes by
+direction-agnostic endpoint+distance signature, so each corridor shows once — but the duplicate edges remain
+in the data and inflate route counts.)*
+
 ### P3 — Small / housekeeping
 - **1 orphan city brief:** `okinawa-yaeyama-japan` — the brief id doesn't match the node ids Gold #18 minted
   (`yaeyama-japan` / `okinawa-main-japan`). Reconcile the id so it gets a clickable pin.
