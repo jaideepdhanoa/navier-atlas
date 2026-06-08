@@ -195,6 +195,10 @@ body.panel-hidden #panel { width:0 !important; }
 #legend .head { font-size:9px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:600; margin-bottom:6px; }
 #legend .sub { font-size:8.5px; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); font-weight:600; opacity:0.75; margin:10px 0 4px; padding-top:8px; border-top:1px solid var(--line); }
 #legend .row { display:flex; align-items:center; gap:8px; padding:2px 0; }
+#legend .econ-row { cursor:pointer; user-select:none; }
+#legend .econ-row .econ-dot { width:8px; height:8px; border-radius:50%; background:#e0cb8f; border:1px solid #0a0e14; box-shadow:0 0 7px rgba(224,203,143,0.7); }
+#legend .econ-row.off { opacity:0.45; }
+#legend .econ-row.off .econ-dot { background:transparent; box-shadow:none; }
 #legend .dot { width:9px; height:9px; border-radius:50%; box-shadow:0 0 8px currentColor; }
 #legend .dot.city   { background:#6ee7b7; color:#6ee7b7; }
 #legend .dot.locale { background:#fb7185; color:#fb7185; }
@@ -773,6 +777,7 @@ body.panel-hidden #footer { display:block; }
     <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤700 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
     <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
     <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤700 nm</span></div>
+    <div class="row econ-row" id="econ-toggle" title="Corridors with unit economics — click the route to see the model"><span class="econ-dot"></span>Economics <span class="muted">— corridor has a model</span></div>
     <div class="sub disclosure" id="bp-toggle"><span class="caret">›</span>Boarding points</div>
     <div id="bp-list" class="collapsed">
       <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina</div>
@@ -1178,6 +1183,20 @@ map.on('load', () => {
   // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
   map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
     paint:{ 'line-color':'#6ee7b7','line-width':W_ROUTE,'line-opacity':O_TIER }});
+  // D0 — economics discoverability: a subtle gold dot at the midpoint of every corridor that has a
+  // unit-economics record (ROUTE_ECONOMICS). grounded brighter than estimated (honesty as opacity);
+  // minzoom keeps the world view clean (only ~69 sparse routes). Toggle via the legend "Economics" row.
+  const _econPts = { type:'FeatureCollection', features:(typeof ROUTE_ECONOMICS!=='undefined' ? ROUTE_FC.features : []).map(f=>{
+    const rec = ROUTE_ECONOMICS[f.properties.id]; const g=f.geometry;
+    if (!rec || !(g && g.type==='LineString' && g.coordinates.length)) return null;
+    return { type:'Feature', geometry:{ type:'Point', coordinates:g.coordinates[Math.floor(g.coordinates.length/2)] }, properties:{ econ: rec.status==='grounded'?'grounded':'estimated' } };
+  }).filter(Boolean) };
+  map.addSource('route-econ-pts', { type:'geojson', data:_econPts });
+  map.addLayer({ id:'route-econ', type:'circle', source:'route-econ-pts', minzoom:4.5,
+    paint:{ 'circle-radius':['interpolate',['linear'],['zoom'],4.5,2.4,10,4.4],
+            'circle-color':'#e0cb8f',
+            'circle-opacity':['match',['get','econ'],'grounded',0.9,0.5],
+            'circle-stroke-color':'#0a0e14','circle-stroke-width':1 }});
   // Terminus connector nodes — a dot at EVERY route endpoint so no line dangles into empty
   // water. Bridges the band gap (visible z7+) before boarding-point glyphs appear (z10), then
   // fades as glyphs take over. Coloured by platform to match the line meeting it.
@@ -3075,6 +3094,11 @@ document.querySelectorAll('.chip').forEach(b => {
   if (legend && window.matchMedia('(max-width:720px)').matches) legend.classList.add('collapsed');  // start as a tappable key chip on phones
   const bt=document.getElementById('bp-toggle'), bl=document.getElementById('bp-list');
   if (bt&&bl) bt.addEventListener('click', ()=>{ bl.classList.toggle('collapsed'); bt.classList.toggle('open'); });
+  // Economics signal toggle — show/hide the gold corridor dots (default on). Stop propagation so it
+  // doesn't bubble to the legend-head collapse handler.
+  const et=document.getElementById('econ-toggle');
+  if (et) et.addEventListener('click', (e)=>{ e.stopPropagation(); const on=et.classList.toggle('off');
+    try { map.setLayoutProperty('route-econ','visibility', on?'none':'visible'); } catch(err){} });
 })();
 
 // Panel collapse toggle — glyph points the way it MOVES the panel: › hides it (toward the edge),
