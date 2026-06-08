@@ -1801,8 +1801,16 @@ function _platColor(plat){ return plat==='Quanta-LR' ? '#fbbf24' : plat==='Pione
 function _cityBriefHtml(brief, props, coords){
   const cid = props.id;
   const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
+  // "On the map" routes for this city, de-duplicated. The ROUTES blob carries duplicate edges for the same
+  // corridor (~299 corridors have 2–7 copies, plus A→B / B→A pairs) which otherwise list the same line several
+  // times. Collapse by a direction-agnostic signature (sorted endpoint names + rounded distance) so each
+  // corridor appears once; keep the highest-demand instance. (Root fix is data-side — see NOTES-FOR-TASKLET.)
+  const _liveSeen = new Set();
   const live = ROUTE_FC.features.filter(f=>f.properties._cfrom===cid || f.properties._cto===cid)
-    .sort((a,b)=>(b.properties.render_tw||0)-(a.properties.render_tw||0)).slice(0,6);
+    .sort((a,b)=>(b.properties.render_tw||0)-(a.properties.render_tw||0))
+    .filter(f=>{ const parts=String(_routeLabel(f.properties)).split(/→|↔/).map(s=>s.trim().toLowerCase()).sort();
+      const sig=parts.join('|')+'|'+Math.round(f.properties.distance_nm||0); if(_liveSeen.has(sig))return false; _liveSeen.add(sig); return true; })
+    .slice(0,6);
   // A detail-chain back (nav-back) takes precedence; once the chain is exhausted, fall back to the
   // "← Back to the proposal" exit when a partner/carousel context is active.
   let h = _navStack.length ? _navBackHtml() : ((PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '');
