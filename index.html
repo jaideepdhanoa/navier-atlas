@@ -1269,6 +1269,21 @@ map.on('load', () => {
 
   // Areas (sub-districts) intentionally not rendered — the network reads as Cities → Boarding points (v17).
 
+  // Cluster pins — the above-city tier (CLUSTERS.json anchors), clickable into the cluster brief. Cyan to
+  // match the cluster panel; prominent at world/region zoom, faded out by ~z7 as the city layer takes over.
+  const _clusterPins = { type:'FeatureCollection', features:(typeof CLUSTERS!=='undefined' ? (CLUSTERS.clusters||[]) : [])
+    .filter(c=>Array.isArray(c.anchor) && c.anchor.length===2)
+    .map(c=>({ type:'Feature', geometry:{type:'Point', coordinates:c.anchor}, properties:{ cluster_id:c.cluster_id, label:c.cluster_label||c.cluster_id } })) };
+  map.addSource('cluster-pins', { type:'geojson', data:_clusterPins });
+  map.addLayer({ id:'cluster-points', type:'circle', source:'cluster-pins', maxzoom:7,
+    paint:{ 'circle-color':'#7dd3fc', 'circle-radius':['interpolate',['linear'],['zoom'],2,3.5,5,6],
+            'circle-opacity':['interpolate',['linear'],['zoom'],2,0.85,6,0.6,7,0],
+            'circle-stroke-color':'#0a0e14','circle-stroke-width':1.5 }});
+  map.addLayer({ id:'cluster-labels', type:'symbol', source:'cluster-pins', minzoom:3.2, maxzoom:7,
+    layout:{ 'text-field':['get','label'],'text-font':['Noto Sans Bold'],'text-size':11,'text-offset':[0,1],'text-anchor':'top','text-allow-overlap':false,'text-optional':true },
+    paint:{ 'text-color':'#bae6fd','text-halo-color':'#0a0e14','text-halo-width':1.4,
+            'text-opacity':['interpolate',['linear'],['zoom'],3.2,0,3.8,1,6,0.85,7,0] }});
+
   // POIs (clustered at mid zoom)
   map.addSource('pois', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.poi||[]}, cluster:true, clusterMaxZoom:10, clusterRadius:30 });
   map.addLayer({ id:'poi-clusters', type:'circle', source:'pois', filter:['has','point_count'], minzoom:8,
@@ -1423,6 +1438,10 @@ map.on('load', () => {
     map.on('mouseenter', layer, () => map.getCanvas().style.cursor='pointer');
     map.on('mouseleave', layer, () => map.getCanvas().style.cursor='');
   }
+  // Cluster pins → open the cluster brief (the above-city tier).
+  map.on('click', 'cluster-points', (e) => { const cid=e.features[0] && e.features[0].properties.cluster_id; if (cid) showClusterBrief(cid); });
+  map.on('mouseenter', 'cluster-points', () => map.getCanvas().style.cursor='pointer');
+  map.on('mouseleave', 'cluster-points', () => map.getCanvas().style.cursor='');
 
   // Route hover tooltips (Fix 8 v10) — both platform line layers
   ['route-p2','route-qlr'].forEach(_bindRouteHover);
@@ -1658,7 +1677,7 @@ function _navReset(){ _navStack = []; _navCurrent = null; }
 function _geoMode(){ return !BUILD_PARTNER && !PARTNER_ACTIVE && !(typeof _CARO!=='undefined' && _CARO); }
 function _navBackHtml(){ if (!_navStack.length) return ''; const prev=_navStack[_navStack.length-1]; const l=(prev&&prev.label)?String(prev.label).slice(0,40):'Back'; return `<button class="pcaro-back" id="nav-back">← ${escapeHtml(l)}</button>`; }
 (function(){ const pnl=(typeof document!=='undefined')&&document.getElementById('panel'); if (pnl) pnl.addEventListener('click', e=>{ if (e.target.closest('#nav-back')){ e.stopPropagation(); _navBack(); } }); })();
-const _INTERACTIVE_LAYERS = ['route-p2','route-qlr','priority-points','priority-halo','city-points','city-halo','city-clusters','poi-points','poi-halo','poi-clusters'];
+const _INTERACTIVE_LAYERS = ['route-p2','route-qlr','priority-points','priority-halo','city-points','city-halo','city-clusters','poi-points','poi-halo','poi-clusters','cluster-points'];
 let SELECTED_ROUTE = null;
 let _ROUTE_CLICK = false;
 function _dimNodesToEndpoints(fromId, toId){
