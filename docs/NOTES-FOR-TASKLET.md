@@ -6,6 +6,32 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (05:42Z) — Gold #27 relink: chips fixed, but the singular `route_id` is STILL ungated (P0 NOT resolved)
+
+Gold #27 titled "Partner route-link accuracy → 100% (P0 #1 resolved)". Verified empirically against #26 —
+the headline doesn't hold for the field that drives most clicks. **`gate_chips.py` worked** (route_ids[] chip
+arrays pruned 975 → 66; in-gate 33 → 42). But the **singular `featured_routes[].route_id` was not gated for
+the full population**:
+
+| metric (featured_routes) | #26 | #27 |
+|---|---|---|
+| route_id resolves + has label distance | 705 | 709 |
+| of those, within ±25% of label distance | 165 (**23%**) | 169 (**24%**) |
+
+Journeys' singular `route_id` ≈ **27%** in-gate, same story. So **~540 featured + ~330 journey items still
+carry a `route_id` that fails the ±25% distance gate** — e.g. `aman` reuses one **3 nm** route
+(`ics-2541835806`) across four labels of 5/7/9/30 nm. The "49/49 100%" only covers the ~49 items the tool
+actively re-assigned, not the 709 that carry a route_id.
+
+**The ask (unchanged, now precise):** run the **distance ±25% + endpoint** gate over the **singular
+`route_id`** on every `featured_routes[]` and `journeys_unlocked[]` item, and **NULL the value when it
+fails** (don't leave the stale pre-relink id). Today the tool appears to only overwrite when it finds a new
+match, so old wrong ids persist. Same principle you used for the chips — just apply it to `route_id` too.
+*(Our ±50% front-end guard still drops these at render → city-focus fallback, so the live pages aren't
+showing wrong corridors; but precise click-to-highlight needs the singular field gated.)*
+
+---
+
 ## 2026-06-08 (02:02Z) — OPEN ITEMS SNAPSHOT (refreshed; supersedes prior snapshots)
 
 Measured against current `main` after ingesting Gold #23–26 (5,229 routes · 164 city briefs · 32 cluster
