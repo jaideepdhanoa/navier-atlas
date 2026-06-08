@@ -64,6 +64,10 @@ data.CLUSTER_BRIEFS = assembleDir(clusterDir, 'cluster_id');
 const econPath = join(DC, 'economics_by_route_id.json');
 data.ROUTE_ECONOMICS = {};
 if (existsSync(econPath)) { const econ = readJson(econPath); for (const r of (econ.records || [])) if (r && r.route_id) data.ROUTE_ECONOMICS[r.route_id] = r; }
+// Cluster lookup (sealed CLUSTERS.json): cluster_id → {label, region, type, anchor [lng,lat], member_city_ids}.
+// Pairs with the cluster_id now tagged on city nodes + the cluster_briefs surface to drive cluster nav.
+const clustersPath = join(DC, 'CLUSTERS.json');
+data.CLUSTERS = existsSync(clustersPath) ? readJson(clustersPath) : { clusters: [] };
 
 // Defensive strip: internal classification fields that must never reach the public artifact. The render
 // never reads these. Belt-and-suspenders over Tasklet's externalizer — the 2026-06-01 P0+P1 reseal leaked
