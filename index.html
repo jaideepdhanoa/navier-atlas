@@ -463,6 +463,13 @@ body.panel-hidden #footer { display:block; }
 .rec-v { font-size:17px; font-weight:700; color:#6ee7b7; letter-spacing:-0.01em; }
 .rec-l { font-size:10px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
 .rec-b { font-size:10px; color:var(--text-2); margin-top:3px; }
+.rec-note { margin-top:8px; font-size:11px; color:var(--text-2); font-style:italic; }
+.rec-also { margin-top:12px; }
+.rec-also-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin-bottom:4px; }
+.rec-also-row { font-size:11.5px; color:var(--text-1); padding:3px 0; line-height:1.4; }
+.rec-also-row .muted { color:var(--text-2); }
+.rec-deck { display:inline-block; margin-top:11px; font-size:11.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+.rec-deck:hover { text-decoration:underline; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
 
@@ -1693,22 +1700,40 @@ function _econRange(arr, fmt){ if(!Array.isArray(arr)||arr.length<2)return ''; c
 function _routeEconHtml(rec){
   if (!rec) return '';
   const m=rec.mid||{}, band=rec.band||{}, figs=[];
+  // "Fleet not yet grounded": ~3/4 of records have no grounded fleet/market-rev (vessels_10pct 0 / market_rev
+  // null). Per the honesty mandate, show per-boat economics only and SAY so — never headline a "0 vessels".
+  const fleetGrounded = (m.vessels_10pct!=null && m.vessels_10pct>0) && (m.market_rev_yr!=null);
   if (m.rev_per_boat_yr!=null) figs.push(['Revenue / boat / yr', _econMoney(m.rev_per_boat_yr), '']);
   if (m.margin!=null) figs.push(['Operating margin', Math.round(m.margin*100)+'%', '']);
   if (m.payback_years!=null) figs.push(['Payback', m.payback_years.toFixed(2)+' yr', _econRange(band.payback_years, x=>x.toFixed(2)+' yr')]);
   if (m.co2_saved_t_per_boat_yr!=null) figs.push(['CO₂ saved / boat / yr', Math.round(m.co2_saved_t_per_boat_yr)+' t', '']);
-  if (m.vessels_10pct!=null) figs.push(['Vessels · 10% capture', String(m.vessels_10pct), _econRange(band.vessels_10pct, x=>String(x))]);
-  if (m.market_rev_yr!=null) figs.push(['Market revenue / yr', _econMoney(m.market_rev_yr), '']);
+  if (fleetGrounded){
+    figs.push(['Vessels · 10% capture', String(m.vessels_10pct), _econRange(band.vessels_10pct, x=>String(x))]);
+    figs.push(['Market revenue / yr', _econMoney(m.market_rev_yr), '']);
+  }
   if (!figs.length) return '';
   const st=String(rec.status||''), dc=String(rec.demand_confidence||'');
   const stCls = st==='grounded' ? 'gc-conf-grounded' : 'gc-conf-medlow';
+  const stTip = (st!=='grounded' && rec.estimation_basis) ? ` title="estimated · ${escapeHtml(rec.estimation_basis)}"` : '';
   let h=`<div class="panel-section"><h3>Unit economics</h3>`;
-  h+=`<div class="rec-tags">${st?`<span class="gc-conf ${stCls}">${escapeHtml(st)}</span>`:''}${dc?`<span class="gc-conf gc-conf-med">demand: ${escapeHtml(dc)}</span>`:''}${rec.vessel?`<span class="rec-vessel">${escapeHtml(rec.vessel)}</span>`:''}</div>`;
-  const fare = rec.navier_fare_usd!=null?rec.navier_fare_usd:rec.fare_today_usd;
-  if (fare!=null) h+=`<div class="rec-fare">Fare <b>$${escapeHtml(String(fare))}</b>/seat${rec.market?` · ${escapeHtml(rec.market)}`:''}</div>`;
+  h+=`<div class="rec-tags">${st?`<span class="gc-conf ${stCls}"${stTip}>${escapeHtml(st)}</span>`:''}${dc?`<span class="gc-conf gc-conf-med">demand: ${escapeHtml(dc)}</span>`:''}${rec.vessel?`<span class="rec-vessel">${escapeHtml(rec.vessel)}</span>`:''}</div>`;
+  // Today → Navier fare. Parity (equal price) is the headline narrative: same price, better product.
+  const ft=rec.fare_today_usd, nf=rec.navier_fare_usd;
+  if (ft!=null && nf!=null) h+=`<div class="rec-fare">Today <b>$${escapeHtml(String(ft))}</b>/seat → Navier <b>$${escapeHtml(String(nf))}</b>${ft===nf?' · parity, better product':''}${rec.market?` · ${escapeHtml(rec.market)}`:''}</div>`;
+  else if (ft!=null || nf!=null) h+=`<div class="rec-fare">Fare <b>$${escapeHtml(String(nf!=null?nf:ft))}</b>/seat${rec.market?` · ${escapeHtml(rec.market)}`:''}</div>`;
   h+=`<div class="rec-grid">`;
   for (const [k,v,b] of figs) h+=`<div class="rec-fig"><div class="rec-v">${escapeHtml(v)}</div><div class="rec-l">${escapeHtml(k)}</div>${b||''}</div>`;
   h+=`</div>`;
+  if (!fleetGrounded) h+=`<div class="rec-note">Fleet size not yet grounded — per-boat economics only.</div>`;
+  // Other corridors carried on the same route line (headline = highest market-rev; the rest surfaced here).
+  if (Array.isArray(rec.also_serves) && rec.also_serves.length){
+    h+=`<div class="rec-also"><div class="rec-also-h">This line also serves</div>${rec.also_serves.map(a=>{
+      const lbl=String(a.corridor||'').replace(/->/g,'→'), d=a.distance_nm!=null?` · ${Math.round(a.distance_nm)} nm`:'',
+        rev=(a.mid&&a.mid.market_rev_yr!=null)?` · ${_econMoney(a.mid.market_rev_yr)}/yr`:'';
+      return `<div class="rec-also-row">${escapeHtml(lbl)}<span class="muted">${escapeHtml(d+rev)}</span></div>`;
+    }).join('')}</div>`;
+  }
+  if (rec.deck_url) h+=`<a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a>`;
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
   if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}</div>`;
   h+=`</div>`;
