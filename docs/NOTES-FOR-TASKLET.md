@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (19:00Z) — Cluster tier effectively complete via membership; 2 data-consistency follow-ups
+
+Big thanks — `CLUSTERS.json` (now 75 clusters) `member_city_ids` covers **100% of city nodes (192/192, 0
+dangling, 0 dupes)**. We now read the city→cluster map from `member_city_ids` (authoritative) instead of the
+city-node property, so partner-network scope, the breadcrumb (Region → **Cluster** → City), the "Part of
+{cluster}" link, and cluster map-pins all cover **every** city. The "capture all cities" goal from the prior
+snapshot is met. Two small consistency items remain (both data; we've mitigated front-end):
+
+1. **`CLUSTERS.anchor` is a centroid → lands mid-ocean for spread/archipelagic clusters.** e.g. `indonesia`
+   anchor `[116.83, -3.91]` is ~5° (~540 km) out in the Flores Sea; `philippines` in the Sulu Sea;
+   `thailand` in the Gulf. **Front-end mitigation shipped:** cluster pins now snap to the member city nearest
+   the anchor (so they sit on land). If you want the `anchor` field itself usable as a label/pin point, set it
+   to a sensible on-land location (the primary/largest member city, or a land-clamped centroid).
+2. **City-node `cluster_id` property lags `member_city_ids` (150/192 vs 192/192).** Not blocking us (we read
+   membership), but if your own tooling reads the node property, sync `cluster_id` from `member_city_ids` so
+   the two agree.
+
+(Supersedes the prior snapshot's item #1 — cluster_id node-tagging is no longer blocking on our side; it's now
+just the consistency sync in #2 above.)
+
+---
+
 ## 2026-06-08 (08:30Z) — OPEN ITEMS SNAPSHOT (refreshed; supersedes prior snapshots)
 
 Measured on current `main`. Route-link accuracy (the long-standing P0) is **resolved** (100% in-gate). The
