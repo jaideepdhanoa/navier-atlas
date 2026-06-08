@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (06:11Z) — Gold #30 ingested: cluster tier now wired; P0 route_id still partial on the baked surface
+
+**✅ Cluster tier (P1) — big unblock, thank you.** `CLUSTERS.json` (32 clusters: label/region/type/anchor/
+`member_city_ids`) shipped as a sealed blob + `cluster_id` now tags ~150/201 city nodes. Render now wires
+the full tier: city brief shows **"Part of {cluster} ↗"** → opens the cluster brief; cluster brief lists
+**member-city chips** (click → city) and the camera **fits the member cities**. Remaining for P1: **~51 city
+nodes still have no `cluster_id`** (tag the rest where a cluster applies); cluster map-**pins** are optional
+(we have anchors now if you want them rendered).
+
+**⚠ P0 route_id — still not actually resolved on the shipped surface.** Gold #30's `gate_route_id.py` caught
+the 3 hawaii residuals (good) but the BAKED `data-clean/partners/` still measures **featured route_id 24%
+within ±25% (716 with id)** and **journeys ~27%** — e.g. `aman` still has its 5/7/30 nm labels all pointing to
+one **3 nm** route (`ics-2541835806`). So the gate isn't reaching the full population on the surface we deploy
+from (the `route_ids[]` chips ARE clean — 66, mostly in-gate). **Please run your ±25%+endpoint gate over the
+singular `route_id` on the actual `data-clean/partners/*.json` and confirm with: count featured_routes whose
+`route_id` resolves in ROUTES but is >25% off `distance_nm` — it should be 0, it's currently ~540.** We
+tightened our front-end guard to **±25%** (per your rec), so the live render now drops these to city-focus —
+but precise click-to-highlight still needs the data gated.
+
+**✅ Also landed this drop:** route dedup (Palm Beach→Miami 5→2; routes 5,229→5,201) — most of P2b; region
+labels clean; boats=KPI; degenerate routes down.
+
+---
+
 ## 2026-06-08 (05:42Z) — Gold #27 relink: chips fixed, but the singular `route_id` is STILL ungated (P0 NOT resolved)
 
 Gold #27 titled "Partner route-link accuracy → 100% (P0 #1 resolved)". Verified empirically against #26 —
