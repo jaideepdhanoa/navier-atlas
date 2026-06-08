@@ -45,7 +45,7 @@
  "pitch": {
   "city_briefs": 164,
   "cluster_briefs": 32,
-  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) — website build MUST bake from these. | #27: partner route_id + route_ids chips gated to 100% precision (gate_chips.py)",
+  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) — website build MUST bake from these. | #27: partner route_id + route_ids chips gated to 100% precision (gate_chips.py) | #31: LB-46 recursive-collector fix — route_id/chips gates now reach markets[] nested items; 559 featured + 337 journey distance-failing ids nulled; baked surface 0-fail on independent reproducer. | #32: source-quality fixes — hawaii Molokaʻi >70nm to Quanta-LR (locked rule); cote-dazur Corsica mislabel route_id+artifact-distance nulled (label-vs-route mismatch class). | #33: geo-audit nulled 8 confidently-wrong hero highlights (Six Senses Zighy Bay->Muscat route; Aman Montenegro->Croatian route). Upstream node/POI root causes flagged for Claude.",
   "partners": 46,
   "tiers_stripped": [
    "internal",
@@ -54,7 +54,7 @@
   "economics_records": 37
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T06:10:37.435763Z",
+ "sealed_at": "2026-06-08T07:55:04.241377Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 69,
@@ -230,5 +230,31 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 30
+ "gold_seq": 33,
+ "_gold31_routeid_distance_gate": {
+  "applied": "2026-06-08",
+  "issue": "LB-46 — gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
+  "fix": "Added shared recursive collect_items() to both gates (walks entire partner tree). Re-ran on source partner-pitch/partners/: route_id had_id 716->157 featured, 452->115 journey; 559 featured + 337 journey confidently-wrong ids NULLED to honest city-focus text. chips 133->107. Re-externalized -> data-clean.",
+  "verify": "Independent distance reproducer on baked surface: featured 157/157 resolve & in-gate, journeys 115/115 resolve & in-gate, 0 dangling, 0 dist_fail. Gates idempotent.",
+  "principle": "null beats confidently-wrong; ID-based matching only; the resolved route's actual distance_nm is the authority vs the item's stated distance."
+ },
+ "_gold32_source_quality_fixes": {
+  "applied": "2026-06-08",
+  "fixes": [
+   "hawaii: Honolulu<->Molokaʻi (72.1nm) platform Pioneer II -> Quanta-LR (x3 occurrences). LOCKED RULE: Pioneer II range=70nm; any >70nm all-electric leg MUST be Quanta-LR. Surfaced by BD-dossier wave-2 worker.",
+   "cote-dazur: 'Monaco/Nice <-> Corsica (Calvi)' items had route_id ics-e0ddf827ef (which is actually a 6.7nm Nice->Port-de-Fontvieille / Monaco hop) + a copy-artifact distance_nm 6.7 on a ~95nm Corsica label. Both route_id AND distance were self-consistent (6.7) but the LABEL describes a long crossing -> CONFIDENTLY-WRONG (a 3rd error class the distance gate cannot catch; route+distance agree with each other). Nulled route_id + artifact distance (did not invent a replacement)."
+  ],
+  "new_error_class": "LABEL-vs-ROUTE geographic mismatch: route_id + distance_nm agree with each other but BOTH disagree with the human label. Distance-consistency gate is blind to it (no internal contradiction). Detection requires label->geography reasoning. Follow-up audit candidate.",
+  "sweep": "Full-partner platform-rule sweep: only 3 violations existed (all the hawaii Molokaʻi item); fleet assignment otherwise clean."
+ },
+ "_gold33_geo_audit": {
+  "applied": "2026-06-08",
+  "method": "label-vs-route geographic audit over all 210 linked items (manual geo-reasoning; Places API disabled).",
+  "nulled": [
+   "six-senses 'Dubai/RAK <-> Six Senses Zighy Bay' (x3): route rn-1ba484ccccc6 is a Muscat-area route (Bandar Al Khairan->Ras Al Hadd), ~300km from Zighy Bay (Musandam). Item mis-homed on muscat-oman node.",
+   "aman 'Tivat/Porto Montenegro<->Sveti Stefan' + 'Montenegro coast<->Porto Montenegro' (x5): route ics-1ec3383b58 is Zaton->Mlini (Dubrovnik-area Croatia), ~45km from the Montenegro Aman sites. kotor-montenegro node carries Croatian boarding points."
+  ],
+  "upstream_root_causes_flagged": "FLAG-FOR-CLAUDE-upstream-geo-mistags.md — needs Musandam node + Montenegro boarding points.",
+  "error_class": "label-vs-route geographic mismatch (route+distance+node_ids self-consistent but disagree with human label); distance/endpoint gates structurally blind."
+ }
 }
