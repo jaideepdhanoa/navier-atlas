@@ -1151,7 +1151,11 @@ const map = window.map = new maplibregl.Map({
       'https://b.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
       'https://c.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png',
       'https://d.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}@2x.png'
-    ], tileSize:256, attribution:'© OpenStreetMap · © CARTO' }},
+    ], tileSize:256, attribution:'© OpenStreetMap · © CARTO' },
+    // Vector tiles — used ONLY to tint the ocean. CARTO's free vector basemap (same CDN as the raster
+    // above). Its `water` source-layer is oceans + lakes; we wash it deep blue so water reads clearly
+    // against the dark raster land. If these tiles ever fail, the raster below is unaffected (no regression).
+    'carto-vector':{ type:'vector', url:'https://tiles.basemaps.cartocdn.com/vector/carto.streets/v1/tiles.json', attribution:'© OpenStreetMap · © CARTO' }},
     // A brand-dark background paints instantly so the canvas isn't pure black while the third-party
     // CARTO tiles load (softens the cold-load blank window — F-13/F-06). Then the basemap on top:
     // lift the near-black base slightly + add saturation so coastlines/waterbodies read as distinct
@@ -1159,7 +1163,17 @@ const map = window.map = new maplibregl.Map({
     layers:[
       { id:'bg', type:'background', paint:{ 'background-color':'#0b1017' } },
       { id:'basemap', type:'raster', source:'carto-dark',
-        paint:{ 'raster-brightness-min':0.07, 'raster-saturation':0.22, 'raster-contrast':0.04 } }
+        // Gentle saturation/contrast bump so the raster's already-bluish ocean separates from the grey land
+        // even if the vector tint below fails to load — a guaranteed floor of water/land contrast.
+        paint:{ 'raster-brightness-min':0.07, 'raster-saturation':0.35, 'raster-contrast':0.10 } },
+      // Ocean tint — deep steel-blue over the vector water polygons (oceans + lakes), so water is
+      // unmistakable while staying within the dark theme. Sits above the raster, below all data layers.
+      { id:'water-tint', type:'fill', source:'carto-vector', 'source-layer':'water',
+        paint:{ 'fill-color':'#17435f', 'fill-opacity':0.6 } },
+      // Crisp coastline edge — a faint lighter line on the same water polygons so the land/water boundary
+      // pops at every zoom (cheap, vector, no glyphs).
+      { id:'water-edge', type:'line', source:'carto-vector', 'source-layer':'water',
+        paint:{ 'line-color':'#3d7ca6', 'line-width':['interpolate',['linear'],['zoom'],3,0.3,8,0.8], 'line-opacity':0.5 } }
     ]
   },
   center:CAMERAS.global.center,
