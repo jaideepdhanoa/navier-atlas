@@ -12,7 +12,7 @@
  "blobs": {
   "FEATURES_BY_TYPE": {
    "count": 11563,
-   "sha256": "ab5fa9f3606356e5fff54fc446879c38ffb9655a5aff5cc52b81831a22ba2ebc"
+   "sha256": "3f749c3d336763f006e7162608f2eff63c85b78f19a86fbb28a421d09e9ccc41"
   },
   "ROUTES": {
    "count": 5201,
@@ -28,7 +28,7 @@
   },
   "CLUSTERS": {
    "count": 75,
-   "sha256": "852c4c2d4ffee490c7c17461f0af2f94e487ed31b9baaf580f23734fac122769"
+   "sha256": "48fb8c7203742667604286142985ab24e53cf40a4949698a70feec3d313ad863"
   }
  },
  "gates": {
@@ -54,7 +54,7 @@
   "economics_records": 71
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T18:26:53.170604Z",
+ "sealed_at": "2026-06-08T22:36:40.086996Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 71,
@@ -269,5 +269,9 @@
   "note": "Pinned 2 Careem UAE managed corridors to gold routes (exact single-match, ID-only): Dubai<->Abu Dhabi rn-25065af2bcb4, Dubai<->Sharjah rn-461399dfc4d5. Root cause: corridor node_ids used bare 'dubai'/'abu-dhabi' vs gold '-uae' suffix; fixed at source (finance/model/corridors.json). Records 69->71, pending 25->23. Other 23 pending stay null (intra-city/resort-level ambiguous) per ID-only mandate. Confirmed: no UAE-as-Singapore mislabel in source (already resolved).",
   "records": 71,
   "pending": 23
+ },
+ "_gold36_cluster_consistency": {
+  "applied_at": "2026-06-08T22:36:40.086996Z",
+  "note": "Claude render-lane follow-ups. (1) CLUSTERS.anchor snapped to member city nearest centroid (41 clusters moved on-land, max 543km; added anchor_source); anchor now a usable on-land label/pin point. (2) node cluster_id synced from authoritative member_city_ids: 51 stamped + 0 drift-corrected -> 201/201 (100%, was 150). Node property now agrees with membership."
  }
 }
