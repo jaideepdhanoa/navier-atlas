@@ -6,6 +6,57 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-08 (08:30Z) — OPEN ITEMS SNAPSHOT (refreshed; supersedes prior snapshots)
+
+Measured on current `main`. Route-link accuracy (the long-standing P0) is **resolved** (100% in-gate). The
+top remaining item is finishing **cluster_id tagging** — it now directly drives how much of a partner's
+network we can show (see #1). Everything below is data/seal — render is current with every shipped surface.
+
+### 1. ⭐ `cluster_id` on EVERY city node (150/201 today → tag the remaining 51)
+This is now the highest-leverage item. The partner-page map expands by the **clusters** a partner touches
+(so e.g. Grab shows the full SEA network — 41 cities — without dragging in Japan/Korea). Cities **without** a
+`cluster_id` fall back to coarse continental-region expansion, which is imprecise. **Please assign a
+`cluster_id` (and a matching `CLUSTERS.json` entry) to all 201 city nodes**, including:
+- **Single-city countries / city-states as their own 1-member cluster** (Singapore, Monaco, Manama, London,
+  New York Harbor, Boston, Seattle, Macau, Mauritius, Colombo, Cayman, Barbados, Antigua & Barbuda, Aruba,
+  Havana, Gold Coast, Bay of Islands…) — so scope + Region→Cluster→City nav cover them uniformly.
+- **Clearly-clustered ones currently missing it:** Koh Rong (→ `cambodia`), Bay of Kotor (→ a Montenegro
+  cluster), Djerba, Malta, Fukuoka, San Blas (Panama), Samaná (Dominican Rep.), Nicoya (Costa Rica), etc.
+Goal: **0 untagged**, so every partner network scopes precisely and no city is missed.
+
+### 2. Economics sidecar coverage — **25 `_pending_route_pin`** (69 live records)
+Careem / JIH-Maldives / Saudi-Red Sea / Taiwan corridors are defined at city granularity, not pinned to a
+gold route. Add `from_node_id`/`to_node_id` per corridor and they flow into the sidecar automatically.
+(route_id LINK accuracy is now 100% in-gate — this is purely coverage.)
+
+### 3. Duplicate route features — **204 same-direction dup corridors (~216 redundant)**
+Down from the original ~299 (Palm Beach etc. fixed), but 204 corridors still have 2+ identical-direction
+edges. Collapse to one edge per corridor (+ treat A↔B as one). Front-end de-dupes the "On the map" list, but
+the dupes still inflate ROUTES counts and stack on the map.
+
+### 4. Small / housekeeping
+- **Orphan brief:** `okinawa-yaeyama-japan` — brief id doesn't match the Gold #18 node ids
+  (`yaeyama-japan` / `okinawa-main-japan`). Reconcile so it gets a clickable pin.
+- **Geo-mistag upstream fixes** (from Gold #33's audit): add a **Musandam node + Dubai/RAK↔Zighy Bay**
+  corridor; add real **Montenegro boarding points** (Tivat/Porto Montenegro/Budva/Sveti Stefan/Kotor) so
+  those heroes stop resolving to Croatian harbours. (Heroes render as honest text until then.)
+- **Cluster tier refresh:** `kenya` cluster brief is tag-only but Mombasa is now connected (Gold #26) — should
+  flip to first-class on the next cluster reseal. (29 first-class / 3 tag-only today.)
+- **economics `country` mislabel:** UAE corridors tagged `"country":"Singapore"` (we render `market`, so no
+  visible bug — fix at source).
+
+### 5. Optional content (low priority)
+`network_thesis.coverage_note` per hub; Bora Bora "exclusivity" reword (currently allowlisted); consistent
+`use_cases` shape (terse-tag vs "Title: sentence").
+
+### ✅ Resolved recently (no action — thank you)
+P0 route_id link accuracy **100% in-gate** (Gold #33) + geo-mistag audit · cluster tier shipped & fully
+wired (CLUSTERS.json + cluster_id + briefs + map-pins) · boats=KPI · region labels (0 null, canonical 9) ·
+degenerate routes 40→27 · Palm Beach dup collapse · economics sidecar (D0 dots + D1 card) · growth_case ×5
+partners · distinct blue ocean.
+
+---
+
 ## 2026-06-08 (07:56Z) — ✅ P0 ROUTE_ID RESOLVED on the baked surface (Gold #33) + 2 upstream geo items
 
 **P0 #1 is finally closed on the surface we deploy from.** Measured on the ingested Gold #33
