@@ -100,11 +100,18 @@ function scopeForPartner(data, slug, opts = {}) {
   // labels are inconsistent upstream (SEA vs Southeast Asia, …), so alias-merge before comparing.
   const normReg = (r) => { const k = String(r || '').trim().toLowerCase();
     return ({ 'sea': 'sea', 'southeast asia': 'sea', 'caribbean': 'latam-caribbean', 'latam-caribbean': 'latam-caribbean' })[k] || k; };
-  const cityRegion = {};
-  for (const t of ['city', 'priority_city']) for (const f of (data.FEATURES_BY_TYPE[t] || [])) { const p = f.properties || {}; if (p.id) cityRegion[p.id] = normReg(p.region); }
-  const partnerRegions = new Set([...keep].map(id => cityRegion[id]).filter(Boolean));
-  const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ all cities in those regions
-  if (opts.expandRegion !== false && partnerRegions.size) for (const [id, reg] of Object.entries(cityRegion)) if (reg && partnerRegions.has(reg)) net.add(id);
+  const cityRegion = {}, cityCluster = {};
+  for (const t of ['city', 'priority_city']) for (const f of (data.FEATURES_BY_TYPE[t] || [])) { const p = f.properties || {}; if (p.id) { cityRegion[p.id] = normReg(p.region); cityCluster[p.id] = p.cluster_id || null; } }
+  // Expand the NETWORK footprint precisely: by CLUSTER (country/archipelago) where the rollout cities are
+  // cluster-tagged — so a Grab Taiwan market doesn't drag in all of Japan/Korea the way coarse continental
+  // region-expansion did. Fall back to region ONLY for rollout cities not yet cluster-tagged upstream
+  // (~25%), so coverage never regresses while tagging completes.
+  const partnerClusters = new Set([...keep].map(id => cityCluster[id]).filter(Boolean));
+  const fallbackRegions = new Set([...keep].filter(id => !cityCluster[id]).map(id => cityRegion[id]).filter(Boolean));
+  const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ cities in those clusters (∪ region fallback)
+  if (opts.expandRegion !== false) for (const id of Object.keys(cityRegion)) {
+    if (cityCluster[id] ? partnerClusters.has(cityCluster[id]) : fallbackRegions.has(cityRegion[id])) net.add(id);
+  }
 
   // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
   // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
@@ -203,9 +210,11 @@ const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []
 for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
   if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
-    // index landing: every market's cities (anchors only, no region sprawl, intra-anchor routes) → global map
+    // index landing: the partner's full network across the countries/clusters its markets touch (so the
+    // hub map tells the real regional story, not just a handful of anchor pins). Cluster-precise expansion
+    // keeps it to the partner's actual countries (see scopeForPartner) rather than whole continents.
     const anchors = [].concat(...partner.markets.map(marketCities));
-    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, expandRegion: false, routesWithin: true }), null);
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors }), null);
     // each market = its own scoped deep-dive page (regional network like a single partner)
     for (const m of partner.markets) emitPage(slug, m.slug, scopeForPartner(data, slug, { keepCities: marketCities(m) }), m.slug, true);
   } else {
