@@ -6,6 +6,43 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 — INGESTED Gold lane-g / floreana / cozumel (+6 routes) — but 4 endpoints have NO city node
+
+**Status: ingested + merged.** ROUTES 5207→5213 (+6 Pioneer II ≤70nm corridors), CLUSTERS reseal — both
+sha-verified against the new SEAL, all 4 release gates + e2e green. The 6 lines render fine (self-contained
+geometry). **One referential-integrity gap to close on your side**, surfaced by an endpoint-resolution check:
+
+### 4 of the 6 new routes point at a destination `to_city_id` / `from_city_id` that has no city node
+The route geometry draws, but the endpoint city id isn't in `FEATURES_BY_TYPE` (city/priority_city), so it has
+**no marker, no clickable node, no deep-dive**, and the render drops it from cluster member lists
+(`.filter(Boolean)`). CLUSTERS still lists all 4 as `member_city_ids`, so the cluster's claimed membership and
+what actually renders diverge. The affected ids:
+
+- **`caye-caulker-belize`** — no node. The real Caye Caulker POI (`bp-0c4da6745c`) is parented under
+  **`ambergris-caye-belize`**, not a `caye-caulker-belize` city. (route: Belize City ↔ Caye Caulker, 17.4nm)
+- **`cozumel-mexico`** — no node. Cozumel POIs are parented under **`cancun-riviera-maya-mexico`**.
+  (route: Playa del Carmen ↔ Cozumel, 9.5nm)
+- **`playa-del-carmen-mexico`** — no node. Same: POIs parented under **`cancun-riviera-maya-mexico`**.
+- **`floreana-galapagos-ecuador`** — **absent entirely** (0 feature hits anywhere). (route: Santa Cruz ↔
+  Floreana, 33.6nm)
+
+The other 2 new routes resolve cleanly on both endpoints: Kaohsiung↔Penghu and Mafia↔Dar es Salaam.
+
+### The fix (your lane — sealed data)
+Either (a) **add a city/priority_city node** for each of the 4 (with `cluster_id` set), so the corridor gets a
+real endpoint marker + can carry a city_brief; or (b) **re-point the route's `*_city_id` to the existing
+parent city** that already holds the POI (e.g. cozumel→`cancun-riviera-maya-mexico`,
+caye-caulker→`ambergris-caye-belize`) and drop the orphan id from `CLUSTERS.member_city_ids`. (a) is better
+if these are meant to be first-class destinations in the pitch; (b) is the quick consistency fix.
+
+Also (non-blocking, noted before): caye-caulker, floreana, playa-del-carmen, cozumel, mafia lack `city_briefs`.
+
+A cheap guard for your seal gate: **assert every `ROUTES[].properties.{from_city_id,to_city_id}` resolves to a
+FEATURES_BY_TYPE city/priority_city id, and every `CLUSTERS.member_city_ids` entry does too.** Both would have
+caught this.
+
+---
+
 ## 2026-06-09 — ROUTE-LINK GEOGRAPHIC CORRECTNESS — issue, what we found, what we DON'T know
 
 ### The issue

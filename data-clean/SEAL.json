@@ -1,307 +1,341 @@
 {
-  "_junk_remediation": "2026-06-07: CLEANUP C Option B executed. Removed 106 conservatively-classified junk POIs (restaurants/cafes/salons/spas/medical/trading/car-rental mis-tagged as marinas) + 77 local density routes referencing them by ID. ID-based matching only. Featured corridors clean (0 affected). Geometry-invariant intentionally broken (documented): 5154->5077 routes, 11351->11245 POIs.",
-  "_p01b_relink": "CLEANUP D: 12 unambiguous phase-relinks applied (featured routes moved to phase whose city-scope contains their endpoints) across 8 partners 2026-06-07",
-  "_p0_relink": {
-    "applied": "2026-06-07",
-    "p0_1_gated_relink": "featured_routes + journeys_unlocked re-linked with distance gate (\u00b125% of label distance_nm), endpoint gate (unordered city-pair ID match; intra-cluster requires both-endpoint name match else stays network-chip), per-corridor uniqueness (journey\u2194featured mirrors of same corridor may share; different corridors may not). Result: featured 45 linked / 100% pass \u00b125%; journeys 45 linked / 100% pass; 0 different-corridor collisions; 0 zero-nm links. Remaining nulls honest (no gold route within gate). Tool: partner-pitch/_tools/gated_relink.py",
-    "p0_2_phase_refile": "10 featured_routes re-homed to the sibling phase whose cities contain an endpoint (incl. saudi-pif Eastern-Province\u2194Bahrain moved Jeddah\u2192EP phase). Only clean single-home moves applied; null-endpoint text routes left in place.",
-    "p1_3_boats_vs_kpi": "FLAGGED not auto-fixed (inconsistent direction across partners). See partner-pitch/P1-3-BOATS-VS-KPI-FLAG.md"
+ "_junk_remediation": "2026-06-07: CLEANUP C Option B executed. Removed 106 conservatively-classified junk POIs (restaurants/cafes/salons/spas/medical/trading/car-rental mis-tagged as marinas) + 77 local density routes referencing them by ID. ID-based matching only. Featured corridors clean (0 affected). Geometry-invariant intentionally broken (documented): 5154->5077 routes, 11351->11245 POIs.",
+ "_p01b_relink": "CLEANUP D: 12 unambiguous phase-relinks applied (featured routes moved to phase whose city-scope contains their endpoints) across 8 partners 2026-06-07",
+ "_p0_relink": {
+  "applied": "2026-06-07",
+  "p0_1_gated_relink": "featured_routes + journeys_unlocked re-linked with distance gate (±25% of label distance_nm), endpoint gate (unordered city-pair ID match; intra-cluster requires both-endpoint name match else stays network-chip), per-corridor uniqueness (journey↔featured mirrors of same corridor may share; different corridors may not). Result: featured 45 linked / 100% pass ±25%; journeys 45 linked / 100% pass; 0 different-corridor collisions; 0 zero-nm links. Remaining nulls honest (no gold route within gate). Tool: partner-pitch/_tools/gated_relink.py",
+  "p0_2_phase_refile": "10 featured_routes re-homed to the sibling phase whose cities contain an endpoint (incl. saudi-pif Eastern-Province↔Bahrain moved Jeddah→EP phase). Only clean single-home moves applied; null-endpoint text routes left in place.",
+  "p1_3_boats_vs_kpi": "FLAGGED not auto-fixed (inconsistent direction across partners). See partner-pitch/P1-3-BOATS-VS-KPI-FLAG.md"
+ },
+ "_uae_luxury_correction": "careem+bolt growth_case regenerated on corrected UAE luxury-network base (10 water-served island corridors added) 2026-06-07",
+ "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt — growth_case blocks added 2026-06-07",
+ "blobs": {
+  "FEATURES_BY_TYPE": {
+   "count": 11563,
+   "sha256": "3f749c3d336763f006e7162608f2eff63c85b78f19a86fbb28a421d09e9ccc41"
   },
-  "_uae_luxury_correction": "careem+bolt growth_case regenerated on corrected UAE luxury-network base (10 water-served island corridors added) 2026-06-07",
-  "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt \u2014 growth_case blocks added 2026-06-07",
-  "blobs": {
-    "FEATURES_BY_TYPE": {
-      "count": 11563,
-      "sha256": "3f749c3d336763f006e7162608f2eff63c85b78f19a86fbb28a421d09e9ccc41"
-    },
-    "ROUTES": {
-      "sha256": "e61574293f92ca3ef8325b36abfcd1d400f40a3d15452b991d9b913ed493eb03",
-      "count": 5207
-    },
-    "STORIES": {
-      "count": 20,
-      "sha256": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe"
-    },
-    "VESSEL_SPECS": {
-      "count": 3,
-      "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
-    },
-    "CLUSTERS": {
-      "count": 75,
-      "sha256": "48fb8c7203742667604286142985ab24e53cf40a4949698a70feec3d313ad863"
-    }
+  "ROUTES": {
+   "sha256": "a692e7657b3a3099c51bf6de929df6b23b9fca7588dfd1157abeb8f083d21ac8",
+   "count": 5213
   },
-  "gates": {
-    "bp_on_water": "PASS \u2014 9 new greenfield clusters (Naxos, Milos, Naples\u2013Capri, Malta\u2013Gozo, Menorca, Corsica, Costa Brava, Djerba, Marseille): 42 web-verified boarding points (provenance in source files). Routes water-validated in-generate (SeaGrid, 23 land-crossers dropped) + post scrub_land_routes (5 dropped). 0 Pioneer II routes >70nm.",
-    "brief_conformance": "PASS \u2014 all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)",
-    "externalization": "PASS \u2014 P0 content re-link (gated featured_routes/journeys + phase re-file); deck_only/internal stripped",
-    "land_crossing": "PASS \u2014 geometry delta (add_market.py / LB-25): +42 BP POIs, +53 intra-cluster routes for 9 web-sourced Mediterranean clusters, append-only onto gold #9. All routes SeaGrid+scrub clean. Gold #9 5077 -> gold #10 5130 routes; 11245 -> 11287 POIs.",
-    "referential_integrity": "PASS \u2014 append-only delta; 0 id collisions with gold; new POIs parent_city_id \u2208 9 existing city nodes; new routes endpoints \u2208 9 existing clusters."
+  "STORIES": {
+   "count": 20,
+   "sha256": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe"
   },
-  "meta": {
-    "gold": "#18",
-    "note": "Maldives inter-island expansion: +31 real open-water edges across 9 atoll gateways (South Ari, Baa, Noonu, Raa, Dhaalu, Gaafu, Laamu, Addu, Lhaviyani); de-Male-ified. Finance layer: capex 20yr, A-prime capture, Saudi/RedSea forward-SAM, R-FLOOR-2 network-sum. Maldives 19->39 boats/$87.5M. All 31 gate-passing @1.0km."
+  "VESSEL_SPECS": {
+   "count": 3,
+   "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
   },
-  "pitch": {
-    "city_briefs": 164,
-    "cluster_briefs": 32,
-    "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) \u2014 website build MUST bake from these. | #27: partner route_id + route_ids chips gated to 100% precision (gate_chips.py) | #31: LB-46 recursive-collector fix \u2014 route_id/chips gates now reach markets[] nested items; 559 featured + 337 journey distance-failing ids nulled; baked surface 0-fail on independent reproducer. | #32: source-quality fixes \u2014 hawaii Moloka\u02bbi >70nm to Quanta-LR (locked rule); cote-dazur Corsica mislabel route_id+artifact-distance nulled (label-vs-route mismatch class). | #33: geo-audit nulled 8 confidently-wrong hero highlights (Six Senses Zighy Bay->Muscat route; Aman Montenegro->Croatian route). Upstream node/POI root causes flagged for Claude.",
-    "partners": 46,
-    "tiers_stripped": [
-      "internal",
-      "deck_only"
-    ],
-    "economics_records": 71
-  },
-  "schema": "navier-atlas/seal/v1",
-  "sealed_at": "2026-06-09T04:58:20.102587Z",
-  "sidecars": {
-    "economics_by_route_id.json": {
-      "count": 77,
-      "sha256": "f42547d449f460bca7a553cfeb42e47ac369824f8bcacbb596e563d0611b0d03"
-    }
-  },
-  "_uae_luxury_corridor_edges": {
-    "gold": "#15",
-    "built": 6,
-    "market": "uae-luxury / careem",
-    "route_ids": [
-      "rn-fe3fdf5c23c4",
-      "rn-f1a7150d087e",
-      "rn-06eef0dc0a9a",
-      "rn-a0295522defb",
-      "rn-9d65d29a88ec",
-      "rn-444748135d1b"
-    ],
-    "method": "add_corridor.py gate-verified -> corridor_layer.py emit (gold FEATURES) -> splice onto gold -> scrub(0 crossers)",
-    "note": "intra-emirate BP->BP luxury transfers; Wynn cross-cluster + 2 id-collisions + Saudi/Maldives deferred (see CORRIDOR-ENDPOINT-GROUNDING.json)"
-  },
-  "_fare_sanity_cascade": {
-    "applied": "2026-06-07T21:26:46Z",
-    "rule": "R5-EXT premium-anchor-validity",
-    "cascaded": [
-      "penang: George Town (Swettenham) -> Butterworth (mainland) ($0.47/2.1M public ferry)",
-      "taiwan: Kaohsiung -> Cijin Island ($2.50/3.18M public ferry)",
-      "taiwan: Donggang -> Xiaoliuqiu ($7/1.12M standard tourist ferry, no premium tier)",
-      "vietnam: Bach Dang -> Thu Duc/Grand Park ($8/900k Saigon Waterbus commuter)",
-      "borneo: Kota Kinabalu -> Tunku Abdul Rahman park ($8/546k budget island-hop)"
-    ],
-    "effect": "fare+demand nulled; excluded from grounded floor & estimation. Geometry retained. Grab floor 165->134 boats / $42.4M->$39.8M.",
-    "sidecar_records": "37 -> 36"
-  },
-  "_uae_origin_aware_edges": {
-    "applied": "2026-06-07T21:40:59Z",
-    "added": [
-      "rn-bb2eb160c1a5 Yas Marina -> Zaya Nurai Island Jetty (12.6nm)",
-      "rn-1fa02768ddc4 Jebel Dhanna/Ruwais -> Sir Bani Yas Anantara Jetty (9.8nm)"
-    ],
-    "fix": "route_id seed made origin-aware (add_corridor.py + corridor_layer.py + route_network.py) so origin-distinct corridors sharing a destination no longer collide. Unblocked the 2 deferred UAE-luxury edges. Existing 6 edges keep legacy ids (splice-maintained, no churn).",
-    "routes": "5173 -> 5175",
-    "sidecar_records": "36 -> 38"
-  },
-  "_gold18_maldives_expansion": {
-    "new_edges": 31,
-    "routes": "5175->5206",
-    "sidecar": "38->69",
-    "solver": "_solve_corridor_waypoints (offline A*+visibility-simplify), all PASS land<=1.0km",
-    "finance": "20yr capex + A-prime capture + Saudi forward-SAM + R-FLOOR-2 network-sum fleet basis"
-  },
-  "_gold19_catalina": {
-    "market": "Catalina Island & the L.A. Channel (catalina-channel-islands-usa)",
-    "new_city_node": 1,
-    "new_pois": 16,
-    "new_routes": 7,
-    "routes": "5206->5213",
-    "heroes": "Cabrillo Mole (Avalon) <-> Long Beach 26nm; <-> Newport 26.3nm",
-    "method": "add_market.py delta (gen+label isolated) + scrub_land_routes (dropped 5 land-crossers); all Pioneer-class <=70nm",
-    "sidecar": "69 (unchanged; geometry-only autonomous-lane hero, no finance corridor)"
-  },
-  "_gold20_galapagos": {
-    "market": "Gal\u00e1pagos inter-island heroes (Ecuador)",
-    "new_routes": 2,
-    "routes": "5213->5215",
-    "heroes": "Puerto Ayora (Santa Cruz) <-> Puerto Villamil (Isabela) 42.5nm; <-> Puerto Baquerizo Moreno (San Crist\u00f3bal) 44.0nm",
-    "method": "_solve_corridor_waypoints offline A*+simplify; both PASS land<=1.0km; both Pioneer II (<70nm)",
-    "note": "authentic hub-and-spoke lancha network through Santa Cruz; Isabela<->San Crist\u00f3bal (81nm) omitted \u2014 exceeds Pioneer range & not a real direct public lancha route (null beats confidently-wrong)",
-    "ports": "3 existing gold POIs (no new pins/POIs); orphan-pin nodes now connected",
-    "sidecar": "69 unchanged (geometry-only hero, no finance corridor)"
-  },
-  "_gold21_belize": {
-    "market": "Belize water-taxi heroes",
-    "new_routes": 2,
-    "routes": "5215->5217",
-    "heroes": "Belize City Water-Taxi Terminal <-> San Pedro (Ambergris Caye) 30.2nm; San Pedro <-> Caye Caulker 12.8nm",
-    "method": "_solve_corridor_waypoints; both PASS land<=1.0km; both Pioneer II",
-    "ports": "existing gold POIs; Ambergris orphan pin now connected",
-    "kenya_note": "Lamu<->Mokowe (2.6nm) already in gold; Mombasa/Lamu otherwise short intra-creek or out-of-range \u2014 no new heroes",
-    "sidecar": "69 unchanged (geometry-only)"
-  },
-  "_gold22_dar_zanzibar": {
-    "market": "Dar es Salaam <-> Zanzibar (Swahili coast)",
-    "new_routes": 1,
-    "routes": "5217->5218",
-    "hero": "Dar es Salaam Ferry Terminal <-> Stone Town Ferry Terminal (Malindi) 41.7nm, Pioneer II",
-    "method": "_solve_corridor_waypoints; PASS land=0.0km",
-    "ports": "both existing gold POIs; orphan Dar pin now connected",
-    "sidecar": "69 unchanged (geometry-only)"
-  },
-  "_gold23_us_islands": {
-    "markets": "San Juan Islands (Puget Sound) + Cape Cod & the Islands",
-    "new_routes": 6,
-    "routes": "5218->5224",
-    "san_juan": [
-      "Anacortes<->Friday Harbor 21.2nm",
-      "Friday Harbor<->Orcas 5.2nm",
-      "Anacortes<->Lopez 19.9nm"
-    ],
-    "cape_cod": [
-      "Hyannis<->Nantucket 24.1nm",
-      "Hyannis<->Oak Bluffs(MV) 17.7nm",
-      "Nantucket<->Vineyard Haven 27.1nm"
-    ],
-    "method": "_solve_corridor_waypoints solver-splice; all gate-pass <=1.0km land",
-    "deferred": "Anacortes<->Orcas direct (WSF real) \u2014 A* exceeded solver budget in dense archipelago; Orcas already connected via Friday Harbor<->Orcas; curated-waypoint follow-up",
-    "ports": "all pre-existing gold POIs under seattle-puget-sound-usa / boston-new-england-usa clusters; were orphan-unconnected",
-    "sidecar": "69 unchanged (geometry-only)"
-  },
-  "_gold24_hamptons_chicago": {
-    "markets": "The Hamptons & East End (NY/RI) + Chicago & Lake Michigan",
-    "new_cities": 2,
-    "new_pois": 9,
-    "new_routes": 4,
-    "routes": "5224->5228",
-    "collisions": [],
-    "hamptons": [
-      "Montauk<->Block Island 17.3nm (Viking Fast Ferry)",
-      "Greenport<->Shelter Island 1.4nm (North Ferry)",
-      "North Haven<->Shelter Island 0.9nm (South Ferry)"
-    ],
-    "chicago": [
-      "DuSable Harbor<->New Buffalo 38.9nm (open Lake Michigan crossing to Harbor Country)"
-    ],
-    "method": "saltwater heroes via clean straight-line (gate 0.0km); Chicago manual straight-line (Great Lakes NOT in ocean mask; path verified offshore of Indiana shore)",
-    "sourcing": "NEW boarding points web-sourced (Viking Fleet, North/South Ferry, Chicago Harbors, New Buffalo Municipal Marina); 2 new city nodes minted",
-    "deferred": "Greenport<->Sag Harbor (channel-locked around Shelter Island, curated-waypoint follow-up); Sag<->Montauk dropped (no real direct ferry)",
-    "sidecar": "69 unchanged (geometry-only)"
-  },
-  "_gold25_housekeeping": {
-    "degenerate_relabels": 12,
-    "self_loops_removed": 1,
-    "method": "exact endpoint-coordinate->POI identity match (6dp); Palm Beach duplicate-name disambiguated by locale",
-    "routes": "5228->5227",
-    "skipped": []
-  },
-  "_gold26_region_cleanup": {
-    "poi_region_fills": 35,
-    "method": "inherit region from parent_city_id (exact ID match); 34 Europe + 1 LatAm-Caribbean"
-  },
-  "_gold26_mombasa_orphan_fill": {
-    "new_routes": 2,
-    "routes": "5227->5229",
-    "collisions": [],
-    "heroes": [
-      "Mombasa Old Port <-> Mtwapa Creek 11.4nm",
-      "Likoni Ferry crossing 0.3nm (direct)"
-    ],
-    "note": "mombasa-kenya node was orphan (5 POIs, 0 routes); now connected. Shanghai DEFERRED (Huangpu River not in ocean mask - curated river-waypoint follow-up)."
-  },
-  "_gold27_partner_relink": {
-    "applied": "2026-06-08",
-    "what": "Re-ran gated_relink.py on Gold #26 geometry (more corridors now exist) + NEW gate_chips.py pass to prune the plural route_ids chip arrays by the same distance(+/-25%)+endpoint(ID) gates.",
-    "result": "BAKED data-clean/partners now 100% precise: featured 49 route_id linked (was 45) all pass; journeys 47 linked (was 45) all pass; route_ids chips 1830->107, every survivor in-gate. 193 chip-items honestly nulled (no in-gate corridor), 37 keep tight sets.",
-    "root_cause": "Prior relink set route_id correctly but left route_ids chip arrays ungated; render lane resolves chips for click-to-highlight -> only 67/1702 chips were in-gate, matching Claude's reported 31%/23%.",
-    "tools": "partner-pitch/_tools/gated_relink.py (route_id) + partner-pitch/_tools/gate_chips.py (route_ids, NEW)",
-    "principle": "exactness over coverage; null beats confidently-wrong; ID-based only",
-    "geometry": "UNCHANGED from #26 (FEATURES/ROUTES/STORIES/VESSEL_SPECS hashes identical)"
-  },
-  "gold_build": 29,
-  "notes": [
-    "Gold #28: A2 country fix (UAE Singapore->UAE in sidecar) + B1 cluster_id/cluster_label on 150 city nodes + B2 CLUSTERS.json lookup (32 clusters w/ anchors). galapagos/belize/kenya first-class.",
-    "Gold #29: P2b exact-duplicate route collapse (5229->5201, 28 removed) + mislabeled fort-lauderdale-las-olas id fixed. Downstream refs remapped across partners/stories/cluster_briefs. A<->B mirror collapse intentionally deferred (front-end de-dupes; source authoring stays directional).",
-    "Gold #30: route_id null-on-fail gate (gate_route_id.py) \u2014 nulled 3 mislabeled hawaii ids (Moloka\u02bbi journey pointing at maui\u2192honolulu). Baked surface 100% clean: featured 47/47, journeys 46/46, chips 107/107 all pass \u00b125%+endpoint gate. Routes/clusters/sidecar unchanged from #29 (5,201)."
-  ],
-  "_gold29_dedup": {
-    "method": "exact endpoint+geometry duplicate collapse with downstream reference remapping",
-    "features_removed": 28,
-    "routes_before": 5229,
-    "routes_after": 5201,
-    "dupe_groups": 21,
-    "references_remapped": 6,
-    "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
-    "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
-  },
-  "gold_seq": 33,
-  "_gold31_routeid_distance_gate": {
-    "applied": "2026-06-08",
-    "issue": "LB-46 \u2014 gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
-    "fix": "Added shared recursive collect_items() to both gates (walks entire partner tree). Re-ran on source partner-pitch/partners/: route_id had_id 716->157 featured, 452->115 journey; 559 featured + 337 journey confidently-wrong ids NULLED to honest city-focus text. chips 133->107. Re-externalized -> data-clean.",
-    "verify": "Independent distance reproducer on baked surface: featured 157/157 resolve & in-gate, journeys 115/115 resolve & in-gate, 0 dangling, 0 dist_fail. Gates idempotent.",
-    "principle": "null beats confidently-wrong; ID-based matching only; the resolved route's actual distance_nm is the authority vs the item's stated distance."
-  },
-  "_gold32_source_quality_fixes": {
-    "applied": "2026-06-08",
-    "fixes": [
-      "hawaii: Honolulu<->Moloka\u02bbi (72.1nm) platform Pioneer II -> Quanta-LR (x3 occurrences). LOCKED RULE: Pioneer II range=70nm; any >70nm all-electric leg MUST be Quanta-LR. Surfaced by BD-dossier wave-2 worker.",
-      "cote-dazur: 'Monaco/Nice <-> Corsica (Calvi)' items had route_id ics-e0ddf827ef (which is actually a 6.7nm Nice->Port-de-Fontvieille / Monaco hop) + a copy-artifact distance_nm 6.7 on a ~95nm Corsica label. Both route_id AND distance were self-consistent (6.7) but the LABEL describes a long crossing -> CONFIDENTLY-WRONG (a 3rd error class the distance gate cannot catch; route+distance agree with each other). Nulled route_id + artifact distance (did not invent a replacement)."
-    ],
-    "new_error_class": "LABEL-vs-ROUTE geographic mismatch: route_id + distance_nm agree with each other but BOTH disagree with the human label. Distance-consistency gate is blind to it (no internal contradiction). Detection requires label->geography reasoning. Follow-up audit candidate.",
-    "sweep": "Full-partner platform-rule sweep: only 3 violations existed (all the hawaii Moloka\u02bbi item); fleet assignment otherwise clean."
-  },
-  "_gold33_geo_audit": {
-    "applied": "2026-06-08",
-    "method": "label-vs-route geographic audit over all 210 linked items (manual geo-reasoning; Places API disabled).",
-    "nulled": [
-      "six-senses 'Dubai/RAK <-> Six Senses Zighy Bay' (x3): route rn-1ba484ccccc6 is a Muscat-area route (Bandar Al Khairan->Ras Al Hadd), ~300km from Zighy Bay (Musandam). Item mis-homed on muscat-oman node.",
-      "aman 'Tivat/Porto Montenegro<->Sveti Stefan' + 'Montenegro coast<->Porto Montenegro' (x5): route ics-1ec3383b58 is Zaton->Mlini (Dubrovnik-area Croatia), ~45km from the Montenegro Aman sites. kotor-montenegro node carries Croatian boarding points."
-    ],
-    "upstream_root_causes_flagged": "FLAG-FOR-CLAUDE-upstream-geo-mistags.md \u2014 needs Musandam node + Montenegro boarding points.",
-    "error_class": "label-vs-route geographic mismatch (route+distance+node_ids self-consistent but disagree with human label); distance/endpoint gates structurally blind."
-  },
-  "_gold34_cluster_id_completion": {
-    "applied_at": "2026-06-08T18:16:16.922183Z",
-    "note": "cluster_id on every city node: 0 untagged (was 51 unmapped of 192). +43 new clusters (32->75). 2 attach-to-existing (Fukuoka node->japan, Sir Bani Yas BP->uae). Method: zip-patch (LB-23); geometry & sidecar untouched.",
-    "clusters_total": 75,
-    "nodes_tagged": 192,
-    "untagged": 0
-  },
-  "_gold35_sidecar_uae_pin": {
-    "applied_at": "2026-06-08T18:26:53.170604Z",
-    "note": "Pinned 2 Careem UAE managed corridors to gold routes (exact single-match, ID-only): Dubai<->Abu Dhabi rn-25065af2bcb4, Dubai<->Sharjah rn-461399dfc4d5. Root cause: corridor node_ids used bare 'dubai'/'abu-dhabi' vs gold '-uae' suffix; fixed at source (finance/model/corridors.json). Records 69->71, pending 25->23. Other 23 pending stay null (intra-city/resort-level ambiguous) per ID-only mandate. Confirmed: no UAE-as-Singapore mislabel in source (already resolved).",
-    "records": 71,
-    "pending": 23
-  },
-  "_gold36_cluster_consistency": {
-    "applied_at": "2026-06-08T22:36:40.086996Z",
-    "note": "Claude render-lane follow-ups. (1) CLUSTERS.anchor snapped to member city nearest centroid (41 clusters moved on-land, max 543km; added anchor_source); anchor now a usable on-land label/pin point. (2) node cluster_id synced from authoritative member_city_ids: 51 stamped + 0 drift-corrected -> 201/201 (100%, was 150). Node property now agrees with membership."
-  },
-  "_gold37_okinawa_reconcile": {
-    "applied_at": "2026-06-09T03:14:30.000000Z",
-    "note": "Lane B (duplicate-route collapse, backlog #3): 0 true duplicates under agreed basis (from_node_id+to_node_id+geometry_hash) \u2014 nothing collapsed (Gold #29 already removed the 28 real ones; the '~204' = 52 city-node<->BP collocations + 1 dup-node + 1,225 intentional directional mirrors; all node-model/render-layer, flagged for Claude). Lane C: Okinawa orphan brief rekeyed city_id+filename okinawa-yaeyama-japan -> okinawa-main-japan (lead hub; rendered nowhere before; 0 dangling). Economics sidecar re-verified clean (71 records, 0 country mislabels)."
-  },
-  "_gold38_jih_jetties": {
-    "added": [
-      "e__velana__gili-lankanfushi-jetty",
-      "e__velana__baros-jetty",
-      "e__velana__constance-halaveli-jetty",
-      "e__velana__conrad-rangali-jetty",
-      "e__velana__oneonly-reethi-rah-jetty",
-      "e__velana__kurumba-jetty"
-    ],
-    "method": "great-circle geometry; endpoints geo-confirmed via LB-55 multi-channel + satellite-verified open-water corridors",
-    "note": "high-mem land-gate solver OOMs this 570MB-free sandbox; geometry re-solvable later; endpoints + economics authoritative",
-    "routes_before": 5201,
-    "routes_after": 5207,
-    "economics_pinned": {
-      "records": 77,
-      "pending": 17,
-      "newly_pinned": [
-        "e__velana__kurumba-jetty",
-        "e__velana__gili-lankanfushi-jetty",
-        "e__velana__baros-jetty",
-        "e__velana__oneonly-reethi-rah-jetty",
-        "e__velana__constance-halaveli-jetty",
-        "e__velana__conrad-rangali-jetty"
-      ]
-    }
+  "CLUSTERS": {
+   "count": 75,
+   "sha256": "95e5ca09ecb37ca10a5a3397fa43d9d7efd79f96b654d8470ad77d3095f29d55"
   }
+ },
+ "gates": {
+  "bp_on_water": "PASS — 9 new greenfield clusters (Naxos, Milos, Naples–Capri, Malta–Gozo, Menorca, Corsica, Costa Brava, Djerba, Marseille): 42 web-verified boarding points (provenance in source files). Routes water-validated in-generate (SeaGrid, 23 land-crossers dropped) + post scrub_land_routes (5 dropped). 0 Pioneer II routes >70nm.",
+  "brief_conformance": "PASS — all briefs carry schema-required + v2 analytical fields (journeys/competitive_landscape/seasonality/regulatory_note)",
+  "externalization": "PASS — P0 content re-link (gated featured_routes/journeys + phase re-file); deck_only/internal stripped",
+  "land_crossing": "PASS — geometry delta (add_market.py / LB-25): +42 BP POIs, +53 intra-cluster routes for 9 web-sourced Mediterranean clusters, append-only onto gold #9. All routes SeaGrid+scrub clean. Gold #9 5077 -> gold #10 5130 routes; 11245 -> 11287 POIs.",
+  "referential_integrity": "PASS — append-only delta; 0 id collisions with gold; new POIs parent_city_id ∈ 9 existing city nodes; new routes endpoints ∈ 9 existing clusters."
+ },
+ "meta": {
+  "gold": "#18",
+  "note": "Maldives inter-island expansion: +31 real open-water edges across 9 atoll gateways (South Ari, Baa, Noonu, Raa, Dhaalu, Gaafu, Laamu, Addu, Lhaviyani); de-Male-ified. Finance layer: capex 20yr, A-prime capture, Saudi/RedSea forward-SAM, R-FLOOR-2 network-sum. Maldives 19->39 boats/$87.5M. All 31 gate-passing @1.0km."
+ },
+ "pitch": {
+  "city_briefs": 164,
+  "cluster_briefs": 32,
+  "note": "data-clean/{city_briefs,partners}/ are public-stripped; website build MUST bake from these, NOT partner-pitch/ | cluster_briefs/ added (32: 29 first-class, 3 tag-only) — website build MUST bake from these. | #27: partner route_id + route_ids chips gated to 100% precision (gate_chips.py) | #31: LB-46 recursive-collector fix — route_id/chips gates now reach markets[] nested items; 559 featured + 337 journey distance-failing ids nulled; baked surface 0-fail on independent reproducer. | #32: source-quality fixes — hawaii Molokaʻi >70nm to Quanta-LR (locked rule); cote-dazur Corsica mislabel route_id+artifact-distance nulled (label-vs-route mismatch class). | #33: geo-audit nulled 8 confidently-wrong hero highlights (Six Senses Zighy Bay->Muscat route; Aman Montenegro->Croatian route). Upstream node/POI root causes flagged for Claude.",
+  "partners": 46,
+  "tiers_stripped": [
+   "internal",
+   "deck_only"
+  ],
+  "economics_records": 71
+ },
+ "schema": "navier-atlas/seal/v1",
+ "sealed_at": "2026-06-09T04:58:20.102587Z",
+ "sidecars": {
+  "economics_by_route_id.json": {
+   "count": 77,
+   "sha256": "f42547d449f460bca7a553cfeb42e47ac369824f8bcacbb596e563d0611b0d03"
+  }
+ },
+ "_uae_luxury_corridor_edges": {
+  "gold": "#15",
+  "built": 6,
+  "market": "uae-luxury / careem",
+  "route_ids": [
+   "rn-fe3fdf5c23c4",
+   "rn-f1a7150d087e",
+   "rn-06eef0dc0a9a",
+   "rn-a0295522defb",
+   "rn-9d65d29a88ec",
+   "rn-444748135d1b"
+  ],
+  "method": "add_corridor.py gate-verified -> corridor_layer.py emit (gold FEATURES) -> splice onto gold -> scrub(0 crossers)",
+  "note": "intra-emirate BP->BP luxury transfers; Wynn cross-cluster + 2 id-collisions + Saudi/Maldives deferred (see CORRIDOR-ENDPOINT-GROUNDING.json)"
+ },
+ "_fare_sanity_cascade": {
+  "applied": "2026-06-07T21:26:46Z",
+  "rule": "R5-EXT premium-anchor-validity",
+  "cascaded": [
+   "penang: George Town (Swettenham) -> Butterworth (mainland) ($0.47/2.1M public ferry)",
+   "taiwan: Kaohsiung -> Cijin Island ($2.50/3.18M public ferry)",
+   "taiwan: Donggang -> Xiaoliuqiu ($7/1.12M standard tourist ferry, no premium tier)",
+   "vietnam: Bach Dang -> Thu Duc/Grand Park ($8/900k Saigon Waterbus commuter)",
+   "borneo: Kota Kinabalu -> Tunku Abdul Rahman park ($8/546k budget island-hop)"
+  ],
+  "effect": "fare+demand nulled; excluded from grounded floor & estimation. Geometry retained. Grab floor 165->134 boats / $42.4M->$39.8M.",
+  "sidecar_records": "37 -> 36"
+ },
+ "_uae_origin_aware_edges": {
+  "applied": "2026-06-07T21:40:59Z",
+  "added": [
+   "rn-bb2eb160c1a5 Yas Marina -> Zaya Nurai Island Jetty (12.6nm)",
+   "rn-1fa02768ddc4 Jebel Dhanna/Ruwais -> Sir Bani Yas Anantara Jetty (9.8nm)"
+  ],
+  "fix": "route_id seed made origin-aware (add_corridor.py + corridor_layer.py + route_network.py) so origin-distinct corridors sharing a destination no longer collide. Unblocked the 2 deferred UAE-luxury edges. Existing 6 edges keep legacy ids (splice-maintained, no churn).",
+  "routes": "5173 -> 5175",
+  "sidecar_records": "36 -> 38"
+ },
+ "_gold18_maldives_expansion": {
+  "new_edges": 31,
+  "routes": "5175->5206",
+  "sidecar": "38->69",
+  "solver": "_solve_corridor_waypoints (offline A*+visibility-simplify), all PASS land<=1.0km",
+  "finance": "20yr capex + A-prime capture + Saudi forward-SAM + R-FLOOR-2 network-sum fleet basis"
+ },
+ "_gold19_catalina": {
+  "market": "Catalina Island & the L.A. Channel (catalina-channel-islands-usa)",
+  "new_city_node": 1,
+  "new_pois": 16,
+  "new_routes": 7,
+  "routes": "5206->5213",
+  "heroes": "Cabrillo Mole (Avalon) <-> Long Beach 26nm; <-> Newport 26.3nm",
+  "method": "add_market.py delta (gen+label isolated) + scrub_land_routes (dropped 5 land-crossers); all Pioneer-class <=70nm",
+  "sidecar": "69 (unchanged; geometry-only autonomous-lane hero, no finance corridor)"
+ },
+ "_gold20_galapagos": {
+  "market": "Galápagos inter-island heroes (Ecuador)",
+  "new_routes": 2,
+  "routes": "5213->5215",
+  "heroes": "Puerto Ayora (Santa Cruz) <-> Puerto Villamil (Isabela) 42.5nm; <-> Puerto Baquerizo Moreno (San Cristóbal) 44.0nm",
+  "method": "_solve_corridor_waypoints offline A*+simplify; both PASS land<=1.0km; both Pioneer II (<70nm)",
+  "note": "authentic hub-and-spoke lancha network through Santa Cruz; Isabela<->San Cristóbal (81nm) omitted — exceeds Pioneer range & not a real direct public lancha route (null beats confidently-wrong)",
+  "ports": "3 existing gold POIs (no new pins/POIs); orphan-pin nodes now connected",
+  "sidecar": "69 unchanged (geometry-only hero, no finance corridor)"
+ },
+ "_gold21_belize": {
+  "market": "Belize water-taxi heroes",
+  "new_routes": 2,
+  "routes": "5215->5217",
+  "heroes": "Belize City Water-Taxi Terminal <-> San Pedro (Ambergris Caye) 30.2nm; San Pedro <-> Caye Caulker 12.8nm",
+  "method": "_solve_corridor_waypoints; both PASS land<=1.0km; both Pioneer II",
+  "ports": "existing gold POIs; Ambergris orphan pin now connected",
+  "kenya_note": "Lamu<->Mokowe (2.6nm) already in gold; Mombasa/Lamu otherwise short intra-creek or out-of-range — no new heroes",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold22_dar_zanzibar": {
+  "market": "Dar es Salaam <-> Zanzibar (Swahili coast)",
+  "new_routes": 1,
+  "routes": "5217->5218",
+  "hero": "Dar es Salaam Ferry Terminal <-> Stone Town Ferry Terminal (Malindi) 41.7nm, Pioneer II",
+  "method": "_solve_corridor_waypoints; PASS land=0.0km",
+  "ports": "both existing gold POIs; orphan Dar pin now connected",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold23_us_islands": {
+  "markets": "San Juan Islands (Puget Sound) + Cape Cod & the Islands",
+  "new_routes": 6,
+  "routes": "5218->5224",
+  "san_juan": [
+   "Anacortes<->Friday Harbor 21.2nm",
+   "Friday Harbor<->Orcas 5.2nm",
+   "Anacortes<->Lopez 19.9nm"
+  ],
+  "cape_cod": [
+   "Hyannis<->Nantucket 24.1nm",
+   "Hyannis<->Oak Bluffs(MV) 17.7nm",
+   "Nantucket<->Vineyard Haven 27.1nm"
+  ],
+  "method": "_solve_corridor_waypoints solver-splice; all gate-pass <=1.0km land",
+  "deferred": "Anacortes<->Orcas direct (WSF real) — A* exceeded solver budget in dense archipelago; Orcas already connected via Friday Harbor<->Orcas; curated-waypoint follow-up",
+  "ports": "all pre-existing gold POIs under seattle-puget-sound-usa / boston-new-england-usa clusters; were orphan-unconnected",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold24_hamptons_chicago": {
+  "markets": "The Hamptons & East End (NY/RI) + Chicago & Lake Michigan",
+  "new_cities": 2,
+  "new_pois": 9,
+  "new_routes": 4,
+  "routes": "5224->5228",
+  "collisions": [],
+  "hamptons": [
+   "Montauk<->Block Island 17.3nm (Viking Fast Ferry)",
+   "Greenport<->Shelter Island 1.4nm (North Ferry)",
+   "North Haven<->Shelter Island 0.9nm (South Ferry)"
+  ],
+  "chicago": [
+   "DuSable Harbor<->New Buffalo 38.9nm (open Lake Michigan crossing to Harbor Country)"
+  ],
+  "method": "saltwater heroes via clean straight-line (gate 0.0km); Chicago manual straight-line (Great Lakes NOT in ocean mask; path verified offshore of Indiana shore)",
+  "sourcing": "NEW boarding points web-sourced (Viking Fleet, North/South Ferry, Chicago Harbors, New Buffalo Municipal Marina); 2 new city nodes minted",
+  "deferred": "Greenport<->Sag Harbor (channel-locked around Shelter Island, curated-waypoint follow-up); Sag<->Montauk dropped (no real direct ferry)",
+  "sidecar": "69 unchanged (geometry-only)"
+ },
+ "_gold25_housekeeping": {
+  "degenerate_relabels": 12,
+  "self_loops_removed": 1,
+  "method": "exact endpoint-coordinate->POI identity match (6dp); Palm Beach duplicate-name disambiguated by locale",
+  "routes": "5228->5227",
+  "skipped": []
+ },
+ "_gold26_region_cleanup": {
+  "poi_region_fills": 35,
+  "method": "inherit region from parent_city_id (exact ID match); 34 Europe + 1 LatAm-Caribbean"
+ },
+ "_gold26_mombasa_orphan_fill": {
+  "new_routes": 2,
+  "routes": "5227->5229",
+  "collisions": [],
+  "heroes": [
+   "Mombasa Old Port <-> Mtwapa Creek 11.4nm",
+   "Likoni Ferry crossing 0.3nm (direct)"
+  ],
+  "note": "mombasa-kenya node was orphan (5 POIs, 0 routes); now connected. Shanghai DEFERRED (Huangpu River not in ocean mask - curated river-waypoint follow-up)."
+ },
+ "_gold27_partner_relink": {
+  "applied": "2026-06-08",
+  "what": "Re-ran gated_relink.py on Gold #26 geometry (more corridors now exist) + NEW gate_chips.py pass to prune the plural route_ids chip arrays by the same distance(+/-25%)+endpoint(ID) gates.",
+  "result": "BAKED data-clean/partners now 100% precise: featured 49 route_id linked (was 45) all pass; journeys 47 linked (was 45) all pass; route_ids chips 1830->107, every survivor in-gate. 193 chip-items honestly nulled (no in-gate corridor), 37 keep tight sets.",
+  "root_cause": "Prior relink set route_id correctly but left route_ids chip arrays ungated; render lane resolves chips for click-to-highlight -> only 67/1702 chips were in-gate, matching Claude's reported 31%/23%.",
+  "tools": "partner-pitch/_tools/gated_relink.py (route_id) + partner-pitch/_tools/gate_chips.py (route_ids, NEW)",
+  "principle": "exactness over coverage; null beats confidently-wrong; ID-based only",
+  "geometry": "UNCHANGED from #26 (FEATURES/ROUTES/STORIES/VESSEL_SPECS hashes identical)"
+ },
+ "gold_build": 29,
+ "notes": [
+  "Gold #28: A2 country fix (UAE Singapore->UAE in sidecar) + B1 cluster_id/cluster_label on 150 city nodes + B2 CLUSTERS.json lookup (32 clusters w/ anchors). galapagos/belize/kenya first-class.",
+  "Gold #29: P2b exact-duplicate route collapse (5229->5201, 28 removed) + mislabeled fort-lauderdale-las-olas id fixed. Downstream refs remapped across partners/stories/cluster_briefs. A<->B mirror collapse intentionally deferred (front-end de-dupes; source authoring stays directional).",
+  "Gold #30: route_id null-on-fail gate (gate_route_id.py) — nulled 3 mislabeled hawaii ids (Molokaʻi journey pointing at maui→honolulu). Baked surface 100% clean: featured 47/47, journeys 46/46, chips 107/107 all pass ±25%+endpoint gate. Routes/clusters/sidecar unchanged from #29 (5,201)."
+ ],
+ "_gold29_dedup": {
+  "method": "exact endpoint+geometry duplicate collapse with downstream reference remapping",
+  "features_removed": 28,
+  "routes_before": 5229,
+  "routes_after": 5201,
+  "dupe_groups": 21,
+  "references_remapped": 6,
+  "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
+  "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
+ },
+ "gold_seq": 33,
+ "_gold31_routeid_distance_gate": {
+  "applied": "2026-06-08",
+  "issue": "LB-46 — gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
+  "fix": "Added shared recursive collect_items() to both gates (walks entire partner tree). Re-ran on source partner-pitch/partners/: route_id had_id 716->157 featured, 452->115 journey; 559 featured + 337 journey confidently-wrong ids NULLED to honest city-focus text. chips 133->107. Re-externalized -> data-clean.",
+  "verify": "Independent distance reproducer on baked surface: featured 157/157 resolve & in-gate, journeys 115/115 resolve & in-gate, 0 dangling, 0 dist_fail. Gates idempotent.",
+  "principle": "null beats confidently-wrong; ID-based matching only; the resolved route's actual distance_nm is the authority vs the item's stated distance."
+ },
+ "_gold32_source_quality_fixes": {
+  "applied": "2026-06-08",
+  "fixes": [
+   "hawaii: Honolulu<->Molokaʻi (72.1nm) platform Pioneer II -> Quanta-LR (x3 occurrences). LOCKED RULE: Pioneer II range=70nm; any >70nm all-electric leg MUST be Quanta-LR. Surfaced by BD-dossier wave-2 worker.",
+   "cote-dazur: 'Monaco/Nice <-> Corsica (Calvi)' items had route_id ics-e0ddf827ef (which is actually a 6.7nm Nice->Port-de-Fontvieille / Monaco hop) + a copy-artifact distance_nm 6.7 on a ~95nm Corsica label. Both route_id AND distance were self-consistent (6.7) but the LABEL describes a long crossing -> CONFIDENTLY-WRONG (a 3rd error class the distance gate cannot catch; route+distance agree with each other). Nulled route_id + artifact distance (did not invent a replacement)."
+  ],
+  "new_error_class": "LABEL-vs-ROUTE geographic mismatch: route_id + distance_nm agree with each other but BOTH disagree with the human label. Distance-consistency gate is blind to it (no internal contradiction). Detection requires label->geography reasoning. Follow-up audit candidate.",
+  "sweep": "Full-partner platform-rule sweep: only 3 violations existed (all the hawaii Molokaʻi item); fleet assignment otherwise clean."
+ },
+ "_gold33_geo_audit": {
+  "applied": "2026-06-08",
+  "method": "label-vs-route geographic audit over all 210 linked items (manual geo-reasoning; Places API disabled).",
+  "nulled": [
+   "six-senses 'Dubai/RAK <-> Six Senses Zighy Bay' (x3): route rn-1ba484ccccc6 is a Muscat-area route (Bandar Al Khairan->Ras Al Hadd), ~300km from Zighy Bay (Musandam). Item mis-homed on muscat-oman node.",
+   "aman 'Tivat/Porto Montenegro<->Sveti Stefan' + 'Montenegro coast<->Porto Montenegro' (x5): route ics-1ec3383b58 is Zaton->Mlini (Dubrovnik-area Croatia), ~45km from the Montenegro Aman sites. kotor-montenegro node carries Croatian boarding points."
+  ],
+  "upstream_root_causes_flagged": "FLAG-FOR-CLAUDE-upstream-geo-mistags.md — needs Musandam node + Montenegro boarding points.",
+  "error_class": "label-vs-route geographic mismatch (route+distance+node_ids self-consistent but disagree with human label); distance/endpoint gates structurally blind."
+ },
+ "_gold34_cluster_id_completion": {
+  "applied_at": "2026-06-08T18:16:16.922183Z",
+  "note": "cluster_id on every city node: 0 untagged (was 51 unmapped of 192). +43 new clusters (32->75). 2 attach-to-existing (Fukuoka node->japan, Sir Bani Yas BP->uae). Method: zip-patch (LB-23); geometry & sidecar untouched.",
+  "clusters_total": 75,
+  "nodes_tagged": 192,
+  "untagged": 0
+ },
+ "_gold35_sidecar_uae_pin": {
+  "applied_at": "2026-06-08T18:26:53.170604Z",
+  "note": "Pinned 2 Careem UAE managed corridors to gold routes (exact single-match, ID-only): Dubai<->Abu Dhabi rn-25065af2bcb4, Dubai<->Sharjah rn-461399dfc4d5. Root cause: corridor node_ids used bare 'dubai'/'abu-dhabi' vs gold '-uae' suffix; fixed at source (finance/model/corridors.json). Records 69->71, pending 25->23. Other 23 pending stay null (intra-city/resort-level ambiguous) per ID-only mandate. Confirmed: no UAE-as-Singapore mislabel in source (already resolved).",
+  "records": 71,
+  "pending": 23
+ },
+ "_gold36_cluster_consistency": {
+  "applied_at": "2026-06-08T22:36:40.086996Z",
+  "note": "Claude render-lane follow-ups. (1) CLUSTERS.anchor snapped to member city nearest centroid (41 clusters moved on-land, max 543km; added anchor_source); anchor now a usable on-land label/pin point. (2) node cluster_id synced from authoritative member_city_ids: 51 stamped + 0 drift-corrected -> 201/201 (100%, was 150). Node property now agrees with membership."
+ },
+ "_gold37_okinawa_reconcile": {
+  "applied_at": "2026-06-09T03:14:30.000000Z",
+  "note": "Lane B (duplicate-route collapse, backlog #3): 0 true duplicates under agreed basis (from_node_id+to_node_id+geometry_hash) — nothing collapsed (Gold #29 already removed the 28 real ones; the '~204' = 52 city-node<->BP collocations + 1 dup-node + 1,225 intentional directional mirrors; all node-model/render-layer, flagged for Claude). Lane C: Okinawa orphan brief rekeyed city_id+filename okinawa-yaeyama-japan -> okinawa-main-japan (lead hub; rendered nowhere before; 0 dangling). Economics sidecar re-verified clean (71 records, 0 country mislabels)."
+ },
+ "_gold38_jih_jetties": {
+  "added": [
+   "e__velana__gili-lankanfushi-jetty",
+   "e__velana__baros-jetty",
+   "e__velana__constance-halaveli-jetty",
+   "e__velana__conrad-rangali-jetty",
+   "e__velana__oneonly-reethi-rah-jetty",
+   "e__velana__kurumba-jetty"
+  ],
+  "method": "great-circle geometry; endpoints geo-confirmed via LB-55 multi-channel + satellite-verified open-water corridors",
+  "note": "high-mem land-gate solver OOMs this 570MB-free sandbox; geometry re-solvable later; endpoints + economics authoritative",
+  "routes_before": 5201,
+  "routes_after": 5207,
+  "economics_pinned": {
+   "records": 77,
+   "pending": 17,
+   "newly_pinned": [
+    "e__velana__kurumba-jetty",
+    "e__velana__gili-lankanfushi-jetty",
+    "e__velana__baros-jetty",
+    "e__velana__oneonly-reethi-rah-jetty",
+    "e__velana__constance-halaveli-jetty",
+    "e__velana__conrad-rangali-jetty"
+   ]
+  }
+ },
+ "_gold39_lane_g_corridors": {
+  "added": [
+   "e__belize-city-cayes-belize__belize-city-water-taxi__caye-caulker-belize__caye-caulker-main-dock",
+   "e__kaohsiung-taiwan__kaohsiung-port__penghu-taiwan__magong-harbor",
+   "e__mafia-tanzania__kilindoni-port__dar-es-salaam-tanzania__dar-ferry-terminal",
+   "e__belize-city-cayes-belize__belize-city-water-taxi__placencia-belize__placencia-village-pier"
+  ],
+  "method": "great-circle geometry; endpoints geo-resolved via LB-55 multi-channel + satellite-verified open-water; node ids = canonical CLUSTERS.json members",
+  "vessel": "all Pioneer II (<=70nm)",
+  "note": "Inter-cluster corridors filling tag-only/orphan clusters. ROUTES-only + city-cluster-map. Dibba<->Zighy DEFERRED (straight line crosses Musandam headland - needs water-following solver). >70nm corridors (Palma-Mahon 78, Fukuoka-Busan 119, Zanzibar-Pemba 87) deferred to held Quanta-LR batch. Galapagos Ayora deferred (41nm channel disagreement).",
+  "cluster_update": "added caye-caulker-belize to belize cluster member_city_ids (75 clusters unchanged); caye-caulker-belize + mafia-tanzania lack city_briefs (consistent with existing orphan-member pattern; flagged for content-lane)"
+ },
+ "_gold40_mexico_cozumel": {
+  "added": [
+   "e__playa-del-carmen-mexico__playa-del-carmen-ferry__cozumel-mexico__cozumel-ferry-san-miguel"
+  ],
+  "corridor": "Playa del Carmen <-> Cozumel (9.5nm Pioneer II)",
+  "method": "Nominatim named ferry terminals (both), satellite-verified deep water; recovered from a Lane-G false-null via the new WD+Nominatim/Nominatim-in-bbox promotion path (resolver over-relied on WD-Mapbox agreement; Mapbox returned wrong inland homonyms).",
+  "new_members": [
+   "playa-del-carmen-mexico",
+   "cozumel-mexico"
+  ],
+  "brief_gap": "both new members lack city_briefs (content-lane follow-up; consistent with orphan-member pattern)"
+ },
+ "_gold41_galapagos_floreana": {
+  "added": [
+   "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra"
+  ],
+  "corridor": "Santa Cruz <-> Floreana (33.6nm Pioneer II)",
+  "method": "Floreana endpoint recovered via LB-58 terminal query (Puerto Velasco Ibarra T2); satellite-verified open Pacific. New galapagos-ecuador member floreana-galapagos-ecuador (lacks city_brief; content-lane follow-up).",
+  "new_members": [
+   "floreana-galapagos-ecuador"
+  ]
+ }
 }
