@@ -2258,10 +2258,11 @@ function _phaseRouteIds(phase){
 }
 function applyPhaseFocus(phase){
   if (!phase){ applyStoryFocus(null); return; }
-  // Route-LEVEL when the phase's featured_routes carry ids → light exactly those routes (the precise
-  // "this phase = these corridors" view). Falls back to city-level for legacy / bare-string phases.
-  if (_focusRoutes(_phaseRouteIds(phase))) return;
   const cities=_phaseFocusCities(phase);
+  // Route-LEVEL only for MULTI-city phases (light the specific cross-city corridor). For a single-city
+  // market the intra-city featured links are unreliable (see showChapter) — light the city's whole intra
+  // network instead of singling out one possibly-mislinked route.
+  if (cities.length>1 && _focusRoutes(_phaseRouteIds(phase))) return;
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   // Safety-net: a single-city phase has no meaningful "all" — route_scope:'all' would light every
   // long-haul corridor that merely TOUCHES the city, which belong to later multi-city phases (e.g. the
@@ -2627,8 +2628,14 @@ function showChapter(i){
   if (ch.kind==='phase'){
     const cur=ch.phase;
     const rids=_phaseRouteIds(cur);
+    // For a SINGLE-city market phase (e.g. Grab→Singapore, all phases cities:["singapore"]) we frame the
+    // whole city water network rather than zooming to one featured-route geometry: those intra-city links
+    // are unreliable here (a 5 nm "Marina↔Sentosa" can resolve to a Sentosa-cove hop), so a lone-route zoom
+    // reads as buggy. The city view stays correct + consistent; precise per-phase corridors return once the
+    // route_ids are re-linked at source (NOTES-FOR-TASKLET). Multi-city phases keep route-level framing.
+    const singleCity = _resolvePhaseCities(cur&&cur.cities).length<=1;
     if (cur&&cur.map_focus&&cur.map_focus.camera){ const c=cur.map_focus.camera; map.flyTo({center:[c.lng,c.lat],zoom:c.zoom,duration:1100,essential:true}); }
-    else if (rids.length){ _fitRoutes(_routeFeats(rids), 160); }   // frame the phase's actual corridors
+    else if (!singleCity && rids.length){ _fitRoutes(_routeFeats(rids), 160); }   // frame the phase's actual corridors
     else _fitPhaseCities(cur);
     applyPhaseFocus(cur);
   } else {                                   // endstate / proof / ask: frame the partner's FULL POTENTIAL
