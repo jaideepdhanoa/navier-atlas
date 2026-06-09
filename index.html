@@ -1213,20 +1213,25 @@ map.on('load', () => {
   // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
   map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
     paint:{ 'line-color':'#6ee7b7','line-width':W_ROUTE,'line-opacity':O_TIER }});
-  // D0 — economics discoverability: a subtle gold dot at the midpoint of every corridor that has a
-  // unit-economics record (ROUTE_ECONOMICS). grounded brighter than estimated (honesty as opacity);
-  // minzoom keeps the world view clean (only ~69 sparse routes). Toggle via the legend "Economics" row.
-  const _econPts = { type:'FeatureCollection', features:(typeof ROUTE_ECONOMICS!=='undefined' ? ROUTE_FC.features : []).map(f=>{
+  // D0 — economics discoverability: a STRING OF GOLD BEADS tracing every corridor that has a unit-economics
+  // record (ROUTE_ECONOMICS), so econ routes stand out in a crowded mesh (replaces the old single midpoint
+  // dot). A dark halo bead sits under each gold bead (same pixel period, wider) to keep them legible over
+  // both the mint Pioneer lines and the amber Quanta-LR dashes. grounded brighter than estimated (honesty as
+  // opacity); minzoom keeps the world view clean (~77 sparse routes). Toggle via the legend "Economics" row.
+  const _econLines = { type:'FeatureCollection', features:(typeof ROUTE_ECONOMICS!=='undefined' ? ROUTE_FC.features : []).map(f=>{
     const rec = ROUTE_ECONOMICS[f.properties.id]; const g=f.geometry;
-    if (!rec || !(g && g.type==='LineString' && g.coordinates.length)) return null;
-    return { type:'Feature', geometry:{ type:'Point', coordinates:g.coordinates[Math.floor(g.coordinates.length/2)] }, properties:{ econ: rec.status==='grounded'?'grounded':'estimated' } };
+    if (!rec || !(g && g.type==='LineString' && g.coordinates.length>1)) return null;
+    return { type:'Feature', geometry:g, properties:{ econ: rec.status==='grounded'?'grounded':'estimated' } };
   }).filter(Boolean) };
-  map.addSource('route-econ-pts', { type:'geojson', data:_econPts });
-  map.addLayer({ id:'route-econ', type:'circle', source:'route-econ-pts', minzoom:4.5,
-    paint:{ 'circle-radius':['interpolate',['linear'],['zoom'],4.5,2.4,10,4.4],
-            'circle-color':'#e0cb8f',
-            'circle-opacity':['match',['get','econ'],'grounded',0.9,0.5],
-            'circle-stroke-color':'#0a0e14','circle-stroke-width':1 }});
+  map.addSource('route-econ-pts', { type:'geojson', data:_econLines });   // id kept for the legend toggle handler
+  map.addLayer({ id:'route-econ-halo', type:'line', source:'route-econ-pts', minzoom:4.5,
+    layout:{ 'line-cap':'round','line-join':'round' },
+    paint:{ 'line-color':'#0a0e14', 'line-width':4.2, 'line-dasharray':[0,1.85],
+            'line-opacity':['match',['get','econ'],'grounded',0.85,0.5] }});
+  map.addLayer({ id:'route-econ', type:'line', source:'route-econ-pts', minzoom:4.5,
+    layout:{ 'line-cap':'round','line-join':'round' },
+    paint:{ 'line-color':'#e0cb8f', 'line-width':2.7, 'line-dasharray':[0,2.88],
+            'line-opacity':['match',['get','econ'],'grounded',0.95,0.6] }});
   // Terminus connector nodes — a dot at EVERY route endpoint so no line dangles into empty
   // water. Bridges the band gap (visible z7+) before boarding-point glyphs appear (z10), then
   // fades as glyphs take over. Coloured by platform to match the line meeting it.
@@ -3153,7 +3158,7 @@ document.querySelectorAll('.chip').forEach(b => {
     cities.sort((a,b)=>a.name.localeCompare(b.name));
     (clustersByRegion[r] = clustersByRegion[r] || []).push({ id:c.cluster_id, label:c.cluster_label||c.cluster_id, cities });
   }
-  for (const r in clustersByRegion) clustersByRegion[r].sort((a,b)=> b.cities.length - a.cities.length || a.label.localeCompare(b.label));
+  for (const r in clustersByRegion) clustersByRegion[r].sort((a,b)=> a.label.localeCompare(b.label));   // alphabetical (matches L1 regions)
   // All city nodes per region (for the orphan safety net + fallback) and the set already in a cluster.
   const cityNodesByRegion = {}, clusteredCityIds = new Set();
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
@@ -3265,11 +3270,11 @@ document.querySelectorAll('.chip').forEach(b => {
   if (legend && window.matchMedia('(max-width:720px)').matches) legend.classList.add('collapsed');  // start as a tappable key chip on phones
   const bt=document.getElementById('bp-toggle'), bl=document.getElementById('bp-list');
   if (bt&&bl) bt.addEventListener('click', ()=>{ bl.classList.toggle('collapsed'); bt.classList.toggle('open'); });
-  // Economics signal toggle — show/hide the gold corridor dots (default on). Stop propagation so it
+  // Economics signal toggle — show/hide the gold corridor beads (default on). Stop propagation so it
   // doesn't bubble to the legend-head collapse handler.
   const et=document.getElementById('econ-toggle');
   if (et) et.addEventListener('click', (e)=>{ e.stopPropagation(); const on=et.classList.toggle('off');
-    try { map.setLayoutProperty('route-econ','visibility', on?'none':'visible'); } catch(err){} });
+    for (const id of ['route-econ','route-econ-halo']) try { map.setLayoutProperty(id,'visibility', on?'none':'visible'); } catch(err){} });
 })();
 
 // Panel collapse toggle — glyph points the way it MOVES the panel: › hides it (toward the edge),
