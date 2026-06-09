@@ -11,12 +11,16 @@
  "_wave1_growth_case": "saudi-pif, red-sea-global (resort subset), careem, bolt — growth_case blocks added 2026-06-07",
  "blobs": {
   "FEATURES_BY_TYPE": {
-   "count": 11563,
-   "sha256": "3f749c3d336763f006e7162608f2eff63c85b78f19a86fbb28a421d09e9ccc41"
+   "sha256": "1beda6a524f40445964495c4493e1d4df8f1ba0c5de92420882e3bdd23caf8e9",
+   "count": {
+    "city": 165,
+    "poi": 11373,
+    "priority_city": 37
+   }
   },
   "ROUTES": {
-   "sha256": "a692e7657b3a3099c51bf6de929df6b23b9fca7588dfd1157abeb8f083d21ac8",
-   "count": 5213
+   "sha256": "86b904ad1904ccc0a8a12bb4e7ec9afce12f6c9d876c161b77d1ad2f73cc1afe",
+   "count": 5248
   },
   "STORIES": {
    "count": 20,
@@ -27,8 +31,8 @@
    "sha256": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643"
   },
   "CLUSTERS": {
-   "count": 75,
-   "sha256": "95e5ca09ecb37ca10a5a3397fa43d9d7efd79f96b654d8470ad77d3095f29d55"
+   "sha256": "2a15c21d65ef7d0cb9fcf494acc92b3654e47b07728c45eab32994e6e12b26c6",
+   "count": 75
   }
  },
  "gates": {
@@ -51,14 +55,14 @@
    "internal",
    "deck_only"
   ],
-  "economics_records": 71
+  "economics_records": 70
  },
  "schema": "navier-atlas/seal/v1",
  "sealed_at": "2026-06-09T04:58:20.102587Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "count": 77,
-   "sha256": "f42547d449f460bca7a553cfeb42e47ac369824f8bcacbb596e563d0611b0d03"
+   "sha256": "8b2c439bfa9102e4cbdda6e0ee814a07c8ecb1e5696ce88668591575fc2b659b",
+   "count": 70
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -230,7 +234,7 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 33,
+ "gold_seq": 42,
  "_gold31_routeid_distance_gate": {
   "applied": "2026-06-08",
   "issue": "LB-46 — gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
@@ -337,5 +341,33 @@
   "new_members": [
    "floreana-galapagos-ecuador"
   ]
+ },
+ "_gold42_cape_hamptons_meshes": {
+  "added_routes": 25,
+  "added_pois": 11,
+  "new_market_node": "cape-cod-islands-usa (placed in boston-new-england-usa cluster)",
+  "markets": [
+   "cape-cod-islands-usa: new city node + 16-route intra-cluster mesh",
+   "the-hamptons-east-end-usa: 9-route mesh enrichment of existing node"
+  ],
+  "method": "add_market.py gen+label (ICR spoke-v3, 1.0km land-gate + A*); byte-level ROUTES append (LB-56); FEATURES/CLUSTERS clean redump; geometry-dedup vs gold (0 route dups @220m, 7 POI dups dropped).",
+  "overlap_flag": "Cape Cod content also exists under boston-new-england-usa (5 terminal POIs + 3 hero routes from Gold #23/LB-39); new cape-cod node coexists additively (superset preserved). Parent may re-parent/retire legacy boston Cape data in a future curation pass.",
+  "edge_mint_skipped": "bora-bora<->raiatea SKIPPED: straight great-circle to any Uturoa quay crosses the Raiatea airport/Uturoa peninsula (satellite + fine-OSM confirmed land clip); deferred to water-solver queue. Verifier 'CLEAN' was a coarse NE10m false-negative; gold Vaitape POI was also mislocated inland (real wharf ~-151.7537,-16.5069).",
+  "feature_count_format": "per-type dict {city,poi,priority_city} (datastore_audit check#3-compatible; gold#41 shipped scalar)"
+ },
+ "_gold43_edge_mint10": {
+  "added": [
+   "ics-2c1d5b96c1",
+   "ics-25efee4ef5",
+   "ics-9e59ba5c5c",
+   "ics-fe31c28f2c",
+   "ics-62e1590af9",
+   "ics-7146c7b16e",
+   "ics-2ca88ff772",
+   "ics-8c6c7ae8ee",
+   "ics-69bad8b4c9",
+   "ics-26acf800c5"
+  ],
+  "note": "10 verified-CLEAN open-water Pioneer II edge-mints (byte-level append, _mint_floreana_g41 template). ics- island-hop scheme; both endpoints existing gold cluster members (no CLUSTERS/FEATURES change). Coords post-verification from _edge_mint_verify.json (dual-backend 0 interior hits)."
  }
 }
