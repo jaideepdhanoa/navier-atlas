@@ -2207,9 +2207,26 @@ const ROUTE_NM_BY_ID = new Map((ROUTE_FC.features||[]).map(f=>[f.properties && f
 // have no single distance) → can't validate, keep as-is. The real fix is re-linking at source (NOTES-FOR-TASKLET).
 const _ROUTE_LINK_TOL = 0.25;  // ±25%: matches Tasklet's seal gate (distance ±25% + endpoint), so the render
                                // drops exactly the links the data should have nulled and never a legit one.
-function _plausibleRouteIds(label_nm, ids){
-  if (label_nm == null) return ids;
-  return ids.filter(id=>{ const nm = ROUTE_NM_BY_ID.get(id); return nm == null || Math.abs(nm - label_nm)/Math.max(label_nm,1) <= _ROUTE_LINK_TOL; });
+// Endpoint-name guard: distance alone can't tell a wrong corridor in the right area from the right one (a
+// "5 nm Marina↔Sentosa" can resolve to a Sentosa-Cove hop). When the LABEL names distinctive places and the
+// linked route's endpoints share NONE of them, the link is almost certainly geographic-mislinked → drop it
+// (the focus then falls back to the city/area). Lenient: when the label has no distinctive token, or the
+// route has no endpoint labels, we TRUST it (avoid rejecting correct-but-differently-named boarding points).
+const _GEO_STOP = new Set(['the','and','to','of','at','via','from','near','off','reach','regional','islands','island','bay','coast','point','city','pier','jetty','terminal','harbour','harbor','marina','waterfront','resort','resorts','beach','club','ferry','cruise','water','wharf','dock','port','cove','north','south','east','west','central','grand','greater','area','district','downtown','cbd','int','intl','international','airport','seaplane']);
+function _placeToks(s){ return new Set(String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().split(/[^a-z]+/).filter(w=>w.length>3 && !_GEO_STOP.has(w))); }
+const ROUTE_EP_BY_ID = new Map((ROUTE_FC.features||[]).map(f=>{ const p=f.properties||{}; return [p.id, _placeToks((p.from_label||p.from||'')+' '+(p.to_label||p.to||''))]; }));
+function _routeMatchesLabel(labelText, id){
+  const lab=_placeToks(labelText); if (!lab.size) return true;        // no distinctive place token in the label → can't disprove
+  const ep=ROUTE_EP_BY_ID.get(id); if (!ep || !ep.size) return true;  // route has no endpoint labels → trust
+  for (const t of lab) if (ep.has(t)) return true;
+  return false;                                                       // label names places the route's endpoints don't → mislink
+}
+function _plausibleRouteIds(label_nm, ids, labelText){
+  return (ids||[]).filter(id=>{
+    const nm = ROUTE_NM_BY_ID.get(id);
+    const distOK = (label_nm == null) || nm == null || Math.abs(nm - label_nm)/Math.max(label_nm,1) <= _ROUTE_LINK_TOL;
+    return distOK && (labelText == null || _routeMatchesLabel(labelText, id));
+  });
 }
 function _routeFeats(ids){ const s=new Set(ids); return (ROUTE_FC.features||[]).filter(f=>f.properties && s.has(f.properties.id)); }
 function _focusRoutes(routeIds){
@@ -2252,7 +2269,7 @@ function _phaseRouteIds(phase){
     }
     // Then keep only ids that plausibly match their label distance (drop mis-linked corridors); if none
     // survive, the phase falls back to city-level focus (handled by applyPhaseFocus).
-    for (const id of _plausibleRouteIds(r.distance_nm, _routeIdsOf(r))) out.push(id);
+    for (const id of _plausibleRouteIds(r.distance_nm, _routeIdsOf(r), r.label)) out.push(id);
   }
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
@@ -2335,7 +2352,7 @@ function _journeysHtml(js){
     if (j.platform==='Quanta-LR') chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">Quanta-LR</span>`);
     // Drop mis-linked ids (route length far off the label distance); clicking then falls back to endpoint-city
     // focus via from/to node rather than highlighting the wrong corridor (see _plausibleRouteIds).
-    const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j)), fn=j.from_node_id||'', tn=j.to_node_id||'';
+    const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j), (j.from||"")+" "+(j.to||"")), fn=j.from_node_id||'', tn=j.to_node_id||'';
     const click = !!(rids.length || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
     return `<div class="pcaro-jrn${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
       <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
@@ -2413,7 +2430,7 @@ function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
   // Drop mis-linked ids (route length far off the label distance) so a click lights the right line or falls
   // back to endpoint-city focus via from/to node — never a confidently-wrong corridor (see _plausibleRouteIds).
-  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r)), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), r.label), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
