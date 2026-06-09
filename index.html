@@ -110,6 +110,35 @@ body.panel-hidden #panel { width:0 !important; }
 .story-grid .card .t, .pidx-cards .card .t { font:600 14px Inter; color:var(--text-0); margin-bottom:5px; }
 .story-grid .card .s, .pidx-cards .card .s { font:400 12px/1.5 Inter; color:var(--text-2); }
 .story-grid .empty, #partner-grid .empty { grid-column:1/-1; padding:24px; text-align:center; color:var(--text-2); font:400 13px Inter; }
+/* Unit-economics breakdown dialog — the slide-deck "what one boat earns" view (revenue build · run cost ·
+   result). Renders Tasklet's granular `breakdown` fields when present; falls back to summary + derived
+   figures otherwise. Reuses the .story-dialog shell. Gold accent = the economics signal colour. */
+.econ-dialog { width:min(1040px,94vw); }
+#econ-close { width:32px; height:32px; flex-shrink:0; border-radius:8px; border:1px solid var(--line-strong);
+  background:var(--bg-3); color:var(--text-1); font-size:18px; line-height:1; cursor:pointer; }
+#econ-close:hover { color:var(--accent); border-color:rgba(224,203,143,0.4); }
+.econ-modal-body { padding:20px 22px 24px; overflow-y:auto; }
+.econ-sub { font:400 13px/1.5 Inter; color:var(--text-2); margin:-4px 0 14px; }
+.econ-headline { border:1px solid rgba(224,203,143,0.35); background:rgba(224,203,143,0.06); border-radius:12px;
+  padding:14px 16px; font:600 15px/1.5 Inter; color:var(--text-0); margin-bottom:18px; }
+.econ-headline b { color:var(--accent); }
+.econ-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media (max-width:760px){ .econ-cols { grid-template-columns:1fr; } .econ-dialog { width:94vw; } }
+.econ-col { border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:rgba(23,23,23,0.5); }
+.econ-col h4 { font:700 11px Inter; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+.econ-line { display:flex; justify-content:space-between; gap:10px; padding:5px 0; border-top:1px solid var(--line); font:400 13px Inter; color:var(--text-2); }
+.econ-line:first-of-type { border-top:none; }
+.econ-line .v { color:var(--text-0); font-weight:600; font-variant-numeric:tabular-nums; }
+.econ-line.total { border-top:1px solid var(--line-strong); margin-top:4px; padding-top:8px; color:var(--text-1); font-weight:700; }
+.econ-line.total .v { color:var(--accent); }
+.econ-line.pending .v { color:var(--text-2); font-weight:400; font-style:italic; }
+.econ-foot { margin-top:16px; font:400 12px/1.6 Inter; color:var(--text-2); }
+.econ-foot .gc-cite { margin-top:6px; }
+.rec-breakdown { display:inline-block; margin-top:10px; background:rgba(224,203,143,0.10); border:1px solid rgba(224,203,143,0.4);
+  color:var(--accent); font:600 12px Inter; padding:7px 13px; border-radius:8px; cursor:pointer; }
+.rec-breakdown:hover { background:rgba(224,203,143,0.18); }
+.pcaro-jchip.econ { color:#e0cb8f; border-color:rgba(224,203,143,0.4); }
+.brief-live.econ .brief-live-d { color:#e0cb8f; }
 /* Browse modal: tabs + the partner index (grouped by category, reusing the card visuals above) */
 .browse-tabs { display:flex; gap:4px; flex:1; }
 .browse-tab { background:none; border:none; color:var(--text-2); font:600 13px Inter; padding:6px 12px; border-radius:8px; cursor:pointer; }
@@ -741,6 +770,17 @@ body.panel-hidden #footer { display:block; }
   <button id="story-trigger">Stories ▾</button>
   <div id="suggest"></div>
 </div>
+<!-- Unit-economics breakdown dialog (the slide-deck "what one boat earns" view). Body filled by openEconModal(). -->
+<div id="econ-modal" hidden>
+  <div class="story-dialog econ-dialog" role="dialog" aria-modal="true" aria-label="Unit economics breakdown">
+    <div class="story-dialog-head">
+      <div class="story-dialog-title" id="econ-modal-title">Unit economics</div>
+      <div style="flex:1"></div>
+      <button id="econ-close" aria-label="Close">×</button>
+    </div>
+    <div id="econ-modal-body" class="econ-modal-body"></div>
+  </div>
+</div>
 <!-- Browse: partners (grouped by category) + stories, filterable card-grid dialog. -->
 <div id="story-modal" hidden>
   <div class="story-dialog" role="dialog" aria-modal="true" aria-label="Browse partners and stories">
@@ -1087,13 +1127,15 @@ function wRoute(mult){
     14, ['+',1.5*mult, ['*',_TW,8.5*mult]]];
 }
 const O_TIER     = tierOpacity();
+const O_P2       = tierOpacity(m=>['*', m, 0.82]);   // Pioneer II opacity ×0.82 (scaled per-tier, zoom stays top-level)
 const O_TIER_QLR = qlrOpacity();
 const W_ROUTE    = wRoute(1);
 const W_QLR      = wRoute(1.25);   // Quanta-LR drawn a touch heavier (platform hero)
+const W_P2       = wRoute(0.85);   // Pioneer II mint slimmed ~15% — the dense mint mesh read as overpowering
 // Density glow — restrained two-pass bloom (v17): wide halo + tight core, demand folded into stops.
 const W_GLOW_BLOOM = wRoute(3.2);
 const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,3, 8,5, 13,7];        // more bloom as you zoom in
-const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.30]]);                   // trunk≈0.20 · regional≈0.10 · local≈0
+const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.22]]);                   // softened from 0.30 — calmer halo (mint mesh was too stark)
 const W_GLOW_CORE  = wRoute(1.6);
 const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,1, 11,1.6, 14,2];
 const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.05,['*',_TW,0.16]]]);         // crisp seat under every line
@@ -1212,7 +1254,7 @@ map.on('load', () => {
   // Pioneer II — colour = PLATFORM (mint), weight by demand. Trip purpose surfaces on hover/select,
   // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
   map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
-    paint:{ 'line-color':'#6ee7b7','line-width':W_ROUTE,'line-opacity':O_TIER }});
+    paint:{ 'line-color':'#6ee7b7','line-width':W_P2,'line-opacity':O_P2 }});
   // D0 — economics discoverability: a STRING OF GOLD BEADS tracing every corridor that has a unit-economics
   // record (ROUTE_ECONOMICS), so econ routes stand out in a crowded mesh (replaces the old single midpoint
   // dot). A dark halo bead sits under each gold bead (same pixel period, wider) to keep them legible over
@@ -1830,12 +1872,85 @@ function _routeEconHtml(rec){
       return `<div class="rec-also-row">${escapeHtml(lbl)}<span class="muted">${escapeHtml(d+rev)}</span></div>`;
     }).join('')}</div>`;
   }
+  if (rec.route_id) h+=`<button class="rec-breakdown" data-eb="${escapeHtml(rec.route_id)}">Full breakdown →</button>`;
   if (rec.deck_url) h+=`<a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a>`;
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
   if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}</div>`;
   h+=`</div>`;
   return h;
 }
+// ---- Unit-economics breakdown DIALOG ("what one boat earns" — mirrors the slide-deck layout).
+// Renders Tasklet's structured `rec.breakdown` when present; otherwise shows the summary + figures we can
+// derive exactly from published fields (profit = revenue×margin; run cost = revenue−profit) and marks the
+// granular build inputs as "pending from the model" — never invents trips/seats/cost-stack numbers.
+function _econPct(x){ return (x==null||isNaN(x))?'':Math.round(x*100)+'%'; }
+function _econNum(n){ return (n==null||isNaN(n))?'':Number(n).toLocaleString('en-US'); }
+function _econModalHtml(rec){
+  const m=rec.mid||{}, bd=rec.breakdown||{}, rb=bd.revenue_build||{}, rc=bd.run_cost||{}, rs=bd.result||{};
+  const corridor=String(rec.corridor||'').replace(/->/g,'→');
+  const sub=[rec.vessel, rec.distance_nm!=null?Math.round(rec.distance_nm)+' nm':'', rec.market].filter(Boolean).join(' · ');
+  // Figures: prefer authored breakdown, then summary, then exact arithmetic derivations.
+  const rev    = rs.revenue_boat_yr ?? rb.revenue_boat_yr ?? m.rev_per_boat_yr;
+  const margin = rs.operating_margin ?? m.margin;
+  const profit = rs.profit_boat_yr ?? ((rev!=null&&margin!=null) ? rev*margin : null);
+  const runTot = rc.total ?? ((rev!=null&&profit!=null) ? rev-profit : null);
+  const payback= rs.payback_years ?? m.payback_years;
+  const co2    = rs.co2_t_yr ?? m.co2_saved_t_per_boat_yr;
+  const capex  = rs.vessel_capex;
+  const fare   = rb.fare_usd ?? rec.navier_fare_usd;
+  const L=(label,val,cls)=>`<div class="econ-line${cls?(' '+cls):''}"><span>${escapeHtml(label)}</span><span class="v">${val===''||val==null?'—':escapeHtml(String(val))}</span></div>`;
+  const pend='pending from the model';
+  // REVENUE BUILD
+  let build='';
+  build+=L('Trips / day', rb.trips_per_day!=null?_econNum(rb.trips_per_day):pend, rb.trips_per_day==null?'pending':'');
+  build+=L('Operating days / yr', rb.operating_days_yr!=null?_econNum(rb.operating_days_yr):pend, rb.operating_days_yr==null?'pending':'');
+  build+=L('Revenue legs', rb.revenue_legs_pct!=null?_econPct(rb.revenue_legs_pct):pend, rb.revenue_legs_pct==null?'pending':'');
+  build+=L('Seats / trip', rb.seats_per_trip!=null?_econNum(rb.seats_per_trip):pend, rb.seats_per_trip==null?'pending':'');
+  build+=L('Paid seats / yr', rb.paid_seats_yr!=null?_econNum(rb.paid_seats_yr):pend, rb.paid_seats_yr==null?'pending':'');
+  build+=L('Fare / seat', fare!=null?('$'+_econNum(fare)):pend, fare==null?'pending':'');
+  build+=L('Revenue / boat·yr', rev!=null?_econMoney(rev):'—', 'total');
+  // ANNUAL RUN COST
+  let cost='';
+  cost+=L('Energy', rc.energy!=null?_econMoney(rc.energy):pend, rc.energy==null?'pending':'');
+  cost+=L('Captain / crew', rc.crew!=null?_econMoney(rc.crew):pend, rc.crew==null?'pending':'');
+  cost+=L('Marina + overhead', rc.marina_overhead!=null?_econMoney(rc.marina_overhead):pend, rc.marina_overhead==null?'pending':'');
+  cost+=L('Maintenance', rc.maintenance!=null?_econMoney(rc.maintenance):pend, rc.maintenance==null?'pending':'');
+  cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
+  // THE RESULT
+  let result='';
+  result+=L('Profit / boat·yr (EBITDA)', profit!=null?_econMoney(profit):'—', '');
+  result+=L('Operating margin', margin!=null?_econPct(margin):'—', '');
+  result+=L('Vessel capex', capex!=null?_econMoney(capex):pend, capex==null?'pending':'');
+  result+=L('Payback period', payback!=null?(payback.toFixed(1)+' yr'):'—', 'total');
+  result+=L('CO₂ saved / yr', co2!=null?(Math.round(co2)+' t'):'—', '');
+  const head = (rev!=null&&runTot!=null&&profit!=null)
+    ? `<b>${_econMoney(rev)}</b> revenue − <b>${_econMoney(runTot)}</b> run cost = <b>${_econMoney(profit)}</b> profit / boat·yr${margin!=null?` · <b>${_econPct(margin)}</b> margin`:''}${payback!=null?` · <b>${payback.toFixed(1)} yr</b> payback`:''}`
+    : `${rev!=null?`<b>${_econMoney(rev)}</b> revenue / boat·yr`:''}${margin!=null?` · <b>${_econPct(margin)}</b> margin`:''}${payback!=null?` · <b>${payback.toFixed(1)} yr</b> payback`:''}`;
+  const hasBreakdown = Object.keys(rb).length || Object.keys(rc).length || Object.keys(rs).length;
+  let h=`<div class="econ-sub">${escapeHtml(corridor)}${sub?` · ${escapeHtml(sub)}`:''}</div>`;
+  if (head.trim()) h+=`<div class="econ-headline">${head}</div>`;
+  h+=`<div class="econ-cols">
+    <div class="econ-col"><h4>Revenue build</h4>${build}</div>
+    <div class="econ-col"><h4>Annual run cost</h4>${cost}</div>
+    <div class="econ-col"><h4>The result</h4>${result}</div>
+  </div>`;
+  h+=`<div class="econ-foot">`;
+  if (!hasBreakdown) h+=`Per-boat figures shown; profit and run cost are derived from the published margin. The detailed revenue-build and cost-stack inputs aren't in the model yet — italicised lines are pending.`;
+  const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
+  if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}${rec.status?` · ${escapeHtml(rec.status)}`:''}</div>`;
+  if (rec.deck_url) h+=`<div style="margin-top:8px"><a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a></div>`;
+  h+=`</div>`;
+  return h;
+}
+function openEconModal(routeId){
+  const rec=(typeof ROUTE_ECONOMICS!=='undefined')?ROUTE_ECONOMICS[routeId]:null; if(!rec) return;
+  const m=document.getElementById('econ-modal'); if(!m) return;
+  document.getElementById('econ-modal-title').textContent='What one boat earns'+(rec.partner?' · '+rec.partner.replace(/(^|\s)\S/g,c=>c.toUpperCase()):'');
+  document.getElementById('econ-modal-body').innerHTML=_econModalHtml(rec);
+  m.hidden=false;
+}
+function closeEconModal(){ const m=document.getElementById('econ-modal'); if(m) m.hidden=true; }
+window.openEconModal=openEconModal;
 function showRouteDetail(p){
   const panel = document.getElementById('panel');
   const a = _endpointName('from','from_label','from_city',p), b = _endpointName('to','to_label','to_city',p);
@@ -1876,6 +1991,19 @@ function showRouteDetail(p){
 const _ARCH = {public_transit:'Public transit', super_app:'Super-app', tourism:'Tourism', luxury_charter:'Luxury charter', corporate:'Corporate', charter:'Charter', hospitality:'Hospitality'};
 function _archLabel(a){ return _ARCH[a] || (a ? String(a).replace(/_/g,' ') : ''); }
 function _platColor(plat){ return plat==='Quanta-LR' ? '#fbbf24' : plat==='Pioneer II' ? '#6ee7b7' : plat==='N35 Shuttle' ? '#7dd3fc' : '#94a3b8'; }
+// Corridors touching a city that carry a unit-economics record — surfaced as a quick-access list on the city
+// brief (and as chips on partner phases) so the model is easy to find in a dense mesh. De-duped by corridor.
+function _econRoutesForCity(cid){
+  if (typeof ROUTE_ECONOMICS==='undefined' || !cid) return [];
+  const seen=new Set(), out=[];
+  for (const f of ROUTE_FC.features){ const p=f.properties; if(!(p._cfrom===cid||p._cto===cid)) continue;
+    const rec=ROUTE_ECONOMICS[p.id]; if(!rec) continue;
+    const parts=String(_routeLabel(p)).split(/→|↔/).map(s=>s.trim().toLowerCase()).sort();
+    const sig=parts.join('|')+'|'+Math.round(p.distance_nm||0); if(seen.has(sig))continue; seen.add(sig);
+    out.push({p, rec}); }
+  out.sort((a,b)=>((b.rec.mid&&b.rec.mid.rev_per_boat_yr)||0)-((a.rec.mid&&a.rec.mid.rev_per_boat_yr)||0));
+  return out.slice(0,8);
+}
 function _cityBriefHtml(brief, props, coords){
   const cid = props.id;
   const ov = (PARTNER_ACTIVE && brief.partner_overlays && brief.partner_overlays[PARTNER_ACTIVE.slug]) || null;
@@ -1936,6 +2064,15 @@ function _cityBriefHtml(brief, props, coords){
     }
     if (liveClean.length){ h+=`<div class="brief-live-h">On the map · click a route to highlight it</div>`;
       for (const f of liveClean){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
+    }
+    h+=`</div>`;
+  }
+  const _econR=_econRoutesForCity(cid);
+  if (_econR.length){
+    h+=`<div class="panel-section"><h3>Unit economics</h3><div class="brief-live-h">Corridors here with a model · click to open the route</div>`;
+    for (const {p:rp, rec} of _econR){ const m=rec.mid||{};
+      const tag=[m.payback_years!=null?m.payback_years.toFixed(1)+' yr':'', m.margin!=null?Math.round(m.margin*100)+'%':''].filter(Boolean).join(' · ');
+      h+=`<div class="brief-live econ" data-rid="${escapeHtml(rp.id)}"><span class="brief-live-dot" style="background:#e0cb8f"></span><span>${escapeHtml(_routeLabel(rp))}</span>${tag?`<span class="brief-live-d">${escapeHtml(tag)}</span>`:''}</div>`;
     }
     h+=`</div>`;
   }
@@ -2467,6 +2604,10 @@ function _featuredRouteHtml(r){
     chips.push(`<span class="pcaro-jchip dim">${Math.round(r.distance_nm)} nm</span>`);
   }
   if (r.platform==='Quanta-LR') chips.push(`<span class="badge platform" style="color:${pc};border-color:${pc}66">Quanta-LR</span>`);
+  // Economics signal — if any linked corridor carries a model, flag it (gold) so it's findable in the phase.
+  const _er = (typeof ROUTE_ECONOMICS!=='undefined') ? rids.map(id=>ROUTE_ECONOMICS[id]).find(Boolean) : null;
+  if (_er){ const em=_er.mid||{}; const lab = em.payback_years!=null ? (em.payback_years.toFixed(1)+' yr payback') : (em.margin!=null ? (Math.round(em.margin*100)+'% margin') : 'economics');
+    chips.push(`<span class="pcaro-jchip econ" title="Unit economics on this corridor — click the route to view">◆ ${escapeHtml(lab)}</span>`); }
   return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
 function _phaseBlockHtml(cur){
@@ -3073,8 +3214,13 @@ storyFilter.addEventListener('input', ()=>_renderBrowse(storyFilter.value));
 document.getElementById('intro-start').addEventListener('click', closeIntroDialog);
 document.getElementById('intro-skip').addEventListener('click', closeIntroDialog);
 document.getElementById('intro-modal').addEventListener('click', (e)=>{ if (e.target.id==='intro-modal') closeIntroDialog(); });
+// Unit-economics breakdown dialog controls (delegated open from any "Full breakdown →" button).
+document.getElementById('econ-close').addEventListener('click', closeEconModal);
+document.getElementById('econ-modal').addEventListener('click', (e)=>{ if (e.target.id==='econ-modal') closeEconModal(); });
+document.addEventListener('click', (e)=>{ const b=e.target.closest && e.target.closest('.rec-breakdown'); if (b){ e.stopPropagation(); openEconModal(b.dataset.eb); } });
 document.addEventListener('keydown', (e)=>{ if (e.key!=='Escape') return;
   if (!storyModal.hidden) closeStoryModal();
+  const em=document.getElementById('econ-modal'); if (em && !em.hidden) closeEconModal();
   const im=document.getElementById('intro-modal'); if (im && !im.hidden) closeIntroDialog(); });
 
 // ============ Search ============

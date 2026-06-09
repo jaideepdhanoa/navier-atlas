@@ -6,6 +6,40 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 — TRIP_PURPOSE "local" on cross-border corridors + Singapore↔Riau endpoint mislabeling
+
+Two linked data issues surfaced on the Singapore↔Riau corridors (both visible on the route hover).
+
+### A. `trip_purpose: "local"` is not a trip purpose — and it's wrong on cross-border hops
+`trip_purpose` distribution across ROUTES: **local 2711**, (none) 2292, luxury 100, tourism 93, mixed 12,
+business 3, commuter 2. "local" is the dominant value but it isn't a *purpose* (tourism / commuter /
+business / luxury are) — it reads as a catchment/scope descriptor. On the hover it collides with the demand
+tier, producing **"Local · Local"** (tier · purpose), which looks broken. On a corridor that visibly crosses
+a border (e.g. Singapore ↔ Riau/Batam) "local" is also just wrong.
+
+**Ask:** define the `trip_purpose` taxonomy as actual purposes (tourism / commuter / business / luxury /
+mixed) and **re-map "local"** to one of them (or to a real value). Never emit "local" for a cross-border
+corridor. If a scope/catchment dimension is genuinely wanted, carry it as a *separate* field, not folded
+into `trip_purpose`.
+
+### B. Root cause for THIS example — Singapore boarding points assigned to Bintan (Indonesia)
+The "Riau Islands: …" corridors have **both** `from_city_id` and `to_city_id` = `bintan-…-indonesia`, yet
+the boarding points are physically in **Singapore** — e.g. "Raffles Marina → ST MARINE **Tuas** Road End",
+"Harbour View Towers → **Pasir Panjang** Ferry Terminal", "Marina South Pier → …". So genuinely cross-border
+SG↔ID hops are (i) mislabeled under one Indonesian city, (ii) given the misleading "Riau Islands: X → Y"
+corridor label, and (iii) invisible to any country-mismatch / cross-border detection (a from/to country
+check finds **0** "local" cross-border routes precisely because the SG endpoints are bucketed as Bintan).
+
+**Ask:** re-assign each boarding point's `parent_city_id` (and the route `from_city_id`/`to_city_id`) to the
+city it physically sits in (Singapore POIs → a Singapore city, Batam POIs → Batam), then re-derive the
+corridor label and `trip_purpose` from the corrected endpoints. This is the same Riau-Islands mislabel class
+flagged earlier; it's the underlying reason the cross-border tags look wrong.
+
+(Front-end note: we can suppress a "local" `trip_purpose` chip when it duplicates the demand tier as a
+stop-gap, but the corridor label + cross-border classification can only be fixed in the data.)
+
+---
+
 ## 2026-06-09 — CLUSTER PIN PLACEMENT — authored on-land LABEL anchor needed for spread countries
 
 **Symptom (live):** several country/cluster pins+labels render in the open sea or on a tiny offshore island
