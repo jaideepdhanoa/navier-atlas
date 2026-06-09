@@ -1084,6 +1084,10 @@ for (const f of (FEATURES_BY_TYPE.poi||[])){
 // trip_purpose → colour (partner-story legible); Quanta-LR stays amber (platform lock).
 const PURPOSE_HEX = { commuter:'#38bdf8', business:'#a78bfa', tourism:'#fb7185',
                       luxury:'#f0abfc', local:'#6ee7b7', mixed:'#94a3b8' };
+// trip_scope (Gold #46) — the geographic axis, distinct from trip_purpose. Upstream nulled the old
+// "local" PURPOSE (it was scope, not purpose); read trip_scope for scope so the hover no longer shows
+// the confusing "Local · Local". intra_city is the implied default — only surface domestic/cross_border.
+const _scopeLabel = (s)=>({intra_city:'Intra-city', domestic:'Domestic', cross_border:'Cross-border'}[s] || '');
 const PURPOSE_COLOR = ['match',['coalesce',['get','trip_purpose'],'none'],
   'commuter','#38bdf8', 'business','#a78bfa', 'tourism','#fb7185',
   'luxury','#f0abfc', 'local','#6ee7b7', 'mixed','#94a3b8',
@@ -1606,12 +1610,14 @@ function _routeTooltipHtml(p) {
   const dist = (p.distance_nm!=null) ? `${Math.round(p.distance_nm)} nm` : '—';
   const kts = _etaKts(plat);
   const time = _etaStr(p.distance_nm, plat) || '—';
-  const purpose = p.trip_purpose || null;
+  const purpose = p.trip_purpose || null;            // real purposes only (Gold #46 nulled "local")
   const tier = p.render_tier || null;
+  const scope = _scopeLabel(p.trip_scope);           // surface domestic / cross-border (intra-city = default)
   const color = plat==='Quanta-LR' ? '#fbbf24' : (PURPOSE_HEX[purpose] || '#6ee7b7');
-  // demand chip — purpose (drives colour) + tier (drives weight); both partner-safe per contract.
+  // demand chip — tier (weight) + scope (geographic axis) + purpose (drives colour); all partner-safe.
   const chips = [];
   if (tier) chips.push(`<span style="text-transform:capitalize;color:#cdd6e2;">${escapeHtml(tier)}</span>`);
+  if (scope && p.trip_scope!=='intra_city') chips.push(`<span style="color:#cdd6e2;">${escapeHtml(scope)}</span>`);
   if (purpose) chips.push(`<span style="color:${color};text-transform:capitalize;font-weight:600;">● ${escapeHtml(purpose)}</span>`);
   return `<div style="font:500 12px Inter; color:#e8ecf1; padding:2px 2px;">
     <div style="font-weight:600; margin-bottom:4px;">${escapeHtml(label)}</div>
@@ -1972,7 +1978,9 @@ function showRouteDetail(p){
     <div class="subtitle">${isQ?'≤700 nm hybrid':'≤70 nm electric'} · ${dist} · ${time} @ ${kts} kts</div>
     <button class="ring-toggle" id="route-clear">Clear selection</button>
   </div>`;
+  const scope = _scopeLabel(p.trip_scope);   // Gold #46 trip_scope (intra-city / domestic / cross-border)
   const kv = [['distance',dist,false],['est. time',`${time} @ ${kts} kts`,false]];
+  if (scope) kv.push(['scope', scope, false]);
   if (tier) kv.push(['demand tier', tier, true]);
   if (p.traffic_weight!=null) kv.push(['traffic weight', (+p.traffic_weight).toFixed(2), false]);
   html += `<div class="panel-section"><h3>Route</h3><div class="kv-grid">`;

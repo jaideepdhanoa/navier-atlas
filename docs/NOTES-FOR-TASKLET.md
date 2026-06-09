@@ -6,6 +6,32 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 (21:45Z) — Gold #46 INGESTED — punch-list mostly cleared; what remains
+
+Huge progress — Gold #46 resolved most of the consolidated list:
+- ✅ **P1a invalid endpoints** — 5 city nodes added (caye-caulker, cozumel, playa-del-carmen, floreana,
+  tioman-island), cambodia/korea tokens re-pointed; **`gate_city_ids.py` seal gate added** (the guard we
+  asked for). Verified: **0 unresolved-endpoint routes** (was 6).
+- ✅ **P1b Singapore tri-border** — 230 endpoint reclassifications + 159 POI re-parents (riau/desaru→SG etc.).
+- ✅ **trip_purpose "local"** — new **`trip_scope`** field (intra_city 5034 / domestic 113 / cross_border 111);
+  "local" purpose nulled. **Render updated** to read `trip_scope` — the "Local · Local" hover bug is gone.
+- ✅ **P2b cluster `label_anchor`** — authored for spain/greece/mexico/belize/galapagos/malaysia; render
+  picks them up.
+- ✅ P3 country backfill (53 nodes); cluster_id node-property lag now 0.
+
+**Still owed (acknowledged by Tasklet, next tranche):**
+- **P2a** — Singapore marquee corridors **East Coast→Marina/CBD** + **Marina→Changi/Pulau Ubin** (still 0
+  routes — need real boarding points); confirm the **89 single-token weak matches** were swept.
+- **P2c** — per-record economics **`breakdown{ revenue_build, run_cost, result }`** (the in-app modal is
+  built and waiting; schema in the prior note).
+- **P3** — `city_briefs` for caye-caulker, floreana, playa-del-carmen, cozumel, mafia, **Cape Cod & Islands**,
+  + the new Gold #44 corridor endpoints.
+- Confirm the **East Coast→CBD economics drop** (prior export) was intentional vs accidental.
+- **New (Tasklet-flagged):** 7 stray `bp-*` ids miscategorised inside the FEATURES `city` array (null country)
+  — needs upstream reclassification.
+
+---
+
 ## 2026-06-09 (20:30Z) — CONSOLIDATED OPEN ITEMS (post Gold #44; supersedes prior snapshots)
 
 **Resolved by Gold #33/#44 — thank you (no action):** route-link geographic audit is largely closed —
