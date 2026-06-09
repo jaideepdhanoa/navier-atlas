@@ -6,6 +6,123 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 (21:45Z) — Gold #46 INGESTED — punch-list mostly cleared; what remains
+
+Huge progress — Gold #46 resolved most of the consolidated list:
+- ✅ **P1a invalid endpoints** — 5 city nodes added (caye-caulker, cozumel, playa-del-carmen, floreana,
+  tioman-island), cambodia/korea tokens re-pointed; **`gate_city_ids.py` seal gate added** (the guard we
+  asked for). Verified: **0 unresolved-endpoint routes** (was 6).
+- ✅ **P1b Singapore tri-border** — 230 endpoint reclassifications + 159 POI re-parents (riau/desaru→SG etc.).
+- ✅ **trip_purpose "local"** — new **`trip_scope`** field (intra_city 5034 / domestic 113 / cross_border 111);
+  "local" purpose nulled. **Render updated** to read `trip_scope` — the "Local · Local" hover bug is gone.
+- ✅ **P2b cluster `label_anchor`** — authored for spain/greece/mexico/belize/galapagos/malaysia; render
+  picks them up.
+- ✅ P3 country backfill (53 nodes); cluster_id node-property lag now 0.
+
+**Still owed (acknowledged by Tasklet, next tranche):**
+- **P2a** — Singapore marquee corridors **East Coast→Marina/CBD** + **Marina→Changi/Pulau Ubin** (still 0
+  routes — need real boarding points); confirm the **89 single-token weak matches** were swept.
+- **P2c** — per-record economics **`breakdown{ revenue_build, run_cost, result }`** (the in-app modal is
+  built and waiting; schema in the prior note).
+- **P3** — `city_briefs` for caye-caulker, floreana, playa-del-carmen, cozumel, mafia, **Cape Cod & Islands**,
+  + the new Gold #44 corridor endpoints.
+- Confirm the **East Coast→CBD economics drop** (prior export) was intentional vs accidental.
+- **New (Tasklet-flagged):** 7 stray `bp-*` ids miscategorised inside the FEATURES `city` array (null country)
+  — needs upstream reclassification.
+
+---
+
+## 2026-06-09 (20:30Z) — CONSOLIDATED OPEN ITEMS (post Gold #44; supersedes prior snapshots)
+
+**Resolved by Gold #33/#44 — thank you (no action):** route-link geographic audit is largely closed —
+9 missing/mislinked corridors *built* with water-routed geometry (incl. Phu Quoc→An Thoi, Phuket→James
+Bond Island, Ha Long→Cat Ba), 10 endpoint relabels (Mabul→Gaya, Kaohsiung→Liuqiu), and the **endpoint
+label↔geometry seal gate (LB-62)** added — the guard we asked for. Marina Bay→Sentosa econ re-keyed.
+
+### P1 — 6 routes have an invalid `from/to_city_id` (render drops the endpoint)
+Five point at a city id with **no `FEATURES_BY_TYPE` node** (yet `CLUSTERS` lists them as members):
+`caye-caulker-belize`, `cozumel-mexico`, `playa-del-carmen-mexico`, `floreana-galapagos-ecuador`, and now
+`tioman-island` (Gold #45 added it to the `malaysia` cluster + used it as the Singapore→Tioman route's
+`to_city_id`, explicitly via the "Floreana byte-level template" — i.e. it replicated this exact bug, so the
+new flagship corridor's Malaysia endpoint has no marker/node). Two more use a **cluster/country token as a
+city id**: Koh Kood→Sihanoukville `from_city_id="cambodia"`; Busan/Geoje→Fukuoka `to_city_id="korea"`. Fix:
+add the missing nodes (with `cluster_id`) or re-point to the parent city + drop the orphan from
+`member_city_ids`; map "cambodia"/"korea" to real city ids. **Seal-gate guard** (complements LB-62): assert
+every `ROUTES[].properties.{from_city_id,to_city_id}` and every `CLUSTERS.member_city_ids` entry resolves to
+a city/priority_city id. (Note: the "Floreana template" is the bug, not the fix — those endpoints need real
+nodes, not a cluster-membership entry that points at a non-existent node.)
+
+### P1 — `trip_purpose:"local"` (2,711) + Singapore↔Riau POI→city mislabel
+"local" isn't a purpose (tourism/commuter/business/luxury are); on the hover it reads "Local · Local" next
+to the demand tier. Root cause on SG↔Riau: Singapore boarding points (Raffles Marina, ST MARINE **Tuas**,
+**Pasir Panjang**, **Marina South Pier**) are assigned `from/to_city_id = bintan-…-indonesia`, so genuine
+cross-border SG↔ID hops are mislabeled under one Indonesian city and invisible to cross-border detection.
+Re-assign each POI's `parent_city_id` + the route `*_city_id` to the city it physically sits in, re-derive
+the label, and re-map "local" to a real purpose (or carry scope as a separate field).
+
+### P2 — Singapore marquee corridors still unbuilt
+**East Coast → Marina/CBD** (0 routes — the MPA transport-berth story needs it) and **Marina → Changi
+Point / Pulau Ubin** (0 routes). Tioman noted as in your solver queue. Also: please confirm the **89
+single-token weak matches** were swept by the #33/#44 geo-audit (that's where same-area errors hid).
+
+### P2 — Cluster `label_anchor` for spread countries
+`CLUSTERS[].anchor` is a centroid that lands on an offshore island for Spain (Mallorca) and Greece
+(Mykonos), so the country label sits in the sea. Our gateway-hub mitigation fixed Italy/Croatia/Türkiye but
+can't fix those two. Add an authored on-land `label_anchor:[lng,lat]` (or `pin`) per cluster — the render
+already prefers it when present, so you can roll out cluster-by-cluster.
+
+### P2 — Detailed economics `breakdown` (the in-app modal is built and waiting)
+We shipped a "what one boat earns" dialog mirroring the slide deck; it renders structured fields when
+present, else shows summary + margin-derived figures and marks the rest "pending." To light it up fully,
+add per-record: `breakdown:{ revenue_build:{trips_per_day,operating_days_yr,revenue_legs_pct,seats_per_trip,
+paid_seats_yr,fare_usd,revenue_boat_yr}, run_cost:{energy,crew,marina_overhead,maintenance,total},
+result:{profit_boat_yr,operating_margin,vessel_capex,payback_years,co2_t_yr} }`.
+
+### P3 — housekeeping
+- **city_briefs missing:** caye-caulker, floreana, playa-del-carmen, cozumel, mafia, **Cape Cod & Islands**,
+  + the new Gold #44 corridor endpoints.
+- **`cluster_id` node property lags `member_city_ids`** (~150/192). Non-blocking (we read membership), but
+  sync it if your tooling reads the node field.
+- **Confirm East Coast→CBD econ drop was intentional** (defer-until-built) vs accidental.
+- **Changelogs:** Gold #44 shipped with one — thank you; the earlier Cape Cod drop (185526Z) didn't. Please
+  keep including a changelog with every export.
+
+---
+
+## 2026-06-09 — TRIP_PURPOSE "local" on cross-border corridors + Singapore↔Riau endpoint mislabeling
+
+Two linked data issues surfaced on the Singapore↔Riau corridors (both visible on the route hover).
+
+### A. `trip_purpose: "local"` is not a trip purpose — and it's wrong on cross-border hops
+`trip_purpose` distribution across ROUTES: **local 2711**, (none) 2292, luxury 100, tourism 93, mixed 12,
+business 3, commuter 2. "local" is the dominant value but it isn't a *purpose* (tourism / commuter /
+business / luxury are) — it reads as a catchment/scope descriptor. On the hover it collides with the demand
+tier, producing **"Local · Local"** (tier · purpose), which looks broken. On a corridor that visibly crosses
+a border (e.g. Singapore ↔ Riau/Batam) "local" is also just wrong.
+
+**Ask:** define the `trip_purpose` taxonomy as actual purposes (tourism / commuter / business / luxury /
+mixed) and **re-map "local"** to one of them (or to a real value). Never emit "local" for a cross-border
+corridor. If a scope/catchment dimension is genuinely wanted, carry it as a *separate* field, not folded
+into `trip_purpose`.
+
+### B. Root cause for THIS example — Singapore boarding points assigned to Bintan (Indonesia)
+The "Riau Islands: …" corridors have **both** `from_city_id` and `to_city_id` = `bintan-…-indonesia`, yet
+the boarding points are physically in **Singapore** — e.g. "Raffles Marina → ST MARINE **Tuas** Road End",
+"Harbour View Towers → **Pasir Panjang** Ferry Terminal", "Marina South Pier → …". So genuinely cross-border
+SG↔ID hops are (i) mislabeled under one Indonesian city, (ii) given the misleading "Riau Islands: X → Y"
+corridor label, and (iii) invisible to any country-mismatch / cross-border detection (a from/to country
+check finds **0** "local" cross-border routes precisely because the SG endpoints are bucketed as Bintan).
+
+**Ask:** re-assign each boarding point's `parent_city_id` (and the route `from_city_id`/`to_city_id`) to the
+city it physically sits in (Singapore POIs → a Singapore city, Batam POIs → Batam), then re-derive the
+corridor label and `trip_purpose` from the corrected endpoints. This is the same Riau-Islands mislabel class
+flagged earlier; it's the underlying reason the cross-border tags look wrong.
+
+(Front-end note: we can suppress a "local" `trip_purpose` chip when it duplicates the demand tier as a
+stop-gap, but the corridor label + cross-border classification can only be fixed in the data.)
+
+---
+
 ## 2026-06-09 — CLUSTER PIN PLACEMENT — authored on-land LABEL anchor needed for spread countries
 
 **Symptom (live):** several country/cluster pins+labels render in the open sea or on a tiny offshore island
