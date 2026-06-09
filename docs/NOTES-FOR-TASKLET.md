@@ -6,51 +6,77 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-09 — ROUTE-LINK AUDIT: endpoint-name check (the diagnostic that catches what distance can’t)
+## 2026-06-09 — ROUTE-LINK GEOGRAPHIC CORRECTNESS — issue, what we found, what we DON'T know
 
-The distance gate (Gold #33) passes 100%, but it can’t tell a wrong corridor in the right area from the right one. This check, run on every re-externalize, asks: does each linked route’s ENDPOINTS share a place-name token with the human label? **It is automatable — reproduce with the snippet at the bottom.**
+### The issue
+A phase's featured_route / journey `route_id` can point to a corridor that is **distance-plausible but
+geographically wrong** — e.g. Grab Singapore "Marina Bay ↔ Sentosa" resolves to a *Sentosa-Cove* internal
+hop. The distance gate (Gold #33, 100% pass) is **blind to this** — it only checks length, not whether the
+endpoints are the named places. On the front end it surfaces as a phase zooming to / highlighting the wrong
+place, which on the flagship (Singapore) reads as if we don't know the city. **This is almost certainly not
+just Singapore.**
 
-**Result:** 243 match · **16 distinct MISMATCH (the to-fix list)** · 1381 with no route_id (mostly intentional null — informational, NOT a bug list).
+### What we found (front-end heuristic — a FLOOR, not the count)
+We ran an endpoint-name check (does the linked route's endpoints share a place-name token with the label?).
+Of **277 links**:
+- **34 occurrences / 16 distinct corridors — clear cross-area MISMATCH** (re-link or null). Listed below.
+- **154 — high-confidence correct** (matched on ≥2 distinct place tokens).
 
-### ✅ The finite to-fix list — 16 geo-mislinks. Re-link to the correct corridor or set route_id:null (null > confidently-wrong).
-- fullers360 · P1 · "Auckland CBD ↔ Devonport"  →  Panmure Yacht and Boating Club → Half Moon Bay Marina  [ics-09a1d1e6e5]
-- grab · vietnam/P2 · "Phu Quoc (Duong Dong) ↔ An Thoi Archipelago"  →  The Local Stay - Ganh Dau Harbour → The Last Point  [ics-0d1216ad4f]
-- hawaii · P1 · "Lahaina / Wailea (Maui) ↔ Four Seasons Lānaʻi (Manele Bay)"  →  Hawaiian Outrigger Canoe Voyaging Society → Kai Kanani Sailing  [ics-3a1836fc0f]
-- kakao-mobility · busan/P1 · "Haeundae ↔ Gwangalli / Marine City"  →  Busan → Busan/Geoje Cluster  [ics-00024a3bd3]
-- kakao-mobility · yeosu-tongyeong/P1 · "Tongyeong ↔ Hansando / Somaemuldo / Bijindo"  →  Southsea Harbour Cruz Pension → Mijohang  [ics-0301325642]
-- kakao-mobility · journey · "Haeundae (Mipo Harbour) ↔ Gwangalli / Marine City"  →  Busan → Busan/Geoje Cluster  [ics-00024a3bd3]
-- kakao-mobility · yeosu-tongyeong/journey · "Tongyeong (Ferry Terminal) ↔ Hansando / Somaemuldo / Bijindo"  →  Southsea Harbour Cruz Pension → Mijohang  [ics-0301325642]
-- line · japan/P2 · "Hiroshima ↔ Miyajima"  →  Uno → Teshima  [ics-01ce4645d7]
-- line · japan/journey · "Hiroshima / Miyajimaguchi ↔ Miyajima (Itsukushima)"  →  Uno → Teshima  [ics-01ce4645d7]
-- lyft · new-york/P1 · "Midtown (W 39th) ↔ Hoboken / Jersey City waterfront"  →  Harbor Freight → Frank A. Vincent Marina  [ics-23d2f2724f]
-- lyft · seattle/P1 · "Seattle (Elliott Bay) ↔ Bainbridge Island"  →  Fauntleroy Terminal → City of Des Moines Marina  [ics-0038607154]
-- lyft · boston/P1 · "Long Wharf ↔ Logan Airport"  →  Encore Ferry Dock → Cambridge Boat Club  [ics-0eb7b6593b]
-- norway-fjords · P4 · "Bergen ↔ Stavanger (coastal express)"  →  Strandkaiterminalen → Fiskepiren Ferry Terminal  [e__bergen-norway__strandkaiterminalen__stavanger-norway__fiskepiren-ferry-terminal]
-- ola · mumbai/P1 · "Gateway of India ↔ Elephanta Caves"  →  Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
-- rapido · mumbai/P1 · "Gateway of India ↔ Elephanta Caves"  →  Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
-- uber · miami/P2 · "West Palm Beach ↔ Palm Beach / Singer Island"  →  Boynton Harbor Marina → Briskel Pointe at Boca Harbour  [ics-110d477a22]
+### What we DON'T know (the heuristic's blind spots — likely the bigger problem)
+The check above is a lower bound. It CANNOT see:
+- **89 links matched on only ONE shared token** — this is exactly where the Singapore-class errors hide
+  (a Sentosa-Cove hop "matches" Marina↔Sentosa because both contain "Sentosa"). We can't tell a same-area
+  *right* corridor from a same-area *wrong* one from the render. **Singapore itself passed our check.**
+- **1,381 with no `route_id`** — mostly intentional null, but an UNKNOWN number are *marquee corridors that
+  should exist and were never built* (Singapore's Marina Bay↔Sentosa downtown, East Coast↔CBD are exactly
+  this). We can't distinguish "honest null" from "missing-but-essential" without knowing each pitch's intent.
 
-### Flagship — Singapore (Grab): the marquee corridors aren’t built as routes (so they read worst)
-- **Marina Bay ↔ Sentosa** (downtown): no route exists; the only “Marina” match is *ONE°15 Marina Sentosa Cove* — a name collision. Build a downtown Marina Bay/Raffles ↔ Sentosa corridor.
-- **East Coast ↔ Marina/CBD**: 0 routes exist — build it (the MPA transport-berth narrative depends on it).
-- **Marina ↔ Changi Point / Pulau Ubin**: 0 routes exist.
-- Phase 2 (“East Coast transport berths”) carries only “Singapore ↔ Riau resort islands” — mis-themed; give it its real East-Coast featured routes.
+So: **16 confirmed-wrong is the floor; the true number of wrong/weak/missing links is unknown and we expect
+it to be materially larger** — Singapore was invisible to every automated check we have.
 
-### On the 1381 with no route_id
-Most are intentional (no built corridor → honest null). Not a defect list. Worth building only the *marquee* ones a pitch leans on (like the Singapore set above) — the rest can stay null and render as text.
+### What only Tasklet can do (and why our past flags didn't stick)
+Our prior flags were directional, and this class is **undetectable by distance math** (the gate you built).
+The authoritative fix needs geography you hold and we don't:
+1. **Run a label↔geography audit over ALL 277 linked corridors** — the Gold #33 method (Wikidata/Mapbox +
+   satellite visual gate), not just the cross-area subset. Re-link or null each that doesn't match its label.
+   Pay special attention to the **89 single-token matches**.
+2. **Review the marquee nulls** — for each partner's flagship phases, is the corridor the pitch leans on
+   actually built? If not, build it (or accept null). Singapore is the worst example but won't be the only one.
+3. **Add the endpoint check to your seal gate** so future links can't regress (reproduce snippet below).
 
-### Front-end (already shipped — so the live pages are safe meanwhile)
+### The 16 distinct confirmed MISMATCHES (start here — re-link or null)
+- fullers360 · "Auckland CBD ↔ Devonport" → Panmure Yacht and Boating Club → Half Moon Bay Marina  [ics-09a1d1e6e5]
+- grab · "Phu Quoc (Duong Dong) ↔ An Thoi Archipelago" → Ganh Dau Harbour → The Last Point  [ics-0d1216ad4f]
+- hawaii · "Lahaina / Wailea (Maui) ↔ Four Seasons Lānaʻi" → Hawaiian Outrigger Canoe Society → Kai Kanani Sailing  [ics-3a1836fc0f]
+- kakao-mobility · "Haeundae ↔ Gwangalli / Marine City" → Busan → Busan/Geoje Cluster  [ics-00024a3bd3]
+- kakao-mobility · "Tongyeong ↔ Hansando / Somaemuldo / Bijindo" → Southsea Harbour Cruz Pension → Mijohang  [ics-0301325642]
+- line · "Hiroshima ↔ Miyajima" → Uno → Teshima  [ics-01ce4645d7]
+- lyft · "Midtown (W 39th) ↔ Hoboken / Jersey City" → Harbor Freight → Frank A. Vincent Marina  [ics-23d2f2724f]
+- lyft · "Seattle (Elliott Bay) ↔ Bainbridge Island" → Fauntleroy Terminal → City of Des Moines Marina  [ics-0038607154]
+- lyft · "Long Wharf ↔ Logan Airport" → Encore Ferry Dock → Cambridge Boat Club  [ics-0eb7b6593b]
+- norway-fjords · "Bergen ↔ Stavanger (coastal express)" → Strandkaiterminalen → Fiskepiren Ferry Terminal  [e__bergen…__stavanger…]
+- ola · "Gateway of India ↔ Elephanta Caves" → Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
+- rapido · "Gateway of India ↔ Elephanta Caves" → Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
+- uber · "West Palm Beach ↔ Palm Beach / Singer Island" → Boynton Harbor Marina → Briskel Pointe (Boca)  [ics-110d477a22]
+- (+ kakao Haeundae/Tongyeong journey duplicates; full set in earlier audit)
+
+### Flagship — Singapore (Grab): marquee corridors not built (the kind hiding in the 89/1,381)
+- **Marina Bay ↔ Sentosa** (downtown): no route; only "Marina" match is *ONE°15 Marina Sentosa Cove* (name collision). Build it.
+- **East Coast ↔ Marina/CBD**: 0 routes — the MPA transport-berth story depends on it.
+- **Marina ↔ Changi Point / Pulau Ubin**: 0 routes.
+- Phase 2 mis-themed (only "Singapore ↔ Riau resort islands" under "East Coast transport berths").
+
+### Front-end safety (shipped — live pages can't show a confidently-wrong corridor meanwhile)
 - Single-city-market phases frame the city (no zoom to a lone mislinked intra-city route).
-- The plausibility guard now also requires endpoint-name overlap, so the 16 mismatches above auto-degrade to area focus in the render (never a confidently-wrong corridor).
+- The guard now requires endpoint-name overlap, so the cross-area mismatches auto-degrade to area focus.
+- BUT this can't fix the 89 same-area weak matches or build the missing corridors — those need the audit above.
 
-### Reproduce (Node)
-```
-// for each featured_route/journey with a route_id: tokenize the label + the route’s from_label/to_label
-// (NFD-strip accents, drop generic words like bay/coast/marina/harbour, len>3); FAIL when the label has
-// distinctive tokens and the route endpoints share none. ~10% fail today.
-```
+### Reproduce the check (Node)
+For each featured_route/journey with a route_id: tokenize the label + the route's from_label/to_label
+(NFD-strip accents; drop generic words bay/coast/marina/harbour/jetty/terminal/point…; len>3). FLAG when the
+label has distinctive tokens and the route endpoints share none (cross-area); and SEPARATELY flag links that
+match on only ONE token (review-needed — where same-area errors hide).
 
----
 
 
 ---
