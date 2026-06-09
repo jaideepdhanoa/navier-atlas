@@ -50,6 +50,11 @@ function loadData() {
   // Cluster lookup — used to scope a partner's network by the countries/clusters it touches. Optional.
   const clp = path.join(DC, 'CLUSTERS.json');
   data.CLUSTERS = fs.existsSync(clp) ? readJson(clp) : { clusters: [] };
+  data.CLUSTER_BRIEFS = dir('cluster_briefs', 'cluster_id');
+  // Route unit-economics sidecar → {route_id: record} (so partner pages can show the per-corridor card + dots).
+  const ep = path.join(DC, 'economics_by_route_id.json');
+  data.ROUTE_ECONOMICS = {};
+  if (fs.existsSync(ep)) { const e = readJson(ep); for (const r of (e.records || [])) if (r && r.route_id) data.ROUTE_ECONOMICS[r.route_id] = r; }
   // Defensive strip of internal classification fields (see build.mjs) — keeps the deployed aggregate AND
   // every scoped partner page clean of `posture`/`archetype_scores`; the render never uses them.
   for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
@@ -141,7 +146,20 @@ function scopeForPartner(data, slug, opts = {}) {
   // Only THIS partner's own story (slug == partner_id). Scoping by shared-city overlap would pull
   // another partner's story (which embeds their hero/identity) onto an isolated page.
   const STORIES = (data.STORIES || []).filter(s => s.slug === slug);
-  const scoped = { FEATURES_BY_TYPE, ROUTES, STORIES, VESSEL_SPECS: data.VESSEL_SPECS, CITY_BRIEFS, PARTNERS: { [slug]: partner } };
+  // Per-corridor economics for routes ON THIS PAGE — isolation-safe: only THIS partner's own records
+  // (rec.partner === slug), so the unit-economics card + gold dots work on the partner page without
+  // surfacing another partner's modeled corridors.
+  const routeIds = new Set(ROUTES.map(f => f.properties && f.properties.id));
+  const ROUTE_ECONOMICS = {};
+  for (const [rid, rec] of Object.entries(data.ROUTE_ECONOMICS || {})) if (routeIds.has(rid) && rec.partner === slug) ROUTE_ECONOMICS[rid] = rec;
+  // Clusters touching this page's network (geographic, not partner-private) → cluster pins / breadcrumb /
+  // "Part of {cluster}" + their briefs. Scoped to relevant clusters for relevance + leanness.
+  const clusters = (((data.CLUSTERS || {}).clusters) || []).filter(c => (c.member_city_ids || []).some(id => net.has(id)));
+  const CLUSTERS = { ...(data.CLUSTERS || {}), clusters };
+  const clIds = new Set(clusters.map(c => c.cluster_id));
+  const CLUSTER_BRIEFS = {};
+  for (const [cid, brief] of Object.entries(data.CLUSTER_BRIEFS || {})) if (clIds.has(cid)) CLUSTER_BRIEFS[cid] = brief;
+  const scoped = { FEATURES_BY_TYPE, ROUTES, STORIES, VESSEL_SPECS: data.VESSEL_SPECS, CITY_BRIEFS, PARTNERS: { [slug]: partner }, ROUTE_ECONOMICS, CLUSTERS, CLUSTER_BRIEFS };
   const cityCount = (FEATURES_BY_TYPE.city || []).length + (FEATURES_BY_TYPE.priority_city || []).length;
   return { scoped, keep: [...keep], counts: { cities: cityCount, rollout: keep.size, pois: (FEATURES_BY_TYPE.poi || []).length, routes: ROUTES.length, briefs: Object.keys(CITY_BRIEFS).length, stories: STORIES.length } };
 }
