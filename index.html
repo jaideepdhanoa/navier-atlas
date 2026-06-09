@@ -1293,17 +1293,31 @@ map.on('load', () => {
 
   // Cluster pins — the above-city tier (CLUSTERS.json anchors), clickable into the cluster brief. Cyan to
   // match the cluster panel; prominent at world/region zoom, faded out by ~z7 as the city layer takes over.
+  // Pin each cluster on its GATEWAY HUB — the most-connected member city (highest route degree) — rather
+  // than the member nearest the geometric centroid. With coastal-only nodes the centroid-nearest member
+  // kept landing on tiny offshore islands that read as mid-ocean dots (Spain→Mallorca, Italy→Ponza); the
+  // gateway hub is a recognizable major node instead (Italy→Amalfi, Croatia→Split). Tiebreak: marquee
+  // (priority_city) member, then name. (Tasklet: a true authored on-land country LABEL anchor would be
+  // better still for spread countries whose dominant hub is itself an island — flagged. FE mitigation.)
+  const _clusterDeg = {};
+  if (typeof ROUTES!=='undefined') for (const r of ROUTES){ const p=r&&r.properties; if(!p) continue;
+    if (p.from_city_id) _clusterDeg[p.from_city_id]=(_clusterDeg[p.from_city_id]||0)+1;
+    if (p.to_city_id)   _clusterDeg[p.to_city_id]  =(_clusterDeg[p.to_city_id]  ||0)+1; }
+  const _prioCity = new Set((FEATURES_BY_TYPE.priority_city||[]).map(f=>f.properties && f.properties.id));
   const _clusterPins = { type:'FeatureCollection', features:(typeof CLUSTERS!=='undefined' ? (CLUSTERS.clusters||[]) : [])
     .map(c=>{
-      // The data `anchor` is a centroid → lands mid-ocean for spread/archipelagic clusters (Indonesia, the
-      // Philippines, …). Snap the pin to the MEMBER CITY nearest the anchor so it sits on a real place.
-      // (Tasklet: anchors are centroids — flagged; this is the front-end mitigation.)
-      let pos = Array.isArray(c.anchor) && c.anchor.length===2 ? c.anchor : null;
-      const members = (c.member_city_ids||[]).map(id=>NODE_INDEX[id]).filter(Boolean);
-      if (members.length){
-        if (pos){ let best=members[0], bd=Infinity; for (const m of members){ const dx=m.coords[0]-pos[0], dy=m.coords[1]-pos[1], d=dx*dx+dy*dy; if (d<bd){ bd=d; best=m; } } pos=best.coords; }
-        else pos = members[0].coords;
-      }
+      const members = (c.member_city_ids||[]).filter(id=>NODE_INDEX[id]);
+      let pos = null;
+      // Prefer an authored on-land LABEL anchor if Tasklet supplies one (rolls out cluster-by-cluster).
+      const la = c.label_anchor || c.pin;
+      if (Array.isArray(la) && la.length===2 && Number.isFinite(la[0]) && Number.isFinite(la[1])){ pos = la; }
+      else if (members.length){
+        const pick = members.slice().sort((a,b)=>
+          (_clusterDeg[b]||0)-(_clusterDeg[a]||0)
+          || (_prioCity.has(b)?1:0)-(_prioCity.has(a)?1:0)
+          || String(NODE_INDEX[a].props.name||a).localeCompare(String(NODE_INDEX[b].props.name||b)))[0];
+        pos = NODE_INDEX[pick].coords;
+      } else if (Array.isArray(c.anchor) && c.anchor.length===2){ pos = c.anchor; }
       return pos ? { type:'Feature', geometry:{type:'Point', coordinates:pos}, properties:{ cluster_id:c.cluster_id, label:c.cluster_label||c.cluster_id } } : null;
     }).filter(Boolean) };
   map.addSource('cluster-pins', { type:'geojson', data:_clusterPins });
@@ -3154,8 +3168,8 @@ document.querySelectorAll('.chip').forEach(b => {
     let mnx=Infinity,mny=Infinity,mxx=-Infinity,mxy=-Infinity; for(const c of cities){ const[x,y]=c.coords; mnx=Math.min(mnx,x);mny=Math.min(mny,y);mxx=Math.max(mxx,x);mxy=Math.max(mxy,y); }
     map.fitBounds([[mnx,mny],[mxx,mxy]],{padding:90,maxZoom:10,duration:1300,essential:true}); };
   const flyCity = (c)=>{ map.flyTo({center:c.coords, zoom:10, duration:1400, essential:true}); try{ showDetail(c.props, c.coords); }catch(e){} };
-  // Biggest regions inline; long tail under "More". Row flex-wraps (desktop) / scrolls (mobile).
-  const labels = Object.keys(regions).sort((a,b)=> regions[b].n - regions[a].n || a.localeCompare(b));
+  // Regions listed alphabetically (stable, predictable order regardless of city count).
+  const labels = Object.keys(regions).sort((a,b)=> a.localeCompare(b));
   const MAX_INLINE = 99;   // show every region inline (the row flex-wraps) — no "More" dropdown
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
 
@@ -3225,7 +3239,8 @@ document.querySelectorAll('.chip').forEach(b => {
     // Cluster level (Global › Region › Cluster › City): the country/archipelago the city belongs to.
     const cl = o.cityId && typeof CITY_TO_CLUSTER!=='undefined' && CITY_TO_CLUSTER[o.cityId];
     const clObj = cl && CLUSTER_BY_ID[cl];
-    if (clObj) { _sep(); _crumb(clObj.cluster_label, ()=>{ clearActive(); showClusterBrief(cl); }); }
+    // Skip the cluster crumb when it would just duplicate the city (single-city metros, e.g. Singapore).
+    if (clObj && clObj.cluster_label !== o.cityName) { _sep(); _crumb(clObj.cluster_label, ()=>{ clearActive(); showClusterBrief(cl); }); }
     if (o.cityName){ _sep();
       if (o.routeLabel && o.cityProps) _crumb(o.cityName, ()=>{ map.flyTo({center:o.cityCoords, zoom:Math.max(10,map.getZoom()), duration:900, essential:true}); try{ showDetail(o.cityProps,o.cityCoords); }catch(e){} });
       else _crumb(o.cityName, null);

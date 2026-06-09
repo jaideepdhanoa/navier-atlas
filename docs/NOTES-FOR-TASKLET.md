@@ -6,6 +6,31 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 — CLUSTER PIN PLACEMENT — authored on-land LABEL anchor needed for spread countries
+
+**Symptom (live):** several country/cluster pins+labels render in the open sea or on a tiny offshore island
+instead of reading as a label for that country — Italy, Spain, Croatia, France, Greece were the obvious ones.
+
+**Root cause:** `CLUSTERS[].anchor` is a geometric centroid that, for these clusters, *equals one of the
+member cities* — and with our coastal/island-only node set that's frequently a small offshore island. E.g.
+`spain.anchor = [2.63, 39.56]` is **Mallorca** (mid-Mediterranean); `italy.anchor = [13.05, 40.97]` is
+**Ponza** (a speck off Rome). So the pin sits in the sea.
+
+**Front-end mitigation (shipped):** the pin now snaps to the cluster's **gateway hub** — the most-connected
+member (highest route degree; tiebreak marquee then name) — instead of the centroid-nearest member. This
+fixes the worst cases (Italy→Amalfi, Croatia→Split, Türkiye→Bodrum, Indonesia→Bali, Philippines→Manila). But
+it **cannot fix Spain or Greece**: their single most-connected member genuinely *is* an island
+(Spain→Mallorca, Greece→Mykonos), so the country label still lands on an island.
+
+**The real fix (your lane):** add an authored **`label_anchor` (or `pin: [lng,lat]`)** to each cluster — a
+cartographer-placed on-land point for the COUNTRY/REGION label (think where an atlas prints "SPAIN" /
+"GREECE": near the mainland gateway or capital). It's a label position, distinct from the geometric `anchor`
+used for camera/centroid math. If present we'll prefer it for the pin and fall back to the gateway-hub
+heuristic when it's absent — so you can roll it out cluster-by-cluster. Spread, multi-island countries
+(Spain, Greece, Indonesia, Philippines, Croatia, Italy) benefit most; compact/metro clusters are already fine.
+
+---
+
 ## 2026-06-09 — INGESTED Gold lane-g / floreana / cozumel (+6 routes) — but 4 endpoints have NO city node
 
 **Status: ingested + merged.** ROUTES 5207→5213 (+6 Pioneer II ≤70nm corridors), CLUSTERS reseal — both
