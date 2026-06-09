@@ -6,6 +6,55 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-09 — ROUTE-LINK AUDIT: endpoint-name check (the diagnostic that catches what distance can’t)
+
+The distance gate (Gold #33) passes 100%, but it can’t tell a wrong corridor in the right area from the right one. This check, run on every re-externalize, asks: does each linked route’s ENDPOINTS share a place-name token with the human label? **It is automatable — reproduce with the snippet at the bottom.**
+
+**Result:** 243 match · **16 distinct MISMATCH (the to-fix list)** · 1381 with no route_id (mostly intentional null — informational, NOT a bug list).
+
+### ✅ The finite to-fix list — 16 geo-mislinks. Re-link to the correct corridor or set route_id:null (null > confidently-wrong).
+- fullers360 · P1 · "Auckland CBD ↔ Devonport"  →  Panmure Yacht and Boating Club → Half Moon Bay Marina  [ics-09a1d1e6e5]
+- grab · vietnam/P2 · "Phu Quoc (Duong Dong) ↔ An Thoi Archipelago"  →  The Local Stay - Ganh Dau Harbour → The Last Point  [ics-0d1216ad4f]
+- hawaii · P1 · "Lahaina / Wailea (Maui) ↔ Four Seasons Lānaʻi (Manele Bay)"  →  Hawaiian Outrigger Canoe Voyaging Society → Kai Kanani Sailing  [ics-3a1836fc0f]
+- kakao-mobility · busan/P1 · "Haeundae ↔ Gwangalli / Marine City"  →  Busan → Busan/Geoje Cluster  [ics-00024a3bd3]
+- kakao-mobility · yeosu-tongyeong/P1 · "Tongyeong ↔ Hansando / Somaemuldo / Bijindo"  →  Southsea Harbour Cruz Pension → Mijohang  [ics-0301325642]
+- kakao-mobility · journey · "Haeundae (Mipo Harbour) ↔ Gwangalli / Marine City"  →  Busan → Busan/Geoje Cluster  [ics-00024a3bd3]
+- kakao-mobility · yeosu-tongyeong/journey · "Tongyeong (Ferry Terminal) ↔ Hansando / Somaemuldo / Bijindo"  →  Southsea Harbour Cruz Pension → Mijohang  [ics-0301325642]
+- line · japan/P2 · "Hiroshima ↔ Miyajima"  →  Uno → Teshima  [ics-01ce4645d7]
+- line · japan/journey · "Hiroshima / Miyajimaguchi ↔ Miyajima (Itsukushima)"  →  Uno → Teshima  [ics-01ce4645d7]
+- lyft · new-york/P1 · "Midtown (W 39th) ↔ Hoboken / Jersey City waterfront"  →  Harbor Freight → Frank A. Vincent Marina  [ics-23d2f2724f]
+- lyft · seattle/P1 · "Seattle (Elliott Bay) ↔ Bainbridge Island"  →  Fauntleroy Terminal → City of Des Moines Marina  [ics-0038607154]
+- lyft · boston/P1 · "Long Wharf ↔ Logan Airport"  →  Encore Ferry Dock → Cambridge Boat Club  [ics-0eb7b6593b]
+- norway-fjords · P4 · "Bergen ↔ Stavanger (coastal express)"  →  Strandkaiterminalen → Fiskepiren Ferry Terminal  [e__bergen-norway__strandkaiterminalen__stavanger-norway__fiskepiren-ferry-terminal]
+- ola · mumbai/P1 · "Gateway of India ↔ Elephanta Caves"  →  Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
+- rapido · mumbai/P1 · "Gateway of India ↔ Elephanta Caves"  →  Mandwa Jetty → Mumbai Harbour  [ics-10990b64b9]
+- uber · miami/P2 · "West Palm Beach ↔ Palm Beach / Singer Island"  →  Boynton Harbor Marina → Briskel Pointe at Boca Harbour  [ics-110d477a22]
+
+### Flagship — Singapore (Grab): the marquee corridors aren’t built as routes (so they read worst)
+- **Marina Bay ↔ Sentosa** (downtown): no route exists; the only “Marina” match is *ONE°15 Marina Sentosa Cove* — a name collision. Build a downtown Marina Bay/Raffles ↔ Sentosa corridor.
+- **East Coast ↔ Marina/CBD**: 0 routes exist — build it (the MPA transport-berth narrative depends on it).
+- **Marina ↔ Changi Point / Pulau Ubin**: 0 routes exist.
+- Phase 2 (“East Coast transport berths”) carries only “Singapore ↔ Riau resort islands” — mis-themed; give it its real East-Coast featured routes.
+
+### On the 1381 with no route_id
+Most are intentional (no built corridor → honest null). Not a defect list. Worth building only the *marquee* ones a pitch leans on (like the Singapore set above) — the rest can stay null and render as text.
+
+### Front-end (already shipped — so the live pages are safe meanwhile)
+- Single-city-market phases frame the city (no zoom to a lone mislinked intra-city route).
+- The plausibility guard now also requires endpoint-name overlap, so the 16 mismatches above auto-degrade to area focus in the render (never a confidently-wrong corridor).
+
+### Reproduce (Node)
+```
+// for each featured_route/journey with a route_id: tokenize the label + the route’s from_label/to_label
+// (NFD-strip accents, drop generic words like bay/coast/marina/harbour, len>3); FAIL when the label has
+// distinctive tokens and the route endpoints share none. ~10% fail today.
+```
+
+---
+
+
+---
+
 ## 2026-06-08 (19:00Z) — Cluster tier effectively complete via membership; 2 data-consistency follow-ups
 
 Big thanks — `CLUSTERS.json` (now 75 clusters) `member_city_ids` covers **100% of city nodes (192/192, 0
