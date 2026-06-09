@@ -13,15 +13,18 @@ build / gates = Tasklet._
 Bond Island, Ha Long→Cat Ba), 10 endpoint relabels (Mabul→Gaya, Kaohsiung→Liuqiu), and the **endpoint
 label↔geometry seal gate (LB-62)** added — the guard we asked for. Marina Bay→Sentosa econ re-keyed.
 
-### P1 — 5 routes have an invalid `from/to_city_id` (render drops the endpoint)
-Four point at a city id with **no `FEATURES_BY_TYPE` node** (yet `CLUSTERS` lists them as members):
-`caye-caulker-belize`, `cozumel-mexico`, `playa-del-carmen-mexico`, `floreana-galapagos-ecuador` (POIs are
-parented under ambergris-caye / cancun-riviera-maya; floreana absent entirely). Two use a **cluster/country
-token as a city id**: Koh Kood→Sihanoukville `from_city_id="cambodia"`; Busan/Geoje→Fukuoka
-`to_city_id="korea"`. Fix: add the 4 nodes (with `cluster_id`) or re-point to the parent city + drop the
-orphan from `member_city_ids`; map "cambodia"/"korea" to real city ids. **Seal-gate guard** (complements
-LB-62): assert every `ROUTES[].properties.{from_city_id,to_city_id}` and every `CLUSTERS.member_city_ids`
-entry resolves to a city/priority_city id.
+### P1 — 6 routes have an invalid `from/to_city_id` (render drops the endpoint)
+Five point at a city id with **no `FEATURES_BY_TYPE` node** (yet `CLUSTERS` lists them as members):
+`caye-caulker-belize`, `cozumel-mexico`, `playa-del-carmen-mexico`, `floreana-galapagos-ecuador`, and now
+`tioman-island` (Gold #45 added it to the `malaysia` cluster + used it as the Singapore→Tioman route's
+`to_city_id`, explicitly via the "Floreana byte-level template" — i.e. it replicated this exact bug, so the
+new flagship corridor's Malaysia endpoint has no marker/node). Two more use a **cluster/country token as a
+city id**: Koh Kood→Sihanoukville `from_city_id="cambodia"`; Busan/Geoje→Fukuoka `to_city_id="korea"`. Fix:
+add the missing nodes (with `cluster_id`) or re-point to the parent city + drop the orphan from
+`member_city_ids`; map "cambodia"/"korea" to real city ids. **Seal-gate guard** (complements LB-62): assert
+every `ROUTES[].properties.{from_city_id,to_city_id}` and every `CLUSTERS.member_city_ids` entry resolves to
+a city/priority_city id. (Note: the "Floreana template" is the bug, not the fix — those endpoints need real
+nodes, not a cluster-membership entry that points at a non-existent node.)
 
 ### P1 — `trip_purpose:"local"` (2,711) + Singapore↔Riau POI→city mislabel
 "local" isn't a purpose (tourism/commuter/business/luxury are); on the hover it reads "Local · Local" next
