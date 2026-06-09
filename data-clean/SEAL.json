@@ -54,7 +54,7 @@
   "economics_records": 71
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-08T22:36:40.086996Z",
+ "sealed_at": "2026-06-09T03:14:30.000000Z",
  "sidecars": {
   "economics_by_route_id.json": {
    "count": 71,
@@ -273,5 +273,9 @@
  "_gold36_cluster_consistency": {
   "applied_at": "2026-06-08T22:36:40.086996Z",
   "note": "Claude render-lane follow-ups. (1) CLUSTERS.anchor snapped to member city nearest centroid (41 clusters moved on-land, max 543km; added anchor_source); anchor now a usable on-land label/pin point. (2) node cluster_id synced from authoritative member_city_ids: 51 stamped + 0 drift-corrected -> 201/201 (100%, was 150). Node property now agrees with membership."
+ },
+ "_gold37_okinawa_reconcile": {
+  "applied_at": "2026-06-09T03:14:30.000000Z",
+  "note": "Lane B (duplicate-route collapse, backlog #3): 0 true duplicates under agreed basis (from_node_id+to_node_id+geometry_hash) — nothing collapsed (Gold #29 already removed the 28 real ones; the '~204' = 52 city-node<->BP collocations + 1 dup-node + 1,225 intentional directional mirrors; all node-model/render-layer, flagged for Claude). Lane C: Okinawa orphan brief rekeyed city_id+filename okinawa-yaeyama-japan -> okinawa-main-japan (lead hub; rendered nowhere before; 0 dangling). Economics sidecar re-verified clean (71 records, 0 country mislabels)."
  }
 }
