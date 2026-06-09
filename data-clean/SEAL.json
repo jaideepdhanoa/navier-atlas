@@ -19,8 +19,8 @@
    }
   },
   "ROUTES": {
-   "sha256": "86b904ad1904ccc0a8a12bb4e7ec9afce12f6c9d876c161b77d1ad2f73cc1afe",
-   "count": 5248
+   "sha256": "bf91abcfd7e34370b28a09313b9e26d92278609d60030ced49fe28cc69c8a646",
+   "count": 5257
   },
   "STORIES": {
    "count": 20,
@@ -55,14 +55,14 @@
    "internal",
    "deck_only"
   ],
-  "economics_records": 70
+  "economics_records": 78
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-09T04:58:20.102587Z",
+ "sealed_at": "2026-06-09T20:06:14.355466Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "sha256": "8b2c439bfa9102e4cbdda6e0ee814a07c8ecb1e5696ce88668591575fc2b659b",
-   "count": 70
+   "sha256": "4b1b1d896c95e2e06bd0624f57494e810d5984b32116edcee51bf14daf2643c8",
+   "count": 78
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -234,7 +234,7 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 42,
+ "gold_seq": 44,
  "_gold31_routeid_distance_gate": {
   "applied": "2026-06-08",
   "issue": "LB-46 — gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
@@ -369,5 +369,88 @@
    "ics-26acf800c5"
   ],
   "note": "10 verified-CLEAN open-water Pioneer II edge-mints (byte-level append, _mint_floreana_g41 template). ics- island-hop scheme; both endpoints existing gold cluster members (no CLUSTERS/FEATURES change). Coords post-verification from _edge_mint_verify.json (dual-backend 0 interior hits)."
+ },
+ "_gold44_solved_corridors": {
+  "base": "navier-export-20260609T185526Z.zip (Gold #43, 5248 routes)",
+  "B2_minted": [
+   {
+    "route_id": "ics-40367adcc3",
+    "market": "cambodia",
+    "routed_sea_nm": 8.5,
+    "vessel": "Pioneer II",
+    "from": "Sihanoukville ferry port",
+    "to": "Koh Russey (Ream private-island resort cluster; Alila Villas / Koh Russey Resort) — Koh Russey arrival pier"
+   },
+   {
+    "route_id": "ics-474721ce45",
+    "market": "cambodia",
+    "routed_sea_nm": 13.0,
+    "vessel": "Pioneer II",
+    "from": "Sihanoukville ferry port (Serendipity / Ochheuteal)",
+    "to": "Saracen Bay pier, Koh Rong Sanloem"
+   },
+   {
+    "route_id": "ics-8301406c4e",
+    "market": "cambodia",
+    "routed_sea_nm": 18.8,
+    "vessel": "Pioneer II",
+    "from": "Sihanoukville Port (Song Saa Lounge)",
+    "to": "Song Saa Private Island (off NE Koh Rong, near Prek Svay)"
+   },
+   {
+    "route_id": "ics-dfe4ef40b3",
+    "market": "cambodia",
+    "routed_sea_nm": 75.4,
+    "vessel": "Quanta-LR",
+    "from": "Sihanoukville ferry port",
+    "to": "Koh Kong town (Cardamom coast)"
+   },
+   {
+    "route_id": "ics-5a3e48e4cf",
+    "market": "philippines",
+    "routed_sea_nm": 35.3,
+    "vessel": "Pioneer II",
+    "from": "Manila — Esplanade Seaside Terminal (SM Mall of Asia, Pasay)",
+    "to": "Camaya Coast Beach & Resort Ferry Terminal (Mariveles, Bataan)"
+   },
+   {
+    "route_id": "ics-b737c5ae68",
+    "market": "phuket",
+    "routed_sea_nm": 20.5,
+    "vessel": "Pioneer II",
+    "from": "Royal Phuket Marina",
+    "to": "Khao Phing Kan (James Bond Island), Phang Nga Bay"
+   },
+   {
+    "route_id": "ics-25ecef3e3b",
+    "market": "taiwan",
+    "routed_sea_nm": 25.2,
+    "vessel": "Pioneer II",
+    "from": "Magong South Sea Visitor Center / Magong Harbour (馬公南海遊客中心), Penghu",
+    "to": "Qimei Nanhu Port (七美南滏港), Qimei Island"
+   },
+   {
+    "route_id": "ics-f21c5d7e8d",
+    "market": "vietnam",
+    "routed_sea_nm": 16.3,
+    "vessel": "Pioneer II",
+    "from": "Tuan Chau International Marina",
+    "to": "Cat Ba town port (Beo Harbour)"
+   },
+   {
+    "route_id": "ics-0263dd49bb",
+    "market": "vietnam",
+    "routed_sea_nm": 12.9,
+    "vessel": "Pioneer II",
+    "from": "Duong Dong (Phu Quoc)",
+    "to": "An Thoi (south Phu Quoc / An Thoi archipelago gateway)"
+   }
+  ],
+  "B2_note": "9 LB-59 water-solver pre-routed corridors spliced VERBATIM (geometry_coords arc, NO straight-line gate). 8 Pioneer II + 1 Quanta-LR (amber_dashed/H2_2026_plus). ics- island-hop scheme, byte-level append. Tioman intentionally excluded (still in solver queue).",
+  "B3_label_fixes": "10 routes relabeled in-place (geometry untouched): ics-91951379c0 Kaohsiung->Liuqiu(Xiaoliuqiu); 9 Borneo routes Mabul->Gaya.",
+  "B4_corridors_null": "cambodia Sihanoukville->Koh Ta Kiev route_id set null (defer; ics-9df91bf7d4 self-mislabel logged for later).",
+  "economics": "sidecar 69->78 records / 32->23 pending (all 9 new resolve).",
+  "endpoint_gate": "0 HARD FLAGS (LB-62).",
+  "routes": "5248->5257 (+9). FEATURES/CLUSTERS unchanged. GOLD-COPY.txt NOT flipped — parent promotes."
  }
 }
