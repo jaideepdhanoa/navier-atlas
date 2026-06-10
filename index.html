@@ -3008,6 +3008,16 @@ function applyPartnerView(){
   p.innerHTML=_partnerEmptyHtml(); p.scrollTop=0;
   p.querySelectorAll('.story-card[data-slug]').forEach(c=>c.addEventListener('click',()=>showStory(c.dataset.slug)));
 }
+// Top-nav "Grab" / partner root → restore the page's original proposal panel (hub index, carousel ch.1, …).
+function _resetPartnerHome(){
+  if (!BUILD_PARTNER && !PARTNER_ACTIVE) return;
+  SELECTED_ROUTE = null;
+  try { map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){}
+  _navReset();
+  ROUTE_POPUP.remove();
+  clearVesselRange(false);
+  applyPartnerView();
+}
 const DEFAULT_OPACITY = {
   'route-p2': O_TIER, 'route-qlr': O_TIER_QLR,
   'route-glow-bloom': O_GLOW_BLOOM, 'route-glow-core': O_GLOW_CORE, 'route-labels': O_RLABEL,
@@ -3468,6 +3478,7 @@ document.querySelectorAll('.chip').forEach(b => {
     else if (skipRegion) renderAllClusters();
     else renderRegions();
   }
+  const resetNavRoot = ()=>{ clearActive(); renderEntry(); if (isPartner) try { _resetPartnerHome(); } catch(e){} };
   // city id → normalized region (all tiers), for the breadcrumb.
   const cityRegion={};
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){ const p=f.properties||{}; if(p.id&&p.region) cityRegion[p.id]=norm(p.region); }
@@ -3476,7 +3487,7 @@ document.querySelectorAll('.chip').forEach(b => {
   const _sep=()=>{ const s=document.createElement('span'); s.className='crumb-sep'; s.textContent='›'; host.appendChild(s); };
   function renderBreadcrumb(o){   // {clusterId, clusterLabel, cityId, cityName, region, cityProps, cityCoords, routeLabel}
     closeMore(); host.innerHTML='';
-    _crumb(rootLabel, ()=>{ clearActive(); renderEntry(); });
+    _crumb(rootLabel, resetNavRoot);
     const region = o.region ? norm(o.region) : (o.cityId && cityRegion[o.cityId]);
     if (!skipRegion && region && regions[region]) { _sep(); _crumb(region, ()=>{ clearActive(); fitRegion(region); renderClusters(region); }); }
     // Cluster level (root › Region › Cluster › City): the country/archipelago the city belongs to.
@@ -3495,10 +3506,10 @@ document.querySelectorAll('.chip').forEach(b => {
     if (o.routeLabel){ _sep(); _crumb(o.routeLabel, null); }
   }
   window._topNavDrill = renderBreadcrumb;
-  window._topNavReset = ()=>{ renderEntry(); };
+  window._topNavReset = resetNavRoot;
   document.addEventListener('click', closeMore);
   const g=document.querySelector('.chip.lead[data-c="global"]');
-  if (g){ if (isPartner) g.textContent=rootLabel; g.addEventListener('click', renderEntry); }
+  if (g){ if (isPartner) g.textContent=rootLabel; g.addEventListener('click', resetNavRoot); }
   renderEntry();
 })();
 
