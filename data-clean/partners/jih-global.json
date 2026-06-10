@@ -294,7 +294,215 @@
     },
     "narrative": "Steady state is the world's first archipelago-scale foiling network, capitalised and delivered as a single program: jet-to-foil-to-villa across the entire Maldivian atoll chain, the live reference case for how the planet's island-hopping markets get built."
   },
-  "steady_state_ceiling": 124,
-  "committed_fleet": 100,
-  "tier": "flagship"
+  "steady_state_ceiling": 98,
+  "committed_fleet": 41,
+  "tier": "flagship",
+  "deal_commitment": {
+    "vessels": 100,
+    "value_usd": 100000000,
+    "term": "3-year phased rollout, first 5 boats 2026",
+    "source": "Navier × JIH Global agreement, reported by WSJ and Bloomberg, May 2026",
+    "_note": "Commercial deal size — distinct from the modeled grounded floor. The ~100-vessel deal almost exactly equals the modeled full-archipelago MID ceiling (98): JIH pre-bought the ceiling."
+  },
+  "_recal_provenance": {
+    "date": "2026-06-10",
+    "method": "geometry-first grounded recalibration (JIH pass — LB-69)",
+    "committed_fleet_grounded": 41,
+    "committed_rev_yr": 87517228.0,
+    "steady_state_ceiling_basis": "resort-census expansion: 39 sourced resorts of ~175 operating (Maldives Ministry of Tourism 2025); factor 1+(175/39-1)*alpha, alpha mid 0.40 -> 2.39x floor = 98 boats / ~$210M",
+    "replaces": "deal-headline framing (was committed 100 / ceiling 124); deal preserved in deal_commitment",
+    "geometry_basis": "Gold #48 wip: 35/45 Maldives edges rebuilt + 4 Velana spokes minted; 43/43 corridors route_id-bound; all endpoints T1-verified (Wikidata/Nominatim/Overpass + atoll-bbox gate; Mapbox excluded per LB-69)"
+  },
+  "growth_case": {
+    "_provenance": {
+      "source_growth": "growth-jih-global.json",
+      "source_rollup": "agg-jih-global.json",
+      "rev_per_boat_yr": 2134567,
+      "greenfield_mode": "census",
+      "greenfield_corridors": null,
+      "sourced_corridors": 43,
+      "generator": "growth_frontend_block.py"
+    },
+    "revenue_potential": {
+      "headline": "The floor and the prize — every rung traces to grounded, sourced demand.",
+      "anchor_note": "Anchor: $875M/yr of premium sea-transfer spend on the sourced corridors today. Every rung is a transformation of that one grounded number.",
+      "whose_money_legend": {
+        "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
+        "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
+        "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+      },
+      "cite_rule": "Cite MID. 'High' stacks every optimistic assumption — ceiling, not headline.",
+      "rungs": [
+        {
+          "id": "som_floor",
+          "label": "SOM — floor (published)",
+          "whose_money": "Navier transport revenue",
+          "basis": "sourced flagship corridors · 10% capture · today's demand",
+          "low": null,
+          "mid": 87517228.0,
+          "high": null,
+          "display": {
+            "low": null,
+            "mid": "$88M",
+            "high": null
+          },
+          "confidence": "grounded"
+        },
+        {
+          "id": "som_network",
+          "label": "SOM — full network",
+          "whose_money": "Navier transport revenue",
+          "basis": "whole mapped network · 10% capture · today's demand (no growth assumed)",
+          "low": 163657216.0,
+          "mid": 210041347.0,
+          "high": 255550306.0,
+          "display": {
+            "low": "$164M",
+            "mid": "$210M",
+            "high": "$256M"
+          },
+          "confidence": "med"
+        },
+        {
+          "id": "sam_network",
+          "label": "SAM — matured network",
+          "whose_money": "Navier transport revenue",
+          "basis": "induced demand + default-operator capture, across the network",
+          "low": 319131572.0,
+          "mid": 945186062.0,
+          "high": 2555503058.0,
+          "display": {
+            "low": "$319M",
+            "mid": "$945M",
+            "high": "$2.56B"
+          },
+          "confidence": "med-low"
+        },
+        {
+          "id": "tam_gmv",
+          "label": "TAM — journey GMV",
+          "whose_money": "total journey wallet",
+          "basis": "every cross-water journey in the induced market (all merchants)",
+          "low": 4255087625.0,
+          "mid": 11342232749.0,
+          "high": 25555030576.0,
+          "display": {
+            "low": "$4.26B",
+            "mid": "$11.34B",
+            "high": "$25.56B"
+          },
+          "confidence": "med-low"
+        },
+        {
+          "id": "platform_rev",
+          "label": "Partner platform revenue",
+          "whose_money": "partner's own P&L",
+          "basis": "platform commission on journey GMV routed through the Navier network",
+          "low": 114887366.0,
+          "mid": 510400474.0,
+          "high": 1839962201.0,
+          "display": {
+            "low": "$115M",
+            "mid": "$510M",
+            "high": "$1.84B"
+          },
+          "confidence": "med-low"
+        }
+      ]
+    },
+    "phase_economics": {
+      "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
+      "conversion_note": "Fleet & CO2 scale from the grounded unit: 41 boats = $88M transport rev = 7,810 t CO2/yr (~$2,135K rev/boat).",
+      "horizons": [
+        {
+          "id": "prove",
+          "name": "Prove",
+          "horizon": "Year 1–2",
+          "scope": "Sourced flagship corridors go live",
+          "capture": "10% (new-entrant floor)",
+          "vessel": "N30 Pioneer II (8 pax, commercial now)",
+          "fleet_boats": 41,
+          "navier_transport_rev_yr": 87517228.0,
+          "navier_transport_rev_display": "$88M",
+          "partner_platform_rev_yr": null,
+          "partner_platform_rev_display": "nascent",
+          "co2_saved_t_yr": 7810,
+          "confidence": "grounded"
+        },
+        {
+          "id": "scale",
+          "name": "Scale",
+          "horizon": "Year 2–4",
+          "scope": "Extend to the full mapped greenfield network",
+          "capture": "10% (still conservative)",
+          "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense legs",
+          "fleet_boats_est": 98,
+          "fleet_boats_band": {
+            "low": 77,
+            "high": 120
+          },
+          "navier_transport_rev_yr": 210041347.0,
+          "navier_transport_rev_display": "$210M",
+          "partner_platform_rev_display": "building",
+          "co2_saved_t_yr": 18745,
+          "confidence": "med"
+        },
+        {
+          "id": "mature",
+          "name": "Mature",
+          "horizon": "Year 4+",
+          "scope": "Induced demand + default-operator capture + in-app journey monetization",
+          "capture": "25% mature share",
+          "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
+          "fleet_boats_est_pioneer_equiv": 443,
+          "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
+          "navier_transport_rev_yr": 945186062.0,
+          "navier_transport_rev_display": "$945M",
+          "partner_platform_rev_yr": 510400474.0,
+          "partner_platform_rev_display": "$510M",
+          "journey_gmv_display": "$11.34B TAM",
+          "co2_saved_t_yr": 84352,
+          "confidence": "med-low (banded)"
+        }
+      ]
+    },
+    "vessel_sizing": {
+      "headline": "Right vessel for every leg — corridor range picks the hull.",
+      "classes": [
+        {
+          "class": "N30 Pioneer II",
+          "pax": 8,
+          "range_nm": 70,
+          "status": "commercial now",
+          "role": "Capillary corridors ≤ 70nm. The workhorse of Prove + Scale.",
+          "render": "solid"
+        },
+        {
+          "class": "N35 Shuttle",
+          "pax": "12–15",
+          "range_nm": 70,
+          "status": "2027",
+          "role": "Doubles throughput per hull on dense corridors; roughly halves payback. Scale-phase workhorse.",
+          "render": "solid"
+        },
+        {
+          "class": "Quanta-LR Hybrid",
+          "pax": "12–15",
+          "range_nm": 700,
+          "status": "H2 2026+",
+          "role": "Regional legs 75–150nm beyond Pioneer range. Held out of near-term numbers.",
+          "render": "amber-dashed"
+        }
+      ],
+      "range_gate_note": "≤ 70nm → Pioneer II (now). 75–150nm → Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
+    },
+    "_render_chip_flag": {
+      "needs_new_layouts": [
+        "revenue_ladder",
+        "phase_economics_table",
+        "vessel_sizing_cards"
+      ],
+      "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
+    }
+  }
 }
