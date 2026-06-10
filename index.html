@@ -580,6 +580,17 @@ body.panel-hidden #footer { display:block; }
 .hub-card-sum { font-size:12px; line-height:1.5; color:var(--text-2); margin-top:7px; }
 .hub-card-go { display:inline-block; font-size:11px; font-weight:600; color:var(--text-2); margin-top:9px; transition:color .15s; }
 .hub-card:hover .hub-card-go { color:var(--accent); }
+.hub-tabs { display:flex; gap:0; padding:14px 18px 0; border-bottom:1px solid var(--line); }
+.hub-tab { flex:1; background:none; border:none; border-bottom:2px solid transparent; color:var(--text-2); font:600 11px Inter; text-transform:uppercase; letter-spacing:0.08em; padding:10px 8px 12px; cursor:pointer; transition:color .15s,border-color .15s; }
+.hub-tab:hover { color:var(--text-1); }
+.hub-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.hub-tab-panel { padding-bottom:8px; }
+.hub-markets-h { font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--text-2); font-weight:700; padding:18px 26px 4px; }
+.hub-markets-sub { font-size:12.5px; line-height:1.55; color:var(--text-2); padding:0 26px 14px; }
+.hub-econ-ptr { font-size:12px; line-height:1.5; color:var(--text-2); margin-top:12px; padding:10px 12px; background:rgba(224,203,143,0.06); border:1px solid rgba(224,203,143,0.2); border-radius:8px; }
+.hub-phase-note { font-size:11px; line-height:1.45; color:var(--text-2); font-style:italic; margin-top:10px; }
+.hub-cta { display:block; width:calc(100% - 36px); margin:16px 18px 8px; text-align:center; background:rgba(224,203,143,0.10); border:1px solid rgba(224,203,143,0.35); color:var(--accent); font:700 12px Inter; padding:11px 16px; border-radius:9px; cursor:pointer; transition:background .15s; }
+.hub-cta:hover { background:rgba(224,203,143,0.18); }
 
 /* "Why Navier, now" → showcase-corridor chips */
 .pcaro-wow-h { font-size:9px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:700; margin:12px 0 7px; }
@@ -596,6 +607,21 @@ body.panel-hidden #footer { display:block; }
 
 /* Opening / "About this proposal" dialogue — large, readable; reuses .story-dialog shell */
 .intro-dialog { width:min(720px,94vw); max-height:88vh; }
+.intro-dialog.intro-step2 { width:min(820px,94vw); }
+.intro-step-h { font-size:22px; font-weight:700; color:var(--text-0); line-height:1.25; margin:6px 0 10px; }
+.intro-step-lead { font-size:13.5px; color:var(--text-1); line-height:1.6; margin-bottom:14px; }
+.intro-jump-econ { display:inline-block; margin-top:10px; background:none; border:none; color:var(--accent); font:600 12px Inter; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:3px; }
+.intro-jump-econ:hover { filter:brightness(1.1); }
+.intro-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 24px; border-top:1px solid var(--line); }
+.intro-foot-right { display:flex; gap:10px; align-items:center; }
+.intro-back { background:none; border:1px solid var(--line-strong); color:var(--text-1); font:600 13px Inter; cursor:pointer; padding:9px 16px; border-radius:9px; }
+.intro-back:hover { border-color:var(--text-2); color:var(--text-0); }
+.rec-assump { margin-top:12px; border:1px solid var(--line-strong); border-radius:9px; overflow:hidden; }
+.rec-assump summary { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; padding:9px 12px; cursor:pointer; background:rgba(255,255,255,0.02); }
+.rec-assump-dl { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; padding:8px 12px 12px; font-size:11.5px; }
+.rec-assump-dl dt { color:var(--text-2); }
+.rec-assump-dl dd { color:var(--text-1); margin:0; }
+.rec-assump-note { font-size:10.5px; color:var(--text-2); font-style:italic; grid-column:1/-1; margin-top:2px; }
 .intro-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; padding:30px 34px 8px; }
 .intro-mark { font-size:10px; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); font-weight:700; }
 .intro-title { font-size:26px; font-weight:700; color:var(--text-0); line-height:1.2; margin:8px 0 0; }
@@ -613,7 +639,7 @@ body.panel-hidden #footer { display:block; }
 .intro-scroll::-webkit-scrollbar-track { background:transparent; }
 .intro-scroll::-webkit-scrollbar-thumb { background:var(--line-strong); border-radius:5px; border:3px solid transparent; background-clip:content-box; }
 .intro-scroll::-webkit-scrollbar-thumb:hover { background:var(--text-2); background-clip:content-box; }
-.intro-foot { display:flex; justify-content:flex-end; gap:10px; padding:14px 24px; border-top:1px solid var(--line); }
+
 .intro-skip { background:none; border:none; color:var(--text-2); font:500 13px Inter; cursor:pointer; padding:9px 14px; }
 .intro-skip:hover { color:var(--text-0); }
 .intro-start { background:var(--accent); border:none; color:#0e0e10; font:700 13px Inter; cursor:pointer; padding:9px 18px; border-radius:9px; }
@@ -804,8 +830,8 @@ body.panel-hidden #footer { display:block; }
   <div class="story-dialog intro-dialog" role="dialog" aria-modal="true" aria-label="Partner proposal">
     <div class="intro-scroll" id="intro-body"></div>
     <div class="intro-foot">
-      <button id="intro-skip" class="intro-skip">Skip to the map</button>
-      <button id="intro-start" class="intro-start">Take the tour →</button>
+      <button type="button" id="intro-skip" class="intro-skip">Skip to the map</button>
+      <div class="intro-foot-right"><button type="button" id="intro-start" class="intro-start">Take the tour →</button></div>
     </div>
   </div>
 </div>
@@ -1839,6 +1865,13 @@ function clearSelection(){
 // Route unit-economics block (ROUTE_ECONOMICS sidecar, keyed by route_id). Headline the MID; carry the
 // THIN/MID/FULL spread as a faint range; surface status (grounded/estimated) + demand confidence. Rendered
 // only when a record exists for the selected route — an absent record means "no economics yet", never zero.
+function _econAssumptionsHtml(a){
+  if (!a) return '';
+  const pct=x=>(x==null||isNaN(x))?'':Math.round(x*100)+'%';
+  const rows=[['Operating days / yr',a.operating_days_yr,a.operating_days_derivation],['Mechanical uptime',pct(a.mechanical_uptime)],['Weather factor',a.weather_factor],['Revenue leg %',pct(a.revenue_leg_pct)],['Load factor',pct(a.load_factor)],['Pax capacity',a.pax_capacity],['One-way',a.one_way_min!=null?a.one_way_min+' min':''],['Cycle',a.cycle_min!=null?a.cycle_min+' min':''],['Trips / day',a.trips_per_day,a.trips_per_day_derivation]].filter(x=>x[1]!=null);
+  if (!rows.length) return '';
+  return `<details class="rec-assump"><summary>Model assumptions</summary><dl class="rec-assump-dl">${rows.map(([k,v,note])=>`<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(String(v))}${note?`<div class="rec-assump-note">${escapeHtml(note)}</div>`:''}</dd>`).join('')}</dl></details>`;
+}
 function _econMoney(n){ if(n==null||isNaN(n))return ''; const a=Math.abs(n);
   if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
 function _econRange(arr, fmt){ if(!Array.isArray(arr)||arr.length<2)return ''; const f=fmt||(x=>x), lo=Math.min(...arr), hi=Math.max(...arr);
@@ -1873,6 +1906,7 @@ function _routeEconHtml(rec){
   for (const [k,v,b] of figs) h+=`<div class="rec-fig"><div class="rec-v">${escapeHtml(v)}</div><div class="rec-l">${escapeHtml(k)}</div>${b||''}</div>`;
   h+=`</div>`;
   if (!fleetGrounded) h+=`<div class="rec-note">Fleet size not yet grounded — per-boat economics only.</div>`;
+  if (rec.assumptions) h+=_econAssumptionsHtml(rec.assumptions);
   // Other corridors carried on the same route line (headline = highest market-rev; the rest surfaced here).
   if (Array.isArray(rec.also_serves) && rec.also_serves.length){
     h+=`<div class="rec-also"><div class="rec-also-h">This line also serves</div>${rec.also_serves.map(a=>{
@@ -2591,7 +2625,7 @@ function _buildChapters(partner){
   const ch=[]; const ph=partner.phases||[];
   if (ph.length) ch.push({kind:'endstate'});
   ph.forEach((phase,idx)=>ch.push({kind:'phase', phaseIndex:idx, phase}));
-  if (partner.growth_case) ch.push({kind:'growth'});   // economic horizons (WHAT it's worth) — distinct from the geographic phases above
+  // Network economics live in the intro modal (step 2) when growth_case is present — not duplicated in the carousel.
   if (partner.why_navier_now || partner.differentiation || (partner.proof_points&&partner.proof_points.length) || (partner.objections&&partner.objections.length)) ch.push({kind:'proof'});
   if (partner.the_ask || partner.close) ch.push({kind:'ask'});
   return ch.length ? ch : [{kind:'endstate'}];
@@ -2665,7 +2699,7 @@ function _phaseBlockHtml(cur){
   const hasVesselKpi = (cur.kpis||[]).some(k=>/vessel|boat|fleet/i.test(k.label||''));
   return `<div class="panel-section">
     ${cur.timeline?`<div class="pcaro-routes-h">${escapeHtml(cur.timeline)}</div>`:''}
-    ${(cur.boats!=null && !hasVesselKpi)?`<div class="pcaro-boats">${escapeHtml(String(cur.boats))} vessels at this phase</div>`:''}
+    ${(cur.boats!=null && !hasVesselKpi)?`<div class="pcaro-boats">${cur.boats===1?'1 vessel':escapeHtml(String(cur.boats))+' vessels'} at this phase</div>`:''}
     ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
     ${cur.rationale?`<div class="pcaro-rationale">${escapeHtml(cur.rationale)}</div>`:''}
     ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
@@ -2689,17 +2723,23 @@ function _gcFleet(h){
   if (h.fleet_boats_est_pioneer_equiv!=null) return _gcNum(h.fleet_boats_est_pioneer_equiv)+' <span class="muted">Pioneer-equiv</span>';
   return '';
 }
-function _growthCaseHtml(gc){
+function _growthCaseHtml(gc, opts){
   if (!gc) return '';
+  opts=opts||{};
   const rp=gc.revenue_potential||{}, pe=gc.phase_economics||{}, vs=gc.vessel_sizing||{}, pv=gc._provenance||{};
   let h='';
   // Lead: hard evidence first — corridor count (ID-traceable) + the published floor.
   const floor=(rp.rungs||[]).find(r=>/floor/i.test(r.label||'')||r.confidence==='grounded');
   const nCorr=(pv.greenfield_corridors!=null&&pv.sourced_corridors!=null)?(pv.greenfield_corridors+pv.sourced_corridors):null;
-  h+=`<div class="chap-cap"><div class="eyebrow">The growth case — the floor and the prize</div>
-    <h2>${escapeHtml(rp.headline||'Revenue potential')}</h2>
-    ${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
-    ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
+  if (!opts.inModal){
+    h+=`<div class="chap-cap"><div class="eyebrow">The growth case — the floor and the prize</div>
+      <h2>${escapeHtml(rp.headline||'Revenue potential')}</h2>
+      ${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
+      ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
+  } else {
+    h+=`<div class="gc-lead-wrap">${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
+      ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
+  }
   // 1) Revenue ladder — prize at top, floor at bottom (render rungs reversed).
   if ((rp.rungs||[]).length){
     h+=`<div class="panel-section"><h3>Revenue potential</h3><div class="gc-ladder">`;
@@ -2888,7 +2928,7 @@ function startPartnerCarousel(partner){
 // full mini-proposal (same field shape as a single partner) reached at /<slug>/<market.slug>. On the
 // aggregate a market opens in place (#/partner/<slug>/market/<mslug>); on a dedicated build each market is
 // its own scoped page (__PARTNER_MARKET__ lock).
-let _HUB=null;
+let _HUB=null, _hubTab='overview', _introStep=1, _introPartner=null;
 function _hubMarketFromHash(){ const m=(location.hash||'').match(/#\/partner\/[^/]+\/market\/([a-z0-9-]+)/i); return m?m[1]:null; }
 function _hubAnchors(partner){
   const set=new Set();
@@ -2914,8 +2954,40 @@ function startPartnerHub(partner){
   renderHubIndex(partner);
   _autoIntro(partner, partner.partner_id||'hub');   // first landing on the hub index → set the scene (once/session)
 }
-function renderHubIndex(partner){
+function _hubHowToRead(partner){
+  const nt=partner.network_thesis||{};
+  const fallback='Several potential launch markets — pick any to explore a full mini-proposal. Singapore is the recommended first proof point, not the only path.';
+  const raw=nt.how_to_read||'';
+  if (/phased sequence|recommended regional path|pick a coastline/i.test(raw)) return fallback;
+  return raw||fallback;
+}
+function _hubMarketCardsHtml(partner){
+  const mk=partner.markets||[];
+  const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
+  return ordered.map(m=>`<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
+      ${m.recommended_entry?`<span class="hub-rec">Recommended entry</span>`:''}
+      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}</div>
+      ${m.status?`<div class="hub-card-status">${escapeHtml(m.status)}</div>`:''}
+      ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
+      <span class="hub-card-go">Open market proposal →</span>
+    </button>`).join('');
+}
+function _wireHubIndex(panel, partner){
+  const anchors=_hubAnchors(partner);
+  panel.querySelectorAll('.hub-tab[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+    _hubTab=btn.dataset.tab; renderHubIndex(partner, _hubTab);
+  }));
+  const cta=panel.querySelector('#hub-browse-markets'); if (cta) cta.addEventListener('click',()=>renderHubIndex(partner,'markets'));
+  panel.querySelectorAll('.hub-card[data-mslug]').forEach(el=>{
+    const m=(partner.markets||[]).find(x=>x.slug===el.dataset.mslug);
+    el.addEventListener('mouseenter',()=>{ const a=_resolvePhaseCities((m&&m.anchor_cities)||[]); if(a.length) applyStoryFocus(a); });
+    el.addEventListener('mouseleave',()=>applyStoryFocus(anchors.length?anchors:null));
+    el.addEventListener('click',()=>openHubMarket(partner,m,true));
+  });
+}
+function renderHubIndex(partner, tab){
   _CARO=null; _HUB={partner};
+  if (tab) _hubTab=tab;
   // Hub index is a back-stack ROOT (drilling a map node from here can step back to it).
   _navStack=[]; _navCurrent={ key:'hubindex:'+(partner.partner_id||''), label:(partner.display||'markets'), render:()=>renderHubIndex(partner) };
   const anchors=_hubAnchors(partner);
@@ -2923,38 +2995,40 @@ function renderHubIndex(partner){
   const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
   _fitCities(anchors, {top:80,right:pw+40,bottom:80,left:120});
   const panel=document.getElementById('panel');
-  panel.innerHTML=_hubIndexHtml(partner); panel.scrollTop=0;
-  panel.querySelectorAll('.hub-card[data-mslug]').forEach(el=>{
-    const m=(partner.markets||[]).find(x=>x.slug===el.dataset.mslug);
-    el.addEventListener('mouseenter',()=>{ const a=_resolvePhaseCities((m&&m.anchor_cities)||[]); if(a.length) applyStoryFocus(a); });
-    el.addEventListener('mouseleave',()=>applyStoryFocus(anchors.length?anchors:null));
-    el.addEventListener('click',()=>openHubMarket(partner,m,true));
-  });
+  panel.innerHTML=_hubIndexHtml(partner, _hubTab); panel.scrollTop=0;
+  _wireHubIndex(panel, partner);
   try{ history.replaceState(null,'','#/partner/'+(partner.partner_id||'')); }catch(e){}
 }
-function _hubIndexHtml(partner){
+function _hubIndexHtml(partner, tab){
+  tab=tab||'overview';
   const nt=partner.network_thesis||{}, mk=partner.markets||[];
-  const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
   const stats=(nt.stats||[]).map(s=>`<div class="hub-stat"><div class="v">${escapeHtml(s.value||'')}</div><div class="l">${escapeHtml(s.label||'')}</div>${s.sub?`<div class="s">${escapeHtml(s.sub)}</div>`:''}</div>`).join('');
-  const cards=ordered.map(m=>`<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
-      ${m.recommended_entry?`<span class="hub-rec">Recommended start</span>`:''}
-      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}</div>
-      ${m.status?`<div class="hub-card-status">${escapeHtml(m.status)}</div>`:''}
-      ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
-      <span class="hub-card-go">Explore →</span>
-    </button>`).join('');
-  return `<div class="hub-wrap">
+  const coverage=nt.coverage_note || (mk.length+' representative launch markets — illustrative, not the full footprint. The same software-defined fleet and in-app water tier extend to any coastline; these are the densest-demand starts.');
+  const hasGrowth=!!partner.growth_case;
+  const overview=`<div class="hub-tab-panel" data-panel="overview"${tab!=='overview'?' hidden':''}>
     <div class="hub-thesis">
       <div class="eyebrow">${escapeHtml(partner.display||'')} · network thesis</div>
       ${nt.headline?`<h1>${escapeHtml(nt.headline)}</h1>`:''}
       ${nt.body?`<p>${escapeHtml(nt.body)}</p>`:''}
       ${stats?`<div class="hub-stats">${stats}</div>`:''}
-      ${nt.how_to_read?`<div class="hub-howto">${escapeHtml(nt.how_to_read)}</div>`:''}
+      <div class="hub-howto">${escapeHtml(_hubHowToRead(partner))}</div>
+      ${hasGrowth?`<div class="hub-econ-ptr">Economics are in the opening overview (<b>Proposal → See the opportunity</b>).</div>`:''}
+      <div class="hub-phase-note">Geographic rollout phases in each market are separate from the network economic horizons (Prove / Scale / Mature) in the proposal overview.</div>
     </div>
-    <div class="hub-grid-h">Pick a coastline to explore</div>
-    <div class="hub-coverage">${escapeHtml(nt.coverage_note || (mk.length+' representative launch markets — illustrative, not the full footprint. The same software-defined fleet and in-app water tier extend to any coastline; these are the densest-demand starts.'))}</div>
-    <div class="hub-grid">${cards}</div>
-    ${partner.growth_case?`<div class="hub-growth">${_growthCaseHtml(partner.growth_case)}</div>`:''}
+    <button class="hub-cta" id="hub-browse-markets" type="button">Browse launch markets →</button>
+  </div>`;
+  const markets=`<div class="hub-tab-panel" data-panel="markets"${tab!=='markets'?' hidden':''}>
+    <div class="hub-markets-h">Potential launch markets</div>
+    <div class="hub-markets-sub">Each is a ready market with its own phased proposal. Start anywhere — Singapore is the recommended entry.</div>
+    <div class="hub-coverage">${escapeHtml(coverage)}</div>
+    <div class="hub-grid">${_hubMarketCardsHtml(partner)}</div>
+  </div>`;
+  return `<div class="hub-wrap">
+    <div class="hub-tabs">
+      <button class="hub-tab${tab==='overview'?' active':''}" data-tab="overview" type="button">Overview</button>
+      <button class="hub-tab${tab==='markets'?' active':''}" data-tab="markets" type="button">Launch markets</button>
+    </div>
+    ${overview}${markets}
   </div>`;
 }
 function openHubMarket(partner, market, fromLanding){
@@ -2974,9 +3048,16 @@ function _backToHub(){
   if (BUILD_PARTNER && window.__PARTNER_MARKET__){ location.href='/'+encodeURIComponent(partner.partner_id); return; }
   renderHubIndex(partner);
 }
-// Opening / "About this proposal" dialogue — hero + Your world + Why now, large and readable.
-function _introHtml(partner){
+// Opening / "Proposal" dialogue — step 1: pitch; step 2: full growth_case (when present).
+function _introGrowthPartner(partner){
+  if (partner&&partner.growth_case) return partner;
+  if (partner&&partner._hubOf&&partner._hubOf.growth_case) return partner._hubOf;
+  if (_HUB&&_HUB.partner&&_HUB.partner.growth_case) return _HUB.partner;
+  return partner;
+}
+function _introStep1Html(partner){
   const hero=partner.hero||{};
+  const gcPartner=_introGrowthPartner(partner);
   let h=`<div class="intro-mark">Partner proposal</div>
     <h2 class="intro-title">${escapeHtml(hero.title||partner.display||'')}</h2>
     ${hero.subtitle?`<div class="intro-sub">${escapeHtml(hero.subtitle)}</div>`:''}
@@ -2986,15 +3067,61 @@ function _introHtml(partner){
   if (!BUILD_PARTNER && partner.partner_id && !partner._hubOf) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
   h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
+  if (gcPartner&&gcPartner.growth_case) h+=`<button type="button" class="intro-jump-econ" id="intro-jump-econ">Jump to economics →</button>`;
   return h;
 }
-function openIntroDialog(partner){
+function _introStep2Html(partner){
+  const gcPartner=_introGrowthPartner(partner), gc=gcPartner&&gcPartner.growth_case;
+  if (!gc) return _introStep1Html(partner);
+  const gcData=gc;
+  const headline=(gcData.modal_headline)||'How big is the opportunity?';
+  const lead='Every rung traces to grounded corridor demand. Navier transport revenue, total journey spend, and your platform commission are different lenses on the same network — not a single "prize" number.';
+  return `<div class="intro-mark">The opportunity</div>
+    <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
+    <p class="intro-step-lead">${escapeHtml(lead)}</p>
+    ${_growthCaseHtml(gc, {inModal:true})}`;
+}
+function _introIsHubContext(partner){
+  if (partner&&partner._hubOf) return true;
+  if (partner&&(partner.layout==='hub'||partner.layout==='network')&&partner.markets) return true;
+  return !!(_HUB&&_HUB.partner);
+}
+function _hubPartnerFromContext(partner){
+  return (partner&&partner._hubOf)||(_HUB&&_HUB.partner)||((partner&&(partner.layout==='hub'||partner.layout==='network')&&partner.markets)?partner:null);
+}
+function _syncIntroChrome(){
+  const partner=_introPartner; if(!partner) return;
+  const body=document.getElementById('intro-body'), foot=document.querySelector('.intro-foot'), dlg=document.querySelector('.intro-dialog');
+  const gc=_introGrowthPartner(partner)&&_introGrowthPartner(partner).growth_case;
+  const hasStep2=!!gc;
+  if (dlg) dlg.classList.toggle('intro-step2', _introStep===2);
+  if (body) body.innerHTML = _introStep===2 && hasStep2 ? _introStep2Html(partner) : _introStep1Html(partner);
+  if (!foot) return;
+  const isHub=_introIsHubContext(partner);
+  if (_introStep===1){
+    foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
+      <div class="intro-foot-right">${hasStep2?`<button type="button" class="intro-start" id="intro-next">See the opportunity →</button>`:`<button type="button" class="intro-start" id="intro-start">Take the tour →</button>`}</div>`;
+  } else {
+    foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
+      <div class="intro-foot-right"><button type="button" class="intro-back" id="intro-back">Back</button>
+      ${isHub?`<button type="button" class="intro-start" id="intro-markets">Explore launch markets →</button>`:`<button type="button" class="intro-start" id="intro-start">Take the tour →</button>`}</div>`;
+  }
+  const skip=foot.querySelector('#intro-skip'); if(skip) skip.addEventListener('click', closeIntroDialog);
+  const back=foot.querySelector('#intro-back'); if(back) back.addEventListener('click',()=>{ _introStep=1; _syncIntroChrome(); });
+  const next=foot.querySelector('#intro-next'); if(next) next.addEventListener('click',()=>{ _introStep=2; _syncIntroChrome(); });
+  const start=foot.querySelector('#intro-start'); if(start) start.addEventListener('click', closeIntroDialog);
+  const markets=foot.querySelector('#intro-markets'); if(markets) markets.addEventListener('click',()=>{ closeIntroDialog(); const hub=_hubPartnerFromContext(partner); if(hub) renderHubIndex(hub,'markets'); });
+  const jump=body&&body.querySelector('#intro-jump-econ'); if(jump) jump.addEventListener('click',()=>{ _introStep=2; _syncIntroChrome(); });
+}
+function openIntroDialog(partner, step){
   // Fall back through the active context: carousel partner/market → hub index → the active aggregate partner.
   partner = partner || (_CARO&&_CARO.partner) || (_HUB&&_HUB.partner)
     || (PARTNER_ACTIVE && typeof PARTNERS!=='undefined' && PARTNERS && PARTNERS[PARTNER_ACTIVE.slug]);
   if(!partner) return;
   const m=document.getElementById('intro-modal'); if(!m) return;
-  document.getElementById('intro-body').innerHTML=_introHtml(partner);
+  _introPartner=partner;
+  _introStep = (step===2 && _introGrowthPartner(partner)&&_introGrowthPartner(partner).growth_case) ? 2 : 1;
+  _syncIntroChrome();
   m.hidden=false;
 }
 // Auto-open the scene-setting intro ONCE PER SESSION per page (keyed by partner/market). Returning to a
@@ -3250,7 +3377,7 @@ const _storyTrigger=document.getElementById('story-trigger');
 // left no way back.) The tour replaces the story list in a partner context, so the control reopens the
 // opening dialogue instead.
 if (BUILD_PARTNER || (PARTNER_ACTIVE && PARTNER_ACTIVE.proposal)){
-  _storyTrigger.textContent='About ▾'; _storyTrigger.title='About this proposal';
+  _storyTrigger.textContent='Proposal ▾'; _storyTrigger.title='Reopen the partner proposal';
   _storyTrigger.addEventListener('click',(e)=>{ e.stopPropagation(); const m=document.getElementById('intro-modal'); (m&&!m.hidden)?closeIntroDialog():openIntroDialog(); });
 } else {
   // Plain aggregate: the control browses the roster (partners grouped by category + stories).
@@ -3260,9 +3387,7 @@ if (BUILD_PARTNER || (PARTNER_ACTIVE && PARTNER_ACTIVE.proposal)){
 document.getElementById('story-close').addEventListener('click', closeStoryModal);
 storyModal.addEventListener('click', (e)=>{ if (e.target===storyModal) closeStoryModal(); });
 storyFilter.addEventListener('input', ()=>_renderBrowse(storyFilter.value));
-// Intro / "About this proposal" dialogue controls
-document.getElementById('intro-start').addEventListener('click', closeIntroDialog);
-document.getElementById('intro-skip').addEventListener('click', closeIntroDialog);
+// Intro / "Proposal" dialogue — footer buttons are wired dynamically in _syncIntroChrome().
 document.getElementById('intro-modal').addEventListener('click', (e)=>{ if (e.target.id==='intro-modal') closeIntroDialog(); });
 // Unit-economics breakdown dialog controls (delegated open from any "Full breakdown →" button).
 document.getElementById('econ-close').addEventListener('click', closeEconModal);

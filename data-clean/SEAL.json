@@ -19,8 +19,8 @@
    }
   },
   "ROUTES": {
-   "sha256": "3ff4fe18afa53e02cde7ae5766429d26295adf42b217cacfeee0b74d7cb90df2",
-   "count": 5276
+   "sha256": "01e43f3e90452c30dad15342e7f0ae64af47a0623fad5901317b5e45bfda4a64",
+   "count": 5280
   },
   "STORIES": {
    "count": 20,
@@ -55,14 +55,14 @@
    "internal",
    "deck_only"
   ],
-  "economics_records": 97
+  "economics_records": 105
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-10T15:00:26.840715Z",
+ "sealed_at": "2026-06-10T20:33:09.119989Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "sha256": "80e34c38a7bd591a4ebea807112074b711584eb055cf74840f94f0161cb61978",
-   "count": 97
+   "sha256": "02ebbcfff8d37cf7eecd97b3e263841fb4168ee08e0a614d2628aeaa4003283b",
+   "count": 105
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -234,7 +234,7 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 50,
+ "gold_seq": 51,
  "_gold31_routeid_distance_gate": {
   "applied": "2026-06-08",
   "issue": "LB-46 \u2014 gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
@@ -572,5 +572,17 @@
   "grab_bindings": "featured_routes bound 6/81 -> 59/81 (54 bound, 16 honest nulls _link_status=aspirational-no-built-route); mirrored to partner-pitch source",
   "gate_route_id_fixes": "constance nm 22->29.0 (stale post-#48-recal display value); SG-Desaru items node-pair aligned to gold route city pair; qatar sub-node keys -> city ids. 0 nulled after.",
   "note_for_claude": "rn-ef7c059adbde (SG->Desaru) to_city_id=singapore on a Malaysian-side endpoint (104.066,1.456) is an LB-67 tri-border classifier artifact - review. palma-mahon ruled 78nm was straight-line (crosses Mallorca interior); routed sea arc = 100.2nm, minted at routed nm per spec."
+ },
+ "_gold51_samui_pools_bindings": {
+  "applied_at": "2026-06-10",
+  "base": "Gold #50 navier-export-20260610T150216Z.zip (LB-67 overlay-only safe-reseal)",
+  "routes": "5276 -> 5280 (+4): koh-samui market ics-b90279ab06 Pralarn->Thong Sala 7.5nm, ics-66f63f2796 Nathon->Seatran Donsak 17.9nm, ics-5038f54700 Lipa Noi->Raja Donsak 14.3nm; ics-5288f62780 HCMC Bach Dang->Vung Tau 44.7nm (48-wp Long Tau channel arc, LB-63 verbatim splice). All Pioneer II, solver-verified pier endpoints.",
+  "grab_bindings": "34 audit binds (geometry-first) + Desaru rebind rn-ef7c059adbde->rn-5d1a30fbb0a9 / Bintan rn-f3670ea7d99b + KK-Gaya rn-1cdc5ab26bb3->rn-9d4c519ed0df; koh-samui market inserted (8 FRs + 4 journeys, all bound); null route_id items 66 -> 29; 17 audit-mint paths honest-null (no solved geometry).",
+  "demand_pools": "19 sourced pools into model/corridors.json (Sentosa 54k, East Coast 111k, Changi/Ubin 30k, Cebu-Bohol 2.0M, Vung Tau 100k, samui set...); R-SUBSET rule: _subset_of pier-slices excluded from market sums.",
+  "fleet_ruling": "market fleet = ceil(sum raw per-corridor vessel fractions @10% capture) at MARKET level. Grab floor 128->233 boats / $38.97M->$73.8M; ceiling 627->1142; root hub ramp now CALCULATED 2/7/151/233 (replaces authored 5/18/45/80); singapore phases 1/1/1 -> 2/2/2 grounded.",
+  "economics": "sidecar 97/5 -> 105/4 resolved/pending; EVERY record now carries an assumptions block (operating days, uptime x weather, revenue-leg pct, load, trips/day derivation, cycle time). Sentosa ics-69bad8b4c9 RESOLVED grounded payback 2.26yr.",
+  "gates": "endpoint label gate 0 HARD (13 weak single-token, benign \u2014 new G51 pool labels); gate_city_ids PASS (198 nodes, 5280 routes, 75 clusters).",
+  "geometry": "CLUSTERS/FEATURES/STORIES/VESSEL_SPECS byte-unchanged from #50 (hash-verified); 5276 prior route geometries byte-identical (Phase A re-dump proof).",
+  "note_for_claude": "render assumptions block on corridor cards; fix \"1 vessels\" pluralization; Sentosa featured-route deep-link now resolves; rebuild front end from this zip."
  }
 }
