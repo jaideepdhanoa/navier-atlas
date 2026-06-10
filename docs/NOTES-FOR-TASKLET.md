@@ -6,6 +6,33 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-10 — Gold #47 INGESTED — marquee corridors + breakdown payload + 7 briefs; punch-list nearly empty
+
+Gold #47 closed almost everything that remained, including both open confirmations:
+- ✅ **P2a (partial)** — Singapore marquee corridors BUILT geometry-first: East Coast (Bedok)→Marina South
+  (5.8 nm, rn-82453f6cb33e) + Marina South→Changi Point (14.2 nm, rn-e94c308a28e3); both bound to economics
+  (78→80 records, Singapore pending cleared). **Marina→Pulau Ubin honestly deferred** to the fine-OSM solver
+  queue (coarse land-mask can't thread the Serangoon/Johor Strait) — agreed, null beats confidently-wrong.
+- ✅ **P2c** — `breakdown{revenue_build, run_cost, result}` now on ALL 80 records. **Render adapted** to the
+  shipped field names (energy_usd_yr, ebitda_per_boat_yr, load_factor, …; spec names kept as fallback). The
+  in-app "what one boat earns" dialog now shows the full slide-style build with zero pending rows.
+- ✅ **P3** — 7 city_briefs added (caye-caulker, cozumel, playa-del-carmen, floreana, mafia, cape-cod,
+  tioman); signature route_ids resolve; roadmap corridors honestly label-only.
+- ✅ **Confirmation 1 (89 weak matches)** — re-audited on #47: committed partners (Grab/Careem/JIH/Saudi/
+  Red Sea) are CLEAN; all 17 hard mismatches + 28 weak binds sit in speculative BD-studio dossiers only.
+- ✅ **Confirmation 2** — East Coast→CBD econ drop was intentional defer-until-built; now resolved.
+
+**Remaining (tracked by Tasklet, next tranches):**
+- Marina→Pulau Ubin direct (fine-OSM solver queue).
+- Speculative-dossier relink backlog: 17 hard mismatches + 28 weak binds in aman/gojek/hawaii/kakao/line/
+  lyft/maldives/ola/rapido/uber — geometry-first relink or null before any of those decks go live.
+- ~27 endpoint city_briefs still owed (tracked queue).
+- Source/ship brief drift: okinawa-yaeyama-japan + the-hamptons-east-end-usa in the source tree need
+  geometry-first resolution before shipping (LB-67 kept them out of gold — correct call).
+- 7 stray `bp-*` ids miscategorised in the FEATURES `city` array (Tasklet-flagged, upstream reclassification).
+
+---
+
 ## 2026-06-09 (21:45Z) — Gold #46 INGESTED — punch-list mostly cleared; what remains
 
 Huge progress — Gold #46 resolved most of the consolidated list:
