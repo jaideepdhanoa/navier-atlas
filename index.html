@@ -88,9 +88,9 @@ body.panel-hidden #panel { width:0 !important; }
 }
 #story-trigger:hover { border-color:rgba(224,203,143,0.45); color:var(--accent); }
 /* Stories browser dialog — filterable card grid (scales past a dropdown). */
-#story-modal, #intro-modal { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center;
+#story-modal, #intro-modal, #econ-modal { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center;
   padding:40px; background:rgba(9,9,11,0.72); backdrop-filter:blur(6px); }
-#story-modal[hidden], #intro-modal[hidden] { display:none; }
+#story-modal[hidden], #intro-modal[hidden], #econ-modal[hidden] { display:none; }
 .story-dialog { width:min(960px,92vw); max-height:84vh; display:flex; flex-direction:column;
   background:rgba(24,24,27,0.98); border:1px solid var(--line-strong); border-radius:16px; overflow:hidden;
   box-shadow:0 24px 80px rgba(0,0,0,0.55); }
@@ -134,7 +134,8 @@ body.panel-hidden #panel { width:0 !important; }
 .econ-line.pending .v { color:var(--text-2); font-weight:400; font-style:italic; }
 .econ-foot { margin-top:16px; font:400 12px/1.6 Inter; color:var(--text-2); }
 .econ-foot .gc-cite { margin-top:6px; }
-.rec-breakdown { display:inline-block; margin-top:10px; background:rgba(224,203,143,0.10); border:1px solid rgba(224,203,143,0.4);
+.rec-actions { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin-top:12px; }
+.rec-breakdown { display:inline-block; margin-top:0; background:rgba(224,203,143,0.10); border:1px solid rgba(224,203,143,0.4);
   color:var(--accent); font:600 12px Inter; padding:7px 13px; border-radius:8px; cursor:pointer; }
 .rec-breakdown:hover { background:rgba(224,203,143,0.18); }
 .pcaro-jchip.econ { color:#e0cb8f; border-color:rgba(224,203,143,0.4); }
@@ -229,7 +230,7 @@ body.panel-hidden #panel { width:0 !important; }
 #legend .sub { font-size:8.5px; text-transform:uppercase; letter-spacing:0.13em; color:var(--text-2); font-weight:600; opacity:0.75; margin:10px 0 4px; padding-top:8px; border-top:1px solid var(--line); }
 #legend .row { display:flex; align-items:center; gap:8px; padding:2px 0; }
 #legend .econ-row { cursor:pointer; user-select:none; }
-#legend .econ-row .econ-dot { width:8px; height:8px; border-radius:50%; background:#e0cb8f; border:1px solid #0a0e14; box-shadow:0 0 7px rgba(224,203,143,0.7); }
+#legend .econ-row .econ-dot { width:8px; height:8px; border-radius:50%; background:#22d3ee; border:1px solid #0a0e14; box-shadow:0 0 7px rgba(34,211,238,0.65); }
 #legend .econ-row.off { opacity:0.45; }
 #legend .econ-row.off .econ-dot { background:transparent; box-shadow:none; }
 #legend .dot { width:9px; height:9px; border-radius:50%; box-shadow:0 0 8px currentColor; }
@@ -510,7 +511,7 @@ body.panel-hidden #footer { display:block; }
 .rec-also-h { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); font-weight:600; margin-bottom:4px; }
 .rec-also-row { font-size:11.5px; color:var(--text-1); padding:3px 0; line-height:1.4; }
 .rec-also-row .muted { color:var(--text-2); }
-.rec-deck { display:inline-block; margin-top:11px; font-size:11.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+.rec-deck { display:inline-block; margin-top:0; font-size:11.5px; font-weight:600; color:var(--accent); text-decoration:none; }
 .rec-deck:hover { text-decoration:underline; }
 .pcaro-close .t { font-size:13px; font-weight:700; color:var(--text-0); line-height:1.4; }
 .pcaro-close .b { font-size:12px; color:var(--text-1); line-height:1.6; margin-top:6px; }
@@ -826,7 +827,7 @@ body.panel-hidden #footer { display:block; }
     <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤700 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
     <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
     <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤700 nm</span></div>
-    <div class="row econ-row" id="econ-toggle" title="Corridors with unit economics — click the route to see the model"><span class="econ-dot"></span>Economics <span class="muted">— corridor has a model</span></div>
+    <div class="row econ-row" id="econ-toggle" title="Cyan bead trail = corridor has unit economics (distinct from amber Quanta-LR dashes)"><span class="econ-dot"></span>Economics <span class="muted">— cyan bead trail</span></div>
     <div class="sub disclosure" id="bp-toggle"><span class="caret">›</span>Boarding points</div>
     <div id="bp-list" class="collapsed">
       <div class="row"><span class="gly" style="color:#60a5fa">⚓</span>Marina</div>
@@ -1259,9 +1260,9 @@ map.on('load', () => {
   // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
   map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
     paint:{ 'line-color':'#6ee7b7','line-width':W_P2,'line-opacity':O_P2 }});
-  // D0 — economics discoverability: a STRING OF GOLD BEADS tracing every corridor that has a unit-economics
+  // D0 — economics discoverability: a STRING OF CYAN BEADS tracing every corridor that has a unit-economics
   // record (ROUTE_ECONOMICS), so econ routes stand out in a crowded mesh (replaces the old single midpoint
-  // dot). A dark halo bead sits under each gold bead (same pixel period, wider) to keep them legible over
+  // dot). A dark halo bead sits under each cyan bead (same pixel period, wider) to keep them legible over
   // both the mint Pioneer lines and the amber Quanta-LR dashes. grounded brighter than estimated (honesty as
   // opacity); minzoom keeps the world view clean (~77 sparse routes). Toggle via the legend "Economics" row.
   const _econLines = { type:'FeatureCollection', features:(typeof ROUTE_ECONOMICS!=='undefined' ? ROUTE_FC.features : []).map(f=>{
@@ -1276,7 +1277,7 @@ map.on('load', () => {
             'line-opacity':['match',['get','econ'],'grounded',0.85,0.5] }});
   map.addLayer({ id:'route-econ', type:'line', source:'route-econ-pts', minzoom:4.5,
     layout:{ 'line-cap':'round','line-join':'round' },
-    paint:{ 'line-color':'#e0cb8f', 'line-width':2.7, 'line-dasharray':[0,2.88],
+    paint:{ 'line-color':'#22d3ee', 'line-width':2.7, 'line-dasharray':[0,2.88],
             'line-opacity':['match',['get','econ'],'grounded',0.95,0.6] }});
   // Terminus connector nodes — a dot at EVERY route endpoint so no line dangles into empty
   // water. Bridges the band gap (visible z7+) before boarding-point glyphs appear (z10), then
@@ -1857,7 +1858,9 @@ function _routeEconHtml(rec){
     figs.push(['Market revenue / yr', _econMoney(m.market_rev_yr), '']);
   }
   if (!figs.length) return '';
-  const st=String(rec.status||''), dc=String(rec.demand_confidence||'');
+  const st=String(rec.status||'');
+  const dcRaw=rec.demand_confidence;
+  const dc=(dcRaw!=null && String(dcRaw).trim() && String(dcRaw).toLowerCase()!=='null') ? String(dcRaw) : '';
   const stCls = st==='grounded' ? 'gc-conf-grounded' : 'gc-conf-medlow';
   const stTip = (st!=='grounded' && rec.estimation_basis) ? ` title="estimated · ${escapeHtml(rec.estimation_basis)}"` : '';
   let h=`<div class="panel-section"><h3>Unit economics</h3>`;
@@ -1878,8 +1881,12 @@ function _routeEconHtml(rec){
       return `<div class="rec-also-row">${escapeHtml(lbl)}<span class="muted">${escapeHtml(d+rev)}</span></div>`;
     }).join('')}</div>`;
   }
-  if (rec.route_id) h+=`<button class="rec-breakdown" data-eb="${escapeHtml(rec.route_id)}">Full breakdown →</button>`;
-  if (rec.deck_url) h+=`<a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a>`;
+  if (rec.route_id || rec.deck_url){
+    h+=`<div class="rec-actions">`;
+    if (rec.route_id) h+=`<button type="button" class="rec-breakdown" data-eb="${escapeHtml(rec.route_id)}">Full breakdown →</button>`;
+    if (rec.deck_url) h+=`<a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a>`;
+    h+=`</div>`;
+  }
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
   if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}</div>`;
   h+=`</div>`;
@@ -2017,6 +2024,7 @@ function showRouteDetail(p){
   panel.scrollTop = 0;
   const cl = document.getElementById('route-clear');
   if (cl) cl.addEventListener('click', clearSelection);
+  panel.querySelectorAll('.rec-breakdown[data-eb]').forEach(btn=>btn.addEventListener('click', (e)=>{ e.stopPropagation(); openEconModal(btn.dataset.eb); }));
 }
 // ---- Rich city pitch panel (CITY_BRIEFS) ----
 const _ARCH = {public_transit:'Public transit', super_app:'Super-app', tourism:'Tourism', luxury_charter:'Luxury charter', corporate:'Corporate', charter:'Charter', hospitality:'Hospitality'};
