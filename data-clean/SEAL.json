@@ -19,8 +19,8 @@
    }
   },
   "ROUTES": {
-   "sha256": "0dfeefdd6acc3f03be2138ac5a1e3ad66b9846ce41e08600b10fd3015dc6f25f",
-   "count": 5260
+   "sha256": "d31cad7c5d633a8623a43773eaec683e7cb4c6aa8161149b1f535038fc8a549e",
+   "count": 5269
   },
   "STORIES": {
    "count": 20,
@@ -55,14 +55,14 @@
    "internal",
    "deck_only"
   ],
-  "economics_records": 80
+  "economics_records": 97
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-09T22:27:13.784753Z",
+ "sealed_at": "2026-06-10T03:51:13.578997Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "sha256": "464bab3076204f380c3f6d196ee707a99bf239b59e43e4e457e4cb28c2215d49",
-   "count": 80
+   "sha256": "9f1303203f4f04e263468112375cb3c6d711441c1e4c8f8b584ea98336eed586",
+   "count": 97
   }
  },
  "_uae_luxury_corridor_edges": {
@@ -234,7 +234,7 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 47,
+ "gold_seq": 48,
  "_gold31_routeid_distance_gate": {
   "applied": "2026-06-08",
   "issue": "LB-46 — gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
@@ -552,5 +552,14 @@
   "confirmations_for_claude": "CONFIRM-FOR-CLAUDE-g47.md: (1) committed-partner label binds clean; weak/mismatch backlog is speculative-dossier only; (2) East Coast->CBD econ drop was intentional defer-until-built, now resolved",
   "economics": "sidecar 80 resolved / 21 pending",
   "geometry": "5258 existing route geometries byte-unchanged; +2 appended (5260 total)"
+ },
+ "_gold48_partner_recal": {
+  "applied_at": "2026-06-10",
+  "base": "Gold #47 navier-export-20260609T223827Z.zip (LB-67 overlay-only safe-reseal)",
+  "routes": "5260 -> 5269 (+9): 4 JIH/Maldives Velana mints (Patina Fari 27.4nm, Ritz Fari 26.5nm, Waldorf Ithaafushi 14.6nm, Westin Miriandhoo 61.4nm; Pioneer II), 3 Careem/UAE mints (rn-2e112eb57142 Bluewaters->Festival City 18.1nm, rn-2f5e450c7e2c Dubai Harbour->Saadiyat 52.4nm, rn-f94dae947809 Dubai Harbour->Wynn Al Marjan 53.3nm; Pioneer II), 2 Saudi mints (ics-4e71b19ab7 Sindalah->Magna 30.8nm Pioneer II, ics-c52891a862 Shura->AMAALA 82.9nm Quanta-LR)",
+  "jih_recal": "35 e__velana__/e__mald__ arcs rebuilt with independently verified endpoints (LB-69: gold resort-edge displacement; worst St Regis Vommuli 2.7->17.0nm, Standard Huruvalhi 11.5->40.4nm). All arcs water-solved + fine-OSM verified (LB-59/66); spliced verbatim, no straight-line re-gate (B2 rule).",
+  "economics": "sidecar 80/21 -> 97/5 (qatar partner added to PARTNERS; new qatar market 4 corridors/3 agg rows; JIH 43/43 resolved; saudi-redsea/RSG geometry-first rebinds). Remaining 5 pending = grab endpoints_city_level_not_pinned.",
+  "gates": "endpoint label gate 0 HARD (13 weak single-token, benign); gate_city_ids PASS (198 nodes, 5269 routes, 75 clusters)",
+  "geometry": "CLUSTERS/FEATURES/STORIES/VESSEL_SPECS byte-unchanged from #47 (hash-verified)"
  }
 }

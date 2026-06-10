@@ -6,6 +6,38 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-10 — Gold #48 INGESTED (`navier-export-20260610T035209Z.zip`)
+
+Ingested on the render lane. Updated `data-clean/ROUTES.json` (5,260→**5,269**), `economics_by_route_id.json`
+(80→**97** resolved / 21→**5** pending), `SEAL.json` (sealed 2026-06-10T03:51Z). Partners/city_briefs/
+cluster_briefs/FEATURES/STORIES/VESSEL_SPECS **byte-unchanged** vs #47 — no render-template edits required;
+`build.mjs` + pre-flight green (0 exclusion hits · 0 rejected MapLibre layers · route lines bound).
+
+**What landed:**
+- **JIH/Maldives recal (LB-69):** 35 existing `e__velana__`/`e__mald__` arcs geometry-corrected (stable
+  route_ids; distances updated to routed sea nm) + 4 new Velana spokes minted (Patina/Ritz/Waldorf/Westin).
+  JIH economics now **43/43 resolved** (was the bulk of #47's 21 pending).
+- **Careem/UAE mints (+3 Pioneer II):** Bluewaters→Festival City Creek (18.1 nm), Dubai Harbour→Saadiyat
+  (52.4 nm), Dubai Harbour→Wynn Al Marjan (53.3 nm). Careem econ **10→14**.
+- **Saudi/RSG mints (+2):** Sindalah→Magna (30.8 nm P2), Shura→AMAALA Triple Bay (82.9 nm QLR).
+  Saudi-PIF + Red Sea Global now carry economics (was 0 in #47 ask).
+- **Qatar market (NEW):** 3 near-term agg econ rows in sidecar; `qatar` partner deck already ships —
+  `/qatar` partner page builds clean.
+
+**Render verification:** all 9 new route_ids present in ROUTES + 8/9 have econ records (QLR Shura→AMAALA
+  `ics-c52891a862` has route geometry but no sidecar row yet — fine if intentional defer). Gold econ beads +
+  breakdown modal join automatically via `ROUTE_ECONOMICS[route_id]`. No `index.html` change this cycle.
+
+**Still open (next asks, unchanged priority):**
+1. **Grab featured_route binding** — still the top item; #48 did not touch partner phase `route_id` links.
+   Geometry exists for many corridors; need geometry-first bind on `featured_routes` so phase carousel
+   clicks light the real line + econ chip.
+2. **Economics widen** — MENA committed partners improved (#48), but regional flagships (Europe/Americas)
+   and the 5 `_pending_route_pin` Grab defers remain.
+3. **City-brief queue + bp-* reclassification** — unchanged from prior note (~18 cities + 7 stray bp-* ids).
+
+---
+
 ## 2026-06-10 — NEXT ASKS (post Gold #47 merge): bind Grab phases to the built corridors + widen econ
 
 Gold #47 is live on main. The biggest remaining GRAB item is no longer building corridors — it's LINKING
@@ -19,6 +51,7 @@ unbuilt) so clicking a featured route lights the real line + travel time + the e
 Second: **economics coverage is 3 partners only** (grab 31 / jih 39 / careem 10). Saudi-PIF and Red Sea
 Global are committed partners with 0 records — extend the sidecar + breakdown to their corridors next, then
 the regional flagships (MENA/Europe/Americas) so the gold econ-bead layer isn't SEA-only.
+_(Partially addressed by Gold #48 — Saudi/RSG/Qatar now have records; Grab binding + regional widen still owed.)_
 
 Third: the ~27 endpoint-brief queue resolves to **18 real cities** (barbados, boracay, crete, halkidiki,
 havana, izu-islands, izu-peninsula, marquesas, miyako, montego-bay, el-nido (bacuit), rangiroa, rhodes,
