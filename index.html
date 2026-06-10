@@ -1772,8 +1772,8 @@ let _navStack = [], _navCurrent = null, _navReplaying = false;
 function _navEnter(desc){ if (_navReplaying) return; if (_navCurrent && _navCurrent.key !== desc.key) _navStack.push(_navCurrent); _navCurrent = desc; }
 function _navBack(){ if (!_navStack.length) return; _navReplaying = true; _navCurrent = _navStack.pop(); try { _navCurrent.render(); } finally { _navReplaying = false; } }
 function _navReset(){ _navStack = []; _navCurrent = null; }
-// Geographic-exploration mode = aggregate, no partner/carousel active → the top-nav breadcrumb is live.
-function _geoMode(){ return !BUILD_PARTNER && !PARTNER_ACTIVE && !(typeof _CARO!=='undefined' && _CARO); }
+// Geographic-exploration mode = aggregate (no partner/carousel) OR a locked partner build → top-nav breadcrumb is live.
+function _geoMode(){ return BUILD_PARTNER || (!PARTNER_ACTIVE && !(typeof _CARO!=='undefined' && _CARO)); }
 function _navBackHtml(){ if (!_navStack.length) return ''; const prev=_navStack[_navStack.length-1]; const l=(prev&&prev.label)?String(prev.label).slice(0,40):'Back'; return `<button class="pcaro-back" id="nav-back">← ${escapeHtml(l)}</button>`; }
 (function(){ const pnl=(typeof document!=='undefined')&&document.getElementById('panel'); if (pnl) pnl.addEventListener('click', e=>{ if (e.target.closest('#nav-back')){ e.stopPropagation(); _navBack(); } }); })();
 const _INTERACTIVE_LAYERS = ['route-p2','route-qlr','priority-points','priority-halo','city-points','city-halo','city-clusters','poi-points','poi-halo','poi-clusters','cluster-points'];
@@ -3309,8 +3309,9 @@ document.querySelectorAll('.chip').forEach(b => {
 (function(){
   const host = document.getElementById('region-chips');
   if (!host) return;
-  // Locked partner page: drop the aggregate region/Global nav entirely (the page is one market).
-  if (BUILD_PARTNER){ const p=document.getElementById('presets'); if (p) p.style.display='none'; return; }
+  const isPartner = !!BUILD_PARTNER;
+  const rootLabel = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER]
+    ? (PARTNERS[BUILD_PARTNER].display || BUILD_PARTNER) : 'Global';
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America & Caribbean', 'Caribbean':'Latin America & Caribbean' };
   const norm = r => ALIAS[r] || r;
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
@@ -3343,6 +3344,22 @@ document.querySelectorAll('.chip').forEach(b => {
     (cityNodesByRegion[norm(p.region)] = cityNodesByRegion[norm(p.region)] || []).push({ id:p.id, coords:co, props:p, name:(p.shortName||p.name||p.id) });
   }
   for (const r in clustersByRegion) for (const cl of clustersByRegion[r]) for (const c of cl.cities) clusteredCityIds.add(c.id);
+  // Partner pages: skip tiers that would be a single chip (one region / cluster / city).
+  const labels = Object.keys(regions).sort((a,b)=> a.localeCompare(b));
+  const uniqueClusters = [];
+  const seenCluster = new Set();
+  for (const r of labels) for (const cl of (clustersByRegion[r]||[])) if (!seenCluster.has(cl.id)) { seenCluster.add(cl.id); uniqueClusters.push({ ...cl, region: r }); }
+  uniqueClusters.sort((a,b)=> a.label.localeCompare(b.label));
+  const allCityNodes = [];
+  const seenCity = new Set();
+  for (const r of labels) for (const c of (cityNodesByRegion[r]||[])) if (!seenCity.has(c.id)) { seenCity.add(c.id); allCityNodes.push(c); }
+  allCityNodes.sort((a,b)=> a.name.localeCompare(b.name));
+  // Partner: skip the region tier when there's only one, or when multiple clusters are the meaningful unit
+  // (e.g. Grab → countries flat; Careem → one region + one cluster → falls through to cities).
+  const skipRegion = isPartner && (labels.length <= 1 || uniqueClusters.length > 1);
+  const skipCluster = isPartner && uniqueClusters.length <= 1;
+  const skipCity = isPartner && allCityNodes.length <= 1;
+  if (isPartner && skipCity) { const p=document.getElementById('presets'); if (p) p.style.display='none'; }
 
   const clearActive = ()=>document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
   const fitRegion = (label)=>{ const b=regions[label]; if (b) map.fitBounds([[b.minX,b.minY],[b.maxX,b.maxY]], { padding:90, maxZoom:9, duration:1400, essential:true }); };
@@ -3350,8 +3367,9 @@ document.querySelectorAll('.chip').forEach(b => {
     let mnx=Infinity,mny=Infinity,mxx=-Infinity,mxy=-Infinity; for(const c of cities){ const[x,y]=c.coords; mnx=Math.min(mnx,x);mny=Math.min(mny,y);mxx=Math.max(mxx,x);mxy=Math.max(mxy,y); }
     map.fitBounds([[mnx,mny],[mxx,mxy]],{padding:90,maxZoom:10,duration:1300,essential:true}); };
   const flyCity = (c)=>{ map.flyTo({center:c.coords, zoom:10, duration:1400, essential:true}); try{ showDetail(c.props, c.coords); }catch(e){} };
-  // Regions listed alphabetically (stable, predictable order regardless of city count).
-  const labels = Object.keys(regions).sort((a,b)=> a.localeCompare(b));
+  const clusterFromId = (clId)=>{ const c=CLUSTER_BY_ID[clId]; if(!c) return null;
+    const cities=(c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
+    cities.sort((a,b)=>a.name.localeCompare(b.name)); return cities.length?{ id:c.cluster_id, label:c.cluster_label||c.cluster_id, cities }:null; };
   const MAX_INLINE = 99;   // show every region inline (the row flex-wraps) — no "More" dropdown
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
 
@@ -3395,17 +3413,53 @@ document.querySelectorAll('.chip').forEach(b => {
     });
     if (!cls.length && !(cityNodesByRegion[label]||[]).length) renderRegions();   // empty region → don't strand the row
   }
-  // Tier 3: the cities of one cluster (+ a "‹ {region}" back chip to that region's clusters).
+  // Flat cluster row (partner: single region → skip the region tier, list countries/clusters directly).
+  function renderAllClusters(){
+    closeMore(); host.innerHTML='';
+    uniqueClusters.forEach(cl=>{
+      const btn=document.createElement('button'); btn.className='chip cluster'; btn.textContent=cl.label;
+      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active');
+        if (cl.cities.length===1) flyCity(cl.cities[0]); else { fitCities(cl.cities); renderClusterCities(cl.region, cl); } });
+      host.appendChild(btn);
+    });
+    allCityNodes.filter(c=>!clusteredCityIds.has(c.id)).forEach(c=>{
+      const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
+      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
+    });
+    if (!uniqueClusters.length && !allCityNodes.length) renderEntry();
+  }
+  // Flat city row (partner: single region + single cluster → cities only, e.g. Careem/UAE).
+  function renderAllCities(){
+    closeMore(); host.innerHTML='';
+    fitCities(allCityNodes);
+    allCityNodes.forEach(c=>{
+      const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
+      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); });
+      host.appendChild(btn);
+    });
+  }
+  // Tier 3: the cities of one cluster (+ back to clusters / regions / partner root as appropriate).
   function renderClusterCities(regionLabel, cl){
     closeMore(); host.innerHTML='';
-    const back=document.createElement('button'); back.className='chip region back'; back.textContent='‹ '+regionLabel; back.title='Back to '+regionLabel+' clusters';
-    back.addEventListener('click',()=>{ clearActive(); fitRegion(regionLabel); renderClusters(regionLabel); });
-    host.appendChild(back);
+    if (!skipCluster){
+      const back=document.createElement('button'); back.className='chip region back';
+      back.textContent=skipRegion ? ('‹ '+rootLabel) : ('‹ '+regionLabel);
+      back.title=skipRegion ? ('Back to '+rootLabel) : ('Back to '+regionLabel+' clusters');
+      back.addEventListener('click',()=>{ clearActive(); if (skipRegion) renderAllClusters(); else { fitRegion(regionLabel); renderClusters(regionLabel); } });
+      host.appendChild(back);
+    }
     cl.cities.forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
       btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); });
       host.appendChild(btn);
     });
+  }
+  // Partner entry: start at the first tier that isn't skipped; aggregate always starts at regions.
+  function renderEntry(){
+    if (skipCity){ if (allCityNodes.length===1) flyCity(allCityNodes[0]); return; }
+    if (skipRegion && skipCluster) renderAllCities();
+    else if (skipRegion) renderAllClusters();
+    else renderRegions();
   }
   // city id → normalized region (all tiers), for the breadcrumb.
   const cityRegion={};
@@ -3415,14 +3469,18 @@ document.querySelectorAll('.chip').forEach(b => {
   const _sep=()=>{ const s=document.createElement('span'); s.className='crumb-sep'; s.textContent='›'; host.appendChild(s); };
   function renderBreadcrumb(o){   // {cityId, cityName, region, cityProps, cityCoords, routeLabel}
     closeMore(); host.innerHTML='';
-    _crumb('Global', ()=>{ clearActive(); renderRegions(); });
+    _crumb(rootLabel, ()=>{ clearActive(); renderEntry(); });
     const region = o.region ? norm(o.region) : (o.cityId && cityRegion[o.cityId]);
-    if (region && regions[region]) { _sep(); _crumb(region, ()=>{ clearActive(); fitRegion(region); renderClusters(region); }); }
-    // Cluster level (Global › Region › Cluster › City): the country/archipelago the city belongs to.
+    if (!skipRegion && region && regions[region]) { _sep(); _crumb(region, ()=>{ clearActive(); fitRegion(region); renderClusters(region); }); }
+    // Cluster level (root › Region › Cluster › City): the country/archipelago the city belongs to.
     const cl = o.cityId && typeof CITY_TO_CLUSTER!=='undefined' && CITY_TO_CLUSTER[o.cityId];
-    const clObj = cl && CLUSTER_BY_ID[cl];
+    const clNav = cl && clusterFromId(cl);
     // Skip the cluster crumb when it would just duplicate the city (single-city metros, e.g. Singapore).
-    if (clObj && clObj.cluster_label !== o.cityName) { _sep(); _crumb(clObj.cluster_label, ()=>{ clearActive(); showClusterBrief(cl); }); }
+    if (!skipCluster && clNav && clNav.label !== o.cityName) { _sep(); _crumb(clNav.label, ()=>{ clearActive();
+      fitCities(clNav.cities);
+      if (clNav.cities.length===1) flyCity(clNav.cities[0]);
+      else renderClusterCities(region||clNav.cities[0]&&cityRegion[clNav.cities[0].id]||'', clNav);
+    }); }
     if (o.cityName){ _sep();
       if (o.routeLabel && o.cityProps) _crumb(o.cityName, ()=>{ map.flyTo({center:o.cityCoords, zoom:Math.max(10,map.getZoom()), duration:900, essential:true}); try{ showDetail(o.cityProps,o.cityCoords); }catch(e){} });
       else _crumb(o.cityName, null);
@@ -3430,10 +3488,11 @@ document.querySelectorAll('.chip').forEach(b => {
     if (o.routeLabel){ _sep(); _crumb(o.routeLabel, null); }
   }
   window._topNavDrill = renderBreadcrumb;
-  window._topNavReset = ()=>{ renderRegions(); };
+  window._topNavReset = ()=>{ renderEntry(); };
   document.addEventListener('click', closeMore);
-  const g=document.querySelector('.chip.lead[data-c="global"]'); if (g) g.addEventListener('click', renderRegions);  // Global resets to the region row
-  renderRegions();
+  const g=document.querySelector('.chip.lead[data-c="global"]');
+  if (g){ if (isPartner) g.textContent=rootLabel; g.addEventListener('click', renderEntry); }
+  renderEntry();
 })();
 
 // Layer toggles removed (v17) — all layers are always on; the map key explains them, so the
