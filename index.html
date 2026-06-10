@@ -1886,53 +1886,76 @@ function _routeEconHtml(rec){
   return h;
 }
 // ---- Unit-economics breakdown DIALOG ("what one boat earns" — mirrors the slide-deck layout).
-// Renders Tasklet's structured `rec.breakdown` when present; otherwise shows the summary + figures we can
-// derive exactly from published fields (profit = revenue×margin; run cost = revenue−profit) and marks the
-// granular build inputs as "pending from the model" — never invents trips/seats/cost-stack numbers.
+// Gold #47 ships structured `rec.breakdown{revenue_build, run_cost, result}` on every record; field names
+// are the sidecar's (energy_usd_yr, ebitda_per_boat_yr, load_factor, …) with the original spec names kept
+// as fallbacks. When breakdown is absent entirely we fall back to summary + figures derived exactly from
+// published fields (profit = revenue×margin; run cost = revenue−profit) and mark the granular build inputs
+// "pending from the model" — never invent trips/seats/cost-stack numbers.
 function _econPct(x){ return (x==null||isNaN(x))?'':Math.round(x*100)+'%'; }
 function _econNum(n){ return (n==null||isNaN(n))?'':Number(n).toLocaleString('en-US'); }
 function _econModalHtml(rec){
   const m=rec.mid||{}, bd=rec.breakdown||{}, rb=bd.revenue_build||{}, rc=bd.run_cost||{}, rs=bd.result||{};
   const corridor=String(rec.corridor||'').replace(/->/g,'→');
   const sub=[rec.vessel, rec.distance_nm!=null?Math.round(rec.distance_nm)+' nm':'', rec.market].filter(Boolean).join(' · ');
-  // Figures: prefer authored breakdown, then summary, then exact arithmetic derivations.
-  const rev    = rs.revenue_boat_yr ?? rb.revenue_boat_yr ?? m.rev_per_boat_yr;
-  const margin = rs.operating_margin ?? m.margin;
-  const profit = rs.profit_boat_yr ?? ((rev!=null&&margin!=null) ? rev*margin : null);
-  const runTot = rc.total ?? ((rev!=null&&profit!=null) ? rev-profit : null);
+  const hasBreakdown = Object.keys(rb).length || Object.keys(rc).length || Object.keys(rs).length;
+  // Figures (dual-schema ?? chains: Gold #47 sidecar names, then spec names, then summary/derivation).
+  const rev    = rb.revenue_per_boat_yr ?? rs.revenue_boat_yr ?? rb.revenue_boat_yr ?? m.rev_per_boat_yr;
+  const margin = rs.margin ?? rs.operating_margin ?? m.margin;
+  const profit = rs.ebitda_per_boat_yr ?? rs.profit_boat_yr ?? ((rev!=null&&margin!=null) ? rev*margin : null);
+  const runTot = rc.annual_opex_usd_yr ?? rc.total ?? ((rev!=null&&profit!=null) ? rev-profit : null);
   const payback= rs.payback_years ?? m.payback_years;
-  const co2    = rs.co2_t_yr ?? m.co2_saved_t_per_boat_yr;
+  const co2    = rs.co2_saved_t_per_boat_yr ?? rs.co2_t_yr ?? m.co2_saved_t_per_boat_yr;
   const capex  = rs.vessel_capex;
-  const fare   = rb.fare_usd ?? rec.navier_fare_usd;
+  const fare   = rb.navier_fare_usd ?? rb.fare_usd ?? rec.navier_fare_usd;
   const L=(label,val,cls)=>`<div class="econ-line${cls?(' '+cls):''}"><span>${escapeHtml(label)}</span><span class="v">${val===''||val==null?'—':escapeHtml(String(val))}</span></div>`;
-  const pend='pending from the model';
-  // REVENUE BUILD
-  let build='';
-  build+=L('Trips / day', rb.trips_per_day!=null?_econNum(rb.trips_per_day):pend, rb.trips_per_day==null?'pending':'');
-  build+=L('Operating days / yr', rb.operating_days_yr!=null?_econNum(rb.operating_days_yr):pend, rb.operating_days_yr==null?'pending':'');
-  build+=L('Revenue legs', rb.revenue_legs_pct!=null?_econPct(rb.revenue_legs_pct):pend, rb.revenue_legs_pct==null?'pending':'');
-  build+=L('Seats / trip', rb.seats_per_trip!=null?_econNum(rb.seats_per_trip):pend, rb.seats_per_trip==null?'pending':'');
-  build+=L('Paid seats / yr', rb.paid_seats_yr!=null?_econNum(rb.paid_seats_yr):pend, rb.paid_seats_yr==null?'pending':'');
-  build+=L('Fare / seat', fare!=null?('$'+_econNum(fare)):pend, fare==null?'pending':'');
-  build+=L('Revenue / boat·yr', rev!=null?_econMoney(rev):'—', 'total');
-  // ANNUAL RUN COST
-  let cost='';
-  cost+=L('Energy', rc.energy!=null?_econMoney(rc.energy):pend, rc.energy==null?'pending':'');
-  cost+=L('Captain / crew', rc.crew!=null?_econMoney(rc.crew):pend, rc.crew==null?'pending':'');
-  cost+=L('Marina + overhead', rc.marina_overhead!=null?_econMoney(rc.marina_overhead):pend, rc.marina_overhead==null?'pending':'');
-  cost+=L('Maintenance', rc.maintenance!=null?_econMoney(rc.maintenance):pend, rc.maintenance==null?'pending':'');
-  cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
-  // THE RESULT
-  let result='';
-  result+=L('Profit / boat·yr (EBITDA)', profit!=null?_econMoney(profit):'—', '');
-  result+=L('Operating margin', margin!=null?_econPct(margin):'—', '');
-  result+=L('Vessel capex', capex!=null?_econMoney(capex):pend, capex==null?'pending':'');
-  result+=L('Payback period', payback!=null?(payback.toFixed(1)+' yr'):'—', 'total');
-  result+=L('CO₂ saved / yr', co2!=null?(Math.round(co2)+' t'):'—', '');
+  let build='', cost='', result='';
+  if (hasBreakdown){
+    // REVENUE BUILD — only rows the sidecar actually carries (no "pending" filler once data exists).
+    const fareT = rb.comparable_fare_usd;
+    if (fare!=null) build+=L((fareT!=null&&fareT!==fare)?`Fare / seat (today $${_econNum(fareT)})`:'Fare / seat', '$'+_econNum(fare));
+    const paxTrip = rb.pax_per_trip ?? rb.seats_per_trip;
+    if (paxTrip!=null) build+=L((rb.pax_capacity!=null&&rb.load_factor!=null)?`Pax / trip (${_econNum(rb.pax_capacity)} × ${_econPct(rb.load_factor)})`:'Pax / trip', _econNum(paxTrip));
+    if (rb.trips_per_day!=null) build+=L('Trips / day', _econNum(rb.trips_per_day));
+    if (rb.operating_days_yr!=null) build+=L('Operating days / yr', _econNum(rb.operating_days_yr));
+    if (rb.trips_per_year!=null) build+=L('Trips / yr', _econNum(rb.trips_per_year));
+    const paxYr = rb.pax_per_year ?? rb.paid_seats_yr;
+    if (paxYr!=null) build+=L('Paid pax / yr', _econNum(paxYr));
+    build+=L('Revenue / boat·yr', rev!=null?_econMoney(rev):'—', 'total');
+    // ANNUAL RUN COST
+    const energy=rc.energy_usd_yr ?? rc.energy, crew=rc.crew_usd_yr ?? rc.crew,
+          marina=rc.marina_overhead_usd_yr ?? rc.marina_overhead, maint=rc.maintenance_usd_yr ?? rc.maintenance;
+    if (energy!=null) cost+=L('Energy', _econMoney(energy));
+    if (crew!=null)   cost+=L('Captain / crew', _econMoney(crew));
+    if (marina!=null) cost+=L('Marina + overhead', _econMoney(marina));
+    if (maint!=null)  cost+=L('Maintenance', _econMoney(maint));
+    cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
+    if (rc.depreciation_usd_yr!=null) cost+=L('Depreciation (non-cash, excl.)', _econMoney(rc.depreciation_usd_yr), 'pending');
+    // THE RESULT
+    result+=L('Profit / boat·yr (EBITDA)', profit!=null?_econMoney(profit):'—');
+    result+=L('Operating margin', margin!=null?_econPct(margin):'—');
+    if (capex!=null) result+=L('Vessel capex', _econMoney(capex));
+    result+=L('Payback period', payback!=null?(payback.toFixed(1)+' yr'):'—', 'total');
+    result+=L('CO₂ saved / yr', co2!=null?(Math.round(co2)+' t'):'—');
+  } else {
+    const pend='pending from the model';
+    build+=L('Trips / day', pend, 'pending');
+    build+=L('Operating days / yr', pend, 'pending');
+    build+=L('Seats / trip', pend, 'pending');
+    build+=L('Fare / seat', fare!=null?('$'+_econNum(fare)):pend, fare==null?'pending':'');
+    build+=L('Revenue / boat·yr', rev!=null?_econMoney(rev):'—', 'total');
+    cost+=L('Energy', pend, 'pending');
+    cost+=L('Captain / crew', pend, 'pending');
+    cost+=L('Marina + overhead', pend, 'pending');
+    cost+=L('Maintenance', pend, 'pending');
+    cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
+    result+=L('Profit / boat·yr (EBITDA)', profit!=null?_econMoney(profit):'—');
+    result+=L('Operating margin', margin!=null?_econPct(margin):'—');
+    result+=L('Payback period', payback!=null?(payback.toFixed(1)+' yr'):'—', 'total');
+    result+=L('CO₂ saved / yr', co2!=null?(Math.round(co2)+' t'):'—');
+  }
   const head = (rev!=null&&runTot!=null&&profit!=null)
     ? `<b>${_econMoney(rev)}</b> revenue − <b>${_econMoney(runTot)}</b> run cost = <b>${_econMoney(profit)}</b> profit / boat·yr${margin!=null?` · <b>${_econPct(margin)}</b> margin`:''}${payback!=null?` · <b>${payback.toFixed(1)} yr</b> payback`:''}`
     : `${rev!=null?`<b>${_econMoney(rev)}</b> revenue / boat·yr`:''}${margin!=null?` · <b>${_econPct(margin)}</b> margin`:''}${payback!=null?` · <b>${payback.toFixed(1)} yr</b> payback`:''}`;
-  const hasBreakdown = Object.keys(rb).length || Object.keys(rc).length || Object.keys(rs).length;
   let h=`<div class="econ-sub">${escapeHtml(corridor)}${sub?` · ${escapeHtml(sub)}`:''}</div>`;
   if (head.trim()) h+=`<div class="econ-headline">${head}</div>`;
   h+=`<div class="econ-cols">
