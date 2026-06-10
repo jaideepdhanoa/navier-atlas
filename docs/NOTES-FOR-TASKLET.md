@@ -6,6 +6,27 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-10 — NEXT ASKS (post Gold #47 merge): bind Grab phases to the built corridors + widen econ
+
+Gold #47 is live on main. The biggest remaining GRAB item is no longer building corridors — it's LINKING
+them: **only 9 of 69 featured_routes across Grab's 11 markets carry a route_id** (singapore 2/7,
+cross-border 0/7, bali 3/8, phuket 1/8, philippines 0/7, vietnam 1/8, cambodia 0/8, borneo 1/5, penang 1/5,
+jakarta 0/3, taiwan 0/3) — yet #44–47 built many of these exact corridors geometry-first (Phu Quoc→An Thoi,
+Phuket→James Bond, Ha Long→Cat Ba, Cambodia set, Manila→Camaya, Magong→Qimei, Tioman, East Coast→Marina,
+Marina→Changi). Ask: geometry-first bind each phase featured_route to its gold route_id (or leave null where
+unbuilt) so clicking a featured route lights the real line + travel time + the econ chip.
+
+Second: **economics coverage is 3 partners only** (grab 31 / jih 39 / careem 10). Saudi-PIF and Red Sea
+Global are committed partners with 0 records — extend the sidecar + breakdown to their corridors next, then
+the regional flagships (MENA/Europe/Americas) so the gold econ-bead layer isn't SEA-only.
+
+Third: the ~27 endpoint-brief queue resolves to **18 real cities** (barbados, boracay, crete, halkidiki,
+havana, izu-islands, izu-peninsula, marquesas, miyako, montego-bay, el-nido (bacuit), rangiroa, rhodes,
+seoul-incheon, siargao, yaeyama, the-hamptons, chicago) **+ the 7 stray bp-* ids miscategorised in the city
+array + the 2 cross-border 0.0nm token nodes** — the latter two groups need reclassification, not briefs.
+
+---
+
 ## 2026-06-10 — Gold #47 INGESTED — marquee corridors + breakdown payload + 7 briefs; punch-list nearly empty
 
 Gold #47 closed almost everything that remained, including both open confirmations:
