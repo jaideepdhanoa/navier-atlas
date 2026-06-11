@@ -2482,11 +2482,18 @@ function _routeIdsOf(o){ const out=[]; if(!o) return out; if(o.route_id) out.pus
 // Corridor/journey has no gold geometry yet — render copy only, no map deep-link (LB-46 / Bangkok river mint queue).
 function _geometryPending(o){
   if (!o) return false;
+  if (o.display==='text_only' || o.flag==='network-chip-text-only') return true;
+  if (o.flag==='aspirational-no-built-route' || /aspirational-no-built-route/i.test(String(o._link_status||''))) return true;
   const st=String(o._link_status||'');
   if (/null-geometry-pending/i.test(st)) return true;
   const ids=_routeIdsOf(o);
   if (o.route_id===null && !ids.length && o.from_node_id && o.from_node_id===o.to_node_id) return true;
   return false;
+}
+function _geometryPendingLabel(o){
+  if (o.display==='text_only' || o.flag==='network-chip-text-only') return 'Illustrative';
+  if (o.flag==='aspirational-no-built-route' || /aspirational-no-built-route/i.test(String(o._link_status||''))) return 'Not yet built';
+  return 'Geometry pending';
 }
 // A phase's focus set = its cities PLUS the resolved endpoints of its featured_routes. For multi-node
 // markets this surfaces the specific corridor(s) (and gives the camera something distinct per phase);
@@ -2604,7 +2611,7 @@ function _journeysHtml(js){
     const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j), (j.from||"")+" "+(j.to||"")), fn=j.from_node_id||'', tn=j.to_node_id||'';
     const pending=_geometryPending(j);
     const click = !pending && !!(rids.length || (fn&&tn));
-    if (pending) chips.push(`<span class="pcaro-jchip pending-geo">Geometry pending</span>`);
+    if (pending) chips.push(`<span class="pcaro-jchip pending-geo">${escapeHtml(_geometryPendingLabel(j))}</span>`);
     return `<div class="pcaro-jrn${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
       <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
       ${j.today?`<div class="pcaro-jrn-line today"><span>Today</span>${escapeHtml(j.today)}</div>`:''}
@@ -2685,7 +2692,7 @@ function _featuredRouteHtml(r){
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
-  if (pending) chips.push(`<span class="pcaro-jchip pending-geo">Geometry pending</span>`);
+  if (pending) chips.push(`<span class="pcaro-jchip pending-geo">${escapeHtml(_geometryPendingLabel(r))}</span>`);
   if (isNet && n) chips.push(`<span class="pcaro-netbadge">${n} corridor${n===1?'':'s'}</span>`);
   else if (r.distance_nm!=null) {
     // Lead with travel time (relatable) using the same cruise-speed basis as the route hover/detail;
