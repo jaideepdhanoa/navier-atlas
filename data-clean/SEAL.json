@@ -58,10 +58,10 @@
   "economics_records": 105
  },
  "schema": "navier-atlas/seal/v1",
- "sealed_at": "2026-06-10T20:33:09.119989Z",
+ "sealed_at": "2026-06-11T03:45:49.919674Z",
  "sidecars": {
   "economics_by_route_id.json": {
-   "sha256": "02ebbcfff8d37cf7eecd97b3e263841fb4168ee08e0a614d2628aeaa4003283b",
+   "sha256": "6f64b117c86cabd7019b6f6394b1e57caac37e63dd5bc00caf309145898271f0",
    "count": 105
   }
  },
@@ -234,7 +234,7 @@
   "mislabel_fixed": "edge__palm-beach-florida-usa__fort-lauderdale-las-olas -> edge-1140 (Palm Beach -> Miami)",
   "basis_note": "ONLY exact-geometry+endpoint dupes collapsed. City-level from/to over-counts (1455) due to rn-/ics- granularity; A<->B mirror collapse deferred to front-end per locked directional-authoring decision. Reconcile basis w/ Claude before bulk collapse."
  },
- "gold_seq": 51,
+ "gold_seq": 52,
  "_gold31_routeid_distance_gate": {
   "applied": "2026-06-08",
   "issue": "LB-46 \u2014 gate_route_id.py & gate_chips.py used a FLAT enumerator (top-level journeys_unlocked + phases[].featured_routes only), silently skipping every multi-market partner whose items live under markets[]/markets[].phases[]. Gold #30 falsely reported 0 failing; Claude's recursive reproducer found 540 featured + 328 journey route_ids that RESOLVE but point to a route whose real distance_nm is >25% off the item's stated distance_nm (e.g. Aman Venice: 4 items @5/7/9/30nm all on one 3.2nm route ics-2541835806).",
@@ -584,5 +584,14 @@
   "gates": "endpoint label gate 0 HARD (13 weak single-token, benign \u2014 new G51 pool labels); gate_city_ids PASS (198 nodes, 5280 routes, 75 clusters).",
   "geometry": "CLUSTERS/FEATURES/STORIES/VESSEL_SPECS byte-unchanged from #50 (hash-verified); 5276 prior route geometries byte-identical (Phase A re-dump proof).",
   "note_for_claude": "render assumptions block on corridor cards; fix \"1 vessels\" pluralization; Sentosa featured-route deep-link now resolves; rebuild front end from this zip."
+ },
+ "_gold52_experience_tier_capture_basis": {
+  "applied_at": "2026-06-11",
+  "lineage": "Gold #52, parent Gold #51 (navier-export-20260610T203354Z.zip); LB-23/LB-81 content zip-patch, NO geometry work",
+  "note": "LB-98 experience tier x4 SEA markets + LB-103 pool_basis capture fix; grab cascade",
+  "changes": "partners/grab.json (LB-103 capture-basis recal: network committed_fleet 231 / ceiling 1132; cross-border 13; singapore 10 phases 3/3/10 ceiling 14; NEW bangkok market, journeys route_id:null geometry pending; 2 placeholder rn-bkk-exp-* featured_route ids nulled per LB-46) + economics sidecar regenerated from LB-103 aggs (105 resolved / 23 pending; +19 honest pendings = LB-98 experience-tier + SG modal-shift corridors awaiting geometry; same 105 route_ids as #51, zero resolution regression; capture now pool_basis-aware, e.g. SG-Bintan vessels 1->4) + SEAL",
+  "gates": "endpoint label gate 0 HARD / 13 weak (same benign G51 set; 20 corridors.json placeholder route_ids nulled to route_id_planned per LB-46); gate_city_ids PASS (198 nodes, 5280 routes, 75 clusters); gate_route_id: bangkok placeholders nulled, 0 dangling ids in shipped grab.json",
+  "geometry": "ROUTES (5280) / CLUSTERS / FEATURES_BY_TYPE / STORIES / VESSEL_SPECS byte-identical to #51 (hash-verified)",
+  "note_for_claude": "bangkok market has no routable corridors yet \u2014 render journeys without map links until next geometry mint"
  }
 }

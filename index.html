@@ -580,6 +580,9 @@ body.panel-hidden #footer { display:block; }
 .hub-card-sum { font-size:12px; line-height:1.5; color:var(--text-2); margin-top:7px; }
 .hub-card-go { display:inline-block; font-size:11px; font-weight:600; color:var(--text-2); margin-top:9px; transition:color .15s; }
 .hub-card:hover .hub-card-go { color:var(--accent); }
+.hub-card-cat { display:inline-block; font-size:8.5px; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-2); border:1px solid var(--line-strong); border-radius:99px; padding:2px 7px; margin-left:6px; vertical-align:middle; }
+.hub-card-note { font-size:10.5px; line-height:1.4; color:var(--text-2); font-style:italic; margin-top:6px; }
+.pcaro-jchip.pending-geo { color:var(--text-2); border:1px dashed var(--line-strong); border-radius:99px; padding:1px 7px; font-size:9px; }
 .hub-tabs { display:flex; gap:0; padding:14px 18px 0; border-bottom:1px solid var(--line); }
 .hub-tab { flex:1; background:none; border:none; border-bottom:2px solid transparent; color:var(--text-2); font:600 11px Inter; text-transform:uppercase; letter-spacing:0.08em; padding:10px 8px 12px; cursor:pointer; transition:color .15s,border-color .15s; }
 .hub-tab:hover { color:var(--text-1); }
@@ -2473,6 +2476,15 @@ function _focusRoutes(routeIds){
 // Collect the route ids referenced by a list item (featured_route or journey): route_id (string) and/or
 // route_ids[] (array, for multi-leg corridors — Tasklet ships both forms).
 function _routeIdsOf(o){ const out=[]; if(!o) return out; if(o.route_id) out.push(o.route_id); if(Array.isArray(o.route_ids)) for(const x of o.route_ids) if(x) out.push(x); return out; }
+// Corridor/journey has no gold geometry yet — render copy only, no map deep-link (LB-46 / Bangkok river mint queue).
+function _geometryPending(o){
+  if (!o) return false;
+  const st=String(o._link_status||'');
+  if (/null-geometry-pending/i.test(st)) return true;
+  const ids=_routeIdsOf(o);
+  if (o.route_id===null && !ids.length && o.from_node_id && o.from_node_id===o.to_node_id) return true;
+  return false;
+}
 // A phase's focus set = its cities PLUS the resolved endpoints of its featured_routes. For multi-node
 // markets this surfaces the specific corridor(s) (and gives the camera something distinct per phase);
 // for single-node markets it collapses to the one city (correct, given the data granularity).
@@ -2587,7 +2599,9 @@ function _journeysHtml(js){
     // Drop mis-linked ids (route length far off the label distance); clicking then falls back to endpoint-city
     // focus via from/to node rather than highlighting the wrong corridor (see _plausibleRouteIds).
     const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j), (j.from||"")+" "+(j.to||"")), fn=j.from_node_id||'', tn=j.to_node_id||'';
-    const click = !!(rids.length || (fn&&tn));   // clickable only when the data links it to the map (Tasklet ids)
+    const pending=_geometryPending(j);
+    const click = !pending && !!(rids.length || (fn&&tn));
+    if (pending) chips.push(`<span class="pcaro-jchip pending-geo">Geometry pending</span>`);
     return `<div class="pcaro-jrn${click?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}>
       <div class="pcaro-jrn-route">${escapeHtml(j.from||'')} <span>→</span> ${escapeHtml(j.to||'')}${click?'<span class="pcaro-jrn-go">show ↦</span>':''}</div>
       ${j.today?`<div class="pcaro-jrn-line today"><span>Today</span>${escapeHtml(j.today)}</div>`:''}
@@ -2664,10 +2678,11 @@ function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
   // Drop mis-linked ids (route length far off the label distance) so a click lights the right line or falls
   // back to endpoint-city focus via from/to node — never a confidently-wrong corridor (see _plausibleRouteIds).
-  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), r.label), fn=r.from_node_id||'', tn=r.to_node_id||'', click=!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), r.label), fn=r.from_node_id||'', tn=r.to_node_id||'', pending=_geometryPending(r), click=!pending&&!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
+  if (pending) chips.push(`<span class="pcaro-jchip pending-geo">Geometry pending</span>`);
   if (isNet && n) chips.push(`<span class="pcaro-netbadge">${n} corridor${n===1?'':'s'}</span>`);
   else if (r.distance_nm!=null) {
     // Lead with travel time (relatable) using the same cruise-speed basis as the route hover/detail;
@@ -2820,7 +2835,8 @@ function _renderChapter(){
   const ch=_CARO.chapters[_CARO.i];
   // On a hub market deep-dive, lead with a "← all markets" return to the index.
   const back = _CARO.hub ? `<button class="pcaro-back" id="hub-back">← All ${escapeHtml(_CARO.hub.display||'')} markets</button>` : '';
-  panel.innerHTML=back+_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner)+_chapterFooterHtml();
+  const corrNote = _CARO.partner.corridors_note ? `<div class="pcaro-sub" style="padding:10px 28px 0">${escapeHtml(_CARO.partner.corridors_note)}</div>` : '';
+  panel.innerHTML=back+corrNote+_chapterStepperHtml()+_chapterHtml(ch,_CARO.partner)+_chapterFooterHtml();
   panel.scrollTop=0; _CARO._rendered=true;   // each chapter starts at top (progressive disclosure)
   const hb=panel.querySelector('#hub-back'); if (hb) hb.addEventListener('click',()=>_backToHub());
   const prev=panel.querySelector('#chap-prev'), next=panel.querySelector('#chap-next');
@@ -2966,9 +2982,10 @@ function _hubMarketCardsHtml(partner){
   const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
   return ordered.map(m=>`<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
       ${m.recommended_entry?`<span class="hub-rec">Recommended entry</span>`:''}
-      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}</div>
+      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}${m.category?`<span class="hub-card-cat">${escapeHtml(m.category)}</span>`:''}</div>
       ${m.status?`<div class="hub-card-status">${escapeHtml(m.status)}</div>`:''}
       ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
+      ${m.corridors_note?`<div class="hub-card-note">${escapeHtml(m.corridors_note)}</div>`:''}
       <span class="hub-card-go">Open market proposal →</span>
     </button>`).join('');
 }
