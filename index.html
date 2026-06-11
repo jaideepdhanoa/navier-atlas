@@ -466,6 +466,9 @@ body.panel-hidden #footer { display:block; }
 .gc-rung-mid { font-size:21px; font-weight:700; color:var(--gc,#6ee7b7); letter-spacing:-0.02em; }
 .gc-rung-range { font-size:11px; color:var(--text-2); }
 .gc-rung-basis { font-size:11px; color:var(--text-2); line-height:1.45; }
+.gc-bridge { margin:4px 0 6px 14px; padding:8px 11px 8px 13px; border-left:2px dashed rgba(224,203,143,0.35); font-size:11px; line-height:1.5; color:var(--text-2); }
+.gc-bridge-h { font-size:10.5px; font-weight:600; color:var(--text-1); margin-bottom:3px; }
+.gc-bridge-deriv { font-size:10px; font-style:italic; margin-top:4px; color:var(--text-2); }
 .gc-money-chip { display:inline-block; margin-top:7px; font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:var(--gc,#6ee7b7); background:color-mix(in srgb, var(--gc,#6ee7b7) 13%, transparent); border:1px solid color-mix(in srgb, var(--gc,#6ee7b7) 35%, transparent); }
 .gc-conf { font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; white-space:nowrap; }
 .gc-conf-grounded { color:#6ee7b7; background:rgba(110,231,183,0.12); border:1px solid rgba(110,231,183,0.32); }
@@ -2731,6 +2734,14 @@ function _gcMoneyClass(w){ const s=String(w||'').toLowerCase();
   if (/journey wallet|gmv/.test(s)) return 'wallet';
   if (/partner|p&l|platform/.test(s)) return 'partner';
   return 'navier'; }
+function _gcLadderBridgeHtml(t){
+  if (!t) return '';
+  return `<div class="gc-bridge">
+    <div class="gc-bridge-h">${escapeHtml(t.headline||'')}${t.confidence?` <span class="gc-conf gc-conf-${escapeHtml(String(t.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(t.confidence)}</span>`:''}</div>
+    ${t.basis?`<div>${escapeHtml(t.basis)}</div>`:''}
+    ${t.derivation?`<div class="gc-bridge-deriv">${escapeHtml(t.derivation)}</div>`:''}
+  </div>`;
+}
 function _gcFleet(h){
   const band=h.fleet_boats_band;
   if (h.fleet_boats!=null) return _gcNum(h.fleet_boats)+' boats';
@@ -2755,10 +2766,14 @@ function _growthCaseHtml(gc, opts){
     h+=`<div class="gc-lead-wrap">${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
       ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
   }
-  // 1) Revenue ladder — prize at top, floor at bottom (render rungs reversed).
+  // 1) Revenue ladder — prize at top, floor at bottom (render rungs reversed). Tasklet ladder_transitions
+  // bridge adjacent rungs (authored math only — never invented in render).
+  const bridges=(gc.ladder_transitions||[]), bridgeTo={};
+  for (const t of bridges) if (t.to_rung_id) bridgeTo[t.to_rung_id]=t;
   if ((rp.rungs||[]).length){
     h+=`<div class="panel-section"><h3>Revenue potential</h3><div class="gc-ladder">`;
     for (const r of rp.rungs.slice().reverse()){
+      if (r.id && bridgeTo[r.id]) h+=_gcLadderBridgeHtml(bridgeTo[r.id]);
       const d=r.display||{}, cls=_gcMoneyClass(r.whose_money), range=(d.low&&d.high)?`${escapeHtml(d.low)} – ${escapeHtml(d.high)}`:'';
       h+=`<div class="gc-rung gc-m-${cls}">
         <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${r.confidence?`<span class="gc-conf gc-conf-${escapeHtml(String(r.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(r.confidence)}</span>`:''}</div>
@@ -3091,8 +3106,8 @@ function _introStep2Html(partner){
   const gcPartner=_introGrowthPartner(partner), gc=gcPartner&&gcPartner.growth_case;
   if (!gc) return _introStep1Html(partner);
   const gcData=gc;
-  const headline=(gcData.modal_headline)||'How big is the opportunity?';
-  const lead='Every rung traces to grounded corridor demand. Navier transport revenue, total journey spend, and your platform commission are different lenses on the same network — not a single "prize" number.';
+  const headline=gcData.modal_headline||'How big is the opportunity?';
+  const lead=gcData.modal_lead||'Every rung traces to grounded corridor demand. Navier transport revenue, total journey spend, and your platform commission are different lenses on the same network — not a single "prize" number.';
   return `<div class="intro-mark">The opportunity</div>
     <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
     <p class="intro-step-lead">${escapeHtml(lead)}</p>

@@ -492,7 +492,7 @@
   "layout": "hub",
   "network_thesis": {
     "headline": "One app. Every coastal cluster. The water layer of the super-app.",
-    "body": "Southeast Asia is the most water-fragmented region on earth, and Grab already owns the demand in every coastal megacity. The same in-app foiling tier proven in the Maldives extends across all 30+ coastal clusters Grab serves, now including Taiwan's leisure-island coast — pick one market to prove it, or roll the recommended regional sequence below. The fleet, the app integration, and the captain-partner model are identical everywhere.",
+    "body": "Southeast Asia is the most water-fragmented region on earth, and Grab already owns the demand in every coastal megacity. The same in-app foiling tier proven in the Maldives extends across 30+ coastal clusters Grab serves, now including Taiwan's leisure-island coast. Each market below is a parallel entry option — start with Singapore for the cleanest regulatory + density story, or open any cluster to see the same template applied locally.",
     "stats": [
       {
         "label": "Reach",
@@ -502,7 +502,7 @@
       {
         "label": "At scale",
         "value": "800+ vessels",
-        "sub": "375+ mapped corridors (full-network floor)"
+        "sub": "376 mapped corridors (341 greenfield + 35 sourced)"
       },
       {
         "label": "Live proof",
@@ -515,8 +515,8 @@
         "sub": "Singapore clean-harbour-craft mandate"
       }
     ],
-    "how_to_read": "Each card is a real, ready market. Start with Singapore — the cleanest first-of-class story — or pick any cluster. The phased sequence below is our recommended regional path, not the only one.",
-    "coverage_note": "Grab is the daily super-app across eight Southeast Asian markets; these six are where the water demand is densest today. The same fleet and in-app tier extend to every coast and island chain Grab already serves."
+    "how_to_read": "Several potential launch markets — pick any to explore a full mini-proposal. Singapore is the recommended first proof point, not the only path.",
+    "coverage_note": "Grab is the daily super-app across eight Southeast Asian markets. The cards below are an illustrative subset — the same fleet and in-app tier extend to every coast and island chain Grab already serves. Open any market for its corridors, fleet ramp, and grounded economics."
   },
   "markets": [
     {
@@ -4070,13 +4070,90 @@
       "range_gate_note": "≤ 70nm → Pioneer II (now). 75–150nm → Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
     },
     "_render_chip_flag": {
-      "needs_new_layouts": [
-        "revenue_ladder",
-        "phase_economics_table",
-        "vessel_sizing_cards"
+      "needs_new_layouts": [],
+      "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band.",
+      "layouts_shipped_in": "option-b-modal-step-2 (G51 render)"
+    },
+    "modal_headline": "How big is the opportunity?",
+    "modal_lead": "Every rung traces to grounded corridor demand. Navier transport revenue, total journey spend, and your platform commission are different lenses on the same network — not a single 'prize' number.",
+    "_recal_provenance": {
+      "root_phase_ramp": [
+        10,
+        23,
+        139,
+        231
       ],
-      "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
-    }
+      "root_phase_ramp_source": "agg-grab.json post-LB-103 full network (Gold #52)",
+      "root_phase_ramp_as_of": "2026-06-11"
+    },
+    "ladder_transitions": [
+      {
+        "from_rung_id": "som_floor",
+        "to_rung_id": "som_network",
+        "headline": "Same 10% capture, expanded to the full mapped network",
+        "basis": "Width-only step. Capture rate held at 10%; corridor set expands from the 35 sourced flagships to the full 376-corridor mapped network (341 greenfield + 35 sourced).",
+        "derivation": "som_floor_mid ($69.7M) × greenfield_corridor_factor.mid (4.9) = $341M (som_network mid)",
+        "multipliers_cited": {
+          "greenfield_corridor_factor_mid": 4.9,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-grab.json:parameters_used.greenfield_corridor_factor",
+          "finance/recal/growth-grab.json:parameters_used.som_capture_rate"
+        ],
+        "confidence": "med"
+      },
+      {
+        "from_rung_id": "som_network",
+        "to_rung_id": "sam_network",
+        "headline": "Network matures: induced demand + default-operator capture",
+        "basis": "Two-lever step. (1) In-app frictionless booking induces incremental water trips. (2) Grab-as-default-operator lifts capture from 10% floor to 25% mature.",
+        "derivation": "som_network_mid ($341M) × induced_demand.mid (1.8) × (mature_capture.mid / som_capture) (0.25 / 0.10 = 2.5) = $1.54B (sam_network mid)",
+        "multipliers_cited": {
+          "induced_demand_mid": 1.8,
+          "mature_capture_rate_mid": 0.25,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-grab.json:parameters_used.induced_demand",
+          "finance/recal/growth-grab.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "sam_network",
+        "to_rung_id": "tam_gmv",
+        "headline": "Lens shift: Navier transport revenue → total journey wallet",
+        "basis": "Unit change. Reverse SAM Navier transport revenue out of the mature capture rate to recover total induced water-transport spend, then apply the journey GMV multiple: each $1 of cross-water transport unlocks $3 of broader journey spend across merchants (food, stays, experiences, in-app ads).",
+        "derivation": "sam_network_mid ($1.54B) / mature_capture.mid (0.25) × journey_gmv_multiple.mid (3.0) = $18.43B (tam_gmv mid)",
+        "multipliers_cited": {
+          "mature_capture_rate_mid": 0.25,
+          "journey_gmv_multiple_mid": 3.0
+        },
+        "source_fields": [
+          "finance/recal/growth-grab.json:parameters_used.journey_gmv_multiple",
+          "finance/recal/growth-grab.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "tam_gmv",
+        "to_rung_id": "platform_rev",
+        "headline": "Partner take: platform commission on the transport-GMV subset",
+        "basis": "Take-rate step. 18% platform commission applies to the transport-GMV slice of the journey wallet (transport ≈ 25% of full journey GMV by the 1+3 journey multiple). Net ratio: 4.5% of TAM journey GMV flows back as partner commission revenue.",
+        "derivation": "tam_gmv_mid ($18.43B) × transport_share (0.25) × platform_take_rate (0.18) = $830M (platform_rev mid)",
+        "multipliers_cited": {
+          "platform_take_rate": 0.18,
+          "transport_share_of_journey": 0.25,
+          "transport_share_derivation": "1 / (1 + journey_gmv_multiple_mid) = 1/4 = 0.25"
+        },
+        "source_fields": [
+          "finance/recal/growth-grab.json:parameters_used.platform_take_rate",
+          "finance/recal/growth-grab.json:parameters_used.journey_gmv_multiple"
+        ],
+        "confidence": "med-low"
+      }
+    ]
   },
   "_recal_provenance": {
     "date": "2026-06-10",
