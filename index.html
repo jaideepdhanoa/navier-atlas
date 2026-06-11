@@ -126,6 +126,12 @@ body.panel-hidden #panel { width:0 !important; }
 @media (max-width:760px){ .econ-cols { grid-template-columns:1fr; } .econ-dialog { width:94vw; } }
 .econ-col { border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:rgba(23,23,23,0.5); }
 .econ-col h4 { font:700 11px Inter; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+.econ-assump-wrap { margin-top:16px; border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:rgba(23,23,23,0.35); }
+.econ-assump-h { font:700 11px Inter; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+.econ-assump-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:760px){ .econ-assump-cols { grid-template-columns:1fr; } }
+.econ-assump-sub { font-size:9.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-2); margin-bottom:6px; }
+.econ-line .note { display:block; font-size:10px; color:var(--text-2); font-style:italic; margin-top:2px; }
 .econ-line { display:flex; justify-content:space-between; gap:10px; padding:5px 0; border-top:1px solid var(--line); font:400 13px Inter; color:var(--text-2); }
 .econ-line:first-of-type { border-top:none; }
 .econ-line .v { color:var(--text-0); font-weight:600; font-variant-numeric:tabular-nums; }
@@ -469,6 +475,9 @@ body.panel-hidden #footer { display:block; }
 .gc-bridge { margin:4px 0 6px 14px; padding:8px 11px 8px 13px; border-left:2px dashed rgba(224,203,143,0.35); font-size:11px; line-height:1.5; color:var(--text-2); }
 .gc-bridge-h { font-size:10.5px; font-weight:600; color:var(--text-1); margin-bottom:3px; }
 .gc-bridge-deriv { font-size:10px; font-style:italic; margin-top:4px; color:var(--text-2); }
+.gc-bridge-math { margin-top:5px; }
+.gc-bridge-math summary { font-size:9.5px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-2); cursor:pointer; }
+.gc-bridge-math[open] summary { margin-bottom:4px; }
 .gc-money-chip { display:inline-block; margin-top:7px; font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:var(--gc,#6ee7b7); background:color-mix(in srgb, var(--gc,#6ee7b7) 13%, transparent); border:1px solid color-mix(in srgb, var(--gc,#6ee7b7) 35%, transparent); }
 .gc-conf { font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; white-space:nowrap; }
 .gc-conf-grounded { color:#6ee7b7; background:rgba(110,231,183,0.12); border:1px solid rgba(110,231,183,0.32); }
@@ -1871,12 +1880,15 @@ function clearSelection(){
 // Route unit-economics block (ROUTE_ECONOMICS sidecar, keyed by route_id). Headline the MID; carry the
 // THIN/MID/FULL spread as a faint range; surface status (grounded/estimated) + demand confidence. Rendered
 // only when a record exists for the selected route — an absent record means "no economics yet", never zero.
-function _econAssumptionsHtml(a){
+function _econAssumpModalHtml(a){
   if (!a) return '';
   const pct=x=>(x==null||isNaN(x))?'':Math.round(x*100)+'%';
-  const rows=[['Operating days / yr',a.operating_days_yr,a.operating_days_derivation],['Mechanical uptime',pct(a.mechanical_uptime)],['Weather factor',a.weather_factor],['Revenue leg %',pct(a.revenue_leg_pct)],['Load factor',pct(a.load_factor)],['Pax capacity',a.pax_capacity],['One-way',a.one_way_min!=null?a.one_way_min+' min':''],['Cycle',a.cycle_min!=null?a.cycle_min+' min':''],['Trips / day',a.trips_per_day,a.trips_per_day_derivation]].filter(x=>x[1]!=null);
-  if (!rows.length) return '';
-  return `<details class="rec-assump"><summary>Model assumptions</summary><dl class="rec-assump-dl">${rows.map(([k,v,note])=>`<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(String(v))}${note?`<div class="rec-assump-note">${escapeHtml(note)}</div>`:''}</dd>`).join('')}</dl></details>`;
+  const L=(label,val,note)=>`<div class="econ-line"><span>${escapeHtml(label)}</span><span class="v">${escapeHtml(String(val))}${note?`<span class="note">${escapeHtml(note)}</span>`:''}</span></div>`;
+  const sched=[['One-way',a.one_way_min!=null?a.one_way_min+' min':''],['Turnaround',a.turnaround_min!=null?a.turnaround_min+' min':''],['Cycle',a.cycle_min!=null?a.cycle_min+' min':''],['Service window / day',a.service_window_h!=null?a.service_window_h+' h':''],['Trips / day',a.trips_per_day,a.trips_per_day_derivation]].filter(x=>x[1]||x[1]===0);
+  const util=[['Load factor',pct(a.load_factor)],['Pax capacity',a.pax_capacity],['Mechanical uptime',pct(a.mechanical_uptime)],['Weather factor',a.weather_factor],['Revenue leg %',pct(a.revenue_leg_pct)],['Operating days / yr',a.operating_days_yr,a.operating_days_derivation]].filter(x=>x[1]||x[1]===0);
+  if (!sched.length && !util.length) return '';
+  const col=(title,rows)=>rows.length?`<div class="econ-assump-col"><div class="econ-assump-sub">${escapeHtml(title)}</div>${rows.map(([k,v,n])=>L(k,v,n)).join('')}</div>`:'';
+  return `<div class="econ-assump-wrap"><h4 class="econ-assump-h">Schedule & utilization</h4><div class="econ-assump-cols">${col('Schedule',sched)}${col('Utilization',util)}</div></div>`;
 }
 function _econMoney(n){ if(n==null||isNaN(n))return ''; const a=Math.abs(n);
   if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
@@ -1912,7 +1924,7 @@ function _routeEconHtml(rec){
   for (const [k,v,b] of figs) h+=`<div class="rec-fig"><div class="rec-v">${escapeHtml(v)}</div><div class="rec-l">${escapeHtml(k)}</div>${b||''}</div>`;
   h+=`</div>`;
   if (!fleetGrounded) h+=`<div class="rec-note">Fleet size not yet grounded — per-boat economics only.</div>`;
-  if (rec.assumptions) h+=_econAssumptionsHtml(rec.assumptions);
+  if (st!=='grounded' && rec.estimation_basis) h+=`<div class="rec-note">${escapeHtml(rec.estimation_basis)}</div>`;
   // Other corridors carried on the same route line (headline = highest market-rev; the rest surfaced here).
   if (Array.isArray(rec.also_serves) && rec.also_serves.length){
     h+=`<div class="rec-also"><div class="rec-also-h">This line also serves</div>${rec.also_serves.map(a=>{
@@ -2010,6 +2022,7 @@ function _econModalHtml(rec){
     <div class="econ-col"><h4>Annual run cost</h4>${cost}</div>
     <div class="econ-col"><h4>The result</h4>${result}</div>
   </div>`;
+  h+=_econAssumpModalHtml(rec.assumptions, rb);
   h+=`<div class="econ-foot">`;
   if (!hasBreakdown) h+=`Per-boat figures shown; profit and run cost are derived from the published margin. The detailed revenue-build and cost-stack inputs aren't in the model yet — italicised lines are pending.`;
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
@@ -2700,7 +2713,7 @@ function _featuredRouteHtml(r){
   // Economics signal — if any linked corridor carries a model, flag it (gold) so it's findable in the phase.
   const _er = (typeof ROUTE_ECONOMICS!=='undefined') ? rids.map(id=>ROUTE_ECONOMICS[id]).find(Boolean) : null;
   if (_er){ const em=_er.mid||{}; const lab = em.payback_years!=null ? (em.payback_years.toFixed(1)+' yr payback') : (em.margin!=null ? (Math.round(em.margin*100)+'% margin') : 'economics');
-    chips.push(`<span class="pcaro-jchip econ" title="Unit economics on this corridor — click the route to view">◆ ${escapeHtml(lab)}</span>`); }
+    chips.push(`<span class="pcaro-jchip econ" title="Unit economics — opens route detail">◆ ${escapeHtml(lab)}</span>`); }
   return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
 function _phaseBlockHtml(cur){
@@ -2727,20 +2740,37 @@ function _phaseBlockHtml(cur){
   </div>`;
 }
 // Growth case (Tasklet `growth_case` block, per RENDER-SPEC-growth-case.md): the "floor and the prize"
-// financial layer — a revenue ladder, economic horizons (Prove/Scale/Mature), and vessel sizing. Honesty
-// rules are HARD: lead with the floor + the ID-traceable corridor COUNT, headline the MID (never the high
-// band), always show the whose-money legend, Quanta-LR renders amber-dashed.
+// financial layer — a revenue ladder (floor-first, build up), economic horizons (Prove/Scale/Mature), and
+// vessel sizing. Honesty rules are HARD: lead with the floor + corridor COUNT, headline the MID (never the
+// high band), always show the whose-money legend, Quanta-LR renders amber-dashed.
 function _gcNum(n){ return (n==null||isNaN(n))?'':Number(n).toLocaleString('en-US'); }
 function _gcMoneyClass(w){ const s=String(w||'').toLowerCase();
-  if (/journey wallet|gmv/.test(s)) return 'wallet';
+  if (/journey wallet|gmv|water-transfer/.test(s)) return 'wallet';
   if (/partner|p&l|platform/.test(s)) return 'partner';
   return 'navier'; }
-function _gcLadderBridgeHtml(t){
+function _gcConfCls(c){ return 'gc-conf-'+String(c||'').replace(/[^a-z]/gi,'').toLowerCase(); }
+function _gcConfTip(c){
+  const s=String(c||'').toLowerCase();
+  if (s==='grounded') return 'Grounded in sourced corridor demand and committed math.';
+  if (/med-low/.test(s)) return 'Banded projection — MID is the headline; HIGH is an optimistic ceiling.';
+  if (s==='med') return 'Modeled expansion from the grounded floor (e.g. network width).';
+  return 'Model confidence for this step.';
+}
+function _gcConfBadge(c){ if(!c) return ''; return `<span class="gc-conf ${_gcConfCls(c)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(String(c))}</span>`; }
+function _gcLadderBridgeHtml(t, opts){
   if (!t) return '';
+  opts=opts||{};
+  let math='';
+  if (t.derivation) math+=`<div class="gc-bridge-deriv">${escapeHtml(t.derivation)}</div>`;
+  if (t.multipliers_cited && Object.keys(t.multipliers_cited).length){
+    const m=Object.entries(t.multipliers_cited).map(([k,v])=>`${k}: ${v}`).join(' · ');
+    math+=`<div class="gc-bridge-deriv">${escapeHtml(m)}</div>`;
+  }
+  const mathBlock=math?(opts.inModal?`<details class="gc-bridge-math"><summary>Show math</summary>${math}</details>`:math):'';
   return `<div class="gc-bridge">
-    <div class="gc-bridge-h">${escapeHtml(t.headline||'')}${t.confidence?` <span class="gc-conf gc-conf-${escapeHtml(String(t.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(t.confidence)}</span>`:''}</div>
+    <div class="gc-bridge-h">${escapeHtml(t.headline||'')}${t.confidence?` ${_gcConfBadge(t.confidence)}`:''}</div>
     ${t.basis?`<div>${escapeHtml(t.basis)}</div>`:''}
-    ${t.derivation?`<div class="gc-bridge-deriv">${escapeHtml(t.derivation)}</div>`:''}
+    ${mathBlock}
   </div>`;
 }
 function _gcFleet(h){
@@ -2758,30 +2788,34 @@ function _growthCaseHtml(gc, opts){
   // Lead: hard evidence first — corridor count (ID-traceable) + the published floor.
   const floor=(rp.rungs||[]).find(r=>/floor/i.test(r.label||'')||r.confidence==='grounded');
   const nCorr=(pv.greenfield_corridors!=null&&pv.sourced_corridors!=null)?(pv.greenfield_corridors+pv.sourced_corridors):null;
+  const leadCorr=nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> corridors mapped${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:'';
   if (!opts.inModal){
     h+=`<div class="chap-cap"><div class="eyebrow">The growth case — the floor and the prize</div>
       <h2>${escapeHtml(rp.headline||'Revenue potential')}</h2>
-      ${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
+      ${leadCorr}
       ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
   } else {
-    h+=`<div class="gc-lead-wrap">${nCorr!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(nCorr)}</span> mapped Pioneer-range corridors <span class="muted">(${_gcNum(pv.greenfield_corridors)} greenfield + ${_gcNum(pv.sourced_corridors)} sourced)</span>${floor&&floor.display?` · floor <b>${escapeHtml(floor.display.mid||'')}/yr</b>`:''}</div>`:''}
+    h+=`<div class="gc-lead-wrap">${leadCorr}
       ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
   }
-  // 1) Revenue ladder — prize at top, floor at bottom (render rungs reversed). Tasklet ladder_transitions
-  // bridge adjacent rungs (authored math only — never invented in render).
-  const bridges=(gc.ladder_transitions||[]), bridgeTo={};
-  for (const t of bridges) if (t.to_rung_id) bridgeTo[t.to_rung_id]=t;
-  if ((rp.rungs||[]).length){
+  // 1) Revenue ladder — build up from floor (ascending rungs). ladder_transitions bridge each step
+  // (authored math only — never invented in render).
+  const bridges=(gc.ladder_transitions||[]), bridgeFrom={};
+  for (const t of bridges) if (t.from_rung_id) bridgeFrom[t.from_rung_id]=t;
+  const rungs=rp.rungs||[];
+  if (rungs.length){
     h+=`<div class="panel-section"><h3>Revenue potential</h3><div class="gc-ladder">`;
-    for (const r of rp.rungs.slice().reverse()){
-      if (r.id && bridgeTo[r.id]) h+=_gcLadderBridgeHtml(bridgeTo[r.id]);
+    for (let i=0;i<rungs.length;i++){
+      const r=rungs[i];
       const d=r.display||{}, cls=_gcMoneyClass(r.whose_money), range=(d.low&&d.high)?`${escapeHtml(d.low)} – ${escapeHtml(d.high)}`:'';
+      const showRungConf=!opts.inModal&&r.confidence;
       h+=`<div class="gc-rung gc-m-${cls}">
-        <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${r.confidence?`<span class="gc-conf gc-conf-${escapeHtml(String(r.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(r.confidence)}</span>`:''}</div>
+        <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${showRungConf?_gcConfBadge(r.confidence):''}</div>
         <div class="gc-rung-fig"><span class="gc-rung-mid">${escapeHtml(d.mid||'')}</span>${range?`<span class="gc-rung-range">${range}</span>`:''}</div>
         ${r.basis?`<div class="gc-rung-basis">${escapeHtml(r.basis)}</div>`:''}
         ${r.whose_money?`<span class="gc-money-chip gc-m-${cls}">${escapeHtml(r.whose_money)}</span>`:''}
       </div>`;
+      if (r.id && bridgeFrom[r.id] && i<rungs.length-1) h+=_gcLadderBridgeHtml(bridgeFrom[r.id], opts);
     }
     h+=`</div>`;
     const L=rp.whose_money_legend;
@@ -2798,7 +2832,7 @@ function _growthCaseHtml(gc, opts){
         <div class="gc-hz-top"><span class="gc-hz-name">${escapeHtml(z.name||'')}</span><span class="gc-hz-when">${escapeHtml(z.horizon||'')}</span></div>
         ${z.scope?`<div class="gc-hz-scope">${escapeHtml(z.scope)}</div>`:''}
         <dl class="gc-hz-dl">${rows.map(([k,v])=>`<dt>${escapeHtml(k)}</dt><dd>${k==='Fleet'?v:escapeHtml(String(v))}</dd>`).join('')}</dl>
-        ${z.confidence?`<span class="gc-conf gc-conf-${escapeHtml(String(z.confidence).replace(/[^a-z]/gi,'').toLowerCase())}">${escapeHtml(z.confidence)}</span>`:''}
+        ${z.confidence?_gcConfBadge(z.confidence):''}
       </div>`;
     }
     h+=`</div>${pe.conversion_note?`<div class="gc-cite">${escapeHtml(pe.conversion_note)}</div>`:''}</div>`;
@@ -2862,8 +2896,19 @@ function _renderChapter(){
   panel.querySelectorAll('.chap-dot[data-i]').forEach(d=>d.addEventListener('click',()=>showChapter(+d.dataset.i)));
   _wireJourneys(panel);
 }
-// Journey card → ISOLATE that corridor on the map (others faded), and mark the card active. Click the
-// active card again to release back to the chapter's full view.
+// Pick the best route_id for panel open: prefer a corridor that carries economics, else the first bind.
+function _primaryRouteId(rids){
+  if (!rids||!rids.length) return null;
+  if (typeof ROUTE_ECONOMICS!=='undefined'){ const e=rids.find(id=>ROUTE_ECONOMICS[id]); if (e) return e; }
+  return rids[0];
+}
+function _openRoutePanel(rids){
+  const id=_primaryRouteId(rids); if (!id) return false;
+  const feats=_routeFeats([id]); if (!feats.length) return false;
+  selectRoute(feats[0]); return true;
+}
+// Journey card → ISOLATE that corridor on the map (others faded), and mark the card active. Featured
+// routes also open the route side panel (economics when present). Click the active card again to release.
 function _wireJourneys(panel){
   const cards=[...panel.querySelectorAll('.pcaro-jrn.clickable, .pcaro-route.clickable')];
   cards.forEach(el=>el.addEventListener('click',()=>{
@@ -2871,10 +2916,9 @@ function _wireJourneys(panel){
     cards.forEach(c=>c.classList.remove('active'));
     if (wasActive){ showChapter(_CARO.i); return; }   // toggle off → re-render chapter (resets focus + camera)
     el.classList.add('active');
-    // Route-level isolate IN PLACE: light only this corridor's route(s) + fit camera to its geometry (keeps
-    // the deep-dive panel). route_id(s) via data-routes; falls back to from/to city focus for legacy items.
+    const isRoute=el.classList.contains('pcaro-route');
     const rids=(el.dataset.routes?el.dataset.routes.split(','):[]).filter(Boolean);
-    if (rids.length && _focusRoutes(rids)){ _fitRoutes(_routeFeats(rids), 200); return; }
+    if (rids.length && _focusRoutes(rids)){ _fitRoutes(_routeFeats(rids), 200); if (isRoute) _openRoutePanel(rids); return; }
     const ids=[...new Set([el.dataset.from, el.dataset.to].filter(Boolean))];
     if (ids.length){ _focusCities(ids, 'intra'); _fitCities(ids, 160); }
   }));
@@ -3108,7 +3152,7 @@ function _introStep2Html(partner){
   if (!gc) return _introStep1Html(partner);
   const gcData=gc;
   const headline=gcData.modal_headline||'How big is the opportunity?';
-  const lead=gcData.modal_lead||'Every rung traces to grounded corridor demand. Navier transport revenue, total journey spend, and your platform commission are different lenses on the same network — not a single "prize" number.';
+  const lead=gcData.modal_lead||'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.';
   return `<div class="intro-mark">The opportunity</div>
     <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
     <p class="intro-step-lead">${escapeHtml(lead)}</p>
@@ -3129,6 +3173,7 @@ function _syncIntroChrome(){
   const hasStep2=!!gc;
   if (dlg) dlg.classList.toggle('intro-step2', _introStep===2);
   if (body) body.innerHTML = _introStep===2 && hasStep2 ? _introStep2Html(partner) : _introStep1Html(partner);
+  if (body && _introStep===2) body.scrollTop=0;
   if (!foot) return;
   const isHub=_introIsHubContext(partner);
   if (_introStep===1){

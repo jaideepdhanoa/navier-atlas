@@ -8,7 +8,7 @@ growth-case + rollup JSON. For Grab it now ships in `data-clean/partners/grab.js
 ## What ships (3 render-ready sub-blocks)
 
 ### 1. `revenue_potential` — the floor-and-prize ladder
-- Render as a **vertical ladder / stacked rungs**, floor at bottom, prize at top.
+- Render as a **vertical ladder / stacked rungs**, **floor at top, building up** to the prize (ascending order). Bridges render **after** each rung (except the last).
 - Each rung: `label`, `whose_money` chip, `basis` (one line), banded `display.{low,mid,high}`, `confidence` tag.
 - **Headline the MID.** Show low–high as a faint range. Never lead with `high`.
 - Show the `whose_money_legend` + `anchor_note` (the one grounded number everything traces to).
