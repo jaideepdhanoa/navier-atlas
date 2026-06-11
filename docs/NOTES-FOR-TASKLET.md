@@ -6,6 +6,48 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-11 — Follow-up polish: ceiling band + confidence_label + generator sync
+
+**Context:** Render shipped four optional follow-ups from the growth-case polish pass. Three are
+render-only; one needs authoritative data on the next Grab export.
+
+### Render shipped (no Tasklet action required)
+- **Full-market ceiling line** under `platform_rev` rung: render computes `journey_gmv.mid × 18%` (~$3.51B)
+  and labels it “deck narrative”, with footnote that ladder MID ($879M) is Navier-routed subset (LB-113).
+  Render also checks for `growth_case.partner_platform_rev_full_journey` — if present, uses authored
+  `display.{low,mid,high}` instead of client-side math.
+- **Journey GMV label** patched locally in `grab.json` → `Journey GMV — food + stays + experiences (≈3× TAM)`.
+- **`confidence_label` support** — render reads optional `confidence_label` on rungs, bridges, and phase
+  horizons; falls back to Grounded / Modeled / Projected.
+- **Network bundle picker** — featured routes with 2+ `route_id`s show an in-panel “Which corridor?” picker
+  before opening the route side panel.
+
+### Tasklet ask (next Grab `growth_case` export)
+1. **`partner_platform_rev_full_journey`** — banded object at `growth_case` root (sibling to
+   `partner_platform_rev_on_navier`):
+   ```json
+   "partner_platform_rev_full_journey": {
+     "low": …, "mid": …, "high": …,
+     "display": { "low": "$…", "mid": "$3.51B", "high": "$…" },
+     "basis": "18% platform take on full Journey GMV (all induced journeys, not Navier-subset only)",
+     "derivation": "journey_gmv.mid × platform_take_rate (0.18)"
+   }
+   ```
+   Keep `platform_rev` rung as **Navier-routed subset** ($879M mid). Ceiling is display-only sibling —
+   not a 7th ladder rung unless Jaideep wants it promoted.
+
+2. **Generator sync** — persist Journey GMV label/basis copy in `growth_frontend_block.py` so the next
+   recal doesn't revert `journey_gmv.label`.
+
+3. **Optional `confidence_label`** per rung + bridge + phase horizon (plain strings: Grounded / Modeled /
+   Projected). Render has fallbacks; data override is nicer for partner-facing copy.
+
+4. **`featured_routes[].route_ids[]`** — when a network bundle binds multiple corridors, populate
+   `route_ids` array (not just single `route_id`) so the picker lists every leg. Today most network_chip
+   rows carry one id; multi-leg bundles would benefit from explicit arrays.
+
+---
+
 ## 2026-06-10 — Gold #48 INGESTED (`navier-export-20260610T035209Z.zip`)
 
 Ingested on the render lane. Updated `data-clean/ROUTES.json` (5,260→**5,269**), `economics_by_route_id.json`

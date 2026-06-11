@@ -478,6 +478,15 @@ body.panel-hidden #footer { display:block; }
 .gc-bridge-math { margin-top:5px; }
 .gc-bridge-math summary { font-size:9.5px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-2); cursor:pointer; }
 .gc-bridge-math[open] summary { margin-bottom:4px; }
+.gc-ceiling { margin-top:10px; padding:10px 13px; border:1px dashed rgba(224,203,143,0.35); border-radius:9px; background:rgba(224,203,143,0.05); font-size:11px; line-height:1.5; color:var(--text-2); }
+.gc-ceiling-h { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#e0cb8f; margin-bottom:4px; }
+.gc-ceiling-body { color:var(--text-1); }
+.gc-ceiling-note { margin-top:5px; font-size:10.5px; font-style:italic; }
+.route-bundle-picker { position:absolute; z-index:12; min-width:min(320px,92%); max-width:360px; border:1px solid var(--line-strong); border-radius:10px; background:rgba(24,24,27,0.98); box-shadow:0 12px 32px rgba(0,0,0,0.45); padding:8px; }
+.rbp-h { font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2); padding:4px 8px 6px; }
+.rbp-item { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; border:0; border-radius:7px; padding:8px 10px; background:transparent; color:var(--text-1); font:500 12px Inter; cursor:pointer; }
+.rbp-item:hover { background:rgba(224,203,143,0.12); color:var(--text-0); }
+.rbp-tag { font-size:10px; color:#e0cb8f; white-space:nowrap; }
 .gc-money-chip { display:inline-block; margin-top:7px; font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 8px; border-radius:999px; color:var(--gc,#6ee7b7); background:color-mix(in srgb, var(--gc,#6ee7b7) 13%, transparent); border:1px solid color-mix(in srgb, var(--gc,#6ee7b7) 35%, transparent); }
 .gc-conf { font-size:9px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; white-space:nowrap; }
 .gc-conf-grounded { color:#6ee7b7; background:rgba(110,231,183,0.12); border:1px solid rgba(110,231,183,0.32); }
@@ -2756,7 +2765,32 @@ function _gcConfTip(c){
   if (s==='med') return 'Modeled expansion from the grounded floor (e.g. network width).';
   return 'Model confidence for this step.';
 }
-function _gcConfBadge(c){ if(!c) return ''; return `<span class="gc-conf ${_gcConfCls(c)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(String(c))}</span>`; }
+function _gcConfLabel(c, custom){
+  if (custom) return String(custom);
+  const s=String(c||'').toLowerCase();
+  if (s==='grounded') return 'Grounded';
+  if (/med-low/.test(s)) return 'Projected';
+  if (s==='med') return 'Modeled';
+  return String(c||'');
+}
+function _gcConfBadge(c, custom){ if(!c&&!custom) return ''; const lbl=_gcConfLabel(c, custom); return `<span class="gc-conf ${_gcConfCls(c||custom)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(lbl)}</span>`; }
+function _gcPlatformCeilingHtml(gc, rungs){
+  const jgm=rungs.find(r=>r.id==='journey_gmv'), plat=rungs.find(r=>r.id==='platform_rev');
+  const authored=gc.partner_platform_rev_full_journey||gc.journey_gmv_ceiling;
+  if (authored&&authored.display&&authored.display.mid){
+    const subset=plat&&plat.display?plat.display.mid:'';
+    return `<div class="gc-ceiling"><div class="gc-ceiling-h">Full-market ceiling</div>
+      <div class="gc-ceiling-body">18% take on all Journey GMV → <b>${escapeHtml(authored.display.mid)}/yr</b></div>
+      ${subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is Grab's take on Navier-routed journeys only.</div>`:''}</div>`;
+  }
+  if (!jgm||jgm.mid==null) return '';
+  const bridge=(gc.ladder_transitions||[]).find(t=>t.to_rung_id==='platform_rev');
+  const rate=(bridge&&bridge.multipliers_cited&&bridge.multipliers_cited.platform_take_rate!=null)?bridge.multipliers_cited.platform_take_rate:0.18;
+  const ceil=_econMoney(jgm.mid*rate), subset=plat&&plat.display?plat.display.mid:'';
+  return `<div class="gc-ceiling"><div class="gc-ceiling-h">Full-market ceiling</div>
+    <div class="gc-ceiling-body">18% take on all Journey GMV → <b>${escapeHtml(ceil)}/yr</b> (deck narrative)</div>
+    ${subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is Grab's take on Navier-routed journeys only.</div>`:''}</div>`;
+}
 function _gcLadderBridgeHtml(t, opts){
   if (!t) return '';
   opts=opts||{};
@@ -2768,7 +2802,7 @@ function _gcLadderBridgeHtml(t, opts){
   }
   const mathBlock=math?(opts.inModal?`<details class="gc-bridge-math"><summary>Show math</summary>${math}</details>`:math):'';
   return `<div class="gc-bridge">
-    <div class="gc-bridge-h">${escapeHtml(t.headline||'')}${t.confidence?` ${_gcConfBadge(t.confidence)}`:''}</div>
+    <div class="gc-bridge-h">${escapeHtml(t.headline||'')}${t.confidence?` ${_gcConfBadge(t.confidence, t.confidence_label)}`:''}</div>
     ${t.basis?`<div>${escapeHtml(t.basis)}</div>`:''}
     ${mathBlock}
   </div>`;
@@ -2810,12 +2844,13 @@ function _growthCaseHtml(gc, opts){
       const d=r.display||{}, cls=_gcMoneyClass(r.whose_money), range=(d.low&&d.high)?`${escapeHtml(d.low)} – ${escapeHtml(d.high)}`:'';
       const showRungConf=!opts.inModal&&r.confidence;
       h+=`<div class="gc-rung gc-m-${cls}">
-        <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${showRungConf?_gcConfBadge(r.confidence):''}</div>
+        <div class="gc-rung-head"><span class="gc-rung-label">${escapeHtml(r.label||'')}</span>${showRungConf?_gcConfBadge(r.confidence, r.confidence_label):''}</div>
         <div class="gc-rung-fig"><span class="gc-rung-mid">${escapeHtml(d.mid||'')}</span>${range?`<span class="gc-rung-range">${range}</span>`:''}</div>
         ${r.basis?`<div class="gc-rung-basis">${escapeHtml(r.basis)}</div>`:''}
         ${r.whose_money?`<span class="gc-money-chip gc-m-${cls}">${escapeHtml(r.whose_money)}</span>`:''}
       </div>`;
       if (r.id && bridgeFrom[r.id] && i<rungs.length-1) h+=_gcLadderBridgeHtml(bridgeFrom[r.id], opts);
+      if (r.id==='platform_rev') h+=_gcPlatformCeilingHtml(gc, rungs);
     }
     h+=`</div>`;
     const L=rp.whose_money_legend;
@@ -2832,7 +2867,7 @@ function _growthCaseHtml(gc, opts){
         <div class="gc-hz-top"><span class="gc-hz-name">${escapeHtml(z.name||'')}</span><span class="gc-hz-when">${escapeHtml(z.horizon||'')}</span></div>
         ${z.scope?`<div class="gc-hz-scope">${escapeHtml(z.scope)}</div>`:''}
         <dl class="gc-hz-dl">${rows.map(([k,v])=>`<dt>${escapeHtml(k)}</dt><dd>${k==='Fleet'?v:escapeHtml(String(v))}</dd>`).join('')}</dl>
-        ${z.confidence?_gcConfBadge(z.confidence):''}
+        ${z.confidence?_gcConfBadge(z.confidence, z.confidence_label):''}
       </div>`;
     }
     h+=`</div>${pe.conversion_note?`<div class="gc-cite">${escapeHtml(pe.conversion_note)}</div>`:''}</div>`;
@@ -2907,18 +2942,51 @@ function _openRoutePanel(rids){
   const feats=_routeFeats([id]); if (!feats.length) return false;
   selectRoute(feats[0]); return true;
 }
+function _closeBundlePicker(){ document.querySelectorAll('.route-bundle-picker').forEach(el=>el.remove()); }
+function _bundlePickerItems(rids){
+  return (rids||[]).map(id=>{
+    const f=_routeFeats([id])[0], rec=(typeof ROUTE_ECONOMICS!=='undefined')?ROUTE_ECONOMICS[id]:null;
+    const em=rec&&rec.mid||{};
+    const tag=em.payback_years!=null?(em.payback_years.toFixed(1)+' yr payback'):(rec?(em.margin!=null?(Math.round(em.margin*100)+'% margin'):'economics'):'view route');
+    return {id, label:f?_routeLabel(f.properties):id, tag};
+  });
+}
+function _openBundlePicker(rids, anchorEl){
+  _closeBundlePicker();
+  const panel=document.getElementById('panel'); if(!panel||!anchorEl) return;
+  const wrap=document.createElement('div');
+  wrap.className='route-bundle-picker';
+  wrap.innerHTML=`<div class="rbp-h">Which corridor?</div>${_bundlePickerItems(rids).map(it=>`<button type="button" class="rbp-item" data-rid="${escapeHtml(it.id)}"><span>${escapeHtml(it.label)}</span><span class="rbp-tag">${escapeHtml(it.tag)}</span></button>`).join('')}`;
+  panel.appendChild(wrap);
+  const ar=anchorEl.getBoundingClientRect(), pr=panel.getBoundingClientRect();
+  wrap.style.top=(ar.bottom-pr.top+panel.scrollTop+4)+'px';
+  wrap.style.left=Math.max(8, ar.left-pr.left)+'px';
+  wrap.querySelectorAll('.rbp-item').forEach(btn=>btn.addEventListener('click',(e)=>{
+    e.stopPropagation(); _closeBundlePicker();
+    const feats=_routeFeats([btn.dataset.rid]); if (feats.length) selectRoute(feats[0]);
+  }));
+}
 // Journey card → ISOLATE that corridor on the map (others faded), and mark the card active. Featured
 // routes also open the route side panel (economics when present). Click the active card again to release.
 function _wireJourneys(panel){
+  _closeBundlePicker();
   const cards=[...panel.querySelectorAll('.pcaro-jrn.clickable, .pcaro-route.clickable')];
   cards.forEach(el=>el.addEventListener('click',()=>{
     const wasActive=el.classList.contains('active');
     cards.forEach(c=>c.classList.remove('active'));
+    _closeBundlePicker();
     if (wasActive){ showChapter(_CARO.i); return; }   // toggle off → re-render chapter (resets focus + camera)
     el.classList.add('active');
     const isRoute=el.classList.contains('pcaro-route');
     const rids=(el.dataset.routes?el.dataset.routes.split(','):[]).filter(Boolean);
-    if (rids.length && _focusRoutes(rids)){ _fitRoutes(_routeFeats(rids), 200); if (isRoute) _openRoutePanel(rids); return; }
+    if (rids.length && _focusRoutes(rids)){
+      _fitRoutes(_routeFeats(rids), 200);
+      if (isRoute){
+        if (rids.length>=2) _openBundlePicker(rids, el);
+        else _openRoutePanel(rids);
+      }
+      return;
+    }
     const ids=[...new Set([el.dataset.from, el.dataset.to].filter(Boolean))];
     if (ids.length){ _focusCities(ids, 'intra'); _fitCities(ids, 160); }
   }));
