@@ -6,6 +6,20 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-11 — Hub spoke intro: no inherited network TAM (render fix)
+
+**Shipped on render:** Grab (and other `layout:"hub"`) **market spokes** no longer inherit the parent
+`growth_case` in the Proposal modal. Philippines/Bali/etc. show **market proposal only** (step 1);
+**See the opportunity →** is hidden unless the market record has its own `growth_case`.
+
+Optional escape hatch on spokes: **Full Grab network opportunity →** opens the hub ladder (step 2) with
+Back returning to the spoke.
+
+**Future (optional data):** per-market `growth_case` blocks (Philippines-sized SOM, market fleet ramp)
+would re-enable step 2 on that spoke with market-scoped numbers — not the network-wide $74M→$879M ladder.
+
+---
+
 ## 2026-06-11 — Follow-up polish: ceiling band + confidence_label + generator sync
 
 **Context:** Render shipped four optional follow-ups from the growth-case polish pass. Three are

@@ -3072,7 +3072,7 @@ function startPartnerCarousel(partner){
 // full mini-proposal (same field shape as a single partner) reached at /<slug>/<market.slug>. On the
 // aggregate a market opens in place (#/partner/<slug>/market/<mslug>); on a dedicated build each market is
 // its own scoped page (__PARTNER_MARKET__ lock).
-let _HUB=null, _hubTab='overview', _introStep=1, _introPartner=null;
+let _HUB=null, _hubTab='overview', _introStep=1, _introPartner=null, _introSpokeReturn=null;
 function _hubMarketFromHash(){ const m=(location.hash||'').match(/#\/partner\/[^/]+\/market\/([a-z0-9-]+)/i); return m?m[1]:null; }
 function _hubAnchors(partner){
   const set=new Set();
@@ -3193,17 +3193,24 @@ function _backToHub(){
   if (BUILD_PARTNER && window.__PARTNER_MARKET__){ location.href='/'+encodeURIComponent(partner.partner_id); return; }
   renderHubIndex(partner);
 }
-// Opening / "Proposal" dialogue — step 1: pitch; step 2: full growth_case (when present).
+// Opening / "Proposal" dialogue — step 1: pitch; step 2: growth_case ladder (network scope only).
+// Hub *spokes* (markets) never inherit the parent hub's growth_case — that ladder is Grab-wide TAM, not
+// Philippines/Bali/etc. Step 2 appears only when this partner record carries its own growth_case.
+function _introIsHubSpoke(partner){ return !!(partner&&partner._hubOf); }
 function _introGrowthPartner(partner){
   if (partner&&partner.growth_case) return partner;
-  if (partner&&partner._hubOf&&partner._hubOf.growth_case) return partner._hubOf;
+  if (_introIsHubSpoke(partner)) return null;
+  if (partner&&(partner.layout==='hub'||partner.layout==='network')&&partner.growth_case) return partner;
   if (_HUB&&_HUB.partner&&_HUB.partner.growth_case) return _HUB.partner;
-  return partner;
+  return null;
 }
+function _introHubPartner(partner){ return (partner&&partner._hubOf)||null; }
 function _introStep1Html(partner){
   const hero=partner.hero||{};
   const gcPartner=_introGrowthPartner(partner);
-  let h=`<div class="intro-mark">Partner proposal</div>
+  const hub=_introHubPartner(partner);
+  const isSpoke=_introIsHubSpoke(partner);
+  let h=`<div class="intro-mark">${isSpoke?'Market proposal':'Partner proposal'}</div>
     <h2 class="intro-title">${escapeHtml(hero.title||partner.display||'')}</h2>
     ${hero.subtitle?`<div class="intro-sub">${escapeHtml(hero.subtitle)}</div>`:''}
     ${hero.what_we_do_together?`<div class="intro-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}`;
@@ -3213,6 +3220,7 @@ function _introStep1Html(partner){
   h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
   if (gcPartner&&gcPartner.growth_case) h+=`<button type="button" class="intro-jump-econ" id="intro-jump-econ">Jump to economics →</button>`;
+  else if (isSpoke&&hub&&hub.growth_case) h+=`<button type="button" class="intro-jump-econ intro-hub-econ" id="intro-hub-econ">Full ${escapeHtml(hub.display||'network')} opportunity →</button>`;
   return h;
 }
 function _introStep2Html(partner){
@@ -3237,27 +3245,38 @@ function _hubPartnerFromContext(partner){
 function _syncIntroChrome(){
   const partner=_introPartner; if(!partner) return;
   const body=document.getElementById('intro-body'), foot=document.querySelector('.intro-foot'), dlg=document.querySelector('.intro-dialog');
-  const gc=_introGrowthPartner(partner)&&_introGrowthPartner(partner).growth_case;
+  const gcP=_introGrowthPartner(partner);
+  const gc=gcP&&gcP.growth_case;
   const hasStep2=!!gc;
+  const isSpoke=_introIsHubSpoke(partner);
   if (dlg) dlg.classList.toggle('intro-step2', _introStep===2);
   if (body) body.innerHTML = _introStep===2 && hasStep2 ? _introStep2Html(partner) : _introStep1Html(partner);
   if (body && _introStep===2) body.scrollTop=0;
   if (!foot) return;
-  const isHub=_introIsHubContext(partner);
+  const isHub=_introIsHubContext(partner)&&!_introSpokeReturn;
   if (_introStep===1){
     foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
-      <div class="intro-foot-right">${hasStep2?`<button type="button" class="intro-start" id="intro-next">See the opportunity →</button>`:`<button type="button" class="intro-start" id="intro-start">Take the tour →</button>`}</div>`;
+      <div class="intro-foot-right">${hasStep2?`<button type="button" class="intro-start" id="intro-next">See the opportunity →</button>`:`<button type="button" class="intro-start" id="intro-start">${isSpoke?'Explore this market →':'Take the tour →'}</button>`}</div>`;
   } else {
     foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
       <div class="intro-foot-right"><button type="button" class="intro-back" id="intro-back">Back</button>
       ${isHub?`<button type="button" class="intro-start" id="intro-markets">Explore launch markets →</button>`:`<button type="button" class="intro-start" id="intro-start">Take the tour →</button>`}</div>`;
   }
   const skip=foot.querySelector('#intro-skip'); if(skip) skip.addEventListener('click', closeIntroDialog);
-  const back=foot.querySelector('#intro-back'); if(back) back.addEventListener('click',()=>{ _introStep=1; _syncIntroChrome(); });
+  const back=foot.querySelector('#intro-back'); if(back) back.addEventListener('click',()=>{
+    if (_introSpokeReturn){ _introPartner=_introSpokeReturn; _introSpokeReturn=null; _introStep=1; }
+    else _introStep=1;
+    _syncIntroChrome();
+  });
   const next=foot.querySelector('#intro-next'); if(next) next.addEventListener('click',()=>{ _introStep=2; _syncIntroChrome(); });
   const start=foot.querySelector('#intro-start'); if(start) start.addEventListener('click', closeIntroDialog);
   const markets=foot.querySelector('#intro-markets'); if(markets) markets.addEventListener('click',()=>{ closeIntroDialog(); const hub=_hubPartnerFromContext(partner); if(hub) renderHubIndex(hub,'markets'); });
   const jump=body&&body.querySelector('#intro-jump-econ'); if(jump) jump.addEventListener('click',()=>{ _introStep=2; _syncIntroChrome(); });
+  const hubEcon=body&&body.querySelector('#intro-hub-econ');
+  if (hubEcon) hubEcon.addEventListener('click',()=>{
+    const hub=_introHubPartner(partner); if(!hub||!hub.growth_case) return;
+    _introSpokeReturn=partner; _introPartner=hub; _introStep=2; _syncIntroChrome();
+  });
 }
 function openIntroDialog(partner, step){
   // Fall back through the active context: carousel partner/market → hub index → the active aggregate partner.
@@ -3266,7 +3285,8 @@ function openIntroDialog(partner, step){
   if(!partner) return;
   const m=document.getElementById('intro-modal'); if(!m) return;
   _introPartner=partner;
-  _introStep = (step===2 && _introGrowthPartner(partner)&&_introGrowthPartner(partner).growth_case) ? 2 : 1;
+  const gcP=_introGrowthPartner(partner);
+  _introStep = (step===2 && gcP&&gcP.growth_case) ? 2 : 1;
   _syncIntroChrome();
   m.hidden=false;
 }
@@ -3277,7 +3297,7 @@ function _autoIntro(partner, key){
   try { if (sessionStorage.getItem('atlas-intro:'+key)==='1') return; sessionStorage.setItem('atlas-intro:'+key,'1'); } catch(e){}
   openIntroDialog(partner);
 }
-function closeIntroDialog(){ const m=document.getElementById('intro-modal'); if(m) m.hidden=true; }
+function closeIntroDialog(){ _introSpokeReturn=null; const m=document.getElementById('intro-modal'); if(m) m.hidden=true; }
 function applyPartnerView(){
   _navReset();
   if (!PARTNER_ACTIVE) return;
