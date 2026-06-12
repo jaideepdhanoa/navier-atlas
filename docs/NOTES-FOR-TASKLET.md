@@ -6,6 +6,27 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-12 — Gold #68 hygiene INGESTED (`navier-export-20260612T052622Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean.
+
+### What landed (backlog closure)
+- ✅ **G61 `commodity_fare`** baked in economics sidecar at source (4 routes + `commodity_fare_usd`; `_meta.commodity_fare_tagged: 4`).
+- ✅ **`deck_only` / `reviewer_notes` stripped** on export (gojek, line, kakao-mobility).
+- ✅ **Montego Bay brief** leak fix at source (“quiet” not “exclusive/secluded”).
+- ✅ **Grab G66 cascade binds** — featured_routes **75/79** (was 69/79): Langkawi↔Lipe, Cijin, Palawan edge, +1 Manila corridor.
+- ✅ **`SEAL.pitch.economics_records`** + `corridor_count_method` metadata.
+
+### Render lane (this cut)
+- Fixed stale `sidecars.economics_by_route_id.json.sha256` in SEAL (export had manifest hash `9fc6e3c5…` but sidecars still pointed at pre-G61 `16d2d0f0…`).
+- Reworded 4× `featured_routes[].rationale` in `grab.json` — “awaiting” trips §3.2 leak gate on per-partner builds. **Tasklet:** reword at source or strip `rationale` from baked surface.
+
+### Still open (updated)
+1. Grab binds **4 null** remain: Cebu↔Boracay, Bach Dang↔Thu Duc (×2), KK↔Labuan.
+2. Per-market `growth_case`, `route_ids[]` multi-leg, economics widen, cluster_id tagging, etc. — see prior backlog entry below.
+
+---
+
 ## 2026-06-12 — Gold #65–#68 INGESTED (`navier-export-20260612T042511Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
