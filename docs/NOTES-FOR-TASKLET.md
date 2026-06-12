@@ -6,6 +6,16 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-12 — Gold #74 INGESTED (`navier-export-20260612T141747Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
+
+**What landed:** `grab.json` rationale leak-gate fix (LB-137) — 4 internal-jargon strings rewritten to partner-safe copy on aspirational featured routes. `SEAL.meta.gold` → **#74**. Geometry/sidecar unchanged (5287 routes, 107 econ, G61 commodity_fare).
+
+**Render lane:** none — full authoritative rsync of `grab.json` + `SEAL.json` only.
+
+---
+
 ## 2026-06-12 — Partial ingest (`navier-export-20260612T054805Z.zip`) — bp-* cleanup only
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean.
