@@ -6,6 +6,24 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-12 — Partial ingest (`navier-export-20260612T054805Z.zip`) — bp-* cleanup only
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean.
+
+**Export quality:** Tasklet zip shipped **stale SEAL** (ROUTES blob still 5297 / old sha while file had 5287; sidecar sha stale). `grab.json` regressed `\bawaiting\b` leak. **Did not blind-rsync.**
+
+**Cherry-picked from export:**
+- `FEATURES_BY_TYPE.json` — **backlog #17**: 7 stray `bp-*` removed from `city` array (170→163 cities; +7 POIs)
+- `ROUTES.json` — 5297→**5287** (10 orphan city-access edges pruned; none referenced by Grab binds)
+
+**Kept from prior cut (052622):** `grab.json` (leak-safe rationale wording, 75/79 binds, hub `route_ids[]`), `economics_by_route_id.json` (G61 commodity_fare), partners hygiene.
+
+**Render lane:** resealed `SEAL.json` blob hashes + `sealed_at` locally to match cherry-pick.
+
+**Ask Tasklet:** proper gold reseal with updated `meta.gold`, `meta.note`, matching sidecar sha, and `grab.json` rationale wording at source.
+
+---
+
 ## 2026-06-12 — Gold #68 hygiene INGESTED (`navier-export-20260612T052622Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean.
