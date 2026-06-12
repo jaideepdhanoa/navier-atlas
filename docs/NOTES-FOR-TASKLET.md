@@ -6,6 +6,46 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-12 — Gold #65–#68 INGESTED (`navier-export-20260612T042511Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
+
+### What landed (data)
+| Batch | Delta |
+|-------|-------|
+| **G65 (ζ)** | `confidence_label` on rungs/bridges/phases; Journey GMV label; `route_ids[]` alias on featured routes; `revenue_potential.ceiling_sibling` (~$3.94B mid) |
+| **G66 (η)** | +12 routes (5,285→**5,297**); Carabao POI; Kaohsiung↔Magong → Quanta-LR; 6 SEA corridors (Langkawi↔Lipe, Penghu hops, Cijin, Corregidor, Boracay↔Carabao) |
+| **G67** | Grab Philippines splice: `committed_fleet` **289**, platform MID **$985M** |
+| **G68** | Full Grab aggregate rerun; economics **107** pinned / **22** pending; sidecar regenerated |
+
+### Render lane (this cut)
+- `_gcPlatformCeilingHtml` reads authored `revenue_potential.ceiling_sibling` (falls back to client math).
+- Stripped `deck_only.reviewer_notes` from `line.json`, `gojek.json`, `kakao-mobility.json` (leak gate: internal names).
+- Re-applied G61 `commodity_fare` + `fare_basis` on 4 econ rows (Vung Tau + 3 Samui→Donsak); **resealed** economics sidecar hash locally — please fold into next generator run.
+
+### Remaining for Tasklet (backlog)
+
+**Data / seal**
+1. **Reseal economics at source** with G61 `commodity_fare` on 4 routes — render re-patched after G68 regen; don't drop on next sidecar rebuild.
+2. **Strip internal fields before seal** — `reviewer_notes` (and similar) must not ship in `data-clean/partners/*`; bake step should drop `deck_only` entirely (render stripped 3 files this cut).
+3. **Montego Bay brief** — confirm “secluded” wording at source (render fixed prior “exclusive” leak).
+
+**Grab growth / hub**
+4. **Per-market `growth_case`** (optional) — Philippines-sized SOM/fleet so hub spokes can show market-scoped Step 2 without network TAM.
+5. **`route_ids[]` population** on multi-leg network bundles — G65 added alias; most chips still single `route_id`.
+6. **Philippines / Taiwan cascade** — bind featured_route chips for G66 corridors (Corregidor, Cijin, Langkawi↔Lipe, Penghu hops, Boracay↔Carabao) where geometry exists.
+
+**Coverage / binding (ongoing)**
+7. **Grab featured_route binding** — aspirational/null routes (PH QLR, Bangkok river, etc.).
+8. **Economics widen** — 107 pinned / 22 pending; regional flagships beyond SEA-heavy set.
+9. **Fine-OSM / pending pins** — SG cluster-level pendings, Quanta-LR queues (KK↔Labuan, etc.).
+
+**Copy / hygiene**
+10. **Luxury “exclusivity” copy** — reword at source where possible (Bora Bora etc.) vs allowlist growth.
+11. **`SEAL.json` metadata** — keep `pitch.economics_records` in sync with live sidecar count.
+
+---
+
 ## 2026-06-11 — Hub spoke intro: no inherited network TAM (render fix)
 
 **Shipped on render:** Grab (and other `layout:"hub"`) **market spokes** no longer inherit the parent

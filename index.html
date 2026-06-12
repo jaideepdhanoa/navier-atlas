@@ -2776,11 +2776,13 @@ function _gcConfLabel(c, custom){
 function _gcConfBadge(c, custom){ if(!c&&!custom) return ''; const lbl=_gcConfLabel(c, custom); return `<span class="gc-conf ${_gcConfCls(c||custom)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(lbl)}</span>`; }
 function _gcPlatformCeilingHtml(gc, rungs){
   const jgm=rungs.find(r=>r.id==='journey_gmv'), plat=rungs.find(r=>r.id==='platform_rev');
-  const authored=gc.partner_platform_rev_full_journey||gc.journey_gmv_ceiling;
+  const rp=gc.revenue_potential||{};
+  const authored=rp.ceiling_sibling||gc.partner_platform_rev_full_journey||gc.journey_gmv_ceiling;
   if (authored&&authored.display&&authored.display.mid){
     const subset=plat&&plat.display?plat.display.mid:'';
-    return `<div class="gc-ceiling"><div class="gc-ceiling-h">Full-market ceiling</div>
-      <div class="gc-ceiling-body">18% take on all Journey GMV → <b>${escapeHtml(authored.display.mid)}/yr</b></div>
+    const lbl=authored.label||'Full-market ceiling';
+    return `<div class="gc-ceiling"><div class="gc-ceiling-h">${escapeHtml(lbl)}</div>
+      <div class="gc-ceiling-body"><b>${escapeHtml(authored.display.mid)}/yr</b>${authored.derivation?` — ${escapeHtml(authored.derivation)}`:''}</div>
       ${subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is Grab's take on Navier-routed journeys only.</div>`:''}</div>`;
   }
   if (!jgm||jgm.mid==null) return '';
