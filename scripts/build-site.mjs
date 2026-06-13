@@ -215,11 +215,24 @@ if (fs.existsSync(apiSrc)) {
   fs.mkdirSync(apiDst, { recursive: true });
   for (const fn of fs.readdirSync(apiSrc)) fs.copyFileSync(path.join(apiSrc, fn), path.join(apiDst, fn));
 }
-fs.writeFileSync(path.join(DIST, 'package.json'), JSON.stringify({ private: true, dependencies: { '@vercel/og': '^0.6.8' } }, null, 2) + '\n');
+fs.writeFileSync(path.join(DIST, 'package.json'), JSON.stringify({
+  private: true,
+  type: 'module',
+  dependencies: { '@vercel/og': '^0.6.8', react: '^18.3.1' },
+}, null, 2) + '\n');
 fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
+  version: 2,
   cleanUrls: true,
   trailingSlash: false,
   installCommand: 'npm install --omit=dev',
+  builds: [
+    { src: 'api/og.js', use: '@vercel/node' },
+    { src: '**', use: '@vercel/static' },
+  ],
+  routes: [
+    { src: '/api/og', dest: '/api/og.js' },
+    { handle: 'filesystem' },
+  ],
 }, null, 2) + '\n');
 console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${Object.keys(data.PARTNERS).length} partners · ${data.ROUTES.length} routes)`);
 

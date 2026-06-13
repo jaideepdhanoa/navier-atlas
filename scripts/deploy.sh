@@ -46,6 +46,8 @@ if [ -f "$ROOT/.vercel/project.json" ]; then
   cp "$ROOT/.vercel/project.json" "$ROOT/_dist/.vercel/project.json"
 fi
 echo "→ pre-flight clean; deploying _dist/ to Vercel prod…"
+# vercel.json `builds` compiles api/og.js on Vercel's builders (@vercel/node + @vercel/og).
+# Plain upload treated api/ as static (404); local `vercel build --prebuilt` skipped bundling.
 # The upload can hit transient Vercel API errors on large trees — e.g. a non-JSON 5xx
 # ("upstream connect error …" → "FetchError: invalid json response body"). The build and
 # pre-flight already passed, so retry just the upload with exponential backoff (2s,4s,8s,16s)

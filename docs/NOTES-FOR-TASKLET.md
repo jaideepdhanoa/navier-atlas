@@ -8,16 +8,21 @@ build / gates = Tasklet._
 
 ## 2026-06-13 — Share deeplinks + dynamic OG previews (render)
 
-**Live:** path-based share URLs with per-page `og:title` / `og:description` / `og:image` (Vercel OG API).
+**Live:** https://navier-atlas.vercel.app · path-based share URLs with per-page `og:title` / `og:description` / `og:image` (Vercel `@vercel/og` via `api/og.js`).
 
-**URL scheme:**
+**URL scheme (use for WhatsApp/X/FB — crawlers ignore hash-only):**
 - `/cluster/<cluster_id>` · `/city/<city_id>`
 - `/<partner>` · `/<partner>/<market>` · `/<partner>/<market>/city/<city_id>`
 - Hash aliases (`#/cluster/`, `#/city/`, `#/partner/…`) still work in-browser.
 
-**Examples:** `/cluster/french-polynesia` · `/city/bora-bora-french-polynesia` · `/grab/penang` · `/grab/penang/city/langkawi-malaysia`
+**Examples:**
+- https://navier-atlas.vercel.app/cluster/french-polynesia
+- https://navier-atlas.vercel.app/grab/penang
+- https://navier-atlas.vercel.app/grab/penang/city/langkawi-malaysia
 
-**UI:** “Copy link” on cluster + city brief panels. Build emits 399 share shells + `api/og` for branded preview cards.
+**OG API:** `GET /api/og?title=…&subtitle=…&badge=…&type=cluster|city|market|partner` → 1200×630 PNG branded card (cluster name + region badge). `_dist/vercel.json` uses `builds` (`api/og.js` + static `**`) so Vercel compiles the function on deploy.
+
+**UI:** “Copy link” on cluster + city brief panels. Build emits 399 share shells + partner OG meta.
 
 ---
 
