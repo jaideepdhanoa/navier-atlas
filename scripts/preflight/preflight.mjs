@@ -46,10 +46,22 @@ const atlasData = fs.existsSync(ATLAS) ? fs.readFileSync(ATLAS, 'utf8') : null;
 const deployText = atlasData ? (html + '\n' + atlasData) : html;
 
 // ─── §3.1 · Hash match (anti-tamper) ──────────────────────────────────────────
-// SEAL.json (Tasklet-produced) supports two blob-key shapes:
+// SEAL.json (Tasklet-produced) supports three manifest shapes (merged + deduped):
 //   legacy:  { "blobs": { "ROUTES": { "sha256": "<hex>", "count": N }, ... } }
 //   v2:      { "blobs": { "ROUTES.json": { "sha": "sha256:<hex>", "bytes": N }, ... } }
+//   v3:      { "files": { "ROUTES.json": { "sha256": "<hex>", "bytes": N }, ... } }
 // Optional "sidecars" block uses the same meta shapes. Any on-disk mismatch ⇒ ABORT.
+const collectSealEntries = (seal) => {
+  const merged = {};
+  for (const block of [seal.files, seal.blobs, seal.sidecars]) {
+    if (!block) continue;
+    for (const [name, meta] of Object.entries(block)) {
+      const rel = name.endsWith('.json') ? name : `${name}.json`;
+      merged[rel] = meta;
+    }
+  }
+  return merged;
+};
 const sealExpectedHex = (meta) => {
   if (!meta) return null;
   if (typeof meta === 'string') return meta.replace(/^sha256:/, '');
@@ -85,11 +97,8 @@ if (!fs.existsSync(SEAL)) {
 } else {
   try {
     const seal = JSON.parse(fs.readFileSync(SEAL, 'utf8'));
-    const blobs = seal.blobs || {};
-    const sidecars = seal.sidecars || {};
-    const blobRes = verifySealEntries(blobs, 'blob', sealIssue);
-    const sideRes = Object.keys(sidecars).length ? verifySealEntries(sidecars, 'sidecar', sealIssue) : { n: 0, bad: 0 };
-    const n = blobRes.n + sideRes.n, bad = blobRes.bad + sideRes.bad;
+    const entries = collectSealEntries(seal);
+    const { n, bad } = verifySealEntries(entries, 'sealed', sealIssue);
     if (n && !bad) ok(`${n} sealed file(s) verified`);
     else if (bad && !RELEASE) console.warn(`   ⚠ ${bad}/${n + bad} file(s) differ from SEAL — Tasklet should re-seal; not blocking dev`);
   } catch (e) { sealIssue('SEAL.json parse error: ' + e.message); }

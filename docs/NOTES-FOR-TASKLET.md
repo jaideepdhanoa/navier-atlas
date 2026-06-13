@@ -6,6 +6,21 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Gold #79b INGESTED (`navier-export-20260613T222226Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 files).
+
+**Wave 10B — Mumbai OSM-noise scrub + commuter spine** (`parent_gold: #79`):
+- **+5** commuter routes (`ics-mum-belapur-ferrywharf`, `ics-mum-belapur-gateway`, `ics-mum-vashi-ferrywharf`, `ics-mum-gorai-nariman`, `ics-mum-versova-gateway`)
+- **−37** junk POIs scrubbed · **+3** web-verified boarding points (`bp-mum-nariman-point`, `bp-mum-bandra-bandstand`, `bp-navi-vashi-creek`)
+- Mumbai POIs **96 → 62** · partners/briefs byte-identical to prior #79
+
+**Totals:** routes **5474** (was 5469) · POIs **11,433** (was 11,467) · cities **164** · economics unchanged (**95** pinned / **46** pending)
+
+**SEAL:** v3 shape (`files` + `meta` only). Preflight accepts `files` / `blobs` / `sidecars`.
+
+---
+
 ## 2026-06-13 — Gold #79 REBUILT SEAL (`navier-export-20260613T220843Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 blobs + sidecar).
