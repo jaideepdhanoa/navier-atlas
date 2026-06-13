@@ -10,7 +10,8 @@
 //   _dist/<slug>/index.html  · per-partner render + window.__PARTNER_BUILD__ lock
 //   _dist/<slug>/atlas-data.js · data SCOPED to that partner only (cities/routes/POIs/briefs/stories
 //                                reachable from PARTNERS[slug].phases[].cities + only PARTNERS[slug])
-//   _dist/vercel.json        · cleanUrls
+//   _dist/vercel.json        · cleanUrls + api/og builds
+//   _dist/middleware.js      · per-partner password gate (cluster/city share links stay public)
 //
 // Isolation = scoped data (a partner page literally contains no other partner's data) + the render
 // build-lock (ignores ?partner= overrides). Each partner build runs the exclusion-token grep AND a
@@ -24,6 +25,7 @@ import { fileURLToPath } from 'node:url';
 import {
   SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
 } from './share-meta.mjs';
+import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -234,7 +236,10 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
     { handle: 'filesystem' },
   ],
 }, null, 2) + '\n');
-console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${Object.keys(data.PARTNERS).length} partners · ${data.ROUTES.length} routes)`);
+const partnerSlugs = Object.keys(data.PARTNERS).sort();
+fs.writeFileSync(path.join(DIST, 'middleware.js'), generatePartnerAuthMiddleware(partnerSlugs));
+console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${partnerSlugs.length} partners · ${data.ROUTES.length} routes)`);
+console.log(`middleware → _dist/middleware.js  (${partnerSlugs.length} partner matchers; /cluster/ + /city/ public)`);
 
 // per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)
 let failed = 0, pages = 0, skipped = 0, sharePages = 0;

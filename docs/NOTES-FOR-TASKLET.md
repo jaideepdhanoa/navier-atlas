@@ -6,6 +6,22 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Per-partner password middleware (render + deploy)
+
+**Policy:** `/<partner>/**` gated by Edge `middleware.js` (one password per slug via Vercel env).
+**Public (no partner password):** `/cluster/<id>`, `/city/<id>`, `/api/og`, root `/atlas-data.js`.
+
+**Vercel env to set before sharing partner links:**
+- `AUTH_SECRET` (session cookie signing)
+- `PARTNER_AUTH_GRAB`, `PARTNER_AUTH_UBER`, … or `PARTNER_AUTH_JSON={"grab":"…"}`
+
+**Caveat:** project-wide Vercel Deployment Protection (SSO) blocks public cluster/city — disable on prod
+or split projects. See `docs/PARTNER-VIEWS.md` §5.
+
+**Build:** `build-site.mjs` → `_dist/middleware.js` (46 partner matchers from `data-clean/partners/`).
+
+---
+
 ## 2026-06-13 — Gold #78c INGESTED (`navier-export-20260613T171106Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.

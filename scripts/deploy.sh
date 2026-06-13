@@ -10,6 +10,12 @@
 #   VERCEL_TOKEN                  Vercel access token (NEVER commit; provided via env secret)
 # Optional env (if the project isn't linked via .vercel/):
 #   VERCEL_ORG_ID, VERCEL_PROJECT_ID   target the existing navier-atlas project non-interactively
+#
+# Partner auth (set in Vercel project env — not in git):
+#   AUTH_SECRET                        session-cookie signing key
+#   PARTNER_AUTH_GRAB, PARTNER_AUTH_UBER, …   per-slug passwords (hyphens → underscores)
+#   PARTNER_AUTH_JSON                  optional {"grab":"…","uber":"…"} bulk map
+#   /cluster/* and /city/* stay public; /<partner>/* gated by _dist/middleware.js
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

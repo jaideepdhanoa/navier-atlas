@@ -149,29 +149,34 @@ locked per-partner build, ship **only** the matching row.
 
 Add/remove partners by editing this table + `PARTNER_VIEWS` — no other render change.
 
-### Routing — recommended: a separate **public** Vercel project for partner builds
+### Routing + access control — single project, Edge middleware (2026-06-13)
 
-The admin/all build (root `index.html`) embeds **every** partner's data and must stay **internal**
-(it's behind the current project's SSO Deployment Protection). Partner builds are meant to be sent
-**out**, so they must be **public** — and that's safe only because each ships **only its own data**.
-Vercel Deployment Protection is per-project, so the clean split is **two projects**:
+Deploy is one Vercel project (`navier-atlas`) from `_dist/`. `build-site.mjs` emits
+`_dist/middleware.js` (generated from `scripts/partner-auth-middleware.mjs`) so partner paths are
+gated **per slug** while share deeplinks stay crawlable.
 
-| Project | Contents | Protection | URLs |
-|---|---|---|---|
-| `navier-atlas` (existing) | admin/all `index.html` | **SSO on** (internal) | `navier-atlas.vercel.app` |
-| `navier-partners` (new) | `_dist/<slug>/index.html` for each roster slug | **off** (public) | `navier-partners.vercel.app/<slug>` (e.g. `/grab`, `/gulf-transit`) |
+| Path | Data | Protection |
+|---|---|---|
+| `/` (aggregate) | full `atlas-data.js` | optional Vercel SSO (project-level); middleware does **not** gate `/` |
+| `/cluster/<id>` · `/city/<id>` | aggregate `atlas-data.js` | **public** (OG/social crawlers) |
+| `/api/og` | dynamic PNG | **public** |
+| `/<partner>` · `/<partner>/<market>` · `/<partner>/<market>/city/<id>` | scoped `/<partner>/atlas-data.js` | **per-partner password** (HTTP Basic → session cookie) |
 
-- **Tasklet build output:** `_dist/<slug>/index.html` per roster slug (per §3), plus a `_dist/vercel.json`
-  with `{ "cleanUrls": true }` so `/grab` serves `/grab/index.html`.
-- **Deploy:** `vercel deploy --prod` **from `_dist/`** for the partner project → no repo `.vercelignore`
-  juggling (the deploy root *is* `_dist/`, which contains only gated per-partner files).
-- **`.vercelignore`:** the repo's allowlist (`index.html` + `vercel.json`) stays as-is for the internal
-  project. If you'd rather deploy partner builds from the repo root instead of `_dist/`, add
-  `!_dist/**` to `.vercelignore` — but deploying from `_dist/` is cleaner and the recommendation.
-- **Pre-flight per partner:** run §3 (hash vs that partner's `SEAL.json` · exclusion grep · MapLibre
-  smoke) on each `_dist/<slug>/index.html`, plus the §3.5 cross-partner sweep (no *other* partner's
-  identifiers in the file).
+**Vercel env (Production):**
 
-Alternatives considered: path-based on the **same** project (rejected — can't make `/` protected but
-`/grab` public on one project); custom domains per partner (fine later, but more setup). Final call on
-project layout + custom domains is Jaideep's.
+- `AUTH_SECRET` — HMAC key for partner session cookies (required when passwords are set).
+- `PARTNER_AUTH_<SLUG>` — password for one partner (`grab` → `PARTNER_AUTH_GRAB`, `abu-dhabi-itc` →
+  `PARTNER_AUTH_ABU_DHABI_ITC`). Hyphens in the slug become underscores in the env key.
+- `PARTNER_AUTH_JSON` — optional bulk map, e.g. `{"grab":"…","uber":"…"}` (overridden by per-slug vars).
+
+If no password env is set for a slug, that partner path stays open (useful for local dev). Set at least
+one env before sharing a partner link externally.
+
+**Important:** Vercel **Deployment Protection** (SSO) is project-wide and runs *before* middleware. For
+`/cluster/` and `/city/` to stay public, turn **off** production Deployment Protection on this
+project (or use a separate public project for share links only). Middleware cannot override SSO.
+
+- **Build output:** `_dist/<slug>/index.html` + scoped `atlas-data.js` per §3; `_dist/vercel.json`
+  with `api/og` build; `_dist/middleware.js` with matchers for every `data-clean/partners/*.json` slug.
+- **Deploy:** `RELEASE=1 ./scripts/deploy.sh` from repo root → publishes `_dist/` to prod.
+- **Pre-flight per partner:** unchanged — §3 hash/exclusion/MapLibre on each `_dist/<slug>/index.html`.
