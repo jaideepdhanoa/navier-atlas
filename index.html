@@ -1945,10 +1945,11 @@ function _routeEconHtml(rec){
       return `<div class="rec-also-row">${escapeHtml(lbl)}<span class="muted">${escapeHtml(d+rev)}</span></div>`;
     }).join('')}</div>`;
   }
-  if (rec.route_id || rec.deck_url){
+  const deckUrl = (!PUBLIC_BUILD && rec.deck_url) ? rec.deck_url : null;
+  if (rec.route_id || deckUrl){
     h+=`<div class="rec-actions">`;
     if (rec.route_id) h+=`<button type="button" class="rec-breakdown" data-eb="${escapeHtml(rec.route_id)}">Full breakdown →</button>`;
-    if (rec.deck_url) h+=`<a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a>`;
+    if (deckUrl) h+=`<a class="rec-deck" href="${escapeHtml(deckUrl)}" target="_blank" rel="noopener">See the full model →</a>`;
     h+=`</div>`;
   }
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
@@ -2039,7 +2040,7 @@ function _econModalHtml(rec){
   if (!hasBreakdown) h+=`Per-boat figures shown; profit and run cost are derived from the published margin. The detailed revenue-build and cost-stack inputs aren't in the model yet — italicised lines are pending.`;
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
   if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}${rec.status?` · ${escapeHtml(rec.status)}`:''}</div>`;
-  if (rec.deck_url) h+=`<div style="margin-top:8px"><a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a></div>`;
+  if (!PUBLIC_BUILD && rec.deck_url) h+=`<div style="margin-top:8px"><a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a></div>`;
   h+=`</div>`;
   return h;
 }

@@ -8,6 +8,29 @@ export function parseProfile(argv = process.argv) {
   return process.env.BUILD_PROFILE || 'public';
 }
 
+const SHEET_URL = /docs\.google\.com\/spreadsheets/i;
+
+/** Drop partner attribution + internal model links from a route-economics record. */
+export function sanitizePublicEconRecord(rec) {
+  const { partner, deck_url, ...rest } = rec;
+  return scrubSheetUrls(rest);
+}
+
+function scrubSheetUrls(val) {
+  if (val == null) return val;
+  if (typeof val === 'string') return SHEET_URL.test(val) ? null : val;
+  if (Array.isArray(val)) return val.map(scrubSheetUrls).filter((v) => v != null);
+  if (typeof val === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(val)) {
+      const scrubbed = scrubSheetUrls(v);
+      if (scrubbed != null) out[k] = scrubbed;
+    }
+    return out;
+  }
+  return val;
+}
+
 /** Strip partner-private globals for the public network atlas. */
 export function applyProfile(data, profile) {
   if (profile !== 'public') return data;
@@ -20,8 +43,7 @@ export function applyProfile(data, profile) {
   const ROUTE_ECONOMICS = {};
   for (const [rid, rec] of Object.entries(data.ROUTE_ECONOMICS || {})) {
     if (!rec || typeof rec !== 'object') continue;
-    const { partner, deck_url, ...rest } = rec;
-    ROUTE_ECONOMICS[rid] = rest;
+    ROUTE_ECONOMICS[rid] = sanitizePublicEconRecord(rec);
   }
   return {
     ...data,

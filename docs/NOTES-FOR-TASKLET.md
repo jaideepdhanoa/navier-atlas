@@ -9,7 +9,7 @@ build / gates = Tasklet._
 ## 2026-06-13 — Public build profile (network atlas; regions browse only)
 
 **Prod default:** `BUILD_PROFILE=public` (deploy.sh). Aggregate `/` + `/cluster/*` + `/city/*` ship stripped
-`atlas-data.js`: no `PARTNERS`, no `STORIES`, no `partner_overlays`, economics kept (`partner`/`deck_url` stripped).
+`atlas-data.js`: no `PARTNERS`, no `STORIES`, no `partner_overlays`, economics kept (`partner` + `deck_url` Google-sheet model links stripped; render hides “See the full model” on public).
 Browse ▾ on public = **Regions** tab only; `?partner=` ignored. Partner proposals stay at `/<slug>/` + middleware.
 
 **Internal admin (future):** `BUILD_PROFILE=internal` → full roster + partners/stories tabs (separate Vercel project + SSO).
