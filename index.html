@@ -1618,7 +1618,7 @@ map.on('load', () => {
   applyUrlState();
   // If a partner view is active and we didn't deep-link straight into one of its stories,
   // land on the partner's scope (focus + branded landing panel).
-  if (PARTNER_ACTIVE && !location.hash.startsWith('#/story/')) applyPartnerView();
+  if (PARTNER_ACTIVE && !_isSemanticHash(location.hash)) applyPartnerView();
   map.on('moveend', updateUrlState);
 });
 
@@ -2270,6 +2270,7 @@ function showClusterBrief(cid){
   if (members.length){ try { _focusCities(members,'intra'); _fitCities(members, 140); } catch(e){} }
   else if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
   else if (cl && Array.isArray(cl.anchor)){ try { map.flyTo({center:cl.anchor, zoom:6.5, duration:1100, essential:true}); } catch(e){} }
+  try { history.replaceState(null,'','#/cluster/'+encodeURIComponent(cid)); } catch(e){}
   // Clickable signature routes → open the route on the map.
   p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
     const id=(el.dataset.routes||'').split(',')[0];
@@ -2290,7 +2291,12 @@ function showDetail(props, coords) {
   if (SELECTED_ROUTE && !_focusEngaged()) { SELECTED_ROUTE = null; try { applyStoryFocus(null); map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){} }
   const _brief = (typeof CITY_BRIEFS!=='undefined') ? CITY_BRIEFS[props.id] : null;
   if (!_focusEngaged()) { if (type==='city' || _brief) setRouteHighlight(props.id); else clearRouteHighlight(); }
-  if (_brief && coords) { _renderCityBrief(_brief, props, coords); return; }
+  if (_brief) {
+    _renderCityBrief(_brief, props, coords);
+    if (coords) try { map.flyTo({center:coords, zoom:Math.max(9,map.getZoom()), duration:900, essential:true}); } catch(e){}
+    if (props.id && (type==='city' || _brief)) try { history.replaceState(null,'','#/city/'+encodeURIComponent(props.id)); } catch(e){}
+    return;
+  }
   const meta = [];
   if (props.poi_class) meta.push(props.poi_class);
   if (props.country) meta.push(props.country);
@@ -3907,26 +3913,40 @@ panelToggle.addEventListener('click', () => {
 })();
 
 // ============ URL state ============
+// Semantic hashes (#/cluster/, #/city/, #/story/, #/partner/) encode shareable panel+map context.
+// Camera-only (#camera=lng,lat,zoom) restores viewport but NOT which brief is open — use semantic routes for sharing.
+const _SEMANTIC_HASH = /^#\/(story|partner|cluster|city)\//;
+function _isSemanticHash(h){ return _SEMANTIC_HASH.test(h||''); }
+function _openCityDeepLink(id){
+  if (!id) return;
+  const n = NODE_INDEX[id];
+  if (n) { showDetail(n.props, n.coords); return; }
+  const brief = (typeof CITY_BRIEFS!=='undefined') ? CITY_BRIEFS[id] : null;
+  if (!brief) return;
+  const props = { id, name: brief.display||brief.city_id||id, fullName: brief.display||id, type:'city', region: brief.region };
+  showDetail(props, null);
+}
+function _applyHashRoute(h, animate){
+  if (h.startsWith('#/story/')) { showStory(h.slice(8)); return true; }
+  if (h.startsWith('#/cluster/')) { const cid=decodeURIComponent(h.slice(10).split(/[?#]/)[0]); if (cid) showClusterBrief(cid); return true; }
+  if (h.startsWith('#/city/')) { _openCityDeepLink(decodeURIComponent(h.slice(7).split(/[?#]/)[0])); return true; }
+  const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
+  if (m) {
+    const center=[parseFloat(m[1]),parseFloat(m[2])], zoom=parseFloat(m[3]);
+    if (animate) map.flyTo({ center, zoom, duration:900, essential:true });
+    else map.jumpTo({ center, zoom });
+    return true;
+  }
+  return false;
+}
 function updateUrlState() {
-  if (window.location.hash.startsWith('#/story/')) return;
+  if (_isSemanticHash(window.location.hash)) return;
   if (typeof _CARO!=='undefined' && _CARO) return;   // a partner tour owns the hash (chapter deep-link)
   const c = map.getCenter(); const z = map.getZoom();
   history.replaceState(null,'',`#camera=${c.lng.toFixed(3)},${c.lat.toFixed(3)},${z.toFixed(2)}`);
 }
-function applyUrlState() {
-  const h = window.location.hash;
-  if (h.startsWith('#/story/')) { showStory(h.replace('#/story/','')); return; }
-  const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
-  if (m) map.jumpTo({ center:[parseFloat(m[1]),parseFloat(m[2])], zoom:parseFloat(m[3]) });
-}
-// React to hash changes: stories deep-link, and a #camera=lng,lat,zoom hash now restores the view too
-// (previously only stories were handled, so pasting/setting a camera hash did nothing — F-02).
-window.addEventListener('hashchange', () => {
-  const h = window.location.hash;
-  if (h.startsWith('#/story/')) { showStory(h.replace('#/story/','')); return; }
-  const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
-  if (m) map.flyTo({ center:[parseFloat(m[1]),parseFloat(m[2])], zoom:parseFloat(m[3]), duration:900, essential:true });
-});
+function applyUrlState() { _applyHashRoute(window.location.hash, false); }
+window.addEventListener('hashchange', () => { _applyHashRoute(window.location.hash, true); });
 </script>
 </body>
 </html>
