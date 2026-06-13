@@ -8,7 +8,7 @@ build / gates = Tasklet._
 
 ## 2026-06-13 — Gold #79 INGESTED (`navier-export-20260613T214200Z.zip`)
 
-**Live:** pending deploy · pre-flight clean · seal verified (local reseal).
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified (local reseal).
 
 **Export quality:** Stale SEAL (meta still `#76`; blob shas didn't match files). ROUTES base was **not** #78c (5294 vs 5458). **Did not blind-rsync.**
 
