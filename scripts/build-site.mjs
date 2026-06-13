@@ -305,7 +305,7 @@ for (const slug of Object.keys(data.PARTNERS)) {
           const lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};window.__PARTNER_MARKET__=${JSON.stringify(m.slug)};</script>\n`;
           const cm = cityMeta(brief, props);
           cm.title = `${partner.display || slug} · ${props.name || brief.display || cid}`;
-          cm.description = trunc(m.summary || cm.description);
+          // City shells use brief tagline/summary (cityMeta); market summary belongs on /partner/market only.
           cm.ogBadge = m.label || m.region || cm.ogBadge;
           writeShareTree(rel, indexHtml, `/${slug}/${m.slug}/atlas-data.js`,
             { type: 'city', id: cid, partner: slug, market: m.slug }, cm, lock);
