@@ -350,6 +350,9 @@ body.panel-hidden #footer { display:block; }
 .cl-city { font:500 12px Inter; color:var(--text-1); background:var(--bg-3); border:1px solid var(--line-strong); border-radius:8px; padding:5px 11px; cursor:pointer; }
 .cl-city:hover { color:#7dd3fc; border-color:rgba(125,211,252,0.45); }
 .panel-hero h2 { font-size:22px; font-weight:700; letter-spacing:-0.02em; margin:0 0 4px; }
+.panel-hero .share-row { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.share-copy { font:600 11px Inter; color:var(--text-1); background:var(--bg-3); border:1px solid var(--line-strong); border-radius:999px; padding:5px 12px; cursor:pointer; }
+.share-copy:hover { color:var(--text-0); border-color:var(--accent); }
 .panel-hero .subtitle { font-size:12px; color:var(--text-1); }
 .panel-hero .ring-toggle { margin-top:10px; padding:6px 12px; font:500 11px Inter; background:var(--bg-3); color:var(--text-1); border:1px solid var(--line-strong); border-radius:8px; cursor:pointer; }
 .panel-hero .ring-toggle:hover { color:var(--accent); border-color:rgba(224,203,143,0.4); }
@@ -1618,7 +1621,7 @@ map.on('load', () => {
   applyUrlState();
   // If a partner view is active and we didn't deep-link straight into one of its stories,
   // land on the partner's scope (focus + branded landing panel).
-  if (PARTNER_ACTIVE && !_isSemanticHash(location.hash)) applyPartnerView();
+  if (PARTNER_ACTIVE && !window.__SHARE_ROUTE__ && !_isSemanticHash(location.hash)) applyPartnerView();
   map.on('moveend', updateUrlState);
 });
 
@@ -2125,7 +2128,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    ${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(c.cluster_label)} ↗</button>`:''; })()}
+    <div class="share-row">${_shareLinkBtnHtml()}${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(c.cluster_label)} ↗</button>`:''; })()}</div>
     ${_rangeCtrlHtml(coords)}
   </div>`;
   if (ov){
@@ -2184,6 +2187,7 @@ function _renderCityBrief(brief, props, coords){
   const p = document.getElementById('panel');
   p.innerHTML = _cityBriefHtml(brief, props, coords);
   p.scrollTop = 0;
+  _wireShareCopy(p);
   const bk = p.querySelector('#brief-back');
   if (bk) bk.addEventListener('click', clearSelection);
   _wireRangeCtrl(p);
@@ -2208,6 +2212,7 @@ function _clusterBriefHtml(cb){
     <div class="type-row"><span class="type-pill cluster">cluster</span>${cb.region?`<span class="brief-arch">${escapeHtml(cb.region)}</span>`:''}${cb.tier==='tag-only'?`<span class="brief-arch" style="opacity:.7">map &amp; pins — heroes coming</span>`:''}</div>
     <h2>${escapeHtml(cb.display||cb.display_name||cid)}</h2>
     ${cb.tagline?`<div class="subtitle">${escapeHtml(cb.tagline)}</div>`:''}
+    <div class="share-row">${_shareLinkBtnHtml()}</div>
   </div>`;
   if (cb.summary) h+=`<div class="panel-section"><div class="what-distinct">${escapeHtml(cb.summary)}</div></div>`;
   if (cb.why_marine_mobility) h+=`<div class="panel-section"><h3>Why marine mobility here</h3><div class="what-distinct">${escapeHtml(cb.why_marine_mobility)}</div></div>`;
@@ -2270,7 +2275,8 @@ function showClusterBrief(cid){
   if (members.length){ try { _focusCities(members,'intra'); _fitCities(members, 140); } catch(e){} }
   else if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
   else if (cl && Array.isArray(cl.anchor)){ try { map.flyTo({center:cl.anchor, zoom:6.5, duration:1100, essential:true}); } catch(e){} }
-  try { history.replaceState(null,'','#/cluster/'+encodeURIComponent(cid)); } catch(e){}
+  _writeShareUrl({ type:'cluster', id:cid });
+  _wireShareCopy(p);
   // Clickable signature routes → open the route on the map.
   p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
     const id=(el.dataset.routes||'').split(',')[0];
@@ -2294,7 +2300,11 @@ function showDetail(props, coords) {
   if (_brief) {
     _renderCityBrief(_brief, props, coords);
     if (coords) try { map.flyTo({center:coords, zoom:Math.max(9,map.getZoom()), duration:900, essential:true}); } catch(e){}
-    if (props.id && (type==='city' || _brief)) try { history.replaceState(null,'','#/city/'+encodeURIComponent(props.id)); } catch(e){}
+    const cityRoute = { type:'city', id:props.id };
+    if (BUILD_PARTNER && window.__PARTNER_MARKET__) { cityRoute.partner = BUILD_PARTNER; cityRoute.market = window.__PARTNER_MARKET__; }
+    else if (typeof _CARO!=='undefined' && _CARO && _CARO.market) { cityRoute.partner = (_CARO.hub||_CARO.partner).partner_id || BUILD_PARTNER; cityRoute.market = _CARO.market.slug; }
+    _writeShareUrl(cityRoute);
+    _wireShareCopy(p);
     return;
   }
   const meta = [];
@@ -3912,11 +3922,49 @@ panelToggle.addEventListener('click', () => {
   new MutationObserver(()=>ensureVisible()).observe(panel,{childList:true});
 })();
 
-// ============ URL state ============
-// Semantic hashes (#/cluster/, #/city/, #/story/, #/partner/) encode shareable panel+map context.
-// Camera-only (#camera=lng,lat,zoom) restores viewport but NOT which brief is open — use semantic routes for sharing.
+// ============ URL state + share links ============
+// Path URLs (/cluster/, /city/, /grab/penang/city/) carry OG previews for WhatsApp/X/Facebook.
+// Hash routes (#/cluster/, …) remain as backward-compatible aliases.
 const _SEMANTIC_HASH = /^#\/(story|partner|cluster|city)\//;
 function _isSemanticHash(h){ return _SEMANTIC_HASH.test(h||''); }
+function _partnerSlugs(){ return (typeof PARTNERS!=='undefined' && PARTNERS) ? Object.keys(PARTNERS) : []; }
+function _parsePathRoute(pathname){
+  const p = String(pathname||'').replace(/\/$/,'').split('/').filter(Boolean);
+  if (!p.length) return null;
+  if (p[0]==='cluster' && p[1]) return { type:'cluster', id:decodeURIComponent(p[1]) };
+  if (p[0]==='city' && p[1] && !_partnerSlugs().includes(p[0])) return { type:'city', id:decodeURIComponent(p[1]) };
+  if (_partnerSlugs().includes(p[0])){
+    const partner=p[0], market=p[1];
+    if (!market) return { type:'partner', partner };
+    if (p[2]==='city' && p[3]) return { type:'city', id:decodeURIComponent(p[3]), partner, market };
+    if (p[2]==='phase' && p[3]) return { type:'phase', partner, market, phase:Math.max(1,parseInt(p[3],10)||1) };
+    return { type:'market', partner, market };
+  }
+  return null;
+}
+function _isSharePath(){ return !!_parsePathRoute(location.pathname); }
+function _shareCanonicalPath(route){
+  if (!route) return location.pathname||'/';
+  if (route.type==='cluster') return '/cluster/'+encodeURIComponent(route.id);
+  if (route.type==='city'){
+    if (route.partner && route.market) return '/'+route.partner+'/'+route.market+'/city/'+encodeURIComponent(route.id);
+    return '/city/'+encodeURIComponent(route.id);
+  }
+  if (route.type==='market') return '/'+route.partner+'/'+route.market;
+  if (route.type==='partner') return '/'+route.partner;
+  if (route.type==='phase') return '/'+route.partner+'/'+route.market+'/phase/'+route.phase;
+  return '/';
+}
+function _writeShareUrl(route){ try{ history.replaceState(null,'',_shareCanonicalPath(route)); }catch(e){} }
+function _shareLinkBtnHtml(){ return `<button type="button" class="share-copy" id="share-copy" title="Copy share link">Copy link</button>`; }
+function _wireShareCopy(panel){
+  const btn=panel&&panel.querySelector('#share-copy'); if(!btn) return;
+  btn.addEventListener('click', async ()=>{
+    const url=location.origin+(location.pathname||'/');
+    try{ await navigator.clipboard.writeText(url); btn.textContent='Copied!'; setTimeout(()=>{ btn.textContent='Copy link'; },2000); }
+    catch(e){ prompt('Copy this link:', url); }
+  });
+}
 function _openCityDeepLink(id){
   if (!id) return;
   const n = NODE_INDEX[id];
@@ -3926,8 +3974,29 @@ function _openCityDeepLink(id){
   const props = { id, name: brief.display||brief.city_id||id, fullName: brief.display||id, type:'city', region: brief.region };
   showDetail(props, null);
 }
+function _applyShareRoute(route){
+  if (!route) return false;
+  if (route.type==='cluster'){ showClusterBrief(route.id); return true; }
+  if (route.type==='city'){ _openCityDeepLink(route.id); return true; }
+  if (route.type==='phase'){
+    const partner=(typeof PARTNERS!=='undefined')?PARTNERS[route.partner]:null;
+    const market=partner&&(partner.markets||[]).find(m=>m.slug===route.market);
+    if (partner&&market){ openHubMarket(partner,market,false); setTimeout(()=>showPhase(route.phase-1),50); return true; }
+  }
+  return false;
+}
 function _applyHashRoute(h, animate){
   if (h.startsWith('#/story/')) { showStory(h.slice(8)); return true; }
+  if (h.startsWith('#/partner/')){
+    const mkt=h.match(/#\/partner\/[^/]+\/market\/([a-z0-9-]+)/i);
+    if (mkt && PARTNER_ACTIVE){
+      const partner=(typeof PARTNERS!=='undefined')?PARTNERS[PARTNER_ACTIVE.slug]:null;
+      const market=partner&&(partner.markets||[]).find(x=>x.slug===mkt[1]);
+      if (partner&&market){ openHubMarket(partner,market,false); return true; }
+    }
+    const ph=h.match(/#\/partner\/[^/]+\/phase\/(\d+)/);
+    if (ph && typeof _CARO!=='undefined' && _CARO){ showPhase(Math.max(0,(+ph[1])-1)); return true; }
+  }
   if (h.startsWith('#/cluster/')) { const cid=decodeURIComponent(h.slice(10).split(/[?#]/)[0]); if (cid) showClusterBrief(cid); return true; }
   if (h.startsWith('#/city/')) { _openCityDeepLink(decodeURIComponent(h.slice(7).split(/[?#]/)[0])); return true; }
   const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);
@@ -3941,12 +4010,21 @@ function _applyHashRoute(h, animate){
 }
 function updateUrlState() {
   if (_isSemanticHash(window.location.hash)) return;
-  if (typeof _CARO!=='undefined' && _CARO) return;   // a partner tour owns the hash (chapter deep-link)
+  if (_isSharePath()) return;
+  if (typeof _CARO!=='undefined' && _CARO) return;
   const c = map.getCenter(); const z = map.getZoom();
   history.replaceState(null,'',`#camera=${c.lng.toFixed(3)},${c.lat.toFixed(3)},${z.toFixed(2)}`);
 }
-function applyUrlState() { _applyHashRoute(window.location.hash, false); }
+function applyUrlState() {
+  const share = window.__SHARE_ROUTE__ || _parsePathRoute(location.pathname);
+  if (share && _applyShareRoute(share)) return;
+  _applyHashRoute(window.location.hash, false);
+}
 window.addEventListener('hashchange', () => { _applyHashRoute(window.location.hash, true); });
+window.addEventListener('popstate', () => {
+  const share = _parsePathRoute(location.pathname);
+  if (share) _applyShareRoute(share);
+});
 </script>
 </body>
 </html>

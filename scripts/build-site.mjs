@@ -21,6 +21,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
+} from './share-meta.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -200,34 +203,65 @@ fs.mkdirSync(DIST, { recursive: true });
 const data = loadData();
 const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
-// aggregate (all partners)
-fs.writeFileSync(path.join(DIST, 'index.html'), indexHtml);
+// aggregate (all partners) — default share meta
+const aggregateMeta = partnerMeta({ display: 'Navier Atlas', partner_id: 'atlas', hero: { title: 'Navier Atlas · Mobility Network', subtitle: 'Interactive map of the electric-hydrofoil mobility network.' }, region: 'Global' });
+fs.writeFileSync(path.join(DIST, 'index.html'), injectShareMeta(indexHtml, { ...aggregateMeta, canonicalPath: '/' }));
 emitDataJs(path.join(DIST, 'atlas-data.js'), data);
-fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({ cleanUrls: true, trailingSlash: false }, null, 2) + '\n');
+
+// Vercel OG image API + install hook for @vercel/og
+const apiSrc = path.join(ROOT, 'api');
+const apiDst = path.join(DIST, 'api');
+if (fs.existsSync(apiSrc)) {
+  fs.mkdirSync(apiDst, { recursive: true });
+  for (const fn of fs.readdirSync(apiSrc)) fs.copyFileSync(path.join(apiSrc, fn), path.join(apiDst, fn));
+}
+fs.writeFileSync(path.join(DIST, 'package.json'), JSON.stringify({ private: true, dependencies: { '@vercel/og': '^0.6.8' } }, null, 2) + '\n');
+fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
+  cleanUrls: true,
+  trailingSlash: false,
+  installCommand: 'npm install --omit=dev',
+}, null, 2) + '\n');
 console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${Object.keys(data.PARTNERS).length} partners · ${data.ROUTES.length} routes)`);
 
 // per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)
-let failed = 0, pages = 0, skipped = 0;
+let failed = 0, pages = 0, skipped = 0, sharePages = 0;
+
+function injectPage(html, lockScripts, dataJsAbs, shareRoute, meta, canonicalPath) {
+  let h = meta ? injectShareMeta(html, { ...meta, canonicalPath }) : html;
+  let scripts = (lockScripts || '');
+  if (shareRoute) scripts += `<script>window.__SHARE_ROUTE__=${JSON.stringify(shareRoute)};</script>\n`;
+  scripts += `<script src="${dataJsAbs}"></script>`;
+  h = h.replace('<script src="atlas-data.js"></script>', scripts);
+  if (lockScripts) {
+    const beforePV = h;
+    h = h.replace(/const PARTNER_VIEWS = \{[\s\S]*?\n\};/, 'const PARTNER_VIEWS = {};');
+    if (h === beforePV) console.warn('  ⚠ could not scope PARTNER_VIEWS on', canonicalPath);
+  }
+  return h;
+}
+
+function writeShareTree(relDir, html, dataJsAbs, shareRoute, meta, lockScripts) {
+  const canonicalPath = `/${relDir.split(path.sep).join('/')}`;
+  const outDir = path.join(DIST, relDir);
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'index.html'), injectPage(html, lockScripts || '', dataJsAbs, shareRoute, meta, canonicalPath));
+  sharePages++;
+}
+
 // Emit one scoped+locked page. subdir '' = bare /<slug>; marketSlug sets the __PARTNER_MARKET__ lock so
 // the render opens that market's deep-dive directly. Sweeps the data text; writes only if clean.
-function emitPage(slug, subdir, r, marketSlug, optional) {
+function emitPage(slug, subdir, r, marketSlug, optional, pageMeta) {
   const tag = `/${slug}${subdir ? '/' + subdir : ''}`;
   // A hub MARKET sub-page that can't resolve its cities (market anchor_cities reference nodes not in the
   // atlas) is skipped with a warning rather than failing the whole deploy — the hub index still lists the
   // market and the in-aggregate deep-dive still renders from pitch. (Flag the bad anchor_cities to Tasklet.)
   if (r.error) { if (optional) { console.warn(`  ⚠ skip ${tag}: ${r.error}`); skipped++; } else { console.error(`  ✗ ${tag}: ${r.error}`); failed++; } return; }
   const dataText = banner + Object.entries(r.scoped).map(([k, v]) => `window.${k}=${JSON.stringify(v)};`).join('\n') + '\n';
-  // Load the SCOPED data by ABSOLUTE path. With cleanUrls (no trailing slash) a relative "atlas-data.js"
-  // would resolve to /atlas-data.js (the full aggregate) — defeating isolation. Use the page's own path.
   let lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};`;
   if (marketSlug) lock += `window.__PARTNER_MARKET__=${JSON.stringify(marketSlug)};`;
   lock += `</script>\n`;
-  let html = indexHtml.replace('<script src="atlas-data.js"></script>', lock + `<script src="${tag}/atlas-data.js"></script>`);
-  if (html === indexHtml) { console.error(`  ✗ ${tag}: could not inject lock (atlas-data.js script tag not found)`); failed++; return; }
-  // Zero PARTNER_VIEWS — the lock + scoped PARTNERS[slug] drive activation, so a locked build needs none.
-  const beforePV = html;
-  html = html.replace(/const PARTNER_VIEWS = \{[\s\S]*?\n\};/, 'const PARTNER_VIEWS = {};');
-  if (html === beforePV) { console.error(`  ✗ ${tag}: could not scope PARTNER_VIEWS (regex no match)`); failed++; return; }
+  const html = injectPage(indexHtml, lock, `${tag}/atlas-data.js`, null, pageMeta, tag);
+  if (!html.includes('__PARTNER_BUILD__')) { console.error(`  ✗ ${tag}: could not inject lock`); failed++; return; }
   const { leaks, cross } = sweep(dataText, data, slug);
   if (leaks.length || cross.length) { console.error(`  ✗ ${tag}: ABORT sweep — tokens:[${leaks.join(',')}] cross-partner:[${cross.join(',')}]`); failed++; return; }
   const outDir = path.join(DIST, slug, subdir || '');
@@ -242,16 +276,47 @@ const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []
 for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
   if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
-    // index landing: the partner's full network across the countries/clusters its markets touch (so the
-    // hub map tells the real regional story, not just a handful of anchor pins). Cluster-precise expansion
-    // keeps it to the partner's actual countries (see scopeForPartner) rather than whole continents.
     const anchors = [].concat(...partner.markets.map(marketCities));
-    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors }), null);
-    // each market = its own scoped deep-dive page (regional network like a single partner)
-    for (const m of partner.markets) emitPage(slug, m.slug, scopeForPartner(data, slug, { keepCities: marketCities(m) }), m.slug, true);
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors }), null, false, partnerMeta(partner));
+    for (const m of partner.markets) {
+      const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m) });
+      emitPage(slug, m.slug, scoped, m.slug, true, partnerMeta(partner, m));
+      // Per-city share pages under each market (e.g. /grab/penang/city/langkawi-malaysia).
+      if (!scoped.error) {
+        for (const cid of scoped.keep) {
+          const brief = data.CITY_BRIEFS[cid];
+          if (!brief) continue;
+          const props = (data.FEATURES_BY_TYPE.city || []).concat(data.FEATURES_BY_TYPE.priority_city || [])
+            .map(f => f.properties).find(p => p && p.id === cid) || { id: cid, name: brief.display || cid };
+          const rel = path.join(slug, m.slug, 'city', cid);
+          const lock = `<script>window.__PARTNER_BUILD__=${JSON.stringify(slug)};window.__PARTNER_MARKET__=${JSON.stringify(m.slug)};</script>\n`;
+          const cm = cityMeta(brief, props);
+          cm.title = `${partner.display || slug} · ${props.name || brief.display || cid}`;
+          cm.description = trunc(m.summary || cm.description);
+          cm.ogBadge = m.label || m.region || cm.ogBadge;
+          writeShareTree(rel, indexHtml, `/${slug}/${m.slug}/atlas-data.js`,
+            { type: 'city', id: cid, partner: slug, market: m.slug }, cm, lock);
+        }
+      }
+    }
   } else {
-    emitPage(slug, '', scopeForPartner(data, slug), null);
+    emitPage(slug, '', scopeForPartner(data, slug), null, false, partnerMeta(partner));
   }
 }
+
+// Aggregate cluster + city share pages (path-based deeplinks + OG previews).
+const clusterById = Object.fromEntries(((data.CLUSTERS.clusters) || []).map(c => [c.cluster_id, c]));
+for (const [cid, cb] of Object.entries(data.CLUSTER_BRIEFS)) {
+  writeShareTree(path.join('cluster', cid), indexHtml, '/atlas-data.js',
+    { type: 'cluster', id: cid }, clusterMeta(cb, clusterById[cid]));
+}
+for (const [cityId, brief] of Object.entries(data.CITY_BRIEFS)) {
+  const props = (data.FEATURES_BY_TYPE.city || []).concat(data.FEATURES_BY_TYPE.priority_city || [])
+    .map(f => f.properties).find(p => p && p.id === cityId) || { id: cityId, name: brief.display || cityId };
+  writeShareTree(path.join('city', cityId), indexHtml, '/atlas-data.js',
+    { type: 'city', id: cityId }, cityMeta(brief, props));
+}
+
 if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
-console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market pages${skipped?` (${skipped} market sub-page(s) skipped — unresolved anchor_cities)`:''}.`);
+console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market + ${sharePages} share pages${skipped?` (${skipped} market sub-page(s) skipped)`:''}.`);
+console.log(`Share URLs: ${SITE_URL}/cluster/<id> · ${SITE_URL}/city/<id> · ${SITE_URL}/<partner>/<market>/city/<id>`);

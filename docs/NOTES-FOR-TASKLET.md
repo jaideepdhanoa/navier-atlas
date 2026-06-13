@@ -6,6 +6,21 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Share deeplinks + dynamic OG previews (render)
+
+**Live:** path-based share URLs with per-page `og:title` / `og:description` / `og:image` (Vercel OG API).
+
+**URL scheme:**
+- `/cluster/<cluster_id>` · `/city/<city_id>`
+- `/<partner>` · `/<partner>/<market>` · `/<partner>/<market>/city/<city_id>`
+- Hash aliases (`#/cluster/`, `#/city/`, `#/partner/…`) still work in-browser.
+
+**Examples:** `/cluster/french-polynesia` · `/city/bora-bora-french-polynesia` · `/grab/penang` · `/grab/penang/city/langkawi-malaysia`
+
+**UI:** “Copy link” on cluster + city brief panels. Build emits 399 share shells + `api/og` for branded preview cards.
+
+---
+
 ## 2026-06-13 — Gold #75–#77 INGESTED (`navier-export-20260613T011718Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
