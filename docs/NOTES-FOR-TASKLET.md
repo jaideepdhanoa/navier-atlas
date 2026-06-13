@@ -6,6 +6,21 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Gold #78c INGESTED (`navier-export-20260613T171106Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
+
+**What landed (authoritative full `data-clean/` rsync):**
+- **Gold #78c:** French Polynesia wave-8B (+175 net routes, 5283→**5458**); FP routes **72**; corridors relink on Gold #77 `ROUTES` base (preserves `rn-*`/`ics-*` ids).
+- **Endpoint gate:** 117 hard flags → **0** (was #78 regression).
+- **Economics:** **95** pinned / **46** pending (vs #77 103/36; vs broken #78 31/126). Pending honestly labeled (`aspirational_intra_city` / `aspirational_declared`).
+- **Features:** cities **164** · POIs **11,455** · `grab.json` unchanged.
+- **Render:** `build.py` preserve-id pass (LB-170) noted in export — prevents future route re-key regressions.
+
+**Skipped:** `161744Z` (#78, economics regression) and `165849Z` (stale SEAL).
+
+---
+
 ## 2026-06-13 — Share deeplinks + dynamic OG previews (render)
 
 **Live:** https://navier-atlas.vercel.app · path-based share URLs with per-page `og:title` / `og:description` / `og:image` (Vercel `@vercel/og` via `api/og.js`).
