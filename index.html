@@ -903,7 +903,7 @@ body.panel-hidden #footer { display:block; }
 <div id="panel"><div class="panel-empty">
   <h2>Select a node</h2>
   <p>Cities cluster at world view. Zoom in to reveal areas and boarding points.</p>
-  <div class="hint"><div class="hint-num">1</div><div>Use <b>Stories ▾</b> to walk a partner pitch.</div></div>
+  <div class="hint" id="hint-browse"><div class="hint-num">1</div><div>Use <b>Browse ▾</b> to explore regions.</div></div>
   <div class="hint"><div class="hint-num">2</div><div>Search or use preset chips to fly to a market.</div></div>
   <div class="hint"><div class="hint-num">3</div><div>Click any node for context and range rings.</div></div>
   <div class="hint"><div class="hint-num">4</div><div>Hide this panel with the <b>‹</b> tab on its edge to give the map full width.</div></div>
@@ -2374,6 +2374,9 @@ const STORY_BY_SLUG = {}; for (const s of STORIES) STORY_BY_SLUG[s.slug]=s;
 const ACCENTS = ['emerald','coral','gold','steel','violet','teal','amber','rose','sky'];
 // Build-mode lock — set by a per-partner Tasklet build (see contract). null on the admin/all build.
 const BUILD_PARTNER = (typeof window !== 'undefined' && window.__PARTNER_BUILD__) || null;
+// Public network atlas: no partner roster, stories, or ?partner= on aggregate / cluster / city shells.
+const PUBLIC_BUILD = !!(typeof window !== 'undefined' && window.__PUBLIC_BUILD__)
+  || (!BUILD_PARTNER && !(typeof PARTNERS!=='undefined' && PARTNERS && Object.keys(PARTNERS).length));
 const PARTNER_VIEWS = {
   // DEMO entries — reference EXISTING public stories only (no invented identities).
   'grab':         { story_slugs:['grab'] },
@@ -2403,6 +2406,7 @@ function _viewScopeCities(v){
 }
 function _activeStories(){ return (PARTNER_ACTIVE && PARTNER_ACTIVE.stories && PARTNER_ACTIVE.stories.length) ? PARTNER_ACTIVE.stories : STORIES; }
 function initPartnerView(){
+  if (PUBLIC_BUILD) return;
   const slug=_partnerSlug();
   const proposal = (typeof PARTNERS!=='undefined' && PARTNERS) ? PARTNERS[slug] : null;
   if (!slug || (!PARTNER_VIEWS[slug] && !proposal)){
@@ -3473,6 +3477,10 @@ document.body.appendChild(emptyTpl);
 // Resolve the active view (?partner=<slug>) before building the menu so a partner only
 // ever sees their own stories; admin/all view (no param) sees every story.
 initPartnerView();
+if (!PUBLIC_BUILD && !BUILD_PARTNER) {
+  const hb = document.getElementById('hint-browse');
+  if (hb) hb.lastElementChild.innerHTML = 'Use <b>Browse ▾</b> to walk a partner pitch.';
+}
 
 // Stories browser — a filterable card-grid dialog (scannable as the roster grows past a dropdown).
 const storyModal = document.getElementById('story-modal');
@@ -3481,7 +3489,7 @@ const partnerGrid = document.getElementById('partner-grid');
 const clusterGrid = document.getElementById('cluster-grid');
 const storyFilter = document.getElementById('story-filter');
 const _STORIES_LIST = _activeStories();
-let _browseTab = 'partners';
+let _browseTab = PUBLIC_BUILD ? 'clusters' : 'partners';
 // Humanized labels + display order for the partner taxonomy (PARTNERS[].category).
 const CAT_LABELS = { ridehail:'Ride-hail platforms', super_app:'Super-apps', hospitality_brand:'Luxury hospitality', luxury_portfolio:'Luxury portfolios', investment_jv:'Investment JVs', transit_authority:'Transit authorities', ferry_operator:'Ferry operators', sovereign_developer:'Sovereign developers', marina_network:'Marina networks', destination_region:'Destination regions' };
 const CAT_ORDER = ['ridehail','super_app','hospitality_brand','luxury_portfolio','investment_jv','transit_authority','ferry_operator','sovereign_developer','marina_network','destination_region'];
@@ -3546,14 +3554,18 @@ function _renderClusterGrid(q){
 }
 function _renderBrowse(q){ (_browseTab==='partners' ? _renderPartnerGrid : _browseTab==='clusters' ? _renderClusterGrid : _renderStoryGrid)(q); }
 function _setBrowseTab(tab){
+  if (PUBLIC_BUILD && tab !== 'clusters') tab = 'clusters';
   _browseTab = tab;
   document.querySelectorAll('.browse-tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   partnerGrid.hidden = tab!=='partners'; clusterGrid.hidden = tab!=='clusters'; storyGrid.hidden = tab!=='stories';
   storyFilter.placeholder = tab==='partners' ? 'Filter partners…' : tab==='clusters' ? 'Filter regions…' : 'Filter stories…';
   _renderBrowse(storyFilter.value);
 }
-document.querySelectorAll('.browse-tab').forEach(b=>b.addEventListener('click', ()=>_setBrowseTab(b.dataset.tab)));
-function openStoryModal(){ storyFilter.value=''; _setBrowseTab('partners'); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
+document.querySelectorAll('.browse-tab').forEach(b=>{
+  if (PUBLIC_BUILD && b.dataset.tab!=='clusters') { b.hidden=true; return; }
+  b.addEventListener('click', ()=>_setBrowseTab(b.dataset.tab));
+});
+function openStoryModal(){ storyFilter.value=''; _setBrowseTab(PUBLIC_BUILD?'clusters':'partners'); storyModal.hidden=false; setTimeout(()=>storyFilter.focus(),0); }
 function closeStoryModal(){ storyModal.hidden=true; }
 const _storyTrigger=document.getElementById('story-trigger');
 // "About" reopener whenever a partner proposal is in view — a locked partner page OR the aggregate with
@@ -3564,8 +3576,9 @@ if (BUILD_PARTNER || (PARTNER_ACTIVE && PARTNER_ACTIVE.proposal)){
   _storyTrigger.textContent='Proposal ▾'; _storyTrigger.title='Reopen the partner proposal';
   _storyTrigger.addEventListener('click',(e)=>{ e.stopPropagation(); const m=document.getElementById('intro-modal'); (m&&!m.hidden)?closeIntroDialog():openIntroDialog(); });
 } else {
-  // Plain aggregate: the control browses the roster (partners grouped by category + stories).
-  _storyTrigger.textContent='Browse ▾'; _storyTrigger.title='Browse partners & stories';
+  // Aggregate: public = regions only; internal = partners + regions + stories.
+  _storyTrigger.textContent='Browse ▾';
+  _storyTrigger.title = PUBLIC_BUILD ? 'Browse regions' : 'Browse partners & stories';
   _storyTrigger.addEventListener('click', (e)=>{ e.stopPropagation(); storyModal.hidden ? openStoryModal() : closeStoryModal(); });
 }
 document.getElementById('story-close').addEventListener('click', closeStoryModal);
@@ -3986,6 +3999,7 @@ function _applyShareRoute(route){
   return false;
 }
 function _applyHashRoute(h, animate){
+  if (PUBLIC_BUILD && (h.startsWith('#/story/') || h.startsWith('#/partner/'))) return false;
   if (h.startsWith('#/story/')) { showStory(h.slice(8)); return true; }
   if (h.startsWith('#/partner/')){
     const mkt=h.match(/#\/partner\/[^/]+\/market\/([a-z0-9-]+)/i);

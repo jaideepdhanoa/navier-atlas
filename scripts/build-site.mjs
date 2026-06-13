@@ -26,6 +26,7 @@ import {
   SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
 } from './share-meta.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
+import { parseProfile, applyProfile } from './build-profile.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -202,13 +203,22 @@ function sweep(text, data, slug) {
 // ─── build ──────────────────────────────────────────────────────────────────
 fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
+const profile = parseProfile();
 const data = loadData();
+const aggregateData = applyProfile(data, profile);
 const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
-// aggregate (all partners) — default share meta
+// aggregate — public profile strips partner/story data; internal keeps full admin surface
 const aggregateMeta = partnerMeta({ display: 'Navier Atlas', partner_id: 'atlas', hero: { title: 'Navier Atlas · Mobility Network', subtitle: 'Interactive map of the electric-hydrofoil mobility network.' }, region: 'Global' });
-fs.writeFileSync(path.join(DIST, 'index.html'), injectShareMeta(indexHtml, { ...aggregateMeta, canonicalPath: '/' }));
-emitDataJs(path.join(DIST, 'atlas-data.js'), data);
+let aggregateHtml = injectShareMeta(indexHtml, { ...aggregateMeta, canonicalPath: '/' });
+if (profile === 'public') {
+  aggregateHtml = aggregateHtml.replace(
+    '<script src="atlas-data.js"></script>',
+    '<script>window.__PUBLIC_BUILD__=true;</script>\n<script src="atlas-data.js"></script>'
+  );
+}
+fs.writeFileSync(path.join(DIST, 'index.html'), aggregateHtml);
+emitDataJs(path.join(DIST, 'atlas-data.js'), aggregateData);
 
 // Vercel OG image API + install hook for @vercel/og
 const apiSrc = path.join(ROOT, 'api');
@@ -238,7 +248,7 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
 }, null, 2) + '\n');
 const partnerSlugs = Object.keys(data.PARTNERS).sort();
 fs.writeFileSync(path.join(DIST, 'middleware.js'), generatePartnerAuthMiddleware(partnerSlugs));
-console.log(`aggregate → _dist/  (${Object.keys(data.CITY_BRIEFS).length} briefs · ${partnerSlugs.length} partners · ${data.ROUTES.length} routes)`);
+console.log(`aggregate → _dist/  profile:${profile} · ${Object.keys(aggregateData.CITY_BRIEFS).length} briefs · ${partnerSlugs.length} partner pages · ${aggregateData.ROUTES.length} routes)`);
 console.log(`middleware → _dist/middleware.js  (${partnerSlugs.length} partner matchers; /cluster/ + /city/ public)`);
 
 // per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)

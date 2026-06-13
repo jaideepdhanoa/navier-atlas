@@ -157,7 +157,7 @@ gated **per slug** while share deeplinks stay crawlable.
 
 | Path | Data | Protection |
 |---|---|---|
-| `/` (aggregate) | full `atlas-data.js` | optional Vercel SSO (project-level); middleware does **not** gate `/` |
+| `/` (aggregate) | **public** `atlas-data.js` (network + economics; no `PARTNERS`/`STORIES`) | public; Browse ▾ → **Regions** only |
 | `/cluster/<id>` · `/city/<id>` | aggregate `atlas-data.js` | **public** (OG/social crawlers) |
 | `/api/og` | dynamic PNG | **public** |
 | `/<partner>` · `/<partner>/<market>` · `/<partner>/<market>/city/<id>` | scoped `/<partner>/atlas-data.js` | **per-partner password** (HTTP Basic → session cookie) |

@@ -34,9 +34,9 @@ fi
 #       _dist/index.html + atlas-data.js          aggregate (all partners; internal)
 #       _dist/<slug>/index.html + atlas-data.js   per-partner: data SCOPED to that partner + render lock
 #     Each per-partner build runs an exclusion-token grep + cross-partner sweep (aborts on any hit).
-echo "→ building deploy tree (_dist/) from data-clean/…"
-node scripts/build.mjs
-node scripts/build-site.mjs
+echo "→ building deploy tree (_dist/) from data-clean/…  (profile: ${BUILD_PROFILE:-public})"
+BUILD_PROFILE="${BUILD_PROFILE:-public}" node scripts/build.mjs --profile="${BUILD_PROFILE:-public}"
+BUILD_PROFILE="${BUILD_PROFILE:-public}" node scripts/build-site.mjs --profile="${BUILD_PROFILE:-public}"
 
 # 3 · §3 pre-flight on the gated surface (seal hash · exclusion grep · MapLibre smoke · pitch-render).
 #     Set RELEASE=1 for a prod cut to ENFORCE the seal (§3.1); non-zero ⇒ abort the deploy.
