@@ -6,6 +6,23 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Gold #79 INGESTED (`navier-export-20260613T214200Z.zip`)
+
+**Live:** pending deploy · pre-flight clean · seal verified (local reseal).
+
+**Export quality:** Stale SEAL (meta still `#76`; blob shas didn't match files). ROUTES base was **not** #78c (5294 vs 5458). **Did not blind-rsync.**
+
+**Cherry-picked onto Gold #78c:**
+- **+11** aspirational FP routes (Rangiroa/Tuamotus, Tahiti, Marquesas) — `ics-*` ids
+- **+12** village-wharf POIs (documented Wikidata/OSM/SAM-PF coords)
+- Centroid fixes: `rangiroa-tuamotus-french-polynesia`, `tahiti-moorea-french-polynesia`
+- `atlas-external/pier-slug-bp-crosswalk.json` (12 new slug→bp entries)
+- Economics unchanged (95 pinned / 46 pending)
+
+**Totals:** routes **5469** (was 5458) · POIs **11,467** (was 11,455) · cities **164** · partners **46**
+
+---
+
 ## 2026-06-13 — Public build profile (network atlas; regions browse only)
 
 **Prod default:** `BUILD_PROFILE=public` (deploy.sh). Aggregate `/` + `/cluster/*` + `/city/*` ship stripped
