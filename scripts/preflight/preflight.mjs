@@ -46,9 +46,34 @@ const atlasData = fs.existsSync(ATLAS) ? fs.readFileSync(ATLAS, 'utf8') : null;
 const deployText = atlasData ? (html + '\n' + atlasData) : html;
 
 // ─── §3.1 · Hash match (anti-tamper) ──────────────────────────────────────────
-// SEAL.json (Tasklet-produced) is expected to be: { "blobs": { "<NAME>": { "sha256": "...", "count": N }, ... } }
-// where <NAME>.json lives in data-clean/ and is injected into index.html. Any mismatch ⇒ data was
-// altered after sealing (only Tasklet may change data) ⇒ ABORT.
+// SEAL.json (Tasklet-produced) supports two blob-key shapes:
+//   legacy:  { "blobs": { "ROUTES": { "sha256": "<hex>", "count": N }, ... } }
+//   v2:      { "blobs": { "ROUTES.json": { "sha": "sha256:<hex>", "bytes": N }, ... } }
+// Optional "sidecars" block uses the same meta shapes. Any on-disk mismatch ⇒ ABORT.
+const sealExpectedHex = (meta) => {
+  if (!meta) return null;
+  if (typeof meta === 'string') return meta.replace(/^sha256:/, '');
+  const raw = meta.sha256 || meta.sha;
+  return raw ? String(raw).replace(/^sha256:/, '') : null;
+};
+const sealBlobPath = (name) => {
+  const rel = name.endsWith('.json') ? name : `${name}.json`;
+  return { rel, abs: path.join(ROOT, 'data-clean', rel) };
+};
+const verifySealEntries = (entries, label, sealIssue) => {
+  let n = 0, bad = 0;
+  for (const [name, meta] of Object.entries(entries)) {
+    const expected = sealExpectedHex(meta);
+    if (!expected) { sealIssue(`${label} ${name}: no sha256 in SEAL entry`); bad++; continue; }
+    const { rel, abs } = sealBlobPath(name);
+    if (!fs.existsSync(abs)) { sealIssue(`SEAL lists ${name} but data-clean/${rel} is missing`); bad++; continue; }
+    const sha = crypto.createHash('sha256').update(fs.readFileSync(abs)).digest('hex');
+    if (sha !== expected) { sealIssue(`${rel}: sha256 mismatch vs SEAL (data changed after sealing)`); bad++; }
+    else { ok(`${rel}: sha256 matches SEAL`); n++; }
+  }
+  return { n, bad };
+};
+
 head('§3.1  seal hash match (anti-tamper)' + (RELEASE ? '' : '  [dev: advisory — pass --release to enforce]'));
 // The seal is Tasklet's data-integrity gate, refreshed on their cadence. In prod (--release) any
 // mismatch/absence ABORTS. In dev it is advisory: a stale seal must not block Claude's render +
@@ -59,19 +84,14 @@ if (!fs.existsSync(SEAL)) {
   else sealIssue('data-clean/SEAL.json missing — cannot verify data integrity (Tasklet ships it)');
 } else {
   try {
-    const seal  = JSON.parse(fs.readFileSync(SEAL, 'utf8'));
-    const blobs = seal.blobs || seal;
-    let n = 0, bad = 0;
-    for (const [name, meta] of Object.entries(blobs)) {
-      const expected = (meta && (meta.sha256 || meta.sha)) || meta;
-      const src = path.join(ROOT, 'data-clean', name + '.json');
-      if (!fs.existsSync(src)) { sealIssue(`SEAL lists ${name} but data-clean/${name}.json is missing`); bad++; continue; }
-      const sha = crypto.createHash('sha256').update(fs.readFileSync(src)).digest('hex');
-      if (sha !== expected) { sealIssue(`${name}: sha256 mismatch vs SEAL (data changed after sealing)`); bad++; }
-      else { ok(`${name}: sha256 matches SEAL`); n++; }
-    }
-    if (n && !bad) ok(`${n} sealed blob(s) verified`);
-    else if (bad && !RELEASE) console.warn(`   ⚠ ${bad}/${n + bad} blob(s) differ from SEAL — Tasklet should re-seal; not blocking dev`);
+    const seal = JSON.parse(fs.readFileSync(SEAL, 'utf8'));
+    const blobs = seal.blobs || {};
+    const sidecars = seal.sidecars || {};
+    const blobRes = verifySealEntries(blobs, 'blob', sealIssue);
+    const sideRes = Object.keys(sidecars).length ? verifySealEntries(sidecars, 'sidecar', sealIssue) : { n: 0, bad: 0 };
+    const n = blobRes.n + sideRes.n, bad = blobRes.bad + sideRes.bad;
+    if (n && !bad) ok(`${n} sealed file(s) verified`);
+    else if (bad && !RELEASE) console.warn(`   ⚠ ${bad}/${n + bad} file(s) differ from SEAL — Tasklet should re-seal; not blocking dev`);
   } catch (e) { sealIssue('SEAL.json parse error: ' + e.message); }
 }
 

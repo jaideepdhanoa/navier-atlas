@@ -6,20 +6,31 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-13 — Gold #79 INGESTED (`navier-export-20260613T214200Z.zip`)
+## 2026-06-13 — Gold #79 REBUILT SEAL (`navier-export-20260613T220843Z.zip`)
 
-**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified (local reseal).
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 blobs + sidecar).
 
-**Export quality:** Stale SEAL (meta still `#76`; blob shas didn't match files). ROUTES base was **not** #78c (5294 vs 5458). **Did not blind-rsync.**
+**Export quality:** All **7** blob files verify against export `SEAL.json` (new v2 schema: `*.json` keys, `sha: "sha256:…"`). Geometry **byte-identical** to cherry-picked #79 already live — 0 route/POI id delta vs prior ingest.
 
-**Cherry-picked onto Gold #78c:**
+**SEAL meta:** `gold: "#79"` · `parent_gold: "#78c"` · `delta_waves: ["W9-FP-geometry", "W10A-Mumbai-India"]` · `sealed_at: 2026-06-13T22:08:34Z`. (`meta.route_count` still says 5458 — stale; file has **5469**.)
+
+**Ingest:** rsynced sealed blobs + `SEAL.json` from export. Preflight updated for v2 seal shape (legacy `ROUTES`/`sha256` still supported).
+
+**Totals:** routes **5469** · POIs **11,467** · cities **164** · partners **46** · economics **95** pinned / **46** pending
+
+---
+
+## 2026-06-13 — Gold #79 cherry-pick (`navier-export-20260613T214200Z.zip`)
+
+**Superseded by rebuilt seal above** — geometry unchanged; first zip had stale SEAL (#76 base).
+
+**Cherry-picked onto Gold #78c (214200Z):**
 - **+11** aspirational FP routes (Rangiroa/Tuamotus, Tahiti, Marquesas) — `ics-*` ids
 - **+12** village-wharf POIs (documented Wikidata/OSM/SAM-PF coords)
 - Centroid fixes: `rangiroa-tuamotus-french-polynesia`, `tahiti-moorea-french-polynesia`
 - `atlas-external/pier-slug-bp-crosswalk.json` (12 new slug→bp entries)
-- Economics unchanged (95 pinned / 46 pending)
 
-**Totals:** routes **5469** (was 5458) · POIs **11,467** (was 11,455) · cities **164** · partners **46**
+**Totals:** routes **5469** (was 5458) · POIs **11,467** (was 11,455)
 
 ---
 
