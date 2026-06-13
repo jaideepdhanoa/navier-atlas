@@ -52,8 +52,16 @@ const briefsDir   = existsSync(join(DC, 'city_briefs')) ? join(DC, 'city_briefs'
 const partnersDir = existsSync(join(DC, 'partners'))    ? join(DC, 'partners')    : join(PITCH, 'partners');
 if (briefsDir.startsWith(PITCH) || partnersDir.startsWith(PITCH))
   console.warn('[build] ⚠ data-clean pitch surface missing — falling back to partner-pitch/ (INTERNAL, un-stripped). NOT valid for prod.');
+// Belt-and-suspenders: internal tiers must never reach the public artifact (see SEAL pitch.note).
+function sanitizePartner(rec) {
+  if (!rec || typeof rec !== 'object') return rec;
+  const { deck_only, reviewer_notes, ...rest } = rec;
+  return rest;
+}
 data.CITY_BRIEFS = assembleDir(briefsDir, 'city_id');
-data.PARTNERS = assembleDir(partnersDir, 'partner_id');
+data.PARTNERS = Object.fromEntries(
+  Object.entries(assembleDir(partnersDir, 'partner_id')).map(([k, v]) => [k, sanitizePartner(v)])
+);
 // Cluster briefs (NEW surface — country/archipelago-scale, keyed by cluster_id; each carries a `tier`:
 // first-class iff a signature_route resolves to a built route, else tag-only). Baked like city_briefs.
 const clusterDir = existsSync(join(DC, 'cluster_briefs')) ? join(DC, 'cluster_briefs') : join(PITCH, 'cluster_briefs');

@@ -6,6 +6,20 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-13 — Gold #75–#77 INGESTED (`navier-export-20260613T011718Z.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.
+
+**What landed (authoritative full `data-clean/` rsync):**
+- **Gold #75:** 4 water-solver corridors minted (`rn-df27ac2fd4a6` Marina↔RWS, `rn-a91713014506` Marina↔Changi, `rn-6327a9cbdd37` Marina↔Pulau Ubin, `rn-68b2f3d3df86` Jesselton↔Labuan); 46-partner re-emit (use_cases normalization, bolt Venice binds, kakao copy).
+- **Gold #76:** 7 stray `bp-*` stripped from `CLUSTERS.member_city_ids` (oman/philippines/uae); Grab **Cebu↔Boracay** bind → `rn-32233df7de6e`; economics sidecar rebuilt (**103** pinned / 36 pending).
+- **Gold #77:** 9 ROUTES label/multi_leg hygiene patches (SG↔Desaru/Bintan/Batam, Cebu↔Bohol piers, KK Sabah-coarse, Shura Marina).
+- `SEAL.meta.gold` → **#77** · routes **5283** (was 5287) · cities **163** / POIs **11381** · commodity_fare **4** preserved.
+
+**Render lane:** build strip for leaked `deck_only` / `reviewer_notes` on `line.json` (and gojek/kakao) — names in `reviewer_notes` tripped partner-page sweep; strip at externalizer source too.
+
+---
+
 ## 2026-06-12 — Gold #74 INGESTED (`navier-export-20260612T141747Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · seal verified.

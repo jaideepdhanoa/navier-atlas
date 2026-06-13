@@ -45,8 +45,16 @@ function loadData() {
     }
     return o;
   };
+  // Belt-and-suspenders: strip internal partner tiers if Tasklet's externalizer missed them.
+  const sanitizePartner = (rec) => {
+    if (!rec || typeof rec !== 'object') return rec;
+    const { deck_only, reviewer_notes, ...rest } = rec;
+    return rest;
+  };
   data.CITY_BRIEFS = dir('city_briefs', 'city_id');
-  data.PARTNERS = dir('partners', 'partner_id');
+  data.PARTNERS = Object.fromEntries(
+    Object.entries(dir('partners', 'partner_id')).map(([k, v]) => [k, sanitizePartner(v)])
+  );
   // Cluster lookup — used to scope a partner's network by the countries/clusters it touches. Optional.
   const clp = path.join(DC, 'CLUSTERS.json');
   data.CLUSTERS = fs.existsSync(clp) ? readJson(clp) : { clusters: [] };
