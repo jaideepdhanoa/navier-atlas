@@ -6,6 +6,22 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-14 — Gold #79f INGESTED (`navier-atlas-gold-79f.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 files).
+
+**Junk scrub wave** (parent: #79b):
+- **−30** junk/local-density routes dropped (25 `rn-*` + 5 `ics-*`; Pioneer II OSM-noise class — Jakarta coffee-shop piers, Manila wedding marinas, etc.)
+- **−61** POIs scrubbed (no additions)
+- Mumbai wave-10B commuter spine **kept** (`ics-mum-*` × 5)
+- Economics unchanged · CLUSTERS/CORRIDOR unchanged
+
+**Totals:** routes **5444** (was 5474) · POIs **11,372** (was 11,433) · cities **164**
+
+**SEAL:** v4 compact (`gold`, `sealed_at`, `route_count`, `files` with bare sha256 strings). Preflight already accepts string-valued `files` entries.
+
+---
+
 ## 2026-06-13 — Gold #79b INGESTED (`navier-export-20260613T222226Z.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 files).
