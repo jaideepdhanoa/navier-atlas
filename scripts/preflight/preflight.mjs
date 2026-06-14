@@ -46,14 +46,14 @@ const atlasData = fs.existsSync(ATLAS) ? fs.readFileSync(ATLAS, 'utf8') : null;
 const deployText = atlasData ? (html + '\n' + atlasData) : html;
 
 // ─── §3.1 · Hash match (anti-tamper) ──────────────────────────────────────────
-// SEAL.json (Tasklet-produced) supports three manifest shapes (merged + deduped):
-//   legacy:  { "blobs": { "ROUTES": { "sha256": "<hex>", "count": N }, ... } }
-//   v2:      { "blobs": { "ROUTES.json": { "sha": "sha256:<hex>", "bytes": N }, ... } }
-//   v3:      { "files": { "ROUTES.json": { "sha256": "<hex>", "bytes": N }, ... } }
+// SEAL.json (Tasklet-produced) supports multiple manifest shapes (merged + deduped):
+//   legacy:       { "blobs": { "ROUTES": { "sha256": "<hex>", ... }, ... } }
+//   v2/v3:        { "files": { "ROUTES.json": "<hex>" | { "sha256": "<hex>" }, ... } }
+//   v5 (#79i+):   { "file_hashes": { "ROUTES.json": "<hex>", "partners/grab.json": "<hex>", ... } }
 // Optional "sidecars" block uses the same meta shapes. Any on-disk mismatch ⇒ ABORT.
 const collectSealEntries = (seal) => {
   const merged = {};
-  for (const block of [seal.files, seal.blobs, seal.sidecars]) {
+  for (const block of [seal.file_hashes, seal.files, seal.blobs, seal.sidecars]) {
     if (!block) continue;
     for (const [name, meta] of Object.entries(block)) {
       const rel = name.endsWith('.json') ? name : `${name}.json`;

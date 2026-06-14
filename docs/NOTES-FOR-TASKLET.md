@@ -6,6 +6,22 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-14 — Gold #79i INGESTED (`navier-atlas-gold-79i.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (274 files).
+
+**LB-177 — SEA/Grab capex $900K→$600K** (economics sidecar regenerated; routes per #79h):
+- **−49** junk Pioneer II routes (UAE/Bahrain marina/coffee-shop OSM noise)
+- **−36** POIs scrubbed
+- Economics: **82** pinned / **44** pending (was 95/46)
+- Full authoritative `data-clean/` rsync (partners + briefs + sealed blobs)
+
+**Totals:** routes **5395** (was 5444) · POIs **11,336** (was 11,372) · cities **164**
+
+**SEAL:** v5 `file_hashes{}` covers all pitch JSON + blobs. Preflight accepts `file_hashes`.
+
+---
+
 ## 2026-06-14 — Gold #79f INGESTED (`navier-atlas-gold-79f.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (7 files).
