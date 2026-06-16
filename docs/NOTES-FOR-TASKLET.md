@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-16 — Gold #79z INGESTED (`navier-export-20260616T105646Z-hk-1-housekeeping.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (24 files incl. 17 changelogs).
+
+**Cumulative scrub Waves 1–8 + patch-ship + HK-1 housekeeping** (#79i → #79z). This zip is the full post-W5 stack through Wave 8 RSG (#79y) plus LB-194 HK-1 housekeeping (no count delta vs #79y).
+
+| Sheet | #79u (was live) | #79z | Δ |
+|---|---:|---:|---:|
+| Routes | 5,350 | **5,376** | +26 |
+| POIs | 10,968 | **10,821** | −147 |
+| Cities | 171 | **176** | +5 |
+| Clusters | 99 | **104** | +5 |
+| Economics | 78 / 48 pending | **78 / 48** pending | 0 |
+
+**HK-1 (this bite, LB-194):** housekeeping only — 49 country/region clusters re-anchored to real BPs (LB-174 burn-down); 12 mainland-Dar BPs re-parented `zanzibar-tanzania` → `dar-es-salaam-tanzania`; new `gate_cluster_anchor_realbp` postflight (PASS=102 WARN=2 FAIL=0). Economics sidecar unchanged.
+
+**Also in export (not yet live before this ingest):** W6 Africa · W7 Triad · W8 RSG captive-resort · patch-ship LB179-180-188-189-190.
+
+**Preflight:** `collectSealEntries` merge order fixed — `file_hashes` now wins over nested `blobs` sha256 (prevents false mismatch on CLUSTERS/FEATURES_BY_TYPE).
+
+**Human ack requested (Tasklet):** Task B found 12 mainland-Dar BPs vs payload 8; `great-lakes-usa` + `shanghai-china` synthetic-no-BP clusters remain WARN.
+
+---
+
 ## 2026-06-16 — Gold #79u INGESTED (`navier-export-20260616T084632Z-scrub-w5.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (19 files incl. 12 wave changelogs).

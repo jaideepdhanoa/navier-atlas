@@ -53,7 +53,9 @@ const deployText = atlasData ? (html + '\n' + atlasData) : html;
 // Optional "sidecars" block uses the same meta shapes. Any on-disk mismatch ⇒ ABORT.
 const collectSealEntries = (seal) => {
   const merged = {};
-  for (const block of [seal.file_hashes, seal.files, seal.blobs, seal.sidecars]) {
+  // Lower-priority blocks first; file_hashes last so on-disk whole-file digests win over
+  // nested blobs/sidecars metadata (which may carry a different canonical sha256).
+  for (const block of [seal.blobs, seal.sidecars, seal.files, seal.file_hashes]) {
     if (!block) continue;
     for (const [name, meta] of Object.entries(block)) {
       const rel = /\.(json|md)$/i.test(name) ? name : `${name}.json`;

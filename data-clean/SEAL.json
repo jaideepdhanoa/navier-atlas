@@ -1,16 +1,14 @@
 {
   "meta": {
-    "gold": "79u",
-    "sealed_at": "2026-06-16T08:46:23Z",
-    "route_count": 5350,
-    "poi_count": 10968,
-    "city_count": 171,
+    "gold": "79z",
+    "sealed_at": "2026-06-16T10:56:32Z",
+    "route_count": 5376,
+    "poi_count": 10821,
+    "city_count": 176,
     "priority_city_count": 37,
-    "cluster_count": 99,
-    "notes": "LB-190 Wave 5 (Indian Ocean) scrub+enrich (maldives-male spot-clean + seychelles-mahe enrich + mauritius enrich): 30 OSM-noise BPs killed (11 maldives + 7 seychelles + 12 mauritius) + 18 enrich BPs minted (10 Seychelles + 8 Mauritius) -> 10968 POI; +20 enrich routes (13 Seychelles Cat Cocos/Cat Rose/Inter-Island/Creole/Hilton Labriz/Six Senses/Fr\u00e9gate/Bird/Denis mesh + 6 Mauritius coastal water-taxi + 1 Mauritius<->Rodrigues 350nm Q-LR amber-dashed Coraline restart OUTSIDE P-II 70nm cap LB-189 LOCKED rule first non-Hawaii instance) -> 5350 routes; 171 cities unchanged; 99 clusters (+2 greenfield meta-clusters seychelles-archipelago anchor Victoria New Port + mauritius-island anchor Caudan Waterfront PER LB-186 archipelago co-existence pattern) + 3 LB-174 country-cluster re-anchors (maldives->Mal\u00e9 Jetty No.1 / seychelles->Victoria Inter-Island Quay / mauritius->Caudan Waterfront). NEW STANDING RULE LB-190 payload-driven dual-cluster pattern (country RE-ANCHOR + archipelago MINT alongside when payload explicit, overrides LB-189 default reuse). NEW JIH-deep metro scrub heuristic for Maldives (~5% conservative). 9 NEW brand rescues (Cat Cocos / Cat Rose / Inter-Island Ferry / Creole Travel Services / Mauritius Catamaran / Coraline Lines / Mauritius Pride / Aquasun / Catamaran Cruises Mauritius \u2014 promote RESCUE_PHRASES). Multi-pipe SEO pattern 3rd region carrier (Caribbean LB-184 + Maldives + Mauritius \u2014 promote universal NOISE_REGEX). NEW standing rule: payload-named anchor BP that doesn't exist yet -> MINT as enrich BP before anchoring (Victoria New Port). 12th consecutive bite of inline LB-179/180/186/187 patches \u2014 PROMOTION CRITICAL; user notified 3x. Wave 5 (Indian Ocean) COMPLETE after this seal. SEAL recomputed nested-blob bytes per LB-171/188; DUAL-SEAL-WRITE LB-182; FUSE-quota fallback LB-186/187.",
+    "cluster_count": 104,
+    "notes": "LB-194 Wave HK-1 housekeeping bite (no count delta). TASK A: LB-174 cluster anchor burn-down — 49 country/region clusters re-anchored from city_id virtuals to real BPs; +3 opportunistic fixes (mexico 1.11km drift snap; oman + philippines dangling-anchor BPs replaced); 2 synthetic-no-BP clusters (great-lakes-usa, shanghai-china) remain WARN by design. TASK B: Re-parented 12 Dar es Salaam mainland BPs (lat<-6.5°S) from zanzibar-tanzania → dar-es-salaam-tanzania (payload said 8; geo+name triangulation found 12; all clearly mainland Dar/Kunduchi/Bongoyo/Slipway/Kigamboni); IDs unchanged, route endpoints intact. TASK C: Codified LB-192a (base-gold extraction mandate in splice worker Phase 0 + _SHARED_PRINCIPLES §45A), LB-193 (captive-resort sub-cluster split archetype + PARTNER-RECAL-PLAYBOOK), LB-191a (post-mint haversine standing rule + auto Q-LR amber-dashed bump). New gate gate_cluster_anchor_realbp.py wired into Phase 3 postflight 6d: PASS=102 WARN=2 FAIL=0 (was PASS=51 FAIL=51 WARN=2 pre-bite). Counts vs #79y: 0 routes / 0 pois / 0 cities / 0 clusters delta (anchor + parent_city_id shifts only). All seal gates: city_ids PASS, premint_pair 0/5376 (15th consecutive 0), partner_rationale_leak clean, osm_noise_bp check-only PASS, cluster_anchor_realbp PASS. 4 HARD endpoint-label flags carry-forward unchanged from #79x/#79y (not touched by this bite). Prior gold #79y (LB-193 Wave 8 RSG captive-resort).",
     "lb_refs": [
-      "LB-55",
-      "LB-67",
       "LB-104",
       "LB-112",
       "LB-152",
@@ -35,11 +33,20 @@
       "LB-187",
       "LB-188",
       "LB-189",
-      "LB-190"
+      "LB-190",
+      "LB-191",
+      "LB-191a",
+      "LB-192",
+      "LB-192a",
+      "LB-193",
+      "LB-194",
+      "LB-55",
+      "LB-67"
     ],
-    "sealed_at_staged": "2026-06-16T08:46:23Z"
+    "sealed_at_staged": "2026-06-16T10:56:32Z"
   },
   "file_hashes": {
+    "CHANGELOG-FOR-CLAUDE-2026-06-16-patch-ship-LB179-180-188-189-190.md": "b8ab31cbb8960fdc9fc3ec6a842a1d3db9c633ded01daa7894a5ee0f1c7325b7",
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w1a-b1.md": "efa8ee9d1384bf609a0ce6260c61c3c27f332098de44c1be01a380df99f3e966",
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w1a-b2.md": "0e88ae0650244c7f6833fe8d3d84be7c007a115630be1f7a253d27f3a6d332b1",
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w1a-b3.md": "05d582f002b940a320e5300966534ddc393c336c423120f2e29f10c12abc7a79",
@@ -52,44 +59,3705 @@
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w3-b4.md": "22e4550b014de13de21db14f356bfec92803f65cdec2b476b024ae3443b4a484",
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w4.md": "85199289b8b86f083d5d2226206967807de94e86f899175e1f53f50d1cb6fab5",
     "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w5.md": "2172e38a24a8901b5fbf99e84621665c3af18a0afc823fe4c08d716b50499d70",
-    "CLUSTERS.json": "1002219c5f3637e8cc5c5e57fe3bee9a6d14834960a59351af8f0dc083e1936a",
+    "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w6-africa.md": "9558c1820924d6402d439cb192bcfdb4ce8b56c48657baba862e5e69b987d380",
+    "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w7-triad.md": "b1797e60d4c122d6ab3290ecea34be8b28b2f8fdf5b7b97da9e315b7ff79a897",
+    "CHANGELOG-FOR-CLAUDE-2026-06-16-scrub-w8-rsg.md": "ae6cafd46f3808e1574a62ef91c467f728b7b3124b58b5481a85c8dab9c47b1c",
+    "CLUSTERS.json": "0f48973e0ed9fdc4c73ab2f69cd314f5f22e5306cf626ace6f7952ebe819a6d8",
     "CORRIDOR-ENDPOINT-GROUNDING.json": "4d721ad30af638feea9ef2df5c37820f965dd551e2a1e61f13d804c82332ec60",
-    "FEATURES_BY_TYPE.json": "a446696ea92a38e26e47c5bbced7169caa003c09deef724d47d8cf3806bebcf0",
-    "ROUTES.json": "b9dc5787dfce4774c216db35e4b65922063e8dc54887af35224aee9db81ef1d4",
+    "FEATURES_BY_TYPE.json": "2daa804b599958d82beb1026a81f13f0c31e0fc2892f83285cc53992c7f18466",
+    "ROUTES.json": "89669e9487dfa2ee976d8e59098df2006b7e6b18dfca7fef3771ad647c6da8c5",
     "STORIES.json": "28087c09e15314013a918e630707b4c09e64c9a659ebe2f8e8ea994c7e4a0dfe",
     "VESSEL_SPECS.json": "f50c2168875d0806f47ebfc27b5e744be07c2a540f02f8b54ec7219d13f74643",
-    "economics_by_route_id.json": "fda2833b9fc45a7a2155a3e5ae22d5635c63e21258ca289bea60872d9e7b14ff"
+    "economics_by_route_id.json": "ddccb5b6be38a5bd07b9885f6f5ea79c53c2ee2ba8a0b2d250ee5c847b3dbfee",
+    "CHANGELOG-FOR-CLAUDE-2026-06-16-hk-1-housekeeping.md": "660fe2bfe23eb248fea584e92bd5dfcb031b4515b0e4cb972aa07326f30e3532"
   },
   "blobs": {
     "FEATURES_BY_TYPE": {
-      "city": 171,
-      "poi": 10968,
+      "city": 176,
+      "poi": 10821,
       "priority_city": 37,
-      "sha256": "a446696ea92a38e26e47c5bbced7169caa003c09deef724d47d8cf3806bebcf0",
       "counts": {
-        "city": 171,
-        "poi": 10968,
+        "city": 176,
+        "poi": 10821,
         "priority_city": 37
       },
       "count": {
-        "city": 171,
-        "poi": 10968,
+        "city": 176,
+        "poi": 10821,
         "priority_city": 37
-      }
+      },
+      "sha256": "751ccc6b21c7c5bfac0f16c070ac8ea4fa63eaaff865844b0a17919016bcfe56"
     },
     "ROUTES": {
-      "count": 5350,
-      "sha256": "b9dc5787dfce4774c216db35e4b65922063e8dc54887af35224aee9db81ef1d4"
+      "count": 5376,
+      "sha256": "89669e9487dfa2ee976d8e59098df2006b7e6b18dfca7fef3771ad647c6da8c5"
     },
     "CLUSTERS": {
-      "count": 99,
-      "sha256": "1002219c5f3637e8cc5c5e57fe3bee9a6d14834960a59351af8f0dc083e1936a"
+      "count": 104,
+      "sha256": "a1b524e7e8d9c7827db44e03f9b77dda0d0bdec9c0553692af862e45acc04916"
     }
   },
   "sidecars": {
     "economics_by_route_id.json": {
-      "sha256": "fda2833b9fc45a7a2155a3e5ae22d5635c63e21258ca289bea60872d9e7b14ff",
-      "records": 78,
+      "sha256": "ddccb5b6be38a5bd07b9885f6f5ea79c53c2ee2ba8a0b2d250ee5c847b3dbfee",
+      "records": [
+        {
+          "route_id": "rn-444748135d1b",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Saadiyat Beach Club Jetty -> Zaya Nurai Island Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 3.7,
+          "status": "grounded",
+          "demand_confidence": "low",
+          "fare_today_usd": 90.0,
+          "navier_fare_usd": 90.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2211768.0,
+            "margin": 0.96,
+            "payback_years": 0.42,
+            "co2_saved_t_per_boat_yr": 107.6,
+            "vessels_10pct": 1,
+            "market_rev_yr": 2211768.0
+          },
+          "band": {
+            "payback_years": [
+              0.64,
+              0.42,
+              0.28
+            ],
+            "vessels_10pct": [
+              2,
+              1,
+              1
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 90.0,
+              "navier_fare_usd": 90.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 23,
+              "trips_per_year": 4726,
+              "pax_per_year": 24575.0,
+              "revenue_per_boat_yr": 2211768.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 83980.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2127788.0,
+              "margin": 0.96,
+              "payback_years": 0.42,
+              "co2_saved_t_per_boat_yr": 107.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "rn-a0295522defb",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai Harbour Marina -> Anantara World Islands Resort Jetty (planned)",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 7.1,
+          "status": "grounded",
+          "demand_confidence": "low",
+          "fare_today_usd": 80.0,
+          "navier_fare_usd": 80.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1453504.0,
+            "margin": 0.94,
+            "payback_years": 0.66,
+            "co2_saved_t_per_boat_yr": 152.7,
+            "vessels_10pct": 1,
+            "market_rev_yr": 1453504.0
+          },
+          "band": {
+            "payback_years": [
+              1.0,
+              0.66,
+              0.44
+            ],
+            "vessels_10pct": [
+              2,
+              1,
+              1
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 80.0,
+              "navier_fare_usd": 80.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 17,
+              "trips_per_year": 3494,
+              "pax_per_year": 18169.0,
+              "revenue_per_boat_yr": 1453504.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 86484.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1367020.0,
+              "margin": 0.94,
+              "payback_years": 0.66,
+              "co2_saved_t_per_boat_yr": 152.7
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          },
+          "also_serves": [
+            {
+              "corridor": "Dubai -> The World / Palm / offshore resorts",
+              "market": "UAE (Careem)",
+              "country": "United Arab Emirates",
+              "distance_nm": 8,
+              "status": "estimated",
+              "demand_confidence": "low",
+              "fare_today_usd": 55.0,
+              "navier_fare_usd": 55.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 940368.0,
+                "margin": 0.92,
+                "payback_years": 1.04,
+                "co2_saved_t_per_boat_yr": 161.9,
+                "vessels_10pct": null,
+                "market_rev_yr": null
+              },
+              "band": {
+                "payback_years": [
+                  1.6,
+                  1.04,
+                  0.69
+                ],
+                "vessels_10pct": [
+                  null,
+                  null,
+                  null
+                ]
+              },
+              "estimation_basis": "country-median",
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 55.0,
+                  "navier_fare_usd": 55.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 16,
+                  "trips_per_year": 3288,
+                  "pax_per_year": 17098.0,
+                  "revenue_per_boat_yr": 940368.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 75641.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 864727.0,
+                  "margin": 0.92,
+                  "payback_years": 1.04,
+                  "co2_saved_t_per_boat_yr": 161.9
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "estimated (country-median)"
+              }
+            }
+          ]
+        },
+        {
+          "route_id": "rn-25065af2bcb4",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai -> Abu Dhabi (Yas / Saadiyat)",
+          "market": "UAE (Careem)",
+          "country": "United Arab Emirates",
+          "distance_nm": 60,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 110.0,
+          "navier_fare_usd": 110.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 352352.0,
+            "margin": 0.78,
+            "payback_years": 3.27,
+            "co2_saved_t_per_boat_yr": 227.5,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              5.54,
+              3.27,
+              2.03
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 110.0,
+              "navier_fare_usd": 110.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 3,
+              "trips_per_year": 616,
+              "pax_per_year": 3203.0,
+              "revenue_per_boat_yr": 352352.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 77116.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 275236.0,
+              "margin": 0.78,
+              "payback_years": 3.27,
+              "co2_saved_t_per_boat_yr": 227.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-461399dfc4d5",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Sharjah (Al Khan / Khalid Lagoon) -> Dubai (Marina / Festival City)",
+          "market": "UAE (Careem)",
+          "country": "United Arab Emirates",
+          "distance_nm": 23,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 35.0,
+          "navier_fare_usd": 35.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 299208.0,
+            "margin": 0.74,
+            "payback_years": 4.05,
+            "co2_saved_t_per_boat_yr": 232.7,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              7.12,
+              4.05,
+              2.47
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 35.0,
+              "navier_fare_usd": 35.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 8,
+              "trips_per_year": 1644,
+              "pax_per_year": 8549.0,
+              "revenue_per_boat_yr": 299208.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 77234.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 221974.0,
+              "margin": 0.74,
+              "payback_years": 4.05,
+              "co2_saved_t_per_boat_yr": 232.7
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-0d9b2acf81b1",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Fujairah east-coast cluster (Dibba / Khor Fakkan / Kalba) -> Intra-cluster east-coast hop",
+          "market": "UAE (Careem)",
+          "country": "United Arab Emirates",
+          "distance_nm": 28,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 40.0,
+          "navier_fare_usd": 40.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 256464.0,
+            "margin": 0.7,
+            "payback_years": 5.01,
+            "co2_saved_t_per_boat_yr": 212.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              9.21,
+              5.01,
+              2.99
+            ],
+            "vessels_10pct": [
+              1,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 40.0,
+              "navier_fare_usd": 40.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 6,
+              "trips_per_year": 1233,
+              "pax_per_year": 6412.0,
+              "revenue_per_boat_yr": 256464.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 76779.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 179685.0,
+              "margin": 0.7,
+              "payback_years": 5.01,
+              "co2_saved_t_per_boat_yr": 212.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-fe3fdf5c23c4",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai Harbour Marina -> Atlantis The Royal Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 3.6,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 150.0,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3686280.0,
+            "margin": 0.98,
+            "payback_years": 0.25,
+            "co2_saved_t_per_boat_yr": 104.7,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.37,
+              0.25,
+              0.17
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150.0,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 23,
+              "trips_per_year": 4726,
+              "pax_per_year": 24575.0,
+              "revenue_per_boat_yr": 3686280.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 83819.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3602461.0,
+              "margin": 0.98,
+              "payback_years": 0.25,
+              "co2_saved_t_per_boat_yr": 104.7
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-f1a7150d087e",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai Harbour Marina -> Bulgari Yacht Club & Marina",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 9.3,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 150.0,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2403960.0,
+            "margin": 0.96,
+            "payback_years": 0.39,
+            "co2_saved_t_per_boat_yr": 176.4,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.58,
+              0.39,
+              0.26
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150.0,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 15,
+              "trips_per_year": 3082,
+              "pax_per_year": 16026.0,
+              "revenue_per_boat_yr": 2403960.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 87803.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2316157.0,
+              "margin": 0.96,
+              "payback_years": 0.39,
+              "co2_saved_t_per_boat_yr": 176.4
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-06eef0dc0a9a",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai Harbour Marina -> Burj Al Arab Private Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 5.9,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 200.0,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 4060160.0,
+            "margin": 0.98,
+            "payback_years": 0.23,
+            "co2_saved_t_per_boat_yr": 141.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.34,
+              0.23,
+              0.15
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200.0,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 19,
+              "trips_per_year": 3904,
+              "pax_per_year": 20301.0,
+              "revenue_per_boat_yr": 4060160.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 85877.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3974283.0,
+              "margin": 0.98,
+              "payback_years": 0.23,
+              "co2_saved_t_per_boat_yr": 141.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-9d65d29a88ec",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Emirates Palace Marina -> Saadiyat Beach Club Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 9.4,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 120.0,
+          "navier_fare_usd": 120.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1795248.0,
+            "margin": 0.95,
+            "payback_years": 0.53,
+            "co2_saved_t_per_boat_yr": 166.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.8,
+              0.53,
+              0.35
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 120.0,
+              "navier_fare_usd": 120.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 14,
+              "trips_per_year": 2877,
+              "pax_per_year": 14960.0,
+              "revenue_per_boat_yr": 1795248.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 87249.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1707999.0,
+              "margin": 0.95,
+              "payback_years": 0.53,
+              "co2_saved_t_per_boat_yr": 166.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-bb2eb160c1a5",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Yas Marina -> Zaya Nurai Island Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 11.1,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 110.0,
+          "navier_fare_usd": 110.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1528384.0,
+            "margin": 0.94,
+            "payback_years": 0.62,
+            "co2_saved_t_per_boat_yr": 182.6,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.95,
+              0.62,
+              0.42
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 110.0,
+              "navier_fare_usd": 110.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 1528384.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 88143.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1440241.0,
+              "margin": 0.94,
+              "payback_years": 0.62,
+              "co2_saved_t_per_boat_yr": 182.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-2f5e450c7e2c",
+          "partner": "careem",
+          "deck_url": null,
+          "corridor": "Dubai Harbour Marina -> Saadiyat Beach Club Jetty",
+          "market": "UAE (Luxury)",
+          "country": "UAE",
+          "distance_nm": 49.0,
+          "status": "estimated",
+          "demand_confidence": "low",
+          "fare_today_usd": 200.0,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 854880.0,
+            "margin": 0.89,
+            "payback_years": 1.18,
+            "co2_saved_t_per_boat_yr": 247.9,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              1.84,
+              1.18,
+              0.77
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200.0,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 4,
+              "trips_per_year": 822,
+              "pax_per_year": 4274.0,
+              "revenue_per_boat_yr": 854880.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 91775.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 763105.0,
+              "margin": 0.89,
+              "payback_years": 1.18,
+              "co2_saved_t_per_boat_yr": 247.9
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "e__velana__westin-miriandhoo-jetty",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> One&Only Reethi Rah",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 22.3,
+          "status": "grounded",
+          "demand_confidence": "low-med",
+          "fare_today_usd": 500,
+          "navier_fare_usd": 500.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 4274400.0,
+            "margin": 0.98,
+            "payback_years": 0.21,
+            "co2_saved_t_per_boat_yr": 206.6,
+            "vessels_10pct": 2,
+            "market_rev_yr": 8548800.0
+          },
+          "band": {
+            "payback_years": [
+              0.32,
+              0.21,
+              0.14
+            ],
+            "vessels_10pct": [
+              3,
+              2,
+              1
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 500,
+              "navier_fare_usd": 500.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 8,
+              "trips_per_year": 1644,
+              "pax_per_year": 8549.0,
+              "revenue_per_boat_yr": 4274400.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 70912.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 4203488.0,
+              "margin": 0.98,
+              "payback_years": 0.21,
+              "co2_saved_t_per_boat_yr": 206.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          },
+          "also_serves": [
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Conrad Maldives Rangali Island (South Ari)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 57.6,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 350,
+              "navier_fare_usd": 350.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 1121120.0,
+                "margin": 0.94,
+                "payback_years": 0.86,
+                "co2_saved_t_per_boat_yr": 199.9,
+                "vessels_10pct": 6,
+                "market_rev_yr": 6726720.0
+              },
+              "band": {
+                "payback_years": [
+                  1.3,
+                  0.86,
+                  0.57
+                ],
+                "vessels_10pct": [
+                  9,
+                  6,
+                  4
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 350,
+                  "navier_fare_usd": 350.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 3,
+                  "trips_per_year": 616,
+                  "pax_per_year": 3203.0,
+                  "revenue_per_boat_yr": 1121120.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 70335.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 1050785.0,
+                  "margin": 0.94,
+                  "payback_years": 0.86,
+                  "co2_saved_t_per_boat_yr": 199.9
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Soneva Fushi (Kunfunadhoo, Baa)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 61.8,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 650,
+              "navier_fare_usd": 650.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 2082080.0,
+                "margin": 0.97,
+                "payback_years": 0.45,
+                "co2_saved_t_per_boat_yr": 214.5,
+                "vessels_10pct": 3,
+                "market_rev_yr": 6246240.0
+              },
+              "band": {
+                "payback_years": [
+                  0.67,
+                  0.45,
+                  0.3
+                ],
+                "vessels_10pct": [
+                  4,
+                  3,
+                  2
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 650,
+                  "navier_fare_usd": 650.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 3,
+                  "trips_per_year": 616,
+                  "pax_per_year": 3203.0,
+                  "revenue_per_boat_yr": 2082080.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 71599.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 2010481.0,
+                  "margin": 0.97,
+                  "payback_years": 0.45,
+                  "co2_saved_t_per_boat_yr": 214.5
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Waldorf Astoria Maldives Ithaafushi",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 13.5,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 400,
+              "navier_fare_usd": 400.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 4700800.0,
+                "margin": 0.99,
+                "payback_years": 0.19,
+                "co2_saved_t_per_boat_yr": 171.9,
+                "vessels_10pct": 1,
+                "market_rev_yr": 4700800.0
+              },
+              "band": {
+                "payback_years": [
+                  0.29,
+                  0.19,
+                  0.13
+                ],
+                "vessels_10pct": [
+                  2,
+                  1,
+                  0
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 400,
+                  "navier_fare_usd": 400.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 11,
+                  "trips_per_year": 2260,
+                  "pax_per_year": 11752.0,
+                  "revenue_per_boat_yr": 4700800.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 67906.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 4632894.0,
+                  "margin": 0.99,
+                  "payback_years": 0.19,
+                  "co2_saved_t_per_boat_yr": 171.9
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> The Ritz-Carlton Maldives, Fari Islands",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 25.1,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 510,
+              "navier_fare_usd": 510.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 3813576.0,
+                "margin": 0.98,
+                "payback_years": 0.24,
+                "co2_saved_t_per_boat_yr": 203.4,
+                "vessels_10pct": 1,
+                "market_rev_yr": 3813576.0
+              },
+              "band": {
+                "payback_years": [
+                  0.36,
+                  0.24,
+                  0.16
+                ],
+                "vessels_10pct": [
+                  2,
+                  1,
+                  1
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 510,
+                  "navier_fare_usd": 510.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 7,
+                  "trips_per_year": 1438,
+                  "pax_per_year": 7478.0,
+                  "revenue_per_boat_yr": 3813576.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 70634.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 3742942.0,
+                  "margin": 0.98,
+                  "payback_years": 0.24,
+                  "co2_saved_t_per_boat_yr": 203.4
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Patina Maldives, Fari Islands",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 26.4,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 450,
+              "navier_fare_usd": 450.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 3364920.0,
+                "margin": 0.98,
+                "payback_years": 0.27,
+                "co2_saved_t_per_boat_yr": 213.9,
+                "vessels_10pct": 1,
+                "market_rev_yr": 3364920.0
+              },
+              "band": {
+                "payback_years": [
+                  0.41,
+                  0.27,
+                  0.18
+                ],
+                "vessels_10pct": [
+                  2,
+                  1,
+                  1
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 450,
+                  "navier_fare_usd": 450.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 7,
+                  "trips_per_year": 1438,
+                  "pax_per_year": 7478.0,
+                  "revenue_per_boat_yr": 3364920.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 71548.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 3293372.0,
+                  "margin": 0.98,
+                  "payback_years": 0.27,
+                  "co2_saved_t_per_boat_yr": 213.9
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> The Westin Maldives Miriandhoo (Baa)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 60.6,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 310,
+              "navier_fare_usd": 310.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 992992.0,
+                "margin": 0.93,
+                "payback_years": 0.98,
+                "co2_saved_t_per_boat_yr": 210.3,
+                "vessels_10pct": 3,
+                "market_rev_yr": 2978976.0
+              },
+              "band": {
+                "payback_years": [
+                  1.49,
+                  0.98,
+                  0.65
+                ],
+                "vessels_10pct": [
+                  4,
+                  3,
+                  2
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 310,
+                  "navier_fare_usd": 310.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 3,
+                  "trips_per_year": 616,
+                  "pax_per_year": 3203.0,
+                  "revenue_per_boat_yr": 992992.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 71238.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 921754.0,
+                  "margin": 0.93,
+                  "payback_years": 0.98,
+                  "co2_saved_t_per_boat_yr": 210.3
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Constance Halaveli (North Ari)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 42.6,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 300,
+              "navier_fare_usd": 300.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 1282320.0,
+                "margin": 0.94,
+                "payback_years": 0.74,
+                "co2_saved_t_per_boat_yr": 197.3,
+                "vessels_10pct": 2,
+                "market_rev_yr": 2564640.0
+              },
+              "band": {
+                "payback_years": [
+                  1.12,
+                  0.74,
+                  0.49
+                ],
+                "vessels_10pct": [
+                  4,
+                  2,
+                  1
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 300,
+                  "navier_fare_usd": 300.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 4,
+                  "trips_per_year": 822,
+                  "pax_per_year": 4274.0,
+                  "revenue_per_boat_yr": 1282320.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 70108.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 1212212.0,
+                  "margin": 0.94,
+                  "payback_years": 0.74,
+                  "co2_saved_t_per_boat_yr": 197.3
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Kurumba Maldives (Vihamanafushi, North Malé)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 2.4,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 60,
+              "navier_fare_usd": 60.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 1667016.0,
+                "margin": 0.96,
+                "payback_years": 0.56,
+                "co2_saved_t_per_boat_yr": 72.2,
+                "vessels_10pct": 0,
+                "market_rev_yr": null
+              },
+              "band": {
+                "payback_years": [
+                  0.84,
+                  0.56,
+                  0.37
+                ],
+                "vessels_10pct": [
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 60,
+                  "navier_fare_usd": 60.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 26,
+                  "trips_per_year": 5343,
+                  "pax_per_year": 27784.0,
+                  "revenue_per_boat_yr": 1667016.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 59265.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 1607751.0,
+                  "margin": 0.96,
+                  "payback_years": 0.56,
+                  "co2_saved_t_per_boat_yr": 72.2
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Gili Lankanfushi (North Malé)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 6.5,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 150,
+              "navier_fare_usd": 150.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 2885220.0,
+                "margin": 0.98,
+                "payback_years": 0.32,
+                "co2_saved_t_per_boat_yr": 135.5,
+                "vessels_10pct": 0,
+                "market_rev_yr": null
+              },
+              "band": {
+                "payback_years": [
+                  0.48,
+                  0.32,
+                  0.21
+                ],
+                "vessels_10pct": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 150,
+                  "navier_fare_usd": 150.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 18,
+                  "trips_per_year": 3699,
+                  "pax_per_year": 19235.0,
+                  "revenue_per_boat_yr": 2885220.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 64747.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 2820473.0,
+                  "margin": 0.98,
+                  "payback_years": 0.32,
+                  "co2_saved_t_per_boat_yr": 135.5
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            },
+            {
+              "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> Baros Maldives (North Malé)",
+              "market": "Maldives (JIH)",
+              "country": "Maldives",
+              "distance_nm": 8.7,
+              "status": "grounded",
+              "demand_confidence": "low-med",
+              "fare_today_usd": 120,
+              "navier_fare_usd": 120.0,
+              "vessel": "N30 Pioneer II",
+              "mid": {
+                "rev_per_boat_yr": 1923168.0,
+                "margin": 0.97,
+                "payback_years": 0.48,
+                "co2_saved_t_per_boat_yr": 151.1,
+                "vessels_10pct": 0,
+                "market_rev_yr": null
+              },
+              "band": {
+                "payback_years": [
+                  0.73,
+                  0.48,
+                  0.32
+                ],
+                "vessels_10pct": [
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "estimation_basis": null,
+              "assumptions": null,
+              "breakdown": {
+                "revenue_build": {
+                  "comparable_fare_usd": 120,
+                  "navier_fare_usd": 120.0,
+                  "pax_capacity": null,
+                  "load_factor": null,
+                  "pax_per_trip": 5.2,
+                  "trips_per_day": 15,
+                  "trips_per_year": 3082,
+                  "pax_per_year": 16026.0,
+                  "revenue_per_boat_yr": 1923168.0
+                },
+                "run_cost": {
+                  "energy_usd_yr": null,
+                  "crew_usd_yr": null,
+                  "marina_overhead_usd_yr": null,
+                  "maintenance_usd_yr": null,
+                  "annual_opex_usd_yr": 66100.0,
+                  "depreciation_usd_yr": null
+                },
+                "result": {
+                  "ebitda_per_boat_yr": 1857068.0,
+                  "margin": 0.97,
+                  "payback_years": 0.48,
+                  "co2_saved_t_per_boat_yr": 151.1
+                }
+              },
+              "provenance": {
+                "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+                "demand": "sourced corridor demand pool"
+              }
+            }
+          ]
+        },
+        {
+          "route_id": "e__mald__9bf1ceb3c16f",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maafaru Airport, Noonu -> Siyam World (Dhigurah, Noonu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 11.9,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1923480.0,
+            "margin": 0.96,
+            "payback_years": 0.48,
+            "co2_saved_t_per_boat_yr": 165.3,
+            "vessels_10pct": 2,
+            "market_rev_yr": 3846960.0
+          },
+          "band": {
+            "payback_years": [
+              0.73,
+              0.48,
+              0.32
+            ],
+            "vessels_10pct": [
+              4,
+              2,
+              1
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 12,
+              "trips_per_year": 2466,
+              "pax_per_year": 12823.0,
+              "revenue_per_boat_yr": 1923480.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67337.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1856143.0,
+              "margin": 0.96,
+              "payback_years": 0.48,
+              "co2_saved_t_per_boat_yr": 165.3
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__1192332c2139",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maamigili (Villa) Airport, South Ari -> Sun Island Resort (Nalaguraidhoo)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 2.0,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 120,
+          "navier_fare_usd": 120.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3461952.0,
+            "margin": 0.98,
+            "payback_years": 0.26,
+            "co2_saved_t_per_boat_yr": 62.5,
+            "vessels_10pct": 1,
+            "market_rev_yr": 3461952.0
+          },
+          "band": {
+            "payback_years": [
+              0.39,
+              0.26,
+              0.18
+            ],
+            "vessels_10pct": [
+              1,
+              1,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 120,
+              "navier_fare_usd": 120.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 27,
+              "trips_per_year": 5548,
+              "pax_per_year": 28850.0,
+              "revenue_per_boat_yr": 3461952.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 58421.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3403531.0,
+              "margin": 0.98,
+              "payback_years": 0.26,
+              "co2_saved_t_per_boat_yr": 62.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__velana__como-cocoa-island-jetty",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Velana International Airport (MLE) Resort Speedboat Lounges -> COMO Cocoa Island (Makunufushi, South Malé)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 16.8,
+          "status": "grounded",
+          "demand_confidence": "low-med",
+          "fare_today_usd": 130,
+          "navier_fare_usd": 130.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1389180.0,
+            "margin": 0.95,
+            "payback_years": 0.68,
+            "co2_saved_t_per_boat_yr": 194.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              1.03,
+              0.68,
+              0.45
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 130,
+              "navier_fare_usd": 130.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 10,
+              "trips_per_year": 2055,
+              "pax_per_year": 10686.0,
+              "revenue_per_boat_yr": 1389180.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 69867.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1319313.0,
+              "margin": 0.95,
+              "payback_years": 0.68,
+              "co2_saved_t_per_boat_yr": 194.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__6321f772bf07",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maamigili (Villa) Airport, South Ari -> Lily Beach Resort (Huvahendhoo)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 12.4,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1923480.0,
+            "margin": 0.96,
+            "payback_years": 0.49,
+            "co2_saved_t_per_boat_yr": 172.3,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.73,
+              0.49,
+              0.32
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 12,
+              "trips_per_year": 2466,
+              "pax_per_year": 12823.0,
+              "revenue_per_boat_yr": 1923480.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67940.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1855540.0,
+              "margin": 0.96,
+              "payback_years": 0.49,
+              "co2_saved_t_per_boat_yr": 172.3
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__cf81f3109b09",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maamigili (Villa) Airport, South Ari -> Constance Moofushi",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 16.8,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1602900.0,
+            "margin": 0.96,
+            "payback_years": 0.59,
+            "co2_saved_t_per_boat_yr": 194.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.88,
+              0.59,
+              0.39
+            ],
+            "vessels_10pct": [
+              1,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 10,
+              "trips_per_year": 2055,
+              "pax_per_year": 10686.0,
+              "revenue_per_boat_yr": 1602900.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 69867.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1533033.0,
+              "margin": 0.96,
+              "payback_years": 0.59,
+              "co2_saved_t_per_boat_yr": 194.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__668ae19f3441",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maamigili (Villa) Airport, South Ari -> Mirihi Island Resort",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 10.8,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 120,
+          "navier_fare_usd": 120.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1667328.0,
+            "margin": 0.96,
+            "payback_years": 0.56,
+            "co2_saved_t_per_boat_yr": 162.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.85,
+              0.56,
+              0.38
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 120,
+              "navier_fare_usd": 120.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 1667328.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67099.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1600229.0,
+              "margin": 0.96,
+              "payback_years": 0.56,
+              "co2_saved_t_per_boat_yr": 162.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__05cb62853a96",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maamigili (Villa) Airport, South Ari -> Conrad Maldives Rangali Island",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 11.4,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2084160.0,
+            "margin": 0.97,
+            "payback_years": 0.45,
+            "co2_saved_t_per_boat_yr": 171.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.67,
+              0.45,
+              0.3
+            ],
+            "vessels_10pct": [
+              1,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 2084160.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67882.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2016278.0,
+              "margin": 0.97,
+              "payback_years": 0.45,
+              "co2_saved_t_per_boat_yr": 171.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__5108f439d6bc",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Four Seasons Landaa Giraavaru (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 9.1,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3205280.0,
+            "margin": 0.98,
+            "payback_years": 0.29,
+            "co2_saved_t_per_boat_yr": 158.0,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.43,
+              0.29,
+              0.19
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 15,
+              "trips_per_year": 3082,
+              "pax_per_year": 16026.0,
+              "revenue_per_boat_yr": 3205280.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 66703.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3138577.0,
+              "margin": 0.98,
+              "payback_years": 0.29,
+              "co2_saved_t_per_boat_yr": 158.0
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__ea26295ac460",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Anantara Kihavah (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 11.0,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2778880.0,
+            "margin": 0.98,
+            "payback_years": 0.33,
+            "co2_saved_t_per_boat_yr": 165.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.5,
+              0.33,
+              0.22
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 2778880.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67360.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2711520.0,
+              "margin": 0.98,
+              "payback_years": 0.33,
+              "co2_saved_t_per_boat_yr": 165.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__a66fd74b4e3f",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Milaidhoo (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 8.8,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2804620.0,
+            "margin": 0.98,
+            "payback_years": 0.33,
+            "co2_saved_t_per_boat_yr": 152.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.49,
+              0.33,
+              0.22
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 15,
+              "trips_per_year": 3082,
+              "pax_per_year": 16026.0,
+              "revenue_per_boat_yr": 2804620.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 66251.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2738369.0,
+              "margin": 0.98,
+              "payback_years": 0.33,
+              "co2_saved_t_per_boat_yr": 152.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__d1ac7b91cb94",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Soneva Fushi (Kunfunadhoo, Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 6.9,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3633760.0,
+            "margin": 0.98,
+            "payback_years": 0.25,
+            "co2_saved_t_per_boat_yr": 135.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.38,
+              0.25,
+              0.17
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 17,
+              "trips_per_year": 3494,
+              "pax_per_year": 18169.0,
+              "revenue_per_boat_yr": 3633760.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 64779.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3568981.0,
+              "margin": 0.98,
+              "payback_years": 0.25,
+              "co2_saved_t_per_boat_yr": 135.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__6f893e9600de",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Vakkaru Maldives (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 6.3,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3366090.0,
+            "margin": 0.98,
+            "payback_years": 0.27,
+            "co2_saved_t_per_boat_yr": 131.3,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.41,
+              0.27,
+              0.18
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 18,
+              "trips_per_year": 3699,
+              "pax_per_year": 19235.0,
+              "revenue_per_boat_yr": 3366090.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 64386.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3301704.0,
+              "margin": 0.98,
+              "payback_years": 0.27,
+              "co2_saved_t_per_boat_yr": 131.3
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__ad763bd18d10",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Dharavandhoo Airport, Baa -> Finolhu (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 8.7,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2403960.0,
+            "margin": 0.97,
+            "payback_years": 0.38,
+            "co2_saved_t_per_boat_yr": 151.1,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.58,
+              0.38,
+              0.26
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 15,
+              "trips_per_year": 3082,
+              "pax_per_year": 16026.0,
+              "revenue_per_boat_yr": 2403960.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 66100.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2337860.0,
+              "margin": 0.97,
+              "payback_years": 0.38,
+              "co2_saved_t_per_boat_yr": 151.1
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__3227d7e5ee37",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maafaru Airport, Noonu -> Soneva Jani (Medhufaru, Noonu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 4.8,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 4274400.0,
+            "margin": 0.98,
+            "payback_years": 0.21,
+            "co2_saved_t_per_boat_yr": 111.1,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.32,
+              0.21,
+              0.14
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 20,
+              "trips_per_year": 4110,
+              "pax_per_year": 21372.0,
+              "revenue_per_boat_yr": 4274400.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 62639.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 4211761.0,
+              "margin": 0.98,
+              "payback_years": 0.21,
+              "co2_saved_t_per_boat_yr": 111.1
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__cb9c1c10aa68",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maafaru Airport, Noonu -> Cheval Blanc Randheli (Noonu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 6.9,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3633760.0,
+            "margin": 0.98,
+            "payback_years": 0.25,
+            "co2_saved_t_per_boat_yr": 135.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.38,
+              0.25,
+              0.17
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 17,
+              "trips_per_year": 3494,
+              "pax_per_year": 18169.0,
+              "revenue_per_boat_yr": 3633760.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 64779.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3568981.0,
+              "margin": 0.98,
+              "payback_years": 0.25,
+              "co2_saved_t_per_boat_yr": 135.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__7daa80d2dca0",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Maafaru Airport, Noonu -> Velaa Private Island (Noonu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 13.4,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2350400.0,
+            "margin": 0.97,
+            "payback_years": 0.39,
+            "co2_saved_t_per_boat_yr": 170.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.59,
+              0.39,
+              0.26
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 11,
+              "trips_per_year": 2260,
+              "pax_per_year": 11752.0,
+              "revenue_per_boat_yr": 2350400.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67796.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2282604.0,
+              "margin": 0.97,
+              "payback_years": 0.39,
+              "co2_saved_t_per_boat_yr": 170.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__d5644e03d0f8",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Ifuru Airport, Raa -> Joali Maldives (Muravandhoo, Raa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 3.7,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 4915040.0,
+            "margin": 0.99,
+            "payback_years": 0.19,
+            "co2_saved_t_per_boat_yr": 98.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.28,
+              0.19,
+              0.13
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 23,
+              "trips_per_year": 4726,
+              "pax_per_year": 24575.0,
+              "revenue_per_boat_yr": 4915040.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 61543.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 4853497.0,
+              "margin": 0.99,
+              "payback_years": 0.19,
+              "co2_saved_t_per_boat_yr": 98.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__371b1d4b42bb",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Ifuru Airport, Raa -> Joali Being (Bodufushi, Raa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 8.3,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 200,
+          "navier_fare_usd": 200.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3419520.0,
+            "margin": 0.98,
+            "payback_years": 0.27,
+            "co2_saved_t_per_boat_yr": 153.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.4,
+              0.27,
+              0.18
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 200,
+              "navier_fare_usd": 200.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 16,
+              "trips_per_year": 3288,
+              "pax_per_year": 17098.0,
+              "revenue_per_boat_yr": 3419520.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 66333.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3353187.0,
+              "margin": 0.98,
+              "payback_years": 0.27,
+              "co2_saved_t_per_boat_yr": 153.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__ec4f42bb18cf",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Ifuru Airport, Raa -> InterContinental Maamunagau (Raa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 18.6,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1443000.0,
+            "margin": 0.95,
+            "payback_years": 0.66,
+            "co2_saved_t_per_boat_yr": 193.9,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.99,
+              0.66,
+              0.44
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 9,
+              "trips_per_year": 1850,
+              "pax_per_year": 9620.0,
+              "revenue_per_boat_yr": 1443000.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 69812.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1373188.0,
+              "margin": 0.95,
+              "payback_years": 0.66,
+              "co2_saved_t_per_boat_yr": 193.9
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__cef2887c4a31",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Ifuru Airport, Raa -> Emerald Maldives (Fasmendhoo, Raa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 11.0,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2084160.0,
+            "margin": 0.97,
+            "payback_years": 0.45,
+            "co2_saved_t_per_boat_yr": 165.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.67,
+              0.45,
+              0.3
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 2084160.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 67360.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2016800.0,
+              "margin": 0.97,
+              "payback_years": 0.45,
+              "co2_saved_t_per_boat_yr": 165.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__d549db406b20",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kudahuvadhoo Airport, Dhaalu -> St. Regis Vommuli (Dhaalu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 2.7,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 4675580.0,
+            "margin": 0.99,
+            "payback_years": 0.19,
+            "co2_saved_t_per_boat_yr": 78.2,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.29,
+              0.19,
+              0.13
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 25,
+              "trips_per_year": 5138,
+              "pax_per_year": 26718.0,
+              "revenue_per_boat_yr": 4675580.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 59778.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 4615802.0,
+              "margin": 0.99,
+              "payback_years": 0.19,
+              "co2_saved_t_per_boat_yr": 78.2
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__7b1ab039c8bc",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kudahuvadhoo Airport, Dhaalu -> Niyama Private Islands (Dhaalu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 7.7,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2564640.0,
+            "margin": 0.97,
+            "payback_years": 0.36,
+            "co2_saved_t_per_boat_yr": 142.6,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.54,
+              0.36,
+              0.24
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 16,
+              "trips_per_year": 3288,
+              "pax_per_year": 17098.0,
+              "revenue_per_boat_yr": 2564640.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 65369.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2499271.0,
+              "margin": 0.97,
+              "payback_years": 0.36,
+              "co2_saved_t_per_boat_yr": 142.6
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__ee1d9b719838",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kooddoo Airport, Gaafu Alif -> Pullman Maldives Maamutaa (Gaafu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 11.5,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2084160.0,
+            "margin": 0.97,
+            "payback_years": 0.45,
+            "co2_saved_t_per_boat_yr": 173.1,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.67,
+              0.45,
+              0.3
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 13,
+              "trips_per_year": 2672,
+              "pax_per_year": 13894.0,
+              "revenue_per_boat_yr": 2084160.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 68013.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2016147.0,
+              "margin": 0.97,
+              "payback_years": 0.45,
+              "co2_saved_t_per_boat_yr": 173.1
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__8d560d6ac726",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kooddoo Airport, Gaafu Alif -> Ayada Maldives (Gaafu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 12.9,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1923480.0,
+            "margin": 0.96,
+            "payback_years": 0.49,
+            "co2_saved_t_per_boat_yr": 179.2,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.73,
+              0.49,
+              0.33
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 12,
+              "trips_per_year": 2466,
+              "pax_per_year": 12823.0,
+              "revenue_per_boat_yr": 1923480.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 68542.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1854938.0,
+              "margin": 0.96,
+              "payback_years": 0.49,
+              "co2_saved_t_per_boat_yr": 179.2
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__b95e8093ec6d",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kadhdhoo Airport, Laamu -> Six Senses Laamu",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 5.4,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3045120.0,
+            "margin": 0.98,
+            "payback_years": 0.3,
+            "co2_saved_t_per_boat_yr": 118.8,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.45,
+              0.3,
+              0.2
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 19,
+              "trips_per_year": 3904,
+              "pax_per_year": 20301.0,
+              "revenue_per_boat_yr": 3045120.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 63300.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2981820.0,
+              "margin": 0.98,
+              "payback_years": 0.3,
+              "co2_saved_t_per_boat_yr": 118.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__74ace969292c",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Gan International Airport, Addu -> Shangri-La Villingili (Addu)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 3.7,
+          "status": "grounded",
+          "demand_confidence": "med",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3686280.0,
+            "margin": 0.98,
+            "payback_years": 0.25,
+            "co2_saved_t_per_boat_yr": 98.5,
+            "vessels_10pct": 0,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.37,
+              0.25,
+              0.17
+            ],
+            "vessels_10pct": [
+              0,
+              0,
+              0
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 23,
+              "trips_per_year": 4726,
+              "pax_per_year": 24575.0,
+              "revenue_per_boat_yr": 3686280.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 61543.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3624737.0,
+              "margin": 0.98,
+              "payback_years": 0.25,
+              "co2_saved_t_per_boat_yr": 98.5
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "sourced corridor demand pool"
+          }
+        },
+        {
+          "route_id": "e__mald__c960786903a0",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Soneva Fushi (Kunfunadhoo, Baa) -> Four Seasons Landaa Giraavaru (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 8.8,
+          "status": "estimated",
+          "demand_confidence": "null",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 2804620.0,
+            "margin": 0.98,
+            "payback_years": 0.33,
+            "co2_saved_t_per_boat_yr": 152.8,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.49,
+              0.33,
+              0.22
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 15,
+              "trips_per_year": 3082,
+              "pax_per_year": 16026.0,
+              "revenue_per_boat_yr": 2804620.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 66251.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 2738369.0,
+              "margin": 0.98,
+              "payback_years": 0.33,
+              "co2_saved_t_per_boat_yr": 152.8
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "e__mald__b6454c3fc24e",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Soneva Fushi (Kunfunadhoo, Baa) -> Anantara Kihavah (Baa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 5.5,
+          "status": "estimated",
+          "demand_confidence": "null",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3552640.0,
+            "margin": 0.98,
+            "payback_years": 0.26,
+            "co2_saved_t_per_boat_yr": 121.0,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.38,
+              0.26,
+              0.17
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 19,
+              "trips_per_year": 3904,
+              "pax_per_year": 20301.0,
+              "revenue_per_boat_yr": 3552640.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 63491.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3489149.0,
+              "margin": 0.98,
+              "payback_years": 0.26,
+              "co2_saved_t_per_boat_yr": 121.0
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "e__mald__1b65ddbf47b9",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Kuredu Island Resort (Lhaviyani) -> Hurawalhi (Lhaviyani)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 4.5,
+          "status": "estimated",
+          "demand_confidence": "null",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3366480.0,
+            "margin": 0.98,
+            "payback_years": 0.27,
+            "co2_saved_t_per_boat_yr": 109.4,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.41,
+              0.27,
+              0.18
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 21,
+              "trips_per_year": 4316,
+              "pax_per_year": 22443.0,
+              "revenue_per_boat_yr": 3366480.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 62489.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3303991.0,
+              "margin": 0.98,
+              "payback_years": 0.27,
+              "co2_saved_t_per_boat_yr": 109.4
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "e__mald__213fc6446c15",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Hurawalhi (Lhaviyani) -> Le Meridien Maldives Thilamaafushi (Lhaviyani)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 3.5,
+          "status": "estimated",
+          "demand_confidence": "null",
+          "fare_today_usd": 150,
+          "navier_fare_usd": 150.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3686280.0,
+            "margin": 0.98,
+            "payback_years": 0.25,
+            "co2_saved_t_per_boat_yr": 93.2,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.37,
+              0.25,
+              0.17
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 150,
+              "navier_fare_usd": 150.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 23,
+              "trips_per_year": 4726,
+              "pax_per_year": 24575.0,
+              "revenue_per_boat_yr": 3686280.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 61081.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3625199.0,
+              "margin": 0.98,
+              "payback_years": 0.25,
+              "co2_saved_t_per_boat_yr": 93.2
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "e__mald__65b15c050ea0",
+          "partner": "jih-global",
+          "deck_url": null,
+          "corridor": "Joali Maldives (Muravandhoo, Raa) -> Joali Being (Bodufushi, Raa)",
+          "market": "Maldives (JIH)",
+          "country": "Maldives",
+          "distance_nm": 4.7,
+          "status": "estimated",
+          "demand_confidence": "null",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 3927560.0,
+            "margin": 0.98,
+            "payback_years": 0.23,
+            "co2_saved_t_per_boat_yr": 114.3,
+            "vessels_10pct": null,
+            "market_rev_yr": null
+          },
+          "band": {
+            "payback_years": [
+              0.35,
+              0.23,
+              0.16
+            ],
+            "vessels_10pct": [
+              null,
+              null,
+              null
+            ]
+          },
+          "estimation_basis": "country-median",
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 21,
+              "trips_per_year": 4316,
+              "pax_per_year": 22443.0,
+              "revenue_per_boat_yr": 3927560.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 62911.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 3864649.0,
+              "margin": 0.98,
+              "payback_years": 0.23,
+              "co2_saved_t_per_boat_yr": 114.3
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (country-median)"
+          }
+        },
+        {
+          "route_id": "rn-1a140dacd3e6",
+          "partner": "red-sea-global",
+          "deck_url": null,
+          "corridor": "Shura Island Marina -> Outer-island resorts (St Regis / Nujuma / Shebara)",
+          "market": "Saudi – Red Sea (Resort)",
+          "country": "Saudi Arabia",
+          "distance_nm": 25,
+          "status": "forward_sam",
+          "demand_confidence": "low-med",
+          "fare_today_usd": 175,
+          "navier_fare_usd": 175.0,
+          "vessel": "N30 Pioneer II",
+          "mid": {
+            "rev_per_boat_yr": 1308580.0,
+            "margin": 0.94,
+            "payback_years": 0.73,
+            "co2_saved_t_per_boat_yr": 211.3,
+            "vessels_10pct": 60,
+            "market_rev_yr": 78514800.0
+          },
+          "band": {
+            "payback_years": [
+              1.11,
+              0.73,
+              0.48
+            ],
+            "vessels_10pct": [
+              88,
+              60,
+              40
+            ]
+          },
+          "estimation_basis": null,
+          "assumptions": null,
+          "breakdown": {
+            "revenue_build": {
+              "comparable_fare_usd": 175,
+              "navier_fare_usd": 175.0,
+              "pax_capacity": null,
+              "load_factor": null,
+              "pax_per_trip": 5.2,
+              "trips_per_day": 7,
+              "trips_per_year": 1438,
+              "pax_per_year": 7478.0,
+              "revenue_per_boat_yr": 1308580.0
+            },
+            "run_cost": {
+              "energy_usd_yr": null,
+              "crew_usd_yr": null,
+              "marina_overhead_usd_yr": null,
+              "maintenance_usd_yr": null,
+              "annual_opex_usd_yr": 74332.0,
+              "depreciation_usd_yr": null
+            },
+            "result": {
+              "ebitda_per_boat_yr": 1234248.0,
+              "margin": 0.94,
+              "payback_years": 0.73,
+              "co2_saved_t_per_boat_yr": 211.3
+            }
+          },
+          "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": "estimated (None)"
+          }
+        }
+      ],
       "pending": 48,
       "generated_with": "--aggdir finance/recal"
     }
