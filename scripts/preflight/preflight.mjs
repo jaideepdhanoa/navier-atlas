@@ -56,7 +56,7 @@ const collectSealEntries = (seal) => {
   for (const block of [seal.file_hashes, seal.files, seal.blobs, seal.sidecars]) {
     if (!block) continue;
     for (const [name, meta] of Object.entries(block)) {
-      const rel = name.endsWith('.json') ? name : `${name}.json`;
+      const rel = /\.(json|md)$/i.test(name) ? name : `${name}.json`;
       merged[rel] = meta;
     }
   }
@@ -69,7 +69,7 @@ const sealExpectedHex = (meta) => {
   return raw ? String(raw).replace(/^sha256:/, '') : null;
 };
 const sealBlobPath = (name) => {
-  const rel = name.endsWith('.json') ? name : `${name}.json`;
+  const rel = /\.(json|md)$/i.test(name) ? name : `${name}.json`;
   return { rel, abs: path.join(ROOT, 'data-clean', rel) };
 };
 const verifySealEntries = (entries, label, sealIssue) => {

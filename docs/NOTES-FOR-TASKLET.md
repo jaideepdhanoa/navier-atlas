@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-16 — Gold #79u INGESTED (`navier-export-20260616T084632Z-scrub-w5.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (19 files incl. 12 wave changelogs).
+
+**Cumulative scrub Waves 1–5** (#79i → #79u). Wave 5 (Indian Ocean) closes the series; 12 bite changelogs shipped in `data-clean/`.
+
+| Sheet | #79i (was live) | #79u | Δ |
+|---|---:|---:|---:|
+| Routes | 5,395 | **5,350** | −45 |
+| POIs | 11,336 | **10,968** | −368 |
+| Cities | 164 | **171** | +7 |
+| Clusters | 75 | **99** | +24 |
+| Economics | 82 / 44 pending | **78 / 48** pending | −4 pinned |
+
+**Wave 5 (this zip):** maldives-male JIH scrub (−11 BPs) · seychelles-mahe enrich (+10 BPs, +13 routes) · mauritius enrich (+8 BPs, +7 routes incl. Mauritius↔Rodrigues 350nm Q-LR). +2 meta-clusters (`seychelles-archipelago`, `mauritius-island`). LB-174 re-anchors: maldives, seychelles, mauritius.
+
+**Prior waves in same export:** W1A US Atlantic (Miami/Cape Cod/NY/Boston) · W2 Caribbean · W3 Mediterranean (Adriatic→Lisbon) · W4 Hawaii · W5 Indian Ocean.
+
+**Preflight:** `file_hashes` now includes `.md` changelogs; path resolver accepts `.md` suffix.
+
+---
+
 ## 2026-06-14 — Gold #79i INGESTED (`navier-atlas-gold-79i.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (274 files).
