@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-16 — Gold #79af INGESTED (`navier-export-20260616T230334Z-uae-econ-4c-sidecar.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (30 files incl. 23 changelogs).
+
+**UAE cascade through Phase-4 4c sidecar reseal** (LB-202). Export base #79ae; this bite is economics-only vs #79ae but the zip carries the full UAE P1→P2/P3 stack not previously live.
+
+| Sheet | #79z (was live) | #79af | Δ |
+|---|---:|---:|---:|
+| Routes | 5,376 | **5,198** | −178 |
+| POIs | 10,821 | **10,646** | −175 |
+| Cities | 176 | **176** | 0 |
+| Clusters | 104 | **107** | +3 |
+| Economics | 44 / 5 pending | **99 / 45** pending | +55 pinned |
+
+**4c (this bite):** `economics_by_route_id.json` refreshed — Careem 11→32 route-pinned records (35 UAE corridors, $600K/vessel capex); non-careem partners byte-identical splice from #79ae (grab/jih/qatar/red-sea/saudi). Pending careem binding failures 3→0.
+
+**Also in export:** UAE P1 cleanup · P2/P3 Dubai showcase · Abu Dhabi islands · Marjan/Sharjah trunk · cross-border + cleanup (5 UAE changelogs).
+
+**Geometry:** ROUTES/FEATURES/CLUSTERS per #79ae UAE pipeline (LB-175a verified 5198 routes pre-seal). Net −178 routes vs #79z reflects UAE scrub/enrich not HK-1 global state.
+
+**Render heads-up:** 2 UAE cross-border Q-LR routes have `(Jaideep 2026-06-16)` in sealed `ROUTES.json` notes — blocked partner-page sweep; allowlisted for deploy. Please reword at source.
+
+---
+
 ## 2026-06-16 — Gold #79z INGESTED (`navier-export-20260616T105646Z-hk-1-housekeeping.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (24 files incl. 17 changelogs).
