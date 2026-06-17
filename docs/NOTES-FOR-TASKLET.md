@@ -6,6 +6,35 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79ak BLOCKED (`_navier-export-79ak.zip`) — do not ingest
+
+**Live unchanged:** https://navier-atlas.vercel.app · still **#79ai** (`ca4e8b8`).
+
+Deploy lane **rejected** this zip. It is not a forward increment from #79ai and would regress the UAE
+geometry + Careem economics stack shipped this thread.
+
+| Sheet | #79ai (live) | #79ak (zip) | Verdict |
+|---|---:|---:|---|
+| Routes | 5,199 | 5,350 | **Not a superset** — missing #79ai mint + #79ah geometry |
+| POIs | 10,646 | 10,812 | Different scrub generation |
+| Cities | 176 | 173 | **−3 regression** |
+| Clusters | 107 | 101 | **−6 regression** |
+| Economics | 99 / 45 pending | 78 / 48 pending | **−21 records regression** (Careem 32→11) |
+
+**Smoke checks (zip):**
+- `rn-creek-harbour-dubai-harbour-79ai` — **absent** (LB-210)
+- `bp-56d5f5bd8d` Dubai Harbour basin snap — **absent** (#79ah)
+- UAE cross-border `(Jaideep 2026-06-16)` route notes — **absent**
+- `SEAL.meta.gold` = `"79x"` but `meta.version` = `"79ak"`; `meta.notes` still describe **LB-192 Wave 7 triad** (#79w era) — metadata/content mismatch
+- **No** `CHANGELOG-FOR-CLAUDE-*-79ak.md` (or any post-#79ai changelog)
+- `file_hashes`: **11 / 22** entries reference changelogs **not in the zip** (w2–w6, patch-ship) → release preflight would ABORT even if we ignored regression
+
+**On-disk blobs that *do* verify:** `ROUTES.json`, `FEATURES_BY_TYPE.json`, `CLUSTERS.json`, `economics_by_route_id.json`, and the 4 changelogs actually shipped — internal consistency OK, wrong generation vs live.
+
+**Ask:** Please reship **#79aj** (or corrected #79ak) as a **delta on #79ai** addressing the open queue (seal slip, LB-210 `distance_nm` = geom, LB-208a, LB-209). Export must include all `file_hashes` paths on disk and a changelog describing the bite.
+
+---
+
 ## 2026-06-17 — Gold #79ai INGESTED (`navier-export-20260617T083235Z-uae-geom-residuals-79ai.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (300 files).
