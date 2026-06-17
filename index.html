@@ -1161,12 +1161,12 @@ const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy la
 // Trunk floor lifted at world view (z1.5–4) so the demand backbone reads when zoomed out (#2 legibility).
 // Local capillary column (4th value) delayed vs trunk/regional — dense UAE/Palm meshes were washing out
 // the basemap below z11; marquee corridors still lead, micro-hops fade in only on zoom-in.
-const _TIER_STOPS = [[1.5,0.78,0.00,0.00],[4,0.90,0.20,0.00],[6.5,0.90,0.64,0.00],
-                     [8.5,0.92,0.80,0.18],[11,0.93,0.88,0.50],[14,0.95,0.88,0.82]];
+const _TIER_STOPS = [[1.5,0.66,0.00,0.00],[4,0.77,0.17,0.00],[6.5,0.77,0.54,0.00],
+                     [8.5,0.78,0.68,0.15],[11,0.79,0.75,0.43],[14,0.81,0.75,0.70]];
 // Quanta-LR is the trans-regional ≤700 nm backbone — the network's headline reach. It gets its OWN
 // brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
-const _QLR_STOPS  = [[1.5,0.92,0.62,0.00],[4,0.94,0.70,0.00],[6.5,0.92,0.74,0.20],
-                     [8.5,0.92,0.82,0.50],[11,0.93,0.88,0.82],[14,0.95,0.90,0.95]];
+const _QLR_STOPS  = [[1.5,0.78,0.53,0.00],[4,0.80,0.60,0.00],[6.5,0.78,0.63,0.17],
+                     [8.5,0.78,0.70,0.43],[11,0.79,0.75,0.70],[14,0.81,0.77,0.81]];
 // Build a top-level zoom interpolate from a stops table; `wrap(tierMatch)` maps the per-zoom tier
 // value to the final stop output (×demand / highlight case). Stop outputs are feature-driven but
 // zoom-free — zoom never leaves the top level (the MapLibre rule the F-01 fix established).
@@ -1189,23 +1189,23 @@ function wRoute(mult){
     14, ['+',1.5*mult, ['*',_TW,8.5*mult]]];
 }
 const O_TIER     = tierOpacity();
-const O_P2       = tierOpacity(m=>['*', m, 0.65]);   // Pioneer II — calmer default (was 0.82; UAE mesh feedback)
-const O_TIER_QLR = qlrOpacity(m=>['*', m, 0.88]);  // Quanta-LR slightly softened to match
+const O_P2       = tierOpacity(m=>['*', m, 0.55]);   // Pioneer II default — −15% pass (selection highlight unchanged)
+const O_TIER_QLR = qlrOpacity(m=>['*', m, 0.75]);
 const W_ROUTE    = wRoute(1);
 const W_QLR      = wRoute(1.1);    // Quanta-LR hero — trimmed from 1.25
 const W_P2       = wRoute(0.72);   // Pioneer II line weight — thinner default mesh
 // Density glow — restrained two-pass bloom (v17): wide halo + tight core, demand folded into stops.
 const W_GLOW_BLOOM = wRoute(2.5);
 const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,2.5, 8,4, 13,5.5];
-const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.14]]);   // softer halo
+const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.12]]);
 const W_GLOW_CORE  = wRoute(1.15);
 const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,0.8, 11,1.2, 14,1.5];
-const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.03,['*',_TW,0.10]]]);
+const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.025,['*',_TW,0.085]]]);
 // Economics bead trail — subtle by default; brightens only on the selected/focused corridor.
 const W_ECON_HALO = 2.6;
 const W_ECON_BEAD = 1.5;
-const O_ECON_HALO_BASE = ['match',['get','econ'],'grounded',0.28,0.14];
-const O_ECON_BASE      = ['match',['get','econ'],'grounded',0.42,0.22];
+const O_ECON_HALO_BASE = ['match',['get','econ'],'grounded',0.24,0.12];
+const O_ECON_BASE      = ['match',['get','econ'],'grounded',0.36,0.19];
 const O_ECON_HALO_HIT  = ['match',['get','econ'],'grounded',0.52,0.34];
 const O_ECON_HIT       = ['match',['get','econ'],'grounded',0.68,0.44];
 const O_ECON_DIM       = 0.03;
