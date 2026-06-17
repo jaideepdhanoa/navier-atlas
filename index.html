@@ -1093,8 +1093,10 @@ const ROUTE_FC = { type:'FeatureCollection', features: ROUTES.filter(f=>{
     if (_bundleable(p,longhaul,tier)) coords=_bundleLine(coords);   // braid overlapping corridors (corridor-clamped)
     geom={type:'LineString', coordinates:_smoothLine(coords, longhaul)};
   }
+  const capillary = tier==='local' && p.distance_nm!=null && p.distance_nm<1.5;
   return {type:'Feature', geometry:geom,
     properties:{...p, scale_class: longhaul?'longhaul':'local', render_tier:tier, render_tw:Math.round(tw*1000)/1000,
+                render_capillary: capillary || undefined,
                 _cfrom:_cityIdOf(p.from), _cto:_cityIdOf(p.to)}};
 })};
 
@@ -1157,8 +1159,10 @@ const _TW  = ['coalesce',['get','render_tw'],0.25];
 const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy lanes
 // per-zoom [trunk, regional, local] opacity on shared zoom stops (trunks lead; regional mid; local late).
 // Trunk floor lifted at world view (z1.5–4) so the demand backbone reads when zoomed out (#2 legibility).
+// Local capillary column (4th value) delayed vs trunk/regional — dense UAE/Palm meshes were washing out
+// the basemap below z11; marquee corridors still lead, micro-hops fade in only on zoom-in.
 const _TIER_STOPS = [[1.5,0.78,0.00,0.00],[4,0.90,0.20,0.00],[6.5,0.90,0.64,0.00],
-                     [8.5,0.92,0.80,0.42],[11,0.93,0.88,0.82],[14,0.95,0.88,0.95]];
+                     [8.5,0.92,0.80,0.18],[11,0.93,0.88,0.50],[14,0.95,0.88,0.82]];
 // Quanta-LR is the trans-regional ≤700 nm backbone — the network's headline reach. It gets its OWN
 // brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
 const _QLR_STOPS  = [[1.5,0.92,0.62,0.00],[4,0.94,0.70,0.00],[6.5,0.92,0.74,0.20],
@@ -1299,19 +1303,22 @@ map.on('load', () => {
   const _isP2  = ['==',['get','platform'],'Pioneer II'];
   const _isQ   = ['==',['get','platform'],'Quanta-LR'];
   const _rline = {'line-cap':'round','line-join':'round'};
+  const _glowTW = ['>=',['coalesce',['get','render_tw'],0],0.4];   // demand-weighted glow — locals stay line-only
+  const _capZoom = ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],12]]; // sub-1.5nm local hops: z12+
   // Demand glow, two-pass bloom (bottom→top): wide halo (trunk/regional only) then tight core.
   // Overlapping high-traffic corridors accumulate into one glowing braided trunk; locals stay clean.
   map.addLayer({ id:'route-glow-bloom', type:'line', source:'routes', layout:_rline,
-    filter:['>=',['coalesce',['get','render_tw'],0],0.4],   // skip the 769 local capillaries (they don't bloom)
+    filter:['all', _glowTW, _capZoom],
     paint:{ 'line-color':GLOW_COLOR, 'line-width':W_GLOW_BLOOM, 'line-opacity':O_GLOW_BLOOM, 'line-blur':B_GLOW_BLOOM }});
   map.addLayer({ id:'route-glow-core', type:'line', source:'routes', layout:_rline,
+    filter:['all', _glowTW, _capZoom],
     paint:{ 'line-color':GLOW_COLOR, 'line-width':W_GLOW_CORE, 'line-opacity':O_GLOW_CORE, 'line-blur':B_GLOW_CORE }});
   // Quanta-LR — amber + dashed (platform lock); under Pioneer II so electric reads on top in-cluster.
   map.addLayer({ id:'route-qlr', type:'line', source:'routes', filter:_isQ, layout:_rline,
     paint:{ 'line-color':'#fbbf24','line-width':W_QLR,'line-opacity':O_TIER_QLR,'line-dasharray':[2,2.2] }});
   // Pioneer II — colour = PLATFORM (mint), weight by demand. Trip purpose surfaces on hover/select,
   // not as line colour (keeps platform instantly legible — Pioneer II mint vs Quanta-LR amber dashed).
-  map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:_isP2, layout:_rline,
+  map.addLayer({ id:'route-p2', type:'line', source:'routes', filter:['all', _isP2, _capZoom], layout:_rline,
     paint:{ 'line-color':'#6ee7b7','line-width':W_P2,'line-opacity':O_P2 }});
   // D0 — economics discoverability: a STRING OF CYAN BEADS tracing every corridor that has a unit-economics
   // record (ROUTE_ECONOMICS), so econ routes stand out in a crowded mesh (replaces the old single midpoint
@@ -1324,11 +1331,11 @@ map.on('load', () => {
     return { type:'Feature', geometry:g, properties:{ econ: rec.status==='grounded'?'grounded':'estimated' } };
   }).filter(Boolean) };
   map.addSource('route-econ-pts', { type:'geojson', data:_econLines });   // id kept for the legend toggle handler
-  map.addLayer({ id:'route-econ-halo', type:'line', source:'route-econ-pts', minzoom:4.5,
+  map.addLayer({ id:'route-econ-halo', type:'line', source:'route-econ-pts', minzoom:7,
     layout:{ 'line-cap':'round','line-join':'round' },
     paint:{ 'line-color':'#0a0e14', 'line-width':4.2, 'line-dasharray':[0,1.85],
             'line-opacity':['match',['get','econ'],'grounded',0.85,0.5] }});
-  map.addLayer({ id:'route-econ', type:'line', source:'route-econ-pts', minzoom:4.5,
+  map.addLayer({ id:'route-econ', type:'line', source:'route-econ-pts', minzoom:7,
     layout:{ 'line-cap':'round','line-join':'round' },
     paint:{ 'line-color':'#22d3ee', 'line-width':2.7, 'line-dasharray':[0,2.88],
             'line-opacity':['match',['get','econ'],'grounded',0.95,0.6] }});
@@ -1856,8 +1863,8 @@ function selectRoute(feature){
   SELECTED_ROUTE = p.id || null;
   const hit = ['==',['get','id'], p.id];
   try {
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.05]]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.05]]));
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.02]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.02]]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.4],0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.5],0]));
     map.setPaintProperty('route-labels','text-opacity',['interpolate',['linear'],['zoom'],8,0,9.5,['case',hit,1,0]]);
@@ -2521,7 +2528,12 @@ function _focusRoutes(routeIds){
 }
 // Collect the route ids referenced by a list item (featured_route or journey): route_id (string) and/or
 // route_ids[] (array, for multi-leg corridors — Tasklet ships both forms).
-function _routeIdsOf(o){ const out=[]; if(!o) return out; if(o.route_id) out.push(o.route_id); if(Array.isArray(o.route_ids)) for(const x of o.route_ids) if(x) out.push(x); return out; }
+function _routeIdsOf(o){
+  const out=[]; if(!o) return out;
+  if(o.route_id) out.push(o.route_id);
+  if(Array.isArray(o.route_ids)) for(const x of o.route_ids) if(x) out.push(x);
+  return [...new Set(out)];   // Tasklet often ships the same id in route_id AND route_ids[] — dedupe before picker/focus
+}
 // Corridor/journey has no gold geometry yet — render copy only, no map deep-link (LB-46 / Bangkok river mint queue).
 function _geometryPending(o){
   if (!o) return false;
@@ -2967,12 +2979,13 @@ function _openRoutePanel(rids){
 }
 function _closeBundlePicker(){ document.querySelectorAll('.route-bundle-picker').forEach(el=>el.remove()); }
 function _bundlePickerItems(rids){
+  const seen=new Set();
   return (rids||[]).map(id=>{
     const f=_routeFeats([id])[0], rec=(typeof ROUTE_ECONOMICS!=='undefined')?ROUTE_ECONOMICS[id]:null;
     const em=rec&&rec.mid||{};
     const tag=em.payback_years!=null?(em.payback_years.toFixed(1)+' yr payback'):(rec?(em.margin!=null?(Math.round(em.margin*100)+'% margin'):'economics'):'view route');
     return {id, label:f?_routeLabel(f.properties):id, tag};
-  });
+  }).filter(it=>{ const k=it.id+'\0'+it.label; if(seen.has(k)) return false; seen.add(k); return true; });
 }
 function _openBundlePicker(rids, anchorEl){
   _closeBundlePicker();
@@ -3363,8 +3376,8 @@ function applyStoryFocus(cityIds) {
   const routeIn = ['any', ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
   try {
     // Fold the focus case into the stop outputs so the top-level zoom curve stays MapLibre-valid.
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, 0.035]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, 0.035]));
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, 0.015]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, 0.015]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], 0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], 0]));
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case', routeIn, 0.9, 0]]);

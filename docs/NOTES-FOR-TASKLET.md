@@ -6,6 +6,23 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Render: UAE route declutter + corridor-picker dedupe (no data change)
+
+**Live:** https://navier-atlas.vercel.app · render-only · seal unchanged (#79af).
+
+**Problem:** UAE bbox (~348 routes) read as a solid mint wash; Careem corridor clicks showed duplicate "Which corridor?" rows (same label twice).
+
+**Shipped (index.html):**
+- `route-glow-core` now gated on `render_tw >= 0.4` (matched bloom) — low-demand capillaries no longer halo
+- Local-tier zoom reveal delayed (capillary opacity ramps later; sub-1.5 nm local hops hidden below z12)
+- Economics bead trails `minzoom` 4.5 → 7 (less cyan noise at city zoom)
+- Route focus/isolate dim non-selected lines harder (0.05 → 0.02 opacity)
+- `_routeIdsOf` + bundle picker dedupe ids (fixes `route_id` + `route_ids[]` carrying the same id)
+
+**Tasklet follow-ups requested:** see message below — binding hygiene, `traffic_weight`, P2b corridor dedup, route `notes` attribution.
+
+---
+
 ## 2026-06-16 — Gold #79af INGESTED (`navier-export-20260616T230334Z-uae-econ-4c-sidecar.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (30 files incl. 23 changelogs).
