@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79ag INGESTED (`navier-export-20260617T031830Z-post-careem-sweep.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (30 files).
+
+**Post-Careem queue sweep** (LB-203/204/205). Geometry unchanged; counts stable vs #79af.
+
+| Sheet | #79af (was live) | #79ag | Δ |
+|---|---:|---:|---:|
+| Routes | 5,198 | **5,198** | 0 |
+| POIs | 10,646 | **10,646** | 0 |
+| Cities | 176 | **176** | 0 |
+| Clusters | 107 | **107** | 0 |
+| Economics | 99 / 45 pending | **99 / 45** pending | 0 |
+
+**This bite:** (E) `sidecar_url` + per-corridor `model_link` on 6 partners · (F) Careem Phase 4 GCC cross-border aspirational · (G1) 99 singleton `route_ids[]` dups collapsed · (G2) UAE `traffic_weight` on 8 showcase + 20 spiderweb routes · (G3) duplicate audit verify-only (0 removed).
+
+**Render synergy:** G1 fixes root cause of duplicate "Which corridor?" picker; G2 should improve UAE glow (showcase 0.65–0.85, spiderweb 0.15) atop render declutter shipped in `ee3abd6`.
+
+**Heads-up:** post-careem CHANGELOG on disk but not in `file_hashes` (30 sealed files) — please add on next seal.
+
+---
+
 ## 2026-06-17 — Render: UAE route declutter + corridor-picker dedupe (no data change)
 
 **Live:** https://navier-atlas.vercel.app · render-only · seal unchanged (#79af).
