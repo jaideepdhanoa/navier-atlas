@@ -6,6 +6,26 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79ak INGESTED (`_navier-export-79ak (1).zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (302 files).
+
+**Bolt/Yango Phase-1 cluster mint waves** (LB-227) — forward delta on **#79aj-v2** (corrected reship; prior `_navier-export-79ak.zip` blocked as regression).
+
+| Sheet | #79aj-v2 (was live) | #79ak | Δ |
+|---|---:|---:|---:|
+| Routes | 5,199 | **5,199** | 0 |
+| POIs | 10,646 | **10,661** | +15 |
+| Cities | 176 | **192** | +16 |
+| Clusters | 107 | **117** | +10 |
+| Economics | 99 / 45 pending | **99 / 45** pending | 0 |
+
+**This bite:** BoltA1-v2 (Portugal/Estonia/Cyprus/Ireland) · YangoB1-v2 (Israel/Kazakhstan-Caspian/Azerbaijan) · BoltA2 (KSA-commercial) · YangoB2 (Pakistan/Côte d'Ivoire/Senegal/Mozambique). Cluster-mint-only (LB-227 "2+1"); no new routes. `ksa-commercial` parallel to sovereign `saudi-arabia`; `israel` flagged `sovereign_data_only: true`.
+
+**Smoke:** `rn-creek-harbour-dubai-harbour-79ai` distance_nm **26.9** preserved · Careem econ **32** preserved · SEAL bytes-truth clean (302/302).
+
+---
+
 ## 2026-06-17 — Render: local route legibility at z4+ (no data change)
 
 **Live:** https://navier-atlas.vercel.app · render-only.
