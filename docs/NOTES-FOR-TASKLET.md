@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79ai INGESTED (`navier-export-20260617T083235Z-uae-geom-residuals-79ai.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (300 files).
+
+**UAE geometry residuals** (LB-208/209/210). Palm channel-aware overlay + 7 intra-Palm hop patches + hero corridor mint.
+
+| Sheet | #79ah (was live) | #79ai | Δ |
+|---|---:|---:|---:|
+| Routes | 5,198 | **5,199** | +1 |
+| POIs | 10,646 | **10,646** | 0 |
+| Cities | 176 | **176** | 0 |
+| Clusters | 107 | **107** | 0 |
+| Economics | 99 / 45 pending | **99 / 45** pending | 0 |
+
+**This bite:** (I1) LB-208 Palm land-mask refinement — 3 narrower polygons replace unified Palm blob; 7 intra-Palm hops seaward-routed to `interior_land_km == 0` · (I2) LB-209 residual densify attempt reverted (20 routes; generic NW nudge regressed) · (I3) LB-210 hero mint `rn-creek-harbour-dubai-harbour-79ai` (Creek Harbour → Dubai Harbour Marina, `traffic_weight` 0.60, labelled 14 nm / geom ≈ 27 nm).
+
+**Seal slip (please reship):** zip `ROUTES.json` sha256 `f139e5b5…` did not match SEAL `file_hashes` / `blobs.ROUTES` (`3e7e3ec…`, count 5198). Deploy lane patched SEAL to on-disk digest before release preflight.
+
+**Carry-forward:** LB-208a — 9 Palm hops need hand-authored channel selection; LB-209 — coast-normal densify authoring.
+
+---
+
 ## 2026-06-17 — Gold #79ah INGESTED (`navier-export-20260617T044939Z-uae-route-geometry-fix.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (299 files).

@@ -1,13 +1,13 @@
 {
  "meta": {
-  "gold": "79ah",
-  "sealed_at": "2026-06-17T04:49:39.506123Z",
-  "route_count": 5198,
+  "gold": "79ai",
+  "sealed_at": "2026-06-17T08:32:21.000000Z",
+  "route_count": 5199,
   "poi_count": 10646,
   "city_count": 176,
   "priority_city_count": 37,
   "cluster_count": 107,
-  "notes": "UAE route geometry fix (Palm Jumeirah/Dubai Islands/Saadiyat/Yas/Lulu/etc no-cross detours via OVERLAY-ONLY waypoint insertion); Dubai Harbour Marina BP coord snap to harbour basin; marquee corridor traffic_weight tone-down (0.65-0.85 → 0.45-0.60). Coarse-mask gate stable at FAIL=219.",
+  "notes": "UAE geom residuals: Palm channel-aware overlay (LB-208) + 7 intra-Palm hop seaward-routing patches (9 carry-forward as LB-208a); Target B residuals reverted (LB-209 carry-forward); hero corridor Dubai Creek Harbour -> Dubai Harbour Marina MINTED (LB-210, rn-creek-harbour-dubai-harbour-79ai, traffic_weight=0.60, distance_nm=14.0 labelled).",
   "lb_refs": [
    "LB-104",
    "LB-112",
@@ -54,7 +54,11 @@
    "LB-204",
    "LB-205",
    "LB-23",
-   "LB-206"
+   "LB-206",
+   "LB-208",
+   "LB-208a",
+   "LB-209",
+   "LB-210"
   ],
   "sealed_at_staged": "2026-06-16T20:58:06Z"
  },
@@ -89,7 +93,7 @@
   "CHANGELOG-FOR-CLAUDE-2026-06-16-uae-p1-cleanup.md": "b598707496314e9358afd47e5c09da4c6333da77074bd5658ffbe429911a3df1",
   "CHANGELOG-FOR-CLAUDE-2026-06-16-uae-p2p3-abu-dhabi-islands.md": "9878236e4b59a7783fa369bd81ef1bb75f2cc3e989ded8a60c4968de458e4b41",
   "CHANGELOG-FOR-CLAUDE-2026-06-16-uae-p2p3-crossborder-and-cleanup.md": "d95c30033db4596ba51df5c6050af4eda35816982b5cf1b5b801c7a395445d4a",
-  "ROUTES.json": "ac17426b7e5c97fb3224a7a9eb3bcfa65aedb2092bb4deeedc35b42b5f3f9ed5",
+  "ROUTES.json": "f139e5b53e8c3045d6667da996a87e83cebaf8df86d5bc86cded89a2393e93f5",
   "CHANGELOG-FOR-CLAUDE-2026-06-17-post-careem-sweep.md": "cc77dee8529c54f8fcfeeffcd2be764e725105b68013abda64cab753ba2e762c",
   "partners/yango.json": "335d5cc4882dfe913960c187ba8314647cb8df3251c29f85e2a74eff7012471b",
   "partners/wsf.json": "aa6bee03c6222c8b80ba00e455d134adfab68d21d1ed0cc00780cccc159e16f8",
@@ -357,7 +361,8 @@
   "city_briefs/ambergris-caye-belize.json": "6eb54777de01d2ad55c1bcb4f607a158f955e91208c01c8f0ee8b30631ba72a2",
   "city_briefs/amalfi-coast-italy.json": "90e8b854ab570c18423d23455406fd7b2386ea832f0a1d905f75c73d2ba605af",
   "city_briefs/agadir-essaouira-morocco.json": "2e88e0f9350d2161059ac6994bad2123c71b9ab60b2014515f0c8559f3aa8fd3",
-  "city_briefs/abu-dhabi-uae.json": "1fdab68e98ad13cf541f8c2f833f4263cec43af58a5816252a5ea733cf93d2e3"
+  "city_briefs/abu-dhabi-uae.json": "1fdab68e98ad13cf541f8c2f833f4263cec43af58a5816252a5ea733cf93d2e3",
+  "CHANGELOG-FOR-CLAUDE-2026-06-17-uae-geom-residuals-79ai.md": "029fa795a24a6e96227928b23e7080b4f26815f72f80b9edbf94bdcc643bb020"
  },
  "blobs": {
   "FEATURES_BY_TYPE": {
@@ -377,8 +382,9 @@
    "sha256": "75f2bd123d79a68263c524e072ee030126646d07f597fc27ebb97e1d1b4ac67b"
   },
   "ROUTES": {
-   "count": 5198,
-   "sha256": "ac17426b7e5c97fb3224a7a9eb3bcfa65aedb2092bb4deeedc35b42b5f3f9ed5"
+   "count": 5199,
+   "sha256": "f139e5b53e8c3045d6667da996a87e83cebaf8df86d5bc86cded89a2393e93f5",
+   "bytes": 11839908
   },
   "CLUSTERS": {
    "count": 107,
