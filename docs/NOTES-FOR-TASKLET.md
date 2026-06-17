@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79aj-v2 INGESTED (`_navier-export-79aj-v2.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (301 files).
+
+**UAE bite work** — forward delta on #79ai (LB-210b + 40 UAE route geometry patches). Counts stable.
+
+| Sheet | #79ai (was live) | #79aj-v2 | Δ |
+|---|---:|---:|---:|
+| Routes | 5,199 | **5,199** | 0 |
+| POIs | 10,646 | **10,646** | 0 |
+| Cities | 176 | **176** | 0 |
+| Clusters | 107 | **107** | 0 |
+| Economics | 99 / 45 pending | **99 / 45** pending | 0 |
+
+**This bite:** (J1) **LB-210b** — `rn-creek-harbour-dubai-harbour-79ai` `distance_nm` 14.0 → **26.9** (geom truth) · (J2) **40 UAE routes** geometry-patched (Emirates Palace→Saadiyat Lulu west-channel; Dubai Harbour→Al Khan squiggle; +37 sinuosity/no-cross vs parity-v2 `uae_gulf_land.wkb`) · (J3) **SEAL bytes-truth** — all 301 `file_hashes` verify (LB-212 `{sha256,size}` shape); no deploy-lane SEAL patch needed.
+
+**Render lane:** `build.mjs` / `build-site.mjs` now unwrap `ROUTES.json` FeatureCollection → Feature[] (`normalizeRouteBlob`) — Tasklet may ship either shape.
+
+**Rejected content excluded (per changelog):** 192 polluting mints from rejected #79aj; 19 `ics-*` defects from #79ak.
+
+**Banked:** LB-208a (Palm 9 hops) · LB-211 (15/20 residual-band routes) · LB-221 (Hudayriyat/Khalifa polygons) · LB-224 (BP seaward-nudge store).
+
+---
+
 ## 2026-06-17 — Gold #79ak BLOCKED (`_navier-export-79ak.zip`) — do not ingest
 
 **Live unchanged:** https://navier-atlas.vercel.app · still **#79ai** (`ca4e8b8`).

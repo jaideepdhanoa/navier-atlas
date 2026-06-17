@@ -26,7 +26,7 @@ import {
   SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
 } from './share-meta.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
-import { parseProfile, applyProfile } from './build-profile.mjs';
+import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -40,7 +40,9 @@ function loadData() {
   for (const name of ['FEATURES_BY_TYPE', 'ROUTES', 'STORIES', 'VESSEL_SPECS']) {
     const p = path.join(DC, `${name}.json`);
     if (!fs.existsSync(p)) { console.error(`FATAL: missing sealed blob data-clean/${name}.json`); process.exit(1); }
-    data[name] = readJson(p);
+    let blob = readJson(p);
+    if (name === 'ROUTES') blob = normalizeRouteBlob(blob);
+    data[name] = blob;
   }
   const dir = (sub, keyField) => {
     const base = fs.existsSync(path.join(DC, sub)) ? path.join(DC, sub) : path.join(PITCH, sub);

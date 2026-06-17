@@ -1,5 +1,12 @@
 // Build profiles for atlas-data.js — public (network atlas) vs internal (full admin).
 
+/** ROUTES blob may be a bare Feature[] or GeoJSON FeatureCollection (#79aj-v2+). */
+export function normalizeRouteBlob(routes) {
+  if (Array.isArray(routes)) return routes;
+  if (routes && Array.isArray(routes.features)) return routes.features;
+  return routes || [];
+}
+
 export function parseProfile(argv = process.argv) {
   const flag = argv.find((a) => a.startsWith('--profile='));
   if (flag) return flag.split('=')[1];

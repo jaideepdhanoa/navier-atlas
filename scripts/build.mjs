@@ -16,7 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseProfile, applyProfile } from './build-profile.mjs';
+import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DC = join(ROOT, 'data-clean');        // Tasklet's sealed blobs
@@ -43,7 +43,9 @@ const data = {};
 for (const name of blobs) {
   const p = join(DC, `${name}.json`);
   if (!existsSync(p)) { console.error(`[build] FATAL: missing sealed blob data-clean/${name}.json`); process.exit(1); }
-  data[name] = readJson(p);
+  let blob = readJson(p);
+  if (name === 'ROUTES') blob = normalizeRouteBlob(blob);
+  data[name] = blob;
 }
 // Pitch content — keyed by city_id / partner_id. MUST bake from data-clean/{city_briefs,partners}/:
 // these are the PUBLIC-STRIPPED, sealed ship surface (internal + deck_only tiers removed, per
