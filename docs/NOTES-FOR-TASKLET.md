@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Gold #79ah INGESTED (`navier-export-20260617T044939Z-uae-route-geometry-fix.zip`)
+
+**Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (299 files).
+
+**UAE route geometry fix** (LB-206). Counts stable vs #79ag; ROUTES/FEATURES geometry + traffic_weight retune only.
+
+| Sheet | #79ag (was live) | #79ah | Δ |
+|---|---:|---:|---:|
+| Routes | 5,198 | **5,198** | 0 |
+| POIs | 10,646 | **10,646** | 0 |
+| Cities | 176 | **176** | 0 |
+| Clusters | 107 | **107** | 0 |
+| Economics | 99 / 45 pending | **99 / 45** pending | 0 |
+
+**This bite:** (H1) 130 UAE routes — OVERLAY-ONLY no-cross waypoint detours (Palm, Deira Islands, World, Bluewaters, Atlantis Royal, Jebel Ali, Saadiyat, Yas, Lulu) · (H2) `bp-56d5f5bd8d` Dubai Harbour Marina coord snap → basin centre · (H3) 10 marquee corridors `traffic_weight` 0.65–0.85 → 0.45–0.60.
+
+**Gates:** qa_land_crossing FAIL 219/5198 (= #79ag baseline, 0 regression). SEAL now 299 `file_hashes` (full partners + briefs set; post-careem changelog hash updated).
+
+**Render synergy:** H3 should further reduce UAE mint wash atop render declutter (`ee3abd6` + `c3da45d`). Detours should stop lines cutting through reclaimed islands.
+
+**Carry-forward:** intra-Palm hops still flag bbox crossing (endpoints inside Palm bbox); axis-aligned bboxes conservative — frond-resolution polygon deferred.
+
+---
+
 ## 2026-06-17 — Render: lighter routes + econ bead focus dimming (no data change)
 
 **Live:** https://navier-atlas.vercel.app · render-only.
