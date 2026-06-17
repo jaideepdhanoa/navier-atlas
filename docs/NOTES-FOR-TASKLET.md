@@ -6,9 +6,17 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-17 — Render: +20% regional/local route opacity (no data change)
+## 2026-06-17 — Render: local route legibility at z4+ (no data change)
 
 **Live:** https://navier-atlas.vercel.app · render-only.
+
+Local tier: opacity floor from z4 (0.36 stop × 0.62 P2 mult); capillary (<1.5 nm) reveal z12→**z4**; tier-specific P2/QLR multipliers (local > regional > trunk). Trunk stops unchanged.
+
+---
+
+## 2026-06-17 — Render: +20% regional/local route opacity (no data change)
+
+**Live:** https://navier-atlas.vercel.app · render-only · superseded by local legibility pass above.
 
 Regional + local tier columns in `_TIER_STOPS` / `_QLR_STOPS` raised 20% (trunk/marquee unchanged) — thin/capillary mesh was reading invisible after prior declutter.
 
