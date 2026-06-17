@@ -6,6 +6,16 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Render: lighter routes + econ bead focus dimming (no data change)
+
+**Live:** https://navier-atlas.vercel.app · render-only.
+
+- Economics beads: smaller/lighter default (W 2.6/1.5, opacity ~0.42 grounded / 0.22 estimated); wider dash gap
+- Route select / partner focus / city highlight now dims non-selected econ beads via `_applyEconPaint` (matched route id / city)
+- Route lines: thinner weights (P2 0.72×, QLR 1.1×), softer glow, lower default opacity (P2 ×0.65)
+
+---
+
 ## 2026-06-17 — Gold #79ag INGESTED (`navier-export-20260617T031830Z-post-careem-sweep.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (30 files).

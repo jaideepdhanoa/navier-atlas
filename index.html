@@ -1189,18 +1189,37 @@ function wRoute(mult){
     14, ['+',1.5*mult, ['*',_TW,8.5*mult]]];
 }
 const O_TIER     = tierOpacity();
-const O_P2       = tierOpacity(m=>['*', m, 0.82]);   // Pioneer II opacity ×0.82 (scaled per-tier, zoom stays top-level)
-const O_TIER_QLR = qlrOpacity();
+const O_P2       = tierOpacity(m=>['*', m, 0.65]);   // Pioneer II — calmer default (was 0.82; UAE mesh feedback)
+const O_TIER_QLR = qlrOpacity(m=>['*', m, 0.88]);  // Quanta-LR slightly softened to match
 const W_ROUTE    = wRoute(1);
-const W_QLR      = wRoute(1.25);   // Quanta-LR drawn a touch heavier (platform hero)
-const W_P2       = wRoute(0.85);   // Pioneer II mint slimmed ~15% — the dense mint mesh read as overpowering
+const W_QLR      = wRoute(1.1);    // Quanta-LR hero — trimmed from 1.25
+const W_P2       = wRoute(0.72);   // Pioneer II line weight — thinner default mesh
 // Density glow — restrained two-pass bloom (v17): wide halo + tight core, demand folded into stops.
-const W_GLOW_BLOOM = wRoute(3.2);
-const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,3, 8,5, 13,7];        // more bloom as you zoom in
-const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.22]]);                   // softened from 0.30 — calmer halo (mint mesh was too stark)
-const W_GLOW_CORE  = wRoute(1.6);
-const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,1, 11,1.6, 14,2];
-const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.05,['*',_TW,0.16]]]);         // crisp seat under every line
+const W_GLOW_BLOOM = wRoute(2.5);
+const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,2.5, 8,4, 13,5.5];
+const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.14]]);   // softer halo
+const W_GLOW_CORE  = wRoute(1.15);
+const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,0.8, 11,1.2, 14,1.5];
+const O_GLOW_CORE  = tierOpacity(m=>['*', m, ['+',0.03,['*',_TW,0.10]]]);
+// Economics bead trail — subtle by default; brightens only on the selected/focused corridor.
+const W_ECON_HALO = 2.6;
+const W_ECON_BEAD = 1.5;
+const O_ECON_HALO_BASE = ['match',['get','econ'],'grounded',0.28,0.14];
+const O_ECON_BASE      = ['match',['get','econ'],'grounded',0.42,0.22];
+const O_ECON_HALO_HIT  = ['match',['get','econ'],'grounded',0.52,0.34];
+const O_ECON_HIT       = ['match',['get','econ'],'grounded',0.68,0.44];
+const O_ECON_DIM       = 0.03;
+function _applyEconPaint(routeHit){
+  try {
+    if (!routeHit) {
+      map.setPaintProperty('route-econ-halo','line-opacity', O_ECON_HALO_BASE);
+      map.setPaintProperty('route-econ','line-opacity', O_ECON_BASE);
+    } else {
+      map.setPaintProperty('route-econ-halo','line-opacity', ['case', routeHit, O_ECON_HALO_HIT, O_ECON_DIM]);
+      map.setPaintProperty('route-econ','line-opacity', ['case', routeHit, O_ECON_HIT, O_ECON_DIM]);
+    }
+  } catch(e){}
+}
 const O_RLABEL   = ['interpolate',['linear'],['zoom'], 11,0, 12,0.9];
 const O_POIGLYPH = ['case',['get','on_route'],1,0.5];   // connected boarding points lead; tail recedes
 
@@ -1326,19 +1345,20 @@ map.on('load', () => {
   // both the mint Pioneer lines and the amber Quanta-LR dashes. grounded brighter than estimated (honesty as
   // opacity); minzoom keeps the world view clean (~77 sparse routes). Toggle via the legend "Economics" row.
   const _econLines = { type:'FeatureCollection', features:(typeof ROUTE_ECONOMICS!=='undefined' ? ROUTE_FC.features : []).map(f=>{
-    const rec = ROUTE_ECONOMICS[f.properties.id]; const g=f.geometry;
+    const rec = ROUTE_ECONOMICS[f.properties.id]; const g=f.geometry, p=f.properties||{};
     if (!rec || !(g && g.type==='LineString' && g.coordinates.length>1)) return null;
-    return { type:'Feature', geometry:g, properties:{ econ: rec.status==='grounded'?'grounded':'estimated' } };
+    return { type:'Feature', geometry:g, properties:{ id:p.id, from:p.from, to:p.to,
+      _cfrom:p._cfrom, _cto:p._cto, econ: rec.status==='grounded'?'grounded':'estimated' } };
   }).filter(Boolean) };
   map.addSource('route-econ-pts', { type:'geojson', data:_econLines });   // id kept for the legend toggle handler
   map.addLayer({ id:'route-econ-halo', type:'line', source:'route-econ-pts', minzoom:7,
     layout:{ 'line-cap':'round','line-join':'round' },
-    paint:{ 'line-color':'#0a0e14', 'line-width':4.2, 'line-dasharray':[0,1.85],
-            'line-opacity':['match',['get','econ'],'grounded',0.85,0.5] }});
+    paint:{ 'line-color':'#0a0e14', 'line-width':W_ECON_HALO, 'line-dasharray':[0,2.6],
+            'line-opacity':O_ECON_HALO_BASE }});
   map.addLayer({ id:'route-econ', type:'line', source:'route-econ-pts', minzoom:7,
     layout:{ 'line-cap':'round','line-join':'round' },
-    paint:{ 'line-color':'#22d3ee', 'line-width':2.7, 'line-dasharray':[0,2.88],
-            'line-opacity':['match',['get','econ'],'grounded',0.95,0.6] }});
+    paint:{ 'line-color':'#22d3ee', 'line-width':W_ECON_BEAD, 'line-dasharray':[0,4.0],
+            'line-opacity':O_ECON_BASE }});
   // Terminus connector nodes — a dot at EVERY route endpoint so no line dangles into empty
   // water. Bridges the band gap (visible z7+) before boarding-point glyphs appear (z10), then
   // fades as glyphs take over. Coloured by platform to match the line meeting it.
@@ -1805,21 +1825,24 @@ let CURRENT_STORY = null;
 function _focusEngaged(){ return !!CURRENT_STORY || !!PARTNER_ACTIVE; }
 function clearRouteHighlight(){
   try {
-    map.setPaintProperty('route-p2','line-opacity',O_TIER);
+    map.setPaintProperty('route-p2','line-opacity',O_P2);
     map.setPaintProperty('route-qlr','line-opacity',O_TIER_QLR);
     map.setPaintProperty('route-glow-bloom','line-opacity',O_GLOW_BLOOM);
     map.setPaintProperty('route-glow-core','line-opacity',O_GLOW_CORE);
+    _applyEconPaint(null);
   } catch(e){}
 }
 function setRouteHighlight(id){
   if (!id) return clearRouteHighlight();
   const hit=['any',['==',['get','from'],id],['==',['get','to'],id]];
+  const econHit=['any',['==',['get','from'],id],['==',['get','to'],id],['==',['get','_cfrom'],id],['==',['get','_cto'],id]];
   try {
     // Rebuild via tierOpacity so the highlight case lives in the stop outputs and zoom stays top-level.
     map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
     map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.22],['*',['*',m,['*',_TW2,0.30]],0.04]]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.22],['*',['*',m,['+',0.05,['*',_TW,0.16]]],0.05]]));
+    _applyEconPaint(econHit);
   } catch(e){}
 }
 
@@ -1868,6 +1891,7 @@ function selectRoute(feature){
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.4],0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.5],0]));
     map.setPaintProperty('route-labels','text-opacity',['interpolate',['linear'],['zoom'],8,0,9.5,['case',hit,1,0]]);
+    _applyEconPaint(['==',['get','id'], p.id]);
   } catch(e){}
   _dimNodesToEndpoints(p.from, p.to);
   showRouteDetail(p);
@@ -2465,6 +2489,7 @@ function _applyFocusPaint(routeIn, inSet){
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',routeIn,['*',m,['*',_TW2,0.30]],0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',routeIn,['*',m,['+',0.05,['*',_TW,0.16]]],0]));
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'],11,0,12,['case',routeIn,0.9,0]]);
+    _applyEconPaint(routeIn);
     map.setPaintProperty('city-points','circle-opacity',['case',inSet,1,0.12]);
     map.setPaintProperty('city-halo','circle-opacity',['case',inSet,0.4,0.03]);
     map.setPaintProperty('city-hub-glow','circle-opacity',['case',inSet,O_HUBGLOW,0]);
@@ -3356,8 +3381,9 @@ function _resetPartnerHome(){
   applyPartnerView();
 }
 const DEFAULT_OPACITY = {
-  'route-p2': O_TIER, 'route-qlr': O_TIER_QLR,
+  'route-p2': O_P2, 'route-qlr': O_TIER_QLR,
   'route-glow-bloom': O_GLOW_BLOOM, 'route-glow-core': O_GLOW_CORE, 'route-labels': O_RLABEL,
+  'route-econ-halo': O_ECON_HALO_BASE, 'route-econ': O_ECON_BASE,
   'city-points': 0.95, 'city-halo': HUB_HALO_O, 'city-hub-glow': O_HUBGLOW, 'city-labels': 1,
   'priority-points': 0.95, 'priority-halo': HUB_HALO_O, 'priority-hub-glow': O_HUBGLOW, 'priority-labels': 1,
   'poi-points': O_POIGLYPH, 'poi-labels': 1
@@ -3374,6 +3400,8 @@ function applyStoryFocus(cityIds) {
   }
   const inSet = ['in', ['get','id'], ['literal', cityIds]];
   const routeIn = ['any', ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
+  const econIn = ['any', ['in', ['get','_cfrom'], ['literal', cityIds]], ['in', ['get','_cto'], ['literal', cityIds]],
+    ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
   try {
     // Fold the focus case into the stop outputs so the top-level zoom curve stays MapLibre-valid.
     map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, 0.015]));
@@ -3381,6 +3409,7 @@ function applyStoryFocus(cityIds) {
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], 0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], 0]));
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case', routeIn, 0.9, 0]]);
+    _applyEconPaint(econIn);
     map.setPaintProperty('city-points','circle-opacity', ['case', inSet, 1, 0.18]);
     map.setPaintProperty('city-halo','circle-opacity', ['case', inSet, 0.4, 0.04]);
     map.setPaintProperty('city-hub-glow','circle-opacity', ['case', inSet, O_HUBGLOW, 0]);
