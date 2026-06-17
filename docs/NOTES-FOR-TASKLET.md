@@ -6,6 +6,14 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-17 — Render: +20% regional/local route opacity (no data change)
+
+**Live:** https://navier-atlas.vercel.app · render-only.
+
+Regional + local tier columns in `_TIER_STOPS` / `_QLR_STOPS` raised 20% (trunk/marquee unchanged) — thin/capillary mesh was reading invisible after prior declutter.
+
+---
+
 ## 2026-06-17 — Gold #79aj-v2 INGESTED (`_navier-export-79aj-v2.zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (301 files).
