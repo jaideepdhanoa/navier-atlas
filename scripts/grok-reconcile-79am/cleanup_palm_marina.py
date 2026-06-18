@@ -8,6 +8,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+from gazetteer_palm_marina import PalmMarinaGazetteer
 from reconcile_shared import (
     JUNK_NAME,
     LAND_THRESHOLD_KM,
@@ -115,11 +116,59 @@ def slug_bp_pairs(work: Path) -> set[tuple[str, str]]:
     return pairs
 
 
+def _promote_visible(props: dict, source: str, *, water_override: bool = False):
+    props.pop("_quarantine", None)
+    props.pop("relevance", None)
+    props.pop("_quarantine_reason", None)
+    props.pop("_quarantine_bucket", None)
+    props["status"] = "operational"
+    props["_gate4_promoted"] = True
+    props["_gazetteer_source"] = source
+    if water_override:
+        props["_gazetteer_override_water"] = True
+
+
+def dedupe_gazetteer_aliases(work: Path, fbt: dict, gaz: PalmMarinaGazetteer, report: dict):
+    """Keep one visible BP per canonical gazetteer source_id."""
+    groups: dict[str, list[tuple[str, dict, float]]] = {}
+    mask = load_land_mask()
+    for poi in fbt.get("poi", []):
+        props = poi.get("properties", poi)
+        pid = props.get("id")
+        coords = poi.get("geometry", {}).get("coordinates", [None, None])
+        lon, lat = coords[0], coords[1]
+        if lon is None or not in_bbox(lon, lat):
+            continue
+        if props.get("_quarantine") or props.get("relevance") == "hide":
+            continue
+        src = props.get("_gazetteer_source")
+        if not src or src == "protected_restore":
+            continue
+        canonical = gaz.canonical_source_id(src)
+        dist = water_distance_km(lon, lat, mask)
+        groups.setdefault(canonical, []).append((pid, props, dist))
+
+    collapsed = []
+    for canonical, rows in groups.items():
+        if len(rows) <= 1:
+            continue
+        rows.sort(key=lambda r: (r[2], len(r[1].get("name") or "")))
+        keep_pid, keep_props, _ = rows[0]
+        keep_props["_gazetteer_canonical"] = canonical
+        for pid, props, _ in rows[1:]:
+            quarantine_bp(props, f"gazetteer_alias_collapse keeper={keep_pid}", "GAZETTEER_ALIAS")
+            collapsed.append({"id": pid, "keeper": keep_pid, "canonical": canonical})
+
+    report["gazetteer_aliases_collapsed"] = len(collapsed)
+    report["alias_collapse_sample"] = collapsed[:20]
+
+
 def cleanup_bbox_bps(work: Path, report: dict) -> set[str]:
     dc = work / "atlas-repo" / "data-clean"
     fbt = load_json(dc / "FEATURES_BY_TYPE.json")
     sem, drop_ids, keep_ids, hold_ids = load_sem(work)
     protected = load_protected_bps(work)
+    gaz = PalmMarinaGazetteer.load(work)
 
     crosswalk_path = work / "atlas-external" / "pier-slug-bp-crosswalk.json"
     if not crosswalk_path.exists():
@@ -129,6 +178,7 @@ def cleanup_bbox_bps(work: Path, report: dict) -> set[str]:
 
     promoted: set[str] = set()
     dropped: list[dict] = []
+    gazetteer_promoted: list[dict] = []
 
     for poi in fbt.get("poi", []):
         props = poi.get("properties", poi)
@@ -140,20 +190,34 @@ def cleanup_bbox_bps(work: Path, report: dict) -> set[str]:
 
         name = props.get("name") or ""
         verdict = (sem.get(pid) or {}).get("verdict")
-        if pid in protected and pid not in drop_ids:
-            props.pop("_quarantine", None)
-            props.pop("relevance", None)
-            props["_gazetteer_source"] = props.get("_gazetteer_source") or "protected_restore"
-            props["_gate4_promoted"] = True
-            promoted.add(pid)
-            continue
 
         if pid in drop_ids or verdict == "DROP":
             quarantine_bp(props, (sem.get(pid) or {}).get("reason", "semantic_DROP"), "DROP")
             dropped.append({"id": pid, "reason": "DROP"})
             continue
 
+        excluded, ex_reason = gaz.is_excluded(name)
+        if excluded:
+            quarantine_bp(props, f"gazetteer_excluded:{ex_reason}", "GAZETTEER_EXCLUDED")
+            dropped.append({"id": pid, "name": name, "reason": f"excluded:{ex_reason}"})
+            continue
+
+        g_ok, entry = gaz.promoteable(name)
         dist = water_distance_km(lon, lat, mask)
+        if g_ok and entry:
+            source_id = gaz.canonical_source_id(entry["source_id"])
+            _promote_visible(props, source_id, water_override=dist > WATER_THRESHOLD_KM)
+            if entry.get("confidence") == "medium":
+                props["_gazetteer_verify_status"] = "stale_or_medium"
+            gazetteer_promoted.append({"id": pid, "name": name, "source_id": source_id})
+            promoted.add(pid)
+            continue
+
+        if pid in protected and pid not in drop_ids:
+            _promote_visible(props, props.get("_gazetteer_source") or "protected_restore")
+            promoted.add(pid)
+            continue
+
         if dist > WATER_THRESHOLD_KM:
             quarantine_bp(props, f"water_adjacency_{dist}km", "GATE3")
             dropped.append({"id": pid, "name": name, "reason": f"inland_{dist}km"})
@@ -171,18 +235,20 @@ def cleanup_bbox_bps(work: Path, report: dict) -> set[str]:
             dropped.append({"id": pid, "name": name, "reason": "no_gazetteer"})
             continue
 
-        props.pop("_quarantine", None)
-        props.pop("relevance", None)
-        props["status"] = "operational"
-        props["_gate4_promoted"] = True
-        props["_gazetteer_source"] = source
+        _promote_visible(props, source)
         promoted.add(pid)
 
+    dedupe_gazetteer_aliases(work, fbt, gaz, report)
     save_json(dc / "FEATURES_BY_TYPE.json", fbt)
     report["bps_dropped"] = len(dropped)
     report["bps_promoted"] = len(promoted)
+    report["gazetteer_sourced_promoted"] = len(gazetteer_promoted)
+    report["gazetteer_promoted_sample"] = gazetteer_promoted[:20]
     report["bp_drop_sample"] = dropped[:40]
-    print(f"palm bbox BPs: promoted={len(promoted)} dropped={len(dropped)}")
+    print(
+        f"palm bbox BPs: promoted={len(promoted)} dropped={len(dropped)} "
+        f"gazetteer_sourced={len(gazetteer_promoted)}"
+    )
     return promoted
 
 

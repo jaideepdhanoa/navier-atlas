@@ -40,6 +40,7 @@ cp "$PKG"/*.json "$PKG"/*.md "$WORK/RECONCILE/"
 cp "$ROOT/grok-routing-output/route-solutions.jsonl" "$WORK/grok-routing-output/"
 cp "$ROOT/grok-routing-output/uae_gulf_land_v2.wkb" "$WORK/partner-pitch/_tools/uae_gulf_land.wkb"
 cp "$ROOT/grok-routing-output/APPLY-LEDGER.json" "$WORK/RECONCILE/APPLY-LEDGER-src.json"
+cp "$ROOT/grok-routing-output/palm-marina-boarding-point-gazetteer.json" "$WORK/RECONCILE/"
 
 for f in STORIES.json VESSEL_SPECS.json economics_by_route_id.json \
          route_water_allowlist.json qa_baseline.json SEAL.prior.json; do
@@ -135,9 +136,9 @@ if [ "$PUSH" != "1" ]; then
 fi
 
 cd "$ROOT"
-git add data-clean/ scripts/grok-reconcile-79am/ .github/workflows/grok-phase3.yml 2>/dev/null || true
+git add data-clean/ scripts/grok-reconcile-79am/ grok-routing-output/palm-marina-boarding-point-gazetteer.json grok-routing-output/QA-PALM-MARINA-79am.md .github/workflows/grok-phase3.yml 2>/dev/null || true
 git add data-clean/CHANGELOG-FOR-CLAUDE-2026-06-18-uae-reconcile-79am.md 2>/dev/null || true
-git commit -m "Gold #79am — Palm/Marina cleanup + reconcile + Phase-3 UAE geometry"
+git commit -m "Gold #79am — Tasklet gazetteer gate #4b (RTA Marina stations) + Palm cleanup"
 git tag -a "$TAG" -m "Gold #79am — reconcile LB230–242 + new-market work" 2>/dev/null || true
 git push origin main
 git push origin "$TAG" 2>/dev/null || true

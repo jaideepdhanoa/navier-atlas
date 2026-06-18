@@ -6,6 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from gazetteer_palm_marina import PalmMarinaGazetteer
 from reconcile_shared import (
     LAND_THRESHOLD_KM,
     PALM_MARINA_BBOX,
@@ -43,9 +44,11 @@ def main():
         if (c.get("properties") or c).get("id")
     }
 
+    gaz = PalmMarinaGazetteer.load(work)
     failures: list[str] = []
     visible_drop = []
     visible_no_source = []
+    rta_missing: list[str] = []
 
     for pid, row in bp_by_id.items():
         props = row["props"]
@@ -63,6 +66,31 @@ def main():
         failures.append(f"visible DROP BPs in bbox: {len(visible_drop)}")
     if visible_no_source:
         failures.append(f"surviving BPs without gazetteer source: {len(visible_no_source)}")
+
+    visible_by_canonical: dict[str, list[str]] = {}
+    rta_prefixes = ("dubai-online:", "rta-timetable-search:", "bluewaters-official:")
+    rta_promoted = 0
+    for pid, row in bp_by_id.items():
+        props = row["props"]
+        lon, lat = row["coords"][:2]
+        if lon is None or not in_bbox(lon, lat):
+            continue
+        if props.get("_quarantine") or props.get("relevance") == "hide":
+            continue
+        src = props.get("_gazetteer_source") or ""
+        if src.startswith(rta_prefixes):
+            rta_promoted += 1
+        canonical = gaz.canonical_source_id(src) if src and src != "protected_restore" else ""
+        if canonical:
+            visible_by_canonical.setdefault(canonical, []).append(pid)
+
+    for entry in gaz.high_confidence_entries():
+        canonical = gaz.canonical_source_id(entry["source_id"])
+        if canonical not in visible_by_canonical:
+            rta_missing.append(entry["name"])
+
+    if rta_missing:
+        failures.append(f"high-confidence gazetteer entries without visible BP: {len(rta_missing)}")
 
     routes = route_features(load_json(dc / "ROUTES.json"))
     orphans = []
@@ -133,7 +161,10 @@ def main():
             "orphan_routes": len(orphans),
             "land_crossers": len(land_crossers),
             "allowlist_ids": len(allow_ids),
+            "rta_gazetteer_promoted": rta_promoted,
+            "high_confidence_gazetteer_missing": len(rta_missing),
         },
+        "rta_missing_sample": rta_missing,
         "land_crossing_proof": {
             "threshold_km": LAND_THRESHOLD_KM,
             "flagged_in_bbox": len(land_crossers),
