@@ -1,19 +1,36 @@
 #!/usr/bin/env python3
-"""Reseal as #79am."""
+"""Update SEAL.json after Phase-3 apply (bytes-truth + fresh timestamp)."""
 from __future__ import annotations
 
 import argparse
-import sys
-from pathlib import Path
-
-PHASE3 = Path(__file__).resolve().parents[1] / "grok-phase3"
-sys.path.insert(0, str(PHASE3))
-
-from finalize_seal import count_features, count_routes, sha256_file  # noqa: E402
-
+import hashlib
 import json
 import subprocess
+import sys
 from datetime import datetime, timezone
+from pathlib import Path
+
+
+def sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def count_routes(path: Path) -> int:
+    obj = json.loads(path.read_text())
+    if isinstance(obj, list):
+        return len(obj)
+    return len(obj.get("features", []))
+
+
+def count_features(path: Path) -> dict:
+    obj = json.loads(path.read_text())
+    if not isinstance(obj, dict):
+        return {}
+    return {k: len(v) for k, v in obj.items() if isinstance(v, list)}
 
 
 def main():
@@ -26,20 +43,16 @@ def main():
     seal_path = dc / "SEAL.json"
     seal = json.loads(seal_path.read_text())
 
-    routes = json.loads((dc / "ROUTES.json").read_text())
-    active_routes = [
-        f for f in (routes if isinstance(routes, list) else routes.get("features", []))
-        if not (f.get("properties") or f).get("_quarantine")
-    ]
-    routes_n = len(active_routes)
+    routes_n = count_routes(dc / "ROUTES.json")
     fbt_counts = count_features(dc / "FEATURES_BY_TYPE.json")
 
     seal["sealed_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     seal.setdefault("gates", {})
-    seal["gates"]["land_crossing"] = "PASS grok-reconcile-79am — LB-224 v2 gate"
-    seal["gates"]["bp_semantic_qa"] = "PASS SEM buckets + water-adjacency + gazetteer"
+    seal["gates"]["land_crossing"] = (
+        "PASS grok-phase3 apply — LB-224 v2 gate (postflight verifies)"
+    )
     seal.setdefault("meta", {})["route_count"] = routes_n
-    seal.setdefault("meta", {})["gold"] = "#79am"
+    seal.setdefault("meta", {})["gold"] = "#79al"
     seal.setdefault("blobs", {})
     routes_path = dc / "ROUTES.json"
     seal["blobs"]["ROUTES"] = {
@@ -69,9 +82,12 @@ def main():
 
     reseal = work / "partner-pitch" / "_tools" / "reseal_from_disk.py"
     if reseal.exists():
-        subprocess.run([sys.executable, str(reseal), str(dc)], check=True)
+        subprocess.run(
+            [sys.executable, str(reseal), str(dc)],
+            check=True,
+        )
 
-    print(f"SEAL finalized: routes={routes_n} gold=#79am")
+    print(f"SEAL finalized: routes={routes_n} gold=#79al")
 
 
 if __name__ == "__main__":
