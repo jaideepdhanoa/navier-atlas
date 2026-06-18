@@ -1,0 +1,41 @@
+# Grok Phase-3 CI — apply → seal → postflight → push main + tag gold-79al → Vercel
+#
+# Manual dispatch only (geometry apply is intentional, not per-PR).
+# Secrets: VERCEL_TOKEN (required for deploy), optional VERCEL_ORG_ID / VERCEL_PROJECT_ID
+name: grok-phase3
+
+on:
+  workflow_dispatch:
+    inputs:
+      push:
+        description: "Push to main + tag + Vercel deploy"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+jobs:
+  phase3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install QA deps
+        run: pip install shapely global-land-mask numpy
+
+      - name: Run Phase-3 pipeline
+        env:
+          PHASE3_PUSH: ${{ inputs.push == 'true' && '1' || '0' }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          chmod +x scripts/grok-phase3/*.sh
+          ./scripts/grok-phase3/run_phase3.sh
