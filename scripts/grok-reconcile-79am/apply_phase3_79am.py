@@ -103,8 +103,6 @@ def main():
             report["errors"].append(f"patch target missing in ROUTES: {rid}")
             continue
         feat = routes[route_by_id[rid]]
-        if feat.get("properties", feat).get("_quarantine"):
-            continue
         feat["geometry"] = row["geometry"]
         props = feat.setdefault("properties", feat)
         if row.get("distance_nm_geom") is not None:

@@ -28,7 +28,7 @@ step() { echo ""; echo "=== $* ==="; }
 [ -d "$BASE_DC" ] || die "base data-clean missing: $BASE_DC"
 [ -d "$RESTORE_SRC/data-clean" ] || die "restore source missing: $RESTORE_SRC"
 
-step "1/12 Stage work tree (base = local LB230–242 + new-market)"
+step "1/15 Stage work tree (base = local LB230–242 + new-market)"
 rm -rf "$WORK"
 mkdir -p "$WORK/atlas-repo" "$WORK/RECONCILE" "$WORK/grok-routing-output"
 cp -R "$BASE_DC" "$WORK/atlas-repo/data-clean"
@@ -48,7 +48,7 @@ done
 [ -d "$REPO_DC/partners" ] && cp -R "$REPO_DC/partners" "$WORK/atlas-repo/data-clean/"
 [ -d "$REPO_DC/cluster_briefs" ] && cp -R "$REPO_DC/cluster_briefs" "$WORK/atlas-repo/data-clean/"
 
-step "2/12 Restore 440 routes + 213 BPs from #79ak"
+step "2/15 Restore 440 routes + 213 BPs from #79ak"
 python3 "$SCRIPTS/restore_from_manifest.py" --work "$WORK" --restore-src "$RESTORE_SRC/data-clean"
 python3 - "$WORK/RECONCILE/RESTORE-MANIFEST.json" "$WORK/atlas-repo/data-clean/route_water_allowlist.json" <<'PY'
 import json,sys
@@ -63,39 +63,51 @@ a.setdefault('_meta',{})['restore_manifest_routes_added']=len(m.get('restore_rou
 json.dump(a,open(allow_p,'w'),indent=2); print(f'allowlist +{len(m.get("restore_route_ids",[]))} restore routes')
 PY
 
-step "3/12 Apply SEM verdicts (DROP quarantine)"
+step "3/15 Apply SEM verdicts (DROP quarantine)"
 python3 "$SCRIPTS/apply_sem_verdicts.py" --work "$WORK"
 
-step "4/12 Gate #3 water-adjacency (KEEP+HOLD)"
+step "4/15 Gate #3 water-adjacency (KEEP+HOLD)"
 python3 "$SCRIPTS/gate_bp_water_adjacency.py" --work "$WORK"
 
-step "5/12 Gate #4 gazetteer ID-match"
+step "5/15 Gate #4 gazetteer ID-match"
 python3 "$SCRIPTS/gate_bp_gazetteer.py" --work "$WORK"
 python3 "$SCRIPTS/apply_bp_gates.py" --work "$WORK"
 
-step "6/12 Route endpoint cascade quarantine"
+step "6/15 Route endpoint cascade quarantine"
 python3 "$SCRIPTS/cascade_route_quarantine.py" --work "$WORK"
 
-step "7/12 Build APPLY-LEDGER-79am (promote 3 held synth)"
+step "7/15 Palm/Marina bbox — junk POI drop + terminal gating"
+python3 "$SCRIPTS/cleanup_palm_marina.py" --work "$WORK" --phase bps
+python3 "$SCRIPTS/cleanup_palm_marina.py" --work "$WORK" --phase cascade
+
+step "8/15 Build APPLY-LEDGER-79am (promote 3 held synth)"
 python3 "$SCRIPTS/build_apply_ledger_79am.py" --work "$WORK" --ledger-src "$WORK/RECONCILE/APPLY-LEDGER-src.json"
 
-step "8/12 Apply Phase-3 geometries (27 synth+patch incl. Lulu/Reem)"
+step "9/15 Apply Phase-3 geometries (27 synth+patch incl. Lulu/Reem)"
 python3 "$SCRIPTS/apply_phase3_79am.py" --work "$WORK"
 
-step "9/12 Extend allowlist for applied routes"
+step "10/15 Extend allowlist for applied routes"
 cp "$WORK/grok-routing-output/phase3-apply-report-79am.json" \
    "$WORK/grok-routing-output/phase3-apply-report.json"
 python3 "$PHASE3_SCRIPTS/extend_allowlist_phase3.py" --work "$WORK"
 
-step "10/12 Finalize seal $SEAL_LABEL"
+step "11/15 Palm/Marina — de-spaghetti + geometry repair"
+python3 "$SCRIPTS/cleanup_palm_marina.py" --work "$WORK" --phase spaghetti
+python3 "$SCRIPTS/cleanup_palm_marina.py" --work "$WORK" --phase geometry
+python3 "$SCRIPTS/cleanup_palm_marina.py" --work "$WORK" --phase cascade
+
+step "12/15 Palm/Marina acceptance gate"
+python3 "$SCRIPTS/qa_palm_acceptance.py" --work "$WORK"
+
+step "13/15 Finalize seal $SEAL_LABEL"
 python3 "$SCRIPTS/finalize_seal_79am.py" --work "$WORK"
 
-step "11/12 Postflight"
+step "14/15 Postflight"
 chmod +x "$PHASE3_SCRIPTS/postflight_pilot.sh"
 ACTIVE_RC=$(python3 -c "import json;d=json.load(open('$WORK/atlas-repo/data-clean/ROUTES.json'));f=d if isinstance(d,list) else d.get('features',[]);print(sum(1 for x in f if not (x.get('properties') or x).get('_quarantine')))")
 ROUTE_FLOOR="${ROUTE_FLOOR:-$ACTIVE_RC}" bash "$PHASE3_SCRIPTS/postflight_pilot.sh" "$WORK"
 
-step "12/12 Sync to repo data-clean"
+step "15/15 Sync to repo data-clean"
 chmod +x "$PHASE3_SCRIPTS/sync_to_repo.sh"
 CHANGELOG="$REPO_DC/CHANGELOG-FOR-CLAUDE-2026-06-18-uae-reconcile-79am.md"
 bash "$PHASE3_SCRIPTS/sync_to_repo.sh" "$WORK" "$REPO_DC"
@@ -125,7 +137,7 @@ fi
 cd "$ROOT"
 git add data-clean/ scripts/grok-reconcile-79am/ .github/workflows/grok-phase3.yml 2>/dev/null || true
 git add data-clean/CHANGELOG-FOR-CLAUDE-2026-06-18-uae-reconcile-79am.md 2>/dev/null || true
-git commit -m "Gold #79am — 3-way reconcile + Phase-3 UAE geometry (Lulu/Reem restored)"
+git commit -m "Gold #79am — Palm/Marina cleanup + reconcile + Phase-3 UAE geometry"
 git tag -a "$TAG" -m "Gold #79am — reconcile LB230–242 + new-market work" 2>/dev/null || true
 git push origin main
 git push origin "$TAG" 2>/dev/null || true

@@ -1,40 +1,19 @@
 #!/usr/bin/env python3
-"""Quarantine routes touching explicitly quarantined BPs only."""
+"""Quarantine routes whose endpoints resolve to quarantined BPs (all id schemes)."""
 from __future__ import annotations
 
 import argparse
 import json
-import re
 from pathlib import Path
 
-
-def load_json(p: Path):
-    return json.loads(p.read_text())
-
-
-def save_routes(p: Path, features: list):
-    p.write_text(json.dumps(features, separators=(",", ":")) + "\n")
-
-
-def route_features(obj) -> list:
-    return obj if isinstance(obj, list) else obj.get("features", [])
-
-
-def build_quarantined_bps(fbt: dict) -> set[str]:
-    out = set()
-    for poi in fbt.get("poi", []):
-        props = poi.get("properties", poi)
-        if props.get("_quarantine") or props.get("relevance") == "hide":
-            pid = props.get("id")
-            if pid:
-                out.add(pid)
-    return out
-
-
-def endpoint_bp(ep: str) -> str | None:
-    if ep and ep.startswith("bp-"):
-        return ep
-    return None
+from reconcile_shared import (
+    build_bp_indexes,
+    endpoint_blocked,
+    load_json,
+    route_features,
+    route_id_of,
+    save_routes,
+)
 
 
 def main():
@@ -46,33 +25,42 @@ def main():
     dc = work / "atlas-repo" / "data-clean"
     routes = route_features(load_json(dc / "ROUTES.json"))
     fbt = load_json(dc / "FEATURES_BY_TYPE.json")
-    q_bps = build_quarantined_bps(fbt)
+    bp_by_id, berth_index = build_bp_indexes(fbt)
+    city_ids = {
+        (c.get("properties") or c).get("id")
+        for c in fbt.get("city", []) + fbt.get("priority_city", [])
+        if (c.get("properties") or c).get("id")
+    }
 
     quarantined = []
     for feat in routes:
         props = feat.get("properties", feat)
-        rid = props.get("id") or props.get("route_id")
-        fr, to = props.get("from"), props.get("to")
+        rid = route_id_of(feat)
         bad = []
-        for ep in (fr, to):
-            bp = endpoint_bp(ep)
-            if bp and bp in q_bps:
-                bad.append(bp)
+        for ep in (props.get("from"), props.get("to")):
+            if not ep:
+                continue
+            if ep.startswith("bp-") or "__" in ep:
+                blocked, why = endpoint_blocked(ep, bp_by_id, berth_index, city_ids)
+                if blocked:
+                    bad.append(f"{ep}:{why}")
         if bad:
             props["_quarantine"] = True
             props["relevance"] = "hide"
-            props["_quarantine_reason"] = f"quarantined_bp_endpoint {bad}"
-            quarantined.append({"id": rid, "bad_bps": bad})
-        else:
-            props.pop("_quarantine", None)
-            props.pop("relevance", None)
+            props["_quarantine_reason"] = f"quarantined_endpoint {bad}"
+            quarantined.append({"id": rid, "bad": bad})
 
     save_routes(dc / "ROUTES.json", routes)
+    q_bps = sum(
+        1
+        for row in bp_by_id.values()
+        if row["props"].get("_quarantine") or row["props"].get("relevance") == "hide"
+    )
     report = {
         "total": len(routes),
         "quarantined": len(quarantined),
         "active": len(routes) - len(quarantined),
-        "quarantined_bps": len(q_bps),
+        "quarantined_bps": q_bps,
         "sample": quarantined[:30],
     }
     (work / "grok-routing-output" / "route-cascade-report.json").write_text(
@@ -80,7 +68,7 @@ def main():
     )
     print(
         f"route cascade: total={report['total']} quarantined={report['quarantined']} "
-        f"active={report['active']} (q_bps={len(q_bps)})"
+        f"active={report['active']} (q_bps={q_bps})"
     )
 
 
