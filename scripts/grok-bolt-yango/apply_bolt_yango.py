@@ -12,6 +12,8 @@ import argparse
 import copy
 import json
 import re
+import sys
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -64,10 +66,14 @@ def route_props(r: dict) -> dict:
     return r.get("properties", r)
 
 
+def _strip_accents(s: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+
+
 def norm_label(s: str | None) -> str:
     if not s:
         return ""
-    s = s.lower().strip()
+    s = _strip_accents(s.lower().strip())
     s = re.sub(r"[^\w\s]", " ", s)
     return re.sub(r"\s+", " ", s).strip()
 
@@ -158,7 +164,14 @@ def corridor_for_journey(corridors: list[dict], from_l: str, to_l: str) -> dict 
     return None
 
 
-def bind_route_item(obj: dict, market_key: str, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None):
+def bind_route_item(
+    obj: dict,
+    market_key: str,
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+    economics_url: str | None,
+    bp_idx: dict | None = None,
+):
     """Bind one featured_route / journey_unlocked row."""
     if not isinstance(obj, dict) or obj.get("route_id"):
         return
@@ -171,10 +184,16 @@ def bind_route_item(obj: dict, market_key: str, indexes: RouteIndexes, corridor_
     to_l = obj.get("to") or obj.get("to_label")
     rid = indexes.match_labels(from_l, to_l)
 
-    if not rid:
-        corr = corridor_for_journey(corridor_idx.get(market_key, []), from_l or "", to_l or "")
-        if corr and corr.get("route_id"):
-            rid = corr["route_id"]
+    corr = corridor_for_journey(corridor_idx.get(market_key, []), from_l or "", to_l or "")
+    if not rid and corr and corr.get("route_id"):
+        rid = corr["route_id"]
+
+    if not rid and corr and bp_idx:
+        from bolt_yango_routing_shared import resolve_corridor_endpoints
+
+        from_bp, to_bp, _, _ = resolve_corridor_endpoints(corr, bp_idx)
+        if from_bp and to_bp:
+            rid = indexes.bp_pair.get((from_bp, to_bp))
 
     if not rid:
         fn = obj.get("from_node_id") or obj.get("from_node")
@@ -195,22 +214,36 @@ def bind_route_item(obj: dict, market_key: str, indexes: RouteIndexes, corridor_
         obj["model_link"] = economics_url
 
 
-def bind_market_routes(market: dict, market_key: str, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None):
+def bind_market_routes(
+    market: dict,
+    market_key: str,
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+    economics_url: str | None,
+    bp_idx: dict | None = None,
+):
     for j in market.get("journeys_unlocked") or []:
-        bind_route_item(j, market_key, indexes, corridor_idx, economics_url)
+        bind_route_item(j, market_key, indexes, corridor_idx, economics_url, bp_idx)
     for ph in market.get("phases") or []:
         for key in ("cities",):
             if isinstance(ph.get(key), list):
                 ph[key] = [crosswalk_node(c) or c for c in ph[key]]
         for fr in ph.get("featured_routes") or []:
-            bind_route_item(fr, market_key, indexes, corridor_idx, economics_url)
+            bind_route_item(fr, market_key, indexes, corridor_idx, economics_url, bp_idx)
 
 
-def bind_route_refs(obj, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None, market_key: str | None = None):
+def bind_route_refs(
+    obj,
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+    economics_url: str | None,
+    market_key: str | None = None,
+    bp_idx: dict | None = None,
+):
     """Recursively bind route_id on hub + market proposals."""
     if isinstance(obj, list):
         for item in obj:
-            bind_route_refs(item, indexes, corridor_idx, economics_url, market_key)
+            bind_route_refs(item, indexes, corridor_idx, economics_url, market_key, bp_idx)
         return
     if not isinstance(obj, dict):
         return
@@ -223,15 +256,15 @@ def bind_route_refs(obj, indexes: RouteIndexes, corridor_idx: dict, economics_ur
             if candidate in corridor_idx:
                 mkey = candidate
                 break
-        bind_market_routes(obj, mkey or f"{prefix}-{pid}", indexes, corridor_idx, economics_url)
+        bind_market_routes(obj, mkey or f"{prefix}-{pid}", indexes, corridor_idx, economics_url, bp_idx)
         return
 
     for j in obj.get("journeys_unlocked") or []:
-        bind_route_item(j, market_key or "", indexes, corridor_idx, economics_url)
+        bind_route_item(j, market_key or "", indexes, corridor_idx, economics_url, bp_idx)
 
     for v in obj.values():
         if isinstance(v, (dict, list)):
-            bind_route_refs(v, indexes, corridor_idx, economics_url, market_key)
+            bind_route_refs(v, indexes, corridor_idx, economics_url, market_key, bp_idx)
 
 
 def sanitize_partner_text(obj):
@@ -266,6 +299,7 @@ def market_from_authored(
     market_key: str,
     indexes: RouteIndexes,
     corridor_idx: dict,
+    bp_idx: dict | None = None,
 ) -> dict:
     m = sanitize_partner_text({k: v for k, v in authored.items() if k not in HUB_STRIP})
     if m.get("slug") and not m.get("id"):
@@ -274,7 +308,7 @@ def market_from_authored(
     if market_key in HELD_MARKET_SLUGS:
         m["tier"] = "data-only"
         m["status"] = "held"
-    bind_market_routes(m, market_key, indexes, corridor_idx, economics_url)
+    bind_market_routes(m, market_key, indexes, corridor_idx, economics_url, bp_idx)
     return m
 
 
@@ -303,12 +337,15 @@ def apply_bolt(
     sealed_cities: set[str],
     indexes: RouteIndexes,
     corridor_idx: dict,
+    bp_idx: dict | None = None,
 ) -> dict:
     bolt_markets = []
     for key in sorted(authored_all):
         if not key.startswith("bolt-"):
             continue
-        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx)
+        m = market_from_authored(
+            authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx, bp_idx
+        )
         bolt_markets.append(m)
     bolt_markets.sort(key=lambda x: (x.get("label") or x.get("id") or "").lower())
 
@@ -327,7 +364,7 @@ def apply_bolt(
         "applied_at": datetime.now(timezone.utc).isoformat(),
         "markets_spliced": len(bolt_markets),
     }
-    bind_route_refs(out, indexes, corridor_idx, economics_url)
+    bind_route_refs(out, indexes, corridor_idx, economics_url, bp_idx=bp_idx)
     return out
 
 
@@ -338,12 +375,15 @@ def apply_yango(
     sealed_cities: set[str],
     indexes: RouteIndexes,
     corridor_idx: dict,
+    bp_idx: dict | None = None,
 ) -> dict:
     yango_markets = []
     for key in sorted(authored_all):
         if not key.startswith("yango-"):
             continue
-        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx)
+        m = market_from_authored(
+            authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx, bp_idx
+        )
         if m.get("slug") == "turkey" or m.get("id") == "turkey":
             anchors = list(dict.fromkeys(TURKEY_ANCHORS + (m.get("anchor_cities") or [])))
             m["anchor_cities"] = [a for a in anchors if a in sealed_cities]
@@ -373,7 +413,7 @@ def apply_yango(
         "markets_spliced": len(yango_markets),
         "held_markets": hub.get("_held_markets", []),
     }
-    bind_route_refs(out, indexes, corridor_idx, economics_url)
+    bind_route_refs(out, indexes, corridor_idx, economics_url, bp_idx=bp_idx)
     return out
 
 
@@ -424,11 +464,20 @@ def main():
     corridors_path = ingest / "inputs/corridors.json"
     corridor_idx = build_corridor_index(load_json(corridors_path)) if corridors_path.exists() else {}
 
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from bolt_yango_routing_shared import build_bp_index
+
+    bp_idx = build_bp_index(fbt)
+
     bolt_url = econ_map.get("economics_url", {}).get("bolt", "")
     yango_url = econ_map.get("economics_url", {}).get("yango", "")
 
-    bolt_out = apply_bolt(authored_all, handoff_bolt, bolt_url, sealed_cities, indexes, corridor_idx)
-    yango_out = apply_yango(authored_all, yango_hub, yango_url, sealed_cities, indexes, corridor_idx)
+    bolt_out = apply_bolt(
+        authored_all, handoff_bolt, bolt_url, sealed_cities, indexes, corridor_idx, bp_idx
+    )
+    yango_out = apply_yango(
+        authored_all, yango_hub, yango_url, sealed_cities, indexes, corridor_idx, bp_idx
+    )
 
     save_json(partners / "bolt.json", bolt_out)
     save_json(partners / "yango.json", yango_out)

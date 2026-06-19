@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import math
 import re
+import unicodedata
 from pathlib import Path
 
 R_EARTH_KM = 6371.0088
@@ -28,6 +29,7 @@ BOLT_YANGO_ANCHORS = frozenset(
         "larnaca-cyprus",
         "limassol-cyprus",
         "lisbon-tagus-portugal",
+        "porto-douro-portugal",
         "maputo-mozambique",
         "tallinn-estonia",
         "tangier-morocco",
@@ -73,10 +75,14 @@ def mint_route_id(from_id: str, to_id: str, tag: str = "boltyango") -> str:
     return "rn-" + hashlib.md5(seed.encode()).hexdigest()[:12]
 
 
+def _strip_accents(s: str) -> str:
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+
+
 def norm_label(s: str | None) -> str:
     if not s:
         return ""
-    s = s.lower().strip()
+    s = _strip_accents(s.lower().strip())
     s = re.sub(r"[^\w\s]", " ", s)
     return re.sub(r"\s+", " ", s).strip()
 
@@ -294,16 +300,47 @@ def trip_scope_for(from_city: str | None, to_city: str | None) -> str:
     return "inter_city"
 
 
-def resolve_bp_by_label(city_id: str | None, label: str | None, bp_idx: dict) -> str | None:
-    if not city_id or not label:
+def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: str | None) -> list[str]:
+    if not city_id:
+        return []
+    cities = [city_id]
+    blob = norm_label(f"{from_label or ''} {to_label or ''}")
+    if city_id == "lisbon-tagus-portugal":
+        if any(t in blob for t in ("porto", "ribeira", "gaia", "douro")):
+            cities.append("porto-douro-portugal")
+    return list(dict.fromkeys(cities))
+
+
+def resolve_bp_by_label(
+    city_id: str | None,
+    label: str | None,
+    bp_idx: dict,
+    *,
+    extra_cities: list[str] | None = None,
+) -> str | None:
+    if not label:
         return None
+    search = list(dict.fromkeys((extra_cities or []) + ([city_id] if city_id else [])))
     best = None
     best_score = 0
     for pid, row in bp_idx.items():
-        if row.get("parent_city_id") != city_id:
+        if search and row.get("parent_city_id") not in search:
             continue
         if labels_match(label, row.get("name")):
             score = len(_tokens(label) & _tokens(row.get("name")))
+            if score > best_score:
+                best_score = score
+                best = pid
+    if best:
+        return best
+    # Relaxed: single strong token overlap (e.g. "Cacilhas (Almada)" ↔ "Cacilhas Ferry Terminal")
+    for pid, row in bp_idx.items():
+        if search and row.get("parent_city_id") not in search:
+            continue
+        overlap = _tokens(label) & _tokens(row.get("name"))
+        strong = [t for t in overlap if len(t) >= 4]
+        if strong:
+            score = len(strong)
             if score > best_score:
                 best_score = score
                 best = pid
@@ -319,14 +356,15 @@ def resolve_corridor_endpoints(
     eps = corridor.get("endpoint_boarding_points") or {}
     from_label = eps.get("from") or corridor.get("from")
     to_label = eps.get("to") or corridor.get("to")
+    cities = _corridor_city_ids(from_city, from_label, to_label)
 
-    from_bp = resolve_bp_by_label(from_city, from_label, bp_idx)
-    to_bp = resolve_bp_by_label(to_city, to_label, bp_idx)
+    from_bp = resolve_bp_by_label(from_city, from_label, bp_idx, extra_cities=cities)
+    to_bp = resolve_bp_by_label(to_city, to_label, bp_idx, extra_cities=cities)
 
     if not from_bp and from_city == to_city:
-        from_bp = resolve_bp_by_label(from_city, corridor.get("from"), bp_idx)
+        from_bp = resolve_bp_by_label(from_city, corridor.get("from"), bp_idx, extra_cities=cities)
     if not to_bp and from_city == to_city:
-        to_bp = resolve_bp_by_label(to_city, corridor.get("to"), bp_idx)
+        to_bp = resolve_bp_by_label(to_city, corridor.get("to"), bp_idx, extra_cities=cities)
 
     return from_bp, to_bp, from_city, to_city
 

@@ -40,6 +40,9 @@ SIGNATURE_WAYPOINTS: dict[tuple[str, str], list[tuple[float, float]]] = {
     ("bp-terreiro-do-paco-lisbon", "bp-barreiro"): [(-9.055, 38.68)],
     ("bp-cais-do-sodre-lisbon", "bp-seixal"): [(-9.125, 38.673)],
     ("bp-belem-lisbon", "bp-trafaria-porto-brandao"): [(-9.22, 38.684)],
+    ("bp-porto-ribeira", "bp-porto-gaia"): [(-8.612, 41.14)],
+    ("bp-lagos-marina", "bp-ponta-da-piedade"): [(-8.671, 37.093)],
+    ("bp-vila-real-santo-antonio", "bp-ayamonte-spain"): [(-7.41, 37.198)],
     ("bp-limassol-marina", "bp-larnaca-marina"): [(33.2, 34.85)],
     ("bp-dublin-port", "bp-dun-laoghaire-harbour"): [(-6.18, 53.32)],
     ("bp-dammam-corniche", "bp-alkhobar-corniche"): [(50.17, 26.42)],
@@ -57,19 +60,23 @@ def partner_markets(corridors_doc: dict) -> dict[str, dict]:
 
 
 def refresh_coastal_geometry(routes: list, mask, report: dict) -> int:
-    """Re-densify existing anchor-city routes that are still 2-point straight lines."""
+    """Re-densify routes that are straight chords or have high interior land crossing."""
     updated = 0
     for feat in routes:
         p = feat.get("properties", feat)
-        if p.get("_coastal_geometry"):
-            continue
         coords = feat.get("geometry", {}).get("coordinates") or []
         if len(coords) < 2:
             continue
+        land_km = float(p.get("_land_km_interior") or 0)
+        needs_refresh = (
+            not p.get("_coastal_geometry")
+            or land_km > LAND_THRESH_KM * 4
+            or (len(coords) <= 24 and land_km > LAND_THRESH_KM)
+        )
+        if not needs_refresh:
+            continue
         fc, tc = p.get("from_city_id"), p.get("to_city_id")
         if fc not in BOLT_YANGO_ANCHORS and tc not in BOLT_YANGO_ANCHORS:
-            continue
-        if len(coords) > 24:
             continue
         a = (coords[0][0], coords[0][1])
         b = (coords[-1][0], coords[-1][1])

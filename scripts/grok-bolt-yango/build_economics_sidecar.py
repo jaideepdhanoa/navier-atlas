@@ -14,8 +14,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-INGEST = ROOT / "_ingest/bolt-yango-seal-2026-06-19/bolt-yango-seal-2026-06-19"
-AGG_DIR = ROOT / "_ingest/gold-delta-LB230-LB241/agg"
+INGEST = ROOT / "_ingest/econ-reseal-2026-06-19/econ-reseal"
+AGG_DIR = INGEST / "inputs/aggs"
 
 PARTNERS = [
     "grab",
@@ -26,12 +26,19 @@ PARTNERS = [
     "qatar",
     "bolt",
     "yango",
+    "constance",
+    "four-seasons",
 ]
 
 DECK_URL = {
     "grab": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
+    "careem": "https://docs.google.com/spreadsheets/d/1ip3bYDedgxj_9ydksKH1OzeoXGMWT2LZzti1y5jsx-8/edit",
     "bolt": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
     "yango": "https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit",
+    "qatar": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
+    "jih-global": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+    "constance": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit",
+    "four-seasons": "https://docs.google.com/spreadsheets/d/1Flk6PfRgCNdSGlP49lf1KxXaoR4qdlLcs1O8YA72gcc/edit",
 }
 
 COMMODITY_FARE_IDS = {
@@ -144,7 +151,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dc", default="data-clean")
     ap.add_argument("--aggdir", default=str(AGG_DIR))
-    ap.add_argument("--corridors", default=str(INGEST / "inputs/corridors.json"))
+    ap.add_argument(
+        "--corridors",
+        default=str(INGEST / "inputs/corridors.json"),
+        help="finance corridors.json (econ-reseal handoff)",
+    )
     ap.add_argument("--out", default="data-clean/economics_by_route_id.json")
     args = ap.parse_args()
 

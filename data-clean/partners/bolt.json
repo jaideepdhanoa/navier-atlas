@@ -401,16 +401,17 @@
   "growth_case": {
     "_provenance": {
       "source_growth": "bolt-growth-case.json",
-      "source_rollup": "careem-aggregate.json",
-      "rev_per_boat_yr": 512928,
-      "greenfield_mode": "census",
-      "greenfield_corridors": 341,
-      "sourced_corridors": 35,
+      "source_rollup": "agg-bolt.json",
+      "rev_per_boat_yr": 200904,
+      "greenfield_mode": "off",
+      "greenfield_corridors": null,
+      "sourced_corridors": 202,
       "generator": "growth_frontend_block.py"
     },
     "revenue_potential": {
       "headline": "The floor and the prize — every rung traces to grounded, sourced demand.",
-      "anchor_note": "Anchor: $15M/yr of premium sea-transfer spend on the sourced corridors today. Every rung is a transformation of that one grounded number.",
+      "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+      "anchor_note": "$1.02B/yr premium sea-transfer spend on sourced corridors today — the anchor every rung builds from.",
       "whose_money_legend": {
         "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
         "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
@@ -424,80 +425,122 @@
           "whose_money": "Navier transport revenue",
           "basis": "sourced flagship corridors · 10% capture · today's demand",
           "low": null,
-          "mid": 1538784.0,
+          "mid": 105876268.0,
           "high": null,
           "display": {
             "low": null,
-            "mid": "$2M",
+            "mid": "$106M",
             "high": null
           },
-          "confidence": "grounded"
+          "confidence": "grounded",
+          "confidence_label": "Grounded",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "id": "som_network",
           "label": "SOM — full network",
           "whose_money": "Navier transport revenue",
           "basis": "whole mapped network · 10% capture · today's demand (no growth assumed)",
-          "low": 5293417.0,
-          "mid": 7540042.0,
-          "high": 9786666.0,
+          "low": 105876268.0,
+          "mid": 105876268.0,
+          "high": 105876268.0,
           "display": {
-            "low": "$5M",
-            "mid": "$8M",
-            "high": "$10M"
+            "low": "$106M",
+            "mid": "$106M",
+            "high": "$106M"
           },
-          "confidence": "med"
+          "confidence": "med",
+          "confidence_label": "Modeled",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "id": "sam_network",
           "label": "SAM — matured network",
           "whose_money": "Navier transport revenue",
-          "basis": "induced demand + default-operator capture, across the network",
-          "low": 10322163.0,
-          "mid": 33930187.0,
-          "high": 97866662.0,
+          "basis": "faster, more comfortable boats grow the market · leading-operator 25% capture, network-wide",
+          "low": 198341812.0,
+          "mid": 457711874.0,
+          "high": 1017137498.0,
           "display": {
-            "low": "$10M",
-            "mid": "$34M",
-            "high": "$98M"
+            "low": "$198M",
+            "mid": "$458M",
+            "high": "$1.02B"
           },
-          "confidence": "med-low"
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
-          "id": "tam_gmv",
-          "label": "TAM — journey GMV",
-          "whose_money": "total journey wallet",
-          "basis": "every cross-water journey in the induced market (all merchants)",
-          "low": 137628841.0,
-          "mid": 407162246.0,
-          "high": 978666624.0,
+          "id": "tam_transfer",
+          "label": "Marine mobility TAM — induced marine-transfer market",
+          "whose_money": "total water-transfer spend",
+          "basis": "SAM divided by leading-operator capture — the full inducible water-transfer wallet at network maturity",
+          "low": 1322278747.0,
+          "mid": 1830847496.0,
+          "high": 2542843745.0,
           "display": {
-            "low": "$138M",
-            "mid": "$407M",
-            "high": "$979M"
+            "low": "$1.32B",
+            "mid": "$1.83B",
+            "high": "$2.54B"
           },
-          "confidence": "med-low"
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
+        },
+        {
+          "id": "journey_gmv",
+          "label": "Journey GMV — food + stays + experiences (≈3× TAM)",
+          "whose_money": "total journey wallet",
+          "basis": "add food, stays, and experiences to every crossing in the induced market",
+          "low": 2644557495.0,
+          "mid": 5492542489.0,
+          "high": 10171374980.0,
+          "display": {
+            "low": "$2.64B",
+            "mid": "$5.49B",
+            "high": "$10.17B"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "id": "platform_rev",
-          "label": "Partner platform revenue",
-          "whose_money": "partner's own P&L",
-          "basis": "platform commission on journey GMV routed through the Navier network",
-          "low": 3715979.0,
-          "mid": 18322301.0,
-          "high": 70463997.0,
+          "label": "Partner platform revenue on Navier",
+          "whose_money": "partner's P&L on Navier-carried journeys",
+          "basis": "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
+          "low": 71403052.0,
+          "mid": 247164412.0,
+          "high": 732338999.0,
           "display": {
-            "low": "$4M",
-            "mid": "$18M",
-            "high": "$70M"
+            "low": "$71M",
+            "mid": "$247M",
+            "high": "$732M"
           },
-          "confidence": "med-low"
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         }
-      ]
+      ],
+      "ceiling_sibling": {
+        "id": "platform_rev_full_journey",
+        "label": "Platform revenue ceiling — 18% × full Journey GMV",
+        "low": 476020349.0,
+        "mid": 988657648.0,
+        "high": 1830847496.0,
+        "display": {
+          "low": "$476M",
+          "mid": "$989M",
+          "high": "$1.83B"
+        },
+        "derivation": "journey_gmv.mid × 0.18 (full GMV ceiling, not Navier-corridor subset)",
+        "confidence_label": "Projected",
+        "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. Platform_rev rung remains the Navier-subset Interpretation-A value."
+      }
     },
     "phase_economics": {
       "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
-      "conversion_note": "Fleet & CO2 scale from the grounded unit: 3 boats = $2M transport rev = 546 t CO2/yr (~$513K rev/boat).",
+      "conversion_note": "Fleet & CO2 scale from the grounded unit: 527 boats = $106M transport rev = 48,099 t CO2/yr (~$201K rev/boat).",
       "horizons": [
         {
           "id": "prove",
@@ -506,48 +549,56 @@
           "scope": "Sourced flagship corridors go live",
           "capture": "10% (new-entrant floor)",
           "vessel": "N30 Pioneer II (8 pax, commercial now)",
-          "fleet_boats": 3,
-          "navier_transport_rev_yr": 1538784.0,
-          "navier_transport_rev_display": "$2M",
+          "fleet_boats": 527,
+          "navier_transport_rev_yr": 105876268.0,
+          "navier_transport_rev_display": "$106M",
           "partner_platform_rev_yr": null,
           "partner_platform_rev_display": "nascent",
-          "co2_saved_t_yr": 546,
-          "confidence": "grounded"
+          "co2_saved_t_yr": 48099,
+          "confidence": "grounded",
+          "confidence_label": "Grounded"
         },
         {
           "id": "scale",
           "name": "Scale",
           "horizon": "Year 2–4",
-          "scope": "Extend to the full mapped greenfield network",
-          "capture": "10% (still conservative)",
-          "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense legs",
-          "fleet_boats_est": 15,
+          "scope": "Flagship corridors ramp to project capacity — depth, not new geography",
+          "capture": "matured default-operator capture as giga-projects fill (~25%), today's demand",
+          "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense resort/transit legs",
+          "fleet_boats_est": 1266,
           "fleet_boats_band": {
-            "low": 10,
-            "high": 19
+            "low": 759,
+            "high": 2025
           },
-          "navier_transport_rev_yr": 7540042.0,
-          "navier_transport_rev_display": "$8M",
+          "navier_transport_rev_yr": 254284374.0,
+          "navier_transport_rev_display": "$254M",
           "partner_platform_rev_display": "building",
-          "co2_saved_t_yr": 2677,
-          "confidence": "med"
+          "co2_saved_t_yr": 115520,
+          "confidence": "med",
+          "confidence_label": "Modeled"
         },
         {
           "id": "mature",
           "name": "Mature",
           "horizon": "Year 4+",
-          "scope": "Induced demand + default-operator capture + in-app journey monetization",
+          "scope": "Induced marine-transfer demand + leading-operator capture across the network",
           "capture": "25% mature share",
           "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
-          "fleet_boats_est_pioneer_equiv": 66,
+          "fleet_boats_est_pioneer_equiv": 2278,
           "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
-          "navier_transport_rev_yr": 33930187.0,
-          "navier_transport_rev_display": "$34M",
-          "partner_platform_rev_yr": 18322301.0,
-          "partner_platform_rev_display": "$18M",
-          "journey_gmv_display": "$407M TAM",
-          "co2_saved_t_yr": 12046,
-          "confidence": "med-low (banded)"
+          "navier_transport_rev_yr": 457711874.0,
+          "navier_transport_rev_display": "$458M",
+          "partner_platform_rev_yr": 247164412.0,
+          "partner_platform_rev_display": "$247M",
+          "partner_platform_rev_on_navier_yr": 247164412.0,
+          "partner_platform_rev_on_navier_display": "$247M",
+          "marine_mobility_tam_yr": 1830847496.0,
+          "marine_mobility_tam_display": "$1.83B marine TAM",
+          "journey_gmv_yr": 5492542489.0,
+          "journey_gmv_display": "$5.49B Journey GMV",
+          "co2_saved_t_yr": 207936,
+          "confidence": "med-low (banded)",
+          "confidence_label": "Projected"
         }
       ]
     },
@@ -588,7 +639,124 @@
         "vessel_sizing_cards"
       ],
       "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
-    }
+    },
+    "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+    "modal_headline": "Floor to prize — every rung traces to grounded demand",
+    "ladder_transitions": [
+      {
+        "from_rung_id": "som_floor",
+        "to_rung_id": "som_network",
+        "headline": "Same 10% capture, expanded to the full mapped network",
+        "basis": "Width-only step. Capture rate held at 10%; corridor set expands from sourced flagships to the full mapped network.",
+        "derivation": "som_floor_mid ($106M) × greenfield_corridor_factor.mid (1.00) = $106M (som_network mid)",
+        "multipliers_cited": {
+          "greenfield_corridor_factor_mid": 1.0,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-bolt.json:parameters_used.greenfield_corridor_factor",
+          "finance/recal/growth-bolt.json:parameters_used.som_capture_rate"
+        ],
+        "confidence": "med"
+      },
+      {
+        "from_rung_id": "som_network",
+        "to_rung_id": "sam_network",
+        "headline": "Network matures: faster, more comfortable boats grow the market + leading-operator capture",
+        "basis": "Two-lever step. (1) Faster, more comfortable boats grow the cross-water market (induced demand). (2) Leading-operator capture lifts share from 10% floor to 25% mature, network-wide.",
+        "derivation": "som_network_mid ($106M) × induced_demand.mid (1.80) × (mature_capture / som_capture) (0.25/0.10 = 2.50) = $458M (sam_network mid)",
+        "multipliers_cited": {
+          "induced_demand_mid": 1.8,
+          "mature_capture_rate_mid": 0.25,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-bolt.json:parameters_used.induced_demand",
+          "finance/recal/growth-bolt.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "sam_network",
+        "to_rung_id": "tam_transfer",
+        "headline": "Lens shift: Navier captured share → total inducible marine-transfer wallet",
+        "basis": "Unit change. Divide SAM (the captured share) by leading-operator capture rate to recover the full inducible water-transfer market — the marine-mobility TAM.",
+        "derivation": "sam_network_mid ($458M) ÷ mature_capture.mid (0.25) = $1.83B (marine TAM mid)",
+        "multipliers_cited": {
+          "mature_capture_rate_mid": 0.25
+        },
+        "source_fields": [
+          "finance/recal/growth-bolt.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low",
+        "_lb_ref": "LB-110: marine_mobility_tam = SAM_full_network / c (locked 2026-06-11)"
+      },
+      {
+        "from_rung_id": "tam_transfer",
+        "to_rung_id": "journey_gmv",
+        "headline": "Marine transfer → total journey wallet (food, stays, experiences, in-app ads)",
+        "basis": "Journey-wallet step. Each $1 of marine-transfer spend unlocks ~$3 of broader journey GMV across merchants the partner monetizes.",
+        "derivation": "marine_tam_mid ($1.83B) × journey_gmv_multiple.mid (3.00) = $5.49B (journey_gmv mid)",
+        "multipliers_cited": {
+          "journey_gmv_multiple_mid": 3.0
+        },
+        "source_fields": [
+          "finance/recal/growth-bolt.json:parameters_used.journey_gmv_multiple"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "journey_gmv",
+        "to_rung_id": "platform_rev",
+        "headline": "Bolt platform take on Navier-carried journeys",
+        "basis": "Platform-take step. Platform commission applied to the journey GMV routed through the Navier network (Navier-captured subset, not the full induced market).",
+        "derivation": "sam_network_mid ($458M) × journey_gmv_multiple.mid (3.00) × platform_take_rate (18%) = $247M (platform_rev mid)",
+        "multipliers_cited": {
+          "journey_gmv_multiple_mid": 3.0,
+          "platform_take_rate": 0.18,
+          "mature_capture_rate_mid": 0.25
+        },
+        "source_fields": [
+          "finance/recal/growth-bolt.json:parameters_used.platform_take_rate",
+          "finance/recal/growth-bolt.json:parameters_used.journey_gmv_multiple"
+        ],
+        "confidence": "med-low",
+        "_lb_ref": "LB-113: partner_platform_rev_on_navier = on-Navier subset, distinct from deck's '18% × full Journey GMV' narrative ceiling"
+      }
+    ],
+    "marine_mobility_tam": {
+      "low": 1322278747.0,
+      "mid": 1830847496.0,
+      "high": 2542843745.0
+    },
+    "journey_gmv": {
+      "low": 2644557495.0,
+      "mid": 5492542489.0,
+      "high": 10171374980.0
+    },
+    "partner_platform_rev_on_navier": {
+      "low": 71403052.0,
+      "mid": 247164412.0,
+      "high": 732338999.0
+    },
+    "_marine_tam_split_provenance": {
+      "date": "2026-06-19T17:09:18.941255Z",
+      "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
+      "field_renames": {
+        "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
+        "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)"
+      },
+      "ladder_rung_count": 6,
+      "rungs_ascending": [
+        "som_floor",
+        "som_network",
+        "sam_network",
+        "tam_transfer",
+        "journey_gmv",
+        "platform_rev"
+      ]
+    },
+    "economics_url": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
   },
   "_growth_case_merged": "2026-06-07T04:37:03.694455+00:00",
   "markets": [
@@ -692,8 +860,10 @@
           "archetype": "commute",
           "from_node_id": "split-croatia",
           "to_node_id": "split-croatia",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-28246c95f412",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Dubrovnik",
@@ -718,8 +888,10 @@
           "archetype": "ridehail",
           "from_node_id": "split-croatia",
           "to_node_id": "split-croatia",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-8af39f1da94d",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Dubrovnik",
@@ -785,9 +957,10 @@
               "distance_nm": 8,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-28246c95f412",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Dubrovnik",
@@ -809,9 +982,10 @@
               "distance_nm": 9,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-8af39f1da94d",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             }
           ],
           "use_cases": [
@@ -2427,7 +2601,7 @@
           "archetype": "ridehail",
           "from_node_id": "cote-dazur-france",
           "to_node_id": "cote-dazur-france",
-          "route_id": "ics-fad76c1c49",
+          "route_id": "ics-529325c5eb",
           "_link_kind": "corridor-label",
           "_link_status": "linked",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
@@ -2530,7 +2704,7 @@
               "distance_nm": 1.5,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "ics-fad76c1c49",
+              "route_id": "ics-529325c5eb",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked"
@@ -2849,8 +3023,10 @@
           "archetype": "commute",
           "from_node_id": "athens-saronic-greece",
           "to_node_id": "athens-saronic-greece",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-89552c9786ec",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Rhodes",
@@ -2952,9 +3128,10 @@
               "distance_nm": 8,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-89552c9786ec",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Athens (Piraeus)",
@@ -2990,9 +3167,10 @@
               "distance_nm": 18,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-16fa8284adf1",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Mykonos",
@@ -4000,9 +4178,10 @@
               "distance_nm": 12.0,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-bbc6263b4a59",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Como",
@@ -4441,8 +4620,10 @@
           "archetype": "ridehail",
           "from_node_id": "lisbon-tagus-portugal",
           "to_node_id": "lisbon-tagus-portugal",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-4296f8bba703",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Vila Real de Santo Antonio (Portugal)",
@@ -4454,8 +4635,10 @@
           "archetype": "intercity",
           "from_node_id": "lisbon-tagus-portugal",
           "to_node_id": "lisbon-tagus-portugal",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-bd10456904cc",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Lagos",
@@ -4467,8 +4650,10 @@
           "archetype": "ridehail",
           "from_node_id": "lisbon-tagus-portugal",
           "to_node_id": "lisbon-tagus-portugal",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-f2aa06497c53",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Cais do Sodré (Lisbon)",
@@ -4495,8 +4680,10 @@
           "archetype": "commute",
           "from_node_id": "lisbon-tagus-portugal",
           "to_node_id": "lisbon-tagus-portugal",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "ics-6b939c627f",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         }
       ],
       "phases": [
@@ -4521,9 +4708,10 @@
               "distance_nm": 0.2,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-4296f8bba703",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Vila Real de Santo Antonio (Portugal)",
@@ -4533,9 +4721,10 @@
               "distance_nm": 0.8,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-bd10456904cc",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Lagos",
@@ -4545,9 +4734,10 @@
               "distance_nm": 1.2,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-f2aa06497c53",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             }
           ],
           "use_cases": [
@@ -4592,9 +4782,10 @@
               "distance_nm": 2.4,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "ics-6b939c627f",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Olhao",
@@ -4604,9 +4795,10 @@
               "distance_nm": 2.7,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-a1e8554c8739",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Faro",
@@ -5132,8 +5324,10 @@
           "archetype": "tourism",
           "from_node_id": "constanta-romania",
           "to_node_id": "constanta-romania",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-c0cdd8745501",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Constanta",
@@ -5225,9 +5419,10 @@
               "distance_nm": 5.0,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-c0cdd8745501",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Constanta",
@@ -6283,8 +6478,10 @@
           "archetype": "ridehail",
           "from_node_id": "stockholm-sweden",
           "to_node_id": "stockholm-sweden",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-bff430fd1e9e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Stockholm (Nybroplan)",
@@ -6296,8 +6493,10 @@
           "archetype": "commute",
           "from_node_id": "stockholm-sweden",
           "to_node_id": "stockholm-sweden",
-          "route_id": null,
-          "_link_status": "unlinked-no-route"
+          "route_id": "rn-2d8722a8afae",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit"
         },
         {
           "from": "Stockholm (Stadshuskajen / Klara Malarstrand)",
@@ -6376,9 +6575,10 @@
               "distance_nm": 0.5,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-bff430fd1e9e",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Stockholm (Nybroplan)",
@@ -6388,9 +6588,10 @@
               "distance_nm": 3,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-2d8722a8afae",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route"
+              "_link_kind": "corridor-label",
+              "_link_status": "linked"
             },
             {
               "from_label": "Stockholm (Stadshuskajen / Klara Malarstrand)",
@@ -6957,7 +7158,12 @@
   "economics_url": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
   "_ingest": {
     "package": "bolt-yango-seal-2026-06-19",
-    "applied_at": "2026-06-19T17:26:56.034077+00:00",
+    "applied_at": "2026-06-19T17:46:36.373541+00:00",
     "markets_spliced": 18
+  },
+  "_econ_reseal": {
+    "applied_at": "2026-06-19T17:47:37.434385+00:00",
+    "package": "econ-reseal-2026-06-19",
+    "fresh": true
   }
 }
