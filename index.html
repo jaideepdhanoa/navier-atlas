@@ -3734,7 +3734,7 @@ document.querySelectorAll('.chip').forEach(b => {
   const rootLabel = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER]
     ? (PARTNERS[BUILD_PARTNER].display || BUILD_PARTNER) : 'Global';
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America', 'Latin-America':'Latin America', 'Caribbean':'Caribbean',
-    'Europe-Mediterranean':'Europe', 'Europe-Atlantic':'Europe', 'Europe-Baltic':'Europe', 'Europe-Med':'Europe' };
+    'Europe-Mediterranean':'Europe', 'Europe-Atlantic':'Europe', 'Europe-Baltic':'Europe', 'Europe-Med':'Europe', 'Asia':'East Asia' };
   const norm = r => ALIAS[r] || r;
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
@@ -3845,7 +3845,7 @@ document.querySelectorAll('.chip').forEach(b => {
       host.appendChild(btn);
     });
     // Safety net: any region city not in a cluster → a direct city chip (so nothing is hidden).
-    (cityNodesByRegion[label]||[]).filter(c=>!clusteredCityIds.has(c.id)).sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
+    (cityNodesByRegion[label]||[]).filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
       btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
     });
@@ -3859,7 +3859,7 @@ document.querySelectorAll('.chip').forEach(b => {
       btn.addEventListener('click',()=>openCluster(cl, cl.region, btn));
       host.appendChild(btn);
     });
-    allCityNodes.filter(c=>!clusteredCityIds.has(c.id)).forEach(c=>{
+    allCityNodes.filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
       btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
     });
