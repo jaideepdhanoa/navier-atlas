@@ -924,10 +924,16 @@ for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[
 // Cluster lookup (CLUSTERS.json): cluster_id -> {cluster_label, region, type, anchor, member_city_ids}.
 // Pairs with cluster_id on city nodes + the cluster_briefs surface to drive Region → Cluster → City nav.
 const CLUSTER_BY_ID = {}; if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])) if (c && c.cluster_id) CLUSTER_BY_ID[c.cluster_id]=c;
-// Authoritative city→cluster map from CLUSTERS.member_city_ids (100% coverage; the city-node cluster_id
-// property lags it). Use this everywhere we resolve a city's cluster so no city is missed.
-const CITY_TO_CLUSTER = {}; for (const c of Object.values(CLUSTER_BY_ID)) for (const id of (c.member_city_ids||[])) CITY_TO_CLUSTER[id]=c.cluster_id;
+// Nav-visible clusters only — sub-clusters (parent_cluster_id / nav_hidden) are routing anchors, not tier-2 peers.
+const NAV_CLUSTERS = ((typeof CLUSTERS!=='undefined') ? (CLUSTERS.clusters||[]) : []).filter(c => c && c.cluster_id && !c.parent_cluster_id && !c.nav_hidden);
+// Authoritative city→cluster map from top-level CLUSTERS.member_city_ids (skip locale ids in member lists).
+const CITY_TO_CLUSTER = {}; for (const c of NAV_CLUSTERS) for (const id of (c.member_city_ids||[])) if (!id.includes('__')) CITY_TO_CLUSTER[id]=c.cluster_id;
 const _clusterOf = (id, fallback) => CITY_TO_CLUSTER[id] || fallback || null;
+// Locales grouped by parent city — tier 4 of Region → Cluster → City → Locale.
+const LOCALES_BY_PARENT = {};
+for (const f of (FEATURES_BY_TYPE.locale||[])) { const p=f.properties||{}, pid=p.parent_city_id; if (!pid||!p.id) continue;
+  (LOCALES_BY_PARENT[pid]=LOCALES_BY_PARENT[pid]||[]).push({ id:p.id, coords:f.geometry.coordinates, props:p, name:(p.shortName||p.name||p.id) }); }
+for (const pid in LOCALES_BY_PARENT) LOCALES_BY_PARENT[pid].sort((a,b)=>a.name.localeCompare(b.name));
 // Map labels show only the PRIMARY place: several nodes carry a bundled "A / B / C" shortName
 // (e.g. "Manila / Cebu / Palawan / Boracay / Siargao") that reads as one mega-city when zoomed out.
 // The full bundled name is preserved in the brief/panel; this is render-only (data-clean is untouched).
@@ -1265,6 +1271,7 @@ const PRIO_GLOW_R = ['interpolate',['linear'],['zoom'],
 (function(){
   const set=(id,n)=>{ const e=document.getElementById(id); if(e) e.textContent=(n||0).toLocaleString(); };
   set('stat-cities',((FEATURES_BY_TYPE.city||[]).length)+((FEATURES_BY_TYPE.priority_city||[]).length));
+  set('stat-areas',(FEATURES_BY_TYPE.locale||[]).length);
   set('stat-bps',(FEATURES_BY_TYPE.poi||[]).length);
   set('stat-routes',(ROUTES||[]).length);
 })();
@@ -1423,7 +1430,19 @@ map.on('load', () => {
              'symbol-sort-key': ['-',0,['coalesce',['get','degree'],0]] },
     paint:{ 'text-color':'#ffffff','text-halo-color':'#0a0e14','text-halo-width':1.9 }});
 
-  // Areas (sub-districts) intentionally not rendered — the network reads as Cities → Boarding points (v17).
+  // Locales (sub-areas / districts inside a city) — tier 4; revealed as you zoom into a metro.
+  map.addSource('locales', { type:'geojson', data:{type:'FeatureCollection',features:FEATURES_BY_TYPE.locale||[]}, cluster:true, clusterMaxZoom:9, clusterRadius:32 });
+  map.addLayer({ id:'locale-clusters', type:'circle', source:'locales', filter:['has','point_count'], minzoom:7,
+    paint:{ 'circle-color':'#fb7185','circle-radius':['step',['get','point_count'],8,4,12,10,16],'circle-opacity':0.55,'circle-stroke-width':1,'circle-stroke-color':'rgba(255,255,255,0.35)' }});
+  map.addLayer({ id:'locale-cluster-count', type:'symbol', source:'locales', filter:['has','point_count'], minzoom:7,
+    layout:{ 'text-field':['get','point_count_abbreviated'],'text-font':['Noto Sans Bold'],'text-size':9 }, paint:{'text-color':'#0a0e14'} });
+  map.addLayer({ id:'locale-halo', type:'circle', source:'locales', filter:['!',['has','point_count']], minzoom:8,
+    paint:{ 'circle-color':'#fb7185','circle-opacity':0.12,'circle-radius':14,'circle-blur':0.6 }});
+  map.addLayer({ id:'locale-points', type:'circle', source:'locales', filter:['!',['has','point_count']], minzoom:8,
+    paint:{ 'circle-color':'#fb7185','circle-radius':5,'circle-stroke-width':1.5,'circle-stroke-color':'#0a0e14' }});
+  map.addLayer({ id:'locale-labels', type:'symbol', source:'locales', filter:['!',['has','point_count']], minzoom:10,
+    layout:{ 'text-field':['get','shortName'],'text-font':['Noto Sans Regular'],'text-size':10,'text-offset':[0,1.1],'text-anchor':'top','text-allow-overlap':false,'text-optional':true },
+    paint:{ 'text-color':'#fda4af','text-halo-color':'#0a0e14','text-halo-width':1.2 }});
 
   // Cluster pins — the above-city tier (CLUSTERS.json anchors), clickable into the cluster brief. Cyan to
   // match the cluster panel; prominent at world/region zoom, faded out by ~z7 as the city layer takes over.
@@ -1438,7 +1457,7 @@ map.on('load', () => {
     if (p.from_city_id) _clusterDeg[p.from_city_id]=(_clusterDeg[p.from_city_id]||0)+1;
     if (p.to_city_id)   _clusterDeg[p.to_city_id]  =(_clusterDeg[p.to_city_id]  ||0)+1; }
   const _prioCity = new Set((FEATURES_BY_TYPE.priority_city||[]).map(f=>f.properties && f.properties.id));
-  const _clusterPins = { type:'FeatureCollection', features:(typeof CLUSTERS!=='undefined' ? (CLUSTERS.clusters||[]) : [])
+  const _clusterPins = { type:'FeatureCollection', features:NAV_CLUSTERS
     .map(c=>{
       const members = (c.member_city_ids||[]).filter(id=>NODE_INDEX[id]);
       let pos = null;
@@ -1593,21 +1612,21 @@ map.on('load', () => {
     paint:{ 'fill-color':'#6ee7b7','fill-opacity':0.06 }});
 
   // Click handlers — include halo layers so the visible glow is clickable too
-  for (const layer of ['priority-points','priority-halo','priority-hub-glow','city-points','city-halo','city-hub-glow','city-clusters','city-cluster-halo','poi-points','poi-halo','poi-clusters']) {
+  for (const layer of ['priority-points','priority-halo','priority-hub-glow','city-points','city-halo','city-hub-glow','city-clusters','city-cluster-halo','locale-points','locale-halo','locale-clusters','poi-points','poi-halo','poi-clusters']) {
     map.on('click', layer, (e) => {
       const f = e.features[0];
       if (f.properties.cluster) return;
       const coords = f.geometry.coordinates;
       const type = f.properties.type;
-      const zoom = type==='city' ? 10 : 14;
+      const zoom = type==='city' ? 10 : type==='locale' ? 12 : 14;
       map.flyTo({ center:coords, zoom:Math.max(zoom, map.getZoom()), duration:1200, essential:true });
       showDetail(f.properties, coords);
     });
     map.on('mouseenter', layer, () => map.getCanvas().style.cursor='pointer');
     map.on('mouseleave', layer, () => map.getCanvas().style.cursor='');
   }
-  for (const layer of ['city-clusters','city-cluster-halo','poi-clusters']) {
-    const src = layer.startsWith('city') ? 'cities' : 'pois';
+  for (const layer of ['city-clusters','city-cluster-halo','locale-clusters','poi-clusters']) {
+    const src = layer.startsWith('city') ? 'cities' : layer.startsWith('locale') ? 'locales' : 'pois';
     map.on('click', layer, (e) => {
       const features = map.queryRenderedFeatures(e.point,{layers:[layer]});
       const f = features[0]; if (!f || !f.properties.cluster_id) return;
@@ -2157,9 +2176,11 @@ function _cityBriefHtml(brief, props, coords){
     .slice(0,6);
   // A detail-chain back (nav-back) takes precedence; once the chain is exhausted, fall back to the
   // "← Back to the proposal" exit when a partner/carousel context is active.
+  const isLocale = (props.type||'').toLowerCase()==='locale' || String(cid).includes('__');
+  const locales = (!isLocale && typeof LOCALES_BY_PARENT!=='undefined') ? (LOCALES_BY_PARENT[cid]||[]) : [];
   let h = _navStack.length ? _navBackHtml() : ((PARTNER_ACTIVE || (typeof _CARO!=='undefined' && _CARO)) ? `<button class="pcaro-back" id="brief-back">← Back to the proposal</button>` : '');
   h += `<div class="panel-hero">
-    <div class="type-row"><span class="type-pill city">city</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
+    <div class="type-row"><span class="type-pill ${isLocale?'locale':'city'}">${isLocale?'area':'city'}</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
     <div class="share-row">${_shareLinkBtnHtml()}${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(c.cluster_label)} ↗</button>`:''; })()}</div>
@@ -2215,6 +2236,11 @@ function _cityBriefHtml(brief, props, coords){
     h+=`</div>`;
   }
   if (brief.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(brief.transit_planning)}</div></div>`;
+  if (locales.length) {
+    h+=`<div class="panel-section"><h3>Areas in ${escapeHtml(brief.display||props.shortName||cid)}</h3><div class="cl-cities">`;
+    for (const loc of locales) h+=`<button class="cl-city" data-locale="${escapeHtml(loc.id)}">${escapeHtml(loc.name)}</button>`;
+    h+=`</div></div>`;
+  }
   return h;
 }
 function _renderCityBrief(brief, props, coords){
@@ -2222,6 +2248,9 @@ function _renderCityBrief(brief, props, coords){
   p.innerHTML = _cityBriefHtml(brief, props, coords);
   p.scrollTop = 0;
   _wireShareCopy(p);
+  p.querySelectorAll('.cl-city[data-locale]').forEach(el=>el.addEventListener('click', ()=>{
+    const n=NODE_INDEX[el.dataset.locale]; if (n){ try{ map.flyTo({center:n.coords, zoom:Math.max(11,map.getZoom()), duration:900, essential:true}); }catch(e){} showDetail(n.props, n.coords); }
+  }));
   const bk = p.querySelector('#brief-back');
   if (bk) bk.addEventListener('click', clearSelection);
   _wireRangeCtrl(p);
@@ -2325,12 +2354,19 @@ function showDetail(props, coords) {
   const p = document.getElementById('panel');
   const name = props.fullName || props.name || 'Unnamed';
   const type = (props.type||'').toLowerCase();
+  const isLocale = type==='locale' || (props.id&&String(props.id).includes('__'));
+  const parentCityId = props.parent_city_id || (isLocale ? String(props.id).split('__')[0] : null);
   _navEnter({ key:'node:'+(props.id||name), label:name, render:()=>showDetail(props,coords) });
-  if (typeof window!=='undefined' && window._topNavDrill && _geoMode()) window._topNavDrill({ cityId:props.id, cityName:name, region:props.region, cityProps:props, cityCoords:coords });
+  if (typeof window!=='undefined' && window._topNavDrill && _geoMode()) {
+    if (isLocale && parentCityId) {
+      const pn = NODE_INDEX[parentCityId];
+      window._topNavDrill({ cityId:parentCityId, cityName:(pn&&pn.props)?(pn.props.shortName||pn.props.name):parentCityId, localeId:props.id, localeName:name, region:props.region||(pn&&pn.props&&pn.props.region), cityProps:pn&&pn.props, cityCoords:pn&&pn.coords, localeProps:props, localeCoords:coords });
+    } else window._topNavDrill({ cityId:props.id, cityName:name, region:props.region, cityProps:props, cityCoords:coords });
+  }
   // Selecting a node supersedes a route selection — restore node opacities to default first.
   if (SELECTED_ROUTE && !_focusEngaged()) { SELECTED_ROUTE = null; try { applyStoryFocus(null); map.setPaintProperty('route-labels','text-opacity',O_RLABEL); } catch(e){} }
   const _brief = (typeof CITY_BRIEFS!=='undefined') ? CITY_BRIEFS[props.id] : null;
-  if (!_focusEngaged()) { if (type==='city' || _brief) setRouteHighlight(props.id); else clearRouteHighlight(); }
+  if (!_focusEngaged()) { if (type==='city' || type==='locale' || _brief) setRouteHighlight(isLocale&&parentCityId?parentCityId:props.id); else clearRouteHighlight(); }
   if (_brief) {
     _renderCityBrief(_brief, props, coords);
     if (coords) try { map.flyTo({center:coords, zoom:Math.max(9,map.getZoom()), duration:900, essential:true}); } catch(e){}
@@ -3643,7 +3679,6 @@ document.addEventListener('keydown', (e)=>{ if (e.key!=='Escape') return;
 // ============ Search ============
 const SEARCH_INDEX = [];
 for (const t of Object.keys(FEATURES_BY_TYPE)) {
-  if (t === 'locale') continue;   // areas are no longer rendered (v17) — keep them out of search too
   for (const f of FEATURES_BY_TYPE[t]) {
     const p = f.properties;
     SEARCH_INDEX.push({ id:p.id, name:p.fullName||p.name||'', type:t, coords:f.geometry.coordinates, ref:f });
@@ -3698,7 +3733,8 @@ document.querySelectorAll('.chip').forEach(b => {
   const isPartner = !!BUILD_PARTNER;
   const rootLabel = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER]
     ? (PARTNERS[BUILD_PARTNER].display || BUILD_PARTNER) : 'Global';
-  const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America & Caribbean', 'Caribbean':'Latin America & Caribbean' };
+  const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America', 'Latin-America':'Latin America', 'Caribbean':'Caribbean',
+    'Europe-Mediterranean':'Europe', 'Europe-Atlantic':'Europe', 'Europe-Baltic':'Europe', 'Europe-Med':'Europe' };
   const norm = r => ALIAS[r] || r;
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
@@ -3715,7 +3751,8 @@ document.querySelectorAll('.chip').forEach(b => {
   // present city are skipped. (Every city currently sits in exactly one cluster — the orphan path below
   // is a safety net for any region city that isn't a cluster member.)
   const clustersByRegion = {};
-  if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])){
+  const _navClusters = (typeof NAV_CLUSTERS!=='undefined') ? NAV_CLUSTERS : ((typeof CLUSTERS!=='undefined') ? (CLUSTERS.clusters||[]).filter(c=>!c.parent_cluster_id&&!c.nav_hidden) : []);
+  for (const c of _navClusters){
     const r = norm(c.region); if (!r) continue;
     const cities = (c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
     if (!cities.length) continue;
@@ -3753,12 +3790,20 @@ document.querySelectorAll('.chip').forEach(b => {
     let mnx=Infinity,mny=Infinity,mxx=-Infinity,mxy=-Infinity; for(const c of cities){ const[x,y]=c.coords; mnx=Math.min(mnx,x);mny=Math.min(mny,y);mxx=Math.max(mxx,x);mxy=Math.max(mxy,y); }
     map.fitBounds([[mnx,mny],[mxx,mxy]],{padding:90,maxZoom:10,duration:1300,essential:true}); };
   const flyCity = (c)=>{ map.flyTo({center:c.coords, zoom:10, duration:1400, essential:true}); try{ showDetail(c.props, c.coords); }catch(e){} };
+  const flyLocale = (loc)=>{ map.flyTo({center:loc.coords, zoom:12, duration:1200, essential:true}); try{ showDetail(loc.props, loc.coords); }catch(e){} };
+  const openCity = (c, regionLabel, cl, btn)=>{
+    clearActive(); if (btn) btn.classList.add('active');
+    const locales = (typeof LOCALES_BY_PARENT!=='undefined') ? (LOCALES_BY_PARENT[c.id]||[]) : [];
+    if (locales.length > 1) { fitCities([c, ...locales]); renderCityLocales(regionLabel, cl, c, locales); flyCity(c); }
+    else if (locales.length === 1) flyLocale(locales[0]);
+    else flyCity(c);
+  };
   // Cluster chip → cluster brief in the side panel (like a city chip → city brief), then city chips if several.
   const openCluster = (cl, regionLabel, btn)=>{
     clearActive(); if (btn) btn.classList.add('active');
     const hasBrief = typeof CLUSTER_BRIEFS!=='undefined' && CLUSTER_BRIEFS[cl.id];
     if (hasBrief){ try { showClusterBrief(cl.id); } catch(e){} renderClusterCities(regionLabel, cl); }
-    else if (cl.cities.length===1) flyCity(cl.cities[0]);
+    else if (cl.cities.length===1) openCity(cl.cities[0], regionLabel, cl, null);
     else { fitCities(cl.cities); renderClusterCities(regionLabel, cl); }
   };
   const clusterFromId = (clId)=>{ const c=CLUSTER_BY_ID[clId]; if(!c) return null;
@@ -3842,7 +3887,21 @@ document.querySelectorAll('.chip').forEach(b => {
     }
     cl.cities.forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
-      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); });
+      btn.addEventListener('click',()=>openCity(c, regionLabel, cl, btn));
+      host.appendChild(btn);
+    });
+  }
+  // Tier 4: locales inside one city (+ back to cluster cities).
+  function renderCityLocales(regionLabel, cl, city, locales){
+    closeMore(); host.innerHTML='';
+    const back=document.createElement('button'); back.className='chip region back';
+    back.textContent='‹ '+(city.name||city.id);
+    back.title='Back to '+(cl&&cl.label?cl.label:'cities');
+    back.addEventListener('click',()=>{ clearActive(); if (cl) renderClusterCities(regionLabel, cl); else flyCity(city); });
+    host.appendChild(back);
+    locales.forEach(loc=>{
+      const btn=document.createElement('button'); btn.className='chip market locale-chip'; btn.textContent=loc.name;
+      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyLocale(loc); });
       host.appendChild(btn);
     });
   }
@@ -3875,9 +3934,16 @@ document.querySelectorAll('.chip').forEach(b => {
       _crumb(clLabel, onCluster);
     }
     if (o.cityName){ _sep();
-      if (o.routeLabel && o.cityProps) _crumb(o.cityName, ()=>{ map.flyTo({center:o.cityCoords, zoom:Math.max(10,map.getZoom()), duration:900, essential:true}); try{ showDetail(o.cityProps,o.cityCoords); }catch(e){} });
-      else _crumb(o.cityName, null);
+      const clForCity = clNav || (clId && clusterFromId(clId));
+      const onCity = (o.localeName || o.routeLabel) && o.cityProps ? ()=>{
+        map.flyTo({center:o.cityCoords, zoom:Math.max(10,map.getZoom()), duration:900, essential:true});
+        try{ showDetail(o.cityProps,o.cityCoords); }catch(e){}
+        const locs=(o.cityId&&LOCALES_BY_PARENT[o.cityId])||[];
+        if (locs.length>1 && clForCity) renderCityLocales(region||'', clForCity, { id:o.cityId, name:o.cityName, coords:o.cityCoords, props:o.cityProps }, locs);
+      } : null;
+      _crumb(o.cityName, onCity);
     }
+    if (o.localeName){ _sep(); _crumb(o.localeName, null); }
     if (o.routeLabel){ _sep(); _crumb(o.routeLabel, null); }
   }
   window._topNavDrill = renderBreadcrumb;

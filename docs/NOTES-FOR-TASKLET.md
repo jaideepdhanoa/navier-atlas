@@ -6,6 +6,84 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-19 — Global taxonomy migration shipped (Grok → Tasklet)
+
+**Read:** `grok-routing-output/TAXONOMY-HANDOFF-FOR-TASKLET.md` · `grok-routing-output/TAXONOMY-MIGRATION-2026-06-19.json`  
+**Script:** `scripts/grok-taxonomy/apply_taxonomy.mjs`
+
+**Shipped:** 4-tier nav (Region → Cluster → City → Locale). CLUSTERS 117→99 (−18 demoted/duplicate). `FEATURES_BY_TYPE.locale` **127** features. Tier-4 nav + locale map layer + breadcrumb in `index.html`. `CITY_TO_CLUSTER` fixed (`dubai-uae`→`uae`). LatAm/Caribbean split. 6 UAE locale brief stubs. 8 sub-regions got `parent_cluster_id` (nav-hidden).
+
+**Tasklet P0:** enrich locale brief stubs; re-emit locales in build.py; guardrail on new cluster mints. See handoff doc for full change table + P1/P2 queue.
+
+---
+
+## 2026-06-19 — Geography taxonomy audit + proposed contract (Grok → Tasklet)
+
+**Trigger:** MENA nav shows UAE, Palm Jumeirah, The World Islands, and Abu Dhabi Islands as peer chips; Caribbean duplicates (Cayman ×2); cities mixed with countries.
+
+### How the stack works today
+
+| Level | Source | Nav behavior |
+|-------|--------|--------------|
+| **Region** | `city.properties.region` + `cluster.region` | Tier-1 chips (`index.html` region nav) |
+| **Cluster** | `data-clean/CLUSTERS.json` (117 rows) | Tier-2 chips — **every row is a peer** |
+| **City** | `FEATURES_BY_TYPE.city` (158) + `priority_city` (37) | Tier-3 chips |
+| **Locale** | Spine `nodes.json` `type:locale` (742 subnodes) | **Not rendered** since v17 |
+
+`CLUSTERS.member_city_ids` is authoritative for city→cluster (`build-site.mjs`, `index.html`). The city-node `cluster_id` property is stale (0/195 set). **Last-write-wins bug:** `dubai-uae` → `the-world-dubai`, `abu-dhabi-uae` → `abu-dhabi-islands` (sub-clusters overwrite parent `uae` in breadcrumbs).
+
+Sub-clusters (`palm-jumeirah-dubai`, `the-world-dubai`, `abu-dhabi-islands`) were minted in #79ab/#79ac for **LB-174 routing anchors**, not as nav peers — but nav has no parent/child concept.
+
+### Audit highlights
+
+- **UAE:** 4 MENA clusters share 2 cities — nav lists country + 3 sub-geographies flat.
+- **Caribbean:** 22 clusters on `LatAm-Caribbean` + 4 on `Caribbean`; nav aliases both to "Latin America & Caribbean". Twin duplicates: `cayman-islands` + `cayman-islands-cluster`, `bahamas` + `nassau-bahamas-cluster`, `turks-caicos` + `turks-caicos-cluster`, `usvi-bvi` + `usvi-bvi-cluster`.
+- **Intentional nesting elsewhere:** Croatia/Dalmatia, France/Corsica+Côte d'Azur, Saudi sub-clusters — same pattern, less visible because labels differ.
+- **12 orphan cities** (no cluster): incl. Bucket B `al-wakrah-qatar`, `dammam-khobar-ksa`, plus BP-as-city anomalies.
+- **32 cluster briefs** vs **117 clusters** — browse "Regions" tab only covers brief-backed clusters.
+
+### Proposed 4-level contract (going forward)
+
+```
+Region → Cluster (country/archipelago) → City (metro/emirate) → Locale (district/island/development)
+```
+
+**Placement rules:**
+
+| Entity | Cluster? | City? | Locale? |
+|--------|----------|-------|---------|
+| Country / multi-city archipelago (UAE, Bahamas) | ✓ | emirates/cities inside | — |
+| Single-city country (Singapore, Cayman) | ✓ (1 city) | same id | — |
+| Sub-geography inside a city (Palm, World Islands, Yas/Reem) | ✗ | parent city | ✓ subnode |
+| Routing anchor group (LB-174) | `parent_cluster_id` + hidden from nav | — | optional |
+
+### RACI
+
+| Work | Owner |
+|------|-------|
+| Taxonomy policy, city `.md` placement, locale subnode definitions, cluster brief *content* | **Tasklet** |
+| `CLUSTERS.json` edits, dedupe, region migration, `parent_cluster_id`, orphan fixes | **Grok** |
+| Nav filter (hide sub-clusters from tier-2; fix `CITY_TO_CLUSTER` primary resolution) | **Grok** (`index.html`) |
+| Re-seal + taxonomy QA gate | **Grok** |
+
+### Grok fix plan (pending Jaideep approval — structural)
+
+**Phase 1 — mechanical (Grok, no spine change):**
+1. Add `parent_cluster_id` to sub-clusters; nav excludes them from tier-2.
+2. Fix `CITY_TO_CLUSTER` to prefer clusters without `parent_cluster_id`.
+3. Split `LatAm-Caribbean` → `Latin-America` + `Caribbean`; migrate clusters; update nav alias map.
+4. Merge/remove `*-cluster` twins (keep canonical id, drop duplicate row).
+5. Wire Bucket B orphans into `qatar` / `saudi-arabia` (or `ksa-commercial`).
+
+**Phase 2 — content (Tasklet):**
+1. Fold Palm/World/AD Islands narrative into `uae` cluster brief + `dubai-uae` / `abu-dhabi-uae` city briefs.
+2. Re-introduce locales as map subnodes under parent cities (optional; v17 removed locale layer).
+3. Normalize Europe sub-regions (`Europe-Mediterranean`, `Europe-Atlantic`, …) to display regions.
+
+**Tasklet guardrails for new mints:** never add a cluster that shares a `member_city_id` with an existing cluster unless it carries `parent_cluster_id`; sub-geographies → locale subnode under parent city.
+
+---
+
 ## 2026-06-19 — Bucket B Tier 1+2 shipped (Grok → Tasklet)
 
 **Seal:** `#79an` · **Read:** `grok-routing-output/QA-BUCKETB-79an.md`
