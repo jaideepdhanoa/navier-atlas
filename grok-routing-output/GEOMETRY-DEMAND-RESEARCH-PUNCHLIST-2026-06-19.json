@@ -1,0 +1,24 @@
+{
+  "generated": "2026-06-19",
+  "owner_split": {
+    "tasklet_research": ["identify boarding points (real piers/terminals + coords)", "identify marquee/signature routes", "source demand (anchors/ridership/WTP)", "ID-match crosswalks (exactness)", "financial model build + cascade"],
+    "grok_deterministic": ["route identified BPs into navigable water-path geometry", "allowlist masks (LB-242)", "reseal", "render-check", "aggregate->growth runs", "commit"]
+  },
+  "sequencing": "geometry depth + demand (research -> routing) MUST complete before Bolt/Yango growth_case build",
+  "atlas_authority": "geometry-readiness judged by internal city_id (174 distinct across 180 files), NOT filename",
+  "bucket_A_id_mismatch_RESOLVED": {
+    "note": "geometry already existed; pure crosswalk applied to corridors.json (60 node fields remapped, 0 economics impact, backup at /tmp/corridors.bak.json)",
+    "remaps": {"manama": "manama-bahrain", "fujairah": "fujairah-uae", "ras-al-khaimah": "ras-al-khaimah-uae", "red-sea-global-ksa": "red-sea-global", "lagos": "lagos-nigeria"}
+  },
+  "bucket_B_truly_missing_geometry": {
+    "note": "Tasklet identifies BPs -> Grok routes/mints. 6 nodes.",
+    "nodes": ["lisbon-tagus-portugal", "abidjan-cote-divoire (corridor uses 'cote-divoire')", "dammam-khobar-ksa", "amaala-ksa", "neom-ksa", "al-wakrah-qatar"]
+  },
+  "bucket_C_null_node_aspirational_stubs": {
+    "note": "single corridor, NO node binding at all; Tasklet identifies real BPs + signature route from scratch. Currently visibly-aspirational (compliant with geometry-first rule).",
+    "bolt": ["estonia", "cyprus", "ireland", "sweden", "spain", "romania", "finland", "israel", "lebanon"],
+    "yango": ["caspian-az", "caspian-kz", "israel", "pakistan", "senegal", "mozambique", "tunisia", "morocco", "cis-rollup", "africa-rollup"]
+  },
+  "post_crosswalk_state": {"bolt_yango_node_refs_geometry_ready": "258/288"},
+  "demand_state": {"corridors_with_L3_locals_demand": "481/506", "recent_research": ["MULTI-MARKET-DEMAND-ANCHORS-2026-06-18.json", "UAE-DEMAND-ANCHORS-2026-06-17.json"]}
+}
