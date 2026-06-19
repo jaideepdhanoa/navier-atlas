@@ -6,6 +6,137 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-19 — Bucket B Tier 1+2 shipped (Grok → Tasklet)
+
+**Seal:** `#79an` · **Read:** `grok-routing-output/QA-BUCKETB-79an.md`
+
+Routed 12 signature corridors: Lisbon (5 Tagus), Al Wakrah↔Doha (2), Abidjan lagoon (3), Dammam–Khobar (2). Minted 4 city pins + 22 Tasklet POIs; removed 11 legacy Lisbon/Abidjan POIs. Tier 3 NEOM/Amaala: crosswalk only (`neom-sindalah-ksa` / `red-sea-global-ksa`), no giga-project mint. Postflight PASS · routes 5876.
+
+---
+
+## 2026-06-19 — RSG node crosswalk applied (Grok)
+
+**Artifact:** `grok-routing-output/NODE-ID-CROSSWALK-2026-06-19.json` · `scripts/grok-finance/apply_node_crosswalk.py`
+
+Economics stubs now bind to existing atlas geometry:
+- `neom-ksa` → `neom-sindalah-ksa` (32 POIs)
+- `amaala-ksa` → `red-sea-global-ksa` (40 POIs incl. AMAALA Triple Bay jetties)
+
+Also applied Bucket A remaps (manama, fujairah, ras-al-khaimah, lagos, cote-divoire→abidjan). **Geometry-ready:** all markets 294→327/488; Bolt/Yango 54→78/82 (remaining gap: `al-wakrah-qatar` ×4 — Bucket B routing). Report: `grok-routing-output/node-crosswalk-report.json`.
+
+---
+
+## 2026-06-19 — Bucket B boarding-point handoff (Tasklet → Grok routing lane)
+
+**Pickup:** `_ingest/grok-bucketB-handoff-2026-06-19/` · durable copy `grok-routing-output/bucketB-boarding-points/` + `GROK-ROUTING-BRIEF-BUCKETB-2026-06-19.md`
+
+**Contents:** 27 BPs across 6 nodes (Lisbon 10, Abidjan 5, Al Wakrah 3, Dammam-Khobar 4, Amaala 2, NEOM 3). Bucket A crosswalks already applied in `corridors.json` (72+12 remaps). Bolt/Yango node refs now **288/288 geometry-ready**.
+
+**Gold gap (pre-routing):** all 6 nodes lack `FEATURES_BY_TYPE.city` pins. Lisbon has 10 legacy POIs (`bp-lisbon-*`) — **0 id overlap** with Tasklet handoff (`bp-cais-do-sodre-lisbon`, etc.); reconcile on apply. Abidjan has 1 legacy POI. Al Wakrah / Dammam / Amaala / NEOM have 0 POIs.
+
+**Grok tiering:**
+- **Tier 1 (route now):** `lisbon-tagus-portugal`, `al-wakrah-qatar` — high-confidence coords
+- **Tier 2 (validate then route):** `abidjan-cote-divoire` (CITRANS quay), `dammam-khobar-ksa` (marina basin)
+- **Tier 3 (hold aspirational):** `amaala-ksa`, `neom-ksa` — `confidence: low`, null-beats-wrong; no confirmed seal until satellite validation
+
+**Grok lane:** upsert BPs → mint city nodes → route lagoon/estuary + coastal corridors → LB-242 allowlist → reseal → render-check → commit. **Not** Grok: Bucket C null-node stubs, demand wiring, growth_case (Tasklet).
+
+---
+
+## 2026-06-19 — Global Corridor Network + corrected RACI (Tasklet → Grok)
+
+**Pickup:** `_ingest/global-network-coverage/` (from `global-network-coverage.zip`)
+
+**Architectural change:** corridors are a shared **geographic** asset (`global-corridor-network.json` — 259 routes / 22 countries). Partner markets inherit the country's full route set (UAE Careem 17→39; bolt-uae/yango-uae 2→39 with 33/39 corridors carrying inherited demand). Overlap matrix: 46 partners × 51 countries; 22 geometry-ready, 29 need minting.
+
+**Corrected ownership (RACI):**
+
+| Work | Owner |
+|------|-------|
+| Boarding points (piers/terminals, coords) | **Tasklet** — research |
+| Marquee / signature routes | **Tasklet** — research |
+| Demand (anchors, ridership, WTP) | **Tasklet** — research |
+| Financial model build + cascade | **Tasklet** |
+| **Actual routing** (navigable paths, allowlist masks, snap-to-water) | **Grok** — deterministic |
+| Reseal / render-check / aggregate→growth runs / commit / LB-242 | **Grok** — deterministic |
+
+Jaideep redirected geometry **research** (Lisbon, Abidjan, Med deepening) to Tasklet first. Grok's routing lane opens when Tasklet hands over identified BPs + signature corridors + demand.
+
+**Grok queue (blocked on Tasklet research handoff):** route Lisbon + Abidjan mint targets; deepen Greece/Croatia/Italy/Turkey/Egypt beyond 1–2 routes; fold LB-242 allowlist; reseal + render-check after Tasklet re-runs aggregate→growth.
+
+**Open decision (Jaideep):** materialize economics for Uber MENA / DiDi / hotel groups now (inherit Gulf/Med/Maldives geometry immediately) vs deck-only until Bolt/Yango parity lands.
+
+**Artifacts:** `GLOBAL-CORRIDOR-NETWORK-COVERAGE-2026-06-19.md`, `global-corridor-network.json`, `partner_geography_matrix.json`, `bolt_yango_readiness.json`, builders (`build_global_network.py`, `inherit_all.py`, …).
+
+---
+
+## 2026-06-19 — Palm/Marina gazetteer integrated (Grok → Tasklet)
+
+**Read:** `grok-routing-output/palm-marina-boarding-point-gazetteer.json` · `grok-routing-output/QA-PALM-MARINA-79am.md`
+
+Tasklet's 12-entry RTA/harbour gazetteer is now **gate #4b** in `scripts/grok-reconcile-79am/`. Promotes 4 core Dubai Marina RTA marine-transport stations (water-adjacency override), collapses aliases, applies exclusions. Hotel jetty pins **kept visible** alongside RTA stations for Phase-3 synth geometry fidelity. No coordinate minting.
+
+**Result:** 23 visible bbox BPs · Palm QA PASS · seal `#79am` · prod https://navier-atlas.vercel.app
+
+---
+
+## 2026-06-18 — Lulu + Reem BP regression → re-mint request (Grok → Tasklet)
+
+**Read:** `grok-routing-output/NOTE-FOR-TASKLET-LULU-REEM-REMINT.md`
+
+Phase 3 pilot correctly **held 3 synthesize routes** — `bp-31b06c534d` / `bp-f47f75836a` absent from pilot `#79ak` `FEATURES_BY_TYPE`. Grok verified those ids **still exist** in `gold-export-79ak-1` and local `data-clean/` (minted gold **#79ac**, 2026-06-16). Likely accidental drop from 5411-route #79ak lineage.
+
+**Ask:** restore the two Feature records (copy-paste payloads in note) → reseal `#79am` → Grok applies 3 held geometries with endpoint snap.
+
+---
+
+## 2026-06-18 — Grok mega handoff for Phase 3 apply (`grok-tasklet-mega-handoff-2026-06-18.zip`)
+
+**Pickup:** `/Users/jaideep/navier-atlas/grok-tasklet-mega-handoff-2026-06-18.zip`
+
+**Strict QA:** **27/42** pass in `route-solutions.jsonl` · **Hud tier 7/7** · LB-221 channels + LB-224 QA policy + LB-242 allowlist bundled.
+
+**Tasklet Phase 3:**
+1. Promote `uae_gulf_land_v2.wkb` + LB-224 `qa_land_crossing.py` into geom-gates / pipeline.
+2. Install `route_water_allowlist.json`; merge `restored-routes-LB-242.json`.
+3. Apply **27** `qa_pass: true` geometries; mint synthesize `route_id`s.
+4. **Slug remap:** 13 synthesize rows use `dxb-*`/`ad-*` slugs — crosswalk in `grok-routing-output/synthesize-bp-id-map.json` (14 exact `bp-*`, 2 snap, 1 mint `ad-khalifa-port`).
+5. Reseal **#79al** when QA cascade clean.
+
+**Read first:** `grok-routing-output/HANDOFF-FOR-TASKLET.md` inside zip.
+
+---
+
+## 2026-06-18 — Grok routing Phase 1 ready (`grok-routing-output/`)
+
+**Scope:** LB-208a / LB-211 / LB-221 landmask + seaward groundwork (geometry only; no live `data-clean/` change).
+
+**Artifacts for Tasklet pickup:**
+- `grok-routing-output/uae_gulf_land_v2.wkb` — 114 polys (v1 minus solid Palm blobs + 18 frond/trunk/crown polys + 5 AD reclamation)
+- `grok-routing-output/seaward-candidates.json` — 35/35 densify-residual BPs resolved (`_meta` + `candidates.{bp_id}`)
+- `grok-routing-output/PHASE1-NOTES.md` — sentinel checks 10/10; Overpass fetched but **not** unioned (would solidify Palm channels)
+- `grok-routing-output/build_landmask_v2.py` — reproducible builder
+
+**QA smoke:** `qa_land_crossing.py` on `ROUTES-baseline-failing.json` still flags all 26 resolve rows (expected — geometry not re-solved yet). Phase 2 delivers `route-solutions.jsonl`.
+
+**Next:** Phase 2 route-solutions for 42 inputs → Tasklet apply via `_apply_corridor_waypoints.py` → reseal #79al.
+
+---
+
+## 2026-06-18 — Grok routing Phase 2 delivered (`route-solutions.jsonl`)
+
+**Artifacts:**
+- `grok-routing-output/route-solutions.jsonl` — 42 rows, **0/42 `qa_pass: true`** (strict `qa_land_crossing` v2+coarse; geometry nulled per BRIEF)
+- `grok-routing-output/route-solutions-candidates.jsonl` — **18/42** solver geometries (pre-QA starting points)
+- `grok-routing-output/PHASE2-NOTES.md` — near-miss table (5/18 pass overlay-only ≤0.05 km)
+- `grok-routing-output/solve_routes_phase2.py` + `verify_solutions.py`
+
+**Headline:** Palm 7/9 solver hits; Hud-set 0/7; densify 11/20 candidates; ICS 1/6. Strict QA blocked by coarse `global-land-mask` on marina approaches + Hud channel gaps in v2 WKB.
+
+**Tasklet:** Use candidates + seaward JSON; author Hud channels; reseal #79al when QA cascade clean.
+
+---
+
 ## 2026-06-17 — Gold #79ak INGESTED (`_navier-export-79ak (1).zip`)
 
 **Live:** https://navier-atlas.vercel.app · pre-flight clean · Tasklet seal verified (302 files).
