@@ -168,7 +168,26 @@ const PROMOTE_POI_TO_LOCALE = [
   'abu-dhabi-uae__saadiyat-island',
   'abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd',
   'abu-dhabi-uae__sir-bani-yas-desert-islands',
+  'muscat-oman__daymaniyat-islands-unesco-marine-reserve-candidate',
 ];
+
+// Promoted boarding points mistakenly typed as city — demote to poi; nav shows locale under parent city.
+const DEMOTE_PROMOTED_BP_CITIES = {
+  'bp-4e324134ef': {
+    locale_id: 'abu-dhabi-uae__sir-bani-yas-desert-islands',
+    parent_city_id: 'abu-dhabi-uae',
+  },
+  'bp-095a41dfcb': {
+    locale_id: 'muscat-oman__daymaniyat-islands-unesco-marine-reserve-candidate',
+    parent_city_id: 'muscat-oman',
+    brief: {
+      display: 'Daymaniyat Islands',
+      tagline: 'Nine-island UNESCO marine reserve — permit-gated diving with a sharp quiet-mode conservation overlay.',
+      summary: 'Promoted BP-as-city orphan demoted to locale under muscat-oman. Tasklet: enrich with demand signals and signature routes.',
+      migrated_from: 'bp-095a41dfcb',
+    },
+  },
+};
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function writeJson(p, obj) {
@@ -349,6 +368,74 @@ function createLocaleBriefs(demotedMeta, cityBriefsDir, existingBriefs, cityRegi
   return { created, skipped };
 }
 
+/** Move promoted BP-as-city nodes back to poi; ensure matching locale feature + brief stub. */
+function demotePromotedBpCities(fbt, localeFeatures, briefsDir, existingBriefs, cityRegion) {
+  const demoted = [];
+  const briefsCreated = [];
+  const cities = [...(fbt.city || [])];
+  const pois = [...(fbt.poi || [])];
+  const localeById = Object.fromEntries(localeFeatures.map((f) => [f.properties.id, f]));
+
+  for (const [bpId, spec] of Object.entries(DEMOTE_PROMOTED_BP_CITIES)) {
+    const idx = cities.findIndex((f) => f.properties?.id === bpId);
+    if (idx < 0) continue;
+    const feat = cities[idx];
+    const props = { ...feat.properties, type: 'poi' };
+    delete props.promoted;
+    delete props.tier_sort_key;
+    pois.push({ type: 'Feature', geometry: feat.geometry, properties: props });
+    cities.splice(idx, 1);
+    demoted.push(bpId);
+
+    if (!localeById[spec.locale_id]) {
+      const full = props.linked_locale || props.fullName || props.name || spec.locale_id;
+      const locFeat = {
+        type: 'Feature',
+        geometry: feat.geometry,
+        properties: {
+          id: spec.locale_id,
+          type: 'locale',
+          name: full,
+          shortName: props.shortName || shortLabel(full),
+          fullName: full,
+          parent_city_id: spec.parent_city_id,
+          region: props.region || cityRegion[spec.parent_city_id] || null,
+          is_anchor: false,
+        },
+      };
+      localeFeatures.push(locFeat);
+      localeById[spec.locale_id] = locFeat;
+    }
+
+    if (spec.brief && !existingBriefs.has(canonicalLocaleId(spec.locale_id))) {
+      const localeId = canonicalLocaleId(spec.locale_id);
+      const brief = {
+        city_id: localeId,
+        display: spec.brief.display,
+        region: cityRegion[spec.parent_city_id] || 'MENA',
+        tagline: spec.brief.tagline,
+        summary: spec.brief.summary,
+        _taxonomy: {
+          migrated_from_bp: spec.brief.migrated_from,
+          parent_city_id: spec.parent_city_id,
+          migration_date: TODAY,
+          status: 'stub',
+          grok_owner: 'Grok',
+          tasklet_action: 'enrich',
+        },
+      };
+      writeJson(path.join(briefsDir, `${localeId}.json`), brief);
+      existingBriefs.add(localeId);
+      briefsCreated.push({ locale_id: localeId, from_bp: bpId });
+    }
+  }
+
+  fbt.city = cities;
+  fbt.poi = pois;
+  localeFeatures.sort((a, b) => a.properties.id.localeCompare(b.properties.id));
+  return { demoted, briefsCreated };
+}
+
 // ── main ─────────────────────────────────────────────────────────────────────
 const clustersPath = path.join(DC, 'CLUSTERS.json');
 const fbtPath = path.join(DC, 'FEATURES_BY_TYPE.json');
@@ -367,16 +454,21 @@ const cityIds = new Set([
 const { clustersData: migrated, changes, demotedMeta } = migrateClusters(clustersData);
 writeJson(clustersPath, migrated);
 
-const localeFeatures = buildLocaleFeatures(nodes, cityIds);
-fbt.locale = localeFeatures;
-writeJson(fbtPath, fbt);
-
 const existingBriefs = new Set(fs.readdirSync(briefsDir).filter(f => f.endsWith('.json')).map(f => f.replace('.json', '')));
 const cityRegion = {};
 for (const f of [...(fbt.city || []), ...(fbt.priority_city || [])]) {
   if (f.properties?.id) cityRegion[f.properties.id] = f.properties.region;
 }
+
+const localeFeatures = buildLocaleFeatures(nodes, cityIds);
+const { demoted: bpDemoted, briefsCreated: bpBriefsCreated } = demotePromotedBpCities(
+  fbt, localeFeatures, briefsDir, existingBriefs, cityRegion
+);
+fbt.locale = localeFeatures;
+writeJson(fbtPath, fbt);
+
 const { created: briefsCreated, skipped: briefsSkipped } = createLocaleBriefs(demotedMeta, briefsDir, existingBriefs, cityRegion);
+const allBriefsCreated = [...briefsCreated, ...bpBriefsCreated];
 
 const manifest = {
   schema: 'navier-atlas/taxonomy-migration/v1',
@@ -389,12 +481,14 @@ const manifest = {
     region_migrations: changes.region_migrated.length,
     orphans_wired: changes.orphans_wired.length,
     locale_features: localeFeatures.length,
-    locale_briefs_created: briefsCreated.length,
+    locale_briefs_created: allBriefsCreated.length,
     locale_briefs_skipped: briefsSkipped.length,
+    bp_cities_demoted: bpDemoted.length,
   },
   changes,
+  bp_cities_demoted: bpDemoted,
   demote_to_locale: DEMOTE_TO_LOCALE,
-  locale_briefs_created: briefsCreated,
+  locale_briefs_created: allBriefsCreated,
   locale_briefs_skipped: briefsSkipped,
   parent_cluster_map: PARENT_CLUSTER,
   delete_clusters: [...DELETE_CLUSTERS],
