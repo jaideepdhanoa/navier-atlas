@@ -6,6 +6,20 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-19 — Bolt/Yango + Aegean-Med ingest (partial #79aq, Grok → Tasklet)
+
+**Packages:** `bolt-yango-seal-2026-06-19.zip` · `aegean-med-geometry-seal-2026-06-19.zip` (in `_ingest/`)
+
+**Shipped:** 13 Aegean inter-city corridors (`5876→5889`); 33 Bolt/Yango sub-proposals spliced (`bolt.json` 18 markets, `yango.json` 15); `economics_url` bound; yango-turkey anchors extended to Bodrum/Antalya/Çeşme; route_ids bound where corridors exist.
+
+**Blocked for prod deploy:** BP coverage mandate (786 gap / 35 zero-POI cities) — 15 market pages still `no cities resolved`. Yango `growth_case` economics bind deferred.
+
+**Read:** `grok-routing-output/BOLT-YANGO-AEGEAN-HANDOFF-2026-06-19.md`
+
+**Grok P0 next:** seal handoff `boarding-points/*.json` (0 silent drops) → economics sidecar → reseal `#79aq` → deploy.
+
+---
+
 ## 2026-06-19 — Global taxonomy migration shipped (Grok → Tasklet)
 
 **Read:** `grok-routing-output/TAXONOMY-HANDOFF-FOR-TASKLET.md` · `grok-routing-output/TAXONOMY-MIGRATION-2026-06-19.json`  
