@@ -64,49 +64,174 @@ def route_props(r: dict) -> dict:
     return r.get("properties", r)
 
 
-def build_route_index(routes: list) -> dict[tuple[str, str], str]:
-    """Map (from_node, to_node) and city pairs → route_id (first match)."""
-    idx: dict[tuple[str, str], str] = {}
-    for r in routes:
-        p = route_props(r)
-        rid = p.get("id") or p.get("route_id")
-        if not rid:
-            continue
-        for a, b in (
-            (p.get("from_node"), p.get("to_node")),
-            (p.get("from"), p.get("to")),
-            (p.get("from_city_id"), p.get("to_city_id")),
-        ):
-            if a and b:
-                idx[(a, b)] = rid
-                idx[(b, a)] = rid
-    return idx
+def norm_label(s: str | None) -> str:
+    if not s:
+        return ""
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s]", " ", s)
+    return re.sub(r"\s+", " ", s).strip()
 
 
-def bind_route_refs(obj, route_idx: dict, economics_url: str | None):
-    """Recursively bind route_id on featured_routes / journeys_unlocked."""
+_LABEL_STOP = frozenset(
+    {
+        "the", "and", "of", "lisbon", "portugal", "spain", "marina", "terminal",
+        "fluvial", "pier", "port", "harbour", "harbor", "jetty", "city", "town",
+    }
+)
+
+
+def _label_tokens(s: str | None) -> set[str]:
+    return {t for t in norm_label(s).split() if t and t not in _LABEL_STOP}
+
+
+def labels_match(a: str | None, b: str | None) -> bool:
+    na, nb = norm_label(a), norm_label(b)
+    if not na or not nb:
+        return False
+    if na == nb or na in nb or nb in na:
+        return True
+    ta, tb = _label_tokens(a), _label_tokens(b)
+    if not ta or not tb:
+        return False
+    overlap = ta & tb
+    need = min(2, min(len(ta), len(tb)))
+    return len(overlap) >= max(1, need)
+
+
+def crosswalk_node(nid: str | None) -> str | None:
+    if not nid:
+        return nid
+    return ANCHOR_CROSSWALK.get(nid, nid)
+
+
+class RouteIndexes:
+    def __init__(self, routes: list):
+        self.bp_pair: dict[tuple[str, str], str] = {}
+        self.label_pair: dict[tuple[str, str], str] = {}
+        self.inter_city: dict[tuple[str, str], str] = {}
+        self.by_id: dict[str, dict] = {}
+        for r in routes:
+            p = route_props(r)
+            rid = p.get("id") or p.get("route_id")
+            if not rid:
+                continue
+            self.by_id[rid] = p
+            fn, tn = p.get("from_node"), p.get("to_node")
+            if fn and tn:
+                self.bp_pair[(fn, tn)] = rid
+                self.bp_pair[(tn, fn)] = rid
+            fl, tl = p.get("from_label"), p.get("to_label")
+            if fl and tl:
+                key = (norm_label(fl), norm_label(tl))
+                self.label_pair[key] = rid
+                self.label_pair[(key[1], key[0])] = rid
+            fc, tc = p.get("from_city_id"), p.get("to_city_id")
+            if fc and tc and fc != tc:
+                self.inter_city[(fc, tc)] = rid
+                self.inter_city[(tc, fc)] = rid
+
+    def match_labels(self, from_l: str | None, to_l: str | None) -> str | None:
+        if not from_l or not to_l:
+            return None
+        nf, nt = norm_label(from_l), norm_label(to_l)
+        hit = self.label_pair.get((nf, nt))
+        if hit:
+            return hit
+        for (rf, rt), rid in self.label_pair.items():
+            if labels_match(from_l, rf) and labels_match(to_l, rt):
+                return rid
+        return None
+
+
+def build_corridor_index(corridors_doc: dict) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    for mkey, mval in (corridors_doc.get("markets") or {}).items():
+        if isinstance(mval, dict) and mval.get("corridors"):
+            out[mkey] = mval["corridors"]
+    return out
+
+
+def corridor_for_journey(corridors: list[dict], from_l: str, to_l: str) -> dict | None:
+    for c in corridors or []:
+        if labels_match(from_l, c.get("from")) and labels_match(to_l, c.get("to")):
+            return c
+    return None
+
+
+def bind_route_item(obj: dict, market_key: str, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None):
+    """Bind one featured_route / journey_unlocked row."""
+    if not isinstance(obj, dict) or obj.get("route_id"):
+        return
+
+    for key in ("from_node_id", "to_node_id", "from_node", "to_node"):
+        if obj.get(key):
+            obj[key] = crosswalk_node(obj[key])
+
+    from_l = obj.get("from") or obj.get("from_label")
+    to_l = obj.get("to") or obj.get("to_label")
+    rid = indexes.match_labels(from_l, to_l)
+
+    if not rid:
+        corr = corridor_for_journey(corridor_idx.get(market_key, []), from_l or "", to_l or "")
+        if corr and corr.get("route_id"):
+            rid = corr["route_id"]
+
+    if not rid:
+        fn = obj.get("from_node_id") or obj.get("from_node")
+        tn = obj.get("to_node_id") or obj.get("to_node")
+        if fn and tn and fn != tn:
+            rid = indexes.inter_city.get((fn, tn)) or indexes.bp_pair.get((fn, tn))
+
+    if rid:
+        obj["route_id"] = rid
+        obj["_link_kind"] = "corridor-label" if from_l else "corridor-node"
+        obj["_link_status"] = "linked"
+    elif from_l and to_l:
+        obj["_link_status"] = "unlinked-no-route"
+    elif (obj.get("from_node_id") or obj.get("from_node")) == (obj.get("to_node_id") or obj.get("to_node")):
+        obj["_link_status"] = "unlinked-intra-city"
+
+    if economics_url and obj.get("route_id") and obj.get("model_link") is None:
+        obj["model_link"] = economics_url
+
+
+def bind_market_routes(market: dict, market_key: str, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None):
+    for j in market.get("journeys_unlocked") or []:
+        bind_route_item(j, market_key, indexes, corridor_idx, economics_url)
+    for ph in market.get("phases") or []:
+        for key in ("cities",):
+            if isinstance(ph.get(key), list):
+                ph[key] = [crosswalk_node(c) or c for c in ph[key]]
+        for fr in ph.get("featured_routes") or []:
+            bind_route_item(fr, market_key, indexes, corridor_idx, economics_url)
+
+
+def bind_route_refs(obj, indexes: RouteIndexes, corridor_idx: dict, economics_url: str | None, market_key: str | None = None):
+    """Recursively bind route_id on hub + market proposals."""
     if isinstance(obj, list):
         for item in obj:
-            bind_route_refs(item, route_idx, economics_url)
+            bind_route_refs(item, indexes, corridor_idx, economics_url, market_key)
         return
     if not isinstance(obj, dict):
         return
 
-    fn = obj.get("from_node_id") or obj.get("from_node")
-    tn = obj.get("to_node_id") or obj.get("to_node")
-    if fn and tn and obj.get("route_id") is None:
-        rid = route_idx.get((fn, tn))
-        if rid:
-            obj["route_id"] = rid
-            obj["_link_kind"] = "corridor"
-            obj["_link_status"] = "linked-exact"
+    mkey = market_key
+    if obj.get("slug") and obj.get("journeys_unlocked") is not None:
+        pid = obj.get("id") or obj.get("slug")
+        prefix = "bolt" if any(k.startswith("bolt-") for k in corridor_idx if pid in k) else "yango"
+        for candidate in (f"bolt-{pid}", f"yango-{pid}", pid):
+            if candidate in corridor_idx:
+                mkey = candidate
+                break
+        bind_market_routes(obj, mkey or f"{prefix}-{pid}", indexes, corridor_idx, economics_url)
+        return
 
-    if economics_url and obj.get("model_link") is None and "route_id" in obj:
-        obj["model_link"] = economics_url
+    for j in obj.get("journeys_unlocked") or []:
+        bind_route_item(j, market_key or "", indexes, corridor_idx, economics_url)
 
     for v in obj.values():
         if isinstance(v, (dict, list)):
-            bind_route_refs(v, route_idx, economics_url)
+            bind_route_refs(v, indexes, corridor_idx, economics_url, market_key)
 
 
 def sanitize_partner_text(obj):
@@ -134,7 +259,14 @@ def normalize_anchors(anchors: list[str], sealed: set[str]) -> list[str]:
     return list(dict.fromkeys(out))
 
 
-def market_from_authored(authored: dict, economics_url: str, sealed_cities: set[str], market_key: str) -> dict:
+def market_from_authored(
+    authored: dict,
+    economics_url: str,
+    sealed_cities: set[str],
+    market_key: str,
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+) -> dict:
     m = sanitize_partner_text({k: v for k, v in authored.items() if k not in HUB_STRIP})
     if m.get("slug") and not m.get("id"):
         m["id"] = m["slug"]
@@ -142,7 +274,7 @@ def market_from_authored(authored: dict, economics_url: str, sealed_cities: set[
     if market_key in HELD_MARKET_SLUGS:
         m["tier"] = "data-only"
         m["status"] = "held"
-    bind_route_refs(m, ROUTE_IDX, economics_url)
+    bind_market_routes(m, market_key, indexes, corridor_idx, economics_url)
     return m
 
 
@@ -164,12 +296,19 @@ def hub_fields(src: dict, *, strip_markets: bool = True) -> dict:
     return out
 
 
-def apply_bolt(authored_all: dict, handoff_bolt: dict, economics_url: str, sealed_cities: set[str]) -> dict:
+def apply_bolt(
+    authored_all: dict,
+    handoff_bolt: dict,
+    economics_url: str,
+    sealed_cities: set[str],
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+) -> dict:
     bolt_markets = []
     for key in sorted(authored_all):
         if not key.startswith("bolt-"):
             continue
-        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key)
+        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx)
         bolt_markets.append(m)
     bolt_markets.sort(key=lambda x: (x.get("label") or x.get("id") or "").lower())
 
@@ -188,16 +327,23 @@ def apply_bolt(authored_all: dict, handoff_bolt: dict, economics_url: str, seale
         "applied_at": datetime.now(timezone.utc).isoformat(),
         "markets_spliced": len(bolt_markets),
     }
-    bind_route_refs(out, ROUTE_IDX, economics_url)
+    bind_route_refs(out, indexes, corridor_idx, economics_url)
     return out
 
 
-def apply_yango(authored_all: dict, hub: dict, economics_url: str, sealed_cities: set[str]) -> dict:
+def apply_yango(
+    authored_all: dict,
+    hub: dict,
+    economics_url: str,
+    sealed_cities: set[str],
+    indexes: RouteIndexes,
+    corridor_idx: dict,
+) -> dict:
     yango_markets = []
     for key in sorted(authored_all):
         if not key.startswith("yango-"):
             continue
-        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key)
+        m = market_from_authored(authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx)
         if m.get("slug") == "turkey" or m.get("id") == "turkey":
             anchors = list(dict.fromkeys(TURKEY_ANCHORS + (m.get("anchor_cities") or [])))
             m["anchor_cities"] = [a for a in anchors if a in sealed_cities]
@@ -227,12 +373,32 @@ def apply_yango(authored_all: dict, hub: dict, economics_url: str, sealed_cities
         "markets_spliced": len(yango_markets),
         "held_markets": hub.get("_held_markets", []),
     }
-    bind_route_refs(out, ROUTE_IDX, economics_url)
+    bind_route_refs(out, indexes, corridor_idx, economics_url)
     return out
 
 
+def binding_stats(partner_doc: dict) -> dict:
+    linked = unlinked = intra = 0
+    for m in partner_doc.get("markets") or []:
+        for j in m.get("journeys_unlocked") or []:
+            if j.get("route_id"):
+                linked += 1
+            elif j.get("_link_status") == "unlinked-intra-city":
+                intra += 1
+            else:
+                unlinked += 1
+        for ph in m.get("phases") or []:
+            for fr in ph.get("featured_routes") or []:
+                if fr.get("route_id"):
+                    linked += 1
+                elif fr.get("_link_status") == "unlinked-intra-city":
+                    intra += 1
+                else:
+                    unlinked += 1
+    return {"linked": linked, "unlinked": unlinked, "intra_city_pending_route": intra}
+
+
 def main():
-    global ROUTE_IDX
     ap = argparse.ArgumentParser()
     ap.add_argument("--dc", default="data-clean")
     ap.add_argument("--ingest", default=str(INGEST))
@@ -254,13 +420,15 @@ def main():
         if f.get("properties", {}).get("id")
     }
     routes = route_features(load_json(dc / "ROUTES.json"))
-    ROUTE_IDX = build_route_index(routes)
+    indexes = RouteIndexes(routes)
+    corridors_path = ingest / "inputs/corridors.json"
+    corridor_idx = build_corridor_index(load_json(corridors_path)) if corridors_path.exists() else {}
 
     bolt_url = econ_map.get("economics_url", {}).get("bolt", "")
     yango_url = econ_map.get("economics_url", {}).get("yango", "")
 
-    bolt_out = apply_bolt(authored_all, handoff_bolt, bolt_url, sealed_cities)
-    yango_out = apply_yango(authored_all, yango_hub, yango_url, sealed_cities)
+    bolt_out = apply_bolt(authored_all, handoff_bolt, bolt_url, sealed_cities, indexes, corridor_idx)
+    yango_out = apply_yango(authored_all, yango_hub, yango_url, sealed_cities, indexes, corridor_idx)
 
     save_json(partners / "bolt.json", bolt_out)
     save_json(partners / "yango.json", yango_out)
@@ -275,10 +443,13 @@ def main():
         "date": "2026-06-19",
         "bolt_markets": len(bolt_out["markets"]),
         "yango_markets": len(yango_out["markets"]),
-        "routes_indexed": len(ROUTE_IDX),
+        "routes_in_graph": len(indexes.by_id),
+        "corridor_markets": len(corridor_idx),
+        "binding_bolt": binding_stats(bolt_out),
+        "binding_yango": binding_stats(yango_out),
         "turkey_anchors": TURKEY_ANCHORS,
         "markets_zero_anchors_after_crosswalk": unresolved,
-        "note": "BP coverage sealed; Yango growth_case bound in bind_yango_growth_case.py.",
+        "note": "Corridor-label binding; intra-city routes require BP-pair geometry lane.",
     }
     out_path = ROOT / "grok-routing-output" / "bolt-yango-splice-report.json"
     save_json(out_path, report)
