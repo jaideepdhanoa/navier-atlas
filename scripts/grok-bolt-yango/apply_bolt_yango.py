@@ -278,7 +278,7 @@ def main():
         "routes_indexed": len(ROUTE_IDX),
         "turkey_anchors": TURKEY_ANCHORS,
         "markets_zero_anchors_after_crosswalk": unresolved,
-        "note": "BP coverage (786 gap) required before all market pages resolve; Yango growth_case bind deferred.",
+        "note": "BP coverage sealed; Yango growth_case bound in bind_yango_growth_case.py.",
     }
     out_path = ROOT / "grok-routing-output" / "bolt-yango-splice-report.json"
     save_json(out_path, report)

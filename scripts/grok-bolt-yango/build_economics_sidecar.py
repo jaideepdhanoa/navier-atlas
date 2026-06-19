@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""
+Build economics_by_route_id.json including bolt + yango partners.
+Wraps handoff build_economics_sidecar.py logic with bolt/yango PARTNERS extension.
+"""
+from __future__ import annotations
+
+import argparse
+import datetime
+import json
+import os
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+INGEST = ROOT / "_ingest/bolt-yango-seal-2026-06-19/bolt-yango-seal-2026-06-19"
+AGG_DIR = ROOT / "_ingest/gold-delta-LB230-LB241/agg"
+
+PARTNERS = [
+    "grab",
+    "careem",
+    "jih-global",
+    "red-sea-global",
+    "saudi-redsea-pif",
+    "qatar",
+    "bolt",
+    "yango",
+]
+
+DECK_URL = {
+    "grab": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
+    "bolt": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+    "yango": "https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit",
+}
+
+COMMODITY_FARE_IDS = {
+    "rn-347c44e1d360": 15.20,
+    "ics-5038f54700": 15.20,
+    "ics-66f63f2796": 15.20,
+    "ics-5288f62780": 14.00,
+}
+
+MARKET_DISPLAY = {
+    "singapore": "Singapore",
+    "cross-border": "Cross-Border",
+    "bali": "Bali",
+    "phuket": "Phuket",
+    "philippines": "Philippines",
+    "vietnam": "Vietnam",
+    "cambodia": "Cambodia",
+    "borneo": "Borneo",
+    "penang": "Penang",
+    "jakarta": "Jakarta",
+    "taiwan": "Taiwan",
+    "saudi-redsea": "Saudi – Red Sea",
+    "saudi-redsea-resort": "Saudi – Red Sea (Resort)",
+    "uae-careem": "UAE (Careem)",
+    "uae-luxury": "UAE (Luxury)",
+    "maldives-jih": "Maldives (JIH)",
+}
+
+
+def mkt_disp(mid):
+    return MARKET_DISPLAY.get(mid, (mid or "").replace("-", " ").title())
+
+
+def num(x):
+    return None if x is None else round(float(x), 2)
+
+
+def corridor_block(row, corr_country):
+    mid = row.get("mid", {})
+    thin = row.get("thin", {})
+    full = row.get("full", {})
+    auth_country = corr_country.get((row.get("market"), row.get("corridor")))
+    return {
+        "corridor": row.get("corridor"),
+        "market": mkt_disp(row.get("market")),
+        "country": auth_country if auth_country is not None else row.get("country"),
+        "distance_nm": row.get("nm"),
+        "status": row.get("status"),
+        "demand_confidence": row.get("demand_conf"),
+        "fare_today_usd": mid.get("comparable_fare_usd"),
+        "navier_fare_usd": mid.get("navier_fare_usd"),
+        "vessel": mid.get("vessel"),
+        "mid": {
+            "rev_per_boat_yr": num(mid.get("revenue_per_boat_yr")),
+            "margin": num(mid.get("margin")),
+            "payback_years": num(mid.get("payback_years")),
+            "co2_saved_t_per_boat_yr": num(mid.get("co2_saved_t_per_boat_yr")),
+            "vessels_10pct": mid.get("vessels_supported_10pct"),
+            "market_rev_yr": num(mid.get("market_revenue_yr")),
+        },
+        "band": {
+            "payback_years": [num(thin.get("payback_years")), num(mid.get("payback_years")), num(full.get("payback_years"))],
+            "vessels_10pct": [
+                thin.get("vessels_supported_10pct"),
+                mid.get("vessels_supported_10pct"),
+                full.get("vessels_supported_10pct"),
+            ],
+        },
+        "estimation_basis": row.get("est_basis"),
+        "assumptions": mid.get("assumptions"),
+        "breakdown": {
+            "revenue_build": {
+                "comparable_fare_usd": mid.get("comparable_fare_usd"),
+                "navier_fare_usd": mid.get("navier_fare_usd"),
+                "pax_capacity": (mid.get("revenue_inputs") or {}).get("pax_capacity"),
+                "load_factor": (mid.get("revenue_inputs") or {}).get("load_factor"),
+                "pax_per_trip": mid.get("pax_per_trip"),
+                "trips_per_day": mid.get("trips_per_day"),
+                "trips_per_year": mid.get("trips_per_year"),
+                "pax_per_year": mid.get("pax_per_year"),
+                "revenue_per_boat_yr": num(mid.get("revenue_per_boat_yr")),
+            },
+            "run_cost": {
+                "energy_usd_yr": num((mid.get("cost_components") or {}).get("energy_usd_yr")),
+                "crew_usd_yr": num((mid.get("cost_components") or {}).get("crew_usd_yr")),
+                "marina_overhead_usd_yr": num((mid.get("cost_components") or {}).get("marina_overhead_usd_yr")),
+                "maintenance_usd_yr": num((mid.get("cost_components") or {}).get("maintenance_usd_yr")),
+                "annual_opex_usd_yr": num(mid.get("annual_opex")),
+                "depreciation_usd_yr": num((mid.get("cost_components") or {}).get("depreciation_usd_yr")),
+            },
+            "result": {
+                "ebitda_per_boat_yr": num(mid.get("ebitda_per_boat_yr")),
+                "margin": num(mid.get("margin")),
+                "payback_years": num(mid.get("payback_years")),
+                "co2_saved_t_per_boat_yr": num(mid.get("co2_saved_t_per_boat_yr")),
+            },
+        },
+        "provenance": {
+            "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+            "demand": (
+                "sourced corridor demand pool"
+                if row.get("status") == "grounded"
+                else f"estimated ({row.get('est_basis')})"
+            ),
+        },
+    }
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dc", default="data-clean")
+    ap.add_argument("--aggdir", default=str(AGG_DIR))
+    ap.add_argument("--corridors", default=str(INGEST / "inputs/corridors.json"))
+    ap.add_argument("--out", default="data-clean/economics_by_route_id.json")
+    args = ap.parse_args()
+
+    dc = ROOT / args.dc
+    aggdir = Path(args.aggdir)
+    out = ROOT / args.out
+
+    routes_obj = json.loads((dc / "ROUTES.json").read_text())
+    feats = routes_obj["features"] if isinstance(routes_obj, dict) and "features" in routes_obj else routes_obj
+    gold_rids = set()
+    pair2id = {}
+    for f in feats:
+        p = f["properties"]
+        rid = p.get("id")
+        gold_rids.add(rid)
+        a, b = p.get("from"), p.get("to")
+        if a and b:
+            pair2id.setdefault(frozenset((a, b)), rid)
+
+    corr = json.loads(Path(args.corridors).read_text())
+    resolved = {}
+    unresolved_detail = {}
+    corr_country = {}
+    for mid_k, mk in corr["markets"].items():
+        partner = mk.get("partner", "grab")
+        for c in mk["corridors"]:
+            label = f"{c.get('from')} -> {c.get('to')}"
+            key = (mid_k, label)
+            corr_country[key] = c.get("country")
+            rid = c.get("route_id")
+            a, b = c.get("from_node_id"), c.get("to_node_id")
+            is_asp = bool(c.get("aspirational"))
+            if rid and rid in gold_rids:
+                resolved[key] = rid
+            elif a and b and frozenset((a, b)) in pair2id:
+                resolved[key] = pair2id[frozenset((a, b))]
+            else:
+                if a and b and a == b:
+                    why = "aspirational_intra_city"
+                elif is_asp:
+                    why = "aspirational_declared"
+                else:
+                    why = "route_id_not_in_gold" if rid else (
+                        "endpoints_city_level_not_pinned" if (a and b) else "no_endpoints"
+                    )
+                unresolved_detail[key] = {"partner": partner, "reason": why}
+
+    by_rid = defaultdict(list)
+    pending = []
+    aliases = {"saudi-redsea": "saudi-redsea-pif", "grab-aggregate-results": "grab"}
+
+    for partner in PARTNERS:
+        p_resolved = aliases.get(partner, partner)
+        candidates = [
+            aggdir / f"agg-{p_resolved}.json",
+            aggdir / f"{p_resolved}-aggregate.json",
+            aggdir / f"agg-{partner}.json",
+            aggdir / f"{partner}-aggregate.json",
+        ]
+        path = next((c for c in candidates if c.exists()), None)
+        if not path:
+            continue
+        rows = json.loads(path.read_text()).get("rows", [])
+        for row in rows:
+            if row.get("status") == "duplicate" or row.get("is_dup"):
+                continue
+            market = row.get("market")
+            label = row.get("corridor")
+            key = (market, label)
+            mid = row.get("mid", {})
+            rid = resolved.get(key)
+            if not rid and mid.get("route_id") in gold_rids:
+                rid = mid.get("route_id")
+            if not rid:
+                pending.append(
+                    {
+                        "partner": partner,
+                        "market": market,
+                        "corridor": label,
+                        "status": row.get("status"),
+                        "reason": unresolved_detail.get(key, {}).get("reason", "unresolved"),
+                    }
+                )
+                continue
+            by_rid[rid].append((partner, row))
+
+    records = []
+    for rid, items in by_rid.items():
+        items_sorted = sorted(items, key=lambda pr: -((pr[1].get("mid", {}).get("market_revenue_yr")) or 0))
+        head_partner, head_row = items_sorted[0]
+        rec = {"route_id": rid, "partner": head_partner, "deck_url": DECK_URL.get(head_partner)}
+        rec.update(corridor_block(head_row, corr_country))
+        if len(items_sorted) > 1:
+            rec["also_serves"] = [corridor_block(r, corr_country) for _, r in items_sorted[1:]]
+        if rid in COMMODITY_FARE_IDS:
+            rec["commodity_fare"] = True
+            rec["fare_basis"] = "commodity_public_transit"
+            rec["commodity_fare_usd"] = COMMODITY_FARE_IDS[rid]
+        records.append(rec)
+
+    records.sort(key=lambda r: (r["partner"], -(r["mid"]["market_rev_yr"] or 0)))
+
+    payload = {
+        "_meta": {
+            "doc": "Route-keyed unit-economics sidecar for the Atlas front end.",
+            "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "gold_routes_total": len(gold_rids),
+            "records": len(records),
+            "pending_route_pin": len(pending),
+            "partners": PARTNERS,
+            "resolution": "ID-based only (route_id in gold, or exact unordered endpoint match).",
+        },
+        "records": records,
+        "_pending_route_pin": pending,
+    }
+    out.write_text(json.dumps(payload, indent=1) + "\n")
+    print(f"wrote {out}")
+    print(f"records: {len(records)} | pending: {len(pending)}")
+    print("by partner:", dict(Counter(r["partner"] for r in records)))
+
+
+if __name__ == "__main__":
+    main()

@@ -62,7 +62,7 @@ Per `inputs/BP-COVERAGE-GAP-2026-06-19.json`: **786 BP gap**, **35 zero-POI citi
 | 33 sub-proposals spliced | ✅ |
 | `economics_url` wired | ✅ bolt + yango |
 | `route_id` bound (deterministic) | ✅ partial (where corridors exist) |
-| BP coverage 0 silent drops | ⏳ **next bite** |
-| 0 land-crossings post-allowlist | ⏳ run `qa_land_crossing` on #79aq |
-| Partner page build (all markets) | ⏳ 15 markets blocked on zero-POI cities |
-| Yango growth_case bound | ⏳ deferred |
+| BP coverage 0 silent drops | ✅ 12,241 ledgered, 0 silent drops |
+| 0 land-crossings post-allowlist | ✅ postflight PASS (#79aq) |
+| Partner page build (all markets) | ✅ 33/33 Bolt+Yango market pages build |
+| Yango growth_case bound | ✅ agg-yango rollup + economics_url |

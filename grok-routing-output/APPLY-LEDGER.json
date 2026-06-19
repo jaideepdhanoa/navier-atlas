@@ -1,0 +1,197 @@
+{
+  "_meta": {
+    "built_by": "tasklet",
+    "date": "2026-06-18",
+    "phase": "3-pilot",
+    "verification": "All applyable bp-* ids confirmed present in sealed gold #79ak (data-clean/FEATURES_BY_TYPE.json). Exact remaps verified at 0m. Snap targets bp-31b06c534d/bp-f47f75836a NOT in sealed gold -> HELD.",
+    "reseal_target": "#79al"
+  },
+  "endpoint_crosswalk_verified": {
+    "dxb-dmyc": {
+      "status": "apply",
+      "bp_id": "bp-06edb1cb16",
+      "verified": "exact_0m"
+    },
+    "dxb-jbr-the-walk": {
+      "status": "apply",
+      "bp_id": "bp-d1a16f292d",
+      "verified": "exact_0m"
+    },
+    "dxb-zabeel-saray": {
+      "status": "apply",
+      "bp_id": "bp-f4ac4e0a50",
+      "verified": "exact_0m"
+    },
+    "dxb-one-only-palm": {
+      "status": "apply",
+      "bp_id": "bp-69b8c08204",
+      "verified": "exact_0m"
+    },
+    "dxb-waldorf-palm": {
+      "status": "apply",
+      "bp_id": "bp-eabf9538e3",
+      "verified": "exact_0m"
+    },
+    "dxb-anantara-palm": {
+      "status": "apply",
+      "bp_id": "bp-409ae0c3e7",
+      "verified": "exact_0m"
+    },
+    "dxb-bluewaters-marina": {
+      "status": "apply",
+      "bp_id": "bp-cef3fdf035",
+      "verified": "exact_0m"
+    },
+    "dxb-rixos-palm": {
+      "status": "apply",
+      "bp_id": "bp-5ff7762dc1",
+      "verified": "exact_0m"
+    },
+    "dxb-atlantis-royal": {
+      "status": "apply",
+      "bp_id": "bp-8625aeb0ac",
+      "verified": "exact_0m"
+    },
+    "ad-hudayriyat-bab-al-nojoum": {
+      "status": "apply",
+      "bp_id": "bp-1dd1c580ce",
+      "verified": "exact_0m"
+    },
+    "ad-emirates-palace-marina": {
+      "status": "apply",
+      "bp_id": "bp-14c19a643c",
+      "verified": "exact_0m"
+    },
+    "ad-yas-marina": {
+      "status": "apply",
+      "bp_id": "bp-3b66a8ce1d",
+      "verified": "exact_0m"
+    },
+    "ad-saadiyat-beach-club": {
+      "status": "apply",
+      "bp_id": "bp-5e6f444b82",
+      "verified": "exact_0m"
+    },
+    "ad-saadiyat-marina": {
+      "status": "apply",
+      "bp_id": "bp-10899a1b48",
+      "verified": "exact_0m"
+    },
+    "ad-lulu-island": {
+      "status": "HOLD",
+      "bp_id": "bp-31b06c534d",
+      "verified": "phantom_not_in_sealed_gold",
+      "reason": "No live boarding point at claimed coords in sealed #79ak; nearest real node >2km (Lulu) / different place (Reem). null beats confidently-wrong."
+    },
+    "ad-reem-island": {
+      "status": "HOLD",
+      "bp_id": "bp-f47f75836a",
+      "verified": "phantom_not_in_sealed_gold",
+      "reason": "No live boarding point at claimed coords in sealed #79ak; nearest real node >2km (Lulu) / different place (Reem). null beats confidently-wrong."
+    },
+    "ad-khalifa-port": {
+      "status": "mint",
+      "bp_id": null,
+      "mint_payload": {
+        "name": "Khalifa Port",
+        "lng": 54.651205,
+        "lat": 24.808029,
+        "bp_type": "working_harbour",
+        "relevance": "hide",
+        "parent_city_id": "abu-dhabi-uae",
+        "linked_locale": "Khalifa Industrial Zone (KIZAD)"
+      },
+      "verified": "no_bp_within_3km"
+    }
+  },
+  "apply_synthesize_clean": [
+    {
+      "route_id": null,
+      "from": "dxb-dmyc",
+      "to": "dxb-waldorf-palm"
+    },
+    {
+      "route_id": null,
+      "from": "dxb-jbr-the-walk",
+      "to": "dxb-one-only-palm"
+    },
+    {
+      "route_id": null,
+      "from": "dxb-zabeel-saray",
+      "to": "dxb-anantara-palm"
+    },
+    {
+      "route_id": null,
+      "from": "dxb-bluewaters-marina",
+      "to": "dxb-rixos-palm"
+    },
+    {
+      "route_id": null,
+      "from": "dxb-jbr-the-walk",
+      "to": "dxb-zabeel-saray"
+    },
+    {
+      "route_id": null,
+      "from": "dxb-dmyc",
+      "to": "dxb-atlantis-royal"
+    },
+    {
+      "route_id": null,
+      "from": "ad-hudayriyat-bab-al-nojoum",
+      "to": "ad-emirates-palace-marina"
+    },
+    {
+      "route_id": null,
+      "from": "ad-hudayriyat-bab-al-nojoum",
+      "to": "ad-yas-marina"
+    }
+  ],
+  "apply_synthesize_after_khalifa_mint": [
+    {
+      "route_id": null,
+      "from": "ad-khalifa-port",
+      "to": "ad-yas-marina"
+    },
+    {
+      "route_id": null,
+      "from": "ad-khalifa-port",
+      "to": "ad-saadiyat-beach-club"
+    }
+  ],
+  "hold_synthesize_phantom": [
+    {
+      "route_id": null,
+      "from": "ad-lulu-island",
+      "to": "ad-emirates-palace-marina",
+      "hold_endpoints": [
+        "ad-lulu-island"
+      ]
+    },
+    {
+      "route_id": null,
+      "from": "ad-saadiyat-marina",
+      "to": "ad-reem-island",
+      "hold_endpoints": [
+        "ad-reem-island"
+      ]
+    },
+    {
+      "route_id": null,
+      "from": "ad-saadiyat-beach-club",
+      "to": "ad-lulu-island",
+      "hold_endpoints": [
+        "ad-lulu-island"
+      ]
+    }
+  ],
+  "khalifa_mint_payload": {
+    "name": "Khalifa Port",
+    "lng": 54.651205,
+    "lat": 24.808029,
+    "bp_type": "working_harbour",
+    "relevance": "hide",
+    "parent_city_id": "abu-dhabi-uae",
+    "linked_locale": "Khalifa Industrial Zone (KIZAD)"
+  },
+  "note_resolve_rn_ics": "The remaining strict-pass rows in route-solutions.jsonl that are densify(rn-*)/ics use live bp-*/rn-* ids already present in sealed gold (verified). Apply directly."
+}

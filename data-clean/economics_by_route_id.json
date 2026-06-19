@@ -1,14 +1,587 @@
 {
  "_meta": {
-  "doc": "Route-keyed unit-economics sidecar for the Atlas front end. Join onto route features by route_id. Presence of a record => has_economics=true. Show MID headline; band carries THIN/MID/FULL. Honor status (grounded vs estimated) and demand_confidence in styling. Never invent: absent record = no economics yet.",
-  "generated": "2026-06-16T22:59:36Z",
-  "gold_routes_total": 5198,
-  "records": 99,
-  "pending_route_pin": 45,
-  "resolution": "ID-based only (route_id in gold, or exact unordered endpoint match). No fuzzy matching.",
-  "_splice_note": "UAE/Careem econ cascade 4c: careem partner records regenerated from recal corridors.json + new careem-aggregate.json (35 UAE corridors -> 32 route-pinned); non-careem partners (grab/jih-global/qatar/red-sea-global/saudi-redsea-pif) carried byte-identical from #79ae to avoid stale-aggregate regression (LB-199/LB-201 pattern)."
+  "doc": "Route-keyed unit-economics sidecar for the Atlas front end.",
+  "generated": "2026-06-19T14:50:18Z",
+  "gold_routes_total": 5884,
+  "records": 103,
+  "pending_route_pin": 91,
+  "partners": [
+   "grab",
+   "careem",
+   "jih-global",
+   "red-sea-global",
+   "saudi-redsea-pif",
+   "qatar",
+   "bolt",
+   "yango"
+  ],
+  "resolution": "ID-based only (route_id in gold, or exact unordered endpoint match)."
  },
  "records": [
+  {
+   "route_id": "rn-1066679a7f79",
+   "partner": "bolt",
+   "deck_url": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+   "corridor": "Doha -> Al Wakrah Marina",
+   "market": "Bolt Qatar",
+   "country": "Qatar",
+   "distance_nm": 11.0,
+   "status": "estimated",
+   "demand_confidence": null,
+   "fare_today_usd": null,
+   "navier_fare_usd": null,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": null,
+    "margin": null,
+    "payback_years": null,
+    "co2_saved_t_per_boat_yr": 176.6,
+    "vessels_10pct": null,
+    "market_rev_yr": null
+   },
+   "band": {
+    "payback_years": [
+     null,
+     null,
+     null
+    ],
+    "vessels_10pct": [
+     null,
+     null,
+     null
+    ]
+   },
+   "estimation_basis": "country-median",
+   "assumptions": {
+    "one_way_min": 33.0,
+    "turnaround_min": 20.0,
+    "cycle_min": 53.0,
+    "service_window_h": 12,
+    "trips_per_day": 13,
+    "trips_per_day_derivation": "floor(12h service window / 53.0min cycle [33.0min one-way + 20.0min turnaround]) = 13 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.75,
+    "load_factor": 0.65,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": null,
+     "navier_fare_usd": null,
+     "pax_capacity": 8,
+     "load_factor": 0.65,
+     "pax_per_trip": 5.2,
+     "trips_per_day": 13,
+     "trips_per_year": 2672,
+     "pax_per_year": 13894.0,
+     "revenue_per_boat_yr": null
+    },
+    "run_cost": {
+     "energy_usd_yr": 1723.0,
+     "crew_usd_yr": 43000.0,
+     "marina_overhead_usd_yr": 20000.0,
+     "maintenance_usd_yr": 10000.0,
+     "annual_opex_usd_yr": 74723.0,
+     "depreciation_usd_yr": 45000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": null,
+     "margin": null,
+     "payback_years": null,
+     "co2_saved_t_per_boat_yr": 176.6
+    }
+   },
+   "provenance": {
+    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+    "demand": "estimated (country-median)"
+   },
+   "also_serves": [
+    {
+     "corridor": "Doha -> Al Wakrah Marina",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 11.0,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 176.6,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 33.0,
+      "turnaround_min": 20.0,
+      "cycle_min": 53.0,
+      "service_window_h": 12,
+      "trips_per_day": 13,
+      "trips_per_day_derivation": "floor(12h service window / 53.0min cycle [33.0min one-way + 20.0min turnaround]) = 13 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 13,
+       "trips_per_year": 2672,
+       "pax_per_year": 13894.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1723.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74723.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 176.6
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
+  },
+  {
+   "route_id": "rn-30d3fa93ca0e",
+   "partner": "bolt",
+   "deck_url": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+   "corridor": "Lusail Marina -> The Pearl",
+   "market": "Bolt Qatar",
+   "country": "Qatar",
+   "distance_nm": 3.5,
+   "status": "estimated",
+   "demand_confidence": null,
+   "fare_today_usd": null,
+   "navier_fare_usd": null,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": null,
+    "margin": null,
+    "payback_years": null,
+    "co2_saved_t_per_boat_yr": 99.4,
+    "vessels_10pct": null,
+    "market_rev_yr": null
+   },
+   "band": {
+    "payback_years": [
+     null,
+     null,
+     null
+    ],
+    "vessels_10pct": [
+     null,
+     null,
+     null
+    ]
+   },
+   "estimation_basis": "country-median",
+   "assumptions": {
+    "one_way_min": 10.5,
+    "turnaround_min": 20.0,
+    "cycle_min": 30.5,
+    "service_window_h": 12,
+    "trips_per_day": 23,
+    "trips_per_day_derivation": "floor(12h service window / 30.5min cycle [10.5min one-way + 20.0min turnaround]) = 23 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.75,
+    "load_factor": 0.65,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": null,
+     "navier_fare_usd": null,
+     "pax_capacity": 8,
+     "load_factor": 0.65,
+     "pax_per_trip": 5.2,
+     "trips_per_day": 23,
+     "trips_per_year": 4726,
+     "pax_per_year": 24575.0,
+     "revenue_per_boat_yr": null
+    },
+    "run_cost": {
+     "energy_usd_yr": 970.0,
+     "crew_usd_yr": 43000.0,
+     "marina_overhead_usd_yr": 20000.0,
+     "maintenance_usd_yr": 10000.0,
+     "annual_opex_usd_yr": 73970.0,
+     "depreciation_usd_yr": 45000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": null,
+     "margin": null,
+     "payback_years": null,
+     "co2_saved_t_per_boat_yr": 99.4
+    }
+   },
+   "provenance": {
+    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+    "demand": "estimated (country-median)"
+   },
+   "also_serves": [
+    {
+     "corridor": "Lusail Marina -> The Pearl",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 3.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 99.4,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 10.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 30.5,
+      "service_window_h": 12,
+      "trips_per_day": 23,
+      "trips_per_day_derivation": "floor(12h service window / 30.5min cycle [10.5min one-way + 20.0min turnaround]) = 23 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 23,
+       "trips_per_year": 4726,
+       "pax_per_year": 24575.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 970.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 73970.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 99.4
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
+  },
+  {
+   "route_id": "rn-ad6f66610b8c",
+   "partner": "bolt",
+   "deck_url": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+   "corridor": "Al Wakrah -> Banana Island",
+   "market": "Bolt Qatar",
+   "country": "Qatar",
+   "distance_nm": 9.5,
+   "status": "estimated",
+   "demand_confidence": null,
+   "fare_today_usd": null,
+   "navier_fare_usd": null,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": null,
+    "margin": null,
+    "payback_years": null,
+    "co2_saved_t_per_boat_yr": 164.2,
+    "vessels_10pct": null,
+    "market_rev_yr": null
+   },
+   "band": {
+    "payback_years": [
+     null,
+     null,
+     null
+    ],
+    "vessels_10pct": [
+     null,
+     null,
+     null
+    ]
+   },
+   "estimation_basis": "country-median",
+   "assumptions": {
+    "one_way_min": 28.5,
+    "turnaround_min": 20.0,
+    "cycle_min": 48.5,
+    "service_window_h": 12,
+    "trips_per_day": 14,
+    "trips_per_day_derivation": "floor(12h service window / 48.5min cycle [28.5min one-way + 20.0min turnaround]) = 14 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.75,
+    "load_factor": 0.65,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": null,
+     "navier_fare_usd": null,
+     "pax_capacity": 8,
+     "load_factor": 0.65,
+     "pax_per_trip": 5.2,
+     "trips_per_day": 14,
+     "trips_per_year": 2877,
+     "pax_per_year": 14960.0,
+     "revenue_per_boat_yr": null
+    },
+    "run_cost": {
+     "energy_usd_yr": 1602.0,
+     "crew_usd_yr": 43000.0,
+     "marina_overhead_usd_yr": 20000.0,
+     "maintenance_usd_yr": 10000.0,
+     "annual_opex_usd_yr": 74602.0,
+     "depreciation_usd_yr": 45000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": null,
+     "margin": null,
+     "payback_years": null,
+     "co2_saved_t_per_boat_yr": 164.2
+    }
+   },
+   "provenance": {
+    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+    "demand": "estimated (country-median)"
+   },
+   "also_serves": [
+    {
+     "corridor": "Al Wakrah -> Banana Island",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 9.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 164.2,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 28.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 48.5,
+      "service_window_h": 12,
+      "trips_per_day": 14,
+      "trips_per_day_derivation": "floor(12h service window / 48.5min cycle [28.5min one-way + 20.0min turnaround]) = 14 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 14,
+       "trips_per_year": 2877,
+       "pax_per_year": 14960.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1602.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74602.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 164.2
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
+  },
+  {
+   "route_id": "rn-dd4500aa99f5",
+   "partner": "careem",
+   "deck_url": null,
+   "corridor": "Dubai Harbour Marina -> Wynn Al Marjan Island arrival lagoon",
+   "market": "UAE (Careem)",
+   "country": "United Arab Emirates",
+   "distance_nm": 56.0,
+   "status": "grounded",
+   "demand_confidence": "medium",
+   "fare_today_usd": 200.0,
+   "navier_fare_usd": 200.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 640640.0,
+    "margin": 0.88,
+    "payback_years": 1.06,
+    "co2_saved_t_per_boat_yr": 212.3,
+    "vessels_10pct": 1,
+    "market_rev_yr": 640640.0
+   },
+   "band": {
+    "payback_years": [
+     1.68,
+     1.06,
+     0.69
+    ],
+    "vessels_10pct": [
+     2,
+     1,
+     1
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 168.0,
+    "turnaround_min": 20.0,
+    "cycle_min": 188.0,
+    "service_window_h": 12,
+    "trips_per_day": 3,
+    "trips_per_day_derivation": "floor(12h service window / 188.0min cycle [168.0min one-way + 20.0min turnaround]) = 3 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.75,
+    "load_factor": 0.65,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 200.0,
+     "navier_fare_usd": 200.0,
+     "pax_capacity": 8,
+     "load_factor": 0.65,
+     "pax_per_trip": 5.2,
+     "trips_per_day": 3,
+     "trips_per_year": 616,
+     "pax_per_year": 3203.0,
+     "revenue_per_boat_yr": 640640.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 4775.0,
+     "crew_usd_yr": 40000.0,
+     "marina_overhead_usd_yr": 22000.0,
+     "maintenance_usd_yr": 10000.0,
+     "annual_opex_usd_yr": 76775.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 563865.0,
+     "margin": 0.88,
+     "payback_years": 1.06,
+     "co2_saved_t_per_boat_yr": 212.3
+    }
+   },
+   "provenance": {
+    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+    "demand": "sourced corridor demand pool"
+   }
+  },
   {
    "route_id": "rn-42aa1791bb60",
    "partner": "careem",
@@ -17,7 +590,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 2.1,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 48.0,
    "navier_fare_usd": 48.0,
@@ -27,7 +600,7 @@
     "margin": 0.95,
     "payback_years": 0.46,
     "co2_saved_t_per_boat_yr": 71.7,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -37,12 +610,12 @@
      0.3
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 6.3,
     "turnaround_min": 20.0,
@@ -87,7 +660,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -179,8 +752,8 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 9.2,
-   "status": "estimated",
-   "demand_confidence": "low",
+   "status": "grounded",
+   "demand_confidence": "medium",
    "fare_today_usd": 175.0,
    "navier_fare_usd": 175.0,
    "vessel": "N30 Pioneer II",
@@ -189,7 +762,7 @@
     "margin": 0.97,
     "payback_years": 0.22,
     "co2_saved_t_per_boat_yr": 174.5,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -199,12 +772,12 @@
      0.15
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 27.6,
     "turnaround_min": 20.0,
@@ -249,7 +822,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -341,7 +914,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 59.8,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 110.0,
    "navier_fare_usd": 110.0,
@@ -351,7 +924,7 @@
     "margin": 0.78,
     "payback_years": 2.18,
     "co2_saved_t_per_boat_yr": 226.7,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -361,12 +934,12 @@
      1.35
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     1,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 179.4,
     "turnaround_min": 20.0,
@@ -411,88 +984,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
-   }
-  },
-  {
-   "route_id": "rn-dd4500aa99f5",
-   "partner": "careem",
-   "deck_url": null,
-   "corridor": "Dubai Harbour Marina -> Wynn Al Marjan Island arrival lagoon",
-   "market": "UAE (Careem)",
-   "country": "United Arab Emirates",
-   "distance_nm": 56.0,
-   "status": "estimated",
-   "demand_confidence": "low",
-   "fare_today_usd": 200.0,
-   "navier_fare_usd": 200.0,
-   "vessel": "N30 Pioneer II",
-   "mid": {
-    "rev_per_boat_yr": 640640.0,
-    "margin": 0.88,
-    "payback_years": 1.06,
-    "co2_saved_t_per_boat_yr": 212.3,
-    "vessels_10pct": null,
-    "market_rev_yr": null
-   },
-   "band": {
-    "payback_years": [
-     1.68,
-     1.06,
-     0.69
-    ],
-    "vessels_10pct": [
-     null,
-     null,
-     null
-    ]
-   },
-   "estimation_basis": "country-median",
-   "assumptions": {
-    "one_way_min": 168.0,
-    "turnaround_min": 20.0,
-    "cycle_min": 188.0,
-    "service_window_h": 12,
-    "trips_per_day": 3,
-    "trips_per_day_derivation": "floor(12h service window / 188.0min cycle [168.0min one-way + 20.0min turnaround]) = 3 legs/day",
-    "operating_days_yr": 274,
-    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
-    "mechanical_uptime": 0.75,
-    "weather_factor": 1.0,
-    "revenue_leg_pct": 0.75,
-    "load_factor": 0.65,
-    "pax_capacity": 8
-   },
-   "breakdown": {
-    "revenue_build": {
-     "comparable_fare_usd": 200.0,
-     "navier_fare_usd": 200.0,
-     "pax_capacity": 8,
-     "load_factor": 0.65,
-     "pax_per_trip": 5.2,
-     "trips_per_day": 3,
-     "trips_per_year": 616,
-     "pax_per_year": 3203.0,
-     "revenue_per_boat_yr": 640640.0
-    },
-    "run_cost": {
-     "energy_usd_yr": 4775.0,
-     "crew_usd_yr": 40000.0,
-     "marina_overhead_usd_yr": 22000.0,
-     "maintenance_usd_yr": 10000.0,
-     "annual_opex_usd_yr": 76775.0,
-     "depreciation_usd_yr": 30000.0
-    },
-    "result": {
-     "ebitda_per_boat_yr": 563865.0,
-     "margin": 0.88,
-     "payback_years": 1.06,
-     "co2_saved_t_per_boat_yr": 212.3
-    }
-   },
-   "provenance": {
-    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -503,7 +995,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 25.1,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 85.0,
    "navier_fare_usd": 85.0,
@@ -513,7 +1005,7 @@
     "margin": 0.88,
     "payback_years": 1.07,
     "co2_saved_t_per_boat_yr": 222.2,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -523,12 +1015,12 @@
      0.7
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 75.3,
     "turnaround_min": 20.0,
@@ -573,7 +1065,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -584,7 +1076,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 13.0,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 75.0,
    "navier_fare_usd": 75.0,
@@ -594,7 +1086,7 @@
     "margin": 0.92,
     "payback_years": 0.68,
     "co2_saved_t_per_boat_yr": 197.3,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -604,12 +1096,12 @@
      0.45
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 39.0,
     "turnaround_min": 20.0,
@@ -654,7 +1146,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -665,7 +1157,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 8.9,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 70.0,
    "navier_fare_usd": 70.0,
@@ -675,7 +1167,7 @@
     "margin": 0.93,
     "payback_years": 0.57,
     "co2_saved_t_per_boat_yr": 168.8,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -685,12 +1177,12 @@
      0.38
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 26.7,
     "turnaround_min": 20.0,
@@ -735,7 +1227,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -746,7 +1238,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 2.6,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 45.0,
    "navier_fare_usd": 45.0,
@@ -756,7 +1248,7 @@
     "margin": 0.94,
     "payback_years": 0.53,
     "co2_saved_t_per_boat_yr": 82.2,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -766,12 +1258,12 @@
      0.35
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 7.8,
     "turnaround_min": 20.0,
@@ -816,7 +1308,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -827,7 +1319,7 @@
    "market": "UAE (Careem)",
    "country": "United Arab Emirates",
    "distance_nm": 7.1,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 60.0,
    "navier_fare_usd": 60.0,
@@ -837,7 +1329,7 @@
     "margin": 0.93,
     "payback_years": 0.59,
     "co2_saved_t_per_boat_yr": 152.7,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -847,12 +1339,12 @@
      0.39
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 21.3,
     "turnaround_min": 20.0,
@@ -897,7 +1389,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1151,8 +1643,8 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 1.3,
-   "status": "estimated",
-   "demand_confidence": "low",
+   "status": "grounded",
+   "demand_confidence": "medium",
    "fare_today_usd": 150.0,
    "navier_fare_usd": 150.0,
    "vessel": "N30 Pioneer II",
@@ -1161,7 +1653,7 @@
     "margin": 0.98,
     "payback_years": 0.13,
     "co2_saved_t_per_boat_yr": 49.3,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1171,12 +1663,12 @@
      0.09
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 3.9,
     "turnaround_min": 20.0,
@@ -1221,7 +1713,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1556,7 +2048,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 2.4,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 150.0,
    "navier_fare_usd": 150.0,
@@ -1566,7 +2058,7 @@
     "margin": 0.98,
     "payback_years": 0.15,
     "co2_saved_t_per_boat_yr": 78.9,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1576,12 +2068,12 @@
      0.1
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 7.2,
     "turnaround_min": 20.0,
@@ -1626,7 +2118,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1637,7 +2129,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 9.88,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 175.0,
    "navier_fare_usd": 175.0,
@@ -1647,7 +2139,7 @@
     "margin": 0.97,
     "payback_years": 0.24,
     "co2_saved_t_per_boat_yr": 175.0,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1657,12 +2149,12 @@
      0.16
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 29.6,
     "turnaround_min": 20.0,
@@ -1707,7 +2199,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1718,7 +2210,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 2.6,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 120.0,
    "navier_fare_usd": 120.0,
@@ -1728,7 +2220,7 @@
     "margin": 0.98,
     "payback_years": 0.19,
     "co2_saved_t_per_boat_yr": 82.2,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1738,12 +2230,12 @@
      0.13
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 7.8,
     "turnaround_min": 20.0,
@@ -1788,7 +2280,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1799,7 +2291,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 1.2,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 110.0,
    "navier_fare_usd": 110.0,
@@ -1809,7 +2301,7 @@
     "margin": 0.98,
     "payback_years": 0.17,
     "co2_saved_t_per_boat_yr": 45.5,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1819,12 +2311,12 @@
      0.12
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 3.6,
     "turnaround_min": 20.0,
@@ -1869,7 +2361,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1880,7 +2372,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 1.2,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 130.0,
    "navier_fare_usd": 130.0,
@@ -1890,7 +2382,7 @@
     "margin": 0.98,
     "payback_years": 0.15,
     "co2_saved_t_per_boat_yr": 45.5,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1900,12 +2392,12 @@
      0.1
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 3.6,
     "turnaround_min": 20.0,
@@ -1950,7 +2442,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -1961,7 +2453,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 1.5,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 95.0,
    "navier_fare_usd": 95.0,
@@ -1971,7 +2463,7 @@
     "margin": 0.97,
     "payback_years": 0.21,
     "co2_saved_t_per_boat_yr": 55.0,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -1981,12 +2473,12 @@
      0.14
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 4.5,
     "turnaround_min": 20.0,
@@ -2031,7 +2523,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2042,7 +2534,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 0.5,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 130.0,
    "navier_fare_usd": 130.0,
@@ -2052,7 +2544,7 @@
     "margin": 0.98,
     "payback_years": 0.13,
     "co2_saved_t_per_boat_yr": 20.9,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -2062,12 +2554,12 @@
      0.09
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 1.5,
     "turnaround_min": 20.0,
@@ -2112,7 +2604,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2123,7 +2615,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 2.2,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 150.0,
    "navier_fare_usd": 150.0,
@@ -2133,7 +2625,7 @@
     "margin": 0.98,
     "payback_years": 0.14,
     "co2_saved_t_per_boat_yr": 75.1,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -2143,12 +2635,12 @@
      0.09
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 6.6,
     "turnaround_min": 20.0,
@@ -2193,7 +2685,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2366,7 +2858,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 12.6,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 175.0,
    "navier_fare_usd": 175.0,
@@ -2376,7 +2868,7 @@
     "margin": 0.97,
     "payback_years": 0.28,
     "co2_saved_t_per_boat_yr": 191.3,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -2386,12 +2878,12 @@
      0.19
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 37.8,
     "turnaround_min": 20.0,
@@ -2436,7 +2928,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2447,7 +2939,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 3.6,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 90.0,
    "navier_fare_usd": 90.0,
@@ -2457,7 +2949,7 @@
     "margin": 0.97,
     "payback_years": 0.28,
     "co2_saved_t_per_boat_yr": 104.7,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -2467,12 +2959,12 @@
      0.19
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 10.8,
     "turnaround_min": 20.0,
@@ -2517,7 +3009,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2528,7 +3020,7 @@
    "market": "UAE (Luxury)",
    "country": "United Arab Emirates",
    "distance_nm": 4.2,
-   "status": "estimated",
+   "status": "grounded",
    "demand_confidence": "low",
    "fare_today_usd": 150.0,
    "navier_fare_usd": 150.0,
@@ -2538,7 +3030,7 @@
     "margin": 0.98,
     "payback_years": 0.17,
     "co2_saved_t_per_boat_yr": 116.9,
-    "vessels_10pct": null,
+    "vessels_10pct": 0,
     "market_rev_yr": null
    },
    "band": {
@@ -2548,12 +3040,12 @@
      0.12
     ],
     "vessels_10pct": [
-     null,
-     null,
-     null
+     0,
+     0,
+     0
     ]
    },
-   "estimation_basis": "country-median",
+   "estimation_basis": null,
    "assumptions": {
     "one_way_min": 12.6,
     "turnaround_min": 20.0,
@@ -2598,7 +3090,7 @@
    },
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
-    "demand": "estimated (country-median)"
+    "demand": "sourced corridor demand pool"
    }
   },
   {
@@ -2837,6 +3329,87 @@
      "margin": 0.88,
      "payback_years": 0.93,
      "co2_saved_t_per_boat_yr": 197.3
+    }
+   },
+   "provenance": {
+    "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+    "demand": "sourced corridor demand pool"
+   }
+  },
+  {
+   "route_id": "rn-66e9451f405f",
+   "partner": "grab",
+   "deck_url": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
+   "corridor": "Cebu (Mactan) -> Bohol / Panglao",
+   "market": "Philippines",
+   "country": "Philippines",
+   "distance_nm": 35,
+   "status": "grounded",
+   "demand_confidence": "med",
+   "fare_today_usd": 21,
+   "navier_fare_usd": 21.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 112258.0,
+    "margin": 0.58,
+    "payback_years": 9.15,
+    "co2_saved_t_per_boat_yr": 205.1,
+    "vessels_10pct": 37,
+    "market_rev_yr": 4153546.0
+   },
+   "band": {
+    "payback_years": [
+     19.0,
+     9.15,
+     5.14
+    ],
+    "vessels_10pct": [
+     55,
+     37,
+     25
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 105.0,
+    "turnaround_min": 20.0,
+    "cycle_min": 125.0,
+    "service_window_h": 12,
+    "trips_per_day": 5,
+    "trips_per_day_derivation": "floor(12h service window / 125.0min cycle [105.0min one-way + 20.0min turnaround]) = 5 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.75,
+    "load_factor": 0.65,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 21,
+     "navier_fare_usd": 21.0,
+     "pax_capacity": 8,
+     "load_factor": 0.65,
+     "pax_per_trip": 5.2,
+     "trips_per_day": 5,
+     "trips_per_year": 1028,
+     "pax_per_year": 5346.0,
+     "revenue_per_boat_yr": 112258.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 11719.0,
+     "crew_usd_yr": 15000.0,
+     "marina_overhead_usd_yr": 10000.0,
+     "maintenance_usd_yr": 10000.0,
+     "annual_opex_usd_yr": 46719.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 65539.0,
+     "margin": 0.58,
+     "payback_years": 9.15,
+     "co2_saved_t_per_boat_yr": 205.1
     }
    },
    "provenance": {
@@ -8564,7 +9137,165 @@
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
     "demand": "sourced corridor demand pool"
-   }
+   },
+   "also_serves": [
+    {
+     "corridor": "Doha -> Banana Island",
+     "market": "Bolt Qatar",
+     "country": "Qatar",
+     "distance_nm": 4.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 116.7,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 13.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 33.5,
+      "service_window_h": 12,
+      "trips_per_day": 21,
+      "trips_per_day_derivation": "floor(12h service window / 33.5min cycle [13.5min one-way + 20.0min turnaround]) = 21 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 21,
+       "trips_per_year": 4316,
+       "pax_per_year": 22443.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1139.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74139.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 116.7
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    },
+    {
+     "corridor": "Doha -> Banana Island",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 4.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 116.7,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 13.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 33.5,
+      "service_window_h": 12,
+      "trips_per_day": 21,
+      "trips_per_day_derivation": "floor(12h service window / 33.5min cycle [13.5min one-way + 20.0min turnaround]) = 21 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 21,
+       "trips_per_year": 4316,
+       "pax_per_year": 22443.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1139.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74139.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 116.7
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
   },
   {
    "route_id": "rn-766596b9e733",
@@ -8645,7 +9376,165 @@
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
     "demand": "estimated (None)"
-   }
+   },
+   "also_serves": [
+    {
+     "corridor": "Doha -> Lusail Marina",
+     "market": "Bolt Qatar",
+     "country": "Qatar",
+     "distance_nm": 6.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 144.5,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 19.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 39.5,
+      "service_window_h": 12,
+      "trips_per_day": 18,
+      "trips_per_day_derivation": "floor(12h service window / 39.5min cycle [19.5min one-way + 20.0min turnaround]) = 18 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 18,
+       "trips_per_year": 3699,
+       "pax_per_year": 19235.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1410.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74410.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 144.5
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    },
+    {
+     "corridor": "Doha -> Lusail Marina",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 6.5,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 144.5,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 19.5,
+      "turnaround_min": 20.0,
+      "cycle_min": 39.5,
+      "service_window_h": 12,
+      "trips_per_day": 18,
+      "trips_per_day_derivation": "floor(12h service window / 39.5min cycle [19.5min one-way + 20.0min turnaround]) = 18 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 18,
+       "trips_per_year": 3699,
+       "pax_per_year": 19235.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1410.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74410.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 144.5
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
   },
   {
    "route_id": "rn-44cec9c94d4c",
@@ -8726,7 +9615,165 @@
    "provenance": {
     "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
     "demand": "estimated (country-median)"
-   }
+   },
+   "also_serves": [
+    {
+     "corridor": "Doha Corniche -> The Pearl",
+     "market": "Bolt Qatar",
+     "country": "Qatar",
+     "distance_nm": 4.0,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 108.7,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 12.0,
+      "turnaround_min": 20.0,
+      "cycle_min": 32.0,
+      "service_window_h": 12,
+      "trips_per_day": 22,
+      "trips_per_day_derivation": "floor(12h service window / 32.0min cycle [12.0min one-way + 20.0min turnaround]) = 22 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 22,
+       "trips_per_year": 4521,
+       "pax_per_year": 23509.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1060.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74060.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 108.7
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    },
+    {
+     "corridor": "Doha Corniche -> The Pearl",
+     "market": "Yango Qatar",
+     "country": "Qatar",
+     "distance_nm": 4.0,
+     "status": "estimated",
+     "demand_confidence": null,
+     "fare_today_usd": null,
+     "navier_fare_usd": null,
+     "vessel": "N30 Pioneer II",
+     "mid": {
+      "rev_per_boat_yr": null,
+      "margin": null,
+      "payback_years": null,
+      "co2_saved_t_per_boat_yr": 108.7,
+      "vessels_10pct": null,
+      "market_rev_yr": null
+     },
+     "band": {
+      "payback_years": [
+       null,
+       null,
+       null
+      ],
+      "vessels_10pct": [
+       null,
+       null,
+       null
+      ]
+     },
+     "estimation_basis": "country-median",
+     "assumptions": {
+      "one_way_min": 12.0,
+      "turnaround_min": 20.0,
+      "cycle_min": 32.0,
+      "service_window_h": 12,
+      "trips_per_day": 22,
+      "trips_per_day_derivation": "floor(12h service window / 32.0min cycle [12.0min one-way + 20.0min turnaround]) = 22 legs/day",
+      "operating_days_yr": 274,
+      "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+      "mechanical_uptime": 0.75,
+      "weather_factor": 1.0,
+      "revenue_leg_pct": 0.75,
+      "load_factor": 0.65,
+      "pax_capacity": 8
+     },
+     "breakdown": {
+      "revenue_build": {
+       "comparable_fare_usd": null,
+       "navier_fare_usd": null,
+       "pax_capacity": 8,
+       "load_factor": 0.65,
+       "pax_per_trip": 5.2,
+       "trips_per_day": 22,
+       "trips_per_year": 4521,
+       "pax_per_year": 23509.0,
+       "revenue_per_boat_yr": null
+      },
+      "run_cost": {
+       "energy_usd_yr": 1060.0,
+       "crew_usd_yr": 43000.0,
+       "marina_overhead_usd_yr": 20000.0,
+       "maintenance_usd_yr": 10000.0,
+       "annual_opex_usd_yr": 74060.0,
+       "depreciation_usd_yr": 45000.0
+      },
+      "result": {
+       "ebitda_per_boat_yr": null,
+       "margin": null,
+       "payback_years": null,
+       "co2_saved_t_per_boat_yr": 108.7
+      }
+     },
+     "provenance": {
+      "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+      "demand": "estimated (country-median)"
+     }
+    }
+   ]
   },
   {
    "route_id": "rn-1a140dacd3e6",
@@ -9512,13 +10559,6 @@
   {
    "partner": "grab",
    "market": "philippines",
-   "corridor": "Cebu (Mactan) -> Bohol / Panglao",
-   "status": "grounded",
-   "reason": "route_id_not_in_gold"
-  },
-  {
-   "partner": "grab",
-   "market": "philippines",
    "corridor": "Manila (CCP / Esplanade Seaside) -> Corregidor Island",
    "status": "estimated",
    "reason": "aspirational_intra_city"
@@ -9689,6 +10729,335 @@
    "market": "langkawi",
    "corridor": "Kuah Jetty (Langkawi) -> Langkawi geopark island-hop (Dayang Bunting / Payar)",
    "status": "grounded",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-greece",
+   "corridor": "Athens -> Hydra (Saronic)",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-greece",
+   "corridor": "Mykonos Town -> Delos",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-croatia",
+   "corridor": "Split -> Hvar",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-croatia",
+   "corridor": "Split -> Bra\u010d (Bol)",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-italy",
+   "corridor": "Sorrento -> Capri",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-italy",
+   "corridor": "Venice Marco Polo -> San Marco",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-france-riviera",
+   "corridor": "Nice Airport -> Monaco",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-france-riviera",
+   "corridor": "Cannes -> Saint-Tropez",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-uae",
+   "corridor": "Dubai Marina -> Downtown Creek",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-uae",
+   "corridor": "Dubai Marina -> Abu Dhabi Corniche",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-ksa-commercial",
+   "corridor": "Jeddah Corniche -> Jeddah Yacht Club & Marina",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-portugal",
+   "corridor": "Cais do Sodr\u00e9 (Lisbon) -> Cacilhas (Almada)",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-estonia",
+   "corridor": "Tallinn Old City Harbour -> Pirita Marina",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-cyprus",
+   "corridor": "Limassol Marina -> Larnaca Marina",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-ireland",
+   "corridor": "Dublin Docklands -> D\u00fan Laoghaire",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-sweden",
+   "corridor": "Stockholm City -> Vaxholm",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-romania",
+   "corridor": "Constan\u021ba -> Mamaia",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-finland",
+   "corridor": "Helsinki Market Square -> Suomenlinna",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-israel",
+   "corridor": "Tel Aviv Marina -> Herzliya Marina",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-lebanon",
+   "corridor": "Beirut Marina (Zaitunay Bay) -> Jounieh",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "bolt",
+   "market": "bolt-egypt",
+   "corridor": "Hurghada -> El Gouna",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-uae",
+   "corridor": "Dubai Marina -> Downtown / Dubai Creek",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-uae",
+   "corridor": "Dubai -> Abu Dhabi (Corniche)",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-turkey",
+   "corridor": "Istanbul (Galataport) -> Be\u015fikta\u015f / Bosphorus",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-egypt",
+   "corridor": "Hurghada / El Gouna -> Sharm El Sheikh",
+   "status": "estimated",
+   "reason": "aspirational_declared"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-caspian-az",
+   "corridor": "Baku Bay (Bulvar) -> Bilgah",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-caspian-kz",
+   "corridor": "Aktau Port -> Kuryk",
+   "status": "estimated",
+   "reason": "endpoints_city_level_not_pinned"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-israel",
+   "corridor": "Tel Aviv Marina -> Herzliya Marina",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-pakistan",
+   "corridor": "Karachi (Keamari) -> Manora",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Plateau -> Cocody (Riviera)",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Plateau -> Treichville",
+   "status": "grounded",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Plateau -> Yopougon",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Marcory -> Koumassi",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Abidjan -> Grand-Bassam",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cote-divoire",
+   "corridor": "Abidjan -> Jacqueville",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-senegal",
+   "corridor": "Dakar Port -> \u00cele de Gor\u00e9e",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-mozambique",
+   "corridor": "Maputo -> Catembe",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-tunisia",
+   "corridor": "La Goulette -> Sidi Bou Said",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-morocco",
+   "corridor": "Tangier Marina Bay -> Tarifa (cross-strait excluded)",
+   "status": "estimated",
+   "reason": "no_endpoints"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-cis-rollup",
+   "corridor": "Tashkent regional hub (catch-all) -> Regional waterfront (TBD)",
+   "status": "estimated",
+   "reason": "unresolved"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-africa-rollup",
+   "corridor": "Lagos / Accra / Nairobi (catch-all) -> Coastal hub (TBD)",
+   "status": "estimated",
+   "reason": "unresolved"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "CMS (Lagos Island) -> Victoria Island",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "Victoria Island -> Lekki Phase 1",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "Ikoyi -> Apapa",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "CMS -> Ikorodu",
+   "status": "grounded",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "Lekki -> Epe",
+   "status": "estimated",
+   "reason": "aspirational_intra_city"
+  },
+  {
+   "partner": "yango",
+   "market": "yango-lagos",
+   "corridor": "Lagos -> Badagry",
+   "status": "estimated",
    "reason": "aspirational_intra_city"
   }
  ]
