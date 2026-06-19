@@ -152,10 +152,20 @@ def main():
     aggdir = Path(args.aggdir)
     out = ROOT / args.out
 
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from bolt_yango_routing_shared import (
+        build_bp_index,
+        mint_route_id,
+        resolve_corridor_endpoints,
+    )
+
     routes_obj = json.loads((dc / "ROUTES.json").read_text())
     feats = routes_obj["features"] if isinstance(routes_obj, dict) and "features" in routes_obj else routes_obj
+    fbt = json.loads((dc / "FEATURES_BY_TYPE.json").read_text())
+    bp_idx = build_bp_index(fbt)
     gold_rids = set()
     pair2id = {}
+    bp_pair2id = {}
     for f in feats:
         p = f["properties"]
         rid = p.get("id")
@@ -163,6 +173,9 @@ def main():
         a, b = p.get("from"), p.get("to")
         if a and b:
             pair2id.setdefault(frozenset((a, b)), rid)
+        fn, tn = p.get("from_node"), p.get("to_node")
+        if fn and tn:
+            bp_pair2id.setdefault(frozenset((fn, tn)), rid)
 
     corr = json.loads(Path(args.corridors).read_text())
     resolved = {}
@@ -182,6 +195,16 @@ def main():
             elif a and b and frozenset((a, b)) in pair2id:
                 resolved[key] = pair2id[frozenset((a, b))]
             else:
+                from_bp, to_bp, _, _ = resolve_corridor_endpoints(c, bp_idx)
+                if from_bp and to_bp:
+                    bp_key = frozenset((from_bp, to_bp))
+                    if bp_key in bp_pair2id:
+                        resolved[key] = bp_pair2id[bp_key]
+                    else:
+                        minted = mint_route_id(from_bp, to_bp)
+                        if minted in gold_rids:
+                            resolved[key] = minted
+            if key not in resolved:
                 if a and b and a == b:
                     why = "aspirational_intra_city"
                 elif is_asp:
