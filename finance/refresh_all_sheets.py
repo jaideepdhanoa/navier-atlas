@@ -17,6 +17,11 @@ stubs the parent agent / connection tools can replace.
 """
 import argparse, json, os, subprocess, sys, time
 
+try:
+    from drive_upload import replace_spreadsheet
+except ImportError:
+    from finance.drive_upload import replace_spreadsheet  # type: ignore
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 SHEET_IDS_PATH = os.path.join(HERE, "PARTNER-SHEET-IDS.json")
 BUILDER = os.path.join(HERE, "build_transparent_sheet.py")
@@ -30,12 +35,13 @@ def load_sheet_ids() -> dict:
 
 
 def upload_to_drive(local_path: str, sheet_id: str, dry_run: bool) -> dict:
-    """Stub. Real impl uses the Google Drive/Sheets connection. In dry-run mode
-    we only report the intent."""
-    if dry_run:
-        return {"status": "dry-run", "sheet_id": sheet_id, "local": local_path}
-    # NOTE: parent agent should swap this for a connection-backed call.
-    return {"status": "skipped-no-connection", "sheet_id": sheet_id, "local": local_path}
+    """In-place Drive replace (fileId preserved → economics_url links stay valid)."""
+    try:
+        return replace_spreadsheet(local_path, sheet_id, dry_run=dry_run)
+    except FileNotFoundError as e:
+        return {"status": "upload-skipped", "reason": str(e), "sheet_id": sheet_id, "local": local_path}
+    except Exception as e:
+        return {"status": "upload-failed", "reason": str(e), "sheet_id": sheet_id, "local": local_path}
 
 
 def post_slack_summary(results: list, dry_run: bool) -> dict:
@@ -52,7 +58,10 @@ def post_slack_summary(results: list, dry_run: bool) -> dict:
 
 def run_for_partner(partner: str, sheet_id: str, dry_run: bool) -> dict:
     out_local = os.path.join(HERE, f"_refresh_{partner}.xlsx")
+    agg = os.path.join(HERE, "recal", f"agg-{partner}.json")
     cmd = ["python3", BUILDER, "--partner", partner, "--out", out_local]
+    if os.path.isfile(agg):
+        cmd.extend(["--agg", agg])
     record = {"partner": partner, "sheet_id": sheet_id, "cmd": " ".join(cmd)}
     if dry_run:
         record["status"] = "planned"
