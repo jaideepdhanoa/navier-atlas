@@ -1,43 +1,352 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Navier Partner Proposal",
-  "version": "2026-05-30",
+  "version": "2026-06-20-pr57",
+  "description": "Partner-facing pitch document. WEB FOCUS: showcase the NEED for marine mobility, the JOURNEYS unlocked, the MULTIMODAL fit, and that we know their LOCAL use cases. Commercial model / unit economics live in the deck, NOT here. All v2 fields are optional and backward-compatible. PR57 aligns the schema with the live proposal renderer: route references may be structured objects, copy blocks may be structured or legacy prose strings, and phase map scope is optional for display-only records.",
   "type": "object",
-  "required": ["partner_id", "display", "archetype", "hero", "phases"],
+  "required": [
+    "partner_id",
+    "display",
+    "archetype",
+    "hero",
+    "phases"
+  ],
   "properties": {
-    "partner_id": { "type": "string", "description": "slug used in ?partner= and /slug URL" },
-    "display": { "type": "string" },
-    "archetype": { "type": "string", "enum": ["super_app", "public_transit", "hospitality", "corporate", "charter"] },
-    "region": { "type": "string" },
-    "hero": {
+    "partner_id": {
+      "type": "string",
+      "description": "slug used in ?partner= and /slug URL"
+    },
+    "display": {
+      "type": "string"
+    },
+    "archetype": {
+      "type": "string",
+      "enum": [
+        "super_app",
+        "public_transit",
+        "hospitality",
+        "corporate",
+        "charter",
+        "sovereign",
+        "ridehail"
+      ]
+    },
+    "region": {
+      "type": "string"
+    },
+    "layout": {
+      "type": "string",
+      "enum": [
+        "single",
+        "hub",
+        "network"
+      ],
+      "description": "RENDER MODE. 'single' = flat one-page proposal (default; single-territory partners). 'hub' = index landing page (global thesis + map + market grid) with per-market deep-dives at /{partner_id}/{market.slug}. Bare /{partner_id} renders the index. Use 'hub' for multi-market platforms (Uber, Bolt, Grab)."
+    },
+    "network_thesis": {
       "type": "object",
-      "required": ["title", "what_we_do_together"],
+      "description": "INDEX-ONLY (layout=hub). The global network argument shown on the landing page above the market grid. Scale + optionality, partner-and-need framed.",
       "properties": {
-        "title": { "type": "string", "description": "e.g. Grab x Navier - the black-car network, on the water" },
-        "subtitle": { "type": "string" },
-        "what_we_do_together": { "type": "string", "description": "partner-facing; sells the joint venture" }
+        "headline": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "stats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "value"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "sub": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "how_to_read": {
+          "type": "string",
+          "description": "One line telling the partner they can pick one market or the whole network."
+        }
       }
     },
-    "why_now": { "type": "string" },
+    "partner_context": {
+      "$ref": "#/definitions/copy_block",
+      "description": "OPEN WITH THEIR WORLD, not our product. Their ambition + the pressure they're under + where Navier slots in."
+    },
+    "hero": {
+      "$ref": "#/definitions/hero_block"
+    },
+    "why_now": {
+      "type": "string",
+      "description": "WHY MARINE MOBILITY WITH NAVIER, NOW. The step-change argument grounded in the KB (reference/why-now-why-navier-mobility-pitch.md): the water is the last unmodernized mobility surface; hydrofoiling = ~10x more efficient + faster + smoother + quieter, with autonomy on the way; NO NEW INFRASTRUCTURE - it uses the oceans and berths that already exist (fundamentally unlike flying taxis, which need vertiports, new certification, and community-noise fights); and the Maldives network proves the model is real and ramping today. Lean into the wow corridors we can unlock now. DO NOT frame Navier vs other hydrofoil makers - this is partner-and-need focused, not competitive."
+    },
+    "why_navier_now": {
+      "type": "object",
+      "description": "OPTIONAL structured version of the why-now argument for richer rendering. Positive, partner-and-need focused. NEVER competitor-vs framing.",
+      "properties": {
+        "step_change": {
+          "type": "string",
+          "description": "Why this is a leap, not an increment: flies above the water, ~10x efficiency, faster/smoother/quieter, autonomy-capable."
+        },
+        "no_new_infrastructure": {
+          "type": "string",
+          "description": "Uses existing oceans + berths; no vertiports, no new right-of-way, no charging dependency on the hybrid. Contrast with flying taxis / new-infrastructure modes."
+        },
+        "the_moment": {
+          "type": "string",
+          "description": "Why now: decarbonization mandates, tech crossed prototype->platform, hybrid removes the charging excuse, autonomy arrives on water first."
+        },
+        "wow_corridors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The marquee corridors we can light up today that make people lean in."
+        }
+      }
+    },
+    "precedents": {
+      "type": "array",
+      "description": "OPTIONAL. Regional/other-market precedents that ADD CONFIDENCE to what we're doing (e.g. the Maldives network at scale; electric-hydrofoil commuter services already operating; ferry-electrification mandates). Use only where it strengthens the case - do NOT force-fit, and do NOT frame as Navier-vs-competitor.",
+      "items": {
+        "type": "object",
+        "required": [
+          "what"
+        ],
+        "properties": {
+          "what": {
+            "type": "string"
+          },
+          "where": {
+            "type": "string"
+          },
+          "why_it_matters": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "multimodal_fit": {
+      "type": "string",
+      "description": "How Navier slots into the partner's EXISTING multimodal footprint (app/booking, last-mile, intermodal hubs). The water layer of a stack they already run."
+    },
+    "journeys_unlocked": {
+      "type": "array",
+      "description": "THE hero feature. Concrete local A->B journeys that prove we know their use cases: today's pain vs the Navier trip. Keep these vivid and specific.",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "with_navier"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "today": {
+            "type": "string",
+            "description": "how the journey is made today + the pain"
+          },
+          "with_navier": {
+            "type": "string",
+            "description": "the transformed trip (time / experience)"
+          },
+          "distance_nm": {
+            "type": "number"
+          },
+          "platform": {
+            "$ref": "#/definitions/platform_label"
+          },
+          "archetype": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "differentiation": {
+      "$ref": "#/definitions/copy_block",
+      "description": "Light, web-appropriate, POSITIVE. No economics. NO competitor-vs-competitor framing (no Candela/hydrofoil-rival comparisons - those live in the deck, not the website). Answers 'why this instead of the status quo (conventional/diesel boats and fast ferries)' and 'what makes Navier the platform to build the marine layer on'."
+    },
+    "proof_points": {
+      "type": "array",
+      "description": "Sourced credibility. Every external number should carry evidence.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "required": [
+              "claim"
+            ],
+            "properties": {
+              "claim": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "objections": {
+      "type": "array",
+      "description": "FAQ: range, sea-state/weather, safety & first-of-class certification, charging infra, seasonality.",
+      "items": {
+        "$ref": "#/definitions/objection_item"
+      }
+    },
     "phases": {
       "type": "array",
       "minItems": 1,
+      "description": "An operating sequence, not a brochure. Each phase explains WHY this, WHY now, WHY this order.",
       "items": {
         "type": "object",
-        "required": ["n", "label", "cities", "narrative"],
+        "required": [
+          "n",
+          "label"
+        ],
         "properties": {
-          "n": { "type": "integer" },
-          "label": { "type": "string", "description": "e.g. Phase 1 - Singapore beachhead" },
-          "boats": { "type": "integer", "description": "cumulative fleet at this phase" },
-          "cities": { "type": "array", "items": { "type": "string" }, "description": "city_ids lit in this phase" },
-          "routes": { "type": "array", "items": { "type": "string" }, "description": "route ids lit in this phase" },
-          "narrative": { "type": "string", "description": "partner-facing side-panel copy" },
+          "n": {
+            "type": "integer"
+          },
+          "label": {
+            "type": "string",
+            "description": "e.g. Phase 1 - Singapore beachhead"
+          },
+          "boats": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "cumulative fleet at this phase; null allowed when authored as TBD/display-only"
+          },
+          "cities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "city_ids lit in this phase (MUST match map node feature IDs)"
+          },
+          "routes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "route ids lit in this phase"
+          },
+          "route_scope": {
+            "type": "string",
+            "enum": [
+              "intra",
+              "inter",
+              "intercity",
+              "network",
+              "all",
+              "cross_border",
+              "regional"
+            ],
+            "description": "which routes to highlight for the phase cities"
+          },
+          "featured_routes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/route_ref"
+            },
+            "description": "human-readable or structured node-linked marquee routes for the side panel"
+          },
+          "timeline": {
+            "type": "string",
+            "description": "e.g. 2026 H2 - the momentum cue (NOT financials)"
+          },
+          "rationale": {
+            "type": "string",
+            "description": "why this phase sits here in the sequence"
+          },
+          "use_cases": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "label",
+                    "summary"
+                  ],
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "title"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            },
+            "description": "local journey/use-case types proven in this phase; strings and {label, summary}/{title, body} objects are renderer-supported"
+          },
+          "narrative": {
+            "type": "string",
+            "description": "partner-facing side-panel copy"
+          },
           "kpis": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["label", "value"],
-              "properties": { "label": { "type": "string" }, "value": { "type": "string" } }
+              "required": [
+                "label",
+                "value"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
             }
           },
           "map_focus": {
@@ -46,7 +355,15 @@
               "camera": {
                 "type": "object",
                 "properties": {
-                  "lng": { "type": "number" }, "lat": { "type": "number" }, "zoom": { "type": "number" }
+                  "lng": {
+                    "type": "number"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "zoom": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -54,9 +371,528 @@
         }
       }
     },
+    "markets": {
+      "type": "array",
+      "description": "Multi-market deep-dives (layout=hub). Each market is a full mini-proposal reachable at /{partner_id}/{slug}. The index renders one card per market from {label, summary, anchor_cities}; clicking opens the deep-dive. ALL markets are presented as equal, real opportunities — do NOT tier or hedge them as 'optionality only'. Content depth may vary, but framing is uniform. Each market should aim for the gold-standard bar (6 journeys / 4 proof / 4 objections / 4 phases) where research supports it.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "phases"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL segment for /{partner_id}/{slug}; defaults to id."
+          },
+          "label": {
+            "type": "string",
+            "description": "card + tab title, e.g. 'MENA / Gulf'"
+          },
+          "region": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "description": "one-to-two sentence card blurb for the index grid"
+          },
+          "recommended_entry": {
+            "type": "boolean",
+            "description": "marks the suggested starting market on the index (avoids choice paralysis); does NOT diminish the others"
+          },
+          "status": {
+            "type": "string",
+            "description": "freeform momentum cue, e.g. 'live network adjacency', 'ready now' — NOT exclusivity or commitment language"
+          },
+          "anchor_cities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "city_ids used for the card thumbnail + market map focus (MUST match map node feature IDs)"
+          },
+          "hero": {
+            "$ref": "#/definitions/hero_block"
+          },
+          "partner_context": {
+            "$ref": "#/definitions/copy_block"
+          },
+          "why_now": {
+            "type": "string"
+          },
+          "multimodal_fit": {
+            "type": "string"
+          },
+          "journeys_unlocked": {
+            "type": "array",
+            "description": "THE hero feature. Concrete local A->B journeys that prove we know their use cases: today's pain vs the Navier trip. Keep these vivid and specific.",
+            "items": {
+              "type": "object",
+              "required": [
+                "from",
+                "to",
+                "with_navier"
+              ],
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "today": {
+                  "type": "string",
+                  "description": "how the journey is made today + the pain"
+                },
+                "with_navier": {
+                  "type": "string",
+                  "description": "the transformed trip (time / experience)"
+                },
+                "distance_nm": {
+                  "type": "number"
+                },
+                "platform": {
+                  "$ref": "#/definitions/platform_label"
+                },
+                "archetype": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "use_cases": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "label",
+                    "summary"
+                  ],
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "title"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            },
+            "description": "market-summary-level use-case chips/cards; at least two are required for newly promoted Phase 3 binds to be proposal-ready"
+          },
+          "differentiation": {
+            "$ref": "#/definitions/copy_block"
+          },
+          "proof_points": {
+            "type": "array"
+          },
+          "objections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/objection_item"
+            }
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "n",
+                "label"
+              ],
+              "properties": {
+                "n": {
+                  "type": "integer"
+                },
+                "label": {
+                  "type": "string",
+                  "description": "e.g. Phase 1 - Singapore beachhead"
+                },
+                "boats": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "description": "cumulative fleet at this phase; null allowed when authored as TBD/display-only"
+                },
+                "cities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "city_ids lit in this phase (MUST match map node feature IDs)"
+                },
+                "routes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "route ids lit in this phase"
+                },
+                "route_scope": {
+                  "type": "string",
+                  "enum": [
+                    "intra",
+                    "inter",
+                    "intercity",
+                    "network",
+                    "all",
+                    "cross_border",
+                    "regional"
+                  ],
+                  "description": "which routes to highlight for the phase cities"
+                },
+                "featured_routes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/route_ref"
+                  },
+                  "description": "human-readable or structured node-linked marquee routes for the side panel"
+                },
+                "timeline": {
+                  "type": "string",
+                  "description": "e.g. 2026 H2 - the momentum cue (NOT financials)"
+                },
+                "rationale": {
+                  "type": "string",
+                  "description": "why this phase sits here in the sequence"
+                },
+                "use_cases": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "label",
+                          "summary"
+                        ],
+                        "properties": {
+                          "label": {
+                            "type": "string"
+                          },
+                          "summary": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "type": "object",
+                        "required": [
+                          "title"
+                        ],
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "body": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "description": "local journey/use-case types proven in this phase; strings and {label, summary}/{title, body} objects are renderer-supported"
+                },
+                "narrative": {
+                  "type": "string",
+                  "description": "partner-facing side-panel copy"
+                },
+                "kpis": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "label",
+                      "value"
+                    ],
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "map_focus": {
+                  "type": "object",
+                  "properties": {
+                    "camera": {
+                      "type": "object",
+                      "properties": {
+                        "lng": {
+                          "type": "number"
+                        },
+                        "lat": {
+                          "type": "number"
+                        },
+                        "zoom": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "close": {
+            "$ref": "#/definitions/close_block"
+          }
+        }
+      }
+    },
+    "the_ask": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "description": "Division of labour + the concrete next step. Web-safe (no economics).",
+          "properties": {
+            "navier_brings": {
+              "type": "string"
+            },
+            "partner_brings": {
+              "type": "string"
+            },
+            "next_step": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
     "close": {
-      "type": "object",
-      "properties": { "title": { "type": "string" }, "body": { "type": "string" } }
+      "$ref": "#/definitions/close_block"
+    }
+  },
+  "definitions": {
+    "platform_label": {
+      "type": "string",
+      "enum": [
+        "Pioneer II",
+        "N30 Pioneer II",
+        "Quanta-LR",
+        "both",
+        "N35",
+        "N35 Shuttle"
+      ]
+    },
+    "copy_block": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "hero_block": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "headline": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "string"
+            },
+            "sub": {
+              "type": "string"
+            },
+            "what_we_do_together": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "close_block": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "route_ref": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "from_node_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "to_node_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "distance_nm": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "platform": {
+              "$ref": "#/definitions/platform_label"
+            },
+            "route_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "route_ids": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "display": {
+              "type": "string"
+            },
+            "_link_kind": {
+              "type": "string"
+            },
+            "_link_status": {
+              "type": "string"
+            },
+            "_link_source": {
+              "type": "string"
+            },
+            "model_link": {
+              "type": "string"
+            },
+            "from_label": {
+              "type": "string"
+            },
+            "to_label": {
+              "type": "string"
+            },
+            "render": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "_phase3_backbone": {
+              "type": "boolean"
+            }
+          }
+        }
+      ]
+    },
+    "objection_item": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "concern",
+            "response"
+          ],
+          "properties": {
+            "concern": {
+              "type": "string"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "objection",
+            "response"
+          ],
+          "properties": {
+            "objection": {
+              "type": "string"
+            },
+            "response": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "q",
+            "a"
+          ],
+          "properties": {
+            "q": {
+              "type": "string"
+            },
+            "a": {
+              "type": "string"
+            }
+          }
+        }
+      ]
     }
   }
 }
