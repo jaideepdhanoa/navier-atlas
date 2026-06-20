@@ -3844,8 +3844,9 @@ document.querySelectorAll('.chip').forEach(b => {
       btn.addEventListener('click',()=>openCluster(cl, label, btn));
       host.appendChild(btn);
     });
-    // Safety net: any region city not in a cluster → a direct city chip (so nothing is hidden).
-    (cityNodesByRegion[label]||[]).filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
+    // Safety net: any region city not in a cluster → a direct city chip (aggregate only; partner hub
+    // reaches cities via market cards + cluster drill-down — untagged rollout cities must not peer with countries).
+    if (!isPartner) (cityNodesByRegion[label]||[]).filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
       btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
     });
@@ -3859,11 +3860,11 @@ document.querySelectorAll('.chip').forEach(b => {
       btn.addEventListener('click',()=>openCluster(cl, cl.region, btn));
       host.appendChild(btn);
     });
-    allCityNodes.filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).forEach(c=>{
+    if (!isPartner) allCityNodes.filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).forEach(c=>{
       const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
       btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
     });
-    if (!uniqueClusters.length && !allCityNodes.length) renderEntry();
+    if (!uniqueClusters.length && (!isPartner && !allCityNodes.length)) renderEntry();
   }
   // Flat city row (partner: single region + single cluster → cities only, e.g. Careem/UAE).
   function renderAllCities(){
