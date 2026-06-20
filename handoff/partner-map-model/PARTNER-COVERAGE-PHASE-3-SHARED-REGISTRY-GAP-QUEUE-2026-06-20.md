@@ -80,3 +80,7 @@ This is the clean Step 3 queue after the filtered 80:20 inheritance pass. It con
 - NEOM and Red Sea Global are sovereign-exclusive and are **not** generic partner bind/gap candidates.
 
 Machine-readable artifact: `partner-coverage-phase-3-shared-registry-gap-queue-2026-06-20.json`.
+
+## PR 56 proposal-readiness gate
+
+Every newly promoted partner-market bind needs at least two local use cases before it becomes proposal-ready. If fewer than two local use cases are authored, the bind can remain visible as display-only / economics-pending, but should not be treated as a partner-ready proposal market.
