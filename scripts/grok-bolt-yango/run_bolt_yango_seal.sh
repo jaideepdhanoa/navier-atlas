@@ -5,7 +5,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SCRIPTS="$ROOT/scripts/grok-bolt-yango"
 PHASE3="$ROOT/scripts/grok-phase3"
-PUSH="${BOLT_YANGO_PUSH:-0}"
 SEAL_LABEL="${BOLT_YANGO_SEAL:-#79aq}"
 
 die() { echo "✗ $*" >&2; exit 1; }
@@ -66,22 +65,4 @@ if [ -f "$PHASE3/postflight_pilot.sh" ]; then
   bash "$PHASE3/postflight_pilot.sh" "$WORK" || echo "WARN postflight non-zero (review)"
 fi
 
-if [ "$PUSH" != "1" ]; then
-  echo ""
-  echo "┌─────────────────────────────────────────────────────────────┐"
-  echo "│ Grok Bolt/Yango seal — DRY RUN COMPLETE                     │"
-  echo "├─────────────────────────────────────────────────────────────┤"
-  echo "│ seal:  $SEAL_LABEL"
-  echo "│ next:  BOLT_YANGO_PUSH=1 $SCRIPTS/run_bolt_yango_seal.sh"
-  echo "└─────────────────────────────────────────────────────────────┘"
-  exit 0
-fi
-
-cd "$ROOT"
-git add data-clean/ scripts/grok-bolt-yango/ grok-routing-output/
-git commit -m "Gold #79aq — Bolt/Yango BP seal + economics + Yango growth_case"
-git push origin main
-if [ -f "$ROOT/scripts/deploy.sh" ]; then
-  RELEASE=1 "$ROOT/scripts/deploy.sh"
-fi
-echo "SHIPPED: $SEAL_LABEL"
+"$ROOT/scripts/publish-gold.sh" "Gold $SEAL_LABEL — Bolt/Yango BP seal + economics + Yango growth_case"

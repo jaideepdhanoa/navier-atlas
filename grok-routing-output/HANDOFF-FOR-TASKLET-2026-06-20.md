@@ -310,7 +310,7 @@ tasklet-handoff-2026-06-20/
 
 Post to `#tasklet-jaideep` with a one-line summary: *"N corridor fixes, M new BPs, K markets touched — ready for Grok ingest."*
 
-Grok ingest lane: drop zip into `_ingest/`, run the appropriate orchestrator, rebuild sidecar, deploy.
+**Handoff channel (2026-06-20+):** GitHub `main` is source of truth. Grok lanes auto-commit + `git push origin main` + Vercel deploy via `scripts/publish-gold.sh`. Tasklet pulls `main` — no zip required for read-back. Tasklet still ships input zips to `_ingest/` (or commits directly to feature branches) for Grok ingest lanes.
 
 ---
 

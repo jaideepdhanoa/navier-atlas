@@ -85,10 +85,8 @@ for partner in ("bolt", "yango"):
     print(f"{partner} bind: {linked} linked / {unlinked} unlinked")
 PY
 
-if [[ "${BOLT_YANGO_PUSH:-}" == "1" ]]; then
-  git add data-clean/ scripts/ grok-routing-output/ _ingest/sidecar-opex-refresh-2026-06-20/
-  git commit -m "Gold $SEAL_TAG — mesh trim, Egypt mint, sidecar opex refresh"
-  RELEASE=1 ./scripts/deploy.sh
-fi
+"$ROOT/scripts/publish-gold.sh" \
+  "Gold $SEAL_TAG — mesh trim, Egypt mint, sidecar opex refresh" \
+  _ingest/sidecar-opex-refresh-2026-06-20/
 
 echo "✓ lane complete: $SEAL_TAG"

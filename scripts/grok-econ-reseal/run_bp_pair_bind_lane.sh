@@ -39,10 +39,6 @@ routes = json.loads(Path("data-clean/ROUTES.json").read_text())
 print("routes:", len(routes) if isinstance(routes, list) else len(routes.get("features", [])))
 PY
 
-if [[ "${BOLT_YANGO_PUSH:-}" == "1" ]]; then
-  git add data-clean/ scripts/ grok-routing-output/
-  git commit -m "Gold $SEAL_TAG — bp_pair_ready mint + Turkey mesh + gcn remainder"
-  RELEASE=1 ./scripts/deploy.sh
-fi
+"$ROOT/scripts/publish-gold.sh" "Gold $SEAL_TAG — bp_pair_ready mint + Turkey mesh + gcn remainder"
 
 echo "✓ lane complete: $SEAL_TAG"

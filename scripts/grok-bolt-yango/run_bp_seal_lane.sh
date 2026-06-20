@@ -63,10 +63,8 @@ r = meta["records"]
 print(f"economics: {r} pinned, {p} pending, pin_rate={100*r/(r+p):.1f}%")
 PY
 
-if [[ "${BOLT_YANGO_PUSH:-}" == "1" ]]; then
-  git add data-clean/ scripts/grok-bolt-yango/ scripts/grok-econ-reseal/ grok-routing-output/ _ingest/bp-seal-2026-06-20/
-  git commit -m "Gold $SEAL_TAG — bp-seal snap + Spain/Sweden route-seal + 51 BP coverage"
-  RELEASE=1 ./scripts/deploy.sh
-fi
+"$ROOT/scripts/publish-gold.sh" \
+  "Gold $SEAL_TAG — bp-seal snap + Spain/Sweden route-seal + 51 BP coverage" \
+  _ingest/bp-seal-2026-06-20/
 
 echo "✓ bp-seal lane complete: $SEAL_TAG"

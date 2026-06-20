@@ -5,7 +5,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SCRIPTS="$ROOT/scripts/grok-bolt-yango"
 SEAL_LABEL="${BOLT_YANGO_SEAL:-#79ar-routing}"
-PUSH="${BOLT_YANGO_PUSH:-0}"
 
 step() { echo ""; echo "=== $* ==="; }
 
@@ -41,15 +40,6 @@ print(f"binding bolt={splice.get('binding_bolt')} yango={splice.get('binding_yan
 print(f"economics pinned records={pinned} pending={len(econ.get('_pending_route_pin',[]))}")
 PY
 
-if [ "$PUSH" != "1" ]; then
-  echo ""
-  echo "Routing lane DRY RUN complete. Push: BOLT_YANGO_PUSH=1 $0"
-  exit 0
-fi
-
-cd "$ROOT"
-git add data-clean/ scripts/grok-bolt-yango/ grok-routing-output/ _ingest/bolt-yango-seal-2026-06-19/
-git commit -m "Gold $SEAL_LABEL — Bolt/Yango coastal routing + economics rebind"
-git push origin main
-RELEASE=1 "$ROOT/scripts/deploy.sh"
-echo "SHIPPED: $SEAL_LABEL"
+"$ROOT/scripts/publish-gold.sh" \
+  "Gold $SEAL_LABEL — Bolt/Yango coastal routing + economics rebind" \
+  _ingest/bolt-yango-seal-2026-06-19/

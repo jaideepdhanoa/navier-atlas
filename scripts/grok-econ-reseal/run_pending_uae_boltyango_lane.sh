@@ -52,10 +52,6 @@ n = len(routes) if isinstance(routes, list) else len(routes.get("features", []))
 print("routes:", n)
 PY
 
-if [[ "${BOLT_YANGO_PUSH:-}" == "1" ]]; then
-  git add data-clean/ scripts/grok-bolt-yango/ scripts/grok-econ-reseal/ grok-routing-output/
-  git commit -m "Gold $SEAL_TAG — bp-seal + gcn mint + pending economics triage"
-  RELEASE=1 ./scripts/deploy.sh
-fi
+"$ROOT/scripts/publish-gold.sh" "Gold $SEAL_TAG — bp-seal + gcn mint + pending economics triage"
 
 echo "✓ lane complete: $SEAL_TAG"
