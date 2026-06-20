@@ -300,10 +300,16 @@ function emitPage(slug, subdir, r, marketSlug, optional, pageMeta) {
   pages++;
 }
 const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []).map(ph => ph.cities || [])));
+// LB-260: hub footprint scope = markets[] anchors ∪ materialized network_footprint cluster cities.
+const hubRolloutCities = (partner) => {
+  const fromMarkets = [].concat(...(partner.markets || []).map(marketCities));
+  const fromFootprint = partner._map_scope?.cluster_city_ids || [];
+  return [...new Set([...fromMarkets, ...fromFootprint])];
+};
 for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
   if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
-    const anchors = [].concat(...partner.markets.map(marketCities));
+    const anchors = hubRolloutCities(partner);
     emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors }), null, false, partnerMeta(partner));
     for (const m of partner.markets) {
       const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m) });

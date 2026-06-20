@@ -3179,6 +3179,8 @@ function _hubAnchors(partner){
     for (const c of _resolvePhaseCities(mk.anchor_cities||[])) set.add(c);
     for (const ph of (mk.phases||[])) for (const c of _resolvePhaseCities(ph.cities||[])) set.add(c);
   }
+  // LB-260: full network_footprint on the map (Grab-style cluster expansion) — not a card grid.
+  for (const c of _resolvePhaseCities(partner._map_scope?.cluster_city_ids||[])) set.add(c);
   return [...set];
 }
 // A market carries hero/why_now/phases/journeys/proof/objections/differentiation/close — exactly the
