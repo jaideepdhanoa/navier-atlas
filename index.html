@@ -2708,6 +2708,25 @@ function _whyNavierHtml(w){
   else if (typeof wc === 'string' && wc.trim()) wow = _labeled('Showcase corridors', wc);
   return (parts||wow) ? `<div class="panel-section"><h3>Why Navier, now</h3>${parts}${wow}</div>` : '';
 }
+function _useCaseText(u){
+  if (typeof u==='string') return u;
+  if (!u) return '';
+  if (u.title) return u.title+(u.body?': '+u.body:'');
+  if (u.label) return u.label+(u.summary?': '+u.summary:'');
+  return u.body||u.summary||'';
+}
+function _useCaseItemsHtml(useCases){
+  return (useCases||[]).map(u=>{
+    const s=_useCaseText(u);
+    const i=s.indexOf(': ');
+    if (i>0 && i<70) return `<div class="pcaro-uc"><span class="pcaro-uc-t">${escapeHtml(s.slice(0,i))}</span> <span class="pcaro-uc-b">${escapeHtml(s.slice(i+2))}</span></div>`;
+    return s ? `<div class="pcaro-uc">${escapeHtml(s)}</div>` : '';
+  }).filter(Boolean).join('');
+}
+function _useCasesHtml(useCases, title='Use cases', sub=''){
+  const uc=_useCaseItemsHtml(useCases);
+  return uc ? `<div class="panel-section"><h3>${escapeHtml(title)}</h3>${sub?`<div class="pcaro-sub">${escapeHtml(sub)}</div>`:''}${uc}</div>` : '';
+}
 function _journeysHtml(js){
   if (!js || !js.length) return '';
   const card = (j)=>{ const pc=_platColor(j.platform); const chips=[];
@@ -2792,6 +2811,7 @@ function _endstateHtml(partner){
     h+=`<div class="panel-section"><h3>At steady state</h3>${rows.map(v=>`<div class="pcaro-route">${escapeHtml(v)}</div>`).join('')}${ss.tam_framing?`<div class="pcaro-narr" style="margin-top:8px">${escapeHtml(ss.tam_framing)}</div>`:''}</div>`;
   }
   if (partner.multimodal_fit) h+=`<div class="panel-section"><h3>Into your stack</h3><div class="pcaro-why">${escapeHtml(partner.multimodal_fit)}</div></div>`;
+  h+=_useCasesHtml(partner.use_cases, 'Local use cases', 'Market-summary use cases; Phase 3 promotions need at least two to be proposal-ready.');
   h+=_journeysHtml(partner.journeys_unlocked);
   return h;
 }
@@ -2823,18 +2843,8 @@ function _featuredRouteHtml(r){
 }
 function _phaseBlockHtml(cur){
   cur=cur||{};
-  // Use cases are heterogeneous strings — terse tags ("coastal spine") through "Route → Route: sentence".
-  // Emphasise the "Title: body" split where present; sentence-case + breathing room handled in CSS.
-  const uc=(cur.use_cases||[]).map(u=>{
-    const s = typeof u==='string' ? u : (
-      u.title ? u.title+(u.body?': '+u.body:'') :
-      u.label ? u.label+(u.summary?': '+u.summary:'') :
-      (u.body||u.summary||'')
-    );
-    const i = s.indexOf(': ');
-    if (i>0 && i<70) return `<div class="pcaro-uc"><span class="pcaro-uc-t">${escapeHtml(s.slice(0,i))}</span> <span class="pcaro-uc-b">${escapeHtml(s.slice(i+2))}</span></div>`;
-    return `<div class="pcaro-uc">${escapeHtml(s)}</div>`;
-  }).join('');
+  // Use cases are heterogeneous strings or {label, summary}/{title, body} objects.
+  const uc=_useCaseItemsHtml(cur.use_cases);
   // Suppress the standalone vessel-count line when a Vessels/fleet KPI already shows it (avoids the
   // boats-vs-KPI double-count — they disagree in the data; the KPI is the authored, narrative-matching one).
   const hasVesselKpi = (cur.kpis||[]).some(k=>/vessel|boat|fleet/i.test(k.label||''));
