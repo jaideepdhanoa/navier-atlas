@@ -112,6 +112,15 @@ def mature_capture(eff_capture):
 
 def ladder(M_today, eff_capture):
     """Build the full ladder off a single M_today anchor at the floor's actual capture."""
+    # LB-256 (Jaideep 2026-06-20): FORWARD-SAM-ONLY guard. Partners whose corridors carry NO
+    # grounded/estimated demand yet (e.g. saudi-pif: 0 grounded, all _forward_sam) yield a null
+    # M_today on that anchor. Emit an honest null floor (null-beats-guess) instead of crashing on
+    # round(None); the headline is then carried by whichever anchor IS populated (see _headline_anchor).
+    if M_today is None:
+        return {"M_today_transport_spend_yr": None, "_eff_capture_floor": None,
+                "_mature_capture_used": None, "_is_captive": None,
+                "_forward_sam_only": True,
+                "SOM_floor_navier_transport_rev_yr": None}
     out = {"M_today_transport_spend_yr": round(M_today, 0)}
     c_eff = mature_capture(eff_capture)   # LB-254: capture >= floor; captive-aware
     out["_eff_capture_floor"] = round(eff_capture, 4) if eff_capture is not None else None
@@ -207,26 +216,40 @@ def fm(x):
 
 def band_str(d): return " / ".join(fm(d[b]) for b in BANDS)
 
-g = result["grounded"]
+# LB-256: forward-SAM-only partners (no grounded demand sourced yet) carry the headline on the
+# estimated_total (forward-SAM mapped network) anchor; record which anchor is authoritative so the
+# frontend splice reads the populated rung, not the null grounded floor.
+FORWARD_SAM_ONLY = result["grounded"].get("M_today_transport_spend_yr") is None
+result["_forward_sam_only"] = FORWARD_SAM_ONLY
+result["_headline_anchor"] = "estimated_total" if FORWARD_SAM_ONLY else "grounded"
+g = result["estimated_total"] if FORWARD_SAM_ONLY else result["grounded"]
+_anchor_lbl = "forward-SAM (estimated_total)" if FORWARD_SAM_ONLY else "grounded"
 _nsrc = roll.get("n_corridors_total") or roll.get("n_corridors_near_term") or "the sourced"
 _gflabel = "+greenfield" if _gf_mode == "census" else "greenfield OFF"
-_cappct = f"{g['_eff_capture_floor']*100:.0f}%" if g.get('_eff_capture_floor') is not None else "—"
-_captag = "CAPTIVE" if g.get('_is_captive') else "contested"
-print(f"\n=== {partner.upper()} GROWTH CASE — grounded anchor (low / MID / high) ===")
-print(f"Anchor  M_today transport-spend POOL (demand x fare, sourced corridors, today): {fm(g['M_today_transport_spend_yr'])}/yr")
-print(f"        floor capture = {_cappct} ({_captag}); ladder capture cannot mature below the floor (LB-254)\n")
-print(f"  SOM  (floor, {_cappct} capture, today's demand, sourced {_nsrc})  {fm(g['SOM_floor_navier_transport_rev_yr'])}/yr   [PUBLISHED]")
-print(f"  SOM  full network ({_cappct} capture, today, {_gflabel})    {band_str(g['SOM_full_network_navier_transport_rev_yr'])}/yr")
-print(f"  SAM* sourced corridors only (depth, no greenfield)     {band_str(g['SAM_sourced_only_navier_transport_rev_yr'])}/yr")
-print(f"  SAM  Navier transport rev @ FULL network ({_gflabel}) {band_str(g['SAM_navier_transport_rev_yr'])}/yr")
-print(f"  TAM  total journey GMV (induced crossing market)       {band_str(g['TAM_journey_gmv_yr'])}/yr")
-print(f"  ---  journey GMV routed through Navier network         {band_str(g['network_journey_gmv_yr'])}/yr")
-print(f"  ---  PARTNER platform revenue on Navier network        {band_str(g['partner_platform_rev_yr'])}/yr")
-print(f"  ---  today's journey GMV (existing demand, no induced) {band_str(g['today_journey_gmv_yr'])}/yr")
-print(f"\nMID headline: floor {fm(g['SOM_floor_navier_transport_rev_yr'])} boat-fare  ->  SAM {fm(g['SAM_navier_transport_rev_yr']['mid'])} Navier transport, "
-      f"{fm(g['network_journey_gmv_yr']['mid'])} journey GMV through the network, "
-      f"{fm(g['partner_platform_rev_yr']['mid'])} partner platform revenue.")
-print("\n(estimated-total anchor adds the cascade-estimated corridors; see JSON.)")
+
+if g.get("SOM_full_network_navier_transport_rev_yr") is None:
+    # Both anchors null: nothing sourced or estimated yet. Honest no-op (null-beats-guess).
+    print(f"\n=== {partner.upper()} GROWTH CASE — FORWARD-SAM-ONLY (no grounded/estimated demand) ===")
+    print("Both grounded and estimated_total floors are null; ladder rungs are null (null-beats-guess).")
+    print("Source demand on >=1 corridor, or confirm forward-SAM intent, to populate the ladder.")
+else:
+    _cappct = f"{g['_eff_capture_floor']*100:.0f}%" if g.get('_eff_capture_floor') is not None else "—"
+    _captag = "CAPTIVE" if g.get('_is_captive') else "contested"
+    print(f"\n=== {partner.upper()} GROWTH CASE — {_anchor_lbl} anchor (low / MID / high) ===")
+    print(f"Anchor  M_today transport-spend POOL (demand x fare, sourced corridors, today): {fm(g['M_today_transport_spend_yr'])}/yr")
+    print(f"        floor capture = {_cappct} ({_captag}); ladder capture cannot mature below the floor (LB-254)\n")
+    print(f"  SOM  (floor, {_cappct} capture, today's demand, sourced {_nsrc})  {fm(g['SOM_floor_navier_transport_rev_yr'])}/yr   [PUBLISHED]")
+    print(f"  SOM  full network ({_cappct} capture, today, {_gflabel})    {band_str(g['SOM_full_network_navier_transport_rev_yr'])}/yr")
+    print(f"  SAM* sourced corridors only (depth, no greenfield)     {band_str(g['SAM_sourced_only_navier_transport_rev_yr'])}/yr")
+    print(f"  SAM  Navier transport rev @ FULL network ({_gflabel}) {band_str(g['SAM_navier_transport_rev_yr'])}/yr")
+    print(f"  TAM  total journey GMV (induced crossing market)       {band_str(g['TAM_journey_gmv_yr'])}/yr")
+    print(f"  ---  journey GMV routed through Navier network         {band_str(g['network_journey_gmv_yr'])}/yr")
+    print(f"  ---  PARTNER platform revenue on Navier network        {band_str(g['partner_platform_rev_yr'])}/yr")
+    print(f"  ---  today's journey GMV (existing demand, no induced) {band_str(g['today_journey_gmv_yr'])}/yr")
+    print(f"\nMID headline: floor {fm(g['SOM_floor_navier_transport_rev_yr'])} boat-fare  ->  SAM {fm(g['SAM_navier_transport_rev_yr']['mid'])} Navier transport, "
+          f"{fm(g['network_journey_gmv_yr']['mid'])} journey GMV through the network, "
+          f"{fm(g['partner_platform_rev_yr']['mid'])} partner platform revenue.")
+    print("\n(estimated-total anchor adds the cascade-estimated corridors; see JSON.)")
 
 if _scope is not None:
     result["_scope"] = _scope
