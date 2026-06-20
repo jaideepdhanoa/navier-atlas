@@ -15,9 +15,18 @@ This is the corrected upstream layer. The previous `partner-market-canonical-bin
 - **grab**: 413 source rows; 14 exact-bound; 399 pending alias/registry triage; 0 scope-only/skipped rows.
 - **yango**: 63 source rows; 4 exact-bound; 27 pending alias/registry triage; 32 scope-only/skipped rows.
 
+
+## Yango correction / coverage guardrail — 2026-06-20
+- The Yango official-source scan is **not** the Yango coverage ceiling. It is an additive candidate/gap scan only.
+- Existing Yango proposal coverage in `partner-pitch/partners/yango.json` remains the baseline and must not be reduced by the scan.
+- Current baseline from the live Yango proposal file: **8 sub-proposal markets**, **33 network_footprint entries**, **33 map-scope cluster city IDs**, and **24 unique anchor city IDs**.
+- The prior “4 display-ready” language meant “4 rows bound inside that captured official-source subset,” not “Yango only has four display-ready markets.” That wording is now corrected.
+- New guardrail artifact: `partner-market-coverage-yango-coverage-guardrail.json`.
+- Any future Yango scan must diff against the existing partner file, `_map_scope`, `network_footprint[]`, and `map-scope.json::yango` before adding backlog rows; no source-page omission can delete or demote existing coverage.
+
 ## Proposal-priority interpretation
 - **Bolt**: official city page is now the operating-market source; the remaining work is coastal/water relevance triage plus exact alias/provenance binding for relevant cities.
-- **Yango**: official country footprint is captured from Yango country links, and city-level rows are captured where official country pages expose city links or explicit location bullets. Country-only rows are intentionally not city-bound.
+- **Yango**: official country/city rows are a partial additive scan only. Existing Yango proposal/map coverage is the baseline; the source scan can add candidates/gaps but must never shrink coverage.
 - **Careem**: UAE-only scope is recorded; no more Careem coverage research until instructed otherwise.
 
 ## Files
