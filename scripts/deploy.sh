@@ -61,7 +61,7 @@ echo "→ pre-flight clean; deploying _dist/ to Vercel prod…"
 URL=""
 attempt=1; max_attempts=5; delay=2
 while :; do
-  if URL="$(cd "$ROOT/_dist" && npx --yes vercel@54 deploy --prod --yes --token "$VERCEL_TOKEN")"; then
+  if URL="$(cd "$ROOT/_dist" && npx --yes vercel@54 deploy --prod --yes --archive=tgz --token "$VERCEL_TOKEN")"; then
     break
   fi
   if [ "$attempt" -ge "$max_attempts" ]; then

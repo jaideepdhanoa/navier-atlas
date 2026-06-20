@@ -241,6 +241,9 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   cleanUrls: true,
   trailingSlash: false,
   installCommand: 'npm install --omit=dev',
+  // LB-258: Edge middleware deploys globally by default; a single broken region kills the whole
+  // "Deploying outputs…" phase. Pin to iad1 (matches build region) until Vercel stabilizes global edge.
+  regions: ['iad1'],
 }, null, 2) + '\n');
 const partnerSlugs = Object.keys(data.PARTNERS).sort();
 fs.writeFileSync(path.join(DIST, 'middleware.js'), generatePartnerAuthMiddleware(partnerSlugs));
