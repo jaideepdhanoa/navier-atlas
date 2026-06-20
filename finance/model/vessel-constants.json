@@ -1,0 +1,277 @@
+{
+ "_doc": "L1 GLOBAL vessel constants. Source of truth for the financial atom. Every value carries provenance. Do NOT put localized opex here (captain wage, energy $/kWh, marina fee) — those live in L3 market locals.",
+ "_version": "v0.1",
+ "_as_of": "2026-06-06",
+ "vessels": {
+  "pioneer_ii": {
+   "label": "N30 Pioneer II",
+   "status": "commercial_now",
+   "range_nm": {
+    "value": 70,
+    "unit": "nm",
+    "source_tier": "T1",
+    "source": "Navier locked spec (KB)",
+    "confidence": "high"
+   },
+   "cruise_speed_kt": {
+    "value": 20,
+    "unit": "kt",
+    "source_tier": "T1",
+    "source": "Navier locked spec (cruise)",
+    "confidence": "high"
+   },
+   "top_speed_kt": {
+    "value": 30,
+    "unit": "kt",
+    "source_tier": "T1",
+    "source": "Navier locked spec (top)",
+    "confidence": "high"
+   },
+   "pax_capacity": {
+    "value": 8,
+    "unit": "pax",
+    "source_tier": "T1",
+    "source": "Navier model: up to 8 pax where local rules allow (Jaideep set base case to 8, 2026-06-06)",
+    "confidence": "high",
+    "notes": "8 = base case. Note USCG Subchapter-T triggers >6 in US waters; SEA/intl markets generally allow 8."
+   },
+   "capex_usd": {
+    "value": 900000,
+    "unit": "USD",
+    "source_tier": "T1",
+    "source": "Navier price (LYFT ref model, ex tax/fees)",
+    "confidence": "high"
+   },
+   "battery_kwh": {
+    "value": 114,
+    "unit": "kWh",
+    "source_tier": "T1",
+    "source": "Navier data (LYFT ref model)",
+    "confidence": "high"
+   },
+   "annual_maintenance_usd": {
+    "value": 10000,
+    "unit": "USD/yr",
+    "source_tier": "T1",
+    "source": "Navier data (LYFT ref model)",
+    "confidence": "med",
+    "notes": "Deep-dive warranted; may rise with high-utilization commercial duty."
+   },
+   "depreciation_years": {
+    "value": 20,
+    "unit": "yr",
+    "source_tier": "T2",
+    "source": "Marine-vessel market best practice (Jaideep locked 2026-06-07): commercial passenger vessels straight-line over ~20-25yr useful life; corroborated by Sampriti founder Jan-2024 operating model (20yr). Was placeholder 10yr.",
+    "confidence": "med",
+    "notes": "20yr straight-line = standard commercial marine convention for hull/vessel; conservative within the 20-25yr band. Halves annual depreciation vs prior 10yr placeholder."
+   },
+   "diesel_comparable_nm_per_gal": {
+    "value": 1.5,
+    "unit": "nm/gal",
+    "source_tier": "T3",
+    "source": "Navier + open web (LYFT ref model)",
+    "confidence": "med",
+    "notes": "For carbon + cost-savings story vs diesel speedboat."
+   }
+  },
+  "quanta_lr": {
+   "label": "Quanta-LR Hybrid",
+   "status": "roadmap_h2_2026",
+   "_note": "Long-haul intercity legs (>70nm). NOT in the near-term per-seat shuttle base case. Constants TBD; do not model in Grab Phase-1 headline.",
+   "range_nm": {
+    "value": 700,
+    "unit": "nm",
+    "source_tier": "T1",
+    "source": "Navier locked spec",
+    "confidence": "high"
+   }
+  }
+ },
+ "operating_defaults": {
+  "_doc": "GLOBAL operating defaults (segment-driven). Overridable per market in L3.",
+  "_utilization_scenarios": {
+   "_doc": "Headline = MID. Thin/Full are the sensitivity bookends we always show as a band (Jaideep 2026-06-06: report a band, not a single number). weather_uptime_factor stays per-market on top of these. Recalibrated 2026-06-19 (Jaideep): thin .45/.45, mid(HEADLINE) .55/.55, full .70/.75 — a utilized premium shuttle isn't full all day.",
+   "thin": {
+    "load_factor": 0.45,
+    "revenue_leg_factor": 0.45,
+    "note": "thin/one-way/seasonal corridor — conservative floor"
+   },
+   "mid": {
+    "load_factor": 0.55,
+    "revenue_leg_factor": 0.55,
+    "note": "HEADLINE — realistic busy two-way corridor"
+   },
+   "full": {
+    "load_factor": 0.7,
+    "revenue_leg_factor": 0.75,
+    "note": "mature/dense corridor — optimistic ceiling"
+   }
+  },
+  "load_factor_default": {
+   "value": 0.55,
+   "source_tier": "T2",
+   "source": "MID scenario (headline). Recalibrated 2026-06-19: 0.55 avg occupancy on revenue sailings for premium on-demand. Thin=0.45 / Full=0.70 bookends.",
+   "confidence": "med"
+  },
+  "monthly_operational_capacity": {
+   "value": 0.75,
+   "source_tier": "T4",
+   "source": "Blade luxury aviation ~75-80% reliability uptime",
+   "confidence": "med",
+   "notes": "Mechanical uptime (maintenance/charging/availability). Effective op days = 365 * this * weather_uptime_factor."
+  },
+  "weather_uptime_factor": {
+   "_doc": "Market-overridable seasonality/weather haircut layered ON TOP of mechanical uptime. 1.0 = year-round calm; <1.0 = monsoon/storm days that suppress service. Override per market in L3 as weather_uptime_factor.",
+   "value": 1.0,
+   "source_tier": "T5",
+   "source": "Default no-haircut; set per market (e.g. Andaman monsoon ~0.85)",
+   "confidence": "low"
+  },
+  "revenue_leg_factor": 0.55,
+  "service_window_hr_per_day": {
+   "value": 12,
+   "unit": "hr",
+   "source_tier": "T5",
+   "source": "Modeled single-asset commercial service window (one extended crew day, water-taxi norm). Conservative vs 24h.",
+   "confidence": "low",
+   "notes": "Bounds trips/day to a believable duty cycle; not 22.5h."
+  },
+  "turnaround_charge_min": {
+   "value": 20,
+   "unit": "min",
+   "source_tier": "T1",
+   "source": "Navier fast-charge (LYFT ref ~20-30min)",
+   "confidence": "med"
+  },
+  "discount_factor": {
+   "_doc": "PRICE-PARITY (Jaideep locked 2026-06-06 PM): NO discount. Navier charges the market rate of the comparable transfer and wins on a better product (faster, quieter, zero-emission, on-demand), not on price. Factor = 1.0 across all segments. Prior segment-driven 0.5-0.7 retired.",
+   "ridehail": {
+    "value": 1.0,
+    "confidence": "high",
+    "notes": "Market parity — better product, not cheaper."
+   },
+   "commute": {
+    "value": 1.0,
+    "confidence": "high",
+    "notes": "Market parity."
+   },
+   "tourism": {
+    "value": 1.0,
+    "confidence": "high",
+    "notes": "Market parity."
+   },
+   "intercity": {
+    "value": 1.0,
+    "confidence": "high",
+    "notes": "Market parity."
+   }
+  },
+  "navier_capture_rate": {
+   "value": 0.1,
+   "_doc": "Navier wins ~10% of the corridor demand pool, never 100% (Jaideep locked 2026-06-06).",
+   "confidence": "med"
+  },
+  "capture_override_enabled": true,
+  "navier_capture_rate_by_archetype": {
+   "_doc": "DORMANT until capture_override_enabled=true (Jaideep option A). Captive resort-transfer archetypes (airport->resort, no competing operator -> Navier IS the transfer fleet) capture ~90%. Contested ride-hail/ferry stay at global navier_capture_rate (10%). Raw archetype keys (pre-enrich rewrite). See MALDIVES-JIH-CAPTURE-DECISION.md.",
+   "luxury_charter": {
+    "value": 0.9,
+    "confidence": "med",
+    "_doc": "captive resort/private transfer"
+   },
+   "hospitality": {
+    "value": 0.9,
+    "confidence": "med",
+    "_doc": "captive hotel/resort guest transfer"
+   },
+   "commuter_modal_shift": {
+    "value": 1.0,
+    "confidence": "med",
+    "_doc": "LB-97 modal-shift tier: capture rate (0.1-0.5% of LAND corridor volume) is ALREADY applied inside the staged demand pool (_demand_record documents floor/base/ceiling). Pool = post-capture addressable; applying global 10% again would double-discount. 1.0 = pass-through."
+   }
+  },
+  "captive_capture_rate": {
+   "value": 0.9,
+   "confidence": "med",
+   "_doc": "A-prime: per-corridor captive:true legs (sole-operator water-access-only transfers) capture ~90%. Inert until capture_override_enabled=true AND corridors tagged. See CAPTIVITY-CLASSIFICATION-DRAFT.md."
+  },
+  "capture_on_addressable": {
+   "value": 0.25,
+   "unit": "share of sourced addressable pool",
+   "note": "LB-103: applied INSTEAD of navier_capture_rate when L3.pool_basis=='addressable' (pool already narrowed from gross to premium-addressable slice upstream; 10% on top = double discount). Ceiling 0.5 expressed via _demand_record addressable_pax_yr_ceiling = 2x base."
+  },
+  "boarding_dwell_min": {
+   "value": 10,
+   "source_tier": "T3",
+   "source": "Premium board/deboard + scheduling slack added to each cycle (Jaideep 2026-06-19).",
+   "confidence": "med"
+  },
+  "max_trips_per_day": {
+   "value": 10,
+   "source_tier": "T3",
+   "source": "Cap on revenue sailings/day — ~1 sailing/70min in a 12h window; a believable on-demand premium duty cycle, not capacity-max (Jaideep 2026-06-19).",
+   "confidence": "med"
+  },
+  "max_trips_per_day_by_archetype": {
+   "_doc": "LB-256 (Jaideep 2026-06-19): true high-frequency commuter / water-shuttle corridors sustain more revenue sailings/day than the premium on-demand default cap (10). Keyed on archetype; premium / tourism / ridehail / luxury stay at the default cap. A per-corridor L3 max_trips_per_day still wins over this.",
+   "commute": 16,
+   "commuter": 16,
+   "commuter_modal_shift": 16,
+   "urban_water_shuttle": 18,
+   "public_transit": 18,
+   "public_transport": 18
+  },
+  "premium_refare": {
+   "_doc": "LB-255 (Jaideep 2026-06-19, decision B = re-fare at premium): a SUBSIDIZED public-transit fare is not the comparable a premium on-demand electric water-taxi prices against. Corridors whose comparable_fare_usd_pax is at/below subsidized_fare_ceiling are treated as subsidized benchmarks and re-faring lifts them to premium_ondemand_floor (the premium ride-hail / private water-taxi minimum seat fare). Genuine scheduled / premium fast-ferry fares ABOVE the ceiling (e.g. Aegean hydrofoils, Adriatic fast cats $7-24) are the correct premium comparable and are left untouched. Price-parity (discount_factor 1.0) still applies on the corrected comparable. A per-corridor L3 comparable_fare_usd_pax edit overrides this.",
+   "enabled": true,
+   "subsidized_fare_ceiling": {
+    "value": 6.0,
+    "unit": "USD/pax/one-way",
+    "source_tier": "T3",
+    "source": "Empirical break in the sourced fare distribution: genuine premium scheduled fast-ferry/hydrofoil per-seat fares bottom out ~$7-11; everything at/below ~$6 (Cairo $0.2, Abidjan $0.9-1.2, Lisbon commuter $1.6-3.4, Helsinki $3.6, Istanbul Eminönü-Üsküdar $2.5) is a subsidized public-transit floor.",
+    "confidence": "med"
+   },
+   "premium_ondemand_floor": {
+    "value": 18.0,
+    "unit": "USD/pax/one-way",
+    "source_tier": "T3",
+    "source": "Premium ride-hail / private water-taxi minimum seat fare; conservative (below full Uber-Black-class pricing). Navier serves an otherwise-subsidized crossing only as a premium on-demand product, so it prices against the premium alternative, never the public ferry. L3-overridable.",
+    "confidence": "med"
+   }
+  },
+  "crew_fte_factor": {
+   "value": 1.8,
+   "source_tier": "T3",
+   "source": "A captain can't run 7 days/wk; 1.8 FTE covers relief/leave/second-shift year-round (Jaideep 2026-06-19). Scales off localized captain wage.",
+   "confidence": "med"
+  },
+  "insurance_pct_of_capex": {
+   "value": 0.025,
+   "source_tier": "T3",
+   "source": "H&M + P&I for a commercial passenger vessel ~2.5%/yr of capex; scales with regional capex overrides (Jaideep 2026-06-19).",
+   "confidence": "med"
+  },
+  "charging_berth_annual_usd": {
+   "value": 18000,
+   "source_tier": "T3",
+   "source": "Dedicated fast-charge berth + demand charges, ADDITIONAL to marina overhead and energy (Jaideep 2026-06-19). L3-overridable.",
+   "confidence": "med"
+  }
+ },
+ "carbon": {
+  "diesel_kg_co2_per_gal": {
+   "value": 10.21,
+   "unit": "kgCO2/gal",
+   "source_tier": "T1",
+   "source": "US EPA: 10.21 kg CO2 per gallon marine/diesel",
+   "confidence": "high"
+  },
+  "grid_kg_co2_per_kwh_default": {
+   "value": 0.4,
+   "unit": "kgCO2/kWh",
+   "source_tier": "T2",
+   "source": "Global avg grid intensity placeholder; override per market grid in L3",
+   "confidence": "low"
+  }
+ }
+}

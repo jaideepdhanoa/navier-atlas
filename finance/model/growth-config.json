@@ -1,0 +1,61 @@
+{
+  "_doc": "L4 GROWTH-CASE parameters. The corridor engine (atom.py/aggregate.py) produces the conservative FLOOR: 10% capture of TODAY's crossing demand, existing corridors, N30 only, transport-fare only. This layer turns that floor into the TAM/SAM/SOM ladder a super-app partner reads. EVERY rung is one multiplication off the model's own M_today (= sourced market_rev / capture_rate), so the prize stays traceable back to grounded demand. NULL-beats-guess still applies: greenfield is OFF by default; all multipliers are modeled (T4/T5) and reported as low/mid/high BANDS, never single points.",
+  "_version": "v0.1",
+  "_as_of": "2026-06-07",
+  "_whose_money_legend": {
+    "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
+    "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
+    "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+  },
+  "ladder": {
+    "_doc": "Three rungs. SOM = published floor (unchanged). SAM = Navier transport revenue once the network matures (induced demand + capture ramp). TAM = total journey GMV across the induced crossing market on serviceable corridors.",
+    "som_capture_rate": {
+      "value": 0.10,
+      "_doc": "FLOOR capture used in the published model. New-entrant share of today's crossing pool. Locked in vessel-constants.json; mirrored here for the ladder.",
+      "source_tier": "T2", "confidence": "med"
+    }
+  },
+  "multipliers": {
+    "induced_demand": {
+      "_doc": "k_induced — how much the addressable crossing market GROWS because the product is transformational (2-3x faster, quiet, zero-emission, on-demand). A miserable 90-min ferry becoming a 25-min premium hop creates trips that don't happen today (day-trips, commutes, spontaneous crossings). Applied to the demand POOL.",
+      "_precedent": "Ride-hail grew urban for-hire-vehicle trips ~2-3x in mature markets (Uber/Lyft). Tempered DOWN here: island crossings still need a destination reason, so more constrained than urban rides. Bands sit below the urban ride-hail precedent on purpose.",
+      "low": 1.3, "mid": 1.8, "high": 2.5,
+      "source_tier": "T4", "confidence": "low"
+    },
+    "mature_capture_rate": {
+      "_doc": "c_mature — Navier's corridor share once it is the established premium default (vs the 0.10 new-entrant floor). On a corridor where Navier is clearly the best option, mature share is well above 10%.",
+      "_precedent": "Category-leading mobility products routinely hold 20-40% corridor/market share at maturity. Floor stays 0.10 (SOM); this is the matured network.",
+      "low": 0.15, "mid": 0.25, "high": 0.40,
+      "source_tier": "T5", "confidence": "low"
+    },
+    "journey_gmv_multiple": {
+      "_doc": "m_attach — journey GMV as a multiple of the transport fare. Transport (the ferry seat) is only a slice of the island-journey wallet; the rest is food, activities/experiences, accommodation share, retail, ads, and parcel/logistics — all monetizable through a super-app.",
+      "_precedent": "Transport is typically ~25-35% of a leisure day-trip / island-journey wallet, implying journey GMV ~= 3x the transport fare. Conservative vs full multi-day trip spend (we scope to the journey, not the whole holiday).",
+      "low": 2.0, "mid": 3.0, "high": 4.0,
+      "source_tier": "T5", "confidence": "low"
+    },
+    "platform_take_rate": {
+      "_doc": "Partner (Grab) blended commission on journey GMV across mobility + food + bookings + ads. Used only for the derived 'partner platform revenue' line.",
+      "_precedent": "Super-app blended take rates run ~18-22% across mobility/delivery/ads. 0.18 used as a conservative blended point.",
+      "value": 0.18,
+      "source_tier": "T4", "confidence": "low"
+    },
+    "greenfield_corridor_factor": {
+      "_doc": "g_greenfield — WIDTH lever. The sourced corridors are only the existing-ferry subset; the addressable network is far larger. Now GROUNDED by greenfield_census.py: an ID-based census of the GOLD atlas corridor corpus (data-clean/ROUTES.json) in partner geography, Pioneer<=70nm, undirected-unique, sourced excluded, tiered by edge_class (local micro-segments excluded). Factor = 1 + (N_greenfield/N_sourced)*alpha_density. Applied to the matured rungs (SAM/TAM/network/platform), NOT to the SOM floor (floor stays the sourced corridors).",
+      "mode": "census",
+      "off_value": 1.0,
+      "low": 3.44, "mid": 4.9, "high": 6.36,
+      "_census": {
+        "source": "grab-greenfield-census.json",
+        "n_sourced": 35, "n_greenfield_headline": 341, "count_ratio": 9.7,
+        "alpha_density": {"low": 0.25, "mid": 0.40, "high": 0.55,
+          "_doc": "avg greenfield corridor demand / avg sourced corridor demand. Sourced = cherry-picked best; greenfield thinner."},
+        "_note": "tier1 market-making (island-hop/regional/inter-city/trunk) + tier2 cluster-spokes; Japan/Ryukyu carved out; local intra-hub micro-segments excluded."
+      },
+      "source_tier": "T4", "confidence": "med-low"
+    },
+    "vessel_roadmap_note": {
+      "_doc": "Not a multiplier in this layer (kept honest). The N35 Shuttle (12-15 pax, 2027) roughly halves payback / ~doubles per-boat throughput vs the modeled 8-seat N30. Larger hulls multiply further. The entire ladder is computed on the WEAKEST boat we will ever run; treat N35+ as additional upside not yet priced in."
+    }
+  }
+}
