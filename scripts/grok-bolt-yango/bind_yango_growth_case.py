@@ -245,11 +245,21 @@ def build_growth_case(agg: dict, economics_url: str, corridor_count: int) -> dic
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dc", default="data-clean")
+    ap.add_argument("--aggdir", default="", help="Directory with agg-yango.json")
+    ap.add_argument("--econ-map", default="", help="economics_url_map.json path")
     args = ap.parse_args()
 
     dc = ROOT / args.dc
-    agg = load_json(AGG_DIR / "agg-yango.json")
-    econ_map = load_json(INGEST / "inputs/economics_url_map.json")
+    aggdir = Path(args.aggdir) if args.aggdir else AGG_DIR
+    opex_ingest = ROOT / "_ingest/sidecar-opex-refresh-2026-06-20"
+    if not (aggdir / "agg-yango.json").exists() and opex_ingest.exists():
+        aggdir = opex_ingest
+    econ_map_path = Path(args.econ_map) if args.econ_map else INGEST / "inputs/economics_url_map.json"
+    if not econ_map_path.exists() and opex_ingest.exists():
+        econ_map_path = opex_ingest / "economics_url_map.json"
+
+    agg = load_json(aggdir / "agg-yango.json")
+    econ_map = load_json(econ_map_path)
     seal_manifest = load_json(INGEST / "inputs/seal-manifest.json")
     economics_url = econ_map.get("economics_url", {}).get("yango", "")
     corridor_count = seal_manifest.get("partners", {}).get("yango", {}).get("corridor_count", 183)

@@ -55,6 +55,11 @@ NODE_CROSSWALK = {
     "algarve": "algarve-portugal",
     "palma-mallorca-spain": "mallorca-spain",
     "cairo": "cairo-egypt",
+    "hurghada-egypt": "hurghada-el-gouna-egypt",
+    "el-gouna-egypt": "hurghada-el-gouna-egypt",
+    "hurghada-el-gouna-egypt": "hurghada-el-gouna-egypt",
+    "sharm-el-sheikh-egypt": "sharm-el-sheikh-egypt",
+    "redsea-egypt": "redsea-egypt",
 }
 
 

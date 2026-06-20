@@ -15,7 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 INGEST = ROOT / "_ingest/econ-reseal-2026-06-19/econ-reseal"
-AGG_DIR = INGEST / "inputs/aggs"
+OPEX_INGEST = ROOT / "_ingest/sidecar-opex-refresh-2026-06-20"
+AGG_DIR = OPEX_INGEST if OPEX_INGEST.exists() else INGEST / "inputs/aggs"
 
 PARTNERS = [
     "grab",
@@ -30,16 +31,25 @@ PARTNERS = [
     "four-seasons",
 ]
 
-DECK_URL = {
-    "grab": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
-    "careem": "https://docs.google.com/spreadsheets/d/1ip3bYDedgxj_9ydksKH1OzeoXGMWT2LZzti1y5jsx-8/edit",
-    "bolt": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-    "yango": "https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit",
-    "qatar": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-    "jih-global": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
-    "constance": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit",
-    "four-seasons": "https://docs.google.com/spreadsheets/d/1Flk6PfRgCNdSGlP49lf1KxXaoR4qdlLcs1O8YA72gcc/edit",
-}
+def load_deck_url(url_map_path: Path | None = None) -> dict:
+    candidates = [
+        url_map_path,
+        OPEX_INGEST / "economics_url_map.json",
+        INGEST / "inputs/economics_url_map.json",
+    ]
+    for path in candidates:
+        if path and path.exists():
+            return json.loads(path.read_text()).get("economics_url", {})
+    return {
+        "grab": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
+        "careem": "https://docs.google.com/spreadsheets/d/1ip3bYDedgxj_9ydksKH1OzeoXGMWT2LZzti1y5jsx-8/edit",
+        "bolt": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+        "yango": "https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit",
+        "qatar": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
+        "jih-global": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+        "constance": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit",
+        "four-seasons": "https://docs.google.com/spreadsheets/d/1Flk6PfRgCNdSGlP49lf1KxXaoR4qdlLcs1O8YA72gcc/edit",
+    }
 
 COMMODITY_FARE_IDS = {
     "rn-347c44e1d360": 15.20,
@@ -126,6 +136,8 @@ def corridor_block(row, corr_country):
                 "crew_usd_yr": num((mid.get("cost_components") or {}).get("crew_usd_yr")),
                 "marina_overhead_usd_yr": num((mid.get("cost_components") or {}).get("marina_overhead_usd_yr")),
                 "maintenance_usd_yr": num((mid.get("cost_components") or {}).get("maintenance_usd_yr")),
+                "insurance_usd_yr": num((mid.get("cost_components") or {}).get("insurance_usd_yr")),
+                "charging_berth_usd_yr": num((mid.get("cost_components") or {}).get("charging_berth_usd_yr")),
                 "annual_opex_usd_yr": num(mid.get("annual_opex")),
                 "depreciation_usd_yr": num((mid.get("cost_components") or {}).get("depreciation_usd_yr")),
             },
@@ -157,11 +169,17 @@ def main():
         help="finance corridors.json (econ-reseal handoff)",
     )
     ap.add_argument("--out", default="data-clean/economics_by_route_id.json")
+    ap.add_argument(
+        "--url-map",
+        default="",
+        help="economics_url_map.json (default: sidecar-opex-refresh handoff)",
+    )
     args = ap.parse_args()
 
     dc = ROOT / args.dc
     aggdir = Path(args.aggdir)
     out = ROOT / args.out
+    deck_url = load_deck_url(Path(args.url_map) if args.url_map else None)
 
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from bolt_yango_routing_shared import (
@@ -269,7 +287,7 @@ def main():
     for rid, items in by_rid.items():
         items_sorted = sorted(items, key=lambda pr: -((pr[1].get("mid", {}).get("market_revenue_yr")) or 0))
         head_partner, head_row = items_sorted[0]
-        rec = {"route_id": rid, "partner": head_partner, "deck_url": DECK_URL.get(head_partner)}
+        rec = {"route_id": rid, "partner": head_partner, "deck_url": deck_url.get(head_partner)}
         rec.update(corridor_block(head_row, corr_country))
         if len(items_sorted) > 1:
             rec["also_serves"] = [corridor_block(r, corr_country) for _, r in items_sorted[1:]]
@@ -289,6 +307,8 @@ def main():
             "records": len(records),
             "pending_route_pin": len(pending),
             "partners": PARTNERS,
+            "aggdir": str(aggdir),
+            "opex_stack": "6-line (energy, crew, marina, maintenance, insurance, charging/berth)",
             "resolution": "ID-based only (route_id in gold, or exact unordered endpoint match).",
         },
         "records": records,

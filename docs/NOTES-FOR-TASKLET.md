@@ -6,6 +6,28 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-20 — #79at mesh trim + sidecar opex refresh (Grok shipped)
+
+**Read:** `data-clean/CHANGELOG-FOR-CLAUDE-2026-06-20-79at.md`
+
+**Shipped:** Mesh trim 840→245 (35/city capillary kept); Egypt 8 routes minted; sidecar rebuilt with 6-line opex from `sidecar-opex-refresh-2026-06-20.zip`; bolt 127 + yango 85 econ records; partner bind 176/99 linked.
+
+**Tasklet still owed:** `corridors.json` authoritative node-ID backfill (economics pins for Egypt yango rows still need corridor registry fix).
+
+---
+
+## 2026-06-20 — Post-#79as economics + geometry backlog (Grok → Tasklet)
+
+**Read:** `grok-routing-output/HANDOFF-FOR-TASKLET-2026-06-20.md`
+
+**State:** 351 pinned / 151 pending economics (~69.9% raw, ~94.9% actionable). Grok shipped `#79ar` (UAE gcn mint), `#79aq` (bp-seal), `#79as` (458 BP-pair routes). **~19 actionable pending** blocked on Tasklet `corridors.json` backfill + BP research.
+
+**Tasklet P0:** Egypt node-ID fix (`hurghada-egypt` → `hurghada-el-gouna-egypt` + `endpoint_boarding_points`); Bali/Phuket/Qatar `gcn-*` endpoint labels; 37 active `one_bp` second-endpoint BPs; Turkey per-city node chips. Ship zip → Grok ingest.
+
+**Do NOT:** resurrect 11 pruned Bolt/Yango markets; edit gold `ROUTES.json`/`FEATURES_BY_TYPE.json` directly.
+
+---
+
 ## 2026-06-19 — Bolt/Yango + Aegean-Med ingest (partial #79aq, Grok → Tasklet)
 
 **Packages:** `bolt-yango-seal-2026-06-19.zip` · `aegean-med-geometry-seal-2026-06-19.zip` (in `_ingest/`)

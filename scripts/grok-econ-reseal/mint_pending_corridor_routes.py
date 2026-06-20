@@ -49,7 +49,7 @@ def main():
     ap.add_argument("--dc", default="data-clean")
     ap.add_argument("--corridors", default=str(DEFAULT_CORRIDORS))
     ap.add_argument("--triage", default="data-clean/PENDING-ECONOMICS-TRIAGE.json")
-    ap.add_argument("--no-mesh", action="store_true")
+    ap.add_argument("--mesh", action="store_true", help="Add capped intra-city mesh (off by default on re-runs)")
     args = ap.parse_args()
 
     dc = ROOT / args.dc
@@ -125,7 +125,7 @@ def main():
             from_bp, to_bp, from_city, to_city = resolve_corridor_endpoints(corr, bp_idx)
             do_mint(from_bp, to_bp, from_city, to_city, mkey)
 
-    if not args.no_mesh:
+    if args.mesh:
         for city_id in MESH_CITIES:
             bps = [pid for pid, row in bp_idx.items() if row.get("parent_city_id") == city_id]
             if len(bps) < 2:
