@@ -1,0 +1,73 @@
+{
+  "partner": "yango",
+  "market": "turkey",
+  "date": "2026-06-20",
+  "issue": "All Turkey corridors+anchors bundled under istanbul-turkey node; 3 of 4 anchor_cities had country-suffixed IDs that don't resolve to atlas city_id (Gate A ID_MISMATCH), so Bodrum/Antalya/Çeşme-İzmir rendered nothing despite minted geometry.",
+  "anchor_cities": [
+    {
+      "anchor": "istanbul-turkey",
+      "resolves_to": "istanbul-turkey",
+      "verdict": "OK"
+    },
+    {
+      "anchor": "bodrum-turkey",
+      "resolves_to": "bodrum",
+      "verdict": "ID_MISMATCH_FIXED",
+      "bps": 138,
+      "covers": "Bodrum peninsula + Marmaris + Datça + Didim + Fethiye/Göcek"
+    },
+    {
+      "anchor": "antalya-turkey",
+      "resolves_to": "antalya",
+      "verdict": "ID_MISMATCH_FIXED",
+      "bps": 89,
+      "covers": "Antalya/Belek Riviera"
+    },
+    {
+      "anchor": "cesme-izmir-turkey",
+      "resolves_to": "cesme-izmir",
+      "verdict": "ID_MISMATCH_FIXED",
+      "bps": 84,
+      "covers": "Çeşme, İzmir, Kuşadası, Foça"
+    }
+  ],
+  "corridor_node_split": {
+    "istanbul-turkey": 9,
+    "bodrum": 12,
+    "cesme-izmir": 4,
+    "antalya": 2,
+    "total": 27
+  },
+  "cross_border_to_nodes": {
+    "rhodes-dodecanese-greece": [
+      "Bodrum→Kos",
+      "Marmaris→Rhodes",
+      "Fethiye→Rhodes"
+    ],
+    "NEEDS_MINTING_no_bound_node": [
+      "Çeşme→Chios",
+      "Kuşadası→Samos"
+    ]
+  },
+  "featured_route_rebinds": [
+    {
+      "phase": 1,
+      "leg": "İzmir (Konak)→Karşıyaka",
+      "new": "cesme-izmir/cesme-izmir",
+      "route_id": "nulled-for-grok-rebind"
+    },
+    {
+      "phase": 2,
+      "leg": "Fethiye→Ölüdeniz",
+      "new": "bodrum/bodrum",
+      "route_id": "nulled-for-grok-rebind"
+    },
+    {
+      "phase": 3,
+      "leg": "Fethiye→Rhodes",
+      "new": "bodrum/rhodes-dodecanese-greece",
+      "route_id": "null (was pending)"
+    }
+  ],
+  "economics_impact": "none — yango-turkey remains one economic market (same corridors/demand/fares); only geometry node-attribution corrected."
+}
