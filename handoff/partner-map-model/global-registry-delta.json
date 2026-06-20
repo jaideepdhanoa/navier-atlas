@@ -1,16 +1,20 @@
 {
-  "_doc": "Global registry delta: markets already researched in Atlas but absent from finance/model/corridors.json. This is step (1) before partner mapping.",
+  "_doc": "Atlas hierarchy/economics delta: markets already researched in Atlas, with display readiness and economics-promotion status separated.",
   "rules": [
+    "Mirror the existing Atlas region → cluster → city → locale_type hierarchy; do not invent a parallel geography model.",
     "ID/provenance match only; null beats confidently-wrong.",
-    "Do not bind partner footprint to a market until the market has a canonical registry key.",
-    "City brief existence proves researched market narrative; active route proves geometry; economics registry key proves inheritance-ready economics."
+    "Do not bind partner footprint to a market unless it resolves to an existing canonical Atlas city/market key.",
+    "Display cities/routes when Atlas hierarchy + route geometry exist; economics/financials are tracked enrichment, not gating.",
+    "City brief existence proves researched market narrative; active route proves geometry; economics registry key proves financial-model readiness."
   ],
   "summary": {
     "economics_ready_today": 51,
     "ready_to_promote_from_active_routes": 125,
     "needs_route_or_unquarantine": 15,
     "needs_boarding_points_or_grounding": 10,
-    "brief_stub_or_low_signal": 7
+    "brief_stub_or_low_signal": 7,
+    "display_ready_geometry_markets": 176,
+    "display_ready_but_economics_pending_markets": 125
   },
   "ready_to_promote_from_active_routes": [
     {
@@ -2668,5 +2672,10 @@
       "source_file": "data-clean/city_briefs/muscat-oman__daymaniyat-islands-unesco-marine-reserve-candidate.json",
       "recommended_action": "research/update brief before inheritance"
     }
-  ]
+  ],
+  "display_policy": {
+    "proposal_display": "Partner proposal pages may display canonical Atlas cities/routes when hierarchy + routed geometry exist, even without economics/financials.",
+    "economics": "Economics readiness remains tracked for model/sidecar promotion, but is not a display gate.",
+    "promotion": "Promotion means adding/aligning economics/model inheritance, not creating a parallel geography hierarchy."
+  }
 }

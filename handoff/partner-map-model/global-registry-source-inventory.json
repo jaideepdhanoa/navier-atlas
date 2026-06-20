@@ -1,5 +1,5 @@
 {
-  "_doc": "Registry-first audit generated from repo sources. city_briefs/CLUSTERS/ROUTES/FEATURES are the global Atlas universe; finance/model/corridors.json is the economics-ready inheritance subset.",
+  "_doc": "Inventory of existing Atlas hierarchy sources. This mirrors current region/cluster/city/route/BP/economics inputs; economics is tracked separately from display readiness.",
   "counts": {
     "city_briefs": 208,
     "clusters": 102,
@@ -15722,5 +15722,11 @@
         "ras-al-khaimah-uae"
       ]
     }
-  ]
+  ],
+  "display_policy": {
+    "source_of_truth": "Existing Atlas region → cluster → city hierarchy plus locale_type/archetype fields where present.",
+    "display_gate": "Existing Atlas city/market key and routed geometry for routes; economics is not required for display.",
+    "economics_tracking": "economics_registry_keys show which markets can already inherit financials; missing economics is an enrichment/promotion queue, not a display blocker.",
+    "null_rule": "ID/provenance match only; null beats confidently-wrong."
+  }
 }

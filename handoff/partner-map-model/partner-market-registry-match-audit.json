@@ -1,5 +1,5 @@
 {
-  "_doc": "Partner market mentions normalized against (a) economics registry keys and (b) global city brief IDs. Use this after registry promotion, not before.",
+  "_doc": "Partner market match audit against existing Atlas hierarchy. Economics gaps are tracked separately and are not display blockers.",
   "summary": {
     "possible_city_alias_review": 49,
     "unmatched": 64,
@@ -5882,5 +5882,10 @@
       ],
       "mention_count": 1
     }
-  ]
+  ],
+  "display_policy": {
+    "display_gate": "A partner bucket can display mapped canonical Atlas cities/routes when those city IDs have routed geometry.",
+    "economics_gate": "None for display. Missing economics is tracked for financial sidecar/model promotion.",
+    "cross_border": "Synthetic route categories such as Grab cross-border remain route categories, not market nodes."
+  }
 }

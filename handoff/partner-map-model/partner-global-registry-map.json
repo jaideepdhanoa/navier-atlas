@@ -1,15 +1,27 @@
 {
-  "_doc": "Step (2) audit: partner coastal operating market IDs mapped to the global inheritance registry overlay. This maps to existing Atlas city IDs only; it does not create new routes/BPs.",
+  "_doc": "Step (2) crosswalk: partner coastal operating market IDs mapped to existing Atlas city IDs. This is a projection of the Atlas hierarchy, not a new geography model; economics pending does not block display.",
   "summary": {
     "partners": 47,
     "partner_markets": 113,
     "mapped_partner_markets": 112,
     "unmapped_partner_markets": 1,
     "by_market_status": {
-      "all_economics_ready": 32,
-      "mixed_registry_gap_queue": 13,
-      "all_geometry_or_economics_ready_promote_missing_economics": 67,
+      "all_display_ready_economics_ready": 32,
+      "mixed_display_ready_and_route_grounding_queue": 13,
+      "all_display_ready_economics_tracked": 67,
       "unmatched": 1
+    },
+    "by_display_status": {
+      "display_ready": 99,
+      "mixed_display_ready_and_route_cleanup": 11,
+      "route_grounding_queue": 2,
+      "unmatched_or_route_category": 1
+    },
+    "by_economics_status": {
+      "all_economics_ready": 32,
+      "mixed_economics_ready_pending": 29,
+      "economics_pending_tracked": 51,
+      "not_applicable": 1
     }
   },
   "partners": [
@@ -38,21 +50,23 @@
           "label": "venice",
           "normalized": "venice",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "venice-italy"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "philippines",
           "label": "philippines",
           "normalized": "philippines",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "boracay-philippines",
             "palawan-philippines__el-nido-bacuit-bay",
@@ -63,14 +77,16 @@
             "brief_only": 1,
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "indonesia",
           "label": "indonesia",
           "normalized": "indonesia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bali-indonesia",
             "banda-maluku-indonesia",
@@ -90,14 +106,16 @@
             "economics_ready": 4,
             "atlas_routed": 9
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "thailand",
           "label": "thailand",
           "normalized": "thailand",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand",
             "koh-samui-thailand",
@@ -107,28 +125,32 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "montenegro",
           "label": "montenegro",
           "normalized": "montenegro",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "kotor-montenegro"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "greece",
           "label": "greece",
           "normalized": "greece",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "athens-saronic-greece",
             "chios-north-aegean-greece",
@@ -145,7 +167,9 @@
             "atlas_routed": 6,
             "brief_only": 1
           },
-          "source_file": "partner-pitch/partners/aman.json"
+          "source_file": "partner-pitch/partners/aman.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -167,7 +191,7 @@
           "label": "uae",
           "normalized": "uae",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "abu-dhabi-uae",
             "dubai-uae",
@@ -179,14 +203,16 @@
             "atlas_routed": 3,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "croatia",
           "label": "croatia",
           "normalized": "croatia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "hvar-croatia",
             "korcula-croatia",
@@ -197,14 +223,16 @@
             "atlas_routed": 3,
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "egypt",
           "label": "egypt",
           "normalized": "egypt",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "cairo-egypt",
             "hurghada-el-gouna-egypt",
@@ -213,42 +241,48 @@
           "readiness_by_status": {
             "economics_ready": 3
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "estonia",
           "label": "estonia",
           "normalized": "estonia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "tallinn-estonia"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "finland",
           "label": "finland",
           "normalized": "finland",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "helsinki-finland"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "france-riviera",
           "label": "france-riviera",
           "normalized": "france-riviera",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "cote-dazur-france",
             "monaco-monaco",
@@ -259,14 +293,16 @@
             "economics_ready": 2,
             "atlas_routed": 2
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "greece",
           "label": "greece",
           "normalized": "greece",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "athens-saronic-greece",
             "chios-north-aegean-greece",
@@ -283,28 +319,32 @@
             "atlas_routed": 6,
             "brief_only": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "ireland",
           "label": "ireland",
           "normalized": "ireland",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "dublin-ireland"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "italy",
           "label": "italy",
           "normalized": "italy",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "amalfi-coast-italy",
             "costa-smeralda-italy",
@@ -320,14 +360,16 @@
             "atlas_routed": 4,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "portugal",
           "label": "portugal",
           "normalized": "portugal",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "lisbon-tagus",
             "porto",
@@ -336,28 +378,32 @@
           "readiness_by_status": {
             "brief_only": 3
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "route_grounding_queue",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "qatar",
           "label": "qatar",
           "normalized": "qatar",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "doha-qatar"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "ksa-commercial",
           "label": "ksa-commercial",
           "normalized": "ksa-commercial",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "jeddah-ksa",
             "eastern-province-ksa"
@@ -366,14 +412,16 @@
             "economics_ready": 1,
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "spain",
           "label": "spain",
           "normalized": "spain",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "costa-brava-spain",
             "menorca-spain",
@@ -384,21 +432,25 @@
             "atlas_routed": 3,
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "sweden",
           "label": "sweden",
           "normalized": "sweden",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "stockholm-sweden"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/bolt.json"
+          "source_file": "partner-pitch/partners/bolt.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         }
       ]
     },
@@ -448,7 +500,7 @@
           "label": "brazil",
           "normalized": "brazil",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "rio-de-janeiro-brazil",
             "angra-dos-reis-ilha-grande-brazil",
@@ -457,14 +509,16 @@
           "readiness_by_status": {
             "atlas_routed": 3
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "mexico-pacific",
           "label": "mexico-pacific",
           "normalized": "mexico-pacific",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "los-cabos-mexico",
             "puerto-vallarta-mexico"
@@ -472,14 +526,16 @@
           "readiness_by_status": {
             "atlas_routed": 2
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "mexico-caribbean",
           "label": "mexico-caribbean",
           "normalized": "mexico-caribbean",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "cancun-riviera-maya-mexico",
             "cozumel-mexico",
@@ -489,63 +545,73 @@
             "atlas_routed": 1,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "colombia",
           "label": "colombia",
           "normalized": "colombia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "cartagena-colombia"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "panama",
           "label": "panama",
           "normalized": "panama",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "san-blas-panama"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "costa-rica",
           "label": "costa-rica",
           "normalized": "costa-rica",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "nicoya-papagayo-costa-rica"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "dominican-republic",
           "label": "dominican-republic",
           "normalized": "dominican-republic",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "samana-dominican-republic"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/didi.json"
+          "source_file": "partner-pitch/partners/didi.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -560,42 +626,48 @@
           "label": "nassau-bahamas",
           "normalized": "nassau-bahamas",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "nassau-bahamas"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/discovery-land.json"
+          "source_file": "partner-pitch/partners/discovery-land.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "los-cabos-mexico",
           "label": "los-cabos-mexico",
           "normalized": "los-cabos-mexico",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "los-cabos-mexico"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/discovery-land.json"
+          "source_file": "partner-pitch/partners/discovery-land.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "antigua-barbuda",
           "label": "antigua-barbuda",
           "normalized": "antigua-barbuda",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "antigua-barbuda"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/discovery-land.json"
+          "source_file": "partner-pitch/partners/discovery-land.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -617,21 +689,23 @@
           "label": "maldives",
           "normalized": "maldives",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "male-maldives"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "french-polynesia",
           "label": "french-polynesia",
           "normalized": "french-polynesia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "raiatea-tahaa-french-polynesia",
             "tahiti-moorea-french-polynesia"
@@ -639,28 +713,32 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "seychelles",
           "label": "seychelles",
           "normalized": "seychelles",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mahe-seychelles"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "thailand",
           "label": "thailand",
           "normalized": "thailand",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand",
             "koh-samui-thailand",
@@ -670,14 +748,16 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "indonesia",
           "label": "indonesia",
           "normalized": "indonesia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bali-indonesia",
             "banda-maluku-indonesia",
@@ -697,21 +777,25 @@
             "economics_ready": 4,
             "atlas_routed": 9
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "mauritius",
           "label": "mauritius",
           "normalized": "mauritius",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "port-louis-mauritius"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/four-seasons.json"
+          "source_file": "partner-pitch/partners/four-seasons.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -740,21 +824,23 @@
           "label": "jakarta",
           "normalized": "jakarta",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "jakarta-indonesia"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "bali-nusa-gili",
           "label": "bali-nusa-gili",
           "normalized": "bali-nusa-gili",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "bali-indonesia",
             "lombok-indonesia"
@@ -762,28 +848,32 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "komodo-flores",
           "label": "komodo-flores",
           "normalized": "komodo-flores",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "komodo-flores-indonesia"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "riau-singapore",
           "label": "riau-singapore",
           "normalized": "riau-singapore",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "riau-islands-indonesia",
             "singapore"
@@ -792,28 +882,32 @@
             "atlas_routed": 1,
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "singapore",
           "label": "singapore",
           "normalized": "singapore",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "singapore"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "eastern-indonesia",
           "label": "eastern-indonesia",
           "normalized": "eastern-indonesia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "komodo-flores-indonesia",
             "raja-ampat-indonesia",
@@ -825,7 +919,9 @@
             "economics_ready": 1,
             "atlas_routed": 4
           },
-          "source_file": "partner-pitch/partners/gojek.json"
+          "source_file": "partner-pitch/partners/gojek.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -840,14 +936,16 @@
           "label": "singapore",
           "normalized": "singapore",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "singapore"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "cross-border",
@@ -857,42 +955,48 @@
           "status": "unmatched",
           "global_registry_city_ids": [],
           "readiness_by_status": {},
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "unmatched_or_route_category",
+          "economics_status": "not_applicable"
         },
         {
           "partner_market_id": "bali",
           "label": "bali",
           "normalized": "bali",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "bali-indonesia"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "phuket",
           "label": "phuket",
           "normalized": "phuket",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "phuket-phang-nga-thailand"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "philippines",
           "label": "philippines",
           "normalized": "philippines",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "boracay-philippines",
             "palawan-philippines__el-nido-bacuit-bay",
@@ -903,14 +1007,16 @@
             "brief_only": 1,
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "vietnam",
           "label": "vietnam",
           "normalized": "vietnam",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "da-nang-hoi-an-vietnam",
             "ha-long-bay-vietnam",
@@ -920,28 +1026,32 @@
           "readiness_by_status": {
             "economics_ready": 4
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "cambodia",
           "label": "cambodia",
           "normalized": "cambodia",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "koh-rong-cambodia"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "borneo",
           "label": "borneo",
           "normalized": "borneo",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "sabah-kota-kinabalu-malaysia",
             "brunei-darussalam",
@@ -951,70 +1061,80 @@
             "economics_ready": 1,
             "atlas_routed": 2
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "penang",
           "label": "penang",
           "normalized": "penang",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "penang-malaysia"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "jakarta",
           "label": "jakarta",
           "normalized": "jakarta",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "jakarta-indonesia"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "koh-samui",
           "label": "koh-samui",
           "normalized": "koh-samui",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "koh-samui-thailand"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "bangkok",
           "label": "bangkok",
           "normalized": "bangkok",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "taiwan",
           "label": "taiwan",
           "normalized": "taiwan",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "kaohsiung-taiwan",
             "penghu-taiwan"
@@ -1022,7 +1142,9 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/grab.json"
+          "source_file": "partner-pitch/partners/grab.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         }
       ]
     },
@@ -1058,7 +1180,7 @@
           "label": "egypt-red-sea",
           "normalized": "egypt-red-sea",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "hurghada-el-gouna-egypt",
             "sharm-el-sheikh-egypt"
@@ -1066,14 +1188,16 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/indrive.json"
+          "source_file": "partner-pitch/partners/indrive.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "morocco-atlantic",
           "label": "morocco-atlantic",
           "normalized": "morocco-atlantic",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "agadir-essaouira-morocco",
             "casablanca",
@@ -1083,14 +1207,16 @@
             "atlas_routed": 1,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/indrive.json"
+          "source_file": "partner-pitch/partners/indrive.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "india",
           "label": "india",
           "normalized": "india",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mumbai-india",
             "goa-india",
@@ -1100,14 +1226,16 @@
           "readiness_by_status": {
             "atlas_routed": 4
           },
-          "source_file": "partner-pitch/partners/indrive.json"
+          "source_file": "partner-pitch/partners/indrive.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "sub-saharan-africa",
           "label": "sub-saharan-africa",
           "normalized": "sub-saharan-africa",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "abidjan",
             "lagos-nigeria",
@@ -1124,7 +1252,9 @@
             "economics_ready": 1,
             "atlas_routed": 5
           },
-          "source_file": "partner-pitch/partners/indrive.json"
+          "source_file": "partner-pitch/partners/indrive.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -1146,56 +1276,64 @@
           "label": "busan",
           "normalized": "busan",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "busan-geoje-korea"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/kakao-mobility.json"
+          "source_file": "partner-pitch/partners/kakao-mobility.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "jeju",
           "label": "jeju",
           "normalized": "jeju",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "jeju-korea"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/kakao-mobility.json"
+          "source_file": "partner-pitch/partners/kakao-mobility.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "yeosu-tongyeong",
           "label": "yeosu-tongyeong",
           "normalized": "yeosu-tongyeong",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "yeosu-tongyeong-korea"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/kakao-mobility.json"
+          "source_file": "partner-pitch/partners/kakao-mobility.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "seoul-han-river",
           "label": "seoul-han-river",
           "normalized": "seoul-han-river",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "seoul-incheon-korea"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/kakao-mobility.json"
+          "source_file": "partner-pitch/partners/kakao-mobility.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -1210,7 +1348,7 @@
           "label": "japan",
           "normalized": "japan",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "tokyo-bay-japan",
             "setouchi-japan",
@@ -1224,14 +1362,16 @@
           "readiness_by_status": {
             "atlas_routed": 8
           },
-          "source_file": "partner-pitch/partners/line.json"
+          "source_file": "partner-pitch/partners/line.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "taiwan",
           "label": "taiwan",
           "normalized": "taiwan",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "kaohsiung-taiwan",
             "penghu-taiwan"
@@ -1239,14 +1379,16 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/line.json"
+          "source_file": "partner-pitch/partners/line.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "thailand",
           "label": "thailand",
           "normalized": "thailand",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand",
             "koh-samui-thailand",
@@ -1256,7 +1398,9 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/line.json"
+          "source_file": "partner-pitch/partners/line.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -1271,77 +1415,87 @@
           "label": "new-york",
           "normalized": "new-york",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "new-york-harbor-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "miami",
           "label": "miami",
           "normalized": "miami",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "miami-florida-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "bay-area",
           "label": "bay-area",
           "normalized": "bay-area",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "san-francisco-bay-area-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "seattle",
           "label": "seattle",
           "normalized": "seattle",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "seattle-puget-sound-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "boston",
           "label": "boston",
           "normalized": "boston",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "boston-new-england-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "athens-cyclades",
           "label": "athens-cyclades",
           "normalized": "athens-cyclades",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "athens-saronic-greece",
             "mykonos-greece",
@@ -1354,7 +1508,9 @@
             "economics_ready": 2,
             "atlas_routed": 4
           },
-          "source_file": "partner-pitch/partners/lyft.json"
+          "source_file": "partner-pitch/partners/lyft.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -1397,56 +1553,64 @@
           "label": "mumbai",
           "normalized": "mumbai",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mumbai-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/ola.json"
+          "source_file": "partner-pitch/partners/ola.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "goa",
           "label": "goa",
           "normalized": "goa",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "goa-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/ola.json"
+          "source_file": "partner-pitch/partners/ola.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "kerala",
           "label": "kerala",
           "normalized": "kerala",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "kerala-backwaters-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/ola.json"
+          "source_file": "partner-pitch/partners/ola.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "andaman",
           "label": "andaman",
           "normalized": "andaman",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "andaman-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/ola.json"
+          "source_file": "partner-pitch/partners/ola.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -1468,56 +1632,64 @@
           "label": "mumbai",
           "normalized": "mumbai",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mumbai-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/rapido.json"
+          "source_file": "partner-pitch/partners/rapido.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "goa",
           "label": "goa",
           "normalized": "goa",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "goa-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/rapido.json"
+          "source_file": "partner-pitch/partners/rapido.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "kerala",
           "label": "kerala",
           "normalized": "kerala",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "kerala-backwaters-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/rapido.json"
+          "source_file": "partner-pitch/partners/rapido.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "andaman",
           "label": "andaman",
           "normalized": "andaman",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "andaman-india"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/rapido.json"
+          "source_file": "partner-pitch/partners/rapido.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -1560,35 +1732,39 @@
           "label": "maldives",
           "normalized": "maldives",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "male-maldives"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "seychelles",
           "label": "seychelles",
           "normalized": "seychelles",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mahe-seychelles"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "vietnam",
           "label": "vietnam",
           "normalized": "vietnam",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "da-nang-hoi-an-vietnam",
             "ha-long-bay-vietnam",
@@ -1598,14 +1774,16 @@
           "readiness_by_status": {
             "economics_ready": 4
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "thailand",
           "label": "thailand",
           "normalized": "thailand",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand",
             "koh-samui-thailand",
@@ -1615,14 +1793,16 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "oman",
           "label": "oman",
           "normalized": "oman",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "muscat-oman",
             "salalah-dhofar-oman"
@@ -1630,21 +1810,25 @@
           "readiness_by_status": {
             "atlas_routed": 2
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "fiji",
           "label": "fiji",
           "normalized": "fiji",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "nadi-fiji"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/six-senses.json"
+          "source_file": "partner-pitch/partners/six-senses.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         }
       ]
     },
@@ -1659,21 +1843,23 @@
           "label": "maldives",
           "normalized": "maldives",
           "match_type": "exact_city_id_or_display",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "male-maldives"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/soneva.json"
+          "source_file": "partner-pitch/partners/soneva.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "thailand",
           "label": "thailand",
           "normalized": "thailand",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "bangkok-thailand",
             "koh-samui-thailand",
@@ -1683,7 +1869,9 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/soneva.json"
+          "source_file": "partner-pitch/partners/soneva.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     },
@@ -1719,7 +1907,7 @@
           "label": "mena",
           "normalized": "mena",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "abu-dhabi-uae",
             "dubai-uae",
@@ -1744,42 +1932,48 @@
             "economics_ready": 8,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "miami",
           "label": "miami",
           "normalized": "miami",
           "match_type": "exact_city_id_or_display",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "miami-florida-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "bay-area",
           "label": "bay-area",
           "normalized": "bay-area",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "san-francisco-bay-area-usa"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "hawaii",
           "label": "hawaii",
           "normalized": "hawaii",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "oahu-honolulu-hawaii-usa",
             "maui-county-hawaii-usa",
@@ -1789,14 +1983,16 @@
           "readiness_by_status": {
             "atlas_routed": 4
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "mediterranean",
           "label": "mediterranean",
           "normalized": "mediterranean",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "athens-saronic-greece",
             "mykonos-greece",
@@ -1832,28 +2028,32 @@
             "economics_ready": 9,
             "atlas_routed": 20
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "sydney-nsw",
           "label": "sydney-nsw",
           "normalized": "sydney-nsw",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "sydney-australia"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "brazil-latam",
           "label": "brazil-latam",
           "normalized": "brazil-latam",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "rio-de-janeiro-brazil",
             "angra-dos-reis-ilha-grande-brazil",
@@ -1862,14 +2062,16 @@
           "readiness_by_status": {
             "atlas_routed": 3
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "italy-luxury",
           "label": "italy-luxury",
           "normalized": "italy-luxury",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "amalfi-coast-italy",
             "costa-smeralda-italy",
@@ -1885,14 +2087,16 @@
             "atlas_routed": 4,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "cote-dazur",
           "label": "cote-dazur",
           "normalized": "cote-dazur",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "cote-dazur-france",
             "monaco-monaco"
@@ -1900,28 +2104,32 @@
           "readiness_by_status": {
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "istanbul",
           "label": "istanbul",
           "normalized": "istanbul",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "istanbul-turkey"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "india",
           "label": "india",
           "normalized": "india",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "mumbai-india",
             "goa-india",
@@ -1931,14 +2139,16 @@
           "readiness_by_status": {
             "atlas_routed": 4
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "japan",
           "label": "japan",
           "normalized": "japan",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "tokyo-bay-japan",
             "setouchi-japan",
@@ -1952,14 +2162,16 @@
           "readiness_by_status": {
             "atlas_routed": 8
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "hong-kong-prd",
           "label": "hong-kong-prd",
           "normalized": "hong-kong-prd",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "hong-kong",
             "macau-china"
@@ -1967,14 +2179,16 @@
           "readiness_by_status": {
             "atlas_routed": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "mexico",
           "label": "mexico",
           "normalized": "mexico",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "cancun-riviera-maya-mexico",
             "cozumel-mexico",
@@ -1986,28 +2200,32 @@
             "atlas_routed": 3,
             "brief_only": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "mixed_display_ready_and_route_cleanup",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "lagos",
           "label": "lagos",
           "normalized": "lagos",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "lagos-nigeria"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "ksa-red-sea",
           "label": "ksa-red-sea",
           "normalized": "ksa-red-sea",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "red-sea-global-ksa",
             "jeddah-ksa",
@@ -2017,14 +2235,16 @@
             "atlas_routed": 1,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "egypt",
           "label": "egypt",
           "normalized": "egypt",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "cairo-egypt",
             "hurghada-el-gouna-egypt",
@@ -2033,7 +2253,9 @@
           "readiness_by_status": {
             "economics_ready": 3
           },
-          "source_file": "partner-pitch/partners/uber.json"
+          "source_file": "partner-pitch/partners/uber.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         }
       ]
     },
@@ -2069,7 +2291,7 @@
           "label": "uae",
           "normalized": "uae",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "abu-dhabi-uae",
             "dubai-uae",
@@ -2081,28 +2303,32 @@
             "atlas_routed": 3,
             "economics_ready": 2
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "cote-divoire",
           "label": "cote-divoire",
           "normalized": "cote-divoire",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "mixed_registry_gap_queue",
+          "status": "mixed_display_ready_and_route_grounding_queue",
           "global_registry_city_ids": [
             "abidjan"
           ],
           "readiness_by_status": {
             "brief_only": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "route_grounding_queue",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "egypt",
           "label": "egypt",
           "normalized": "egypt",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "cairo-egypt",
             "hurghada-el-gouna-egypt",
@@ -2111,56 +2337,64 @@
           "readiness_by_status": {
             "economics_ready": 3
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "lagos",
           "label": "lagos",
           "normalized": "lagos",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "lagos-nigeria"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "morocco",
           "label": "morocco",
           "normalized": "morocco",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "agadir-essaouira-morocco"
           ],
           "readiness_by_status": {
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "economics_pending_tracked"
         },
         {
           "partner_market_id": "qatar",
           "label": "qatar",
           "normalized": "qatar",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_economics_ready",
+          "status": "all_display_ready_economics_ready",
           "global_registry_city_ids": [
             "doha-qatar"
           ],
           "readiness_by_status": {
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "all_economics_ready"
         },
         {
           "partner_market_id": "ksa-commercial",
           "label": "ksa-commercial",
           "normalized": "ksa-commercial",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "jeddah-ksa",
             "eastern-province-ksa"
@@ -2169,14 +2403,16 @@
             "economics_ready": 1,
             "atlas_routed": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         },
         {
           "partner_market_id": "turkey",
           "label": "turkey",
           "normalized": "turkey",
           "match_type": "deterministic_country_cluster_alias",
-          "status": "all_geometry_or_economics_ready_promote_missing_economics",
+          "status": "all_display_ready_economics_tracked",
           "global_registry_city_ids": [
             "antalya-turkey",
             "bodrum-turkey",
@@ -2187,9 +2423,16 @@
             "atlas_routed": 3,
             "economics_ready": 1
           },
-          "source_file": "partner-pitch/partners/yango.json"
+          "source_file": "partner-pitch/partners/yango.json",
+          "display_status": "display_ready",
+          "economics_status": "mixed_economics_ready_pending"
         }
       ]
     }
-  ]
+  ],
+  "display_policy": {
+    "display_gate": "A partner bucket can display mapped canonical Atlas cities/routes when those city IDs have routed geometry.",
+    "economics_gate": "None for display. Missing economics is tracked for financial sidecar/model promotion.",
+    "cross_border": "Synthetic route categories such as Grab cross-border remain route categories, not market nodes."
+  }
 }
