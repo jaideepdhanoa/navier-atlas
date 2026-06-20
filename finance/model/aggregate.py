@@ -133,7 +133,10 @@ def main():
         mlow = mid.lower()
         return any(tok in mlow or mlow in tok for tok in scope)
 
-    # dedupe: collect (from,to) labels seen in "real" markets to drop cross-listed dups
+    # dedupe: collect (from,to) labels seen in "real" markets to drop cross-listed dups.
+    # Per-partner runs: cross-market label collision => is_dup (one owner market keeps the row).
+    # Global run: physics are partner-independent — the SAME pier-pair may legitimately appear in
+    # bolt-uae, yango-uae, uae-careem, etc. Only honor explicit _dup_of in global mode.
     seen_labels = {}
     rows = []; roadmap = []
     # PARTNER SCOPING (multi-partner safety): only aggregate markets owned by this partner.
@@ -148,8 +151,11 @@ def main():
         for c in mk["corridors"]:
             if c.get("_premium_cascade"): continue  # R5-EXT: public-transit/no-premium-tier — excluded from floor & estimation
             key = (c.get("from","").strip().lower(), c.get("to","").strip().lower())
-            is_dup = c.get("_dup_of") is not None or (key in seen_labels and seen_labels[key] != mid)
-            seen_labels.setdefault(key, mid)
+            if global_mode:
+                is_dup = c.get("_dup_of") is not None
+            else:
+                is_dup = c.get("_dup_of") is not None or (key in seen_labels and seen_labels[key] != mid)
+                seen_labels.setdefault(key, mid)
             nm = c["distance_nm"]
             vk = vessel_for(nm)
             ec = enrich(c, mid)

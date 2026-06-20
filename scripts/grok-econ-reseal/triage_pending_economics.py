@@ -116,7 +116,7 @@ def main():
     by_reason = Counter(x.get("reason") for x in pending)
     by_partner = defaultdict(Counter)
     for x in pending:
-        by_partner[x["partner"]][x.get("reason", "?")] += 1
+        by_partner[x.get("authored_for") or x.get("partner") or "?"][x.get("reason", "?")] += 1
 
     actionable = (
         sub_buckets["gcn_declared_not_in_gold"]

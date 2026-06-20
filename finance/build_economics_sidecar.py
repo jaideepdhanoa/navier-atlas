@@ -70,6 +70,14 @@ for mid_k, mk in corr["markets"].items():
         rid = c.get("route_id")
         a, b = c.get("from_node_id"), c.get("to_node_id")
         is_asp = bool(c.get("aspirational"))
+        if rid and rid not in gold_rids:
+            # Partner-suffixed gcn ids (e.g. gcn-*-bolt) may lag gold mint; fall back to base gcn.
+            inh = c.get("_inherited_from_gcn")
+            if inh:
+                for cand in (inh, f"{inh}-bolt", f"{inh}-yango", f"{inh}-shared"):
+                    if cand in gold_rids:
+                        rid = cand
+                        break
         if rid and rid in gold_rids:
             resolved[key] = rid
         elif a and b and frozenset((a, b)) in pair2id:
