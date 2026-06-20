@@ -1,0 +1,122 @@
+{
+  "created_at": "2026-06-20",
+  "status": "exact-bind hygiene complete for current India proposal slice",
+  "rules": [
+    "Registry first, partner mapping second, gap queue third.",
+    "ID-based matching only; null beats confidently-wrong.",
+    "candidate_route_ids are audit evidence, not live proposal route_ids unless explicitly sealed.",
+    "Adani/Reliance remain overlay-only."
+  ],
+  "city_crosswalk": [
+    {
+      "market": "Goa",
+      "atlas_city_id": "goa-india",
+      "atlas_city_label": "Goa",
+      "status": "OK_CITY_SCOPE",
+      "exact_bp_hits": [
+        {"alias":"Mormugao Harbour","bp_id":"bp-0d6e4cc1d5"},
+        {"alias":"Mormugao Port","bp_id":"bp-3610d51697"},
+        {"alias":"Panaji Jetty (Mandovi River)","bp_id":"bp-8c5afef8b1"}
+      ],
+      "mismatch_risk": "Mormugao exists as BP/harbour/port, but no Adani asset bind should be promoted without confirming the exact partner asset label and route purpose.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "atlas_city_id": "mumbai-india",
+      "atlas_city_label": "Mumbai Harbour",
+      "status": "OK_CITY_SCOPE_WITH_SEALED_CANDIDATE_ROUTES",
+      "exact_bp_hits": [
+        {"alias":"Gateway of India","bp_id":"bp-bbf16aee29"},
+        {"alias":"Elephanta Island Jetty","bp_id":"bp-758332246f"},
+        {"alias":"Mandwa Jetty (Alibaug)","bp_id":"bp-571dfc0761"},
+        {"alias":"Ferry Wharf (Bhaucha Dhakka)","bp_id":"bp-ceb6233334"},
+        {"alias":"Belapur Jetty (Navi Mumbai)","bp_id":"bp-ab42b2f95b"},
+        {"alias":"Nerul Ferry Terminal (Nerul Jetty)","bp_id":"bp-bc4bfb0ea4"}
+      ],
+      "candidate_route_ids_for_audit_only": ["ics-mum-belapur-ferrywharf","ics-mum-belapur-gateway","ics-mum-vashi-ferrywharf","ics-mum-versova-gateway","ics-mum-gorai-nariman"],
+      "mismatch_risk": "Renderer may distinguish Mumbai Harbour city_id from Navi Mumbai BP slugs; use exact BP IDs in any Grok render packet.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Kerala / Kochi / Vembanad",
+      "atlas_city_id": "kerala-backwaters-india",
+      "atlas_city_label": "Kerala Backwaters & Kochi",
+      "status": "OK_CITY_SCOPE",
+      "exact_bp_hits": [
+        {"alias":"Ernakulam Boat Jetty (Kochi)","bp_id":"bp-7f744c0b4a"},
+        {"alias":"Fort Kochi Jetty","bp_id":"bp-9ba774c37c"},
+        {"alias":"Kumarakom Jetty (Vembanad Lake)","bp_id":"bp-408737890e"},
+        {"alias":"FortKochi - Vypeen Jankar Jetty","bp_id":"bp-4d29ae2fbd"}
+      ],
+      "mismatch_risk": "Water Metro is source-backed but not all terminals are exact Atlas BP aliases; do not imply terminal-level seal beyond listed IDs.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Andaman & Nicobar / Port Blair",
+      "atlas_city_id": "andaman-india",
+      "atlas_city_label": "Andaman & Nicobar Islands — India",
+      "status": "OK_CITY_SCOPE_WITH_MANY_BP_HITS",
+      "exact_bp_hits": [
+        {"alias":"Port Blair (Haddo Wharf / Phoenix Bay Jetty)","bp_id":"bp-7f1d145a12"},
+        {"alias":"Port Blair Marina Park Jetty","bp_id":"bp-7bef8fd1aa"},
+        {"alias":"Havelock / Swaraj Dweep Jetty","bp_id":"bp-68d009dffb"},
+        {"alias":"Neil / Shaheed Dweep Jetty","bp_id":"bp-56fad569af"},
+        {"alias":"Bambooflat Jetty","bp_id":"bp-96da0f1d7c"},
+        {"alias":"Haddo Jetty","bp_id":"bp-a61bf5867a"}
+      ],
+      "mismatch_risk": "Avoid non-India Andaman hits from Thailand/SEA. Filter region == South Asia and city_id == andaman-india in any Grok packet.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Gujarat coast / Ghogha-Hazira / Gulf of Khambhat-Kutch",
+      "atlas_city_id": null,
+      "atlas_city_label": null,
+      "status": "NO_ATLAS_CITY_OR_BP_HIT_FOR_GHOGHA_HAZIRA_DAHEJ",
+      "exact_bp_hits": [],
+      "mismatch_risk": "Source-backed RoPax precedent exists, but no exact Atlas geography for Ghogha/Hazira/Dahej appeared in repo search. Keep as brief/backlog; no map footprint.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Chennai / Tamil Nadu / India-Sri Lanka ferry adjacency",
+      "atlas_city_id": null,
+      "atlas_city_label": null,
+      "status": "PARTIAL_EXTERNAL_BP_ONLY",
+      "exact_bp_hits": [{"alias":"Kankesanthurai (KKS) Harbour, Jaffna","bp_id":"bp-4f36afc9f8"}],
+      "mismatch_risk": "KKS exists but Chennai/Nagapattinam did not hit Atlas registry in this branch. Do not bind India-side route until India-side BP exists.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Vizag / Visakhapatnam / Andhra coast",
+      "atlas_city_id": null,
+      "atlas_city_label": null,
+      "status": "NO_ATLAS_CITY_OR_BP_HIT",
+      "exact_bp_hits": [],
+      "mismatch_risk": "Official port source supports narrative only. No exact Atlas bind for Vizag/Visakhapatnam/Gangavaram/Krishnapatnam in current branch search.",
+      "proposal_route_id": null
+    },
+    {
+      "market": "Kolkata-Haldia / Hooghly River / West Bengal waterways",
+      "atlas_city_id": null,
+      "atlas_city_label": null,
+      "status": "NO_ATLAS_CITY_OR_BP_HIT",
+      "exact_bp_hits": [],
+      "mismatch_risk": "World Bank/IWT source supports narrative only. No exact Atlas bind for Kolkata/Haldia/Howrah/Haora in current branch search.",
+      "proposal_route_id": null
+    }
+  ],
+  "adani_reliance_overlay_audit": {
+    "adani": [
+      {"asset":"Mormugao","repo_result":"BP hits exist","promotion":"overlay_only_until exact Adani asset + route use confirmed"},
+      {"asset":"Vizhinjam","repo_result":"no hit","promotion":"null/backlog"},
+      {"asset":"Hazira","repo_result":"no hit","promotion":"null/backlog"},
+      {"asset":"Kattupalli / Ennore","repo_result":"no hit","promotion":"null/backlog"},
+      {"asset":"Gangavaram / Krishnapatnam","repo_result":"no hit","promotion":"null/backlog"},
+      {"asset":"Haldia","repo_result":"no hit","promotion":"null/backlog"}
+    ],
+    "reliance": [
+      {"asset":"Sikka / Jamnagar Marine Terminal","repo_result":"no Sikka/Jamnagar hit","promotion":"overlay_only_no_footprint"},
+      {"asset":"Reliance Corporate Park / Navi Mumbai","repo_result":"Mumbai/Navi Mumbai BPs exist but no exact Reliance waterfront pickup/drop","promotion":"overlay_only_no_footprint"}
+    ]
+  }
+}

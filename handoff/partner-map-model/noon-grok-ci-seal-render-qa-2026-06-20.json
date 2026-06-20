@@ -1,0 +1,248 @@
+{
+  "package": "NOON-GROK-CI-SEAL-RENDER-QA-2026-06-20",
+  "partner_id": "noon",
+  "source_pr": 58,
+  "build_date": "2026-06-20",
+  "inputs": [
+    "handoff/partner-map-model/noon.partner-skeleton.draft.json",
+    "handoff/partner-map-model/noon-skeleton-derivation-2026-06-20.json",
+    "handoff/partner-map-model/uae-gulf-shared-corridor-spine.json",
+    "partner-pitch/schema/partner_proposal.schema.json"
+  ],
+  "scope_policy": {
+    "mode": "uae_first_review_safe",
+    "active_city_ids_from_tasklet_skeleton": [
+      "abu-dhabi-uae",
+      "dubai-uae",
+      "fujairah-uae",
+      "ras-al-khaimah-uae",
+      "sharjah-uae"
+    ],
+    "amber_city_ids_from_tasklet_skeleton": [
+      "doha-qatar",
+      "manama-bahrain",
+      "muscat-oman"
+    ],
+    "must_not_promote": [
+      "KSA",
+      "Egypt",
+      "Qatar",
+      "Bahrain",
+      "Oman"
+    ],
+    "cross_border_policy": "UAE/Gulf cross-border routes remain amber/regulatory-roadmap only, not commercial-now launch."
+  },
+  "deterministic_tasks_for_grok": [
+    {
+      "id": "A_anchor_city_crosswalk",
+      "owner": "Grok CI",
+      "instruction": "Resolve every skeleton city id to the internal Atlas city_id used by the renderer. Country-suffixed draft IDs may need mapping (example: dubai-uae -> dubai) if the sealed Atlas city_id is unsuffixed. Do not guess: read the actual internal city_id.",
+      "output": "partner-pitch/NOON-ANCHOR-CITY-CROSSWALK.json",
+      "acceptance": "Every active UAE city resolves OK or is explicitly held with MISSING_GEOMETRY. No ID_MISMATCH remains in a renderable Noon draft."
+    },
+    {
+      "id": "B_route_id_seal",
+      "owner": "Grok CI",
+      "instruction": "For each featured route, bind canonical route_id/route_ids using source corridor IDs and BP node IDs. Keep null if no exact canonical route exists; never invent a route_id.",
+      "output": "handoff/partner-map-model/noon-route-seal-ledger.json",
+      "acceptance": "Each featured route has verdict SEALED_ROUTE_ID or HELD_NULL_WITH_REASON; source_corridor_id is preserved."
+    },
+    {
+      "id": "C_render_safe_partner_draft",
+      "owner": "Grok CI",
+      "instruction": "Create a render-safe Noon draft or live partner JSON only after A and B. Use active UAE map scope only. Preserve coverage_note prose for KSA/Egypt/Gulf future scope; do not add footprint-card grids.",
+      "output": "partner-pitch/partners/noon.json or partner-pitch/partners/_draft/noon.json, depending on CI lane policy",
+      "acceptance": "Schema validation passes and the side panel renders active UAE markets/routes without blank cards."
+    },
+    {
+      "id": "D_render_QA",
+      "owner": "Grok CI",
+      "instruction": "Run partner proposal render QA. Confirm geometry chips, market pages/sections, featured routes, and roll-up scope reconcile. If economics are absent, display remains allowed but economics-pending is explicit.",
+      "output": "handoff/partner-map-model/noon-render-qa-ledger.json",
+      "acceptance": "No empty route cards, no anchor-city ID mismatch, no non-UAE market rendered as active, no invented economics."
+    }
+  ],
+  "featured_routes_requiring_seal": [
+    {
+      "phase": 1,
+      "label": "Yas Marina → Four Seasons Al Maryah Jetty",
+      "from_node_id": "bp-3b66a8ce1d",
+      "to_node_id": "bp-23cecdeb51",
+      "from_label": "Yas Marina",
+      "to_label": "Four Seasons Al Maryah Jetty",
+      "distance_nm": 12.4,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "rn-80c408c085a6",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 1,
+      "label": "Dubai Harbour Marina → Nikki Beach Resort Pearl Jumeirah Jetty",
+      "from_node_id": "bp-56d5f5bd8d",
+      "to_node_id": "bp-b13fc69aba",
+      "from_label": "Dubai Harbour Marina",
+      "to_label": "Nikki Beach Resort Pearl Jumeirah Jetty",
+      "distance_nm": 11.9,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "rn-b1ba183aa886",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 1,
+      "label": "Fujairah → Khorfakkan Corniche / Port",
+      "from_node_id": "fujairah-uae",
+      "to_node_id": "bp-82af5d5862",
+      "from_label": "Fujairah",
+      "to_label": "Khorfakkan Corniche / Port",
+      "distance_nm": 11.4,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "rn-bc685bdb0da3",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 1,
+      "label": "Ras Al Khaimah → ميناء صيادين غليلة",
+      "from_node_id": "ras-al-khaimah-uae",
+      "to_node_id": "bp-6cb42c383a",
+      "from_label": "Ras Al Khaimah",
+      "to_label": "ميناء صيادين غليلة",
+      "distance_nm": 11.9,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "rn-d61bc3c848d9",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 1,
+      "label": "Vida Beach Resort Umm Al Quwain → Sharjah Waterfront City marina",
+      "from_node_id": "bp-bad4f1baf7",
+      "to_node_id": "bp-b3eed149c8",
+      "from_label": "Vida Beach Resort Umm Al Quwain",
+      "to_label": "Sharjah Waterfront City marina",
+      "distance_nm": 9.6,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "rn-02a40748974d",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 2,
+      "label": "Ushuaïa Dubai Harbour Experience → Marina Mall / Breakwater Marina",
+      "from_node_id": "bp-933fd357b6",
+      "to_node_id": "bp-b3458dd3c6",
+      "from_label": "Ushuaïa Dubai Harbour Experience",
+      "to_label": "Marina Mall / Breakwater Marina",
+      "distance_nm": 57.4,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "gcn-4ae479b872-bolt",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 2,
+      "label": "Dubai Harbour Marina → Wynn Al Marjan Island arrival lagoon",
+      "from_node_id": "bp-56d5f5bd8d",
+      "to_node_id": "bp-29c2c81221",
+      "from_label": "Dubai Harbour Marina",
+      "to_label": "Wynn Al Marjan Island arrival lagoon",
+      "distance_nm": 49.8,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "gcn-9e515da38a-bolt",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 2,
+      "label": "Dubai Harbour Marina → Al Khan Lagoon mouth",
+      "from_node_id": "bp-56d5f5bd8d",
+      "to_node_id": "bp-f0fde14967",
+      "from_label": "Dubai Harbour Marina",
+      "to_label": "Al Khan Lagoon mouth",
+      "distance_nm": 19.4,
+      "platform": "N30 Pioneer II",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "gcn-8e3c2d581c-bolt",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 3,
+      "label": "Abu Dhabi → Muscat",
+      "from_node_id": "abu-dhabi-uae",
+      "to_node_id": "muscat-oman",
+      "from_label": "Abu Dhabi",
+      "to_label": "Muscat",
+      "distance_nm": 360.9,
+      "platform": "Quanta-LR",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "edge-0687",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 3,
+      "label": "Abu Dhabi → Manama",
+      "from_node_id": "abu-dhabi-uae",
+      "to_node_id": "manama-bahrain",
+      "from_label": "Abu Dhabi",
+      "to_label": "Manama",
+      "distance_nm": 264.1,
+      "platform": "Quanta-LR",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "edge-0685",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 3,
+      "label": "Abu Dhabi → Doha",
+      "from_node_id": "abu-dhabi-uae",
+      "to_node_id": "doha-qatar",
+      "from_label": "Abu Dhabi",
+      "to_label": "Doha",
+      "distance_nm": 179.1,
+      "platform": "Quanta-LR",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "edge-0684",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    },
+    {
+      "phase": 3,
+      "label": "Fujairah → Muscat",
+      "from_node_id": "fujairah-uae",
+      "to_node_id": "muscat-oman",
+      "from_label": "Fujairah",
+      "to_label": "Muscat",
+      "distance_nm": 149.1,
+      "platform": "Quanta-LR",
+      "route_id": null,
+      "route_ids": null,
+      "source_corridor_id": "edge-0712",
+      "link_status": "geometry-present-route-id-held-for-grok-seal"
+    }
+  ],
+  "route_pool_counts": {
+    "domestic_uae_intra_city": 452,
+    "inter_emirate_uae": 18,
+    "uae_gulf_cross_border": 14
+  },
+  "hard_gates": [
+    "No external outreach; this is internal deterministic handoff only.",
+    "No Adani/Reliance geography promotion in this Noon lane.",
+    "No KSA/Egypt active map scope in this pass.",
+    "No route_id invention; null beats confidently wrong.",
+    "Economics cascade begins only after canonical route IDs are sealed and render QA is clean.",
+    "If creating a live Noon partner JSON, preserve the source skeleton as a draft artifact and commit both ledger outputs."
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-06-20",
+  "status": "Tasklet exact-bind queue; no footprint promotion",
+  "global_policy": [
+    "Adani and Reliance remain overlay/backlog until exact Atlas BP/asset aliases exist.",
+    "Official asset existence is not enough for map display or economics.",
+    "Two local use cases are required before any proposal-ready market promotion.",
+    "Route IDs remain null until sealed."
+  ],
+  "adani": {
+    "official_source": "https://www.adaniports.com/ports-and-terminals",
+    "prior_audit": "ADANI-EXACT-BIND-AUDIT-2026-06-20",
+    "promotion_decision": "none_promoted",
+    "highest_priority_exact_bind_tasks": [
+      {"asset":"Mormugao","market_candidate":"Goa","reason":"Goa exists in India spine but BP/asset label missing","status":"city_scope_only_bp_missing","task":"verify exact Mormugao/port/terminal alias in shared registry before any display bind"},
+      {"asset":"Vizhinjam","market_candidate":"Kerala","reason":"Kerala exists in India spine but BP/asset label missing","status":"city_scope_only_bp_missing","task":"verify Vizhinjam port/terminal alias against Atlas Kerala geometry"},
+      {"asset":"Hazira","market_candidate":"Gujarat","reason":"Gujarat expansion lane plus possible RoPax/coastal precedent","status":"no_existing_atlas_scope_or_label_hit","task":"source Hazira terminal/water passenger relevance and exact BP candidate"},
+      {"asset":"Kattupalli / Ennore","market_candidate":"Chennai / Tamil Nadu","reason":"Chennai expansion lane with port-city use cases","status":"no_existing_atlas_scope_or_label_hit","task":"verify if any Atlas Chennai/TN coastal geometry exists before route proposal"},
+      {"asset":"Gangavaram / Krishnapatnam","market_candidate":"Vizag / Andhra","reason":"Vizag expansion lane and port-city business movement","status":"no_existing_atlas_scope_or_label_hit","task":"source terminal/route candidates; do not bind without Atlas geometry"},
+      {"asset":"Haldia","market_candidate":"Kolkata-Haldia","reason":"riverine/logistics corridor candidate","status":"no_existing_atlas_scope_or_label_hit","task":"verify Haldia terminal alias and Hooghly route registry support"}
+    ]
+  },
+  "reliance": {
+    "promotion_decision": "overlay_only_no_footprint",
+    "source_leads": [
+      {"source":"Sikka Ports & Terminals Limited","url":"https://www.sptl.co.in/business.html","evidence":"SPTL provides port infrastructure for receiving/evacuation of petroleum/petrochemical products from Reliance Industries refineries/manufacturing facilities at Jamnagar; facilities include SPMs, jetty berths, storage tanks, undersea/on-shore pipelines, RO-RO jetty and cargo handling facilities.","status":"official/near-official asset proof, not passenger mobility proof"},
+      {"source":"Reuters source lead","url":"https://www.reuters.com/world/india/reliance-industries-resumes-vessel-ops-indian-port-sources-2023-06-19/","evidence":"Search lead: Reliance resumed vessel operations at Sikka port in Jamnagar.","status":"news lead; useful for asset presence only"},
+      {"source":"Reliance Corporate Park lead","url":"https://www.ril.com/","evidence":"Navi Mumbai / Mumbai corporate campus and headquarters leads exist but are not water-route proof.","status":"corporate overlay lead only"}
+    ],
+    "highest_priority_exact_bind_tasks": [
+      {"asset":"Sikka / Jamnagar Marine Terminal","market_candidate":"Gujarat / Gulf of Kutch","local_use_cases":["captive corporate/industrial transfer","marine terminal/service movement"],"promotion_status":"blocked_until_passenger_or_captive_route_and_atlas_geometry","task":"verify whether any existing Atlas Gulf of Kutch/Jamnagar/Sikka geometry exists; otherwise backlog"},
+      {"asset":"Reliance Corporate Park / Navi Mumbai","market_candidate":"Mumbai / Navi Mumbai","local_use_cases":["corporate waterfront executive transfer","Mumbai-Navi Mumbai premium commute overlay"],"promotion_status":"overlay_only","task":"only bind if a specific waterfront pickup/drop or sealed route exists; corporate campus alone is not enough"}
+    ]
+  },
+  "next_tasklet_actions": [
+    "Search repo/Atlas for aliases: Mormugao, Vizhinjam, Hazira, Kattupalli, Ennore, Gangavaram, Krishnapatnam, Haldia, Sikka, Jamnagar.",
+    "For any alias hit, build an ID-based crosswalk row; for no hit, keep null/backlog.",
+    "Do not ask Grok to promote Adani/Reliance until a crosswalk row is OK or ID_MISMATCH with existing geometry."
+  ]
+}

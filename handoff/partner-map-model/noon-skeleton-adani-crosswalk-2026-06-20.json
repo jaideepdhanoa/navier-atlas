@@ -1,0 +1,224 @@
+{
+  "build_date": "2026-06-20",
+  "noon_scope_spec": {
+    "partner_id": "noon",
+    "display": "noon",
+    "status": "draft_scope_spec_for_grok_not_live_partner_json",
+    "archetype": "commerce_logistics_superapp",
+    "lead_country": "United Arab Emirates",
+    "coverage_note": "noon is evidenced as a UAE/KSA/Egypt shopping, grocery, food, send, and delivery platform. This pass uses UAE Atlas waterfront geometry only; KSA and Egypt stay narrative/future scope until local Atlas overlap and use cases are grounded.",
+    "evidence_tier": "country_supported + platform_model_supported",
+    "source_urls": [
+      "https://play.google.com/store/apps/details?id=com.noon.buyerapp&hl=en_US"
+    ],
+    "scope_spec": {
+      "derive_scope_city_ids_from": "handoff/partner-map-model/uae-gulf-shared-corridor-spine.json where usable_by_noon=true and current_geometry_status=geometry_present",
+      "first_pass_route_filters": [
+        {
+          "market_key": "domestic_uae_intra_city",
+          "count": 452,
+          "include": true,
+          "treatment": "commercial-now review pool"
+        },
+        {
+          "market_key": "inter_emirate_uae",
+          "count": 18,
+          "include": true,
+          "treatment": "selected commercial-now review pool"
+        },
+        {
+          "market_key": "uae_gulf_cross_border",
+          "count": 14,
+          "include": "amber_only",
+          "treatment": "roadmap/regulatory gated"
+        }
+      ],
+      "hold_markets": [
+        "KSA",
+        "Egypt",
+        "Kuwait",
+        "Oman",
+        "Bahrain for Noon-specific display unless locally validated"
+      ],
+      "do_not_hand_list_scope_city_ids": true
+    },
+    "draft_partner_page_shape": {
+      "hero": "Waterfront quick-commerce, concierge transfer, and experience logistics for the UAE’s densest marina, resort, and event districts.",
+      "why_now": "UAE waterfront districts concentrate high-value residents, visitors, restaurants, hotels, and events, while Noon already aggregates commerce, food, grocery, send, and fast-delivery demand in one app surface.",
+      "multimodal_fit": "Navier operates as the marine leg inside Noon’s same-day / minutes / send / experience layer, not as a standalone consumer ferry brand.",
+      "phases": [
+        {
+          "n": 1,
+          "label": "Prove",
+          "route_scope": "Dubai / Abu Dhabi / RAK domestic waterfront routes from sealed geometry",
+          "featured_routes_binding": "from_node_id/to_node_id only; route_id null until seal"
+        },
+        {
+          "n": 2,
+          "label": "Scale",
+          "route_scope": "selected inter-emirate waterfront resort/event links",
+          "featured_routes_binding": "N30 only unless re-gated"
+        },
+        {
+          "n": 3,
+          "label": "Mature",
+          "route_scope": "platform GMV across marine mobility + premium delivery/experience use cases",
+          "featured_routes_binding": "economics after route IDs final"
+        }
+      ]
+    },
+    "economics_cascade_gate": "After Grok finalizes route scope and IDs, model with UAE country-reference rows and platform/commerce revenue share; do not borrow Careem ride-hail capture blindly."
+  },
+  "adani_asset_crosswalk": [
+    {
+      "partner": "adani_ports",
+      "asset": "Mundra",
+      "lane": "Gujarat",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Tuna",
+      "lane": "Gujarat",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Dahej",
+      "lane": "Gujarat",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Hazira",
+      "lane": "Gujarat",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Mormugao",
+      "lane": "Goa",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "overlay_on_goa_marquee_expansion",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Vizhinjam",
+      "lane": "Kerala",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "overlay_on_existing_kerala_baseline_after_review",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Ennore",
+      "lane": "Tamil Nadu / Chennai",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Kattupalli",
+      "lane": "Tamil Nadu / Chennai",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Karaikal",
+      "lane": "Tamil Nadu / Chennai",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Gangavaram",
+      "lane": "Andhra / Vizag",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Krishnapatnam",
+      "lane": "Andhra / Vizag",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Haldia",
+      "lane": "West Bengal / Kolkata-Haldia",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "active_exact_bind_lane",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Dhamra",
+      "lane": "Odisha",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "backlog_outside_current_named_india_additions",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    },
+    {
+      "partner": "adani_ports",
+      "asset": "Gopalpur",
+      "lane": "Odisha",
+      "official_source": "https://www.adaniports.com/ports-and-terminals",
+      "current_spine_label_hit": "none_found_in_current_97_route_india_spine",
+      "atlas_binding_verdict": "MISSING_GEOMETRY_OR_UNVERIFIED_ALIAS",
+      "proposal_status": "backlog_outside_current_named_india_additions",
+      "next_action": "Grok/Tasklet exact-bind by asset coordinates, existing Atlas city/cluster aliases, and BP provenance; do not promote route economics until OK or ID_MISMATCH is resolved."
+    }
+  ],
+  "reliance_overlay_gate": {
+    "status": "held_overlay_only",
+    "reason": "No exact route/asset labels in current 97-route India spine; Jamnagar/Sikka and Mumbai remain candidate narrative lanes until exact binds and owner/use-case are validated."
+  },
+  "acceptance_gates": [
+    "Noon scope_city_ids derived from actual UAE/Gulf route endpoints only.",
+    "Adani assets cannot render as partner footprint until crosswalk verdict is OK or ID_MISMATCH resolved.",
+    "Reliance cannot render or cascade economics until exact buyer/use-case plus route geometry are accepted.",
+    "All route_id fields remain null until Grok seal binds real route IDs."
+  ]
+}

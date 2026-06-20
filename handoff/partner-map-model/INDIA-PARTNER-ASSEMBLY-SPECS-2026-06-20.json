@@ -1,0 +1,69 @@
+{
+  "created_at": "2026-06-20",
+  "status": "Tasklet assembly spec; ready for deterministic JSON build after Atlas seal/crosswalk",
+  "shared_rules": [
+    "Do not overwrite global Uber proposal; create an India derivative namespace/draft.",
+    "Rapido/Ola use country-supported India platform evidence unless local service evidence is sourced.",
+    "Only Uber rows extracted from official city list may be city-supported, pending Atlas alias review.",
+    "route_id is null until Grok/Atlas seal; economics_url null until model/sheet cascade.",
+    "Adani/Reliance are overlay-only and excluded from live footprint."
+  ],
+  "partners": [
+    {
+      "partner_id_candidate": "rapido-india",
+      "display_name": "Rapido × Navier India",
+      "positioning": "High-frequency first/last-mile distribution layer around premium water routes, terminals, resort clusters and commuter nodes.",
+      "evidence_tier": "country_supported",
+      "source": {"url":"https://www.rapido.bike/","claim":"India's #1 ride-hailing app; 400+ cities; products include bike, auto, cab, parcel, travel and metro."},
+      "active_or_draft_markets": [
+        {"market":"Goa","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"tourism volume + airport/resort/beach feeder fit"},
+        {"market":"Mumbai / Navi Mumbai","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"terminal feeder for water taxi/harbour routes"},
+        {"market":"Kerala / Kochi","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"Water Metro terminal and island-city feeder fit"},
+        {"market":"Andaman","status":"brief_only_local_partner_evidence_pending","phase":"scale_candidate","why":"marine-first mobility but local platform proof needed"},
+        {"market":"Kolkata-Haldia","status":"draft_after_exact_terminal_cleanup","phase":"scale_candidate","why":"riverine commuter feeder logic"}
+      ],
+      "coverage_note": "Rapido provides India-scale distribution and first/last-mile supply. Navier should lead with markets where water demand is independently proven and use Rapido as the app-distributed land-side layer.",
+      "excluded_from_live_map_until_sealed": ["Gujarat", "Chennai/Tamil Nadu", "Vizag/Andhra", "Adani/Reliance overlay markets"]
+    },
+    {
+      "partner_id_candidate": "ola-india",
+      "display_name": "Ola × Navier India",
+      "positioning": "National mobility, airport/hotel/outstation and premium distribution layer for app-booked water legs.",
+      "evidence_tier": "country_supported",
+      "source": {"url":"https://www.olacabs.com/","claim":"250+ cities; 55 crore+ yearly rides; bikes, autos, Prime sedans/SUVs, rentals and outstation."},
+      "active_or_draft_markets": [
+        {"market":"Goa","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"airport/resort and premium tourism packages"},
+        {"market":"Mumbai / Navi Mumbai","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"land pickup + water transfer package"},
+        {"market":"Kerala / Kochi","status":"draft_proposal_ready_economics_pending","phase":"prove","why":"terminal/backwater/hotel premium packages"},
+        {"market":"Chennai/Tamil Nadu","status":"brief_only_pending_terminal_bind","phase":"scale_candidate","why":"airport/port/ferry adjacency"},
+        {"market":"Kolkata-Haldia","status":"draft_after_exact_terminal_cleanup","phase":"scale_candidate","why":"commuter + port/business movement"}
+      ],
+      "coverage_note": "Ola is strongest where Navier can package water legs into known mobility products: airport transfer, rental/outstation, hotel transfer and premium city ride.",
+      "excluded_from_live_map_until_sealed": ["Gujarat", "Vizag/Andhra", "Andaman unless local availability is verified", "Adani/Reliance overlay markets"]
+    },
+    {
+      "partner_id_candidate": "uber-india-derivative",
+      "display_name": "Uber India × Navier",
+      "positioning": "Exact city-row derivative for India's coastal, island and riverine premium water mobility markets.",
+      "evidence_tier": "city_supported_candidates_pending_alias_review",
+      "source": {"url":"https://www.uber.com/global/en/r/india/cities/","claim":"Official Uber India city roster; extracted candidate rows by coastal/river market bucket."},
+      "active_or_draft_markets": [
+        {"market":"Goa","status":"candidate_city_supported_alias_review","phase":"prove","why":"official roster includes Goa candidates; tourism anchor strong"},
+        {"market":"Mumbai / Maharashtra coast","status":"candidate_city_supported_alias_review","phase":"prove","why":"official roster includes Mumbai/coastal Maharashtra candidates"},
+        {"market":"Kerala / Kochi","status":"candidate_city_supported_alias_review","phase":"prove","why":"official roster includes Kerala candidates plus Water Metro proof"},
+        {"market":"Chennai/Tamil Nadu","status":"candidate_city_supported_alias_review","phase":"prove_or_scale","why":"Chennai supported; ferry adjacency"},
+        {"market":"Vizag/Andhra","status":"candidate_city_supported_alias_review","phase":"scale_candidate","why":"Andhra coastal rows need alias filtering"},
+        {"market":"Kolkata-Haldia / West Bengal","status":"candidate_city_supported_alias_review","phase":"scale_candidate","why":"Haldia/Haora/West Bengal rows plus waterway project"}
+      ],
+      "coverage_note": "This derivative should be built from exact official city rows and Atlas alias checks; it must not shrink or overwrite the global Uber proposal.",
+      "excluded_from_live_map_until_sealed": ["all candidate rows without Atlas hierarchy", "Adani/Reliance overlay markets"]
+    }
+  ],
+  "recommended_build_order": [
+    "uber-india-derivative exact-row crosswalk",
+    "rapido-india narrative draft JSON",
+    "ola-india narrative draft JSON",
+    "demand-anchor cleanup for Goa/Mumbai/Kochi/Kolkata",
+    "Grok-safe partner JSON assembly packet after Atlas seal"
+  ]
+}
