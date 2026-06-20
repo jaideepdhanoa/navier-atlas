@@ -1,0 +1,1193 @@
+{
+ "_doc": "L3-COUNTRY normalization layer. Every corridor inherits its country's opex + cost_index. Sourced once per country, reused across all corridors in that country. cost_index = relative price level vs Singapore=1.00, used by the estimation cascade to scale regional-median fares into un-sourced corridors. All values carry source_tier + confidence.",
+ "_schema": {
+  "captain_usd_yr": "fully-loaded annual crew cost for one vessel (1 captain + deckhand blended)",
+  "energy_usd_kwh": "commercial/business electricity tariff",
+  "grid_co2_kg_kwh": "grid carbon intensity for charging-emissions calc",
+  "marina_overhead_usd_yr": "berth + insurance + admin per vessel/yr",
+  "cost_index": "relative cost level vs Singapore=1.00"
+ },
+ "countries": {
+  "Singapore": {
+   "captain_usd_yr": {
+    "value": 48000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled SG marine crew ~SGD 4-5k/mo blended"
+   },
+   "energy_usd_kwh": {
+    "value": 0.21,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "SG regulated tariff 28.1c SGD = $0.21"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T2",
+    "confidence": "high",
+    "source": "SG gas-fired grid ~0.40"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 20000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "SG high-cost berth modeled"
+   },
+   "cost_index": {
+    "value": 1.0,
+    "confidence": "high"
+   }
+  },
+  "Indonesia": {
+   "captain_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "med",
+    "source": "Blended local crew; ERI pro $23k vs informal local"
+   },
+   "energy_usd_kwh": {
+    "value": 0.07,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "PLN business IDR 1,114/kWh = $0.07"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.75,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Coal-heavy Java-Bali grid ~0.75"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 10000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled"
+   },
+   "cost_index": {
+    "value": 0.45,
+    "confidence": "med"
+   }
+  },
+  "Thailand": {
+   "captain_usd_yr": {
+    "value": 24000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "ERI Thailand boat captain ~876k THB/yr"
+   },
+   "energy_usd_kwh": {
+    "value": 0.116,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "MEA/PEA business tariff ~4.18 THB/kWh"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.5,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Gas-heavy Thai grid ~0.50"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 12000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled Phuket marine ops"
+   },
+   "cost_index": {
+    "value": 0.55,
+    "confidence": "med"
+   }
+  },
+  "Philippines": {
+   "captain_usd_yr": {
+    "value": 15000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "ERI SalaryExpert boat captain PH ~PHP825,644/yr (~$14.5k @57). Blended 1 captain + local deckhand (~PHP15-22k/mo, Indeed) for one commercial tourism vessel ~$15k fully-loaded."
+   },
+   "energy_usd_kwh": {
+    "value": 0.2,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "Meralco 2025 overall ~PHP11-12.26/kWh (highest tariff in SEA); commercial/general-power class ~PHP11/kWh = ~$0.20 @57."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.68,
+    "source_tier": "T2",
+    "confidence": "med-high",
+    "source": "Coal-heavy PH grid; Climatiq 0.691 kgCO2/kWh, PH DOE National Grid Emission Factor ~0.65-0.71."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 10000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr; below Thailand ($12k) on lower PH marine-ops costs."
+   },
+   "cost_index": {
+    "value": 0.5,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.31x SG (captain $15k vs $48k) but electricity ~0.95x SG ($0.20 vs $0.21); blended ~0.50, in line with Indonesia 0.45 / Thailand 0.55."
+   }
+  },
+  "Vietnam": {
+   "captain_usd_yr": {
+    "value": 14000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "ERI SalaryExpert Vietnam boat captain avg ~VND 540M/yr (~$21k @26,300, high-side professional). Blended 1 tourism-boat captain + local deckhand realistically lower; Vietnam wage band ~= Philippines/Indonesia. Fully-loaded ~$14k/vessel/yr."
+   },
+   "energy_usd_kwh": {
+    "value": 0.12,
+    "source_tier": "T1",
+    "confidence": "med",
+    "source": "EVN avg retail VND 2,204/kWh ($0.084, May 2025). Commercial/services sector (kinh doanh) pays the HIGHEST tariff band: normal-hour ~VND 3,200/kWh ($0.12), peak up to VND 5,422 ($0.21, VietnamNet 2025). Tourism boat operators are on services tariff -> ~$0.12."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.66,
+    "source_tier": "T2",
+    "confidence": "high",
+    "source": "Vietnam official grid emission factor 2023 = 0.6592 tCO2/MWh (MOIT/Dept of Climate Change; down from 0.6766 in 2022). Coal+hydro+gas mix."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 9000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Below Thailand ($12k), ~= Indonesia/Philippines ($10k) on lower Vietnam marine-ops costs."
+   },
+   "cost_index": {
+    "value": 0.45,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.29x SG (captain $14k vs $48k); commercial electricity ~0.57x SG ($0.12 vs $0.21); blended ~0.45, in line with Indonesia 0.45, below Thailand 0.55."
+   }
+  },
+  "Cambodia": {
+   "captain_usd_yr": {
+    "value": 11000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "No clean Cambodia boat-captain salary index. Cambodia wage band sits just below Vietnam/Philippines (lower GDP/capita). Blended 1 commercial tourism-boat captain + local deckhand fully-loaded ~$11k/vessel/yr (captain ~$600-800/mo + deckhand ~$250-350/mo incl on-costs). Below Vietnam $14k / Philippines $15k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.15,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "EDC commercial/business tariff. Climatescope 2025: Cambodia avg electricity price ~$137/MWh (2023) -> ~$149/MWh (2024) = ~$0.15/kWh. ERIA: EDC grid tariffs range US cents 9-25/kWh, commercial band ~18-23c historically. GlobalPetrolPrices business ~$0.147/kWh. Among the higher commercial tariffs in SEA (heavy diesel/coal + imports). Anchored $0.15."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.6,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Cambodia grid mix ~coal 45-50% + hydro ~30-40% + imports ~15% + small solar. Average consumption intensity ~0.5-0.6 kgCO2/kWh. NOTE: marginal/operating-margin factor is far higher (IFI OM ~1.046 kgCO2/kWh, coal-on-margin with must-run hydro). Used average grid intensity 0.6 for charging-emissions; below Vietnam 0.66 / PH 0.68 / Indonesia 0.75 due to hydro share."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 9000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr for Sihanoukville marine ops; ~= Vietnam $9k, below Thailand $12k on lower Cambodia operating costs."
+   },
+   "cost_index": {
+    "value": 0.42,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.23x SG (captain $11k vs $48k); commercial electricity ~0.71x SG ($0.15 vs $0.21); blended ~0.42, just below Vietnam/Indonesia (0.45) and well below Thailand (0.55). R7 two-sided: cheap crew but high (dollarized) electricity keeps the index from going lower."
+   }
+  },
+  "Malaysia": {
+   "captain_usd_yr": {
+    "value": 17000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "ERI ship captain RM119k/yr (high-side professional); Indeed boat-captain avg RM2,885/mo (~RM35k/yr); Jobstreet Sabah boat captain RM5.5-8k/mo (offshore high-side). Tourism island-boat captain ~RM3-4k/mo + deckhand ~RM1.8-2k/mo, blended fully-loaded (incl EPF/SOCSO) ~RM73k = $17k @4.30. Above Indonesia/PH/VN (higher MY min wage RM1,700), below Thailand $24k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.1,
+    "source_tier": "T1",
+    "confidence": "med-high",
+    "source": "TNB low-voltage Commercial tariff ~36.5 sen/kWh base; July-2025 restructure base 45.4 sen/kWh; effective all-in commercial (incl AFA/capacity) ~RM0.40-0.45/kWh = $0.09-0.10 @4.30. Sabah SESB similar band. Anchored $0.10. Below Thailand $0.116, above Indonesia $0.07."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.7,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Peninsular Malaysia grid coal+gas heavy: Energy Commission GEF ~0.758 kgCO2/kWh (2021, used by UM); Climatiq 0.792. Sabah (SESB) grid lower (more gas/hydro/diesel). National blended ~0.70. Coal-heavy Peninsular pulls it up; below Indonesia 0.75."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 11000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Between Thailand ($12k) and PH/Indonesia ($10k); Malaysia marina ops (Sutera Harbour, Telaga, Jesselton) mid-cost. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.55,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.35x SG (captain $17k vs $48k); commercial electricity ~0.48x SG ($0.10 vs $0.21); blended ~0.55, ~= Thailand 0.55 and above Indonesia/VN/PH (0.45-0.50). R7 two-sided: higher MY wages but cheaper (subsidized) power -> mid-tier index."
+   }
+  },
+  "Taiwan": {
+   "captain_usd_yr": {
+    "value": 38000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "ERI SalaryExpert Taiwan boat captain NT$1,639,415/yr (~$50.8k @32.3, high-side single qualified captain). Blended 1 tourism-boat captain (~NT$55-65k/mo) + deckhand (~NT$35-40k/mo) fully-loaded (incl labor insurance/pension) ~NT$1.23M = ~$38k/vessel/yr. Taiwan is high-income (GDP/cap ~$33k); 2nd-highest wage in set, below Singapore $48k, well above Thailand $24k / SEA $11-17k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.18,
+    "source_tier": "T1",
+    "confidence": "med",
+    "source": "Taipower 2025: industrial NT$4.27/kWh (unchanged, Taipei Times); residential ~NT$3.23 ($0.10); GlobalPetrolPrices business band TWD7.29 ($0.232, Sep 2025). A small tourism boat is on the 表燈營業 (commercial lighting) tariff - the higher band (R7-EXT) - effective blended ~NT$5-6/kWh = ~$0.18 @32.3. Floor industrial $0.13, ceiling commercial-business $0.23."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.46,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "Taipower official electricity carbon emission factor: 0.467 kgCO2/kWh (2024), 2025 preliminary 0.456 (MOEA/Energy-Omni). Coal+LNG heavy with nuclear phase-out but notably cleaner than SEA neighbors (0.46 vs VN 0.66 / PH 0.68 / Indonesia 0.75). 2025 target 0.388."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 14000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Taiwan high-income marine ops (Kaohsiung/Penghu/Donggang); above Thailand $12k / Malaysia $11k, below Singapore $20k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.72,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.79x SG (captain $38k vs $48k); commercial electricity ~0.86x SG ($0.18 vs $0.21); blended ~0.72. Highest in the set after Singapore - Taiwan is a high-income economy, not a low-cost SEA market. R7 two-sided: high wages AND mid-high commercial power both pull the index up."
+   }
+  },
+  "Saudi Arabia": {
+   "captain_usd_yr": {
+    "value": 42000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "GCC expat marine crew. Job ads (Instagram/Facebook 2026): yacht/boat captain SAR 7,000-10,000/mo (~$1,870-2,670/mo); ERI SalaryExpert boat captain avg SAR 203,728/yr (~$54k, high-side single qualified). Blended 1 commercial tourism-boat captain (~SAR 8,500/mo) + deckhand (~SAR 3,500/mo) fully-loaded (housing/food/visa typically provided) ~= SAR 157k = ~$42k/vessel/yr @3.75. High-income GCC; just below Singapore $48k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.074,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "HEAVILY SUBSIDIZED. SEC/SERA commercial tariff: SAR 0.22/kWh up to 6,000 kWh/mo, SAR 0.32 above (clenergize/SEC 2025). GlobalPetrolPrices business SAR 0.277 = $0.074 (Sep 2025). Anchored $0.074. Floor (low-band) ~$0.059, ceiling (high-band SAR 0.32) ~$0.085. @SAR 3.75 (pegged)."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.57,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "Saudi DNA official grid emission factor 0.568 tCO2/MWh (KFUPM 2024 GHG inventory citing DNA CDM); IEA-derived 0.56 (KSU 2024); ACWA Power 0.520; ScienceDirect ~0.65. Gas+oil-fired grid. Anchored 0.57."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 18000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. New premium Red Sea Global / NEOM marinas (Shura, Sindalah 86-berth) are high-cost GCC marine ops; above Taiwan $14k, below Singapore $20k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.68,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.875x SG (captain $42k vs $48k); commercial electricity ~0.35x SG ($0.074 vs $0.21, heavily subsidized). R7 two-sided: HIGH GCC crew cost but very cheap subsidized power -> wage-weighted blend ~0.68. High-income GCC; below Singapore, just below Taiwan 0.72."
+   }
+  },
+  "Bahrain": {
+   "captain_usd_yr": {
+    "value": 36000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "GCC expat marine crew, slightly below Saudi. Job ads (Instagram 2026): private boat captain BHD 250-350/mo (~$660-930/mo). Blended 1 commercial tourism-boat captain (~BHD 1,000/mo ~$2,650) + deckhand (~BHD 400/mo ~$1,060) fully-loaded (visa/accom provided) ~= ~$36k/vessel/yr @BHD 0.376. High-income GCC; just below Saudi $42k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.08,
+    "source_tier": "T1",
+    "confidence": "med-high",
+    "source": "SUBSIDIZED. EWA non-subsidized (expat/commercial) rate 32 fils/kWh = BHD 0.032 = ~$0.085 (GulfInsider/Reddit 2026). GlobalPetrolPrices business BHD 0.029 = $0.077 (Sep 2025). Anchored $0.08. @BHD 0.376 (pegged)."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.55,
+    "source_tier": "T4",
+    "confidence": "med",
+    "source": "Bahrain grid is ~100% natural gas (some oil), efficient CCGT. No single official GEF found; GCC gas grids ~0.45-0.60 kgCO2/kWh (Kuwait oil-heavy 0.69 is upper bound, IEA). Anchored 0.55 - gas-dominated. Tagged med."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 15000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Bahrain marine ops (Manama/Marina) mid-high GCC; below Saudi $18k, above Taiwan $14k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.63,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.75x SG (captain $36k vs $48k); commercial electricity ~0.38x SG ($0.08 vs $0.21, subsidized). R7 two-sided: high GCC crew, cheap subsidized power -> wage-weighted blend ~0.63, just below Saudi 0.68."
+   }
+  },
+  "United Arab Emirates": {
+   "captain_usd_yr": {
+    "value": 40000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "GCC expat marine crew (Dubai). Dubai yacht-group ads: captain AED 5,000-10,000/mo, deckhand AED 2,000-3,500/mo; Morgan & Mallet GCC guide captain $4,200-7,200/mo, deckhand $1,550-2,300/mo. Blended 1 commercial tourism-boat captain (~AED 8,000/mo ~$2,180) + deckhand (~AED 3,000/mo ~$817) fully-loaded incl visa/accommodation/insurance ~= ~$40k/vessel/yr @AED 3.6725. High-income GCC; between Saudi $42k and Bahrain $36k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.085,
+    "source_tier": "T1",
+    "confidence": "med-high",
+    "source": "DEWA commercial slab tariff AED 0.23/0.28/0.32 per kWh + ~6 fils fuel surcharge (DEWA 2025); utilitybilluae.com business band AED 0.20-0.38/kWh. Effective commercial ~AED 0.30-0.33 = ~$0.082-0.090 @AED 3.6725. Abu Dhabi (ADDC) commercial cheaper. Blended UAE commercial ~$0.085. Subsidized like other GCC but above Saudi $0.074."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T2",
+    "confidence": "med-high",
+    "source": "UAE grid emission factor FALLING: Climatiq 0.404 kgCO2/kWh (recent); GE Vernova white paper 0.556 (2021) -> target 0.27 by 2030. Driven down by Barakah nuclear (4 units, ~25% of generation) + large solar (Mohammed bin Rashid / Al Dhafra). Anchored 0.40 - cleanest GCC grid in the set (vs Saudi 0.57, Bahrain 0.55)."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 22000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Dubai premium marinas (Dubai Marina, Dubai Harbour, Bluewaters) are among the most expensive GCC marine ops; above Saudi $18k and Singapore $20k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.74,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.83x SG (captain $40k vs $48k); commercial electricity ~0.40x SG ($0.085 vs $0.21, subsidized). R7-GCC two-sided: HIGH GCC expat crew but cheap subsidized power -> wage-weighted blend ~0.74, plus Dubai's high general price level / premium marina overhead pull it up. Highest GCC in set (above Saudi 0.68, Bahrain 0.63), just above Taiwan 0.72 - Dubai is an expensive high-income market, NOT a low-cost band."
+   }
+  },
+  "Maldives": {
+   "captain_usd_yr": {
+    "value": 27000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Maldives resort/tourism marine crew (real 2026 job listings): MHLZ speedboat captain MVR 15,000 + MVR 3,000 food allowance = MVR 18k/mo; jobcenter.mv boat captain MVR 20,000-25,000 + service charge; expat safari/yacht captains EUR 3,200/mo (high-side). Blended 1 resort speedboat captain (~MVR 15-20k base + service charge/food ~$1,500-1,700/mo all-in) + deckhand (~MVR 10-12k all-in ~$700/mo) fully-loaded ~$2,250/mo = ~$27k/vessel/yr @MVR 15.42. Higher than SEA (service-charge system + some expat crew); between Thailand $24k and GCC $36-42k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.3,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Maldives has among the HIGHEST electricity costs in South Asia (near-100% imported diesel). STELCO Male' commercial tariff MVR 3.30/kWh = $0.214 (stelco.com.mv tariff-rates). Resort islands SELF-GENERATE on diesel gensets at $0.30-0.40/kWh (CIF SREP: diesel $0.35/kWh; World Bank 30-40 US-cents on larger islands; ADB/Climate Policy Radar efficient-diesel $0.23-0.33). Charging an electric tourism boat will largely occur at diesel-powered resort islands -> anchored $0.30 (floor STELCO grid $0.214, ceiling resort diesel $0.40). Higher than Singapore $0.21."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.72,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Maldives generation is ~99% imported diesel/fuel-oil (small but growing solar). Diesel-genset grids ~0.70-0.78 kgCO2/kWh (IEA Emission Factors 2024; Climatiq Maldives grid). Anchored 0.72 - among the highest in the set (vs Indonesia 0.75, PH 0.68), driven by all-diesel island power. Solar push (SREP/AIIB) will lower this over time."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 16000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin per vessel/yr. Maldives is a high-cost island operating environment (everything imported; no true marinas - resort jetties/anchorage + maintenance + marine insurance). Above Thailand $12k / Malaysia $11k, near Taiwan $14k, below Singapore $20k / GCC $18-22k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.63,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. R7 two-sided: wages ~0.56x SG (captain $27k vs $48k) but commercial/operating electricity ~1.43x SG ($0.30 vs $0.21 - Maldives is MORE expensive on energy, all-diesel islands) plus very high imported-logistics price level. Wage-dominant blend nudged up by energy + import costs -> ~0.63. Above all SEA (0.42-0.55), below GCC/Taiwan (0.68-0.74). Maldives is an expensive tourism economy, not a low-cost band."
+   }
+  },
+  "Qatar": {
+   "captain_usd_yr": {
+    "value": 43000,
+    "source_tier": "T4",
+    "confidence": "med-low",
+    "source": "GCC expat marine crew (Doha). Naukrigulf: yacht captain Qatar QAR 6,000-18,518/mo, avg QAR 10,333/mo (~$2,840); Indeed Qatar boat captain avg QAR 50,795/yr (low-side local base, ~$14k); Facebook/MCA ad: 38m-yacht captain $15k/mo (superyacht high-side, excluded). Deckhand: Doha job ads QAR 2,300/mo + food (Facebook 2026), Indeed boat/yacht crew up to QAR 4,500/mo. Blended 1 commercial tourism-boat captain (~QAR 10,000/mo ~$2,750) + deckhand (~QAR 3,000/mo ~$825) fully-loaded incl visa/accommodation ~= QAR 156k = ~$43k/vessel/yr @QAR 3.64 (pegged). Highest GCC wage market (GDP/cap top of GCC); just above Saudi $42k / UAE $40k, below Singapore $48k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.036,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "HEAVILY SUBSIDIZED - cheapest commercial power in the set. Kahramaa commercial tariff slabs: QAR 0.09/kWh first 4,000 kWh/mo, QAR 0.12 for 4,001-15,000, QAR 0.14 above 15,000 (Kahramaa tariff schedule). GlobalPetrolPrices business QAR 0.130/kWh = $0.036 (Sep 2025). Anchored $0.036. Floor (low slab QAR 0.09) ~$0.025, ceiling (top slab QAR 0.14) ~$0.038. @QAR 3.64 (pegged). Well below Saudi $0.074 / Bahrain $0.08 / UAE $0.085."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.49,
+    "source_tier": "T2",
+    "confidence": "med-high",
+    "source": "Qatar grid is ~100% natural gas (efficient CCGT; low-carbon share 0.24%). Ember/lowcarbonpower.org 2024: 489 gCO2eq/kWh; AYCM Qatar (official Doha carbon-footprint program) electricity factor 0.539 kgCO2/kWh; IEA/Climatiq Qatar grid factor in same band. Anchored 0.49 - all-gas grid, cleaner than oil-blend GCC peers (Saudi 0.57, Bahrain 0.55) but above nuclear+solar UAE 0.40. Renewables strategy targets -27% intensity by 2030 (Al Kharsaah solar)."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 20000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. Doha premium marina set: Lusail Marina, The Pearl (Ronautica) marinas, Old Doha Port Mina District superyacht marina - high-cost GCC marine ops comparable to Dubai. Between Saudi $18k and UAE $22k, ~= Singapore $20k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.7,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~0.90x SG (captain $43k vs $48k - highest GCC crew cost); commercial electricity ~0.17x SG ($0.036 vs $0.21 - most heavily subsidized power in the set). R7-GCC two-sided: very high expat crew + ultra-cheap gas-subsidized power -> wage-weighted blend ~0.70, nudged up by Doha's high general price level / premium marinas. Sits between Saudi 0.68 and UAE 0.74, above Bahrain 0.63."
+   }
+  },
+  "French Polynesia": {
+   "captain_usd_yr": {
+    "value": 55000,
+    "source_tier": "T2",
+    "confidence": "med",
+    "source": "Indeed.fr Tahiti: 'capitaine de navire' est. €2,454/mo (~$2,700/mo, ~$32k/yr base). CESEC PF avis 8-2023: marin pêcheur salaire moyen 280,000 XPF/mo (~$2,570). Premium tourism-boat captain XPF 380-450k/mo (~$3,500-4,150) + deckhand SMIG XPF 173,181 = $1,580 (Direction du travail, May-2024 SMIG). Fully-loaded 1 captain + deckhand incl French-territory social charges (~50% on top) ~XPF 6M/yr = ~$55k/vessel/yr @109. High French-overseas-territory wage band; sits below Singapore $48k... actually ABOVE on social charges (~$55k), between Taiwan $38k and Saudi $42k."
+   },
+   "energy_usd_kwh": {
+    "value": 0.32,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "EDT-Engie Tahiti Nord 2024 tariff schedule (edt.pf official PDF Jan-2024): commercial/professional 'Usages professionnels' tranches 22.00, 23.30, 33.95, 37.00, 39.49, 40.64, 42.46 XPF/kWh HT depending on slab/voltage. Domestic tier 11.90/31.10 XPF/kWh. Blended commercial small tourism-boat operator ~35 XPF/kWh = ~$0.32 @109. Outer-island grids (Maupiti, Bora, Marquesas) similar or higher (~35-45 XPF/kWh) - diesel-dominated. Among the highest tariffs in the Pacific."
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.58,
+    "source_tier": "T1",
+    "confidence": "high",
+    "source": "Bilan énergétique de la Polynésie française - édition 2024 (service-public.pf / SDE official): 'facteur d'émission moyen en Polynésie française est de 579 gCO2e/kWh en 2024' (vs 565 in 2021, 486 in 2022, 542 in 2023, 477 Tahiti, 894 Moorea). Generation mix 71% thermal (diesel) + 23% hydro (Marama Nui Tahiti) + ~6% solar (UNIDO PICTs 2022). Hydro share moderates the otherwise-diesel intensity. Anchored 0.58."
+   },
+   "marina_overhead_usd_yr": {
+    "value": 18000,
+    "source_tier": "T5",
+    "confidence": "low",
+    "source": "Modeled berth+insurance+admin/vessel/yr. FP is a high-cost French-overseas import-dependent island economy with limited marina infrastructure (Papeete Marina Taina, Vaitape jetties, Apooiti Marina Raiatea). Above Taiwan $14k / Maldives $16k; comparable to Saudi $18k. Tagged low."
+   },
+   "cost_index": {
+    "value": 0.9,
+    "confidence": "med",
+    "source": "Relative to Singapore=1.00. Wages ~1.15x SG (captain $55k vs $48k - French social charges pull total cost above SG); commercial electricity ~1.52x SG ($0.32 vs $0.21). R7-EXT services tariff applied. R7 two-sided: HIGH French-overseas crew (Code du Travail / CSG + 50% social charges) AND HIGH diesel-island electricity → blended ~0.90, second-highest in set (just below SG 1.00, above UAE 0.74 / Taiwan 0.72). FP is a high-income French collectivity, NOT a Pacific low-cost band."
+   }
+  },
+  "Greece": {
+   "captain_usd_yr": {
+    "value": 32000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.19,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 18000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.7,
+    "confidence": "low"
+   }
+  },
+  "Croatia": {
+   "captain_usd_yr": {
+    "value": 28000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.15,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.2,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 16000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.6,
+    "confidence": "low"
+   }
+  },
+  "Italy": {
+   "captain_usd_yr": {
+    "value": 48000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.28,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.33,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 26000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.0,
+    "confidence": "low"
+   }
+  },
+  "France": {
+   "captain_usd_yr": {
+    "value": 55000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.2,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.06,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 30000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.15,
+    "confidence": "low"
+   }
+  },
+  "Portugal": {
+   "captain_usd_yr": {
+    "value": 30000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.18,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.2,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 16000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.65,
+    "confidence": "low"
+   }
+  },
+  "Estonia": {
+   "captain_usd_yr": {
+    "value": 30000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.16,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.45,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 14000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.65,
+    "confidence": "low"
+   }
+  },
+  "Cyprus": {
+   "captain_usd_yr": {
+    "value": 34000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.26,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.6,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 22000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.72,
+    "confidence": "low"
+   }
+  },
+  "Ireland": {
+   "captain_usd_yr": {
+    "value": 55000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.27,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.33,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 22000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.15,
+    "confidence": "low"
+   }
+  },
+  "Sweden": {
+   "captain_usd_yr": {
+    "value": 58000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.13,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.04,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 22000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.2,
+    "confidence": "low"
+   }
+  },
+  "Spain": {
+   "captain_usd_yr": {
+    "value": 38000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.18,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.19,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 20000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.8,
+    "confidence": "low"
+   }
+  },
+  "Romania": {
+   "captain_usd_yr": {
+    "value": 22000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.16,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.26,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.5,
+    "confidence": "low"
+   }
+  },
+  "Finland": {
+   "captain_usd_yr": {
+    "value": 55000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.14,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.08,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 18000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.15,
+    "confidence": "low"
+   }
+  },
+  "Israel": {
+   "captain_usd_yr": {
+    "value": 50000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.16,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.55,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 20000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 1.05,
+    "confidence": "low"
+   }
+  },
+  "Lebanon": {
+   "captain_usd_yr": {
+    "value": 20000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.2,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.6,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.45,
+    "confidence": "low"
+   }
+  },
+  "Egypt": {
+   "captain_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.06,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.45,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 8000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.3,
+    "confidence": "low"
+   }
+  },
+  "Turkey": {
+   "captain_usd_yr": {
+    "value": 20000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.12,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.45,
+    "confidence": "low"
+   }
+  },
+  "Azerbaijan": {
+   "captain_usd_yr": {
+    "value": 14000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.07,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.5,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 9000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.35,
+    "confidence": "low"
+   }
+  },
+  "Kazakhstan": {
+   "captain_usd_yr": {
+    "value": 14000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.06,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.55,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 8000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.35,
+    "confidence": "low"
+   }
+  },
+  "Pakistan": {
+   "captain_usd_yr": {
+    "value": 10000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.12,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 7000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.25,
+    "confidence": "low"
+   }
+  },
+  "Côte d'Ivoire": {
+   "captain_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.13,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 8000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.3,
+    "confidence": "low"
+   }
+  },
+  "Senegal": {
+   "captain_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.18,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.55,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 8000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.32,
+    "confidence": "low"
+   }
+  },
+  "Mozambique": {
+   "captain_usd_yr": {
+    "value": 10000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.1,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.1,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 7000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.28,
+    "confidence": "low"
+   }
+  },
+  "Tunisia": {
+   "captain_usd_yr": {
+    "value": 14000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.1,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.45,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 9000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.35,
+    "confidence": "low"
+   }
+  },
+  "Morocco": {
+   "captain_usd_yr": {
+    "value": 14000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.12,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.6,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 10000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.38,
+    "confidence": "low"
+   }
+  },
+  "Nigeria": {
+   "captain_usd_yr": {
+    "value": 12000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled from national maritime-wage / cost-of-living index vs SG anchor"
+   },
+   "energy_usd_kwh": {
+    "value": 0.13,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national commercial electricity tariff avg"
+   },
+   "grid_co2_kg_kwh": {
+    "value": 0.4,
+    "source_tier": "T3",
+    "confidence": "med",
+    "source": "Modeled from national grid carbon-intensity avg"
+   },
+   "marina_overhead_usd_yr": {
+    "value": 9000,
+    "source_tier": "T4",
+    "confidence": "low",
+    "source": "Modeled berth/marina overhead vs SG anchor by cost index"
+   },
+   "cost_index": {
+    "value": 0.32,
+    "confidence": "low"
+   }
+  }
+ }
+}
