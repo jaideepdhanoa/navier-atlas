@@ -12,15 +12,20 @@ SEAL_TAG="${SEAL_TAG:-#79ba-finance-sheet-refresh}"
 PARTNERS="${PARTNERS:-}"
 RUN_CASCADE="${RUN_CASCADE:-0}"
 DRY_RUN="${DRY_RUN:-0}"
-BUILD_MASTER="${BUILD_MASTER:-0}"
 
 mkdir -p "$RECAL"
 
+engine_partner() {
+  python3 -c "from finance.partner_keys import engine_partner; print(engine_partner('$1'))"
+}
+
 cascade_partner() {
   local p="$1"
-  echo "  [$p] cascade"
-  python3 "$FINANCE_MODEL/aggregate.py" --partner "$p" --json "$RECAL/agg-$p.json"
-  python3 "$FINANCE_MODEL/growth.py" --partner "$p" --agg "$RECAL/agg-$p.json" --json "$RECAL/growth-$p.json"
+  local engine
+  engine="$(engine_partner "$p")"
+  echo "  [$p] cascade (engine=$engine)"
+  python3 "$FINANCE_MODEL/aggregate.py" --partner "$engine" --json "$RECAL/agg-$p.json"
+  python3 "$FINANCE_MODEL/growth.py" --partner "$engine" --agg "$RECAL/agg-$p.json" --json "$RECAL/growth-$p.json"
 }
 
 if [[ "$RUN_CASCADE" == "1" ]]; then
@@ -37,7 +42,7 @@ if [[ "$RUN_CASCADE" == "1" ]]; then
   done
 fi
 
-echo "→ Build + publish transparent sheets"
+echo "→ Build + publish transparent sheets + master tracker"
 REFRESH_ARGS=()
 if [[ -n "$PARTNERS" ]]; then
   REFRESH_ARGS+=(--partners "$PARTNERS")
@@ -46,12 +51,5 @@ if [[ "$DRY_RUN" == "1" ]]; then
   REFRESH_ARGS+=(--dry-run)
 fi
 python3 "$FINANCE/refresh_all_sheets.py" "${REFRESH_ARGS[@]}"
-
-if [[ "$BUILD_MASTER" == "1" && "$DRY_RUN" != "1" ]]; then
-  echo "→ Master tracker"
-  python3 "$FINANCE/build_master_sheet.py"
-  MASTER_ID="$(python3 -c "import json; d=json.load(open('$FINANCE/PARTNER-SHEET-IDS.json')); print(d['_master_tracker'])")"
-  python3 "$FINANCE/drive_upload.py" /tmp/master-unit-econ.xlsx "$MASTER_ID"
-fi
 
 echo "✓ finance sheet lane: $SEAL_TAG"

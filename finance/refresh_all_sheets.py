@@ -4,11 +4,13 @@ LB-83 — Batched sheet refresh helper.
 
 Loops `build_transparent_sheet.py --partner <name>` for each partner in
 PARTNER-SHEET-IDS.json, uploads each refreshed sheet to its existing Drive
-sheet ID, then posts ONE summary Slack message with all links.
+sheet ID, refreshes the master tracker (_master_tracker), then posts ONE
+summary Slack message with all links.
 
 Usage:
-  python3 refresh_all_sheets.py                          # all partners
-  python3 refresh_all_sheets.py --partners grab,careem   # subset
+  python3 refresh_all_sheets.py                          # all partners + master
+  python3 refresh_all_sheets.py --partners grab,careem   # subset + master
+  python3 refresh_all_sheets.py --skip-master            # partners only
   python3 refresh_all_sheets.py --dry-run                # plan only, no exec
 
 This script is the ORCHESTRATOR. Upload + Slack delivery are wired through
@@ -16,21 +18,33 @@ hook functions (`upload_to_drive`, `post_slack_summary`) that default to
 stubs the parent agent / connection tools can replace.
 """
 import argparse, json, os, subprocess, sys, time
+from typing import Optional
 
 try:
     from drive_upload import replace_spreadsheet
+    from partner_keys import engine_partner
+    from build_master_sheet import build_master
 except ImportError:
     from finance.drive_upload import replace_spreadsheet  # type: ignore
+    from finance.partner_keys import engine_partner  # type: ignore
+    from finance.build_master_sheet import build_master  # type: ignore
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SHEET_IDS_PATH = os.path.join(HERE, "PARTNER-SHEET-IDS.json")
 BUILDER = os.path.join(HERE, "build_transparent_sheet.py")
+MASTER_BUILDER = os.path.join(HERE, "build_master_sheet.py")
+RECAL = os.path.join(HERE, "recal")
+MASTER_OUT = os.path.join(HERE, "_master-unit-econ.xlsx")
 DRIVE_URL_FMT = "https://docs.google.com/spreadsheets/d/{sid}/edit"
 
 
-def load_sheet_ids() -> dict:
+def load_sheet_registry() -> dict:
     with open(SHEET_IDS_PATH) as f:
-        d = json.load(f)
+        return json.load(f)
+
+
+def load_sheet_ids() -> dict:
+    d = load_sheet_registry()
     return {k: v for k, v in d.items() if not k.startswith("_")}
 
 
@@ -44,22 +58,46 @@ def upload_to_drive(local_path: str, sheet_id: str, dry_run: bool) -> dict:
         return {"status": "upload-failed", "reason": str(e), "sheet_id": sheet_id, "local": local_path}
 
 
-def post_slack_summary(results: list, dry_run: bool) -> dict:
+def post_slack_summary(results: list, master: Optional[dict], dry_run: bool) -> dict:
     lines = ["*Transparent sheet refresh — summary*"]
     for r in results:
         url = DRIVE_URL_FMT.format(sid=r["sheet_id"])
         status = r.get("status", "?")
         lines.append(f"• <{url}|{r['partner']}> — {status}")
+    if master:
+        url = DRIVE_URL_FMT.format(sid=master["sheet_id"])
+        status = master.get("status", "?")
+        lines.append(f"• <{url}|master tracker> — {status}")
     text = "\n".join(lines)
     if dry_run:
         return {"status": "dry-run", "text": text}
     return {"status": "skipped-no-connection", "text": text}
 
 
+def refresh_master(dry_run: bool) -> dict:
+    reg = load_sheet_registry()
+    master_id = reg.get("_master_tracker")
+    if not master_id:
+        return {"status": "skipped", "reason": "no _master_tracker in PARTNER-SHEET-IDS.json"}
+    record = {"partner": "master", "sheet_id": master_id, "out": MASTER_OUT}
+    if dry_run:
+        record["status"] = "planned"
+        record["upload"] = upload_to_drive(MASTER_OUT, master_id, dry_run=True)
+        return record
+    try:
+        build_master(MASTER_OUT, RECAL)
+        record["status"] = "built"
+        record["upload"] = upload_to_drive(MASTER_OUT, master_id, dry_run=False)
+    except Exception as e:
+        record["status"] = f"error: {e}"
+    return record
+
+
 def run_for_partner(partner: str, sheet_id: str, dry_run: bool) -> dict:
     out_local = os.path.join(HERE, f"_refresh_{partner}.xlsx")
-    agg = os.path.join(HERE, "recal", f"agg-{partner}.json")
-    cmd = ["python3", BUILDER, "--partner", partner, "--out", out_local]
+    agg = os.path.join(RECAL, f"agg-{partner}.json")
+    build_partner = engine_partner(partner)
+    cmd = ["python3", BUILDER, "--partner", build_partner, "--out", out_local]
     if os.path.isfile(agg):
         cmd.extend(["--agg", agg])
     record = {"partner": partner, "sheet_id": sheet_id, "cmd": " ".join(cmd)}
@@ -90,6 +128,8 @@ def main():
                     help="comma-separated subset; default = all in PARTNER-SHEET-IDS.json")
     ap.add_argument("--dry-run", action="store_true",
                     help="plan only; do not invoke builder or upload")
+    ap.add_argument("--skip-master", action="store_true",
+                    help="skip master tracker refresh (default: refresh master)")
     args = ap.parse_args()
 
     sheet_ids = load_sheet_ids()
@@ -103,8 +143,9 @@ def main():
         targets = sorted(sheet_ids.items())
 
     results = [run_for_partner(p, sid, args.dry_run) for p, sid in targets]
-    summary = post_slack_summary(results, args.dry_run)
-    print(json.dumps({"results": results, "slack_summary": summary}, indent=2))
+    master = None if args.skip_master else refresh_master(args.dry_run)
+    summary = post_slack_summary(results, master, args.dry_run)
+    print(json.dumps({"results": results, "master": master, "slack_summary": summary}, indent=2))
 
 
 if __name__ == "__main__":
