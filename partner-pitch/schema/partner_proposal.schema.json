@@ -162,7 +162,7 @@
           "featured_routes": { "type": "array", "items": { "type": "string" }, "description": "human-readable marquee routes for the side panel" },
           "timeline": { "type": "string", "description": "e.g. 2026 H2 - the momentum cue (NOT financials)" },
           "rationale": { "type": "string", "description": "why this phase sits here in the sequence" },
-          "use_cases": { "type": "array", "items": { "type": "string" }, "description": "local journey/use-case types proven in this phase" },
+          "use_cases": { "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "object", "required": ["label", "summary"], "properties": { "label": { "type": "string" }, "summary": { "type": "string" } } }, { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "body": { "type": "string" } } } ] }, "description": "local journey/use-case types proven in this phase; strings and {label, summary}/{title, body} objects are renderer-supported" },
           "narrative": { "type": "string", "description": "partner-facing side-panel copy" },
           "kpis": {
             "type": "array",
@@ -207,6 +207,7 @@
           "why_now": { "type": "string" },
           "multimodal_fit": { "type": "string" },
           "journeys_unlocked": { "type": "array" },
+          "use_cases": { "type": "array", "items": { "oneOf": [ { "type": "string" }, { "type": "object", "required": ["label", "summary"], "properties": { "label": { "type": "string" }, "summary": { "type": "string" } } }, { "type": "object", "required": ["title"], "properties": { "title": { "type": "string" }, "body": { "type": "string" } } } ] }, "description": "market-summary-level use-case chips/cards; at least two are required for newly promoted Phase 3 binds to be proposal-ready" },
           "differentiation": { "type": "object" },
           "proof_points": { "type": "array" },
           "objections": { "type": "array" },
