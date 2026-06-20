@@ -37,3 +37,12 @@ Observed results:
 2. Source a premium/on-demand comparable fare separately; do not reuse the public M2M fare floor as Navier premium fare.
 3. Register sheet targets in `finance/PARTNER-SHEET-IDS.json` for Rapido/Ola/Uber India derivative if/when publish is approved.
 4. Re-run aggregate/growth/materialization only after rows graduate from demand-null/fare-null state.
+
+## Demand source update — still held null
+Captured direct Mumbai water-taxi load anchors after initial validation:
+
+- Indian Express (2023-02-08): Nayantara/NAYAN XI 200-seat DCT→Mandwa via Belapur service had poor DCT ridership, but averaged 120 passengers from Belapur; fares ₹400 lower deck / ₹450 upper-business.
+- The Hindu (2022-11-13): Belapur→Elephanta was filling ~80% capacity on a 32-seat vessel with three round trips; Belapur→JNPT was “doing very well”; DCT→Mandwa had 60 round trips in 10 days with <10% occupancy on a 200-seat vessel.
+- PIB MoPSW (2022-02-17): route/terminal proof for DCT, Nerul, Belapur, Elephanta, JNPT plus Belapur movements to Bhaucha Dhakka, Mandwa, Elephanta and Karanja.
+
+Decision: these are strong load/service-health anchors but not route-level annual demand. Annual demand remains null; aggregate validation still must show no fare, no demand pool, no fleet, no revenue.
