@@ -23,9 +23,13 @@ cp "$HANDOFF/corridors.json" "$FINANCE/corridors.json"
 cp "$HANDOFF/corridors.json" "$ACTIVE_CORR"
 
 echo "→ Re-aggregate Grab/Bolt/Yango on de-duplicated registry"
-for p in grab bolt yango; do
-  python3 "$FINANCE/aggregate.py" --partner "$p" --json "$RECAL/agg-$p.json"
-done
+if [[ -f "$FINANCE/vessel-constants.json" && -f "$FINANCE/atom.py" && -f "$FINANCE/country-reference.json" ]]; then
+  for p in grab bolt yango; do
+    python3 "$FINANCE/aggregate.py" --partner "$p" --json "$RECAL/agg-$p.json"
+  done
+else
+  echo "  WARN finance/model incomplete (missing vessel-constants/atom/country-reference) — skipping aggregate; using existing agg-*.json"
+fi
 
 echo "→ Bind growth_case ladders"
 for p in grab bolt yango; do
