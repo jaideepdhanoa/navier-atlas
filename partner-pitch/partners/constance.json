@@ -23,12 +23,15 @@
       "to": "Constance Hotels & Resorts resort jetty",
       "today": "20–45 min in a diesel speedboat, rough in any swell, or a costly weather-bound seaplane hop.",
       "with_navier": "A smooth, silent foiling arrival in an all-weather enclosed cabin — level boarding with luggage, direct to the resort jetty, any weather, after dark.",
-      "distance_nm": 22,
+      "distance_nm": 29,
       "platform": "N35",
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "node-network",
+      "_link_status": "unlinked-intra-city"
     },
     {
       "from": "Constance Hotels & Resorts resort lagoon",
@@ -40,7 +43,10 @@
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "node-network",
+      "_link_status": "unlinked-intra-city"
     },
     {
       "from": "Constance Halaveli (North Ari Atoll)",
@@ -52,7 +58,10 @@
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "node-network",
+      "_link_status": "unlinked-intra-city"
     }
   ],
   "differentiation": {
@@ -73,6 +82,11 @@
       "claim": "The arrival experience is a premium differentiator.",
       "evidence": "Nearly every Maldivian guest requires a sea or air transfer on arrival; making it smooth, quiet and reliable directly lifts guest satisfaction.",
       "source": "Maldives tourism data"
+    },
+    {
+      "claim": "The arrival is the single biggest friction in a Maldives stay — and the easiest to upgrade.",
+      "evidence": "Today guests trade a long-haul flight for a daylight-only seaplane or a swell-prone speedboat. A foiling-electric transfer is faster, smoother, quieter and weather-resilient — converting the most-complained-about part of the journey into a signature, on-brand moment.",
+      "source": "Maldives guest-transfer experience, 2026"
     }
   ],
   "objections": [
@@ -83,6 +97,10 @@
     {
       "concern": "What about charging across remote islands?",
       "response": "The N35 needs only a berth pedestal at the resort jetty; the Quanta-LR hybrid needs no charging at all — so coverage is not gated on building charging at every island."
+    },
+    {
+      "concern": "Won't guests still depend on seaplanes for the outer atolls?",
+      "response": "That's the point. Maldivian seaplanes fly in daylight only, so late-arriving guests lose a night to an airport hotel. A Quanta-LR foiling vessel reaches the outer atolls — up to 700 nm of hybrid range — and arrives smoothly after dark, turning a forced overnight into a same-night welcome."
     }
   ],
   "phases": [
@@ -102,8 +120,12 @@
           "label": "Velana International Airport ↔ Constance Hotels & Resorts resort jetty",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "distance_nm": 22,
-          "platform": "N35"
+          "distance_nm": 29,
+          "platform": "N35",
+          "route_id": null,
+          "route_ids": null,
+          "_link_kind": "node-network",
+          "_link_status": "unlinked-intra-city"
         }
       ],
       "use_cases": [
@@ -127,15 +149,23 @@
           "label": "Velana International Airport ↔ Constance Hotels & Resorts resort jetty",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "distance_nm": 22,
-          "platform": "N35"
+          "distance_nm": 29,
+          "platform": "N35",
+          "route_id": null,
+          "route_ids": null,
+          "_link_kind": "node-network",
+          "_link_status": "unlinked-intra-city"
         },
         {
           "label": "Constance Halaveli (North Ari Atoll) ↔ Constance Moofushi / dive site / sandbank",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
           "distance_nm": 38,
-          "platform": "Quanta-LR"
+          "platform": "Quanta-LR",
+          "route_id": null,
+          "route_ids": null,
+          "_link_kind": "node-network",
+          "_link_status": "unlinked-intra-city"
         }
       ],
       "use_cases": [
@@ -181,7 +211,383 @@
   "steady_state_ceiling": 64,
   "committed_fleet": 50,
   "tier": "watch",
-  "deck_only": {
-    "relocated_vs_status_quo": "Today's arrivals split between weather-bound seaplanes and rough diesel speedboats. The N35 is all-weather, after-dark, near-silent and zero-emission, with level boarding for luggage — a smoother, quieter, lower-carbon arrival at roughly 10x the efficiency of a diesel transfer."
+  "growth_case": {
+    "revenue_potential": {
+      "headline": "The floor and the prize — every rung traces to grounded, sourced demand.",
+      "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+      "anchor_note": "$4M/yr premium sea-transfer spend on sourced corridors today — the anchor every rung builds from.",
+      "whose_money_legend": {
+        "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
+        "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
+        "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+      },
+      "cite_rule": "Cite MID. 'High' stacks every optimistic assumption — ceiling, not headline.",
+      "rungs": [
+        {
+          "id": "som_floor",
+          "label": "SOM — floor (published)",
+          "whose_money": "Navier transport revenue",
+          "basis": "sourced flagship corridors · 90% capture · today's demand",
+          "low": null,
+          "mid": 3618000.0,
+          "high": null,
+          "display": {
+            "low": null,
+            "mid": "$4M",
+            "high": null
+          },
+          "confidence": "grounded",
+          "confidence_label": "Grounded",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        },
+        {
+          "id": "som_network",
+          "label": "SOM — full network",
+          "whose_money": "Navier transport revenue",
+          "basis": "whole mapped network · 90% capture · today's demand (no growth assumed)",
+          "low": 3618000.0,
+          "mid": 3618000.0,
+          "high": 3618000.0,
+          "display": {
+            "low": "$4M",
+            "mid": "$4M",
+            "high": "$4M"
+          },
+          "confidence": "med",
+          "confidence_label": "Modeled",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        },
+        {
+          "id": "sam_network",
+          "label": "SAM — matured network",
+          "whose_money": "Navier transport revenue",
+          "basis": "faster, more comfortable boats grow the market (induced demand); we already capture ~90% — growth is demand + width, not a capture ramp",
+          "low": 4703400.0,
+          "mid": 6512400.0,
+          "high": 9547500.0,
+          "display": {
+            "low": "$5M",
+            "mid": "$7M",
+            "high": "$10M"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        },
+        {
+          "id": "tam_transfer",
+          "label": "Marine mobility TAM — induced marine-transfer market",
+          "whose_money": "total water-transfer spend",
+          "basis": "SAM divided by leading-operator capture — the full inducible water-transfer wallet at network maturity",
+          "low": 5226000.0,
+          "mid": 7236000.0,
+          "high": 10050000.0,
+          "display": {
+            "low": "$5M",
+            "mid": "$7M",
+            "high": "$10M"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        },
+        {
+          "id": "journey_gmv",
+          "label": "Journey GMV — food + stays + experiences (≈3× TAM)",
+          "whose_money": "total journey wallet",
+          "basis": "add food, stays, and experiences to every crossing in the induced market",
+          "low": 10452000.0,
+          "mid": 21708000.0,
+          "high": 40200000.0,
+          "display": {
+            "low": "$10M",
+            "mid": "$22M",
+            "high": "$40M"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        },
+        {
+          "id": "platform_rev",
+          "label": "Partner platform revenue on Navier",
+          "whose_money": "partner's P&L on Navier-carried journeys",
+          "basis": "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
+          "low": 1693224.0,
+          "mid": 3516696.0,
+          "high": 6874200.0,
+          "display": {
+            "low": "$2M",
+            "mid": "$4M",
+            "high": "$7M"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected",
+          "model_link": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+        }
+      ],
+      "ceiling_sibling": {
+        "id": "platform_rev_full_journey",
+        "label": "Platform revenue ceiling — 18% × full Journey GMV",
+        "low": 1881360.0,
+        "mid": 3907440.0,
+        "high": 7236000.0,
+        "display": {
+          "low": "$2M",
+          "mid": "$4M",
+          "high": "$7M"
+        },
+        "derivation": "journey_gmv.mid × 0.18 (full GMV ceiling, not Navier-corridor subset)",
+        "confidence_label": "Projected",
+        "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. Platform_rev rung remains the Navier-subset Interpretation-A value."
+      }
+    },
+    "phase_economics": {
+      "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
+      "conversion_note": "Fleet & CO2 scale from the grounded unit: 4 boats = $4M transport rev = 582 t CO2/yr (~$904K rev/boat).",
+      "horizons": [
+        {
+          "id": "prove",
+          "name": "Prove",
+          "horizon": "Year 1–2",
+          "scope": "Sourced flagship corridors go live",
+          "capture": "10% (new-entrant floor)",
+          "vessel": "N30 Pioneer II (8 pax, commercial now)",
+          "fleet_boats": 4,
+          "navier_transport_rev_yr": 3618000.0,
+          "navier_transport_rev_display": "$4M",
+          "partner_platform_rev_yr": null,
+          "partner_platform_rev_display": "nascent",
+          "co2_saved_t_yr": 582,
+          "confidence": "grounded",
+          "confidence_label": "Grounded"
+        },
+        {
+          "id": "scale",
+          "name": "Scale",
+          "horizon": "Year 2–4",
+          "scope": "Flagship corridors ramp to project capacity — depth, not new geography",
+          "capture": "already ~90% captive capture; corridors ramp to project capacity (depth), today's demand",
+          "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense resort/transit legs",
+          "fleet_boats_est": 4,
+          "fleet_boats_band": {
+            "low": 4,
+            "high": 4
+          },
+          "navier_transport_rev_yr": 3618000.0,
+          "navier_transport_rev_display": "$4M",
+          "partner_platform_rev_display": "building",
+          "co2_saved_t_yr": 582,
+          "confidence": "med",
+          "confidence_label": "Modeled"
+        },
+        {
+          "id": "mature",
+          "name": "Mature",
+          "horizon": "Year 4+",
+          "scope": "Induced marine-transfer demand across the captive network (capture already ~max)",
+          "capture": "90% mature share",
+          "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
+          "fleet_boats_est_pioneer_equiv": 7,
+          "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
+          "navier_transport_rev_yr": 6512400.0,
+          "navier_transport_rev_display": "$7M",
+          "partner_platform_rev_yr": 3516696.0,
+          "partner_platform_rev_display": "$4M",
+          "partner_platform_rev_on_navier_yr": 3516696.0,
+          "partner_platform_rev_on_navier_display": "$4M",
+          "marine_mobility_tam_yr": 7236000.0,
+          "marine_mobility_tam_display": "$7M marine TAM",
+          "journey_gmv_yr": 21708000.0,
+          "journey_gmv_display": "$22M Journey GMV",
+          "co2_saved_t_yr": 1048,
+          "confidence": "med-low (banded)",
+          "confidence_label": "Projected"
+        }
+      ]
+    },
+    "vessel_sizing": {
+      "headline": "Right vessel for every leg — corridor range picks the hull.",
+      "classes": [
+        {
+          "class": "N30 Pioneer II",
+          "pax": 8,
+          "range_nm": 70,
+          "status": "commercial now",
+          "role": "Capillary corridors ≤ 70nm. The workhorse of Prove + Scale.",
+          "render": "solid"
+        },
+        {
+          "class": "N35 Shuttle",
+          "pax": "12–15",
+          "range_nm": 70,
+          "status": "2027",
+          "role": "Doubles throughput per hull on dense corridors; roughly halves payback. Scale-phase workhorse.",
+          "render": "solid"
+        },
+        {
+          "class": "Quanta-LR Hybrid",
+          "pax": "12–15",
+          "range_nm": 700,
+          "status": "H2 2026+",
+          "role": "Regional legs 75–150nm beyond Pioneer range. Held out of near-term numbers.",
+          "render": "amber-dashed"
+        }
+      ],
+      "range_gate_note": "≤ 70nm → Pioneer II (now). 75–150nm → Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
+    },
+    "_provenance": {
+      "source_growth": "constance-growth-case.json",
+      "source_rollup": "agg-constance.json",
+      "rev_per_boat_yr": 904500,
+      "greenfield_mode": "off",
+      "greenfield_corridors": null,
+      "sourced_corridors": 1,
+      "generator": "growth_frontend_block.py"
+    },
+    "_render_chip_flag": {
+      "needs_new_layouts": [
+        "revenue_ladder",
+        "phase_economics_table",
+        "vessel_sizing_cards"
+      ],
+      "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
+    },
+    "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+    "modal_headline": "Floor to prize — every rung traces to grounded demand",
+    "ladder_transitions": [
+      {
+        "from_rung_id": "som_floor",
+        "to_rung_id": "som_network",
+        "headline": "Same 10% capture, expanded to the full mapped network",
+        "basis": "Width-only step. Capture rate held at 10%; corridor set expands from sourced flagships to the full mapped network.",
+        "derivation": "som_floor_mid ($4M) × greenfield_corridor_factor.mid (1.00) = $4M (som_network mid)",
+        "multipliers_cited": {
+          "greenfield_corridor_factor_mid": 1.0,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-constance.json:parameters_used.greenfield_corridor_factor",
+          "finance/recal/growth-constance.json:parameters_used.som_capture_rate"
+        ],
+        "confidence": "med"
+      },
+      {
+        "from_rung_id": "som_network",
+        "to_rung_id": "sam_network",
+        "headline": "Network matures: faster, more comfortable boats grow the market + leading-operator capture",
+        "basis": "Two-lever step. (1) Faster, more comfortable boats grow the cross-water market (induced demand). (2) Leading-operator capture lifts share from 10% floor to 25% mature, network-wide.",
+        "derivation": "som_network_mid ($4M) × induced_demand.mid (1.80) × (mature_capture / som_capture) (0.90/0.10 = 9.00) = $7M (sam_network mid)",
+        "multipliers_cited": {
+          "induced_demand_mid": 1.8,
+          "mature_capture_rate_mid": 0.9,
+          "som_capture_rate": 0.1
+        },
+        "source_fields": [
+          "finance/recal/growth-constance.json:parameters_used.induced_demand",
+          "finance/recal/growth-constance.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "sam_network",
+        "to_rung_id": "tam_transfer",
+        "headline": "Lens shift: Navier captured share → total inducible marine-transfer wallet",
+        "basis": "Unit change. Divide SAM (the captured share) by leading-operator capture rate to recover the full inducible water-transfer market — the marine-mobility TAM.",
+        "derivation": "sam_network_mid ($7M) ÷ mature_capture.mid (0.90) = $7M (marine TAM mid)",
+        "multipliers_cited": {
+          "mature_capture_rate_mid": 0.9
+        },
+        "source_fields": [
+          "finance/recal/growth-constance.json:parameters_used.mature_capture_rate"
+        ],
+        "confidence": "med-low",
+        "_lb_ref": "LB-110: marine_mobility_tam = SAM_full_network / c (locked 2026-06-11)"
+      },
+      {
+        "from_rung_id": "tam_transfer",
+        "to_rung_id": "journey_gmv",
+        "headline": "Marine transfer → total journey wallet (food, stays, experiences, in-app ads)",
+        "basis": "Journey-wallet step. Each $1 of marine-transfer spend unlocks ~$3 of broader journey GMV across merchants the partner monetizes.",
+        "derivation": "marine_tam_mid ($7M) × journey_gmv_multiple.mid (3.00) = $22M (journey_gmv mid)",
+        "multipliers_cited": {
+          "journey_gmv_multiple_mid": 3.0
+        },
+        "source_fields": [
+          "finance/recal/growth-constance.json:parameters_used.journey_gmv_multiple"
+        ],
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "journey_gmv",
+        "to_rung_id": "platform_rev",
+        "headline": "Constance platform take on Navier-carried journeys",
+        "basis": "Platform-take step. Platform commission applied to the journey GMV routed through the Navier network (Navier-captured subset, not the full induced market).",
+        "derivation": "sam_network_mid ($7M) × journey_gmv_multiple.mid (3.00) × platform_take_rate (18%) = $4M (platform_rev mid)",
+        "multipliers_cited": {
+          "journey_gmv_multiple_mid": 3.0,
+          "platform_take_rate": 0.18,
+          "mature_capture_rate_mid": 0.9
+        },
+        "source_fields": [
+          "finance/recal/growth-constance.json:parameters_used.platform_take_rate",
+          "finance/recal/growth-constance.json:parameters_used.journey_gmv_multiple"
+        ],
+        "confidence": "med-low",
+        "_lb_ref": "LB-113: partner_platform_rev_on_navier = on-Navier subset, distinct from deck's '18% × full Journey GMV' narrative ceiling"
+      }
+    ],
+    "marine_mobility_tam": {
+      "low": 5226000.0,
+      "mid": 7236000.0,
+      "high": 10050000.0
+    },
+    "journey_gmv": {
+      "low": 10452000.0,
+      "mid": 21708000.0,
+      "high": 40200000.0
+    },
+    "partner_platform_rev_on_navier": {
+      "low": 1693224.0,
+      "mid": 3516696.0,
+      "high": 6874200.0
+    },
+    "_marine_tam_split_provenance": {
+      "date": "2026-06-19T17:10:05.978225Z",
+      "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
+      "field_renames": {
+        "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
+        "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)"
+      },
+      "ladder_rung_count": 6,
+      "rungs_ascending": [
+        "som_floor",
+        "som_network",
+        "sam_network",
+        "tam_transfer",
+        "journey_gmv",
+        "platform_rev"
+      ]
+    },
+    "economics_url": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit"
+  },
+  "economics_url": "https://docs.google.com/spreadsheets/d/1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0/edit",
+  "_econ_reseal": {
+    "applied_at": "2026-06-19T17:50:42.077876+00:00",
+    "package": "econ-reseal-2026-06-19",
+    "fresh": true
+  },
+  "_provenance": {
+    "journey_relink": {
+      "at": "2026-06-20T06:54:50Z",
+      "lane": "grok/relink_partner_journeys",
+      "stats": {
+        "total": 6,
+        "linked": 0,
+        "cleared_mislink": 3,
+        "borrowed_brief": 0,
+        "matched_scoped": 0
+      }
+    }
   }
 }
