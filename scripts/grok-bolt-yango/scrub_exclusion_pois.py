@@ -56,9 +56,20 @@ def main():
             removed.append({"id": props.get("id"), "reason": meta})
             continue
         if has_token(props):
-            for key in ("name", "shortName", "operator", "source", "formatted_address", "fullName"):
+            for key in (
+                "name",
+                "shortName",
+                "operator",
+                "source",
+                "formatted_address",
+                "fullName",
+                "_handoff_bp_id",
+            ):
                 if key in props and props[key]:
                     props[key] = scrub_field(str(props[key]))
+            for key, val in list(props.items()):
+                if key.startswith("_") and isinstance(val, str) and any(p.search(val) for p in TOKEN_RES):
+                    props[key] = scrub_field(val)
             if has_token(props):
                 removed.append({"id": props.get("id"), "reason": "exclusion_token_after_scrub"})
                 continue
