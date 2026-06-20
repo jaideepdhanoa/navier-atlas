@@ -2826,7 +2826,11 @@ function _phaseBlockHtml(cur){
   // Use cases are heterogeneous strings — terse tags ("coastal spine") through "Route → Route: sentence".
   // Emphasise the "Title: body" split where present; sentence-case + breathing room handled in CSS.
   const uc=(cur.use_cases||[]).map(u=>{
-    const s = typeof u==='string' ? u : (u.title?u.title+(u.body?': '+u.body:''):(u.body||''));
+    const s = typeof u==='string' ? u : (
+      u.title ? u.title+(u.body?': '+u.body:'') :
+      u.label ? u.label+(u.summary?': '+u.summary:'') :
+      (u.body||u.summary||'')
+    );
     const i = s.indexOf(': ');
     if (i>0 && i<70) return `<div class="pcaro-uc"><span class="pcaro-uc-t">${escapeHtml(s.slice(0,i))}</span> <span class="pcaro-uc-b">${escapeHtml(s.slice(i+2))}</span></div>`;
     return `<div class="pcaro-uc">${escapeHtml(s)}</div>`;
