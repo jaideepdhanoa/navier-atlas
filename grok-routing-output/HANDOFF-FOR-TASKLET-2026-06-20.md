@@ -292,25 +292,29 @@ If you rename corridor `from`/`to` labels or split markets, re-run aggregate →
 
 ## Deliverable package (what to ship Grok)
 
-Zip to `Downloads/` (name pattern: `tasklet-handoff-2026-06-20.zip`):
+**Channel: GitHub PR against `main`** (non-draft). No Downloads zips.
+
+1. Branch: `tasklet/<topic>-YYYY-MM-DD`
+2. Commit into `_ingest/tasklet-handoff-YYYY-MM-DD/`:
 
 ```
-tasklet-handoff-2026-06-20/
-├── README.md                    # what changed, corridor count delta, BP count
-├── corridors.json               # full finance/model/corridors.json (or PATCH manifest)
-├── boarding-points/             # new/updated BP files only
-│   └── <city>-boarding-points.json
-├── inputs/
-│   └── BP-COVERAGE-NEW-<date>.json   # if minting new BPs
-├── aggs/                        # only if you re-ran aggregates
-│   └── agg-<partner>.json
+_ingest/tasklet-handoff-YYYY-MM-DD/
+├── README.md                    # what changed, markets touched, expected Grok outcome
+├── corridors.json               # full finance/model/corridors.json when registry edits
+├── boarding-points/             # new/updated BP files (BP-research handoffs)
+├── inputs/BP-COVERAGE-NEW-*.json
+├── aggs/agg-<partner>.json      # only if aggregates re-ran
 └── partners/                    # optional narrative deltas
-    └── subproposals-enriched-<date>.json
 ```
 
-Post to `#tasklet-jaideep` with a one-line summary: *"N corridor fixes, M new BPs, K markets touched — ready for Grok ingest."*
+3. Open **non-draft PR → `main`**. Title: `Tasklet handoff YYYY-MM-DD: <topic>`
+4. PR description (also post to `#tasklet-jaideep`): *"N corridor fixes, M new BPs — ready for Grok ingest."*
 
-**Handoff channel (2026-06-20+):** GitHub `main` is source of truth. Grok lanes auto-commit + `git push origin main` + Vercel deploy via `scripts/publish-gold.sh`. Tasklet pulls `main` — no zip required for read-back. Tasklet still ships input zips to `_ingest/` (or commits directly to feature branches) for Grok ingest lanes.
+**Grok ingests:** merge PR → `scripts/grok-econ-reseal/run_tasklet_corridors_lane.sh` → `scripts/publish-gold.sh`.
+
+**Read-back (Grok → Tasklet):** pull `main` after publish. See `data-clean/CHANGELOG-FOR-CLAUDE-*.md` and `PENDING-ECONOMICS-TRIAGE.json`.
+
+**PR policy:** Tasklet opens PRs directly ([#44](https://github.com/jaideepdhanoa/navier-atlas/pull/44) is the template). Grok reviews, merges, and runs the ingest lane. Tasklet does not push to `main` or self-merge.
 
 ---
 

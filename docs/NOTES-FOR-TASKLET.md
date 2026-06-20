@@ -22,7 +22,7 @@ build / gates = Tasklet._
 
 **State:** 351 pinned / 151 pending economics (~69.9% raw, ~94.9% actionable). Grok shipped `#79ar` (UAE gcn mint), `#79aq` (bp-seal), `#79as` (458 BP-pair routes). **~19 actionable pending** blocked on Tasklet `corridors.json` backfill + BP research.
 
-**Tasklet P0:** Egypt node-ID fix (`hurghada-egypt` → `hurghada-el-gouna-egypt` + `endpoint_boarding_points`); Bali/Phuket/Qatar `gcn-*` endpoint labels; 37 active `one_bp` second-endpoint BPs; Turkey per-city node chips. Ship zip → Grok ingest.
+**Tasklet P0:** Egypt + Qatar shipped in **PR #44** (`_ingest/tasklet-handoff-2026-06-20/`). Remaining: Bali/Phuket gcn-backfill sync; 37 `one_bp` BP-research batch; Turkey node-chip split. **Handoff = GitHub PR → main** (not Downloads zip). Grok merges + ingests.
 
 **Do NOT:** resurrect 11 pruned Bolt/Yango markets; edit gold `ROUTES.json`/`FEATURES_BY_TYPE.json` directly.
 
