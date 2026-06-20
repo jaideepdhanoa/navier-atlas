@@ -69,7 +69,26 @@ NODE_CROSSWALK = {
     "ksa-commercial": "jeddah-ksa",
     "lagos": "lagos-nigeria",
     "mykonos-greece": "mykonos-greece",
+    "paros-greece": "paros-greece",
+    "naxos-greece": "naxos-greece",
+    "santorini-greece": "santorini-greece",
+    "rhodes-dodecanese-greece": "rhodes-dodecanese-greece",
+    "athens-saronic-greece": "athens-saronic-greece",
     "bolt-greece": "mykonos-greece",
+    "dubrovnik-croatia": "dubrovnik-croatia",
+    "korcula-croatia": "korcula-croatia",
+    "split-croatia": "split-croatia",
+    "lake-como-italy": "lake-como-italy",
+    "portofino-cinque-terre-italy": "portofino-cinque-terre-italy",
+    "amalfi-coast-italy": "amalfi-coast-italy",
+    "maputo-mozambique": "maputo-mozambique",
+    "vilanculos-bazaruto-mozambique": "vilanculos-bazaruto-mozambique",
+    "pemba-mozambique": "pemba-mozambique",
+    "inhambane-mozambique": "inhambane-mozambique",
+    "beira-mozambique": "beira-mozambique",
+    "amaala-ksa": "amaala-ksa",
+    "neom-ksa": "neom-ksa",
+    "red-sea-global": "red-sea-global-ksa",
     "bodrum": "bodrum-turkey",
     "cesme-izmir": "cesme-izmir-turkey",
     "antalya": "antalya-turkey",
@@ -82,7 +101,19 @@ CITY_SEARCH_ALIASES: dict[str, list[str]] = {
     "bangkok-thailand": ["bangkok-thailand"],
     "singapore": ["singapore"],
     "lagos-nigeria": ["lagos-nigeria"],
-    "mykonos-greece": ["mykonos-greece"],
+    "mykonos-greece": ["mykonos-greece", "paros-greece", "naxos-greece", "santorini-greece"],
+    "paros-greece": ["paros-greece", "mykonos-greece", "naxos-greece"],
+    "naxos-greece": ["naxos-greece", "paros-greece", "mykonos-greece", "santorini-greece"],
+    "santorini-greece": ["santorini-greece", "mykonos-greece", "naxos-greece"],
+    "rhodes-dodecanese-greece": ["rhodes-dodecanese-greece", "bodrum-turkey"],
+    "athens-saronic-greece": ["athens-saronic-greece"],
+    "red-sea-global-ksa": ["red-sea-global-ksa", "amaala-ksa", "the-red-sea-archipelago-ksa"],
+    "amaala-ksa": ["amaala-ksa", "red-sea-global-ksa"],
+    "pemba-mozambique": ["pemba-mozambique"],
+    "vilanculos-bazaruto-mozambique": ["vilanculos-bazaruto-mozambique"],
+    "maputo-mozambique": ["maputo-mozambique"],
+    "inhambane-mozambique": ["inhambane-mozambique"],
+    "beira-mozambique": ["beira-mozambique"],
 }
 
 # Tasklet endpoint_boarding_points labels → token hints for relaxed BP match
@@ -97,6 +128,35 @@ LABEL_HINTS: dict[str, list[str]] = {
     "phra arthit pier n13": ["phra arthit"],
     "epe epe ayetoro jetty": ["epe", "ayetoro"],
     "badagry jegba marina commando jetty": ["badagry", "jegba", "commando"],
+    "mykonos new port tourlos": ["mykonos new port", "tourlos"],
+    "paros parikia port": ["parikia port"],
+    "naxos town port chora": ["naxos port", "chora"],
+    "santorini athinios port": ["athinios port"],
+    "porto de maputo catembe pier public ferry departs the catembe side pier in maputo": [
+        "catembe ferry terminal",
+        "catembe",
+    ],
+    "inhaca island jetty new 1 km mpdc jetty opened mar 2026 replacing the old 120 m jetty closed 2013": [
+        "inhaca island jetty",
+        "inhaca",
+    ],
+    "ilha dos portugueses portuguese island santa maria beach landing no permanent jetty structures": [
+        "portuguese island",
+        "santa maria",
+    ],
+    "vilankulo vilanculos beachfront boat departure town jetty": ["vilanculos port"],
+    "bazaruto archipelago national park island landings bazaruto benguerra magaruque santa carolina": [
+        "bazaruto island lodge pier",
+        "bazaruto",
+    ],
+    "inhambane city ferry pier inhambane peninsula": ["inhambane ferry pier", "inhambane"],
+    "maxixe town jetty reconstructed japan funded repair after cyclone damage": ["maxixe town jetty", "maxixe"],
+    "porto da beira beira waterfront": ["porto da beira", "beira port"],
+    "buzi town landing buzi river estuary": ["buzi estuary landing", "buzi"],
+    "pemba pemba bay waterfront paquitequete or tandanhangue jetty by road": ["pemba mz port"],
+    "ibo island jetty quirimbas archipelago quirimbas national park": ["ibo island quay", "ibo"],
+    "the red sea": ["shura island marina"],
+    "shura island hub": ["shura island marina"],
 }
 
 
@@ -428,6 +488,20 @@ def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: st
     if city_id == "dubai" or cities[0] == "dubai-uae":
         if any(t in blob for t in ("abu dhabi", "abudhabi", "corniche")):
             cities.append("abu-dhabi-uae")
+    if city_id in ("mykonos-greece", "paros-greece", "naxos-greece", "santorini-greece"):
+        cities.extend(["mykonos-greece", "paros-greece", "naxos-greece", "santorini-greece"])
+    if city_id in ("red-sea-global-ksa", "amaala-ksa"):
+        cities.extend(["red-sea-global-ksa", "amaala-ksa", "the-red-sea-archipelago-ksa"])
+    if city_id in ("maputo-mozambique", "vilanculos-bazaruto-mozambique", "pemba-mozambique"):
+        cities.extend(
+            ["maputo-mozambique", "vilanculos-bazaruto-mozambique", "pemba-mozambique", "inhambane-mozambique", "beira-mozambique"]
+        )
+    if city_id == "rhodes-dodecanese-greece":
+        cities.append("bodrum-turkey")
+    if city_id == "dubrovnik-croatia":
+        cities.extend(["dubrovnik-croatia", "korcula-croatia", "split-croatia", "kotor-montenegro"])
+    if city_id == "limassol-cyprus" or city_id == "larnaca-cyprus":
+        cities.extend(["limassol-cyprus", "larnaca-cyprus"])
     return list(dict.fromkeys(cities))
 
 
