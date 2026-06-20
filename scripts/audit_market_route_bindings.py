@@ -84,14 +84,20 @@ def walk_bindings(partner: dict, partner_id: str) -> list[dict]:
                     emit(j, market_id=market_id, scope=rs, ctx=ctx, kind="journey")
             if obj.get("featured_routes"):
                 for fr in obj["featured_routes"]:
+                    if not isinstance(fr, dict):
+                        continue
                     if fr.get("display") == "network_chip":
                         emit(fr, market_id=market_id, scope=rs, ctx=ctx, kind="chip")
                     else:
                         emit(fr, market_id=market_id, scope=rs, ctx=ctx, kind="featured")
 
             for ph in obj.get("phases") or []:
+                if not isinstance(ph, dict):
+                    continue
                 pl = ph.get("label") or f"phase-{ph.get('n')}"
                 for fr in ph.get("featured_routes") or []:
+                    if not isinstance(fr, dict):
+                        continue
                     if fr.get("display") == "network_chip":
                         emit(fr, market_id=market_id, scope=ph.get("route_scope") or rs,
                              ctx=f"{ctx} / {pl}", kind="chip")

@@ -1,0 +1,985 @@
+{
+  "artifact": "partner-market-coverage-p1-p2-continuation-batch-2026-06-20",
+  "created_at": "2026-06-20T00:00:00Z",
+  "method": {
+    "rule": "broad-footprint-first, exact-bind-second; additive only; source omissions do not shrink existing coverage",
+    "display_rule": "Atlas hierarchy/geometry can display markets even when economics are missing; economics tracked separately",
+    "hotel_property_rule": "Aman, Four Seasons, Six Senses, Discovery Land, and Soneva are property-origin partners only, not country/city footprint partners.",
+    "null_rule": "null/backlog beats confidently-wrong; no inferred map_scope from unsupported or stale sources"
+  },
+  "sources": {
+    "didi_official": {
+      "block": "b_ehzve5ae66w1gvv8a4hx",
+      "url": "https://web.didiglobal.com/"
+    },
+    "gojek_official": {
+      "block": "b_8wgb2g5zpvyz42x5d836",
+      "url": "https://www.gojek.com/en-id"
+    },
+    "ola_play_store": {
+      "block": "b_5rhp5tyyrwbeyf056dsp",
+      "url": "https://play.google.com/store/apps/details?id=com.olacabs.customer&hl=en_US"
+    },
+    "ola_official_city_table": {
+      "block": "b_8jczcf33b6aget1gw8t1",
+      "url": "https://blog.olacabs.com/know-where-ola-is-resuming-its-services/"
+    },
+    "rapido_official": {
+      "block": "b_vt31mb847z8avn0nk26s",
+      "url": "https://www.rapido.bike/"
+    },
+    "line_global": {
+      "block": "b_jvsxqscx8j1r806kmg2s",
+      "url": "https://www.lycorp.co.jp/en/company/global/"
+    },
+    "kakao_visitkorea": {
+      "block": "b_hcrnpz7arejzc4qv8fe5",
+      "url": "https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=197907"
+    },
+    "soneva_official": {
+      "block": "b_sfd3pbqyamq4csbcvmwb",
+      "url": "https://soneva.com/"
+    },
+    "discovery_official": {
+      "block": "b_cqy0yf3k9gaej40xd1hx",
+      "url": "https://discoverylandco.com/"
+    },
+    "aman_destinations": {
+      "block": "b_wyfh4zaf8zbdb55kn8qt",
+      "url": "https://www.aman.com/destinations"
+    },
+    "four_seasons_locations": {
+      "block": "b_fa3355yfh29rjvh954t8",
+      "url": "https://www.fourseasons.com/find_a_hotel_or_resort/"
+    },
+    "six_senses_locations": {
+      "block": "b_pcxkrf8twvfsqp77xbbg",
+      "url": "https://www.sixsenses.com/en/hotels-resorts/asia-the-pacific/"
+    }
+  },
+  "mobility_and_non_hotel_platform_partners": [
+    {
+      "partner": "DiDi",
+      "lane": "P1 mobility",
+      "source_quality": "official homepage structured country links",
+      "coverage_evidence": {
+        "countries_from_official_page": [
+          "Argentina",
+          "Australia",
+          "Brazil",
+          "Chile",
+          "Colombia",
+          "Costa Rica",
+          "Ecuador",
+          "Egypt",
+          "Japan",
+          "Mexico",
+          "New Zealand",
+          "Panama",
+          "Peru",
+          "Dominican Republic"
+        ],
+        "count": 14
+      },
+      "map_action": "country-seed only; exact-bind cities/routes only where existing Atlas hierarchy/geometry supports them; do not infer city coverage from country links",
+      "notes": [
+        "Strong broad-footprint seed across LatAm/APAC plus Egypt/Japan/Aus/NZ; needs city-level exact binding before map_scope."
+      ]
+    },
+    {
+      "partner": "Gojek / GoTo",
+      "lane": "P1 mobility",
+      "source_quality": "official homepage operational-area statement",
+      "coverage_evidence": {
+        "official_operational_area": "Operations in Indonesia and Singapore"
+      },
+      "map_action": "country-seed only; use existing Atlas Indonesia/Singapore nodes where already present; no expansion to older SEA claims without current official support",
+      "notes": [
+        "Search results include stale/broader historic claims; current official page is narrower and should be additive-only, not a shrink of any existing baseline until reconciled."
+      ]
+    },
+    {
+      "partner": "Ola",
+      "lane": "P1 mobility",
+      "source_quality": "Google Play current app copy + official city table (COVID-era but structured)",
+      "coverage_evidence": {
+        "current_app_copy": "200+ cities in India",
+        "official_table_rows_parsed": 205,
+        "coastal_state_rows_parsed": 88,
+        "sample_coastal_state_rows": [
+          {
+            "state": "Andhra Pradesh",
+            "city": "Anantapur",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Bhimavaram",
+            "services": {
+              "cabs": "No",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Chittoor",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Eluru",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Kadapa",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Kakinada",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Kurnool",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Nandyal",
+            "services": {
+              "cabs": "No",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Nellore",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Ongole",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Rajahmundry",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Srikakulam",
+            "services": {
+              "cabs": "Yes",
+              "auto": "No",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Tanuku",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Tirupati",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Vijayawada",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Visakhapatnam",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "Yes",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Andhra Pradesh",
+            "city": "Vizianagaram",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Assam",
+            "city": "Guwahati",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "Yes",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Assam",
+            "city": "Jorhat",
+            "services": {
+              "cabs": "No",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Assam",
+            "city": "Siliguri",
+            "services": {
+              "cabs": "Yes",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Ahmedabad",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "Yes",
+              "outstation": "Yes",
+              "airport": "Yes",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Anand",
+            "services": {
+              "cabs": "No",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Bhavnagar",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Bhuj",
+            "services": {
+              "cabs": "No",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Daman",
+            "services": {
+              "cabs": "No",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Gandhidham",
+            "services": {
+              "cabs": "No",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Jamnagar",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Junagadh",
+            "services": {
+              "cabs": "No",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Mansa",
+            "services": {
+              "cabs": "No",
+              "auto": "No",
+              "bike": "Yes",
+              "outstation": "No",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          },
+          {
+            "state": "Gujarat",
+            "city": "Mehsana",
+            "services": {
+              "cabs": "Yes",
+              "auto": "Yes",
+              "bike": "No",
+              "outstation": "Yes",
+              "airport": "No",
+              "emergency_special": "No"
+            }
+          }
+        ],
+        "coastal_state_rows_note": "Rows counted by Indian coastal/island-priority states only; not every city in these states is itself coastal. Exact Atlas binding still required."
+      },
+      "map_action": "India mobility seed; exact-bind parsed city rows only when Atlas supports them; table is dated, so treat as evidence queue not live coverage ceiling",
+      "notes": [
+        "Reuters/search evidence indicates international ride-hailing exit; keep India-first unless newer official proof contradicts."
+      ]
+    },
+    {
+      "partner": "Rapido",
+      "lane": "P1 mobility",
+      "source_quality": "official homepage",
+      "coverage_evidence": {
+        "official_statement": "Present across 400+ cities and counting",
+        "country": "India"
+      },
+      "map_action": "India mobility seed; do not expand to city map_scope without exact city evidence and Atlas match",
+      "notes": [
+        "Homepage is strong for national scale but not city names."
+      ]
+    },
+    {
+      "partner": "Kakao Mobility / Kakao T",
+      "lane": "P1 mobility",
+      "source_quality": "officially credited tourism authority page",
+      "coverage_evidence": {
+        "coverage_statement": "Kakao T service is available wherever you are in Korea, including Jeju Island",
+        "named_regions": [
+          "Korea nationwide",
+          "Jeju Island"
+        ]
+      },
+      "map_action": "South Korea seed; Jeju is a coastal/island priority candidate only if exact Atlas hierarchy exists",
+      "notes": [
+        "VISITKOREA page credits Kakao Mobility assets and provides tourist-facing operational guidance."
+      ]
+    },
+    {
+      "partner": "LINE / LY Corporation",
+      "lane": "P2 non-hotel platform",
+      "source_quality": "official global business page",
+      "coverage_evidence": {
+        "major_market_MAU": {
+          "Japan": "100M",
+          "Taiwan": "22M",
+          "Thailand": "54M"
+        },
+        "major_locations": [
+          "South Korea",
+          "Japan",
+          "Taiwan",
+          "Vietnam",
+          "Thailand"
+        ]
+      },
+      "map_action": "brief/prose only for now; do not create marine footprint or mobility map_scope from LINE platform usage; legacy LINE Taxi references are not enough for current route coverage",
+      "notes": [
+        "User clarified LINE is not a hotel developer; keep it in normal non-hotel platform lane."
+      ]
+    }
+  ],
+  "property_origin_partners": [
+    {
+      "partner": "Aman",
+      "lane": "P2 property-origin",
+      "source_quality": "official destinations page + search result count",
+      "coverage_evidence": {
+        "official_brand_scale": "36 luxury resorts, hotels & private residences in 20 countries (search result); destinations page exposes regional official property links but scrape was partial",
+        "featured_property_links_seen": [
+          "Aman Sveti Stefan",
+          "Amanvari",
+          "Amanzoe"
+        ]
+      },
+      "map_action": "property-origin only; extract official property pages in a follow-up before exact binding; no country/city footprint expansion",
+      "notes": [
+        "Scrape did not expose a full structured inventory, so exact property list remains backlog."
+      ]
+    },
+    {
+      "partner": "Four Seasons",
+      "lane": "P2 property-origin",
+      "source_quality": "official all hotels/resorts page",
+      "coverage_evidence": {
+        "official_property_count_statement": "135 hotels and resorts",
+        "parsed_candidate_labels_count": 165,
+        "sample_parsed_labels": [
+          {
+            "label": "Hawaii, Oahu at Ko Olina",
+            "url": "https://www.fourseasons.com/oahu/"
+          },
+          {
+            "label": "Taormina",
+            "url": "https://www.fourseasons.com/taormina/"
+          },
+          {
+            "label": "Bali at Sayan",
+            "url": "https://www.fourseasons.com/sayan/"
+          },
+          {
+            "label": "Sydney",
+            "url": "https://www.fourseasons.com/sydney/"
+          },
+          {
+            "label": "Anguilla",
+            "url": "https://www.fourseasons.com/anguilla/"
+          },
+          {
+            "label": "Atlanta",
+            "url": "https://www.fourseasons.com/atlanta/"
+          },
+          {
+            "label": "Austin",
+            "url": "https://www.fourseasons.com/austin/"
+          },
+          {
+            "label": "Bahamas (The Ocean Club)",
+            "url": "https://www.fourseasons.com/oceanclub/"
+          },
+          {
+            "label": "Baltimore",
+            "url": "https://www.fourseasons.com/baltimore/"
+          },
+          {
+            "label": "Boston",
+            "url": "https://www.fourseasons.com/boston/"
+          },
+          {
+            "label": "One Dalton Street, Boston",
+            "url": "https://www.fourseasons.com/onedalton/"
+          },
+          {
+            "label": "Chicago",
+            "url": "https://www.fourseasons.com/chicago/"
+          },
+          {
+            "label": "Denver",
+            "url": "https://www.fourseasons.com/denver/"
+          },
+          {
+            "label": "Fort Lauderdale",
+            "url": "https://www.fourseasons.com/fortlauderdale/"
+          },
+          {
+            "label": "Hawaii, Hualalai",
+            "url": "https://www.fourseasons.com/hualalai/"
+          },
+          {
+            "label": "Hawaii, Lanai",
+            "url": "https://www.fourseasons.com/lanai/"
+          },
+          {
+            "label": "Hawaii, Lanai (Sensei)",
+            "url": "https://www.fourseasons.com/sensei/"
+          },
+          {
+            "label": "Hawaii, Maui",
+            "url": "https://www.fourseasons.com/maui/"
+          },
+          {
+            "label": "Houston",
+            "url": "https://www.fourseasons.com/houston/"
+          },
+          {
+            "label": "Jackson Hole",
+            "url": "https://www.fourseasons.com/jacksonhole/"
+          },
+          {
+            "label": "Las Vegas",
+            "url": "https://www.fourseasons.com/lasvegas/"
+          },
+          {
+            "label": "Los Angeles (Four Seasons Los Angeles)",
+            "url": "https://www.fourseasons.com/losangeles/"
+          },
+          {
+            "label": "Beverly Wilshire, Beverly Hills, A Four Seasons Hotel",
+            "url": "https://www.fourseasons.com/beverlywilshire/"
+          },
+          {
+            "label": "Los Angeles Area (Westlake Village)",
+            "url": "https://www.fourseasons.com/westlakevillage/"
+          },
+          {
+            "label": "Los Cabos (Cabo Del Sol)",
+            "url": "https://www.fourseasons.com/cabodelsol/"
+          },
+          {
+            "label": "Los Cabos (Los Cabos at Costa Palmas™)",
+            "url": "https://www.fourseasons.com/loscabos/"
+          },
+          {
+            "label": "Mexico City",
+            "url": "https://www.fourseasons.com/mexico/"
+          },
+          {
+            "label": "Miami",
+            "url": "https://www.fourseasons.com/miami/"
+          },
+          {
+            "label": "Miami Beach, Surfside",
+            "url": "https://www.fourseasons.com/surfside/"
+          },
+          {
+            "label": "Minneapolis",
+            "url": "https://www.fourseasons.com/minneapolis/"
+          },
+          {
+            "label": "Montreal",
+            "url": "https://www.fourseasons.com/montreal/"
+          },
+          {
+            "label": "Napa Valley",
+            "url": "https://www.fourseasons.com/napavalley/"
+          },
+          {
+            "label": "Naples Beach Club",
+            "url": "https://www.fourseasons.com/naplesbeachclub/"
+          },
+          {
+            "label": "Nashville",
+            "url": "https://www.fourseasons.com/nashville/"
+          },
+          {
+            "label": "Nevis",
+            "url": "https://www.fourseasons.com/nevis/"
+          },
+          {
+            "label": "New Orleans",
+            "url": "https://www.fourseasons.com/neworleans/"
+          },
+          {
+            "label": "New York",
+            "url": "https://www.fourseasons.com/newyork/"
+          },
+          {
+            "label": "New York Downtown",
+            "url": "https://www.fourseasons.com/newyorkdowntown/"
+          },
+          {
+            "label": "Orlando",
+            "url": "https://www.fourseasons.com/orlando/"
+          },
+          {
+            "label": "Palm Beach",
+            "url": "https://www.fourseasons.com/palmbeach/"
+          }
+        ],
+        "parsed_candidate_labels_count_note": "Original scrape includes image-alt links; only non-image property/location links should be used in binding."
+      },
+      "map_action": "property-origin only; prioritize coastal/island resort anchors already supported by Atlas (e.g. Oahu, Taormina, Bali, Sydney if present)",
+      "notes": [
+        "Strong structured inventory; next pass should classify parsed labels by coastal/island/support status, not promote broad brand footprint."
+      ]
+    },
+    {
+      "partner": "Six Senses",
+      "lane": "P2 property-origin",
+      "source_quality": "official locations selector",
+      "coverage_evidence": {
+        "parsed_selector_locations_count": null,
+        "parsed_locations": [],
+        "selector_text_available": true,
+        "parser_note": "Official selector text is present but concatenated in scrape; requires cleanup before any exact binding. Do not use the provisional parser output."
+      },
+      "map_action": "property-origin only; exact-bind individual resort/property origins already supported by Atlas; new-opening list remains separate backlog",
+      "notes": [
+        "Official selector is suitable as source inventory; parser may need cleanup before map binding."
+      ]
+    },
+    {
+      "partner": "Soneva",
+      "lane": "P2 property-origin",
+      "source_quality": "official homepage resort list",
+      "coverage_evidence": {
+        "parsed_resorts": [
+          {
+            "property": "Soneva Fushi",
+            "description": "The original chapter of island life made for all ages, where every generation finds their own adventure.",
+            "country": "Maldives"
+          },
+          {
+            "property": "Soneva Jani",
+            "description": "An energising chapter of island life, where active days and restorative nights are made to be shared.",
+            "country": "Maldives"
+          },
+          {
+            "property": "Soneva Secret",
+            "description": "A hidden chapter of island life, where privacy isn’t a feature. It’s the whole point.",
+            "country": "Maldives"
+          }
+        ],
+        "official_resort_names": [
+          "Soneva Fushi",
+          "Soneva Jani",
+          "Soneva Secret"
+        ]
+      },
+      "map_action": "property-origin only; Maldives resort transfer opportunity; bind only if Maldives/Baa/Noonu/Haa Dhaalu/nearby Atlas nodes exist",
+      "notes": [
+        "Current official page lists Maldives resorts only; do not infer Thailand from older/non-official sources for current map_scope."
+      ]
+    },
+    {
+      "partner": "Discovery Land Company",
+      "lane": "P2 property-origin/private community",
+      "source_quality": "official homepage community cards",
+      "coverage_evidence": {
+        "parsed_communities_count": 39,
+        "parsed_communities": [
+          {
+            "property_or_community": "Moncayo",
+            "location": "Fajardo, Puerto Rico"
+          },
+          {
+            "property_or_community": "Territory 1889",
+            "location": "Flathead Lake, Montana"
+          },
+          {
+            "property_or_community": "Discovery Dunes",
+            "location": "Dubai South, United Arab Emirates"
+          },
+          {
+            "property_or_community": "CostaTerra",
+            "location": "Comporta, Portugal"
+          },
+          {
+            "property_or_community": "Tenuta Toscana",
+            "location": "Tuscany, Italy"
+          },
+          {
+            "property_or_community": "Mohala",
+            "location": "Honolulu, Hawai‘i"
+          },
+          {
+            "property_or_community": "Crazy Mountain Ranch",
+            "location": "Shields Valley, Montana"
+          },
+          {
+            "property_or_community": "Barbuda",
+            "location": "Barbuda, West Indies"
+          },
+          {
+            "property_or_community": "El Dorado",
+            "location": "Los Cabos, Mexico"
+          },
+          {
+            "property_or_community": "Zapotal",
+            "location": "Guanacaste, Costa Rica"
+          },
+          {
+            "property_or_community": "Maverick",
+            "location": "Fort Worth, Texas"
+          },
+          {
+            "property_or_community": "Austin Surf",
+            "location": "Austin, Texas"
+          },
+          {
+            "property_or_community": "Atlantic Fields",
+            "location": "Hobe Sound, Florida"
+          },
+          {
+            "property_or_community": "The Hills",
+            "location": "The Hamptons, New York"
+          },
+          {
+            "property_or_community": "Naples Beach Club",
+            "location": "Naples, Florida"
+          },
+          {
+            "property_or_community": "Taymouth Castle",
+            "location": "Perthshire, Scotland"
+          },
+          {
+            "property_or_community": "Homewood",
+            "location": "Lake Tahoe, California"
+          },
+          {
+            "property_or_community": "North Shore Preserve",
+            "location": "Kaua'i, Hawai‘i"
+          },
+          {
+            "property_or_community": "Playa Grande",
+            "location": "Rio San Juan, Dominican Republic"
+          },
+          {
+            "property_or_community": "Yellowstone Club",
+            "location": "Big Sky, Montana"
+          },
+          {
+            "property_or_community": "James Island",
+            "location": "British Columbia, Canada"
+          },
+          {
+            "property_or_community": "Troubadour",
+            "location": "Nashville, Tennessee"
+          },
+          {
+            "property_or_community": "Driftwood",
+            "location": "Austin, Texas"
+          },
+          {
+            "property_or_community": "Chileno Bay Club",
+            "location": "Cabo San Lucas, Mexico"
+          },
+          {
+            "property_or_community": "Madison",
+            "location": "La Quinta, California"
+          },
+          {
+            "property_or_community": "Summit",
+            "location": "Las Vegas, Nevada"
+          },
+          {
+            "property_or_community": "Hideaway",
+            "location": "La Quinta, California"
+          },
+          {
+            "property_or_community": "Estancia",
+            "location": "Scottsdale, Arizona"
+          },
+          {
+            "property_or_community": "Mirabel",
+            "location": "Scottsdale, Arizona"
+          },
+          {
+            "property_or_community": "Gozzer Ranch",
+            "location": "Coeur d’Alene, Idaho"
+          },
+          {
+            "property_or_community": "Iron Horse",
+            "location": "Whitefish, Montana"
+          },
+          {
+            "property_or_community": "Vaquero",
+            "location": "Westlake, Texas"
+          },
+          {
+            "property_or_community": "Mountaintop",
+            "location": "Cashiers, North Carolina"
+          },
+          {
+            "property_or_community": "Baker's Bay",
+            "location": "Great Guana Cay, Bahamas"
+          },
+          {
+            "property_or_community": "Silo Ridge",
+            "location": "Amenia, New York"
+          },
+          {
+            "property_or_community": "Dune Deck",
+            "location": "Westhampton Beach, New York"
+          },
+          {
+            "property_or_community": "CordeValle",
+            "location": "Silicon Valley, California"
+          },
+          {
+            "property_or_community": "Kūki'o",
+            "location": "Kohala, Hawai‘i"
+          },
+          {
+            "property_or_community": "Mākena",
+            "location": "Maui, Hawai‘i"
+          }
+        ]
+      },
+      "map_action": "property/community-origin only; prioritize waterfront/island communities already supported by Atlas; no full city/country footprint",
+      "notes": [
+        "Official page supports a concrete community-origin queue across Puerto Rico, Hawai‘i, Caribbean, Mexico, Costa Rica, Bahamas, etc."
+      ]
+    }
+  ],
+  "promotion_queue": {
+    "ready_for_exact_binding_review": [
+      {
+        "partner": "Kakao Mobility / Kakao T",
+        "candidate": "Jeju Island / South Korea coastal-island nodes",
+        "condition": "only if exact Atlas hierarchy/geometry exists"
+      },
+      {
+        "partner": "DiDi",
+        "candidate": "official country links that overlap existing Atlas coastal/island registry",
+        "condition": "city/route remains null until exact support exists"
+      },
+      {
+        "partner": "Ola",
+        "candidate": "parsed coastal-state city rows from official table",
+        "condition": "dated table; verify current official or app support before partner-page display"
+      },
+      {
+        "partner": "Discovery Land Company",
+        "candidate": "official waterfront/island communities",
+        "condition": "property-origin binding only, never broad city footprint"
+      },
+      {
+        "partner": "Soneva",
+        "candidate": "Soneva Fushi/Jani/Secret Maldives origins",
+        "condition": "property-origin binding only"
+      }
+    ],
+    "backlog_not_promoted": [
+      "LINE platform footprint: prose/brief only until mobility/network evidence exists",
+      "Aman full inventory: official page scrape partial; needs structured property extraction",
+      "Six Senses parser cleanup/classification before binding",
+      "Four Seasons parsed label classification before binding"
+    ]
+  },
+  "next_steps": [
+    "Run targeted exact-bind against Atlas hierarchy/geometry for the promotion queue only.",
+    "For property partners, generate property-origin backlog rows with property name, source URL, nearest existing Atlas node if exact, otherwise null.",
+    "Do not shrink existing partner baselines based on current source omissions.",
+    "After exact-bind, update partner pages/sidecar economics and prepare Grok handoff for deterministic sealing/render checks."
+  ]
+}

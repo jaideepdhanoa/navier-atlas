@@ -374,29 +374,40 @@ def walk_partner(
 
         if is_root:
             for j in obj.get("journeys_unlocked") or []:
-                fix_item(j, partner_id, None, routes, econ_by_partner, promo, stats)
+                if isinstance(j, dict):
+                    fix_item(j, partner_id, None, routes, econ_by_partner, promo, stats)
             for ph in obj.get("phases") or []:
+                if not isinstance(ph, dict):
+                    continue
                 ph_scope = ph.get("route_scope") or rs
                 for fr in ph.get("featured_routes") or []:
+                    if not isinstance(fr, dict):
+                        continue
                     if fr.get("display") == "network_chip":
                         scrub_chip_route_ids(fr, ph_scope, None, routes, stats, partner_id)
                     else:
                         fix_item(fr, partner_id, None, routes, econ_by_partner, promo, stats)
 
         for j in obj.get("journeys_unlocked") or []:
-            if not is_root:
+            if not is_root and isinstance(j, dict):
                 fix_item(j, partner_id, market_id, routes, econ_by_partner, promo, stats)
 
         if not is_root:
             for fr in obj.get("featured_routes") or []:
+                if not isinstance(fr, dict):
+                    continue
                 if fr.get("display") == "network_chip":
                     scrub_chip_route_ids(fr, rs, market_id, routes, stats, partner_id)
                 else:
                     fix_item(fr, partner_id, market_id, routes, econ_by_partner, promo, stats)
 
             for ph in obj.get("phases") or []:
+                if not isinstance(ph, dict):
+                    continue
                 ph_scope = ph.get("route_scope") or rs
                 for fr in ph.get("featured_routes") or []:
+                    if not isinstance(fr, dict):
+                        continue
                     if fr.get("display") == "network_chip":
                         scrub_chip_route_ids(fr, ph_scope, market_id, routes, stats, partner_id)
                     else:

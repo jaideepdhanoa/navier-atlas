@@ -1,0 +1,1553 @@
+{
+  "_doc": "P0 coastal-priority diff for Yango, Bolt, Uber, and Lyft. Additive only: exact-bound candidates are safe candidates, backlog rows are not map-display until grounded.",
+  "created_at": "2026-06-20T14:52:00+05:30",
+  "guardrails": [
+    "load_p0_no_shrink_baseline_first",
+    "source_omissions_do_not_demote_existing_coverage",
+    "exact_bound_candidates_require_existing_registry_id",
+    "backlog_rows_are_brief_or_registry_queue_not_network_footprint"
+  ],
+  "source_blocks": {
+    "bolt_official_cities": "b_estxyr5bgg4ghhy75c80",
+    "uber_official_countries": "b_9ajd64najxwaxmndqz6f",
+    "lyft_official_cities": "b_vk6b8xm0v6nzg4z2gtp3",
+    "yango_official_homepage_attempt": "b_k4h56e7r415qypee03xp"
+  },
+  "source_inventory_counts": {
+    "bolt_city_rows_parsed": 864,
+    "uber_country_rows_parsed": 73,
+    "lyft_city_rows_parsed": 812
+  },
+  "exact_bound_additive_candidates": [
+    {
+      "partner_id": "bolt",
+      "country": "Greece",
+      "registry_city_id": "crete-greece",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Crete"
+      ],
+      "source_urls": [
+        "https://bolt.eu/en/cities/crete/"
+      ]
+    },
+    {
+      "partner_id": "bolt",
+      "country": "Malta",
+      "registry_city_id": "malta-gozo",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Gozo",
+        "Malta"
+      ],
+      "source_urls": [
+        "https://bolt.eu/en/cities/gozo/",
+        "https://bolt.eu/en/cities/malta/"
+      ]
+    },
+    {
+      "partner_id": "lyft",
+      "country": "United States",
+      "state_or_province": "Hawaii",
+      "registry_city_id": "oahu-honolulu-hawaii-usa",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Honolulu"
+      ],
+      "source_urls": [
+        "https://www.lyft.com/rider/cities/honolulu-hi"
+      ]
+    },
+    {
+      "partner_id": "lyft",
+      "country": "United States",
+      "state_or_province": "Hawaii",
+      "registry_city_id": "maui-county-hawaii-usa",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Maui"
+      ],
+      "source_urls": [
+        "https://www.lyft.com/rider/cities/maui-hi"
+      ]
+    },
+    {
+      "partner_id": "lyft",
+      "country": "United States",
+      "state_or_province": "Hawaii",
+      "registry_city_id": "kauai-hawaii-usa",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Kauai"
+      ],
+      "source_urls": [
+        "https://www.lyft.com/rider/cities/kauai-hi"
+      ]
+    },
+    {
+      "partner_id": "lyft",
+      "country": "United States",
+      "state_or_province": "Hawaii",
+      "registry_city_id": "kona-hilo-hawaii-island-usa",
+      "status": "exact_bound_additive_candidate",
+      "match_basis": "official_city_row_to_existing_registry_id",
+      "proposal_action": "candidate for display after partner-page decision/economics sidecar update",
+      "source_markets": [
+        "Big Island"
+      ],
+      "source_urls": [
+        "https://www.lyft.com/rider/cities/big-island-hi"
+      ]
+    }
+  ],
+  "priority_backlog": [
+    {
+      "partner_id": "bolt",
+      "source_market": "Madeira",
+      "country": "Portugal",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; no safe existing registry ID in P0 baseline or not yet bound for Bolt",
+      "source_url": "https://bolt.eu/en/cities/madeira/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Ponta Delgada",
+      "country": "Portugal",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; no safe existing registry ID in P0 baseline or not yet bound for Bolt",
+      "source_url": "https://bolt.eu/en/cities/ponta-delgada/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "São Miguel",
+      "country": "Portugal",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; no safe existing registry ID in P0 baseline or not yet bound for Bolt",
+      "source_url": "https://bolt.eu/en/cities/sao-miguel/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Ayia Napa",
+      "country": "Cyprus",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/ayia-napa/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Famagusta",
+      "country": "Cyprus",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/famagusta/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Larnaca",
+      "country": "Cyprus",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/larnaca/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Limassol",
+      "country": "Cyprus",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/limassol/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Paphos",
+      "country": "Cyprus",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/paphos/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Pula",
+      "country": "Croatia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/pula/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Rijeka",
+      "country": "Croatia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/rijeka/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Šibenik",
+      "country": "Croatia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/sibenik/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Zadar",
+      "country": "Croatia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/zadar/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Diani",
+      "country": "Kenya",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/diani/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Kilifi",
+      "country": "Kenya",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/kilifi/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Malindi",
+      "country": "Kenya",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/malindi/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Mombasa",
+      "country": "Kenya",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/mombasa/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Dar es Salaam",
+      "country": "Tanzania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/dar-es-salaam/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Tanga",
+      "country": "Tanzania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/tanga/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Zanzibar",
+      "country": "Tanzania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/zanzibar/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Accra",
+      "country": "Ghana",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/accra/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Cape Coast",
+      "country": "Ghana",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/cape-coast/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Takoradi",
+      "country": "Ghana",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/takoradi/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Calabar",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/calabar/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Lagos",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/lagos/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Port Harcourt",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/port-harcourt/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Uyo",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/uyo/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Warri",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/warri/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Yenagoa",
+      "country": "Nigeria",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/yenagoa/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Cape Town",
+      "country": "South Africa",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/cape-town/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Durban",
+      "country": "South Africa",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/durban/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "East London",
+      "country": "South Africa",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/east-london/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Garden Route",
+      "country": "South Africa",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/garden-route/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Port Elizabeth",
+      "country": "South Africa",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/port-elizabeth/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Krabi",
+      "country": "Thailand",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/krabi/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Phuket",
+      "country": "Thailand",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/phuket/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Surat Thani",
+      "country": "Thailand",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/surat-thani/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Batumi",
+      "country": "Georgia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/batumi/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Poti",
+      "country": "Georgia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/poti/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Astara",
+      "country": "Azerbaijan",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/astara/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Baku",
+      "country": "Azerbaijan",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/baku/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Lankaran",
+      "country": "Azerbaijan",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/lankaran/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Sumgayit",
+      "country": "Azerbaijan",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/sumgayit/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Constanța",
+      "country": "Romania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/constanta/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Tulcea",
+      "country": "Romania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/tulcea/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Koper",
+      "country": "Slovenia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/koper/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Jūrmala",
+      "country": "Latvia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/jurmala/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Liepāja",
+      "country": "Latvia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/liepaja/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Rīga",
+      "country": "Latvia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/riga/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Ventspils",
+      "country": "Latvia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/ventspils/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Klaipėda",
+      "country": "Lithuania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/klaipeda/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Nida",
+      "country": "Lithuania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/nida/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Palanga",
+      "country": "Lithuania",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/palanga/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Ålesund",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/alesund/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Bergen",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/bergen/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Kristiansand",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/kristiansand/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Oslo",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/oslo/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Stavanger",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/stavanger/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Trondheim",
+      "country": "Norway",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/trondheim/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Gdansk",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/gdansk/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Gdynia",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/gdynia/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Kolobrzeg",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/kolobrzeg/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Koszalin",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/koszalin/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Sopot",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/sopot/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Swinoujscie",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/swinoujscie/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Szczecin",
+      "country": "Poland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/szczecin/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Cardiff",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/cardiff/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Edinburgh",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/edinburgh/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Havant",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/havant/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Liverpool",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/liverpool/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Newcastle-Upon-Tyne",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/newcastle/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Portsmouth",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/portsmouth/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Southampton",
+      "country": "United Kingdom",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/southampton/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Mazatlan",
+      "country": "Mexico",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/mazatlan/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Los Mochis",
+      "country": "Mexico",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/los-mochis/"
+    },
+    {
+      "partner_id": "bolt",
+      "source_market": "Auckland",
+      "country": "New Zealand",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Bolt row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://bolt.eu/en/cities/auckland/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Barbados",
+      "country": "Barbados",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/barbados/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Bahrain",
+      "country": "Bahrain",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/bahrain/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Bangladesh",
+      "country": "Bangladesh",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/bangladesh/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Canada",
+      "country": "Canada",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/canada/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Chile",
+      "country": "Chile",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/chile/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Colombia",
+      "country": "Colombia",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/colombia/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Costa Rica",
+      "country": "Costa Rica",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/costa-rica/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Dominican Republic",
+      "country": "Dominican Republic",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/dominican-republic/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Ecuador",
+      "country": "Ecuador",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/ecuador/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Ghana",
+      "country": "Ghana",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/ghana/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Guatemala",
+      "country": "Guatemala",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/guatemala/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Honduras",
+      "country": "Honduras",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/honduras/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Jamaica",
+      "country": "Jamaica",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/jamaica/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Jordan",
+      "country": "Jordan",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/jordan/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Kenya",
+      "country": "Kenya",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/kenya/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Korea",
+      "country": "Korea",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/korea/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Kuwait",
+      "country": "Kuwait",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/kuwait/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Lebanon",
+      "country": "Lebanon",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/lebanon/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Saint Lucia",
+      "country": "Saint Lucia",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/saint-lucia/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Sri Lanka",
+      "country": "Sri Lanka",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/sri-lanka/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Netherlands",
+      "country": "Netherlands",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/netherlands/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Norway",
+      "country": "Norway",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/norway/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "New Zealand",
+      "country": "New Zealand",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/new-zealand/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Panama",
+      "country": "Panama",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/panama/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Peru",
+      "country": "Peru",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/peru/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Portugal",
+      "country": "Portugal",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/portugal/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Romania",
+      "country": "Romania",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/romania/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Slovenia",
+      "country": "Slovenia",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/slovenia/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Sweden",
+      "country": "Sweden",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/sweden/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Ukraine",
+      "country": "Ukraine",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/ukraine/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Uganda",
+      "country": "Uganda",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/uganda/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "South Africa",
+      "country": "South Africa",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/south-africa/cities/"
+    },
+    {
+      "partner_id": "uber",
+      "source_market": "Uruguay",
+      "country": "Uruguay",
+      "status": "country_scope_priority_seed",
+      "reason": "official Uber country page exists; run coastal/Atlas-overlap city page diff before any binding",
+      "source_url": "https://www.uber.com/global/en/r/uruguay/cities/"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Anchorage",
+      "country": "United States",
+      "state_or_province": "Alaska",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/anchorage-ak"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Homer",
+      "country": "United States",
+      "state_or_province": "Alaska",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/greater-alaska-ak/homer"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Juneau",
+      "country": "United States",
+      "state_or_province": "Alaska",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/juneau-ak"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Kodiak",
+      "country": "United States",
+      "state_or_province": "Alaska",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/greater-alaska-ak/kodiak"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Sitka",
+      "country": "United States",
+      "state_or_province": "Alaska",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/greater-alaska-ak/sitka"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Los Angeles",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/los-angeles-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Long Beach",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/los-angeles-ca/long-beach"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Monterey",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/monterey-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "San Diego",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/san-diego-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Santa Barbara",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/santa-barbara-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Santa Cruz",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/santa-cruz-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Ventura",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/ventura-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Orange",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/orange-county-ca"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Newport Beach",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/orange-county-ca/newport-beach"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Oceanside",
+      "country": "United States",
+      "state_or_province": "California",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/san-diego-ca/oceanside"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Florida Keys",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/florida-keys-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Key Largo",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/florida-keys-fl/key-largo"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Fort Lauderdale",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/miami-fl/fort-lauderdale"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Jacksonville",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/jacksonville-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Naples",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/naples-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Panama City",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/panama-city-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Pensacola",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/pensacola-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "St Petersburg",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/tampa-bay-fl/st-petersburg"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Tampa Bay",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/tampa-bay-fl"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "West Palm Beach",
+      "country": "United States",
+      "state_or_province": "Florida",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/miami-fl/west-palm-beach"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Brunswick",
+      "country": "United States",
+      "state_or_province": "Georgia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/coastal-georgia-ga/brunswick"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Savannah",
+      "country": "United States",
+      "state_or_province": "Georgia",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/savannah-ga"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "New Orleans",
+      "country": "United States",
+      "state_or_province": "Louisiana",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/new-orleans-la"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Portland",
+      "country": "United States",
+      "state_or_province": "Maine",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/portland-me"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Ocean City",
+      "country": "United States",
+      "state_or_province": "Maryland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/eastern-maryland-md/ocean-city"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Salisbury",
+      "country": "United States",
+      "state_or_province": "Maryland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/eastern-maryland-md/salisbury"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Baltimore",
+      "country": "United States",
+      "state_or_province": "Maryland",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/baltimore-md"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Atlantic City",
+      "country": "United States",
+      "state_or_province": "New Jersey",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/new-jersey-nj/atlantic-city"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Hoboken",
+      "country": "United States",
+      "state_or_province": "New Jersey",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/new-jersey-nj/hoboken"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Jersey City",
+      "country": "United States",
+      "state_or_province": "New Jersey",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/new-jersey-nj/jersey-city"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Hamptons",
+      "country": "United States",
+      "state_or_province": "New York",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/hamptons-ny"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Nassau County",
+      "country": "United States",
+      "state_or_province": "New York",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/nassau-county-ny"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "New York City",
+      "country": "United States",
+      "state_or_province": "New York",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/new-york-city-ny"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Suffolk County",
+      "country": "United States",
+      "state_or_province": "New York",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/suffolk-county-ny"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Outer Banks",
+      "country": "United States",
+      "state_or_province": "North Carolina",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/outer-banks-nc"
+    },
+    {
+      "partner_id": "lyft",
+      "source_market": "Wilmington",
+      "country": "United States",
+      "state_or_province": "North Carolina",
+      "status": "coastal_or_island_backlog",
+      "reason": "official Lyft row; coastal/island relevance likely, but requires Atlas registry/geometry check before map display",
+      "source_url": "https://www.lyft.com/rider/cities/wilmington-nc"
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Oman",
+      "country": "Oman",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Bahrain",
+      "country": "Bahrain",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Jordan",
+      "country": "Jordan",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Pakistan",
+      "country": "Pakistan",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Ghana",
+      "country": "Ghana",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Senegal",
+      "country": "Senegal",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Cameroon",
+      "country": "Cameroon",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Zambia",
+      "country": "Zambia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Angola",
+      "country": "Angola",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Mozambique",
+      "country": "Mozambique",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Namibia",
+      "country": "Namibia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Ethiopia",
+      "country": "Ethiopia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "DRC",
+      "country": "DRC",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Bolivia",
+      "country": "Bolivia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Peru",
+      "country": "Peru",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Colombia",
+      "country": "Colombia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Guatemala",
+      "country": "Guatemala",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Nepal",
+      "country": "Nepal",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Sri Lanka",
+      "country": "Sri Lanka",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Armenia",
+      "country": "Armenia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Georgia",
+      "country": "Georgia",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Uzbekistan",
+      "country": "Uzbekistan",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Kazakhstan",
+      "country": "Kazakhstan",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Finland",
+      "country": "Finland",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    },
+    {
+      "partner_id": "yango",
+      "source_market": "Norway",
+      "country": "Norway",
+      "status": "country_scope_seed_needs_validation",
+      "reason": "from user/broad regional seed; validate official/local Yango source then coastal city-diff; no shrink to existing Yango baseline",
+      "source_url": null
+    }
+  ],
+  "next_actions": [
+    "Promote exact-bound additive candidates only after partner-page scope decision and economics sidecar update.",
+    "For backlog rows, run registry/alias/geometry lookup; null beats fuzzy binding.",
+    "Continue with P1 partners using the same baseline-first pattern."
+  ]
+}
