@@ -1,7 +1,7 @@
 # India economics sidecar v0 — cleanup pass 1
 
 Status: **draft only until crosswalk / route sealing**  
-Updated: 2026-06-20 23:18 IST
+Updated: 2026-06-20 23:55 IST
 
 Global controls preserved:
 
@@ -103,3 +103,9 @@ Still quarantined or partial:
 2. Probe DG Sea Connect booking/API flow only enough to capture current fare ladder and vessel categories; do not book.
 3. Add or request exact Atlas BPs for Chennai, Nagapattinam, Vizag if the proposal needs those corridors sealed.
 4. Find official Hooghly current ridership by route or station; otherwise keep it out of model inputs.
+
+### Mumbai Candela/JalVimana competitive validation — added
+
+Uploaded Business Standard / NDTV Profit capture says the Candela P-12 electric hydrofoil “flying boat” launched in Mumbai, developed by Candela and set to be operated in India by JalVimana. The cited initial routes are Gateway of India → Alibaug and Gateway of India → Elephanta Island, with a planned Navi Mumbai airport → central Mumbai route expected to reduce travel time from ~90 minutes to under 30 minutes. The article also cites a planned fleet of 11 hydrofoiling Candela P-12 commuter ferries.
+
+Use: **market validation / competitive context only**. Do **not** use this as a fare anchor, demand anchor, route-ID binding, or distance seal. M2M/PIB/Indian Express/The Hindu remain the current Mumbai source spine, with annual demand still null until direct route-level passenger counts are captured.

@@ -92,7 +92,7 @@
       "demand_status": "partial",
       "pricing_status": "direct",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Best v0 pricing comparable: year-round RoPax product with published fare floor and vehicle deck. Demand volume remains partial until passenger counts are captured.",
+      "economics_read": "Best v0 pricing comparable: year-round RoPax product with published fare floor and vehicle deck. Demand volume remains partial until passenger counts are captured. Candela/JalVimana P-12 launch strengthens Mumbai market-validation context but is not used as a fare or demand anchor.",
       "demand_anchors": [
         {
           "source": "PIB Ministry of Ports, Shipping and Waterways",
@@ -124,7 +124,23 @@
       "next_research": [
         "Capture M2M booking flow class-by-class fare ladder if needed for high/low cases.",
         "Find public passenger-count or trip-count disclosures for M2M/Mandwa route.",
-        "Bind exact Atlas BPs for Ferry Wharf/Bhaucha Dhakka, Belapur, Elephanta, Mandwa before geometry economics."
+        "Bind exact Atlas BPs for Ferry Wharf/Bhaucha Dhakka, Belapur, Elephanta, Mandwa before geometry economics.",
+        "Do not use Candela/JalVimana launch coverage as a fare or demand input; separately capture JalVimana fares/passenger counts if/when public."
+      ],
+      "competitive_market_validation": [
+        {
+          "source": "Business Standard / NDTV Profit report, uploaded MHTML capture",
+          "captured_at": "2026-06-20",
+          "captured_metric": "Candela P-12 electric hydrofoil “flying boat” launched in Mumbai; developed by Swedish manufacturer Candela and set to be operated in India by JalVimana. Initial routes cited: Gateway of India→Alibaug and Gateway of India→Elephanta Island. JalVimana also planning upcoming Navi Mumbai airport→central Mumbai route, expected to cut travel time from around 90 minutes to under 30 minutes. Article cites planned fleet of 11 hydrofoiling Candela P-12 commuter ferries.",
+          "use": "Market validation / competitive context for premium electric water mobility in Mumbai only.",
+          "not_used_for": [
+            "fare_anchor",
+            "annual_demand",
+            "route_id_binding",
+            "distance_seal"
+          ],
+          "controls": "Do not use Candela article to overwrite M2M public fare floor or passenger-count fields. Keep economics conservative until direct fare and route-level passenger counts are sourced."
+        }
       ]
     },
     {
