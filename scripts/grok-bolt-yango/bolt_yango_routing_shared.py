@@ -53,6 +53,8 @@ NODE_CROSSWALK = {
     "lisbon-tagus-portugal": "lisbon-tagus-portugal",
     "porto": "porto-douro-portugal",
     "algarve": "algarve-portugal",
+    "palma-mallorca-spain": "mallorca-spain",
+    "cairo": "cairo-egypt",
 }
 
 
@@ -318,11 +320,24 @@ def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: st
         return []
     cities = [NODE_CROSSWALK.get(city_id, city_id)]
     blob = norm_label(f"{from_label or ''} {to_label or ''}")
-    if city_id == "lisbon-tagus-portugal":
+    if city_id in ("lisbon-tagus-portugal", "porto-douro-portugal"):
         if any(t in blob for t in ("porto", "ribeira", "gaia", "douro")):
             cities.append("porto-douro-portugal")
-        if any(t in blob for t in ("faro", "portimao", "lagos", "algarve", "cascais")):
+        if any(t in blob for t in ("faro", "portimao", "lagos", "algarve", "cascais", "olhao", "deserta", "benagil")):
             cities.append("algarve-portugal")
+        if any(t in blob for t in ("lisbon", "sodre", "belem", "cacilhas", "cascais")):
+            cities.append("lisbon-tagus-portugal")
+    if city_id in ("palma-mallorca-spain", "mallorca-spain"):
+        if any(t in blob for t in ("ibiza", "eivissa", "formentera", "savina")):
+            cities.append("ibiza-spain")
+        if any(t in blob for t in ("menorca", "mao", "maó")):
+            cities.append("menorca-spain")
+        if any(t in blob for t in ("palma", "mallorca", "soller", "menorca")):
+            cities.append("mallorca-spain")
+    if city_id == "ibiza-spain":
+        cities.append("mallorca-spain")
+    if city_id in ("helsinki-finland", "tallinn-estonia", "stockholm-sweden"):
+        cities.extend(["helsinki-finland", "tallinn-estonia", "stockholm-sweden"])
     if city_id == "dubai" or cities[0] == "dubai-uae":
         if any(t in blob for t in ("abu dhabi", "abudhabi", "corniche")):
             cities.append("abu-dhabi-uae")
