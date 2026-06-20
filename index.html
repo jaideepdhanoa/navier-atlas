@@ -2692,6 +2692,7 @@ let _CARO=null;
 function _labeled(label, body){ return body ? `<div class="pcaro-lp"><span class="l">${escapeHtml(label)}</span><p>${escapeHtml(body)}</p></div>` : ''; }
 function _ctxHtml(c){
   if (!c) return '';
+  if (typeof c==='string') return c.trim()?`<div class="panel-section"><h3>Your world</h3><div class="pcaro-why">${escapeHtml(c)}</div></div>`:'';
   const inner = _labeled('Where you are today', c.their_ambition) + _labeled('What you’re up against', c.their_pressure) + _labeled('Where Navier fits for you', c.where_navier_fits);
   return inner ? `<div class="panel-section"><h3>Your world</h3>${inner}</div>` : '';
 }
@@ -2754,6 +2755,7 @@ function _journeysHtml(js){
 }
 function _diffHtml(d){
   if (!d) return '';
+  if (typeof d==='string') return d.trim()?`<div class="panel-section"><h3>Why Navier</h3><div class="pcaro-why">${escapeHtml(d)}</div></div>`:'';
   // Data ships why_navier (+ sometimes vs_status_quo); older drops used vs_ferry/vs_candela/navier_moat.
   // Render whatever is present (this section was silently empty when only why_navier existed).
   const lead = d.why_navier ? `<div class="pcaro-why">${escapeHtml(d.why_navier)}</div>` : '';
@@ -2762,14 +2764,15 @@ function _diffHtml(d){
 }
 function _proofHtml(ps){
   if (!ps || !ps.length) return '';
-  return `<div class="panel-section"><h3>Proof points</h3>${ps.map(p=>`<div class="pcaro-proof">${p.claim?`<div class="claim">${escapeHtml(p.claim)}</div>`:''}${p.evidence?`<div class="ev">${escapeHtml(p.evidence)}</div>`:''}${p.source?`<div class="src">${escapeHtml(p.source)}</div>`:''}</div>`).join('')}</div>`;
+  return `<div class="panel-section"><h3>Proof points</h3>${ps.map(p=>{ if (typeof p==='string') return `<div class="pcaro-proof"><div class="claim">${escapeHtml(p)}</div></div>`; return `<div class="pcaro-proof">${p.claim?`<div class="claim">${escapeHtml(p.claim)}</div>`:''}${p.evidence?`<div class="ev">${escapeHtml(p.evidence)}</div>`:''}${p.source?`<div class="src">${escapeHtml(p.source)}</div>`:''}</div>`; }).join('')}</div>`;
 }
 function _objHtml(os){
   if (!os || !os.length) return '';
-  return `<div class="panel-section"><h3>Questions you might have</h3>${os.map(o=>`<div class="pcaro-faq"><div class="q">${escapeHtml(o.concern||'')}</div>${o.response?`<div class="a">${escapeHtml(o.response)}</div>`:''}</div>`).join('')}</div>`;
+  return `<div class="panel-section"><h3>Questions you might have</h3>${os.map(o=>{ const q=o.concern||o.objection||o.q||''; const a=o.response||o.a||''; return `<div class="pcaro-faq"><div class="q">${escapeHtml(q)}</div>${a?`<div class="a">${escapeHtml(a)}</div>`:''}</div>`; }).join('')}</div>`;
 }
 function _askHtml(a){
   if (!a) return '';
+  if (typeof a==='string') return a.trim()?`<div class="panel-section"><h3>The ask</h3><div class="pcaro-next">${escapeHtml(a)}</div></div>`:'';
   const cols = (a.navier_brings?`<div class="pcaro-ask-col"><span>Navier brings</span><p>${escapeHtml(a.navier_brings)}</p></div>`:'') + (a.partner_brings?`<div class="pcaro-ask-col"><span>You bring</span><p>${escapeHtml(a.partner_brings)}</p></div>`:'');
   if (!cols && !a.next_step) return '';
   return `<div class="panel-section"><h3>The ask</h3>${cols?`<div class="pcaro-ask">${cols}</div>`:''}${a.next_step?`<div class="pcaro-next"><span>Next step</span>${escapeHtml(a.next_step)}</div>`:''}</div>`;
@@ -2799,8 +2802,8 @@ function _endstateHtml(partner){
   const cities=_unionPhaseCities(partner), ph=partner.phases||[];
   const netCount=(typeof CITY_IDS!=='undefined'&&CITY_IDS.size)?CITY_IDS.size:cities.length;
   const M=(es&&es.addressable_market_count)||netCount;
-  const headline=(es&&es.headline)||(partner.close&&partner.close.title)||((partner.display||'The')+' — the whole water network');
-  const blurb=(es&&es.narrative)||(partner.hero&&partner.hero.subtitle)||'';
+  const headline=(es&&es.headline)||((partner.close&&typeof partner.close==='object'&&partner.close.title)||'')||((partner.display||'The')+' — the whole water network');
+  const blurb=(es&&es.narrative)||((partner.hero&&typeof partner.hero==='object'&&partner.hero.subtitle)||'')||'';
   let h=`<div class="chap-cap"><div class="eyebrow">Where this goes — the full picture</div>
     <h2>${escapeHtml(headline)}</h2>
     ${blurb?`<p>${escapeHtml(blurb)}</p>`:''}
@@ -2821,7 +2824,8 @@ function _featuredRouteHtml(r){
   if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
   // Drop mis-linked ids (route length far off the label distance) so a click lights the right line or falls
   // back to endpoint-city focus via from/to node — never a confidently-wrong corridor (see _plausibleRouteIds).
-  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), r.label), fn=r.from_node_id||'', tn=r.to_node_id||'', pending=_geometryPending(r), click=!pending&&!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  const routeLabel=r.label||([r.from_label,r.to_label].filter(Boolean).join(' ↔ '));
+  const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), routeLabel), fn=r.from_node_id||'', tn=r.to_node_id||'', pending=_geometryPending(r), click=!pending&&!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
@@ -2839,7 +2843,7 @@ function _featuredRouteHtml(r){
   const _er = (typeof ROUTE_ECONOMICS!=='undefined') ? rids.map(id=>ROUTE_ECONOMICS[id]).find(Boolean) : null;
   if (_er){ const em=_er.mid||{}; const lab = em.payback_years!=null ? (em.payback_years.toFixed(1)+' yr payback') : (em.margin!=null ? (Math.round(em.margin*100)+'% margin') : 'economics');
     chips.push(`<span class="pcaro-jchip econ" title="Unit economics — opens route detail">◆ ${escapeHtml(lab)}</span>`); }
-  return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(r.label||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
+  return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(routeLabel||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
 function _phaseBlockHtml(cur){
   cur=cur||{};
@@ -3004,7 +3008,7 @@ function _chapterHtml(ch, partner){
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
   if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case);
   if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
-  if (ch.kind==='ask')      return _askHtml(partner.the_ask)+(partner.close?`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(partner.close.title||'')}</div>${partner.close.body?`<div class="b">${escapeHtml(partner.close.body)}</div>`:''}</div>`:'');
+  if (ch.kind==='ask')      { const c=partner.close; const closeHtml=!c?'':(typeof c==='string'?`<div class="panel-section pcaro-close"><div class="b">${escapeHtml(c)}</div></div>`:`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(c.title||'')}</div>${c.body?`<div class="b">${escapeHtml(c.body)}</div>`:''}</div>`); return _askHtml(partner.the_ask)+closeHtml; }
   return '';
 }
 // Top bar: prev/next arrows + the PROMINENT current chapter title + progress + dots.
@@ -3202,7 +3206,7 @@ function _hubAnchors(partner){
 function _marketAsPartner(partner, market){
   return Object.assign({}, market, {
     partner_id: partner.partner_id,
-    display: market.label || (market.hero&&market.hero.title) || partner.display,
+    display: market.label || (market.hero&&(typeof market.hero==='string'?market.hero:market.hero.title)) || partner.display,
     _hubOf: partner, _hubMarketSlug: market.slug
   });
 }
@@ -3322,13 +3326,16 @@ function _introGrowthPartner(partner){
 function _introHubPartner(partner){ return (partner&&partner._hubOf)||null; }
 function _introStep1Html(partner){
   const hero=partner.hero||{};
+  const heroTitle=(typeof hero==='string')?hero:(hero.title||hero.headline||partner.display||'');
+  const heroSub=(typeof hero==='object')?(hero.subtitle||hero.sub||''):'';
+  const heroCta=(typeof hero==='object')?(hero.what_we_do_together||''):'';
   const gcPartner=_introGrowthPartner(partner);
   const hub=_introHubPartner(partner);
   const isSpoke=_introIsHubSpoke(partner);
   let h=`<div class="intro-mark">${isSpoke?'Market proposal':'Partner proposal'}</div>
-    <h2 class="intro-title">${escapeHtml(hero.title||partner.display||'')}</h2>
-    ${hero.subtitle?`<div class="intro-sub">${escapeHtml(hero.subtitle)}</div>`:''}
-    ${hero.what_we_do_together?`<div class="intro-cta">${escapeHtml(hero.what_we_do_together)}</div>`:''}`;
+    <h2 class="intro-title">${escapeHtml(heroTitle)}</h2>
+    ${heroSub?`<div class="intro-sub">${escapeHtml(heroSub)}</div>`:''}
+    ${heroCta?`<div class="intro-cta">${escapeHtml(heroCta)}</div>`:''}`;
   // On the internal aggregate only, offer the partner's standalone (scoped + locked) page. Suppressed for
   // a hub market (its own dedicated page is /<partner>/<market> and the back-bar already returns to the hub).
   if (!BUILD_PARTNER && partner.partner_id && !partner._hubOf) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
@@ -3615,11 +3622,11 @@ function _renderPartnerGrid(q){
   let html='', n=0;
   for (const c of order){
     const items = groups[c]
-      .filter(p => !q || ((p.display||'')+' '+((p.hero&&p.hero.subtitle)||'')).toLowerCase().includes(q))
+      .filter(p => !q || ((p.display||'')+' '+((p.hero&&typeof p.hero==='object'&&p.hero.subtitle)||'')+' '+(typeof p.hero==='string'?p.hero:'')).toLowerCase().includes(q))
       .sort((a,b)=>(a.display||a.partner_id).localeCompare(b.display||b.partner_id));
     if (!items.length) continue; n+=items.length;
     html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(CAT_LABELS[c]||c)}</div><div class="pidx-cards">` + items.map(p=>{
-      const blurb=(p.hero&&p.hero.subtitle)||(p.network_thesis&&p.network_thesis.headline)||'';
+      const blurb=((p.hero&&typeof p.hero==='object'&&p.hero.subtitle)||'')||(typeof p.hero==='string'?p.hero:'')||(p.network_thesis&&p.network_thesis.headline)||'';
       const mk=((p.layout==='hub'||p.layout==='network')&&p.markets&&p.markets.length)?`<span class="pidx-badge">${p.markets.length} markets</span>`:'';
       // In the All view, flag the flagship partners so the tier reads at a glance.
       const fl=(_partnerTier===''&&p.tier==='flagship')?`<span class="pidx-badge flag">flagship</span>`:'';
