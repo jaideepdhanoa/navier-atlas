@@ -100,6 +100,14 @@ ROUTE_LINK_TOL = 0.25
 CHIP_DISTANCE_TOL = 0.4
 CHIP_BUNDLE_CAP = 20
 
+# Foreign-corridor markers — scrub from intra-scoped network chips.
+_CROSS_BORDER_EP_RE = re.compile(
+    r"harbour bay|batam|bintan|bandar bentan|desaru|johor|sekupang|nongsa|"
+    r"pasir gudang|riau islands|tanjung pinang|penang(?! hill)|langkawi|"
+    r"koh lipe|manama|bahrain|soul beach abu dhabi",
+    re.I,
+)
+
 # Tokens too generic to anchor a directional match on their own.
 _COMMON_PLACE = frozenset(
     {
@@ -465,6 +473,38 @@ def load_economics_index(root: Path) -> EconomicsIndex:
     return idx
 
 
+def find_economics_route(
+    item: dict,
+    partner_slug: str | None,
+    econ: EconomicsIndex,
+    routes: dict[str, RouteRec],
+    promo: GcnPromoIndex,
+) -> str | None:
+    """Lane E: economics corridor pin — prefer partner-pinned route_id when label matches."""
+    slug = (partner_slug or "").lower()
+    if not slug:
+        return None
+    from_l, to_l, label_text = item_labels(item)
+    if not from_l and not to_l and not item.get("label"):
+        return None
+
+    candidates: list[tuple[str, float]] = []
+    for rid in econ.by_partner.get(slug, set()):
+        promoted = promote_route_id(rid, slug, promo, routes) or rid
+        rec = routes.get(promoted)
+        if not rec:
+            continue
+        score = econ_corridor_score(item, promoted, slug, econ)
+        if from_l and to_l and directional_endpoints_match(from_l, to_l, rec):
+            score += 20.0
+        if score >= 6.0 and passes_gates(item, rec, label_text):
+            candidates.append((promoted, score))
+
+    if not candidates:
+        return None
+    return max(candidates, key=lambda x: x[1])[0]
+
+
 def econ_corridor_score(
     item: dict,
     rid: str,
@@ -522,6 +562,16 @@ def route_in_scope(rec: RouteRec, scope: set[str]) -> bool:
         (rec.from_city_id and rec.from_city_id in scope)
         or (rec.to_city_id and rec.to_city_id in scope)
     )
+
+
+def route_domestic_ok(rec: RouteRec) -> bool:
+    """True when route endpoints look domestic (no cross-border corridor markers)."""
+    ep = f"{rec.from_label} {rec.to_label}"
+    return not _CROSS_BORDER_EP_RE.search(ep)
+
+
+def is_intra_route_scope(scope: str | None) -> bool:
+    return (scope or "").lower() in ("intra", "")
 
 
 def distance_ok(label_nm: float | None, route_nm: float | None) -> bool:
@@ -1098,6 +1148,7 @@ def expand_network_chip_route_ids(
     econ: EconomicsIndex,
     *,
     chip_supplement: dict[str, RouteRec] | None = None,
+    domestic_only: bool = False,
 ) -> list[str]:
     """Lane A: network_chip bundle → all scoped legs matching label tokens."""
     label = item.get("label") or ""
@@ -1117,6 +1168,8 @@ def expand_network_chip_route_ids(
             continue
         rec = vis
         if not route_in_scope(rec, scope):
+            continue
+        if domestic_only and not route_domestic_ok(rec):
             continue
         if not route_matches_chip(rec, tokens, phrases):
             continue
@@ -1151,6 +1204,8 @@ def expand_grounding_route_ids(
     econ: EconomicsIndex,
     chip_supplement: dict[str, RouteRec],
     grounding: GroundingIndex,
+    *,
+    domestic_only: bool = False,
 ) -> list[str]:
     """Lane B′: endpoint grounding crosswalk + quarantined e__ corridor mints."""
     label = item.get("label") or ""
@@ -1172,6 +1227,8 @@ def expand_grounding_route_ids(
         promoted = promote_route_id(rid, partner_slug, promo, routes) or rid
         vis = routes.get(promoted) or chip_supplement.get(promoted)
         if not vis or not route_in_scope(vis, scope):
+            continue
+        if domestic_only and not route_domestic_ok(vis):
             continue
         if not route_matches_chip(vis, tokens, list(search_phrases)):
             continue
@@ -1262,11 +1319,13 @@ def relink_network_chip(
     grounding: GroundingIndex | None = None,
     phase: dict | None = None,
     all_phases: list[dict] | None = None,
+    route_scope: str | None = None,
 ) -> None:
     promo = promo or GcnPromoIndex()
     econ = econ or EconomicsIndex()
     grounding = grounding or GroundingIndex()
     chip_supplement = chip_supplement or {}
+    domestic_only = is_intra_route_scope(route_scope or (phase or {}).get("route_scope"))
     stats.total += 1
 
     if item.get("route_id"):
@@ -1289,7 +1348,7 @@ def relink_network_chip(
     if not rids:
         rids = expand_grounding_route_ids(
             item, scope, routes, routes_by_city, partner_slug, promo, econ,
-            chip_supplement, grounding,
+            chip_supplement, grounding, domestic_only=domestic_only,
         )
         if rids:
             source = "grounding"
@@ -1297,7 +1356,7 @@ def relink_network_chip(
     if not rids:
         rids = expand_network_chip_route_ids(
             item, scope, routes, routes_by_city, partner_slug, promo, econ,
-            chip_supplement=chip_supplement,
+            chip_supplement=chip_supplement, domestic_only=domestic_only,
         )
         if rids:
             source = "network-chip"
@@ -1385,6 +1444,7 @@ def relink_item(
     grounding: GroundingIndex | None = None,
     phase: dict | None = None,
     all_phases: list[dict] | None = None,
+    route_scope: str | None = None,
 ) -> None:
     if not isinstance(item, dict):
         return
@@ -1398,7 +1458,7 @@ def relink_item(
             item, scope, routes, routes_by_city, brief_idx, stats,
             partner_slug=partner_slug, promo=promo, econ=econ,
             chip_supplement=chip_supplement, grounding=grounding,
-            phase=phase, all_phases=all_phases,
+            phase=phase, all_phases=all_phases, route_scope=route_scope,
         )
         return
 
@@ -1438,9 +1498,13 @@ def relink_item(
     rid: str | None = None
     source = ""
 
-    rid = borrow_from_brief(item, scope, brief_idx, routes, partner_slug, econ, promo)
+    rid = find_economics_route(item, partner_slug, econ, routes, promo)
     if rid:
-        source = "brief"
+        source = "economics"
+    if not rid:
+        rid = borrow_from_brief(item, scope, brief_idx, routes, partner_slug, econ, promo)
+        if rid:
+            source = "brief"
     if not rid:
         rid = find_node_pair_route(item, routes, routes_by_city, scope)
         if rid:
@@ -1578,13 +1642,17 @@ def _walk_phase_carousels(
                 )
                 relink_item(
                     fr, scope, routes, routes_by_city, brief_idx, stats,
-                    phase=ph, all_phases=all_phases, **kw,
+                    phase=ph, all_phases=all_phases,
+                    route_scope=ph.get("route_scope"), **kw,
                 )
             if not rollup_only:
                 for fr in featured:
                     if fr.get("display") == "network_chip":
                         continue
-                    relink_item(fr, phase_scope, routes, routes_by_city, brief_idx, stats, **kw)
+                    relink_item(
+                        fr, phase_scope, routes, routes_by_city, brief_idx, stats,
+                        route_scope=ph.get("route_scope"), **kw,
+                    )
 
     process(rollup_only=False)
     process(rollup_only=True)

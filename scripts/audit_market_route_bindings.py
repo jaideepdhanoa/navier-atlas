@@ -119,7 +119,39 @@ def is_domestic_scope(scope: str | None, market_id: str | None) -> bool:
     return True
 
 
-def audit_row(row: dict, routes: dict) -> list[dict]:
+def load_economics_pins() -> dict[tuple[str, str], str]:
+    """(partner, route_id) -> corridor text for whitelisted bindings."""
+    path = ROOT / "data-clean/economics_by_route_id.json"
+    pins: dict[tuple[str, str], str] = {}
+    if not path.exists():
+        return pins
+    raw = r.load_json(path)
+    for rec in raw.get("records") or []:
+        rid = rec.get("route_id")
+        partner = str(rec.get("partner") or "").lower()
+        corridor = rec.get("corridor") or ""
+        if rid and partner and corridor:
+            pins[(partner, rid)] = corridor
+    return pins
+
+
+def economics_whitelist_ok(
+    row: dict,
+    item: dict,
+    rec,
+    econ_pins: dict[tuple[str, str], str],
+) -> bool:
+    """Economics-pinned route that passes render gates — intentional binding."""
+    partner = row.get("partner", "")
+    rid = row.get("route_id", "")
+    if (partner, rid) not in econ_pins:
+        return False
+    from_l, to_l, label_text = r.item_labels(item)
+    label = label_text or f"{from_l} → {to_l}"
+    return r.passes_gates(item, rec, label)
+
+
+def audit_row(row: dict, routes: dict, econ_pins: dict[tuple[str, str], str]) -> list[dict]:
     issues: list[dict] = []
     rid = row["route_id"]
     rec = routes.get(rid)
@@ -162,7 +194,8 @@ def audit_row(row: dict, routes: dict) -> list[dict]:
 
     # Tier 1: wrong clickable binding (journey / featured only)
     if kind in ("journey", "featured") and from_l and to_l:
-        if not r.directional_endpoints_match(from_l, to_l, rec):
+        econ_ok = economics_whitelist_ok(row, render_item, rec, econ_pins)
+        if not r.directional_endpoints_match(from_l, to_l, rec) and not econ_ok:
             issues.append({
                 **base,
                 "issue": "wrong_binding",
@@ -189,9 +222,17 @@ def audit_row(row: dict, routes: dict) -> list[dict]:
     if domestic and CROSS_BORDER_RE.search(ep):
         chip_domestic = row.get("chip_label") and not CROSS_BORDER_RE.search(row["chip_label"])
         journey_domestic = row.get("from") or row.get("to") or "domestic" in label_text.lower()
+        fn, tn = row.get("from_node_id"), row.get("to_node_id")
+        hub_cross_border = (
+            row.get("market") is None
+            and kind == "journey"
+            and fn
+            and tn
+            and fn != tn
+        )
         if kind == "chip_leg" and chip_domestic:
             issues.append({**base, "issue": "cross_border_chip_leak", "severity": "high"})
-        elif kind in ("journey", "featured") and journey_domestic:
+        elif kind in ("journey", "featured") and journey_domestic and not hub_cross_border:
             issues.append({**base, "issue": "cross_border_leak", "severity": "high"})
 
     # Tier 3: intra-city nodes but foreign route
@@ -214,6 +255,7 @@ def main():
     args = ap.parse_args()
 
     routes, _, _ = r.load_routes(r.ROOT)
+    econ_pins = load_economics_pins()
     all_issues: list[dict] = []
 
     paths = sorted(PARTNERS_DIR.glob("*.json"))
@@ -228,7 +270,7 @@ def main():
             continue
         data = r.load_json(path)
         for row in walk_bindings(data, partner_id):
-            all_issues.extend(audit_row(row, routes))
+            all_issues.extend(audit_row(row, routes, econ_pins))
 
     # dedupe
     seen: set[tuple] = set()
