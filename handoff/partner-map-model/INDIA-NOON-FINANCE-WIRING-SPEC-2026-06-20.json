@@ -1,0 +1,1651 @@
+{
+  "created_at": "2026-06-20T23:55:00+05:30",
+  "base_branch": "pr-59",
+  "purpose": "Unblock India/Noon finance wiring after Grok sealed PR58 routes; keep null beats wrong controls.",
+  "acceptance_checks": {
+    "india_ledger_summary": {
+      "total": 921,
+      "sealed": 900,
+      "held_null": 21
+    },
+    "noon_ledger_summary": {
+      "total": 12,
+      "sealed": 12,
+      "held_null": 0
+    },
+    "india_distinct_sealed_route_ids": 39,
+    "india_held_null_by_partner": {
+      "rapido": 7,
+      "ola": 7,
+      "uber-india-derivative": 7
+    },
+    "partner_sheet_ids_present": [
+      "_doc",
+      "_master_tracker",
+      "bolt",
+      "careem",
+      "constance",
+      "four-seasons",
+      "grab",
+      "jih-global",
+      "qatar",
+      "red-sea-global",
+      "saudi-pif",
+      "uber",
+      "yango"
+    ],
+    "country_reference_preflight": {
+      "India": false,
+      "United Arab Emirates": true,
+      "Sri Lanka": false
+    }
+  },
+  "controls": [
+    "No route-level economics for held-null corridors.",
+    "No route-level economics where price or demand is quarantined; use economics_pending with explicit reason.",
+    "Do not borrow peer-specific census. Global template band only if labelled.",
+    "Add finance/model/country-reference.json row for India before any India cascade; Sri Lanka only if Nagapattinam-KKS becomes a finance row.",
+    "No Adani/Reliance footprint from broad asset ownership; bind only specific airport/port/waterfront/property route evidence."
+  ],
+  "candela_mumbai_market_validation": {
+    "source": "Business Standard",
+    "url": "https://www.business-standard.com/india-news/india-s-1st-electric-hydrofoil-flying-boat-candela-p12-launched-in-mumbai-key-details-126052900896_1.html",
+    "uploaded_archive": "/tasklet/agent/uploads/India's 1st electric hydrofoil flying boat launched in Mumbai_ Key details _ India News - Business Standard.mhtml",
+    "article_date": "2026-05-29",
+    "captured_points": [
+      "India first electric hydrofoil flying boat, Candela P12, launched in Mumbai.",
+      "Developed by Swedish manufacturer Candela and set to be operated in India by JalVimana.",
+      "Initial routes: Gateway of India to Alibaug; Gateway of India to Elephanta Island.",
+      "Planned route: upcoming Navi Mumbai airport to central Mumbai; expected to cut travel from around 90 minutes to under 30 minutes.",
+      "Planned fleet: 11 hydrofoiling Candela P12 commuter ferries; larger electric water transport ecosystem language."
+    ],
+    "finance_use": "market_validation_and_competitive_context_only_not_fare_or_ridership_input",
+    "proposal_use": {
+      "adani": "airport access wedge for Navi Mumbai airport ↔ central Mumbai; exact asset/terminal evidence still required before footprint bind",
+      "reliance": "Mumbai electric marine mobility validation and Jio/energy/platform adjacency; no operator footprint claim"
+    }
+  },
+  "india_finance_wiring_candidates": [
+    {
+      "partner": "ola",
+      "market": "Andaman / Port Blair / island mobility",
+      "market_key_suggestion": "ola-andaman",
+      "finance_readiness": "route_ids_sealed_demand_partial_pricing_quarantined",
+      "finance_action": "do not publish route economics; keep rows economics_pending until DSS fare PDF direct capture succeeds",
+      "distinct_sealed_routes": 10,
+      "routes": [
+        {
+          "route_id": "ics-5c094f9b0f",
+          "label": "Andaman & Nicobar Islands: Bambooflat Jetty → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Bambooflat Jetty",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 8.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-77f233e565",
+          "label": "Andaman & Nicobar Islands: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 15.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-15b477252a2a",
+          "label": "Andaman → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "Andaman",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 28.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-30a13a2451e7",
+          "label": "Andaman: APARUPA SANDS MARINA → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "APARUPA SANDS MARINA",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-40d432afeaa7",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Junglighat Jetty",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Junglighat Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-9470ece6d137",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Port Blair",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-98d8f63617ee",
+          "label": "Andaman: Port Blair → BookMyBoat Andaman Ferry Booking",
+          "from": "Port Blair",
+          "to": "BookMyBoat Andaman Ferry Booking",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-d10abbe5d36a",
+          "label": "Andaman → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Andaman",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-f6d2eee38e08",
+          "label": "Andaman: Junglighat Jetty → Port Blair",
+          "from": "Junglighat Jetty",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 0.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-fb4a3f74ce06",
+          "label": "Andaman: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 14.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "ola",
+      "market": "Goa",
+      "market_key_suggestion": "ola-goa",
+      "finance_readiness": "route_ids_sealed_pricing_comparables_ready_tourism_tam_ready",
+      "finance_action": "wire draft corridor rows using official RND/taxi/GoaMiles comparables; keep airport demand quarantined",
+      "distinct_sealed_routes": 7,
+      "routes": [
+        {
+          "route_id": "ics-30e7ae3007",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-894d34e14d",
+          "label": "Goa: Yacht Life Goa → Camurlim Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Camurlim Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-a53a6e7900",
+          "label": "Goa: Yacht Life Goa → Tuem Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Tuem Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b61d127eb2",
+          "label": "Goa: Goveia Marina → LifeOnYachts Goa",
+          "from": "Goveia Marina",
+          "to": "LifeOnYachts Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b6394de290",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-d1d96f8e7c",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f8ba590813",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 6.0,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "ola",
+      "market": "Kochi / Kerala Water Metro adjacency",
+      "market_key_suggestion": "ola-kochi",
+      "finance_readiness": "route_ids_sealed_demand_ready_pricing_partial",
+      "finance_action": "wire only with conservative fare placeholder from DPR planning benchmark if labelled historical; preferably source current fare before finance publish",
+      "distinct_sealed_routes": 8,
+      "routes": [
+        {
+          "route_id": "ics-0091e0dcc0",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 6.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-248e023645",
+          "label": "Kerala Backwaters & Kochi: Keltron Ferry → Chellanam Harbour Kochi",
+          "from": "Keltron Ferry",
+          "to": "Chellanam Harbour Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-40f9371e54",
+          "label": "Kerala Backwaters & Kochi: BLUEMARINE Backwaters → Sailing Club House",
+          "from": "BLUEMARINE Backwaters",
+          "to": "Sailing Club House",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.7,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-518c914828",
+          "label": "Kerala Backwaters & Kochi: Marina One, Kochi → Harbour Roof Garden",
+          "from": "Marina One, Kochi",
+          "to": "Harbour Roof Garden",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-537ea74b43",
+          "label": "Kerala Backwaters & Kochi: Palette MG Road Ernakulam formerly Harbour View Residency → BLUEMARINE Backwaters",
+          "from": "Palette MG Road Ernakulam formerly Harbour View Residency",
+          "to": "BLUEMARINE Backwaters",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-68fc0a687b",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-782056e815",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-8404d09d86",
+          "label": "Kerala Backwaters & Kochi: Kochi International Marina KTDC → Martins Harbour",
+          "from": "Kochi International Marina KTDC",
+          "to": "Martins Harbour",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "ola",
+      "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "market_key_suggestion": "ola-mumbai",
+      "finance_readiness": "route_ids_sealed_price_floor_ready_demand_partial",
+      "finance_action": "wire as draft corridor rows with M2M fare floor/comparable; keep demand confidence partial until passenger counts are sourced",
+      "distinct_sealed_routes": 12,
+      "routes": [
+        {
+          "route_id": "ics-10990b64b9",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-1b14a6bcfe",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-3964e5583e",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-45ea784fef",
+          "label": "Mumbai Harbour → Mandwa Jetty",
+          "from": "Mumbai Harbour",
+          "to": "Mandwa Jetty",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-6a150e9b8e",
+          "label": "Mumbai Harbour: Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Elephanta Caves",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-91a8902d18",
+          "label": "Mumbai Harbour: BSA Mandwa → Marina Bay Bistro @KARANJA Fishing Dock",
+          "from": "BSA Mandwa",
+          "to": "Marina Bay Bistro @KARANJA Fishing Dock",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-971049e54f",
+          "label": "Mumbai Harbour: JNPT Ferry Service → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "JNPT Ferry Service",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-c142e5992b",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-ed747a4789",
+          "label": "Mumbai Harbour: Pirpau Jetty → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Pirpau Jetty",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 6.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f811ad5db4",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-mum-versova-gateway",
+          "label": "Versova ↔ Gateway of India — Coastal Water-Taxi",
+          "from": "Versova Ferry Wharf",
+          "to": "Gateway of India",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 12.43,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-ff5ccaf1831e",
+          "label": "Goa → Mumbai",
+          "from": "Goa",
+          "to": "Mumbai",
+          "from_city_id": "goa-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 213.3,
+          "vessel": "Quanta-LR",
+          "trip_scope": "domestic"
+        }
+      ]
+    },
+    {
+      "partner": "rapido",
+      "market": "Andaman / Port Blair / island mobility",
+      "market_key_suggestion": "rapido-andaman",
+      "finance_readiness": "route_ids_sealed_demand_partial_pricing_quarantined",
+      "finance_action": "do not publish route economics; keep rows economics_pending until DSS fare PDF direct capture succeeds",
+      "distinct_sealed_routes": 10,
+      "routes": [
+        {
+          "route_id": "ics-5c094f9b0f",
+          "label": "Andaman & Nicobar Islands: Bambooflat Jetty → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Bambooflat Jetty",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 8.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-77f233e565",
+          "label": "Andaman & Nicobar Islands: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 15.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-15b477252a2a",
+          "label": "Andaman → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "Andaman",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 28.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-30a13a2451e7",
+          "label": "Andaman: APARUPA SANDS MARINA → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "APARUPA SANDS MARINA",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-40d432afeaa7",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Junglighat Jetty",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Junglighat Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-9470ece6d137",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Port Blair",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-98d8f63617ee",
+          "label": "Andaman: Port Blair → BookMyBoat Andaman Ferry Booking",
+          "from": "Port Blair",
+          "to": "BookMyBoat Andaman Ferry Booking",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-d10abbe5d36a",
+          "label": "Andaman → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Andaman",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-f6d2eee38e08",
+          "label": "Andaman: Junglighat Jetty → Port Blair",
+          "from": "Junglighat Jetty",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 0.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-fb4a3f74ce06",
+          "label": "Andaman: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 14.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "rapido",
+      "market": "Goa",
+      "market_key_suggestion": "rapido-goa",
+      "finance_readiness": "route_ids_sealed_pricing_comparables_ready_tourism_tam_ready",
+      "finance_action": "wire draft corridor rows using official RND/taxi/GoaMiles comparables; keep airport demand quarantined",
+      "distinct_sealed_routes": 7,
+      "routes": [
+        {
+          "route_id": "ics-30e7ae3007",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-894d34e14d",
+          "label": "Goa: Yacht Life Goa → Camurlim Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Camurlim Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-a53a6e7900",
+          "label": "Goa: Yacht Life Goa → Tuem Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Tuem Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b61d127eb2",
+          "label": "Goa: Goveia Marina → LifeOnYachts Goa",
+          "from": "Goveia Marina",
+          "to": "LifeOnYachts Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b6394de290",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-d1d96f8e7c",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f8ba590813",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 6.0,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "rapido",
+      "market": "Kochi / Kerala Water Metro adjacency",
+      "market_key_suggestion": "rapido-kochi",
+      "finance_readiness": "route_ids_sealed_demand_ready_pricing_partial",
+      "finance_action": "wire only with conservative fare placeholder from DPR planning benchmark if labelled historical; preferably source current fare before finance publish",
+      "distinct_sealed_routes": 8,
+      "routes": [
+        {
+          "route_id": "ics-0091e0dcc0",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 6.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-248e023645",
+          "label": "Kerala Backwaters & Kochi: Keltron Ferry → Chellanam Harbour Kochi",
+          "from": "Keltron Ferry",
+          "to": "Chellanam Harbour Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-40f9371e54",
+          "label": "Kerala Backwaters & Kochi: BLUEMARINE Backwaters → Sailing Club House",
+          "from": "BLUEMARINE Backwaters",
+          "to": "Sailing Club House",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.7,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-518c914828",
+          "label": "Kerala Backwaters & Kochi: Marina One, Kochi → Harbour Roof Garden",
+          "from": "Marina One, Kochi",
+          "to": "Harbour Roof Garden",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-537ea74b43",
+          "label": "Kerala Backwaters & Kochi: Palette MG Road Ernakulam formerly Harbour View Residency → BLUEMARINE Backwaters",
+          "from": "Palette MG Road Ernakulam formerly Harbour View Residency",
+          "to": "BLUEMARINE Backwaters",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-68fc0a687b",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-782056e815",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-8404d09d86",
+          "label": "Kerala Backwaters & Kochi: Kochi International Marina KTDC → Martins Harbour",
+          "from": "Kochi International Marina KTDC",
+          "to": "Martins Harbour",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "rapido",
+      "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "market_key_suggestion": "rapido-mumbai",
+      "finance_readiness": "route_ids_sealed_price_floor_ready_demand_partial",
+      "finance_action": "wire as draft corridor rows with M2M fare floor/comparable; keep demand confidence partial until passenger counts are sourced",
+      "distinct_sealed_routes": 14,
+      "routes": [
+        {
+          "route_id": "ics-10990b64b9",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-1b14a6bcfe",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-3964e5583e",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-45ea784fef",
+          "label": "Mumbai Harbour → Mandwa Jetty",
+          "from": "Mumbai Harbour",
+          "to": "Mandwa Jetty",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-6a150e9b8e",
+          "label": "Mumbai Harbour: Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Elephanta Caves",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-91a8902d18",
+          "label": "Mumbai Harbour: BSA Mandwa → Marina Bay Bistro @KARANJA Fishing Dock",
+          "from": "BSA Mandwa",
+          "to": "Marina Bay Bistro @KARANJA Fishing Dock",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-971049e54f",
+          "label": "Mumbai Harbour: JNPT Ferry Service → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "JNPT Ferry Service",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-997116ff5d",
+          "label": "Mumbai Harbour: Mora → Elephanta Caves",
+          "from": "Mora",
+          "to": "Elephanta Caves",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-c142e5992b",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-d1cada0928",
+          "label": "Mumbai Harbour: Bombay Harbour → Elephanta Caves",
+          "from": "Bombay Harbour",
+          "to": "Elephanta Caves",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-ed747a4789",
+          "label": "Mumbai Harbour: Pirpau Jetty → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Pirpau Jetty",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 6.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f811ad5db4",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-mum-versova-gateway",
+          "label": "Versova ↔ Gateway of India — Coastal Water-Taxi",
+          "from": "Versova Ferry Wharf",
+          "to": "Gateway of India",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 12.43,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-ff5ccaf1831e",
+          "label": "Goa → Mumbai",
+          "from": "Goa",
+          "to": "Mumbai",
+          "from_city_id": "goa-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 213.3,
+          "vessel": "Quanta-LR",
+          "trip_scope": "domestic"
+        }
+      ]
+    },
+    {
+      "partner": "uber-india-derivative",
+      "market": "Andaman / Port Blair / island mobility",
+      "market_key_suggestion": "uber-andaman",
+      "finance_readiness": "route_ids_sealed_demand_partial_pricing_quarantined",
+      "finance_action": "do not publish route economics; keep rows economics_pending until DSS fare PDF direct capture succeeds",
+      "distinct_sealed_routes": 10,
+      "routes": [
+        {
+          "route_id": "ics-5c094f9b0f",
+          "label": "Andaman & Nicobar Islands: Bambooflat Jetty → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Bambooflat Jetty",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 8.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-77f233e565",
+          "label": "Andaman & Nicobar Islands: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 15.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-15b477252a2a",
+          "label": "Andaman → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "Andaman",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 28.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-30a13a2451e7",
+          "label": "Andaman: APARUPA SANDS MARINA → Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from": "APARUPA SANDS MARINA",
+          "to": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-40d432afeaa7",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Junglighat Jetty",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Junglighat Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-9470ece6d137",
+          "label": "Andaman: Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands → Port Blair",
+          "from": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 1.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-98d8f63617ee",
+          "label": "Andaman: Port Blair → BookMyBoat Andaman Ferry Booking",
+          "from": "Port Blair",
+          "to": "BookMyBoat Andaman Ferry Booking",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-d10abbe5d36a",
+          "label": "Andaman → Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from": "Andaman",
+          "to": "Game Fishing In Andaman | Bite Me Charter | Best Sport fishing in Andaman Islands",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-f6d2eee38e08",
+          "label": "Andaman: Junglighat Jetty → Port Blair",
+          "from": "Junglighat Jetty",
+          "to": "Port Blair",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 0.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-fb4a3f74ce06",
+          "label": "Andaman: Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock → Shaheed Dweep Jetty",
+          "from": "Office Of Assistant Engineer Civil, Andaman Lakshdweep Harbour Work Havelock",
+          "to": "Shaheed Dweep Jetty",
+          "from_city_id": "andaman-india",
+          "to_city_id": "andaman-india",
+          "distance_nm": 14.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "uber-india-derivative",
+      "market": "Goa",
+      "market_key_suggestion": "uber-goa",
+      "finance_readiness": "route_ids_sealed_pricing_comparables_ready_tourism_tam_ready",
+      "finance_action": "wire draft corridor rows using official RND/taxi/GoaMiles comparables; keep airport demand quarantined",
+      "distinct_sealed_routes": 7,
+      "routes": [
+        {
+          "route_id": "ics-30e7ae3007",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-894d34e14d",
+          "label": "Goa: Yacht Life Goa → Camurlim Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Camurlim Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-a53a6e7900",
+          "label": "Goa: Yacht Life Goa → Tuem Ferry Terminal",
+          "from": "Yacht Life Goa",
+          "to": "Tuem Ferry Terminal",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b61d127eb2",
+          "label": "Goa: Goveia Marina → LifeOnYachts Goa",
+          "from": "Goveia Marina",
+          "to": "LifeOnYachts Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-b6394de290",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-d1d96f8e7c",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 3.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f8ba590813",
+          "label": "Goa: Panaji Jetty → Goa",
+          "from": "Panaji Jetty",
+          "to": "Goa",
+          "from_city_id": "goa-india",
+          "to_city_id": "goa-india",
+          "distance_nm": 6.0,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "uber-india-derivative",
+      "market": "Kochi / Kerala Water Metro adjacency",
+      "market_key_suggestion": "uber-kochi",
+      "finance_readiness": "route_ids_sealed_demand_ready_pricing_partial",
+      "finance_action": "wire only with conservative fare placeholder from DPR planning benchmark if labelled historical; preferably source current fare before finance publish",
+      "distinct_sealed_routes": 8,
+      "routes": [
+        {
+          "route_id": "ics-0091e0dcc0",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 6.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-248e023645",
+          "label": "Kerala Backwaters & Kochi: Keltron Ferry → Chellanam Harbour Kochi",
+          "from": "Keltron Ferry",
+          "to": "Chellanam Harbour Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 5.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-40f9371e54",
+          "label": "Kerala Backwaters & Kochi: BLUEMARINE Backwaters → Sailing Club House",
+          "from": "BLUEMARINE Backwaters",
+          "to": "Sailing Club House",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.7,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-518c914828",
+          "label": "Kerala Backwaters & Kochi: Marina One, Kochi → Harbour Roof Garden",
+          "from": "Marina One, Kochi",
+          "to": "Harbour Roof Garden",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-537ea74b43",
+          "label": "Kerala Backwaters & Kochi: Palette MG Road Ernakulam formerly Harbour View Residency → BLUEMARINE Backwaters",
+          "from": "Palette MG Road Ernakulam formerly Harbour View Residency",
+          "to": "BLUEMARINE Backwaters",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-68fc0a687b",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-782056e815",
+          "label": "Kerala Backwaters & Kochi: Willingdon Island → Kerala Backwaters & Kochi",
+          "from": "Willingdon Island",
+          "to": "Kerala Backwaters & Kochi",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-8404d09d86",
+          "label": "Kerala Backwaters & Kochi: Kochi International Marina KTDC → Martins Harbour",
+          "from": "Kochi International Marina KTDC",
+          "to": "Martins Harbour",
+          "from_city_id": "kerala-backwaters-india",
+          "to_city_id": "kerala-backwaters-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        }
+      ]
+    },
+    {
+      "partner": "uber-india-derivative",
+      "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "market_key_suggestion": "uber-mumbai",
+      "finance_readiness": "route_ids_sealed_price_floor_ready_demand_partial",
+      "finance_action": "wire as draft corridor rows with M2M fare floor/comparable; keep demand confidence partial until passenger counts are sourced",
+      "distinct_sealed_routes": 14,
+      "routes": [
+        {
+          "route_id": "ics-10990b64b9",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-1b14a6bcfe",
+          "label": "Mandwa Jetty → Mumbai Harbour",
+          "from": "Mandwa Jetty",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-3964e5583e",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-45ea784fef",
+          "label": "Mumbai Harbour → Mandwa Jetty",
+          "from": "Mumbai Harbour",
+          "to": "Mandwa Jetty",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 7.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-6a150e9b8e",
+          "label": "Mumbai Harbour: Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Elephanta Caves",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.6,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-91a8902d18",
+          "label": "Mumbai Harbour: BSA Mandwa → Marina Bay Bistro @KARANJA Fishing Dock",
+          "from": "BSA Mandwa",
+          "to": "Marina Bay Bistro @KARANJA Fishing Dock",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 4.5,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-971049e54f",
+          "label": "Mumbai Harbour: JNPT Ferry Service → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "JNPT Ferry Service",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 5.9,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-997116ff5d",
+          "label": "Mumbai Harbour: Mora → Elephanta Caves",
+          "from": "Mora",
+          "to": "Elephanta Caves",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.8,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-c142e5992b",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.4,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-d1cada0928",
+          "label": "Mumbai Harbour: Bombay Harbour → Elephanta Caves",
+          "from": "Bombay Harbour",
+          "to": "Elephanta Caves",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 3.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-ed747a4789",
+          "label": "Mumbai Harbour: Pirpau Jetty → Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from": "Pirpau Jetty",
+          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 6.2,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-f811ad5db4",
+          "label": "Mumbai Harbour: Gateway of India → Mumbai Harbour",
+          "from": "Gateway of India",
+          "to": "Mumbai Harbour",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "ics-mum-versova-gateway",
+          "label": "Versova ↔ Gateway of India — Coastal Water-Taxi",
+          "from": "Versova Ferry Wharf",
+          "to": "Gateway of India",
+          "from_city_id": "mumbai-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 12.43,
+          "vessel": "Pioneer II",
+          "trip_scope": "intra_city"
+        },
+        {
+          "route_id": "rn-ff5ccaf1831e",
+          "label": "Goa → Mumbai",
+          "from": "Goa",
+          "to": "Mumbai",
+          "from_city_id": "goa-india",
+          "to_city_id": "mumbai-india",
+          "distance_nm": 213.3,
+          "vessel": "Quanta-LR",
+          "trip_scope": "domestic"
+        }
+      ]
+    }
+  ],
+  "noon_finance_wiring_candidates": {
+    "partner": "noon",
+    "market_key_suggestion": "noon-uae",
+    "routes": [
+      {
+        "route_id": "rn-80c408c085a6",
+        "label": "Yas Marina → Four Seasons Al Maryah Jetty",
+        "phase": 1,
+        "from": "Yas Marina",
+        "to": "Four Seasons Al Maryah Jetty",
+        "from_city_id": "abu-dhabi-uae",
+        "to_city_id": "abu-dhabi-uae",
+        "distance_nm": 12.4,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [],
+        "finance_action": "needs_new_uae_demand_anchor_before_noon_economics"
+      },
+      {
+        "route_id": "rn-b1ba183aa886",
+        "label": "Dubai Harbour Marina → Nikki Beach Resort Pearl Jumeirah Jetty",
+        "phase": 1,
+        "from": "Dubai Harbour Marina",
+        "to": "Nikki Beach Resort Pearl Jumeirah Jetty",
+        "from_city_id": "dubai-uae",
+        "to_city_id": "dubai-uae",
+        "distance_nm": 11.9,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [],
+        "finance_action": "needs_new_uae_demand_anchor_before_noon_economics"
+      },
+      {
+        "route_id": "rn-bc685bdb0da3",
+        "label": "Fujairah → Khorfakkan Corniche / Port",
+        "phase": 1,
+        "from": "Fujairah",
+        "to": "Khorfakkan Corniche / Port",
+        "from_city_id": "fujairah-uae",
+        "to_city_id": "fujairah-uae",
+        "distance_nm": 11.4,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [],
+        "finance_action": "needs_new_uae_demand_anchor_before_noon_economics"
+      },
+      {
+        "route_id": "rn-d61bc3c848d9",
+        "label": "Ras Al Khaimah → ميناء صيادين غليلة",
+        "phase": 1,
+        "from": "Ras Al Khaimah",
+        "to": "ميناء صيادين غليلة",
+        "from_city_id": "ras-al-khaimah-uae",
+        "to_city_id": "ras-al-khaimah-uae",
+        "distance_nm": 11.9,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [],
+        "finance_action": "needs_new_uae_demand_anchor_before_noon_economics"
+      },
+      {
+        "route_id": "rn-02a40748974d",
+        "label": "Vida Beach Resort Umm Al Quwain → Sharjah Waterfront City marina",
+        "phase": 1,
+        "from": "Vida Beach Resort Umm Al Quwain",
+        "to": "Sharjah Waterfront City marina",
+        "from_city_id": "sharjah-uae",
+        "to_city_id": "sharjah-uae",
+        "distance_nm": 9.6,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [],
+        "finance_action": "needs_new_uae_demand_anchor_before_noon_economics"
+      },
+      {
+        "route_id": "gcn-4ae479b872-bolt",
+        "label": "Ushuaïa Dubai Harbour Experience → Marina Mall / Breakwater Marina",
+        "phase": 2,
+        "from": "Ushuaïa Dubai Harbour Experience",
+        "to": "Marina Mall / Breakwater Marina",
+        "from_city_id": "abu-dhabi-uae",
+        "to_city_id": "dubai-uae",
+        "distance_nm": 57.4,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [
+          {
+            "market_key": "bolt-uae",
+            "from": "Dubai Harbour Marina",
+            "to": "Marina Mall / Breakwater Marina",
+            "country": "United Arab Emirates",
+            "fare_usd": 110.0,
+            "pax_yr": 25000
+          }
+        ],
+        "finance_action": "inherit_existing_finance_anchor_after_partner-scope-review"
+      },
+      {
+        "route_id": "gcn-9e515da38a-bolt",
+        "label": "Dubai Harbour Marina → Wynn Al Marjan Island arrival lagoon",
+        "phase": 2,
+        "from": "Dubai Harbour Marina",
+        "to": "Wynn Al Marjan Island arrival lagoon",
+        "from_city_id": "dubai-uae",
+        "to_city_id": "ras-al-khaimah-uae",
+        "distance_nm": 49.8,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [
+          {
+            "market_key": "bolt-uae",
+            "from": "Dubai Harbour Marina",
+            "to": "Wynn Al Marjan Island arrival lagoon",
+            "country": "United Arab Emirates",
+            "fare_usd": 200.0,
+            "pax_yr": 60000
+          }
+        ],
+        "finance_action": "inherit_existing_finance_anchor_after_partner-scope-review"
+      },
+      {
+        "route_id": "gcn-8e3c2d581c-bolt",
+        "label": "Dubai Harbour Marina → Al Khan Lagoon mouth",
+        "phase": 2,
+        "from": "Dubai Harbour Marina",
+        "to": "Al Khan Lagoon mouth",
+        "from_city_id": "dubai-uae",
+        "to_city_id": "sharjah-uae",
+        "distance_nm": 19.4,
+        "vessel": "Pioneer II",
+        "existing_finance_anchors": [
+          {
+            "market_key": "bolt-uae",
+            "from": "Dubai Harbour Marina",
+            "to": "Al Khan Lagoon mouth",
+            "country": "United Arab Emirates",
+            "fare_usd": 85.0,
+            "pax_yr": 40000
+          }
+        ],
+        "finance_action": "inherit_existing_finance_anchor_after_partner-scope-review"
+      },
+      {
+        "route_id": "edge-0687",
+        "label": "Abu Dhabi → Muscat",
+        "phase": 3,
+        "from": "Abu Dhabi",
+        "to": "Muscat",
+        "from_city_id": "abu-dhabi-uae",
+        "to_city_id": "muscat-oman",
+        "distance_nm": 360.9,
+        "vessel": "Quanta-LR",
+        "existing_finance_anchors": [],
+        "finance_action": "defer_cross_border_until_LB-242_UAE_Gulf_land_crossing_QA_and_demand_anchor"
+      },
+      {
+        "route_id": "edge-0685",
+        "label": "Abu Dhabi → Manama",
+        "phase": 3,
+        "from": "Abu Dhabi",
+        "to": "Manama",
+        "from_city_id": "abu-dhabi-uae",
+        "to_city_id": "manama-bahrain",
+        "distance_nm": 264.1,
+        "vessel": "Quanta-LR",
+        "existing_finance_anchors": [],
+        "finance_action": "defer_cross_border_until_LB-242_UAE_Gulf_land_crossing_QA_and_demand_anchor"
+      },
+      {
+        "route_id": "edge-0684",
+        "label": "Abu Dhabi → Doha",
+        "phase": 3,
+        "from": "Abu Dhabi",
+        "to": "Doha",
+        "from_city_id": "abu-dhabi-uae",
+        "to_city_id": "doha-qatar",
+        "distance_nm": 179.1,
+        "vessel": "Quanta-LR",
+        "existing_finance_anchors": [],
+        "finance_action": "defer_cross_border_until_LB-242_UAE_Gulf_land_crossing_QA_and_demand_anchor"
+      },
+      {
+        "route_id": "edge-0712",
+        "label": "Fujairah → Muscat",
+        "phase": 3,
+        "from": "Fujairah",
+        "to": "Muscat",
+        "from_city_id": "fujairah-uae",
+        "to_city_id": "muscat-oman",
+        "distance_nm": 149.1,
+        "vessel": "Quanta-LR",
+        "existing_finance_anchors": [],
+        "finance_action": "defer_cross_border_until_LB-242_UAE_Gulf_land_crossing_QA_and_demand_anchor"
+      }
+    ]
+  },
+  "next_bites": [
+    "Add India country-reference row with source-tiered opex/energy/grid/marina assumptions.",
+    "Patch corridors.json with draft market keys for rapido/ola/uber-india for sealed Mumbai, Goa, Kochi rows only; keep Andaman economics_pending until DSS fare PDF is captured.",
+    "Patch noon-uae only for the three route_ids that already have finance anchors, then source/wire remaining UAE local routes; defer UAE-Gulf cross-border edges pending LB-242.",
+    "Register or create Sheet IDs for rapido, ola, noon, and uber-india derivative before publish.",
+    "Hand deterministic patch to Grok for aggregate → growth → sheet publish → sidecar build."
+  ]
+}
