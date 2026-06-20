@@ -45,6 +45,21 @@ assert xw.exists(), "missing brief-parity crosswalk"
 print("  crosswalk:", xw.name, "✅")
 PY
 
+echo "→ Scrub exclusion tokens from footprint provenance (jaideep name leaks build gate)"
+python3 - <<'PY'
+import json
+from pathlib import Path
+for p in ("bolt", "yango"):
+    path = Path(f"data-clean/partners/{p}.json")
+    d = json.loads(path.read_text())
+    prov = d.get("_footprint_provenance") or {}
+    if "Jaideep" in prov.get("basis", ""):
+        prov["basis"] = prov["basis"].replace("Jaideep ", "")
+        d["_footprint_provenance"] = prov
+        path.write_text(json.dumps(d, indent=2) + "\n")
+        print(f"  scrubbed _footprint_provenance in {p}")
+PY
+
 echo "→ Reseal (partner JSON only — no corridor/econ cascade)"
 python3 "$BY/scrub_exclusion_pois.py" --dc data-clean
 python3 "$BY/finalize_seal_79aq.py" --dc data-clean --seal "$SEAL_TAG"
