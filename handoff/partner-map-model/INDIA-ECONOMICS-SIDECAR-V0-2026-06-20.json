@@ -1,0 +1,286 @@
+{
+  "created_at": "2026-06-20",
+  "status": "v0_source_backed_draft_only",
+  "lane": "India partner proposal economics sidecar",
+  "model_use": "draft_only_until_crosswalk",
+  "global_controls": [
+    "route_id remains null unless sealed by Atlas/Grok",
+    "distance_status remains pending_seal until deterministic geometry is bound",
+    "AAI airport traffic is quarantined until direct official page/PDF capture succeeds",
+    "Search snippets and inaccessible pages are source leads only, not finance inputs",
+    "Adani/Reliance lanes remain overlay-only/no-footprint until exact Atlas IDs and partner asset route evidence exist"
+  ],
+  "recommended_sequence": [
+    "Goa",
+    "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+    "Kochi / Kerala Water Metro adjacency",
+    "Gujarat RoPax precedent",
+    "Andaman",
+    "Kolkata-Haldia",
+    "Chennai / Vizag"
+  ],
+  "markets": [
+    {
+      "market": "Goa",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "sourced",
+      "pricing_status": "pending",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Strong tourism TAM; pricing and route geometry still need clean comparables before finance use.",
+      "demand_anchors": [
+        {
+          "source": "Goa Tourism",
+          "url": "https://goatourism.gov.in/blog-list/goa-records-strong-and-sustained-growth-in-tourist-arrivals-2025-figures-reflect-continued-momentum/",
+          "captured_metric": "10,802,410 total tourist arrivals in 2025, including 10,284,608 domestic and 517,802 foreign tourists.",
+          "use": "Primary tourism TAM anchor."
+        },
+        {
+          "source": "Goa Tourism",
+          "url": "https://goatourism.gov.in/blog-list/goa-records-strong-and-sustained-growth-in-tourist-arrivals-2025-figures-reflect-continued-momentum/",
+          "captured_metric": "189 charter flights and 40,336 foreign tourists in 2025 across Dabolim and Mopa.",
+          "use": "Premium/international transfer signal."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "River Navigation Department, Government of Goa",
+          "url": "https://rnd.goa.gov.in/ferry-routes/",
+          "captured_metric": "Official page confirms Goa ferry-route/toll context, but scrape only captured page title and route/toll summary from search result; toll values not captured.",
+          "use": "Source lead only; do not price from this yet."
+        }
+      ],
+      "next_research": [
+        "Capture official ferry toll table or fare notification from Goa RND.",
+        "Gather premium airport/resort transfer comparables for North/South Goa.",
+        "Separate Dabolim/Mopa airport transfer thesis without using quarantined AAI traffic."
+      ]
+    },
+    {
+      "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "partial",
+      "pricing_status": "direct",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Best v0 pricing comparable: year-round RoPax product with published fare floor and vehicle deck. Demand volume remains partial until passenger counts are captured.",
+      "demand_anchors": [
+        {
+          "source": "PIB Ministry of Ports, Shipping and Waterways",
+          "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1799056",
+          "captured_metric": "Belapur water taxi connects Mumbai/Navi Mumbai nodes including DCT, Nerul, Belapur, Elephanta and JNPT; Belapur jetty enables movement to Bhaucha Dhakka, Mandwa, Elephanta and Karanja.",
+          "use": "Route precedent and terminal proof."
+        },
+        {
+          "source": "M2M Ferries",
+          "url": "https://www.m2mferries.com/",
+          "captured_metric": "Maharashtra's first year-round Ro-Pax ferry; Mumbai Ferry Wharf/Bhaucha Dhakka to Mandwa terminal; approx. 1-hour sail per captured testimonials/operator page text.",
+          "use": "Premium ferry product proof."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "M2M Ferries",
+          "url": "https://www.m2mferries.com/",
+          "captured_metric": "Passenger fares from ₹400 onwards; motorcycle ₹210 onwards; 4-wheelers ₹1,020 onwards; bicycles ₹110 onwards; buses ₹4,500 onwards; vehicle deck over 120 cars/two-wheelers/buses.",
+          "use": "Direct fare floor/comparable for premium water transfer economics."
+        }
+      ],
+      "v0_range_notes": {
+        "published_passenger_fare_floor_inr": 400,
+        "published_four_wheeler_fare_floor_inr": 1020,
+        "published_motorcycle_fare_floor_inr": 210,
+        "capacity_note": "Vehicle deck can accommodate over 120 cars/two-wheelers/buses; passenger capacity not captured on current page."
+      },
+      "next_research": [
+        "Capture M2M booking flow class-by-class fare ladder if needed for high/low cases.",
+        "Find public passenger-count or trip-count disclosures for M2M/Mandwa route.",
+        "Bind exact Atlas BPs for Ferry Wharf/Bhaucha Dhakka, Belapur, Elephanta, Mandwa before geometry economics."
+      ]
+    },
+    {
+      "market": "Kochi / Kerala Water Metro adjacency",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "sourced",
+      "pricing_status": "partial",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Strongest public ridership proof in India set; fare/current route-level price chart still needs direct official capture before finance model use.",
+      "demand_anchors": [
+        {
+          "source": "Kochi Water Metro",
+          "url": "https://watermetro.co.in/",
+          "captured_metric": "7,070,083 joined passengers and daily ridership update of 5,873 on 2026-06-19; 75+ e-boats, 15 routes and 75+ kilometres.",
+          "use": "Direct ridership and network proof."
+        },
+        {
+          "source": "Kochi Water Metro DPR PDF",
+          "url": "https://cdn-dev.watermetro.co.in/01_DPR_WM_1_b782f1566c.pdf",
+          "captured_metric": "Project plan identifies 16 routes, 38 jetties, 10 island communities and 76 km route network; planned 78 boats in full Phase II with 10-20 minute headways.",
+          "use": "System scale, route-density and operating-headway planning anchor."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "Kochi Water Metro DPR PDF",
+          "url": "https://cdn-dev.watermetro.co.in/01_DPR_WM_1_b782f1566c.pdf",
+          "captured_metric": "DPR financial assumptions reference average revenue per passenger of ₹9.83 in the first year and 5% annual fare increase assumption; this is old planning economics, not current fare table.",
+          "use": "Historical planning benchmark only; do not use as current fare."
+        }
+      ],
+      "v0_range_notes": {
+        "joined_passengers_captured": 7070083,
+        "daily_passengers_on_2026_06_19": 5873,
+        "network_km_captured": "75+ official site / 76 km DPR",
+        "planned_full_fleet_dpr": 78
+      },
+      "next_research": [
+        "Capture current official fare chart / route fare table from Water Metro.",
+        "Build terminal-level ridership if available.",
+        "Research premium hotel/backwater transfer comparables around Fort Kochi, Bolgatty, Vypin, Mattancherry and Vyttila."
+      ]
+    },
+    {
+      "market": "Gujarat RoPax precedent / Ghogha-Hazira",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "sourced",
+      "pricing_status": "pending",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Clean official time-savings and usage precedent; direct fare ladder still pending. Keep as precedent until exact Atlas BP/route match exists.",
+      "demand_anchors": [
+        {
+          "source": "PIB / Ministry of Ports, Shipping and Waterways Year End Review 2022",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1886868",
+          "captured_metric": "Ghogha-Hazira RoPax commenced November 2020; reduced travel time from 10 hours to 4 hours and facilitated 15,000+ trucks, 50,000 cars and around 2 lakh passengers so far.",
+          "use": "Official RoPax demand/time-savings precedent."
+        },
+        {
+          "source": "Gujarat Maritime Board",
+          "url": "https://gmbports.org/civil",
+          "captured_metric": "GMB frames Ro-Ro ferries as carrying cars, trucks, buses/trailers with drivers/passengers and reducing time, cost and fuel; Gujarat is ideal because two gulfs divide the state into three segments.",
+          "use": "Official state maritime-board strategic context."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "DG Sea Connect",
+          "url": "https://www.dgferry.com/",
+          "captured_metric": "Operator page reachable but fare/capacity content was not captured in scrape; search result showed operator statistics but remains non-finance until page text/API capture succeeds.",
+          "use": "Source lead only."
+        }
+      ],
+      "v0_range_notes": {
+        "official_passengers_so_far_pib_2022": 200000,
+        "official_cars_so_far_pib_2022": 50000,
+        "official_trucks_so_far_pib_2022": 15000,
+        "official_travel_time_reduction_hours": "10 to 4"
+      },
+      "next_research": [
+        "Capture DG Sea Connect fare/capacity data directly from booking/API or official page.",
+        "Exact-match Hazira, Ghogha and related Gujarat BPs before any route promotion.",
+        "Keep Adani/Reliance Gujarat references overlay-only until partner asset route proof exists."
+      ]
+    },
+    {
+      "market": "Andaman / Port Blair / island mobility",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "partial",
+      "pricing_status": "pending",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Good island-mobility logic, but tourism and fare inputs are not yet finance-safe enough for model values.",
+      "demand_anchors": [
+        {
+          "source": "IBEF Andaman and Nicobar presentation",
+          "url": "https://www.ibef.org/industry/andaman-and-nicobar-presentation",
+          "captured_metric": "2024 tourist arrivals: 7,10,397 domestic and 11,497 foreign; 37% rise in domestic visitors.",
+          "use": "Government-affiliated tourism scale fallback; label as not primary tourism table."
+        },
+        {
+          "source": "Directorate of Shipping Services, Andaman & Nicobar",
+          "url": "https://dss.andamannicobar.gov.in/",
+          "captured_metric": "Foreshore, inter-island and mainland voyages; harbour passenger ferry services; monthly passes/daily ticketing; tourism cruises.",
+          "use": "Official water-mobility proof."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "DSS Passenger Fares 2025-26 PDF source lead",
+          "url": "https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf",
+          "captured_metric": "Search result found official fare PDF path, but direct download failed due temporary name resolution; not captured.",
+          "use": "Source lead only."
+        }
+      ],
+      "next_research": [
+        "Retry/capture DSS 2025-26 fare PDF.",
+        "Capture primary Andaman Tourism tourist-data table or official compendium.",
+        "Keep AAI Port Blair airport traffic quarantined until direct AAI PDF works."
+      ]
+    },
+    {
+      "market": "Kolkata-Haldia / Hooghly waterways",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "partial",
+      "pricing_status": "pending",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Strong infrastructure/opportunity framing, weak fare and corridor-volume capture so far.",
+      "demand_anchors": [
+        {
+          "source": "World Bank",
+          "url": "https://www.worldbank.org/en/news/press-release/2020/11/30/world-bank-approves-usd105-million-project-to-improve-waterways-in-west-bengal-india",
+          "captured_metric": "$105M project to facilitate passenger and freight movement across the Hooghly; more than 80% of freight and passenger traffic crosses via three bridges; existing ferry system caters to less than 2% of passenger traffic and small freight share; project covers KMA and five populous districts with around 30M people in KMA.",
+          "use": "Infrastructure opportunity and modal-shift anchor."
+        }
+      ],
+      "pricing_anchors": [],
+      "next_research": [
+        "Capture West Bengal ferry fare tables and terminal route list.",
+        "Find project implementation reports for current passenger volumes and terminal upgrades.",
+        "Exact-bind Kolkata/Haldia/Howrah/Hooghly BP candidates before geometry economics."
+      ]
+    },
+    {
+      "market": "Chennai / Tamil Nadu and Vizag / Andhra coast",
+      "route_id": null,
+      "distance_status": "pending_seal",
+      "demand_status": "partial",
+      "pricing_status": "pending",
+      "model_use": "draft_only_until_crosswalk",
+      "economics_read": "Keep combined as lower-confidence v0 tail: official ferry/port context exists, but passenger volumes, fares and Atlas binds remain incomplete.",
+      "demand_anchors": [
+        {
+          "source": "MEA India-Sri Lanka ferry release",
+          "url": "https://www.mea.gov.in/press-releases?dtl/37188/Commencement_of_passenger_ferry_service_between_India_and_Sri_Lanka_A_new_landmark_in_regional_connectivity",
+          "captured_metric": "Official commencement of passenger ferry service between India and Sri Lanka.",
+          "use": "Tamil Nadu regional ferry-connectivity proof."
+        },
+        {
+          "source": "Visakhapatnam Port Authority",
+          "url": "https://vpt.shipping.gov.in/",
+          "captured_metric": "Official port authority / port-development context captured as source lead in evidence queue.",
+          "use": "Port-city business movement proof; not passenger-volume economics yet."
+        }
+      ],
+      "pricing_anchors": [
+        {
+          "source": "Nagapattinam-Kankesanthurai operator/source leads",
+          "url": "http://www.sailsubham.com/",
+          "captured_metric": "Search results found fare claims around ₹3,500-₹4,500, but these are not official/direct captured values and must not feed finance.",
+          "use": "Source lead only."
+        }
+      ],
+      "next_research": [
+        "Capture official/operator ferry fares and schedule for Nagapattinam-Kankesanthurai.",
+        "Find official Vizag passenger/cruise or AAI airport traffic data; keep current AAI/social leads quarantined.",
+        "Split Chennai and Vizag into separate economics rows after exact BPs and at least one clean price/demand input each."
+      ]
+    }
+  ],
+  "finance_readiness_summary": {
+    "ready_for_draft_narrative": ["Goa", "Mumbai / Navi Mumbai / Mandwa / Elephanta", "Kochi / Kerala Water Metro adjacency", "Gujarat RoPax precedent"],
+    "ready_for_finance_model_inputs_now": ["Mumbai fare floors as comparable", "Kochi ridership/network scale as demand proof", "Gujarat official time-savings/usage precedent"],
+    "quarantined_or_partial": ["AAI airport traffic", "Andaman primary tourist table", "DSS fare PDF until captured", "DG Ferry fare/capacity until captured", "Chennai/Vizag airport/passenger traffic", "Nagapattinam-KKS fare claims until direct official/operator capture"]
+  }
+}
