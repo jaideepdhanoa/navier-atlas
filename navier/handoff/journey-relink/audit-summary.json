@@ -1,18 +1,33 @@
 {
-  "generated": "2026-06-20T06:55:27Z",
+  "generated": "2026-06-20T12:00:00Z",
   "lane": "grok/relink_partner_journeys",
-  "before_clickable_route": 420,
-  "after_clickable_route": 453,
-  "mislinked_dropped_before": 167,
+  "before_clickable_route": 453,
+  "after_clickable_route": 834,
+  "before_clickable_route_bundle": 76,
+  "after_clickable_route_bundle": 75,
+  "mislinked_dropped_before": 0,
   "mislinked_dropped_after": 0,
+  "network_chip_total": 82,
+  "network_chip_with_route_ids": 55,
   "method": [
     "city-scoped candidate search",
-    "directional endpoint match (from\u2192to, no reverse)",
-    "distinctive anchor tokens",
-    "partner gcn-* route preference",
+    "directional endpoint match (from→to, no reverse)",
+    "distinctive anchor tokens (corniche etc.)",
+    "partner gcn-* route preference + partner_route_ok filter",
+    "best-of-N: traffic_weight + economics corridor tie-break",
+    "network_chip route_ids[] bundle expansion (lane A)",
+    "brief cluster signature_routes inheritance (lane B)",
+    "gcn promote over rn-* endpoint twins (lane D)",
     "distance sync from graph",
     "borrow sealed city/cluster brief signature_routes",
     "null beats wrong"
   ],
-  "tasklet_role": "prose only \u2014 no route_id binding"
+  "lane_stats": {
+    "network_chip": 54,
+    "brief_cluster": 1,
+    "scoped": 783,
+    "brief": 22,
+    "gcn_promoted": 0
+  },
+  "tasklet_role": "prose only — no route_id binding"
 }
