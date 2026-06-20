@@ -1,126 +1,105 @@
-# India economics sidecar v0 — draft only until crosswalk
+# India economics sidecar v0 — cleanup pass 1
 
-Created: 2026-06-20  
-Status: source-backed v0; not final finance model
+Status: **draft only until crosswalk / route sealing**  
+Updated: 2026-06-20 23:18 IST
 
-## Controls
+Global controls preserved:
 
-- `route_id: null` for every row unless Atlas/Grok has sealed the route.
-- `distance_status: pending_seal` until geometry is bound.
-- `model_use: draft_only_until_crosswalk` throughout.
-- AAI airport traffic remains quarantined until direct official page/PDF capture succeeds.
-- Search snippets and inaccessible pages remain source leads only.
-- Adani/Reliance remain overlay-only/no-footprint until exact Atlas IDs and partner asset route evidence exist.
-
-## Readiness by market
-
-| Market | Demand status | Pricing status | Draft economics use |
-|---|---:|---:|---|
-| Goa | sourced | pending | Strong tourism TAM; pricing still needs clean transfer/ferry comparable. |
-| Mumbai / Navi Mumbai / Mandwa / Elephanta | partial | direct | Best v0 fare comparable via M2M RoPax fare floors. |
-| Kochi / Kerala Water Metro | sourced | partial | Strongest ridership/network proof; current fare chart still needed. |
-| Gujarat RoPax precedent | sourced | pending | Official travel-time and usage precedent; no direct fare ladder yet. |
-| Andaman | partial | pending | Good island-mobility thesis; tourism/fare inputs not finance-safe yet. |
-| Kolkata-Haldia | partial | pending | Strong infrastructure/opportunity framing; fare and volume still weak. |
-| Chennai / Vizag | partial | pending | Keep lower-confidence tail until fare/passenger data and BP binds improve. |
-
-## Market notes
-
-### Goa
-
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: sourced`
-- `pricing_status: pending`
+- `route_id: null` everywhere
+- `distance_status: pending_seal` everywhere
 - `model_use: draft_only_until_crosswalk`
+- ID-based matching only; `null` beats confidently-wrong
+- AAI airport traffic remains quarantined
+- Adani/Reliance remain overlay-only/no-footprint
 
-**Economics read:** strong tourism TAM, not yet priceable. Goa Tourism reported **10,802,410 total tourist arrivals in 2025**, including **10,284,608 domestic** and **517,802 foreign** tourists. Goa also reported **189 charter flights** and **40,336 foreign tourists** in 2025 across Dabolim and Mopa.
+## Cleanup results
 
-**Next:** capture official Goa RND ferry toll/fare table, premium airport/resort transfer comparables, and keep AAI airport traffic out until direct capture works.
+### Goa fare / transfer comparables — improved
 
-### Mumbai / Navi Mumbai / Mandwa / Elephanta
+Promoted to source-backed comparables, still not sealed route economics.
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: partial`
-- `pricing_status: direct`
-- `model_use: draft_only_until_crosswalk`
+Sources captured:
 
-**Economics read:** best v0 pricing comparable. PIB supports route/terminal precedent across Belapur, DCT, Nerul, Elephanta, JNPT, Bhaucha Dhakka, Mandwa and Karanja. M2M Ferries gives direct fare floors: **passengers from ₹400**, **motorcycles from ₹210**, **4-wheelers from ₹1,020**, **bicycles from ₹110**, and **buses from ₹4,500**. The operator also states the vehicle deck can accommodate **over 120 cars, two-wheelers and buses**.
+- Goa River Navigation Department Citizens Charter: RND operates regular ferry services on 21 routes. Foot passengers, two-wheelers, and three-wheelers are toll-exempt; four-wheeler and cargo tolls apply. Sample toll floors include car/jeep/3-wheeler ₹7–₹27 by route group, light commercial vehicle ₹15–₹43, medium commercial vehicle ₹20–₹33 where allowed, heavy vehicle ₹23–₹38 where allowed, and special trips ₹55 or ₹255 depending route group.
+- Goa Directorate of Transport / Official Gazette taxi fare notification: 4-hour/50-km tourist taxi rates from ₹900 hatchback to ₹4,600 premium cab; 8-hour/100-km rates from ₹1,750 to ₹8,400; one-way per-km rates from ₹26 to ₹146 by vehicle class.
+- GoaMiles rate card: hatchback ₹21.50/km, sedan ₹23/km, MUV ₹26/km, SUV ₹29/km, before convenience/toll/care/GST/minute/traffic add-ons.
 
-**Next:** capture trip/passenger volume and booking-class fare ladder; bind exact BPs before geometry economics.
+Exact BP hygiene:
 
-### Kochi / Kerala Water Metro adjacency
+- Matched city: `goa-india`
+- Matched BP examples: `bp-8c5afef8b1` Panaji Jetty, `bp-c3a5659ec3` Betim Ferry Terminal, `bp-8fb017e867` Ribandar Ferry, `bp-d91cefa66e` Old Goa Ferry Terminal.
+- Caution: Goa alias search returns false positives outside India; bind only after country/region filtering.
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: sourced`
-- `pricing_status: partial`
-- `model_use: draft_only_until_crosswalk`
+### DSS Andaman fare PDF capture — still quarantined
 
-**Economics read:** strongest demand proof. Kochi Water Metro page captured **7,070,083 joined passengers**, **5,873 daily riders on 2026-06-19**, **75+ e-boats**, **15 routes**, and **75+ km**. The Water Metro DPR supports **16 routes**, **38 jetties**, **10 island communities**, **76 km**, and full Phase II fleet of **78 boats** with **10–20 minute headways**. DPR fare economics are old planning assumptions only, not current fare table.
+- Official PDF path confirmed: `https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf`
+- Direct capture still failed due web/PDF retrieval instability.
+- Search snippet confirms a revised 2025–26 DSS fare PDF exists and exposes partial fare rows including Two Wheelers/ThreeWheelers values `60` and `95`, but this is **not finance-safe** until the PDF is captured directly.
 
-**Next:** capture current official route fare chart and terminal-level ridership if available.
+Exact BP hygiene:
 
-### Gujarat RoPax precedent / Ghogha-Hazira
+- Matched city: `andaman-india`
+- Matched BP examples: Port Blair Haddo/Phoenix Bay `bp-7f1d145a12`, Port Blair Marina Park `bp-7bef8fd1aa`, Port Blair Wharf `bp-970643cf81`, Havelock/Swaraj Dweep `bp-68d009dffb`, Neil/Shaheed Dweep `bp-56fad569af`.
+- Caution: filter out Thailand Andaman aliases.
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: sourced`
-- `pricing_status: pending`
-- `model_use: draft_only_until_crosswalk`
+### DG Sea Connect direct fare / capacity capture — partially improved
 
-**Economics read:** clean precedent, not yet priceable. PIB states Ghogha-Hazira RoPax reduced travel time from **10 hours to 4 hours** and had facilitated **15,000+ trucks**, **50,000 cars**, and **around 2 lakh passengers** by the cited point. Gujarat Maritime Board supplies official Ro-Ro/RoPax strategic context.
+Promoted operator demand-scale snippet; pricing remains pending.
 
-**Next:** capture DG Sea Connect fare/capacity directly and exact-match Hazira/Ghogha BPs before any route promotion.
+- DG Sea Connect official site shell was captured.
+- Official-site search snippet reports milestone counts: Passengers `15,70,000`; Cars `2,17,000`; Two Wheelers `1,66,000`; Cargo Vehicles `1,99,000`.
+- Direct current fare ladder / booking-flow pricing was **not** captured. Third-party/social fare claims remain excluded.
 
-### Andaman / Port Blair
+### Kolkata-Haldia / Hooghly fare and current ridership — fare floor improved, ridership pending
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: partial`
-- `pricing_status: pending`
-- `model_use: draft_only_until_crosswalk`
+- Direct official route list captured from West Bengal Transport Department. Routes include Howrah–Shipping/Millennium Park, Howrah–Fairlie, Dakshineswar–Belur, Fairlie–Ariyadaha via Howrah/Baghbazar/Belur/Kutighat, Lot No. 8–Kachuberia, Roychak–Kukrahati, Narayanpur–Namkhana LCT, Hasnabad–Par-Hasnabad LCT, and Nebukhali–Dulduli LCT.
+- Official-document search snippet for WBIWTLSDP ESIA reports current ferry fares: single passenger ₹6, passenger + cycle ₹12, passenger + two-wheeler ₹30.
+- Direct PDF extraction failed, so this remains `partial`.
+- Current route/corridor ridership remains pending.
 
-**Economics read:** good island-mobility logic, not finance-safe yet. IBEF fallback says 2024 arrivals were **7,10,397 domestic** and **11,497 foreign** tourists, but this is not the primary Andaman Tourism table. DSS proves official foreshore/inter-island/mainland ferry operations, passes, ticketing and cruises. DSS fare PDF path was found but not captured.
+### Chennai / Vizag fare, passenger data, and exact BP binds — partially improved
 
-**Next:** retry DSS fare PDF and primary Andaman Tourism table; keep AAI Port Blair traffic quarantined.
+Tamil Nadu / Chennai-side comparable:
 
-### Kolkata-Haldia / Hooghly waterways
+- MEA confirms commencement of India–Sri Lanka passenger ferry connectivity.
+- The Hindu captured Nagapattinam–Kankesanthurai service resumption: 83 passengers outbound from Nagapattinam and 85 return from KKS on resumption day; operator-reported one-way fare ₹4,250 and round-trip fare ₹8,500; 10 kg luggage included and ₹50/kg beyond the limit.
+- Treat as media/operator-reported until direct operator/official booking capture succeeds.
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: partial`
-- `pricing_status: pending`
-- `model_use: draft_only_until_crosswalk`
+Vizag / Andhra coast comparable:
 
-**Economics read:** strong infrastructure thesis. World Bank supports a **$105M** inland water transport project; more than **80%** of freight/passenger traffic crosses via three bridges; existing ferries serve **less than 2%** of passenger traffic; and KMA is framed around **30M people**.
+- Visakhapatnam Port Authority cruise terminal page confirms Vizag International Cruise Terminal and ₹96 Cr investment.
+- VPA Cruise Shipping page says a passenger ship from Visakhapatnam to Port Blair is available every month; distance is 1,100 nautical miles and passenger fare is about ₹5,000.
+- VPA itinerary PDF lists 2026 domestic cruise calls for Empress and an international Odessy call in Dec 2026.
 
-**Next:** capture ferry fares, current passenger volumes and terminal upgrades; exact-bind Kolkata/Haldia/Howrah/Hooghly BPs.
+Exact BP hygiene:
 
-### Chennai / Tamil Nadu and Vizag / Andhra coast
+- Kankesanthurai/KKS exists as `bp-4f36afc9f8`.
+- Chennai, Nagapattinam, Visakhapatnam/Vizag did **not** match in current Atlas `FEATURES_BY_TYPE` search.
+- Route IDs remain null; do not seal Chennai/Nagapattinam/Vizag corridors until India-side BPs are created or matched exactly.
 
-- `route_id: null`
-- `distance_status: pending_seal`
-- `demand_status: partial`
-- `pricing_status: pending`
-- `model_use: draft_only_until_crosswalk`
+## Finance-readiness update
 
-**Economics read:** lower-confidence v0 tail. MEA supports the India-Sri Lanka passenger ferry commencement. Vizag has official port context but not a clean passenger/fare economics row. Nagapattinam-KKS fare claims found in search are not finance-safe until direct official/operator capture.
+Usable now as draft model inputs/comparables:
 
-**Next:** capture official/operator ferry fares and schedule for Nagapattinam-KKS; capture official Vizag passenger/cruise/AAI traffic data; split Chennai and Vizag into separate rows after stronger inputs.
+- Mumbai fare floors
+- Kochi ridership/network scale
+- Gujarat official RoPax time-savings/usage precedent
+- Goa public ferry toll floor + official taxi + GoaMiles comparables
+- Vizag official long-haul passenger-ship fare as a non-urban comparable
 
-## Finance readiness summary
+Still quarantined or partial:
 
-**Can be used now for draft narrative/economics framing:** Goa, Mumbai/Navi Mumbai, Kochi, Gujarat precedent.
+- AAI airport traffic
+- Andaman primary tourist table
+- DSS fare PDF until direct PDF capture succeeds
+- DG Sea Connect fare ladder until direct booking/page capture succeeds
+- Kolkata-Haldia current ridership
+- Chennai/Nagapattinam/Vizag exact India-side BP binds
+- Nagapattinam-KKS fare until direct operator/official booking capture succeeds
 
-**Can be used as v0 model inputs with flags:**
+## Next bite-sized cleanup
 
-- Mumbai M2M fare floors as premium water-transfer comparable.
-- Kochi ridership/network scale as direct demand proof.
-- Gujarat RoPax official travel-time and usage precedent.
-
-**Still quarantined or partial:** AAI airport traffic, Andaman primary tourist table, DSS fare PDF, DG Ferry fare/capacity, Chennai/Vizag passenger traffic, Nagapattinam-KKS fare claims.
-
-The compact answer: we can start India economics now; Grok is needed later to seal geometry/IDs, not to begin the research runway.
-
+1. Capture DSS PDF through alternate network/browser path and extract route fare table.
+2. Probe DG Sea Connect booking/API flow only enough to capture current fare ladder and vessel categories; do not book.
+3. Add or request exact Atlas BPs for Chennai, Nagapattinam, Vizag if the proposal needs those corridors sealed.
+4. Find official Hooghly current ridership by route or station; otherwise keep it out of model inputs.

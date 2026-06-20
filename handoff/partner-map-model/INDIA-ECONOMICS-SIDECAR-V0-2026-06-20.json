@@ -25,9 +25,9 @@
       "route_id": null,
       "distance_status": "pending_seal",
       "demand_status": "sourced",
-      "pricing_status": "pending",
+      "pricing_status": "direct",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Strong tourism TAM; pricing and route geometry still need clean comparables before finance use.",
+      "economics_read": "Strong tourism TAM plus official public ferry toll floor and taxi/ride-hail transfer comparables. Still draft-only because route geometry and premium water-product pricing are not sealed.",
       "demand_anchors": [
         {
           "source": "Goa Tourism",
@@ -44,17 +44,46 @@
       ],
       "pricing_anchors": [
         {
-          "source": "River Navigation Department, Government of Goa",
-          "url": "https://rnd.goa.gov.in/ferry-routes/",
-          "captured_metric": "Official page confirms Goa ferry-route/toll context, but scrape only captured page title and route/toll summary from search result; toll values not captured.",
-          "use": "Source lead only; do not price from this yet."
+          "source": "River Navigation Department, Government of Goa — Citizens Charter PDF",
+          "url": "https://rnd.goa.gov.in/wp-content/uploads/2022/06/rnd-goa-citizen-charter.pdf",
+          "captured_metric": "RND operates regular ferry services on 21 routes; foot passengers/two-wheelers/three-wheelers are exempt from toll; four-wheeler/cargo tolls apply. Sample tolls: car/jeep/3-wheeler ₹7–₹27 by route group, light commercial vehicle ₹15–₹43, medium commercial vehicle ₹20–₹33 where allowed, heavy vehicle ₹23–₹38 where allowed, special trip ₹55 or ₹255 depending route group; loaded vehicles ₹2 per quintal or part thereof.",
+          "use": "Official low-end public ferry/toll floor; not a premium-transfer fare."
+        },
+        {
+          "source": "Goa Directorate of Transport / Official Gazette taxi fare notification",
+          "url": "https://goatransport.gov.in/download_Forms/FileCS.pdf",
+          "captured_metric": "Tourist taxi / motor cab / maxi cab rates: 4-hour/50-km half-day ₹900 hatchback, ₹1,000 larger hatchback, ₹1,200 sedan, ₹1,500 SUV regular, ₹1,650 premium SUV/MPV, ₹4,600 premium cab; 8-hour/100-km full-day ₹1,750, ₹1,950, ₹2,300, ₹2,900, ₹3,200 and ₹8,400 respectively. One-way per-km rates: ₹26, ₹33, ₹40, ₹46, ₹46 and ₹146 respectively; night journey adds 35%/₹100 per hour as specified.",
+          "use": "Official land-transfer comparable for airport/resort substitution economics."
+        },
+        {
+          "source": "GoaMiles Rate Card",
+          "url": "https://www.goamiles.com/rate_card_mob.html",
+          "captured_metric": "Per-km app-cab rates: hatchback ₹21.50/km, sedan ₹23/km, MUV ₹26/km, SUV ₹29/km; convenience/toll/care/GST and travel-minute/traffic charges additional.",
+          "use": "Direct app-cab comparable for ride-hail partner framing; add-ons not yet quantified."
         }
       ],
       "next_research": [
-        "Capture official ferry toll table or fare notification from Goa RND.",
-        "Gather premium airport/resort transfer comparables for North/South Goa.",
-        "Separate Dabolim/Mopa airport transfer thesis without using quarantined AAI traffic."
-      ]
+        "Convert Goa ferry/taxi fare floors into low/base/high water-transfer comparables once sealed routes exist.",
+        "Capture premium private boat/resort transfer fares only from operator pages/booking flows, not blogs.",
+        "Keep Dabolim/Mopa airport demand out of finance until official airport traffic capture is fixed."
+      ],
+      "v0_range_notes": {
+        "public_ferry_passenger_toll_floor_inr": "0 for foot passengers on RND ferries per citizens charter",
+        "public_ferry_car_toll_range_inr": "7-27 by RND route group; cargo/vehicle categories vary",
+        "goa_tourist_taxi_half_day_50km_range_inr": "900-4600 by vehicle class",
+        "goa_tourist_taxi_full_day_100km_range_inr": "1750-8400 by vehicle class",
+        "goamiles_per_km_range_inr": "21.50-29 for hatchback/Sedan/MUV/SUV before add-ons"
+      },
+      "exact_bp_notes": {
+        "matched_atlas_city_id": "goa-india",
+        "matched_bp_examples": [
+          "bp-8c5afef8b1 Panaji Jetty (Mandovi River)",
+          "bp-c3a5659ec3 Betim Ferry Terminal",
+          "bp-8fb017e867 Ribandar Ferry",
+          "bp-d91cefa66e Old Goa Ferry Terminal"
+        ],
+        "caution": "Use only exact matched route endpoints; many Goa alias hits include non-India false positives if country/region filters are not applied."
+      }
     },
     {
       "market": "Mumbai / Navi Mumbai / Mandwa / Elephanta",
@@ -147,7 +176,7 @@
       "demand_status": "sourced",
       "pricing_status": "pending",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Clean official time-savings and usage precedent; direct fare ladder still pending. Keep as precedent until exact Atlas BP/route match exists.",
+      "economics_read": "Clean official RoPax precedent plus improved DG Sea Connect milestone counts from the operator site snippet; fare ladder remains not finance-safe because the booking flow/direct fare page was not captured.",
       "demand_anchors": [
         {
           "source": "PIB / Ministry of Ports, Shipping and Waterways Year End Review 2022",
@@ -160,21 +189,32 @@
           "url": "https://gmbports.org/civil",
           "captured_metric": "GMB frames Ro-Ro ferries as carrying cars, trucks, buses/trailers with drivers/passengers and reducing time, cost and fuel; Gujarat is ideal because two gulfs divide the state into three segments.",
           "use": "Official state maritime-board strategic context."
+        },
+        {
+          "source": "DG Sea Connect official website search snippet / dynamic site source lead",
+          "url": "https://www.dgferry.com/",
+          "captured_metric": "Operator milestone snippet: Passengers 15,70,000; Cars 2,17,000; Two Wheelers 1,66,000; Cargo Vehicles 1,99,000.",
+          "use": "Operator demand-scale source lead. Treat as stronger than generic web mentions but still verify in rendered page/booking/API before finance lock."
         }
       ],
       "pricing_anchors": [
         {
           "source": "DG Sea Connect",
           "url": "https://www.dgferry.com/",
-          "captured_metric": "Operator page reachable but fare/capacity content was not captured in scrape; search result showed operator statistics but remains non-finance until page text/API capture succeeds.",
-          "use": "Source lead only."
+          "captured_metric": "Official site shell and operator milestone snippet captured; direct current fare ladder/capacity page not captured. Third-party/social fare claims remain excluded from finance.",
+          "use": "Demand/precedent only; pricing still pending."
         }
       ],
       "v0_range_notes": {
         "official_passengers_so_far_pib_2022": 200000,
         "official_cars_so_far_pib_2022": 50000,
         "official_trucks_so_far_pib_2022": 15000,
-        "official_travel_time_reduction_hours": "10 to 4"
+        "official_travel_time_reduction_hours": "10 to 4",
+        "operator_milestone_passengers_snippet": "15,70,000",
+        "operator_milestone_cars_snippet": "2,17,000",
+        "operator_milestone_two_wheelers_snippet": "1,66,000",
+        "operator_milestone_cargo_vehicles_snippet": "1,99,000",
+        "fare_status": "not captured from direct official booking/page; do not use social/third-party fare claims"
       },
       "next_research": [
         "Capture DG Sea Connect fare/capacity data directly from booking/API or official page.",
@@ -187,9 +227,9 @@
       "route_id": null,
       "distance_status": "pending_seal",
       "demand_status": "partial",
-      "pricing_status": "pending",
+      "pricing_status": "quarantined",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Good island-mobility logic, but tourism and fare inputs are not yet finance-safe enough for model values.",
+      "economics_read": "Island-mobility thesis remains strong and Atlas has multiple Port Blair/Andaman BP candidates, but DSS fare PDF is still not directly retrievable; only official PDF path and search snippets are available.",
       "demand_anchors": [
         {
           "source": "IBEF Andaman and Nicobar presentation",
@@ -206,49 +246,78 @@
       ],
       "pricing_anchors": [
         {
-          "source": "DSS Passenger Fares 2025-26 PDF source lead",
+          "source": "DSS Passenger Fares 2025-26 PDF path / search snippet",
           "url": "https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf",
-          "captured_metric": "Search result found official fare PDF path, but direct download failed due temporary name resolution; not captured.",
-          "use": "Source lead only."
+          "captured_metric": "Official PDF path confirmed. Search snippet references revised fare 2025-26 and visible rows including Two Wheelers/ThreeWheelers 60 and 95, but direct PDF capture failed due name-resolution/web-reader errors.",
+          "use": "Quarantined source lead only; do not price from snippet until PDF is captured."
         }
       ],
       "next_research": [
         "Retry/capture DSS 2025-26 fare PDF.",
         "Capture primary Andaman Tourism tourist-data table or official compendium.",
         "Keep AAI Port Blair airport traffic quarantined until direct AAI PDF works."
-      ]
+      ],
+      "exact_bp_notes": {
+        "matched_city_id": "andaman-india",
+        "matched_bp_examples": [
+          "bp-7f1d145a12 Port Blair (Haddo Wharf / Phoenix Bay Jetty)",
+          "bp-7bef8fd1aa Port Blair Marina Park Jetty",
+          "bp-970643cf81 Port Blair Wharf",
+          "bp-68d009dffb Havelock / Swaraj Dweep Jetty",
+          "bp-56fad569af Neil / Shaheed Dweep Jetty"
+        ],
+        "caution": "Filter Andaman to India/South Asia; do not bind Thailand Andaman aliases."
+      }
     },
     {
       "market": "Kolkata-Haldia / Hooghly waterways",
       "route_id": null,
       "distance_status": "pending_seal",
       "demand_status": "partial",
-      "pricing_status": "pending",
+      "pricing_status": "partial",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Strong infrastructure/opportunity framing, weak fare and corridor-volume capture so far.",
+      "economics_read": "Official route list and World Bank modal-shift thesis are now paired with an official-document fare snippet, but current ridership remains pending.",
       "demand_anchors": [
         {
           "source": "World Bank",
           "url": "https://www.worldbank.org/en/news/press-release/2020/11/30/world-bank-approves-usd105-million-project-to-improve-waterways-in-west-bengal-india",
           "captured_metric": "$105M project to facilitate passenger and freight movement across the Hooghly; more than 80% of freight and passenger traffic crosses via three bridges; existing ferry system caters to less than 2% of passenger traffic and small freight share; project covers KMA and five populous districts with around 30M people in KMA.",
           "use": "Infrastructure opportunity and modal-shift anchor."
+        },
+        {
+          "source": "West Bengal Transport Department — Routes of Ferry Services",
+          "url": "https://transport.wb.gov.in/transport-services/ferry-services/ferry-routes/",
+          "captured_metric": "WBSTC route list includes Howrah–Shipping/Millennium Park, Howrah–Fairlie, Dakshineswar–Belur, Fairlie–Ariyadaha via Howrah/Baghbazar/Belur/Kutighat, Lot No. 8–Kachuberia, Roychak–Kukrahati, Narayanpur–Namkhana LCT, Hasnabad–Par-Hasnabad LCT, and Nebukhali–Dulduli LCT.",
+          "use": "Direct official route/terminal proof."
         }
       ],
-      "pricing_anchors": [],
+      "pricing_anchors": [
+        {
+          "source": "West Bengal Transport Department ESIA search snippet for WBIWTLSDP",
+          "url": "https://transport.wb.gov.in/wp-content/uploads/2024/02/Preliminary-Draft-ESIA-for-Consultation-1_compressed.pdf",
+          "captured_metric": "Official-document search snippet reports current ferry service fares: single passenger INR 6; passenger + cycle INR 12; passenger + two-wheeler INR 30.",
+          "use": "Public ferry fare floor; still mark partial because PDF direct extraction failed and current corridor-specific ridership is not captured."
+        }
+      ],
       "next_research": [
         "Capture West Bengal ferry fare tables and terminal route list.",
         "Find project implementation reports for current passenger volumes and terminal upgrades.",
         "Exact-bind Kolkata/Haldia/Howrah/Hooghly BP candidates before geometry economics."
-      ]
+      ],
+      "v0_range_notes": {
+        "public_ferry_fare_floor_snippet_inr": "6 single passenger; 12 passenger+cycle; 30 passenger+two-wheeler",
+        "route_list_status": "direct official page captured",
+        "current_ridership_status": "pending"
+      }
     },
     {
       "market": "Chennai / Tamil Nadu and Vizag / Andhra coast",
       "route_id": null,
       "distance_status": "pending_seal",
       "demand_status": "partial",
-      "pricing_status": "pending",
+      "pricing_status": "partial",
       "model_use": "draft_only_until_crosswalk",
-      "economics_read": "Keep combined as lower-confidence v0 tail: official ferry/port context exists, but passenger volumes, fares and Atlas binds remain incomplete.",
+      "economics_read": "Tamil Nadu fare comparable improved from a direct newspaper capture of the Nagapattinam-KKS operator fare; Vizag improved with official VPA cruise/passenger-ship pages and itinerary PDF. Exact India-side BPs for Chennai/Nagapattinam/Vizag are still not present in Atlas search, so keep route IDs null.",
       "demand_anchors": [
         {
           "source": "MEA India-Sri Lanka ferry release",
@@ -257,30 +326,94 @@
           "use": "Tamil Nadu regional ferry-connectivity proof."
         },
         {
-          "source": "Visakhapatnam Port Authority",
-          "url": "https://vpt.shipping.gov.in/",
-          "captured_metric": "Official port authority / port-development context captured as source lead in evidence queue.",
-          "use": "Port-city business movement proof; not passenger-volume economics yet."
+          "source": "The Hindu report on Nagapattinam-Kankesanthurai service resumption",
+          "url": "https://www.thehindu.com/news/cities/Tiruchirapalli/passenger-ferry-service-resumes/article69251221.ece",
+          "captured_metric": "Service resumed after suspension; 83 passengers boarded from Nagapattinam and 85 returned from Kankesanthurai on the resumption day; operator revised one-way fare to ₹4,250 and round-trip fare to ₹8,500; 10 kg luggage included and ₹50/kg beyond limit.",
+          "use": "Direct media/operator fare and initial passenger-count comparable; not official government fare."
+        },
+        {
+          "source": "Visakhapatnam Port Authority — Cruise Terminal page",
+          "url": "https://vpt.shipping.gov.in/Template/navigateTemplate/gnt/Q3J1aXNlIFRlcm1pbmFs",
+          "captured_metric": "Vizag International Cruise Terminal built with investment of Rs. 96 Cr.; official page confirms maiden arrival of MV The World and links cruise-vessel itinerary.",
+          "use": "Official cruise/passenger terminal proof."
+        },
+        {
+          "source": "Visakhapatnam Port Authority — Cruise Shipping page",
+          "url": "https://vizagport.com/Template/navigateTemplate/gnt/Q3J1aXNlIFNoaXBwaW5n",
+          "captured_metric": "Passenger ship from Visakhapatnam to Port Blair is available every month; VPA page states distance Visakhapatnam Port to Port Blair is 1100 nautical miles and passenger fare is about INR 5,000.",
+          "use": "Official long-haul passenger ship fare/distance comparable; not a short-route urban ferry comparable."
+        },
+        {
+          "source": "Visakhapatnam Port Authority cruise itinerary PDF",
+          "url": "https://vpt.shipping.gov.in/admin_assets/uploads/1772085581_Cruise__Itineray_domesticforign.pdf",
+          "captured_metric": "Domestic passenger vessel itinerary lists Empress calls on 24-Jun-2026, 01-Jul-2026, 08-Jul-2026, 15-Jul-2026 and 2027 dates; international itinerary lists Odessy call 04-Dec-2026 to 05-Dec-2026.",
+          "use": "Official scheduled cruise-call proof."
         }
       ],
       "pricing_anchors": [
         {
-          "source": "Nagapattinam-Kankesanthurai operator/source leads",
-          "url": "http://www.sailsubham.com/",
-          "captured_metric": "Search results found fare claims around ₹3,500-₹4,500, but these are not official/direct captured values and must not feed finance.",
-          "use": "Source lead only."
+          "source": "The Hindu / operator-reported Nagapattinam-KKS ferry fare",
+          "url": "https://www.thehindu.com/news/cities/Tiruchirapalli/passenger-ferry-service-resumes/article69251221.ece",
+          "captured_metric": "One-way passenger fare ₹4,250; round-trip ₹8,500; 10 kg free luggage; ₹50/kg for additional luggage.",
+          "use": "Tamil Nadu ferry fare comparable; keep as media/operator reported until operator/official booking page is captured."
+        },
+        {
+          "source": "Visakhapatnam Port Authority Cruise Shipping page",
+          "url": "https://vizagport.com/Template/navigateTemplate/gnt/Q3J1aXNlIFNoaXBwaW5n",
+          "captured_metric": "Visakhapatnam-Port Blair passenger fare about INR 5,000; distance 1100 nautical miles.",
+          "use": "Official long-distance passenger-ship comparable; not a city-transfer fare."
         }
       ],
       "next_research": [
         "Capture official/operator ferry fares and schedule for Nagapattinam-Kankesanthurai.",
         "Find official Vizag passenger/cruise or AAI airport traffic data; keep current AAI/social leads quarantined.",
         "Split Chennai and Vizag into separate economics rows after exact BPs and at least one clean price/demand input each."
-      ]
+      ],
+      "exact_bp_notes": {
+        "atlas_search_results": "Kankesanthurai (KKS) Harbour matched as bp-4f36afc9f8; Chennai, Nagapattinam, Visakhapatnam/Vizag did not match current FEATURES_BY_TYPE search; Port Blair BPs exist but belong to Andaman row.",
+        "route_id_policy": "route_id remains null; do not seal Chennai/Nagapattinam/Vizag corridors until India-side BPs are created/matched exactly."
+      },
+      "v0_range_notes": {
+        "nagapattinam_kks_one_way_fare_inr_media_operator_reported": 4250,
+        "nagapattinam_kks_round_trip_fare_inr_media_operator_reported": 8500,
+        "nagapattinam_kks_resumption_day_passengers": "83 outbound from Nagapattinam; 85 return from KKS",
+        "vizag_port_blair_about_fare_inr_official_vpa": 5000,
+        "vizag_port_blair_distance_nm_official_vpa": 1100,
+        "vizag_cruise_terminal_investment_inr_cr": "96"
+      }
     }
   ],
   "finance_readiness_summary": {
-    "ready_for_draft_narrative": ["Goa", "Mumbai / Navi Mumbai / Mandwa / Elephanta", "Kochi / Kerala Water Metro adjacency", "Gujarat RoPax precedent"],
-    "ready_for_finance_model_inputs_now": ["Mumbai fare floors as comparable", "Kochi ridership/network scale as demand proof", "Gujarat official time-savings/usage precedent"],
-    "quarantined_or_partial": ["AAI airport traffic", "Andaman primary tourist table", "DSS fare PDF until captured", "DG Ferry fare/capacity until captured", "Chennai/Vizag airport/passenger traffic", "Nagapattinam-KKS fare claims until direct official/operator capture"]
+    "ready_for_draft_narrative": [
+      "Goa",
+      "Mumbai / Navi Mumbai / Mandwa / Elephanta",
+      "Kochi / Kerala Water Metro adjacency",
+      "Gujarat RoPax precedent"
+    ],
+    "ready_for_finance_model_inputs_now": [
+      "Mumbai fare floors as comparable",
+      "Kochi ridership/network scale as demand proof",
+      "Gujarat official time-savings/usage precedent",
+      "Goa official public ferry/taxi/GoaMiles pricing floors as comparables",
+      "Vizag official long-haul Port Blair passenger-ship fare as non-urban comparable"
+    ],
+    "quarantined_or_partial": [
+      "AAI airport traffic",
+      "Andaman primary tourist table",
+      "DSS fare PDF until direct PDF capture succeeds",
+      "DG Ferry fare ladder until direct booking/page capture succeeds",
+      "Kolkata-Haldia current ridership",
+      "Chennai/Nagapattinam/Vizag exact India-side BP binds",
+      "Nagapattinam-KKS fare remains media/operator-reported until direct operator/official booking capture succeeds"
+    ]
+  },
+  "updated_at": "2026-06-20T23:18:00+05:30",
+  "cleanup_pass": "fare_capacity_bp_cleanup_pass_1",
+  "cleanup_status": {
+    "Goa fare/transfer comparables": "improved_official_rnd_and_transport_goamiles",
+    "DSS Andaman fare PDF capture": "still_quarantined_pdf_path_confirmed_snippet_only",
+    "DG Sea Connect direct fare/capacity capture": "demand_stats_improved_fare_still_pending",
+    "Kolkata-Haldia fare/current ridership": "fare_floor_improved_from_wb_official_snippet_route_list_direct_current_ridership_pending",
+    "Chennai/Vizag fare/passenger data and exact BP binds": "chennai_fare_comparable_improved_vizag_official_port_passenger_ship_and_itinerary_improved_exact_bp_gaps_listed"
   }
 }
