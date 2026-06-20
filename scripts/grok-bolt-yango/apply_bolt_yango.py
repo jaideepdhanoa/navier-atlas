@@ -40,6 +40,9 @@ ANCHOR_CROSSWALK = {
     "amaala-ksa": "red-sea-global-ksa",
     "red-sea-global": "red-sea-global-ksa",
     "ksa-commercial": "jeddah-ksa",
+    "bodrum": "bodrum-turkey",
+    "cesme-izmir": "cesme-izmir-turkey",
+    "antalya": "antalya-turkey",
 }
 
 HUB_STRIP = {"_provenance", "_held_markets", "_anchor_market", "capture_rate"}

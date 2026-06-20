@@ -70,6 +70,9 @@ NODE_CROSSWALK = {
     "lagos": "lagos-nigeria",
     "mykonos-greece": "mykonos-greece",
     "bolt-greece": "mykonos-greece",
+    "bodrum": "bodrum-turkey",
+    "cesme-izmir": "cesme-izmir-turkey",
+    "antalya": "antalya-turkey",
 }
 
 # Extra parent_city_id search pools when a finance node maps to one canonical city
