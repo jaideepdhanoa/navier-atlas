@@ -97,6 +97,8 @@ _GEO_STOP = frozenset(
 )
 
 ROUTE_LINK_TOL = 0.25
+CHIP_DISTANCE_TOL = 0.4
+CHIP_BUNDLE_CAP = 20
 
 # Tokens too generic to anchor a directional match on their own.
 _COMMON_PLACE = frozenset(
@@ -304,7 +306,7 @@ CHIP_GROUNDING: dict[str, list[str]] = {
 
 _ASPIRATIONAL_CHIP = re.compile(
     r"\b(hamptons|jfk|lga|sounion|desroches|haeundae|gwangalli|nampo|oryukdo|"
-    r"marado|gapado|kadhdhoo|laamu)\b",
+    r"marado|gapado)\b",
     re.I,
 )
 
@@ -983,11 +985,6 @@ def route_matches_chip(
     anchors = [t for t in tokens if len(t) >= 4 and t not in _COMMON_PLACE]
     if anchors and any(a in nl for a in anchors):
         return True
-    if len(overlap) >= 1:
-        return True
-    for tok in tokens:
-        if len(tok) >= 4 and tok in nl:
-            return True
     return False
 
 
@@ -1089,7 +1086,7 @@ def expand_network_chip_route_ids(
         if not route_matches_chip(rec, tokens, phrases):
             continue
         if chip_nm is not None and rec.distance_nm is not None:
-            if abs(rec.distance_nm - chip_nm) / max(chip_nm, 1.0) > 0.6:
+            if abs(rec.distance_nm - chip_nm) / max(chip_nm, 1.0) > CHIP_DISTANCE_TOL:
                 continue
         tw = rec.traffic_weight or 0.0
         sc = tw + (2.0 if promoted in econ.all_ids else 0.0)
@@ -1098,7 +1095,15 @@ def expand_network_chip_route_ids(
     if not passing:
         return []
     passing.sort(key=lambda x: -x[1])
-    return list(dict.fromkeys(rid for rid, _ in passing))
+    return cap_chip_route_ids(list(dict.fromkeys(rid for rid, _ in passing)), item)
+
+
+def cap_chip_route_ids(rids: list[str], item: dict) -> list[str]:
+    if is_rollup_chip(item.get("label")):
+        return rids
+    if len(rids) <= CHIP_BUNDLE_CAP:
+        return rids
+    return rids[:CHIP_BUNDLE_CAP]
 
 
 def expand_grounding_route_ids(
@@ -1137,7 +1142,7 @@ def expand_grounding_route_ids(
             continue
         chip_nm = item.get("distance_nm")
         if chip_nm is not None and vis.distance_nm is not None:
-            if abs(vis.distance_nm - chip_nm) / max(chip_nm, 1.0) > 0.6:
+            if abs(vis.distance_nm - chip_nm) / max(chip_nm, 1.0) > CHIP_DISTANCE_TOL:
                 continue
         sc = (vis.traffic_weight or 0.0) + (3.0 if promoted in econ.all_ids else 0.0)
         if rid.startswith("e__"):
@@ -1146,7 +1151,7 @@ def expand_grounding_route_ids(
     if not passing:
         return []
     passing.sort(key=lambda x: -x[1])
-    return list(dict.fromkeys(rid for rid, _ in passing))
+    return cap_chip_route_ids(list(dict.fromkeys(rid for rid, _ in passing)), item)
 
 
 def phase_union_route_ids(
@@ -1269,7 +1274,8 @@ def relink_network_chip(
             elif p in chip_supplement and p.startswith("e__"):
                 promoted_ids.append(p)
         rids = [x for x in dict.fromkeys(promoted_ids) if x in routes or x in chip_supplement]
-        rids = [x for x in rids if x in routes]
+        rids = [x for x in rids if x in routes or x in chip_supplement]
+        rids = cap_chip_route_ids(rids, item)
         if not rids:
             mark_unlinked_chip(item, stats)
             return
