@@ -1,0 +1,148 @@
+{
+  "_doc": "BOLT/YANGO brief-parity crosswalk (Tasklet, 2026-06-20). Answers Jaideep Ask #3: confirm cluster+city briefs and sub-page/phase narratives are at Grab parity for the thinner markets.",
+  "verdicts": {
+    "sub_page_phase_narratives": "AT PARITY. Grab Singapore sub-page = 13.2k chars; Bolt/Yango sub-pages range 11.8k-16.9k chars, all carry 3 full phases with the complete 11-key phase schema (n,label,boats,cities,route_scope,narrative,timeline,rationale,featured_routes,use_cases,fleet_confidence). Thinnest: bolt-ireland (11.8k), yango-morocco (12.0k) — still in-band; optional light top-up.",
+    "city_brief_depth": "AT PARITY where present. Sampled bodrum-turkey = 8.3k chars, full schema (demand_signals w/ sources, journeys, navier_fit, use_cases, signature_routes, regulatory_note, seasonality). Same depth band as Grab city briefs (singapore 7.5k).",
+    "city_brief_coverage": "GAPS. Several grounded anchor cities have no brief yet (list below).",
+    "cluster_brief_coverage": "GAPS. Several grounded partner countries have no country cluster brief yet (list below)."
+  },
+  "id_mismatch_render_gaps": {
+    "_note": "Anchor id != sealed city_id -> renders nothing (parity Gate A). FIXED in this PR for yango/turkey.",
+    "yango_turkey": [
+      {
+        "anchor_was": "bodrum",
+        "renamed_to": "bodrum-turkey",
+        "brief": "bodrum-turkey",
+        "status": "FIXED"
+      },
+      {
+        "anchor_was": "antalya",
+        "renamed_to": "antalya-turkey",
+        "brief": "antalya-turkey",
+        "status": "FIXED"
+      },
+      {
+        "anchor_was": "cesme-izmir",
+        "renamed_to": "cesme-izmir-turkey",
+        "brief": "cesme-izmir-turkey",
+        "status": "FIXED"
+      }
+    ]
+  },
+  "missing_city_briefs": {
+    "_owner": "Tasklet authors content (research lane) -> Grok seals via build_content.py",
+    "priority_grounded_subpages": [
+      {
+        "market": "estonia",
+        "city": "tallinn-estonia",
+        "note": "grounded sub-page, no anchor brief"
+      },
+      {
+        "market": "finland",
+        "city": "helsinki-finland",
+        "note": "grounded sub-page, no anchor brief"
+      },
+      {
+        "market": "ireland",
+        "city": "dublin-ireland",
+        "note": "grounded sub-page, no anchor brief"
+      },
+      {
+        "market": "portugal",
+        "city": "lisbon-tagus-portugal",
+        "note": "grounded sub-page; also porto-portugal, algarve-portugal"
+      },
+      {
+        "market": "egypt",
+        "city": "cairo-egypt",
+        "note": "Nile-spine anchor; hurghada/sharm exist, cairo does not"
+      },
+      {
+        "market": "cote-divoire",
+        "city": "abidjan-cote-divoire",
+        "note": "grounded Yango flagship lagoon, no brief"
+      },
+      {
+        "market": "morocco",
+        "city": "casablanca-morocco",
+        "note": "also tangier-morocco, al-hoceima-morocco; only agadir-essaouira exists"
+      },
+      {
+        "market": "ksa-commercial",
+        "city": "dammam-khobar-ksa",
+        "note": "verify eastern-province-ksa brief doesn't already cover"
+      },
+      {
+        "market": "qatar",
+        "city": "al-wakrah-qatar",
+        "note": "secondary; doha-qatar exists"
+      }
+    ]
+  },
+  "missing_cluster_briefs": {
+    "_owner": "Tasklet authors content -> Grok seals",
+    "bolt": [
+      "estonia",
+      "finland",
+      "ireland",
+      "portugal",
+      "qatar",
+      "sweden",
+      "cyprus",
+      "romania"
+    ],
+    "yango": [
+      "cote-divoire",
+      "nigeria",
+      "morocco",
+      "qatar",
+      "senegal",
+      "mozambique",
+      "tunisia",
+      "pakistan",
+      "azerbaijan",
+      "kazakhstan"
+    ]
+  },
+  "corridor_ready_promotions": {
+    "_note": "Registry-grounded markets with corridors but no full sub-page yet. Promote to full Grab-parity sub-pages (Tasklet authors growth_case-ready narrative; Grok cascades economics + seals geometry).",
+    "bolt": [
+      {
+        "id": "cyprus",
+        "corridors": 10
+      },
+      {
+        "id": "romania",
+        "corridors": 11
+      }
+    ],
+    "yango": [
+      {
+        "id": "senegal",
+        "corridors": 7
+      },
+      {
+        "id": "mozambique",
+        "corridors": 7
+      },
+      {
+        "id": "tunisia",
+        "corridors": 8
+      },
+      {
+        "id": "pakistan",
+        "corridors": 7
+      },
+      {
+        "id": "caspian-az",
+        "corridors": 6,
+        "label": "Azerbaijan/Baku"
+      },
+      {
+        "id": "caspian-kz",
+        "corridors": 5,
+        "label": "Kazakhstan/Aktau"
+      }
+    ]
+  }
+}
