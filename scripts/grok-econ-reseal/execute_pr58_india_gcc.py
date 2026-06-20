@@ -291,6 +291,210 @@ def deep_canonicalize(obj: Any, ledger: list[dict]) -> Any:
     return obj
 
 
+# Marquee corridor-label cards inherit sealed network-bundle route_ids from hub phases.
+MARQUEE_TO_BUNDLE_LABEL: dict[str, str] = {
+    "Gateway of India / Bhaucha Dhakka ↔ Mandwa (Alibaug)": "Gateway <-> Mandwa / Alibaug",
+    "South Mumbai (Nariman Point) ↔ Navi Mumbai / new airport": "South Mumbai <-> Navi Mumbai airport",
+    "North Goa ↔ South Goa (Palolem / Cavelossim)": "North Goa <-> South Goa",
+    "Panaji (Mandovi River) ↔ North Goa beaches (Baga / Morjim)": "North Goa <-> South Goa",
+    "Kochi ↔ Alleppey (Alappuzha) backwaters": "Kochi <-> Alleppey backwaters",
+    "Kochi (Vyttila / Marine Drive) ↔ Fort Kochi / Willingdon / Bolgatty": "Kochi <-> Alleppey backwaters",
+    "Kochi ↔ Kumarakom / Vembanad Lake": "Kochi <-> Alleppey backwaters",
+    "Port Blair (Phoenix Bay) ↔ Havelock / Swaraj Dweep": "Port Blair <-> Havelock <-> Neil",
+
+    "Kochi ↔ Lakshadweep (Agatti / Kavaratti)": "Kochi <-> Lakshadweep (Quanta-LR)",
+}
+
+MARQUEE_STATIC_ROUTE_IDS: dict[str, list[str]] = {
+    "Gateway of India ↔ Elephanta Caves": [
+        "ics-d1cada0928",
+        "ics-997116ff5d",
+        "ics-6a150e9b8e",
+    ],
+    "Havelock ↔ Neil / Shaheed Dweep": [
+        "ics-77f233e565",
+        "rn-fb4a3f74ce06",
+    ],
+}
+
+MARQUEE_SINGLE_ROUTE_ID: dict[str, str] = {
+    "Mumbai ↔ Goa": "rn-ff5ccaf1831e",
+    "Goa ↔ Mumbai": "rn-ff5ccaf1831e",
+    "Mumbai <-> Konkan/Goa (Quanta-LR)": "rn-ff5ccaf1831e",
+}
+
+MARQUEE_ROADMAP_NO_GEOMETRY: dict[str, str] = {
+    "Goa ↔ Grande Island / Bat Island": "no_india_gold_geometry",
+    "Port Blair ↔ Ross Island / North Bay": "no_deterministic_gold_bind",
+    "Port Blair ↔ Diglipur (North Andaman)": "no_deterministic_gold_bind",
+}
+
+JOURNEY_PAIR_BINDINGS: dict[tuple[str, str], str] = {
+    ("gateway of india / bhaucha dhakka", "mandwa (alibaug)"): "Gateway of India / Bhaucha Dhakka ↔ Mandwa (Alibaug)",
+    ("gateway of india", "mandwa (alibaug)"): "Gateway of India / Bhaucha Dhakka ↔ Mandwa (Alibaug)",
+    ("south mumbai (nariman point)", "navi mumbai / new airport"): "South Mumbai (Nariman Point) ↔ Navi Mumbai / new airport",
+    ("gateway of india", "elephanta caves"): "Gateway of India ↔ Elephanta Caves",
+    ("mumbai", "goa"): "Mumbai ↔ Goa",
+    ("goa", "mumbai"): "Goa ↔ Mumbai",
+    ("panaji (mandovi river)", "north goa beaches (baga / morjim)"): "Panaji (Mandovi River) ↔ North Goa beaches (Baga / Morjim)",
+    ("north goa", "south goa (palolem / cavelossim)"): "North Goa ↔ South Goa (Palolem / Cavelossim)",
+    ("kochi (marine drive)", "alleppey backwaters"): "Kochi ↔ Alleppey (Alappuzha) backwaters",
+    ("port blair (phoenix bay)", "havelock / swaraj dweep"): "Port Blair (Phoenix Bay) ↔ Havelock / Swaraj Dweep",
+    ("havelock", "neil / shaheed dweep"): "Havelock ↔ Neil / Shaheed Dweep",
+    ("kochi (vyttila / marine drive)", "fort kochi / willingdon / bolgatty"): "Kochi (Vyttila / Marine Drive) ↔ Fort Kochi / Willingdon / Bolgatty",
+    ("kochi", "alleppey (alappuzha) backwaters"): "Kochi ↔ Alleppey (Alappuzha) backwaters",
+    ("kochi", "kumarakom / vembanad lake"): "Kochi ↔ Kumarakom / Vembanad Lake",
+    ("kochi", "lakshadweep (agatti / kavaratti)"): "Kochi ↔ Lakshadweep (Agatti / Kavaratti)",
+    ("port blair", "ross island / north bay"): "Port Blair ↔ Ross Island / North Bay",
+    ("port blair", "diglipur (north andaman)"): "Port Blair ↔ Diglipur (North Andaman)",
+}
+
+MARQUEE_LABEL_ALIASES: dict[str, str] = {
+    "Gateway of India ↔ Mandwa (Alibaug)": "Gateway of India / Bhaucha Dhakka ↔ Mandwa (Alibaug)",
+    "Kochi (Marine Drive) ↔ Alleppey backwaters": "Kochi ↔ Alleppey (Alappuzha) backwaters",
+}
+
+
+def _norm_pair_key(a: str, b: str) -> tuple[str, str]:
+    return (a.strip().lower(), b.strip().lower())
+
+
+def collect_network_bundle_registry(doc: dict[str, Any]) -> dict[str, list[str]]:
+    registry: dict[str, list[str]] = {}
+    for phase in doc.get("phases", []):
+        for fr in phase.get("featured_routes", []) or []:
+            if not isinstance(fr, dict):
+                continue
+            label = fr.get("label")
+            rids = fr.get("route_ids")
+            if label and isinstance(rids, list) and rids:
+                registry[label] = [x for x in rids if isinstance(x, str)]
+    return registry
+
+
+def _marquee_label_for_entry(entry: dict[str, Any]) -> str | None:
+    label = entry.get("label")
+    if isinstance(label, str) and label.strip():
+        return MARQUEE_LABEL_ALIASES.get(label.strip(), label.strip())
+    from_l = entry.get("from")
+    to_l = entry.get("to")
+    if isinstance(from_l, str) and isinstance(to_l, str):
+        key = _norm_pair_key(from_l, to_l)
+        return JOURNEY_PAIR_BINDINGS.get(key)
+    return None
+
+
+def _is_marquee_wire_candidate(entry: dict[str, Any]) -> bool:
+    if entry.get("display") == "network_chip":
+        return False
+    if entry.get("route_id") or entry.get("route_ids"):
+        return False
+    label = _marquee_label_for_entry(entry)
+    if not label:
+        return False
+    return (
+        label in MARQUEE_TO_BUNDLE_LABEL
+        or label in MARQUEE_STATIC_ROUTE_IDS
+        or label in MARQUEE_SINGLE_ROUTE_ID
+        or label in MARQUEE_ROADMAP_NO_GEOMETRY
+    )
+
+
+def wire_corridor_label_entry(
+    entry: dict[str, Any],
+    *,
+    bundle_registry: dict[str, list[str]],
+    gold_ids: set[str],
+    spine_ids: set[str],
+    by_id: dict[str, dict] | None = None,
+) -> None:
+    if not _is_marquee_wire_candidate(entry):
+        return
+
+    label = _marquee_label_for_entry(entry)
+    if not label:
+        return
+
+    entry.setdefault("_link_kind", "corridor-label")
+
+    if label in MARQUEE_ROADMAP_NO_GEOMETRY:
+        entry["_link_status"] = "roadmap-no-geometry"
+        entry["_hold_reason"] = MARQUEE_ROADMAP_NO_GEOMETRY[label]
+        entry.setdefault("economics_status", "economics_pending")
+        return
+
+    single = MARQUEE_SINGLE_ROUTE_ID.get(label)
+    if single and single in gold_ids:
+        entry["route_id"] = single
+        entry["_link_status"] = "linked-pr58-marquee-bind"
+        entry["_link_source"] = "grok/execute_pr58_india_gcc/marquee-wire"
+        entry.setdefault("economics_status", "economics_pending")
+        if label in {"Mumbai ↔ Goa", "Goa ↔ Mumbai", "Mumbai <-> Konkan/Goa (Quanta-LR)"}:
+            entry["platform"] = "Quanta-LR"
+            entry["vessel_gate"] = "Quanta-LR review >150nm"
+            props = (by_id or {}).get(single, {})
+            if props.get("from_city_id"):
+                entry["from_node_id"] = props["from_city_id"]
+            if props.get("to_city_id"):
+                entry["to_node_id"] = props["to_city_id"]
+            if props.get("distance_nm") is not None:
+                entry["distance_nm"] = props["distance_nm"]
+        return
+
+    static = MARQUEE_STATIC_ROUTE_IDS.get(label)
+    if static:
+        filtered = [x for x in static if x in gold_ids and x in spine_ids]
+        if filtered:
+            entry["route_ids"] = filtered
+            entry["route_id"] = None
+            entry["_link_status"] = "linked-pr58-marquee-bind"
+            entry["_link_source"] = "grok/execute_pr58_india_gcc/marquee-wire"
+            entry.setdefault("economics_status", "economics_pending")
+            return
+
+    bundle_label = MARQUEE_TO_BUNDLE_LABEL.get(label)
+    if bundle_label:
+        rids = bundle_registry.get(bundle_label)
+        if rids:
+            filtered = [x for x in rids if x in gold_ids and x in spine_ids]
+            if filtered:
+                entry["route_ids"] = filtered
+                entry["route_id"] = None
+                entry["_link_status"] = "linked-pr58-marquee-bind"
+                entry["_link_source"] = "grok/execute_pr58_india_gcc/marquee-wire"
+                entry.setdefault("economics_status", "economics_pending")
+                return
+
+
+def wire_corridor_labels_in_doc(
+    doc: dict[str, Any],
+    *,
+    gold_ids: set[str],
+    spine_ids: set[str],
+    by_id: dict[str, dict] | None = None,
+) -> None:
+    bundle_registry = collect_network_bundle_registry(doc)
+    containers: list[list[dict]] = []
+    containers.append(doc.get("journeys_unlocked", []) or [])
+    for phase in doc.get("phases", []):
+        containers.append(phase.get("featured_routes", []) or [])
+    for market in doc.get("markets", []):
+        containers.append(market.get("journeys_unlocked", []) or [])
+        for phase in market.get("phases", []):
+            containers.append(phase.get("featured_routes", []) or [])
+
+    for routes in containers:
+        for entry in routes:
+            if isinstance(entry, dict):
+                wire_corridor_label_entry(
+                    entry,
+                    bundle_registry=bundle_registry,
+                    gold_ids=gold_ids,
+                    spine_ids=spine_ids,
+                    by_id=by_id,
+                )
+
+
 def normalize_featured_route(
     fr: dict[str, Any],
     *,
@@ -394,6 +598,8 @@ def normalize_india_partner(
     gold_ids: set[str],
     goa_ledger: list[dict],
     doc: dict[str, Any] | None = None,
+    *,
+    by_id: dict[str, dict] | None = None,
 ) -> dict[str, Any]:
     doc = copy.deepcopy(doc) if doc is not None else load_json(path)
     by_market = spine_corridors_by_market(spine)
@@ -449,6 +655,8 @@ def normalize_india_partner(
                 )
             phase["featured_routes"] = new_routes
 
+    wire_corridor_labels_in_doc(doc, gold_ids=gold_ids, spine_ids=all_spine, by_id=by_id)
+
     doc = deep_canonicalize(doc, goa_ledger)
     doc["_pr58_execution"] = {
         "applied_at": utc_now(),
@@ -458,6 +666,17 @@ def normalize_india_partner(
     }
     save_json(path, doc)
     return doc
+
+
+def featured_row_label(row: dict[str, Any]) -> str:
+    label = row.get("label")
+    if isinstance(label, str) and label.strip():
+        return label.strip()
+    from_l = row.get("from")
+    to_l = row.get("to")
+    if isinstance(from_l, str) and isinstance(to_l, str):
+        return f"{from_l} ↔ {to_l}"
+    return ""
 
 
 def collect_featured_for_seal(doc: dict, partner: str) -> list[dict]:
@@ -474,8 +693,27 @@ def collect_featured_for_seal(doc: dict, partner: str) -> list[dict]:
                 if isinstance(fr, dict):
                     rows.append({**fr, "_phase": pn, "_partner": partner, "_market": market.get("id")})
     for j in doc.get("journeys_unlocked", []):
-        if isinstance(j, dict) and (j.get("route_id") is not None or j.get("_source_corridor_id")):
+        if isinstance(j, dict) and (
+            j.get("route_id") is not None
+            or j.get("route_ids")
+            or j.get("_source_corridor_id")
+            or j.get("_link_kind") == "corridor-label"
+        ):
             rows.append({**j, "_partner": partner, "_kind": "journey"})
+    for market in doc.get("markets", []):
+        for j in market.get("journeys_unlocked", []) or []:
+            if isinstance(j, dict) and (
+                j.get("route_id") is not None
+                or j.get("route_ids")
+                or j.get("_source_corridor_id")
+                or j.get("_link_kind") == "corridor-label"
+            ):
+                rows.append({
+                    **j,
+                    "_partner": partner,
+                    "_kind": "journey",
+                    "_market": market.get("id"),
+                })
     return rows
 
 
@@ -772,10 +1010,10 @@ def main() -> int:
     # --- India partners normalize ---
     rapido_path = PARTNERS / "rapido.json"
     ola_path = PARTNERS / "ola.json"
-    rapido = normalize_india_partner(rapido_path, spine, gold_ids, goa_ledger)
+    rapido = normalize_india_partner(rapido_path, spine, gold_ids, goa_ledger, by_id=by_id)
     ola_raw = load_json(ola_path)
     sync_ola_from_rapido(ola_raw, rapido)
-    ola = normalize_india_partner(ola_path, spine, gold_ids, goa_ledger, doc=ola_raw)
+    ola = normalize_india_partner(ola_path, spine, gold_ids, goa_ledger, doc=ola_raw, by_id=by_id)
 
     uber_draft = build_uber_india_draft(rapido, spine)
     uber_draft = deep_canonicalize(uber_draft, goa_ledger)
@@ -794,25 +1032,49 @@ def main() -> int:
         ("uber-india-derivative", uber_draft),
     ):
         for row in collect_featured_for_seal(doc, partner):
+            row_label = featured_row_label(row)
+            bind_method = (
+                "marquee_wire"
+                if row.get("_link_status") == "linked-pr58-marquee-bind"
+                else "network_bundle"
+            )
             if row.get("route_id"):
-                india_seal_rows.append({
-                    **seal_route_entry(row, gold_ids, by_id, by_bp, partner=partner, phase=row.get("_phase")),
-                    "featured_label": row.get("label"),
-                })
+                rid = row["route_id"]
+                if rid in gold_ids:
+                    india_seal_rows.append({
+                        "partner": partner,
+                        "phase": row.get("_phase"),
+                        "label": row_label or row.get("label"),
+                        "featured_label": row_label or row.get("label"),
+                        "route_id": rid,
+                        "verdict": "SEALED_ROUTE_ID",
+                        "bind_method": bind_method,
+                        "reason": "explicit route_id in partner doc",
+                    })
+                else:
+                    india_seal_rows.append({
+                        **seal_route_entry(row, gold_ids, by_id, by_bp, partner=partner, phase=row.get("_phase")),
+                        "label": row_label or row.get("label"),
+                        "featured_label": row_label or row.get("label"),
+                        "bind_method": bind_method,
+                    })
             elif row.get("route_ids"):
                 for rid in row["route_ids"]:
                     india_seal_rows.append({
                         "partner": partner,
                         "phase": row.get("_phase"),
-                        "label": row.get("label"),
+                        "label": row_label or row.get("label"),
                         "route_id": rid,
                         "verdict": "SEALED_ROUTE_ID" if rid in gold_ids else "HELD_NULL_WITH_REASON",
-                        "bind_method": "network_bundle",
+                        "bind_method": bind_method,
                     })
             else:
-                india_seal_rows.append(
-                    seal_route_entry(row, gold_ids, by_id, by_bp, partner=partner, phase=row.get("_phase"))
-                )
+                rec = seal_route_entry(row, gold_ids, by_id, by_bp, partner=partner, phase=row.get("_phase"))
+                if row_label:
+                    rec["label"] = row_label
+                if row.get("_hold_reason"):
+                    rec["reason"] = row["_hold_reason"]
+                india_seal_rows.append(rec)
 
     india_ledger = {
         "package": "india-route-seal-ledger",
