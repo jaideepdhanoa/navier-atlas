@@ -148,14 +148,20 @@ def main():
     if not gcblock.get("modal_headline"):
         gcblock["modal_headline"] = "Floor to prize \u2014 every rung traces to grounded demand"
 
+    anchor = gc.get("_headline_anchor", "grounded")
+    G = gc.get(anchor) or gc["grounded"]
+
     # ladder_transitions regenerated
     gcblock["ladder_transitions"] = build_ladder_transitions(
-        gc["grounded"], gc["parameters_used"], a.partner)
+        G, gc["parameters_used"], a.partner)
 
     # marine TAM convenience surface at growth_case top
-    gcblock["marine_mobility_tam"] = gc["grounded"]["marine_mobility_tam_yr"]
-    gcblock["journey_gmv"] = gc["grounded"]["journey_gmv_yr"]
-    gcblock["partner_platform_rev_on_navier"] = gc["grounded"]["partner_platform_rev_on_navier_yr"]
+    gcblock["marine_mobility_tam"] = G["marine_mobility_tam_yr"]
+    gcblock["journey_gmv"] = G["journey_gmv_yr"]
+    gcblock["partner_platform_rev_on_navier"] = G["partner_platform_rev_on_navier_yr"]
+    if gc.get("_forward_sam_only"):
+        gcblock["_forward_sam_only"] = True
+        gcblock["_headline_anchor"] = anchor
     gcblock["_marine_tam_split_provenance"] = {
         "date": datetime.utcnow().isoformat() + "Z",
         "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",

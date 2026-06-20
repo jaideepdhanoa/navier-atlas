@@ -24,9 +24,12 @@ PARTNERS = [
     "jih-global",
     "red-sea-global",
     "saudi-redsea-pif",
+    "saudi-pif",
     "qatar",
     "bolt",
     "yango",
+    "uber",
+    "french-polynesia",
     "constance",
     "four-seasons",
 ]

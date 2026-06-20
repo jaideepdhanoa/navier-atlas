@@ -30,7 +30,7 @@ def m(x):  # -> "$Xm" / "$X.Yb" display
     return f"${x/1e6:,.0f}M" if x < 1e9 else f"${x/1e9:,.2f}B"
 
 def boats(rev, key):
-    if rev is None: return None
+    if rev is None or not key: return None
     return round(rev / key)
 
 def main():
@@ -41,11 +41,23 @@ def main():
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
 
-    gc = json.load(open(a.growth)); G = gc["grounded"]; P = gc["parameters_used"]; gf = gc["greenfield"]
+    gc = json.load(open(a.growth)); P = gc["parameters_used"]; gf = gc["greenfield"]
     rl = json.load(open(a.rollup))["rollup"]
-    floor_fleet = rl["grounded_floor"]["fleet"]
-    floor_rev   = rl["grounded_floor"]["market_rev_yr"]
-    floor_co2   = rl["grounded_floor"]["co2_saved_t_yr"]
+    anchor = gc.get("_headline_anchor", "grounded")
+    G = gc.get(anchor) or gc["grounded"]
+    if anchor == "forward_sam":
+        floor_fleet = rl["forward_sam"]["fleet"]
+        floor_rev   = rl["forward_sam"]["market_rev_yr"]
+        floor_co2   = rl["forward_sam"]["co2_saved_t_yr"]
+    elif anchor == "estimated_total":
+        floor_fleet = rl["estimated_total"]["fleet"]
+        floor_rev   = rl["estimated_total"]["market_rev_yr"]
+        floor_co2   = (rl["grounded_floor"]["co2_saved_t_yr"]
+                       + (rl.get("estimated_upside", {}).get("co2_saved_t_yr") or 0))
+    else:
+        floor_fleet = rl["grounded_floor"]["fleet"]
+        floor_rev   = rl["grounded_floor"]["market_rev_yr"]
+        floor_co2   = rl["grounded_floor"]["co2_saved_t_yr"]
     # LB-254: capture that ACTUALLY built the floor (eff) + captive-aware mature band (both emitted
     # per-anchor by growth.py). Replaces hardcoded contested 10%/25% display copy.
     eff_cap = G.get("_eff_capture_floor") or 0.10
@@ -53,8 +65,11 @@ def main():
     cmat_mid = cmat["mid"]
     is_captive = bool(G.get("_is_captive"))
     cappct = f"{eff_cap:.0%}"; maturepct = f"{cmat_mid:.0%}"
-    REVPERBOAT  = floor_rev / floor_fleet          # conversion key (~$257K)
-    CO2PERREV   = floor_co2 / floor_rev            # CO2 t per $ transport rev
+    REVPERBOAT  = (floor_rev / floor_fleet if floor_fleet else None)  # conversion key (~$257K)
+    if REVPERBOAT is None and G.get("SOM_floor_navier_transport_rev_yr"):
+        _sam_fleet = rl.get("forward_sam", {}).get("fleet") or rl["estimated_total"].get("fleet") or 1
+        REVPERBOAT = G["SOM_floor_navier_transport_rev_yr"] / _sam_fleet
+    CO2PERREV   = (floor_co2 / floor_rev if floor_rev else 0)       # CO2 t per $ transport rev
 
     def co2(rev):
         return None if rev is None else round(rev * CO2PERREV)

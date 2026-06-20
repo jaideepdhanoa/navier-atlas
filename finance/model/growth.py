@@ -94,6 +94,11 @@ def m_today_and_capture(node):
 
 M_today_grounded, eff_capture_grounded = m_today_and_capture(roll["grounded_floor"])
 M_today_total,    eff_capture_total    = m_today_and_capture(roll["estimated_total"])
+_fwd = roll.get("forward_sam") or {}
+M_today_forward,  eff_capture_forward  = m_today_and_capture({
+    "transport_spend_pool_yr": _fwd.get("transport_spend_pool_yr"),
+    "market_rev_yr": _fwd.get("market_rev_yr"),
+})
 
 # LB-254: capture cannot mature BELOW the rate the floor already operates at.
 CAPTIVE_THRESHOLD = 0.5    # blended floor capture above this => CAPTIVE market treatment
@@ -192,6 +197,7 @@ result = {
     },
     "grounded": ladder(M_today_grounded, eff_capture_grounded),
     "estimated_total": ladder(M_today_total, eff_capture_total),
+    "forward_sam": ladder(M_today_forward, eff_capture_forward),
     "source_rollup": {
         "n_corridors": roll["n_corridors_total"],
         "som_floor_grounded_rev_yr": roll["grounded_floor"]["market_rev_yr"],
@@ -217,13 +223,15 @@ def fm(x):
 def band_str(d): return " / ".join(fm(d[b]) for b in BANDS)
 
 # LB-256: forward-SAM-only partners (no grounded demand sourced yet) carry the headline on the
-# estimated_total (forward-SAM mapped network) anchor; record which anchor is authoritative so the
-# frontend splice reads the populated rung, not the null grounded floor.
-FORWARD_SAM_ONLY = result["grounded"].get("M_today_transport_spend_yr") is None
+# forward_sam rollup bucket (held OUT of estimated_total by aggregate.py); record which anchor is
+# authoritative so the frontend splice reads the populated rung, not the null grounded floor.
+FORWARD_SAM_ONLY = (result["grounded"].get("M_today_transport_spend_yr") is None
+                    and result["estimated_total"].get("M_today_transport_spend_yr") is None
+                    and result["forward_sam"].get("M_today_transport_spend_yr") is not None)
 result["_forward_sam_only"] = FORWARD_SAM_ONLY
-result["_headline_anchor"] = "estimated_total" if FORWARD_SAM_ONLY else "grounded"
-g = result["estimated_total"] if FORWARD_SAM_ONLY else result["grounded"]
-_anchor_lbl = "forward-SAM (estimated_total)" if FORWARD_SAM_ONLY else "grounded"
+result["_headline_anchor"] = "forward_sam" if FORWARD_SAM_ONLY else "grounded"
+g = result["forward_sam"] if FORWARD_SAM_ONLY else result["grounded"]
+_anchor_lbl = "forward-SAM (2030+ mapped network)" if FORWARD_SAM_ONLY else "grounded"
 _nsrc = roll.get("n_corridors_total") or roll.get("n_corridors_near_term") or "the sourced"
 _gflabel = "+greenfield" if _gf_mode == "census" else "greenfield OFF"
 
