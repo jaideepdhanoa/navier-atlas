@@ -1,65 +1,50 @@
-# Partner Map Model — Universal Rollout Handoff (all partners)
+# Partner Map Model — Existing-Registry Coastal Footprint Reconciliation
 
-**For:** Grok (deterministic materialize / seal / render-check loop)
-**From:** Tasklet (registry binding + footprint rosters)
-**Supersedes:** the Bolt/Yango-only pass in PR #54. This applies the binding/inheritance
-contract to **every partner**, not just the named five.
+This amends the universal partner-map rollout with a stricter rule from Jaideep:
 
-## What changed
+- Include **every coastal / waterfront-relevant market already grounded in the shared registry** when a partner's written footprint references that market or region.
+- Do **not** research or create new boarding points/routes in this pass.
+- If a market is not already registry-grounded, leave it as `registry_key:null` / aspirational backlog.
 
-Every partner JSON with a registry presence now carries a **`network_footprint[]`** array of
-**references** into `finance/model/corridors.json` — never copied data. The renderer resolves each
-`registry_key` → cluster cities, corridor lines, briefs, and economics. **Add/enrich a shared market
-(e.g. UAE) once and every partner that references it inherits automatically** (Careem, Uber, Bolt,
-Yango all point at the UAE registry markets).
+## What changed vs the first PR #55 pass
 
-### Footprint entry shape
-```json
-{ "id": "bolt-uae", "registry_key": "bolt-uae", "covered": true,
-  "tier": "sub_proposal", "render": "geometry", "map_promote": true,
-  "label": "Uae", "country": "United Arab Emirates",
-  "countries": ["United Arab Emirates"], "region": "MENA" }
-```
+The first pass created the universal binding framework but was conservative for broad market IDs (`mena`, `mediterranean`, `thailand`, etc.). This pass adds explicit aliases from those broad written markets to already-grounded registry keys only.
 
-- `registry_key` — the binding (null = not yet grounded → ground backlog).
-- `covered` — a `markets[]` sub-proposal overlay exists (overlay only, never controls visibility).
-- `tier` ∈ {flagship, sub_proposal, corridor_ready, coastal_aspirational, held_sovereign}.
-- `render` ∈ {geometry, cluster_dots, anchor_dots, aspirational, held}.
-- **`map_promote`** — honors Grok note #6: `false` keeps a market **brief-only / off the live map**
-  until green-lit. Only fully-sealed covered sub-proposals are `true` today. Corridor-ready (incl.
-  sealed-but-uncovered) are held `false`.
+### Bolt / Yango
 
-## Render / hold rules (folded in from Grok's reply)
+No change needed from the first universal pass:
 
-1. No `non_marine` — gone everywhere; footprint is map + `coverage_note` prose only.
-2. No card grid — `network_footprint` is **map-native render data**, not a UI tier list.
-3. `coverage_note` prose preserved where it existed; generated (Grab/Uber style) where missing.
-4. Sovereign-held (Israel, Lebanon) → `render:"held"`, **excluded from map_scope**.
-5. Corridor-ready → `map_promote:false` (hold for green-light), still brief-eligible.
-6. `map_scope` = sealed cluster cities of `map_promote:true` entries only — see `map-scope.json`.
+- **Bolt:** 18/18 bound, 0 null. Regions covered: Europe + MENA, with Israel/Lebanon sovereign-held off-map.
+- **Yango:** 15/15 bound, 0 null. Regions covered: MENA, Africa, Central Asia/Caucasus, Turkey, with Israel sovereign-held off-map.
 
-## Coverage (23 partners bound; 24 await grounding)
+Important caveat: this is complete against the **current registry-grounded coastal footprint**, not a newly researched official global operating-country roster.
 
-| layer | partners |
-|---|---|
-| Dense registry (owned keys) | bolt (18 fp), yango (15) |
-| Shared SEA + Gulf | grab (10), gojek (6) |
-| Sub-proposals only, ungrounded geometry (null binding, aspirational) | uber (9), didi (7), lyft (6), ola (4), rapido (4), indrive (4), kakao-mobility (4), line (3) |
-| Gulf / Indian-Ocean anchored | careem, qatar, saudi-pif, red-sea-global, jih-global, french-polynesia |
-| Luxury-resort sub-proposals (ungrounded) | aman, four-seasons, six-senses, soneva, discovery-land |
+### Uber
 
-**24 regional operators have no registry market yet** (ferries, hotel groups, authorities) — listed
-in `ground-backlog.json` under `no_registry_presence`. They are structurally untouched until grounded.
+Upgraded from 9 aspirational/null stories to **20 footprint entries**:
 
-## Ground backlog (`ground-backlog.json` — 78 tasks)
+- **15 bound** via existing registry markets:
+  - MENA/Gulf: `uae-careem`, `uae-luxury`, `qatar`, `saudi-redsea`, `saudi-redsea-resort`, `bolt-egypt`, `yango-egypt`, `yango-morocco`, `yango-tunisia`
+  - Mediterranean: `bolt-greece`, `bolt-croatia`, `bolt-italy`, `bolt-france-riviera`, `bolt-cyprus`, `yango-turkey`
+- **5 remain null/aspirational:** `bay-area`, `brazil-latam`, `hawaii`, `miami`, `sydney-nsw`
 
-- **54 ungrounded sub-proposals** — a `markets[]` story exists but no registry geometry. Author
-  cities/corridors into the registry → the partner inherits on the next loop with zero page edits.
-  (Heaviest: uber 9, didi 7, lyft 6, ola/rapido/indrive/kakao 4 each.)
-- **24 no-registry partners** — operating roster not yet in the registry at all.
+### Other partner upgrades
 
-## Tasklet next bites (research, not deterministic)
+- **Lyft:** `athens-cyclades` now binds to `bolt-greece`; US coastal markets remain null.
+- **Line:** Thailand now binds only to already-grounded Thailand keys (`bangkok`, `phuket`, `koh-samui`); Taiwan already bound; Japan remains null.
+- **inDrive:** Egypt/Morocco/Sub-Saharan Africa stories now bind to existing Yango/Bolt Africa/MENA keys; India remains null.
+- **Aman / Soneva / Four Seasons / Six Senses / Gojek:** broad Indonesia/Maldives/Thailand/Riau-Singapore stories bind to existing SEA/Indian-Ocean registry keys where available.
 
-1. Ground Uber + Didi full operating rosters into the registry (largest inheritance unlock).
-2. Reconcile Bolt/Yango footprints vs official operating-country lists (≈30 shown vs ~45 real).
-3. Ground the regional operators' home networks.
+## Remaining honest gaps
+
+Backlog is now **63 entries**:
+
+- LATAM remains ungrounded in this registry version: Didi's Brazil/Mexico/Colombia/Panama/Costa Rica/Dominican Republic and Uber `brazil-latam` still stay null.
+- US/Australia/Korea/India/Japan/Seychelles/Venice and some resort-specific coastal stories also remain null.
+- No fake geometry was introduced.
+
+## Implementation rule for Grok
+
+`network_footprint[].registry_key` is the only source for inherited cities/routes/economics. `registry_key:null` remains visibly aspirational. `map_scope` includes only `map_promote:true` entries with sealed cluster cities.
+
+Null beats confidently-wrong. Geometry first.
