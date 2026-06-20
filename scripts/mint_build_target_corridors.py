@@ -72,7 +72,83 @@ PRIORITY_CORRIDORS = [
         "distance_nm": 8.0,
         "tag": "kood",
     },
+    {
+        "market": "thailand-soneva",
+        "corridor": "Laem Sok Pier (Trat) -> Soneva Kiri (Koh Kood)",
+        "from_node": "bp-7c6116d860",
+        "to_node": "bp-d5427b5e8b",
+        "from_label": "Trat / mainland coast (Laem Sok Pier)",
+        "to_label": "Soneva Kiri (Koh Kood) — resort jetty",
+        "from_city_id": "koh-rong-cambodia",
+        "to_city_id": "koh-rong-cambodia",
+        "distance_nm": 40.0,
+        "tag": "kood",
+    },
+    {
+        "market": "egypt-redsea",
+        "corridor": "Sharm El Sheikh -> Ras Mohammed National Park",
+        "from_node": "bp-d794fc49a1",
+        "to_node": "bp-ras-mohammed",
+        "from_label": "Sharm El Sheikh (Aqua Marina)",
+        "to_label": "Ras Mohammed National Park — reef jetty",
+        "from_city_id": "sharm-el-sheikh-egypt",
+        "to_city_id": "sharm-el-sheikh-egypt",
+        "distance_nm": 12.0,
+        "tag": "egypt",
+    },
+    {
+        "market": "egypt-redsea",
+        "corridor": "Sharm El Sheikh -> Dahab",
+        "from_node": "bp-d794fc49a1",
+        "to_node": "bp-dahab",
+        "from_label": "Sharm El Sheikh (Aqua Marina)",
+        "to_label": "Dahab Waterfront",
+        "from_city_id": "sharm-el-sheikh-egypt",
+        "to_city_id": "sharm-el-sheikh-egypt",
+        "distance_nm": 18.0,
+        "tag": "egypt",
+    },
+    {
+        "market": "egypt-redsea",
+        "corridor": "Marina El Gouna -> Sharm El Sheikh",
+        "from_node": "bp-fb14b3dfe2",
+        "to_node": "bp-b393d9d9fe",
+        "from_label": "Marina El Gouna (Hurghada / El Gouna)",
+        "to_label": "Sharm El Sheikh — Four Seasons Resort Jetty",
+        "from_city_id": "hurghada-el-gouna-egypt",
+        "to_city_id": "sharm-el-sheikh-egypt",
+        "distance_nm": 50.9,
+        "tag": "egypt",
+    },
 ]
+
+ROUTE_RELABELS: dict[str, dict[str, str]] = {
+    "e__ep-khobar__manama-bahrain": {
+        "from_label": "Khobar / Dammam (Eastern Province)",
+        "to_label": "Manama, Bahrain",
+        "label": "Khobar / Dammam (Eastern Province) → Manama, Bahrain",
+    },
+    "e__uae__1b860507c38f": {
+        "from_label": "Dubai Harbour / DIFC waterfront",
+        "to_label": "Abu Dhabi Corniche / Yas waterfront",
+        "label": "Dubai Harbour / DIFC waterfront → Abu Dhabi Corniche / Yas waterfront",
+    },
+    "edge__hurghada-el-gouna-egypt__sharm-el-sheikh-across-the-gulf": {
+        "from_label": "Hurghada / El Gouna",
+        "to_label": "Sharm El Sheikh",
+        "label": "Hurghada / El Gouna → Sharm El Sheikh",
+    },
+    "gcn-73d7e2f19c-bolt": {
+        "from_label": "Marina El Gouna (Hurghada / El Gouna)",
+        "to_label": "Sharm El Sheikh — Four Seasons Resort Jetty",
+        "label": "Marina El Gouna (Hurghada / El Gouna) → Sharm El Sheikh",
+    },
+    "e__kood__0987ae6d8dd5": {
+        "from_label": "Trat / mainland coast (Laem Sok Pier)",
+        "to_label": "Soneva Kiri (Koh Kood) — resort jetty",
+        "label": "Trat / mainland coast (Laem Sok Pier) → Soneva Kiri (Koh Kood)",
+    },
+}
 
 # Maldives JIH build_targets → already-promoted e__velana legs (skip re-mint)
 VELANA_BY_RESORT = {
@@ -315,6 +391,21 @@ def resolve_city_from_bp(node_id: str, bt: dict) -> str | None:
     return None
 
 
+def apply_route_relabels(routes: list[dict]) -> list[str]:
+    """Patch endpoint labels on existing routes so anchor gates pass."""
+    changes: list[str] = []
+    for feat in routes:
+        p = feat.get("properties") or {}
+        rid = p.get("id")
+        if rid not in ROUTE_RELABELS:
+            continue
+        patch = ROUTE_RELABELS[rid]
+        for key, val in patch.items():
+            p[key] = val
+        changes.append(rid)
+    return changes
+
+
 def main():
     fbt = load_json(DC / "FEATURES_BY_TYPE.json")
     poi_changes = apply_poi_scan(fbt)
@@ -325,6 +416,7 @@ def main():
     cities = build_city_index(fbt)
     mask = load_land_mask()
     routes = route_features(load_json(DC / "ROUTES.json"))
+    relabeled = apply_route_relabels(routes)
     existing = {r["properties"]["id"] for r in routes if r.get("properties", {}).get("id")}
 
     minted: list[dict] = []
@@ -376,6 +468,7 @@ def main():
     report = {
         "at": datetime.now(timezone.utc).isoformat(),
         "poi_changes": poi_changes,
+        "relabeled": relabeled,
         "minted": minted,
         "skipped": skipped,
         "allowlist_added": len(added),
@@ -385,6 +478,8 @@ def main():
     save_json(out, report)
 
     print(f"POI scan: {poi_changes}")
+    if relabeled:
+        print(f"relabeled {len(relabeled)} routes: {relabeled}")
     print(f"minted {len(minted)} corridors, skipped {len(skipped)}, allowlist +{len(added)}")
     for m in minted:
         print(f"  {m['route_id']} {m['corridor'][:50]} ({m['nm']} nm)")

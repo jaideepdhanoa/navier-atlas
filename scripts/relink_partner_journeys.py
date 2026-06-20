@@ -721,9 +721,7 @@ def find_scoped_route(
     econ: EconomicsIndex | None = None,
     promo: GcnPromoIndex | None = None,
 ) -> str | None:
-    from_l = item.get("from") or item.get("from_label")
-    to_l = item.get("to") or item.get("to_label")
-    label_text = item.get("label") or f"{from_l or ''} {to_l or ''}"
+    from_l, to_l, label_text = item_labels(item)
     label_nm = item.get("distance_nm")
 
     candidates: set[str] = set()
@@ -747,6 +745,12 @@ def find_scoped_route(
         score_nm = rec.distance_nm if rec.distance_nm is not None else label_nm
         sc = score_route_match(from_l, to_l, rec, score_nm, partner_slug)
         sc = max(sc, econ_corridor_score(item, promoted, partner_slug, econ))
+        if sc <= 0.0 and not (from_l and to_l) and endpoint_ok(label_text, rec):
+            sc = 5.0
+            if label_nm is not None and rec.distance_nm is not None:
+                delta = abs(rec.distance_nm - label_nm) / max(label_nm, 1.0)
+                if delta <= ROUTE_LINK_TOL:
+                    sc += 2.0 * (1.0 - delta)
         if sc <= 0.0:
             continue
         passing.append((promoted, sc))
@@ -764,7 +768,7 @@ def find_node_pair_route(
     tn = crosswalk_node(item.get("to_node_id") or item.get("to_node"))
     if not fn or not tn or fn == tn:
         return None
-    label_text = item.get("label") or ""
+    _, _, label_text = item_labels(item)
     label_nm = item.get("distance_nm")
     best_id: str | None = None
     best_score = 0.0
@@ -784,7 +788,10 @@ def find_node_pair_route(
                 if delta > ROUTE_LINK_TOL:
                     continue
                 sc += 1.0 - delta
-            if not endpoint_ok(label_text, rec):
+            trial = dict(item)
+            if rec.distance_nm is not None:
+                trial["distance_nm"] = rec.distance_nm
+            if not passes_gates(trial, rec, label_text):
                 continue
             if sc > best_score:
                 best_score = sc
@@ -1330,9 +1337,23 @@ def relink_network_chip(
         mark_unlinked_chip(item, stats)
 
 
+def parse_label_endpoints(label: str | None) -> tuple[str | None, str | None]:
+    if not label:
+        return None, None
+    for sep in ("↔", "→", "->", "—", "–"):
+        if sep in label:
+            a, b = label.split(sep, 1)
+            return a.strip() or None, b.strip() or None
+    return None, None
+
+
 def item_labels(item: dict) -> tuple[str | None, str | None, str]:
     from_l = item.get("from") or item.get("from_label")
     to_l = item.get("to") or item.get("to_label")
+    if not from_l or not to_l:
+        pf, pt = parse_label_endpoints(item.get("label"))
+        from_l = from_l or pf
+        to_l = to_l or pt
     label = item.get("label") or (f"{from_l} → {to_l}" if from_l or to_l else "")
     return from_l, to_l, label
 
@@ -1439,17 +1460,36 @@ def relink_item(
         rec = routes[rid]
         if rec.distance_nm is not None:
             item["distance_nm"] = rec.distance_nm
-        item["route_id"] = rid
-        item["_link_kind"] = "corridor-label" if (from_l or item.get("label")) else "corridor-node"
-        item["_link_status"] = f"linked-grok-{source}"
-        item["_link_source"] = f"grok/relink_partner_journeys/{source}"
-        stats.linked += 1
-        if source == "brief":
-            stats.borrowed_brief += 1
-        elif source == "scoped":
-            stats.matched_scoped += 1
-        elif source == "node":
-            stats.matched_node += 1
+        if not passes_gates(item, rec, label_text):
+            item["route_id"] = None
+            if item.get("route_ids"):
+                item["route_ids"] = None
+            if from_l and to_l:
+                fn = item.get("from_node_id") or item.get("from_node")
+                tn = item.get("to_node_id") or item.get("to_node")
+                if fn and tn and fn == tn:
+                    item["_link_status"] = "unlinked-intra-city"
+                    stats.geometry_pending += 1
+                else:
+                    item["_link_status"] = "unlinked-no-route"
+                    stats.still_null += 1
+            else:
+                item["_link_status"] = "unlinked-no-route"
+                stats.still_null += 1
+            item.pop("_link_kind", None)
+            item.pop("_link_source", None)
+        else:
+            item["route_id"] = rid
+            item["_link_kind"] = "corridor-label" if (from_l or item.get("label")) else "corridor-node"
+            item["_link_status"] = f"linked-grok-{source}"
+            item["_link_source"] = f"grok/relink_partner_journeys/{source}"
+            stats.linked += 1
+            if source == "brief":
+                stats.borrowed_brief += 1
+            elif source == "scoped":
+                stats.matched_scoped += 1
+            elif source == "node":
+                stats.matched_node += 1
     else:
         item["route_id"] = None
         if from_l and to_l:
