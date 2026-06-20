@@ -338,6 +338,17 @@ def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: st
         cities.append("mallorca-spain")
     if city_id in ("helsinki-finland", "tallinn-estonia", "stockholm-sweden"):
         cities.extend(["helsinki-finland", "tallinn-estonia", "stockholm-sweden"])
+    if city_id == "istanbul-turkey" or "turkey" in (city_id or ""):
+        if any(t in blob for t in ("bodrum", "marmaris", "gulluk", "gumusluk", "turgutreis", "didim", "yalikavak", "kos")):
+            cities.append("bodrum-turkey")
+        if any(t in blob for t in ("fethiye", "gocek", "oludeniz", "datca", "rhodes")):
+            cities.extend(["bodrum-turkey", "cesme-izmir-turkey"])
+        if any(t in blob for t in ("antalya", "kemer", "side")):
+            cities.append("antalya-turkey")
+        if any(t in blob for t in ("cesme", "izmir", "karşıyaka", "karsiyaka", "chios", "samos", "kusadasi")):
+            cities.append("cesme-izmir-turkey")
+        if any(t in blob for t in ("kadikoy", "kabatas", "bostanci", "buyukada", "istanbul", "karakoy", "besiktas")):
+            cities.append("istanbul-turkey")
     if city_id == "dubai" or cities[0] == "dubai-uae":
         if any(t in blob for t in ("abu dhabi", "abudhabi", "corniche")):
             cities.append("abu-dhabi-uae")
