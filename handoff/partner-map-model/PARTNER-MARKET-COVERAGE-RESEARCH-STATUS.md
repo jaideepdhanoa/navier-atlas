@@ -24,3 +24,7 @@ This is the corrected upstream layer. The previous `partner-market-canonical-bin
 - `partner-market-coverage-research.json`
 - `partner-market-coverage-research-gap-queue.json` — full triage queue, not clean registry gaps yet.
 - `partner-market-coverage-proposal-priority-queue.json` — Bolt/Yango active proposal subset.
+
+## Added proposal triage artifacts
+- `partner-market-coverage-yango-city-triage.json` — Yango city rows split into existing Atlas display-ready, coastal registry/alias backlog, and inland/not-map-footprint.
+- `partner-market-coverage-bolt-country-rollup.json` — Bolt official city inventory rolled up by country so the active proposal pass can triage coastal relevance without confusing source coverage with marine footprint.
