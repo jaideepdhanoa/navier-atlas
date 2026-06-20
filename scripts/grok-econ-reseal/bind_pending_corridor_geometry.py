@@ -50,12 +50,12 @@ CITY_HINTS: list[tuple[tuple[str, ...], str]] = [
     (("dubrovnik", "cilipi", "cavtat", "elaphiti"), "dubrovnik-croatia"),
     (("korcula", "korčula", "korcula"), "korcula-croatia"),
     (("mljet", "polace", "sobra"), "korcula-croatia"),
-    (("zadar", "kornati", "biograd", "murter"), "split-croatia"),
+    (("zadar", "kornati", "biograd", "murter"), "zadar-croatia"),
     (("kotor",), "kotor-montenegro"),
     (("limassol",), "limassol-cyprus"),
     (("larnaca", "lca"), "larnaca-cyprus"),
-    (("paphos", "pfo", "coral bay"), "larnaca-cyprus"),
-    (("ayia napa", "protaras"), "larnaca-cyprus"),
+    (("paphos", "pfo", "coral bay"), "paphos-cyprus"),
+    (("ayia napa", "protaras"), "ayia-napa-cyprus"),
     (("tallinn", "aegna"), "tallinn-estonia"),
     (("dublin", "dalkey", "killiney", "docklands"), "dublin-ireland"),
     (("como", "bellagio"), "lake-como-italy"),
@@ -63,7 +63,8 @@ CITY_HINTS: list[tuple[tuple[str, ...], str]] = [
     (("amalfi", "positano", "capri", "sorrento"), "amalfi-coast-italy"),
     (("the red sea", "shura island", "shura"), "red-sea-global-ksa"),
     (("amaala", "triple bay"), "amaala-ksa"),
-    (("neom", "sindalah", "magna", "oxagon"), "neom-ksa"),
+    (("sindalah", "magna", "oxagon"), "neom-sindalah-ksa"),
+    (("neom",), "neom-ksa"),
     (("tangier",), "tangier-morocco"),
     (("casablanca",), "casablanca-morocco"),
     (("agadir",), "agadir-essaouira-morocco"),
@@ -85,8 +86,95 @@ STALE_NODE_CHIPS = frozenset(
         "split-croatia",
         "amalfi-coast-italy",
         "limassol-cyprus",
+        "neom-ksa",
     }
 )
+
+SINDALAH_GCN_EPS = {
+    "from": "NEOM Sindalah — Sindalah Marina (IGY)",
+    "to": "Magna resort cluster jetty (NEOM north-coast)",
+}
+
+CROATIA_CYPRUS_CITIES = [
+    {"id": "zadar-croatia", "name": "Zadar", "coords": [15.2317, 44.1194], "country": "Croatia"},
+    {"id": "paphos-cyprus", "name": "Paphos", "coords": [32.4242, 34.7750], "country": "Cyprus"},
+    {"id": "ayia-napa-cyprus", "name": "Ayia Napa", "coords": [33.9998, 34.9828], "country": "Cyprus"},
+]
+
+CROATIA_CYPRUS_BPS = [
+    {
+        "id": "bp-zadar-gazenica-port",
+        "name": "Zadar Gaženica Ferry Port",
+        "shortName": "Zadar Gaženica Port",
+        "parent_city_id": "zadar-croatia",
+        "coords": [15.2317, 44.1194],
+        "bp_type": "ferry_terminal",
+    },
+    {
+        "id": "bp-murter-hramina-marina",
+        "name": "Murter Hramina Marina (Kornati gateway)",
+        "shortName": "Murter Hramina Marina",
+        "parent_city_id": "zadar-croatia",
+        "coords": [15.5922, 43.8250],
+        "bp_type": "marina",
+    },
+    {
+        "id": "bp-kornati-piskera",
+        "name": "Kornati NP — ACI Piškera / Vela Proversa anchorage",
+        "shortName": "Kornati Piškera Anchorage",
+        "parent_city_id": "zadar-croatia",
+        "coords": [15.3500, 43.8000],
+        "bp_type": "anchorage",
+    },
+    {
+        "id": "bp-paphos-harbour",
+        "name": "Paphos Harbour (Kato Paphos / Castle quay)",
+        "shortName": "Paphos Harbour",
+        "parent_city_id": "paphos-cyprus",
+        "coords": [32.4078, 34.7547],
+        "bp_type": "harbour",
+    },
+    {
+        "id": "bp-paphos-airport-jetty",
+        "name": "Paphos International Airport (PFO) waterfront jetty",
+        "shortName": "Paphos Airport Jetty",
+        "parent_city_id": "paphos-cyprus",
+        "coords": [32.4892, 34.7180],
+        "bp_type": "jetty",
+    },
+    {
+        "id": "bp-coral-bay-peyia",
+        "name": "Coral Bay (Peyia) resort cluster jetty",
+        "shortName": "Coral Bay Jetty",
+        "parent_city_id": "paphos-cyprus",
+        "coords": [32.3789, 34.8519],
+        "bp_type": "jetty",
+    },
+    {
+        "id": "bp-ayia-napa-marina",
+        "name": "Ayia Napa Marina",
+        "shortName": "Ayia Napa Marina",
+        "parent_city_id": "ayia-napa-cyprus",
+        "coords": [34.0019, 34.9828],
+        "bp_type": "marina",
+    },
+    {
+        "id": "bp-protaras-jetty",
+        "name": "Protaras Fig Tree Bay / Pernera jetty",
+        "shortName": "Protaras Jetty",
+        "parent_city_id": "ayia-napa-cyprus",
+        "coords": [34.0583, 35.0133],
+        "bp_type": "jetty",
+    },
+    {
+        "id": "bp-larnaca-airport-jetty",
+        "name": "Larnaca International Airport (LCA) waterfront jetty",
+        "shortName": "Larnaca Airport Jetty",
+        "parent_city_id": "larnaca-cyprus",
+        "coords": [33.6231, 34.8751],
+        "bp_type": "jetty",
+    },
+]
 
 MOZAMBIQUE_BPS = [
     {
@@ -190,12 +278,16 @@ def should_patch_nodes(corridor: dict) -> bool:
         return False
     if a in STALE_NODE_CHIPS or b in STALE_NODE_CHIPS:
         return True
+    fc, tc = infer_endpoint_cities(corridor)
     if a == b:
-        fc, tc = infer_endpoint_cities(corridor)
         if fc and tc and fc != tc:
             return True
         if fc and fc != a:
             return True
+    if fc and a != fc:
+        return True
+    if tc and b != tc:
+        return True
     return False
 
 
@@ -311,6 +403,84 @@ def ensure_mozambique_surface(fbt: dict) -> dict:
     return report
 
 
+def ensure_croatia_cyprus_surface(fbt: dict) -> dict:
+    report = {"cities_added": [], "bps_added": []}
+    seen = existing_ids(fbt)
+
+    for city in CROATIA_CYPRUS_CITIES:
+        if city["id"] in seen:
+            continue
+        fbt.setdefault("city", []).append(
+            {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": city["coords"]},
+                "properties": {
+                    "id": city["id"],
+                    "type": "city",
+                    "name": city["name"],
+                    "shortName": city["name"],
+                    "fullName": city["name"],
+                    "country": city["country"],
+                    "region": "Europe",
+                    "platform_class": "dual-platform",
+                    "coords_resolved": True,
+                    "coords_source": "geometry_bind_2026-06-20",
+                    "confidence": "medium",
+                    "status": "operational",
+                    "tier_sort_key": 2,
+                },
+            }
+        )
+        seen.add(city["id"])
+        report["cities_added"].append(city["id"])
+
+    fbt["city"].sort(key=lambda x: (x.get("properties") or {}).get("id", ""))
+
+    for bp in CROATIA_CYPRUS_BPS:
+        if bp["id"] in seen:
+            continue
+        fbt.setdefault("poi", []).append(
+            {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": bp["coords"]},
+                "properties": {
+                    "id": bp["id"],
+                    "type": "poi",
+                    "name": bp["name"],
+                    "shortName": bp["shortName"],
+                    "fullName": bp["name"],
+                    "parent_city_id": bp["parent_city_id"],
+                    "bp_type": bp["bp_type"],
+                    "coords_resolved": True,
+                    "confidence": "medium",
+                    "status": "operational",
+                    "_geometry_bind": True,
+                    "last_enriched": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                },
+            }
+        )
+        seen.add(bp["id"])
+        report["bps_added"].append(bp["id"])
+
+    return report
+
+
+def patch_sindalah_gcn_eps(corridor: dict) -> bool:
+    rid = corridor.get("route_id") or ""
+    if not str(rid).startswith("gcn-7bd6efa01a"):
+        return False
+    eps = corridor.get("endpoint_boarding_points") or {}
+    changed = False
+    for side, val in SINDALAH_GCN_EPS.items():
+        if eps.get(side) != val:
+            eps[side] = val
+            changed = True
+    if changed:
+        corridor["endpoint_boarding_points"] = eps
+        corridor["_geometry_bound_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return changed
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--corridors", default=str(DEFAULT_CORRIDORS))
@@ -325,14 +495,17 @@ def main():
     routes = route_features(load_json(dc / "ROUTES.json"))
     gold_ids = {route_id_of(r) for r in routes}
 
-    surface_report = ensure_mozambique_surface(fbt)
+    moz_surface_report = ensure_mozambique_surface(fbt)
+    cc_surface_report = ensure_croatia_cyprus_surface(fbt)
 
     report = {
         "phase": "bind_pending_corridor_geometry",
         "generated": datetime.now(timezone.utc).isoformat(),
         "nodes_patched": [],
         "routes_wired": [],
-        "mozambique_surface": surface_report,
+        "sindalah_eps_patched": [],
+        "mozambique_surface": moz_surface_report,
+        "croatia_cyprus_surface": cc_surface_report,
         "bp_resolution_after": [],
     }
 
@@ -341,13 +514,16 @@ def main():
             label = f"{corr.get('from')} -> {corr.get('to')}"
             if patch_corridor_nodes(corr):
                 report["nodes_patched"].append({"market": mkey, "corridor": label})
+            if patch_sindalah_gcn_eps(corr):
+                report["sindalah_eps_patched"].append({"market": mkey, "corridor": label})
             if wire_route_id(mkey, corr, gold_ids):
                 report["routes_wired"].append(
                     {"market": mkey, "corridor": label, "route_id": corr["route_id"]}
                 )
 
     bp_idx = build_bp_index(fbt)
-    for row in report["nodes_patched"] + report["routes_wired"]:
+    touched = report["nodes_patched"] + report["routes_wired"] + report["sindalah_eps_patched"]
+    for row in touched:
         mkey = row["market"]
         label = row["corridor"]
         corr = next(
@@ -375,8 +551,10 @@ def main():
 
     print(
         f"bind: nodes={len(report['nodes_patched'])} wired={len(report['routes_wired'])} "
+        f"sindalah_eps={len(report['sindalah_eps_patched'])} "
         f"bp_pairs={len(report['bp_resolution_after'])} "
-        f"moz_cities={len(surface_report['cities_added'])} moz_bps={len(surface_report['bps_added'])}"
+        f"moz_cities={len(moz_surface_report['cities_added'])} moz_bps={len(moz_surface_report['bps_added'])} "
+        f"cc_cities={len(cc_surface_report['cities_added'])} cc_bps={len(cc_surface_report['bps_added'])}"
     )
     print(f"report: {out_report}")
 

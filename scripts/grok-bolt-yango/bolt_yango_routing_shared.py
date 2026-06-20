@@ -88,6 +88,10 @@ NODE_CROSSWALK = {
     "beira-mozambique": "beira-mozambique",
     "amaala-ksa": "amaala-ksa",
     "neom-ksa": "neom-ksa",
+    "neom-sindalah-ksa": "neom-sindalah-ksa",
+    "paphos-cyprus": "paphos-cyprus",
+    "ayia-napa-cyprus": "ayia-napa-cyprus",
+    "zadar-croatia": "zadar-croatia",
     "red-sea-global": "red-sea-global-ksa",
     "bodrum": "bodrum-turkey",
     "cesme-izmir": "cesme-izmir-turkey",
@@ -114,6 +118,12 @@ CITY_SEARCH_ALIASES: dict[str, list[str]] = {
     "maputo-mozambique": ["maputo-mozambique"],
     "inhambane-mozambique": ["inhambane-mozambique"],
     "beira-mozambique": ["beira-mozambique"],
+    "limassol-cyprus": ["limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"],
+    "larnaca-cyprus": ["larnaca-cyprus", "limassol-cyprus", "ayia-napa-cyprus", "paphos-cyprus"],
+    "paphos-cyprus": ["paphos-cyprus", "limassol-cyprus", "larnaca-cyprus"],
+    "ayia-napa-cyprus": ["ayia-napa-cyprus", "larnaca-cyprus", "limassol-cyprus", "protaras"],
+    "zadar-croatia": ["zadar-croatia", "split-croatia"],
+    "neom-sindalah-ksa": ["neom-sindalah-ksa"],
 }
 
 # Tasklet endpoint_boarding_points labels → token hints for relaxed BP match
@@ -157,6 +167,26 @@ LABEL_HINTS: dict[str, list[str]] = {
     "ibo island jetty quirimbas archipelago quirimbas national park": ["ibo island quay", "ibo"],
     "the red sea": ["shura island marina"],
     "shura island hub": ["shura island marina"],
+    "neom sindalah sindalah marina igy": ["sindalah island marina"],
+    "magna oxagon coast": ["magna resort cluster jetty"],
+    "magna resort cluster jetty neom north coast": ["magna resort cluster jetty"],
+    "paphos harbour kato paphos paphos castle harbour the established sea cruise departure quay": [
+        "paphos harbour",
+    ],
+    "jetty adjacent to paphos international airport pfo": ["paphos airport jetty"],
+    "paphos harbour kato paphos coral bay peyia resort cluster": ["paphos harbour", "coral bay"],
+    "ayia napa marina opened 2020 360 berths yachts to 110 m superyacht capable hosted 100m m y lana": [
+        "ayia napa marina",
+    ],
+    "ayia napa marina": ["ayia napa marina"],
+    "protaras fig tree bay pernera jetties no full marina tender jetty boarding": ["protaras jetty"],
+    "protaras fig tree bay pernera jetty tender jetty boarding": ["protaras jetty"],
+    "larnaca port jetty adjacent to larnaca international airport lca": ["larnaca airport jetty"],
+    "zadar gazenica old port murter hramina biograd na moru harbour": [
+        "murter hramina marina",
+        "zadar gazenica port",
+    ],
+    "kornati np vela provarsa aci piskera island anchorages": ["kornati piskera anchorage"],
 }
 
 
@@ -500,8 +530,12 @@ def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: st
         cities.append("bodrum-turkey")
     if city_id == "dubrovnik-croatia":
         cities.extend(["dubrovnik-croatia", "korcula-croatia", "split-croatia", "kotor-montenegro"])
-    if city_id == "limassol-cyprus" or city_id == "larnaca-cyprus":
-        cities.extend(["limassol-cyprus", "larnaca-cyprus"])
+    if city_id in ("limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"):
+        cities.extend(["limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"])
+    if city_id == "zadar-croatia":
+        cities.extend(["zadar-croatia", "split-croatia"])
+    if city_id == "neom-sindalah-ksa":
+        cities.append("neom-sindalah-ksa")
     return list(dict.fromkeys(cities))
 
 
