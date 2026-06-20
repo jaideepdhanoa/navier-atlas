@@ -1,0 +1,40 @@
+{
+  "_doc": "LB-257 Gate-A anchor-city crosswalk for the new french-polynesia partner page. Verdict basis: each anchor id equals the from_node_id/to_node_id used in the SEALED french-polynesia corridors (finance/model/corridors.json), and matches the city_id in markets/french-polynesia/briefs/*. Render join key = atlas city_id (not filename).",
+  "partner": "french-polynesia",
+  "anchors": {
+    "tahiti-moorea-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/papeete-tahiti.json == node_id in sealed corridors"
+    },
+    "moorea-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/moorea.json == node_id in sealed corridors"
+    },
+    "bora-bora-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "from_node_id in sealed corridors (brief JSON truncated, pre-existing; node_id is sealed/rendered)"
+    },
+    "raiatea-tahaa-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/raiatea-tahaa.json == node_id in sealed corridors"
+    },
+    "huahine-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/huahine.json == node_id in sealed corridors"
+    },
+    "maupiti-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/maupiti.json == node_id in sealed corridors"
+    },
+    "rangiroa-tuamotus-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "from_node_id in sealed corridors (Tuamotus cluster)"
+    },
+    "marquesas-french-polynesia": {
+      "verdict": "OK",
+      "evidence": "city_id in briefs/marquesas.json == node_id in sealed corridors"
+    }
+  },
+  "grok_render_check": "Standard Gate-A safety net: confirm each anchor id resolves to an atlas city_id at render and that geometry chips == .markets == roll_up reconcile. FP uses the -french-polynesia suffix consistently in BOTH registry node_ids and atlas city_ids, so no dubai-uave-style mismatch is expected.",
+  "page_region_flag": "page.region set to 'pacific' to match the corridor market region 'Pacific — French Polynesia'; confirm the front-end groups under a Pacific bucket (else map to 'oceania')."
+}
