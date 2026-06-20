@@ -11,6 +11,11 @@ Precision lanes (all partners / phase carousels):
   B. brief inheritance — cluster labels (Bali ↔ Lombok ↔ Komodo) → brief signature_routes
   C. best-of-N — traffic_weight + economics tie-break when multiple routes pass gates
   D. gcn promote — visible gcn-*-{partner} over quarantined rn-* copies
+  A′. declared-city scope union + label-inferred chip scope
+  A″. brand tokens (ONE°15) + segment-head anchors + chip_search_phrases
+  B′. endpoint grounding crosswalk (CHIP_GROUNDING + CORRIDOR-ENDPOINT-GROUNDING)
+  F. phase-union rollup chips (nationwide / whole-map umbrellas)
+  G. geometry-pending flags (network-chip-text-only) for true gaps
 
 Usage:
   python3 scripts/relink_partner_journeys.py --audit
@@ -226,13 +231,82 @@ class LinkStats:
     matched_node: int = 0
     network_chip: int = 0
     brief_cluster: int = 0
+    phase_rollup: int = 0
+    grounding: int = 0
     gcn_promoted: int = 0
     still_null: int = 0
     geometry_pending: int = 0
 
 
 # Bundle label segment separators (Grab hub chips, resort meshes, etc.)
-_BUNDLE_SPLIT = re.compile(r"\s*(?:↔|↔|<->|/|—|–|&|,|\+|\band\b)\s*", re.I)
+_BUNDLE_SPLIT = re.compile(r"\s*(?:↔|↔|<->|/|—|–|&|,|\+|\band\b|\bto\b)\s*", re.I)
+_ROLLUP_CHIP = re.compile(
+    r"\b(nationwide|whole\s+\w+\s+(?:map|network|water)|entire\s+network|"
+    r"coastal\s*\+\s*(?:cross[- ]border|river)|cross[- ]border\s+network)\b",
+    re.I,
+)
+_BRAND_TOKEN_RE = re.compile(r"one\s*°?\s*15", re.I)
+_CHIP_ARROW = re.compile(r"\s*(?:→|->)\s*")
+
+# Chip label token → graph label substrings (endpoint grounding crosswalk)
+CHIP_GROUNDING: dict[str, list[str]] = {
+    "velana": ["velana", "ferry terminal", "malé jetty", "hulhumale", "seaplane", "male jetty"],
+    "kuda huraa": ["huraa", "bandos", "north malé", "north male", "kurumba", "gili lankanfushi"],
+    "landaa giraavaru": ["landaa", "giraavaru", "ari", "halaveli", "nord malé"],
+    "one15": ["one 15", "one°15", "sentosa cove"],
+    "one°15": ["one 15", "sentosa cove"],
+    "cbd": ["marina bay", "fullerton", "bayfront", "downtown core"],
+    "marina cluster": ["one 15", "sentosa cove", "marina bay", "southern islands"],
+    "premium leisure": ["sentosa", "one 15", "marina bay"],
+    "dubai marina": ["dubai harbour", "dubai marina", "harbour marina", "ushuaïa"],
+    "downtown": ["dubai creek", "al seef", "canal", "festival city", "creek marina"],
+    "resort atolls": ["atoll", "ferry", "harbour", "jetty", "malé", "bandos"],
+    "malé": ["malé", "male", "north malé", "south malé", "ferry terminal", "atoll"],
+    "haeundae": ["busan", "haeundae", "gwangalli", "marine city", "gwangandaegyo"],
+    "gwangalli": ["gwangalli", "marine city", "busan"],
+    "marine city": ["gwangalli", "marine city", "busan"],
+    "nampo": ["nampo", "busan", "songdo", "jagalchi"],
+    "oryukdo": ["oryukdo", "songdo", "busan", "yeong"],
+    "songdo": ["songdo", "oryukdo", "busan"],
+    "moseulpo": ["jeju", "marado", "gapado", "moseulpo", "southern"],
+    "marado": ["marado", "gapado", "jeju", "moseulpo"],
+    "gapado": ["gapado", "marado", "jeju"],
+    "han river": ["han river", "incheon bay", "yeouido", "hangang"],
+    "goa coastal": ["goa", "panjim", "calangute", "anjuna", "vagator", "margao"],
+    "goa": ["goa", "panjim", "calangute", "anjuna", "vagator", "margao", "palolem"],
+    "north goa": ["north goa", "panjim", "calangute", "anjuna", "vagator"],
+    "south goa": ["south goa", "margao", "palolem", "benaulim"],
+    "bora bora": ["bora bora", "motu mute", "vaitape", "four seasons"],
+    "four seasons bora bora": ["bora bora", "motu mute", "vaitape"],
+    "mahé": ["mahé", "mahe", "victoria", "seychelles", "eden island"],
+    "desroches": ["desroches", "amirantes"],
+    "manhattan": ["manhattan", "hudson", "brooklyn", "new york", "wall street"],
+    "jfk": ["jfk", "laguardia", "lga", "kennedy", "airport"],
+    "lga": ["laguardia", "lga", "airport"],
+    "hamptons": ["hamptons", "montauk", "southampton", "east hampton"],
+    "wall st": ["wall street", "manhattan", "brooklyn", "hamptons"],
+    "marina zeas": ["zeas", "piraeus", "athens", "marina"],
+    "cape sounion": ["sounion", "athens", "saronic", "lavrio"],
+    "vung tau": ["vung tau", "ba ria", "ho chi minh"],
+    "con dao": ["con dao", "condao"],
+    "park excursions": ["con dao", "condao"],
+    "kadhdhoo": ["kadhdhoo", "laamu", "six senses laamu"],
+    "laamu": ["laamu", "kadhdhoo", "six senses"],
+    "soneva kiri": ["soneva", "koh kood", "kood", "kiri"],
+    "koh kood": ["koh kood", "kood", "mai si", "soneva"],
+    "koh mai si": ["mai si", "koh kood", "soneva"],
+    "gulf excursions": ["samui", "phangan", "tao", "ang thong"],
+    "sentosa": ["sentosa", "southern islands", "brani", "seringat"],
+    "marina bay": ["marina bay", "bayfront", "fullerton", "downtown"],
+    "changi": ["changi", "east coast", "pasir ris", "tanah merah"],
+    "east coast": ["east coast", "changi", "pasir ris"],
+}
+
+_ASPIRATIONAL_CHIP = re.compile(
+    r"\b(hamptons|jfk|lga|sounion|desroches|haeundae|gwangalli|nampo|oryukdo|"
+    r"marado|gapado|kadhdhoo|laamu)\b",
+    re.I,
+)
 
 
 def route_visible(p: dict) -> bool:
@@ -688,6 +762,88 @@ def find_node_pair_route(
     return best_id
 
 
+def is_rollup_chip(label: str | None) -> bool:
+    return bool(label and _ROLLUP_CHIP.search(label))
+
+
+def phase_chip_scope(
+    declared_cities: list | None,
+    city_ids: set[str],
+    fallback_scope: set[str],
+) -> set[str]:
+    """Union resolved cities with raw declared phase cities (map-scope heroes)."""
+    scope: set[str] = set()
+    for c in declared_cities or []:
+        c = crosswalk_node(c) or c
+        scope.add(c)
+        scope.update(resolve_phase_cities([c], city_ids))
+        for alias in CITY_SEARCH_ALIASES.get(c, [c]):
+            scope.add(alias)
+    if not scope:
+        scope = set(fallback_scope)
+    return expand_scope(scope)
+
+
+def chip_scope_for_item(
+    item: dict,
+    declared_cities: list | None,
+    city_ids: set[str],
+    fallback_scope: set[str],
+) -> set[str]:
+    """Prefer label-inferred cities; fall back to full declared phase scope."""
+    base = phase_chip_scope(declared_cities, city_ids, fallback_scope)
+    label = item.get("label") or ""
+    if is_rollup_chip(label):
+        return base
+    label_hits: set[str] = set()
+    for seg in bundle_segments(label):
+        label_hits.update(resolve_place_to_cities(seg, base))
+        sn = norm_label(seg)
+        for cid in base:
+            a = cid.lower()
+            for tok in _tokens(seg):
+                if len(tok) >= 4 and tok in a.replace("_", "-").split("-"):
+                    label_hits.add(cid)
+            if sn and sn in a:
+                label_hits.add(cid)
+        if "dubai" in sn and "dubai-uae" in base:
+            label_hits.add("dubai-uae")
+        if "malé" in sn or "male" in sn or "resort atoll" in sn:
+            for cid in base:
+                if "maldives" in cid or "male" in cid:
+                    label_hits.add(cid)
+        if "singapore" in sn or "marina bay" in sn or "sentosa" in sn or "one" in sn:
+            if "singapore" in base:
+                label_hits.add("singapore")
+    if label_hits:
+        return expand_scope(label_hits)
+    return base
+
+
+def extract_brand_tokens(label: str | None) -> set[str]:
+    if not label:
+        return set()
+    out: set[str] = set()
+    if _BRAND_TOKEN_RE.search(label):
+        out.update({"one15", "one", "15"})
+    return out
+
+
+def segment_head_tokens(seg: str) -> set[str]:
+    """Segment-head anchors: keep geo tokens that are bundle segment titles."""
+    out: set[str] = set()
+    seg_n = norm_label(seg)
+    if not seg_n:
+        return out
+    for tok in seg_n.split():
+        if len(tok) >= 3:
+            out.add(tok)
+    for tok in _tokens(seg):
+        if len(tok) >= 3:
+            out.add(tok)
+    return out
+
+
 def bundle_segments(label: str | None) -> list[str]:
     if not label:
         return []
@@ -695,12 +851,95 @@ def bundle_segments(label: str | None) -> list[str]:
     return parts or [label.strip()]
 
 
+def grounding_expansions(label: str | None, segments: list[str]) -> set[str]:
+    phrases: set[str] = set()
+    keys = [norm_label(label)] + [norm_label(s) for s in segments]
+    for key in keys:
+        if not key:
+            continue
+        if key in CHIP_GROUNDING:
+            phrases.update(CHIP_GROUNDING[key])
+        for gkey, aliases in CHIP_GROUNDING.items():
+            if gkey in key or key in gkey:
+                phrases.update(aliases)
+            for sn in (norm_label(s) for s in segments):
+                if sn and (sn in gkey or gkey in sn):
+                    phrases.update(aliases)
+    return {norm_label(p) for p in phrases if p}
+
+
 def bundle_tokens(label: str | None) -> set[str]:
     toks: set[str] = set()
-    for seg in bundle_segments(label):
+    segments = bundle_segments(label)
+    toks |= extract_brand_tokens(label)
+    for seg in segments:
         toks |= _place_toks(seg)
-        toks |= {t for t in _tokens(seg) if len(t) >= 4 and t not in _GEO_STOP}
-    return toks
+        toks |= segment_head_tokens(seg)
+        toks |= {t for t in _tokens(seg) if len(t) >= 3 and t not in _LABEL_STOP}
+    toks |= grounding_expansions(label, segments)
+    return {t for t in toks if t and t not in _LABEL_STOP}
+
+
+def chip_search_phrases(label: str | None) -> list[str]:
+    phrases: list[str] = []
+    if not label:
+        return phrases
+    if _BRAND_TOKEN_RE.search(label):
+        phrases.extend(["one 15", "one°15", "ONE°15"])
+    for seg in bundle_segments(label):
+        phrases.append(seg)
+        sn = norm_label(seg)
+        if sn:
+            phrases.append(sn)
+    for arrow_part in _CHIP_ARROW.split(label):
+        p = arrow_part.strip()
+        if p:
+            phrases.append(p)
+    segments = bundle_segments(label)
+    for gp in grounding_expansions(label, segments):
+        phrases.append(gp)
+    return list(dict.fromkeys(phrases))
+
+
+@dataclass
+class GroundingIndex:
+    by_place: dict[str, list[str]] = field(default_factory=dict)
+
+
+def load_grounding_index(root: Path) -> GroundingIndex:
+    idx = GroundingIndex(by_place=dict(CHIP_GROUNDING))
+    path = root / "data-clean/CORRIDOR-ENDPOINT-GROUNDING.json"
+    if not path.exists():
+        return idx
+    raw = load_json(path)
+    for bucket in ("build_targets", "pinnable_now"):
+        for row in raw.get(bucket) or []:
+            for side in ("from_text", "to_text", "from_label", "to_label"):
+                txt = row.get(side)
+                if not txt:
+                    continue
+                key = norm_label(txt)
+                idx.by_place.setdefault(key, []).append(norm_label(txt))
+                for tok in _tokens(txt):
+                    if len(tok) >= 4:
+                        idx.by_place.setdefault(tok, []).append(norm_label(txt))
+    return idx
+
+
+def load_chip_supplement_routes(root: Path) -> dict[str, RouteRec]:
+    """Quarantined e__ corridor mints — eligible for network_chip bundles only."""
+    raw = load_json(root / "data-clean/ROUTES.json")
+    feats = raw if isinstance(raw, list) else raw.get("features", [])
+    out: dict[str, RouteRec] = {}
+    for f in feats:
+        p = f.get("properties") or {}
+        rid = p.get("id")
+        if not rid or not str(rid).startswith("e__"):
+            continue
+        rec = _route_rec_from_props(p)
+        if rec:
+            out[rid] = rec
+    return out
 
 
 def resolve_place_to_cities(place: str, scope: set[str]) -> list[str]:
@@ -720,18 +959,40 @@ def resolve_place_to_cities(place: str, scope: set[str]) -> list[str]:
     return list(dict.fromkeys(out))
 
 
-def route_matches_bundle(rec: RouteRec, tokens: set[str]) -> bool:
-    if not tokens:
+def route_matches_chip(
+    rec: RouteRec,
+    tokens: set[str],
+    phrases: list[str] | None = None,
+) -> bool:
+    if not tokens and not phrases:
         return False
+    nl = norm_label(rec.from_label + " " + rec.to_label)
+    for ph in phrases or []:
+        pn = norm_label(ph)
+        if not pn:
+            continue
+        if pn in nl or nl in pn:
+            return True
+        if "one 15" in pn and "one 15" in nl:
+            return True
     ep = _place_toks(rec.from_label) | _place_toks(rec.to_label)
-    ep |= {t for t in _tokens(rec.from_label + " " + rec.to_label) if len(t) >= 4}
+    ep |= {t for t in _tokens(rec.from_label + " " + rec.to_label) if len(t) >= 3}
     overlap = tokens & ep
     if len(overlap) >= 2:
         return True
-    anchors = [t for t in tokens if len(t) >= 5 and t not in _COMMON_PLACE]
-    if anchors and any(a in norm_label(rec.from_label + " " + rec.to_label) for a in anchors):
+    anchors = [t for t in tokens if len(t) >= 4 and t not in _COMMON_PLACE]
+    if anchors and any(a in nl for a in anchors):
         return True
-    return len(overlap) >= 1 and any(len(t) >= 6 for t in overlap)
+    if len(overlap) >= 1:
+        return True
+    for tok in tokens:
+        if len(tok) >= 4 and tok in nl:
+            return True
+    return False
+
+
+def route_matches_bundle(rec: RouteRec, tokens: set[str]) -> bool:
+    return route_matches_chip(rec, tokens)
 
 
 def inherit_cluster_route_ids(
@@ -775,6 +1036,26 @@ def inherit_cluster_route_ids(
     return [rid for rid, _ in ranked]
 
 
+def _chip_candidate_pool(
+    scope: set[str],
+    routes: dict[str, RouteRec],
+    routes_by_city: dict[str, list[str]],
+    chip_supplement: dict[str, RouteRec] | None = None,
+) -> dict[str, RouteRec]:
+    pool: dict[str, RouteRec] = dict(routes)
+    if chip_supplement:
+        pool.update(chip_supplement)
+    scoped: dict[str, RouteRec] = {}
+    for cid in scope:
+        for rid in routes_by_city.get(cid, []):
+            if rid in pool:
+                scoped[rid] = pool[rid]
+    for rid, rec in pool.items():
+        if route_in_scope(rec, scope):
+            scoped[rid] = rec
+    return scoped
+
+
 def expand_network_chip_route_ids(
     item: dict,
     scope: set[str],
@@ -783,28 +1064,32 @@ def expand_network_chip_route_ids(
     partner_slug: str | None,
     promo: GcnPromoIndex,
     econ: EconomicsIndex,
+    *,
+    chip_supplement: dict[str, RouteRec] | None = None,
 ) -> list[str]:
     """Lane A: network_chip bundle → all scoped legs matching label tokens."""
     label = item.get("label") or ""
     tokens = bundle_tokens(label)
-    if not tokens:
+    phrases = chip_search_phrases(label)
+    if not tokens and not phrases:
         return []
 
     chip_nm = item.get("distance_nm")
-    candidates: set[str] = set()
-    for cid in scope:
-        candidates.update(routes_by_city.get(cid, []))
+    candidates = _chip_candidate_pool(scope, routes, routes_by_city, chip_supplement)
 
     passing: list[tuple[str, float]] = []
-    for rid in candidates:
+    for rid, rec in candidates.items():
         promoted = promote_route_id(rid, partner_slug, promo, routes) or rid
-        rec = routes.get(promoted)
-        if not rec or not route_in_scope(rec, scope):
+        vis = routes.get(promoted) or (chip_supplement or {}).get(promoted)
+        if not vis:
             continue
-        if not route_matches_bundle(rec, tokens):
+        rec = vis
+        if not route_in_scope(rec, scope):
+            continue
+        if not route_matches_chip(rec, tokens, phrases):
             continue
         if chip_nm is not None and rec.distance_nm is not None:
-            if abs(rec.distance_nm - chip_nm) / max(chip_nm, 1.0) > 0.5:
+            if abs(rec.distance_nm - chip_nm) / max(chip_nm, 1.0) > 0.6:
                 continue
         tw = rec.traffic_weight or 0.0
         sc = tw + (2.0 if promoted in econ.all_ids else 0.0)
@@ -814,6 +1099,108 @@ def expand_network_chip_route_ids(
         return []
     passing.sort(key=lambda x: -x[1])
     return list(dict.fromkeys(rid for rid, _ in passing))
+
+
+def expand_grounding_route_ids(
+    item: dict,
+    scope: set[str],
+    routes: dict[str, RouteRec],
+    routes_by_city: dict[str, list[str]],
+    partner_slug: str | None,
+    promo: GcnPromoIndex,
+    econ: EconomicsIndex,
+    chip_supplement: dict[str, RouteRec],
+    grounding: GroundingIndex,
+) -> list[str]:
+    """Lane B′: endpoint grounding crosswalk + quarantined e__ corridor mints."""
+    label = item.get("label") or ""
+    segments = bundle_segments(label)
+    search_phrases: set[str] = set(chip_search_phrases(label))
+    for seg in segments:
+        sn = norm_label(seg)
+        for aliases in grounding.by_place.values():
+            for a in aliases:
+                if sn and (sn in a or a in sn):
+                    search_phrases.add(a)
+        if sn in grounding.by_place:
+            search_phrases.update(grounding.by_place[sn])
+
+    tokens = bundle_tokens(label)
+    candidates = _chip_candidate_pool(scope, routes, routes_by_city, chip_supplement)
+    passing: list[tuple[str, float]] = []
+    for rid, rec in candidates.items():
+        promoted = promote_route_id(rid, partner_slug, promo, routes) or rid
+        vis = routes.get(promoted) or chip_supplement.get(promoted)
+        if not vis or not route_in_scope(vis, scope):
+            continue
+        if not route_matches_chip(vis, tokens, list(search_phrases)):
+            continue
+        chip_nm = item.get("distance_nm")
+        if chip_nm is not None and vis.distance_nm is not None:
+            if abs(vis.distance_nm - chip_nm) / max(chip_nm, 1.0) > 0.6:
+                continue
+        sc = (vis.traffic_weight or 0.0) + (3.0 if promoted in econ.all_ids else 0.0)
+        if rid.startswith("e__"):
+            sc += 2.0
+        passing.append((promoted, sc))
+    if not passing:
+        return []
+    passing.sort(key=lambda x: -x[1])
+    return list(dict.fromkeys(rid for rid, _ in passing))
+
+
+def phase_union_route_ids(
+    phase: dict,
+    all_phases: list[dict],
+    item: dict,
+    routes: dict[str, RouteRec],
+    partner_slug: str | None,
+    promo: GcnPromoIndex,
+) -> list[str]:
+    """Lane F: end-state rollup chips → union of prior phase linked corridors."""
+    if not is_rollup_chip(item.get("label")):
+        return []
+    phase_n = phase.get("n")
+    out: list[str] = []
+    for ph in all_phases:
+        pn = ph.get("n")
+        if phase_n is not None and pn is not None and pn > phase_n:
+            continue
+        for fr in ph.get("featured_routes") or []:
+            if not isinstance(fr, dict) or fr is item:
+                continue
+            if is_rollup_chip(fr.get("label")):
+                continue
+            for rid in list(fr.get("route_ids") or []):
+                if rid:
+                    out.append(rid)
+            if fr.get("route_id"):
+                out.append(fr["route_id"])
+    promoted: list[str] = []
+    for rid in dict.fromkeys(out):
+        p = promote_route_id(rid, partner_slug, promo, routes) or rid
+        if p in routes:
+            promoted.append(p)
+    return promoted
+
+
+def mark_unlinked_chip(item: dict, stats: LinkStats) -> None:
+    """Lane G: explicit geometry-pending flags — null beats wrong."""
+    item["route_ids"] = None
+    item["route_id"] = None
+    item["flag"] = "network-chip-text-only"
+    fn = item.get("from_node_id") or item.get("from_node")
+    tn = item.get("to_node_id") or item.get("to_node")
+    label = item.get("label") or ""
+    if fn and tn and fn == tn:
+        item["_link_status"] = "unlinked-intra-city"
+        stats.geometry_pending += 1
+    elif _ASPIRATIONAL_CHIP.search(label):
+        item["_link_status"] = "aspirational-no-built-route"
+        stats.geometry_pending += 1
+    else:
+        item["_link_status"] = "unlinked-no-bundle"
+        stats.still_null += 1
 
 
 def relink_network_chip(
@@ -827,23 +1214,49 @@ def relink_network_chip(
     partner_slug: str | None = None,
     promo: GcnPromoIndex | None = None,
     econ: EconomicsIndex | None = None,
+    chip_supplement: dict[str, RouteRec] | None = None,
+    grounding: GroundingIndex | None = None,
+    phase: dict | None = None,
+    all_phases: list[dict] | None = None,
 ) -> None:
     promo = promo or GcnPromoIndex()
     econ = econ or EconomicsIndex()
+    grounding = grounding or GroundingIndex()
+    chip_supplement = chip_supplement or {}
     stats.total += 1
 
-    old_ids = list(item.get("route_ids") or [])
     if item.get("route_id"):
         item["route_id"] = None
         stats.cleared_mislink += 1
 
-    rids = inherit_cluster_route_ids(item, scope, brief_idx, routes, partner_slug, promo, econ)
-    source = "brief-cluster"
+    rids: list[str] = []
+    source = ""
+
+    if phase and all_phases and is_rollup_chip(item.get("label")):
+        rids = phase_union_route_ids(phase, all_phases, item, routes, partner_slug, promo)
+        if rids:
+            source = "phase-rollup"
+
+    if not rids:
+        rids = inherit_cluster_route_ids(item, scope, brief_idx, routes, partner_slug, promo, econ)
+        if rids:
+            source = "brief-cluster"
+
+    if not rids:
+        rids = expand_grounding_route_ids(
+            item, scope, routes, routes_by_city, partner_slug, promo, econ,
+            chip_supplement, grounding,
+        )
+        if rids:
+            source = "grounding"
+
     if not rids:
         rids = expand_network_chip_route_ids(
-            item, scope, routes, routes_by_city, partner_slug, promo, econ
+            item, scope, routes, routes_by_city, partner_slug, promo, econ,
+            chip_supplement=chip_supplement,
         )
-        source = "network-chip"
+        if rids:
+            source = "network-chip"
 
     if rids:
         promoted_ids: list[str] = []
@@ -853,28 +1266,30 @@ def relink_network_chip(
                 if p != rid:
                     stats.gcn_promoted += 1
                 promoted_ids.append(p)
-        rids = list(dict.fromkeys(promoted_ids))
+            elif p in chip_supplement and p.startswith("e__"):
+                promoted_ids.append(p)
+        rids = [x for x in dict.fromkeys(promoted_ids) if x in routes or x in chip_supplement]
+        rids = [x for x in rids if x in routes]
+        if not rids:
+            mark_unlinked_chip(item, stats)
+            return
         item["route_ids"] = rids
         item["route_id"] = None
+        item.pop("flag", None)
         item["_link_kind"] = "network-bundle"
         item["_link_status"] = f"linked-grok-{source}"
         item["_link_source"] = f"grok/relink_partner_journeys/{source}"
         stats.linked += 1
         if source == "brief-cluster":
             stats.brief_cluster += 1
+        elif source == "phase-rollup":
+            stats.phase_rollup += 1
+        elif source == "grounding":
+            stats.grounding += 1
         else:
             stats.network_chip += 1
     else:
-        item["route_ids"] = None
-        item["route_id"] = None
-        fn = item.get("from_node_id") or item.get("from_node")
-        tn = item.get("to_node_id") or item.get("to_node")
-        if fn and tn and fn == tn:
-            item["_link_status"] = "unlinked-intra-city"
-            stats.geometry_pending += 1
-        else:
-            item["_link_status"] = "unlinked-no-bundle"
-            stats.still_null += 1
+        mark_unlinked_chip(item, stats)
 
 
 def item_labels(item: dict) -> tuple[str | None, str | None, str]:
@@ -907,6 +1322,10 @@ def relink_item(
     force: bool = True,
     promo: GcnPromoIndex | None = None,
     econ: EconomicsIndex | None = None,
+    chip_supplement: dict[str, RouteRec] | None = None,
+    grounding: GroundingIndex | None = None,
+    phase: dict | None = None,
+    all_phases: list[dict] | None = None,
 ) -> None:
     if not isinstance(item, dict):
         return
@@ -919,6 +1338,8 @@ def relink_item(
         relink_network_chip(
             item, scope, routes, routes_by_city, brief_idx, stats,
             partner_slug=partner_slug, promo=promo, econ=econ,
+            chip_supplement=chip_supplement, grounding=grounding,
+            phase=phase, all_phases=all_phases,
         )
         return
 
@@ -1046,6 +1467,51 @@ def hub_scope(partner: dict, city_ids: set[str], locale_parents: dict[str, str])
     return expand_scope(scope)
 
 
+def _walk_phase_carousels(
+    phases: list[dict],
+    fallback_scope: set[str],
+    city_ids: set[str],
+    routes: dict[str, RouteRec],
+    routes_by_city: dict[str, list[str]],
+    brief_idx: BriefRouteIndex,
+    stats: LinkStats,
+    kw: dict,
+):
+    """Two-pass: non-rollup network_chips first, then rollup umbrellas."""
+    all_phases = [ph for ph in phases if isinstance(ph, dict)]
+
+    def process(rollup_only: bool):
+        for ph in all_phases:
+            phase_scope = phase_chip_scope(ph.get("cities"), city_ids, fallback_scope)
+            featured = [fr for fr in (ph.get("featured_routes") or []) if isinstance(fr, dict)]
+            for fr in featured:
+                is_chip = fr.get("display") == "network_chip"
+                is_roll = is_rollup_chip(fr.get("label"))
+                if rollup_only:
+                    if not (is_chip and is_roll):
+                        continue
+                else:
+                    if is_chip and is_roll:
+                        continue
+                scope = (
+                    chip_scope_for_item(fr, ph.get("cities"), city_ids, fallback_scope)
+                    if is_chip
+                    else phase_scope
+                )
+                relink_item(
+                    fr, scope, routes, routes_by_city, brief_idx, stats,
+                    phase=ph, all_phases=all_phases, **kw,
+                )
+            if not rollup_only:
+                for fr in featured:
+                    if fr.get("display") == "network_chip":
+                        continue
+                    relink_item(fr, phase_scope, routes, routes_by_city, brief_idx, stats, **kw)
+
+    process(rollup_only=False)
+    process(rollup_only=True)
+
+
 def walk_partner(
     partner: dict,
     partner_slug: str,
@@ -1059,36 +1525,36 @@ def walk_partner(
     hub_scope_set: set[str] | None = None,
     promo: GcnPromoIndex | None = None,
     econ: EconomicsIndex | None = None,
+    chip_supplement: dict[str, RouteRec] | None = None,
+    grounding: GroundingIndex | None = None,
 ):
     if hub_scope_set is None:
         hub_scope_set = hub_scope(partner, city_ids, locale_parents)
 
-    kw = {"partner_slug": partner_slug, "promo": promo, "econ": econ}
+    kw = {
+        "partner_slug": partner_slug,
+        "promo": promo,
+        "econ": econ,
+        "chip_supplement": chip_supplement,
+        "grounding": grounding,
+    }
 
     for j in partner.get("journeys_unlocked") or []:
         relink_item(j, hub_scope_set, routes, routes_by_city, brief_idx, stats, **kw)
 
-    for ph in partner.get("phases") or []:
-        ph_scope = expand_scope(
-            set(resolve_phase_cities(ph.get("cities"), city_ids)) or set(hub_scope_set)
-        )
-        for fr in ph.get("featured_routes") or []:
-            if isinstance(fr, str):
-                continue
-            relink_item(fr, ph_scope, routes, routes_by_city, brief_idx, stats, **kw)
+    _walk_phase_carousels(
+        partner.get("phases") or [], hub_scope_set, city_ids,
+        routes, routes_by_city, brief_idx, stats, kw,
+    )
 
     for m in partner.get("markets") or []:
         m_scope = market_scope(m, city_ids, locale_parents) or hub_scope_set
         for j in m.get("journeys_unlocked") or []:
             relink_item(j, m_scope, routes, routes_by_city, brief_idx, stats, **kw)
-        for ph in m.get("phases") or []:
-            ph_scope = expand_scope(
-                set(resolve_phase_cities(ph.get("cities"), city_ids)) or set(m_scope)
-            )
-            for fr in ph.get("featured_routes") or []:
-                if isinstance(fr, str):
-                    continue
-                relink_item(fr, ph_scope, routes, routes_by_city, brief_idx, stats, **kw)
+        _walk_phase_carousels(
+            m.get("phases") or [], m_scope, city_ids,
+            routes, routes_by_city, brief_idx, stats, kw,
+        )
 
 
 def render_bucket(item: dict, routes: dict[str, RouteRec]) -> str:
@@ -1156,6 +1622,8 @@ def main():
     routes, routes_by_city, promo = load_routes(ROOT)
     brief_idx = load_brief_index(ROOT)
     econ = load_economics_index(ROOT)
+    chip_supplement = load_chip_supplement_routes(ROOT)
+    grounding = load_grounding_index(ROOT)
 
     partner_dir = ROOT / "data-clean/partners"
     slugs = args.partner or sorted(p.stem for p in partner_dir.glob("*.json"))
@@ -1184,7 +1652,7 @@ def main():
         stats = LinkStats()
         walk_partner(
             partner, slug, routes, routes_by_city, brief_idx, city_ids, locale_parents, stats,
-            promo=promo, econ=econ,
+            promo=promo, econ=econ, chip_supplement=chip_supplement, grounding=grounding,
         )
         all_stats.total += stats.total
         all_stats.linked += stats.linked
@@ -1194,6 +1662,8 @@ def main():
         all_stats.matched_node += stats.matched_node
         all_stats.network_chip += stats.network_chip
         all_stats.brief_cluster += stats.brief_cluster
+        all_stats.phase_rollup += stats.phase_rollup
+        all_stats.grounding += stats.grounding
         all_stats.gcn_promoted += stats.gcn_promoted
         all_stats.still_null += stats.still_null
         all_stats.geometry_pending += stats.geometry_pending
@@ -1211,6 +1681,8 @@ def main():
                     "matched_scoped": stats.matched_scoped,
                     "network_chip": stats.network_chip,
                     "brief_cluster": stats.brief_cluster,
+                    "phase_rollup": stats.phase_rollup,
+                    "grounding": stats.grounding,
                     "gcn_promoted": stats.gcn_promoted,
                 },
             }
@@ -1228,6 +1700,7 @@ def main():
             f"  ✓ {slug}: linked {stats.linked}/{stats.total} "
             f"(brief {stats.borrowed_brief}, scoped {stats.matched_scoped}, "
             f"chip {stats.network_chip}, cluster {stats.brief_cluster}, "
+            f"rollup {stats.phase_rollup}, ground {stats.grounding}, "
             f"gcn {stats.gcn_promoted}, cleared {stats.cleared_mislink}) "
             f"clickable {before.get('clickable_route',0)}→{after.get('clickable_route',0)} "
             f"bundle {before.get('clickable_route_bundle',0)}→{bundle_after} "
@@ -1243,6 +1716,7 @@ def main():
             f"{all_stats.cleared_mislink} cleared, "
             f"{all_stats.borrowed_brief} from briefs, {all_stats.matched_scoped} scoped, "
             f"{all_stats.network_chip} network_chip, {all_stats.brief_cluster} brief_cluster, "
+            f"{all_stats.phase_rollup} phase_rollup, {all_stats.grounding} grounding, "
             f"{all_stats.gcn_promoted} gcn_promoted"
         )
     else:
