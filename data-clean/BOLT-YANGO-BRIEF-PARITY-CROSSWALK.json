@@ -1,0 +1,64 @@
+{
+  "_doc": "Bolt/Yango brief-parity crosswalk — updated after authoring wave",
+  "updated": "2026-06-20",
+  "status": "city + cluster brief gaps RESOLVED; two ID-alias fixes remain for Grok (not missing content)",
+  "authored_city_briefs": [
+    "abidjan",
+    "al-hoceima",
+    "al-wakrah",
+    "algarve",
+    "cairo-egypt",
+    "casablanca",
+    "dublin-ireland",
+    "helsinki-finland",
+    "lisbon-tagus",
+    "porto",
+    "tallinn-estonia",
+    "tangier"
+  ],
+  "authored_cluster_briefs": [
+    "azerbaijan",
+    "cote-divoire",
+    "cyprus",
+    "estonia",
+    "finland",
+    "ireland",
+    "kazakhstan",
+    "morocco",
+    "mozambique",
+    "nigeria",
+    "pakistan",
+    "portugal",
+    "qatar",
+    "romania",
+    "senegal",
+    "sweden",
+    "tunisia"
+  ],
+  "grounding_note": "All briefs at Grab/Careem schema parity (~5.3-6.2KB). Qatar cluster signature_routes grounded with 4 sealed route_ids (rn-44cec9c94d4c, rn-766596b9e733, rn-1066679a7f79, rn-30d3fa93ca0e). All other signature_routes route_id=null pending Grok geometry seal (exactness over coverage / null beats confidently-wrong).",
+  "remaining_for_grok_id_alias_only": [
+    {
+      "partner_anchor": "dammam-khobar-ksa",
+      "resolves_to_existing_brief": "eastern-province-ksa",
+      "action": "alias/rename partner anchor id to match sealed city_id — NOT a missing brief"
+    },
+    {
+      "partner_anchor": "redsea-egypt",
+      "resolves_to_existing_brief": "hurghada-el-gouna-egypt",
+      "action": "alias/rename partner anchor id to match sealed city_id — NOT a missing brief"
+    }
+  ],
+  "already_fixed_in_pr53": [
+    {
+      "partner": "yango",
+      "market": "turkey",
+      "anchors": [
+        "bodrum->bodrum-turkey",
+        "antalya->antalya-turkey",
+        "cesme-izmir->cesme-izmir-turkey"
+      ],
+      "note": "3 Turkey anchor-id render gaps corrected in earlier commit"
+    }
+  ],
+  "not_promoted": "Per Jaideep 2026-06-20: brief content authored, but NO markets promoted to full sub-pages yet. Corridor-ready footprint markets now have cluster briefs ready for future promotion."
+}
