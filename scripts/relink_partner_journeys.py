@@ -109,6 +109,16 @@ _COMMON_PLACE = frozenset(
     }
 )
 
+# Multi-word label anchors — when present in a journey label, route endpoints must match.
+_LABEL_ANCHOR_PHRASES = (
+    "sir bani yas", "bani yas", "sharm el sheikh", "hurghada", "el gouna",
+    "helsinki", "tallinn", "desroches", "corniche", "dubai marina",
+    "cijin", "soneva kiri", "koh kood", "koh mai si", "xiaoliuqiu", "liuqiu",
+    "sir bani", "yas island", "saadiyat", "nujuma", "shura island",
+    "penghu", "magong", "jeddah", "sindalah", "oxagon", "manama", "bahrain",
+    "ithaafushi", "reethi rah", "fari islands", "miriandhoo", "velana",
+)
+
 
 def load_json(p: Path):
     return json.loads(p.read_text())
@@ -530,8 +540,26 @@ def endpoint_ok(label_text: str, rec: RouteRec) -> bool:
     return bool(lab & ep)
 
 
+def label_anchor_ok(label_text: str, rec: RouteRec) -> bool:
+    """Require named corridor anchors from the label to appear on route endpoints."""
+    ln = norm_label(label_text)
+    if not ln:
+        return True
+    ep = norm_label(rec.from_label + " " + rec.to_label)
+    if not ep:
+        return True
+    for ph in _LABEL_ANCHOR_PHRASES:
+        if ph in ln and ph not in ep:
+            return False
+    return True
+
+
 def passes_gates(item: dict, rec: RouteRec, label_text: str) -> bool:
-    return distance_ok(item.get("distance_nm"), rec.distance_nm) and endpoint_ok(label_text, rec)
+    return (
+        distance_ok(item.get("distance_nm"), rec.distance_nm)
+        and endpoint_ok(label_text, rec)
+        and label_anchor_ok(label_text, rec)
+    )
 
 
 def partner_route_ok(rid: str, partner_slug: str | None) -> bool:
@@ -574,13 +602,13 @@ def candidate_rank(
     partner_slug: str | None,
     econ: EconomicsIndex,
 ) -> tuple:
-    """Lane C tie-break: economics > traffic_weight > match score > partner gcn."""
+    """Lane C tie-break: economics presence > match score > traffic_weight > partner gcn."""
     slug = (partner_slug or "").lower()
     has_econ = rid in econ.all_ids or (slug and rid in econ.by_partner.get(slug, set()))
     tw = rec.traffic_weight if rec.traffic_weight is not None else -1.0
     partner_gcn = bool(slug and rid.endswith(f"-{slug}"))
     is_gcn = rid.startswith("gcn-")
-    return (has_econ, tw, match_score, partner_gcn, is_gcn)
+    return (has_econ, match_score, tw, partner_gcn, is_gcn)
 
 
 def pick_best_rid(
@@ -1193,17 +1221,21 @@ def mark_unlinked_chip(item: dict, stats: LinkStats) -> None:
     """Lane G: explicit geometry-pending flags — null beats wrong."""
     item["route_ids"] = None
     item["route_id"] = None
-    item["flag"] = "network-chip-text-only"
     fn = item.get("from_node_id") or item.get("from_node")
     tn = item.get("to_node_id") or item.get("to_node")
     label = item.get("label") or ""
     if fn and tn and fn == tn:
+        item["display"] = "text_only"
+        item.pop("flag", None)
         item["_link_status"] = "unlinked-intra-city"
         stats.geometry_pending += 1
     elif _ASPIRATIONAL_CHIP.search(label):
+        item["display"] = "text_only"
+        item.pop("flag", None)
         item["_link_status"] = "aspirational-no-built-route"
         stats.geometry_pending += 1
     else:
+        item["flag"] = "network-chip-text-only"
         item["_link_status"] = "unlinked-no-bundle"
         stats.still_null += 1
 
@@ -1389,14 +1421,14 @@ def relink_item(
     if rid:
         source = "brief"
     if not rid:
-        rid = find_scoped_route(item, scope, routes, routes_by_city, partner_slug, econ, promo)
-        if rid:
-            source = "scoped"
-    if not rid:
         rid = find_node_pair_route(item, routes, routes_by_city, scope)
         if rid:
             rid = promote_route_id(rid, partner_slug, promo, routes) or rid
             source = "node"
+    if not rid:
+        rid = find_scoped_route(item, scope, routes, routes_by_city, partner_slug, econ, promo)
+        if rid:
+            source = "scoped"
 
     if rid:
         if rid != item.get("route_id"):
