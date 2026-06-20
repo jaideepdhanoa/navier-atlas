@@ -137,9 +137,11 @@ def main():
     seen_labels = {}
     rows = []; roadmap = []
     # PARTNER SCOPING (multi-partner safety): only aggregate markets owned by this partner.
-    # Markets carry an optional "partner" tag; legacy unlabeled markets default to "grab".
+    # --partner global: process ALL markets (route physics are partner-independent); market.partner
+    # is provenance only. Output defaults to finance/recal/agg-global.json.
+    global_mode = partner == "global"
     for mid, mk in corr["markets"].items():
-        if mk.get("partner", "grab") != partner:
+        if not global_mode and mk.get("partner", "grab") != partner:
             continue
         if not in_scope(mid):
             continue
@@ -344,7 +346,7 @@ def main():
             "phase_3_fleet": net + max(sgf, sgf_p3),
         }
     rollup = {
-        "partner": partner,
+        "partner": "global" if global_mode else partner,
         "phase_caps_per_market_LB89": phase_caps_per_market,
         "phase_caps_LB89_doc": "Per-market caps: Phase 1 ≤ 8 boats, Phase 2 ≤ 25 boats, Phase 3 = network-sum (unchanged). Prevents single-market dominance in near-term phase economics.",
         "n_corridors_total": len(uniq), "n_grounded": len(grounded), "n_estimated": len(estimated),
@@ -403,7 +405,8 @@ def main():
 
     # ---- LB-82 CARRY-FORWARD: merge prev rows for unscoped markets ----
     out_obj = {"rows": rows, "rollup": rollup}
-    default_recal = os.path.join(os.path.dirname(HERE), "recal", f"agg-{partner}.json")
+    default_recal = os.path.join(os.path.dirname(HERE), "recal",
+                                 "agg-global.json" if global_mode else f"agg-{partner}.json")
     out_path = sys.argv[sys.argv.index("--json")+1] if "--json" in sys.argv else None
     if scope is not None:
         prev_path = out_path if (out_path and os.path.exists(out_path)) else default_recal

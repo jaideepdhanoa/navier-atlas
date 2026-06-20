@@ -19,7 +19,7 @@ const SHEET_URL = /docs\.google\.com\/spreadsheets/i;
 
 /** Drop partner attribution + internal model links from a route-economics record. */
 export function sanitizePublicEconRecord(rec) {
-  const { partner, deck_url, ...rest } = rec;
+  const { partner, deck_url, authored_for, registry_market_id, ...rest } = rec;
   return scrubSheetUrls(rest);
 }
 

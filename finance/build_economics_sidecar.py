@@ -14,6 +14,12 @@ Usage:
 """
 import json, os, sys, datetime
 from collections import Counter
+from pathlib import Path
+
+_SHARED = Path(__file__).resolve().parents[1] / "scripts" / "grok-bolt-yango"
+if str(_SHARED) not in sys.path:
+    sys.path.insert(0, str(_SHARED))
+from bolt_yango_routing_shared import build_bp_index, mint_route_id, resolve_corridor_endpoints
 
 def arg(flag, default=None):
     return sys.argv[sys.argv.index(flag)+1] if flag in sys.argv else default
@@ -21,44 +27,42 @@ def arg(flag, default=None):
 GOLD   = arg("--gold", "/tmp/v12/data-clean")
 AGGDIR = arg("--aggdir", "/tmp")
 OUT    = arg("--out", "/tmp/economics_by_route_id.json")
-# All modeled partners. The contested (bolt/yango) and captive (constance/four-seasons) partners
-# were added to the opex recal (2026-06-19) and MUST be in the sidecar or their corridor cards show
-# no economics on the front end. uber + saudi-pif remain held (bespoke reconciliation pending).
+USE_GLOBAL = "--global" in sys.argv or arg("--mode") == "global"
+# Legacy per-partner agg files (fallback when agg-global.json is absent).
 PARTNERS = ["grab", "careem", "jih-global", "red-sea-global", "saudi-redsea-pif", "qatar",
-            "bolt", "yango", "constance", "four-seasons"]
-
-# Partner -> deck / model link surfaced on the card's "see the full model" CTA. null = honest blank.
-# Loaded from the canonical economics_url map (PARTNER-SHEET-IDS-derived) so every partner's corridor
-# card deep-links to its live transparent unit-econ Sheet, not just grab. Missing partner = honest null.
-_EURL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "economics_url_map.json")
-try:
-    DECK_URL = json.load(open(_EURL)).get("economics_url", {})
-except FileNotFoundError:
-    DECK_URL = {
-        "grab": "https://docs.google.com/spreadsheets/d/1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w/edit",
-    }
+            "bolt", "yango", "constance", "four-seasons", "uber", "french-polynesia", "saudi-pif"]
 
 # ---- gold geometry: route_id set + unordered-endpoint index ----
 R = json.load(open(os.path.join(GOLD, "ROUTES.json")))
 feats = R["features"] if isinstance(R, dict) and "features" in R else R
+fbt_path = os.path.join(GOLD, "FEATURES_BY_TYPE.json")
+fbt = json.load(open(fbt_path)) if os.path.exists(fbt_path) else {}
+bp_idx = build_bp_index(fbt) if fbt else {}
 gold_rids = set()
 pair2id = {}
+bp_pair2id = {}
 for f in feats:
     p = f["properties"]; rid = p.get("id")
     gold_rids.add(rid)
     a, b = p.get("from"), p.get("to")
     if a and b:
         pair2id.setdefault(frozenset((a, b)), rid)
+    fn, tn = p.get("from_node"), p.get("to_node")
+    if fn and tn:
+        bp_pair2id.setdefault(frozenset((fn, tn)), rid)
 
 # ---- corridors.json: per-corridor route-id resolution (ID-based only) ----
-corr = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model", "corridors.json")))
+_CORR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model", "corridors.json")
+corr = json.load(open(_CORR_PATH))
 resolved = {}            # (market, label) -> route_id
 unresolved_detail = {}   # (market, label) -> reason
 corr_country = {}        # (market, label) -> country  (corridors.json is source of truth;
                          # never trust the agg row's country — it can carry a stale template value,
                          # e.g. UAE corridors once shipped country="Singapore" from a copy-paste seed.)
+market_partner = {}      # market_id -> provenance partner tag from corridors.json
 for mid_k, mk in corr["markets"].items():
     partner = mk.get("partner", "grab")
+    market_partner[mid_k] = partner
     for c in mk["corridors"]:
         label = f"{c.get('from')} -> {c.get('to')}"
         key = (mid_k, label)
@@ -71,11 +75,17 @@ for mid_k, mk in corr["markets"].items():
         elif a and b and frozenset((a, b)) in pair2id:
             resolved[key] = pair2id[frozenset((a, b))]
         else:
-            # LB-169: intra-city aspirational chips have a==b at city-resolution (both bp-* in same city,
-            # or both literal city slug). No edge exists between a city and itself in ROUTES.json by design,
-            # so don't flag as a binding failure — label honestly as aspirational_intra_city.
-            # LB-170: corridors carrying explicit `aspirational: true` and no built edge are aspirational
-            # by design (declared, not a binding miss) — label inter-city honestly.
+            from_bp, to_bp, _, _ = resolve_corridor_endpoints(c, bp_idx)
+            if from_bp and to_bp:
+                bp_key = frozenset((from_bp, to_bp))
+                if bp_key in bp_pair2id:
+                    resolved[key] = bp_pair2id[bp_key]
+                else:
+                    minted = mint_route_id(from_bp, to_bp)
+                    if minted in gold_rids:
+                        resolved[key] = minted
+        if key not in resolved:
+            # LB-169/170: aspirational corridors — honest label, not a binding failure.
             if a and b and a == b:
                 why = "aspirational_intra_city"
             elif is_asp:
@@ -95,24 +105,7 @@ from collections import defaultdict as _dd
 by_rid = _dd(list)
 pending = []
 
-for partner in PARTNERS:
-    # LB-152: accept both naming conventions + partner aliases
-    # (in-tree files use `{partner}-aggregate.json`; recal/ uses `agg-{partner}.json`)
-    ALIASES = {
-        "saudi-redsea": "saudi-redsea-pif",
-        "grab-aggregate-results": "grab",
-    }
-    p_resolved = ALIASES.get(partner, partner)
-    candidates = [
-        os.path.join(AGGDIR, f"agg-{p_resolved}.json"),
-        os.path.join(AGGDIR, f"{p_resolved}-aggregate.json"),
-        os.path.join(AGGDIR, f"agg-{partner}.json"),
-        os.path.join(AGGDIR, f"{partner}-aggregate.json"),
-    ]
-    path = next((c for c in candidates if os.path.exists(c)), candidates[0])
-    if not os.path.exists(path):
-        continue
-    rows = json.load(open(path)).get("rows", [])
+def ingest_rows(rows, source_partner=None):
     for row in rows:
         if row.get("status") == "duplicate" or row.get("is_dup"):
             continue
@@ -123,11 +116,34 @@ for partner in PARTNERS:
         if not rid and mid.get("route_id") in gold_rids:
             rid = mid.get("route_id")
         if not rid:
-            pending.append({"partner": partner, "market": market, "corridor": label,
+            pending.append({"authored_for": source_partner or market_partner.get(market),
+                            "market": market, "corridor": label,
                             "status": row.get("status"),
                             "reason": unresolved_detail.get(key, {}).get("reason", "unresolved")})
             continue
-        by_rid[rid].append((partner, row))
+        authored = market_partner.get(market, source_partner)
+        by_rid[rid].append((authored, market, row))
+
+global_path = os.path.join(AGGDIR, "agg-global.json")
+if USE_GLOBAL or os.path.exists(global_path):
+    if not os.path.exists(global_path):
+        print(f"FATAL: --global requested but {global_path} missing. Run aggregate.py --partner global first.", file=sys.stderr)
+        sys.exit(1)
+    ingest_rows(json.load(open(global_path)).get("rows", []))
+else:
+    ALIASES = {"saudi-redsea": "saudi-redsea-pif", "grab-aggregate-results": "grab"}
+    for partner in PARTNERS:
+        p_resolved = ALIASES.get(partner, partner)
+        candidates = [
+            os.path.join(AGGDIR, f"agg-{p_resolved}.json"),
+            os.path.join(AGGDIR, f"{p_resolved}-aggregate.json"),
+            os.path.join(AGGDIR, f"agg-{partner}.json"),
+            os.path.join(AGGDIR, f"{partner}-aggregate.json"),
+        ]
+        path = next((c for c in candidates if os.path.exists(c)), None)
+        if not path:
+            continue
+        ingest_rows(json.load(open(path)).get("rows", []), source_partner=partner)
 
 MARKET_DISPLAY = {
     "singapore":"Singapore", "cross-border":"Cross-Border", "bali":"Bali",
@@ -223,26 +239,29 @@ COMMODITY_FARE_IDS = {
 records = []
 for rid, items in by_rid.items():
     # headline = highest market-rev (grounded preferred via the rev sort; null treated as 0)
-    items_sorted = sorted(items, key=lambda pr: -((pr[1].get("mid", {}).get("market_revenue_yr")) or 0))
-    head_partner, head_row = items_sorted[0]
-    rec = {"route_id": rid, "partner": head_partner, "deck_url": DECK_URL.get(head_partner)}
+    items_sorted = sorted(items, key=lambda pr: -((pr[2].get("mid", {}).get("market_revenue_yr")) or 0))
+    head_authored, head_market, head_row = items_sorted[0]
+    rec = {"route_id": rid, "registry_market_id": head_market}
+    if head_authored:
+        rec["authored_for"] = head_authored
     rec.update(corridor_block(head_row))
     if len(items_sorted) > 1:
-        rec["also_serves"] = [corridor_block(r) for _, r in items_sorted[1:]]
+        rec["also_serves"] = [corridor_block(r) for _, __, r in items_sorted[1:]]
     if rid in COMMODITY_FARE_IDS:
         rec["commodity_fare"] = True
         rec["fare_basis"] = "commodity_public_transit"
         rec["commodity_fare_usd"] = COMMODITY_FARE_IDS[rid]
     records.append(rec)
 
-records.sort(key=lambda r: (r["partner"], -(r["mid"]["market_rev_yr"] or 0)))
+records.sort(key=lambda r: (r.get("authored_for") or "", -(r["mid"]["market_rev_yr"] or 0)))
 
 out = {
     "_meta": {
         "doc": "Route-keyed unit-economics sidecar for the Atlas front end. Join onto route "
-               "features by route_id. Presence of a record => has_economics=true. Show MID "
-               "headline; band carries THIN/MID/FULL. Honor status (grounded vs estimated) and "
-               "demand_confidence in styling. Never invent: absent record = no economics yet.",
+               "features by route_id. Corridor physics are partner-independent (built from "
+               "agg-global.json). Partner deck links live in PARTNER_ECONOMICS at build time, "
+               "not on each record. Presence of a record => has_economics=true.",
+        "source": "agg-global.json" if (USE_GLOBAL or os.path.exists(global_path)) else "per-partner-aggs",
         "generated": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "gold_routes_total": len(gold_rids),
         "records": len(records),
@@ -255,6 +274,6 @@ out = {
 json.dump(out, open(OUT, "w"), indent=1)
 print(f"wrote {OUT}")
 print(f"records (route-pinned): {len(records)} | pending (no gold route): {len(pending)}")
-print("by partner:", dict(Counter(r['partner'] for r in records)))
+print("by authored_for:", dict(Counter(r.get('authored_for') for r in records)))
 print("grounded:", sum(1 for r in records if r['status']=='grounded'),
       "| estimated:", sum(1 for r in records if r['status']=='estimated'))

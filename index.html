@@ -1958,6 +1958,11 @@ function _econMoney(n){ if(n==null||isNaN(n))return ''; const a=Math.abs(n);
   if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
 function _econRange(arr, fmt){ if(!Array.isArray(arr)||arr.length<2)return ''; const f=fmt||(x=>x), lo=Math.min(...arr), hi=Math.max(...arr);
   return lo===hi ? '' : `<div class="rec-b">${f(lo)}–${f(hi)}</div>`; }
+function _partnerDeckUrl(){
+  if (PUBLIC_BUILD) return null;
+  const pe = (typeof PARTNER_ECONOMICS !== 'undefined') ? PARTNER_ECONOMICS : null;
+  return (pe && pe.deck_url) ? pe.deck_url : null;
+}
 function _routeEconHtml(rec){
   if (!rec) return '';
   const m=rec.mid||{}, band=rec.band||{}, figs=[];
@@ -1997,7 +2002,7 @@ function _routeEconHtml(rec){
       return `<div class="rec-also-row">${escapeHtml(lbl)}<span class="muted">${escapeHtml(d+rev)}</span></div>`;
     }).join('')}</div>`;
   }
-  const deckUrl = (!PUBLIC_BUILD && rec.deck_url) ? rec.deck_url : null;
+  const deckUrl = _partnerDeckUrl();
   if (rec.route_id || deckUrl){
     h+=`<div class="rec-actions">`;
     if (rec.route_id) h+=`<button type="button" class="rec-breakdown" data-eb="${escapeHtml(rec.route_id)}">Full breakdown →</button>`;
@@ -2092,14 +2097,17 @@ function _econModalHtml(rec){
   if (!hasBreakdown) h+=`Per-boat figures shown; profit and run cost are derived from the published margin. The detailed revenue-build and cost-stack inputs aren't in the model yet — italicised lines are pending.`;
   const pr=rec.provenance ? Object.values(rec.provenance).filter(Boolean).join(' · ') : '';
   if (pr) h+=`<div class="gc-cite">Basis: ${escapeHtml(pr)}${rec.status?` · ${escapeHtml(rec.status)}`:''}</div>`;
-  if (!PUBLIC_BUILD && rec.deck_url) h+=`<div style="margin-top:8px"><a class="rec-deck" href="${escapeHtml(rec.deck_url)}" target="_blank" rel="noopener">See the full model →</a></div>`;
+  const modalDeck = _partnerDeckUrl();
+  if (modalDeck) h+=`<div style="margin-top:8px"><a class="rec-deck" href="${escapeHtml(modalDeck)}" target="_blank" rel="noopener">See the full model →</a></div>`;
   h+=`</div>`;
   return h;
 }
 function openEconModal(routeId){
   const rec=(typeof ROUTE_ECONOMICS!=='undefined')?ROUTE_ECONOMICS[routeId]:null; if(!rec) return;
   const m=document.getElementById('econ-modal'); if(!m) return;
-  document.getElementById('econ-modal-title').textContent='What one boat earns'+(rec.partner?' · '+rec.partner.replace(/(^|\s)\S/g,c=>c.toUpperCase()):'');
+  const partnerLbl = (BUILD_PARTNER && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER])
+    ? (PARTNERS[BUILD_PARTNER].display || BUILD_PARTNER) : (rec.authored_for || rec.partner || '');
+  document.getElementById('econ-modal-title').textContent='What one boat earns'+(partnerLbl?` · ${partnerLbl}`:'');
   document.getElementById('econ-modal-body').innerHTML=_econModalHtml(rec);
   m.hidden=false;
 }

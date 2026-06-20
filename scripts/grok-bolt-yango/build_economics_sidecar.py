@@ -172,6 +172,7 @@ def main():
         help="finance corridors.json (econ-reseal handoff)",
     )
     ap.add_argument("--out", default="data-clean/economics_by_route_id.json")
+    ap.add_argument("--global", action="store_true", help="Build from agg-global.json (partner-independent physics)")
     ap.add_argument(
         "--url-map",
         default="",
@@ -213,8 +214,10 @@ def main():
     resolved = {}
     unresolved_detail = {}
     corr_country = {}
+    market_partner = {}
     for mid_k, mk in corr["markets"].items():
         partner = mk.get("partner", "grab")
+        market_partner[mid_k] = partner
         for c in mk["corridors"]:
             label = f"{c.get('from')} -> {c.get('to')}"
             key = (mid_k, label)
@@ -251,18 +254,7 @@ def main():
     pending = []
     aliases = {"saudi-redsea": "saudi-redsea-pif", "grab-aggregate-results": "grab"}
 
-    for partner in PARTNERS:
-        p_resolved = aliases.get(partner, partner)
-        candidates = [
-            aggdir / f"agg-{p_resolved}.json",
-            aggdir / f"{p_resolved}-aggregate.json",
-            aggdir / f"agg-{partner}.json",
-            aggdir / f"{partner}-aggregate.json",
-        ]
-        path = next((c for c in candidates if c.exists()), None)
-        if not path:
-            continue
-        rows = json.loads(path.read_text()).get("rows", [])
+    def ingest_rows(rows, source_partner=None):
         for row in rows:
             if row.get("status") == "duplicate" or row.get("is_dup"):
                 continue
@@ -276,7 +268,7 @@ def main():
             if not rid:
                 pending.append(
                     {
-                        "partner": partner,
+                        "authored_for": source_partner or market_partner.get(market),
                         "market": market,
                         "corridor": label,
                         "status": row.get("status"),
@@ -284,23 +276,45 @@ def main():
                     }
                 )
                 continue
-            by_rid[rid].append((partner, row))
+            authored = market_partner.get(market, source_partner)
+            by_rid[rid].append((authored, market, row))
+
+    global_path = aggdir / "agg-global.json"
+    if args.global or global_path.exists():
+        if not global_path.exists():
+            raise SystemExit(f"--global requested but {global_path} missing")
+        ingest_rows(json.loads(global_path.read_text()).get("rows", []))
+    else:
+        for partner in PARTNERS:
+            p_resolved = aliases.get(partner, partner)
+            candidates = [
+                aggdir / f"agg-{p_resolved}.json",
+                aggdir / f"{p_resolved}-aggregate.json",
+                aggdir / f"agg-{partner}.json",
+                aggdir / f"{partner}-aggregate.json",
+            ]
+            path = next((c for c in candidates if c.exists()), None)
+            if not path:
+                continue
+            ingest_rows(json.loads(path.read_text()).get("rows", []), source_partner=partner)
 
     records = []
     for rid, items in by_rid.items():
-        items_sorted = sorted(items, key=lambda pr: -((pr[1].get("mid", {}).get("market_revenue_yr")) or 0))
-        head_partner, head_row = items_sorted[0]
-        rec = {"route_id": rid, "partner": head_partner, "deck_url": deck_url.get(head_partner)}
+        items_sorted = sorted(items, key=lambda pr: -((pr[2].get("mid", {}).get("market_revenue_yr")) or 0))
+        head_authored, head_market, head_row = items_sorted[0]
+        rec = {"route_id": rid, "registry_market_id": head_market}
+        if head_authored:
+            rec["authored_for"] = head_authored
         rec.update(corridor_block(head_row, corr_country))
         if len(items_sorted) > 1:
-            rec["also_serves"] = [corridor_block(r, corr_country) for _, r in items_sorted[1:]]
+            rec["also_serves"] = [corridor_block(r, corr_country) for _, __, r in items_sorted[1:]]
         if rid in COMMODITY_FARE_IDS:
             rec["commodity_fare"] = True
             rec["fare_basis"] = "commodity_public_transit"
             rec["commodity_fare_usd"] = COMMODITY_FARE_IDS[rid]
         records.append(rec)
 
-    records.sort(key=lambda r: (r["partner"], -(r["mid"]["market_rev_yr"] or 0)))
+    records.sort(key=lambda r: (r.get("authored_for") or "", -(r["mid"]["market_rev_yr"] or 0)))
 
     payload = {
         "_meta": {
@@ -320,7 +334,7 @@ def main():
     out.write_text(json.dumps(payload, indent=1) + "\n")
     print(f"wrote {out}")
     print(f"records: {len(records)} | pending: {len(pending)}")
-    print("by partner:", dict(Counter(r["partner"] for r in records)))
+    print("by authored_for:", dict(Counter(r.get("authored_for") for r in records)))
 
 
 if __name__ == "__main__":
