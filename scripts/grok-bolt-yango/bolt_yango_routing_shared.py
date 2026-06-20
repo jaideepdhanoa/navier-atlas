@@ -42,6 +42,19 @@ _LABEL_STOP = frozenset(
     {"the", "and", "of", "marina", "terminal", "pier", "port", "harbour", "harbor", "jetty", "city"}
 )
 
+# Finance corridor node chips → sealed city_id on the gold surface
+NODE_CROSSWALK = {
+    "dubai": "dubai-uae",
+    "abu-dhabi": "abu-dhabi-uae",
+    "sharjah": "sharjah-uae",
+    "fujairah": "fujairah-uae",
+    "ras-al-khaimah": "ras-al-khaimah-uae",
+    "doha": "doha-qatar",
+    "lisbon-tagus-portugal": "lisbon-tagus-portugal",
+    "porto": "porto-douro-portugal",
+    "algarve": "algarve-portugal",
+}
+
 
 def load_json(path: Path):
     import json
@@ -303,11 +316,16 @@ def trip_scope_for(from_city: str | None, to_city: str | None) -> str:
 def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: str | None) -> list[str]:
     if not city_id:
         return []
-    cities = [city_id]
+    cities = [NODE_CROSSWALK.get(city_id, city_id)]
     blob = norm_label(f"{from_label or ''} {to_label or ''}")
     if city_id == "lisbon-tagus-portugal":
         if any(t in blob for t in ("porto", "ribeira", "gaia", "douro")):
             cities.append("porto-douro-portugal")
+        if any(t in blob for t in ("faro", "portimao", "lagos", "algarve", "cascais")):
+            cities.append("algarve-portugal")
+    if city_id == "dubai" or cities[0] == "dubai-uae":
+        if any(t in blob for t in ("abu dhabi", "abudhabi", "corniche")):
+            cities.append("abu-dhabi-uae")
     return list(dict.fromkeys(cities))
 
 
@@ -351,8 +369,11 @@ def resolve_corridor_endpoints(
     corridor: dict,
     bp_idx: dict,
 ) -> tuple[str | None, str | None, str | None, str | None]:
-    from_city = corridor.get("from_node_id")
-    to_city = corridor.get("to_node_id") or from_city
+    from_city = NODE_CROSSWALK.get(corridor.get("from_node_id"), corridor.get("from_node_id"))
+    to_city = NODE_CROSSWALK.get(
+        corridor.get("to_node_id") or corridor.get("from_node_id"),
+        corridor.get("to_node_id") or corridor.get("from_node_id"),
+    )
     eps = corridor.get("endpoint_boarding_points") or {}
     from_label = eps.get("from") or corridor.get("from")
     to_label = eps.get("to") or corridor.get("to")

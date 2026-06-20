@@ -49,6 +49,23 @@ HELD_MARKET_SLUGS = {
     "yango-israel",
 }
 
+# Pruned proposal pages — geometry may exist; do not splice into partner hub
+PRUNED_MARKET_KEYS = frozenset(
+    {
+        "bolt-cyprus",
+        "bolt-romania",
+        "bolt-israel",
+        "bolt-lebanon",
+        "yango-senegal",
+        "yango-mozambique",
+        "yango-tunisia",
+        "yango-pakistan",
+        "yango-caspian-az",
+        "yango-caspian-kz",
+        "yango-israel",
+    }
+)
+
 
 def load_json(p: Path):
     return json.loads(p.read_text())
@@ -338,10 +355,12 @@ def apply_bolt(
     indexes: RouteIndexes,
     corridor_idx: dict,
     bp_idx: dict | None = None,
+    *,
+    ingest_package: str = "bolt-yango-seal-2026-06-19",
 ) -> dict:
     bolt_markets = []
     for key in sorted(authored_all):
-        if not key.startswith("bolt-"):
+        if not key.startswith("bolt-") or key in PRUNED_MARKET_KEYS:
             continue
         m = market_from_authored(
             authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx, bp_idx
@@ -360,9 +379,10 @@ def apply_bolt(
         {"label": "Proof", "value": "~100 vessels", "sub": "live Maldives network"},
     ]
     out["_ingest"] = {
-        "package": "bolt-yango-seal-2026-06-19",
+        "package": ingest_package,
         "applied_at": datetime.now(timezone.utc).isoformat(),
         "markets_spliced": len(bolt_markets),
+        "pruned_skipped": sorted(PRUNED_MARKET_KEYS),
     }
     bind_route_refs(out, indexes, corridor_idx, economics_url, bp_idx=bp_idx)
     return out
@@ -376,10 +396,12 @@ def apply_yango(
     indexes: RouteIndexes,
     corridor_idx: dict,
     bp_idx: dict | None = None,
+    *,
+    ingest_package: str = "bolt-yango-seal-2026-06-19",
 ) -> dict:
     yango_markets = []
     for key in sorted(authored_all):
-        if not key.startswith("yango-"):
+        if not key.startswith("yango-") or key in PRUNED_MARKET_KEYS:
             continue
         m = market_from_authored(
             authored_all[key], economics_url, sealed_cities, key, indexes, corridor_idx, bp_idx
@@ -408,10 +430,11 @@ def apply_yango(
             "note": "Run build_economics_sidecar.py against Yango model; bind phase_economics + ladder.",
         }
     out["_ingest"] = {
-        "package": "bolt-yango-seal-2026-06-19",
+        "package": ingest_package,
         "applied_at": datetime.now(timezone.utc).isoformat(),
         "markets_spliced": len(yango_markets),
         "held_markets": hub.get("_held_markets", []),
+        "pruned_skipped": sorted(PRUNED_MARKET_KEYS),
     }
     bind_route_refs(out, indexes, corridor_idx, economics_url, bp_idx=bp_idx)
     return out
@@ -442,16 +465,33 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dc", default="data-clean")
     ap.add_argument("--ingest", default=str(INGEST))
+    ap.add_argument(
+        "--authored",
+        default="",
+        help="Path to authored markets JSON (default: ingest subproposals or inputs/)",
+    )
     args = ap.parse_args()
 
     ingest = Path(args.ingest)
     dc = ROOT / args.dc
     partners = dc / "partners"
 
-    authored_all = load_json(ingest / "subproposals/AUTHORED-ALL-33-markets.json")
-    yango_hub = load_json(ingest / "subproposals/AUTHORED-yango-hub.json")
-    handoff_bolt = load_json(ingest / "partners/bolt.json")
-    econ_map = load_json(ingest / "inputs/economics_url_map.json")
+    if args.authored:
+        authored_path = Path(args.authored)
+    elif (ingest / "inputs/subproposals-enriched-2026-06-20.json").exists():
+        authored_path = ingest / "inputs/subproposals-enriched-2026-06-20.json"
+    else:
+        authored_path = ingest / "subproposals/AUTHORED-ALL-33-markets.json"
+    authored_all = load_json(authored_path)
+    hub_ingest = ingest
+    if not (ingest / "subproposals/AUTHORED-yango-hub.json").exists():
+        hub_ingest = INGEST
+    yango_hub = load_json(hub_ingest / "subproposals/AUTHORED-yango-hub.json")
+    handoff_bolt = load_json(hub_ingest / "partners/bolt.json")
+    econ_path = ingest / "inputs/economics_url_map.json"
+    if not econ_path.exists():
+        econ_path = INGEST / "inputs/economics_url_map.json"
+    econ_map = load_json(econ_path)
     fbt = load_json(dc / "FEATURES_BY_TYPE.json")
     sealed_cities = {
         f["properties"]["id"]
@@ -461,7 +501,10 @@ def main():
     }
     routes = route_features(load_json(dc / "ROUTES.json"))
     indexes = RouteIndexes(routes)
+    econ_corr = ROOT / "_ingest/econ-reseal-2026-06-19/econ-reseal/inputs/corridors.json"
     corridors_path = ingest / "inputs/corridors.json"
+    if not corridors_path.exists() and econ_corr.exists():
+        corridors_path = econ_corr
     corridor_idx = build_corridor_index(load_json(corridors_path)) if corridors_path.exists() else {}
 
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -472,11 +515,26 @@ def main():
     bolt_url = econ_map.get("economics_url", {}).get("bolt", "")
     yango_url = econ_map.get("economics_url", {}).get("yango", "")
 
+    pkg = authored_path.name
     bolt_out = apply_bolt(
-        authored_all, handoff_bolt, bolt_url, sealed_cities, indexes, corridor_idx, bp_idx
+        authored_all,
+        handoff_bolt,
+        bolt_url,
+        sealed_cities,
+        indexes,
+        corridor_idx,
+        bp_idx,
+        ingest_package=pkg,
     )
     yango_out = apply_yango(
-        authored_all, yango_hub, yango_url, sealed_cities, indexes, corridor_idx, bp_idx
+        authored_all,
+        yango_hub,
+        yango_url,
+        sealed_cities,
+        indexes,
+        corridor_idx,
+        bp_idx,
+        ingest_package=pkg,
     )
 
     save_json(partners / "bolt.json", bolt_out)
