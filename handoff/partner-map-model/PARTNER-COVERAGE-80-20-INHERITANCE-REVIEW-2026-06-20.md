@@ -6,6 +6,10 @@ Review artifact only: no partner JSON, map scope, network footprint, or economic
 
 Credible country/region evidence may inherit **existing Atlas** coastal/island/waterfront registry cities inside that scope. We still do not create new geography from country evidence. Every inherited bind carries an evidence tier.
 
+## Accounting clarification
+
+`already_covered_no_shrink` is **not total partner baseline coverage**. It only counts rows that were already covered **inside this incremental 80:20 inheritance candidate set**. Existing partner coverage is now reported separately from `partner-global-registry-map.json` so partial/additive source scans cannot make partners such as Yango or Uber look empty.
+
 ## Headline counts
 - **partners_scanned**: ['bolt', 'cabify', 'didi', 'freenow', 'gojek', 'grab', 'indrive', 'kakao-mobility', 'lyft', 'ola', 'uber', 'yango']
 - **partner_scope_count**: 182
@@ -13,10 +17,20 @@ Credible country/region evidence may inherit **existing Atlas** coastal/island/w
 - **atlas_registry_city_count_with_inferred_country**: 205
 - **country_supported_candidate_rows_total**: 315
 - **net_new_partner_market_binds_total**: 211
-- **already_covered_no_shrink_total**: 104
+- **already_covered_no_shrink_total**: 104 *(incremental candidate-set overlap only)*
 - **exact_supported_additive_rows_carried_forward**: 18
 - **multi_partner_candidate_markets_2plus**: 110
 - **true_gap_country_scopes_after_inheritance**: 87
+
+## Existing baseline coverage snapshot
+
+Source: `partner-global-registry-map.json`. Counts below are per-partner sums; the same Atlas city can appear under multiple partners.
+
+- **partners_with_baseline_record**: 10
+- **partners_without_baseline_record**: ['cabify', 'freenow']
+- **existing_baseline_partner_market_rows_sum**: 83
+- **existing_baseline_mapped_market_rows_sum**: 82
+- **existing_baseline_unique_registry_city_ids_partner_sum**: 223
 
 ## Net-new promotion lanes
 - **promote_new_display_and_marquee_economics_candidate**: 53
@@ -28,22 +42,45 @@ Credible country/region evidence may inherit **existing Atlas** coastal/island/w
 - **full_display_geometry_no_economics**: 123
 - **thin_brief_only_needs_route_grounding**: 35
 
-## Partner counts
+## Partner accounting — baseline vs incremental inheritance
 
-| Partner | all scope matches | already covered | net-new binds | marquee/econ-ready new | display+econ-corridor new | thin route-grounding new |
-|---|---:|---:|---:|---:|---:|---:|
-| bolt | 86 | 40 | 46 | 11 | 21 | 14 |
-| cabify | 5 | 0 | 5 | 1 | 4 | 0 |
-| didi | 13 | 11 | 2 | 0 | 1 | 1 |
-| freenow | 30 | 0 | 30 | 8 | 18 | 4 |
-| gojek | 14 | 10 | 4 | 1 | 3 | 0 |
-| grab | 33 | 17 | 16 | 7 | 9 | 0 |
-| indrive | 72 | 13 | 59 | 21 | 30 | 8 |
-| kakao-mobility | 4 | 4 | 0 | 0 | 0 | 0 |
-| lyft | 16 | 5 | 11 | 0 | 10 | 1 |
-| ola | 4 | 4 | 0 | 0 | 0 | 0 |
-| uber | 28 | 0 | 28 | 2 | 20 | 6 |
-| yango | 10 | 0 | 10 | 2 | 7 | 1 |
+| Partner | baseline market rows | baseline unique Atlas city IDs | incremental scope matches | already covered within incremental scope | net-new incremental binds | marquee/econ-ready new | display+econ-corridor new | thin route-grounding new |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| bolt | 14 | 47 | 86 | 40 | 46 | 11 | 21 | 14 |
+| cabify | — | — | 5 | 0 | 5 | 1 | 4 | 0 |
+| didi | 7 | 12 | 13 | 11 | 2 | 0 | 1 | 1 |
+| freenow | — | — | 30 | 0 | 30 | 8 | 18 | 4 |
+| gojek | 6 | 10 | 14 | 10 | 4 | 1 | 3 | 0 |
+| grab | 13 | 20 | 33 | 17 | 16 | 7 | 9 | 0 |
+| indrive | 4 | 18 | 72 | 13 | 59 | 21 | 30 | 8 |
+| kakao-mobility | 4 | 4 | 4 | 4 | 0 | 0 | 0 | 0 |
+| lyft | 6 | 11 | 16 | 5 | 11 | 0 | 10 | 1 |
+| ola | 4 | 4 | 4 | 4 | 0 | 0 | 0 | 0 |
+| uber | 17 | 79 | 28 | 0 | 28 | 2 | 20 | 6 |
+| yango | 8 | 18 | 10 | 0 | 10 | 2 | 7 | 1 |
+
+## Focus partner notes
+
+### bolt
+- Existing baseline: **14** partner-market rows, **47** unique Atlas registry city IDs.
+- Incremental 80:20 candidate set: **86** matches; **40** already-covered within that incremental set; **46** net-new additive binds.
+- Net-new by country: Greece (3), Italy (1), Kenya (2), Malaysia (5), Malta (1), Mexico (5), Morocco (4), New Zealand (2), Nigeria (1), Norway (3), Saudi Arabia (2), South Africa (1), Taiwan (2), Tanzania (4), Thailand (3), United Arab Emirates (6), United Kingdom (1).
+
+### grab
+- Existing baseline: **13** partner-market rows, **20** unique Atlas registry city IDs.
+- Incremental 80:20 candidate set: **33** matches; **17** already-covered within that incremental set; **16** net-new additive binds.
+- Net-new by country: Indonesia (10), Malaysia (3), Philippines (3).
+
+### uber
+- Existing baseline: **17** partner-market rows, **79** unique Atlas registry city IDs.
+- Incremental 80:20 candidate set: **28** matches; **0** already-covered within that incremental set; **28** net-new additive binds.
+- Net-new by country: Bahrain (1), Barbados (1), Canada (1), Colombia (1), Costa Rica (1), Dominican Republic (1), Ecuador (4), Jamaica (1), Kenya (2), New Zealand (2), Norway (3), Panama (1), Portugal (2), South Africa (1), South Korea (4), Sri Lanka (1), Sweden (1).
+
+### yango
+- Existing baseline: **8** partner-market rows, **18** unique Atlas registry city IDs.
+- Incremental 80:20 candidate set: **10** matches; **0** already-covered within that incremental set; **10** net-new additive binds.
+- Yango note: the prior `0 already covered` headline was only within the new additive seed scopes. It does **not** mean Yango had no baseline; the baseline has 8 market rows and 18 unique Atlas city IDs.
+- Net-new by country: Bahrain (1), Colombia (1), Finland (1), Norway (3), Oman (3), Sri Lanka (1).
 
 ## Top multi-partner density candidates
 
