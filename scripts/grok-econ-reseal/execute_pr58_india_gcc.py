@@ -366,8 +366,21 @@ def sync_ola_from_rapido(ola: dict, rapido: dict) -> None:
             if not ref:
                 continue
             merged = copy.deepcopy(fr)
-            for key in ("route_ids", "route_id", "from_node_id", "to_node_id", "distance_nm", "platform", "_link_kind", "_link_status", "_link_source", "display", "vessel_gate"):
-                if key in ref and (merged.get(key) is None or key.startswith("_")):
+            for key in (
+                "route_ids",
+                "route_id",
+                "from_node_id",
+                "to_node_id",
+                "distance_nm",
+                "platform",
+                "display",
+                "vessel_gate",
+            ):
+                if key in ref and merged.get(key) is None:
+                    merged[key] = ref[key]
+            # Always inherit spine bundle metadata from Rapido for matching labels.
+            for key in ("route_ids", "_link_kind", "_link_status", "_link_source"):
+                if key in ref and ref.get(key) is not None:
                     merged[key] = ref[key]
             if merged.get("route_ids") or merged.get("route_id"):
                 merged["_link_source"] = "grok/execute_pr58_india_gcc/rapido-spine-inherit"
@@ -375,8 +388,14 @@ def sync_ola_from_rapido(ola: dict, rapido: dict) -> None:
             phase["featured_routes"][i] = merged
 
 
-def normalize_india_partner(path: Path, spine: dict[str, Any], gold_ids: set[str], goa_ledger: list[dict]) -> dict[str, Any]:
-    doc = load_json(path)
+def normalize_india_partner(
+    path: Path,
+    spine: dict[str, Any],
+    gold_ids: set[str],
+    goa_ledger: list[dict],
+    doc: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    doc = copy.deepcopy(doc) if doc is not None else load_json(path)
     by_market = spine_corridors_by_market(spine)
     all_spine = {c["corridor_id"] for c in spine.get("corridors", []) if c.get("corridor_id")}
 
@@ -754,9 +773,9 @@ def main() -> int:
     rapido_path = PARTNERS / "rapido.json"
     ola_path = PARTNERS / "ola.json"
     rapido = normalize_india_partner(rapido_path, spine, gold_ids, goa_ledger)
-    ola = load_json(ola_path)
-    sync_ola_from_rapido(ola, rapido)
-    ola = normalize_india_partner(ola_path, spine, gold_ids, goa_ledger)
+    ola_raw = load_json(ola_path)
+    sync_ola_from_rapido(ola_raw, rapido)
+    ola = normalize_india_partner(ola_path, spine, gold_ids, goa_ledger, doc=ola_raw)
 
     uber_draft = build_uber_india_draft(rapido, spine)
     uber_draft = deep_canonicalize(uber_draft, goa_ledger)

@@ -1,12 +1,12 @@
 # PR #58 Grok Execution Report — 2026-06-20
 
-Generated: 2026-06-20T17:53:51Z
+Generated: 2026-06-20T17:54:49Z
 
 ## Summary
 
 - **Branch lane**: `grok/execute_pr58_india_gcc`
 - **Noon route seals**: 12 sealed / 0 held
-- **India route seals**: 98 sealed / 93 held
+- **India route seals**: 147 sealed / 87 held
 - **Anchor crosswalks**: 4 files
 - **Goa label canonicalizations**: 0
 - **Economics**: economics_pending; sidecar ref merged (0 records)
