@@ -60,6 +60,40 @@ NODE_CROSSWALK = {
     "hurghada-el-gouna-egypt": "hurghada-el-gouna-egypt",
     "sharm-el-sheikh-egypt": "sharm-el-sheikh-egypt",
     "redsea-egypt": "redsea-egypt",
+    "bangkok": "bangkok-thailand",
+    "phuket": "phuket-phang-nga-thailand",
+    "jakarta": "jakarta-indonesia",
+    "bali": "jakarta-indonesia",
+    "singapore": "singapore",
+    "red-sea-global": "red-sea-global-ksa",
+    "ksa-commercial": "jeddah-ksa",
+    "lagos": "lagos-nigeria",
+    "mykonos-greece": "mykonos-greece",
+    "bolt-greece": "mykonos-greece",
+}
+
+# Extra parent_city_id search pools when a finance node maps to one canonical city
+CITY_SEARCH_ALIASES: dict[str, list[str]] = {
+    "red-sea-global-ksa": ["red-sea-global-ksa", "the-red-sea-archipelago-ksa"],
+    "jakarta-indonesia": ["jakarta-indonesia"],
+    "bangkok-thailand": ["bangkok-thailand"],
+    "singapore": ["singapore"],
+    "lagos-nigeria": ["lagos-nigeria"],
+    "mykonos-greece": ["mykonos-greece"],
+}
+
+# Tasklet endpoint_boarding_points labels → token hints for relaxed BP match
+LABEL_HINTS: dict[str, list[str]] = {
+    "shura island yacht marina the red sea": ["shura island marina"],
+    "st regis red sea resort jetty ummahat island": ["ummahat alshaykh resort jetty", "st regis"],
+    "nujuma a ritz carlton reserve island jetty": ["nujuma", "ritz carlton reserve"],
+    "marina ancol dermaga marina ancol ancol marina": ["marina batavia", "marina ancol", "dermaga"],
+    "pulau bidadari resort island jetty": ["bidadari"],
+    "pulau putri resort island jetty": ["putri harbour", "putri resort"],
+    "sathorn central pier saphan taksin": ["sathorn central pier"],
+    "phra arthit pier n13": ["phra arthit"],
+    "epe epe ayetoro jetty": ["epe", "ayetoro"],
+    "badagry jegba marina commando jetty": ["badagry", "jegba", "commando"],
 }
 
 
@@ -111,6 +145,19 @@ def _tokens(s: str | None) -> set[str]:
     return {t for t in norm_label(s).split() if t and t not in _LABEL_STOP}
 
 
+def _label_variants(label: str | None) -> list[str]:
+    if not label:
+        return []
+    out = [label]
+    primary = re.split(r"\s+[—–-]\s+", label, maxsplit=1)[0].strip()
+    if primary and primary != label:
+        out.append(primary)
+    hints = LABEL_HINTS.get(norm_label(label))
+    if hints:
+        out.extend(hints)
+    return out
+
+
 def labels_match(a: str | None, b: str | None) -> bool:
     na, nb = norm_label(a), norm_label(b)
     if not na or not nb:
@@ -123,6 +170,27 @@ def labels_match(a: str | None, b: str | None) -> bool:
     overlap = ta & tb
     need = min(2, min(len(ta), len(tb)))
     return len(overlap) >= max(1, need)
+
+
+def resolve_node_to_city(node_id: str | None, bp_idx: dict) -> str | None:
+    if not node_id:
+        return None
+    if node_id.startswith("bp-"):
+        row = bp_idx.get(node_id)
+        if row and row.get("parent_city_id"):
+            return row["parent_city_id"]
+    if node_id in NODE_CROSSWALK:
+        return NODE_CROSSWALK[node_id]
+    if "__" in node_id:
+        base = node_id.split("__", 1)[0]
+        return NODE_CROSSWALK.get(base, base)
+    return NODE_CROSSWALK.get(node_id, node_id)
+
+
+def city_search_ids(city_id: str | None) -> list[str]:
+    if not city_id:
+        return []
+    return list(dict.fromkeys(CITY_SEARCH_ALIASES.get(city_id, [city_id])))
 
 
 def hav_km(a: tuple[float, float], b: tuple[float, float]) -> float:
@@ -369,30 +437,35 @@ def resolve_bp_by_label(
 ) -> str | None:
     if not label:
         return None
-    search = list(dict.fromkeys((extra_cities or []) + ([city_id] if city_id else [])))
+    search: list[str] = []
+    for cid in (extra_cities or []) + ([city_id] if city_id else []):
+        search.extend(city_search_ids(cid))
+    search = list(dict.fromkeys(search))
     best = None
     best_score = 0
-    for pid, row in bp_idx.items():
-        if search and row.get("parent_city_id") not in search:
-            continue
-        if labels_match(label, row.get("name")):
-            score = len(_tokens(label) & _tokens(row.get("name")))
-            if score > best_score:
-                best_score = score
-                best = pid
+    for variant in _label_variants(label):
+        for pid, row in bp_idx.items():
+            if search and row.get("parent_city_id") not in search:
+                continue
+            if labels_match(variant, row.get("name")):
+                score = len(_tokens(variant) & _tokens(row.get("name")))
+                if score > best_score:
+                    best_score = score
+                    best = pid
     if best:
         return best
     # Relaxed: single strong token overlap (e.g. "Cacilhas (Almada)" ↔ "Cacilhas Ferry Terminal")
-    for pid, row in bp_idx.items():
-        if search and row.get("parent_city_id") not in search:
-            continue
-        overlap = _tokens(label) & _tokens(row.get("name"))
-        strong = [t for t in overlap if len(t) >= 4]
-        if strong:
-            score = len(strong)
-            if score > best_score:
-                best_score = score
-                best = pid
+    for variant in _label_variants(label):
+        for pid, row in bp_idx.items():
+            if search and row.get("parent_city_id") not in search:
+                continue
+            overlap = _tokens(variant) & _tokens(row.get("name"))
+            strong = [t for t in overlap if len(t) >= 4]
+            if strong:
+                score = len(strong)
+                if score > best_score:
+                    best_score = score
+                    best = pid
     return best
 
 
@@ -400,10 +473,10 @@ def resolve_corridor_endpoints(
     corridor: dict,
     bp_idx: dict,
 ) -> tuple[str | None, str | None, str | None, str | None]:
-    from_city = NODE_CROSSWALK.get(corridor.get("from_node_id"), corridor.get("from_node_id"))
-    to_city = NODE_CROSSWALK.get(
+    from_city = resolve_node_to_city(corridor.get("from_node_id"), bp_idx)
+    to_city = resolve_node_to_city(
         corridor.get("to_node_id") or corridor.get("from_node_id"),
-        corridor.get("to_node_id") or corridor.get("from_node_id"),
+        bp_idx,
     )
     eps = corridor.get("endpoint_boarding_points") or {}
     from_label = eps.get("from") or corridor.get("from")
