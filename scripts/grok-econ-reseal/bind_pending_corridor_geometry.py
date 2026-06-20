@@ -70,6 +70,8 @@ CITY_HINTS: list[tuple[tuple[str, ...], str]] = [
     (("agadir",), "agadir-essaouira-morocco"),
     (("al hoceima", "al-hoceima"), "al-hoceima-morocco"),
     (("split", "hvar", "brac"), "split-croatia"),
+    (("jounieh", "byblos", "jbeil", "cedar waves"), "beirut-lebanon"),
+    (("lebanon",), "beirut-lebanon"),
 ]
 
 # Existing gold routes keyed by (market, from_label, to_label)
@@ -174,7 +176,44 @@ CROATIA_CYPRUS_BPS = [
         "coords": [33.6231, 34.8751],
         "bp_type": "jetty",
     },
+    {
+        "id": "bp-larnaca-commercial-port",
+        "name": "Larnaca Commercial Port (Cedar Waves Cyprus berth)",
+        "shortName": "Larnaca Port",
+        "parent_city_id": "larnaca-cyprus",
+        "coords": [33.6412, 34.9175],
+        "bp_type": "port",
+    },
+    {
+        "id": "bp-dubrovnik-airport-cilipi-jetty",
+        "name": "Dubrovnik Airport (Čilipi) waterfront jetty",
+        "shortName": "Čilipi Airport Jetty",
+        "parent_city_id": "dubrovnik-croatia",
+        "coords": [18.2682, 42.5614],
+        "bp_type": "jetty",
+    },
+    {
+        "id": "bp-cavtat-croatia-quay",
+        "name": "Cavtat town waterfront quay (Konavle)",
+        "shortName": "Cavtat Quay",
+        "parent_city_id": "dubrovnik-croatia",
+        "coords": [18.2183, 42.5811],
+        "bp_type": "jetty",
+    },
+    {
+        "id": "bp-jounieh-port",
+        "name": "Jounieh Port (Cedar Waves Lebanon berth)",
+        "shortName": "Jounieh Port",
+        "parent_city_id": "beirut-lebanon",
+        "coords": [35.6178, 33.9808],
+        "bp_type": "port",
+    },
 ]
+
+DUBROVNIK_AIRPORT_EPS = {
+    "from": "Dubrovnik Airport (Čilipi) — waterfront jetty",
+    "to": "Port Gruž (main resort-transfer ferry hub)",
+}
 
 MOZAMBIQUE_BPS = [
     {
@@ -465,6 +504,21 @@ def ensure_croatia_cyprus_surface(fbt: dict) -> dict:
     return report
 
 
+def patch_dubrovnik_airport_eps(corridor: dict) -> bool:
+    if "dubrovnik airport" not in norm_label(corridor.get("from")):
+        return False
+    eps = corridor.get("endpoint_boarding_points") or {}
+    changed = False
+    for side, val in DUBROVNIK_AIRPORT_EPS.items():
+        if eps.get(side) != val:
+            eps[side] = val
+            changed = True
+    if changed:
+        corridor["endpoint_boarding_points"] = eps
+        corridor["_geometry_bound_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return changed
+
+
 def patch_sindalah_gcn_eps(corridor: dict) -> bool:
     rid = corridor.get("route_id") or ""
     if not str(rid).startswith("gcn-7bd6efa01a"):
@@ -504,6 +558,7 @@ def main():
         "nodes_patched": [],
         "routes_wired": [],
         "sindalah_eps_patched": [],
+        "dubrovnik_airport_eps_patched": [],
         "mozambique_surface": moz_surface_report,
         "croatia_cyprus_surface": cc_surface_report,
         "bp_resolution_after": [],
@@ -516,13 +571,20 @@ def main():
                 report["nodes_patched"].append({"market": mkey, "corridor": label})
             if patch_sindalah_gcn_eps(corr):
                 report["sindalah_eps_patched"].append({"market": mkey, "corridor": label})
+            if patch_dubrovnik_airport_eps(corr):
+                report["dubrovnik_airport_eps_patched"].append({"market": mkey, "corridor": label})
             if wire_route_id(mkey, corr, gold_ids):
                 report["routes_wired"].append(
                     {"market": mkey, "corridor": label, "route_id": corr["route_id"]}
                 )
 
     bp_idx = build_bp_index(fbt)
-    touched = report["nodes_patched"] + report["routes_wired"] + report["sindalah_eps_patched"]
+    touched = (
+        report["nodes_patched"]
+        + report["routes_wired"]
+        + report["sindalah_eps_patched"]
+        + report["dubrovnik_airport_eps_patched"]
+    )
     for row in touched:
         mkey = row["market"]
         label = row["corridor"]

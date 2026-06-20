@@ -119,7 +119,8 @@ CITY_SEARCH_ALIASES: dict[str, list[str]] = {
     "inhambane-mozambique": ["inhambane-mozambique"],
     "beira-mozambique": ["beira-mozambique"],
     "limassol-cyprus": ["limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"],
-    "larnaca-cyprus": ["larnaca-cyprus", "limassol-cyprus", "ayia-napa-cyprus", "paphos-cyprus"],
+    "larnaca-cyprus": ["larnaca-cyprus", "limassol-cyprus", "ayia-napa-cyprus", "paphos-cyprus", "beirut-lebanon"],
+    "beirut-lebanon": ["beirut-lebanon", "larnaca-cyprus"],
     "paphos-cyprus": ["paphos-cyprus", "limassol-cyprus", "larnaca-cyprus"],
     "ayia-napa-cyprus": ["ayia-napa-cyprus", "larnaca-cyprus", "limassol-cyprus", "protaras"],
     "zadar-croatia": ["zadar-croatia", "split-croatia"],
@@ -187,6 +188,14 @@ LABEL_HINTS: dict[str, list[str]] = {
         "zadar gazenica port",
     ],
     "kornati np vela provarsa aci piskera island anchorages": ["kornati piskera anchorage"],
+    "cilipi cavtat area jetty airport waterfront": ["dubrovnik airport cilipi jetty"],
+    "dubrovnik airport cilipi waterfront jetty": ["dubrovnik airport cilipi jetty"],
+    "port gruz main resort transfer ferry hub": ["gruz port", "port gruz"],
+    "dubrovnik old port gruz cavtat transfer dependent": ["gruz port", "dubrovnik old port"],
+    "cavtat town waterfront quay": ["cavtat croatia quay", "cavtat town waterfront"],
+    "larnaca port cyprus": ["larnaca commercial port", "larnaca port"],
+    "jounieh port lebanon also marketed to beirut": ["jounieh port", "jounieh bay"],
+    "beirut port jounieh port cedar waves departs jounieh marketed beirut jounieh": ["jounieh port"],
 }
 
 
@@ -529,13 +538,17 @@ def _corridor_city_ids(city_id: str | None, from_label: str | None, to_label: st
     if city_id == "rhodes-dodecanese-greece":
         cities.append("bodrum-turkey")
     if city_id == "dubrovnik-croatia":
-        cities.extend(["dubrovnik-croatia", "korcula-croatia", "split-croatia", "kotor-montenegro"])
+        cities.extend(["dubrovnik-croatia", "korcula-croatia", "split-croatia"])
+        if any(t in blob for t in ("kotor", "montenegro")):
+            cities.append("kotor-montenegro")
     if city_id in ("limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"):
         cities.extend(["limassol-cyprus", "larnaca-cyprus", "paphos-cyprus", "ayia-napa-cyprus"])
     if city_id == "zadar-croatia":
         cities.extend(["zadar-croatia", "split-croatia"])
     if city_id == "neom-sindalah-ksa":
         cities.append("neom-sindalah-ksa")
+    if any(t in blob for t in ("jounieh", "larnaca", "lebanon", "cyprus", "cedar waves")):
+        cities.extend(["larnaca-cyprus", "beirut-lebanon"])
     return list(dict.fromkeys(cities))
 
 
