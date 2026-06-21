@@ -21,30 +21,66 @@ except ImportError:
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_AGG_DIR = os.path.join(HERE, "recal")
 DEFAULT_OUT = os.path.join(HERE, "_master-unit-econ.xlsx")
+SHEET_IDS_PATH = os.path.join(HERE, "PARTNER-SHEET-IDS.json")
 
-# (display, sheet-slug, google-sheet-id, note)
-SHEETS = [
-    ("Grab", "grab", "1ACYTZar0odZCASzKUwo1A4rXGsCsz6Luec6Cu3vQ20w",
-     "SE-Asia ridehail/island network. Primary anchor — 0% future-dated demand."),
-    ("Careem", "careem", "1ip3bYDedgxj_9ydksKH1OzeoXGMWT2LZzti1y5jsx-8",
-     "UAE luxury water-served transfers. Mostly estimated; corridors city-level (route-pin pending)."),
-    ("Saudi / Red Sea (PIF)", "saudi-pif", "1K75Ln5YKgKkOBKnprAoVGu4KeuO83Dx2TGzQ-1o45Ig",
-     "Low-confidence / largely 2030-dated. Greenfield OFF. Treat as forward."),
-    ("Red Sea Global", "red-sea-global", "1QbF7zSl-5CllYXXLRJvvKJXXBpOu8Cnl97X1rO5J77c",
-     "Resort-operator corridors. Small, grounded subset."),
-    ("JIH Global (Maldives)", "jih-global", "136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU",
-     "Maldives 43 corridors geometry-bound; network-sum captive fleet."),
-    ("Qatar", "qatar", "1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q",
-     "Doha 4/4 in-range corridors bound. Banana Island captive carries floor."),
-    ("Bolt", "bolt", "1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk",
-     "MENA grounded floor + Med/Baltic aspirational tail (Bucket C bound)."),
-    ("Yango", "yango", "1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM",
-     "MENA + Africa grounded + CIS/Caspian/Africa aspirational tail (Bucket C bound)."),
-    ("Constance (Maldives)", "constance", "1Lhz_6nh3HnCK8L7tzr4HhmNEtfnXx2smecYPNQSORl0",
-     "Captive resort-transfer; network-sum captive fleet. Greenfield OFF."),
-    ("Four Seasons (Maldives)", "four-seasons", "1Flk6PfRgCNdSGlP49lf1KxXaoR4qdlLcs1O8YA72gcc",
-     "Captive resort-transfer; network-sum captive fleet. Greenfield OFF."),
+# Stable row order; any slug in PARTNER-SHEET-IDS.json not listed here appends alphabetically.
+PARTNER_ORDER = [
+    "grab", "careem", "bolt", "yango", "uber",
+    "rapido", "ola", "noon",
+    "jih-global", "qatar", "saudi-pif", "red-sea-global",
+    "constance", "four-seasons",
 ]
+
+PARTNER_DISPLAY: dict[str, str] = {
+    "grab": "Grab",
+    "careem": "Careem",
+    "bolt": "Bolt",
+    "yango": "Yango",
+    "uber": "Uber",
+    "rapido": "Rapido (India)",
+    "ola": "Ola (India)",
+    "noon": "Noon (UAE)",
+    "jih-global": "JIH Global (Maldives)",
+    "qatar": "Qatar",
+    "saudi-pif": "Saudi / Red Sea (PIF)",
+    "red-sea-global": "Red Sea Global",
+    "constance": "Constance (Maldives)",
+    "four-seasons": "Four Seasons (Maldives)",
+}
+
+PARTNER_NOTES: dict[str, str] = {
+    "grab": "SE-Asia ridehail/island network. Primary anchor — 0% future-dated demand.",
+    "careem": "UAE luxury water-served transfers. Mostly estimated; corridors city-level (route-pin pending).",
+    "saudi-pif": "Low-confidence / largely 2030-dated. Greenfield OFF. Treat as forward.",
+    "red-sea-global": "Resort-operator corridors. Small, grounded subset.",
+    "jih-global": "Maldives 43 corridors geometry-bound; network-sum captive fleet.",
+    "qatar": "Doha 4/4 in-range corridors bound. Banana Island captive carries floor.",
+    "bolt": "MENA grounded floor + Med/Baltic aspirational tail (Bucket C bound).",
+    "yango": "MENA + Africa grounded + CIS/Caspian/Africa aspirational tail (Bucket C bound).",
+    "constance": "Captive resort-transfer; network-sum captive fleet. Greenfield OFF.",
+    "four-seasons": "Captive resort-transfer; network-sum captive fleet. Greenfield OFF.",
+    "uber": "Global mobility rollup; MENA + Med + Hawaii + LatAm scoped markets.",
+    "rapido": "PR #58 India — Mumbai/Goa/Kerala/Andaman sealed spine; ridehail archetype.",
+    "ola": "PR #58 India — same sealed spine as Rapido; ridehail archetype.",
+    "noon": "PR #58 UAE — 12 sealed super_app corridors; Careem-style demand ladder.",
+}
+
+
+def load_registry_rows() -> list[tuple[str, str, str, str]]:
+    """(display, sheet-slug, google-sheet-id, note) from PARTNER-SHEET-IDS.json."""
+    reg = json.load(open(SHEET_IDS_PATH))
+    slugs = [k for k in reg if not k.startswith("_")]
+    order = {s: i for i, s in enumerate(PARTNER_ORDER)}
+    slugs.sort(key=lambda s: (order.get(s, 999), s))
+    rows: list[tuple[str, str, str, str]] = []
+    for slug in slugs:
+        sid = reg[slug]
+        if not sid or str(sid).startswith("_"):
+            continue
+        disp = PARTNER_DISPLAY.get(slug, slug.replace("-", " ").title())
+        note = PARTNER_NOTES.get(slug, "Unit-economics transparent sheet — see agg rollup when present.")
+        rows.append((disp, slug, sid, note))
+    return rows
 
 NAVY = PatternFill("solid", fgColor="1F3A5F")
 STEEL = PatternFill("solid", fgColor="2E5984")
@@ -161,7 +197,7 @@ def build_master(out_path: str, agg_dir: str = DEFAULT_AGG_DIR) -> int:
 
     r = 4
     missing: list[str] = []
-    for disp, pk, sid, note in SHEETS:
+    for disp, pk, sid, note in load_registry_rows():
         ro = rollup(pk, agg_dir)
         if ro.get("missing"):
             missing.append(pk)
