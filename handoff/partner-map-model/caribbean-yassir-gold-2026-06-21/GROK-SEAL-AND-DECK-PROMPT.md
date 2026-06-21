@@ -72,6 +72,12 @@ Use `yassir-algeria-market-source-and-mint-queue.json`, `algeria-country-referen
 - Do not use Europe-facing ferry fares as Navier commuter fares without local route validation.
 - If exact seal succeeds, return a QA ledger with: city IDs minted, BPs sealed/dropped with reasons, route IDs created/held, land-crossing proof, and whether each route is N30/N35 commercial-now, seasonal, or roadmap-only.
 
+## Readiness audit checklist
+Before claiming either proposal is Grok-ready/done, use `proposal-package-readiness-audit-2026-06-21.json` and `.md` as the gate checklist.
+- Treat all `HELD` gates as unresolved until receipts are returned.
+- Data-clean partner JSONs are absent on this branch and must be generated/sealed only after deterministic route/city/render checks.
+- This audit does not authorize invented routes, approximate route IDs, or deck edits without live deck binding/object inventory.
+
 ## Deck Studio handoff — both lanes
 Use `deck-studio-readiness-queue.json` plus the deck folders listed above.
 

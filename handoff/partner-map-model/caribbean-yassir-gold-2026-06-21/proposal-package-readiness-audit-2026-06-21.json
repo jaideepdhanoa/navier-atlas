@@ -1,0 +1,217 @@
+{
+  "audit_id": "proposal-package-readiness-audit-2026-06-21",
+  "generated_at": "2026-06-21",
+  "pr": 65,
+  "branch": "tasklet/caribbean-yassir-gold-2026-06-21",
+  "rule": "Exactness over coverage: pass/held gates are explicit; null beats confidently-wrong; Grok seals route/city/render IDs, Tasklet provides source-led ingredients.",
+  "package_scope": {
+    "caribbean_mobility": "Generic regional mobility partner proposal. Not tied to a named operator. Existing Atlas Caribbean market IDs only; economics are preflight until exact route IDs/assumptions are sealed.",
+    "yassir": "Named Yassir proposal. Current render/economics scope is Morocco/Tunisia. Algeria is explicitly treated as first-class but held behind Grok mint/seal and economics gates."
+  },
+  "source_inventory_summary": {
+    "total_rows": 29,
+    "by_partner": {
+      "yassir": 3,
+      "caribbean-mobility": 16,
+      "shared_or_unknown": 10
+    },
+    "by_evidence_tier": {
+      "country_supported": 2,
+      "product_supported": 1,
+      "market_signal": 2,
+      "macro_signal": 1,
+      "demand_anchor_candidate": 4,
+      "route_candidate": 2,
+      "none": 10,
+      "fare_anchor": 1,
+      "fare_and_route_anchor": 2,
+      "use_case_anchor": 1,
+      "country_reference_draft": 3
+    }
+  },
+  "anchor_city_crosswalk_summary": {
+    "yassir": {
+      "total": 18,
+      "verdicts": {
+        "OK": 18
+      }
+    },
+    "caribbean-mobility": {
+      "total": 24,
+      "verdicts": {
+        "OK": 24
+      }
+    }
+  },
+  "missing_or_held_repo_artifacts": [
+    "data-clean/partners/yassir.json",
+    "data-clean/partners/caribbean-mobility.json"
+  ],
+  "caribbean_mobility_gates": [
+    {
+      "gate_id": "C-01",
+      "label": "Source-backed regional market footprint",
+      "status": "pass",
+      "evidence": "16 Caribbean/source rows banked; 11 partner-generic market sections authored.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Keep generic until a named operator is approved."
+    },
+    {
+      "gate_id": "C-02",
+      "label": "Unsupported geography guardrail",
+      "status": "pass",
+      "evidence": "Partner JSON uses existing Atlas Caribbean anchor IDs; route IDs remain null.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Do not claim named partner footprint or create new BPs without Grok seal."
+    },
+    {
+      "gate_id": "C-03",
+      "label": "Anchor-city render crosswalk",
+      "status": "pass",
+      "evidence": "24 / 24 anchor-city checks OK.",
+      "owner": "Grok",
+      "next_action": "Grok should render-check against sealed city_id, not filenames."
+    },
+    {
+      "gate_id": "C-04",
+      "label": "Country-reference preflight",
+      "status": "pass_preflight",
+      "evidence": "Draft country-reference batch exists for 5 country rows.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Review/accept rows before editing finance/model/country-reference.json."
+    },
+    {
+      "gate_id": "C-05",
+      "label": "Route-economics conversion",
+      "status": "pass_preflight",
+      "evidence": "5 route-economics inputs converted; 3 markets explicitly blocked/not modeled.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Seal exact route IDs and assumptions before cascade."
+    },
+    {
+      "gate_id": "C-06",
+      "label": "Live finance cascade / growth_case",
+      "status": "held",
+      "evidence": "No live Caribbean corridors/country-reference/model rows changed; partner JSON intentionally has no growth_case.",
+      "owner": "Tasklet/Grok",
+      "next_action": "After Grok seal + assumption acceptance, add approved rows and run aggregate/growth cascade."
+    },
+    {
+      "gate_id": "C-07",
+      "label": "Data-clean partner artifact",
+      "status": "held",
+      "evidence": "data-clean/partners/caribbean-mobility.json is absent on PR #65 branch; this is now explicit.",
+      "owner": "Grok",
+      "next_action": "Have Grok generate/seal data-clean only after deterministic route/city binding."
+    },
+    {
+      "gate_id": "C-08",
+      "label": "Deck Studio package",
+      "status": "pass",
+      "evidence": "deck-studio/decks/caribbean-mobility has deck.config, content-source, image-manifest, and slide-manifest.",
+      "owner": "Grok",
+      "next_action": "Bind/create live deck ID and pull object inventory before edits."
+    },
+    {
+      "gate_id": "C-09",
+      "label": "Grok seal queue / unresolved gaps",
+      "status": "pass",
+      "evidence": "Caribbean economics sidecar draft and deck readiness queue identify route/country/economics gaps.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Return unresolved gaps separately; preserve nulls."
+    }
+  ],
+  "yassir_gates": [
+    {
+      "gate_id": "Y-01",
+      "label": "Source-backed Yassir footprint",
+      "status": "pass_partial",
+      "evidence": "3 Yassir rows plus Algeria packets; display/economics scope remains Morocco/Tunisia only.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Keep Yassir source claims tiered; do not assume unsupported cities."
+    },
+    {
+      "gate_id": "Y-02",
+      "label": "Algeria home-market treatment",
+      "status": "pass_held",
+      "evidence": "Algeria source/mint packet has 8 candidate cities; route hardening has 5 source-backed candidates.",
+      "owner": "Grok",
+      "next_action": "Grok must mint/validate Algeria city IDs, BPs, and routes before display/economics."
+    },
+    {
+      "gate_id": "Y-03",
+      "label": "Anchor-city render crosswalk",
+      "status": "pass",
+      "evidence": "18 / 18 anchor-city checks OK for current Morocco/Tunisia display scope.",
+      "owner": "Grok",
+      "next_action": "Render-check market cards against sealed city_id."
+    },
+    {
+      "gate_id": "Y-04",
+      "label": "Partner JSON narrative/sub-markets",
+      "status": "pass",
+      "evidence": "Yassir JSON has 2 full market sections and 4 route-ID-null journey candidates.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Promote Algeria only after exact seal."
+    },
+    {
+      "gate_id": "Y-05",
+      "label": "Economics cascade for current scope",
+      "status": "pass_current_scope",
+      "evidence": "agg-yassir.json, growth-yassir.json, _growth-draft/yassir.growth.json, and yassir_unit_econ.xlsx are staged for Morocco/Tunisia.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Upload/replace economics Sheet only through approved in-place path after review."
+    },
+    {
+      "gate_id": "Y-06",
+      "label": "Algeria economics cascade",
+      "status": "held",
+      "evidence": "algeria-country-reference-draft.json exists, but no live Algeria model rows are included.",
+      "owner": "Tasklet/Grok",
+      "next_action": "Add accepted Algeria country-reference + route rows after Grok seal, then rerun cascade."
+    },
+    {
+      "gate_id": "Y-07",
+      "label": "Exact route IDs",
+      "status": "held_grok",
+      "evidence": "Authored route IDs remain null until deterministic sealing.",
+      "owner": "Grok",
+      "next_action": "Bind only exact route IDs; return null for unresolved endpoints."
+    },
+    {
+      "gate_id": "Y-08",
+      "label": "Data-clean partner artifact",
+      "status": "held",
+      "evidence": "data-clean/partners/yassir.json is absent on PR #65 branch; current package is handoff/partner-pitch first.",
+      "owner": "Grok",
+      "next_action": "Have Grok generate/seal data-clean after render graph QA."
+    },
+    {
+      "gate_id": "Y-09",
+      "label": "Deck Studio package",
+      "status": "pass",
+      "evidence": "deck-studio/decks/yassir has deck.config, content-source, image-manifest, and slide-manifest.",
+      "owner": "Grok",
+      "next_action": "Bind/create live deck ID and pull object inventory before edits."
+    }
+  ],
+  "global_holds_before_definition_of_done": [
+    "data-clean partner JSONs are absent and should be generated/sealed by Grok after deterministic route/city binding.",
+    "No live Google Slides IDs are bound yet; Deck Studio configs intentionally retain pending deck IDs.",
+    "Caribbean economics are draft/preflight only; no live model cascade or growth_case until route IDs and assumptions are accepted.",
+    "Yassir Algeria is source-backed but not display/economics-ready until sealed Algeria city IDs, BPs, route IDs, country-reference row, and route-level demand/fare anchors exist.",
+    "Grok render receipts, duplicate-corridor checks, deck QA receipts, and unresolved-gap return packet are still required."
+  ],
+  "next_bite_recommendation": [
+    "Ask Grok to execute the seal/render/data-clean pass using the handoff prompt and this audit as the checklist.",
+    "If Tasklet continues before Grok, only add source hardening or specs; do not fabricate data-clean, route IDs, or live economics.",
+    "After Grok returns IDs, cascade approved economics and include the economics sidecar in the gold export/package."
+  ],
+  "do_not_do": [
+    "Do not invent Caribbean operator footprint claims.",
+    "Do not add Yassir Algeria to display/economics before exact Grok seal.",
+    "Do not replace null route IDs with approximate or filename-based matches.",
+    "Do not create or replace live Slides outside the approved API workflow.",
+    "Do not treat this audit as a validation receipt for front-end render; it is a readiness control checklist."
+  ]
+}

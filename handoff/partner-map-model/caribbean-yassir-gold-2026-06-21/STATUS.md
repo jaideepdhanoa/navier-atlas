@@ -66,3 +66,10 @@
 - Added `deck-studio-readiness-queue.json` with the Grok deck-bind/create instructions, QA commands, image rules, and known gaps.
 - No live Google Slides edits were made; deck IDs are intentionally `PENDING_GROK_CREATE_OR_BIND` until Grok binds or creates the live deck and pulls object inventory.
 - Image policy remains canonical N30/N35 compositing, market-specific backgrounds, and no Atlas-generated imagery.
+
+## Batch 7 banked: Proposal-package readiness audit
+- Added `proposal-package-readiness-audit-2026-06-21.json` and `.md` to turn the full definition of done into explicit pass/held gates for both lanes.
+- Caribbean is marked source/deck/preflight-ready, with live economics/growth/data-clean held until Grok seals exact route IDs and assumptions are accepted.
+- Yassir is marked source/deck/economics-ready for the current Morocco/Tunisia scope, with Algeria explicitly first-class but held behind Grok mint/seal + country-reference/economics cascade gates.
+- Data-clean partner JSONs are intentionally called out as missing/held artifacts, not silently implied.
+- This audit is a readiness control checklist; it is not a render receipt.
