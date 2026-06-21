@@ -1,0 +1,169 @@
+{
+  "artifact": "india-adani-reliance-validated-model-inputs-research-only",
+  "date": "2026-06-21",
+  "status": "tasklet_research_complete_grok_financials_ready",
+  "not_a_financial_model": true,
+  "partners": [
+    "adani-ports",
+    "reliance-industries"
+  ],
+  "inputs_by_market": [
+    {
+      "market_id": "mumbai-india",
+      "admit_to_grok_model": true,
+      "input_quality": "fare_and_ops_anchor_no_demand",
+      "route_candidates": [
+        {
+          "label": "Mumbai Ferry Wharf / Bhaucha Dhakka ↔ Mandwa Ro-Pax Jetty",
+          "route_id": null,
+          "binding_owner": "Grok",
+          "status": "candidate_exact_bind_pending"
+        }
+      ],
+      "fare_inputs_inr": {
+        "passenger_floor": 400,
+        "motorcycle_floor": 210,
+        "four_wheeler_floor": 1020,
+        "bicycle_floor": 110,
+        "bus_floor": 4500,
+        "source": "M2M official website onwards fares"
+      },
+      "demand_inputs": null,
+      "ops_inputs": {
+        "service_type": "Ro-Pax",
+        "year_round": true,
+        "vehicle_deck_capacity_fact": "over 120 cars/two-wheelers/buses"
+      },
+      "vessel_inputs": {
+        "supported_hull_note": "Use Grok range-gate; Tasklet does not assign vessel count or economics."
+      },
+      "holdouts": [
+        "current average fare",
+        "passenger volume",
+        "seasonality",
+        "capture",
+        "vessel count"
+      ]
+    },
+    {
+      "market_id": "kerala-backwaters-india",
+      "admit_to_grok_model": true,
+      "input_quality": "demand_and_ops_anchor_no_official_fare",
+      "route_candidates": [
+        {
+          "label": "Kochi Water Metro terminal pairs; prioritize High Court, Vypin, Fort Kochi, Vytilla, Kakkanad, Willingdon Island, Mattancherry after ID binding",
+          "route_id": null,
+          "binding_owner": "Grok",
+          "status": "candidate_exact_bind_pending"
+        }
+      ],
+      "fare_inputs_inr": null,
+      "fare_candidate_not_admitted": "₹20–₹40 surfaced in search/social/secondary result but is not admitted without official scraped fare chart.",
+      "demand_inputs": {
+        "daily_ridership": 5873,
+        "date": "2026-06-19",
+        "cumulative_passengers": 7070083,
+        "source": "Kochi Water Metro official homepage"
+      },
+      "ops_inputs": {
+        "e_boats": "75+",
+        "routes": "15",
+        "network_km": "75+",
+        "terminal_list": [
+          "South Chittoor",
+          "Cheranalloor",
+          "Eloor",
+          "Fort Kochi",
+          "Willingdon Island",
+          "Mattancherry",
+          "High Court",
+          "Kakkanad",
+          "Vytilla",
+          "Vypin"
+        ]
+      },
+      "vessel_inputs": {
+        "supported_hull_note": "Existing service is electric water-metro boats; Grok must range-gate Navier hulls after route selection."
+      },
+      "holdouts": [
+        "official fare chart",
+        "route-level ridership split",
+        "route distances",
+        "capture",
+        "vessel count"
+      ]
+    },
+    {
+      "market_id": "goa-india",
+      "admit_to_grok_model": true,
+      "input_quality": "government_route_ops_and_toll_baseline_no_demand_no_premium_fare",
+      "route_candidates": [
+        {
+          "label": "Goa RND 21-route ferry network; specific Mandovi/Mormugao legs only after exact sealed ID binding",
+          "route_id": null,
+          "binding_owner": "Grok",
+          "status": "candidate_exact_bind_pending"
+        }
+      ],
+      "fare_inputs_inr": {
+        "public_ferry_exemptions": {
+          "foot_passenger": 0,
+          "two_wheeler": 0,
+          "three_wheeler": 0
+        },
+        "vehicle_toll_bands": "₹7/₹10/₹14/₹27+ car/jeep group bands and higher commercial/special-trip bands in official charter; not a Navier passenger fare"
+      },
+      "demand_inputs": null,
+      "ops_inputs": {
+        "regular_routes": 21,
+        "service_hours": "about 18-20 hours/day plus on-request service",
+        "source": "Goa RND Citizens' Charter"
+      },
+      "vessel_inputs": {
+        "supported_hull_note": "Government ferry/toll data supports baseline context only; Grok must assign Navier hulls by actual corridor distance."
+      },
+      "holdouts": [
+        "public-ferry demand",
+        "premium/tourist fare",
+        "route-level volumes",
+        "capture",
+        "vessel count"
+      ]
+    },
+    {
+      "market_id": "andaman-india",
+      "admit_to_grok_model": false,
+      "input_quality": "route_candidate_only_unverified_fare_pdf",
+      "route_candidates": [
+        {
+          "label": "Port Blair / Sri Vijaya Puram ↔ Swaraj Dweep / Havelock / Shaheed Dweep / Neil",
+          "route_id": null,
+          "binding_owner": "Grok",
+          "status": "candidate_exact_bind_pending"
+        }
+      ],
+      "fare_inputs_inr": null,
+      "demand_inputs": null,
+      "ops_inputs": null,
+      "vessel_inputs": null,
+      "holdouts": [
+        "official DSS fare table retrieval",
+        "route-level demand",
+        "schedule/fleet",
+        "capture",
+        "vessel count"
+      ],
+      "hard_rule": "No Tasklet-sourced Andaman economics row. Grok may independently retrieve the DSS PDF and then admit values."
+    }
+  ],
+  "partner_specific_framing": {
+    "adani_ports": "Use APSEZ official port-network fact pattern for national operator rationale. Treat APSEZ assets as partner footprint, not as sealed passenger BPs unless Grok exact-binds/mints them.",
+    "reliance_industries": "Use RIL official Nariman Point office, Jamnagar refining/new-energy scale, and clean-energy/materials strategy for Reliance rationale. Treat RCP/Ghansoli/Jamnagar as null until exact-bound/minted."
+  },
+  "grok_next_actions": [
+    "Build financial model/TAM/growth_case from admitted inputs only.",
+    "Use clearly-labelled assumptions/templates where facts are absent; do not attribute assumptions to Tasklet research.",
+    "Run exact ID binding and route minting/sealing/render QA.",
+    "Cascade economics sidecar/sheet/master tracker as Grok-owned deterministic lane."
+  ]
+}
