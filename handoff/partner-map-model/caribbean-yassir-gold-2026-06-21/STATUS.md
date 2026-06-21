@@ -47,3 +47,8 @@
 - Sources now include ENTMV/Algérie Ferries, Radio Algérienne/APS Algiers Bay, Port de Béjaïa PDF, Radio Algérienne/APS Oran–Mostaganem, Ferryhopper Algeria, and GNV Algiers port page.
 - Exactness gate unchanged: no Algeria render/economics until Grok seals city IDs, boarding points, and route IDs; unresolved endpoints stay null.
 
+
+## 2026-06-21 — Grok Algeria mint handoff prompt updated
+- Updated `GROK-SEAL-AND-DECK-PROMPT.md` to reference the Algeria source/mint queue, country-reference draft, and route hardening batch 1.
+- Added exact city/BP/route mint requests and null-policy gates for Grok.
+- Still no live `yassir-algeria` display/economics until Grok returns sealed IDs and route QA.
