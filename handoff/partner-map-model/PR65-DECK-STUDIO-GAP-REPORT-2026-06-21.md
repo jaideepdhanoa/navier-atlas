@@ -1,42 +1,78 @@
 # PR #65 Deck Studio gap report — 2026-06-21
 
-## Live bind pass (complete)
+## Status summary
 
-- `GOOGLE_TOKEN_PATH=/Users/jaideep/.config/google-drive-mcp/tokens.json` — Slides + Drive OAuth verified
-- `deck-studio validate` — **PASS** (all 11 #65 packages + golden decks)
-- Live decks created from Grab template copy (PR65 sandbox copies)
-- Per deck: `pull --mode full` → `plan` → `apply` (no-op) → `qa`
-- Live QA receipts: `deck-studio/decks/<deck>/qa-receipts/pr65-live-qa.json`
-- Status: **pass** on all 11 #65 packages (23 slides each, full object inventory pulled)
+| Phase | Status |
+|-------|--------|
+| Local validate | **PASS** (all 11 #65 + golden decks) |
+| Live bind (Slides OAuth) | **COMPLETE** — 11 sandbox decks from Grab template |
+| Content apply + 11-slide trim | **COMPLETE** — partner text from `content-source.json` |
+| Economics URL bind | **7/11 bound** — see table below |
+| Route/render QA ledgers | **COMPLETE** — `decks/<deck>/ledgers/route-render-qa.json` |
+| N30 image compositing | **HELD-NULL** — no approved backgrounds or `n30.png` in repo |
+| Schema validate post-content | **PASS** |
 
-## Packages — live deck IDs
+Lane report: `deck-studio/out/pr65-content-lane-report.json`
 
-| Deck key | Config | Content source | Image manifest | Live deck ID | QA |
-|----------|--------|----------------|----------------|--------------|-----|
-| adani-ports | ✓ | ✓ | ✓ | `1WKRo-A3DamjYBT_dmuMazw8s7K9PHinFZFilkbwlb7c` | pass |
-| bolt | ✓ | ✓ | ✓ | `1sQNF5P3OjhAlSh917yO6If1OPBGnwOBvrBzGXcYZh4c` | pass |
-| caribbean-mobility | ✓ | ✓ | ✓ | `1FL4B_AxahPoyQRCHfjUy_GwzxcNyZquoXRP1v5O0EgA` | pass |
-| noon | ✓ | ✓ | ✓ | `10yH0aMKJsSDhz2epxyZb9hMCyDSRYJp4DrPDYJQZ38A` | pass |
-| ola | ✓ | ✓ | ✓ | `1unu9eU1kfIdq9zU7lEm33P5JMDLeEvViQ7FcdCAEgYI` | pass |
-| rapido | ✓ | ✓ | ✓ | `1EU_W3HEEUHDY91XwVHDX3e7Hv2D3nhY7VHgVe369gFM` | pass |
-| reliance-industries | ✓ | ✓ | ✓ | `1Nvphyjr1rHmgM4YMqLnfj9lGDm4_sDPJHwZ4j9c279Y` | pass |
-| uber-india | ✓ | ✓ | ✓ | `1I-QTXOLN2KExoR7e6qYFqL03lBo2MAA45sw3zMkw1Kg` | pass |
-| uber-mena | ✓ | ✓ | ✓ | `1-COtUkEqZE8QfbBI1YXPqeY0xbTnCOQUOjB2UHPMuqk` | pass |
-| yango | ✓ | ✓ | ✓ | `1A-ElNhMyvyRLzidj1r3J5ibLaqi746TSLJMvJlkts78` | pass |
-| yassir | ✓ | ✓ | ✓ | `1fqwFDPrLklNbxrS_0ibo5MsXa-iGT43uLZNMCvU4wMo` | pass |
+## Packages — live deck IDs + content QA
 
-Bind report artifact: `deck-studio/out/pr65-deck-bind-report.json`
+| Deck key | Slides | Economics URL | Route QA | Content QA |
+|----------|--------|---------------|----------|------------|
+| adani-ports | 11 | null (held) | PASS_WITH_FLAGS | pass |
+| bolt | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit) | PASS | pass |
+| caribbean-mobility | 11 | null (held) | PASS | pass |
+| noon | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1v0ywhNFk_fA1JRVhizWlz89RKgQWlID9RD3LfBhVB2Y/edit) | PASS | pass |
+| ola | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1pNwq_GQd2Fdem8O4o2GNNoKxBPxXOPDh1qfbhGFGkaQ/edit) | PASS | pass |
+| rapido | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1ujRCwCKNFcfUbVL5B312fjcYmtvsDVhBtK2hsTHo-qA/edit) | PASS | pass |
+| reliance-industries | 11 | null (held) | PASS_WITH_FLAGS | pass |
+| uber-india | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1L6StDXDjdR26l_bIqRRH150B1rTeT9pHk76JKkG3rqw/edit) | PASS | pass |
+| uber-mena | 11 | [Sheet](https://docs.google.com/spreadsheets/d/19VtRN0U6Gggq_RQlRuSxmiIxnp2KgGEIvXOW72RQHIQ/edit) | PASS | pass |
+| yango | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit) | PASS | pass |
+| yassir | 11 | null (held — local xlsx only) | PASS | pass |
 
-## Remaining gaps (content, not bind)
+Live deck links unchanged from bind pass (`deck-studio/out/pr65-deck-bind-report.json`).
 
-These decks are **bound and inventory-pulled** but still carry Grab-template placeholder content. Next passes:
+## What ran (content lane)
 
-1. Partner-specific text edits via Slides API edit plans (sourced from each `content-source.json`)
-2. N30 image compositing per `image-manifest.json` + provenance receipts
-3. Economics sheet URL binding where `economics_url` is still null
-4. Slide-count alignment: planned outlines were 10–11 slides; live copies are 23-slide Grab sandboxes — trim or restructure in a follow-up edit plan
-5. Route/render QA for route appendix slides
+```bash
+cd deck-studio
+export GOOGLE_TOKEN_PATH=~/.config/google-drive-mcp/tokens.json
+export PYTHONPATH=builders
+python -m deck_studio.pr65_content_lane
+```
 
-## Auth note
+Per deck:
+1. Bind `economics_url` / `economics_sheet_id` from `finance/economics_url_map.json` where available
+2. Run `scripts/audit_partner_page_qa.py --partner <slug>` → route/render ledger
+3. Write image provenance ledger (held-null — no approved assets)
+4. Build + apply Slides API edit plan (partner title/body text on slides 1–11)
+5. Delete slides 12–23 (Grab sandbox trim)
+6. Re-pull full inventory + `pr65-content-qa.json` receipt
 
-`deck_studio/cli.py` now loads MCP OAuth the same way as `finance/drive_upload.py`: token from `GOOGLE_TOKEN_PATH` (default `~/.config/google-drive-mcp/tokens.json`) plus client keys from `GOOGLE_CLIENT_PATH` (default `~/.config/google-drive-mcp/gcp-oauth.keys.json`). Token refresh is persisted back to the token file.
+## Remaining gaps
+
+### Economics (4 held-null)
+
+- **yassir** — `finance/_sheet_out/yassir_unit_econ.xlsx` exists; no `PARTNER-SHEET-IDS` entry → in-place publish pending
+- **caribbean-mobility** — batch-1 economics inputs drafted; no published Sheet
+- **adani-ports** / **reliance-industries** — no economics Sheet in registry
+
+### N30 images (all 11 decks)
+
+`decks/<deck>/ledgers/image-provenance-ledger.json` — status `held_null_pending_approved_assets`.
+
+Blocked until:
+- Source-approved market backgrounds checked in under `deck-studio/assets/backgrounds/`
+- Canonical `assets/n30/n30.png` (or Drive registry entry per `assets/n30/README.md`)
+
+IMAGE-RULES forbid Atlas-generated or generic decorative imagery.
+
+### Content polish (non-blocking)
+
+- Grab-template layout slots ≠ final brand layouts; text applied to largest title/body shapes per slide
+- Slide 10 appendix includes page-QA summary + sourced journey rows; full route-ID seal receipts still partner-specific
+- Human review required before external send (per `LIVE-DECK-RULES.md`)
+
+## Auth
+
+`deck_studio/cli.py` loads MCP OAuth: `GOOGLE_TOKEN_PATH` + `GOOGLE_CLIENT_PATH` (default `~/.config/google-drive-mcp/`).
