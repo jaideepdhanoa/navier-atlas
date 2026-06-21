@@ -26,21 +26,6 @@
       "route_scope": "intra",
       "featured_routes": [
         {
-          "label": "Dubai Creek ↔ Dubai Marina",
-          "from_node_id": "bp-56d5f5bd8d",
-          "to_node_id": "bp-c2602e6640",
-          "distance_nm": 15.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-96ac70c9ebf8",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-96ac70c9ebf8"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
           "label": "Dubai Marina / Harbour ↔ Palm Jumeirah / Dubai Islands",
           "from_node_id": "bp-56d5f5bd8d",
           "to_node_id": "bp-051c982570",
@@ -53,6 +38,36 @@
           "route_ids": [
             "rn-42aa1791bb60"
           ],
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Dubai Creek ↔ Dubai Harbour / Bluewaters",
+          "from_node_id": "bp-548f2fc0b7",
+          "to_node_id": "bp-56d5f5bd8d",
+          "distance_nm": 11.9,
+          "platform": "Pioneer II",
+          "route_id": "rn-b1ba183aa886",
+          "_link_kind": "bp-corridor-candidate",
+          "_link_status": "linked-authority-noon-mirror",
+          "_link_source": "grok/upgrade_uae_authority_from_noon",
+          "route_ids": [
+            "rn-b1ba183aa886"
+          ],
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Dubai Creek ↔ Dubai Marina",
+          "from_node_id": "bp-56d5f5bd8d",
+          "to_node_id": "bp-c2602e6640",
+          "distance_nm": 15.5,
+          "platform": "Pioneer II",
+          "route_id": "rn-96ac70c9ebf8",
+          "route_ids": [
+            "rn-96ac70c9ebf8"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
           "economics_status": "economics_pending"
         }
       ],
@@ -86,7 +101,9 @@
         "Dubai Creek → Dubai Marina: A fast, near-silent foiling run along the waterfront.",
         "Dubai Marina / Harbour → Palm Jumeirah / Dubai Islands: A direct all-electric island hop.",
         "Dubai → Abu Dhabi waterfront: A smooth Quanta-LR water express between the emirates."
-      ]
+      ],
+      "_authority_phase_tier": "intra_pilot",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims."
     },
     {
       "n": 2,
@@ -98,33 +115,33 @@
       "route_scope": "intra",
       "featured_routes": [
         {
+          "label": "Dubai Creek ↔ Dubai Marina",
+          "from_node_id": "bp-56d5f5bd8d",
+          "to_node_id": "bp-c2602e6640",
+          "distance_nm": 15.5,
+          "platform": "Pioneer II",
+          "route_id": "rn-96ac70c9ebf8",
+          "_link_kind": "bp-corridor-candidate",
+          "_link_status": "linked-authority-noon-mirror",
+          "_link_source": "grok/upgrade_uae_authority_from_noon",
+          "route_ids": [
+            "rn-96ac70c9ebf8"
+          ],
+          "economics_status": "economics_pending"
+        },
+        {
           "label": "Dubai Creek ↔ Dubai Harbour / Bluewaters",
           "from_node_id": "bp-548f2fc0b7",
           "to_node_id": "bp-56d5f5bd8d",
           "distance_nm": 11.9,
           "platform": "Pioneer II",
           "route_id": "rn-b1ba183aa886",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
           "route_ids": [
             "rn-b1ba183aa886"
           ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Abu Dhabi waterfront ↔ Sir Bani Yas Island",
-          "from_node_id": "abu-dhabi-uae",
-          "to_node_id": "bp-a40b35cc0543",
-          "distance_nm": 50.6,
-          "platform": "Quanta-LR",
-          "route_id": "rn-08f29522c5f2",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-08f29522c5f2"
-          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
           "economics_status": "economics_pending"
         }
       ],
@@ -158,49 +175,23 @@
         "Dubai Creek → Dubai Harbour / Bluewaters: A direct waterfront foiling run linking the historic core to the new harbour district.",
         "DIFC / Dubai business district → Abu Dhabi corniche: A smooth, working-cabin Quanta-LR express between the two capitals of UAE business.",
         "Abu Dhabi waterfront → Sir Bani Yas Island: A direct Quanta-LR island run with no offshore charging dependency."
-      ]
+      ],
+      "_authority_phase_tier": "intra_scale",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only."
     },
     {
       "n": 3,
-      "label": "Phase 3 — Dubai ↔ Abu Dhabi express corridor",
+      "label": "Phase 3 — Dubai ↔ UAE emirates connectivity",
       "boats": 20,
       "cities": [
+        "abu-dhabi-uae",
         "dubai-uae",
-        "abu-dhabi-uae"
+        "ras-al-khaimah-uae",
+        "sharjah-uae"
       ],
-      "route_scope": "all",
+      "route_scope": "inter",
       "featured_routes": [
         {
-          "label": "Dubai Creek ↔ Dubai Marina",
-          "from_node_id": "bp-56d5f5bd8d",
-          "to_node_id": "bp-c2602e6640",
-          "distance_nm": 15.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-96ac70c9ebf8",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-96ac70c9ebf8"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Dubai Marina / Harbour ↔ Palm Jumeirah / Dubai Islands",
-          "from_node_id": "bp-56d5f5bd8d",
-          "to_node_id": "bp-051c982570",
-          "distance_nm": 2.1,
-          "platform": "Pioneer II",
-          "route_id": "rn-42aa1791bb60",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-42aa1791bb60"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
           "label": "Dubai ↔ Abu Dhabi waterfront",
           "from_node_id": "dubai-uae",
           "to_node_id": "abu-dhabi-uae",
@@ -212,26 +203,34 @@
           "_link_source": "grok/relink_partner_journeys/node"
         },
         {
-          "label": "Dubai ↔ Abu Dhabi waterfront",
+          "label": "Dubai ↔ Sharjah waterfront",
           "from_node_id": "dubai-uae",
-          "to_node_id": "abu-dhabi-uae",
-          "distance_nm": 51.5,
-          "platform": "Quanta-LR",
-          "route_id": "rn-4e23e582d4fa",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
+          "to_node_id": "sharjah-uae",
+          "distance_nm": 23.0,
+          "platform": "Pioneer II",
+          "route_id": "rn-461399dfc4d5",
+          "route_ids": [
+            "rn-461399dfc4d5"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         },
         {
-          "label": "DIFC / Dubai business district ↔ Abu Dhabi corniche",
+          "label": "Dubai ↔ Ras Al Khaimah",
           "from_node_id": "dubai-uae",
-          "to_node_id": "abu-dhabi-uae",
-          "distance_nm": 60.0,
-          "platform": "Quanta-LR",
-          "route_id": "e__uae__1b860507c38f",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
+          "to_node_id": "ras-al-khaimah-uae",
+          "distance_nm": 52.8,
+          "platform": "Pioneer II",
+          "route_id": "rn-14d3708d3bf1",
+          "route_ids": [
+            "rn-14d3708d3bf1"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "With the inner network proven, the long-range hybrid opens the corridor the region has always wanted: a fast, clean Dubai-to-Abu Dhabi water express — and the wider Gulf beyond — with no offshore charging dependency.",
@@ -264,61 +263,69 @@
         "Dubai Creek → Dubai Marina: A fast, near-silent foiling run along the waterfront.",
         "Dubai Marina / Harbour → Palm Jumeirah / Dubai Islands: A direct all-electric island hop.",
         "Dubai → Abu Dhabi waterfront: A smooth Quanta-LR water express between the emirates."
-      ]
+      ],
+      "_authority_phase_tier": "inter_city",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof."
     },
     {
       "n": 4,
-      "label": "Phase 4 — Southern Gulf foiling network",
+      "label": "Phase 4 — Gulf cross-border roadmap",
       "boats": 50,
       "cities": [
-        "abu-dhabi-uae",
+        "doha-qatar",
         "dubai-uae",
-        "fujairah-uae",
-        "ras-al-khaimah-uae",
-        "sharjah-uae"
+        "manama-bahrain",
+        "muscat-oman"
       ],
-      "route_scope": "all",
+      "route_scope": "regional",
       "featured_routes": [
         {
-          "label": "Dubai Creek ↔ Dubai Marina",
-          "from_node_id": "bp-56d5f5bd8d",
-          "to_node_id": "bp-c2602e6640",
-          "distance_nm": 15.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-96ac70c9ebf8",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-96ac70c9ebf8"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Dubai Marina / Harbour ↔ Palm Jumeirah / Dubai Islands",
-          "from_node_id": "bp-56d5f5bd8d",
-          "to_node_id": "bp-051c982570",
-          "distance_nm": 2.1,
-          "platform": "Pioneer II",
-          "route_id": "rn-42aa1791bb60",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-42aa1791bb60"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Dubai ↔ Abu Dhabi waterfront",
+          "label": "Dubai ↔ Doha",
           "from_node_id": "dubai-uae",
-          "to_node_id": "abu-dhabi-uae",
-          "distance_nm": 51.5,
+          "to_node_id": "doha-qatar",
+          "distance_nm": 237.7,
           "platform": "Quanta-LR",
-          "route_id": "rn-4e23e582d4fa",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
+          "route_id": "edge__dubai-uae__doha-qatar",
+          "route_ids": [
+            "edge__dubai-uae__doha-qatar"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Dubai ↔ Manama",
+          "from_node_id": "dubai-uae",
+          "to_node_id": "manama-bahrain",
+          "distance_nm": 290.6,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0705",
+          "route_ids": [
+            "edge-0705"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Dubai ↔ Muscat",
+          "from_node_id": "dubai-uae",
+          "to_node_id": "muscat-oman",
+          "distance_nm": 306.3,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0703",
+          "route_ids": [
+            "edge-0703"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "narrative": "Steady state: 50+ foiling vessels run the full inner-Dubai mesh and a multi-daily Dubai↔Abu Dhabi express, with the Quanta-LR reach extending down the coast to Sir Bani Yas and the wider southern Gulf — the region's marine-transit fleet upgraded to foils, end to end. The same coastal foiling surface extends as route ambition up the northern-emirates seaboard — Sharjah, Ras Al Khaimah — and, long-range, around the Musandam corridor to the Fujairah east coast.",
@@ -351,7 +358,9 @@
         "Dubai Creek → Dubai Marina: A fast, near-silent foiling run along the waterfront.",
         "Dubai Marina / Harbour → Palm Jumeirah / Dubai Islands: A direct all-electric island hop.",
         "Dubai → Abu Dhabi waterfront: A smooth Quanta-LR water express between the emirates."
-      ]
+      ],
+      "_authority_phase_tier": "cross_border_roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
     }
   ],
   "multimodal_fit": "Navier slots into RTA's network as the premium marine mode — feeding the metro, tram and bus interchanges, advancing the 20-minute-city goal, and adding ridership lines toward the Marine Plan 2030 targets.",
@@ -579,8 +588,11 @@
     "addressable_footprint": "The full Dubai water grid under RTA's marine-transport mandate — Dubai Creek, Marina, Dubai Harbour, Palm Jumeirah, Bluewaters, the World Islands, and the trunk run down the coast to Abu Dhabi.",
     "end_state_cities": [
       "abu-dhabi-uae",
+      "doha-qatar",
       "dubai-uae",
       "fujairah-uae",
+      "manama-bahrain",
+      "muscat-oman",
       "ras-al-khaimah-uae",
       "sharjah-uae"
     ],
@@ -626,5 +638,18 @@
     "applied_at": "2026-06-21T06:35:10Z",
     "featured_bound": 8,
     "journeys_bound": 4
+  },
+  "_public_transit_authority": {
+    "archetype_id": "public_transit_authority",
+    "applied_at": "2026-06-21T11:24:08Z",
+    "home_cities": [
+      "dubai-uae"
+    ],
+    "phase_tiers": [
+      "intra_pilot",
+      "intra_scale",
+      "inter_city",
+      "cross_border_roadmap"
+    ]
   }
 }

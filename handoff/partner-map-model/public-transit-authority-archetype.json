@@ -1,0 +1,325 @@
+{
+  "_doc": "Phase taxonomy for emirate-/territory-scoped public transport authorities. Early phases prove intra-home corridors; final phases add inter-city then cross-border (Quanta-LR roadmap excluded from economics unless sealed commercial).",
+  "_version": "2026-06-21",
+  "archetype_id": "public_transit_authority",
+  "applies_when": {
+    "archetype": "public_transit",
+    "category": "transit_authority"
+  },
+  "phase_tiers": [
+    {
+      "tier": "intra_pilot",
+      "n": 1,
+      "route_scope": "intra",
+      "label_pattern": "Phase 1 — {home} pilot",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims."
+    },
+    {
+      "tier": "intra_scale",
+      "n": 2,
+      "route_scope": "intra",
+      "label_pattern": "Phase 2 — Full inner-{home} network",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only."
+    },
+    {
+      "tier": "inter_city",
+      "n": 3,
+      "route_scope": "inter",
+      "label_pattern": "Phase 3 — Inter-city corridors",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof."
+    },
+    {
+      "tier": "cross_border_roadmap",
+      "n": 4,
+      "route_scope": "regional",
+      "label_pattern": "Phase 4 — Cross-border roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
+    }
+  ],
+  "partners": {
+    "dubai-rta": {
+      "home_cities": ["dubai-uae"],
+      "domestic_city_ids": [
+        "abu-dhabi-uae",
+        "dubai-uae",
+        "fujairah-uae",
+        "ras-al-khaimah-uae",
+        "sharjah-uae"
+      ],
+      "cross_border_city_ids": ["doha-qatar", "manama-bahrain", "muscat-oman"],
+      "phase_labels": {
+        "1": "Phase 1 — Creek premium pilot",
+        "2": "Phase 2 — Full inner-Dubai network",
+        "3": "Phase 3 — Dubai ↔ UAE emirates connectivity",
+        "4": "Phase 4 — Gulf cross-border roadmap"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "Dubai Marina / Harbour ↔ Palm Jumeirah / Dubai Islands",
+            "route_id": "rn-42aa1791bb60",
+            "from_node_id": "bp-56d5f5bd8d",
+            "to_node_id": "bp-051c982570",
+            "distance_nm": 2.1,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Dubai Creek ↔ Dubai Marina",
+            "route_id": "rn-96ac70c9ebf8",
+            "from_node_id": "bp-56d5f5bd8d",
+            "to_node_id": "bp-c2602e6640",
+            "distance_nm": 15.5,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Dubai Creek ↔ Dubai Harbour / Bluewaters",
+            "route_id": "rn-b1ba183aa886",
+            "from_node_id": "bp-548f2fc0b7",
+            "to_node_id": "bp-56d5f5bd8d",
+            "distance_nm": 11.9,
+            "platform": "Pioneer II"
+          }
+        ],
+        "inter_city": [
+          {
+            "label": "Dubai ↔ Abu Dhabi waterfront",
+            "route_id": "rn-25065af2bcb4",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "abu-dhabi-uae",
+            "distance_nm": 55.8,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Dubai ↔ Sharjah waterfront",
+            "route_id": "rn-461399dfc4d5",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "sharjah-uae",
+            "distance_nm": 23.0,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Dubai ↔ Ras Al Khaimah",
+            "route_id": "rn-14d3708d3bf1",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "ras-al-khaimah-uae",
+            "distance_nm": 52.8,
+            "platform": "Pioneer II"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Dubai ↔ Doha",
+            "route_id": "edge__dubai-uae__doha-qatar",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 237.7,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Dubai ↔ Manama",
+            "route_id": "edge-0705",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "manama-bahrain",
+            "distance_nm": 290.6,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Dubai ↔ Muscat",
+            "route_id": "edge-0703",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "muscat-oman",
+            "distance_nm": 306.3,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          }
+        ]
+      }
+    },
+    "abu-dhabi-itc": {
+      "home_cities": ["abu-dhabi-uae"],
+      "domestic_city_ids": [
+        "abu-dhabi-uae",
+        "dubai-uae",
+        "fujairah-uae",
+        "ras-al-khaimah-uae",
+        "sharjah-uae"
+      ],
+      "cross_border_city_ids": ["doha-qatar", "manama-bahrain", "muscat-oman"],
+      "phase_labels": {
+        "1": "Phase 1 — Island-core pilot",
+        "2": "Phase 2 — Full island network",
+        "3": "Phase 3 — Abu Dhabi ↔ UAE emirates connectivity",
+        "4": "Phase 4 — Gulf cross-border roadmap"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "Corniche / Downtown ↔ Saadiyat cultural district",
+            "route_id": "rn-d94bb048e34e",
+            "from_node_id": "bp-3b66a8ce1d",
+            "to_node_id": "bp-4602a2affc9f",
+            "distance_nm": 10.7,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Downtown ↔ Yas Island (events)",
+            "route_id": "rn-961cdc919083",
+            "from_node_id": "bp-3b66a8ce1d",
+            "to_node_id": "bp-7d4da7d9980a",
+            "distance_nm": 2.5,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Yas Island ↔ Saadiyat cultural district",
+            "route_id": "rn-d94bb048e34e",
+            "from_node_id": "bp-7d4da7d9980a",
+            "to_node_id": "bp-4602a2affc9f",
+            "distance_nm": 10.7,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Abu Dhabi ↔ Sir Bani Yas / Western Region islands",
+            "route_id": "rn-08f29522c5f2",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "bp-a40b35cc0543",
+            "distance_nm": 50.6,
+            "platform": "Quanta-LR"
+          }
+        ],
+        "inter_city": [
+          {
+            "label": "Abu Dhabi corniche ↔ Dubai waterfront",
+            "route_id": "e__uae__1b860507c38f",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "dubai-uae",
+            "distance_nm": 60.0,
+            "platform": "Quanta-LR"
+          },
+          {
+            "label": "Abu Dhabi ↔ Ras Al Khaimah",
+            "route_id": "rn-f50ee8b4d8f7",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "ras-al-khaimah-uae",
+            "distance_nm": 112.0,
+            "platform": "Quanta-LR"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Abu Dhabi ↔ Doha",
+            "route_id": "edge-0684",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 179.1,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Abu Dhabi ↔ Manama",
+            "route_id": "edge-0685",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "manama-bahrain",
+            "distance_nm": 264.1,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Abu Dhabi ↔ Muscat",
+            "route_id": "edge-0687",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "muscat-oman",
+            "distance_nm": 360.9,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          }
+        ]
+      }
+    },
+    "rakta": {
+      "home_cities": ["ras-al-khaimah-uae"],
+      "domestic_city_ids": [
+        "abu-dhabi-uae",
+        "dubai-uae",
+        "fujairah-uae",
+        "ras-al-khaimah-uae",
+        "sharjah-uae",
+        "khasab-oman"
+      ],
+      "cross_border_city_ids": ["doha-qatar", "manama-bahrain", "muscat-oman"],
+      "phase_count": 3,
+      "phase_labels": {
+        "1": "Prove — RAK domestic resort and public-waterfront access",
+        "2": "Scale — RAK ↔ Dubai / northern-emirates connectivity",
+        "3": "Roadmap — Musandam / Muscat / Doha / Bahrain"
+      },
+      "tier_map": {
+        "1": "intra_pilot",
+        "2": "inter_city",
+        "3": "cross_border_roadmap"
+      }
+    },
+    "singapore-mpa": {
+      "home_cities": ["singapore"],
+      "domestic_city_ids": ["singapore", "desaru-coast-malaysia"],
+      "cross_border_city_ids": ["riau-islands-indonesia", "batam-indonesia", "bintan-indonesia"],
+      "phase_labels": {
+        "1": "Phase 1 — Clean harbour-craft pilot",
+        "2": "Phase 2 — Inner waterfront network",
+        "3": "Phase 3 — Cross-border Riau corridor",
+        "4": "Phase 4 — Regional clean-craft network"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "East Coast (Marina East / Marine Parade) ↔ Marina Bay / CBD",
+            "route_id": null,
+            "from_node_id": "singapore",
+            "to_node_id": "singapore",
+            "distance_nm": 5.2,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Marina Bay / CBD ↔ Sentosa & the Southern Islands",
+            "route_id": "rn-e486603e53a8",
+            "from_node_id": "singapore",
+            "to_node_id": "singapore",
+            "distance_nm": 29.1,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Jurong / western harbour ↔ Marina Bay / CBD",
+            "route_id": "rn-55f72072dd69",
+            "from_node_id": "singapore",
+            "to_node_id": "singapore",
+            "distance_nm": 19.7,
+            "platform": "Pioneer II"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Singapore (Tanah Merah) ↔ Batam / Bintan",
+            "route_id": "rn-dc3e2f90d207",
+            "from_node_id": "singapore",
+            "to_node_id": "riau-islands-indonesia",
+            "distance_nm": 13.0,
+            "platform": "Pioneer II"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -26,36 +26,6 @@
       "route_scope": "intra",
       "featured_routes": [
         {
-          "label": "Corniche / Downtown ↔ Saadiyat cultural district",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-4602a2affc9f",
-          "distance_nm": 10.7,
-          "platform": "Pioneer II",
-          "route_id": "rn-d94bb048e34e",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-d94bb048e34e"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Downtown ↔ Yas Island (events)",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-7d4da7d9980a",
-          "distance_nm": 2.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-961cdc919083",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "route_ids": [
-            "rn-961cdc919083"
-          ],
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "economics_status": "economics_pending"
-        },
-        {
           "label": "Abu Dhabi ↔ Sir Bani Yas / Western Region islands",
           "from_node_id": "abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd",
           "to_node_id": "abu-dhabi-uae__sir-bani-yas-desert-islands",
@@ -65,6 +35,36 @@
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "label": "Corniche / Downtown ↔ Saadiyat cultural district",
+          "from_node_id": "bp-3b66a8ce1d",
+          "to_node_id": "bp-4602a2affc9f",
+          "distance_nm": 10.7,
+          "platform": "Pioneer II",
+          "route_id": "rn-d94bb048e34e",
+          "route_ids": [
+            "rn-d94bb048e34e"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Downtown ↔ Yas Island (events)",
+          "from_node_id": "bp-3b66a8ce1d",
+          "to_node_id": "bp-7d4da7d9980a",
+          "distance_nm": 2.5,
+          "platform": "Pioneer II",
+          "route_id": "rn-961cdc919083",
+          "route_ids": [
+            "rn-961cdc919083"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "A five-vessel Pioneer II pilot connecting the Corniche, the CBD islands and the Saadiyat / Yas destinations — proving a quiet, zero-emission premium tier on sheltered inner waters, with clean first-of-class metrics for the authority.",
@@ -97,7 +97,9 @@
         "Corniche / Downtown → Saadiyat cultural district: A direct foiling hop to the museums district.",
         "Downtown → Yas Island (events): A surge-capable water shuttle straight to the venues.",
         "Abu Dhabi → Sir Bani Yas / Western Region islands: A direct Quanta-LR hybrid run to the Western Region islands."
-      ]
+      ],
+      "_authority_phase_tier": "intra_pilot",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims."
     },
     {
       "n": 2,
@@ -115,24 +117,28 @@
           "distance_nm": 10.7,
           "platform": "Pioneer II",
           "route_id": "rn-d94bb048e34e",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
           "route_ids": [
             "rn-d94bb048e34e"
           ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
           "economics_status": "economics_pending"
         },
         {
-          "label": "Downtown Abu Dhabi ↔ Hudayriyat / coastal leisure islands",
-          "from_node_id": "abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd",
-          "to_node_id": "abu-dhabi-uae__zaya-nurai-island",
-          "distance_nm": 51.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-4e23e582d4fa",
-          "_link_kind": "corridor-label",
+          "label": "Abu Dhabi ↔ Sir Bani Yas / Western Region islands",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "bp-a40b35cc0543",
+          "distance_nm": 50.6,
+          "platform": "Quanta-LR",
+          "route_id": "rn-08f29522c5f2",
+          "route_ids": [
+            "rn-08f29522c5f2"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "We light up the complete Abu Dhabi island network — a true marine layer of the city's transport system, with surge capacity for Yas events and reliable, weather-tolerant island shuttles that foiling makes comfortable year-round.",
@@ -165,69 +171,45 @@
         "Yas Island → Saadiyat cultural district: A direct quiet foiling hop linking Abu Dhabi's two marquee islands.",
         "Abu Dhabi corniche → Dubai waterfront: A smooth Quanta-LR business express between Abu Dhabi and Dubai.",
         "Downtown Abu Dhabi → Hudayriyat / coastal leisure islands: A direct all-electric run to the coastal leisure islands."
-      ]
+      ],
+      "_authority_phase_tier": "intra_scale",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only."
     },
     {
       "n": 3,
-      "label": "Phase 3 — Gulf corridors: the long range",
+      "label": "Phase 3 — Abu Dhabi ↔ UAE emirates connectivity",
       "boats": 30,
       "cities": [
         "abu-dhabi-uae",
-        "dubai-uae"
+        "ras-al-khaimah-uae"
       ],
-      "route_scope": "all",
+      "route_scope": "inter",
       "featured_routes": [
         {
-          "label": "Corniche / Downtown ↔ Saadiyat cultural district",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-4602a2affc9f",
-          "distance_nm": 10.7,
-          "platform": "Pioneer II",
-          "route_id": "rn-d94bb048e34e",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-d94bb048e34e"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Downtown ↔ Yas Island (events)",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-7d4da7d9980a",
-          "distance_nm": 2.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-961cdc919083",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "route_ids": [
-            "rn-961cdc919083"
-          ],
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Abu Dhabi ↔ Sir Bani Yas / Western Region islands",
+          "label": "Downtown Abu Dhabi ↔ Hudayriyat / coastal leisure islands",
           "from_node_id": "abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd",
-          "to_node_id": "abu-dhabi-uae__sir-bani-yas-desert-islands",
-          "distance_nm": 5.3,
-          "platform": "Quanta-LR",
-          "route_id": "rn-08f29522c5f2",
+          "to_node_id": "abu-dhabi-uae__zaya-nurai-island",
+          "distance_nm": 51.5,
+          "platform": "Pioneer II",
+          "route_id": "rn-4e23e582d4fa",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
-          "label": "Abu Dhabi corniche ↔ Dubai waterfront",
+          "label": "Abu Dhabi ↔ Ras Al Khaimah",
           "from_node_id": "abu-dhabi-uae",
-          "to_node_id": "dubai-uae",
-          "distance_nm": 60.0,
+          "to_node_id": "ras-al-khaimah-uae",
+          "distance_nm": 112.0,
           "platform": "Quanta-LR",
-          "route_id": "e__uae__1b860507c38f",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
+          "route_id": "rn-f50ee8b4d8f7",
+          "route_ids": [
+            "rn-f50ee8b4d8f7"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "Quanta-LR's hybrid range turns the Gulf into part of the network: a smooth single-leg Abu Dhabi ↔ Dubai corridor and a direct line to the Western Region's Sir Bani Yas islands — routes that road can't match, with no charging-infrastructure dependency.",
@@ -260,58 +242,69 @@
         "Corniche / Downtown → Saadiyat cultural district: A direct foiling hop to the museums district.",
         "Downtown → Yas Island (events): A surge-capable water shuttle straight to the venues.",
         "Abu Dhabi → Sir Bani Yas / Western Region islands: A direct Quanta-LR hybrid run to the Western Region islands."
-      ]
+      ],
+      "_authority_phase_tier": "inter_city",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof."
     },
     {
       "n": 4,
-      "label": "Phase 4 — Southern Gulf network at scale",
+      "label": "Phase 4 — Gulf cross-border roadmap",
       "boats": 50,
       "cities": [
         "abu-dhabi-uae",
-        "dubai-uae"
+        "doha-qatar",
+        "manama-bahrain",
+        "muscat-oman"
       ],
-      "route_scope": "all",
+      "route_scope": "regional",
       "featured_routes": [
         {
-          "label": "Corniche / Downtown ↔ Saadiyat cultural district",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-4602a2affc9f",
-          "distance_nm": 10.7,
-          "platform": "Pioneer II",
-          "route_id": "rn-d94bb048e34e",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "route_ids": [
-            "rn-d94bb048e34e"
-          ],
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Downtown ↔ Yas Island (events)",
-          "from_node_id": "bp-3b66a8ce1d",
-          "to_node_id": "bp-7d4da7d9980a",
-          "distance_nm": 2.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-961cdc919083",
-          "_link_kind": "bp-corridor-candidate",
-          "_link_status": "linked-authority-noon-mirror",
-          "route_ids": [
-            "rn-961cdc919083"
-          ],
-          "_link_source": "grok/upgrade_uae_authority_from_noon",
-          "economics_status": "economics_pending"
-        },
-        {
-          "label": "Abu Dhabi ↔ Sir Bani Yas / Western Region islands",
-          "from_node_id": "abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd",
-          "to_node_id": "abu-dhabi-uae__sir-bani-yas-desert-islands",
-          "distance_nm": 5.3,
+          "label": "Abu Dhabi ↔ Doha",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "doha-qatar",
+          "distance_nm": 179.1,
           "platform": "Quanta-LR",
-          "route_id": "rn-08f29522c5f2",
-          "_link_kind": "corridor-label",
+          "route_id": "edge-0684",
+          "route_ids": [
+            "edge-0684"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Abu Dhabi ↔ Manama",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "manama-bahrain",
+          "distance_nm": 264.1,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0685",
+          "route_ids": [
+            "edge-0685"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Abu Dhabi ↔ Muscat",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "muscat-oman",
+          "distance_nm": 360.9,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0687",
+          "route_ids": [
+            "edge-0687"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "narrative": "Steady state: 50+ foiling vessels run the full Abu Dhabi island mesh, the Western Region island chain on Quanta-LR, and a multi-daily express up to Dubai — the capital's integrated transport network extended onto the water, zero-emission end to end.",
@@ -344,7 +337,9 @@
         "Corniche / Downtown → Saadiyat cultural district: A direct foiling hop to the museums district.",
         "Downtown → Yas Island (events): A surge-capable water shuttle straight to the venues.",
         "Abu Dhabi → Sir Bani Yas / Western Region islands: A direct Quanta-LR hybrid run to the Western Region islands."
-      ]
+      ],
+      "_authority_phase_tier": "cross_border_roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
     }
   ],
   "multimodal_fit": "The marine mode of ITC's integrated network — foiling island hops feeding bus and future rail interchanges, with event-day surge capacity to Yas venues.",
@@ -572,7 +567,13 @@
     "addressable_footprint": "Every island and coastal node ITC's mandate touches across the emirate — Corniche, Yas, Saadiyat, Lulu, Hudayriyat, Reem, Al Maryah, the Ghantoot corridor to Dubai, and the western islands out to Sir Bani Yas and Delma.",
     "end_state_cities": [
       "abu-dhabi-uae",
-      "dubai-uae"
+      "doha-qatar",
+      "dubai-uae",
+      "fujairah-uae",
+      "manama-bahrain",
+      "muscat-oman",
+      "ras-al-khaimah-uae",
+      "sharjah-uae"
     ],
     "steady_state": {
       "total_markets": "1 emirate, 10+ coastal/island nodes",
@@ -616,5 +617,18 @@
     "applied_at": "2026-06-21T06:35:10Z",
     "featured_bound": 7,
     "journeys_bound": 4
+  },
+  "_public_transit_authority": {
+    "archetype_id": "public_transit_authority",
+    "applied_at": "2026-06-21T11:24:08Z",
+    "home_cities": [
+      "abu-dhabi-uae"
+    ],
+    "phase_tiers": [
+      "intra_pilot",
+      "intra_scale",
+      "inter_city",
+      "cross_border_roadmap"
+    ]
   }
 }

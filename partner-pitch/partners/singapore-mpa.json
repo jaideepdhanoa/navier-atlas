@@ -33,9 +33,10 @@
           "platform": "Pioneer II",
           "route_id": null,
           "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_kind": "authority-archetype",
+          "_link_status": "held-null-with-reason",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         },
         {
           "label": "Marina Bay / CBD ↔ Sentosa & the Southern Islands",
@@ -44,10 +45,13 @@
           "distance_nm": 29.1,
           "platform": "Pioneer II",
           "route_id": "rn-e486603e53a8",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "rn-e486603e53a8"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "Five Pioneer II vessels demonstrate the clean-harbour-craft standard in the world's busiest port — zero-emission, fast, smooth, and measurable. The first-of-class data package MPA can stand behind and export.",
@@ -80,7 +84,9 @@
         "East Coast (Marina East / Marine Parade) → Marina Bay / CBD: A fast foiling commuter line straight up the coast to the CBD — new capacity for a landlocked city.",
         "Marina Bay / CBD → Sentosa & the Southern Islands: A direct inner-harbour foiling hop.",
         "Singapore (Tanah Merah) → Batam / Bintan: A fast, low-emission cross-border crossing — the corridor millions already make."
-      ]
+      ],
+      "_authority_phase_tier": "intra_pilot",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims."
     },
     {
       "n": 2,
@@ -92,27 +98,34 @@
       "route_scope": "intra",
       "featured_routes": [
         {
+          "label": "Marina Bay / CBD ↔ Sentosa & the Southern Islands",
+          "from_node_id": "singapore",
+          "to_node_id": "singapore",
+          "distance_nm": 29.1,
+          "platform": "Pioneer II",
+          "route_id": "rn-e486603e53a8",
+          "route_ids": [
+            "rn-e486603e53a8"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
+        },
+        {
           "label": "Jurong / western harbour ↔ Marina Bay / CBD",
           "from_node_id": "singapore",
           "to_node_id": "singapore",
           "distance_nm": 19.7,
           "platform": "Pioneer II",
           "route_id": "rn-55f72072dd69",
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "rn-55f72072dd69"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Marina Bay ↔ Sentosa & the Southern Islands",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 29.1,
-          "platform": "Pioneer II",
-          "route_id": "rn-e486603e53a8",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "We scale to a full inner-waterfront network — commuter, tourism and corporate tiers — establishing foiling as the everyday clean-water standard across Singapore's coastline.",
@@ -145,65 +158,19 @@
         "Singapore (Tanah Merah / East Coast) → Desaru Coast / Johor: A direct foiling crossing that skips the land border entirely — the higher-traffic of Singapore's two cross-border corridors.",
         "Jurong / western harbour → Marina Bay / CBD: A direct clean harbour-craft run along the working waterfront.",
         "Marina Bay → Sentosa & the Southern Islands: A quiet zero-emission hop to Sentosa and the Southern Islands."
-      ]
+      ],
+      "_authority_phase_tier": "intra_scale",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only."
     },
     {
       "n": 3,
       "label": "Phase 3 — Cross-border Riau corridor",
       "boats": 28,
       "cities": [
-        "singapore",
-        "riau-islands-indonesia"
+        "singapore"
       ],
-      "route_scope": "all",
-      "featured_routes": [
-        {
-          "label": "East Coast (Marina East / Marine Parade) ↔ Marina Bay / CBD",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 5.2,
-          "platform": "Pioneer II",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Marina Bay / CBD ↔ Sentosa & the Southern Islands",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 29.1,
-          "platform": "Pioneer II",
-          "route_id": "rn-e486603e53a8",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Singapore (Tanah Merah) ↔ Batam / Bintan",
-          "from_node_id": "singapore",
-          "to_node_id": "riau-islands-indonesia",
-          "distance_nm": 13.0,
-          "platform": "Pioneer II",
-          "route_id": "rn-dc3e2f90d207",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
-        },
-        {
-          "label": "Singapore (Tanah Merah) ↔ Batam / Bintan",
-          "from_node_id": "singapore",
-          "to_node_id": "riau-islands-indonesia",
-          "distance_nm": 13.0,
-          "platform": "Pioneer II",
-          "route_id": "rn-dc3e2f90d207",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
-        }
-      ],
+      "route_scope": "inter",
+      "featured_routes": [],
       "narrative": "We extend the network across the Singapore Strait to Batam and Bintan — the cross-border crossing millions already make by slow ferry — turning it into a fast, smooth, low-emission corridor and a model for regional clean-water connectivity.",
       "kpis": [
         {
@@ -234,43 +201,20 @@
         "East Coast (Marina East / Marine Parade) → Marina Bay / CBD: A fast foiling commuter line straight up the coast to the CBD — new capacity for a landlocked city.",
         "Marina Bay / CBD → Sentosa & the Southern Islands: A direct inner-harbour foiling hop.",
         "Singapore (Tanah Merah) → Batam / Bintan: A fast, low-emission cross-border crossing — the corridor millions already make."
-      ]
+      ],
+      "_authority_phase_tier": "inter_city",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof."
     },
     {
       "n": 4,
       "label": "Phase 4 — Regional clean-craft network",
       "boats": 48,
       "cities": [
-        "singapore",
         "riau-islands-indonesia",
-        "desaru-coast-malaysia"
+        "singapore"
       ],
-      "route_scope": "all",
+      "route_scope": "regional",
       "featured_routes": [
-        {
-          "label": "East Coast (Marina East / Marine Parade) ↔ Marina Bay / CBD",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 5.2,
-          "platform": "Pioneer II",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Marina Bay / CBD ↔ Sentosa & the Southern Islands",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 29.1,
-          "platform": "Pioneer II",
-          "route_id": "rn-e486603e53a8",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
         {
           "label": "Singapore (Tanah Merah) ↔ Batam / Bintan",
           "from_node_id": "singapore",
@@ -278,20 +222,13 @@
           "distance_nm": 13.0,
           "platform": "Pioneer II",
           "route_id": "rn-dc3e2f90d207",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node"
-        },
-        {
-          "label": "Singapore (Tanah Merah / East Coast) ↔ Desaru Coast / Johor",
-          "from_node_id": "singapore",
-          "to_node_id": "singapore",
-          "distance_nm": 29.5,
-          "platform": "Pioneer II",
-          "route_id": "rn-5d1a30fbb0a9",
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "rn-dc3e2f90d207"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "narrative": "Steady state: a clean foiling fleet runs the inner-harbour mesh plus both cross-border corridors — the heavily-trafficked Singapore↔Malaysia (Desaru/Johor) line and the Riau islands run — positioning MPA's harbour-craft fleet as the region's zero-emission marine-transit backbone.",
@@ -324,7 +261,9 @@
         "East Coast (Marina East / Marine Parade) → Marina Bay / CBD: A fast foiling commuter line straight up the coast to the CBD — new capacity for a landlocked city.",
         "Marina Bay / CBD → Sentosa & the Southern Islands: A direct inner-harbour foiling hop.",
         "Singapore (Tanah Merah) → Batam / Bintan: A fast, low-emission cross-border crossing — the corridor millions already make."
-      ]
+      ],
+      "_authority_phase_tier": "cross_border_roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
     }
   ],
   "multimodal_fit": "Foiling integrates with Singapore's MRT and bus network as the marine mode — a fast East Coast↔CBD water line that adds transport capacity to a land-constrained city, plus harbour and cross-border services on shared clean-craft berths.",
@@ -495,9 +434,11 @@
     "addressable_market_count": 3,
     "addressable_footprint": "Singapore's harbour and southern islands plus the two cross-border surfaces MPA's mandate touches — the high-traffic Johor Strait link to Malaysia (the priority corridor) and the run across to Bintan and the Riau Islands.",
     "end_state_cities": [
-      "singapore",
+      "batam-indonesia",
+      "bintan-indonesia",
+      "desaru-coast-malaysia",
       "riau-islands-indonesia",
-      "desaru-coast-malaysia"
+      "singapore"
     ],
     "steady_state": {
       "total_markets": "1 city-state + 2 cross-border surfaces",
@@ -536,5 +477,18 @@
     "mode": "display_markets",
     "bound_cards": 1,
     "missing_reference_keys": 17
+  },
+  "_public_transit_authority": {
+    "archetype_id": "public_transit_authority",
+    "applied_at": "2026-06-21T11:24:08Z",
+    "home_cities": [
+      "singapore"
+    ],
+    "phase_tiers": [
+      "intra_pilot",
+      "intra_scale",
+      "inter_city",
+      "cross_border_roadmap"
+    ]
   }
 }

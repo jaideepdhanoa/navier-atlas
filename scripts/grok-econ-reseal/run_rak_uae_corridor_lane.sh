@@ -25,7 +25,10 @@ python3 "$ROOT/scripts/relink_partner_journeys.py" --apply --partner rakta dubai
 echo "  6/7 Upgrade dubai-rta + abu-dhabi-itc geometry binds (post-relink)"
 python3 "$GROK/upgrade_uae_authority_from_noon.py"
 
-echo "  7/7 Partner QA spot-check"
+echo "  7/8 Apply public_transit_authority phase taxonomy"
+python3 "$GROK/apply_public_transit_authority_phases.py"
+
+echo "  8/8 Partner QA spot-check"
 python3 "$ROOT/scripts/audit_partner_page_qa.py" --partner rakta dubai-rta abu-dhabi-itc
 
 echo "✓ RAK / UAE corridor lane complete"
