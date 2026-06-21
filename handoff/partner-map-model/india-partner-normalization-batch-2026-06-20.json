@@ -1,0 +1,86 @@
+{
+  "batch_id": "india-partner-normalization-2026-06-20",
+  "repo_pr_target_branch": "tasklet/india-gcc-partner-spines-2026-06-20",
+  "status": "handoff_spec_ready",
+  "baseline_spine": "handoff/partner-map-model/india-shared-corridor-spine.json",
+  "accepted_baseline_markets": [
+    {"market_key": "mumbai", "label": "Mumbai / Maharashtra waterfront corridors", "route_count": 29, "proposal_status": "baseline_display_ready_after_reconcile"},
+    {"market_key": "goa", "label": "Goa corridors", "route_count": 16, "proposal_status": "promote_to_marquee_expansion"},
+    {"market_key": "kerala", "label": "Kerala / Kochi + backwaters", "route_count": 12, "proposal_status": "baseline_display_ready_sufficiency_review_needed"},
+    {"market_key": "andaman", "label": "Andaman Islands", "route_count": 40, "proposal_status": "baseline_display_ready_use_case_sort_needed"}
+  ],
+  "partners": {
+    "rapido": {
+      "current_file": "partner-pitch/partners/rapido.json",
+      "source_evidence_tier": "country_supported",
+      "source_urls": ["https://www.rapido.bike/"],
+      "anchor_city_check": "OK: mumbai-india, goa-india, kerala-backwaters-india, andaman-india resolve",
+      "next_actions": [
+        "reconcile featured_routes against india-shared-corridor-spine.json",
+        "bind route_id only where exact route exists",
+        "cascade economics after binding",
+        "promote Goa through marquee expansion lane"
+      ]
+    },
+    "ola": {
+      "current_file": "partner-pitch/partners/ola.json",
+      "source_evidence_tier": "country_supported_india_only",
+      "source_urls": ["https://www.reuters.com/world/india/indias-ola-stop-ride-hailing-operations-international-markets-2024-04-09/"],
+      "anchor_city_check": "OK: mumbai-india, goa-india, kerala-backwaters-india, andaman-india resolve",
+      "next_actions": [
+        "keep India-only for this pass",
+        "normalize to the same shared spine as Rapido",
+        "preserve Ola Electric framing without letting narrative invent geography",
+        "cascade economics after binding"
+      ]
+    },
+    "uber_india": {
+      "current_global_file": "partner-pitch/partners/uber.json",
+      "recommended_output": "new India-focused derivative/draft, not a global Uber replacement",
+      "source_evidence_tier": "country_supported_with_city_supported_rows_where_officially_listed",
+      "source_urls": ["https://www.uber.com/global/en/r/india/cities/"],
+      "current_gap": "global Uber India currently covers Mumbai + Goa only; India-focused pass should add Kerala + Andaman baseline",
+      "next_actions": [
+        "draft Uber India from the four accepted baseline markets",
+        "do not import non-India Uber global markets",
+        "apply exact-bind expansion lanes after baseline derivative is reviewed"
+      ]
+    },
+    "noon": {
+      "baseline_spine": "handoff/partner-map-model/uae-gulf-shared-corridor-spine.json",
+      "source_evidence_tier": "queued_platform_hypothesis",
+      "next_actions": [
+        "build after India normalization",
+        "mirror Careem-style UAE/Gulf mechanics",
+        "platform GMV / commerce + mobility enablement framing",
+        "keep most Gulf cross-border as Quanta-LR roadmap except Manama-KSA Eastern Province"
+      ]
+    }
+  },
+  "goa_marquee_promotion": {
+    "current_route_count": 16,
+    "sufficiency_verdict": "not_final_sufficient",
+    "phase_3_gate_local_use_cases": [
+      "Mandovi / river ferry commuter + tourist mobility",
+      "tourism resort/beach transfers",
+      "arrival/port transfer exact-bind candidates",
+      "Goa-Mumbai Quanta-LR roadmap"
+    ],
+    "required_expansion_families": [
+      "Panaji / Mandovi / Old Goa ferry spine",
+      "North Goa beach-resort corridor",
+      "South Goa resort corridor",
+      "Grande Island / day-trip corridor if exact geometry is clean",
+      "Mormugao / port-arrival corridor if exact geometry is clean",
+      "Goa-Mumbai Quanta-LR roadmap corridor"
+    ],
+    "source_urls": ["https://rnd.goa.gov.in/ferry-routes/"]
+  },
+  "active_exact_bind_expansion_lanes": [
+    {"lane": "gujarat-coast", "status": "active_exact_bind", "primary_partner_fit": "adani_first", "source_urls": ["https://www.adaniports.com/ports-and-terminals"], "display_gate": "exact port/city/BP bind"},
+    {"lane": "tamil-nadu-chennai", "status": "active_exact_bind", "primary_partner_fit": "mobility_plus_adani_port_overlay", "source_urls": ["https://www.adaniports.com/ports-and-terminals", "https://www.uber.com/global/en/r/india/cities/"], "display_gate": "exact Chennai/Kattupalli/Ennore bind"},
+    {"lane": "andhra-vizag", "status": "active_exact_bind", "primary_partner_fit": "mobility_plus_adani_port_overlay", "source_urls": ["https://www.adaniports.com/ports-and-terminals", "https://www.uber.com/global/en/r/india/cities/"], "display_gate": "exact Vizag/Gangavaram bind"},
+    {"lane": "west-bengal-kolkata-haldia", "status": "active_exact_bind", "primary_partner_fit": "mobility_plus_adani_port_overlay", "source_urls": ["https://www.adaniports.com/ports-and-terminals", "https://www.uber.com/global/en/r/india/cities/"], "display_gate": "exact Kolkata/Haldia/Sundarbans-edge validation"},
+    {"lane": "lakshadweep", "status": "hold", "primary_partner_fit": "future_kerala_quanta_lr_extension", "display_gate": "grounding_or_explicit_green_light_required"}
+  ]
+}

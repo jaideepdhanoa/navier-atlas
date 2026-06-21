@@ -1,0 +1,62 @@
+{
+  "created_at": "2026-06-20",
+  "status": "closed_for_proposal_packaging_with_quarantine_rules",
+  "policy": [
+    "Use only captured official/operator/multilateral text as proposal anchors.",
+    "Search snippets and unreachable pages remain cleanup notes, not model inputs.",
+    "Airport traffic numbers remain non-finance until an official AAI PDF/page is captured directly.",
+    "Route IDs remain null unless already sealed by Atlas/Grok; partner package text may reference source-backed use cases without promoting route IDs."
+  ],
+  "source_hardening": {
+    "andaman_tourism_stats": {
+      "decision": "numeric_fallback_captured_but_not_official_tourism_table",
+      "usable_anchor": {
+        "source": "India Brand Equity Foundation, Andaman and Nicobar Presentation / Economy Growth Report",
+        "url": "https://www.ibef.org/industry/andaman-and-nicobar-presentation",
+        "captured_text": "In 2024, the Andaman and Nicobar Islands recorded 7,10,397 domestic and 11,497 foreign tourist arrivals, marking a 37% rise in domestic visitors.",
+        "tier": "government-affiliated investment/economy source; not the primary Andaman Tourism table"
+      },
+      "primary_official_page": {
+        "source": "Andaman Tourism tourist_data.php",
+        "url": "https://www.andamantourism.gov.in/tourist_data.php",
+        "result": "Repeated web/browser/sandbox reads timed out or failed tunnel; retain as primary source lead only."
+      },
+      "proposal_use": "May cite tourism scale as a sourced demand anchor with IBEF tier label; do not feed into finance/model until primary table or official compendium row is captured."
+    },
+    "aai_airport_traffic_stats": {
+      "decision": "quarantined",
+      "usable_anchor": null,
+      "source_leads": [
+        {
+          "source": "AAI Traffic News index",
+          "url": "https://www.aai.aero/en/business-opportunities/aai-traffic-news",
+          "result": "Search result confirms index exists; web scrape and direct PDF fetch were unreliable/timeouts."
+        },
+        {
+          "source": "AAI Sep 2024 Annex 3 PDF search result",
+          "url": "https://www.aai.aero/sites/default/files/traffic-news/Sep2k24Annex3.pdf",
+          "snippet": "Search result exposed Port Blair row with 102,612 vs 99,110, +3.5%; direct download timed out, so snippet is not model-safe."
+        }
+      ],
+      "proposal_use": "Do not include AAI airport passenger figures in partner-facing or finance text until direct PDF capture succeeds. Use tourism/operator/waterway anchors instead."
+    },
+    "gujarat_ropax": {
+      "decision": "clean_official_sources_captured",
+      "usable_anchors": [
+        {
+          "source": "PIB / Ministry of Ports, Shipping and Waterways Year End Review 2022",
+          "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1886868",
+          "captured_text": "ROPAX ferry between Ghogha–Hazira commenced from November 2020; reduced travel time from 10 hours to 4 hours and facilitated 15,000+ trucks, 50,000 cars and around 2 lakh passengers so far.",
+          "tier": "official_transport"
+        },
+        {
+          "source": "Gujarat Maritime Board Civil / Ro-Ro strategic projects page",
+          "url": "https://gmbports.org/civil",
+          "captured_text": "GMB describes Ro-Ro ferries as carrying cars, trucks, buses/trailers with drivers/passengers; lists benefits including time/cost/fuel reduction and notes Gujarat is ideal because two gulfs divide the state into three segments.",
+          "tier": "official_state_maritime_board"
+        }
+      ],
+      "proposal_use": "Gujarat can now use Ghogha–Hazira as a water-mobility precedent; Adani/Reliance still overlay-only because no exact Atlas BP/route match for Hazira/Ghogha/Dahej was found in repo search."
+    }
+  }
+}
