@@ -17,6 +17,9 @@ NEW_PARTNERS: dict[str, str] = {
     "rapido": "Navier — Rapido India Unit Economics",
     "ola": "Navier — Ola India Unit Economics",
     "noon": "Navier — Noon UAE Unit Economics",
+    "rakta": "Navier — RAKTA UAE Authority Unit Economics",
+    "bahrain-motc": "Navier — Bahrain MOTC Authority Unit Economics",
+    "uber-india-derivative": "Navier — Uber India Unit Economics",
 }
 
 

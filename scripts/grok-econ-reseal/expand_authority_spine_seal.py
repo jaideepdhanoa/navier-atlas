@@ -30,15 +30,17 @@ SKIP_CLASS = frozenset({
 EXPAND = {
     "rakta": {
         "ledger": HANDOFF / "rakta-route-seal-ledger-2026-06-21.json",
-        "phase_n": 1,
-        "max_add": 8,
-        "classifications": {"proposal_active_rak_domestic"},
+        "phases": [
+            {"n": 1, "max_add": 999, "classifications": {"proposal_active_rak_domestic"}},
+            {"n": 2, "max_add": 999, "classifications": {"proposal_active_rak_dubai_inter_emirate"}},
+        ],
     },
     "bahrain-motc": {
         "ledger": HANDOFF / "bahrain-motc-route-seal-ledger-2026-06-21.json",
-        "phase_n": 1,
-        "max_add": 10,
-        "classifications": {"proposal_active_bahrain_domestic"},
+        "phases": [
+            {"n": 1, "max_add": 999, "classifications": {"proposal_active_bahrain_domestic"}},
+            {"n": 2, "max_add": 999, "classifications": {"proposal_active_ksa_eastern_province_cross_border"}},
+        ],
     },
 }
 
@@ -85,32 +87,44 @@ def card_from_spine(row: dict) -> dict:
     }
 
 
-def expand_partner(slug: str, cfg: dict) -> dict:
-    doc = load_json(PARTNERS / f"{slug}.json")
-    ledger = load_json(cfg["ledger"])
-    phase = next((p for p in doc.get("phases") or [] if p.get("n") == cfg["phase_n"]), None)
-    if not phase:
-        return {"partner": slug, "error": "phase not found"}
-    existing = {fr.get("_spine_corridor_id") for fr in phase.get("featured_routes") or []}
+def expand_phase(phase: dict, ledger_rows: list, cfg_phase: dict, existing: set[str]) -> list[str]:
     candidates = []
-    for row in ledger.get("routes") or []:
+    for row in ledger_rows:
         sid = row.get("spine_corridor_id")
         cls = row.get("classification", "")
-        if sid in existing or cls in SKIP_CLASS or cls not in cfg["classifications"]:
+        if sid in existing or cls in SKIP_CLASS or cls not in cfg_phase["classifications"]:
             continue
         if row.get("geometry_status_spine") != "geometry_present":
             continue
         candidates.append(row)
     candidates.sort(key=lambda r: r.get("distance_nm_spine") or 999)
     added = []
-    for row in candidates[: cfg["max_add"]]:
+    for row in candidates[: cfg_phase["max_add"]]:
         phase.setdefault("featured_routes", []).append(card_from_spine(row))
+        existing.add(row["spine_corridor_id"])
         added.append(row["spine_corridor_id"])
+    return added
+
+
+def expand_partner(slug: str, cfg: dict) -> dict:
+    doc = load_json(PARTNERS / f"{slug}.json")
+    ledger_rows = load_json(cfg["ledger"]).get("routes") or []
+    existing = {
+        fr.get("_spine_corridor_id")
+        for ph in doc.get("phases") or []
+        for fr in ph.get("featured_routes") or []
+        if fr.get("_spine_corridor_id")
+    }
+    all_added: list[str] = []
+    for cfg_phase in cfg["phases"]:
+        phase = next((p for p in doc.get("phases") or [] if p.get("n") == cfg_phase["n"]), None)
+        if not phase:
+            continue
+        all_added.extend(expand_phase(phase, ledger_rows, cfg_phase, existing))
     doc.setdefault("_authority_spine_expand", {})["applied_at"] = utc_now()
-    doc["_authority_spine_expand"]["phase"] = cfg["phase_n"]
-    doc["_authority_spine_expand"]["added"] = added
+    doc["_authority_spine_expand"]["added"] = all_added
     save_json(PARTNERS / f"{slug}.json", doc)
-    return {"partner": slug, "added": len(added), "spine_ids": added}
+    return {"partner": slug, "added": len(all_added), "spine_ids": all_added[:20], "spine_ids_total": len(all_added)}
 
 
 def reseal_partner(slug: str, pr58: Any) -> dict:

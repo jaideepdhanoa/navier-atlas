@@ -54,6 +54,7 @@ if [ "$FAIL_ON_WARN" -eq 1 ]; then
   QA_ARGS+=(--fail-on-warn)
 fi
 
+# Prefer run_post_merge_lane.sh after Tasklet merges — this lane is the geometry/inherit subset.
 echo "=== Partner page lane ==="
 echo "  1/8 schema validation"
 python3 "$ROOT/scripts/validate_partner_proposals.py"

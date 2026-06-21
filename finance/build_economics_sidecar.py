@@ -30,7 +30,8 @@ OUT    = arg("--out", "/tmp/economics_by_route_id.json")
 USE_GLOBAL = "--global" in sys.argv or arg("--mode") == "global"
 # Legacy per-partner agg files (fallback when agg-global.json is absent).
 PARTNERS = ["grab", "careem", "jih-global", "red-sea-global", "saudi-redsea-pif", "qatar",
-            "bolt", "yango", "constance", "four-seasons", "uber", "french-polynesia", "saudi-pif"]
+            "bolt", "yango", "constance", "four-seasons", "uber", "french-polynesia", "saudi-pif",
+            "rakta", "bahrain-motc", "rapido", "ola", "uber-india-derivative"]
 
 # ---- gold geometry: route_id set + unordered-endpoint index ----
 R = json.load(open(os.path.join(GOLD, "ROUTES.json")))

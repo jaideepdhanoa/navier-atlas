@@ -1,0 +1,61 @@
+{
+  "_doc": "Post-Tasklet auto-lanes. run_post_merge_lane.sh runs these when handoff/partner JSON changes land on main.",
+  "_version": "2026-06-21",
+  "why_not_automatic_before": [
+    "inherit_regional_spine.py only copies bind fields between existing partner cards — it does not mint Atlas geometry",
+    "execute_tasklet_fastlane.py explicitly held-null Kolkata/Chennai and cleared route_ids after Tasklet PR #62",
+    "Geometry mint + extension bind were separate manual scripts, not chained to partner page lane",
+    "brief_only_market_ids in manifest blocked inherit until Grok manually promoted markets",
+    "Authority spine expand/seal and finance cascade were never wired to merge/deploy hooks",
+    "run_partner_page_lane.sh is opt-in (PARTNERS=...) — not invoked on git push or Vercel deploy"
+  ],
+  "entrypoint": "scripts/grok-econ-reseal/run_post_merge_lane.sh",
+  "lanes": [
+    {
+      "id": "india_geometry",
+      "when": "handoff/partner-map-model/india-adani-reliance-high-value-consumer-market-scan-kolkata-chennai-2026-06-21.json",
+      "script": "scripts/grok-econ-reseal/run_india_kolkata_chennai_lane.sh",
+      "packs": ["india_mobility", "india_corporate"]
+    },
+    {
+      "id": "india_extensions",
+      "when": "scripts/grok-econ-reseal/mint_india_extension_routes.py",
+      "steps": [
+        "mint_india_extension_routes.py",
+        "bind_india_extension_journeys.py",
+        "wire_india_kcc_economics.py"
+      ],
+      "packs": ["india_mobility", "india_corporate"]
+    },
+    {
+      "id": "authority_contamination_fix",
+      "script": "scripts/grok-econ-reseal/fix_rak_spine_city_contamination.py",
+      "packs": ["gulf_authority"]
+    },
+    {
+      "id": "authority_spine_expand",
+      "script": "scripts/grok-econ-reseal/expand_authority_spine_seal.py",
+      "packs": ["gulf_authority"]
+    },
+    {
+      "id": "inherit_bind_all",
+      "script": "inherit_regional_spine.py --bind --all",
+      "always": true
+    },
+    {
+      "id": "partner_page_lane",
+      "script": "run_partner_page_lane.sh",
+      "always": true
+    },
+    {
+      "id": "authority_finance",
+      "script": "run_authority_finance_lane.sh",
+      "partners": ["rakta", "bahrain-motc"]
+    },
+    {
+      "id": "india_finance",
+      "script": "run_india_authority_finance_lane.sh",
+      "partners": ["rapido", "ola", "uber-india-derivative", "rakta", "bahrain-motc"]
+    }
+  ]
+}

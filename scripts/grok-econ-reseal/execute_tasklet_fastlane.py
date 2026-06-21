@@ -177,11 +177,24 @@ def seal_authority_partner(
     return out_ledger["summary"]
 
 
+def india_brief_cities_live() -> bool:
+    """Skip hold-null wipe when Kolkata/Chennai cities exist in gold FBT."""
+    fbt_path = ROOT / "data-clean" / "FEATURES_BY_TYPE.json"
+    if not fbt_path.is_file():
+        return False
+    fbt = load_json(fbt_path)
+    ids = {f["properties"]["id"] for t in ("city", "priority_city") for f in (fbt.get(t) or []) if f.get("properties", {}).get("id")}
+    return "kolkata-india" in ids and "chennai-india" in ids
+
+
 def seal_india_consumer_partner(slug: str) -> dict[str, Any]:
     path = PARTNERS / f"{slug}.json"
     doc = load_json(path)
     held_rows: list[dict] = []
     brief_markets: list[dict] = []
+
+    if india_brief_cities_live():
+        return {"held_null": 0, "sealed": 0, "skipped": "kolkata_chennai_geometry_live — use seal_india_kolkata_chennai_partners.py"}
 
     for m in doc.get("markets") or []:
         mid = m.get("id")
@@ -289,16 +302,20 @@ def main() -> int:
     save_json(HANDOFF / "tasklet-fastlane-execution-report.json", stats)
     print(json.dumps(stats, indent=2))
 
-    partners = "ola rapido uber uber-india-derivative rakta bahrain-motc"
-    print(f"\n→ partner page lane ({partners})")
-    import os
-
-    env = {**os.environ, "PARTNERS": partners}
-    rc = subprocess.run(
-        [str(ROOT / "scripts/grok-econ-reseal/run_partner_page_lane.sh")],
-        cwd=ROOT,
-        env=env,
-    )
+    post_merge = ROOT / "scripts/grok-econ-reseal/run_post_merge_lane.sh"
+    if post_merge.is_file():
+        print("\n→ post-merge lane (inherit + seal + finance automatic)")
+        rc = subprocess.run([str(post_merge)], cwd=ROOT)
+    else:
+        partners = "ola rapido uber uber-india-derivative rakta bahrain-motc"
+        print(f"\n→ partner page lane ({partners})")
+        import os
+        env = {**os.environ, "PARTNERS": partners}
+        rc = subprocess.run(
+            [str(ROOT / "scripts/grok-econ-reseal/run_partner_page_lane.sh")],
+            cwd=ROOT,
+            env=env,
+        )
     return rc.returncode
 
 
