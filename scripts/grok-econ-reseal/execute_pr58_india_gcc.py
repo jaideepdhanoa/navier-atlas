@@ -324,10 +324,38 @@ MARQUEE_SINGLE_ROUTE_ID: dict[str, str] = {
 }
 
 MARQUEE_ROADMAP_NO_GEOMETRY: dict[str, str] = {
-    "Goa ↔ Grande Island / Bat Island": "no_india_gold_geometry",
-    "Port Blair ↔ Ross Island / North Bay": "no_deterministic_gold_bind",
-    "Port Blair ↔ Diglipur (North Andaman)": "no_deterministic_gold_bind",
+    # Cleared when mint_india_held_null_routes.py publishes gold geometry — see _load_held_null_mint().
 }
+
+
+PR58_MINT_ROUTE_IDS: set[str] = set()
+
+
+def _route_bindable(rid: str, *, gold_ids: set[str], spine_ids: set[str]) -> bool:
+    return rid in gold_ids and (rid in spine_ids or rid in PR58_MINT_ROUTE_IDS)
+
+
+def _load_held_null_mint() -> None:
+    """Merge route IDs from india-held-null-mint-report.json into marquee wire tables."""
+    report_path = HANDOFF / "india-held-null-mint-report.json"
+    if not report_path.is_file():
+        return
+    report = json.loads(report_path.read_text())
+    for m in report.get("minted", []):
+        if m.get("route_id"):
+            PR58_MINT_ROUTE_IDS.add(m["route_id"])
+    for label, rid in (report.get("marquee_single_route_id") or {}).items():
+        if rid:
+            MARQUEE_SINGLE_ROUTE_ID[label] = rid
+            MARQUEE_ROADMAP_NO_GEOMETRY.pop(label, None)
+    for label, rids in (report.get("marquee_static_route_ids") or {}).items():
+        clean = [x for x in (rids or []) if x]
+        if clean:
+            MARQUEE_STATIC_ROUTE_IDS[label] = clean
+            MARQUEE_ROADMAP_NO_GEOMETRY.pop(label, None)
+
+
+_load_held_null_mint()
 
 JOURNEY_PAIR_BINDINGS: dict[tuple[str, str], str] = {
     ("gateway of india / bhaucha dhakka", "mandwa (alibaug)"): "Gateway of India / Bhaucha Dhakka ↔ Mandwa (Alibaug)",
@@ -443,7 +471,7 @@ def wire_corridor_label_entry(
 
     static = MARQUEE_STATIC_ROUTE_IDS.get(label)
     if static:
-        filtered = [x for x in static if x in gold_ids and x in spine_ids]
+        filtered = [x for x in static if _route_bindable(x, gold_ids=gold_ids, spine_ids=spine_ids)]
         if filtered:
             entry["route_ids"] = filtered
             entry["route_id"] = None
@@ -521,14 +549,14 @@ def normalize_featured_route(
     if rid and rid not in gold_ids:
         out["route_id"] = None
         out["_link_status"] = "held-null-not-in-gold"
-    elif rid and rid not in spine_ids and out.get("display") != "network_chip":
-        # Single route_id must be in spine for India baseline
+    elif rid and rid not in spine_ids and rid not in PR58_MINT_ROUTE_IDS and out.get("display") != "network_chip":
+        # Single route_id must be in spine for India baseline (PR58 mint routes exempt)
         out["route_id"] = None
         out["_link_status"] = "held-null-not-in-spine"
 
     rids = out.get("route_ids")
     if isinstance(rids, list):
-        filtered = [x for x in rids if x in gold_ids and x in spine_ids]
+        filtered = [x for x in rids if _route_bindable(x, gold_ids=gold_ids, spine_ids=spine_ids)]
         if filtered:
             out["route_ids"] = filtered
             out["_link_kind"] = out.get("_link_kind") or "network-bundle"
