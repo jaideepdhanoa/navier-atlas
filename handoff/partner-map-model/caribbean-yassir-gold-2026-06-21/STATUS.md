@@ -52,3 +52,9 @@
 - Updated `GROK-SEAL-AND-DECK-PROMPT.md` to reference the Algeria source/mint queue, country-reference draft, and route hardening batch 1.
 - Added exact city/BP/route mint requests and null-policy gates for Grok.
 - Still no live `yassir-algeria` display/economics until Grok returns sealed IDs and route QA.
+
+## Batch 5 banked: Caribbean economics preflight conversion
+- Added `caribbean-country-reference-draft-batch-1.json` for Bahamas, Puerto Rico, U.S. Virgin Islands, British Virgin Islands, and Barbados.
+- Added `caribbean-route-economics-inputs-batch-1.json` converting the banked demand anchors into first route-economics inputs for Nassau/Paradise Island, San Juan-Cataño, Red Hook-Cruz Bay, St. Thomas-Tortola, and Bridgetown Port waterfront extension.
+- Added `caribbean-economics-sidecar-draft-batch-1.md` as the review sidecar.
+- No live finance/model rows were changed; route IDs remain null until Grok seals exact geometry and demand/fare assumptions are accepted.
