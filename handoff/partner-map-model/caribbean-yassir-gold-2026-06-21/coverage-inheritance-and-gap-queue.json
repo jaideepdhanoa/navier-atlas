@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-06-21",
+  "partners": [
+    {
+      "partner": "yassir",
+      "display_ready": [
+        "yassir-tunisia",
+        "yassir-morocco"
+      ],
+      "brief_only": [
+        "Algeria home market — no Atlas geometry found"
+      ],
+      "true_registry_gaps": [
+        {
+          "country": "Algeria",
+          "reason": "Yassir core/home market but no Algeria city/priority_city found in data-clean; source-led geometry and BPs required before map/economics."
+        }
+      ],
+      "economics": "cascaded for Morocco/Tunisia only"
+    },
+    {
+      "partner": "caribbean-mobility",
+      "display_ready": [
+        "bahamas",
+        "puerto-rico",
+        "usvi-bvi",
+        "barbados",
+        "jamaica",
+        "dominican-republic",
+        "st-lucia-grenadines",
+        "turks-caicos",
+        "cayman",
+        "antigua",
+        "abc-islands"
+      ],
+      "brief_only": [],
+      "true_registry_gaps": [
+        {
+          "scope": "country-reference rows",
+          "reason": "Draft rows now exist for Bahamas, Puerto Rico, USVI, BVI and Barbados, but are not apply-ready until tariff/wage/marina assumptions pass review."
+        },
+        {
+          "scope": "route-specific demand anchors",
+          "reason": "Batch-1 route inputs now exist, but several demand values remain tourism-pool/system-pool derived and require route splits before final economics."
+        }
+      ],
+      "economics": "batch-1 country-reference and route-economics drafts prepared; not cascaded until exact IDs and assumption review pass",
+      "economics_preflight_batch_1": {
+        "country_reference_draft": "caribbean-country-reference-draft-batch-1.json",
+        "route_economics_inputs": "caribbean-route-economics-inputs-batch-1.json",
+        "sidecar": "caribbean-economics-sidecar-draft-batch-1.md",
+        "apply_ready": false,
+        "model_change": "none",
+        "candidate_routes": [
+          "carib-bahamas-nassau-paradise-island-water-layer",
+          "carib-puerto-rico-san-juan-catano-metro-water-layer",
+          "carib-usvi-red-hook-cruz-bay-short-hop",
+          "carib-usvi-bvi-st-thomas-tortola-cross-border",
+          "carib-barbados-bridgetown-port-waterfront-extension"
+        ],
+        "remaining_gates": [
+          "exact Grok route IDs / boarding points",
+          "approved country-reference rows",
+          "route-level demand splits for Puerto Rico and USVI/BVI",
+          "fare comparable for Barbados",
+          "deduped launch cluster assumptions"
+        ]
+      }
+    }
+  ],
+  "yassir_algeria_home_market_gap": {
+    "status": "prioritized_geometry_and_economics_gap",
+    "packet": "yassir-algeria-market-source-and-mint-queue.json",
+    "priority": "A",
+    "reason": "Official Yassir/YC/Google Cloud sources support Algeria, and Yassir Express exposes coastal city candidates; Atlas geometry/country-reference gates block modeling.",
+    "next_actions": [
+      "Mint/validate Algeria city IDs for the selected coastal cities.",
+      "Mint/validate boarding points for each route candidate with from_node_id/to_node_id set to real IDs.",
+      "Add source-tiered Algeria row in finance/model/country-reference.json before any cascade.",
+      "Add route-level fare and demand anchors; no 30k placeholders.",
+      "Then add yassir-algeria to finance/model/corridors.json and partner-pitch/partners/yassir.json and re-run aggregate/growth/frontend/sheet."
+    ],
+    "route_hardening_packet": "yassir-algeria-route-source-hardening-batch-1.json",
+    "batch_1_route_candidates": [
+      "dz-algiers-bay-pecherie-el-djamila",
+      "dz-algiers-bay-pecherie-tamentfoust-sablettes",
+      "dz-bejaia-algiers-hsc",
+      "dz-oran-mostaganem-summer",
+      "dz-annaba-marseille-port-existence"
+    ],
+    "next_action": "Hand the batch-1 mint requests to Grok for city/boarding-point/route-ID sealing; keep finance/model untouched until exact IDs and Algeria country-reference row are approved."
+  }
+}

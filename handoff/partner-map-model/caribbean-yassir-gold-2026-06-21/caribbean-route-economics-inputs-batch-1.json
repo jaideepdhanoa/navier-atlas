@@ -1,0 +1,247 @@
+{
+  "generated_at": "2026-06-21",
+  "status": "route_economics_inputs_draft_not_cascaded",
+  "rule": "These are route-level economics inputs converted from the banked Caribbean demand-anchor pack. They are not final model rows and all route_id fields stay null until Grok seals exact IDs.",
+  "partner": "caribbean-mobility",
+  "model_gate": "No finance/model/corridors.json change until exact route geometry, approved country-reference rows, and demand/fare review are complete.",
+  "currency": "USD",
+  "capture_policy": "Tourism and ferry volumes are pre-harvest pools. Draft corridor demand is a conservative launch-capture assumption and must not be summed across overlapping pools without dedupe.",
+  "routes": [
+    {
+      "candidate_id": "carib-bahamas-nassau-paradise-island-water-layer",
+      "status": "candidate_needs_grok",
+      "market": "Bahamas",
+      "atlas_city_ids": [
+        "nassau-bahamas"
+      ],
+      "route_id": null,
+      "from": "Downtown Nassau / cruise-port waterfront",
+      "to": "Paradise Island / Atlantis-marina catchment",
+      "distance_nm_estimate": {
+        "value": 1.5,
+        "confidence": "low",
+        "needs_grok_geometry": true
+      },
+      "trip_time_min_estimate": {
+        "value": 10,
+        "confidence": "med_low"
+      },
+      "use_case": [
+        "cruise/waterfront transfer",
+        "resort transfer",
+        "premium sightseeing shuttle"
+      ],
+      "vessel": "N30 Pioneer II",
+      "fare": {
+        "comparable_fare_usd_pax_one_way": 7.0,
+        "navier_draft_fare_usd_pax_one_way": 18.0,
+        "confidence": "low",
+        "source": "Bahamas Air Tours visitor guide reports recent Nassau/Paradise Island water taxi fare at $7 one-way as of 2025, while warning service reliability is uncertain.",
+        "url": "https://www.bahamasairtours.com/destination/ferry-to-paradise-island/"
+      },
+      "demand": {
+        "full_pool_preharvest": 6721658,
+        "pool_basis": "2019 Bahamas baseline: 1,292,424 Nassau/Paradise Island stopovers + 5,429,474 cruise visitors from the existing demand-anchor pack.",
+        "draft_capture_pct": 1.0,
+        "corridor_annual_oneway_pax_draft": 67200,
+        "confidence": "low",
+        "dedupe_warning": "Cruise visitors and stayovers overlap with other Nassau transfer routes; do not sum without launch cluster dedupe."
+      },
+      "economics_readiness": "needs_grok_geometry_and_route_demand_review"
+    },
+    {
+      "candidate_id": "carib-puerto-rico-san-juan-catano-metro-water-layer",
+      "status": "candidate_needs_grok",
+      "market": "Puerto Rico",
+      "atlas_city_ids": [
+        "san-juan-puerto-rico"
+      ],
+      "route_id": null,
+      "from": "San Juan Terminal / Old San Juan waterfront",
+      "to": "Cataño Terminal / Bacardi catchment",
+      "distance_nm_estimate": {
+        "value": 1.6,
+        "confidence": "med_low",
+        "needs_grok_geometry": true
+      },
+      "trip_time_min_estimate": {
+        "value": 12,
+        "confidence": "high",
+        "source": "Puerto Rico Ferry San Juan–Cataño route page."
+      },
+      "use_case": [
+        "urban mobility complement",
+        "visitor waterfront transfer",
+        "last-mile app pickup handoff"
+      ],
+      "vessel": "N30 Pioneer II or N35 Shuttle on dense short leg",
+      "fare": {
+        "comparable_fare_usd_pax_one_way": 0.5,
+        "navier_draft_fare_usd_pax_one_way": 8.0,
+        "confidence": "med_low",
+        "source": "Puerto Rico Ferry tariff page lists $0.50 one-way for general public on San Juan-Cataño; Navier fare is a premium service assumption, not the subsidized ferry fare.",
+        "url": "https://www.puertoricoferry.com/en/tarifas-sj-cat/"
+      },
+      "demand": {
+        "full_pool_preharvest": 713751,
+        "pool_basis": "HMS Ferries Puerto Rico reported 713,751 passengers across Culebra/Vieques and Cataño/San Juan in Jan-May 2024, +14% YoY.",
+        "annualized_system_pool": 1713000,
+        "draft_capture_pct_of_system_pool": 2.0,
+        "corridor_annual_oneway_pax_draft": 34200,
+        "confidence": "med_low",
+        "dedupe_warning": "System ridership covers multiple routes; San Juan-Cataño split is not sourced yet. Keep this as pool-derived until route-level split is found."
+      },
+      "economics_readiness": "needs_san_juan_catano_route_split_or_operator_confirmation"
+    },
+    {
+      "candidate_id": "carib-usvi-red-hook-cruz-bay-short-hop",
+      "status": "candidate_needs_grok",
+      "market": "U.S. Virgin Islands",
+      "atlas_city_ids": [
+        "usvi-bvi"
+      ],
+      "route_id": null,
+      "from": "Red Hook Ferry Terminal, St. Thomas",
+      "to": "Cruz Bay Ferry Dock, St. John",
+      "distance_nm_estimate": {
+        "value": 3.2,
+        "confidence": "med_low",
+        "needs_grok_geometry": true
+      },
+      "trip_time_min_estimate": {
+        "value": 15,
+        "confidence": "high",
+        "source": "VINow St. Thomas-St. John ferry schedule."
+      },
+      "use_case": [
+        "island-city commuter route",
+        "visitor transfer",
+        "resort/charter access"
+      ],
+      "vessel": "N30 Pioneer II / N35 Shuttle on frequency layer",
+      "fare": {
+        "comparable_fare_usd_pax_one_way": 8.15,
+        "navier_draft_fare_usd_pax_one_way": 16.0,
+        "confidence": "med",
+        "source": "VINow lists Red Hook-Cruz Bay adult non-resident one-way fare at $8.15 and 15-minute crossing.",
+        "url": "https://www.vinow.com/travel/virgin-islands-ferry-schedules/stjohn/"
+      },
+      "demand": {
+        "full_pool_preharvest": 303388,
+        "pool_basis": "USVI Department of Tourism Q1 2026 total arrivals from existing demand-anchor pack; St. Thomas led with 246,772 arrivals.",
+        "draft_capture_pct": 12.0,
+        "corridor_annual_oneway_pax_draft": 36000,
+        "confidence": "low",
+        "dedupe_warning": "Visitor arrivals are not ferry ridership. Replace with port/terminal passenger counts if found."
+      },
+      "economics_readiness": "fare_ready_demand_pool_only"
+    },
+    {
+      "candidate_id": "carib-usvi-bvi-st-thomas-tortola-cross-border",
+      "status": "candidate_needs_grok",
+      "market": "USVI / BVI",
+      "atlas_city_ids": [
+        "usvi-bvi"
+      ],
+      "route_id": null,
+      "from": "St. Thomas ferry terminals (Charlotte Amalie / Red Hook)",
+      "to": "Tortola ferry terminals (Road Town / West End)",
+      "distance_nm_estimate": {
+        "value": 14.0,
+        "confidence": "low",
+        "needs_grok_geometry": true
+      },
+      "trip_time_min_estimate": {
+        "value": 30,
+        "confidence": "med",
+        "source": "VI Ferries St. Thomas-Tortola schedule page."
+      },
+      "use_case": [
+        "cross-border inter-island premium shuttle",
+        "airport-to-yacht/resort transfer",
+        "high-yield visitor movement"
+      ],
+      "vessel": "N30 Pioneer II where sea-state/range gates pass; otherwise review",
+      "fare": {
+        "comparable_fare_usd_pax_one_way_low": 25.0,
+        "comparable_fare_usd_pax_one_way_high": 65.0,
+        "navier_draft_fare_usd_pax_one_way": 55.0,
+        "confidence": "med_low",
+        "source": "VI Ferries reports St. Thomas-Tortola adult one-way fares from $25 to $65, with passports and additional fees required.",
+        "url": "https://viferries.com/red-hook-to-west-end-ferry"
+      },
+      "demand": {
+        "full_pool_preharvest": null,
+        "pool_basis": "BVI Tourism confirms frequent daily Tortola-St. Thomas schedules; passenger counts not sourced yet.",
+        "draft_capture_pct": null,
+        "corridor_annual_oneway_pax_draft": null,
+        "confidence": "insufficient",
+        "missing_input": "Route-level passenger movements or visitor ferry-arrival stats."
+      },
+      "economics_readiness": "fare_and_schedule_ready_demand_missing"
+    },
+    {
+      "candidate_id": "carib-barbados-bridgetown-port-waterfront-extension",
+      "status": "candidate_needs_grok_but_economics_incomplete",
+      "market": "Barbados",
+      "atlas_city_ids": [
+        "barbados"
+      ],
+      "route_id": null,
+      "from": "Bridgetown Cruise Terminal / Port of Bridgetown",
+      "to": "Bridgetown / Carlisle Bay / west-coast visitor catchment",
+      "distance_nm_estimate": {
+        "value": 2.0,
+        "confidence": "low",
+        "needs_grok_geometry": true
+      },
+      "trip_time_min_estimate": {
+        "value": 12,
+        "confidence": "low"
+      },
+      "use_case": [
+        "cruise passenger waterfront transfer",
+        "taxi-app water extension",
+        "hotel/beach transfer"
+      ],
+      "vessel": "N30 Pioneer II",
+      "fare": {
+        "comparable_fare_usd_pax_one_way": null,
+        "navier_draft_fare_usd_pax_one_way": 18.0,
+        "confidence": "low",
+        "source": "Barbados Port page confirms complimentary ship-to-terminal shuttles, taxi dispatch, tour buses, and beach/Bridgetown transfer context, but no water-fare comparable.",
+        "url": "https://barbadosport.com/from-ship-to-shore/"
+      },
+      "demand": {
+        "full_pool_preharvest": 599826,
+        "pool_basis": "BTMI reported 599,826 cruise passengers Jan-Jul 2025 and 503,000 stayover arrivals Jan-Aug 2025.",
+        "draft_capture_pct": 3.0,
+        "corridor_annual_oneway_pax_draft": 18000,
+        "confidence": "low",
+        "dedupe_warning": "Cruise/stayover arrivals are a ceiling, not route demand; fare comparable missing."
+      },
+      "economics_readiness": "demand_pool_only_fare_comparable_missing"
+    }
+  ],
+  "blocked_or_not_modelled_yet": [
+    {
+      "market": "Jamaica",
+      "reason": "Atlas display-ready but no route-level fare/demand source converted in batch 1."
+    },
+    {
+      "market": "Dominican Republic",
+      "reason": "Atlas display-ready but no route-level fare/demand source converted in batch 1."
+    },
+    {
+      "market": "Turks and Caicos / Cayman / Antigua / St Lucia-Grenadines / ABC",
+      "reason": "Kept broad-footprint only until source-supported route/fare anchors are found."
+    }
+  ],
+  "next_actions": [
+    "Extract exact route geometry and route IDs with Grok for the five batch-1 candidate routes.",
+    "Replace Bahamas/Barbados demand pools with route-specific operator/terminal counts if found.",
+    "Find San Juan-Cataño route split from Puerto Rico Ferry/HMS, or split the 713,751 Jan-May system pool by operator confirmation only.",
+    "Find BVI/USVI passenger movement data before modeling St. Thomas-Tortola revenue.",
+    "After review, promote approved rows into finance/model/corridors.json and rebuild finance/recal + growth sidecar."
+  ]
+}

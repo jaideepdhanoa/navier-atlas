@@ -1,0 +1,76 @@
+{
+  "packet_id": "algeria-country-reference-draft-2026-06-21",
+  "status": "ready_to_apply_before_algeria_cascade__not_applied_because_no_sealed_algeria_corridors_yet",
+  "decision": "Algeria country-reference research is complete enough for a transparent pre-cascade row. Apply it immediately before adding sealed yassir-algeria corridors; do not run Algeria through Singapore fallback.",
+  "proposed_country_reference_row": {
+    "Algeria": {
+      "captain_usd_yr": {
+        "value": 12000,
+        "source_tier": "T4",
+        "confidence": "low",
+        "source": "Regional modeled maritime-wage proxy retained because no strong Algeria maritime-captain salary source was found; acceptable only as labelled draft until local wage source replaces it."
+      },
+      "energy_usd_kwh": {
+        "value": 0.04,
+        "source_tier": "T3",
+        "confidence": "medium",
+        "source": "GlobalPetrolPrices Algeria electricity page reports September 2025 business electricity at USD 0.035/kWh, citing CREG, Ministry of Energy and Mines, and Sonelgaz; rounded up to 0.04/kWh for operating conservatism."
+      },
+      "grid_co2_kg_kwh": {
+        "value": 0.55,
+        "source_tier": "T3",
+        "confidence": "medium",
+        "source": "Climatiq/ADEME Algeria grid electricity factor is 0.548 kgCO2e/kWh; rounded to 0.55. Source is deprecated but explicit and better than fallback."
+      },
+      "marina_overhead_usd_yr": {
+        "value": 8000,
+        "source_tier": "T4",
+        "confidence": "low",
+        "source": "Regional modeled marina/port overhead proxy retained; Algeria marina-fee search found weak port/marina leads but no tariff table. Replace before final investment-grade economics if available."
+      },
+      "cost_index": {
+        "value": 0.3,
+        "source_tier": "T4",
+        "confidence": "low",
+        "source": "Regional cost-index proxy; do not present as sourced local statistic."
+      }
+    }
+  },
+  "source_leads": [
+    {
+      "name": "Climatiq Algeria grid electricity factor",
+      "url": "https://www.climatiq.io/data/emission-factor/48d51268-b95b-4244-89c9-cf137868a57c",
+      "evidence": "Search result: electricity supplied from grid — Algeria, factor CO2e 0.548 kg/kWh, ADEME source.",
+      "used_for": "grid_co2_kg_kwh draft"
+    },
+    {
+      "name": "Numbeo Algeria vs Morocco cost comparison",
+      "url": "https://www.numbeo.com/cost-of-living/compare_countries_result.jsp?country1=Algeria&country2=Morocco",
+      "evidence": "Search result: Morocco cost of living incl. rent 28.0% higher than Algeria; used only as a low-confidence cost-index lead.",
+      "used_for": "cost_index draft"
+    },
+    {
+      "name": "Glassdoor Captain in Algiers lead",
+      "url": "https://www.glassdoor.com/Salaries/algiers-algeria-captain-salary-SRCH_IL.0,15_IM960_KO16,23.htm",
+      "evidence": "Search result reports generic Captain salary in Algiers; not treated as a maritime captain source.",
+      "used_for": "do_not_use_as_final_wage"
+    },
+    {
+      "name": "GlobalPetrolPrices Algeria electricity prices",
+      "url": "https://www.globalpetrolprices.com/Algeria/electricity_prices/",
+      "tier": "T3_energy_price_source",
+      "evidence": "September 2025 Algeria business electricity price USD 0.035/kWh; sources CREG, Ministry of Energy and Mines, and Sonelgaz. Use 0.04/kWh conservative rounded input."
+    },
+    {
+      "name": "Climatiq / ADEME Algeria grid electricity factor",
+      "url": "https://www.climatiq.io/data/emission-factor/48d51268-b95b-4244-89c9-cf137868a57c",
+      "tier": "T3_grid_emissions_source",
+      "evidence": "Algeria grid electricity factor 0.548 kgCO2e/kWh from ADEME/Base Carbone; deprecated but acceptable as transparent draft until IEA/official replacement."
+    }
+  ],
+  "apply_gate": [
+    "Apply this row before any Algeria aggregate run; never allow Singapore fallback.",
+    "Keep captain_usd_yr and marina_overhead_usd_yr visibly labelled T4 draft inputs until replaced by local wage/tariff sources.",
+    "Energy and grid CO2 are acceptable draft inputs for pre-seal economics; revisit before external finance export if exact official tables are obtained."
+  ]
+}
