@@ -244,6 +244,10 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   version: 2,
   cleanUrls: true,
   trailingSlash: false,
+  redirects: [
+    { source: '/uber-india', destination: '/uber-india-derivative', permanent: true },
+    { source: '/uber-india/:path*', destination: '/uber-india-derivative/:path*', permanent: true },
+  ],
   installCommand: 'npm install --omit=dev',
   // LB-258: Edge middleware deploys globally by default; a single broken region kills the whole
   // "Deploying outputs…" phase. Pin to iad1 (matches build region) until Vercel stabilizes global edge.
