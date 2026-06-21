@@ -20,18 +20,58 @@
   "journeys_unlocked": [
     {
       "from": "Velana International Airport (Malé)",
-      "to": "Universal Resorts resort jetty",
-      "today": "20–45 min in a diesel speedboat, rough in any swell, or a costly weather-bound seaplane hop.",
-      "with_navier": "A smooth, silent foiling arrival in an all-weather enclosed cabin — level boarding with luggage, direct to the resort jetty, any weather, after dark.",
-      "distance_nm": 22,
-      "platform": "N35",
+      "to": "North & South Malé Atoll resorts",
+      "today": "20–45 min in a diesel speedboat, rough in any swell, or a costly seaplane hop.",
+      "with_navier": "A smooth, silent ~25-minute foiling transfer direct to the resort jetty — any weather, after dark.",
+      "distance_nm": 2.1,
+      "platform": "Pioneer II",
+      "archetype": "tourism",
+      "from_node_id": "male-maldives__velana-seaplane-terminal",
+      "to_node_id": "male-maldives__kurumba-jetty",
+      "route_id": "e__velana__kurumba-jetty",
+      "route_ids": [
+        "e__velana__kurumba-jetty"
+      ],
+      "_link_kind": "velana-resort",
+      "_link_status": "linked-grok-scoped",
+      "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+      "_link_source": "grok/bind_velana_hospitality_corridors",
+      "economics_status": "economics_pending"
+    },
+    {
+      "from": "Malé hub",
+      "to": "Ari Atoll / Baa Atoll resorts",
+      "today": "Seaplane only — daylight-limited, weather-cancelled, ~$600+ round trip.",
+      "with_navier": "An all-weather, after-dark foiling link to the mid-atolls, complementing seaplane for the longest legs.",
+      "distance_nm": 55,
+      "platform": "Quanta-LR",
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
       "route_id": null,
-      "route_ids": null,
-      "_link_kind": "node-network",
-      "_link_status": "unlinked-intra-city"
+      "_link_kind": "corridor",
+      "_link_status": "unlinked-intra-city",
+      "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit"
+    },
+    {
+      "from": "Velana International Airport",
+      "to": "Greater Malé / Hulhumalé urban waterfront",
+      "today": "Congested causeway road or a slow public ferry.",
+      "with_navier": "A fast foiling commuter and visitor link across the capital's lagoon — the resident layer of the same program.",
+      "distance_nm": 2.1,
+      "platform": "Pioneer II",
+      "archetype": "public_transport",
+      "from_node_id": "male-maldives__velana-seaplane-terminal",
+      "to_node_id": "male-maldives__kurumba-jetty",
+      "route_id": "e__velana__kurumba-jetty",
+      "route_ids": [
+        "e__velana__kurumba-jetty"
+      ],
+      "_link_kind": "velana-resort",
+      "_link_status": "linked-grok-scoped",
+      "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+      "_link_source": "grok/bind_velana_hospitality_corridors",
+      "economics_status": "economics_pending"
     },
     {
       "from": "Universal Resorts resort lagoon",
@@ -46,23 +86,10 @@
       "route_id": null,
       "route_ids": null,
       "_link_kind": "node-network",
-      "_link_status": "unlinked-intra-city"
-    },
-    {
-      "from": "Kurumba / North Malé Atoll property",
-      "to": "Sister property (Baros / Huvafen Fushi / Velassaru)",
-      "today": "A separate speedboat charter per island, booked and crewed independently.",
-      "with_navier": "A shared foiling shuttle linking the portfolio's islands — guests move between Universal resorts as one connected collection.",
-      "distance_nm": 13.0,
-      "platform": "Quanta-LR",
-      "archetype": "tourism",
-      "from_node_id": "male-maldives",
-      "to_node_id": "male-maldives",
-      "route_id": null,
-      "route_ids": null,
-      "_link_kind": "corridor-label",
       "_link_status": "unlinked-intra-city",
-      "_link_source": "grok/relink_partner_journeys/scoped"
+      "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+      "_inherit_source": "grok/normalize/jih-global",
+      "_inherit_at": "2026-06-21T14:24:34Z"
     }
   ],
   "differentiation": {
@@ -118,15 +145,36 @@
       "rationale": "Start where transfer volume is highest and the arrival impression matters most.",
       "featured_routes": [
         {
-          "label": "Velana International Airport ↔ Universal Resorts resort jetty",
-          "from_node_id": "male-maldives",
-          "to_node_id": "male-maldives",
-          "distance_nm": 22,
-          "platform": "N35",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "node-network",
-          "_link_status": "unlinked-intra-city"
+          "label": "Velana International Airport (Malé) ↔ North & South Malé Atoll resorts",
+          "from_node_id": "male-maldives__velana-seaplane-terminal",
+          "to_node_id": "male-maldives__kurumba-jetty",
+          "distance_nm": 2.1,
+          "platform": "Pioneer II",
+          "route_id": "e__velana__kurumba-jetty",
+          "_link_kind": "velana-resort",
+          "_link_status": "linked-grok-scoped",
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+          "route_ids": [
+            "e__velana__kurumba-jetty"
+          ],
+          "_link_source": "grok/bind_velana_hospitality_corridors",
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Velana International Airport ↔ Greater Malé / Hulhumalé urban waterfront",
+          "from_node_id": "male-maldives__velana-seaplane-terminal",
+          "to_node_id": "male-maldives__kurumba-jetty",
+          "distance_nm": 2.1,
+          "platform": "Pioneer II",
+          "route_id": "e__velana__kurumba-jetty",
+          "route_ids": [
+            "e__velana__kurumba-jetty"
+          ],
+          "_link_kind": "velana-resort",
+          "_link_status": "linked-grok-scoped",
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+          "_link_source": "grok/bind_velana_hospitality_corridors",
+          "economics_status": "economics_pending"
         }
       ],
       "use_cases": [
@@ -147,33 +195,88 @@
       "rationale": "Extend the proven pilot to every island once operations and guest demand are validated.",
       "featured_routes": [
         {
-          "label": "Velana International Airport ↔ Universal Resorts resort jetty",
+          "label": "Malé hub ↔ Ari Atoll / Baa Atoll resorts",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "distance_nm": 22,
-          "platform": "N35",
+          "distance_nm": 55,
+          "platform": "Quanta-LR",
+          "route_id": null,
+          "_link_kind": "corridor",
+          "_link_status": "unlinked-intra-city",
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit"
+        },
+        {
+          "label": "Resort lagoon ↔ Neighbouring island / sandbank / dive site",
+          "from_node_id": "male-maldives",
+          "to_node_id": "male-maldives",
+          "distance_nm": 12,
+          "platform": "Pioneer II",
           "route_id": null,
           "route_ids": null,
           "_link_kind": "node-network",
-          "_link_status": "unlinked-intra-city"
-        },
-        {
-          "label": "Kurumba / North Malé Atoll property ↔ Sister property (Baros / Huvafen Fushi / Velassaru)",
-          "from_node_id": "male-maldives",
-          "to_node_id": "male-maldives",
-          "distance_nm": 13.0,
-          "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit"
         }
       ],
       "use_cases": [
         "resort transfer",
         "island hopping",
         "all-weather reliability"
+      ]
+    },
+    {
+      "n": 3,
+      "label": "Phase 3 — national network",
+      "boats": 100,
+      "cities": [
+        "male-maldives"
+      ],
+      "route_scope": "intra",
+      "narrative": "Roughly 100 vessels at steady state forming a national foiling transfer layer spanning the inhabited atoll chain — the world's first archipelago-scale foiling network, capitalised and built as a single multi-year program.",
+      "timeline": "2028",
+      "rationale": "Complete the three-year phased rollout to national coverage — the full realisation of the signed program.",
+      "featured_routes": [
+        {
+          "label": "Velana International Airport (Malé) ↔ North & South Malé Atoll resorts",
+          "from_node_id": "male-maldives__velana-seaplane-terminal",
+          "to_node_id": "male-maldives__kurumba-jetty",
+          "distance_nm": 2.1,
+          "platform": "Pioneer II",
+          "route_id": "e__velana__kurumba-jetty",
+          "_link_kind": "velana-resort",
+          "_link_status": "linked-grok-scoped",
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit",
+          "route_ids": [
+            "e__velana__kurumba-jetty"
+          ],
+          "_link_source": "grok/bind_velana_hospitality_corridors",
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Malé hub ↔ Ari Atoll / Baa Atoll resorts",
+          "from_node_id": "male-maldives",
+          "to_node_id": "male-maldives",
+          "distance_nm": 55,
+          "platform": "Quanta-LR",
+          "route_id": null,
+          "_link_kind": "corridor",
+          "_link_status": "unlinked-intra-city",
+          "model_link": "https://docs.google.com/spreadsheets/d/136mve2Z-c2FRZm2cZZ3of9jk85kpEkpzf-ZIC9dzXJU/edit"
+        }
+      ],
+      "use_cases": [
+        {
+          "label": "national transfer layer",
+          "summary": ""
+        },
+        {
+          "label": "resident mobility",
+          "summary": ""
+        },
+        {
+          "label": "tourism backbone",
+          "summary": ""
+        }
       ]
     }
   ],
@@ -215,10 +318,10 @@
   "tier": "watch",
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-21T05:32:21Z",
+      "at": "2026-06-21T14:24:40Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
-        "total": 6,
+        "total": 10,
         "linked": 0,
         "cleared_mislink": 0,
         "borrowed_brief": 0,
@@ -234,9 +337,21 @@
   "_regional_inheritance": {
     "pack": "maldives_hospitality",
     "reference_partner": "jih-global",
-    "applied_at": "2026-06-21T05:32:06Z",
+    "applied_at": "2026-06-21T14:24:34Z",
     "mode": "subset",
-    "bound_cards": 0,
-    "missing_reference_keys": 0
+    "bound_cards": 9,
+    "missing_reference_keys": 0,
+    "normalized_to_reference": "2026-06-21T14:24:34Z"
+  },
+  "_velana_hospitality_bind": {
+    "applied_at": "2026-06-21T14:24:44Z",
+    "route_id": "e__velana__kurumba-jetty",
+    "journeys": 2,
+    "featured": 3
+  },
+  "_hospitality_flagship_bind": {
+    "applied_at": "2026-06-21T14:24:44Z",
+    "journeys": 0,
+    "featured": 0
   }
 }

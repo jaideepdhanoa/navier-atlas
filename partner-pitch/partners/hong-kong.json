@@ -19,124 +19,150 @@
   "multimodal_fit": "Foiling vessels run from the existing Star Ferry piers, the outlying-island terminals and the Macau/China Ferry terminals — integrating with the MTR and the cross-boundary network. The water leg becomes the fast, clean spine connecting Hong Kong Island, Kowloon, the islands, the airport's SkyPier and the PRD mainland.",
   "journeys_unlocked": [
     {
-      "from": "Central (Hong Kong Island)",
-      "to": "Tsim Sha Tsui (Kowloon)",
-      "today": "The diesel Star Ferry across Victoria Harbour.",
-      "with_navier": "A near-silent zero-wake Pioneer II cross-harbour hop — modernizing the iconic crossing.",
-      "distance_nm": 4.2,
-      "platform": "Pioneer II",
-      "archetype": "commute",
-      "from_node_id": "hong-kong__central-ferry-piers",
-      "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
+      "from": "Hong Kong (Sheung Wan)",
+      "to": "Macau (Outer Harbour)",
+      "today": "A ~55–60 min diesel jetfoil, fuel-hungry and aging.",
+      "with_navier": "A faster, near-silent foiling crossing of the Pearl River estuary — far lower fuel cost and emissions, on the franchise's iconic backbone.",
+      "distance_nm": 35.2,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "hong-kong__hk-macau-ferry-terminal-sheung-wan",
+      "to_node_id": "macau-china__macau-outer-harbour-ferry-terminal",
       "route_id": null,
-      "_link_kind": "corridor-label",
+      "_link_kind": "authority-phase-sync",
       "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
+      "_link_source": "grok/bind_authority_journeys_from_phases",
+      "route_ids": null,
+      "economics_status": "economics_pending",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
     },
     {
-      "from": "Central / Sheung Wan",
-      "to": "Macau (Outer Harbour)",
-      "today": "A ~55–60 min diesel jetfoil.",
-      "with_navier": "A faster, near-silent Quanta-LR foiling crossing of the Pearl River estuary.",
-      "distance_nm": 3.6,
+      "from": "Hong Kong",
+      "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
+      "today": "Aging diesel fast ferries across the busy delta.",
+      "with_navier": "A clean Quanta-LR hybrid run to the PRD mainland ports — no charging dependence on a high-frequency duty cycle.",
+      "distance_nm": 40.4,
       "platform": "Quanta-LR",
       "archetype": "intercity",
       "from_node_id": "hong-kong",
-      "to_node_id": "macau-china",
-      "route_id": null,
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+      "route_id": "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
       "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
+      "_link_status": "linked-grok-node",
+      "_link_source": "grok/relink_partner_journeys/node",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
     },
     {
-      "from": "Central",
-      "to": "Outlying islands — Lamma, Cheung Chau, Mui Wo",
-      "today": "Slow diesel ferries to the outlying islands.",
-      "with_navier": "A silent zero-wake Pioneer II island hop from the Central piers.",
-      "distance_nm": 2.6,
+      "from": "HK Airport (SkyPier)",
+      "to": "Macau (Outer Harbour / Taipa)",
+      "today": "A diesel cross-border ferry from the airport.",
+      "with_navier": "A fast clean foiling airport-to-Macau connection within the existing SkyPier transit model.",
+      "distance_nm": 35.2,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "hong-kong__hk-macau-ferry-terminal-sheung-wan",
+      "to_node_id": "macau-china__macau-outer-harbour-ferry-terminal",
+      "route_id": null,
+      "_link_kind": "authority-phase-sync",
+      "_link_status": "unlinked-no-route",
+      "_link_source": "grok/bind_authority_journeys_from_phases",
+      "route_ids": null,
+      "economics_status": "economics_pending",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
+    },
+    {
+      "from": "Hong Kong (Central piers)",
+      "to": "Outlying islands (Lamma / Cheung Chau / Mui Wo)",
+      "today": "Diesel ferries and walla-wallas.",
+      "with_navier": "A silent zero-wake Pioneer II hop to the outlying islands from the Central piers.",
+      "distance_nm": 7.6,
       "platform": "Pioneer II",
       "archetype": "commute",
       "from_node_id": "hong-kong__central-ferry-piers",
       "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
-      "route_id": null,
+      "route_id": "edge__hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
       "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
-    },
-    {
-      "from": "HKIA SkyPier",
-      "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
-      "today": "Cross-border coach over the HKZM bridge or a diesel ferry.",
-      "with_navier": "A clean Quanta-LR airport-to-PRD foiling connection with no charging dependence.",
-      "distance_nm": 3.6,
-      "platform": "Quanta-LR",
-      "archetype": "intercity",
-      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
-      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
-      "route_id": null,
-      "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
-    },
-    {
-      "from": "Central",
-      "to": "Discovery Bay / Lantau",
-      "today": "A diesel commuter ferry.",
-      "with_navier": "A silent zero-wake Pioneer II commuter run to Discovery Bay and Lantau.",
-      "distance_nm": 8.8,
-      "platform": "Pioneer II",
-      "archetype": "commute",
-      "from_node_id": "hong-kong__central-ferry-piers",
-      "to_node_id": "hong-kong__discovery-bay-lantau",
-      "route_id": null,
-      "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
-    },
-    {
-      "from": "Central",
-      "to": "Sai Kung / Clearwater Bay archipelago",
-      "today": "A long road trip then a sampan to the inner islands.",
-      "with_navier": "A direct foiling run to the Sai Kung archipelago and Hebe Haven for leisure and dining.",
-      "distance_nm": 3.6,
-      "platform": "Pioneer II",
-      "archetype": "tourism",
-      "from_node_id": "hong-kong__central-ferry-piers",
-      "to_node_id": "hong-kong__sai-kung-clear-water-bay-inner-archipelago-hebe-haven",
-      "route_id": null,
-      "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
-    },
-    {
-      "from": "Kai Tak cruise terminal / event pontoon",
-      "to": "Central / Tsim Sha Tsui",
-      "today": "Road shuttle from the cruise terminal into town.",
-      "with_navier": "A quiet zero-wake Pioneer II shuttle from Kai Tak to the harbourfront piers — surge-capable on event days.",
-      "distance_nm": 3.6,
-      "platform": "Pioneer II",
-      "archetype": "tourism",
-      "from_node_id": "hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon",
-      "to_node_id": "hong-kong__central-ferry-piers",
-      "route_id": null,
-      "_link_kind": "corridor-label",
-      "_link_status": "unlinked-no-route",
-      "_link_source": "grok/relink_partner_journeys/scoped"
+      "_link_status": "linked-grok-scoped",
+      "_link_source": "grok/relink_partner_journeys/scoped",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
     },
     {
       "from": "Macau (Outer Harbour)",
       "to": "Shenzhen-Shekou / Zhuhai (PRD mainland)",
       "today": "A diesel ferry across the western delta.",
       "with_navier": "A direct Quanta-LR cross-delta run linking Macau to the western PRD ports.",
-      "distance_nm": 3.6,
+      "distance_nm": 40.4,
       "platform": "Quanta-LR",
       "archetype": "intercity",
-      "from_node_id": "macau-china",
+      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
       "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
       "route_id": null,
-      "_link_kind": "corridor-label",
+      "_link_kind": "authority-phase-sync",
       "_link_status": "unlinked-no-route",
+      "_link_source": "grok/bind_authority_journeys_from_phases",
+      "route_ids": [
+        "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland"
+      ],
+      "economics_status": "economics_pending",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
+    },
+    {
+      "from": "HK Airport (SkyPier)",
+      "to": "Shenzhen-Shekou (PRD mainland)",
+      "today": "Cross-border coach or a diesel ferry.",
+      "with_navier": "A clean foiling airport-to-PRD connection feeding the SkyPier intermodal model.",
+      "distance_nm": 40.4,
+      "platform": "Quanta-LR",
+      "archetype": "intercity",
+      "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
+      "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+      "route_id": null,
+      "_link_kind": "authority-phase-sync",
+      "_link_status": "unlinked-no-route",
+      "_link_source": "grok/bind_authority_journeys_from_phases",
+      "route_ids": [
+        "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland"
+      ],
+      "economics_status": "economics_pending",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
+    },
+    {
+      "from": "Macau (Outer Harbour)",
+      "to": "Taipa / Cotai",
+      "today": "Road shuttle through Macau traffic.",
+      "with_navier": "A short silent zero-wake Pioneer II hop across the harbour to the Cotai resorts.",
+      "distance_nm": 3.7,
+      "platform": "Pioneer II",
+      "archetype": "commute",
+      "from_node_id": "macau-china",
+      "to_node_id": "hong-kong__macau-outer-harbour-taipa",
+      "route_id": "ics-86ce23e759",
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-scoped",
       "_link_source": "grok/relink_partner_journeys/scoped"
+    },
+    {
+      "from": "Hong Kong (Central piers)",
+      "to": "Tsim Sha Tsui / Victoria Harbour",
+      "today": "The diesel Star Ferry and cross-harbour traffic.",
+      "with_navier": "A near-silent zero-wake Pioneer II cross-harbour run from Central to Tsim Sha Tsui.",
+      "distance_nm": 1.3,
+      "platform": "Pioneer II",
+      "archetype": "commute",
+      "from_node_id": "hong-kong__central-ferry-piers",
+      "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
+      "route_id": "edge__hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-scoped",
+      "_link_source": "grok/relink_partner_journeys/scoped",
+      "_inherit_source": "grok/normalize/shun-tak",
+      "_inherit_at": "2026-06-21T14:24:34Z"
     }
   ],
   "differentiation": {
@@ -205,9 +231,9 @@
           "route_ids": [
             "edge__hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside"
           ],
-          "_link_kind": "authority-archetype",
+          "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "_link_source": "grok/relink_partner_journeys/scoped",
           "economics_status": "economics_pending"
         },
         {
@@ -216,14 +242,25 @@
           "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
           "distance_nm": 7.6,
           "platform": "Pioneer II",
-          "route_id": "edge__hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
+          "route_id": null,
           "route_ids": [
             "edge__hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo"
           ],
-          "_link_kind": "authority-archetype",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "_link_kind": "authority-phase-sync",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/bind_authority_journeys_from_phases",
           "economics_status": "economics_pending"
+        },
+        {
+          "label": "HK Airport (SkyPier) ↔ Macau / PRD ports",
+          "from_node_id": "hong-kong",
+          "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+          "distance_nm": 3.6,
+          "platform": "Quanta-LR",
+          "route_id": null,
+          "_link_kind": "corridor-label",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         }
       ],
       "use_cases": [
@@ -251,13 +288,13 @@
           "to_node_id": "hong-kong__discovery-bay-lantau",
           "distance_nm": 8.7,
           "platform": "Pioneer II",
-          "route_id": "edge__hong-kong__discovery-bay-lantau",
+          "route_id": null,
           "route_ids": [
             "edge__hong-kong__discovery-bay-lantau"
           ],
-          "_link_kind": "authority-archetype",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "_link_kind": "authority-phase-sync",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/bind_authority_journeys_from_phases",
           "economics_status": "economics_pending"
         }
       ],
@@ -286,13 +323,13 @@
           "to_node_id": "hong-kong__central-ferry-piers",
           "distance_nm": 2.6,
           "platform": "Pioneer II",
-          "route_id": "edge__hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon",
+          "route_id": null,
           "route_ids": [
             "edge__hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon"
           ],
-          "_link_kind": "authority-archetype",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "_link_kind": "authority-phase-sync",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/bind_authority_journeys_from_phases",
           "economics_status": "economics_pending"
         }
       ],
@@ -318,13 +355,11 @@
           "to_node_id": "macau-china__macau-outer-harbour-ferry-terminal",
           "distance_nm": 35.2,
           "platform": "Quanta-LR",
-          "route_id": "e__hong-kong__hk-macau-ferry-terminal-sheung-wan__macau-china__macau-outer-harbour-ferry-terminal",
-          "route_ids": [
-            "e__hong-kong__hk-macau-ferry-terminal-sheung-wan__macau-china__macau-outer-harbour-ferry-terminal"
-          ],
-          "_link_kind": "authority-archetype",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "route_id": null,
+          "route_ids": null,
+          "_link_kind": "authority-phase-sync",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/bind_authority_journeys_from_phases",
           "economics_status": "roadmap_excluded",
           "render": "roadmap-amber-dashed"
         },
@@ -334,19 +369,25 @@
           "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
           "distance_nm": 40.4,
           "platform": "Quanta-LR",
-          "route_id": "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+          "route_id": null,
           "route_ids": [
             "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland"
           ],
-          "_link_kind": "authority-archetype",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/apply_public_transit_authority_phases",
+          "_link_kind": "authority-phase-sync",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/bind_authority_journeys_from_phases",
           "economics_status": "roadmap_excluded",
           "render": "roadmap-amber-dashed"
         }
       ],
       "_authority_phase_tier": "cross_border_roadmap",
-      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal.",
+      "narrative": "Quanta-LR regional legs — amber-dashed display; economics excluded until ops seal.",
+      "_narrative_source": "grok/fill_authority_phase_narratives",
+      "use_cases": [
+        "Central / Sheung Wan ↔ Macau (Outer Harbour)",
+        "HKIA SkyPier ↔ Shenzhen-Shekou / Zhuhai (PRD mainland)"
+      ]
     }
   ],
   "the_ask": {
@@ -388,14 +429,14 @@
   "tier": "priority",
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-21T05:32:17Z",
+      "at": "2026-06-21T14:24:53Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
         "total": 15,
-        "linked": 0,
-        "cleared_mislink": 0,
+        "linked": 5,
+        "cleared_mislink": 3,
         "borrowed_brief": 0,
-        "matched_scoped": 0,
+        "matched_scoped": 4,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,
@@ -407,14 +448,15 @@
   "_regional_inheritance": {
     "pack": "ferry_transit",
     "reference_partner": "shun-tak",
-    "applied_at": "2026-06-21T05:32:06Z",
+    "applied_at": "2026-06-21T14:24:34Z",
     "mode": "subset",
-    "bound_cards": 1,
-    "missing_reference_keys": 0
+    "bound_cards": 15,
+    "missing_reference_keys": 0,
+    "normalized_to_reference": "2026-06-21T14:24:34Z"
   },
   "_public_transit_authority": {
     "archetype_id": "public_transit_authority",
-    "applied_at": "2026-06-21T11:30:40Z",
+    "applied_at": "2026-06-21T14:24:40Z",
     "home_cities": [
       "hong-kong"
     ],
@@ -424,5 +466,16 @@
       "inter_city",
       "cross_border_roadmap"
     ]
+  },
+  "_authority_journey_bind": {
+    "applied_at": "2026-06-21T14:24:51Z",
+    "featured_from_archetype": 6,
+    "featured_promoted_route_ids": 0,
+    "journeys_synced": 4
+  },
+  "_authority_featured_promote": {
+    "applied_at": "2026-06-21T14:24:53Z",
+    "from_archetype": 0,
+    "from_route_ids": 0
   }
 }

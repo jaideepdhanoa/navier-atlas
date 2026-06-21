@@ -19,6 +19,61 @@
   "multimodal_fit": "Yango already routes the road first/last mile; the foiling pier becomes the water node in the same in-app trip across both regions.",
   "journeys_unlocked": [
     {
+      "from": "Athens",
+      "to": "Hydra (Saronic)",
+      "today": "2–3 h slow diesel ferry.",
+      "with_navier": "A ~45-min foiling run, booked in Bolt.",
+      "distance_nm": 36.8,
+      "platform": "Pioneer II",
+      "archetype": "tourism",
+      "from_node_id": "athens-saronic-greece",
+      "to_node_id": "athens-saronic-greece",
+      "route_id": "rn-678c1b2769a9",
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-scoped",
+      "_link_source": "grok/relink_partner_journeys/scoped",
+      "model_link": "rn-678c1b2769a9",
+      "economics_status": "cascaded",
+      "_economics_source": "economics_by_route_id.json",
+      "_economics_authored_for": "bolt",
+      "_economics_cascade_at": "2026-06-21T14:24:45Z"
+    },
+    {
+      "from": "Split",
+      "to": "Hvar",
+      "today": "1–2 h catamaran ferry.",
+      "with_navier": "A ~30-min on-demand foiling crossing.",
+      "distance_nm": 22.2,
+      "platform": "Pioneer II",
+      "archetype": "tourism",
+      "from_node_id": "split-croatia",
+      "to_node_id": "split-croatia",
+      "route_id": "rn-7c1e7f62f283",
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-scoped",
+      "_link_source": "grok/relink_partner_journeys/scoped",
+      "model_link": "rn-7c1e7f62f283",
+      "economics_status": "cascaded",
+      "_economics_source": "economics_by_route_id.json",
+      "_economics_authored_for": "bolt",
+      "_economics_cascade_at": "2026-06-21T14:24:45Z"
+    },
+    {
+      "from": "Nice Airport",
+      "to": "Monaco",
+      "today": "60–90 min in Corniche traffic.",
+      "with_navier": "A silent ~20-min foiling run, in-app.",
+      "distance_nm": 6.8,
+      "platform": "Pioneer II",
+      "archetype": "corporate",
+      "from_node_id": "cote-dazur-france",
+      "to_node_id": "monaco-monaco",
+      "route_id": "rn-48bac1363efe",
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-node",
+      "_link_source": "grok/relink_partner_journeys/node"
+    },
+    {
       "from": "Dubai Marina",
       "to": "Downtown / Creek",
       "today": "Congested Sheikh Zayed Road crawl.",
@@ -32,51 +87,13 @@
       "_link_kind": "corridor-label",
       "_link_status": "linked-grok-scoped",
       "_link_source": "grok/relink_partner_journeys/scoped",
-      "_inherit_source": "grok/inherit/bolt",
-      "_inherit_at": "2026-06-21T05:06:51Z"
-    },
-    {
-      "from": "Dubai",
-      "to": "Abu Dhabi",
-      "today": "~90 min+ highway drive.",
-      "with_navier": "Clean Quanta-LR coastal line-haul between the emirates.",
-      "distance_nm": 60.0,
-      "platform": "Quanta-LR",
-      "archetype": "intercity",
-      "from_node_id": "dubai-uae",
-      "to_node_id": "abu-dhabi-uae",
-      "route_id": "e__uae__1b860507c38f",
-      "_link_kind": "corridor-label",
-      "_link_status": "linked-grok-node",
-      "_link_source": "grok/relink_partner_journeys/node"
-    },
-    {
-      "from": "Victoria Island / Lekki",
-      "to": "Ikorodu (Lagos mainland)",
-      "today": "2–3 hr lagoon-edge gridlock.",
-      "with_navier": "Fast foiling lagoon crossing — minutes, not hours — in-app.",
-      "distance_nm": 4.0,
-      "platform": "Pioneer II",
-      "archetype": "commute",
-      "from_node_id": "lagos-nigeria",
-      "to_node_id": "lagos-nigeria",
-      "route_id": "rn-632b76f92dcf",
-      "_link_kind": "corridor-label",
-      "_link_status": "linked-grok-scoped",
-      "_link_source": "grok/relink_partner_journeys/scoped"
-    },
-    {
-      "from": "Lagos",
-      "to": "Regional coast",
-      "today": "Rough coastal road.",
-      "with_navier": "Clean Quanta-LR coastal corridor.",
-      "distance_nm": 45,
-      "platform": "Quanta-LR",
-      "archetype": "intercity",
-      "from_node_id": "lagos-nigeria",
-      "to_node_id": "lagos-nigeria",
-      "route_id": null,
-      "_link_status": "unlinked-intra-city"
+      "_inherit_source": "grok/normalize/bolt",
+      "_inherit_at": "2026-06-21T14:24:34Z",
+      "model_link": "gcn-0ca7f3ffe7-yango",
+      "economics_status": "cascaded",
+      "_economics_source": "economics_by_route_id.json",
+      "_economics_authored_for": "yango",
+      "_economics_cascade_at": "2026-06-21T14:24:45Z"
     }
   ],
   "differentiation": {
@@ -124,15 +141,67 @@
       "label": "Phase 1 — Dubai coastal hops (UAE, Pioneer II)",
       "boats": 4,
       "cities": [
-        "dubai-uae"
+        "athens-saronic-greece",
+        "split-croatia"
       ],
       "route_scope": "intra",
       "narrative": "Activate the Dubai coast in-app — Marina, Palm and Creek hops that skip the gridlock — proving congestion-beating water mobility in Yango's most mobility-forward market.",
       "timeline": "2027 H1",
       "rationale": "Receptive market, under-used coast.",
       "featured_routes": [
-        "Marina ↔ Downtown",
-        "Marina ↔ Palm"
+        {
+          "label": "Dubai Marina ↔ Downtown / Dubai Creek",
+          "from_node_id": "dubai-uae",
+          "to_node_id": "dubai-uae",
+          "distance_nm": 2.1,
+          "platform": "Pioneer II",
+          "route_id": "gcn-0ca7f3ffe7-bolt",
+          "route_ids": [
+            "gcn-0ca7f3ffe7-bolt"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-intra-city",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "cascaded",
+          "model_link": "gcn-0ca7f3ffe7-bolt",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        },
+        {
+          "label": "Monaco ↔ Cannes / Antibes",
+          "from_node_id": "monaco-monaco",
+          "to_node_id": "cote-dazur-france",
+          "distance_nm": 5.64,
+          "platform": "Pioneer II",
+          "route_id": null,
+          "route_ids": [
+            "ics-4269303d3c"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "economics_pending"
+        },
+        {
+          "label": "Jeddah ↔ the Red Sea destinations",
+          "from_node_id": "jeddah-ksa",
+          "to_node_id": "red-sea-global-ksa",
+          "distance_nm": 6.3,
+          "platform": "Quanta-LR",
+          "route_id": "gcn-adcdd3d09c-bolt",
+          "route_ids": [
+            "gcn-adcdd3d09c-bolt"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "cascaded",
+          "model_link": "gcn-adcdd3d09c-bolt",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        }
       ],
       "use_cases": [
         "commute"
@@ -143,15 +212,77 @@
       "label": "Phase 2 — Lagos lagoon commuter spine (Africa, Pioneer II)",
       "boats": 4,
       "cities": [
-        "lagos-nigeria"
+        "athens-saronic-greece",
+        "mykonos-greece",
+        "santorini-greece",
+        "split-croatia",
+        "amalfi-coast-italy",
+        "venice-italy",
+        "cote-dazur-france",
+        "monaco-monaco"
       ],
-      "route_scope": "intra",
+      "route_scope": "all",
       "narrative": "Activate the Lagos lagoon in-app — Victoria Island/Lekki to the mainland — turning the world's most gridlocked megacity's biggest under-used asset into the fastest way across the city.",
       "timeline": "2027 H2",
       "rationale": "Possibly the world's largest captive commuter-ferry demand.",
       "featured_routes": [
-        "VI/Lekki ↔ Ikorodu",
-        "Island ↔ Apapa"
+        {
+          "label": "Athens Riviera (Glyfada / Vouliagmeni) ↔ Athens centre / Piraeus",
+          "from_node_id": "athens-saronic-greece",
+          "to_node_id": "athens-saronic-greece",
+          "distance_nm": 6.7,
+          "platform": "Pioneer II",
+          "route_id": "rn-89552c9786ec",
+          "route_ids": [
+            "rn-89552c9786ec"
+          ],
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "economics_status": "cascaded",
+          "model_link": "rn-89552c9786ec",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        },
+        {
+          "label": "Nice (Airport / Port) ↔ Monaco",
+          "from_node_id": "cote-dazur-france",
+          "to_node_id": "monaco-monaco",
+          "distance_nm": 7.0,
+          "platform": "Pioneer II",
+          "route_id": "rn-d66efc6795b3",
+          "route_ids": [
+            "rn-d66efc6795b3"
+          ],
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/relink_partner_journeys/node",
+          "economics_status": "cascaded",
+          "model_link": "rn-d66efc6795b3",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        },
+        {
+          "label": "Dubai (Harbour) ↔ Palm Jumeirah / World Islands / Bluewaters",
+          "from_node_id": "dubai-uae",
+          "to_node_id": "dubai-uae",
+          "distance_nm": 7.4,
+          "platform": "Pioneer II",
+          "route_id": "gcn-6a2841d6db-bolt",
+          "route_ids": [
+            "gcn-6a2841d6db-bolt"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-intra-city",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "cascaded",
+          "model_link": "gcn-6a2841d6db-bolt",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        }
       ],
       "use_cases": [
         "commute",
@@ -163,15 +294,74 @@
       "label": "Phase 3 — Quanta-LR line-hauls (both regions)",
       "boats": 4,
       "cities": [
-        "dubai-uae"
+        "dubai-uae",
+        "abu-dhabi-uae",
+        "jeddah-ksa",
+        "red-sea-global-ksa",
+        "neom-sindalah-ksa"
       ],
-      "route_scope": "intra",
+      "route_scope": "all",
       "narrative": "Add clean Quanta-LR line-hauls — Dubai↔Abu Dhabi and Lagos regional coast — the long-range corridors beyond the city.",
       "timeline": "2028",
       "rationale": "Connect cities and regions cleanly.",
       "featured_routes": [
-        "Dubai ↔ Abu Dhabi",
-        "Lagos ↔ regional coast"
+        {
+          "label": "Red Sea destination (Shura) ↔ Nujuma / the outer islands",
+          "from_node_id": "red-sea-global-ksa",
+          "to_node_id": "red-sea-global-ksa",
+          "distance_nm": 10.9,
+          "platform": "Pioneer II",
+          "route_id": "gcn-d51af091f2-yango",
+          "route_ids": [
+            "gcn-d51af091f2-bolt"
+          ],
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "economics_status": "cascaded",
+          "model_link": "gcn-d51af091f2-yango",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        },
+        {
+          "label": "Naples ↔ Capri / Positano",
+          "from_node_id": "amalfi-coast-italy",
+          "to_node_id": "amalfi-coast-italy__marina-grande-capri",
+          "distance_nm": 17.8,
+          "platform": "Pioneer II",
+          "route_id": "rn-31d27d5fc623",
+          "route_ids": [
+            "rn-31d27d5fc623"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "cascaded",
+          "model_link": "rn-31d27d5fc623",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        },
+        {
+          "label": "Mykonos ↔ Paros / Naxos",
+          "from_node_id": "mykonos-greece",
+          "to_node_id": "santorini-greece",
+          "distance_nm": 21.6,
+          "platform": "Pioneer II",
+          "route_id": "rn-dc595b5a6ab8",
+          "route_ids": [
+            "rn-dc595b5a6ab8"
+          ],
+          "_link_kind": "promoted-from-journey",
+          "_link_status": "unlinked-no-route",
+          "_link_source": "grok/promote_journeys_to_phase_featured",
+          "economics_status": "cascaded",
+          "model_link": "rn-dc595b5a6ab8",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "bolt",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
+        }
       ],
       "use_cases": [
         "intercity"
@@ -260,10 +450,15 @@
           "to_node_id": "dubai-uae",
           "route_id": "gcn-0ca7f3ffe7-yango",
           "_inherit_source": "grok/inherit/bolt",
-          "_inherit_at": "2026-06-21T05:06:51Z",
+          "_inherit_at": "2026-06-21T14:24:34Z",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "model_link": "gcn-0ca7f3ffe7-yango",
+          "economics_status": "cascaded",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
         },
         {
           "from": "Dubai",
@@ -465,7 +660,12 @@
           "route_id": "rn-632b76f92dcf",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "model_link": "rn-632b76f92dcf",
+          "economics_status": "cascaded",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
         },
         {
           "from": "Lagos Island",
@@ -480,22 +680,32 @@
           "route_id": "rn-9632f558daa6",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "model_link": "rn-9632f558daa6",
+          "economics_status": "cascaded",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
         },
         {
           "from": "Lekki / Ajah",
           "to": "Lagos Island (CBD)",
           "today": "A long peninsula road commute.",
           "with_navier": "A fast foiling lagoon-spine commute up to the CBD.",
-          "distance_nm": 39.8,
+          "distance_nm": 4.0,
           "platform": "Pioneer II",
           "archetype": "commute",
           "from_node_id": "lagos-nigeria",
           "to_node_id": "lagos-nigeria",
-          "route_id": "rn-ce69767d2bdd",
+          "route_id": "rn-632b76f92dcf",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "model_link": "rn-632b76f92dcf",
+          "economics_status": "cascaded",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
         },
         {
           "from": "Lagos",
@@ -510,7 +720,12 @@
           "route_id": "rn-d136fdb74647",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/relink_partner_journeys/scoped",
+          "model_link": "rn-d136fdb74647",
+          "economics_status": "cascaded",
+          "_economics_source": "economics_by_route_id.json",
+          "_economics_authored_for": "yango",
+          "_economics_cascade_at": "2026-06-21T14:24:45Z"
         }
       ],
       "proof_points": [
@@ -1089,21 +1304,22 @@
   "_regional_inheritance": {
     "pack": "europe_ridehail",
     "reference_partner": "bolt",
-    "applied_at": "2026-06-21T05:32:06Z",
+    "applied_at": "2026-06-21T14:24:34Z",
     "mode": "display_markets",
-    "bound_cards": 3,
-    "missing_reference_keys": 9
+    "bound_cards": 15,
+    "missing_reference_keys": 6,
+    "normalized_to_reference": "2026-06-21T14:24:34Z"
   },
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-21T05:32:21Z",
+      "at": "2026-06-21T14:24:40Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
-        "total": 12,
-        "linked": 9,
+        "total": 21,
+        "linked": 13,
         "cleared_mislink": 0,
         "borrowed_brief": 0,
-        "matched_scoped": 7,
+        "matched_scoped": 10,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,
@@ -1111,5 +1327,9 @@
         "gcn_promoted": 0
       }
     }
+  },
+  "_economics_cascade": {
+    "applied_at": "2026-06-21T14:24:45Z",
+    "cards": 16
   }
 }

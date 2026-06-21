@@ -1,0 +1,125 @@
+{
+  "_doc": "Proposal class taxonomy — authorities, hospitality, hubs, and standalone pages use different audit/spine rules.",
+  "_version": "2026-06-21",
+  "classes": {
+    "authority": {
+      "description": "Emirate/territory-scoped public transport authorities and ferry operators with home-first phase taxonomy.",
+      "partners": [
+        "dubai-rta",
+        "abu-dhabi-itc",
+        "rakta",
+        "bahrain-motc",
+        "qatar",
+        "singapore-mpa",
+        "hong-kong",
+        "transport-nsw",
+        "thames-clippers",
+        "nyc-ferry",
+        "shun-tak",
+        "wsf",
+        "bc-ferries",
+        "fullers360",
+        "norway-fjords",
+        "maldives-government"
+      ],
+      "spine_reference_override": {
+        "dubai-rta": "rakta",
+        "abu-dhabi-itc": "rakta",
+        "qatar": "rakta",
+        "singapore-mpa": "rakta",
+        "hong-kong": "shun-tak",
+        "transport-nsw": "shun-tak",
+        "thames-clippers": "shun-tak",
+        "nyc-ferry": "shun-tak",
+        "bc-ferries": "shun-tak"
+      },
+      "audit": {
+        "skip_card_inventory_vs_superapp": true,
+        "geometry_floor": 0.85,
+        "featured_geometry_floor": 0.85,
+        "journey_geometry_floor": 0.7,
+        "thin_map_threshold": 3,
+        "phase_featured_min": 1,
+        "require_phase_rationale": false,
+        "authority_phase_tier_ok": true
+      }
+    },
+    "hospitality": {
+      "description": "Resort / luxury hospitality proposals — subset scope, flagship corridor bind, not full superapp inventory.",
+      "partners": [
+        "aman",
+        "six-senses",
+        "soneva",
+        "four-seasons",
+        "discovery-land",
+        "d-marin",
+        "french-polynesia",
+        "cote-dazur",
+        "indian-ocean-luxury",
+        "red-sea-global",
+        "jih-global",
+        "maldives",
+        "constance",
+        "crown-champa",
+        "sun-siyam",
+        "universal-enterprises",
+        "villa-hotels",
+        "saudi-pif"
+      ],
+      "audit": {
+        "skip_card_inventory": true,
+        "geometry_floor": 0.5,
+        "featured_geometry_floor": 0.5,
+        "journey_geometry_floor": 0.35,
+        "thin_map_threshold": 30,
+        "phase_featured_min": 0,
+        "held_null_ok_on_featured": true
+      }
+    },
+    "hub": {
+      "description": "Multi-market hub layouts — journeys and featured cards live under markets[], not hub phases.",
+      "partners": [
+        "grab",
+        "gojek",
+        "bolt",
+        "yango",
+        "uber",
+        "lyft",
+        "didi",
+        "indrive",
+        "cabify",
+        "freenow",
+        "kakao-mobility",
+        "line",
+        "noon",
+        "careem",
+        "rapido",
+        "ola",
+        "uber-india-derivative",
+        "adani-ports",
+        "reliance-industries"
+      ],
+      "audit": {
+        "hub_phase_featured_optional": true,
+        "card_inventory_underfill_only": true,
+        "geometry_floor": 0.7,
+        "hub_inventory_fail_requires_underfill": true,
+        "featured_geometry_floor": 0.85,
+        "journey_geometry_floor": 0.7,
+        "thin_map_threshold_overrides": {
+          "kakao-mobility": 5
+        }
+      }
+    },
+    "standalone": {
+      "description": "Single-layout corporate or regional proposals — full strict gates.",
+      "partners": [],
+      "audit": {
+        "geometry_floor": 0.85,
+        "featured_geometry_floor": 0.85,
+        "journey_geometry_floor": 0.85,
+        "thin_map_threshold": 80
+      }
+    }
+  }
+}
