@@ -1,0 +1,70 @@
+{
+  "packet_id": "algeria-country-reference-draft-2026-06-21",
+  "status": "draft_not_applied_to_finance_model",
+  "decision": "Prepared a source-tiered Algeria country-reference draft, but did not edit finance/model/country-reference.json because no Algeria corridors are modeled yet and wage/marina inputs still need a stronger local source before cascade.",
+  "proposed_country_reference_row": {
+    "Algeria": {
+      "captain_usd_yr": {
+        "value": 12000,
+        "source_tier": "T4",
+        "confidence": "low",
+        "source": "Modeled from Morocco/Tunisia/Egypt regional maritime-wage anchors and Algeria cost-index leads; Glassdoor Algiers captain salary lead is too generic to use as a T2 maritime source."
+      },
+      "energy_usd_kwh": {
+        "value": 0.04,
+        "source_tier": "T3",
+        "confidence": "med-low",
+        "source": "Climatescope 2025 Algeria lead reports average electricity price rising from ~$29/MWh in 2023 to ~$31/MWh in 2024; rounded upward to $0.04/kWh for commercial operating conservatism pending Sonelgaz/CREG tariff table."
+      },
+      "grid_co2_kg_kwh": {
+        "value": 0.55,
+        "source_tier": "T3",
+        "confidence": "med",
+        "source": "Climatiq/ADEME grid-mix factor lead reports Algeria electricity supplied from grid at 0.548 kgCO2e/kWh; rounded to 0.55."
+      },
+      "marina_overhead_usd_yr": {
+        "value": 8000,
+        "source_tier": "T4",
+        "confidence": "low",
+        "source": "Modeled berth/marina overhead vs Morocco/Tunisia/Egypt anchors; replace with local marina/port fee schedule before final economics."
+      },
+      "cost_index": {
+        "value": 0.3,
+        "confidence": "low",
+        "source": "Numbeo country/city comparison leads indicate Algeria cost of living below Morocco and near/under Tunisia; use 0.30 draft until a workspace-approved source is captured."
+      }
+    }
+  },
+  "source_leads": [
+    {
+      "name": "Climatescope 2025 Algeria",
+      "url": "https://www.global-climatescope.org/markets/algeria",
+      "evidence": "Search result: average electricity price in Algeria increased from ~$29/MWh in 2023 to ~$31/MWh in 2024.",
+      "used_for": "energy_usd_kwh draft"
+    },
+    {
+      "name": "Climatiq Algeria grid electricity factor",
+      "url": "https://www.climatiq.io/data/emission-factor/48d51268-b95b-4244-89c9-cf137868a57c",
+      "evidence": "Search result: electricity supplied from grid — Algeria, factor CO2e 0.548 kg/kWh, ADEME source.",
+      "used_for": "grid_co2_kg_kwh draft"
+    },
+    {
+      "name": "Numbeo Algeria vs Morocco cost comparison",
+      "url": "https://www.numbeo.com/cost-of-living/compare_countries_result.jsp?country1=Algeria&country2=Morocco",
+      "evidence": "Search result: Morocco cost of living incl. rent 28.0% higher than Algeria; used only as a low-confidence cost-index lead.",
+      "used_for": "cost_index draft"
+    },
+    {
+      "name": "Glassdoor Captain in Algiers lead",
+      "url": "https://www.glassdoor.com/Salaries/algiers-algeria-captain-salary-SRCH_IL.0,15_IM960_KO16,23.htm",
+      "evidence": "Search result reports generic Captain salary in Algiers; not treated as a maritime captain source.",
+      "used_for": "do_not_use_as_final_wage"
+    }
+  ],
+  "apply_gate": [
+    "Scrape/verify tariff source page or capture official Sonelgaz/CREG commercial tariff table.",
+    "Confirm grid CO2 factor from a stable source or IEA factor table.",
+    "Find a stronger local maritime wage or port/service wage proxy, or explicitly keep T4 regional modeled wage.",
+    "Only then add the row to finance/model/country-reference.json before any yassir-algeria aggregate run."
+  ]
+}

@@ -30,3 +30,8 @@
 - Updated `partner-pitch/partners/yassir.json` so Algeria is a first-class home-market unlock, not an omission.
 - Kept Algeria out of `markets` and `corridors.json` for now because this branch has no sealed Algeria Atlas IDs and no Algeria country-reference row; exactness over coverage.
 - Next gate: Grok mints Algeria IDs/boarding points, then Tasklet adds Algeria country-reference + route demand/fare anchors and reruns the Yassir economics cascade.
+
+## Batch 4 banked: Algeria country-reference draft prepared
+- Added `algeria-country-reference-draft.json` with draft opex/grid inputs for Algeria.
+- Did **not** edit `finance/model/country-reference.json` yet: no Algeria corridors are modeled and the wage/marina sources are still low-confidence.
+- Proposed draft row: energy ~$0.04/kWh, grid CO₂ ~0.55 kg/kWh, captain ~$12k/yr, marina overhead ~$8k/yr, cost index ~0.30 — all explicitly source-tiered and gated before cascade.
