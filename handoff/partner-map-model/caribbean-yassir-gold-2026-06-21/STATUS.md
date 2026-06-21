@@ -78,3 +78,17 @@
 - Corrected the handoff language: Tasklet owns source-led city and boarding-point research/evidence packs.
 - Grok owns deterministic route geometry sealing, route IDs, render checks, and null returns for unresolved routes.
 - Grok may validate/bind/mint city/BP IDs only from Tasklet-provided exact evidence; it should not be treated as the primary city/BP research lane.
+
+
+## 2026-06-21 — Yassir Algeria Tasklet research completion
+
+Correction to the earlier held wording: **Tasklet-owned Algeria research is complete for batch 1**. Algeria is now held behind Grok exact geometry/route sealing and the post-seal Tasklet economics cascade — not behind additional Tasklet city/BP research.
+
+Completed artifacts:
+- `yassir-algeria-tasklet-research-completion-2026-06-21.json`
+- `YASSIR-ALGERIA-TASKLET-RESEARCH-COMPLETION-2026-06-21.md`
+- updated `yassir-algeria-market-source-and-mint-queue.json`
+- updated `yassir-algeria-route-source-hardening-batch-1.json`
+- updated `algeria-country-reference-draft.json`
+
+Batch-1 Grok-ready city IDs: `algiers-algeria`, `bejaia-algeria`, `oran-algeria`, `mostaganem-algeria`. Annaba remains optional/backlog, not economics-ready.

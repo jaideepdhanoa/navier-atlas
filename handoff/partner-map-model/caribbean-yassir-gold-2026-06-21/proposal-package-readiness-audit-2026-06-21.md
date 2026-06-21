@@ -44,3 +44,7 @@ This converts the definition of done into explicit pass/held gates for PR #65. I
 - Do not create or replace live Slides outside the approved API workflow.
 - Do not treat this audit as a validation receipt for front-end render; it is a readiness control checklist.
 
+
+
+## Correction — Yassir Algeria research completion
+Algeria batch-1 Tasklet research is now complete: city/BP evidence and demand/fare assumptions are recorded in `yassir-algeria-tasklet-research-completion-2026-06-21.json`. Remaining holds are Grok route sealing/render QA and the post-seal Tasklet economics cascade.

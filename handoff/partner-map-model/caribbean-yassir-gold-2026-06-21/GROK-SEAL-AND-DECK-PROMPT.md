@@ -89,3 +89,25 @@ Use `deck-studio-readiness-queue.json` plus the deck folders listed above.
 - Use `image-manifest.json` for image work; final images require deterministic N30/N35 compositing, saved provenance, and market-specific backgrounds.
 - Return QA receipts, render receipts, deck links, and unresolved gaps separately.
 
+
+
+## Algeria Tasklet research completion update — 2026-06-21
+Use `yassir-algeria-tasklet-research-completion-2026-06-21.json` as the controlling Algeria packet. Tasklet has completed the city/BP research and demand/fare assumption layer for batch 1. Grok should **not** research the Algeria city/BP universe from scratch; Grok should seal only the exact Tasklet-provided cities/BPs/routes and return `null` for anything that cannot be deterministically sealed.
+
+Batch-1 city IDs to mint/validate:
+- `algiers-algeria`
+- `bejaia-algeria`
+- `oran-algeria`
+- `mostaganem-algeria`
+
+Optional/backlog only:
+- `annaba-algeria` city mint if cheap; do not model Annaba route/economics in this pass.
+
+Primary route/economics candidates after seal:
+- Algiers Bay: La Pêcherie / Port d’Alger ↔ El Djamila / Aïn Bénian. Tasklet selected assumption: 170,280 annual one-way pax mid-case, 500 DZD fare mid-case, with explicit low/high sensitivity in the completion JSON.
+- Oran ↔ Mostaganem. Tasklet selected assumption: 40,500 annual one-way pax seasonal mid-case, 800 DZD sourced fare, held until current recurrence is confirmed.
+
+Source/fare anchor only, not initial N30 model:
+- Béjaïa ↔ Algiers HSC. Range-gate first; likely roadmap/Quanta-LR, not a 70nm boat.
+
+Do not create route IDs or renderable markets for weak/backlog rows. Null beats wrong.

@@ -1,7 +1,7 @@
 {
   "packet_id": "yassir-algeria-market-source-and-mint-queue-2026-06-21",
-  "status": "first_class_home_market__geometry_gated_not_modelled",
-  "decision": "Address Algeria explicitly, but do not add a renderable market card or economics until Grok mints/validates Algeria city and boarding-point IDs and Tasklet adds a source-tiered Algeria country-reference row.",
+  "status": "tasklet_research_complete_for_algeria_batch_1__grok_seal_and_cascade_gated",
+  "decision": "Tasklet Algeria research is now complete for batch 1: selected cities, exact source-backed BP mint requests, and route-level demand/fare assumptions are recorded. Do not render/model Algeria until Grok returns exact city/BP/route IDs and Tasklet applies the Algeria country-reference row/cascade.",
   "why_it_matters": [
     "Yassir is Algeria-originated and Google Cloud/YC describe it as the leading Maghreb superapp operating across Algeria, Morocco, and Tunisia.",
     "Yassir's own Algeria page confirms ride-hailing, delivery, B2B fleet, partners, and app operations in Algeria.",
@@ -15,12 +15,10 @@
       "Do not run Algeria economics through Singapore fallback; country-reference row must exist first."
     ],
     "definition_of_done_for_unlock": [
-      "Use yassir-algeria-route-source-hardening-batch-1.json as the first Algeria Grok mint request; keep unresolved endpoints null.",
-      "Mint/validate Algeria city IDs for the selected coastal cities.",
-      "Mint/validate boarding points for each route candidate with from_node_id/to_node_id set to real IDs.",
-      "Add source-tiered Algeria row in finance/model/country-reference.json before any cascade.",
-      "Add route-level fare and demand anchors; no 30k placeholders.",
-      "Then add yassir-algeria to finance/model/corridors.json and partner-pitch/partners/yassir.json and re-run aggregate/growth/frontend/sheet."
+      "Tasklet research layer: COMPLETE for batch 1 in yassir-algeria-tasklet-research-completion-2026-06-21.json.",
+      "Grok seal layer: mint/validate listed Algeria city IDs and exact source-backed BP node IDs; return null for any unresolved endpoint.",
+      "Grok route layer: return route_id only for exact non-land-crossing geometry; range-gate N30/N35 vs Quanta-LR.",
+      "Tasklet cascade layer: apply Algeria country-reference row, add only Grok-sealed route/node IDs with the recorded demand/fare assumptions, then rerun aggregate/growth/frontend/sheet/sidecar."
     ]
   },
   "official_partner_sources": [
@@ -191,7 +189,7 @@
     "currently_in_corridors_json": false,
     "currently_in_partner_markets": false,
     "reason": "No exact Atlas IDs and no Algeria country-reference row; adding now would create a dark/incorrect render and/or silent Singapore opex fallback.",
-    "next_model_bite": "After Grok mints Algeria IDs, add Algeria country-reference row, add yassir-algeria corridors with null route_id but real node IDs, then rerun Yassir aggregate/growth/frontend/sheet and rebuild sidecar."
+    "next_model_bite": "After Grok mints Algeria IDs, apply the Algeria country-reference row, add only selected sealed Algeria corridors using the completed demand/fare assumptions, then rerun Yassir aggregate/growth/frontend/sheet and rebuild sidecar."
   },
   "route_source_hardening_packet": "yassir-algeria-route-source-hardening-batch-1.json",
   "priority_route_candidates_batch_1": [
@@ -225,5 +223,122 @@
       "route_label": "Annaba passenger port — Europe ferry lead only",
       "status": "port_existence_only__not_a_navier_route_yet"
     }
-  ]
+  ],
+  "selected_batch_1_city_bp_matrix": [
+    {
+      "city": "Alger Centre / Algiers",
+      "atlas_city_id_required": "algiers-algeria",
+      "yassir_evidence": "Yassir Express Algeria partner signup city selector lists Alger Centre; Yassir Algeria official page confirms Algeria operations.",
+      "tasklet_research_status": "complete_for_batch_1",
+      "grok_action": "mint_or_validate_city_id",
+      "boarding_points": [
+        {
+          "label": "Port d’Alger / Gare Maritime d’Alger / La Pêcherie",
+          "bp_status": "exact_named_terminal_ready_for_grok_mint",
+          "sources": [
+            "Radio Algérienne / APS Algiers Bay pilot line names La Pêcherie / Port d’Alger as departure point",
+            "GNV Algiers port page gives Port of Algiers / Gare Maritime d’Alger address at Via Angkor, Alger-Centre"
+          ],
+          "node_id": "null_until_grok_seal"
+        },
+        {
+          "label": "El Djamila / Aïn Bénian fishing and leisure port",
+          "bp_status": "exact_named_terminal_ready_for_grok_mint",
+          "sources": [
+            "Radio Algérienne / APS names El Djamila (Aïn Bénian) port as the opposite endpoint and calls it a port de pêche et de plaisance"
+          ],
+          "node_id": "null_until_grok_seal"
+        },
+        {
+          "label": "Tamentfoust / El Marsa coastal port area",
+          "bp_status": "source_named_expansion_candidate__not_economics_first",
+          "sources": [
+            "Radio Algérienne / APS says maritime-urban service extension was planned to Tamentfoust; mint only if Grok can bind exact port/waterfront point"
+          ],
+          "node_id": "null_until_grok_seal"
+        },
+        {
+          "label": "Les Sablettes / Hussein Dey waterfront",
+          "bp_status": "source_named_expansion_or_attraction_candidate__not_economics_first",
+          "sources": [
+            "Radio Algérienne / APS references Les Sablettes as a future attraction/axis; exact BP must be sealed or returned null"
+          ],
+          "node_id": "null_until_grok_seal"
+        }
+      ]
+    },
+    {
+      "city": "Béjaïa",
+      "atlas_city_id_required": "bejaia-algeria",
+      "yassir_evidence": "Yassir Express Algeria partner signup city selector lists Bejaia.",
+      "tasklet_research_status": "complete_for_batch_1",
+      "grok_action": "mint_or_validate_city_id",
+      "boarding_points": [
+        {
+          "label": "Port de Béjaïa passenger terminal / GNV boarding quay",
+          "bp_status": "exact_named_port_ready_for_grok_mint",
+          "sources": [
+            "Port de Béjaïa official PDF names Port de Béjaïa as one endpoint of the ENTMV Béjaïa–Alger HSC line",
+            "GNV Béjaïa port page gives Port of Béjaïa address on Boulevard Frères Amrani and describes ferry boarding procedures"
+          ],
+          "node_id": "null_until_grok_seal"
+        }
+      ]
+    },
+    {
+      "city": "Oran",
+      "atlas_city_id_required": "oran-algeria",
+      "yassir_evidence": "Yassir Express Algeria partner signup city selector lists Oran.",
+      "tasklet_research_status": "complete_for_batch_1",
+      "grok_action": "mint_or_validate_city_id",
+      "boarding_points": [
+        {
+          "label": "Gare Maritime / Port d’Oran passenger terminal",
+          "bp_status": "exact_named_terminal_ready_for_grok_mint",
+          "sources": [
+            "Radio Algérienne / APS names Oran–Mostaganem ENTMV maritime service",
+            "Direct Ferries Oran page gives port address: Gare Maritime, Rue du port, Oran and describes ferry passenger port access"
+          ],
+          "node_id": "null_until_grok_seal"
+        }
+      ]
+    },
+    {
+      "city": "Mostaganem",
+      "atlas_city_id_required": "mostaganem-algeria",
+      "yassir_evidence": "Yassir Express Algeria partner signup city selector lists Mostaganem.",
+      "tasklet_research_status": "complete_for_batch_1",
+      "grok_action": "mint_or_validate_city_id",
+      "boarding_points": [
+        {
+          "label": "Gare Maritime / Port de Mostaganem passenger area",
+          "bp_status": "exact_named_terminal_ready_for_grok_mint",
+          "sources": [
+            "Radio Algérienne / APS names Oran–Mostaganem ENTMV maritime service",
+            "Ferryhopper Valencia–Mostaganem page says Baleària ferries dock at Route du Port, 15, Mostaganem",
+            "Direct Ferries / Omio search leads identify Gare Maritime de Mostaganem as the ferry terminal"
+          ],
+          "node_id": "null_until_grok_seal"
+        }
+      ]
+    },
+    {
+      "city": "Annaba",
+      "atlas_city_id_required": "annaba-algeria",
+      "yassir_evidence": "Yassir Express Algeria partner signup city selector lists Annaba.",
+      "tasklet_research_status": "complete_as_backlog_not_batch_1_economics",
+      "grok_action": "mint city only if inexpensive; BP/route can remain null",
+      "boarding_points": [
+        {
+          "label": "Port d’Annaba passenger terminal",
+          "bp_status": "weak_port_existence_lead__do_not_model",
+          "sources": [
+            "EuropeanTransportMaps / AFerry / Direct Ferries search leads show Annaba passenger-ferry references, but no strong local Navier route or current local demand anchor was found in this bite"
+          ],
+          "node_id": "null_backlog"
+        }
+      ]
+    }
+  ],
+  "completed_route_demand_fare_assumptions_file": "yassir-algeria-tasklet-research-completion-2026-06-21.json"
 }
