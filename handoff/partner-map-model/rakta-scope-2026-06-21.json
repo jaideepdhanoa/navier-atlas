@@ -1,0 +1,62 @@
+{
+  "partner_id": "rakta",
+  "generated": "2026-06-21",
+  "markets": [
+    {
+      "id": "rak-domestic",
+      "label": "RAK domestic / intra-emirate",
+      "anchor_city_ids": [
+        "ras-al-khaimah-uae"
+      ],
+      "status": "proposal_candidate_after_grok_seal"
+    },
+    {
+      "id": "rak-dubai",
+      "label": "RAK ↔ Dubai",
+      "anchor_city_ids": [
+        "ras-al-khaimah-uae",
+        "dubai-uae"
+      ],
+      "status": "proposal_candidate_after_grok_seal"
+    },
+    {
+      "id": "rak-other-uae",
+      "label": "RAK ↔ Sharjah / Abu Dhabi / Fujairah",
+      "anchor_city_ids": [
+        "ras-al-khaimah-uae",
+        "sharjah-uae",
+        "abu-dhabi-uae",
+        "fujairah-uae"
+      ],
+      "status": "held_null_no_exact_spine_geometry_in_tasklet_extraction"
+    },
+    {
+      "id": "rak-musandam",
+      "label": "RAK ↔ Musandam / Khasab",
+      "anchor_city_ids": [
+        "ras-al-khaimah-uae"
+      ],
+      "missing_or_unresolved_city_ids": [
+        "khasab-oman"
+      ],
+      "status": "held_exact_bind_required"
+    },
+    {
+      "id": "rak-gulf-roadmap",
+      "label": "RAK ↔ Muscat / Doha / Bahrain",
+      "anchor_city_ids": [
+        "ras-al-khaimah-uae",
+        "muscat-oman",
+        "doha-qatar",
+        "manama-bahrain"
+      ],
+      "status": "roadmap_quanta_lr"
+    }
+  ],
+  "grok_acceptance": [
+    "derive scope_city_ids by ID match, not hand list",
+    "promote Khasab/Musandam only if exact registry exists",
+    "leave route_id null where exact seal fails",
+    "render roadmap routes amber-dashed"
+  ]
+}
