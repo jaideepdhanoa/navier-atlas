@@ -24,3 +24,9 @@
 - Added `caribbean-demand-anchor-research-batch-1.json` covering Bahamas, Puerto Rico, USVI/BVI, and Barbados.
 - These are *not* final economics; they are source-backed prioritization and route-candidate anchors for the next model pass.
 - Next hard gate: country-reference rows + route-level passenger/fare assumptions before any Caribbean economics cascade.
+
+## Batch 3 banked: Yassir Algeria market addressed
+- Added `yassir-algeria-market-source-and-mint-queue.json` with official Yassir/Google Cloud/YC sources, Algeria city candidates, and a route mint queue.
+- Updated `partner-pitch/partners/yassir.json` so Algeria is a first-class home-market unlock, not an omission.
+- Kept Algeria out of `markets` and `corridors.json` for now because this branch has no sealed Algeria Atlas IDs and no Algeria country-reference row; exactness over coverage.
+- Next gate: Grok mints Algeria IDs/boarding points, then Tasklet adds Algeria country-reference + route demand/fare anchors and reruns the Yassir economics cascade.

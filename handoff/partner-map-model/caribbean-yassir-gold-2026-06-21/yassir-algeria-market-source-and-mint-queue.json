@@ -1,0 +1,195 @@
+{
+  "packet_id": "yassir-algeria-market-source-and-mint-queue-2026-06-21",
+  "status": "first_class_home_market__geometry_gated_not_modelled",
+  "decision": "Address Algeria explicitly, but do not add a renderable market card or economics until Grok mints/validates Algeria city and boarding-point IDs and Tasklet adds a source-tiered Algeria country-reference row.",
+  "why_it_matters": [
+    "Yassir is Algeria-originated and Google Cloud/YC describe it as the leading Maghreb superapp operating across Algeria, Morocco, and Tunisia.",
+    "Yassir's own Algeria page confirms ride-hailing, delivery, B2B fleet, partners, and app operations in Algeria.",
+    "Yassir Express partner signup exposes an Algeria city list with several coastal/water-adjacent cities that are plausible Navier market candidates."
+  ],
+  "exactness_gate": {
+    "atlas_current_state": "No Algeria anchor-city or boarding-point IDs were found in this branch's data-clean/FEATURES_BY_TYPE.json search. Null beats wrong: Algeria remains held from render/economics.",
+    "do_not_do": [
+      "Do not point Algeria to Morocco/Tunisia anchor IDs.",
+      "Do not add yassir-algeria to partner markets until anchor_cities resolve to sealed atlas city_id values.",
+      "Do not run Algeria economics through Singapore fallback; country-reference row must exist first."
+    ],
+    "definition_of_done_for_unlock": [
+      "Mint/validate Algeria city IDs for the selected coastal cities.",
+      "Mint/validate boarding points for each route candidate with from_node_id/to_node_id set to real IDs.",
+      "Add source-tiered Algeria row in finance/model/country-reference.json before any cascade.",
+      "Add route-level fare and demand anchors; no 30k placeholders.",
+      "Then add yassir-algeria to finance/model/corridors.json and partner-pitch/partners/yassir.json and re-run aggregate/growth/frontend/sheet."
+    ]
+  },
+  "official_partner_sources": [
+    {
+      "name": "Yassir Algeria official page",
+      "url": "https://yassir.com/algeria",
+      "evidence": "Official country page for Algeria; describes ride hailing, food delivery, driver/delivery sign-up, B2B fleet system, grocery delivery, and Yassir Algeria social channels.",
+      "tier": "T1_partner_official"
+    },
+    {
+      "name": "Yassir Express partner signup city selector",
+      "url": "https://express.yassir.io/payout",
+      "evidence": "City selector lists Alger Centre, Constantine, Oran, Blida, Bejaia, Boumerdes, Tlemcen, Batna, Annaba, Setif, Skikda, Chlef, Tizi Ouzou, Mostaganem, Biskra, Sidi Bel Abbes, Tiaret, Adrar, Bouira, Relizane, Bordj Badji Mokhtar.",
+      "tier": "T1_partner_operational_form"
+    },
+    {
+      "name": "Google Cloud customer story: Yassir",
+      "url": "https://cloud.google.com/customers/yassir",
+      "evidence": "Yassir is the leading superapp in the Maghreb region, operating in 45 cities across Algeria, Morocco, and Tunisia; location Algeria; millions of users and 100,000+ partners.",
+      "tier": "T1_partner_case_study"
+    },
+    {
+      "name": "Y Combinator company profile: Yassir",
+      "url": "https://www.ycombinator.com/companies/yassir",
+      "evidence": "Yassir is the leading super app for French-speaking Africa and operates in 45 cities across Algeria, Morocco, and Tunisia.",
+      "tier": "T1_accelerator_profile"
+    }
+  ],
+  "coastal_city_candidates_from_partner_city_list": [
+    {
+      "city": "Alger Centre / Algiers",
+      "priority": "A",
+      "why": "Home-market capital, Yassir-listed, port/ferry city, dense urban mobility surface.",
+      "atlas_id_required": "algiers-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Oran",
+      "priority": "A",
+      "why": "Yassir-listed major coastal city and western Algeria tourism/business hub.",
+      "atlas_id_required": "oran-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Annaba",
+      "priority": "A",
+      "why": "Yassir-listed eastern coastal/port city; appears in Algeria ferry passenger/port-route sources.",
+      "atlas_id_required": "annaba-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Bejaia",
+      "priority": "A",
+      "why": "Yassir-listed coastal/port city; ferry operators expose Bejaia routes and port/boarding pages.",
+      "atlas_id_required": "bejaia-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Skikda",
+      "priority": "B",
+      "why": "Yassir-listed coastal/port city and Algeria ferry route candidate; validate after A cities.",
+      "atlas_id_required": "skikda-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Mostaganem",
+      "priority": "B",
+      "why": "Yassir-listed coastal city and Algeria ferry route candidate; validate after A cities.",
+      "atlas_id_required": "mostaganem-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Boumerdes",
+      "priority": "B",
+      "why": "Yassir-listed Algiers-east coastal province/city; likely Algiers Bay commuter extension, but route geometry and demand are not yet sourced.",
+      "atlas_id_required": "boumerdes-algeria",
+      "geometry_status": "missing"
+    },
+    {
+      "city": "Tlemcen / Ghazaouet catchment",
+      "priority": "B",
+      "why": "Yassir-listed Tlemcen; Ghazaouet is a ferry port in the wider western catchment. Bind only if a real coastal node is minted.",
+      "atlas_id_required": "ghazaouet-algeria_or_tlemcen-catchment",
+      "geometry_status": "missing"
+    }
+  ],
+  "route_mint_queue": [
+    {
+      "id": "alg-1-algiers-bay-prove",
+      "label": "Algiers Centre / Port d'Alger ↔ Sablettes / eastern-bay waterfront",
+      "candidate_city_ids": [
+        "algiers-algeria"
+      ],
+      "distance_gate": "short_N30_candidate_pending_coordinates",
+      "demand_anchor_status": "needs route-specific local urban/port/tourism source; Algiers metro/tram daily ridership sources are leads only, not yet route demand.",
+      "why": "Home-market flagship proof if local boarding points can be minted."
+    },
+    {
+      "id": "alg-2-algiers-boumerdes",
+      "label": "Algiers east waterfront ↔ Boumerdes/Tamentfoust catchment",
+      "candidate_city_ids": [
+        "algiers-algeria",
+        "boumerdes-algeria"
+      ],
+      "distance_gate": "N30_or_Quanta_pending_coordinates",
+      "demand_anchor_status": "needs exact road/rail or commuter-tourism source.",
+      "why": "Yassir-listed Boumerdes plus Algiers east-coast commuter/tourism surface."
+    },
+    {
+      "id": "alg-3-oran-ain-el-turk",
+      "label": "Oran waterfront ↔ Aïn El Turk / resort coast",
+      "candidate_city_ids": [
+        "oran-algeria"
+      ],
+      "distance_gate": "short_N30_candidate_pending_coordinates",
+      "demand_anchor_status": "needs Oran airport/tourism/road source and premium water fare benchmark.",
+      "why": "Western Algeria scale market with clear coastal leisure corridor."
+    },
+    {
+      "id": "alg-4-bejaia-coastal",
+      "label": "Bejaia port/corniche ↔ nearby coastal resort nodes",
+      "candidate_city_ids": [
+        "bejaia-algeria"
+      ],
+      "distance_gate": "short_N30_candidate_pending_coordinates",
+      "demand_anchor_status": "ferry operator/port-page leads found; route-specific passenger/fare still pending.",
+      "why": "Yassir-listed coastal port; plausible tourism and ferry-adjacent handoff market."
+    },
+    {
+      "id": "alg-5-annaba-coastal",
+      "label": "Annaba port/waterfront ↔ Seraïdi/El Kala-side coastal nodes",
+      "candidate_city_ids": [
+        "annaba-algeria"
+      ],
+      "distance_gate": "N30_or_Quanta_pending_coordinates",
+      "demand_anchor_status": "needs passenger/tourism source; CEIC/IOP/port-route leads exist but are not enough for model yet.",
+      "why": "Yassir-listed eastern port city; high-value once exact source anchors land."
+    }
+  ],
+  "demand_source_leads_not_yet_model_inputs": [
+    {
+      "name": "Ferryhopper Algeria ferry overview",
+      "url": "https://www.ferryhopper.com/en/ferries/algeria/algeria",
+      "evidence": "Lists year-round/seasonal routes to Algiers, Béjaïa, Ghazaouet, Mostaganem and Oran; useful for port presence and fare-route research, not enough for local Navier demand alone."
+    },
+    {
+      "name": "Direct Ferries France to Algeria overview",
+      "url": "https://www.directferries.com/ferries_from_france_to_algeria.htm",
+      "evidence": "Mentions regular ferries to Algiers, Bejaia, Oran, Annaba and Skikda; route-existence lead only."
+    },
+    {
+      "name": "GNV Algiers port page",
+      "url": "https://www.gnv.it/en/ports/algeria/algeri",
+      "evidence": "Confirms ferry boarding information for Port of Algiers; useful for boarding-point research."
+    },
+    {
+      "name": "GNV Bejaia port page",
+      "url": "https://www.gnv.it/en/ports/algeria/bejaia",
+      "evidence": "Confirms ferry boarding information for Bejaia; useful for boarding-point research."
+    },
+    {
+      "name": "Railway Technology / Arab Urban Development Institute Algiers Metro leads",
+      "url": "https://www.railway-technology.com/projects/algiers-metro/",
+      "evidence": "Search snippets report Algiers metro serving/capable of ~300,000 passengers/day; use only as an urban-demand lead until scraped/verified and route haircut is defined."
+    }
+  ],
+  "model_status": {
+    "currently_in_corridors_json": false,
+    "currently_in_partner_markets": false,
+    "reason": "No exact Atlas IDs and no Algeria country-reference row; adding now would create a dark/incorrect render and/or silent Singapore opex fallback.",
+    "next_model_bite": "After Grok mints Algeria IDs, add Algeria country-reference row, add yassir-algeria corridors with null route_id but real node IDs, then rerun Yassir aggregate/growth/frontend/sheet and rebuild sidecar."
+  }
+}
