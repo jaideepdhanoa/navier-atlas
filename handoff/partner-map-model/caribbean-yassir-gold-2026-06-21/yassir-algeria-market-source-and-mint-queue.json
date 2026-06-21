@@ -15,6 +15,7 @@
       "Do not run Algeria economics through Singapore fallback; country-reference row must exist first."
     ],
     "definition_of_done_for_unlock": [
+      "Use yassir-algeria-route-source-hardening-batch-1.json as the first Algeria Grok mint request; keep unresolved endpoints null.",
       "Mint/validate Algeria city IDs for the selected coastal cities.",
       "Mint/validate boarding points for each route candidate with from_node_id/to_node_id set to real IDs.",
       "Add source-tiered Algeria row in finance/model/country-reference.json before any cascade.",
@@ -191,5 +192,38 @@
     "currently_in_partner_markets": false,
     "reason": "No exact Atlas IDs and no Algeria country-reference row; adding now would create a dark/incorrect render and/or silent Singapore opex fallback.",
     "next_model_bite": "After Grok mints Algeria IDs, add Algeria country-reference row, add yassir-algeria corridors with null route_id but real node IDs, then rerun Yassir aggregate/growth/frontend/sheet and rebuild sidecar."
-  }
+  },
+  "route_source_hardening_packet": "yassir-algeria-route-source-hardening-batch-1.json",
+  "priority_route_candidates_batch_1": [
+    {
+      "candidate_id": "dz-algiers-bay-pecherie-el-djamila",
+      "priority": "A",
+      "route_label": "La Pêcherie / Port d'Alger ↔ El Djamila / Aïn Bénian",
+      "status": "commercial_now_candidate__needs_current_service_check_and_geometry"
+    },
+    {
+      "candidate_id": "dz-algiers-bay-pecherie-tamentfoust-sablettes",
+      "priority": "A-",
+      "route_label": "La Pêcherie / Port d'Alger ↔ Tamentfoust / Les Sablettes axis",
+      "status": "planned_expansion_candidate__needs_current_service_check_and_geometry"
+    },
+    {
+      "candidate_id": "dz-bejaia-algiers-hsc",
+      "priority": "A-",
+      "route_label": "Port de Béjaïa ↔ Port d'Alger",
+      "status": "intercity_hsc_candidate__range_and_current_service_check_required"
+    },
+    {
+      "candidate_id": "dz-oran-mostaganem-summer",
+      "priority": "B+",
+      "route_label": "Oran ↔ Mostaganem",
+      "status": "seasonal_urban_candidate__needs_geometry_and_repeatability_check"
+    },
+    {
+      "candidate_id": "dz-annaba-marseille-port-existence",
+      "priority": "B",
+      "route_label": "Annaba passenger port — Europe ferry lead only",
+      "status": "port_existence_only__not_a_navier_route_yet"
+    }
+  ]
 }

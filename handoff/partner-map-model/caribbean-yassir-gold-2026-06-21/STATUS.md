@@ -35,3 +35,15 @@
 - Added `algeria-country-reference-draft.json` with draft opex/grid inputs for Algeria.
 - Did **not** edit `finance/model/country-reference.json` yet: no Algeria corridors are modeled and the wage/marina sources are still low-confidence.
 - Proposed draft row: energy ~$0.04/kWh, grid CO₂ ~0.55 kg/kWh, captain ~$12k/yr, marina overhead ~$8k/yr, cost index ~0.30 — all explicitly source-tiered and gated before cascade.
+
+## 2026-06-21 — Algeria route hardening batch 1
+- Added `yassir-algeria-route-source-hardening-batch-1.json` as the first Algeria route/source mint packet.
+- Promoted concrete source-backed candidates while keeping live model untouched:
+  - A: Algiers Bay — La Pêcherie / Port d’Alger ↔ El Djamila / Aïn Bénian.
+  - A-: Algiers Bay — La Pêcherie ↔ Tamentfoust / Les Sablettes axis.
+  - A-: Port de Béjaïa ↔ Port d’Alger HSC line.
+  - B+: Oran ↔ Mostaganem seasonal ENTMV line.
+  - B: Annaba port existence lead only; not model-ready.
+- Sources now include ENTMV/Algérie Ferries, Radio Algérienne/APS Algiers Bay, Port de Béjaïa PDF, Radio Algérienne/APS Oran–Mostaganem, Ferryhopper Algeria, and GNV Algiers port page.
+- Exactness gate unchanged: no Algeria render/economics until Grok seals city IDs, boarding points, and route IDs; unresolved endpoints stay null.
+

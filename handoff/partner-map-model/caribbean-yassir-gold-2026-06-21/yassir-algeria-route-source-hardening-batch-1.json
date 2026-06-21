@@ -1,0 +1,233 @@
+{
+  "packet_id": "yassir-algeria-route-source-hardening-batch-1-2026-06-21",
+  "status": "route_candidates_sourced__geometry_gated_not_modelled",
+  "decision": "Promote Algeria from generic home-market gap to a route/source-backed mint queue, but do not add route IDs, corridors, demand, or live economics until Atlas city/boarding-point IDs and country-reference rows are sealed.",
+  "exactness_gate": {
+    "atlas_current_state": "Current branch has no sealed Algeria anchor-city/boarding-point IDs in data-clean/FEATURES_BY_TYPE.json; all route candidates remain mint requests.",
+    "do_not_do": [
+      "Do not create synthetic Algeria route IDs in partner-pitch or finance/model/corridors.json.",
+      "Do not use Europe-facing ferry ticket prices as Navier commuter fares without local-route validation.",
+      "Do not model Annaba/Skikda/Mostaganem until local or operator evidence is strong enough for demand/fare anchors."
+    ],
+    "definition_of_done_for_grok_seal": [
+      "Mint city IDs for Algiers, Oran, Bejaia, Annaba, plus optional Mostaganem/Skikda after source hardening.",
+      "Mint boarding points for port/gare-maritime/marina endpoints only where source names an actual terminal or port.",
+      "Confirm if each route is commercial-now N30/N35, seasonal/event-only, or roadmap-only.",
+      "Return exact from_node_id/to_node_id/route_id, with null for any unresolved endpoint."
+    ]
+  },
+  "source_rollup": [
+    {
+      "name": "Algérie Ferries / ENTMV official site",
+      "url": "https://algerieferries.com/",
+      "tier": "T1_operator_official",
+      "evidence": "Official ENTMV/Algérie Ferries site states its mission is maritime transport of passengers and vehicles, with online booking and ports/routes described through its booking platform."
+    },
+    {
+      "name": "Radio Algérienne / APS — Algiers bay pilot line",
+      "url": "https://radioalgerie.dz/news/fr/article/20140805/9131.html",
+      "tier": "T2_state_media_APS",
+      "evidence": "Pilot urban maritime passenger line opened between Port d'Alger/La Pêcherie and El Djamila/Aïn Bénian; 344-seat vessel, 50 DA fare, five daily shuttles, 30-minute voyage; planned expansion to Tamentfoust, Boumerdès, Tipaza, and Les Sablettes."
+    },
+    {
+      "name": "Port de Béjaïa PDF — Béjaïa–Alger urban maritime line",
+      "url": "https://www.portdebejaia.dz/download/ligne-de-transport-%20maritime-urbain.pdf",
+      "tier": "T1_port_official_pdf",
+      "evidence": "Port de Béjaïa PDF says an ENTMV urban maritime line links Port de Béjaïa to Port d'Alger in 4 hours using HSC vessels Seraïdi and Badji Mokhtar II; three weekly sailings; adult fare 1300 DA."
+    },
+    {
+      "name": "Radio Algérienne / APS — Oran–Mostaganem summer urban maritime service",
+      "url": "http://news.radioalgerie.dz/fr/node/27221",
+      "tier": "T2_state_media_APS",
+      "evidence": "ENTMV announced Oran–Mostaganem urban maritime services aboard Seraïdi through 30 September 2023, with services from 09:00 to 18:30; adult fare 800 DA, child fare 400 DA."
+    },
+    {
+      "name": "Ferryhopper Algeria 2026 routes",
+      "url": "https://www.ferryhopper.com/en/ferries/algeria/algeria",
+      "tier": "T3_marketplace_schedule",
+      "evidence": "Lists Algeria ferry ports and schedules: Algiers, Béjaïa, Ghazaouet, Mostaganem, Oran; shows year-round/seasonal routes to/from Spain and France with durations/frequencies. Use for port existence and fare sanity, not Navier local demand."
+    },
+    {
+      "name": "GNV Algiers port page",
+      "url": "https://www.gnv.it/en/ports/algeria/algeri",
+      "tier": "T2_operator_port_page",
+      "evidence": "Identifies Port of Algiers/Gare Maritime d’Alger at Via Angkor, Alger-Centre; describes central terminal access, bus/taxi/airport connectivity, and Sète–Algiers service."
+    }
+  ],
+  "priority_route_candidates": [
+    {
+      "candidate_id": "dz-algiers-bay-pecherie-el-djamila",
+      "priority": "A",
+      "status": "commercial_now_candidate__needs_current_service_check_and_geometry",
+      "market": "Algiers Bay",
+      "route_label": "La Pêcherie / Port d'Alger ↔ El Djamila / Aïn Bénian",
+      "why": "Official/state source proves an urban maritime passenger use case inside Algiers Bay with named endpoints, fare, vessel capacity, and frequency; directly compatible with Yassir door-to-pier app handoff.",
+      "source_basis": [
+        "Radio Algérienne / APS — Algiers bay pilot line",
+        "GNV Algiers port page"
+      ],
+      "boarding_point_mint_requests": [
+        {
+          "label": "La Pêcherie / Port d'Alger / Gare Maritime d'Alger",
+          "city_id_required": "algiers-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne and GNV"
+        },
+        {
+          "label": "El Djamila / Aïn Bénian fishing and leisure port",
+          "city_id_required": "algiers-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne"
+        }
+      ],
+      "demand_anchor_leads": [
+        "344-seat vessel",
+        "five daily shuttles during pilot",
+        "50 DA pilot fare",
+        "30-minute voyage"
+      ],
+      "model_action": "Hold; after Grok mints endpoints, verify current service status and modern fare before finance cascade."
+    },
+    {
+      "candidate_id": "dz-algiers-bay-pecherie-tamentfoust-sablettes",
+      "priority": "A-",
+      "status": "planned_expansion_candidate__needs_current_service_check_and_geometry",
+      "market": "Algiers Bay",
+      "route_label": "La Pêcherie / Port d'Alger ↔ Tamentfoust / Les Sablettes axis",
+      "why": "State source names bay-wide expansion to Tamentfoust and references Les Sablettes as a future attraction; high-fit for premium short water layer if endpoints are sealed.",
+      "source_basis": [
+        "Radio Algérienne / APS — Algiers bay pilot line"
+      ],
+      "boarding_point_mint_requests": [
+        {
+          "label": "Tamentfoust / El Marsa coastal port area",
+          "city_id_required": "algiers-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne expansion reference"
+        },
+        {
+          "label": "Les Sablettes / Hussein Dey waterfront",
+          "city_id_required": "algiers-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne expansion/tourism reference"
+        }
+      ],
+      "demand_anchor_leads": [
+        "planned extension within Algiers Bay",
+        "tourism/decongestion rationale"
+      ],
+      "model_action": "Hold; treat as mint-only until current line evidence exists."
+    },
+    {
+      "candidate_id": "dz-bejaia-algiers-hsc",
+      "priority": "A-",
+      "status": "intercity_hsc_candidate__range_and_current_service_check_required",
+      "market": "Béjaïa / Algiers",
+      "route_label": "Port de Béjaïa ↔ Port d'Alger",
+      "why": "Official Port de Béjaïa PDF proves an ENTMV HSC passenger line with concrete schedule, fare, and 4-hour runtime; longer than ideal commuter shuttle but useful for Algeria source/economics anchoring and Quanta/N35 roadmap review.",
+      "source_basis": [
+        "Port de Béjaïa PDF — Béjaïa–Alger urban maritime line"
+      ],
+      "boarding_point_mint_requests": [
+        {
+          "label": "Port de Béjaïa passenger terminal",
+          "city_id_required": "bejaia-algeria",
+          "node_id": "missing",
+          "source": "Port de Béjaïa PDF"
+        },
+        {
+          "label": "Port d'Alger passenger terminal",
+          "city_id_required": "algiers-algeria",
+          "node_id": "missing",
+          "source": "Port de Béjaïa PDF"
+        }
+      ],
+      "demand_anchor_leads": [
+        "three weekly sailings",
+        "1300 DA adult fare",
+        "4-hour runtime",
+        "HSC vessels Seraïdi / Badji Mokhtar II"
+      ],
+      "model_action": "Hold; range-gate before any commercial-now label."
+    },
+    {
+      "candidate_id": "dz-oran-mostaganem-summer",
+      "priority": "B+",
+      "status": "seasonal_urban_candidate__needs_geometry_and_repeatability_check",
+      "market": "Oran / Mostaganem",
+      "route_label": "Oran ↔ Mostaganem",
+      "why": "APS/Radio Algérienne source proves a seasonal ENTMV urban maritime service with named endpoints, operating window, service hours, and fare; good western Algeria source lead after Algiers is sealed.",
+      "source_basis": [
+        "Radio Algérienne / APS — Oran–Mostaganem summer urban maritime service"
+      ],
+      "boarding_point_mint_requests": [
+        {
+          "label": "Port d'Oran passenger/marina area",
+          "city_id_required": "oran-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne / APS; Oran port pages to verify"
+        },
+        {
+          "label": "Mostaganem port / passenger area",
+          "city_id_required": "mostaganem-algeria",
+          "node_id": "missing",
+          "source": "Radio Algérienne / APS"
+        }
+      ],
+      "demand_anchor_leads": [
+        "09:00–18:30 service window",
+        "800 DA adult fare",
+        "400 DA child fare",
+        "summer season through 30 September 2023"
+      ],
+      "model_action": "Hold; validate service recurrence/current status before finance cascade."
+    },
+    {
+      "candidate_id": "dz-annaba-marseille-port-existence",
+      "priority": "B",
+      "status": "port_existence_only__not_a_navier_route_yet",
+      "market": "Annaba",
+      "route_label": "Annaba passenger port — Europe ferry lead only",
+      "why": "Annaba is Yassir-listed and appears in Algeria ferry/port passenger sources, but current evidence is weaker and Europe-facing; keep as city/port mint candidate, not a route model.",
+      "source_basis": [
+        "Search leads: AFerry/Ferrysavers Annaba–Marseille / Algérie Ferries references"
+      ],
+      "boarding_point_mint_requests": [
+        {
+          "label": "Port d'Annaba passenger terminal",
+          "city_id_required": "annaba-algeria",
+          "node_id": "missing",
+          "source": "needs official/port source"
+        }
+      ],
+      "demand_anchor_leads": [],
+      "model_action": "Hold; source harden after Algiers/Béjaïa/Oran."
+    }
+  ],
+  "grok_mint_request_summary": {
+    "cities_to_mint_or_validate": [
+      "algiers-algeria",
+      "bejaia-algeria",
+      "oran-algeria",
+      "mostaganem-algeria",
+      "annaba-algeria"
+    ],
+    "boarding_points_to_mint_or_validate": [
+      "Port d'Alger / Gare Maritime / La Pêcherie",
+      "El Djamila / Aïn Bénian",
+      "Tamentfoust / El Marsa",
+      "Les Sablettes / Hussein Dey",
+      "Port de Béjaïa",
+      "Port d'Oran",
+      "Mostaganem port",
+      "Port d'Annaba"
+    ],
+    "route_ids_to_return_if_exact": [
+      "Algiers Bay La Pêcherie–El Djamila",
+      "Algiers Bay La Pêcherie–Tamentfoust/Les Sablettes",
+      "Béjaïa–Alger HSC",
+      "Oran–Mostaganem seasonal"
+    ],
+    "null_policy": "Return null for any unresolved endpoint or unsupported route rather than approximate geometry."
+  }
+}
