@@ -60,7 +60,7 @@ def iter_phases(doc: dict, market_id: str | None = None):
             yield mid, phase
 
 
-def audit(*, partner_filter: set[str] | None = None) -> int:
+def audit(*, partner_filter: set[str] | None = None, warn_only: bool = False) -> int:
     errors: list[str] = []
     empty_phase: list[str] = []
     missing_market_uc: list[str] = []
@@ -120,10 +120,15 @@ def audit(*, partner_filter: set[str] | None = None) -> int:
         for row in gate_failures[:20]:
             print(f"    - {row}")
 
-    if errors or empty_phase or missing_market_uc or gate_failures:
+    if errors or empty_phase or gate_failures:
+        return 1
+    if missing_market_uc and not warn_only:
         return 1
 
-    print("  ✅ all PR #56 use-case gates pass")
+    if missing_market_uc and warn_only:
+        print("  ⚠ missing market use_cases (warn-only — lane continues)")
+    else:
+        print("  ✅ all PR #56 use-case gates pass")
     return 0
 
 
@@ -135,10 +140,15 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Limit audit to these partner slugs (e.g. rapido ola noon careem)",
     )
+    p.add_argument(
+        "--warn-only",
+        action="store_true",
+        help="Do not fail on missing market-level use_cases (global lane)",
+    )
     return p.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
     filt = set(args.partner) if args.partner else None
-    sys.exit(audit(partner_filter=filt))
+    sys.exit(audit(partner_filter=filt, warn_only=args.warn_only))

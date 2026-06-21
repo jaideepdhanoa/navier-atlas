@@ -1635,6 +1635,8 @@ def _walk_phase_carousels(
                 else:
                     if is_chip and is_roll:
                         continue
+                    if not is_chip:
+                        continue  # plain featured routes: second loop below
                 scope = (
                     chip_scope_for_item(fr, ph.get("cities"), city_ids, fallback_scope)
                     if is_chip

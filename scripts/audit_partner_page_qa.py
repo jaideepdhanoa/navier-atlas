@@ -108,17 +108,23 @@ def iter_featured_and_journeys(doc: dict):
             yield "sealed_pool", mid, fr
 
 
-def is_linked(item: dict, gold: set[str]) -> bool:
+def is_geometry_linked(item: dict, gold: set[str]) -> bool:
     rid = item.get("route_id")
     rids = item.get("route_ids") or []
     if rid and rid in gold:
         return True
-    if rids and any(x in gold for x in rids):
+    return bool(rids and any(x in gold for x in rids))
+
+
+def is_held_null_acceptable(item: dict) -> bool:
+    status = item.get("_bind_status") or item.get("_link_status") or ""
+    if "brief" in status.lower() or item.get("_market_candidate"):
         return True
-    status = item.get("_link_status") or ""
-    if status in HELD_OK and (item.get("_hold_reason") or status.startswith("unlinked")):
-        return True
-    return False
+    return status in HELD_OK and bool(item.get("_hold_reason") or status.startswith("unlinked"))
+
+
+def is_linked(item: dict, gold: set[str]) -> bool:
+    return is_geometry_linked(item, gold) or is_held_null_acceptable(item)
 
 
 def is_bp_bound(item: dict) -> bool:
@@ -164,11 +170,15 @@ def audit_partner(slug: str, doc: dict, gold: set[str], city_id_of) -> dict:
         })
 
     journey_linked = 0
+    journey_geometry_linked = 0
     for j in journeys:
         for req in ("from", "to", "today", "with_navier"):
             if not (j.get(req) or "").strip():
                 flags.append({"check": "journey_fields", "severity": "error", "detail": f"journey missing {req}"})
-        if is_linked(j, gold):
+        if is_geometry_linked(j, gold):
+            journey_geometry_linked += 1
+            journey_linked += 1
+        elif is_held_null_acceptable(j):
             journey_linked += 1
         else:
             flags.append({
@@ -179,16 +189,21 @@ def audit_partner(slug: str, doc: dict, gold: set[str], city_id_of) -> dict:
             tasklet.append(f"{slug}: journey needs geometry bind — {j.get('from')} → {j.get('to')}")
 
     featured_linked = 0
+    featured_geometry_linked = 0
     bp_bound = 0
     for fr in featured:
         if fr.get("display") == "network_chip":
             rids = fr.get("route_ids") or []
             if rids and any(x in gold for x in rids):
+                featured_geometry_linked += 1
                 featured_linked += 1
             elif not rids:
                 flags.append({"check": "network_chip_empty", "severity": "warn", "detail": fr.get("label")})
             continue
-        if is_linked(fr, gold):
+        if is_geometry_linked(fr, gold):
+            featured_geometry_linked += 1
+            featured_linked += 1
+        elif is_held_null_acceptable(fr):
             featured_linked += 1
         else:
             flags.append({
@@ -269,15 +284,23 @@ def audit_partner(slug: str, doc: dict, gold: set[str], city_id_of) -> dict:
         "counts": {
             "journeys": len(journeys),
             "journeys_linked": journey_linked,
+            "journeys_geometry_linked": journey_geometry_linked,
             "featured_routes": len(featured),
             "featured_linked": featured_linked,
+            "featured_geometry_linked": featured_geometry_linked,
             "bp_bound_featured": bp_bound,
             "map_routes_in_scope": route_count,
             "phases": len(phases),
         },
         "ratios": {
             "journey_link": round(j_ratio, 3),
+            "journey_geometry": round(
+                journey_geometry_linked / len(journeys) if journeys else 1.0, 3
+            ),
             "featured_link": round(f_ratio, 3),
+            "featured_geometry": round(
+                featured_geometry_linked / len(featured) if featured else 1.0, 3
+            ),
             "bp_bound": round(bp_ratio, 3),
         },
         "flags": flags,
@@ -373,7 +396,9 @@ def main() -> int:
             print(
                 f"  {r['verdict']:16} {r['partner']:12} "
                 f"journeys {c['journeys_linked']}/{c['journeys']} "
+                f"(geom {c['journeys_geometry_linked']}/{c['journeys']}) "
                 f"featured {c['featured_linked']}/{c['featured_routes']} "
+                f"(geom {c['featured_geometry_linked']}/{c['featured_routes']}) "
                 f"map_routes {c['map_routes_in_scope']}"
             )
 

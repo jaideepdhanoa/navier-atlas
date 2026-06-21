@@ -282,14 +282,14 @@ def main() -> int:
             slug, ledger_path=ledger, pr58=pr58, gold_ids=gold_ids, by_id=by_id, by_bp=by_bp
         )
 
-    for slug in ("ola", "rapido"):
+    for slug in ("ola", "rapido", "uber-india-derivative"):
         stats["partners"][slug] = seal_india_consumer_partner(slug)
     stats["partners"]["uber"] = seal_uber_india_brief()
 
     save_json(HANDOFF / "tasklet-fastlane-execution-report.json", stats)
     print(json.dumps(stats, indent=2))
 
-    partners = "ola rapido uber rakta bahrain-motc"
+    partners = "ola rapido uber uber-india-derivative rakta bahrain-motc"
     print(f"\n→ partner page lane ({partners})")
     import os
 

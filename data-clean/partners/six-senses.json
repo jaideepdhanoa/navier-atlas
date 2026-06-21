@@ -3,6 +3,7 @@
   "display": "Six Senses",
   "display_name": "Six Senses",
   "archetype": "hospitality",
+  "category": "hospitality_brand",
   "region": "Global",
   "layout": "hub",
   "partner_context": {
@@ -28,43 +29,58 @@
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "node-network",
+      "_link_status": "unlinked-intra-city"
     },
     {
       "from": "Praslin",
       "to": "Six Senses Zil Pasyon (Félicité)",
       "today": "Diesel boat or helicopter.",
       "with_navier": "Silent zero-wake foiling transfer to Félicité.",
-      "distance_nm": 12,
+      "distance_nm": 12.0,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "mahe-seychelles",
       "to_node_id": "mahe-seychelles",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "corridor-label",
+      "_link_status": "unlinked-intra-city",
+      "_link_source": "grok/relink_partner_journeys/scoped"
     },
     {
       "from": "Vung Tau",
       "to": "Six Senses Con Dao",
       "today": "Slow ~3–4 hr diesel ferry.",
       "with_navier": "Fast clean Quanta-LR corridor to Con Dao — half the time, no charging dependence.",
-      "distance_nm": 100,
+      "distance_nm": 33.7,
       "platform": "Quanta-LR",
       "archetype": "tourism",
       "from_node_id": "ho-chi-minh-city-vietnam",
       "to_node_id": "ho-chi-minh-city-vietnam",
-      "route_id": null
+      "route_id": "rn-00dfea36a4d9",
+      "route_ids": null,
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-scoped",
+      "_link_source": "grok/relink_partner_journeys/scoped"
     },
     {
       "from": "Six Senses Laamu",
       "to": "Laamu reef-research sites",
       "today": "Diesel dhoni excursion.",
       "with_navier": "Silent zero-wake reef-research excursion.",
-      "distance_nm": 12,
+      "distance_nm": 12.0,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
-      "route_id": null
+      "route_id": null,
+      "route_ids": null,
+      "_link_kind": "corridor-label",
+      "_link_status": "unlinked-intra-city",
+      "_link_source": "grok/relink_partner_journeys/scoped"
     }
   ],
   "differentiation": {
@@ -110,7 +126,7 @@
     {
       "n": 1,
       "label": "Phase 1 — Six Senses Laamu (Maldives)",
-      "boats": 2,
+      "boats": 8,
       "cities": [
         "male-maldives"
       ],
@@ -119,8 +135,34 @@
       "timeline": "2027 H1",
       "rationale": "Live network, sustainability flagship.",
       "featured_routes": [
-        "Kadhdhoo ↔ Laamu",
-        "Laamu reef excursions"
+        {
+          "label": "Kadhdhoo ↔ Laamu",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "e__mald__b95e8093ec6d",
+            "e__velana__six-senses-laamu-jetty"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        },
+        {
+          "label": "Laamu reef excursions",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "e__mald__b95e8093ec6d",
+            "e__velana__six-senses-laamu-jetty",
+            "e__velana__taj-coral-reef-jetty",
+            "ics-5f12d7eb91"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        }
       ],
       "use_cases": [
         "luxury arrival",
@@ -130,7 +172,7 @@
     {
       "n": 2,
       "label": "Phase 2 — Zil Pasyon (Seychelles)",
-      "boats": 2,
+      "boats": 156,
       "cities": [
         "mahe-seychelles"
       ],
@@ -139,8 +181,37 @@
       "timeline": "2027 H2",
       "rationale": "Conservation-aligned inner islands.",
       "featured_routes": [
-        "Praslin ↔ Félicité",
-        "Félicité ↔ La Digue"
+        {
+          "label": "Praslin ↔ Félicité",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "ics-05c0ace2f9",
+            "ics-06f323c382",
+            "ics-21b328dc34",
+            "ics-2dd01cb8df",
+            "ics-60c0ad5972",
+            "ics-975894008b",
+            "ics-b161972f11"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        },
+        {
+          "label": "Félicité ↔ La Digue",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "ics-2517b9d1dc",
+            "ics-2dd01cb8df"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        }
       ],
       "use_cases": [
         "inter-island",
@@ -150,7 +221,7 @@
     {
       "n": 3,
       "label": "Phase 3 — Con Dao (Vietnam)",
-      "boats": 2,
+      "boats": 313,
       "cities": [
         "ho-chi-minh-city-vietnam"
       ],
@@ -159,8 +230,36 @@
       "timeline": "2028",
       "rationale": "Network synergy with the new Vietnam corridor.",
       "featured_routes": [
-        "Vung Tau ↔ Con Dao",
-        "Con Dao park excursions"
+        {
+          "label": "Vung Tau ↔ Con Dao",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "rn-00dfea36a4d9",
+            "ics-8c89e83014",
+            "ics-8f1baa090d",
+            "ics-b3457433e7",
+            "ics-5288f62780"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        },
+        {
+          "label": "Con Dao park excursions",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": null,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "rn-00dfea36a4d9",
+            "ics-0f67ffdab4",
+            "ics-8ec58637e4"
+          ],
+          "_link_source": "grok/relink_partner_journeys/grounding"
+        }
       ],
       "use_cases": [
         "intercity",
@@ -201,7 +300,7 @@
   "network_thesis": {
     "headline": "Wellness and sustainability, extended to the journey — across every Six Senses island.",
     "body": "Six Senses built its brand on wellness and sustainability — yet the diesel transfer to its remote island resorts contradicts both. A silent zero-emission foiling layer plugs into the live Maldives network at Laamu, connects the Seychelles inner islands at Zil Pasyon, and links Six Senses Con Dao to Vietnam's new coastal network.",
-    "coverage_note": "The same Navier fleet that anchors our 3 proposed markets extends across Six Senses's full operating footprint of 3 water-relevant markets — each inheriting cities, corridors, and economics directly from the shared corridor registry."
+    "coverage_note": "Six Senses pairs wellness and sustainability with remarkable settings; these six — Laamu, Zil Pasyon, Con Dao, Yao Noi, Zighy Bay and Fiji — are where a silent, zero-emission arrival best fits the brand's ethos and the guest journey today. The same fleet extends to every Six Senses on water."
   },
   "markets": [
     {
@@ -212,7 +311,6 @@
       "anchor_cities": [
         "male-maldives"
       ],
-      "status": "opportunity",
       "summary": "Six Senses Laamu is the only resort in the remote Laamu Atoll — reached today by a domestic flight plus speedboat. A clean foiling transfer fits the brand's wellness-and-sustainability identity and the live Maldives network.",
       "hero": {
         "title": "Laamu, silently.",
@@ -233,7 +331,8 @@
           "Kadhdhoo Airport ↔ Six Senses Laamu",
           "Inter-atoll corridors",
           "Silent reef-research excursions"
-        ]
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
       },
       "multimodal_fit": "Guests fly to Kadhdhoo via Velana; the foiling transfer is the clean over-water leg to the resort and silent excursions over Laamu's reefs.",
       "journeys_unlocked": [
@@ -241,13 +340,14 @@
           "from": "Kadhdhoo Airport (Laamu)",
           "to": "Six Senses Laamu",
           "today": "A diesel speedboat to the resort.",
-          "with_navier": "A silent zero-wake foiling transfer to the over-water jetty.",
+          "with_navier": "A silent zero-wake foiling transfer to the over-water jetty. The N35 runs the arrival itself — 12–15 guests plus luggage, level dockside boarding, an enclosed all-weather cabin and a shallow 1.5 ft draft for reef-flat and lagoon approaches, with a near-silent low-wake foil that protects the marine sites the resort is built around.",
           "distance_nm": 10,
-          "platform": "Pioneer II",
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         },
         {
           "from": "Velana International (Malé)",
@@ -259,19 +359,21 @@
           "archetype": "tourism",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         },
         {
           "from": "Six Senses Laamu",
           "to": "Laamu reef & research sites",
           "today": "A diesel dhoni excursion.",
-          "with_navier": "A silent zero-wake Pioneer II reef-research excursion — no engine noise over the coral.",
+          "with_navier": "A silent zero-wake Pioneer II reef-research excursion — no engine noise over the coral. The N35 runs the arrival itself — 12–15 guests plus luggage, level dockside boarding, an enclosed all-weather cabin and a shallow 1.5 ft draft for reef-flat and lagoon approaches, with a near-silent low-wake foil that protects the marine sites the resort is built around.",
           "distance_nm": 12,
-          "platform": "Pioneer II",
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         },
         {
           "from": "Six Senses Laamu",
@@ -283,7 +385,8 @@
           "archetype": "tourism",
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         }
       ],
       "proof_points": [
@@ -326,7 +429,7 @@
         {
           "n": 1,
           "label": "Phase 1 — Laamu transfer + research excursions (Pioneer II)",
-          "boats": 2,
+          "boats": 3,
           "cities": [
             "male-maldives"
           ],
@@ -335,8 +438,33 @@
           "timeline": "2027 H1",
           "rationale": "Sustainability-aligned flagship.",
           "featured_routes": [
-            "Kadhdhoo ↔ Six Senses Laamu",
-            "Laamu reef excursions"
+            {
+              "label": "Kadhdhoo Airport (Laamu) ↔ Six Senses Laamu",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 10,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Velana International (Malé) ↔ Six Senses Laamu",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 130,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Six Senses Laamu ↔ Laamu reef & research sites",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 12,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "luxury arrival",
@@ -346,7 +474,7 @@
         {
           "n": 2,
           "label": "Phase 2 — Direct Malé corridor (Quanta-LR)",
-          "boats": 2,
+          "boats": 25,
           "cities": [
             "male-maldives"
           ],
@@ -355,8 +483,15 @@
           "timeline": "2027 H2",
           "rationale": "Remove the daylight/diesel constraint.",
           "featured_routes": [
-            "Velana ↔ Laamu",
-            "inter-atoll hops"
+            {
+              "label": "Six Senses Laamu ↔ Neighboring atolls",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 60,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "intercity"
@@ -365,7 +500,7 @@
         {
           "n": 3,
           "label": "Phase 3 — Six Senses Maldives tier",
-          "boats": 3,
+          "boats": 50,
           "cities": [
             "male-maldives"
           ],
@@ -374,7 +509,33 @@
           "timeline": "2028",
           "rationale": "Durable brand amenity.",
           "featured_routes": [
-            "All Six Senses Laamu transfers"
+            {
+              "label": "Kadhdhoo Airport (Laamu) ↔ Six Senses Laamu",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 10,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Velana International (Malé) ↔ Six Senses Laamu",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 130,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Six Senses Laamu ↔ Laamu reef & research sites",
+              "from_node_id": "male-maldives",
+              "to_node_id": "male-maldives",
+              "distance_nm": 12,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -393,7 +554,29 @@
           "male-maldives"
         ],
         "narrative": "Six Senses Laamu's arrival and reef-research excursions run on a silent zero-emission foiling fleet — sustainability extended to the journey, plugged into the live Maldives network."
-      }
+      },
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 77,
+      "committed_fleet": 50,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Maldives (Six Senses Laamu) as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~50 vessels as the network matures (addressable ceiling ~77)."
+      },
+      "use_cases": [
+        {
+          "label": "premium arrival transfer",
+          "summary": "Kadhdhoo Airport (Laamu) → Six Senses Laamu becomes a Six Senses water leg: A silent zero-wake foiling transfer to the over-water jetty."
+        },
+        {
+          "label": "leisure excursion",
+          "summary": "Velana International (Malé) → Six Senses Laamu becomes a Six Senses water leg: A clean Quanta-LR hybrid transfer direct to Laamu, after dark and in weather."
+        },
+        {
+          "label": "leisure excursion",
+          "summary": "Six Senses Laamu → Laamu reef & research sites becomes a Six Senses water leg: A silent zero-wake Pioneer II reef-research excursion — no engine noise over the coral."
+        }
+      ]
     },
     {
       "id": "seychelles",
@@ -403,7 +586,6 @@
       "anchor_cities": [
         "mahe-seychelles"
       ],
-      "status": "opportunity",
       "summary": "Six Senses Zil Pasyon occupies the private island of Félicité in the Seychelles inner islands — reached by helicopter or boat. A clean foiling tier offers silent island access and inter-island corridors aligned with Seychelles' conservation brand.",
       "hero": {
         "title": "Félicité, silently.",
@@ -424,7 +606,8 @@
           "Mahé / Praslin ↔ Félicité (Zil Pasyon)",
           "Félicité ↔ La Digue",
           "Silent inner-island excursions"
-        ]
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
       },
       "multimodal_fit": "Guests arrive via Mahé; foiling transfers connect to Félicité and across the inner islands, with helicopter kept for the fastest hops.",
       "journeys_unlocked": [
@@ -433,48 +616,60 @@
           "to": "Six Senses Zil Pasyon (Félicité)",
           "today": "A diesel boat or helicopter to the private island.",
           "with_navier": "A silent zero-wake foiling transfer to Félicité.",
-          "distance_nm": 12,
-          "platform": "Pioneer II",
+          "distance_nm": 12.0,
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Mahé",
           "to": "Félicité / inner islands",
           "today": "A ~1 hr diesel inter-island ferry plus boat.",
           "with_navier": "A clean Quanta-LR hybrid inner-island corridor to Félicité.",
-          "distance_nm": 30,
+          "distance_nm": 2.4,
           "platform": "Quanta-LR",
           "archetype": "tourism",
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
-          "route_id": null
+          "route_id": "ics-b852a170cb",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Six Senses Zil Pasyon",
           "to": "La Digue",
           "today": "A diesel excursion to La Digue.",
           "with_navier": "A silent Pioneer II hop to La Digue's famous beaches.",
-          "distance_nm": 6,
-          "platform": "Pioneer II",
+          "distance_nm": 5.4,
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Félicité",
           "to": "Sister islands & marine sites",
           "today": "A diesel snorkel/dive excursion.",
           "with_navier": "A silent zero-wake Pioneer II reef excursion.",
-          "distance_nm": 8,
-          "platform": "Pioneer II",
+          "distance_nm": 4.0,
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         }
       ],
       "proof_points": [
@@ -517,7 +712,7 @@
         {
           "n": 1,
           "label": "Phase 1 — Félicité transfer + excursions (Pioneer II)",
-          "boats": 2,
+          "boats": 3,
           "cities": [
             "mahe-seychelles"
           ],
@@ -526,8 +721,39 @@
           "timeline": "2027 H1",
           "rationale": "Conservation-aligned private-island access.",
           "featured_routes": [
-            "Praslin ↔ Félicité",
-            "Félicité ↔ La Digue"
+            {
+              "label": "Praslin ↔ Six Senses Zil Pasyon (Félicité)",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 12.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Mahé ↔ Félicité / inner islands",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 2.4,
+              "platform": "Quanta-LR",
+              "route_id": "ics-b852a170cb",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Zil Pasyon ↔ La Digue",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 5.4,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "luxury arrival",
@@ -537,7 +763,7 @@
         {
           "n": 2,
           "label": "Phase 2 — Inner-island corridor (Quanta-LR)",
-          "boats": 2,
+          "boats": 25,
           "cities": [
             "mahe-seychelles"
           ],
@@ -546,7 +772,17 @@
           "timeline": "2027 H2",
           "rationale": "Connect the inner islands cleanly.",
           "featured_routes": [
-            "Mahé ↔ Praslin ↔ Félicité"
+            {
+              "label": "Félicité ↔ Sister islands & marine sites",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 4.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "inter-island"
@@ -555,7 +791,7 @@
         {
           "n": 3,
           "label": "Phase 3 — Six Senses Seychelles tier",
-          "boats": 3,
+          "boats": 50,
           "cities": [
             "mahe-seychelles"
           ],
@@ -564,7 +800,39 @@
           "timeline": "2028",
           "rationale": "Durable brand amenity.",
           "featured_routes": [
-            "All Zil Pasyon transfers"
+            {
+              "label": "Praslin ↔ Six Senses Zil Pasyon (Félicité)",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 12.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Mahé ↔ Félicité / inner islands",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 2.4,
+              "platform": "Quanta-LR",
+              "route_id": "ics-b852a170cb",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Zil Pasyon ↔ La Digue",
+              "from_node_id": "mahe-seychelles",
+              "to_node_id": "mahe-seychelles",
+              "distance_nm": 5.4,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -583,7 +851,29 @@
           "mahe-seychelles"
         ],
         "narrative": "Six Senses Zil Pasyon's island access and excursions run on a silent zero-emission foiling fleet, connected across the Seychelles inner islands and the wider Indian-Ocean-Luxury network."
-      }
+      },
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 77,
+      "committed_fleet": 50,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Seychelles (Six Senses Zil Pasyon) as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~50 vessels as the network matures (addressable ceiling ~77)."
+      },
+      "use_cases": [
+        {
+          "label": "premium water mobility",
+          "summary": "Praslin → Six Senses Zil Pasyon (Félicité) becomes a Six Senses water leg: A silent zero-wake foiling transfer to Félicité."
+        },
+        {
+          "label": "island access",
+          "summary": "Mahé → Félicité / inner islands becomes a Six Senses water leg: A clean Quanta-LR hybrid inner-island corridor to Félicité."
+        },
+        {
+          "label": "premium water mobility",
+          "summary": "Six Senses Zil Pasyon → La Digue becomes a Six Senses water leg: A silent Pioneer II hop to La Digue's famous beaches."
+        }
+      ]
     },
     {
       "id": "vietnam",
@@ -593,7 +883,6 @@
       "anchor_cities": [
         "ho-chi-minh-city-vietnam"
       ],
-      "status": "opportunity",
       "summary": "Six Senses Con Dao sits on the remote, protected Con Dao archipelago off southern Vietnam — reached today by a short flight from Ho Chi Minh City or a long ferry from Vung Tau. A clean foiling corridor connects it to the mainland and the new Vietnam network.",
       "hero": {
         "title": "Con Dao, cleanly reached.",
@@ -614,7 +903,8 @@
           "Vung Tau ↔ Con Dao (Quanta-LR corridor)",
           "Con Dao national-park excursions",
           "Con Dao inter-island hops"
-        ]
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
       },
       "multimodal_fit": "Guests fly or ferry from the HCMC region; the foiling corridor offers a clean, faster mainland link and silent park excursions.",
       "journeys_unlocked": [
@@ -623,24 +913,30 @@
           "to": "Six Senses Con Dao",
           "today": "A slow ~3–4 hr diesel ferry or a flight from HCMC.",
           "with_navier": "A fast clean Quanta-LR hybrid corridor across to Con Dao — half the ferry time, zero charging dependence.",
-          "distance_nm": 100,
+          "distance_nm": 33.7,
           "platform": "Quanta-LR",
           "archetype": "tourism",
           "from_node_id": "ho-chi-minh-city-vietnam",
           "to_node_id": "ho-chi-minh-city-vietnam",
-          "route_id": null
+          "route_id": "rn-00dfea36a4d9",
+          "_link_status": "linked-grok-scoped",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Six Senses Con Dao",
           "to": "Con Dao national-park reefs",
           "today": "A diesel excursion in the marine park.",
           "with_navier": "A silent zero-wake Pioneer II excursion over the protected reefs.",
-          "distance_nm": 10,
-          "platform": "Pioneer II",
+          "distance_nm": 2.5,
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "ho-chi-minh-city-vietnam",
           "to_node_id": "ho-chi-minh-city-vietnam",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Six Senses Con Dao",
@@ -648,11 +944,12 @@
           "today": "A diesel island-hop.",
           "with_navier": "A silent Pioneer II island-hop across the archipelago.",
           "distance_nm": 14,
-          "platform": "Pioneer II",
+          "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "ho-chi-minh-city-vietnam",
           "to_node_id": "ho-chi-minh-city-vietnam",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         },
         {
           "from": "Con Dao",
@@ -664,7 +961,8 @@
           "archetype": "tourism",
           "from_node_id": "ho-chi-minh-city-vietnam",
           "to_node_id": "ho-chi-minh-city-vietnam",
-          "route_id": null
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
         }
       ],
       "proof_points": [
@@ -692,7 +990,7 @@
       "objections": [
         {
           "concern": "Con Dao is far offshore.",
-          "response": "Quanta-LR's 2,000 nm hybrid range is built for the Vung Tau–Con Dao crossing, no charging dependence — Pioneer II handles park excursions."
+          "response": "Quanta-LR's 700 nm hybrid range is built for the Vung Tau–Con Dao crossing, no charging dependence — Pioneer II handles park excursions."
         },
         {
           "concern": "Flights already serve Con Dao.",
@@ -707,7 +1005,7 @@
         {
           "n": 1,
           "label": "Phase 1 — Con Dao park excursions (Pioneer II)",
-          "boats": 2,
+          "boats": 4,
           "cities": [
             "ho-chi-minh-city-vietnam"
           ],
@@ -716,8 +1014,37 @@
           "timeline": "2027 H1",
           "rationale": "Conservation-aligned, high-frequency.",
           "featured_routes": [
-            "Con Dao park excursions",
-            "Con Dao island-hops"
+            {
+              "label": "Vung Tau ↔ Six Senses Con Dao",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 33.7,
+              "platform": "Quanta-LR",
+              "route_id": "rn-00dfea36a4d9",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Con Dao ↔ Con Dao national-park reefs",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 2.5,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Con Dao ↔ Con Dao outer islands",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 14,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "excursions",
@@ -727,7 +1054,7 @@
         {
           "n": 2,
           "label": "Phase 2 — Vung Tau corridor (Quanta-LR)",
-          "boats": 2,
+          "boats": 42,
           "cities": [
             "ho-chi-minh-city-vietnam"
           ],
@@ -736,7 +1063,15 @@
           "timeline": "2027 H2",
           "rationale": "Connect Con Dao to the Saigon/Vung Tau network.",
           "featured_routes": [
-            "Vung Tau ↔ Con Dao"
+            {
+              "label": "Con Dao ↔ Mekong Delta coast",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 120,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "intercity"
@@ -745,7 +1080,7 @@
         {
           "n": 3,
           "label": "Phase 3 — Six Senses Vietnam tier",
-          "boats": 2,
+          "boats": 83,
           "cities": [
             "ho-chi-minh-city-vietnam"
           ],
@@ -754,7 +1089,37 @@
           "timeline": "2028",
           "rationale": "Durable brand amenity + network synergy.",
           "featured_routes": [
-            "All Six Senses Con Dao transfers"
+            {
+              "label": "Vung Tau ↔ Six Senses Con Dao",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 33.7,
+              "platform": "Quanta-LR",
+              "route_id": "rn-00dfea36a4d9",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Con Dao ↔ Con Dao national-park reefs",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 2.5,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Six Senses Con Dao ↔ Con Dao outer islands",
+              "from_node_id": "ho-chi-minh-city-vietnam",
+              "to_node_id": "ho-chi-minh-city-vietnam",
+              "distance_nm": 14,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -773,47 +1138,948 @@
           "ho-chi-minh-city-vietnam"
         ],
         "narrative": "Six Senses Con Dao connects to the mainland via a clean Quanta-LR corridor and runs silent zero-wake excursions in its marine park — Vietnam's pristine luxury anchor, tied into the new national network."
-      }
+      },
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 139,
+      "committed_fleet": 83,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Vietnam (Six Senses Con Dao) as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~48 vessels as the network matures (addressable ceiling ~80)."
+      },
+      "use_cases": [
+        {
+          "label": "premium water mobility",
+          "summary": "Vung Tau → Six Senses Con Dao becomes a Six Senses water leg: A fast clean Quanta-LR hybrid corridor across to Con Dao — half the ferry time, zero charging dependence."
+        },
+        {
+          "label": "premium water mobility",
+          "summary": "Six Senses Con Dao → Con Dao national-park reefs becomes a Six Senses water leg: A silent zero-wake Pioneer II excursion over the protected reefs."
+        },
+        {
+          "label": "island access",
+          "summary": "Six Senses Con Dao → Con Dao outer islands becomes a Six Senses water leg: A silent Pioneer II island-hop across the archipelago."
+        }
+      ]
+    },
+    {
+      "id": "thailand",
+      "slug": "thailand",
+      "label": "Thailand — Six Senses Yao Noi",
+      "region": "SEA",
+      "anchor_cities": [
+        "phuket-phang-nga-thailand"
+      ],
+      "summary": "Six Senses Yao Noi in the heart of Phang Nga Bay, facing the most dramatic limestone karsts in Thailand — reached today by diesel longtails and speedboats from Phuket and Krabi.",
+      "hero": {
+        "title": "Six Senses × Navier — Yao Noi & Phang Nga Bay, by foil",
+        "subtitle": "The karst bay's most serene resort, reached in silence.",
+        "what_we_do_together": "We bring a foiling-electric arrival and bay tier to Six Senses Yao Noi — Phuket and Krabi transfers and silent runs among the Phang Nga karsts. Navier supplies the fleet and the Maldives playbook; Six Senses brings the guests and the wellness-led, sustainability-first ethos a silent electric boat fits perfectly."
+      },
+      "partner_context": {
+        "their_ambition": "Six Senses is built on wellness and sustainability; Yao Noi sits in the heart of one of the world's most dramatic seascapes.",
+        "their_pressure": "That seascape is crossed by noisy diesel longtails and speedboats — at odds with the brand's environmental promise.",
+        "where_navier_fits": "Navier makes the arrival and the bay silent and zero-emission — the Six Senses ethos made literal on the water."
+      },
+      "why_now": "Phang Nga Bay is crowded with diesel longtails and speedboats, and Thailand is pushing marine decarbonization. A ~100-vessel Navier network is already operating in the Maldives. A silent, zero-emission foiling tier aligns exactly with the Six Senses sustainability ethos — and the arrival is open now.",
+      "why_navier_now": {
+        "step_change": "Hydrofoiling lifts the hull clear of the water, so a Navier vessel flies instead of plowing through chop - roughly 10x more efficient than a conventional planing boat, faster (30+ kt cruise), and dramatically smoother and quieter. It's software-defined and autonomy-ready, so the same fleet keeps getting better and cheaper to run over time. A step-change in marine mobility, not an incremental faster boat.",
+        "no_new_infrastructure": "Navier rides on infrastructure that already exists - the open ocean and the berths and jetties already in use. No vertiports, no new rights-of-way, no tunnels or tracks. Pioneer II needs only a berth pedestal; the Quanta-LR hybrid needs no charging infrastructure at all. That's the fundamental contrast with flying taxis and other new-infrastructure modes: nothing to permit, build, or wait for.",
+        "the_moment": "Six Senses is built on wellness and sustainability, yet Yao Noi is reached by noisy diesel boats across one of the world's great seascapes. Foiling makes the arrival silent and zero-emission — the brand promise extended onto the water.",
+        "wow_corridors": [
+          "Phuket / Krabi -> Six Senses Yao Noi",
+          "Yao Noi -> Phang Nga karsts & hongs",
+          "Yao Noi -> James Bond Island & Yao Yai",
+          "Phang Nga -> Krabi / Koh Lanta (Quanta-LR)"
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
+      },
+      "multimodal_fit": "Six Senses guests arrive by air and transfer to the resort by boat or seaplane. A foiling tier replaces the slow, fume-heavy or weather-limited final leg with a fast, silent, zero-emission arrival — booked as part of the Six Senses journey.",
+      "journeys_unlocked": [
+        {
+          "from": "Phuket / Krabi",
+          "to": "Six Senses Yao Noi",
+          "today": "A diesel longtail or speedboat across the bay, 45–90 min.",
+          "with_navier": "A silent foiling run across Phang Nga Bay straight to the resort.",
+          "distance_nm": 17.8,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Yao Noi",
+          "to": "Phang Nga karsts & hongs",
+          "today": "A diesel-boat excursion among the islands.",
+          "with_navier": "A silent, zero-wake foiling run among the limestone karsts.",
+          "distance_nm": 3.0,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Yao Noi",
+          "to": "James Bond Island & Koh Yao Yai",
+          "today": "Crowded diesel day-trip boats.",
+          "with_navier": "On-demand silent foiling runs to the bay's icons.",
+          "distance_nm": 3.0,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Phang Nga Bay",
+          "to": "Krabi / Koh Lanta & the southern Andaman",
+          "today": "A long road-and-boat journey.",
+          "with_navier": "A Quanta-LR coastal run linking the bay to the southern Andaman.",
+          "distance_nm": 37.2,
+          "platform": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        }
+      ],
+      "proof_points": [
+        {
+          "claim": "Six Senses Yao Noi is a brand icon.",
+          "evidence": "In the heart of Phang Nga Bay, facing the most dramatic karst seascape in Thailand.",
+          "source": "Six Senses"
+        },
+        {
+          "claim": "Sustainability is the brand's core.",
+          "evidence": "Six Senses is built on wellness and environmental responsibility — a silent electric boat is a perfect fit.",
+          "source": "Six Senses ethos"
+        },
+        {
+          "claim": "The bay is diesel and crowded.",
+          "evidence": "Longtails and speedboats dominate Phang Nga — loud and fume-heavy against the Six Senses promise.",
+          "source": "Regional operators"
+        },
+        {
+          "claim": "The network model is proven.",
+          "evidence": "~100 vessels / $100M phased rollout already underway in the Maldives.",
+          "source": "WSJ + Bloomberg, May 2026"
+        }
+      ],
+      "objections": [
+        {
+          "concern": "Monsoon season?",
+          "response": "The fleet flexes seasonally; the long high season anchors demand, and foiling rides the bay's chop better than a longtail."
+        },
+        {
+          "concern": "Will it fit the wellness brand?",
+          "response": "Silent, zero-wake, zero-emission — a foiling boat is the literal embodiment of the Six Senses sustainability promise on the water."
+        },
+        {
+          "concern": "Certification in Thai waters?",
+          "response": "A clear first-of-class path, software-defined controls, and an operating record in the US and the Maldives."
+        }
+      ],
+      "phases": [
+        {
+          "n": 1,
+          "label": "Phase 1 — the Yao Noi arrival",
+          "boats": 3,
+          "cities": [
+            "phuket-phang-nga-thailand"
+          ],
+          "route_scope": "intra",
+          "narrative": "Two Pioneer II vessels for silent Phuket/Krabi arrivals to Yao Noi and karst day-runs — the sustainability promise on the water.",
+          "timeline": "2027",
+          "rationale": "Launch at the brand icon where the diesel contrast most undercuts the ethos.",
+          "featured_routes": [
+            {
+              "label": "Phuket / Krabi ↔ Six Senses Yao Noi",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 17.8,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Yao Noi ↔ Phang Nga karsts & hongs",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 3.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Yao Noi ↔ James Bond Island & Koh Yao Yai",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 3.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
+          ],
+          "use_cases": [
+            "resort arrival",
+            "karst touring",
+            "private charter"
+          ]
+        },
+        {
+          "n": 2,
+          "label": "Phase 2 — the Phang Nga network",
+          "boats": 25,
+          "cities": [
+            "phuket-phang-nga-thailand"
+          ],
+          "route_scope": "intra",
+          "narrative": "Extend across Phang Nga Bay and the Yao islands — a silent foiling tier across the whole karst seascape.",
+          "timeline": "2028",
+          "rationale": "Open the bay guests already explore, in silence.",
+          "featured_routes": [
+            {
+              "label": "Phang Nga Bay ↔ Krabi / Koh Lanta & the southern Andaman",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 37.2,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
+          ],
+          "use_cases": [
+            "bay touring",
+            "island-hopping",
+            "exploration"
+          ]
+        },
+        {
+          "n": 3,
+          "label": "Phase 3 — the southern Andaman extension",
+          "boats": 50,
+          "cities": [
+            "phuket-phang-nga-thailand"
+          ],
+          "route_scope": "intra",
+          "narrative": "Quanta-LR links Phang Nga to Krabi, Koh Lanta and the southern Andaman — a silent hybrid coastal tier.",
+          "timeline": "2029+",
+          "rationale": "The hybrid connects the bay to the wider Andaman coves.",
+          "featured_routes": [
+            {
+              "label": "Phuket / Krabi ↔ Six Senses Yao Noi",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 17.8,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Yao Noi ↔ Phang Nga karsts & hongs",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 3.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Yao Noi ↔ James Bond Island & Koh Yao Yai",
+              "from_node_id": "phuket-phang-nga-thailand",
+              "to_node_id": "phuket-phang-nga-thailand",
+              "distance_nm": 3.0,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
+          ],
+          "use_cases": [
+            "coastal network",
+            "exploration",
+            "cross-bay luxury"
+          ]
+        }
+      ],
+      "close": {
+        "title": "The karst bay's most serene resort, reached in silence.",
+        "body": "Yao Noi proves it; Phang Nga scales it. The brand promise of silence and sustainability, extended onto the water."
+      },
+      "end_state": {
+        "headline": "Six Senses Yao Noi and Phang Nga Bay as a silent, zero-emission foiling tier.",
+        "addressable_market_count": 1,
+        "addressable_footprint": "Six Senses Yao Noi, the Phang Nga karsts and hongs, the Yao islands, and a Quanta-LR extension to the southern Andaman.",
+        "end_state_cities": [
+          "phuket-phang-nga-thailand"
+        ],
+        "narrative": "Steady state is Phang Nga Bay on foils — a silent, zero-emission arrival and a karst-hopping tier that embodies the Six Senses ethos."
+      },
+      "corridors_note": "A silent arrival, karst runs and a Quanta-LR Andaman reach — the journeys Phang Nga makes dramatic and diesel longtails make loud.",
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 77,
+      "committed_fleet": 50,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Thailand — Six Senses Yao Noi as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~50 vessels as the network matures (addressable ceiling ~77)."
+      },
+      "use_cases": [
+        {
+          "label": "premium water mobility",
+          "summary": "Phuket / Krabi → Six Senses Yao Noi becomes a Six Senses water leg: A silent foiling run across Phang Nga Bay straight to the resort."
+        },
+        {
+          "label": "premium water mobility",
+          "summary": "Yao Noi → Phang Nga karsts & hongs becomes a Six Senses water leg: A silent, zero-wake foiling run among the limestone karsts."
+        },
+        {
+          "label": "island access",
+          "summary": "Yao Noi → James Bond Island & Koh Yao Yai becomes a Six Senses water leg: On-demand silent foiling runs to the bay's icons."
+        }
+      ]
+    },
+    {
+      "id": "oman",
+      "slug": "oman",
+      "label": "Oman — Six Senses Zighy Bay",
+      "region": "MENA",
+      "anchor_cities": [
+        "muscat-oman"
+      ],
+      "summary": "Six Senses Zighy Bay on the Musandam peninsula — a dramatic fjord coast on the Strait of Hormuz, reached today by a steep mountain road or a conventional speedboat.",
+      "hero": {
+        "title": "Six Senses × Navier — Zighy Bay & the Musandam fjords, by foil",
+        "subtitle": "Arabia's fjords, reached over the water in silence.",
+        "what_we_do_together": "We bring a foiling-electric arrival and fjord tier to Six Senses Zighy Bay — silent runs from Dubai and Khasab and among the Musandam khors. Navier supplies the fleet and the Maldives playbook; Six Senses brings the guests and the sustainability ethos a silent electric boat fits perfectly."
+      },
+      "partner_context": {
+        "their_ambition": "Six Senses places guests in singular landscapes; Zighy Bay sits on Arabia's only fjord coast, on the Strait of Hormuz.",
+        "their_pressure": "The resort is reached by a hair-raising mountain road or a diesel speedboat — dramatic, but loud and at odds with the ethos.",
+        "where_navier_fits": "Navier makes the arrival a silent run across the strait and opens the khors to zero-emission exploration."
+      },
+      "why_now": "The Musandam's dramatic fjords are reached by a steep mountain road or diesel speedboats, and the UAE/Oman region has a quantified marine-mobility mandate. A ~100-vessel Navier network is already operating in the Maldives. A silent foiling tier is the elevated, sustainable arrival Six Senses guests expect.",
+      "why_navier_now": {
+        "step_change": "Hydrofoiling lifts the hull clear of the water, so a Navier vessel flies instead of plowing through chop - roughly 10x more efficient than a conventional planing boat, faster (30+ kt cruise), and dramatically smoother and quieter. It's software-defined and autonomy-ready, so the same fleet keeps getting better and cheaper to run over time. A step-change in marine mobility, not an incremental faster boat.",
+        "no_new_infrastructure": "Navier rides on infrastructure that already exists - the open ocean and the berths and jetties already in use. No vertiports, no new rights-of-way, no tunnels or tracks. Pioneer II needs only a berth pedestal; the Quanta-LR hybrid needs no charging infrastructure at all. That's the fundamental contrast with flying taxis and other new-infrastructure modes: nothing to permit, build, or wait for.",
+        "the_moment": "The Musandam is Arabia's fjordland, but Zighy Bay is reached by a hair-raising mountain road or a diesel speedboat. Foiling makes the arrival a silent run across the strait — and opens the khors to silent exploration.",
+        "wow_corridors": [
+          "Dubai / RAK -> Six Senses Zighy Bay (Quanta-LR)",
+          "Khasab -> Musandam khors",
+          "Zighy Bay -> Telegraph Island & inner fjords",
+          "Musandam -> Dibba & the Oman coast (Quanta-LR)"
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
+      },
+      "multimodal_fit": "Six Senses guests arrive by air and transfer to the resort by boat or seaplane. A foiling tier replaces the slow, fume-heavy or weather-limited final leg with a fast, silent, zero-emission arrival — booked as part of the Six Senses journey.",
+      "journeys_unlocked": [
+        {
+          "from": "Dubai / Ras Al Khaimah",
+          "to": "Six Senses Zighy Bay",
+          "today": "A 2 h+ drive plus a mountain descent, or a diesel speedboat.",
+          "with_navier": "A Quanta-LR run up the coast and across to the resort bay.",
+          "distance_nm": 263.5,
+          "platform": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "muscat-oman",
+          "to_node_id": "muscat-oman",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Khasab",
+          "to": "Musandam khors (fjords)",
+          "today": "A diesel dhow or speedboat tour.",
+          "with_navier": "A silent, zero-wake foiling run among the fjords.",
+          "distance_nm": 18,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "muscat-oman",
+          "to_node_id": "muscat-oman",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
+        },
+        {
+          "from": "Zighy Bay",
+          "to": "Telegraph Island & the inner fjords",
+          "today": "A long diesel-boat excursion.",
+          "with_navier": "A silent foiling run deep into the khors.",
+          "distance_nm": 22,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "muscat-oman",
+          "to_node_id": "muscat-oman",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
+        },
+        {
+          "from": "Musandam",
+          "to": "Dibba & the wider Oman coast",
+          "today": "Mountain road journeys.",
+          "with_navier": "A Quanta-LR coastal run along the peninsula.",
+          "distance_nm": 8.5,
+          "platform": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "muscat-oman",
+          "to_node_id": "muscat-oman",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        }
+      ],
+      "proof_points": [
+        {
+          "claim": "Six Senses Zighy Bay is a brand icon.",
+          "evidence": "A dramatic fjord-coast resort on the Musandam, reached by paraglider, mountain road or boat.",
+          "source": "Six Senses"
+        },
+        {
+          "claim": "The Musandam is unique.",
+          "evidence": "Arabia's only fjordland, on the Strait of Hormuz — a seascape with no equivalent in the Gulf.",
+          "source": "Oman tourism"
+        },
+        {
+          "claim": "The region has a marine mandate.",
+          "evidence": "The neighbouring UAE has a quantified marine-transport master plan; the whole region is pulling mobility onto the water.",
+          "source": "Dubai RTA / regional policy"
+        },
+        {
+          "claim": "The network model is proven.",
+          "evidence": "~100 vessels / $100M phased rollout already underway in the Maldives.",
+          "source": "WSJ + Bloomberg, May 2026"
+        }
+      ],
+      "objections": [
+        {
+          "concern": "Strait of Hormuz conditions and range?",
+          "response": "Quanta-LR is built for the longer coastal runs from the UAE; the fjord runs themselves are short and well inside Pioneer II range."
+        },
+        {
+          "concern": "Will it fit the wellness brand?",
+          "response": "Silent, zero-wake, zero-emission — a foiling boat embodies the Six Senses sustainability promise on the water."
+        },
+        {
+          "concern": "Certification across UAE/Oman waters?",
+          "response": "A clear first-of-class path and software-defined controls; the fjord network launches first while cross-border runs mature."
+        }
+      ],
+      "phases": [
+        {
+          "n": 1,
+          "label": "Phase 1 — the Zighy Bay arrival",
+          "boats": 3,
+          "cities": [
+            "muscat-oman"
+          ],
+          "route_scope": "intra",
+          "narrative": "Two vessels for silent arrivals across the bay and khor day-runs — replacing the diesel speedboat and the mountain road.",
+          "timeline": "2027",
+          "rationale": "Launch at the brand icon where the arrival is the talking point.",
+          "featured_routes": [
+            {
+              "label": "Dubai / Ras Al Khaimah ↔ Six Senses Zighy Bay",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 263.5,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Khasab ↔ Musandam khors (fjords)",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 18,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Zighy Bay ↔ Telegraph Island & the inner fjords",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 22,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
+          ],
+          "use_cases": [
+            "resort arrival",
+            "fjord touring",
+            "private charter"
+          ]
+        },
+        {
+          "n": 2,
+          "label": "Phase 2 — the Musandam fjord network",
+          "boats": 25,
+          "cities": [
+            "muscat-oman"
+          ],
+          "route_scope": "intra",
+          "narrative": "Extend across the Musandam khors — Telegraph Island, the inner fjords — a silent foiling exploration tier.",
+          "timeline": "2028",
+          "rationale": "Open Arabia's fjordland to silent, zero-emission touring.",
+          "featured_routes": [
+            {
+              "label": "Musandam ↔ Dibba & the wider Oman coast",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 8.5,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
+          ],
+          "use_cases": [
+            "fjord touring",
+            "exploration",
+            "wellness retreats"
+          ]
+        },
+        {
+          "n": 3,
+          "label": "Phase 3 — the UAE link",
+          "boats": 50,
+          "cities": [
+            "muscat-oman"
+          ],
+          "route_scope": "intra",
+          "narrative": "Quanta-LR links the Musandam to Dubai and Ras Al Khaimah — a silent hybrid arrival from the UAE, no mountain road.",
+          "timeline": "2029+",
+          "rationale": "The hybrid connects the resort directly to its biggest feeder market by sea.",
+          "featured_routes": [
+            {
+              "label": "Dubai / Ras Al Khaimah ↔ Six Senses Zighy Bay",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 263.5,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Khasab ↔ Musandam khors (fjords)",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 18,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            },
+            {
+              "label": "Zighy Bay ↔ Telegraph Island & the inner fjords",
+              "from_node_id": "muscat-oman",
+              "to_node_id": "muscat-oman",
+              "distance_nm": 22,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
+          ],
+          "use_cases": [
+            "feeder-market link",
+            "coastal network",
+            "cross-border luxury"
+          ]
+        }
+      ],
+      "close": {
+        "title": "Arabia's fjords, reached over the water in silence.",
+        "body": "Zighy Bay proves it; the Musandam fjords scale it; the UAE link completes it. A seascape with no equivalent in the Gulf, on foils."
+      },
+      "end_state": {
+        "headline": "Six Senses Zighy Bay and the Musandam fjords as a silent foiling tier.",
+        "addressable_market_count": 1,
+        "addressable_footprint": "Six Senses Zighy Bay, the Musandam khors and Telegraph Island, the Dibba coast, and a Quanta-LR link to Dubai and Ras Al Khaimah.",
+        "end_state_cities": [
+          "muscat-oman"
+        ],
+        "narrative": "Steady state is Arabia's fjordland on foils — a silent arrival across the strait and an exploration tier through the Musandam khors."
+      },
+      "corridors_note": "A silent strait arrival, fjord-khor runs and a Quanta-LR UAE link — the journeys the Musandam makes dramatic and diesel boats make loud.",
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 77,
+      "committed_fleet": 50,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Oman — Six Senses Zighy Bay as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~50 vessels as the network matures (addressable ceiling ~77)."
+      },
+      "use_cases": [
+        {
+          "label": "waterfront commute",
+          "summary": "Dubai / Ras Al Khaimah → Six Senses Zighy Bay becomes a Six Senses water leg: A Quanta-LR run up the coast and across to the resort bay."
+        },
+        {
+          "label": "waterfront commute",
+          "summary": "Khasab → Musandam khors (fjords) becomes a Six Senses water leg: A silent, zero-wake foiling run among the fjords."
+        },
+        {
+          "label": "waterfront commute",
+          "summary": "Zighy Bay → Telegraph Island & the inner fjords becomes a Six Senses water leg: A silent foiling run deep into the khors."
+        }
+      ]
+    },
+    {
+      "id": "fiji",
+      "slug": "fiji",
+      "label": "Fiji — Six Senses Fiji",
+      "region": "Oceania",
+      "anchor_cities": [
+        "nadi-fiji"
+      ],
+      "summary": "Six Senses Fiji on Malolo Island in the Mamanuca group — a South Pacific archipelago reached today by diesel catamarans and seaplanes from Nadi.",
+      "hero": {
+        "title": "Six Senses × Navier — Fiji's Mamanuca & Yasawa islands, by foil",
+        "subtitle": "A South Pacific archipelago, hopped in silence.",
+        "what_we_do_together": "We bring a foiling-electric arrival and island tier to Six Senses Fiji — Nadi and Port Denarau transfers and silent runs across the Mamanuca and Yasawa islands. Navier supplies the fleet and the Maldives playbook; Six Senses brings the guests and the sustainability ethos a silent electric boat fits perfectly."
+      },
+      "partner_context": {
+        "their_ambition": "Six Senses pairs luxury with sustainability; its solar-powered Fiji resort sits in one of the South Pacific's great archipelagos.",
+        "their_pressure": "The islands are hopped by diesel catamarans and seaplanes — at odds with the solar resort and Fiji's climate leadership.",
+        "where_navier_fits": "Navier makes island-hopping silent and zero-emission — the Six Senses ethos and Fiji's climate stance made literal on the water."
+      },
+      "why_now": "Fiji's island-hopping runs on diesel catamarans and seaplanes, and the Pacific island states are acutely focused on climate and clean transport. A ~100-vessel Navier network is already operating in the Maldives. A silent, zero-emission foiling tier aligns exactly with the Six Senses ethos and Fiji's climate leadership.",
+      "why_navier_now": {
+        "step_change": "Hydrofoiling lifts the hull clear of the water, so a Navier vessel flies instead of plowing through chop - roughly 10x more efficient than a conventional planing boat, faster (30+ kt cruise), and dramatically smoother and quieter. It's software-defined and autonomy-ready, so the same fleet keeps getting better and cheaper to run over time. A step-change in marine mobility, not an incremental faster boat.",
+        "no_new_infrastructure": "Navier rides on infrastructure that already exists - the open ocean and the berths and jetties already in use. No vertiports, no new rights-of-way, no tunnels or tracks. Pioneer II needs only a berth pedestal; the Quanta-LR hybrid needs no charging infrastructure at all. That's the fundamental contrast with flying taxis and other new-infrastructure modes: nothing to permit, build, or wait for.",
+        "the_moment": "Fiji is one of the South Pacific's great archipelagos, but the islands are reached by diesel catamarans and seaplanes. Foiling makes the Mamanucas and Yasawas a silent, on-demand network from the Six Senses jetty — and a statement of Pacific climate leadership.",
+        "wow_corridors": [
+          "Port Denarau -> Six Senses Fiji (Malolo)",
+          "Malolo -> Mamanuca islands",
+          "Mamanucas -> Yasawa Islands",
+          "Mamanucas -> outer Yasawas (Quanta-LR)"
+        ],
+        "n35_note": "Guest arrivals and inter-villa transfers run on the N35 Shuttle — 12–15 passengers plus luggage, level dockside boarding, an all-weather climate-controlled cabin, and a shallow 1.5 m draft for lagoon and atoll approaches."
+      },
+      "multimodal_fit": "Six Senses guests arrive by air and transfer to the resort by boat or seaplane. A foiling tier replaces the slow, fume-heavy or weather-limited final leg with a fast, silent, zero-emission arrival — booked as part of the Six Senses journey.",
+      "journeys_unlocked": [
+        {
+          "from": "Nadi / Port Denarau",
+          "to": "Six Senses Fiji (Malolo)",
+          "today": "A 45–90 min diesel catamaran or a seaplane.",
+          "with_navier": "A silent foiling run across to the resort island.",
+          "distance_nm": 5.3,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "nadi-fiji",
+          "to_node_id": "nadi-fiji",
+          "route_id": "ics-d552817910",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Malolo",
+          "to": "Mamanuca islands",
+          "today": "Crowded diesel day-trip boats.",
+          "with_navier": "A silent foiling run between the Mamanuca islands.",
+          "distance_nm": 8.6,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "nadi-fiji",
+          "to_node_id": "nadi-fiji",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "from": "Mamanucas",
+          "to": "Yasawa Islands",
+          "today": "A slow diesel-cat chain up the group.",
+          "with_navier": "A faster, smoother foiling run up the Yasawas.",
+          "distance_nm": 30,
+          "platform": "N35",
+          "archetype": "tourism",
+          "from_node_id": "nadi-fiji",
+          "to_node_id": "nadi-fiji",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
+        },
+        {
+          "from": "Nadi / Mamanucas",
+          "to": "Outer Yasawas & remote resorts",
+          "today": "A half-day diesel-cat journey.",
+          "with_navier": "A Quanta-LR run to the remote outer islands.",
+          "distance_nm": 75,
+          "platform": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "nadi-fiji",
+          "to_node_id": "nadi-fiji",
+          "route_id": null,
+          "_link_status": "unlinked-intra-city"
+        }
+      ],
+      "proof_points": [
+        {
+          "claim": "Six Senses Fiji is a brand icon.",
+          "evidence": "On Malolo Island in the Mamanucas — solar-powered and sustainability-led.",
+          "source": "Six Senses"
+        },
+        {
+          "claim": "Sustainability is the brand and the nation's cause.",
+          "evidence": "Six Senses Fiji runs on solar; Fiji is a global voice on climate — a zero-emission boat is a perfect fit.",
+          "source": "Six Senses / Fiji climate policy"
+        },
+        {
+          "claim": "The archipelago is the draw.",
+          "evidence": "The Mamanuca and Yasawa islands are the heart of Fiji's island-hopping tourism.",
+          "source": "Fiji tourism"
+        },
+        {
+          "claim": "The network model is proven.",
+          "evidence": "~100 vessels / $100M phased rollout already underway in the Maldives.",
+          "source": "WSJ + Bloomberg, May 2026"
+        }
+      ],
+      "objections": [
+        {
+          "concern": "Open South Pacific conditions?",
+          "response": "Quanta-LR handles the longer outer-island runs; the inner Mamanuca hops are short and well inside Pioneer II range, with software-controlled routing around the reefs."
+        },
+        {
+          "concern": "Will it fit the solar-powered resort?",
+          "response": "A zero-emission foiling boat is the natural extension of Six Senses Fiji's solar, sustainability-first identity onto the water."
+        },
+        {
+          "concern": "Certification in Fijian waters?",
+          "response": "A clear first-of-class path, software-defined controls, and an operating record in the US and the Maldives."
+        }
+      ],
+      "phases": [
+        {
+          "n": 1,
+          "label": "Phase 1 — the Malolo arrival",
+          "boats": 3,
+          "cities": [
+            "nadi-fiji"
+          ],
+          "route_scope": "intra",
+          "narrative": "Two Pioneer II vessels for silent Nadi/Denarau arrivals to Malolo and Mamanuca day-runs — clean transfers for a solar resort.",
+          "timeline": "2027",
+          "rationale": "Launch at the brand icon where a zero-emission boat reinforces the solar identity.",
+          "featured_routes": [
+            {
+              "label": "Nadi / Port Denarau ↔ Six Senses Fiji (Malolo)",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 5.3,
+              "platform": "Pioneer II",
+              "route_id": "ics-d552817910",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Malolo ↔ Mamanuca islands",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 8.6,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Mamanucas ↔ Yasawa Islands",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 30,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
+          ],
+          "use_cases": [
+            "resort arrival",
+            "island day-trips",
+            "private charter"
+          ]
+        },
+        {
+          "n": 2,
+          "label": "Phase 2 — the Mamanuca network",
+          "boats": 25,
+          "cities": [
+            "nadi-fiji"
+          ],
+          "route_scope": "intra",
+          "narrative": "Extend across the Mamanucas — a silent foiling island-hopping tier across the inner group.",
+          "timeline": "2028",
+          "rationale": "Open the islands guests already hop, in silence.",
+          "featured_routes": [
+            {
+              "label": "Nadi / Mamanucas ↔ Outer Yasawas & remote resorts",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 75,
+              "platform": "Quanta-LR",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
+          ],
+          "use_cases": [
+            "island-hopping",
+            "dive trips",
+            "exploration"
+          ]
+        },
+        {
+          "n": 3,
+          "label": "Phase 3 — the Yasawa extension",
+          "boats": 50,
+          "cities": [
+            "nadi-fiji"
+          ],
+          "route_scope": "intra",
+          "narrative": "Quanta-LR opens the Yasawas and the outer islands — a silent hybrid tier up one of the South Pacific's great island chains.",
+          "timeline": "2029+",
+          "rationale": "The hybrid connects the inner group to the remote outer resorts.",
+          "featured_routes": [
+            {
+              "label": "Nadi / Port Denarau ↔ Six Senses Fiji (Malolo)",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 5.3,
+              "platform": "Pioneer II",
+              "route_id": "ics-d552817910",
+              "_link_status": "linked-grok-scoped",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Malolo ↔ Mamanuca islands",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 8.6,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city",
+              "_link_kind": "corridor-label",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Mamanucas ↔ Yasawa Islands",
+              "from_node_id": "nadi-fiji",
+              "to_node_id": "nadi-fiji",
+              "distance_nm": 30,
+              "platform": "Pioneer II",
+              "route_id": null,
+              "_link_status": "unlinked-intra-city"
+            }
+          ],
+          "use_cases": [
+            "island-hopping",
+            "remote resorts",
+            "exploration"
+          ]
+        }
+      ],
+      "close": {
+        "title": "A South Pacific archipelago, hopped in silence.",
+        "body": "Malolo proves it; the Mamanucas and Yasawas scale it. One of the South Pacific's great island chains, on foils — and a statement of Pacific climate leadership."
+      },
+      "end_state": {
+        "headline": "Six Senses Fiji and the Mamanuca/Yasawa islands as a silent, zero-emission foiling tier.",
+        "addressable_market_count": 1,
+        "addressable_footprint": "Six Senses Fiji on Malolo, the Mamanuca islands, and a Quanta-LR extension up the Yasawa chain to the outer resorts.",
+        "end_state_cities": [
+          "nadi-fiji"
+        ],
+        "narrative": "Steady state is Fiji's archipelago on foils — a silent, solar-aligned arrival and an island-hopping tier across the Mamanucas and Yasawas."
+      },
+      "corridors_note": "A solar-aligned arrival, Mamanuca hops and a Quanta-LR Yasawa run — the journeys Fiji's archipelago makes idyllic and diesel cats make slow.",
+      "category": "hospitality_brand",
+      "steady_state_ceiling": 77,
+      "committed_fleet": 50,
+      "the_ask": {
+        "navier_brings": "The software-defined foiling fleet, captain training, the maintenance & certification path, and a uniform integration spec.",
+        "partner_brings": "Demand, the rider/guest relationship, and Fiji — Six Senses Fiji as the launch market to prove the on-water tier.",
+        "next_step": "Scope a Phase-1 pilot (~3 vessels) on the entry corridor, building to ~50 vessels as the network matures (addressable ceiling ~77)."
+      },
+      "use_cases": [
+        {
+          "label": "premium water mobility",
+          "summary": "Nadi / Port Denarau → Six Senses Fiji (Malolo) becomes a Six Senses water leg: A silent foiling run across to the resort island."
+        },
+        {
+          "label": "island access",
+          "summary": "Malolo → Mamanuca islands becomes a Six Senses water leg: A silent foiling run between the Mamanuca islands."
+        },
+        {
+          "label": "island access",
+          "summary": "Mamanucas → Yasawa Islands becomes a Six Senses water leg: A faster, smoother foiling run up the Yasawas."
+        }
+      ]
     }
   ],
-  "network_footprint": [
-    {
-      "id": "vietnam",
-      "registry_key": "vietnam",
-      "covered": true,
-      "tier": "sub_proposal",
-      "render": "geometry",
-      "map_promote": true,
-      "label": "Vietnam",
-      "country": "Vietnam",
-      "countries": [
-        "Vietnam"
-      ],
-      "region": "APAC"
-    },
-    {
-      "id": "maldives",
-      "registry_key": null,
-      "covered": true,
-      "tier": "coastal_aspirational",
-      "render": "aspirational",
-      "map_promote": false,
-      "label": "Maldives",
-      "country": null,
-      "countries": [],
-      "region": "Global"
-    },
-    {
-      "id": "seychelles",
-      "registry_key": null,
-      "covered": true,
-      "tier": "coastal_aspirational",
-      "render": "aspirational",
-      "map_promote": false,
-      "label": "Seychelles",
-      "country": null,
-      "countries": [],
-      "region": "Global"
+  "steady_state_ceiling": 524,
+  "committed_fleet": 333,
+  "tier": "flagship",
+  "_provenance": {
+    "journey_relink": {
+      "at": "2026-06-21T04:41:42Z",
+      "lane": "grok/relink_partner_journeys",
+      "stats": {
+        "total": 76,
+        "linked": 16,
+        "cleared_mislink": 0,
+        "borrowed_brief": 0,
+        "matched_scoped": 10,
+        "network_chip": 0,
+        "brief_cluster": 0,
+        "phase_rollup": 0,
+        "grounding": 6,
+        "gcn_promoted": 0
+      }
     }
-  ]
+  },
+  "_regional_inheritance": {
+    "pack": "global_hospitality",
+    "reference_partner": "four-seasons",
+    "applied_at": "2026-06-21T05:06:51Z",
+    "mode": "subset",
+    "bound_cards": 0,
+    "missing_reference_keys": 0
+  }
 }
