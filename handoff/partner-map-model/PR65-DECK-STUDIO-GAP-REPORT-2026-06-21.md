@@ -7,7 +7,7 @@
 | Local validate | **PASS** (all 11 #65 + golden decks) |
 | Live bind (Slides OAuth) | **COMPLETE** — 11 sandbox decks from Grab template |
 | Content apply + 11-slide trim | **COMPLETE** — partner text from `content-source.json` |
-| Economics URL bind | **9/11 bound** — yassir + caribbean published 2026-06-21 |
+| Economics URL bind | **11/11 bound** — India corporate inherit published 2026-06-21 |
 | Route/render QA ledgers | **COMPLETE** — `decks/<deck>/ledgers/route-render-qa.json` |
 | N30 image compositing | **HELD-NULL** — no approved backgrounds or `n30.png` in repo |
 | Schema validate post-content | **PASS** |
@@ -18,13 +18,13 @@ Lane report: `deck-studio/out/pr65-content-lane-report.json`
 
 | Deck key | Slides | Economics URL | Route QA | Content QA |
 |----------|--------|---------------|----------|------------|
-| adani-ports | 11 | null (held) | PASS_WITH_FLAGS | pass |
+| adani-ports | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1nHiCS0crF7zdFvpZ5GhRjApknsvFDerAjIlRfB4kW5w/edit) | PASS_WITH_FLAGS | pass |
 | bolt | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit) | PASS | pass |
 | caribbean-mobility | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1J9rb-rAXkLnJPrKO8WhG7bLkofG-IB5En6hrjnwDyt0/edit) | PASS | pass |
 | noon | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1v0ywhNFk_fA1JRVhizWlz89RKgQWlID9RD3LfBhVB2Y/edit) | PASS | pass |
 | ola | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1pNwq_GQd2Fdem8O4o2GNNoKxBPxXOPDh1qfbhGFGkaQ/edit) | PASS | pass |
 | rapido | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1ujRCwCKNFcfUbVL5B312fjcYmtvsDVhBtK2hsTHo-qA/edit) | PASS | pass |
-| reliance-industries | 11 | null (held) | PASS_WITH_FLAGS | pass |
+| reliance-industries | 11 | [Sheet](https://docs.google.com/spreadsheets/d/12A3sSM5HMOF1qoDm4lq8zOKQ5YU17VzlIQ9favraS8Y/edit) | PASS_WITH_FLAGS | pass |
 | uber-india | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1L6StDXDjdR26l_bIqRRH150B1rTeT9pHk76JKkG3rqw/edit) | PASS | pass |
 | uber-mena | 11 | [Sheet](https://docs.google.com/spreadsheets/d/19VtRN0U6Gggq_RQlRuSxmiIxnp2KgGEIvXOW72RQHIQ/edit) | PASS | pass |
 | yango | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit) | PASS | pass |
@@ -51,12 +51,11 @@ Per deck:
 
 ## Remaining gaps
 
-### Economics (2 held-null)
+### Economics
 
-See `handoff/partner-map-model/PR65-ECONOMICS-SHEET-NOTES-2026-06-21.md`.
+All 11 decks bound. See `handoff/partner-map-model/PR65-ECONOMICS-SHEET-NOTES-2026-06-21.md`.
 
-- **yassir** / **caribbean-mobility** — **published** (LB-83 registry + in-place Drive upload)
-- **adani-ports** / **reliance-industries** — held-null: no `corridors.json` market / no `agg-*.json`; Tasklet must run finance cascade before Sheet mint
+- **adani-ports** / **reliance-industries** — LB-257 scoped inherit from Rapido India corridor markets (`india_corporate` pack), partner-owned sheets (not Rapido's URL)
 
 ### N30 images (all 11 decks)
 

@@ -36,12 +36,10 @@ Grok can then run `n30_composite.py` + Slides API `replaceImage` edit plans once
 |---------|--------|-------|
 | **yassir** | **Published** | Sheet `1ba9Zpap5hPAehDKFHgk2PwRq4xStr2rx_z1LGSY52Q4` — built from `agg-yassir.json`, uploaded in-place |
 | **caribbean-mobility** | **Published** | Sheet `1J9rb-rAXkLnJPrKO8WhG7bLkofG-IB5En6hrjnwDyt0` — built from `agg-caribbean-mobility.json` |
-| **adani-ports** | **held-null** | No `corridors.json` market, no `agg-adani-ports.json` — deck-prep only; **do not mint empty Sheet** until geometry + aggregate exist |
-| **reliance-industries** | **held-null** | Same — no finance engine rows yet |
+| **adani-ports** | **Published** | LB-257 inherit from Rapido India markets → own sheet `1nHiCS0crF7zdFvpZ5GhRjApknsvFDerAjIlRfB4kW5w` |
+| **reliance-industries** | **Published** | Same inheritance → sheet `12A3sSM5HMOF1qoDm4lq8zOKQ5YU17VzlIQ9favraS8Y` |
 
-**Why held-null happened:** `pr65_content_lane` binds `economics_url` only from `finance/economics_url_map.json`, which is sourced from `PARTNER-SHEET-IDS.json` (LB-83). Yassir/Caribbean had local agg + xlsx but were never registered in that lane until today. Adani/Reliance were never in the finance cascade.
-
-**Tasklet P1 for Adani/Reliance economics:** add scoped `corridors.json` markets → run `aggregate.py` → `build_transparent_sheet.py` → register in `PARTNER-SHEET-IDS.json` (mirror `create_partner_sheets.py` flow).
+**Why they looked held-null earlier:** proposal geometry was sealed under `india_corporate` (PR #61), but the **finance publish lane** (`inheritance_spec.json` + scoped aggregate + LB-83) had not been run for corporate partners — only for Rapido/Ola/Uber India mobility sheets. They should **inherit India corridor economics**, not share Rapido's sheet URL.
 
 ---
 

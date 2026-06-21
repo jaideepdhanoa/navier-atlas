@@ -8,10 +8,10 @@ Deck Studio binds `economics_url` from `finance/economics_url_map.json`, which m
 |---------|------------|
 | yassir | Had `agg-yassir.json` + local `yassir_unit_econ.xlsx` from PR #65 Grok lane, but **never registered** in `PARTNER-SHEET-IDS.json` — no stable Drive ID for deck chip / `model_link` wiring |
 | caribbean-mobility | Same — `agg-caribbean-mobility.json` existed, no LB-83 entry |
-| adani-ports | **No finance engine footprint** — zero rows in `corridors.json`, no `agg-adani-ports.json`. Deck lane is proposal-prep only |
-| reliance-industries | Same as Adani — no corridors/aggregate; `economics_url: null` in partner JSON is correct |
+| adani-ports | **LB-257 inheritance gap (fixed 2026-06-21)** — proposal geometry sealed via `india_corporate` / Rapido spine, but finance lane had not run scoped cascade + LB-83 publish |
+| reliance-industries | Same — inherit India mobility corridor economics; operator narrative differs |
 
-Creating empty Google Sheets for Adani/Reliance would violate null-beats-confidently-wrong.
+**Correction:** Adani/Reliance do **not** point at Rapido's sheet URL. They inherit Rapido's **scoped corridor rows** (LB-257), re-tagged to `adani-ports` / `reliance-industries`, then get **partner-owned** transparent sheets.
 
 ## Resolved today (Grok)
 
@@ -31,12 +31,20 @@ python3 drive_upload.py _sheet_out/caribbean-mobility_unit_econ.xlsx <caribbean_
 
 Wired into: `partner-pitch/partners/*.json`, `data-clean/partners/*.json`, `deck-studio/decks/*/deck.config.json`.
 
-## Still held-null — Tasklet path
+## India corporate inheritance (resolved 2026-06-21)
 
-For **adani-ports** and **reliance-industries**:
+`regional-inheritance-manifest.json` → pack `india_corporate` (`reference_partner: rapido`).
 
-1. Seal/port geometry → scoped corridors in `finance/model/corridors.json`
-2. `aggregate.py --partner <slug>` → `finance/recal/agg-<slug>.json`
-3. `build_transparent_sheet.py --partner <slug>`
-4. `create_partner_sheets.py` entry + `drive_upload.py` in-place publish
-5. Add to `economics_url_map.json`; Grok re-runs deck economics bind
+```bash
+python3 finance/build_scoped_corridors.py --partner adani-ports --out finance/recal/corridors-adani-ports.json
+python3 finance/model/aggregate.py --partner adani-ports --corridors finance/recal/corridors-adani-ports.json --json finance/recal/agg-adani-ports.json
+python3 finance/build_transparent_sheet.py --partner adani-ports --corridors finance/recal/corridors-adani-ports.json --out finance/_sheet_out/adani-ports_unit_econ.xlsx
+# repeat for reliance-industries
+```
+
+| Partner | Sheet ID | URL |
+|---------|----------|-----|
+| adani-ports | `1nHiCS0crF7zdFvpZ5GhRjApknsvFDerAjIlRfB4kW5w` | https://docs.google.com/spreadsheets/d/1nHiCS0crF7zdFvpZ5GhRjApknsvFDerAjIlRfB4kW5w/edit |
+| reliance-industries | `12A3sSM5HMOF1qoDm4lq8zOKQ5YU17VzlIQ9favraS8Y` | https://docs.google.com/spreadsheets/d/12A3sSM5HMOF1qoDm4lq8zOKQ5YU17VzlIQ9favraS8Y/edit |
+
+Inherited markets (6): `india-mumbai-rapido`, `india-goa-rapido`, `india-kerala-rapido`, `india-andaman-rapido`, `india-kolkata-rapido`, `india-chennai-rapido` — 99 grounded corridors each after dedupe.
