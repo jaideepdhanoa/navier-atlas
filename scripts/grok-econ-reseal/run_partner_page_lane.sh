@@ -50,7 +50,12 @@ echo "  1/5 schema validation"
 python3 "$ROOT/scripts/validate_partner_proposals.py"
 
 echo "  2/5 use-case completeness"
-python3 "$ROOT/scripts/audit_partner_proposal_use_cases.py"
+UC_ARGS=()
+if [ -n "$PARTNERS" ]; then
+  # shellcheck disable=SC2206
+  UC_ARGS=(--partner $PARTNERS)
+fi
+python3 "$ROOT/scripts/audit_partner_proposal_use_cases.py" "${UC_ARGS[@]}"
 
 echo "  3/5 journey + featured re-link"
 python3 "$ROOT/scripts/relink_partner_journeys.py" "${RELINK_ARGS[@]}"

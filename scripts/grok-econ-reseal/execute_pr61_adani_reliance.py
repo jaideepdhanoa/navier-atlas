@@ -37,6 +37,72 @@ VALID_ROUTE_SCOPES = {
     "intra", "inter", "intercity", "network", "all", "cross_border", "regional",
 }
 
+VALID_PLATFORMS = frozenset({
+    "Pioneer II", "N30 Pioneer II", "Quanta-LR", "both", "N35", "N35 Shuttle",
+})
+
+
+def _normalize_platform_label(raw: Any) -> str | None:
+    if not isinstance(raw, str) or not raw.strip():
+        return None
+    if raw in VALID_PLATFORMS:
+        return raw
+    low = raw.lower()
+    if "quanta" in low:
+        return "Quanta-LR"
+    if "n35 shuttle" in low or raw.strip() == "N35":
+        return "N35 Shuttle"
+    if "n35" in low:
+        return "N35"
+    if "n30" in low or "pioneer" in low:
+        return "N30 Pioneer II"
+    return None
+
+
+def sanitize_route_entry(entry: dict[str, Any]) -> list[str]:
+    """Drop or normalize fields that fail partner_proposal.schema.json when present."""
+    notes: list[str] = []
+    if entry.get("distance_nm") is None:
+        entry.pop("distance_nm", None)
+        notes.append("distance_nm: null removed")
+    plat = entry.get("platform")
+    if plat is not None and plat not in VALID_PLATFORMS:
+        mapped = _normalize_platform_label(plat)
+        if mapped:
+            entry["_platform_note"] = plat
+            entry["platform"] = mapped
+            notes.append(f"platform: normalized → {mapped}")
+        else:
+            entry["_platform_note"] = plat
+            entry.pop("platform", None)
+            notes.append("platform: invalid removed")
+    return notes
+
+
+def sanitize_all_route_containers(doc: dict[str, Any]) -> list[str]:
+    notes: list[str] = []
+    containers: list[tuple[str, list]] = []
+    if isinstance(doc.get("journeys_unlocked"), list):
+        containers.append(("journeys_unlocked", doc["journeys_unlocked"]))
+    for phase in doc.get("phases", []) or []:
+        if isinstance(phase.get("featured_routes"), list):
+            containers.append((f"phase-{phase.get('n')}", phase["featured_routes"]))
+    for market in doc.get("markets", []) or []:
+        mid = market.get("id", "?")
+        if isinstance(market.get("journeys_unlocked"), list):
+            containers.append((f"{mid}/journeys_unlocked", market["journeys_unlocked"]))
+        for phase in market.get("phases", []) or []:
+            if isinstance(phase.get("featured_routes"), list):
+                containers.append(
+                    (f"{mid}/phase-{phase.get('n')}", phase["featured_routes"]),
+                )
+    for label, routes in containers:
+        for entry in routes:
+            if isinstance(entry, dict):
+                for n in sanitize_route_entry(entry):
+                    notes.append(f"{label}: {n}")
+    return notes
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -80,14 +146,28 @@ def conform_schema(doc: dict[str, Any], *, partner_id: str, display: str) -> lis
         }
         notes.append("network_thesis: str → object")
 
-    for phase in doc.get("phases", []) or []:
+    def _conform_phase_route_scope(phase: dict[str, Any], *, ctx: str) -> None:
         rs = phase.get("route_scope")
         if rs in ROUTE_SCOPE_MAP:
             phase["route_scope"] = ROUTE_SCOPE_MAP[rs]
-            notes.append(f"phase {phase.get('n')}: route_scope mapped")
+            notes.append(f"{ctx}: route_scope mapped")
         elif rs not in VALID_ROUTE_SCOPES:
-            phase["route_scope"] = "all"
-            notes.append(f"phase {phase.get('n')}: route_scope defaulted to all")
+            phase["route_scope"] = "intra"
+            notes.append(f"{ctx}: route_scope {rs!r} → intra")
+
+    for phase in doc.get("phases", []) or []:
+        _conform_phase_route_scope(phase, ctx=f"phase {phase.get('n')}")
+
+    for market in doc.get("markets", []) or []:
+        mid = market.get("id", "?")
+        for phase in market.get("phases", []) or []:
+            _conform_phase_route_scope(phase, ctx=f"{mid}/phase {phase.get('n')}")
+
+    if doc.get("layout") not in ("single", "hub", "network"):
+        doc["layout"] = "hub"
+        notes.append("layout: mapped to hub")
+
+    notes.extend(sanitize_all_route_containers(doc))
 
     return notes
 

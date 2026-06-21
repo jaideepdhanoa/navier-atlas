@@ -1,12 +1,12 @@
 # PR #58 Grok Execution Report — 2026-06-20
 
-Generated: 2026-06-21T03:20:56Z
+Generated: 2026-06-21T04:09:12Z
 
 ## Summary
 
 - **Branch lane**: `grok/execute_pr58_india_gcc`
 - **Noon route seals**: 12 sealed / 0 held
-- **India route seals**: 1608 sealed / 0 held
+- **India route seals**: 1029 sealed / 0 held
 - **Anchor crosswalks**: 4 files
 - **Goa label canonicalizations**: 0
 - **Economics**: economics_pending; sidecar ref merged (0 records)
@@ -31,4 +31,4 @@ Generated: 2026-06-21T03:20:56Z
 ## Validation
 
 -   ✅ all partner proposals pass schema validation
-- build-site:  | _dist/ ready: 1 aggregate + 132 partner/market + 412 share pages (1 market sub-page(s) skipped). | Share URLs: https://navier-atlas.vercel.app/cluster/<id> · https://navier-atlas.vercel.app/city/<id> · https://navier-atlas.vercel.app/<partner>/<market>/city/<id>
+- build-site:  | _dist/ ready: 1 aggregate + 137 partner/market + 416 share pages (1 market sub-page(s) skipped). | Share URLs: https://navier-atlas.vercel.app/cluster/<id> · https://navier-atlas.vercel.app/city/<id> · https://navier-atlas.vercel.app/<partner>/<market>/city/<id>

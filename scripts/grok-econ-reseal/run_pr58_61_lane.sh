@@ -4,11 +4,11 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
+echo "=== PR #61 Adani / Reliance schema conform + exact-bind (before global validate) ==="
+python3 "$ROOT/scripts/grok-econ-reseal/execute_pr61_adani_reliance.py"
+
 echo "=== PR #58 India + GCC execution ==="
 "$ROOT/scripts/grok-econ-reseal/run_pr58_india_gcc_lane.sh"
-
-echo "=== PR #61 Adani / Reliance exact-bind ==="
-python3 "$ROOT/scripts/grok-econ-reseal/execute_pr61_adani_reliance.py"
 
 # Sync India platform + overlay partners to data-clean
 for p in rapido ola noon careem adani-ports reliance-industries uber-india-derivative; do

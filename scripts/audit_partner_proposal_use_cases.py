@@ -2,6 +2,7 @@
 """Audit partner-pitch use-case completeness (PR #56 gate)."""
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -59,7 +60,7 @@ def iter_phases(doc: dict, market_id: str | None = None):
             yield mid, phase
 
 
-def audit() -> int:
+def audit(*, partner_filter: set[str] | None = None) -> int:
     errors: list[str] = []
     empty_phase: list[str] = []
     missing_market_uc: list[str] = []
@@ -67,6 +68,9 @@ def audit() -> int:
 
     for path in sorted(PARTNERS.glob("*.json")):
         if path.name.startswith("_"):
+            continue
+        slug = path.stem
+        if partner_filter is not None and slug not in partner_filter:
             continue
         try:
             doc = json.loads(path.read_text())
@@ -123,5 +127,18 @@ def audit() -> int:
     return 0
 
 
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument(
+        "--partner",
+        nargs="+",
+        default=None,
+        help="Limit audit to these partner slugs (e.g. rapido ola noon careem)",
+    )
+    return p.parse_args()
+
+
 if __name__ == "__main__":
-    sys.exit(audit())
+    args = parse_args()
+    filt = set(args.partner) if args.partner else None
+    sys.exit(audit(partner_filter=filt))
