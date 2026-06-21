@@ -19,3 +19,8 @@
 2. Source route-specific demand anchors for the first 3 Caribbean prove markets: Bahamas, Puerto Rico, USVI/BVI.
 3. Assemble Grok seal package for Yassir Morocco/Tunisia and Caribbean geometry render QA.
 4. Publish/update economics Sheets in place once approved IDs exist; include sidecar in gold export.
+
+## Batch 2 banked: Caribbean demand-anchor leads
+- Added `caribbean-demand-anchor-research-batch-1.json` covering Bahamas, Puerto Rico, USVI/BVI, and Barbados.
+- These are *not* final economics; they are source-backed prioritization and route-candidate anchors for the next model pass.
+- Next hard gate: country-reference rows + route-level passenger/fare assumptions before any Caribbean economics cascade.
