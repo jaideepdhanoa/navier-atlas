@@ -38,22 +38,54 @@ def cmd_validate(args):
     print('Deck Studio validation passed.')
     return 0
 
-def get_slides_service():
+def load_google_credentials(scopes=None):
     try:
+        from google.auth.transport.requests import Request
         from google.oauth2.credentials import Credentials
-        from google_auth_oauthlib.flow import InstalledAppFlow
-        from googleapiclient.discovery import build
         from dotenv import load_dotenv
     except Exception as e:
         raise SystemExit(f'Missing Google dependencies: {e}')
     load_dotenv()
-    scopes=['https://www.googleapis.com/auth/presentations','https://www.googleapis.com/auth/drive.readonly']
-    token_path=os.getenv('GOOGLE_TOKEN_PATH')
-    cred_path=os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-    if not token_path or not Path(token_path).exists():
-        raise SystemExit('Set GOOGLE_TOKEN_PATH to an OAuth token JSON with Slides scope. Service-account auth can be added here if needed.')
-    creds=Credentials.from_authorized_user_file(token_path, scopes)
-    return build('slides','v1',credentials=creds)
+    default_cred_dir = Path.home() / '.config' / 'google-drive-mcp'
+    token_path = Path(os.getenv('GOOGLE_TOKEN_PATH') or default_cred_dir / 'tokens.json')
+    client_path = Path(os.getenv('GOOGLE_CLIENT_PATH') or default_cred_dir / 'gcp-oauth.keys.json')
+    if not token_path.is_file():
+        raise SystemExit(f'Set GOOGLE_TOKEN_PATH to an OAuth token JSON with Slides scope. Missing: {token_path}')
+    data = load_json(token_path)
+    client = load_json(client_path) if client_path.is_file() else {}
+    installed = client.get('installed') or client.get('web') or {}
+    token_scopes = data.get('scope', '').split() if data.get('scope') else None
+    creds = Credentials(
+        token=data.get('access_token'),
+        refresh_token=data.get('refresh_token'),
+        token_uri=installed.get('token_uri', 'https://oauth2.googleapis.com/token'),
+        client_id=installed.get('client_id') or data.get('client_id'),
+        client_secret=installed.get('client_secret') or data.get('client_secret'),
+        scopes=scopes or token_scopes,
+    )
+    if creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+        data['access_token'] = creds.token
+        if creds.expiry:
+            data['expiry_date'] = int(creds.expiry.timestamp() * 1000)
+        write_json(token_path, data)
+    return creds
+
+def get_slides_service():
+    try:
+        from googleapiclient.discovery import build
+    except Exception as e:
+        raise SystemExit(f'Missing Google dependencies: {e}')
+    scopes = ['https://www.googleapis.com/auth/presentations', 'https://www.googleapis.com/auth/drive.readonly']
+    return build('slides', 'v1', credentials=load_google_credentials(scopes), cache_discovery=False)
+
+def get_drive_service():
+    try:
+        from googleapiclient.discovery import build
+    except Exception as e:
+        raise SystemExit(f'Missing Google dependencies: {e}')
+    scopes = ['https://www.googleapis.com/auth/drive']
+    return build('drive', 'v3', credentials=load_google_credentials(scopes), cache_discovery=False)
 
 def cmd_pull(args):
     root=Path(args.root); cfg=load_json(deck_dir(root,args.deck)/'deck.config.json')
