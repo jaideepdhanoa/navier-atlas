@@ -1,52 +1,42 @@
-# India Adani/Reliance — missing market scan queue
+# India Adani/Reliance — high-value consumer market scan queue
 
 Date: 2026-06-21  
-Status: **Tasklet research lane reopened for broader India market scan.**
+Status: **Narrowed per Jaideep to recognizable high-value consumer markets.**
 
 ## Correction
 
-The prior Tasklet note saying the Adani/Reliance research lane was complete was too narrow. It completed only the four **existing Atlas display-ready India markets** in the current sealed crosswalk:
+The prior scan queue included a broad industrial/port Priority B list. That is now **held out of scope**. The active plan is not a generic India port-footprint crawl.
 
-- Mumbai / Konkan
-- Goa
-- Kerala / Kochi backwaters
-- Andaman & Nicobar
+## Active markets only
 
-That is not the same as completing the planned broad India scan.
+1. **Kolkata / Hooghly waterfront**
+2. **Chennai / ECR / Cuddalore / Puducherry coast**
 
-## Why only four markets landed
+## Held / not active unless re-approved
 
-The PR #61 handoff constrained display scope to existing sealed Atlas India city IDs and then source-hardened only those four. This followed the exactness rule, but it incorrectly collapsed the broader scan backlog into `roll_up_markets` / candidate-only notes instead of producing a separate market scan queue for Grok and Tasklet.
-
-## Markets that still need broad-footprint-first scan
-
-Priority A — named by plan / user:
-
-- Kolkata / Hooghly river / Sundarbans access
-- Chennai / Ennore / ECR / Mahabalipuram / Puducherry coast
-
-Priority B — strongly implied by Adani/Reliance assets and India coastal footprint:
-
-- Gujarat port spine: Mundra, Kandla/Tuna, Dahej, Hazira, Surat/Bharuch
-- Dighi / Raigad / Agardanda / Konkan industrial-coast spine
-- Vizhinjam / Trivandrum passenger context beyond Kerala backwaters
-- Visakhapatnam / Kakinada / KG-D6/Gadimoga east-coast context
-- Odisha / Dhamra / Bhubaneswar-Puri-Chilika context
-- Lakshadweep access from Kochi/Vizhinjam
+- Gujarat port spine
+- Dighi / Raigad / Agardanda industrial-coast spine
+- Vizhinjam / Trivandrum beyond consumer/tourism context
+- Visakhapatnam / Kakinada / KG-D6/Gadimoga
+- Odisha / Dhamra / Puri / Chilika
+- Lakshadweep access
 
 ## Scan rule
 
-For each candidate market, Tasklet should produce only research/rationale inputs:
+For each active market, Tasklet should produce only research/rationale inputs:
 
-- official route / ferry / waterway / port / tourism source if available
+- official route / ferry / waterway / tourism source if available
 - official or high-confidence demand proxy if available
 - official fare/tariff if available
-- partner relevance to Adani/Reliance
+- consumer-market relevance to Adani/Reliance proposal narrative
 - Atlas status: existing ID / exact-bind candidate / mint required / hold
 - unsupported economics fields stay `null`
 
-Grok still owns financials, model building, sealing, render QA, sheets and master cascade.
+Grok still owns financials, model building, sealing, render checks, sheets, and master cascade.
 
-## Immediate next step
+## Current batch
 
-Run a bite-sized scan for Kolkata and Chennai first, then append Gujarat/Dighi/east-coast markets as additive scan batches.
+See:
+
+- `handoff/partner-map-model/INDIA-ADANI-RELIANCE-HIGH-VALUE-CONSUMER-MARKET-SCAN-KOLKATA-CHENNAI-2026-06-21.md`
+- `handoff/partner-map-model/india-adani-reliance-high-value-consumer-market-scan-kolkata-chennai-2026-06-21.json`

@@ -1,0 +1,99 @@
+{
+  "date": "2026-06-21",
+  "scope": "high_value_consumer_markets_only",
+  "status": "tasklet_research_batch_complete_grok_financials_and_seal_pending",
+  "excluded_for_now": {
+    "prior_priority_b_industrial_port_list": "held_out_of_scope_until_user_reapproves",
+    "reason": "User wants recognizable high-value consumer markets; focus narrowed to Kolkata and Chennai."
+  },
+  "markets": [
+    {
+      "market_id_candidate": "kolkata_hooghly_waterfront",
+      "display_label": "Kolkata / Hooghly waterfront",
+      "verdict": "admit_high_priority_consumer_candidate",
+      "atlas_status": "mint_or_exact_bind_required",
+      "confidence": {
+        "market_admit": "high",
+        "route_roster": "medium",
+        "demand": "medium_network_level_only",
+        "fare": "null"
+      },
+      "candidate_routes": [
+        "Howrah ↔ Millennium Park / Shipping",
+        "Howrah ↔ Fairlie",
+        "Dakshineswar ↔ Belur",
+        "Fairlie ↔ Howrah ↔ Baghbazar ↔ Belur ↔ Kutighat / Ariyadaha",
+        "Princep Ghat / Millennium Park / Babughat leisure-waterfront loop",
+        "Kolkata ↔ Chandannagar / Belur / Dakshineswar / Sundarbans access if geometry and range gates pass"
+      ],
+      "admitted_facts": [
+        "Official West Bengal Transport Department page lists multiple ferry routes across/along the Hooghly.",
+        "World Bank / Government of India sources confirm a $105M project to improve inland water transport infrastructure in Kolkata/KMA.",
+        "World Bank project detail states approximately 30M people in the project area.",
+        "World Bank project detail states daily passenger volume within KMA is approximately 25M, expected to increase to 32M by 2025.",
+        "World Bank project detail states 165 ferries operate across 57 KMA ferry points serving more than 145M passengers per year.",
+        "West Bengal Tourism frames river/cruise tourism as a leisure/luxury product and lists Hooghly-relevant destinations."
+      ],
+      "model_inputs": {
+        "annual_passenger_demand": 145000000,
+        "annual_passenger_demand_scope": "KMA ferry network/system-level only; not a single route value",
+        "route_level_demand": null,
+        "official_fare_floor": null,
+        "premium_fare_proxy": null
+      },
+      "sources": [
+        "https://transport.wb.gov.in/transport-services/ferry-services/ferry-routes/",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1686277",
+        "https://www.worldbank.org/en/news/press-release/2020/11/30/world-bank-approves-usd105-million-project-to-improve-waterways-in-west-bengal-india",
+        "https://documents1.worldbank.org/curated/en/657021582100054184/txt/Project-Information-Document-Integrated-Safeguards-Data-Sheet-West-Bengal-Inland-Water-Transport-Logistics-and-Spatial-Development-Project-P166020.txt",
+        "https://www.wbtourism.gov.in/destination/details?template_id=2&id=62fded584f32074b6d01ed76"
+      ]
+    },
+    {
+      "market_id_candidate": "chennai_ecr_cuddalore_puducherry_coast",
+      "display_label": "Chennai / ECR / Cuddalore / Puducherry coast",
+      "verdict": "admit_consumer_candidate_earlier_stage_than_kolkata",
+      "atlas_status": "mint_or_exact_bind_required",
+      "confidence": {
+        "market_admit": "medium",
+        "route_roster": "medium",
+        "demand": "null",
+        "fare": "null"
+      },
+      "candidate_routes": [
+        "Napier Bridge ↔ Kovalam via Buckingham Canal if project advances and navigability passes",
+        "Chennai Port / waterfront ↔ leisure voyages in and around Chennai",
+        "Chennai ↔ Cuddalore coastal passenger ferry / cruise tourism",
+        "Chennai ↔ Puducherry / Pondicherry tourism route extension candidate",
+        "Chennai cruise terminal / passenger terminal as tourism gateway"
+      ],
+      "admitted_facts": [
+        "Poompuhar Shipping Corporation, a Government of Tamil Nadu enterprise, issued an EOI for ferry service and cruise tourism involving Cuddalore to Chennai and in/around Chennai.",
+        "The EOI lists Chennai Port and Cuddalore Port as proposed service locations and notes Chennai Port has a cruise-cum-passenger terminal.",
+        "The EOI contemplates ferry operations, leisure voyages, floating restaurants, corporate events, family events, ocean moonlight dinner, ticketing/marketing, economy seats, and tourism/maritime profit-sharing.",
+        "ET Infra reports feasibility work for a 53-km Chennai Water Metro corridor along Buckingham Canal between Napier Bridge and Kovalam, coordinated by CUMTA/WRD/TN Maritime Board.",
+        "Puducherry Port EOI confirms interest in passenger ferry, cruise tourism, yacht marina and passenger routes from/to Pondicherry Port.",
+        "PIB Tourism confirms Chennai Port is among Indian major ports visited by cruise passengers; no Chennai-specific passenger count is admitted."
+      ],
+      "model_inputs": {
+        "annual_passenger_demand": null,
+        "route_level_demand": null,
+        "official_fare_floor": null,
+        "premium_fare_proxy": null
+      },
+      "sources": [
+        "https://tamilship.com/FINAL%20EOI-PSC%20-3-23.12.2020.pdf",
+        "https://infra.economictimes.indiatimes.com/news/urban-transportation/feasibility-study-begins-for-chennais-water-metro-project/123675651",
+        "https://www.py.gov.in/sites/default/files/port22022022eoi.pdf",
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1540658"
+      ]
+    }
+  ],
+  "grok_instruction_delta": [
+    "Add Kolkata and Chennai as candidate high-value consumer markets.",
+    "Do not add the earlier Priority B industrial/port list unless Jaideep re-approves it.",
+    "Use Kolkata 145M passengers/year only as a KMA ferry-network anchor; route-level demand remains null unless separately sourced or explicitly modelled.",
+    "Keep Chennai demand and fare null unless independently validated.",
+    "Grok owns financials, TAM, geometry, seal, render QA, sheet/master cascade."
+  ]
+}
