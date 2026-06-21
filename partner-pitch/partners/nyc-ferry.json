@@ -129,7 +129,7 @@
   "phases": [
     {
       "n": 1,
-      "label": "Phase 1 — Rockaway long-range + East River wake pilot (Quanta-LR + Pioneer II)",
+      "label": "Phase 1 — Rockaway long-range + East River wake pilot",
       "boats": 8,
       "cities": [
         "new-york-harbor-usa"
@@ -137,20 +137,8 @@
       "route_scope": "intra",
       "narrative": "Demonstrate two flagship wins at once: a Quanta-LR run halving the Rockaway journey, and a zero-wake Pioneer II East River hop that answers the wake complaints — proving speed, range and wake advantages on the network's hardest routes.",
       "timeline": "2027 H1",
-      "rationale": "The two clearest pain points: the longest route and the wake-constrained corridor.",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims.",
       "featured_routes": [
-        {
-          "label": "Wall St / Pier 11 ↔ Rockaway",
-          "from_node_id": "new-york-harbor-usa",
-          "to_node_id": "new-york-harbor-usa",
-          "distance_nm": 1.77,
-          "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
         {
           "label": "Wall St / Pier 11 ↔ Brooklyn (DUMBO) / Long Island City",
           "from_node_id": "new-york-harbor-usa",
@@ -158,33 +146,40 @@
           "distance_nm": 0.54,
           "platform": "Pioneer II",
           "route_id": "ics-38e18c9220",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "ics-38e18c9220"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         },
         {
-          "label": "Midtown (E 34th) ↔ Yonkers / NJ Gold Coast",
+          "label": "Wall St / Pier 11 ↔ Rockaway",
           "from_node_id": "new-york-harbor-usa",
           "to_node_id": "new-york-harbor-usa",
-          "distance_nm": 1.92,
+          "distance_nm": 1.77,
           "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "route_id": "ics-f993f1e653",
+          "route_ids": [
+            "ics-f993f1e653"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "use_cases": [
         "commute",
         "fast ferry",
         "wake"
-      ]
+      ],
+      "_authority_phase_tier": "intra_pilot"
     },
     {
       "n": 2,
-      "label": "Phase 2 — Regional Hudson + harbor routes (Quanta-LR)",
+      "label": "Phase 2 — Regional Hudson + harbor routes",
       "boats": 77,
       "cities": [
         "new-york-harbor-usa"
@@ -192,76 +187,73 @@
       "route_scope": "intra",
       "narrative": "Add clean Quanta-LR regional routes up the Hudson (Yonkers, NJ Gold Coast) and toward Jamaica Bay — new connections the diesel cats can't economically serve.",
       "timeline": "2027 H2",
-      "rationale": "Open new regional water corridors.",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only.",
       "featured_routes": [
-        {
-          "label": "Manhattan ↔ JFK / Jamaica Bay area",
-          "from_node_id": "new-york-harbor-usa",
-          "to_node_id": "new-york-harbor-usa",
-          "distance_nm": 20,
-          "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "node-network",
-          "_link_status": "unlinked-intra-city"
-        }
-      ],
-      "use_cases": [
-        "regional commute"
-      ]
-    },
-    {
-      "n": 3,
-      "label": "Phase 3 — Foiling layer across the network",
-      "boats": 154,
-      "cities": [
-        "new-york-harbor-usa"
-      ],
-      "route_scope": "intra",
-      "narrative": "Scale a foiling fleet integrated across NYC Ferry — faster, cleaner, near-wakeless service that decarbonizes the network and extends it regionally.",
-      "timeline": "2028+",
-      "rationale": "The fast clean water layer of New York transit.",
-      "featured_routes": [
-        {
-          "label": "Wall St / Pier 11 ↔ Rockaway",
-          "from_node_id": "new-york-harbor-usa",
-          "to_node_id": "new-york-harbor-usa",
-          "distance_nm": 1.77,
-          "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Wall St / Pier 11 ↔ Brooklyn (DUMBO) / Long Island City",
-          "from_node_id": "new-york-harbor-usa",
-          "to_node_id": "new-york-harbor-usa",
-          "distance_nm": 0.54,
-          "platform": "Pioneer II",
-          "route_id": "ics-38e18c9220",
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
         {
           "label": "Midtown (E 34th) ↔ Yonkers / NJ Gold Coast",
           "from_node_id": "new-york-harbor-usa",
           "to_node_id": "new-york-harbor-usa",
           "distance_nm": 1.92,
           "platform": "Quanta-LR",
-          "route_id": null,
-          "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "route_id": "ics-25a683a51c",
+          "route_ids": [
+            "ics-25a683a51c"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
+        }
+      ],
+      "use_cases": [
+        "regional commute"
+      ],
+      "_authority_phase_tier": "intra_scale"
+    },
+    {
+      "n": 3,
+      "label": "Phase 3 — Midtown & NJ Gold Coast",
+      "boats": 154,
+      "cities": [
+        "new-york-harbor-usa"
+      ],
+      "route_scope": "inter",
+      "narrative": "Scale a foiling fleet integrated across NYC Ferry — faster, cleaner, near-wakeless service that decarbonizes the network and extends it regionally.",
+      "timeline": "2028+",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof.",
+      "featured_routes": [
+        {
+          "label": "Manhattan ↔ JFK / Jamaica Bay area",
+          "from_node_id": "new-york-harbor-usa",
+          "to_node_id": "new-york-harbor-usa",
+          "distance_nm": 3.56,
+          "platform": "Quanta-LR",
+          "route_id": "ics-db90a41958",
+          "route_ids": [
+            "ics-db90a41958"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "use_cases": [
         "regional transit"
-      ]
+      ],
+      "_authority_phase_tier": "inter_city"
+    },
+    {
+      "n": 4,
+      "label": "Phase 4 — JFK / Jamaica Bay roadmap",
+      "route_scope": "regional",
+      "cities": [
+        "new-york-harbor-usa"
+      ],
+      "featured_routes": [],
+      "_authority_phase_tier": "cross_border_roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
     }
   ],
   "the_ask": {
@@ -320,5 +312,18 @@
     "mode": "display_markets",
     "bound_cards": 0,
     "missing_reference_keys": 11
+  },
+  "_public_transit_authority": {
+    "archetype_id": "public_transit_authority",
+    "applied_at": "2026-06-21T11:30:40Z",
+    "home_cities": [
+      "new-york-harbor-usa"
+    ],
+    "phase_tiers": [
+      "intra_pilot",
+      "intra_scale",
+      "inter_city",
+      "cross_border_roadmap"
+    ]
   }
 }

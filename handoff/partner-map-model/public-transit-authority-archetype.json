@@ -4,7 +4,7 @@
   "archetype_id": "public_transit_authority",
   "applies_when": {
     "archetype": "public_transit",
-    "category": "transit_authority"
+    "category": ["transit_authority", "ferry_operator", "destination_region", "Authority / national transport"]
   },
   "phase_tiers": [
     {
@@ -284,10 +284,12 @@
         "intra_pilot": [
           {
             "label": "East Coast (Marina East / Marine Parade) ↔ Marina Bay / CBD",
-            "route_id": null,
-            "from_node_id": "singapore",
-            "to_node_id": "singapore",
-            "distance_nm": 5.2,
+            "route_id": "rn-82453f6cb33e",
+            "from_node_id": "bp-e887b12462",
+            "to_node_id": "bp-d269aeb00f",
+            "from_label": "Bedok Jetty (East Coast Park)",
+            "to_label": "Marina Bay Water Taxi Stops (MPA pilot — Esplanade / Bayfront / Promontory)",
+            "distance_nm": 5.8,
             "platform": "Pioneer II"
           },
           {
@@ -317,6 +319,373 @@
             "to_node_id": "riau-islands-indonesia",
             "distance_nm": 13.0,
             "platform": "Pioneer II"
+          }
+        ]
+      }
+    },
+    "bahrain-motc": {
+      "home_cities": ["manama-bahrain"],
+      "domestic_city_ids": ["manama-bahrain", "eastern-province-ksa", "dammam-khobar-ksa"],
+      "cross_border_city_ids": ["doha-qatar", "dubai-uae", "abu-dhabi-uae"],
+      "phase_count": 3,
+      "phase_labels": {
+        "1": "Prove — Bahrain domestic public marine mobility",
+        "2": "Scale — Manama ↔ KSA Eastern Province",
+        "3": "Roadmap — Doha / Dubai / Abu Dhabi Gulf capital links"
+      },
+      "tier_map": {
+        "1": "intra_pilot",
+        "2": "inter_city",
+        "3": "cross_border_roadmap"
+      },
+      "supplement_routes": {
+        "inter_city": [
+          {
+            "label": "Manama ↔ KSA Eastern Province",
+            "route_id": "rn-fffd9a53d482",
+            "from_node_id": "manama-bahrain",
+            "to_node_id": "eastern-province-ksa",
+            "distance_nm": 21.2,
+            "platform": "N30 Pioneer II"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Manama ↔ Doha",
+            "route_id": "edge__manama-bahrain__manama-doha-qatar",
+            "from_node_id": "manama-bahrain",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 98.8,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Manama ↔ Dubai",
+            "route_id": "edge__manama-bahrain__manama-dubai-uae",
+            "from_node_id": "manama-bahrain",
+            "to_node_id": "dubai-uae",
+            "distance_nm": 290.6,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Manama ↔ Abu Dhabi",
+            "route_id": "edge-0685",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "manama-bahrain",
+            "distance_nm": 264.1,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          }
+        ]
+      }
+    },
+    "qatar": {
+      "home_cities": ["doha-qatar"],
+      "domestic_city_ids": ["doha-qatar", "al-wakrah-qatar"],
+      "cross_border_city_ids": ["manama-bahrain", "abu-dhabi-uae", "dubai-uae"],
+      "phase_labels": {
+        "1": "Phase 1 — Doha Bay beachhead",
+        "2": "Phase 2 — Full Doha network",
+        "3": "Phase 3 — Coastal & airport connectivity",
+        "4": "Phase 4 — Gulf cross-border roadmap"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "West Bay / Corniche ↔ Lusail Marina & Place Vendôme",
+            "route_id": "gcn-4c7a1915c8-qatar",
+            "from_node_id": "doha-qatar",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 4.9,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "The Pearl-Qatar ↔ Doha Corniche / Old Doha Port",
+            "route_id": "gcn-4c7a1915c8-qatar",
+            "from_node_id": "doha-qatar",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 4.9,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Doha ↔ Banana Island (Anantara)",
+            "route_id": "gcn-12676090ea-qatar",
+            "from_node_id": "doha-qatar",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 0.9,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Hamad International Airport waterfront ↔ West Bay / Lusail hotels",
+            "route_id": "rn-766596b9e733",
+            "from_node_id": "doha-qatar__hamad-international-airport-hia-waterfront",
+            "to_node_id": "doha-qatar__lusail-lusail-marina-place-vendôme-fairmontraffles-waldorf-r",
+            "distance_nm": 6.3,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Doha ↔ Al Wakrah (south coast)",
+            "route_id": "gcn-e2b0929d6f-qatar",
+            "from_node_id": "doha-qatar",
+            "to_node_id": "doha-qatar__al-wakrah-south-coast",
+            "distance_nm": 10.1,
+            "platform": "Pioneer II"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Doha ↔ Bahrain (Manama — Financial Harbour)",
+            "route_id": "edge-0695",
+            "from_node_id": "doha-qatar",
+            "to_node_id": "manama-bahrain",
+            "distance_nm": 100.6,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Doha ↔ Abu Dhabi",
+            "route_id": "edge-0684",
+            "from_node_id": "abu-dhabi-uae",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 179.1,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "Doha ↔ Dubai",
+            "route_id": "edge__dubai-uae__doha-qatar",
+            "from_node_id": "dubai-uae",
+            "to_node_id": "doha-qatar",
+            "distance_nm": 237.7,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          }
+        ]
+      }
+    },
+    "hong-kong": {
+      "home_cities": ["hong-kong"],
+      "domestic_city_ids": ["hong-kong"],
+      "cross_border_city_ids": ["macau-china"],
+      "phase_labels": {
+        "1": "Phase 1 — Victoria Harbour modernization",
+        "2": "Phase 2 — Outlying islands & Lantau",
+        "3": "Phase 3 — Discovery Bay & Kai Tak",
+        "4": "Phase 4 — Macau & PRD crossings"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "Central (Hong Kong Island) ↔ Tsim Sha Tsui (Kowloon)",
+            "route_id": "edge__hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
+            "from_node_id": "hong-kong__central-ferry-piers",
+            "to_node_id": "hong-kong__tsim-sha-tsui-star-ferry-victoria-dockside",
+            "distance_nm": 1.3,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Central ↔ Outlying islands — Lamma, Cheung Chau, Mui Wo",
+            "route_id": "edge__hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
+            "from_node_id": "hong-kong__central-ferry-piers",
+            "to_node_id": "hong-kong__outlying-islands-lamma-cheung-chau-peng-chau-mui-wo",
+            "distance_nm": 7.6,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Central ↔ Discovery Bay / Lantau",
+            "route_id": "edge__hong-kong__discovery-bay-lantau",
+            "from_node_id": "hong-kong__central-ferry-piers",
+            "to_node_id": "hong-kong__discovery-bay-lantau",
+            "distance_nm": 8.7,
+            "platform": "Pioneer II"
+          }
+        ],
+        "inter_city": [
+          {
+            "label": "Kai Tak cruise terminal / event pontoon ↔ Central / Tsim Sha Tsui",
+            "route_id": "edge__hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon",
+            "from_node_id": "hong-kong__kai-tak-cruise-terminal-sports-park-event-pontoon",
+            "to_node_id": "hong-kong__central-ferry-piers",
+            "distance_nm": 2.6,
+            "platform": "Pioneer II"
+          }
+        ],
+        "cross_border_roadmap": [
+          {
+            "label": "Central / Sheung Wan ↔ Macau (Outer Harbour)",
+            "route_id": "e__hong-kong__hk-macau-ferry-terminal-sheung-wan__macau-china__macau-outer-harbour-ferry-terminal",
+            "from_node_id": "hong-kong__hk-macau-ferry-terminal-sheung-wan",
+            "to_node_id": "macau-china__macau-outer-harbour-ferry-terminal",
+            "distance_nm": 35.2,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          },
+          {
+            "label": "HKIA SkyPier ↔ Shenzhen-Shekou / Zhuhai (PRD mainland)",
+            "route_id": "edge__hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+            "from_node_id": "hong-kong__hkia-skypier-tung-chung-chek-lap-kok",
+            "to_node_id": "hong-kong__shenzhen-shekou-zhuhai-prd-mainland",
+            "distance_nm": 40.4,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
+          }
+        ]
+      }
+    },
+    "transport-nsw": {
+      "home_cities": ["sydney-australia"],
+      "domestic_city_ids": ["sydney-australia"],
+      "cross_border_city_ids": [],
+      "phase_labels": {
+        "1": "Phase 1 — Manly & inner-harbour commuter",
+        "2": "Phase 2 — Parramatta River network",
+        "3": "Phase 3 — Olympic Park & eastern bays",
+        "4": "Phase 4 — Coastal corridor roadmap"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "Circular Quay ↔ Manly",
+            "route_id": "ics-bb25fb0b69",
+            "from_node_id": "sydney-australia",
+            "to_node_id": "sydney-australia",
+            "distance_nm": 5.1,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Circular Quay ↔ Watsons Bay / Rose Bay",
+            "route_id": "ics-26759e3e76",
+            "from_node_id": "sydney-australia",
+            "to_node_id": "sydney-australia",
+            "distance_nm": 2.5,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Circular Quay ↔ Parramatta",
+            "route_id": "ics-0bc6865ade",
+            "from_node_id": "sydney-australia",
+            "to_node_id": "sydney-australia",
+            "distance_nm": 2.3,
+            "platform": "Pioneer II"
+          }
+        ],
+        "inter_city": [
+          {
+            "label": "Sydney CBD ↔ Sydney Olympic Park",
+            "route_id": "ics-4bfda3ec3e",
+            "from_node_id": "sydney-australia",
+            "to_node_id": "sydney-australia",
+            "distance_nm": 6.1,
+            "platform": "Pioneer II"
+          }
+        ]
+      }
+    },
+    "thames-clippers": {
+      "home_cities": ["london-thames-uk"],
+      "domestic_city_ids": ["london-thames-uk"],
+      "cross_border_city_ids": [],
+      "phase_labels": {
+        "1": "Phase 1 — Central fast zero-wake pilot (Pioneer II)",
+        "2": "Phase 2 — Full-length + new developments (Pioneer II)",
+        "3": "Phase 3 — Royal Docks & Thamesmead",
+        "4": "Phase 4 — Thames Estuary roadmap (Quanta-LR)"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "London (Embankment / Tower) ↔ Canary Wharf",
+            "route_id": "ics-5e35d5734e",
+            "from_node_id": "london-thames-uk",
+            "to_node_id": "london-thames-uk",
+            "distance_nm": 2.2,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Central London ↔ Thamesmead / Royal Docks (new developments)",
+            "route_id": "ics-a7b6b93c46",
+            "from_node_id": "london-thames-uk",
+            "to_node_id": "london-thames-uk",
+            "distance_nm": 2.6,
+            "platform": "Pioneer II"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Putney (west) ↔ Barking Riverside / Woolwich (east)",
+            "route_id": "ics-b2fd5c9640",
+            "from_node_id": "london-thames-uk",
+            "to_node_id": "london-thames-uk",
+            "distance_nm": 2.8,
+            "platform": "Pioneer II"
+          }
+        ]
+      }
+    },
+    "nyc-ferry": {
+      "home_cities": ["new-york-harbor-usa"],
+      "domestic_city_ids": ["new-york-harbor-usa"],
+      "cross_border_city_ids": [],
+      "phase_labels": {
+        "1": "Phase 1 — Rockaway long-range + East River wake pilot",
+        "2": "Phase 2 — Regional Hudson + harbor routes",
+        "3": "Phase 3 — Midtown & NJ Gold Coast",
+        "4": "Phase 4 — JFK / Jamaica Bay roadmap"
+      },
+      "supplement_routes": {
+        "intra_pilot": [
+          {
+            "label": "Wall St / Pier 11 ↔ Brooklyn (DUMBO) / Long Island City",
+            "route_id": "ics-38e18c9220",
+            "from_node_id": "new-york-harbor-usa",
+            "to_node_id": "new-york-harbor-usa",
+            "distance_nm": 0.54,
+            "platform": "Pioneer II"
+          },
+          {
+            "label": "Wall St / Pier 11 ↔ Rockaway",
+            "route_id": "ics-f993f1e653",
+            "from_node_id": "new-york-harbor-usa",
+            "to_node_id": "new-york-harbor-usa",
+            "distance_nm": 1.77,
+            "platform": "Quanta-LR"
+          }
+        ],
+        "intra_scale": [
+          {
+            "label": "Midtown (E 34th) ↔ Yonkers / NJ Gold Coast",
+            "route_id": "ics-25a683a51c",
+            "from_node_id": "new-york-harbor-usa",
+            "to_node_id": "new-york-harbor-usa",
+            "distance_nm": 1.92,
+            "platform": "Quanta-LR"
+          }
+        ],
+        "inter_city": [
+          {
+            "label": "Manhattan ↔ JFK / Jamaica Bay area",
+            "route_id": "ics-db90a41958",
+            "from_node_id": "new-york-harbor-usa",
+            "to_node_id": "new-york-harbor-usa",
+            "distance_nm": 3.56,
+            "platform": "Quanta-LR",
+            "render": "roadmap-amber-dashed",
+            "economics_status": "roadmap_excluded"
           }
         ]
       }

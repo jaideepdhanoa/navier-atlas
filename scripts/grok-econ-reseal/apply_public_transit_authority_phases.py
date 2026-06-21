@@ -43,7 +43,13 @@ def load_gold() -> tuple[set[str], dict[str, dict]]:
 
 DUBAI_HINTS = ("dubai", "deira", "ghubaiba", "marina", "palm", "creek", "harbour", "bluewaters", "jumeirah")
 ABU_DHABI_HINTS = ("yas", "saadiyat", "corniche", "maryah", "abu dhabi", "hidd", "jubail", "nurai")
-SINGAPORE_HINTS = ("singapore", "marina bay", "sentosa", "jurong", "tanah merah", "east coast")
+SINGAPORE_HINTS = ("singapore", "marina bay", "sentosa", "jurong", "tanah merah", "east coast", "bedok")
+BAHRAIN_HINTS = ("manama", "bahrain", "bfh", "financial harbour", "muharraq")
+QATAR_HINTS = ("doha", "lusail", "pearl", "corniche", "katara", "banana island", "wakrah", "hamad")
+HK_HINTS = ("hong kong", "central", "tsim sha tsui", "kowloon", "star ferry", "lamma", "cheung chau", "discovery bay", "kai tak", "skypier")
+SYDNEY_HINTS = ("sydney", "circular quay", "manly", "parramatta", "watsons bay", "rose bay", "olympic park")
+LONDON_HINTS = ("london", "thames", "canary wharf", "embankment", "tower", "putney", "woolwich", "thamesmead")
+NYC_HINTS = ("new york", "pier 11", "wall st", "rockaway", "dumbo", "hudson", "yonkers", "jfk", "midtown")
 
 
 def bp_parent_index() -> dict[str, str]:
@@ -78,16 +84,39 @@ def label_city_hint(label: str, home: set[str]) -> str | None:
         return "singapore"
     if "ras-al-khaimah-uae" in home and ("rak" in blob or "ras al khaimah" in blob or "marjan" in blob):
         return "ras-al-khaimah-uae"
+    if "manama-bahrain" in home and any(h in blob for h in BAHRAIN_HINTS):
+        return "manama-bahrain"
+    if "doha-qatar" in home and any(h in blob for h in QATAR_HINTS):
+        return "doha-qatar"
+    if "hong-kong" in home and any(h in blob for h in HK_HINTS):
+        return "hong-kong"
+    if "sydney-australia" in home and any(h in blob for h in SYDNEY_HINTS):
+        return "sydney-australia"
+    if "london-thames-uk" in home and any(h in blob for h in LONDON_HINTS):
+        return "london-thames-uk"
+    if "new-york-harbor-usa" in home and any(h in blob for h in NYC_HINTS):
+        return "new-york-harbor-usa"
     return None
 
 
-def cities_for_card(card: dict, bp_idx: dict[str, str], gold_by_id: dict[str, dict], home: set[str]) -> tuple[str | None, str | None]:
+def cities_for_card(
+    card: dict,
+    bp_idx: dict[str, str],
+    gold_by_id: dict[str, dict],
+    home: set[str],
+    *,
+    cross_border: set[str] | None = None,
+) -> tuple[str | None, str | None]:
     rid = card.get("route_id") or ((card.get("route_ids") or [None])[0])
     if rid and rid in gold_by_id:
         p = gold_by_id[rid]
         return p.get("from_city_id") or p.get("from"), p.get("to_city_id") or p.get("to")
     fc = resolve_city(card.get("from_node_id"), bp_idx)
     tc = resolve_city(card.get("to_node_id"), bp_idx)
+    cb = cross_border or set()
+    # Never collapse a sealed cross-border endpoint into home via label hints.
+    if fc in cb or tc in cb:
+        return fc, tc
     hint = label_city_hint(card.get("label", ""), home)
     if hint:
         if fc not in home and tc in home:
@@ -108,7 +137,7 @@ def classify_card(
     bp_idx: dict[str, str],
     gold_by_id: dict[str, dict],
 ) -> str:
-    fc, tc = cities_for_card(card, bp_idx, gold_by_id, home)
+    fc, tc = cities_for_card(card, bp_idx, gold_by_id, home, cross_border=cross_border)
     if not fc or not tc:
         return "unknown"
     if fc in home and tc in home:
@@ -122,6 +151,10 @@ def classify_card(
         return "cross_border_roadmap"
     if card.get("platform") == "Quanta-LR" and (fc in cross_border or tc in cross_border):
         return "cross_border_roadmap"
+    blob = (card.get("label") or "").lower()
+    if any(x in blob for x in ("macau", " prd", "shenzhen", "zhuhai", "cross-border", "cross-gulf", "bahrain", "abu dhabi", "dubai")):
+        if card.get("platform") == "Quanta-LR" or card.get("render") == "roadmap-amber-dashed":
+            return "cross_border_roadmap"
     return "other"
 
 
@@ -205,20 +238,19 @@ def apply_partner(slug: str, cfg: dict, archetype: dict, gold: set[str], gold_by
         "inter_city": [],
         "cross_border_roadmap": [],
     }
+    placed: set[str] = set()
 
-    for card in collect_cards(doc):
-        tier = classify_card(
-            card, home=home, domestic=domestic, cross_border=cross_border, bp_idx=bp_idx, gold_by_id=gold_by_id
-        )
-        if tier == "intra":
-            # Split: shorter/distinct pilot vs scale by distance
-            dist = card.get("distance_nm") or 999
-            if dist <= 15 and len(buckets["intra_pilot"]) < 4:
-                buckets["intra_pilot"].append(card)
-            else:
-                buckets["intra_scale"].append(card)
-        elif tier in buckets:
-            buckets[tier].append(card)
+    def place(tier: str, card: dict, *, force: bool = False) -> None:
+        k = card_key(card)
+        if tier not in buckets:
+            return
+        if k in placed and not force:
+            return
+        if force and k in placed:
+            for t in buckets:
+                buckets[t] = [x for x in buckets[t] if card_key(x) != k]
+        placed.add(k)
+        buckets[tier].append(card)
 
     supplements = cfg.get("supplement_routes") or {}
     for tier, specs in supplements.items():
@@ -226,15 +258,78 @@ def apply_partner(slug: str, cfg: dict, archetype: dict, gold: set[str], gold_by
             c = make_card(spec, gold)
             if not c:
                 continue
-            keys = {card_key(x) for x in buckets.get(tier, [])}
-            if card_key(c) not in keys:
-                buckets.setdefault(tier, []).append(c)
+            place(tier, c, force=True)
+
+    for card in collect_cards(doc):
+        if card_key(card) in placed:
+            continue
+        tier = classify_card(
+            card, home=home, domestic=domestic, cross_border=cross_border, bp_idx=bp_idx, gold_by_id=gold_by_id
+        )
+        if tier == "intra":
+            # Split: shorter/distinct pilot vs scale by distance
+            dist = card.get("distance_nm") or 999
+            if dist <= 15 and len(buckets["intra_pilot"]) < 4:
+                place("intra_pilot", card)
+            else:
+                place("intra_scale", card)
+        elif tier in buckets:
+            place(tier, card)
 
     def pair_key(card: dict) -> str | None:
-        fc, tc = cities_for_card(card, bp_idx, gold_by_id, home)
+        fc, tc = cities_for_card(card, bp_idx, gold_by_id, home, cross_border=cross_border)
         if not fc or not tc:
             return None
         return "|".join(sorted([fc, tc]))
+
+    def norm_label(label: str) -> str:
+        s = (label or "").lower().strip()
+        for ch in ("↔", "—", "–", "/", "(", ")"):
+            s = s.replace(ch, " ")
+        return " ".join(s.split())
+
+    def drop_null_if_linked(cards: list[dict]) -> list[dict]:
+        linked = [c for c in cards if c.get("route_id")]
+        linked_labels = {norm_label(c.get("label", "")) for c in linked}
+        linked_nodes = {
+            "|".join(sorted([str(c.get("from_node_id") or ""), str(c.get("to_node_id") or "")]))
+            for c in linked
+        }
+        out = []
+        for c in cards:
+            if c.get("route_id"):
+                out.append(c)
+                continue
+            lbl = norm_label(c.get("label", ""))
+            nodes = "|".join(sorted([str(c.get("from_node_id") or ""), str(c.get("to_node_id") or "")]))
+            if lbl in linked_labels:
+                continue
+            if nodes in linked_nodes and any(
+                lbl[:20] == ll[:20] or lbl.split()[0] == ll.split()[0] for ll in linked_labels
+            ):
+                continue
+            out.append(c)
+        return out
+
+    all_linked = [c for t in buckets for c in buckets[t] if c.get("route_id")]
+
+    def drop_null_against_linked(cards: list[dict]) -> list[dict]:
+        linked_labels = {norm_label(c.get("label", "")) for c in all_linked}
+        linked_nodes = {
+            "|".join(sorted([str(c.get("from_node_id") or ""), str(c.get("to_node_id") or "")]))
+            for c in all_linked
+        }
+        out = []
+        for c in cards:
+            if c.get("route_id"):
+                out.append(c)
+                continue
+            lbl = norm_label(c.get("label", ""))
+            nodes = "|".join(sorted([str(c.get("from_node_id") or ""), str(c.get("to_node_id") or "")]))
+            if lbl in linked_labels or nodes in linked_nodes:
+                continue
+            out.append(c)
+        return out
 
     # Dedupe buckets by route_id; inter/cross-border also dedupe by city-pair (keep shortest distance)
     for tier in buckets:
@@ -250,13 +345,20 @@ def apply_partner(slug: str, cfg: dict, archetype: dict, gold: set[str], gold_by
                 pk = pair_key(c)
                 if pk:
                     prev = by_pair.get(pk)
-                    if prev and (prev.get("distance_nm") or 999) <= (c.get("distance_nm") or 999):
-                        continue
                     if prev:
-                        deduped = [x for x in deduped if pair_key(x) != pk]
+                        prev_linked = bool(prev.get("route_id"))
+                        cur_linked = bool(c.get("route_id"))
+                        if cur_linked and not prev_linked:
+                            deduped = [x for x in deduped if pair_key(x) != pk]
+                        elif prev_linked and not cur_linked:
+                            continue
+                        elif (prev.get("distance_nm") or 999) <= (c.get("distance_nm") or 999):
+                            continue
+                        else:
+                            deduped = [x for x in deduped if pair_key(x) != pk]
                     by_pair[pk] = c
             deduped.append(c)
-        buckets[tier] = deduped
+        buckets[tier] = drop_null_against_linked(drop_null_if_linked(deduped))
 
     old_phases = {ph.get("n"): ph for ph in doc.get("phases") or []}
     phase_count = cfg.get("phase_count") or 4
@@ -292,7 +394,8 @@ def apply_partner(slug: str, cfg: dict, archetype: dict, gold: set[str], gold_by
 
     doc["phases"] = new_phases
     doc["archetype"] = "public_transit"
-    doc["category"] = doc.get("category") or "transit_authority"
+    if not doc.get("category"):
+        doc["category"] = "transit_authority"
     doc["_public_transit_authority"] = {
         "archetype_id": archetype.get("archetype_id"),
         "applied_at": utc_now(),
@@ -300,7 +403,14 @@ def apply_partner(slug: str, cfg: dict, archetype: dict, gold: set[str], gold_by
         "phase_tiers": [p["_authority_phase_tier"] for p in new_phases],
     }
 
-    es = doc.setdefault("end_state", {})
+    es_raw = doc.get("end_state")
+    if isinstance(es_raw, dict):
+        es = es_raw
+    else:
+        es = {}
+        if es_raw is not None:
+            es["headline"] = es_raw if isinstance(es_raw, str) else str(es_raw)
+        doc["end_state"] = es
     es["end_state_cities"] = sorted(
         set(es.get("end_state_cities") or []) | home | domestic | cross_border
     )

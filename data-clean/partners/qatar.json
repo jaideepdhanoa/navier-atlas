@@ -244,28 +244,19 @@
       "route_scope": "intra",
       "featured_routes": [
         {
-          "label": "West Bay / Corniche ↔ Lusail Marina & Place Vendôme",
-          "from_node_id": "doha-qatar",
-          "to_node_id": "doha-qatar",
-          "distance_nm": 4.9,
-          "platform": "Pioneer II",
-          "route_id": "gcn-4c7a1915c8-qatar",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
           "label": "The Pearl-Qatar ↔ Doha Corniche / Old Doha Port",
           "from_node_id": "doha-qatar",
           "to_node_id": "doha-qatar",
           "distance_nm": 4.9,
           "platform": "Pioneer II",
           "route_id": "gcn-4c7a1915c8-qatar",
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "gcn-4c7a1915c8-qatar"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         },
         {
           "label": "Doha ↔ Banana Island (Anantara)",
@@ -274,14 +265,17 @@
           "distance_nm": 0.9,
           "platform": "Pioneer II",
           "route_id": "gcn-12676090ea-qatar",
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "gcn-12676090ea-qatar"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "timeline": "2026–2027",
-      "rationale": "Launch on the exact corridors the MOT's new water-taxi terminals already serve — the busiest, most iconic stretch of Doha Bay.",
+      "rationale": "Prove foiling on sheltered intra-{home} waters before any inter-emirate or cross-border claims.",
       "use_cases": [
         {
           "label": "bay commuting",
@@ -321,45 +315,51 @@
           "lat": 25.32,
           "zoom": 11.2
         }
-      }
+      },
+      "_authority_phase_tier": "intra_pilot"
     },
     {
       "n": 2,
-      "label": "Phase 2 — The full Doha network",
+      "label": "Phase 2 — Full Doha network",
       "boats": 16,
       "cities": [
-        "doha-qatar",
-        "manama-bahrain"
+        "doha-qatar"
       ],
-      "route_scope": "all",
+      "route_scope": "intra",
       "featured_routes": [
         {
           "label": "Hamad International Airport waterfront ↔ West Bay / Lusail hotels",
-          "from_node_id": "doha-qatar__doha-corniche-west-bay-old-doha-port-mina-district",
+          "from_node_id": "doha-qatar__hamad-international-airport-hia-waterfront",
           "to_node_id": "doha-qatar__lusail-lusail-marina-place-vendôme-fairmontraffles-waldorf-r",
           "distance_nm": 6.3,
           "platform": "Pioneer II",
           "route_id": "rn-766596b9e733",
-          "_link_kind": "corridor-label",
+          "route_ids": [
+            "rn-766596b9e733"
+          ],
+          "_link_kind": "authority-archetype",
           "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         },
         {
-          "label": "Doha (Lusail Marina) ↔ Bahrain (Manama — Financial Harbour)",
+          "label": "Doha ↔ Al Wakrah (south coast)",
           "from_node_id": "doha-qatar",
-          "to_node_id": "manama-bahrain",
-          "distance_nm": 28.7,
-          "platform": "Quanta-LR",
-          "route_id": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "unlinked-no-route",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "to_node_id": "doha-qatar__al-wakrah-south-coast",
+          "distance_nm": 10.1,
+          "platform": "Pioneer II",
+          "route_id": "gcn-e2b0929d6f-qatar",
+          "route_ids": [
+            "gcn-e2b0929d6f-qatar"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "economics_pending"
         }
       ],
       "timeline": "2027–2028",
-      "rationale": "Extend from the bay core to the airport, the island resorts and the coastal towns — the complete marine mode of the Comprehensive Transport Plan.",
+      "rationale": "Scale the authority marine layer across the home emirate/territory only.",
       "use_cases": [
         {
           "label": "airport transfer",
@@ -399,57 +399,20 @@
           "lat": 25.4,
           "zoom": 9.4
         }
-      }
+      },
+      "_authority_phase_tier": "intra_scale"
     },
     {
       "n": 3,
-      "label": "Phase 3 — the cross-Gulf corridor",
+      "label": "Phase 3 — Coastal & airport connectivity",
       "boats": 24,
       "cities": [
-        "doha-qatar",
-        "manama-bahrain"
+        "doha-qatar"
       ],
-      "route_scope": "all",
-      "featured_routes": [
-        {
-          "label": "West Bay / Corniche ↔ Lusail Marina & Place Vendôme",
-          "from_node_id": "doha-qatar",
-          "to_node_id": "doha-qatar",
-          "distance_nm": 4.9,
-          "platform": "Pioneer II",
-          "route_id": "gcn-4c7a1915c8-qatar",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "The Pearl-Qatar ↔ Doha Corniche / Old Doha Port",
-          "from_node_id": "doha-qatar",
-          "to_node_id": "doha-qatar",
-          "distance_nm": 4.9,
-          "platform": "Pioneer II",
-          "route_id": "gcn-4c7a1915c8-qatar",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        },
-        {
-          "label": "Doha ↔ Banana Island (Anantara)",
-          "from_node_id": "doha-qatar",
-          "to_node_id": "doha-qatar",
-          "distance_nm": 0.9,
-          "platform": "Pioneer II",
-          "route_id": "gcn-12676090ea-qatar",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "model_link": "https://docs.google.com/spreadsheets/d/1v0Fo-QDKVIEiMzzYUbrugCUH1cBJdLKD9URG1R16S0Q/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
-        }
-      ],
+      "route_scope": "inter",
+      "featured_routes": [],
       "timeline": "2028+",
-      "rationale": "Extend beyond the bay: a Quanta-LR link across the Gulf to Bahrain turns Qatar's national water network into the first leg of a GCC water-mobility spine — no charging infrastructure required.",
+      "rationale": "Add domestic inter-emirate / inter-city legs from the home anchor after intra proof.",
       "use_cases": [
         {
           "label": "cross-border business travel",
@@ -489,7 +452,71 @@
           "lat": 25.7,
           "zoom": 7.4
         }
-      }
+      },
+      "_authority_phase_tier": "inter_city"
+    },
+    {
+      "n": 4,
+      "label": "Phase 4 — Gulf cross-border roadmap",
+      "route_scope": "regional",
+      "cities": [
+        "abu-dhabi-uae",
+        "doha-qatar",
+        "dubai-uae",
+        "manama-bahrain"
+      ],
+      "featured_routes": [
+        {
+          "label": "Doha ↔ Bahrain (Manama — Financial Harbour)",
+          "from_node_id": "doha-qatar",
+          "to_node_id": "manama-bahrain",
+          "distance_nm": 100.6,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0695",
+          "route_ids": [
+            "edge-0695"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Doha ↔ Abu Dhabi",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "doha-qatar",
+          "distance_nm": 179.1,
+          "platform": "Quanta-LR",
+          "route_id": "edge-0684",
+          "route_ids": [
+            "edge-0684"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Doha ↔ Dubai",
+          "from_node_id": "dubai-uae",
+          "to_node_id": "doha-qatar",
+          "distance_nm": 237.7,
+          "platform": "Quanta-LR",
+          "route_id": "edge__dubai-uae__doha-qatar",
+          "route_ids": [
+            "edge__dubai-uae__doha-qatar"
+          ],
+          "_link_kind": "authority-archetype",
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/apply_public_transit_authority_phases",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        }
+      ],
+      "_authority_phase_tier": "cross_border_roadmap",
+      "rationale": "Quanta-LR Gulf/regional legs — amber-dashed display, economics_excluded until ops seal."
     }
   ],
   "the_ask": {
@@ -521,7 +548,9 @@
     "addressable_footprint": "The full Qatari coast under a Ministry of Transport (MOTC) convening mandate — Doha Corniche, Lusail, The Pearl, Banana Island, Al Wakrah, and the cross-Gulf corridor to Bahrain.",
     "end_state_cities": [
       "abu-dhabi-uae",
+      "al-wakrah-qatar",
       "doha-qatar",
+      "dubai-uae",
       "manama-bahrain"
     ],
     "steady_state": {
@@ -970,5 +999,18 @@
     "mode": "active_cities",
     "bound_cards": 0,
     "missing_reference_keys": 19
+  },
+  "_public_transit_authority": {
+    "archetype_id": "public_transit_authority",
+    "applied_at": "2026-06-21T11:30:40Z",
+    "home_cities": [
+      "doha-qatar"
+    ],
+    "phase_tiers": [
+      "intra_pilot",
+      "intra_scale",
+      "inter_city",
+      "cross_border_roadmap"
+    ]
   }
 }
