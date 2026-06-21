@@ -29,7 +29,7 @@
 - Added `yassir-algeria-market-source-and-mint-queue.json` with official Yassir/Google Cloud/YC sources, Algeria city candidates, and a route mint queue.
 - Updated `partner-pitch/partners/yassir.json` so Algeria is a first-class home-market unlock, not an omission.
 - Kept Algeria out of `markets` and `corridors.json` for now because this branch has no sealed Algeria Atlas IDs and no Algeria country-reference row; exactness over coverage.
-- Next gate: Grok mints Algeria IDs/boarding points, then Tasklet adds Algeria country-reference + route demand/fare anchors and reruns the Yassir economics cascade.
+- Next gate: Tasklet continues Algeria city/BP evidence hardening; Grok validates/binds/mints IDs only where the evidence is exact, seals routes/render, then Tasklet adds Algeria country-reference + route demand/fare anchors and reruns the Yassir economics cascade.
 
 ## Batch 4 banked: Algeria country-reference draft prepared
 - Added `algeria-country-reference-draft.json` with draft opex/grid inputs for Algeria.
@@ -45,12 +45,12 @@
   - B+: Oran ↔ Mostaganem seasonal ENTMV line.
   - B: Annaba port existence lead only; not model-ready.
 - Sources now include ENTMV/Algérie Ferries, Radio Algérienne/APS Algiers Bay, Port de Béjaïa PDF, Radio Algérienne/APS Oran–Mostaganem, Ferryhopper Algeria, and GNV Algiers port page.
-- Exactness gate unchanged: no Algeria render/economics until Grok seals city IDs, boarding points, and route IDs; unresolved endpoints stay null.
+- Exactness gate unchanged: Tasklet owns city/BP research; no Algeria render/economics until Grok seals exact route geometry/IDs from that evidence; unresolved endpoints stay null.
 
 
 ## 2026-06-21 — Grok Algeria mint handoff prompt updated
 - Updated `GROK-SEAL-AND-DECK-PROMPT.md` to reference the Algeria source/mint queue, country-reference draft, and route hardening batch 1.
-- Added exact city/BP/route mint requests and null-policy gates for Grok.
+- Clarified ownership: Tasklet supplies city/BP evidence; Grok validates/binds/mints exact IDs only as needed and seals routes/render under the null policy.
 - Still no live `yassir-algeria` display/economics until Grok returns sealed IDs and route QA.
 
 ## Batch 5 banked: Caribbean economics preflight conversion
@@ -70,6 +70,11 @@
 ## Batch 7 banked: Proposal-package readiness audit
 - Added `proposal-package-readiness-audit-2026-06-21.json` and `.md` to turn the full definition of done into explicit pass/held gates for both lanes.
 - Caribbean is marked source/deck/preflight-ready, with live economics/growth/data-clean held until Grok seals exact route IDs and assumptions are accepted.
-- Yassir is marked source/deck/economics-ready for the current Morocco/Tunisia scope, with Algeria explicitly first-class but held behind Grok mint/seal + country-reference/economics cascade gates.
+- Yassir is marked source/deck/economics-ready for the current Morocco/Tunisia scope, with Algeria explicitly first-class; Tasklet owns remaining city/BP research, while route/render sealing and economics unlock stay held behind Grok receipts + country-reference/economics cascade gates.
 - Data-clean partner JSONs are intentionally called out as missing/held artifacts, not silently implied.
 - This audit is a readiness control checklist; it is not a render receipt.
+
+## Batch 8 correction: City/BP vs route ownership
+- Corrected the handoff language: Tasklet owns source-led city and boarding-point research/evidence packs.
+- Grok owns deterministic route geometry sealing, route IDs, render checks, and null returns for unresolved routes.
+- Grok may validate/bind/mint city/BP IDs only from Tasklet-provided exact evidence; it should not be treated as the primary city/BP research lane.

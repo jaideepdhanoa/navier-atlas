@@ -1,7 +1,7 @@
 # Grok handoff — Caribbean Mobility + Yassir gold-standard proposal package
 
 ## Mandate
-Bring `yassir` and `caribbean-mobility` to the same render/QA discipline as Grab/Careem without shortcuts.
+Bring `yassir` and `caribbean-mobility` to the same render/QA discipline as Grab/Careem without shortcuts. Ownership split: Tasklet supplies source-led city/BP research and evidence packs; Grok seals deterministic route geometry, route IDs, render checks, and unresolved-route nulls.
 
 ## Inputs
 - `partner-pitch/partners/yassir.json`
@@ -42,13 +42,13 @@ Bring `yassir` and `caribbean-mobility` to the same render/QA discipline as Grab
 Use `yassir-algeria-market-source-and-mint-queue.json`, `algeria-country-reference-draft.json`, and `yassir-algeria-route-source-hardening-batch-1.json` as inputs for a deterministic Algeria seal pass.
 
 ### What to seal if exact
-- City IDs to mint/validate:
+- City IDs to validate/bind/mint only from Tasklet-provided evidence:
   - `algiers-algeria`
   - `bejaia-algeria`
   - `oran-algeria`
   - `mostaganem-algeria`
   - `annaba-algeria`
-- Boarding points to mint/validate only from named source-backed terminals/ports:
+- Boarding points to validate/bind/mint only from Tasklet-provided named source-backed terminals/ports:
   - Port d'Alger / Gare Maritime d'Alger / La Pêcherie
   - El Djamila / Aïn Bénian
   - Tamentfoust / El Marsa
@@ -70,13 +70,13 @@ Use `yassir-algeria-market-source-and-mint-queue.json`, `algeria-country-referen
 - Do not bind Algeria to Morocco/Tunisia IDs or broad country centroids.
 - Do not add `yassir-algeria` to display/economics until Algeria city IDs, boarding points, route IDs, country-reference row, and route-level demand/fare anchors are all ready.
 - Do not use Europe-facing ferry fares as Navier commuter fares without local route validation.
-- If exact seal succeeds, return a QA ledger with: city IDs minted, BPs sealed/dropped with reasons, route IDs created/held, land-crossing proof, and whether each route is N30/N35 commercial-now, seasonal, or roadmap-only.
+- If exact seal succeeds, return a QA ledger with: city IDs validated/bound/minted from Tasklet evidence, BPs sealed/dropped with reasons, route IDs created/held, land-crossing proof, and whether each route is N30/N35 commercial-now, seasonal, or roadmap-only.
 
 ## Readiness audit checklist
 Before claiming either proposal is Grok-ready/done, use `proposal-package-readiness-audit-2026-06-21.json` and `.md` as the gate checklist.
 - Treat all `HELD` gates as unresolved until receipts are returned.
-- Data-clean partner JSONs are absent on this branch and must be generated/sealed only after deterministic route/city/render checks.
-- This audit does not authorize invented routes, approximate route IDs, or deck edits without live deck binding/object inventory.
+- Data-clean partner JSONs are absent on this branch and must be generated/sealed only after deterministic route/city/render checks; Tasklet remains owner of the source evidence, Grok of the route/render receipt.
+- This audit does not authorize invented routes, approximate route IDs, city/BP research by assumption, or deck edits without live deck binding/object inventory.
 
 ## Deck Studio handoff — both lanes
 Use `deck-studio-readiness-queue.json` plus the deck folders listed above.
