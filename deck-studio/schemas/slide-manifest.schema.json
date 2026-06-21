@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "slide-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deck_key",
+    "presentation_id",
+    "source",
+    "slide_count",
+    "slides",
+    "object_inventory_status"
+  ],
+  "properties": {
+    "deck_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "presentation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "slide_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "page_size": {
+      "type": "object"
+    },
+    "object_inventory_status": {
+      "enum": [
+        "summary_only",
+        "full_inventory_pulled",
+        "stale_requires_pull"
+      ]
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "slide_object_id",
+          "layout_object_id",
+          "purpose",
+          "allowed_edit_types",
+          "locked"
+        ],
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "slide_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layout_object_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "allowed_edit_types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "known_objects": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pull_command": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qa_notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}
