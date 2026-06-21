@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "deck-config.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deck_key",
+    "deck_id",
+    "display_name",
+    "deck_type",
+    "editing_mode",
+    "live_deck_url",
+    "partner_id",
+    "slide_manifest",
+    "content_source",
+    "image_manifest",
+    "rules"
+  ],
+  "properties": {
+    "deck_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deck_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deck_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "partner_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "live_deck_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "canonical_market_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "editing_mode": {
+      "const": "slides_api_only"
+    },
+    "export_modes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "pdf",
+          "png_preview",
+          "slides_summary",
+          "slides_full_inventory"
+        ]
+      }
+    },
+    "brand_profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "image_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "economics_sheet_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "economics_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "slide_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "content_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "image_manifest": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "last_pulled_at": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

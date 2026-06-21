@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-manifest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deck_key",
+    "policy",
+    "images"
+  ],
+  "properties": {
+    "deck_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "image_key",
+          "target_slide_object_id",
+          "status",
+          "provenance_required"
+        ],
+        "properties": {
+          "image_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_slide_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_object_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "placeholder",
+              "candidate",
+              "approved",
+              "applied"
+            ]
+          },
+          "background_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "vessel_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "mask_source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "minLength": 1
+          },
+          "provenance_required": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

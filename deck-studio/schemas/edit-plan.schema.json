@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "edit-plan.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "deck_key",
+    "presentation_id",
+    "mode",
+    "request_summary",
+    "safety",
+    "operations",
+    "qa_gates"
+  ],
+  "properties": {
+    "deck_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "presentation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "const": "slides_api_batch_update"
+    },
+    "request_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "no_pptx_roundtrip",
+        "no_full_deck_replace",
+        "preserve_object_ids",
+        "human_review_required_for_external_send"
+      ],
+      "properties": {
+        "no_pptx_roundtrip": {
+          "const": true
+        },
+        "no_full_deck_replace": {
+          "const": true
+        },
+        "preserve_object_ids": {
+          "const": true
+        },
+        "human_review_required_for_external_send": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "op_key",
+          "slide_object_id",
+          "google_slides_request"
+        ],
+        "properties": {
+          "op_key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slide_object_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "target_object_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_pointer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "google_slides_request": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "qa_gates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "created_at": {
+      "type": "string"
+    }
+  }
+}
