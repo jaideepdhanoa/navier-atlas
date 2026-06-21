@@ -42,6 +42,9 @@ python3 "$ROOT/scripts/validate_partner_proposals.py"
 echo "→ PR #56 use-case completeness (regression)"
 python3 "$ROOT/scripts/audit_partner_proposal_use_cases.py"
 
+echo "→ Partner page completeness + linkability QA"
+python3 "$ROOT/scripts/audit_partner_page_qa.py" --write-tasklet-note
+
 echo "→ index.html script syntax"
 node --check <(python3 - <<'PY'
 import re

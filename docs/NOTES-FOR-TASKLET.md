@@ -6,6 +6,12 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-21 — Partner page QA flags (Grok audit_partner_page_qa)
+
+**Ledger:** `handoff/partner-map-model/partner-page-qa-ledger.json`
+
+- careem: increase BP-bound featured_routes to Noon reference bar
+
 ## 2026-06-20 — #79at mesh trim + sidecar opex refresh (Grok shipped)
 
 **Read:** `data-clean/CHANGELOG-FOR-CLAUDE-2026-06-20-79at.md`
