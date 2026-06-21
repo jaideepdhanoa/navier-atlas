@@ -1,16 +1,12 @@
 # India Adani/Reliance — high-value consumer market scan queue
 
 Date: 2026-06-21  
-Status: **Narrowed per Jaideep to recognizable high-value consumer markets.**
+Status: **Completed for active scope: Kolkata + Chennai.**
 
-## Correction
+## Active markets now researched and proposal-included
 
-The prior scan queue included a broad industrial/port Priority B list. That is now **held out of scope**. The active plan is not a generic India port-footprint crawl.
-
-## Active markets only
-
-1. **Kolkata / Hooghly waterfront**
-2. **Chennai / ECR / Cuddalore / Puducherry coast**
+1. **Kolkata / Hooghly waterfront** — admitted high-priority consumer market; included in Adani/Reliance proposal JSON as brief market; Grok exact-bind/mint + financials pending.
+2. **Chennai / ECR / Cuddalore / Puducherry coast** — admitted earlier-stage consumer/tourism market; included in Adani/Reliance proposal JSON as brief market; Grok exact-bind/mint + financials pending.
 
 ## Held / not active unless re-approved
 
@@ -21,22 +17,13 @@ The prior scan queue included a broad industrial/port Priority B list. That is n
 - Odisha / Dhamra / Puri / Chilika
 - Lakshadweep access
 
-## Scan rule
+## Null-safe rule
 
-For each active market, Tasklet should produce only research/rationale inputs:
+Kolkata and Chennai are included for proposal narrative and Grok seal review, **not** as sealed `network_footprint[]` rows yet. Exact BPs, route IDs, distances, fares, route-level demand and economics remain `null` until Grok/Tasklet can validate them.
 
-- official route / ferry / waterway / tourism source if available
-- official or high-confidence demand proxy if available
-- official fare/tariff if available
-- consumer-market relevance to Adani/Reliance proposal narrative
-- Atlas status: existing ID / exact-bind candidate / mint required / hold
-- unsupported economics fields stay `null`
-
-Grok still owns financials, model building, sealing, render checks, sheets, and master cascade.
-
-## Current batch
-
-See:
+## Completed artifacts
 
 - `handoff/partner-map-model/INDIA-ADANI-RELIANCE-HIGH-VALUE-CONSUMER-MARKET-SCAN-KOLKATA-CHENNAI-2026-06-21.md`
 - `handoff/partner-map-model/india-adani-reliance-high-value-consumer-market-scan-kolkata-chennai-2026-06-21.json`
+- `handoff/partner-map-model/adani-ports-india-expanded-grok-ready.json`
+- `handoff/partner-map-model/reliance-industries-india-expanded-grok-ready.json`

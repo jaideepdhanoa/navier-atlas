@@ -49,6 +49,20 @@ Owner split: **Tasklet is done with research. Grok owns financial model construc
 - Admit: route candidate only.
 - Null: fare, demand, ops, vessel count.
 
+### Kolkata / Hooghly waterfront
+
+- Source: West Bengal Transport official ferry-route roster; PIB/GoI and World Bank West Bengal Inland Water Transport project documents; West Bengal Tourism river/cruise context.
+- Admit: active official Hooghly route roster; $105M GoI/WB waterways project; around 30M project-area population; KMA daily passenger volume ~25M expected to reach 32M by 2025; 165 ferries / 57 KMA ferry points / more than 145M annual ferry passengers at KMA system level.
+- Null: route-level demand, official tariff, premium fare, exact BP IDs, route IDs, distances and capture.
+- Model warning: `145000000` is KMA ferry-system context only, not a route-level Navier demand input.
+
+### Chennai / ECR / Cuddalore / Puducherry coast
+
+- Source: Poompuhar Shipping Corporation official EOI; PIB Chennai cruise release; ET Infra water-metro feasibility report; Puducherry Port EOI context.
+- Admit: PSC official EOI for ferry service and cruise tourism involving Cuddalore to Chennai and in/around Chennai; proposed locations include Chennai Port and Cuddalore Port; Chennai Port 2026 cruise context includes 3,600 passengers in one day, 21 announced voyages over three months, 4,103 sqm premium terminal and 800 passengers/hour flow.
+- Null: ferry demand, ferry fare/tariff, official route-level volumes, final water-metro route approvals, exact BP IDs, route IDs, distances and capture.
+- Model warning: cruise passenger event/terminal facts are premium infrastructure context only, not ferry TAM.
+
 ## Financial/model work requested from Grok
 
 - Build/refresh partner economics for Adani and Reliance at Grab/Careem parity using the admitted research packet.

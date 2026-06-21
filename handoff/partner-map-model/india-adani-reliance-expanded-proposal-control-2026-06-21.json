@@ -19,14 +19,19 @@
     "ril-jamnagar-giga-refinery",
     "ril-hazira-dahej-surat-bharuch",
     "ril-raigad-industrial-belt",
-    "ril-kg-d6-gadimoga"
+    "ril-kg-d6-gadimoga",
+    "kolkata_hooghly_waterfront_without_exact_bp_route_seal",
+    "chennai_ecr_cuddalore_puducherry_without_exact_bp_route_seal"
   ],
   "grok_acceptance": [
     "route_id remains null unless exact route matched/minted",
     "anchor_cities resolve to sealed Atlas city IDs",
     "no finance corridors until demand and fare sources exist",
     "create drop ledger for any backlog asset not minted",
-    "range-gate all featured_routes"
+    "range-gate all featured_routes",
+    "Kolkata and Chennai routes either exact-bound/minted with source URLs or held with explicit reasons",
+    "Do not add Kolkata/Chennai to network_footprint until sealed registry keys exist",
+    "Keep Kolkata/Chennai fare and route-level demand null unless independently validated or model-assumption-labelled"
   ],
   "sources": {
     "adani_ports_network": "https://www.adaniports.com/ports-and-terminals",
@@ -39,6 +44,20 @@
     "reliance_petrochem": "https://www.ril.com/businesses/petrochemicals",
     "reliance_new_energy": "https://www.ril.com/businesses/new-energy-materials",
     "reliance_refining": "https://www.ril.com/businesses/energy/refining-marketing",
-    "reliance_rcp": "https://www.ril.com/news-media/resource-center/media-kit/rcp-navi-mumbai"
+    "reliance_rcp": "https://www.ril.com/news-media/resource-center/media-kit/rcp-navi-mumbai",
+    "kolkata_wb_transport_ferry_routes": "https://transport.wb.gov.in/transport-services/ferry-services/ferry-routes/",
+    "kolkata_pib_world_bank_105m": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1686277",
+    "kolkata_world_bank_pid": "https://documents1.worldbank.org/curated/en/657021582100054184/txt/Project-Information-Document-Integrated-Safeguards-Data-Sheet-West-Bengal-Inland-Water-Transport-Logistics-and-Spatial-Development-Project-P166020.txt",
+    "chennai_poompuhar_eoi": "https://tamilship.com/FINAL%20EOI-PSC%20-3-23.12.2020.pdf",
+    "chennai_pib_cruise_terminal_2026": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2275607",
+    "chennai_water_metro_feasibility": "https://infra.economictimes.indiatimes.com/news/urban-transportation/feasibility-study-begins-for-chennais-water-metro-project/123675651"
+  },
+  "proposal_included_brief_markets_2026_06_21": [
+    "kolkata_hooghly_waterfront",
+    "chennai_ecr_cuddalore_puducherry_coast"
+  ],
+  "brief_market_rules": {
+    "kolkata_hooghly_waterfront": "Include in Adani/Reliance proposal narrative; exact BP/route/city seal required before network_footprint; 145M passengers/year is KMA ferry-system context only.",
+    "chennai_ecr_cuddalore_puducherry_coast": "Include in Adani/Reliance proposal narrative; exact BP/route/city seal required before network_footprint; cruise terminal facts are infrastructure context only, not ferry TAM."
   }
 }
