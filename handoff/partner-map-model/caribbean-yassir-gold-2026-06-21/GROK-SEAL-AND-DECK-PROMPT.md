@@ -11,13 +11,22 @@ Bring `yassir` and `caribbean-mobility` to the same render/QA discipline as Grab
 - `finance/growth-yassir.json`
 - `partner-pitch/partners/_growth-draft/yassir.growth.json`
 - `finance/_sheet_out/yassir_unit_econ.xlsx`
-- This handoff folder: source inventory, anchor-city crosswalk, gap queue, Yassir Algeria market source/mint queue, Algeria country-reference draft, and Algeria route-source hardening batch 1.
+- This handoff folder: source inventory, anchor-city crosswalk, gap queue, Yassir Algeria market source/mint queue, Algeria country-reference draft, Algeria route-source hardening batch 1, Caribbean country-reference/economics preflight batch 1, and Deck Studio readiness queue.
+- Deck Studio packages:
+  - `deck-studio/decks/yassir/deck.config.json`
+  - `deck-studio/decks/yassir/content-source.json`
+  - `deck-studio/decks/yassir/image-manifest.json`
+  - `deck-studio/decks/yassir/slide-manifest.json`
+  - `deck-studio/decks/caribbean-mobility/deck.config.json`
+  - `deck-studio/decks/caribbean-mobility/content-source.json`
+  - `deck-studio/decks/caribbean-mobility/image-manifest.json`
+  - `deck-studio/decks/caribbean-mobility/slide-manifest.json`
 
 ## Hard gates
 1. **Anchor-city IDs:** use `handoff/.../anchor-city-crosswalk.json`. All listed anchors are currently `OK`; do not rename by filename. Render join key is sealed `city_id`.
 2. **Yassir scope:** Morocco + Tunisia only for display/economics in this pass. Algeria is sourced and route-hardened, but held from render/economics because no sealed Atlas Algeria geometry was found.
 3. **Caribbean scope:** use existing Atlas Caribbean IDs only. Do not invent country/city support for a specific app partner; this is partner-generic until an operator is named.
-4. **Economics:** Yassir economics may render from generated files. Caribbean economics must stay pending until country-reference rows and route-specific demand anchors are added.
+4. **Economics:** Yassir economics may render from generated files for Morocco/Tunisia. Caribbean now has draft country-reference rows and route-economics inputs in batch 1, but these are preflight-only; do not cascade or headline Caribbean economics until Grok seals exact route IDs and the assumptions are reviewed.
 5. **Range gate:** N30/N35 only for <=70nm. 75–150nm is Quanta-LR roadmap. >150nm is review. Do not fake long legs.
 6. **Route IDs:** all authored `route_id: null` values are intentional. Bind only by deterministic seal from node IDs / routes.
 7. **No Atlas images in decks:** use deterministic N30/N35 compositing and market-specific backgrounds only.
@@ -62,4 +71,15 @@ Use `yassir-algeria-market-source-and-mint-queue.json`, `algeria-country-referen
 - Do not add `yassir-algeria` to display/economics until Algeria city IDs, boarding points, route IDs, country-reference row, and route-level demand/fare anchors are all ready.
 - Do not use Europe-facing ferry fares as Navier commuter fares without local route validation.
 - If exact seal succeeds, return a QA ledger with: city IDs minted, BPs sealed/dropped with reasons, route IDs created/held, land-crossing proof, and whether each route is N30/N35 commercial-now, seasonal, or roadmap-only.
+
+## Deck Studio handoff — both lanes
+Use `deck-studio-readiness-queue.json` plus the deck folders listed above.
+
+### Deck gates
+- Bind or create live deck IDs, then write them back into each `deck.config.json`.
+- Pull full slide/object inventory before object-specific edits.
+- Apply edits only through the Google Slides API; no PPTX round-trip and no full deck replacement.
+- Use `content-source.json` as the claim map; every number or market claim must cite a repo source path, live economics Sheet, or explicit assumption.
+- Use `image-manifest.json` for image work; final images require deterministic N30/N35 compositing, saved provenance, and market-specific backgrounds.
+- Return QA receipts, render receipts, deck links, and unresolved gaps separately.
 

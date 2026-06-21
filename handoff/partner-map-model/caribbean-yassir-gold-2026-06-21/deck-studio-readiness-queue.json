@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-06-21",
+  "status": "deck_studio_prep_banked_not_live_edited",
+  "rule": "Tasklet prepared repo-native Deck Studio inputs only. No live Google Slides edits, no image generation, and no external outreach occurred in this bite.",
+  "decks": [
+    {
+      "deck_key": "caribbean-mobility",
+      "paths": [
+        "deck-studio/decks/caribbean-mobility/deck.config.json",
+        "deck-studio/decks/caribbean-mobility/content-source.json",
+        "deck-studio/decks/caribbean-mobility/image-manifest.json",
+        "deck-studio/decks/caribbean-mobility/slide-manifest.json"
+      ],
+      "deck_brief": "Generic regional Caribbean partner proposal reusable for named mobility / super-app / hotel / travel operators.",
+      "economics_gate": "Batch-1 route-economics inputs are draft; do not cascade or headline economics until reviewed and Grok route IDs are sealed.",
+      "visual_gate": "Premium island/waterfront mobility; market-specific backgrounds; no generic tropical filler; canonical N30/N35 composites only."
+    },
+    {
+      "deck_key": "yassir",
+      "paths": [
+        "deck-studio/decks/yassir/deck.config.json",
+        "deck-studio/decks/yassir/content-source.json",
+        "deck-studio/decks/yassir/image-manifest.json",
+        "deck-studio/decks/yassir/slide-manifest.json"
+      ],
+      "deck_brief": "Yassir named-partner deck for sourced French North Africa / Maghreb coastal mobility, with Morocco/Tunisia active and Algeria held for Grok mint.",
+      "economics_gate": "Morocco/Tunisia economics generated; Algeria excluded until exact geometry + country-reference + route anchors pass.",
+      "visual_gate": "North African coastal city / airport / waterfront context; Yassir-aware but Navier-led; no invented city visuals."
+    }
+  ],
+  "grok_instructions": [
+    "Bind or create live Google Slides deck IDs; write deck IDs back into deck.config.json.",
+    "Pull full slide/object inventory before object-specific edits.",
+    "Apply edits through Slides API only; never use PPTX round-trip or full-replace.",
+    "Use only source-backed claims from content-source.json and listed repo paths.",
+    "Use deterministic N30/N35 compositing with saved provenance; no Atlas-generated images.",
+    "Return QA receipts, render screenshots/links, and unresolved gaps as separate files."
+  ],
+  "qa_commands": [
+    "cd deck-studio && deck-studio validate --root .",
+    "deck-studio pull --root deck-studio --deck caribbean-mobility --mode summary",
+    "deck-studio pull --root deck-studio --deck yassir --mode summary",
+    "deck-studio qa --root deck-studio --deck caribbean-mobility",
+    "deck-studio qa --root deck-studio --deck yassir",
+    "uv run --with jsonschema python3 scripts/validate_partner_proposals.py"
+  ],
+  "known_gaps": [
+    "No live deck IDs are assigned yet.",
+    "Caribbean economics remain draft preflight; no final model cascade.",
+    "Yassir Algeria remains held until Grok returns exact city/BP/route receipts.",
+    "Image backgrounds are placeholders pending source-approved assets."
+  ]
+}

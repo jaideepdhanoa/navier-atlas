@@ -58,3 +58,11 @@
 - Added `caribbean-route-economics-inputs-batch-1.json` converting the banked demand anchors into first route-economics inputs for Nassau/Paradise Island, San Juan-Cataño, Red Hook-Cruz Bay, St. Thomas-Tortola, and Bridgetown Port waterfront extension.
 - Added `caribbean-economics-sidecar-draft-batch-1.md` as the review sidecar.
 - No live finance/model rows were changed; route IDs remain null until Grok seals exact geometry and demand/fare assumptions are accepted.
+
+
+## Batch 6 banked: Deck Studio prep for both proposal lanes
+- Added repo-native Deck Studio packages for `caribbean-mobility` and `yassir` under `deck-studio/decks/`.
+- Each package now has `deck.config.json`, `content-source.json`, `image-manifest.json`, and `slide-manifest.json`.
+- Added `deck-studio-readiness-queue.json` with the Grok deck-bind/create instructions, QA commands, image rules, and known gaps.
+- No live Google Slides edits were made; deck IDs are intentionally `PENDING_GROK_CREATE_OR_BIND` until Grok binds or creates the live deck and pulls object inventory.
+- Image policy remains canonical N30/N35 compositing, market-specific backgrounds, and no Atlas-generated imagery.
