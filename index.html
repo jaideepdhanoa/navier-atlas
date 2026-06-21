@@ -2685,8 +2685,29 @@ function _endStateCities(partner){
   const ids=(es&&es.end_state_cities&&es.end_state_cities.length)?_resolvePhaseCities(es.end_state_cities):[];
   return ids.length?ids:_unionPhaseCities(partner);
 }
+function _roadmapPromoteIds(partner){
+  const md=partner&&partner.map_display;
+  if(!md||!md.promote_roadmap) return [];
+  const ids=(md.roadmap_route_ids||[]).filter(id=>ROUTE_ID_SET.has(id));
+  if(!ids.length){
+    for(const ph of (partner.phases||[]))
+      for(const r of (ph.featured_routes||[]))
+        if(r.render==='roadmap-amber-dashed'||r.economics_status==='roadmap_excluded')
+          for(const id of _routeIdsOf(r)) if(ROUTE_ID_SET.has(id)) ids.push(id);
+  }
+  return [...new Set(ids)];
+}
 function applyEndStateFocus(partner){
   const c=_endStateCities(partner);
+  const roadmap=_roadmapPromoteIds(partner);
+  if(roadmap.length && _focusRoutes(roadmap)){
+    // Quanta-LR roadmap arcs stay visible on default "The network" view — display only, no economics claim.
+    try{
+      map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',['in',['get','id'],['literal',roadmap]],['max',m,0.92],['*',m,0.22]]));
+    }catch(e){}
+    if(c.length) _focusCities(c, 'intra');
+    return;
+  }
   if(!c.length){ applyStoryFocus(null); return; }
   // intra: light the in-network grid + the trunks BETWEEN end-state cities, but not long-haul beyond them.
   _focusCities(c, 'intra');

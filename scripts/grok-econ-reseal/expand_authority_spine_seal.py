@@ -17,6 +17,7 @@ DC = ROOT / "data-clean" / "partners"
 SEALABLE = frozenset({
     "proposal_active_rak_domestic",
     "proposal_active_rak_dubai_inter_emirate",
+    "proposal_active_rak_musandam_pioneer",
     "proposal_active_bahrain_domestic",
     "proposal_active_ksa_eastern_province_cross_border",
 })

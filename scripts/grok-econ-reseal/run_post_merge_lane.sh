@@ -7,8 +7,11 @@ GROK="$ROOT/scripts/grok-econ-reseal"
 
 echo "=== Post-merge lane (automatic inheritance + seal + finance) ==="
 
-echo "  1/9 RAK spine city-ID contamination fix"
+echo "  1/11 RAK spine city-ID contamination fix"
 python3 "$GROK/fix_rak_spine_city_contamination.py"
+
+echo "  1b/11 RAK/UAE corridor lane (Musandam, inter-emirate, authority twins)"
+"$GROK/run_rak_uae_corridor_lane.sh"
 
 echo "  2/9 India geometry (if handoff present)"
 if [[ -f "$ROOT/handoff/partner-map-model/india-adani-reliance-high-value-consumer-market-scan-kolkata-chennai-2026-06-21.json" ]]; then
