@@ -66,4 +66,7 @@ python3 "$ROOT/scripts/audit_partner_page_qa.py" "${QA_ARGS[@]}"
 echo "  5/5 build-site smoke"
 node "$ROOT/scripts/build-site.mjs" 2>&1 | tail -8
 
+echo "  6/6 partner tracker sheet"
+python3 "$ROOT/finance/build_partner_tracker.py" --upload
+
 echo "✓ Partner page lane complete"
