@@ -7,7 +7,7 @@
 | Local validate | **PASS** (all 11 #65 + golden decks) |
 | Live bind (Slides OAuth) | **COMPLETE** — 11 sandbox decks from Grab template |
 | Content apply + 11-slide trim | **COMPLETE** — partner text from `content-source.json` |
-| Economics URL bind | **7/11 bound** — see table below |
+| Economics URL bind | **9/11 bound** — yassir + caribbean published 2026-06-21 |
 | Route/render QA ledgers | **COMPLETE** — `decks/<deck>/ledgers/route-render-qa.json` |
 | N30 image compositing | **HELD-NULL** — no approved backgrounds or `n30.png` in repo |
 | Schema validate post-content | **PASS** |
@@ -20,7 +20,7 @@ Lane report: `deck-studio/out/pr65-content-lane-report.json`
 |----------|--------|---------------|----------|------------|
 | adani-ports | 11 | null (held) | PASS_WITH_FLAGS | pass |
 | bolt | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit) | PASS | pass |
-| caribbean-mobility | 11 | null (held) | PASS | pass |
+| caribbean-mobility | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1J9rb-rAXkLnJPrKO8WhG7bLkofG-IB5En6hrjnwDyt0/edit) | PASS | pass |
 | noon | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1v0ywhNFk_fA1JRVhizWlz89RKgQWlID9RD3LfBhVB2Y/edit) | PASS | pass |
 | ola | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1pNwq_GQd2Fdem8O4o2GNNoKxBPxXOPDh1qfbhGFGkaQ/edit) | PASS | pass |
 | rapido | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1ujRCwCKNFcfUbVL5B312fjcYmtvsDVhBtK2hsTHo-qA/edit) | PASS | pass |
@@ -28,7 +28,7 @@ Lane report: `deck-studio/out/pr65-content-lane-report.json`
 | uber-india | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1L6StDXDjdR26l_bIqRRH150B1rTeT9pHk76JKkG3rqw/edit) | PASS | pass |
 | uber-mena | 11 | [Sheet](https://docs.google.com/spreadsheets/d/19VtRN0U6Gggq_RQlRuSxmiIxnp2KgGEIvXOW72RQHIQ/edit) | PASS | pass |
 | yango | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM/edit) | PASS | pass |
-| yassir | 11 | null (held — local xlsx only) | PASS | pass |
+| yassir | 11 | [Sheet](https://docs.google.com/spreadsheets/d/1ba9Zpap5hPAehDKFHgk2PwRq4xStr2rx_z1LGSY52Q4/edit) | PASS | pass |
 
 Live deck links unchanged from bind pass (`deck-studio/out/pr65-deck-bind-report.json`).
 
@@ -51,11 +51,12 @@ Per deck:
 
 ## Remaining gaps
 
-### Economics (4 held-null)
+### Economics (2 held-null)
 
-- **yassir** — `finance/_sheet_out/yassir_unit_econ.xlsx` exists; no `PARTNER-SHEET-IDS` entry → in-place publish pending
-- **caribbean-mobility** — batch-1 economics inputs drafted; no published Sheet
-- **adani-ports** / **reliance-industries** — no economics Sheet in registry
+See `handoff/partner-map-model/PR65-ECONOMICS-SHEET-NOTES-2026-06-21.md`.
+
+- **yassir** / **caribbean-mobility** — **published** (LB-83 registry + in-place Drive upload)
+- **adani-ports** / **reliance-industries** — held-null: no `corridors.json` market / no `agg-*.json`; Tasklet must run finance cascade before Sheet mint
 
 ### N30 images (all 11 decks)
 

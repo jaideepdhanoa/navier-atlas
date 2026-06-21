@@ -6,6 +6,45 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-21 — Deck Studio image asset base + economics gaps (Grok → Tasklet)
+
+**Read:** `deck-studio/docs/IMAGE-RULES.md` · `handoff/partner-map-model/PR65-DECK-STUDIO-GAP-REPORT-2026-06-21.md`
+
+### Image / compositing asset base (P0 for deck polish)
+
+All 11 PR #65 live decks are bound and text-applied, but **N30 compositing is held-null** because the repo has **zero binary image assets**:
+
+| Expected path | Status | Needed for |
+|---------------|--------|------------|
+| `deck-studio/assets/n30/n30.png` (or Drive registry per `assets/n30/README.md`) | **missing** | Canonical vessel overlay in `builders/images/n30_composite.py` |
+| `deck-studio/assets/backgrounds/<market>.png` | **missing** | Market-specific hero / launch-market slides per `image-manifest.json` |
+| `deck-studio/assets/masks/*.png` | optional | Deterministic compositor masks |
+
+Per-deck requirements live in `deck-studio/decks/<deck>/image-manifest.json` (11 decks). Provenance ledgers: `decks/<deck>/ledgers/image-provenance-ledger.json`.
+
+**Tasklet ask:** deliver a checked-in or registry-linked **approved asset pack**:
+
+1. One canonical **N30 Pioneer II** PNG (transparent, consistent scale/orientation).
+2. **Market-specific backgrounds** for each deck's `image_key` rows — source-approved only (no Atlas renders, no generic stock scenery). Suggested minimum set from PR #65 manifests: Maghreb waterfront (Yassir), Caribbean gateway (Nassau/San Juan), India coastal (Ola/Rapido/Uber India), Gulf/UAE (Noon/Yango/Uber MENA), European coast (Bolt), port/industrial (Adani/Reliance if/when decks advance).
+3. Optional: `deck-studio/assets/ASSET-REGISTRY.json` mapping `image_key → {local_path | drive_file_id, source_url, license, captured_at}` for reproducibility.
+
+Grok can then run `n30_composite.py` + Slides API `replaceImage` edit plans once assets exist.
+
+### Economics sheets — resolved vs still held
+
+| Partner | Status | Notes |
+|---------|--------|-------|
+| **yassir** | **Published** | Sheet `1ba9Zpap5hPAehDKFHgk2PwRq4xStr2rx_z1LGSY52Q4` — built from `agg-yassir.json`, uploaded in-place |
+| **caribbean-mobility** | **Published** | Sheet `1J9rb-rAXkLnJPrKO8WhG7bLkofG-IB5En6hrjnwDyt0` — built from `agg-caribbean-mobility.json` |
+| **adani-ports** | **held-null** | No `corridors.json` market, no `agg-adani-ports.json` — deck-prep only; **do not mint empty Sheet** until geometry + aggregate exist |
+| **reliance-industries** | **held-null** | Same — no finance engine rows yet |
+
+**Why held-null happened:** `pr65_content_lane` binds `economics_url` only from `finance/economics_url_map.json`, which is sourced from `PARTNER-SHEET-IDS.json` (LB-83). Yassir/Caribbean had local agg + xlsx but were never registered in that lane until today. Adani/Reliance were never in the finance cascade.
+
+**Tasklet P1 for Adani/Reliance economics:** add scoped `corridors.json` markets → run `aggregate.py` → `build_transparent_sheet.py` → register in `PARTNER-SHEET-IDS.json` (mirror `create_partner_sheets.py` flow).
+
+---
+
 ## 2026-06-21 — Partner page QA flags (Grok audit_partner_page_qa)
 
 **Ledger:** `handoff/partner-map-model/partner-page-qa-ledger.json`
