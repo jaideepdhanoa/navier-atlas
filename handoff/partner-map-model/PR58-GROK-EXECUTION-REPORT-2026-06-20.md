@@ -1,6 +1,6 @@
 # PR #58 Grok Execution Report — 2026-06-20
 
-Generated: 2026-06-21T02:39:14Z
+Generated: 2026-06-21T03:01:48Z
 
 ## Summary
 
@@ -31,4 +31,4 @@ Generated: 2026-06-21T02:39:14Z
 ## Validation
 
 -   ✅ all partner proposals pass schema validation
-- build-site:  | _dist/ ready: 1 aggregate + 131 partner/market + 412 share pages (1 market sub-page(s) skipped). | Share URLs: https://navier-atlas.vercel.app/cluster/<id> · https://navier-atlas.vercel.app/city/<id> · https://navier-atlas.vercel.app/<partner>/<market>/city/<id>
+- build-site:  | _dist/ ready: 1 aggregate + 132 partner/market + 412 share pages (1 market sub-page(s) skipped). | Share URLs: https://navier-atlas.vercel.app/cluster/<id> · https://navier-atlas.vercel.app/city/<id> · https://navier-atlas.vercel.app/<partner>/<market>/city/<id>

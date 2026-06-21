@@ -17,9 +17,30 @@ Design (locked):
   - Cross-border opex = vessel home-port country (R16) = Singapore default.
   - Duplicates (_dup_of, or label seen in a real market) excluded from rollup.
 
-Usage: python3 aggregate.py [--json out.json] [--partner grab]
+Usage: python3 aggregate.py [--json out.json] [--partner grab] [--dedup unique]
+       --partner global --dedup unique  → one row per pier-pair (geometry owner) for global TAM
 """
 import json, os, sys, copy, importlib.util, statistics, math
+
+def arg(flag, default=None):
+    return sys.argv[sys.argv.index(flag)+1] if flag in sys.argv else default
+
+def pier_pair(corridor: str) -> tuple[str, str]:
+    if " -> " in corridor:
+        a, b = corridor.split(" -> ", 1)
+        return a.strip().lower(), b.strip().lower()
+    return corridor.strip().lower(), ""
+
+_STATUS_RANK = {"grounded": 4, "estimated": 3, "forward_sam": 2, "duplicate": 0}
+
+def geometry_owner_score(r: dict) -> tuple:
+    """Pick one canonical row per pier-pair for --dedup unique."""
+    return (
+        _STATUS_RANK.get(r.get("status"), 0),
+        r.get("pool_yr") or 0,
+        r.get("mid", {}).get("market_revenue_yr") or 0,
+        -(r.get("nm") or 0),
+    )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 const = json.load(open(os.path.join(HERE, "vessel-constants.json")))
@@ -119,6 +140,7 @@ def run_scenarios(c, vessel_key):
 def main():
     partner = "grab"
     if "--partner" in sys.argv: partner = sys.argv[sys.argv.index("--partner")+1]
+    dedup_mode = arg("--dedup")
 
     # LB-82: --markets <comma-list> SCOPE FILTER.
     # Only recompute rows for in-scope markets; carry forward out-of-scope rows
@@ -294,6 +316,26 @@ def main():
             # LB-254: cascade-estimated corridors carry no real demand; pool = est_demand x fare.
             r["pool_yr"] = (est or 0) * (r.get("fare") or 0)
 
+    # ---- GEOMETRY DEDUP (global TAM on unique pier-pairs) ----
+    if global_mode and dedup_mode == "unique":
+        live = [r for r in rows if not r.get("is_dup")]
+        groups: dict[tuple[str, str], list] = {}
+        for r in live:
+            groups.setdefault(pier_pair(r["corridor"]), []).append(r)
+        for group in groups.values():
+            owner = max(group, key=geometry_owner_score)
+            owner["_geometry_owner"] = True
+            owner["_alias_markets"] = sorted({g["market"] for g in group})
+            owner["_alias_count"] = len(group)
+            prov = corr["markets"].get(owner["market"], {})
+            owner["_provenance_partner"] = prov.get("partner", "grab")
+            for g in group:
+                if g is owner:
+                    continue
+                g["is_dup"] = True
+                g["status"] = "duplicate"
+                g["_dup_of_geometry"] = owner.get("route_id") or owner["corridor"]
+
     # ---- ROLLUP ----
     uniq = [r for r in rows if not r["is_dup"]]
     grounded = [r for r in uniq if r["status"]=="grounded"]
@@ -358,6 +400,8 @@ def main():
         "n_corridors_total": len(uniq), "n_grounded": len(grounded), "n_estimated": len(estimated),
         "n_forward_sam": len(forward_sam),
         "n_duplicates_excluded": sum(1 for r in rows if r["is_dup"]),
+        "dedup_mode": dedup_mode if (global_mode and dedup_mode) else None,
+        "n_unique_geometry": len(uniq) if (global_mode and dedup_mode == "unique") else None,
         "grounded_floor": {
             "fleet": floor_fleet,
             "market_rev_yr": round(floor_rev, 0),

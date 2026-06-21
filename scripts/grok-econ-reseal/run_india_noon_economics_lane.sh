@@ -44,6 +44,9 @@ RUN_CASCADE=0 PARTNERS="$PARTNERS_SHEETS" "$ROOT/scripts/grok-econ-reseal/run_fi
 
 echo "→ Rebuild agg-global.json (India/Noon markets for route-keyed sidecar)"
 python3 "$MODEL/aggregate.py" --partner global --json "$RECAL/agg-global.json"
+echo "→ Rebuild agg-unique-global.json + growth-unique-global.json (global TAM on unique geometry)"
+python3 "$MODEL/aggregate.py" --partner global --dedup unique --json "$RECAL/agg-unique-global.json"
+python3 "$MODEL/growth.py" --agg "$RECAL/agg-unique-global.json" --partner global-unique --json "$RECAL/growth-unique-global.json"
 
 echo "→ Wire economics_url + model_link into partner JSON"
 python3 "$FINANCE/wire_partner_economics_urls.py"

@@ -17,6 +17,11 @@ def arg(flag, default=None):
 
 PARTNER = arg("--partner", "grab")
 OUT = arg("--out", f"/tmp/{PARTNER}_unit_econ.xlsx")
+GLOBAL_MODE = PARTNER == "global"
+DEDUP_MODE = arg("--dedup", "unique" if GLOBAL_MODE else "none")
+SKIP_README = "--skip-readme" in sys.argv
+PARTNER_LABEL = "Global (unique geometry)" if (GLOBAL_MODE and DEDUP_MODE == "unique") else (
+    "Global" if GLOBAL_MODE else PARTNER.title())
 # --corridors <path>: override the corridor registry source. Mirrors aggregate.py so the
 # sheet builds from a SCOPED VIEW of the shared global network for inheriting partners
 # (Uber/hotels) WITHOUT duplicating corridors into the durable corridors.json. Default = canonical.
@@ -58,7 +63,9 @@ bands = {b: (SCEN[b]["load_factor"], SCEN[b]["revenue_leg_factor"]) for b in ("t
 # aggregate, so the Market-sizing ladder (the SECOND cost engine — golden rule #7) anchors on the
 # TRUE pool exactly like growth.py: M_today = floor / eff_capture = pool, never the inflated
 # floor/0.10 that put captive markets ~9x too high. Falls back to the static rate if no agg/pool.
-_agg_path = arg("--agg", os.path.join(HERE, "recal", f"agg-{PARTNER}.json"))
+_agg_default = os.path.join(HERE, "recal", "agg-unique-global.json" if (GLOBAL_MODE and DEDUP_MODE == "unique")
+                            else f"agg-{PARTNER}.json")
+_agg_path = arg("--agg", _agg_default)
 EFF_CAPTURE = None; IS_CAPTIVE = False
 try:
     _gfloor = json.load(open(_agg_path))["rollup"]["grounded_floor"]
@@ -80,17 +87,30 @@ MARKET_DISPLAY = {
 }
 def mkt_disp(mid): return MARKET_DISPLAY.get(mid, mid.replace("-"," ").title())
 
+def pier_key(label: str) -> tuple[str, str]:
+    sep = " \u2192 " if " \u2192 " in label else (" -> " if " -> " in label else None)
+    if sep:
+        a, b = label.split(sep, 1)
+        return a.strip().lower(), b.strip().lower()
+    return label.strip().lower(), ""
+
 # ---- corridors (range gate + dedupe, mirrors aggregate.py) ----
 rows=[]; roadmap=[]; seen={}
 mkt_fleet_basis={}   # display name -> (fleet_basis, fleet_rounding)  [R-FLOOR-2 / G51]
 for mid, mk in corr["markets"].items():
-    if mk.get("partner","grab") != PARTNER: continue
+    if not GLOBAL_MODE and mk.get("partner","grab") != PARTNER: continue
     mkt_fleet_basis[mkt_disp(mid)] = (mk.get("fleet_basis","per_corridor_floor"), mk.get("fleet_rounding"))
     for c in mk["corridors"]:
         if c.get("_premium_cascade"): continue  # R5-EXT public-transit/no-premium-tier — excluded
         key=(c.get("from","").strip().lower(), c.get("to","").strip().lower())
-        is_dup = c.get("_dup_of") is not None or (key in seen and seen[key]!=mid)
-        seen.setdefault(key, mid)
+        if DEDUP_MODE == "unique":
+            is_dup = c.get("_dup_of") is not None or (key in seen)
+            seen.setdefault(key, mid)
+        elif GLOBAL_MODE:
+            is_dup = c.get("_dup_of") is not None
+        else:
+            is_dup = c.get("_dup_of") is not None or (key in seen and seen[key]!=mid)
+            seen.setdefault(key, mid)
         if is_dup: continue
         nm=c["distance_nm"]; L3=c.get("L3_locals") or {}
         fr=L3.get("_fare_record") or {}; dr=L3.get("_demand_record") or {}
@@ -133,6 +153,7 @@ for mid, mk in corr["markets"].items():
         eff_cap=TPD_MAP[_arche_cap] if (_arche_cap in TPD_MAP and not str(_arche_cap).startswith("_")) else max_tpd
         rec=dict(market=mkt_disp(mid), country=country, corridor=f"{c['from']} \u2192 {c['to']}",
                  route_id=c.get("route_id"), nm=nm, fare=_fare, eff_cap=eff_cap,
+                 provenance=mk.get("partner", "grab"),
                  fare_tier=fr.get("source_tier"), fare_conf=fr.get("confidence"), fare_src=_fare_src,
                  demand=pool, cap=cap_row,
                  demand_tier=dr.get("source_tier"), demand_conf=dr.get("confidence"), demand_src=dr.get("source"),
@@ -146,6 +167,24 @@ for mid, mk in corr["markets"].items():
                  fleet_cap=(math.ceil(c["villas"]/25) if (c.get("captive_resort") and c.get("villas")) else None))
         (roadmap if nm>range_nm else rows).append(rec)
 rows.sort(key=lambda r:(r["country"], r["nm"]))
+
+# Enrich global unique rows with geometry-owner metadata from agg-unique-global.json
+GEOMETRY_META: dict[tuple[str, str], dict] = {}
+if GLOBAL_MODE and DEDUP_MODE == "unique" and os.path.isfile(_agg_path):
+    for ar in json.load(open(_agg_path)).get("rows", []):
+        if ar.get("is_dup"):
+            continue
+        pk = pier_key(ar.get("corridor", ""))
+        GEOMETRY_META[pk] = {
+            "provenance": ar.get("_provenance_partner") or "",
+            "alias_markets": ", ".join(ar.get("_alias_markets") or []),
+            "alias_count": ar.get("_alias_count") or 1,
+        }
+    for rec in rows:
+        meta = GEOMETRY_META.get(pier_key(rec["corridor"]), {})
+        rec["provenance"] = meta.get("provenance") or rec.get("provenance", "")
+        rec["alias_markets"] = meta.get("alias_markets", "")
+        rec["alias_count"] = meta.get("alias_count", 1)
 
 # country opex (only countries used)
 used_countries = sorted({r["country"] for r in rows})
@@ -183,9 +222,13 @@ named={}
 def addname(name, ref): named[name]=ref
 
 # ------------------------------------------------------------ TAB 0 Read me
-ws0=wb.active; ws0.title="Read me"; ws0.sheet_view.showGridLines=False
-ws0.column_dimensions["A"].width=3; ws0.column_dimensions["B"].width=120
-sc(ws0,"B2",f"Navier \u00d7 {PARTNER.title()} \u2014 Corridor Unit Economics",font=H1,fill=f_navy,align=Alignment(vertical="center")); ws0.row_dimensions[2].height=34
+if SKIP_README:
+    wb.remove(wb.active)
+    ws0 = None
+else:
+    ws0=wb.active; ws0.title="Read me"; ws0.sheet_view.showGridLines=False
+    ws0.column_dimensions["A"].width=3; ws0.column_dimensions["B"].width=120
+    sc(ws0,"B2",f"Navier \u00d7 {PARTNER_LABEL} \u2014 Corridor Unit Economics",font=H1,fill=f_navy,align=Alignment(vertical="center")); ws0.row_dimensions[2].height=34
 content=[
  ("",None,None),
  ("What this is",BOLD,None),
@@ -212,9 +255,10 @@ content=[
  ("   Green  = COMPUTED by formula.",None,f_calc),
  ("   Every fare & demand figure carries a Source tier (T1 official \u2192 T5 modeled) + Confidence (high/med/low). Null beats a wrong number: no published pool \u2192 blank, not a guess.",None,None),
 ]
-rr=4
-for text,font,fill in content:
-    sc(ws0,f"B{rr}",text,font=font,fill=fill,align=wrap); rr+=1
+if ws0 is not None:
+    rr=4
+    for text,font,fill in content:
+        sc(ws0,f"B{rr}",text,font=font,fill=fill,align=wrap); rr+=1
 
 # ------------------------------------------------------------ TAB 1 Assumptions
 ws1=wb.create_sheet("Assumptions"); ws1.sheet_view.showGridLines=False
@@ -325,17 +369,28 @@ addname("country_opex",copex)
 # ------------------------------------------------------------ TAB 3 Corridor economics (engine)
 ws=wb.create_sheet("Corridor economics"); ws.sheet_view.showGridLines=False
 # scenario toggle mirror at top
-sc(ws,"A1",f"Navier \u00d7 {PARTNER.title()} \u2014 Corridor economics (one boat, one year; MID = headline)",font=H2,fill=f_navy)
+_corr_hdr = ("Corridor economics \u2014 unique geometry (one row per pier-pair; canonical list for Global TAM)"
+             if (GLOBAL_MODE and DEDUP_MODE == "unique") else
+             f"Navier \u00d7 {PARTNER_LABEL} \u2014 Corridor economics (one boat, one year; MID = headline)")
+sc(ws,"A1",_corr_hdr,font=H2,fill=f_navy)
 ws.merge_cells("A1:L1")
 sc(ws,"N1","SCENARIO:",font=BOLD,align=Alignment(horizontal="right",vertical="center"))
 sc(ws,"O1","=scenario",fill=f_band,align=ctr,font=Font(bold=True,size=12),bd=True)
 sc(ws,"P1","(set on Assumptions tab)",font=SMALL,align=Alignment(vertical="center"))
 
 # column plan
-cols=[
+_cols_head = [
  ("Market","market",10,None,"in"),
  ("Country","country",13,None,"in"),
  ("Corridor","corridor",34,None,"in"),
+]
+if GLOBAL_MODE and DEDUP_MODE == "unique":
+    _cols_head += [
+        ("Provenance partner","provenance",14,None,"in"),
+        ("Alias markets","alias_markets",30,None,"in"),
+        ("Alias count","alias_count",8,NUM,"in"),
+    ]
+cols = _cols_head + [
  ("Distance","nm",8,NUM,"in"),
  ("Premium fare $/pax","fare",11,USD,"in"),
  ("Fare tier","fare_tier",7,None,"in"),
@@ -405,6 +460,10 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Market')}{R}",rec["market"],fill=f_input,bd=True,font=SMALL)
     sc(ws,f"{CL('Country')}{R}",rec["country"],fill=f_input,bd=True,font=SMALL)
     sc(ws,f"{CL('Corridor')}{R}",rec["corridor"],fill=f_input,bd=True,font=Font(size=9),align=wrap)
+    if GLOBAL_MODE and DEDUP_MODE == "unique":
+        sc(ws,f"{CL('Provenance partner')}{R}",rec.get("provenance"),fill=f_input,bd=True,font=SMALL)
+        sc(ws,f"{CL('Alias markets')}{R}",rec.get("alias_markets"),fill=f_grey,align=wrap,bd=True,font=Font(size=8,color="555555"))
+        sc(ws,f"{CL('Alias count')}{R}",rec.get("alias_count", 1),fill=f_grey,fmt=NUM,align=ctr,bd=True,font=SMALL)
     sc(ws,f"{CL('Distance')}{R}",rec["nm"],fill=f_input,fmt=NUM,align=ctr,bd=True)
     sc(ws,f"{CL('Premium fare $/pax')}{R}",rec["fare"],fill=f_input,fmt=USD,align=ctr,bd=True)
     sc(ws,f"{CL('Fare tier')}{R}",rec["fare_tier"],fill=f_input,align=ctr,bd=True,font=SMALL)
@@ -561,12 +620,15 @@ if ALL_FWD:
     named["som_floor_fleet"]=f"'Corridor economics'!$D${FSROW}"
     named["som_floor_rev"]=f"'Corridor economics'!$E${FSROW}"
 
-# ------------------------------------------------------------ TAB 4 Market sizing
-ws4=wb.create_sheet("Market sizing"); ws4.sheet_view.showGridLines=False
-for i,wd in enumerate([40,16,16,16,72],1): ws4.column_dimensions[get_column_letter(i)].width=wd
+# ------------------------------------------------------------ TAB 4 Market sizing / Global TAM
 _ms_title=("Market sizing \u2014 how the FORWARD-SAM anchor (2030-dated; no near-term grounded floor) builds into SOM \u2192 SAM \u2192 TAM"
            if ALL_FWD else
            "Market sizing \u2014 how the grounded floor builds into SOM \u2192 SAM \u2192 TAM")
+if GLOBAL_MODE and DEDUP_MODE == "unique":
+    _ms_title = "Global TAM \u2014 unique geometry (one row per pier-pair; SOM \u2192 SAM \u2192 TAM)"
+ws4_title = "Global TAM" if (GLOBAL_MODE and DEDUP_MODE == "unique") else "Market sizing"
+ws4=wb.create_sheet(ws4_title); ws4.sheet_view.showGridLines=False
+for i,wd in enumerate([40,16,16,16,72],1): ws4.column_dimensions[get_column_letter(i)].width=wd
 sc(ws4,"A1",_ms_title,font=H2,fill=f_navy); ws4.merge_cells("A1:E1")
 M=gcfg["multipliers"]; LAD=gcfg["ladder"]
 # LB-172: Partner-scoped multiplier overrides. Partners whose corridor census already
