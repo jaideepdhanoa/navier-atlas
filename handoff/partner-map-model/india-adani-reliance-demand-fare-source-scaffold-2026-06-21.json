@@ -1,73 +1,175 @@
 {
   "artifact": "india-adani-reliance-demand-fare-source-scaffold",
+  "version": "v2_tasklet_research_complete",
   "date": "2026-06-21",
-  "status": "source_scaffold_only_no_economics",
-  "purpose": "Collect route-demand/fare source candidates for later economics cascade. This file does not create corridors, fares, demand rows, fleet counts, or TAM.",
-  "partners": ["adani-ports", "reliance-industries"],
-  "display_city_ids": ["mumbai-india", "goa-india", "kerala-backwaters-india", "andaman-india"],
+  "status": "tasklet_research_complete_no_financial_model",
+  "purpose": "Research-only demand/fare/ops source packet for Grok financial model building. This file admits only source-backed inputs and keeps unverified demand/fare cells null.",
+  "owner_split": {
+    "tasklet": "public-source research, exact source qualification, route/fare/demand/ops input sidecars, proposal narrative rationale",
+    "grok": "financial model construction, TAM/growth_case, economics sidecar, sheet/master cascade, deterministic ID binding, sealing, render QA"
+  },
+  "partners": [
+    "adani-ports",
+    "reliance-industries"
+  ],
+  "display_city_ids": [
+    "mumbai-india",
+    "goa-india",
+    "kerala-backwaters-india",
+    "andaman-india"
+  ],
   "source_rows": [
     {
       "market_id": "mumbai-india",
-      "candidate_corridor": "Mumbai / Bhaucha Dhakka / Ferry Wharf ↔ Mandwa / Alibaug",
+      "candidate_corridor": "Mumbai / Bhaucha Dhakka / Ferry Wharf ↔ Mandwa / Mandwa Ro-Pax Jetty / Alibaug",
       "source_name": "M2M Ferries official website",
       "source_url": "https://www.m2mferries.com/",
       "source_type": "operator_official",
       "usable_facts": [
         "Route selector supports Mumbai to Mandwa.",
-        "M2M describes Maharashtra's first Ro-Pax ferry, operational year-round including monsoons.",
-        "Official page states passenger fare from ₹400 onwards, motorcycle ₹210 onwards, 4 wheelers ₹1,020 onwards, bicycles ₹110 onwards, buses ₹4,500 onwards.",
-        "Official page lists Mumbai terminal at Ferry Wharf / Bhaucha Dhakka, Mumbai Port and Mandwa terminal at Mandwa Ropax Service Jetty."
+        "M2M describes the service as Maharashtra's first Ro-Pax ferry, operational year-round including monsoons.",
+        "Official page states passenger fare from ₹400 onwards, motorcycle from ₹210 onwards, 4-wheelers from ₹1,020 onwards, bicycles from ₹110 onwards, buses from ₹4,500 onwards.",
+        "Official page lists Mumbai terminal at Ferry Wharf / Bhaucha Dhakka, Mumbai Port and Mandwa terminal at Mandwa Ropax Service Jetty.",
+        "Official page states the vehicle deck can accommodate over 120 cars, two-wheelers and buses."
       ],
-      "economics_readiness": "fare_anchor_candidate_demand_missing",
-      "next_validation": "Confirm current fare table via booking flow or downloadable tariff; collect passenger volumes/seasonality before model row."
+      "admitted_model_inputs": {
+        "route_candidate": true,
+        "fare_floor_inr": {
+          "passenger": 400,
+          "motorcycle": 210,
+          "four_wheeler": 1020,
+          "bicycle": 110,
+          "bus": 4500,
+          "basis": "official onwards fare, not average fare"
+        },
+        "demand_anchor": null,
+        "ops_anchor": {
+          "year_round": true,
+          "ropax": true,
+          "vehicle_deck_capacity_fact": "over 120 cars/two-wheelers/buses, exact mix not specified"
+        }
+      },
+      "model_input_status": "fare_and_ops_anchor_admitted_demand_null",
+      "grok_instruction": "Use as a fare/ops anchor only. Do not invent passenger volumes; if model requires demand, leave demand null or use a clearly labelled template assumption outside Tasklet's sourced facts."
     },
     {
       "market_id": "kerala-backwaters-india",
-      "candidate_corridor": "Kochi Water Metro terminals / harbour and backwater network",
-      "source_name": "Kochi Water Metro official website",
-      "source_url": "https://watermetro.co.in/",
+      "candidate_corridor": "Kochi Water Metro harbour/backwater network; exact terminal pair to be selected by Grok after route/ID binding",
+      "source_name": "Kochi Water Metro official website and boat schedule page",
+      "source_url": "https://watermetro.co.in/ ; https://watermetro.co.in/boat-schedule",
       "source_type": "agency_official",
       "usable_facts": [
         "Official site reports Kochi as India's first city to have a Water Metro project.",
-        "Official site describes 75+ e-boats, 15 routes, 75+ kilometres.",
-        "Official site lists ridership update: 7,070,083 passengers joined us; daily update shown as 5,873 on 2026-06-19.",
-        "Official site lists terminals including South Chittoor, Cheranalloor, Eloor, Fort Kochi, Willingdon Island, Mattancherry, High Court, Kakkanad, Vytilla, and Vypin."
+        "Official site describes 75+ e-boats, 15 routes, and 75+ kilometres.",
+        "Official site lists ridership update: daily 5,873 on 2026-06-19 and cumulative 7,070,083 passengers.",
+        "Official site and schedule page list terminals including South Chittoor, Cheranalloor, Eloor, Fort Kochi, Willingdon Island, Mattancherry, High Court, Kakkanad, Vytilla, and Vypin.",
+        "Official site positions the system as sustainable/eco-friendly and connected through waterways."
       ],
-      "economics_readiness": "demand_anchor_candidate_fare_needs_tariff_page",
-      "next_validation": "Scrape/confirm official fare chart or passes page; bind terminal-level route IDs before model row."
+      "admitted_model_inputs": {
+        "route_candidate": true,
+        "fare_floor_inr": null,
+        "fare_candidate_not_admitted": "Search surfaced a ₹20–₹40 fare range via non-scraped social/secondary results, but Tasklet did not admit it as model input because the official website scrape did not expose a fare chart.",
+        "demand_anchor": {
+          "daily_ridership_reported": 5873,
+          "daily_ridership_date": "2026-06-19",
+          "cumulative_passengers_reported": 7070083,
+          "basis": "official homepage visible ridership update"
+        },
+        "ops_anchor": {
+          "e_boats": "75+",
+          "routes": "15",
+          "network_km": "75+",
+          "basis": "official homepage"
+        }
+      },
+      "model_input_status": "demand_and_ops_anchor_admitted_fare_null",
+      "grok_instruction": "Use as demand/ops anchor. Keep fare null unless Grok independently verifies an official fare chart/pass table."
     },
     {
       "market_id": "goa-india",
-      "candidate_corridor": "Goa river / ferry route network, including Mandovi / Mormugao support",
-      "source_name": "River Navigation Department, Government of Goa — ferry routes",
-      "source_url": "https://rnd.goa.gov.in/ferry-routes/",
+      "candidate_corridor": "Government of Goa River Navigation Department ferry-route network; Mormugao/Goa display-market support only where exact sealed IDs bind",
+      "source_name": "River Navigation Department, Government of Goa — ferry routes and Citizens' Charter",
+      "source_url": "https://rnd.goa.gov.in/ferry-routes/ ; https://rnd.goa.gov.in/wp-content/uploads/2022/06/rnd-goa-citizen-charter.pdf",
       "source_type": "government_official",
       "usable_facts": [
-        "Official Government of Goa RND ferry-routes page exists and is the preferred ferry-route source.",
-        "Current scrape returned heading only; route/fare details require browser/manual extraction or alternate official endpoint.",
-        "Sealed Atlas crosswalk has Goa/Mormugao POI hits, but economics require a separate official tariff/demand source."
+        "Official RND page exists for ferry routes; scrape exposes heading only, while the official Citizens' Charter exposes detailed route/toll/ops content.",
+        "Citizens' Charter states the department operates regular ferry services on 21 routes in Goa, including one inter-state route (Aronda–Kiranpani).",
+        "Citizens' Charter states regular service is about 18–20 hours per day, with ferry available on request for the remaining period.",
+        "Citizens' Charter states foot passengers are exempt from ferry toll from 1-Apr-2000 and two-wheelers from 1-Jan-2006; later toll table text also says foot passengers, two-wheelers and three-wheelers are exempt.",
+        "Citizens' Charter provides vehicle/cargo toll bands by route group: cars/jeeps/light vehicles ₹7/₹10/₹14/₹27 depending route group, light commercial ₹15/₹20/₹20/₹43, medium/heavy bands where allowed, and special trip charges ₹55 or ₹255.",
+        "Citizens' Charter lists 21 ferry routes, deployed ferries, operating hours, and a named ferry vessel roster including F/B Mormugao."
       ],
-      "economics_readiness": "route_source_candidate_fare_and_demand_missing",
-      "next_validation": "Use browser or official PDF/tender/tariff source to capture ferry routes and any toll/fare schedule."
+      "admitted_model_inputs": {
+        "route_candidate": true,
+        "fare_floor_inr": {
+          "foot_passenger": 0,
+          "two_wheeler": 0,
+          "three_wheeler": 0,
+          "vehicle_toll_bands": "official charter includes vehicle/cargo toll bands; do not treat as premium passenger fare"
+        },
+        "demand_anchor": null,
+        "ops_anchor": {
+          "regular_routes": 21,
+          "service_hours": "about 18-20 hours/day plus on-request service",
+          "deployed_ferries_by_route": "available in charter table"
+        }
+      },
+      "model_input_status": "route_ops_and_government_toll_anchor_admitted_demand_null_premium_fare_null",
+      "grok_instruction": "Use for Goa route/ops context and public-ferry baseline only. Do not use vehicle tolls as Navier passenger fare without an explicit model choice by Grok."
     },
     {
       "market_id": "andaman-india",
-      "candidate_corridor": "Port Blair ↔ Havelock / Swaraj Dweep / Neil / Shaheed Dweep ferry network",
-      "source_name": "Directorate of Shipping Services, Andaman & Nicobar Administration — passenger fares PDF candidate",
+      "candidate_corridor": "Port Blair / Sri Vijaya Puram ↔ Swaraj Dweep / Havelock and Shaheed Dweep / Neil ferry network",
+      "source_name": "Directorate of Shipping Services, Andaman & Nicobar Administration — passenger fares PDF URL",
       "source_url": "https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf",
-      "source_type": "government_official_pdf_candidate",
+      "source_type": "government_official_pdf_url_unreadable_in_tasklet_environment",
       "usable_facts": [
-        "Search found an official DSS passenger fares PDF candidate for 2025-26.",
-        "Web scrape failed on the PDF, so no values are admitted yet.",
-        "This should be downloaded/read via browser or PDF-capable path before any economics row is created."
+        "Search found an official DSS passenger fares PDF URL for 2025-26.",
+        "Tasklet web scrape, browser open, and sandbox retrieval failed due service/DNS/retrieval errors; therefore no fare values are admitted.",
+        "Andaman remains a display-ready Atlas market, but economics inputs must stay null until Grok or a human can retrieve the PDF or another official DSS table."
       ],
-      "economics_readiness": "blocked_pdf_verification_required",
-      "next_validation": "Retrieve PDF, extract route/fare table, then confirm route IDs against sealed Andaman routes."
+      "admitted_model_inputs": {
+        "route_candidate": true,
+        "fare_floor_inr": null,
+        "demand_anchor": null,
+        "ops_anchor": null
+      },
+      "model_input_status": "route_candidate_only_fare_demand_ops_null",
+      "grok_instruction": "Do not create Andaman fare/demand economics from Tasklet facts. Keep as null or independently verify the DSS PDF during Grok model build."
     }
   ],
+  "partner_rationale_sources": {
+    "adani_ports": {
+      "source_url": "https://www.adaniports.com/ports-and-terminals",
+      "admitted_facts": [
+        "APSEZ official page describes the company as India's largest and the world's fastest-growing integrated transport utility.",
+        "Official page says APSEZ operates 19 ports and terminals, including 15 in India and 4 international ports.",
+        "Official page lists Indian assets including Mundra, Tuna, Dahej, Hazira, Dighi, Mormugao, Vizhinjam, Ennore, Kattupalli, Krishnapatnam, Haldia, Gangavaram, Dhamra, Karaikal, and Gopalpur."
+      ],
+      "proposal_use": "Supports broad owner/operator network narrative, but asset-level Atlas binding remains exact-only/null until Grok mints or binds IDs."
+    },
+    "reliance_industries": {
+      "source_urls": [
+        "https://www.ril.com/",
+        "https://www.ril.com/contact-us",
+        "https://www.ril.com/businesses/new-energy-materials"
+      ],
+      "admitted_facts": [
+        "RIL official homepage describes Reliance as a Fortune 500 company and India's largest private sector corporation.",
+        "RIL homepage describes Jamnagar as the world's largest integrated single-location refining complex.",
+        "RIL contact page lists corporate office at Maker Chambers-IV, Nariman Point, Mumbai 400021.",
+        "RIL New Energy page states net-zero carbon target by 2035 and over 5,000 acres for the Dhirubhai Ambani Green Energy Giga Complex in Jamnagar.",
+        "RIL New Energy page describes investments in solar PV manufacturing, fuel cells, green hydrogen, energy storage, power electronics, and mobility-relevant materials."
+      ],
+      "proposal_use": "Supports Reliance clean-energy/corporate-demand narrative and Nariman/Jamnagar rationale, but exact Atlas binding remains exact-only/null until Grok mints or binds IDs."
+    }
+  },
   "model_guardrails": [
-    "Do not create finance/model/corridors.json rows from this scaffold alone.",
-    "Route-specific demand, fare, capture, and country-reference coverage must be validated before economics.",
-    "Partner narrative may cite source-backed facts, but TAM/growth_case remains null until cascade."
-  ]
+    "Tasklet has not built the financial model and will not cascade economics; Grok owns that lane.",
+    "Only admitted_model_inputs may flow into Grok model build as sourced facts.",
+    "Null remains null for any missing demand, fare, ops, or exact ID field.",
+    "No TAM/growth_case is authored by Tasklet; Grok may build it from admitted facts plus explicitly-labelled model assumptions/templates.",
+    "Andaman stays route-candidate-only until the official DSS PDF is independently retrieved."
+  ],
+  "tasklet_completion_verdict": "Research packet complete for Grok model-build handoff. No Tasklet economics cascade remains."
 }

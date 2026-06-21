@@ -79,3 +79,36 @@ The sealed crosswalk includes POI and route counts and full sealed POI/route row
 - Do not promote broad country/port/campus evidence into executable map footprint.
 - Do not use substring matches such as `tuna` inside unrelated names like `Fortuna` or `Natuna`.
 - Do not treat route labels as exact if the endpoint intent differs.
+
+## 2026-06-21 Kolkata + Chennai consumer-market update
+
+Tasklet has now completed the requested high-value consumer-market research for:
+
+- `kolkata_hooghly_waterfront`
+- `chennai_ecr_cuddalore_puducherry_coast`
+
+These two markets are included in both:
+
+- `handoff/partner-map-model/adani-ports-india-expanded-grok-ready.json`
+- `handoff/partner-map-model/reliance-industries-india-expanded-grok-ready.json`
+
+Important handling rules:
+
+1. They are **proposal-included / brief-only** markets, not sealed `network_footprint[]` markets yet.
+2. Do **not** add either to `network_footprint[]` until Grok exact-binds or mints traceable Atlas city/BP/route IDs.
+3. Kolkata has strong source evidence, but the `145000000` passenger value is KMA ferry-system-level only. It is not route-level demand.
+4. Chennai has official EOI and cruise-terminal context, but route-level ferry demand and fare remain `null`. The 3,600-passenger M.V. Empress event is port/cruise infrastructure context only.
+5. Candidate BPs/routes must remain `null` unless exact-bound/minted with source URLs and water/passenger suitability.
+6. The earlier Priority B industrial/port list remains inactive unless Jaideep re-approves it.
+
+Research sidecar:
+
+- `handoff/partner-map-model/INDIA-ADANI-RELIANCE-HIGH-VALUE-CONSUMER-MARKET-SCAN-KOLKATA-CHENNAI-2026-06-21.md`
+- `handoff/partner-map-model/india-adani-reliance-high-value-consumer-market-scan-kolkata-chennai-2026-06-21.json`
+
+Additional Grok tasks for this update:
+
+- Attempt exact-bind / mint review for official Kolkata Hooghly route endpoints from the West Bengal Transport route roster.
+- Attempt exact-bind / mint review for Chennai Port / WQIV, Cuddalore Port, Puducherry extension context, and Napier Bridge–Kovalam only where traceable geometry exists.
+- Produce an explicit hold ledger for every Kolkata/Chennai candidate route that cannot be sealed.
+- Keep all fares/economics null unless a separate approved economics cascade supplies assumptions.
