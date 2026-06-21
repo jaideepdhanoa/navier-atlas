@@ -582,6 +582,55 @@ def normalize_featured_route(
     return out
 
 
+CHIP_ROUTE_EXCLUSIONS: dict[str, frozenset[str]] = {
+    "South Mumbai <-> Navi Mumbai airport": frozenset({"rn-ff5ccaf1831e"}),
+    "Gateway <-> Mandwa / Alibaug": frozenset(),
+}
+
+MUMBAI_COMMUTER_ROUTES = frozenset(
+    {
+        "ics-mum-belapur-ferrywharf",
+        "ics-mum-belapur-gateway",
+        "ics-mum-vashi-ferrywharf",
+        "ics-mum-gorai-nariman",
+        "ics-mum-versova-gateway",
+    }
+)
+
+
+def expand_india_network_chips(
+    doc: dict[str, Any],
+    *,
+    by_market: dict[str, set[str]],
+    gold_ids: set[str],
+) -> None:
+    """Fill network_chip route_ids from full sealed spine per phase market — Grab/Careem-grade coverage."""
+    for phase in doc.get("phases", []):
+        mk_union = phase_market_keys(phase)
+        if not mk_union:
+            continue
+        spine_ids: set[str] = set()
+        for mk in mk_union:
+            spine_ids |= by_market.get(mk, set())
+        spine_ids &= gold_ids
+        for fr in phase.get("featured_routes", []) or []:
+            if not isinstance(fr, dict) or fr.get("display") != "network_chip":
+                continue
+            label = fr.get("label") or ""
+            exclude = CHIP_ROUTE_EXCLUSIONS.get(label, frozenset())
+            rids = sorted(spine_ids - exclude)
+            if "mumbai" in mk_union and label in (
+                "Gateway <-> Mandwa / Alibaug",
+                "South Mumbai <-> Navi Mumbai airport",
+            ):
+                rids = sorted(set(rids) | (MUMBAI_COMMUTER_ROUTES & gold_ids))
+            if rids:
+                fr["route_ids"] = rids
+                fr["_link_kind"] = "network-bundle"
+                fr["_link_status"] = "linked-pr58-spine"
+                fr["_link_source"] = "grok/execute_pr58_india_gcc/spine-expand"
+
+
 def sync_ola_from_rapido(ola: dict, rapido: dict) -> None:
     """Deterministic: Ola phase featured_routes inherit Rapido spine bundles for same labels."""
     rapido_by_label: dict[str, dict] = {}
@@ -661,6 +710,8 @@ def normalize_india_partner(
                 )
             )
         phase["featured_routes"] = new_routes
+
+    expand_india_network_chips(doc, by_market=by_market, gold_ids=gold_ids)
 
     for market in doc.get("markets", []):
         anchor = (market.get("anchor_cities") or [None])[0]
