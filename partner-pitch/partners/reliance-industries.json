@@ -1313,7 +1313,9 @@
         "India"
       ],
       "region": "South Asia",
-      "economics_status": "pending_source_demand_fare"
+      "economics_status": "pending_source_demand_fare",
+      "sealed_poi_count": 99,
+      "sealed_route_count": 29
     },
     {
       "id": "goa",
@@ -1328,7 +1330,9 @@
         "India"
       ],
       "region": "South Asia",
-      "economics_status": "pending_source_demand_fare"
+      "economics_status": "pending_source_demand_fare",
+      "sealed_poi_count": 92,
+      "sealed_route_count": 17
     },
     {
       "id": "kerala",
@@ -1343,7 +1347,9 @@
         "India"
       ],
       "region": "South Asia",
-      "economics_status": "pending_source_demand_fare"
+      "economics_status": "pending_source_demand_fare",
+      "sealed_poi_count": 135,
+      "sealed_route_count": 12
     },
     {
       "id": "andaman",
@@ -1358,7 +1364,9 @@
         "India"
       ],
       "region": "South Asia",
-      "economics_status": "pending_source_demand_fare"
+      "economics_status": "pending_source_demand_fare",
+      "sealed_poi_count": 37,
+      "sealed_route_count": 40
     }
   ],
   "roll_up_markets": [
@@ -1367,7 +1375,7 @@
       "label": "Nariman Point corporate office",
       "region": "Mumbai",
       "one_liner": "South Mumbai corporate-waterfront origin candidate.",
-      "status": "candidate_only_exact_bp_required",
+      "status": "exact_sealed_bp_hit_review_ready_route_still_null",
       "source_urls": [
         "https://www.ril.com/contact-us"
       ],
@@ -1438,9 +1446,23 @@
       "label": "Nariman Point corporate office",
       "region": "Mumbai",
       "one_liner": "South Mumbai corporate-waterfront origin candidate.",
-      "status": "candidate_only_exact_bp_required",
+      "status": "exact_sealed_bp_hit_review_ready_route_still_null",
       "source_urls": [
         "https://www.ril.com/contact-us"
+      ],
+      "sealed_hits": [
+        {
+          "type": "poi",
+          "bp_id": "bp-mum-nariman-point",
+          "parent_city_id": "mumbai-india",
+          "name": "Nariman Point Water-Taxi Jetty"
+        },
+        {
+          "type": "route_review_only",
+          "route_id": "ics-mum-gorai-nariman",
+          "label": "North Mumbai (Gorai/Marve) ↔ South Mumbai (Nariman Point) — Coastal Water-Taxi",
+          "note": "Do not use as RCP/NMIA route; only confirms Nariman BP is sealed."
+        }
       ]
     },
     {
@@ -2074,6 +2096,50 @@
       "null_beats_confidently_wrong",
       "no_economics_until_route_specific_sources",
       "grok_seals_geometry"
+    ]
+  },
+  "sealed_atlas_crosswalk": {
+    "source_file": "handoff/partner-map-model/india-adani-reliance-sealed-atlas-crosswalk-2026-06-21.json",
+    "sealed_poi_counts": {
+      "mumbai-india": 99,
+      "goa-india": 92,
+      "kerala-backwaters-india": 135,
+      "andaman-india": 37
+    },
+    "sealed_route_counts": {
+      "mumbai-india": 29,
+      "goa-india": 17,
+      "kerala-backwaters-india": 12,
+      "andaman-india": 40
+    },
+    "reviewable_exact_asset_hits": [
+      "nariman",
+      "mormugao"
+    ],
+    "must_remain_null_terms": [
+      "ulwe",
+      "dighi",
+      "agardanda",
+      "hazira",
+      "mundra",
+      "jamnagar",
+      "ghansoli",
+      "reliance corporate park",
+      "rcp",
+      "dahej",
+      "tuna",
+      "vizhinjam",
+      "kattupalli",
+      "ennore",
+      "krishnapatnam",
+      "gangavaram",
+      "dhamra",
+      "haldia",
+      "karaikal",
+      "gopalpur",
+      "patalganga",
+      "nagothane",
+      "gadimoga"
     ]
   }
 }
