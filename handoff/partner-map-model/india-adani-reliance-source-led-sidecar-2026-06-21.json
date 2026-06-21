@@ -1,0 +1,97 @@
+{
+  "created_at": "2026-06-21",
+  "status": "source_led_seed_only_no_executable_economics",
+  "global_controls": [
+    "exact Atlas route/boarding-point ID required before any bind",
+    "null beats confidently-wrong",
+    "broad-footprint-first, exact-bind-second",
+    "no partner footprint promotion for Adani or Reliance in this patch",
+    "Mumbai annual demand remains null until route-level source is captured"
+  ],
+  "mumbai_gate": {
+    "verdict": "market_scale_context_only_route_level_demand_not_closed",
+    "source": "Open Government Data Platform India / Maharashtra Maritime Board",
+    "url": "https://kerala.data.gov.in/resource/statistics-annual-passenger-water-transport-maharashtra-2022-23-2024-25",
+    "resource_path": "/resource/aad4ae5e-5229-496e-8405-4c5b29069e19",
+    "captured_metric": "MMB operates passenger water transport on 36 routes, including 7 Ro-Pax services, carrying about 18 million passengers annually; 21 routes are in MMR including Gateway of India, Versova, Madh, Mandwa, Mora, Elephanta, Rewas and Belapur.",
+    "constraint": "download requires captcha; public API key returned Key not authorised; row values not extracted",
+    "model_action": "keep Mumbai/Mandwa annual_demand null and contribution zero until route-level counts are sourced"
+  },
+  "adani_seeds": [
+    {
+      "label": "adani_nmia_mumbai_waterfront_transfer_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.adani.com/newsroom/media-releases/PM-Modi-Inaugurates-Navi-Mumbai-International-Airport-Unveils-Major-Landmark-in-Indias-Aviation-Journey",
+      "captured_metric": "NMIA developed by AAHL and CIDCO; starts with 20 MPPA and scales to 90 MPPA; complements CSMIA.",
+      "missing": [
+        "exact waterfront boarding point",
+        "route_id",
+        "demand split",
+        "fare"
+      ]
+    },
+    {
+      "label": "adani_dighi_port_maharashtra_waterfront_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.adaniports.com/Home/Ports-and-Terminals/Dighi-Port",
+      "captured_metric": "Dighi is an all-weather deep draft multipurpose/commercial port serving industrial corridors and hinterland.",
+      "missing": [
+        "passenger mobility relevance",
+        "exact boarding point",
+        "route_id",
+        "demand",
+        "fare"
+      ]
+    }
+  ],
+  "reliance_seeds": [
+    {
+      "label": "reliance_rcp_navi_mumbai_waterfront_transfer_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.ril.com/news-media/resource-center/media-kit/rcp-navi-mumbai",
+      "captured_metric": "Official Reliance Corporate Park, Navi Mumbai page/media kit.",
+      "missing": [
+        "exact waterfront boarding point",
+        "route_id",
+        "demand split",
+        "fare"
+      ]
+    },
+    {
+      "label": "reliance_nariman_point_mumbai_cbd_transfer_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.ril.com/contact-us",
+      "captured_metric": "RIL corporate office listed at Maker Chambers IV, Nariman Point, Mumbai 400021.",
+      "missing": [
+        "exact waterfront boarding point",
+        "route_id",
+        "demand split",
+        "fare"
+      ]
+    },
+    {
+      "label": "reliance_jamnagar_green_energy_industrial_mobility_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.ril.com/businesses/new-energy-materials",
+      "captured_metric": "Over 5,000 acres in Jamnagar for New Energy giga factories; page transcript includes 20,000+ people for 20 GW in all shifts and 550 trucks inbound/outbound per day for 20 GW.",
+      "missing": [
+        "Atlas route geometry",
+        "passenger/captive mobility evidence",
+        "demand split",
+        "fare"
+      ]
+    },
+    {
+      "label": "reliance_hazira_materials_industrial_mobility_candidate",
+      "status": "candidate_only_no_bind",
+      "source": "https://www.ril.com/businesses/new-energy-materials",
+      "captured_metric": "RIL plans a Hazira carbon fibre plant with target capacity of 20,000 MTPA.",
+      "missing": [
+        "Atlas route geometry",
+        "passenger/captive mobility evidence",
+        "demand split",
+        "fare"
+      ]
+    }
+  ]
+}
