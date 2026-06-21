@@ -1,0 +1,73 @@
+{
+  "artifact": "india-adani-reliance-demand-fare-source-scaffold",
+  "date": "2026-06-21",
+  "status": "source_scaffold_only_no_economics",
+  "purpose": "Collect route-demand/fare source candidates for later economics cascade. This file does not create corridors, fares, demand rows, fleet counts, or TAM.",
+  "partners": ["adani-ports", "reliance-industries"],
+  "display_city_ids": ["mumbai-india", "goa-india", "kerala-backwaters-india", "andaman-india"],
+  "source_rows": [
+    {
+      "market_id": "mumbai-india",
+      "candidate_corridor": "Mumbai / Bhaucha Dhakka / Ferry Wharf ↔ Mandwa / Alibaug",
+      "source_name": "M2M Ferries official website",
+      "source_url": "https://www.m2mferries.com/",
+      "source_type": "operator_official",
+      "usable_facts": [
+        "Route selector supports Mumbai to Mandwa.",
+        "M2M describes Maharashtra's first Ro-Pax ferry, operational year-round including monsoons.",
+        "Official page states passenger fare from ₹400 onwards, motorcycle ₹210 onwards, 4 wheelers ₹1,020 onwards, bicycles ₹110 onwards, buses ₹4,500 onwards.",
+        "Official page lists Mumbai terminal at Ferry Wharf / Bhaucha Dhakka, Mumbai Port and Mandwa terminal at Mandwa Ropax Service Jetty."
+      ],
+      "economics_readiness": "fare_anchor_candidate_demand_missing",
+      "next_validation": "Confirm current fare table via booking flow or downloadable tariff; collect passenger volumes/seasonality before model row."
+    },
+    {
+      "market_id": "kerala-backwaters-india",
+      "candidate_corridor": "Kochi Water Metro terminals / harbour and backwater network",
+      "source_name": "Kochi Water Metro official website",
+      "source_url": "https://watermetro.co.in/",
+      "source_type": "agency_official",
+      "usable_facts": [
+        "Official site reports Kochi as India's first city to have a Water Metro project.",
+        "Official site describes 75+ e-boats, 15 routes, 75+ kilometres.",
+        "Official site lists ridership update: 7,070,083 passengers joined us; daily update shown as 5,873 on 2026-06-19.",
+        "Official site lists terminals including South Chittoor, Cheranalloor, Eloor, Fort Kochi, Willingdon Island, Mattancherry, High Court, Kakkanad, Vytilla, and Vypin."
+      ],
+      "economics_readiness": "demand_anchor_candidate_fare_needs_tariff_page",
+      "next_validation": "Scrape/confirm official fare chart or passes page; bind terminal-level route IDs before model row."
+    },
+    {
+      "market_id": "goa-india",
+      "candidate_corridor": "Goa river / ferry route network, including Mandovi / Mormugao support",
+      "source_name": "River Navigation Department, Government of Goa — ferry routes",
+      "source_url": "https://rnd.goa.gov.in/ferry-routes/",
+      "source_type": "government_official",
+      "usable_facts": [
+        "Official Government of Goa RND ferry-routes page exists and is the preferred ferry-route source.",
+        "Current scrape returned heading only; route/fare details require browser/manual extraction or alternate official endpoint.",
+        "Sealed Atlas crosswalk has Goa/Mormugao POI hits, but economics require a separate official tariff/demand source."
+      ],
+      "economics_readiness": "route_source_candidate_fare_and_demand_missing",
+      "next_validation": "Use browser or official PDF/tender/tariff source to capture ferry routes and any toll/fare schedule."
+    },
+    {
+      "market_id": "andaman-india",
+      "candidate_corridor": "Port Blair ↔ Havelock / Swaraj Dweep / Neil / Shaheed Dweep ferry network",
+      "source_name": "Directorate of Shipping Services, Andaman & Nicobar Administration — passenger fares PDF candidate",
+      "source_url": "https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf",
+      "source_type": "government_official_pdf_candidate",
+      "usable_facts": [
+        "Search found an official DSS passenger fares PDF candidate for 2025-26.",
+        "Web scrape failed on the PDF, so no values are admitted yet.",
+        "This should be downloaded/read via browser or PDF-capable path before any economics row is created."
+      ],
+      "economics_readiness": "blocked_pdf_verification_required",
+      "next_validation": "Retrieve PDF, extract route/fare table, then confirm route IDs against sealed Andaman routes."
+    }
+  ],
+  "model_guardrails": [
+    "Do not create finance/model/corridors.json rows from this scaffold alone.",
+    "Route-specific demand, fare, capture, and country-reference coverage must be validated before economics.",
+    "Partner narrative may cite source-backed facts, but TAM/growth_case remains null until cascade."
+  ]
+}
