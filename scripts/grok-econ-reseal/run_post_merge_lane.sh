@@ -38,7 +38,14 @@ echo "  7/9 Authority finance cascade"
 echo "  8/9 India KCC finance cascade"
 "$GROK/run_india_authority_finance_lane.sh"
 
-echo "  9/9 Coverage audit"
+echo "  9/11 Authority coverage audit"
 python3 "$GROK/audit_authority_coverage.py"
+
+echo "  10/11 Partner page QA (all partners)"
+python3 "$ROOT/scripts/audit_partner_page_qa.py"
+
+echo "  11/11 Partner coverage rollup"
+python3 "$ROOT/scripts/audit_partner_spine_parity.py" --all
+python3 "$GROK/audit_partner_coverage_rollup.py"
 
 echo "✓ Post-merge lane complete — see handoff/partner-map-model/regional-inheritance-auto-lanes.json"
