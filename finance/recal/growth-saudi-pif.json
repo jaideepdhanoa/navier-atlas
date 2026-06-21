@@ -1,5 +1,5 @@
 {
-  "partner": "saudi-pif",
+  "partner": "saudi-redsea-pif",
   "_as_of": "2026-06-07",
   "anchor_note": "LB-254: M_today = transport_spend_pool_yr (demand x fare); the ladder's capture = floor/pool (the capture that actually built the floor: ~0.90 captive / ~0.10 contested / blended). Replaces the legacy floor/0.10 divisor that inflated captive markets ~9x.",
   "parameters_used": {
@@ -25,9 +25,9 @@
     },
     "platform_take_rate": 0.18,
     "greenfield_corridor_factor": {
-      "low": 1.0,
-      "mid": 1.0,
-      "high": 1.0
+      "low": 3.44,
+      "mid": 4.9,
+      "high": 6.36
     }
   },
   "grounded": {
@@ -47,7 +47,7 @@
     "SOM_floor_navier_transport_rev_yr": null
   },
   "forward_sam": {
-    "M_today_transport_spend_yr": 1115897860.0,
+    "M_today_transport_spend_yr": 1119797800.0,
     "_eff_capture_floor": 0.1,
     "_mature_capture_used": {
       "low": 0.15,
@@ -55,66 +55,66 @@
       "high": 0.4
     },
     "_is_captive": false,
-    "SOM_floor_navier_transport_rev_yr": 111589786.0,
+    "SOM_floor_navier_transport_rev_yr": 111979780.0,
     "SOM_full_network_navier_transport_rev_yr": {
-      "low": 111589786.0,
-      "mid": 111589786.0,
-      "high": 111589786.0
+      "low": 385210443.0,
+      "mid": 548700922.0,
+      "high": 712191401.0
     },
     "SAM_capture_ramp_navier_transport_rev_yr": {
-      "low": 167384679.0,
-      "mid": 278974465.0,
-      "high": 446359144.0
+      "low": 167969670.0,
+      "mid": 279949450.0,
+      "high": 447919120.0
     },
     "SAM_sourced_only_navier_transport_rev_yr": {
-      "low": 217600083.0,
-      "mid": 502154037.0,
-      "high": 1115897860.0
+      "low": 218360571.0,
+      "mid": 503909010.0,
+      "high": 1119797800.0
     },
     "SAM_navier_transport_rev_yr": {
-      "low": 217600083.0,
-      "mid": 502154037.0,
-      "high": 1115897860.0
+      "low": 751160364.0,
+      "mid": 2469154149.0,
+      "high": 7121914008.0
     },
     "TAM_journey_gmv_yr": {
-      "low": 2901334436.0,
-      "mid": 6025848444.0,
-      "high": 11158978600.0
+      "low": 10015471523.0,
+      "mid": 29629849788.0,
+      "high": 71219140080.0
     },
     "network_journey_gmv_yr": {
-      "low": 435200165.0,
-      "mid": 1506462111.0,
-      "high": 4463591440.0
+      "low": 1502320728.0,
+      "mid": 7407462447.0,
+      "high": 28487656032.0
     },
     "partner_platform_rev_yr": {
-      "low": 78336030.0,
-      "mid": 271163180.0,
-      "high": 803446459.0
+      "low": 270417731.0,
+      "mid": 1333343240.0,
+      "high": 5127778086.0
     },
     "partner_platform_rev_on_navier_yr": {
-      "low": 78336030.0,
-      "mid": 271163180.0,
-      "high": 803446459.0
+      "low": 270417731.0,
+      "mid": 1333343240.0,
+      "high": 5127778086.0
     },
     "partner_platform_rev_full_journey_yr": {
-      "low": 522240198.0,
-      "mid": 1084652720.0,
-      "high": 2008616148.0
+      "low": 1802784874.0,
+      "mid": 5333372962.0,
+      "high": 12819445214.0
     },
     "today_journey_gmv_yr": {
-      "low": 2231795720.0,
-      "mid": 3347693580.0,
-      "high": 4463591440.0
+      "low": 2239595600.0,
+      "mid": 3359393400.0,
+      "high": 4479191200.0
     },
     "marine_mobility_tam_yr": {
-      "low": 1450667218.0,
-      "mid": 2008616148.0,
-      "high": 2789744650.0
+      "low": 5007735762.0,
+      "mid": 9876616596.0,
+      "high": 17804785020.0
     },
     "journey_gmv_yr": {
-      "low": 2901334436.0,
-      "mid": 6025848444.0,
-      "high": 11158978600.0
+      "low": 10015471523.0,
+      "mid": 29629849788.0,
+      "high": 71219140080.0
     }
   },
   "source_rollup": {
@@ -129,14 +129,26 @@
     "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
   },
   "greenfield": {
-    "mode": "off",
-    "source": "forced off (per-partner)",
+    "mode": "census",
+    "source": "growth-config default",
     "factor_band": {
-      "low": 1.0,
-      "mid": 1.0,
-      "high": 1.0
+      "low": 3.44,
+      "mid": 4.9,
+      "high": 6.36
     },
-    "_census": null,
+    "_census": {
+      "source": "grab-greenfield-census.json",
+      "n_sourced": 35,
+      "n_greenfield_headline": 341,
+      "count_ratio": 9.7,
+      "alpha_density": {
+        "low": 0.25,
+        "mid": 0.4,
+        "high": 0.55,
+        "_doc": "avg greenfield corridor demand / avg sourced corridor demand. Sourced = cherry-picked best; greenfield thinner."
+      },
+      "_note": "tier1 market-making (island-hop/regional/inter-city/trunk) + tier2 cluster-spokes; Japan/Ryukyu carved out; local intra-hub micro-segments excluded."
+    },
     "_doc": "WIDTH lever. SAM_sourced_only = depth on the sourced corridors (no greenfield). SAM/TAM/network/platform = full addressable network (sourced + greenfield). SOM floor is unaffected (it is the sourced corridors)."
   },
   "_forward_sam_only": true,

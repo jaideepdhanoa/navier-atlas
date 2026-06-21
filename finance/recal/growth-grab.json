@@ -4,8 +4,8 @@
   "anchor_note": "LB-254: M_today = transport_spend_pool_yr (demand x fare); the ladder's capture = floor/pool (the capture that actually built the floor: ~0.90 captive / ~0.10 contested / blended). Replaces the legacy floor/0.10 divisor that inflated captive markets ~9x.",
   "parameters_used": {
     "som_capture_rate_legacy_fallback": 0.1,
-    "effective_capture_floor_grounded": 0.1064,
-    "effective_capture_floor_estimated_total": 0.1047,
+    "effective_capture_floor_grounded": 0.1067,
+    "effective_capture_floor_estimated_total": 0.1043,
     "induced_demand": {
       "low": 1.3,
       "mid": 1.8,
@@ -32,18 +32,18 @@
   },
   "grounded": {
     "M_today_transport_spend_yr": 783760789.0,
-    "_eff_capture_floor": 0.1064,
+    "_eff_capture_floor": 0.1067,
     "_mature_capture_used": {
       "low": 0.15,
       "mid": 0.25,
       "high": 0.4
     },
     "_is_captive": false,
-    "SOM_floor_navier_transport_rev_yr": 83362581.0,
+    "SOM_floor_navier_transport_rev_yr": 83620136.0,
     "SOM_full_network_navier_transport_rev_yr": {
-      "low": 286767279.0,
-      "mid": 408476647.0,
-      "high": 530186015.0
+      "low": 287653268.0,
+      "mid": 409738666.0,
+      "high": 531824065.0
     },
     "SAM_capture_ramp_navier_transport_rev_yr": {
       "low": 117564118.0,
@@ -103,18 +103,18 @@
   },
   "estimated_total": {
     "M_today_transport_spend_yr": 1014075329.0,
-    "_eff_capture_floor": 0.1047,
+    "_eff_capture_floor": 0.1043,
     "_mature_capture_used": {
       "low": 0.15,
       "mid": 0.25,
       "high": 0.4
     },
     "_is_captive": false,
-    "SOM_floor_navier_transport_rev_yr": 106144595.0,
+    "SOM_floor_navier_transport_rev_yr": 105740594.0,
     "SOM_full_network_navier_transport_rev_yr": {
-      "low": 365137407.0,
-      "mid": 520108516.0,
-      "high": 675079624.0
+      "low": 363747643.0,
+      "mid": 518128911.0,
+      "high": 672510178.0
     },
     "SAM_capture_ramp_navier_transport_rev_yr": {
       "low": 152111299.0,
@@ -172,11 +172,82 @@
       "high": 64495190924.0
     }
   },
+  "forward_sam": {
+    "M_today_transport_spend_yr": 2116220.0,
+    "_eff_capture_floor": 0.1,
+    "_mature_capture_used": {
+      "low": 0.15,
+      "mid": 0.25,
+      "high": 0.4
+    },
+    "_is_captive": false,
+    "SOM_floor_navier_transport_rev_yr": 211622.0,
+    "SOM_full_network_navier_transport_rev_yr": {
+      "low": 727980.0,
+      "mid": 1036948.0,
+      "high": 1345916.0
+    },
+    "SAM_capture_ramp_navier_transport_rev_yr": {
+      "low": 317433.0,
+      "mid": 529055.0,
+      "high": 846488.0
+    },
+    "SAM_sourced_only_navier_transport_rev_yr": {
+      "low": 412663.0,
+      "mid": 952299.0,
+      "high": 2116220.0
+    },
+    "SAM_navier_transport_rev_yr": {
+      "low": 1419560.0,
+      "mid": 4666265.0,
+      "high": 13459159.0
+    },
+    "TAM_journey_gmv_yr": {
+      "low": 18927472.0,
+      "mid": 55995181.0,
+      "high": 134591592.0
+    },
+    "network_journey_gmv_yr": {
+      "low": 2839121.0,
+      "mid": 13998795.0,
+      "high": 53836637.0
+    },
+    "partner_platform_rev_yr": {
+      "low": 511042.0,
+      "mid": 2519783.0,
+      "high": 9690595.0
+    },
+    "partner_platform_rev_on_navier_yr": {
+      "low": 511042.0,
+      "mid": 2519783.0,
+      "high": 9690595.0
+    },
+    "partner_platform_rev_full_journey_yr": {
+      "low": 3406945.0,
+      "mid": 10079133.0,
+      "high": 24226487.0
+    },
+    "today_journey_gmv_yr": {
+      "low": 4232440.0,
+      "mid": 6348660.0,
+      "high": 8464880.0
+    },
+    "marine_mobility_tam_yr": {
+      "low": 9463736.0,
+      "mid": 18665060.0,
+      "high": 33647898.0
+    },
+    "journey_gmv_yr": {
+      "low": 18927472.0,
+      "mid": 55995181.0,
+      "high": 134591592.0
+    }
+  },
   "source_rollup": {
     "n_corridors": 80,
-    "som_floor_grounded_rev_yr": 83362581.0,
-    "som_floor_grounded_fleet": 570,
-    "som_estimated_total_rev_yr": 106144595.0
+    "som_floor_grounded_rev_yr": 83620136.0,
+    "som_floor_grounded_fleet": 448,
+    "som_estimated_total_rev_yr": 105740594.0
   },
   "_whose_money_legend": {
     "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
@@ -205,5 +276,7 @@
       "_note": "tier1 market-making (island-hop/regional/inter-city/trunk) + tier2 cluster-spokes; Japan/Ryukyu carved out; local intra-hub micro-segments excluded."
     },
     "_doc": "WIDTH lever. SAM_sourced_only = depth on the sourced corridors (no greenfield). SAM/TAM/network/platform = full addressable network (sourced + greenfield). SOM floor is unaffected (it is the sourced corridors)."
-  }
+  },
+  "_forward_sam_only": false,
+  "_headline_anchor": "grounded"
 }

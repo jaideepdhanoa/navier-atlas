@@ -134,6 +134,8 @@ def run_scenarios(c, vessel_key):
         cc = copy.deepcopy(c)
         cc["L3_locals"]["load_factor"] = band["load_factor"]
         cc["L3_locals"]["revenue_leg_factor"] = band["revenue_leg_factor"]
+        if band.get("max_trips_per_day") is not None:
+            cc["L3_locals"]["max_trips_per_day"] = band["max_trips_per_day"]
         out[name] = atom.compute_atom(cc, vessel_key=vessel_key)
     return out
 

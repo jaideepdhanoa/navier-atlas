@@ -132,7 +132,7 @@ def main():
     fe = json.load(open(a.frontend))
     pp = json.load(open(pj))
 
-    if "growth_case" not in pp:
+    if not isinstance(pp.get("growth_case"), dict):
         pp["growth_case"] = {}
     gcblock = pp["growth_case"]
 
