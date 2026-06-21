@@ -1,0 +1,90 @@
+{
+  "status": "TASKLET_SOURCE_INPUTS_ONLY_NO_MODEL_CASCADE",
+  "partners": [
+    "adani-ports",
+    "reliance-industries"
+  ],
+  "do_not_overwrite": [
+    "model_link",
+    "route_id",
+    "route_ids",
+    "economics_status:roadmap_excluded"
+  ],
+  "source_scaffold": "handoff/partner-map-model/tasklet-wave-9e-india-demand-fare-sidecar-2026-06-21.json",
+  "market_inputs": [
+    {
+      "market_id": "mumbai-india",
+      "candidate_corridor": "Gateway of India / Bhaucha Dhakka / Ferry Wharf ↔ Mandwa / Alibaug",
+      "admitted_fare_floor_inr": {
+        "passenger": 400,
+        "basis": "M2M official passenger fare from ₹400 onwards; not average fare"
+      },
+      "admitted_demand_anchor": null,
+      "ops_anchor": {
+        "year_round": true,
+        "ropax": true,
+        "vehicle_deck_capacity_fact": "over 120 cars/two-wheelers/buses; exact mix not specified"
+      },
+      "source_urls": [
+        "https://www.m2mferries.com/"
+      ],
+      "use": "fare/ops anchor only; demand remains null unless Grok applies a labelled template assumption."
+    },
+    {
+      "market_id": "kerala-backwaters-india",
+      "candidate_corridor": "Kochi Water Metro harbour/backwater network; exact terminal pair by Grok after binding",
+      "admitted_fare_floor_inr": null,
+      "admitted_demand_anchor": {
+        "daily_ridership_reported": 5873,
+        "daily_ridership_date": "2026-06-19",
+        "cumulative_passengers_reported": 7070083
+      },
+      "ops_anchor": {
+        "e_boats": "75+",
+        "routes": "15",
+        "network_km": "75+"
+      },
+      "source_urls": [
+        "https://watermetro.co.in/",
+        "https://watermetro.co.in/boat-schedule"
+      ],
+      "use": "demand/ops anchor only; fare remains null unless official fare chart is independently verified."
+    },
+    {
+      "market_id": "goa-india",
+      "candidate_corridor": "Government of Goa River Navigation Department ferry-route network",
+      "admitted_fare_floor_inr": {
+        "foot_passenger": 0,
+        "two_wheeler": 0,
+        "three_wheeler": 0,
+        "basis": "government toll/public-ferry baseline, not premium Navier fare"
+      },
+      "admitted_demand_anchor": null,
+      "ops_anchor": {
+        "regular_routes": 21,
+        "service_hours": "about 18-20 hours/day plus on-request service"
+      },
+      "source_urls": [
+        "https://rnd.goa.gov.in/ferry-routes/",
+        "https://rnd.goa.gov.in/wp-content/uploads/2022/06/rnd-goa-citizen-charter.pdf"
+      ],
+      "use": "route/ops context and baseline toll only; do not turn vehicle toll into premium passenger fare without explicit model choice."
+    },
+    {
+      "market_id": "andaman-india",
+      "candidate_corridor": "Port Blair / Sri Vijaya Puram ↔ Swaraj Dweep / Havelock and Shaheed Dweep / Neil ferry network",
+      "admitted_fare_floor_inr": null,
+      "admitted_demand_anchor": null,
+      "ops_anchor": null,
+      "source_urls": [
+        "https://dss.andaman.gov.in/docs/press/DSS_Passenger_Fares_2025-26.pdf"
+      ],
+      "use": "route candidate only; fare/demand/ops null until official PDF or other official DSS table is retrieved."
+    }
+  ],
+  "partner_application": {
+    "adani-ports": "Use the same admitted India market inputs for the Adani controlled-proof / west-coast / national spine story; APSEZ network facts support narrative only, not unsourced demand.",
+    "reliance-industries": "Use the same admitted India market inputs for Reliance corporate/clean-energy mobility narrative; RIL Mumbai/Nariman and Jamnagar facts support narrative only, not unsourced demand."
+  },
+  "grok_instruction": "Build or reseal economics from admitted facts plus explicitly labelled assumptions only. If a demand/fare cell is null here, keep it null unless Grok independently verifies a source. Do not overwrite cascaded model_link/route_id fields."
+}
