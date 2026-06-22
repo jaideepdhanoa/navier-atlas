@@ -1,29 +1,38 @@
-# Deck Studio — Branch Map & Consolidation (single Grok-facing source)
+# Deck Studio — branch map (Grok-facing)
 
-**Decision: `tasklet/asset-pack-grab` is the canonical Grok-facing deck-studio branch.**
-All deck/asset/economics/logo work converges here. This PR's branch
-(`tasklet/deck-autonomy-contract-2026-06-22`) is cut **from** `asset-pack-grab` and
-adds the autonomy artifacts (golden map, economics binding, logo manifest, schema fix,
-autonomous build contract). Merge target is `asset-pack-grab` (then onward to `main`).
+**Canonical source: `main`** (as of 2026-06-22).
 
-## Why this was confusing
-Grok's review referenced files — `golden-template-map.json`, `LOGO-MANIFEST.json`,
-`CONSOLIDATED-DECK-GENERATION-QUEUE`, `DETERMINISTIC-DECK-EDIT-PLAN-CONTRACT.md`,
-`SPEC-REFRESH.json` — that **did not exist on any pushed branch**. They lived only in a
-local working copy that was never pushed. That is the root cause of the "half-finished"
-feeling. This PR materializes the real, missing artifacts in the repo so Grok reads
-from git, not from memory.
+All deck/asset/economics/logo work is consolidated on `main`. Grok reads from git on `main`, not from memory or stale branch names.
 
-## Branch roles
-| Branch | Role | Decks | Verdict |
-|---|---|---|---|
-| `tasklet/asset-pack-grab` | **Canonical** deck-studio base: 14 deck scaffolds, ASSET-REGISTRY, market backgrounds, CLI, handoff playbook | 14 | **Use this.** Base for all deck work. |
-| `tasklet/deck-autonomy-contract-2026-06-22` | This PR — autonomy artifacts on top of canonical | 14 | Merge into `asset-pack-grab`. |
-| `tasklet/deck-studio-grok-handoff` (PR #72) | Earlier tidy subset: 3 decks + doc set | 3 | **Superseded** for asset work; do not branch deck builds from it. |
+## Pinned SHAs (historical — now merged to main)
+
+| Artifact | Original branch / commit | On `main` via |
+|---|---|---|
+| Logo bank + reconciled `LOGO-MANIFEST.json` | `tasklet/asset-pack-grab` @ `b42c312` | cherry-pick `b0b4806` |
+| Autonomy contract + Grab economics-binding | `tasklet/deck-autonomy-contract` @ `d931362` | cherry-pick `d3377a7` |
+| Asset pack expansion (N30, Careem, FP) | PR #71 | merge |
+| Deck generation kickoff (queue, SPEC-REFRESH) | PR #72 | merge |
+
+## Single sources of truth
+
+| File | Role |
+|---|---|
+| `assets/logos/LOGO-MANIFEST.json` | Cover logo bind-gate (`status=="banked"` only) |
+| `decks/grab/golden-template-map.json` | Target object IDs (630 elements, enriched with roles) |
+| `decks/grab/economics-binding.json` | Field→object map for slides 3/7/10 + OPEX |
+| `assets/ASSET-REGISTRY.json` | Image provenance + stable `source_url` |
+| `docs/AUTONOMOUS-DECK-BUILD-CONTRACT.md` | Grok-owned build loop |
+| `docs/TASKLET-RESIDUAL-ASK.md` | Narrow Tasklet advisory lane |
 
 ## Rules for Grok
-1. **Read from `asset-pack-grab`** (or its merged successor on `main`), never a local-only copy.
-2. `LOGO-MANIFEST.json` (this PR) **supersedes** any "needs_sourcing" logo list in queue docs. Reconcile against the manifest, not the markdown.
-3. `golden-template-map.json` is the only source of target object IDs. Never invent IDs.
-4. `economics-binding.json` says **where**; the partner sheet (content-source.json pointers) says **what**. Never hand-type economics.
-5. No live Slides application until a deck's `deck.editplan.json` validates (see AUTONOMOUS-DECK-BUILD-CONTRACT.md).
+
+1. **Read from `main` only.** Run `git pull` before every deck session.
+2. Reconcile logo status from `LOGO-MANIFEST.json`, not queue markdown.
+3. Never bind a cover logo unless manifest `status=="banked"`.
+4. No Slides write until `deck.editplan.json` validates and is non-empty.
+5. Run `python3 builders/deck_autonomy_sync.py` for hygiene steps (see script `--help`).
+
+## Superseded branches
+
+- `tasklet/asset-pack-grab` — merged content lives on `main`; do not branch new work from it.
+- `tasklet/deck-studio-grok-handoff` (PR #64) — superseded for asset/deck builds.

@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "image-manifest.schema.json",
   "title": "Deck image manifest (v1 + v2 superset)",
-  "description": "Validates both the v1 generation manifests (placeholder pipeline decks: bolt, careem, caribbean-mobility, french-polynesia, etc.) and the richer v2 asset-pack manifests (grab) that carry asset_registry/role_contract/asset_ref/role and extended status values.",
+  "description": "Validates v1 placeholder manifests and v2 asset-pack manifests with role contract fields.",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": [
     "deck_key",
     "policy",
@@ -16,33 +16,35 @@
       "minLength": 1
     },
     "schema": {
-      "type": "string",
-      "minLength": 1
+      "type": "string"
     },
     "policy": {
       "type": "string",
       "minLength": 1
     },
     "asset_registry": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
     },
     "role_contract": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": ["string", "null"]
+    },
+    "current_spec_refresh": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "wired_at": {
+      "type": "string"
+    },
+    "wired_by": {
+      "type": "string"
     },
     "images": {
       "type": "array",
       "items": {
         "type": "object",
-        "additionalProperties": false,
+        "additionalProperties": true,
         "required": [
           "image_key",
-          "target_slide_object_id",
           "status"
         ],
         "properties": {
@@ -51,80 +53,68 @@
             "minLength": 1
           },
           "role": {
-            "type": "string",
-            "minLength": 1
+            "type": "string"
           },
           "asset_ref": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
+          },
+          "registry_key": {
+            "type": ["string", "null"]
+          },
+          "asset_path": {
+            "type": ["string", "null"]
+          },
+          "target_slide_index": {
+            "type": "integer"
           },
           "target_slide_object_id": {
-            "type": "string",
-            "minLength": 1
+            "type": ["string", "null"]
           },
           "target_object_id": {
-            "type": [
-              "string",
-              "null"
-            ]
+            "type": ["string", "null"]
           },
           "status": {
-            "enum": [
-              "placeholder",
-              "candidate",
-              "embedded_only",
-              "checked_in",
-              "published",
-              "approved",
-              "applied"
-            ]
-          },
-          "background_source": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "vessel_source": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "mask_source": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "prompt_path": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "output_path": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "source_url": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "aspect_ratio": {
             "type": "string",
             "minLength": 1
+          },
+          "asset_delivery": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "official_source": {
+            "type": ["string", "null"]
+          },
+          "source_type": {
+            "type": ["string", "null"]
           },
           "provenance_required": {
             "type": "boolean"
           },
+          "background_source": {
+            "type": ["string", "null"]
+          },
+          "vessel_source": {
+            "type": ["string", "null"]
+          },
+          "mask_source": {
+            "type": ["string", "null"]
+          },
+          "prompt_path": {
+            "type": ["string", "null"]
+          },
+          "output_path": {
+            "type": ["string", "null"]
+          },
+          "source_url": {
+            "type": ["string", "null"]
+          },
+          "aspect_ratio": {
+            "type": "string"
+          },
           "notes": {
+            "type": "string"
+          },
+          "legacy_role": {
             "type": "string"
           }
         }

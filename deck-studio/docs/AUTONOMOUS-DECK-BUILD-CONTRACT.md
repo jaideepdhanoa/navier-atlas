@@ -123,16 +123,15 @@ QA receipt. External sends stay human-reviewed.
 
 ## 3. What still blocks a *clean-room* run (open, not yet done)
 
-These are the honest gaps; none are Grok-capability gaps, they are missing inputs/contracts:
-- **Partner logo bank** — `assets/logos/partners/` is empty (README only). Logos must be banked
-  (path + Drive URL + provenance) before cover binds; territory decks stay null.
-- **Per-deck economics-binding** — pointers exist in `content-source.json`; an explicit
-  field→object_id binding per deck still has to be emitted during the per-deck build.
-- **Golden map** — not yet generated; it is step [0] of the first real run.
-- **Branch consolidation** — the `golden-template-map.json` / `LOGO-MANIFEST.json` /
-  `CONSOLIDATED-DECK-GENERATION-QUEUE` / edit-plan contract Grok referenced from "PR #71/#72" are
-  **not present in this canonical repo**. This branch (`asset-pack-grab`) is the real source of truth.
-  Grok should operate from here, not from a local-only copy.
+Updated 2026-06-22 after `main` consolidation:
+- **Partner logo bank** — **partially resolved.** `LOGO-MANIFEST.json` on `main`: **16 banked · 6 needs_sourcing · 3 no_named_partner**.
+  Bind-gate: only `status=="banked"`. `needs_sourcing` (do not guess): abu-dhabi-itc, careem, gojek, grab, red-sea-global, singapore-mpa.
+  Territory null covers: caribbean, french-polynesia, hong-kong.
+- **Per-deck economics-binding** — Grab done (`decks/grab/economics-binding.json`). Bolt scaffold cloned (`decks/bolt/economics-binding.json`, same object IDs from gold copy). Other decks: emit at build time.
+- **Golden map** — exists and enriched on `main` (630 elements + roles/char_budget/runs). Refresh via `deck_studio pull` when gold template changes.
+- **Asset publish** — Grok-owned via `builders/deck_autonomy_sync.py publish-assets`. Registry now carries stable `source_url`s for published binaries.
+- **deck.editplan.json** — Bolt scaffold exists (`status: scaffold_pending_gold_copy`); must populate `operations[]` before Slides apply.
+- **Branch consolidation** — **resolved.** Operate from `main` only (`docs/BRANCH-MAP.md`).
 
 ---
 
