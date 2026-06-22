@@ -5,17 +5,18 @@
     "generator": "deck-econ/asset-pack (Tasklet)",
     "policy": "N30/N35 composites only; no Atlas images; provenance required; exact city-id bind only; null beats confidently-wrong.",
     "role_contract_doc": "deck-studio/assets/IMAGE-ROLE-CONTRACT.md",
-    "binaries_checked_in": 29,
+    "binaries_checked_in": 30,
     "decks_total": 14,
     "decks_indexed": [
       "grab (10 bg)",
       "careem (logo+cover+tam+6 UAE corridors)",
       "french-polynesia (tahiti bg)",
-      "shared navier wordmark"
+      "shared navier wordmark",
+      "grab-thailand (1 bg: bangkok)"
     ],
-    "updated_at": "2026-06-22T13:11:47.988609+00:00",
+    "updated_at": "2026-06-22T16:04:57.649087+00:00",
     "no_reembed_contract": "Deck images must be applied from a stable registry-resolved image URL. Use registry source_url/drive_file_id when present. If only local_path is present, publish that checked-in file to the approved Drive/asset-host path, record drive_file_id/source_url, then apply. Never reuse Google Slides contentUrl / lh*-googleusercontent temporary URLs as canonical assets; those are inspection evidence only.",
-    "last_asset_publish_at": "2026-06-22T13:11:47.988609+00:00"
+    "last_asset_publish_at": "2026-06-22T16:04:57.649087+00:00"
   },
   "role_contract": {
     "cover_hero": {
@@ -454,9 +455,9 @@
       "drive_file_id": null,
       "source_url": null,
       "license": "grab-brand",
-      "provenance": "live_deck:Grab \u00d7 Navier/p1_i5",
+      "provenance": "live_deck:Grab × Navier/p1_i5",
       "reproducible": true,
-      "notes": "Grab wordmark (white), fetched from live Grab \u00d7 Navier cover. Canonical partner_logo for grab.",
+      "notes": "Grab wordmark (white), fetched from live Grab × Navier cover. Canonical partner_logo for grab.",
       "used_by": [
         {
           "deck": "grab",
@@ -488,7 +489,7 @@
       "drive_file_id": null,
       "source_url": null,
       "license": "navier-internal",
-      "provenance": "live_deck:Grab \u00d7 Navier/p1_i2",
+      "provenance": "live_deck:Grab × Navier/p1_i2",
       "reproducible": true,
       "blocked_by": "assets/n30/n30.png absent",
       "notes": "Singapore cover hero (Marina Bay + N30), fetched from live Grab cover.",
@@ -961,7 +962,7 @@
       "version": "v1",
       "composited": true,
       "license": "navier-internal",
-      "provenance": "live_deck:French Polynesia \u00d7 Navier/p1_i101",
+      "provenance": "live_deck:French Polynesia × Navier/p1_i101",
       "reproducible": true,
       "captured_at": "2026-06-22T01:10:31.487801+00:00",
       "status": "checked_in",
@@ -4294,6 +4295,98 @@
       "notes": "Atlas route screenshot slide 18",
       "drive_file_id": "1rABjT56ntEO0j6SG5_X84rP-0zZmpm0_",
       "source_url": "https://drive.google.com/uc?export=download&id=1rABjT56ntEO0j6SG5_X84rP-0zZmpm0_"
+    },
+    "econ-bangkok-v1": {
+      "role": "econ_market_bg",
+      "scope": "market",
+      "partner": "grab-thailand",
+      "market_slug": "bangkok",
+      "atlas_city_id": null,
+      "local_path": "deck-studio/assets/backgrounds/markets/bangkok/slide-bg-bangkok-v1-composited.png",
+      "drive_file_id": null,
+      "source_url": null,
+      "dimensions": "1600x896",
+      "bytes": 1784500,
+      "sha16": "a0fe87801d74af8b",
+      "version": "v1",
+      "composited": true,
+      "license": "navier-internal",
+      "provenance": "tasklet/generate_image reference-guided (N30 neutral) + Wat Arun / Chao Phraya market lock; full provenance in econ-bangkok-v1.provenance.json",
+      "reproducible": true,
+      "captured_at": "2026-06-22T16:04:57.649087+00:00",
+      "blocked_by": null,
+      "notes": "Bangkok / Chao Phraya River econ market plate (Wat Arun, golden-hour, N30 composited). New for grab-thailand Bangkok market slide. atlas_city_id pending exact Atlas bind.",
+      "used_by": [],
+      "status": "checked_in",
+      "generation": {
+        "provider": "tasklet/generate_image",
+        "reference": "deck-studio/assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "1600x896",
+        "note": "Tasklet-composited econ_market_bg via reference-guided generation (N30 neutral for vessel form/colour). Tier-A xai/grok-imagine regen remains available to Grok if cover-grade parity is wanted."
+      },
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1-tasklet",
+        "evaluated_at": "2026-06-22T16:04:13.925158+00:00",
+        "overall": "pending_human",
+        "blocking_failures": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9",
+            "status": "pass",
+            "details": {
+              "w": 1600,
+              "h": 896,
+              "aspect": 1.7857
+            }
+          },
+          {
+            "name": "cover_upper_left_clear",
+            "status": "pass",
+            "details": {
+              "mean_luminance": 166.77,
+              "variance": 2730.54,
+              "box_px": [
+                0,
+                0,
+                1072,
+                663
+              ]
+            }
+          },
+          {
+            "name": "market_lock_bangkok",
+            "status": "pass",
+            "details": {
+              "market_slug": "bangkok",
+              "landmark": "Wat Arun (Temple of Dawn)"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pending_human",
+            "details": "visual: exactly one N30 in frame"
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pending_human",
+            "details": "white hull, glass cabin, V-mark window, sensor mast match n30-reference-neutral"
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pending_human",
+            "details": "no Dubai/Gulf/Santorini/Marina Bay"
+          }
+        ]
+      },
+      "delivery": {
+        "method": "slides_api_image_url",
+        "forbid_embedded_only": true,
+        "forbid_temporary_googleusercontent_content_url": true,
+        "stable_url_field": "source_url",
+        "stable_url_status": "needs_publish_to_stable_url_before_apply",
+        "next_action": "publish checked-in local_path to approved Drive/asset URL and record source_url before Slides update"
+      }
     }
   },
   "deck_coverage": {
@@ -4503,7 +4596,7 @@
       "partner_roles_bg (where absent)"
     ],
     "other_decks": "13 decks pending live-image inventory + fetch (only decks with live_deck_id have fetchable Drive assets).",
-    "n30_blocker": "RESOLVED: assets/n30/n30-reference.png (dusk pose) + n30-reference-neutral.png (form/color) + n30-reference-bowright.png; derived from shipped koh-samui/langkawi plates. Lighting is a PLATE property (per-market overlay), NOT an N30 property \u2014 generate vessel neutral.",
+    "n30_blocker": "RESOLVED: assets/n30/n30-reference.png (dusk pose) + n30-reference-neutral.png (form/color) + n30-reference-bowright.png; derived from shipped koh-samui/langkawi plates. Lighting is a PLATE property (per-market overlay), NOT an N30 property — generate vessel neutral.",
     "embedded_only_needs_capture_or_regen": [
       "grab navier_logo (p1_i4)",
       "grab partner_roles_bg (slide11)"
@@ -4521,7 +4614,7 @@
     "per_partner_logos_resolution": {
       "grab": "checked_in (logos/partners/grab/grab-logo.png)",
       "careem": "checked_in (logos/partners/careem/careem-logo.png)",
-      "french-polynesia": "NONE \u2014 Navier-only cover (no named partner), LOCKED per Jaideep (same convention as Caribbean)"
+      "french-polynesia": "NONE — Navier-only cover (no named partner), LOCKED per Jaideep (same convention as Caribbean)"
     }
   }
 }
