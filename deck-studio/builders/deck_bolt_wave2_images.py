@@ -378,11 +378,12 @@ def apply_image_ops_only(ops: list[dict], *, require_qa_pass: bool = True) -> No
         "presentation_id": PRESENTATION_ID,
         "wave": "wave-2.1-images",
         "generated_at": utc_now(),
-        "ops": ops,
+        "operations": ops,
     }
     out = ROOT / "decks/bolt/deck.image-ops.json"
     write_json(out, plan)
-    apply_plan(PRESENTATION_ID, plan)
+    applied = apply_plan(plan, chunk_size=10)
+    print(f"applied {applied} image ops")
 
 
 def tag_drift_controls() -> None:
@@ -421,6 +422,90 @@ def generate_bolt_cover_greece(*, out: Path) -> dict:
     return meta
 
 
+def approve_asset_qa(asset_key: str, *, approver: str = "human") -> dict:
+    registry = load_json(REGISTRY_PATH)
+    asset = registry["assets"].get(asset_key)
+    if not asset:
+        raise SystemExit(f"Unknown asset key: {asset_key}")
+    receipt = dict(asset.get("qa_receipt", {}))
+    for check in receipt.get("checks", []):
+        if check["status"] == "pending_human":
+            check["status"] = "pass"
+            check["details"]["human_approved_by"] = approver
+            check["details"]["human_approved_at"] = utc_now()
+    receipt["overall"] = "pass"
+    receipt["human_approved_at"] = utc_now()
+    receipt["human_approved_by"] = approver
+    receipt["pending_human"] = []
+    asset["qa_receipt"] = receipt
+    asset["qa_status"] = "pass"
+    asset["qa_evaluated_at"] = utc_now()
+    asset["status"] = "checked_in"
+    asset["qa_evaluated_at"] = receipt.get("evaluated_at", utc_now())
+    write_json(REGISTRY_PATH, registry)
+    return receipt
+
+
+def _register_tier_a_asset(
+    *,
+    key: str,
+    role: str,
+    local_name: str,
+    meta: dict,
+    receipt: dict,
+    market_slug: str | None = None,
+    used_by: list[dict] | None = None,
+) -> None:
+    registry = load_json(REGISTRY_PATH)
+    asset = registry.setdefault("assets", {}).setdefault(key, {})
+    prev = dict(asset)
+    asset.update(
+        {
+            "role": role,
+            "scope": "deck",
+            "partner": "bolt",
+            "market_slug": market_slug,
+            "local_path": f"assets/backgrounds/decks/bolt/{local_name}",
+            "provenance": f"tier_a:{meta['provider']}",
+            "tier": "A",
+            "status": "checked_in" if receipt["overall"] == "pass" else "qa_pending",
+            "composited": False,
+            "reproducible": True,
+            "captured_at": meta["generated_at"],
+            "generation": meta,
+            "drive_file_id": prev.get("drive_file_id"),
+            "source_url": prev.get("source_url"),
+            "used_by": used_by or prev.get("used_by", []),
+            "license": "navier-internal",
+            "notes": (prev.get("notes", "") + " | wave-2.1 Tier A").strip(" |"),
+        }
+    )
+    asset["qa_receipt"] = receipt
+    asset["qa_status"] = receipt["overall"]
+    asset["qa_evaluated_at"] = receipt["evaluated_at"]
+    write_json(REGISTRY_PATH, registry)
+
+
+def generate_bolt_slide2(*, out: Path) -> dict:
+    prompt = load_tier_a_prompt(2)
+    lock = GradeLock.load()
+    if not lock.locked:
+        prompt = (
+            f"{prompt} Match the warm golden-hour grade family of the approved Bolt Greece cover "
+            "(sun from left, soft rim light on white hull, premium photographic grade)."
+        )
+    raw, meta = tier_a_edit(prompt=prompt, seed_note="bolt-wave21-slide2-greece")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img = Image.open(__import__("io").BytesIO(raw))
+    if img.size[0] < MIN_W or img.size[1] < MIN_H:
+        img = img.resize((MIN_W, MIN_H), Image.LANCZOS)
+    img.convert("RGB").save(out, format="PNG", quality=95)
+    receipt = qa_image_gate(out, role="value_prop_bg", market_slug="athens-saronic-greece")
+    meta["output"] = str(out.relative_to(ROOT))
+    meta["qa_receipt"] = receipt
+    return meta
+
+
 def cmd_generate_cover() -> int:
     out = ROOT / "assets/backgrounds/decks/bolt/bolt-cover-greece-aegean-tier-a-v1.png"
     meta = generate_bolt_cover_greece(out=out)
@@ -446,9 +531,113 @@ def cmd_generate_cover() -> int:
             "generation": meta,
         }
     )
-    write_qa_receipt_to_registry(key, receipt)
-    write_json(REGISTRY_PATH, registry)
+    _register_tier_a_asset(
+        key=key,
+        role="cover_hero",
+        local_name=out.name,
+        meta=meta,
+        receipt=receipt,
+        market_slug="athens-saronic-greece",
+        used_by=[
+            {
+                "deck": "bolt",
+                "slide_index": 1,
+                "slide_object_id": "p1",
+                "target_object_id": "p1_i2",
+            }
+        ],
+    )
     return 0 if receipt["overall"] != "fail" else 1
+
+
+def cmd_approve_cover() -> int:
+    receipt = approve_asset_qa("bolt-cover-hero")
+    lock_deck_grade(
+        reference_plate="assets/backgrounds/decks/bolt/bolt-cover-greece-aegean-tier-a-v1.png",
+        seed_family="bolt-wave21-greece-bar-setter",
+    )
+    print(json.dumps({"asset": "bolt-cover-hero", "qa_status": "pass", "grade_locked": True}, indent=2))
+    return 0
+
+
+def cmd_generate_slide2() -> int:
+    out = ROOT / "assets/backgrounds/decks/bolt/bolt-slide2-booking-moment-tier-a-v1.png"
+    meta = generate_bolt_slide2(out=out)
+    receipt = meta["qa_receipt"]
+    print(json.dumps({"output": str(out), "qa_overall": receipt["overall"], "checks": receipt["checks"]}, indent=2))
+    _register_tier_a_asset(
+        key="bolt-value-prop-bg",
+        role="value_prop_bg",
+        local_name=out.name,
+        meta=meta,
+        receipt=receipt,
+        market_slug="athens-saronic-greece",
+        used_by=[
+            {
+                "deck": "bolt",
+                "slide_index": 2,
+                "slide_object_id": "g3f139a0b6ec_0_0",
+                "target_object_id": "g3f139a0b6ec_0_1",
+            }
+        ],
+    )
+    return 0 if receipt["overall"] != "fail" else 1
+
+
+def clear_drive_urls_for_republish(*keys: str) -> None:
+    """Drop stale Drive URLs so a new local_path binary is uploaded."""
+    registry = load_json(REGISTRY_PATH)
+    for key in keys:
+        asset = registry.get("assets", {}).get(key)
+        if not asset:
+            continue
+        asset.pop("drive_file_id", None)
+        asset.pop("source_url", None)
+    write_json(REGISTRY_PATH, registry)
+
+
+def cmd_publish_and_apply_approved() -> int:
+    """Publish QA-passed wave-2.1 plates to Drive, then image-ops-only apply."""
+    sys.path.insert(0, str(BUILDERS))
+    from deck_autonomy_sync import publish_assets_to_drive  # type: ignore
+
+    registry = load_json(REGISTRY_PATH)
+    republish = [
+        k
+        for k, a in registry.get("assets", {}).items()
+        if a.get("tier") == "A" and a.get("qa_status") == "pass" and a.get("local_path")
+    ]
+    clear_drive_urls_for_republish(*republish)
+    publish_assets_to_drive(REGISTRY_PATH)
+    registry = load_json(REGISTRY_PATH)
+    ops = []
+    for key, bind in [
+        ("bolt-cover-hero", ("p1", "p1_i2", "CENTER_INSIDE")),
+        ("bolt-value-prop-bg", ("g3f139a0b6ec_0_0", "g3f139a0b6ec_0_1", "CENTER_CROP")),
+    ]:
+        asset = registry["assets"].get(key, {})
+        if asset.get("qa_status") != "pass":
+            print(f"skip {key}: qa_status={asset.get('qa_status')!r}")
+            continue
+        url = asset.get("source_url")
+        if not url:
+            raise SystemExit(f"{key} missing source_url after publish")
+        slide_oid, target_oid, method = bind
+        ops.append(
+            image_replace_op(
+                slide_oid,
+                target_oid,
+                url,
+                op_key=f"bolt-wave21-img-{key}",
+                source_pointer=f"ASSET-REGISTRY {key}",
+                method=method,
+            )
+        )
+    if not ops:
+        raise SystemExit("No QA-passed assets to apply")
+    apply_image_ops_only(ops)
+    print(json.dumps({"applied_ops": len(ops), "presentation_id": PRESENTATION_ID}, indent=2))
+    return 0
 
 
 def main() -> int:
@@ -457,6 +646,9 @@ def main() -> int:
     sub.add_parser("deprecate-paste")
     sub.add_parser("tag-drift-controls")
     sub.add_parser("generate-cover-greece")
+    sub.add_parser("approve-cover")
+    sub.add_parser("generate-slide2")
+    sub.add_parser("publish-and-apply-approved")
     p_lock = sub.add_parser("lock-grade")
     p_lock.add_argument("--plate", required=True)
     p_lock.add_argument("--seed-family", required=True)
@@ -471,6 +663,12 @@ def main() -> int:
         return 0
     if args.cmd == "generate-cover-greece":
         return cmd_generate_cover()
+    if args.cmd == "approve-cover":
+        return cmd_approve_cover()
+    if args.cmd == "generate-slide2":
+        return cmd_generate_slide2()
+    if args.cmd == "publish-and-apply-approved":
+        return cmd_publish_and_apply_approved()
     if args.cmd == "lock-grade":
         lock_deck_grade(reference_plate=args.plate, seed_family=args.seed_family)
         print("grade locked")
