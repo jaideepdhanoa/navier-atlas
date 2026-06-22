@@ -30,13 +30,6 @@ const CAT_ORDER = [
   'ferry_operator', 'sovereign_developer', 'marina_network', 'destination_region',
 ];
 
-const TIER_FILTERS = [
-  ['flagship', 'Flagship'],
-  ['priority', 'Priority'],
-  ['watch', 'Watch'],
-  ['', 'All'],
-];
-
 const ARCHETYPE_LABELS = {
   super_app: 'Super-app',
   ridehail: 'Ride-hail',
@@ -90,7 +83,6 @@ export function buildPartnersManifest({ partners, economicsUrlMap, root }) {
         archetype: p.archetype || '',
         archetype_label: ARCHETYPE_LABELS[p.archetype] || p.archetype || '',
         region: p.region || '',
-        tier: p.tier || '',
         layout: p.layout || 'single',
         blurb: partnerBlurb(p),
         proposal_path: `/${slug}`,
@@ -109,7 +101,6 @@ export function renderPartnersHubHtml(manifest) {
     partners: manifest,
     catLabels: CAT_LABELS,
     catOrder: CAT_ORDER,
-    tierFilters: TIER_FILTERS,
   });
   return `<!DOCTYPE html>
 <html lang="en">
@@ -158,13 +149,6 @@ export function renderPartnersHubHtml(manifest) {
     #q:focus { outline:2px solid var(--accent); outline-offset:1px; }
     #q::placeholder { color:var(--text-2); }
     .panel-body { padding:8px 20px 20px; max-height:calc(100vh - 220px); overflow-y:auto; }
-    .pidx-tierbar { display:flex; gap:6px; padding:4px 0 12px; position:sticky; top:0;
-      background:linear-gradient(var(--bg-1) 70%, transparent); z-index:2; flex-wrap:wrap; }
-    .pidx-tier { background:var(--bg-3); border:1px solid var(--line-strong); color:var(--text-2);
-      font:600 11px Inter; padding:5px 12px; border-radius:99px; cursor:pointer; }
-    .pidx-tier:hover { color:var(--text-0); }
-    .pidx-tier.active { color:#1a1a1a; background:var(--accent); border-color:var(--accent); }
-    .pidx-tier-n { opacity:0.75; margin-left:2px; }
     .pidx-group { margin-top:16px; }
     .pidx-group:first-child { margin-top:8px; }
     .pidx-cat { font-size:10px; text-transform:uppercase; letter-spacing:0.12em;
@@ -180,7 +164,6 @@ export function renderPartnersHubHtml(manifest) {
       display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
     .pidx-badge { font-size:9px; font-weight:700; letter-spacing:0.04em; color:var(--accent);
       background:rgba(224,203,143,0.12); border-radius:99px; padding:1px 7px; text-transform:uppercase; }
-    .pidx-badge.flag { color:#1a1a1a; background:var(--accent); }
     .pidx-badge.region { color:var(--steel); background:rgba(96,165,250,0.12); text-transform:none; }
     .pidx-badge.muted { color:var(--text-2); background:rgba(255,255,255,0.06); text-transform:none; }
     .pidx-badge.ok { color:var(--ok); background:rgba(110,231,183,0.12); text-transform:none; }
@@ -227,9 +210,8 @@ export function renderPartnersHubHtml(manifest) {
   </div>
   <script id="payload" type="application/json">${payload.replace(/</g, '\\u003c')}</script>
   <script>
-    const { partners: MANIFEST, catLabels: CAT_LABELS, catOrder: CAT_ORDER, tierFilters: TIER_FILTERS } =
+    const { partners: MANIFEST, catLabels: CAT_LABELS, catOrder: CAT_ORDER } =
       JSON.parse(document.getElementById('payload').textContent);
-    let tier = 'flagship';
     let view = 'category';
     const q = document.getElementById('q');
     const body = document.getElementById('body');
@@ -238,19 +220,11 @@ export function renderPartnersHubHtml(manifest) {
       return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    function tierCounts() {
-      const c = { flagship:0, priority:0, watch:0 };
-      for (const p of MANIFEST) if (c[p.tier] != null) c[p.tier]++;
-      return c;
-    }
-
     function renderStats() {
       const econ = MANIFEST.filter(p => p.economics_url).length;
       const deck = MANIFEST.filter(p => p.deck_status === 'in_progress').length;
-      const flagship = MANIFEST.filter(p => p.tier === 'flagship').length;
       document.getElementById('stats').innerHTML =
         '<div class="stat"><div class="v">' + MANIFEST.length + '</div><div class="k">Partners</div></div>' +
-        '<div class="stat"><div class="v">' + flagship + '</div><div class="k">Flagship</div></div>' +
         '<div class="stat"><div class="v">' + econ + '</div><div class="k">Models</div></div>' +
         '<div class="stat"><div class="v">' + deck + '</div><div class="k">Decks WIP</div></div>';
     }
@@ -261,14 +235,9 @@ export function renderPartnersHubHtml(manifest) {
       return hay.includes(term);
     }
 
-    function matchesTier(p) {
-      return !tier || p.tier === tier;
-    }
-
     function cardHtml(p) {
       const mk = (p.layout === 'hub' || p.layout === 'network') && p.markets_count
         ? '<span class="pidx-badge">' + p.markets_count + ' markets</span>' : '';
-      const fl = (!tier && p.tier === 'flagship') ? '<span class="pidx-badge flag">flagship</span>' : '';
       const rg = p.region ? '<span class="pidx-badge region">' + esc(p.region) + '</span>' : '';
       const econBadge = p.economics_url
         ? '<span class="pidx-badge ok">model</span>' : '<span class="pidx-badge muted">no model</span>';
@@ -279,7 +248,7 @@ export function renderPartnersHubHtml(manifest) {
         ? '<a class="btn" href="' + esc(p.economics_url) + '" target="_blank" rel="noopener">Unit economics</a>'
         : '<span class="btn disabled">Unit economics</span>';
       return '<article class="card">' +
-        '<h2 class="t">' + esc(p.display) + mk + fl + rg + econBadge + deckBadge + growth + '</h2>' +
+        '<h2 class="t">' + esc(p.display) + mk + rg + econBadge + deckBadge + growth + '</h2>' +
         '<p class="s">' + (esc(p.blurb) || '<span class="slug">' + esc(p.slug) + '</span>') + '</p>' +
         '<div class="card-actions">' +
         '<a class="btn primary" href="' + esc(p.proposal_path) + '">Open proposal</a>' +
@@ -293,7 +262,7 @@ export function renderPartnersHubHtml(manifest) {
       const term = q.value.trim().toLowerCase();
       for (const key of order) {
         const items = (groups[key] || [])
-          .filter(p => matchesTier(p) && matchesQ(p, term))
+          .filter(p => matchesQ(p, term))
           .sort((a,b) => a.display.localeCompare(b.display));
         if (!items.length) continue;
         n += items.length;
@@ -304,13 +273,6 @@ export function renderPartnersHubHtml(manifest) {
     }
 
     function render() {
-      const counts = tierCounts();
-      const tierBar = '<div class="pidx-tierbar">' + TIER_FILTERS.map(([v,l]) => {
-        const c = counts[v] != null ? counts[v] : MANIFEST.length;
-        return '<button type="button" class="pidx-tier' + (tier === v ? ' active' : '') + '" data-tier="' + esc(v) + '">' +
-          esc(l) + ' <span class="pidx-tier-n">' + c + '</span></button>';
-      }).join('') + '</div>';
-
       const term = q.value.trim().toLowerCase();
       let content = '', shown = 0;
 
@@ -336,13 +298,9 @@ export function renderPartnersHubHtml(manifest) {
       }
 
       const countLine = '<div class="count-line">Showing ' + shown + ' of ' + MANIFEST.length + ' partners</div>';
-      body.innerHTML = tierBar + countLine + (shown
+      body.innerHTML = countLine + (shown
         ? content
         : '<div class="empty">No partners match your filters.</div>');
-
-      body.querySelectorAll('.pidx-tier').forEach(btn => {
-        btn.addEventListener('click', () => { tier = btn.dataset.tier; render(); });
-      });
     }
 
     document.querySelectorAll('.browse-tab').forEach(btn => {
