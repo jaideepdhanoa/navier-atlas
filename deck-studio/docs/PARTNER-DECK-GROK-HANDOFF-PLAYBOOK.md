@@ -4,6 +4,12 @@ This repo copy mirrors the workspace skill `partner-deck-grok-handoff`. Use it w
 
 > **2026-06-21 upgrade — read this first.** The first Grok-built decks (e.g. the Bolt sandbox) failed parity: they were whole-file copies of the gold Grab deck with a few text boxes poked, leaving Grab's logo, Grab's Singapore routes, and Grab's economics numbers in place, with brand fonts reset to Arial-black and text overflowing. Root cause was **not** a Grok capability gap — it was that the handoff told Grok *what* to say but not *how* to edit. Going forward, Tasklet emits a deterministic **object-keyed edit plan** and Grok applies it verbatim. See `DECK-PARITY-DIAGNOSIS-2026-06-21.md` and `DETERMINISTIC-DECK-EDIT-PLAN-CONTRACT.md`.
 
+## Deck archetypes
+
+Pick the archetype **before** building the edit plan — it sets the route rule, economics frame, and slide content:
+- **Mobility / super-app distributor** (Grab, Bolt, Careem, Yango): use the standard sequence in this playbook as-is. City-mobility TAM, contested capture band, airport/commute/premium use cases.
+- **Hotel/resort operator-developer** (Minor, Aman, Four Seasons, Constance, …): use [`OPERATOR-DEVELOPER-ARCHETYPE.md`](./OPERATOR-DEVELOPER-ARCHETYPE.md) — captive property-graph routes only (gateway→property, property↔property, property→excursion), captive economics (capture ~0.85–0.90, LB-254), headroom = WIDTH (keys/openings/clusters). Keeps the slide skeleton and all base rules; overrides only the content frame of slides 2, 3, 4, 5, 7, 9.
+
 ## Steps
 
 1. Read partner JSON, data-clean partner JSON, finance/growth assets, economics Sheet URL, and current handoff status.

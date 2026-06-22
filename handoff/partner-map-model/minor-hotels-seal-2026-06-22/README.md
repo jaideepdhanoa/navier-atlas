@@ -8,6 +8,11 @@ Minor Hotels is a **new archetype**: a hotel developer/operator whose marine net
 intra-portfolio graph** (routes only from/between its own hotels + curated excursions), sized by guest
 throughput at ~0.85–0.90 capture — NOT a contested ride-hail mobility share.
 
+> **Deck archetype (reusable):** build Minor's deck with the operator-developer variant at
+> `deck-studio/docs/OPERATOR-DEVELOPER-ARCHETYPE.md` (captive property-graph routes, captive economics,
+> WIDTH headroom) — also mirrored in the workspace `partner-deck-grok-handoff` skill; reuse for Aman /
+> Four Seasons / Constance going forward.
+
 ## Read order
 1. `docs/GROK-SEAL-PROMPT.md` — the mandate, deterministic field mappings, eval gates G1–G8, cascade order.
 2. `docs/01-MINOR-ARCHETYPE-GUIDE.md` — how a hotel developer differs (route rule + captive economics).
