@@ -1,0 +1,131 @@
+{
+  "deck_key": "grab",
+  "presentation_id": "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs",
+  "generated_from": "gen_narrative_binding.py",
+  "source_narrative": "deck-studio/decks/grab/narrative-slide2-grab.json",
+  "slide_index": 2,
+  "slide_object_id": "narr2_page",
+  "purpose": "Deterministic field->object_id binding for the slide-2 exec-summary/thesis. Grok pulls VALUES from narrative-slide2-<partner>.json (DISTILLED from the proposal, never authored) and writes them into these object_ids via style-preserving deleteText(ALL)+insertText — identical to the economics layer. This file says WHERE; the proposal says WHAT. The slide itself is created ONCE in gold via narrative-slide2.gold-create.editplan.json with these exact IDs, then inherited by every gold copy. Never author prose; never invent object_ids.",
+  "image_slot": {
+    "object_id": "narr2_image",
+    "filled_by": "N30 image archetype A2 (image-manifest.json)"
+  },
+  "accent_rule": {
+    "object_id": "narr2_rule"
+  },
+  "fields": {
+    "kicker": {
+      "object_id": "narr2_kicker",
+      "static": "PARTNER PROPOSAL",
+      "present": true
+    },
+    "partner_lockup": {
+      "object_id": "narr2_lockup",
+      "present": true,
+      "sample": "Grab × Navier"
+    },
+    "positioning": {
+      "object_id": "narr2_positioning",
+      "present": true,
+      "sample": "the black-car network, on the water"
+    },
+    "thesis": {
+      "object_id": "narr2_thesis",
+      "present": true,
+      "sample": "Southeast Asia's super-app already owns the demand. Water is the only transport surface no one owns yet."
+    },
+    "the_deal": {
+      "object_id": "narr2_deal",
+      "present": true,
+      "sample": "We launch a Grab-branded foiling water tier across Southeast Asia's densest coastal and cross-border corridors — booked in-app, premium-priced, region-wide and category-defining."
+    },
+    "world_label": {
+      "object_id": "narr2_world_label",
+      "static": "Your world",
+      "present": true
+    }
+  },
+  "your_world": [
+    {
+      "head_object_id": "narr2_w1_h",
+      "body_object_id": "narr2_w1_b",
+      "present": true,
+      "sample_label": "Where you are today",
+      "sample_text": "You are Southeast Asia's everyday super-app — mobility, deliveries, and payments in one."
+    },
+    {
+      "head_object_id": "narr2_w2_h",
+      "body_object_id": "narr2_w2_b",
+      "present": true,
+      "sample_label": "What you're up against",
+      "sample_text": "Ride-hail on land is maturing and increasingly contested."
+    },
+    {
+      "head_object_id": "narr2_w3_h",
+      "body_object_id": "narr2_w3_b",
+      "present": true,
+      "sample_label": "Where Navier fits",
+      "sample_text": "Water is the only transport surface in Southeast Asia no one owns yet."
+    },
+    {
+      "head_object_id": "narr2_w4_h",
+      "body_object_id": "narr2_w4_b",
+      "present": true,
+      "sample_label": "Why now",
+      "sample_text": "Foiling lifts the hull clear of the water: faster, dramatically more efficient per passenger-mile, smooth and near-silent, hybrid-capable with no charging-infrastructure dependency, and autonomy-ready."
+    }
+  ],
+  "proof_strip": [
+    {
+      "value_object_id": "narr2_chip1_v",
+      "caption_object_id": "narr2_chip1_c",
+      "present": true,
+      "sample_value": "30+ clusters",
+      "sample_caption": "Reach · across Grab's 8 countries",
+      "external": true
+    },
+    {
+      "value_object_id": "narr2_chip2_v",
+      "caption_object_id": "narr2_chip2_c",
+      "present": true,
+      "sample_value": "250+ vessels",
+      "sample_caption": "At scale · on 120+ booked corridors",
+      "external": true
+    },
+    {
+      "value_object_id": "narr2_chip3_v",
+      "caption_object_id": "narr2_chip3_c",
+      "present": true,
+      "sample_value": "~100 vessels",
+      "sample_caption": "Live proof · Maldives network, $100M",
+      "external": true
+    },
+    {
+      "value_object_id": "narr2_chip4_v",
+      "caption_object_id": "narr2_chip4_c",
+      "present": true,
+      "sample_value": "2030",
+      "sample_caption": "Regulator · Singapore clean-harbour-craft mandate",
+      "external": true
+    }
+  ],
+  "render_order": [
+    "kicker",
+    "partner_lockup",
+    "positioning",
+    "thesis",
+    "the_deal",
+    "world_label",
+    "your_world[0..3]",
+    "proof_strip[0..3]"
+  ],
+  "paint_protocol": "Per-deck (after one-time gold-create): for each present pin, deleteText{objectId,textRange:ALL} then insertText{objectId,insertionIndex:0}. Skip pins where present=false (null beats confidently-wrong). Numbers in proof_strip must trace to narrative proof_sources or FLAG.",
+  "qa_gates": [
+    "leak_denylist",
+    "char_budget_scan",
+    "orphan_number_check",
+    "style_reset_scan",
+    "drift_gate",
+    "render_thumbnails"
+  ]
+}
