@@ -18,6 +18,12 @@ You own deterministic deck creation, live editing, and image generation/composit
    `deck-studio/assets/IMAGE-ROLE-CONTRACT.md`. Honor `status`: `checked_in`→ready/apply,
    `embedded_only`→background_pending (capture or regenerate first), `needs_generation`/`needs_sourcing`→blocked.
    Bind market backgrounds only on exact `atlas_city_id` match. Never guess an image.
+   - **Interactive Atlas links (slides 4–6, 14–18).** Each market side-panel slide has an
+     `Interactive link` text box (top-left). Resolve URLs from `decks/{deck}/slide-link-bindings.json`
+     + `data-clean/partners/{partner_id}.json` via `builders/deck_atlas_links.py` (hub partners →
+     `/{partner}/{market}` sub-proposal; optional `link_target: city` → `/{partner}/{market}/city/{city_id}`).
+     Run `python builders/deck_atlas_links.py validate-bindings --deck bolt` then `apply --deck bolt`
+     (or `deck_bolt_wave2.py apply-atlas-links`).
    - **Slide-family gate (Grab gold template).** `econ_market_bg` binds **only** to `navierBg_*` on slides
      7–9 and 19–23 (full-bleed market-specific landmark skyline). Slides 4–6 and 14–18 =
      `atlas_route_screenshot` (human Atlas capture — no generation). Run

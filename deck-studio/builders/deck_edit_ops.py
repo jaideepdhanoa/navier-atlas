@@ -189,6 +189,38 @@ def text_replace_ops(
     return ops
 
 
+def link_replace_op(
+    slide_object_id: str,
+    target_object_id: str,
+    url: str,
+    *,
+    op_key: str,
+    source_pointer: str,
+) -> dict:
+    """Hyperlink the Interactive link text box (full-range link + underline)."""
+    return make_op(
+        op_key,
+        slide_object_id,
+        target_object_id,
+        {
+            "updateTextStyle": {
+                "objectId": target_object_id,
+                "textRange": {"type": "ALL"},
+                "style": {
+                    "link": {"url": url},
+                    "underline": True,
+                    "foregroundColor": {
+                        "opaqueColor": {"rgbColor": {"red": 0.02, "green": 0.39, "blue": 0.76}}
+                    },
+                },
+                "fields": "link,underline,foregroundColor",
+            }
+        },
+        rationale=f"Set Atlas hyperlink on {target_object_id}",
+        source_pointer=source_pointer,
+    )
+
+
 def image_replace_op(
     slide_object_id: str,
     target_object_id: str,
