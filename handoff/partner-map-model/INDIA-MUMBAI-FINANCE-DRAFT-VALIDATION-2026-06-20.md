@@ -5,7 +5,7 @@ Adds draft-only Mumbai sealed route rows to `finance/model/corridors.json` for:
 
 - `ola-mumbai` — 11 Pioneer II rows
 - `rapido-mumbai` — 13 Pioneer II rows
-- `uber-mumbai` / partner `uber-india-derivative` — 13 Pioneer II rows
+- `uber-mumbai` / partner `uber-india` — 13 Pioneer II rows
 
 ## Controls
 - Route IDs come only from the PR59 India wiring spec.
@@ -21,7 +21,7 @@ Commands run locally from `finance/model`:
 ```bash
 python3 aggregate.py --partner ola --markets mumbai --json /tmp/india-agg/agg-ola.json
 python3 aggregate.py --partner rapido --markets mumbai --json /tmp/india-agg/agg-rapido.json
-python3 aggregate.py --partner uber-india-derivative --markets mumbai --json /tmp/india-agg/agg-uber-india-derivative.json
+python3 aggregate.py --partner uber-india --markets mumbai --json /tmp/india-agg/agg-uber-india.json
 ```
 
 Observed results:
@@ -30,7 +30,7 @@ Observed results:
 |---|---:|---|---|---:|---:|---|
 | ola | 11 | `ola-mumbai` | `None` | 0 | 0 | `NULL_revenue:no_comparable_fare`, `NULL_demand:no_pool` |
 | rapido | 13 | `rapido-mumbai` | `None` | 0 | 0 | `NULL_revenue:no_comparable_fare`, `NULL_demand:no_pool` |
-| uber-india-derivative | 13 | `uber-mumbai` | `None` | 0 | 0 | `NULL_revenue:no_comparable_fare`, `NULL_demand:no_pool` |
+| uber-india | 13 | `uber-mumbai` | `None` | 0 | 0 | `NULL_revenue:no_comparable_fare`, `NULL_demand:no_pool` |
 
 ## Next gates before partner-facing finance publish
 1. Capture direct route passenger counts for Mumbai/Mandwa/Elephanta/Navi Mumbai water corridors.

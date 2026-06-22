@@ -20,7 +20,7 @@ Adani and Reliance stay overlay-only. Gujarat, Vizag and some Tamil Nadu rows re
 
 ## Next deterministic packet requirements
 
-1. Build partner JSON drafts for `rapido-india`, `ola-india`, and `uber-india-derivative`.
+1. Build partner JSON drafts for `rapido-india`, `ola-india`, and `uber-india`.
 2. Carry `route_id: null` until sealed.
 3. Attach `coverage_note` prose for unsupported broader reach.
 4. No non-marine footprint grid.

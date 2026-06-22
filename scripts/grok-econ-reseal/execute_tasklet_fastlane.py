@@ -295,7 +295,7 @@ def main() -> int:
             slug, ledger_path=ledger, pr58=pr58, gold_ids=gold_ids, by_id=by_id, by_bp=by_bp
         )
 
-    for slug in ("ola", "rapido", "uber-india-derivative"):
+    for slug in ("ola", "rapido", "uber-india"):
         stats["partners"][slug] = seal_india_consumer_partner(slug)
     stats["partners"]["uber"] = seal_uber_india_brief()
 
@@ -307,7 +307,7 @@ def main() -> int:
         print("\n→ post-merge lane (inherit + seal + finance automatic)")
         rc = subprocess.run([str(post_merge)], cwd=ROOT)
     else:
-        partners = "ola rapido uber uber-india-derivative rakta bahrain-motc"
+        partners = "ola rapido uber uber-india rakta bahrain-motc"
         print(f"\n→ partner page lane ({partners})")
         import os
         env = {**os.environ, "PARTNERS": partners}

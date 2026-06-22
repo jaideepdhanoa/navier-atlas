@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Grok seal — Grab Thailand derivative (PR #74 / LB-258 follow-on).
+Grok seal — Grab Thailand (PR #74 / Bucket-C routing).
 
 1. Apply Bucket-C boarding points → FEATURES_BY_TYPE POIs + mint connected-city pins
-2. Bind finance/model/corridors.json route_ids onto grab-thailand-derivative journeys
+2. Bind finance/model/corridors.json route_ids onto grab-thailand journeys
 3. Promote partner JSON to data-clean/partners/
 4. Emit QA report (acceptance gate from GROK-SEAL-PROMPT-thailand.md)
 
@@ -24,8 +24,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BP_DIR = ROOT / "grok-routing-output/bucketC-thailand-boarding-points"
-PARTNER_SRC = ROOT / "partner-pitch/partners/grab-thailand-derivative.json"
-PARTNER_DST = ROOT / "data-clean/partners/grab-thailand-derivative.json"
+PARTNER_SRC = ROOT / "partner-pitch/partners/grab-thailand.json"
+PARTNER_DST = ROOT / "data-clean/partners/grab-thailand.json"
 CORRIDORS = ROOT / "finance/model/corridors.json"
 FBT_PATH = ROOT / "data-clean/FEATURES_BY_TYPE.json"
 REPORT_PATH = ROOT / "grok-routing-output/grab-thailand-seal-report.json"
@@ -45,6 +45,7 @@ CITY_META = {
     "koh-chang-thailand": ("Koh Chang", "Thailand", "SEA"),
     "krabi-thailand": ("Krabi", "Thailand", "SEA"),
     "koh-phi-phi-thailand": ("Koh Phi Phi", "Thailand", "SEA"),
+    "koh-larn-thailand": ("Koh Larn", "Thailand", "SEA"),
 }
 
 
@@ -106,14 +107,17 @@ def finalize_partner_metadata(partner: dict) -> None:
                 stat["value"] = str(bound)
                 stat["sub"] = "Samui (7) + Andaman (6) + Bangkok (2); cross-border held out"
     partner["expansion_lanes_exact_bind_only"] = [
-        "Gulf connected cities minted (Phangan, Tao, Pattaya, Koh Chang) — BP↔BP routes pending routing pass",
-        "Andaman connected cities minted (Krabi, Phi Phi) — BP↔BP routes pending routing pass",
-        "Cross-border: Phuket <-> Langkawi/Penang via Grab regional lane (not in this derivative)",
+        "Gulf connected cities + Koh Larn minted — BP↔BP routes sealed (Bucket-C)",
+        "Andaman connected cities minted — BP↔BP routes sealed (Bucket-C)",
+        "Cross-border: Phuket <-> Langkawi/Penang via Grab regional lane (not in grab-thailand)",
+        "Bangkok gulf gateway (Pattaya/Koh Chang/Samui long-legs) — aspirational, no demand record",
     ]
     partner.setdefault("_provenance", {})["geometry"] = (
-        f"{bound} Thailand-only corridors bound to finance/model/corridors.json; "
-        "18 BPs sealed; 6 connected cities minted"
+        f"{bound} Thailand-only anchor corridors bound to finance/model/corridors.json; "
+        "19 BPs gazetteer-validated; 7 connected cities minted + Bucket-C route mesh"
     )
+    if partner.get("partner_id", "").endswith("-derivative"):
+        partner["partner_id"] = "grab-thailand"
 
 
 def bind_journeys(partner: dict, corr: dict, report: dict) -> None:
@@ -272,7 +276,7 @@ def main() -> int:
 
     report = {
         "sealed_at": now_iso(),
-        "phase": "grab-thailand-derivative",
+        "phase": "grab-thailand",
         "dry_run": args.dry_run,
         "cities_minted": [],
         "cities_existing": [],

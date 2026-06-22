@@ -13,7 +13,7 @@ python3 "$ROOT/scripts/grok-econ-reseal/refresh_india_partner_chips.py"
 python3 "$ROOT/scripts/grok-econ-reseal/upgrade_careem_from_noon.py"
 
 # Sync pitch → data-clean before canonical partner-page lane
-for p in rapido ola noon careem uber-india-derivative; do
+for p in rapido ola noon careem uber-india; do
   src="$ROOT/partner-pitch/partners/${p}.json"
   [ -f "$src" ] || src="$ROOT/partner-pitch/partners/_draft/${p}.json"
   [ -f "$src" ] && cp "$src" "$ROOT/data-clean/partners/${p}.json"

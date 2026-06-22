@@ -49,7 +49,7 @@ def main() -> int:
     buckets = collect_route_ids()
     corr = json.loads(CORRIDORS.read_text())
     markets = corr.setdefault("markets", {})
-    for partner in ("rapido", "ola", "uber-india-derivative"):
+    for partner in ("rapido", "ola", "uber-india"):
         for key, anchor in KCC_ANCHORS.items():
             rids = buckets[key]
             if not rids:

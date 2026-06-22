@@ -20,7 +20,7 @@ echo "  5/6 wire India KCC economics stubs"
 python3 "$ROOT/scripts/grok-econ-reseal/wire_india_kcc_economics.py"
 
 echo "  6/6 partner page lane"
-PARTNERS="rakta bahrain-motc rapido ola uber-india-derivative adani-ports reliance-industries uber" \
+PARTNERS="rakta bahrain-motc rapido ola uber-india adani-ports reliance-industries uber" \
   "$ROOT/scripts/grok-econ-reseal/run_partner_page_lane.sh"
 
 echo "✓ Follow-up lane complete"

@@ -12,7 +12,7 @@ echo "  2/5 seal India partners (anchor_cities + route bind)"
 python3 "$ROOT/scripts/grok-econ-reseal/seal_india_kolkata_chennai_partners.py"
 
 echo "  3/5 partner page lane (inherit + relink + QA + build)"
-PARTNERS="rapido ola uber-india-derivative adani-ports reliance-industries uber" \
+PARTNERS="rapido ola uber-india adani-ports reliance-industries uber" \
   "$ROOT/scripts/grok-econ-reseal/run_partner_page_lane.sh"
 
 echo "✓ India Kolkata/Chennai lane complete"

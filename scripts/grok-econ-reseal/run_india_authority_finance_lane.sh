@@ -6,7 +6,7 @@ cd "$ROOT"
 FINANCE="$ROOT/finance"
 MODEL="$FINANCE/model"
 RECAL="$FINANCE/recal"
-PARTNERS="rapido,ola,uber-india-derivative"
+PARTNERS="rapido,ola,uber-india"
 mkdir -p "$RECAL"
 
 echo "→ Patch India corridors (incl. Kolkata/Chennai spine rows)"

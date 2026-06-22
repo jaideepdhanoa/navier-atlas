@@ -20,7 +20,7 @@ Status: **draft only**. Do not execute until Noon seal/render output is reviewed
 4. Draft partner JSONs only if Atlas city IDs/market hierarchy resolve:
    - `rapido-india` draft
    - `ola-india` draft
-   - `uber-india-derivative` draft
+   - `uber-india` draft
 5. Render QA ledgers per draft.
 
 ## Scope gates

@@ -26,12 +26,12 @@ Three clusters, one country story — **"the water layer for Thailand's two coas
 ---
 
 ## 1b. Standalone Grab Thailand proposal (NEW — mirrors Uber India)
-Build a dedicated **`grab-thailand-derivative.json`** partner, exactly patterned on **`uber-india-derivative.json`**: a standalone hub-layout proposal whose `markets[]` array *is* the set of Thai sub-proposals. This gives the TH team a single, self-contained Thailand pitch — not a Thai slice buried inside a SEA-wide Grab deck.
-- **Pattern source (verified):** `uber-india-derivative.json` = `partner_id` + `display` + `archetype/category/region/layout:"hub"` + `coverage_note` + `hero/why_now/network_thesis/why_navier_now` + **`markets[]`** (each a full sub-proposal: hero, partner_context, why_now, why_navier_now, journeys_unlocked, proof_points, objections, phases, the_ask, end_state, close, vessel sizing) + `phases` + `economics_status` + `growth_case` + `_provenance` + a `*_seal` block. It has **6 India markets**; ours gets the Thai markets.
+Build a dedicated **`grab-thailand.json`** partner, exactly patterned on **`uber-india.json`**: a standalone hub-layout proposal whose `markets[]` array *is* the set of Thai sub-proposals. This gives the TH team a single, self-contained Thailand pitch — not a Thai slice buried inside a SEA-wide Grab deck.
+- **Pattern source (verified):** `uber-india.json` = `partner_id` + `display` + `archetype/category/region/layout:"hub"` + `coverage_note` + `hero/why_now/network_thesis/why_navier_now` + **`markets[]`** (each a full sub-proposal: hero, partner_context, why_now, why_navier_now, journeys_unlocked, proof_points, objections, phases, the_ask, end_state, close, vessel sizing) + `phases` + `economics_status` + `growth_case` + `_provenance` + a `*_seal` block. It has **6 India markets**; ours gets the Thai markets.
 - **Reuse:** the `growth_case` TAM template already references **Grab's commission / super-app journey_gmv** (it was authored *from* the Grab model) → economics inherit cleanly.
 - **Derivative markets (initial):** `phuket_andaman` (flagship), `koh_samui_gulf` (flagship), `bangkok` (river + gulf gateway). Expansion-ready for the gulf/Andaman connected cities.
 - **Scaffold:** reuse `partner-pitch/subproposals/build_scaffold.py` (deterministic phases + range-gated vessel sizing off real corridors; prose left empty for Tasklet to author).
-- **Crosswalk + seal:** ship `GRAB-THAILAND-DERIVATIVE-ANCHOR-CITY-CROSSWALK.json` (ID-match only) → Grok mints missing geometry + binds route_ids → reseal.
+- **Crosswalk + seal:** ship `GRAB-THAILAND-ANCHOR-CITY-CROSSWALK.json` (ID-match only) → Grok mints missing geometry + binds route_ids → reseal.
 
 ---
 

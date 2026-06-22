@@ -11,7 +11,7 @@ echo "=== PR #58 India + GCC execution ==="
 "$ROOT/scripts/grok-econ-reseal/run_pr58_india_gcc_lane.sh"
 
 # Sync India platform + overlay partners to data-clean
-for p in rapido ola noon careem adani-ports reliance-industries uber-india-derivative; do
+for p in rapido ola noon careem adani-ports reliance-industries uber-india; do
   src="$ROOT/partner-pitch/partners/${p}.json"
   [ -f "$src" ] || src="$ROOT/partner-pitch/partners/_draft/${p}.json"
   if [ -f "$src" ]; then

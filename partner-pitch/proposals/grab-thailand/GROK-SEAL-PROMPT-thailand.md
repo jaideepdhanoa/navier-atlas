@@ -17,8 +17,8 @@ scratch — you ID-match, validate, gate, route, and seal what is provided.**
 | `partner-pitch/city_briefs/{koh-phangan,koh-tao,pattaya,koh-chang,krabi,koh-phi-phi}-thailand.json` | Connected-city briefs (+ registered in `_index.json`) |
 | `partner-pitch/city_briefs/{koh-samui,bangkok}-thailand.json` | Enriched anchor briefs |
 | `partner-pitch/locale_briefs/` | Pier-level anchor locale briefs (Bangkok Chao Phraya, Phuket eastern piers, Samui north arc) |
-| `partner-pitch/GRAB-THAILAND-DERIVATIVE-ANCHOR-CITY-CROSSWALK.json` | Gate-A anchor resolution + BP-authored status |
-| `partner-pitch/partners/grab-thailand-derivative.json` | The proposal surface; `markets[].journeys_unlocked` are the corridors to bind; `route_ids` currently null |
+| `partner-pitch/GRAB-THAILAND-ANCHOR-CITY-CROSSWALK.json` | Gate-A anchor resolution + BP-authored status |
+| `partner-pitch/partners/grab-thailand.json` | The proposal surface; `markets[].journeys_unlocked` are the corridors to bind; `route_ids` currently null |
 
 ## Tasks (deterministic)
 1. **Validate coords.** Every BP carries `confidence:"low"` and `coord APPROXIMATE` — validate each

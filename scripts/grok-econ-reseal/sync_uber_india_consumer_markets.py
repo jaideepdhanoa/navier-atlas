@@ -46,7 +46,7 @@ def uberize_obj(obj):
 def main() -> int:
     rapido = load(PARTNERS / "rapido.json")
     for base in (PARTNERS, DRAFT):
-        path = base / "uber-india-derivative.json"
+        path = base / "uber-india.json"
         if not path.is_file():
             continue
         doc = load(path)
@@ -69,7 +69,7 @@ def main() -> int:
                 "Six high-value India markets — four sealed on the map; Kolkata and Chennai in proposal until Grok mints geometry."
             )
         save(path, doc)
-        dc = ROOT / "data-clean" / "partners" / "uber-india-derivative.json"
+        dc = ROOT / "data-clean" / "partners" / "uber-india.json"
         save(dc, doc)
         print(f"✓ synced {path.relative_to(ROOT)} — {len(kept)} display + {len(ref_brief)} brief markets")
     return 0

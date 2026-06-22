@@ -863,7 +863,7 @@ def build_uber_india_draft(rapido: dict, spine: dict[str, Any]) -> dict:
             markets_out.append(mc)
 
     doc = {
-        "partner_id": "uber-india-derivative",
+        "partner_id": "uber-india",
         "display": "Uber India (draft)",
         "archetype": "ridehail",
         "category": "ridehail",
@@ -1052,7 +1052,7 @@ def main() -> int:
         ("noon", NOON_ACTIVE_UAE, "partner-pitch/NOON-ANCHOR-CITY-CROSSWALK.json", "Active UAE only"),
         ("rapido", INDIA_ANCHORS, "partner-pitch/RAPIDO-INDIA-ANCHOR-CITY-CROSSWALK.json", "India baseline 4 markets"),
         ("ola", INDIA_ANCHORS, "partner-pitch/OLA-INDIA-ANCHOR-CITY-CROSSWALK.json", "India baseline 4 markets"),
-        ("uber-india-derivative", INDIA_ANCHORS, "partner-pitch/UBER-INDIA-DERIVATIVE-ANCHOR-CITY-CROSSWALK.json", "Uber India draft"),
+        ("uber-india", INDIA_ANCHORS, "partner-pitch/UBER-INDIA-DERIVATIVE-ANCHOR-CITY-CROSSWALK.json", "Uber India draft"),
     ]
     crosswalks: dict[str, dict] = {}
     for partner, anchors, rel, note in crosswalk_specs:
@@ -1096,11 +1096,11 @@ def main() -> int:
 
     uber_draft = build_uber_india_draft(rapido, spine)
     uber_draft = deep_canonicalize(uber_draft, goa_ledger)
-    save_json(DRAFT / "uber-india-derivative.json", uber_draft)
+    save_json(DRAFT / "uber-india.json", uber_draft)
     stats["outputs"].extend([
         "partner-pitch/partners/rapido.json",
         "partner-pitch/partners/ola.json",
-        "partner-pitch/partners/_draft/uber-india-derivative.json",
+        "partner-pitch/partners/_draft/uber-india.json",
     ])
 
     # --- India route seal ledger ---
@@ -1108,7 +1108,7 @@ def main() -> int:
     for partner, doc in (
         ("rapido", rapido),
         ("ola", ola),
-        ("uber-india-derivative", uber_draft),
+        ("uber-india", uber_draft),
     ):
         for row in collect_featured_for_seal(doc, partner):
             row_label = featured_row_label(row)
@@ -1158,7 +1158,7 @@ def main() -> int:
     india_ledger = {
         "package": "india-route-seal-ledger",
         "build_date": BUILD_DATE,
-        "partners": ["rapido", "ola", "uber-india-derivative"],
+        "partners": ["rapido", "ola", "uber-india"],
         "source_spine": "handoff/partner-map-model/india-shared-corridor-spine.json",
         "summary": {
             "total": len(india_seal_rows),
@@ -1208,7 +1208,7 @@ def main() -> int:
     for partner, doc, cw_key in (
         ("rapido", rapido, "rapido"),
         ("ola", ola, "ola"),
-        ("uber-india-derivative", uber_draft, "uber-india-derivative"),
+        ("uber-india", uber_draft, "uber-india"),
     ):
         india_qa_entries.append(
             run_render_qa(

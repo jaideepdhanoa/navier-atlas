@@ -12,7 +12,7 @@ PARTNERS = ROOT / "partner-pitch" / "partners"
 DC = ROOT / "data-clean" / "partners"
 HANDOFF = ROOT / "handoff" / "partner-map-model"
 EXT_REPORT = HANDOFF / "india-extension-mint-report.json"
-INDIA = ("rapido", "ola", "uber-india-derivative", "adani-ports", "reliance-industries", "uber")
+INDIA = ("rapido", "ola", "uber-india", "adani-ports", "reliance-industries", "uber")
 
 
 def norm(s: str | None) -> str:

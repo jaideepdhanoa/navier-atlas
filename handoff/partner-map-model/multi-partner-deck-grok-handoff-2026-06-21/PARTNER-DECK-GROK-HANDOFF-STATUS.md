@@ -57,7 +57,7 @@ This does **not** mean the live decks are complete. Remaining work is Grok-owned
 
 ### Uber India → `uber-india`
 
-- Source partner JSON: `partner-pitch/partners/uber-india-derivative.json`
+- Source partner JSON: `partner-pitch/partners/uber-india.json`
 - Tasklet deck status: `deck-prep-complete / grok-create-or-bind-needed`
 - Source markets: 6; rollups: 0
 - Growth case present in source partner JSON: `true`

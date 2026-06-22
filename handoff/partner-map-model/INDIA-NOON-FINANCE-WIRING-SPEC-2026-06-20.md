@@ -4,7 +4,7 @@ Base: PR #59 / `pr-59`. Purpose: convert Grok’s sealed route IDs into finance-
 - India ledger: {'total': 921, 'sealed': 900, 'held_null': 21}
 - Noon ledger: {'total': 12, 'sealed': 12, 'held_null': 0}
 - India distinct sealed route IDs: **39** despite 900 sealed partner references.
-- Held-null remains: {'rapido': 7, 'ola': 7, 'uber-india-derivative': 7} — keep economics pending.
+- Held-null remains: {'rapido': 7, 'ola': 7, 'uber-india': 7} — keep economics pending.
 ## Correction to prior blocker note
 Grok has Google Sheets access. Current blockers are finance/model wiring plus Sheet ID registration for `rapido`, `ola`, `noon`, and the Uber India derivative, not OAuth.
 ## Country-reference preflight
@@ -62,22 +62,22 @@ Use as **market validation / competitive context only** for now — not fare, de
 - Distinct sealed routes: 14
 - Readiness: `route_ids_sealed_price_floor_ready_demand_partial`
 - Action: wire as draft corridor rows with M2M fare floor/comparable; keep demand confidence partial until passenger counts are sourced
-### uber-india-derivative — Andaman / Port Blair / island mobility
+### uber-india — Andaman / Port Blair / island mobility
 - Suggested market key: `uber-andaman`
 - Distinct sealed routes: 10
 - Readiness: `route_ids_sealed_demand_partial_pricing_quarantined`
 - Action: do not publish route economics; keep rows economics_pending until DSS fare PDF direct capture succeeds
-### uber-india-derivative — Goa
+### uber-india — Goa
 - Suggested market key: `uber-goa`
 - Distinct sealed routes: 7
 - Readiness: `route_ids_sealed_pricing_comparables_ready_tourism_tam_ready`
 - Action: wire draft corridor rows using official RND/taxi/GoaMiles comparables; keep airport demand quarantined
-### uber-india-derivative — Kochi / Kerala Water Metro adjacency
+### uber-india — Kochi / Kerala Water Metro adjacency
 - Suggested market key: `uber-kochi`
 - Distinct sealed routes: 8
 - Readiness: `route_ids_sealed_demand_ready_pricing_partial`
 - Action: wire only with conservative fare placeholder from DPR planning benchmark if labelled historical; preferably source current fare before finance publish
-### uber-india-derivative — Mumbai / Navi Mumbai / Mandwa / Elephanta
+### uber-india — Mumbai / Navi Mumbai / Mandwa / Elephanta
 - Suggested market key: `uber-mumbai`
 - Distinct sealed routes: 14
 - Readiness: `route_ids_sealed_price_floor_ready_demand_partial`

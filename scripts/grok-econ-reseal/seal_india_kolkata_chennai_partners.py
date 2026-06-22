@@ -23,7 +23,7 @@ MARKET_CITY = {
 INDIA_PARTNERS = (
     "rapido",
     "ola",
-    "uber-india-derivative",
+    "uber-india",
     "adani-ports",
     "reliance-industries",
     "uber",
@@ -136,7 +136,7 @@ def promote_market(m: dict, city_id: str) -> None:
 
 
 def clean_uber_india_copy(doc: dict) -> None:
-    if doc.get("partner_id") != "uber-india-derivative":
+    if doc.get("partner_id") != "uber-india":
         return
     doc["coverage_note"] = (
         "Six India consumer markets on sealed Atlas geometry: Mumbai, Goa, Kerala, Andaman, "

@@ -1,0 +1,111 @@
+{
+ "_doc": "Gate-A anchor-city crosswalk for grab-thailand. Exact ID match only against FEATURES_BY_TYPE / global registry. null beats confidently-wrong.",
+ "partner": "grab-thailand",
+ "build_date": "2026-06-22",
+ "updated_at": "2026-06-22T20:00:00Z",
+ "scope_note": "Standalone Grab Thailand proposal (pattern: uber-india). 3 Thai anchor markets on sealed corridors.json geometry; 7 connected cities minted + Bucket-C BP route mesh.",
+ "anchors": {
+  "phuket-phang-nga-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "phuket-phang-nga-thailand",
+   "evidence": "exact match; 6 Thailand-only corridors bound in grab-thailand phuket_andaman market",
+   "market": "phuket_andaman"
+  },
+  "koh-samui-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "koh-samui-thailand",
+   "evidence": "exact match; 7 sealed corridors in corridors.json :: koh-samui",
+   "market": "koh_samui_gulf"
+  },
+  "bangkok-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "bangkok-thailand",
+   "evidence": "exact match; 2 sealed river corridors in corridors.json :: bangkok",
+   "market": "bangkok"
+  }
+ },
+ "cross_border_regional_only": {
+  "langkawi-malaysia": {
+   "verdict": "OK_NON_THAI",
+   "atlas_city_id": "langkawi-malaysia",
+   "note": "Malaysian — Grab regional cross-border lane only; excluded from grab-thailand journeys_unlocked"
+  },
+  "penang-malaysia": {
+   "verdict": "OK_NON_THAI",
+   "atlas_city_id": "penang-malaysia",
+   "note": "Malaysian — cross-border only"
+  }
+ },
+ "connected_cities_minted": {
+  "koh-phangan-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "koh-phangan-thailand",
+   "cluster": "gulf",
+   "bp_count": 2,
+   "bucketC_routes": true
+  },
+  "koh-tao-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "koh-tao-thailand",
+   "cluster": "gulf",
+   "bp_count": 1,
+   "bucketC_routes": true
+  },
+  "pattaya-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "pattaya-thailand",
+   "cluster": "gulf",
+   "bp_count": 2,
+   "bucketC_routes": true
+  },
+  "koh-larn-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "koh-larn-thailand",
+   "cluster": "gulf",
+   "bp_count": 1,
+   "note": "Grok mint 2026-06-22 — Na Ban pier; Bali Hai gateway",
+   "bucketC_routes": true
+  },
+  "koh-chang-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "koh-chang-thailand",
+   "cluster": "gulf",
+   "bp_count": 2,
+   "bucketC_routes": true
+  },
+  "krabi-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "krabi-thailand",
+   "cluster": "andaman",
+   "bp_count": 4,
+   "bucketC_routes": true
+  },
+  "koh-phi-phi-thailand": {
+   "verdict": "MINTED",
+   "atlas_city_id": "koh-phi-phi-thailand",
+   "cluster": "andaman",
+   "bp_count": 2,
+   "bucketC_routes": true
+  }
+ },
+ "aspirational_no_demand_record": {
+  "bangkok_gulf_gateway": {
+   "verdict": "ASPIRATIONAL",
+   "note": "Bangkok→Pattaya/Koh Chang/Samui long-legs (Quanta-LR roadmap). No demand record — do not cascade economics."
+  }
+ },
+ "grok_render_check": "All 3 anchors + 7 connected cities resolve at render. 19 BPs gazetteer-validated. Bucket-C BP↔BP routes sealed with land-crossing QA.",
+ "guardrails": [
+  "ID-match only",
+  "null beats confidently-wrong",
+  "no Malaysia inside Thai markets",
+  "Bangkok gulf gateway stays aspirational until Tasklet demand anchors"
+ ],
+ "_updates": [
+  {
+   "date": "2026-06-22",
+   "by": "grok",
+   "change": "Connected cities promoted from MISSING_GEOMETRY to MINTED. Koh Larn added. Bucket-C routes + gazetteer validation applied."
+  }
+ ]
+}

@@ -20,7 +20,7 @@ Generated: 2026-06-21T04:09:12Z
 - `handoff/partner-map-model/noon-route-seal-ledger.json`
 - `partner-pitch/partners/rapido.json`
 - `partner-pitch/partners/ola.json`
-- `partner-pitch/partners/_draft/uber-india-derivative.json`
+- `partner-pitch/partners/_draft/uber-india.json`
 - `handoff/partner-map-model/india-route-seal-ledger.json`
 - `partner-pitch/partners/noon.json`
 - `data-clean/economics_by_route_id.json (_meta.india_pr58_sidecar_ref)`
