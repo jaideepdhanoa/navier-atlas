@@ -52,20 +52,21 @@ low-detail water/sky so white KPI numerals stay legible.
 single vessel; market lock; no seam; grade matches deck family.
 
 ## D. Unit-economics slides · econ keys (e.g. 7–9, 19–23)
-**Role:** quiet **backdrop for charts + the 6-line flush-left OPEX model** (Careem/French-Polynesia style).
-Must **not fight data**. Far/abstract vessel, heavily calmed.
-**Composition / safe zone:** vessel **small in a lower corner** or absent-but-implied; the **left column +
-center** stay an unbroken calm gradient for the flush-left OPEX lines and chart.
+**Role:** **full-bleed market-specific landmark skyline** behind unit-economics charts. Charts and OPEX
+text overlay on the slide template — the image itself is a rich, recognizable local scene, not a muted
+gradient or split composition.
+**Composition:** edge-to-edge panoramic skyline/coastline/harbour; vessel **small in the lower-center**,
+actively foiling.
 
 > Using the attached white hydrofoil vessel as the exact form/colour reference, produce a single
-> photorealistic 16:9 photograph: a **distant** white hydrofoil on **calm open water at dawn**, small in the
-> **lower-right**, the rest of the frame an **unbroken calm sea-and-sky gradient** in deep navy/slate tones.
-> **Very muted, low-contrast** so charts and white text overlay cleanly across the **left and center**.
-> Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal,
-> premium, photographic. No people, no logos, no text, no busy foreground.
+> photorealistic 16:9 photograph: a **full-width panoramic view** of **{MARKET_LANDMARK}** filling the
+> frame from left to right — unmistakable local skyline, coastline, and harbour detail at golden hour.
+> A single white hydrofoil, small in the **lower-center** on open water, **foils deployed, hull elevated**
+> above the waterline. Exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam.
+> Cinematic, aspirational, premium. No people, no logos, no text, no artificial gradient panels.
 
-**Eval:** global **contrast/variance below threshold** (auto) so overlays read; **left column clean** for
-flush-left OPEX; single vessel; no busy elements; deck-coherent grade.
+**Eval:** **full-frame landmark detail** (auto variance check); single vessel; market lock; foiling not
+displacement; deck-coherent grade.
 
 ## E. TAM / market-size · slide 10
 **Role:** the **aspirational scale** plate behind the TAM ladder. Convey a *network of destinations* —

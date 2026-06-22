@@ -20,7 +20,7 @@ provenance required.** Logos are the only non-composite assets.
 | `tam_bg` | 10 | deck | TAM background | composite |
 | `partner_roles_bg` | 11 | deck | partner-roles background | composite |
 | `atlas_route_screenshot` | 4–6, 14–18 | deck | market side-panel (example + backup) | **human capture** from Vercel Navier Atlas (not generated) |
-| `econ_market_bg` | 7–9, 19–23 | **market** | **reusable across any deck featuring that city** | Tier-A landmark skyline + chart-safe left (`navierBg_*` slots only) |
+| `econ_market_bg` | 7–9, 19–23 | **market** | **reusable across any deck featuring that city** | Tier-A full-bleed landmark skyline (`navierBg_*` slots only) |
 
 ### `partner_logo` (cover) — required
 Every named-partner deck **must** carry the partner's logo on the cover (slide 1). It is part of the
@@ -49,10 +49,11 @@ Market side-panel slides show the Navier Atlas route/map UI for beachhead and ba
 from the live Vercel Atlas, bank under `assets/screenshots/atlas/{deck}/`, register with provenance,
 apply to the side-panel image slot. Do **not** substitute Tier-A generated plates here.
 
-### `econ_market_bg` (slides 7–9, 19–23) — landmark skyline + chart-safe left
-Unit-economics slides: left 42% stays low-contrast for P&L tables; right 58% shows a **recognizable
-market-specific landmark skyline or coastline** (identifiable at thumbnail size). Vessel small in the
-lower-right, foils deployed, hull elevated (hydrofoiling — not sitting low like a ferry). Prompt tier:
+### `econ_market_bg` (slides 7–9, 19–23) — full-bleed landmark skyline
+Unit-economics slides: **full-width edge-to-edge** photorealistic market-specific landmark skyline,
+coastline, and harbour (identifiable at thumbnail size). No artificial gradient panels or blank chart-safe
+zones baked into the image — charts overlay on the slide template. Vessel small in the lower-center,
+foils deployed, hull elevated (hydrofoiling — not sitting low like a ferry). Prompt tier:
 `econ_unit_landmark` in `N30-TIER-A-PROMPTS.md`.
 
 ### `market_overview_kpis` (slide 3) — data role, not an image

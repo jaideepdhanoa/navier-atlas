@@ -246,7 +246,7 @@ def qa_image_gate(
     )
 
     if role == "econ_market_bg":
-        hull_box = (0.55, 0.55, 0.95, 0.92)
+        hull_box = (0.30, 0.55, 0.70, 0.92)
     elif role == "tam_bg":
         hull_box = (0.18, 0.50, 0.58, 0.78)
     else:
@@ -293,27 +293,14 @@ def qa_image_gate(
             QACheck("partner_roles_right_third_clean", "pass" if lockup_ok else "fail", True, right)
         )
     elif role == "econ_market_bg":
-        left = _region_stats(img, (0.0, 0.0, 0.48, 0.85))
-        landmark = _region_stats(img, (0.42, 0.0, 1.0, 0.72))
-        left_ok = left["variance"] < 2000 and left["mean_luminance"] < 125
-        landmark_ok = landmark["variance"] > 700 and landmark["mean_luminance"] > 50
-        checks.append(
-            QACheck("econ_left_column_clean", "pass" if left_ok else "fail", True, left)
-        )
+        full = _region_stats(img, (0.0, 0.0, 1.0, 0.78))
+        landmark_ok = full["variance"] > 900 and full["mean_luminance"] > 45
         checks.append(
             QACheck(
-                "econ_low_contrast_left",
-                "pass" if left_ok else "fail",
-                True,
-                {"left_mean_luminance": left["mean_luminance"], "left_variance": left["variance"]},
-            )
-        )
-        checks.append(
-            QACheck(
-                "econ_landmark_skyline_visible",
+                "econ_landmark_full_bleed",
                 "pass" if landmark_ok else "fail",
                 True,
-                landmark,
+                full,
             )
         )
 
@@ -647,15 +634,15 @@ def prompt_econ(market_slug: str) -> str:
     landmark = ECON_LANDMARKS[market_slug]
     return (
         "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, "
-        "produce a single photorealistic 16:9 photograph for a unit-economics chart slide. "
-        "Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — "
-        "low enough contrast for white P&L tables and charts. "
-        f"The right 58% is a photorealistic, clearly recognizable view of {landmark}. "
-        "The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm "
-        "golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic "
-        "empty ocean. A single white hydrofoil is small in the lower-right on open water, "
+        "produce a single photorealistic 16:9 photograph for a unit-economics slide. "
+        f"Full-width edge-to-edge panoramic scene of {landmark} — the landmark skyline, coastline, "
+        "and harbour fill the entire frame from left to right with rich market-specific detail. "
+        "Must be unmistakable and identifiable at thumbnail size — vibrant warm golden-hour light, "
+        "never a generic empty ocean, never an artificial gradient panel or blank chart-safe zone. "
+        "A single white hydrofoil is small in the lower-center foreground on open water, "
         f"{FOIL_STATE}. Hull/cabin/V-mark exactly as the reference, in-water no seam. "
-        "Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics."
+        "Exactly one vessel. Cinematic aspirational premium grade. No people, no logos, no text, "
+        "no map graphics."
         + _grade_suffix()
     )
 
@@ -705,7 +692,7 @@ REMAINING_PLATES: list[dict] = [
         "market_slug": "athens-saronic-greece",
         "atlas_city_id": "athens-saronic-greece",
         "prompt": lambda: prompt_econ("athens-saronic-greece"),
-        "seed": "bolt-wave22-econ-greece-athens",
+        "seed": "bolt-wave23-econ-greece-athens",
     },
     {
         "key": "econ-croatia-split-hvar",
@@ -715,7 +702,7 @@ REMAINING_PLATES: list[dict] = [
         "market_slug": "split-croatia",
         "atlas_city_id": "split-croatia",
         "prompt": lambda: prompt_econ("split-croatia"),
-        "seed": "bolt-wave22-econ-croatia-split",
+        "seed": "bolt-wave23-econ-croatia-split",
     },
     {
         "key": "econ-cote-azur-nice-monaco",
@@ -725,7 +712,7 @@ REMAINING_PLATES: list[dict] = [
         "market_slug": "cote-dazur-france",
         "atlas_city_id": "cote-dazur-france",
         "prompt": lambda: prompt_econ("cote-dazur-france"),
-        "seed": "bolt-wave22-econ-cote-azur",
+        "seed": "bolt-wave23-econ-cote-azur",
     },
     {
         "key": "econ-italy-sorrento-capri",
@@ -734,7 +721,7 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
         "market_slug": "sorrento-italy",
         "prompt": lambda: prompt_econ("sorrento-italy"),
-        "seed": "bolt-wave22-econ-italy-amalfi",
+        "seed": "bolt-wave23-econ-italy-amalfi",
     },
     {
         "key": "econ-uae-dubai-harbour",
@@ -744,7 +731,7 @@ REMAINING_PLATES: list[dict] = [
         "market_slug": "dubai-uae",
         "atlas_city_id": "dubai-uae",
         "prompt": lambda: prompt_econ("dubai-uae"),
-        "seed": "bolt-wave22-econ-uae-dubai",
+        "seed": "bolt-wave23-econ-uae-dubai",
     },
     {
         "key": "econ-ksa-jeddah",
@@ -753,7 +740,7 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
         "market_slug": "jeddah-ksa",
         "prompt": lambda: prompt_econ("jeddah-ksa"),
-        "seed": "bolt-wave22-econ-ksa-jeddah",
+        "seed": "bolt-wave23-econ-ksa-jeddah",
     },
     {
         "key": "econ-greece-mykonos-paros",
@@ -762,7 +749,7 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
         "market_slug": "mykonos-greece",
         "prompt": lambda: prompt_econ("mykonos-greece"),
-        "seed": "bolt-wave22-econ-greece-cyclades",
+        "seed": "bolt-wave23-econ-greece-cyclades",
     },
 ]
 
@@ -784,7 +771,7 @@ REDSEA_AMAALA_PLATE: dict = {
     "local_path": "assets/backgrounds/markets/ksa/ksa-redsea-amaala-econ-tier-a-v1.png",
     "market_slug": "red-sea-ksa",
     "prompt": lambda: prompt_econ("red-sea-ksa"),
-    "seed": "bolt-wave22-econ-ksa-redsea-amaala",
+    "seed": "bolt-wave23-econ-ksa-redsea-amaala",
     "used_by": [
         {
             "deck": "bolt",
@@ -1077,7 +1064,7 @@ def cmd_approve_all_econ() -> int:
         if asset.get("qa_status") == "pass":
             skipped.append({"key": key, "reason": "already_pass"})
             continue
-        approve_asset_qa(key, approver="wave22-econ-landmark-batch")
+        approve_asset_qa(key, approver="wave23-econ-fullbleed-batch")
         approved.append(key)
     print(json.dumps({"approved": approved, "skipped": skipped}, indent=2))
     return 1 if skipped and any(s.get("reason") == "auto_fail" for s in skipped) else 0
