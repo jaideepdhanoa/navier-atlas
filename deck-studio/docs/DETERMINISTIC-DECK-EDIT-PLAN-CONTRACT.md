@@ -71,6 +71,22 @@ Rules:
 - New copy length **must be ≤ `char_budget`**. If the partner story needs more, Tasklet trims at source; Grok never receives an over-budget string.
 - For multi-run lines (KPIs, mixed emphasis), emit one `updateTextStyle` per run range — see §3.
 
+### Economics table value cells (revenue build · annual run cost · the result)
+
+These are **single-value** cells, not multi-run narrative. Use `builders/deck_edit_ops.py`
+`econ_value_replace_ops()` (or equivalent) — **never** reuse golden-map run lengths from a shorter
+sample string.
+
+| Rule | Requirement |
+|---|---|
+| **Style range** | One `updateTextStyle` over `startIndex: 0, endIndex: len(value_text)` — the **entire** inserted string |
+| **Font** | Exo 2, 10pt, bold, white (`rgb 1,1,1`) |
+| **Paragraph alignment** | `END` (right-aligned). Do **not** map shape `contentAlignment: MIDDLE` to `CENTER` for value columns |
+| **Overflow group** | Insurance (`g3f213b2845d_0_5`) and Charging berth (`g3f213b2845d_0_7`) live outside the main golden-map pull — treat them like any other value cell (full-range style, not a 2-char fallback run) |
+
+**Failure mode (Bolt 2026-06-22):** styling only the first 2 characters of `$22,500` because the
+fallback golden element was sampled from a 2-char cell (`15`) → `$2` white Exo-2, `2,500` default Arial 14 black.
+
 ## 3. Multi-run KPI / emphasis lines (rebuild, don't skip)
 
 The economics KPI line is 10 runs alternating gold figures (Exo 2 700) and grey connectors (Exo 2 400). Tasklet emits the full run sequence from the **economics sidecar** (never hand-typed):

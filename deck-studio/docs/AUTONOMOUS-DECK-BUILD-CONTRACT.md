@@ -147,3 +147,9 @@ These are the concrete files this contract depends on. They are checked in under
 
 ### OPEX six-line order (flush-left, no indented sub-lines)
 `opex_energy → opex_crew → opex_marina → opex_maintenance → opex_insurance → opex_charging_berth`, then `opex_total`. Insurance + Charging berth live in the slide-7-style overflow group.
+
+### Economics value-cell formatting (mandatory)
+Revenue-build, annual-run-cost, and result **value** columns must use `econ_value_replace_ops()` from
+`builders/deck_edit_ops.py`: full-string Exo-2 10pt white style + paragraph alignment `END`. Never truncate
+`updateTextStyle` to the golden-map sample run length; overflow-group value OIDs (`g3f213b2845d_*`) are not
+in `golden-template-map.json` and must not fall back to a 2-character template cell.

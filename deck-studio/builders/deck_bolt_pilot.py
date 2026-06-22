@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import json
-import mimetypes
 import os
-import re
 import subprocess
 import sys
 import urllib.request
@@ -13,11 +11,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+BUILDERS = ROOT / "builders"
+sys.path.insert(0, str(BUILDERS))
+
+from deck_edit_ops import econ_value_replace_ops, image_replace_op, text_replace_ops  # noqa: E402
+
 GOLD_ID = "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs"
 SLIDE7_OID = "g3eec5122801_0_391"
-STYLE_FIELDS = (
-    "fontFamily,weightedFontFamily,fontSize,foregroundColor,bold,italic,backgroundColor,underline"
-)
 
 LEAK_DENYLIST = [
     "Marina Bay",
@@ -95,149 +95,6 @@ def golden_slide_oid(golden: dict, slide_index: int) -> str:
     raise KeyError(f"slide index {slide_index} not in golden map")
 
 
-def rgb_color(rgb: list[float]) -> dict:
-    return {"red": rgb[0], "green": rgb[1], "blue": rgb[2]}
-
-
-def golden_style_to_api(style: dict) -> dict:
-    weight = 700 if style.get("bold") else 400
-    font = style.get("font", "Arial")
-    return {
-        "fontFamily": font,
-        "weightedFontFamily": {"fontFamily": font, "weight": weight},
-        "fontSize": {"magnitude": style.get("sizePt", 12), "unit": "PT"},
-        "foregroundColor": {"opaqueColor": {"rgbColor": rgb_color(style.get("color", [0, 0, 0]))}},
-        "bold": bool(style.get("bold")),
-    }
-
-
-def make_op(
-    op_key: str,
-    slide_object_id: str,
-    target_object_id: str,
-    request: dict,
-    *,
-    rationale: str,
-    source_pointer: str,
-) -> dict:
-    return {
-        "op_key": op_key,
-        "slide_object_id": slide_object_id,
-        "target_object_id": target_object_id,
-        "rationale": rationale,
-        "source_pointer": source_pointer,
-        "google_slides_request": request,
-    }
-
-
-def text_replace_ops(
-    slide_object_id: str,
-    target_object_id: str,
-    new_text: str,
-    element: dict,
-    *,
-    op_prefix: str,
-    source_pointer: str,
-    alignment: str | None = None,
-) -> list[dict]:
-    if len(new_text) > element.get("char_budget", 9999):
-        raise ValueError(
-            f"{target_object_id}: text len {len(new_text)} exceeds char_budget {element.get('char_budget')}"
-        )
-    ops: list[dict] = []
-    ops.append(
-        make_op(
-            f"{op_prefix}-clear",
-            slide_object_id,
-            target_object_id,
-            {"deleteText": {"objectId": target_object_id, "textRange": {"type": "ALL"}}},
-            rationale=f"Clear text on {target_object_id}",
-            source_pointer=source_pointer,
-        )
-    )
-    ops.append(
-        make_op(
-            f"{op_prefix}-insert",
-            slide_object_id,
-            target_object_id,
-            {"insertText": {"objectId": target_object_id, "text": new_text, "insertionIndex": 0}},
-            rationale=f"Insert text on {target_object_id}",
-            source_pointer=source_pointer,
-        )
-    )
-    runs = element.get("runs") or [{"start": 0, "end": len(new_text), "style": element.get("style", {})}]
-    cursor = 0
-    for i, run in enumerate(runs):
-        run_len = min(run.get("end", len(new_text)) - run.get("start", 0), len(new_text) - cursor)
-        if run_len <= 0:
-            continue
-        end = cursor + run_len
-        style = golden_style_to_api(run.get("style") or element.get("style", {}))
-        ops.append(
-            make_op(
-                f"{op_prefix}-style-{i}",
-                slide_object_id,
-                target_object_id,
-                {
-                    "updateTextStyle": {
-                        "objectId": target_object_id,
-                        "textRange": {"type": "FIXED_RANGE", "startIndex": cursor, "endIndex": end},
-                        "style": style,
-                        "fields": STYLE_FIELDS,
-                    }
-                },
-                rationale=f"Re-apply run style on {target_object_id}",
-                source_pointer=source_pointer,
-            )
-        )
-        cursor = end
-    align = alignment or element.get("contentAlignment", "TOP")
-    align_map = {"TOP": "START", "MIDDLE": "CENTER", "BOTTOM": "END"}
-    ops.append(
-        make_op(
-            f"{op_prefix}-para",
-            slide_object_id,
-            target_object_id,
-            {
-                "updateParagraphStyle": {
-                    "objectId": target_object_id,
-                    "textRange": {"type": "ALL"},
-                    "style": {"alignment": align_map.get(align, "START")},
-                    "fields": "alignment",
-                }
-            },
-            rationale=f"Re-apply paragraph alignment on {target_object_id}",
-            source_pointer=source_pointer,
-        )
-    )
-    return ops
-
-
-def image_replace_op(
-    slide_object_id: str,
-    target_object_id: str,
-    url: str,
-    *,
-    op_key: str,
-    source_pointer: str,
-    method: str = "CENTER_INSIDE",
-) -> dict:
-    return make_op(
-        op_key,
-        slide_object_id,
-        target_object_id,
-        {
-            "replaceImage": {
-                "imageObjectId": target_object_id,
-                "url": url,
-                "imageReplaceMethod": method,
-            }
-        },
-        rationale=f"Replace image {target_object_id}",
-        source_pointer=source_pointer,
-    )
-
-
 def fmt_usd(n: float) -> str:
     return f"${n:,.0f}"
 
@@ -250,53 +107,68 @@ def load_bolt_economics() -> dict:
     raise SystemExit("Athens -> Hydra mid scenario not found in agg-bolt.json")
 
 
+def econ7_value_map(econ: dict) -> dict[str, str]:
+    cc = econ["cost_components"]
+    rev = econ["revenue_per_boat_yr"]
+    opex = econ["annual_opex"]
+    profit = econ["ebitda_per_boat_yr"]
+    margin_pct = int(round(econ["margin"] * 100))
+    payback = f"{econ['payback_years']:.1f} yrs"
+    return {
+        "trips_per_day": str(econ["trips_per_day"]),
+        "operating_days": str(econ["assumptions"]["operating_days_yr"]),
+        "revenue_legs": f"{int(econ['assumptions']['revenue_leg_pct'] * 100)}%",
+        "seats_per_trip": str(econ["pax_per_trip"]),
+        "paid_seats_yr": f"{int(econ['pax_per_year']):,}",
+        "premium_fare": f"{fmt_usd(econ['navier_fare_usd'])} / seat",
+        "revenue_per_boat": fmt_usd(rev),
+        "opex_energy": fmt_usd(cc["energy_usd_yr"]),
+        "opex_crew": fmt_usd(cc["crew_usd_yr"]),
+        "opex_marina": fmt_usd(cc["marina_overhead_usd_yr"]),
+        "opex_maintenance": fmt_usd(cc["maintenance_usd_yr"]),
+        "opex_insurance": fmt_usd(cc["insurance_usd_yr"]),
+        "opex_charging_berth": fmt_usd(cc["charging_berth_usd_yr"]),
+        "opex_total": fmt_usd(opex),
+        "result_profit": fmt_usd(profit),
+        "result_margin": f"{margin_pct}%",
+        "result_capex": "$600,000",
+        "result_payback": payback,
+        "result_co2": f"{econ['co2_saved_t_per_boat_yr']:.1f} t",
+    }
+
+
+def build_econ7_value_fix_ops() -> list[dict]:
+    binding = load_json(ROOT / "decks/bolt/economics-binding.json")
+    slide7 = next(s for s in binding["economics_slides"] if s["slide_index"] == 7)
+    fields = slide7["fields"]
+    value_map = econ7_value_map(load_bolt_economics())
+    ops: list[dict] = []
+    for field_key, text in value_map.items():
+        oid = fields[field_key]["value_object_id"]
+        ops.extend(
+            econ_value_replace_ops(
+                SLIDE7_OID,
+                oid,
+                text,
+                op_prefix=f"bolt-econ7-val-fix-{field_key}",
+                source_pointer="deck_edit_ops.econ_value_replace_ops (full-range style + END align)",
+            )
+        )
+    return ops
+
+
 def generate_greece_cover() -> Path:
-    """Composite EU Mediterranean cover from cote-azur plate + N30 reference."""
-    out_dir = ROOT / "assets/backgrounds/markets/athens-saronic-greece"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    raw = ROOT / "assets/backgrounds/markets/athens-saronic-greece/athens-saronic-greece-raw.png"
-    cover = ROOT / "assets/backgrounds/decks/bolt/bolt-cover-hero-greece-v1.png"
-    cover.parent.mkdir(parents=True, exist_ok=True)
-    cote = ROOT / "assets/backgrounds/markets/cote-azur/cote-azur-n30-raw.png"
-    vessel = ROOT / "assets/n30/n30-reference-neutral.png"
-    if not cote.is_file():
-        raise SystemExit(f"Missing cote-azur plate: {cote}")
-    if not vessel.is_file():
-        raise SystemExit(f"Missing N30 reference: {vessel}")
-    # Stage raw plate (interim EU coast; Aegean-specific plate pending approved source photo)
-    if not raw.is_file():
-        import shutil
-
-        shutil.copy2(cote, raw)
-    composite_py = ROOT / "builders/images/n30_composite.py"
-    cmd = [
-        sys.executable,
-        str(composite_py),
-        "--background",
-        str(raw),
-        "--vessel",
-        str(vessel),
-        "--out",
-        str(cover),
-        "--x",
-        "0.58",
-        "--y",
-        "0.68",
-        "--scale",
-        "0.32",
-        "--bg-darken",
-        "0.90",
-    ]
-    subprocess.run(cmd, check=True)
-    return cover
+    raise SystemExit(
+        "Greece/Aegean cover generation blocked until an approved Greece source plate exists. "
+        "Do not reuse mislabeled econ-uae-the-world-islands (formerly econ-cote-azur)."
+    )
 
 
-def register_bolt_assets(cover_path: Path) -> dict[str, str]:
+def register_bolt_assets() -> dict[str, str]:
     registry_path = ROOT / "assets/ASSET-REGISTRY.json"
     registry = load_json(registry_path)
     assets = registry.setdefault("assets", {})
 
-    logo_path = ROOT / "assets/logos/partners/bolt/bolt-logo.png"
     assets["bolt-partner-logo"] = {
         "role": "partner_logo",
         "scope": "partner",
@@ -316,52 +188,14 @@ def register_bolt_assets(cover_path: Path) -> dict[str, str]:
         "captured_at": utc_now(),
     }
 
-    rel_cover = str(cover_path.relative_to(ROOT))
-    assets["bolt-cover-hero"] = {
-        "role": "cover_hero",
-        "scope": "deck",
-        "partner": "bolt",
-        "market_slug": "athens-saronic-greece",
-        "status": "checked_in",
-        "local_path": rel_cover,
-        "drive_file_id": assets.get("bolt-cover-hero", {}).get("drive_file_id"),
-        "source_url": assets.get("bolt-cover-hero", {}).get("source_url"),
-        "license": "navier-internal",
-        "provenance": "n30_composite_from_cote-azur_interim_eu_coast",
-        "reproducible": True,
-        "composited": True,
-        "notes": "Interim EU/Aegean cover: cote-azur plate + N30 neutral. Replace when Greece-specific plate approved.",
-        "used_by": [
-            {"deck": "bolt", "slide_index": 1, "slide_object_id": "p1", "target_object_id": "p1_i2"}
-        ],
-        "captured_at": utc_now(),
-    }
-
-    assets["econ-athens-saronic-greece"] = {
-        "role": "econ_market_bg",
-        "scope": "market",
-        "market_slug": "athens-saronic-greece",
-        "atlas_city_id": "athens-saronic-greece",
-        "status": "checked_in",
-        "local_path": rel_cover,
-        "drive_file_id": assets.get("econ-athens-saronic-greece", {}).get("drive_file_id"),
-        "source_url": assets.get("econ-athens-saronic-greece", {}).get("source_url"),
-        "license": "navier-internal",
-        "provenance": "n30_composite_from_cote-azur_interim_eu_coast",
-        "reproducible": True,
-        "composited": True,
-        "notes": "Interim Greece/Saronic econ plate (shared with cover composite).",
-        "captured_at": utc_now(),
-    }
-
     registry.setdefault("deck_coverage", {}).setdefault("bolt", {})["roles"] = {
-        "cover_hero": "checked_in",
+        "cover_hero": "pending_inventory",
         "navier_logo": "checked_in(shared)",
         "partner_logo": "checked_in",
         "value_prop_bg": "pending_inventory",
         "tam_bg": "pending_inventory",
         "partner_roles_bg": "pending_inventory",
-        "econ_market_bg": "checked_in(1: athens-saronic-greece interim)",
+        "econ_market_bg": "pending_inventory",
     }
     write_json(registry_path, registry)
 
@@ -372,7 +206,7 @@ def register_bolt_assets(cover_path: Path) -> dict[str, str]:
     publish_assets_to_drive(registry_path)
     registry = load_json(registry_path)
     urls = {}
-    for key in ("bolt-partner-logo", "bolt-cover-hero"):
+    for key in ("bolt-partner-logo",):
         asset = registry["assets"][key]
         if not asset.get("source_url"):
             raise SystemExit(f"Asset {key} missing source_url after publish")
@@ -464,16 +298,20 @@ def build_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
             method="CENTER_INSIDE",
         )
     )
-    ops.append(
-        image_replace_op(
-            slide1,
-            "p1_i2",
-            asset_urls["bolt-cover-hero"],
-            op_key="bolt-cover-hero",
-            source_pointer="ASSET-REGISTRY bolt-cover-hero",
-            method="CENTER_CROP",
+    cover_asset = load_json(ROOT / "assets/ASSET-REGISTRY.json")["assets"].get("bolt-cover-hero", {})
+    if cover_asset.get("status") not in ("deprecated_invalid_source", "blocked") and asset_urls.get(
+        "bolt-cover-hero"
+    ):
+        ops.append(
+            image_replace_op(
+                slide1,
+                "p1_i2",
+                asset_urls["bolt-cover-hero"],
+                op_key="bolt-cover-hero",
+                source_pointer="ASSET-REGISTRY bolt-cover-hero",
+                method="CENTER_CROP",
+            )
         )
-    )
 
     slide7 = next(s for s in binding["economics_slides"] if s["slide_index"] == 7)
     fields = slide7["fields"]
@@ -508,39 +346,15 @@ def build_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
             )
         )
 
-    value_map = {
-        "trips_per_day": str(econ["trips_per_day"]),
-        "operating_days": str(econ["assumptions"]["operating_days_yr"]),
-        "revenue_legs": f"{int(econ['assumptions']['revenue_leg_pct'] * 100)}%",
-        "seats_per_trip": str(econ["pax_per_trip"]),
-        "paid_seats_yr": f"{int(econ['pax_per_year']):,}",
-        "premium_fare": f"{fmt_usd(econ['navier_fare_usd'])} / seat",
-        "revenue_per_boat": fmt_usd(rev),
-        "opex_energy": fmt_usd(cc["energy_usd_yr"]),
-        "opex_crew": fmt_usd(cc["crew_usd_yr"]),
-        "opex_marina": fmt_usd(cc["marina_overhead_usd_yr"]),
-        "opex_maintenance": fmt_usd(cc["maintenance_usd_yr"]),
-        "opex_insurance": fmt_usd(cc["insurance_usd_yr"]),
-        "opex_charging_berth": fmt_usd(cc["charging_berth_usd_yr"]),
-        "opex_total": fmt_usd(opex),
-        "result_profit": fmt_usd(profit),
-        "result_margin": f"{margin_pct}%",
-        "result_capex": "$600,000",
-        "result_payback": payback,
-        "result_co2": f"{econ['co2_saved_t_per_boat_yr']:.1f} t",
-    }
+    value_map = econ7_value_map(econ)
     for field_key, text in value_map.items():
         spec = fields[field_key]
         oid = spec["value_object_id"]
-        el = element_or_fallback(golden, oid)
-        if len(text) > el.get("char_budget", 999):
-            el = {**el, "char_budget": len(text)}
         ops.extend(
-            text_replace_ops(
+            econ_value_replace_ops(
                 SLIDE7_OID,
                 oid,
                 text,
-                el,
                 op_prefix=f"bolt-econ7-val-{field_key}",
                 source_pointer="finance/recal/agg-bolt.json mid Athens->Hydra",
             )
@@ -718,19 +532,15 @@ def run_qa(presentation_id: str, plan: dict) -> dict:
 
 
 def cmd_run_all() -> int:
-    print("1/6 Generate Greece/Aegean cover composite...")
-    cover = generate_greece_cover()
-    print(f"   cover: {cover}")
-
-    print("2/6 Register + publish bolt assets...")
-    urls = register_bolt_assets(cover)
+    print("1/6 Register + publish bolt logo...")
+    urls = register_bolt_assets()
     print(f"   published: {list(urls)}")
 
-    print("3/6 Copy gold deck (23 slides)...")
+    print("2/6 Copy gold deck (23 slides)...")
     presentation_id = copy_gold_deck()
     print(f"   presentation_id: {presentation_id}")
 
-    print("4/6 Pull manifest + populate editplan...")
+    print("3/6 Pull manifest + populate editplan...")
     pull_manifest(presentation_id)
     plan = build_editplan(presentation_id, urls)
     plan_path = ROOT / "decks/bolt/deck.editplan.json"
@@ -743,14 +553,14 @@ def cmd_run_all() -> int:
         raise SystemExit("Drift gate failed before apply")
     print("   drift gate: pass")
 
-    print("5/6 Apply editplan...")
+    print("4/6 Apply editplan...")
     applied = apply_plan(plan)
     plan["applied_at"] = utc_now()
     plan["status"] = "applied"
     write_json(plan_path, plan)
     print(f"   applied {applied} requests")
 
-    print("6/6 QA + thumbnails...")
+    print("5/6 QA + thumbnails...")
     receipt = run_qa(presentation_id, plan)
     print(json.dumps(receipt, indent=2))
     return 0 if receipt["status"] in ("pass", "pass_with_flags") else 1
@@ -762,7 +572,16 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Bolt gold-deck pilot")
     ap.add_argument(
         "command",
-        choices=["run-all", "generate-greece", "register-assets", "copy-gold", "populate-editplan", "apply", "qa"],
+        choices=[
+            "run-all",
+            "generate-greece",
+            "register-assets",
+            "copy-gold",
+            "populate-editplan",
+            "fix-econ7-formatting",
+            "apply",
+            "qa",
+        ],
     )
     ap.add_argument("--presentation-id")
     args = ap.parse_args()
@@ -774,25 +593,49 @@ def main() -> int:
         print(p)
         return 0
     if args.command == "register-assets":
-        cover = ROOT / "assets/backgrounds/decks/bolt/bolt-cover-hero-greece-v1.png"
-        if not cover.is_file():
-            generate_greece_cover()
-        print(json.dumps(register_bolt_assets(cover), indent=2))
+        print(json.dumps(register_bolt_assets(), indent=2))
         return 0
     if args.command == "copy-gold":
         pid = copy_gold_deck()
         pull_manifest(pid)
         print(pid)
         return 0
+    if args.command == "fix-econ7-formatting":
+        cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+        presentation_id = args.presentation_id or cfg["deck_id"]
+        ops = build_econ7_value_fix_ops()
+        plan = {
+            "deck_key": "bolt",
+            "presentation_id": presentation_id,
+            "mode": "slides_api_batch_update",
+            "request_summary": "Fix slide-7 economics value cells: full-range Exo-2 style + END alignment",
+            "safety": {
+                "no_pptx_roundtrip": True,
+                "no_full_deck_replace": True,
+                "preserve_object_ids": True,
+                "human_review_required_for_external_send": True,
+            },
+            "operations": ops,
+            "qa_gates": ["econ_value_format_gate"],
+            "created_at": utc_now(),
+        }
+        fix_path = ROOT / "decks/bolt/deck.econ7-value-fix.json"
+        write_json(fix_path, plan)
+        n = apply_plan(plan)
+        print(json.dumps({"applied": n, "operations": len(ops), "plan": str(fix_path)}, indent=2))
+        return 0
     if args.command == "populate-editplan":
         if not args.presentation_id:
             cfg = load_json(ROOT / "decks/bolt/deck.config.json")
             args.presentation_id = cfg["deck_id"]
         registry = load_json(ROOT / "assets/ASSET-REGISTRY.json")
-        urls = {
-            "bolt-partner-logo": registry["assets"]["bolt-partner-logo"]["source_url"],
-            "bolt-cover-hero": registry["assets"]["bolt-cover-hero"]["source_url"],
-        }
+        urls = {"bolt-partner-logo": registry["assets"]["bolt-partner-logo"]["source_url"]}
+        cover = registry["assets"].get("bolt-cover-hero", {})
+        if cover.get("source_url") and cover.get("status") not in (
+            "deprecated_invalid_source",
+            "blocked",
+        ):
+            urls["bolt-cover-hero"] = cover["source_url"]
         plan = build_editplan(args.presentation_id, urls)
         write_json(ROOT / "decks/bolt/deck.editplan.json", plan)
         print(json.dumps({"operations": len(plan["operations"]), "presentation_id": args.presentation_id}, indent=2))
