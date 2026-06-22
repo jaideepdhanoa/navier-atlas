@@ -133,3 +133,11 @@ If you re-tune, keep the chip-caption bottom inside the page edge or captions wi
      composite the Three C's slide already used. **Definitive policy: distinct backgrounds.**
      Added role `three_cs_bg` (status `needs_sourcing`, documented interim share) and repointed
      `value_prop_bg` to the real slide-2 image (`narr2_bg_img`).
+  - **rev-2 (same day, reviewer follow-up):** direction reversed — the **Three C's slide
+     background is correct as-is**; the new image belongs on **slide 2**, not slide 3.
+     `three_cs_bg` is now the **canonical** Three C's plate (`applied_live`, no sourcing open),
+     and **`value_prop_bg` (slide 2) is `needs_generation`** with a literal brief at
+     `assets/backgrounds/decks/grab/SLIDE2-IMAGE-BRIEF.md` (woman on a phone at the berth booking
+     a ride, N30 at the dock, market plate + navy scrim, distinct from the Three C's plate). The
+     borrowed Three C's plate stays on live slide 2 as a **documented interim only** until the
+     distinct composite is sourced (N30 neutral, no Atlas-generated images, provenance + stable URL).

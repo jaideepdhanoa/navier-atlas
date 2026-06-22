@@ -15,7 +15,7 @@ provenance required.** Logos are the only non-composite assets.
 | `cover_hero` | 1 | deck/market | per anchor-market (place-specific vessel-on-water) | N30 composite |
 | `navier_logo` | 1 | shared | every deck (identical) | brand asset |
 | `partner_logo` | 1 | partner | every deck for that partner | partner brand asset **(REQUIRED on cover)** |
-| `value_prop_bg` | 2 | deck | cost / comfort / convenience background | composite |
+| `value_prop_bg` | 2 | deck | exec-summary booking/berth scene — **woman on a phone at the berth booking a ride**, N30 at the dock (distinct from the Three C's plate) | composite |
 | `market_overview_kpis` | 3 | deck | market-overview KPI block (figures, not an image) | manifest/economics sidecar |
 | `tam_bg` | 10 | deck | TAM background | composite |
 | `partner_roles_bg` | 11 | deck | partner-roles background | composite |
@@ -35,26 +35,31 @@ Slide 3 carries the market-overview KPIs (e.g., market size, fleet/route counts,
 a **data/figures role** resolved from the deck manifest + economics sidecar, not a composite image. The
 deck-builder/playbook must populate it from the transparent sheet/master tracker, never leave it stale.
 
-### Slide 2 vs the "Three C's" slide — distinct images (definitive, 2026-06-22)
+### Slide 2 vs the "Three C's" slide — distinct images (definitive, 2026-06-22, rev-2)
 After the exec-summary insert, the live deck order is: 1 cover, **2 exec-summary/thesis**
 (`value_prop_bg`), **3 "Three C's" (Cost/Comfort/Convenience)**. There is **no rule — and no
 Grok instruction — to share a background across slides 2 and 3.** They came out identical only
 because `value_prop_bg` was banked from the *same* N30 composite the Three C's slide already used
 (Drive `…id=1ZyY6gGGWJ9ab4JFQdD2mUsputE70Rytz`). That is incidental reuse, not intent.
 
-**Definitive policy:** slides 2 and 3 carry **distinct** backgrounds.
-- **Slide 2 `value_prop_bg`** — the booking/berth scene (woman on phone at the berth, N30 at the
-  dock). This is the exec-summary hero and stays.
-- **Slide 3 `three_cs_bg`** — its **own** N30 composite (a different scene — e.g. cabin-interior
-  comfort or an efficiency/cost framing), so the two consecutive slides don't read as a repeat.
-  Until a distinct asset is sourced/composited (per `IMAGE-RULES.md`: N30 only, no Atlas-generated
-  images, provenance required), this role is **`needs_sourcing` (blocked)** and the slide may keep
-  the shared asset as a **documented interim**, never as the final answer. Never guess a new image.
+**Definitive policy (rev-2 — reviewer call 2026-06-22): the Three C's slide background is correct
+as-is; slide 2 gets its OWN new image rather than borrowing it.**
+- **Slide 3 "Three C's" background — canonical, keep as-is.** The existing N30 composite
+  (Drive `…id=1ZyY6gGGWJ9ab4JFQdD2mUsputE70Rytz`) is the accepted asset for this slide. It is **not**
+  re-sourced and **not** a placeholder. No `three_cs_bg` sourcing work is open. *(The slide-3 figures
+  role `market_overview_kpis` is unaffected — see that row.)*
+- **Slide 2 `value_prop_bg` — needs its OWN distinct composite (`needs_generation`, blocked).**
+  Slide 2 is the exec-summary "today/proof" hero. Its image must be a **distinct** N30 composite —
+  not the Three C's plate — built to the literal brief in
+  **`backgrounds/decks/grab/SLIDE2-IMAGE-BRIEF.md`**: a **woman on a phone at the berth booking a
+  ride**, with the canonical N30 at the dock, market-specific plate, navy lower-third scrim for copy
+  legibility. Until that asset is sourced/composited (per `IMAGE-RULES.md`: N30 neutral reference, no
+  Atlas-generated images, provenance required, stable URL), slide 2 may keep the borrowed Three C's
+  plate as a **documented interim only** — never the final answer, never guessed.
 
 > Note: the table row `market_overview_kpis (slide 3)` is the *figures/KPI* role for the
-> deck-builder's canonical slide 3; the live Grab deck's physical slide 3 is the Three C's slide.
-> When the market-overview-KPI slide is added, it keeps its data role; `three_cs_bg` governs the
-> Three C's slide's background specifically.
+> deck-builder's canonical slide 3; the live Grab deck's physical slide 3 is the Three C's slide,
+> whose background is the canonical asset above. The open image work is **slide 2 only**.
 
 ### Scope semantics
 - **market** — keyed by sealed Atlas `city_id`; the *same* file is reused by any deck that features that city.
