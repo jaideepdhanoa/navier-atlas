@@ -34,6 +34,7 @@ PARTNERS = [
     "four-seasons",
     "grab-thailand",
     "uber-india",
+    "minor-hotels",
 ]
 
 def load_deck_url(url_map_path: Path | None = None) -> dict:
@@ -282,10 +283,22 @@ def main():
             by_rid[rid].append((authored, market, row))
 
     global_path = aggdir / "agg-global.json"
+    corridors_path = Path(args.corridors)
+    scoped_partner = None
+    if "minor-hotels" in corridors_path.name:
+        scoped_partner = "minor-hotels"
+
     if getattr(args, "global") or global_path.exists():
         if not global_path.exists():
             raise SystemExit(f"--global requested but {global_path} missing")
         ingest_rows(json.loads(global_path.read_text()).get("rows", []))
+        if scoped_partner:
+            scoped_agg = aggdir / f"agg-{scoped_partner}.json"
+            if scoped_agg.exists():
+                ingest_rows(
+                    json.loads(scoped_agg.read_text()).get("rows", []),
+                    source_partner=scoped_partner,
+                )
     else:
         for partner in PARTNERS:
             p_resolved = aliases.get(partner, partner)

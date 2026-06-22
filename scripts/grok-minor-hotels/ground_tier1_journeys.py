@@ -277,7 +277,8 @@ def update_partner(partner: dict, report: dict) -> int:
                 j["_link_status"] = "linked-grok-scoped"
                 j["_link_source"] = "grok-minor-hotels/ground_tier1_journeys"
                 j.pop("_note", None)
-                j["economics_status"] = "geometry_bound"
+                j["economics_status"] = "bound"
+                j["_economics_source"] = "economics_by_route_id.json"
                 updated += 1
                 report["journeys_updated"].append({
                     "market": slug,

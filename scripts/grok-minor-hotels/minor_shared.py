@@ -70,11 +70,16 @@ TIER1_CLUSTERS = {
 # Representative captive corridors per Tier-1 cluster (route_id from parent markets)
 TIER1_CORRIDOR_ROUTES: dict[str, list[str]] = {
     "phuket": [
+        "rn-830bd4d377ca",  # Rassada → Koh Yao Yai (A)
+        "rn-b28ac4ca3d14",  # Ao Po → Layan (A)
+        "rn-b1313beb0eaa",  # Koh Yao → Khao Lak (B)
         "gcn-cbc11a6947-shared",  # Phang Nga excursion (C)
-        "gcn-e927fe8958-shared",  # Krabi inter-resort (B)
-        "gcn-7c1835846d-shared",  # held out — cross-border, excluded at bind
+        "gcn-9ae16d4c34-shared",  # Phi Phi excursion (C)
+        "gcn-e927fe8958-shared",  # Krabi corridor (C)
     ],
     "bali": [
+        "rn-c256a044c8be",  # Benoa → Uluwatu (A)
+        "rn-488fcf2617fe",  # Sanur → Seminyak coast (A)
         "gcn-3d7809869d-shared",  # Nusa Penida (C)
     ],
     "palm-jumeirah": [
