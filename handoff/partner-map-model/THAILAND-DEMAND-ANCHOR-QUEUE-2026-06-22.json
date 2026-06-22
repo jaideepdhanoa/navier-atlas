@@ -1,0 +1,128 @@
+{
+ "created_at": "2026-06-22",
+ "owner": "tasklet_research",
+ "partner": "grab-thailand-derivative",
+ "status": "Tasklet source queue; economics-ready only after exact Grok seal (route_ids) and anchor cleanup. country-reference.json already has a source-backed Thailand row (no Singapore-fallback risk).",
+ "country_reference_status": {
+  "country": "Thailand",
+  "present": true,
+  "note": "captain $24k/yr (T2), energy $0.116/kWh (T1), grid 0.50 kg/kWh (T2), marina $12k/yr (T5), cost_index 0.55 (med). No gap to fill before cascade."
+ },
+ "markets": [
+  {
+   "market": "Koh Samui & the Gulf islands",
+   "proposed_corridor_key": "grab-thailand-samui-gulf",
+   "anchor_cities": ["koh-samui-thailand", "koh-phangan-thailand", "koh-tao-thailand"],
+   "strong_anchors": [
+    {
+     "source": "Samui Airport (Wikipedia, citing AOT)",
+     "url": "https://en.wikipedia.org/wiki/Samui_Airport",
+     "metric": "~2,051,289 total passengers handled in 2024",
+     "use": "primary tourism TAM anchor for the Gulf triangle"
+    },
+    {
+     "source": "skhai.com (citing Samui arrivals data)",
+     "url": "https://skhai.com/insights/thailands-surging-tourism-boosts-rental-and-property-prices/",
+     "metric": "1.13M passenger arrivals into Koh Samui in Jan-Apr 2025 alone (+9% YoY)",
+     "use": "onward inter-island transfer demand (Samui -> Phangan/Tao)"
+    },
+    {
+     "source": "Bangkok Post",
+     "url": "https://www.bangkokpost.com/thailand/general/2734601/tourist-arrivals-at-samui-airport-up-66-65-",
+     "metric": "2.2M tourist arrivals at Samui airport in 2023 (+66.65% YoY)",
+     "use": "growth-trajectory corroboration"
+    }
+   ],
+   "fare_basis_leads": [
+    "Lomprayah / Seatran / Raja Ferry published Samui<->Phangan<->Tao fares (catamaran baseline to price the premium tier above)",
+    "Resort speedboat-transfer charter rates (Four Seasons / Six Senses) for premium willingness-to-pay ceiling"
+   ],
+   "cleanup_leads": [
+    "AOT per-airport monthly arrivals series for Samui (exact 2024-2025 split)",
+    "Daily Samui<->Phangan ferry seat capacity x load factor for the ~12nm corridor demand record",
+    "Full Moon Party monthly visitor counts (Haad Rin surge) for event-demand modeling"
+   ]
+  },
+  {
+   "market": "Phuket & the Andaman coast",
+   "proposed_corridor_key": "grab-thailand-phuket-andaman",
+   "anchor_cities": ["phuket-phang-nga-thailand", "krabi-thailand", "koh-phi-phi-thailand"],
+   "strong_anchors": [
+    {
+     "source": "roadgenius (citing TAT/UNWTO)",
+     "url": "https://roadgenius.com/statistics/tourism/thailand/",
+     "metric": "32.40M international tourists to Thailand in 2024 (Phuket/Phi Phi/Krabi among top Andaman draws)",
+     "use": "national TAM frame; Andaman cluster share to be apportioned"
+    },
+    {
+     "source": "Rassada Pier ferry schedule",
+     "url": "https://rassadapier.net/_new_rassada_pier_to_phiphi_ferry_schedule.php",
+     "metric": "Rassada (Phuket) -> Phi Phi: ~5+ daily sailings, ~2h, fare ~600 THB one-way",
+     "use": "fare baseline + frequency for the Phuket<->Phi Phi corridor demand record"
+    },
+    {
+     "source": "Direct Ferries",
+     "url": "https://www.directferries.co.uk/blog/travelling-from-phuket-rassada-pier-to-koh-phi-phi-tonsai-pier-complete-ferry-and-travel-guide",
+     "metric": "12 daily Rassada->Phi Phi sailings (08:30-15:00 span)",
+     "use": "corroborating daily frequency / capacity"
+    }
+   ],
+   "fare_basis_leads": [
+    "Speedboat vs ferry fare spread Phuket<->Phi Phi / Krabi (premium tier pricing)",
+    "Ao Nang<->Railay longtail fares (captive water-only hop floor)"
+   ],
+   "cleanup_leads": [
+    "Rassada Pier annual passenger throughput (exact)",
+    "Krabi (Klong Jilad) annual ferry passenger counts",
+    "Phang Nga Bay day-tour volumes (Bang Rong / Ao Po launches)"
+   ]
+  },
+  {
+   "market": "Bangkok (Chao Phraya)",
+   "proposed_corridor_key": "grab-thailand-bangkok",
+   "anchor_cities": ["bangkok-thailand"],
+   "strong_anchors": [
+    {
+     "source": "Chao Phraya Express Boat (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/Chao_Phraya_Express_Boat",
+     "metric": "~40,000 passengers/day average on the Chao Phraya express river boats (~32km network)",
+     "use": "primary in-river modal-shift demand anchor"
+    },
+    {
+     "source": "EasyChair preprint (Chao Phraya service-quality study)",
+     "url": "https://easychair.org/publications/preprint/JZ3X/open",
+     "metric": "No fewer than 13,328,992 express-boat users per year",
+     "use": "annualized ridership corroboration (~36.5k/day)"
+    },
+    {
+     "source": "The Nation Thailand",
+     "url": "https://www.facebook.com/TheNationThailand/posts/1360865522733445/",
+     "metric": "Air-conditioned electric express boats (MINE Smart Ferry) carry up to 200 pax — electrification already underway on the river",
+     "use": "modal-readiness / electric precedent on the corridor"
+    }
+   ],
+   "fare_basis_leads": [
+    "Chao Phraya Express Boat fares (from THB10) and Tourist Boat (150 THB day-pass / 30 THB single) for premium tier delta",
+    "Cross-river / pier-shuttle fares vs BTS connector for last-mile pricing"
+   ],
+   "cleanup_leads": [
+    "Pier-level boardings at Sathorn / ICONSIAM / Phra Arthit (split of the ~40k/day)",
+    "MINE Smart Ferry route ridership (electric baseline already operating)",
+    "Gulf-gateway (river-mouth -> sea) is roadmap/needs-mint — keep tagged aspirational, no demand record yet"
+   ]
+  }
+ ],
+ "finance_use_policy": {
+  "do": [
+   "Use strong_anchors as TAM frame + fare baselines once Grok seals route_ids.",
+   "Build grounded-floor demand records (demand x fare x capture) only from anchors with a sailing-frequency or ridership basis (Chao Phraya 40k/day; Rassada frequency; Samui arrivals).",
+   "Keep the Thailand country-reference row as-is (already source-backed)."
+  ],
+  "do_not": [
+   "Do NOT fabricate per-corridor L3_locals or fares to fill cells — null beats confidently-wrong.",
+   "Do NOT add Thailand markets to durable corridors.json until route_ids are bound and a sailing/ridership basis exists per corridor.",
+   "Do NOT inherit a peer partner's census; if a greenfield band is shown, label it the global template (3.44/4.9/6.36)."
+  ]
+ },
+ "cascade_gate": "research-needed: full grounded-floor -> growth -> sheet -> route-keyed sidecar cascade runs AFTER Grok seals route_ids (PR #74 seal) and after the cleanup_leads above harden the per-corridor demand records."
+}
