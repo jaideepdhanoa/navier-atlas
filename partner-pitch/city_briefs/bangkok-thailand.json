@@ -7,9 +7,10 @@
   "demand_signals": [
     {
       "label": "River-transit ridership",
-      "value": "Chao Phraya express boats",
-      "note": "Mature, high-volume urban water-commuting culture",
-      "archetype": "public_transit"
+      "value": "~40,000 passengers/day on the Chao Phraya Express Boat network",
+      "note": "Mature, high-volume urban water-commuting culture on a basic diesel fleet — the premium foiling tier sits directly on proven demand",
+      "archetype": "public_transit",
+      "source": "Chao Phraya Express Boat (Wikipedia / The Nation Thailand)"
     },
     {
       "label": "Megacity congestion",
@@ -63,7 +64,7 @@
   "partner_overlays": {
     "grab": {
       "lead_with": "super_app",
-      "note": "A branded river-and-gulf water tier in a megacity where demand already lives in-app."
+      "note": "A branded river-and-gulf water tier in a megacity where ~40k daily river trips and deep on-demand penetration mean demand already lives in-app. The premium foiling river tier is the unclaimed layer above the diesel express boats; electric Chao Phraya ferries already run, so policy is friendly. Gulf-island corridors (Pattaya, Koh Chang, Samui) are the Quanta-LR roadmap extension."
     }
   },
   "sources": [
@@ -78,6 +79,24 @@
   ],
   "journeys": [
     {
+      "from": "ICONSIAM Pier (Chao Phraya)",
+      "to": "Sathorn (Central) Pier",
+      "today": "Crowded Chao Phraya Express boats, cross-river ferries and longtails on a mature but basic diesel river network.",
+      "with_navier": "A premium all-electric foiling hop on the central river, gliding above the wake — booked in-app.",
+      "distance_nm": 5.3,
+      "platform": "Pioneer II",
+      "_geometry": "sealed (corridors.json :: bangkok)"
+    },
+    {
+      "from": "Sathorn (Central) Pier",
+      "to": "Phra Arthit Pier (Old Town / Khao San)",
+      "today": "Express-boat hops up the central reach, slow and crowded at peak.",
+      "with_navier": "A quiet, smooth premium river leg linking the CBD to the old town riverside.",
+      "distance_nm": 2.9,
+      "platform": "Pioneer II",
+      "_geometry": "sealed (corridors.json :: bangkok)"
+    },
+    {
       "from": "Chao Phraya (central piers)",
       "to": "Riverside districts",
       "today": "Crowded Chao Phraya Express boats and longtails on a mature but basic river network.",
@@ -91,7 +110,9 @@
       "today": "Slow ferries and speedboats across the inner gulf.",
       "with_navier": "A comfortable foiling hop, with Quanta-LR for the longer Koh Chang reach.",
       "distance_nm": 60,
-      "platform": "both"
+      "platform": "both",
+      "_geometry": "roadmap — gulf-gateway geometry not yet sealed (Pattaya/Koh Chang require mint)",
+      "_status": "roadmap"
     },
     {
       "from": "Bangkok / Pattaya",
@@ -99,7 +120,9 @@
       "today": "A flight, or a long bus-and-ferry combination of many hours.",
       "with_navier": "A single ~205 nm Quanta-LR hybrid gulf corridor, no charging dependency.",
       "distance_nm": 205,
-      "platform": "Quanta-LR"
+      "platform": "Quanta-LR",
+      "_geometry": "roadmap — gulf-gateway geometry not yet sealed (Pattaya/Koh Chang require mint)",
+      "_status": "roadmap"
     }
   ],
   "competitive_landscape": "Bangkok already has a mature water-commuting culture on the Chao Phraya (Express Boat, cross-river ferries, klong boats, longtails) — but the fleet is basic and diesel, with an early electric-ferry push underway. The Gulf islands (Samui, Koh Chang, Koh Larn) are reached by slow ferries or flights. A premium clean river tier and fast gulf-island corridors are the open gaps.",
@@ -112,5 +135,15 @@
       "why_it_matters": "Proof that clean marine transport is welcomed and viable on Bangkok's water — a foiling premium tier extends it.",
       "source": "Bangkok river electric-ferry service"
     }
-  ]
+  ],
+  "_enrichment": {
+    "by": "tasklet",
+    "pass": "grab-thailand-2026-06-22",
+    "added": [
+      "pier-exact sealed river journeys",
+      "sharpened river ridership signal",
+      "roadmap tags on gulf-gateway legs"
+    ],
+    "geometry_gap": "Pattaya / Koh Chang / Hua Hin = 0 corridors in model (need mint)"
+  }
 }

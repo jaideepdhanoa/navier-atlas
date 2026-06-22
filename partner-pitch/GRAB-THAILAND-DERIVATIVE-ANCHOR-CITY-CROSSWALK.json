@@ -1,0 +1,107 @@
+{
+ "_doc": "Gate-A anchor-city crosswalk for grab-thailand-derivative. Exact ID match only against FEATURES_BY_TYPE / global registry. null beats confidently-wrong.",
+ "partner": "grab-thailand-derivative",
+ "build_date": "2026-06-22",
+ "scope_note": "Standalone Grab Thailand proposal mirroring uber-india-derivative. 3 Thai markets on sealed Atlas geometry; gulf/Andaman connected cities flagged for mint.",
+ "anchors": {
+  "phuket-phang-nga-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "phuket-phang-nga-thailand",
+   "evidence": "exact match in registry; 8 sealed corridors in finance/model/corridors.json :: phuket",
+   "market": "phuket_andaman"
+  },
+  "koh-samui-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "koh-samui-thailand",
+   "evidence": "exact match in registry; 7 sealed corridors in corridors.json :: koh-samui",
+   "market": "koh_samui_gulf"
+  },
+  "bangkok-thailand": {
+   "verdict": "OK",
+   "atlas_city_id": "bangkok-thailand",
+   "evidence": "exact match in registry; 2 sealed river corridors in corridors.json :: bangkok (gulf gateway pending mint)",
+   "market": "bangkok"
+  }
+ },
+ "cross_border_regional_only": {
+  "langkawi-malaysia": {
+   "verdict": "OK_NON_THAI",
+   "atlas_city_id": "langkawi-malaysia",
+   "note": "resolves, but Malaysian — routed to grab cross-border logic, NOT a Thai market"
+  },
+  "penang-malaysia": {
+   "verdict": "OK_NON_THAI",
+   "atlas_city_id": "penang-malaysia",
+   "note": "resolves, but Malaysian — cross-border only"
+  }
+ },
+ "connected_cities_need_mint": {
+  "koh-phangan": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "gulf",
+   "note": "Samui triangle; thin corridor presence, no registry city_id — Grok mint"
+  },
+  "koh-tao": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "gulf",
+   "note": "Samui triangle / dive demand — Grok mint"
+  },
+  "pattaya": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "gulf",
+   "note": "Bangkok gulf gateway; 0 corridors — Grok mint"
+  },
+  "koh-chang": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "gulf",
+   "note": "eastern gulf island; 0 corridors — Grok mint"
+  },
+  "krabi": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "andaman",
+   "note": "Phuket island-hop anchor; thin — Grok mint"
+  },
+  "phi-phi": {
+   "verdict": "MISSING_GEOMETRY",
+   "atlas_city_id": null,
+   "cluster": "andaman",
+   "note": "iconic Phuket day-trip; thin — Grok mint"
+  }
+ },
+ "phase_order": [
+  "gulf cluster (Phangan, Koh Tao, Pattaya, Koh Chang)",
+  "andaman cluster (Krabi, Phi Phi, Phang Nga deepen)"
+ ],
+ "grok_render_check": "Confirm each active Thai anchor resolves at render; ID_MISMATCH in active scope must be zero. route_ids stay null on mint candidates until Grok binds.",
+ "guardrails": [
+  "ID-match only",
+  "null beats confidently-wrong",
+  "broad-footprint-first / exact-bind-second",
+  "no Malaysia inside Thai markets"
+ ],
+ "_updates": [
+  {
+   "date": "2026-06-22",
+   "by": "tasklet_research",
+   "change": "Gulf-cluster boarding points authored (Bucket C). Connected cities moved from 'needs-mint' to 'BP-authored, awaiting Grok seal'.",
+   "bp_files": "grok-routing-output/bucketC-thailand-boarding-points/",
+   "cities_bp_authored": [
+    "koh-samui-thailand",
+    "koh-phangan-thailand",
+    "koh-tao-thailand",
+    "pattaya-thailand",
+    "koh-chang-thailand"
+   ],
+   "still_needs_mint_andaman": [
+    "krabi-thailand",
+    "phi-phi-thailand"
+   ],
+   "bp_count": 12
+  }
+ ]
+}
