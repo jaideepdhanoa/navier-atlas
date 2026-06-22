@@ -133,3 +133,18 @@ These are the honest gaps; none are Grok-capability gaps, they are missing input
   `CONSOLIDATED-DECK-GENERATION-QUEUE` / edit-plan contract Grok referenced from "PR #71/#72" are
   **not present in this canonical repo**. This branch (`asset-pack-grab`) is the real source of truth.
   Grok should operate from here, not from a local-only copy.
+
+---
+
+## Materialized artifacts (now in repo — read these, not memory)
+
+These are the concrete files this contract depends on. They are checked in under `asset-pack-grab` + this PR. Grok reads them from git:
+
+- `decks/grab/golden-template-map.json` — canonical object-ID map of the 23-slide Grab gold deck (630 elements). **The only source of target object IDs.** Never invent IDs.
+- `decks/grab/economics-binding.json` — deterministic field→object_id binding for **slide 3 KPIs**, **slide 7 economics (incl. the 6-line flush-left OPEX)**, and **slide 10 TAM ladder**. Says *where*; the partner sheet (see each deck's `content-source.json` economics pointers) says *what*. Includes the OPEX six-line order and a leak denylist.
+- `assets/logos/LOGO-MANIFEST.json` — single source of truth for cover logos; supersedes any queue "needs_sourcing" list. Cover-logo bind is gated on `status=="banked"`. `caribbean-mobility` + `french-polynesia` are `intentional_null` (no badge ever).
+- `docs/BRANCH-MAP.md` — `asset-pack-grab` is the canonical Grok-facing branch; build only from it.
+- `schemas/image-manifest.schema.json` — v1+v2 superset; validates the richer asset-pack manifests.
+
+### OPEX six-line order (flush-left, no indented sub-lines)
+`opex_energy → opex_crew → opex_marina → opex_maintenance → opex_insurance → opex_charging_berth`, then `opex_total`. Insurance + Charging berth live in the slide-7-style overflow group.
