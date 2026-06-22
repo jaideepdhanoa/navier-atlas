@@ -89,6 +89,13 @@ const STRIP_PROPS = ['posture', 'archetype_scores'];
 for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
   for (const f of (data.FEATURES_BY_TYPE[t] || []))
     if (f && f.properties) for (const k of STRIP_PROPS) delete f.properties[k];
+// City-brief index + records can carry internal posture stamps — strip before public bake.
+for (const rec of Object.values(data.CITY_BRIEFS || {})) {
+  if (!rec || typeof rec !== 'object') continue;
+  if (Array.isArray(rec.index)) for (const row of rec.index) for (const k of STRIP_PROPS) delete row[k];
+  for (const k of STRIP_PROPS) delete rec[k];
+  delete rec.posture_note;
+}
 
 const profile = parseProfile();
 const baked = applyProfile(data, profile);
