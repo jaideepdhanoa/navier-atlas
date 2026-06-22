@@ -71,7 +71,7 @@ from pathlib import Path
 ROOT = Path(sys.argv[1])
 partner_path = ROOT / "partner-pitch/partners/grab-thailand.json"
 sidecar = json.loads((ROOT / "data-clean/economics_by_route_id.json").read_text())
-by_rid = {r["route_id"]: r for r in sidecar.get("routes", []) if r.get("route_id")}
+by_rid = {r["route_id"]: r for r in sidecar.get("records", []) if r.get("route_id")}
 partner = json.loads(partner_path.read_text())
 bound = pending = 0
 for j in partner.get("connected_city_mesh", []):

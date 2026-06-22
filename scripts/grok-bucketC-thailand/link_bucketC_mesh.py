@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PARTNER_SRC = ROOT / "partner-pitch/partners/grab-thailand.json"
 PARTNER_DST = ROOT / "data-clean/partners/grab-thailand.json"
 ROUTES = ROOT / "data-clean/ROUTES.json"
+SIDECAR = ROOT / "data-clean/economics_by_route_id.json"
 
 MARKET_BY_CITY = {
     "koh-samui-thailand": "koh_samui_gulf",
@@ -39,10 +40,24 @@ def route_features(obj):
     return obj if isinstance(obj, list) else obj.get("features", [])
 
 
-def journey_from_route(props: dict) -> dict:
+def mesh_economics_status(by_rid: dict, rid: str | None) -> tuple[str, str | None]:
+    if not rid:
+        return "pending_demand_anchor", None
+    rec = by_rid.get(rid)
+    if not rec or not rec.get("mid"):
+        return "pending_demand_anchor", None
+    inherit = rec.get("_economics_inherit")
+    if inherit or rec.get("economics_status") == "bound_inherit":
+        return "bound_inherit", inherit
+    return "bound", None
+
+
+def journey_from_route(props: dict, by_rid: dict | None = None) -> dict:
     dist = props.get("distance_nm", 0)
     platform = props.get("platform") or ("Quanta-LR" if dist >= 70 else "Pioneer II")
-    return {
+    rid = props.get("id")
+    econ_status, inherit = mesh_economics_status(by_rid or {}, rid)
+    row = {
         "from": props.get("from_label") or props.get("from"),
         "to": props.get("to_label") or props.get("to"),
         "today": "Slow diesel ferries or speedboats on fixed schedules — weather-exposed, no in-app premium tier.",
@@ -55,11 +70,16 @@ def journey_from_route(props: dict) -> dict:
         "to_node_id": props.get("to_city_id"),
         "from_bp_id": props.get("from"),
         "to_bp_id": props.get("to"),
-        "route_id": props.get("id"),
+        "route_id": rid,
         "_link_status": "linked-bucketC-thailand",
         "_link_source": "bucketC-thailand",
-        "economics_status": "pending_demand_anchor",
+        "economics_status": econ_status,
     }
+    if econ_status in ("bound", "bound_inherit"):
+        row["_economics_source"] = "economics_by_route_id.json"
+    if inherit:
+        row["_economics_inherit"] = inherit
+    return row
 
 
 def patch_bangkok(market: dict) -> None:
@@ -118,6 +138,8 @@ def patch_phuket(market: dict) -> None:
 
 def main() -> int:
     routes = route_features(json.loads(ROUTES.read_text()))
+    sidecar = json.loads(SIDECAR.read_text()) if SIDECAR.exists() else {"records": []}
+    by_rid = {r["route_id"]: r for r in sidecar.get("records", []) if r.get("route_id")}
     mesh = []
     by_market: dict[str, list] = {k: [] for k in ("koh_samui_gulf", "phuket_andaman", "bangkok")}
 
@@ -125,7 +147,7 @@ def main() -> int:
         props = feat.get("properties", feat)
         if not props.get("_bucketC_thailand"):
             continue
-        j = journey_from_route(props)
+        j = journey_from_route(props, by_rid)
         mesh.append(j)
         fc = props.get("from_city_id")
         tc = props.get("to_city_id")
@@ -142,11 +164,20 @@ def main() -> int:
             if j.get("_link_source") != "bucketC-thailand"
         ]
     partner["connected_city_mesh"] = mesh
+    bound = sum(1 for j in mesh if j.get("economics_status") == "bound")
+    bound_inherit = sum(1 for j in mesh if j.get("economics_status") == "bound_inherit")
+    pending = len(mesh) - bound - bound_inherit
     partner["connected_city_mesh_meta"] = {
         "bound_at": now_iso(),
         "route_count": len(mesh),
         "_link_source": "bucketC-thailand",
-        "note": "Pier-exact BP↔BP routes; economics pending Tasklet demand anchors.",
+        "economics_bound": bound + bound_inherit,
+        "economics_bound_inherit": bound_inherit,
+        "economics_pending": pending,
+        "note": (
+            f"{bound + bound_inherit}/{len(mesh)} mesh routes economics-bound "
+            f"({bound_inherit} inherit from anchor corridors)."
+        ),
     }
 
     for market in partner.get("markets", []):

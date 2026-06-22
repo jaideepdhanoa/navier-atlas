@@ -32,30 +32,40 @@ from bucketB_shared import (  # noqa: E402
 
 # (report_city, from_bp, to_bp, waypoints[(lon,lat),...])
 SIGNATURE_ROUTES = [
-    # Gulf inter-island mesh (offshore waypoints tuned LB-242)
+    # Gulf inter-island mesh (offshore waypoints tuned LB-242, polish pass 2026-06-22)
     ("koh-samui-thailand", "bp-bangrak-pier", "bp-thong-sala-pier", [(100.08, 9.64)]),
     ("koh-samui-thailand", "bp-maenam-pier", "bp-thong-sala-pier", [(100.05, 9.66)]),
-    ("koh-samui-thailand", "bp-bangrak-pier", "bp-mae-haad-pier", [(100.14, 9.68), (100.06, 9.92), (99.92, 10.04)]),
-    ("koh-phangan-thailand", "bp-thong-sala-pier", "bp-mae-haad-pier", [(100.04, 9.92), (99.90, 10.02)]),
-    ("koh-phangan-thailand", "bp-thong-sala-pier", "bp-haad-rin-pier", [(100.06, 9.69)]),
+    ("koh-samui-thailand", "bp-bangrak-pier", "bp-mae-haad-pier", [
+        (99.65, 9.70), (99.60, 9.90), (99.70, 10.08),
+    ]),
+    ("koh-phangan-thailand", "bp-thong-sala-pier", "bp-mae-haad-pier", [
+        (100.35, 9.75), (100.20, 9.95), (99.85, 10.08),
+    ]),
+    ("koh-phangan-thailand", "bp-thong-sala-pier", "bp-haad-rin-pier", [
+        (100.05, 9.62), (100.02, 9.58),
+    ]),
     # Samui north-arc intra (locale brief)
-    ("koh-samui-thailand", "bp-nathon-pier", "bp-lipa-noi-pier", [(99.94, 9.49)]),
-    ("koh-samui-thailand", "bp-nathon-pier", "bp-bangrak-pier", [(99.98, 9.55), (100.04, 9.56)]),
+    ("koh-samui-thailand", "bp-nathon-pier", "bp-lipa-noi-pier", [(99.85, 9.48)]),
+    ("koh-samui-thailand", "bp-nathon-pier", "bp-bangrak-pier", [(99.88, 9.58), (100.08, 9.60)]),
     ("koh-samui-thailand", "bp-bophut-fishermans-village", "bp-maenam-pier", None),
     # Pattaya ↔ Koh Larn
     ("pattaya-thailand", "bp-bali-hai-pier", "bp-koh-larn-na-ban-pier", [(100.82, 12.92)]),
     ("pattaya-thailand", "bp-ocean-marina-yacht-club", "bp-bali-hai-pier", [(100.876, 12.88)]),
-    # Koh Chang intra (offshore south coast)
-    ("koh-chang-thailand", "bp-ao-sapparot-pier", "bp-bang-bao-pier", [(102.33, 12.04), (102.30, 12.00)]),
+    # Koh Chang intra (wide south-coast offshore arc)
+    ("koh-chang-thailand", "bp-ao-sapparot-pier", "bp-bang-bao-pier", [
+        (102.45, 12.05), (102.35, 11.92), (102.20, 11.98),
+    ]),
     # Krabi river + peninsula
     ("krabi-thailand", "bp-khong-kha-pier", "bp-klong-jilad-pier", [(98.9195, 8.052)]),
-    ("krabi-thailand", "bp-klong-jilad-pier", "bp-ao-nang-pier", [(98.86, 8.028), (98.825, 8.031)]),
+    ("krabi-thailand", "bp-klong-jilad-pier", "bp-ao-nang-pier", [(98.905, 8.030)]),
     ("krabi-thailand", "bp-ao-nang-pier", "bp-railay-east-pier", [(98.832, 8.018)]),
     ("krabi-thailand", "bp-khong-kha-pier", "bp-railay-east-pier", [(98.835, 8.022), (98.832, 8.014)]),
     # Phi Phi intra
     ("koh-phi-phi-thailand", "bp-tonsai-pier", "bp-laem-tong-pier", [(98.775, 7.752)]),
-    # Andaman cross-cluster
-    ("krabi-thailand", "bp-klong-jilad-pier", "bp-tonsai-pier", [(98.68, 7.92), (98.72, 7.80)]),
+    # Andaman cross-cluster (channel-hugging to Phi Phi)
+    ("krabi-thailand", "bp-klong-jilad-pier", "bp-tonsai-pier", [
+        (98.90, 8.01), (98.75, 7.95), (98.70, 7.85),
+    ]),
 ]
 
 

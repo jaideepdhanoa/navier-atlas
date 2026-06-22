@@ -296,11 +296,18 @@ def main() -> int:
 
     partner["proposal_status"] = "grok_sealed_geometry_bound"
     partner.setdefault("_provenance", {})["grok_seal_at"] = now_iso()
-    partner["economics_status"] = {
-        **(partner.get("economics_status") or {}),
-        "state": "route_ids_bound_pending_demand_cascade",
-        "grounded_floor": "pending Tasklet demand anchors + finance cascade",
-    }
+    if partner.get("growth_case", {}).get("_status") == "cascade_complete":
+        partner["economics_status"] = {
+            **(partner.get("economics_status") or {}),
+            "state": "grounded_floor_cascade_complete",
+            "grounded_floor": "3 cascade-ready corridors (Samui↔Phangan, Phuket↔Phi Phi, Chao Phraya)",
+        }
+    else:
+        partner["economics_status"] = {
+            **(partner.get("economics_status") or {}),
+            "state": "route_ids_bound_pending_demand_cascade",
+            "grounded_floor": "pending Tasklet demand anchors + finance cascade",
+        }
 
     fbt = json.loads(FBT_PATH.read_text())
     apply_boarding_points(fbt, report)
