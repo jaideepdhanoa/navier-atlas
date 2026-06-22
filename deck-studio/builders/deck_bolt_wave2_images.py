@@ -560,6 +560,12 @@ def cmd_approve_cover() -> int:
     return 0
 
 
+def cmd_approve_slide2() -> int:
+    approve_asset_qa("bolt-value-prop-bg")
+    print(json.dumps({"asset": "bolt-value-prop-bg", "qa_status": "pass"}, indent=2))
+    return 0
+
+
 def cmd_generate_slide2() -> int:
     out = ROOT / "assets/backgrounds/decks/bolt/bolt-slide2-booking-moment-tier-a-v1.png"
     meta = generate_bolt_slide2(out=out)
@@ -596,7 +602,13 @@ def clear_drive_urls_for_republish(*keys: str) -> None:
     write_json(REGISTRY_PATH, registry)
 
 
-def cmd_publish_and_apply_approved() -> int:
+IMAGE_OP_BINDINGS = {
+    "bolt-cover-hero": ("p1", "p1_i2", "CENTER_INSIDE"),
+    "bolt-value-prop-bg": ("g3f139a0b6ec_0_0", "g3f139a0b6ec_0_1", "CENTER_CROP"),
+}
+
+
+def cmd_publish_and_apply_approved(*, only: list[str] | None = None) -> int:
     """Publish QA-passed wave-2.1 plates to Drive, then image-ops-only apply."""
     sys.path.insert(0, str(BUILDERS))
     from deck_autonomy_sync import publish_assets_to_drive  # type: ignore
@@ -606,15 +618,15 @@ def cmd_publish_and_apply_approved() -> int:
         k
         for k, a in registry.get("assets", {}).items()
         if a.get("tier") == "A" and a.get("qa_status") == "pass" and a.get("local_path")
+        and (only is None or k in only)
     ]
     clear_drive_urls_for_republish(*republish)
     publish_assets_to_drive(REGISTRY_PATH)
     registry = load_json(REGISTRY_PATH)
     ops = []
-    for key, bind in [
-        ("bolt-cover-hero", ("p1", "p1_i2", "CENTER_INSIDE")),
-        ("bolt-value-prop-bg", ("g3f139a0b6ec_0_0", "g3f139a0b6ec_0_1", "CENTER_CROP")),
-    ]:
+    for key, bind in IMAGE_OP_BINDINGS.items():
+        if only is not None and key not in only:
+            continue
         asset = registry["assets"].get(key, {})
         if asset.get("qa_status") != "pass":
             print(f"skip {key}: qa_status={asset.get('qa_status')!r}")
@@ -647,8 +659,10 @@ def main() -> int:
     sub.add_parser("tag-drift-controls")
     sub.add_parser("generate-cover-greece")
     sub.add_parser("approve-cover")
+    sub.add_parser("approve-slide2")
     sub.add_parser("generate-slide2")
-    sub.add_parser("publish-and-apply-approved")
+    p_pub = sub.add_parser("publish-and-apply-approved")
+    p_pub.add_argument("--only", nargs="+", default=None)
     p_lock = sub.add_parser("lock-grade")
     p_lock.add_argument("--plate", required=True)
     p_lock.add_argument("--seed-family", required=True)
@@ -665,10 +679,12 @@ def main() -> int:
         return cmd_generate_cover()
     if args.cmd == "approve-cover":
         return cmd_approve_cover()
+    if args.cmd == "approve-slide2":
+        return cmd_approve_slide2()
     if args.cmd == "generate-slide2":
         return cmd_generate_slide2()
     if args.cmd == "publish-and-apply-approved":
-        return cmd_publish_and_apply_approved()
+        return cmd_publish_and_apply_approved(only=args.only)
     if args.cmd == "lock-grade":
         lock_deck_grade(reference_plate=args.plate, seed_family=args.seed_family)
         print("grade locked")
