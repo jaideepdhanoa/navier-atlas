@@ -7,16 +7,22 @@ SCRIPTS="$ROOT/scripts/grok-bucketC-thailand"
 
 step() { echo ""; echo "=== $* ==="; }
 
-step "1/5 Gazetteer-validate 19 boarding points"
+step "1/7 Gazetteer-validate 19 boarding points"
 python3 "$SCRIPTS/validate_bp_coords.py"
 
-step "2/5 Seal BPs + bind anchor corridors (grab-thailand)"
+step "2/7 Seal BPs + bind anchor corridors (grab-thailand)"
 python3 "$SCRIPTS/seal_grab_thailand.py" --apply
 
-step "3/5 Build connected-city BP↔BP route mesh"
+step "3/7 Rebuild connected-city BP↔BP route mesh (tuned waypoints)"
 python3 "$SCRIPTS/route_bucketC_thailand.py" --repo "$ROOT"
 
-step "4/5 Land-crossing QA (LB-242 interior gate)"
+step "4/7 Link Bucket-C mesh onto grab-thailand partner JSON"
+python3 "$SCRIPTS/link_bucketC_mesh.py"
+
+step "5/7 Sync city + locale briefs to data-clean"
+python3 "$SCRIPTS/sync_thailand_assets.py"
+
+step "6/7 Land-crossing QA (LB-242 interior gate)"
 python3 - <<'PY' "$ROOT"
 import json, sys
 from pathlib import Path
@@ -58,7 +64,7 @@ if flagged:
     sys.exit(1)
 PY
 
-step "5/5 Partner schema validation"
+step "7/7 Partner schema validation"
 python3 "$ROOT/scripts/validate_partner_proposals.py" 2>&1 | tail -8
 
 echo ""
