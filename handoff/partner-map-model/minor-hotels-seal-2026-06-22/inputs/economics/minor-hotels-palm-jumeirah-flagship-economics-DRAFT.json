@@ -1,0 +1,75 @@
+{
+  "_doc": "FLAGSHIP grounded economics DRAFT \u2014 Minor Hotels @ dubai-uae__palm-jumeirah-crescent-inner (triple-stack). Tasklet-owned grounded floor (demand x fare x capture). NOT sealed/cascaded. CAUTION: Palm submarket is needs_bp_route_grounding (0 routes/0 BPs, brief-only) \u2014 UNLIKE Phuket/Bali which are economics_ready. Floor is buildable as an input but the Palm-crescent routes must be GROUNDED (like Algarve) before cascade. Upper rungs FLAGGED.",
+  "generated_utc": "2026-06-22T14:34:35.982709+00:00",
+  "anchor_market": "dubai-uae__palm-jumeirah-crescent-inner (needs_bp_route_grounding: 0 routes / 0 BPs; parent dubai-uae has 168 routes / 250 BPs, active_geometry)",
+  "status": "grounding-needed THEN cascade-needed (grounded floor only; Palm-crescent BPs+routes seal-needed)",
+  "global_assumptions": {
+    "occupancy": 0.75,
+    "avg_los_nights": 3.0,
+    "marine_legs_per_attaching_stay": 1.4,
+    "fare_usd_mid": 150.0,
+    "capture_mid": 0.6,
+    "fare_usd_low": 100.0,
+    "capture_low": 0.4,
+    "capture_basis": "discretionary leisure-marine (resort-arranged share) \u2014 Palm is road/monorail-connected, NOT transfer-captive, so NOT the 0.85 island-resort band. Honest down-weight.",
+    "fare_note": "UAE premium marine fares ($150 mid) \u2014 Dubai Marina cruises / DXB boat transfers / Palm-crescent charters price well above SEA."
+  },
+  "per_property": [
+    {
+      "property": "Anantara The Palm Dubai Resort",
+      "est_keys": 293,
+      "setting": "palm-east-crescent (on water)",
+      "marine_attach": 0.35,
+      "note": "East crescent, beach/lagoon frontage; DXB boat-transfer + Marina cruise attach",
+      "annual_marine_trips_mid": 13101,
+      "transport_pool_usd_mid": 1965114,
+      "key_tier": "estimate"
+    },
+    {
+      "property": "NH Collection Dubai The Palm",
+      "est_keys": 530,
+      "setting": "west-palm-beach (beachfront tower)",
+      "marine_attach": 0.3,
+      "note": "West Palm Beach, big hotel+residences tower; West Beach jetty / Marina cruise attach",
+      "annual_marine_trips_mid": 20312,
+      "transport_pool_usd_mid": 3046838,
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Avani+ Palm View Dubai Hotel & Suites",
+      "est_keys": 360,
+      "setting": "media-city side (coastal-near, off-Palm)",
+      "marine_attach": 0.18,
+      "note": "Overlooks Palm but sits Media City side \u2014 coastal-near not on-water \u2192 lower marine attach",
+      "annual_marine_trips_mid": 8278,
+      "transport_pool_usd_mid": 1241730,
+      "key_tier": "estimate"
+    }
+  ],
+  "grounded_floor": {
+    "annual_marine_trips_mid": 41691,
+    "transport_spend_pool_usd_yr_mid": 6253682,
+    "grounded_som_floor_usd_yr_mid": 3752209,
+    "transport_spend_pool_usd_yr_low": 3275738,
+    "grounded_som_floor_usd_yr_low": 1310295
+  },
+  "vessel_gate": "Dubai Marina \u2194 Palm \u22483-6nm, DXB transfer \u224812nm, Abu Dhabi day-charter \u224870nm \u2014 all \u226470nm \u2192 Pioneer II (N35 Shuttle on dense Marina\u2194Palm legs).",
+  "capex_region_key": "non-US/EU \u2192 $600K/vessel (UAE)",
+  "country_reference_check": "UAE row already present in model/country-reference.json (used by Careem/Bolt-UAE). Reuse \u2014 do NOT fall back to Singapore.",
+  "route_archetypes": [
+    "airport\u2192resort (DXB \u2194 Palm crescent by boat transfer)",
+    "city\u2192island/marina (Dubai Marina / Bluewaters \u2194 Palm West Beach jetty)",
+    "leisure cruise (Marina dinner/day cruises attaching to resort stays)"
+  ],
+  "honesty_flags": [
+    "Palm is road+monorail connected \u2192 marine is DISCRETIONARY not captive; capture down-weighted to 0.60 (vs 0.85 island band).",
+    "Palm submarket needs BP/route grounding before this floor can cascade \u2014 treat like Algarve grounding seed.",
+    "est_keys are public-scale estimates (estimate tier), not measured."
+  ],
+  "next_cascade_steps": [
+    "Ground Palm-crescent BPs+routes onto dubai-uae gold (Grok) \u2014 submarket currently brief-only",
+    "aggregate.py --partner minor-hotels (scoped, UAE) \u2192 agg",
+    "growth.py with discretionary capture \u2192 ladder",
+    "Transparent sheet + master tracker row"
+  ]
+}

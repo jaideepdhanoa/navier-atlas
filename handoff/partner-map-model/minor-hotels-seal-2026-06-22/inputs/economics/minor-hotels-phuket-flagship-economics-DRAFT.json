@@ -1,0 +1,114 @@
+{
+  "_doc": "FLAGSHIP grounded economics DRAFT \u2014 Minor Hotels @ phuket-phang-nga-thailand. Tasklet-owned grounded floor (demand x fare x capture). NOT a sealed/cascaded number. Feeds finance/model aggregate.py once Grok seals the Minor resort-origin routes. Upper rungs (SAM depth / TAM journey-GMV / partner platform rev) stay FLAGGED pending cascade.",
+  "generated_utc": "2026-06-22T14:15:18.847188+00:00",
+  "anchor_market": "phuket-phang-nga-thailand (economics_ready: 188 routes / 324 BPs)",
+  "status": "cascade-needed (grounded floor only; routes seal-needed)",
+  "global_assumptions": {
+    "occupancy": 0.7,
+    "avg_los_nights": 4.0,
+    "marine_legs_per_attaching_stay": 1.6,
+    "fare_usd_mid": 100.0,
+    "capture_mid": 0.85,
+    "fare_usd_low": 70.0,
+    "capture_low": 0.6,
+    "capture_basis": "captive hospitality (resort-arranged) \u2014 LB-254 captive band, NOT contested 0.10"
+  },
+  "per_property": [
+    {
+      "property": "Anantara Mai Khao Phuket Villas",
+      "est_keys": 83,
+      "setting": "phuket-mainland",
+      "marine_attach": 0.3,
+      "annual_marine_trips": 2545,
+      "transport_pool_usd": 254478,
+      "note": "Mai Khao beach; HKT 10min by road, marine = excursion-led",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Anantara Layan Phuket Resort",
+      "est_keys": 77,
+      "setting": "phuket-mainland",
+      "marine_attach": 0.35,
+      "annual_marine_trips": 2754,
+      "transport_pool_usd": 275429,
+      "note": "Layan cove west coast; Phang Nga Bay + Similan excursions",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Layan Residences by Anantara",
+      "est_keys": 6,
+      "setting": "phuket-mainland",
+      "marine_attach": 0.4,
+      "annual_marine_trips": 245,
+      "transport_pool_usd": 24528,
+      "note": "ultra-premium villas; private charter skew",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Anantara Vacation Club Mai Khao",
+      "est_keys": 74,
+      "setting": "phuket-mainland",
+      "marine_attach": 0.25,
+      "annual_marine_trips": 1891,
+      "transport_pool_usd": 189070,
+      "note": "timeshare; excursion-led marine",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Avani Ao Nang Cliff Krabi",
+      "est_keys": 280,
+      "setting": "krabi-coast",
+      "marine_attach": 0.45,
+      "annual_marine_trips": 12877,
+      "transport_pool_usd": 1287720,
+      "note": "Ao Nang = Railay/Hong Islands boat gateway",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Avani+ Koh Lanta Krabi",
+      "est_keys": 50,
+      "setting": "island",
+      "marine_attach": 0.85,
+      "annual_marine_trips": 4344,
+      "transport_pool_usd": 434350,
+      "note": "Koh Lanta island; ferry/speedboat arrival + 4-islands",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Avani+ Khao Lak",
+      "est_keys": 327,
+      "setting": "phang-nga-coast",
+      "marine_attach": 0.4,
+      "annual_marine_trips": 13368,
+      "transport_pool_usd": 1336776,
+      "note": "Khao Lak = Similan/Surin liveaboard gateway",
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Anantara Koh Yao Yai Resort",
+      "est_keys": 147,
+      "setting": "island",
+      "marine_attach": 0.9,
+      "annual_marine_trips": 13521,
+      "transport_pool_usd": 1352106,
+      "note": "Koh Yao Yai island; boat-ONLY access from Phuket/Krabi",
+      "key_tier": "estimate"
+    }
+  ],
+  "grounded_floor": {
+    "transport_spend_pool_usd_yr_mid": 5154457,
+    "grounded_som_floor_usd_yr_mid": 4381288,
+    "transport_spend_pool_usd_yr_low": 3608120,
+    "grounded_som_floor_usd_yr_low": 2164872
+  },
+  "vessel_gate": "All legs <=70nm Andaman \u2192 Pioneer II (N35 Shuttle on dense Phuket\u21c4Koh Yao Yai\u21c4Krabi legs at scale)",
+  "capex_region_key": "non-US/EU \u2192 $600K/vessel (LB-243)",
+  "country_reference_check": "thailand row REQUIRED in model/country-reference.json before cascade (golden rule #8 \u2014 else silent Singapore-opex fallback)",
+  "next_cascade_steps": [
+    "\u00a7B.0 preflight thailand country-reference row",
+    "Grok seal Minor resort-origin BPs + routes at phuket-phang-nga",
+    "aggregate.py --partner minor-hotels (scoped view)",
+    "growth.py (greenfield=template band, labelled)",
+    "growth_frontend_block \u2192 splice \u2192 transparent sheet \u2192 master tracker"
+  ]
+}

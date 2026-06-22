@@ -1,0 +1,113 @@
+{
+  "generated_utc": "2026-06-22T14:21:54.531973+00:00",
+  "_doc": "BP-grounding seed for EXISTING but ungrounded Atlas markets `algarve` and `porto` (both needs_bp_route_grounding, 0 routes / 0 BPs). Tasklet supplies candidate boarding points + route archetypes; Grok owns deterministic gazetteer promotion + BP<->BP route graph + seal. NOT a new-market registration \u2014 these registry_keys already exist. broad-footprint-first, exact-bind-second.",
+  "markets": [
+    {
+      "registry_key": "algarve",
+      "display": "The Algarve & the Ria Formosa",
+      "cluster_region": "Europe",
+      "current_state": "needs_bp_route_grounding (0 routes / 0 BPs)",
+      "country_tag": "Portugal",
+      "anchor_minor_properties": [
+        "Tivoli Marina Vilamoura Algarve Resort",
+        "Tivoli Carvoeiro Algarve Resort",
+        "Tivoli Lagos Algarve Resort",
+        "Tivoli Alvor Algarve - All Inclusive Resort"
+      ],
+      "candidate_boarding_points": [
+        {
+          "bp": "Marina de Vilamoura",
+          "type": "marina",
+          "anchor": "Tivoli Marina Vilamoura (on-marina)",
+          "confidence": "high"
+        },
+        {
+          "bp": "Marina de Lagos",
+          "type": "marina",
+          "anchor": "Tivoli Lagos (Lagos bay)",
+          "confidence": "high"
+        },
+        {
+          "bp": "Portim\u00e3o / Praia da Rocha jetty",
+          "type": "marina",
+          "anchor": "Tivoli Alvor (Alvor estuary)",
+          "confidence": "med"
+        },
+        {
+          "bp": "Carvoeiro cove tender point",
+          "type": "resort_tender",
+          "anchor": "Tivoli Carvoeiro (clifftop, tender)",
+          "confidence": "med"
+        },
+        {
+          "bp": "Albufeira Marina",
+          "type": "marina",
+          "anchor": "public hub between Vilamoura & Carvoeiro",
+          "confidence": "med"
+        },
+        {
+          "bp": "Faro / Ria Formosa terminal",
+          "type": "city_terminal",
+          "anchor": "airport gateway + Ria Formosa islands",
+          "confidence": "high"
+        },
+        {
+          "bp": "Olh\u00e3o / Ria Formosa islands",
+          "type": "island_hop",
+          "anchor": "Armona/Culatra/Tavira island-hop",
+          "confidence": "med"
+        }
+      ],
+      "route_archetypes": [
+        "airport\u2192resort (Faro\u2192Vilamoura/Lagos)",
+        "marina\u2192marina coastal hop (Lagos\u21c4Portim\u00e3o\u21c4Vilamoura)",
+        "city\u2192island (Faro/Olh\u00e3o\u2192Ria Formosa barrier islands)",
+        "resort tender (Carvoeiro/Alvor cove pickup)"
+      ]
+    },
+    {
+      "registry_key": "porto",
+      "display": "Porto & the Douro",
+      "cluster_region": "Europe",
+      "current_state": "needs_bp_route_grounding (0 routes / 0 BPs)",
+      "country_tag": "Portugal",
+      "anchor_minor_properties": [
+        "Tivoli Kopke Porto Gaia Hotel",
+        "Tivoli Estela Golf and Lodges"
+      ],
+      "candidate_boarding_points": [
+        {
+          "bp": "Vila Nova de Gaia / Douro quay",
+          "type": "river_quay",
+          "anchor": "Tivoli Kopke (Gaia riverfront)",
+          "confidence": "high"
+        },
+        {
+          "bp": "Cais da Ribeira (Porto)",
+          "type": "river_quay",
+          "anchor": "Porto old-town cross-river",
+          "confidence": "high"
+        },
+        {
+          "bp": "Leix\u00f5es / Matosinhos marina",
+          "type": "marina",
+          "anchor": "ocean gateway + Estela coast",
+          "confidence": "med"
+        },
+        {
+          "bp": "P\u00f3voa de Varzim / Estela",
+          "type": "coastal_jetty",
+          "anchor": "Tivoli Estela (north coast)",
+          "confidence": "med"
+        }
+      ],
+      "route_archetypes": [
+        "river\u2192city (Gaia\u21c4Ribeira cross-Douro)",
+        "Douro valley up-river excursion",
+        "ocean marina\u2192coast (Leix\u00f5es\u2192Estela/P\u00f3voa)"
+      ]
+    }
+  ],
+  "status": "seal-needed",
+  "handoff_note": "Feeds grok-seal-handoff: promote these BPs into atlas-external/boarding-points/{algarve,porto}.json, route via BP<->BP graph under LB-242 water/land gates, reseal to next gold. Holds pending full-research completion (no repo push yet)."
+}

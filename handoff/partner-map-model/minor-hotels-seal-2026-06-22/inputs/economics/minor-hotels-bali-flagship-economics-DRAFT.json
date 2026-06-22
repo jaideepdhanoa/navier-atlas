@@ -1,0 +1,71 @@
+{
+  "_doc": "FLAGSHIP grounded economics DRAFT \u2014 Minor Hotels @ bali-indonesia. Tasklet-owned grounded floor (demand x fare x capture). NOT a sealed/cascaded number. Bali is already economics_ready (131 routes / 422 BPs) so the floor is buildable now; upper rungs (SAM/TAM/platform-rev) stay FLAGGED pending cascade. Captive capture per LB-254.",
+  "generated_utc": "2026-06-22T14:27:25.374839+00:00",
+  "anchor_market": "bali-indonesia (economics_ready: 131 routes / 422 BPs)",
+  "status": "cascade-needed (grounded floor only; Minor resort-origin attach routes seal-needed)",
+  "global_assumptions": {
+    "occupancy": 0.7,
+    "avg_los_nights": 3.5,
+    "marine_legs_per_attaching_stay": 1.5,
+    "fare_usd_mid": 85.0,
+    "capture_mid": 0.85,
+    "fare_usd_low": 60.0,
+    "capture_low": 0.6,
+    "capture_basis": "captive hospitality (resort-arranged) \u2014 LB-254 captive band, NOT contested 0.10",
+    "los_note": "3.5 nights \u2014 south-Bali beach belt skews shorter than Andaman island resorts (4.0)"
+  },
+  "per_property": [
+    {
+      "property": "Anantara Uluwatu Bali Resort",
+      "est_keys": 74,
+      "setting": "south-clifftop",
+      "marine_attach": 0.42,
+      "note": "Uluwatu clifftop; premium guest base, strong Nusa Penida / Lembongan day-charter + Benoa marina attach",
+      "annual_marine_trips_mid": 3403,
+      "transport_pool_usd_mid": 289277,
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Avani Seminyak Bali Resort",
+      "est_keys": 104,
+      "setting": "seminyak-beach",
+      "marine_attach": 0.32,
+      "note": "Seminyak beachfront; Sanur/Benoa fast-boat to Nusa islands & Gili excursion-led",
+      "annual_marine_trips_mid": 3644,
+      "transport_pool_usd_mid": 309754,
+      "key_tier": "estimate"
+    },
+    {
+      "property": "Anantara Vacation Club Legian Bali",
+      "est_keys": 52,
+      "setting": "legian-beach",
+      "marine_attach": 0.3,
+      "note": "Legian beach; club guests, longer LOS, Nusa/Gili day-trip attach",
+      "annual_marine_trips_mid": 1708,
+      "transport_pool_usd_mid": 145197,
+      "key_tier": "estimate"
+    }
+  ],
+  "grounded_floor": {
+    "annual_marine_trips_mid": 8756,
+    "transport_spend_pool_usd_yr_mid": 744228,
+    "grounded_som_floor_usd_yr_mid": 632594,
+    "transport_spend_pool_usd_yr_low": 420270,
+    "grounded_som_floor_usd_yr_low": 252162
+  },
+  "vessel_gate": "South Bali \u2194 Nusa islands \u224810-12nm, Bali \u2194 Gili/Lombok \u224820-35nm \u2014 all \u226470nm \u2192 Pioneer II (N35 Shuttle on dense Nusa legs at scale).",
+  "capex_region_key": "non-US/EU \u2192 $600K/vessel (Indonesia)",
+  "country_reference_check": "REQUIRED before cascade: confirm Indonesia row exists in model/country-reference.json (opex/energy/grid-CO2/crew/marina) \u2014 else engines silently fall back to Singapore (LB-243). Bali is SEA so Singapore proximity reduces error, but still add an honest Indonesia row.",
+  "route_archetypes": [
+    "airport\u2192resort (Ngurah Rai/DPS \u2194 Seminyak/Legian/Uluwatu beach)",
+    "city\u2192island day-charter (Benoa/Sanur \u2194 Nusa Penida/Lembongan/Ceningan)",
+    "island crossing (Bali \u2194 Gili Islands / Lombok)"
+  ],
+  "next_cascade_steps": [
+    "Seal Minor resort-origin attach routes onto bali-indonesia gold (Grok)",
+    "aggregate.py --partner minor-hotels (scoped) \u2192 agg",
+    "growth.py with captive band \u2192 SOM/SAM/TAM ladder",
+    "Add Indonesia country-reference row",
+    "Transparent sheet + master tracker row"
+  ]
+}
