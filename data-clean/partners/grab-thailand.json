@@ -229,7 +229,7 @@
      "route_id": "rn-b6a6920513fc",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Maenam Pier",
@@ -247,7 +247,7 @@
      "route_id": "rn-4cc25e9c8dba",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Bangrak (Big Buddha) Pier",
@@ -265,7 +265,7 @@
      "route_id": "rn-459f23f12c58",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Thong Sala Pier",
@@ -283,7 +283,7 @@
      "route_id": "rn-4aea78887c2b",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Thong Sala Pier",
@@ -319,7 +319,7 @@
      "route_id": "rn-a103dc26f160",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Nathon Pier",
@@ -337,7 +337,7 @@
      "route_id": "rn-f2ca85cdc57b",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Bophut / Fisherman's Village Jetty",
@@ -591,7 +591,7 @@
      "route_id": "rn-42fff7b8d918",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Klong Jilad Pier",
@@ -609,7 +609,7 @@
      "route_id": "rn-c1aa6c63734d",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Ao Nang / Nopparat Thara Pier",
@@ -627,7 +627,7 @@
      "route_id": "rn-5f7af958b634",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Khong Kha Pier (Chao Fa)",
@@ -645,7 +645,7 @@
      "route_id": "rn-a6bcbbd67192",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Tonsai Pier (Ao Ton Sai)",
@@ -663,7 +663,7 @@
      "route_id": "rn-cad7f6d9ba79",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     },
     {
      "from": "Klong Jilad Pier",
@@ -681,7 +681,7 @@
      "route_id": "rn-884b63688113",
      "_link_status": "linked-bucketC-thailand",
      "_link_source": "bucketC-thailand",
-     "economics_status": "pending_demand_anchor"
+     "economics_status": "bound"
     }
    ],
    "proof_points": [
@@ -990,17 +990,369 @@
   "Bangkok gulf gateway long-legs (Bangkok\u2194Pattaya/Samui/Chang ~100\u2013205nm) \u2014 aspirational"
  ],
  "economics_status": {
-  "state": "route_ids_bound_pending_demand_cascade",
-  "country_reference": "present (source-backed Thailand row; no Singapore fallback)",
-  "demand_anchors": "queued \u2014 handoff/partner-map-model/THAILAND-DEMAND-ANCHOR-QUEUE-2026-06-22.json",
-  "grounded_floor": "pending Tasklet demand anchors + finance cascade",
-  "cascade_gate": "runs after PR #74 seal; route-keyed sidecar built against new gold"
+  "state": "grounded_floor_cascade_complete",
+  "grounded_floor": "3 cascade-ready corridors (Samui\u2194Phangan, Phuket\u2194Phi Phi, Chao Phraya)",
+  "cascade_at": "2026-06-22T16:11:06Z",
+  "agg": "finance/recal/agg-grab-thailand.json",
+  "growth": "finance/recal/growth-grab-thailand.json",
+  "sheet": "finance/_refresh_grab-thailand.xlsx"
  },
  "proposal_status": "grok_sealed_geometry_and_mesh_linked",
  "growth_case": {
   "_status": "inherit_pending",
   "_inherits_from": "grab.json :: growth_case (Grab super-app TAM model: navier_transport_revenue / journey_gmv / platform_take)",
-  "_note": "Re-run aggregate.py -> growth.py over the 3-market Thai footprint with a Thailand country-reference row (no silent Singapore opex) and sourced demand anchors (no 30K placeholder). Tasklet to supply demand anchors; Grok to cascade."
+  "_note": "Re-run aggregate.py -> growth.py over the 3-market Thai footprint with a Thailand country-reference row (no silent Singapore opex) and sourced demand anchors (no 30K placeholder). Tasklet to supply demand anchors; Grok to cascade.",
+  "revenue_potential": {
+   "headline": "The floor and the prize \u2014 every rung traces to grounded, sourced demand.",
+   "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever \u2014 network width, induced demand, journey wallet, platform take.",
+   "anchor_note": "$218M/yr premium sea-transfer spend on sourced corridors today \u2014 the anchor every rung builds from.",
+   "whose_money_legend": {
+    "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
+    "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
+    "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line \u2014 this is the number that makes a super-app care, not the boat fare."
+   },
+   "cite_rule": "Cite MID. 'High' stacks every optimistic assumption \u2014 ceiling, not headline.",
+   "rungs": [
+    {
+     "id": "som_floor",
+     "label": "SOM \u2014 floor (published)",
+     "whose_money": "Navier transport revenue",
+     "basis": "sourced flagship corridors \u00b7 10% capture \u00b7 today's demand",
+     "low": null,
+     "mid": 21093282.0,
+     "high": null,
+     "display": {
+      "low": null,
+      "mid": "$21M",
+      "high": null
+     },
+     "confidence": "grounded",
+     "confidence_label": "Grounded"
+    },
+    {
+     "id": "som_network",
+     "label": "SOM \u2014 full network",
+     "whose_money": "Navier transport revenue",
+     "basis": "whole mapped network \u00b7 10% capture \u00b7 today's demand (no growth assumed)",
+     "low": 72560890.0,
+     "mid": 103357082.0,
+     "high": 134153274.0,
+     "display": {
+      "low": "$73M",
+      "mid": "$103M",
+      "high": "$134M"
+     },
+     "confidence": "med",
+     "confidence_label": "Modeled"
+    },
+    {
+     "id": "sam_network",
+     "label": "SAM \u2014 matured network",
+     "whose_money": "Navier transport revenue",
+     "basis": "faster, more comfortable boats grow the market \u00b7 leading-operator 25% capture, network-wide",
+     "low": 146178522.0,
+     "mid": 480506324.0,
+     "high": 1385950212.0,
+     "display": {
+      "low": "$146M",
+      "mid": "$481M",
+      "high": "$1.39B"
+     },
+     "confidence": "med-low",
+     "confidence_label": "Projected"
+    },
+    {
+     "id": "tam_transfer",
+     "label": "Marine mobility TAM \u2014 induced marine-transfer market",
+     "whose_money": "total water-transfer spend",
+     "basis": "SAM divided by leading-operator capture \u2014 the full inducible water-transfer wallet at network maturity",
+     "low": 974523482.0,
+     "mid": 1922025294.0,
+     "high": 3464875530.0,
+     "display": {
+      "low": "$975M",
+      "mid": "$1.92B",
+      "high": "$3.46B"
+     },
+     "confidence": "med-low",
+     "confidence_label": "Projected"
+    },
+    {
+     "id": "journey_gmv",
+     "label": "Journey GMV \u2014 food + stays + experiences (\u22483\u00d7 TAM)",
+     "whose_money": "total journey wallet",
+     "basis": "add food, stays, and experiences to every crossing in the induced market",
+     "low": 1949046965.0,
+     "mid": 5766075882.0,
+     "high": 13859502120.0,
+     "display": {
+      "low": "$1.95B",
+      "mid": "$5.77B",
+      "high": "$13.86B"
+     },
+     "confidence": "med-low",
+     "confidence_label": "Projected"
+    },
+    {
+     "id": "platform_rev",
+     "label": "Partner platform revenue on Navier",
+     "whose_money": "partner's P&L on Navier-carried journeys",
+     "basis": "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
+     "low": 52624268.0,
+     "mid": 259473415.0,
+     "high": 997884153.0,
+     "display": {
+      "low": "$53M",
+      "mid": "$259M",
+      "high": "$998M"
+     },
+     "confidence": "med-low",
+     "confidence_label": "Projected"
+    }
+   ],
+   "ceiling_sibling": {
+    "id": "platform_rev_full_journey",
+    "label": "Platform revenue ceiling \u2014 18% \u00d7 full Journey GMV",
+    "low": 350828454.0,
+    "mid": 1037893659.0,
+    "high": 2494710382.0,
+    "display": {
+     "low": "$351M",
+     "mid": "$1.04B",
+     "high": "$2.49B"
+    },
+    "derivation": "journey_gmv.mid \u00d7 0.18 (full GMV ceiling, not Navier-corridor subset)",
+    "confidence_label": "Projected",
+    "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. Platform_rev rung remains the Navier-subset Interpretation-A value."
+   }
+  },
+  "phase_economics": {
+   "headline": "Revenue potential by phase \u2014 conservative floor first, ecosystem prize last.",
+   "conversion_note": "Fleet & CO2 scale from the grounded unit: 103 boats = $21M transport rev = 20,896 t CO2/yr (~$205K rev/boat).",
+   "horizons": [
+    {
+     "id": "prove",
+     "name": "Prove",
+     "horizon": "Year 1\u20132",
+     "scope": "Sourced flagship corridors go live",
+     "capture": "10% (new-entrant floor)",
+     "vessel": "N30 Pioneer II (8 pax, commercial now)",
+     "fleet_boats": 103,
+     "navier_transport_rev_yr": 21093282.0,
+     "navier_transport_rev_display": "$21M",
+     "partner_platform_rev_yr": null,
+     "partner_platform_rev_display": "nascent",
+     "co2_saved_t_yr": 20896,
+     "confidence": "grounded",
+     "confidence_label": "Grounded"
+    },
+    {
+     "id": "scale",
+     "name": "Scale",
+     "horizon": "Year 2\u20134",
+     "scope": "Extend to the full mapped greenfield network",
+     "capture": "10% (still conservative)",
+     "vessel": "N30 Pioneer II + N35 Shuttle (12\u201315 pax, 2027) on dense legs",
+     "fleet_boats_est": 505,
+     "fleet_boats_band": {
+      "low": 354,
+      "high": 655
+     },
+     "navier_transport_rev_yr": 103357082.0,
+     "navier_transport_rev_display": "$103M",
+     "partner_platform_rev_display": "building",
+     "co2_saved_t_yr": 102393,
+     "confidence": "med",
+     "confidence_label": "Modeled"
+    },
+    {
+     "id": "mature",
+     "name": "Mature",
+     "horizon": "Year 4+",
+     "scope": "Induced marine-transfer demand + leading-operator capture across the network",
+     "capture": "25% mature share",
+     "vessel": "N35-led mix; Quanta-LR on 75\u2013150nm regional legs (H2 2026+)",
+     "fleet_boats_est_pioneer_equiv": 2346,
+     "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
+     "navier_transport_rev_yr": 480506324.0,
+     "navier_transport_rev_display": "$481M",
+     "partner_platform_rev_yr": 259473415.0,
+     "partner_platform_rev_display": "$259M",
+     "partner_platform_rev_on_navier_yr": 259473415.0,
+     "partner_platform_rev_on_navier_display": "$259M",
+     "marine_mobility_tam_yr": 1922025294.0,
+     "marine_mobility_tam_display": "$1.92B marine TAM",
+     "journey_gmv_yr": 5766075882.0,
+     "journey_gmv_display": "$5.77B Journey GMV",
+     "co2_saved_t_yr": 476024,
+     "confidence": "med-low (banded)",
+     "confidence_label": "Projected"
+    }
+   ]
+  },
+  "vessel_sizing": {
+   "headline": "Right vessel for every leg \u2014 corridor range picks the hull.",
+   "classes": [
+    {
+     "class": "N30 Pioneer II",
+     "pax": 8,
+     "range_nm": 70,
+     "status": "commercial now",
+     "role": "Capillary corridors \u2264 70nm. The workhorse of Prove + Scale.",
+     "render": "solid"
+    },
+    {
+     "class": "N35 Shuttle",
+     "pax": "12\u201315",
+     "range_nm": 70,
+     "status": "2027",
+     "role": "Doubles throughput per hull on dense corridors; roughly halves payback. Scale-phase workhorse.",
+     "render": "solid"
+    },
+    {
+     "class": "Quanta-LR Hybrid",
+     "pax": "12\u201315",
+     "range_nm": 700,
+     "status": "H2 2026+",
+     "role": "Regional legs 75\u2013150nm beyond Pioneer range. Held out of near-term numbers.",
+     "render": "amber-dashed"
+    }
+   ],
+   "range_gate_note": "\u2264 70nm \u2192 Pioneer II (now). 75\u2013150nm \u2192 Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
+  },
+  "_provenance": {
+   "source_growth": "growth-grab-thailand.json",
+   "source_rollup": "agg-grab-thailand.json",
+   "rev_per_boat_yr": 204789,
+   "greenfield_mode": "census",
+   "greenfield_corridors": 341,
+   "sourced_corridors": 35,
+   "generator": "growth_frontend_block.py"
+  },
+  "_render_chip_flag": {
+   "needs_new_layouts": [
+    "revenue_ladder",
+    "phase_economics_table",
+    "vessel_sizing_cards"
+   ],
+   "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
+  },
+  "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever \u2014 network width, induced demand, journey wallet, platform take.",
+  "modal_headline": "Floor to prize \u2014 every rung traces to grounded demand",
+  "ladder_transitions": [
+   {
+    "from_rung_id": "som_floor",
+    "to_rung_id": "som_network",
+    "headline": "Same 10% capture, expanded to the full mapped network",
+    "basis": "Width-only step. Capture rate held at 10%; corridor set expands from sourced flagships to the full mapped network.",
+    "derivation": "som_floor_mid ($21M) \u00d7 greenfield_corridor_factor.mid (4.90) = $103M (som_network mid)",
+    "multipliers_cited": {
+     "greenfield_corridor_factor_mid": 4.9,
+     "som_capture_rate": 0.1
+    },
+    "source_fields": [
+     "finance/recal/growth-grab-thailand.json:parameters_used.greenfield_corridor_factor",
+     "finance/recal/growth-grab-thailand.json:parameters_used.som_capture_rate"
+    ],
+    "confidence": "med"
+   },
+   {
+    "from_rung_id": "som_network",
+    "to_rung_id": "sam_network",
+    "headline": "Network matures: faster, more comfortable boats grow the market + leading-operator capture",
+    "basis": "Two-lever step. (1) Faster, more comfortable boats grow the cross-water market (induced demand). (2) Leading-operator capture lifts share from 10% floor to 25% mature, network-wide.",
+    "derivation": "som_network_mid ($103M) \u00d7 induced_demand.mid (1.80) \u00d7 (mature_capture / som_capture) (0.25/0.10 = 2.50) = $481M (sam_network mid)",
+    "multipliers_cited": {
+     "induced_demand_mid": 1.8,
+     "mature_capture_rate_mid": 0.25,
+     "som_capture_rate": 0.1
+    },
+    "source_fields": [
+     "finance/recal/growth-grab-thailand.json:parameters_used.induced_demand",
+     "finance/recal/growth-grab-thailand.json:parameters_used.mature_capture_rate"
+    ],
+    "confidence": "med-low"
+   },
+   {
+    "from_rung_id": "sam_network",
+    "to_rung_id": "tam_transfer",
+    "headline": "Lens shift: Navier captured share \u2192 total inducible marine-transfer wallet",
+    "basis": "Unit change. Divide SAM (the captured share) by leading-operator capture rate to recover the full inducible water-transfer market \u2014 the marine-mobility TAM.",
+    "derivation": "sam_network_mid ($481M) \u00f7 mature_capture.mid (0.25) = $1.92B (marine TAM mid)",
+    "multipliers_cited": {
+     "mature_capture_rate_mid": 0.25
+    },
+    "source_fields": [
+     "finance/recal/growth-grab-thailand.json:parameters_used.mature_capture_rate"
+    ],
+    "confidence": "med-low",
+    "_lb_ref": "LB-110: marine_mobility_tam = SAM_full_network / c (locked 2026-06-11)"
+   },
+   {
+    "from_rung_id": "tam_transfer",
+    "to_rung_id": "journey_gmv",
+    "headline": "Marine transfer \u2192 total journey wallet (food, stays, experiences, in-app ads)",
+    "basis": "Journey-wallet step. Each $1 of marine-transfer spend unlocks ~$3 of broader journey GMV across merchants the partner monetizes.",
+    "derivation": "marine_tam_mid ($1.92B) \u00d7 journey_gmv_multiple.mid (3.00) = $5.77B (journey_gmv mid)",
+    "multipliers_cited": {
+     "journey_gmv_multiple_mid": 3.0
+    },
+    "source_fields": [
+     "finance/recal/growth-grab-thailand.json:parameters_used.journey_gmv_multiple"
+    ],
+    "confidence": "med-low"
+   },
+   {
+    "from_rung_id": "journey_gmv",
+    "to_rung_id": "platform_rev",
+    "headline": "Grab-Thailand platform take on Navier-carried journeys",
+    "basis": "Platform-take step. Platform commission applied to the journey GMV routed through the Navier network (Navier-captured subset, not the full induced market).",
+    "derivation": "sam_network_mid ($481M) \u00d7 journey_gmv_multiple.mid (3.00) \u00d7 platform_take_rate (18%) = $259M (platform_rev mid)",
+    "multipliers_cited": {
+     "journey_gmv_multiple_mid": 3.0,
+     "platform_take_rate": 0.18,
+     "mature_capture_rate_mid": 0.25
+    },
+    "source_fields": [
+     "finance/recal/growth-grab-thailand.json:parameters_used.platform_take_rate",
+     "finance/recal/growth-grab-thailand.json:parameters_used.journey_gmv_multiple"
+    ],
+    "confidence": "med-low",
+    "_lb_ref": "LB-113: partner_platform_rev_on_navier = on-Navier subset, distinct from deck's '18% \u00d7 full Journey GMV' narrative ceiling"
+   }
+  ],
+  "marine_mobility_tam": {
+   "low": 974523482.0,
+   "mid": 1922025294.0,
+   "high": 3464875530.0
+  },
+  "journey_gmv": {
+   "low": 1949046965.0,
+   "mid": 5766075882.0,
+   "high": 13859502120.0
+  },
+  "partner_platform_rev_on_navier": {
+   "low": 52624268.0,
+   "mid": 259473415.0,
+   "high": 997884153.0
+  },
+  "_marine_tam_split_provenance": {
+   "date": "2026-06-22T16:11:05.154793Z",
+   "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
+   "field_renames": {
+    "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
+    "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)"
+   },
+   "ladder_rung_count": 6,
+   "rungs_ascending": [
+    "som_floor",
+    "som_network",
+    "sam_network",
+    "tam_transfer",
+    "journey_gmv",
+    "platform_rev"
+   ]
+  }
  },
  "_provenance": {
   "built_by": "tasklet",
@@ -1076,7 +1428,8 @@
    "route_id": "rn-b6a6920513fc",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Maenam Pier",
@@ -1094,7 +1447,8 @@
    "route_id": "rn-4cc25e9c8dba",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Bangrak (Big Buddha) Pier",
@@ -1112,7 +1466,8 @@
    "route_id": "rn-459f23f12c58",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Thong Sala Pier",
@@ -1130,7 +1485,8 @@
    "route_id": "rn-4aea78887c2b",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Thong Sala Pier",
@@ -1166,7 +1522,8 @@
    "route_id": "rn-a103dc26f160",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Nathon Pier",
@@ -1184,7 +1541,8 @@
    "route_id": "rn-f2ca85cdc57b",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Bophut / Fisherman's Village Jetty",
@@ -1274,7 +1632,8 @@
    "route_id": "rn-42fff7b8d918",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Klong Jilad Pier",
@@ -1292,7 +1651,8 @@
    "route_id": "rn-c1aa6c63734d",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Ao Nang / Nopparat Thara Pier",
@@ -1310,7 +1670,8 @@
    "route_id": "rn-5f7af958b634",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Khong Kha Pier (Chao Fa)",
@@ -1328,7 +1689,8 @@
    "route_id": "rn-a6bcbbd67192",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Tonsai Pier (Ao Ton Sai)",
@@ -1346,7 +1708,8 @@
    "route_id": "rn-cad7f6d9ba79",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   },
   {
    "from": "Klong Jilad Pier",
@@ -1364,7 +1727,8 @@
    "route_id": "rn-884b63688113",
    "_link_status": "linked-bucketC-thailand",
    "_link_source": "bucketC-thailand",
-   "economics_status": "pending_demand_anchor"
+   "economics_status": "bound",
+   "_economics_source": "economics_by_route_id.json"
   }
  ],
  "connected_city_mesh_meta": {

@@ -26,6 +26,13 @@
 - Offer: start with one cluster (Samui), prove the in-app premium hop, then extend.
 - Leave-behind: the one-pager (no deck needed unless they want one).
 
+## Economics (if they ask numbers)
+- Grounded near-term floor: **~$21M/yr** Navier transport revenue, **103 boats** across 15 sealed Thailand corridors.
+- Mature SAM mid: **~$481M/yr**; marine TAM mid: **~$1.9B**; journey GMV mid: **~$5.8B**; Grab platform rev on Navier network: **~$259M**.
+- Three corridors have hardened demand records (Samui↔Phangan, Phuket↔Phi Phi, Chao Phraya); rest are sourced but volume-pending.
+- Contested capture band (Grab super-app) — not the 90% captive Maldives model.
+
 ## Guardrail (don't overclaim)
 - Short island/river legs = Pioneer II all-electric (≤70nm). Long gulf runs = Quanta-LR hybrid, roadmap — say so plainly.
-- Pattaya / Koh Chang / Hua Hin gulf geometry is still being mapped on our side; speak to them as roadmap, not live today.
+- Pattaya, Koh Larn, Koh Chang are **minted on the map** with Bucket-C routes; Bangkok↔gulf gateway (~100–205nm) stays aspirational.
+- Economics on 5 Bucket-C mesh legs (Pattaya/Koh Larn/Koh Chang intra + some Samui north-arc) still pending demand anchors.

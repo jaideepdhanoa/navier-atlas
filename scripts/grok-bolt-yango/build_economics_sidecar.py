@@ -32,6 +32,8 @@ PARTNERS = [
     "french-polynesia",
     "constance",
     "four-seasons",
+    "grab-thailand",
+    "uber-india",
 ]
 
 def load_deck_url(url_map_path: Path | None = None) -> dict:
@@ -280,7 +282,7 @@ def main():
             by_rid[rid].append((authored, market, row))
 
     global_path = aggdir / "agg-global.json"
-    if args.global or global_path.exists():
+    if getattr(args, "global") or global_path.exists():
         if not global_path.exists():
             raise SystemExit(f"--global requested but {global_path} missing")
         ingest_rows(json.loads(global_path.read_text()).get("rows", []))

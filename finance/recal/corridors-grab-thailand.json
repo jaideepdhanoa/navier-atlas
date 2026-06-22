@@ -1,0 +1,826 @@
+{
+  "_doc": "Scoped Thailand view for grab-thailand economics cascade",
+  "_source": "finance/model/corridors.json",
+  "_built_at": "2026-06-22T16:11:04.996073+00:00",
+  "capture_rate": 0.1,
+  "markets": {
+    "koh-samui": {
+      "region": "SEA",
+      "label": "Koh Samui + the Gulf island triangle",
+      "corridors": [
+        {
+          "route_id": "rn-db5e83248f9d",
+          "from": "Koh Samui (Bangrak)",
+          "to": "Koh Phangan (Thong Sala)",
+          "distance_nm": 10.2,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 10.0,
+            "_fare_record": {
+              "value": 10.0,
+              "unit": "USD/pax/one-way",
+              "source": "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala)",
+              "method": "THAILAND-DEMAND-ANCHORS hardened fare",
+              "confidence": "derived_pending_validation",
+              "notes": "Lomprayah scheduled high-speed seat THB 350 = ~$10 as the contested floor; premium charter ceiling far higher (see premium_ceiling_note)."
+            },
+            "corridor_annual_oneway_pax": 19404,
+            "_demand_record": {
+              "value": 19404,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "derived_demand_record",
+              "confidence": "derived_pending_validation",
+              "source": "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala)",
+              "method": "shown_math",
+              "detail": "12 * 20000 * 0.98 * 0.55 = ~129,360 FMP-driven Samui<->Phangan pax/yr (one-way). Add ~year-round baseline ferry traffic (separate). Premium-eligible slice = 129,360 * 0.15 = ~19,400 premium one-way trips/yr from the FMP pool alone."
+            },
+            "demand_confidence": "derived_pending_validation"
+          },
+          "_thailand_demand_hardened": true,
+          "_demand_anchor_file": "THAILAND-DEMAND-ANCHORS-samui-gulf.json"
+        },
+        {
+          "route_id": "rn-347c44e1d360",
+          "from": "Koh Samui (Bangrak)",
+          "to": "Don Sak Ferry Harbour",
+          "distance_nm": 28.1,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 15.2,
+            "_fare_record": {
+              "value": 15.2,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "fast_catamaran_per_seat_above_car_ferry (Lomprayah high-speed cat ~45 min Samui<->Donsak vs 1.5-2h car ferries)",
+              "source_url": "https://www.omio.com/ferries/surat-thani/ko-samui-vxova",
+              "notes": "Anchor THB 500/pp one-way = USD 15.2: Lomprayah runs a ~45-min high-speed catamaran Samui<->Donsak (Tripadvisor review; lomprayah.com Surat Thani route via Donsak); Surat Thani-Samui combo (ferry+coach) averages ~USD 18 / THB 600-700 (Omio; travelfish '700 baht'), ferry-only leg de-bundled to ~THB 500. Fare ladder (THB/pp): Raja car ferry 160 (busonlineticket/siamtickets); Seatran car ferry 180-225 (siamtickets/ferrysamui); Lomprayah fast-cat ~500 <- premium per-seat anchor; +coach combos 600-700. R5-EXT validity check PASSED: a real premium per-seat tier (fast cat) exists above the standard car ferry - no cascade. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 666667,
+            "_demand_record": {
+              "value": 2000000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T4",
+              "confidence": "med-low",
+              "source": "Total Samui<->Donsak crossing (all operators/piers). Raja Ferry Port (SET: RP) disclosed ~1.2M passengers carried in 2017 (+20% YoY) across its Donsak-Samui(Lipa Noi)/Donsak-Phangan network, with a 1.5M target (Samui Times / Koh Samui News quoting RP business plan; RP IPO-era disclosure ~600k/yr 2014, Nation Thailand). Seatran runs 6 vessels ~hourly 05:00-19:00 Nathon<->Donsak (Tripadvisor/operator). Mode balance: Samui drew ~3.54M tourists 2023 (Forbes/C9) vs ~1.4M airport arrivals (Samui Airport 2.8M total pax 2024, BAREIT one-report 56-1) - the majority of non-air arrivals cross at Donsak.",
+              "method": "Sum of operator slices: Raja ~0.85M (1.2M 2017 x ~70% Samui-route share) + Seatran ~1.2M (R4 freq x capacity, see mint record) = ~2.05M -> 2.0M one-way/yr. Cross-check vs mode balance (~2M+ sea arrivals+departures via Donsak for 3.5M visitors) holds. Components are 2017-vintage + modeled, hence med-low."
+            },
+            "_pool_override_recal": {
+              "pool": "Raja+Seatran Surat Thani-Samui ~2M/yr",
+              "pool_pax": 2000000,
+              "share_of_pool": 0.3333333333333333,
+              "final_pax_yr": 666667,
+              "source_url": "https://www.samuitimes.com/"
+            }
+          },
+          "pool_id": "donsak_samui_carferry_2M",
+          "share_of_pool": 0.3333
+        },
+        {
+          "route_id": "ics-5038f54700",
+          "from": "Koh Samui (Lipa Noi)",
+          "to": "Donsak (Raja Ferry pier)",
+          "distance_nm": 14.3,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 15.2,
+            "_fare_record": {
+              "value": 15.2,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "same crossing as rn-347c44e1d360 (Raja vehicle-ferry pier pair) - inherits the fast-cat premium per-seat anchor",
+              "source_url": "https://www.omio.com/ferries/surat-thani/ko-samui-vxova",
+              "notes": "Raja's own product is the THB 160 single-class vehicle ferry (budget tier); premium per-seat tier on the crossing is the ~THB 500 fast-cat point (see rn-347c44e1d360). FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 666667,
+            "_demand_record": {
+              "value": 850000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "source": "SUBSET of rn-347c44e1d360 (do not sum). Raja Ferry Port (SET-listed, RP) company disclosure: ~1.2M passengers + ~600k vehicles carried in 2017 (+20% over 2016) across Donsak-Lipa Noi (Samui) and Donsak-Phangan routes; ~14 ferries, up to 50 trips/day (RP business plan via Koh Samui News/Samui Times; CreditRiskMonitor profile). RP FY2024 (2567) one-report exists but is a scanned PDF; per-route pax not machine-readable.",
+              "method": "1.2M RP network pax (2017) x ~70% Samui-route share = ~850k one-way/yr on Lipa Noi<->Donsak. Company-disclosed base (T2) but 2017-vintage + modeled route split -> med-low. Post-Covid recovery assumed roughly back to 2017 levels given Samui 2024 visitation above pre-Covid."
+            },
+            "_pool_override_recal": {
+              "pool": "Raja+Seatran Surat Thani-Samui ~2M/yr",
+              "pool_pax": 2000000,
+              "share_of_pool": 0.3333333333333333,
+              "final_pax_yr": 666667,
+              "source_url": "https://www.samuitimes.com/"
+            }
+          },
+          "_subset_rule": "R-SUBSET: mint-slice pool of parent crossing \u2014 never sum with parent in aggregates",
+          "pool_id": "donsak_samui_carferry_2M",
+          "share_of_pool": 0.3333,
+          "_subset_of_old": "rn-347c44e1d360"
+        },
+        {
+          "route_id": "ics-5038f54700",
+          "from": "Koh Samui (Nathon)",
+          "to": "Donsak (Seatran harbour)",
+          "distance_nm": 17.9,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 15.2,
+            "_fare_record": {
+              "value": 15.2,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "same crossing as rn-347c44e1d360 (Seatran pier pair) - inherits the fast-cat premium per-seat anchor",
+              "source_url": "https://www.omio.com/ferries/surat-thani/ko-samui-vxova",
+              "notes": "Seatran's own product is the THB 180-225 single-class car ferry (budget/standard tier); the crossing's premium per-seat tier is the ~THB 500 fast-cat point (see rn-347c44e1d360). FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 666667,
+            "_demand_record": {
+              "value": 1200000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low-med",
+              "source": "SUBSET of rn-347c44e1d360 (do not sum). Seatran Ferry: 6 vessels, ~hourly departures 05:00-19:00 each way, 13-16 kt, ~1.5h crossing, ~450-pax + ~70-car capacity per vessel (Tripadvisor operator page; thailandboattickets.com; C9 Hotelworks cited in city brief). No published Seatran annual ridership found.",
+              "method": "R4 frequency x capacity: ~14 sailings/day/direction x 2 directions x ~450 pax x ~33% pax load x 365 = ~1.2M one-way/yr. Tagged T5/modeled per R4; low-med."
+            },
+            "_pool_override_recal": {
+              "pool": "Raja+Seatran Surat Thani-Samui ~2M/yr",
+              "pool_pax": 2000000,
+              "share_of_pool": 0.3333333333333333,
+              "final_pax_yr": 666667,
+              "source_url": "https://www.samuitimes.com/"
+            }
+          },
+          "_subset_rule": "R-SUBSET: mint-slice pool of parent crossing \u2014 never sum with parent in aggregates",
+          "pool_id": "donsak_samui_carferry_2M",
+          "share_of_pool": 0.3333,
+          "_subset_of_old": "rn-347c44e1d360"
+        },
+        {
+          "route_id": "ics-5038f54700",
+          "from": "Samui Pralarn Pier (Mae Nam)",
+          "to": "Koh Phangan (Thong Sala) \u2014 pier-exact",
+          "distance_nm": 7.5,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35.0,
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "same crossing as rn-db5e83248f9d - inherits the Santhiya resort-speedboat per-seat anchor",
+              "source_url": "https://kohphangan.santhiya.com/transfer",
+              "notes": "Pier-exact Lomprayah leg (Pralarn->Thong Sala, 20 min, THB 300 standard fast-cat per ferryadvice.com) is the STANDARD tier; the crossing's premium per-seat tier (resort scheduled speedboat THB 1,150 = USD 35.0) is the R1 anchor. FX 32.85.",
+              "confidence": "T1"
+            },
+            "corridor_annual_oneway_pax": 450000,
+            "_demand_record": {
+              "value": 450000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low-med",
+              "source": "SUBSET of rn-db5e83248f9d (do not sum). Lomprayah operates the Pralarn (Mae Nam) terminal with ~4-6 daily fast-cat departures/direction to Thong Sala (lomprayah.com 2026 timetable; ferryadvice.com: Pralarn->Thong Sala 20 min, THB 300); Lomprayah is the highest-frequency operator on the crossing.",
+              "method": "R4-style operator-share slice: Lomprayah Pralarn-pier share modeled at ~45% of the ~1.0M crossing pool = ~450k one-way/yr. Capacity sanity: ~5 sailings/day/direction x ~340-seat catamarans x 2 directions x 365 = ~1.24M seats/yr -> 450k = ~36% load, plausible."
+            }
+          },
+          "_subset_of": "rn-db5e83248f9d",
+          "_subset_rule": "R-SUBSET: mint-slice pool of parent crossing \u2014 never sum with parent in aggregates"
+        },
+        {
+          "route_id": "rn-21d437d2bf84",
+          "from": "Koh Samui",
+          "to": "Koh Tao (Mae Haad)",
+          "distance_nm": 35.3,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 24.4,
+            "_fare_record": {
+              "value": 24.4,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "premium_fast_catamaran_per_seat (Lomprayah/Seatran Discovery high-speed cat is the top scheduled per-seat product on this 35 nm open-water leg)",
+              "source_url": "https://www.ticket2attraction.com/discount-tickets/ferry-samui-koh-tao/",
+              "notes": "Anchor THB 800/pp one-way = USD 24.4 (top of the published THB 700-850 fast-cat band: ticket2attraction Lomprayah ex-Pralarn from THB 700; ferryadvice 700; rome2rio THB 650-1,300; city-brief/siamtickets band 700-850). Fare ladder (THB/pp): budget Songserm/night boat ~500-600; fast-cat 700-850 <- premium scheduled tier, anchor 800; no scheduled per-seat speedboat above it (private charter only, e.g. Boonsiri Chumphon-Tao catamaran charter from THB 110,000/way - excluded as whole-boat overclaim). R13-type note: the fast cat IS the premium product on this crossing. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 400000,
+            "_demand_record": {
+              "value": 400000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "med-low",
+              "source": "Koh Tao: 666,778 visitors in 2024 (above pre-Covid; record), 327,000 Jan-May 2025, full-year 2025 forecast >700,000 - Koh Tao Tourism Association / TAT figures via Thairath & Daily News (T2 base). Koh Tao is boat-only (no airport, R3-EXCEPTION: arrivals = crossing ridership). Access splits between the Chumphon side (Bangkok route) and the Samui/Phangan side.",
+              "method": "666,778 visitors x 2 = ~1.33M one-way island boat legs/yr across all routes. Samui-side direct share (Samui<->Tao without the Phangan leg) modeled at ~30% = ~400k one-way/yr. The visitor count is T2; the route-split is modeled (T5), hence med-low. Phangan<->Tao (ics-3cf5eda189) holds a comparable separate slice - not pooled here."
+            }
+          }
+        },
+        {
+          "route_id": "rn-fa231ce52b52",
+          "from": "Four Seasons Koh Samui (Laem Yai)",
+          "to": "Ang Thong Marine Park (Wua Talap)",
+          "distance_nm": 15.3,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 79.0,
+            "_fare_record": {
+              "value": 79.0,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "licensed_premium_speedboat_day_tour_per_seat_net_of_park_fee (Ang Thong NMP from Samui)",
+              "source_url": "https://angthongmarinepark.com/",
+              "notes": "Anchor USD 79.0/pp one-way-equivalent: licensed Ang Thong speedboat day tours sell at THB 2,200 (angthongmarinepark.com, incl lunch/snorkel/kayak, 4.7/5 x 4,400 guests) up to THB 3,900 premium small-group (city brief / GetYourGuide-tier operators 2025); premium point ~THB 2,900 minus THB 300 DNP park fee (thailandee.com: foreigner entrance THB 300) = ~THB 2,600 = USD 79 (R3-PIER fee-netting: transport+experience portion only). Charter rung: Samui Boat Charter private half-day from USD 109.88/adult (Tripadvisor). Fare ladder (THB/pp): big-boat tour ~1,400-1,800; standard speedboat tour 2,200; PREMIUM small-group speedboat 2,900-3,900 <- anchor 2,900 gross / 2,600 net; private charter >= USD 110/pp. Note: day-tour RT+excursion pricing, not a clean point-to-point one-way transfer - treated as the per-seat premium willingness-to-pay on this corridor. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 300000,
+            "_demand_record": {
+              "value": 300000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "source": "Mu Ko Ang Thong National Marine Park: ~160,000 park visitors/yr, ~85% foreign, >THB 40M annual fee revenue (Thai PBS citing park authority, ~2024; DNP visitor-stats system catalog.dnp.go.th is the underlying register - R3-GOLD park-authority class). Park is boat-only and closed annually 1 Nov-15 Dec. Licensed speedboat day tours depart Samui (and Phangan) daily in season.",
+              "method": "160k park visitors x 2 = ~320k one-way park boat legs/yr -> 300k (rounding + Phangan-departure share trimmed). R3-PIER FLAG: the modeled origin is the Four Seasons (Laem Yai) jetty, but today's tour boats depart Nathon/Maenam/Bangrak - this pool is the PARK-ACCESS pool servable from Samui's NW coast, not current Four Seasons-origin ridership. Down-weighted to med-low accordingly."
+            }
+          },
+          "captive_resort": true,
+          "villas": 60,
+          "_captive_note": "Four Seasons Koh Samui = 60 pool villas. Ceiling = ceil(60/25)=3 vessels."
+        }
+      ],
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_fleet_basis_note": "G51 locked ruling: market fleet = sum of raw per-corridor vessel fractions (10% capture), ceil ONCE at market level. No per-corridor math.floor zeroing of thin-but-real legs. Subset (_subset_of) slices excluded.",
+      "partner": "grab-thailand",
+      "_scope": "grab-thailand-derivative"
+    },
+    "phuket": {
+      "region": "SEA",
+      "label": "Phuket + the Andaman",
+      "corridors": [
+        {
+          "route_id": "gcn-cbc11a6947-shared",
+          "from": "Phuket (Royal Phuket Marina)",
+          "to": "Phang Nga Bay / James Bond Island",
+          "distance_nm": 20,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-cbc11a6947",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 72,
+            "_fare_record": {
+              "value": 72,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "THB",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket->Phang Nga Bay/James Bond Island speedboat day-tour ladder (THB/USD 36): budget longtail ~1,400 THB ($39, phukettoursdirect); standard shared speedboat ~2,500 THB ($69); PREMIUM shared speedboat ~2,600-3,700 THB ($72-103, phiphitours/mythailandtours '$55 low-season' to ~3,700 quoted); private charter speedboat ~29,000-40,900 THB/boat/day (yacht-rental-phuket, phuketdreamcompany) = whole-boat, excluded as overclaim. Premium per-seat anchored ~2,600 THB net of 400 THB park fee = $72.",
+              "method": "observed-premium-tier (per-seat premium speedboat, net of national-park fee; tour bundles meal+guide so transport portion conservative)",
+              "fare_ladder_usd_pax": {
+                "budget": 39,
+                "standard": 69,
+                "premium": 97,
+                "charter": "29000-40900/boat"
+              }
+            },
+            "corridor_annual_oneway_pax": 580000,
+            "_demand_record": {
+              "value": 580000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Ao Phang Nga National Park visitors FY2567 (Oct-2023..Sep-2024) = 530,204 (DNP top-10 ranking, #7 by visitors; reported by Prachachat, https://www.prachachat.net/hilight-prachachat/news-1796245, Apr-2025). Park is reachable ONLY by tour boat/longtail/speedboat (no road/air to Khao Phing Kan/Ko Tapu) -> R3-EXCEPTION holds: park arrivals = crossing ridership. DNP also runs e-ticketing at this park (one of 6 pilot parks). Pre-covid FY2019 was ~1M+ (payload note), so FY2024 is the conservative post-covid actual.",
+              "method": "530,204 park visitors x2 = 1,060,408 one-way boat trips (T2, turnstile/fee-paying). R3-PIER haircut: day-tours depart BOTH Phuket NE marinas (Ao Po Grand, Royal Phuket Marina, Boat Lagoon, Yacht Haven) AND Phang Nga mainland piers (Surakul/Kura, Khao Lak); Phuket-origin share modeled 0.55 -> 583,224 ~= 580,000. Per existing rule, THB 300 NP fee must be netted out of tour fares on the FARE side (not demand). Tour-boat-only corridor (no scheduled ferry) - demand is day-trip pool, not point-to-point ridership."
+            },
+            "demand_confidence": "med"
+          }
+        },
+        {
+          "route_id": "gcn-e927fe8958-shared",
+          "from": "Phuket",
+          "to": "Krabi (Ao Nang)",
+          "distance_nm": 40,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-e927fe8958",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 44,
+            "_fare_record": {
+              "value": 44,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket->Krabi (Ao Nang) speedboat premium tier ~comparable to Phi Phi route ($44). Krabi-specific demand re-source pending.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "budget": 18,
+                "vip_transfer": 22,
+                "private_speedboat": 44,
+                "private_charter": "333/2pax-tour"
+              }
+            },
+            "corridor_annual_oneway_pax": null,
+            "_demand_record": {
+              "value": null,
+              "unit": "pax/yr one-way",
+              "confidence": null,
+              "method": "RE-SOURCE NEEDED",
+              "source": "Phi Phi demand moved to new Phuket->Phi Phi corridor per Jaideep 2026-06-09. Krabi (Ao Nang) demand to be sourced separately. Until then: estimated via country cascade."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-9ae16d4c34-shared",
+          "from": "Phuket",
+          "to": "Phi Phi (Tonsai)",
+          "distance_nm": 25,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": null,
+          "to_node_id": null,
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-9ae16d4c34",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 17.14,
+            "_fare_record": {
+              "value": 17.14,
+              "unit": "USD/pax/one-way",
+              "source": "Phuket (Rassada Pier) -> Koh Phi Phi (Tonsai)",
+              "method": "THAILAND-DEMAND-ANCHORS hardened fare",
+              "confidence": "derived_pending_validation",
+              "notes": "THB 600 standard ferry = ~$17 contested floor; speedboat THB 700-1,200 and charter ceiling far higher."
+            },
+            "corridor_annual_oneway_pax": 98124,
+            "_demand_record": {
+              "value": 98124,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "derived_demand_record",
+              "confidence": "derived_pending_validation",
+              "source": "Phuket (Rassada Pier) -> Koh Phi Phi (Tonsai)",
+              "method": "shown_math",
+              "detail": "97 sailings/wk * 52 wk * 590 cap * 0.55 LF = ~1.64M corridor seats/yr (gross, both directions implied in schedule). One-way pax pool ~ 818k/yr. Premium-eligible = 818k * 0.12 = ~98,200 premium one-way trips/yr."
+            },
+            "demand_confidence": "derived_pending_validation"
+          },
+          "_thailand_demand_hardened": true,
+          "_demand_anchor_file": "THAILAND-DEMAND-ANCHORS-phuket-andaman.json"
+        },
+        {
+          "route_id": "gcn-0cc5f4e157-shared",
+          "from": "Phuket",
+          "to": "Similan / Surin Islands",
+          "distance_nm": 55,
+          "vessel": "Quanta-LR",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand__similan-islands",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-0cc5f4e157",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 80,
+            "_fare_record": {
+              "value": 80,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "THB",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket->Similan/Surin premium shared speedboat day-tour (THB/USD 36): premium catamaran-speedboat tours ~2,500-2,600 THB incl 500 THB park fee+meals from Khao Lak (phiphitours 2,590 THB=$72); Phuket-origin runs higher ~2,900-3,500 THB ($80-97) for the longer 55nm leg. Private charter Phuket->Similan 50,000-80,000 THB/boat/day (forbesandpartners) = whole-boat, excluded. Premium per-seat anchored ~2,900 THB ($80) net for the longer Phuket origin.",
+              "method": "observed-premium-tier per-seat; longer-leg Phuket origin priced above Khao Lak baseline; park fee included",
+              "fare_ladder_usd_pax": {
+                "budget": "n/a (no budget option, NP speedboat-only)",
+                "standard": 72,
+                "premium": 80,
+                "charter": "50000-80000/boat"
+              }
+            },
+            "corridor_annual_oneway_pax": 580000,
+            "_demand_record": {
+              "value": 580000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "low",
+              "source": "Mu Ko Similan NP official visitor statistics (DNP/park clarification, May-2025, via MGR Online https://mgronline.com/uptodate/detail/9680000041761): FY2561(2018)=912,566; FY2562(2019)=676,793; FY2566(2023)=352,701; FY2567(2024)=578,535; FY2568=503,142 as of 30-Apr-2025. Daily cap 3,850 visitors/day (DNP, http://news.dnp.go.th/news/7966). Season: park CLOSED ~May 16 - Oct 14; open season ~212 days/yr (reopened 15-Oct each year, prd.go.th).",
+              "method": "FY2024 actual 578,535 visitors x2 = 1,157,070 one-way boat trips - BUT R3-PIER applies HARD: virtually all Similan boats depart Thap Lamu pier (Phang Nga, ~60km N of Phuket), customers based in Phuket/Khao Lak; there is NO Phuket-origin sea service today. Phuket-customer-origin share ~0.5 -> ~578,000 ~= 580,000 re-routable one-way trips; confidence LOW for the named Phuket origin. season_days=212: demand concentrates to ~2,730 visitors/day avg (71% of the 3,850/day cap; cap x season = 816,200 ceiling, R4-grade cross-check). Surin Is. (separate NP, boats from Kuraburi, same seasonal closure) NOT added - would be additive but even further from Phuket."
+            },
+            "demand_confidence": "low"
+          }
+        },
+        {
+          "route_id": null,
+          "from": "Phuket",
+          "to": "Langkawi (cross-border, regional reach)",
+          "distance_nm": 107,
+          "vessel": "Quanta-LR",
+          "archetype": "intercity",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "langkawi-malaysia",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 115,
+            "_fare_record": {
+              "value": 115,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "THB",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket (Rassada Pier)->Langkawi (Telaga Harbour) operated daily by Satun Pakbara Speed Boat Club, speedboat+ferry combo via Koh Lipe (immigration stop), ~8.5h, 1 trip/day. Fare THB 4,100 = ~$115 one-way (ferrysamui.com, directferries, ferryscanner); Omio cross-check $89-117 (Tigerline). Single-class long-haul cross-border - the operating fare IS the premium per-seat (no budget tier on this combo).",
+              "method": "observed live booking fare; single-class combo route = premium per-seat by default (R5-EXT inverse: this is a real premium long-haul transfer, not a commuter flat fare)",
+              "fare_ladder_usd_pax": {
+                "budget": "n/a",
+                "standard": 115,
+                "premium": 115,
+                "charter": "n/a"
+              }
+            },
+            "corridor_annual_oneway_pax": null,
+            "_demand_record": {
+              "value": null,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "Daily combo speedboat/ferry operates (Satun Pakbara) but NO published ridership. Niche pool: visa-runners + Koh Lipe through-traffic; most Phuket<->Langkawi travelers FLY (AirAsia direct). Freq x capacity floor: 1 boat/day x ~40 seats x ~0.5 load x ~210 season-days ~ 4k/yr - too thin/speculative to anchor.",
+              "method": "NULL beats a guess (R2). Route operates (not greenfield/lapsed) but unpublished + structurally thin cross-border niche -> flag to cascade."
+            }
+          },
+          "_distance_nm_orig": 80,
+          "aspirational": true
+        },
+        {
+          "route_id": "gcn-097bdf6e8e-shared",
+          "from": "Chalong Pier (Ao Chalong)",
+          "to": "Chalong Pier (Ao Chalong)",
+          "distance_nm": 10.0,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-097bdf6e8e",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35,
+            "_fare_record": {
+              "value": 35,
+              "unit": "USD/pax/day-trip ride (half-day Coral speedboat comparable, lunch/snorkel-inclusive)",
+              "currency_basis": "THB at ~36 THB/USD (same FX basis as existing phuket rows, 2026)",
+              "year": 2026,
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Modal product = shared speedboat Coral Island half/one-day trip ex-Chalong: Love Sea Tour Racha+Coral speedboat 1,200 THB adult (promo 1,050) (loveseatour.com/racha-coral-speed-boat/); JC Tour Coral+snorkel 1,200 THB (jctour-thai.com/coral); Andamarine one-day Racha Yai+Coral 1,250 THB/pax incl. buffet lunch (operator IG, 2026). Premium top of ladder: HYPE join-in day cruise 3,900 THB adult incl. transfer (operator rate sheet via boatingo.com/boats/hype-catamaran/). Anchor = modal speedboat product ~1,250 THB = ~USD 35, NOT the premium cat.",
+              "method": "observed operator per-seat pricing for the identical day-experience products; anchor at the volume-dominant product tier",
+              "fare_ladder_usd_pax": {
+                "loveseatour_racha_coral_promo": 29,
+                "jctour_coral_halfday": 33,
+                "andamarine_racha_coral_oneday": 35,
+                "sunset_dinner_catamaran_band": 60,
+                "hype_join_in_day_cruise_thb3900": 108
+              }
+            },
+            "corridor_annual_oneway_pax": 400000,
+            "_demand_record": {
+              "value": 400000,
+              "unit": "pax/yr (day-experience rides ex-Chalong; one ticket = one ride/loop, no doubling)",
+              "gross_pool_pax_yr": 400000,
+              "gross_pool_basis": "T2 GOVERNMENT TURNSTILE-GRADE ANCHOR: Marine Department regional office (Phuket branch) counts reported by Prachachat, 13-Apr-2024 (Songkran holiday): 119 tour-boat departures from Chalong Pier carrying >2,500 tourists in one day, destinations 'especially Ko He (Coral) and Ko Racha', activities cruising/snorkelling/fishing/sunset; plus 36 marina departures; province-wide same day 379 departures / 11,637 pax (+25% YoY). Annualization (T3 layer): holiday-peak day scaled to average day at 0.40-0.60x (Andaman May-Oct monsoon + shoulder seasons) = 1,000-1,500 pax/day = 365k-550k gross; ~10% strip for Racha resort-transfer legs (The Racha/Rayaburi overnight guests on tour boats) and any Chalong-departing Phi Phi-bound boats (overlap guard vs ics-8c6c7ae8ee) -> floor 300k / base 400k / ceiling 550k (ceiling holds the 0.60x scaling with no strip).",
+              "addressable_pax_yr_floor": 300000,
+              "addressable_pax_yr": 400000,
+              "addressable_pax_yr_ceiling": 550000,
+              "demand_confidence": "med",
+              "sources": [
+                {
+                  "label": "Prachachat - 'Phuket Ao Chalong bustling! Tourists board boats, 2,000+' (13-Apr-2024): Marine Dept Phuket branch data - 119 departures / >2,500 tourists ex-Chalong in one day, esp. to Ko He & Ko Racha; +36 marina departures; province 379 departures / 11,637 pax, +25% YoY",
+                  "url": "https://www.prachachat.net/hilight-prachachat/news-1543946",
+                  "year": 2024,
+                  "tier": "T2"
+                },
+                {
+                  "label": "HYPE Boat Club operator rate sheet (via boatingo charter listing) - HYPE 84 catamaran: Day capacity 80, join-in day cruise 3,900 THB adult, daily 11:30-18:30 ex-Chalong Pier to Coral Island/Racha Yai, 'All Seasons/All Year'; private charter ladder up to 80 pax",
+                  "url": "https://boatingo.com/boats/hype-catamaran/",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Hype Boat Club operator site - fleet: HYPE 84 catamaran (Chalong), HYPE Escape catamaran, HYPE Yacht, HYPE 86 arriving mid-2026; Yona floating beach club sister venue",
+                  "url": "https://hypeboatclub.com/",
+                  "year": 2026,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Love Sea Tour - Racha + Coral Island speedboat day tour 1,200 THB adult (promo 1,050), scheduled daily ex-Chalong (fare + schedule anchor for the modal speedboat product)",
+                  "url": "https://www.loveseatour.com/racha-coral-speed-boat/",
+                  "year": 2026,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Trip.com OTA listing - 'Half-day sunset tour to Coral Island and Promthep Cape from Phuket by catamaran... maximum capacity: 104 travelers' (second large-cat hull on the waterway; corroborator only)",
+                  "url": "https://www.trip.com/things-to-do/detail/108256863/",
+                  "year": 2026,
+                  "tier": "T3"
+                },
+                {
+                  "label": "Viator - Scenic Promthep & Krating Cape Dining Experience Cruise: 'sunset dinner trip accommodates a maximum of 38 guests' (third scheduled evening hull; corroborator)",
+                  "url": "https://www.viator.com/tours/Phuket/Promthep-and-Krating-Cape-Luxury-Dinner-Cruise/d349-110534P740",
+                  "year": 2026,
+                  "tier": "T2"
+                }
+              ],
+              "haircut_rationale": "GROUNDED: real, government-counted on-water ridership (LB-98 species 3) - the Marine Dept count is of passengers boarding boats, not waterfront foot traffic. The only inferred layer is peak-to-average seasonality (T3, 0.40-0.60x band drives floor/ceiling) plus a 10% strip for resort-transfer/other-pool legs. Fleet cross-check consistent: 119 documented departures on a peak day from a 1-km pier; year-round daily schedules from HYPE (80-seat cat) + 104-pax and 38-pax cats + dozens of 20-30-seat speedboats. Navier 10% capture applied downstream by the engine, competing as the premium small-group electric tier under the THB 1,250-3,900 ladder.",
+              "lb91_test": "PASS by construction: every counted pax was boarding a boat (Marine Dept pier count). Chalong waterfront restaurant/marina foot traffic and land-arriving beach visitors are NOT counted (R3-LAND). Ko He/Racha are boat-only islands - no land-arrival conflation possible.",
+              "dedupe": "ONE merged pool for all parallel Chalong-origin per-seat operators per LB-86. Zero overlap with ics-b737c5ae68 (Phang Nga, NE-marina departures - 0.55 Phuket-origin share there was built on NE marinas, not Chalong), ics-8c6c7ae8ee (Phi Phi, Rassada/NE piers; any Chalong Phi Phi departures stripped in the 10% haircut), ics-2ca88ff772 (Similan, Thap Lamu mainland pier). Racha overnight-resort transfer legs stripped in haircut. The premium Phang Nga subset row below shares NO pax with this pool (different piers, different waterway)."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-f1b2ff834e-shared",
+          "from": "Ao Po Pier (Ao Po / Ao Por, NE Phuket)",
+          "to": "Khao Phing Kan (James Bond Island), Phang Nga Bay",
+          "distance_nm": 13.5,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-f1b2ff834e",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 90,
+            "_fare_record": {
+              "value": 90,
+              "unit": "USD/pax/day-cruise (premium small-group, lunch/kayak-inclusive comparable; THB 300 NP fee netted out on fare side per existing phuket rule)",
+              "currency_basis": "THB at ~36 THB/USD (same FX basis as existing phuket rows, 2026)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "John Gray's Hong by Starlight 3,350 THB/pax agent rate (phukettoursdirect.com/hong-by-starlight.html) / USD 108.89 retail (Agoda activities listing); Phuket Sail Tours sunset/day band 2,200-2,800 THB (phuketexpatguide.com operator comparison, 2026); Simba Sea Trips premium small-group products (TripAdvisor-listed, 18-adult cap, award-positioned above mass market). Anchor = conservative mid of the 2,500-3,900 THB premium band ~ USD 90.",
+              "method": "operator/agent-listed per-seat pricing for the identical premium small-group day-cruise products, conservative mid-band",
+              "fare_ladder_usd_pax": {
+                "pst_sunset_band_low_thb2200": 61,
+                "pst_band_high_thb2800": 78,
+                "johngray_agent_thb3350": 93,
+                "johngray_retail_agoda": 109,
+                "parent_pool_anchor_ref": 72
+              }
+            },
+            "corridor_annual_oneway_pax": 20000,
+            "_demand_record": {
+              "value": 20000,
+              "unit": "riders/yr (round-trip premium day-cruise pax; one rider = one experience)",
+              "gross_pool_pax_yr": 20000,
+              "gross_pool_basis": "Fleet x departures x capacity x load (WaterB precedent) - no operator discloses annual pax. Operators sailing the NE-Phuket -> Phang Nga premium small-group product: (1) Simba Sea Trips - 'every tour capped at 18 adults' (T2 TripAdvisor operator listing), daily 'Phang Nga Bay and Beyond' departure ex-Boat Lagoon, operating since 2005 (T2 GetYourGuide supplier page); (2) Phuket Sail Tours - big boat Ngamkom 'licensed for 45 passengers but we won't take more than 20 adults' (T2 TripAdvisor product page quoting operator), James Bond day tour + separate sunset tour ex-Ao Por Public Pier (T1 operator site) = up to 2 departures/day; (3) John Gray's Sea Canoe - Hong by Starlight daily ex-Ao Po Pier (T2 Agoda itinerary), 'Maximum 40 Persons per boat' (T3 listing copy - excluded from floor build, Quicksilver precedent). Build: floor = T2-capped operators only at 0.5 load, 1 dep/day each, 330 days: (18+20) x 0.5 x 330 = 6.3k -> 6k; base = Simba 18 x 0.7 + PST 2 deps x 20 x 0.6 + JG 40 x 0.6 = ~61/day x 330 = 20.1k -> 20k; ceiling = all hulls at 0.8 load, PST 2 deps, 365 days: (14.4 + 32 + 32) x 365 = 28.6k -> 30k.",
+              "addressable_pax_yr_floor": 6000,
+              "addressable_pax_yr": 20000,
+              "addressable_pax_yr_ceiling": 30000,
+              "demand_confidence": "low",
+              "sources": [
+                {
+                  "label": "TripAdvisor operator listing - Simba Sea Trips: 'Every tour is capped at 18 adults', TAT-licensed; product 'Luxury Small Group Phang Nga Bay and Beyond' (273 reviews)",
+                  "url": "https://www.tripadvisor.com/Attraction_Review-g293920-d1169438-Reviews-Simba_Sea_Trips_Co_Ltd-Phuket.html",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "GetYourGuide supplier page - Simba Sea Trips: small-group/private tours from Boat Lagoon Marina for 20+ years (Phi Phi, Maya Bay, Phang Nga, James Bond)",
+                  "url": "https://www.getyourguide.com/simba-sea-trips-co-ltd-s150517/",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Phuket Sail Tours operator site - James Bond sunset tour ex-Ao Por Public Pier, 'Max 20 Guests' on big boat Ngamkom; TripAdvisor product page: 'licensed for 45 passengers, but we won't take more than 20 adult'",
+                  "url": "https://phuketsailtours.com/james-bond-sunset-tour-from-phuket/",
+                  "year": 2026,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Agoda activities - John Gray's Sea Canoe Hong by Starlight: 'cruise from Ao Po Pier', USD 108.89 (departure pier + retail fare)",
+                  "url": "https://www.agoda.com/activities/detail/th/phuket/john-grays-sea-canoe-day-tour",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "phukettoursdirect agent - Hong by Starlight 3,350 THB/pax (agent fare-ladder anchor); beaches-searcher listing copy 'Maximum 40 Persons per boat' (T3 capacity - excluded from floor)",
+                  "url": "https://www.phukettoursdirect.com/hong-by-starlight.html",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Phuket Expat Guide - sunset cruise operator comparison: John Gray's 2,800-3,500 THB, Phuket Sail Tours 2,200-2,800 THB (fare band corroborator)",
+                  "url": "https://phuketexpatguide.com/blog/phuket-sunset-cruises-compared/",
+                  "year": 2026,
+                  "tier": "T3"
+                }
+              ],
+              "haircut_rationale": "GROUNDED ridership (LB-98 species 3) but held OUT of the grounded additive floor as a subset of the ics-b737c5ae68 Phang Nga pool (see _subset_note). Floor excludes John Gray (capacity only T3-sourced) - null beats confidently-wrong. Loads/departure counts are the inferred layer (T3). Navier 10% capture applied downstream by the engine; the 8-pax Pioneer II is the natural next rung of exactly this premium small-group ladder.",
+              "lb91_test": "PASS: every counted rider bought the premium boat day-cruise as the product. Khao Phing Kan is boat-only (existing R3-EXCEPTION on the parent row); no land-arrival conflation.",
+              "dedupe": "ONE merged pool for all premium small-group Phang Nga operators per LB-86. _subset_of ics-b737c5ae68 prevents double-count with the 580k parent. Zero overlap with the Chalong pool above (different piers/waterway) and zero overlap with Phi Phi/Similan pools (those products excluded from the build)."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-7c1835846d-shared",
+          "from": "Phuket",
+          "to": "Langkawi (cross-border, regional reach)",
+          "distance_nm": 107,
+          "vessel": "Quanta-LR",
+          "archetype": "ridehail",
+          "from_node_id": "langkawi-malaysia",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-7c1835846d",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 115,
+            "_fare_record": {
+              "value": 115,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "THB",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket (Rassada Pier)->Langkawi (Telaga Harbour) operated daily by Satun Pakbara Speed Boat Club, speedboat+ferry combo via Koh Lipe (immigration stop), ~8.5h, 1 trip/day. Fare THB 4,100 = ~$115 one-way (ferrysamui.com, directferries, ferryscanner); Omio cross-check $89-117 (Tigerline). Single-class long-haul cross-border - the operating fare IS the premium per-seat (no budget tier on this combo).",
+              "method": "observed live booking fare; single-class combo route = premium per-seat by default (R5-EXT inverse: this is a real premium long-haul transfer, not a commuter flat fare)",
+              "fare_ladder_usd_pax": {
+                "budget": "n/a",
+                "standard": 115,
+                "premium": 115,
+                "charter": "n/a"
+              }
+            },
+            "corridor_annual_oneway_pax": null,
+            "_demand_record": {
+              "value": null,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "Daily combo speedboat/ferry operates (Satun Pakbara) but NO published ridership. Niche pool: visa-runners + Koh Lipe through-traffic; most Phuket<->Langkawi travelers FLY (AirAsia direct). Freq x capacity floor: 1 boat/day x ~40 seats x ~0.5 load x ~210 season-days ~ 4k/yr - too thin/speculative to anchor.",
+              "method": "NULL beats a guess (R2). Route operates (not greenfield/lapsed) but unpublished + structurally thin cross-border niche -> flag to cascade."
+            },
+            "demand_confidence": "low"
+          }
+        }
+      ],
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_fleet_basis_note": "G51 locked ruling: market fleet = sum of raw per-corridor vessel fractions (10% capture), ceil ONCE at market level. No per-corridor math.floor zeroing of thin-but-real legs. Subset (_subset_of) slices excluded.",
+      "partner": "grab-thailand",
+      "_scope": "grab-thailand-derivative"
+    },
+    "bangkok": {
+      "region": "SEA",
+      "label": "Bangkok / Chao Phraya",
+      "corridors": [
+        {
+          "route_id": "gcn-334cc44485-shared",
+          "from": "ICONSIAM Pier (Chao Phraya)",
+          "to": "ICONSIAM Pier (Chao Phraya)",
+          "distance_nm": 5.3,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bangkok",
+          "to_node_id": "bangkok",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-334cc44485",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35,
+            "_fare_record": {
+              "value": 35,
+              "unit": "USD/pax/loop-ride (evening sail, F&B-inclusive comparable)",
+              "currency_basis": "THB 1,200; FX ~34 THB/USD, 2026",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Conservative mid of the live Jun-2026 promo band across 24 listed dinner-round products (899-2,000 THB; cluster at 1,150-1,550): click2gothailand.com top-10 guide (updated 1-Jun-2026); Bangkok Chaophraya Cruise operator site lists 1,550 THB/pax rack. Navier 8-pax product would be drinks/canape-class, not galley-buffet-class, hence mid-band anchor not premium.",
+              "method": "OTA-listed per-seat evening-sail pricing across the full operator set, conservative mid-band",
+              "fare_ladder_usd_pax": {
+                "sunset_round_low": 18,
+                "budget_dinner_round": 26,
+                "headline_anchor_mid_band": 35,
+                "operator_rack_bangkok_chaophraya": 46,
+                "wonderful_pearl_premium": 59
+              }
+            },
+            "corridor_annual_oneway_pax": 1200000,
+            "_demand_record": {
+              "value": 1200000,
+              "unit": "pax/yr (loop rides; one seat = one ride)",
+              "gross_pool_pax_yr": 1200000,
+              "gross_pool_basis": "Fleet x sailings x capacity x load (WaterB precedent), whole-market: ~10 cruise operators on the river (T2, Bangkok Post 23-Mar-2024 quoting Tristar/Chao Phraya Princess director Chatree Wangpanitkul); >=25 distinct scheduled hulls active Jun-2026 (T2, click2gothailand catalog: 24 dinner-round products + sunset rounds, after collapsing same-hull multi-pier listings; CP Princess alone fields 8 hulls). Capacities where published: CP Princess fleet 150-450 pax/hull (T2 BKK Post), Viva Alangka 700 / Royal Princess 600 / Alangka 400 (T2 guide), Chaophraya Cruise 290 (T1 operator site chaophrayacruise.com). Build: floor 20 hulls x 1 sailing/night x 250 avg cap x 40% load = 2,000/night = 730k/yr; base 25 hulls x 1 x 300 x 50% = 3,750/night = 1.37M, haircut to 1.2M; ceiling 25 hulls x 1.4 sailings (sunset+dinner doubles) x 325 x 60% = 6,800/night = 2.5M, capped at 2.0M. Cross-check: CP Princess alone runs 5-8 trips/day (T2 BKK Post) ~ 350k pax/yr at mid assumptions and is the largest operator -> market 3-4x Princess = 1.1-1.4M, consistent with base.",
+              "addressable_pax_yr_floor": 700000,
+              "addressable_pax_yr": 1200000,
+              "addressable_pax_yr_ceiling": 2000000,
+              "demand_confidence": "med",
+              "sources": [
+                {
+                  "label": "Bangkok Post - 'Staying afloat in a turbulent market' (23-Mar-2024): Chao Phraya Princess fleet 8 boats, 150-450 pax capacity, 300+ staff, 5-8 boat trips daily, ~10 cruise operators on the river, 2024 target 80% of 2019 customers",
+                  "url": "https://www.bangkokpost.com/business/general/2763423/staying-afloat-in-a-turbulent-market",
+                  "year": 2024,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Click2GoThailand Top-10 Bangkok Dinner Cruises (updated 1-Jun-2026) - live catalog of 24 dinner-round + 9 sunset-round products across ICONSIAM/Asiatique/River City piers with ship specs (Viva Alangka 700 pax, Royal Princess 600, Alangka 400) and promo fares 599-2,000 THB",
+                  "url": "https://www.click2gothailand.com/guides/00008/top-10-bangkok-dinner-cruises",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Chaophraya Cruise operator site - Chaophraya Cruise capacity 290 passengers (Grand Chaophraya + Chaophraya Cruise 2-hull fleet)",
+                  "url": "https://chaophrayacruise.com/en/",
+                  "year": 2025,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Bangkok Chaophraya Cruise operator site - 1,550 THB/pax, two daily cruises",
+                  "url": "https://www.bangkokchaophrayacruise.com/",
+                  "year": 2026,
+                  "tier": "T1"
+                }
+              ],
+              "haircut_rationale": "GROUNDED: real scheduled per-seat ridership today (LB-98 species 3). No big-round-number anchor exists; pool is built bottom-up from T1/T2 hull counts and capacities with T3 load/sailing-frequency inference (the only unsourced layers), mirroring the SG WaterB recipe. Base haircut below the raw mid build; ceiling capped below the raw ceiling. Navier 10% capture applied downstream by the engine, competing on product (8-pax premium electric, private-table small-group) at drinks-class price parity.",
+              "lb91_test": "PASS by construction: every counted pax bought a boat ride as the product. Asiatique/ICONSIAM mall foot traffic and free shuttle riders are NOT counted (R3-LAND / zero-fare exclusion).",
+              "dedupe": "ONE merged pool for all parallel dinner/sunset operators per LB-86 (no per-operator rows, no _subset_of chains). No overlap with bkk_hoponhopoff_river_1100k_yr (daytime sightseeing line, different product/fare class) nor with excluded commuter/shuttle/longtail species."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-e299366426-shared",
+          "from": "Sathorn (Central) Pier",
+          "to": "Phra Arthit Pier",
+          "distance_nm": 2.9,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bangkok",
+          "to_node_id": "bangkok",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-e299366426",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.29,
+            "_fare_record": {
+              "value": 4.29,
+              "unit": "USD/pax/one-way",
+              "source": "Chao Phraya river spine: Sathorn (CEN) <-> ICONSIAM (N2/1) <-> Phra Arthit (N13) corridor",
+              "method": "THAILAND-DEMAND-ANCHORS hardened fare",
+              "confidence": "derived_pending_validation",
+              "notes": "THB 150 tourist day-pass as the premium-tier reference (NOT the THB 10 commuter floor); a foiling premium transfer is positioned at the tourist/hotel tier."
+            },
+            "corridor_annual_oneway_pax": 345600,
+            "_demand_record": {
+              "value": 345600,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "derived_demand_record",
+              "confidence": "derived_pending_validation",
+              "source": "Chao Phraya river spine: Sathorn (CEN) <-> ICONSIAM (N2/1) <-> Phra Arthit (N13) corridor",
+              "method": "shown_math",
+              "detail": "40,000/day * 360 = 14.4M system pax/yr. Central tourist corridor = 14.4M * 0.30 = 4.32M/yr. Premium-eligible = 4.32M * 0.08 = ~345,600 premium one-way trips/yr."
+            },
+            "demand_confidence": "derived_pending_validation"
+          },
+          "_thailand_demand_hardened": true,
+          "_demand_anchor_file": "THAILAND-DEMAND-ANCHORS-bangkok.json"
+        }
+      ],
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_fleet_basis_note": "G51 locked ruling: market fleet = sum of raw per-corridor vessel fractions (10% capture), ceil ONCE at market level. Subset (_subset_of) slices excluded.",
+      "_created": "2026-06-10 LB-98 experience-tier wave (no prior bangkok market; Chao Phraya rows are the seed)",
+      "partner": "grab-thailand",
+      "_scope": "grab-thailand-derivative"
+    }
+  }
+}

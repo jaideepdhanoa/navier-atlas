@@ -30,8 +30,20 @@ Thailand is one of the strongest fits we've mapped anywhere. Three clusters, one
 ## What a low-friction pilot looks like
 Start in **one cluster** — the Samui–Phangan–Tao triangle is the cleanest first pilot: dense, proven flows, painful weather-fragile ferries, premium guests, jetties already in place. Prove the in-app premium hop, then extend to Phuket/Andaman and the Bangkok river.
 
+## Economics snapshot (grounded floor — 3 cascade-ready corridors + 12 additional sourced legs)
+
+| Rung | Mid estimate | Basis |
+|------|-------------|-------|
+| **SOM floor** (near-term) | **~$21M/yr** Navier transport rev | 103-boat fleet across 15 Pioneer-II corridors |
+| **SAM** (mature network) | **~$481M/yr** | Contested super-app capture (10%→25%), induced demand |
+| **Marine TAM** | **~$1.9B/yr** | Full Thailand mapped network |
+| **Journey GMV** | **~$5.8B/yr** | Induced crossing-market GMV through Navier network |
+| **Grab platform rev** | **~$259M/yr** | 18% take on Navier-routed journey GMV |
+
+Cascade-ready demand records (Tasklet hardened): Samui↔Phangan (19.4K premium pax/yr), Phuket↔Phi Phi (98.1K), Chao Phraya spine (345.6K). Bucket-C mesh (17 BP-exact routes) linked on `/grab-thailand/`.
+
 ## The ask
 A 20-minute conversation with the Grab Thailand team while Jaideep is in-country (Bangkok end of this week / early next; can reach Phuket or Samui). No deck required — this page is the brief. We'd love the team's read on whether this sits best under **future mobility**, **country ops**, or **logistics**.
 
 ---
-*Navier — autonomous electric hydrofoiling boats. Corridor atlas available on request.*
+*Navier — autonomous electric hydrofoiling boats. Live proposal: `/grab-thailand/` · Unit-economics sheet: `finance/_refresh_grab-thailand.xlsx`*
