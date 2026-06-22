@@ -62,6 +62,23 @@ slide-2 / convenience plate.
 
 ---
 
+## 4. Prompt tiers by slide family (all partners on Grab gold template)
+
+| Tier | Role | Slides | Look |
+|---|---|---|---|
+| `cover` / `value_prop` / `tam` / `partner_roles` | deck narrative | 1, 2, 10, 11 | Aspirational, golden-hour, iconic when applicable |
+| `atlas_route_screenshot` | example markets | 4–6 | **No generation** — screenshot from Vercel Navier Atlas |
+| `econ_unit` | `econ_market_bg` | 7–9, 19–23 | Left column calm for charts; soft landmark on right horizon; small foiling N30 lower-right |
+| `market_showcase` | `market_showcase_bg` | 14–18 | Postcard iconic skyline/coast; mid-ground foiling N30; vibrant, unmistakably local |
+
+**Foiling rule (all tiers with a vessel):** foils *deployed in the water*, hull *elevated above the
+waterline*, visible struts and foil wake. Never depict a displacement ferry sitting low. “Foils down” in
+legacy docs means foils lowered **into** the water for foiling — not retracted/displacement mode.
+
+Wiring: `decks/{deck}/slide-image-bindings.json` + `builders/deck_slide_bindings.py`.
+
+---
+
 ## Before apply
 QA each plate against the gate in `N30-IMAGE-INTEGRATION-ADDENDUM.md` (opacity 100%, single vessel, market
 lock, human booking-moment on slide 2, no seam, hull form matches the neutral reference). Save provenance to

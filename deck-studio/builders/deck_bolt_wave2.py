@@ -27,6 +27,7 @@ from deck_bolt_pilot import (  # noqa: E402
     write_json,
 )
 from deck_edit_ops import econ_value_replace_ops, image_replace_op, text_replace_ops  # noqa: E402
+from deck_slide_bindings import image_bindings_list, load_slide_bindings, validate_bindings  # noqa: E402
 
 GOLD_ID = "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs"
 
@@ -204,23 +205,20 @@ NARRATIVE_TEXT: dict[tuple[str, str], str] = {
     ("g3eec5122801_0_729", "g3eec5122801_0_735"): "▸  Dubrovnik → Elaphiti Islands\n      ~8 nm · island excursion\n▸  Dubrovnik → Korčula\n      ~55 nm · south Adriatic",
 }
 
+# Deck-level narrative plates only. Unit-econ + market-showcase wiring lives in
+# decks/bolt/slide-image-bindings.json — never bind econ_market_bg to slides 4–6 or 14–18.
 IMAGE_BINDINGS: list[dict] = [
     {"registry": "bolt-cover-hero", "slide_oid": "p1", "target_oid": "p1_i2", "method": "CENTER_CROP"},
     {"registry": "bolt-value-prop-bg", "slide_oid": "g3f139a0b6ec_0_0", "target_oid": "g3f139a0b6ec_0_1", "method": "CENTER_CROP"},
     {"registry": "bolt-tam-bg", "slide_oid": "g3eec5122801_0_562", "target_oid": "navierBg_s26", "method": "CENTER_CROP"},
     {"registry": "bolt-partner-roles-bg", "slide_oid": "g3ea5e0fb254_4_357", "target_oid": "g3ea5e0fb254_4_358", "method": "CENTER_CROP"},
     {"registry": "bolt-partner-logo", "slide_oid": "p1", "target_oid": "p1_i5", "method": "CENTER_INSIDE"},
-    # Example market slide images
-    {"registry": "econ-greece-athens-hydra", "slide_oid": "g3eec5122801_0_106", "target_oid": "g3eec5122801_0_107", "method": "CENTER_CROP"},
-    {"registry": "econ-croatia-split-hvar", "slide_oid": "g3eec5122801_0_201", "target_oid": "g3eec5122801_0_202", "method": "CENTER_CROP"},
-    {"registry": "econ-cote-azur-nice-monaco", "slide_oid": "g3eec5122801_0_296", "target_oid": "g3eec5122801_0_297", "method": "CENTER_CROP"},
-    {"registry": "econ-italy-sorrento-capri", "slide_oid": "g3eec5122801_0_677", "target_oid": "g3eec5122801_0_676", "method": "CENTER_CROP"},
-    {"registry": "econ-uae-dubai-harbour", "slide_oid": "g3eec5122801_0_690", "target_oid": "g3eec5122801_0_689", "method": "CENTER_CROP"},
-    {"registry": "econ-ksa-jeddah", "slide_oid": "g3eec5122801_0_703", "target_oid": "g3eec5122801_0_702", "method": "CENTER_CROP"},
-    {"registry": "econ-greece-mykonos-paros", "slide_oid": "g3eec5122801_0_716", "target_oid": "g3eec5122801_0_715", "method": "CENTER_CROP"},
-    {"registry": "econ-croatia-dubrovnik", "slide_oid": "g3eec5122801_0_729", "target_oid": "g3eec5122801_0_728", "method": "CENTER_CROP"},
-    {"registry": "econ-ksa-redsea-amaala", "slide_oid": "g3eec5122801_0_968", "target_oid": "navierBg_s39", "method": "CENTER_CROP"},
 ]
+
+
+def showcase_image_bindings() -> list[dict]:
+    doc = load_slide_bindings("bolt")
+    return image_bindings_list(doc, roles={"market_showcase_bg"})
 
 
 def element_or_fallback(golden: dict, oid: str, *, fallback_oid: str = "g3eec5122801_0_394") -> dict:
@@ -611,6 +609,25 @@ def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> di
         )
 
     for bind in IMAGE_BINDINGS:
+        url = asset_urls.get(bind["registry"])
+        if not url:
+            continue
+        ops.append(
+            image_replace_op(
+                bind["slide_oid"],
+                bind["target_oid"],
+                url,
+                op_key=f"bolt-wave2-img-{bind['registry']}",
+                source_pointer=f"ASSET-REGISTRY {bind['registry']}",
+                method=bind.get("method", "CENTER_CROP"),
+            )
+        )
+
+    binding_doc = load_slide_bindings("bolt")
+    bind_errs = validate_bindings(binding_doc)
+    if bind_errs:
+        raise SystemExit("slide-image-bindings.json invalid:\n" + "\n".join(bind_errs))
+    for bind in showcase_image_bindings():
         url = asset_urls.get(bind["registry"])
         if not url:
             continue

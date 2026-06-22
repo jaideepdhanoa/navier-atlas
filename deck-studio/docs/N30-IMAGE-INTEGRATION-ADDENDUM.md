@@ -54,8 +54,19 @@ Without her, slide 2 loses its entire narrative point. Add this line to the slid
 
 ---
 
+## Slide-family wiring (wave-2.1 lesson)
+Wave-2.1 mis-bound `econ_market_bg` plates to **market side-panel** slides (4–6, 14–18) instead of
+**unit-economics** full-bleed slots (`navierBg_s23`–`s39` on slides 7–9, 19–23). Fix: use
+`decks/bolt/slide-image-bindings.json` as the single source of truth; run `validate-bindings` before apply.
+
+| Wrong (wave-2.1) | Correct |
+|---|---|
+| Econ plate on slide 4 `g3eec5122801_0_107` | Atlas screenshot (human) on 4–6 |
+| Econ plate on slide 14 `g3eec5122801_0_676` | `market_showcase_bg` Tier-A on 14–18 |
+| — | `econ_market_bg` on `navierBg_s23`–`s39` (slides 7–9, 19–23) |
+
 ## Grading / integration spec (match the Grab gold)
-- **Foils down**, visible **wake spray** at the foils and **waterline interaction + reflection** on the water.
+- **Foils deployed** (in the water), hull **elevated** on foils, visible **foil wake** — actively hydrofoiling.
 - **Warm golden-hour / dusk grade**; rim light on the hull consistent with the scene's sun direction.
 - Hull form locked to the neutral reference: **white/light hull, glass cabin, V-mark, 8-seat Pioneer II scale.** No
   hull/cabin/V-mark drift.

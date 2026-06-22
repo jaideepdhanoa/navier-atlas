@@ -23,6 +23,11 @@ sys.path.insert(0, str(BUILDERS))
 
 from deck_bolt_pilot import apply_plan, load_json, write_json  # noqa: E402
 from deck_edit_ops import image_replace_op  # noqa: E402
+from deck_slide_bindings import (  # noqa: E402
+    image_op_bindings,
+    load_slide_bindings,
+    validate_bindings,
+)
 
 N30_NEUTRAL = ROOT / "assets/n30/n30-reference-neutral.png"
 GRADE_LOCK_PATH = ROOT / "decks/bolt/wave21-grade-lock.json"
@@ -288,7 +293,9 @@ def qa_image_gate(
         )
     elif role == "econ_market_bg":
         left = _region_stats(img, (0.0, 0.0, 0.55, 0.85))
+        right = _region_stats(img, (0.45, 0.0, 1.0, 0.55))
         left_ok = left["variance"] < 1800 and left["mean_luminance"] < 120
+        horizon_ok = right["variance"] > 350 and right["mean_luminance"] > 45
         checks.append(
             QACheck("econ_left_column_clean", "pass" if left_ok else "fail", True, left)
         )
@@ -298,6 +305,25 @@ def qa_image_gate(
                 "pass" if left_ok else "fail",
                 True,
                 {"left_mean_luminance": left["mean_luminance"], "left_variance": left["variance"]},
+            )
+        )
+        checks.append(
+            QACheck(
+                "econ_horizon_has_landmark_texture",
+                "pass" if horizon_ok else "pending_human",
+                False,
+                right,
+            )
+        )
+    elif role == "market_showcase_bg":
+        right = _region_stats(img, (0.35, 0.0, 1.0, 0.75))
+        iconic_ok = right["variance"] > 500 and right["mean_luminance"] > 55
+        checks.append(
+            QACheck(
+                "showcase_iconic_market_scene",
+                "pass" if iconic_ok else "pending_human",
+                False,
+                right,
             )
         )
 
@@ -320,6 +346,14 @@ def qa_image_gate(
     )
     checks.append(
         QACheck("single_vessel", "pending_human", False, {})
+    )
+    checks.append(
+        QACheck(
+            "vessel_foiling_not_displacement",
+            "pending_human",
+            False,
+            {"require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"},
+        )
     )
     checks.append(
         QACheck("hull_fidelity_vs_neutral_ref", "pending_human", False, {})
@@ -535,17 +569,23 @@ def approve_asset_qa(asset_key: str, *, approver: str = "human") -> dict:
 
 
 MARKET_SCENES: dict[str, str] = {
-    "athens-saronic-greece": "the Aegean — distant Cycladic islands and white cliff towns",
-    "split-croatia": "the Dalmatian coast — pine islets and Hvar stone waterfront",
-    "cote-dazur-france": "the Côte d'Azur — Nice/Monaco harbour and belle-époque façades",
-    "sorrento-italy": "the Amalfi coast — Sorrento cliffs and Capri silhouettes",
-    "dubai-uae": "Dubai Marina towers and Gulf water (Gulf market only)",
-    "jeddah-ksa": "Jeddah Corniche and Red Sea calm water",
-    "mykonos-greece": "Cycladic islands — Mykonos windmills and Paros shoreline",
-    "dubrovnik-croatia": "Dubrovnik old-town stone walls and Adriatic blue water",
-    "red-sea-ksa": "the Red Sea coast — desert mountains and calm turquoise water near AMAALA",
+    "athens-saronic-greece": "the Aegean — Hydra/Saronic white cliff towns and Cycladic domes",
+    "split-croatia": "Split harbour and Hvar old-town stone waterfront, pine islets",
+    "cote-dazur-france": "Nice Promenade des Anglais and Monaco harbour, belle-époque façades",
+    "sorrento-italy": "Sorrento cliffs, Capri Faraglioni stacks, Amalfi pastel terraces",
+    "dubai-uae": "Dubai Marina skyline and harbour towers on the Gulf (Gulf market only)",
+    "jeddah-ksa": "Jeddah Corniche waterfront and Red Sea turquoise bay",
+    "mykonos-greece": "Mykonos windmills, Paros Naoussa harbour, Cycladic blue domes",
+    "dubrovnik-croatia": "Dubrovnik old-town walls, terracotta roofs, Adriatic blue",
+    "red-sea-ksa": "Red Sea desert mountains, turquoise AMAALA/Triple Bay coastline",
     "europe-network": "European coastline — Aegean, Adriatic and Riviera island silhouettes",
 }
+
+# Foils *deployed* (in the water) = hydrofoiling. Never depict a displacement ferry sitting low.
+FOIL_STATE = (
+    "underwater foils fully deployed, hull riding elevated above the waterline on the foils, "
+    "visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry"
+)
 
 
 def _grade_suffix() -> str:
@@ -584,12 +624,26 @@ def prompt_partner_roles(scene: str) -> str:
 def prompt_econ(scene: str) -> str:
     return (
         "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, "
-        "produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, "
-        f"small in the lower-right, with a very faint far-horizon hint of {scene}. The rest of the frame "
-        "is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so "
-        "charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, "
-        "hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. "
-        "No people, no logos, no text, no busy foreground."
+        "produce a single photorealistic 16:9 photograph for a unit-economics chart slide. "
+        "Keep the left half and upper-left calm, low-contrast navy/slate so white tables overlay cleanly. "
+        f"On the right horizon, a soft but recognizable silhouette of {scene} — warm golden-hour grade, "
+        "not flat gray. A single white hydrofoil is small in the lower-right, "
+        f"{FOIL_STATE}. Hull/cabin/V-mark exactly as the reference, in-water no seam. "
+        "Exactly one vessel. Premium photographic, not depressing. No people, no logos, no text."
+        + _grade_suffix()
+    )
+
+
+def prompt_market_showcase(scene: str) -> str:
+    return (
+        "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, "
+        "produce a single photorealistic 16:9 photograph. "
+        f"Iconic, aspirational postcard view of {scene} — unmistakable local skyline or coastline, "
+        "warm golden-hour sunlight, vibrant premium grade. "
+        f"The white hydrofoil cruises in the mid-ground, {FOIL_STATE}, light bow wake. "
+        "Frame for a side-panel market slide: subject in the right two-thirds, calm sky/water "
+        "breathing room on the left for route copy. Exactly one vessel, hull/cabin/V-mark exactly as "
+        "the reference, in-water no seam. No logos, no text, no other boats."
         + _grade_suffix()
     )
 
@@ -913,21 +967,72 @@ def clear_drive_urls_for_republish(*keys: str) -> None:
     write_json(REGISTRY_PATH, registry)
 
 
-IMAGE_OP_BINDINGS = {
+DECK_LEVEL_IMAGE_OP_BINDINGS: dict[str, tuple[str, str, str]] = {
     "bolt-cover-hero": ("p1", "p1_i2", "CENTER_INSIDE"),
     "bolt-value-prop-bg": ("g3f139a0b6ec_0_0", "g3f139a0b6ec_0_1", "CENTER_CROP"),
     "bolt-tam-bg": ("g3eec5122801_0_562", "navierBg_s26", "CENTER_CROP"),
     "bolt-partner-roles-bg": ("g3ea5e0fb254_4_357", "g3ea5e0fb254_4_358", "CENTER_CROP"),
-    "econ-greece-athens-hydra": ("g3eec5122801_0_106", "g3eec5122801_0_107", "CENTER_CROP"),
-    "econ-croatia-split-hvar": ("g3eec5122801_0_201", "g3eec5122801_0_202", "CENTER_CROP"),
-    "econ-cote-azur-nice-monaco": ("g3eec5122801_0_296", "g3eec5122801_0_297", "CENTER_CROP"),
-    "econ-italy-sorrento-capri": ("g3eec5122801_0_677", "g3eec5122801_0_676", "CENTER_CROP"),
-    "econ-uae-dubai-harbour": ("g3eec5122801_0_690", "g3eec5122801_0_689", "CENTER_CROP"),
-    "econ-ksa-jeddah": ("g3eec5122801_0_703", "g3eec5122801_0_702", "CENTER_CROP"),
-    "econ-greece-mykonos-paros": ("g3eec5122801_0_716", "g3eec5122801_0_715", "CENTER_CROP"),
-    "econ-croatia-dubrovnik": ("g3eec5122801_0_729", "g3eec5122801_0_728", "CENTER_CROP"),
-    "econ-ksa-redsea-amaala": ("g3eec5122801_0_968", "navierBg_s39", "CENTER_CROP"),
 }
+
+
+def all_image_op_bindings(*, roles: set[str] | None = None) -> dict[str, tuple[str, str, str]]:
+    """Deck-level plates + slide-image-bindings.json (authoritative for econ + showcase)."""
+    doc = load_slide_bindings("bolt")
+    errs = validate_bindings(doc)
+    if errs:
+        raise SystemExit("slide-image-bindings.json invalid:\n" + "\n".join(errs))
+    merged = dict(DECK_LEVEL_IMAGE_OP_BINDINGS)
+    merged.update(image_op_bindings(doc, roles=roles))
+    return merged
+
+
+SHOWCASE_PLATES: list[dict] = [
+    {
+        "key": "showcase-italy-sorrento-capri",
+        "role": "market_showcase_bg",
+        "scope": "market",
+        "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-showcase-tier-a-v1.png",
+        "market_slug": "sorrento-italy",
+        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["sorrento-italy"]),
+        "seed": "bolt-wave21-showcase-italy-amalfi",
+    },
+    {
+        "key": "showcase-uae-dubai-harbour",
+        "role": "market_showcase_bg",
+        "scope": "market",
+        "local_path": "assets/backgrounds/markets/uae/uae-dubai-showcase-tier-a-v1.png",
+        "market_slug": "dubai-uae",
+        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["dubai-uae"]),
+        "seed": "bolt-wave21-showcase-uae-dubai",
+    },
+    {
+        "key": "showcase-ksa-jeddah",
+        "role": "market_showcase_bg",
+        "scope": "market",
+        "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-showcase-tier-a-v1.png",
+        "market_slug": "jeddah-ksa",
+        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["jeddah-ksa"]),
+        "seed": "bolt-wave21-showcase-ksa-jeddah",
+    },
+    {
+        "key": "showcase-greece-mykonos-paros",
+        "role": "market_showcase_bg",
+        "scope": "market",
+        "local_path": "assets/backgrounds/markets/greece/greece-cyclades-showcase-tier-a-v1.png",
+        "market_slug": "mykonos-greece",
+        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["mykonos-greece"]),
+        "seed": "bolt-wave21-showcase-greece-cyclades",
+    },
+    {
+        "key": "showcase-croatia-dubrovnik",
+        "role": "market_showcase_bg",
+        "scope": "market",
+        "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-showcase-tier-a-v1.png",
+        "market_slug": "dubrovnik-croatia",
+        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["dubrovnik-croatia"]),
+        "seed": "bolt-wave21-showcase-croatia-dubrovnik",
+    },
+]
 
 
 def cmd_generate_remaining() -> int:
@@ -1019,6 +1124,48 @@ def cmd_approve_batch_remaining() -> int:
     return 0
 
 
+def cmd_validate_bindings() -> int:
+    doc = load_slide_bindings("bolt")
+    errs = validate_bindings(doc)
+    if errs:
+        print(json.dumps({"status": "fail", "errors": errs}, indent=2))
+        return 1
+    econ = image_op_bindings(doc, roles={"econ_market_bg"})
+    showcase = image_op_bindings(doc, roles={"market_showcase_bg"})
+    print(
+        json.dumps(
+            {
+                "status": "pass",
+                "econ_bindings": len(econ),
+                "showcase_bindings": len(showcase),
+                "econ_slides": sorted(b["slide_index"] for b in doc["bindings"] if b["image_role"] == "econ_market_bg"),
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
+def cmd_apply_econ_bindings() -> int:
+    """Re-apply econ_market_bg only to unit-economics slides (7–9, 19–23)."""
+    return cmd_publish_and_apply_approved(
+        only=list(image_op_bindings(load_slide_bindings("bolt"), roles={"econ_market_bg"}).keys())
+    )
+
+
+def cmd_generate_showcase_plates() -> int:
+    results = []
+    for spec in SHOWCASE_PLATES:
+        print(f"generating {spec['key']}...", flush=True)
+        try:
+            results.append(generate_and_save_plate(spec))
+        except Exception as e:
+            results.append({"key": spec["key"], "error": str(e), "qa_overall": "fail"})
+    print(json.dumps(results, indent=2))
+    fails = [r for r in results if r.get("qa_overall") == "fail" or r.get("error")]
+    return 1 if fails else 0
+
+
 def cmd_publish_and_apply_approved(*, only: list[str] | None = None) -> int:
     """Publish QA-passed wave-2.1 plates to Drive, then image-ops-only apply."""
     sys.path.insert(0, str(BUILDERS))
@@ -1035,7 +1182,8 @@ def cmd_publish_and_apply_approved(*, only: list[str] | None = None) -> int:
     publish_assets_to_drive(REGISTRY_PATH)
     registry = load_json(REGISTRY_PATH)
     ops = []
-    for key, bind in IMAGE_OP_BINDINGS.items():
+    bindings = all_image_op_bindings()
+    for key, bind in bindings.items():
         if only is not None and key not in only:
             continue
         asset = registry["assets"].get(key, {})
@@ -1071,6 +1219,9 @@ def main() -> int:
     sub.add_parser("tag-drift-controls")
     sub.add_parser("generate-redsea-amaala")
     sub.add_parser("approve-redsea-amaala")
+    sub.add_parser("validate-bindings")
+    sub.add_parser("apply-econ-bindings")
+    sub.add_parser("generate-showcase-plates")
     sub.add_parser("generate-cover-greece")
     sub.add_parser("approve-cover")
     sub.add_parser("approve-slide2")
@@ -1098,6 +1249,12 @@ def main() -> int:
         return cmd_generate_redsea_amaala()
     if args.cmd == "approve-redsea-amaala":
         return cmd_approve_redsea_amaala()
+    if args.cmd == "validate-bindings":
+        return cmd_validate_bindings()
+    if args.cmd == "apply-econ-bindings":
+        return cmd_apply_econ_bindings()
+    if args.cmd == "generate-showcase-plates":
+        return cmd_generate_showcase_plates()
     if args.cmd == "tag-drift-controls":
         tag_drift_controls()
         print("tagged drift controls")
