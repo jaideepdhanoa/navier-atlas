@@ -121,10 +121,23 @@ def build(partner):
             warnings.append(f"{field_label}: lead sentence is {wc(s)}w > cap {CAPS[key]}w — tighten the source proposal; emitted unmangled (null beats confidently-wrong).")
         return s or None
 
+    # Optional author-supplied beat teasers. A long proposal lead sentence (e.g. why_now,
+    # which enumerates many clauses) cannot be clause-trimmed into a clean complete beat —
+    # the trim leaves a mid-thought ellipsis that reads as incomplete. When that happens,
+    # supply a short COMPLETE beat in `your_world_beats.<key>` and it is used verbatim
+    # (still cap-flagged). This keeps beats complete + Grok-deterministic without rewriting
+    # the full proposal prose (which still drives the dedicated why-now slide).
+    beat_overrides = d.get("your_world_beats", {}) or {}
+
     def capped_beat(key, text, field_label):
+        override = (beat_overrides.get(key) or "").strip()
+        if override:
+            if wc(override) > CAPS[key]:
+                warnings.append(f"{field_label}: your_world_beats override is {wc(override)}w > cap {CAPS[key]}w — tighten the override.")
+            return override
         s, trimmed = distill_beat(text, CAPS[key])
         if trimmed:
-            warnings.append(f"{field_label}: source clause-trimmed to <= {CAPS[key]}w for the beat teaser — tighten the source proposal for a clean break (the full thought stays in the proposal + the why-now slide).")
+            warnings.append(f"{field_label}: source clause-trimmed to <= {CAPS[key]}w for the beat teaser — supply a complete short beat in your_world_beats.{key} for a clean break (the full thought stays in the proposal + the why-now slide).")
         return s or None
 
     hero = d.get("hero", {})

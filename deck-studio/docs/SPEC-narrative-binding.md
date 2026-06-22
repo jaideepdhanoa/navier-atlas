@@ -96,3 +96,22 @@ If you re-tune, keep the chip-caption bottom inside the page edge or captions wi
   comes from a full-bleed background, and the text styles assume a dark base. `narr2_image`
   (right ~35%) is **reserved empty** for the N30 archetype-A2 image (the woman-on-phone-at-berth
   booking moment) — to be filled by the image layer, never embedded here.
+- **2026-06-22 (slide-2 v2, partner-comment pass)** — three reviewer comments resolved on the
+  live deck, surgically (no re-mint, manual reviewer edits preserved):
+  1. **Image (was plain black).** Wired `grab-value_prop_bg` (existing N30 market composite,
+     stable Drive URL) **full-bleed** behind the text + a navy scrim rectangle (`alpha 0.5`),
+     text brought to front; `narr2_image` placeholder deleted. The boat sits in the clear
+     right third where there is no text; the woman-at-berth reads in the scrimmed left.
+     This was the never-executed `post_create_action`. Manifest → `applied_live`.
+  2. **"Why now" was incomplete/overflowing.** The long `why_now` proposal lead cannot be
+     clause-trimmed into a complete beat (it left a mid-thought ellipsis). Added a
+     deterministic **`your_world_beats.<key>` override** in the generator: a short COMPLETE
+     beat is used verbatim (still cap-flagged). `grab.your_world_beats.why_now` set; regen is
+     warning-free and 2-line clean above the chips.
+  3. **KPI overlap between slide 2 and slide 4 (250 vs 1,000+ vessels).** Division of labor:
+     **slide 2 = today/proof, slide 4 = scale/TAM.** Removed the confusing middle
+     "250+ vessels / 120+ booked corridors" chip. New slide-2 quartet (today ladder):
+     `30+ clusters · ~100 vessels (live, Maldives $100M) · 2026 (proof, WSJ & Bloomberg) ·
+     2030 (regulator)`. The only vessel numbers are now ~100 (live, slide 2) → 1,000+
+     (maturity, slide 4): a progression, not a contradiction. Slide 4 left untouched; each
+     metric now appears exactly once.
