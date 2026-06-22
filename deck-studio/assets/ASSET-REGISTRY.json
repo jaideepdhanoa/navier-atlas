@@ -1000,8 +1000,8 @@
       "scope": "deck",
       "partner": "bolt",
       "market_slug": "athens-saronic-greece",
-      "local_path": "assets/backgrounds/markets/greece/greece-aegean-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_greece_aegean_raw",
+      "local_path": "assets/backgrounds/decks/bolt/bolt-cover-greece-aegean-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
       "used_by": [
         {
           "deck": "bolt",
@@ -1010,14 +1010,127 @@
           "target_object_id": "p1_i2"
         }
       ],
-      "status": "checked_in",
+      "status": "qa_pending",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
+      "composited": false,
+      "captured_at": "2026-06-22T10:25:36Z",
       "drive_file_id": "1gg2ZGM4YjOgJSguBTrarAUuIsjABv-Fj",
       "source_url": "https://drive.google.com/uc?export=download&id=1gg2ZGM4YjOgJSguBTrarAUuIsjABv-Fj",
-      "notes": "Wave-2 N30 composite — bolt-cover-hero"
+      "notes": "Wave-2 N30 composite — bolt-cover-hero | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": null,
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the **exact form and colour reference**, produce a single photorealistic 16:9 photograph. Foreground: the vessel cruising on calm deep-blue Aegean water, **foils down**, with a light bow wake and a clean reflection on the water, seen in **rear three-quarter view, bow angled left**. Background: a classic Cycladic / Santorini caldera scene — white-washed buildings with blue domes terraced up volcanic cliffs, soft sea haze. **Warm golden-hour sunlight from the left**, gentle rim light along the white hull. Place the vessel in the **lower-center / left** of the frame and keep the **upper-left third clear** for a headline. **Exactly one vessel in frame.** Keep the hull form, glass cabin, and the small V-mark on the bow **exactly as the reference — do not alter the vessel design.** The boat must sit **in the water** with correct waterline contact and reflection, **never pasted on top**, no rectangular edge or seam. Single integrated photograph, not a collage. **No people, no logos, no text, no other boats.** Negative: no Dubai/Gulf skyline, no Burj Khalifa or Burj Al Arab, no Marina Bay Sands, no Grab/SEA signage.",
+        "generated_at": "2026-06-22T10:25:36Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/decks/bolt/bolt-cover-greece-aegean-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/decks/bolt/bolt-cover-greece-aegean-tier-a-v1.png",
+          "role": "cover_hero",
+          "market_slug": "athens-saronic-greece",
+          "evaluated_at": "2026-06-22T10:25:37Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "hull_variance": 2370.34,
+                "surround_variance": 3380.61,
+                "leak_score": 0.701,
+                "green_in_hull_ratio": 0.0,
+                "pass": true
+              }
+            },
+            {
+              "name": "cover_upper_left_clear",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 200.88,
+                "variance": 337.71,
+                "box_px": [
+                  0,
+                  0,
+                  1070,
+                  665
+                ]
+              }
+            },
+            {
+              "name": "market_lock_greece",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "market_slug": "athens-saronic-greece"
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      }
     },
     "econ-athens-saronic-greece": {
       "role": "econ_market_bg",
@@ -1049,14 +1162,15 @@
           "target_object_id": "g3f139a0b6ec_0_1"
         }
       ],
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1gXrOxcPjv5ZA7UrnM0sWmak5jN-Mch9g",
       "source_url": "https://drive.google.com/uc?export=download&id=1gXrOxcPjv5ZA7UrnM0sWmak5jN-Mch9g",
-      "notes": "Wave-2 N30 composite — bolt-value-prop-bg"
+      "notes": "Wave-2 N30 composite — bolt-value-prop-bg | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "bolt-tam-bg": {
       "role": "tam_bg",
@@ -1072,14 +1186,15 @@
           "target_object_id": "navierBg_s26"
         }
       ],
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1wOEfhZECXCTSkk8k2TUD8jRP7chzs78P",
       "source_url": "https://drive.google.com/uc?export=download&id=1wOEfhZECXCTSkk8k2TUD8jRP7chzs78P",
-      "notes": "Wave-2 N30 composite — bolt-tam-bg"
+      "notes": "Wave-2 N30 composite — bolt-tam-bg | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "bolt-partner-roles-bg": {
       "role": "partner_roles_bg",
@@ -1095,14 +1210,15 @@
           "target_object_id": "g3ea5e0fb254_4_358"
         }
       ],
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1kZ0k6elo-IwZ5IKETRj6ohaVNBo9bpk4",
       "source_url": "https://drive.google.com/uc?export=download&id=1kZ0k6elo-IwZ5IKETRj6ohaVNBo9bpk4",
-      "notes": "Wave-2 N30 composite — bolt-partner-roles-bg"
+      "notes": "Wave-2 N30 composite — bolt-partner-roles-bg | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-greece-athens-hydra": {
       "role": "econ_market_bg",
@@ -1111,14 +1227,15 @@
       "atlas_city_id": "athens-saronic-greece",
       "local_path": "assets/backgrounds/markets/greece/greece-aegean-v1-composited.png",
       "provenance": "n30_composite:grok_gen_greece_aegean_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1KUcYTt4Hxzsq_u1QIcf0pf0NTmms-6Op",
       "source_url": "https://drive.google.com/uc?export=download&id=1KUcYTt4Hxzsq_u1QIcf0pf0NTmms-6Op",
-      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra"
+      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-croatia-split-hvar": {
       "role": "econ_market_bg",
@@ -1127,14 +1244,15 @@
       "atlas_city_id": "split-croatia",
       "local_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-v1-composited.png",
       "provenance": "n30_composite:grok_gen_croatia_dalmatian_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1ohV3pbRmBW_DjSQqjN99BYFT8PKJF2v8",
       "source_url": "https://drive.google.com/uc?export=download&id=1ohV3pbRmBW_DjSQqjN99BYFT8PKJF2v8",
-      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar"
+      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-cote-azur-nice-monaco": {
       "role": "econ_market_bg",
@@ -1143,14 +1261,15 @@
       "atlas_city_id": "cote-dazur-france",
       "local_path": "assets/backgrounds/markets/cote-dazur/cote-azur-v1-composited.png",
       "provenance": "n30_composite:grok_gen_cote_azur_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1p8tsc2DCf0kyBYY4M8Hl00oUGb-QInUQ",
       "source_url": "https://drive.google.com/uc?export=download&id=1p8tsc2DCf0kyBYY4M8Hl00oUGb-QInUQ",
-      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco"
+      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-italy-sorrento-capri": {
       "role": "econ_market_bg",
@@ -1158,14 +1277,15 @@
       "market_slug": "sorrento-italy",
       "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-v1-composited.png",
       "provenance": "n30_composite:grok_gen_italy_amalfi_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1Yk-1XOZq8b4Bu4pDOXa17WbpmmrI5jQZ",
       "source_url": "https://drive.google.com/uc?export=download&id=1Yk-1XOZq8b4Bu4pDOXa17WbpmmrI5jQZ",
-      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri"
+      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-uae-dubai-harbour": {
       "role": "econ_market_bg",
@@ -1174,14 +1294,15 @@
       "atlas_city_id": "dubai-uae",
       "local_path": "assets/backgrounds/markets/uae/uae-dubai-v1-composited.png",
       "provenance": "n30_composite:grok_gen_uae_dubai_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1apCiABBESoBwaVlZiTphYTeosY0mzjWG",
       "source_url": "https://drive.google.com/uc?export=download&id=1apCiABBESoBwaVlZiTphYTeosY0mzjWG",
-      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour"
+      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-ksa-jeddah": {
       "role": "econ_market_bg",
@@ -1189,14 +1310,15 @@
       "market_slug": "jeddah-ksa",
       "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-v1-composited.png",
       "provenance": "n30_composite:grok_gen_ksa_jeddah_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "128e8rIZr3WZNZcDUW98Gf9vvlM1oKc2q",
       "source_url": "https://drive.google.com/uc?export=download&id=128e8rIZr3WZNZcDUW98Gf9vvlM1oKc2q",
-      "notes": "Wave-2 N30 composite — econ-ksa-jeddah"
+      "notes": "Wave-2 N30 composite — econ-ksa-jeddah | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-greece-mykonos-paros": {
       "role": "econ_market_bg",
@@ -1204,14 +1326,15 @@
       "market_slug": "mykonos-greece",
       "local_path": "assets/backgrounds/markets/greece/greece-cyclades-v1-composited.png",
       "provenance": "n30_composite:grok_gen_greece_cyclades_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1CLrZZ6SRYYTYamR7fbBep1PwBTMGzx1T",
       "source_url": "https://drive.google.com/uc?export=download&id=1CLrZZ6SRYYTYamR7fbBep1PwBTMGzx1T",
-      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros"
+      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-croatia-dubrovnik": {
       "role": "econ_market_bg",
@@ -1219,14 +1342,15 @@
       "market_slug": "dubrovnik-croatia",
       "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-v1-composited.png",
       "provenance": "n30_composite:grok_gen_croatia_dubrovnik_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "1ZjZgOalxJlKmmDxi4OH43R_dT0Ujjz7O",
       "source_url": "https://drive.google.com/uc?export=download&id=1ZjZgOalxJlKmmDxi4OH43R_dT0Ujjz7O",
-      "notes": "Wave-2 N30 composite — econ-croatia-dubrovnik"
+      "notes": "Wave-2 N30 composite — econ-croatia-dubrovnik | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     },
     "econ-ksa-redsea-amaala": {
       "role": "econ_market_bg",
@@ -1234,14 +1358,15 @@
       "market_slug": "red-sea-ksa",
       "local_path": "assets/backgrounds/markets/ksa/ksa-redsea-v1-composited.png",
       "provenance": "n30_composite:grok_gen_ksa_redsea_raw",
-      "status": "checked_in",
+      "status": "deprecated_paste_composite",
       "license": "navier-internal",
       "reproducible": true,
       "composited": true,
       "captured_at": "2026-06-22T09:35:38Z",
       "drive_file_id": "14A-Q0ShIfvGMIwRYU3l1m-lVhEABe83D",
       "source_url": "https://drive.google.com/uc?export=download&id=14A-Q0ShIfvGMIwRYU3l1m-lVhEABe83D",
-      "notes": "Wave-2 N30 composite — econ-ksa-redsea-amaala"
+      "notes": "Wave-2 N30 composite — econ-ksa-redsea-amaala | wave-2.1 Tier A supersession",
+      "deprecated_at": "2026-06-22T10:25:20Z"
     }
   },
   "deck_coverage": {
