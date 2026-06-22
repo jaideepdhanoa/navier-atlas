@@ -237,6 +237,14 @@ def publish_assets_to_drive(registry_path: Path, *, dry_run: bool = False) -> di
                 .execute()
             )
             fid = created["id"]
+            try:
+                service.permissions().create(
+                    fileId=fid,
+                    body={"type": "anyone", "role": "reader"},
+                    fields="id",
+                ).execute()
+            except Exception:
+                pass
             asset["drive_file_id"] = fid
             asset["source_url"] = f"https://drive.google.com/uc?export=download&id={fid}"
             if asset.get("status") == "checked_in":
