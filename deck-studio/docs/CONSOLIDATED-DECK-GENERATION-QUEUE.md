@@ -13,7 +13,7 @@ Updated: `2026-06-22T02:17:02Z`
 | `dubai-rta` | create-or-bind | needs_sourcing | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
 | `gojek` | create-or-bind | banked | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
 | `hong-kong` | create-or-bind | no-logo | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
-| `jih-global` | create-or-bind | needs_decision | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
+| `jih-global` | create-or-bind | banked | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
 | `qatar` | create-or-bind | needs_sourcing | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
 | `rakta` | create-or-bind | needs_sourcing | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
 | `red-sea-global` | create-or-bind | banked | build-on-spec | stable_linked_asset_url_required | build-on-spec | build-on-spec | build-on-spec |
@@ -41,3 +41,5 @@ Updated: `2026-06-22T02:17:02Z`
 ## Separate prep backlog (not generation-ready yet)
 
 `aman`, `bc-ferries`, `cabify`, `constance`, `cote-dazur`, `crown-champa`, `d-marin`, `didi`, `discovery-land`, `four-seasons`, `freenow`, `fullers360`, `hawaii`, `indian-ocean-luxury`, `indrive`, `kakao-mobility`, `line`, `lyft`, `maldives`, `maldives-government`, `norway-fjords`, `nyc-ferry`, `shun-tak`, `six-senses`, `soneva`, `sun-siyam`, `thames-clippers`, `transport-nsw`, `universal-enterprises`, `villa-hotels`, `wsf`
+
+- `jih-global`: entity confirmed by Jaideep 2026-06-22; official-site logo asset banked from `https://www.jihglobal.com/` / Framer asset.
