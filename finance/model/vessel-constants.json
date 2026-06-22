@@ -90,11 +90,11 @@
  "operating_defaults": {
   "_doc": "GLOBAL operating defaults (segment-driven). Overridable per market in L3.",
   "_utilization_scenarios": {
-   "_doc": "Headline = MID. Thin/Full are the sensitivity bookends we always show as a band (Jaideep 2026-06-06: report a band, not a single number). weather_uptime_factor stays per-market on top of these. Recalibrated 2026-06-21 (Jaideep): thin 12tpd/.55 rev-leg, mid(HEADLINE) 15tpd/.65, full 18tpd/.85 — busier duty cycle + higher revenue-leg capture on the headline case.",
+   "_doc": "Headline = MID. Thin/Full are the sensitivity bookends we always show as a band (Jaideep 2026-06-06: report a band, not a single number). weather_uptime_factor stays per-market on top of these. Recalibrated 2026-06-21 (Jaideep): 15 tpd all scenarios; rev-leg thin .55, mid(HEADLINE) .65, full .75 — load factor is the primary sensitivity axis.",
    "thin": {
     "load_factor": 0.45,
     "revenue_leg_factor": 0.55,
-    "max_trips_per_day": 12,
+    "max_trips_per_day": 15,
     "note": "thin/one-way/seasonal corridor — conservative floor"
    },
    "mid": {
@@ -105,8 +105,8 @@
    },
    "full": {
     "load_factor": 0.7,
-    "revenue_leg_factor": 0.85,
-    "max_trips_per_day": 18,
+    "revenue_leg_factor": 0.75,
+    "max_trips_per_day": 15,
     "note": "mature/dense corridor — optimistic ceiling"
    }
   },
@@ -212,7 +212,7 @@
   "max_trips_per_day": {
    "value": 15,
    "source_tier": "T3",
-   "source": "Cap on revenue sailings/day — MID headline duty cycle; thin=12 / full=18 bookends in _utilization_scenarios (Jaideep 2026-06-21).",
+   "source": "Cap on revenue sailings/day — 15 across thin/mid/full scenarios (Jaideep 2026-06-21).",
    "confidence": "med"
   },
   "max_trips_per_day_by_archetype": {
