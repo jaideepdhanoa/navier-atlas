@@ -2,6 +2,10 @@
 
 You own deterministic deck creation, live editing, and image generation/compositing for the Navier deck family.
 
+## Read first
+
+`docs/AUTONOMOUS-DECK-BUILD-CONTRACT.md` defines the full independent loop you own (economics pull, image generate/reuse/publish/link, golden-map self-generation, deck.editplan.json build). This runbook is the operational checklist for it.
+
 ## Start here every time
 
 1. Pull latest `main`.
