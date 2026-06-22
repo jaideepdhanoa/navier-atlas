@@ -160,10 +160,12 @@ gated **per slug** while share deeplinks stay crawlable.
 | `/` (aggregate) | **public** `atlas-data.js` (network + economics; no `PARTNERS`/`STORIES`) | public; Browse ▾ → **Regions** only |
 | `/cluster/<id>` · `/city/<id>` | aggregate `atlas-data.js` | **public** (OG/social crawlers) |
 | `/api/og` | dynamic PNG | **public** |
+| `/partners` | `partners/manifest.json` (metadata only) | **hub password** (`PARTNERS_HUB_PASSWORD`) |
 | `/<partner>` · `/<partner>/<market>` · `/<partner>/<market>/city/<id>` | scoped `/<partner>/atlas-data.js` | **per-partner password** (HTTP Basic → session cookie) |
 
 **Vercel env (Production):**
 
+- `PARTNERS_HUB_PASSWORD` — password for the internal `/partners` directory (proposal + economics links; deck status shown but not linked until ready).
 - `AUTH_SECRET` — HMAC key for partner session cookies (required when passwords are set).
 - `PARTNER_AUTH_<SLUG>` — password for one partner (`grab` → `PARTNER_AUTH_GRAB`, `abu-dhabi-itc` →
   `PARTNER_AUTH_ABU_DHABI_ITC`). Hyphens in the slug become underscores in the env key.

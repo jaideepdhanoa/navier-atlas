@@ -13,9 +13,10 @@
 #
 # Partner auth (set in Vercel project env — not in git):
 #   AUTH_SECRET                        session-cookie signing key
+#   PARTNERS_HUB_PASSWORD              password for /partners internal directory
 #   PARTNER_AUTH_GRAB, PARTNER_AUTH_UBER, …   per-slug passwords (hyphens → underscores)
-#   PARTNER_AUTH_JSON                  optional {"grab":"…","uber":"…"} bulk map
-#   /cluster/* and /city/* stay public; /<partner>/* gated by _dist/middleware.js
+#   PARTNER_AUTH_JSON                  optional {"grab":"…","__hub__":"…"} bulk map
+#   /cluster/* and /city/* stay public; /partners + /<partner>/* gated by _dist/middleware.js
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

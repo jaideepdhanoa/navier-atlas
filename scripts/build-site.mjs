@@ -11,7 +11,8 @@
 //   _dist/<slug>/atlas-data.js · data SCOPED to that partner only (cities/routes/POIs/briefs/stories
 //                                reachable from PARTNERS[slug].phases[].cities + only PARTNERS[slug])
 //   _dist/vercel.json        · cleanUrls + api/og builds
-//   _dist/middleware.js      · per-partner password gate (cluster/city share links stay public)
+//   _dist/partners/          · internal partner directory (password via PARTNERS_HUB_PASSWORD)
+//   _dist/middleware.js      · /partners + per-partner password gate (cluster/city stay public)
 //
 // Isolation = scoped data (a partner page literally contains no other partner's data) + the render
 // build-lock (ignores ?partner= overrides). Each partner build runs the exclusion-token grep AND a
@@ -26,6 +27,7 @@ import {
   SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
 } from './share-meta.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
+import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -256,7 +258,16 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
 const partnerSlugs = Object.keys(data.PARTNERS).sort();
 fs.writeFileSync(path.join(DIST, 'middleware.js'), generatePartnerAuthMiddleware(partnerSlugs));
 console.log(`aggregate → _dist/  profile:${profile} · ${Object.keys(aggregateData.CITY_BRIEFS).length} briefs · ${partnerSlugs.length} partner pages · ${aggregateData.ROUTES.length} routes)`);
-console.log(`middleware → _dist/middleware.js  (${partnerSlugs.length} partner matchers; /cluster/ + /city/ public)`);
+console.log(`middleware → _dist/middleware.js  (${partnerSlugs.length} partner matchers; /cluster/ + /city/ public; /partners hub)`);
+
+const hubCount = buildPartnersHub({
+  root: ROOT,
+  dist: DIST,
+  partners: data.PARTNERS,
+  economicsUrlMap: data.ECONOMICS_URL_MAP,
+  siteUrl: SITE_URL,
+});
+console.log(`partners hub → _dist/partners/  (${hubCount} entries; password via PARTNERS_HUB_PASSWORD)`);
 
 // per-partner (path-based: _dist/<slug>/ ; hub markets at _dist/<slug>/<market.slug>/)
 let failed = 0, pages = 0, skipped = 0, sharePages = 0;

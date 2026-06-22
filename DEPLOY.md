@@ -24,6 +24,7 @@ carries the Vercel project link into `_dist/`, and deploys `_dist/` to prod. It 
    _dist/vercel.json
    _dist/<slug>/index.html   per-partner page  (render + __PARTNER_BUILD__ lock)
    _dist/<slug>/atlas-data.js per-partner data, SCOPED to that partner only
+   _dist/partners/index.html  internal directory (password-protected; links to proposals + sheets)
    ```
    Do **not** hand-copy `index.html`, and do **not** use `tasklet-build/dev.sh` — it only copies
    `index.html` + `vercel.json`, which would ship a blank page (no data) and none of the partner pages.
@@ -42,6 +43,11 @@ carries the Vercel project link into `_dist/`, and deploys `_dist/` to prod. It 
    `/grab` · `/careem` · `/uber` · `/dubai-rta` · `/abu-dhabi-itc` · `/qatar` · `/saudi-pif` ·
    `/red-sea-global` · `/singapore-mpa` · `/hawaii`
    (New partners appear automatically — `build-site.mjs` emits one page per `data-clean/partners/*.json`.)
+
+4. **Internal partner directory at `/partners`.** Password-protected index listing every partner with
+   links to proposal pages (`/<slug>`) and unit-economics Google Sheets (when available). Deck status
+   is shown as "in progress" but not linked until iterations are complete. Set `PARTNERS_HUB_PASSWORD`
+   (+ `AUTH_SECRET` for session cookies) in Vercel Production env.
 
 ---
 
