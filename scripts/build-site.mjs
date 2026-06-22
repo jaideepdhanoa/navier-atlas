@@ -265,7 +265,6 @@ const hubCount = buildPartnersHub({
   dist: DIST,
   partners: data.PARTNERS,
   economicsUrlMap: data.ECONOMICS_URL_MAP,
-  siteUrl: SITE_URL,
 });
 console.log(`partners hub → _dist/partners/  (${hubCount} entries; password via PARTNERS_HUB_PASSWORD)`);
 
