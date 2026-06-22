@@ -1,0 +1,26 @@
+{
+  "canonical_reference": {
+    "form_color": "n30-reference-neutral.png",
+    "pose_stance": "n30-reference.png",
+    "pose_bowright": "n30-reference-bowright.png"
+  },
+  "source": "deck-studio/assets/backgrounds/markets/koh-samui/slide-bg-kohsamui-v2-composited.png",
+  "source_note": "Cropped from our own shipped/generated market plate (koh-samui v2). This is the canonical white-hull glass-cabin foiling N30 used across all SEA market backgrounds.",
+  "pose": "bow-left rear-quarter, foils down (bow-right variant from langkawi v1)",
+  "lighting_rule": "CRITICAL: the dusk/sunset tone in n30-reference.png is a PLATE property (market background + navy gradient overlay), NOT a property of the N30. Generate/composite the vessel NEUTRAL (light hull, glass cabin, daylight). The market plate sets time-of-day per market. Use n30-reference-neutral.png for hull color/form; use n30-reference.png only for pose/stance/geometry.",
+  "references": {
+    "n30-reference-neutral.png": "FORM + COLOR reference. Tint-neutralized + shadow-lifted crop recovering true light hull and daylight read. Match the VESSEL to this (hull color, cabin glass, V-mark, foil stance).",
+    "n30-reference.png": "POSE + STANCE reference only (bow-left rear-quarter). Carries koh-samui dusk tint \u2014 do NOT match lighting to this.",
+    "n30-reference-bowright.png": "Alternate POSE reference (bow-right), cropped from langkawi v1."
+  },
+  "use": "Reference-guided generation/compositing of the N30 into new market backgrounds. Match the vessel to the neutral reference; let the market plate set lighting.",
+  "provenance": "derived_from_shipped_plate",
+  "reproducible": true,
+  "neutralization": "gamma 1/1.55 shadow lift + gray-world white balance + contrast 1.05 / saturation 0.92 (deterministic, see step in repo history)",
+  "sha16": {
+    "n30-reference.png": "39caefa45fb74596",
+    "n30-reference-bowright.png": "0b35ed4a6783e527"
+  },
+  "updated": "2026-06-22T01:00:00+00:00",
+  "supersedes": "image47 (LuxuryHospitality deck) \u2014 rejected: wrong vessel/style, did not match shipped images"
+}

@@ -39,8 +39,64 @@
     "docs/LIVE-DECK-RULES.md",
     "docs/BRAND-RULES.md",
     "docs/IMAGE-RULES.md",
-    "docs/PARTNER-DECK-GROK-HANDOFF-PLAYBOOK.md"
+    "docs/PARTNER-DECK-GROK-HANDOFF-PLAYBOOK.md",
+    "assets/IMAGE-ROLE-CONTRACT.md"
   ],
   "last_pulled_at": "2026-06-21T14:42:42Z",
-  "notes": "Tasklet deck-prep config for Yango. Use existing Yango baseline first. Country/region seeds are additive only until validated; lead with Dubai-HQ Yango framing and keep ungrounded candidates as gaps. Grok must bind/create a live deck ID, pull full inventory, and apply via Slides API only. Live deck created from Grab template copy for PR65 bind pass. PR65 content applied; 11-slide trim."
+  "notes": "Tasklet deck-prep config for Yango. Use existing Yango baseline first. Country/region seeds are additive only until validated; lead with Dubai-HQ Yango framing and keep ungrounded candidates as gaps. Grok must bind/create a live deck ID, pull full inventory, and apply via Slides API only. Live deck created from Grab template copy for PR65 bind pass. PR65 content applied; 11-slide trim. Current-spec refresh required: slide 3 KPIs, slide 10 TAM, six flush-left OPEX lines, cover logo/no-logo policy, and stable linked-image URL delivery only (no embedded-only image reuse).",
+  "generation_type": "refresh-to-current-spec",
+  "spec_refresh_required": true,
+  "current_spec_requirements": {
+    "spec_version": "wave10a-current-2026-06-22",
+    "slide_3_market_overview_kpis": {
+      "status": "refresh_required",
+      "source": "transparent economics sheet + master tracker",
+      "rule": "no stale KPIs; null beats unsupported"
+    },
+    "slide_10_tam": {
+      "status": "refresh_required",
+      "source": "growth_case / TAM economics sidecar",
+      "rule": "include economics sidecar in export package"
+    },
+    "unit_economics_opex_6_line": {
+      "status": "refresh_required",
+      "lines": 6,
+      "layout": "flush_left",
+      "field_id_policy": "pull live object IDs per slide before editing; never assume duplicated/recreated IDs"
+    },
+    "image_delivery": {
+      "status": "required",
+      "rule": "stable registry URL only; no embedded-only blobs or temporary googleusercontent contentUrl"
+    }
+  },
+  "asset_policy": {
+    "no_reembed": true,
+    "image_insert_mode": "stable_registry_url_only",
+    "allowed_sources": [
+      "deck-studio/assets/ASSET-REGISTRY.json source_url",
+      "approved Drive/asset-host URL recorded back into registry"
+    ],
+    "forbidden_sources": [
+      "live Slides contentUrl",
+      "lh*-googleusercontent temporary URLs",
+      "copy/paste embedded-only binaries"
+    ],
+    "missing_asset_behavior": "block_or_leave_null"
+  },
+  "cover_logos": {
+    "navier_logo": {
+      "path": "assets/logos/navier/navier-wordmark-white.png",
+      "required": true
+    },
+    "partner_logo": {
+      "partner": "Yango",
+      "asset_key": "yango-logo",
+      "path": "assets/logos/partners/yango/yango-logo.png",
+      "official_source": "https://yango.com",
+      "required": true,
+      "status": "needs_sourcing"
+    },
+    "cover_policy": "navier_plus_partner_logo"
+  },
+  "last_spec_refreshed_at": "2026-06-22T02:16:30Z"
 }
