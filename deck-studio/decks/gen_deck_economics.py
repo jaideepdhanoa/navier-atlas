@@ -172,7 +172,8 @@ def main():
                 f = econ_fields(row)
                 f["header_market"] = f"WHAT ONE BOAT EARNS \u00b7 {mk['label'].upper()}"
                 if f.get("title"):
-                    f["title"] = f"{mk['label'].split(' \u2014 ')[0]}: profitable from year one"
+                    market_short = mk["label"].split(" \u2014 ")[0]
+                    f["title"] = f"{market_short}: profitable from year one"
                 out_econ[str(sidx)] = {"status": row.get("status"), "market": mk["label"],
                                        "corridor": row.get("corridor"), "route_id": row.get("route_id"),
                                        "fields": f}

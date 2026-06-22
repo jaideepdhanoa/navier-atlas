@@ -24,11 +24,25 @@ You own deterministic deck creation, live editing, and image generation/composit
      - Slides **4–6, 14–18** `Interactive link` → market sub-proposal or city page
      - Slides **7–9, 19–23** `Model deepdive` → `economics_url` (auto from `economics-binding.json`)
      - Slide **10** `Detailed market sizing` → same `economics_url`
+     - Slide **13** body phrase `Navier × {Partner} Atlas` → partner Atlas hub (`close_atlas_link`,
+       `link_style: inline_phrase` — white underlined inline link in body; title stays plain)
      Run `python builders/deck_link_bindings.py validate-bindings --deck {deck}` then `apply`.
    - **Slide-family gate (Grab gold template).** `econ_market_bg` binds **only** to `navierBg_*` on slides
      7–9 and 19–23 (full-bleed market-specific landmark skyline). Slides 4–6 and 14–18 =
-     `atlas_route_screenshot` (human Atlas capture — no generation). Run
+     `atlas_route_screenshot` (Atlas capture — no generation). Capture via
+     `python builders/deck_bolt_wave2_images.py capture-atlas-screenshots --serve-dist`
+     (Playwright; URLs from `slide-link-bindings.json`). Run
      `python builders/deck_bolt_wave2_images.py validate-bindings` before any image apply.
+   - **Unit-economics header eyebrow (slides 7–9, 19–23).** `WHAT ONE BOAT EARNS · {MARKET_LABEL}`
+     must use the **full** `market_label` — never truncate (`CRO`/`AZUR`). Canonical char budget is
+     31 (Singapore geometry), not Bali/Phuket sample budgets on slides 8–9.
+     `python builders/deck_bolt_wave2.py validate-econ-headers`
+     `python builders/deck_bolt_wave2.py apply-econ-headers`
+   - **Market-slide route lists (slides 4–6, 14–18).** Four marquee routes per slide from
+     `decks/{deck}/market-route-bindings.json` (sourced from partner JSON `journeys_unlocked`).
+     Styling: amber `▸` bullet only, white route text, blank line between routes. Validate then apply:
+     `python builders/deck_bolt_wave2.py validate-market-routes`
+     `python builders/deck_bolt_wave2.py apply-market-routes`
    - **Prompt tiers.** `econ_unit_landmark` (full-bleed recognizable landmark skyline edge-to-edge),
      `cover` / `value_prop` / `tam` / `partner_roles` per `N30-TIER-A-PROMPTS.md`. Vessel must be
      **hydrofoiling** (foils deployed, hull elevated) — not displacement sitting on the water.

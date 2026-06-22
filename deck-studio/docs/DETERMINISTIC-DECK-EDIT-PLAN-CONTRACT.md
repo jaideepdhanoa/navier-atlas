@@ -71,6 +71,19 @@ Rules:
 - New copy length **must be ≤ `char_budget`**. If the partner story needs more, Tasklet trims at source; Grok never receives an over-budget string.
 - For multi-run lines (KPIs, mixed emphasis), emit one `updateTextStyle` per run range — see §3.
 
+### Unit-economics header eyebrow (`econ.header_market`)
+
+The gold eyebrow string is `WHAT ONE BOAT EARNS · {MARKET_LABEL}` on every unit-econ slide (7–9, 19–23).
+
+| Rule | Requirement |
+|---|---|
+| **Full market label** | Never truncate the suffix to fit a shorter Grab residue sample (e.g. `CRO`, `AZUR`). Use `CROATIA`, `RIVIERA`, etc. |
+| **Char budget** | All `econ.header_market` objects share the same text-box geometry — use canonical budget **31** (Singapore reference), not the Bali/Phuket sample budgets (26/28) on slides 8–9 |
+| **Source** | `deck_bolt_wave2.ECON_BINDINGS[].market_label` → `econ_header_market_text()` |
+| **Validation** | `python builders/deck_bolt_wave2.py validate-econ-headers` before apply |
+
+**Failure mode (Bolt 2026-06-22):** slides 8–9 shipped `CRO` / `AZUR` because `char_budget` was taken from shorter Grab sample strings on duplicated template slides.
+
 ### Economics table value cells (revenue build · annual run cost · the result)
 
 These are **single-value** cells, not multi-run narrative. Use `builders/deck_edit_ops.py`
@@ -87,7 +100,26 @@ sample string.
 **Failure mode (Bolt 2026-06-22):** styling only the first 2 characters of `$22,500` because the
 fallback golden element was sampled from a 2-char cell (`15`) → `$2` white Exo-2, `2,500` default Arial 14 black.
 
-## 3. Multi-run KPI / emphasis lines (rebuild, don't skip)
+## 3. Market-slide marquee routes (slides 4–6, 14–18)
+
+Example and backup market slides carry **four** signature/marquee routes in the route-list text box
+(`example-market-routes` role — object IDs like `g3eec5122801_0_114`).
+
+| Rule | Requirement |
+|---|---|
+| **Route count** | Exactly **4** routes per market slide |
+| **Separator** | Blank line between route blocks (`\n\n`) |
+| **Format** | `▸  From → To` then indented `~X nm · tagline` on the next line |
+| **Bullet color** | Only the `▸` character: amber/gold `rgb(0.773, 0.616, 0.373)` |
+| **Body color** | Route title + detail line: white `rgb(1, 1, 1)` |
+| **Font** | Exo 2, 11pt, bold for the full block |
+| **Source** | `decks/{deck}/market-route-bindings.json` → `data-clean/partners/{partner}.json` `markets[].journeys_unlocked` |
+| **Builder** | `builders/deck_market_routes.py` → `market_route_replace_ops()` (amber/white multi-run styling) |
+
+**Failure mode (Bolt 2026-06-22):** only 2 routes hardcoded in `NARRATIVE_TEXT`, entire block styled
+gold from the golden-map single run. Fix: bindings file + bullet-only amber styling.
+
+## 4. Multi-run KPI / emphasis lines (rebuild, don't skip)
 
 The economics KPI line is 10 runs alternating gold figures (Exo 2 700) and grey connectors (Exo 2 400). Tasklet emits the full run sequence from the **economics sidecar** (never hand-typed):
 

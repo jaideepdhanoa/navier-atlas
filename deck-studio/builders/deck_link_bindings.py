@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from deck_edit_ops import link_replace_op
+from deck_edit_ops import clear_hyperlink_op, link_replace_op, white_link_replace_op
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO_ROOT = ROOT.parent
@@ -17,6 +17,8 @@ ECON_URL_MAP = REPO_ROOT / "finance" / "economics_url_map.json"
 LABEL_INTERACTIVE = "Interactive link"
 LABEL_MODEL_DEEPDIVE = "Model deepdive"
 LABEL_TAM_SIZING = "Detailed market sizing"
+LINK_STYLE_PRESERVE = "preserve_element"
+LINK_STYLE_INLINE_PHRASE = "inline_phrase"
 
 
 def load_json(path: Path) -> dict:
@@ -38,6 +40,18 @@ def link_oid_for_label(golden: dict, slide_index: int, label: str) -> str | None
     target = label.strip().lower()
     for slide in golden.get("slides", []):
         if slide.get("index") != slide_index:
+            continue
+        for el in slide.get("elements", []):
+            if (el.get("text") or "").strip().lower() == target:
+                return el.get("oid")
+    return None
+
+
+def link_oid_for_label_on_slide(golden: dict, slide_object_id: str, label: str) -> str | None:
+    """Resolve link object_id by stable slide object_id (post slide-2 insert safe)."""
+    target = label.strip().lower()
+    for slide in golden.get("slides", []):
+        if slide.get("pageObjectId") != slide_object_id:
             continue
         for el in slide.get("elements", []):
             if (el.get("text") or "").strip().lower() == target:
@@ -145,6 +159,29 @@ def econ_model_link_bindings(deck_key: str) -> list[dict]:
     return rows
 
 
+def phrase_text_range(body_text: str, phrase: str) -> dict[str, int]:
+    start = body_text.index(phrase)
+    return {"startIndex": start, "endIndex": start + len(phrase)}
+
+
+def close_atlas_link_binding(deck_key: str) -> dict | None:
+    doc = load_link_bindings_doc(deck_key)
+    close = doc.get("close_atlas_link")
+    if not close:
+        return None
+    return {
+        "slide_index": close["slide_index"],
+        "slide_object_id": close["slide_object_id"],
+        "title_object_id": close.get("title_object_id"),
+        "link_object_id": close["link_object_id"],
+        "link_role": close.get("link_role", "atlas_partner_hub"),
+        "link_phrase": close.get("link_phrase"),
+        "body_text": close.get("body_text"),
+        "label": close.get("label"),
+        "link_style": close.get("link_style", LINK_STYLE_INLINE_PHRASE),
+    }
+
+
 def tam_sizing_link_binding(deck_key: str, golden: dict) -> dict | None:
     doc = load_link_bindings_doc(deck_key)
     tam = doc.get("tam_sizing_link")
@@ -187,6 +224,11 @@ def merged_bindings(deck_key: str, *, golden: dict | None = None) -> list[dict]:
     tam = tam_sizing_link_binding(deck_key, golden)
     if tam and tam["slide_index"] not in seen:
         rows.append(tam)
+        seen.add(tam["slide_index"])
+    close = close_atlas_link_binding(deck_key)
+    if close and close["slide_index"] not in seen:
+        rows.append(close)
+        seen.add(close["slide_index"])
     rows.sort(key=lambda r: r["slide_index"])
     return rows
 
@@ -256,16 +298,75 @@ def validate_link_bindings(deck_key: str, *, golden: dict | None = None) -> list
         if role == "atlas_market" and not b.get("atlas_city_id"):
             errors.append(f"slide {idx}: atlas_market requires atlas_city_id")
 
+        link_style = b.get("link_style")
         label = b.get("label", LABEL_INTERACTIVE)
-        if role in ("atlas_market", "atlas_partner_hub"):
+        if role in ("atlas_market", "atlas_partner_hub") and link_style not in (
+            LINK_STYLE_PRESERVE,
+            LINK_STYLE_INLINE_PHRASE,
+        ):
             label = LABEL_INTERACTIVE
-        expected_oid = link_oid_for_label(golden, idx, label)
-        if expected_oid and b.get("link_object_id") != expected_oid:
-            errors.append(
-                f"slide {idx}: link_object_id {b.get('link_object_id')!r} != golden {expected_oid!r} ({label})"
+        if link_style == LINK_STYLE_PRESERVE:
+            if not b.get("label"):
+                errors.append(f"slide {idx}: preserve_element close link requires label")
+        elif link_style == LINK_STYLE_INLINE_PHRASE:
+            phrase = b.get("link_phrase")
+            body_text = b.get("body_text")
+            if not phrase:
+                errors.append(f"slide {idx}: inline_phrase requires link_phrase")
+            if not body_text:
+                errors.append(f"slide {idx}: inline_phrase requires body_text")
+            elif phrase and phrase not in body_text:
+                errors.append(f"slide {idx}: link_phrase {phrase!r} not found in body_text")
+        else:
+            slide_oid = b.get("slide_object_id")
+            expected_oid = (
+                link_oid_for_label_on_slide(golden, slide_oid, label)
+                if slide_oid
+                else link_oid_for_label(golden, idx, label)
             )
+            if expected_oid and b.get("link_object_id") != expected_oid:
+                errors.append(
+                    f"slide {idx}: link_object_id {b.get('link_object_id')!r} != golden {expected_oid!r} ({label})"
+                )
 
     return errors
+
+
+def build_inline_phrase_link_ops(
+    binding: dict,
+    *,
+    url: str,
+    resolution: str,
+    op_prefix: str,
+) -> list[dict]:
+    body_text = binding["body_text"]
+    phrase = binding["link_phrase"]
+    text_range = {"type": "FIXED_RANGE", **phrase_text_range(body_text, phrase)}
+    idx = binding["slide_index"]
+    role = binding.get("link_role", "atlas_partner_hub")
+    source = f"slide-link-bindings.json slide {idx} ({resolution})"
+    ops: list[dict] = []
+    title_oid = binding.get("title_object_id")
+    if title_oid:
+        ops.append(
+            clear_hyperlink_op(
+                binding["slide_object_id"],
+                title_oid,
+                op_key=f"{op_prefix}-s{idx:02d}-{role}-title-clear",
+                source_pointer=source,
+            )
+        )
+    ops.append(
+        white_link_replace_op(
+            binding["slide_object_id"],
+            binding["link_object_id"],
+            url,
+            op_key=f"{op_prefix}-s{idx:02d}-{role}-inline",
+            source_pointer=source,
+            text_range=text_range,
+        )
+    )
+    return ops
 
 
 def build_deck_link_ops(deck_key: str, *, op_prefix: str | None = None) -> list[dict]:
@@ -280,8 +381,20 @@ def build_deck_link_ops(deck_key: str, *, op_prefix: str | None = None) -> list[
             binding, doc=doc, deck_cfg=deck_cfg, partner_doc=partner_doc
         )
         role = binding.get("link_role", "atlas_market")
+        link_style = binding.get("link_style")
+        if link_style == LINK_STYLE_INLINE_PHRASE:
+            ops.extend(
+                build_inline_phrase_link_ops(
+                    binding,
+                    url=resolved["url"],
+                    resolution=resolved["resolution"],
+                    op_prefix=prefix,
+                )
+            )
+            continue
+        op_factory = white_link_replace_op if link_style == LINK_STYLE_PRESERVE else link_replace_op
         ops.append(
-            link_replace_op(
+            op_factory(
                 binding["slide_object_id"],
                 binding["link_object_id"],
                 resolved["url"],

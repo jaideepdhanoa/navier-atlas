@@ -189,6 +189,64 @@ def text_replace_ops(
     return ops
 
 
+def clear_hyperlink_op(
+    slide_object_id: str,
+    target_object_id: str,
+    *,
+    op_key: str,
+    source_pointer: str,
+    text_range: dict | None = None,
+) -> dict:
+    """Remove hyperlink from a text range (default: entire object)."""
+    return make_op(
+        op_key,
+        slide_object_id,
+        target_object_id,
+        {
+            "updateTextStyle": {
+                "objectId": target_object_id,
+                "textRange": text_range or {"type": "ALL"},
+                "fields": "link",
+            }
+        },
+        rationale=f"Clear hyperlink on {target_object_id}",
+        source_pointer=source_pointer,
+    )
+
+
+def white_link_replace_op(
+    slide_object_id: str,
+    target_object_id: str,
+    url: str,
+    *,
+    op_key: str,
+    source_pointer: str,
+    text_range: dict | None = None,
+) -> dict:
+    """Apply white underlined hyperlink without changing font/size (preserves close-title styling)."""
+    return make_op(
+        op_key,
+        slide_object_id,
+        target_object_id,
+        {
+            "updateTextStyle": {
+                "objectId": target_object_id,
+                "textRange": text_range or {"type": "ALL"},
+                "style": {
+                    "link": {"url": url},
+                    "underline": True,
+                    "foregroundColor": {
+                        "opaqueColor": {"rgbColor": {"red": 1.0, "green": 1.0, "blue": 1.0}}
+                    },
+                },
+                "fields": "link,underline,foregroundColor",
+            }
+        },
+        rationale=f"Set white hyperlink on {target_object_id}",
+        source_pointer=source_pointer,
+    )
+
+
 def link_replace_op(
     slide_object_id: str,
     target_object_id: str,

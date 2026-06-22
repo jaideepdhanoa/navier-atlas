@@ -1,7 +1,21 @@
 # Bolt deck — Atlas route screenshots
 
-Human captures from https://navier-atlas.vercel.app for market side-panel slides **4–6** and **14–18**.
+Human or automated captures from Navier Atlas for market side-panel slides **4–6** and **14–18**.
 No Tier-A generation — register and apply via `python builders/deck_bolt_wave2_images.py apply-atlas-screenshots`.
+
+## Automated capture (Playwright)
+
+From `deck-studio/`:
+
+```bash
+# Local _dist (no password) — preferred for batch capture
+python builders/deck_bolt_wave2_images.py capture-atlas-screenshots --serve-dist
+
+# Prod Vercel (requires PARTNER_AUTH_BOLT or --password)
+python builders/deck_bolt_wave2_images.py capture-atlas-screenshots --base-url https://navier-atlas.vercel.app
+```
+
+Then apply: `python builders/deck_bolt_wave2_images.py apply-atlas-screenshots`
 
 ## Required files
 

@@ -13,6 +13,32 @@ All deck links render **white + underlined** (`link_replace_op` in `deck_edit_op
 | `atlas_market` | 4–6, 14–18 | Interactive link | `/{partner}/{market}` or `.../city/{city_id}` |
 | `economics_sheet` | 7–9, 19–23 | Model deepdive | Partner unit-economics Google Sheet |
 | `economics_sheet` | 10 | Detailed market sizing | Same economics sheet |
+| `atlas_partner_hub` | 13 | `Navier × {Partner} Atlas` (inline body phrase) | `/{partner_id}` — `link_style: inline_phrase` |
+
+## Close slide (slide 13)
+
+The close-slide **title** (`g3ea5e0fb254_4_330`) stays plain text:
+`Explore the {Partner} marine network` (Exo-2, not linked).
+
+The **body** (`g3ea5e0fb254_4_331`) carries the Atlas CTA sentence; only the phrase
+`Navier × {Partner} Atlas` is a white underlined hyperlink to the partner Atlas proposal hub.
+
+Wire via `close_atlas_link` in `slide-link-bindings.json`:
+
+```json
+"close_atlas_link": {
+  "slide_index": 13,
+  "slide_object_id": "g3ea5e0fb254_4_270",
+  "title_object_id": "g3ea5e0fb254_4_330",
+  "link_object_id": "g3ea5e0fb254_4_331",
+  "link_role": "atlas_partner_hub",
+  "link_phrase": "Navier × Bolt Atlas",
+  "body_text": "Open the Navier × Bolt Atlas, pick the first corridor, and let's discover a new foiling water tier across Europe.",
+  "link_style": "inline_phrase"
+}
+```
+
+Link ops must run **after** narrative body text is inserted (text replace clears hyperlinks).
 
 ## URL resolution
 

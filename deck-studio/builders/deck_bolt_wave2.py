@@ -28,9 +28,47 @@ from deck_bolt_pilot import (  # noqa: E402
 )
 from deck_link_bindings import build_deck_link_ops  # noqa: E402
 from deck_edit_ops import econ_value_replace_ops, image_replace_op, text_replace_ops  # noqa: E402
+from deck_market_routes import (  # noqa: E402
+    ROUTE_TARGET_OIDS,
+    build_market_route_ops,
+    validate_market_route_bindings,
+)
 from deck_slide_bindings import image_bindings_list, load_slide_bindings, validate_bindings  # noqa: E402
 
 GOLD_ID = "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs"
+
+# Slide 10 TAM ladder: golden map uses shape contentAlignment MIDDLE (vertical centering in
+# the box) but paragraph text must stay left-aligned — do not map MIDDLE → CENTER here.
+# Unit-econ eyebrow: all slides share the same text-box geometry (Grab gold template).
+# Do not derive char_budget from shorter Grab residue samples (Bali/Phuket on slides 8–9).
+ECON_HEADER_MARKET_CHAR_BUDGET = 31
+ECON_HEADER_MARKET_OBJECT_IDS = frozenset(
+    {
+        "g3eec5122801_0_392",
+        "g3eec5122801_0_449",
+        "g3eec5122801_0_506",
+        "g3eec5122801_0_741",
+        "g3eec5122801_0_798",
+        "g3eec5122801_0_855",
+        "g3eec5122801_0_912",
+        "g3eec5122801_0_969",
+    }
+)
+
+TAM_LADDER_OBJECT_IDS = frozenset(
+    {
+        "g3eec5122801_0_570",
+        "g3eec5122801_0_571",
+        "g3eec5122801_0_574",
+        "g3eec5122801_0_575",
+        "g3eec5122801_0_578",
+        "g3eec5122801_0_579",
+        "g3eec5122801_0_582",
+        "g3eec5122801_0_583",
+        "g3eec5122801_0_586",
+        "g3eec5122801_0_587",
+    }
+)
 
 WAVE2_LEAK_DENYLIST = LEAK_DENYLIST + [
     "Southeast Asia",
@@ -72,7 +110,7 @@ WAVE2_LEAK_DENYLIST = LEAK_DENYLIST + [
 
 # Economics corridor bindings (mid scenario from agg-bolt.json)
 ECON_BINDINGS: dict[int, dict] = {
-    7: {
+    8: {
         "corridor": "Athens -> Hydra (Saronic)",
         "market_label": "GREECE",
         "title_market": "Greece",
@@ -80,25 +118,23 @@ ECON_BINDINGS: dict[int, dict] = {
         "bg_registry": "econ-greece-athens-hydra",
         "bg_oid": "navierBg_s23",
     },
-    8: {
+    9: {
         "corridor": "Split -> Hvar",
         "market_label": "CROATIA",
-        "header_market": "WHAT ONE BOAT EARNS · CRO",
         "title": "Croatia: profit from year one",
         "route_line": "Split → Hvar  ·  ~20 nm  ·  N30 Pioneer II (8 seats)",
         "bg_registry": "econ-croatia-split-hvar",
         "bg_oid": "navierBg_s24",
     },
-    9: {
+    10: {
         "corridor": "Nice -> Monaco",
         "market_label": "RIVIERA",
-        "header_market": "WHAT ONE BOAT EARNS · AZUR",
         "title": "Riviera: profit from year one",
         "route_line": "Nice → Monaco  ·  ~7 nm  ·  N30 Pioneer II (8 seats)",
         "bg_registry": "econ-cote-azur-nice-monaco",
         "bg_oid": "navierBg_s25",
     },
-    19: {
+    20: {
         "corridor": "Sorrento -> Capri",
         "market_label": "ITALY",
         "title_market": "Italy",
@@ -106,7 +142,7 @@ ECON_BINDINGS: dict[int, dict] = {
         "bg_registry": "econ-italy-sorrento-capri",
         "bg_oid": "navierBg_s35",
     },
-    20: {
+    21: {
         "corridor": "Dubai Harbour Marina -> Bluewaters Marina",
         "market_label": "UAE",
         "title_market": "UAE",
@@ -114,7 +150,7 @@ ECON_BINDINGS: dict[int, dict] = {
         "bg_registry": "econ-uae-dubai-harbour",
         "bg_oid": "navierBg_s36",
     },
-    21: {
+    22: {
         "corridor": "Jeddah Corniche -> Jeddah Central (PIF waterfront)",
         "market_label": "JEDDAH",
         "header_market": "WHAT ONE BOAT EARNS · JEDDAH",
@@ -123,7 +159,7 @@ ECON_BINDINGS: dict[int, dict] = {
         "bg_registry": "econ-ksa-jeddah",
         "bg_oid": "navierBg_s37",
     },
-    22: {
+    23: {
         "corridor": "Mykonos -> Paros",
         "market_label": "GREECE",
         "title_market": "Cyclades",
@@ -131,7 +167,7 @@ ECON_BINDINGS: dict[int, dict] = {
         "bg_registry": "econ-greece-mykonos-paros",
         "bg_oid": "navierBg_s38",
     },
-    23: {
+    24: {
         "corridor": "The Red Sea -> AMAALA (Triple Bay)",
         "market_label": "RED SEA",
         "title": "Red Sea: profit from year one",
@@ -154,56 +190,42 @@ NARRATIVE_TEXT: dict[tuple[str, str], str] = {
     # Slide 4 Greece example market
     ("g3eec5122801_0_106", "g3eec5122801_0_110"): "Greece — the recommended beachhead",
     ("g3eec5122801_0_106", "g3eec5122801_0_111"): "Bolt's deepest island demand and longest season — replacing slow diesel ferries.",
-    ("g3eec5122801_0_106", "g3eec5122801_0_114"): "▸  Athens → Hydra (Saronic)\n      ~30 nm · ~45-min foiling run\n▸  Piraeus → Aegina\n      ~10 nm · commuter island hop",
+    # Slide 4–6 + 14–18 route lists: decks/bolt/market-route-bindings.json (4 routes, amber bullet)
     # Slide 5 Croatia
     ("g3eec5122801_0_201", "g3eec5122801_0_205"): "Croatia — the Dalmatian island chain",
     ("g3eec5122801_0_201", "g3eec5122801_0_206"): "High-volume Adriatic island hops — Split, Hvar, Brač and Korčula on one network.",
-    ("g3eec5122801_0_201", "g3eec5122801_0_209"): "▸  Split → Hvar\n      ~20 nm · the everyday island hop\n▸  Split → Brač (Bol)\n      ~12 nm · beach-resort crossing",
     # Slide 6 Riviera
     ("g3eec5122801_0_296", "g3eec5122801_0_300"): "Riviera — Nice to Monaco by water",
     ("g3eec5122801_0_296", "g3eec5122801_0_304"): "Premium corporate and leisure demand — skip Corniche traffic with a silent foiling run.",
-    ("g3eec5122801_0_296", "g3eec5122801_0_301"): "▸  Nice → Monaco\n      ~7 nm · the Corniche bypass\n▸  Nice Airport → Monaco\n      ~7 nm · airport transfer",
-    # Slide 10 TAM
+    # Slide 10 TAM — ladder values filled by slide10_tam_text_map() from economics sidecar
     ("g3eec5122801_0_562", "g3eec5122801_0_565"): "A new multi-billion-dollar vertical across Europe",
     ("g3eec5122801_0_562", "g3eec5122801_0_567"): "Read it bottom-up: the fare a Navier boat collects today, the market a faster product unlocks — then the whole journey a super-app monetizes around every crossing.",
-    ("g3eec5122801_0_562", "g3eec5122801_0_570"): "$507M",
-    ("g3eec5122801_0_562", "g3eec5122801_0_571"): "SOM — Navier fare, Bolt network, today's trips, 10% capture",
-    ("g3eec5122801_0_562", "g3eec5122801_0_574"): "$2.2B",
-    ("g3eec5122801_0_562", "g3eec5122801_0_575"): "SAM — faster, quieter boats grow the market; 25% capture at maturity",
-    ("g3eec5122801_0_562", "g3eec5122801_0_578"): "$8.8B",
-    ("g3eec5122801_0_562", "g3eec5122801_0_579"): "TAM — the entire induced marine-transfer market (≈ 4× SAM; band $4.5–15.8B)",
-    ("g3eec5122801_0_562", "g3eec5122801_0_582"): "$6.6B",
-    ("g3eec5122801_0_562", "g3eec5122801_0_583"): "Journey GMV — add food + stays + experiences to every crossing (≈ 3× TAM)",
-    ("g3eec5122801_0_562", "g3eec5122801_0_586"): "$1.2B",
-    ("g3eec5122801_0_562", "g3eec5122801_0_587"): "Bolt platform revenue on Navier — 18% × Navier-corridor Journey GMV (ceiling on full network)",
     # Slide 11 partner roles
     ("g3ea5e0fb254_4_357", "g3ea5e0fb254_4_361"): "You bring the demand. We operate the water.",
     ("g3ea5e0fb254_4_357", "g3ea5e0fb254_4_362"): "▸  Bolt — demand, the app, the wallet and the brand.\n▸  Navier — vessels, crew, maintenance, certification and the network playbook.\n▸  Together — a premium foiling water tier from the Aegean to the Gulf.",
     # Slide 12 ask
     ("g3ea5e0fb254_4_444", "g3ea5e0fb254_4_447"): "1.  Working session — walk through the presentation and Navier atlas. \n2.  Vessel demo — a live foiling run on a pilot corridor. \n3.  Pilot MOU — Greece beachhead, three corridors, 12-month launch window.",
-    # Slide 13 close
+    # Slide 13 close — body phrase "Navier × Bolt Atlas" is white hyperlinked via close_atlas_link binding
     ("g3ea5e0fb254_4_330", "g3ea5e0fb254_4_330"): "Explore the Bolt marine network",
-    ("g3ea5e0fb254_4_331", "g3ea5e0fb254_4_331"): "Open the Navier × Bolt Atlas, pick the first corridor, and let's discover a new foiling water tier across Europe.",
+    ("g3ea5e0fb254_4_331", "g3ea5e0fb254_4_331"): (
+        "Open the Navier × Bolt Atlas, pick the first corridor, "
+        "and let's discover a new foiling water tier across Europe."
+    ),
     # Slide 14 Italy backup market
     ("g3eec5122801_0_677", "g3eec5122801_0_679"): "Italy — Amalfi, Capri & the lagoon",
     ("g3eec5122801_0_677", "g3eec5122801_0_680"): "Amalfi Coast day-trips, Capri crossings and Venice lagoon hops on one supply standard.",
-    ("g3eec5122801_0_677", "g3eec5122801_0_683"): "▸  Sorrento → Capri\n      ~17 nm · the Amalfi day-trip\n▸  Naples → Capri\n      ~22 nm · bay crossing",
     # Slide 15 UAE
     ("g3eec5122801_0_690", "g3eec5122801_0_692"): "UAE — Dubai & Abu Dhabi by water",
     ("g3eec5122801_0_690", "g3eec5122801_0_693"): "Premium harbour-to-harbour demand — no Sheikh Zayed Road required.",
-    ("g3eec5122801_0_690", "g3eec5122801_0_696"): "▸  Dubai Harbour → Bluewaters\n      ~3 nm · marina hop\n▸  Dubai Marina → Downtown Creek\n      ~2 nm · cross-city water leg",
     # Slide 16 Saudi
     ("g3eec5122801_0_703", "g3eec5122801_0_705"): "Saudi — Jeddah & the Red Sea",
     ("g3eec5122801_0_703", "g3eec5122801_0_706"): "PIF waterfront ambition meets water mobility",
-    ("g3eec5122801_0_703", "g3eec5122801_0_709"): "▸  Jeddah Corniche → Jeddah Central\n      ~2 nm · waterfront hop\n▸  Red Sea → AMAALA\n      ~45 nm · resort corridor",
     # Slide 17 Greece Cyclades
     ("g3eec5122801_0_716", "g3eec5122801_0_718"): "Greece — Cyclades island network",
     ("g3eec5122801_0_716", "g3eec5122801_0_719"): "Mykonos, Paros, Naxos and Santorini — the highest-volume Aegean hops.",
-    ("g3eec5122801_0_716", "g3eec5122801_0_722"): "▸  Mykonos → Paros\n      ~25 nm · inter-island hop\n▸  Mykonos → Naxos\n      ~20 nm · Cyclades crossing",
     # Slide 18 Croatia Dubrovnik
     ("g3eec5122801_0_729", "g3eec5122801_0_731"): "Croatia — Dubrovnik & the islands",
     ("g3eec5122801_0_729", "g3eec5122801_0_732"): "Elaphiti Islands, Korčula and Mljet — premium Adriatic excursions.",
-    ("g3eec5122801_0_729", "g3eec5122801_0_735"): "▸  Dubrovnik → Elaphiti Islands\n      ~8 nm · island excursion\n▸  Dubrovnik → Korčula\n      ~55 nm · south Adriatic",
 }
 
 # Deck-level narrative plates only. Unit-econ + atlas screenshot wiring lives in
@@ -230,6 +252,32 @@ def element_or_fallback(golden: dict, oid: str, *, fallback_oid: str = "g3eec512
     if not fb:
         raise KeyError(f"No golden element for {oid}")
     return {**fb, "oid": oid, "char_budget": max(fb.get("char_budget", 12), 16)}
+
+
+def econ_header_market_text(spec: dict) -> str:
+    return spec.get("header_market", f"WHAT ONE BOAT EARNS · {spec['market_label']}")
+
+
+def econ_text_element(golden: dict, oid: str, field_key: str) -> dict:
+    el = element_or_fallback(golden, oid)
+    if field_key == "header_market" or oid in ECON_HEADER_MARKET_OBJECT_IDS:
+        return {**el, "char_budget": max(el.get("char_budget", 12), ECON_HEADER_MARKET_CHAR_BUDGET)}
+    return el
+
+
+def validate_econ_header_markets() -> list[str]:
+    errors: list[str] = []
+    for slide_index, spec in ECON_BINDINGS.items():
+        header = econ_header_market_text(spec)
+        if len(header) > ECON_HEADER_MARKET_CHAR_BUDGET:
+            errors.append(
+                f"slide {slide_index}: header_market len {len(header)} > {ECON_HEADER_MARKET_CHAR_BUDGET}: {header!r}"
+            )
+        if not header.endswith(spec["market_label"]):
+            errors.append(
+                f"slide {slide_index}: header_market must end with market_label {spec['market_label']!r}, got {header!r}"
+            )
+    return errors
 
 
 def load_agg_rows() -> list[dict]:
@@ -282,72 +330,261 @@ HOLD_HEADER = "WHAT ONE BOAT EARNS · HOLD"
 HOLD_TITLE = "Unit economics: pending validation"
 
 SLIDE3_OID = "g3eec5122801_0_0"
+SLIDE10_OID = "g3eec5122801_0_562"
+ECONOMICS_VALUES_PATH = ROOT / "decks/bolt/deck-economics-values-bolt.json"
+NARRATIVE_BINDING_PATH = ROOT / "decks/bolt/narrative-binding.json"
+NARRATIVE_JSON_PATH = ROOT / "decks/bolt/narrative-slide2-bolt.json"
+GOLD_SLIDE2_CREATE_PATH = ROOT / "decks/grab/narrative-slide2.gold-create.editplan.json"
+
 SLIDE3_KPI_FIELDS: list[tuple[str, str]] = [
-    ("g3eec5122801_0_6", "clusters_value"),
-    ("g3eec5122801_0_7", "clusters_caption"),
-    ("g3eec5122801_0_10", "spend_value"),
-    ("g3eec5122801_0_11", "spend_caption"),
-    ("g3eec5122801_0_15", "fleet_value"),
-    ("g3eec5122801_0_16", "fleet_caption"),
-    ("g3eec5122801_0_18", "tam_value"),
-    ("g3eec5122801_0_19", "tam_caption"),
+    ("g3eec5122801_0_6", "card1_value"),
+    ("g3eec5122801_0_7", "card1_caption"),
+    ("g3eec5122801_0_10", "card2_value"),
+    ("g3eec5122801_0_11", "card2_caption"),
+    ("g3eec5122801_0_15", "card3_value"),
+    ("g3eec5122801_0_16", "card3_caption"),
+    ("g3eec5122801_0_18", "card4_value"),
+    ("g3eec5122801_0_19", "card4_caption"),
 ]
+
+SLIDE10_TAM_FIELDS: list[tuple[str, str]] = [
+    ("g3eec5122801_0_570", "som_value"),
+    ("g3eec5122801_0_571", "som_caption"),
+    ("g3eec5122801_0_574", "sam_value"),
+    ("g3eec5122801_0_575", "sam_caption"),
+    ("g3eec5122801_0_578", "tam_value"),
+    ("g3eec5122801_0_579", "tam_caption"),
+    ("g3eec5122801_0_582", "journey_gmv_value"),
+    ("g3eec5122801_0_583", "journey_gmv_caption"),
+    ("g3eec5122801_0_586", "platform_value"),
+    ("g3eec5122801_0_587", "platform_caption"),
+]
+
+SLIDE10_TAM_CAPTIONS = {
+    "som_caption": "SOM — Navier fare, Bolt network, today's trips, 10% capture",
+    "sam_caption": "SAM — faster, quieter boats grow the market; 25% capture at maturity",
+    "tam_caption": "TAM — the entire induced marine-transfer market (≈ 4× SAM; band $4.5–15.8B)",
+    "journey_gmv_caption": "Journey GMV — add food + stays + experiences to every crossing (≈ 3× TAM)",
+    "platform_caption": "Bolt platform revenue on Navier — 18% × Navier-corridor Journey GMV (ceiling on full network)",
+}
+
+
+def load_economics_values() -> dict:
+    return load_json(ECONOMICS_VALUES_PATH)
 
 
 def slide3_kpi_text_map() -> dict[str, str]:
-    """Market-overview KPI ladder (slide 3) from grounded growth cascade."""
-    frontend = load_json(ROOT.parent / "finance/recal/growth-frontend-bolt.json")
-    growth = load_json(ROOT.parent / "finance/recal/growth-bolt.json")
-    content = load_json(ROOT / "decks/bolt/content-source.json")
-    grounded = growth["grounded"]
-    tam_rung = next(
-        r for r in frontend["revenue_potential"]["rungs"] if r["id"] == "tam_transfer"
-    )
-    scale = next(h for h in frontend["phase_economics"]["horizons"] if h["id"] == "scale")
-    clusters = len(content["partner_json_extract"]["canonical_market_scope"])
-    m_raw = grounded["M_today_transport_spend_yr"]
-    if m_raw >= 1_000_000_000:
-        m_today = f"${m_raw / 1_000_000_000:.2f}B".replace(".00B", "B")
-    else:
-        m_today = f"${round(m_raw / 1_000_000)}M"
-    fleet_est = scale["fleet_boats_est"]
-    fleet_rounded = (fleet_est // 100) * 100
-    fleet_value = f"{fleet_rounded:,}+"
-    greenfield = frontend["_provenance"]["greenfield_corridors"]
-    tam_mid = tam_rung["display"]["mid"]
-    tam_low = tam_rung["display"]["low"].replace("B", "")
-    tam_high = tam_rung["display"]["high"].replace("$", "").replace("B", "")
+    """Market-overview KPI ladder from deck-economics-values sidecar."""
+    sidecar = load_economics_values()
+    cards = sidecar["slide3_kpi"]["network_cards"]
+    if len(cards) != 4:
+        raise ValueError(f"expected 4 network_cards, got {len(cards)}")
     return {
-        "clusters_value": str(clusters),
-        "clusters_caption": "water-bound clusters in Bolt's current proposal scope",
-        "spend_value": m_today,
-        "spend_caption": "premium sea-transfer spend on sourced Bolt corridors, per year",
-        "fleet_value": fleet_value,
-        "fleet_caption": f"vessels at full network scale across {greenfield} mapped corridors",
-        "tam_value": tam_mid,
-        "tam_caption": (
-            f"marine-transfer TAM (induced market) · band {tam_low}–{tam_high}B, mid {tam_mid}"
-        ),
+        "card1_value": cards[0]["value"],
+        "card1_caption": cards[0]["meaning"],
+        "card2_value": cards[1]["value"],
+        "card2_caption": cards[1]["meaning"],
+        "card3_value": cards[2]["value"],
+        "card3_caption": cards[2]["meaning"],
+        "card4_value": cards[3]["value"],
+        "card4_caption": cards[3]["meaning"],
     }
+
+
+def slide10_tam_text_map() -> dict[str, str]:
+    """TAM ladder values from deck-economics-values sidecar + fixed Bolt captions."""
+    sidecar = load_economics_values()
+    rungs = sidecar["slide10_tam"]["rungs"]
+    if len(rungs) != 5:
+        raise ValueError(f"expected 5 TAM rungs, got {len(rungs)}")
+    keys = ("som", "sam", "tam", "journey_gmv", "platform")
+    out: dict[str, str] = {}
+    for key, rung in zip(keys, rungs):
+        out[f"{key}_value"] = rung["value"]
+        out[f"{key}_caption"] = SLIDE10_TAM_CAPTIONS[f"{key}_caption"]
+    return out
+
+
+def kpi_element(golden: dict, oid: str, text: str) -> dict:
+    el = element_or_fallback(golden, oid)
+    return {**el, "char_budget": max(el.get("char_budget", 12), len(text) + 4)}
 
 
 def build_slide3_kpi_ops(golden: dict) -> list[dict]:
     kpi = slide3_kpi_text_map()
     ops: list[dict] = []
-    source = "finance/recal/growth-bolt.json + growth-frontend-bolt.json slide3_kpi"
+    source = "decks/bolt/deck-economics-values-bolt.json slide3_kpi.network_cards"
     for oid, key in SLIDE3_KPI_FIELDS:
-        el = element_or_fallback(golden, oid)
+        text = kpi[key]
+        el = kpi_element(golden, oid, text)
         ops.extend(
             text_replace_ops(
                 SLIDE3_OID,
                 oid,
-                kpi[key],
+                text,
                 el,
                 op_prefix=f"bolt-slide3-kpi-{oid}",
                 source_pointer=source,
             )
         )
     return ops
+
+
+def build_slide10_tam_ops(golden: dict) -> list[dict]:
+    tam = slide10_tam_text_map()
+    ops: list[dict] = []
+    source = "decks/bolt/deck-economics-values-bolt.json slide10_tam.rungs"
+    for oid, key in SLIDE10_TAM_FIELDS:
+        text = tam[key]
+        el = kpi_element(golden, oid, text)
+        ops.extend(
+            text_replace_ops(
+                SLIDE10_OID,
+                oid,
+                text,
+                el,
+                op_prefix=f"bolt-slide10-tam-{oid}",
+                source_pointer=source,
+                alignment="START" if oid in TAM_LADDER_OBJECT_IDS else None,
+            )
+        )
+    return ops
+
+
+def narrative_element(text: str) -> dict:
+    return {"char_budget": max(len(text) + 24, 48), "style": {"font": "Exo 2", "sizePt": 11, "bold": False, "color": [1.0, 1.0, 1.0]}}
+
+
+def apply_slides_requests(presentation_id: str, requests: list[dict], *, chunk_size: int = 35) -> int:
+    service = slides_service()
+    applied = 0
+    for i in range(0, len(requests), chunk_size):
+        chunk = requests[i : i + chunk_size]
+        service.presentations().batchUpdate(
+            presentationId=presentation_id, body={"requests": chunk}
+        ).execute()
+        applied += len(chunk)
+    return applied
+
+
+def slide2_exists(presentation_id: str) -> bool:
+    service = slides_service()
+    pres = service.presentations().get(presentationId=presentation_id).execute()
+    return any(slide.get("objectId") == "narr2_page" for slide in pres.get("slides", []))
+
+
+def cmd_insert_slide2() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    if slide2_exists(presentation_id):
+        print(json.dumps({"status": "already_present", "slide_object_id": "narr2_page"}, indent=2))
+        return 0
+    gold_create = load_json(GOLD_SLIDE2_CREATE_PATH)
+    requests = gold_create["requests"]
+    applied = apply_slides_requests(presentation_id, requests, chunk_size=12)
+    print(json.dumps({"applied_requests": applied, "slide_object_id": "narr2_page"}, indent=2))
+    return 0
+
+
+def build_narrative_paint_ops() -> list[dict]:
+    binding = load_json(NARRATIVE_BINDING_PATH)
+    narrative = load_json(NARRATIVE_JSON_PATH)
+    slide_oid = binding["slide_object_id"]
+    ops: list[dict] = []
+
+    for field_key, pin in binding["fields"].items():
+        if not pin.get("present"):
+            continue
+        if pin.get("static"):
+            text = pin["static"]
+        else:
+            text = narrative.get(field_key) or ""
+        if not text:
+            continue
+        ops.extend(
+            text_replace_ops(
+                slide_oid,
+                pin["object_id"],
+                text,
+                narrative_element(text),
+                op_prefix=f"bolt-narr2-{pin['object_id']}",
+                source_pointer=NARRATIVE_JSON_PATH.name,
+            )
+        )
+
+    for i, beat_pin in enumerate(binding["your_world"]):
+        if not beat_pin.get("present"):
+            continue
+        beat = narrative["your_world"][i]
+        for part, oid_key in (("label", "head_object_id"), ("text", "body_object_id")):
+            text = beat[part]
+            ops.extend(
+                text_replace_ops(
+                    slide_oid,
+                    beat_pin[oid_key],
+                    text,
+                    narrative_element(text),
+                    op_prefix=f"bolt-narr2-{beat_pin[oid_key]}",
+                    source_pointer=NARRATIVE_JSON_PATH.name,
+                )
+            )
+    return ops
+
+
+def cmd_apply_narrative() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    if not slide2_exists(presentation_id):
+        raise SystemExit("narr2_page missing — run insert-slide2 first")
+    ops = build_narrative_paint_ops()
+    plan = {"deck_key": "bolt", "presentation_id": presentation_id, "operations": ops}
+    applied = apply_plan(plan, chunk_size=40)
+    print(json.dumps({"applied_ops": applied, "fields": len(ops) // 3}, indent=2))
+    return 0
+
+
+def cmd_apply_slide2_image() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    if not slide2_exists(presentation_id):
+        raise SystemExit("narr2_page missing — run insert-slide2 first")
+    registry = load_json(ROOT / "assets/ASSET-REGISTRY.json")
+    asset = registry["assets"]["bolt-value-prop-bg"]
+    url = asset.get("source_url")
+    if not url:
+        raise SystemExit("bolt-value-prop-bg missing source_url")
+    emu_w, emu_h = 9144000, 5143500
+    requests = [
+        {
+            "createImage": {
+                "objectId": "narr2_bg_img",
+                "url": url,
+                "elementProperties": {
+                    "pageObjectId": "narr2_page",
+                    "size": {
+                        "width": {"magnitude": emu_w, "unit": "EMU"},
+                        "height": {"magnitude": emu_h, "unit": "EMU"},
+                    },
+                    "transform": {
+                        "scaleX": 1,
+                        "scaleY": 1,
+                        "translateX": 0,
+                        "translateY": 0,
+                        "unit": "EMU",
+                    },
+                },
+            }
+        },
+        {
+            "updatePageElementsZOrder": {
+                "pageElementObjectIds": ["narr2_bg_img"],
+                "operation": "SEND_TO_BACK",
+            }
+        },
+    ]
+    applied = apply_slides_requests(presentation_id, requests, chunk_size=2)
+    print(json.dumps({"applied_requests": applied, "image_url": url, "target": "narr2_bg_img"}, indent=2))
+    return 0
 
 
 def build_econ_slide_ops(
@@ -370,7 +607,7 @@ def build_econ_slide_ops(
         margin_pct = int(round(econ["margin"] * 100))
         payback = f"{econ['payback_years']:.1f} yrs"
         text_map = {
-            "header_market": spec.get("header_market", f"WHAT ONE BOAT EARNS · {spec['market_label']}"),
+            "header_market": econ_header_market_text(spec),
             "title": spec.get("title", f"{spec.get('title_market', spec['market_label'].title())}: profitable from year one"),
             "route_line": spec["route_line"],
             "summary_line": (
@@ -392,7 +629,7 @@ def build_econ_slide_ops(
 
     for field_key, text in text_map.items():
         oid = fields[field_key]["object_id"]
-        el = element_or_fallback(golden, oid)
+        el = econ_text_element(golden, oid, field_key)
         ops.extend(
             text_replace_ops(
                 slide_oid,
@@ -453,7 +690,7 @@ def register_wave2_assets() -> dict[str, str]:
             "partner": "bolt",
             "local_path": "assets/backgrounds/decks/bolt/bolt-value-prop-v1-composited.png",
             "provenance": "n30_composite:grok_gen_bolt_value_prop_raw",
-            "used_by": [{"deck": "bolt", "slide_index": 2, "slide_object_id": "g3f139a0b6ec_0_0", "target_object_id": "g3f139a0b6ec_0_1"}],
+            "used_by": [{"deck": "bolt", "slide_index": 3, "slide_object_id": "g3f139a0b6ec_0_0", "target_object_id": "g3f139a0b6ec_0_1"}],
         },
         "bolt-tam-bg": {
             "role": "tam_bg",
@@ -461,7 +698,7 @@ def register_wave2_assets() -> dict[str, str]:
             "partner": "bolt",
             "local_path": "assets/backgrounds/decks/bolt/bolt-tam-v1-composited.png",
             "provenance": "n30_composite:grok_gen_bolt_tam_raw",
-            "used_by": [{"deck": "bolt", "slide_index": 10, "slide_object_id": "g3eec5122801_0_562", "target_object_id": "navierBg_s26"}],
+            "used_by": [{"deck": "bolt", "slide_index": 11, "slide_object_id": "g3eec5122801_0_562", "target_object_id": "navierBg_s26"}],
         },
         "bolt-partner-roles-bg": {
             "role": "partner_roles_bg",
@@ -469,7 +706,7 @@ def register_wave2_assets() -> dict[str, str]:
             "partner": "bolt",
             "local_path": "assets/backgrounds/decks/bolt/bolt-partner-roles-v1-composited.png",
             "provenance": "n30_composite:grok_gen_bolt_partner_roles_raw",
-            "used_by": [{"deck": "bolt", "slide_index": 11, "slide_object_id": "g3ea5e0fb254_4_357", "target_object_id": "g3ea5e0fb254_4_358"}],
+            "used_by": [{"deck": "bolt", "slide_index": 12, "slide_object_id": "g3ea5e0fb254_4_357", "target_object_id": "g3ea5e0fb254_4_358"}],
         },
         "econ-greece-athens-hydra": {
             "role": "econ_market_bg",
@@ -589,15 +826,41 @@ def register_wave2_assets() -> dict[str, str]:
     return urls
 
 
+def partner_json_path() -> Path:
+    return ROOT.parent / "data-clean/partners/bolt.json"
+
+
+def build_market_route_slide_ops(golden: dict) -> list[dict]:
+    errs = validate_market_route_bindings(
+        "bolt", partner_json_path=partner_json_path(), golden=golden
+    )
+    if errs:
+        raise SystemExit("market-route-bindings.json invalid:\n" + "\n".join(errs))
+    return build_market_route_ops(
+        golden,
+        "bolt",
+        partner_json_path=partner_json_path(),
+        element_lookup=element_or_fallback,
+    )
+
+
 def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
+    header_errs = validate_econ_header_markets()
+    if header_errs:
+        raise SystemExit("ECON_BINDINGS header_market invalid:\n" + "\n".join(header_errs))
     golden = load_json(ROOT / "decks/grab/golden-template-map.json")
     binding = load_json(ROOT / "decks/bolt/economics-binding.json")
     ops: list[dict] = []
 
     ops.extend(build_slide3_kpi_ops(golden))
+    ops.extend(build_slide10_tam_ops(golden))
+    ops.extend(build_market_route_slide_ops(golden))
 
     for (slide_oid, target_oid), text in NARRATIVE_TEXT.items():
+        if target_oid in ROUTE_TARGET_OIDS:
+            continue
         el = element_or_fallback(golden, target_oid)
+        para_align = "START" if target_oid in TAM_LADDER_OBJECT_IDS else None
         ops.extend(
             text_replace_ops(
                 slide_oid,
@@ -605,7 +868,8 @@ def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> di
                 text,
                 el,
                 op_prefix=f"bolt-wave2-{target_oid}",
-                source_pointer="deck_bolt_wave2.NARRATIVE_TEXT + growth-bolt.json",
+                source_pointer="deck_bolt_wave2.NARRATIVE_TEXT + deck-economics-values-bolt.json",
+                alignment=para_align,
             )
         )
 
@@ -722,6 +986,66 @@ def run_wave2_qa(presentation_id: str, plan: dict) -> dict:
     return receipt
 
 
+def build_econ_header_ops(golden: dict, *, slide_indices: list[int] | None = None) -> list[dict]:
+    binding = load_json(ROOT / "decks/bolt/economics-binding.json")
+    ops: list[dict] = []
+    for slide_binding in binding["economics_slides"]:
+        idx = slide_binding["slide_index"]
+        if slide_indices is not None and idx not in slide_indices:
+            continue
+        spec = ECON_BINDINGS.get(idx)
+        if not spec:
+            continue
+        slide_oid = slide_binding["slide_object_id"]
+        oid = slide_binding["fields"]["header_market"]["object_id"]
+        text = econ_header_market_text(spec)
+        el = econ_text_element(golden, oid, "header_market")
+        ops.extend(
+            text_replace_ops(
+                slide_oid,
+                oid,
+                text,
+                el,
+                op_prefix=f"bolt-econ{idx}-header_market",
+                source_pointer=f"deck_bolt_wave2.ECON_BINDINGS slide {idx}",
+            )
+        )
+    return ops
+
+
+def cmd_apply_econ_headers(slide_indices: list[int] | None = None) -> int:
+    header_errs = validate_econ_header_markets()
+    if header_errs:
+        raise SystemExit("ECON_BINDINGS header_market invalid:\n" + "\n".join(header_errs))
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    golden = load_json(ROOT / "decks/grab/golden-template-map.json")
+    ops = build_econ_header_ops(golden, slide_indices=slide_indices)
+    plan = {"deck_key": "bolt", "presentation_id": cfg["deck_id"], "operations": ops}
+    applied = apply_plan(plan, chunk_size=40)
+    headers = {
+        idx: econ_header_market_text(ECON_BINDINGS[idx])
+        for idx in (slide_indices or sorted(ECON_BINDINGS))
+        if idx in ECON_BINDINGS
+    }
+    print(json.dumps({"applied_ops": applied, "header_market": headers}, indent=2))
+    return 0
+
+
+def cmd_apply_market_routes() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    golden = load_json(ROOT / "decks/grab/golden-template-map.json")
+    ops = build_market_route_slide_ops(golden)
+    plan = {
+        "deck_key": "bolt",
+        "presentation_id": presentation_id,
+        "operations": ops,
+    }
+    applied = apply_plan(plan, chunk_size=40)
+    print(json.dumps({"applied_ops": applied, "market_route_slides": [5, 6, 7, 15, 16, 17, 18, 19]}, indent=2))
+    return 0
+
+
 def cmd_apply_slide3_kpis() -> int:
     cfg = load_json(ROOT / "decks/bolt/deck.config.json")
     presentation_id = cfg["deck_id"]
@@ -737,17 +1061,17 @@ def cmd_apply_slide3_kpis() -> int:
     binding = load_json(ROOT / "decks/bolt/economics-binding.json")
     slide3 = binding.setdefault("slide3_kpi", {})
     slide3["applied_at"] = utc_now()
-    slide3["source"] = "finance/recal/growth-bolt.json + growth-frontend-bolt.json"
+    slide3["source"] = "decks/bolt/deck-economics-values-bolt.json"
     for item in slide3.get("kpis", []):
         field_map = {
-            "g3eec5122801_0_6": ("sample_value", "clusters_value"),
-            "g3eec5122801_0_7": ("sample_caption", "clusters_caption"),
-            "g3eec5122801_0_10": ("sample_value", "spend_value"),
-            "g3eec5122801_0_11": ("sample_caption", "spend_caption"),
-            "g3eec5122801_0_15": ("sample_value", "fleet_value"),
-            "g3eec5122801_0_16": ("sample_caption", "fleet_caption"),
-            "g3eec5122801_0_18": ("sample_value", "tam_value"),
-            "g3eec5122801_0_19": ("sample_caption", "tam_caption"),
+            "g3eec5122801_0_6": ("sample_value", "card1_value"),
+            "g3eec5122801_0_7": ("sample_caption", "card1_caption"),
+            "g3eec5122801_0_10": ("sample_value", "card2_value"),
+            "g3eec5122801_0_11": ("sample_caption", "card2_caption"),
+            "g3eec5122801_0_15": ("sample_value", "card3_value"),
+            "g3eec5122801_0_16": ("sample_caption", "card3_caption"),
+            "g3eec5122801_0_18": ("sample_value", "card4_value"),
+            "g3eec5122801_0_19": ("sample_caption", "card4_caption"),
         }
         vid = item.get("value_object_id")
         cid = item.get("caption_object_id")
@@ -759,6 +1083,32 @@ def cmd_apply_slide3_kpis() -> int:
             item[attr] = kpi[k]
     write_json(ROOT / "decks/bolt/economics-binding.json", binding)
     print(json.dumps({"applied_ops": applied, "slide3_kpi": kpi}, indent=2))
+    return 0
+
+
+def cmd_apply_slide10_tam() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    golden = load_json(ROOT / "decks/grab/golden-template-map.json")
+    ops = build_slide10_tam_ops(golden)
+    plan = {
+        "deck_key": "bolt",
+        "presentation_id": presentation_id,
+        "operations": ops,
+    }
+    applied = apply_plan(plan, chunk_size=40)
+    tam = slide10_tam_text_map()
+    binding = load_json(ROOT / "decks/bolt/economics-binding.json")
+    slide10 = binding.setdefault("slide10_tam", {})
+    slide10["applied_at"] = utc_now()
+    slide10["source"] = "decks/bolt/deck-economics-values-bolt.json"
+    value_keys = ("som_value", "sam_value", "tam_value", "journey_gmv_value", "platform_value")
+    caption_keys = ("som_caption", "sam_caption", "tam_caption", "journey_gmv_caption", "platform_caption")
+    for item, vkey, ckey in zip(slide10.get("rungs", []), value_keys, caption_keys):
+        item["sample_value"] = tam[vkey]
+        item["sample_caption"] = tam[ckey]
+    write_json(ROOT / "decks/bolt/economics-binding.json", binding)
+    print(json.dumps({"applied_ops": applied, "slide10_tam": tam}, indent=2))
     return 0
 
 
@@ -811,6 +1161,14 @@ def main() -> int:
             "apply",
             "qa",
             "apply-slide3-kpis",
+            "apply-slide10-tam",
+            "insert-slide2",
+            "apply-narrative",
+            "apply-slide2-image",
+            "apply-market-routes",
+            "validate-market-routes",
+            "validate-econ-headers",
+            "apply-econ-headers",
             "apply-atlas-links",
             "validate-atlas-links",
         ],
@@ -845,6 +1203,36 @@ def main() -> int:
         return 0 if receipt["status"] == "pass" else 1
     if args.command == "apply-slide3-kpis":
         return cmd_apply_slide3_kpis()
+    if args.command == "apply-slide10-tam":
+        return cmd_apply_slide10_tam()
+    if args.command == "insert-slide2":
+        return cmd_insert_slide2()
+    if args.command == "apply-narrative":
+        return cmd_apply_narrative()
+    if args.command == "apply-slide2-image":
+        return cmd_apply_slide2_image()
+    if args.command == "apply-market-routes":
+        return cmd_apply_market_routes()
+    if args.command == "validate-econ-headers":
+        errs = validate_econ_header_markets()
+        if errs:
+            print("\n".join(errs), file=sys.stderr)
+            return 1
+        headers = {idx: econ_header_market_text(spec) for idx, spec in ECON_BINDINGS.items()}
+        print(json.dumps({"status": "pass", "header_market": headers}, indent=2))
+        return 0
+    if args.command == "apply-econ-headers":
+        return cmd_apply_econ_headers()
+    if args.command == "validate-market-routes":
+        golden = load_json(ROOT / "decks/grab/golden-template-map.json")
+        errs = validate_market_route_bindings(
+            "bolt", partner_json_path=partner_json_path(), golden=golden
+        )
+        if errs:
+            print("\n".join(errs), file=sys.stderr)
+            return 1
+        print(json.dumps({"status": "pass", "slides": [5, 6, 7, 15, 16, 17, 18, 19]}, indent=2))
+        return 0
     if args.command == "apply-atlas-links":
         from deck_link_bindings import cmd_apply
 

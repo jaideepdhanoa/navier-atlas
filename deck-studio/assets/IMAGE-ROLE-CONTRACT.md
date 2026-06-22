@@ -57,6 +57,7 @@ apply to the side-panel image slot. Do **not** substitute Tier-A generated plate
 | 4–6, 14–18 | Interactive link | `atlas_market` | Market sub-proposal or city page |
 | 7–9, 19–23 | Model deepdive | `economics_sheet` | Partner unit-economics Google Sheet |
 | 10 | Detailed market sizing | `economics_sheet` | Same economics sheet |
+| 13 | Navier × {Partner} Atlas (inline body phrase) | `atlas_partner_hub` | Partner Atlas proposal hub (`close_atlas_link`, `inline_phrase`) |
 
 Authoritative wiring: `decks/{deck}/slide-link-bindings.json` (+ auto-merge from
 `economics-binding.json`). Apply via `builders/deck_link_bindings.py`. Style: **white + underlined**.

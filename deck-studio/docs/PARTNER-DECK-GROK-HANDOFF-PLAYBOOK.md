@@ -16,6 +16,14 @@ This repo copy mirrors the workspace skill `partner-deck-grok-handoff`. Use it w
    - keep every captured `autofit` unchanged;
    - keep every string within its object `char_budget`;
    - rebuild multi-run KPI lines from the economics sidecar (never hand-typed, never left as the gold partner's numbers);
+   - emit full unit-economics header eyebrows (`WHAT ONE BOAT EARNS · {MARKET}`) — never truncate
+     market labels to fit shorter gold-template sample budgets on duplicated slides;
+   - wire slide **13** body phrase (`Navier × {Partner} Atlas`) as a white underlined inline Atlas hub
+     link via `close_atlas_link` in `slide-link-bindings.json` (`link_style: inline_phrase`);
+     title stays `Explore the {Partner} marine network` (not linked);
+   - wire market-slide route lists (slides 4–6, 14–18) via `decks/{deck}/market-route-bindings.json`:
+     four marquee routes, amber `▸` bullet only, white body text, blank line between routes
+     (`builders/deck_market_routes.py`);
    - mark every gold slide `edit | hold | remove` (no silent truncation);
    - swap brand logos (hard requirement) and either composite/replace market backgrounds or fall back to the approved generic Navier hero — **never inherit the prior partner's image**;
    - attach a `qa.leak_denylist` and `qa.expected_object_ids` for Grok's gates.

@@ -1268,6 +1268,13 @@ def main() -> int:
     sub.add_parser("regenerate-all-econ")
     sub.add_parser("approve-all-econ")
     sub.add_parser("apply-atlas-screenshots")
+    p_cap = sub.add_parser("capture-atlas-screenshots")
+    p_cap.add_argument("--base-url", default=None)
+    p_cap.add_argument("--serve-dist", action="store_true")
+    p_cap.add_argument("--port", type=int, default=4174)
+    p_cap.add_argument("--password", default=None)
+    p_cap.add_argument("--dry-run", action="store_true")
+    p_cap.add_argument("--only-slides", nargs="+", type=int, default=None)
     sub.add_parser("generate-cover-greece")
     sub.add_parser("approve-cover")
     sub.add_parser("approve-slide2")
@@ -1305,6 +1312,18 @@ def main() -> int:
         return cmd_approve_all_econ()
     if args.cmd == "apply-atlas-screenshots":
         return cmd_apply_atlas_screenshots()
+    if args.cmd == "capture-atlas-screenshots":
+        from capture_atlas_screenshots import run_capture
+
+        return run_capture(
+            "bolt",
+            base_url=args.base_url,
+            serve_dist=args.serve_dist,
+            port=args.port,
+            password=args.password,
+            dry_run=args.dry_run,
+            only_slides=set(args.only_slides) if args.only_slides else None,
+        )
     if args.cmd == "tag-drift-controls":
         tag_drift_controls()
         print("tagged drift controls")
