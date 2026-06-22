@@ -197,7 +197,7 @@ def link_replace_op(
     op_key: str,
     source_pointer: str,
 ) -> dict:
-    """Hyperlink the Interactive link text box (full-range link + underline)."""
+    """Hyperlink a deck link text box — white underlined text (Poppins 9.5pt template)."""
     return make_op(
         op_key,
         slide_object_id,
@@ -210,13 +210,13 @@ def link_replace_op(
                     "link": {"url": url},
                     "underline": True,
                     "foregroundColor": {
-                        "opaqueColor": {"rgbColor": {"red": 0.02, "green": 0.39, "blue": 0.76}}
+                        "opaqueColor": {"rgbColor": {"red": 1.0, "green": 1.0, "blue": 1.0}}
                     },
                 },
                 "fields": "link,underline,foregroundColor",
             }
         },
-        rationale=f"Set Atlas hyperlink on {target_object_id}",
+        rationale=f"Set white hyperlink on {target_object_id}",
         source_pointer=source_pointer,
     )
 

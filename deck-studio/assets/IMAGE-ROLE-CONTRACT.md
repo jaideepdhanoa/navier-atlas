@@ -49,11 +49,17 @@ Market side-panel slides show the Navier Atlas route/map UI for beachhead and ba
 from the live Vercel Atlas, bank under `assets/screenshots/atlas/{deck}/`, register with provenance,
 apply to the side-panel image slot. Do **not** substitute Tier-A generated plates here.
 
-### `atlas_interactive_link` (slides 4–6, 14–18) — hyperlink on template text box
-The gold template's top-left `Interactive link` text box must hyperlink to the correct Navier Atlas
-share URL for that slide's market. Authoritative wiring: `decks/{deck}/slide-link-bindings.json`.
-Resolve from `data-clean/partners/{partner_id}.json` (hub layout → `/{partner}/{market_slug}` market
-sub-proposal; `link_target: city` → per-city page). Apply via `builders/deck_atlas_links.py`.
+### Deck hyperlinks (white text) — `docs/DECK-LINK-BINDINGS.md`
+
+| Slide(s) | Label | Role | Target |
+|----------|-------|------|--------|
+| 3 | Interactive link | `atlas_partner_hub` | `/{partner_id}` on Navier Atlas |
+| 4–6, 14–18 | Interactive link | `atlas_market` | Market sub-proposal or city page |
+| 7–9, 19–23 | Model deepdive | `economics_sheet` | Partner unit-economics Google Sheet |
+| 10 | Detailed market sizing | `economics_sheet` | Same economics sheet |
+
+Authoritative wiring: `decks/{deck}/slide-link-bindings.json` (+ auto-merge from
+`economics-binding.json`). Apply via `builders/deck_link_bindings.py`. Style: **white + underlined**.
 
 ### `econ_market_bg` (slides 7–9, 19–23) — full-bleed landmark skyline
 Unit-economics slides: **full-width edge-to-edge** photorealistic market-specific landmark skyline,

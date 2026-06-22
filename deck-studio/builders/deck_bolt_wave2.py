@@ -26,7 +26,7 @@ from deck_bolt_pilot import (  # noqa: E402
     utc_now,
     write_json,
 )
-from deck_atlas_links import build_atlas_link_ops, load_link_bindings, partner_doc_path  # noqa: E402
+from deck_link_bindings import build_deck_link_ops  # noqa: E402
 from deck_edit_ops import econ_value_replace_ops, image_replace_op, text_replace_ops  # noqa: E402
 from deck_slide_bindings import image_bindings_list, load_slide_bindings, validate_bindings  # noqa: E402
 
@@ -650,9 +650,7 @@ def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> di
             continue
         ops.extend(build_econ_slide_ops(golden, slide_binding, spec, asset_urls=asset_urls))
 
-    link_doc = load_link_bindings("bolt")
-    partner_doc = load_json(partner_doc_path(link_doc))
-    ops.extend(build_atlas_link_ops(link_doc, partner_doc, op_prefix="bolt-wave2-atlas-link"))
+    ops.extend(build_deck_link_ops("bolt", op_prefix="bolt-wave2-deck-link"))
 
     plan = {
         "deck_key": "bolt",
@@ -848,11 +846,11 @@ def main() -> int:
     if args.command == "apply-slide3-kpis":
         return cmd_apply_slide3_kpis()
     if args.command == "apply-atlas-links":
-        from deck_atlas_links import cmd_apply
+        from deck_link_bindings import cmd_apply
 
         return cmd_apply("bolt", presentation_id=args.presentation_id)
     if args.command == "validate-atlas-links":
-        from deck_atlas_links import cmd_validate
+        from deck_link_bindings import cmd_validate
 
         return cmd_validate("bolt")
     if args.command == "run-all":
