@@ -133,5 +133,41 @@
     "DNP": "dnp.go.th - national park visitor statistics; the durable primary source for Phang Nga Bay / marine-park day-tour pools.",
     "TAT_MOTS": "mots.go.th - provincial tourism arrival statistics; gateway/island arrival proxies."
   },
-  "note_samui_correction": "Samui Airport is operated by Bangkok Airways, NOT AOT. The queue's 'AOT monthly Samui arrivals' line should chase Bangkok Airways traffic data for the exact 2024-2025 Samui split; AOT applies to Phuket/Krabi."
+  "note_samui_correction": "Samui Airport is operated by Bangkok Airways, NOT AOT. The queue's 'AOT monthly Samui arrivals' line should chase Bangkok Airways traffic data for the exact 2024-2025 Samui split; AOT applies to Phuket/Krabi.",
+  "resolution_2026-06-22": {
+    "resolved_utc": "2026-06-22T16:32:49.664441+00:00",
+    "lane": "volume chase executed (official-source pass)",
+    "outcome_by_corridor": {
+      "Koh Samui (Maenam) -> Koh Tao": {
+        "result": "VALIDATED (captive-geometry)",
+        "tier": "tier_2_strong + captive",
+        "official": "Koh Tao ~500,000 visitors/yr (UNDP/BIOFIN); boat-only island => visitor count ~= boat arrivals.",
+        "residual": "Origin split (Samui vs Chumphon vs Phangan) pending Marine Dept Surat Thani."
+      },
+      "Phuket -> Krabi / Ao Nang": {
+        "result": "GATEWAY-ANCHORED (official)",
+        "tier": "tier_1 gateway proxy",
+        "official": "Krabi Int'l Airport 2,320,841 pax (2023, CAAT).",
+        "correction": "Krabi airport = Department of Airports (DOA), NOT AOT.",
+        "residual": "Klong Jilad Pier ferry throughput pending Krabi Marine Office."
+      },
+      "Ao Nang -> Railay": {
+        "result": "STILL PENDING (no official count exists)",
+        "tier": "tier_3 no lock",
+        "note": "No published cooperative/TAT Railay figure found; stays derived. Krabi airport 2.32M bounds the province pool. null beats confidently-wrong."
+      },
+      "Phang Nga Bay day-tour cluster": {
+        "result": "MEASURED (official)",
+        "tier": "tier_1 official",
+        "official": "Ao Phang Nga National Park 999,035 visitors (2019, DNP); FY2024 DNP system +17.7% supports ~1.0M steady-state.",
+        "residual": "Per-pier departure split (Ao Po/Bang Rong) optional cross-check."
+      }
+    },
+    "scoreboard": "3 of 4 corridors upgraded off derived (1 measured, 1 gateway-anchored official, 1 validated-captive); 1 (Railay) held pending honestly.",
+    "corrections_logged": [
+      "Krabi Int'l Airport operated by Department of Airports (DOA), not AOT.",
+      "Samui Airport (USM) 2,294,811 pax 2023 (DOA/CAAT, Bangkok Airways-operated) confirms the >2M gateway anchor."
+    ],
+    "cascade_handoff": "Demand records upgraded. run_econ_cascade.sh (aggregate.py->growth.py->sheet->economics_by_route_id.json) is now ready to re-run to refresh floor/TAM on the higher-confidence volumes. Deterministic cascade is Grok-owned per standing policy."
+  }
 }

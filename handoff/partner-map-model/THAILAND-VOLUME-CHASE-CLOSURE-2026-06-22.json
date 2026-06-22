@@ -1,0 +1,35 @@
+{
+  "generated_utc": "2026-06-22T16:32:49.664441+00:00",
+  "lane": "grab-thailand volume chase — closure",
+  "task": "Grok volume chase: upgrade 4 anchor-only corridors off derived_pending_validation using official throughput (Marine Dept / DNP / TAT / Bangkok Airways, not AOT).",
+  "files_updated": [
+    "THAILAND-DEMAND-ANCHORS-samui-gulf.json (Koh Tao corridor)",
+    "THAILAND-DEMAND-ANCHORS-phuket-andaman.json (Krabi, Railay, Phang Nga corridors)",
+    "THAILAND-DEMAND-VALIDATION-CHASE-LIST-2026-06-22.json (resolution block)"
+  ],
+  "scoreboard": {
+    "measured_official": [
+      "Phang Nga Bay day-tour cluster (Ao Phang Nga NP 999,035 / 2019 DNP)"
+    ],
+    "gateway_anchored_official": [
+      "Phuket -> Krabi/Ao Nang (Krabi airport 2,320,841 / 2023 CAAT-DOA)"
+    ],
+    "validated_captive_geometry": [
+      "Samui -> Koh Tao (~500k visitors/yr UNDP/BIOFIN, boat-only island)"
+    ],
+    "still_pending_honest_hold": [
+      "Ao Nang -> Railay (no official count published)"
+    ]
+  },
+  "corrections": [
+    "Krabi International Airport is operated by Department of Airports (DOA), NOT AOT.",
+    "Samui Airport (USM) 2,294,811 pax 2023 — Bangkok Airways/DOA, confirms >2M gateway."
+  ],
+  "guardrails_kept": [
+    "No fabricated fares — all fares remain operator/list-published.",
+    "Official volumes added additively; transparent derivations preserved alongside.",
+    "Capture still applied downstream by cascade (LB-254 contested band for Grab).",
+    "null beats confidently-wrong — Railay held, not invented."
+  ],
+  "next": "run_econ_cascade.sh ready to re-run to refresh floor/TAM on upgraded volumes (Grok-owned deterministic cascade)."
+}

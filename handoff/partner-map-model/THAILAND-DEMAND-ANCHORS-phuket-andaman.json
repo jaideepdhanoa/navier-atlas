@@ -1,227 +1,275 @@
 {
- "generated_utc": "2026-06-22T15:25:42.184733+00:00",
- "market": "Phuket & the Andaman coast",
- "slug": "grab-thailand-phuket-andaman",
- "market_id": "phuket_andaman",
- "anchor_city": "phuket-phang-nga-thailand",
- "partner": "grab-thailand-derivative",
- "status": "demand-record-hardened / cascade-ready",
- "atlas_bind": "Grok geometry sealed; route_ids bound.",
- "policy": {
-  "do": [
-   "Use strong_anchors as TAM frame once demand x fare x capture is grounded.",
-   "Keep Thailand country-reference.json row as-is (source-backed: captain $24k, energy $0.116/kWh, etc.)."
+  "generated_utc": "2026-06-22T15:25:42.184733+00:00",
+  "market": "Phuket & the Andaman coast",
+  "slug": "grab-thailand-phuket-andaman",
+  "market_id": "phuket_andaman",
+  "anchor_city": "phuket-phang-nga-thailand",
+  "partner": "grab-thailand-derivative",
+  "status": "demand-record-hardened / cascade-ready",
+  "atlas_bind": "Grok geometry sealed; route_ids bound.",
+  "policy": {
+    "do": [
+      "Use strong_anchors as TAM frame once demand x fare x capture is grounded.",
+      "Keep Thailand country-reference.json row as-is (source-backed: captain $24k, energy $0.116/kWh, etc.)."
+    ],
+    "do_not": [
+      "Fabricate per-corridor L3_locals or fares.",
+      "Add Thailand markets to durable corridors.json without sailing/ridership basis.",
+      "Use 30K placeholder economics."
+    ],
+    "method_note": "Per-corridor volumes are TRANSPARENT DERIVATIONS from sourced throughput x a labelled premium-eligible share, shown as `derived_demand_record` with confidence=derived_pending_validation. Published fares are SOURCED (real operator/list prices), not fabricated. Capture is applied downstream by the cascade (LB-254): Grab is a CONTESTED super-app, not captive -> contested capture band, NOT 0.90.",
+    "fx_thb_per_usd": 35.0
+  },
+  "market_demand_anchors": [
+    {
+      "source": "Direct Ferries (Rassada<->Phi Phi)",
+      "url": "https://www.directferries.com/koh_phi_phi_phuket_ferry.htm",
+      "evidence": "Rassada Pier (Phuket) <-> Phi Phi: ~97 weekly sailings; fares from ~$18.",
+      "tier": "operator_aggregator"
+    },
+    {
+      "source": "Ferryscanner",
+      "url": "https://www.ferryscanner.com/en/ferry-routes/ferry-koh-phi-phi-don-all-ports-piers-rassada-pier-phuket",
+      "evidence": "Phi Phi <-> Rassada: ~275-366 crossings per week depending on season (Jun-Sep peak).",
+      "tier": "operator_aggregator"
+    },
+    {
+      "source": "Phuket Dream Company / vessel spec",
+      "url": "https://phuketdreamcompany.asia/product/ferry-tickets-from-phuket-to-phi-phi-island-laemtong-beach/",
+      "evidence": "Rassada Pier ferries carry up to 590 passengers per vessel; sailing 1h30-2h06.",
+      "tier": "operator"
+    }
   ],
-  "do_not": [
-   "Fabricate per-corridor L3_locals or fares.",
-   "Add Thailand markets to durable corridors.json without sailing/ridership basis.",
-   "Use 30K placeholder economics."
+  "corridors": [
+    {
+      "corridor": "Phuket (Rassada Pier) -> Koh Phi Phi (Tonsai)",
+      "distance_nm": 24,
+      "duration_min_published": "90-126",
+      "vessel_gate": "<=70nm -> N30 Pioneer II",
+      "operators_sourced": [
+        "Andaman Wave Master",
+        "Jc Tour",
+        "Sea Angel"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Standard big-boat ferry",
+          "one_way_thb": 600,
+          "round_trip_thb": 1200,
+          "source_url": "https://rassadapier.net/"
+        },
+        {
+          "class": "Ferry (railayecotour range)",
+          "one_way_thb_range": [
+            400,
+            600
+          ],
+          "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
+        },
+        {
+          "class": "Speedboat (premium tier)",
+          "one_way_thb_range": [
+            700,
+            1200
+          ],
+          "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
+        }
+      ],
+      "premium_ceiling_note": "Private speedboat charters Phuket<->Phi Phi list THB 12,000-25,000 per boat (premium transfer ceiling).",
+      "demand_anchors": [
+        {
+          "source": "Direct Ferries",
+          "url": "https://www.directferries.com/koh_phi_phi_phuket_ferry.htm",
+          "evidence": "~97 weekly scheduled sailings Rassada<->Phi Phi.",
+          "tier": "operator_aggregator"
+        },
+        {
+          "source": "Phuket Dream Company",
+          "url": "https://phuketdreamcompany.asia/product/ferry-tickets-from-phuket-to-phi-phi-island-laemtong-beach/",
+          "evidence": "Vessels up to 590 pax.",
+          "tier": "operator"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "shown_math",
+        "confidence": "derived_pending_validation",
+        "inputs": {
+          "weekly_sailings_each_way": 97,
+          "avg_vessel_capacity": 590,
+          "avg_load_factor_assumption": 0.55,
+          "load_factor_basis": "Blended annual load factor across high/low season (peak Jun-Sep runs 275-366 crossings/wk; shoulder lower). LABELLED ASSUMPTION.",
+          "premium_transfer_eligible_share": 0.12,
+          "premium_share_basis": "Share above the THB 600 ferry floor willing to pay for a premium foiling transfer (resort guests, seasickness-averse, time-sensitive). Labelled assumption."
+        },
+        "calc": "97 sailings/wk * 52 wk * 590 cap * 0.55 LF = ~1.64M corridor seats/yr (gross, both directions implied in schedule). One-way pax pool ~ 818k/yr. Premium-eligible = 818k * 0.12 = ~98,200 premium one-way trips/yr.",
+        "corridor_pool_oneway_per_year": 817700,
+        "premium_eligible_oneway_per_year": 98124,
+        "fare_for_model_usd": 17.14,
+        "fare_basis": "THB 600 standard ferry = ~$17 contested floor; speedboat THB 700-1,200 and charter ceiling far higher."
+      }
+    },
+    {
+      "corridor": "Phuket (Rassada/Ao Nam Mao) -> Krabi (Klong Jilad) / Ao Nang",
+      "distance_nm": 18,
+      "duration_min_published": "105",
+      "vessel_gate": "<=70nm -> N30 Pioneer II",
+      "operators_sourced": [
+        "Ao Nang Princess",
+        "Green Planet"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Ferry",
+          "one_way_thb_range": [
+            400,
+            600
+          ],
+          "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
+        },
+        {
+          "class": "Direct speedboat Rassada->Ao Nam Mao/Klong Jilad",
+          "one_way_thb": 850,
+          "source_url": "https://www.tripadvisor.com/AttractionProductReview-g297930-d30345097-Phuket_to_Railay_Ao_Nang_or_Krabi_Direct_Speedboat_Return-Patong_Kathu_Phuket.html"
+        }
+      ],
+      "demand_anchors": [
+        {
+          "source": "Tripadvisor operator listing",
+          "url": "https://www.tripadvisor.com/AttractionProductReview-g297930-d30345097-Phuket_to_Railay_Ao_Nang_or_Krabi_Direct_Speedboat_Return-Patong_Kathu_Phuket.html",
+          "evidence": "Daily direct speedboat Rassada Pier -> Ao Nam Mao / Krabi Klong Jilad, 1h45, departs 08:45.",
+          "tier": "operator"
+        },
+        {
+          "source": "CAAT / Department of Airports (Krabi International Airport, KBV) 2023 final traffic",
+          "url": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Thailand",
+          "evidence": "Krabi International Airport handled 2,320,841 passengers in 2023 (+63.6% YoY), 6th-busiest in Thailand. Gateway demand proxy for onward Phuket<->Krabi/Ao Nang island transfers.",
+          "tier": "official"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "shown_math",
+        "confidence": "gateway_anchored_pending_pier_throughput",
+        "inputs": {
+          "note": "Krabi (Klong Jilad) is a major Andaman ferry node feeding Railay/Ao Nang; corridor volume pending Marine Dept / Klong Jilad throughput data."
+        },
+        "status": "anchor_only_no_volume_lock",
+        "fare_for_model_usd": 24.29
+      },
+      "official_volume_validation": {
+        "validated_utc": "2026-06-22T16:32:12.562359+00:00",
+        "status": "gateway_anchored_official",
+        "tier": "tier_1_gateway_proxy",
+        "official_anchor": "Krabi Int'l Airport 2,320,841 pax (2023, CAAT). Bounds the onward-transfer demand pool feeding the Phuket<->Krabi/Ao Nang marine corridor.",
+        "krabi_airport_pax_2023": 2320841,
+        "operator_correction": "Krabi International Airport is operated by the Department of Airports (DOA), NOT AOT. (Chase-list said 'AOT - Krabi'; corrected.) AOT operates Phuket (HKT), which handled 13,977,030 pax in 2023.",
+        "phuket_airport_pax_2023": 13977030,
+        "residual_gap": "Klong Jilad Pier (Krabi) registered ferry passenger throughput still pending Krabi Marine Office for the corridor-specific (not gateway) volume.",
+        "moves_to_measured": "Gateway demand now tier-1 official; corridor-specific pier throughput remains the open lock."
+      }
+    },
+    {
+      "corridor": "Ao Nang -> Railay Beach (longtail floor)",
+      "distance_nm": 2,
+      "duration_min_published": "15",
+      "vessel_gate": "<=70nm -> N30 Pioneer II (short-hop; N35 Shuttle at scale)",
+      "operators_sourced": [
+        "Ao Nang longtail cooperative"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Shared longtail (floor)",
+          "one_way_thb_range": [
+            100,
+            200
+          ],
+          "source_url": "https://www.rome2rio.com/s/Railay-Beach/Ko-Phi-Phi"
+        }
+      ],
+      "demand_anchors": [
+        {
+          "source": "Rome2Rio / operator",
+          "url": "https://www.rome2rio.com/s/Railay-Beach/Ko-Phi-Phi",
+          "evidence": "Ao Nang<->Railay served by shared longtail cooperative; Railay is road-inaccessible so ALL access is by boat (100% captive water corridor).",
+          "tier": "market"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "note",
+        "confidence": "derived_pending_validation",
+        "inputs": {
+          "captive_note": "Railay has NO road access -> every visitor arrives by boat. This is a structurally captive short-hop; longtail floor THB 100-200. Premium upside is comfort/speed, not access."
+        },
+        "status": "captive_corridor_fare_locked_volume_pending",
+        "fare_for_model_usd": 4.29
+      },
+      "official_volume_validation": {
+        "validated_utc": "2026-06-22T16:32:12.562359+00:00",
+        "status": "still_pending_no_official_count",
+        "tier": "tier_3_no_lock",
+        "search_result": "No official Ao Nang<->Railay longtail passenger count or Railay Beach visitor figure is published by the cooperative, TAT Krabi, or Marine Dept as of this pass. Only anecdotal press ('hundreds of day-trippers daily').",
+        "regional_ceiling_context": "Krabi Int'l Airport 2,320,841 pax (2023) bounds the province arrival pool from which Railay day-trips draw; Railay is road-inaccessible (fully captive boat access).",
+        "honest_hold": "null beats confidently-wrong: corridor stays derived_pending_validation. Captive geometry means any future TAT Railay visitor figure would be a near-direct boat-volume proxy.",
+        "moves_to_measured": "Pending cooperative manifest or TAT Krabi Railay-specific arrivals."
+      }
+    },
+    {
+      "corridor": "Phang Nga Bay day-tour cluster (Ao Po / Bang Rong -> James Bond Island / Ao Phang Nga NP)",
+      "distance_nm": 20,
+      "duration_min_published": "varies (day tour)",
+      "vessel_gate": "<=70nm -> N30 Pioneer II",
+      "operators_sourced": [
+        "5 Star Marine",
+        "numerous day-tour operators"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Group speedboat day tour (per pax)",
+          "price_usd_from": 43,
+          "source_url": "https://www.thethaipass.com/attractions/phang-nga-bay-phuket"
+        }
+      ],
+      "premium_ceiling_note": "Private Phang Nga Bay charters list THB 18,000-35,000 per boat/day.",
+      "demand_anchors": [
+        {
+          "source": "Ao Phang Nga National Park / AsiaByLocals",
+          "url": "https://www.asiabylocals.com/thailand/phuket/james-bond-island",
+          "evidence": "James Bond Island sits in Ao Phang Nga National Park (400 sq km marine park); one of Phuket's highest-volume day-tour anchors, departing Ao Po / Bang Rong piers.",
+          "tier": "official_market"
+        },
+        {
+          "source": "DNP (Dept of National Parks) via Ao Phang Nga NP record",
+          "url": "https://en.wikipedia.org/wiki/Ao_Phang_Nga_National_Park",
+          "evidence": "Ao Phang Nga National Park recorded 999,035 visitors in 2019 (DNP official figure). Park includes Khao Phing Kan / 'James Bond Island'.",
+          "tier": "official"
+        },
+        {
+          "source": "DNP national-park tourism (FY2024 aggregate context)",
+          "url": "https://en.vietnamplus.vn/thailand-taps-into-tourism-potential-of-national-parks-post300657.vnp",
+          "evidence": "DNP parks system drew 18.6M visitors FY2024 (+17.7% vs FY2023's 15.8M), confirming strong post-COVID recovery toward 2019 levels.",
+          "tier": "official_context"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "note",
+        "confidence": "measured_official_dnp",
+        "inputs": {
+          "note": "High-volume day-tour corridor; per-pax tour price from $43. Annual tour volume pending DNP / operator data. Premium charter ceiling THB 18k-35k/boat."
+        },
+        "status": "anchor_only_no_volume_lock",
+        "fare_for_model_usd": 43.0
+      },
+      "official_volume_validation": {
+        "validated_utc": "2026-06-22T16:32:12.562359+00:00",
+        "status": "measured_official",
+        "tier": "tier_1_official",
+        "official_anchor": "Ao Phang Nga National Park 999,035 visitors (2019, DNP). Direct measure of the day-tour visitor pool entering the bay (James Bond Island / Khao Phing Kan).",
+        "park_visitors_2019": 999035,
+        "year_caveat": "2019 is the clean pre-COVID measured year; FY2024 system-wide DNP recovery (+17.7%) supports treating ~1.0M as the steady-state day-tour pool ceiling.",
+        "residual_gap": "Ao Po Grand Marina / Bang Rong Pier departure-side throughput (Marine Dept Phuket) would cross-check the per-pier split; park figure already anchors the pool.",
+        "moves_to_measured": "Volume frame upgraded derived -> measured (DNP tier-1)."
+      }
+    }
   ],
-  "method_note": "Per-corridor volumes are TRANSPARENT DERIVATIONS from sourced throughput x a labelled premium-eligible share, shown as `derived_demand_record` with confidence=derived_pending_validation. Published fares are SOURCED (real operator/list prices), not fabricated. Capture is applied downstream by the cascade (LB-254): Grab is a CONTESTED super-app, not captive -> contested capture band, NOT 0.90.",
-  "fx_thb_per_usd": 35.0
- },
- "market_demand_anchors": [
-  {
-   "source": "Direct Ferries (Rassada<->Phi Phi)",
-   "url": "https://www.directferries.com/koh_phi_phi_phuket_ferry.htm",
-   "evidence": "Rassada Pier (Phuket) <-> Phi Phi: ~97 weekly sailings; fares from ~$18.",
-   "tier": "operator_aggregator"
-  },
-  {
-   "source": "Ferryscanner",
-   "url": "https://www.ferryscanner.com/en/ferry-routes/ferry-koh-phi-phi-don-all-ports-piers-rassada-pier-phuket",
-   "evidence": "Phi Phi <-> Rassada: ~275-366 crossings per week depending on season (Jun-Sep peak).",
-   "tier": "operator_aggregator"
-  },
-  {
-   "source": "Phuket Dream Company / vessel spec",
-   "url": "https://phuketdreamcompany.asia/product/ferry-tickets-from-phuket-to-phi-phi-island-laemtong-beach/",
-   "evidence": "Rassada Pier ferries carry up to 590 passengers per vessel; sailing 1h30-2h06.",
-   "tier": "operator"
-  }
- ],
- "corridors": [
-  {
-   "corridor": "Phuket (Rassada Pier) -> Koh Phi Phi (Tonsai)",
-   "distance_nm": 24,
-   "duration_min_published": "90-126",
-   "vessel_gate": "<=70nm -> N30 Pioneer II",
-   "operators_sourced": [
-    "Andaman Wave Master",
-    "Jc Tour",
-    "Sea Angel"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Standard big-boat ferry",
-     "one_way_thb": 600,
-     "round_trip_thb": 1200,
-     "source_url": "https://rassadapier.net/"
-    },
-    {
-     "class": "Ferry (railayecotour range)",
-     "one_way_thb_range": [
-      400,
-      600
-     ],
-     "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
-    },
-    {
-     "class": "Speedboat (premium tier)",
-     "one_way_thb_range": [
-      700,
-      1200
-     ],
-     "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
-    }
-   ],
-   "premium_ceiling_note": "Private speedboat charters Phuket<->Phi Phi list THB 12,000-25,000 per boat (premium transfer ceiling).",
-   "demand_anchors": [
-    {
-     "source": "Direct Ferries",
-     "url": "https://www.directferries.com/koh_phi_phi_phuket_ferry.htm",
-     "evidence": "~97 weekly scheduled sailings Rassada<->Phi Phi.",
-     "tier": "operator_aggregator"
-    },
-    {
-     "source": "Phuket Dream Company",
-     "url": "https://phuketdreamcompany.asia/product/ferry-tickets-from-phuket-to-phi-phi-island-laemtong-beach/",
-     "evidence": "Vessels up to 590 pax.",
-     "tier": "operator"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "shown_math",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "weekly_sailings_each_way": 97,
-     "avg_vessel_capacity": 590,
-     "avg_load_factor_assumption": 0.55,
-     "load_factor_basis": "Blended annual load factor across high/low season (peak Jun-Sep runs 275-366 crossings/wk; shoulder lower). LABELLED ASSUMPTION.",
-     "premium_transfer_eligible_share": 0.12,
-     "premium_share_basis": "Share above the THB 600 ferry floor willing to pay for a premium foiling transfer (resort guests, seasickness-averse, time-sensitive). Labelled assumption."
-    },
-    "calc": "97 sailings/wk * 52 wk * 590 cap * 0.55 LF = ~1.64M corridor seats/yr (gross, both directions implied in schedule). One-way pax pool ~ 818k/yr. Premium-eligible = 818k * 0.12 = ~98,200 premium one-way trips/yr.",
-    "corridor_pool_oneway_per_year": 817700,
-    "premium_eligible_oneway_per_year": 98124,
-    "fare_for_model_usd": 17.14,
-    "fare_basis": "THB 600 standard ferry = ~$17 contested floor; speedboat THB 700-1,200 and charter ceiling far higher."
-   }
-  },
-  {
-   "corridor": "Phuket (Rassada/Ao Nam Mao) -> Krabi (Klong Jilad) / Ao Nang",
-   "distance_nm": 18,
-   "duration_min_published": "105",
-   "vessel_gate": "<=70nm -> N30 Pioneer II",
-   "operators_sourced": [
-    "Ao Nang Princess",
-    "Green Planet"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Ferry",
-     "one_way_thb_range": [
-      400,
-      600
-     ],
-     "source_url": "https://www.railayecotour.com/en/blog/how-to-travel-to-phi-phi"
-    },
-    {
-     "class": "Direct speedboat Rassada->Ao Nam Mao/Klong Jilad",
-     "one_way_thb": 850,
-     "source_url": "https://www.tripadvisor.com/AttractionProductReview-g297930-d30345097-Phuket_to_Railay_Ao_Nang_or_Krabi_Direct_Speedboat_Return-Patong_Kathu_Phuket.html"
-    }
-   ],
-   "demand_anchors": [
-    {
-     "source": "Tripadvisor operator listing",
-     "url": "https://www.tripadvisor.com/AttractionProductReview-g297930-d30345097-Phuket_to_Railay_Ao_Nang_or_Krabi_Direct_Speedboat_Return-Patong_Kathu_Phuket.html",
-     "evidence": "Daily direct speedboat Rassada Pier -> Ao Nam Mao / Krabi Klong Jilad, 1h45, departs 08:45.",
-     "tier": "operator"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "shown_math",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "note": "Krabi (Klong Jilad) is a major Andaman ferry node feeding Railay/Ao Nang; corridor volume pending Marine Dept / Klong Jilad throughput data."
-    },
-    "status": "anchor_only_no_volume_lock",
-    "fare_for_model_usd": 24.29
-   }
-  },
-  {
-   "corridor": "Ao Nang -> Railay Beach (longtail floor)",
-   "distance_nm": 2,
-   "duration_min_published": "15",
-   "vessel_gate": "<=70nm -> N30 Pioneer II (short-hop; N35 Shuttle at scale)",
-   "operators_sourced": [
-    "Ao Nang longtail cooperative"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Shared longtail (floor)",
-     "one_way_thb_range": [
-      100,
-      200
-     ],
-     "source_url": "https://www.rome2rio.com/s/Railay-Beach/Ko-Phi-Phi"
-    }
-   ],
-   "demand_anchors": [
-    {
-     "source": "Rome2Rio / operator",
-     "url": "https://www.rome2rio.com/s/Railay-Beach/Ko-Phi-Phi",
-     "evidence": "Ao Nang<->Railay served by shared longtail cooperative; Railay is road-inaccessible so ALL access is by boat (100% captive water corridor).",
-     "tier": "market"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "note",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "captive_note": "Railay has NO road access -> every visitor arrives by boat. This is a structurally captive short-hop; longtail floor THB 100-200. Premium upside is comfort/speed, not access."
-    },
-    "status": "captive_corridor_fare_locked_volume_pending",
-    "fare_for_model_usd": 4.29
-   }
-  },
-  {
-   "corridor": "Phang Nga Bay day-tour cluster (Ao Po / Bang Rong -> James Bond Island / Ao Phang Nga NP)",
-   "distance_nm": 20,
-   "duration_min_published": "varies (day tour)",
-   "vessel_gate": "<=70nm -> N30 Pioneer II",
-   "operators_sourced": [
-    "5 Star Marine",
-    "numerous day-tour operators"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Group speedboat day tour (per pax)",
-     "price_usd_from": 43,
-     "source_url": "https://www.thethaipass.com/attractions/phang-nga-bay-phuket"
-    }
-   ],
-   "premium_ceiling_note": "Private Phang Nga Bay charters list THB 18,000-35,000 per boat/day.",
-   "demand_anchors": [
-    {
-     "source": "Ao Phang Nga National Park / AsiaByLocals",
-     "url": "https://www.asiabylocals.com/thailand/phuket/james-bond-island",
-     "evidence": "James Bond Island sits in Ao Phang Nga National Park (400 sq km marine park); one of Phuket's highest-volume day-tour anchors, departing Ao Po / Bang Rong piers.",
-     "tier": "official_market"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "note",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "note": "High-volume day-tour corridor; per-pax tour price from $43. Annual tour volume pending DNP / operator data. Premium charter ceiling THB 18k-35k/boat."
-    },
-    "status": "anchor_only_no_volume_lock",
-    "fare_for_model_usd": 43.0
-   }
-  }
- ],
- "aspirational_no_demand_record": [],
- "next_action": "Cascade can run on Rassada<->Phi Phi (volume + fare hardened). Krabi/Klong Jilad, Phang Nga day-tour, and Ao Nang<->Railay carry sourced fares + anchors; volume locks pending Marine Dept / DNP throughput data."
+  "aspirational_no_demand_record": [],
+  "next_action": "Cascade can run on Rassada<->Phi Phi (volume + fare hardened). Krabi/Klong Jilad, Phang Nga day-tour, and Ao Nang<->Railay carry sourced fares + anchors; volume locks pending Marine Dept / DNP throughput data."
 }

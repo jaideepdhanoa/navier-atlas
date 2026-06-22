@@ -1,161 +1,183 @@
 {
- "generated_utc": "2026-06-22T15:24:28.827484+00:00",
- "market": "Koh Samui & the Gulf islands",
- "slug": "grab-thailand-samui-gulf",
- "market_id": "koh_samui_gulf",
- "anchor_city": "koh-samui-thailand",
- "partner": "grab-thailand-derivative",
- "status": "demand-record-hardened / cascade-ready",
- "atlas_bind": "Grok geometry sealed; route_ids bound. This file hardens the demand side so aggregate.py->growth.py->sheet->economics_by_route_id.json can run.",
- "policy": {
-  "do": [
-   "Use strong_anchors as TAM frame once demand x fare x capture is grounded.",
-   "Keep Thailand country-reference.json row as-is (source-backed: captain $24k, energy $0.116/kWh, etc.)."
+  "generated_utc": "2026-06-22T15:24:28.827484+00:00",
+  "market": "Koh Samui & the Gulf islands",
+  "slug": "grab-thailand-samui-gulf",
+  "market_id": "koh_samui_gulf",
+  "anchor_city": "koh-samui-thailand",
+  "partner": "grab-thailand-derivative",
+  "status": "demand-record-hardened / cascade-ready",
+  "atlas_bind": "Grok geometry sealed; route_ids bound. This file hardens the demand side so aggregate.py->growth.py->sheet->economics_by_route_id.json can run.",
+  "policy": {
+    "do": [
+      "Use strong_anchors as TAM frame once demand x fare x capture is grounded.",
+      "Keep Thailand country-reference.json row as-is (source-backed: captain $24k, energy $0.116/kWh, etc.)."
+    ],
+    "do_not": [
+      "Fabricate per-corridor L3_locals or fares.",
+      "Add Thailand markets to durable corridors.json without sailing/ridership basis.",
+      "Use 30K placeholder economics."
+    ],
+    "method_note": "Per-corridor volumes are TRANSPARENT DERIVATIONS from sourced throughput x a labelled premium-eligible share, shown as `derived_demand_record` with confidence=derived_pending_validation. Published fares are SOURCED (real operator/list prices), not fabricated. Capture is applied downstream by the cascade (LB-254): Grab is a CONTESTED super-app, not captive -> contested capture band, NOT 0.90.",
+    "fx_thb_per_usd": 35.0
+  },
+  "market_demand_anchors": [
+    {
+      "source": "AviationWeek (Bangkok Airways airport expansion)",
+      "url": "https://aviationweek.com/air-transport/airports-networks/bangkok-airways-invest-airport-expansion-koh-samui-trat",
+      "evidence": "Koh Samui Airport (USM) currently handles around 2 million passengers annually; Bangkok Airways investing $69M to expand.",
+      "tier": "operator"
+    },
+    {
+      "source": "UNIS / Samui Intl Airport profile",
+      "url": "https://www.unisco.com/international-airports/samui-intl-airport",
+      "evidence": "Passenger arrivals increased 21% in 2024 and 9% YoY in early 2025, surpassing pre-pandemic levels.",
+      "tier": "operator"
+    },
+    {
+      "source": "Bangkok Airways H1 figures (reported)",
+      "url": "https://www.facebook.com/infoaboutthailand/posts/954338006498861/",
+      "evidence": "Bangkok Airways reported >1.4 million passengers using Samui airport Jan-Jun, +22% YoY.",
+      "tier": "operator_press"
+    },
+    {
+      "source": "Wikipedia / Thai Dept of Civil Aviation (historical)",
+      "url": "https://en.wikipedia.org/wiki/Samui_Airport",
+      "evidence": "Historical clean-year totals: 2019 = 1,208,882 total pax (14,325 flights); 2015 arrivals = 1,024,373. Bangkok Airways near-monopoly base.",
+      "tier": "official_historical"
+    }
   ],
-  "do_not": [
-   "Fabricate per-corridor L3_locals or fares.",
-   "Add Thailand markets to durable corridors.json without sailing/ridership basis.",
-   "Use 30K placeholder economics."
+  "corridors": [
+    {
+      "corridor": "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala)",
+      "distance_nm": 12,
+      "duration_min_published": "20-40",
+      "vessel_gate": "<=70nm -> N30 Pioneer II",
+      "operators_sourced": [
+        "Lomprayah",
+        "Seatran Discovery",
+        "Raja Ferry"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Raja Ferry (car ferry, economy floor)",
+          "one_way_thb": 200,
+          "note": "motorbike +500 THB",
+          "source_url": "https://phanganlife.com/koh-phangan-ferry-schedule-how-to-get-to-and-from-the-island/"
+        },
+        {
+          "class": "Lomprayah high-speed catamaran",
+          "one_way_thb": 350,
+          "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
+        },
+        {
+          "class": "Lomprayah ferry + van combo",
+          "one_way_thb": 400,
+          "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
+        },
+        {
+          "class": "Echo Travel speedboat",
+          "one_way_thb": 500,
+          "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
+        }
+      ],
+      "premium_ceiling_note": "Resort/private speedboat charters Samui<->Phangan list THB 3,500-8,000 per boat (premium transfer ceiling Navier targets). Published scheduled floor THB 200-500/seat.",
+      "demand_anchors": [
+        {
+          "source": "Bangkok Post",
+          "url": "https://www.bangkokpost.com/thailand/general/2347488/full-moon-party-draws-20-000-to-koh-phangan",
+          "evidence": "Full Moon Party at Haad Rin (Koh Phangan) draws ~20,000 revellers per event; ~98% foreigners.",
+          "tier": "press_official"
+        },
+        {
+          "source": "PhanganLife FMP FAQ",
+          "url": "https://phanganlife.com/full-moon-party-faq/",
+          "evidence": "Regular months 5,000-20,000 visitors; peak season up to 30,000 per party.",
+          "tier": "market"
+        },
+        {
+          "source": "Khaosod English",
+          "url": "https://www.khaosodenglish.com/life/nightlife/2023/02/06/full-moon-parties/",
+          "evidence": "~50,000 tourists attended one high-season Full Moon Party; local speedboat operators surged capacity.",
+          "tier": "press"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "shown_math",
+        "confidence": "derived_pending_validation",
+        "inputs": {
+          "full_moon_events_per_year": 12,
+          "avg_visitors_per_event": 20000,
+          "foreign_share": 0.98,
+          "samui_routing_share_assumption": 0.55,
+          "samui_routing_share_basis": "Samui (USM, ~2M pax/yr, Bangkok Airways hub) is the dominant air gateway feeding Phangan; ~55% of FMP arrivals route via Samui ferry vs Surat Thani mainland / direct Phangan. LABELLED ASSUMPTION pending operator manifest.",
+          "premium_transfer_eligible_share": 0.15,
+          "premium_share_basis": "Share willing to pay a premium foiling transfer over the THB 200-500 ferry floor (resort guests, time-sensitive, FMP surge). Labelled assumption."
+        },
+        "calc": "12 * 20000 * 0.98 * 0.55 = ~129,360 FMP-driven Samui<->Phangan pax/yr (one-way). Add ~year-round baseline ferry traffic (separate). Premium-eligible slice = 129,360 * 0.15 = ~19,400 premium one-way trips/yr from the FMP pool alone.",
+        "fmp_pool_oneway_per_year": 129360,
+        "premium_eligible_oneway_per_year": 19404,
+        "fare_for_model_usd": 10.0,
+        "fare_basis": "Lomprayah scheduled high-speed seat THB 350 = ~$10 as the contested floor; premium charter ceiling far higher (see premium_ceiling_note)."
+      }
+    },
+    {
+      "corridor": "Koh Samui (Maenam) -> Koh Tao",
+      "distance_nm": 24,
+      "duration_min_published": "60-90",
+      "vessel_gate": "<=70nm -> N30 Pioneer II",
+      "operators_sourced": [
+        "Lomprayah",
+        "Seatran Discovery"
+      ],
+      "fare_baseline_thb": [
+        {
+          "class": "Lomprayah high-speed catamaran",
+          "one_way_thb": 600,
+          "note": "Samui<->Tao indicative scheduled fare",
+          "source_url": "https://lomprayah.com/time-table"
+        }
+      ],
+      "demand_anchors": [
+        {
+          "source": "Wikipedia (Samui Airport facilities)",
+          "url": "https://en.wikipedia.org/wiki/Samui_Airport",
+          "evidence": "High-speed ferries to Ko Tao and Chumphon depart Maenam Beach Pier; Samui is the air gateway feeding the Tao dive-tourism corridor.",
+          "tier": "official"
+        },
+        {
+          "source": "UNDP / BIOFIN (Koh Tao sustainable tourism)",
+          "url": "https://www.biofin.org/news-and-media/koh-tao-model-sustainable-tourism-and-coral-reef-conservation",
+          "evidence": "Koh Tao draws between 300,000 and 500,000 tourists annually (UNDP-backed BIOFIN program).",
+          "tier": "ngo_official"
+        },
+        {
+          "source": "UNDP (Koh Tao Better Together)",
+          "url": "https://www.undp.org/impact-giving/koh-tao-better-together",
+          "evidence": "Koh Tao attracted over 500,000 tourists/yr (pre-COVID baseline); tourist user-charge introduced 2022.",
+          "tier": "ngo_official"
+        }
+      ],
+      "derived_demand_record": {
+        "method": "shown_math",
+        "confidence": "validated_captive_geometry",
+        "inputs": {
+          "note": "Koh Tao receives an estimated ~400-500k visitors/yr (dive tourism); Samui-routed share is a labelled assumption pending operator data."
+        },
+        "status": "anchor_only_no_volume_lock",
+        "fare_for_model_usd": 17.14
+      },
+      "official_volume_validation": {
+        "validated_utc": "2026-06-22T16:32:12.562359+00:00",
+        "status": "validated_by_captive_geometry",
+        "tier": "tier_2_strong_plus_captive",
+        "official_anchor": "Koh Tao ~500,000 visitors/yr (UNDP/BIOFIN). Koh Tao has NO airport and NO road access — every arrival is by boat — so the island visitor count is a near-direct proxy for annual ferry/boat arrivals.",
+        "annual_visitor_pool": 500000,
+        "captive_geometry_note": "Boat-only island => visitor count ~= boat-arrival count. Premium-eligible slice still applies the labelled share; fare (THB 600 / $17.14) remains operator-published.",
+        "residual_gap": "Exact Mae Haad Pier (Koh Tao) seat-manifest split by origin (Samui vs Chumphon vs Phangan) still pending Marine Dept Surat Thani for origin-level precision.",
+        "moves_to_measured": "Volume frame upgraded from derived -> validated (captive-geometry). Origin split remains tier-1 pending."
+      }
+    }
   ],
-  "method_note": "Per-corridor volumes are TRANSPARENT DERIVATIONS from sourced throughput x a labelled premium-eligible share, shown as `derived_demand_record` with confidence=derived_pending_validation. Published fares are SOURCED (real operator/list prices), not fabricated. Capture is applied downstream by the cascade (LB-254): Grab is a CONTESTED super-app, not captive -> contested capture band, NOT 0.90.",
-  "fx_thb_per_usd": 35.0
- },
- "market_demand_anchors": [
-  {
-   "source": "AviationWeek (Bangkok Airways airport expansion)",
-   "url": "https://aviationweek.com/air-transport/airports-networks/bangkok-airways-invest-airport-expansion-koh-samui-trat",
-   "evidence": "Koh Samui Airport (USM) currently handles around 2 million passengers annually; Bangkok Airways investing $69M to expand.",
-   "tier": "operator"
-  },
-  {
-   "source": "UNIS / Samui Intl Airport profile",
-   "url": "https://www.unisco.com/international-airports/samui-intl-airport",
-   "evidence": "Passenger arrivals increased 21% in 2024 and 9% YoY in early 2025, surpassing pre-pandemic levels.",
-   "tier": "operator"
-  },
-  {
-   "source": "Bangkok Airways H1 figures (reported)",
-   "url": "https://www.facebook.com/infoaboutthailand/posts/954338006498861/",
-   "evidence": "Bangkok Airways reported >1.4 million passengers using Samui airport Jan-Jun, +22% YoY.",
-   "tier": "operator_press"
-  },
-  {
-   "source": "Wikipedia / Thai Dept of Civil Aviation (historical)",
-   "url": "https://en.wikipedia.org/wiki/Samui_Airport",
-   "evidence": "Historical clean-year totals: 2019 = 1,208,882 total pax (14,325 flights); 2015 arrivals = 1,024,373. Bangkok Airways near-monopoly base.",
-   "tier": "official_historical"
-  }
- ],
- "corridors": [
-  {
-   "corridor": "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala)",
-   "distance_nm": 12,
-   "duration_min_published": "20-40",
-   "vessel_gate": "<=70nm -> N30 Pioneer II",
-   "operators_sourced": [
-    "Lomprayah",
-    "Seatran Discovery",
-    "Raja Ferry"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Raja Ferry (car ferry, economy floor)",
-     "one_way_thb": 200,
-     "note": "motorbike +500 THB",
-     "source_url": "https://phanganlife.com/koh-phangan-ferry-schedule-how-to-get-to-and-from-the-island/"
-    },
-    {
-     "class": "Lomprayah high-speed catamaran",
-     "one_way_thb": 350,
-     "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
-    },
-    {
-     "class": "Lomprayah ferry + van combo",
-     "one_way_thb": 400,
-     "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
-    },
-    {
-     "class": "Echo Travel speedboat",
-     "one_way_thb": 500,
-     "source_url": "https://siamtickets.com/lomprayah-ferry-koh-phangan-to-koh-samui/"
-    }
-   ],
-   "premium_ceiling_note": "Resort/private speedboat charters Samui<->Phangan list THB 3,500-8,000 per boat (premium transfer ceiling Navier targets). Published scheduled floor THB 200-500/seat.",
-   "demand_anchors": [
-    {
-     "source": "Bangkok Post",
-     "url": "https://www.bangkokpost.com/thailand/general/2347488/full-moon-party-draws-20-000-to-koh-phangan",
-     "evidence": "Full Moon Party at Haad Rin (Koh Phangan) draws ~20,000 revellers per event; ~98% foreigners.",
-     "tier": "press_official"
-    },
-    {
-     "source": "PhanganLife FMP FAQ",
-     "url": "https://phanganlife.com/full-moon-party-faq/",
-     "evidence": "Regular months 5,000-20,000 visitors; peak season up to 30,000 per party.",
-     "tier": "market"
-    },
-    {
-     "source": "Khaosod English",
-     "url": "https://www.khaosodenglish.com/life/nightlife/2023/02/06/full-moon-parties/",
-     "evidence": "~50,000 tourists attended one high-season Full Moon Party; local speedboat operators surged capacity.",
-     "tier": "press"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "shown_math",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "full_moon_events_per_year": 12,
-     "avg_visitors_per_event": 20000,
-     "foreign_share": 0.98,
-     "samui_routing_share_assumption": 0.55,
-     "samui_routing_share_basis": "Samui (USM, ~2M pax/yr, Bangkok Airways hub) is the dominant air gateway feeding Phangan; ~55% of FMP arrivals route via Samui ferry vs Surat Thani mainland / direct Phangan. LABELLED ASSUMPTION pending operator manifest.",
-     "premium_transfer_eligible_share": 0.15,
-     "premium_share_basis": "Share willing to pay a premium foiling transfer over the THB 200-500 ferry floor (resort guests, time-sensitive, FMP surge). Labelled assumption."
-    },
-    "calc": "12 * 20000 * 0.98 * 0.55 = ~129,360 FMP-driven Samui<->Phangan pax/yr (one-way). Add ~year-round baseline ferry traffic (separate). Premium-eligible slice = 129,360 * 0.15 = ~19,400 premium one-way trips/yr from the FMP pool alone.",
-    "fmp_pool_oneway_per_year": 129360,
-    "premium_eligible_oneway_per_year": 19404,
-    "fare_for_model_usd": 10.0,
-    "fare_basis": "Lomprayah scheduled high-speed seat THB 350 = ~$10 as the contested floor; premium charter ceiling far higher (see premium_ceiling_note)."
-   }
-  },
-  {
-   "corridor": "Koh Samui (Maenam) -> Koh Tao",
-   "distance_nm": 24,
-   "duration_min_published": "60-90",
-   "vessel_gate": "<=70nm -> N30 Pioneer II",
-   "operators_sourced": [
-    "Lomprayah",
-    "Seatran Discovery"
-   ],
-   "fare_baseline_thb": [
-    {
-     "class": "Lomprayah high-speed catamaran",
-     "one_way_thb": 600,
-     "note": "Samui<->Tao indicative scheduled fare",
-     "source_url": "https://lomprayah.com/time-table"
-    }
-   ],
-   "demand_anchors": [
-    {
-     "source": "Wikipedia (Samui Airport facilities)",
-     "url": "https://en.wikipedia.org/wiki/Samui_Airport",
-     "evidence": "High-speed ferries to Ko Tao and Chumphon depart Maenam Beach Pier; Samui is the air gateway feeding the Tao dive-tourism corridor.",
-     "tier": "official"
-    }
-   ],
-   "derived_demand_record": {
-    "method": "shown_math",
-    "confidence": "derived_pending_validation",
-    "inputs": {
-     "note": "Koh Tao receives an estimated ~400-500k visitors/yr (dive tourism); Samui-routed share is a labelled assumption pending operator data."
-    },
-    "status": "anchor_only_no_volume_lock",
-    "fare_for_model_usd": 17.14
-   }
-  }
- ],
- "aspirational_no_demand_record": [],
- "next_action": "Cascade can run on the Samui<->Phangan corridor (volume + fare hardened). Samui<->Tao carries fare + anchor but volume stays anchor_only until an operator manifest lands."
+  "aspirational_no_demand_record": [],
+  "next_action": "Cascade can run on the Samui<->Phangan corridor (volume + fare hardened). Samui<->Tao carries fare + anchor but volume stays anchor_only until an operator manifest lands."
 }
