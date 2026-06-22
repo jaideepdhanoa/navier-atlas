@@ -1,6 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "image-manifest.schema.json",
+  "title": "Deck image manifest (v1 + v2 superset)",
+  "description": "Validates both the v1 generation manifests (placeholder pipeline decks: bolt, careem, caribbean-mobility, french-polynesia, etc.) and the richer v2 asset-pack manifests (grab) that carry asset_registry/role_contract/asset_ref/role and extended status values.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,9 +15,25 @@
       "type": "string",
       "minLength": 1
     },
+    "schema": {
+      "type": "string",
+      "minLength": 1
+    },
     "policy": {
       "type": "string",
       "minLength": 1
+    },
+    "asset_registry": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "role_contract": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "images": {
       "type": "array",
@@ -25,13 +43,22 @@
         "required": [
           "image_key",
           "target_slide_object_id",
-          "status",
-          "provenance_required"
+          "status"
         ],
         "properties": {
           "image_key": {
             "type": "string",
             "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "asset_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
           },
           "target_slide_object_id": {
             "type": "string",
@@ -47,6 +74,9 @@
             "enum": [
               "placeholder",
               "candidate",
+              "embedded_only",
+              "checked_in",
+              "published",
               "approved",
               "applied"
             ]
@@ -76,6 +106,12 @@
             ]
           },
           "output_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_url": {
             "type": [
               "string",
               "null"
