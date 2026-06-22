@@ -8,16 +8,33 @@ You own deterministic deck creation, live editing, and image generation/composit
 2. Read `deck-studio/README.md` and all files in `deck-studio/docs/`.
 3. Run `python -m deck_studio validate --root deck-studio`.
 4. For the target deck, run `pull --mode summary` and compare slide counts/object IDs with the manifest.
-5. Build an edit/image plan; do not apply first.
-6. Apply only through Google Slides API batch updates.
-7. Run QA and export receipts.
-8. Commit manifests/receipts and open a PR or push directly only when explicitly approved.
+5. **Resolve image roles.** Read the target deck's `image-manifest.json`; for every role resolve its asset
+   through `deck-studio/assets/ASSET-REGISTRY.json` (`registry_key` → `local_path`/`drive_file_id`) per
+   `deck-studio/assets/IMAGE-ROLE-CONTRACT.md`. Honor `status`: `checked_in`→ready/apply,
+   `embedded_only`→background_pending (capture or regenerate first), `needs_generation`/`needs_sourcing`→blocked.
+   Bind market backgrounds only on exact `atlas_city_id` match. Never guess an image.
+   - **N30 reference rule.** Any generated/composited N30 must match `assets/n30/n30-reference-neutral.png`
+     for hull color/form and `assets/n30/n30-reference.png` for pose. **Lighting is a plate property** —
+     keep the vessel neutral and let the market plate set time-of-day. See `docs/IMAGE-RULES.md`.
+   - **Partner logo on cover (slide 1).** The `partner_logo` role is **required** on the cover. Resolve it
+     from `assets/logos/partners/{partner}/` via the registry. If unresolved, status `needs_sourcing` → blocked
+     (never ship a cover without the partner logo, never guess one).
+   - **No re-embedding.** Apply every image as a registry-resolved image element (`replaceImage`/`createImage`
+     bound to a `registry_key`). Never re-embed a one-off binary with no registry entry; if an asset is
+     `embedded_only`, capture it to the pack and register it first.
+6. **Slide 3 (market overview KPIs).** Resolve the slide-3 KPI block from the deck's manifest/economics
+   sidecar (see `IMAGE-ROLE-CONTRACT.md` slide-3 row); render the market-overview KPIs, do not leave stale.
+7. Build an edit/image plan; do not apply first.
+8. Apply only through Google Slides API batch updates.
+9. Run QA and export receipts.
+10. Commit manifests/receipts and open a PR or push directly only when explicitly approved.
 
 ## Context boundaries
 
 - The repo is the source of truth for deck rules and current known deck IDs.
 - Google Slides is the source of truth for live slide/object structure.
 - Partner JSON, finance recal outputs, and live Google Sheets are sources of truth for claims/economics.
+- The asset registry (`assets/ASSET-REGISTRY.json`) is the source of truth for image provenance and reuse.
 - Do not ask Tasklet for hidden history. If something is missing, add it to this folder or mark it held-null.
 
 ## Deck IDs
