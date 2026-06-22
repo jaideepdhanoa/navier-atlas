@@ -1,0 +1,115 @@
+{
+  "deck_key": "minor-hotels",
+  "presentation_id": null,
+  "generated_from": "gen_narrative_binding.py",
+  "source_narrative": "deck-studio/decks/minor-hotels/narrative-slide2-minor-hotels.json",
+  "slide_index": 2,
+  "slide_object_id": "narr2_page",
+  "purpose": "Deterministic field->object_id binding for the slide-2 exec-summary/thesis. Grok pulls VALUES from narrative-slide2-<partner>.json (DISTILLED from the proposal, never authored) and writes them into these object_ids via style-preserving deleteText(ALL)+insertText — identical to the economics layer. This file says WHERE; the proposal says WHAT. The slide itself is created ONCE in gold via narrative-slide2.gold-create.editplan.json with these exact IDs, then inherited by every gold copy. Never author prose; never invent object_ids.",
+  "background": {
+    "image_object_id": "narr2_bg_img",
+    "filled_by": "N30 image archetype A2 (image-manifest.json), full-bleed",
+    "scrim_object_id": "narr2_scrim",
+    "note": "Background is a full-bleed market image with a navy scrim for legibility; text sits above the scrim. No right-zone image box."
+  },
+  "accent_rule": {
+    "object_id": "narr2_rule"
+  },
+  "proof_strip": {
+    "painted_on_slide2": false,
+    "retired_object_ids": [
+      "narr2_chip1_v",
+      "narr2_chip1_c",
+      "narr2_chip2_v",
+      "narr2_chip2_c",
+      "narr2_chip3_v",
+      "narr2_chip3_c",
+      "narr2_chip4_v",
+      "narr2_chip4_c"
+    ],
+    "note": "KPI chips removed 2026-06-22 (cross-slide redundancy + copy room). network_thesis.stats remains in narrative JSON for the economics sidecar and slide 4, but is NOT painted on slide 2."
+  },
+  "fields": {
+    "kicker": {
+      "object_id": "narr2_kicker",
+      "static": "PARTNER PROPOSAL",
+      "present": true
+    },
+    "partner_lockup": {
+      "object_id": "narr2_lockup",
+      "present": true,
+      "sample": "Minor Hotels × Navier"
+    },
+    "positioning": {
+      "object_id": "narr2_positioning",
+      "present": true,
+      "sample": "own the arrival, own the margin"
+    },
+    "thesis": {
+      "object_id": "narr2_thesis",
+      "present": true,
+      "sample": "Your guests already arrive by boat. Navier makes that arrival the best part of the stay — and a margin line you own."
+    },
+    "the_deal": {
+      "object_id": "narr2_deal",
+      "present": true,
+      "sample": "Minor brings 109 coastal-relevant properties and a captive guest base; Navier brings the silent foiling fleet proven in the live Maldives network. Together we turn every resort transfer into a branded, zero-emission signature."
+    },
+    "world_label": {
+      "object_id": "narr2_world_label",
+      "static": "Your world",
+      "present": true
+    }
+  },
+  "your_world": [
+    {
+      "head_object_id": "narr2_w1_h",
+      "body_object_id": "narr2_w1_b",
+      "present": true,
+      "sample_label": "Where you are today",
+      "sample_text": "You operate 100+ coastal and island resorts where the last mile is water — and guests take the resort's boat."
+    },
+    {
+      "head_object_id": "narr2_w2_h",
+      "body_object_id": "narr2_w2_b",
+      "present": true,
+      "sample_label": "What you're up against",
+      "sample_text": "Diesel speedboats and outsourced launches leak margin, fumes, and weather risk on the arrival guests remember first."
+    },
+    {
+      "head_object_id": "narr2_w3_h",
+      "body_object_id": "narr2_w3_b",
+      "present": true,
+      "sample_label": "Where Navier fits",
+      "sample_text": "A branded electric hydrofoil fleet you control end-to-end — gateway pickups, inter-resort hops, and curated excursions."
+    },
+    {
+      "head_object_id": "narr2_w4_h",
+      "body_object_id": "narr2_w4_b",
+      "present": true,
+      "sample_label": "Why now",
+      "sample_text": "Maldives is live at scale; Phuket, Bali, and Palm Jumeirah floors are grounded — captive economics, not contested mobility."
+    }
+  ],
+  "render_order": [
+    "background",
+    "scrim",
+    "kicker",
+    "partner_lockup",
+    "positioning",
+    "thesis",
+    "the_deal",
+    "world_label",
+    "rule",
+    "your_world[0..3]"
+  ],
+  "paint_protocol": "Per-deck (after one-time gold-create): for each present pin, deleteText{objectId,textRange:ALL} then insertText{objectId,insertionIndex:0}. Skip pins where present=false (null beats confidently-wrong). If the deck still carries RETIRED_OBJECT_IDS, deleteObject them. No numbers are painted on slide 2; quantified proof lives on slide 4 + sidecar.",
+  "qa_gates": [
+    "leak_denylist",
+    "char_budget_scan",
+    "orphan_number_check",
+    "style_reset_scan",
+    "drift_gate",
+    "render_thumbnails"
+  ]
+}
