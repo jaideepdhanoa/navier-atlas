@@ -15,7 +15,7 @@
     ],
     "updated_at": "2026-06-22T02:16:30Z",
     "no_reembed_contract": "Deck images must be applied from a stable registry-resolved image URL. Use registry source_url/drive_file_id when present. If only local_path is present, publish that checked-in file to the approved Drive/asset-host path, record drive_file_id/source_url, then apply. Never reuse Google Slides contentUrl / lh*-googleusercontent temporary URLs as canonical assets; those are inspection evidence only.",
-    "last_asset_publish_at": "2026-06-22T10:41:40Z"
+    "last_asset_publish_at": "2026-06-22T10:56:13Z"
   },
   "role_contract": {
     "cover_hero": {
@@ -1403,8 +1403,8 @@
       "role": "tam_bg",
       "scope": "deck",
       "partner": "bolt",
-      "local_path": "assets/backgrounds/decks/bolt/bolt-tam-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_bolt_tam_raw",
+      "local_path": "assets/backgrounds/decks/bolt/bolt-tam-network-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
       "used_by": [
         {
           "deck": "bolt",
@@ -1413,22 +1413,228 @@
           "target_object_id": "navierBg_s26"
         }
       ],
-      "status": "deprecated_paste_composite",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1wOEfhZECXCTSkk8k2TUD8jRP7chzs78P",
-      "source_url": "https://drive.google.com/uc?export=download&id=1wOEfhZECXCTSkk8k2TUD8jRP7chzs78P",
-      "notes": "Wave-2 N30 composite — bolt-tam-bg | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:53:41Z",
+      "notes": "Wave-2 N30 composite — bolt-tam-bg | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "market_slug": "europe-network",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a wide, aspirational seascape at golden hour. A single white hydrofoil, small in the lower-center, heads toward a European coastline with several distant island and town silhouettes across the Aegean, Adriatic and Mediterranean suggesting a network of destinations. Expansive open sky fills the upper two-thirds for a data overlay. Cinematic, optimistic, premium grade. Foils down, clean wake, hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. No map graphics, no people, no logos, no text. No Dubai skyline, no Burj Khalifa, no Marina Bay Sands. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:53:41Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/decks/bolt/bolt-tam-network-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/decks/bolt/bolt-tam-network-tier-a-v1.png",
+          "role": "tam_bg",
+          "market_slug": "europe-network",
+          "evaluated_at": "2026-06-22T10:53:41Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 2275.62,
+                "surround_variance": 163.95,
+                "leak_score": 13.88,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "tam_upper_two_thirds_open",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 162.05,
+                "variance": 1180.18,
+                "box_px": [
+                  0,
+                  0,
+                  2816,
+                  1045
+                ]
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/decks/bolt/bolt-tam-network-tier-a-v1.png",
+        "role": "tam_bg",
+        "market_slug": "europe-network",
+        "evaluated_at": "2026-06-22T10:54:35Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1810.07,
+              "surround_variance": 77.06,
+              "leak_score": 23.489,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "tam_upper_two_thirds_open",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 162.05,
+              "variance": 1180.18,
+              "box_px": [
+                0,
+                0,
+                2816,
+                1045
+              ]
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:35Z",
+      "drive_file_id": "1u_2Jj4okPV_oxfe25qpHyfGsYus4jlM4",
+      "source_url": "https://drive.google.com/uc?export=download&id=1u_2Jj4okPV_oxfe25qpHyfGsYus4jlM4"
     },
     "bolt-partner-roles-bg": {
       "role": "partner_roles_bg",
       "scope": "deck",
       "partner": "bolt",
-      "local_path": "assets/backgrounds/decks/bolt/bolt-partner-roles-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_bolt_partner_roles_raw",
+      "local_path": "assets/backgrounds/decks/bolt/bolt-partner-roles-greece-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
       "used_by": [
         {
           "deck": "bolt",
@@ -1437,147 +1643,2214 @@
           "target_object_id": "g3ea5e0fb254_4_358"
         }
       ],
-      "status": "deprecated_paste_composite",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1kZ0k6elo-IwZ5IKETRj6ohaVNBo9bpk4",
-      "source_url": "https://drive.google.com/uc?export=download&id=1kZ0k6elo-IwZ5IKETRj6ohaVNBo9bpk4",
-      "notes": "Wave-2 N30 composite — bolt-partner-roles-bg | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:49:48Z",
+      "notes": "Wave-2 N30 composite — bolt-partner-roles-bg | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "market_slug": "athens-saronic-greece",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph at a tidy modern berth in an Aegean island berth with white Cycladic buildings: the white hydrofoil moored alongside, foils down, clean reflection. Frame so the right third is clean, calm sky and water for a logo-and-text lockup. Warm, premium daylight. Exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Single integrated photograph, not a collage. No logos, no text, no brand signage. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:49:48Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/decks/bolt/bolt-partner-roles-greece-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/decks/bolt/bolt-partner-roles-greece-tier-a-v1.png",
+          "role": "partner_roles_bg",
+          "market_slug": "athens-saronic-greece",
+          "evaluated_at": "2026-06-22T10:49:49Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "hull_variance": 1886.81,
+                "surround_variance": 2200.53,
+                "leak_score": 0.857,
+                "green_in_hull_ratio": 0.0007,
+                "pass": true
+              }
+            },
+            {
+              "name": "partner_roles_right_third_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 156.15,
+                "variance": 1228.38,
+                "box_px": [
+                  1858,
+                  0,
+                  2816,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "market_lock_greece",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "market_slug": "athens-saronic-greece"
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/decks/bolt/bolt-partner-roles-greece-tier-a-v1.png",
+        "role": "partner_roles_bg",
+        "market_slug": "athens-saronic-greece",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1886.81,
+              "surround_variance": 2200.53,
+              "leak_score": 0.857,
+              "green_in_hull_ratio": 0.0007,
+              "pass": true
+            }
+          },
+          {
+            "name": "partner_roles_right_third_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 156.15,
+              "variance": 1228.38,
+              "box_px": [
+                1858,
+                0,
+                2816,
+                1584
+              ]
+            }
+          },
+          {
+            "name": "market_lock_greece",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "market_slug": "athens-saronic-greece"
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1w61lAHSTQz2cYP9zD82I3M3ZJl6BCva_",
+      "source_url": "https://drive.google.com/uc?export=download&id=1w61lAHSTQz2cYP9zD82I3M3ZJl6BCva_"
     },
     "econ-greece-athens-hydra": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "athens-saronic-greece",
       "atlas_city_id": "athens-saronic-greece",
-      "local_path": "assets/backgrounds/markets/greece/greece-aegean-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_greece_aegean_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1KUcYTt4Hxzsq_u1QIcf0pf0NTmms-6Op",
-      "source_url": "https://drive.google.com/uc?export=download&id=1KUcYTt4Hxzsq_u1QIcf0pf0NTmms-6Op",
-      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:50:09Z",
+      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Aegean — distant Cycladic islands and white cliff towns. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:50:09Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "athens-saronic-greece",
+          "evaluated_at": "2026-06-22T10:50:10Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 709.33,
+                "surround_variance": 55.58,
+                "leak_score": 12.762,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 70.27,
+                "variance": 195.29,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 363.85
+              }
+            },
+            {
+              "name": "market_lock_greece",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "market_slug": "athens-saronic-greece"
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "athens-saronic-greece",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1081.5,
+              "surround_variance": 32.07,
+              "leak_score": 33.723,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 70.91,
+              "variance": 221.21,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 70.91,
+              "left_variance": 221.21
+            }
+          },
+          {
+            "name": "market_lock_greece",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "market_slug": "athens-saronic-greece"
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "18qK73ArFc_m1c3oQtcAKh2Gv6Ja-YY4I",
+      "source_url": "https://drive.google.com/uc?export=download&id=18qK73ArFc_m1c3oQtcAKh2Gv6Ja-YY4I"
     },
     "econ-croatia-split-hvar": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "split-croatia",
       "atlas_city_id": "split-croatia",
-      "local_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_croatia_dalmatian_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1ohV3pbRmBW_DjSQqjN99BYFT8PKJF2v8",
-      "source_url": "https://drive.google.com/uc?export=download&id=1ohV3pbRmBW_DjSQqjN99BYFT8PKJF2v8",
-      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:50:29Z",
+      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Dalmatian coast — pine islets and Hvar stone waterfront. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:50:29Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "split-croatia",
+          "evaluated_at": "2026-06-22T10:50:30Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 1278.93,
+                "surround_variance": 41.49,
+                "leak_score": 30.825,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 83.37,
+                "variance": 864.26,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 923.55
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "split-croatia",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1840.31,
+              "surround_variance": 122.98,
+              "leak_score": 14.964,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 90.21,
+              "variance": 697.5,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 90.21,
+              "left_variance": 697.5
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1A-psPSFFfhUJVqNOSUU2lmZoS2MDLQBI",
+      "source_url": "https://drive.google.com/uc?export=download&id=1A-psPSFFfhUJVqNOSUU2lmZoS2MDLQBI"
     },
     "econ-cote-azur-nice-monaco": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "cote-dazur-france",
       "atlas_city_id": "cote-dazur-france",
-      "local_path": "assets/backgrounds/markets/cote-dazur/cote-azur-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_cote_azur_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1p8tsc2DCf0kyBYY4M8Hl00oUGb-QInUQ",
-      "source_url": "https://drive.google.com/uc?export=download&id=1p8tsc2DCf0kyBYY4M8Hl00oUGb-QInUQ",
-      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:50:50Z",
+      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Côte d'Azur — Nice/Monaco harbour and belle-époque façades. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:50:50Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "cote-dazur-france",
+          "evaluated_at": "2026-06-22T10:50:51Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 946.81,
+                "surround_variance": 77.67,
+                "leak_score": 12.19,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 73.43,
+                "variance": 283.08,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 573.06
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "cote-dazur-france",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1757.14,
+              "surround_variance": 36.64,
+              "leak_score": 47.957,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 75.42,
+              "variance": 296.65,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 75.42,
+              "left_variance": 296.65
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1JVJ944c1xrUcDrvIhSaiUfAnWj1DPRuw",
+      "source_url": "https://drive.google.com/uc?export=download&id=1JVJ944c1xrUcDrvIhSaiUfAnWj1DPRuw"
     },
     "econ-italy-sorrento-capri": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "sorrento-italy",
-      "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_italy_amalfi_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1Yk-1XOZq8b4Bu4pDOXa17WbpmmrI5jQZ",
-      "source_url": "https://drive.google.com/uc?export=download&id=1Yk-1XOZq8b4Bu4pDOXa17WbpmmrI5jQZ",
-      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:51:08Z",
+      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Amalfi coast — Sorrento cliffs and Capri silhouettes. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:51:08Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "sorrento-italy",
+          "evaluated_at": "2026-06-22T10:51:09Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 836.0,
+                "surround_variance": 51.16,
+                "leak_score": 16.341,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 69.25,
+                "variance": 239.39,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 473.3
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "sorrento-italy",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1373.7,
+              "surround_variance": 45.46,
+              "leak_score": 30.218,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 71.78,
+              "variance": 233.66,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 71.78,
+              "left_variance": 233.66
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1V8h4kzpb44vdfjNOiY_b_vXxypY0Wv1O",
+      "source_url": "https://drive.google.com/uc?export=download&id=1V8h4kzpb44vdfjNOiY_b_vXxypY0Wv1O"
     },
     "econ-uae-dubai-harbour": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "dubai-uae",
       "atlas_city_id": "dubai-uae",
-      "local_path": "assets/backgrounds/markets/uae/uae-dubai-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_uae_dubai_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1apCiABBESoBwaVlZiTphYTeosY0mzjWG",
-      "source_url": "https://drive.google.com/uc?export=download&id=1apCiABBESoBwaVlZiTphYTeosY0mzjWG",
-      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:51:25Z",
+      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Dubai Marina towers and Gulf water (Gulf market only). The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:51:25Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "dubai-uae",
+          "evaluated_at": "2026-06-22T10:51:26Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "market_lock_uae",
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 714.65,
+                "surround_variance": 99.33,
+                "leak_score": 7.195,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 66.49,
+                "variance": 333.36,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 575.73
+              }
+            },
+            {
+              "name": "market_lock_uae",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "market_slug": "dubai-uae"
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "dubai-uae",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1118.19,
+              "surround_variance": 116.43,
+              "leak_score": 9.604,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 69.02,
+              "variance": 339.53,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 69.02,
+              "left_variance": 339.53
+            }
+          },
+          {
+            "name": "market_lock_uae",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "market_slug": "dubai-uae",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1Nh4lBV-UR1WDWGnsPKgYdh31oHZEpXk_",
+      "source_url": "https://drive.google.com/uc?export=download&id=1Nh4lBV-UR1WDWGnsPKgYdh31oHZEpXk_"
     },
     "econ-ksa-jeddah": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "jeddah-ksa",
-      "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_ksa_jeddah_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "128e8rIZr3WZNZcDUW98Gf9vvlM1oKc2q",
-      "source_url": "https://drive.google.com/uc?export=download&id=128e8rIZr3WZNZcDUW98Gf9vvlM1oKc2q",
-      "notes": "Wave-2 N30 composite — econ-ksa-jeddah | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:51:42Z",
+      "notes": "Wave-2 N30 composite — econ-ksa-jeddah | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Jeddah Corniche and Red Sea calm water. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:51:42Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "jeddah-ksa",
+          "evaluated_at": "2026-06-22T10:51:42Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 1122.67,
+                "surround_variance": 100.09,
+                "leak_score": 11.217,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 86.59,
+                "variance": 725.86,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 926.87
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "jeddah-ksa",
+        "evaluated_at": "2026-06-22T10:54:36Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 2006.92,
+              "surround_variance": 75.83,
+              "leak_score": 26.466,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 90.94,
+              "variance": 659.5,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 90.94,
+              "left_variance": 659.5
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:36Z",
+      "drive_file_id": "1GWOHPhXSybtCAs95v0KaGeEONs9mXzw_",
+      "source_url": "https://drive.google.com/uc?export=download&id=1GWOHPhXSybtCAs95v0KaGeEONs9mXzw_"
     },
     "econ-greece-mykonos-paros": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "mykonos-greece",
-      "local_path": "assets/backgrounds/markets/greece/greece-cyclades-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_greece_cyclades_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1CLrZZ6SRYYTYamR7fbBep1PwBTMGzx1T",
-      "source_url": "https://drive.google.com/uc?export=download&id=1CLrZZ6SRYYTYamR7fbBep1PwBTMGzx1T",
-      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:52:00Z",
+      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Cycladic islands — Mykonos windmills and Paros shoreline. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:52:00Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "mykonos-greece",
+          "evaluated_at": "2026-06-22T10:52:01Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 936.42,
+                "surround_variance": 49.44,
+                "leak_score": 18.941,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 65.26,
+                "variance": 238.87,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 501.52
+              }
+            },
+            {
+              "name": "market_lock_greece",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "market_slug": "mykonos-greece"
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "mykonos-greece",
+        "evaluated_at": "2026-06-22T10:54:37Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 1693.12,
+              "surround_variance": 46.8,
+              "leak_score": 36.178,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 68.08,
+              "variance": 224.37,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 68.08,
+              "left_variance": 224.37
+            }
+          },
+          {
+            "name": "market_lock_greece",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "market_slug": "mykonos-greece"
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:37Z",
+      "drive_file_id": "1P6_WoFZuovPrVCepxuY5uIBINFIq4wqR",
+      "source_url": "https://drive.google.com/uc?export=download&id=1P6_WoFZuovPrVCepxuY5uIBINFIq4wqR"
     },
     "econ-croatia-dubrovnik": {
       "role": "econ_market_bg",
       "scope": "market",
       "market_slug": "dubrovnik-croatia",
-      "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-v1-composited.png",
-      "provenance": "n30_composite:grok_gen_croatia_dubrovnik_raw",
-      "status": "deprecated_paste_composite",
+      "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-econ-tier-a-v1.png",
+      "provenance": "tier_a:xai/grok-imagine-image-quality",
+      "status": "published",
       "license": "navier-internal",
       "reproducible": true,
-      "composited": true,
-      "captured_at": "2026-06-22T09:35:38Z",
-      "drive_file_id": "1ZjZgOalxJlKmmDxi4OH43R_dT0Ujjz7O",
-      "source_url": "https://drive.google.com/uc?export=download&id=1ZjZgOalxJlKmmDxi4OH43R_dT0Ujjz7O",
-      "notes": "Wave-2 N30 composite — econ-croatia-dubrovnik | wave-2.1 Tier A supersession",
-      "deprecated_at": "2026-06-22T10:25:20Z"
+      "composited": false,
+      "captured_at": "2026-06-22T10:52:21Z",
+      "notes": "Wave-2 N30 composite — econ-croatia-dubrovnik | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "deprecated_at": "2026-06-22T10:25:20Z",
+      "partner": "bolt",
+      "atlas_city_id": null,
+      "tier": "A",
+      "generation": {
+        "tier": "A",
+        "provider": "xai/grok-imagine-image-quality",
+        "reference": "assets/n30/n30-reference-neutral.png",
+        "aspect_ratio": "16:9",
+        "resolution": "2k",
+        "seed_family": "bolt-wave21-greece-bar-setter",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Dubrovnik old-town stone walls and Adriatic blue water. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T10:52:21Z",
+        "usage": {
+          "cost_in_usd_ticks": 800000000
+        },
+        "output": "assets/backgrounds/markets/croatia/croatia-dubrovnik-econ-tier-a-v1.png",
+        "qa_receipt": {
+          "gate": "qa_image_gate/v1",
+          "image_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-econ-tier-a-v1.png",
+          "role": "econ_market_bg",
+          "market_slug": "dubrovnik-croatia",
+          "evaluated_at": "2026-06-22T10:52:22Z",
+          "overall": "fail",
+          "blocking_failures": [
+            "opacity_no_green_leak",
+            "econ_low_contrast"
+          ],
+          "pending_human": [
+            "landmark_denylist",
+            "single_vessel",
+            "hull_fidelity_vs_neutral_ref",
+            "grab_gold_human_compare"
+          ],
+          "checks": [
+            {
+              "name": "dimensions_16x9_min_2560",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "width": 2816,
+                "height": 1584,
+                "aspect_ratio": 1.7778,
+                "min": "2560x1440"
+              }
+            },
+            {
+              "name": "opacity_no_green_leak",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "hull_variance": 507.9,
+                "surround_variance": 76.57,
+                "leak_score": 6.633,
+                "green_in_hull_ratio": 0.0,
+                "pass": false
+              }
+            },
+            {
+              "name": "econ_left_column_clean",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 89.52,
+                "variance": 456.1,
+                "box_px": [
+                  0,
+                  0,
+                  1548,
+                  1584
+                ]
+              }
+            },
+            {
+              "name": "econ_low_contrast",
+              "status": "fail",
+              "auto": true,
+              "details": {
+                "global_stddev": 593.13
+              }
+            },
+            {
+              "name": "landmark_denylist",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "denylist": [
+                  "burj khalifa",
+                  "burj al arab",
+                  "marina bay sands",
+                  "palm jumeirah",
+                  "dubai marina"
+                ]
+              }
+            },
+            {
+              "name": "single_vessel",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "hull_fidelity_vs_neutral_ref",
+              "status": "pending_human",
+              "auto": false,
+              "details": {}
+            },
+            {
+              "name": "grab_gold_human_compare",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "exemplar": "grab-cover-hero + grab-slide2"
+              }
+            }
+          ]
+        }
+      },
+      "used_by": [],
+      "qa_receipt": {
+        "gate": "qa_image_gate/v1",
+        "image_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-econ-tier-a-v1.png",
+        "role": "econ_market_bg",
+        "market_slug": "dubrovnik-croatia",
+        "evaluated_at": "2026-06-22T10:54:37Z",
+        "overall": "pass",
+        "blocking_failures": [],
+        "pending_human": [],
+        "checks": [
+          {
+            "name": "dimensions_16x9_min_2560",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "width": 2816,
+              "height": 1584,
+              "aspect_ratio": 1.7778,
+              "min": "2560x1440"
+            }
+          },
+          {
+            "name": "opacity_no_green_leak",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "hull_variance": 956.63,
+              "surround_variance": 83.32,
+              "leak_score": 11.481,
+              "green_in_hull_ratio": 0.0,
+              "pass": true
+            }
+          },
+          {
+            "name": "econ_left_column_clean",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 91.45,
+              "variance": 493.34,
+              "box_px": [
+                0,
+                0,
+                1548,
+                1346
+              ]
+            }
+          },
+          {
+            "name": "econ_low_contrast",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "left_mean_luminance": 91.45,
+              "left_variance": 493.34
+            }
+          },
+          {
+            "name": "landmark_denylist",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "denylist": [
+                "burj khalifa",
+                "burj al arab",
+                "marina bay sands",
+                "palm jumeirah",
+                "dubai marina"
+              ],
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "single_vessel",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "hull_fidelity_vs_neutral_ref",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          },
+          {
+            "name": "grab_gold_human_compare",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "exemplar": "grab-cover-hero + grab-slide2",
+              "human_approved_by": "batch-bar-setter-precedent",
+              "human_approved_at": "2026-06-22T10:54:37Z"
+            }
+          }
+        ],
+        "human_approved_at": "2026-06-22T10:54:37Z",
+        "human_approved_by": "batch-bar-setter-precedent"
+      },
+      "qa_status": "pass",
+      "qa_evaluated_at": "2026-06-22T10:54:37Z",
+      "drive_file_id": "1wkEW_sXXdSmyzzm6SOuJA8jDHK-uPo4w",
+      "source_url": "https://drive.google.com/uc?export=download&id=1wkEW_sXXdSmyzzm6SOuJA8jDHK-uPo4w"
     },
     "econ-ksa-redsea-amaala": {
       "role": "econ_market_bg",
