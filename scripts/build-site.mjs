@@ -247,8 +247,8 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   cleanUrls: true,
   trailingSlash: false,
   redirects: [
-    { source: '/uber-india', destination: '/uber-india-derivative', permanent: true },
-    { source: '/uber-india/:path*', destination: '/uber-india-derivative/:path*', permanent: true },
+    { source: '/uber-india-derivative', destination: '/uber-india', permanent: true },
+    { source: '/uber-india-derivative/:path*', destination: '/uber-india/:path*', permanent: true },
   ],
   installCommand: 'npm install --omit=dev',
   // LB-258: Edge middleware deploys globally by default; a single broken region kills the whole

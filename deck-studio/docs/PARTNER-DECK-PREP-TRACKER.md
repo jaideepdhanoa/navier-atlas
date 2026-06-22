@@ -35,7 +35,7 @@ Central tracker to prevent duplicate/throwaway deck work. Status is deck-prep on
 - `saudi-pif` → deck `saudi-pif` — deck-prep-complete / grok-create-or-bind-needed — multi-partner-deck-grok-handoff-wave10a-2026-06-21
 - `singapore-mpa` → deck `singapore-mpa` — deck-prep-complete / grok-create-or-bind-needed — multi-partner-deck-grok-handoff-wave10a-2026-06-21
 - `uber` → deck `uber-mena` — deck-prep-complete / existing Deck Studio package — existing-main
-- `uber-india-derivative` → deck `uber-india` — deck-prep-complete / existing Deck Studio package — existing-main
+- `uber-india` → deck `uber-india` — deck-prep-complete / existing Deck Studio package — existing-main
 - `yango` → deck `yango` — deck-prep-complete / existing Deck Studio package — existing-main
 - `yassir` → deck `yassir` — deck-prep-complete / existing Deck Studio package — existing-main
 
