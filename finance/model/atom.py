@@ -134,8 +134,8 @@ def compute_atom(corridor, vessel_key="pioneer_ii"):
     capex = L3.get("capex_usd_override") if L3.get("capex_usd_override") is not None else vget(v, "capex_usd")
     dep_years = vget(v, "depreciation_years")
     depreciation = capex / dep_years
-    # insurance (H&M+P&I) scales with capex; charging/berth is ADDITIONAL to marina+energy.
-    # platform/commission fees are deliberately excluded (Jaideep 2026-06-19).
+    # Vessel insurance (H&M+P&I) scales with regional CAPEX; fast-charge berth is separate
+    # from per-kWh energy and berth/port admin. Platform/commission fees excluded (Jaideep 2026-06-19).
     insurance = round(capex * vget(ops, "insurance_pct_of_capex"), 0)
     charging_berth = L3.get("charging_berth_annual_usd")
     if charging_berth is None: charging_berth = vget(ops, "charging_berth_annual_usd")

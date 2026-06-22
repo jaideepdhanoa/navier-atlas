@@ -240,15 +240,24 @@ content=[
  ("    one-way time   = distance(nm) \u00f7 cruise speed(kt)",MONO,None),
  ("    operating days = 365 \u00d7 mechanical uptime \u00d7 weather factor",MONO,None),
  ("    Navier fare    = comparable premium transfer fare \u00d7 discount (=1.0, market parity)",MONO,None),
- ("EBITDA  = REVENUE \u2212 OPEX   (energy + captain + marina/overhead + maintenance)",MONO,f_light),
+ ("EBITDA  = REVENUE \u2212 OPEX",MONO,f_light),
+ ("    OPEX = energy + crew + berth/port admin + maintenance + vessel insurance + fast-charge berth",MONO,None),
  ("PAYBACK = vessel CAPEX \u00f7 EBITDA",MONO,f_light),
+ ("",None,None),
+ ("OPEX lines (per boat, per year \u2014 no double-counting)",BOLD,None),
+ ("Energy \u2014 variable propulsion cost: kWh on revenue sailings \u00d7 local $/kWh (Country opex tab). Excludes utility demand charges.",None,None),
+ ("Crew \u2014 fully-loaded captain + relief: local captain wage \u00d7 crew FTE factor (Country opex + Assumptions).",None,None),
+ ("Berth & port admin \u2014 fixed annual berth, port fees, and local marine admin (Country opex tab). Excludes vessel H&M+P&I and fast-charge infrastructure.",None,None),
+ ("Maintenance \u2014 vessel annual maintenance reserve (Assumptions tab).",None,None),
+ ("Vessel insurance \u2014 commercial H&M + P&I as % of regional CAPEX (Assumptions % \u00d7 Country opex CAPEX column).",None,None),
+ ("Fast-charge berth \u2014 dedicated fast-charge berth slot + utility demand charges (Assumptions default; overridable per market). Separate from per-kWh energy and berth/port admin.",None,None),
  ("",None,None),
  ("From demand pool to fleet & market size",BOLD,None),
  ("Navier serviceable rides/yr = corridor demand pool \u00d7 capture rate (10% on contested corridors; ~90% on captive sole-operator transfer legs \u2014 see the per-row Capture % column)",MONO,None),
  ("Vessels supported = FLOOR(Navier rides/yr \u00f7 pax/yr per boat);  Market rev = vessels \u00d7 rev/boat. The 'Market sizing' tab rolls these up into the SOM \u2192 SAM \u2192 TAM ladder.",None,None),
  ("",None,None),
  ("The scenario toggle (what we flex)",BOLD,None),
- ("'Corridor economics' has a SCENARIO cell = THIN / MID / FULL. It flexes two levers: load factor (how full the boat is) and revenue-leg factor (how many legs earn full fare). MID is the headline. Change that one cell and the whole model recomputes. The right-hand Payback THIN/MID/FULL columns always show all three at once.",None,None),
+ ("'Corridor economics' has a SCENARIO cell = THIN / MID / FULL. It flexes load factor (occupancy) and revenue-leg factor (share of legs that earn full fare). Max trips/day is fixed across all three bands (see Assumptions). MID is the headline. Change SCENARIO and the whole model recomputes. Payback THIN/MID/FULL columns always show all three at once.",None,None),
  ("",None,None),
  ("Colour & provenance legend",BOLD,None),
  ("   Yellow = INPUTS you can change (fare, distance, demand, weather).",None,f_input),
@@ -293,8 +302,6 @@ r=param(r,"Turnaround / charge per leg",turn_min,"min",tier(OPS["turnaround_char
 r=param(r,"Boarding / scheduling dwell per leg",dwell_min,"min",tier(OPS["boarding_dwell_min"]),conf(OPS["boarding_dwell_min"]),src(OPS["boarding_dwell_min"]),NUM,"dwell_min")
 r=param(r,"Max revenue sailings/day (cap)",max_tpd,"legs/day",tier(OPS["max_trips_per_day"]),conf(OPS["max_trips_per_day"]),src(OPS["max_trips_per_day"]),NUM,"max_tpd")
 r=param(r,"Crew FTE factor (x captain wage)",crew_factor,"x",tier(OPS["crew_fte_factor"]),conf(OPS["crew_fte_factor"]),src(OPS["crew_fte_factor"]),NUM2,"crew_factor")
-r=param(r,"Insurance (% of capex/yr)",ins_pct,"frac",tier(OPS["insurance_pct_of_capex"]),conf(OPS["insurance_pct_of_capex"]),src(OPS["insurance_pct_of_capex"]),PCT,"ins_pct")
-r=param(r,"Charging & berth (additional to marina+energy)",charge_berth,"USD/yr",tier(OPS["charging_berth_annual_usd"]),conf(OPS["charging_berth_annual_usd"]),src(OPS["charging_berth_annual_usd"]),USD,"charge_berth")
 r=param(r,"Mechanical uptime",mech_uptime,"frac",tier(OPS["monthly_operational_capacity"]),conf(OPS["monthly_operational_capacity"]),src(OPS["monthly_operational_capacity"]),PCT,"mech_uptime")
 r=param(r,"Navier capture rate",capture,"frac",tier(OPS["navier_capture_rate"]),conf(OPS["navier_capture_rate"]),"Navier wins ~10% of a CONTESTED corridor demand pool (locked). Captive sole-operator transfer legs (captive:true / luxury_charter / hospitality archetypes) carry the captive rate instead \u2014 see per-row Capture %.",PCT,"capture")
 cap_cc=OPS.get("captive_capture_rate")
@@ -303,8 +310,14 @@ if OPS.get("capture_override_enabled") and cap_cc is not None:
 r=param(r,"Discount factor (vs comparable fare)",discount,"frac","T1","high","Market parity \u2014 better product, not cheaper (locked).",NUM2,"discount")
 r=param(r,"Diesel CO\u2082 per gallon",diesel_co2pg,"kg/gal",tier(CAR["diesel_kg_co2_per_gal"]),conf(CAR["diesel_kg_co2_per_gal"]),src(CAR["diesel_kg_co2_per_gal"]),NUM2,"diesel_co2pg")
 r+=1
+sec(r,"OPEX defaults  (global fallbacks \u2014 localized energy, crew, berth admin on Country opex tab)"); r+=1; hrow(r); r+=1
+r=param(r,"Vessel insurance \u2014 H&M + P&I (% of CAPEX/yr)",ins_pct,"frac",tier(OPS["insurance_pct_of_capex"]),conf(OPS["insurance_pct_of_capex"]),
+      src(OPS["insurance_pct_of_capex"])+". Multiplied by regional CAPEX (Country opex col G). Not included in berth/port admin.",PCT,"ins_pct")
+r=param(r,"Fast-charge berth & demand charges (global default)",charge_berth,"USD/yr",tier(OPS["charging_berth_annual_usd"]),conf(OPS["charging_berth_annual_usd"]),
+      src(OPS["charging_berth_annual_usd"])+". Dedicated charge berth + utility demand charges. Excludes per-kWh propulsion energy and berth/port admin. L3-overridable per market.",USD,"charge_berth")
+r+=1
 # scenario bands
-sec(r,"Utilization scenarios  (the two levers we flex)"); r+=1
+sec(r,"Utilization scenarios  (load factor + revenue-leg factor)"); r+=1
 scen_hdr_r=r
 for i,h in enumerate(["Scenario","Load factor","Rev-leg factor","","","Note"]): sc(ws1,f"{get_column_letter(i+1)}{r}",h,font=HDR,fill=f_steel,align=ctr,bd=True)
 r+=1
@@ -344,8 +357,8 @@ def _capex_for_country(ct):
     return 900000 if (ct in _EU_COUNTRIES or ct in _US_COUNTRIES) else 600000
 ws2=wb.create_sheet("Country opex"); ws2.sheet_view.showGridLines=False
 for i,wd in enumerate([18,16,14,14,14,11,14,60],1): ws2.column_dimensions[get_column_letter(i)].width=wd
-sc(ws2,"A1","Country opex \u2014 L3 localized layer (VLOOKUP target for the engine)",font=H2,fill=f_navy); ws2.merge_cells("A1:H1")
-ch=["Country","Captain $/yr","Energy $/kWh","Grid CO\u2082 kg/kWh","Marina $/yr","Cost index","CAPEX $/vessel","Source notes (captain | energy | marina)"]
+sc(ws2,"A1","Country opex \u2014 localized inputs (crew, energy, berth admin, CAPEX)",font=H2,fill=f_navy); ws2.merge_cells("A1:H1")
+ch=["Country","Captain $/yr","Energy $/kWh","Grid CO\u2082 kg/kWh","Berth & port admin $/yr","Cost index","CAPEX $/vessel","Source notes (crew | energy | berth admin)"]
 hr2=3
 for i,h in enumerate(ch): sc(ws2,f"{get_column_letter(i+1)}{hr2}",h,font=HDR,fill=f_steel,align=ctrw,bd=True)
 cr=hr2+1; country_first=cr
@@ -364,7 +377,7 @@ for ct in used_countries:
 country_last=cr-1
 copex=f"'Country opex'!$A${country_first}:$G${country_last}"
 addname("country_opex",copex)
-# column index map for VLOOKUP: A=1 country,2 captain,3 energy,4 grid,5 marina,6 costidx,7 capex
+# column index map for VLOOKUP: A=1 country,2 captain,3 energy,4 grid,5 berth/port admin,6 costidx,7 capex
 
 # ------------------------------------------------------------ TAB 3 Corridor economics (engine)
 ws=wb.create_sheet("Corridor economics"); ws.sheet_view.showGridLines=False
@@ -410,10 +423,10 @@ cols = _cols_head + [
  ("Revenue/yr","",11,USD,"f"),
  ("Energy/yr","",10,USD,"f"),
  ("Crew/yr","",10,USD,"f"),
- ("Marina/yr","",10,USD,"f"),
+ ("Berth & port admin/yr","",12,USD,"f"),
  ("Maint/yr","",9,USD,"f"),
- ("Insurance/yr","",10,USD,"f"),
- ("Charge+berth/yr","",11,USD,"f"),
+ ("Vessel insurance/yr","",12,USD,"f"),
+ ("Fast-charge berth/yr","",12,USD,"f"),
  ("OPEX/yr","",11,USD,"f"),
  ("Deprec/yr","",10,USD,"f"),
  ("EBITDA/yr","",11,USD,"f"),
@@ -475,8 +488,8 @@ for idx,rec in enumerate(rows):
     od=f"{CL('Op days/yr')}{R}"; tpy=f"{CL('Trips/yr')}{R}"; lf=f"{CL('Load factor')}{R}"
     ppt=f"{CL('Pax/trip')}{R}"; ppy=f"{CL('Pax/yr')}{R}"; nf=f"{CL('Navier fare $')}{R}"
     rev=f"{CL('Revenue/yr')}{R}"; en=f"{CL('Energy/yr')}{R}"; cap=f"{CL('Crew/yr')}{R}"
-    mar=f"{CL('Marina/yr')}{R}"; mnt=f"{CL('Maint/yr')}{R}"; opx=f"{CL('OPEX/yr')}{R}"
-    insr=f"{CL('Insurance/yr')}{R}"; chg=f"{CL('Charge+berth/yr')}{R}"
+    mar=f"{CL('Berth & port admin/yr')}{R}"; mnt=f"{CL('Maint/yr')}{R}"; opx=f"{CL('OPEX/yr')}{R}"
+    insr=f"{CL('Vessel insurance/yr')}{R}"; chg=f"{CL('Fast-charge berth/yr')}{R}"
     dep=f"{CL('Deprec/yr')}{R}"; ebt=f"{CL('EBITDA/yr')}{R}"; mgn=f"{CL('Margin')}{R}"
     _co2_lbl = "CO\u2082 saved t/yr"
     pbk=f"{CL('Payback yr (sel)')}{R}"; co2=f"{CL(_co2_lbl)}{R}"
