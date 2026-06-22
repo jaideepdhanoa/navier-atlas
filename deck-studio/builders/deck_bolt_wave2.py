@@ -148,14 +148,7 @@ NARRATIVE_TEXT: dict[tuple[str, str], str] = {
     ("g3eec5122801_0_0", "g3eec5122801_0_2"): "THE REGION",
     ("g3eec5122801_0_0", "g3eec5122801_0_4"): "Europe & the Gulf: water-bound mobility markets",
     ("g3eec5122801_0_0", "g3eec5122801_0_14"): "Bolt already owns the demand from the Aegean to the Gulf; the water leg books door-to-door beside every Bolt car.",
-    ("g3eec5122801_0_0", "g3eec5122801_0_6"): "6",
-    ("g3eec5122801_0_0", "g3eec5122801_0_7"): "water-bound clusters in Bolt's current proposal scope",
-    ("g3eec5122801_0_0", "g3eec5122801_0_10"): "$996M",
-    ("g3eec5122801_0_0", "g3eec5122801_0_11"): "premium sea-transfer spend on Bolt corridors today, per year",
-    ("g3eec5122801_0_0", "g3eec5122801_0_15"): "1,000+",
-    ("g3eec5122801_0_0", "g3eec5122801_0_16"): "vessels at full network maturity across mapped corridors",
-    ("g3eec5122801_0_0", "g3eec5122801_0_18"): "$8.8B",
-    ("g3eec5122801_0_0", "g3eec5122801_0_19"): "marine-transfer TAM (induced market) · model band $4.5–15.8B, mid $8.8B",
+    # Slide 3 KPI ladder — values filled by slide3_kpi_text_map() from growth cascade
     # Slide 4 Greece example market
     ("g3eec5122801_0_106", "g3eec5122801_0_110"): "Greece — the recommended beachhead",
     ("g3eec5122801_0_106", "g3eec5122801_0_111"): "Bolt's deepest island demand and longest season — replacing slow diesel ferries.",
@@ -226,6 +219,7 @@ IMAGE_BINDINGS: list[dict] = [
     {"registry": "econ-ksa-jeddah", "slide_oid": "g3eec5122801_0_703", "target_oid": "g3eec5122801_0_702", "method": "CENTER_CROP"},
     {"registry": "econ-greece-mykonos-paros", "slide_oid": "g3eec5122801_0_716", "target_oid": "g3eec5122801_0_715", "method": "CENTER_CROP"},
     {"registry": "econ-croatia-dubrovnik", "slide_oid": "g3eec5122801_0_729", "target_oid": "g3eec5122801_0_728", "method": "CENTER_CROP"},
+    {"registry": "econ-ksa-redsea-amaala", "slide_oid": "g3eec5122801_0_968", "target_oid": "navierBg_s39", "method": "CENTER_CROP"},
 ]
 
 
@@ -287,6 +281,74 @@ HOLD_SUMMARY = "Economics pending corridor validation"
 HOLD_ROUTE = "Representative corridor pending published Bolt economics"
 HOLD_HEADER = "WHAT ONE BOAT EARNS · HOLD"
 HOLD_TITLE = "Unit economics: pending validation"
+
+SLIDE3_OID = "g3eec5122801_0_0"
+SLIDE3_KPI_FIELDS: list[tuple[str, str]] = [
+    ("g3eec5122801_0_6", "clusters_value"),
+    ("g3eec5122801_0_7", "clusters_caption"),
+    ("g3eec5122801_0_10", "spend_value"),
+    ("g3eec5122801_0_11", "spend_caption"),
+    ("g3eec5122801_0_15", "fleet_value"),
+    ("g3eec5122801_0_16", "fleet_caption"),
+    ("g3eec5122801_0_18", "tam_value"),
+    ("g3eec5122801_0_19", "tam_caption"),
+]
+
+
+def slide3_kpi_text_map() -> dict[str, str]:
+    """Market-overview KPI ladder (slide 3) from grounded growth cascade."""
+    frontend = load_json(ROOT.parent / "finance/recal/growth-frontend-bolt.json")
+    growth = load_json(ROOT.parent / "finance/recal/growth-bolt.json")
+    content = load_json(ROOT / "decks/bolt/content-source.json")
+    grounded = growth["grounded"]
+    tam_rung = next(
+        r for r in frontend["revenue_potential"]["rungs"] if r["id"] == "tam_transfer"
+    )
+    scale = next(h for h in frontend["phase_economics"]["horizons"] if h["id"] == "scale")
+    clusters = len(content["partner_json_extract"]["canonical_market_scope"])
+    m_raw = grounded["M_today_transport_spend_yr"]
+    if m_raw >= 1_000_000_000:
+        m_today = f"${m_raw / 1_000_000_000:.2f}B".replace(".00B", "B")
+    else:
+        m_today = f"${round(m_raw / 1_000_000)}M"
+    fleet_est = scale["fleet_boats_est"]
+    fleet_rounded = (fleet_est // 100) * 100
+    fleet_value = f"{fleet_rounded:,}+"
+    greenfield = frontend["_provenance"]["greenfield_corridors"]
+    tam_mid = tam_rung["display"]["mid"]
+    tam_low = tam_rung["display"]["low"].replace("B", "")
+    tam_high = tam_rung["display"]["high"].replace("$", "").replace("B", "")
+    return {
+        "clusters_value": str(clusters),
+        "clusters_caption": "water-bound clusters in Bolt's current proposal scope",
+        "spend_value": m_today,
+        "spend_caption": "premium sea-transfer spend on sourced Bolt corridors, per year",
+        "fleet_value": fleet_value,
+        "fleet_caption": f"vessels at full network scale across {greenfield} mapped corridors",
+        "tam_value": tam_mid,
+        "tam_caption": (
+            f"marine-transfer TAM (induced market) · band {tam_low}–{tam_high}B, mid {tam_mid}"
+        ),
+    }
+
+
+def build_slide3_kpi_ops(golden: dict) -> list[dict]:
+    kpi = slide3_kpi_text_map()
+    ops: list[dict] = []
+    source = "finance/recal/growth-bolt.json + growth-frontend-bolt.json slide3_kpi"
+    for oid, key in SLIDE3_KPI_FIELDS:
+        el = element_or_fallback(golden, oid)
+        ops.extend(
+            text_replace_ops(
+                SLIDE3_OID,
+                oid,
+                kpi[key],
+                el,
+                op_prefix=f"bolt-slide3-kpi-{oid}",
+                source_pointer=source,
+            )
+        )
+    return ops
 
 
 def build_econ_slide_ops(
@@ -533,6 +595,8 @@ def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> di
     binding = load_json(ROOT / "decks/bolt/economics-binding.json")
     ops: list[dict] = []
 
+    ops.extend(build_slide3_kpi_ops(golden))
+
     for (slide_oid, target_oid), text in NARRATIVE_TEXT.items():
         el = element_or_fallback(golden, target_oid)
         ops.extend(
@@ -638,6 +702,46 @@ def run_wave2_qa(presentation_id: str, plan: dict) -> dict:
     return receipt
 
 
+def cmd_apply_slide3_kpis() -> int:
+    cfg = load_json(ROOT / "decks/bolt/deck.config.json")
+    presentation_id = cfg["deck_id"]
+    golden = load_json(ROOT / "decks/grab/golden-template-map.json")
+    ops = build_slide3_kpi_ops(golden)
+    plan = {
+        "deck_key": "bolt",
+        "presentation_id": presentation_id,
+        "operations": ops,
+    }
+    applied = apply_plan(plan, chunk_size=40)
+    kpi = slide3_kpi_text_map()
+    binding = load_json(ROOT / "decks/bolt/economics-binding.json")
+    slide3 = binding.setdefault("slide3_kpi", {})
+    slide3["applied_at"] = utc_now()
+    slide3["source"] = "finance/recal/growth-bolt.json + growth-frontend-bolt.json"
+    for item in slide3.get("kpis", []):
+        field_map = {
+            "g3eec5122801_0_6": ("sample_value", "clusters_value"),
+            "g3eec5122801_0_7": ("sample_caption", "clusters_caption"),
+            "g3eec5122801_0_10": ("sample_value", "spend_value"),
+            "g3eec5122801_0_11": ("sample_caption", "spend_caption"),
+            "g3eec5122801_0_15": ("sample_value", "fleet_value"),
+            "g3eec5122801_0_16": ("sample_caption", "fleet_caption"),
+            "g3eec5122801_0_18": ("sample_value", "tam_value"),
+            "g3eec5122801_0_19": ("sample_caption", "tam_caption"),
+        }
+        vid = item.get("value_object_id")
+        cid = item.get("caption_object_id")
+        if vid in field_map:
+            attr, k = field_map[vid]
+            item[attr] = kpi[k]
+        if cid in field_map:
+            attr, k = field_map[cid]
+            item[attr] = kpi[k]
+    write_json(ROOT / "decks/bolt/economics-binding.json", binding)
+    print(json.dumps({"applied_ops": applied, "slide3_kpi": kpi}, indent=2))
+    return 0
+
+
 def cmd_run_all() -> int:
     cfg = load_json(ROOT / "decks/bolt/deck.config.json")
     presentation_id = cfg["deck_id"]
@@ -680,7 +784,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Bolt wave-2 full deck builder")
     ap.add_argument(
         "command",
-        choices=["run-all", "register-assets", "build-editplan", "apply", "qa"],
+        choices=["run-all", "register-assets", "build-editplan", "apply", "qa", "apply-slide3-kpis"],
     )
     ap.add_argument("--presentation-id")
     args = ap.parse_args()
@@ -710,6 +814,8 @@ def main() -> int:
         receipt = run_wave2_qa(plan["presentation_id"], plan)
         print(json.dumps(receipt, indent=2))
         return 0 if receipt["status"] == "pass" else 1
+    if args.command == "apply-slide3-kpis":
+        return cmd_apply_slide3_kpis()
     if args.command == "run-all":
         return cmd_run_all()
     return 1

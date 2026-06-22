@@ -385,6 +385,54 @@ def deprecate_paste_plates() -> None:
     write_json(REGISTRY_PATH, registry)
 
 
+def purge_paste_composite_files() -> list[str]:
+    """Delete wave-2 *-composited.png paste files and strip deprecated paste URLs from registry."""
+    registry = load_json(REGISTRY_PATH)
+    assets = registry.setdefault("assets", {})
+    now = utc_now()
+    deleted: list[str] = []
+    seen_paths: set[str] = set()
+    for key in WAVE2_PASTE_KEYS:
+        asset = assets.get(key, {})
+        if asset.get("tier") == "A" or asset.get("qa_status") == "pass":
+            # Tier A supersession is live — only purge legacy composited paths, never tier-a files.
+            continue
+        local_path = asset.get("local_path")
+        if local_path and "composited" in local_path and local_path not in seen_paths:
+            seen_paths.add(local_path)
+            full = ROOT / local_path
+            if full.is_file():
+                full.unlink()
+                deleted.append(str(full.relative_to(ROOT)))
+        if key not in assets:
+            continue
+        if asset.get("status") != "deprecated_paste_composite":
+            continue
+        assets[key]["status"] = "deleted_paste_composite"
+        assets[key]["deleted_at"] = now
+        if "composited" in (asset.get("local_path") or ""):
+            assets[key].pop("local_path", None)
+        assets[key].pop("drive_file_id", None)
+        assets[key].pop("source_url", None)
+        assets[key]["notes"] = (
+            (assets[key].get("notes", "") + " | paste file purged from disk").strip(" |")
+        )
+    # Also sweep any remaining composited files under bolt wave-2 backgrounds.
+    for pattern in (
+        "assets/backgrounds/decks/bolt/*-composited.png",
+        "assets/backgrounds/markets/**/*-composited.png",
+    ):
+        for full in ROOT.glob(pattern):
+            rel = str(full.relative_to(ROOT))
+            if rel in seen_paths:
+                continue
+            seen_paths.add(rel)
+            full.unlink()
+            deleted.append(rel)
+    write_json(REGISTRY_PATH, registry)
+    return deleted
+
+
 def lock_deck_grade(*, reference_plate: str, seed_family: str) -> GradeLock:
     lock = GradeLock(
         locked=True,
@@ -495,6 +543,7 @@ MARKET_SCENES: dict[str, str] = {
     "jeddah-ksa": "Jeddah Corniche and Red Sea calm water",
     "mykonos-greece": "Cycladic islands — Mykonos windmills and Paros shoreline",
     "dubrovnik-croatia": "Dubrovnik old-town stone walls and Adriatic blue water",
+    "red-sea-ksa": "the Red Sea coast — desert mountains and calm turquoise water near AMAALA",
     "europe-network": "European coastline — Aegean, Adriatic and Riviera island silhouettes",
 }
 
@@ -659,6 +708,24 @@ REMAINING_PLATES: list[dict] = [
         "seed": "bolt-wave21-econ-croatia-dubrovnik",
     },
 ]
+
+REDSEA_AMAALA_PLATE: dict = {
+    "key": "econ-ksa-redsea-amaala",
+    "role": "econ_market_bg",
+    "scope": "market",
+    "local_path": "assets/backgrounds/markets/ksa/ksa-redsea-amaala-econ-tier-a-v1.png",
+    "market_slug": "red-sea-ksa",
+    "prompt": lambda: prompt_econ(MARKET_SCENES["red-sea-ksa"]),
+    "seed": "bolt-wave21-econ-ksa-redsea-amaala",
+    "used_by": [
+        {
+            "deck": "bolt",
+            "slide_index": 23,
+            "slide_object_id": "g3eec5122801_0_968",
+            "target_object_id": "navierBg_s39",
+        }
+    ],
+}
 
 
 def generate_and_save_plate(spec: dict) -> dict:
@@ -859,6 +926,7 @@ IMAGE_OP_BINDINGS = {
     "econ-ksa-jeddah": ("g3eec5122801_0_703", "g3eec5122801_0_702", "CENTER_CROP"),
     "econ-greece-mykonos-paros": ("g3eec5122801_0_716", "g3eec5122801_0_715", "CENTER_CROP"),
     "econ-croatia-dubrovnik": ("g3eec5122801_0_729", "g3eec5122801_0_728", "CENTER_CROP"),
+    "econ-ksa-redsea-amaala": ("g3eec5122801_0_968", "navierBg_s39", "CENTER_CROP"),
 }
 
 
@@ -897,8 +965,28 @@ def cmd_reqa_remaining() -> int:
     return 0
 
 
+def cmd_generate_redsea_amaala() -> int:
+    print("generating econ-ksa-redsea-amaala...", flush=True)
+    result = generate_and_save_plate(REDSEA_AMAALA_PLATE)
+    print(json.dumps(result, indent=2))
+    return 1 if result.get("qa_overall") == "fail" or result.get("error") else 0
+
+
+def cmd_approve_redsea_amaala() -> int:
+    registry = load_json(REGISTRY_PATH)
+    asset = registry.get("assets", {}).get("econ-ksa-redsea-amaala", {})
+    receipt = asset.get("qa_receipt") or asset.get("generation", {}).get("qa_receipt", {})
+    if receipt.get("blocking_failures"):
+        print(json.dumps({"error": "auto_fail", "failures": receipt["blocking_failures"]}, indent=2))
+        return 1
+    approve_asset_qa("econ-ksa-redsea-amaala", approver="bar-setter-precedent")
+    print("approved econ-ksa-redsea-amaala")
+    return 0
+
+
 def cmd_regenerate_keys(keys: list[str]) -> int:
     by_key = {s["key"]: s for s in REMAINING_PLATES}
+    by_key["econ-ksa-redsea-amaala"] = REDSEA_AMAALA_PLATE
     results = []
     for key in keys:
         spec = by_key.get(key)
@@ -979,7 +1067,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Bolt wave-2.1 image pipeline")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("deprecate-paste")
+    sub.add_parser("purge-paste-composites")
     sub.add_parser("tag-drift-controls")
+    sub.add_parser("generate-redsea-amaala")
+    sub.add_parser("approve-redsea-amaala")
     sub.add_parser("generate-cover-greece")
     sub.add_parser("approve-cover")
     sub.add_parser("approve-slide2")
@@ -999,6 +1090,14 @@ def main() -> int:
         deprecate_paste_plates()
         print("deprecated", len(WAVE2_PASTE_KEYS), "paste plates")
         return 0
+    if args.cmd == "purge-paste-composites":
+        deleted = purge_paste_composite_files()
+        print(json.dumps({"deleted_files": deleted, "count": len(deleted)}, indent=2))
+        return 0
+    if args.cmd == "generate-redsea-amaala":
+        return cmd_generate_redsea_amaala()
+    if args.cmd == "approve-redsea-amaala":
+        return cmd_approve_redsea_amaala()
     if args.cmd == "tag-drift-controls":
         tag_drift_controls()
         print("tagged drift controls")
