@@ -10,10 +10,13 @@ step() { echo ""; echo "=== $* ==="; }
 step "1/3 Seal Minor Hotels (binds, POIs, crosswalk, country-reference, QA G1–G8)"
 python3 "$SCRIPTS/seal_minor_hotels.py" --apply
 
-step "2/3 Build scoped captive corridors view"
+step "2/4 Ground Palm Jumeirah crescent BPs (gazetteer snap → solid render)"
+python3 "$SCRIPTS/ground_palm_crescent.py" --apply
+
+step "3/4 Build scoped captive corridors view"
 python3 "$SCRIPTS/build_corridors_minor_hotels.py"
 
-step "3/3 Validate partner JSON"
+step "4/4 Validate partner JSON"
 python3 "$ROOT/scripts/validate_partner_proposals.py" 2>&1 | tail -8
 
 echo ""

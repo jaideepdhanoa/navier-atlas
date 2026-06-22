@@ -163,7 +163,7 @@
    "bali": 630000,
    "palm-jumeirah": 3750000
   },
-  "cascade_at": "2026-06-22T17:39:59Z",
+  "cascade_at": "2026-06-22T17:49:20Z",
   "agg": "finance/recal/agg-minor-hotels.json",
   "growth": "finance/recal/growth-minor-hotels.json",
   "sheet": "finance/_refresh_minor-hotels.xlsx",
@@ -435,16 +435,17 @@
    "label": "Palm Jumeirah / Dubai",
    "region": "MENA",
    "anchor_cities": [
+    "dubai-uae__palm-jumeirah-crescent-inner",
     "dubai-uae"
    ],
    "category": "hospitality_developer",
    "_tier": "Tier 1",
-   "status": "needs_bp_route_grounding",
-   "economics_status": "grounded_floor_draft",
+   "status": "economics_ready",
+   "economics_status": "bound",
    "grounded_floor_usd_yr_mid": 3752209,
    "grounded_floor_display": "$3.75M",
    "property_count": 3,
-   "summary": "Three Palm properties \u2014 Anantara The Palm, NH Collection Dubai The Palm, Avani+ Palm View \u2014 with a $3.75M grounded floor on UAE premium fares at downweighted 0.60 discretionary capture (Palm is road/monorail-connected, not transfer-captive). Palm submarket needs BP grounding before cascade; parent dubai-uae carries 168 routes.",
+   "summary": "Three Palm properties \u2014 Anantara The Palm, NH Collection Dubai The Palm, Avani+ Palm View \u2014 with a $3.75M grounded floor on UAE premium fares at downweighted 0.60 discretionary capture (Palm is road/monorail-connected, not transfer-captive). Palm crescent BPs grounded \u2014 3 sealed captive routes on gazetteer jetty geometry; parent dubai-uae carries 168 routes.",
    "hero": {
     "title": "Palm Jumeirah \u2014 discretionary leisure-marine, premium-priced",
     "subtitle": "Three crescent properties. UAE premium fares. Ground the geometry, own the experience.",
@@ -455,7 +456,7 @@
     "their_pressure": "Marina cruises and DXB boat transfers are premium-priced but diesel, outsourced, and disconnected from the resort brand.",
     "where_navier_fits": "A discretionary leisure-marine tier (Class A gateway + Class C marina excursions) at UAE premium fares \u2014 honest 0.60 capture, not island-captive math."
    },
-   "why_now": "The $3.75M floor is drafted on UAE premium marine fares, but Palm crescent geometry is brief-only (0 routes / 0 BPs) \u2014 ground the crescent like Algarve, then cascade. Parent dubai-uae routes exist for reference hops.",
+   "why_now": "Palm crescent geometry is now grounded on gazetteer jetty BPs \u2014 the $3.75M floor cascades on 3 sealed Pioneer II routes, not brief-only stubs.",
    "why_navier_now": {
     "step_change": "A silent foiling arrival across the Palm crescent \u2014 the brochure moment diesel can't match on a connected island.",
     "no_new_infrastructure": "Dubai Marina, Dubai Harbour, and Palm West marina already serve the crescent.",
@@ -473,16 +474,17 @@
      "to": "Anantara The Palm Dubai Resort",
      "today": "A diesel yacht transfer or road/monorail \u2014 outsourced, not branded, fume-heavy if by boat.",
      "with_navier": "A premium foiling boat-transfer arrival to the east crescent \u2014 silent, branded, on the guest's schedule.",
-     "distance_nm": 6,
+     "distance_nm": 3.4,
      "platform": "Pioneer II",
      "archetype": "tourism",
      "_route_class": "A",
-     "from_node_id": "dubai-uae",
-     "to_node_id": "dubai-uae",
-     "route_id": null,
-     "render": "aspirational",
-     "_link_status": "unbound-post-seal",
-     "economics_status": "grounded_floor_draft"
+     "from_node_id": "bp-56d5f5bd8d",
+     "to_node_id": "bp-409ae0c3e7",
+     "route_id": "rn-b0d5e6498ee4",
+     "render": "solid",
+     "_link_status": "linked-grok-scoped",
+     "economics_status": "bound",
+     "_link_source": "grok-minor-hotels/ground_palm_crescent"
     },
     {
      "from": "Dubai Harbour Marina",
@@ -493,14 +495,13 @@
      "platform": "Pioneer II",
      "archetype": "tourism",
      "_route_class": "C",
-     "from_node_id": "dubai-uae",
-     "to_node_id": "dubai-uae",
+     "from_node_id": "bp-56d5f5bd8d",
+     "to_node_id": "bp-8294b693cc",
      "route_id": "rn-42aa1791bb60",
-     "render": "aspirational",
+     "render": "solid",
      "range_status": "now",
      "_link_status": "linked-grok-scoped",
-     "_link_source": "grok-minor-hotels/seal_minor_hotels",
-     "_note": "Palm submarket BPs not grounded \u2014 render aspirational until crescent seal",
+     "_link_source": "grok-minor-hotels/ground_palm_crescent",
      "economics_status": "bound",
      "_economics_source": "economics_by_route_id.json"
     },
@@ -513,14 +514,13 @@
      "platform": "Pioneer II",
      "archetype": "tourism",
      "_route_class": "C",
-     "from_node_id": "dubai-uae",
-     "to_node_id": "dubai-uae",
+     "from_node_id": "bp-8294b693cc",
+     "to_node_id": "bp-0157d8dd51",
      "route_id": "rn-b49c885ed913",
-     "render": "aspirational",
+     "render": "solid",
      "range_status": "now",
      "_link_status": "linked-grok-scoped",
-     "_link_source": "grok-minor-hotels/seal_minor_hotels",
-     "_note": "Greenfield premium per-seat; Palm render aspirational until BP grounding",
+     "_link_source": "grok-minor-hotels/ground_palm_crescent",
      "economics_status": "bound",
      "_economics_source": "economics_by_route_id.json"
     }
@@ -537,9 +537,9 @@
      "source": "01-MINOR-ARCHETYPE-GUIDE.md + palm economics assumptions, 2026-06-22"
     },
     {
-     "claim": "Geometry gap is flagged, not hidden.",
-     "evidence": "dubai-uae__palm-jumeirah-crescent-inner: 0 routes / 0 BPs, brief_routes_only.",
-     "source": "Atlas registry + palm economics DRAFT, 2026-06-22"
+     "claim": "Crescent geometry is grounded.",
+     "evidence": "3 sealed routes / 13 gazetteer jetty BPs on dubai-uae__palm-jumeirah-crescent-inner.",
+     "source": "grok-minor-hotels/ground_palm_crescent.py, 2026-06-22"
     },
     {
      "claim": "All legs \u226470 nm \u2192 Pioneer II.",
@@ -554,7 +554,7 @@
     },
     {
      "concern": "No Palm crescent routes in Atlas yet.",
-     "response": "Correct \u2014 floor is drafted, cascade waits on BP grounding. Parent dubai-uae routes are reference geometry only; Palm renders aspirational until seal."
+     "response": "Resolved \u2014 Palm crescent BPs snapped to gold jetty gazetteer; rn-b0d5e6498ee4, rn-42aa1791bb60, rn-b49c885ed913 sealed solid."
     },
     {
      "concern": "Three properties isn't a fleet.",
@@ -1487,7 +1487,7 @@
   },
   "phase_economics": {
    "headline": "Revenue potential by phase \u2014 conservative floor first, ecosystem prize last.",
-   "conversion_note": "Fleet & CO2 scale from the grounded unit: 14 boats = $9M transport rev = 1,667 t CO2/yr (~$671K rev/boat).",
+   "conversion_note": "Fleet & CO2 scale from the grounded unit: 14 boats = $9M transport rev = 1,518 t CO2/yr (~$671K rev/boat).",
    "horizons": [
     {
      "id": "prove",
@@ -1501,7 +1501,7 @@
      "navier_transport_rev_display": "$9M",
      "partner_platform_rev_yr": null,
      "partner_platform_rev_display": "nascent",
-     "co2_saved_t_yr": 1667,
+     "co2_saved_t_yr": 1518,
      "confidence": "grounded",
      "confidence_label": "Grounded"
     },
@@ -1520,7 +1520,7 @@
      "navier_transport_rev_yr": 46015307.0,
      "navier_transport_rev_display": "$46M",
      "partner_platform_rev_display": "building",
-     "co2_saved_t_yr": 8166,
+     "co2_saved_t_yr": 7437,
      "confidence": "med",
      "confidence_label": "Modeled"
     },
@@ -1543,7 +1543,7 @@
      "marine_mobility_tam_display": "$92M marine TAM",
      "journey_gmv_yr": 276091843.0,
      "journey_gmv_display": "$276M Journey GMV",
-     "co2_saved_t_yr": 14699,
+     "co2_saved_t_yr": 13387,
      "confidence": "med-low (banded)",
      "confidence_label": "Projected"
     }
@@ -1696,7 +1696,7 @@
    "high": 113479382.0
   },
   "_marine_tam_split_provenance": {
-   "date": "2026-06-22T17:39:58.501243Z",
+   "date": "2026-06-22T17:49:19.870112Z",
    "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
    "field_renames": {
     "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",

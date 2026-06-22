@@ -204,11 +204,21 @@ def ground_palm_bps(report: dict, apply: bool) -> int:
             "confidence": bp["confidence"],
             "minor_property": bp.get("minor_property"),
         })
-    report["palm_grounding"]["status"] = "grounded_aspirational"
-    report["palm_grounding"]["note"] = (
-        "Palm crescent BPs minted with property-origin coords; "
-        "routes render aspirational until full gazetteer snap"
-    )
+    palm_report = ROOT / "grok-routing-output/minor-hotels-palm-grounding-report.json"
+    if palm_report.exists():
+        pg = load_json(palm_report)
+        report["palm_grounding"].update({
+            "status": "solid" if pg.get("qa", {}).get("pass") else "pending_gazetteer_snap",
+            "routes_sealed": pg.get("routes_sealed_count"),
+            "property_pois_snapped": pg.get("property_pois_snapped"),
+            "qa_pass": pg.get("qa", {}).get("pass"),
+        })
+    else:
+        report["palm_grounding"]["status"] = "pending_gazetteer_snap"
+        report["palm_grounding"]["note"] = (
+            "Run ground_palm_crescent.py to snap property POIs to gold jetty BPs "
+            "and upgrade render aspirational → solid"
+        )
     return len(PALM_BPS)
 
 

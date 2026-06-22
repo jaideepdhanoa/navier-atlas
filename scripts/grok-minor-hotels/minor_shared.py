@@ -63,7 +63,7 @@ TIER1_CLUSTERS = {
         "market_key": "palm-jumeirah",
         "anchor_city": "dubai-uae__palm-jumeirah-crescent-inner",
         "economics_file": "minor-hotels-palm-jumeirah-flagship-economics-DRAFT.json",
-        "status": "needs_bp_route_grounding",
+        "status": "economics_ready",
     },
 }
 
@@ -78,9 +78,9 @@ TIER1_CORRIDOR_ROUTES: dict[str, list[str]] = {
         "gcn-3d7809869d-shared",  # Nusa Penida (C)
     ],
     "palm-jumeirah": [
-        "rn-42aa1791bb60",  # Dubai Harbour → Palm (A)
-        "rn-b49c885ed913",  # Palm West → Atlantis (B)
-        "rn-b1ba183aa886",  # Dubai Harbour → Nikki Beach (C)
+        "rn-b0d5e6498ee4",  # Dubai Harbour → Anantara (A)
+        "rn-42aa1791bb60",  # Dubai Harbour → Palm Marina West (C)
+        "rn-b49c885ed913",  # Palm Marina West → Atlantis (C)
     ],
 }
 
