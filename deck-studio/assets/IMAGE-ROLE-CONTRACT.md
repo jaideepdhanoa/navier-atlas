@@ -22,10 +22,13 @@ provenance required.** Logos are the only non-composite assets.
 | `econ_market_bg` | 7–9, 19–23 | **market** | **reusable across any deck featuring that city** | N30 composite, keyed by Atlas city ID |
 
 ### `partner_logo` (cover) — required
-Every partner deck **must** carry the partner's logo on the cover (slide 1). It is part of the
+Every named-partner deck **must** carry the partner's logo on the cover (slide 1). It is part of the
 deck-builder request, not optional polish. Source it from the partner's brand assets and bank it under
 `logos/partners/{partner}/` with provenance; register it in `ASSET-REGISTRY.json`. If it cannot be sourced
-cleanly, leave the role `needs_sourcing` (blocked) — never ship a cover without it, never guess a logo.
+cleanly, leave the role `needs_sourcing` (blocked) — never ship a named-partner cover without it, never guess a logo.
+
+Territory / Navier-only decks with no named partner (for example Caribbean, French Polynesia, Hong Kong) are the
+exception: set `partner_logo: null`, use a Navier-only cover, and do **not** invent a government/tourism badge.
 
 ### `market_overview_kpis` (slide 3) — data role, not an image
 Slide 3 carries the market-overview KPIs (e.g., market size, fleet/route counts, demand/fare anchors). It is
@@ -66,3 +69,12 @@ and an `asset_ref` pointing at an `ASSET-REGISTRY.json` `image_key`. The `deck.e
 those refs to emit `replaceImage` / `createImage` ops. Grok binds image object IDs **only** from
 Tasklet-provided exact evidence; unresolved roles stay `null` (status `needs_generation`/`needs_sourcing`),
 never guessed.
+
+
+## No-reembed / linked URL rule
+
+A checked-in file is not enough by itself for a live Slides update. Every final image must resolve to a stable
+registry URL (`source_url` / approved Drive URL) before it is inserted or replaced in Google Slides. Temporary
+Google Slides `contentUrl` / `lh*-googleusercontent` links are inspection evidence only and must never become
+canonical assets. If an image is embedded-only, regenerate or capture it into `assets/`, publish a stable URL,
+update `ASSET-REGISTRY.json`, then apply.

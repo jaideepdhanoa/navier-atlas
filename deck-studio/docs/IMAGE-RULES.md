@@ -9,7 +9,7 @@ Image generation is allowed for candidate backgrounds, moodboards, and market-sp
 3. Apply a saved mask if needed.
 4. Composite with the deterministic helper in `builders/images/n30_composite.py`.
 5. Save the output and provenance in the deck's `image-manifest.json`.
-6. Apply to the live deck using Slides API image replacement only.
+6. Apply to the live deck using Slides API image replacement only. Use a stable registry/Drive URL; never use embedded-only blobs or temporary Slides content URLs.
 
 ## N30 reference rule (canonical)
 
@@ -62,3 +62,11 @@ Map the registry `status` to the plan `image.status`:
 
 Reusable market backgrounds bind to a slide **only** on exact `atlas_city_id` match (null beats confidently-wrong).
 Logos are the only non-composite assets and live under `assets/logos/`.
+
+
+## No-reembed linked-asset rule
+
+Final images must be applied from a stable URL recorded in `assets/ASSET-REGISTRY.json` (`source_url` / approved Drive URL).
+If an asset only has `local_path`, publish it to the approved linked-image location and record the resulting URL before
+editing the live deck. If an asset is only visible as a live Slides `contentUrl`, it is **not reusable**; regenerate or
+capture it into the asset pack first.

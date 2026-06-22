@@ -1,0 +1,69 @@
+{
+  "deck_key": "careem",
+  "updated_at": "2026-06-22T02:16:30Z",
+  "generation_type": "refresh-to-current-spec",
+  "status": "prep_refresh_ready__live_slides_not_mutated",
+  "live_slide_mutation_done": false,
+  "requirements": {
+    "spec_version": "wave10a-current-2026-06-22",
+    "slide_3_market_overview_kpis": {
+      "status": "refresh_required",
+      "source": "transparent economics sheet + master tracker",
+      "rule": "no stale KPIs; null beats unsupported"
+    },
+    "slide_10_tam": {
+      "status": "refresh_required",
+      "source": "growth_case / TAM economics sidecar",
+      "rule": "include economics sidecar in export package"
+    },
+    "unit_economics_opex_6_line": {
+      "status": "refresh_required",
+      "lines": 6,
+      "layout": "flush_left",
+      "field_id_policy": "pull live object IDs per slide before editing; never assume duplicated/recreated IDs"
+    },
+    "image_delivery": {
+      "status": "required",
+      "rule": "stable registry URL only; no embedded-only blobs or temporary googleusercontent contentUrl"
+    }
+  },
+  "cover_logo_policy": {
+    "navier_logo": {
+      "path": "assets/logos/navier/navier-wordmark-white.png",
+      "required": true
+    },
+    "partner_logo": {
+      "partner": "Careem",
+      "asset_key": "careem-logo",
+      "path": "assets/logos/partners/careem/careem-logo.png",
+      "official_source": "https://www.careem.com",
+      "required": true,
+      "status": "banked_needs_stable_url_publish"
+    },
+    "cover_policy": "navier_plus_partner_logo"
+  },
+  "asset_delivery_contract": {
+    "no_reembed": true,
+    "image_insert_mode": "stable_registry_url_only",
+    "allowed_sources": [
+      "deck-studio/assets/ASSET-REGISTRY.json source_url",
+      "approved Drive/asset-host URL recorded back into registry"
+    ],
+    "forbidden_sources": [
+      "live Slides contentUrl",
+      "lh*-googleusercontent temporary URLs",
+      "copy/paste embedded-only binaries"
+    ],
+    "missing_asset_behavior": "block_or_leave_null"
+  },
+  "roles_to_resolve": [
+    "cover_hero",
+    "value_prop_bg",
+    "tam_bg",
+    "partner_roles_bg",
+    "econ_market_bg",
+    "partner_logo"
+  ],
+  "blocking_behavior": "If any image lacks a stable registry source_url/approved Drive URL, leave null/blocked; do not embed temporary live-deck images.",
+  "notes": "Prep refresh only. Does not claim the deck has been regenerated or edited live."
+}
