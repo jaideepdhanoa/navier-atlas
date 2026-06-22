@@ -19,9 +19,8 @@ provenance required.** Logos are the only non-composite assets.
 | `market_overview_kpis` | 3 | deck | market-overview KPI block (figures, not an image) | manifest/economics sidecar |
 | `tam_bg` | 10 | deck | TAM background | composite |
 | `partner_roles_bg` | 11 | deck | partner-roles background | composite |
-| `atlas_route_screenshot` | 4–6 | deck | example-market side panel | **human capture** from Vercel Navier Atlas (not generated) |
-| `market_showcase_bg` | 14–18 | **market** | backup-market side panel | Tier-A iconic market scene (not drab econ style) |
-| `econ_market_bg` | 7–9, 19–23 | **market** | **reusable across any deck featuring that city** | Tier-A low-contrast full-bleed (`navierBg_*` slots only) |
+| `atlas_route_screenshot` | 4–6, 14–18 | deck | market side-panel (example + backup) | **human capture** from Vercel Navier Atlas (not generated) |
+| `econ_market_bg` | 7–9, 19–23 | **market** | **reusable across any deck featuring that city** | Tier-A landmark skyline + chart-safe left (`navierBg_*` slots only) |
 
 ### `partner_logo` (cover) — required
 Every named-partner deck **must** carry the partner's logo on the cover (slide 1). It is part of the
@@ -38,24 +37,23 @@ Partner decks cloned from the Grab gold template have **two image slot types**:
 
 | Family | Slides | Layout | Target object pattern | Allowed roles |
 |---|---|---|---|---|
-| Market side-panel | 4–6, 14–18 | `p22` side image | `g3eec5122801_0_*` (not `navierBg_*`) | `atlas_route_screenshot` (4–6), `market_showcase_bg` (14–18) |
+| Market side-panel | 4–6, 14–18 | `p22` side image | `g3eec5122801_0_*` (not `navierBg_*`) | `atlas_route_screenshot` only |
 | Unit economics full-bleed | 7–9, 19–23 | full-bleed behind P&L | `navierBg_s23` … `navierBg_s39` | `econ_market_bg` only |
 
-**Never** apply `econ_market_bg` to slides 4–6 or 14–18. Slides 4–6 are reserved for Atlas route
-screenshots (human capture). Authoritative per-deck wiring: `decks/{deck}/slide-image-bindings.json`.
+**Never** apply `econ_market_bg` to slides 4–6 or 14–18. All market side-panel slides (4–6 and 14–18)
+are reserved for Atlas route screenshots (human capture). Authoritative per-deck wiring:
+`decks/{deck}/slide-image-bindings.json`.
 
-### `atlas_route_screenshot` (slides 4–6) — human capture, not generated
-Example-market slides show the Navier Atlas route/map UI for the beachhead corridors. Capture from the
-live Vercel Atlas, bank under `assets/screenshots/atlas/{deck}/`, register with provenance, apply to the
-side-panel image slot. Do **not** substitute Tier-A generated plates here.
+### `atlas_route_screenshot` (slides 4–6, 14–18) — human capture, not generated
+Market side-panel slides show the Navier Atlas route/map UI for beachhead and backup corridors. Capture
+from the live Vercel Atlas, bank under `assets/screenshots/atlas/{deck}/`, register with provenance,
+apply to the side-panel image slot. Do **not** substitute Tier-A generated plates here.
 
-### `market_showcase_bg` (slides 14–18) — iconic market scene
-Backup-market slides need **recognizable local skyline/coastline** and an **actively foiling** N30
-(Tier-A `market_showcase` prompt tier). Not the muted econ chart style.
-
-### `econ_market_bg` (slides 7–9, 19–23) — chart backdrop only
-Unit-economics slides: left column stays low-contrast for tables; right horizon may show a soft landmark
-silhouette. Vessel small, foils deployed, hull elevated (hydrofoiling — not sitting low like a ferry).
+### `econ_market_bg` (slides 7–9, 19–23) — landmark skyline + chart-safe left
+Unit-economics slides: left 42% stays low-contrast for P&L tables; right 58% shows a **recognizable
+market-specific landmark skyline or coastline** (identifiable at thumbnail size). Vessel small in the
+lower-right, foils deployed, hull elevated (hydrofoiling — not sitting low like a ferry). Prompt tier:
+`econ_unit_landmark` in `N30-TIER-A-PROMPTS.md`.
 
 ### `market_overview_kpis` (slide 3) — data role, not an image
 Slide 3 carries the market-overview KPIs (e.g., market size, fleet/route counts, demand/fare anchors). It is

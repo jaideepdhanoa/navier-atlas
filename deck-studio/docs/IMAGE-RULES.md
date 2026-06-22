@@ -44,7 +44,7 @@ Every deck's images are governed by two files:
 
 - **`assets/IMAGE-ROLE-CONTRACT.md`** — the fixed per-deck image roles: `cover_hero` (slide 1),
   `navier_logo` (slide 1), `partner_logo` (slide 1), `value_prop_bg` (slide 2), `tam_bg` (slide 10),
-  `partner_roles_bg` (slide 11), `atlas_route_screenshot` (slides 4–6), `market_showcase_bg` (slides 14–18),
+  `partner_roles_bg` (slide 11), `atlas_route_screenshot` (slides 4–6 and 14–18),
   and `econ_market_bg` (slides 7–9, 19–23 only — `navierBg_*` slots, reusable by Atlas city ID).
 - **`decks/{deck}/slide-image-bindings.json`** — authoritative slide index → object ID → role wiring.
 - **`assets/ASSET-REGISTRY.json`** — the master index. Each `image_key` carries `role`, `scope`,

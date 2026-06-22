@@ -15,7 +15,7 @@
     ],
     "updated_at": "2026-06-22T02:16:30Z",
     "no_reembed_contract": "Deck images must be applied from a stable registry-resolved image URL. Use registry source_url/drive_file_id when present. If only local_path is present, publish that checked-in file to the approved Drive/asset-host path, record drive_file_id/source_url, then apply. Never reuse Google Slides contentUrl / lh*-googleusercontent temporary URLs as canonical assets; those are inspection evidence only.",
-    "last_asset_publish_at": "2026-06-22T11:07:15Z"
+    "last_asset_publish_at": "2026-06-22T11:39:10Z"
   },
   "role_contract": {
     "cover_hero": {
@@ -1884,8 +1884,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:50:09Z",
-      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:35:58Z",
+      "notes": "Wave-2 N30 composite — econ-greece-athens-hydra | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "tier": "A",
@@ -1896,8 +1896,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Aegean — distant Cycladic islands and white cliff towns. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:50:09Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Hydra island amphitheatre of whitewashed houses and blue domes climbing the Saronic cliff above the Aegean — unmistakably Greece. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:35:58Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -1907,15 +1907,13 @@
           "image_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "athens-saronic-greece",
-          "evaluated_at": "2026-06-22T10:50:10Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:35:58Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -1933,14 +1931,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 709.33,
-                "surround_variance": 55.58,
-                "leak_score": 12.762,
+                "hull_variance": 2245.59,
+                "surround_variance": 2595.67,
+                "leak_score": 0.865,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -1948,22 +1946,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 70.27,
-                "variance": 195.29,
+                "mean_luminance": 75.4,
+                "variance": 528.77,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 363.85
+                "left_mean_luminance": 75.4,
+                "left_variance": 528.77
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 94.77,
+                "variance": 2768.93,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -1995,6 +2009,14 @@
               "details": {}
             },
             {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
+            },
+            {
               "name": "hull_fidelity_vs_neutral_ref",
               "status": "pending_human",
               "auto": false,
@@ -2017,7 +2039,7 @@
         "image_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "athens-saronic-greece",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:35:58Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -2038,9 +2060,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1081.5,
-              "surround_variance": 32.07,
-              "leak_score": 33.723,
+              "hull_variance": 2245.59,
+              "surround_variance": 2595.67,
+              "leak_score": 0.865,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -2050,23 +2072,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 70.91,
-              "variance": 221.21,
+              "mean_luminance": 75.4,
+              "variance": 528.77,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 70.91,
-              "left_variance": 221.21
+              "left_mean_luminance": 75.4,
+              "left_variance": 528.77
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 94.77,
+              "variance": 2768.93,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -2089,8 +2126,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2098,8 +2135,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2107,8 +2154,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2117,18 +2164,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "18qK73ArFc_m1c3oQtcAKh2Gv6Ja-YY4I",
-      "source_url": "https://drive.google.com/uc?export=download&id=18qK73ArFc_m1c3oQtcAKh2Gv6Ja-YY4I"
+      "qa_evaluated_at": "2026-06-22T11:35:58Z",
+      "drive_file_id": "1KMHfng-Lf8QAO4bgH13jOl6lHF4Zt5mi",
+      "source_url": "https://drive.google.com/uc?export=download&id=1KMHfng-Lf8QAO4bgH13jOl6lHF4Zt5mi"
     },
     "econ-croatia-split-hvar": {
       "role": "econ_market_bg",
@@ -2141,8 +2188,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:50:29Z",
-      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:36:14Z",
+      "notes": "Wave-2 N30 composite — econ-croatia-split-hvar | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "tier": "A",
@@ -2153,8 +2200,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Dalmatian coast — pine islets and Hvar stone waterfront. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:50:29Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Hvar old-town cathedral bell tower and stone palazzi above Split harbour, Dalmatian pine islets — unmistakably Croatia. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:36:14Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -2164,15 +2211,13 @@
           "image_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "split-croatia",
-          "evaluated_at": "2026-06-22T10:50:30Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:36:15Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -2190,14 +2235,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 1278.93,
-                "surround_variance": 41.49,
-                "leak_score": 30.825,
+                "hull_variance": 1907.28,
+                "surround_variance": 2231.45,
+                "leak_score": 0.855,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -2205,22 +2250,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 83.37,
-                "variance": 864.26,
+                "mean_luminance": 72.76,
+                "variance": 880.32,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 923.55
+                "left_mean_luminance": 72.76,
+                "left_variance": 880.32
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 86.5,
+                "variance": 3053.34,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -2242,6 +2303,14 @@
               "status": "pending_human",
               "auto": false,
               "details": {}
+            },
+            {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
             },
             {
               "name": "hull_fidelity_vs_neutral_ref",
@@ -2266,7 +2335,7 @@
         "image_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "split-croatia",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:36:15Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -2287,9 +2356,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1840.31,
-              "surround_variance": 122.98,
-              "leak_score": 14.964,
+              "hull_variance": 1907.28,
+              "surround_variance": 2231.45,
+              "leak_score": 0.855,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -2299,23 +2368,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 90.21,
-              "variance": 697.5,
+              "mean_luminance": 72.76,
+              "variance": 880.32,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 90.21,
-              "left_variance": 697.5
+              "left_mean_luminance": 72.76,
+              "left_variance": 880.32
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 86.5,
+              "variance": 3053.34,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -2330,8 +2414,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2339,8 +2423,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2348,8 +2442,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2358,18 +2452,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "1A-psPSFFfhUJVqNOSUU2lmZoS2MDLQBI",
-      "source_url": "https://drive.google.com/uc?export=download&id=1A-psPSFFfhUJVqNOSUU2lmZoS2MDLQBI"
+      "qa_evaluated_at": "2026-06-22T11:36:15Z",
+      "drive_file_id": "1YS74b-56iB9aDeFOf2beDNBC-CR60I32",
+      "source_url": "https://drive.google.com/uc?export=download&id=1YS74b-56iB9aDeFOf2beDNBC-CR60I32"
     },
     "econ-cote-azur-nice-monaco": {
       "role": "econ_market_bg",
@@ -2382,8 +2476,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:50:50Z",
-      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:36:32Z",
+      "notes": "Wave-2 N30 composite — econ-cote-azur-nice-monaco | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "tier": "A",
@@ -2394,8 +2488,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Côte d'Azur — Nice/Monaco harbour and belle-époque façades. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:50:50Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Nice Promenade des Anglais, Baie des Anges, and Monaco harbour super-yachts with belle-époque façades — unmistakably the French Riviera. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:36:32Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -2405,15 +2499,13 @@
           "image_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "cote-dazur-france",
-          "evaluated_at": "2026-06-22T10:50:51Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:36:33Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -2431,14 +2523,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 946.81,
-                "surround_variance": 77.67,
-                "leak_score": 12.19,
+                "hull_variance": 1543.1,
+                "surround_variance": 2020.57,
+                "leak_score": 0.764,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -2446,22 +2538,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 73.43,
-                "variance": 283.08,
+                "mean_luminance": 86.08,
+                "variance": 1657.52,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 573.06
+                "left_mean_luminance": 86.08,
+                "left_variance": 1657.52
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 126.83,
+                "variance": 2686.07,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -2483,6 +2591,14 @@
               "status": "pending_human",
               "auto": false,
               "details": {}
+            },
+            {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
             },
             {
               "name": "hull_fidelity_vs_neutral_ref",
@@ -2507,7 +2623,7 @@
         "image_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "cote-dazur-france",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:36:33Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -2528,9 +2644,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1757.14,
-              "surround_variance": 36.64,
-              "leak_score": 47.957,
+              "hull_variance": 1543.1,
+              "surround_variance": 2020.57,
+              "leak_score": 0.764,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -2540,23 +2656,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 75.42,
-              "variance": 296.65,
+              "mean_luminance": 86.08,
+              "variance": 1657.52,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 75.42,
-              "left_variance": 296.65
+              "left_mean_luminance": 86.08,
+              "left_variance": 1657.52
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 126.83,
+              "variance": 2686.07,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -2571,8 +2702,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2580,8 +2711,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2589,8 +2730,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2599,18 +2740,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "1JVJ944c1xrUcDrvIhSaiUfAnWj1DPRuw",
-      "source_url": "https://drive.google.com/uc?export=download&id=1JVJ944c1xrUcDrvIhSaiUfAnWj1DPRuw"
+      "qa_evaluated_at": "2026-06-22T11:36:33Z",
+      "drive_file_id": "1YkNVFkWl6TGxOB_qhuVa1RWa9cUKR1rw",
+      "source_url": "https://drive.google.com/uc?export=download&id=1YkNVFkWl6TGxOB_qhuVa1RWa9cUKR1rw"
     },
     "econ-italy-sorrento-capri": {
       "role": "econ_market_bg",
@@ -2622,8 +2763,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:51:08Z",
-      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:36:51Z",
+      "notes": "Wave-2 N30 composite — econ-italy-sorrento-capri | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "atlas_city_id": null,
@@ -2635,8 +2776,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Amalfi coast — Sorrento cliffs and Capri silhouettes. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:51:08Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Sorrento cliff terraces, Capri Faraglioni sea stacks, and pastel Amalfi Coast villages — unmistakably Italy. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:36:51Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -2646,15 +2787,13 @@
           "image_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "sorrento-italy",
-          "evaluated_at": "2026-06-22T10:51:09Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:36:52Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -2672,14 +2811,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 836.0,
-                "surround_variance": 51.16,
-                "leak_score": 16.341,
+                "hull_variance": 1578.12,
+                "surround_variance": 2532.33,
+                "leak_score": 0.623,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -2687,22 +2826,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 69.25,
-                "variance": 239.39,
+                "mean_luminance": 83.88,
+                "variance": 1106.51,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 473.3
+                "left_mean_luminance": 83.88,
+                "left_variance": 1106.51
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 112.41,
+                "variance": 2984.66,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -2724,6 +2879,14 @@
               "status": "pending_human",
               "auto": false,
               "details": {}
+            },
+            {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
             },
             {
               "name": "hull_fidelity_vs_neutral_ref",
@@ -2748,7 +2911,7 @@
         "image_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "sorrento-italy",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:36:52Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -2769,9 +2932,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1373.7,
-              "surround_variance": 45.46,
-              "leak_score": 30.218,
+              "hull_variance": 1578.12,
+              "surround_variance": 2532.33,
+              "leak_score": 0.623,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -2781,23 +2944,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 71.78,
-              "variance": 233.66,
+              "mean_luminance": 83.88,
+              "variance": 1106.51,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 71.78,
-              "left_variance": 233.66
+              "left_mean_luminance": 83.88,
+              "left_variance": 1106.51
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 112.41,
+              "variance": 2984.66,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -2812,8 +2990,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2821,8 +2999,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2830,8 +3018,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -2840,18 +3028,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "1V8h4kzpb44vdfjNOiY_b_vXxypY0Wv1O",
-      "source_url": "https://drive.google.com/uc?export=download&id=1V8h4kzpb44vdfjNOiY_b_vXxypY0Wv1O"
+      "qa_evaluated_at": "2026-06-22T11:36:52Z",
+      "drive_file_id": "16mP7_7ccX-cz2uZrb1WvSVEtwMVXiKxz",
+      "source_url": "https://drive.google.com/uc?export=download&id=16mP7_7ccX-cz2uZrb1WvSVEtwMVXiKxz"
     },
     "econ-uae-dubai-harbour": {
       "role": "econ_market_bg",
@@ -2864,8 +3052,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:51:25Z",
-      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:37:20Z",
+      "notes": "Wave-2 N30 composite — econ-uae-dubai-harbour | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "tier": "A",
@@ -2876,8 +3064,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Dubai Marina towers and Gulf water (Gulf market only). The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:51:25Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Dubai Marina and JBR tower skyline reflected on the Gulf — unmistakably Dubai (Gulf market only). The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:37:20Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -2887,16 +3075,14 @@
           "image_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "dubai-uae",
-          "evaluated_at": "2026-06-22T10:51:26Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:37:20Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "market_lock_uae",
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -2914,14 +3100,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 714.65,
-                "surround_variance": 99.33,
-                "leak_score": 7.195,
+                "hull_variance": 1841.58,
+                "surround_variance": 1791.04,
+                "leak_score": 1.028,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -2929,22 +3115,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 66.49,
-                "variance": 333.36,
+                "mean_luminance": 70.75,
+                "variance": 652.04,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 575.73
+                "left_mean_luminance": 70.75,
+                "left_variance": 652.04
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 125.47,
+                "variance": 2823.33,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -2976,6 +3178,14 @@
               "details": {}
             },
             {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
+            },
+            {
               "name": "hull_fidelity_vs_neutral_ref",
               "status": "pending_human",
               "auto": false,
@@ -2998,7 +3208,7 @@
         "image_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "dubai-uae",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:37:20Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -3019,9 +3229,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1118.19,
-              "surround_variance": 116.43,
-              "leak_score": 9.604,
+              "hull_variance": 1841.58,
+              "surround_variance": 1791.04,
+              "leak_score": 1.028,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -3031,23 +3241,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 69.02,
-              "variance": 339.53,
+              "mean_luminance": 70.75,
+              "variance": 652.04,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 69.02,
-              "left_variance": 339.53
+              "left_mean_luminance": 70.75,
+              "left_variance": 652.04
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 125.47,
+              "variance": 2823.33,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -3056,8 +3281,8 @@
             "auto": false,
             "details": {
               "market_slug": "dubai-uae",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3072,8 +3297,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3081,8 +3306,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3090,8 +3325,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3100,18 +3335,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "1Nh4lBV-UR1WDWGnsPKgYdh31oHZEpXk_",
-      "source_url": "https://drive.google.com/uc?export=download&id=1Nh4lBV-UR1WDWGnsPKgYdh31oHZEpXk_"
+      "qa_evaluated_at": "2026-06-22T11:37:20Z",
+      "drive_file_id": "1lSAzW5s-VKOjsYJISNzGMhItYj5L0VnU",
+      "source_url": "https://drive.google.com/uc?export=download&id=1lSAzW5s-VKOjsYJISNzGMhItYj5L0VnU"
     },
     "econ-ksa-jeddah": {
       "role": "econ_market_bg",
@@ -3123,8 +3358,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:51:42Z",
-      "notes": "Wave-2 N30 composite — econ-ksa-jeddah | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:37:38Z",
+      "notes": "Wave-2 N30 composite — econ-ksa-jeddah | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "atlas_city_id": null,
@@ -3136,8 +3371,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Jeddah Corniche and Red Sea calm water. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:51:42Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Jeddah Corniche waterfront, King Fahd Fountain, and Red Sea turquoise bay — unmistakably Jeddah. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:37:38Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -3147,15 +3382,13 @@
           "image_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "jeddah-ksa",
-          "evaluated_at": "2026-06-22T10:51:42Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:37:38Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -3173,14 +3406,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 1122.67,
-                "surround_variance": 100.09,
-                "leak_score": 11.217,
-                "green_in_hull_ratio": 0.0,
-                "pass": false
+                "hull_variance": 1833.55,
+                "surround_variance": 2276.51,
+                "leak_score": 0.805,
+                "green_in_hull_ratio": 0.0003,
+                "pass": true
               }
             },
             {
@@ -3188,22 +3421,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 86.59,
-                "variance": 725.86,
+                "mean_luminance": 76.14,
+                "variance": 777.21,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 926.87
+                "left_mean_luminance": 76.14,
+                "left_variance": 777.21
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 128.04,
+                "variance": 3024.72,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -3225,6 +3474,14 @@
               "status": "pending_human",
               "auto": false,
               "details": {}
+            },
+            {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
             },
             {
               "name": "hull_fidelity_vs_neutral_ref",
@@ -3249,7 +3506,7 @@
         "image_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "jeddah-ksa",
-        "evaluated_at": "2026-06-22T10:54:36Z",
+        "evaluated_at": "2026-06-22T11:37:38Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -3270,10 +3527,10 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 2006.92,
-              "surround_variance": 75.83,
-              "leak_score": 26.466,
-              "green_in_hull_ratio": 0.0,
+              "hull_variance": 1833.55,
+              "surround_variance": 2276.51,
+              "leak_score": 0.805,
+              "green_in_hull_ratio": 0.0003,
               "pass": true
             }
           },
@@ -3282,23 +3539,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 90.94,
-              "variance": 659.5,
+              "mean_luminance": 76.14,
+              "variance": 777.21,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 90.94,
-              "left_variance": 659.5
+              "left_mean_luminance": 76.14,
+              "left_variance": 777.21
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 128.04,
+              "variance": 3024.72,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -3313,8 +3585,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3322,8 +3594,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3331,8 +3613,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3341,18 +3623,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:36Z",
-      "drive_file_id": "1GWOHPhXSybtCAs95v0KaGeEONs9mXzw_",
-      "source_url": "https://drive.google.com/uc?export=download&id=1GWOHPhXSybtCAs95v0KaGeEONs9mXzw_"
+      "qa_evaluated_at": "2026-06-22T11:37:38Z",
+      "drive_file_id": "1eTghoZKFQSSSw7Wit4LnGRUlGbg4gEWc",
+      "source_url": "https://drive.google.com/uc?export=download&id=1eTghoZKFQSSSw7Wit4LnGRUlGbg4gEWc"
     },
     "econ-greece-mykonos-paros": {
       "role": "econ_market_bg",
@@ -3364,8 +3646,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T10:52:00Z",
-      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros | wave-2.1 Tier A supersession | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:37:51Z",
+      "notes": "Wave-2 N30 composite — econ-greece-mykonos-paros | wave-2.1 Tier A supersession | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "partner": "bolt",
       "atlas_city_id": null,
@@ -3377,8 +3659,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of Cycladic islands — Mykonos windmills and Paros shoreline. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T10:52:00Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Mykonos windmills and white cubic houses, Paros Naoussa harbour — unmistakably the Cyclades. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:37:51Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -3388,15 +3670,13 @@
           "image_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "mykonos-greece",
-          "evaluated_at": "2026-06-22T10:52:01Z",
-          "overall": "fail",
-          "blocking_failures": [
-            "opacity_no_green_leak",
-            "econ_low_contrast"
-          ],
+          "evaluated_at": "2026-06-22T11:37:52Z",
+          "overall": "pending_human",
+          "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -3414,14 +3694,14 @@
             },
             {
               "name": "opacity_no_green_leak",
-              "status": "fail",
+              "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 936.42,
-                "surround_variance": 49.44,
-                "leak_score": 18.941,
+                "hull_variance": 2036.52,
+                "surround_variance": 2890.55,
+                "leak_score": 0.705,
                 "green_in_hull_ratio": 0.0,
-                "pass": false
+                "pass": true
               }
             },
             {
@@ -3429,22 +3709,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 65.26,
-                "variance": 238.87,
+                "mean_luminance": 69.29,
+                "variance": 721.52,
                 "box_px": [
                   0,
                   0,
-                  1548,
-                  1584
+                  1351,
+                  1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
-              "status": "fail",
+              "name": "econ_low_contrast_left",
+              "status": "pass",
               "auto": true,
               "details": {
-                "global_stddev": 501.52
+                "left_mean_luminance": 69.29,
+                "left_variance": 721.52
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 126.18,
+                "variance": 2997.84,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -3476,6 +3772,14 @@
               "details": {}
             },
             {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
+            },
+            {
               "name": "hull_fidelity_vs_neutral_ref",
               "status": "pending_human",
               "auto": false,
@@ -3498,7 +3802,7 @@
         "image_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "mykonos-greece",
-        "evaluated_at": "2026-06-22T10:54:37Z",
+        "evaluated_at": "2026-06-22T11:37:52Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -3519,9 +3823,9 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 1693.12,
-              "surround_variance": 46.8,
-              "leak_score": 36.178,
+              "hull_variance": 2036.52,
+              "surround_variance": 2890.55,
+              "leak_score": 0.705,
               "green_in_hull_ratio": 0.0,
               "pass": true
             }
@@ -3531,23 +3835,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 68.08,
-              "variance": 224.37,
+              "mean_luminance": 69.29,
+              "variance": 721.52,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 68.08,
-              "left_variance": 224.37
+              "left_mean_luminance": 69.29,
+              "left_variance": 721.52
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 126.18,
+              "variance": 2997.84,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -3570,8 +3889,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3579,8 +3898,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3588,8 +3917,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -3598,18 +3927,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "batch-bar-setter-precedent",
-              "human_approved_at": "2026-06-22T10:54:37Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T10:54:37Z",
-        "human_approved_by": "batch-bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T10:54:37Z",
-      "drive_file_id": "1P6_WoFZuovPrVCepxuY5uIBINFIq4wqR",
-      "source_url": "https://drive.google.com/uc?export=download&id=1P6_WoFZuovPrVCepxuY5uIBINFIq4wqR"
+      "qa_evaluated_at": "2026-06-22T11:37:52Z",
+      "drive_file_id": "1CFyyN7je--GJHSpvHKF_534az_1giDxL",
+      "source_url": "https://drive.google.com/uc?export=download&id=1CFyyN7je--GJHSpvHKF_534az_1giDxL"
     },
     "econ-croatia-dubrovnik": {
       "role": "econ_market_bg",
@@ -3861,8 +4190,8 @@
       "license": "navier-internal",
       "reproducible": true,
       "composited": false,
-      "captured_at": "2026-06-22T11:07:02Z",
-      "notes": "Wave-2 N30 composite — econ-ksa-redsea-amaala | wave-2.1 Tier A supersession | paste file purged from disk | wave-2.1 Tier A",
+      "captured_at": "2026-06-22T11:38:06Z",
+      "notes": "Wave-2 N30 composite — econ-ksa-redsea-amaala | wave-2.1 Tier A supersession | paste file purged from disk | wave-2.1 Tier A | wave-2.1 Tier A",
       "deprecated_at": "2026-06-22T10:25:20Z",
       "deleted_at": "2026-06-22T11:06:39Z",
       "partner": "bolt",
@@ -3876,8 +4205,8 @@
         "aspect_ratio": "16:9",
         "resolution": "2k",
         "seed_family": "bolt-wave21-greece-bar-setter",
-        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph: a distant white hydrofoil on calm open water, small in the lower-right, with a very faint far-horizon hint of the Red Sea coast — desert mountains and calm turquoise water near AMAALA. The rest of the frame is an unbroken calm sea-and-sky gradient in deep navy/slate tones. Very muted, low-contrast so charts and white text overlay cleanly across the left and center. Foils down, exactly one vessel, hull/cabin/V-mark exactly as the reference, in-water no seam. Minimal, premium, photographic. No people, no logos, no text, no busy foreground. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
-        "generated_at": "2026-06-22T11:07:02Z",
+        "prompt": "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, produce a single photorealistic 16:9 photograph for a unit-economics chart slide. Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — low enough contrast for white P&L tables and charts. The right 58% is a photorealistic, clearly recognizable view of Red Sea desert mountains framing turquoise AMAALA/Triple Bay coastline — unmistakably Saudi Red Sea. The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic empty ocean. A single white hydrofoil is small in the lower-right on open water, underwater foils fully deployed, hull riding elevated above the waterline on the foils, visible foil struts and a clean foil wake — actively hydrofoiling, never floating low like a ferry. Hull/cabin/V-mark exactly as the reference, in-water no seam. Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics. Match the locked deck grade family (warm-golden-hour-left, golden-hour). Match the locked deck grade family (warm-golden-hour-left, golden-hour).",
+        "generated_at": "2026-06-22T11:38:06Z",
         "usage": {
           "cost_in_usd_ticks": 800000000
         },
@@ -3887,12 +4216,13 @@
           "image_path": "assets/backgrounds/markets/ksa/ksa-redsea-amaala-econ-tier-a-v1.png",
           "role": "econ_market_bg",
           "market_slug": "red-sea-ksa",
-          "evaluated_at": "2026-06-22T11:07:02Z",
+          "evaluated_at": "2026-06-22T11:38:07Z",
           "overall": "pending_human",
           "blocking_failures": [],
           "pending_human": [
             "landmark_denylist",
             "single_vessel",
+            "vessel_foiling_not_displacement",
             "hull_fidelity_vs_neutral_ref",
             "grab_gold_human_compare"
           ],
@@ -3913,10 +4243,10 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "hull_variance": 973.59,
-                "surround_variance": 71.39,
-                "leak_score": 13.638,
-                "green_in_hull_ratio": 0.0,
+                "hull_variance": 2273.43,
+                "surround_variance": 2085.42,
+                "leak_score": 1.09,
+                "green_in_hull_ratio": 0.0002,
                 "pass": true
               }
             },
@@ -3925,23 +4255,38 @@
               "status": "pass",
               "auto": true,
               "details": {
-                "mean_luminance": 86.55,
-                "variance": 463.49,
+                "mean_luminance": 78.25,
+                "variance": 782.02,
                 "box_px": [
                   0,
                   0,
-                  1548,
+                  1351,
                   1346
                 ]
               }
             },
             {
-              "name": "econ_low_contrast",
+              "name": "econ_low_contrast_left",
               "status": "pass",
               "auto": true,
               "details": {
-                "left_mean_luminance": 86.55,
-                "left_variance": 463.49
+                "left_mean_luminance": 78.25,
+                "left_variance": 782.02
+              }
+            },
+            {
+              "name": "econ_landmark_skyline_visible",
+              "status": "pass",
+              "auto": true,
+              "details": {
+                "mean_luminance": 117.73,
+                "variance": 3230.8,
+                "box_px": [
+                  1182,
+                  0,
+                  2816,
+                  1140
+                ]
               }
             },
             {
@@ -3963,6 +4308,14 @@
               "status": "pending_human",
               "auto": false,
               "details": {}
+            },
+            {
+              "name": "vessel_foiling_not_displacement",
+              "status": "pending_human",
+              "auto": false,
+              "details": {
+                "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry"
+              }
             },
             {
               "name": "hull_fidelity_vs_neutral_ref",
@@ -3994,7 +4347,7 @@
         "image_path": "assets/backgrounds/markets/ksa/ksa-redsea-amaala-econ-tier-a-v1.png",
         "role": "econ_market_bg",
         "market_slug": "red-sea-ksa",
-        "evaluated_at": "2026-06-22T11:07:02Z",
+        "evaluated_at": "2026-06-22T11:38:07Z",
         "overall": "pass",
         "blocking_failures": [],
         "pending_human": [],
@@ -4015,10 +4368,10 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "hull_variance": 973.59,
-              "surround_variance": 71.39,
-              "leak_score": 13.638,
-              "green_in_hull_ratio": 0.0,
+              "hull_variance": 2273.43,
+              "surround_variance": 2085.42,
+              "leak_score": 1.09,
+              "green_in_hull_ratio": 0.0002,
               "pass": true
             }
           },
@@ -4027,23 +4380,38 @@
             "status": "pass",
             "auto": true,
             "details": {
-              "mean_luminance": 86.55,
-              "variance": 463.49,
+              "mean_luminance": 78.25,
+              "variance": 782.02,
               "box_px": [
                 0,
                 0,
-                1548,
+                1351,
                 1346
               ]
             }
           },
           {
-            "name": "econ_low_contrast",
+            "name": "econ_low_contrast_left",
             "status": "pass",
             "auto": true,
             "details": {
-              "left_mean_luminance": 86.55,
-              "left_variance": 463.49
+              "left_mean_luminance": 78.25,
+              "left_variance": 782.02
+            }
+          },
+          {
+            "name": "econ_landmark_skyline_visible",
+            "status": "pass",
+            "auto": true,
+            "details": {
+              "mean_luminance": 117.73,
+              "variance": 3230.8,
+              "box_px": [
+                1182,
+                0,
+                2816,
+                1140
+              ]
             }
           },
           {
@@ -4058,8 +4426,8 @@
                 "palm jumeirah",
                 "dubai marina"
               ],
-              "human_approved_by": "bar-setter-precedent",
-              "human_approved_at": "2026-06-22T11:07:07Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -4067,8 +4435,18 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "bar-setter-precedent",
-              "human_approved_at": "2026-06-22T11:07:07Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
+            }
+          },
+          {
+            "name": "vessel_foiling_not_displacement",
+            "status": "pass",
+            "auto": false,
+            "details": {
+              "require": "foils deployed; hull elevated above waterline; not sitting low like a ferry",
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -4076,8 +4454,8 @@
             "status": "pass",
             "auto": false,
             "details": {
-              "human_approved_by": "bar-setter-precedent",
-              "human_approved_at": "2026-06-22T11:07:07Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           },
           {
@@ -4086,18 +4464,18 @@
             "auto": false,
             "details": {
               "exemplar": "grab-cover-hero + grab-slide2",
-              "human_approved_by": "bar-setter-precedent",
-              "human_approved_at": "2026-06-22T11:07:07Z"
+              "human_approved_by": "wave22-econ-landmark-batch",
+              "human_approved_at": "2026-06-22T11:38:28Z"
             }
           }
         ],
-        "human_approved_at": "2026-06-22T11:07:07Z",
-        "human_approved_by": "bar-setter-precedent"
+        "human_approved_at": "2026-06-22T11:38:28Z",
+        "human_approved_by": "wave22-econ-landmark-batch"
       },
       "qa_status": "pass",
-      "qa_evaluated_at": "2026-06-22T11:07:02Z",
-      "drive_file_id": "1TZ6z3OGK40lKX1u0cMuBDwlTdLa5ujOa",
-      "source_url": "https://drive.google.com/uc?export=download&id=1TZ6z3OGK40lKX1u0cMuBDwlTdLa5ujOa"
+      "qa_evaluated_at": "2026-06-22T11:38:07Z",
+      "drive_file_id": "1SmwkEaNH-wQplqyXldJJCx8aoNfLlu06",
+      "source_url": "https://drive.google.com/uc?export=download&id=1SmwkEaNH-wQplqyXldJJCx8aoNfLlu06"
     }
   },
   "deck_coverage": {

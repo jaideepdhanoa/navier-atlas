@@ -27,6 +27,10 @@ def bindings_for_role(bindings_doc: dict, role: str) -> list[dict]:
     return [b for b in bindings_doc.get("bindings", []) if b.get("image_role") == role]
 
 
+def atlas_bindings(bindings_doc: dict) -> list[dict]:
+    return bindings_for_role(bindings_doc, "atlas_route_screenshot")
+
+
 def image_op_bindings(bindings_doc: dict, *, roles: set[str] | None = None) -> dict[str, tuple[str, str, str]]:
     """registry_key -> (slide_object_id, target_object_id, replace_method)."""
     out: dict[str, tuple[str, str, str]] = {}
@@ -82,16 +86,16 @@ def validate_bindings(bindings_doc: dict) -> list[str]:
         key = b.get("registry_key")
         if role == "econ_market_bg" and not key:
             errors.append(f"slide {idx}: econ_market_bg missing registry_key")
-        if role == "atlas_route_screenshot" and key:
-            errors.append(f"slide {idx}: atlas_route_screenshot must not use registry_key (human capture)")
+        if role == "atlas_route_screenshot" and not key:
+            errors.append(f"slide {idx}: atlas_route_screenshot requires registry_key (atlas-bolt-slide*)")
+        if role == "atlas_route_screenshot" and key and not str(key).startswith("atlas-"):
+            errors.append(f"slide {idx}: atlas registry_key must start with atlas-")
         if role == "econ_market_bg" and not str(b.get("target_object_id", "")).startswith("navierBg_"):
             errors.append(
                 f"slide {idx}: econ_market_bg target must be navierBg_* full-bleed slot, got {b.get('target_object_id')!r}"
             )
-        if role in ("atlas_route_screenshot", "market_showcase_bg") and str(
-            b.get("target_object_id", "")
-        ).startswith("navierBg_"):
-            errors.append(f"slide {idx}: market slide must not target navierBg_* (econ slot)")
+        if role == "atlas_route_screenshot" and str(b.get("target_object_id", "")).startswith("navierBg_"):
+            errors.append(f"slide {idx}: atlas slide must not target navierBg_* (econ slot)")
     # No duplicate registry on different slides unless intentional reuse (econ keys are 1:1)
     seen: dict[str, int] = {}
     for b in bindings_doc.get("bindings", []):

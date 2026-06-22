@@ -1,8 +1,8 @@
 {
   "deck_key": "bolt",
-  "binding_version": "2",
+  "binding_version": "3",
   "gold_template_id": "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs",
-  "notes": "Authoritative slide→image wiring. Two layout families: side-panel market slides (4–6, 14–18) vs full-bleed unit-economics slides (7–9, 19–23). Never cross-wire econ_market_bg onto market slides.",
+  "notes": "Side-panel slides 4–6 and 14–18 = Atlas route screenshots (human capture, no generation). Full-bleed unit-econ slides 7–9 and 19–23 = Tier-A econ_market_bg with market-specific landmark skyline.",
   "slide_families": {
     "example_market": {
       "slides": [4, 5, 6],
@@ -10,33 +10,34 @@
       "image_role": "atlas_route_screenshot",
       "source": "human_capture_vercel_atlas",
       "prompt_tier": null,
-      "notes": "Screenshots from the Vercel Navier Atlas route/map UI — not Tier-A generated plates."
+      "notes": "Screenshots from https://navier-atlas.vercel.app — not generated."
     },
     "unit_economics": {
       "slides": [7, 8, 9],
       "layout": "full_bleed_econ",
       "image_role": "econ_market_bg",
       "source": "tier_a_image_edit",
-      "prompt_tier": "econ_unit",
-      "notes": "Low-contrast full-bleed backgrounds behind P&L charts (navierBg_s23–s25)."
+      "prompt_tier": "econ_unit_landmark",
+      "notes": "Market-specific landmark skyline on right; chart-safe left (navierBg_s23–s25)."
     },
     "backup_market": {
       "slides": [14, 15, 16, 17, 18],
       "layout": "side_panel",
-      "image_role": "market_showcase_bg",
-      "source": "tier_a_image_edit",
-      "prompt_tier": "market_showcase",
-      "notes": "Iconic, market-personalized N30 scene plates — not drab econ style."
+      "image_role": "atlas_route_screenshot",
+      "source": "human_capture_vercel_atlas",
+      "prompt_tier": null,
+      "notes": "Backup-market Atlas route screenshots — not generated."
     },
     "backup_economics": {
       "slides": [19, 20, 21, 22, 23],
       "layout": "full_bleed_econ",
       "image_role": "econ_market_bg",
       "source": "tier_a_image_edit",
-      "prompt_tier": "econ_unit",
-      "notes": "Low-contrast full-bleed backgrounds behind P&L charts (navierBg_s35–s39)."
+      "prompt_tier": "econ_unit_landmark",
+      "notes": "Market-specific landmark skyline on right; chart-safe left (navierBg_s35–s39)."
     }
   },
+  "atlas_screenshot_dir": "assets/screenshots/atlas/bolt",
   "bindings": [
     {
       "slide_index": 4,
@@ -44,7 +45,8 @@
       "slide_object_id": "g3eec5122801_0_106",
       "target_object_id": "g3eec5122801_0_107",
       "image_role": "atlas_route_screenshot",
-      "registry_key": null,
+      "registry_key": "atlas-bolt-slide04-greece",
+      "atlas_filename": "slide-04-athens-saronic-greece.png",
       "market_slug": "athens-saronic-greece",
       "market_label": "Greece",
       "status": "pending_human_atlas_capture",
@@ -56,7 +58,8 @@
       "slide_object_id": "g3eec5122801_0_201",
       "target_object_id": "g3eec5122801_0_202",
       "image_role": "atlas_route_screenshot",
-      "registry_key": null,
+      "registry_key": "atlas-bolt-slide05-croatia",
+      "atlas_filename": "slide-05-split-croatia.png",
       "market_slug": "split-croatia",
       "market_label": "Croatia",
       "status": "pending_human_atlas_capture",
@@ -68,7 +71,8 @@
       "slide_object_id": "g3eec5122801_0_296",
       "target_object_id": "g3eec5122801_0_297",
       "image_role": "atlas_route_screenshot",
-      "registry_key": null,
+      "registry_key": "atlas-bolt-slide06-riviera",
+      "atlas_filename": "slide-06-cote-dazur-france.png",
       "market_slug": "cote-dazur-france",
       "market_label": "Riviera",
       "status": "pending_human_atlas_capture",
@@ -115,11 +119,12 @@
       "slide_family": "backup_market",
       "slide_object_id": "g3eec5122801_0_675",
       "target_object_id": "g3eec5122801_0_676",
-      "image_role": "market_showcase_bg",
-      "registry_key": "showcase-italy-sorrento-capri",
+      "image_role": "atlas_route_screenshot",
+      "registry_key": "atlas-bolt-slide14-italy",
+      "atlas_filename": "slide-14-sorrento-italy.png",
       "market_slug": "sorrento-italy",
       "market_label": "Italy",
-      "status": "needs_generation",
+      "status": "pending_human_atlas_capture",
       "apply_method": "CENTER_CROP"
     },
     {
@@ -127,11 +132,12 @@
       "slide_family": "backup_market",
       "slide_object_id": "g3eec5122801_0_688",
       "target_object_id": "g3eec5122801_0_689",
-      "image_role": "market_showcase_bg",
-      "registry_key": "showcase-uae-dubai-harbour",
+      "image_role": "atlas_route_screenshot",
+      "registry_key": "atlas-bolt-slide15-uae",
+      "atlas_filename": "slide-15-dubai-uae.png",
       "market_slug": "dubai-uae",
       "market_label": "UAE",
-      "status": "needs_generation",
+      "status": "pending_human_atlas_capture",
       "apply_method": "CENTER_CROP"
     },
     {
@@ -139,11 +145,12 @@
       "slide_family": "backup_market",
       "slide_object_id": "g3eec5122801_0_701",
       "target_object_id": "g3eec5122801_0_702",
-      "image_role": "market_showcase_bg",
-      "registry_key": "showcase-ksa-jeddah",
+      "image_role": "atlas_route_screenshot",
+      "registry_key": "atlas-bolt-slide16-jeddah",
+      "atlas_filename": "slide-16-jeddah-ksa.png",
       "market_slug": "jeddah-ksa",
       "market_label": "Jeddah",
-      "status": "needs_generation",
+      "status": "pending_human_atlas_capture",
       "apply_method": "CENTER_CROP"
     },
     {
@@ -151,11 +158,12 @@
       "slide_family": "backup_market",
       "slide_object_id": "g3eec5122801_0_714",
       "target_object_id": "g3eec5122801_0_715",
-      "image_role": "market_showcase_bg",
-      "registry_key": "showcase-greece-mykonos-paros",
+      "image_role": "atlas_route_screenshot",
+      "registry_key": "atlas-bolt-slide17-cyclades",
+      "atlas_filename": "slide-17-mykonos-greece.png",
       "market_slug": "mykonos-greece",
       "market_label": "Cyclades",
-      "status": "needs_generation",
+      "status": "pending_human_atlas_capture",
       "apply_method": "CENTER_CROP"
     },
     {
@@ -163,11 +171,12 @@
       "slide_family": "backup_market",
       "slide_object_id": "g3eec5122801_0_727",
       "target_object_id": "g3eec5122801_0_728",
-      "image_role": "market_showcase_bg",
-      "registry_key": "showcase-croatia-dubrovnik",
+      "image_role": "atlas_route_screenshot",
+      "registry_key": "atlas-bolt-slide18-dubrovnik",
+      "atlas_filename": "slide-18-dubrovnik-croatia.png",
       "market_slug": "dubrovnik-croatia",
       "market_label": "Dubrovnik",
-      "status": "needs_generation",
+      "status": "pending_human_atlas_capture",
       "apply_method": "CENTER_CROP"
     },
     {

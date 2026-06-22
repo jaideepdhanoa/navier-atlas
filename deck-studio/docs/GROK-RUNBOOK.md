@@ -19,11 +19,11 @@ You own deterministic deck creation, live editing, and image generation/composit
    `embedded_only`→background_pending (capture or regenerate first), `needs_generation`/`needs_sourcing`→blocked.
    Bind market backgrounds only on exact `atlas_city_id` match. Never guess an image.
    - **Slide-family gate (Grab gold template).** `econ_market_bg` binds **only** to `navierBg_*` on slides
-     7–9 and 19–23. Slides 4–6 = `atlas_route_screenshot` (human Atlas capture). Slides 14–18 =
-     `market_showcase_bg` (iconic Tier-A scene). Run
+     7–9 and 19–23 (market-specific landmark skyline on right, chart-safe left). Slides 4–6 and 14–18 =
+     `atlas_route_screenshot` (human Atlas capture — no generation). Run
      `python builders/deck_bolt_wave2_images.py validate-bindings` before any image apply.
-   - **Prompt tiers.** `econ_unit` (muted chart backdrop + soft landmark), `market_showcase` (iconic +
-     foiling), `cover` / `value_prop` / `tam` / `partner_roles` per `N30-TIER-A-PROMPTS.md`. Vessel must be
+   - **Prompt tiers.** `econ_unit_landmark` (chart-safe left + recognizable landmark skyline on right),
+     `cover` / `value_prop` / `tam` / `partner_roles` per `N30-TIER-A-PROMPTS.md`. Vessel must be
      **hydrofoiling** (foils deployed, hull elevated) — not displacement sitting on the water.
    - **N30 reference rule.** Any generated/composited N30 must match `assets/n30/n30-reference-neutral.png`
      for hull color/form and `assets/n30/n30-reference.png` for pose. **Lighting is a plate property** —

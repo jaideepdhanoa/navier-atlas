@@ -67,9 +67,8 @@ slide-2 / convenience plate.
 | Tier | Role | Slides | Look |
 |---|---|---|---|
 | `cover` / `value_prop` / `tam` / `partner_roles` | deck narrative | 1, 2, 10, 11 | Aspirational, golden-hour, iconic when applicable |
-| `atlas_route_screenshot` | example markets | 4–6 | **No generation** — screenshot from Vercel Navier Atlas |
-| `econ_unit` | `econ_market_bg` | 7–9, 19–23 | Left column calm for charts; soft landmark on right horizon; small foiling N30 lower-right |
-| `market_showcase` | `market_showcase_bg` | 14–18 | Postcard iconic skyline/coast; mid-ground foiling N30; vibrant, unmistakably local |
+| `atlas_route_screenshot` | market side-panel | 4–6, 14–18 | **No generation** — screenshot from Vercel Navier Atlas |
+| `econ_unit_landmark` | `econ_market_bg` | 7–9, 19–23 | Left 42% calm for charts; right 58% recognizable market landmark skyline; small foiling N30 lower-right |
 
 **Foiling rule (all tiers with a vessel):** foils *deployed in the water*, hull *elevated above the
 waterline*, visible struts and foil wake. Never depict a displacement ferry sitting low. “Foils down” in

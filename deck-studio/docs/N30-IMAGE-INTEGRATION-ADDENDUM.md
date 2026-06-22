@@ -62,7 +62,7 @@ Wave-2.1 mis-bound `econ_market_bg` plates to **market side-panel** slides (4–
 | Wrong (wave-2.1) | Correct |
 |---|---|
 | Econ plate on slide 4 `g3eec5122801_0_107` | Atlas screenshot (human) on 4–6 |
-| Econ plate on slide 14 `g3eec5122801_0_676` | `market_showcase_bg` Tier-A on 14–18 |
+| Econ plate on slide 14 `g3eec5122801_0_676` | `atlas_route_screenshot` (human capture) on 14–18 |
 | — | `econ_market_bg` on `navierBg_s23`–`s39` (slides 7–9, 19–23) |
 
 ## Grading / integration spec (match the Grab gold)

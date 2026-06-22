@@ -205,7 +205,7 @@ NARRATIVE_TEXT: dict[tuple[str, str], str] = {
     ("g3eec5122801_0_729", "g3eec5122801_0_735"): "▸  Dubrovnik → Elaphiti Islands\n      ~8 nm · island excursion\n▸  Dubrovnik → Korčula\n      ~55 nm · south Adriatic",
 }
 
-# Deck-level narrative plates only. Unit-econ + market-showcase wiring lives in
+# Deck-level narrative plates only. Unit-econ + atlas screenshot wiring lives in
 # decks/bolt/slide-image-bindings.json — never bind econ_market_bg to slides 4–6 or 14–18.
 IMAGE_BINDINGS: list[dict] = [
     {"registry": "bolt-cover-hero", "slide_oid": "p1", "target_oid": "p1_i2", "method": "CENTER_CROP"},
@@ -216,9 +216,9 @@ IMAGE_BINDINGS: list[dict] = [
 ]
 
 
-def showcase_image_bindings() -> list[dict]:
+def atlas_image_bindings() -> list[dict]:
     doc = load_slide_bindings("bolt")
-    return image_bindings_list(doc, roles={"market_showcase_bg"})
+    return image_bindings_list(doc, roles={"atlas_route_screenshot"})
 
 
 def element_or_fallback(golden: dict, oid: str, *, fallback_oid: str = "g3eec5122801_0_394") -> dict:
@@ -627,7 +627,7 @@ def build_wave2_editplan(presentation_id: str, asset_urls: dict[str, str]) -> di
     bind_errs = validate_bindings(binding_doc)
     if bind_errs:
         raise SystemExit("slide-image-bindings.json invalid:\n" + "\n".join(bind_errs))
-    for bind in showcase_image_bindings():
+    for bind in atlas_image_bindings():
         url = asset_urls.get(bind["registry"])
         if not url:
             continue

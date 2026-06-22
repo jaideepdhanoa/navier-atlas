@@ -24,6 +24,7 @@ sys.path.insert(0, str(BUILDERS))
 from deck_bolt_pilot import apply_plan, load_json, write_json  # noqa: E402
 from deck_edit_ops import image_replace_op  # noqa: E402
 from deck_slide_bindings import (  # noqa: E402
+    atlas_bindings,
     image_op_bindings,
     load_slide_bindings,
     validate_bindings,
@@ -292,16 +293,16 @@ def qa_image_gate(
             QACheck("partner_roles_right_third_clean", "pass" if lockup_ok else "fail", True, right)
         )
     elif role == "econ_market_bg":
-        left = _region_stats(img, (0.0, 0.0, 0.55, 0.85))
-        right = _region_stats(img, (0.45, 0.0, 1.0, 0.55))
-        left_ok = left["variance"] < 1800 and left["mean_luminance"] < 120
-        horizon_ok = right["variance"] > 350 and right["mean_luminance"] > 45
+        left = _region_stats(img, (0.0, 0.0, 0.48, 0.85))
+        landmark = _region_stats(img, (0.42, 0.0, 1.0, 0.72))
+        left_ok = left["variance"] < 2000 and left["mean_luminance"] < 125
+        landmark_ok = landmark["variance"] > 700 and landmark["mean_luminance"] > 50
         checks.append(
             QACheck("econ_left_column_clean", "pass" if left_ok else "fail", True, left)
         )
         checks.append(
             QACheck(
-                "econ_low_contrast",
+                "econ_low_contrast_left",
                 "pass" if left_ok else "fail",
                 True,
                 {"left_mean_luminance": left["mean_luminance"], "left_variance": left["variance"]},
@@ -309,21 +310,10 @@ def qa_image_gate(
         )
         checks.append(
             QACheck(
-                "econ_horizon_has_landmark_texture",
-                "pass" if horizon_ok else "pending_human",
-                False,
-                right,
-            )
-        )
-    elif role == "market_showcase_bg":
-        right = _region_stats(img, (0.35, 0.0, 1.0, 0.75))
-        iconic_ok = right["variance"] > 500 and right["mean_luminance"] > 55
-        checks.append(
-            QACheck(
-                "showcase_iconic_market_scene",
-                "pass" if iconic_ok else "pending_human",
-                False,
-                right,
+                "econ_landmark_skyline_visible",
+                "pass" if landmark_ok else "fail",
+                True,
+                landmark,
             )
         )
 
@@ -581,6 +571,38 @@ MARKET_SCENES: dict[str, str] = {
     "europe-network": "European coastline — Aegean, Adriatic and Riviera island silhouettes",
 }
 
+# Market-specific landmarks for unit-economics slides (must read at thumbnail size).
+ECON_LANDMARKS: dict[str, str] = {
+    "athens-saronic-greece": (
+        "Hydra island amphitheatre of whitewashed houses and blue domes climbing the Saronic cliff above "
+        "the Aegean — unmistakably Greece"
+    ),
+    "split-croatia": (
+        "Hvar old-town cathedral bell tower and stone palazzi above Split harbour, Dalmatian pine islets — "
+        "unmistakably Croatia"
+    ),
+    "cote-dazur-france": (
+        "Nice Promenade des Anglais, Baie des Anges, and Monaco harbour super-yachts with belle-époque "
+        "façades — unmistakably the French Riviera"
+    ),
+    "sorrento-italy": (
+        "Sorrento cliff terraces, Capri Faraglioni sea stacks, and pastel Amalfi Coast villages — "
+        "unmistakably Italy"
+    ),
+    "dubai-uae": (
+        "Dubai Marina and JBR tower skyline reflected on the Gulf — unmistakably Dubai (Gulf market only)"
+    ),
+    "jeddah-ksa": (
+        "Jeddah Corniche waterfront, King Fahd Fountain, and Red Sea turquoise bay — unmistakably Jeddah"
+    ),
+    "mykonos-greece": (
+        "Mykonos windmills and white cubic houses, Paros Naoussa harbour — unmistakably the Cyclades"
+    ),
+    "red-sea-ksa": (
+        "Red Sea desert mountains framing turquoise AMAALA/Triple Bay coastline — unmistakably Saudi Red Sea"
+    ),
+}
+
 # Foils *deployed* (in the water) = hydrofoiling. Never depict a displacement ferry sitting low.
 FOIL_STATE = (
     "underwater foils fully deployed, hull riding elevated above the waterline on the foils, "
@@ -621,29 +643,19 @@ def prompt_partner_roles(scene: str) -> str:
     )
 
 
-def prompt_econ(scene: str) -> str:
+def prompt_econ(market_slug: str) -> str:
+    landmark = ECON_LANDMARKS[market_slug]
     return (
         "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, "
         "produce a single photorealistic 16:9 photograph for a unit-economics chart slide. "
-        "Keep the left half and upper-left calm, low-contrast navy/slate so white tables overlay cleanly. "
-        f"On the right horizon, a soft but recognizable silhouette of {scene} — warm golden-hour grade, "
-        "not flat gray. A single white hydrofoil is small in the lower-right, "
+        "Composition split: the left 42% is a smooth, calm navy-to-slate sky-and-water gradient — "
+        "low enough contrast for white P&L tables and charts. "
+        f"The right 58% is a photorealistic, clearly recognizable view of {landmark}. "
+        "The landmark skyline or coastline must be identifiable at thumbnail size — vibrant warm "
+        "golden-hour light, market-specific detail (buildings, cliffs, towers, harbour), never a generic "
+        "empty ocean. A single white hydrofoil is small in the lower-right on open water, "
         f"{FOIL_STATE}. Hull/cabin/V-mark exactly as the reference, in-water no seam. "
-        "Exactly one vessel. Premium photographic, not depressing. No people, no logos, no text."
-        + _grade_suffix()
-    )
-
-
-def prompt_market_showcase(scene: str) -> str:
-    return (
-        "Using <IMAGE_0> as the white hydrofoil vessel as the exact form and colour reference, "
-        "produce a single photorealistic 16:9 photograph. "
-        f"Iconic, aspirational postcard view of {scene} — unmistakable local skyline or coastline, "
-        "warm golden-hour sunlight, vibrant premium grade. "
-        f"The white hydrofoil cruises in the mid-ground, {FOIL_STATE}, light bow wake. "
-        "Frame for a side-panel market slide: subject in the right two-thirds, calm sky/water "
-        "breathing room on the left for route copy. Exactly one vessel, hull/cabin/V-mark exactly as "
-        "the reference, in-water no seam. No logos, no text, no other boats."
+        "Exactly one vessel. Aspirational premium grade. No people, no logos, no text, no map graphics."
         + _grade_suffix()
     )
 
@@ -692,8 +704,8 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/greece/greece-aegean-econ-tier-a-v1.png",
         "market_slug": "athens-saronic-greece",
         "atlas_city_id": "athens-saronic-greece",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["athens-saronic-greece"]),
-        "seed": "bolt-wave21-econ-greece-athens",
+        "prompt": lambda: prompt_econ("athens-saronic-greece"),
+        "seed": "bolt-wave22-econ-greece-athens",
     },
     {
         "key": "econ-croatia-split-hvar",
@@ -702,8 +714,8 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/croatia/croatia-dalmatian-econ-tier-a-v1.png",
         "market_slug": "split-croatia",
         "atlas_city_id": "split-croatia",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["split-croatia"]),
-        "seed": "bolt-wave21-econ-croatia-split",
+        "prompt": lambda: prompt_econ("split-croatia"),
+        "seed": "bolt-wave22-econ-croatia-split",
     },
     {
         "key": "econ-cote-azur-nice-monaco",
@@ -712,8 +724,8 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/cote-dazur/cote-azur-econ-tier-a-v1.png",
         "market_slug": "cote-dazur-france",
         "atlas_city_id": "cote-dazur-france",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["cote-dazur-france"]),
-        "seed": "bolt-wave21-econ-cote-azur",
+        "prompt": lambda: prompt_econ("cote-dazur-france"),
+        "seed": "bolt-wave22-econ-cote-azur",
     },
     {
         "key": "econ-italy-sorrento-capri",
@@ -721,8 +733,8 @@ REMAINING_PLATES: list[dict] = [
         "scope": "market",
         "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-econ-tier-a-v1.png",
         "market_slug": "sorrento-italy",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["sorrento-italy"]),
-        "seed": "bolt-wave21-econ-italy-amalfi",
+        "prompt": lambda: prompt_econ("sorrento-italy"),
+        "seed": "bolt-wave22-econ-italy-amalfi",
     },
     {
         "key": "econ-uae-dubai-harbour",
@@ -731,8 +743,8 @@ REMAINING_PLATES: list[dict] = [
         "local_path": "assets/backgrounds/markets/uae/uae-dubai-econ-tier-a-v1.png",
         "market_slug": "dubai-uae",
         "atlas_city_id": "dubai-uae",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["dubai-uae"]),
-        "seed": "bolt-wave21-econ-uae-dubai",
+        "prompt": lambda: prompt_econ("dubai-uae"),
+        "seed": "bolt-wave22-econ-uae-dubai",
     },
     {
         "key": "econ-ksa-jeddah",
@@ -740,8 +752,8 @@ REMAINING_PLATES: list[dict] = [
         "scope": "market",
         "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-econ-tier-a-v1.png",
         "market_slug": "jeddah-ksa",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["jeddah-ksa"]),
-        "seed": "bolt-wave21-econ-ksa-jeddah",
+        "prompt": lambda: prompt_econ("jeddah-ksa"),
+        "seed": "bolt-wave22-econ-ksa-jeddah",
     },
     {
         "key": "econ-greece-mykonos-paros",
@@ -749,18 +761,20 @@ REMAINING_PLATES: list[dict] = [
         "scope": "market",
         "local_path": "assets/backgrounds/markets/greece/greece-cyclades-econ-tier-a-v1.png",
         "market_slug": "mykonos-greece",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["mykonos-greece"]),
-        "seed": "bolt-wave21-econ-greece-cyclades",
+        "prompt": lambda: prompt_econ("mykonos-greece"),
+        "seed": "bolt-wave22-econ-greece-cyclades",
     },
-    {
-        "key": "econ-croatia-dubrovnik",
-        "role": "econ_market_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-econ-tier-a-v1.png",
-        "market_slug": "dubrovnik-croatia",
-        "prompt": lambda: prompt_econ(MARKET_SCENES["dubrovnik-croatia"]),
-        "seed": "bolt-wave21-econ-croatia-dubrovnik",
-    },
+]
+
+ECON_PLATE_KEYS = [
+    "econ-greece-athens-hydra",
+    "econ-croatia-split-hvar",
+    "econ-cote-azur-nice-monaco",
+    "econ-italy-sorrento-capri",
+    "econ-uae-dubai-harbour",
+    "econ-ksa-jeddah",
+    "econ-greece-mykonos-paros",
+    "econ-ksa-redsea-amaala",
 ]
 
 REDSEA_AMAALA_PLATE: dict = {
@@ -769,8 +783,8 @@ REDSEA_AMAALA_PLATE: dict = {
     "scope": "market",
     "local_path": "assets/backgrounds/markets/ksa/ksa-redsea-amaala-econ-tier-a-v1.png",
     "market_slug": "red-sea-ksa",
-    "prompt": lambda: prompt_econ(MARKET_SCENES["red-sea-ksa"]),
-    "seed": "bolt-wave21-econ-ksa-redsea-amaala",
+    "prompt": lambda: prompt_econ("red-sea-ksa"),
+    "seed": "bolt-wave22-econ-ksa-redsea-amaala",
     "used_by": [
         {
             "deck": "bolt",
@@ -976,7 +990,7 @@ DECK_LEVEL_IMAGE_OP_BINDINGS: dict[str, tuple[str, str, str]] = {
 
 
 def all_image_op_bindings(*, roles: set[str] | None = None) -> dict[str, tuple[str, str, str]]:
-    """Deck-level plates + slide-image-bindings.json (authoritative for econ + showcase)."""
+    """Deck-level plates + slide-image-bindings.json (authoritative for econ)."""
     doc = load_slide_bindings("bolt")
     errs = validate_bindings(doc)
     if errs:
@@ -986,53 +1000,10 @@ def all_image_op_bindings(*, roles: set[str] | None = None) -> dict[str, tuple[s
     return merged
 
 
-SHOWCASE_PLATES: list[dict] = [
-    {
-        "key": "showcase-italy-sorrento-capri",
-        "role": "market_showcase_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/italy-amalfi/italy-amalfi-showcase-tier-a-v1.png",
-        "market_slug": "sorrento-italy",
-        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["sorrento-italy"]),
-        "seed": "bolt-wave21-showcase-italy-amalfi",
-    },
-    {
-        "key": "showcase-uae-dubai-harbour",
-        "role": "market_showcase_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/uae/uae-dubai-showcase-tier-a-v1.png",
-        "market_slug": "dubai-uae",
-        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["dubai-uae"]),
-        "seed": "bolt-wave21-showcase-uae-dubai",
-    },
-    {
-        "key": "showcase-ksa-jeddah",
-        "role": "market_showcase_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/ksa/ksa-jeddah-showcase-tier-a-v1.png",
-        "market_slug": "jeddah-ksa",
-        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["jeddah-ksa"]),
-        "seed": "bolt-wave21-showcase-ksa-jeddah",
-    },
-    {
-        "key": "showcase-greece-mykonos-paros",
-        "role": "market_showcase_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/greece/greece-cyclades-showcase-tier-a-v1.png",
-        "market_slug": "mykonos-greece",
-        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["mykonos-greece"]),
-        "seed": "bolt-wave21-showcase-greece-cyclades",
-    },
-    {
-        "key": "showcase-croatia-dubrovnik",
-        "role": "market_showcase_bg",
-        "scope": "market",
-        "local_path": "assets/backgrounds/markets/croatia/croatia-dubrovnik-showcase-tier-a-v1.png",
-        "market_slug": "dubrovnik-croatia",
-        "prompt": lambda: prompt_market_showcase(MARKET_SCENES["dubrovnik-croatia"]),
-        "seed": "bolt-wave21-showcase-croatia-dubrovnik",
-    },
-]
+def _econ_plate_specs() -> dict[str, dict]:
+    specs = {s["key"]: s for s in REMAINING_PLATES if s["key"].startswith("econ-")}
+    specs[REDSEA_AMAALA_PLATE["key"]] = REDSEA_AMAALA_PLATE
+    return specs
 
 
 def cmd_generate_remaining() -> int:
@@ -1089,9 +1060,107 @@ def cmd_approve_redsea_amaala() -> int:
     return 0
 
 
+def cmd_regenerate_all_econ() -> int:
+    return cmd_regenerate_keys(ECON_PLATE_KEYS)
+
+
+def cmd_approve_all_econ() -> int:
+    approved = []
+    skipped = []
+    registry = load_json(REGISTRY_PATH)
+    for key in ECON_PLATE_KEYS:
+        asset = registry.get("assets", {}).get(key, {})
+        receipt = asset.get("qa_receipt") or asset.get("generation", {}).get("qa_receipt", {})
+        if receipt.get("blocking_failures"):
+            skipped.append({"key": key, "reason": "auto_fail", "failures": receipt["blocking_failures"]})
+            continue
+        if asset.get("qa_status") == "pass":
+            skipped.append({"key": key, "reason": "already_pass"})
+            continue
+        approve_asset_qa(key, approver="wave22-econ-landmark-batch")
+        approved.append(key)
+    print(json.dumps({"approved": approved, "skipped": skipped}, indent=2))
+    return 1 if skipped and any(s.get("reason") == "auto_fail" for s in skipped) else 0
+
+
+def cmd_apply_atlas_screenshots() -> int:
+    """Publish and apply human-captured Atlas screenshots for slides 4–6 and 14–18."""
+    doc = load_slide_bindings("bolt")
+    atlas_dir = ROOT / doc.get("atlas_screenshot_dir", "assets/screenshots/atlas/bolt")
+    sys.path.insert(0, str(BUILDERS))
+    from deck_autonomy_sync import publish_assets_to_drive  # type: ignore
+
+    registry = load_json(REGISTRY_PATH)
+    assets = registry.setdefault("assets", {})
+    pending = []
+    registered = []
+    for bind in atlas_bindings(doc):
+        key = bind["registry_key"]
+        filename = bind.get("atlas_filename")
+        if not filename:
+            pending.append({"slide": bind["slide_index"], "reason": "missing atlas_filename"})
+            continue
+        local_path = f"{doc.get('atlas_screenshot_dir', 'assets/screenshots/atlas/bolt')}/{filename}"
+        full = ROOT / local_path
+        if not full.is_file():
+            pending.append({"slide": bind["slide_index"], "key": key, "expected": local_path})
+            continue
+        assets[key] = {
+            **assets.get(key, {}),
+            "role": "atlas_route_screenshot",
+            "scope": "deck",
+            "partner": "bolt",
+            "market_slug": bind.get("market_slug"),
+            "local_path": local_path,
+            "provenance": "human_capture:navier-atlas.vercel.app",
+            "status": "checked_in",
+            "license": "navier-internal",
+            "reproducible": False,
+            "composited": False,
+            "captured_at": utc_now(),
+            "used_by": [
+                {
+                    "deck": "bolt",
+                    "slide_index": bind["slide_index"],
+                    "slide_object_id": bind["slide_object_id"],
+                    "target_object_id": bind["target_object_id"],
+                }
+            ],
+            "notes": f"Atlas route screenshot slide {bind['slide_index']}",
+        }
+        registered.append(key)
+    write_json(REGISTRY_PATH, registry)
+    if not registered:
+        print(json.dumps({"applied": 0, "pending": pending}, indent=2))
+        return 0
+    clear_drive_urls_for_republish(*registered)
+    publish_assets_to_drive(REGISTRY_PATH)
+    registry = load_json(REGISTRY_PATH)
+    ops = []
+    for bind in atlas_bindings(doc):
+        key = bind["registry_key"]
+        if key not in registered:
+            continue
+        url = registry["assets"][key].get("source_url")
+        if not url:
+            raise SystemExit(f"{key} missing source_url after publish")
+        ops.append(
+            image_replace_op(
+                bind["slide_object_id"],
+                bind["target_object_id"],
+                url,
+                op_key=f"bolt-atlas-{key}",
+                source_pointer=f"ASSET-REGISTRY {key}",
+                method=bind.get("apply_method", "CENTER_CROP"),
+            )
+        )
+    apply_image_ops_only(ops, require_qa_pass=False)
+    print(json.dumps({"applied": len(ops), "registered": registered, "pending": pending}, indent=2))
+    return 0
+
+
 def cmd_regenerate_keys(keys: list[str]) -> int:
-    by_key = {s["key"]: s for s in REMAINING_PLATES}
-    by_key["econ-ksa-redsea-amaala"] = REDSEA_AMAALA_PLATE
+    by_key = _econ_plate_specs()
     results = []
     for key in keys:
         spec = by_key.get(key)
@@ -1131,14 +1200,15 @@ def cmd_validate_bindings() -> int:
         print(json.dumps({"status": "fail", "errors": errs}, indent=2))
         return 1
     econ = image_op_bindings(doc, roles={"econ_market_bg"})
-    showcase = image_op_bindings(doc, roles={"market_showcase_bg"})
+    atlas = image_op_bindings(doc, roles={"atlas_route_screenshot"})
     print(
         json.dumps(
             {
                 "status": "pass",
                 "econ_bindings": len(econ),
-                "showcase_bindings": len(showcase),
+                "atlas_bindings": len(atlas),
                 "econ_slides": sorted(b["slide_index"] for b in doc["bindings"] if b["image_role"] == "econ_market_bg"),
+                "atlas_slides": sorted(b["slide_index"] for b in doc["bindings"] if b["image_role"] == "atlas_route_screenshot"),
             },
             indent=2,
         )
@@ -1151,19 +1221,6 @@ def cmd_apply_econ_bindings() -> int:
     return cmd_publish_and_apply_approved(
         only=list(image_op_bindings(load_slide_bindings("bolt"), roles={"econ_market_bg"}).keys())
     )
-
-
-def cmd_generate_showcase_plates() -> int:
-    results = []
-    for spec in SHOWCASE_PLATES:
-        print(f"generating {spec['key']}...", flush=True)
-        try:
-            results.append(generate_and_save_plate(spec))
-        except Exception as e:
-            results.append({"key": spec["key"], "error": str(e), "qa_overall": "fail"})
-    print(json.dumps(results, indent=2))
-    fails = [r for r in results if r.get("qa_overall") == "fail" or r.get("error")]
-    return 1 if fails else 0
 
 
 def cmd_publish_and_apply_approved(*, only: list[str] | None = None) -> int:
@@ -1221,7 +1278,9 @@ def main() -> int:
     sub.add_parser("approve-redsea-amaala")
     sub.add_parser("validate-bindings")
     sub.add_parser("apply-econ-bindings")
-    sub.add_parser("generate-showcase-plates")
+    sub.add_parser("regenerate-all-econ")
+    sub.add_parser("approve-all-econ")
+    sub.add_parser("apply-atlas-screenshots")
     sub.add_parser("generate-cover-greece")
     sub.add_parser("approve-cover")
     sub.add_parser("approve-slide2")
@@ -1253,8 +1312,12 @@ def main() -> int:
         return cmd_validate_bindings()
     if args.cmd == "apply-econ-bindings":
         return cmd_apply_econ_bindings()
-    if args.cmd == "generate-showcase-plates":
-        return cmd_generate_showcase_plates()
+    if args.cmd == "regenerate-all-econ":
+        return cmd_regenerate_all_econ()
+    if args.cmd == "approve-all-econ":
+        return cmd_approve_all_econ()
+    if args.cmd == "apply-atlas-screenshots":
+        return cmd_apply_atlas_screenshots()
     if args.cmd == "tag-drift-controls":
         tag_drift_controls()
         print("tagged drift controls")
