@@ -55,42 +55,44 @@ WORLD_SLOTS = [
     ("narr2_w3_h", "narr2_w3_b"),
     ("narr2_w4_h", "narr2_w4_b"),
 ]
-# four proof chips -> value/caption object_ids
-CHIP_SLOTS = [
-    ("narr2_chip1_v", "narr2_chip1_c"),
-    ("narr2_chip2_v", "narr2_chip2_c"),
-    ("narr2_chip3_v", "narr2_chip3_c"),
-    ("narr2_chip4_v", "narr2_chip4_c"),
-]
-IMAGE_ID = "narr2_image"   # filled by N30 image archetype A2 (image-manifest), not here
-RULE_ID  = "narr2_rule"    # thin gold accent rule
+# PROOF CHIPS REMOVED (2026-06-22, partner-comment pass).
+#   The bottom KPI strip created cross-slide number redundancy (slide-2 ~100/250 vessels
+#   vs slide-4 1,000+) and review risk, and crowded the copy. Slide 2 is now
+#   kicker + lockup + positioning + thesis + the_deal + the 2x2 "Your world" beats only.
+#   Quantified proof lives on slide 4 (THE REGION) and in the economics sidecar.
+#   network_thesis.stats is STILL distilled into narrative-slide2-<partner>.json (for the
+#   sidecar / provenance), it is simply no longer painted on slide 2. The chip object IDs
+#   (narr2_chip{1..4}_{v,c}) are retired; if a deck still carries them from the old
+#   gold-create, the per-deck paint step deletes them (see RETIRED_OBJECT_IDS).
+RETIRED_OBJECT_IDS = [f"narr2_chip{i}_{s}" for i in (1, 2, 3, 4) for s in ("v", "c")]
 
-# ---- Geometry (EMU). Left text column + right image zone. UI-tunable post-create.
+BG_IMAGE_ID = "narr2_bg_img"   # full-bleed market background (N30 archetype A2); wired in the image step
+SCRIM_ID    = "narr2_scrim"    # full-bleed navy legibility scrim, sits above the bg image, below the text
+RULE_ID     = "narr2_rule"     # thin gold accent rule under "Your world"
+
+# ---- Geometry (EMU). Single left-weighted text column over a full-bleed market image.
+#   Rhythm matches the human-tuned live Grab slide (content shifted up; KPI strip removed;
+#   the 2x2 beats enlarged and spread into the freed lower third). UI-tunable post-create.
 GEO = {
     "narr2_kicker":      dict(x=430000,  y=300000,  w=4600000, h=320000),
-    "narr2_lockup":      dict(x=430000,  y=620000,  w=5200000, h=760000),
-    "narr2_positioning": dict(x=430000,  y=1360000, w=5200000, h=420000),
-    "narr2_thesis":      dict(x=430000,  y=1760000, w=5200000, h=560000),
-    "narr2_deal":        dict(x=430000,  y=2360000, w=5200000, h=620000),
-    "narr2_world_label": dict(x=430000,  y=3010000, w=2600000, h=280000),
-    RULE_ID:             dict(x=430000,  y=3290000, w=5200000, h=14000),
-    IMAGE_ID:            dict(x=5900000, y=0,       w=3244000, h=5143500),
+    "narr2_lockup":      dict(x=430000,  y=543800,  w=5200000, h=760000),
+    "narr2_positioning": dict(x=430000,  y=1055200, w=5200000, h=420000),
+    "narr2_thesis":      dict(x=430000,  y=1455200, w=5200000, h=560000),
+    "narr2_deal":        dict(x=430000,  y=2055200, w=5200000, h=620000),
+    "narr2_world_label": dict(x=430000,  y=2705200, w=2600000, h=280000),
+    RULE_ID:             dict(x=430000,  y=2985200, w=5200000, h=14000),
+    SCRIM_ID:            dict(x=0,       y=0,       w=EMU_W,   h=EMU_H),
 }
-# 2x2 beat grid (lower-left) — beats are 2-line teasers; rows tightened so the
-# proof-chip strip below clears them AND the 2-line chip captions clear the slide
-# bottom edge (Slides does not clip text to the box; only the page edge clips). LB-256.
-_bx = [430000, 3050000]; _by = [3360000, 3960000]
-for i,(h,b) in enumerate(WORLD_SLOTS):
+# 2x2 beat grid (lower-left), enlarged (head 11pt / body 10pt) and spread into the
+# space the proof-chip strip vacated. Text boxes do not clip (only the page edge clips);
+# row2 body ends ~4665000, inside the 5143500 page edge.
+_bx = [430000, 3050000]
+_by_head = [3055200, 3900000]
+_by_body = [3300000, 4145000]
+for i, (h, b) in enumerate(WORLD_SLOTS):
     col, row = i % 2, i // 2
-    GEO[h] = dict(x=_bx[col], y=_by[row],          w=2480000, h=220000)
-    GEO[b] = dict(x=_bx[col], y=_by[row]+225000,   w=2480000, h=340000)
-# proof chips: horizontal strip along the bottom (value clears beat row2 @ 4525000;
-# 2-line caption ends ~5060000, inside the 5143500 page edge)
-_cx0, _cw, _cgap = 430000, 1230000, 80000
-for i,(v,c) in enumerate(CHIP_SLOTS):
-    x = _cx0 + i*(_cw+_cgap)
-    GEO[v] = dict(x=x, y=4585000, w=_cw, h=190000)
-    GEO[c] = dict(x=x, y=4780000, w=_cw, h=330000)
+    GEO[h] = dict(x=_bx[col], y=_by_head[row], w=2480000, h=240000)
+    GEO[b] = dict(x=_bx[col], y=_by_body[row], w=2480000, h=520000)
 
 # ---- Styles (applied once at gold-create; inherited thereafter)
 STYLE = {
@@ -100,11 +102,11 @@ STYLE = {
     "narr2_thesis":      dict(size=15,  bold=True,  color="FFFFFF", italic=False),
     "narr2_deal":        dict(size=11,  bold=False, color="E8E8E8", italic=False),
     "narr2_world_label": dict(size=10,  bold=True,  color="C9A227", italic=False),
-    "_beat_head":        dict(size=10,  bold=True,  color="FFFFFF", italic=False),
-    "_beat_body":        dict(size=8.5, bold=False, color="CFCFCF", italic=False),
-    "_chip_value":       dict(size=12,  bold=True,  color="C9A227", italic=False),
-    "_chip_caption":     dict(size=7,   bold=False, color="BDBDBD", italic=False),
+    "_beat_head":        dict(size=11,  bold=True,  color="FFFFFF", italic=False),
+    "_beat_body":        dict(size=10,  bold=False, color="CFCFCF", italic=False),
 }
+# Full-bleed navy legibility scrim (matches the live deck): rgb(0.039,0.071,0.125), alpha 0.5.
+SCRIM_FILL = dict(red=0.039215688, green=0.07058824, blue=0.1254902, alpha=0.5)
 
 def load_narrative(partner):
     p = os.path.join(ROOT, "deck-studio", "decks", partner, f"narrative-slide2-{partner}.json")
@@ -128,22 +130,12 @@ def build_binding(partner, nar, src_rel):
                         "sample": (nar.get(fk) if present else None)}
     world = []
     src_world = nar.get("your_world", []) or []
-    for i,(h,b) in enumerate(WORLD_SLOTS):
+    for i, (h, b) in enumerate(WORLD_SLOTS):
         item = src_world[i] if i < len(src_world) else None
         world.append({"head_object_id": h, "body_object_id": b,
                       "present": item is not None,
                       "sample_label": (item or {}).get("label"),
                       "sample_text": (item or {}).get("text")})
-    chips = []
-    src_chips = nar.get("proof_strip", []) or []
-    for i,(v,c) in enumerate(CHIP_SLOTS):
-        item = src_chips[i] if i < len(src_chips) else None
-        chips.append({"value_object_id": v, "caption_object_id": c,
-                      "present": item is not None,
-                      "sample_value": (item or {}).get("value"),
-                      "sample_caption": (f"{(item or {}).get('label','')} · {(item or {}).get('sub','')}".strip(" ·")
-                                         if item else None),
-                      "external": bool((item or {}).get("_external"))})
     return {
         "deck_key": partner,
         "presentation_id": GOLD_PRESENTATION_ID if partner == "grab" else None,
@@ -158,23 +150,32 @@ def build_binding(partner, nar, src_rel):
                     "This file says WHERE; the proposal says WHAT. The slide itself is created ONCE in "
                     "gold via narrative-slide2.gold-create.editplan.json with these exact IDs, then "
                     "inherited by every gold copy. Never author prose; never invent object_ids."),
-        "image_slot": {"object_id": IMAGE_ID, "filled_by": "N30 image archetype A2 (image-manifest.json)"},
+        "background": {"image_object_id": BG_IMAGE_ID,
+                       "filled_by": "N30 image archetype A2 (image-manifest.json), full-bleed",
+                       "scrim_object_id": SCRIM_ID,
+                       "note": "Background is a full-bleed market image with a navy scrim for legibility; "
+                               "text sits above the scrim. No right-zone image box."},
         "accent_rule": {"object_id": RULE_ID},
+        "proof_strip": {"painted_on_slide2": False,
+                        "retired_object_ids": RETIRED_OBJECT_IDS,
+                        "note": "KPI chips removed 2026-06-22 (cross-slide redundancy + copy room). "
+                                "network_thesis.stats remains in narrative JSON for the economics "
+                                "sidecar and slide 4, but is NOT painted on slide 2."},
         "fields": pins,
         "your_world": world,
-        "proof_strip": chips,
-        "render_order": ["kicker","partner_lockup","positioning","thesis","the_deal",
-                         "world_label","your_world[0..3]","proof_strip[0..3]"],
+        "render_order": ["background", "scrim", "kicker", "partner_lockup", "positioning",
+                         "thesis", "the_deal", "world_label", "rule", "your_world[0..3]"],
         "paint_protocol": ("Per-deck (after one-time gold-create): for each present pin, "
                            "deleteText{objectId,textRange:ALL} then insertText{objectId,insertionIndex:0}. "
                            "Skip pins where present=false (null beats confidently-wrong). "
-                           "Numbers in proof_strip must trace to narrative proof_sources or FLAG."),
-        "qa_gates": ["leak_denylist","char_budget_scan","orphan_number_check",
-                     "style_reset_scan","drift_gate","render_thumbnails"],
+                           "If the deck still carries RETIRED_OBJECT_IDS, deleteObject them. "
+                           "No numbers are painted on slide 2; quantified proof lives on slide 4 + sidecar."),
+        "qa_gates": ["leak_denylist", "char_budget_scan", "orphan_number_check",
+                     "style_reset_scan", "drift_gate", "render_thumbnails"],
     }
 
 def _rgb(hexc):
-    return {"red": int(hexc[0:2],16)/255, "green": int(hexc[2:4],16)/255, "blue": int(hexc[4:6],16)/255}
+    return {"red": int(hexc[0:2], 16) / 255, "green": int(hexc[2:4], 16) / 255, "blue": int(hexc[4:6], 16) / 255}
 
 def _shape_req(oid, geo, style_key=None, text=None, kind="TEXT_BOX"):
     reqs = [{
@@ -204,6 +205,26 @@ def _shape_req(oid, geo, style_key=None, text=None, kind="TEXT_BOX"):
                      "textRange": {"type": "ALL"}, "fields": fields}})
     return reqs
 
+def _scrim_reqs():
+    """Full-bleed navy legibility scrim, created right after the slide so text sits on top
+    and the market bg image (page-background stretchedPictureFill, applied in the image step)
+    sits behind it."""
+    g = GEO[SCRIM_ID]
+    return [
+        {"createShape": {"objectId": SCRIM_ID, "shapeType": "RECTANGLE",
+                         "elementProperties": {"pageObjectId": PAGE_ID,
+                             "size": {"width": {"magnitude": g["w"], "unit": "EMU"},
+                                      "height": {"magnitude": g["h"], "unit": "EMU"}},
+                             "transform": {"scaleX": 1, "scaleY": 1,
+                                           "translateX": g["x"], "translateY": g["y"], "unit": "EMU"}}}},
+        {"updateShapeProperties": {"objectId": SCRIM_ID,
+            "shapeProperties": {"shapeBackgroundFill": {"solidFill": {
+                "color": {"rgbColor": {"red": SCRIM_FILL["red"], "green": SCRIM_FILL["green"],
+                                       "blue": SCRIM_FILL["blue"]}}, "alpha": SCRIM_FILL["alpha"]}},
+                "outline": {"propertyState": "NOT_RENDERED"}},
+            "fields": "shapeBackgroundFill.solidFill,outline.propertyState"}},
+    ]
+
 def build_gold_create(partner, nar):
     reqs = [{
         "createSlide": {
@@ -212,10 +233,10 @@ def build_gold_create(partner, nar):
             "slideLayoutReference": {"predefinedLayout": "BLANK"},
         }
     }, {
-        # On-brand dark base so the white/gold text is legible immediately.
-        # BLANK predefined layout is white; deck slides are #050505-#111111.
-        # The market background image gets wired onto this page in the image step
-        # (page-background stretchedPictureFill, which always sits behind text).
+        # On-brand dark base so the white/gold text is legible immediately and remains
+        # legible if the image step is deferred. The market background image gets wired
+        # onto this page in the image step (page-background stretchedPictureFill, which
+        # always sits behind every element); the scrim below provides legibility over it.
         "updatePageProperties": {
             "objectId": PAGE_ID,
             "pageProperties": {
@@ -226,6 +247,8 @@ def build_gold_create(partner, nar):
             "fields": "pageBackgroundFill.solidFill.color",
         }
     }]
+    # Scrim first (above bg, below text).
+    reqs += _scrim_reqs()
     seeds = {
         "narr2_kicker":      ("narr2_kicker", "PARTNER PROPOSAL"),
         "narr2_lockup":      ("narr2_lockup", nar.get("partner_lockup")),
@@ -234,23 +257,15 @@ def build_gold_create(partner, nar):
         "narr2_deal":        ("narr2_deal", nar.get("the_deal")),
         "narr2_world_label": ("narr2_world_label", "Your world"),
     }
-    for oid,(skey,txt) in seeds.items():
+    for oid, (skey, txt) in seeds.items():
         if txt:
             reqs += _shape_req(oid, GEO[oid], skey, txt)
     reqs += _shape_req(RULE_ID, GEO[RULE_ID], kind="RECTANGLE")
-    for i,(h,b) in enumerate(WORLD_SLOTS):
+    for i, (h, b) in enumerate(WORLD_SLOTS):
         items = nar.get("your_world", []) or []
         if i < len(items):
             reqs += _shape_req(h, GEO[h], "_beat_head", items[i].get("label"))
             reqs += _shape_req(b, GEO[b], "_beat_body", items[i].get("text"))
-    for i,(v,c) in enumerate(CHIP_SLOTS):
-        chips = nar.get("proof_strip", []) or []
-        if i < len(chips):
-            ch = chips[i]
-            cap = f"{ch.get('label','')} · {ch.get('sub','')}".strip(" ·")
-            reqs += _shape_req(v, GEO[v], "_chip_value", ch.get("value"))
-            reqs += _shape_req(c, GEO[c], "_chip_caption", cap)
-    reqs += _shape_req(IMAGE_ID, GEO[IMAGE_ID], kind="TEXT_BOX")
     return {
         "deck_key": partner,
         "presentation_id": GOLD_PRESENTATION_ID,
@@ -259,14 +274,19 @@ def build_gold_create(partner, nar):
         "generated_from": "gen_narrative_binding.py",
         "purpose": ("Create the exec-summary slide ONCE in the Grab gold deck with PRE-ASSIGNED "
                     "object IDs, so it propagates to every future gold copy and the binding can pin "
-                    "to fixed IDs. Replay on any deck ALREADY forked from gold; new copies inherit it."),
+                    "to fixed IDs. Replay on any deck ALREADY forked from gold; new copies inherit it. "
+                    "v2 (2026-06-22): no proof-chip strip; 2x2 beats enlarged (11/10pt) and spread; "
+                    "full-bleed market bg + navy scrim (no right-zone image box)."),
         "safety": {"no_pptx_roundtrip": True, "no_full_deck_replace": True,
                    "preserve_object_ids": True, "additive_single_slide_insert": True,
                    "human_review_required_for_external_send": True},
+        "retired_object_ids": RETIRED_OBJECT_IDS,
         "post_create_actions": [
             "Capture the realized slide into golden-template-map.json (pre-described entry already added).",
             "Visually nudge layout in Slides UI if needed (IDs are stable; this is the one-time tuning).",
-            "Wire image slot narr2_image via image-manifest.json (N30 archetype A2).",
+            "Wire the full-bleed market background via image-manifest.json (N30 archetype A2) as the page "
+            "background (stretchedPictureFill); the scrim narr2_scrim provides legibility over it.",
+            "If replaying onto a deck that already has the old chip strip, deleteObject the retired_object_ids.",
         ],
         "requests": reqs,
     }
@@ -290,20 +310,19 @@ def main():
             if new is None:
                 continue
             if not os.path.exists(path):
-                print(f"✗ MISSING {os.path.relpath(path,ROOT)}"); ok = False; continue
+                print(f"\u2717 MISSING {os.path.relpath(path,ROOT)}"); ok = False; continue
             old = json.load(open(path))
             if json.dumps(old, sort_keys=True, ensure_ascii=False) == json.dumps(new, sort_keys=True, ensure_ascii=False):
-                print(f"✓ reproduces {os.path.relpath(path,ROOT)}")
+                print(f"\u2713 reproduces {os.path.relpath(path,ROOT)}")
             else:
-                print(f"✗ DRIFT {os.path.relpath(path,ROOT)}"); ok = False
+                print(f"\u2717 DRIFT {os.path.relpath(path,ROOT)}"); ok = False
         return 0 if ok else 1
 
     with open(b_path, "w") as f:
         json.dump(binding, f, indent=2, ensure_ascii=False)
     print(f"wrote {os.path.relpath(b_path,ROOT)}  "
           f"({sum(1 for v in binding['fields'].values() if v['present'])} scalar pins, "
-          f"{sum(1 for w in binding['your_world'] if w['present'])} beats, "
-          f"{sum(1 for c in binding['proof_strip'] if c['present'])} chips)")
+          f"{sum(1 for w in binding['your_world'] if w['present'])} beats, no chips)")
     if gold:
         with open(g_path, "w") as f:
             json.dump(gold, f, indent=2, ensure_ascii=False)

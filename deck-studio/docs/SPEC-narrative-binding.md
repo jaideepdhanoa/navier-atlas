@@ -115,3 +115,21 @@ If you re-tune, keep the chip-caption bottom inside the page edge or captions wi
      2030 (regulator)`. The only vessel numbers are now ~100 (live, slide 2) → 1,000+
      (maturity, slide 4): a progression, not a contradiction. Slide 4 left untouched; each
      metric now appears exactly once.
+- **2026-06-22 (slide-2 v3, partner-comment pass #2)** — two further reviewer comments:
+  1. **Remove the bottom KPI chips entirely; give the copy room.** The whole proof-chip strip
+     was creating more risk/uncertainty than value (and still echoed slide-4 numbers). Removed
+     all four chips (`narr2_chip{1..4}_{v,c}` → **retired**) on the live deck *and* in the
+     playbook. The 2x2 "Your world" beats were enlarged (head 10→**11pt**, body 8.5→**10pt**)
+     and spread into the freed lower third. `gen_narrative_binding.py` no longer paints chips;
+     `network_thesis.stats` is retained in the narrative JSON for the **economics sidecar +
+     slide 4 only** (`_proof_strip_painted_on_slide2: false`). Slide 2 now carries **no
+     numbers** — quantified proof lives on slide 4 (THE REGION). The one-time gold-create
+     editplan was regenerated to the new design (scrim + full-bleed bg, no chips, no
+     right-zone image box) so future gold copies inherit it; `--validate` reproduces.
+  2. **Same image on slides 2 and 3 — intentional?** No. See
+     `assets/IMAGE-ROLE-CONTRACT.md` → "Slide 2 vs the Three C's slide". The contract assigns
+     `value_prop_bg` to slide 2 and treats slide 3 as a **data/KPI** role; there is no
+     same-image rule. They matched only because `value_prop_bg` was banked from the *same* N30
+     composite the Three C's slide already used. **Definitive policy: distinct backgrounds.**
+     Added role `three_cs_bg` (status `needs_sourcing`, documented interim share) and repointed
+     `value_prop_bg` to the real slide-2 image (`narr2_bg_img`).

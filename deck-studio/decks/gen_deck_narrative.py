@@ -161,7 +161,11 @@ def build(partner):
         {"key": "why_now",     "label": "Why now",                "text": capped_beat("why_now",     d.get("why_now", ""),           "your_world.why_now")},
     ]
 
-    # proof strip: stats + matched sources from proof_points (external claims carry provenance)
+    # proof strip: stats + matched sources from proof_points (external claims carry provenance).
+    # NOTE (2026-06-22): the proof strip is NO LONGER painted on slide 2 — the KPI chips were
+    # removed to avoid cross-slide number redundancy (slide-2 vs slide-4) and to give the copy
+    # room. These stats are retained here for the economics sidecar and slide 4 (THE REGION),
+    # not for slide-2 rendering. The slide-2 binding ignores proof_strip.
     sources = []
     for p in d.get("proof_points", []):
         s = p.get("source")
@@ -188,6 +192,7 @@ def build(partner):
         "the_deal": capped("the_deal", hero.get("what_we_do_together", ""), "the_deal"),
         "your_world": your_world,
         "proof_strip": proof_strip,
+        "_proof_strip_painted_on_slide2": False,
         "proof_sources": sources,
         "_provenance_note": "Distilled leading sentences from the proposal; word caps flag (never truncate) overflow. External numbers (e.g. partner financials, regulator dates) are sourced facts — see proof_sources — not model outputs; model numbers belong to the economics sidecar.",
     }

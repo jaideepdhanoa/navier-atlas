@@ -4,7 +4,7 @@
   "run_scope": "ONE_TIME_GOLD_ONLY",
   "mode": "slides_api_batch_update",
   "generated_from": "gen_narrative_binding.py",
-  "purpose": "Create the exec-summary slide ONCE in the Grab gold deck with PRE-ASSIGNED object IDs, so it propagates to every future gold copy and the binding can pin to fixed IDs. Replay on any deck ALREADY forked from gold; new copies inherit it.",
+  "purpose": "Create the exec-summary slide ONCE in the Grab gold deck with PRE-ASSIGNED object IDs, so it propagates to every future gold copy and the binding can pin to fixed IDs. Replay on any deck ALREADY forked from gold; new copies inherit it. v2 (2026-06-22): no proof-chip strip; 2x2 beats enlarged (11/10pt) and spread; full-bleed market bg + navy scrim (no right-zone image box).",
   "safety": {
     "no_pptx_roundtrip": true,
     "no_full_deck_replace": true,
@@ -12,10 +12,21 @@
     "additive_single_slide_insert": true,
     "human_review_required_for_external_send": true
   },
+  "retired_object_ids": [
+    "narr2_chip1_v",
+    "narr2_chip1_c",
+    "narr2_chip2_v",
+    "narr2_chip2_c",
+    "narr2_chip3_v",
+    "narr2_chip3_c",
+    "narr2_chip4_v",
+    "narr2_chip4_c"
+  ],
   "post_create_actions": [
     "Capture the realized slide into golden-template-map.json (pre-described entry already added).",
     "Visually nudge layout in Slides UI if needed (IDs are stable; this is the one-time tuning).",
-    "Wire image slot narr2_image via image-manifest.json (N30 archetype A2)."
+    "Wire the full-bleed market background via image-manifest.json (N30 archetype A2) as the page background (stretchedPictureFill); the scrim narr2_scrim provides legibility over it.",
+    "If replaying onto a deck that already has the old chip strip, deleteObject the retired_object_ids."
   ],
   "requests": [
     {
@@ -44,6 +55,55 @@
           }
         },
         "fields": "pageBackgroundFill.solidFill.color"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_scrim",
+        "shapeType": "RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 9144000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 5143500,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 0,
+            "translateY": 0,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "narr2_scrim",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.039215688,
+                  "green": 0.07058824,
+                  "blue": 0.1254902
+                }
+              },
+              "alpha": 0.5
+            }
+          },
+          "outline": {
+            "propertyState": "NOT_RENDERED"
+          }
+        },
+        "fields": "shapeBackgroundFill.solidFill,outline.propertyState"
       }
     },
     {
@@ -124,7 +184,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 620000,
+            "translateY": 543800,
             "unit": "EMU"
           }
         }
@@ -182,7 +242,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 1360000,
+            "translateY": 1055200,
             "unit": "EMU"
           }
         }
@@ -241,7 +301,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 1760000,
+            "translateY": 1455200,
             "unit": "EMU"
           }
         }
@@ -299,7 +359,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 2360000,
+            "translateY": 2055200,
             "unit": "EMU"
           }
         }
@@ -357,7 +417,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 3010000,
+            "translateY": 2705200,
             "unit": "EMU"
           }
         }
@@ -415,7 +475,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 3290000,
+            "translateY": 2985200,
             "unit": "EMU"
           }
         }
@@ -433,7 +493,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 220000,
+              "magnitude": 240000,
               "unit": "EMU"
             }
           },
@@ -441,7 +501,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 3360000,
+            "translateY": 3055200,
             "unit": "EMU"
           }
         }
@@ -469,7 +529,7 @@
           },
           "bold": true,
           "fontSize": {
-            "magnitude": 10,
+            "magnitude": 11,
             "unit": "PT"
           }
         },
@@ -491,7 +551,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 340000,
+              "magnitude": 520000,
               "unit": "EMU"
             }
           },
@@ -499,7 +559,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 3585000,
+            "translateY": 3300000,
             "unit": "EMU"
           }
         }
@@ -527,7 +587,7 @@
           },
           "bold": false,
           "fontSize": {
-            "magnitude": 8.5,
+            "magnitude": 10,
             "unit": "PT"
           }
         },
@@ -549,7 +609,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 220000,
+              "magnitude": 240000,
               "unit": "EMU"
             }
           },
@@ -557,7 +617,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 3050000,
-            "translateY": 3360000,
+            "translateY": 3055200,
             "unit": "EMU"
           }
         }
@@ -585,7 +645,7 @@
           },
           "bold": true,
           "fontSize": {
-            "magnitude": 10,
+            "magnitude": 11,
             "unit": "PT"
           }
         },
@@ -607,7 +667,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 340000,
+              "magnitude": 520000,
               "unit": "EMU"
             }
           },
@@ -615,7 +675,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 3050000,
-            "translateY": 3585000,
+            "translateY": 3300000,
             "unit": "EMU"
           }
         }
@@ -643,7 +703,7 @@
           },
           "bold": false,
           "fontSize": {
-            "magnitude": 8.5,
+            "magnitude": 10,
             "unit": "PT"
           }
         },
@@ -665,7 +725,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 220000,
+              "magnitude": 240000,
               "unit": "EMU"
             }
           },
@@ -673,7 +733,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 3960000,
+            "translateY": 3900000,
             "unit": "EMU"
           }
         }
@@ -701,7 +761,7 @@
           },
           "bold": true,
           "fontSize": {
-            "magnitude": 10,
+            "magnitude": 11,
             "unit": "PT"
           }
         },
@@ -723,7 +783,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 340000,
+              "magnitude": 520000,
               "unit": "EMU"
             }
           },
@@ -731,7 +791,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 430000,
-            "translateY": 4185000,
+            "translateY": 4145000,
             "unit": "EMU"
           }
         }
@@ -759,7 +819,7 @@
           },
           "bold": false,
           "fontSize": {
-            "magnitude": 8.5,
+            "magnitude": 10,
             "unit": "PT"
           }
         },
@@ -781,7 +841,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 220000,
+              "magnitude": 240000,
               "unit": "EMU"
             }
           },
@@ -789,7 +849,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 3050000,
-            "translateY": 3960000,
+            "translateY": 3900000,
             "unit": "EMU"
           }
         }
@@ -817,7 +877,7 @@
           },
           "bold": true,
           "fontSize": {
-            "magnitude": 10,
+            "magnitude": 11,
             "unit": "PT"
           }
         },
@@ -839,7 +899,7 @@
               "unit": "EMU"
             },
             "height": {
-              "magnitude": 340000,
+              "magnitude": 520000,
               "unit": "EMU"
             }
           },
@@ -847,7 +907,7 @@
             "scaleX": 1,
             "scaleY": 1,
             "translateX": 3050000,
-            "translateY": 4185000,
+            "translateY": 4145000,
             "unit": "EMU"
           }
         }
@@ -856,7 +916,7 @@
     {
       "insertText": {
         "objectId": "narr2_w4_b",
-        "text": "Foiling lifts the hull clear of the water: faster, dramatically more efficient per passenger-mile…",
+        "text": "Foiling lifts the hull clear — faster, near-silent and far more efficient per seat-mile.",
         "insertionIndex": 0
       }
     },
@@ -875,7 +935,7 @@
           },
           "bold": false,
           "fontSize": {
-            "magnitude": 8.5,
+            "magnitude": 10,
             "unit": "PT"
           }
         },
@@ -883,496 +943,6 @@
           "type": "ALL"
         },
         "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip1_v",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 190000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 430000,
-            "translateY": 4585000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip1_v",
-        "text": "30+ clusters",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip1_v",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.788235294117647,
-                "green": 0.6352941176470588,
-                "blue": 0.15294117647058825
-              }
-            }
-          },
-          "bold": true,
-          "fontSize": {
-            "magnitude": 12,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip1_c",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 330000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 430000,
-            "translateY": 4780000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip1_c",
-        "text": "Reach · across Grab's 8 countries",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip1_c",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.7411764705882353,
-                "green": 0.7411764705882353,
-                "blue": 0.7411764705882353
-              }
-            }
-          },
-          "bold": false,
-          "fontSize": {
-            "magnitude": 7,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip2_v",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 190000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 1740000,
-            "translateY": 4585000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip2_v",
-        "text": "250+ vessels",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip2_v",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.788235294117647,
-                "green": 0.6352941176470588,
-                "blue": 0.15294117647058825
-              }
-            }
-          },
-          "bold": true,
-          "fontSize": {
-            "magnitude": 12,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip2_c",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 330000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 1740000,
-            "translateY": 4780000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip2_c",
-        "text": "At scale · on 120+ booked corridors",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip2_c",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.7411764705882353,
-                "green": 0.7411764705882353,
-                "blue": 0.7411764705882353
-              }
-            }
-          },
-          "bold": false,
-          "fontSize": {
-            "magnitude": 7,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip3_v",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 190000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 3050000,
-            "translateY": 4585000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip3_v",
-        "text": "~100 vessels",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip3_v",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.788235294117647,
-                "green": 0.6352941176470588,
-                "blue": 0.15294117647058825
-              }
-            }
-          },
-          "bold": true,
-          "fontSize": {
-            "magnitude": 12,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip3_c",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 330000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 3050000,
-            "translateY": 4780000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip3_c",
-        "text": "Live proof · Maldives network, $100M",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip3_c",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.7411764705882353,
-                "green": 0.7411764705882353,
-                "blue": 0.7411764705882353
-              }
-            }
-          },
-          "bold": false,
-          "fontSize": {
-            "magnitude": 7,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip4_v",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 190000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 4360000,
-            "translateY": 4585000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip4_v",
-        "text": "2030",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip4_v",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.788235294117647,
-                "green": 0.6352941176470588,
-                "blue": 0.15294117647058825
-              }
-            }
-          },
-          "bold": true,
-          "fontSize": {
-            "magnitude": 12,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_chip4_c",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 1230000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 330000,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 4360000,
-            "translateY": 4780000,
-            "unit": "EMU"
-          }
-        }
-      }
-    },
-    {
-      "insertText": {
-        "objectId": "narr2_chip4_c",
-        "text": "Regulator · Singapore clean-harbour-craft mandate",
-        "insertionIndex": 0
-      }
-    },
-    {
-      "updateTextStyle": {
-        "objectId": "narr2_chip4_c",
-        "style": {
-          "foregroundColor": {
-            "opaqueColor": {
-              "rgbColor": {
-                "red": 0.7411764705882353,
-                "green": 0.7411764705882353,
-                "blue": 0.7411764705882353
-              }
-            }
-          },
-          "bold": false,
-          "fontSize": {
-            "magnitude": 7,
-            "unit": "PT"
-          }
-        },
-        "textRange": {
-          "type": "ALL"
-        },
-        "fields": "foregroundColor,bold,fontSize"
-      }
-    },
-    {
-      "createShape": {
-        "objectId": "narr2_image",
-        "shapeType": "TEXT_BOX",
-        "elementProperties": {
-          "pageObjectId": "narr2_page",
-          "size": {
-            "width": {
-              "magnitude": 3244000,
-              "unit": "EMU"
-            },
-            "height": {
-              "magnitude": 5143500,
-              "unit": "EMU"
-            }
-          },
-          "transform": {
-            "scaleX": 1,
-            "scaleY": 1,
-            "translateX": 5900000,
-            "translateY": 0,
-            "unit": "EMU"
-          }
-        }
       }
     }
   ]
