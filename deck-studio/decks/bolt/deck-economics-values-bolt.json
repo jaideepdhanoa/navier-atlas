@@ -1,0 +1,332 @@
+{
+  "_meta": {
+    "doc": "Deterministic deck VALUE sidecar. Join field values onto economics-binding.json object_ids. Every number is read from the model engine; none are hand-typed. All figures are grounded-floor / modeled, not measured.",
+    "partner": "bolt",
+    "generated": "2026-06-22T10:27:17Z",
+    "sources": [
+      "finance/recal/agg-bolt.json",
+      "finance/recal/growth-bolt.json",
+      "deck-studio/decks/bolt/market-scope.json"
+    ],
+    "representative_corridor_rule": "grounded first, then revenue_per_boat_yr desc",
+    "capex_rule": "capex = model depreciation x 20yr dep-life (reproduces $900K US/EU, $600K RoW)",
+    "opex_total_rule": "sum of the six flush-left OPEX lines (energy, crew, marina, maintenance, insurance, charging_berth)",
+    "provenance_note": "grounded floor = demand x fare x ~10% capture; modeled, not a measured count"
+  },
+  "slide3_kpi": {
+    "network_cards": [
+      {
+        "value": "202",
+        "meaning": "premium water corridors mapped from real demand"
+      },
+      {
+        "value": "$996M",
+        "meaning": "premium sea-transfer spend already moving on these lanes, per year"
+      },
+      {
+        "value": "$104M floor",
+        "meaning": "SOM floor \u2014 Navier fare, today's trips, ~10% capture"
+      },
+      {
+        "value": "$8.8B",
+        "meaning": "marine-transfer TAM (induced market), mid of model band"
+      }
+    ],
+    "per_market_cards": {
+      "bolt-greece": {
+        "label": "Greece / Aegean",
+        "gulf_slide_only": false,
+        "kpis": {
+          "routes_mapped": 14,
+          "addressable_pool_usd_m": 20.48,
+          "navier_rev_floor_usd_m": 1.95,
+          "fleet_at_floor": 16,
+          "modeled_riders_per_day_floor": 262,
+          "co2_saved_t_yr": 2294
+        }
+      },
+      "bolt-croatia": {
+        "label": "Croatia \u2014 Dalmatian Coast",
+        "gulf_slide_only": false,
+        "kpis": {
+          "routes_mapped": 15,
+          "addressable_pool_usd_m": 44.52,
+          "navier_rev_floor_usd_m": 3.84,
+          "fleet_at_floor": 25,
+          "modeled_riders_per_day_floor": 273,
+          "co2_saved_t_yr": 4237
+        }
+      },
+      "bolt-france-riviera": {
+        "label": "C\u00f4te d'Azur",
+        "gulf_slide_only": false,
+        "kpis": {
+          "routes_mapped": 11,
+          "addressable_pool_usd_m": 18.95,
+          "navier_rev_floor_usd_m": 1.54,
+          "fleet_at_floor": 7,
+          "modeled_riders_per_day_floor": 281,
+          "co2_saved_t_yr": 690
+        }
+      },
+      "bolt-italy": {
+        "label": "Italy \u2014 Amalfi/Naples",
+        "gulf_slide_only": false,
+        "kpis": {
+          "routes_mapped": 14,
+          "addressable_pool_usd_m": 204.48,
+          "navier_rev_floor_usd_m": 19.5,
+          "fleet_at_floor": 70,
+          "modeled_riders_per_day_floor": 344,
+          "co2_saved_t_yr": 7687
+        }
+      },
+      "bolt-ksa-commercial": {
+        "label": "Saudi Arabia \u2014 Jeddah/Red Sea",
+        "gulf_slide_only": true,
+        "kpis": {
+          "routes_mapped": 7,
+          "addressable_pool_usd_m": 287.65,
+          "navier_rev_floor_usd_m": 25.8,
+          "fleet_at_floor": 27,
+          "modeled_riders_per_day_floor": 144,
+          "co2_saved_t_yr": 4376
+        }
+      },
+      "bolt-uae": {
+        "label": "UAE \u2014 Dubai/Abu Dhabi",
+        "gulf_slide_only": true,
+        "kpis": {
+          "routes_mapped": 36,
+          "addressable_pool_usd_m": 50.57,
+          "navier_rev_floor_usd_m": 4.33,
+          "fleet_at_floor": 7,
+          "modeled_riders_per_day_floor": 932,
+          "co2_saved_t_yr": 786
+        }
+      }
+    }
+  },
+  "slide10_tam": {
+    "rungs": [
+      {
+        "rung": "SOM",
+        "value": "$104M"
+      },
+      {
+        "rung": "SAM",
+        "value": "$2.2B"
+      },
+      {
+        "rung": "TAM",
+        "value": "$8.8B"
+      },
+      {
+        "rung": "Journey GMV",
+        "value": "$26.3B"
+      },
+      {
+        "rung": "partner platform revenue",
+        "value": "$1.2B"
+      }
+    ]
+  },
+  "economics_slides": {
+    "7": {
+      "status": "grounded",
+      "market": "Greece / Aegean",
+      "corridor": "Mykonos Town -> Delos",
+      "route_id": null,
+      "fields": {
+        "title": "Greece / Aegean: profitable from year one",
+        "route_line": "Mykonos Town -> Delos  \u00b7  ~4 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$634,867 revenue  \u2212  $128,994 run cost  =  $505,873 profit / boat\u00b7yr  \u00b7  80% margin  \u00b7  1.8 yrs payback",
+        "trips_per_day": "15",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "11,757",
+        "premium_fare": "$54 / seat",
+        "revenue_per_boat": "$634,867",
+        "opex_energy": "$2,894",
+        "opex_crew": "$57,600",
+        "opex_marina": "$18,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$22,500",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$128,994",
+        "result_profit": "$505,873",
+        "result_margin": "80%",
+        "result_capex": "$900,000",
+        "result_payback": "1.8 yrs",
+        "result_co2": "57.6 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 GREECE / AEGEAN"
+      }
+    },
+    "8": {
+      "status": "grounded",
+      "market": "Croatia \u2014 Dalmatian Coast",
+      "corridor": "Zadar (Murter / Biograd gateway) -> Kornati National Park",
+      "route_id": null,
+      "fields": {
+        "title": "Croatia: profitable from year one",
+        "route_line": "Zadar (Murter / Biograd gateway) -> Kornati National Park  \u00b7  ~20 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$474,012 revenue  \u2212  $123,862 run cost  =  $350,150 profit / boat\u00b7yr  \u00b7  74% margin  \u00b7  2.6 yrs payback",
+        "trips_per_day": "8",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "6,270",
+        "premium_fare": "$76 / seat",
+        "revenue_per_boat": "$474,012",
+        "opex_energy": "$6,962",
+        "opex_crew": "$50,400",
+        "opex_marina": "$16,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$22,500",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$123,862",
+        "result_profit": "$350,150",
+        "result_margin": "74%",
+        "result_capex": "$900,000",
+        "result_payback": "2.6 yrs",
+        "result_co2": "184.7 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 CROATIA \u2014 DALMATIAN COAST"
+      }
+    },
+    "9": {
+      "status": "grounded",
+      "market": "C\u00f4te d'Azur",
+      "corridor": "Nice -> Monaco",
+      "route_id": null,
+      "fields": {
+        "title": "C\u00f4te d'Azur: profitable from year one",
+        "route_line": "Nice -> Monaco  \u00b7  ~6 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$292,878 revenue  \u2212  $184,778 run cost  =  $108,100 profit / boat\u00b7yr  \u00b7  37% margin  \u00b7  8.3 yrs payback",
+        "trips_per_day": "14",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "10,969",
+        "premium_fare": "$27 / seat",
+        "revenue_per_boat": "$292,878",
+        "opex_energy": "$5,278",
+        "opex_crew": "$99,000",
+        "opex_marina": "$30,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$22,500",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$184,778",
+        "result_profit": "$108,100",
+        "result_margin": "37%",
+        "result_capex": "$900,000",
+        "result_payback": "8.3 yrs",
+        "result_co2": "108.7 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 C\u00d4TE D'AZUR"
+      }
+    },
+    "19": {
+      "status": "grounded",
+      "market": "Italy \u2014 Amalfi/Naples",
+      "corridor": "Venice Marco Polo -> San Marco",
+      "route_id": null,
+      "fields": {
+        "title": "Italy: profitable from year one",
+        "route_line": "Venice Marco Polo -> San Marco  \u00b7  ~4 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$493,786 revenue  \u2212  $168,017 run cost  =  $325,769 profit / boat\u00b7yr  \u00b7  66% margin  \u00b7  2.8 yrs payback",
+        "trips_per_day": "15",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "11,757",
+        "premium_fare": "$42 / seat",
+        "revenue_per_boat": "$493,786",
+        "opex_energy": "$5,117",
+        "opex_crew": "$86,400",
+        "opex_marina": "$26,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$22,500",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$168,017",
+        "result_profit": "$325,769",
+        "result_margin": "66%",
+        "result_capex": "$900,000",
+        "result_payback": "2.8 yrs",
+        "result_co2": "70.4 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 ITALY \u2014 AMALFI/NAPLES"
+      }
+    },
+    "20": {
+      "status": "grounded",
+      "market": "Saudi Arabia \u2014 Jeddah/Red Sea",
+      "corridor": "Shura Island Marina -> Outer-island resorts (St Regis / Nujuma / Shebara)",
+      "route_id": "gcn-d51af091f2-bolt",
+      "fields": {
+        "title": "Saudi Arabia: profitable from year one",
+        "route_line": "Shura Island Marina -> Outer-island resorts (St Regis / Nujuma / Shebara)  \u00b7  ~12 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$1,508,430 revenue  \u2212  $139,315 run cost  =  $1,369,115 profit / boat\u00b7yr  \u00b7  91% margin  \u00b7  0.4 yrs payback",
+        "trips_per_day": "11",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "8,620",
+        "premium_fare": "$175 / seat",
+        "revenue_per_boat": "$1,508,430",
+        "opex_energy": "$2,715",
+        "opex_crew": "$75,600",
+        "opex_marina": "$18,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$15,000",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$139,315",
+        "result_profit": "$1,369,115",
+        "result_margin": "91%",
+        "result_capex": "$600,000",
+        "result_payback": "0.4 yrs",
+        "result_co2": "132.4 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 SAUDI ARABIA \u2014 JEDDAH/RED SEA"
+      }
+    },
+    "21": {
+      "status": "grounded",
+      "market": "UAE \u2014 Dubai/Abu Dhabi",
+      "corridor": "Palm Jumeirah Marina West -> Atlantis The Palm Jetty",
+      "route_id": "gcn-cb796b40f0-bolt",
+      "fields": {
+        "title": "UAE: profitable from year one",
+        "route_line": "Palm Jumeirah Marina West -> Atlantis The Palm Jetty  \u00b7  ~1 nm  \u00b7  N30 Pioneer II (8 seats)",
+        "summary_line": "$1,763,520 revenue  \u2212  $137,481 run cost  =  $1,626,039 profit / boat\u00b7yr  \u00b7  92% margin  \u00b7  0.4 yrs payback",
+        "trips_per_day": "15",
+        "operating_days": "274",
+        "revenue_legs": "65%",
+        "seats_per_trip": "4.4",
+        "paid_seats_yr": "11,757",
+        "premium_fare": "$150 / seat",
+        "revenue_per_boat": "$1,763,520",
+        "opex_energy": "$481",
+        "opex_crew": "$72,000",
+        "opex_marina": "$22,000",
+        "opex_maintenance": "$10,000",
+        "opex_insurance": "$15,000",
+        "opex_charging_berth": "$18,000",
+        "opex_total": "$137,481",
+        "result_profit": "$1,626,039",
+        "result_margin": "92%",
+        "result_capex": "$600,000",
+        "result_payback": "0.4 yrs",
+        "result_co2": "21.4 t",
+        "header_market": "WHAT ONE BOAT EARNS \u00b7 UAE \u2014 DUBAI/ABU DHABI"
+      }
+    },
+    "22": {
+      "status": "no_market_drop_slide",
+      "market": null,
+      "fields": null
+    },
+    "23": {
+      "status": "no_market_drop_slide",
+      "market": null,
+      "fields": null
+    }
+  }
+}
