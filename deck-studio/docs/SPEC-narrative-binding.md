@@ -141,3 +141,16 @@ If you re-tune, keep the chip-caption bottom inside the page edge or captions wi
      a ride, N30 at the dock, market plate + navy scrim, distinct from the Three C's plate). The
      borrowed Three C's plate stays on live slide 2 as a **documented interim only** until the
      distinct composite is sourced (N30 neutral, no Atlas-generated images, provenance + stable URL).
+  - **rev-3 (same day, image SEALED):** generated the distinct slide-2 composite and **locked it**.
+     Scene: modern city riverfront skyline, woman lower-left on her phone walking the dock to board,
+     canonical N30 bow-to-dock with gangway, navy lower-third scrim — reference-guided on the **N30
+     neutral only** (the Three C's plate was deliberately *not* used as a composition reference; that
+     incidental reuse caused the earlier echo). Published to the public deck-assets Drive folder
+     (`id=1OiOsLLNSdzR9P0vwZ7S_sQr42RWd5EFe`), registered, and applied live via **`replaceImage`** on
+     `narr2_bg_img` (in place; transform/scrim/z-order preserved). Interim Three C's plate **retired**.
+     `value_prop_bg` is now declared **market-specific** (one variant per anchor market); the
+     deterministic per-market process + literal prompt template live in `SLIDE2-IMAGE-BRIEF.md`.
+  - **Live geometry fix (same pass):** the four "Your world" beats were inconsistent — the bottom row
+     (`narr2_w3/w4`) was full-width (scaleX 1.0) and overran into the right column. Narrowed to match
+     the top row (effective width ~2,480,000 EMU) so the 2×2 grid is collision-free. The generator
+     (`gen_narrative_binding.py`) already emits the uniform width, so new decks are unaffected.
