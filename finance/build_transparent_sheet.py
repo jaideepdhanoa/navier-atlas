@@ -67,12 +67,6 @@ _agg_default = os.path.join(HERE, "recal", "agg-unique-global.json" if (GLOBAL_M
                             else f"agg-{PARTNER}.json")
 _agg_path = arg("--agg", _agg_default)
 EFF_CAPTURE = None; IS_CAPTIVE = False
-try:
-    _gfloor = json.load(open(_agg_path))["rollup"]["grounded_floor"]
-    EFF_CAPTURE = _gfloor.get("effective_capture")
-    IS_CAPTIVE = bool(EFF_CAPTURE and EFF_CAPTURE >= 0.5)
-except Exception:
-    pass
 
 # ---- market display names (proper-case Market column) ----
 MARKET_DISPLAY = {
@@ -93,6 +87,34 @@ def pier_key(label: str) -> tuple[str, str]:
         a, b = label.split(sep, 1)
         return a.strip().lower(), b.strip().lower()
     return label.strip().lower(), ""
+
+# LB-258: corridor floor-bucket status from aggregate.py — the Market-sizing ladder MUST
+# anchor on status=grounded only (same as growth.py _headline_anchor=grounded and deck
+# gen_deck_economics.py). Cascade-estimated rows were wrongly summed into the floor.
+STATUS_BY_ROUTE: dict[tuple[str, tuple[str, str]], str] = {}
+try:
+    _agg = json.load(open(_agg_path))
+    _gfloor = _agg["rollup"]["grounded_floor"]
+    EFF_CAPTURE = _gfloor.get("effective_capture")
+    IS_CAPTIVE = bool(EFF_CAPTURE and EFF_CAPTURE >= 0.5)
+    for ar in _agg.get("rows", []):
+        if ar.get("is_dup"):
+            continue
+        STATUS_BY_ROUTE[(ar["market"], pier_key(ar.get("corridor", "")))] = ar.get("status", "")
+except Exception:
+    pass
+
+def floor_bucket(mid, corridor, tier_excl, fwd, demand, status=None):
+    """Mirror aggregate.py status buckets for the published floor vs held-out demand."""
+    if fwd or status == "forward_sam":
+        return "Forward SAM"
+    if status == "grounded":
+        return "Grounded"
+    if status == "estimated":
+        return "Upside tier" if tier_excl else "Estimated"
+    if tier_excl:
+        return "Upside tier"
+    return "Grounded" if demand else "Estimated"
 
 # ---- corridors (range gate + dedupe, mirrors aggregate.py) ----
 rows=[]; roadmap=[]; seen={}
@@ -151,7 +173,11 @@ for mid, mk in corr["markets"].items():
         # LB-256 archetype-keyed sailings cap (mirror atom.py)
         _arche_cap=c.get("archetype")
         eff_cap=TPD_MAP[_arche_cap] if (_arche_cap in TPD_MAP and not str(_arche_cap).startswith("_")) else max_tpd
-        rec=dict(market=mkt_disp(mid), country=country, corridor=f"{c['from']} \u2192 {c['to']}",
+        _corridor=f"{c['from']} \u2192 {c['to']}"
+        _fwd=("FWD-SAM (2030)" if c.get("_forward_sam") else None)
+        _tier_excl=(c.get("_tier") if c.get("_in_grounded_floor") is False else None)
+        _status=STATUS_BY_ROUTE.get((mid, pier_key(_corridor)))
+        rec=dict(market=mkt_disp(mid), country=country, corridor=_corridor,
                  route_id=c.get("route_id"), nm=nm, fare=_fare, eff_cap=eff_cap,
                  provenance=mk.get("partner", "grab"),
                  fare_tier=fr.get("source_tier"), fare_conf=fr.get("confidence"), fare_src=_fare_src,
@@ -159,10 +185,11 @@ for mid, mk in corr["markets"].items():
                  demand_tier=dr.get("source_tier"), demand_conf=dr.get("confidence"), demand_src=dr.get("source"),
                  weather=(w if w is not None else 1.0),
                  subset=c.get("_subset_of"),
-                 fwd=("FWD-SAM (2030)" if c.get("_forward_sam") else None),
+                 fwd=_fwd,
                  # LB-99: sourced-greenfield tiers (modal-shift / experience-upside) are
                  # estimated UPSIDE, never grounded floor. experience_grounded stays in.
-                 tier_excl=(c.get("_tier") if c.get("_in_grounded_floor") is False else None),
+                 tier_excl=_tier_excl,
+                 floor_bucket=floor_bucket(mid, _corridor, _tier_excl, _fwd, pool, _status),
                  # LB-88: captive-resort vessel ceiling = ceil(villas/25)
                  fleet_cap=(math.ceil(c["villas"]/25) if (c.get("captive_resort") and c.get("villas")) else None))
         (roadmap if nm>range_nm else rows).append(rec)
@@ -443,6 +470,7 @@ cols = _cols_head + [
  ("Vessels raw (unfloored)","",9,NUM2,"f"),
  ("Market rev/yr raw","",13,USD,"f"),
  ("Subset of (excl. from market fleet)","subset",26,None,"in"),
+ ("Floor bucket (aggregate status)","floor_bucket",14,None,"in"),
  ("Forward SAM (2030-dated; held OUT of grounded floor)","fwd",16,None,"in"),
  ("Upside tier (LB-99; held OUT of grounded floor)","tier_excl",16,None,"in"),
  ("Fleet ceiling (captive villas/25)","fleet_cap",9,NUM,"in"),
@@ -542,6 +570,7 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Subset of (excl. from market fleet)')}{R}",rec["subset"],fill=f_input,align=wrap,bd=True,font=Font(size=8,color="555555"))
     # LB-33 forward-SAM flag: 2030-dated / low-confidence demand — engine row computed
     # at MID but held OUT of the grounded floor (separate FORWARD SAM total below).
+    sc(ws,f"{CL('Floor bucket (aggregate status)')}{R}",rec["floor_bucket"],fill=f_input,align=ctr,bd=True,font=SMALL)
     sc(ws,f"{CL('Forward SAM (2030-dated; held OUT of grounded floor)')}{R}",rec["fwd"],fill=f_input,align=ctr,bd=True,font=Font(size=8,color="9C4500"))
     sc(ws,f"{CL('Upside tier (LB-99; held OUT of grounded floor)')}{R}",rec["tier_excl"],fill=f_input,align=ctr,bd=True,font=Font(size=8,color="9C4500"))
     sc(ws,f"{CL('Fleet ceiling (captive villas/25)')}{R}",rec["fleet_cap"],fill=f_input,fmt=NUM,align=ctr,bd=True,font=SMALL)
@@ -581,8 +610,10 @@ for i,h in enumerate(["Market","Fleet basis","Raw vessels (sum)","Fleet (rounded
     sc(ws,f"{get_column_letter(i+1)}{buh}",h,font=HDR,fill=f_steel,align=ctrw,bd=True)
 MKTcol=CL('Market'); RAWcol=CL('Vessels raw (unfloored)'); RRVcol=CL('Market rev/yr raw')
 VEScol=CL('Vessels @capture'); MRVcol=CL('Market rev/yr'); SUBcol=CL('Subset of (excl. from market fleet)')
+FLOORcol=CL('Floor bucket (aggregate status)')
 FWDcol=CL('Forward SAM (2030-dated; held OUT of grounded floor)')
 TIERcol=CL('Upside tier (LB-99; held OUT of grounded floor)')
+_GROUNDED_CRIT=f',{FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Grounded"'
 bur=buh+1
 seen_mkts=[]
 for rec in rows:
@@ -592,16 +623,16 @@ for mname in seen_mkts:
     crit=f'"{mname}"'
     sc(ws,f"A{bur}",mname,bd=True,font=BOLD)
     sc(ws,f"B{bur}",f"{basis}{' / '+rounding if rounding else ''}",bd=True,font=SMALL,align=ctr)
-    # LB-33: _forward_sam rows are held OUT of the grounded floor (extra blank-FWD criterion)
+    # LB-258: only status=grounded corridors build the published floor (matches growth.py / deck).
     if basis=="network_sum":
-        sc(ws,f"C{bur}",f'=SUMIFS({RAWcol}{DATA0}:{RAWcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"=",{FWDcol}{DATA0}:{FWDcol}{LASTROW},"=",{TIERcol}{DATA0}:{TIERcol}{LASTROW},"=")',fill=f_calc,fmt=NUM2,align=ctr,bd=True)
+        sc(ws,f"C{bur}",f'=SUMIFS({RAWcol}{DATA0}:{RAWcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"="{_GROUNDED_CRIT})',fill=f_calc,fmt=NUM2,align=ctr,bd=True)
         rndfn="CEILING" if rounding=="ceil" else "ROUND"
         sc(ws,f"D{bur}",f"=IF(C{bur}=0,0,{rndfn}(C{bur},1))" if rounding=="ceil" else f"=ROUND(C{bur},0)",fill=f_calc,fmt=NUM,align=ctr,bd=True)
-        sc(ws,f"E{bur}",f'=SUMIFS({RRVcol}{DATA0}:{RRVcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"=",{FWDcol}{DATA0}:{FWDcol}{LASTROW},"=",{TIERcol}{DATA0}:{TIERcol}{LASTROW},"=")',fill=f_calc,fmt=USD,align=ctr,bd=True)
+        sc(ws,f"E{bur}",f'=SUMIFS({RRVcol}{DATA0}:{RRVcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"="{_GROUNDED_CRIT})',fill=f_calc,fmt=USD,align=ctr,bd=True)
     else:
         sc(ws,f"C{bur}","\u2014",align=ctr,bd=True,font=SMALL)
-        sc(ws,f"D{bur}",f'=SUMIFS({VEScol}{DATA0}:{VEScol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"=",{FWDcol}{DATA0}:{FWDcol}{LASTROW},"=",{TIERcol}{DATA0}:{TIERcol}{LASTROW},"=")',fill=f_calc,fmt=NUM,align=ctr,bd=True)
-        sc(ws,f"E{bur}",f'=SUMIFS({MRVcol}{DATA0}:{MRVcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"=",{FWDcol}{DATA0}:{FWDcol}{LASTROW},"=",{TIERcol}{DATA0}:{TIERcol}{LASTROW},"=")',fill=f_calc,fmt=USD,align=ctr,bd=True)
+        sc(ws,f"D{bur}",f'=SUMIFS({VEScol}{DATA0}:{VEScol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"="{_GROUNDED_CRIT})',fill=f_calc,fmt=NUM,align=ctr,bd=True)
+        sc(ws,f"E{bur}",f'=SUMIFS({MRVcol}{DATA0}:{MRVcol}{LASTROW},{MKTcol}{DATA0}:{MKTcol}{LASTROW},{crit},{SUBcol}{DATA0}:{SUBcol}{LASTROW},"="{_GROUNDED_CRIT})',fill=f_calc,fmt=USD,align=ctr,bd=True)
     bur+=1
 BUT=bur
 sc(ws,f"A{BUT}","GROUNDED FLOOR (PUBLISHED)",font=BOLD,fill=f_light,bd=True)
@@ -615,18 +646,24 @@ addname("som_floor_rev", f"'Corridor economics'!$E${BUT}")
 # Market-sizing ladder anchors HERE — clearly labelled as forward, not grounded.
 # LB-99 estimated-upside bucket: modal-shift / experience-upside tiers, reported
 # BELOW the floor, never summed into it (mirrors aggregate.py estimated_upside).
+ESTROW=None
+if any(rec.get("floor_bucket") == "Estimated" for rec in rows):
+    ESTROW=BUT+1
+    sc(ws,f"A{ESTROW}","ESTIMATED DEMAND (country-median cascade; held OUT of grounded floor)",font=BOLD,fill=f_band,bd=True)
+    sc(ws,f"D{ESTROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Estimated",{VEScol}{DATA0}:{VEScol}{LASTROW})',font=BOLD,fill=f_band,fmt=NUM,align=ctr,bd=True)
+    sc(ws,f"E{ESTROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Estimated",{MRVcol}{DATA0}:{MRVcol}{LASTROW})',font=BOLD,fill=f_band,fmt=USD,align=ctr,bd=True)
 UPROW=None
-if any(rec.get("tier_excl") for rec in rows):
-    UPROW=BUT+1
+if any(rec.get("floor_bucket") == "Upside tier" for rec in rows):
+    UPROW=(ESTROW or BUT)+1
     sc(ws,f"A{UPROW}","ESTIMATED UPSIDE (LB-99 modal-shift / experience-upside tiers; held OUT of grounded floor)",font=BOLD,fill=f_band,bd=True)
-    sc(ws,f"D{UPROW}",f'=SUMIF({TIERcol}{DATA0}:{TIERcol}{LASTROW},"<>",{VEScol}{DATA0}:{VEScol}{LASTROW})',font=BOLD,fill=f_band,fmt=NUM,align=ctr,bd=True)
-    sc(ws,f"E{UPROW}",f'=SUMIF({TIERcol}{DATA0}:{TIERcol}{LASTROW},"<>",{MRVcol}{DATA0}:{MRVcol}{LASTROW})',font=BOLD,fill=f_band,fmt=USD,align=ctr,bd=True)
+    sc(ws,f"D{UPROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Upside tier",{VEScol}{DATA0}:{VEScol}{LASTROW})',font=BOLD,fill=f_band,fmt=NUM,align=ctr,bd=True)
+    sc(ws,f"E{UPROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Upside tier",{MRVcol}{DATA0}:{MRVcol}{LASTROW})',font=BOLD,fill=f_band,fmt=USD,align=ctr,bd=True)
 FSROW=None
-if any(rec.get("fwd") for rec in rows):
-    FSROW=(UPROW or BUT)+1
+if any(rec.get("floor_bucket") == "Forward SAM" for rec in rows):
+    FSROW=(UPROW or ESTROW or BUT)+1
     sc(ws,f"A{FSROW}","FORWARD SAM (2030-dated; held OUT of grounded floor)",font=BOLD,fill=f_band,bd=True)
-    sc(ws,f"D{FSROW}",f'=SUMIF({FWDcol}{DATA0}:{FWDcol}{LASTROW},"<>",{VEScol}{DATA0}:{VEScol}{LASTROW})',font=BOLD,fill=f_band,fmt=NUM,align=ctr,bd=True)
-    sc(ws,f"E{FSROW}",f'=SUMIF({FWDcol}{DATA0}:{FWDcol}{LASTROW},"<>",{MRVcol}{DATA0}:{MRVcol}{LASTROW})',font=BOLD,fill=f_band,fmt=USD,align=ctr,bd=True)
+    sc(ws,f"D{FSROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Forward SAM",{VEScol}{DATA0}:{VEScol}{LASTROW})',font=BOLD,fill=f_band,fmt=NUM,align=ctr,bd=True)
+    sc(ws,f"E{FSROW}",f'=SUMIF({FLOORcol}{DATA0}:{FLOORcol}{LASTROW},"Forward SAM",{MRVcol}{DATA0}:{MRVcol}{LASTROW})',font=BOLD,fill=f_band,fmt=USD,align=ctr,bd=True)
 ALL_FWD = bool(rows) and all(rec.get("fwd") for rec in rows)
 if ALL_FWD:
     # re-anchor the ladder named ranges to the forward-SAM bucket (grounded floor is 0 by design)
@@ -732,7 +769,7 @@ gmv_lo,gmv_mi,gmv_hi=mult_named["gmv"]; gr_lo,gr_mi,gr_hi=mult_named["green"]
 # SOM floor (single) + M_today anchor
 sc(ws4,f"A{mr}",("FORWARD-SAM anchor \u2014 Navier transport rev/yr (2030-dated; NOT a grounded floor)" if ALL_FWD else "SOM floor \u2014 Navier transport rev/yr (PUBLISHED)"),bd=True,font=BOLD)
 sc(ws4,f"C{mr}","=som_floor_rev",fill=f_calc,fmt=USD,align=ctr,bd=True)
-sc(ws4,f"E{mr}",("Live sum of forward-SAM corridor market-rev (10% capture, 2030-dated destination-cap demand). Held OUT of any near-term grounded number." if ALL_FWD else "Live sum of grounded corridor market-rev (10% capture, today's demand, sourced corridors)."),align=wrap,bd=True,font=SMALL)
+sc(ws4,f"E{mr}",("Live sum of forward-SAM corridor market-rev (10% capture, 2030-dated destination-cap demand). Held OUT of any near-term grounded number." if ALL_FWD else "Live sum of grounded-floor corridor market-rev only (Floor bucket = Grounded; cascade-estimated rows held out). Matches growth.py _headline_anchor and deck TAM."),align=wrap,bd=True,font=SMALL)
 som_floor_ref=f"$C${mr}"; mr+=1
 sc(ws4,f"A{mr}","M_today \u2014 full transport spend on sourced corridors",bd=True,font=BOLD)
 sc(ws4,f"C{mr}",f"={som_floor_ref}/{somcap_ref}",fill=f_calc,fmt=USD,align=ctr,bd=True)

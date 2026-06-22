@@ -55,6 +55,12 @@ passes **112/112**. Run it after any model change as a regression gate before tr
 **slide10 ladder** (mid of band): `SOM_floor_navier_transport_rev_yr`, `SAM_navier_transport_rev_yr.mid`,
 `marine_mobility_tam_yr.mid` (TAM), `TAM_journey_gmv_yr.mid` (Journey GMV), `partner_platform_rev_yr.mid`.
 
+**Spreadsheet parity (LB-258):** the partner transparent sheet's *Market sizing* tab must use the
+same anchor: `growth-<partner>.json` → `grounded` only (`_headline_anchor`), with
+`marine_mobility_tam_yr.mid` = `M_today × induced_mid × greenfield_mid` (LB-110). The corridor
+floor sum includes **only** aggregate `status=grounded` rows (Floor bucket column); cascade-estimated
+and LB-99 upside tiers are held out — never mixed into the headline ladder.
+
 **slide3 cards:** `rollup.n_corridors_total`, `M_today_transport_spend_yr`, SOM floor, `marine_mobility_tam_yr.mid`.
 
 ## Slide↔market mapping
