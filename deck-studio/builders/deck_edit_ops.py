@@ -16,7 +16,9 @@ ECON_VALUE_STYLE = {
 ECON_VALUE_PARAGRAPH_ALIGNMENT = "END"
 
 
-def rgb_color(rgb: list[float]) -> dict:
+def rgb_color(rgb: list[float] | None) -> dict:
+    if not rgb:
+        rgb = [0.0, 0.0, 0.0]
     return {"red": rgb[0], "green": rgb[1], "blue": rgb[2]}
 
 
