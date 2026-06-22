@@ -28,8 +28,13 @@ import json, sys, re, datetime, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Beats (the 2x2 "Your world" grid) are explicitly TEASERS: short pointers that
+# physically hold ~2 lines in the slide box. The full thought lives in the proposal
+# and on the dedicated why-now slide. So beats use a tighter cap and a clause-aware
+# trim (distinct from thesis/the_deal, which never truncate mid-thought).
 CAPS = {"positioning": 8, "thesis": 25, "the_deal": 40,
-        "today": 25, "up_against": 25, "navier_fits": 25, "why_now": 25}
+        "today": 16, "up_against": 16, "navier_fits": 16, "why_now": 16}
+CLAUSE_BREAKS = (";", ":", " — ", " \u2014 ", ",")
 
 # ----- deterministic text helpers -------------------------------------------------
 _ABBR = ("U.S.", "e.g.", "i.e.", "vs.", "Mr.", "St.")
@@ -70,6 +75,33 @@ def distill(text, cap):
 def wc(s):
     return len(s.split())
 
+def distill_beat(text, cap):
+    """Teaser distillation for the 2x2 'Your world' beats only. Fills whole sentences
+    up to cap (like distill). If the lead sentence alone still exceeds cap, trim at the
+    last clause boundary (; : em-dash ,) that keeps it <= cap, append an ellipsis. Beats
+    are pointers, not full thoughts, so a clause-level trim is intended here (unlike the
+    thesis/deal which are emitted unmangled)."""
+    s = distill(text, cap)
+    if not s or wc(s) <= cap:
+        return s, False           # fit cleanly, no trim
+    words = s.split()
+    # try clause boundaries, longest-that-fits first
+    best = None
+    for i in range(len(words), 0, -1):
+        frag = " ".join(words[:i])
+        if wc(frag) > cap:
+            continue
+        if any(frag.rstrip().endswith(b.strip()) or (b.strip() and b.strip() in frag[-2:]) for b in CLAUSE_BREAKS):
+            best = frag; break
+        # also accept a fragment whose NEXT char in original was a clause break
+        nxt = s[len(frag):len(frag)+2]
+        if nxt[:1] in (";", ":", ",") or nxt.strip()[:1] == "\u2014":
+            best = frag; break
+    if best is None:
+        best = " ".join(words[:cap])
+    best = best.rstrip(" ,;:\u2014-")
+    return best + "\u2026", True
+
 NUM_TOKEN = re.compile(r"\$[\d.]+[BMK%]?|\b\d[\d,]*(?:\.\d+)?%?\b")
 
 def find_numbers(s):
@@ -89,6 +121,12 @@ def build(partner):
             warnings.append(f"{field_label}: lead sentence is {wc(s)}w > cap {CAPS[key]}w — tighten the source proposal; emitted unmangled (null beats confidently-wrong).")
         return s or None
 
+    def capped_beat(key, text, field_label):
+        s, trimmed = distill_beat(text, CAPS[key])
+        if trimmed:
+            warnings.append(f"{field_label}: source clause-trimmed to <= {CAPS[key]}w for the beat teaser — tighten the source proposal for a clean break (the full thought stays in the proposal + the why-now slide).")
+        return s or None
+
     hero = d.get("hero", {})
     title = hero.get("title", "")
     # split "Grab × Navier — the black-car network, on the water"
@@ -104,10 +142,10 @@ def build(partner):
 
     pc = d.get("partner_context", {})
     your_world = [
-        {"key": "today",       "label": "Where you are today",   "text": capped("today",       pc.get("their_ambition", ""),   "your_world.today")},
-        {"key": "up_against",  "label": "What you're up against", "text": capped("up_against",  pc.get("their_pressure", ""),   "your_world.up_against")},
-        {"key": "navier_fits", "label": "Where Navier fits",      "text": capped("navier_fits", pc.get("where_navier_fits", ""), "your_world.navier_fits")},
-        {"key": "why_now",     "label": "Why now",                "text": capped("why_now",     d.get("why_now", ""),           "your_world.why_now")},
+        {"key": "today",       "label": "Where you are today",   "text": capped_beat("today",       pc.get("their_ambition", ""),   "your_world.today")},
+        {"key": "up_against",  "label": "What you're up against", "text": capped_beat("up_against",  pc.get("their_pressure", ""),   "your_world.up_against")},
+        {"key": "navier_fits", "label": "Where Navier fits",      "text": capped_beat("navier_fits", pc.get("where_navier_fits", ""), "your_world.navier_fits")},
+        {"key": "why_now",     "label": "Why now",                "text": capped_beat("why_now",     d.get("why_now", ""),           "your_world.why_now")},
     ]
 
     # proof strip: stats + matched sources from proof_points (external claims carry provenance)

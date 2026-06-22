@@ -70,24 +70,27 @@ GEO = {
     "narr2_kicker":      dict(x=430000,  y=300000,  w=4600000, h=320000),
     "narr2_lockup":      dict(x=430000,  y=620000,  w=5200000, h=760000),
     "narr2_positioning": dict(x=430000,  y=1360000, w=5200000, h=420000),
-    "narr2_thesis":      dict(x=430000,  y=1850000, w=5200000, h=620000),
-    "narr2_deal":        dict(x=430000,  y=2520000, w=5200000, h=620000),
-    "narr2_world_label": dict(x=430000,  y=3250000, w=2600000, h=300000),
-    RULE_ID:             dict(x=430000,  y=3560000, w=5200000, h=18000),
+    "narr2_thesis":      dict(x=430000,  y=1760000, w=5200000, h=560000),
+    "narr2_deal":        dict(x=430000,  y=2360000, w=5200000, h=620000),
+    "narr2_world_label": dict(x=430000,  y=3010000, w=2600000, h=280000),
+    RULE_ID:             dict(x=430000,  y=3290000, w=5200000, h=14000),
     IMAGE_ID:            dict(x=5900000, y=0,       w=3244000, h=5143500),
 }
-# 2x2 beat grid (lower-left)
-_bx = [430000, 3050000]; _by = [3640000, 4360000]
+# 2x2 beat grid (lower-left) — beats are 2-line teasers; rows tightened so the
+# proof-chip strip below clears them AND the 2-line chip captions clear the slide
+# bottom edge (Slides does not clip text to the box; only the page edge clips). LB-256.
+_bx = [430000, 3050000]; _by = [3360000, 3960000]
 for i,(h,b) in enumerate(WORLD_SLOTS):
     col, row = i % 2, i // 2
-    GEO[h] = dict(x=_bx[col], y=_by[row],          w=2480000, h=240000)
-    GEO[b] = dict(x=_bx[col], y=_by[row]+250000,   w=2480000, h=420000)
-# proof chips: horizontal strip along the very bottom
+    GEO[h] = dict(x=_bx[col], y=_by[row],          w=2480000, h=220000)
+    GEO[b] = dict(x=_bx[col], y=_by[row]+225000,   w=2480000, h=340000)
+# proof chips: horizontal strip along the bottom (value clears beat row2 @ 4525000;
+# 2-line caption ends ~5060000, inside the 5143500 page edge)
 _cx0, _cw, _cgap = 430000, 1230000, 80000
 for i,(v,c) in enumerate(CHIP_SLOTS):
     x = _cx0 + i*(_cw+_cgap)
-    GEO[v] = dict(x=x, y=4760000, w=_cw, h=210000)
-    GEO[c] = dict(x=x, y=4965000, w=_cw, h=160000)
+    GEO[v] = dict(x=x, y=4585000, w=_cw, h=190000)
+    GEO[c] = dict(x=x, y=4780000, w=_cw, h=330000)
 
 # ---- Styles (applied once at gold-create; inherited thereafter)
 STYLE = {
@@ -207,6 +210,20 @@ def build_gold_create(partner, nar):
             "objectId": PAGE_ID,
             "insertionIndex": 1,
             "slideLayoutReference": {"predefinedLayout": "BLANK"},
+        }
+    }, {
+        # On-brand dark base so the white/gold text is legible immediately.
+        # BLANK predefined layout is white; deck slides are #050505-#111111.
+        # The market background image gets wired onto this page in the image step
+        # (page-background stretchedPictureFill, which always sits behind text).
+        "updatePageProperties": {
+            "objectId": PAGE_ID,
+            "pageProperties": {
+                "pageBackgroundFill": {
+                    "solidFill": {"color": {"rgbColor": {"red": 0.0392, "green": 0.0392, "blue": 0.0470}}}
+                }
+            },
+            "fields": "pageBackgroundFill.solidFill.color",
         }
     }]
     seeds = {

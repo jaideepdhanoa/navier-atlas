@@ -72,3 +72,27 @@ For partner P:
 Generation **and** render. Grok runs `gen_deck_narrative.py` → `gen_narrative_binding.py` (once per gold
 structural change) → emits the per-deck `deleteText`/`insertText` ops from `narrative-binding.json`.
 Tasklet supplies the contract (IDs, geometry, styles, gates), not hand-typed slides.
+
+## Beat distillation (LB-256)
+Beats are **2-line teasers**, not full sentences — the 2×2 grid box physically holds ~14 words.
+`gen_deck_narrative.py` therefore runs a **clause-aware beat distiller** (`distill_beat`) on
+`your_world[*].text` only — it trims at a clause/conjunction boundary and appends an ellipsis,
+preserving the lead idea. **thesis/the_deal/positioning are never beat-trimmed** (they keep their
+full punchline). Caps: beat ≤ 14 words. The full thought still lives in the proposal + the later
+"why-now" slide; the beat only has to *open the loop*.
+
+## Geometry note (LB-256)
+Slides does **not** clip text to the text-box height — only the **page edge** clips. The lower block
+(beats + proof-chip strip) is tuned so a **2-line chip caption clears the 5143500 EMU page bottom**:
+beat row2 body ends 4525000, chip values at 4585000, captions at 4780000 (2-line end ≈ 5060000).
+If you re-tune, keep the chip-caption bottom inside the page edge or captions will silently truncate.
+
+## Live execution log
+- **2026-06-22** — One-time gold-create **executed** against the live Grab deck
+  (`18yDAgO0…NCdSs`) via additive single-slide insert (`createSlide @ insertionIndex 1`,
+  **no full-replace**). Slide 2 is now the exec-summary; the original three-C's slide shifted to 3.
+  Applied as 7 ordered `batchUpdate` chunks (page+dark-background first, then style-preserving
+  shape groups). A dark page background (`#0a0a0c`) is set on create because the deck's dark look
+  comes from a full-bleed background, and the text styles assume a dark base. `narr2_image`
+  (right ~35%) is **reserved empty** for the N30 archetype-A2 image (the woman-on-phone-at-berth
+  booking moment) — to be filled by the image layer, never embedded here.
