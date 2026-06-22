@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://navier-atlas/deck-studio/schemas/deck-editplan.schema.json",
+  "title": "Deck edit plan",
+  "description": "Deterministic, object-keyed Slides API batchUpdate plan emitted by Tasklet and applied verbatim by Grok.",
+  "type": "object",
+  "required": ["deck_key", "base_deck_id", "golden_template_map", "objects", "qa"],
+  "additionalProperties": false,
+  "properties": {
+    "_comment": { "type": "string" },
+    "deck_key": { "type": "string" },
+    "partner_slug": { "type": "string" },
+    "base_deck_id": { "type": "string", "description": "Gold template deck the partner deck is copied from." },
+    "target_deck_id": { "type": ["string", "null"], "description": "Live partner deck id once created/bound; null until Grok creates it." },
+    "golden_template_map": { "type": "string", "description": "Path to golden-template-map.json this plan was built against." },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["object_id", "slide_index", "action"],
+        "additionalProperties": false,
+        "properties": {
+          "object_id": { "type": "string" },
+          "slide_index": { "type": "integer" },
+          "role": { "type": "string" },
+          "action": { "enum": ["edit", "hold", "remove", "keep"] },
+          "type": { "enum": ["text", "image", "shape_solid", "table"] },
+          "char_budget": { "type": ["integer", "null"] },
+          "autofit": { "type": ["string", "null"], "description": "Captured autofit; must not be changed." },
+          "runs": {
+            "type": "array",
+            "description": "Ordered runs for text edits; each carries the captured style to re-apply.",
+            "items": {
+              "type": "object",
+              "required": ["text", "style"],
+              "additionalProperties": false,
+              "properties": {
+                "text": { "type": "string" },
+                "style": { "type": "object" },
+                "style_ref": { "type": "string" }
+              }
+            }
+          },
+          "paragraph_style": { "type": ["object", "null"] },
+          "image": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "class": { "enum": ["brand_logo", "market_background", "n30_composite"] },
+              "registry_key": { "type": ["string", "null"] },
+              "url": { "type": ["string", "null"] },
+              "fallback": { "type": ["string", "null"], "description": "Registry key of approved generic fallback if asset missing." },
+              "replace_method": { "enum": ["CENTER_CROP", "CENTER_INSIDE"] },
+              "status": { "enum": ["ready", "background_pending", "blocked"] },
+              "_note": { "type": "string" }
+            }
+          },
+          "source_paths": { "type": "array", "items": { "type": "string" } },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "qa": {
+      "type": "object",
+      "required": ["leak_denylist", "expected_object_ids"],
+      "additionalProperties": false,
+      "properties": {
+        "leak_denylist": { "type": "array", "items": { "type": "string" }, "description": "Prior-partner tokens that must NOT survive on the partner deck." },
+        "expected_object_ids": { "type": "array", "items": { "type": "string" }, "description": "Drift gate: object ids that must exist on the freshly copied deck before applying." },
+        "style_reset_check": { "type": "boolean", "default": true },
+        "budget_check": { "type": "boolean", "default": true },
+        "image_inheritance_check": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}
