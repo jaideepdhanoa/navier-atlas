@@ -1,0 +1,949 @@
+{
+  "deck_key": "grab",
+  "presentation_id": "18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs",
+  "run_scope": "ONE_TIME_GOLD_ONLY",
+  "mode": "slides_api_batch_update",
+  "generated_from": "gen_narrative_binding.py",
+  "purpose": "Create the exec-summary slide ONCE in the Grab gold deck with PRE-ASSIGNED object IDs, so it propagates to every future gold copy and the binding can pin to fixed IDs. Replay on any deck ALREADY forked from gold; new copies inherit it. v2 (2026-06-22): no proof-chip strip; 2x2 beats enlarged (11/10pt) and spread; full-bleed market bg + navy scrim (no right-zone image box).",
+  "safety": {
+    "no_pptx_roundtrip": true,
+    "no_full_deck_replace": true,
+    "preserve_object_ids": true,
+    "additive_single_slide_insert": true,
+    "human_review_required_for_external_send": true
+  },
+  "retired_object_ids": [
+    "narr2_chip1_v",
+    "narr2_chip1_c",
+    "narr2_chip2_v",
+    "narr2_chip2_c",
+    "narr2_chip3_v",
+    "narr2_chip3_c",
+    "narr2_chip4_v",
+    "narr2_chip4_c"
+  ],
+  "post_create_actions": [
+    "Capture the realized slide into golden-template-map.json (pre-described entry already added).",
+    "Visually nudge layout in Slides UI if needed (IDs are stable; this is the one-time tuning).",
+    "Wire the full-bleed market background via image-manifest.json (N30 archetype A2) as the page background (stretchedPictureFill); the scrim narr2_scrim provides legibility over it.",
+    "If replaying onto a deck that already has the old chip strip, deleteObject the retired_object_ids."
+  ],
+  "requests": [
+    {
+      "createSlide": {
+        "objectId": "narr2_page",
+        "insertionIndex": 1,
+        "slideLayoutReference": {
+          "predefinedLayout": "BLANK"
+        }
+      }
+    },
+    {
+      "updatePageProperties": {
+        "objectId": "narr2_page",
+        "pageProperties": {
+          "pageBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.0392,
+                  "green": 0.0392,
+                  "blue": 0.047
+                }
+              }
+            }
+          }
+        },
+        "fields": "pageBackgroundFill.solidFill.color"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_scrim",
+        "shapeType": "RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 9144000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 5143500,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 0,
+            "translateY": 0,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "narr2_scrim",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.039215688,
+                  "green": 0.07058824,
+                  "blue": 0.1254902
+                }
+              },
+              "alpha": 0.5
+            }
+          },
+          "outline": {
+            "propertyState": "NOT_RENDERED"
+          }
+        },
+        "fields": "shapeBackgroundFill.solidFill,outline.propertyState"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_kicker",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 4600000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 320000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 300000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_kicker",
+        "text": "PARTNER PROPOSAL",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_kicker",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.788235294117647,
+                "green": 0.6352941176470588,
+                "blue": 0.15294117647058825
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_lockup",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 5200000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 760000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 543800,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_lockup",
+        "text": "Grab × Navier",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_lockup",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 26,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_positioning",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 5200000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 420000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 1055200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_positioning",
+        "text": "the black-car network, on the water",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_positioning",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.788235294117647,
+                "green": 0.6352941176470588,
+                "blue": 0.15294117647058825
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 15,
+            "unit": "PT"
+          },
+          "italic": true
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize,italic"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_thesis",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 5200000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 560000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 1455200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_thesis",
+        "text": "Southeast Asia's super-app already owns the demand. Water is the only transport surface no one owns yet.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_thesis",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 15,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_deal",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 5200000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 620000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 2055200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_deal",
+        "text": "We launch a Grab-branded foiling water tier across Southeast Asia's densest coastal and cross-border corridors — booked in-app, premium-priced, region-wide and category-defining.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_deal",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.9098039215686274,
+                "green": 0.9098039215686274,
+                "blue": 0.9098039215686274
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 11,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_world_label",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2600000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 280000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 2705200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_world_label",
+        "text": "Your world",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_world_label",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.788235294117647,
+                "green": 0.6352941176470588,
+                "blue": 0.15294117647058825
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_rule",
+        "shapeType": "RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 5200000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 14000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 2985200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w1_h",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 240000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 3055200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w1_h",
+        "text": "Where you are today",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w1_h",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 11,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w1_b",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 520000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 3300000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w1_b",
+        "text": "You are Southeast Asia's everyday super-app — mobility, deliveries, and payments in one.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w1_b",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.8117647058823529,
+                "green": 0.8117647058823529,
+                "blue": 0.8117647058823529
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w2_h",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 240000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 3050000,
+            "translateY": 3055200,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w2_h",
+        "text": "What you're up against",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w2_h",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 11,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w2_b",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 520000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 3050000,
+            "translateY": 3300000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w2_b",
+        "text": "Ride-hail on land is maturing and increasingly contested.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w2_b",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.8117647058823529,
+                "green": 0.8117647058823529,
+                "blue": 0.8117647058823529
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w3_h",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 240000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 3900000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w3_h",
+        "text": "Where Navier fits",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w3_h",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 11,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w3_b",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 520000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 430000,
+            "translateY": 4145000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w3_b",
+        "text": "Water is the only transport surface in Southeast Asia no one owns yet.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w3_b",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.8117647058823529,
+                "green": 0.8117647058823529,
+                "blue": 0.8117647058823529
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w4_h",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 240000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 3050000,
+            "translateY": 3900000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w4_h",
+        "text": "Why now",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w4_h",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 1.0,
+                "green": 1.0,
+                "blue": 1.0
+              }
+            }
+          },
+          "bold": true,
+          "fontSize": {
+            "magnitude": 11,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "narr2_w4_b",
+        "shapeType": "TEXT_BOX",
+        "elementProperties": {
+          "pageObjectId": "narr2_page",
+          "size": {
+            "width": {
+              "magnitude": 2480000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 520000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 3050000,
+            "translateY": 4145000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "narr2_w4_b",
+        "text": "Foiling lifts the hull clear — faster, near-silent and far more efficient per seat-mile.",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "narr2_w4_b",
+        "style": {
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.8117647058823529,
+                "green": 0.8117647058823529,
+                "blue": 0.8117647058823529
+              }
+            }
+          },
+          "bold": false,
+          "fontSize": {
+            "magnitude": 10,
+            "unit": "PT"
+          }
+        },
+        "textRange": {
+          "type": "ALL"
+        },
+        "fields": "foregroundColor,bold,fontSize"
+      }
+    }
+  ]
+}

@@ -48,14 +48,14 @@ QA_PARTNER_SLUG = {
     "ola": "ola",
     "rapido": "rapido",
     "reliance-industries": "reliance-industries",
-    "uber-india": "uber-india-derivative",
+    "uber-india": "uber-india",
     "uber-mena": "uber",
     "yango": "yango",
     "yassir": "yassir",
 }
 
 ECON_PARTNER_KEY = {
-    "uber-india": "uber-india-derivative",
+    "uber-india": "uber-india",
     "uber-mena": "uber",
 }
 

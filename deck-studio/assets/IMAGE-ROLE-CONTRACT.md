@@ -15,7 +15,7 @@ provenance required.** Logos are the only non-composite assets.
 | `cover_hero` | 1 | deck/market | per anchor-market (place-specific vessel-on-water) | N30 composite |
 | `navier_logo` | 1 | shared | every deck (identical) | brand asset |
 | `partner_logo` | 1 | partner | every deck for that partner | partner brand asset **(REQUIRED on cover)** |
-| `value_prop_bg` | 2 | deck | cost / comfort / convenience background | composite |
+| `value_prop_bg` | 2 | deck · **per market** | exec-summary booking/berth scene — **woman on a phone booking a ride**, N30 at the dock; **one distinct composite per anchor market** (distinct from the Three C's plate) | composite |
 | `market_overview_kpis` | 3 | deck | market-overview KPI block (figures, not an image) | manifest/economics sidecar |
 | `tam_bg` | 10 | deck | TAM background | composite |
 | `partner_roles_bg` | 11 | deck | partner-roles background | composite |
@@ -72,6 +72,50 @@ foils deployed, hull elevated (hydrofoiling — not sitting low like a ferry). P
 Slide 3 carries the market-overview KPIs (e.g., market size, fleet/route counts, demand/fare anchors). It is
 a **data/figures role** resolved from the deck manifest + economics sidecar, not a composite image. The
 deck-builder/playbook must populate it from the transparent sheet/master tracker, never leave it stale.
+
+### Slide 2 `value_prop_bg` — SEALED + market-specific (definitive, 2026-06-22, rev-3)
+
+**Status: SEALED for Grab (SE Asia).** The distinct slide-2 image is generated, locked, and applied
+live (`replaceImage` on `narr2_bg_img`). The interim borrowed Three C's plate is **retired**.
+
+- **Sealed SE-Asia gold reference:** `backgrounds/decks/grab/grab-value_prop_bg-southeast_asia.png`
+  (1536×864) — Drive `id=1OiOsLLNSdzR9P0vwZ7S_sQr42RWd5EFe`. Scene: modern city riverfront skyline,
+  a professional woman lower-left on her phone walking the dock to board, canonical N30 bow-to-dock
+  with the gangway down, navy lower-third scrim. Reference-guided on the **N30 neutral** only (the
+  Three C's plate was deliberately **not** used as a composition reference — that incidental reuse
+  was the original echo). Provenance: `…-southeast_asia.provenance.json`.
+- **`value_prop_bg` is MARKET-SPECIFIC.** Scope is `deck`, but the scene must be generated for the
+  deck's **anchor market** — there is **one variant per market**, never a shared cross-market plate.
+  The SE-Asia urban-riverfront read is the Grab variant; a different anchor market gets its own
+  composite to the same brief. Build per `backgrounds/decks/{deck}/SLIDE2-IMAGE-BRIEF.md`
+  (the deterministic per-market process + literal prompt template live there).
+- Each market variant must still pass the **distinctness check** vs that deck's Three C's plate.
+
+### Slide 2 vs the "Three C's" slide — distinct images (history, 2026-06-22, rev-2)
+After the exec-summary insert, the live deck order is: 1 cover, **2 exec-summary/thesis**
+(`value_prop_bg`), **3 "Three C's" (Cost/Comfort/Convenience)**. There is **no rule — and no
+Grok instruction — to share a background across slides 2 and 3.** They came out identical only
+because `value_prop_bg` was banked from the *same* N30 composite the Three C's slide already used
+(Drive `…id=1ZyY6gGGWJ9ab4JFQdD2mUsputE70Rytz`). That is incidental reuse, not intent.
+
+**Definitive policy (rev-2 — reviewer call 2026-06-22): the Three C's slide background is correct
+as-is; slide 2 gets its OWN new image rather than borrowing it.**
+- **Slide 3 "Three C's" background — canonical, keep as-is.** The existing N30 composite
+  (Drive `…id=1ZyY6gGGWJ9ab4JFQdD2mUsputE70Rytz`) is the accepted asset for this slide. It is **not**
+  re-sourced and **not** a placeholder. No `three_cs_bg` sourcing work is open. *(The slide-3 figures
+  role `market_overview_kpis` is unaffected — see that row.)*
+- **Slide 2 `value_prop_bg` — needs its OWN distinct composite (`needs_generation`, blocked).**
+  Slide 2 is the exec-summary "today/proof" hero. Its image must be a **distinct** N30 composite —
+  not the Three C's plate — built to the literal brief in
+  **`backgrounds/decks/grab/SLIDE2-IMAGE-BRIEF.md`**: a **woman on a phone at the berth booking a
+  ride**, with the canonical N30 at the dock, market-specific plate, navy lower-third scrim for copy
+  legibility. Until that asset is sourced/composited (per `IMAGE-RULES.md`: N30 neutral reference, no
+  Atlas-generated images, provenance required, stable URL), slide 2 may keep the borrowed Three C's
+  plate as a **documented interim only** — never the final answer, never guessed.
+
+> Note: the table row `market_overview_kpis (slide 3)` is the *figures/KPI* role for the
+> deck-builder's canonical slide 3; the live Grab deck's physical slide 3 is the Three C's slide,
+> whose background is the canonical asset above. The open image work is **slide 2 only**.
 
 ### Scope semantics
 - **market** — keyed by sealed Atlas `city_id`; the *same* file is reused by any deck that features that city.

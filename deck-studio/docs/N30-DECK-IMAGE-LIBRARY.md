@@ -28,15 +28,40 @@ eval gate.**
 
 ---
 
+> **Slide order (after exec-summary insertion):** 1 cover → **2 exec-summary/thesis** → 3 convenience
+> (booking-moment) → 4 market KPIs → econ slides → TAM → partner-roles. **Role is canonical; the numbers
+> below are post-insertion.** The economics binding (`economics-binding.json`) is the source of truth for
+> actual slide indices — every role from convenience onward shifts +1 vs the pre-insertion deck.
+
 ## A. Cover · slide 1 → see `N30-TIER-A-PROMPTS.md §1`
 Safe zone: **upper-left third** clear for the headline. Eval: defects 1–3 fixed (opacity/single/market).
 
-## B. Convenience · slide 2 (the booking-moment) → see `N30-TIER-A-PROMPTS.md §2`
+## A2. Executive-summary / thesis · slide 2
+**Role:** the **strategic-story** backdrop behind the partner thesis (see `SPEC-deck-narrative.md` /
+`gen_deck_narrative.py`). It carries the proposal's positioning + "Your World" beats, so it must read
+**premium and confident but stay quiet** — a lot of distilled copy sits on top.
+**Composition / safe zone:** vessel **lower-right, mid-distance** in the deck-locked market scene; the
+**left ~55% and a calm lower band** stay open, low-detail, gently darkened for the headline + thesis + the
+four "Your World" blocks + a stat strip. This is a **text-heavy** slide — protect the type more than the cover.
+
+> Using the attached white hydrofoil vessel as the exact form/colour reference, produce a single
+> photorealistic 16:9 photograph in the deck's locked grade. The vessel cruises calmly in the **lower-right
+> third** with **{MARKET_SCENE}** softly behind it. The **left ~55% of the frame and a lower band are open,
+> calm, low-detail water and sky with a soft dark gradient**, so a headline, several short paragraphs, and a
+> row of stat chips overlaid there stay fully legible. Foils down, clean reflection, exactly one vessel,
+> hull/cabin/V-mark exactly as the reference, in-water with no seam. Muted, premium, photographic — quiet
+> enough to sit behind dense copy. Single integrated photograph, not a collage. No people, no logos, no text.
+
+**Eval:** **left-55% + lower band** low mean luminance + low variance (auto histogram) → dense copy legible;
+single vessel; **market lock** (same scene family as the cover, no leak); **no baked logos/text** (all copy +
+the stat strip are renderer-placed from the narrative sidecar); grade matches the locked cover.
+
+## B. Convenience · slide 3 (the booking-moment) → see `N30-TIER-A-PROMPTS.md §2`
 Mandatory: **woman on the berth booking on her phone**, foreground left third. Eval: defect 4 present.
 
 ---
 
-## C. Market-overview KPIs · slide 3
+## C. Market-overview KPIs · slide 4
 **Role:** market scene sitting **behind big KPI numbers/chips** (pax/day, route count, TAM headline).
 **Composition / safe zone:** vessel + market in the **right third**; **left ~60%** is open, **darker**
 low-detail water/sky so white KPI numerals stay legible.
@@ -68,7 +93,7 @@ actively foiling.
 **Eval:** **full-frame landmark detail** (auto variance check); single vessel; market lock; foiling not
 displacement; deck-coherent grade.
 
-## E. TAM / market-size · slide 10
+## E. TAM / market-size · slide 11
 **Role:** the **aspirational scale** plate behind the TAM ladder. Convey a *network of destinations* —
 **without** a fleet (still one vessel). Scale comes from an expansive seascape + multiple distant
 island/town silhouettes + optimistic light.
@@ -86,7 +111,7 @@ dotted with destinations; **upper two-thirds open sky** for the TAM-ladder rungs
 **generic-premium or market-correct** coastline (no leak / no specific banned landmark); **no Atlas/map**
 imagery; reads as scale/ambition.
 
-## F. Partner-roles · slide 11
+## F. Partner-roles · slide 12
 **Role:** the **partnership** — Navier vessel + the partner's network — **without cheesy handshakes**.
 Vessel at a berth (optionally the booking-moment human), framed to leave a **clean lockup band** where the
 renderer places the **partner logo + role columns** (Navier = vessels/charging; Partner = demand/app).
@@ -119,7 +144,7 @@ CTA line. Eval: deck-coherent grade, single vessel, clean center band, no leak.
 | In-water / no seam | edge/gradient check at hull waterline | ⚠️ vision-assisted |
 | Hull fidelity vs neutral ref | embedding/feature similarity to `n30-reference-neutral.png` | ⚠️ vision-assisted |
 | Market lock + landmark denylist | vision classifier vs allowed scene + banned-landmark list | ⚠️ vision-assisted |
-| Booking-moment present (slide 2) | person + phone in left third | ⚠️ vision-assisted |
+| Booking-moment present (slide 3) | person + phone in left third | ⚠️ vision-assisted |
 | No baked logos/text | OCR == empty in image | ✅ auto (OCR) |
 | Deck coherence (grade family) | grade/seed match the locked cover | ⚠️ human + metadata |
 | **Final partner-quality** | **Grab-gold exemplar compare** | 👁️ **human spot-check (hard gate)** |
