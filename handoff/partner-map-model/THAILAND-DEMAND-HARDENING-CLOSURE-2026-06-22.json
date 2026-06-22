@@ -1,0 +1,99 @@
+{
+ "generated_utc": "2026-06-22T15:26:12.861917+00:00",
+ "lane": "grab-thailand demand-record hardening",
+ "responds_to": "handoff/partner-map-model/THAILAND-DEMAND-ANCHOR-QUEUE-2026-06-22.json (Grok)",
+ "cascade_gate": "Grok geometry sealed (route_ids bound). Tasklet has hardened per-corridor demand records below; aggregate.py->growth.py->sheet->economics_by_route_id.json may now run on the cascade-ready corridors.",
+ "files": [
+  "THAILAND-DEMAND-ANCHORS-samui-gulf.json",
+  "THAILAND-DEMAND-ANCHORS-phuket-andaman.json",
+  "THAILAND-DEMAND-ANCHORS-bangkok.json"
+ ],
+ "markets": [
+  {
+   "slug": "grab-thailand-samui-gulf",
+   "market": "Koh Samui & the Gulf islands",
+   "corridors": [
+    {
+     "corridor": "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala)",
+     "nm": 12,
+     "state": "cascade-ready (volume+fare)",
+     "premium_eligible_oneway_per_year": 19404,
+     "fare_usd": 10.0
+    },
+    {
+     "corridor": "Koh Samui (Maenam) -> Koh Tao",
+     "nm": 24,
+     "state": "anchor_only_no_volume_lock",
+     "premium_eligible_oneway_per_year": null,
+     "fare_usd": 17.14
+    }
+   ],
+   "aspirational_held": []
+  },
+  {
+   "slug": "grab-thailand-phuket-andaman",
+   "market": "Phuket & the Andaman coast",
+   "corridors": [
+    {
+     "corridor": "Phuket (Rassada Pier) -> Koh Phi Phi (Tonsai)",
+     "nm": 24,
+     "state": "cascade-ready (volume+fare)",
+     "premium_eligible_oneway_per_year": 98124,
+     "fare_usd": 17.14
+    },
+    {
+     "corridor": "Phuket (Rassada/Ao Nam Mao) -> Krabi (Klong Jilad) / Ao Nang",
+     "nm": 18,
+     "state": "anchor_only_no_volume_lock",
+     "premium_eligible_oneway_per_year": null,
+     "fare_usd": 24.29
+    },
+    {
+     "corridor": "Ao Nang -> Railay Beach (longtail floor)",
+     "nm": 2,
+     "state": "captive_corridor_fare_locked_volume_pending",
+     "premium_eligible_oneway_per_year": null,
+     "fare_usd": 4.29
+    },
+    {
+     "corridor": "Phang Nga Bay day-tour cluster (Ao Po / Bang Rong -> James Bond Island / Ao Phang Nga NP)",
+     "nm": 20,
+     "state": "anchor_only_no_volume_lock",
+     "premium_eligible_oneway_per_year": null,
+     "fare_usd": 43.0
+    }
+   ],
+   "aspirational_held": []
+  },
+  {
+   "slug": "grab-thailand-bangkok",
+   "market": "Bangkok - Chao Phraya river tier & gulf gateway",
+   "corridors": [
+    {
+     "corridor": "Chao Phraya river spine: Sathorn (CEN) <-> ICONSIAM (N2/1) <-> Phra Arthit (N13) corridor",
+     "nm": 11,
+     "state": "cascade-ready (volume+fare)",
+     "premium_eligible_oneway_per_year": 345600,
+     "fare_usd": 4.29
+    }
+   ],
+   "aspirational_held": [
+    "Bangkok -> Pattaya",
+    "Bangkok -> Koh Chang",
+    "Bangkok -> Koh Samui"
+   ]
+  }
+ ],
+ "counts": {
+  "corridors_cascade_ready": 3,
+  "corridors_anchor_only_volume_pending": 4,
+  "gulf_gateway_aspirational_held": 3
+ },
+ "guardrails_honored": [
+  "No fabricated fares - every fare is a published operator/list price with a source URL.",
+  "Per-corridor volumes are transparent shown-math derivations labelled derived_pending_validation, anchored on sourced throughput - never a 30K placeholder.",
+  "Capture left to the cascade: Grab is a CONTESTED super-app -> contested capture band, NOT the 0.90 captive band (LB-254).",
+  "Gulf gateway legs (Pattaya/Koh Chang/Samui, 100-205nm) held aspirational with NO demand record and NO durable corridors.json entry.",
+  "Thailand country-reference.json row untouched (already source-backed)."
+ ]
+}

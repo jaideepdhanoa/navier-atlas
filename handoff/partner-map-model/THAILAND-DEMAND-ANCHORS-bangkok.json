@@ -1,0 +1,126 @@
+{
+ "generated_utc": "2026-06-22T15:25:42.184733+00:00",
+ "market": "Bangkok - Chao Phraya river tier & gulf gateway",
+ "slug": "grab-thailand-bangkok",
+ "market_id": "bangkok",
+ "anchor_city": "bangkok-thailand",
+ "partner": "grab-thailand-derivative",
+ "status": "demand-record-hardened / cascade-ready (river tier); gulf gateway = aspirational",
+ "atlas_bind": "Grok geometry sealed; route_ids bound (river tier).",
+ "policy": {
+  "do": [
+   "Use strong_anchors as TAM frame once demand x fare x capture is grounded.",
+   "Keep Thailand country-reference.json row as-is (source-backed: captain $24k, energy $0.116/kWh, etc.)."
+  ],
+  "do_not": [
+   "Fabricate per-corridor L3_locals or fares.",
+   "Add Thailand markets to durable corridors.json without sailing/ridership basis.",
+   "Use 30K placeholder economics."
+  ],
+  "method_note": "Per-corridor volumes are TRANSPARENT DERIVATIONS from sourced throughput x a labelled premium-eligible share, shown as `derived_demand_record` with confidence=derived_pending_validation. Published fares are SOURCED (real operator/list prices), not fabricated. Capture is applied downstream by the cascade (LB-254): Grab is a CONTESTED super-app, not captive -> contested capture band, NOT 0.90.",
+  "fx_thb_per_usd": 35.0
+ },
+ "market_demand_anchors": [
+  {
+   "source": "Wikipedia / Chao Phraya Express Boat",
+   "url": "https://en.wikipedia.org/wiki/Chao_Phraya_Express_Boat",
+   "evidence": "The Chao Phraya Express Boat river boats carry an average of about 40,000 passengers per day across a ~21 km system.",
+   "tier": "official"
+  },
+  {
+   "source": "Wikipedia / Thai Smile Boat (ex-MINE Smart Ferry)",
+   "url": "https://en.wikipedia.org/wiki/Thai_Smile_Boat",
+   "evidence": "Thai Smile Boat (formerly MINE Smart Ferry): electric catamaran fleet of 35 vessels, 22 piers, 3 lines (City/Metro/Urban), hub Sathorn Pier; vessels 150-250 pax; began 2020.",
+   "tier": "official"
+  }
+ ],
+ "corridors": [
+  {
+   "corridor": "Chao Phraya river spine: Sathorn (CEN) <-> ICONSIAM (N2/1) <-> Phra Arthit (N13) corridor",
+   "distance_nm": 11,
+   "duration_min_published": "~50 end-to-end",
+   "vessel_gate": "<=70nm -> N30 Pioneer II / N35 Shuttle (dense urban legs)",
+   "operators_sourced": [
+    "Chao Phraya Express Boat",
+    "Chao Phraya Tourist Boat",
+    "Thai Smile Boat (electric)"
+   ],
+   "fare_baseline_thb": [
+    {
+     "class": "Express Boat (commuter floor)",
+     "one_way_thb_range": [
+      10,
+      16
+     ],
+     "note": "Orange/Yellow/Green flag commuter lines",
+     "source_url": "https://www.chaophrayaexpressboat.com/chaophrayaexpressboat?lang=en"
+    },
+    {
+     "class": "Chao Phraya Tourist Boat day-pass",
+     "day_pass_thb": 150,
+     "source_url": "https://chaophrayatouristboat.com/tourist_boat"
+    },
+    {
+     "class": "Thai Smile Boat (electric) single",
+     "one_way_thb_range": [
+      20,
+      30
+     ],
+     "note": "premium electric tier",
+     "source_url": "https://en.wikipedia.org/wiki/Thai_Smile_Boat"
+    }
+   ],
+   "premium_ceiling_note": "Private long-tail / dinner-cruise charters list THB 1,500-15,000; Navier premium positioning sits above the THB 150 tourist day-pass, below charter.",
+   "demand_anchors": [
+    {
+     "source": "Wikipedia / Chao Phraya Express Boat",
+     "url": "https://en.wikipedia.org/wiki/Chao_Phraya_Express_Boat",
+     "evidence": "~40,000 passengers/day system-wide; Sathorn is the central interchange (BTS Saphan Taksin).",
+     "tier": "official"
+    },
+    {
+     "source": "Chao Phraya Tourist Boat",
+     "url": "https://chaophrayatouristboat.com/tourist_boat",
+     "evidence": "Tourist boats depart every 30 min from 11 piers incl. Sathorn, ICONSIAM, Ratchawongse, Yodpiman.",
+     "tier": "operator"
+    }
+   ],
+   "derived_demand_record": {
+    "method": "shown_math",
+    "confidence": "derived_pending_validation",
+    "inputs": {
+     "system_pax_per_day": 40000,
+     "operating_days_per_year": 360,
+     "central_tourist_corridor_share_assumption": 0.3,
+     "share_basis": "Share of the 40k/day on the central Sathorn-ICONSIAM-Phra Arthit tourist/commuter spine (vs outer commuter piers). LABELLED ASSUMPTION.",
+     "premium_transfer_eligible_share": 0.08,
+     "premium_share_basis": "Share willing to pay a premium electric-foil fare above the THB 10-30 commuter floor (hotel guests, ICONSIAM/riverside, airport-rail interchange). Labelled assumption - low because this is a deeply price-anchored commuter market."
+    },
+    "calc": "40,000/day * 360 = 14.4M system pax/yr. Central tourist corridor = 14.4M * 0.30 = 4.32M/yr. Premium-eligible = 4.32M * 0.08 = ~345,600 premium one-way trips/yr.",
+    "system_pax_per_year": 14400000,
+    "central_corridor_pool_oneway_per_year": 4320000,
+    "premium_eligible_oneway_per_year": 345600,
+    "fare_for_model_usd": 4.29,
+    "fare_basis": "THB 150 tourist day-pass as the premium-tier reference (NOT the THB 10 commuter floor); a foiling premium transfer is positioned at the tourist/hotel tier."
+   }
+  }
+ ],
+ "aspirational_no_demand_record": [
+  {
+   "corridor": "Bangkok -> Pattaya",
+   "distance_nm": "~100",
+   "reason": "No sourced ridership basis for a scheduled fast-ferry corridor yet; keep tagged aspirational per queue policy. Range gate: 75-150nm -> Quanta-LR roadmap (amber)."
+  },
+  {
+   "corridor": "Bangkok -> Koh Chang",
+   "distance_nm": "~160",
+   "reason": "No demand record; >150nm -> Quanta-LR flagged for review. Aspirational."
+  },
+  {
+   "corridor": "Bangkok -> Koh Samui",
+   "distance_nm": "~205",
+   "reason": "No demand record; >150nm -> Quanta-LR flagged for review. Aspirational (do NOT add to durable corridors.json)."
+  }
+ ],
+ "next_action": "Cascade can run on the Chao Phraya river spine (volume + fare hardened). Gulf gateway legs stay aspirational with NO demand record and NO entry in durable corridors.json until ridership basis exists."
+}

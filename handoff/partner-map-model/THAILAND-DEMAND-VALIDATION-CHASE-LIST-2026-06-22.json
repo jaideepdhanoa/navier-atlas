@@ -1,0 +1,137 @@
+{
+  "generated_utc": "2026-06-22T15:44:22.818600+00:00",
+  "lane": "grab-thailand demand-record validation chase-list",
+  "purpose": "Exact official sources that upgrade the 4 anchor-only corridors from derived_pending_validation -> measured. Companion to THAILAND-DEMAND-HARDENING-CLOSURE-2026-06-22.json.",
+  "rule": "A corridor moves to 'measured' only when an official primary source (AOT / Marine Department of Thailand / DNP / TAT) supplies a throughput or seat-capacity number that replaces the derived volume input. Operator/list fares already source-backed; this list is volume-locks only. null beats confidently-wrong.",
+  "tier_ladder": {
+    "tier_1_official_primary": "AOT airport stats, Marine Department passenger manifests, DNP national-park visitor statistics, TAT provincial arrival data. Upgrades to 'measured'.",
+    "tier_2_operator_published": "Ferry operator published seat capacity x sailings x stated load factor (Lomprayah/Seatran/Raja/Ao Nang Princess). Upgrades to 'derived_high_confidence' not 'measured'.",
+    "tier_3_aggregator": "Direct Ferries / Rome2Rio / Tripadvisor listings. Anchor only; never 'measured'."
+  },
+  "corridors": [
+    {
+      "corridor": "Koh Samui (Maenam) -> Koh Tao",
+      "nm": 24,
+      "current_state": "anchor_only_no_volume_lock",
+      "fare_status": "locked (THB 600 / $17.14, operator-published)",
+      "missing_input": "Annual one-way passenger throughput Samui/Phangan <-> Koh Tao",
+      "chase_sources": [
+        {
+          "authority": "Marine Department of Thailand (Surat Thani Marine Office)",
+          "target": "Mae Haad Pier (Koh Tao) passenger manifests / registered seat capacity",
+          "url_hint": "md.go.th regional Surat Thani office passenger statistics",
+          "tier": 1
+        },
+        {
+          "authority": "TAT Surat Thani",
+          "target": "Koh Tao annual visitor arrivals (island-level split from Samui archipelago)",
+          "url_hint": "tat / mots.go.th Surat Thani tourism statistics",
+          "tier": 1
+        },
+        {
+          "authority": "Lomprayah / Seatran Discovery",
+          "target": "Published high-speed catamaran seat capacity x daily Koh Tao sailings x stated load factor",
+          "url_hint": "lomprayah.com / seatrandiscovery.com timetable + vessel capacity",
+          "tier": 2
+        }
+      ],
+      "measured_when": "Marine Dept or TAT Koh Tao arrival figure replaces the derived diver/visitor estimate."
+    },
+    {
+      "corridor": "Phuket (Rassada/Ao Nam Mao) -> Krabi (Klong Jilad) / Ao Nang",
+      "nm": 18,
+      "current_state": "anchor_only_no_volume_lock",
+      "fare_status": "locked (THB 850 / $24.29, operator-published)",
+      "missing_input": "Klong Jilad Pier annual ferry passenger counts (Phuket<->Krabi corridor)",
+      "chase_sources": [
+        {
+          "authority": "Marine Department of Thailand (Krabi Marine Office)",
+          "target": "Klong Jilad Pier registered passenger throughput",
+          "url_hint": "md.go.th Krabi provincial marine office passenger statistics",
+          "tier": 1
+        },
+        {
+          "authority": "AOT - Krabi International Airport",
+          "target": "Krabi annual arrivals (gateway demand proxy for onward island transfers)",
+          "url_hint": "airportthai.co.th / AOT monthly traffic Krabi",
+          "tier": 1
+        },
+        {
+          "authority": "Ao Nang Princess / PP operators",
+          "target": "Published ferry seat capacity x sailings Rassada<->Krabi/Ao Nang",
+          "url_hint": "operator timetables",
+          "tier": 2
+        }
+      ],
+      "measured_when": "Krabi Marine Office Klong Jilad throughput or AOT Krabi arrivals anchor the corridor volume."
+    },
+    {
+      "corridor": "Ao Nang -> Railay Beach (longtail floor, structurally captive)",
+      "nm": 2,
+      "current_state": "captive_corridor_fare_locked_volume_pending",
+      "fare_status": "locked (THB 150 / $4.29 longtail floor, cooperative-published)",
+      "missing_input": "Daily/annual longtail passenger volume Ao Nang<->Railay (no road access = fully captive)",
+      "chase_sources": [
+        {
+          "authority": "Ao Nang Longtail Boat Service Cooperative",
+          "target": "Registered daily passenger volume / boat rotation counts",
+          "url_hint": "Krabi tourism cooperative records; on-the-ground manifest",
+          "tier": 1
+        },
+        {
+          "authority": "TAT Krabi",
+          "target": "Railay Beach annual visitor counts (captive: all arrivals are by boat)",
+          "url_hint": "mots.go.th Krabi tourism statistics",
+          "tier": 1
+        },
+        {
+          "authority": "Railay accommodation occupancy proxy",
+          "target": "Room inventory x occupancy x avg stay -> boat trips (derivation, not measured)",
+          "url_hint": "hotel registry / STR-style proxy",
+          "tier": 2
+        }
+      ],
+      "measured_when": "Cooperative or TAT Railay arrival figure lands; captive geometry makes any official visitor count a near-direct boat-volume proxy."
+    },
+    {
+      "corridor": "Phang Nga Bay day-tour cluster (Ao Po / Bang Rong -> James Bond Island / Ao Phang Nga NP)",
+      "nm": 20,
+      "current_state": "anchor_only_no_volume_lock",
+      "fare_status": "locked (THB ~1500 / $43 day-tour, operator-published)",
+      "missing_input": "Ao Phang Nga National Park annual visitor counts + Ao Po/Bang Rong departure volumes",
+      "chase_sources": [
+        {
+          "authority": "DNP - Department of National Parks, Wildlife and Plant Conservation",
+          "target": "Ao Phang Nga National Park annual visitor statistics (incl. James Bond Island / Khao Phing Kan entries)",
+          "url_hint": "dnp.go.th national park visitor statistics (Ao Phang Nga)",
+          "tier": 1
+        },
+        {
+          "authority": "Marine Department (Phuket / Phang Nga)",
+          "target": "Ao Po Grand Marina / Bang Rong Pier registered departure throughput",
+          "url_hint": "md.go.th Phuket marine office",
+          "tier": 1
+        },
+        {
+          "authority": "TAT Phang Nga",
+          "target": "Phang Nga Bay day-tour volume estimates",
+          "url_hint": "mots.go.th Phang Nga tourism statistics",
+          "tier": 1
+        }
+      ],
+      "measured_when": "DNP Ao Phang Nga NP visitor count anchors the day-tour pool; marine-office pier throughput cross-checks departures."
+    }
+  ],
+  "cascade_ready_corridors_no_chase_needed": [
+    "Koh Samui (Bangrak/Maenam) -> Koh Phangan (Thong Sala) - volume+fare sourced",
+    "Phuket (Rassada) -> Koh Phi Phi (Tonsai) - volume+fare sourced",
+    "Chao Phraya river spine (Sathorn<->ICONSIAM<->Phra Arthit) - volume+fare sourced"
+  ],
+  "global_upgrade_sources": {
+    "AOT": "airportthai.co.th monthly traffic reports - Samui is Bangkok Airways (not AOT); use AOT for Phuket & Krabi, Bangkok Airways investor/traffic data for Samui exact 2024-2025 split.",
+    "Marine_Department": "md.go.th - provincial marine offices hold pier-level passenger manifests; the durable primary source for ferry corridor volumes.",
+    "DNP": "dnp.go.th - national park visitor statistics; the durable primary source for Phang Nga Bay / marine-park day-tour pools.",
+    "TAT_MOTS": "mots.go.th - provincial tourism arrival statistics; gateway/island arrival proxies."
+  },
+  "note_samui_correction": "Samui Airport is operated by Bangkok Airways, NOT AOT. The queue's 'AOT monthly Samui arrivals' line should chase Bangkok Airways traffic data for the exact 2024-2025 Samui split; AOT applies to Phuket/Krabi."
+}
