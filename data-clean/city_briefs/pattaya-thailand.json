@@ -2,8 +2,8 @@
  "city_id": "pattaya-thailand",
  "display": "Pattaya",
  "region": "SEA",
- "tagline": "Eastern Seaboard gateway — marina depth + island day-trip volume near Bangkok.",
- "summary": "Pattaya sits ~2hr by road SE of Bangkok on the Eastern Seaboard, with Southeast Asia's largest marina (Ocean Marina) and heavy day-trip flow to Koh Larn. It is the natural Gulf-gateway complement to Bangkok: a place to prove premium coastal and island-transfer corridors with strong existing marine infrastructure.",
+ "tagline": "Eastern Seaboard gateway — marina depth + island day-trip volume, now linked to Bangkok by water.",
+ "summary": "Pattaya sits ~2hr by road SE of Bangkok on the Eastern Seaboard, with Southeast Asia's largest marina (Ocean Marina) and heavy day-trip flow off Bali Hai Pier to Koh Larn. It is the anchor of the Eastern Seaboard cluster: the natural Gulf-gateway complement to Bangkok (a ~46 nm Pioneer II water line), the launch point for the Koh Larn and Koh Samet day-trips, and the eastern terminus of the cross-Gulf line from Hua Hin.",
  "demand_signals": [
   {
    "signal": "Koh Larn day-trip volume",
@@ -11,17 +11,23 @@
   },
   {
    "signal": "Marina & yachting base",
-   "detail": "Ocean Marina Yacht Club anchors charter, berthing and premium marine demand."
+   "detail": "Ocean Marina Yacht Club — the largest marina in SE Asia — anchors charter, berthing and premium marine demand."
   },
   {
    "signal": "Bangkok overflow corridor",
-   "detail": "Eastern Seaboard tourism and EEC business travel create premium transfer demand."
+   "detail": "Eastern Seaboard tourism and EEC business travel create premium transfer demand; the ~46 nm water line beats the congested highway."
+  },
+  {
+   "signal": "Cross-Gulf terminus",
+   "detail": "Eastern end of the government-validated Hua Hin<->Pattaya crossing."
   }
  ],
  "use_cases": [
+  "Bangkok <-> Pattaya gateway hop",
   "Pattaya <-> Koh Larn premium island transfer",
+  "Pattaya <-> Koh Samet direct day-trip",
   "Marina-based charter & premium berth charging",
-  "Eastern Seaboard coastal shuttle"
+  "Cross-Gulf line terminus (Hua Hin)"
  ],
  "journeys": [
   {
@@ -32,6 +38,20 @@
    "note": "Short, high-frequency island hop."
   },
   {
+   "from": "Bali Hai Pier",
+   "to": "Koh Samet (Na Dan)",
+   "approx_nm": 40,
+   "vessel_class": "Pioneer II",
+   "note": "Direct Eastern Seaboard island line."
+  },
+  {
+   "from": "Bangkok (Gulf mouth)",
+   "to": "Bali Hai Pier",
+   "approx_nm": 46,
+   "vessel_class": "Pioneer II",
+   "note": "Gateway line from the capital — beats the 2hr-plus highway."
+  },
+  {
    "from": "Ocean Marina",
    "to": "Bali Hai / coastal nodes",
    "approx_nm": 6,
@@ -39,12 +59,14 @@
    "note": "Marina-anchored premium corridor."
   }
  ],
- "navier_fit": "High. Best existing marine infrastructure of the new cluster (Ocean Marina); short island corridors; clear premium WTP. Strong pedestal/charging partner case at the marina.",
- "competitive_landscape": "Conventional speedboats and ferries to Koh Larn; no premium electric option. Ocean Marina serves charters but not scheduled transfer.",
- "seasonality": "Peak: Nov-Mar cool season. Gulf is relatively sheltered here vs open Gulf islands — broader operating window.",
+ "navier_fit": "Very high. Best existing marine infrastructure of the new clusters (Ocean Marina); short island corridors plus an in-range Bangkok gateway; clear premium WTP. Strong pedestal/charging partner case at the marina.",
+ "competitive_landscape": "Conventional speedboats and ferries to Koh Larn; no premium electric option and no water link to Bangkok. Ocean Marina serves charters but not scheduled transfer.",
+ "seasonality": "Peak: Nov-Mar cool season. The upper Gulf here is relatively sheltered vs the open lower-Gulf islands — a broader operating window.",
  "regulatory_note": "Thai cabotage + Marine Department licensing; Chonburi/EEC special economic zone may offer a pilot-friendly regulatory environment.",
  "signature_routes": [
+  "Bangkok <-> Pattaya",
   "Bali Hai Pier <-> Koh Larn",
+  "Pattaya <-> Koh Samet",
   "Ocean Marina <-> coastal nodes"
  ],
  "sources": [
@@ -66,7 +88,7 @@
  "partner_overlays": {
   "grab": {
    "super_app_fit": "Grab in-app island day-trip bundles (boat + GrabCar from Bangkok) and marina concierge transfers.",
-   "wedge": "Day-trip island bundles originating from Bangkok via Grab — pairs the Bangkok deal with a proven coastal corridor."
+   "wedge": "Day-trip island bundles and a Bangkok->Pattaya gateway hop in Grab — pairs the Bangkok deal with proven coastal corridors."
   }
  },
  "transit_planning": {
@@ -74,14 +96,14 @@
    "Bali Hai Pier",
    "Ocean Marina Yacht Club"
   ],
-  "land_handoff": "GrabCar to/from Bangkok & EEC",
-  "note": "Marina infrastructure makes this the easiest charging-partner case."
+  "land_handoff": "GrabCar to/from Bangkok & the EEC",
+  "note": "Anchor of the Eastern Seaboard cluster (promoted from Bangkok connected-city). Geometry sealed via Grok from BP files."
  },
  "_enrichment": {
-  "authored": "2026-06-22",
+  "authored": "2026-06-23",
   "by": "tasklet_research",
-  "cluster": "thailand_gulf",
-  "status": "connected_city_v1",
-  "note": "Connected city brief hung off the Koh Samui / Gulf flagship. Geometry sealed via Grok from Bucket-C BP files."
+  "cluster": "thailand_eastern_seaboard",
+  "note": "Anchor of the Eastern Seaboard cluster (promoted from Bangkok connected-city). Geometry sealed via Grok from BP files.",
+  "status": "connected_city_v2"
  }
 }

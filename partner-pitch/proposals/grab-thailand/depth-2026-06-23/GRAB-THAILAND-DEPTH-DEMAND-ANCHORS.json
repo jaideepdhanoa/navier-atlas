@@ -1,0 +1,35 @@
+{
+  "_about": "Demand anchors for the new upper-Gulf markets. Source-tiered estimates to seed corridors.json during the post-seal economics cascade. NOT a 30k uniform placeholder. Confidence labelled; refine with operator data at survey.",
+  "_pass": "grab-thailand-depth-2026-06-23",
+  "markets": {
+    "eastern_seaboard": {
+      "anchor_city": "pattaya-thailand",
+      "corridors": [
+        {"route": "bangkok-thailand__pattaya-thailand", "nm": 46, "vessel": "Pioneer II",
+         "demand_basis": "Bangkok<->Pattaya is a top domestic leisure+EEC corridor; premium-tier water capture is a thin slice of a very large road flow.",
+         "annual_pax_estimate": "tier-B (model from premium capture of road corridor)", "confidence": "low-med", "tier": "B"},
+        {"route": "pattaya-thailand__koh-larn-thailand", "nm": 5, "vessel": "Pioneer II",
+         "demand_basis": "Among the busiest Eastern-Seaboard island day-trip legs off Bali Hai; corridor already sealed.",
+         "annual_pax_estimate": "tier-A (high day-trip volume)", "confidence": "med", "tier": "A"},
+        {"route": "pattaya-thailand__koh-samet-thailand", "nm": 40, "vessel": "Pioneer II",
+         "demand_basis": "New direct line; demand a premium slice of existing Ban Phe->Samet day-trip flow rerouted from Pattaya origin.",
+         "annual_pax_estimate": "tier-B", "confidence": "low-med", "tier": "B"},
+        {"route": "koh-samet-thailand__koh-samet-thailand (Ban Phe<->Na Dan)", "nm": 3, "vessel": "Pioneer II",
+         "demand_basis": "Proven high-frequency Ban Phe speedboat market; premium upgrade of an existing dense leg.",
+         "annual_pax_estimate": "tier-A", "confidence": "med", "tier": "A"}
+      ]
+    },
+    "royal_coast": {
+      "anchor_city": "hua-hin-thailand",
+      "corridors": [
+        {"route": "hua-hin-thailand__pattaya-thailand", "nm": 58, "vessel": "Pioneer II",
+         "demand_basis": "Government-validated cross-Gulf ferry demand (East-West Ferry Project); premium reliable tier captures travelers avoiding the 5-6hr road loop.",
+         "annual_pax_estimate": "tier-A (validated route)", "confidence": "med", "tier": "A", "marquee": true},
+        {"route": "hua-hin-thailand__cha-am-thailand", "nm": 14, "vessel": "Pioneer II",
+         "demand_basis": "Premium resort-coast hop; domestic weekend resort flow.",
+         "annual_pax_estimate": "tier-B", "confidence": "low-med", "tier": "B"}
+      ]
+    }
+  },
+  "_cascade_note": "On cascade: wire these as premium-tier fare x haircut-demand records in finance/model/corridors.json (no rollup pseudo-geographies), add country-reference rows if Thailand missing, then aggregate.py->growth.py->splice->sheet->sidecar. SOM floor is the honest sell; do not inflate."
+}
