@@ -35,19 +35,21 @@
       ],
       "_link_kind": "hospitality-flagship",
       "_link_source": "grok/bind_hospitality_flagship_corridors",
-      "economics_status": "economics_pending"
+      "economics_status": "economics_pending",
+      "display": "text_only",
+      "render": "roadmap-amber-dashed"
     },
     {
       "from": "Bora Bora Airport",
       "to": "Four Seasons Bora Bora",
       "today": "Diesel lagoon boat transfer.",
       "with_navier": "Silent zero-wake foiling transfer — protecting the lagoon.",
-      "distance_nm": 139.0,
+      "distance_nm": 32.2,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "bora-bora-french-polynesia",
       "to_node_id": "bora-bora-french-polynesia",
-      "route_id": "rn-7afca0da6548",
+      "route_id": "e__bora-bora-french-polynesia__raiatea-tahaa-french-polynesia",
       "_link_kind": "corridor-label",
       "_link_status": "linked-grok-scoped",
       "_link_source": "grok/relink_partner_journeys/scoped"
@@ -63,7 +65,8 @@
       "from_node_id": "mahe-seychelles",
       "to_node_id": "mahe-seychelles",
       "route_id": null,
-      "_link_status": "unlinked-intra-city"
+      "_link_status": "unlinked-intra-city",
+      "display": "text_only"
     },
     {
       "from": "Four Seasons Kuda Huraa",
@@ -76,7 +79,8 @@
       "from_node_id": "male-maldives",
       "to_node_id": "male-maldives",
       "route_id": null,
-      "_link_status": "unlinked-intra-city"
+      "_link_status": "unlinked-intra-city",
+      "display": "text_only"
     }
   ],
   "differentiation": {
@@ -131,8 +135,32 @@
       "timeline": "2026 H2",
       "rationale": "Live network, flagship resorts.",
       "featured_routes": [
-        "Velana ↔ Kuda Huraa",
-        "Velana ↔ Landaa Giraavaru"
+        {
+          "label": "Velana ↔ Kuda Huraa",
+          "route_id": null,
+          "_link_kind": "normalized-from-string",
+          "_link_status": "aspirational-no-built-route",
+          "display": "text_only",
+          "_link_source": "grok/mark_unlinked_aspirational",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "Velana ↔ Landaa Giraavaru",
+          "route_id": "e__mald__c960786903a0",
+          "_link_kind": "hospitality-flagship",
+          "_link_status": "linked-grok-scoped",
+          "display": "text_only",
+          "_link_source": "grok/bind_hospitality_flagship_corridors",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed",
+          "route_ids": [
+            "e__mald__c960786903a0"
+          ],
+          "distance_nm": 11.7,
+          "from_node_id": "male-maldives__soneva-fushi-jetty",
+          "to_node_id": "male-maldives__four-seasons-landaa-giraavaru"
+        }
       ],
       "use_cases": [
         "luxury arrival"
@@ -150,7 +178,14 @@
       "timeline": "2027 H1",
       "rationale": "Iconic arrival, lagoon protection.",
       "featured_routes": [
-        "Airport ↔ Four Seasons Bora Bora"
+        {
+          "label": "Airport ↔ Four Seasons Bora Bora",
+          "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
+          "_link_kind": "corridor-label",
+          "distance_nm": 34.7,
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        }
       ],
       "use_cases": [
         "luxury arrival",
@@ -169,9 +204,46 @@
       "timeline": "2027 H2",
       "rationale": "Conservation-aligned Indian Ocean network.",
       "featured_routes": [
-        "Mahé ↔ Petite Anse",
-        "Mahé ↔ Praslin",
-        "Mahé ↔ Desroches"
+        {
+          "label": "Mahé ↔ Petite Anse",
+          "route_id": "ics-170b25c514",
+          "_link_kind": "hospitality-flagship",
+          "_link_status": "linked-grok-scoped",
+          "display": "text_only",
+          "_link_source": "grok/bind_hospitality_flagship_corridors",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed",
+          "route_ids": [
+            "ics-170b25c514"
+          ],
+          "distance_nm": 6.2,
+          "from_node_id": "Mahé & Inner Islands, Seychelles",
+          "to_node_id": "Anse Royale"
+        },
+        {
+          "label": "Mahé ↔ Praslin",
+          "route_id": "ics-b161972f11",
+          "_link_kind": "corridor-label",
+          "distance_nm": 4.4,
+          "_link_status": "linked-grok-scoped",
+          "_link_source": "grok/relink_partner_journeys/scoped"
+        },
+        {
+          "label": "Mahé ↔ Desroches",
+          "route_id": "ics-05c0ace2f9",
+          "_link_kind": "hospitality-flagship",
+          "_link_status": "linked-grok-scoped",
+          "display": "text_only",
+          "_link_source": "grok/bind_hospitality_flagship_corridors",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed",
+          "route_ids": [
+            "ics-05c0ace2f9"
+          ],
+          "distance_nm": 2.6,
+          "from_node_id": "Mahé & Inner Islands, Seychelles",
+          "to_node_id": "Mahé & Inner Islands, Seychelles"
+        }
       ],
       "use_cases": [
         "inter-island",
@@ -259,7 +331,8 @@
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         },
         {
           "from": "Velana International",
@@ -272,7 +345,8 @@
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         },
         {
           "from": "Kuda Huraa",
@@ -285,7 +359,8 @@
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         },
         {
           "from": "Landaa Giraavaru",
@@ -298,7 +373,8 @@
           "from_node_id": "male-maldives",
           "to_node_id": "male-maldives",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         }
       ],
       "proof_points": [
@@ -350,7 +426,16 @@
           "timeline": "2026 H2",
           "rationale": "Closest flagship, highest frequency.",
           "featured_routes": [
-            "Velana ↔ Kuda Huraa"
+            {
+              "label": "Velana ↔ Kuda Huraa",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            }
           ],
           "use_cases": [
             "luxury arrival"
@@ -368,9 +453,34 @@
           "timeline": "2027 H1",
           "rationale": "Connect both flagships seamlessly.",
           "featured_routes": [
-            "Velana ↔ Landaa Giraavaru",
-            "Kuda Huraa ↔ Landaa Giraavaru",
-            "Hanifaru excursions"
+            {
+              "label": "Velana ↔ Landaa Giraavaru",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            },
+            {
+              "label": "Kuda Huraa ↔ Landaa Giraavaru",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            },
+            {
+              "label": "Hanifaru excursions",
+              "route_id": "ics-5f12d7eb91",
+              "_link_kind": "corridor-label",
+              "distance_nm": 4.3,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "multi-property",
@@ -389,7 +499,14 @@
           "timeline": "2027 H2",
           "rationale": "Durable brand amenity.",
           "featured_routes": [
-            "All Four Seasons Maldives transfers"
+            {
+              "label": "All Four Seasons Maldives transfers",
+              "route_id": "ics-0a9c3fa047",
+              "_link_kind": "corridor-label",
+              "distance_nm": 4.2,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -448,12 +565,12 @@
           "to": "Four Seasons Bora Bora",
           "today": "A diesel boat transfer across the lagoon.",
           "with_navier": "A silent zero-wake foiling transfer to the resort dock — protecting the lagoon.",
-          "distance_nm": 139.0,
+          "distance_nm": 34.7,
           "platform": "Pioneer II",
           "archetype": "tourism",
           "from_node_id": "bora-bora-french-polynesia",
           "to_node_id": "bora-bora-french-polynesia",
-          "route_id": "rn-7afca0da6548",
+          "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
@@ -463,12 +580,12 @@
           "to": "Vaitape / Bora Bora village",
           "today": "A noisy diesel shuttle across the lagoon.",
           "with_navier": "A silent Pioneer II hop to the main island.",
-          "distance_nm": 139.0,
+          "distance_nm": 34.7,
           "platform": "Pioneer II",
           "archetype": "tourism",
           "from_node_id": "bora-bora-french-polynesia",
           "to_node_id": "bora-bora-french-polynesia",
-          "route_id": "rn-7afca0da6548",
+          "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
@@ -493,12 +610,12 @@
           "to": "Lagoon coral gardens",
           "today": "A diesel excursion boat over the reef.",
           "with_navier": "A silent zero-wake Pioneer II lagoon excursion — no engine noise over the coral.",
-          "distance_nm": 137.7,
+          "distance_nm": 34.7,
           "platform": "Pioneer II",
           "archetype": "tourism",
           "from_node_id": "bora-bora-french-polynesia",
           "to_node_id": "bora-bora-french-polynesia",
-          "route_id": "rn-daf81831bfa5",
+          "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
@@ -553,8 +670,26 @@
           "timeline": "2027 H1",
           "rationale": "The iconic arrival, made serene and clean.",
           "featured_routes": [
-            "Airport ↔ Four Seasons",
-            "Resort ↔ Vaitape"
+            {
+              "label": "Airport ↔ Four Seasons",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            },
+            {
+              "label": "Resort ↔ Vaitape",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            }
           ],
           "use_cases": [
             "luxury arrival",
@@ -573,9 +708,30 @@
           "timeline": "2027 H2",
           "rationale": "Open clean inter-island access.",
           "featured_routes": [
-            "Bora Bora ↔ Taha'a",
-            "Bora Bora ↔ Raiatea",
-            "Lagoon excursions"
+            {
+              "label": "Bora Bora ↔ Taha'a",
+              "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
+              "_link_kind": "corridor-label",
+              "distance_nm": 34.7,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Bora Bora ↔ Raiatea",
+              "route_id": "e__bora-bora-french-polynesia__raiatea-tahaa-french-polynesia",
+              "_link_kind": "corridor-label",
+              "distance_nm": 32.2,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Lagoon excursions",
+              "route_id": "rn-daf81831bfa5",
+              "_link_kind": "corridor-label",
+              "distance_nm": 137.7,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "inter-island",
@@ -594,7 +750,14 @@
           "timeline": "2028",
           "rationale": "Durable brand amenity.",
           "featured_routes": [
-            "All Four Seasons Bora Bora transfers"
+            {
+              "label": "All Four Seasons Bora Bora transfers",
+              "route_id": "e__bora-bora-french-polynesia__maupiti-french-polynesia",
+              "_link_kind": "corridor-label",
+              "distance_nm": 34.7,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -659,19 +822,20 @@
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         },
         {
           "from": "Mahé",
           "to": "Praslin / La Digue",
           "today": "A ~1 hr diesel inter-island ferry.",
           "with_navier": "A fast clean Pioneer II inner-island foiling hop.",
-          "distance_nm": 4.5,
+          "distance_nm": 4.4,
           "platform": "Pioneer II",
           "archetype": "tourism",
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
-          "route_id": "ics-975894008b",
+          "route_id": "ics-b161972f11",
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-scoped",
           "_link_source": "grok/relink_partner_journeys/scoped"
@@ -687,7 +851,8 @@
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         },
         {
           "from": "Four Seasons Seychelles",
@@ -700,7 +865,8 @@
           "from_node_id": "mahe-seychelles",
           "to_node_id": "mahe-seychelles",
           "route_id": null,
-          "_link_status": "unlinked-intra-city"
+          "_link_status": "unlinked-intra-city",
+          "display": "text_only"
         }
       ],
       "proof_points": [
@@ -752,8 +918,24 @@
           "timeline": "2027 H1",
           "rationale": "Brand-aligned conservation showcase.",
           "featured_routes": [
-            "Mahé ↔ Petite Anse",
-            "Ste Anne excursions"
+            {
+              "label": "Mahé ↔ Petite Anse",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            },
+            {
+              "label": "Ste Anne excursions",
+              "route_id": "rn-w5-7aaa208602",
+              "_link_kind": "corridor-label",
+              "distance_nm": 2.5,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "luxury arrival",
@@ -772,9 +954,34 @@
           "timeline": "2027 H2",
           "rationale": "Connect the inner islands and the private-island flagship.",
           "featured_routes": [
-            "Mahé ↔ Praslin",
-            "Mahé ↔ La Digue",
-            "Mahé ↔ Desroches"
+            {
+              "label": "Mahé ↔ Praslin",
+              "route_id": "ics-b161972f11",
+              "_link_kind": "corridor-label",
+              "distance_nm": 4.4,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            },
+            {
+              "label": "Mahé ↔ La Digue",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            },
+            {
+              "label": "Mahé ↔ Desroches",
+              "route_id": null,
+              "_link_kind": "normalized-from-string",
+              "_link_status": "aspirational-no-built-route",
+              "display": "text_only",
+              "_link_source": "grok/mark_unlinked_aspirational",
+              "economics_status": "roadmap_excluded",
+              "render": "roadmap-amber-dashed"
+            }
           ],
           "use_cases": [
             "inter-island"
@@ -792,7 +999,14 @@
           "timeline": "2028",
           "rationale": "Durable brand amenity + network economics.",
           "featured_routes": [
-            "All Four Seasons Seychelles transfers"
+            {
+              "label": "All Four Seasons Seychelles transfers",
+              "route_id": "rn-w5-7aaa208602",
+              "_link_kind": "corridor-label",
+              "distance_nm": 2.5,
+              "_link_status": "linked-grok-scoped",
+              "_link_source": "grok/relink_partner_journeys/scoped"
+            }
           ],
           "use_cases": [
             "brand signature"
@@ -951,14 +1165,14 @@
   },
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-21T14:24:36Z",
+      "at": "2026-06-23T05:54:11Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
-        "total": 16,
-        "linked": 6,
-        "cleared_mislink": 0,
+        "total": 39,
+        "linked": 17,
+        "cleared_mislink": 1,
         "borrowed_brief": 0,
-        "matched_scoped": 6,
+        "matched_scoped": 17,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,
@@ -974,8 +1188,8 @@
     "featured": 0
   },
   "_hospitality_flagship_bind": {
-    "applied_at": "2026-06-21T14:24:44Z",
+    "applied_at": "2026-06-23T05:54:35Z",
     "journeys": 1,
-    "featured": 0
+    "featured": 3
   }
 }

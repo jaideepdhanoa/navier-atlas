@@ -39,6 +39,18 @@ echo "→ building deploy tree (_dist/) from data-clean/…  (profile: ${BUILD_P
 BUILD_PROFILE="${BUILD_PROFILE:-public}" node scripts/build.mjs --profile="${BUILD_PROFILE:-public}"
 BUILD_PROFILE="${BUILD_PROFILE:-public}" node scripts/build-site.mjs --profile="${BUILD_PROFILE:-public}"
 
+# 2b · route linkage audit (advisory unless RELEASE=1 or partner-scoped strict).
+echo "→ route linkage audit…"
+LINKAGE_ARGS=(--strict)
+if [ -n "${RELEASE:-}" ]; then LINKAGE_ARGS+=(--global); fi
+node scripts/audit-partner-route-linkage.mjs "${LINKAGE_ARGS[@]}" || {
+  if [ -n "${RELEASE:-}" ]; then
+    echo "✗ RELEASE=1 deploy blocked — fix route linkage: ./scripts/run-route-linkage-lane.sh --apply" >&2
+    exit 1
+  fi
+  echo "  ⚠ route linkage gaps (allowlisted partners OK) — set RELEASE=1 only when allowlist is empty"
+}
+
 # 3 · §3 pre-flight on the gated surface (seal hash · exclusion grep · MapLibre smoke · pitch-render).
 #     Set RELEASE=1 for a prod cut to ENFORCE the seal (§3.1); non-zero ⇒ abort the deploy.
 echo "→ running deploy pre-flight…"

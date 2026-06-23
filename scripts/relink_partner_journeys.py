@@ -1660,6 +1660,37 @@ def _walk_phase_carousels(
     process(rollup_only=True)
 
 
+def normalize_featured_routes_tree(obj: dict) -> int:
+    """Convert string featured_routes → objects so relinker can bind them."""
+    n = 0
+
+    def walk(container: dict):
+        nonlocal n
+        for ph in container.get("phases") or []:
+            if not isinstance(ph, dict):
+                continue
+            out: list = []
+            for fr in ph.get("featured_routes") or []:
+                if isinstance(fr, str):
+                    out.append({
+                        "label": fr,
+                        "route_id": None,
+                        "_link_kind": "normalized-from-string",
+                    })
+                    n += 1
+                elif isinstance(fr, dict):
+                    if not fr.get("label") and fr.get("title"):
+                        fr["label"] = fr["title"]
+                    out.append(fr)
+            ph["featured_routes"] = out
+        for m in container.get("markets") or []:
+            if isinstance(m, dict):
+                walk(m)
+
+    walk(obj)
+    return n
+
+
 def walk_partner(
     partner: dict,
     partner_slug: str,
@@ -1786,6 +1817,10 @@ def main():
             print(f"skip {slug}: missing", file=sys.stderr)
             continue
         partner = load_json(path)
+        if args.apply:
+            norm = normalize_featured_routes_tree(partner)
+            if norm:
+                print(f"  · {slug}: normalized {norm} string featured_route(s)")
 
         if args.audit:
             b = audit_partner(partner, slug, routes)

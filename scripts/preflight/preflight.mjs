@@ -20,6 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 import { JSDOM } from 'jsdom';
 import styleSpec from '@maplibre/maplibre-gl-style-spec';
 
@@ -236,6 +237,21 @@ head('§3.4  pitch-render layer present');
     if (gone.length) fail(`pitch content is inlined but its render is MISSING: ${gone.join(' · ')} — a build regen likely dropped the PR#3 render (re-apply it, then run claude_to_template.py so the template keeps it)`);
     else ok('city panel + partner carousel + route-label recovery all present');
   }
+}
+
+// ─── §3.5 · Route linkage (partner story routes) ─────────────────────────────
+head('§3.5  route linkage audit (story / featured_routes)');
+{
+  const auditArgs = ['scripts/audit-partner-route-linkage.mjs', '--strict'];
+  if (RELEASE) auditArgs.push('--global');
+  const r = spawnSync(process.execPath, auditArgs, { cwd: ROOT, encoding: 'utf8' });
+  if (r.stdout) process.stdout.write(r.stdout);
+  if (r.stderr) process.stderr.write(r.stderr);
+  if (r.status !== 0) {
+    fail(RELEASE
+      ? 'route linkage gaps remain — run ./scripts/run-route-linkage-lane.sh --apply'
+      : 'route linkage blocking gaps (non-allowlisted partners) — fix before RELEASE=1 deploy');
+  } else ok('route linkage audit passed (allowlist respected)');
 }
 
 // ─── verdict ──────────────────────────────────────────────────────────────────

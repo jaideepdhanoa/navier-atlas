@@ -14,7 +14,9 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[1]
 PARTNERS = ROOT / "partner-pitch" / "partners"
+DATA_PARTNERS = ROOT / "data-clean" / "partners"
 SCHEMA_PATH = ROOT / "partner-pitch" / "schema" / "partner_proposal.schema.json"
+ROUTE_LINKAGE_AUDIT = ROOT / "handoff" / "partner-map-model" / "PARTNER-ROUTE-LINKAGE-AUDIT.json"
 
 # --- Narrative (slide-2 exec-summary) readiness -------------------------------
 # gen_deck_narrative.py distills slide 2 from these proposal fields. A partner that
@@ -98,6 +100,29 @@ def validate(schema_path: Path = SCHEMA_PATH) -> int:
     print("\n".join(narr_lines))
 
     strict_narr = "--strict-narrative" in sys.argv
+    strict_link = "--strict-linkage" in sys.argv
+    if strict_link:
+        import subprocess
+        audit_args = [sys.executable, str(ROOT / "scripts/audit-partner-route-linkage.mjs"), "--strict"]
+        if "--global-linkage" in sys.argv:
+            audit_args.append("--global")
+        r = subprocess.run(audit_args, cwd=ROOT)
+        if r.returncode != 0:
+            print("\n  ✗ --strict-linkage: route linkage audit failed")
+            return 1
+        print("  ✅ route linkage audit passed (--strict-linkage)")
+    elif ROUTE_LINKAGE_AUDIT.exists():
+        audit = json.loads(ROUTE_LINKAGE_AUDIT.read_text())
+        s = audit.get("summary", {})
+        print(
+            f"\nRoute linkage audit ({ROUTE_LINKAGE_AUDIT.relative_to(ROOT)}): "
+            f"{s.get('partners_with_gaps', '?')} partners with gaps · "
+            f"{s.get('partners_story_ready', '?')} story-ready · "
+            f"run: node scripts/audit-partner-route-linkage.mjs"
+        )
+    else:
+        print("\nRoute linkage audit: not found — run: node scripts/audit-partner-route-linkage.mjs")
+
     if not schema_ok:
         return 1
     if strict_narr and narr_gaps:

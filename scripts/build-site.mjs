@@ -29,6 +29,7 @@ import {
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
+import { applyRouteDisplay } from './route-display.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -113,8 +114,9 @@ function scoper(FBT) {
 }
 
 // ---- scope the full data object to one partner ----
-// opts: { keepCities?, expandRegion=true, routesWithin=false } — a hub index passes all markets' cities
+// opts: { keepCities?, expandRegion=true, routesWithin=false, pageKind? } — a hub index passes all markets' cities
 // (anchors-only, no region expansion, intra-anchor routes); a market deep-dive passes that market's cities.
+// pageKind: 'flat' | 'hub-index' | 'market' — drives PR3 route filtering + MAP_DISPLAY defaults.
 function scopeForPartner(data, slug, opts = {}) {
   const partner = data.PARTNERS[slug];
   const { cityIdOf, resolve } = scoper(data.FEATURES_BY_TYPE);
@@ -141,13 +143,21 @@ function scopeForPartner(data, slug, opts = {}) {
   const partnerClusters = new Set([...keep].map(id => cityCluster[id]).filter(Boolean));
   const fallbackRegions = new Set([...keep].filter(id => !cityCluster[id]).map(id => cityRegion[id]).filter(Boolean));
   const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ cities in those clusters (∪ region fallback)
-  if (opts.expandRegion !== false) for (const id of Object.keys(cityRegion)) {
-    if (cityCluster[id] ? partnerClusters.has(cityCluster[id]) : fallbackRegions.has(cityRegion[id])) net.add(id);
+  const pageKind = opts.pageKind || 'flat';
+  const expandNetwork = opts.expandRegion !== false
+    && pageKind !== 'market'
+    && !(pageKind === 'flat' && !partner?.map_display?.expand_network);
+  // Market + flat authority pages: rollout/phase cities only — no cluster inflation (dense UAE/Palm meshes).
+  if (expandNetwork) {
+    for (const id of Object.keys(cityRegion)) {
+      if (cityCluster[id] ? partnerClusters.has(cityCluster[id]) : fallbackRegions.has(cityRegion[id])) net.add(id);
+    }
   }
 
   // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
   // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
-  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return opts.routesWithin ? (a && b) : (a || b); });
+  const routesWithin = opts.routesWithin ?? (pageKind === 'market' || pageKind === 'flat');
+  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return routesWithin ? (a && b) : (a || b); });
   const phaseEndpoints = new Set();
   for (const f of (data.ROUTES || [])) { const p = f.properties || {}; if (keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to))) { if (p.from) phaseEndpoints.add(p.from); if (p.to) phaseEndpoints.add(p.to); } }
   const FEATURES_BY_TYPE = {};
@@ -181,9 +191,33 @@ function scopeForPartner(data, slug, opts = {}) {
   const clIds = new Set(clusters.map(c => c.cluster_id));
   const CLUSTER_BRIEFS = {};
   for (const [cid, brief] of Object.entries(data.CLUSTER_BRIEFS || {})) if (clIds.has(cid)) CLUSTER_BRIEFS[cid] = brief;
-  const scoped = { FEATURES_BY_TYPE, ROUTES, STORIES, VESSEL_SPECS: data.VESSEL_SPECS, CITY_BRIEFS, PARTNERS: { [slug]: partner }, ROUTE_ECONOMICS, PARTNER_ECONOMICS, CLUSTERS, CLUSTER_BRIEFS };
+  let scoped = { FEATURES_BY_TYPE, ROUTES, STORIES, VESSEL_SPECS: data.VESSEL_SPECS, CITY_BRIEFS, PARTNERS: { [slug]: partner }, ROUTE_ECONOMICS, PARTNER_ECONOMICS, CLUSTERS, CLUSTER_BRIEFS };
+  const market = opts.market || null;
+  scoped = applyRouteDisplay(scoped, {
+    partner,
+    market,
+    pageKind,
+    keep: [...keep],
+    net: [...net],
+    cityIdOf,
+  });
   const cityCount = (FEATURES_BY_TYPE.city || []).length + (FEATURES_BY_TYPE.priority_city || []).length;
-  return { scoped, keep: [...keep], counts: { cities: cityCount, rollout: keep.size, pois: (FEATURES_BY_TYPE.poi || []).length, routes: ROUTES.length, briefs: Object.keys(CITY_BRIEFS).length, stories: STORIES.length } };
+  const rd = scoped._route_display || {};
+  delete scoped._route_display;
+  return {
+    scoped,
+    keep: [...keep],
+    counts: {
+      cities: cityCount,
+      rollout: keep.size,
+      pois: (FEATURES_BY_TYPE.poi || []).length,
+      routes: scoped.ROUTES.length,
+      routes_raw: ROUTES.length,
+      story_routes: rd.story_ids?.length || 0,
+      briefs: Object.keys(CITY_BRIEFS).length,
+      stories: STORIES.length,
+    },
+  };
 }
 
 // ---- safety sweep on the emitted data text ----
@@ -213,7 +247,21 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 const profile = parseProfile();
 const data = loadData();
-const aggregateData = applyProfile(data, profile);
+let aggregateData = applyProfile(data, profile);
+// Aggregate atlas: annotate all routes + backbone default for dense regions at render time.
+{
+  const { cityIdOf } = scoper(aggregateData.FEATURES_BY_TYPE);
+  const allCities = [...(aggregateData.FEATURES_BY_TYPE.city || []), ...(aggregateData.FEATURES_BY_TYPE.priority_city || [])]
+    .map(f => f.properties?.id).filter(Boolean);
+  aggregateData = applyRouteDisplay(aggregateData, {
+    partner: null,
+    pageKind: 'aggregate',
+    keep: allCities,
+    net: allCities,
+    cityIdOf,
+  });
+  delete aggregateData._route_display;
+}
 const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 // aggregate — public profile strips partner/story data; internal keeps full admin surface
@@ -247,10 +295,12 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   cleanUrls: true,
   trailingSlash: false,
   redirects: [
-    { source: '/uber-india', destination: '/uber-india', permanent: true },
-    { source: '/uber-india/:path*', destination: '/uber-india/:path*', permanent: true },
-    { source: '/grab-thailand', destination: '/grab-thailand', permanent: true },
-    { source: '/grab-thailand/:path*', destination: '/grab-thailand/:path*', permanent: true },
+    { source: '/uber-india-derivative', destination: '/uber-india', permanent: true },
+    { source: '/uber-india-derivative/:path*', destination: '/uber-india/:path*', permanent: true },
+    { source: '/grab-thailand-derivative', destination: '/grab-thailand', permanent: true },
+    { source: '/grab-thailand-derivative/:path*', destination: '/grab-thailand/:path*', permanent: true },
+    { source: '/minor', destination: '/minor-hotels', permanent: true },
+    { source: '/minor/:path*', destination: '/minor-hotels/:path*', permanent: true },
   ],
   installCommand: 'npm install --omit=dev',
   // LB-258: Edge middleware deploys globally by default; a single broken region kills the whole
@@ -316,7 +366,9 @@ function emitPage(slug, subdir, r, marketSlug, optional, pageMeta) {
   fs.writeFileSync(path.join(outDir, 'index.html'), html);
   fs.writeFileSync(path.join(outDir, 'atlas-data.js'), dataText);
   const c = r.counts;
-  console.log(`  ✓ ${tag}  network cities:${c.cities} (rollout ${c.rollout}) pois:${c.pois} routes:${c.routes} briefs:${c.briefs} stories:${c.stories}`);
+  const storyNote = c.story_routes ? ` story:${c.story_routes}` : '';
+  const rawNote = c.routes_raw && c.routes_raw !== c.routes ? ` (scoped from ${c.routes_raw})` : '';
+  console.log(`  ✓ ${tag}  network cities:${c.cities} (rollout ${c.rollout}) pois:${c.pois} routes:${c.routes}${rawNote}${storyNote} briefs:${c.briefs} stories:${c.stories}`);
   pages++;
 }
 const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []).map(ph => ph.cities || [])));
@@ -330,9 +382,9 @@ for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
   if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
     const anchors = hubRolloutCities(partner);
-    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors }), null, false, partnerMeta(partner));
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, pageKind: 'hub-index' }), null, false, partnerMeta(partner));
     for (const m of partner.markets) {
-      const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m) });
+      const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m), pageKind: 'market', market: m, expandRegion: false, routesWithin: true });
       emitPage(slug, m.slug, scoped, m.slug, true, partnerMeta(partner, m));
       // Per-city share pages under each market (e.g. /grab/penang/city/langkawi-malaysia).
       if (!scoped.error) {
@@ -353,7 +405,7 @@ for (const slug of Object.keys(data.PARTNERS)) {
       }
     }
   } else {
-    emitPage(slug, '', scopeForPartner(data, slug), null, false, partnerMeta(partner));
+    emitPage(slug, '', scopeForPartner(data, slug, { pageKind: 'flat' }), null, false, partnerMeta(partner));
   }
 }
 
