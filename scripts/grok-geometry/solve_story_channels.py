@@ -102,6 +102,7 @@ def main() -> int:
             from_id=props.get("from"),
             to_id=props.get("to"),
             dist_nm=props.get("distance_nm"),
+            story_mode=True,
         )
         if not solved or not solved.get("qa_pass"):
             held += 1

@@ -24,6 +24,19 @@ LAND_TOL_KM = 0.05
 LB224_MARINA_APRON_KM = 0.12
 UAE_BBOX = (50.0, 21.5, 57.5, 26.8)
 
+def hand_waypoints_for(from_id: str | None, to_id: str | None) -> list[list[float]] | None:
+    """Bidirectional lookup for hand-authored channel waypoints."""
+    if not from_id or not to_id:
+        return None
+    key = (from_id, to_id)
+    rev = (to_id, from_id)
+    if key in HAND_WAYPOINTS:
+        return HAND_WAYPOINTS[key]
+    if rev in HAND_WAYPOINTS:
+        return list(reversed(HAND_WAYPOINTS[rev]))
+    return None
+
+
 HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
     ("dxb-zabeel-saray", "dxb-rixos-palm"): [[55.115, 25.105], [55.141, 25.100], [55.141, 25.118], [55.158, 25.120], [55.152, 25.113]],
     ("dxb-palm-west-beach", "dxb-five-palm"): [[55.145, 25.103]],
@@ -50,6 +63,17 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
     ("bp-ed4ac4b266", "bp-6846d27fcc"): [[54.329, 24.454]],
     ("bp-f377aadba6", "bp-3d9055c24e"): [[56.365, 25.514]],
     ("bp-7e3e3ac47c", "bp-7c9cd1a243"): [[55.842, 25.720]],
+    # Cape Town lagoon mesh (offshore Table Bay / peninsula arc)
+    ("bp-41c1d22c88", "bp-c07f712484"): [[18.35, -33.82], [18.33, -33.78]],
+    ("bp-41c1d22c88", "bp-6572ae8691"): [[18.30, -33.95], [18.25, -34.05], [18.30, -34.08]],
+    ("bp-6572ae8691", "bp-17cbbdad38"): [[18.32, -34.12], [18.38, -34.22], [18.44, -34.20]],
+    ("bp-41c1d22c88", "bp-5fa23ee16d"): [[18.55, -34.05], [18.72, -34.12], [18.82, -34.15]],
+    # East Africa channel corridors (v2)
+    ("dar-es-salaam-tanzania", "zanzibar-tanzania"): [[39.45, -6.85], [39.35, -6.55], [39.20, -6.25]],
+    ("mombasa-kenya", "diani-ukunda-kenya"): [[39.72, -4.10], [39.65, -4.18], [39.60, -4.24]],
+    ("mombasa-kenya", "kilifi-kenya"): [[39.78, -3.92], [39.85, -3.78], [39.88, -3.68]],
+    ("zanzibar-tanzania", "pemba-tanzania"): [[39.50, -5.95], [39.62, -5.65], [39.72, -5.38]],
+    ("dar-es-salaam-tanzania", "mafia-tanzania"): [[39.55, -7.05], [39.65, -7.35], [39.72, -7.70]],
 }
 
 _lc_singleton: "LandChecker | None" = None
@@ -427,15 +451,16 @@ def solve_endpoints(
     to_id: str | None = None,
     lc: LandChecker | None = None,
     dist_nm: float | None = None,
+    story_mode: bool = False,
 ) -> dict[str, Any] | None:
     """Solve water path between two lon/lat endpoints."""
     lc = lc or get_land_checker()
     if dist_nm is None:
         dist_nm = hav_nm(a, b)
 
-    key = (from_id or "", to_id or "")
-    if key in HAND_WAYPOINTS:
-        res = solve_hand(lc, a, b, HAND_WAYPOINTS[key])
+    wps = hand_waypoints_for(from_id, to_id)
+    if wps:
+        res = solve_hand(lc, a, b, wps)
         if res:
             return res
 
@@ -455,8 +480,8 @@ def solve_endpoints(
     if res:
         return res
 
-    # Long legs: skip expensive grid A* unless hand-authored.
-    if dist_nm > 120:
+    max_nm = 250 if story_mode else 120
+    if dist_nm > max_nm:
         return None
 
     return solve_chain(lc, a, b, mids=mids if mids else None, anchors=anchors or None)

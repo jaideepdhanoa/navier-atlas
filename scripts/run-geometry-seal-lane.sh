@@ -46,7 +46,11 @@ run_g0() {
 }
 
 run_g1() {
-  echo "→ G1 story route coastal re-solve"
+  echo "→ G1 story channel mint (nudge-first)"
+  python3 scripts/grok-geometry/mint_story_channels.py --story --nudge-only --max-land-km 5 "${PY_APPLY[@]}"
+  echo "→ G1 story channel A* solve (remaining)"
+  python3 scripts/grok-geometry/mint_story_channels.py --story --min-land-km 5 "${PY_APPLY[@]}"
+  echo "→ G1 legacy coastal re-solve"
   python3 scripts/grok-geometry/fix_route_geometry.py --story "${PY_APPLY[@]}"
   echo "→ G1 story channel A* solve"
   python3 scripts/grok-geometry/solve_story_channels.py --story "${PY_APPLY[@]}"
