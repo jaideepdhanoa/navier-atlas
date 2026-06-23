@@ -3021,7 +3021,10 @@ function _gcConfLabel(c, custom){
   return String(c||'');
 }
 function _gcConfBadge(c, custom){ if(!c&&!custom) return ''; const lbl=_gcConfLabel(c, custom); return `<span class="gc-conf ${_gcConfCls(c||custom)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(lbl)}</span>`; }
-function _gcPlatformCeilingHtml(gc, rungs){
+function _gcPlatformCeilingHtml(gc, rungs, opts){
+  opts=opts||{};
+  const partnerLabel=opts.partnerDisplay||'The platform';
+  const ceilingNote=subset=>subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is ${escapeHtml(partnerLabel)}'s take on Navier-routed journeys only.</div>`:'';
   const jgm=rungs.find(r=>r.id==='journey_gmv'), plat=rungs.find(r=>r.id==='platform_rev');
   const rp=gc.revenue_potential||{};
   const authored=rp.ceiling_sibling||gc.partner_platform_rev_full_journey||gc.journey_gmv_ceiling;
@@ -3030,7 +3033,7 @@ function _gcPlatformCeilingHtml(gc, rungs){
     const lbl=authored.label||'Full-market ceiling';
     return `<div class="gc-ceiling"><div class="gc-ceiling-h">${escapeHtml(lbl)}</div>
       <div class="gc-ceiling-body"><b>${escapeHtml(authored.display.mid)}/yr</b>${authored.derivation?` — ${escapeHtml(authored.derivation)}`:''}</div>
-      ${subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is Grab's take on Navier-routed journeys only.</div>`:''}</div>`;
+      ${ceilingNote(subset)}</div>`;
   }
   if (!jgm||jgm.mid==null) return '';
   const bridge=(gc.ladder_transitions||[]).find(t=>t.to_rung_id==='platform_rev');
@@ -3038,7 +3041,7 @@ function _gcPlatformCeilingHtml(gc, rungs){
   const ceil=_econMoney(jgm.mid*rate), subset=plat&&plat.display?plat.display.mid:'';
   return `<div class="gc-ceiling"><div class="gc-ceiling-h">Full-market ceiling</div>
     <div class="gc-ceiling-body">18% take on all Journey GMV → <b>${escapeHtml(ceil)}/yr</b> (deck narrative)</div>
-    ${subset?`<div class="gc-ceiling-note">Ladder MID above (${escapeHtml(subset)}) is Grab's take on Navier-routed journeys only.</div>`:''}</div>`;
+    ${ceilingNote(subset)}</div>`;
 }
 function _gcLadderBridgeHtml(t, opts){
   if (!t) return '';
@@ -3099,7 +3102,7 @@ function _growthCaseHtml(gc, opts){
         ${r.whose_money?`<span class="gc-money-chip gc-m-${cls}">${escapeHtml(r.whose_money)}</span>`:''}
       </div>`;
       if (r.id && bridgeFrom[r.id] && i<rungs.length-1) h+=_gcLadderBridgeHtml(bridgeFrom[r.id], opts);
-      if (r.id==='platform_rev') h+=_gcPlatformCeilingHtml(gc, rungs);
+      if (r.id==='platform_rev') h+=_gcPlatformCeilingHtml(gc, rungs, opts);
     }
     h+=`</div>`;
     const L=rp.whose_money_legend;
@@ -3352,10 +3355,9 @@ function startPartnerHub(partner){
 }
 function _hubHowToRead(partner){
   const nt=partner.network_thesis||{};
-  const fallback='Several potential launch markets — pick any to explore a full mini-proposal. Singapore is the recommended first proof point, not the only path.';
   const raw=nt.how_to_read||'';
-  if (/phased sequence|recommended regional path|pick a coastline/i.test(raw)) return fallback;
-  return raw||fallback;
+  if (/phased sequence|recommended regional path|pick a coastline|Singapore is the recommended/i.test(raw)) return '';
+  return raw;
 }
 const _INTERNAL_MARKET_STATUS = new Set(['enriched_marquee','data-only','held','research-complete','seal-needed','seal_needed','awaiting_grok_bind']);
 function _hubMarketStatusLabel(m){
@@ -3416,15 +3418,13 @@ function _hubIndexHtml(partner, tab){
       ${nt.headline?`<h1>${escapeHtml(nt.headline)}</h1>`:''}
       ${nt.body?`<p>${escapeHtml(nt.body)}</p>`:''}
       ${stats?`<div class="hub-stats">${stats}</div>`:''}
-      <div class="hub-howto">${escapeHtml(_hubHowToRead(partner))}</div>
-      ${hasGrowth?`<div class="hub-econ-ptr">Economics are in the opening overview (<b>Proposal → See the opportunity</b>).</div>`:''}
-      <div class="hub-phase-note">Geographic rollout phases in each market are separate from the network economic horizons (Prove / Scale / Mature) in the proposal overview.</div>
+      ${_hubHowToRead(partner)?`<div class="hub-howto">${escapeHtml(_hubHowToRead(partner))}</div>`:''}
     </div>
     <button class="hub-cta" id="hub-browse-markets" type="button">Browse launch markets →</button>
   </div>`;
   const markets=`<div class="hub-tab-panel" data-panel="markets"${tab!=='markets'?' hidden':''}>
     <div class="hub-markets-h">Potential launch markets</div>
-    <div class="hub-markets-sub">Each is a ready market with its own phased proposal. Start anywhere — Singapore is the recommended entry.</div>
+    <div class="hub-markets-sub">Each is a ready market with its own phased proposal.</div>
     <div class="hub-coverage">${escapeHtml(coverage)}</div>
     <div class="hub-grid">${_hubMarketCardsHtml(partner)}</div>
   </div>`;
@@ -3482,7 +3482,6 @@ function _introStep1Html(partner){
   if (!BUILD_PARTNER && partner.partner_id && !partner._hubOf) h+=`<a class="pcaro-dedicated" href="/${encodeURIComponent(partner.partner_id)}">Open ${escapeHtml(partner.display||'this partner')}’s dedicated page →</a>`;
   h+=_ctxHtml(partner.partner_context);
   if (partner.why_now) h+=`<div class="panel-section"><h3>Why now</h3><div class="pcaro-why">${escapeHtml(partner.why_now)}</div></div>`;
-  if (gcPartner&&gcPartner.growth_case) h+=`<button type="button" class="intro-jump-econ" id="intro-jump-econ">Jump to economics →</button>`;
   else if (isSpoke&&hub&&hub.growth_case) h+=`<button type="button" class="intro-jump-econ intro-hub-econ" id="intro-hub-econ">Full ${escapeHtml(hub.display||'network')} opportunity →</button>`;
   return h;
 }
@@ -3495,7 +3494,7 @@ function _introStep2Html(partner){
   return `<div class="intro-mark">The opportunity</div>
     <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
     <p class="intro-step-lead">${escapeHtml(lead)}</p>
-    ${_growthCaseHtml(gc, {inModal:true})}`;
+    ${_growthCaseHtml(gc, {inModal:true, partnerDisplay:gcPartner.display||gcPartner.partner_id||'The platform'})}`;
 }
 function _introIsHubContext(partner){
   if (partner&&partner._hubOf) return true;
