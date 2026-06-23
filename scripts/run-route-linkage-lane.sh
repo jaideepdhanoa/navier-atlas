@@ -39,20 +39,34 @@ else
 fi
 
 echo "→ route linkage audit (before)"
-node scripts/audit-partner-route-linkage.mjs "${AUDIT_PARTNER[@]}" || true
+if ((${#AUDIT_PARTNER[@]})); then
+  node scripts/audit-partner-route-linkage.mjs "${AUDIT_PARTNER[@]}" || true
+else
+  node scripts/audit-partner-route-linkage.mjs || true
+fi
+
+run_py() {
+  local script=$1
+  shift
+  if ((${#PY_PARTNER[@]})); then
+    python3 "$script" "$@" "${PY_PARTNER[@]}"
+  else
+    python3 "$script" "$@"
+  fi
+}
 
 if ((APPLY)); then
   echo "→ relink_partner_journeys.py --apply"
-  python3 scripts/relink_partner_journeys.py --apply "${PY_PARTNER[@]}"
+  run_py scripts/relink_partner_journeys.py --apply
 
   echo "→ fix_market_route_bindings.py --apply"
-  python3 scripts/fix_market_route_bindings.py --apply "${PY_PARTNER[@]}" 2>/dev/null || true
+  run_py scripts/fix_market_route_bindings.py --apply 2>/dev/null || true
 
   echo "→ backfill_phase_featured_routes.py --apply"
-  python3 scripts/backfill_phase_featured_routes.py --apply "${PY_PARTNER[@]}"
+  run_py scripts/backfill_phase_featured_routes.py --apply
 
   echo "→ promote_model_link_route_ids.py --apply"
-  python3 scripts/promote_model_link_route_ids.py --apply "${PY_PARTNER[@]}"
+  run_py scripts/promote_model_link_route_ids.py --apply
 
   if ((${#PARTNERS[@]})); then
     echo "→ mark_unlinked_aspirational.py --apply"
@@ -70,13 +84,17 @@ if ((APPLY)); then
   fi
 else
   echo "→ relink_partner_journeys.py --audit (dry-run)"
-  python3 scripts/relink_partner_journeys.py --audit "${PY_PARTNER[@]}"
+  run_py scripts/relink_partner_journeys.py --audit
 fi
 
 echo "→ route linkage audit (after)"
 STRICT_ARGS=(--strict)
 if ((GLOBAL_AUDIT)); then STRICT_ARGS+=(--global); fi
-node scripts/audit-partner-route-linkage.mjs "${STRICT_ARGS[@]}" "${AUDIT_PARTNER[@]}"
+if ((${#AUDIT_PARTNER[@]})); then
+  node scripts/audit-partner-route-linkage.mjs "${STRICT_ARGS[@]}" "${AUDIT_PARTNER[@]}"
+else
+  node scripts/audit-partner-route-linkage.mjs "${STRICT_ARGS[@]}"
+fi
 
 if ((APPLY)) && ((${#PARTNERS[@]})); then
   echo "→ build-site spot-check"
