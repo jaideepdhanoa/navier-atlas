@@ -103,10 +103,12 @@ def solve_route(
     dist_nm: float | None,
     land_before: float,
     nudge_only: bool = False,
+    channel_only: bool = False,
 ) -> dict | None:
-    res = nudge_solve(lc, a, b, dist_nm)
-    if res:
-        return res
+    if not channel_only:
+        res = nudge_solve(lc, a, b, dist_nm)
+        if res:
+            return res
 
     if nudge_only:
         return None
@@ -168,6 +170,7 @@ def main() -> int:
     ap.add_argument("--min-land-km", type=float, default=0.0)
     ap.add_argument("--max-land-km", type=float, default=0.0, help="0 = no cap")
     ap.add_argument("--nudge-only", action="store_true", help="fast seaward nudge; skip A* channel solver")
+    ap.add_argument("--channel-only", action="store_true", help="skip nudge; hand waypoints + A* only")
     args = ap.parse_args()
 
     story = collect_story_registry()
@@ -207,6 +210,8 @@ def main() -> int:
     if args.limit > 0:
         targets = targets[: args.limit]
 
+    print(f"targets={len(targets)} land_range=[{args.min_land_km},{args.max_land_km or 'inf'}]", flush=True)
+
     if not targets:
         print("No targets", file=sys.stderr)
         return 2
@@ -233,6 +238,7 @@ def main() -> int:
             dist_nm=props.get("distance_nm"),
             land_before=land_before,
             nudge_only=args.nudge_only,
+            channel_only=args.channel_only,
         )
 
         if not solved or not solved.get("qa_pass"):
