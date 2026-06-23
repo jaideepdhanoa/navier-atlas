@@ -254,6 +254,19 @@ head('§3.5  route linkage audit (story / featured_routes)');
   } else ok('route linkage audit passed (allowlist respected)');
 }
 
+// ─── §3.6 · Route geometry (story routes land QA) ───────────────────────────
+head('§3.6  route geometry audit (story land QA)');
+{
+  const geomArgs = ['scripts/audit-route-geometry.py'];
+  const py = spawnSync('python3', geomArgs, { cwd: ROOT, encoding: 'utf8' });
+  if (py.stdout) process.stdout.write(py.stdout);
+  if (py.stderr) process.stderr.write(py.stderr);
+  const severe = spawnSync('python3', [...geomArgs, '--strict-severe'], { cwd: ROOT, encoding: 'utf8' });
+  if (severe.status !== 0) {
+    ok('story route geometry — advisory (severe fails remain; see GEOMETRY-STORY-HOLD.json)');
+  } else ok('story route geometry QA passed (strict-severe)');
+}
+
 // ─── verdict ──────────────────────────────────────────────────────────────────
 console.log('');
 if (failed) { console.error('PRE-FLIGHT FAILED — deploy ABORTED.'); process.exit(1); }

@@ -51,6 +51,12 @@ node scripts/audit-partner-route-linkage.mjs "${LINKAGE_ARGS[@]}" || {
   echo "  ⚠ route linkage gaps (allowlisted partners OK) — set RELEASE=1 only when allowlist is empty"
 }
 
+echo "→ route geometry audit…"
+python3 scripts/audit-route-geometry.py || true
+python3 scripts/audit-route-geometry.py --strict-severe 2>/dev/null || {
+  echo "  ⚠ story route severe geometry gaps (>1km) — see GEOMETRY-STORY-HOLD.json; channel solver backlog"
+}
+
 # 3 · §3 pre-flight on the gated surface (seal hash · exclusion grep · MapLibre smoke · pitch-render).
 #     Set RELEASE=1 for a prod cut to ENFORCE the seal (§3.1); non-zero ⇒ abort the deploy.
 echo "→ running deploy pre-flight…"
