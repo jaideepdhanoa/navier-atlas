@@ -55,8 +55,42 @@ def east_africa_subproposal(scope_cities: list[str]) -> dict:
         ),
         "multimodal_fit": "Same Bolt app: car to the jetty, foiling hop, car on arrival — the premium chain on Africa's busiest coastal corridors.",
         "capture_rate": 0.18,
-        "journeys_unlocked": [],
-        "phases": [],
+        "journeys_unlocked": [
+            {
+                "from": "Dar es Salaam",
+                "to": "Stone Town (Zanzibar)",
+                "today": "90–110 min Azam fast ferry.",
+                "with_navier": "A ~41nm premium foiling hop, booked in Bolt.",
+                "distance_nm": 39.9,
+                "platform": "Pioneer II",
+                "archetype": "tourism",
+                "from_node_id": "dar-es-salaam-tanzania",
+                "to_node_id": "zanzibar-tanzania",
+                "route_id": "rn-46bee519109a",
+            },
+            {
+                "from": "Mombasa",
+                "to": "Diani / Ukunda",
+                "today": "1.5–2 h via congested Likoni ferry queue.",
+                "with_navier": "A ~13nm south-coast foiling shortcut, booked in Bolt.",
+                "distance_nm": 13.4,
+                "platform": "Pioneer II",
+                "archetype": "ridehail",
+                "from_node_id": "mombasa-kenya",
+                "to_node_id": "diani-ukunda-kenya",
+                "route_id": "rn-cd518611c3e5",
+            },
+        ],
+        "phases": [
+            {
+                "phase": 1,
+                "label": "Prove",
+                "featured_routes": [
+                    {"from": "Dar es Salaam", "to": "Stone Town", "route_id": "rn-46bee519109a", "distance_nm": 39.9, "platform": "Pioneer II"},
+                    {"from": "Mombasa", "to": "Diani", "route_id": "rn-cd518611c3e5", "distance_nm": 13.4, "platform": "Pioneer II"},
+                ],
+            }
+        ],
         "_seal_status": "geometry_sealed_pending_economics_cascade",
     }
 
