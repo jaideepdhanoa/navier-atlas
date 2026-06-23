@@ -1,0 +1,974 @@
+{
+ "handoff": "BOLT-locale-poi-cleanup",
+ "date": "2026-06-23",
+ "owner": "Tasklet (spec/ledger) -> Grok (seal)",
+ "scope_suffixes": [
+  "bahrain",
+  "croatia",
+  "egypt",
+  "estonia",
+  "finland",
+  "france",
+  "greece",
+  "ireland",
+  "italy",
+  "kenya",
+  "ksa",
+  "monaco",
+  "morocco",
+  "nigeria",
+  "portugal",
+  "qatar",
+  "south-africa",
+  "spain",
+  "sweden",
+  "tanzania"
+ ],
+ "excluded": [
+  "thailand",
+  "uae"
+ ],
+ "method": "country-agnostic: exact-dedup + universal junk + wrong-city retag where the POI name carries a DIFFERENT in-scope city name (geom-corroborated) + locale structural. Hand-curated aliases intentionally NOT used (avoids guessing); the bulk geometric residual is Grok’s gate.",
+ "poi_layer": {
+  "dedup_exact_drops": {
+   "count": 16,
+   "drops": [
+    {
+     "id": "sicily-aeolian-italy__villa-san-giovanni-reggio-calabria",
+     "parent": "sicily-aeolian-italy",
+     "name": "Villa San Giovanni / Reggio Calabria",
+     "keep": "sicily-aeolian-italy__villa-san-giovanni",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-b39b196487",
+     "parent": "monaco-monaco",
+     "name": "Safe Harbor Saint-Laurent-du-Var I Monaco Marine",
+     "keep": "bp-68a1bcf3b3",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-e2aa550a33",
+     "parent": "monaco-monaco",
+     "name": "Hercule Monaco Cruise Harbor",
+     "keep": "bp-c37b0af6da",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-c0a084e3cc",
+     "parent": "monaco-monaco",
+     "name": "Monaco Yacht Club",
+     "keep": "bp-b8ac15fe9d",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-e4d8ecef5e",
+     "parent": "monaco-monaco",
+     "name": "Port of Fontvieille Viewpoint",
+     "keep": "bp-69ab67ae4b",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-cd1908433c",
+     "parent": "monaco-monaco",
+     "name": "Monaco Yacht Show",
+     "keep": "bp-a7a32a3241",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-0c18a13ec4",
+     "parent": "lagos-nigeria",
+     "name": "Marina Ferry Terminal",
+     "keep": "bp-0a23376ed0",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-b556716fc1",
+     "parent": "hurghada-el-gouna-egypt",
+     "name": "Hurghada Marina",
+     "keep": "bp-33e0fab89d",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-b8176c9bf9",
+     "parent": "hurghada-el-gouna-egypt",
+     "name": "Landmark Marina",
+     "keep": "bp-390f78eb98",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-port-al-wakrah-marina",
+     "parent": "al-wakrah-qatar",
+     "name": "Port Al-Wakrah Marina",
+     "keep": "bp-port-al-wakrah-marina",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-al-wakrah-dhow-harbour",
+     "parent": "al-wakrah-qatar",
+     "name": "Al Wakrah Dhow Harbour",
+     "keep": "bp-al-wakrah-dhow-harbour",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-souq-al-wakra-beach",
+     "parent": "al-wakrah-qatar",
+     "name": "Souq Al Wakra Marine Frontage",
+     "keep": "bp-souq-al-wakra-beach",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-dammam-corniche",
+     "parent": "dammam-khobar-ksa",
+     "name": "Dammam Corniche Waterfront",
+     "keep": "bp-dammam-corniche",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-alkhobar-corniche",
+     "parent": "dammam-khobar-ksa",
+     "name": "Al Khobar Corniche",
+     "keep": "bp-alkhobar-corniche",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-half-moon-bay-ksa",
+     "parent": "dammam-khobar-ksa",
+     "name": "Half Moon Bay",
+     "keep": "bp-half-moon-bay-ksa",
+     "reason": "exact-duplicate (parent+name+coords)"
+    },
+    {
+     "id": "bp-dammam-marina-yacht",
+     "parent": "dammam-khobar-ksa",
+     "name": "Dammam Marina (Yacht Basin)",
+     "keep": "bp-dammam-marina-yacht",
+     "reason": "exact-duplicate (parent+name+coords)"
+    }
+   ]
+  },
+  "retag_identity": {
+   "count": 38,
+   "retags": [
+    {
+     "id": "bp-b7acff0504",
+     "from": "doha-qatar",
+     "to": "al-wakrah-qatar",
+     "name": "Al Wakrah Marina (Souq Heritage Village)",
+     "reason": "name carries city \"al wakrah\"; 0nm to al-wakrah-qatar vs 8nm to doha-qatar"
+    },
+    {
+     "id": "bp-7b809c59a7",
+     "from": "doha-qatar",
+     "to": "al-wakrah-qatar",
+     "name": "Al Wakrah Souq Heritage Pier",
+     "reason": "name carries city \"al wakrah\"; 0nm to al-wakrah-qatar vs 8nm to doha-qatar"
+    },
+    {
+     "id": "bp-053c417fe9",
+     "from": "eastern-province-ksa",
+     "to": "manama-bahrain",
+     "name": "Manama Pier (Bahrain Financial Harbour)",
+     "reason": "name carries city \"manama\"; 0nm to manama-bahrain vs 20nm to eastern-province-ksa"
+    },
+    {
+     "id": "bp-ac13b99e96",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Mykonos",
+     "reason": "name carries city \"mykonos\"; 1nm to mykonos-greece vs 24nm to paros-greece"
+    },
+    {
+     "id": "bp-534aa0cdce",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Mykonos Cruise Ship Terminal",
+     "reason": "name carries city \"mykonos\"; 1nm to mykonos-greece vs 24nm to paros-greece"
+    },
+    {
+     "id": "bp-857170deb4",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Sea Bus - Mykonos Cruise Dock",
+     "reason": "name carries city \"mykonos\"; 1nm to mykonos-greece vs 24nm to paros-greece"
+    },
+    {
+     "id": "bp-044d6b6c47",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Mykonos Yacht Club",
+     "reason": "name carries city \"mykonos\"; 0nm to mykonos-greece vs 23nm to paros-greece"
+    },
+    {
+     "id": "bp-8ef507df9b",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Sea Bus - Mykonos Old Port",
+     "reason": "name carries city \"mykonos\"; 0nm to mykonos-greece vs 24nm to paros-greece"
+    },
+    {
+     "id": "bp-799d6d84c6",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "MYK Boat Club - Boat parties in Mykonos",
+     "reason": "name carries city \"mykonos\"; 0nm to mykonos-greece vs 23nm to paros-greece"
+    },
+    {
+     "id": "bp-0bff4d1918",
+     "from": "paros-greece",
+     "to": "mykonos-greece",
+     "name": "Mykonos Yachting Club",
+     "reason": "name carries city \"mykonos\"; 2nm to mykonos-greece vs 22nm to paros-greece"
+    },
+    {
+     "id": "bp-d75382c155",
+     "from": "monaco-monaco",
+     "to": "nice-france",
+     "name": "Nice Port",
+     "reason": "name carries city \"nice\"; 0nm to nice-france vs 7nm to monaco-monaco"
+    },
+    {
+     "id": "bp-a8af1d4b15",
+     "from": "monaco-monaco",
+     "to": "nice-france",
+     "name": "Port Nice Carras",
+     "reason": "name carries city \"nice\"; 3nm to nice-france vs 9nm to monaco-monaco"
+    },
+    {
+     "id": "bp-44721e005f",
+     "from": "monaco-monaco",
+     "to": "cannes-france",
+     "name": "Port de Cannes Marina Copropriété - Capitainerie",
+     "reason": "name carries city \"cannes\"; 4nm to cannes-france vs 24nm to monaco-monaco"
+    },
+    {
+     "id": "bp-ec14045089",
+     "from": "monaco-monaco",
+     "to": "nice-france",
+     "name": "Port de Nice",
+     "reason": "name carries city \"nice\"; 0nm to nice-france vs 7nm to monaco-monaco"
+    },
+    {
+     "id": "bp-8cc0e69117",
+     "from": "monaco-monaco",
+     "to": "cannes-france",
+     "name": "Cannes Yacht Club",
+     "reason": "name carries city \"cannes\"; 1nm to cannes-france vs 21nm to monaco-monaco"
+    },
+    {
+     "id": "bp-ea418dfbb1",
+     "from": "monaco-monaco",
+     "to": "antibes-france",
+     "name": "Yacht Club Antibes",
+     "reason": "name carries city \"antibes\"; 0nm to antibes-france vs 16nm to monaco-monaco"
+    },
+    {
+     "id": "bp-6f886659d5",
+     "from": "monaco-monaco",
+     "to": "nice-france",
+     "name": "Corsica Ferries Nice",
+     "reason": "name carries city \"nice\"; 0nm to nice-france vs 6nm to monaco-monaco"
+    },
+    {
+     "id": "bp-9a2a731d72",
+     "from": "monaco-monaco",
+     "to": "cannes-france",
+     "name": "CANNES TAXI BOAT & TENDER, Bateau Taxi.",
+     "reason": "name carries city \"cannes\"; 1nm to cannes-france vs 20nm to monaco-monaco"
+    },
+    {
+     "id": "bp-52b1bac3ad",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Doha Cruise Terminal",
+     "reason": "name carries city \"doha\"; 2nm to doha-qatar vs 76nm to manama-bahrain"
+    },
+    {
+     "id": "bp-284a672518",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Doha Port",
+     "reason": "name carries city \"doha\"; 2nm to doha-qatar vs 76nm to manama-bahrain"
+    },
+    {
+     "id": "bp-476fdbec52",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Marina Doha",
+     "reason": "name carries city \"doha\"; 5nm to doha-qatar vs 73nm to manama-bahrain"
+    },
+    {
+     "id": "bp-485e1ee0d6",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Four Seasons Luxury Marina in Doha",
+     "reason": "name carries city \"doha\"; 2nm to doha-qatar vs 75nm to manama-bahrain"
+    },
+    {
+     "id": "bp-2379374f6b",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Doha sailing club",
+     "reason": "name carries city \"doha\"; 4nm to doha-qatar vs 73nm to manama-bahrain"
+    },
+    {
+     "id": "bp-0a94d7a904",
+     "from": "manama-bahrain",
+     "to": "doha-qatar",
+     "name": "Doha Marina",
+     "reason": "name carries city \"doha\"; 2nm to doha-qatar vs 76nm to manama-bahrain"
+    },
+    {
+     "id": "bp-fa2f652c5a",
+     "from": "sharm-el-sheikh-egypt",
+     "to": "hurghada-el-gouna-egypt",
+     "name": "Cheguevara Hurghada Marina",
+     "reason": "name carries city \"hurghada\"; 0nm to hurghada-el-gouna-egypt vs 49nm to sharm-el-sheikh-egypt"
+    },
+    {
+     "id": "bp-4da4083f1e",
+     "from": "sharm-el-sheikh-egypt",
+     "to": "hurghada-el-gouna-egypt",
+     "name": "Hurghada Maritime Port",
+     "reason": "name carries city \"hurghada\"; 1nm to hurghada-el-gouna-egypt vs 49nm to sharm-el-sheikh-egypt"
+    },
+    {
+     "id": "bp-8640ffb9a2",
+     "from": "sharm-el-sheikh-egypt",
+     "to": "hurghada-el-gouna-egypt",
+     "name": "Hurghada boat charters",
+     "reason": "name carries city \"hurghada\"; 2nm to hurghada-el-gouna-egypt vs 48nm to sharm-el-sheikh-egypt"
+    },
+    {
+     "id": "bp-66ed17a6b4",
+     "from": "sharm-el-sheikh-egypt",
+     "to": "hurghada-el-gouna-egypt",
+     "name": "Blue Reef Dive Club Hurghada",
+     "reason": "name carries city \"hurghada\"; 0nm to hurghada-el-gouna-egypt vs 49nm to sharm-el-sheikh-egypt"
+    },
+    {
+     "id": "bp-9583e78dc6",
+     "from": "zanzibar-tanzania",
+     "to": "dar-es-salaam-tanzania",
+     "name": "Dar es Salaam Ferry Terminal (mainland)",
+     "reason": "name carries city \"dar es salaam\"; 1nm to dar-es-salaam-tanzania vs 39nm to zanzibar-tanzania"
+    },
+    {
+     "id": "bp-8323185c35",
+     "from": "zanzibar-tanzania",
+     "to": "dar-es-salaam-tanzania",
+     "name": "Dar es Salaam Harbour",
+     "reason": "name carries city \"dar es salaam\"; 1nm to dar-es-salaam-tanzania vs 40nm to zanzibar-tanzania"
+    },
+    {
+     "id": "bp-4c9db6d858",
+     "from": "zanzibar-tanzania",
+     "to": "dar-es-salaam-tanzania",
+     "name": "Dar Es Salaam Yacht Club",
+     "reason": "name carries city \"dar es salaam\"; 4nm to dar-es-salaam-tanzania vs 35nm to zanzibar-tanzania"
+    },
+    {
+     "id": "bp-6873352eed",
+     "from": "zanzibar-tanzania",
+     "to": "dar-es-salaam-tanzania",
+     "name": "Dar es Salaam Port (Bandari ya Dar es salaam)",
+     "reason": "name carries city \"dar es salaam\"; 1nm to dar-es-salaam-tanzania vs 40nm to zanzibar-tanzania"
+    },
+    {
+     "id": "bp-4bf3d6d51b",
+     "from": "hurghada-el-gouna-egypt",
+     "to": "sharm-el-sheikh-egypt",
+     "name": "Sharm El sheikh Port",
+     "reason": "name carries city \"sharm el sheikh\"; 5nm to sharm-el-sheikh-egypt vs 44nm to hurghada-el-gouna-egypt"
+    },
+    {
+     "id": "bp-2fe9e537be",
+     "from": "hurghada-el-gouna-egypt",
+     "to": "sharm-el-sheikh-egypt",
+     "name": "Sharm El Sheikh Port",
+     "reason": "name carries city \"sharm el sheikh\"; 4nm to sharm-el-sheikh-egypt vs 45nm to hurghada-el-gouna-egypt"
+    },
+    {
+     "id": "bp-61493c7c04",
+     "from": "agadir-essaouira-morocco",
+     "to": "casablanca-morocco",
+     "name": "Casablanca Marina",
+     "reason": "name carries city \"casablanca\"; 27nm to casablanca-morocco vs 217nm to agadir-essaouira-morocco"
+    },
+    {
+     "id": "bp-w6-051089f1b1",
+     "from": "mombasa-kenya",
+     "to": "kilifi-kenya",
+     "name": "Kilifi Creek Jetty",
+     "reason": "name carries city \"kilifi\"; 0nm to kilifi-kenya vs 29nm to mombasa-kenya"
+    },
+    {
+     "id": "bp-w6-cec5cffd82",
+     "from": "mombasa-kenya",
+     "to": "diani-ukunda-kenya",
+     "name": "Diani Beach Landing (Galu)",
+     "reason": "name carries city \"diani\"; 1nm to diani-ukunda-kenya vs 14nm to mombasa-kenya"
+    },
+    {
+     "id": "bp-8acb0cddf0",
+     "from": "agadir-essaouira-morocco",
+     "to": "casablanca-morocco",
+     "name": "Port de Casablanca (Commercial)",
+     "reason": "name carries city \"casablanca\"; 26nm to casablanca-morocco vs 217nm to agadir-essaouira-morocco"
+    }
+   ]
+  },
+  "junk_drops": {
+   "count": 19,
+   "drops": [
+    {
+     "id": "bp-ae4fae97a8",
+     "parent": "eastern-province-ksa",
+     "name": "Coffee Harbour",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-83c24c9673",
+     "parent": "athens-saronic-greece",
+     "name": "Harbor Shipping & Trading",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-96df80cfa4",
+     "parent": "athens-saronic-greece",
+     "name": "Harbour Coffee",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-8cf2d65fa4",
+     "parent": "dubrovnik-croatia",
+     "name": "Hostel Petra Marina",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-7e5fa08ab8",
+     "parent": "dubrovnik-croatia",
+     "name": "Dubrovnik Boat Rentals",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-7f18cb289b",
+     "parent": "amalfi-coast-italy",
+     "name": "Yacht Club Sorrento Boat Rental",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-66a0221b17",
+     "parent": "ibiza-spain",
+     "name": "Helmsmen Club - Boat Membership - Boat Hire Santa Eulalia - Boating License Spain - Boat Rental Santa Eulalia",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-a6b678fbb8",
+     "parent": "paros-greece",
+     "name": "The Sailor's Ride - Private cruises and Luxury boat rental",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-780a84b7e7",
+     "parent": "manama-bahrain",
+     "name": "Golden Harbour Trading",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-1469417bf5",
+     "parent": "manama-bahrain",
+     "name": "Coffee Harbour",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-e295a848b3",
+     "parent": "lake-como-italy",
+     "name": "Como Boat Rental",
+     "reason": "non-commercial / retail / tour-operator"
+    },
+    {
+     "id": "bp-chios-town-port",
+     "parent": "chios-north-aegean-greece",
+     "name": "Chios Town Port (Ertuğrul Lines Çeşme cross-border)",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-kos-marina-cross",
+     "parent": "rhodes-dodecanese-greece",
+     "name": "Kos Marina — Cross-border Pioneer pier",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-8d2d6eb36d",
+     "parent": "doha-qatar",
+     "name": "Bahrain Marina (Manama) — cross-border Quanta-LR endpoint",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-51f7e3745b",
+     "parent": "doha-qatar",
+     "name": "Dubai Marina (Dubai) — cross-border Quanta-LR endpoint",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-ff4485c64a",
+     "parent": "doha-qatar",
+     "name": "King Abdulaziz Port (Dammam, KSA Eastern Province) — cross-border Quanta-LR endpoint",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-0f984310fb",
+     "parent": "manama-bahrain",
+     "name": "ASRY (Arab Shipbuilding & Repair Yard) — yard-partner pointer",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-f86d359f61",
+     "parent": "doha-qatar",
+     "name": "Yas Marina (Abu Dhabi) — cross-border Quanta-LR endpoint",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    },
+    {
+     "id": "bp-00203f87b0",
+     "parent": "jeddah-ksa",
+     "name": "Sharm El Sheikh — Travco / Maritim Marina (POINTER, cross-border)",
+     "reason": "cross-border corridor pointer/endpoint artifact (strategy, not a parent-city boarding point)"
+    }
+   ]
+  },
+  "review_name_only": {
+   "count": 51,
+   "items": [
+    {
+     "id": "tuscan-archipelago-italy__porto-santo-stefano",
+     "from": "tuscan-archipelago-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Santo Stefano",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "tuscan-archipelago-italy__giglio-porto",
+     "from": "tuscan-archipelago-italy",
+     "to_guess": "porto-portugal",
+     "name": "Giglio (Giglio Porto)",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "naples-capri-procida-italy__casamicciola",
+     "from": "naples-capri-procida-italy",
+     "to_guess": "porto-portugal",
+     "name": "Ischia (Casamicciola / Ischia Porto)",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-2a5d05a105",
+     "from": "doha-qatar",
+     "to_guess": "porto-portugal",
+     "name": "The Pearl-Qatar — Porto Arabia Marina",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-15e6f20bb8",
+     "from": "athens-saronic-greece",
+     "to_guess": "porto-portugal",
+     "name": "Porto Heli Marina",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-8a7fd5b428",
+     "from": "dubrovnik-croatia",
+     "to_guess": "porto-portugal",
+     "name": "Mega Yacht Marina - Porto Montenegro",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-4e1fb059ce",
+     "from": "dubrovnik-croatia",
+     "to_guess": "porto-portugal",
+     "name": "Porto Montenegro Yacht Club",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-0c2c47e2c0",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Pozzuoli",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-f8a7956406",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Sorrento",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-9afc560950",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Mergellina e Porto di Sannazaro",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-e4b390b54c",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto turistico Marina di Lacco Ameno",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-d358fcafff",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Agropoli - Pontile Yachting Club Agropoli",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-a7f83a29a6",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Ormeggio Porto di Baia - Nautica Fusaro",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-3d3133394f",
+     "from": "amalfi-coast-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Napoli",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-1df29a22d2",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Cervo Marina",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-d06a7ae335",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Rotondo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-4c4bc03beb",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Palau",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-dc984d38a4",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Marina Ottiolu",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-29b4f8bccd",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Marina di Porto Cervo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-01c03edeb4",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Turistico Marina di Olbia",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-c7fe1b7f7b",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Marina di Porto Rotondo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-6f3f0566bb",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Turistico MARINA",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-dbd8577bdd",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Tavolara",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-0d521152a5",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Port of Porto San Paolo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-d4860dc9f9",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Marina di Porto Rafael",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-284fca2293",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Wave Marina Porto San Paolo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-1257d7e41c",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Faro Sailing Club",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-b02957e704",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Olbia",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-5ce888632a",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Yacht Charter Porto Cervo Sardinia",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-c454bc1da1",
+     "from": "costa-smeralda-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Istana",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-c966b70652",
+     "from": "venice-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto di Casale sul Sile",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-c9f0c48790",
+     "from": "venice-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Levante Fishing Club",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-d794582dc8",
+     "from": "venice-italy",
+     "to_guess": "porto-portugal",
+     "name": "Yachting Club Porto Baseleghe",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-3cd54df1d5",
+     "from": "crete-greece",
+     "to_guess": "porto-portugal",
+     "name": "Porto Elounda Golf & Spa Resort",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-64333de314",
+     "from": "manama-bahrain",
+     "to_guess": "venice-italy",
+     "name": "Venice Yacht",
+     "reason": "name carries \"venice\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-aaf6ba604d",
+     "from": "lake-como-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Laveno",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-365f0b5243",
+     "from": "lake-como-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Colico",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-e8eaa0bb63",
+     "from": "lake-como-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Pescallo",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-d39a81e67c",
+     "from": "lake-como-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto delle Barche",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-5a3fd08932",
+     "from": "lake-como-italy",
+     "to_guess": "porto-portugal",
+     "name": "Porto Regionale di Locarno",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-1540269fa6",
+     "from": "hurghada-el-gouna-egypt",
+     "to_guess": "porto-portugal",
+     "name": "PORTO CHRIST Jewellery",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-53c68c1c90",
+     "from": "naples-capri-procida-italy",
+     "to_guess": "porto-portugal",
+     "name": "Ischia Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-e93ac8a753",
+     "from": "corsica-france",
+     "to_guess": "porto-portugal",
+     "name": "Port of Porto-Vecchio",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-alicudi-porto",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Alicudi — Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-favignana-porto",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Favignana — Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-filicudi-porto",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Filicudi — Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-levanzo-porto",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Levanzo — Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-marettimo-porto",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Marettimo — Porto",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-vulcano-portolevante",
+     "from": "sicily-aeolian-italy",
+     "to_guess": "porto-portugal",
+     "name": "Vulcano — Porto di Levante",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-trafaria-porto-brandao",
+     "from": "lisbon-tagus-portugal",
+     "to_guess": "porto-portugal",
+     "name": "Trafaria / Porto Brandão",
+     "reason": "name carries \"porto\" but geometry not corroborating"
+    },
+    {
+     "id": "bp-lagos-marina",
+     "from": "lisbon-tagus-portugal",
+     "to_guess": "lagos-nigeria",
+     "name": "Marina de Lagos",
+     "reason": "name carries \"lagos\" but geometry not corroborating"
+    }
+   ],
+   "note": "name carries another city but geometry not corroborating -> Grok residual gate"
+  },
+  "kept_in_place": 2134,
+  "poi_total": 2258,
+  "residual_note": "Bulk geometric nearest-city retag + water-adjacency + fuzzy near-duplicate merge are Grok’s residual gate. 0 silent drops."
+ },
+ "locale_layer": {
+  "keep": [
+   {
+    "id": "doha-qatar__katara-cultural-village-beach-marina",
+    "parent": "doha-qatar",
+    "name": "Katara Cultural Village (beach/marina)"
+   },
+   {
+    "id": "doha-qatar__lusail-lusail-marina-place-vendôme-fairmont-raffles-waldorf-rosewood",
+    "parent": "doha-qatar",
+    "name": "Lusail (Lusail Marina, Place Vendôme, Fairmont/Raffles, Waldorf, Rosewood)"
+   },
+   {
+    "id": "doha-qatar__the-pearl-qatar-porto-arabia-qanat-quartier-marsa-arabia-kempinski-marsa-malaz-st-regis",
+    "parent": "doha-qatar",
+    "name": "The Pearl-Qatar (Porto Arabia, Qanat Quartier, Marsa Arabia, Kempinski Marsa Malaz, St. Regis)"
+   },
+   {
+    "id": "manama-bahrain__manama-waterfront-bahrain-bay-financial-harbour-diplomatic-area",
+    "parent": "manama-bahrain",
+    "name": "Manama waterfront (Bahrain Bay / Financial Harbour / Diplomatic Area)"
+   },
+   {
+    "id": "sharm-el-sheikh-egypt__neom-sindalah-neom-coast",
+    "parent": "sharm-el-sheikh-egypt",
+    "name": "NEOM (Sindalah + NEOM coast)"
+   },
+   {
+    "id": "sharm-el-sheikh-egypt__sharm-el-sheikh-naama-bay-sharks-bay-nabq-ras-mohammed-gateway",
+    "parent": "sharm-el-sheikh-egypt",
+    "name": "Sharm El Sheikh (Naama Bay + Sharks Bay + Nabq + Ras Mohammed gateway)"
+   }
+  ],
+  "drop": [
+   {
+    "id": "doha-qatar__al-khor-ras-laffan-north",
+    "parent": "doha-qatar",
+    "name": "Al Khor / Ras Laffan (north)",
+    "reason": "combined/corridor-artifact label (30nm from parent)"
+   },
+   {
+    "id": "doha-qatar__doha-corniche-west-bay-old-doha-port-mina-district",
+    "parent": "doha-qatar",
+    "name": "Doha Corniche / West Bay / Old Doha Port (Mina District)",
+    "reason": "combined/corridor-artifact label"
+   },
+   {
+    "id": "jeddah-ksa__neom-sindalah",
+    "parent": "jeddah-ksa",
+    "name": "NEOM / Sindalah",
+    "reason": "combined/corridor-artifact label (448nm from parent)"
+   },
+   {
+    "id": "jeddah-ksa__thuwal-kaust-proximity",
+    "parent": "jeddah-ksa",
+    "name": "Thuwal / KAUST proximity",
+    "reason": "combined/corridor-artifact label (48nm from parent)"
+   },
+   {
+    "id": "manama-bahrain__bahrain-f1-sakhir-inland",
+    "parent": "manama-bahrain",
+    "name": "Bahrain F1 / Sakhir (inland)",
+    "reason": "combined/corridor-artifact label (21nm from parent)"
+   }
+  ]
+ },
+ "guardrail": "locale pin only if same-country + single placeable waterfront place + not a routing artifact; POI parent_city_id = nearest in-country city whose name it carries, never the regional flagship by default."
+}
