@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CORRIDORS = ROOT / "_ingest/econ-reseal-2026-06-19/econ-reseal/inputs/corridors.json"
+DEFAULT_CORRIDORS = ROOT / "finance/model/corridors.json"
 
 KEPT_MARKETS = (
     "bolt-spain",
