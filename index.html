@@ -1167,12 +1167,21 @@ function _updateDensityLegend(){
   }).length;
   if (note) note.textContent = `Showing ${visible} of ${total} routes${_activePhaseTag&&_densityMode==='story'?' · '+_activePhaseTag.replace('phase:','Phase '):''}`;
 }
+function _capZoomFilter(){
+  // Mesh mode: show capillary hops at all zooms (legend count must match visible lines).
+  if (_densityMode === 'mesh') return ['literal', true];
+  return ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
+}
+function _routeFocusDim(){
+  // Story-focus dims non-spotlight corridors; mesh needs a higher floor or capillaries vanish.
+  return _densityMode === 'mesh' ? 0.34 : 0.015;
+}
 function applyDensityFilters(){
   if (!map || !map.getLayer('route-p2')) return;
   const _isP2  = ['==',['get','platform'],'Pioneer II'];
   const _isQ   = ['==',['get','platform'],'Quanta-LR'];
   const _glowTW = ['>=',['coalesce',['get','render_tw'],0],0.4];
-  const _capZoom = ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
+  const _capZoom = _capZoomFilter();
   try{
     map.setFilter('route-glow-bloom', _routeDisplayFilter(['all', _glowTW, _capZoom]));
     map.setFilter('route-glow-core', _routeDisplayFilter(['all', _glowTW, _capZoom]));
@@ -1187,6 +1196,9 @@ function setDensityMode(mode, opts){
   if (opts.phaseTag !== undefined) _activePhaseTag = opts.phaseTag;
   if (mode && _DENSITY_LANES[mode]) _densityMode = mode;
   applyDensityFilters();
+  // Re-stamp focus opacity — mesh floor is higher so newly unfiltered capillaries actually read.
+  if (_HUB && _HUB.partner){ const a=_hubAnchors(_HUB.partner); if(a.length) applyStoryFocus(a); }
+  else if (PARTNER_ACTIVE && PARTNER_ACTIVE.scopeCities){ applyStoryFocus(PARTNER_ACTIVE.scopeCities); }
   if (!opts.silent) _updateDensityLegend();
 }
 
@@ -1253,12 +1265,12 @@ const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy la
 // the basemap below z11; marquee corridors still lead, micro-hops fade in only on zoom-in.
 // Per-stop columns: [zoom, trunk, regional, local]. Local column now leads in from z4 (was 0 until z8.5);
 // trunk/marquee unchanged. Capillary (<1.5 nm) reveal lowered to z7 (was z12) — see _capZoom.
-const _TIER_STOPS = [[1.5,0.59,0.00,0.10],[4,0.69,0.18,0.36],[6.5,0.69,0.59,0.48],
-                     [8.5,0.70,0.73,0.60],[11,0.71,0.82,0.74],[14,0.73,0.82,0.90]];
+const _TIER_STOPS = [[1.5,0.52,0.00,0.10],[4,0.62,0.16,0.32],[6.5,0.62,0.52,0.42],
+                     [8.5,0.63,0.64,0.52],[11,0.64,0.72,0.62],[14,0.65,0.72,0.72]];
 // Quanta-LR is the trans-regional ≤700 nm backbone — the network's headline reach. It gets its OWN
 // brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
-const _QLR_STOPS  = [[1.5,0.70,0.58,0.08],[4,0.72,0.65,0.30],[6.5,0.70,0.68,0.44],
-                     [8.5,0.70,0.76,0.58],[11,0.71,0.82,0.80],[14,0.73,0.83,0.90]];
+const _QLR_STOPS  = [[1.5,0.62,0.50,0.08],[4,0.64,0.56,0.26],[6.5,0.62,0.60,0.38],
+                     [8.5,0.62,0.66,0.50],[11,0.63,0.72,0.68],[14,0.65,0.73,0.72]];
 // Build a top-level zoom interpolate from a stops table; `wrap(tierMatch)` maps the per-zoom tier
 // value to the final stop output (×demand / highlight case). Stop outputs are feature-driven but
 // zoom-free — zoom never leaves the top level (the MapLibre rule the F-01 fix established).
@@ -1275,20 +1287,20 @@ const qlrOpacity  = (wrap)=>tierOpacityFrom(_QLR_STOPS,  wrap);   // Quanta-LR h
 // Base widths lifted at low zoom so lines aren't sub-pixel at world view.
 function wRoute(mult){
   return ['interpolate',['linear'],['zoom'],
-    2,  ['+',0.7*mult, ['*',_TW,3.0*mult]],
-    6,  ['+',1.0*mult, ['*',_TW,5.4*mult]],
-    11, ['+',1.2*mult, ['*',_TW,7.0*mult]],
-    14, ['+',1.5*mult, ['*',_TW,8.5*mult]]];
+    2,  ['+',0.55*mult, ['*',_TW,2.2*mult]],
+    6,  ['+',0.75*mult, ['*',_TW,3.8*mult]],
+    11, ['+',0.9*mult, ['*',_TW,4.8*mult]],
+    14, ['+',1.0*mult, ['*',_TW,5.5*mult]]];
 }
 const O_TIER     = tierOpacity();
 const O_P2       = tierOpacity(m=>['match',['get','render_tier'],'local',['*',m,0.62],'regional',['*',m,0.54],['*',m,0.50]]);
 const O_TIER_QLR = qlrOpacity(m=>['match',['get','render_tier'],'local',['*',m,0.80],'regional',['*',m,0.72],['*',m,0.68]]);
 const W_ROUTE    = wRoute(1);
-const W_QLR      = wRoute(1.1);    // Quanta-LR hero — trimmed from 1.25
-const W_P2       = wRoute(0.72);   // Pioneer II line weight — thinner default mesh
+const W_QLR      = wRoute(1.05);
+const W_P2       = wRoute(0.68);   // Pioneer II line weight — thinner default mesh
 // Density glow — restrained two-pass bloom (v17): wide halo + tight core, demand folded into stops.
-const W_GLOW_BLOOM = wRoute(2.5);
-const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,2.5, 8,4, 13,5.5];
+const W_GLOW_BLOOM = wRoute(1.45);
+const B_GLOW_BLOOM = ['interpolate',['linear'],['zoom'], 3,1.8, 8,2.6, 13,3.2];
 const O_GLOW_BLOOM = tierOpacity(m=>['*', m, ['*',_TW2,0.11]]);
 const W_GLOW_CORE  = wRoute(1.15);
 const B_GLOW_CORE  = ['interpolate',['linear'],['zoom'], 3,0.8, 11,1.2, 14,1.5];
@@ -1416,7 +1428,7 @@ map.on('load', () => {
   const _isQ   = ['==',['get','platform'],'Quanta-LR'];
   const _rline = {'line-cap':'round','line-join':'round'};
   const _glowTW = ['>=',['coalesce',['get','render_tw'],0],0.4];   // demand-weighted glow — locals stay line-only
-  const _capZoom = ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]]; // sub-1.5nm local hops: z4+
+  const _capZoom = _capZoomFilter(); // sub-1.5nm local hops: z4+ (all zooms in mesh mode)
   // Demand glow, two-pass bloom (bottom→top): wide halo (trunk/regional only) then tight core.
   // Overlapping high-traffic corridors accumulate into one glowing braided trunk; locals stay clean.
   map.addLayer({ id:'route-glow-bloom', type:'line', source:'routes', layout:_rline,
@@ -3594,8 +3606,9 @@ function applyStoryFocus(cityIds) {
     ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
   try {
     // Fold the focus case into the stop outputs so the top-level zoom curve stays MapLibre-valid.
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, 0.015]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, 0.015]));
+    const dim = _routeFocusDim();
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, dim]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, dim]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], 0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], 0]));
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case', routeIn, 0.9, 0]]);
