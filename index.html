@@ -3345,17 +3345,25 @@ function _hubHowToRead(partner){
   if (/phased sequence|recommended regional path|pick a coastline/i.test(raw)) return fallback;
   return raw||fallback;
 }
+const _INTERNAL_MARKET_STATUS = new Set(['enriched_marquee','data-only','held','research-complete','seal-needed','seal_needed','awaiting_grok_bind']);
+function _hubMarketStatusLabel(m){
+  const s=m&&m.status; if(!s) return '';
+  const norm=String(s).toLowerCase().replace(/[\s-]+/g,'_');
+  if(_INTERNAL_MARKET_STATUS.has(norm)) return '';
+  return s;
+}
 function _hubMarketCardsHtml(partner){
   const mk=partner.markets||[];
   const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
-  return ordered.map(m=>`<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
+  return ordered.map(m=>{ const statusLbl=_hubMarketStatusLabel(m);
+    return `<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
       ${m.recommended_entry?`<span class="hub-rec">Recommended entry</span>`:''}
       <div class="hub-card-h">${escapeHtml(m.label||m.slug)}${m.category?`<span class="hub-card-cat">${escapeHtml(m.category)}</span>`:''}</div>
-      ${m.status?`<div class="hub-card-status">${escapeHtml(m.status)}</div>`:''}
+      ${statusLbl?`<div class="hub-card-status">${escapeHtml(statusLbl)}</div>`:''}
       ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
       ${m.corridors_note?`<div class="hub-card-note">${escapeHtml(m.corridors_note)}</div>`:''}
       <span class="hub-card-go">Open market proposal →</span>
-    </button>`).join('');
+    </button>`; }).join('');
 }
 function _wireHubIndex(panel, partner){
   const anchors=_hubAnchors(partner);
@@ -3911,6 +3919,11 @@ document.querySelectorAll('.chip').forEach(b => {
     (cityNodesByRegion[norm(p.region)] = cityNodesByRegion[norm(p.region)] || []).push({ id:p.id, coords:co, props:p, name:(p.shortName||p.name||p.id) });
   }
   for (const r in clustersByRegion) for (const cl of clustersByRegion[r]) for (const c of cl.cities) clusteredCityIds.add(c.id);
+  // Hub partners (Bolt, Uber, Yango): always show region tier when multiple regions — cluster
+  // chips alone overflow the row (18+ markets). Drill: Region → Cluster → City.
+  const partnerDoc = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER];
+  const isHubLayout = partnerDoc && (partnerDoc.layout==='hub'||partnerDoc.layout==='network')
+    && ((partnerDoc.markets||[]).length > 0 || (partnerDoc._map_scope?.cluster_city_ids||[]).length > 0);
   // Partner pages: skip tiers that would be a single chip (one region / cluster / city).
   const labels = Object.keys(regions).sort((a,b)=> a.localeCompare(b));
   const uniqueClusters = [];
@@ -3923,7 +3936,10 @@ document.querySelectorAll('.chip').forEach(b => {
   allCityNodes.sort((a,b)=> a.name.localeCompare(b.name));
   // Partner: skip the region tier when there's only one, or when multiple clusters are the meaningful unit
   // (e.g. Grab → countries flat; Careem → one region + one cluster → falls through to cities).
-  const skipRegion = isPartner && (labels.length <= 1 || uniqueClusters.length > 1);
+  // Hub layout (Bolt/Uber/Yango): never flatten to all-clusters — keep Region → Cluster drill.
+  const skipRegion = isPartner && (
+    isHubLayout ? labels.length <= 1 : (labels.length <= 1 || uniqueClusters.length > 1)
+  );
   const skipCluster = isPartner && uniqueClusters.length <= 1;
   const skipCity = isPartner && allCityNodes.length <= 1;
   if (isPartner && skipCity) { const p=document.getElementById('presets'); if (p) p.style.display='none'; }

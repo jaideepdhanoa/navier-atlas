@@ -52,6 +52,19 @@ HELD_MARKET_SLUGS = {
     "yango-israel",
 }
 
+# Internal pipeline labels — never surface on partner hub cards.
+INTERNAL_MARKET_STATUS = frozenset(
+    {
+        "enriched_marquee",
+        "data-only",
+        "held",
+        "research-complete",
+        "seal-needed",
+        "seal_needed",
+        "awaiting_grok_bind",
+    }
+)
+
 # Pruned proposal pages — geometry may exist; do not splice into partner hub
 PRUNED_MARKET_KEYS = frozenset(
     {
@@ -327,6 +340,9 @@ def market_from_authored(
     m = sanitize_partner_text({k: v for k, v in authored.items() if k not in HUB_STRIP})
     if m.get("slug") and not m.get("id"):
         m["id"] = m["slug"]
+    st = m.get("status")
+    if st and str(st).lower().replace(" ", "_").replace("-", "_") in INTERNAL_MARKET_STATUS:
+        m.pop("status", None)
     m["anchor_cities"] = normalize_anchors(m.get("anchor_cities") or [], sealed_cities)
     if market_key in HELD_MARKET_SLUGS:
         m["tier"] = "data-only"
