@@ -290,10 +290,13 @@ def bind_route_refs(
 def sanitize_partner_text(obj):
     """Strip exclusion tokens from partner-facing copy."""
     if isinstance(obj, str):
-        return (
+        from bolt_yango_shared import scrub_field
+
+        out = (
             obj.replace("on hold", "held pending sovereign coordination")
             .replace("On hold", "Held pending sovereign coordination")
         )
+        return scrub_field(out) or out
     if isinstance(obj, list):
         return [sanitize_partner_text(x) for x in obj]
     if isinstance(obj, dict):
