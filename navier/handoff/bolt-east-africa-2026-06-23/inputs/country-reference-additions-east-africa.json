@@ -1,0 +1,33 @@
+{
+  "purpose": "Honest source-tiered country-reference rows for Kenya + Tanzania so the model/sheet do NOT silently fall back to Singapore opex/energy/grid-CO2/crew/marina (golden rule #8). Merge against the LIVE finance/model/country-reference.json schema; values are estimate-tier and must be confirmed by finance before a final cascade.",
+  "as_of": "2026-06-23",
+  "capex_region_rule": "Both Kenya and Tanzania are non-US/non-EU -> $600K/vessel (LB-243).",
+  "countries": {
+    "Kenya": {
+      "tier": "estimate",
+      "electricity_usd_per_kwh": 0.20,
+      "electricity_basis": "Commercial tariff estimate (KPLC), ~KES 25-30/kWh range; confirm.",
+      "grid_co2_kg_per_kwh": 0.08,
+      "grid_co2_basis": "Kenya grid ~90%+ renewable (geothermal/hydro/wind, incl. Lake Turkana); among the cleanest grids in Africa. Strong zero-emission narrative.",
+      "captain_crew_usd_per_year": 9000,
+      "crew_basis": "Coastal Kenya marine crew estimate; well below Singapore. Confirm.",
+      "marina_overhead_usd_per_year": 22000,
+      "marina_basis": "English Point Marina (Mombasa) / Kilifi Creek berthing estimate.",
+      "capex_usd_per_vessel": 600000,
+      "notes": "Clean grid is a marquee ESG selling point for the Kenya coast legs."
+    },
+    "Tanzania": {
+      "tier": "estimate",
+      "electricity_usd_per_kwh": 0.11,
+      "electricity_basis": "TANESCO commercial tariff estimate (~TZS 280-300/kWh); confirm.",
+      "grid_co2_kg_per_kwh": 0.40,
+      "grid_co2_basis": "Tanzania grid gas-heavy with growing hydro (Julius Nyerere HPP ramping); moderate intensity. Still far cleaner per-trip than diesel ferries it displaces.",
+      "captain_crew_usd_per_year": 8000,
+      "crew_basis": "Dar/Zanzibar marine crew estimate; well below Singapore. Confirm.",
+      "marina_overhead_usd_per_year": 20000,
+      "marina_basis": "Dar Slipway / Zanzibar ferry-terminal berthing estimate.",
+      "capex_usd_per_vessel": 600000,
+      "notes": "Displacing diesel fast-ferries gives a strong per-trip CO2 reduction even at moderate grid intensity; JNHPP hydro ramp improves it over the model horizon."
+    }
+  }
+}

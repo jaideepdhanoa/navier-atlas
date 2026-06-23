@@ -1,0 +1,114 @@
+{
+  "cluster": "bolt-east-africa",
+  "as_of": "2026-06-23",
+  "status": "candidate / seal-needed (geometry) + cascade-needed (economics)",
+  "range_gate_rule": "<=70nm -> Pioneer II (N35 Shuttle on dense legs at scale); 75-150nm -> Quanta-LR (roadmap, amber); >150nm -> Quanta-LR flagged. Distances below are APPROXIMATE pending Grok seal on sealed BP coords; borderline (~65-72nm) legs are flagged for exact great-circle re-gate after seal.",
+  "demand_fare_note": "Fares/volumes are SOURCE-ANCHORED ASSUMPTIONS for the model cascade, not sealed economics. Premium-tier fare + haircut-demand template (Bucket-C recipe). Economics are cascade-needed; nothing here is a final number.",
+  "corridors": [
+    {
+      "id_proposed": "dar-stonetown",
+      "from": "dar-es-salaam", "to": "stone-town",
+      "approx_nm": 41, "vessel_gate": "Pioneer II (N30)", "tier": "MARQUEE",
+      "thesis": "The flagship crossing. Replaces 90-110min Azam fast ferry with a faster, premium, zero-emission hop. Heavy existing passenger base (4 daily ferry slots each way; operator expanding fleet 2025).",
+      "demand_anchor": {"existing_ferry": "Azam 4 slots/way/day", "zanzibar_arrivals_2025": 917167, "addressable": "premium tourist + business slice of ferry+air pool"},
+      "fare_anchor_usd": {"incumbent_ferry_foreign": 45, "navier_premium_seat_assumption": "70-95"},
+      "confidence": "high"
+    },
+    {
+      "id_proposed": "stonetown-nungwi",
+      "from": "stone-town", "to": "nungwi",
+      "approx_nm": 30, "vessel_gate": "Pioneer II (N30)", "tier": "resort_transfer",
+      "thesis": "Stone Town arrival -> north-tip resort cluster (Nungwi/Kendwa) by water, bypassing 1-1.5h congested road transfer.",
+      "demand_anchor": {"basis": "north-Zanzibar resort bednights; airport/ferry arrival distribution"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "45-70"},
+      "confidence": "medium"
+    },
+    {
+      "id_proposed": "stonetown-pemba",
+      "from": "stone-town", "to": "pemba",
+      "approx_nm": 48, "vessel_gate": "Pioneer II (N30)", "tier": "outer_island",
+      "thesis": "Replaces the 4-6h rough Zan Fast Ferry (~10x/week) with a premium fast hop to Pemba's dive/eco-lux market. Re-gate exact nm on seal.",
+      "demand_anchor": {"existing_ferry": "Zan Fast Ferries ~10 sailings/week", "basis": "Pemba dive/eco-lux + inter-island"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "60-90"},
+      "confidence": "medium"
+    },
+    {
+      "id_proposed": "dar-mafia",
+      "from": "dar-es-salaam", "to": "mafia",
+      "approx_nm": 70, "vessel_gate": "Pioneer II (N30) / re-gate Quanta-LR if >70nm on seal", "tier": "outer_island",
+      "thesis": "Mafia is flight-only or slow-ferry (Nyamisati) today. A direct Dar->Kilindoni hop unlocks the marine-park dive market. BORDERLINE range — flag for exact re-gate.",
+      "demand_anchor": {"basis": "Mafia marine-park dive arrivals; currently capacity-constrained by access"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "80-120"},
+      "confidence": "low",
+      "flags": ["borderline_range_regate"]
+    },
+    {
+      "id_proposed": "stonetown-mafia",
+      "from": "stone-town", "to": "mafia",
+      "approx_nm": 68, "vessel_gate": "Pioneer II (N30) / re-gate on seal", "tier": "island_circuit",
+      "thesis": "Island-to-island tourist circuit (Zanzibar + Mafia combo trips). Borderline range — flag for re-gate.",
+      "demand_anchor": {"basis": "multi-island tourist circuits"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "80-120"},
+      "confidence": "low",
+      "flags": ["borderline_range_regate"]
+    },
+    {
+      "id_proposed": "mombasa-diani",
+      "from": "mombasa", "to": "diani-ukunda",
+      "approx_nm": 16, "vessel_gate": "Pioneer II (N30); N35 Shuttle if dense at scale", "tier": "MARQUEE",
+      "thesis": "Bypasses the chronically congested Likoni channel ferry. Heavy daily commuter + tourist flow to the south-coast resort strip; road is 1.5-2h via Likoni queue today.",
+      "demand_anchor": {"road_alt_fare_usd": 29, "basis": "Mombasa<->south-coast commuter + resort"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "35-55"},
+      "confidence": "medium"
+    },
+    {
+      "id_proposed": "mombasa-likoni-shuttle",
+      "from": "mombasa", "to": "likoni",
+      "approx_nm": 1, "vessel_gate": "N35 Shuttle (dense commuter)", "tier": "commuter_shuttle",
+      "thesis": "The Likoni channel itself: one of Africa's busiest ferry crossings (hundreds of thousands of daily crossings). High-frequency electric shuttle complement. Volume-heavy, low-fare.",
+      "demand_anchor": {"basis": "Likoni ferry daily foot+vehicle crossings (very high volume)"},
+      "fare_anchor_usd": {"navier_shuttle_seat_assumption": "2-5"},
+      "confidence": "medium",
+      "flags": ["very_short_high_frequency"]
+    },
+    {
+      "id_proposed": "mombasa-kilifi",
+      "from": "mombasa", "to": "kilifi",
+      "approx_nm": 30, "vessel_gate": "Pioneer II (N30)", "tier": "coastal_hop",
+      "thesis": "North-coast hop to Kilifi Creek sailing/marina community.",
+      "demand_anchor": {"basis": "Mombasa<->Kilifi coastal travel"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "35-55"},
+      "confidence": "low"
+    },
+    {
+      "id_proposed": "mombasa-malindi-watamu",
+      "from": "mombasa", "to": "malindi",
+      "approx_nm": 60, "vessel_gate": "Pioneer II (N30)", "tier": "coastal_hop",
+      "thesis": "Mombasa -> Watamu/Malindi resort + marine-park belt (Italian-heavy market). Borderline-OK range.",
+      "demand_anchor": {"basis": "Malindi/Watamu resort + marine park"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "55-80"},
+      "confidence": "low"
+    },
+    {
+      "id_proposed": "malindi-lamu",
+      "from": "malindi", "to": "lamu",
+      "approx_nm": 120, "vessel_gate": "Quanta-LR (roadmap, amber)", "tier": "roadmap_long_leg",
+      "thesis": "Coastal long-leg to car-free Lamu (water-access-only via Mokowe). Range-gated roadmap leg, NOT an N30 leg.",
+      "demand_anchor": {"basis": "Lamu heritage tourism; Mokowe jetty gateway"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "110-160"},
+      "confidence": "low",
+      "flags": ["range_gated_roadmap"]
+    },
+    {
+      "id_proposed": "mombasa-pemba",
+      "from": "mombasa", "to": "pemba",
+      "approx_nm": 54, "vessel_gate": "Pioneer II (N30)", "tier": "cross_border_roadmap",
+      "thesis": "Kenya<->Tanzania cross-border island hop. Geometrically in-range, but CROSS-BORDER (customs/immigration/maritime clearance). Roadmap-only; flag heavily.",
+      "demand_anchor": {"basis": "regional cross-border premium travel"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "90-130"},
+      "confidence": "low",
+      "flags": ["cross_border_KE_TZ", "regulatory_clearance_required", "roadmap_only"]
+    }
+  ],
+  "seal_instructions": "Grok: build BP<->BP geometry only between sealed, geocoded, water-adjacency-passing BPs; apply water/land-crossing gate (no land-crossings); re-gate borderline legs on exact great-circle; keep cross-border + range-gated legs visibly aspirational; null any leg whose endpoints fail to seal."
+}

@@ -1,0 +1,30 @@
+{
+  "cluster": "bolt-east-africa",
+  "as_of": "2026-06-23",
+  "status": "candidate / geocode+seal-needed",
+  "rules": "Tasklet supplies named, source-real BP candidates with searchable gazetteer descriptors. Grok does deterministic geocode + ID-match + water-adjacency gate + seal. Coords are intentionally null (null beats confidently-wrong); precise lat/long is Grok's deterministic gazetteer promotion. Do NOT invent coordinates. Every candidate is a real, named, existing maritime point.",
+  "boarding_points": [
+    {"city_node": "mombasa", "name": "Likoni Ferry Terminal (north/Island side)", "type": "ferry_terminal", "gazetteer_hint": "Likoni Ferry, Mombasa Island side, Mombasa, Kenya", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "mombasa", "name": "Likoni Ferry Terminal (Likoni/south side)", "type": "ferry_terminal", "gazetteer_hint": "Likoni Ferry, Likoni mainland side, Mombasa, Kenya", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "mombasa", "name": "Mombasa Old Port / Old Town jetty", "type": "harbour_jetty", "gazetteer_hint": "Mombasa Old Port, Old Town, Mombasa, Kenya", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "mombasa", "name": "English Point Marina", "type": "marina", "gazetteer_hint": "English Point Marina, Tudor Creek, Mombasa, Kenya", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "diani-ukunda", "name": "Diani / Ukunda beach landing (south coast)", "type": "beach_landing", "gazetteer_hint": "Diani Beach water-sports landing, Ukunda, Kwale County, Kenya", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "kilifi", "name": "Kilifi Creek jetty / Kilifi Boatyard", "type": "creek_jetty", "gazetteer_hint": "Kilifi Creek jetty, Kilifi, Kenya", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "malindi", "name": "Malindi jetty / Malindi marine park landing", "type": "beach_jetty", "gazetteer_hint": "Malindi jetty, Malindi Marine Park, Kenya", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "watamu", "name": "Watamu marine park landing", "type": "beach_jetty", "gazetteer_hint": "Watamu Marine National Park boat landing, Watamu, Kenya", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "lamu", "name": "Mokowe Jetty (mainland gateway)", "type": "ferry_jetty", "gazetteer_hint": "Mokowe Jetty, Lamu County, Kenya", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "lamu", "name": "Lamu Town waterfront jetty", "type": "island_jetty", "gazetteer_hint": "Lamu Town main jetty, Lamu Island, Kenya", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "dar-es-salaam", "name": "Dar es Salaam Ferry Terminal (Azam / Zanzibar ferries)", "type": "ferry_terminal", "gazetteer_hint": "Dar es Salaam ferry terminal, Kivukoni, Dar es Salaam, Tanzania", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "dar-es-salaam", "name": "Slipway / Msasani Bay jetty", "type": "marina_jetty", "gazetteer_hint": "The Slipway jetty, Msasani Peninsula, Dar es Salaam, Tanzania", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "bagamoyo", "name": "Bagamoyo dhow port / jetty", "type": "harbour_jetty", "gazetteer_hint": "Bagamoyo old port jetty, Bagamoyo, Tanzania", "coords": null, "geocode_needed": true, "confidence": "low"},
+    {"city_node": "tanga", "name": "Tanga port / waterfront jetty", "type": "port_jetty", "gazetteer_hint": "Tanga port, Tanga, Tanzania", "coords": null, "geocode_needed": true, "confidence": "low"},
+    {"city_node": "stone-town", "name": "Zanzibar Ferry Terminal (Malindi port, Stone Town)", "type": "ferry_terminal", "gazetteer_hint": "Zanzibar ferry terminal, Malindi, Stone Town, Zanzibar, Tanzania", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "nungwi", "name": "Nungwi beach boat landing", "type": "beach_landing", "gazetteer_hint": "Nungwi beach landing, north Zanzibar (Unguja), Tanzania", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "paje", "name": "Paje beach landing", "type": "beach_landing", "gazetteer_hint": "Paje beach, east Zanzibar (Unguja), Tanzania", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "pemba", "name": "Mkoani Port (Pemba)", "type": "port", "gazetteer_hint": "Mkoani port, Pemba Island, Zanzibar, Tanzania", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "pemba", "name": "Wete Port (Pemba)", "type": "port", "gazetteer_hint": "Wete port, Pemba Island, Tanzania", "coords": null, "geocode_needed": true, "confidence": "medium"},
+    {"city_node": "mafia", "name": "Kilindoni Port (Mafia)", "type": "port", "gazetteer_hint": "Kilindoni port, Mafia Island, Tanzania", "coords": null, "geocode_needed": true, "confidence": "high"},
+    {"city_node": "mafia", "name": "Nyamisati mainland ferry jetty (Rufiji)", "type": "ferry_jetty", "gazetteer_hint": "Nyamisati ferry jetty, Rufiji, Pwani, Tanzania (mainland gateway to Mafia)", "coords": null, "geocode_needed": true, "confidence": "medium"}
+  ],
+  "coverage_audit_directive": "0 silent drops: every candidate BP must end as a sealed POI OR a drop-ledger entry with a reason (failed geocode / failed water-adjacency / not a real maritime point). Low-confidence brief-only nodes (Bagamoyo, Tanga, Malindi, Watamu) may stay brief-only/backlog rather than seal, but must be logged, not silently dropped."
+}
