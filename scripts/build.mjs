@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -113,3 +114,16 @@ const nodes = ftypes.reduce((n, t) => n + (fc[t] ? fc[t].length : 0), 0);
 console.log(`[build] atlas-data.js written (${(readFileSync(OUT).length / 1e6).toFixed(2)} MB) · profile:${profile}`);
 console.log(`[build]   features: ${nodes} across ${ftypes.length} types · routes: ${baked.ROUTES.length} · stories: ${baked.STORIES.length}`);
 console.log(`[build]   city briefs: ${Object.keys(baked.CITY_BRIEFS).length} · partners: ${Object.keys(baked.PARTNERS).length} · cluster briefs: ${Object.keys(baked.CLUSTER_BRIEFS).length} · route-economics: ${Object.keys(baked.ROUTE_ECONOMICS).length}`);
+
+if (process.env.RELEASE || process.env.BUILD_ENFORCE_CITY_IDS) {
+  const gate = spawnSync('python3', ['scripts/backfill_route_city_ids.py', '--assert-build'], {
+    cwd: ROOT, encoding: 'utf8',
+  });
+  if (gate.stdout) process.stdout.write(gate.stdout);
+  if (gate.stderr) process.stderr.write(gate.stderr);
+  if (gate.status !== 0) {
+    console.error('[build] FATAL: route *_city_id gate failed — run scripts/backfill_route_city_ids.py --apply');
+    process.exit(1);
+  }
+  console.log('[build]   route city_id gate: pass (<5% non-gold)');
+}
