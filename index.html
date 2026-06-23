@@ -3142,7 +3142,7 @@ function _growthCaseHtml(gc, opts){
 function _chapterHtml(ch, partner){
   if (ch.kind==='endstate') return _endstateHtml(partner);
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
-  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case);
+  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case, {partnerDisplay:partner.display||partner.partner_id||'The platform'});
   if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
   if (ch.kind==='ask')      { const c=partner.close; const closeHtml=!c?'':(typeof c==='string'?`<div class="panel-section pcaro-close"><div class="b">${escapeHtml(c)}</div></div>`:`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(c.title||'')}</div>${c.body?`<div class="b">${escapeHtml(c.body)}</div>`:''}</div>`); return _askHtml(partner.the_ask)+closeHtml; }
   return '';
