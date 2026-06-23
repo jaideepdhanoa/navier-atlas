@@ -1,0 +1,1114 @@
+{
+ "handoff": "thailand-locale-poi-cleanup",
+ "date": "2026-06-23",
+ "owner": "Tasklet (spec/ledger) -> Grok (seal)",
+ "directive": "Jaideep 2026-06-23: Thailand locales are a complete mess, showing under the wrong cities. Rather not have them than have them wrong. Clean Thailand first, then all Bolt markets, then the rest.",
+ "principle": "A locale/POI pin must be a single, in-city, real waterfront place placeable to one accurate coordinate at 99%+ confidence. Wrong-city POIs are retagged to the correct in-scope city; combined/corridor/foreign locales are dropped; exact-duplicate copies are collapsed.",
+ "apply_order": [
+  "1_dedup_exact",
+  "2_retag_identity",
+  "3_drop_junk_annotation",
+  "4_locale_structural",
+  "5_grok_residual_gate"
+ ],
+ "poi_layer": {
+  "dedup_exact_drops": {
+   "count": 74,
+   "drops": [
+    {
+     "id": "bp-b2d7221631",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Royal Phuket Marina",
+     "keep": "bp-89b0b1c3e7",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-655b11d977",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Po Grand Marina",
+     "keep": "bp-0d336bff75",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-ec4bce490c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Chalong Pier",
+     "keep": "bp-4e9a8f7cea",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-5be07b3430",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Rassada Pier (Phuket Deep Sea Port)",
+     "keep": "bp-4f5aa81348",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-e0fc2603f4",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Laem Hin Pier",
+     "keep": "bp-17aed885a3",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-dd566abbfa",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "COMO Point Yamu Jetty",
+     "keep": "bp-d728093d82",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-1e6c46b12d",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Sri Panwa Jetty",
+     "keep": "bp-19e3f312a4",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-d1fe1850c4",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Cape Panwa Hotel Jetty",
+     "keep": "bp-5ac5342ccc",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-5586988004",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Amari Phuket Beach Jetty",
+     "keep": "bp-01c063b542",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f8375331d0",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Rosewood Phuket Beach Jetty",
+     "keep": "bp-9fb4cb4737",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-a69f2adb72",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Kamala Beach (Keemala access)",
+     "keep": "bp-79ce2bef3e",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-58a21863ca",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Amanpuri Beach Jetty (Pansea Beach)",
+     "keep": "bp-343fe854f1",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-fc4dadfea5",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Trisara Beach Jetty",
+     "keep": "bp-ead6689b7f",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b3bca737f5",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "The Slate (Nai Yang Beach)",
+     "keep": "bp-7718955c3a",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-943035ac7b",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Naka Island Jetty (Naka Yai)",
+     "keep": "bp-5a1dba3227",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-d337b8e857",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "The Village Coconut Island (Koh Maphrao)",
+     "keep": "bp-550545c03d",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-c04ea5237d",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Maiton Island Jetty",
+     "keep": "bp-46d899ff1f",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-4dffb5a7d0",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Manoh Pier (Koh Yao Yai)",
+     "keep": "bp-3baedff1fc",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-e09f2910cc",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Santhiya Koh Yao Yai Jetty",
+     "keep": "bp-9768aa1288",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b39a75736c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Khao Phing Kan (James Bond Island)",
+     "keep": "bp-a4b0719b2f",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-5767edd734",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ko Panyi Floating Village",
+     "keep": "bp-50e16ae07f",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b4cf01274f",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Koh Hong (Phang Nga) Lagoon",
+     "keep": "bp-1104e21fc6",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-dcd12a677c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Surakul Pier (Phang Nga Town)",
+     "keep": "bp-3fc2963792",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-95a51c6539",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Phi Phi Don — Tonsai Pier",
+     "keep": "bp-94665cbfe4",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-aa49a03aa2",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Laem Tong Pier (Phi Phi Don north)",
+     "keep": "bp-28c6e2d8c5",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-401a2fbe4c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Maya Bay (Phi Phi Leh)",
+     "keep": "bp-24a1b4f8f8",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-5e195f7928",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Rayavadee Phra Nang Jetty",
+     "keep": "bp-1a527d1fa5",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b7de091723",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Banyan Tree Krabi (Tubkaek)",
+     "keep": "bp-23cef5683e",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-747f9a093f",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Saladan Pier (Koh Lanta)",
+     "keep": "bp-6b9b60b077",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-72e44abb90",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Pimalai Resort Beach Jetty (Kantiang Bay)",
+     "keep": "bp-518afab8d6",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-c72f778013",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Similan Islands — Koh Miang Ranger Station",
+     "keep": "bp-c4dbc126bb",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-9050d2d286",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Aleenta Phuket-Phang Nga (Natai Beach)",
+     "keep": "bp-46c4f9af13",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-78d05acf7b",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Iniala Beach House (Natai)",
+     "keep": "bp-1522e16bfe",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-9661ca36d0",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "The Racha (Koh Racha Yai)",
+     "keep": "bp-9520cf50ac",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-8a4584022f",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Saphan Hin (Phuket Town waterfront)",
+     "keep": "bp-50e0b8bf7b",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-c4360a357a",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Blue Harbour Coffee at Tri-​Trang Beach",
+     "keep": "bp-39eb6c3dfb",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-a5dbbabdd7",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Koh Yao Yai Ferry",
+     "keep": "bp-2147ad6322",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-979cdbe096",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "ท่าเรือด่านศุลกากรพังงา ( Harbor Phang-nga Bay)",
+     "keep": "bp-02d56a18e1",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-66c19a345c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Koh Phi Phi (Laemtong Beach)",
+     "keep": "bp-0ffdcd3b3a",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-54f2548db0",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Nang Nopparat Thara Beach",
+     "keep": "bp-1ff2939820",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-7b53b6b07a",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Nang Mcdonalds",
+     "keep": "bp-09e61bbf5d",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-d54b8febfb",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "harbour dept",
+     "keep": "bp-9ee09c0755",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-d6b6f65f63",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "ฮาร์เบอร์ ฟาร์มาซี (HARBOUR PHARMACY)",
+     "keep": "bp-5d202c3dc7",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-824e5f3617",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Kata Phuket",
+     "keep": "bp-4390a4b8e4",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-bfee5fe1de",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Bang Tao Beach",
+     "keep": "bp-8b5c369ba7",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f1bf6d2035",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Kamala Beach Transfer",
+     "keep": "bp-118a63354e",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-de88ba4e4e",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Kor Kwang Transfer",
+     "keep": "bp-cd231bf550",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b714f8352e",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "AA Marina",
+     "keep": "bp-15dffe4611",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-9af7c87bcf",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Seastar ท่าเรือบ้านน้ำเค็ม",
+     "keep": "bp-645a890639",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-a4831db3cd",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Koh Kho Khao Marina & Pier",
+     "keep": "bp-264f42e9e7",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-479263e513",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Marina Hut Guest House",
+     "keep": "bp-3506015069",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f1ad56c19e",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Marina Seafood @ Naiyang Beach",
+     "keep": "bp-e81b33ee99",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b6a28e4e04",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Hype Luxury Boat Club. (Departure point)",
+     "keep": "bp-968377bde5",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f0f0c9ff1b",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Andaman Port",
+     "keep": "bp-0651abe08c",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-8fc8bfd0fb",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ocean Marina Andaman",
+     "keep": "bp-4412d29902",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f91d290e44",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "ท่าโดยสาร",
+     "keep": "bp-320f7ef3f7",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-d450018228",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Noah Yacht Club",
+     "keep": "bp-368126a6bd",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-dd6a4755c1",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Sea for Rest beach club",
+     "keep": "bp-d300f79365",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-c9d3d70808",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Nang Longtail Boat Service Club",
+     "keep": "bp-a0acd0438e",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-863cf6ed11",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Pak Meng Dock",
+     "keep": "bp-5c9b2b1da3",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-ca1f43f32f",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Phuket Deep Sea Port",
+     "keep": "bp-10867325c0",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f709bf68a1",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Laem Sai Pier",
+     "keep": "bp-2110899919",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-88e2f4a5ff",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Baan Nam Khem Pier",
+     "keep": "bp-12da5eda99",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-fd6d439d05",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Klong Hia Pier",
+     "keep": "bp-dc84dc4c3b",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-dd2a0bb171",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Bundhaya Speedboat",
+     "keep": "bp-8abdd9a549",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-dc0b66f988",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Boat Ramp Pier",
+     "keep": "bp-74a9044e8b",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-5a5ea290b9",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ngop-Ko Tapu Pier",
+     "keep": "bp-39c4a5fa05",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-48ab8303bb",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Tha Dan Pier",
+     "keep": "bp-10e5896990",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-99244fd304",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Sunrise Beach",
+     "keep": "bp-7167780a40",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-afcfa086a2",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Krabi Boat Rental",
+     "keep": "bp-71edc07118",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-90657f00ca",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Lam Hin Pier",
+     "keep": "bp-90261f135a",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-b22395963a",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Klong Yingsuea Pier",
+     "keep": "bp-6dff91869e",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-9088aaebf9",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Maya Bay floating pier",
+     "keep": "bp-6f32c92890",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    },
+    {
+     "id": "bp-f086436a4c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Chong Lard Pier Koh Yao Yai",
+     "keep": "bp-453f726f24",
+     "reason": "exact-duplicate (same parent+name+coords; double-ingestion 2026-05-29 vs 2026-06-19)"
+    }
+   ]
+  },
+  "retag_identity": {
+   "count": 53,
+   "retags": [
+    {
+     "id": "bp-94665cbfe4",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Phi Phi Don — Tonsai Pier",
+     "reason": "identity token \"phi phi\"; 11nm to koh-phi-phi-thailand vs 21nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-28c6e2d8c5",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Laem Tong Pier (Phi Phi Don north)",
+     "reason": "identity token \"phi phi\"; 2nm to koh-phi-phi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-24a1b4f8f8",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Maya Bay (Phi Phi Leh)",
+     "reason": "identity token \"phi phi\"; 4nm to koh-phi-phi-thailand vs 32nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-c0673dfa52",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Ao Nang Pier (Nopparat Thara)",
+     "reason": "identity token \"ao nang\"; 7nm to krabi-thailand vs 26nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-410d7ee3d7",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Railay West Beach",
+     "reason": "identity token \"railay\"; 6nm to krabi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-1a527d1fa5",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Rayavadee Phra Nang Jetty",
+     "reason": "identity token \"phra nang\"; 6nm to krabi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-a2766253be",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Phulay Bay, a Ritz-Carlton Reserve",
+     "reason": "identity token \"phulay bay\"; 11nm to krabi-thailand vs 23nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-23cef5683e",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Banyan Tree Krabi (Tubkaek)",
+     "reason": "identity token \"krabi\"; 10nm to krabi-thailand vs 23nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-76709856be",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Klong Jilad Ferry Pier (to Phi Phi Island)",
+     "reason": "identity token \"phi phi\"; 20nm to koh-phi-phi-thailand vs 32nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-cdd5a0c441",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Ko Phi Phi Ferry Terminal",
+     "reason": "identity token \"phi phi\"; 0nm to koh-phi-phi-thailand vs 30nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-112ba7a0a7",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Railay West",
+     "reason": "identity token \"railay\"; 6nm to krabi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-0ffdcd3b3a",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Koh Phi Phi (Laemtong Beach)",
+     "reason": "identity token \"phi phi\"; 2nm to koh-phi-phi-thailand vs 29nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-1ff2939820",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Ao Nang Nopparat Thara Beach",
+     "reason": "identity token \"ao nang\"; 6nm to krabi-thailand vs 27nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-0479c9b3cc",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Nopparat Thara Beach",
+     "reason": "identity token \"nopparat thara\"; 7nm to krabi-thailand vs 26nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-43d904dc44",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Boonsiri Ferry Ao Nang",
+     "reason": "identity token \"ao nang\"; 6nm to krabi-thailand vs 27nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-a5bea0f475",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Ton Sai Beach Railay",
+     "reason": "identity token \"railay\"; 6nm to krabi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-02325f497d",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Krabi Boat Lagoon",
+     "reason": "identity token \"krabi\"; 4nm to krabi-thailand vs 36nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-80ffbd8bd1",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Krabi Marina",
+     "reason": "identity token \"krabi\"; 0nm to krabi-thailand vs 33nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-6780129a09",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Marina Seaview Krabi",
+     "reason": "identity token \"krabi\"; 0nm to krabi-thailand vs 33nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-7b8e485f73",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Port Takola Yacht Marina & Boatyard Krabi",
+     "reason": "identity token \"krabi\"; 2nm to krabi-thailand vs 32nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-cd5ab934c8",
+     "from": "phuket-phang-nga-thailand",
+     "to": "hua-hin-thailand",
+     "name": "Hua Hin Pier",
+     "reason": "unambiguous primary city-name token \"hua hin\"->hua-hin-thailand (name-identity; coords flagged for Grok regeocode)",
+     "coords_verify": true
+    },
+    {
+     "id": "bp-0197f1e2de",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Floating Pier (East Railay)",
+     "reason": "identity token \"railay\"; 6nm to krabi-thailand vs 28nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-eae9d93db1",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Pier To Railay",
+     "reason": "identity token \"railay\"; 4nm to krabi-thailand vs 30nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-9b29972f0a",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Sai Thai Klong Jilad Pier",
+     "reason": "identity token \"klong jilad\"; 1nm to krabi-thailand vs 32nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-6f32c92890",
+     "from": "phuket-phang-nga-thailand",
+     "to": "koh-phi-phi-thailand",
+     "name": "Maya Bay floating pier",
+     "reason": "identity token \"maya bay\"; 4nm to koh-phi-phi-thailand vs 33nm to phuket-phang-nga-thailand"
+    },
+    {
+     "id": "bp-535187baca",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Ocean Marina Yacht Club (Na Jomtien)",
+     "reason": "identity token \"jomtien\"; 6nm to pattaya-thailand vs 61nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-78fbea8d82",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Bali Hai Pier (Pattaya passenger pier)",
+     "reason": "identity token \"bali hai\"; 0nm to pattaya-thailand vs 54nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-5c346403dd",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Royal Varuna Yacht Club",
+     "reason": "identity token \"royal varuna\"; 1nm to pattaya-thailand vs 54nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-c1cbf953ee",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Royal Cliff Beach Resort Pier",
+     "reason": "identity token \"royal cliff\"; 0nm to pattaya-thailand vs 54nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-33252c7882",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Hilton Pattaya beach access",
+     "reason": "identity token \"pattaya\"; 1nm to pattaya-thailand vs 54nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-37a35c37ef",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Hyatt Regency Pattaya jetty (Wong Amat)",
+     "reason": "identity token \"wong amat\"; 4nm to pattaya-thailand vs 59nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-bed9db537f",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Cape Dara Resort Pattaya jetty",
+     "reason": "identity token \"cape dara\"; 2nm to pattaya-thailand vs 53nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-630f43c59b",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Jomtien Beach Pier",
+     "reason": "identity token \"jomtien\"; 2nm to pattaya-thailand vs 56nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-c2dc72c6a1",
+     "from": "bangkok-thailand",
+     "to": "koh-larn-thailand",
+     "name": "Koh Larn Naban Pier",
+     "reason": "identity token \"koh larn\"; 0nm to koh-larn-thailand vs 53nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-59926e787e",
+     "from": "bangkok-thailand",
+     "to": "koh-larn-thailand",
+     "name": "Koh Larn Tawaen Beach Pier",
+     "reason": "identity token \"koh larn\"; 0nm to koh-larn-thailand vs 52nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-af53787345",
+     "from": "bangkok-thailand",
+     "to": "pattaya-thailand",
+     "name": "Bang Saray Fishing Pier",
+     "reason": "identity token \"bang saray\"; 10nm to pattaya-thailand vs 64nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-572e38261f",
+     "from": "bangkok-thailand",
+     "to": "hua-hin-thailand",
+     "name": "Anantara Hua Hin Resort jetty",
+     "reason": "identity token \"hua hin\"; 3nm to hua-hin-thailand vs 75nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-db6f155ae4",
+     "from": "bangkok-thailand",
+     "to": "hua-hin-thailand",
+     "name": "InterContinental Hua Hin Resort jetty",
+     "reason": "identity token \"hua hin\"; 1nm to hua-hin-thailand vs 79nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-de9c2b07d5",
+     "from": "bangkok-thailand",
+     "to": "hua-hin-thailand",
+     "name": "SO/ Hua Hin (Sofitel)",
+     "reason": "identity token \"hua hin\"; 16nm to hua-hin-thailand vs 63nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-7d4bd8ba1a",
+     "from": "bangkok-thailand",
+     "to": "hua-hin-thailand",
+     "name": "Hua Hin Fishing Pier (Tha Chao Mai)",
+     "reason": "identity token \"hua hin\"; 0nm to hua-hin-thailand vs 78nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-7c39779705",
+     "from": "bangkok-thailand",
+     "to": "hua-hin-thailand",
+     "name": "Six Senses Hua Hin (planned)",
+     "reason": "identity token \"hua hin\"; 179nm to hua-hin-thailand vs 251nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-5ff40a7502",
+     "from": "bangkok-thailand",
+     "to": "koh-samet-thailand",
+     "name": "Ban Phe Pier (Nuan Tip)",
+     "reason": "identity token \"ban phe\"; 4nm to koh-samet-thailand vs 87nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-b32dd6c445",
+     "from": "bangkok-thailand",
+     "to": "koh-samet-thailand",
+     "name": "Na Dan Pier (Koh Samet)",
+     "reason": "identity token \"koh samet\"; 1nm to koh-samet-thailand vs 91nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-7deb867e99",
+     "from": "bangkok-thailand",
+     "to": "koh-samet-thailand",
+     "name": "Paradee Resort Koh Samet jetty",
+     "reason": "identity token \"koh samet\"; 2nm to koh-samet-thailand vs 92nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-02e7dc26d5",
+     "from": "bangkok-thailand",
+     "to": "koh-chang-thailand",
+     "name": "Ao Sapparot Pier (Koh Chang)",
+     "reason": "identity token \"koh chang\"; 7nm to koh-chang-thailand vs 142nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-7c43a5238f",
+     "from": "bangkok-thailand",
+     "to": "koh-chang-thailand",
+     "name": "Bang Bao Pier (Koh Chang SW)",
+     "reason": "identity token \"koh chang\"; 4nm to koh-chang-thailand vs 151nm to bangkok-thailand"
+    },
+    {
+     "id": "bp-37fe5d8a8c",
+     "from": "koh-samui-thailand",
+     "to": "koh-phangan-thailand",
+     "name": "Thong Sala Pier (Koh Phangan main)",
+     "reason": "identity token \"koh phangan\"; 3nm to koh-phangan-thailand vs 8nm to koh-samui-thailand"
+    },
+    {
+     "id": "bp-c91053d9b6",
+     "from": "koh-samui-thailand",
+     "to": "koh-phangan-thailand",
+     "name": "Haad Rin Pier (Koh Phangan SE)",
+     "reason": "identity token \"koh phangan\"; 3nm to koh-phangan-thailand vs 7nm to koh-samui-thailand"
+    },
+    {
+     "id": "bp-88883d94bf",
+     "from": "koh-samui-thailand",
+     "to": "koh-phangan-thailand",
+     "name": "Anantara Rasananda Koh Phangan",
+     "reason": "identity token \"koh phangan\"; 4nm to koh-phangan-thailand vs 13nm to koh-samui-thailand"
+    },
+    {
+     "id": "bp-08602a59ee",
+     "from": "koh-samui-thailand",
+     "to": "koh-phangan-thailand",
+     "name": "SALA Phangan + Buri Rasa Village (Thong Nai Pan Yai)",
+     "reason": "identity token \"phangan\"; 4nm to koh-phangan-thailand vs 13nm to koh-samui-thailand"
+    },
+    {
+     "id": "bp-8da8e9243c",
+     "from": "koh-samui-thailand",
+     "to": "koh-tao-thailand",
+     "name": "Mae Haad Pier (Koh Tao main)",
+     "reason": "identity token \"koh tao\"; 1nm to koh-tao-thailand vs 33nm to koh-samui-thailand"
+    },
+    {
+     "id": "minor-hotels__anantara-rasananda-koh-phangan-villas",
+     "from": "koh-samui-thailand",
+     "to": "koh-phangan-thailand",
+     "name": "Anantara Rasananda Koh Phangan Villas",
+     "reason": "unambiguous primary city-name token \"koh phangan\"->koh-phangan-thailand (name-identity; coords flagged for Grok regeocode)",
+     "coords_verify": true
+    },
+    {
+     "id": "minor-hotels__avani-ao-nang-cliff-krabi-resort",
+     "from": "phuket-phang-nga-thailand",
+     "to": "krabi-thailand",
+     "name": "Avani Ao Nang Cliff Krabi Resort",
+     "reason": "unambiguous primary city-name token \"krabi\"->krabi-thailand (name-identity; coords flagged for Grok regeocode)",
+     "coords_verify": true
+    }
+   ]
+  },
+  "junk_annotation_drops": {
+   "count": 19,
+   "drops": [
+    {
+     "id": "bp-39eb6c3dfb",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Blue Harbour Coffee at Tri-​Trang Beach",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-1c1fe4ab48",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Harbour Master Krabi",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-09e61bbf5d",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Nang Mcdonalds",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-ac76af2036",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Harbour Master Kantang Port",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-5d202c3dc7",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "ฮาร์เบอร์ ฟาร์มาซี (HARBOUR PHARMACY)",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-3506015069",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Marina Hut Guest House",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-66e72072d4",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "(Local) AO-NANG BOAT SERVICE CO.OPERATIVE",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-4324b19b4b",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Private long tail and trip in Krabi by Nongna",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-a0acd0438e",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Ao Nang Longtail Boat Service Club",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-094be4c4fd",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Five Star Thailand | Phi Phi Island Tour",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-1295882457",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Koh Phi Phi Tour Pier",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-b54696d95c",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "The Pirate Boat: Phi Phi Island Tour",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-71edc07118",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Krabi Boat Rental",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-2fe5625152",
+     "parent": "phuket-phang-nga-thailand",
+     "name": "Krabi Island Adventure",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-a8a69242ba",
+     "parent": "koh-samui-thailand",
+     "name": "Chaweng Beach soft-landing cluster (no formal pier)",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-efe3e974fa",
+     "parent": "koh-samui-thailand",
+     "name": "Lamai Beach soft-landing cluster",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-b24b2787e5",
+     "parent": "bangkok-thailand",
+     "name": "Sattahip Royal Thai Navy Base",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-f1f087e8bc",
+     "parent": "koh-samui-thailand",
+     "name": "NE-monsoon blackout flag (Nov–Mar) — COMPLEMENTARITY gap with Phuket",
+     "reason": "non-commercial / annotation non-place"
+    },
+    {
+     "id": "bp-9d9f6b829d",
+     "parent": "koh-samui-thailand",
+     "name": "Royal Thai Navy 2nd Naval Area Command (Gulf)",
+     "reason": "non-commercial / annotation non-place"
+    }
+   ]
+  },
+  "review_name_only": {
+   "count": 0,
+   "note": "name names another city but no geom corroboration; Grok residual gate decides retag-vs-keep",
+   "items": []
+  },
+  "kept_in_place": 217,
+  "residual_note": "Near-duplicate (same place, different label e.g. \"Nathon Pier\" vs \"Nathon Pier (Samui mainland gateway)\") fuzzy-merge and any coordinate-only mis-placement are Grok residual-gate. 0 silent drops: every Thailand POI ends keep/retag/dedup/drop-with-reason."
+ },
+ "locale_layer": {
+  "keep": [
+   {
+    "id": "phuket-phang-nga-thailand__phang-nga-bay-limestone-karst-james-bond-island-koh-hong-koh-yao-yai-noi-naka-yai",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Phang Nga Bay (limestone karst, James Bond Island, Koh Hong, Koh Yao Yai/Noi, Naka Yai)"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__phuket-island-east-coast-ao-po-cape-yamu-royal-phuket-marina-boat-lagoon",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Phuket island east coast (Ao Po, Cape Yamu, Royal Phuket Marina, Boat Lagoon)"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__phuket-west-coast-luxury-beach-belt-patong-kata-karon-kamala-surin-bang-tao-layan-mai-khao",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Phuket west coast luxury beach belt (Patong, Kata, Karon, Kamala, Surin, Bang Tao, Layan, Mai Khao)"
+   }
+  ],
+  "drop": [
+   {
+    "id": "bangkok-thailand__bang-saray-sattahip",
+    "parent": "bangkok-thailand",
+    "name": "Bang Saray / Sattahip",
+    "reason": "combined/corridor-artifact label spanning multiple places (64nm from parent)"
+   },
+   {
+    "id": "bangkok-thailand__koh-chang-trat-via-pattaya-ban-phe",
+    "parent": "bangkok-thailand",
+    "name": "Koh Chang / Trat (via Pattaya + Ban Phe)",
+    "reason": "combined/corridor-artifact label spanning multiple places (148nm from parent)"
+   },
+   {
+    "id": "bangkok-thailand__koh-samui-cross-gulf",
+    "parent": "bangkok-thailand",
+    "name": "Koh Samui (cross-Gulf)",
+    "reason": "pin 257nm from parent city — wrong-city placement"
+   },
+   {
+    "id": "bangkok-thailand__pattaya-ocean-marina",
+    "parent": "bangkok-thailand",
+    "name": "Pattaya / Ocean Marina",
+    "reason": "combined/corridor-artifact label spanning multiple places (54nm from parent)"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__koh-samui-gulf-of-thailand-side-round-s-tip-of-peninsula",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Koh Samui (Gulf of Thailand side, round S tip of peninsula)",
+    "reason": "pin 133nm from parent city — wrong-city placement"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__krabi-ao-nang-railay-tonsai-phi-phi-ko-phi-phi-don-phi-phi-leh-maya-bay",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Krabi (Ao Nang, Railay, Tonsai) + Phi Phi (Ko Phi Phi Don, Phi Phi Leh — Maya Bay)",
+    "reason": "combined/corridor-artifact label spanning multiple places (31nm from parent)"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__langkawi-malaysia",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Langkawi (Malaysia)",
+    "reason": "foreign-country locale (different country than parent)"
+   },
+   {
+    "id": "phuket-phang-nga-thailand__penang-malaysia",
+    "parent": "phuket-phang-nga-thailand",
+    "name": "Penang (Malaysia)",
+    "reason": "foreign-country locale (different country than parent)"
+   }
+  ]
+ },
+ "guardrail": "A sub-cluster/corridor row is promoted to a rendered locale pin ONLY if (1) same country as parent city, (2) a single placeable waterfront place, (3) not a routing artifact (name matching: via | cross-gulf | + | / multi-place | round s tip | gulf-of-thailand-side | corridor | gateway). Rows failing this stay route edges / strategy text, never origin-city locale pins."
+}
