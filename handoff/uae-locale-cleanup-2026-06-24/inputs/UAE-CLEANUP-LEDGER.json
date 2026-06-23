@@ -1,0 +1,1030 @@
+{
+ "handoff": "uae-locale-poi-cleanup",
+ "date": "2026-06-24",
+ "owner": "Tasklet (spec/ledger) → Grok (seal)",
+ "directive": "Jaideep 2026-06-24: UAE locales are a mess — Abu Dhabi locales showing under Dubai, combined areas producing inaccurate pins, vague multi-emirate hops. Eliminate anything not placeable at 99%+ confidence.",
+ "principle": "A locale/POI pin must be a single, in-emirate, real waterfront place placeable to one accurate coordinate at 99%+ confidence. ID-based; null beats confidently-wrong. Cross-emirate/cross-border corridor endpoints are ROUTE edges, never origin-city locale pins.",
+ "locale_layer": {
+  "keep": [
+   {
+    "id": "abu-dhabi-uae__abu-dhabi-island-corniche-al-maryah-cbd",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Abu Dhabi Island / Corniche / Al Maryah (CBD)"
+   },
+   {
+    "id": "abu-dhabi-uae__mussafah-kizad-industrial-channel",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Mussafah / KIZAD industrial channel"
+   },
+   {
+    "id": "abu-dhabi-uae__saadiyat-island",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Saadiyat Island"
+   },
+   {
+    "id": "abu-dhabi-uae__sir-bani-yas-desert-islands",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Sir Bani Yas / Desert Islands"
+   },
+   {
+    "id": "abu-dhabi-uae__yas-island",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Yas Island"
+   },
+   {
+    "id": "dubai-uae__dubai-creek-bur-dubai-deira-festival-city",
+    "parent_city_id": "dubai-uae",
+    "name": "Dubai Creek (Bur Dubai / Deira / Festival City)"
+   },
+   {
+    "id": "dubai-uae__dubai-harbour-jbr",
+    "parent_city_id": "dubai-uae",
+    "name": "Dubai Harbour / JBR"
+   },
+   {
+    "id": "dubai-uae__dubai-marina-bluewaters",
+    "parent_city_id": "dubai-uae",
+    "name": "Dubai Marina + Bluewaters"
+   },
+   {
+    "id": "dubai-uae__mina-rashid-bulgari-marina",
+    "parent_city_id": "dubai-uae",
+    "name": "Mina Rashid / Bulgari Marina"
+   },
+   {
+    "id": "dubai-uae__palm-jumeirah-crescent-inner",
+    "parent_city_id": "dubai-uae",
+    "name": "Palm Jumeirah (crescent + inner)"
+   },
+   {
+    "id": "dubai-uae__world-islands-heart-of-europe",
+    "parent_city_id": "dubai-uae",
+    "name": "World Islands / Heart of Europe"
+   },
+   {
+    "id": "fujairah-uae__fujairah-corniche-old-town",
+    "parent_city_id": "fujairah-uae",
+    "name": "Fujairah Corniche / Old Town"
+   },
+   {
+    "id": "fujairah-uae__murbah-dadna-northern-fujairah-coast",
+    "parent_city_id": "fujairah-uae",
+    "name": "Murbah / Dadna (northern Fujairah coast)"
+   },
+   {
+    "id": "ras-al-khaimah-uae__rak-corniche-old-town",
+    "parent_city_id": "ras-al-khaimah-uae",
+    "name": "RAK Corniche / Old Town"
+   },
+   {
+    "id": "sharjah-uae__khalid-lagoon-al-majaz-waterfront",
+    "parent_city_id": "sharjah-uae",
+    "name": "Khalid Lagoon / Al Majaz Waterfront"
+   },
+   {
+    "id": "sharjah-uae__sharjah-corniche-al-khan-lagoon",
+    "parent_city_id": "sharjah-uae",
+    "name": "Sharjah Corniche / Al Khan Lagoon"
+   },
+   {
+    "id": "sharjah-uae__sharjah-heritage-area-al-mareija",
+    "parent_city_id": "sharjah-uae",
+    "name": "Sharjah Heritage Area / Al Mareija"
+   }
+  ],
+  "drop": [
+   {
+    "id": "abu-dhabi-uae__al-dhafra-western-region-coastal-mugheirah-sila-marawah-marine-biosphere",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Al Dhafra / Western Region coastal (Mugheirah, Sila, Marawah Marine Biosphere)",
+    "reason": "four far-apart Western-Region places (80–270km) combined; pin wrongly sits in AD city — confidently wrong"
+   },
+   {
+    "id": "abu-dhabi-uae__dubai-dxb-corridor-endpoint",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Dubai (DXB) corridor endpoint",
+    "reason": "corridor endpoint; pin sits in Dubai (133km); belongs as a route edge"
+   },
+   {
+    "id": "abu-dhabi-uae__liwa-inland-desert-adjacency",
+    "parent_city_id": "abu-dhabi-uae",
+    "name": "Liwa / inland desert adjacency",
+    "reason": "non-maritime — inland desert; brief itself marks it N/A (not a water node)"
+   },
+   {
+    "id": "dubai-uae__abu-dhabi-corniche-saadiyat",
+    "parent_city_id": "dubai-uae",
+    "name": "Abu Dhabi Corniche / Saadiyat",
+    "reason": "wrong emirate (Abu Dhabi locale under Dubai); pin 95km off; duplicates AD Corniche+Saadiyat"
+   },
+   {
+    "id": "dubai-uae__ghantoot-yas-marina-mid-corridor",
+    "parent_city_id": "dubai-uae",
+    "name": "Ghantoot / Yas Marina (mid-corridor)",
+    "reason": "cross-emirate corridor waypoint (AD border); pin wrong inland; belongs as a route edge, not a Dubai locale"
+   },
+   {
+    "id": "dubai-uae__sharjah-ajman-rak-coastal-hop",
+    "parent_city_id": "dubai-uae",
+    "name": "Sharjah / Ajman / RAK coastal hop",
+    "reason": "vague 3-emirate combo; single pin lands 109km away near the Oman mountains"
+   },
+   {
+    "id": "dubai-uae__sir-bani-yas-desert-islands",
+    "parent_city_id": "dubai-uae",
+    "name": "Sir Bani Yas / Desert Islands",
+    "reason": "wrong emirate (Abu Dhabi, ~276km); duplicates AD Sir Bani Yas"
+   },
+   {
+    "id": "fujairah-uae__dubai-overland-130-km",
+    "parent_city_id": "fujairah-uae",
+    "name": "Dubai (overland 130 km)",
+    "reason": "corridor endpoint; Dubai locale under Fujairah (115km); belongs as a route edge"
+   },
+   {
+    "id": "fujairah-uae__khasab-musandam-oman-from-dibba",
+    "parent_city_id": "fujairah-uae",
+    "name": "Khasab (Musandam, Oman) — from Dibba",
+    "reason": "cross-border corridor endpoint (Oman); belongs as a route edge"
+   },
+   {
+    "id": "ras-al-khaimah-uae__abu-dhabi-corniche-saadiyat",
+    "parent_city_id": "ras-al-khaimah-uae",
+    "name": "Abu Dhabi (Corniche / Saadiyat)",
+    "reason": "corridor endpoint; AD locale under RAK (216km)"
+   },
+   {
+    "id": "ras-al-khaimah-uae__dubai-marina-harbour",
+    "parent_city_id": "ras-al-khaimah-uae",
+    "name": "Dubai (Marina / Harbour)",
+    "reason": "corridor endpoint; Dubai locale under RAK (109km)"
+   },
+   {
+    "id": "sharjah-uae__abu-dhabi-corniche",
+    "parent_city_id": "sharjah-uae",
+    "name": "Abu Dhabi (Corniche)",
+    "reason": "corridor endpoint; AD locale under Sharjah (143km)"
+   },
+   {
+    "id": "sharjah-uae__dubai-marina-harbour",
+    "parent_city_id": "sharjah-uae",
+    "name": "Dubai (Marina / Harbour)",
+    "reason": "corridor endpoint; Dubai locale under Sharjah (37km)"
+   },
+   {
+    "id": "sharjah-uae__rak-al-marjan-al-hamra",
+    "parent_city_id": "sharjah-uae",
+    "name": "RAK (Al Marjan / Al Hamra)",
+    "reason": "corridor endpoint; RAK locale under Sharjah (72km)"
+   }
+  ]
+ },
+ "poi_layer": {
+  "high_confidence_drops_by_city": {
+   "dubai-uae": 2,
+   "abu-dhabi-uae": 21,
+   "sharjah-uae": 73,
+   "ras-al-khaimah-uae": 64,
+   "fujairah-uae": 5
+  },
+  "high_confidence_drops_total": 165,
+  "drops": {
+   "dubai-uae": [
+    {
+     "id": "bp-a06253adc2",
+     "name": "Sharjah Aquarium Marine Transport Station",
+     "reason": "wrong-emirate identity (names sharjah: 'sharjah')"
+    },
+    {
+     "id": "bp-396ce9e8f1",
+     "name": "Sharjah Boat Slider Ramp",
+     "reason": "wrong-emirate identity (names sharjah: 'sharjah')"
+    }
+   ],
+   "abu-dhabi-uae": [
+    {
+     "id": "bp-933fd357b6",
+     "name": "Ushuaïa Dubai Harbour Experience",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-0104f351db",
+     "name": "Dubai Harbour • View Point",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-f483bacbc8",
+     "name": "The Captain's Club - Jumeirah Harbor",
+     "reason": "wrong-emirate identity (names dubai: 'jumeirah')"
+    },
+    {
+     "id": "bp-f7739dc8e3",
+     "name": "Bluewaters Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'bluewaters')"
+    },
+    {
+     "id": "bp-2b236303a1",
+     "name": "Dubai Canal Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-f857e2245e",
+     "name": "The Luxe Fleet - Dubai Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-75a22aed32",
+     "name": "Dubai Harbour Residences",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-e8dcfd6f0f",
+     "name": "Dubai Harbour Cruise Terminal",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-9527ef9bd0",
+     "name": "Jack Sparrow Cruise Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-c2c4dbbb18",
+     "name": "Dubai Harbour - Cruise Terminal A",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-bc454358b1",
+     "name": "Crowne Plaza Dubai Marina by IHG",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-dbf02f16ec",
+     "name": "Zaatar w Zeit - Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-967aafd150",
+     "name": "Saarangaa Bhojan Shala Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-5f5ffe02b1",
+     "name": "Dubai Offshore Sailing Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-ddfa095509",
+     "name": "Jet Ski Abu Dhabi Waves Marine Water Sports",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-7143ba76ae",
+     "name": "Dubai Harbour - Bay Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-033eb8ba6b",
+     "name": "Dubai Marina • West Bay",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-48545946be",
+     "name": "Dubai Marina Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-750b27f18b",
+     "name": "Dubai Harbour - Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-7fcbb94ade",
+     "name": "Jungle Bay Waterpark",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-13886421c4",
+     "name": "AIN Yachts Dubai harbour Dockmaster 1 Building",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    }
+   ],
+   "sharjah-uae": [
+    {
+     "id": "bp-242317621f",
+     "name": "Dibba Al Hisn marina",
+     "reason": "wrong-emirate identity (names fujairah: 'dibba')"
+    },
+    {
+     "id": "bp-fc79155f5a",
+     "name": "Ushuaïa Dubai Harbour Experience",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-76827b483e",
+     "name": "Dubai Old Souq Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-0cdf63678f",
+     "name": "Japanos, Creek Harbour - Ramen, Bento & Sushi Bar",
+     "reason": "wrong-emirate identity (names dubai: 'creek')"
+    },
+    {
+     "id": "bp-ae3d4c3638",
+     "name": "Al Ghubaiba Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al ghubaiba')"
+    },
+    {
+     "id": "bp-b36ae25dcc",
+     "name": "Dubai Ferry Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-b2913e4b3d",
+     "name": "Al Sabkha Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'al sabkha')"
+    },
+    {
+     "id": "bp-cf3148e6fc",
+     "name": "ALOE BAR, Emaar Beachfront, Dubai Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-7be023e6ae",
+     "name": "M/Y Stardom AA1- Dubai Harbour by Xclusive Yachts",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-d17336c277",
+     "name": "Baniyas Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'baniyas')"
+    },
+    {
+     "id": "bp-a58c691b23",
+     "name": "Harbour Views - Dubai Creek Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-77c7ae28b7",
+     "name": "Dubai Harbour • View Point",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-197a0ddc66",
+     "name": "Dubai Festival City Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3c658377bf",
+     "name": "Deira Old Souq Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'deira')"
+    },
+    {
+     "id": "bp-543dfdb3dc",
+     "name": "Al Fahidi Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'al fahidi')"
+    },
+    {
+     "id": "bp-40a5afcfe9",
+     "name": "Al Jaddaf Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al jaddaf')"
+    },
+    {
+     "id": "bp-a3a9ebdef3",
+     "name": "JUMP N FUN - Dubai Creek Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-324287825b",
+     "name": "The Captain's Club - Jumeirah Harbor",
+     "reason": "wrong-emirate identity (names dubai: 'jumeirah')"
+    },
+    {
+     "id": "bp-bd3e850be0",
+     "name": "Bluewaters Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'bluewaters')"
+    },
+    {
+     "id": "bp-ad78da1f3c",
+     "name": "Al Seef Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al seef')"
+    },
+    {
+     "id": "bp-2e27ae2ba6",
+     "name": "The Captain's Club - Dubai Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3eb94d7c74",
+     "name": "Dubai Canal Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-077c15daa5",
+     "name": "Ras Al Khaimah Harbour",
+     "reason": "wrong-emirate identity (names ras: 'ras al khaimah')"
+    },
+    {
+     "id": "bp-b66074851b",
+     "name": "Harbour Lights by Damac",
+     "reason": "wrong-emirate identity (names dubai: 'damac')"
+    },
+    {
+     "id": "bp-e20b87462b",
+     "name": "Port of Dibba",
+     "reason": "wrong-emirate identity (names fujairah: 'dibba')"
+    },
+    {
+     "id": "bp-a72d5ad9dc",
+     "name": "Lima",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-8cc017dac2",
+     "name": "Dubai Harbour Residences",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-f9b5317e8d",
+     "name": "Shinas",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-a5b08fe5cc",
+     "name": "Murbah sea port st—China harbour office for construction",
+     "reason": "wrong-emirate identity (names fujairah: 'murbah')"
+    },
+    {
+     "id": "bp-0f0df71c67",
+     "name": "Dhow Cruise Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-325b3faedb",
+     "name": "Dubai Harbour Cruise Terminal",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3ecb8896a2",
+     "name": "Jack Sparrow Cruise Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-2f1b82658e",
+     "name": "Dubai Harbour - Cruise Terminal A",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-7c8fff1c69",
+     "name": "Dhow Cruise Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-fdc6474b0e",
+     "name": "Dubai Creek Dhow Cruise with Buffet Dinner With Dinner",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-d96abb6dba",
+     "name": "Seawings Seaplane Tours - Dubai Creek, Dubai (Now operating from Jebel Ali)",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-0e210347eb",
+     "name": "D-Marin Al Seef Marina",
+     "reason": "wrong-emirate identity (names dubai: 'al seef')"
+    },
+    {
+     "id": "bp-c6710a26d0",
+     "name": "Marina Medical Center Dubai Marina Clinics",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-cbe1a0c906",
+     "name": "Dubai Offshore Sailing Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-28ba019449",
+     "name": "P&O Marinas - Mina Rashid Marina",
+     "reason": "wrong-emirate identity (names dubai: 'mina rashid')"
+    },
+    {
+     "id": "bp-c5eb4ad215",
+     "name": "D-Marin Marasi Bay Marina",
+     "reason": "wrong-emirate identity (names dubai: 'marasi')"
+    },
+    {
+     "id": "bp-121c81c020",
+     "name": "Seahawk Yacht Charter Rental Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-6e392a6e00",
+     "name": "Barry's Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-db26a87a23",
+     "name": "Dubai Creek Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-e1a497d134",
+     "name": "Dubai Islands Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-4ecc4da7a4",
+     "name": "Dubai Harbour - Bay Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-66bf31f96d",
+     "name": "Raksa (Rak Sailing Association)",
+     "reason": "wrong-emirate identity (names ras: 'rak')"
+    },
+    {
+     "id": "bp-bda50488d2",
+     "name": "Dubai island Marina Slipway",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-34f0e14bcb",
+     "name": "Zighy Marina",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-ad8f3ea64f",
+     "name": "Al Ali Yachts Rentals Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-ad420ca996",
+     "name": "Dubai Creek Golf & Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-118a85c512",
+     "name": "Dubai Marina Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-284ef9152e",
+     "name": "Royal Yacht Club of Ras Al Khaimah",
+     "reason": "wrong-emirate identity (names ras: 'ras al khaimah')"
+    },
+    {
+     "id": "bp-ddf88a3e9b",
+     "name": "Creek Marina Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'creek')"
+    },
+    {
+     "id": "bp-3a99d3db58",
+     "name": "Dubai Harbour - Yacht Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-483f9e4991",
+     "name": "Dubai Marina Yacht Club (rent a yacht in Dubai)",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-080ec86c78",
+     "name": "Centara Mirage Beach Resort Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-df01b0261d",
+     "name": "Le Méridien Mina Seyahi Beach Resort & Waterpark",
+     "reason": "wrong-emirate identity (names dubai: 'mina seyahi')"
+    },
+    {
+     "id": "bp-c29f45813e",
+     "name": "Dubai Marine Beach Resort & Spa",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-11117759b3",
+     "name": "The Westin Dubai Mina Seyahi Beach Resort & Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-d7f18c36e4",
+     "name": "Le Royal Meridien Beach Resort & Spa",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-d9e1fbafdd",
+     "name": "Sahara Beach Resort & Spa",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-6e08425b69",
+     "name": "FIVE LUXE JBR",
+     "reason": "wrong-emirate identity (names dubai: 'jbr')"
+    },
+    {
+     "id": "bp-04fe7015e4",
+     "name": "Fujairah International Marine Club",
+     "reason": "wrong-emirate identity (names fujairah: 'fujairah')"
+    },
+    {
+     "id": "bp-92389835ea",
+     "name": "DUBAI INTERNATIONAL MARINE CLUB",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-539c6ab97b",
+     "name": "The Croft",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-64ebce516c",
+     "name": "Jungle Bay Waterpark",
+     "reason": "junk keyword (not a boarding point)"
+    },
+    {
+     "id": "bp-22ecea7557",
+     "name": "Al Jaddaf Dry Docks",
+     "reason": "wrong-emirate identity (names dubai: 'al jaddaf')"
+    },
+    {
+     "id": "bp-0598e923bf",
+     "name": "Bur Dubai Marine Transport Station (On Demand Abra Service)",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-f0ca34d7c9",
+     "name": "Ras Al KHAIMAH INTERNATIONAL MARINE SPORTS CLUB",
+     "reason": "wrong-emirate identity (names ras: 'ras al khaimah')"
+    },
+    {
+     "id": "bp-5a8d366b44",
+     "name": "Dubai Design District Marine Transport Station - Information & Ticket Office",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-2e577d10cf",
+     "name": "Jumeirah",
+     "reason": "wrong-emirate identity (names dubai: 'jumeirah')"
+    },
+    {
+     "id": "bp-84c7e6cff8",
+     "name": "Jumeirah 3 Boat Launch Ramp / Slipway",
+     "reason": "wrong-emirate identity (names dubai: 'jumeirah')"
+    }
+   ],
+   "ras-al-khaimah-uae": [
+    {
+     "id": "bp-67c10e5131",
+     "name": "Ushuaïa Dubai Harbour Experience",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-4541337f6e",
+     "name": "Dubai Old Souq Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-5c718bcb04",
+     "name": "Japanos, Creek Harbour - Ramen, Bento & Sushi Bar",
+     "reason": "wrong-emirate identity (names dubai: 'creek')"
+    },
+    {
+     "id": "bp-6fd92de9b9",
+     "name": "Al Ghubaiba Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al ghubaiba')"
+    },
+    {
+     "id": "bp-52a2e28458",
+     "name": "Dubai Ferry Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-467f150697",
+     "name": "Al Sabkha Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'al sabkha')"
+    },
+    {
+     "id": "bp-93b7ff3666",
+     "name": "ALOE BAR, Emaar Beachfront, Dubai Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3c3d934259",
+     "name": "M/Y Stardom AA1- Dubai Harbour by Xclusive Yachts",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-6c6e1de88b",
+     "name": "Baniyas Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'baniyas')"
+    },
+    {
+     "id": "bp-76a165a841",
+     "name": "Harbour Views - Dubai Creek Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-f5f16b7286",
+     "name": "Dubai Harbour • View Point",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-06f97c9bd0",
+     "name": "Dubai Festival City Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-548f2fc0b7",
+     "name": "Deira Old Souq Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'deira')"
+    },
+    {
+     "id": "bp-bee4f6de11",
+     "name": "Al Fahidi Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'al fahidi')"
+    },
+    {
+     "id": "bp-17946b65f9",
+     "name": "Al Jaddaf Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al jaddaf')"
+    },
+    {
+     "id": "bp-374d87a52b",
+     "name": "JUMP N FUN - Dubai Creek Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-651712bf92",
+     "name": "Bluewaters Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'bluewaters')"
+    },
+    {
+     "id": "bp-f271e25bad",
+     "name": "Al Seef Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'al seef')"
+    },
+    {
+     "id": "bp-518b407a28",
+     "name": "Sharjah Aquarium Marine Transport Station",
+     "reason": "wrong-emirate identity (names sharjah: 'sharjah')"
+    },
+    {
+     "id": "bp-8ce109978e",
+     "name": "Dubai Canal Marine Transport Station 1",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3ad6e7e1d9",
+     "name": "Al Saadiyat New Ferry Terminal",
+     "reason": "wrong-emirate identity (names abu: 'saadiyat')"
+    },
+    {
+     "id": "bp-5af99ca384",
+     "name": "The Luxe Fleet - Dubai Harbour",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-1279557f2b",
+     "name": "Port of Dibba",
+     "reason": "wrong-emirate identity (names fujairah: 'dibba')"
+    },
+    {
+     "id": "bp-57f2cbba74",
+     "name": "Hamriyah Port Main Harbour",
+     "reason": "wrong-emirate identity (names sharjah: 'hamriyah')"
+    },
+    {
+     "id": "bp-f169293d20",
+     "name": "Lima",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-522cf7cf9f",
+     "name": "Dubai Harbour Residences",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-742bbd6493",
+     "name": "Business Bay Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'business bay')"
+    },
+    {
+     "id": "bp-afcada2a24",
+     "name": "Marasi Marine Transport Station",
+     "reason": "wrong-emirate identity (names dubai: 'marasi')"
+    },
+    {
+     "id": "bp-bc8029138c",
+     "name": "Al Aliah Island Jetty",
+     "reason": "wrong-emirate identity (names abu: 'al aliah')"
+    },
+    {
+     "id": "bp-76a3ae23a9",
+     "name": "Murbah sea port st—China harbour office for construction",
+     "reason": "wrong-emirate identity (names fujairah: 'murbah')"
+    },
+    {
+     "id": "bp-9405822421",
+     "name": "Dubai Harbour Cruise Terminal",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-4c83867660",
+     "name": "Jack Sparrow Cruise Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-84124dae3d",
+     "name": "Dubai Harbour - Cruise Terminal A",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-3301d83e19",
+     "name": "Abu Dhabi Cruise Terminal 2",
+     "reason": "wrong-emirate identity (names abu: 'abu dhabi')"
+    },
+    {
+     "id": "bp-33d4155d34",
+     "name": "Dubai Creek Dhow Cruise with Buffet Dinner With Dinner",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-32e2d588c4",
+     "name": "Yas Marina Abu Dhabi",
+     "reason": "wrong-emirate identity (names abu: 'abu dhabi')"
+    },
+    {
+     "id": "bp-7cdf2b1868",
+     "name": "D-Marin Al Seef Marina",
+     "reason": "wrong-emirate identity (names dubai: 'al seef')"
+    },
+    {
+     "id": "bp-ecdc1827f5",
+     "name": "Marsa Al Bateen Marina",
+     "reason": "wrong-emirate identity (names abu: 'al bateen')"
+    },
+    {
+     "id": "bp-9973b5cc63",
+     "name": "Marina Medical Center Dubai Marina Clinics",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-27fe3c3cb2",
+     "name": "Dubai Offshore Sailing Club",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-b2a195e98f",
+     "name": "Ishtar Yas Marina",
+     "reason": "wrong-emirate identity (names abu: 'yas')"
+    },
+    {
+     "id": "bp-60b8dbe2f4",
+     "name": "D-Marin Marasi Bay Marina",
+     "reason": "wrong-emirate identity (names dubai: 'marasi')"
+    },
+    {
+     "id": "bp-47f72db301",
+     "name": "Hidd Al Saadiyat Marina",
+     "reason": "wrong-emirate identity (names abu: 'saadiyat')"
+    },
+    {
+     "id": "bp-33376d4819",
+     "name": "Seahawk Yacht Charter Rental Dubai",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-c4ad546b57",
+     "name": "Barry's Dubai Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-507dc26e94",
+     "name": "Dibba Al-Hisn Marina - Sharjah",
+     "reason": "wrong-emirate identity (names sharjah: 'sharjah')"
+    },
+    {
+     "id": "bp-0111b87b7a",
+     "name": "Dubai Creek Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-8693435493",
+     "name": "InterContinental Abu Dhabi Marina",
+     "reason": "wrong-emirate identity (names abu: 'abu dhabi')"
+    },
+    {
+     "id": "bp-91f5cec791",
+     "name": "ADNEC Marina",
+     "reason": "wrong-emirate identity (names abu: 'adnec')"
+    },
+    {
+     "id": "bp-1047d2c4d1",
+     "name": "Al Raha Beach Marina",
+     "reason": "wrong-emirate identity (names abu: 'al raha')"
+    },
+    {
+     "id": "bp-82ca73071d",
+     "name": "Abu Dhabi Marine Tours and watersports Services",
+     "reason": "wrong-emirate identity (names abu: 'abu dhabi')"
+    },
+    {
+     "id": "bp-bb1b9d0844",
+     "name": "Al Qana Marina",
+     "reason": "wrong-emirate identity (names abu: 'al qana')"
+    },
+    {
+     "id": "bp-53bb3538dc",
+     "name": "The Captain's Club - Emirates Palace Marina",
+     "reason": "wrong-emirate identity (names abu: 'emirates palace')"
+    },
+    {
+     "id": "bp-051c982570",
+     "name": "Dubai Islands Marina",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-9e656f24b7",
+     "name": "Hudayriat Marina",
+     "reason": "wrong-emirate identity (names abu: 'hudayriat')"
+    },
+    {
+     "id": "bp-002561c9bc",
+     "name": "Rabdan Marina",
+     "reason": "wrong-emirate identity (names abu: 'rabdan')"
+    },
+    {
+     "id": "bp-fd7cd3a574",
+     "name": "Dubai island Marina Slipway",
+     "reason": "wrong-emirate identity (names dubai: 'dubai')"
+    },
+    {
+     "id": "bp-7960d60838",
+     "name": "Zighy Marina",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-aee524520c",
+     "name": "Gulf Craft UAQ Marina (shipyard-partner pointer)",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    },
+    {
+     "id": "bp-fbc5b4a106",
+     "name": "Fujairah Marina (east-coast cross-emirate pointer)",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    },
+    {
+     "id": "bp-9e0c631268",
+     "name": "Greater Tunb (Iranian-claimed) — line-of-sight only",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    },
+    {
+     "id": "bp-a7949e890b",
+     "name": "Lesser Tunb (Iranian-claimed) — line-of-sight only",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    },
+    {
+     "id": "bp-0a4ebe1ab3",
+     "name": "Dubai Harbour (cross-emirate pointer)",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    },
+    {
+     "id": "bp-59c3b83cd8",
+     "name": "Abu Dhabi Corniche (cross-emirate pointer)",
+     "reason": "explicit cross-emirate/pointer/corridor artifact"
+    }
+   ],
+   "fujairah-uae": [
+    {
+     "id": "bp-82af5d5862",
+     "name": "Khorfakkan Corniche / Port (Sharjah enclave)",
+     "reason": "wrong-emirate identity (names sharjah: 'sharjah')"
+    },
+    {
+     "id": "bp-bf1c34f33d",
+     "name": "Ras Al Khaimah Harbour",
+     "reason": "wrong-emirate identity (names ras: 'ras al khaimah')"
+    },
+    {
+     "id": "bp-d66c20d32e",
+     "name": "Lima",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-e735a28aa1",
+     "name": "Shinas",
+     "reason": "foreign-country (oman) mis-tag"
+    },
+    {
+     "id": "bp-08b9b97bec",
+     "name": "Zighy Marina",
+     "reason": "foreign-country (oman) mis-tag"
+    }
+   ]
+  },
+  "residual_note": "Remaining mis-placed POIs that carry NO emirate token (e.g. \"Slipway\",\"MSC\",\"Container Terminal 2\",\"Park Island\",\"Classy.Boat\",\"China harbour project\") are NOT in this ledger. Grok finishes them via the water-adjacency + nearest-city gazetteer gate: any POI >X km from its parent-city waterfront with no in-emirate gazetteer match is dropped or re-tagged. 0 silent drops — everything lands in keep, retag, or drop-with-reason."
+ }
+}
