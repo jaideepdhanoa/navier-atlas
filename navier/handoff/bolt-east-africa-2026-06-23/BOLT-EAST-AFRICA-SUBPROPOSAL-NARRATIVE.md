@@ -59,11 +59,15 @@ and a chronically congested channel ferry. This is a natural, reusable coastal-c
 | Mombasa ↔ Kilifi | 30 | N30 | Coastal hop | |
 | Mombasa ↔ Malindi/Watamu | ~60 | N30 | Coastal hop | Borderline-OK |
 | Malindi ↔ Lamu | ~120 | **Quanta-LR** (amber) | Roadmap | Range-gated long leg |
-| Mombasa ↔ Pemba | ~54 | N30 | **Cross-border roadmap** | KE↔TZ clearance required |
+| Mombasa ↔ Pemba | ~54 | N30 (Quanta-LR for reserve headroom) | **Marquee cross-border** | First-class KE↔TZ hop; ICQ handshake is the live gate |
 
-All within-70nm legs are **N30/Pioneer II**; the Malindi↔Lamu long leg is **Quanta-LR roadmap**; the
-cross-border Mombasa↔Pemba leg is geometrically in-range but **roadmap-only** pending customs/maritime
-clearance. Borderline (~65–72 nm) legs are flagged for exact re-gate once Grok seals coordinates.
+All within-70nm legs are **N30/Pioneer II**; the Malindi↔Lamu long leg is **Quanta-LR roadmap**.
+The cross-border **Mombasa↔Pemba** leg is a **first-class marquee corridor** — modeled on the same footing as
+**Dubai↔Doha (GCC)** and **Phuket↔Langkawi / Phu Quoc↔Sihanoukville (SE Asia)**, not a deferred footnote. It is
+geometrically in-range on Pioneer II (~54nm, comparable to the in-range cross-border Bodrum↔Kos); the gate stack is
+range + ICQ/customs, range is satisfied, and the **KE↔TZ ICQ (immigration/customs/quarantine) + maritime clearance
+handshake** is the live human-side gate. There is no direct Mombasa↔Pemba fast ferry today — it is white space.
+Borderline (~65–72 nm) legs are flagged for exact re-gate once Grok seals coordinates.
 
 ## 5. Product fit
 

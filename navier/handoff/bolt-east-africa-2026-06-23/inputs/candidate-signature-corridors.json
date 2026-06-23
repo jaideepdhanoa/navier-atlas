@@ -102,13 +102,17 @@
     {
       "id_proposed": "mombasa-pemba",
       "from": "mombasa", "to": "pemba",
-      "approx_nm": 54, "vessel_gate": "Pioneer II (N30)", "tier": "cross_border_roadmap",
-      "thesis": "Kenya<->Tanzania cross-border island hop. Geometrically in-range, but CROSS-BORDER (customs/immigration/maritime clearance). Roadmap-only; flag heavily.",
-      "demand_anchor": {"basis": "regional cross-border premium travel"},
-      "fare_anchor_usd": {"navier_premium_seat_assumption": "90-130"},
-      "confidence": "low",
-      "flags": ["cross_border_KE_TZ", "regulatory_clearance_required", "roadmap_only"]
+      "approx_nm": 54, "vessel_gate": "Pioneer II (N30); Quanta-LR for reserve headroom / two-leg routing", "tier": "MARQUEE_cross_border",
+      "cross_border": true,
+      "thesis": "First-class KE<->TZ cross-border island hop, authored on the same pattern as Dubai<->Doha (GCC) and Phuket<->Langkawi / Phu Quoc<->Sihanoukville (SE Asia) — a real marquee wedge, NOT a deferred footnote. Geometrically in-range on Pioneer II (~54nm, comparable to in-range cross-border Bodrum<->Kos). Gate stack = range + ICQ/customs: range is satisfied; the live gate is the human-side KE<->TZ ICQ (immigration/customs/quarantine) + maritime clearance handshake. Connects the Kenyan coast premium pool to Pemba's dive/eco-lux market with no direct ferry today (white space).",
+      "gate_stack": {"range_gate": "satisfied on Pioneer II (~54nm, <=70nm); Quanta-LR available for reserve comfort", "pedestal_concession_gate": "none required (diesel-capable refuel removes host-side shore-power dependency on the TZ side)", "human_side_gate": "KE<->TZ ICQ handshake + maritime cross-border clearance; first KE<->TZ instance in the corridor catalogue", "incumbent_gate": "no direct Mombasa<->Pemba fast-ferry incumbent today (white space)"},
+      "catalogue_pattern_ref": ["dubai-doha (GCC)", "phuket-langkawi (SEA TH<->MY)", "phu-quoc-sihanoukville (SEA VN<->KH, ~70nm)", "bodrum-kos (Med TR<->GR, in-range cross-border)"],
+      "demand_anchor": {"basis": "cross-border premium travel: Kenyan coast (Mombasa/Diani) inbound pool + Pemba dive/eco-lux arrivals; addressable = premium slice today routed via Zanzibar/air with no direct sea option"},
+      "fare_anchor_usd": {"navier_premium_seat_assumption": "90-130", "note": "cross-border premium tier, consistent with GCC/SEA cross-border fare anchors"},
+      "confidence": "medium",
+      "flags": ["cross_border_KE_TZ", "ICQ_handshake_required", "first_KE_TZ_catalogue_instance"],
+      "seal_note": "Seal as a real cross-border corridor (geometry + render), same treatment as Dubai<->Doha / Phu Quoc<->Sihanoukville. Author the cross-border row in BOTH city files (mombasa, pemba) with explicit Pioneer-status / Quanta-LR-status / human-side ICQ-gate columns per the cross-border wedge catalogue authoring discipline. Re-gate exact great-circle nm on sealed BP coords."
     }
   ],
-  "seal_instructions": "Grok: build BP<->BP geometry only between sealed, geocoded, water-adjacency-passing BPs; apply water/land-crossing gate (no land-crossings); re-gate borderline legs on exact great-circle; keep cross-border + range-gated legs visibly aspirational; null any leg whose endpoints fail to seal."
+  "seal_instructions": "Grok: build BP<->BP geometry only between sealed, geocoded, water-adjacency-passing BPs; apply water/land-crossing gate (no land-crossings); re-gate borderline legs on exact great-circle; null any leg whose endpoints fail to seal. NOTE: mombasa-pemba is a FIRST-CLASS cross-border corridor (tier MARQUEE_cross_border) — seal it as real geometry on the same footing as Dubai<->Doha / Phu Quoc<->Sihanoukville, with the KE<->TZ ICQ handshake noted as the human-side gate (not as a reason to leave the corridor aspirational). Quanta-LR-only roadmap legs (Malindi<->Lamu and other >70nm legs) remain visibly aspirational/amber."
 }

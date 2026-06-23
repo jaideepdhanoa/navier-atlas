@@ -24,8 +24,12 @@ standalone in PR #83). Both worlds must catch up: the **render graph** (your lan
 2. **Build corridor geometry:** BP↔BP routes only between sealed, water-adjacency-passing BPs; **no
    land-crossings**; every surviving BP carries a source id.
 3. **Re-gate borderline legs on exact great-circle:** Dar↔Mafia and Stone Town↔Mafia (~68–70 nm) — if
-   >70 nm, move to Quanta-LR. Keep Malindi↔Lamu on **Quanta-LR (amber roadmap)** and keep the cross-border
-   **Mombasa↔Pemba (KE↔TZ)** leg **visibly aspirational/roadmap** (regulatory clearance required).
+   >70 nm, move to Quanta-LR. Keep Malindi↔Lamu on **Quanta-LR (amber roadmap)**. Seal the cross-border
+   **Mombasa↔Pemba (KE↔TZ)** leg as a **FIRST-CLASS marquee cross-border corridor** — real geometry + render,
+   same footing as **Dubai↔Doha** / **Phu Quoc↔Sihanoukville** — NOT visibly aspirational. It is in-range on
+   Pioneer II (~54nm); the **KE↔TZ ICQ handshake** is the human-side gate (note it, don't down-rank the corridor).
+   Author the cross-border row in BOTH city files (mombasa, pemba) with explicit Pioneer-status / Quanta-LR-status /
+   human-side ICQ-gate columns per the cross-border wedge catalogue authoring discipline.
 4. **Country tags:** tag Kenya + Tanzania corridors with authoritative country tags; preserve cross-partner
    overlap (this cluster is reusable for Uber/Yango).
 5. **Stand up the partner view:** add a `bolt-east-africa` scope to Bolt's story `scope_city_ids` (derive by
