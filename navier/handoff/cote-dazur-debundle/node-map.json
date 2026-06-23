@@ -1,0 +1,43 @@
+{
+  "handoff": "cote-dazur-debundle",
+  "date": "2026-06-23",
+  "owner_request": "Jaideep — de-bundle Côte d'Azur into city nodes (all four), fold Monaco into the cluster, represent in Bolt sub-proposal.",
+  "two_worlds_note": "Tasklet owns these node/narrative definitions. Grok owns the deterministic seal: re-key existing sealed Côte d'Azur POIs/BPs to the new node ids, rebuild the route graph, reseal to next gold. No net-new unsourced geometry — re-key existing points only; if a node has zero existing POIs, flag aspirational rather than invent.",
+  "cluster_parent": "cote-dazur-france",
+  "nodes_minted": [
+    {"node_id": "nice-france", "region": "europe-med", "parent_cluster": "cote-dazur-france", "anchor": "Port Lympia (Port of Nice)", "posture": "P0 — gateway / network anchor", "brief": "briefs/nice-france.md"},
+    {"node_id": "cannes-france", "region": "europe-med", "parent_cluster": "cote-dazur-france", "anchor": "Vieux Port de Cannes (secondary: Port Pierre Canto)", "posture": "P0 — event-surge node", "brief": "briefs/cannes-france.md"},
+    {"node_id": "antibes-france", "region": "europe-med", "parent_cluster": "cote-dazur-france", "anchor": "Port Vauban, Antibes (incl. IYCA / Quai des Milliardaires)", "posture": "P0 — superyacht capital", "brief": "briefs/antibes-france.md"},
+    {"node_id": "saint-tropez-france", "region": "europe-med", "parent_cluster": "cote-dazur-france", "anchor": "Port de Saint-Tropez", "posture": "P0 — seasonal-peak node", "brief": "briefs/saint-tropez-france.md"}
+  ],
+  "node_existing_folded": [
+    {"node_id": "monaco-monaco", "action": "keep as own node; tag as member of cote-dazur-france cluster family for network + partner-scope purposes", "brief": "monaco-monaco.md (unchanged)"}
+  ],
+  "poi_rekey_rule": {
+    "instruction": "Re-key each currently-sealed POI/BP under parent_city_id=cote-dazur-france to exactly one of the de-bundled nodes by ID/label match. Points that do not belong to a minted node stay under the cote-dazur-france cluster catch-all. 0 silent drops.",
+    "label_to_node": {
+      "Nice": "nice-france",
+      "Nice Airport / Nice Côte d'Azur Airport": "nice-france",
+      "Port Lympia": "nice-france",
+      "Cannes": "cannes-france",
+      "Vieux Port (Cannes)": "cannes-france",
+      "Port Pierre Canto / Port Canto": "cannes-france",
+      "Île Sainte-Marguerite / Îles de Lérins": "cannes-france",
+      "Antibes": "antibes-france",
+      "Port Vauban": "antibes-france",
+      "Quai des Milliardaires / IYCA": "antibes-france",
+      "Saint-Tropez / St-Tropez": "saint-tropez-france",
+      "Port de Saint-Tropez": "saint-tropez-france",
+      "Pampelonne": "saint-tropez-france",
+      "Monaco / Port Hercule / Port de Fontvieille": "monaco-monaco"
+    },
+    "stays_cluster_catchall": ["Menton", "Villefranche-sur-Mer", "Sanremo (Italy)", "Portofino (Italy)"]
+  },
+  "partner_view": {
+    "partner": "bolt",
+    "subproposal_id": "bolt-france-riviera",
+    "anchor_cities": ["cote-dazur-france", "nice-france", "monaco-monaco", "antibes-france", "cannes-france", "saint-tropez-france"],
+    "action": "Derive Bolt story scope_city_ids by ID-matching anchor_cities; reseal Bolt partner JSON so the Côte d'Azur cluster + the five nodes render in the Bolt view. Source = bolt-france-riviera.subproposal.json (this package).",
+    "note": "Existing tracker item flags 'only Monaco still needs minting for Bolt' — this package supplies Monaco-in-cluster + the four new nodes."
+  }
+}
