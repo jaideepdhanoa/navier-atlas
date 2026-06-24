@@ -1,4 +1,4 @@
-# GROK SPEC — Ocean Whisperer: rescope greenfield factor 4.9 → 3.0 (captive partner)
+# GROK SPEC — Ocean Whisperer: greenfield 4.9 → 3.0 + journey multiple 3.0 → 5.0 (captive partner)
 
 **Owner:** Grok (deterministic model-to-deck sealing lane)
 **Author:** Tasklet (handoff)
@@ -10,7 +10,9 @@
 
 ## 1. Decision
 
-The greenfield-corridor width factor for **Ocean Whisperer** changes from **4.9× → 3.0×**.
+Two OW model parameters change:
+- Greenfield-corridor width factor: **4.9× → 3.0×**
+- Whole-journey GMV multiple: **3.0× → 5.0×**
 
 **Why:** the 4.9× factor is derived from a **Grab national super-app census** (sourced vs greenfield
 corridor counts). OW is a **captive single-island resort mesh** (Curaçao + sister-island lanes), not a
@@ -26,17 +28,19 @@ that structure — it only changes the value of the multiplier.
 
 **Changes (Grok seals these):**
 - OW greenfield factor `4.9 → 3.0` in the OW model parameter block, and everything downstream that the
-  model recomputes from it: SAM, the marine-mobility TAM rung, and the whole-journey GMV rung.
+  model recomputes from it: SAM and the marine-mobility TAM rung.
+- OW whole-journey GMV multiple `3.0 → 5.0`, which recomputes the journey-GMV rung.
 - The **Atlas proposal page** numbers for OW.
 - The **underlying source JSONs** for OW (economics values sidecar, economics binding, partner JSON).
 
 **Does NOT change (leave alone):**
 - **SOM stays $7.7M** — the SOM floor is *before* greenfield (sourced corridors, today), so it is
   unaffected by the width factor.
+- **SAM and TAM** depend only on greenfield (not the journey multiple), so they move with gf=3.0 only.
 - **Capture rate stays as the model has it (45.55%).** The separate "OW should be 55% captive-style"
   item is **NOT** part of this change — do not fold it in. (Still an open reconciliation item; if/when
   it lands it shifts SOM and everything above it again, as a distinct decision.)
-- **Induced demand (1.8×) and journey-GMV multiple (3.0×) are unchanged.**
+- **Induced demand (1.8×) is unchanged.**
 - **The live OW slides** — Jaideep already edited these. Per standing rule, do **not** rebuild or
   full-replace the live deck. Bring the *source/JSONs* into parity with the already-correct live slides.
 
@@ -44,16 +48,21 @@ that structure — it only changes the value of the multiplier.
 
 ## 3. The ladder, before vs after (mid case — for parity verification)
 
-Pool `M_today_transport_spend_yr` = **$16,964,015**; capture **0.4555**; induced **1.8**; journey mult **3.0**.
+Pool `M_today_transport_spend_yr` = **$16,964,015**; capture **0.4555**; induced **1.8**.
+OLD params: gf **4.9**, journey mult **3.0**. NEW params: gf **3.0**, journey mult **5.0**.
 
-| Rung | Formula | OLD (gf 4.9) | NEW (gf 3.0) |
+| Rung | Formula | OLD (gf 4.9, jm 3.0) | NEW (gf 3.0, jm 5.0) |
 |---|---|---|---|
 | **SOM** — Navier fare, sourced lanes, today | `pool × capture` | **$7.7M** | **$7.7M** (unchanged) |
 | **SAM** — Navier fare, full network, mature | `SOM × gf × induced` | $68.2M | **$41.7M** |
 | **TAM** — whole sea-transfer market, full network | `pool × gf × induced` | $149.6M | **$91.6M** |
-| **Journey GMV** — whole island journey | `TAM × 3.0` | $448.9M | **$274.8M** |
+| **Journey GMV** — whole island journey | `TAM × jm` | $448.9M | **$458.0M** |
 
-Exact NEW values to seal (mid): SOM `7,727,109` · SAM `41,726,388` · TAM `91,605,681` · GMV `274,817,043`.
+Exact NEW values to seal (mid): SOM `7,727,109` · SAM `41,726,388` · TAM `91,605,681` · GMV `458,028,405`.
+
+Note: GMV lands near its old value (`$458.0M` vs `$448.9M`) because the smaller TAM (gf 3.0) is offset
+by the larger journey multiple (5.0). SAM and TAM, which the journey multiple does not touch, drop as
+shown.
 
 **Greenfield is applied once.** (For the record: the old ladder was *not* double-counting 4.9 — the
 SOM→TAM jump of ~19× was `(1/capture 2.2) × (gf 4.9) × (induced 1.8)`. With gf=3.0 the jump becomes
@@ -75,8 +84,8 @@ public numbers in §3 are the mid case regardless of how the band is set.
 
 Read the model output as source of truth; do not hand-type rung values into prose.
 
-- `finance/recal/growth-ocean-whisperer.json` — `parameters_used.greenfield_corridor_factor` and the
-  recomputed `grounded` / `estimated_total` rung blocks.
+- `finance/recal/growth-ocean-whisperer.json` — `parameters_used.greenfield_corridor_factor` (→3.0) and
+  the whole-journey GMV multiple (→5.0), plus the recomputed `grounded` / `estimated_total` rung blocks.
 - `finance/recal/agg-ocean-whisperer.json` — recomputed aggregates.
 - `deck-studio/decks/ocean-whisperer/deck-economics-values-*.json` — `slide10_tam.rungs[].value`,
   `slide3_kpi` cards.
