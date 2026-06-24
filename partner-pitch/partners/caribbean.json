@@ -5,7 +5,7 @@
   "category": "destination_region",
   "region": "caribbean",
   "layout": "single",
-  "_rename_note": "Renamed from 'Caribbean Mobility Partner × Navier' to 'Caribbean × Navier' (Jaideep 24-Jun). GENERIC Caribbean Navier network proposal — NOT an aggregator-led pitch. Structural twin of french-polynesia.json. Reconcile/retire the old lumped 'caribbean-mobility' market + its single 'aruba-curacao-bonaire' node into the 3 sealed island nodes (shared network, never copied).",
+  "_rename_note": "Renamed from 'Caribbean Mobility Partner × Navier' to 'Caribbean × Navier' (24-Jun decision). GENERIC Caribbean Navier network proposal — NOT an aggregator-led pitch. Structural twin of french-polynesia.json. Reconcile/retire the old lumped 'caribbean-mobility' market + its single 'aruba-curacao-bonaire' node into the 3 sealed island nodes (shared network, never copied).",
   "_economics_status": "pending",
   "_economics_note": "growth_case below is a CASCADE-INPUT STUB, NOT hand-typed numbers. Grok seals geometry (3 island nodes + BPs + routes) FIRST; then the economics cascade (aggregate→growth→splice→sheet→tracker) fills the real rungs at capture 0.55 / $900K commercial tier / broad-footprint RISING ladder (NOT FP's flat treatment). Then economics_url + sidecar bind against the new gold.",
   "partner_context": {
@@ -26,64 +26,78 @@
       "to": "Bonaire (Kralendijk)",
       "today": "A costly 19-seat turboprop hop or a slow ferry.",
       "with_navier": "A silent zero-emission Pioneer II inter-island run over the reef, berth to berth.",
-      "distance_nm": 38,
+      "distance_nm": 33.3,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "curacao-curacao__spanish-water-caracasbaai",
       "to_node_id": "bonaire-bonaire__kralendijk-town-pier",
       "route_id": null,
-      "_link_status": "PENDING_SEAL",
-      "display": "text_only",
+      "_link_status": "unlinked-no-route",
       "economics_status": "economics_pending",
-      "render": "solid"
+      "render": "solid",
+      "route_ids": [
+        "rn-0f8e77cfef46"
+      ],
+      "_link_source": "grok/abc_islands"
     },
     {
       "from": "Kralendijk (Bonaire)",
       "to": "Klein Bonaire (National Marine Park)",
       "today": "A diesel dive-boat into a zero-wake protected zone.",
       "with_navier": "A silent, zero-wake foiling dive transfer — purpose-built for the marine park.",
-      "distance_nm": 2,
+      "distance_nm": 0.8,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "bonaire-bonaire__kralendijk-town-pier",
       "to_node_id": "bonaire-bonaire__klein-bonaire-dive-transfer",
-      "route_id": null,
-      "_link_status": "PENDING_SEAL",
-      "display": "text_only",
+      "route_id": "rn-f23a5af76773",
+      "_link_status": "linked-grok-node",
       "economics_status": "economics_pending",
-      "render": "solid"
+      "render": "solid",
+      "route_ids": [
+        "rn-f23a5af76773"
+      ],
+      "_link_source": "grok/relink_partner_journeys/node",
+      "_link_kind": "corridor-label"
     },
     {
       "from": "Oranjestad Cruise Terminal (Aruba)",
       "to": "Palm Beach resort strip (Aruba)",
       "today": "A diesel taxi/shuttle through Oranjestad traffic.",
       "with_navier": "A direct silent foiling shore transfer from pier to resort beach.",
-      "distance_nm": 6,
+      "distance_nm": 3.4,
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "aruba-aruba__oranjestad-cruise-terminal",
       "to_node_id": "aruba-aruba__palm-beach-resort-strip",
-      "route_id": null,
-      "_link_status": "PENDING_SEAL",
-      "display": "text_only",
+      "route_id": "rn-7839c5ad6d42",
+      "_link_status": "linked-grok-node",
       "economics_status": "economics_pending",
-      "render": "solid"
+      "render": "solid",
+      "route_ids": [
+        "rn-7839c5ad6d42"
+      ],
+      "_link_source": "grok/relink_partner_journeys/node",
+      "_link_kind": "corridor-label"
     },
     {
       "from": "Aruba (Oranjestad)",
       "to": "Curaçao (Willemstad)",
       "today": "A daily 19-seat turboprop; no sea link.",
       "with_navier": "An aspirational Quanta-LR hybrid crossing — roadmap, never faked on a 70nm boat.",
-      "distance_nm": 70,
+      "distance_nm": 74.7,
       "platform": "Quanta-LR",
       "archetype": "tourism",
       "from_node_id": "aruba-aruba__oranjestad-renaissance-marina",
       "to_node_id": "curacao-curacao__spanish-water-caracasbaai",
       "route_id": null,
-      "_link_status": "PENDING_SEAL",
-      "display": "text_only",
+      "_link_status": "unlinked-no-route",
       "economics_status": "roadmap_excluded",
-      "render": "roadmap-amber-dashed"
+      "render": "roadmap-amber-dashed",
+      "route_ids": [
+        "rn-e96930f83c0f"
+      ],
+      "_link_source": "grok/abc_islands"
     }
   ],
   "differentiation": {
@@ -139,39 +153,102 @@
       "n": 1,
       "label": "Phase 1 — the Curaçao hub + intra-island transfers",
       "boats": 8,
-      "cities": ["curacao-curacao"],
+      "cities": [
+        "curacao-curacao"
+      ],
       "route_scope": "intra",
       "narrative": "Launch on the operational hub — Curaçao — with intra-island cruise/airport/resort transfers (Willemstad, Hato, Spanish Water/Jan Thiel) where cruise and stayover demand is densest and the protected leeward water is calm year-round.",
       "timeline": "2027 H2",
       "rationale": "Start where the demand is densest and the water is most protected: Curaçao's deep-water Spanish Water marina as the operational hub, feeding the cruise pier and resort cluster.",
-      "featured_routes": [],
-      "use_cases": ["cruise transfer", "airport transfer", "resort transfer"],
+      "featured_routes": [
+        {
+          "label": "Kralendijk (Bonaire) ↔ Klein Bonaire (National Marine Park)",
+          "from_node_id": "bonaire-bonaire__kralendijk-town-pier",
+          "to_node_id": "bonaire-bonaire__klein-bonaire-dive-transfer",
+          "distance_nm": 0.8,
+          "platform": "Pioneer II",
+          "route_id": "rn-f23a5af76773",
+          "_link_kind": "backfill-from-journey",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/backfill_phase_featured_routes",
+          "economics_status": "economics_pending",
+          "route_ids": [
+            "rn-f23a5af76773"
+          ]
+        }
+      ],
+      "use_cases": [
+        "cruise transfer",
+        "airport transfer",
+        "resort transfer"
+      ],
       "fleet_confidence": "roadmap"
     },
     {
       "n": 2,
       "label": "Phase 2 — the Curaçao↔Bonaire spine + Bonaire dive/marine-park network",
       "boats": 20,
-      "cities": ["curacao-curacao", "bonaire-bonaire"],
+      "cities": [
+        "curacao-curacao",
+        "bonaire-bonaire"
+      ],
       "route_scope": "inter",
       "narrative": "Open the grounded inter-island spine — Curaçao↔Bonaire (~38nm Pioneer II) — and the Bonaire dive/marine-park transfers (Kralendijk, Klein Bonaire, Harbour Village), consolidating the live turboprop market and the zero-wake dive pool into one silent network.",
       "timeline": "2028",
       "rationale": "The Curaçao↔Bonaire turboprop market is already paid and high-frequency; Bonaire's marine park is the textbook zero-wake showcase.",
-      "featured_routes": [],
-      "use_cases": ["inter-island transfer", "dive transfer", "cruise transfer"],
+      "featured_routes": [
+        {
+          "label": "Oranjestad Cruise Terminal (Aruba) ↔ Palm Beach resort strip (Aruba)",
+          "from_node_id": "aruba-aruba__oranjestad-cruise-terminal",
+          "to_node_id": "aruba-aruba__palm-beach-resort-strip",
+          "distance_nm": 3.4,
+          "platform": "Pioneer II",
+          "route_id": "rn-7839c5ad6d42",
+          "_link_kind": "backfill-from-journey",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/backfill_phase_featured_routes",
+          "economics_status": "economics_pending",
+          "route_ids": [
+            "rn-7839c5ad6d42"
+          ]
+        }
+      ],
+      "use_cases": [
+        "inter-island transfer",
+        "dive transfer",
+        "cruise transfer"
+      ],
       "fleet_confidence": "roadmap"
     },
     {
       "n": 3,
       "label": "Phase 3 — the full ABC trio + Aruba reach (Quanta-LR)",
       "boats": 35,
-      "cities": ["aruba-aruba", "curacao-curacao", "bonaire-bonaire"],
+      "cities": [
+        "aruba-aruba",
+        "curacao-curacao",
+        "bonaire-bonaire"
+      ],
       "route_scope": "inter",
       "narrative": "Add Aruba's cruise/resort intra-island transfers and the aspirational Quanta-LR reach — Aruba↔Curaçao (~70nm) and Aruba↔Bonaire (~95-100nm) — completing the trio. Long legs are flagged amber-dashed (roadmap) and never faked on a 70nm boat.",
       "timeline": "2029+",
       "rationale": "Extend the proven Curaçao-Bonaire network west to Aruba: the hybrid opens the cross-island links a 70nm Pioneer II cannot ground.",
-      "featured_routes": [],
-      "use_cases": ["cross-island day-run", "cruise transfer", "resort hopping"],
+      "featured_routes": [
+        {
+          "label": "cross-island day-run",
+          "display": "text_only",
+          "_link_status": "aspirational-no-built-route",
+          "_link_kind": "aspirational-phase-chip",
+          "_link_source": "grok/mark_unlinked_aspirational",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
+        }
+      ],
+      "use_cases": [
+        "cross-island day-run",
+        "cruise transfer",
+        "resort hopping"
+      ],
       "fleet_confidence": "roadmap"
     }
   ],
@@ -191,9 +268,15 @@
   },
   "end_state": {
     "headline": "The ABC trio, re-platformed as one year-round silent foiling network — Curaçao hub to Bonaire spine to Aruba reach.",
-    "addressable_regions": ["caribbean"],
+    "addressable_regions": [
+      "caribbean"
+    ],
     "addressable_market_count": 3,
-    "end_state_cities": ["aruba-aruba", "curacao-curacao", "bonaire-bonaire"],
+    "end_state_cities": [
+      "aruba-aruba",
+      "curacao-curacao",
+      "bonaire-bonaire"
+    ],
     "steady_state": {
       "total_markets": "3 island nodes (Aruba · Curaçao · Bonaire)",
       "total_corridors": "PENDING_SEAL — grounded Curaçao-Bonaire + intra-island; Aruba legs Quanta-LR roadmap",
@@ -215,21 +298,70 @@
       "ladder_shape": "rising (broad-footprint; SOM floor < SOM network < SAM < marine TAM < journey GMV < platform rev)",
       "greenfield_mode": "on (labelled global template band 3.44/4.9/6.36; no peer census)",
       "sanity_gate": "journey-GMV TAM must not exceed ABC's whole tourism economy",
-      "rung_ids_expected": ["som_floor", "som_network", "sam_network", "tam_transfer", "journey_gmv", "platform_rev"]
+      "rung_ids_expected": [
+        "som_floor",
+        "som_network",
+        "sam_network",
+        "tam_transfer",
+        "journey_gmv",
+        "platform_rev"
+      ]
     },
     "revenue_potential": {
       "headline": "PENDING CASCADE — the floor and the prize, every rung traceable to grounded sourced demand once geometry seals.",
       "rungs": []
     },
-    "phase_economics": {"headline": "PENDING CASCADE", "horizons": []},
+    "phase_economics": {
+      "headline": "PENDING CASCADE",
+      "horizons": []
+    },
     "vessel_sizing": {
       "headline": "Right vessel for every leg — corridor range picks the hull.",
       "classes": [
-        {"class": "N30 Pioneer II", "pax": 8, "range_nm": 70, "status": "commercial now", "role": "Leeward + inter-island corridors ≤70nm. The grounded workhorse.", "render": "solid"},
-        {"class": "N35 Shuttle", "pax": "12-15", "range_nm": 70, "status": "2027", "role": "Doubles throughput per hull on dense cruise/resort legs; roughly halves payback.", "render": "solid"},
-        {"class": "Quanta-LR Hybrid", "pax": "12-15", "range_nm": 700, "status": "H2 2026+", "role": "Aruba cross-island legs (70-100nm) beyond Pioneer range. Held out of near-term numbers.", "render": "amber-dashed"}
+        {
+          "class": "N30 Pioneer II",
+          "pax": 8,
+          "range_nm": 70,
+          "status": "commercial now",
+          "role": "Leeward + inter-island corridors ≤70nm. The grounded workhorse.",
+          "render": "solid"
+        },
+        {
+          "class": "N35 Shuttle",
+          "pax": "12-15",
+          "range_nm": 70,
+          "status": "2027",
+          "role": "Doubles throughput per hull on dense cruise/resort legs; roughly halves payback.",
+          "render": "solid"
+        },
+        {
+          "class": "Quanta-LR Hybrid",
+          "pax": "12-15",
+          "range_nm": 700,
+          "status": "H2 2026+",
+          "role": "Aruba cross-island legs (70-100nm) beyond Pioneer range. Held out of near-term numbers.",
+          "render": "amber-dashed"
+        }
       ],
       "range_gate_note": "≤70nm → Pioneer II (now). 75-150nm → Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
+    }
+  },
+  "_provenance": {
+    "journey_relink": {
+      "at": "2026-06-24T02:14:57Z",
+      "lane": "grok/relink_partner_journeys",
+      "stats": {
+        "total": 4,
+        "linked": 2,
+        "cleared_mislink": 0,
+        "borrowed_brief": 0,
+        "matched_scoped": 0,
+        "network_chip": 0,
+        "brief_cluster": 0,
+        "phase_rollup": 0,
+        "grounding": 0,
+        "gcn_promoted": 0
+      }
     }
   }
 }

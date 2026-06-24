@@ -40,6 +40,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("raja_ampat", 129.50, -5.00, 131.50, -0.30),
     # Leeward Islands ferry lanes
     ("leeward_caribbean", -65.00, 17.80, -62.80, 18.50),
+    # Dutch Caribbean ABC (Aruba · Curaçao · Bonaire) coastal + inter-island lanes
+    ("abc_islands", -70.15, 11.85, -68.10, 12.65),
     # Dubai Creek / Palm lagoon approaches
     ("dubai_coast", 54.95, 24.95, 55.35, 25.35),
     # Lagos Lagoon
