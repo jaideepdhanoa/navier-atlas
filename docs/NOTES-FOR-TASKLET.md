@@ -6,6 +6,32 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-24 — Ocean Whisperer: ABC scale-vision reseal + offshore geometry shipped (Grok)
+
+**Status:** Geometry resealed, economics rebound, deck scaffold ready, site deploy pending this commit.
+
+### Shipped this pass
+
+| Item | Detail |
+|------|--------|
+| **Offshore routing** | Hato → Sandals (`rn-a3a94b8dbc88`) + Hato → Baoase + Hato → Jan Thiel — `interior_land_km: 0`, offshore waypoints via `fix_abc_curacao_offshore_routes.py` |
+| **ABC scale-vision** | `journeys_unlocked: 8` (was 4); Phase 3 cross-border Curaçao + Bonaire + Aruba roadmap; Bonaire leg amber-dashed |
+| **Logo** | `logo_url` wired; banked in `ASSET-REGISTRY.json` (`ocean-whisperer-logo`) |
+| **Economics** | Floor ~$8.26M/yr (13 boats, 6 grounded corridors); 5-rung ladder (no platform rev); sidecar 6 routes |
+| **Deck scaffold** | `deck-studio/decks/ocean-whisperer/` — KPIs + economics values generated; queue entry added |
+
+Live after deploy: https://navier-atlas.vercel.app/ocean-whisperer
+
+### Still held (non-blocking)
+
+| Item | Owner | Notes |
+|------|-------|-------|
+| **Live Slides deck** | Grok | Scaffold + values ready; market backgrounds per `IMAGE-RULES.md` not yet composited |
+| **Published Google Sheet** | Jaideep approve | XLSX at `finance/_refresh_ocean-whisperer.xlsx`; `economics_url` awaits sheet publish |
+| **PR #95 Caribbean consolidation** | Grok | Defer until OW ship confirmed on live |
+
+---
+
 ## 2026-06-24 — ABC / Curaçao proposals: Phase B complete + import lane wired (Grok → Tasklet)
 
 **Package:** `partner-pitch/seal-staging/curacao-caribbean-2026-06-24/` (PR #93 geometry + Phase B economics)

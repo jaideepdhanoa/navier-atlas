@@ -98,19 +98,19 @@ CORRIDORS = [
         "curacao-curacao__hato-airport-waterfront",
         "curacao-curacao__spanish-water-jan-thiel",
         "grounded",
-        [(-68.95, 12.17), (-68.92, 12.12), (-68.88, 12.09), (-68.86, 12.082)],
+        [(-69.02, 12.16), (-69.08, 12.10), (-69.10, 12.02), (-69.00, 11.98), (-68.88, 12.06), (-68.86, 12.082)],
     ),
     (
         "curacao-curacao__hato-airport-waterfront",
         "curacao-curacao__sandals-royal-curacao-spanish-water",
         "grounded",
-        [(-68.95, 12.17), (-68.90, 12.10), (-68.86, 12.072), (-68.85, 12.067)],
+        [(-69.02, 12.16), (-69.08, 12.10), (-69.10, 12.02), (-69.00, 11.98), (-68.87, 12.05), (-68.85, 12.067)],
     ),
     (
         "curacao-curacao__hato-airport-waterfront",
         "curacao-curacao__baoase-luxury-resort",
         "grounded",
-        [(-68.95, 12.17), (-68.93, 12.13), (-68.91, 12.10), (-68.90, 12.094)],
+        [(-69.02, 12.16), (-69.08, 12.10), (-69.10, 12.02), (-69.00, 11.98), (-68.92, 12.06), (-68.90, 12.094)],
     ),
     (
         "curacao-curacao__willemstad-sint-anna-bay",
@@ -139,7 +139,7 @@ CORRIDORS = [
     ),
 ]
 
-LAND_THRESH = {"inter_island": 1.5, "intra_island": 2.5, "roadmap": 12.0, "default": 0.08}
+LAND_THRESH = {"inter_island": 1.5, "intra_island": 0.08, "roadmap": 12.0, "default": 0.08}
 
 
 def utc_now() -> str:
@@ -367,6 +367,14 @@ def main() -> int:
     cities_idx = build_city_index(fbt)
     existing_ids = {(r.get("properties") or r).get("id") for r in routes}
     route_by_pair: dict[tuple[str, str], str] = {}
+    pair_to_feat: dict[tuple[str, str], dict] = {}
+    for feat in routes:
+        p = feat.get("properties", feat)
+        fn = p.get("from_node") or p.get("from")
+        tn = p.get("to_node") or p.get("to")
+        if fn and tn:
+            pair_to_feat[(fn, tn)] = feat
+            pair_to_feat[(tn, fn)] = feat
 
     def endpoint_coords(node: str) -> tuple[float, float] | None:
         node = NODE_ALIASES.get(node, node)
@@ -396,8 +404,9 @@ def main() -> int:
         from_name = bp_meta.get(from_n, {}).get("name", from_n)
         to_name = bp_meta.get(to_n, {}).get("name", to_n)
         rid = mint_route_id(from_n, to_n, TAG)
-        if rid in existing_ids:
-            rid = mint_route_id(from_n, to_n, f"{TAG}|{len(routes)}")
+        existing_feat = pair_to_feat.get((from_n, to_n))
+        if existing_feat:
+            rid = (existing_feat.get("properties") or existing_feat).get("id") or rid
 
         feat = {
             "type": "Feature",
@@ -434,8 +443,15 @@ def main() -> int:
             feat["properties"]["render_mode"] = "amber-dashed"
             feat["properties"]["_vessel_gate"] = "Quanta-LR roadmap (amber-dashed)"
 
-        routes.append(feat)
-        existing_ids.add(rid)
+        if existing_feat:
+            existing_feat["geometry"] = feat["geometry"]
+            existing_feat["properties"].update(feat["properties"])
+            feat = existing_feat
+        else:
+            routes.append(feat)
+            existing_ids.add(rid)
+        pair_to_feat[(from_n, to_n)] = feat
+        pair_to_feat[(to_n, from_n)] = feat
         route_by_pair[(from_n, to_n)] = rid
         route_by_pair[(to_n, from_n)] = rid
         report["routes_built"].append({
@@ -447,11 +463,30 @@ def main() -> int:
             "land_km": round(land_km, 4),
         })
 
+    canonical_pairs: set[tuple[str, str]] = set()
+    for from_n, to_n, *_ in CORRIDORS:
+        from_n = NODE_ALIASES.get(from_n, from_n)
+        to_n = NODE_ALIASES.get(to_n, to_n)
+        canonical_pairs.add((from_n, to_n))
+        canonical_pairs.add((to_n, from_n))
+
     culled = []
     kept = []
+    seen_canonical: set[tuple[str, str]] = set()
     for feat in routes:
         p = feat.get("properties", feat)
         rid = p.get("id", "")
+        fn = p.get("from_node") or p.get("from")
+        tn = p.get("to_node") or p.get("to")
+        pair_key = (fn, tn) if fn and tn else None
+        if pair_key in canonical_pairs:
+            want_rid = mint_route_id(fn, tn, TAG)
+            if rid != want_rid and pair_key in seen_canonical:
+                culled.append({"id": rid, "reason": "abc_duplicate_pair"})
+                continue
+            if rid == want_rid or pair_key not in seen_canonical:
+                seen_canonical.add(pair_key)
+                seen_canonical.add((tn, fn))
         fc = p.get("from_city_id") or p.get("from_city")
         tc = p.get("to_city_id") or p.get("to_city")
         if fc == LUMP or tc == LUMP or p.get("cluster_city_id") == LUMP:
