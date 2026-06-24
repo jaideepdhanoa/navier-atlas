@@ -2418,3 +2418,30 @@ What we need from Tasklet to ship real partner URLs:
 
 Open decision (Claude + Jaideep): URL routing — path-based (`navier-atlas.vercel.app/<slug>`) vs
 separate per-partner deployments — and adding the partner output path(s) to `.vercelignore`.
+
+---
+
+## LEARNING — internal taxonomy leaked onto partner slides (2026-06-24) · **fixed + gated**
+
+**What happened.** The Ocean Whisperer deck shipped slide titles/subtitles/captions written in
+model vocabulary — "captive resort mesh (grounded)", "premium network width", "ABC scale vision
+(roadmap)", "amber-dashed / Quanta-LR cross-island reach", "SOM floor ~46% capture", "marine-transfer
+TAM (induced market)", "the WIDTH a faster product unlocks". Illegible and off-brand. It survived
+several review rounds because nothing checked the *words a partner reads*.
+
+**Root cause.** `deck-studio/builders/deck_*.py` composed rendered slide text **straight from finance +
+render taxonomy** — `kpi_frame`, the market `label`, economics `meaning`/caption strings, vessel
+codenames. There was **no display-copy layer** between model labels and the slide, and QA only checked
+land-crossings + object inventory, never the prose. Same disease is live on **bolt / grab-thailand /
+minor-hotels** decks (run the linter for counts).
+
+**Fix shipped.**
+- De-jargoned the live OW deck (Slides API) and the OW builder + all OW deck source JSON.
+- New blocking gate: `deck-studio/qa/partner_copy_lint.py` (reads rendered text only; ignores internal
+  directives). Wired into `BRAND-RULES.md`, `GROK-RUNBOOK.md` step 9, and the autonomous build contract QA gates.
+- Canonical rule + translation table: `deck-studio/docs/PARTNER-COPY-RULES.md`.
+
+**Going forward.**
+1. Builders map model labels → display captions; never f-string a `meaning` onto a slide.
+2. `partner_copy_lint.py` is a hard gate before any seal/apply (same status as the land-crossing gate) — Grok runs it in the deterministic pipeline.
+3. **Backlog:** clean bolt / grab-thailand / minor-hotels rendered copy to green; then any new deck must pass from the start.

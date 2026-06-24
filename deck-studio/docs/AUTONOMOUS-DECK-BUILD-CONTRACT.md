@@ -106,10 +106,12 @@ ops, Grok authors the operations; the CLI's job is schema + safety validation (`
 unknown `slide_object_id`s and forbidden request keys).
 
 ### [4]–[7] Copy → apply → QA → receipts
-Copy the gold/template deck (drift gate), `apply` the editplan **verbatim**, then run the 6 QA gates
-(`object_id_check`, logo check, image-URL check, economics/source check, leak-denylist, render/thumbnail
-review). Commit `golden-template-map.json`, `deck.editplan.json`, updated `ASSET-REGISTRY.json`, and the
-QA receipt. External sends stay human-reviewed.
+Copy the gold/template deck (drift gate), `apply` the editplan **verbatim**, then run the 7 QA gates
+(`object_id_check`, logo check, image-URL check, economics/source check, leak-denylist,
+**`partner_copy_lint`** (`deck-studio/qa/partner_copy_lint.py` — no internal taxonomy in rendered text;
+see `PARTNER-COPY-RULES.md`), render/thumbnail review). The copy lint is **blocking**: do not apply/seal
+a deck whose rendered text still contains model taxonomy. Commit `golden-template-map.json`,
+`deck.editplan.json`, updated `ASSET-REGISTRY.json`, and the QA receipt. External sends stay human-reviewed.
 
 ---
 

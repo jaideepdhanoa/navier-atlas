@@ -61,7 +61,10 @@ You own deterministic deck creation, live editing, and image generation/composit
    sidecar (see `IMAGE-ROLE-CONTRACT.md` slide-3 row); render the market-overview KPIs, do not leave stale.
 7. Build an edit/image plan; do not apply first.
 8. Apply only through Google Slides API batch updates.
-9. Run QA and export receipts.
+9. Run QA and export receipts. **Includes the blocking partner-copy gate**
+   `python3 deck-studio/qa/partner_copy_lint.py <deck>` — no internal taxonomy (SOM/SAM/TAM,
+   "captive resort mesh", "amber-dashed", vessel codenames, "N% capture") in rendered slide text.
+   See `PARTNER-COPY-RULES.md`. Do not seal/apply until it is green.
 10. Commit manifests/receipts and open a PR or push directly only when explicitly approved.
 
 ## Context boundaries

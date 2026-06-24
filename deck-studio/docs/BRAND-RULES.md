@@ -18,6 +18,18 @@ The canonical values should be resolved from the existing deck masters when poss
 - Accent gold: minimal; no broad gold fills
 - Avoid heavy gradients, decorative borders, and dense text blocks
 
+## Partner-facing copy (no internal taxonomy)
+
+- Everything a partner *reads* — titles, subtitles, eyebrows, KPI/ladder captions, route
+  descriptors, CTAs — must be **plain, compelling, partner-facing English**.
+- **Banned from rendered slide text:** SOM/SAM/TAM/GMV, "captive resort mesh", "grounded",
+  "network width", "sealed leeward geometry", "amber-dashed", "scale vision", "N% capture",
+  "X-rung captive frame", vessel codenames (e.g. Quanta-LR), "on these lanes". These stay in
+  the model / `kpi_frame` / render directives / provenance only.
+- Builders must map model labels to display captions — never f-string a finance `meaning`
+  straight onto a slide. Full rule + translation table + lint gate: **`PARTNER-COPY-RULES.md`**.
+- Hard gate before any seal/apply: `python3 deck-studio/qa/partner_copy_lint.py <deck>` must be green.
+
 ## Claim style
 
 - CEO-level claims must be short, sourced, and non-hypey.
