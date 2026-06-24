@@ -8,7 +8,7 @@ build / gates = Tasklet._
 
 ## 2026-06-24 — Ocean Whisperer: ABC scale-vision reseal + offshore geometry shipped (Grok)
 
-**Status:** Geometry resealed, economics rebound, deck scaffold ready, site deploy pending this commit.
+**Status:** Shipped — commit `0ea2f48e` deployed to https://navier-atlas.vercel.app/ocean-whisperer (2026-06-24).
 
 ### Shipped this pass
 
@@ -20,7 +20,7 @@ build / gates = Tasklet._
 | **Economics** | Floor ~$8.26M/yr (13 boats, 6 grounded corridors); 5-rung ladder (no platform rev); sidecar 6 routes |
 | **Deck scaffold** | `deck-studio/decks/ocean-whisperer/` — KPIs + economics values generated; queue entry added |
 
-Live after deploy: https://navier-atlas.vercel.app/ocean-whisperer
+Live: https://navier-atlas.vercel.app/ocean-whisperer — visual QA passed (Hato→Sandals `interior_land_km: 0`, 8 journeys, 2 roadmap-amber-dashed ABC legs, logo wired).
 
 ### Still held (non-blocking)
 
