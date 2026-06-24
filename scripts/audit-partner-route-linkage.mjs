@@ -57,7 +57,9 @@ function isGeometryPendingChip(o) {
   return o.display === 'text_only'
     || o.flag === 'network-chip-text-only'
     || o._link_status === 'unlinked-intra-city'
-    || o._link_status === 'aspirational-no-built-route';
+    || o._link_status === 'aspirational-no-built-route'
+    || o._link_status === 'roadmap-quanta-lr'
+    || o._link_status === 'aspirational-quanta-lr';
 }
 
 function auditFeaturedRoutes(items, label, routeIds) {
