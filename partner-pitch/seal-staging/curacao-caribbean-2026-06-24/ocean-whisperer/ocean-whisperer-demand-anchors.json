@@ -1,0 +1,53 @@
+{
+  "_doc": "Ocean Whisperer (Curaçao-core) captive demand anchors. Sourced volumes are real (year + source). Capture (~55% captive) and per-leg fares are MODEL INPUTS flagged for the cascade, NOT sealed. Derived from ABC-DEMAND-ANCHORS.json (Curaçao slice) + OCEAN-WHISPERER-FINE-TUNING.md. broad-footprint-first; null beats confidently-wrong.",
+  "_method": "Real Curaçao tourism/cruise volumes establish the demand pool; the captive resort/cruise transfer subset is the addressable floor. Capture 0.55 + fares applied in the cascade. The pitch reframes territory-wide figures as CAPTIVE luxury (resort guests + OW cruise-aggregator network), not the whole island.",
+  "as_of": "2026-06-24",
+  "market_key": "ocean-whisperer",
+  "captive_capture_basis": 0.55,
+  "_capture_note": "Captive ~55% (Jaideep 24-Jun) — NOT FP's ~90%. ~45% headroom remains → cascade ladder must RISE (SOM < SAM < TAM). Do not flat-line like FP.",
+  "island_pool": {
+    "curacao_total_arrivals_yr": 1570000,
+    "curacao_stayover_visitors_yr": 700249,
+    "curacao_daytime_visitors_yr": 35499,
+    "curacao_cruise_passengers_yr": 834890,
+    "curacao_cruise_calls_yr": 328,
+    "year": 2024,
+    "source": "Curaçao Tourist Board (CTB) / Curaçao Ports Authority (834,890 cruise pax, +17.5%, 328 vessels) / TravelPulse / HVS"
+  },
+  "captive_anchors": {
+    "ocean_whisperer_cruise_aggregator_network_pax_yr": {
+      "value": 1000000,
+      "confidence": "med",
+      "source": "OCEAN-WHISPERER-FINE-TUNING.md §5 — OW cruise-aggregator network ~1M pax/yr (buyer doc).",
+      "note": "Aggregator reach, not all addressable; the captive resort+cruise-transfer subset is the floor."
+    },
+    "min_initial_exposure_pax_yr": {
+      "value": 3000,
+      "confidence": "med",
+      "source": "OCEAN-WHISPERER-FINE-TUNING.md §5 — minimum initial exposure ~3,000+ pax.",
+      "note": "Phase-1 grounded pilot floor."
+    },
+    "named_resort_partners": [
+      {"name": "Sandals Royal Curaçao", "rooms": 350, "nightly_usd": "2000-8000", "role": "flagship captive resort transfer anchor (Spanish Water / Santa Barbara)", "status": "under discussion"},
+      {"name": "Baoase Luxury Resort", "role": "existing Ocean Whisperer destination (already served by air)", "status": "existing OW relationship"},
+      {"name": "Piscadera Bay (Marriott / JW-style)", "role": "resort cluster transfer", "status": "prospective"},
+      {"name": "Jan Thiel", "role": "resort & leisure cluster", "status": "prospective"},
+      {"name": "BASI / Balasy", "role": "named partner under discussion", "status": "under discussion"}
+    ]
+  },
+  "use_cases_ranked": [
+    "resort transfers (CORE revenue driver)",
+    "premium passenger network (cruise-feed → resort/beach)",
+    "Klein Curaçao seasonal excursion (amber)",
+    "nature-preserve / reef routes (silent zero-wake)",
+    "VIP curated packages (air-to-water, Ocean Whisperer signature journeys)",
+    "light goods / supply between destinations"
+  ],
+  "inter_island_substitution_pool_roadmap": {
+    "carriers": ["Divi Divi Air (3R)", "EZ Air"],
+    "curacao_bonaire": "high-frequency core air route (substitution pool for the Quanta-LR/Pioneer-edge roadmap leg)",
+    "curacao_aruba": "at least 2x daily (Divi Divi) + EZ Air",
+    "note": "Roadmap network legs only — feeds the standardization/scale narrative, NOT the grounded Curaçao floor.",
+    "source": "ABC-DEMAND-ANCHORS.json inter_island_air_substitution_pool"
+  }
+}
