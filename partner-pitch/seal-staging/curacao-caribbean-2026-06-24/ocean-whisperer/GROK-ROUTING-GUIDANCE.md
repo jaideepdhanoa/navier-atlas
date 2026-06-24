@@ -27,7 +27,7 @@ In `ocean-whisperer-corridors.json`, the two grounded airport legs now carry:
 
 **Action:** reseal both legs as short leeward south-coast runs (Piscadera → Sandals ≈ 8 nm; Piscadera → Baoase ≈ 4 nm), and **retire/repoint** the three windward route_ids above so no Curaçao leg renders north of ~12.13°N or dips below ~12.05°N. The air-arrival demand basis is unchanged; only the embarkation moved to calm water (short land transfer from Hato).
 
-**Decision flag for Jaideep (do not auto-apply Option B):** the alternative is to *drop* air→resort from grounded Navier sea corridors and treat the airport purely as Ocean Whisperer's air domain (Navier grounded water = cruise-pier→resort + resort→resort + Klein seasonal). Option A (leeward embarkation, applied) preserves the CORE revenue pool; Option B is cleaner but smaller. Hold for sign-off before switching.
+**Decision — RESOLVED (Jaideep, 2026-06-24): OPTION A.** Keep the airport as the demand source and embark at the leeward Piscadera marina via a short land transfer; the CORE air-arrival revenue pool is preserved and the leg is made honest. **Proceed with the Option A reseal below — do not apply Option B.** (Option B, rejected: drop air→resort from grounded Navier sea corridors and treat the airport purely as OW's air domain.)
 
 ## Fix 2 — add a detour-ratio + bbox gate to land QA
 Add to `scripts/grok-geometry/route_land_qa.py` (or the reseal acceptance step), alongside the land check:
