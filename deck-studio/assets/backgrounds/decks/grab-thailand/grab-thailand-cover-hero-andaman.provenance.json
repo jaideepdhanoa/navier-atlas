@@ -1,0 +1,28 @@
+{
+  "image_key": "grab-thailand-cover_hero",
+  "role": "cover_hero (slide 1, deck hero behind title lockup)",
+  "asset": "grab-thailand-cover-hero-andaman.png",
+  "raw_candidate": "raw/cover-andaman-raw.png",
+  "deck": "grab-thailand",
+  "market_slug": "thailand",
+  "concept": "Thailand-specific flagship cover. Replaces the pan-SEA Singapore (Marina Bay) hero so the Grab Thailand deck opens on Thai waters. DISTINCT from slide 2 (urban Bangkok boarding moment) and from the slide-3 Three C's plate.",
+  "scene": "Wide cinematic Andaman / Phang Nga-style limestone karst bay at golden hour; canonical white-hull N30 foiling center-right with clean wake; open water + soft sunset sky to the upper/lower-left for the title lockup.",
+  "provider": "generate_image (reference-guided)",
+  "reference_images": [
+    "deck-studio/assets/n30/n30-reference-neutral.png (vessel FORM+COLOR only)"
+  ],
+  "n30_lighting_rule": "vessel generated neutral/daylight; scene/plate sets time-of-day (golden hour). IMAGE-RULES.md.",
+  "scrim": {
+    "helper": "deterministic PIL navy lower-left WEDGE (vertical x left-weight), tuned to match the legibility of the prior grab-cover-hero-singapore title zone",
+    "navy_rgb": [10, 26, 47],
+    "vertical_control_points_y": [0.0, 0.40, 0.52, 0.62, 0.78, 0.90, 1.0],
+    "vertical_control_points_alpha": [0.0, 0.0, 0.74, 0.82, 0.95, 0.985, 0.985],
+    "left_weight": "1.0 for x<=0.30, linear to 0.0 at x=0.70 (protects center-right hero + karst + sky)",
+    "alpha_cap": 0.985,
+    "legibility_target": "title-zone luminance matched to grab-cover-hero-singapore (text band x0.03-0.48): 54%~62, 65%~53, 88%~17, 96%~12"
+  },
+  "forbidden_check": "no Atlas image; no logos/watermarks/UI chrome; no fantasy hull; not embedded-only; market-specific background.",
+  "supersedes_for_this_deck": "grab-cover-hero-singapore.png (pan-SEA, retained for the SE-Asia/regional deck)",
+  "status": "candidate_for_review",
+  "created": "2026-06-24"
+}
