@@ -1,0 +1,58 @@
+{
+  "_doc": "ABC Islands (Aruba/Curacao/Bonaire) demand anchors for the Navier destination-cluster proposal. Sourced volumes are real (year + source noted); fares/capture are model inputs flagged for the economics cascade, NOT yet sealed.",
+  "_method": "broad-footprint-first: real tourism/cruise/dive/air volumes establish the demand floor pool; capture (~55% captive, FP-style, per Jaideep 24-Jun) and per-leg fares applied in the model step. null beats confidently-wrong.",
+  "as_of": "2026-06-24",
+  "captive_capture_basis": 0.55,
+  "islands": {
+    "aruba": {
+      "stopover_visitors_yr": 1200000,
+      "stopover_note": "2019 baseline 1,117,663; 2024 above pre-COVID record (record years 2023-2025). Conservative round.",
+      "cruise_passengers_yr": 850000,
+      "cruise_calls_yr": 330,
+      "cruise_note": "2019 = 832,001 pax / 324 calls (Oranjestad). 2024 in same band, growing.",
+      "source": "Aruba Tourism Authority / Aruba Ports Authority via tourismanalytics.com",
+      "primary_bp_demand": ["Oranjestad cruise terminal", "Renaissance/Palm Beach resort strip", "Queen Beatrix airport waterfront"]
+    },
+    "curacao": {
+      "stayover_visitors_yr": 700249,
+      "daytime_visitors_yr": 35499,
+      "cruise_passengers_yr": 834890,
+      "cruise_calls_yr": 328,
+      "total_arrivals_yr": 1570000,
+      "year": 2024,
+      "source": "Curacao Tourist Board (CTB) / Curacao Ports Authority (834,890 pax, +17.5%, 328 vessels) / TravelPulse / HVS",
+      "primary_bp_demand": ["Willemstad / Sint Anna Bay", "Spanish Water (Caracasbaai) marina", "Hato airport waterfront", "Klein Curacao day-trip"]
+    },
+    "bonaire": {
+      "stayover_visitors_yr": 182181,
+      "cruise_passengers_yr": 359000,
+      "dive_share_of_stayover": 0.43,
+      "year": 2024,
+      "source": "Tourism Corporation Bonaire (182,181 stayover, record) / CBS Netherlands (359,000 cruise 2024) / CaribJournal (43% dive)",
+      "note": "World dive capital; Bonaire National Marine Park = zero-wake/silent mandate (textbook Navier use-case). Bonaire uses USD; special municipality of NL.",
+      "primary_bp_demand": ["Kralendijk town pier", "Klein Bonaire dive transfer", "dive-resort jetties (Harbour Village etc.)"]
+    }
+  },
+  "inter_island_air_substitution_pool": {
+    "carriers": ["Divi Divi Air (3R)", "EZ Air"],
+    "divi_divi_daily_flights": 16,
+    "aircraft_seats": 19,
+    "routes": {
+      "curacao_aruba": "at least 2x daily (Divi Divi) + EZ Air",
+      "curacao_bonaire": "high-frequency core route (Divi Divi + EZ Air)",
+      "bonaire_aruba": "~1x weekly (Divi Divi)"
+    },
+    "note": "Existing paid inter-island demand already moving by 19-seat turboprop = the direct substitution pool for Navier sea legs. Curacao<->Bonaire (grounded Pioneer II) and Curacao<->Aruba are the live air markets; Bonaire<->Aruba is thin (weekly) = roadmap.",
+    "source": "Divi Divi Air / EZ Air / Wikipedia / Alternative Airlines"
+  },
+  "corridor_intent": {
+    "grounded_now_pioneer_ii": [
+      {"legs": "Curacao <-> Bonaire", "approx_nm": "30-45", "demand_basis": "cruise+dive+air substitution; both islands' cruise/stayover"},
+      {"legs": "intra-island transfers (cruise-port->beach/marina, airport->resort, Klein Bonaire, Klein Curacao)", "approx_nm": "1-15", "demand_basis": "cruise pax + resort/dive transfers"}
+    ],
+    "roadmap_quanta_lr": [
+      {"legs": "Aruba <-> Curacao", "approx_nm": "~70 (edge)", "status": "amber; verify distance at seal"},
+      {"legs": "Aruba <-> Bonaire", "approx_nm": "~95-100", "status": "amber; thin air market today"}
+    ]
+  }
+}
