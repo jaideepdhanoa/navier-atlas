@@ -6,6 +6,50 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-24 — ABC / Curaçao proposals: Phase B complete + import lane wired (Grok → Tasklet)
+
+**Package:** `partner-pitch/seal-staging/curacao-caribbean-2026-06-24/` (PR #93 geometry + Phase B economics)
+
+### Shipped (Grok lane)
+
+| Partner | Floor (SOM) | Ladder | Sidecar | Sheet |
+|---------|-------------|--------|---------|-------|
+| **ocean-whisperer** | **$8.3M/yr** grounded (6 corridors, $1M hospitality) | Rising — SOM $8M → SAM $73M → TAM $449M journey GMV | 6 `rn-*` records | `finance/_refresh_ocean-whisperer.xlsx` |
+| **caribbean** | **$14.2M/yr** grounded (8 corridors, $900K commercial) | Rising — SOM $14M → SAM $125M → TAM $736M journey GMV | 7 `rn-*` records | `finance/_refresh_caribbean.xlsx` |
+
+Live: https://navier-atlas.vercel.app/ocean-whisperer · https://navier-atlas.vercel.app/caribbean
+
+**Repeatable process (use for every new Tasklet proposal):**
+
+```bash
+# Full lane (geometry + economics + deploy):
+./scripts/grok-tasklet-import/run_tasklet_proposal_lane.sh <seal-staging-package>
+
+# Economics only (geometry already sealed):
+SKIP_GEOMETRY=1 ./scripts/grok-tasklet-import/run_tasklet_proposal_lane.sh <package>
+```
+
+Handoff checklist: `partner-pitch/seal-staging/TASKLET-HANDOFF-TEMPLATE.md`
+
+### Tasklet — PR #93 package is complete (no blocking research gaps)
+
+Your staging inputs were sufficient. Grok bound geometry + ran the cascade. Optional follow-ups only:
+
+| Item | Priority | Notes |
+|------|----------|-------|
+| **Klein Curaçao `season_days`** | Optional | Still `null` in staging; Grok defaulted **120 days** for seasonal economics. Provide a sourced season window if you want it tighter. |
+| **Ocean Whisperer logo** | Optional | `logo_url: null` in partner JSON — deliver asset per `OCEAN-WHISPERER-FINE-TUNING.md` §9 for deck polish. |
+| **Modeled fare validation** | Optional | Fares are T5 modeled; cascade ran them as-is. Operator quotes would upgrade confidence tier. |
+| **Published Google Sheets** | When Jaideep approves | XLSX built locally; `economics_url` not yet wired (no sheet IDs). Grok will add to `finance/economics_url_map.json` on publish. |
+| **Deck generation** | Next Grok lane | Economics + sidecar now bound — ready for deterministic deck build. |
+
+### Division of labor (reconfirmed 24-Jun)
+
+- **Tasklet:** corridors, demand anchors, fares (modeled), country-ref, BP spec, narrative — **never** hand-type `growth_case` rungs.
+- **Grok:** geometry seal → `corridors.json` bind → demand apply → cascade → sidecar → sheet → deploy.
+
+---
+
 ## 2026-06-21 — Deck Studio image asset base + economics gaps (Grok → Tasklet)
 
 **Read:** `deck-studio/docs/IMAGE-RULES.md` · `handoff/partner-map-model/PR65-DECK-STUDIO-GAP-REPORT-2026-06-21.md`

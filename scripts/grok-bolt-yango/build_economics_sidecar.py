@@ -35,6 +35,8 @@ PARTNERS = [
     "grab-thailand",
     "uber-india",
     "minor-hotels",
+    "ocean-whisperer",
+    "caribbean",
 ]
 
 def load_deck_url(url_map_path: Path | None = None) -> dict:
@@ -285,13 +287,14 @@ def main():
     global_path = aggdir / "agg-global.json"
     corridors_path = Path(args.corridors)
     scoped_partner = None
-    if "minor-hotels" in corridors_path.name:
-        scoped_partner = "minor-hotels"
+    if corridors_path.name.startswith("corridors-") and corridors_path.name.endswith(".json"):
+        scoped_partner = corridors_path.stem.replace("corridors-", "", 1)
 
     if getattr(args, "global") or global_path.exists():
         if not global_path.exists():
             raise SystemExit(f"--global requested but {global_path} missing")
         ingest_rows(json.loads(global_path.read_text()).get("rows", []))
+        merged_scoped = {scoped_partner} if scoped_partner else set()
         if scoped_partner:
             scoped_agg = aggdir / f"agg-{scoped_partner}.json"
             if scoped_agg.exists():
@@ -299,6 +302,17 @@ def main():
                     json.loads(scoped_agg.read_text()).get("rows", []),
                     source_partner=scoped_partner,
                 )
+        # Partner-scoped proposals (Tasklet import lane) may not appear in agg-global.
+        for partner in PARTNERS:
+            if partner in merged_scoped:
+                continue
+            scoped_agg = aggdir / f"agg-{partner}.json"
+            if scoped_agg.exists():
+                ingest_rows(
+                    json.loads(scoped_agg.read_text()).get("rows", []),
+                    source_partner=partner,
+                )
+                merged_scoped.add(partner)
     else:
         for partner in PARTNERS:
             p_resolved = aliases.get(partner, partner)

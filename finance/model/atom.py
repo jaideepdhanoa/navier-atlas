@@ -201,6 +201,10 @@ def compute_atom(corridor, vessel_key="pioneer_ii"):
         _ca = ops.get("capture_on_addressable")
         if _ca is not None:
             capture = _ca["value"] if isinstance(_ca, dict) else _ca
+    # Per-corridor capture override (Tasklet-specified; e.g. ABC 0.55 captive basis).
+    _l3cap = L3.get("navier_capture_override")
+    if _l3cap is not None:
+        capture = _l3cap
     if not pool_vals:
         flags.append("NULL_demand:no_pool")
         vessels_supported = None; market_rev = None; market_co2 = None
