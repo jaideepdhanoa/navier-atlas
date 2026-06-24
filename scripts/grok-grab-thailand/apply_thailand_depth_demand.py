@@ -80,6 +80,19 @@ DEPTH_CORRIDORS = [
         "tier": "B",
         "note": "Royal-coast resort weekend hop; modeled premium slice.",
     },
+    {
+        "market": "bangkok",
+        "route_id": "rn-01f164a3d43c",
+        "from": "Bangkok (ICONSIAM / Chao Phraya)",
+        "to": "Hua Hin (pier)",
+        "distance_nm": 88.0,
+        "from_node_id": "bangkok-thailand",
+        "to_node_id": "hua-hin-thailand",
+        "pax": 85000,
+        "fare": 68.0,
+        "tier": "A",
+        "note": "Marquee river-coast gateway: Bangkok weekenders to royal-coast resorts; replaces 2.5–3hr Phetkasem drive.",
+    },
 ]
 
 KOLANTA_PATCHES = [
