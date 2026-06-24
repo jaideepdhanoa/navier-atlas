@@ -163,7 +163,7 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "      ~25 nm · cliff-beach premium run"
     ),
     ("g3eec5122801_0_296", "g3eec5122801_0_300"): "Bangkok — Chao Phraya & gulf gateway",
-    ("g3eec5122801_0_296", "g3eec5122801_0_304"): "River spine sealed; Pattaya, Koh Larn and Koh Chang connected cities live.",
+    ("g3eec5122801_0_296", "g3eec5122801_0_304"): "River spine sealed; Pattaya, Hua Hin, Koh Larn and Koh Chang connected cities live.",
     (
         "g3eec5122801_0_296",
         "g3eec5122801_0_301",
@@ -174,8 +174,8 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "      ~2 nm · tourist river loop\n"
         "▸  Bangkok → Pattaya\n"
         "      ~60 nm · gulf gateway city\n"
-        "▸  Pattaya → Koh Larn\n"
-        "      ~5 nm · day-trip island hop"
+        "▸  Bangkok ↔ Hua Hin\n"
+        "      ~88 nm · cross-Gulf Quanta-LR ring"
     ),
     (SLIDE10_OID, "g3eec5122801_0_565"): "A new multi-billion-dollar vertical across Thailand",
     (SLIDE10_OID, "g3eec5122801_0_567"): "Read it bottom-up: the fare a Navier boat collects today, the market a faster product unlocks — then the whole journey Grab monetizes around every crossing.",
