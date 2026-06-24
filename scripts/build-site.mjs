@@ -62,7 +62,40 @@ function loadData() {
     const { deck_only, reviewer_notes, ...rest } = rec;
     return rest;
   };
-  data.CITY_BRIEFS = dir('city_briefs', 'city_id');
+  const STRIP_BRIEF_PROPS = ['posture', 'archetype_scores', 'archetype_fit'];
+  const sanitizeBrief = (rec) => {
+    if (!rec || typeof rec !== 'object') return rec;
+    const out = { ...rec };
+    if (Array.isArray(out.index)) {
+      out.index = out.index.map((row) => {
+        if (!row || typeof row !== 'object') return row;
+        const r = { ...row };
+        for (const k of STRIP_BRIEF_PROPS) delete r[k];
+        delete r.posture_note;
+        delete r.internal;
+        return r;
+      });
+    }
+    for (const k of STRIP_BRIEF_PROPS) delete out[k];
+    delete out.posture_note;
+    delete out.internal;
+    if (out.partner_overlays && typeof out.partner_overlays === 'object') {
+      for (const [pid, ov] of Object.entries(out.partner_overlays)) {
+        if (!ov || typeof ov !== 'object') continue;
+        const cleaned = { ...ov };
+        delete cleaned.wedge;
+        delete cleaned.posture;
+        delete cleaned.posture_note;
+        delete cleaned.internal;
+        for (const k of STRIP_BRIEF_PROPS) delete cleaned[k];
+        out.partner_overlays[pid] = cleaned;
+      }
+    }
+    return out;
+  };
+  data.CITY_BRIEFS = Object.fromEntries(
+    Object.entries(dir('city_briefs', 'city_id')).map(([k, v]) => [k, sanitizeBrief(v)])
+  );
   data.PARTNERS = Object.fromEntries(
     Object.entries(dir('partners', 'partner_id')).map(([k, v]) => [k, sanitizePartner(v)])
   );

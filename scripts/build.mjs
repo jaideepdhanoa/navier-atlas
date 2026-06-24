@@ -86,16 +86,31 @@ data.CLUSTERS = existsSync(clustersPath) ? readJson(clustersPath) : { clusters: 
 // `posture` (P0/P1/P2/Watch) + `archetype_scores` onto city features (both on the EXCLUSION blocklist).
 // Stripping here keeps the sealed source intact (seal still verifies) while the deployed atlas-data.js
 // stays clean. Safe to keep permanently; remove only if these ever become intended-public fields.
-const STRIP_PROPS = ['posture', 'archetype_scores'];
+const STRIP_PROPS = ['posture', 'archetype_scores', 'archetype_fit'];
 for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
   for (const f of (data.FEATURES_BY_TYPE[t] || []))
     if (f && f.properties) for (const k of STRIP_PROPS) delete f.properties[k];
 // City-brief index + records can carry internal posture stamps — strip before public bake.
 for (const rec of Object.values(data.CITY_BRIEFS || {})) {
   if (!rec || typeof rec !== 'object') continue;
-  if (Array.isArray(rec.index)) for (const row of rec.index) for (const k of STRIP_PROPS) delete row[k];
+  if (Array.isArray(rec.index)) for (const row of rec.index) {
+    if (!row || typeof row !== 'object') continue;
+    for (const k of STRIP_PROPS) delete row[k];
+    delete row.posture_note;
+  }
   for (const k of STRIP_PROPS) delete rec[k];
   delete rec.posture_note;
+  delete rec.internal;
+  if (rec.partner_overlays && typeof rec.partner_overlays === 'object') {
+    for (const ov of Object.values(rec.partner_overlays)) {
+      if (!ov || typeof ov !== 'object') continue;
+      delete ov.wedge;
+      delete ov.posture;
+      delete ov.posture_note;
+      delete ov.internal;
+      for (const k of STRIP_PROPS) delete ov[k];
+    }
+  }
 }
 
 const profile = parseProfile();
