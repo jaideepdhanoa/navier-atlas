@@ -33,7 +33,8 @@ DECKS_DIR = os.path.join(os.path.dirname(__file__), "..", "decks")
 
 # Banned in RENDERED partner text, case-INSENSITIVE. Word-boundary where it matters.
 BANNED_CI = [
-    r"\bSOM\b", r"\bSAM\b", r"\bTAM\b", r"\bGMV\b",
+    # NOTE: SOM / SAM / TAM / GMV are ALLOWED as recognized labels (paired with a
+    # plain-English descriptor on the slide). Only the internal taxonomy below is banned.
     r"captive resort mesh", r"resort mesh", r"network width",
     r"captive floor", r"captive economics", r"captive transfer",
     r"captive guest (?:base|throughput)", r"captive boat-only", r"captive case",
@@ -47,10 +48,10 @@ BANNED_CI = [
     r"amber[- ]dashed", r"scale vision", r"induced (?:market|demand|transfer|marine)",
     r"\d+%\s*capture", r"capture (?:rate|basis|frame|share)",
     r"\d+-rung",
-    r"Quanta-LR", r"Quanta-SR", r"Pioneer-edge", r"\bSOM floor\b",
+    r"Quanta-LR", r"Quanta-SR", r"Pioneer-edge",
     r"on these lanes", r"premium water corridors", r"airport waterfront",
     r"journey wallet", r"guest wallet", r"platform-revenue line", r"mapped corridors",
-    r"\baggregate\b", r"\bSAM mid\b", r"\bTAM band\b",
+    r"\baggregate\b",
     # network-topology / sealing taxonomy (leaked into Grab Thailand)
     r"\bmesh\b", r"cascade corridor", r"\bsealed\b", r"pending seal",
     r"anchor corridor",
