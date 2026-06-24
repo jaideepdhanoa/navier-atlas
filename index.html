@@ -3049,6 +3049,11 @@ function _gcConfLabel(c, custom){
   return String(c||'');
 }
 function _gcConfBadge(c, custom){ if(!c&&!custom) return ''; const lbl=_gcConfLabel(c, custom); return `<span class="gc-conf ${_gcConfCls(c||custom)}" title="${escapeHtml(_gcConfTip(c))}">${escapeHtml(lbl)}</span>`; }
+const _PLATFORM_REV_ARCHETYPES=new Set(['super_app','ridehail']);
+function _showsPlatformRevenue(partner){
+  const arch=String((partner&&partner.archetype)||'').toLowerCase();
+  return _PLATFORM_REV_ARCHETYPES.has(arch);
+}
 function _gcPlatformCeilingHtml(gc, rungs, opts){
   opts=opts||{};
   const partnerLabel=opts.partnerDisplay||'The platform';
@@ -3097,6 +3102,7 @@ function _gcFleet(h){
 function _growthCaseHtml(gc, opts){
   if (!gc) return '';
   opts=opts||{};
+  const showPlat=opts.showPlatformRev!==false;
   const rp=gc.revenue_potential||{}, pe=gc.phase_economics||{}, vs=gc.vessel_sizing||{}, pv=gc._provenance||{};
   let h='';
   // Lead: hard evidence first — corridor count (ID-traceable) + the published floor.
@@ -3114,9 +3120,10 @@ function _growthCaseHtml(gc, opts){
   }
   // 1) Revenue ladder — build up from floor (ascending rungs). ladder_transitions bridge each step
   // (authored math only — never invented in render).
-  const bridges=(gc.ladder_transitions||[]), bridgeFrom={};
+  const bridges=(gc.ladder_transitions||[]).filter(t=>showPlat||(!/platform_rev/.test(String(t.from_rung_id||''))&&!/platform_rev/.test(String(t.to_rung_id||''))));
+  const bridgeFrom={};
   for (const t of bridges) if (t.from_rung_id) bridgeFrom[t.from_rung_id]=t;
-  const rungs=rp.rungs||[];
+  const rungs=(rp.rungs||[]).filter(r=>showPlat||r.id!=='platform_rev');
   if (rungs.length){
     h+=`<div class="panel-section"><h3>Revenue potential</h3><div class="gc-ladder">`;
     for (let i=0;i<rungs.length;i++){
@@ -3130,11 +3137,15 @@ function _growthCaseHtml(gc, opts){
         ${r.whose_money?`<span class="gc-money-chip gc-m-${cls}">${escapeHtml(r.whose_money)}</span>`:''}
       </div>`;
       if (r.id && bridgeFrom[r.id] && i<rungs.length-1) h+=_gcLadderBridgeHtml(bridgeFrom[r.id], opts);
-      if (r.id==='platform_rev') h+=_gcPlatformCeilingHtml(gc, rungs, opts);
+      if (showPlat&&r.id==='platform_rev') h+=_gcPlatformCeilingHtml(gc, rungs, opts);
     }
     h+=`</div>`;
     const L=rp.whose_money_legend;
-    if (L){ h+=`<div class="gc-legend">${[['navier','Navier transport revenue',L.navier_transport_revenue],['wallet','Journey GMV',L.journey_gmv],['partner','Partner platform revenue',L.platform_take]].filter(x=>x[2]).map(([c,t,desc])=>`<div class="gc-legend-row"><span class="gc-dot gc-m-${c}"></span><b>${escapeHtml(t)}</b> — ${escapeHtml(desc)}</div>`).join('')}</div>`; }
+    if (L){
+      const legendRows=[['navier','Navier transport revenue',L.navier_transport_revenue],['wallet','Journey GMV',L.journey_gmv]];
+      if (showPlat&&L.platform_take) legendRows.push(['partner','Partner platform revenue',L.platform_take]);
+      h+=`<div class="gc-legend">${legendRows.filter(x=>x[2]).map(([c,t,desc])=>`<div class="gc-legend-row"><span class="gc-dot gc-m-${c}"></span><b>${escapeHtml(t)}</b> — ${escapeHtml(desc)}</div>`).join('')}</div>`;
+    }
     if (rp.cite_rule) h+=`<div class="gc-cite">${escapeHtml(rp.cite_rule)}</div>`;
     h+=`</div>`;
   }
@@ -3142,7 +3153,10 @@ function _growthCaseHtml(gc, opts){
   if ((pe.horizons||[]).length){
     h+=`<div class="panel-section"><h3>Revenue potential by phase</h3>${pe.headline?`<div class="pcaro-narr">${escapeHtml(pe.headline)}</div>`:''}<div class="gc-horizons">`;
     for (const z of pe.horizons){
-      const rows=[['Capture',z.capture],['Vessel',z.vessel],['Fleet',_gcFleet(z)],['Navier rev/yr',z.navier_transport_rev_display],['Partner rev/yr',z.partner_platform_rev_display],['CO₂ saved',z.co2_saved_t_yr!=null?_gcNum(z.co2_saved_t_yr)+' t/yr':'']].filter(x=>x[1]);
+      const phaseRows=[['Capture',z.capture],['Vessel',z.vessel],['Fleet',_gcFleet(z)],['Navier rev/yr',z.navier_transport_rev_display]];
+      if (showPlat&&z.partner_platform_rev_display) phaseRows.push(['Partner rev/yr',z.partner_platform_rev_display]);
+      phaseRows.push(['CO₂ saved',z.co2_saved_t_yr!=null?_gcNum(z.co2_saved_t_yr)+' t/yr':'']);
+      const rows=phaseRows.filter(x=>x[1]);
       h+=`<div class="gc-hz gc-hz-${escapeHtml(z.id||'')}">
         <div class="gc-hz-top"><span class="gc-hz-name">${escapeHtml(z.name||'')}</span><span class="gc-hz-when">${escapeHtml(z.horizon||'')}</span></div>
         ${z.scope?`<div class="gc-hz-scope">${escapeHtml(z.scope)}</div>`:''}
@@ -3170,7 +3184,7 @@ function _growthCaseHtml(gc, opts){
 function _chapterHtml(ch, partner){
   if (ch.kind==='endstate') return _endstateHtml(partner);
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
-  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case, {partnerDisplay:partner.display||partner.partner_id||'The platform'});
+  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case, {partnerDisplay:partner.display||partner.partner_id||'The platform', showPlatformRev:_showsPlatformRevenue(partner)});
   if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
   if (ch.kind==='ask')      { const c=partner.close; const closeHtml=!c?'':(typeof c==='string'?`<div class="panel-section pcaro-close"><div class="b">${escapeHtml(c)}</div></div>`:`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(c.title||'')}</div>${c.body?`<div class="b">${escapeHtml(c.body)}</div>`:''}</div>`); return _askHtml(partner.the_ask)+closeHtml; }
   return '';
@@ -3518,11 +3532,12 @@ function _introStep2Html(partner){
   if (!gc) return _introStep1Html(partner);
   const gcData=gc;
   const headline=gcData.modal_headline||'How big is the opportunity?';
-  const lead=gcData.modal_lead||'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.';
+  const showPlat=_showsPlatformRevenue(gcPartner);
+  const lead=gcData.modal_lead||(showPlat?'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.':'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, and journey wallet.');
   return `<div class="intro-mark">The opportunity</div>
     <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
     <p class="intro-step-lead">${escapeHtml(lead)}</p>
-    ${_growthCaseHtml(gc, {inModal:true, partnerDisplay:gcPartner.display||gcPartner.partner_id||'The platform'})}`;
+    ${_growthCaseHtml(gc, {inModal:true, partnerDisplay:gcPartner.display||gcPartner.partner_id||'The platform', showPlatformRev:showPlat})}`;
 }
 function _introIsHubContext(partner){
   if (partner&&partner._hubOf) return true;

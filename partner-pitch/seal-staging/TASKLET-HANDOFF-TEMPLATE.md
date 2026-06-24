@@ -70,7 +70,7 @@ Pipeline steps (Phase B):
 1. `bind_corridors_from_staging.py` — staging → `finance/model/corridors.json` with sealed `route_id`s
 2. `build_scoped_corridors.py` — `finance/recal/corridors-<partner>.json`
 3. `apply_demand_anchors.py` — `corridor_annual_oneway_pax` from demand anchors
-4. `aggregate.py` → `growth.py` → `growth_frontend_block.py` → `splice_growth_into_partner.py`
+4. `aggregate.py` → `growth.py` → `growth_frontend_block.py` (--partner-json for archetype gate) → `splice_growth_into_partner.py`
 5. `build_economics_sidecar.py` + `build_transparent_sheet.py`
 6. Bind `economics_status` on partner JSON; reseal; deploy
 
@@ -91,6 +91,6 @@ Reports land in `grok-routing-output/tasklet-corridors-bind-report.json` and `gr
 
 | Package | Partners | Notes |
 |---------|----------|-------|
-| `curacao-caribbean-2026-06-24` | `ocean-whisperer`, `caribbean` | $1M hospitality vs $900K commercial; capture 0.55; rising ladder |
+| `curacao-caribbean-2026-06-24` | `ocean-whisperer`, `caribbean` | $1M hospitality vs $900K commercial; capture 0.55; **5-rung** ladder (no platform take) |
 | `grab-thailand` | `grab-thailand` | Demand apply pattern |
 | `minor-hotels` | `minor-hotels` | Captive hospitality cascade |

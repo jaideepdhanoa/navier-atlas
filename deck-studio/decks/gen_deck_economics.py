@@ -29,6 +29,9 @@ import json, os, sys, datetime
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "finance"))
+from partner_platform_rev import shows_platform_revenue  # noqa: E402
+
 def P(*a): return os.path.join(ROOT, *a)
 
 def money(x):
@@ -204,13 +207,17 @@ def main():
         {"value": (f"${som/1e6:.0f}M floor" if som else None), "meaning": "SOM floor — Navier fare, today's trips, ~10% capture"},
         {"value": usd_compact(tam_marine), "meaning": "marine-transfer TAM (induced market), mid of model band"},
     ]
+    pj_path = P("partner-pitch", "partners", f"{partner}.json")
+    partner_meta = json.load(open(pj_path)) if os.path.isfile(pj_path) else {}
+    show_plat = shows_platform_revenue(partner_meta)
     slide10_rungs = [
         {"rung": "SOM", "value": usd_compact(som)},
         {"rung": "SAM", "value": usd_compact(sam)},
         {"rung": "TAM", "value": usd_compact(tam_marine)},
         {"rung": "Journey GMV", "value": usd_compact(journey_gmv)},
-        {"rung": "partner platform revenue", "value": usd_compact(plat)},
     ]
+    if show_plat:
+        slide10_rungs.append({"rung": "partner platform revenue", "value": usd_compact(plat)})
 
     # six per-market cards (slide-3 grid) — pax/day, pool, rev floor, fleet, co2
     gfm = rollup.get("grounded_floor_by_market", {}) or {}

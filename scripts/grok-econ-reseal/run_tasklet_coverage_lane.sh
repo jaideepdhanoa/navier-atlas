@@ -34,12 +34,13 @@ cascade_partner() {
     python3 "$FINANCE_MODEL/growth.py" --partner "$p" --agg "$agg" \
       --json "$RECAL/growth-$p.json"
   fi
+  local pj="$ROOT/data-clean/partners/$p.json"
   echo "  [$p] frontend_block"
   python3 "$FINANCE_MODEL/growth_frontend_block.py" --partner "$p" \
+    --partner-json "$pj" \
     --growth "$RECAL/growth-$p.json" --rollup "$agg" \
     --out "$GROWTH_DRAFT/$p.growth.json"
   echo "  [$p] splice → data-clean"
-  local pj="$ROOT/data-clean/partners/$p.json"
   if [[ ! -f "$pj" ]]; then
     echo "✗ missing $pj" >&2
     exit 1

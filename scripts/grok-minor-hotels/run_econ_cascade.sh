@@ -35,6 +35,7 @@ step "3/9 growth_frontend_block.py"
 mkdir -p "$GROWTH_DRAFT"
 python3 "$MODEL/growth_frontend_block.py" \
   --partner "$PARTNER" \
+  --partner-json "$ROOT/partner-pitch/partners/$PARTNER.json" \
   --growth "$RECAL/growth-$PARTNER.json" \
   --rollup "$RECAL/agg-$PARTNER.json" \
   --out "$GROWTH_DRAFT/$PARTNER.growth.json"

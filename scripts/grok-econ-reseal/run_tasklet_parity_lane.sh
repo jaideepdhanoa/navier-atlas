@@ -53,6 +53,7 @@ for p in grab bolt yango; do
   python3 "$FINANCE_MODEL/growth.py" --partner "$p" --agg "$RECAL/agg-$p.json" --json "$RECAL/growth-$p.json"
   echo "  [$p] frontend_block"
   python3 "$FINANCE_MODEL/growth_frontend_block.py" --partner "$p" \
+    --partner-json "$ROOT/data-clean/partners/$p.json" \
     --growth "$RECAL/growth-$p.json" --rollup "$RECAL/agg-$p.json" \
     --out "$GROWTH_DRAFT/$p.growth.json"
   echo "  [$p] splice → data-clean"

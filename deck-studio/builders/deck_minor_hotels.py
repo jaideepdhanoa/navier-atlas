@@ -276,18 +276,17 @@ def slide10_tam_map() -> dict[str, str]:
     som_m = g.get("SOM_floor_navier_transport_rev_yr", 0) / 1e6
     sam_m = g.get("SAM_navier_transport_rev_yr", {}).get("mid", 0) / 1e6
     tam_m = g.get("TAM_journey_gmv_yr", {}).get("mid", 0) / 1e6
-    plat_m = g.get("partner_platform_rev_yr", {}).get("mid", 0) / 1e6
     return {
         "som_value": t["som_floor_display"],
         "som_caption": f"SOM floor — captive ~90% capture, {som_m:.0f}M grounded today",
         "sam_value": t["sam_mid_display"],
         "sam_caption": f"SAM mid — WIDTH scales keys + clusters ({sam_m:.0f}M Navier rev)",
         "tam_value": t["tam_journey_gmv_mid_display"],
-        "tam_caption": f"TAM — total journey GMV through Minor guest wallet ({tam_m:.0f}M)",
+        "tam_caption": f"Journey GMV — total guest wallet on Minor coastal network ({tam_m:.0f}M)",
         "journey_gmv_value": t["tam_journey_gmv_mid_display"],
         "journey_gmv_caption": "Journey GMV routed through the Minor coastal network",
-        "platform_value": t["partner_platform_rev_mid_display"],
-        "platform_caption": f"Minor ancillary revenue on resort journey GMV ({plat_m:.0f}M)",
+        "platform_value": "",
+        "platform_caption": "",
     }
 
 

@@ -13,11 +13,14 @@ Usage:
 import argparse, json, os, shutil, sys, time
 from datetime import datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from partner_platform_rev import shows_platform_revenue, strip_growth_case_platform  # noqa: E402
+
 def m(x):
     if x is None: return "—"
     return f"${x/1e6:,.0f}M" if x < 1e9 else f"${x/1e9:,.2f}B"
 
-def build_ladder_transitions(gc_grounded, params, partner):
+def build_ladder_transitions(gc_grounded, params, partner, *, include_platform: bool = True):
     """Six-rung ascending: som_floor -> som_network -> sam_network -> tam_transfer
     -> journey_gmv -> platform_rev."""
     G = gc_grounded
@@ -48,7 +51,7 @@ def build_ladder_transitions(gc_grounded, params, partner):
     partner_label = {"grab":"Grab","careem":"Careem","jih-global":"JIH Global","qatar":"Qatar",
                      "saudi-pif":"Saudi PIF","red-sea-global":"Red Sea Global"}.get(partner, partner.title())
 
-    return [
+    transitions = [
         {
             "from_rung_id":"som_floor","to_rung_id":"som_network",
             "headline":"Same 10% capture, expanded to the full mapped network",
@@ -98,7 +101,9 @@ def build_ladder_transitions(gc_grounded, params, partner):
             "source_fields":[f"finance/recal/growth-{partner}.json:parameters_used.journey_gmv_multiple"],
             "confidence":"med-low",
         },
-        {
+    ]
+    if include_platform:
+        transitions.append({
             "from_rung_id":"journey_gmv","to_rung_id":"platform_rev",
             "headline":f"{partner_label} platform take on Navier-carried journeys",
             "basis":("Platform-take step. Platform commission applied to the journey GMV routed through "
@@ -112,8 +117,8 @@ def build_ladder_transitions(gc_grounded, params, partner):
             ],
             "confidence":"med-low",
             "_lb_ref":"LB-113: partner_platform_rev_on_navier = on-Navier subset, distinct from deck's '18% \u00d7 full Journey GMV' narrative ceiling",
-        },
-    ]
+        })
+    return transitions
 
 def main():
     ap = argparse.ArgumentParser()
@@ -151,14 +156,20 @@ def main():
     anchor = gc.get("_headline_anchor", "grounded")
     G = gc.get(anchor) or gc["grounded"]
 
+    show_plat = shows_platform_revenue(pp)
+
     # ladder_transitions regenerated
     gcblock["ladder_transitions"] = build_ladder_transitions(
-        G, gc["parameters_used"], a.partner)
+        G, gc["parameters_used"], a.partner, include_platform=show_plat)
 
     # marine TAM convenience surface at growth_case top
     gcblock["marine_mobility_tam"] = G["marine_mobility_tam_yr"]
     gcblock["journey_gmv"] = G["journey_gmv_yr"]
-    gcblock["partner_platform_rev_on_navier"] = G["partner_platform_rev_on_navier_yr"]
+    if show_plat:
+        gcblock["partner_platform_rev_on_navier"] = G["partner_platform_rev_on_navier_yr"]
+    else:
+        gcblock.pop("partner_platform_rev_on_navier", None)
+        strip_growth_case_platform(gcblock)
     if gc.get("_forward_sam_only"):
         gcblock["_forward_sam_only"] = True
         gcblock["_headline_anchor"] = anchor
@@ -169,15 +180,24 @@ def main():
             "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
             "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)",
         },
-        "ladder_rung_count": 6,
-        "rungs_ascending": ["som_floor","som_network","sam_network","tam_transfer","journey_gmv","platform_rev"],
+        "ladder_rung_count": 6 if show_plat else 5,
+        "rungs_ascending": (
+            ["som_floor","som_network","sam_network","tam_transfer","journey_gmv","platform_rev"]
+            if show_plat
+            else ["som_floor","som_network","sam_network","tam_transfer","journey_gmv"]
+        ),
     }
+    if not show_plat:
+        gcblock["_marine_tam_split_provenance"]["platform_rev_excluded"] = (
+            "hospitality/destination — not a super-app partner"
+        )
 
     json.dump(pp, open(pj, "w"), indent=1, ensure_ascii=False)
+    plat_mid = (gcblock.get("partner_platform_rev_on_navier") or {}).get("mid")
     print(f"spliced {a.partner}: rungs={len(gcblock['revenue_potential']['rungs'])} "
           f"transitions={len(gcblock['ladder_transitions'])} "
           f"marine_tam_mid={m(gcblock['marine_mobility_tam']['mid'])} "
-          f"plat_on_navier_mid={m(gcblock['partner_platform_rev_on_navier']['mid'])}")
+          f"plat_on_navier_mid={m(plat_mid) if plat_mid else '— (excluded)'}")
 
 if __name__ == "__main__":
     main()

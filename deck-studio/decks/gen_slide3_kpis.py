@@ -20,8 +20,12 @@ RULES:
   - Markets, order, labels, and gulf_slide_only come ONLY from market-scope.json (single source of scope truth).
   - If a market in scope is missing from the source files -> emit null KPIs for it, DO NOT guess. (null beats wrong.)
 """
-import json, sys, datetime
+import json, os, sys, datetime
 from collections import defaultdict
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "finance"))
+from partner_platform_rev import shows_platform_revenue  # noqa: E402
 
 partner = sys.argv[1]
 REC = "finance/recal"
@@ -56,18 +60,24 @@ def card(key):
         "co2_saved_t_yr": round(g.get("co2_saved_t_yr", 0)),
     }
 
+pj_path = os.path.join(ROOT, "partner-pitch", "partners", f"{partner}.json")
+partner_meta = json.load(open(pj_path)) if os.path.isfile(pj_path) else {}
+show_plat = shows_platform_revenue(partner_meta)
+
 def ladder(scen):
     s = grw[scen]
     mid = lambda x: x.get("mid") if isinstance(x, dict) else x
-    return {
+    out = {
         "addressable_transport_spend_usd_m": usd_m(s["M_today_transport_spend_yr"]),
         "SOM_floor_navier_rev_usd_m": usd_m(s["SOM_floor_navier_transport_rev_yr"]),
         "SAM_navier_rev_mid_usd_b": usd_b(mid(s["SAM_navier_transport_rev_yr"])),
         "TAM_journey_gmv_mid_usd_b": usd_b(mid(s["TAM_journey_gmv_yr"])),
-        "partner_platform_rev_mid_usd_b": usd_b(mid(s["partner_platform_rev_yr"])),
         "effective_capture": round(s.get("_eff_capture_floor", 0), 3),
         "is_captive": s.get("_is_captive"),
     }
+    if show_plat:
+        out["partner_platform_rev_mid_usd_b"] = usd_b(mid(s["partner_platform_rev_yr"]))
+    return out
 
 markets = {}
 for m in scope["markets"]:

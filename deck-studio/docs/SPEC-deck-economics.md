@@ -31,7 +31,7 @@ passes **112/112**. Run it after any model change as a regression gate before tr
 ## Output: `deck-economics-values-<partner>.json`
 - `slide3_kpi.network_cards` — the 4 headline KPI cards
 - `slide3_kpi.per_market_cards` — 6 per-market cards (routes, pool, rev floor, fleet, riders/day, CO₂)
-- `slide10_tam.rungs` — SOM → SAM → TAM(marine) → Journey GMV → partner platform revenue
+- `slide10_tam.rungs` — SOM → SAM → TAM(marine) → Journey GMV; **+ partner platform revenue** only when `archetype` ∈ `{super_app, ridehail}`
 - `economics_slides[idx]` — per-market unit economics for every slide-7-family index
 
 ## Field derivation (literal — no interpretation)
@@ -53,7 +53,9 @@ passes **112/112**. Run it after any model change as a regression gate before tr
   reproduces $900K US/EU, $600K RoW without re-encoding the region rule)
 
 **slide10 ladder** (mid of band): `SOM_floor_navier_transport_rev_yr`, `SAM_navier_transport_rev_yr.mid`,
-`marine_mobility_tam_yr.mid` (TAM), `TAM_journey_gmv_yr.mid` (Journey GMV), `partner_platform_rev_yr.mid`.
+`marine_mobility_tam_yr.mid` (TAM), `TAM_journey_gmv_yr.mid` (Journey GMV). Hospitality / destination /
+sovereign / transit / corporate proposals stop at Journey GMV (5 rungs). Super-app / ride-hail only:
+append `partner_platform_rev_yr.mid` (6th rung).
 
 **Spreadsheet parity (LB-258):** the partner transparent sheet's *Market sizing* tab must use the
 same anchor: `growth-<partner>.json` → `grounded` only (`_headline_anchor`), with

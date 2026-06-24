@@ -33,7 +33,7 @@ python3 deck-studio/decks/gen_slide3_kpis.py <partner>      # run from repo root
 - `SOM_floor_navier_rev_usd_m` = `SOM_floor_navier_transport_rev_yr` /1e6
 - `SAM_navier_rev_mid_usd_b` = `SAM_navier_transport_rev_yr["mid"]` /1e9
 - `TAM_journey_gmv_mid_usd_b` = `TAM_journey_gmv_yr["mid"]` /1e9
-- `partner_platform_rev_mid_usd_b` = `partner_platform_rev_yr["mid"]` /1e9
+- `partner_platform_rev_mid_usd_b` = `partner_platform_rev_yr["mid"]` /1e9 — **omitted** unless `archetype` ∈ `{super_app, ridehail}`
 - `effective_capture` = `_eff_capture_floor`; `is_captive` = `_is_captive`
 - `routes_mapped_total` = `rollup.n_corridors_total`
 

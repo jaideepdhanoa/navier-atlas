@@ -29,6 +29,7 @@ python3 "$FINANCE_MODEL/growth.py" --partner "$P" --agg "$AGG" --greenfield off 
 
 echo "→ [$P] frontend_block + splice"
 python3 "$FINANCE_MODEL/growth_frontend_block.py" --partner "$P" \
+  --partner-json "$PARTNER" \
   --growth "$GROWTH" --rollup "$AGG" --out "$FRONT"
 cp "$PARTNER" "$ROOT/partner-pitch/partners/$P.json" 2>/dev/null || true
 python3 "$FINANCE/splice_growth_into_partner.py" --partner "$P" \

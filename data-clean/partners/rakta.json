@@ -1178,12 +1178,11 @@
  "growth_case": {
   "revenue_potential": {
    "headline": "The floor and the prize — every rung traces to grounded, sourced demand.",
-   "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+   "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, and journey wallet.",
    "anchor_note": "$8M/yr premium sea-transfer spend on sourced corridors today — the anchor every rung builds from.",
    "whose_money_legend": {
     "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
-    "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
-    "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+    "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit."
    },
    "cite_rule": "Cite MID. 'High' stacks every optimistic assumption — ceiling, not headline.",
    "rungs": [
@@ -1266,39 +1265,8 @@
      },
      "confidence": "med-low",
      "confidence_label": "Projected"
-    },
-    {
-     "id": "platform_rev",
-     "label": "Partner platform revenue on Navier",
-     "whose_money": "partner's P&L on Navier-carried journeys",
-     "basis": "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
-     "low": 1851969.0,
-     "mid": 9131466.0,
-     "high": 35117839.0,
-     "display": {
-      "low": "$2M",
-      "mid": "$9M",
-      "high": "$35M"
-     },
-     "confidence": "med-low",
-     "confidence_label": "Projected"
     }
-   ],
-   "ceiling_sibling": {
-    "id": "platform_rev_full_journey",
-    "label": "Platform revenue ceiling — 18% × full Journey GMV",
-    "low": 12346460.0,
-    "mid": 36525866.0,
-    "high": 87794598.0,
-    "display": {
-     "low": "$12M",
-     "mid": "$37M",
-     "high": "$88M"
-    },
-    "derivation": "journey_gmv.mid × 0.18 (full GMV ceiling, not Navier-corridor subset)",
-    "confidence_label": "Projected",
-    "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. Platform_rev rung remains the Navier-subset Interpretation-A value."
-   }
+   ]
   },
   "phase_economics": {
    "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
@@ -1314,8 +1282,6 @@
      "fleet_boats": 3,
      "navier_transport_rev_yr": 766899.0,
      "navier_transport_rev_display": "$1M",
-     "partner_platform_rev_yr": null,
-     "partner_platform_rev_display": "nascent",
      "co2_saved_t_yr": 288,
      "confidence": "grounded",
      "confidence_label": "Grounded"
@@ -1334,7 +1300,6 @@
      },
      "navier_transport_rev_yr": 3757805.0,
      "navier_transport_rev_display": "$4M",
-     "partner_platform_rev_display": "building",
      "co2_saved_t_yr": 1411,
      "confidence": "med",
      "confidence_label": "Modeled"
@@ -1350,10 +1315,6 @@
      "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
      "navier_transport_rev_yr": 16910123.0,
      "navier_transport_rev_display": "$17M",
-     "partner_platform_rev_yr": 9131466.0,
-     "partner_platform_rev_display": "$9M",
-     "partner_platform_rev_on_navier_yr": 9131466.0,
-     "partner_platform_rev_on_navier_display": "$9M",
      "marine_mobility_tam_yr": 67640492.0,
      "marine_mobility_tam_display": "$68M marine TAM",
      "journey_gmv_yr": 202921475.0,
@@ -1475,24 +1436,6 @@
      "finance/recal/growth-rakta.json:parameters_used.journey_gmv_multiple"
     ],
     "confidence": "med-low"
-   },
-   {
-    "from_rung_id": "journey_gmv",
-    "to_rung_id": "platform_rev",
-    "headline": "Rakta platform take on Navier-carried journeys",
-    "basis": "Platform-take step. Platform commission applied to the journey GMV routed through the Navier network (Navier-captured subset, not the full induced market).",
-    "derivation": "sam_network_mid ($17M) × journey_gmv_multiple.mid (3.00) × platform_take_rate (18%) = $9M (platform_rev mid)",
-    "multipliers_cited": {
-     "journey_gmv_multiple_mid": 3.0,
-     "platform_take_rate": 0.18,
-     "mature_capture_rate_mid": 0.25
-    },
-    "source_fields": [
-     "finance/recal/growth-rakta.json:parameters_used.platform_take_rate",
-     "finance/recal/growth-rakta.json:parameters_used.journey_gmv_multiple"
-    ],
-    "confidence": "med-low",
-    "_lb_ref": "LB-113: partner_platform_rev_on_navier = on-Navier subset, distinct from deck's '18% × full Journey GMV' narrative ceiling"
    }
   ],
   "marine_mobility_tam": {
@@ -1505,11 +1448,6 @@
    "mid": 202921475.0,
    "high": 487747764.0
   },
-  "partner_platform_rev_on_navier": {
-   "low": 1851969.0,
-   "mid": 9131466.0,
-   "high": 35117839.0
-  },
   "_marine_tam_split_provenance": {
    "date": "2026-06-22T00:37:15.231668Z",
    "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
@@ -1517,16 +1455,18 @@
     "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
     "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)"
    },
-   "ladder_rung_count": 6,
+   "ladder_rung_count": 5,
    "rungs_ascending": [
     "som_floor",
     "som_network",
     "sam_network",
     "tam_transfer",
-    "journey_gmv",
-    "platform_rev"
-   ]
-  }
+    "journey_gmv"
+   ],
+   "platform_rev_excluded": "hospitality/destination — not a super-app partner"
+  },
+  "_platform_rev_excluded": true,
+  "_platform_rev_rule": "super_app|ridehail only (LB-hospitality-ladder)"
  },
  "map_display": {
   "promote_roadmap": true,

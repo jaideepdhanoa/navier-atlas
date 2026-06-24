@@ -35,7 +35,7 @@ Seal Curaçao **once**; both partner views scope to it (shared network, never co
 ## Then — economics (NOT Grok; Tasklet's lane, after seal)
 Once geometry seals, **Tasklet** runs the cascade on the sealed route_ids:
 - `ocean-whisperer`: capture 0.55, **$1M hospitality** tier, captive **but rising** ladder (~45% headroom — NOT FP's flat treatment).
-- `caribbean`: capture 0.55, **$900K commercial** tier, **broad-footprint rising** ladder (SOM floor < SOM network < SAM < marine TAM < journey GMV < platform rev).
+- `caribbean`: capture 0.55, **$900K commercial** tier, **broad-footprint rising** ladder (SOM floor < SOM network < SAM < marine TAM < journey GMV). No platform-revenue rung — hospitality archetype.
 - Greenfield band 3.44/4.9/6.36 (no peer census). Sanity gate: journey-GMV TAM ≤ each market's whole tourism economy.
 - Then wire `economics_url` to the published Sheets and (Grok) build the route-keyed sidecar against the new gold.
 

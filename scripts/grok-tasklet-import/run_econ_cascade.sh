@@ -18,6 +18,8 @@ if [[ -z "$PARTNER" ]]; then
 fi
 MARKETS="${2:-$PARTNER}"
 CORR="$RECAL/corridors-$PARTNER.json"
+PJ="$ROOT/partner-pitch/partners/$PARTNER.json"
+DC="$ROOT/data-clean/partners/$PARTNER.json"
 
 step() { echo ""; echo "=== $* ==="; }
 
@@ -48,13 +50,12 @@ step "5/9 growth_frontend_block.py"
 mkdir -p "$GROWTH_DRAFT"
 python3 "$MODEL/growth_frontend_block.py" \
   --partner "$PARTNER" \
+  --partner-json "$PJ" \
   --growth "$RECAL/growth-$PARTNER.json" \
   --rollup "$RECAL/agg-$PARTNER.json" \
   --out "$GROWTH_DRAFT/$PARTNER.growth.json"
 
 step "6/9 splice growth_case → partner JSON"
-PJ="$ROOT/partner-pitch/partners/$PARTNER.json"
-DC="$ROOT/data-clean/partners/$PARTNER.json"
 python3 "$FINANCE/splice_growth_into_partner.py" \
   --partner "$PARTNER" \
   --growth "$RECAL/growth-$PARTNER.json" \

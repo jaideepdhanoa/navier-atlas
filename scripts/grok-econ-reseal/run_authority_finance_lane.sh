@@ -21,6 +21,7 @@ for p in "${TARGETS[@]}"; do
   python3 "$MODEL/aggregate.py" --partner "$p" --json "$RECAL/agg-$p.json"
   python3 "$MODEL/growth.py" --agg "$RECAL/agg-$p.json" --partner "$p" --json "$RECAL/growth-$p.json"
   python3 "$MODEL/growth_frontend_block.py" --partner "$p" \
+    --partner-json "$ROOT/partner-pitch/partners/$p.json" \
     --growth "$RECAL/growth-$p.json" --rollup "$RECAL/agg-$p.json" \
     --out "$RECAL/growth-frontend-$p.json"
   python3 "$FINANCE/splice_growth_into_partner.py" --partner "$p" \

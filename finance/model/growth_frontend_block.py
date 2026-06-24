@@ -18,7 +18,12 @@ Usage:
       --growth ../grab-growth-case.json --rollup ../grab-aggregate-results.json \
       --out ../../partner-pitch/partners/_growth-draft/grab.growth.json
 """
-import json, argparse, os
+import json, argparse, os, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+FIN = os.path.dirname(HERE)
+sys.path.insert(0, FIN)
+from partner_platform_rev import shows_platform_revenue, strip_frontend_block  # noqa: E402
 
 def band(d):
     if isinstance(d, dict):
@@ -39,7 +44,13 @@ def main():
     ap.add_argument("--growth", required=True)
     ap.add_argument("--rollup", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--partner-json", default=None, help="partner proposal JSON (archetype gate for platform rev)")
     a = ap.parse_args()
+
+    show_plat = True
+    if a.partner_json:
+        pp = json.load(open(a.partner_json))
+        show_plat = shows_platform_revenue(pp)
 
     gc = json.load(open(a.growth)); P = gc["parameters_used"]; gf = gc["greenfield"]
     rl = json.load(open(a.rollup))["rollup"]
@@ -94,14 +105,20 @@ def main():
         ("journey_gmv",   "Journey GMV \u2014 food + stays + experiences (\u22483\u00d7 TAM)", "total journey wallet",
          "add food, stays, and experiences to every crossing in the induced market",
          band(G["journey_gmv_yr"]), "med-low"),
-        ("platform_rev",  "Partner platform revenue on Navier", "partner's P&L on Navier-carried journeys",
-         "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
-         band(G["partner_platform_rev_on_navier_yr"]), "med-low"),
     ]
+    if show_plat:
+        rungs.append(
+            ("platform_rev",  "Partner platform revenue on Navier", "partner's P&L on Navier-carried journeys",
+             "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
+             band(G["partner_platform_rev_on_navier_yr"]), "med-low"),
+        )
     revenue_potential = {
         "headline": "The floor and the prize \u2014 every rung traces to grounded, sourced demand.",
-        "modal_lead": ("We start from grounded corridor demand. Each step adds one realistic expansion "
-                       "lever \u2014 network width, induced demand, journey wallet, platform take."),
+        "modal_lead": (
+            "We start from grounded corridor demand. Each step adds one realistic expansion "
+            "lever \u2014 network width, induced demand, journey wallet"
+            + (", platform take." if show_plat else ".")
+        ),
         "anchor_note": (f"{m(G['M_today_transport_spend_yr'])}/yr premium sea-transfer spend on sourced corridors today "
                         "\u2014 the anchor every rung builds from."),
         "whose_money_legend": gc.get("_whose_money_legend", {}),
@@ -116,8 +133,9 @@ def main():
                                   "med-low": "Projected", "med-low (banded)": "Projected"}.get(conf, "Projected")}
             for rid, lbl, wm, basis, bd, conf in rungs
         ],
-        # ζ1 (LB-122): ceiling SIBLING object — 18% × full journey GMV. NOT a ladder rung.
-        "ceiling_sibling": {
+    }
+    if show_plat:
+        revenue_potential["ceiling_sibling"] = {
             "id": "platform_rev_full_journey",
             "label": "Platform revenue ceiling \u2014 18% \u00d7 full Journey GMV",
             "low": band(G["partner_platform_rev_full_journey_yr"])["low"],
@@ -132,8 +150,7 @@ def main():
             "confidence_label": "Projected",
             "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. "
                     "Platform_rev rung remains the Navier-subset Interpretation-A value.",
-        },
-    }
+        }
 
     # ---- 2. phase_economics (3 horizons) ---------------------------------
     som_net = band(G["SOM_full_network_navier_transport_rev_yr"])
@@ -167,7 +184,7 @@ def main():
                 "vessel": "N30 Pioneer II (8 pax, commercial now)",
                 "fleet_boats": floor_fleet,
                 "navier_transport_rev_yr": floor_rev, "navier_transport_rev_display": m(floor_rev),
-                "partner_platform_rev_yr": None, "partner_platform_rev_display": "nascent",
+                **({"partner_platform_rev_yr": None, "partner_platform_rev_display": "nascent"} if show_plat else {}),
                 "co2_saved_t_yr": round(floor_co2),
                 "confidence": "grounded",
                 "confidence_label": "Grounded",
@@ -180,7 +197,7 @@ def main():
                 "fleet_boats_est": boats(scale_rev["mid"], REVPERBOAT),
                 "fleet_boats_band": {"low": boats(scale_rev["low"], REVPERBOAT), "high": boats(scale_rev["high"], REVPERBOAT)},
                 "navier_transport_rev_yr": scale_rev["mid"], "navier_transport_rev_display": m(scale_rev["mid"]),
-                "partner_platform_rev_display": "building",
+                **({"partner_platform_rev_display": "building"} if show_plat else {}),
                 "co2_saved_t_yr": co2(scale_rev["mid"]),
                 "confidence": "med",
                 "confidence_label": "Modeled",
@@ -195,9 +212,16 @@ def main():
                 "fleet_boats_est_pioneer_equiv": boats(sam_net["mid"], REVPERBOAT),
                 "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
                 "navier_transport_rev_yr": sam_net["mid"], "navier_transport_rev_display": m(sam_net["mid"]),
-                "partner_platform_rev_yr": plat["mid"], "partner_platform_rev_display": m(plat["mid"]),
-                "partner_platform_rev_on_navier_yr": plat["mid"],
-                "partner_platform_rev_on_navier_display": m(plat["mid"]),
+                **(
+                    {
+                        "partner_platform_rev_yr": plat["mid"],
+                        "partner_platform_rev_display": m(plat["mid"]),
+                        "partner_platform_rev_on_navier_yr": plat["mid"],
+                        "partner_platform_rev_on_navier_display": m(plat["mid"]),
+                    }
+                    if show_plat
+                    else {}
+                ),
                 "marine_mobility_tam_yr": band(G["marine_mobility_tam_yr"])["mid"],
                 "marine_mobility_tam_display": m(band(G["marine_mobility_tam_yr"])["mid"]) + " marine TAM",
                 "journey_gmv_yr": band(G["journey_gmv_yr"])["mid"],
@@ -226,7 +250,32 @@ def main():
                            "Long legs never faked on a 70nm boat.",
     }
 
-    block = {
+    if not show_plat:
+        block = {
+            "_provenance": {},
+            "revenue_potential": revenue_potential,
+            "phase_economics": phase_economics,
+            "vessel_sizing": vessel_sizing,
+        }
+        strip_frontend_block(block)
+        block["_provenance"] = {
+            "source_growth": os.path.basename(a.growth),
+            "source_rollup": os.path.basename(a.rollup),
+            "rev_per_boat_yr": round(REVPERBOAT) if REVPERBOAT else None,
+            "greenfield_mode": gf_mode,
+            "greenfield_corridors": (gf.get("_census") or {}).get("n_greenfield_headline"),
+            "sourced_corridors": (gf.get("_census") or {}).get("n_sourced")
+                                  or json.load(open(a.rollup)).get("rollup", {}).get("n_corridors_total"),
+            "generator": "growth_frontend_block.py",
+            "platform_rev_excluded": True,
+        }
+        block["_render_chip_flag"] = {
+            "needs_new_layouts": ["revenue_ladder", "phase_economics_table", "vessel_sizing_cards"],
+            "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). "
+                                  "Never headline the 'high' band.",
+        }
+    else:
+        block = {
         "_provenance": {
             "source_growth": os.path.basename(a.growth),
             "source_rollup": os.path.basename(a.rollup),
