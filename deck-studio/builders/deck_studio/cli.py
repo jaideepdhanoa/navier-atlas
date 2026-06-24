@@ -115,9 +115,30 @@ def cmd_plan(args):
     plan={'deck_key':args.deck,'presentation_id':cfg['deck_id'],'mode':'slides_api_batch_update','request_summary':request[:500], 'safety':{'no_pptx_roundtrip':True,'no_full_deck_replace':True,'preserve_object_ids':True,'human_review_required_for_external_send':True}, 'operations':[], 'qa_gates':['schema_validation','no_full_replace','object_id_check','brand_lint','claim_source_check','render_export'], 'created_at':datetime.datetime.utcnow().isoformat()+'Z'}
     out=args.out or f'out/{args.deck}-edit-plan.json'; write_json(out, plan); print(out); return 0
 
+def load_partner_copy_lint(root):
+    """Dynamically load qa/partner_copy_lint.py (the shared jargon gate)."""
+    import importlib.util
+    lint_path=Path(root)/'qa'/'partner_copy_lint.py'
+    if not lint_path.is_file():
+        return None
+    spec=importlib.util.spec_from_file_location('partner_copy_lint', lint_path)
+    mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+    return mod
+
 def cmd_apply(args):
     plan=load_json(args.plan); bad=plan_has_forbidden(plan)
     if bad: raise SystemExit('Refusing unsafe plan: '+', '.join(bad))
+    # Pre-seal gate: no internal model/render taxonomy in partner-rendered text.
+    if not getattr(args, 'skip_copy_lint', False):
+        lint=load_partner_copy_lint(args.root)
+        if lint is not None:
+            findings=lint.scan_editplan(plan)
+            if findings:
+                msg=['Refusing plan: %d internal-taxonomy hit(s) in partner-rendered text '
+                     '(run qa/partner_copy_lint.py; --skip-copy-lint to override):' % len(findings)]
+                for where, tok, ctx in findings[:25]:
+                    msg.append(f'  [{where}] \u00ab{tok}\u00bb  \u2192  {ctx}')
+                raise SystemExit('\n'.join(msg))
     # Validate against known slide ids.
     manifest=load_json(deck_dir(args.root,args.deck)/'slide-manifest.json')
     known={s['slide_object_id'] for s in manifest['slides']}
@@ -142,6 +163,11 @@ def cmd_qa(args):
     checks.append({'name':'object_inventory','status':'warning' if manifest.get('object_inventory_status')=='summary_only' else 'pass','details':manifest.get('object_inventory_status','')})
     bad_images=[i['image_key'] for i in img.get('images',[]) if not i.get('provenance_required')]
     checks.append({'name':'image_provenance_required','status':'pass' if not bad_images else 'fail','details':', '.join(bad_images)})
+    # Partner-copy jargon gate (internal model/render taxonomy on partner slides).
+    lint=load_partner_copy_lint(root); ep_path=d/'deck.editplan.json'
+    if lint is not None and ep_path.is_file():
+        hits=lint.scan_editplan(load_json(ep_path))
+        checks.append({'name':'partner_copy_lint','status':'pass' if not hits else 'fail','details':('clean' if not hits else '; '.join(f"[{w}] {t}" for w,t,_ in hits[:12]))})
     status='fail' if any(c['status']=='fail' for c in checks) else ('pass_with_flags' if any(c['status']=='warning' for c in checks) else 'pass')
     receipt={'deck_key':args.deck,'status':status,'generated_at':datetime.datetime.utcnow().isoformat()+'Z','checks':checks,'artifacts':[str(d/'deck.config.json'), str(d/'slide-manifest.json'), str(d/'image-manifest.json')]}
     out=args.receipt or str(d/'qa-receipts'/'latest-local-qa.json')
@@ -158,7 +184,11 @@ def main():
     p=sub.add_parser('validate'); p.add_argument('--root', default='.'); p.set_defaults(func=cmd_validate)
     p=sub.add_parser('pull'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--mode', choices=['summary','full','raw'], default='summary'); p.add_argument('--out'); p.set_defaults(func=cmd_pull)
     p=sub.add_parser('plan'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--request'); p.add_argument('--out'); p.set_defaults(func=cmd_plan)
-    p=sub.add_parser('apply'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--plan', required=True); p.add_argument('--dry-run', action='store_true'); p.set_defaults(func=cmd_apply)
+    p=sub.add_parser('apply'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--plan', required=True); p.add_argument('--dry-run', action='store_true'); p.add_argument('--skip-copy-lint', action='store_true', help='override the partner-copy jargon gate (not recommended)'); p.set_defaults(func=cmd_apply)
     p=sub.add_parser('qa'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--receipt'); p.set_defaults(func=cmd_qa)
     p=sub.add_parser('image-plan'); p.add_argument('--root', default='.'); p.add_argument('--deck', required=True); p.add_argument('--slide-object-id', required=True); p.add_argument('--out'); p.set_defaults(func=cmd_image_plan)
     args=ap.parse_args(); sys.exit(args.func(args))
+
+
+if __name__ == '__main__':
+    main()
