@@ -2346,9 +2346,11 @@ function _cityBriefHtml(brief, props, coords){
       // signature_routes are now {label, route_id} objects (were bare strings — handle both). Clickable
       // when the route_id resolves to a route in this bundle (→ opens it like a live route).
       const o = (typeof r==='string') ? {label:r} : (r||{});
+      if (_geometryPending(o)) continue;
       const lbl = String(o.label||'').replace(/^[↔→\s]+/,'');
       const rids = _routeIdsOf(o).filter(id=>ROUTE_ID_SET.has(id));
-      h+=`<div class="pcaro-route${rids.length?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
+      if (!rids.length) continue;
+      h+=`<div class="pcaro-route clickable" data-routes="${escapeHtml(rids.join(','))}"><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
     }
     if (liveClean.length){ h+=`<div class="brief-live-h">On the map · click a route to highlight it</div>`;
       for (const f of liveClean){ const p=f.properties; h+=`<div class="brief-live" data-rid="${escapeHtml(p.id)}"><span class="brief-live-dot" style="background:${_platColor(p.platform)}"></span><span>${escapeHtml(_routeLabel(p))}</span>${p.distance_nm!=null?`<span class="brief-live-d">${Math.round(p.distance_nm)} nm</span>`:''}</div>`; }
@@ -2429,9 +2431,11 @@ function _clusterBriefHtml(cb){
     h+=`<div class="panel-section"><h3>Signature routes</h3>`;
     for (const r of cb.signature_routes){
       const o = (typeof r==='string') ? {label:r} : (r||{});
+      if (_geometryPending(o)) continue;
       const lbl = String(o.label||'').replace(/^[↔→\s]+/,'');
       const rids = _routeIdsOf(o).filter(id=>ROUTE_ID_SET.has(id));
-      h+=`<div class="pcaro-route${rids.length?' clickable':''}"${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
+      if (!rids.length) continue;
+      h+=`<div class="pcaro-route clickable" data-routes="${escapeHtml(rids.join(','))}"><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
     }
     h+=`</div>`;
   }
@@ -2896,6 +2900,14 @@ function _useCasesHtml(useCases, title='Use cases', sub=''){
 }
 function _journeysHtml(js){
   if (!js || !js.length) return '';
+  // Build-time curation ships ≤6 geometry-ready corridors; runtime guard hides pending / unlinked rows.
+  const visible = js.filter(j=>{
+    if (_geometryPending(j)) return false;
+    const rids=_plausibleRouteIds(j.distance_nm, _routeIdsOf(j), (j.from||'')+' '+(j.to||''));
+    const fn=j.from_node_id||'', tn=j.to_node_id||'';
+    return rids.length > 0 || (fn && tn && fn !== tn);
+  }).slice(0, 6);
+  if (!visible.length) return '';
   const card = (j)=>{ const pc=_platColor(j.platform); const chips=[];
     // Same treatment as featured routes: lead with travel time, keep nm muted, drop the verbose
     // "both"/"Pioneer II" platform label, flag only the Quanta-LR long-range exception.
@@ -2917,7 +2929,7 @@ function _journeysHtml(js){
       ${j.with_navier?`<div class="pcaro-jrn-line nav"><span>With Navier</span>${escapeHtml(j.with_navier)}</div>`:''}
       ${chips.length?`<div class="pcaro-jrn-chips">${chips.join('')}</div>`:''}
     </div>`; };
-  return `<div class="panel-section"><h3>Journeys we unlock</h3><div class="pcaro-sub">A few of the corridors this opens — illustrative, not the full map.</div>${js.map(card).join('')}</div>`;
+  return `<div class="panel-section"><h3>Journeys we unlock</h3><div class="pcaro-sub">Marquee corridors with map geometry — not the full network.</div>${visible.map(card).join('')}</div>`;
 }
 function _diffHtml(d){
   if (!d) return '';
@@ -2987,11 +2999,12 @@ function _endstateHtml(partner){
 // featured_routes are node-linked objects {label, from_node_id, to_node_id, distance_nm, platform}
 // (older data shipped plain strings — handle both). Clickable when ids resolve them to the map.
 function _featuredRouteHtml(r){
-  if (typeof r==='string') return `<div class="pcaro-route">${escapeHtml(r)}</div>`;
+  if (typeof r==='string') return '';
   // Drop mis-linked ids (route length far off the label distance) so a click lights the right line or falls
   // back to endpoint-city focus via from/to node — never a confidently-wrong corridor (see _plausibleRouteIds).
   const routeLabel=r.label||([r.from_label,r.to_label].filter(Boolean).join(' ↔ '));
   const rids=_plausibleRouteIds(r.distance_nm, _routeIdsOf(r), routeLabel), fn=r.from_node_id||'', tn=r.to_node_id||'', pending=_geometryPending(r), click=!pending&&!!(rids.length||(fn&&tn)), pc=_platColor(r.platform);
+  if (!click) return '';
   // display:"network_chip" marks a bundle of corridors (Tasklet hint) — clicking lights/frames all its legs.
   const isNet = r.display==='network_chip', n=rids.length;
   const chips=[];
@@ -3024,7 +3037,7 @@ function _phaseBlockHtml(cur){
     ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
     ${cur.rationale?`<div class="pcaro-rationale">${escapeHtml(cur.rationale)}</div>`:''}
     ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
-    ${(cur.featured_routes&&cur.featured_routes.length)?`<div class="pcaro-routes-h">Featured routes</div>${cur.featured_routes.map(_featuredRouteHtml).join('')}`:''}
+    ${(()=>{ const fr=(cur.featured_routes||[]).map(_featuredRouteHtml).filter(Boolean).join(''); return fr?`<div class="pcaro-routes-h">Featured routes</div>${fr}`:''; })()}
     ${uc?`<div class="pcaro-routes-h">Use cases</div>${uc}`:''}
   </div>`;
 }

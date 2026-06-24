@@ -117,6 +117,193 @@ export function ensureTrafficWeight(p) {
 }
 
 const DENSITY_ROUTE_CAP = 120;
+const MARQUEE_JOURNEY_MAX = 6;
+const AUTO_LEGACY_ROUTE_THRESHOLD = 40;
+
+/** Cities where intra-city mesh routinely overwhelms the map at market scope. */
+const HIGH_DENSITY_CITY_IDS = new Set([
+  'dubai-uae', 'abu-dhabi-uae', 'sharjah-uae', 'doha-qatar', 'manama-bahrain',
+  'bangkok-thailand', 'phuket-thailand', 'pattaya-thailand', 'koh-samui-thailand',
+]);
+
+function isGeometryPending(o) {
+  if (!o) return true;
+  if (o.display === 'text_only' || o.flag === 'network-chip-text-only') return true;
+  if (o.flag === 'aspirational-no-built-route' || /aspirational-no-built-route/i.test(String(o._link_status || ''))) return true;
+  if (/null-geometry-pending/i.test(String(o._link_status || ''))) return true;
+  if (o.route_id === null && !routeIdsOf(o).length && o.from_node_id && o.from_node_id === o.to_node_id) return true;
+  return false;
+}
+
+/** Score journeys for marquee display — higher = more map-ready / proposal-worthy. */
+export function journeyDisplayScore(j, routeIdSet) {
+  if (isGeometryPending(j)) return -1;
+  const ids = routeIdsOf(j).filter((id) => routeIdSet.has(id));
+  const hasNodes = !!(j.from_node_id && j.to_node_id && j.from_node_id !== j.to_node_id);
+  if (!ids.length && !hasNodes) return -1;
+  let score = ids.length ? 12 : 3;
+  if (j.platform === 'Quanta-LR') score += 2;
+  if (typeof j.distance_nm === 'number' && j.distance_nm >= 8) score += 2;
+  else if (typeof j.distance_nm === 'number' && j.distance_nm >= 3) score += 1;
+  if (j.with_navier) score += 0.5;
+  if (j.today) score += 0.25;
+  return score;
+}
+
+export function curateJourneys(journeys, routeIdSet, max = MARQUEE_JOURNEY_MAX) {
+  return (journeys || [])
+    .map((j) => ({ j, score: journeyDisplayScore(j, routeIdSet) }))
+    .filter((x) => x.score >= 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, max)
+    .map((x) => x.j);
+}
+
+export function curateSignatureRoutes(routes, routeIdSet, max = MARQUEE_JOURNEY_MAX) {
+  return (routes || [])
+    .map((r) => {
+      const o = (typeof r === 'string') ? { label: r } : (r || {});
+      if (isGeometryPending(o)) return { o, score: -1 };
+      const ids = routeIdsOf(o).filter((id) => routeIdSet.has(id));
+      if (!ids.length) return { o, score: -1 };
+      let score = 10 + ids.length;
+      if (typeof o.distance_nm === 'number' && o.distance_nm >= 5) score += 1;
+      return { o, score };
+    })
+    .filter((x) => x.score >= 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, max)
+    .map((x) => x.o);
+}
+
+function rankRouteForCull(f, storyById) {
+  const p = ensureTrafficWeight(f.properties || {});
+  const tw = resolveTW(p);
+  const tier = resolveTier(p, tw);
+  let score = tw;
+  if (p.id && storyById.has(p.id)) score += 100;
+  if (tier === 'trunk' || p.platform === 'Quanta-LR') score += 50;
+  if (tier === 'regional') score += 20;
+  if (typeof p.distance_nm === 'number' && p.distance_nm >= 5) score += 8;
+  if (typeof p.distance_nm === 'number' && p.distance_nm < 1.5) score -= 25;
+  return score;
+}
+
+/**
+ * Thin intra-city meshes and duplicate inter-city pairs when route volume overwhelms area.
+ * Story routes always survive; inter-city corridors are kept in full unless duplicated heavily.
+ */
+export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pageKind, keep = [] }) {
+  if (pageKind === 'aggregate' || densityTier === 'normal') return routes;
+
+  const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
+  const intraCap = densityTier === 'extreme' ? (touchesDense ? 8 : 12) : 18;
+  const interDupCap = densityTier === 'extreme' ? 4 : 6;
+
+  const inter = [];
+  const intraByCity = new Map();
+  for (const f of routes) {
+    const cf = cityIdOf(f.properties?.from);
+    const ct = cityIdOf(f.properties?.to);
+    if (cf && ct && cf === ct) {
+      if (!intraByCity.has(cf)) intraByCity.set(cf, []);
+      intraByCity.get(cf).push(f);
+    } else {
+      inter.push(f);
+    }
+  }
+
+  const keptIntra = [];
+  for (const list of intraByCity.values()) {
+    const sorted = [...list].sort((a, b) => rankRouteForCull(b, storyById) - rankRouteForCull(a, storyById));
+    keptIntra.push(...sorted.slice(0, intraCap));
+  }
+
+  const interByPair = new Map();
+  for (const f of inter) {
+    const cf = cityIdOf(f.properties?.from);
+    const ct = cityIdOf(f.properties?.to);
+    const k = [cf, ct].sort().join('|');
+    if (!interByPair.has(k)) interByPair.set(k, []);
+    interByPair.get(k).push(f);
+  }
+  const keptInter = [];
+  for (const list of interByPair.values()) {
+    if (list.length <= interDupCap) {
+      keptInter.push(...list);
+      continue;
+    }
+    const sorted = [...list].sort((a, b) => rankRouteForCull(b, storyById) - rankRouteForCull(a, storyById));
+    keptInter.push(...sorted.slice(0, interDupCap));
+  }
+
+  return [...keptIntra, ...keptInter];
+}
+
+function resolveDensityPolicy(md, routeCount, keep = []) {
+  if (isLegacyDensity(md)) return 'legacy';
+  const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
+  if (routeCount >= AUTO_LEGACY_ROUTE_THRESHOLD || touchesDense) return 'legacy';
+  return 'tier_visual';
+}
+
+export function curatePartnerDisplay(partner, {
+  market = null,
+  routeIdSet,
+  cityBriefs = {},
+  clusterBriefs = {},
+  maxJourneys = MARQUEE_JOURNEY_MAX,
+} = {}) {
+  if (!partner) return partner;
+  const out = { ...partner };
+  const rid = routeIdSet || new Set();
+
+  if (market) {
+    const m = { ...market };
+    m.journeys_unlocked = curateJourneys(market.journeys_unlocked, rid, maxJourneys);
+    if (Array.isArray(m.phases)) {
+      m.phases = m.phases.map((ph) => ({
+        ...ph,
+        featured_routes: (ph.featured_routes || []).filter((fr) => {
+          if (typeof fr === 'string') return false;
+          if (isGeometryPending(fr)) return false;
+          const ids = routeIdsOf(fr).filter((id) => rid.has(id));
+          return ids.length > 0 || !!(fr.from_node_id && fr.to_node_id && fr.from_node_id !== fr.to_node_id);
+        }),
+      }));
+    }
+    out.markets = (partner.markets || []).map((x) => (x.slug === market.slug ? m : x));
+  } else {
+    out.journeys_unlocked = curateJourneys(partner.journeys_unlocked, rid, maxJourneys);
+    if (Array.isArray(out.phases)) {
+      out.phases = out.phases.map((ph) => ({
+        ...ph,
+        featured_routes: (ph.featured_routes || []).filter((fr) => {
+          if (typeof fr === 'string') return false;
+          if (isGeometryPending(fr)) return false;
+          const ids = routeIdsOf(fr).filter((id) => rid.has(id));
+          return ids.length > 0 || !!(fr.from_node_id && fr.to_node_id && fr.from_node_id !== fr.to_node_id);
+        }),
+      }));
+    }
+  }
+
+  return {
+    partner: out,
+    cityBriefs: Object.fromEntries(
+      Object.entries(cityBriefs).map(([cid, b]) => [
+        cid,
+        { ...b, signature_routes: curateSignatureRoutes(b.signature_routes, rid, maxJourneys) },
+      ]),
+    ),
+    clusterBriefs: Object.fromEntries(
+      Object.entries(clusterBriefs).map(([cid, b]) => [
+        cid,
+        { ...b, signature_routes: curateSignatureRoutes(b.signature_routes, rid, maxJourneys) },
+      ]),
+    ),
+  };
+}
 
 function passesDensityCap(p, tier, id, storyById) {
   if (storyById.has(id)) return true;
@@ -181,7 +368,8 @@ function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf }
     return true;
   });
 
-  if (pageKind !== 'aggregate' && filtered.length > DENSITY_ROUTE_CAP) {
+  // Market pages use area-density culling (densityCullRoutes) — skip the flat 120 cap here.
+  if (pageKind !== 'aggregate' && pageKind !== 'market' && filtered.length > DENSITY_ROUTE_CAP) {
     return filtered.filter((f) => {
       const p = f.properties || {};
       const tier = resolveTier(p, resolveTW(p));
@@ -243,9 +431,9 @@ export function defaultDensityMode(tier, storyCount) {
   return 'backbone';
 }
 
-export function buildMapDisplay(partner, { market = null, routeCount = 0, storyCount = 0, pageKind = 'flat' } = {}) {
+export function buildMapDisplay(partner, { market = null, routeCount = 0, storyCount = 0, pageKind = 'flat', densityPolicy = null } = {}) {
   const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
-  const legacy = isLegacyDensity(md);
+  const legacy = densityPolicy === 'legacy' || (densityPolicy == null && isLegacyDensity(md));
   const tier = inferDensityTier(routeCount, partner, market);
   if (legacy) {
     return {
@@ -273,7 +461,6 @@ export function buildMapDisplay(partner, { market = null, routeCount = 0, storyC
 
 export function applyRouteDisplay(scoped, { partner, market = null, pageKind, keep, net, cityIdOf }) {
   const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
-  const densityPolicy = isLegacyDensity(md) ? 'legacy' : 'tier_visual';
 
   const storyById = collectStoryRoutes(partner, {
     market,
@@ -282,23 +469,70 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
   });
 
   const rawRoutes = scoped.ROUTES || [];
-  const filtered = filterRoutesForPage(rawRoutes, {
+  const preTier = inferDensityTier(rawRoutes.length, partner, market);
+  const densityPolicy = resolveDensityPolicy(md, rawRoutes.length, keep);
+
+  let filtered = filterRoutesForPage(rawRoutes, {
     keep,
     net,
     storyById,
     pageKind,
     cityIdOf,
-    densityPolicy,
+    densityPolicy: 'tier_visual',
   });
+
+  const cullTier = preTier !== 'normal' ? preTier : inferDensityTier(filtered.length, partner, market);
+  if (pageKind !== 'aggregate' && cullTier !== 'normal') {
+    filtered = densityCullRoutes(filtered, { storyById, cityIdOf, densityTier: cullTier, pageKind, keep });
+  }
+
+  if (densityPolicy === 'legacy') {
+    filtered = filterRoutesForPage(filtered, {
+      keep,
+      net,
+      storyById,
+      pageKind,
+      cityIdOf,
+      densityPolicy: 'legacy',
+    });
+  }
 
   const ROUTES = annotateRoutes(filtered, { storyById, keep, cityIdOf });
   const storyCount = ROUTES.filter((f) => f.properties?.render_lane === 'story').length;
+  const routeIdSet = new Set(ROUTES.map((f) => f.properties?.id).filter(Boolean));
+  const curated = partner ? curatePartnerDisplay(partner, {
+    market,
+    routeIdSet,
+    cityBriefs: scoped.CITY_BRIEFS || {},
+    clusterBriefs: scoped.CLUSTER_BRIEFS || {},
+  }) : null;
+
+  const slug = partner?.partner_id;
   const MAP_DISPLAY = buildMapDisplay(partner, {
     market,
     routeCount: ROUTES.length,
     storyCount,
     pageKind,
+    densityPolicy,
   });
+  if (densityPolicy === 'legacy' && !md.default_layer) {
+    MAP_DISPLAY.default_mode = defaultDensityMode(MAP_DISPLAY.density_tier, storyCount);
+  }
 
-  return { ...scoped, ROUTES, MAP_DISPLAY, _route_display: { story_ids: [...storyById.keys()], filtered_from: rawRoutes.length } };
+  return {
+    ...scoped,
+    ROUTES,
+    MAP_DISPLAY,
+    ...(curated ? {
+      CITY_BRIEFS: curated.cityBriefs,
+      CLUSTER_BRIEFS: curated.clusterBriefs,
+      PARTNERS: slug ? { [slug]: curated.partner } : scoped.PARTNERS,
+    } : {}),
+    _route_display: {
+      story_ids: [...storyById.keys()],
+      filtered_from: rawRoutes.length,
+      culled_to: ROUTES.length,
+      density_policy: densityPolicy,
+    },
+  };
 }
