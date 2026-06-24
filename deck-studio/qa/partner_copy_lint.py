@@ -78,11 +78,12 @@ def rendered_strings(editplan: dict):
                 if isinstance(v, str):
                     yield f"{key}.{k}", v
 
-def lint_deck(deck_dir: str):
-    ep = os.path.join(deck_dir, "deck.editplan.json")
-    if not os.path.exists(ep):
-        return []
-    editplan = json.load(open(ep))
+def scan_editplan(editplan: dict):
+    """Return [(where, token, context)] for jargon in an editplan dict.
+
+    Reusable entry point for the deck-studio CLI pre-seal/apply gate so the same
+    rules guard both `partner_copy_lint.py` runs and live applies.
+    """
     findings = []
     for where, text in rendered_strings(editplan):
         if not text:
@@ -92,6 +93,12 @@ def lint_deck(deck_dir: str):
             if m:
                 findings.append((where, m.group(0), text.replace("\n", " ")[:120]))
     return findings
+
+def lint_deck(deck_dir: str):
+    ep = os.path.join(deck_dir, "deck.editplan.json")
+    if not os.path.exists(ep):
+        return []
+    return scan_editplan(json.load(open(ep)))
 
 def main():
     args = sys.argv[1:]
