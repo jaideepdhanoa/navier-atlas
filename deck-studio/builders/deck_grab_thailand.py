@@ -86,40 +86,43 @@ ECON_SLIDES: dict[int, dict] = {
         "slide_oid": "g3eec5122801_0_391",
         "bg_oid": "navierBg_s23",
         "bg_registry": "econ-koh-samui-v2",
-        "corridor": "Koh Samui (Bangrak) -> Koh Phangan (Thong Sala)",
+        "corridor": "Samui Pralarn Pier (Mae Nam) -> Koh Phangan (Thong Sala) — pier-exact",
         "market_label": "KOH SAMUI",
         "title": "Samui: profitable from year one",
-        "route_line": "Bangrak → Thong Sala  ·  ~10 nm  ·  N30 Pioneer II (8 seats)",
+        "route_line": "Mae Nam → Thong Sala  ·  ~8 nm  ·  N30 Pioneer II (8 seats)",
         "header_oid": "g3eec5122801_0_392",
         "title_oid": "g3eec5122801_0_394",
         "route_oid": "g3eec5122801_0_395",
         "summary_oid": "g3eec5122801_0_397",
+        "footnote_oid": "g3eec5122801_0_441",
     },
     8: {
         "slide_oid": "g3eec5122801_0_448",
         "bg_oid": "navierBg_s24",
         "bg_registry": "econ-phuket-v1",
-        "corridor": "Phuket -> Phi Phi (Tonsai)",
+        "corridor": "Phuket (Royal Phuket Marina) -> Phang Nga Bay / James Bond Island",
         "market_label": "PHUKET",
         "title": "Phuket: profitable from year one",
-        "route_line": "Phuket → Phi Phi (Tonsai)  ·  ~25 nm  ·  N30 Pioneer II (8 seats)",
+        "route_line": "Royal Phuket Marina → Phang Nga (James Bond Island)  ·  ~20 nm  ·  N30 Pioneer II (8 seats)",
         "header_oid": "g3eec5122801_0_449",
         "title_oid": "g3eec5122801_0_451",
         "route_oid": "g3eec5122801_0_452",
         "summary_oid": "g3eec5122801_0_454",
+        "footnote_oid": "g3eec5122801_0_498",
     },
     9: {
         "slide_oid": "g3eec5122801_0_505",
         "bg_oid": "navierBg_s25",
         "bg_registry": "econ-bangkok-v1",
-        "corridor": "Sathorn (Central) Pier -> Phra Arthit Pier",
+        "corridor": "ICONSIAM Pier (Chao Phraya) -> ICONSIAM Pier (Chao Phraya)",
         "market_label": "BANGKOK",
         "title": "Bangkok: profitable from year one",
-        "route_line": "Sathorn → Phra Arthit  ·  ~3 nm  ·  N30 Pioneer II (8 seats)",
+        "route_line": "Icon Siam → Wat Arun  ·  ~5 nm  ·  N30 Pioneer II (8 seats)",
         "header_oid": "g3eec5122801_0_506",
         "title_oid": "g3eec5122801_0_508",
         "route_oid": "g3eec5122801_0_509",
         "summary_oid": "g3eec5122801_0_511",
+        "footnote_oid": "g3eec5122801_0_555",
     },
 }
 
@@ -135,8 +138,8 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "g3eec5122801_0_106",
         "g3eec5122801_0_114",
     ): (
-        "▸  Bangrak → Thong Sala (Phangan)\n"
-        "      ~10 nm · flagship cascade corridor\n"
+        "▸  Mae Nam → Thong Sala (Phangan)\n"
+        "      ~8 nm · flagship cascade corridor\n"
         "▸  Samui → Koh Tao\n"
         "      ~35 nm · dive-school triangle leg\n"
         "▸  Lipa Noi → Donsak (mainland)\n"
@@ -160,7 +163,7 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "      ~25 nm · cliff-beach premium run"
     ),
     ("g3eec5122801_0_296", "g3eec5122801_0_300"): "Bangkok — Chao Phraya & gulf gateway",
-    ("g3eec5122801_0_296", "g3eec5122801_0_304"): "River spine sealed; Pattaya, Koh Larn and Koh Chang connected cities live.",
+    ("g3eec5122801_0_296", "g3eec5122801_0_304"): "River spine sealed; Pattaya, Hua Hin, Koh Larn and Koh Chang connected cities live.",
     (
         "g3eec5122801_0_296",
         "g3eec5122801_0_301",
@@ -171,8 +174,8 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "      ~2 nm · tourist river loop\n"
         "▸  Bangkok → Pattaya\n"
         "      ~60 nm · gulf gateway city\n"
-        "▸  Pattaya → Koh Larn\n"
-        "      ~5 nm · day-trip island hop"
+        "▸  Bangkok ↔ Hua Hin\n"
+        "      ~88 nm · cross-Gulf Quanta-LR ring"
     ),
     (SLIDE10_OID, "g3eec5122801_0_565"): "A new multi-billion-dollar vertical across Thailand",
     (SLIDE10_OID, "g3eec5122801_0_567"): "Read it bottom-up: the fare a Navier boat collects today, the market a faster product unlocks — then the whole journey Grab monetizes around every crossing.",
@@ -409,6 +412,26 @@ def build_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
                 source_pointer=f"agg-grab-thailand.json :: {spec['corridor']}",
             )
         )
+        # Footnote tagline: builder-owned so a rebuild reproduces the live deck.
+        # Payback is derived from the model (mid scenario), never hand-typed.
+        footnote_oid = spec.get("footnote_oid")
+        if footnote_oid:
+            if econ.get("payback_years"):
+                footnote = (
+                    "Profitable from year one — every line item ties on this slide; "
+                    f"the vessel pays itself back in {econ['payback_years']:.1f} yrs."
+                )
+            else:
+                footnote = "Profitable from year one — every line item ties on this slide."
+            base = element_or_fallback(golden, footnote_oid)
+            el = {**base, "char_budget": max(base.get("char_budget", 12), len(footnote) + 4)}
+            ops.extend(
+                text_replace_ops(
+                    spec["slide_oid"], footnote_oid, footnote, el,
+                    op_prefix=f"gt-econ-footnote-{spec['slide_oid']}",
+                    source_pointer=f"agg-grab-thailand.json :: {spec['corridor']} (payback)",
+                )
+            )
         binding_slide = next(s for s in grab_binding["economics_slides"] if s["slide_index"] == slide_idx)
         values = econ_value_map(econ)
         source = f"finance/recal/agg-grab-thailand.json mid {spec['corridor']}"
