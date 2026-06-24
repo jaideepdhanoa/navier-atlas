@@ -8,6 +8,8 @@ from functools import lru_cache
 WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     # Upper Gulf of Thailand ferry corridor (Bangkok ↔ Pattaya ↔ Hua Hin)
     ("gulf_thailand_upper", 100.35, 11.15, 101.55, 13.85),
+    # Chao Phraya river transit lane (Bangkok ICONSIAM → Gulf mouth)
+    ("chao_phraya_bangkok", 100.48, 13.05, 100.62, 13.78),
     # Pattaya ↔ Koh Samet crossing
     ("gulf_thailand_samet", 100.82, 12.45, 101.52, 12.95),
     # Table Bay (V&A ↔ Robben Island)
