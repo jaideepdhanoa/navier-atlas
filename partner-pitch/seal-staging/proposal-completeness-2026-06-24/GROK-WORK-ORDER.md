@@ -33,17 +33,25 @@ Thailand footprint from cluster-dots to geometry.
 **Handback → Tasklet:** reconcile `journeys_unlocked` to minted routes (drop/flag any that can't be
 built), refresh economics.
 
-## PRIORITY 3 — Bolt markets
-**Symptom:** **23 cluster-dots** of 50 footprint entries + **57 unbuilt journeys**; plus 3 data bugs.
+## PRIORITY 3 — Bolt markets  *(curated to 12 — see `BOLT-UAE-GRADE-GAPS.md`)*
+**Curation applied this PR:** Bolt cut from 18 sub-proposals to **12 shown / 6 hidden**, every kept
+market to be brought to **UAE grade**. New per-market fields `display_order` (1–12) and `hidden:true`;
+**renderer must sort by `display_order` and drop `hidden`.** Shown order: Croatia, France-Riviera, East
+Africa, Estonia, Greece, Italy, Nigeria, Qatar, Saudi Arabia, Spain, Thailand, UAE. Hidden: egypt,
+finland, ireland, portugal, south-africa, sweden. KSA label cleaned ("(commercial)" dropped); `id`/
+`slug` kept stable (referenced by yango + crosswalk).
 **Grok:**
-- Mint corridors for the cluster-dots sub-proposals — EU (Croatia, France-Riviera, Greece, Italy,
-  Cyprus, Portugal, Spain, Sweden, Estonia, Finland, Ireland, Romania), East Africa (Mombasa↔Diani,
-  Dar-es-Salaam, Mafia, the Pemba cross-border hop), and the UAE/Abu-Dhabi island sub-clusters. Leave
-  Lebanon **held**.
+- **Mint the 38 unbuilt legs across the 12 kept markets** (full leg list in `BOLT-UAE-GRADE-GAPS.md`);
+  promote kept-market cities from cluster_dots → `map_promote` geometry.
+- **Validate the 3 cross-border water gates** — Dubrovnik↔Kotor (ME), Rhodes↔Marmaris (TR),
+  Tarifa↔Tangier (MA). Mint only on a clean gate; else seasonal/aspirational — **null beats
+  confidently-wrong**. Leave Lebanon **held**.
 - **Fix the 3 data bugs:** (a) floor rounding — $1.54M must not display "$2M"; (b) stale
   `source_rollup: careem-aggregate.json` → Bolt's own rollup; (c) regenerate the ladder so
   network/SAM rungs rest on minted (sourced) corridors, not the 341 shared census.
-**Handback → Tasklet:** reconcile the 57 journeys to minted geometry; refresh economics.
+**Handback → Tasklet:** cascade the ladder on minted `route_id`s; **author East Africa to UAE parity**
+(only 2 journeys + missing 9/12 narrative fields today); reconcile the rest; refresh economics. Then
+**Grok reseals** the Bolt page/map honoring `display_order` + `hidden`.
 
 ## PRIORITY 4 — Minor Hotels
 **Symptom:** **80 `journeys_unlocked`, 0 minted** — entirely aspirational geometry.
