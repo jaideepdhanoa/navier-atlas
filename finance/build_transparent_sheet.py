@@ -143,6 +143,7 @@ for mid, mk in corr["markets"].items():
         fr=L3.get("_fare_record") or {}; dr=L3.get("_demand_record") or {}
         country=c.get("country");  country = country if country in cref else "Singapore"
         w=L3.get("weather_uptime_factor")
+        _season_days=L3.get("season_days")  # L3 override wins over 365×uptime×weather (atom.py)
         # demand pool — mirror atom.py LENS 2: average of native proxies (arrivals/ferry)
         # when present; corridor_annual_oneway_pax only as the fallback crossing proxy.
         da=L3.get("demand_arrivals_rides_yr"); df=L3.get("demand_ferry_rides_yr")
@@ -169,6 +170,10 @@ for mid, mk in corr["markets"].items():
         elif _pb=="addressable":
             _ca=OPS.get("capture_on_addressable")
             if _ca is not None: cap_row=v(_ca)
+        # Per-corridor capture override (mirror atom.py) — e.g. OW L3_locals navier_capture_override 0.55
+        _l3cap=L3.get("navier_capture_override")
+        if _l3cap is not None:
+            cap_row=_l3cap
         # LB-255 premium re-fare: lift subsidized public-transit fares to the premium
         # on-demand floor (mirror atom.py). Genuine premium scheduled fares untouched.
         _fare=L3.get("comparable_fare_usd_pax"); _fare_src=fr.get("source")
@@ -189,6 +194,7 @@ for mid, mk in corr["markets"].items():
                  demand=pool, cap=cap_row,
                  demand_tier=dr.get("source_tier"), demand_conf=dr.get("confidence"), demand_src=dr.get("source"),
                  weather=(w if w is not None else 1.0),
+                 season_days=_season_days,
                  subset=c.get("_subset_of"),
                  fwd=_fwd,
                  # LB-99: sourced-greenfield tiers (modal-shift / experience-upside) are
@@ -539,7 +545,10 @@ for idx,rec in enumerate(rows):
     F(ow,f"=60*{nm}/cruise_kt",NUM1)
     F(cyc,f"={ow}+turn_min+dwell_min",NUM1)
     F(tpd,f"=MIN({rec.get('eff_cap',max_tpd)},FLOOR(60*service_hr/{cyc},1))",NUM)
-    F(od,f"=ROUND(365*mech_uptime*{wf},0)",NUM)
+    if rec.get("season_days") is not None:
+        sc(ws,od,rec["season_days"],fill=f_input,fmt=NUM,align=ctr,bd=True)
+    else:
+        F(od,f"=ROUND(365*mech_uptime*{wf},0)",NUM)
     F(upt,"=mech_uptime",PCT)
     F(rlp,"=revleg_sel",PCT)
     F(tpy,f"=ROUND({tpd}*{od}*revleg_sel,0)",NUM)
