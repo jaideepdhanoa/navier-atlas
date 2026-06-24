@@ -1,79 +1,124 @@
 {
- "city_id": "koh-phangan-thailand",
- "display": "Koh Phangan",
- "region": "SEA",
- "tagline": "The Gulf's high-surge island — Full Moon demand, thin transit.",
- "summary": "Koh Phangan sits ~12nm north of Koh Samui and ~30nm south of Koh Tao, forming the core of the Samui Gulf triangle. Its economy swings on tourism surges (Full Moon Party) where ferry/speedboat capacity is the binding constraint. A quiet, zero-wake electric shuttle is a premium answer for resort and event transfers.",
- "demand_signals": [
-  {
-   "signal": "Full Moon Party surge",
-   "detail": "Monthly events draw 10k-30k visitors to Haad Rin, overwhelming pier and road capacity."
-  },
-  {
-   "signal": "Samui-Phangan commuter & staff flow",
-   "detail": "Daily worker and supply movement on the ~12nm Bangrak-Thong Sala corridor."
-  }
- ],
- "use_cases": [
-  "Samui<->Phangan premium resort transfer",
-  "Full Moon event surge shuttle",
-  "Inter-island staff & supply runs"
- ],
- "journeys": [
-  {
-   "from": "Bangrak (Samui)",
-   "to": "Thong Sala (Phangan)",
-   "approx_nm": 12,
-   "vessel_class": "Pioneer II (<=70nm)",
-   "note": "Core commuter corridor; sealed in corridors model."
-  },
-  {
-   "from": "Thong Sala",
-   "to": "Haad Rin",
-   "approx_nm": 6,
-   "vessel_class": "Pioneer II",
-   "note": "Event-surge intra-island hop."
-  }
- ],
- "navier_fit": "High. Short, high-frequency corridors well within Pioneer II range; premium transfer willingness-to-pay; Thong Sala pier already a multi-operator hub for pedestal siting.",
- "competitive_landscape": "Lomprayah, Raja Ferry, Seatran Discovery on the Samui/Phangan/Tao triangle; all diesel, schedule-bound, capacity-capped at peaks.",
- "seasonality": "Peak: Dec-Mar dry season + monthly Full Moon. Monsoon Oct-Nov raises Gulf swell; range-gate to short hops.",
- "regulatory_note": "Thai cabotage; domestic passenger operations via Marine Department licensing. Foreign-flag/charter rules apply — partner-of-record likely a local operator.",
- "signature_routes": [
-  "Bangrak (Samui) <-> Thong Sala (Phangan)",
-  "Thong Sala <-> Haad Rin"
- ],
- "sources": [
-  {
-   "label": "Marine Department Thailand",
-   "url": "https://www.md.go.th"
-  }
- ],
- "precedents": [
-  {
-   "label": "Lomprayah high-speed catamaran network",
-   "note": "Existing Samui-Phangan-Tao-Chumphon spine"
-  }
- ],
- "partner_overlays": {
-  "grab": {
-   "super_app_fit": "Grab in-app boat-transfer booking + last-mile GrabCar/GrabBike pier handoff at Bangrak and Thong Sala.",
-   "wedge": "Bundle event-surge transfers (Full Moon) into Grab as a premium, pre-booked, zero-wait alternative to pier queues."
-  }
- },
- "transit_planning": {
-  "primary_piers": [
-   "Thong Sala Pier",
-   "Haad Rin Pier"
+  "city_id": "koh-phangan-thailand",
+  "display": "Koh Phangan",
+  "region": "SEA",
+  "tagline": "The Gulf's high-surge island — Full Moon demand, thin transit.",
+  "summary": "Koh Phangan sits about twelve nautical miles north of Koh Samui and some thirty south of Koh Tao, forming the core of the Samui Gulf triangle. Its economy swings on huge tourism surges — the monthly Full Moon Party packs Haad Rin with anywhere from ten to thirty thousand visitors — where ferry and pier capacity become the binding constraint, on top of a steady daily flow of workers and supplies across the short Samui crossing. The island leans on the same fleet of diesel catamarans that serve the wider triangle, schedule-bound and capacity-capped at exactly the peaks that matter most. A quiet, smooth, zero-wake foiling shuttle is the premium answer for resort guests, event surges and the everyday inter-island runs alike.",
+  "demand_signals": [
+    {
+      "label": "Full Moon Party surge",
+      "value": "10,000-30,000 partygoers per event at Haad Rin",
+      "note": "Monthly events overwhelm pier and road capacity, making transfer capacity the binding constraint",
+      "archetype": "tourism",
+      "source": "TripSavvy / 41n8 Full Moon guides (2025)"
+    },
+    {
+      "label": "Samui air-gateway feed",
+      "value": "1.13M passengers through Koh Samui Airport Jan-Apr 2025 (+9% YoY)",
+      "note": "The triangle's primary air gateway sits ~12 nm away and feeds onward demand straight to Phangan",
+      "archetype": "tourism",
+      "source": "Koh Samui International Airport / Hospitality & Catering News (2025)"
+    },
+    {
+      "label": "Samui ↔ Phangan inter-island corridor",
+      "value": "~12 nm Bangrak–Thong Sala, ~30 min high-speed catamaran",
+      "note": "Daily worker, supply and visitor movement on a dense diesel-ferry corridor",
+      "archetype": "commuter",
+      "source": "Lomprayah / Seatran / phanganferries.com (2025)"
+    }
   ],
-  "land_handoff": "GrabCar/GrabBike at both piers",
-  "note": "Thong Sala is the inter-island hub; Haad Rin is event-driven."
- },
- "_enrichment": {
-  "authored": "2026-06-22",
-  "by": "tasklet_research",
-  "cluster": "thailand_gulf",
-  "status": "connected_city_v1",
-  "note": "Connected city brief hung off the Koh Samui / Gulf flagship. Geometry sealed via Grok from Bucket-C BP files."
- }
+  "use_cases": [
+    {
+      "archetype": "luxury",
+      "title": "Samui ↔ Phangan premium resort transfer",
+      "body": "An on-demand foiling link from Samui's airport jetties to Phangan's resorts that flies above the Gulf chop, collapsing the airport-plus-ferry-plus-wait chain into one smooth, near-silent hop. Guests arrive fresh instead of queued and rattled.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "tourism",
+      "title": "Full Moon event-surge shuttle",
+      "body": "A high-frequency, pre-booked foiling service for the monthly Full Moon crush, when conventional ferries and the Haad Rin pier hit their limits. It turns a capacity-capped, queue-bound event transfer into a zero-wait premium lane.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "logistics",
+      "title": "Inter-island staff & supply runs",
+      "body": "Reliable daily foiling runs on the short Bangrak–Thong Sala corridor keep staff and supplies moving smoothly when the ferry schedule is tight. A consistent, weather-resilient link underpins the resort economy behind the scenes.",
+      "platform": "Pioneer II"
+    }
+  ],
+  "journeys": [
+    {
+      "from": "Bangrak (Samui)",
+      "to": "Thong Sala (Phangan)",
+      "today": "Lomprayah/Seatran diesel catamaran, ~30 min on schedule, queue and board, bumpy and capacity-capped at peaks.",
+      "with_navier": "An on-demand foiling hop above the Gulf chop — smooth, fast and clear of the pier queue.",
+      "distance_nm": 12,
+      "platform": "Pioneer II"
+    },
+    {
+      "from": "Thong Sala",
+      "to": "Haad Rin",
+      "today": "Road transfer or a longtail around the headland, congested on event nights.",
+      "with_navier": "A quick intra-island foiling hop straight to the Full Moon beach, sidestepping the road and pier crush.",
+      "distance_nm": 6,
+      "platform": "Pioneer II"
+    }
+  ],
+  "navier_fit": {
+    "pioneer_ii": "Phangan's corridors are short and dense — Bangrak↔Thong Sala (~12 nm) and the intra-island Thong Sala↔Haad Rin hop (~6 nm) — sitting deep inside the 70 nm all-electric envelope with margin for high-frequency event-surge rotations, and Thong Sala is already a multi-operator pier that eases shore-charging siting.",
+    "quanta_lr": "Quanta LR's ~2,000 nm hybrid range, with no charging-infrastructure dependency, extends the triangle to the mainland — Surat Thani, Chumphon and Donsak — and across the open Gulf without relying on island grid power for charging."
+  },
+  "competitive_landscape": "Lomprayah, Raja Ferry, Seatran Discovery on the Samui/Phangan/Tao triangle; all diesel, schedule-bound, capacity-capped at peaks.",
+  "seasonality": "Peak: Dec-Mar dry season + monthly Full Moon. Monsoon Oct-Nov raises Gulf swell; range-gate to short hops.",
+  "regulatory_note": "Thai cabotage; domestic passenger operations via Marine Department licensing. Foreign-flag/charter rules apply — partner-of-record likely a local operator.",
+  "signature_routes": [
+    "Bangrak (Samui) <-> Thong Sala (Phangan)",
+    "Thong Sala <-> Haad Rin"
+  ],
+  "sources": [
+    {
+      "label": "Full Moon Party 10,000-30,000 partygoers at Haad Rin",
+      "url": "https://www.tripsavvy.com/koh-phangan-full-moon-party-1458340"
+    },
+    {
+      "label": "Koh Samui Airport 1.13M passengers Jan–Apr 2025 (+9%)",
+      "url": "https://www.hospitalityandcateringnews.com/2025/06/koh-samui-shines-as-thailand-challenged/"
+    },
+    {
+      "label": "Lomprayah/Seatran inter-island catamaran timetable",
+      "url": "https://www.phanganferries.com/time-table"
+    },
+    {
+      "label": "Marine Department Thailand",
+      "url": "https://www.md.go.th"
+    }
+  ],
+  "precedents": [
+    {
+      "label": "Lomprayah high-speed catamaran network",
+      "note": "Existing Samui-Phangan-Tao-Chumphon spine"
+    }
+  ],
+  "partner_overlays": {
+    "grab": {
+      "super_app_fit": "Grab in-app boat-transfer booking + last-mile GrabCar/GrabBike pier handoff at Bangrak and Thong Sala.",
+      "wedge": "Bundle event-surge transfers (Full Moon) into Grab as a premium, pre-booked, zero-wait alternative to pier queues."
+    }
+  },
+  "transit_planning": {
+    "primary_piers": [
+      "Thong Sala Pier",
+      "Haad Rin Pier"
+    ],
+    "land_handoff": "GrabCar/GrabBike at both piers",
+    "note": "Thong Sala is the inter-island hub; Haad Rin is event-driven."
+  },
+  "_enrichment": {
+    "authored": "2026-06-22",
+    "by": "tasklet_research",
+    "cluster": "thailand_gulf",
+    "status": "connected_city_v1",
+    "note": "Connected city brief hung off the Koh Samui / Gulf flagship. Geometry sealed via Grok from Bucket-C BP files."
+  }
 }

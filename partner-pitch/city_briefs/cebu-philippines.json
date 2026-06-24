@@ -3,31 +3,83 @@
   "display": "Cebu / Mactan",
   "region": "SEA",
   "tagline": "The Visayas hub — a dense island cluster where every high-value trip already crosses water.",
-  "summary": "Cebu is the central Philippines' commercial and tourism hub, anchored by Cebu City and Mactan Island (home to the international airport and the Mactan resort strip). The surrounding Central Visayas is a tight archipelago — Bohol/Panglao, Camotes, Mactan, Dumaguete, Siquijor — where ferries and bangka boats are the connective tissue. Resort transfers, island-hopping day trips, and inter-island commuting are constant and currently served by conventional fast ferries (OceanJet, etc.) and small craft. Pioneer II covers the dense inner-Visayas hops; Quanta-LR opens longer inter-island and Manila-facing line-hauls.",
+  "summary": "Cebu is the central Philippines' commercial and tourism hub, anchored by Cebu City and Mactan Island (home to the international airport and the Mactan resort strip). The surrounding Central Visayas is a tight archipelago — Bohol/Panglao, Camotes, Mactan, Dumaguete, Siquijor — where ferries and bangka boats are the connective tissue. Resort transfers, island-hopping day trips, and inter-island commuting are constant and currently served by conventional fast ferries (OceanJet and peers) and small craft. The flows are enormous and proven: Mactan-Cebu airport handled 11.3 million passengers in 2024 and neighbouring Bohol drew roughly 1.37 million visitors, all of whom cross water to reach the islands. Pioneer II covers the dense inner-Visayas hops; Quanta LR opens longer inter-island and Manila-facing line-hauls.",
   "demand_signals": [
-    "Mactan-Cebu International Airport drives heavy airport→resort and airport→island transfer demand.",
-    "Established fast-ferry network (OceanJet and peers) across Cebu–Bohol–Dumaguete–Siquijor = demand proof.",
-    "Dense resort cluster on Mactan and Panglao (Bohol) with daily transfer flows.",
-    "Diving and island-hopping tourism (Moalboal, Oslob, Malapascua) generates premium day-trip demand."
+    {
+      "label": "Mactan-Cebu International Airport",
+      "value": "11.3M passengers in 2024",
+      "note": "Drives heavy airport→resort and airport→island transfer demand into the cluster",
+      "archetype": "tourism",
+      "source": "MCIAA / PortCalls (2024)"
+    },
+    {
+      "label": "Bohol / Panglao tourism",
+      "value": "~1.37M visitors in 2024 (498,989 foreign)",
+      "note": "The busiest Visayas tourist axis from Cebu, with daily transfer flows to Panglao resorts",
+      "archetype": "tourism",
+      "source": "Bohol PPDO / Department of Tourism (2024)"
+    },
+    {
+      "label": "Established fast-ferry network",
+      "value": "OceanJet & peers; Cebu↔Tagbilaran ~2 hr",
+      "note": "Dense Cebu–Bohol–Dumaguete–Siquijor schedules are demand proof and a partnering path",
+      "archetype": "commuter",
+      "source": "OceanJet / Ferryscanner (route data)"
+    },
+    {
+      "label": "Diving & island-hopping tourism",
+      "value": "Moalboal, Oslob, Malapascua premium day-trips",
+      "note": "High-margin excursion demand built on water access",
+      "archetype": "luxury",
+      "source": "Cebu/Visayas dive-tourism sector"
+    }
   ],
   "use_cases": [
-    "Airport (Mactan) ↔ resort and ↔ Bohol/Panglao premium transfers.",
-    "Cebu ↔ Bohol/Panglao foiling shuttle replacing 1.5–2 hr fast ferries.",
-    "Resort island-hopping day journeys across the inner Visayas.",
-    "Inter-island commuter line-haul (Quanta-LR) to Dumaguete / Negros."
+    {
+      "archetype": "tourism",
+      "title": "Airport & resort premium transfers",
+      "body": "Direct water transfers from Mactan-Cebu airport to the Mactan resort strip and across to Bohol/Panglao, bypassing congested bridges and giving arriving guests a premium first leg.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "commuter",
+      "title": "Cebu ↔ Bohol/Panglao foiling shuttle",
+      "body": "A faster, quieter, zero-emission crossing on the busiest Visayas tourist axis, cutting the 1.5–2 hr fast-ferry into a smooth foiling hop.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "tourism",
+      "title": "Inner-Visayas island-hopping day journeys",
+      "body": "Curated resort and dive day-trips across Mactan, Bohol, Camotes and the surrounding islands on a clean, comfortable foiling craft.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "commuter",
+      "title": "Inter-island line-haul to Negros",
+      "body": "A direct line-haul to Dumaguete and beyond that runs past the all-electric range without relying on island charging infrastructure.",
+      "platform": "Quanta-LR"
+    }
   ],
   "journeys": [
-    {"name": "Cebu ↔ Bohol (Tagbilaran/Panglao)", "from": "Cebu City pier", "to": "Tagbilaran / Panglao", "approx_nm": 40, "platform": "Pioneer II", "today": "OceanJet fast ferry ~2 hr.", "with_navier": "Faster, quieter, zero-emission foiling crossing on the busiest Visayas tourist axis."},
-    {"name": "Mactan Airport ↔ Mactan/Panglao resorts", "from": "Mactan (MCIA)", "to": "Mactan / Panglao resort jetties", "approx_nm": 8, "platform": "Pioneer II", "today": "Road + ferry combinations; congested Mactan bridges.", "with_navier": "Direct water transfer bypassing bridge traffic."},
-    {"name": "Cebu ↔ Camotes Islands", "from": "Cebu (Danao)", "to": "Camotes", "approx_nm": 28, "platform": "Pioneer II", "today": "Ferry ~2 hr.", "with_navier": "Half-time foiling hop to an emerging island destination."},
-    {"name": "Cebu ↔ Dumaguete (Negros)", "from": "Cebu City", "to": "Dumaguete", "approx_nm": 90, "platform": "Quanta-LR", "today": "Long ferry / bus-ferry combinations.", "with_navier": "Direct inter-island line-haul beyond Pioneer II range — Quanta-LR."}
+    {"name": "Cebu ↔ Bohol (Tagbilaran/Panglao)", "from": "Cebu City pier", "to": "Tagbilaran / Panglao", "distance_nm": 40, "platform": "Pioneer II", "today": "OceanJet fast ferry ~2 hr.", "with_navier": "Faster, quieter, zero-emission foiling crossing on the busiest Visayas tourist axis."},
+    {"name": "Mactan Airport ↔ Mactan/Panglao resorts", "from": "Mactan (MCIA)", "to": "Mactan / Panglao resort jetties", "distance_nm": 8, "platform": "Pioneer II", "today": "Road + ferry combinations; congested Mactan bridges.", "with_navier": "Direct water transfer bypassing bridge traffic."},
+    {"name": "Cebu ↔ Camotes Islands", "from": "Cebu (Danao)", "to": "Camotes", "distance_nm": 28, "platform": "Pioneer II", "today": "Ferry ~2 hr.", "with_navier": "Half-time foiling hop to an emerging island destination."},
+    {"name": "Cebu ↔ Dumaguete (Negros)", "from": "Cebu City", "to": "Dumaguete", "distance_nm": 90, "platform": "Quanta-LR", "today": "Long ferry / bus-ferry combinations.", "with_navier": "Direct inter-island line-haul beyond Pioneer II range on Quanta LR."}
   ],
-  "navier_fit": "Cebu is a textbook dense-archipelago hub: Pioneer II (70 nm) covers the high-frequency Cebu–Bohol–Mactan–Camotes core, while Quanta-LR (2,000 nm hybrid) handles longer Negros/Leyte/Manila-facing legs without charging infrastructure. The existing fast-ferry network is demand proof and a public-transport partnering path.",
+  "navier_fit": {
+    "pioneer_ii": "Cebu is a textbook dense-archipelago hub: Pioneer II's 70 nm all-electric envelope covers the high-frequency core — Cebu ↔ Bohol/Panglao (~40 nm), Mactan airport transfers (~8 nm) and Cebu ↔ Camotes (~28 nm) — over short, sheltered inner-Visayas water with shore charging at established piers.",
+    "quanta_lr": "Quanta LR's ~2,000 nm hybrid range, with no charging-infrastructure dependency, handles the longer Negros (Dumaguete ~90 nm), Leyte and Manila-facing line-hauls that fall outside the electric envelope."
+  },
   "competitive_landscape": "OceanJet and other fast-ferry operators run the established inter-island network — demand proof and potential partners, not threats.",
   "seasonality": "Year-round; habagat (SW monsoon, ~Jun–Oct) and typhoon season elevates cancellation risk on small craft — the reliability hook for a more capable platform. Amihan (NE, Dec–Feb) is peak.",
   "regulatory_note": "Coordinate with MARINA (Maritime Industry Authority), Philippine Ports Authority, and Cebu/LGU port operators. Cabotage and domestic-flag rules apply.",
-  "signature_routes": ["Cebu ↔ Bohol/Panglao", "Mactan Airport ↔ resorts", "Cebu ↔ Camotes", "Cebu ↔ Dumaguete (Quanta-LR)"],
+  "signature_routes": ["Cebu ↔ Bohol/Panglao", "Mactan Airport ↔ resorts", "Cebu ↔ Camotes", "Cebu ↔ Dumaguete (Quanta LR)"],
   "key_partners": ["MARINA", "Philippine Ports Authority", "Cebu LGU / Mactan resort groups", "OceanJet (incumbent operator)"],
-  "sources": ["Philippine inter-island fast-ferry route/ridership data (OceanJet and peers)", "Mactan-Cebu International Airport passenger volumes"],
+  "sources": [
+    {"label": "Mactan-Cebu International Airport 11.3M passengers in 2024", "url": "https://portcalls.com/cebu-pacific-passengers-make-up-nearly-50-of-mcia-traffic-in-2024/"},
+    {"label": "Bohol ~1.37M visitor arrivals (870,956 domestic + 498,989 foreign)", "url": "https://ppdo.bohol.gov.ph/profile/socio-economic-profile/economic-development/tourism/visitor-arrivals/"},
+    {"label": "OceanJet inter-island fast-ferry network", "url": "https://www.oceanjet.net/"},
+    {"label": "Cebu ↔ Tagbilaran (Bohol) ferry ~2 hr", "url": "https://www.ferryscanner.com/en/ferry-routes/ferry-cebu-island-all-ports-tagbilaran-port-bohol-island"}
+  ],
   "precedents": ["Indonesian and Maldivian island-hopping clusters in the atlas show resort + airport transfer as the entry pattern for hospitality-led marine mobility."]
 }

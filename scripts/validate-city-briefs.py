@@ -32,6 +32,8 @@ def check(d):
         f.append("no navier_fit (renders empty 'Why marine mobility here')")
     elif isinstance(nf, str):
         f.append("navier_fit is a flat string — need {pioneer_ii, quanta_lr}")
+    elif not (nf.get("pioneer_ii") and nf.get("quanta_lr")):
+        f.append("navier_fit missing pioneer_ii and/or quanta_lr")
 
     ds = d.get("demand_signals")
     if not ds:
