@@ -62,6 +62,13 @@ def in_uae_bbox(lon: float, lat: float) -> bool:
 
 
 def point_is_land(lon: float, lat: float, *, coarse=None, uae=None) -> bool:
+    try:
+        from regional_land_masks import in_water_override
+
+        if in_water_override(lon, lat):
+            return False
+    except Exception:
+        pass
     if uae is not None and in_uae_bbox(lon, lat):
         try:
             from shapely.geometry import Point

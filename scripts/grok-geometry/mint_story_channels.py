@@ -20,6 +20,7 @@ from channel_solver import (  # noqa: E402
     solve_endpoints,
     solve_hand,
 )
+from mint_hand_waypoints import merge_waypoint_catalogs  # noqa: E402
 from route_land_qa import evaluate_route  # noqa: E402
 from story_registry import collect_story_registry  # noqa: E402
 
@@ -100,6 +101,8 @@ def solve_route(
     *,
     from_id: str | None,
     to_id: str | None,
+    from_city_id: str | None = None,
+    to_city_id: str | None = None,
     dist_nm: float | None,
     land_before: float,
     nudge_only: bool = False,
@@ -113,7 +116,7 @@ def solve_route(
     if nudge_only:
         return None
 
-    wps = hand_waypoints_for(from_id, to_id)
+    wps = hand_waypoints_for(from_id, to_id, from_city_id=from_city_id, to_city_id=to_city_id)
     if wps:
         solved = solve_hand(lc, a, b, wps)
         if solved and solved.get("qa_pass"):
@@ -121,8 +124,8 @@ def solve_route(
 
     res = solve_endpoints(
         a, b,
-        from_id=from_id,
-        to_id=to_id,
+        from_id=from_id or from_city_id,
+        to_id=to_id or to_city_id,
         dist_nm=dist_nm,
         lc=lc,
         story_mode=True,
@@ -172,6 +175,10 @@ def main() -> int:
     ap.add_argument("--nudge-only", action="store_true", help="fast seaward nudge; skip A* channel solver")
     ap.add_argument("--channel-only", action="store_true", help="skip nudge; hand waypoints + A* only")
     args = ap.parse_args()
+
+    merged = merge_waypoint_catalogs()
+    if merged:
+        print(f"merged {merged} HAND_WAYPOINTS entries", flush=True)
 
     story = collect_story_registry()
     feats, by_id = load_routes()
@@ -235,6 +242,8 @@ def main() -> int:
             lc, a, b,
             from_id=props.get("from"),
             to_id=props.get("to"),
+            from_city_id=props.get("from_city_id"),
+            to_city_id=props.get("to_city_id"),
             dist_nm=props.get("distance_nm"),
             land_before=land_before,
             nudge_only=args.nudge_only,

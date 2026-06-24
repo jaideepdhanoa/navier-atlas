@@ -98,6 +98,13 @@ def merge_waypoint_catalogs() -> int:
         ("corfu-ionian-greece__gouvia-marina", "corfu-ionian-greece__gaios"): [
             [20.62, 39.02], [20.55, 38.85], [20.52, 38.72],
         ],
+        # Dubai Harbour / Palm lagoon offshore arc
+        ("bp-56d5f5bd8d", "bp-29c2c81221"): [[55.12, 25.08], [55.10, 25.06], [55.08, 25.04]],
+        ("bp-56d5f5bd8d", "bp-f0fde14967"): [[55.12, 25.08], [55.08, 25.05], [55.05, 25.02]],
+        ("bp-56d5f5bd8d", "bp-d6496ac4e8"): [[55.12, 25.08], [55.14, 25.10], [55.16, 25.12]],
+        ("bp-df8901f3ae", "bp-e981496917"): [[55.18, 25.22], [55.20, 25.18], [55.22, 25.14]],
+        ("dubai-uae", "sharjah-uae"): [[55.30, 25.20], [55.38, 25.22], [55.42, 25.24]],
+        ("dubai-uae", "ras-al-khaimah-uae"): [[55.20, 25.30], [55.45, 25.55], [55.75, 25.72]],
         # Cape Town — wider Atlantic arc
         ("bp-41c1d22c88", "bp-c07f712484"): [[18.28, -33.84], [18.32, -33.80]],
         ("bp-41c1d22c88", "bp-6572ae8691"): [
@@ -170,9 +177,11 @@ def solve_route(
     *,
     from_id: str | None,
     to_id: str | None,
+    from_city_id: str | None = None,
+    to_city_id: str | None = None,
     dist_nm: float | None,
 ) -> dict | None:
-    wps = hand_waypoints_for(from_id, to_id)
+    wps = hand_waypoints_for(from_id, to_id, from_city_id=from_city_id, to_city_id=to_city_id)
     if wps:
         res = solve_hand(lc, a, b, wps)
         if res and res.get("qa_pass"):
@@ -272,6 +281,8 @@ def main() -> int:
             lc, a, b,
             from_id=props.get("from"),
             to_id=props.get("to"),
+            from_city_id=props.get("from_city_id"),
+            to_city_id=props.get("to_city_id"),
             dist_nm=props.get("distance_nm"),
         )
         if not solved or not solved.get("qa_pass"):

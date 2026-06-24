@@ -24,16 +24,37 @@ LAND_TOL_KM = 0.05
 LB224_MARINA_APRON_KM = 0.12
 UAE_BBOX = (50.0, 21.5, 57.5, 26.8)
 
-def hand_waypoints_for(from_id: str | None, to_id: str | None) -> list[list[float]] | None:
-    """Bidirectional lookup for hand-authored channel waypoints."""
-    if not from_id or not to_id:
-        return None
+def _waypoint_lookup(from_id: str, to_id: str) -> list[list[float]] | None:
     key = (from_id, to_id)
     rev = (to_id, from_id)
     if key in HAND_WAYPOINTS:
         return HAND_WAYPOINTS[key]
     if rev in HAND_WAYPOINTS:
         return list(reversed(HAND_WAYPOINTS[rev]))
+    return None
+
+
+def hand_waypoints_for(
+    from_id: str | None,
+    to_id: str | None,
+    *,
+    from_city_id: str | None = None,
+    to_city_id: str | None = None,
+) -> list[list[float]] | None:
+    """Bidirectional lookup — tries POI ids, city ids, and cross pairs."""
+    pairs: list[tuple[str, str]] = []
+    for a, b in (
+        (from_id, to_id),
+        (from_city_id, to_city_id),
+        (from_id, to_city_id),
+        (from_city_id, to_id),
+    ):
+        if a and b and (a, b) not in pairs:
+            pairs.append((a, b))
+    for a, b in pairs:
+        wps = _waypoint_lookup(a, b)
+        if wps:
+            return wps
     return None
 
 
@@ -127,6 +148,13 @@ class LandChecker:
         return self.W <= lon <= self.E and self.S <= lat <= self.N
 
     def is_land(self, lat: float, lon: float) -> bool:
+        try:
+            from regional_land_masks import in_water_override
+
+            if in_water_override(lon, lat):
+                return False
+        except Exception:
+            pass
         if self._in_uae(lon, lat):
             i = int((lon - self.W) / self.res)
             j = int((lat - self.S) / self.res)
