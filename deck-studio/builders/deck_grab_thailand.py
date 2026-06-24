@@ -259,27 +259,27 @@ def econ_value_map(econ: dict) -> dict[str, str]:
 
 def slide3_kpi_map() -> dict[str, str]:
     kpi = load_json(KPI_PATH)
+    width = kpi.get("slide3_width_kpis") or {}
+    if width:
+        return {k: str(v) for k, v in width.items()}
     g = kpi["network_headline"]["grounded"]
+    n = kpi["network_headline"].get("routes_mapped_total", kpi["network_headline"].get("sealed_anchor_corridors"))
     cards = [
-        ("32", "routes mapped — 15 anchor corridors + 17 Bucket-C mesh"),
+        (str(n), "premium water corridors mapped — 5 Thailand clusters"),
         (f"${g['addressable_transport_spend_usd_m']:.0f}M", "addressable transport spend on sourced corridors today"),
-        (kpi["slide10_tam"]["som_floor_display"], "SOM floor — Navier fare, 10% capture, today's demand"),
+        (kpi["slide10_tam"]["som_floor_display"], "SOM floor — Navier fare, ~11% capture, today's demand"),
         (f"${g['SAM_navier_rev_mid_usd_m']:.0f}M", "SAM mid — full network Navier transport revenue"),
     ]
-    out: dict[str, str] = {}
-    mapping = [
-        ("card1_value", cards[0][0]),
-        ("card1_caption", cards[0][1]),
-        ("card2_value", cards[1][0]),
-        ("card2_caption", cards[1][1]),
-        ("card3_value", cards[2][0]),
-        ("card3_caption", cards[2][1]),
-        ("card4_value", cards[3][0]),
-        ("card4_caption", cards[3][1]),
-    ]
-    for k, v in mapping:
-        out[k] = v
-    return out
+    return {
+        "card1_value": cards[0][0],
+        "card1_caption": cards[0][1],
+        "card2_value": cards[1][0],
+        "card2_caption": cards[1][1],
+        "card3_value": cards[2][0],
+        "card3_caption": cards[2][1],
+        "card4_value": cards[3][0],
+        "card4_caption": cards[3][1],
+    }
 
 
 def slide10_tam_map() -> dict[str, str]:
@@ -297,8 +297,8 @@ def slide10_tam_map() -> dict[str, str]:
         "som_caption": "SOM — Navier fare, Grab Thailand network, today's trips, 10% capture",
         "sam_value": sam.get("display", {}).get("mid") or f"${sam.get('mid', 0)/1e6:.0f}M",
         "sam_caption": "SAM — faster boats grow the market; contested capture at maturity",
-        "tam_value": tam.get("display", {}).get("mid") or t["journey_gmv_mid_display"],
-        "tam_caption": "TAM — total journey GMV through the super-app (induced market)",
+        "tam_value": tam.get("display", {}).get("mid") or t.get("marine_mobility_tam_mid_display", t["journey_gmv_mid_display"]),
+        "tam_caption": "Marine mobility TAM — induced transfer market, mid of model band",
         "journey_gmv_value": jgmv.get("display", {}).get("mid") or t["journey_gmv_mid_display"],
         "journey_gmv_caption": "Journey GMV routed through the Navier network",
         "platform_value": plat.get("display", {}).get("mid") or t["partner_platform_rev_mid_display"],
