@@ -56,13 +56,14 @@ operate** — the same DNA carried from the air to the water:
   market → this is the on-ramp to the broader **Caribbean x Navier** network (see §7).
 
 ## 3. Geography — Curaçao core, network as the scale vision
-**Grounded / commercial-now (leeward coast, calm ~90% of the time):**
+**Grounded / commercial-now (leeward / south coast, calm ~90% of the time):**
 - Willemstad (cruise mega-pier + waterfront / Queen Emma) — gateway + cruise-aggregator feed
-- Hato (Curaçao Int'l) airport waterfront — air↔sea transfer
-- Piscadera Bay — Marriott / JW-style cluster
+- Piscadera Bay — Marriott / JW-style cluster; **leeward embarkation for air arrivals** (see note)
 - Spanish Water / Santa Barbara — **Sandals Royal Curaçao** (350 rooms, $2K–$8K/night)
 - Baoase (south coast, near Willemstad) — existing OW destination
 - Jan Thiel — resort/leisure cluster
+
+> **GEOGRAPHY CORRECTION (2026-06-24): Hato (Curaçao Int'l) airport is on the NORTH / windward coast — it is NOT a leeward sea node.** A direct sea leg from the airport to any south-coast resort must circumnavigate the island (~30 nm of windward water) and breaks the calm-leeward / ~90%-uptime thesis. Treat the airport as the **air gateway and demand source**; the calm-water embarkation is the nearest **leeward marina (Piscadera)**, reached by a short land transfer. Air-arrival → resort stays the CORE revenue pool, but it embarks leeward. See `GROK-ROUTING-GUIDANCE.md`.
 
 **Seasonal (amber):** Curaçao ↔ **Klein Curaçao** excursion — real demand but **5–7 ft swell, seasonal**;
 flag honestly, do not present as year-round.

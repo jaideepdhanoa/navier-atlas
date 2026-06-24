@@ -20,12 +20,12 @@
   },
   "corridors_grounded_pioneer_ii_commercial_now": [
     {
-      "from": "Hato (Curaçao Int'l) airport waterfront",
+      "from": "Hato air arrival → leeward embarkation (Piscadera Bay)",
       "to": "Sandals Royal Curaçao (Spanish Water / Santa Barbara)",
-      "approx_distance_nm": 13,
+      "approx_distance_nm": null,
       "vessel": "Pioneer II",
       "archetype": "hospitality",
-      "proposed_from_node_id": "curacao-curacao__hato-airport-waterfront",
+      "proposed_from_node_id": "curacao-curacao__piscadera-bay-resort-cluster",
       "proposed_to_node_id": "curacao-curacao__sandals-royal-curacao-spanish-water",
       "country": "Curaçao",
       "pool_basis": "gross",
@@ -41,7 +41,10 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.9,
-        "sources": ["ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao row)", "OCEAN-WHISPERER-FINE-TUNING.md §3/§5"],
+        "sources": [
+          "ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao row)",
+          "OCEAN-WHISPERER-FINE-TUNING.md §3/§5"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_note": "Leeward Curaçao calm ~90% of the time (uptime 0.90). Costs inherited from sealed Curaçao country-reference row.",
         "_fare_record": {
@@ -54,15 +57,24 @@
           "source": "MODELED captive-luxury air→resort transfer band. No public scheduled fare exists (private resort transfer). Anchored against premium island heli/transfer pricing and Sandals luxury tier; to be finalized in cascade with partner input.",
           "method": "Modeled premium-per-seat; flagged null-if-unvalidated. NOT sealed."
         }
+      },
+      "_routing_correction": {
+        "at": "2026-06-24",
+        "by": "tasklet",
+        "reason": "Hato (Curaçao Int'l) airport sits on the NORTH/windward coast; a direct sea leg to a south/leeward resort circumnavigates the island (~30nm of windward water) and contradicts the calm-leeward pitch. Air arrival is the DEMAND source; the calm-water embarkation is the nearest leeward marina (Piscadera), reached by a short land transfer.",
+        "was_from_node": "curacao-curacao__hato-airport-waterfront",
+        "now_from_node": "curacao-curacao__piscadera-bay-resort-cluster",
+        "approx_distance_nm_after_repoint": "~4–8 (Grok to seal exact leeward geometry)",
+        "alt_decision_for_jaideep": "OPTION B (not applied): drop air→resort from grounded Navier sea corridors entirely and treat the airport as Ocean Whisperer's air domain; Navier grounded water network = cruise-pier→resorts + resort→resort + Klein seasonal."
       }
     },
     {
-      "from": "Hato (Curaçao Int'l) airport waterfront",
+      "from": "Hato air arrival → leeward embarkation (Piscadera Bay)",
       "to": "Baoase Luxury Resort (south coast, near Willemstad)",
-      "approx_distance_nm": 6,
+      "approx_distance_nm": null,
       "vessel": "Pioneer II",
       "archetype": "hospitality",
-      "proposed_from_node_id": "curacao-curacao__hato-airport-waterfront",
+      "proposed_from_node_id": "curacao-curacao__piscadera-bay-resort-cluster",
       "proposed_to_node_id": "curacao-curacao__baoase-luxury-resort",
       "country": "Curaçao",
       "pool_basis": "gross",
@@ -78,7 +90,10 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.9,
-        "sources": ["ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao row)", "OCEAN-WHISPERER-FINE-TUNING.md §3"],
+        "sources": [
+          "ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao row)",
+          "OCEAN-WHISPERER-FINE-TUNING.md §3"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_fare_record": {
           "value": 85,
@@ -90,6 +105,15 @@
           "source": "MODELED captive-luxury air→resort transfer (shorter leg than Sandals). To be finalized in cascade.",
           "method": "Modeled premium-per-seat. NOT sealed."
         }
+      },
+      "_routing_correction": {
+        "at": "2026-06-24",
+        "by": "tasklet",
+        "reason": "Hato (Curaçao Int'l) airport sits on the NORTH/windward coast; a direct sea leg to a south/leeward resort circumnavigates the island (~30nm of windward water) and contradicts the calm-leeward pitch. Air arrival is the DEMAND source; the calm-water embarkation is the nearest leeward marina (Piscadera), reached by a short land transfer.",
+        "was_from_node": "curacao-curacao__hato-airport-waterfront",
+        "now_from_node": "curacao-curacao__piscadera-bay-resort-cluster",
+        "approx_distance_nm_after_repoint": "~4–8 (Grok to seal exact leeward geometry)",
+        "alt_decision_for_jaideep": "OPTION B (not applied): drop air→resort from grounded Navier sea corridors entirely and treat the airport as Ocean Whisperer's air domain; Navier grounded water network = cruise-pier→resorts + resort→resort + Klein seasonal."
       }
     },
     {
@@ -114,7 +138,10 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.9,
-        "sources": ["ABC-DEMAND-ANCHORS.json (curacao cruise)", "ABC-COUNTRY-REFERENCE-ROWS.json"],
+        "sources": [
+          "ABC-DEMAND-ANCHORS.json (curacao cruise)",
+          "ABC-COUNTRY-REFERENCE-ROWS.json"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_fare_record": {
           "value": 55,
@@ -150,7 +177,9 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.9,
-        "sources": ["OCEAN-WHISPERER-FINE-TUNING.md §3"],
+        "sources": [
+          "OCEAN-WHISPERER-FINE-TUNING.md §3"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_fare_record": {
           "value": 45,
@@ -186,7 +215,9 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.9,
-        "sources": ["OCEAN-WHISPERER-FINE-TUNING.md §3/§5"],
+        "sources": [
+          "OCEAN-WHISPERER-FINE-TUNING.md §3/§5"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_fare_record": {
           "value": 50,
@@ -225,8 +256,11 @@
         "marina_overhead_annual_usd": 18000,
         "grid_kg_co2_per_kwh": 0.6,
         "weather_uptime_factor": 0.6,
-        "season_days": null,
-        "sources": ["ABC-BOARDING-POINT-SPEC.json", "OCEAN-WHISPERER-FINE-TUNING.md §3 (seasonal amber)"],
+        "season_days": 90,
+        "sources": [
+          "ABC-BOARDING-POINT-SPEC.json",
+          "OCEAN-WHISPERER-FINE-TUNING.md §3 (seasonal amber)"
+        ],
         "_status": "MODELED_PENDING_CASCADE",
         "_fare_record": {
           "value": 120,
@@ -237,7 +271,8 @@
           "confidence": "low",
           "source": "MODELED premium seasonal excursion. To be finalized in cascade with season_days.",
           "method": "Modeled premium-per-seat; seasonal. NOT sealed."
-        }
+        },
+        "_note_season_days": "Commercial season window set to ~90 days (calm-water months) — kept separate from weather_uptime_factor 0.6. Fare $120/pax untouched."
       }
     }
   ],
@@ -258,7 +293,10 @@
       "render": "roadmap-amber-dashed",
       "tier": "roadmap",
       "demand_basis": "standardization / network scale story. ~30–45 nm (Pioneer II edge). Live air market today (Divi Divi + EZ Air). Roadmap — not in grounded economics.",
-      "L3_locals": {"_status": "ROADMAP_EXCLUDED", "_note": "Roadmap network leg — excluded from grounded economics; part of the scale/standardization vision only."}
+      "L3_locals": {
+        "_status": "ROADMAP_EXCLUDED",
+        "_note": "Roadmap network leg — excluded from grounded economics; part of the scale/standardization vision only."
+      }
     },
     {
       "from": "Curaçao (Spanish Water)",
@@ -276,7 +314,11 @@
       "render": "roadmap-amber-dashed",
       "tier": "roadmap",
       "demand_basis": "standardization / network scale story. ~70 nm = Quanta-LR roadmap (near/over Pioneer II ceiling); never faked on a 70 nm boat. Live air market today.",
-      "L3_locals": {"_status": "ROADMAP_EXCLUDED", "_note": "Quanta-LR roadmap network leg — excluded from grounded economics."}
+      "L3_locals": {
+        "_status": "ROADMAP_EXCLUDED",
+        "_note": "Quanta-LR roadmap network leg — excluded from grounded economics."
+      }
     }
-  ]
+  ],
+  "_routing_guidance": "See GROK-ROUTING-GUIDANCE.md (same folder). Airport-origin legs repointed to leeward embarkation; Grok must reseal geometry + add detour-ratio QA gate (land_km alone did NOT catch the circumnavigation)."
 }
