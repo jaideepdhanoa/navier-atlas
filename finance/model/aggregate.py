@@ -80,6 +80,12 @@ def vessel_for(nm):
 #   US + EU bloc. Keyed on the resolved opex country so it is robust to new markets.
 CAPEX_USEU_USD = 900000   # United States + EU member states
 CAPEX_ROW_USD  = 600000   # rest of world (outside US/EU)
+# LB-260 (Jaideep 2026-06-24): HOSPITALITY / captive-luxury proposals are sold the N30 luxury hull at
+#   its ~$1M direct-sale list price, archetype-keyed and region-independent. Applied to any market flagged
+#   "capex_tier": "hospitality" in corridors.json (french-polynesia, ocean-whisperer, Minor's scoped view, …).
+#   This is the standard going forward for hospitality/captive-luxury proposals and OVERRIDES the region rule.
+#   Commercial / ride-hail markets keep the region-keyed $900K (US/EU) / $600K (ROW) rule above.
+CAPEX_HOSPITALITY_USD = 1000000
 EU_COUNTRIES = {
     "Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czechia", "Czech Republic",
     "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Ireland",
@@ -94,7 +100,14 @@ def capex_for_country(country):
         return CAPEX_USEU_USD
     return CAPEX_ROW_USD
 
-def enrich(c, market):
+def capex_for(country, market_obj=None):
+    """LB-260: hospitality/captive-luxury markets (capex_tier=='hospitality') -> $1M N30 list price,
+    region-independent. Otherwise fall back to the LB-243 region rule."""
+    if market_obj and market_obj.get("capex_tier") == "hospitality":
+        return CAPEX_HOSPITALITY_USD
+    return capex_for_country(country)
+
+def enrich(c, market, market_obj=None):
     """Return a deep copy with L3 opex injected from country layer + demand mapped."""
     c = copy.deepcopy(c)
     L3 = c.setdefault("L3_locals", {})
@@ -103,9 +116,9 @@ def enrich(c, market):
     if country not in cref:               # 'CrossBorder' or missing -> home-port opex (R16)
         country = CROSS_BORDER_HOMEPORT
     c["_opex_country"] = country
-    # LB-243: global region-based capex rule, keyed on resolved opex country.
+    # LB-243/LB-260: capex rule — hospitality (capex_tier) -> $1M; else region-keyed US/EU $900K / ROW $600K.
     if L3.get("capex_usd_override") is None:
-        L3["capex_usd_override"] = capex_for_country(country)
+        L3["capex_usd_override"] = capex_for(country, market_obj)
     # --- inject opex if the corridor didn't already carry atom-native fields ---
     if L3.get("energy_usd_per_kwh") is None:
         L3["energy_usd_per_kwh"] = cval(country, "energy_usd_kwh")
@@ -182,7 +195,7 @@ def main():
                 seen_labels.setdefault(key, mid)
             nm = c["distance_nm"]
             vk = vessel_for(nm)
-            ec = enrich(c, mid)
+            ec = enrich(c, mid, mk)
             # --- RANGE GATE: corridors beyond Pioneer II range need roadmap Quanta-LR ---
             if vk != "pioneer_ii":
                 roadmap.append({"market": mid, "corridor": f"{c['from']} -> {c['to']}",
