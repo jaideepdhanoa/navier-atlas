@@ -1,5 +1,6 @@
 // Route display density — build-time classification + scoping (PR 1–3).
 // Annotates routes with render_lane / story_tags / render_tw; emits MAP_DISPLAY config.
+// Default (tier_visual): ship all geographically scoped routes; tier controls paint only.
 
 export const EDGE_CLASS_TW = {
   trunk: 0.9,
@@ -126,8 +127,27 @@ function passesDensityCap(p, tier, id, storyById) {
   return true;
 }
 
-/** PR3 — filter routes included on a scoped partner page. */
-export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, cityIdOf }) {
+function isLegacyDensity(md) {
+  return md?.density_policy === 'legacy';
+}
+
+/** Geographic scope only — tier affects paint, not inclusion (default). */
+function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf }) {
+  const keepSet = new Set(keep);
+  return routes.filter((f) => {
+    const p = f.properties || {};
+    if (p.render_hidden === true) return false;
+    if (pageKind === 'market') {
+      const cf = cityIdOf(p.from);
+      const ct = cityIdOf(p.to);
+      return keepSet.has(cf) && keepSet.has(ct);
+    }
+    return true;
+  });
+}
+
+/** Legacy tier-based inclusion filter (opt-in via map_display.density_policy = legacy). */
+function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf }) {
   const keepSet = new Set(keep);
   const netSet = new Set(net);
 
@@ -158,7 +178,6 @@ export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, ci
       return keepSet.has(cf) && keepSet.has(ct);
     }
 
-    // aggregate — keep all routes (render layer handles density)
     return true;
   });
 
@@ -170,6 +189,15 @@ export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, ci
     });
   }
   return filtered;
+}
+
+/** Filter routes included on a scoped partner page. */
+export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, cityIdOf, densityPolicy = 'tier_visual' }) {
+  if (pageKind === 'aggregate') return routes;
+  if (densityPolicy === 'legacy') {
+    return filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf });
+  }
+  return filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf });
 }
 
 export function annotateRoutes(routes, { storyById = new Map(), keep = [], cityIdOf } = {}) {
@@ -217,20 +245,36 @@ export function defaultDensityMode(tier, storyCount) {
 
 export function buildMapDisplay(partner, { market = null, routeCount = 0, storyCount = 0, pageKind = 'flat' } = {}) {
   const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
+  const legacy = isLegacyDensity(md);
   const tier = inferDensityTier(routeCount, partner, market);
-  const defaultMode = md.default_layer || defaultDensityMode(tier, storyCount);
+  if (legacy) {
+    return {
+      density_tier: tier,
+      density_policy: 'legacy',
+      default_mode: md.default_layer || defaultDensityMode(tier, storyCount),
+      page_kind: pageKind,
+      route_count: routeCount,
+      story_count: storyCount,
+      scope_mode: md.scope_mode || (pageKind === 'market' ? 'rollout_only' : 'phase_network'),
+      modes: ['story', 'backbone', 'mesh'],
+    };
+  }
   return {
     density_tier: tier,
-    default_mode: defaultMode,
+    density_policy: 'tier_visual',
+    default_mode: 'full_network',
     page_kind: pageKind,
     route_count: routeCount,
     story_count: storyCount,
-    modes: ['story', 'backbone', 'mesh'],
-    scope_mode: md.scope_mode || (pageKind === 'market' ? 'rollout_only' : 'phase_network'),
+    scope_mode: 'full_network',
+    modes: [],
   };
 }
 
 export function applyRouteDisplay(scoped, { partner, market = null, pageKind, keep, net, cityIdOf }) {
+  const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
+  const densityPolicy = isLegacyDensity(md) ? 'legacy' : 'tier_visual';
+
   const storyById = collectStoryRoutes(partner, {
     market,
     cityBriefs: scoped.CITY_BRIEFS || {},
@@ -238,9 +282,14 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
   });
 
   const rawRoutes = scoped.ROUTES || [];
-  const filtered = pageKind === 'aggregate'
-    ? rawRoutes
-    : filterRoutesForPage(rawRoutes, { keep, net, storyById, pageKind, cityIdOf });
+  const filtered = filterRoutesForPage(rawRoutes, {
+    keep,
+    net,
+    storyById,
+    pageKind,
+    cityIdOf,
+    densityPolicy,
+  });
 
   const ROUTES = annotateRoutes(filtered, { storyById, keep, cityIdOf });
   const storyCount = ROUTES.filter((f) => f.properties?.render_lane === 'story').length;

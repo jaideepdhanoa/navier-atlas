@@ -881,7 +881,7 @@ body.panel-hidden #footer { display:block; }
   <div class="head" id="legend-head">Map key <span class="caret">⌄</span></div>
   <div id="legend-body">
     <div class="row"><span class="dot city"></span>City <span class="muted">— market</span></div>
-    <div class="sub" id="density-section" hidden>Network view</div>
+    <div class="sub" id="density-section" hidden>Network view (legacy)</div>
     <div id="density-controls" hidden>
       <div class="density-row">
         <button type="button" class="density-btn" data-density="story">Story</button>
@@ -890,7 +890,7 @@ body.panel-hidden #footer { display:block; }
       </div>
       <div class="density-note" id="density-note"></div>
     </div>
-    <div class="sub">Routes <span class="help" data-tip="Line COLOUR = platform: Pioneer II (mint · ≤70 nm electric) ▸ Quanta-LR (amber dashed · ≤700 nm hybrid). Line WEIGHT = demand: trunk (high-traffic backbone) ▸ regional (cross-cluster) ▸ local (capillary). Trip purpose shows on hover / when you select a route.">?</span></div>
+    <div class="sub">Routes <span class="help" data-tip="All network routes are always shown. Line COLOUR = platform (mint Pioneer II · amber Quanta-LR). Line WEIGHT and brightness = demand tier (thick trunk · thin local). Selecting a phase or journey brightens those corridors.">?</span></div>
     <div class="row"><span class="line"></span>Pioneer II <span class="muted">— ≤70 nm</span></div>
     <div class="row"><span class="line qlr"></span>Quanta-LR <span class="muted">— ≤700 nm</span></div>
     <div class="row econ-row" id="econ-toggle" title="Cyan bead trail = corridor has unit economics (distinct from amber Quanta-LR dashes)"><span class="econ-dot"></span>Economics <span class="muted">— cyan bead trail</span></div>
@@ -1122,8 +1122,10 @@ const ROUTE_FC = { type:'FeatureCollection', features: ROUTES.filter(f=>{
                 _cfrom:_cityIdOf(p.from), _cto:_cityIdOf(p.to)}};
 })};
 
-// ============ Density modes — story / backbone / mesh (PR 2) ============
-let _densityMode = (MAP_DISPLAY && MAP_DISPLAY.default_mode) || 'backbone';
+// ============ Route display — tier_visual (default) or legacy density modes ============
+const _FOCUS_DIM_FLOOR = 0.32;
+function _tierVisual(){ return !MAP_DISPLAY || MAP_DISPLAY.density_policy !== 'legacy'; }
+let _densityMode = (MAP_DISPLAY && MAP_DISPLAY.default_mode) || 'full_network';
 let _activePhaseTag = null;
 const _DENSITY_LANES = {
   story: ['story','backbone'],
@@ -1131,10 +1133,10 @@ const _DENSITY_LANES = {
   mesh: ['story','backbone','context','capillary'],
 };
 function _densityLaneFilter(){
+  if (_tierVisual()) return ['literal', true];
   const lanes = _DENSITY_LANES[_densityMode] || _DENSITY_LANES.backbone;
   const laneMatch = ['in',['get','render_lane'],['literal',lanes]];
   if (_densityMode !== 'story' || !_activePhaseTag) return laneMatch;
-  // Story + phase: featured routes for this phase; fall back to all story lanes if none tagged.
   const phaseMatch = ['in', _activePhaseTag, ['coalesce',['get','story_tags'],['literal',[]]]];
   return ['any',
     ['all',['==',['get','render_lane'],'story'], phaseMatch],
@@ -1149,7 +1151,7 @@ function _updateDensityLegend(){
   const ctl = document.getElementById('density-controls');
   const note = document.getElementById('density-note');
   if (!sec || !ctl) return;
-  const show = !!(MAP_DISPLAY && MAP_DISPLAY.route_count > 25);
+  const show = !_tierVisual() && !!(MAP_DISPLAY && MAP_DISPLAY.route_count > 25);
   sec.hidden = !show; ctl.hidden = !show;
   if (!show) return;
   ctl.querySelectorAll('.density-btn').forEach(btn=>{
@@ -1168,13 +1170,26 @@ function _updateDensityLegend(){
   if (note) note.textContent = `Showing ${visible} of ${total} routes${_activePhaseTag&&_densityMode==='story'?' · '+_activePhaseTag.replace('phase:','Phase '):''}`;
 }
 function _capZoomFilter(){
-  // Mesh mode: show capillary hops at all zooms (legend count must match visible lines).
+  if (_tierVisual()) return ['literal', true];
   if (_densityMode === 'mesh') return ['literal', true];
   return ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
 }
 function _routeFocusDim(){
-  // Story-focus dims non-spotlight corridors; mesh needs a higher floor or capillaries vanish.
+  if (_tierVisual()) return _FOCUS_DIM_FLOOR;
   return _densityMode === 'mesh' ? 0.34 : 0.015;
+}
+function applyRouteEmphasis(routeIds){
+  if (!map || !routeIds || !routeIds.length) { applyStoryFocus(null); return; }
+  const hit = ['in',['get','id'],['literal',routeIds]];
+  const dim = _routeFocusDim();
+  try {
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.92],['*',m,dim]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.92],['*',m,dim]]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.35],['*',m,dim*0.18]]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.4],['*',m,dim*0.22]]));
+    map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case',hit,0.9,dim]]);
+    _applyEconPaint(hit);
+  } catch(e) { console.warn('route-emphasis', e); }
 }
 function applyDensityFilters(){
   if (!map || !map.getLayer('route-p2')) return;
@@ -1265,8 +1280,8 @@ const _TW2 = ['*', _TW, _TW];   // demand² emphasis → bloom hugs the heavy la
 // the basemap below z11; marquee corridors still lead, micro-hops fade in only on zoom-in.
 // Per-stop columns: [zoom, trunk, regional, local]. Local column now leads in from z4 (was 0 until z8.5);
 // trunk/marquee unchanged. Capillary (<1.5 nm) reveal lowered to z7 (was z12) — see _capZoom.
-const _TIER_STOPS = [[1.5,0.52,0.00,0.10],[4,0.62,0.16,0.32],[6.5,0.62,0.52,0.42],
-                     [8.5,0.63,0.64,0.52],[11,0.64,0.72,0.62],[14,0.65,0.72,0.72]];
+const _TIER_STOPS = [[1.5,0.52,0.14,0.24],[4,0.62,0.32,0.38],[6.5,0.62,0.50,0.44],
+                     [8.5,0.63,0.58,0.50],[11,0.64,0.68,0.58],[14,0.65,0.72,0.62]];
 // Quanta-LR is the trans-regional ≤700 nm backbone — the network's headline reach. It gets its OWN
 // brighter low-zoom curve so the long-haul corridors lead at world view (#2 Quanta-LR hero).
 const _QLR_STOPS  = [[1.5,0.62,0.50,0.08],[4,0.64,0.56,0.26],[6.5,0.62,0.60,0.38],
@@ -1293,7 +1308,7 @@ function wRoute(mult){
     14, ['+',1.0*mult, ['*',_TW,5.5*mult]]];
 }
 const O_TIER     = tierOpacity();
-const O_P2       = tierOpacity(m=>['match',['get','render_tier'],'local',['*',m,0.62],'regional',['*',m,0.54],['*',m,0.50]]);
+const O_P2       = tierOpacity(m=>['match',['get','render_lane'],'story',['max',m,0.88],['match',['get','render_tier'],'local',['*',m,0.62],'regional',['*',m,0.54],['*',m,0.50]]]);
 const O_TIER_QLR = qlrOpacity(m=>['match',['get','render_tier'],'local',['*',m,0.80],'regional',['*',m,0.72],['*',m,0.68]]);
 const W_ROUTE    = wRoute(1);
 const W_QLR      = wRoute(1.05);
@@ -1958,8 +1973,9 @@ function setRouteHighlight(id){
   const econHit=['any',['==',['get','from'],id],['==',['get','to'],id],['==',['get','_cfrom'],id],['==',['get','_cto'],id]];
   try {
     // Rebuild via tierOpacity so the highlight case lives in the stop outputs and zoom stays top-level.
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.85],['*',m,0.12]]));
+    const dim = _tierVisual() ? _FOCUS_DIM_FLOOR : 0.12;
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.85],['*',m,dim]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.85],['*',m,dim]]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.22],['*',['*',m,['*',_TW2,0.30]],0.04]]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.22],['*',['*',m,['+',0.05,['*',_TW,0.16]]],0.05]]));
     _applyEconPaint(econHit);
@@ -2006,8 +2022,9 @@ function selectRoute(feature){
   SELECTED_ROUTE = p.id || null;
   const hit = ['==',['get','id'], p.id];
   try {
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.02]]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.95],['*',m,0.02]]));
+    const dim = _tierVisual() ? _FOCUS_DIM_FLOOR : 0.02;
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.95],['*',m,dim]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.95],['*',m,dim]]));
     map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.4],0]));
     map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.5],0]));
     map.setPaintProperty('route-labels','text-opacity',['interpolate',['linear'],['zoom'],8,0,9.5,['case',hit,1,0]]);
@@ -2751,12 +2768,22 @@ function _phaseRouteIds(phase){
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
 function _useDensityFocus(){
+  if (_tierVisual()) return false;
   return !!(MAP_DISPLAY && (MAP_DISPLAY.density_tier === 'high' || MAP_DISPLAY.density_tier === 'extreme' || MAP_DISPLAY.route_count > 40));
 }
 function applyPhaseFocus(phase){
   if (!phase){ _activePhaseTag=null; if(_useDensityFocus()) setDensityMode(MAP_DISPLAY.default_mode||'backbone',{phaseTag:null}); applyStoryFocus(null); return; }
   const phaseN = phase.n ?? phase.phase;
   const phaseTag = phaseN != null ? 'phase:'+phaseN : null;
+  if (_tierVisual()){
+    _activePhaseTag = phaseTag;
+    const routeIds = _phaseRouteIds(phase);
+    if (routeIds.length) { applyRouteEmphasis(routeIds); return; }
+    const cities = _phaseFocusCities(phase);
+    if (cities.length) { applyStoryFocus(cities); return; }
+    applyStoryFocus(null);
+    return;
+  }
   if (_useDensityFocus()){
     _activePhaseTag = phaseTag;
     setDensityMode('story', { phaseTag, silent:true });
@@ -2801,7 +2828,8 @@ function _roadmapPromoteIds(partner){
   return [...new Set(ids)];
 }
 function applyEndStateFocus(partner){
-  if (_useDensityFocus()){ _activePhaseTag=null; setDensityMode('backbone',{phaseTag:null,silent:true}); applyStoryFocus(null); return; }
+  if (_tierVisual()){ _activePhaseTag=null; applyStoryFocus(null); }
+  else if (_useDensityFocus()){ _activePhaseTag=null; setDensityMode('backbone',{phaseTag:null,silent:true}); applyStoryFocus(null); return; }
   const c=_endStateCities(partner);
   const roadmap=_roadmapPromoteIds(partner);
   if(roadmap.length && _focusRoutes(roadmap)){
@@ -3608,8 +3636,9 @@ function applyStoryFocus(cityIds) {
     const dim = _routeFocusDim();
     map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case', routeIn, m, dim]));
     map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case', routeIn, m, dim]));
-    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], 0]));
-    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], 0]));
+    const glowDim = _tierVisual() ? dim * 0.18 : 0;
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['*',_TW2,0.30]], glowDim]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case', routeIn, ['*',m,['+',0.05,['*',_TW,0.16]]], glowDim]));
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case', routeIn, 0.9, 0]]);
     _applyEconPaint(econIn);
     map.setPaintProperty('city-points','circle-opacity', ['case', inSet, 1, 0.18]);
