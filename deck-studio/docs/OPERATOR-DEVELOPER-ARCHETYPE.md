@@ -46,11 +46,12 @@ Slides 1, 6, 8, 10, 11 keep their base meaning. Slide 6 still scopes N30/N35 for
 
 ## Narrative / USP framing
 
-Lead with **four operator value props** (Minor's set, reusable): **Captive · Calm · Clean · Continuity** —
-- **Captive**: guests are already on-property; demand is owned, not competed for.
-- **Calm**: premium, quiet, wake-free arrival as a brand-grade guest experience.
-- **Clean**: zero-emission transfers aligned to resort ESG positioning.
-- **Continuity**: one operator graph end-to-end (gateway → property → excursion), brand-consistent.
+Lead with the canonical **Three C's** (hospitality standard — do NOT rename or substitute): **Cost · Convenience · Comfort** —
+- **Cost**: a margin line the operator owns — branded transfers captured in-house instead of leaking to diesel launches and outsourced boats.
+- **Convenience**: one operator graph end-to-end (gateway → property → excursion), brand-consistent and on-demand.
+- **Comfort**: premium, quiet, wake-free arrival as a brand-grade guest experience — zero-emission and aligned to resort ESG positioning.
+
+> **Naming lock (Jaideep 2026-06-24):** the hospitality value-prop framework is the **Three C's = Cost · Convenience · Comfort**. The earlier "Captive · Calm · Clean · Continuity" variant was reverted and must not be reintroduced. (The separate *captive-economics* frame — capture ~0.85–0.90 — is unrelated and stays.)
 
 Back each prop with a **source-backed proof strip**; slide-level claims need source paths and `null` beats confidently-wrong.
 

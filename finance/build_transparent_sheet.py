@@ -18,6 +18,10 @@ def arg(flag, default=None):
 PARTNER = arg("--partner", "grab")
 OUT = arg("--out", f"/tmp/{PARTNER}_unit_econ.xlsx")
 GLOBAL_MODE = PARTNER == "global"
+# LB-260 (Jaideep 2026-06-24): hospitality/captive-luxury proposals use the $1M N30 list-price CAPEX,
+# region-independent. Pass --capex-tier hospitality for hospitality partners (FP, Ocean Whisperer, Minor, …)
+# so this engine recomputes payback against $1M, matching model/aggregate.py capex_for() (golden rule #7).
+HOSPITALITY_CAPEX = arg("--capex-tier", "") == "hospitality"
 DEDUP_MODE = arg("--dedup", "unique" if GLOBAL_MODE else "none")
 SKIP_README = "--skip-readme" in sys.argv
 PARTNER_LABEL = "Global (unique geometry)" if (GLOBAL_MODE and DEDUP_MODE == "unique") else (
@@ -42,6 +46,7 @@ SCEN = OPS["_utilization_scenarios"]
 
 pax_cap=v(P2["pax_capacity"]); range_nm=v(P2["range_nm"]); cruise_kt=v(P2["cruise_speed_kt"])
 capex=v(P2["capex_usd"]); battery=v(P2["battery_kwh"]); maint=v(P2["annual_maintenance_usd"])
+if HOSPITALITY_CAPEX: capex=1000000   # LB-260: hospitality N30 list-price headline
 dep_years=v(P2["depreciation_years"]); diesel_nmpg=v(P2["diesel_comparable_nm_per_gal"])
 service_hr=v(OPS["service_window_hr_per_day"]); turn_min=v(OPS["turnaround_charge_min"])
 mech_uptime=v(OPS["monthly_operational_capacity"]); capture=v(OPS["navier_capture_rate"])
@@ -317,7 +322,8 @@ sec(r,"Vessel \u2014 N30 Pioneer II  (L1 global, commercial now)"); r+=1; hrow(r
 r=param(r,"Passenger capacity",pax_cap,"pax",tier(P2["pax_capacity"]),conf(P2["pax_capacity"]),src(P2["pax_capacity"]),NUM,"pax_cap")
 r=param(r,"Range",range_nm,"nm",tier(P2["range_nm"]),conf(P2["range_nm"]),src(P2["range_nm"]),NUM,"range_nm")
 r=param(r,"Cruise speed",cruise_kt,"kt",tier(P2["cruise_speed_kt"]),conf(P2["cruise_speed_kt"]),src(P2["cruise_speed_kt"]),NUM,"cruise_kt")
-r=param(r,"CAPEX (per vessel; US/EU base \u2014 ROW=$600K, see Country opex tab col G)",capex,"USD",tier(P2["capex_usd"]),conf(P2["capex_usd"]),src(P2["capex_usd"]),USD,"capex")
+_capex_label = "CAPEX (per vessel; hospitality N30 list = $1M, region-independent \u2014 see Country opex tab col G)" if HOSPITALITY_CAPEX else "CAPEX (per vessel; US/EU base \u2014 ROW=$600K, see Country opex tab col G)"
+r=param(r,_capex_label,capex,"USD",tier(P2["capex_usd"]),conf(P2["capex_usd"]),src(P2["capex_usd"]),USD,"capex")
 r=param(r,"Battery",battery,"kWh",tier(P2["battery_kwh"]),conf(P2["battery_kwh"]),src(P2["battery_kwh"]),NUM,"battery")
 r=param(r,"Annual maintenance",maint,"USD/yr",tier(P2["annual_maintenance_usd"]),conf(P2["annual_maintenance_usd"]),src(P2["annual_maintenance_usd"]),USD,"maint")
 r=param(r,"Depreciation life",dep_years,"yr",tier(P2["depreciation_years"]),conf(P2["depreciation_years"]),src(P2["depreciation_years"]),NUM,"dep_years")
@@ -381,6 +387,8 @@ _EU_COUNTRIES = {
 }
 _US_COUNTRIES = {"United States","USA","United States of America"}
 def _capex_for_country(ct):
+    if HOSPITALITY_CAPEX:                       # LB-260: hospitality N30 list price, region-independent
+        return 1000000
     return 900000 if (ct in _EU_COUNTRIES or ct in _US_COUNTRIES) else 600000
 ws2=wb.create_sheet("Country opex"); ws2.sheet_view.showGridLines=False
 for i,wd in enumerate([18,16,14,14,14,11,14,60],1): ws2.column_dimensions[get_column_letter(i)].width=wd
@@ -398,7 +406,8 @@ for ct in used_countries:
     sc(ws2,f"E{cr}",v(row["marina_overhead_usd_yr"]),fill=f_input,fmt=USD,align=ctr,bd=True)
     sc(ws2,f"F{cr}",v(row.get("cost_index",{})),fill=f_input,fmt=NUM2,align=ctr,bd=True)
     sc(ws2,f"G{cr}",_capex_for_country(ct),fill=f_input,fmt=USD,align=ctr,bd=True)
-    note=f"{src(row['captain_usd_yr'])} | {src(row['energy_usd_kwh'])} | {src(row['marina_overhead_usd_yr'])} | CAPEX LB-243 US/EU=$900K else $600K"
+    _capex_note = "CAPEX LB-260 hospitality N30 list = $1M (region-independent)" if HOSPITALITY_CAPEX else "CAPEX LB-243 US/EU=$900K else $600K"
+    note=f"{src(row['captain_usd_yr'])} | {src(row['energy_usd_kwh'])} | {src(row['marina_overhead_usd_yr'])} | {_capex_note}"
     sc(ws2,f"H{cr}",note,align=wrap,bd=True,font=SMALL)
     cr+=1
 country_last=cr-1
