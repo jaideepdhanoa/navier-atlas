@@ -1,82 +1,128 @@
 {
- "city_id": "krabi-thailand",
- "display": "Krabi",
- "region": "SEA",
- "tagline": "Andaman's mainland gateway — limestone-island demand, boat-only nodes.",
- "summary": "Krabi is the Andaman mainland hub feeding a dense archipelago (Phi Phi, Hong, Poda, Railay) and the Ao Nang tourist node. Much of its signature geography — Railay peninsula, the island parks — is road-inaccessible and water-only, making it a structural fit for a quiet, zero-wake electric shuttle. Krabi pairs with Phuket across the ~18nm Andaman corridor.",
- "demand_signals": [
-  {
-   "signal": "Ao Nang island-hopping volume",
-   "detail": "Ao Nang/Nopparat Thara is one of Thailand's densest day-trip launch points to Hong, Poda, Chicken Island, Phi Phi."
+  "city_id": "krabi-thailand",
+  "display": "Krabi",
+  "region": "SEA",
+  "tagline": "Andaman's mainland gateway — limestone-island demand, boat-only nodes.",
+  "summary": "Krabi is the Andaman mainland hub feeding a dense archipelago — Phi Phi, Hong, Poda, Chicken Island and the cliff-ringed Railay peninsula — plus the busy Ao Nang resort strip. Its airport has grown past three million passengers a year, and much of its signature geography is road-inaccessible and reachable only by water, so the boat trip is not an add-on here — it is the only way in. Today every leg runs on diesel longtails and speedboats: noisy, fume-heavy and wake-churning in waters where reef tours and beach resorts are the whole draw. A quiet, smooth, zero-wake foiling shuttle turns the water transfer itself into part of the premium Andaman experience, and pairs Krabi with Phuket across the ~18 nm corridor.",
+  "demand_signals": [
+    {
+      "label": "Krabi International Airport throughput",
+      "value": "3.07M passengers in 2025, a record above pre-pandemic levels",
+      "note": "The Andaman mainland's primary air gateway; nearly all arrivals continue by water to the islands and Railay",
+      "archetype": "tourism",
+      "source": "The Nation Thailand (2026)"
+    },
+    {
+      "label": "Railay water-only access",
+      "value": "Boat-only peninsula; ~20-min longtail from Ao Nang, no road link",
+      "note": "Limestone cliffs cut Railay off from the mainland, so 100% of arrivals are by boat — a captive water transfer market",
+      "archetype": "commuter",
+      "source": "Railay / Ao Nang visitor guides (2025)"
+    },
+    {
+      "label": "Phi Phi & Maya Bay day-trip pull",
+      "value": "Phi Phi ~1.5M visitors/yr; Maya Bay capped at 4,125 visitors/day",
+      "note": "Ao Nang and Nopparat Thara are among Thailand's densest day-trip launch points feeding the Phi Phi archipelago",
+      "archetype": "tourism",
+      "source": "Qbic Travel / CNN (2024-2025)"
+    }
+  ],
+  "use_cases": [
+    {
+      "archetype": "tourism",
+      "title": "Ao Nang ↔ Railay premium beach shuttle",
+      "body": "A smooth, near-silent hop to the cliff-ringed Railay peninsula — the only beach in the region reachable solely by water. Where today guests wedge into a wet, noisy longtail, a foiling shuttle delivers them dry, calm and on their own schedule.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "tourism",
+      "title": "Krabi ↔ Phi Phi island transfer",
+      "body": "A direct foiling crossing from the Krabi mainland to the Phi Phi archipelago that flies above the Andaman chop, arriving day-trippers and resort guests fresh rather than rattled by a diesel speedboat. The smooth, low-wake ride also fits the conservation rules tightening across the national-park waters.",
+      "platform": "Pioneer II"
+    },
+    {
+      "archetype": "commuter",
+      "title": "Krabi ↔ Phuket Andaman cross-corridor",
+      "body": "A fast water link across the ~18 nm Andaman corridor connecting the two biggest Andaman gateways without the long road detour around the bay. It knits Krabi's island demand to Phuket's air and resort base into one coastal network.",
+      "platform": "Pioneer II"
+    }
+  ],
+  "journeys": [
+    {
+      "from": "Ao Nang",
+      "to": "Railay East",
+      "today": "Wet, noisy diesel longtail, board off the beach, ~20 min when the operators run; weather- and tide-exposed.",
+      "with_navier": "A smooth, near-silent foiling hop to the boat-only peninsula on demand — dry, calm and quick.",
+      "distance_nm": 2,
+      "platform": "Pioneer II"
+    },
+    {
+      "from": "Klong Jilad (Krabi)",
+      "to": "Tonsai (Phi Phi)",
+      "today": "Diesel speedboat or ferry across open Andaman water, schedule-bound and bumpy in swell.",
+      "with_navier": "A direct foiling crossing that holds its line above the chop and lands guests fresh at the car-free island.",
+      "distance_nm": 23,
+      "platform": "Pioneer II"
+    },
+    {
+      "from": "Krabi",
+      "to": "Phuket",
+      "today": "Long road detour around Phang Nga Bay, or a fully weather-exposed speedboat across the corridor.",
+      "with_navier": "A fast, smooth foiling line-haul across the ~18 nm Andaman corridor linking the two gateways directly.",
+      "distance_nm": 18,
+      "platform": "Pioneer II"
+    }
+  ],
+  "navier_fit": {
+    "pioneer_ii": "Krabi mixes ultra-short captive hops with mid-range corridors that all sit inside the 70 nm all-electric envelope — Ao Nang↔Railay (~2 nm), Krabi↔Phi Phi (~23 nm) and the Krabi↔Phuket cross-corridor (~18 nm) — with multi-operator piers at Klong Jilad and Ao Nang that ease shore-charging siting and the boat-only nodes removing any road-modal competition.",
+    "quanta_lr": "Quanta LR's ~2,000 nm hybrid range, with no charging-infrastructure dependency, extends the Andaman network down the coast — Phuket, Phang Nga, Koh Lanta and the outer islands — and bridges open-water legs that island grid power could not yet support for all-electric charging."
   },
-  {
-   "signal": "Railay water-only access",
-   "detail": "Railay peninsula has no road link — every arrival is by boat, a captive shuttle market."
-  }
- ],
- "use_cases": [
-  "Ao Nang <-> Railay premium beach shuttle",
-  "Krabi <-> Phi Phi island transfer",
-  "Krabi <-> Phuket Andaman cross-corridor"
- ],
- "journeys": [
-  {
-   "from": "Ao Nang",
-   "to": "Railay East",
-   "approx_nm": 2,
-   "vessel_class": "Pioneer II (<=70nm)",
-   "note": "Captive water-only hop; longtail-replacement candidate."
+  "competitive_landscape": "Dense longtail + speedboat operators (Ao Nang Longtail Boat Club controls Railay access); all diesel/2-stroke, noise- and wake-heavy — a quiet electric shuttle is a clean differentiator.",
+  "seasonality": "Peak: Nov-Apr dry season. SW monsoon May-Oct raises Andaman swell; range-gate cross-corridors, keep short captive hops year-round.",
+  "regulatory_note": "Thai cabotage; Marine Department domestic licensing. Railay longtail cartel is a real access-politics factor — partner-of-record / local-operator structure advised.",
+  "signature_routes": [
+    "Ao Nang <-> Railay East",
+    "Klong Jilad (Krabi) <-> Tonsai (Phi Phi)",
+    "Krabi <-> Phuket"
+  ],
+  "sources": [
+    {
+      "label": "Krabi Airport 3.07M passengers in 2025 (record)",
+      "url": "https://www.nationthailand.com/blogs/business/economy/40061585"
+    },
+    {
+      "label": "Railay boat-only access from Ao Nang (longtail, ~20 min)",
+      "url": "https://www.awaygowe.com/railay-beach-krabi/"
+    },
+    {
+      "label": "Phi Phi ~1.5M visitors/yr; daily peak 3,000-5,000",
+      "url": "https://www.qbictravel.com/phi-phi-islands-population/"
+    },
+    {
+      "label": "Maya Bay capped at 4,125 visitors/day",
+      "url": "https://www.cnn.com/travel/article/maya-bay-thailand-recovery-c2e-spc-intl"
+    },
+    {
+      "label": "Marine Department Thailand",
+      "url": "https://www.md.go.th"
+    }
+  ],
+  "precedents": [
+    {
+      "label": "Ao Nang-Railay longtail shuttle",
+      "note": "Established captive water-only route, diesel today"
+    }
+  ],
+  "partner_overlays": {
+    "grab": {
+      "super_app_fit": "Grab in-app island-transfer + Ao Nang-Railay shuttle booking with GrabCar pier handoff at Klong Jilad / Ao Nang.",
+      "wedge": "Own the road-inaccessible Railay shuttle as a pre-booked premium lane inside Grab — no road-modal alternative exists."
+    }
   },
-  {
-   "from": "Klong Jilad (Krabi)",
-   "to": "Tonsai (Phi Phi)",
-   "approx_nm": 23,
-   "vessel_class": "Pioneer II",
-   "note": "Core island-transfer corridor."
-  },
-  {
-   "from": "Krabi",
-   "to": "Phuket",
-   "approx_nm": 18,
-   "vessel_class": "Pioneer II",
-   "note": "Andaman cross-corridor; needs range-gate confirm in monsoon swell."
+  "_enrichment": {
+    "authored": "2026-06-22",
+    "owner": "tasklet_research",
+    "tier": "connected",
+    "cluster": "thailand_andaman"
   }
- ],
- "navier_fit": "High. Mix of very short captive hops (Ao Nang-Railay) and mid-range island/cross corridors within Pioneer II range; road-inaccessible nodes remove road-modal competition; multi-operator piers (Klong Jilad, Ao Nang) ease pedestal siting.",
- "competitive_landscape": "Dense longtail + speedboat operators (Ao Nang Longtail Boat Club controls Railay access); all diesel/2-stroke, noise- and wake-heavy — a quiet electric shuttle is a clean differentiator.",
- "seasonality": "Peak: Nov-Apr dry season. SW monsoon May-Oct raises Andaman swell; range-gate cross-corridors, keep short captive hops year-round.",
- "regulatory_note": "Thai cabotage; Marine Department domestic licensing. Railay longtail cartel is a real access-politics factor — partner-of-record / local-operator structure advised.",
- "signature_routes": [
-  "Ao Nang <-> Railay East",
-  "Klong Jilad (Krabi) <-> Tonsai (Phi Phi)",
-  "Krabi <-> Phuket"
- ],
- "sources": [
-  {
-   "label": "Marine Department Thailand",
-   "url": "https://www.md.go.th"
-  },
-  {
-   "label": "Krabi Provincial tourism",
-   "url": "https://krabi.go.th"
-  }
- ],
- "precedents": [
-  {
-   "label": "Ao Nang-Railay longtail shuttle",
-   "note": "Established captive water-only route, diesel today"
-  }
- ],
- "partner_overlays": {
-  "grab": {
-   "super_app_fit": "Grab in-app island-transfer + Ao Nang-Railay shuttle booking with GrabCar pier handoff at Klong Jilad / Ao Nang.",
-   "wedge": "Own the road-inaccessible Railay shuttle as a pre-booked premium lane inside Grab — no road-modal alternative exists."
-  }
- },
- "_enrichment": {
-  "authored": "2026-06-22",
-  "owner": "tasklet_research",
-  "tier": "connected",
-  "cluster": "thailand_andaman"
- }
 }
