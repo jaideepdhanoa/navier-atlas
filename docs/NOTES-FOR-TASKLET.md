@@ -6,6 +6,20 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-24 — Held lanes closed: OW live deck + economics_url + PR #95 Caribbean (Grok)
+
+| Lane | Status |
+|------|--------|
+| **Ocean Whisperer live Slides deck** | Applied — https://docs.google.com/presentation/d/1nDyJiJYnGAfQQC4qg00JG-8sZOnr9B2CIK5tWZo4N2c/edit (`deck_ocean_whisperer.py`, Curaçao `econ-curacao-v1` composited bg) |
+| **Ocean Whisperer economics_url** | Published — https://docs.google.com/spreadsheets/d/109GGDSUoU_xofFU5Losb8-3OCW5ykZMBD41m4XTvOeU/edit (`finance/publish_partner_economics.py`) |
+| **PR #95 Caribbean consolidation** | Shipped — `caribbean-mobility` → `caribbean` (11 markets); ABC geometry in `abc-islands` market only; `caribbean-mobility` retired in place |
+
+Live: https://navier-atlas.vercel.app/caribbean · https://navier-atlas.vercel.app/ocean-whisperer
+
+**Tasklet follow-up:** reconcile `abc-islands` economics into the consolidated `caribbean` growth_case (per `CARIBBEAN-CONSOLIDATION.md`).
+
+---
+
 ## 2026-06-24 — Ocean Whisperer: ABC scale-vision reseal + offshore geometry shipped (Grok)
 
 **Status:** Shipped — commit `0ea2f48e` deployed to https://navier-atlas.vercel.app/ocean-whisperer (2026-06-24).
