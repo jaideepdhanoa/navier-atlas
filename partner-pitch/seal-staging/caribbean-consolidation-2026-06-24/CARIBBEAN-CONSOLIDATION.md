@@ -23,9 +23,11 @@ is backwards — it downgraded the canonical Caribbean network to a stub.
   `caribbean-mobility.json.bak-*` removed.
 
 ## What Grok needs to reconcile
-1. **Geometry binding:** the ABC routes you sealed in PR #93 under partner **`caribbean`** still bind here
-   (partner id is unchanged) — attach them to the **`abc-islands`** market. Drop any duplicate ABC
-   corridors created under the short-lived standalone.
+1. **Geometry binding (REQUIRED):** the ABC routes you sealed in PR #93 under partner **`caribbean`**
+   must be bound to the **`abc-islands` market** — *not* at the partner level and *not* spread across the
+   other 10 markets. The partner id is unchanged, so the routes still resolve; the action is to attach
+   every ABC `route_id` to the `abc-islands` market entry. Drop any duplicate ABC corridors created under
+   the short-lived standalone `caribbean`. Net: ABC geometry lives in exactly one place — `abc-islands`.
 2. **Ocean Whisperer** stays its own partner (Curaçao captive scoped view) — unchanged.
 3. After binding, hand back to **Tasklet** to reconcile the `abc-islands` economics into the existing
    growth_case; then reseal the `/caribbean` page/map.
