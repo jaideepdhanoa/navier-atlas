@@ -2168,11 +2168,14 @@ function _econModalHtml(rec){
     build+=L('Revenue / boat·yr', rev!=null?_econMoney(rev):'—', 'total');
     // ANNUAL RUN COST
     const energy=rc.energy_usd_yr ?? rc.energy, crew=rc.crew_usd_yr ?? rc.crew,
-          marina=rc.marina_overhead_usd_yr ?? rc.marina_overhead, maint=rc.maintenance_usd_yr ?? rc.maintenance;
+          marina=rc.marina_overhead_usd_yr ?? rc.marina_overhead, maint=rc.maintenance_usd_yr ?? rc.maintenance,
+          insurance=rc.insurance_usd_yr ?? rc.insurance, charging=rc.charging_berth_usd_yr ?? rc.charging_berth;
     if (energy!=null) cost+=L('Energy', _econMoney(energy));
     if (crew!=null)   cost+=L('Captain / crew', _econMoney(crew));
     if (marina!=null) cost+=L('Marina + overhead', _econMoney(marina));
     if (maint!=null)  cost+=L('Maintenance', _econMoney(maint));
+    if (insurance!=null) cost+=L('Insurance', _econMoney(insurance));
+    if (charging!=null)  cost+=L('Charging berth', _econMoney(charging));
     cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
     if (rc.depreciation_usd_yr!=null) cost+=L('Depreciation (non-cash, excl.)', _econMoney(rc.depreciation_usd_yr), 'pending');
     // THE RESULT
@@ -2192,6 +2195,8 @@ function _econModalHtml(rec){
     cost+=L('Captain / crew', pend, 'pending');
     cost+=L('Marina + overhead', pend, 'pending');
     cost+=L('Maintenance', pend, 'pending');
+    cost+=L('Insurance', pend, 'pending');
+    cost+=L('Charging berth', pend, 'pending');
     cost+=L('Total run cost / yr', runTot!=null?_econMoney(runTot):'—', 'total');
     result+=L('Profit / boat·yr (EBITDA)', profit!=null?_econMoney(profit):'—');
     result+=L('Operating margin', margin!=null?_econPct(margin):'—');

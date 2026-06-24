@@ -70,13 +70,33 @@ python3 "$BY/build_economics_sidecar.py" \
   --aggdir "$RECAL" \
   --url-map "$FINANCE/economics_url_map.json"
 
-step "8/9 transparent unit-economics sheet"
-python3 "$FINANCE/build_transparent_sheet.py" \
-  --partner "$PARTNER" \
-  --corridors "$CORR" \
-  --out "$FINANCE/_refresh_$PARTNER.xlsx"
+step "8/10 transparent unit-economics sheet"
+python3 - <<PY
+import subprocess, sys
+sys.path.insert(0, "$FINANCE")
+from partner_sheet_build import build_sheet_cmd
+out = "$FINANCE/_refresh_$PARTNER.xlsx"
+cmd = build_sheet_cmd("$PARTNER", out)
+print(" ".join(cmd))
+subprocess.run(cmd, cwd="$FINANCE", check=True)
+PY
 
-step "9/9 Bind economics_status on partner JSON"
+step "9/10 Publish sheet to Drive (keeps economics_url live)"
+python3 - "$PARTNER" "$FINANCE" <<'PY'
+import json, sys
+from pathlib import Path
+PARTNER, FINANCE = sys.argv[1], Path(sys.argv[2])
+sys.path.insert(0, str(FINANCE))
+from partner_sheet_build import publish_partner_sheet
+from publish_partner_economics import wire_partner
+result = publish_partner_sheet(PARTNER, dry_run=False)
+sid = result.get("sheet_id") or json.loads((FINANCE / "PARTNER-SHEET-IDS.json").read_text())[PARTNER]
+url = f"https://docs.google.com/spreadsheets/d/{sid}/edit"
+wire_partner(PARTNER, url)
+print(json.dumps({"partner": PARTNER, "url": url, "upload": result}, indent=2))
+PY
+
+step "10/10 Bind economics_status on partner JSON"
 python3 - <<'PY' "$ROOT" "$PARTNER"
 import json, sys
 from datetime import datetime, timezone

@@ -212,23 +212,29 @@ def tam_sizing_link_binding(deck_key: str, golden: dict) -> dict | None:
     }
 
 
+def _binding_key(row: dict) -> tuple[str, str]:
+    """Dedupe by stable slide + link object ids (slide_index alone collides after slide-2 insert)."""
+    return (row.get("slide_object_id", ""), row.get("link_object_id", ""))
+
+
 def merged_bindings(deck_key: str, *, golden: dict | None = None) -> list[dict]:
     doc = load_link_bindings_doc(deck_key)
     golden = golden or load_json(ROOT / "decks/grab/golden-template-map.json")
     rows = list(doc.get("bindings", []))
-    seen = {r["slide_index"] for r in rows}
+    seen = {_binding_key(r) for r in rows}
     for row in econ_model_link_bindings(deck_key):
-        if row["slide_index"] not in seen:
+        key = _binding_key(row)
+        if key not in seen:
             rows.append(row)
-            seen.add(row["slide_index"])
+            seen.add(key)
     tam = tam_sizing_link_binding(deck_key, golden)
-    if tam and tam["slide_index"] not in seen:
+    if tam and _binding_key(tam) not in seen:
         rows.append(tam)
-        seen.add(tam["slide_index"])
+        seen.add(_binding_key(tam))
     close = close_atlas_link_binding(deck_key)
-    if close and close["slide_index"] not in seen:
+    if close and _binding_key(close) not in seen:
         rows.append(close)
-        seen.add(close["slide_index"])
+        seen.add(_binding_key(close))
     rows.sort(key=lambda r: r["slide_index"])
     return rows
 
@@ -283,12 +289,14 @@ def validate_link_bindings(deck_key: str, *, golden: dict | None = None) -> list
     except SystemExit as exc:
         errors.append(str(exc))
 
-    seen: set[int] = set()
+    seen_keys: set[tuple[str, str]] = set()
     for b in merged_bindings(deck_key, golden=golden):
-        idx = b.get("slide_index")
-        if idx in seen:
-            errors.append(f"duplicate slide_index {idx} in merged link bindings")
-        seen.add(idx)
+        key = _binding_key(b)
+        if key in seen_keys:
+            errors.append(
+                f"duplicate link binding {key} (slide_index {b.get('slide_index')})"
+            )
+        seen_keys.add(key)
 
         role = b.get("link_role", "atlas_market")
         for field in ("slide_object_id", "link_object_id", "link_role"):

@@ -180,50 +180,31 @@ def main():
                 }
             )
 
-    # Intra-city BP mesh for anchor cities (fills gaps when corridor labels don't resolve)
-    mesh_added = 0
-    for city_id in sorted(BOLT_YANGO_ANCHORS):
-        bps = [pid for pid, row in bp_idx.items() if row.get("parent_city_id") == city_id]
-        if len(bps) < 2:
-            continue
-        pairs = 0
-        for i, from_bp in enumerate(bps):
-            for to_bp in bps[i + 1 :]:
-                if pairs >= 40:
-                    break
-                a = bp_idx[from_bp]["coords"]
-                b = bp_idx[to_bp]["coords"]
-                if hav_nm(a, b) > 40:
-                    continue
-                rid = mint_route_id(from_bp, to_bp)
-                if rid in existing_ids:
-                    continue
-                coords = build_coastal_path(a, b, mask)
-                land_km = interior_land_km(coords, mask)
-                feat = make_route_feature(
-                    from_bp,
-                    to_bp,
-                    bp_idx[from_bp]["name"],
-                    bp_idx[to_bp]["name"],
-                    city_id,
-                    city_id,
-                    coords,
-                    cities,
-                    land_km=land_km,
-                )
-                feat["properties"]["id"] = rid
-                if land_km > LAND_THRESH_KM:
-                    feat["properties"]["_qa_land_flag"] = True
-                    report["allowlisted"].append({"route_id": rid, "land_km": land_km, "market": f"mesh:{city_id}"})
-                new_routes.append(feat)
-                existing_ids.add(rid)
-                mesh_added += 1
-                pairs += 1
-                report["synthesized"].append(
-                    {"route_id": rid, "market": f"mesh:{city_id}", "from_bp": from_bp, "to_bp": to_bp, "tag": "mesh"}
-                )
-
     routes.extend(new_routes)
+    # Intra-city BP mesh — shared lane (scripts/grok-geometry/mint_intra_city_mesh.py)
+    sys.path.insert(0, str(ROOT / "scripts/grok-geometry"))
+    from mint_intra_city_mesh import mint_mesh_for_cities  # noqa: E402
+
+    mesh_report = mint_mesh_for_cities(
+        routes,
+        fbt,
+        city_configs={},
+        source="grok/boltyango_mesh",
+        extra_cities=list(BOLT_YANGO_ANCHORS),
+    )
+    mesh_added = mesh_report.get("mesh_added", 0)
+    for row in mesh_report.get("allowlisted", []):
+        report["allowlisted"].append({**row, "market": f"mesh:{row.get('city')}"})
+    for row in mesh_report.get("synthesized", []):
+        report["synthesized"].append(
+            {
+                "route_id": row["route_id"],
+                "market": f"mesh:{row['city']}",
+                "from_bp": row["from"],
+                "to_bp": row["to"],
+                "tag": "mesh",
+            }
+        )
     save_routes(dc / "ROUTES.json", routes)
     print(f"intra-city mesh routes added: {mesh_added}")
 

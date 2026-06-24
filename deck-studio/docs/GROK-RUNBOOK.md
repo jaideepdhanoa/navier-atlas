@@ -78,6 +78,25 @@ You own deterministic deck creation, live editing, and image generation/composit
 - Careem x Navier: `1Mut8qzpW-8Pd989hGS7fgskY1SuQICxVflIlHP-zonQ`
 - Grab × Navier: `18yDAgO0Sj9PJlgf6paxtgni8Pk1xRAmNwE2TD_NCdSs`
 
+## Hospitality / single-market decks (Ocean Whisperer pattern)
+
+Do **not** treat hospitality as “text-only.” The same **deck-level image roles** as Bolt are mandatory:
+
+| Step | Command / artifact |
+|------|-------------------|
+| Gap check vs Bolt | `decks/{deck}/WAVE2-GAP-MATRIX.md` |
+| Slide 2 insert | `python builders/deck_{deck}.py insert-slide2` |
+| Deck plates (cover, slide2, Three C's, TAM, partner-roles) | `deck_{deck}_images.py generate-all` + `publish` |
+| Slide 2 narrative | `narrative-binding.json` + `deck_narrative_slide2.build_narrative_paint_ops` (gold `narr2_*` style pins — never flat 11pt) |
+| Slide 3 KPI captions | Center-align caption object_ids (`g3eec5122801_0_7/_11/_16/_19`); values stay as-is |
+| Market route lists (5–7, 12) | `market-route-bindings.json` + `deck_market_routes.py` — amber `▸`, white body, `\n\n` between blocks, distance lines **not bold** |
+| Single-market econ bg | Tier-A integrated vessel (`econ-{market}-v1`) on **all** `navierBg_s23`–`s25` — **never** paste-composite overlay; repaint corridor economics from `agg-*.json` |
+| Close slide (14) | **Only** `close_atlas_link.body_text` from `slide-link-bindings.json` — never concatenate partner `close.body` prose |
+| Atlas side-panels | `slide-image-bindings.json` + `capture_atlas_screenshots.py` |
+| Hyperlinks | `slide-link-bindings.json` + `deck_link_bindings.py` |
+
+**Failure mode we hit on OW:** only slide 7 bg + text; slides 8–9 kept Grab Phuket/Bali paintbrush plates; slide 10 TAM text without `tam_bg`; slide 11 partner-roles without `partner_roles_bg`; no cover hero; no slide 2.
+
 ## Stop conditions
 
 Stop and request human review if:

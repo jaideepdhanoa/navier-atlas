@@ -135,6 +135,21 @@ Updated 2026-06-22 after `main` consolidation:
 
 ---
 
+## Hospitality / single-market decks — same image contract as Bolt
+
+A hospitality deck with one anchor market (e.g. Ocean Whisperer / Curaçao) is **not** text-only.
+Before `run-all` / `run-wave2`, every role in `IMAGE-ROLE-CONTRACT.md` must resolve:
+
+- `cover_hero`, `value_prop_bg` (requires `insert-slide2`), `three_cs_bg` (slide 3 — distinct from slide 2), `tam_bg`, `partner_roles_bg`
+- `econ_market_bg` on **all three** unit-econ slots (`navierBg_s23`–`s25`) — Tier-A reference-guided integrated vessel (same pattern as Bolt wave-2.3); **never** ship paste-composite `n30_composite` center overlays
+- Slide 2 exec-summary text via `deck_narrative_slide2.py` + `narrative-slide2-style-pins.json` (gold-create pins)
+- Slide 3 KPI **captions** center-aligned; market routes + partner-roles bullets via `deck_market_routes.py` (amber `▸`, blank line between blocks)
+- Close slide body = `slide-link-bindings.json` `close_atlas_link.body_text` only (inline Atlas phrase link)
+- `atlas_route_screenshot` on market side-panels (slides 5–7 post-insert)
+
+Skipping deck-level images because “only slide 7 matters” leaves Grab paintbrush residue on slides 8–11.
+See `decks/ocean-whisperer/WAVE2-GAP-MATRIX.md` for the OW post-mortem.
+
 ## Materialized artifacts (now in repo — read these, not memory)
 
 These are the concrete files this contract depends on. They are checked in under `asset-pack-grab` + this PR. Grok reads them from git:

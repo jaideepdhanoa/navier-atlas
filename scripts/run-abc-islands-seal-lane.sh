@@ -12,25 +12,31 @@ SEAL_TAG="${SEAL_TAG:-#pr93-abc-seal}"
 die() { echo "✗ $*" >&2; exit 1; }
 step() { echo ""; echo "=== $* ==="; }
 
-step "1/7 Mint ABC islands geometry"
+step "1/9 Mint ABC islands geometry"
 python3 "$GEO/mint_abc_islands_geometry.py" --dc data-clean --apply
 
-step "2/7 Bind partners + retire caribbean-mobility"
+step "2/9 Full boarding-point mesh (canonical ABC nodes — Ocean Whisperer + Caribbean)"
+python3 "$GEO/mint_intra_city_mesh.py" --dc data-clean --abc-only
+
+step "3/9 Offshore fix — Curaçao north→south legs (no overland chord)"
+python3 "$GEO/fix_abc_curacao_offshore_routes.py"
+
+step "4/9 Bind partners + retire caribbean-mobility"
 python3 "$GEO/seal_abc_caribbean_partners.py" --apply
 
-step "3/7 Route geometry audit"
+step "5/9 Route geometry audit"
 python3 "$ROOT/scripts/audit-route-geometry.py" || echo "WARN: audit reported issues (review report)"
 
-step "4/7 Update SEAL geometry gate"
+step "6/9 Update SEAL geometry gate"
 python3 "$GEO/update_seal_geometry_gate.py" --apply 2>/dev/null || true
 
-step "5/7 Reseal hashes"
+step "7/9 Reseal hashes"
 python3 "$ECON/update_seal_hashes.py" 2>/dev/null || true
 
-step "6/7 Public build preflight"
+step "8/9 Public build preflight"
 BUILD_PROFILE=public node "$ROOT/scripts/build-site.mjs" --profile=public
 
-step "7/7 Deploy"
+step "9/9 Deploy"
 RELEASE=1 BUILD_PROFILE=public "$ROOT/scripts/deploy.sh"
 
 "$ROOT/scripts/publish-gold.sh" "Gold $SEAL_TAG — PR #93 ABC islands seal"

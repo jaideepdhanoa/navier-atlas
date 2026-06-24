@@ -721,11 +721,17 @@ PARTNER_NO_PLATFORM_REV = {"french-polynesia"}
 _override = PARTNER_MULTIPLIER_OVERRIDES.get(PARTNER, {})
 for _k, _v in _override.items():
     M[_k] = {**M[_k], **_v}
-# LB-254: captive markets already capture ~max of the corridor; mature capture cannot ramp below
-# the floor it already operates at (a contested 0.15->0.40 ramp would imply maturing DOWN from 90%).
-# Clamp to the floor capture with a thin high-band lock-up headroom. Mirrors growth.py mature_capture().
-if IS_CAPTIVE and EFF_CAPTURE:
-    M["mature_capture_rate"] = {"low": EFF_CAPTURE, "mid": EFF_CAPTURE, "high": min(0.95, EFF_CAPTURE + 0.05)}
+# LB-254: mirror growth.py mature_capture() exactly — contested ramp (0.15/0.25/0.40) only when
+# eff_capture is below the config band; hospitality/captive-blended floors (~0.49–0.55) must use
+# max(band, eff_capture) so SAM stays above SOM network (induced × mature > floor capture).
+_CAPTIVE_CEILING = 0.95
+def _mature_capture_band(eff_capture):
+    if eff_capture and eff_capture >= 0.5:
+        return {"low": eff_capture, "mid": eff_capture,
+                "high": min(_CAPTIVE_CEILING, eff_capture + 0.05)}
+    return {b: max(M["mature_capture_rate"][b], eff_capture or 0.0) for b in ("low", "mid", "high")}
+if EFF_CAPTURE is not None:
+    M["mature_capture_rate"] = _mature_capture_band(EFF_CAPTURE)
 SKIP_PLATFORM_REV = (PARTNER in PARTNER_NO_PLATFORM_REV)
 def band3(node): return node["low"],node["mid"],node["high"]
 # multiplier table

@@ -94,12 +94,11 @@ def refresh_master(dry_run: bool) -> dict:
 
 
 def run_for_partner(partner: str, sheet_id: str, dry_run: bool) -> dict:
+    from partner_sheet_build import build_sheet_cmd
+
     out_local = os.path.join(HERE, f"_refresh_{partner}.xlsx")
-    agg = os.path.join(RECAL, f"agg-{partner}.json")
     build_partner = engine_partner(partner)
-    cmd = ["python3", BUILDER, "--partner", build_partner, "--out", out_local]
-    if os.path.isfile(agg):
-        cmd.extend(["--agg", agg])
+    cmd = build_sheet_cmd(build_partner, out_local)
     record = {"partner": partner, "sheet_id": sheet_id, "cmd": " ".join(cmd)}
     if dry_run:
         record["status"] = "planned"

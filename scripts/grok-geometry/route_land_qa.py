@@ -136,11 +136,41 @@ def interior_land_km(
     return bad
 
 
+DETOUR_MAX = 1.35
+CURACAO_LEEWARD_LAT_MIN = 12.05
+CURACAO_LEEWARD_LAT_MAX = 12.13
+
+
+def path_detour_ratio(coords: list) -> float:
+    """Sealed path length / great-circle (nm). Catches windward circumnavigations with land_km=0."""
+    if len(coords) < 2:
+        return 1.0
+    start = (coords[0][0], coords[0][1])
+    end = (coords[-1][0], coords[-1][1])
+    straight_km = _hav_km(start, end)
+    if straight_km < 0.5 * 1.852:
+        return 1.0
+    path_km = sum(
+        _hav_km((coords[i - 1][0], coords[i - 1][1]), (coords[i][0], coords[i][1]))
+        for i in range(1, len(coords))
+    )
+    return path_km / straight_km if straight_km else 1.0
+
+
+def curacao_leeward_bbox_ok(coords: list) -> bool:
+    if not coords:
+        return True
+    lats = [c[1] for c in coords]
+    return min(lats) >= CURACAO_LEEWARD_LAT_MIN and max(lats) <= CURACAO_LEEWARD_LAT_MAX + 0.02
+
+
 def evaluate_route(
     coords: list,
     *,
     sea_nm: float | None = None,
     step_km: float | None = None,
+    check_detour: bool = True,
+    check_curacao_bbox: bool = False,
 ) -> dict[str, Any]:
     if not coords or len(coords) < 2:
         return {"interior_land_km": 0.0, "qa_pass": True, "mask": "none"}
@@ -153,11 +183,16 @@ def evaluate_route(
         step_km = 0.15 if sea_nm > 30 else 0.05
     land_km = interior_land_km(coords, step_km=step_km)
     uae_used = any(in_uae_bbox(c[0], c[1]) for c in coords)
+    detour = path_detour_ratio(coords)
+    detour_ok = (not check_detour) or detour <= DETOUR_MAX
+    bbox_ok = (not check_curacao_bbox) or curacao_leeward_bbox_ok(coords)
     return {
         "interior_land_km": round(land_km, 4),
-        "qa_pass": land_km <= THRESH_KM,
+        "detour_ratio": round(detour, 3),
+        "qa_pass": land_km <= THRESH_KM and detour_ok and bbox_ok,
         "mask": "uae_v2+coarse" if uae_used and load_uae_overlay() else "coarse",
         "threshold_km": THRESH_KM,
+        "detour_max": DETOUR_MAX,
     }
 
 

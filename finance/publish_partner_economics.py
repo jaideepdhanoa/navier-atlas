@@ -73,9 +73,12 @@ def ensure_sheet_id(partner: str, title: str) -> str:
     return sid
 
 
-def build_xlsx(partner: str, out: Path, *, hospitality: bool) -> None:
-    cmd = [sys.executable, str(BUILDER), "--partner", partner, "--out", str(out)]
-    if hospitality:
+def build_xlsx(partner: str, out: Path, *, hospitality: bool | None = None) -> None:
+    from partner_sheet_build import build_sheet_cmd, hospitality_capex_tier
+
+    use_hospitality = hospitality_capex_tier(partner) if hospitality is None else hospitality
+    cmd = build_sheet_cmd(partner, out)
+    if use_hospitality and "--capex-tier" not in cmd:
         cmd.extend(["--capex-tier", "hospitality"])
     subprocess.run(cmd, cwd=str(HERE), check=True)
 
@@ -96,7 +99,7 @@ def main() -> int:
         print(json.dumps({"partner": args.partner, "sheet_id": sid, "url": url, "out": str(out)}))
         return 0
 
-    build_xlsx(args.partner, out, hospitality=args.hospitality)
+    build_xlsx(args.partner, out, hospitality=True if args.hospitality else None)
     result = replace_spreadsheet(str(out), sid, dry_run=False)
     wire_partner(args.partner, url)
     print(json.dumps({"partner": args.partner, "sheet_id": sid, "url": url, "upload": result}, indent=2))
