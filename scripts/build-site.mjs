@@ -47,6 +47,17 @@ function loadData() {
     if (name === 'ROUTES') blob = normalizeRouteBlob(blob);
     data[name] = blob;
   }
+  const STRIP_POI_PROPS = ['linked_locale', 'linked_subcluster', 'validation_log', 'source_chain', 'operator', 'notes'];
+  const isPitchTrapPoi = (f) => {
+    const p = f?.properties;
+    if (!p) return false;
+    const blob = `${p.id || ''} ${p.name || ''} ${p._handoff_bp_id || ''}`.toLowerCase();
+    return blob.includes('pitch-trap') || blob.includes('pitch trap');
+  };
+  data.FEATURES_BY_TYPE.poi = (data.FEATURES_BY_TYPE.poi || []).filter((f) => !isPitchTrapPoi(f));
+  for (const f of data.FEATURES_BY_TYPE.poi) {
+    if (f?.properties) for (const k of STRIP_POI_PROPS) delete f.properties[k];
+  }
   const dir = (sub, keyField) => {
     const base = fs.existsSync(path.join(DC, sub)) ? path.join(DC, sub) : path.join(PITCH, sub);
     if (base.startsWith(PITCH)) console.warn(`⚠ data-clean/${sub} missing — falling back to partner-pitch/ (INTERNAL). NOT for prod.`);
@@ -79,6 +90,8 @@ function loadData() {
     for (const k of STRIP_BRIEF_PROPS) delete out[k];
     delete out.posture_note;
     delete out.internal;
+    delete out.convener_intel;
+    delete out.regulatory_note;
     if (out.partner_overlays && typeof out.partner_overlays === 'object') {
       for (const [pid, ov] of Object.entries(out.partner_overlays)) {
         if (!ov || typeof ov !== 'object') continue;

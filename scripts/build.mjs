@@ -87,9 +87,26 @@ data.CLUSTERS = existsSync(clustersPath) ? readJson(clustersPath) : { clusters: 
 // Stripping here keeps the sealed source intact (seal still verifies) while the deployed atlas-data.js
 // stays clean. Safe to keep permanently; remove only if these ever become intended-public fields.
 const STRIP_PROPS = ['posture', 'archetype_scores', 'archetype_fit'];
-for (const t of Object.keys(data.FEATURES_BY_TYPE || {}))
+const STRIP_POI_PROPS = ['linked_locale', 'linked_subcluster', 'validation_log', 'source_chain', 'operator', 'notes'];
+const isPitchTrapPoi = (f) => {
+  const p = f?.properties;
+  if (!p) return false;
+  const blob = `${p.id || ''} ${p.name || ''} ${p._handoff_bp_id || ''}`.toLowerCase();
+  return blob.includes('pitch-trap') || blob.includes('pitch trap');
+};
+for (const t of Object.keys(data.FEATURES_BY_TYPE || {})) {
+  if (t === 'poi') {
+    data.FEATURES_BY_TYPE.poi = (data.FEATURES_BY_TYPE[t] || []).filter((f) => !isPitchTrapPoi(f));
+    for (const f of data.FEATURES_BY_TYPE.poi)
+      if (f?.properties) {
+        for (const k of STRIP_PROPS) delete f.properties[k];
+        for (const k of STRIP_POI_PROPS) delete f.properties[k];
+      }
+    continue;
+  }
   for (const f of (data.FEATURES_BY_TYPE[t] || []))
-    if (f && f.properties) for (const k of STRIP_PROPS) delete f.properties[k];
+    if (f?.properties) for (const k of STRIP_PROPS) delete f.properties[k];
+}
 // City-brief index + records can carry internal posture stamps — strip before public bake.
 for (const rec of Object.values(data.CITY_BRIEFS || {})) {
   if (!rec || typeof rec !== 'object') continue;
