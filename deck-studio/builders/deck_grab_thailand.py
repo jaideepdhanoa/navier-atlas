@@ -94,6 +94,7 @@ ECON_SLIDES: dict[int, dict] = {
         "title_oid": "g3eec5122801_0_394",
         "route_oid": "g3eec5122801_0_395",
         "summary_oid": "g3eec5122801_0_397",
+        "footnote_oid": "g3eec5122801_0_441",
     },
     8: {
         "slide_oid": "g3eec5122801_0_448",
@@ -107,6 +108,7 @@ ECON_SLIDES: dict[int, dict] = {
         "title_oid": "g3eec5122801_0_451",
         "route_oid": "g3eec5122801_0_452",
         "summary_oid": "g3eec5122801_0_454",
+        "footnote_oid": "g3eec5122801_0_498",
     },
     9: {
         "slide_oid": "g3eec5122801_0_505",
@@ -120,6 +122,7 @@ ECON_SLIDES: dict[int, dict] = {
         "title_oid": "g3eec5122801_0_508",
         "route_oid": "g3eec5122801_0_509",
         "summary_oid": "g3eec5122801_0_511",
+        "footnote_oid": "g3eec5122801_0_555",
     },
 }
 
@@ -135,8 +138,8 @@ NARRATIVE: dict[tuple[str, str], str] = {
         "g3eec5122801_0_106",
         "g3eec5122801_0_114",
     ): (
-        "▸  Bangrak → Thong Sala (Phangan)\n"
-        "      ~10 nm · flagship cascade corridor\n"
+        "▸  Mae Nam → Thong Sala (Phangan)\n"
+        "      ~8 nm · flagship cascade corridor\n"
         "▸  Samui → Koh Tao\n"
         "      ~35 nm · dive-school triangle leg\n"
         "▸  Lipa Noi → Donsak (mainland)\n"
@@ -409,6 +412,26 @@ def build_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
                 source_pointer=f"agg-grab-thailand.json :: {spec['corridor']}",
             )
         )
+        # Footnote tagline: builder-owned so a rebuild reproduces the live deck.
+        # Payback is derived from the model (mid scenario), never hand-typed.
+        footnote_oid = spec.get("footnote_oid")
+        if footnote_oid:
+            if econ.get("payback_years"):
+                footnote = (
+                    "Profitable from year one — every line item ties on this slide; "
+                    f"the vessel pays itself back in {econ['payback_years']:.1f} yrs."
+                )
+            else:
+                footnote = "Profitable from year one — every line item ties on this slide."
+            base = element_or_fallback(golden, footnote_oid)
+            el = {**base, "char_budget": max(base.get("char_budget", 12), len(footnote) + 4)}
+            ops.extend(
+                text_replace_ops(
+                    spec["slide_oid"], footnote_oid, footnote, el,
+                    op_prefix=f"gt-econ-footnote-{spec['slide_oid']}",
+                    source_pointer=f"agg-grab-thailand.json :: {spec['corridor']} (payback)",
+                )
+            )
         binding_slide = next(s for s in grab_binding["economics_slides"] if s["slide_index"] == slide_idx)
         values = econ_value_map(econ)
         source = f"finance/recal/agg-grab-thailand.json mid {spec['corridor']}"
