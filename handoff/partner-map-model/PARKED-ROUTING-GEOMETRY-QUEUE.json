@@ -1,0 +1,139 @@
+{
+  "schema": "navier-atlas/parked-queue/v1",
+  "parked_at": "2026-06-24T00:00:00Z",
+  "repo": "/Users/jaideep/navier-atlas",
+  "production_url": "https://navier-atlas.vercel.app",
+  "baseline": {
+    "branch": "main",
+    "commit": "e1f69dcf",
+    "parent_commits": ["c47bafb1", "d322f5cc"],
+    "deployed": true,
+    "deployed_at": "2026-06-24"
+  },
+  "north_star": {
+    "story_geometry_pass": 839,
+    "story_geometry_fail": 205,
+    "story_geometry_total": 1044,
+    "story_geometry_pass_rate_pct": 80.4,
+    "target_story_fail": 0,
+    "target_story_pass_rate_pct": 100,
+    "note": "80% gate met for interim deploy; all story routes must pass before geometry is done"
+  },
+  "seal": {
+    "geometry_story": "FAIL — story 839 pass / 205 fail",
+    "geometry_story_allowlisted": "PASS — 0 story routes on allowlist",
+    "preflight_release": "PASS on e1f69dcf"
+  },
+  "completed": [
+    "channel_mint_80pct_gate",
+    "regional_land_masks",
+    "hand_waypoint_multi_key_lookup",
+    "city_id_normalization_phase1",
+    "deploy_e1f69dcf",
+    "seal_geometry_gate_refresh"
+  ],
+  "queue": [
+    {
+      "id": "P0",
+      "title": "Story geometry completion",
+      "priority": 1,
+      "status": "parked",
+      "remaining": 205,
+      "fail_buckets": { "lt_1km": 30, "1_5km": 95, "5_15km": 50, "15_50km": 20, "gt_50km": 5 },
+      "hard_blockers": [
+        "rn-460c45c21fb8",
+        "gcn-3273659cd1-shared",
+        "rn-f6761e2793e7",
+        "e__chicago-lake-michigan-usa__dusable-harbor-chicago__new-buffalo-municipal-marina",
+        "rn-67dc105ba6e9"
+      ],
+      "acceptance": "audit-route-geometry.py story_fail == 0",
+      "key_files": [
+        "handoff/partner-map-model/GEOMETRY-TRIAGE.json",
+        "scripts/grok-geometry/mint_story_channels.py",
+        "scripts/grok-geometry/mint_hand_waypoints.py",
+        "scripts/grok-geometry/channel_solver.py",
+        "scripts/grok-geometry/regional_land_masks.py"
+      ]
+    },
+    {
+      "id": "P1",
+      "title": "South Africa mesh",
+      "priority": 2,
+      "status": "parked",
+      "routes_built": 10,
+      "routes_pass_qa": 4,
+      "failing_routes": [
+        "rn-373fbf71fa7d",
+        "rn-12ad23baa2fd",
+        "rn-9014901e2f96",
+        "rn-5e0c1a18bf27",
+        "rn-75e6606e3a52",
+        "rn-242284fa4884"
+      ],
+      "blockers": ["route_id null on bolt.json south-africa journeys"],
+      "key_files": [
+        "scripts/grok-geometry/mint_bolt_south_africa_geometry.py",
+        "grok-routing-output/bolt-south-africa-seal-report.json",
+        "data-clean/partners/bolt.json"
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Croatia depth",
+      "priority": 3,
+      "status": "parked",
+      "scoped_routes_approx": 30,
+      "corridors_in_model": 15,
+      "key_files": [
+        "scripts/grok-bolt-yango/route_kept_markets.py",
+        "data-clean/partners/bolt.json"
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "Phase 0 map footprint",
+      "priority": 4,
+      "status": "parked",
+      "bolt_footprint_rows": 50,
+      "bolt_map_scope_cities": 38,
+      "target_rollout_cities": 80,
+      "tasks": ["0.1 footprint restore", "0.2 Cyprus", "0.3 Israel", "0.4 Auckland"],
+      "key_files": ["data-clean/partners/bolt.json"]
+    },
+    {
+      "id": "P4",
+      "title": "Phase 2 corridor minting waves",
+      "priority": 5,
+      "status": "parked",
+      "markets_partial": [
+        "bolt-estonia",
+        "grab-thailand",
+        "bolt-east-africa",
+        "bolt-greece",
+        "bolt-croatia"
+      ]
+    },
+    {
+      "id": "P5",
+      "title": "Economics Phase 5",
+      "priority": 6,
+      "status": "not_started"
+    }
+  ],
+  "resume_prompt_file": "handoff/partner-map-model/PARKED-ROUTING-GEOMETRY-QUEUE.md",
+  "resume_commands": [
+    "python3 scripts/audit-route-geometry.py",
+    "python3 scripts/grok-geometry/mint_story_channels.py --apply --nudge-only --max-land-km 5",
+    "python3 scripts/grok-geometry/mint_bolt_south_africa_geometry.py --apply",
+    "python3 scripts/grok-bolt-yango/route_kept_markets.py --markets bolt-croatia"
+  ],
+  "dirty_at_park": [
+    "grok-routing-output/route-city-id-backfill-report.json",
+    "handoff/partner-map-model/GEOMETRY-AUDIT.json",
+    "handoff/partner-map-model/GEOMETRY-TRIAGE.json",
+    "handoff/partner-map-model/PARTNER-ROUTE-LINKAGE-AUDIT.json",
+    "handoff/partner-map-model/geometry-channel-mint-report.json",
+    "handoff/partner-map-model/geometry-hand-waypoints-report.json"
+  ]
+}
