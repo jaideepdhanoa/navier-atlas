@@ -12,10 +12,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("chao_phraya_bangkok", 100.48, 13.05, 100.62, 13.78),
     # Pattaya ↔ Koh Samet crossing
     ("gulf_thailand_samet", 100.82, 12.45, 101.52, 12.95),
-    # Table Bay (V&A ↔ Robben Island)
-    ("table_bay_cape_town", 18.25, -33.95, 18.50, -33.75),
-    # False Bay north shore channel (Hout Bay ↔ Simon's Town arc)
-    ("false_bay_cape_town", 18.15, -34.35, 18.55, -34.05),
+    # Table Bay (V&A ↔ Robben Island) + Atlantic approaches to Hout Bay
+    ("table_bay_cape_town", 18.18, -34.12, 18.52, -33.72),
+    # Hout Bay lagoon + harbour micro-hops
+    ("hout_bay_cape_town", 18.32, -34.10, 18.40, -34.00),
+    # False Bay north shore channel (Hout Bay ↔ Gordon's Bay arc)
+    ("false_bay_cape_town", 18.15, -34.35, 18.95, -33.88),
     # Ionian protected channel (Corfu ↔ Paxos)
     ("ionian_corfu", 20.45, 38.65, 20.85, 39.25),
     # Hong Kong ↔ Macau ferry lane
