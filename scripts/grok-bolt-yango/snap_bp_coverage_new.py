@@ -85,6 +85,21 @@ EXTRA_WATER_BODIES = [
         "bbox": [-7.45, -7.35, 37.17, 37.22],
         "reason": "Cross-border Spain–Portugal river mouth",
     },
+    {
+        "name": "Venice Lagoon (Laguna Veneta)",
+        "bbox": [12.20, 12.50, 45.38, 45.50],
+        "reason": "ACTV vaporetto network; San Zaccaria, Murano, Burano, Lido S.M.E.",
+    },
+    {
+        "name": "Lagos Lagoon (Five Cowries Creek)",
+        "bbox": [3.00, 3.70, 6.30, 6.55],
+        "reason": "Yango Lagos: Osborne Foreshore jetty; lagoon water-taxi approaches",
+    },
+    {
+        "name": "Lake Mälaren (Stockholm)",
+        "bbox": [17.50, 18.30, 59.20, 59.45],
+        "reason": "Bolt Sweden: Drottningholm slottsbrygga; palace ferry pier",
+    },
 ]
 
 R_EARTH_KM = 6371.0088
