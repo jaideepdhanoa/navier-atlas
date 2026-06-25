@@ -142,6 +142,13 @@ def enrich(c, market, market_obj=None):
 
 def run_scenarios(c, vessel_key):
     out = {}
+    # LB-261 (Jaideep 2026-06-25): per-corridor hospitality REALISM override. Additive, default-OFF.
+    # Captive resort transfers run at a lower, honest basis than the global scenario band (a 10-min
+    # hotel transfer cannot run 70% full all day on 75% revenue legs). When a corridor carries
+    # _realism_override, its load/revenue-leg (and optional trips) WIN over the global band. Only fires
+    # when present -> zero blast radius on every other partner/corridor. Marquee realism corridors are
+    # point estimates, so the thin/mid/full band intentionally collapses to the override point.
+    ov = (c.get("L3_locals") or {}).get("_realism_override") or c.get("_realism_override")
     for name, band in SCEN.items():
         if name.startswith("_"): continue
         cc = copy.deepcopy(c)
@@ -149,6 +156,13 @@ def run_scenarios(c, vessel_key):
         cc["L3_locals"]["revenue_leg_factor"] = band["revenue_leg_factor"]
         if band.get("max_trips_per_day") is not None:
             cc["L3_locals"]["max_trips_per_day"] = band["max_trips_per_day"]
+        if ov:
+            if ov.get("load_factor") is not None:
+                cc["L3_locals"]["load_factor"] = ov["load_factor"]
+            if ov.get("revenue_leg_factor") is not None:
+                cc["L3_locals"]["revenue_leg_factor"] = ov["revenue_leg_factor"]
+            if ov.get("max_trips_per_day") is not None:
+                cc["L3_locals"]["max_trips_per_day"] = ov["max_trips_per_day"]
         out[name] = atom.compute_atom(cc, vessel_key=vessel_key)
     return out
 

@@ -1,0 +1,64 @@
+{
+  "_doc": "Minor Hotels — captive hospitality REALISM overrides (Jaideep 2026-06-25). Applied to Minor's SCOPED corridor view only (materialize_partner_economics.py --mode captive-*). MUST NOT be written into the shared durable markets in corridors.json (maldives-jih / phuket / bali / palm-jumeirah are inherited by Four Seasons, JIH, Bolt, Yango, Careem — editing them would blast every inheritor; LB-260 'tag the scoped view, not the shared market').",
+  "_rule": "LB-261 — captive hospitality transfers run at a lower, honest basis than the global scenario band. Per-corridor load_factor / revenue_leg_factor / fare win over the global band for Minor-scoped corridors only. The engine honors L3_locals._realism_override (default-OFF; zero blast radius).",
+  "_source": "Jaideep Dhanoa, 2026-06-25 — direct realism rebase on the live Minor deck (10-min hotel transfer cannot command $150 or run 70% full all day).",
+  "_provenance": "deck-gold reproduced to the dollar by hospitality-template-2026-06-25/econ_engine.py; see minor-hotels-econ-gold-2026-06-25.json",
+
+  "bound_overrides": [
+    {
+      "match": {"market": "maldives-jih", "route_id": "e__mald__ea26295ac460", "from": "Dharavandhoo Airport, Baa", "to": "Anantara Kihavah (Baa)"},
+      "scope": "minor-hotels",
+      "fare_usd_per_seat": 100,
+      "_realism_override": {"load_factor": 0.50, "revenue_leg_factor": 0.50, "max_trips_per_day": 11},
+      "note": "Shared maldives-jih row is $200/0.7 for jih-global; Minor-scoped view re-bases to $100 + 50/50. Apply to scoped view only."
+    },
+    {
+      "match": {"market": "phuket", "route_id": "rn-b28ac4ca3d14", "from": "Ao Po Grand Marina", "to": "Anantara Layan Phuket Beach Jetty"},
+      "scope": "minor-hotels",
+      "fare_usd_per_seat": 85,
+      "_realism_override": {"load_factor": 0.50, "revenue_leg_factor": 0.50, "max_trips_per_day": 12},
+      "note": "Shared phuket row is $100/0.7; Minor-scoped re-base to $85 + 50/50."
+    }
+  ],
+
+  "scoped_marquee_corridors": [
+    {
+      "corridor_id": "uae-anantara-palm-bluewaters",
+      "label": "Anantara The Palm \u2192 Bluewaters Island",
+      "market_key": "palm", "distance_nm": 5.0, "trips_per_day": 15,
+      "fare_usd_per_seat": 50, "_realism_override": {"load_factor": 0.60, "revenue_leg_factor": 0.60},
+      "note": "NEW Dubai marquee. REPLACES the old Dubai Harbour \u2192 Anantara The Palm (3.4nm $150) example \u2014 a 10-min hop cannot anchor the case. Not a shared-market durable row; Minor-scoped illustrative corridor."
+    },
+    {
+      "corridor_id": "uae-sirbaniyas-jebeldhanna",
+      "label": "Sir Bani Yas \u2192 Jebel Dhanna",
+      "market_key": "palm", "distance_nm": 7.9, "trips_per_day": 13,
+      "fare_usd_per_seat": 50, "_realism_override": {"load_factor": 0.60, "revenue_leg_factor": 0.60},
+      "note": "Minor-scoped marquee. Shared uae rows carry Jebel Dhanna\u2194Sir Bani Yas at 5.3nm/$90 for mobility partners; Minor uses the captive resort transfer basis."
+    },
+    {
+      "corridor_id": "uae-minaalarab-palm",
+      "label": "Mina Al Arab RAK \u2192 Anantara The Palm",
+      "market_key": "palm", "distance_nm": 46.5, "trips_per_day": 4,
+      "fare_usd_per_seat": 150, "_realism_override": {"load_factor": 0.50, "revenue_leg_factor": 0.50},
+      "note": "Long premium crossing; $150 retained (2+ hr premium leg). Minor-scoped illustrative corridor."
+    },
+    {
+      "corridor_id": "uae-palm-yasmarina",
+      "label": "Anantara The Palm \u2192 Yas Marina",
+      "market_key": "palm", "distance_nm": 49.6, "trips_per_day": 4,
+      "fare_usd_per_seat": 150, "_realism_override": {"load_factor": 0.50, "revenue_leg_factor": 0.50},
+      "note": "Long premium crossing; $150 retained. Minor-scoped illustrative corridor."
+    },
+    {
+      "corridor_id": "bali-seminyak-uluwatu",
+      "label": "Avani Seminyak \u2194 Anantara Uluwatu",
+      "market_key": "bali", "distance_nm": 9.3, "trips_per_day": 12,
+      "fare_usd_per_seat": 85, "_realism_override": {"load_factor": 0.50, "revenue_leg_factor": 0.50},
+      "note": "Corrects the durable bali row naming (was 'Bali Marina (Benoa) \u2192 Six Senses Uluwatu' 7.7nm). Minor properties are Avani Seminyak + Anantara Uluwatu (two, not three; not Six Senses). Re-bind in the Minor-scoped view only."
+    }
+  ],
+
+  "do_not_edit_shared_markets": ["maldives-jih", "phuket", "bali", "palm-jumeirah", "uae-luxury", "uae-careem", "bolt-uae", "yango-uae"],
+  "cascade": "After applying these to Minor's scoped view, re-run §B of the partner-model-cascade skill for partner=minor-hotels (aggregate \u2192 growth \u2192 frontend \u2192 splice \u2192 transparent sheet \u2192 master tracker) so agg/growth/sheet reproduce the deck-gold per-vessel economics. The deck itself was directly edited and is the gold \u2014 do NOT rebuild it."
+}
