@@ -101,6 +101,10 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
         [-9.55, 38.45], [-9.35, 38.10], [-9.15, 37.75], [-9.00, 37.40],
         [-8.88, 37.15], [-8.78, 37.02],
     ],
+    # Bangkok ↔ Pattaya upper-Gulf Quanta-LR gateway
+    ("bangkok-thailand", "pattaya-thailand"): [
+        [100.62, 13.15], [100.78, 13.02], [100.86, 12.96],
+    ],
     # Chicago Lake Michigan ferry
     ("chicago-lake-michigan-usa__dusable-harbor-chicago", "chicago-lake-michigan-usa__new-buffalo-municipal-marina"): [
         [-87.55, 41.85], [-87.20, 41.95], [-86.85, 42.05], [-86.55, 42.15],
