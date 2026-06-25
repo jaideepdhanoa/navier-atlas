@@ -33,6 +33,7 @@ PARTNERS = [
     "constance",
     "four-seasons",
     "grab-thailand",
+    "line-man-wongnai",
     "uber-india",
     "minor-hotels",
     "ocean-whisperer",
