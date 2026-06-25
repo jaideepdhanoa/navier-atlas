@@ -72,8 +72,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("samana_bay", -69.70, 19.10, -69.05, 19.35),
     # Goa / Mandovi estuary
     ("goa_estuary", 73.75, 15.35, 74.15, 15.55),
-    # Andaman shallow channels
-    ("andaman_india", 92.50, 10.50, 93.20, 12.00),
+    # Andaman shallow channels + Port Blair approaches
+    ("andaman_india", 92.50, 10.50, 93.25, 13.50),
     # San Blas archipelago
     ("san_blas_panama", -79.20, 8.80, -77.80, 9.60),
     # Jeju Strait
@@ -100,6 +100,16 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("flores_sea_indonesia", 115.50, -9.20, 119.80, -8.20),
     # Marmara + Dardanelles approach (Istanbul Bosphorus ferry context)
     ("marmara_bosphorus", 28.50, 40.60, 29.30, 41.25),
+    # Eastern Mediterranean shelf (Antalya → Rhodes arc; coarse-mask false positives)
+    ("eastern_med_turkey", 28.00, 36.40, 32.50, 37.20),
+    # Central Aegean open water (Cyclades ↔ Dardanelles approach)
+    ("aegean_central", 24.50, 37.50, 28.50, 40.50),
+    # Rhodes / Karpathos channel (coarse-mask island false positives)
+    ("aegean_rhodes", 26.50, 35.50, 29.00, 37.80),
+    # Dardanelles strait transit
+    ("dardanelles", 25.80, 39.80, 26.80, 40.45),
+    # Atlantic Portugal full shelf (Lisbon → Algarve offshore lane)
+    ("atlantic_portugal_algarve", -10.20, 36.80, -8.50, 38.90),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)

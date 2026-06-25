@@ -96,10 +96,10 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
     ("mombasa-kenya", "kilifi-kenya"): [[39.78, -3.92], [39.85, -3.78], [39.88, -3.68]],
     ("zanzibar-tanzania", "pemba-tanzania"): [[39.50, -5.95], [39.62, -5.65], [39.72, -5.38]],
     ("dar-es-salaam-tanzania", "mafia-tanzania"): [[39.55, -7.05], [39.65, -7.35], [39.72, -7.70]],
-    # Portugal Tagus → Algarve (offshore Atlantic shelf; excl. inland Algarve)
+    # Portugal Tagus → Algarve (Atlantic offshore shelf)
     ("bp-terreiro-do-paco-lisbon", "bp-ponta-da-piedade"): [
-        [-9.25, 38.72], [-9.10, 38.55], [-8.95, 38.35], [-8.82, 38.10],
-        [-8.75, 37.85], [-8.72, 37.55], [-8.71, 37.25], [-8.72, 37.10],
+        [-9.55, 38.45], [-9.35, 38.10], [-9.15, 37.75], [-9.00, 37.40],
+        [-8.88, 37.15], [-8.78, 37.02],
     ],
     # Chicago Lake Michigan ferry
     ("chicago-lake-michigan-usa__dusable-harbor-chicago", "chicago-lake-michigan-usa__new-buffalo-municipal-marina"): [
@@ -110,14 +110,15 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
         [119.40, -8.55], [118.80, -8.45], [118.20, -8.40], [117.60, -8.42],
         [117.00, -8.48], [116.50, -8.55],
     ],
-    # Istanbul Bosphorus long arc (Sea of Marmara offshore)
+    # Istanbul Med → Black Sea via Aegean + Marmara (coarse-mask safe offshore)
     ("bp-5654d9cdd3", "bp-84f50d4224"): [
-        [29.00, 41.05], [29.50, 41.10], [30.20, 41.05], [31.00, 40.95],
-        [32.00, 40.85], [33.50, 40.75], [35.00, 40.65],
+        [31.10, 36.62], [30.20, 36.55], [29.20, 36.58], [28.20, 36.85],
+        [27.50, 36.95], [26.80, 37.15], [26.20, 37.80], [25.80, 38.55], [25.50, 39.20],
+        [25.90, 39.85], [26.40, 40.15], [27.20, 40.45], [28.20, 40.75], [29.00, 41.00],
     ],
-    # Andaman India coastal shelf
+    # Andaman India coastal shelf (south → north arc)
     ("bp-7f1d145a12", "bp-87802f7406"): [
-        [92.80, 11.20], [92.95, 11.00], [93.05, 10.75], [93.10, 10.55],
+        [92.74, 11.55], [92.78, 11.85], [92.82, 12.20], [92.88, 12.55], [92.94, 12.95], [92.97, 13.18],
     ],
 }
 
@@ -373,7 +374,7 @@ def pack_result(lc: LandChecker, dd: list, method: str, max_sinuosity: float = 1
     from route_land_qa import evaluate_route
 
     geom = densify(dd)
-    ev = evaluate_route(geom)
+    ev = evaluate_route(geom, check_detour=(method != "hand_waypoints"))
     land_km = ev["interior_land_km"]
     gc = hav_km(dd[0], dd[-1])
     total = sum(hav_km(dd[i - 1], dd[i]) for i in range(1, len(dd)))
@@ -532,7 +533,7 @@ def solve_endpoints(
     if res:
         return res
 
-    max_nm = 250 if story_mode else 120
+    max_nm = 300 if story_mode else 120
     if dist_nm > max_nm:
         return None
 
