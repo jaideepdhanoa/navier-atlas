@@ -96,6 +96,29 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
     ("mombasa-kenya", "kilifi-kenya"): [[39.78, -3.92], [39.85, -3.78], [39.88, -3.68]],
     ("zanzibar-tanzania", "pemba-tanzania"): [[39.50, -5.95], [39.62, -5.65], [39.72, -5.38]],
     ("dar-es-salaam-tanzania", "mafia-tanzania"): [[39.55, -7.05], [39.65, -7.35], [39.72, -7.70]],
+    # Portugal Tagus → Algarve (offshore Atlantic shelf; excl. inland Algarve)
+    ("bp-terreiro-do-paco-lisbon", "bp-ponta-da-piedade"): [
+        [-9.25, 38.72], [-9.10, 38.55], [-8.95, 38.35], [-8.82, 38.10],
+        [-8.75, 37.85], [-8.72, 37.55], [-8.71, 37.25], [-8.72, 37.10],
+    ],
+    # Chicago Lake Michigan ferry
+    ("chicago-lake-michigan-usa__dusable-harbor-chicago", "chicago-lake-michigan-usa__new-buffalo-municipal-marina"): [
+        [-87.55, 41.85], [-87.20, 41.95], [-86.85, 42.05], [-86.55, 42.15],
+    ],
+    # Komodo ↔ Lombok open Flores Sea
+    ("bp-fa2c2875fa", "bp-3497837a7b"): [
+        [119.40, -8.55], [118.80, -8.45], [118.20, -8.40], [117.60, -8.42],
+        [117.00, -8.48], [116.50, -8.55],
+    ],
+    # Istanbul Bosphorus long arc (Sea of Marmara offshore)
+    ("bp-5654d9cdd3", "bp-84f50d4224"): [
+        [29.00, 41.05], [29.50, 41.10], [30.20, 41.05], [31.00, 40.95],
+        [32.00, 40.85], [33.50, 40.75], [35.00, 40.65],
+    ],
+    # Andaman India coastal shelf
+    ("bp-7f1d145a12", "bp-87802f7406"): [
+        [92.80, 11.20], [92.95, 11.00], [93.05, 10.75], [93.10, 10.55],
+    ],
 }
 
 _lc_singleton: "LandChecker | None" = None

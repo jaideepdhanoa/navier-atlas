@@ -86,6 +86,20 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("dodecanese_greece", 27.80, 36.20, 28.45, 36.90),
     # Red Sea NEOM / coastal corridor
     ("red_sea_ksa", 34.50, 25.20, 37.20, 28.20),
+    # Tagus estuary + Lisbon coastal approaches (excl. inland)
+    ("tagus_lisbon", -9.45, 38.62, -8.95, 38.78),
+    # Atlantic Portugal shelf (Lisbon → Setúbal → Sines; stops before Algarve headlands)
+    ("atlantic_portugal_shelf", -9.60, 37.50, -8.70, 38.85),
+    # Lake Michigan open water (Chicago ↔ New Buffalo ferry lane)
+    ("lake_michigan_chicago", -87.85, 41.60, -86.40, 42.45),
+    # Venice Lagoon
+    ("venice_lagoon", 12.20, 45.38, 12.50, 45.50),
+    # Lake Mälaren (Stockholm archipelago)
+    ("lake_malaren", 17.50, 59.20, 18.30, 59.45),
+    # Komodo / Lombok / Bali Sea passages
+    ("flores_sea_indonesia", 115.50, -9.20, 119.80, -8.20),
+    # Marmara + Dardanelles approach (Istanbul Bosphorus ferry context)
+    ("marmara_bosphorus", 28.50, 40.60, 29.30, 41.25),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
