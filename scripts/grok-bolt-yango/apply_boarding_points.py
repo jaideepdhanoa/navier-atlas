@@ -220,7 +220,7 @@ def main():
             continue
 
         report["files_processed"] += 1
-        raw_city = data.get("city_id")
+        raw_city = data.get("city_id") or data.get("city_node")
         if not raw_city:
             report["ledger"].append({"file": fname, "action": "file_skip", "reason": "missing_city_id"})
             continue
