@@ -247,7 +247,8 @@ function scopeForPartner(data, slug, opts = {}) {
     net: [...net],
     cityIdOf,
   });
-  const cityCount = (FEATURES_BY_TYPE.city || []).length + (FEATURES_BY_TYPE.priority_city || []).length;
+  const cityCount = new Set([...(FEATURES_BY_TYPE.city || []), ...(FEATURES_BY_TYPE.priority_city || [])]
+    .map(f => f.properties?.id).filter(Boolean)).size;
   const rd = scoped._route_display || {};
   delete scoped._route_display;
   return {
@@ -428,7 +429,7 @@ for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
   if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
     const anchors = hubRolloutCities(partner);
-    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, pageKind: 'hub-index' }), null, false, partnerMeta(partner));
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, pageKind: 'hub-index', expandRegion: false }), null, false, partnerMeta(partner));
     for (const m of partner.markets) {
       const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m), pageKind: 'market', market: m, expandRegion: false, routesWithin: true });
       emitPage(slug, m.slug, scoped, m.slug, true, partnerMeta(partner, m));
