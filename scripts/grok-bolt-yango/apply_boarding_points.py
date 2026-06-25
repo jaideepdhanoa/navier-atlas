@@ -228,6 +228,17 @@ def main():
         city_id = resolve_city_id(raw_city, known)
         anchor = parse_anchor(data)
         bps = data.get("boarding_points") or []
+        for bp in bps:
+            if not bp.get("id") and bp.get("bp_id"):
+                bp["id"] = bp["bp_id"]
+            if bp.get("lng") is None and bp.get("lon") is not None:
+                bp["lng"] = bp["lon"]
+        if not anchor and bps:
+            lngs = [float(b["lng"]) for b in bps if b.get("lng") is not None]
+            lats = [float(b["lat"]) for b in bps if b.get("lat") is not None]
+            if lngs and lats:
+                anchor = [round(sum(lngs) / len(lngs), 6), round(sum(lats) / len(lats), 6)]
+                data["city_anchor"] = anchor
 
         if city_id not in known:
             if not anchor:

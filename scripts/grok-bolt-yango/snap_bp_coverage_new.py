@@ -100,6 +100,16 @@ EXTRA_WATER_BODIES = [
         "bbox": [17.50, 18.30, 59.20, 59.45],
         "reason": "Bolt Sweden: Drottningholm slottsbrygga; palace ferry pier",
     },
+    {
+        "name": "Kenya north coast (Malindi/Watamu/Lamu)",
+        "bbox": [39.80, 41.05, -3.55, -2.00],
+        "reason": "Bolt East Africa: marine-park jetties on Indian Ocean lagoon fringe",
+    },
+    {
+        "name": "Bali Nusa islands (Penida/Lembongan)",
+        "bbox": [115.40, 115.52, -8.72, -8.64],
+        "reason": "GCN fast-boat pontoons; Mushroom Bay tender landings",
+    },
 ]
 
 R_EARTH_KM = 6371.0088
