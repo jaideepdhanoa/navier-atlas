@@ -1,0 +1,116 @@
+{
+  "_doc": "East Africa 8 culled corridors -> Tasklet v2 recommendations. Tasklet ships BPs + sea-waypoint HINTS; Grok mints/validates geometry (land-crossing gate is Grok's call).",
+  "generated": "2026-06-25",
+  "source_report": "grok-routing-output/bolt-east-africa-seal-report.json",
+  "corridors": [
+    {
+      "id": "mombasa-malindi-watamu",
+      "prior_cull": "endpoint_bp_not_sealed",
+      "fix": "bp_now_supplied",
+      "needs_city_nodes": [
+        "malindi-kenya",
+        "watamu-kenya"
+      ],
+      "recommend": "MINT v2 once Malindi/Watamu BPs sealed",
+      "confidence": "high"
+    },
+    {
+      "id": "malindi-lamu",
+      "prior_cull": "endpoint_bp_not_sealed",
+      "fix": "bp_now_supplied",
+      "needs_city_nodes": [
+        "malindi-kenya",
+        "lamu-kenya"
+      ],
+      "recommend": "MINT v2 once Malindi/Lamu BPs sealed; ~120nm open-coast, verify vessel gate",
+      "confidence": "medium"
+    },
+    {
+      "id": "stonetown-nungwi",
+      "prior_cull": "land_crossing_km=82.29",
+      "fix": "sea_waypoint_hint",
+      "endpoints": [
+        "stone-town",
+        "nungwi (Unguja N tip)"
+      ],
+      "waypoint_hint": [
+        -5.9,
+        39.15
+      ],
+      "recommend": "route W coast of Unguja; Grok to validate. Likely road-transfer in reality -> may keep culled",
+      "confidence": "low"
+    },
+    {
+      "id": "stonetown-pemba",
+      "prior_cull": "land_crossing_km=56.14",
+      "fix": "sea_waypoint_hint",
+      "endpoints": [
+        "stone-town",
+        "pemba-tanzania"
+      ],
+      "waypoint_hint": [
+        -5.45,
+        39.55
+      ],
+      "recommend": "route NE around N Unguja into Pemba channel; real ~50nm sea crossing",
+      "confidence": "medium"
+    },
+    {
+      "id": "dar-mafia",
+      "prior_cull": "land_crossing_km=42.39",
+      "fix": "sea_waypoint_hint",
+      "endpoints": [
+        "dar-es-salaam",
+        "mafia-tanzania"
+      ],
+      "waypoint_hint": [
+        -7.6,
+        39.6
+      ],
+      "recommend": "route offshore E of Rufiji delta; real ~75nm sea crossing",
+      "confidence": "medium"
+    },
+    {
+      "id": "stonetown-mafia",
+      "prior_cull": "land_crossing_km=41.35",
+      "fix": "sea_waypoint_hint",
+      "endpoints": [
+        "stone-town",
+        "mafia-tanzania"
+      ],
+      "waypoint_hint": [
+        -7.4,
+        39.6
+      ],
+      "recommend": "route S offshore; Grok to validate land gate",
+      "confidence": "low"
+    },
+    {
+      "id": "mombasa-kilifi",
+      "prior_cull": "land_crossing_km=35.14",
+      "fix": "sea_waypoint_hint",
+      "endpoints": [
+        "mombasa",
+        "kilifi-kenya"
+      ],
+      "waypoint_hint": [
+        -3.85,
+        39.9
+      ],
+      "recommend": "route offshore around headlands; real ~35nm coastal",
+      "confidence": "medium"
+    },
+    {
+      "id": "mombasa-pemba",
+      "prior_cull": "land_crossing_km=16.85",
+      "fix": "keep_culled",
+      "endpoints": [
+        "mombasa (KE)",
+        "pemba (TZ)"
+      ],
+      "cross_border": true,
+      "recommend": "CROSS-BORDER (KE->TZ) -> keep culled / aspirational per exclusion rule",
+      "confidence": "n/a"
+    }
+  ]
+}
