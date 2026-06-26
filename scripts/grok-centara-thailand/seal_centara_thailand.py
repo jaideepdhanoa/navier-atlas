@@ -415,6 +415,92 @@ def market_narratives() -> dict[str, dict]:
     }
 
 
+def featured_route(bind: dict, route_feat: dict | None) -> dict:
+    p = props(route_feat) if route_feat else {}
+    rid = bind.get("route_id") or p.get("id")
+    return {
+        "label": bind["corridor_label"],
+        "route_id": rid,
+        "distance_nm": p.get("distance_nm"),
+        "platform": "Pioneer II",
+        "from_node_id": bind["from_node_id"],
+        "to_node_id": bind["to_node_id"],
+        "from_bp_id": bind.get("from_bp_id"),
+        "to_bp_id": bind.get("to_bp_id"),
+        "_link_kind": "hospitality-corridor",
+        "_link_status": "linked-grok-scoped",
+        "_link_source": "grok/centara_thailand_seal",
+        "economics_status": "pending_cascade",
+        "render": "solid",
+    }
+
+
+def _build_phases(bindings: list[dict], routes: list) -> list[dict]:
+    ridx = route_index(routes)
+    by_id = {b["route_id"]: b for b in bindings if b.get("route_id")}
+    phase1_rids = ["rn-f09e06bc2910", "rn-ed1f11dec282"]
+    phase2_rids = [
+        "gcn-e299366426-shared",
+        "rn-7512bdcf3d4c",
+        "rn-b11478b5cb27",
+        "rn-884b63688113",
+    ]
+    phuket_rid = next(
+        (b["route_id"] for b in bindings if b["cluster_id"] == "phuket-andaman-north"),
+        None,
+    )
+    if phuket_rid:
+        phase2_rids.append(phuket_rid)
+
+    def feats(rids: list[str]) -> list[dict]:
+        out = []
+        for rid in rids:
+            bind = by_id.get(rid)
+            if not bind:
+                continue
+            out.append(featured_route(bind, ridx.get(rid)))
+        return out
+
+    return [
+        {
+            "n": 1,
+            "label": "Phase 1 — pilot corridors",
+            "boats": 2,
+            "cities": ["pattaya-thailand", "koh-samui-thailand"],
+            "route_scope": "intra",
+            "narrative": "Start with Eastern Gulf (Pattaya → Koh Larn) or Samui gateway — highest visibility, shortest ops validation.",
+            "timeline": "2026 H2",
+            "rationale": "Family-resort demand + sealed short-hop geometry.",
+            "featured_routes": feats(phase1_rids),
+            "use_cases": ["family-resort island excursion", "airport-to-resort water arrival"],
+        },
+        {
+            "n": 2,
+            "label": "Phase 2 — portfolio rollout",
+            "boats": 8,
+            "cities": [
+                "bangkok-thailand",
+                "hua-hin-thailand",
+                "phuket-phang-nga-thailand",
+                "krabi-thailand",
+                "koh-chang-thailand",
+            ],
+            "route_scope": "intra",
+            "narrative": "Extend to river gateway, royal coast, Andaman, and Koh Chang arrivals.",
+            "timeline": "2027",
+            "rationale": "Six-cluster network after pier/beach ops validated.",
+            "featured_routes": feats(phase2_rids),
+            "use_cases": [
+                "hotel-curated city-to-river experience",
+                "heritage beachfront leisure route",
+                "island arrival",
+                "premium arrival / excursion gateway",
+                "island resort arrival",
+            ],
+        },
+    ]
+
+
 def build_partner_doc(bindings: list[dict], routes: list, sidecar: list[dict], inventory: list[dict]) -> dict:
     ridx = route_index(routes)
     by_cluster = sidecar_by_cluster(sidecar)
@@ -563,34 +649,7 @@ def build_partner_doc(bindings: list[dict], routes: list, sidecar: list[dict], i
                 "response": "One hospitality playbook across six clusters — corridor examples sealed today, pilot 1–2 corridors first.",
             },
         ],
-        "phases": [
-            {
-                "n": 1,
-                "label": "Phase 1 — pilot corridors",
-                "boats": 2,
-                "cities": ["pattaya-thailand", "koh-samui-thailand"],
-                "route_scope": "intra",
-                "narrative": "Start with Eastern Gulf (Pattaya → Koh Larn) or Samui gateway — highest visibility, shortest ops validation.",
-                "timeline": "2026 H2",
-                "rationale": "Family-resort demand + sealed short-hop geometry.",
-            },
-            {
-                "n": 2,
-                "label": "Phase 2 — portfolio rollout",
-                "boats": 8,
-                "cities": [
-                    "bangkok-thailand",
-                    "hua-hin-thailand",
-                    "phuket-phang-nga-thailand",
-                    "krabi-thailand",
-                    "koh-chang-thailand",
-                ],
-                "route_scope": "intra",
-                "narrative": "Extend to river gateway, royal coast, Andaman, and Koh Chang arrivals.",
-                "timeline": "2027",
-                "rationale": "Six-cluster network after pier/beach ops validated.",
-            },
-        ],
+        "phases": _build_phases(bindings, routes),
         "markets": markets_out,
         "next_step": (
             "Select 1–2 pilot corridors, validate pier/beach/dock operations, "
