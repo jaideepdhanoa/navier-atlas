@@ -1,6 +1,7 @@
 # Tasklet pending handoff — consolidated (Grok → Tasklet)
 
-**Baseline:** `main` @ `7f803dc7` · Production: https://navier-atlas.vercel.app
+**Baseline:** `main` @ `c9db6218` · Production: https://navier-atlas.vercel.app  
+**Updated:** 2026-06-26 — Grok merged all 5 open Tasklet PRs (#106–#111) to `main`.
 
 ## Division reminder
 
@@ -8,17 +9,17 @@ Per `DIVISION-OF-LABOR.md`, **Tasklet** owns the graph, demand model, security g
 
 ---
 
-## 1. Active open PRs (Tasklet seats)
+## 1. Tasklet PRs — merged 2026-06-26 (Grok)
 
-| PR | Title | Tasklet still owes |
-|----|-------|-------------------|
-| **#111** | Centara Thailand hospitality deck plan | **Primary owner.** Grok finished partner page + route/econ seal; Tasklet still owns the live 24-slide deck |
-| **#108** | LINE MAN Wongnai deck + proposal package | Build live Slides deck from `SLIDE-COPY-DIFF.md`; Thailand-scoped mirror (8 regional Grab slides dropped) |
-| **#106** | Hospitality gold: Minor realism rebase (LB-261) | Deck-builder codification + Minor gold standard refresh |
-| **#109** | Bolt parity re-audit | Grounded ID crosswalk + gate status audit |
-| **#107** | Grok-chat migration playbooks | Operating playbooks + Tasklet-seat onboarding docs |
+| PR | Title | Status |
+|----|-------|--------|
+| **#111** | Centara Thailand hospitality deck plan | ✅ **MERGED** — Tasklet still owns live deck appendix refresh |
+| **#108** | LINE MAN Wongnai deck + proposal package | ✅ **MERGED** — Tasklet still owes live Slides build |
+| **#106** | Hospitality gold: Minor realism rebase (LB-261) | ✅ **MERGED** — Tasklet still owes Minor gold deck refresh |
+| **#109** | Bolt parity re-audit | ✅ **MERGED** — Grok applied surgical fixes in `6e0eb8ba` |
+| **#107** | Grok-chat migration playbooks | ✅ **MERGED** — docs on `main` |
 
-**PR #110** (LINE MAN Grok handoff spec) is **CLOSED** — Grok mirror is already on `main`.
+**No open Tasklet PRs remain.** PR #110 (LINE MAN Grok handoff spec) was already **CLOSED**.
 
 ---
 
