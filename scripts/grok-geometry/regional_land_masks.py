@@ -74,8 +74,40 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("goa_estuary", 73.75, 15.35, 74.15, 15.55),
     # Andaman shallow channels + Port Blair approaches
     ("andaman_india", 92.50, 10.50, 93.25, 13.50),
-    # San Blas archipelago
-    ("san_blas_panama", -79.20, 8.80, -77.80, 9.60),
+    # San Blas archipelago (extended west for Guna Yala coastal hops)
+    ("san_blas_panama", -80.00, 8.80, -77.80, 9.70),
+    # Gulf of Finland / Tallinn harbour approaches
+    ("gulf_of_finland_tallinn", 24.55, 59.40, 25.00, 59.55),
+    # Hooghly river transit (Kolkata harbour micro-hops)
+    ("hooghly_kolkata", 88.30, 22.56, 88.38, 22.60),
+    # Casablanca harbour + Atlantic approaches
+    ("casablanca_harbor", -9.90, 31.30, -9.75, 31.55),
+    # Pearl River Delta (Hong Kong ↔ Shenzhen Shekou ferry context)
+    ("pearl_river_delta", 113.85, 22.15, 114.25, 22.55),
+    # Milos bay micro-hops (Cyclades)
+    ("milos_bay", 24.40, 36.70, 24.62, 36.80),
+    # Angra dos Reis / Ilha Grande lagoon
+    ("angra_bay", -44.45, -23.05, -44.30, -22.92),
+    # Langkawi strait ferry lanes
+    ("langkawi_strait", 99.70, 6.20, 100.05, 6.45),
+    # Boracay channel
+    ("boracay_channel", 121.90, 11.90, 122.05, 12.05),
+    # Siargao passage
+    ("siargao_passage", 126.00, 9.70, 126.20, 9.95),
+    # Palawan coastal channels
+    ("palawan_channel", 118.50, 9.50, 119.20, 10.50),
+    # Muscat coast / Mutrah harbour
+    ("muscat_coast", 58.40, 23.50, 59.00, 23.70),
+    # Desaru coast / Singapore Strait south
+    ("desaru_strait", 104.10, 1.30, 104.25, 1.45),
+    # Korea south coast (Yeosu / Tongyeong archipelago)
+    ("korea_south_coast", 127.50, 34.50, 129.50, 35.20),
+    # Bahía de Banderas (Puerto Vallarta / Riviera Nayarit)
+    ("mexico_bahia_banderas", -106.00, 20.40, -105.20, 21.10),
+    # Ligurian coast (Genoa ↔ Portofino / Cinque Terre)
+    ("ligurian_coast", 8.80, 43.95, 9.85, 44.45),
+    # Red Sea full coastal shelf (NEOM ↔ Jeddah long legs)
+    ("red_sea_coastal_ext", 34.50, 21.00, 40.00, 28.50),
     # Jeju Strait
     ("jeju_strait", 126.10, 33.00, 126.95, 33.60),
     # Tuscan Archipelago ferry lanes
