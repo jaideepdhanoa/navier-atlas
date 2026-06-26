@@ -2073,7 +2073,7 @@ function _econAssumpModalHtml(a){
   return `<div class="econ-assump-wrap"><h4 class="econ-assump-h">Schedule & utilization</h4><div class="econ-assump-cols">${col('Schedule',sched)}${col('Utilization',util)}</div></div>`;
 }
 function _econMoney(n){ if(n==null||isNaN(n))return ''; const a=Math.abs(n);
-  if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M'; if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
+  if(a>=1e9)return '$'+(n/1e9).toFixed(2)+'B'; if(a>=1e6){const v=n/1e6; return '$'+(Math.abs(v)<10?v.toFixed(1):String(Math.round(v)))+'M';} if(a>=1e3)return '$'+Math.round(n/1e3)+'k'; return '$'+Math.round(n); }
 function _econRange(arr, fmt){ if(!Array.isArray(arr)||arr.length<2)return ''; const f=fmt||(x=>x), lo=Math.min(...arr), hi=Math.max(...arr);
   return lo===hi ? '' : `<div class="rec-b">${f(lo)}–${f(hi)}</div>`; }
 function _partnerDeckUrl(){
