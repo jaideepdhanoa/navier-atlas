@@ -3421,20 +3421,30 @@ function _hubHowToRead(partner){
   if (/phased sequence|recommended regional path|pick a coastline|Singapore is the recommended/i.test(raw)) return '';
   return raw;
 }
-const _INTERNAL_MARKET_STATUS = new Set(['enriched_marquee','data-only','held','research-complete','seal-needed','seal_needed','awaiting_grok_bind']);
+const _INTERNAL_MARKET_STATUS = new Set(['enriched_marquee','data-only','held','research-complete','seal-needed','seal_needed','awaiting_grok_bind','economics_ready','copy_only','display_ready','economics_pending','economics_bound','bound','pending_seal','pending_demand_anchor']);
+const _INTERNAL_SNAKE = /^[a-z][a-z0-9]*(?:_[a-z0-9]+)+$/;
 function _hubMarketStatusLabel(m){
   const s=m&&m.status; if(!s) return '';
-  const norm=String(s).toLowerCase().replace(/[\s-]+/g,'_');
+  const raw=String(s).trim();
+  const norm=raw.toLowerCase().replace(/[\s-]+/g,'_');
   if(_INTERNAL_MARKET_STATUS.has(norm)) return '';
+  if(!/\s/.test(raw) && _INTERNAL_SNAKE.test(norm)) return '';
   return s;
+}
+function _hubMarketCategoryLabel(m){
+  const c=m&&m.category_label||m&&m.category; if(!c) return '';
+  const raw=String(c).trim();
+  const norm=raw.toLowerCase().replace(/[\s-]+/g,'_');
+  if(!/\s/.test(raw) && _INTERNAL_SNAKE.test(norm)) return '';
+  return c;
 }
 function _hubMarketCardsHtml(partner){
   const mk=partner.markets||[];
   const ordered=[...mk].sort((a,b)=>(b.recommended_entry?1:0)-(a.recommended_entry?1:0));
-  return ordered.map(m=>{ const statusLbl=_hubMarketStatusLabel(m);
+  return ordered.map(m=>{ const statusLbl=_hubMarketStatusLabel(m); const catLbl=_hubMarketCategoryLabel(m);
     return `<button class="hub-card${m.recommended_entry?' rec':''}" data-mslug="${escapeHtml(m.slug)}">
       ${m.recommended_entry?`<span class="hub-rec">Recommended entry</span>`:''}
-      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}${m.category?`<span class="hub-card-cat">${escapeHtml(m.category)}</span>`:''}</div>
+      <div class="hub-card-h">${escapeHtml(m.label||m.slug)}${catLbl?`<span class="hub-card-cat">${escapeHtml(catLbl)}</span>`:''}</div>
       ${statusLbl?`<div class="hub-card-status">${escapeHtml(statusLbl)}</div>`:''}
       ${m.summary?`<div class="hub-card-sum">${escapeHtml(m.summary)}</div>`:''}
       ${m.corridors_note?`<div class="hub-card-note">${escapeHtml(m.corridors_note)}</div>`:''}
