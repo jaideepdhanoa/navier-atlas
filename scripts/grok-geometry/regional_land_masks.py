@@ -32,6 +32,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("dalmatia_croatia", 15.80, 42.55, 18.50, 43.85),
     # Puget Sound / San Juan / BC Ferries lanes (Georgia Strait + Gulf Islands)
     ("puget_sound", -123.55, 48.35, -122.00, 49.45),
+    # Seattle inner Sound + Elliott Bay approaches
+    ("puget_seattle", -122.75, 47.40, -122.15, 47.75),
     # Boston harbour + outer islands
     ("boston_harbour", -71.15, 42.30, -70.05, 42.85),
     # Sydney Harbour approaches
@@ -46,8 +48,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("leeward_caribbean", -65.00, 17.80, -62.80, 18.50),
     # Dutch Caribbean ABC (Aruba · Curaçao · Bonaire) coastal + inter-island lanes
     ("abc_islands", -70.15, 11.85, -68.10, 12.65),
-    # UAE full coastal shelf (Dubai ↔ RAK ↔ Abu Dhabi ferry context)
-    ("dubai_coast", 54.00, 24.50, 56.50, 26.50),
+    # UAE + Oman Gulf full coastal shelf (Abu Dhabi west through RAK)
+    ("dubai_coast", 51.00, 24.00, 57.00, 26.50),
     # Lagos Lagoon (extended for Eti-Osa / Lekki waterfront hops)
     ("lagos_lagoon", 3.20, 6.30, 3.65, 6.65),
     # River Thames / estuary ferry lanes
@@ -184,6 +186,16 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("tahiti_society", -151.00, -18.50, -138.00, -8.00),
     # Ligurian-Tyrrhenian connector (Corsica ↔ Sardinia / Bonifacio extension)
     ("corsica_sardinia", 7.50, 41.00, 10.50, 43.50),
+    # Northern Italy lakes / Po valley ferry context (Como ↔ Garda)
+    ("northern_italy_lakes", 8.50, 45.50, 11.50, 46.50),
+    # Côte d'Ivoire lagoon (Abidjan ↔ Grand-Bassam)
+    ("cotedivoire_lagoon", -4.50, 5.00, -3.80, 5.55),
+    # Tangier / Strait of Gibraltar Morocco side
+    ("tangier_morocco", -6.50, 35.00, -3.50, 36.00),
+    # Algeria Mediterranean coast (Algiers ↔ Oran shelf)
+    ("algeria_med_coast", 2.50, 36.50, 5.50, 37.20),
+    # Eastern Gulf of Thailand (Pattaya ↔ Koh Chang / Rayong)
+    ("gulf_thailand_east", 101.50, 11.50, 103.00, 13.00),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
