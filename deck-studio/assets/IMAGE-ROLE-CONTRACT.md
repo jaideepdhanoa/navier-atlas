@@ -161,3 +161,40 @@ registry URL (`source_url` / approved Drive URL) before it is inserted or replac
 Google Slides `contentUrl` / `lh*-googleusercontent` links are inspection evidence only and must never become
 canonical assets. If an image is embedded-only, regenerate or capture it into `assets/`, publish a stable URL,
 update `ASSET-REGISTRY.json`, then apply.
+
+---
+
+## Hospitality addendum (operator-developer template) — 2026-06-26
+
+The roles above are the **mobility (Grab gold)** lineage. Hospitality decks (Minor, Centara) share the
+brand system but differ in image wiring. For `deck_type: hospitality`, this addendum **overrides** the
+mobility families. Full slide map: `deck-studio/docs/SLIDE-SPINE-AND-VARIANTS.md` (Template A).
+
+### Added role: `cluster_hero` (slides 9–14)
+Six market-specific cluster deep-dive slides. Each carries a **generated N30 dusk-waterfront composite**
+for that cluster (not an Atlas screenshot, not the mobility econ landmark plate). Scope `market`,
+reusable by any hospitality deck featuring that cluster. Bank under
+`assets/{deck}/clusters/final-{market}.png`, register in `ASSET-REGISTRY.json` (`role: cluster_hero`),
+apply via `replaceImage` on the slide composite element.
+
+### `econ_market_bg` in hospitality = **PAGE-FILL** (slides 18–24) — LB-262
+The appendix unit-economics slides (7) are **page-background fills**, applied via
+`updatePageProperties.pageBackgroundFill.stretchedPictureFill.contentUrl` — **NOT** `navierBg_*` image
+elements (that pattern is mobility-only, and forking it is what left UAE backgrounds on the Centara
+appendix). Each is a market-specific N30 composite with a **vertical legibility scrim**
+(`rgba(0,0,0,0.42)` top → `rgba(0,0,0,0.86)` bottom). Bank under `assets/{deck}/econ/econ-bg-{market}-n30.jpg`,
+register (`role: econ_market_bg`, `treatment: hospitality_econ_appendix_vertical_scrim`), apply as page-fill.
+
+### Roles NOT used in hospitality
+- `tam_bg` (slide 10) — **n/a**. Hospitality decks have **no SOM/SAM/TAM/GMV ladder**; the marquee
+  unit-economics live in the appendix instead.
+- `value_prop_bg` slide-2 brief differs: hospitality slide 2 is the **KPI-free** exec summary with its
+  **own distinct image** — it must **not** borrow the operator-value (Three C's) background.
+- `atlas_route_screenshot` (mobility side-panels 4–6/14–18) — **n/a** in the hospitality spine.
+
+### Hospitality render-complete checklist
+A hospitality deck is render-complete only when: cover carries the partner logo (or null for territory
+decks); slide 2 has its own KPI-free image; all 6 `cluster_hero` slots filled with market-specific
+composites; all 7 appendix `econ_market_bg` **page-fills** are market-specific (no gold-market leakage);
+no ladder; every image resolves to a stable registry URL. Cross-check against
+`SLIDE-SPINE-AND-VARIANTS.md` Template A.
