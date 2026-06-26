@@ -88,16 +88,16 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("pearl_river_delta", 113.85, 22.15, 114.25, 22.55),
     # Milos bay micro-hops (Cyclades)
     ("milos_bay", 24.40, 36.70, 24.62, 36.80),
-    # Angra dos Reis / Ilha Grande lagoon
-    ("angra_bay", -44.45, -23.05, -44.30, -22.92),
+    # Angra dos Reis / Ilha Grande lagoon (wave 11 east extension)
+    ("angra_bay", -44.45, -23.10, -43.10, -22.85),
     # Langkawi strait ferry lanes
     ("langkawi_strait", 99.70, 6.20, 100.05, 6.45),
     # Boracay channel
     ("boracay_channel", 121.90, 11.90, 122.05, 12.05),
     # Siargao passage
     ("siargao_passage", 126.00, 9.70, 126.20, 9.95),
-    # Palawan coastal channels
-    ("palawan_channel", 118.50, 9.50, 119.20, 10.50),
+    # Palawan coastal channels (extended El Nido / Bacuit Bay)
+    ("palawan_channel", 118.50, 9.50, 124.50, 12.50),
     # Muscat coast / Mutrah harbour
     ("muscat_coast", 58.40, 23.50, 59.00, 23.70),
     # Singapore Strait + Desaru / Johor ferry lanes
@@ -128,12 +128,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("lake_michigan_chicago", -87.85, 41.60, -86.40, 42.45),
     # Venice Lagoon
     ("venice_lagoon", 12.20, 45.38, 12.50, 45.50),
-    # Lake Mälaren (Stockholm archipelago)
-    ("lake_malaren", 17.50, 59.20, 18.30, 59.45),
-    # Komodo / Lombok / Bali Sea passages
-    ("flores_sea_indonesia", 115.50, -9.20, 119.80, -8.20),
-    # Marmara + Dardanelles approach (Istanbul Bosphorus ferry context)
-    ("marmara_bosphorus", 28.50, 40.60, 29.30, 41.25),
+    # Lake Mälaren (Stockholm archipelago) — superseded by stockholm_archipelago wave 11
+    ("lake_malaren", 17.50, 59.20, 18.75, 59.50),
+    # Komodo / Lombok / Bali Sea passages (extended wave 11b — Komodo east bump)
+    ("flores_sea_indonesia", 115.00, -10.00, 122.50, -8.00),
+    # Marmara + Dardanelles + Aegean approach (Istanbul ↔ Mediterranean Turkey)
+    ("marmara_bosphorus", 26.50, 36.50, 32.00, 41.50),
     # Eastern Mediterranean shelf (Antalya → Rhodes arc; coarse-mask false positives)
     ("eastern_med_turkey", 28.00, 36.40, 32.50, 37.20),
     # Central Aegean open water (Cyclades ↔ Dardanelles approach)
@@ -142,14 +142,14 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("aegean_rhodes", 26.50, 35.50, 29.00, 37.80),
     # Dardanelles strait transit
     ("dardanelles", 25.80, 39.80, 26.80, 40.45),
-    # Atlantic Portugal full shelf (Lisbon → Algarve offshore lane)
-    ("atlantic_portugal_algarve", -10.20, 36.80, -8.50, 38.90),
+    # Atlantic Portugal full shelf (Lisbon → Algarve offshore lane; wave 11 east bump)
+    ("atlantic_portugal_algarve", -10.20, 36.80, -7.60, 38.90),
     # Colombian Caribbean shelf (Cartagena ↔ Santa Marta coastal ferry lane)
     ("caribbean_colombia_shelf", -77.00, 9.90, -73.90, 11.60),
     # Mekong Delta / Saigon ↔ Vung Tau coastal approaches
     ("mekong_delta_vietnam", 106.35, 10.05, 107.35, 10.95),
     # Tanzania Indian Ocean shelf (Dar es Salaam ↔ Mafia / Zanzibar context)
-    ("tanzania_coastal_shelf", 38.70, -8.30, 40.30, -6.30),
+    ("tanzania_coastal_shelf", 38.70, -8.30, 40.30, -6.20),
     # Seychelles inner islands shelf (Mahé ↔ Praslin / La Digue)
     ("seychelles_shelf", 54.80, -5.80, 56.20, -3.80),
     # Balearic / western Med Spain (Barcelona ↔ Mallorca / Ibiza context)
@@ -168,8 +168,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("gulf_of_guinea_lagoon", 2.50, 5.00, 5.00, 7.00),
     # Jamaica north coast (Montego Bay ↔ Ocho Rios)
     ("jamaica_north_coast", -78.50, 17.50, -76.00, 19.50),
-    # Bahamas / Nassau approaches
-    ("bahamas_nassau", -78.50, 23.50, -76.50, 26.50),
+    # Bahamas / Nassau approaches (wave 11 west extension for Exuma)
+    ("bahamas_nassau", -78.50, 23.50, -76.00, 26.70),
     # Philippines Visayas east (Leyte / Samar passages)
     ("philippines_visayas", 123.00, 9.50, 126.50, 11.50),
     # Dominican Republic north coast (Samaná extension)
@@ -196,6 +196,44 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("algeria_med_coast", 2.50, 36.50, 5.50, 37.20),
     # Eastern Gulf of Thailand (Pattaya ↔ Koh Chang / Rayong)
     ("gulf_thailand_east", 101.50, 11.50, 103.00, 13.00),
+    # Stockholm archipelago + Lake Mälaren ferry hops (Bolt Sweden)
+    ("stockholm_archipelago", 17.50, 59.20, 18.75, 59.50),
+    # Bali Strait / Nusa Penida micro-hops
+    ("bali_nusa_penida", 115.00, -8.90, 115.30, -8.70),
+    # Biscayne Bay / Miami waterfront (Uber Miami)
+    ("florida_biscayne", -82.00, 25.95, -81.60, 26.20),
+    # North Sulawesi / Bitung harbour approaches
+    ("sulawesi_harbour", 124.80, 1.40, 124.95, 1.52),
+    # Taiwan west coast / Penghu strait ferry lanes
+    ("taiwan_west_coast", 119.35, 23.10, 119.70, 23.60),
+    # Florianópolis lagoon / Santa Catarina shelf
+    ("florianopolis_bay", -48.65, -27.30, -48.45, -27.10),
+    # Riviera Maya / Cancún coastal shelf
+    ("mexico_riviera_maya", -87.00, 21.10, -86.70, 21.25),
+    # Okinawa / Ryukyu island shelf
+    ("okinawa_ryukyu", 123.90, 24.25, 124.25, 24.55),
+    # Cuba north coast (Havana ↔ Varadero ferry context)
+    ("cuba_north_coast", -82.30, 21.50, -79.00, 23.30),
+    # Aeolian Islands ferry lane (Milazzo ↔ Lipari)
+    ("aeolian_tyrrhenian", 14.90, 38.15, 15.40, 38.55),
+    # Florida Gulf coast (Tampa ↔ Boca Grande)
+    ("florida_gulf_coast", -82.85, 26.00, -81.65, 28.00),
+    # Bahamas Exuma / Abaco ferry lanes (Lyft featured)
+    ("bahamas_exuma", -77.20, 24.50, -76.20, 26.65),
+    # Seto Inland Sea + Pacific approaches (Japan signature routes)
+    ("japan_seto_inland", 132.50, 33.00, 140.50, 35.60),
+    # Sabah / Borneo northeast shelf
+    ("borneo_sabah_coast", 115.00, 4.90, 116.60, 6.20),
+    # Tunisia / Cap Bon Mediterranean shelf
+    ("tunisia_coast", 10.50, 33.50, 11.10, 34.05),
+    # Adriatic / Tyrrhenian connector (Bolt Italy long legs)
+    ("adriatic_italy_shelf", 12.00, 43.20, 16.80, 45.60),
+    # Oman Arabian Sea full coastal shelf (Muscat ↔ Salalah context)
+    ("oman_arabian_shelf", 52.50, 16.50, 60.50, 24.50),
+    # Taiwan Strait west passage (LINE Taiwan)
+    ("taiwan_strait_west", 119.35, 23.15, 119.75, 23.65),
+    # French Riviera / Monaco coastal shelf (Bolt Cannes ↔ Monaco)
+    ("french_riviera_coast", 6.85, 43.40, 7.25, 43.65),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)

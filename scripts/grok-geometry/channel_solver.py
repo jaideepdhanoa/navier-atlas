@@ -145,11 +145,10 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
         [119.40, -8.55], [118.80, -8.45], [118.20, -8.40], [117.60, -8.42],
         [117.00, -8.48], [116.50, -8.55],
     ],
-    # Istanbul Med → Black Sea via Aegean + Marmara (coarse-mask safe offshore)
+    # Mediterranean Turkey → Black Sea via Marmara / Bosphorus (wave 11b — shorter arc)
     ("bp-5654d9cdd3", "bp-84f50d4224"): [
-        [31.10, 36.62], [30.20, 36.55], [29.20, 36.58], [28.20, 36.85],
-        [27.50, 36.95], [26.80, 37.15], [26.20, 37.80], [25.80, 38.55], [25.50, 39.20],
-        [25.90, 39.85], [26.40, 40.15], [27.20, 40.45], [28.20, 40.75], [29.00, 41.00],
+        [31.10, 36.62], [30.50, 37.00], [29.50, 37.50], [29.00, 38.50],
+        [29.20, 39.50], [29.00, 40.50],
     ],
     # Andaman India coastal shelf (south → north arc)
     ("bp-7f1d145a12", "bp-87802f7406"): [
