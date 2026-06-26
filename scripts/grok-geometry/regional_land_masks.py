@@ -30,8 +30,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("aegean_cyclades", 24.80, 36.30, 26.20, 37.80),
     # Dalmatian coast channels (Split ↔ Dubrovnik)
     ("dalmatia_croatia", 15.80, 42.55, 18.50, 43.85),
-    # Puget Sound / San Juan ferry lanes
-    ("puget_sound", -123.30, 47.50, -122.25, 48.80),
+    # Puget Sound / San Juan / BC Ferries lanes (extended to Georgia Strait north)
+    ("puget_sound", -123.45, 47.50, -122.10, 49.40),
     # Boston harbour + outer islands
     ("boston_harbour", -71.15, 42.30, -70.05, 42.85),
     # Sydney Harbour approaches
@@ -46,8 +46,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("leeward_caribbean", -65.00, 17.80, -62.80, 18.50),
     # Dutch Caribbean ABC (Aruba · Curaçao · Bonaire) coastal + inter-island lanes
     ("abc_islands", -70.15, 11.85, -68.10, 12.65),
-    # Dubai Creek / Palm lagoon approaches
-    ("dubai_coast", 54.95, 24.95, 55.35, 25.35),
+    # UAE full coastal shelf (Dubai ↔ RAK ↔ Abu Dhabi ferry context)
+    ("dubai_coast", 54.00, 24.50, 56.50, 26.50),
     # Lagos Lagoon
     ("lagos_lagoon", 3.30, 6.35, 3.55, 6.50),
     # River Thames / estuary ferry lanes
@@ -78,8 +78,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("san_blas_panama", -80.00, 8.80, -77.80, 9.70),
     # Gulf of Finland / Tallinn harbour approaches
     ("gulf_of_finland_tallinn", 24.55, 59.40, 25.00, 59.55),
-    # Hooghly river transit (Kolkata harbour micro-hops)
-    ("hooghly_kolkata", 88.30, 22.56, 88.38, 22.60),
+    # Hooghly river + Kolkata harbour waterfront (extended north)
+    ("hooghly_kolkata", 88.20, 22.45, 88.50, 22.95),
     # Casablanca harbour + Atlantic approaches
     ("casablanca_harbor", -9.90, 31.30, -9.75, 31.55),
     # Pearl River Delta (Hong Kong ↔ Shenzhen Shekou ferry context)
@@ -98,8 +98,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("palawan_channel", 118.50, 9.50, 119.20, 10.50),
     # Muscat coast / Mutrah harbour
     ("muscat_coast", 58.40, 23.50, 59.00, 23.70),
-    # Desaru coast / Singapore Strait south
-    ("desaru_strait", 104.10, 1.30, 104.25, 1.45),
+    # Singapore Strait + Desaru / Johor ferry lanes
+    ("desaru_strait", 103.65, 0.95, 104.55, 1.55),
     # Korea south coast (Yeosu / Tongyeong archipelago)
     ("korea_south_coast", 127.50, 34.50, 129.50, 35.20),
     # Bahía de Banderas (Puerto Vallarta / Riviera Nayarit)
@@ -148,6 +148,20 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("mekong_delta_vietnam", 106.35, 10.05, 107.35, 10.95),
     # Tanzania Indian Ocean shelf (Dar es Salaam ↔ Mafia / Zanzibar context)
     ("tanzania_coastal_shelf", 38.70, -8.30, 40.30, -6.30),
+    # Seychelles inner islands shelf (Mahé ↔ Praslin / La Digue)
+    ("seychelles_shelf", 54.80, -5.80, 56.20, -3.80),
+    # Balearic / western Med Spain (Barcelona ↔ Mallorca / Ibiza context)
+    ("balearic_spain_shelf", 0.50, 38.50, 4.80, 41.50),
+    # Tyrrhenian Sea Italy west coast (Rome ↔ Naples ↔ Sardinia approaches)
+    ("tyrrhenian_italy", 11.50, 39.50, 15.80, 42.80),
+    # Coromandel / Chennai–Puducherry ECR coastal shelf
+    ("coromandel_chennai", 79.50, 11.00, 81.20, 13.50),
+    # Finland SW archipelago + Gulf of Finland west
+    ("finland_archipelago", 21.00, 59.00, 26.50, 61.00),
+    # New Zealand Hauraki / North Island east coast
+    ("nz_hauraki", 174.50, -37.50, 177.50, -34.50),
+    # Bali / Lombok Strait approaches
+    ("bali_lombok_strait", 115.00, -8.80, 116.20, -8.10),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
