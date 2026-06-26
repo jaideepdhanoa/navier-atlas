@@ -30,8 +30,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("aegean_cyclades", 24.80, 36.30, 26.20, 37.80),
     # Dalmatian coast channels (Split ↔ Dubrovnik)
     ("dalmatia_croatia", 15.80, 42.55, 18.50, 43.85),
-    # Puget Sound / San Juan / BC Ferries lanes (extended to Georgia Strait north)
-    ("puget_sound", -123.45, 47.50, -122.10, 49.40),
+    # Puget Sound / San Juan / BC Ferries lanes (Georgia Strait + Gulf Islands)
+    ("puget_sound", -123.55, 48.35, -122.00, 49.45),
     # Boston harbour + outer islands
     ("boston_harbour", -71.15, 42.30, -70.05, 42.85),
     # Sydney Harbour approaches
@@ -176,6 +176,14 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("norway_southwest", 4.00, 58.00, 7.50, 61.50),
     # Mumbai harbour + Versova gateway
     ("mumbai_harbour", 72.40, 18.85, 73.05, 19.35),
+    # Egypt Mediterranean + North Sinai coastal shelf (Alexandria ↔ Suez context)
+    ("egypt_med_coast", 29.50, 29.00, 35.50, 31.50),
+    # Gulf of Suez / Red Sea north (Sharm ↔ Hurghada approaches)
+    ("red_sea_gulf_suez", 32.50, 26.00, 35.50, 29.50),
+    # French Polynesia / Society Islands lagoon passages
+    ("tahiti_society", -151.00, -18.50, -138.00, -8.00),
+    # Ligurian-Tyrrhenian connector (Corsica ↔ Sardinia / Bonifacio extension)
+    ("corsica_sardinia", 7.50, 41.00, 10.50, 43.50),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
