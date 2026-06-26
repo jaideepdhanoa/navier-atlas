@@ -1,0 +1,237 @@
+{
+ "_provenance": {
+  "source_growth": "growth-indrive.json",
+  "source_rollup": "agg-indrive.json",
+  "rev_per_boat_yr": 9000,
+  "greenfield_mode": "census",
+  "greenfield_corridors": 341,
+  "sourced_corridors": 35,
+  "generator": "growth_frontend_block.py"
+ },
+ "revenue_potential": {
+  "headline": "The floor and the prize — every rung traces to grounded, sourced demand.",
+  "modal_lead": "We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.",
+  "anchor_note": "$0M/yr premium sea-transfer spend on sourced corridors today — the anchor every rung builds from.",
+  "whose_money_legend": {
+   "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
+   "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
+   "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+  },
+  "cite_rule": "Cite MID. 'High' stacks every optimistic assumption — ceiling, not headline.",
+  "rungs": [
+   {
+    "id": "som_floor",
+    "label": "SOM — floor (published)",
+    "whose_money": "Navier transport revenue",
+    "basis": "sourced flagship corridors · 10% capture · today's demand",
+    "low": null,
+    "mid": 9000.0,
+    "high": null,
+    "display": {
+     "low": null,
+     "mid": "$0M",
+     "high": null
+    },
+    "confidence": "grounded",
+    "confidence_label": "Grounded"
+   },
+   {
+    "id": "som_network",
+    "label": "SOM — full network",
+    "whose_money": "Navier transport revenue",
+    "basis": "whole mapped network · 10% capture · today's demand (no growth assumed)",
+    "low": 30960.0,
+    "mid": 44100.0,
+    "high": 57240.0,
+    "display": {
+     "low": "$0M",
+     "mid": "$0M",
+     "high": "$0M"
+    },
+    "confidence": "med",
+    "confidence_label": "Modeled"
+   },
+   {
+    "id": "sam_network",
+    "label": "SAM — matured network",
+    "whose_money": "Navier transport revenue",
+    "basis": "faster, more comfortable boats grow the market · leading-operator 25% capture, network-wide",
+    "low": 60372.0,
+    "mid": 198450.0,
+    "high": 572400.0,
+    "display": {
+     "low": "$0M",
+     "mid": "$0M",
+     "high": "$1M"
+    },
+    "confidence": "med-low",
+    "confidence_label": "Projected"
+   },
+   {
+    "id": "tam_transfer",
+    "label": "Marine mobility TAM — induced marine-transfer market",
+    "whose_money": "total water-transfer spend",
+    "basis": "SAM divided by leading-operator capture — the full inducible water-transfer wallet at network maturity",
+    "low": 402480.0,
+    "mid": 793800.0,
+    "high": 1431000.0,
+    "display": {
+     "low": "$0M",
+     "mid": "$1M",
+     "high": "$1M"
+    },
+    "confidence": "med-low",
+    "confidence_label": "Projected"
+   },
+   {
+    "id": "journey_gmv",
+    "label": "Journey GMV — food + stays + experiences (≈3× TAM)",
+    "whose_money": "total journey wallet",
+    "basis": "add food, stays, and experiences to every crossing in the induced market",
+    "low": 804960.0,
+    "mid": 2381400.0,
+    "high": 5724000.0,
+    "display": {
+     "low": "$1M",
+     "mid": "$2M",
+     "high": "$6M"
+    },
+    "confidence": "med-low",
+    "confidence_label": "Projected"
+   },
+   {
+    "id": "platform_rev",
+    "label": "Partner platform revenue on Navier",
+    "whose_money": "partner's P&L on Navier-carried journeys",
+    "basis": "platform commission on journey GMV routed through the Navier network (subset of full Journey GMV)",
+    "low": 21734.0,
+    "mid": 107163.0,
+    "high": 412128.0,
+    "display": {
+     "low": "$0M",
+     "mid": "$0M",
+     "high": "$0M"
+    },
+    "confidence": "med-low",
+    "confidence_label": "Projected"
+   }
+  ],
+  "ceiling_sibling": {
+   "id": "platform_rev_full_journey",
+   "label": "Platform revenue ceiling — 18% × full Journey GMV",
+   "low": 144893.0,
+   "mid": 428652.0,
+   "high": 1030320.0,
+   "display": {
+    "low": "$0M",
+    "mid": "$0M",
+    "high": "$1M"
+   },
+   "derivation": "journey_gmv.mid × 0.18 (full GMV ceiling, not Navier-corridor subset)",
+   "confidence_label": "Projected",
+   "_doc": "Sibling reference. Do NOT promote to a 7th ladder rung. Platform_rev rung remains the Navier-subset Interpretation-A value."
+  }
+ },
+ "phase_economics": {
+  "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
+  "conversion_note": "Fleet & CO2 scale from the grounded unit: 1 boats = $0M transport rev = 9 t CO2/yr (~$9K rev/boat).",
+  "horizons": [
+   {
+    "id": "prove",
+    "name": "Prove",
+    "horizon": "Year 1–2",
+    "scope": "Sourced flagship corridors go live",
+    "capture": "10% (new-entrant floor)",
+    "vessel": "N30 Pioneer II (8 pax, commercial now)",
+    "fleet_boats": 1,
+    "navier_transport_rev_yr": 9000.0,
+    "navier_transport_rev_display": "$0M",
+    "partner_platform_rev_yr": null,
+    "partner_platform_rev_display": "nascent",
+    "co2_saved_t_yr": 9,
+    "confidence": "grounded",
+    "confidence_label": "Grounded"
+   },
+   {
+    "id": "scale",
+    "name": "Scale",
+    "horizon": "Year 2–4",
+    "scope": "Extend to the full mapped greenfield network",
+    "capture": "10% (still conservative)",
+    "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense legs",
+    "fleet_boats_est": 5,
+    "fleet_boats_band": {
+     "low": 3,
+     "high": 6
+    },
+    "navier_transport_rev_yr": 44100.0,
+    "navier_transport_rev_display": "$0M",
+    "partner_platform_rev_display": "building",
+    "co2_saved_t_yr": 42,
+    "confidence": "med",
+    "confidence_label": "Modeled"
+   },
+   {
+    "id": "mature",
+    "name": "Mature",
+    "horizon": "Year 4+",
+    "scope": "Induced marine-transfer demand + leading-operator capture across the network",
+    "capture": "25% mature share",
+    "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
+    "fleet_boats_est_pioneer_equiv": 22,
+    "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
+    "navier_transport_rev_yr": 198450.0,
+    "navier_transport_rev_display": "$0M",
+    "partner_platform_rev_yr": 107163.0,
+    "partner_platform_rev_display": "$0M",
+    "partner_platform_rev_on_navier_yr": 107163.0,
+    "partner_platform_rev_on_navier_display": "$0M",
+    "marine_mobility_tam_yr": 793800.0,
+    "marine_mobility_tam_display": "$1M marine TAM",
+    "journey_gmv_yr": 2381400.0,
+    "journey_gmv_display": "$2M Journey GMV",
+    "co2_saved_t_yr": 190,
+    "confidence": "med-low (banded)",
+    "confidence_label": "Projected"
+   }
+  ]
+ },
+ "vessel_sizing": {
+  "headline": "Right vessel for every leg — corridor range picks the hull.",
+  "classes": [
+   {
+    "class": "N30 Pioneer II",
+    "pax": 8,
+    "range_nm": 70,
+    "status": "commercial now",
+    "role": "Capillary corridors ≤ 70nm. The workhorse of Prove + Scale.",
+    "render": "solid"
+   },
+   {
+    "class": "N35 Shuttle",
+    "pax": "12–15",
+    "range_nm": 70,
+    "status": "2027",
+    "role": "Doubles throughput per hull on dense corridors; roughly halves payback. Scale-phase workhorse.",
+    "render": "solid"
+   },
+   {
+    "class": "Quanta-LR Hybrid",
+    "pax": "12–15",
+    "range_nm": 700,
+    "status": "H2 2026+",
+    "role": "Regional legs 75–150nm beyond Pioneer range. Held out of near-term numbers.",
+    "render": "amber-dashed"
+   }
+  ],
+  "range_gate_note": "≤ 70nm → Pioneer II (now). 75–150nm → Quanta-LR (roadmap). Long legs never faked on a 70nm boat."
+ },
+ "_render_chip_flag": {
+  "needs_new_layouts": [
+   "revenue_ladder",
+   "phase_economics_table",
+   "vessel_sizing_cards"
+  ],
+  "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
+ }
+}

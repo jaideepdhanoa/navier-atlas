@@ -1,0 +1,65 @@
+{
+  "_doc": "Scoped corridors view for sun-siyam Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:36Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "sun-siyam": {
+      "partner": "sun-siyam",
+      "region": "South Asia",
+      "label": "Sun Siyam Resorts \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "sun-siyam-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 1,
+      "_corridors_bound": 1,
+      "corridors": [
+        {
+          "route_id": "e__velana__westin-miriandhoo-jetty",
+          "from": "Velana International Airport (MLE) Resort Speedboat Lounges",
+          "to": "Kurumba Maldives (Vihamanafushi, North Mal\u00e9)",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "from_node_id": "male-maldives",
+          "to_node_id": "male-maldives",
+          "country": "Maldives",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "_fare_record": {
+              "value": 60,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (Maldives resort/seaplane transfers natively quoted in USD; no FX, R8-style)",
+              "year": 2025,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Short 2.4nm/10-min North Male speedboat hop. maldivestour.guide: Kurumba round-trip speedboat USD 96/adult = $48/way. immaldives.com 2026 table: Kurumba shared speedboat $100-150 RT = $50-75/way. atolltransfer scheduled $25-120/way. Single-class resort speedboat (premium ~= standard on this short close hop); premium per-seat ~$60/way.",
+              "method": "Two independent listings (maldivestour.guide RT $96; immaldives $100-150 RT). Premium per-seat = upper of the shared-speedboat band on a very short close-in hop. R1 satisfied (2 listings).",
+              "fare_ladder_usd_pax": {
+                "budget_public_ferry": 2,
+                "shared_speedboat": 50,
+                "premium_per_seat": 60,
+                "whole_boat_charter": 450
+              }
+            },
+            "corridor_annual_oneway_pax": 28000,
+            "_demand_record": {
+              "value": 28000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low-med",
+              "source": "Modeled from resort key count. Kurumba Maldives (Vihamanafushi, North Mal\u00e9): ~180 villas/keys (published resort/Virtuoso/booking figures). corridor_annual_oneway_pax = keys x 365 x occ(0.75) / avg_stay(7 nights) x guests/key(2) x 2 (arr+dep) ~= keys x 156. 180 keys -> ~28,000 one-way pax/yr. Airport(MLE)<->this resort is the sole transfer corridor (boat/seaplane only; no road/air alt - R3-EXCEPTION: arrivals = crossing ridership).",
+              "method": "Resort-key-count occupancy model (R2: grounded key count, not a blind guess; banded low-med). Avg-stay 7 nights, occ 0.75, 2 guests/occupied key."
+            }
+          },
+          "captive": true,
+          "captive_resort": true,
+          "villas": 180,
+          "_captive_note": "Resort 180 villas. Ceiling = ceil(180/25)=8."
+        }
+      ],
+      "capex_tier": "hospitality"
+    }
+  }
+}

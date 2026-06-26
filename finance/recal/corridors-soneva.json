@@ -1,0 +1,62 @@
+{
+  "_doc": "Scoped corridors view for soneva Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:34Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "soneva": {
+      "partner": "soneva",
+      "region": "Global (Maldives + Thailand)",
+      "label": "Soneva \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "soneva-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 4,
+      "_corridors_bound": 1,
+      "corridors": [
+        {
+          "route_id": "e__mald__5108f439d6bc",
+          "from": "Dharavandhoo Airport, Baa",
+          "to": "Four Seasons Landaa Giraavaru (Baa)",
+          "distance_nm": 9.5,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "captive": true,
+          "from_node_id": "male-maldives__dharavandhoo-baa",
+          "to_node_id": "male-maldives__four-seasons-landaa-giraavaru",
+          "country": "Maldives",
+          "_expansion": "gold18-maldives-interisland",
+          "_distance_note": "approx from atoll coords; refine at BP build",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 200,
+            "_fare_record": {
+              "value": 200,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (Maldives transfers natively USD; no FX, R8)",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "immaldives.com Maldives transfer costs (May 2026): shared speedboat $100-490 RT pp (=$50-245 OW); shared seaplane $400-820 RT pp (=$200-410 OW). atolltransfer.com scheduled $30-195 OW. Navier premium per-seat anchored between local premium speedboat and the seaplane the resort otherwise charges (R-MALDIVES-1).",
+              "method": "R-MALDIVES-1: premium per-seat set between local premium speedboat ($50-245/way, immaldives 2026) and the seaplane the resort otherwise charges ($200-410/way). Beyond-Male atoll-gateway transfer."
+            },
+            "corridor_annual_oneway_pax": 7693,
+            "_demand_record": {
+              "value": 7693,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "med",
+              "source": "Modeled arrivals = published keys x occupancy 0.70 (Maldives Min. of Tourism avg) x (365/6.5 nights avg stay) x 1.9 pax/room. Inbound one-way transfers. T5-modeled/med; keys T1 resort-published. NULL for pure inter-resort excursion legs (R2).",
+              "method": "keys x occupancy 0.70 (Maldives Min. of Tourism avg) x (365 / 6.5 nights avg stay) x 1.9 pax/room = inbound one-way transfers/yr."
+            },
+            "demand_confidence": "med"
+          },
+          "captive_resort": true,
+          "villas": 103,
+          "_captive_note": "Resort 103 villas. Ceiling = ceil(103/25)=5."
+        }
+      ],
+      "capex_tier": "hospitality"
+    }
+  }
+}

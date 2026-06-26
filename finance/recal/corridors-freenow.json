@@ -1,0 +1,64 @@
+{
+  "_doc": "Scoped corridors view for freenow Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:25Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "freenow": {
+      "partner": "freenow",
+      "region": "Europe",
+      "label": "FREENOW \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "freenow-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 11,
+      "_corridors_bound": 1,
+      "corridors": [
+        {
+          "route_id": "rn-1a140dacd3e6",
+          "from": "Shura Island Marina",
+          "to": "Outer-island resorts (St Regis / Nujuma / Shebara)",
+          "distance_nm": 11.5,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "from_node_id": "red-sea-global-ksa",
+          "to_node_id": "red-sea-global-ksa",
+          "country": "Saudi Arabia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 175,
+            "_fare_record": {
+              "value": 175,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (SAR/BHD pegged); 2025",
+              "year": 2025,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "Maldives resort speedboat transfer per-seat comparable (no incumbent on this greenfield Red Sea crossing, R5): MaldivesNomad resort transfers $65-350/pax 1-way; AtollTransfer $90-450/pax; premium private-resort $150-250 1-way; PointsGuy Marriott speedboat $142 RT. Premium per-seat point picked. 25nm outer-island luxury resort transfer -> premium per-seat $175.",
+              "method": "Modeled from Maldives premium resort speedboat per-seat comparable (R5 greenfield; R12 short luxury transfer not flight-substituted).",
+              "fare_ladder_usd_pax": {
+                "budget_public_ferry": 25,
+                "standard_resort_speedboat": 90,
+                "premium_per_seat_speedboat": 175,
+                "whole_boat_charter": 1000
+              }
+            },
+            "corridor_annual_oneway_pax": 500000,
+            "_demand_record": {
+              "value": 500000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "low-med",
+              "source": "Red Sea Global / The Red Sea destination capped at 1,000,000 visitors/yr at full completion 2030 across 50 resorts/8,000+ keys (RSG official; Monaco Yacht Show factsheet 2025; blooloop; ICWA). Shura Island hub->outer-island resorts is THE primary internal transfer leg; R3 discount ~50% (not all resorts outer-island; some mainland/nearshore) -> ~500k 1-way.",
+              "method": "Destination visitor cap (T1/T2) x R3 on-corridor discount. 2030 build-out target."
+            }
+          },
+          "_forward_sam": true,
+          "captive": true,
+          "multi_leg": true,
+          "_geometry_bound_at": "2026-06-20"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,473 @@
+{
+  "_doc": "Scoped corridors view for gojek Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:17Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "gojek": {
+      "partner": "gojek",
+      "region": "SEA",
+      "label": "Gojek (GoTo) \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "gojek-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 37,
+      "_corridors_bound": 9,
+      "corridors": [
+        {
+          "route_id": "gcn-3273659cd1-shared",
+          "from": "Lombok",
+          "to": "Komodo / Labuan Bajo",
+          "distance_nm": 237,
+          "vessel": "Quanta-LR",
+          "archetype": "intercity",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "lombok-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-3273659cd1",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 130,
+            "_fare_record": {
+              "value": 130,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR->USD @ ~16,300/USD, 2026",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No direct premium fast ferry on the 150nm crossing. Substitute premium point-to-point mode = flight Lombok(LOP)->Labuan Bajo(LBJ): IDR 1.5-2.5M ($100-170) one-way (Garuda/Wings/Lion, surfwells 2026). Pelni slow ferry IDR 236k ($27), 24-36h = budget floor. Liveaboard 4D3N $200-1000/pax = bundled cruise, excluded as overclaim. Modeled premium per-seat transfer anchored at air-fare midpoint ~$130.",
+              "method": "modeled-on-substitute-mode (R5 no-direct-route)",
+              "fare_ladder_usd_pax": {
+                "budget_pelni_ferry_24_36h": 27,
+                "standard_no_scheduled_fastboat": null,
+                "premium_substitute_airfare": "100-170",
+                "liveaboard_4d3n_per_pax_excluded": "200-1000",
+                "whole_boat_private_charter": "1500+/boat"
+              },
+              "anchor_rationale": "Navier Quanta-LR = fast point-to-point sea transfer; currently the only fast P2P option on this corridor is the FLIGHT, so the relevant traveler-paid comparable is the airfare, not the multi-day liveaboard. R5 greenfield-thin signal."
+            },
+            "corridor_annual_oneway_pax": null,
+            "_demand_record": {
+              "value": null,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No published ridership for a direct Lombok->Labuan Bajo crossing because none operates as a scheduled fast route. Labuan Bajo arrivals are dominated by air + Bali-origin liveaboards (R3: destination arrivals != this crossing). NULL beats a guess.",
+              "method": "null-no-credible-pool (R2)"
+            },
+            "demand_confidence": "low"
+          }
+        },
+        {
+          "route_id": "gcn-3d7809869d-shared",
+          "from": "Bali (Benoa / Sanur)",
+          "to": "Nusa Penida / Lembongan",
+          "distance_nm": 13.5,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "bali-indonesia",
+          "to_node_id": "bali-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-3d7809869d",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "_fare_record": {
+              "value": 60,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med-high",
+              "source": "Premium private transfer tier, Sanur->Nusa Penida. Tripadvisor 'Private and Luxury' $75/adult (bundles tour, excluded as overclaim); Klook Premium Speedboat; standard fast boat $37-40. Anchored at $60 = clean premium point-to-point transfer, conservative vs $75 bundled.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "budget_shared": 13,
+                "standard_fastboat": 40,
+                "premium_transfer": 60,
+                "private_charter_per_seat": 75,
+                "whole_boat_charter": "500-610/boat"
+              },
+              "anchor_rationale": "Navier = premium private on-demand boat sold per-seat. Comparable = premium transfer tier, NOT budget ferry (under-claim) and NOT whole-boat charter (over-claim). Market parity, win on product."
+            },
+            "corridor_annual_oneway_pax": 1500000,
+            "_demand_record": {
+              "value": 1500000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med-high",
+              "source": "Klungkung Tourism Office (Dispar) official levy count, 2025: 1,078,125 visitors to Kawasan Wisata Nusa Penida (1,070,616 adults @ Rp25,000 retribution + 7,509 children @ Rp15,000), PAD Rp 26.88B (NusaBali, 27-Feb-2026, https://www.nusabali.com/berita/214419/tahun-2025-nusa-penida-dikunjungi-1-juta-lebih-wisatawan). 2023 was ~729k (Klungkung); regent's 2026 target 2-2.5M. Levy is collected at island entry -> fee-paying turnstile-grade count (R3-GOLD pattern). Nusa Penida district (incl. Lembongan/Ceningan) is boat-only - no airport, no bridge to Bali -> R3-EXCEPTION: arrivals = crossing ridership.",
+              "method": "1,078,125 visitors x2 = 2,156,250 one-way fast-boat crossings (all origins). Origin split haircut: Sanur is the dominant fast-boat gateway, Kusamba + Padangbai secondary -> Benoa/Sanur share modeled 0.70 -> 1,509,375 ~= 1,500,000 one-way. Conservative: levy likely undercounts Lembongan-only day-trippers who can bypass the Penida levy point."
+            },
+            "demand_confidence": "med-high"
+          }
+        },
+        {
+          "route_id": "ics-9e59ba5c5c",
+          "from": "Marina Ancol",
+          "to": "Thousand Islands \u2014 inner ring (Bidadari / Ayer / Onrust)",
+          "distance_nm": 7.4,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "jakarta-indonesia__marina-ancol-jakarta-bay",
+          "to_node_id": "jakarta-indonesia__thousand-islands-inner-ring-bidadari-ayer-onrust-historical",
+          "country": "Indonesia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 11.7,
+            "_fare_record": {
+              "value": 11.7,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR converted @ ~16,300 IDR/USD (2025 avg; fares are 2024-25 listings)",
+              "year": 2025,
+              "source_tier": "T2/T3",
+              "confidence": "med-high",
+              "source": "Official Marina Ancol speedboat tariff table (pulauseribu-resorts.com / visitpulauseribu.co.id): Ayer/Bidadari Rp155,000 one-way regular speedboat; budget wooden boat ex-Kaliadem Rp90-110k; private speedboat charter Rp2,400,000/boat (Ayer/Bidadari/Kelor-Onrust) => ~Rp200-300k/seat. Premium per-seat anchored at ~Rp190,000.",
+              "method": "Fare ladder: budget wooden boat ~Rp110k / standard speedboat Rp155k / PREMIUM private-speedboat-per-seat ~Rp190k (ANCHOR) / whole-boat charter Rp2.4M. Picked premium per-seat (R1, R1-RESORT). Short 10nm crossing; speedboat is the premium-vs-wooden-boat product.",
+              "fare_ladder_usd_pax": {
+                "budget_wooden_boat": 6.7,
+                "standard_speedboat": 9.5,
+                "premium_per_seat": 11.7,
+                "whole_boat_charter_per_boat": 147.2
+              }
+            },
+            "corridor_annual_oneway_pax": 10000,
+            "_demand_record": {
+              "value": 10000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Sudin Parekraf Kepulauan Seribu official 2025 category breakdown (via pulauseribu.jakarta.go.id, 11-Jan-2026): total 398,519 visitors (2024: 411,161); resort islands 13,932 (TOP = Bidadari #1, then Putri, Macan); tourism islands 3,575; nature-reserve islands 537. Inner-ring = Bidadari+Ayer resort share (~half of resort pool, Bidadari is #1) + Onrust/Cipir/Kelor historical-park day-trips (pulau wisata/cagar) => ~10,000/yr.",
+              "method": "R3 APPLIED (critical): the 398,519 headline is dominated by RESIDENTIAL budget islands (380,475 = 96%, Pari/Untung-Jawa/Tidung) reached by separate cheap-ferry crossings, NOT this premium resort/historical corridor. On-corridor pool = resort+wisata+cagar islands only (~18k total), of which inner-ring (Bidadari/Ayer/Onrust) modeled at ~10k. Kepulauan Seribu is boat-only (R3-EXCEPTION: arrivals=crossing ridership) but the residential-island majority is off-corridor, so headline is NOT used. Allocation across rings is modeled => med confidence."
+            }
+          },
+          "_distance_nm_orig": 10
+        },
+        {
+          "route_id": "ics-fe31c28f2c",
+          "from": "Marina Ancol",
+          "to": "Thousand Islands \u2014 outer ring (Macan / Pelangi / Putri / Sepa)",
+          "distance_nm": 35.9,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "jakarta-indonesia__marina-ancol-jakarta-bay",
+          "to_node_id": "jakarta-indonesia__thousand-islands-outer-ring-macan-pelangi-putri-sepa-pantara",
+          "country": "Indonesia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 24.5,
+            "_fare_record": {
+              "value": 24.5,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR converted @ ~16,300 IDR/USD (2025 avg; fares are 2024-25 listings)",
+              "year": 2025,
+              "source_tier": "T2/T3",
+              "confidence": "high",
+              "source": "Official Marina Ancol tariff table: Pelangi/Sepa/Macan & Kotok/Putri Rp335,000 one-way regular speedboat; Pulau Pantara Rp455,000 one-way; Tokopedia (endangeredstore) Pelangi/Sepa one-way Rp340,000. Resort day/2D1N packages (Sepa Rp1,250,000 one-day incl. transport+lunch+activities; Putri 2D1N Rp1,610,000-2,200,000) include premium boat but are bundles, not pure transfer. Premium per-seat transfer anchored ~Rp400,000.",
+              "method": "Fare ladder (resort-only, no budget wooden boat to outer resorts): standard speedboat Rp335k / PREMIUM resort speedboat ~Rp400k (ANCHOR, between Rp335k std and Rp455k Pantara) / Pantara Rp455k / whole-boat charter (over-claim, excluded). Picked premium per-seat (R1, R1-RESORT). 35nm resort transfer.",
+              "fare_ladder_usd_pax": {
+                "standard_speedboat": 20.6,
+                "premium_resort_speedboat": 24.5,
+                "pantara_tier": 27.9
+              }
+            },
+            "corridor_annual_oneway_pax": 7000,
+            "_demand_record": {
+              "value": 7000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Sudin Parekraf Kepulauan Seribu official 2025: resort islands 13,932 total (Putri #2 and Macan #3 most-visited resorts; plus Pelangi/Sepa/Pantara). Outer-ring resort share modeled at ~7,000/yr (remainder of the 13,932 resort pool after inner-ring Bidadari/Ayer).",
+              "method": "R3 APPLIED: headline 398,519 excluded (96% off-corridor residential islands). On-corridor outer-ring = resort islands Putri/Macan/Pelangi/Sepa/Pantara, ~7k/yr (resort pool 13,932 minus inner-ring share). Boat-only (R3-EXCEPTION) but premium-resort subset only. Allocation modeled => med confidence."
+            }
+          },
+          "_distance_nm_orig": 35
+        },
+        {
+          "route_id": "rn-488fcf2617fe",
+          "from": "Sanur Beach Fast Boat Terminal",
+          "to": "GoBoat.id - Nelayan Beach Canggu",
+          "distance_nm": 7.6,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-fd00aa8c14",
+          "to_node_id": "bp-e810decf31",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 85.0,
+            "_fare_record": {
+              "value": 85.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Avani Seminyak coastal transfer.",
+              "method": "minor-hotels/bali grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 2900,
+            "_demand_record": {
+              "value": 2900,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-bali-flagship-economics-DRAFT.json \u2014 Seminyak gateway pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-c256a044c8be",
+          "from": "Bali Marina (Benoa)",
+          "to": "Six Senses Uluwatu",
+          "distance_nm": 7.7,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-099b3f1f2b",
+          "to_node_id": "bp-b51d721f3b",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 85.0,
+            "_fare_record": {
+              "value": 85.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Anantara Uluwatu Benoa marina transfer.",
+              "method": "minor-hotels/bali grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 2900,
+            "_demand_record": {
+              "value": 2900,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-bali-flagship-economics-DRAFT.json \u2014 Uluwatu gateway pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-dc3e2f90d207",
+          "from": "Singapore",
+          "to": "Batam (Harbour Bay / Nongsa)",
+          "distance_nm": 13.0,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "singapore",
+          "to_node_id": "riau-islands-indonesia__batam-batam-centre-sekupang-harbour-bay-nongsapura-batu-ampa",
+          "country": "CrossBorder",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 57,
+            "_fare_record": {
+              "value": 57,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "SGD",
+              "year": 2026,
+              "fx_note": "1 SGD=0.78 USD (2026)",
+              "source_tier": "T3",
+              "confidence": "med-high",
+              "source": "Fare ladder Singapore\u2194Batam: budget SGD28 (Sindo, HarbourFront\u2192Batam Centre); standard SGD40-43 (BatamFast/Majestic, Batam Centre/Harbour Bay); PREMIUM resort-transfer SGD~73 (BatamFast Tanah Merah\u2192Nongsapura serving Nongsa premium resort zone: Montigo, Turi Beach \u2014 real bookings Lemon8 ~SGD73, Rome2Rio Rp430k-650k, DirectFerries from SGD33-35).",
+              "method": "Premium per-seat anchor = Tanah Merah\u2192Nongsapura (Nongsa resort zone, the corridor's premium endpoint) ~SGD73 x0.78 = USD57. Above the commodity Batam Centre crossing; matches corridor label 'Harbour Bay/Nongsa'.",
+              "fare_ladder_usd_pax": {
+                "budget": 22,
+                "standard": 33,
+                "premium_nongsa": 57,
+                "charter": "n/a per-seat"
+              },
+              "opex_assignment_flag": "CROSS-BORDER: vessel home-ports Singapore (Tanah Merah/HarbourFront), SG crew \u2192 assign SINGAPORE origin opex (index 1.0). Destination Indonesia (Batam, index 0.45) cheaper \u2014 Indonesian operators (Batam Fast) may home-port Batam-side \u2192 reassign. PARENT: decide origin (SG) vs destination (ID). Shortest leg (14nm)."
+            },
+            "_demand_record": {
+              "value": 350000,
+              "unit": "pax/yr one-way (addressable)",
+              "gross_pool_pax_yr": 3500000,
+              "gross_pool_basis": "BP Batam (Badan Usaha Pelabuhan) official H1-2024: 4,284,570 total ferry pax at Batam terminals, of which ~2.3M international; 1.75M of those were Singapore-route arrivals+departures (76% of international) -> annualized ~3.5M one-way SG-Batam crossings/yr. Corroboration: BP Batam FY2024 total 8.6M pax all terminals, ~4.8M international, Singapore the dominant route (Tribun Batam citing BP Batam); pre-pandemic SG-Batam served 3.9M pax/yr incl 1.9M foreign tourists (Straits Times). Counts are pax movements at Batam (arrival or departure) = one-way crossings; no x2 applied.",
+              "addressable_share": 0.1,
+              "addressable_pax_yr": 350000,
+              "demand_confidence": "high (gross) / med (share)",
+              "sources": [
+                {
+                  "label": "Batam Pos - BP Batam BUP Director Dendi Gustinandar: H1-2024 4.28M pax; 1.75M Singapore-route; 76% of international SG-bound",
+                  "url": "https://batampos.jawapos.com/infokota/2407260006/penumpang-ferry-di-batam-tembus-42-juta-orang-tujuan-singapura-masih-jadi-primadona",
+                  "year": 2024
+                },
+                {
+                  "label": "BP Batam (official) - FY2024 8.6M ferry pax across Batam ports, ~4.8M international",
+                  "url": "https://www.facebook.com/batamport/posts/1046005564209524",
+                  "year": 2025
+                },
+                {
+                  "label": "Straits Times - pre-pandemic SG-Batam ferry 3.9M pax/yr incl 1.9M foreign tourists",
+                  "url": "https://www.straitstimes.com/asia/se-asia/s-pore-passengers-unhappy-over-high-batam-ferry-prices-as-indonesia-probes-possible-price-fixing",
+                  "year": 2024
+                },
+                {
+                  "label": "Jakarta Post - 4.2M pax through Batam terminals H1-2024 (+6% YoY)",
+                  "url": "https://www.thejakartapost.com/front-row/2024/07/30/4-2-million-passengers-served-at-batam-port-in-first-half",
+                  "year": 2024
+                }
+              ],
+              "haircut_rationale": "Gross is gold-standard on-corridor crossing ridership (port-authority turnstile counts, R3-GOLD-INTL analog; three agreeing T1/T2 sources). Addressable 10% = premium per-seat tier (VIP-class / quality fast-transfer) of a mass S$30-45 crossing market - the corridor's $57 fare row anchors to that tier. R16 note: cross-border corridor; home-port side (SG index 1.00 vs Indonesia ~0.45) is a parent-level opex decision.",
+              "addressable_pax_yr_ceiling": 700000,
+              "capture_note": "LB-103: pool is addressable-basis; capture_on_addressable 25% base / 50% ceiling (was double-discounted at 10%-on-addressable)"
+            },
+            "corridor_annual_oneway_pax": 350000,
+            "_pool_override_recal": {
+              "source": "BP Batam SG-route ferry (recovery baseline ~1.2M/yr) \u00d7 8% premium capture",
+              "sourced_metric": "1,200,000 pax/yr",
+              "mode_share": null,
+              "capture_rate": 0.08,
+              "final_pax_yr": 96000,
+              "source_url": "https://batampos.jawapos.com/infokota/2407260006/penumpang-ferry-di-batam"
+            },
+            "pool_basis": "addressable",
+            "_pool_sync_note": "LB-103: pool synced 96000 -> 350000 (stale vs _demand_record.value)"
+          },
+          "_distance_nm_orig": 14
+        },
+        {
+          "route_id": "rn-e94c308a28e3",
+          "from": "Marina Bay",
+          "to": "Changi Point / Pulau Ubin",
+          "distance_nm": 14.2,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-d269aeb00f",
+          "to_node_id": "bp-e06987f0a6",
+          "country": "Singapore",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 28,
+            "_fare_record": {
+              "value": 28,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "SGD; FX ~1.35 SGD/USD, 2026 (modeled premium)",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "Only existing boat is the Changi Point->Pulau Ubin bumboat: S$4/pax one-way (NParks official, T1) \u2014 budget single-class, no premium tier. No direct Marina Bay->Changi/Ubin boat (14nm long leg is greenfield). Private Ubin boat tours/charters $91-297/group = whole-boat (overclaim). Modeled premium per-seat one-way for the 14nm Marina Bay hop ~$28 (above bumboat budget, below charter).",
+              "method": "modeled \u2014 budget bumboat anchor + greenfield long leg; no premium per-seat scheduled transfer exists",
+              "fare_ladder_usd_pax": {
+                "bumboat_budget_oneway": 3,
+                "modeled_premium_per_seat_oneway": 28,
+                "private_charter_tour_per_group_excluded": 150
+              }
+            },
+            "corridor_annual_oneway_pax": 30000,
+            "_demand_record": {
+              "value": 30000,
+              "unit": "pax/yr one-way (addressable)",
+              "gross_pool_pax_yr": 600000,
+              "gross_pool_basis": "NParks: Pulau Ubin attracts >300,000 visitors/yr; access is BOAT-ONLY via bumboats from Changi Point Ferry Terminal (S$4/pax, ~10 min). 300k visitors x2 = ~600k one-way bumboat crossings/yr (R3-EXCEPTION: boat-only island, arrivals = crossing riders).",
+              "addressable_share": 0.05,
+              "addressable_pax_yr": 30000,
+              "demand_confidence": "low-med",
+              "sources": [
+                {
+                  "label": "NParks - Visit Pulau Ubin (bumboat access from Changi Point Ferry Terminal)",
+                  "url": "https://pulau-ubin.nparks.gov.sg/visitubin/",
+                  "year": 2025
+                },
+                {
+                  "label": "Wikipedia (citing NParks) - Pulau Ubin >300,000 visitors annually",
+                  "url": "https://en.wikipedia.org/wiki/Pulau_Ubin",
+                  "year": 2024
+                }
+              ],
+              "haircut_rationale": "R3-PIER applied HARD: the 600k real crossings are a ~1nm, S$4 hop from CHANGI POINT, not the modeled 14.2nm Marina Bay leg - the named-origin corridor has zero current ridership. Addressable 5% = the slice plausibly served by a premium direct city-to-Ubin/Changi service (skip the cross-island taxi to Changi). Gross is solid (T2 park authority); addressability on this specific origin is the weak link, hence low-med.",
+              "_pool_link_note": "LB-87 pool_id sg_pulau_ubin_600k_yr; this row's 5% slice of 600k = 30k. Sibling Changi->Ubin row claims another 10% = 60k. Total 15% claimed; 85% remains as budget-tier non-Navier ridership headroom.",
+              "addressable_pax_yr_ceiling": 60000,
+              "capture_note": "LB-103: pool is addressable-basis; capture_on_addressable 25% base / 50% ceiling (was double-discounted at 10%-on-addressable)"
+            },
+            "pool_basis": "addressable"
+          },
+          "pool_id": "sg_pulau_ubin_600k_yr",
+          "share_of_pool": 0.05
+        },
+        {
+          "route_id": "rn-f3670ea7d99b",
+          "from": "Singapore",
+          "to": "Bintan (Lagoi resort zone)",
+          "distance_nm": 21.9,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "singapore",
+          "to_node_id": "riau-islands-indonesia__bintan-bandar-bentan-telani-bbt-lagoi-resort-zone-tanjung-pi",
+          "country": "CrossBorder",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 69,
+            "_fare_record": {
+              "value": 69,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "SGD",
+              "year": 2026,
+              "fx_note": "1 SGD=0.78 USD (2026)",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Bintan Resort Ferries (BRF, official) Tanah Merah\u2194Bandar Bentan Telani (Lagoi resort zone), fares eff. 12 Mar 2026: Economy one-way SGD62 adult; EMERALD CLASS one-way SGD89 adult (premium per-seat tier, incl levies). 3rd-party budget listings from SGD53. Charter = 180-270 pax whole vessel (excluded, R1).",
+              "method": "Premium per-seat anchor = BRF Emerald Class one-way SGD89 x0.78 = USD69. Clean operator-published premium class above Economy \u2014 textbook R1 premium ladder point.",
+              "fare_ladder_usd_pax": {
+                "budget": 41,
+                "standard_economy": 48,
+                "premium_emerald": 69,
+                "charter": "180-270 pax whole vessel, n/a"
+              },
+              "opex_assignment_flag": "CROSS-BORDER: vessel home-ports Singapore (Tanah Merah), SG crew \u2192 assign SINGAPORE origin opex (index 1.0). Destination Indonesia (Riau, index 0.45) far cheaper \u2014 if vessel home-ports at BBT/Bintan reassign to Indonesia. PARENT: decide origin (SG) vs destination (ID)."
+            },
+            "_demand_record": {
+              "value": 150000,
+              "unit": "pax/yr one-way (addressable)",
+              "gross_pool_pax_yr": 1000000,
+              "gross_pool_basis": "Bintan Resorts (BRC, via TTG Asia interview May-2024): total arrivals 2023 = 500,000 (vs ~1.06M arrivals at Bandar Bentan Telani terminal in 2018, C9 Hotelworks - the pre-covid ceiling). Essentially all Bintan Resorts (Lagoi) guests cross by Bintan Resort Ferries Tanah Merah <-> Bandar Bentan Telani: 500k visitors x2 = ~1.0M one-way crossings/yr. SG-Tanjung Pinang ferry traffic (Sindo/Majestic) is ADDITIVE but not counted (conservative; avoids stretching the resort-corridor pool).",
+              "addressable_share": 0.15,
+              "addressable_pax_yr": 150000,
+              "demand_confidence": "med",
+              "sources": [
+                {
+                  "label": "TTG Asia - Bintan Resorts: total arrivals 2023 = 500,000",
+                  "url": "https://www.ttgasia.com/2024/05/30/big-plans-for-bintan/",
+                  "year": 2024
+                },
+                {
+                  "label": "C9 Hotelworks - Bandar Bentan Telani terminal arrivals 1.06M (2018, pre-covid ceiling)",
+                  "url": "https://c9hotelworks.com/location/asia/indonesia/bintan",
+                  "year": 2018
+                },
+                {
+                  "label": "Bintan Resort Ferries - sole scheduled operator Tanah Merah <-> Bandar Bentan Telani",
+                  "url": "https://www.brf.com.sg/",
+                  "year": 2025
+                }
+              ],
+              "haircut_rationale": "Gross = on-corridor ferry crossings (boat-only access to the Lagoi resort enclave from SG; R3-EXCEPTION holds). Addressable 15% = premium per-seat tier (BRF Emerald-class and above) of a resort-bound clientele that already skews affluent; conservative vs the 2018 1.06M ceiling (recovery upside un-counted). SPLIT DISCIPLINE: this pool is registered ONCE on route rn-f3670ea7d99b. Bind to the canonical Bintan row (fare $69); the Riau resort-islands row (fare $54) on the same route_id must carry zero incremental pool (alias), else the corridor double-counts.",
+              "shared_with_rows": [
+                "Singapore -> Bintan (Lagoi resort zone) [canonical, fare $69]",
+                "Singapore -> Riau resort islands (regional reach) [alias, fare $54, zero incremental pool]"
+              ],
+              "addressable_pax_yr_ceiling": 300000,
+              "capture_note": "LB-103: pool is addressable-basis; capture_on_addressable 25% base / 50% ceiling (was double-discounted at 10%-on-addressable)"
+            },
+            "corridor_annual_oneway_pax": 150000,
+            "_pool_override_recal": {
+              "source": "Bintan Resorts arrivals baseline ~700k/yr \u00d7 8% premium capture",
+              "sourced_metric": "700,000 pax/yr",
+              "mode_share": null,
+              "capture_rate": 0.08,
+              "final_pax_yr": 56000,
+              "source_url": "https://www.ttgasia.com/2024/05/30/big-plans-for-bintan/"
+            },
+            "pool_basis": "addressable",
+            "_pool_sync_note": "LB-103: pool synced 56000 -> 150000 (stale vs _demand_record.value)"
+          },
+          "_distance_nm_orig": 40
+        }
+      ]
+    }
+  }
+}

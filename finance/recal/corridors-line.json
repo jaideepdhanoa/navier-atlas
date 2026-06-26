@@ -1,0 +1,210 @@
+{
+  "_doc": "Scoped corridors view for line Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:24Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "line": {
+      "partner": "line",
+      "region": "East Asia",
+      "label": "LINE (LY Corporation) \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "line-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 14,
+      "_corridors_bound": 5,
+      "corridors": [
+        {
+          "route_id": "ics-25ecef3e3b",
+          "from": "Magong (Penghu)",
+          "to": "Penghu outer islands (Qimei / Wang'an)",
+          "distance_nm": 23.12,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": null,
+          "to_node_id": null,
+          "country": "Taiwan",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 15.0,
+            "_fare_record": {
+              "value": 15.0,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "TWD",
+              "year": 2025,
+              "fx": "USD/TWD 32.3",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Penghu NSA / \u516c\u8eca\u8655 official one-way fares: Magong->Qimei NT$437/person, Magong->Wang'an NT$272/person (public \u4ea4\u901a\u8239). Private fast \u5feb\u8247 / island-hop day tours run NT$709-900 incl scooter (ezpenghu, EIT, goplay). Premium per-seat fast-boat transfer on the 18nm Magong->Qimei leg ~NT$485 (~$15).",
+              "method": "R1: anchored to Magong->Qimei (18nm, matches distance) official public fare NT$437 ($13.5) lifted to private fast-boat premium ~NT$485 ($15). Budget=public\u4ea4\u901a\u8239 $13.5; tour packages $22-28 RT bundle scooter (not pure transfer). NT$485/32.3=$15.0.",
+              "fare_ladder_usd_pax": {
+                "public_ferry_Magong_Qimei": 13.5,
+                "private_fastboat_premium": 15.0,
+                "island_hop_tour_RT_bundle": 24.0
+              }
+            },
+            "corridor_annual_oneway_pax": 176528,
+            "_demand_record": {
+              "value": 176528,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "pool_basis": "gross south-sea island-hop pool (terminal-area throughput, incl. Tongpan/Hujing short-hops and visitor-center foot traffic)",
+              "source": "Penghu County Govt / Tourism Administration scenic-stats monthly bulletin (DGBAS form 20702-01-01, Dec-2025 cumulative): South Sea Visitor Center & surrounds (\u5357\u6d77\u904a\u5ba2\u4e2d\u5fc3\u53ca\u5468\u908a\u5730\u5340 - the Magong departure terminal for all Qimei/Wang'an/Tongpan/Hujing tourist boats) 176,528 visitors in 2025. Cross-refs same table: Wang'an scenic area 20,054, Qimei scenic area 10,808 (on-island spot counters, likely under-count). Historic: South Sea VC ~393k/yr in 2014 (county bulletin 104-04) - pool roughly halved over a decade.",
+              "method": "Terminal-throughput proxy: every Qimei/Wang'an boat passenger boards at the South Sea Visitor Center, so its annual count upper-bounds one-way departures on the south-sea routes; includes short-hop Tongpan/Hujing riders and some non-boarding foot traffic ('\u53ca\u5468\u908a\u5730\u5340') -> tagged gross, med-low. Highly seasonal (Apr-Sep carries the bulk; winter near-zero). Down-weighted per R3 variant: counted pool is the multi-island south-sea network, of which the 23nm Qimei leg is the longest segment."
+            }
+          },
+          "_distance_nm_orig": 18
+        },
+        {
+          "route_id": "ics-91951379c0",
+          "from": "Donggang (Pingtung)",
+          "to": "Xiaoliuqiu (Liuqiu Island)",
+          "distance_nm": 8.93,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": null,
+          "to_node_id": null,
+          "country": "Taiwan",
+          "L3_locals": {
+            "comparable_fare_usd_pax": null,
+            "_fare_record": {
+              "value": 7.7,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "TWD",
+              "year": 2025,
+              "fx": "USD/TWD 32.3",
+              "source_tier": "T1",
+              "confidence": "med-high",
+              "source": "Liuqiu Township Office / Pingtung County official tariff: public ferry (\u516c\u71df\u4ea4\u901a\u8239) NT$200 one-way / NT$380 RT; private operators (\u6c11\u71df - Dongliu Line alliance: Taifu \u6cf0\u5bcc, Lanbai \u85cd\u767d, Dafu joint fleet) NT$250 one-way / NT$450 RT, 25-30min (pthg.gov.tw, kkday, ferry.tw, ianchen.life - all agree). No scheduled premium/luxury per-seat tier above the NT$250 private ferry on Donggang-Liuqiu. NOTE: a boutique per-seat speedboat DOES operate from Houbihu (Kenting) to Xiaoliuqiu at NT$300-380/seat, min 2 pax, hourly (Klook) - different origin, signals nascent premium per-seat demand in the Liuqiu market.",
+              "method": "R1 ladder: public NT$200 ($6.2) / private NT$250 ($7.7) one-way - private tier is the top scheduled per-seat product; no premium class above it (R5-EXT cascade stands). NT$250/32.3=$7.74.",
+              "fare_ladder_usd_pax": {
+                "public_ferry": 6.2,
+                "private_ferry_top_scheduled": 7.7,
+                "houbihu_kenting_speedboat_perseat_other_origin": 10.5,
+                "charter": "n/a"
+              }
+            },
+            "corridor_annual_oneway_pax": null,
+            "_demand_record": {
+              "value": 1118000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "high",
+              "source": "Tourism Administration (\u89c0\u5149\u7f72) scenic stats: Xiaoliuqiu visitors 441k (2019) -> 1,118,000 (2023) per Rwnews/\u83f1\u50b3\u5a92; annual visitors 'break 1 million' yearly (TWReporter, ethesys). Pingtung Liuqiu township publishes official \u5ba2\u8239\u65c5\u5ba2\u7d71\u8a08 (ferry passenger stats, round-trip \u4eba\u6b21).",
+              "method": "R3-EXCEPTION + R3-GOLD: Xiaoliuqiu is a boat-only island (NO airport/bridge) -> visitor arrivals EQUAL crossing ridership; do not down-weight. Used 2023 official visitor figure 1.118M as one-way pax pool; ferry boardings ~2.2M round-trip. Highest-confidence demand grounding in the Taiwan set."
+            },
+            "_cascaded_fare_usd_pax": 7.0,
+            "_cascaded_demand_oneway_pax": 1118000
+          },
+          "_premium_cascade": true,
+          "_premium_cascade_reason": "Top scheduled tier is the standard private ferry (NT$250/$7.7, official county tariff); no premium per-seat class above it on Donggang-Liuqiu. R5-EXT. (Premium per-seat speedboat exists only from Kenting/Houbihu - different origin.)",
+          "_distance_nm_orig": 8
+        },
+        {
+          "route_id": "rn-830bd4d377ca",
+          "from": "Rassada Pier (Phuket Deep Sea Port)",
+          "to": "Manoh Pier (Koh Yao Yai)",
+          "distance_nm": 16.9,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-5be07b3430",
+          "to_node_id": "bp-3baedff1fc",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 100.0,
+            "_fare_record": {
+              "value": 100.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Anantara Koh Yao Yai boat-only transfer from Phuket.",
+              "method": "minor-hotels/phuket-phang-nga grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 8500,
+            "_demand_record": {
+              "value": 8500,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-phuket-flagship-economics-DRAFT.json \u2014 Koh Yao Yai captive transfer pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-b28ac4ca3d14",
+          "from": "Ao Po Grand Marina",
+          "to": "Anantara Layan Phuket Beach Jetty",
+          "distance_nm": 9.6,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-655b11d977",
+          "to_node_id": "bp-fefbe1d8f0",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 100.0,
+            "_fare_record": {
+              "value": 100.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Anantara Layan marina pickup.",
+              "method": "minor-hotels/phuket-phang-nga grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 8500,
+            "_demand_record": {
+              "value": 8500,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-phuket-flagship-economics-DRAFT.json \u2014 Layan gateway pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-db5e83248f9d",
+          "from": "Koh Samui (Bangrak)",
+          "to": "Koh Phangan (Thong Sala)",
+          "distance_nm": 10.2,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35.0,
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "resort_scheduled_speedboat_per_seat (R1-RESORT: Santhiya Koh Phangan published per-seat speedboat transfer to/from Koh Samui)",
+              "source_url": "https://kohphangan.santhiya.com/transfer",
+              "notes": "Premium per-seat anchor THB 1,150/pp one-way = USD 35.0 (Santhiya Resort official scheduled speedboat Koh Phangan<->Koh Samui; private speedboat max 12 pax THB 10,000/boat/way on same page). Corroborating premium per-seat points: WowSamui Haad Rin speedboat transfer w/ hotel pickup THB 1,500/pp; Tripadvisor Full-Moon speedboat transfers from USD 34.53/adult. Fare ladder (THB/pp one-way): budget Songserm/Raja ~250-300; standard fast-cat Lomprayah/Seatran 300-400 (ferrysamui.com class 400, promo 250-275; siamtickets Lomprayah speedboat 350, Echo 500); PREMIUM per-seat speedboat 1,150-1,500 <- anchor 1,150; charter 8,500-10,000/boat (~10-12 pax, kohsanuk/Reddit). FX 32.85.",
+              "confidence": "T1"
+            },
+            "corridor_annual_oneway_pax": 1000000,
+            "_demand_record": {
+              "value": 1000000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T4",
+              "confidence": "med-low",
+              "source": "Koh Phangan receives ~1M visitors/yr, ~75% (~825,000) for the Full Moon Party (ThaiJo peer-reviewed research article citing official figures, 2024-era; kohphangancity.go.th municipal plan ~2,000 visitors/day baseline). Trio cross-check: >1M tourists entered Tao-Phangan-Samui in Q1-2024 alone (MGR Online / TAT + Koh Tao Tourism Business Association). Full Moon Party draws 20,000-40,000/event (adventureinyou/41n8, 2025). Phangan has NO airport - boat-only island (R3-EXCEPTION: arrivals = crossing ridership).",
+              "method": "~1M island visitors x 2 one-way crossings = ~2M one-way island boat legs/yr across ALL access routes (Samui fast-cats + Donsak/Surat direct ferries + Chumphon-side southbound). Via-Samui share modeled at ~50% (Lomprayah Pralarn + Seatran Bangrak + Haad Rin Queen + FMP speedboats dominate published schedules) -> ~1.0M one-way on the Samui<->Phangan crossing. Boat-only island so no air leakage; share-split is the modeled step, hence med-low."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

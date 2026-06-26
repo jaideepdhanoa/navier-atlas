@@ -1,0 +1,105 @@
+{
+  "_doc": "Scoped corridors view for maldives-government Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-26T09:59:27Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "maldives-government": {
+      "partner": "maldives-government",
+      "region": "South Asia",
+      "label": "Maldives \u2014 National Ferry Network \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "maldives-government-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 18,
+      "_corridors_bound": 2,
+      "corridors": [
+        {
+          "route_id": "e__mald__b95e8093ec6d",
+          "from": "Kadhdhoo Airport, Laamu",
+          "to": "Six Senses Laamu",
+          "distance_nm": 7.8,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "captive": true,
+          "from_node_id": "male-maldives__kadhdhoo-laamu",
+          "to_node_id": "male-maldives__six-senses-laamu-jetty",
+          "country": "Maldives",
+          "_expansion": "gold18-maldives-interisland",
+          "_distance_note": "approx from atoll coords; refine at BP build",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 150,
+            "_fare_record": {
+              "value": 150,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (Maldives transfers natively USD; no FX, R8)",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "immaldives.com Maldives transfer costs (May 2026): shared speedboat $100-490 RT pp (=$50-245 OW); shared seaplane $400-820 RT pp (=$200-410 OW). atolltransfer.com scheduled $30-195 OW. Navier premium per-seat anchored between local premium speedboat and the seaplane the resort otherwise charges (R-MALDIVES-1).",
+              "method": "R-MALDIVES-1: premium per-seat set between local premium speedboat ($50-245/way, immaldives 2026) and the seaplane the resort otherwise charges ($200-410/way). Beyond-Male atoll-gateway transfer."
+            },
+            "corridor_annual_oneway_pax": 7244,
+            "_demand_record": {
+              "value": 7244,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "med",
+              "source": "Modeled arrivals = published keys x occupancy 0.70 (Maldives Min. of Tourism avg) x (365/6.5 nights avg stay) x 1.9 pax/room. Inbound one-way transfers. T5-modeled/med; keys T1 resort-published. NULL for pure inter-resort excursion legs (R2).",
+              "method": "keys x occupancy 0.70 (Maldives Min. of Tourism avg) x (365 / 6.5 nights avg stay) x 1.9 pax/room = inbound one-way transfers/yr."
+            },
+            "demand_confidence": "med"
+          },
+          "captive_resort": true,
+          "villas": 97,
+          "_captive_note": "Resort 97 villas. Ceiling = ceil(97/25)=4."
+        },
+        {
+          "route_id": "e__velana__como-cocoa-island-jetty",
+          "from": "Velana International Airport (MLE) Resort Speedboat Lounges",
+          "to": "COMO Cocoa Island (Makunufushi, South Mal\u00e9)",
+          "distance_nm": 15.9,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "from_node_id": "male-maldives",
+          "to_node_id": "male-maldives",
+          "country": "Maldives",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 130,
+            "_fare_record": {
+              "value": 130,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (Maldives resort/seaplane transfers natively quoted in USD; no FX, R8-style)",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "med-high",
+              "source": "COMO Hotels official (Tripadvisor FAQ quoting resort): private guest speedboat USD 250++ per person combined return = $125/way. maldivesnomad.com: COMO Cocoa Island $258 RT = $129/way. Private up-to-4-guest charter from ~$900/boat/way (Go Ocean Travel). Premium per-seat $130/way.",
+              "method": "Two independent listings (COMO/Tripadvisor $250 RT; maldivesnomad $258 RT) agree. Premium per-seat $130/way. R1 satisfied.",
+              "fare_ladder_usd_pax": {
+                "budget_public_ferry": 4,
+                "shared_speedboat": 110,
+                "premium_per_seat": 130,
+                "whole_boat_charter": 900
+              }
+            },
+            "corridor_annual_oneway_pax": 5200,
+            "_demand_record": {
+              "value": 5200,
+              "unit": "pax/yr one-way",
+              "source_tier": "T5",
+              "confidence": "low-med",
+              "source": "Modeled from resort key count. COMO Cocoa Island (Makunufushi, South Mal\u00e9): ~33 villas/keys (published resort/Virtuoso/booking figures). corridor_annual_oneway_pax = keys x 365 x occ(0.75) / avg_stay(7 nights) x guests/key(2) x 2 (arr+dep) ~= keys x 156. 33 keys -> ~5,200 one-way pax/yr. Airport(MLE)<->this resort is the sole transfer corridor (boat/seaplane only; no road/air alt - R3-EXCEPTION: arrivals = crossing ridership).",
+              "method": "Resort-key-count occupancy model (R2: grounded key count, not a blind guess; banded low-med). Avg-stay 7 nights, occ 0.75, 2 guests/occupied key."
+            }
+          },
+          "_route_pin_provenance": "endpoint ID-match to existing gold edge (Velana seaplane terminal -> resort jetty); verified in gold ROUTES Gold#12",
+          "captive": true,
+          "captive_resort": true,
+          "villas": 33,
+          "_captive_note": "Resort 33 villas. Ceiling = ceil(33/25)=2."
+        }
+      ]
+    }
+  }
+}
