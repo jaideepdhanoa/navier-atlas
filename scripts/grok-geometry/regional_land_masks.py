@@ -48,8 +48,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("abc_islands", -70.15, 11.85, -68.10, 12.65),
     # UAE full coastal shelf (Dubai ↔ RAK ↔ Abu Dhabi ferry context)
     ("dubai_coast", 54.00, 24.50, 56.50, 26.50),
-    # Lagos Lagoon
-    ("lagos_lagoon", 3.30, 6.35, 3.55, 6.50),
+    # Lagos Lagoon (extended for Eti-Osa / Lekki waterfront hops)
+    ("lagos_lagoon", 3.20, 6.30, 3.65, 6.65),
     # River Thames / estuary ferry lanes
     ("thames_london", -0.30, 51.44, 0.05, 51.58),
     # Krabi / Phang Nga shallow bay corridors
@@ -62,16 +62,16 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("nicoya_gulf", -86.00, 9.35, -84.10, 10.70),
     # Kerala backwaters / Vembanad
     ("kerala_backwaters", 76.20, 9.40, 76.55, 10.20),
-    # Abidjan lagoon
-    ("abidjan_lagoon", -4.10, 5.20, -3.85, 5.45),
+    # Abidjan lagoon + Ébrié waterfront
+    ("abidjan_lagoon", -4.20, 5.10, -3.75, 5.55),
     # Ras Al Khaimah coast / creek
     ("rak_uae_coast", 55.45, 25.55, 56.10, 26.05),
     # Vancouver inner harbour + Georgia Strait
     ("vancouver_harbour", -123.35, 49.10, -122.85, 49.35),
     # Samaná Bay DR
     ("samana_bay", -69.70, 19.10, -69.05, 19.35),
-    # Goa / Mandovi estuary
-    ("goa_estuary", 73.75, 15.35, 74.15, 15.55),
+    # Goa / Mandovi estuary (extended river-mouth hops)
+    ("goa_estuary", 73.60, 15.20, 74.25, 15.65),
     # Andaman shallow channels + Port Blair approaches
     ("andaman_india", 92.50, 10.50, 93.25, 13.50),
     # San Blas archipelago (extended west for Guna Yala coastal hops)
@@ -162,6 +162,20 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("nz_hauraki", 174.50, -37.50, 177.50, -34.50),
     # Bali / Lombok Strait approaches
     ("bali_lombok_strait", 115.00, -8.80, 116.20, -8.10),
+    # Gulf of Guinea lagoon corridor (Lagos ↔ Abidjan featured routes)
+    ("gulf_of_guinea_lagoon", 2.50, 5.00, 5.00, 7.00),
+    # Jamaica north coast (Montego Bay ↔ Ocho Rios)
+    ("jamaica_north_coast", -78.50, 17.50, -76.00, 19.50),
+    # Bahamas / Nassau approaches
+    ("bahamas_nassau", -78.50, 23.50, -76.50, 26.50),
+    # Philippines Visayas east (Leyte / Samar passages)
+    ("philippines_visayas", 123.00, 9.50, 126.50, 11.50),
+    # Dominican Republic north coast (Samaná extension)
+    ("dominican_north", -71.50, 18.50, -68.50, 21.00),
+    # Norway southwest fjord approaches (Bergen / Stavanger)
+    ("norway_southwest", 4.00, 58.00, 7.50, 61.50),
+    # Mumbai harbour + Versova gateway
+    ("mumbai_harbour", 72.40, 18.85, 73.05, 19.35),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
