@@ -1379,9 +1379,11 @@ const PRIO_GLOW_R = ['interpolate',['linear'],['zoom'],
   2, ['*',_PRIO_GLOW_BASE,0.35], 5, ['*',_PRIO_GLOW_BASE,0.6], 8, _PRIO_GLOW_BASE, 11, ['*',_PRIO_GLOW_BASE,1.2]];
 
 // Header stat counts are data-driven so they stay correct at live scale (60+/1,900/470+).
+// Cities: count UNIQUE ids (CITY_IDS), not raw feature rows — FEATURES_BY_TYPE.city often carries
+// duplicate Feature entries per city_id (~6–8× from upstream merges); array .length inflated Bolt to 551.
 (function(){
   const set=(id,n)=>{ const e=document.getElementById(id); if(e) e.textContent=(n||0).toLocaleString(); };
-  set('stat-cities',((FEATURES_BY_TYPE.city||[]).length)+((FEATURES_BY_TYPE.priority_city||[]).length));
+  set('stat-cities', CITY_IDS.size);
   set('stat-areas',(FEATURES_BY_TYPE.locale||[]).length);
   set('stat-bps',(FEATURES_BY_TYPE.poi||[]).length);
   set('stat-routes',(ROUTES||[]).length);
