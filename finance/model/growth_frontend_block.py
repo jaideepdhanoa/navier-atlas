@@ -31,8 +31,12 @@ def band(d):
     return {"low": None, "mid": d, "high": None}
 
 def m(x):  # -> "$Xm" / "$X.Yb" display
+    # One decimal below $10M so a grounded floor never rounds UP across a whole-million
+    # boundary (e.g. $1.54M -> "$1.5M", not "$2M"); whole millions / $B at/above $10M.
     if x is None: return None
-    return f"${x/1e6:,.0f}M" if x < 1e9 else f"${x/1e9:,.2f}B"
+    if x >= 1e9: return f"${x/1e9:,.2f}B"
+    v = x / 1e6
+    return f"${v:,.1f}M" if abs(v) < 10 else f"${v:,.0f}M"
 
 def boats(rev, key):
     if rev is None or not key: return None
