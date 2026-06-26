@@ -1,7 +1,7 @@
 {
   "_doc": "Scoped corridors view for abu-dhabi-itc Bite-2 economics cascade",
   "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
-  "_built_at": "2026-06-26T09:59:28Z",
+  "_built_at": "2026-06-26T19:09:11Z",
   "capture_rate": 0.1,
   "markets": {
     "abu-dhabi-itc": {
@@ -12,7 +12,7 @@
       "fleet_rounding": "ceil",
       "_scope": "abu-dhabi-itc-bite2-cascade",
       "_partner_market_keys": [],
-      "_route_ids_requested": 14,
+      "_route_ids_requested": 15,
       "_corridors_bound": 11,
       "corridors": [
         {
@@ -24,6 +24,41 @@
           "archetype": "super_app",
           "from_node_id": "abu-dhabi-uae",
           "to_node_id": "doha-qatar",
+          "country": "United Arab Emirates",
+          "pool_basis": "addressable",
+          "_pr58_sealed": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 48.0,
+            "corridor_annual_oneway_pax": 35000,
+            "_fare_record": {
+              "value": 48.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med-low",
+              "source": "uae-careem demand ladder + PR #58 Noon route seal (Careem-style super_app)",
+              "method": "PR #58 India/Noon corridor market anchor split across sealed geometry rows"
+            },
+            "_demand_record": {
+              "value": 35000,
+              "unit": "pax/yr one-way (addressable)",
+              "source_tier": "T3",
+              "confidence": "med-low",
+              "basis": "addressable",
+              "source": "uae-careem demand ladder + PR #58 Noon route seal (Careem-style super_app)",
+              "method": "Market-level anchor from INDIA-ECONOMICS-SIDECAR-V0 / UAE Careem ladder; split evenly across sealed corridors in market."
+            },
+            "demand_confidence": "med-low"
+          }
+        },
+        {
+          "route_id": "edge-0685",
+          "from": "Abu Dhabi",
+          "to": "Manama",
+          "distance_nm": 264.1,
+          "vessel": "Quanta-LR",
+          "archetype": "super_app",
+          "from_node_id": "abu-dhabi-uae",
+          "to_node_id": "manama-bahrain",
           "country": "United Arab Emirates",
           "pool_basis": "addressable",
           "_pr58_sealed": true,
@@ -370,36 +405,6 @@
               "method": "Market-level anchor from INDIA-ECONOMICS-SIDECAR-V0 / UAE Careem ladder; split evenly across sealed corridors in market."
             },
             "demand_confidence": "med-low"
-          }
-        },
-        {
-          "route_id": "rn-e70860f21af3",
-          "from": "Ras Al Khaimah",
-          "to": "Abu Dhabi",
-          "distance_nm": 112.0,
-          "vessel": "Quanta-LR",
-          "archetype": "authority",
-          "from_node_id": "ras-al-khaimah-uae",
-          "to_node_id": "abu-dhabi-uae",
-          "country": "United Arab Emirates",
-          "pool_basis": "addressable",
-          "_authority_sealed": true,
-          "L3_locals": {
-            "comparable_fare_usd_pax": 35.0,
-            "corridor_annual_oneway_pax": 5217,
-            "demand_confidence": "med-low",
-            "_fare_record": {
-              "value": 35.0,
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "method": "authority anchor split"
-            },
-            "_demand_record": {
-              "value": 5217,
-              "basis": "addressable",
-              "source_tier": "T3",
-              "confidence": "med-low"
-            }
           }
         }
       ]

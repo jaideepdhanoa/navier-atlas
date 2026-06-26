@@ -66,12 +66,16 @@ python3 "$FINANCE/splice_growth_into_partner.py" \
   --partner-json "$PJ"
 cp "$PJ" "$DC"
 
-step "5 economics sidecar refresh"
-python3 "$BY/build_economics_sidecar.py" \
-  --dc "$ROOT/data-clean" \
-  --corridors "$CORR" \
-  --aggdir "$RECAL" \
-  --url-map "$FINANCE/economics_url_map.json" || true
+if [[ "${SKIP_ECON_SIDECAR_REFRESH:-}" != "1" ]]; then
+  step "5 economics sidecar refresh"
+  python3 "$BY/build_economics_sidecar.py" \
+    --dc "$ROOT/data-clean" \
+    --corridors "$CORR" \
+    --aggdir "$RECAL" \
+    --url-map "$FINANCE/economics_url_map.json" || true
+else
+  step "5 economics sidecar refresh (skipped — bite2 stubs preserved)"
+fi
 
 step "6 bind economics_url if known"
 python3 - <<PY
