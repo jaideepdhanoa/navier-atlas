@@ -142,6 +142,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("dardanelles", 25.80, 39.80, 26.80, 40.45),
     # Atlantic Portugal full shelf (Lisbon → Algarve offshore lane)
     ("atlantic_portugal_algarve", -10.20, 36.80, -8.50, 38.90),
+    # Colombian Caribbean shelf (Cartagena ↔ Santa Marta coastal ferry lane)
+    ("caribbean_colombia_shelf", -77.00, 9.90, -73.90, 11.60),
+    # Mekong Delta / Saigon ↔ Vung Tau coastal approaches
+    ("mekong_delta_vietnam", 106.35, 10.05, 107.35, 10.95),
+    # Tanzania Indian Ocean shelf (Dar es Salaam ↔ Mafia / Zanzibar context)
+    ("tanzania_coastal_shelf", 38.70, -8.30, 40.30, -6.30),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
