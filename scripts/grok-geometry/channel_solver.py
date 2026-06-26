@@ -101,9 +101,40 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
         [-9.55, 38.45], [-9.35, 38.10], [-9.15, 37.75], [-9.00, 37.40],
         [-8.88, 37.15], [-8.78, 37.02],
     ],
-    # Bangkok ↔ Pattaya upper-Gulf Quanta-LR gateway
+    # Bangkok ↔ Pattaya upper-Gulf gateway
     ("bangkok-thailand", "pattaya-thailand"): [
         [100.62, 13.15], [100.78, 13.02], [100.86, 12.96],
+    ],
+    # Colombia Caribbean shelf (Cartagena → Santa Marta)
+    ("cartagena-colombia__club-de-pesca-de-cartagena-marina", "cartagena-colombia__marina-santa-marta"): [
+        [-75.52, 10.50], [-75.40, 10.65], [-75.20, 10.85], [-74.95, 11.05], [-74.65, 11.18],
+    ],
+    # Ho Chi Minh → Vung Tau / southern delta offshore
+    ("bp-f5f91624c1", "bp-f5f19e2fa6"): [
+        [106.78, 10.55], [106.85, 10.42], [106.95, 10.35], [107.02, 10.34],
+    ],
+    # Gulf of Finland (Helsinki ↔ Tallinn)
+    ("bp-d44335284f", "bp-tallinn-old-city-harbour"): [
+        [24.55, 59.55], [24.35, 59.72], [24.20, 59.78], [24.05, 59.70], [24.00, 59.55], [24.10, 59.48],
+    ],
+    ("helsinki-finland", "tallinn-estonia"): [
+        [24.55, 59.55], [24.35, 59.72], [24.20, 59.78], [24.05, 59.70], [24.00, 59.55], [24.10, 59.48],
+    ],
+    # Kolkata Hooghly river / harbour arc
+    ("bp-4767db5fe8", "bp-0ffc8ae32c"): [
+        [88.32, 22.52], [88.30, 22.58], [88.31, 22.65], [88.33, 22.72], [88.35, 22.80], [88.36, 22.86],
+    ],
+    # Mafia ↔ Dar es Salaam (open Indian Ocean channel)
+    ("mafia-tanzania__kilindoni-port", "dar-es-salaam-tanzania__dar-ferry-terminal"): [
+        [39.55, -7.55], [39.48, -7.25], [39.40, -6.95], [39.35, -6.85],
+    ],
+    # BC Ferries — Strait of Georgia (Vancouver ↔ Victoria)
+    ("vancouver-canada__vancouver-harbour-flight-centre", "vancouver-canada__victoria-inner-harbour"): [
+        [-123.20, 49.10], [-123.35, 48.95], [-123.45, 48.75], [-123.42, 48.55], [-123.38, 48.43],
+    ],
+    # Abu Dhabi cross-channel (Hudayriyat → Yas)
+    ("ad-hudayriyat-bab-al-nojoum", "ad-yas-marina"): [
+        [54.300, 24.405], [54.320, 24.420], [54.380, 24.450], [54.450, 24.465], [54.520, 24.475], [54.580, 24.478],
     ],
     # Chicago Lake Michigan ferry
     ("chicago-lake-michigan-usa__dusable-harbor-chicago", "chicago-lake-michigan-usa__new-buffalo-municipal-marina"): [
