@@ -34,6 +34,7 @@ PARTNERS = [
     "four-seasons",
     "grab-thailand",
     "line-man-wongnai",
+    "centara-thailand",
     "uber-india",
     "minor-hotels",
     "ocean-whisperer",
