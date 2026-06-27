@@ -10,7 +10,7 @@
 
 | # | Question | Decision |
 |---|----------|----------|
-| 1 | **Mesh on proposal pages** | **All routes visible** (including capillary mesh) at **low background opacity**. Phase map **emphasizes cumulative featured routes through active phase N** (Phase 2 = Phase 1 + 2 corridors at full opacity). Scoping to wrong/future-phase routes was inconsistent — **P0 bug**. |
+| 1 | **Mesh on proposal pages** | **Three-tier opacity:** mesh/network **low** (~8%), **prior phases medium** (~48%), **current phase full** (~92%). Viewing Phase N shows phases 1…N corridors only (not future phases). Scoping was inconsistent — **P0 bug**. |
 | 2 | **Cross-emirate legs** (Dubai↔Abu Dhabi) | **Allowed** in `journeys_unlocked` when geometry and narrative fit. |
 | 3 | **RAK / east coast in Careem Phase 1** | Not a global exclusion — the issue is **irrelevant routes featured outside the current phase narrative** (e.g. RAK fisherman jetty under "Dubai beachhead"). Phase-narrative fit is a **quality gate**, not a geography ban. |
 | 4 | **Channel graph authorship** | **Grok only** — draft centerline graphs from satellite imagery, self-validate (land mask + visual QA). **No Tasklet** in the channel-graph loop. |

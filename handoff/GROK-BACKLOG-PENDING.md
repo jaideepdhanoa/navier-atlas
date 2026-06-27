@@ -32,7 +32,7 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 ### Locked display rules
 
-- **Mesh:** visible at low opacity; phased routes emphasized
+- **Phase map opacity:** current phase full · prior phases medium · mesh low
 - **Phase map:** cumulative `featured_routes` through active phase N only
 - **Cross-emirate legs:** allowed when geometry + phase narrative fit
 - **Channel graphs:** Grok drafts from satellite, self-validates

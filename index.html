@@ -1189,7 +1189,8 @@ function _capZoomFilter(){
   if (_densityMode === 'mesh') return ['literal', true];
   return ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
 }
-const _PHASE_BG_DIM = 0.08;   // capillary + network context during phase carousel
+const _PHASE_BG_DIM = 0.08;      // capillary + non-featured network context
+const _PHASE_PRIOR_DIM = 0.48;   // earlier phases: visible trail, below current-phase emphasis
 function _routeFocusDim(){
   if (_activePhaseN != null && _onPartnerPage()) return _PHASE_BG_DIM;
   if (_tierVisual()) return _FOCUS_DIM_FLOOR;
@@ -1209,6 +1210,30 @@ function applyRouteEmphasis(routeIds){
     map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case',hit,0.9,['*',bgDim,0.5]]]);
     _applyEconPaint(hit);
   } catch(e) { console.warn('route-emphasis', e); }
+}
+// Three-tier phase carousel paint: current phase (full) → prior phases (medium) → mesh/network (low).
+function applyPhaseRouteEmphasis(currentIds, priorIds){
+  const cur=[...new Set(currentIds||[])].filter(id=>ROUTE_ID_SET.has(id));
+  const pri=[...new Set(priorIds||[])].filter(id=>ROUTE_ID_SET.has(id)&&!cur.includes(id));
+  if (!cur.length && !pri.length){ applyStoryFocus(null); return; }
+  const curHit=['in',['get','id'],['literal',cur]];
+  const priHit=pri.length?['in',['get','id'],['literal',pri]]:['literal',false];
+  const dim=_routeFocusDim();
+  const isCap=['==',['get','render_lane'],'capillary'];
+  const bgDim=['case',isCap,dim*0.45,dim];
+  const lineOp=m=>['case',curHit,['max',m,0.92],priHit,['*',m,_PHASE_PRIOR_DIM],['*',m,bgDim]];
+  const glowBloom=m=>['case',curHit,['max',['*',m,['*',_TW2,0.30]],0.35],priHit,['*',m,_PHASE_PRIOR_DIM*0.22],['*',m,['*',bgDim,0.18]]];
+  const glowCore=m=>['case',curHit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.4],priHit,['*',m,_PHASE_PRIOR_DIM*0.28],['*',m,['*',bgDim,0.22]]];
+  const lblOp=['interpolate',['linear'],['zoom'],11,0,12,['case',curHit,0.9,priHit,0.55,['*',bgDim,0.5]]];
+  const econHit=pri.length?['any',curHit,priHit]:curHit;
+  try{
+    map.setPaintProperty('route-p2','line-opacity',tierOpacity(lineOp));
+    map.setPaintProperty('route-qlr','line-opacity',qlrOpacity(lineOp));
+    map.setPaintProperty('route-glow-bloom','line-opacity',tierOpacity(glowBloom));
+    map.setPaintProperty('route-glow-core','line-opacity',tierOpacity(glowCore));
+    map.setPaintProperty('route-labels','text-opacity',lblOp);
+    _applyEconPaint(econHit);
+  }catch(e){ console.warn('phase-route-emphasis',e); }
 }
 function applyDensityFilters(){
   if (!map || !map.getLayer('route-p2')) return;
@@ -2798,16 +2823,25 @@ function _phaseRouteIds(phase){
   }
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
-// Cumulative featured routes through the active phase (Phase 2 = Phase 1 ∪ Phase 2 corridors).
-function _cumulativePhaseRouteIds(partner, phase){
+// Prior-phase featured routes (phases 1 … N−1) — medium emphasis when viewing phase N.
+function _priorPhaseRouteIds(partner, phase){
   const maxN = _phaseNumber(phase);
-  if (maxN == null) return _phaseRouteIds(phase);
+  if (maxN == null || maxN <= 1) return [];
   const out = [];
   for (const ph of ((partner&&partner.phases)||[])){
     const pn = _phaseNumber(ph);
-    if (pn != null && pn <= maxN) out.push(..._phaseRouteIds(ph));
+    if (pn != null && pn < maxN) out.push(..._phaseRouteIds(ph));
   }
   return [...new Set(out)];
+}
+// Cumulative featured routes through the active phase (camera fit + journey wiring).
+function _cumulativePhaseRouteIds(partner, phase){
+  const current = _phaseRouteIds(phase);
+  const prior = partner ? _priorPhaseRouteIds(partner, phase) : [];
+  return [...new Set([...prior, ...current])];
+}
+function _phaseRouteTiers(partner, phase){
+  return { current: _phaseRouteIds(phase), prior: partner ? _priorPhaseRouteIds(partner, phase) : [] };
 }
 function _useDensityFocus(){
   if (_tierVisual()) return false;
@@ -2823,13 +2857,13 @@ function applyPhaseFocus(phase){
   const phaseN = _phaseNumber(phase);
   const phaseTag = phaseN != null ? 'phase:'+phaseN : null;
   const partner = (_CARO&&_CARO.partner) || (PARTNER_ACTIVE&&PARTNERS&&PARTNERS[PARTNER_ACTIVE.slug]) || null;
-  const routeIds = partner ? _cumulativePhaseRouteIds(partner, phase) : _phaseRouteIds(phase);
+  const { current, prior } = partner ? _phaseRouteTiers(partner, phase) : { current: _phaseRouteIds(phase), prior: [] };
   _activePhaseTag = phaseTag;
   _activePhaseN = phaseN;
-  // Full network stays visible at low opacity; cumulative phase corridors are emphasized.
+  // Full network at low opacity; prior phases medium; current phase full emphasis.
   if (_useDensityFocus()) setDensityMode('mesh', { phaseTag, phaseN, silent:true });
   applyDensityFilters();
-  if (routeIds.length) { applyRouteEmphasis(routeIds); return; }
+  if (current.length || prior.length) { applyPhaseRouteEmphasis(current, prior); return; }
   const cities=_phaseFocusCities(phase);
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   const scope = (cities.length<=1) ? 'intra' : phase.route_scope;
