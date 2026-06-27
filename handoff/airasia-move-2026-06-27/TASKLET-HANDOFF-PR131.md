@@ -1,8 +1,9 @@
-# Tasklet handoff — PR #131 merged + Grok Malaysia seal
+# Tasklet handoff — PR #131 merged + Grok seal complete
 
-**Merged:** 2026-06-27 · `main` @ `bac1d71d` (PR #131)  
-**Grok seal:** Malaysia corridors + build fix (pending commit)  
-**Live:** https://navier-atlas.vercel.app (redeploy after Grok commit)
+**Merged:** 2026-06-27 · PR #131 @ `bac1d71d`  
+**Grok seal:** Malaysia corridors + build fix @ `19123697`  
+**Follow-on:** hub linkage + tioman city + reseal @ `7b23d7eb`  
+**Live:** https://navier-atlas.vercel.app · deployed `7b23d7eb` · preflight PASS (RELEASE=1)
 
 ---
 
@@ -29,38 +30,36 @@
 | 13 Malaysia corridors bound (4 minted + 9 reused) | ✅ |
 | Exclusion-token fix (`Jaideep` → product decision) | ✅ |
 | `PARTNER_VIEWS['airasia-move']` | ✅ |
+| Hub-level `featured_routes` on phases 1–3 (linkage gate) | ✅ |
+| `tioman-island` city node in FEATURES_BY_TYPE | ✅ |
 | Receipt: `AIRASIA-MALAYSIA-SEAL-RECEIPT.json` | ✅ |
+| SEAL reseal (7418 routes, 1662 cities) | ✅ |
 
-### Build receipts
+### Build receipts (deploy `7b23d7eb`)
 
 | Page | Cities | Routes |
 |------|--------|--------|
-| `/airasia-move` hub | 31 | 132 |
+| `/airasia-move` hub | 32 | 133 |
 | `/airasia-move/kota-kinabalu` | 1 | 20 |
 | `/airasia-move/langkawi` | 1 | 18 |
-| `/airasia-move/penang` | 4 | 50 |
+| `/airasia-move/penang` | 5 | 50 |
 | `/airasia-move/desaru` | 1 | 18 |
+| `/airasia-move/tioman` | 1 | 0 (Quanta-LR roadmap; SG leg bound) |
 
-**Held:** `/airasia-move/tioman` skipped — `tioman-island` not in atlas city nodes (brief only). Tioman SG leg `ics-1a53f8237d` already bound in JSON.
+**Preflight:** §3.1 seal PASS · §3.7 Careem journey gate PASS · §3.8 scope drift 0 · linkage 62/62 story-ready.
 
 ---
 
 ## Tasklet owns next
 
 1. **Model pass** — see `MODEL-PASS-HANDOFF.md` (capture band → `growth_case` + `economics_url`)
-2. **Tioman city node** — add `tioman-island` to FEATURES_BY_TYPE or retarget anchor
-3. **Indonesia inherited nulls** (13) — bind when Gojek source binds (do not diverge mint)
-4. Optional deck refresh (untouched per product lock)
+2. **Indonesia inherited nulls** (13) — bind when Gojek source binds (do not diverge mint)
+3. Optional deck refresh (untouched per product lock)
 
 ---
 
-## Files (Grok lane)
+## Grok lane closed for PR #131
 
-```
-scripts/grok-airasia/seal_airasia_malaysia.py
-data-clean/partners/airasia-move.json
-partner-pitch/partners/airasia-move.json
-data-clean/ROUTES.json (+4 minted)
-handoff/airasia-move-2026-06-27/AIRASIA-MALAYSIA-SEAL-RECEIPT.json
-index.html (PARTNER_VIEWS)
-```
+Nothing else on Grok side until model pass or Indonesia null bind handback.
+
+*Posted 2026-06-27 — deploy `7b23d7eb` live.*

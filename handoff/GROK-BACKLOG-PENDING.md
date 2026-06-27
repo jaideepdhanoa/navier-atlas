@@ -1,7 +1,7 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ `18376e3b` · Production: https://navier-atlas.vercel.app  
-**Updated:** 2026-06-27  
+**Baseline:** `main` @ `7b23d7eb` · Production: https://navier-atlas.vercel.app  
+**Updated:** 2026-06-27 (AFK session)  
 **Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
 
 ---
@@ -24,8 +24,8 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 |----------|-------|-----|
 | **P0a** | **Phase-map cumulative scoping** | ✅ Done — cumulative phases + three-tier opacity |
 | **P0c** | **Partner scope live inheritance** | ✅ Done — hub partners inherit CLUSTERS.json at build; `partner-scope.mjs` + §3.8 drift gate |
-| **P0b** | **Proposal route quality audit** | Phase-narrative misfit + wrong BPs (e.g. Careem RAK in Phase 1 beachhead) — credibility risk |
-| **P1** | **UAE channel graphs (Grok-only)** | Palm, Marina, Creek, AD islands, Deira — satellite draft + self-validate; no Tasklet |
+| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ PASS_WITH_FLAGS · Grab ⏳ (108 DROP) |
+| **P1** | **UAE channel graphs (Grok-only)** | ✅ v1 Palm + Marina + Creek (`channel_graphs/`); AD islands + Deira next |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
 | **P3** | Mesh geometry | ~3,035 non-story fails (deferred until proposal surfaces credible) |
 
