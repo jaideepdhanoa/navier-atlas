@@ -54,12 +54,21 @@ function loadAllowlist() {
 
 function isGeometryPendingChip(o) {
   if (!o || typeof o !== 'object') return false;
-  return o.display === 'text_only'
+  if (o.display === 'text_only'
     || o.flag === 'network-chip-text-only'
     || o._link_status === 'unlinked-intra-city'
     || o._link_status === 'aspirational-no-built-route'
     || o._link_status === 'roadmap-quanta-lr'
-    || o._link_status === 'aspirational-quanta-lr';
+    || o._link_status === 'aspirational-quanta-lr') return true;
+  // Explicit null corridor — prose authored, geometry seal pending (Indonesia frontier, etc.)
+  const ids = routeIdsOfItem(o);
+  if (!ids.length && (o.route_id === null || o.route_id === undefined)) {
+    const st = String(o._link_status || '');
+    if (/unlinked|pending|frontier|seal|no-route/i.test(st)) return true;
+    if (String(o._link_source || '').includes('indonesia-depth')) return true;
+    if (o.economics_status === 'economics_pending' && o.from_node_id && o.to_node_id) return true;
+  }
+  return false;
 }
 
 function auditFeaturedRoutes(items, label, routeIds) {
