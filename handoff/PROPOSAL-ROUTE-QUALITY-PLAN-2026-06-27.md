@@ -1,0 +1,182 @@
+# Proposal route quality + UAE channel routing — plan (2026-06-27)
+
+**Status:** PLAN ONLY — no execution until approved  
+**Trigger:** Careem proposal (`/careem`) — ~4/5 journeys_unlocked show wrong or distant BPs; UAE map still has land-crossing spaghetti  
+**Principle:** **Reduce count, raise bar** — null beats wrong; fewer routes that are exact, relevant, and geometry-verified
+
+---
+
+## Problem statement
+
+Three layers currently fail the credibility test:
+
+1. **Narrative layer** (`journeys_unlocked`, phase copy) promises corridors that read well but bind to weak geometry or irrelevant BPs.
+2. **Proposal layer** (`featured_routes`, phased routes, signature routes) auto-links via `relink_partner_journeys.py` with fuzzy label/distance matching — passes linkage audit (route_id exists) but not **human exactness**.
+3. **Map layer** (partner-scoped `story_route_count` + mesh) shows dense spaghetti; UAE in particular still cuts over Palm fronds, Deira Island, marina basins, and Abu Dhabi reclamation.
+
+The existing gates (`PARTNER-ROUTE-LINKAGE-AUDIT`, `audit_partner_page_qa.py`) check **existence and scope**, not **endpoint plausibility, narrative fit, or visual geometry**.
+
+---
+
+## Scope surfaces (audit inventory)
+
+| Surface | Source JSON | Renders as | Current gate |
+|---------|-------------|------------|--------------|
+| `journeys_unlocked` | `data-clean/partners/{id}.json` | Hero "journeys we unlock" | Link ratio only |
+| `phases[].featured_routes` | same | Phase carousel cards | route_id ∈ ROUTES.json |
+| `markets[].journeys_unlocked` | hub partners | Per-market unlocks | scoped city match |
+| `signature_routes` | `cluster_briefs/*.json` | Brief-derived gold | story_registry |
+| `story_routes` / map scope | build + `_map_scope` | Lines on partner map | geometry advisory |
+| Mesh routes | ROUTES.json (non-story) | Background density | 3035 fails (deferred) |
+
+**Audit order:** Reference partners first (Careem, Noon, Grab, Rapido, Bolt UAE), then all MENA/super-app, then hub hospitality.
+
+---
+
+## Phase A — Diagnostic audit (read-only, ~1 session)
+
+### A1. Per-partner proposal fidelity report
+
+Extend `scripts/audit_partner_page_qa.py` (or sibling `audit_proposal_fidelity.py`) with **new checks**:
+
+| Check | Fail example (Careem) |
+|-------|----------------------|
+| **BP binding** | `from`/`to` labels ≠ actual route endpoint BPs |
+| **Distance honesty** | journey `distance_nm: 0.3` vs featured `12.4` for same corridor |
+| **City scope** | RAK journey with BP in unrelated sub-market |
+| **Narrative fit** | "Dubai beachhead" phase featuring obscure fisherman jetty (غليلة) |
+| **Cross-emirate sanity** | 57nm Abu Dhabi↔Dubai labeled as everyday commerce leg |
+| **Geometry preview** | route `interior_land_km` > 0.4 or crosses known no-cross polygon |
+| **Inheritance debt** | `_inherit_source: grok/normalize/noon` without re-validation |
+
+Output: `handoff/partner-map-model/PROPOSAL-FIDELITY-AUDIT.json` + per-partner `-{id}.md` verdict (PASS / TRIM / REWRITE / HOLD-NULL).
+
+### A2. Careem smoke deep-dive (user-reported)
+
+Manually trace all 6 `journeys_unlocked` + Phase 1 `featured_routes`:
+
+- Map each `route_id` → `ROUTES.json` geometry → endpoint `bp-*` coords → haversine vs labels
+- Flag: RAK→Ghallilah, cross-city bolt-inherited legs, distance mismatches
+- Deliver: **recommended keep set** (target 3–4 journeys max for Careem Phase 1)
+
+### A3. Tasklet dependency matrix
+
+| Question | Owner |
+|----------|-------|
+| Which UAE corridors are "commercial-now" vs roadmap? | Tasklet |
+| Authoritative BP pairs for Palm / Creek / Marina / AD islands? | Tasklet + `CORRIDOR-ENDPOINT-GROUNDING` |
+| Can we drop inherited noon-normalize journeys wholesale? | Grok proposes, Tasklet confirms |
+| Palm frond polygons vs axis-aligned bbox? | Tasklet geometry spec |
+
+---
+
+## Phase B — Quality bar + reduction policy (design, no data change)
+
+### B1. Tier taxonomy (proposal-visible routes only)
+
+| Tier | Criteria | UI treatment |
+|------|----------|--------------|
+| **S — Signature** | Tasklet-sealed BP pair + hand/channel geometry + economics grounded + narrative match | journeys_unlocked + featured + map highlight |
+| **A — Featured** | Sealed endpoints, geometry pass, phase-scoped | phase carousel only |
+| **B — Map context** | Geometry pass, lower traffic | map only, no proposal copy |
+| **H — Hold null** | Fails any gate | explicit "roadmap" or omit |
+
+**Default cap:** ≤4 `journeys_unlocked`, ≤3 `featured_routes` per active phase, ≤6 signature routes per cluster brief.
+
+### B2. Binding policy change
+
+Replace fuzzy auto-win in `relink_partner_journeys.py` for proposal surfaces:
+
+1. **Require endpoint grounding** — `from_node_id`/`to_node_id` must be `bp-*` in `CORRIDOR-ENDPOINT-GROUNDING` or explicit brief signature.
+2. **Require geometry tier** — story route must pass regional mask OR `hand_waypoints` seal.
+3. **Kill inheritance** — drop `_inherit_source: grok/normalize/noon` links unless re-grounded.
+4. **Null beats wrong** — empty carousel beats misleading line on map.
+
+### B3. Deploy gate (future)
+
+Add preflight **§3.7 proposal fidelity** — fail deploy if reference partners (Careem, Noon, Grab) have any S-tier journey failing BP exactness.
+
+---
+
+## Phase C — UAE channel routing methodology (design)
+
+### Current toolchain
+
+| Tool | What it does | UAE gap |
+|------|--------------|---------|
+| `global_land_mask` | Coarse ocean mask | Misses creeks, marina basins, fronds |
+| `channel_solver.py` | A* on `uae_gulf_land_v2` grid + `HAND_WAYPOINTS` | ~dozen hand pairs; Palm has 2 entries |
+| OVERLAY-ONLY bbox detour (#79ah) | Inserts seaward corner waypoints | Axis-aligned; intra-Palm still fails |
+| `regional_land_masks.py` | Extra water bodies | UAE creek/marina not fine enough |
+| `route_water_allowlist.json` | Allowlist land-crossing | Masks problem, doesn't fix geometry |
+
+### Recommended methodology (tiered)
+
+**Tier 1 — Channel graphs (high-value sub-areas)**  
+Author **navigable centerline graphs** per sub-area:
+
+- Palm Jumeirah trunk + frond mouths
+- Dubai Marina / JBR / Harbour basin
+- Dubai Creek + Business Bay connector
+- Abu Dhabi: Yas ↔ Saadiyat ↔ Lulu ↔ Reem ↔ Hudayriyat
+- Deira Islands / Palm Deira apron
+
+Format: GeoJSON `LineString` networks in `data-clean/channel_graphs/uae-{area}.geojson` + solver snaps A→B onto graph.
+
+**Tier 2 — Expand `HAND_WAYPOINTS` in `channel_solver.py`**  
+Short-term: Tasklet/Grok pair-list for ~30–50 sealed UAE commercial corridors; each gets 3–8 waypoints authored from satellite/OSM.
+
+**Tier 3 — Frond-resolution polygons**  
+Replace Palm/Deira axis bboxes with Tasklet-supplied frond polygons (carry-forward from #79ah known limitation).
+
+**Tier 4 — Marina apron tolerance**  
+Extend LB-224 marina apron rule (0.12 km) consistently in proposal gate, not just routing.
+
+### Tooling comparison
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| More bbox detours | Fast | Still spaghetti on complex shapes |
+| Hand waypoints only | Precise per corridor | Doesn't scale to 5000 routes |
+| **Channel graphs** | Scales within sub-areas; visually correct | Upfront authorship cost |
+| Full OSM waterway routing | Comprehensive | Gulf OSM incomplete; maintenance |
+| Hide mesh, show story only | Instant credibility win | Doesn't fix proposal cards |
+
+**Recommendation:** **Channel graphs + aggressive story/mesh split** — proposal surfaces only show S-tier sealed corridors; mesh hidden or heavily faded until geometry tier B.
+
+---
+
+## Phase D — Execution sequence (after plan approval)
+
+1. Run Phase A audit → share Careem + UAE findings with Tasklet  
+2. Agree tier caps + commercial-now corridor list (Tasklet sign-off)  
+3. Careem pilot: trim to 3–4 journeys, re-ground BPs, re-run channel_solver on those route_ids  
+4. UAE channel graph v1: Palm + Creek + Marina (3 graphs)  
+5. Roll binding policy to Noon/Grab/Rapido reference set  
+6. Add preflight §3.7  
+7. Deploy + visual QA on `/careem`, `/noon`, `/dubai-rta`  
+8. FE-2 dedup + mesh (only after proposal surfaces credible)
+
+---
+
+## Success metrics
+
+| Metric | Current (est.) | Target |
+|--------|----------------|--------|
+| Careem journeys_unlocked passing BP exactness | ~1/6 | 4/4 (after trim) |
+| UAE story routes crossing no-cross polygons | unknown | 0 visible on proposal map |
+| Reference partner proposal fidelity | not gated | 100% S-tier pass |
+| Partner map route count (Careem) | 126 story | ≤40 story + ≤20 featured |
+
+---
+
+## Open questions for Jaideep
+
+1. **Mesh on proposal pages:** hide entirely, or show only S-tier at 30% opacity?  
+2. **Cross-emirate legs** (Dubai↔Abu Dhabi): allowed in journeys_unlocked if geometry perfect, or phase-3+ only?  
+3. **RAK / east coast:** keep in Careem Phase 1 or defer to Phase 2?  
+4. **Channel graph authorship:** Grok drafts from satellite, Tasklet validates, or Tasklet-only?
+
+---
+
+*No code changes in this phase — audit + policy only*

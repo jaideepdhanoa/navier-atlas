@@ -1,48 +1,56 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ post-phase-4 drain · Production: https://navier-atlas.vercel.app  
+**Baseline:** `main` @ `18376e3b` · Production: https://navier-atlas.vercel.app  
 **Updated:** 2026-06-27  
-**Intake:** `GROK-HANDBACK-2026-06-27-phase4.md`  
-**Story geometry:** 1019 pass / 0 fail · **Bite 2:** **36/36** `growth_case` ✅ · **bp_on_water:** **PASS** ✅
+**Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
 
 ---
 
-## 0. Current status
+## 0. Decisions (locked)
 
-| Issue | Verdict | Gap |
-|-------|---------|-----|
-| **#127, #121, #104, #115, #119** | ✅ CLOSED | — |
-| **#112** | 🟡 PARTIAL | Minor binding re-pulled + QA PASS; live Slides apply held (OAuth) |
-| **#118** | 🟡 BLOCKED | Grab KPI ready; OID manifest refresh needs OAuth re-auth |
+| Decision | Status |
+|----------|--------|
+| **Google OAuth refresh** (Grab KPI apply + Minor live appendix) | ⛔ **SKIPPED / OMITTED** — not pursuing; deck lane deprioritized |
+| **#118 Grab Slides apply** | ⛔ Omitted with OAuth skip |
+| **#112 Minor live appendix apply** | ⛔ Omitted with OAuth skip |
 
-**Remaining Grok work:**
-
-1. **OAuth refresh** — unblock Grab + Minor live Slides apply
-2. **#118** — re-pull Grab slide-3 OIDs → apply KPI text ops
-3. **#112** — live Minor appendix page-fill apply (after OAuth)
-4. **FE-2 dedup** — ~193 referenced-copy groups
-5. **Mesh** — 3,036 non-story fails
+KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo as reference only.
 
 ---
 
-## 1. Suggested execution order
+## 1. Active priorities (plan-first — do not execute until plan approved)
 
-1. **OAuth / Tasklet** — refresh Google Slides token
-2. **#118** — Grab manifest re-pull + KPI apply
-3. **#112** — Minor live appendix apply
-4. **FE-2 dedup** + **mesh** as capacity allows
+| Priority | Track | Why |
+|----------|-------|-----|
+| **P0** | **Proposal route quality audit** | Journeys / signature / featured / phased routes showing false precision (e.g. Careem 4/5 bad BPs) — credibility risk |
+| **P1** | **UAE hand-waypoint channel routing** | Palm, Dubai Marina, Creek, Abu Dhabi islands, Deira Island — spaghetti over land extensions |
+| **P2** | FE-2 dedup | ~193 referenced-copy groups |
+| **P3** | Mesh geometry | ~3,035 non-story fails |
 
----
-
-## 2. Tasklet-owned
-
-| Item | Status |
-|------|--------|
-| Gojek copy + Indonesia deck | Unblocked (#127) |
-| Formal gold SEAL sign-off | **Unblocked** (#119 PASS) |
-| Grab live Slides apply | OAuth + OID refresh |
-| Centara/Minor live deck | QA receipts ready; apply when OAuth restored |
+**Plan doc:** `handoff/PROPOSAL-ROUTE-QUALITY-PLAN-2026-06-27.md`
 
 ---
 
-*Grok seat · #119 PASS · Bite 2 complete 36/36*
+## 2. Closed / unblocked
+
+| Issue | Verdict |
+|-------|---------|
+| **#127, #121, #104, #115, #119** | ✅ CLOSED |
+| **#112 binding re-pull** | ✅ QA PASS (live apply omitted) |
+| Formal gold SEAL sign-off | Unblocked (#119 PASS) — Tasklet |
+
+---
+
+## 3. Tasklet dependencies (to confirm in audit)
+
+| Item | Owner | Notes |
+|------|-------|-------|
+| Partner narrative + journey copy | Tasklet | Which corridors are "commercial-now" vs roadmap |
+| `CORRIDOR-ENDPOINT-GROUNDING.json` | Tasklet/Grok | BP endpoint authority for proposal surfaces |
+| UAE frond-resolution polygons | Tasklet | Palm trunk channel authorship (LB carry-forward) |
+| Cluster brief `signature_routes` | Tasklet | Gold source for journey binding |
+| Deck lane (Grab/Minor live apply) | — | **Omitted** |
+
+---
+
+*Grok seat · Credibility pass: proposal surfaces before mesh capacity work*
