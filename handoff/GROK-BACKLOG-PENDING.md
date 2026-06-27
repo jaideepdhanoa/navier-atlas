@@ -22,7 +22,7 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 | Priority | Track | Why |
 |----------|-------|-----|
-| **P0a** | **Phase-map cumulative scoping** | Proposal pages must show featured routes through active phase only; **no mesh at any opacity** — currently inconsistent |
+| **P0a** | **Phase-map cumulative scoping** | Cumulative featured routes at full opacity; mesh/network at low opacity — was highlighting wrong/future-phase routes |
 | **P0b** | **Proposal route quality audit** | Phase-narrative misfit + wrong BPs (e.g. Careem RAK in Phase 1 beachhead) — credibility risk |
 | **P1** | **UAE channel graphs (Grok-only)** | Palm, Marina, Creek, AD islands, Deira — satellite draft + self-validate; no Tasklet |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
@@ -32,7 +32,7 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 ### Locked display rules
 
-- **Mesh:** never visible on proposal pages (not even dimmed)
+- **Mesh:** visible at low opacity; phased routes emphasized
 - **Phase map:** cumulative `featured_routes` through active phase N only
 - **Cross-emirate legs:** allowed when geometry + phase narrative fit
 - **Channel graphs:** Grok drafts from satellite, self-validates

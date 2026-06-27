@@ -10,7 +10,7 @@
 
 | # | Question | Decision |
 |---|----------|----------|
-| 1 | **Mesh on proposal pages** | **No mesh at any opacity.** Phase map shows **cumulative featured routes through the active phase only** (Phase 2 = Phase 1 + 2 routes, not the full network). Current behavior is inconsistent — **P0 bug**. |
+| 1 | **Mesh on proposal pages** | **All routes visible** (including capillary mesh) at **low background opacity**. Phase map **emphasizes cumulative featured routes through active phase N** (Phase 2 = Phase 1 + 2 corridors at full opacity). Scoping to wrong/future-phase routes was inconsistent — **P0 bug**. |
 | 2 | **Cross-emirate legs** (Dubai↔Abu Dhabi) | **Allowed** in `journeys_unlocked` when geometry and narrative fit. |
 | 3 | **RAK / east coast in Careem Phase 1** | Not a global exclusion — the issue is **irrelevant routes featured outside the current phase narrative** (e.g. RAK fisherman jetty under "Dubai beachhead"). Phase-narrative fit is a **quality gate**, not a geography ban. |
 | 4 | **Channel graph authorship** | **Grok only** — draft centerline graphs from satellite imagery, self-validate (land mask + visual QA). **No Tasklet** in the channel-graph loop. |
@@ -38,7 +38,7 @@ The existing gates (`PARTNER-ROUTE-LINKAGE-AUDIT`, `audit_partner_page_qa.py`) c
 | `markets[].journeys_unlocked` | hub partners | Per-market unlocks | scoped city match |
 | `signature_routes` | `cluster_briefs/*.json` | Brief-derived gold | story_registry |
 | `story_routes` / map scope | build + `_map_scope` | Lines on partner map | geometry advisory |
-| Mesh routes | ROUTES.json (non-story) | ~~Background density~~ **hidden on proposal pages** | 3035 fails (deferred) |
+| Mesh routes | ROUTES.json (non-story) | Low-opacity background on proposal pages | 3035 fails (deferred) |
 
 **Audit order:** Reference partners first (Careem, Noon, Grab, Rapido, Bolt UAE), then all MENA/super-app, then hub hospitality.
 
@@ -153,7 +153,7 @@ Extend LB-224 marina apron rule (0.12 km) consistently in proposal gate, not jus
 | Full OSM waterway routing | Comprehensive | Gulf OSM incomplete; maintenance |
 | Hide mesh, show story only | Instant credibility win | Doesn't fix proposal cards |
 
-**Recommendation:** **Channel graphs + zero mesh on proposal pages** — proposal map shows cumulative phase featured routes only; capillary mesh never rendered (not even dimmed). End-state chapter may show backbone/context, never mesh.
+**Recommendation:** **Channel graphs + tiered opacity on proposal pages** — cumulative phase featured routes at full opacity; capillary mesh and network context at much lower opacity. End-state chapter shows broader backbone/context.
 
 ---
 

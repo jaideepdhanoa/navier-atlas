@@ -1147,24 +1147,14 @@ function _cumulativePhaseStoryMatch(n){
   return ['any', ...tags.map(t => ['in', t, ['coalesce',['get','story_tags'],['literal',[]]]])];
 }
 function _densityLaneFilter(){
-  // Proposal pages: never render capillary mesh (not even dimmed).
-  const noMesh = _onPartnerPage() ? ['!',['in',['get','render_lane'],['literal',['capillary']]]] : ['literal', true];
-  // Phase carousel: only cumulative featured routes through the active phase — hide the rest.
-  if (_activePhaseN != null) {
-    return ['all', ['==',['get','render_lane'],'story'], _cumulativePhaseStoryMatch(_activePhaseN), noMesh];
-  }
-  if (_tierVisual()) {
-    if (_onPartnerPage()) return ['!', ['in', ['get','render_lane'], ['literal', ['capillary']]]];
-    return ['literal', true];
-  }
+  if (_tierVisual()) return ['literal', true];
   const lanes = _DENSITY_LANES[_densityMode] || _DENSITY_LANES.backbone;
   const laneMatch = ['in',['get','render_lane'],['literal',lanes]];
-  if (_densityMode !== 'story' || !_activePhaseTag) return ['all', laneMatch, noMesh];
+  if (_densityMode !== 'story' || !_activePhaseTag) return laneMatch;
   const phaseMatch = _cumulativePhaseStoryMatch(_activePhaseN ?? parseInt(String(_activePhaseTag||'').replace('phase:',''), 10));
-  return ['all', noMesh,
-    ['any',
-      ['all',['==',['get','render_lane'],'story'], phaseMatch],
-      ['==',['get','render_lane'],'backbone']]];
+  return ['any',
+    ['all',['==',['get','render_lane'],'story'], phaseMatch],
+    ['==',['get','render_lane'],'backbone']];
 }
 function _routeDisplayFilter(extra){
   const f = _densityLaneFilter();
@@ -1199,22 +1189,24 @@ function _capZoomFilter(){
   if (_densityMode === 'mesh') return ['literal', true];
   return ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
 }
+const _PHASE_BG_DIM = 0.08;   // capillary + network context during phase carousel
 function _routeFocusDim(){
-  // Phase focus on a proposal page: hide non-cumulative routes entirely (no dimmed mesh/network).
-  if (_activePhaseN != null && _onPartnerPage()) return 0;
-  if (_tierVisual()) return _onPartnerPage() ? 0.12 : _FOCUS_DIM_FLOOR;
+  if (_activePhaseN != null && _onPartnerPage()) return _PHASE_BG_DIM;
+  if (_tierVisual()) return _FOCUS_DIM_FLOOR;
   return _densityMode === 'mesh' ? 0.34 : 0.015;
 }
 function applyRouteEmphasis(routeIds){
   if (!map || !routeIds || !routeIds.length) { applyStoryFocus(null); return; }
   const hit = ['in',['get','id'],['literal',routeIds]];
   const dim = _routeFocusDim();
+  const isCap = ['==',['get','render_lane'],'capillary'];
+  const bgDim = ['case', isCap, dim * 0.45, dim];   // mesh even quieter than backbone/context
   try {
-    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.92],['*',m,dim]]));
-    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.92],['*',m,dim]]));
-    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.35],['*',m,dim*0.18]]));
-    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.4],['*',m,dim*0.22]]));
-    map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case',hit,0.9,dim]]);
+    map.setPaintProperty('route-p2','line-opacity', tierOpacity(m=>['case',hit,['max',m,0.92],['*',m,bgDim]]));
+    map.setPaintProperty('route-qlr','line-opacity', qlrOpacity(m=>['case',hit,['max',m,0.92],['*',m,bgDim]]));
+    map.setPaintProperty('route-glow-bloom','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['*',_TW2,0.30]],0.35],['*',m,['*',bgDim,0.18]]]));
+    map.setPaintProperty('route-glow-core','line-opacity', tierOpacity(m=>['case',hit,['max',['*',m,['+',0.05,['*',_TW,0.16]]],0.4],['*',m,['*',bgDim,0.22]]]));
+    map.setPaintProperty('route-labels','text-opacity', ['interpolate',['linear'],['zoom'], 11,0, 12,['case',hit,0.9,['*',bgDim,0.5]]]);
     _applyEconPaint(hit);
   } catch(e) { console.warn('route-emphasis', e); }
 }
@@ -2834,21 +2826,10 @@ function applyPhaseFocus(phase){
   const routeIds = partner ? _cumulativePhaseRouteIds(partner, phase) : _phaseRouteIds(phase);
   _activePhaseTag = phaseTag;
   _activePhaseN = phaseN;
+  // Full network stays visible at low opacity; cumulative phase corridors are emphasized.
+  if (_useDensityFocus()) setDensityMode('mesh', { phaseTag, phaseN, silent:true });
   applyDensityFilters();
-  if (_tierVisual()){
-    if (routeIds.length) { applyRouteEmphasis(routeIds); return; }
-    const cities = _phaseFocusCities(phase);
-    if (cities.length) { applyStoryFocus(cities); return; }
-    applyStoryFocus(null);
-    return;
-  }
-  if (_useDensityFocus()){
-    setDensityMode('story', { phaseTag, phaseN, silent:true });
-    if (routeIds.length) applyRouteEmphasis(routeIds);
-    else applyStoryFocus(null);
-    return;
-  }
-  if (routeIds.length && _focusRoutes(routeIds)) return;
+  if (routeIds.length) { applyRouteEmphasis(routeIds); return; }
   const cities=_phaseFocusCities(phase);
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   const scope = (cities.length<=1) ? 'intra' : phase.route_scope;
