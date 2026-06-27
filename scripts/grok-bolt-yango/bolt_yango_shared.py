@@ -209,7 +209,9 @@ def water_distance_km(lon: float, lat: float, mask, step_km: float = 0.05, max_k
     return round(best, 4)
 
 
-def in_allowlist_bbox(lon: float, lat: float, allowlist: dict) -> bool:
+def in_allowlist_bbox(lon: float, lat: float, allowlist: dict, pid: str | None = None) -> bool:
+    if pid and pid in allowlist.get("allowlisted_ids", {}):
+        return True
     for body in allowlist.get("water_bodies", []):
         bbox = body.get("bbox")
         if not bbox or len(bbox) != 4:
@@ -218,7 +220,14 @@ def in_allowlist_bbox(lon: float, lat: float, allowlist: dict) -> bool:
         if min_lon <= lon <= max_lon and min_lat <= lat <= max_lat:
             return True
     for pt in allowlist.get("points", []):
-        if abs(pt.get("lng", 0) - lon) < 0.02 and abs(pt.get("lat", 0) - lat) < 0.02:
+        plon = pt.get("lng", pt.get("lon", 0))
+        plat = pt.get("lat", 0)
+        if abs(plon - lon) < 0.02 and abs(plat - lat) < 0.02:
+            return True
+    for entry in allowlist.get("allowlisted_ids", {}).values():
+        elon = entry.get("lng", entry.get("lon", 0))
+        elat = entry.get("lat", 0)
+        if abs(elon - lon) < 0.02 and abs(elat - lat) < 0.02:
             return True
     return False
 

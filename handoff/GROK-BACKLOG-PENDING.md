@@ -1,9 +1,9 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ post-phase-3 drain · Production: https://navier-atlas.vercel.app  
+**Baseline:** `main` @ post-phase-4 drain · Production: https://navier-atlas.vercel.app  
 **Updated:** 2026-06-27  
-**Intake:** `GROK-HANDBACK-2026-06-27-phase3.md`  
-**Story geometry:** 1019 pass / 0 fail · **Bite 2:** **36/36** `growth_case` ✅ · **Open Grok issues:** 3 (#119, #118-partial, #112-partial)
+**Intake:** `GROK-HANDBACK-2026-06-27-phase4.md`  
+**Story geometry:** 1019 pass / 0 fail · **Bite 2:** **36/36** `growth_case` ✅ · **bp_on_water:** **PASS** ✅
 
 ---
 
@@ -11,16 +11,15 @@
 
 | Issue | Verdict | Gap |
 |-------|---------|-----|
-| **#127, #121, #104, #115** | ✅ CLOSED | — |
-| **#119** | 🔴 OPEN | FAIL **1012** true mis-geocodes (down from 1297); snap wave done |
-| **#118** | 🟡 PARTIAL | KPI JSON refreshed; Slides apply blocked (stale OIDs) |
-| **#112** | 🟡 PARTIAL | QA gate PASS Centara; Minor re-pull + live apply held |
+| **#127, #121, #104, #115, #119** | ✅ CLOSED | — |
+| **#112** | 🟡 PARTIAL | Minor binding re-pulled + QA PASS; live Slides apply held (OAuth) |
+| **#118** | 🟡 BLOCKED | Grab KPI ready; OID manifest refresh needs OAuth re-auth |
 
 **Remaining Grok work:**
 
-1. **#119** — Second snap/allowlist wave for 1012 true fails
-2. **#118** — Tasklet OID refresh → live Grab Slides apply
-3. **#112** — Minor binding re-pull; hospitality text ops need manifest object IDs
+1. **OAuth refresh** — unblock Grab + Minor live Slides apply
+2. **#118** — re-pull Grab slide-3 OIDs → apply KPI text ops
+3. **#112** — live Minor appendix page-fill apply (after OAuth)
 4. **FE-2 dedup** — ~193 referenced-copy groups
 5. **Mesh** — 3,036 non-story fails
 
@@ -28,9 +27,9 @@
 
 ## 1. Suggested execution order
 
-1. **#119** — bp snap wave 2 + allowlist expansion
-2. **#112** — Minor hospitality binding re-pull
-3. **#118** — unblock with Tasklet OID refresh
+1. **OAuth / Tasklet** — refresh Google Slides token
+2. **#118** — Grab manifest re-pull + KPI apply
+3. **#112** — Minor live appendix apply
 4. **FE-2 dedup** + **mesh** as capacity allows
 
 ---
@@ -40,10 +39,10 @@
 | Item | Status |
 |------|--------|
 | Gojek copy + Indonesia deck | Unblocked (#127) |
-| Formal gold SEAL sign-off | After #119 PASS |
-| Grab live Slides apply | OID manifest refresh |
-| Centara/Minor live deck | QA receipt ready; apply when safe |
+| Formal gold SEAL sign-off | **Unblocked** (#119 PASS) |
+| Grab live Slides apply | OAuth + OID refresh |
+| Centara/Minor live deck | QA receipts ready; apply when OAuth restored |
 
 ---
 
-*Grok seat · Bite 2 complete 36/36*
+*Grok seat · #119 PASS · Bite 2 complete 36/36*
