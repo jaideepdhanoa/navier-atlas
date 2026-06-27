@@ -1,16 +1,16 @@
 # Proposal fidelity — grab
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-27T15:00:01Z
+**Checked:** 2026-06-27T16:00:27Z
 
 ## Summary
 
 - Items audited: 143
-- KEEP: 53
-- DROP: 89
+- KEEP: 33
+- DROP: 108
 - DEFER: 0
-- TRIM/REWRITE: 1
-- BP-binding errors: 89
+- TRIM/REWRITE: 2
+- BP-binding errors: 108
 
 ## Trim list
 
@@ -34,13 +34,13 @@
 | featured | 4 | Bach Dang Wharf (District 1) ↔ Thu Duc / Grand Par | `rn-a0654d43e7e4` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'bp-f5f91624 |
 | featured | 4 | Singapore / Desaru ↔ East-coast Malaysia & outer R | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Desaru Coas |
 | featured | 4 | Singapore ↔ Desaru Coast / Johor | `rn-f2a4c410dfa8` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Desaru Coas |
-| journey | market:singapore | Marina Bay → Sentosa / southern islands | `—` | **KEEP** | — |
+| journey | market:singapore | Marina Bay → Sentosa / southern islands | `rn-76264638fa6b` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Bay' → 'Sentosa / sou |
 | journey | market:singapore | East Coast → Marina / CBD | `rn-82453f6cb33e` | **DROP** | bp_binding: labels ≠ route endpoints: card 'East Coast' → 'Marina / CBD' |
 | journey | market:singapore | Marina Bay → Changi Point / Pulau Ubin | `rn-e94c308a28e3` | **KEEP** | — |
-| journey | market:singapore | Singapore → Riau resort islands (regional reach) | `rn-dc3e2f90d207` | **KEEP** | — |
+| journey | market:singapore | Singapore → Riau resort islands (regional reach) | `rn-f3670ea7d99b` | **TRIM** | distance_honesty: card 13.0nm vs route 21.9nm (41% delta) |
 | featured | singapore/p1 | East Coast ↔ Marina / CBD | `rn-82453f6cb33e` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Bedok Jetty |
-| featured | singapore/p2 | Marina Bay ↔ Sentosa / southern islands | `—` | **KEEP** | — |
-| featured | singapore/p3 | Marina Bay ↔ Sentosa / southern islands | `—` | **KEEP** | — |
+| featured | singapore/p2 | Marina Bay ↔ Sentosa / southern islands | `rn-76264638fa6b` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'ONE°15 Mari |
+| featured | singapore/p3 | Marina Bay ↔ Sentosa / southern islands | `rn-76264638fa6b` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'ONE°15 Mari |
 | journey | market:cross-border | Singapore → Desaru Coast / Johor | `rn-f2a4c410dfa8` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Singapore' → 'Desaru Coast / |
 | journey | market:cross-border | Singapore → Bintan (Lagoi resort zone) | `rn-f3670ea7d99b` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Singapore' → 'Bintan (Lagoi  |
 | journey | market:cross-border | Singapore → Batam (Harbour Bay / Nongsa) | `rn-dc3e2f90d207` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Singapore' → 'Batam (Harbour |
@@ -72,15 +72,15 @@
 | featured | jakarta/p3 | Pluit / PIK ↔ Ancol / Tanjung Priok | `ics-9e59ba5c5c` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Jakarta' →  |
 | featured | jakarta/p3 | Marina Ancol ↔ Pulau Macan / Pelangi / Sepa (outer | `ics-fe31c28f2c` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Jakarta' →  |
 | journey | market:lombok | Bali (Padang Bai / Serangan) → Gili Islands / Lomb | `gcn-869b9d144c-shared` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Bali (Padang Bai / Serangan) |
-| journey | market:lombok | Lombok (Bangsal / Senggigi) → Gili Trawangan / Men | `—` | **KEEP** | — |
-| journey | market:lombok | Lombok → Komodo / Labuan Bajo | `—` | **KEEP** | — |
-| journey | market:lombok | Kuta Lombok / Mandalika → Gili Islands | `—` | **KEEP** | — |
-| featured | lombok/p1 | Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Men | `—` | **KEEP** | — |
-| featured | lombok/p1 | Kuta Lombok / Mandalika ↔ Gili Islands | `—` | **KEEP** | — |
+| journey | market:lombok | Lombok (Bangsal / Senggigi) → Gili Trawangan / Men | `rn-00e3ed569ebc` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Lombok (Bangsal / Senggigi)'; distance_honesty: card 6.0nm vs route 2.1nm (186% delta) |
+| journey | market:lombok | Lombok → Komodo / Labuan Bajo | `rn-d2f360f76d12` | **KEEP** | — |
+| journey | market:lombok | Kuta Lombok / Mandalika → Gili Islands | `rn-0a8e5aab0b22` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Kuta Lombok / Mandalika' → '; distance_honesty: card 22.0nm vs route 1.9nm (1058% delta) |
+| featured | lombok/p1 | Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Men | `rn-00e3ed569ebc` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Bangsal Har; distance_honesty: card 6.0nm vs route 2.1nm (186% delta) |
+| featured | lombok/p1 | Kuta Lombok / Mandalika ↔ Gili Islands | `rn-0a8e5aab0b22` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Mandalika M; distance_honesty: card 22.0nm vs route 1.9nm (1058% delta) |
 | featured | lombok/p2 | Bali (Padang Bai / Serangan) ↔ Gili Islands / Lomb | `gcn-869b9d144c-shared` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Bali Marina |
-| featured | lombok/p2 | Lombok ↔ Komodo / Labuan Bajo | `—` | **KEEP** | — |
+| featured | lombok/p2 | Lombok ↔ Komodo / Labuan Bajo | `rn-d2f360f76d12` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Lombok / Ma |
 | featured | lombok/p3 | Bali (Padang Bai / Serangan) ↔ Gili Islands / Lomb | `gcn-869b9d144c-shared` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Bali Marina |
-| featured | lombok/p3 | Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Men | `—` | **KEEP** | — |
+| featured | lombok/p3 | Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Men | `rn-00e3ed569ebc` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Bangsal Har; distance_honesty: card 6.0nm vs route 2.1nm (186% delta) |
 | journey | market:komodo-flores | Labuan Bajo → Komodo / Rinca / Padar | `rn-453a25f98ad9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Labuan Bajo' → 'Komodo / Rin |
 | journey | market:komodo-flores | Labuan Bajo → Pink Beach / manta points | `—` | **KEEP** | — |
 | journey | market:komodo-flores | Labuan Bajo → Maumere / east Flores | `rn-11d0c322c8c8` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Labuan Bajo' → 'Maumere / ea |
@@ -117,24 +117,24 @@
 | featured | raja-ampat/p3 | Raja Ampat (Waisai) ↔ Wayag / Misool | `ics-5840f85047` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Raja Ampat  |
 | journey | market:likupang | Manado → Bunaken / Siladen / Lembeh | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manado' → 'Bunaken / Siladen |
 | journey | market:likupang | Manado → Sangihe-Talaud archipelago | `ics-c142307006` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manado' → 'Sangihe-Talaud ar |
-| journey | market:likupang | Manado → Bunaken Marine Park | `—` | **KEEP** | — |
+| journey | market:likupang | Manado → Bunaken Marine Park | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manado' → 'Bunaken Marine Pa |
 | journey | market:likupang | Manado → Lembeh Strait (muck-diving) | `—` | **KEEP** | — |
-| journey | market:likupang | Likupang gateway → Bunaken / Siladen resorts | `—` | **KEEP** | — |
+| journey | market:likupang | Likupang gateway → Bunaken / Siladen resorts | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Likupang gateway' → 'Bunaken; distance_honesty: card 12.0nm vs route 7.1nm (69% delta) |
 | featured | likupang/p1 | Manado ↔ Bunaken / Siladen / Lembeh | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
 | featured | likupang/p1 | Manado ↔ Sangihe-Talaud archipelago | `ics-c142307006` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
 | featured | likupang/p2 | Manado ↔ Bunaken / Siladen / Lembeh | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
 | featured | likupang/p2 | Manado ↔ Sangihe-Talaud archipelago | `ics-c142307006` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
 | featured | likupang/p3 | Manado ↔ Bunaken / Siladen / Lembeh | `ics-ab1b7a224c` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
 | featured | likupang/p3 | Manado ↔ Sangihe-Talaud archipelago | `ics-c142307006` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Likupang (N |
-| journey | market:lake-toba | Parapat → Tomok / Tuk Tuk (Samosir) | `—` | **KEEP** | — |
-| journey | market:lake-toba | Tuk Tuk → Samosir shoreline villages | `—` | **KEEP** | — |
-| journey | market:lake-toba | Parapat → Samosir resorts | `—` | **KEEP** | — |
-| featured | lake-toba/p1 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `—` | **KEEP** | — |
-| featured | lake-toba/p1 | Tuk Tuk ↔ Samosir shoreline villages | `—` | **KEEP** | — |
-| featured | lake-toba/p2 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `—` | **KEEP** | — |
-| featured | lake-toba/p2 | Tuk Tuk ↔ Samosir shoreline villages | `—` | **KEEP** | — |
-| featured | lake-toba/p3 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `—` | **KEEP** | — |
-| featured | lake-toba/p3 | Tuk Tuk ↔ Samosir shoreline villages | `—` | **KEEP** | — |
+| journey | market:lake-toba | Parapat → Tomok / Tuk Tuk (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
+| journey | market:lake-toba | Tuk Tuk → Samosir shoreline villages | `rn-89174b6f31fe` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Tuk Tuk' → 'Samosir shorelin |
+| journey | market:lake-toba | Parapat → Samosir resorts | `rn-db305ed7f029` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Parapat' → 'Samosir resorts'; distance_honesty: card 6.0nm vs route 3.2nm (87% delta) |
+| featured | lake-toba/p1 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `rn-db305ed7f029` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Po |
+| featured | lake-toba/p1 | Tuk Tuk ↔ Samosir shoreline villages | `rn-89174b6f31fe` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siad |
+| featured | lake-toba/p2 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `rn-db305ed7f029` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Po |
+| featured | lake-toba/p2 | Tuk Tuk ↔ Samosir shoreline villages | `rn-89174b6f31fe` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siad |
+| featured | lake-toba/p3 | Parapat ↔ Tomok / Tuk Tuk (Samosir) | `rn-db305ed7f029` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Po |
+| featured | lake-toba/p3 | Tuk Tuk ↔ Samosir shoreline villages | `rn-89174b6f31fe` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siad |
 | journey | market:phuket | Phuket (Royal Phuket Marina) → Phang Nga Bay / Jam | `rn-b28ac4ca3d14` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Phuket (Royal Phuket Marina) |
 | journey | market:phuket | Phuket → Phi Phi / Krabi | `rn-b28ac4ca3d14` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Phuket' → 'Phi Phi / Krabi'  |
 | journey | market:phuket | Phuket → Similan / Surin Islands | `gcn-0cc5f4e157-shared` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Phuket' → 'Similan / Surin I; geometry_preview: interior_land_km=16.94 (threshold 0.4) |

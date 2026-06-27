@@ -1,14 +1,14 @@
 {
   "partner": "grab",
   "verdict": "REWRITE",
-  "checked_at": "2026-06-27T15:00:01Z",
+  "checked_at": "2026-06-27T16:00:27Z",
   "counts": {
     "items": 143,
-    "keep": 53,
-    "drop": 89,
+    "keep": 33,
+    "drop": 108,
     "defer": 0,
-    "trim": 1,
-    "bp_errors": 89
+    "trim": 2,
+    "bp_errors": 108
   },
   "items": [
     {
@@ -344,14 +344,20 @@
       "surface": "journey",
       "phase": "market:singapore",
       "corridor": "Marina Bay → Sentosa / southern islands",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-76264638fa6b",
+      "route_endpoints": "ONE°15 Marina Sentosa Cove → Harbour Bay",
       "distance_card_nm": 11.2,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 11.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Marina Bay' → 'Sentosa / southern islands' vs route 'ONE°15 Marina Sentosa Cove' → 'Harbour Bay'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -389,14 +395,20 @@
       "surface": "journey",
       "phase": "market:singapore",
       "corridor": "Singapore → Riau resort islands (regional reach)",
-      "route_id": "rn-dc3e2f90d207",
+      "route_id": "rn-f3670ea7d99b",
       "route_endpoints": "Singapore → Riau Islands (Kepulauan Riau) — Batam / Bintan / Anambas / Natuna",
       "distance_card_nm": 13,
-      "distance_route_nm": 13,
-      "flags": [],
+      "distance_route_nm": 21.9,
+      "flags": [
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 13.0nm vs route 21.9nm (41% delta)"
+        }
+      ],
       "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "warnings": 1,
+      "recommendation": "TRIM"
     },
     {
       "surface": "featured",
@@ -421,27 +433,39 @@
       "surface": "featured",
       "phase": "singapore/p2",
       "corridor": "Marina Bay ↔ Sentosa / southern islands",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-76264638fa6b",
+      "route_endpoints": "ONE°15 Marina Sentosa Cove → Harbour Bay",
       "distance_card_nm": 11.2,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 11.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'ONE°15 Marina Sentosa Cove' → 'Harbour Bay'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "singapore/p3",
       "corridor": "Marina Bay ↔ Sentosa / southern islands",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-76264638fa6b",
+      "route_endpoints": "ONE°15 Marina Sentosa Cove → Harbour Bay",
       "distance_card_nm": 11.2,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 11.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'ONE°15 Marina Sentosa Cove' → 'Harbour Bay'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -1024,23 +1048,34 @@
       "surface": "journey",
       "phase": "market:lombok",
       "corridor": "Lombok (Bangsal / Senggigi) → Gili Trawangan / Meno / Air",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-00e3ed569ebc",
+      "route_endpoints": "Bangsal Harbour (Pelabuhan Bangsal) → Gili Air main jetty",
       "distance_card_nm": 6,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 2.1,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Lombok (Bangsal / Senggigi)' → 'Gili Trawangan / Meno / Air' vs route 'Bangsal Harbour (Pelabuhan Bangsal)' → 'Gili Air main jetty'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 6.0nm vs route 2.1nm (186% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": "market:lombok",
       "corridor": "Lombok → Komodo / Labuan Bajo",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-d2f360f76d12",
+      "route_endpoints": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway → Komodo / Labuan Bajo / Flores / Sumba",
       "distance_card_nm": 237,
-      "distance_route_nm": null,
+      "distance_route_nm": 236.7,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -1050,40 +1085,73 @@
       "surface": "journey",
       "phase": "market:lombok",
       "corridor": "Kuta Lombok / Mandalika → Gili Islands",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-0a8e5aab0b22",
+      "route_endpoints": "Mandalika Marina Zone (ITDC KEK SEZ greenfield) → Kuta Lombok main beach",
       "distance_card_nm": 22,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 1.9,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Kuta Lombok / Mandalika' → 'Gili Islands' vs route 'Mandalika Marina Zone (ITDC KEK SEZ greenfield)' → 'Kuta Lombok main beach'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 22.0nm vs route 1.9nm (1058% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lombok/p1",
       "corridor": "Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Meno / Air",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-00e3ed569ebc",
+      "route_endpoints": "Bangsal Harbour (Pelabuhan Bangsal) → Gili Air main jetty",
       "distance_card_nm": 6,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 2.1,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Bangsal Harbour (Pelabuhan Bangsal)' → 'Gili Air main jetty'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 6.0nm vs route 2.1nm (186% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lombok/p1",
       "corridor": "Kuta Lombok / Mandalika ↔ Gili Islands",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-0a8e5aab0b22",
+      "route_endpoints": "Mandalika Marina Zone (ITDC KEK SEZ greenfield) → Kuta Lombok main beach",
       "distance_card_nm": 22,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 1.9,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Mandalika Marina Zone (ITDC KEK SEZ greenfield)' → 'Kuta Lombok main beach'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 22.0nm vs route 1.9nm (1058% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -1108,14 +1176,20 @@
       "surface": "featured",
       "phase": "lombok/p2",
       "corridor": "Lombok ↔ Komodo / Labuan Bajo",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-d2f360f76d12",
+      "route_endpoints": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway → Komodo / Labuan Bajo / Flores / Sumba",
       "distance_card_nm": 237,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 236.7,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway' → 'Komodo / Labuan Bajo / Flores / Sumba'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -1140,14 +1214,25 @@
       "surface": "featured",
       "phase": "lombok/p3",
       "corridor": "Lombok (Bangsal / Senggigi) ↔ Gili Trawangan / Meno / Air",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-00e3ed569ebc",
+      "route_endpoints": "Bangsal Harbour (Pelabuhan Bangsal) → Gili Air main jetty",
       "distance_card_nm": 6,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 2.1,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Bangsal Harbour (Pelabuhan Bangsal)' → 'Gili Air main jetty'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 6.0nm vs route 2.1nm (186% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -1735,14 +1820,20 @@
       "surface": "journey",
       "phase": "market:likupang",
       "corridor": "Manado → Bunaken Marine Park",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-ab1b7a224c",
+      "route_endpoints": "Likupang (North Sulawesi) → Likupang / Manado / Bunaken, North Sulawesi, Indonesia",
       "distance_card_nm": 7.1,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 7.1,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Manado' → 'Bunaken Marine Park' vs route 'Likupang (North Sulawesi)' → 'Likupang / Manado / Bunaken, North Sulawesi, Indonesia'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -1761,14 +1852,25 @@
       "surface": "journey",
       "phase": "market:likupang",
       "corridor": "Likupang gateway → Bunaken / Siladen resorts",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-ab1b7a224c",
+      "route_endpoints": "Likupang (North Sulawesi) → Likupang / Manado / Bunaken, North Sulawesi, Indonesia",
       "distance_card_nm": 12,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 7.1,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Likupang gateway' → 'Bunaken / Siladen resorts' vs route 'Likupang (North Sulawesi)' → 'Likupang / Manado / Bunaken, North Sulawesi, Indonesia'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 12.0nm vs route 7.1nm (69% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -1888,10 +1990,10 @@
       "surface": "journey",
       "phase": "market:lake-toba",
       "corridor": "Parapat → Tomok / Tuk Tuk (Samosir)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db305ed7f029",
+      "route_endpoints": "Tigaraja Port (Parapat) → Tomok pier (Samosir)",
       "distance_card_nm": 4,
-      "distance_route_nm": null,
+      "distance_route_nm": 3.2,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -1901,105 +2003,158 @@
       "surface": "journey",
       "phase": "market:lake-toba",
       "corridor": "Tuk Tuk → Samosir shoreline villages",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-89174b6f31fe",
+      "route_endpoints": "Tuktuk Siadong village pier → Ambarita",
       "distance_card_nm": 8,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 8.0,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Tuk Tuk' → 'Samosir shoreline villages' vs route 'Tuktuk Siadong village pier' → 'Ambarita'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": "market:lake-toba",
       "corridor": "Parapat → Samosir resorts",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db305ed7f029",
+      "route_endpoints": "Tigaraja Port (Parapat) → Tomok pier (Samosir)",
       "distance_card_nm": 6,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
-      "warnings": 0,
-      "recommendation": "KEEP"
+      "distance_route_nm": 3.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Parapat' → 'Samosir resorts' vs route 'Tigaraja Port (Parapat)' → 'Tomok pier (Samosir)'"
+        },
+        {
+          "check": "distance_honesty",
+          "severity": "warn",
+          "detail": "card 6.0nm vs route 3.2nm (87% delta)"
+        }
+      ],
+      "errors": 1,
+      "warnings": 1,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p1",
       "corridor": "Parapat ↔ Tomok / Tuk Tuk (Samosir)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db305ed7f029",
+      "route_endpoints": "Tigaraja Port (Parapat) → Tomok pier (Samosir)",
       "distance_card_nm": 4,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 3.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Port (Parapat)' → 'Tomok pier (Samosir)'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p1",
       "corridor": "Tuk Tuk ↔ Samosir shoreline villages",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-89174b6f31fe",
+      "route_endpoints": "Tuktuk Siadong village pier → Ambarita",
       "distance_card_nm": 8,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 8.0,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siadong village pier' → 'Ambarita'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p2",
       "corridor": "Parapat ↔ Tomok / Tuk Tuk (Samosir)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db305ed7f029",
+      "route_endpoints": "Tigaraja Port (Parapat) → Tomok pier (Samosir)",
       "distance_card_nm": 4,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 3.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Port (Parapat)' → 'Tomok pier (Samosir)'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p2",
       "corridor": "Tuk Tuk ↔ Samosir shoreline villages",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-89174b6f31fe",
+      "route_endpoints": "Tuktuk Siadong village pier → Ambarita",
       "distance_card_nm": 8,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 8.0,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siadong village pier' → 'Ambarita'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p3",
       "corridor": "Parapat ↔ Tomok / Tuk Tuk (Samosir)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db305ed7f029",
+      "route_endpoints": "Tigaraja Port (Parapat) → Tomok pier (Samosir)",
       "distance_card_nm": 4,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 3.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tigaraja Port (Parapat)' → 'Tomok pier (Samosir)'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": "lake-toba/p3",
       "corridor": "Tuk Tuk ↔ Samosir shoreline villages",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-89174b6f31fe",
+      "route_endpoints": "Tuktuk Siadong village pier → Ambarita",
       "distance_card_nm": 8,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 8.0,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card '' → '' vs route 'Tuktuk Siadong village pier' → 'Ambarita'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -2435,5 +2590,6 @@
       "warnings": 0,
       "recommendation": "KEEP"
     }
-  ]
+  ],
+  "journey_bp_errors": 42
 }

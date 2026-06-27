@@ -254,6 +254,27 @@ head('§3.5  route linkage audit (story / featured_routes)');
   } else ok('route linkage audit passed (allowlist respected)');
 }
 
+// ─── §3.7 · Proposal fidelity (S-tier journey BP exactness) ─────────────────
+head('§3.7  proposal fidelity (S-tier journey BP gate)');
+{
+  // Pilot: Careem post-trim must pass in RELEASE. Noon/Grab reported advisory until trim lane ships.
+  const gatePartners = RELEASE ? ['careem'] : ['careem', 'noon', 'grab'];
+  const fidelityArgs = ['scripts/audit_proposal_fidelity.py', '--partner', ...gatePartners];
+  if (RELEASE) fidelityArgs.push('--strict-journey-gate');
+  const py = spawnSync('python3', fidelityArgs, { cwd: ROOT, encoding: 'utf8' });
+  if (py.stdout) process.stdout.write(py.stdout);
+  if (py.stderr) process.stderr.write(py.stderr);
+  if (RELEASE && py.status !== 0) {
+    fail('proposal fidelity §3.7 — S-tier journey BP errors on gated partner(s)');
+  } else if (!RELEASE && py.status !== 0) {
+    ok('proposal fidelity — advisory (pass --release to enforce Careem journey gate)');
+  } else {
+    ok(RELEASE
+      ? 'proposal fidelity journey BP gate passed (Careem)'
+      : 'proposal fidelity audit complete (Careem + Noon + Grab advisory)');
+  }
+}
+
 // ─── §3.8 · Partner scope drift (live cluster inheritance) ───────────────────
 head('§3.8  partner scope drift (hub _map_scope vs CLUSTERS.json)');
 {

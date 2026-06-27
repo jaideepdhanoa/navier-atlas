@@ -1,7 +1,7 @@
 # Proposal fidelity — rapido
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-27T15:00:01Z
+**Checked:** 2026-06-27T15:59:54Z
 
 ## Summary
 

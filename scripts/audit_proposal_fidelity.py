@@ -500,9 +500,24 @@ def audit_partner(slug: str, doc: dict, indexes) -> dict:
     return record
 
 
+def journey_bp_errors(record: dict) -> int:
+    """S-tier (journeys_unlocked) BP-binding failures only — preflight §3.7 gate."""
+    return sum(
+        1
+        for it in record.get("items", [])
+        if it.get("surface") == "journey"
+        and any(f.get("check") == "bp_binding" for f in it.get("flags", []))
+    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--partner", nargs="*", help="Limit to partner slug(s)")
+    ap.add_argument(
+        "--strict-journey-gate",
+        action="store_true",
+        help="Exit 1 if any audited partner has S-tier (journey) BP-binding errors",
+    )
     args = ap.parse_args()
 
     indexes = build_indexes()
@@ -516,6 +531,7 @@ def main() -> int:
             continue
         doc = load_json(path)
         rec = audit_partner(slug, doc, indexes)
+        rec["journey_bp_errors"] = journey_bp_errors(rec)
         results.append(rec)
         write_partner_md(slug, rec)
         save_json(HANDOFF / f"PROPOSAL-FIDELITY-{slug}.json", rec)
@@ -523,20 +539,31 @@ def main() -> int:
     aggregate = {
         "package": "proposal-fidelity-audit",
         "checked_at": datetime.now(timezone.utc).isoformat(),
-        "partners": [{k: v for k, v in r.items() if k != "items"} | {"items": len(r["items"])} for r in results],
+        "partners": [
+            {k: v for k, v in r.items() if k != "items"}
+            | {"items": len(r["items"]), "journey_bp_errors": r.get("journey_bp_errors", 0)}
+            for r in results
+        ],
         "detail_by_partner": {r["partner"]: r for r in results},
     }
     save_json(HANDOFF / "PROPOSAL-FIDELITY-AUDIT.json", aggregate)
 
     print(f"Proposal fidelity — {len(results)} partners")
+    gate_fail = False
     for r in results:
         c = r["counts"]
+        jbe = r.get("journey_bp_errors", 0)
         print(
             f"  {r['verdict']:16} {r['partner']:10} "
             f"items={c['items']} keep={c['keep']} drop={c['drop']} "
-            f"defer={c['defer']} bp_err={c['bp_errors']}"
+            f"defer={c['defer']} bp_err={c['bp_errors']} journey_bp={jbe}"
         )
+        if args.strict_journey_gate and jbe > 0:
+            gate_fail = True
 
+    if gate_fail:
+        print("✗ strict journey BP gate FAILED — fix S-tier journeys before deploy")
+        return 1
     return 0
 
 

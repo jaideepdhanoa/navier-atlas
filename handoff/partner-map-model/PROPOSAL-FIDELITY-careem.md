@@ -1,7 +1,7 @@
 # Proposal fidelity — careem
 
 **Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-27T15:02:10Z
+**Checked:** 2026-06-27T16:00:27Z
 
 ## Summary
 
