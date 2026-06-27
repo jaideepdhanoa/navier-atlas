@@ -1,47 +1,50 @@
-# Tasklet handoff — Indonesia breadth & depth (post-merge)
+# Tasklet handoff — Indonesia breadth & depth (Phase 3 ready)
 
-**Merged:** 2026-06-27 · `main` @ `f39c996d`  
-**PRs:** #129 (Gojek prose + deck) · #130 (Indonesia 10+10 sub-proposals)  
-**Live:** https://navier-atlas.vercel.app (deploy in flight)
-
----
-
-## What Tasklet shipped (Phase 1 — DONE)
-
-- **Gojek:** 10 Indonesia sub-proposals (jakarta, bali-nusa-gili, lombok, komodo-flores, sumba, riau-singapore, singapore, raja-ampat, likupang, lake-toba) + 60-journey prose depth
-- **Grab:** Mirrored 10 Indonesia markets with Grab regional-super-app framing (not Gojek birthplace copy)
-- **Footprint:** All 13 Indonesia geos + Singapore on both partners; Derawan added; komodo/riau render bug fixed
-- **data-clean + partner-pitch synced** for both partners (render path fix)
-- **3 Sabah journeys parked** → `handoff/indonesia-breadth-depth-2026-06-27/_PARKED-sabah-journeys.json`
-
-## Grok owns next (Phase 2 — IN PROGRESS)
-
-See `GROK-SPEC-indonesia-frontier-seal.md`:
-- Mint frontier geometry (Raja Ampat, Likupang, Lake Toba flagships; 4 roll-up dots)
-- Close seal gaps: Singapore 14, Jakarta 2, Bali 1
-- Range-gate, render-QA both maps, economics cascade, handback with SHA/receipt
-
-## Tasklet Phase 3 — WAIT for Grok handback
-
-When Grok returns branch/PR/SHA + route_ids:
-1. Bind returned `route_id`s into `data-clean/partners/gojek.json` + `grab.json` (frontier featured_routes + journeys)
-2. Run economics cascade → sheet/tracker/sidecar per market
-3. Re-run `partner_copy_lint.py` + linkage audit
-4. Optional: deck refresh (currently untouched per Jaideep)
-
-## Also merged on main (Grok)
-
-- **P0c partner scope live inheritance** (`scripts/partner-scope.mjs`) — hub maps auto-inherit `CLUSTERS.json` at build; no frozen `_map_scope` staleness
-
-## Build receipts (post-merge)
-
-| Page | Cities | Routes |
-|------|--------|--------|
-| `/gojek` hub | 18 | 96 |
-| `/grab` hub | 41 | 165 |
-| `/gojek/raja-ampat` | 1 | 0 (pending seal) |
-| `/grab/jakarta` | 13 | 90 |
+**Updated:** 2026-06-27  
+**Grok handback:** `GROK-HANDBACK-indonesia-frontier-seal.md`  
+**Receipt:** `INDONESIA-SEAL-RECEIPT.json`  
+**Live:** https://navier-atlas.vercel.app (post-deploy)
 
 ---
 
-*No Tasklet action until Grok frontier seal handback.*
+## Phase 1 — Tasklet DONE
+
+- Gojek 10 Indonesia sub-proposals + Grab mirror
+- Footprint: 13 Indonesia geos + Singapore on both partners
+- Merged PRs #129 + #130 @ `f39c996d`
+
+## Phase 2 — Grok DONE
+
+See `GROK-HANDBACK-indonesia-frontier-seal.md`:
+- Lake Toba minted (3 routes: `rn-db305ed7f029`, `rn-89174b6f31fe`, `rn-35e2eb8d3ca0`)
+- lake-toba / likupang / singapore / lombok bindings cleared
+- +28 economics stubs (bite2 lane)
+- Build 7414 routes; preflight PASS
+
+## Phase 3 — Tasklet owns next
+
+1. **Economics cascade** — replace bite2 stubs with deck-grounded rows per Indonesia market (gojek + grab)
+2. **Bind held nulls** where corridor registry completes: Sumba (7), komodo Pink Beach (2), likupang Lembeh (1)
+3. **Raja Ampat corridor registry** — register `ics-*` refs into `corridors.json`, full cascade
+4. **Roll-up dots** — karimunjawa, banda, derawan, wakatobi: mint ≥1 corridor each for dot+line render
+5. Cascade → transparent sheet (in place) + master tracker + economics sidecar
+6. Parity QA Gates A–F both partners
+7. Decks remain untouched
+
+## Also on main (Grok)
+
+- **P0b Careem fidelity** @ `de43b1e5` — PASS_WITH_FLAGS, 3 hub journeys
+- **P0c partner scope live inheritance** — hub maps inherit `CLUSTERS.json` at build
+
+## Held items (do not invent)
+
+| Geo | Gap |
+|-----|-----|
+| likupang | Lembeh 18nm — no sealed route |
+| komodo-flores | Pink Beach — pending BP seal |
+| sumba | All corridors — greenfield |
+| roll-up dots | No minted corridors yet |
+
+---
+
+*Tasklet may proceed with Phase 3 economics cascade.*
