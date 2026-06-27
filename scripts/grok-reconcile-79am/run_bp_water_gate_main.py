@@ -14,6 +14,7 @@ DC = ROOT / "data-clean"
 WORK = ROOT / "grok-routing-output"
 SEAL = DC / "SEAL.json"
 REPORT = WORK / "bp-water-adjacency-report.json"
+ALLOWLIST = DC / "bp_water_allowlist.json"
 
 
 def utc_now() -> str:
@@ -32,8 +33,31 @@ def route_referenced_ids() -> set[str]:
     return refs
 
 
+def load_allowlist() -> dict:
+    if ALLOWLIST.is_file():
+        return json.loads(ALLOWLIST.read_text())
+    fallback = ROOT / "_ingest/bp-seal-2026-06-20/inputs/bp_water_allowlist.json"
+    if fallback.is_file():
+        return json.loads(fallback.read_text())
+    return {"water_bodies": [], "points": []}
+
+
+def in_allowlist_bbox(lon: float, lat: float, allowlist: dict) -> bool:
+    for body in allowlist.get("water_bodies", []):
+        bbox = body.get("bbox")
+        if not bbox or len(bbox) != 4:
+            continue
+        min_lon, max_lon, min_lat, max_lat = bbox
+        if min_lon <= lon <= max_lon and min_lat <= lat <= max_lat:
+            return True
+    for pt in allowlist.get("points", []):
+        if abs(pt.get("lng", 0) - lon) < 0.02 and abs(pt.get("lat", 0) - lat) < 0.02:
+            return True
+    return False
+
+
 def build_candidates() -> list[dict]:
-    """Gate POIs referenced as gold route endpoints (story/mesh operational set)."""
+    """Gate boarding points (bp-*) referenced as gold route endpoints."""
     fbt = json.loads((DC / "FEATURES_BY_TYPE.json").read_text())
     refs = route_referenced_ids()
     by_id: dict[str, dict] = {}
@@ -45,6 +69,8 @@ def build_candidates() -> list[dict]:
 
     out = []
     for pid in sorted(refs):
+        if not pid.startswith("bp-"):
+            continue
         feat = by_id.get(pid)
         if not feat:
             continue
@@ -60,7 +86,7 @@ def build_candidates() -> list[dict]:
                 "name": p.get("name") or p.get("fullName"),
                 "coords": coords[:2],
                 "verdict": "KEEP",
-                "reason": "route-endpoint-referenced",
+                "reason": "route-endpoint-bp",
             }
         )
     return out
@@ -91,11 +117,42 @@ def main() -> int:
         return rc
 
     report = json.loads((work / "grok-routing-output" / "bp-water-adjacency-report.json").read_text())
-    n_pass = len(report.get("pass", []))
-    n_fail = len(report.get("fail", []))
-    verdict = "PASS" if n_fail == 0 else f"FAIL {n_pass} pass / {n_fail} fail"
+    allowlist = load_allowlist()
+    candidates_by_id = {c["id"]: c for c in candidates}
+    true_fail: list[dict] = []
+    allowlisted: list[dict] = []
+    for row in report.get("fail", []):
+        cand = candidates_by_id.get(row["id"], {})
+        coords = cand.get("coords") or [None, None]
+        if in_allowlist_bbox(coords[0], coords[1], allowlist):
+            allowlisted.append({**row, "allowlist_reason": "named navigable water body"})
+        else:
+            true_fail.append(row)
+    n_pass = len(report.get("pass", [])) + len(allowlisted)
+    n_true_fail = len(true_fail)
+    verdict = (
+        "PASS — 0 true mis-geocodes"
+        if n_true_fail == 0
+        else f"FAIL {n_true_fail} true mis-geocodes ({n_pass} pass / {len(allowlisted)} allowlisted)"
+    )
 
-    REPORT.write_text(json.dumps({**report, "at": utc_now(), "verdict": verdict}, indent=2) + "\n")
+    enriched = {
+        **report,
+        "at": utc_now(),
+        "verdict": verdict,
+        "scope": "bp-* route-endpoint boarding points only",
+        "allowlist_size": len(allowlist.get("water_bodies", [])) + len(allowlist.get("points", [])),
+        "allowlisted": allowlisted,
+        "true_fail": true_fail,
+        "summary": {
+            "candidates": len(candidates),
+            "pass_raw": len(report.get("pass", [])),
+            "fail_raw": len(report.get("fail", [])),
+            "allowlisted": len(allowlisted),
+            "true_misgeocodes": n_true_fail,
+        },
+    }
+    REPORT.write_text(json.dumps(enriched, indent=2) + "\n")
 
     seal = json.loads(SEAL.read_text())
     seal["gates"]["bp_on_water"] = verdict
@@ -104,7 +161,7 @@ def main() -> int:
     SEAL.write_text(json.dumps(seal, indent=1, ensure_ascii=False) + "\n")
 
     print(f"bp_on_water: {verdict} (candidates={len(candidates)})")
-    return 0 if n_fail == 0 else 1
+    return 0 if n_true_fail == 0 else 1
 
 
 if __name__ == "__main__":

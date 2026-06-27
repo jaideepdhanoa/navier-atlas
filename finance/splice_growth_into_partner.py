@@ -157,22 +157,35 @@ def main():
     G = gc.get(anchor) or gc["grounded"]
 
     show_plat = shows_platform_revenue(pp)
+    forward_only = bool(
+        fe.get("_provenance", {}).get("forward_sam_only")
+        or gc.get("_forward_sam_only")
+        or G.get("SOM_full_network_navier_transport_rev_yr") is None
+    )
 
-    # ladder_transitions regenerated
-    gcblock["ladder_transitions"] = build_ladder_transitions(
-        G, gc["parameters_used"], a.partner, include_platform=show_plat)
-
-    # marine TAM convenience surface at growth_case top
-    gcblock["marine_mobility_tam"] = G["marine_mobility_tam_yr"]
-    gcblock["journey_gmv"] = G["journey_gmv_yr"]
-    if show_plat:
-        gcblock["partner_platform_rev_on_navier"] = G["partner_platform_rev_on_navier_yr"]
-    else:
+    if forward_only:
+        gcblock["ladder_transitions"] = []
+        gcblock.pop("marine_mobility_tam", None)
+        gcblock.pop("journey_gmv", None)
         gcblock.pop("partner_platform_rev_on_navier", None)
         strip_growth_case_platform(gcblock)
-    if gc.get("_forward_sam_only"):
         gcblock["_forward_sam_only"] = True
         gcblock["_headline_anchor"] = anchor
+        if fe.get("roadmap_quanta_lr_2026plus"):
+            gcblock["roadmap_quanta_lr_2026plus"] = fe["roadmap_quanta_lr_2026plus"]
+    else:
+        gcblock["ladder_transitions"] = build_ladder_transitions(
+            G, gc["parameters_used"], a.partner, include_platform=show_plat)
+        gcblock["marine_mobility_tam"] = G["marine_mobility_tam_yr"]
+        gcblock["journey_gmv"] = G["journey_gmv_yr"]
+        if show_plat:
+            gcblock["partner_platform_rev_on_navier"] = G["partner_platform_rev_on_navier_yr"]
+        else:
+            gcblock.pop("partner_platform_rev_on_navier", None)
+            strip_growth_case_platform(gcblock)
+        if gc.get("_forward_sam_only"):
+            gcblock["_forward_sam_only"] = True
+            gcblock["_headline_anchor"] = anchor
     gcblock["_marine_tam_split_provenance"] = {
         "date": datetime.utcnow().isoformat() + "Z",
         "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
@@ -194,10 +207,14 @@ def main():
 
     json.dump(pp, open(pj, "w"), indent=1, ensure_ascii=False)
     plat_mid = (gcblock.get("partner_platform_rev_on_navier") or {}).get("mid")
-    print(f"spliced {a.partner}: rungs={len(gcblock['revenue_potential']['rungs'])} "
-          f"transitions={len(gcblock['ladder_transitions'])} "
-          f"marine_tam_mid={m(gcblock['marine_mobility_tam']['mid'])} "
-          f"plat_on_navier_mid={m(plat_mid) if plat_mid else '— (excluded)'}")
+    if forward_only:
+        print(f"spliced {a.partner}: forward_sam_only rungs={len(gcblock['revenue_potential']['rungs'])} "
+              f"transitions=0 (roadmap held)")
+    else:
+        print(f"spliced {a.partner}: rungs={len(gcblock['revenue_potential']['rungs'])} "
+              f"transitions={len(gcblock['ladder_transitions'])} "
+              f"marine_tam_mid={m(gcblock['marine_mobility_tam']['mid'])} "
+              f"plat_on_navier_mid={m(plat_mid) if plat_mid else '— (excluded)'}")
 
 if __name__ == "__main__":
     main()

@@ -119,11 +119,113 @@ def econ_fields(row):
         "result_co2": (f"{f1(co2)} t" if co2 is not None else None),
     }
 
+def hospitality_appendix_fields(row: dict) -> dict:
+    """Format one sealed hospitality sidecar corridor for appendix cards."""
+    rev = row.get("revenue_per_vessel_year_usd")
+    opex = row.get("total_run_cost_usd")
+    kept = row.get("kept_per_vessel_year_usd")
+    margin = row.get("operating_margin")
+    payback = row.get("payback_years")
+    co2 = row.get("co2_avoided_tonnes_year")
+    dist = row.get("distance_nm_sealed") or row.get("distance_nm_working")
+    equation = None
+    if rev is not None and opex is not None and kept is not None:
+        equation = f"{money(rev)} revenue   −   {money(opex)} to run   =   "
+    return {
+        "eyebrow": None,
+        "title": row.get("corridor"),
+        "distance_line": row.get("distance_nm_working"),
+        "equation_line": equation,
+        "column1_value": money(rev),
+        "column2_value": money(opex),
+        "column3_value": money(kept),
+        "result_kept": money(kept),
+        "result_margin": pct(margin),
+        "result_payback": (f"{f1(payback)} yrs" if payback is not None else None),
+        "result_co2": (f"{co2} t/yr" if co2 is not None else None),
+        "co2_avoided_tonnes_year": co2,
+        "opex_energy": money(row.get("energy_usd")),
+        "opex_crew": money(row.get("captain_crew_usd")),
+        "opex_marina": money(row.get("marina_overhead_usd")),
+        "opex_maintenance": money(row.get("maintenance_usd")),
+        "opex_insurance": money(row.get("insurance_usd")),
+        "opex_shore_power": money(row.get("shore_power_berth_usd")),
+        "opex_total": money(opex),
+        "vessel_investment_usd": money(row.get("vessel_investment_usd")),
+        "route_id": row.get("route_id"),
+        "route_status": row.get("route_status"),
+    }
+
+
+def gen_hospitality_economics(partner: str, binding: dict) -> dict:
+    sidecar_path = binding.get("sidecar_source")
+    if not sidecar_path:
+        raise SystemExit(f"hospitality binding for {partner} missing sidecar_source")
+    sidecar = json.load(open(P(*sidecar_path.split("/"))))
+    if isinstance(sidecar, list):
+        by_cluster = {r["cluster_id"]: r for r in sidecar}
+    else:
+        by_cluster = sidecar.get("clusters") or sidecar
+    appendix = {}
+    for card in binding.get("appendix_cards", []):
+        cid = card.get("cluster_id")
+        row = by_cluster.get(cid) if isinstance(by_cluster, dict) else None
+        if row is None and isinstance(sidecar, list):
+            row = next((r for r in sidecar if r.get("cluster_id") == cid), None)
+        if row is None:
+            appendix[str(card["slide_index"])] = {
+                "status": "no_sidecar_row_hold_null",
+                "cluster_id": cid,
+                "fields": None,
+            }
+            continue
+        fields = hospitality_appendix_fields(row)
+        fields["eyebrow"] = card.get("eyebrow")
+        if card.get("title"):
+            fields["title"] = card["title"]
+        if card.get("distance_line"):
+            fields["distance_line"] = card["distance_line"]
+        appendix[str(card["slide_index"])] = {
+            "status": row.get("route_status", "sealed"),
+            "cluster_id": cid,
+            "market_slug": card.get("market_slug"),
+            "route_id": row.get("route_id"),
+            "fields": fields,
+        }
+    return {
+        "_meta": {
+            "doc": "Hospitality deck VALUE sidecar — sealed sidecar only, no mobility ladder.",
+            "partner": partner,
+            "deck_type": "hospitality",
+            "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "sources": [sidecar_path, f"deck-studio/decks/{partner}/economics-binding.json"],
+            "economics_frame": binding.get("economics_frame"),
+            "operator_framing": (binding.get("economics_frame") or {}).get("operator_framing"),
+            "vessel_investment_usd": (binding.get("economics_frame") or {}).get("vessel_investment_usd"),
+            "provenance_note": "Hospitality appendix cards only — no SOM/SAM/TAM ladder.",
+        },
+        "appendix_cards": appendix,
+        "slide3_kpi": None,
+        "slide10_tam": None,
+        "economics_slides": None,
+    }
+
+
 def main():
     if len(sys.argv) < 2:
         print("usage: gen_deck_economics.py <partner> [--validate]", file=sys.stderr); sys.exit(2)
     partner = sys.argv[1]
     validate = "--validate" in sys.argv
+    binding_path = P("deck-studio", "decks", partner, "economics-binding.json")
+    binding = json.load(open(binding_path)) if os.path.isfile(binding_path) else {}
+    if binding.get("deck_type") == "hospitality":
+        out = gen_hospitality_economics(partner, binding)
+        outp = P("deck-studio", "decks", partner, f"deck-economics-values-{partner}.json")
+        json.dump(out, open(outp, "w"), indent=2)
+        filled = sum(1 for v in out["appendix_cards"].values() if v.get("fields"))
+        print(f"wrote {outp} (hospitality)")
+        print(f"appendix cards filled: {filled}/{len(out['appendix_cards'])}")
+        return
 
     agg = json.load(open(P("finance", "recal", f"agg-{partner}.json")))
     rows = agg.get("rows", [])
@@ -131,7 +233,6 @@ def main():
     if validate:
         # Reproduce gold: for each econ slide in the binding, find the row whose
         # revenue_per_boat matches the sample, then assert every formatted field matches.
-        binding = json.load(open(P("deck-studio", "decks", partner, "economics-binding.json")))
         rev_index = {}
         for r in rows:
             v = (r.get("mid", {}) or {}).get("revenue_per_boat_yr")
@@ -159,7 +260,6 @@ def main():
         return
 
     scope = json.load(open(P("deck-studio", "decks", partner, "market-scope.json")))
-    binding = json.load(open(P("deck-studio", "decks", partner, "economics-binding.json")))
     markets = scope["markets"]
     econ_slides = sorted([s["slide_index"] for s in binding.get("economics_slides", [])])
 

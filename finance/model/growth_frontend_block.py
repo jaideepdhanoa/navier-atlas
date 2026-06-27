@@ -89,6 +89,90 @@ def main():
     def co2(rev):
         return None if rev is None else round(rev * CO2PERREV)
 
+    # LB-256: Quanta-LR / forward-SAM-only partners (no Pioneer-II near-term floor yet).
+    forward_only = bool(
+        gc.get("_forward_sam_only")
+        or G.get("_forward_sam_only")
+        or G.get("SOM_full_network_navier_transport_rev_yr") is None
+    )
+    roadmap = (rl.get("roadmap_quanta_lr_2026plus") or {})
+    if forward_only:
+        n_roadmap = roadmap.get("n_corridors") or len(roadmap.get("corridors") or [])
+        block = {
+            "_provenance": {
+                "source_growth": os.path.basename(a.growth),
+                "source_rollup": os.path.basename(a.rollup),
+                "generator": "growth_frontend_block.py",
+                "forward_sam_only": True,
+                "headline_anchor": anchor,
+                "roadmap_quanta_lr_corridors": n_roadmap,
+            },
+            "revenue_potential": {
+                "headline": "Forward-SAM network — Quanta-LR corridors held until H2 2026+ economics lock.",
+                "modal_lead": (
+                    "Near-term Pioneer-II floor is null (null-beats-guess). "
+                    "Mapped inter-island / long-haul corridors sit in the Quanta-LR roadmap bucket."
+                ),
+                "anchor_note": (
+                    f"{n_roadmap} corridor(s) mapped beyond 70 nm Pioneer range — "
+                    "economics held for Quanta-LR hybrid (H2 2026+)."
+                ),
+                "whose_money_legend": gc.get("_whose_money_legend", {}),
+                "cite_rule": "No headline until a near-term floor is sourced or forward-SAM demand is published.",
+                "rungs": [],
+            },
+            "phase_economics": {
+                "headline": "Phased rollout — prove on sheltered Pioneer legs, scale on Quanta-LR line-hauls.",
+                "conversion_note": "Fleet & revenue conversion deferred until first near-term corridor is grounded.",
+                "horizons": [
+                    {
+                        "id": "prove", "name": "Prove", "horizon": "Year 1–2",
+                        "scope": "Sheltered ≤70 nm Pioneer-II beachhead (if sourced)",
+                        "capture": "10% new-entrant floor",
+                        "vessel": "N30 Pioneer II (8 pax, commercial now)",
+                        "fleet_boats": floor_fleet or 0,
+                        "navier_transport_rev_yr": floor_rev, "navier_transport_rev_display": m(floor_rev) if floor_rev else "—",
+                        "co2_saved_t_yr": round(floor_co2) if floor_co2 else 0,
+                        "confidence": "held",
+                        "confidence_label": "Held",
+                    },
+                    {
+                        "id": "scale", "name": "Scale", "horizon": "Year 2–4",
+                        "scope": f"Quanta-LR roadmap — {n_roadmap} long-haul corridor(s) mapped",
+                        "capture": "forward-SAM",
+                        "vessel": "Quanta-LR Hybrid (12–15 pax, H2 2026+)",
+                        "fleet_boats_est": None,
+                        "navier_transport_rev_yr": None, "navier_transport_rev_display": "roadmap",
+                        "co2_saved_t_yr": None,
+                        "confidence": "med-low",
+                        "confidence_label": "Roadmap",
+                    },
+                ],
+            },
+            "vessel_sizing": {
+                "headline": "Quanta-LR owns the long-haul network; Pioneer-II proves sheltered legs.",
+                "classes": [
+                    {"class": "N30 Pioneer II", "pax": 8, "range_nm": 70, "status": "commercial now",
+                     "role": "Sheltered channels ≤70 nm — beachhead only.", "render": "solid"},
+                    {"class": "Quanta-LR Hybrid", "pax": "12–15", "range_nm": 700, "status": "H2 2026+",
+                     "role": "Inter-island / regional line-hauls beyond Pioneer range — headline fleet class.",
+                     "render": "amber-dashed"},
+                ],
+                "range_gate_note": "Long legs never faked on a 70 nm boat. Roadmap corridors listed in aggregate rollup.",
+            },
+            "_render_chip_flag": {
+                "needs_new_layouts": ["forward_sam_roadmap_banner", "vessel_sizing_cards"],
+                "confidence_display": "Lead with roadmap corridor count; do not invent a floor.",
+            },
+        }
+        if roadmap.get("corridors"):
+            block["roadmap_quanta_lr_2026plus"] = roadmap
+        strip_frontend_block(block)
+        os.makedirs(os.path.dirname(a.out), exist_ok=True)
+        json.dump(block, open(a.out, "w"), indent=1, ensure_ascii=False)
+        print("wrote", a.out, "(forward_sam_only)")
+        return
+
     # ---- 1. revenue_potential ladder (LB-110/111/113 — 6 rungs ascending) ----
     # Order: SOM floor -> SOM network -> SAM network -> TAM transfer (NEW) -> Journey GMV (renamed) -> Platform Rev on Navier
     rungs = [

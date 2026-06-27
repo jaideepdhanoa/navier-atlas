@@ -117,7 +117,8 @@ ECON_SLIDES: dict[int, dict] = {
         "corridor": "ICONSIAM Pier (Chao Phraya) -> ICONSIAM Pier (Chao Phraya)",
         "market_label": "BANGKOK",
         "title": "Bangkok: profitable from year one",
-        "route_line": "Icon Siam → Wat Arun  ·  ~5 nm  ·  N30 Pioneer II (8 seats)",
+        "route_line": "Icon Siam → Wat Arun  ·  ~2 nm river loop (Pioneer unit econ)",
+        "footnote": "Network marquee: Bangkok ↔ Hua Hin ~88 nm cross-Gulf (Quanta-LR roadmap) — Atlas-sealed; this slide shows near-term river spine unit economics.",
         "header_oid": "g3eec5122801_0_506",
         "title_oid": "g3eec5122801_0_508",
         "route_oid": "g3eec5122801_0_509",
@@ -416,7 +417,9 @@ def build_editplan(presentation_id: str, asset_urls: dict[str, str]) -> dict:
         # Payback is derived from the model (mid scenario), never hand-typed.
         footnote_oid = spec.get("footnote_oid")
         if footnote_oid:
-            if econ.get("payback_years"):
+            if spec.get("footnote"):
+                footnote = spec["footnote"]
+            elif econ.get("payback_years"):
                 footnote = (
                     "Profitable from year one — every line item ties on this slide; "
                     f"the vessel pays itself back in {econ['payback_years']:.1f} yrs."
