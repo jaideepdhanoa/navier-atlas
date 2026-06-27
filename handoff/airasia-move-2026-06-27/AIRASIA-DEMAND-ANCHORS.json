@@ -1,0 +1,134 @@
+{
+  "artifact": "AIRASIA-DEMAND-ANCHORS",
+  "partner": "airasia-move",
+  "generated": "2026-06-27",
+  "frame": "Arriving-seat distribution-capture. TAM anchors on AirAsia/Capital A inbound passengers into each coastal hub x island-bound share x capture band. NOT contested city-mobility. Capture band handed to the model pass (not set here).",
+  "tasklet_owns": "sourced demand pools + explicit assumption flags",
+  "model_pass_owns": "capture band, island-bound share validation, final TAM ladder (LB-254 captive-style rules apply if band runs captive)",
+  "group_metrics_sourced": [
+    {
+      "metric": "Capital A passengers carried Q1 2025",
+      "value": "16.2M (+5% YoY)",
+      "load_factor": "<90% (was 90% Q1'24)",
+      "source": "https://newsroom.airasia.com/news/2025/5/30/capital-a-financial-results-first-quarter-2025"
+    },
+    {
+      "metric": "Capital A load factor Q2 2025",
+      "value": "82%",
+      "source": "https://newsroom.airasia.com/news/2025/8/28/capital-a-financial-results-second-quarter-2025"
+    },
+    {
+      "metric": "Top passenger markets Q3 2025",
+      "value": "China, Indonesia, Malaysia, Thailand; group LF 83.6% (record)",
+      "source": "https://www.capitala.com/misc/3Q25-presentation-capitala.pdf"
+    },
+    {
+      "metric": "AirAsia Ride registered drivers (region-wide)",
+      "value": "~53,000",
+      "source": "user-brief / iglcoatings blog"
+    },
+    {
+      "metric": "AirAsia Ride model",
+      "value": "Pre-book airport transfer up to 7 days out, fixed all-in fare from RM59; city rides Malaysia-only; Airport Transfer+ via partners in MY/ID/SG/PH/TH",
+      "source": "https://www.airasia.com/ride/ ; https://aacsm.my.site.com/s/article/AirAsia-Ride-Malaysia-FAQs"
+    }
+  ],
+  "coastal_hub_demand_pools_sourced": [
+    {
+      "hub": "HKT Phuket",
+      "atlas_city_id": "phuket-phang-nga-thailand",
+      "airport_total": "17.4M pax 2024/25 (all carriers); ~8.65M tourist arrivals 2024",
+      "island_bound_note": "Phi Phi/Phang Nga/James Bond day+transfer demand very high",
+      "source": "https://en.wikipedia.org/wiki/Phuket_International_Airport ; c9hotelworks Phuket review 2025"
+    },
+    {
+      "hub": "DPS Bali",
+      "atlas_city_id": "bali-indonesia",
+      "airport_total": "21.8M pax Jan-Nov 2024 (all carriers)",
+      "island_bound_note": "Gili/Nusa Penida/Lombok onward demand high",
+      "source": "https://balidiscovery.com/passenger-total-at-balis-airport-up-12-37/"
+    },
+    {
+      "hub": "BKI Kota Kinabalu",
+      "atlas_city_id": "sabah-kota-kinabalu-malaysia",
+      "airport_total": "~9M/yr annual (MASB); +23.5% growth segment reported 2025",
+      "island_bound_note": "TAR Marine Park (Gaya/Manukan/Sapi) + Semporna/Sipadan dive transfers",
+      "source": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+      "granularity_flag": "802k figure in release appears to be a sub-annual/intl segment — confirm period before modeling"
+    },
+    {
+      "hub": "PEN Penang",
+      "atlas_city_id": "penang-malaysia",
+      "airport_total": "~8M/yr annual; +12.2% growth segment 2025",
+      "island_bound_note": "George Town<->Butterworth channel + Batu Ferringhi + Penang<->Langkawi",
+      "source": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+      "granularity_flag": "772k figure appears sub-annual — confirm period"
+    },
+    {
+      "hub": "LGK Langkawi",
+      "atlas_city_id": "langkawi-malaysia",
+      "airport_total": "~3-4M/yr annual; +23% growth segment 2025",
+      "island_bound_note": "Intra-island geoparks + cross-border Langkawi<->Koh Lipe (TH)",
+      "source": "https://corporate.malaysiaairports.com.my/en/media-centre/news/1678",
+      "granularity_flag": "290k figure appears sub-annual — confirm period"
+    },
+    {
+      "hub": "USM/URT Koh Samui / Surat Thani",
+      "atlas_city_id": "koh-samui-thailand",
+      "airport_total": "USM ~2.5M; URT low-cost gateway feeds Samui/Phangan/Tao ferries",
+      "island_bound_note": "Samui<->Phangan<->Tao gulf island chain",
+      "source": "general aviation stats — confirm in model pass"
+    },
+    {
+      "hub": "LBJ Labuan Bajo",
+      "atlas_city_id": "komodo-flores-indonesia",
+      "airport_total": "~1M/yr, fast-growing premium gateway",
+      "island_bound_note": "Komodo/Padar liveaboard + day-transfer; near-100% island-bound",
+      "source": "confirm in model pass"
+    },
+    {
+      "hub": "LOP Lombok",
+      "atlas_city_id": "lombok-indonesia",
+      "airport_total": "~3.5M/yr",
+      "island_bound_note": "Gili Islands transfer demand",
+      "source": "confirm in model pass"
+    },
+    {
+      "hub": "CGK Jakarta",
+      "atlas_city_id": "jakarta-indonesia",
+      "airport_total": "~50M/yr (mega-hub)",
+      "island_bound_note": "Thousand Islands weekend demand; low island-bound share of a huge base",
+      "source": "confirm in model pass"
+    },
+    {
+      "hub": "JHB Johor Bahru/Senai",
+      "atlas_city_id": "desaru-coast-malaysia",
+      "airport_total": "~4M/yr; also Singapore(SIN) cross-border catchment",
+      "island_bound_note": "Desaru resort jetties + cross-border Singapore<->Desaru",
+      "source": "confirm in model pass"
+    }
+  ],
+  "assumptions_to_set_in_model_pass": [
+    {
+      "param": "airasia_seat_share_of_airport_total",
+      "status": "FLAG",
+      "note": "AirAsia/Capital A share of each airport's total pax — needs per-hub split; group LF 82-90% known but carrier share per airport not yet sourced."
+    },
+    {
+      "param": "island_bound_share",
+      "status": "FLAG",
+      "note": "% of arriving pax whose onward leg is over water (resort/island). High at HKT/DPS/LBJ/BKI, low at CGK. Set per hub."
+    },
+    {
+      "param": "checkout_attach_rate",
+      "status": "FLAG",
+      "note": "% of island-bound arrivals who attach a pre-booked water transfer at flight checkout — the distribution-capture conversion. Upstream-captured intent => higher than contested street-hail."
+    },
+    {
+      "param": "capture_band",
+      "status": "HANDED_TO_MODEL",
+      "note": "Distribution-capture, not contested commuter band. If band runs captive-style, apply LB-254 (floor capture = effective capture, anchor M_today on true transport_spend_pool, never floor/0.10)."
+    }
+  ],
+  "sanity_gate": "Per LB-254: a hub whose journey-GMV TAM exceeds its destination's whole tourism economy is the tell of an inflated ladder. Check each hub's TAM against local tourism GDP."
+}
