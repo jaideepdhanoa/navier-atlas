@@ -30,6 +30,7 @@ import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
+import { loadClusters, hubRolloutCities, isHubPartner } from './partner-scope.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -246,6 +247,7 @@ function scopeForPartner(data, slug, opts = {}) {
     keep: [...keep],
     net: [...net],
     cityIdOf,
+    inheritClusters: opts.inheritClusters === true,
   });
   const cityCount = new Set([...(FEATURES_BY_TYPE.city || []), ...(FEATURES_BY_TYPE.priority_city || [])]
     .map(f => f.properties?.id).filter(Boolean)).size;
@@ -294,6 +296,7 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 const profile = parseProfile();
 const data = loadData();
+const { byId: clusterById } = loadClusters(DC);
 let aggregateData = applyProfile(data, profile);
 // Aggregate atlas: annotate all routes + backbone default for dense regions at render time.
 {
@@ -419,19 +422,14 @@ function emitPage(slug, subdir, r, marketSlug, optional, pageMeta) {
   pages++;
 }
 const marketCities = (m) => [].concat(m.anchor_cities || [], ...((m.phases || []).map(ph => ph.cities || [])));
-// LB-260: hub footprint scope = markets[] anchors ∪ materialized network_footprint cluster cities.
-const hubRolloutCities = (partner) => {
-  const fromMarkets = [].concat(...(partner.markets || []).map(marketCities));
-  const fromFootprint = partner._map_scope?.cluster_city_ids || [];
-  return [...new Set([...fromMarkets, ...fromFootprint])];
-};
 for (const slug of Object.keys(data.PARTNERS)) {
   const partner = data.PARTNERS[slug];
-  if ((partner.layout === 'hub' || partner.layout === 'network') && partner.markets && partner.markets.length) {
-    const anchors = hubRolloutCities(partner);
-    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, pageKind: 'hub-index', expandRegion: false }), null, false, partnerMeta(partner));
+  if (isHubPartner(partner)) {
+    const anchors = [...hubRolloutCities(partner, clusterById, { pageKind: 'hub-index' })];
+    emitPage(slug, '', scopeForPartner(data, slug, { keepCities: anchors, pageKind: 'hub-index', expandRegion: false, inheritClusters: true }), null, false, partnerMeta(partner));
     for (const m of partner.markets) {
-      const scoped = scopeForPartner(data, slug, { keepCities: marketCities(m), pageKind: 'market', market: m, expandRegion: false, routesWithin: true });
+      const mCities = [...hubRolloutCities(partner, clusterById, { pageKind: 'market', market: m })];
+      const scoped = scopeForPartner(data, slug, { keepCities: mCities, pageKind: 'market', market: m, expandRegion: false, routesWithin: true, inheritClusters: true });
       emitPage(slug, m.slug, scoped, m.slug, true, partnerMeta(partner, m));
       // Per-city share pages under each market (e.g. /grab/penang/city/langkawi-malaysia).
       if (!scoped.error) {
@@ -457,10 +455,10 @@ for (const slug of Object.keys(data.PARTNERS)) {
 }
 
 // Aggregate cluster + city share pages (path-based deeplinks + OG previews).
-const clusterById = Object.fromEntries(((data.CLUSTERS.clusters) || []).map(c => [c.cluster_id, c]));
+const clusterMetaById = Object.fromEntries(((data.CLUSTERS.clusters) || []).map(c => [c.cluster_id, c]));
 for (const [cid, cb] of Object.entries(data.CLUSTER_BRIEFS)) {
   writeShareTree(path.join('cluster', cid), indexHtml, '/atlas-data.js',
-    { type: 'cluster', id: cid }, clusterMeta(cb, clusterById[cid]));
+    { type: 'cluster', id: cid }, clusterMeta(cb, clusterMetaById[cid]));
 }
 for (const [cityId, brief] of Object.entries(data.CITY_BRIEFS)) {
   const props = (data.FEATURES_BY_TYPE.city || []).concat(data.FEATURES_BY_TYPE.priority_city || [])

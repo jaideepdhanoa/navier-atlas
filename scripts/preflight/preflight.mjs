@@ -254,6 +254,21 @@ head('§3.5  route linkage audit (story / featured_routes)');
   } else ok('route linkage audit passed (allowlist respected)');
 }
 
+// ─── §3.8 · Partner scope drift (live cluster inheritance) ───────────────────
+head('§3.8  partner scope drift (hub _map_scope vs CLUSTERS.json)');
+{
+  const driftArgs = ['scripts/audit-partner-scope-drift.mjs'];
+  if (RELEASE) driftArgs.push('--strict');
+  const r = spawnSync(process.execPath, driftArgs, { cwd: ROOT, encoding: 'utf8' });
+  if (r.stdout) process.stdout.write(r.stdout);
+  if (r.stderr) process.stderr.write(r.stderr);
+  if (r.status !== 0) {
+    fail(RELEASE
+      ? 'hub partner _map_scope stale — run: node scripts/sync-partner-map-scope.mjs'
+      : 'hub partner scope drift — run sync-partner-map-scope.mjs before RELEASE deploy');
+  } else ok('partner scope aligned with live cluster inheritance');
+}
+
 // ─── §3.6 · Route geometry (story routes land QA) ───────────────────────────
 head('§3.6  route geometry audit (story land QA)');
 {

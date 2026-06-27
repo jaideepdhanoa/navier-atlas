@@ -193,8 +193,30 @@ function rankRouteForCull(f, storyById) {
  * Thin intra-city meshes and duplicate inter-city pairs when route volume overwhelms area.
  * Story routes always survive; inter-city corridors are kept in full unless duplicated heavily.
  */
-export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pageKind, keep = [] }) {
+export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pageKind, keep = [], inheritClusters = false }) {
   if (pageKind === 'aggregate' || densityTier === 'normal') return routes;
+  // Hub index with live cluster inheritance: keep inter-city corridors; only thin intra-city mesh.
+  if (pageKind === 'hub-index' && inheritClusters) {
+    const intraCap = densityTier === 'extreme' ? 24 : 32;
+    const intraByCity = new Map();
+    const inter = [];
+    for (const f of routes) {
+      const cf = cityIdOf(f.properties?.from);
+      const ct = cityIdOf(f.properties?.to);
+      if (cf && ct && cf === ct) {
+        if (!intraByCity.has(cf)) intraByCity.set(cf, []);
+        intraByCity.get(cf).push(f);
+      } else {
+        inter.push(f);
+      }
+    }
+    const keptIntra = [];
+    for (const list of intraByCity.values()) {
+      const sorted = [...list].sort((a, b) => rankRouteForCull(b, storyById) - rankRouteForCull(a, storyById));
+      keptIntra.push(...sorted.slice(0, intraCap));
+    }
+    return [...keptIntra, ...inter];
+  }
 
   const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
   const intraCap = densityTier === 'extreme' ? (touchesDense ? 8 : 12) : 18;
@@ -459,7 +481,7 @@ export function buildMapDisplay(partner, { market = null, routeCount = 0, storyC
   };
 }
 
-export function applyRouteDisplay(scoped, { partner, market = null, pageKind, keep, net, cityIdOf }) {
+export function applyRouteDisplay(scoped, { partner, market = null, pageKind, keep, net, cityIdOf, inheritClusters = false }) {
   const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
 
   const storyById = collectStoryRoutes(partner, {
@@ -483,7 +505,7 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
 
   const cullTier = preTier !== 'normal' ? preTier : inferDensityTier(filtered.length, partner, market);
   if (pageKind !== 'aggregate' && cullTier !== 'normal') {
-    filtered = densityCullRoutes(filtered, { storyById, cityIdOf, densityTier: cullTier, pageKind, keep });
+    filtered = densityCullRoutes(filtered, { storyById, cityIdOf, densityTier: cullTier, pageKind, keep, inheritClusters });
   }
 
   if (densityPolicy === 'legacy') {

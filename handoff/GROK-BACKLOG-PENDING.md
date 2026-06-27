@@ -22,7 +22,8 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 | Priority | Track | Why |
 |----------|-------|-----|
-| **P0a** | **Phase-map cumulative scoping** | Cumulative featured routes at full opacity; mesh/network at low opacity — was highlighting wrong/future-phase routes |
+| **P0a** | **Phase-map cumulative scoping** | ✅ Done — cumulative phases + three-tier opacity |
+| **P0c** | **Partner scope live inheritance** | ✅ Done — hub partners inherit CLUSTERS.json at build; `partner-scope.mjs` + §3.8 drift gate |
 | **P0b** | **Proposal route quality audit** | Phase-narrative misfit + wrong BPs (e.g. Careem RAK in Phase 1 beachhead) — credibility risk |
 | **P1** | **UAE channel graphs (Grok-only)** | Palm, Marina, Creek, AD islands, Deira — satellite draft + self-validate; no Tasklet |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
@@ -36,6 +37,7 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 - **Phase map:** cumulative `featured_routes` through active phase N only
 - **Cross-emirate legs:** allowed when geometry + phase narrative fit
 - **Channel graphs:** Grok drafts from satellite, self-validates
+- **Hub map scope:** live cluster inheritance at build (`scripts/partner-scope.mjs`); sync JSON via `node scripts/sync-partner-map-scope.mjs`
 
 ---
 
