@@ -1,7 +1,8 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ `4750ac95` · Production: https://navier-atlas.vercel.app  
+**Baseline:** `main` @ post-#128 merge · Production: https://navier-atlas.vercel.app  
 **Updated:** 2026-06-27  
+**Intake:** PR #128 merged (`GROK-QUEUE-DRAIN-2026-06-27.md`, `GROK-HANDOFF-gojek-127-corridor-coverage.md`)  
 **Story geometry:** 1019 pass / 0 fail · **Bite 2:** 32/36 `growth_case` · **Open Grok issues:** 6 (#127, #121, #119, #118, #104, #112)
 
 ---
@@ -114,19 +115,41 @@ Partial overlap: #126 merged de-jargon on 8 partners + sub-$10M format; does **n
 
 ---
 
-### 2.6 Gojek Korea contamination + census (#127) — HIGH
+### 2.6 Gojek Korea contamination + corridor coverage + census (#127) — HIGH
 
-**Bug A — top-level Korea residue (live contamination):**
-- `gojek.json` `journeys_unlocked` + `phases` are 100% Korea (Kakao template); markets[] are clean Indonesia.
-- Rebind from in-file Indonesian `route_id`s; re-derive phase `boats` from Gojek model (not Kakao 8/173/432/864).
+**Handoff:** `handoff/GROK-HANDOFF-gojek-127-corridor-coverage.md` (PR #128)
+
+**Root cause (Tasklet audit, Grok-verified):** Gojek reads shallow vs Grab Thailand because Indonesia is **under-modeled in `finance/model/corridors.json`**, not because of authoring effort. Tasklet inherits 1:1 from the model — it cannot invent corridors.
+
+| Cluster | `corridors.json` market | Real corridors | route_id-bound | null |
+|---------|-------------------------|----------------|----------------|------|
+| jakarta | `jakarta` | 3 | 3 | 0 |
+| bali-nusa-gili | `bali` | 6 | 5 | 1 |
+| singapore | `singapore` | 3 | 2 | 1 |
+| riau-singapore | `cross-border` | 4 | 3 | 1 |
+| eastern-indonesia | `borneo` ⚠️ | 0 (all Sabah self-loops) | — | — |
+| komodo-flores | **(missing)** | 0 | — | — |
+
+⚠️ **`borneo` is Malaysian Sabah placeholders, not eastern Indonesia.** Grok must mint a dedicated `komodo-flores` market plus eastern-Indonesia markets (`likupang` / `raja-ampat` or unified `eastern-indonesia`) — do not thicken `borneo` for Gojek.
+
+**Phase 1 — model + geometry (before top-level rebind):**
+1. Mint `komodo-flores` corridors (Labuan Bajo ↔ Komodo/Rinca/Padar, ↔Maumere, etc.).
+2. Mint eastern-Indonesia corridors (Manado↔Bunaken, Sorong↔Raja Ampat, etc.).
+3. Mint missing `route_id`s on modeled-but-unbound rows (≥4 confirmed null on bali/singapore/cross-border; Tasklet cited 12 — recount after self-loop drop).
+4. Optionally thicken `jakarta` (Thousand Islands beyond current 3).
+
+**Phase 2 — Bug A (top-level Korea residue, live contamination):**
+- `gojek.json` `journeys_unlocked` + `phases` are 100% Korea; `markets[]` are clean Indonesia.
+- Rebind top-level structures from **corrected per-region inheritance pool** (not current thin set).
+- Re-derive phase `boats` from Gojek model (not Kakao 8/173/432/864).
 - Normalize descriptive `to_node_id` strings in eastern-indonesia to real node IDs.
 
-**Bug B — census re-base (Bolt Bug-C twin):**
+**Phase 3 — Bug B (census re-base, Bolt Bug-C twin):**
 - `greenfield_corridors: 341` (shared census), `sourced 35`, `som_network` ~5× floor.
 - Per-market economics `authored_for: grab` throughout.
-- Re-base to Gojek-specific corridor set; re-cascade ladder before Indonesia deck.
+- Re-base to Gojek-specific corridor set; re-cascade ladder; single reseal.
 
-**Tasklet holds:** copy/jargon fixes + Indonesia deck until Grok lands geometry + census.
+**Tasklet holds:** copy/jargon fixes + Indonesia deck until all three phases land in one Grok commit.
 
 ---
 
@@ -202,16 +225,19 @@ Priority mesh markets (from handback): Bolt South Africa, Croatia depth, Bolt Ph
 
 ---
 
-## 4. Suggested Grok execution order
+## 4. Suggested Grok execution order (revised post-#128)
 
-1. **#127 Gojek** — HIGH live contamination
-2. **#121 Maldives jetties** — confidently-wrong geometry on 3 partners
-3. **#119 `bp_on_water` gate** — unblock Tasklet SEAL sign-off
-4. **#118 Grab labels + deck KPI**
-5. **#104 Bolt Bug C census**
-6. **Bite 2 tail** — Hawaii generator + mint routes for cote-dazur / d-marin / discovery-land
-7. **FE-2 dedup tail** — referenced-copy groups
-8. **Mesh waves** — as capacity allows
+1. **#127 Gojek** — Phase 1 model mint → Phase 2 Korea rebind → Phase 3 census (one reseal)
+2. **#121 Maldives jetties** — crown-champa / villa-hotels / sun-siyam wrong-operator repoints
+3. **#119 `bp_on_water` gate** — script-only; can run in parallel with #121; unblocks Tasklet SEAL sign-off
+4. **#118 Grab labels + deck KPI** — `growth_frontend_block.py` generator fix + BKK marquee
+5. **#104 Bolt Bug C census** — data correctness before deck infra
+6. **#112 unified deck builder** — hospitality profile (shared Grok/Tasklet; lower urgency than #104)
+7. **Bite 2 tail** — hawaii generator + mint routes for cote-dazur / d-marin / discovery-land (§2.1)
+8. **FE-2 dedup tail** — ~193 referenced-copy groups (§2.8)
+9. **Mesh waves** — 3,036 non-story fails; as capacity allows
+
+**Closed (no drain action):** #115 ✅, #124 ✅ — both closed on GitHub with handback receipts.
 
 ---
 
