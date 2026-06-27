@@ -18,16 +18,24 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 ---
 
-## 1. Active priorities (plan-first — do not execute until plan approved)
+## 1. Active priorities (plan approved 2026-06-27)
 
 | Priority | Track | Why |
 |----------|-------|-----|
-| **P0** | **Proposal route quality audit** | Journeys / signature / featured / phased routes showing false precision (e.g. Careem 4/5 bad BPs) — credibility risk |
-| **P1** | **UAE hand-waypoint channel routing** | Palm, Dubai Marina, Creek, Abu Dhabi islands, Deira Island — spaghetti over land extensions |
+| **P0a** | **Phase-map cumulative scoping** | Proposal pages must show featured routes through active phase only; **no mesh at any opacity** — currently inconsistent |
+| **P0b** | **Proposal route quality audit** | Phase-narrative misfit + wrong BPs (e.g. Careem RAK in Phase 1 beachhead) — credibility risk |
+| **P1** | **UAE channel graphs (Grok-only)** | Palm, Marina, Creek, AD islands, Deira — satellite draft + self-validate; no Tasklet |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
-| **P3** | Mesh geometry | ~3,035 non-story fails |
+| **P3** | Mesh geometry | ~3,035 non-story fails (deferred until proposal surfaces credible) |
 
 **Plan doc:** `handoff/PROPOSAL-ROUTE-QUALITY-PLAN-2026-06-27.md`
+
+### Locked display rules
+
+- **Mesh:** never visible on proposal pages (not even dimmed)
+- **Phase map:** cumulative `featured_routes` through active phase N only
+- **Cross-emirate legs:** allowed when geometry + phase narrative fit
+- **Channel graphs:** Grok drafts from satellite, self-validates
 
 ---
 
@@ -41,14 +49,14 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 
 ---
 
-## 3. Tasklet dependencies (to confirm in audit)
+## 3. Dependencies (revised)
 
 | Item | Owner | Notes |
 |------|-------|-------|
-| Partner narrative + journey copy | Tasklet | Which corridors are "commercial-now" vs roadmap |
-| `CORRIDOR-ENDPOINT-GROUNDING.json` | Tasklet/Grok | BP endpoint authority for proposal surfaces |
-| UAE frond-resolution polygons | Tasklet | Palm trunk channel authorship (LB carry-forward) |
-| Cluster brief `signature_routes` | Tasklet | Gold source for journey binding |
+| Phase-narrative fit + featured trim | **Grok** | Null beats wrong; e.g. drop RAK from Careem Phase 1 |
+| UAE channel graphs | **Grok** | Satellite draft + self-validate; no Tasklet |
+| `CORRIDOR-ENDPOINT-GROUNDING.json` | Grok | BP endpoint authority for proposal surfaces |
+| Cluster brief `signature_routes` | Grok audit | Trim to phase-aligned S-tier only |
 | Deck lane (Grab/Minor live apply) | — | **Omitted** |
 
 ---

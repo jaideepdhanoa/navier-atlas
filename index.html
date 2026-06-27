@@ -1127,20 +1127,44 @@ const _FOCUS_DIM_FLOOR = 0.32;
 function _tierVisual(){ return !MAP_DISPLAY || MAP_DISPLAY.density_policy !== 'legacy'; }
 let _densityMode = (MAP_DISPLAY && MAP_DISPLAY.default_mode) || 'full_network';
 let _activePhaseTag = null;
+let _activePhaseN = null;   // numeric phase for cumulative story-route scoping
 const _DENSITY_LANES = {
   story: ['story','backbone'],
   backbone: ['story','backbone','context'],
   mesh: ['story','backbone','context','capillary'],
 };
+function _onPartnerPage(){ return !!(typeof BUILD_PARTNER!=='undefined' && BUILD_PARTNER) || !!(PARTNER_ACTIVE); }
+function _phaseNumber(ph){ return ph && (ph.n ?? ph.phase) != null ? (ph.n ?? ph.phase) : null; }
+function _cumulativePhaseTags(n){
+  if (n == null) return [];
+  const tags = [];
+  for (let i = 1; i <= n; i++) tags.push('phase:'+i);
+  return tags;
+}
+function _cumulativePhaseStoryMatch(n){
+  const tags = _cumulativePhaseTags(n);
+  if (!tags.length) return ['literal', false];
+  return ['any', ...tags.map(t => ['in', t, ['coalesce',['get','story_tags'],['literal',[]]]])];
+}
 function _densityLaneFilter(){
-  if (_tierVisual()) return ['literal', true];
+  // Proposal pages: never render capillary mesh (not even dimmed).
+  const noMesh = _onPartnerPage() ? ['!',['in',['get','render_lane'],['literal',['capillary']]]] : ['literal', true];
+  // Phase carousel: only cumulative featured routes through the active phase — hide the rest.
+  if (_activePhaseN != null) {
+    return ['all', ['==',['get','render_lane'],'story'], _cumulativePhaseStoryMatch(_activePhaseN), noMesh];
+  }
+  if (_tierVisual()) {
+    if (_onPartnerPage()) return ['!', ['in', ['get','render_lane'], ['literal', ['capillary']]]];
+    return ['literal', true];
+  }
   const lanes = _DENSITY_LANES[_densityMode] || _DENSITY_LANES.backbone;
   const laneMatch = ['in',['get','render_lane'],['literal',lanes]];
-  if (_densityMode !== 'story' || !_activePhaseTag) return laneMatch;
-  const phaseMatch = ['in', _activePhaseTag, ['coalesce',['get','story_tags'],['literal',[]]]];
-  return ['any',
-    ['all',['==',['get','render_lane'],'story'], phaseMatch],
-    ['==',['get','render_lane'],'backbone']];
+  if (_densityMode !== 'story' || !_activePhaseTag) return ['all', laneMatch, noMesh];
+  const phaseMatch = _cumulativePhaseStoryMatch(_activePhaseN ?? parseInt(String(_activePhaseTag||'').replace('phase:',''), 10));
+  return ['all', noMesh,
+    ['any',
+      ['all',['==',['get','render_lane'],'story'], phaseMatch],
+      ['==',['get','render_lane'],'backbone']]];
 }
 function _routeDisplayFilter(extra){
   const f = _densityLaneFilter();
@@ -1162,12 +1186,13 @@ function _updateDensityLegend(){
     const p=f.properties||{}, lane=p.render_lane||'capillary';
     const lanes = _DENSITY_LANES[_densityMode]||[];
     if (!lanes.includes(lane)) return false;
-    if (_densityMode==='story' && _activePhaseTag && lane==='story'){
-      return (p.story_tags||[]).includes(_activePhaseTag);
+    if (_densityMode==='story' && _activePhaseN != null && lane==='story'){
+      const tags = _cumulativePhaseTags(_activePhaseN);
+      return (p.story_tags||[]).some(t => tags.includes(t));
     }
     return true;
   }).length;
-  if (note) note.textContent = `Showing ${visible} of ${total} routes${_activePhaseTag&&_densityMode==='story'?' · '+_activePhaseTag.replace('phase:','Phase '):''}`;
+  if (note) note.textContent = `Showing ${visible} of ${total} routes${_activePhaseN!=null&&_densityMode==='story'?' · Phases 1–'+_activePhaseN:''}`;
 }
 function _capZoomFilter(){
   if (_tierVisual()) return ['literal', true];
@@ -1175,7 +1200,9 @@ function _capZoomFilter(){
   return ['any',['!',['coalesce',['get','render_capillary'],false]],['>=',['zoom'],4]];
 }
 function _routeFocusDim(){
-  if (_tierVisual()) return _FOCUS_DIM_FLOOR;
+  // Phase focus on a proposal page: hide non-cumulative routes entirely (no dimmed mesh/network).
+  if (_activePhaseN != null && _onPartnerPage()) return 0;
+  if (_tierVisual()) return _onPartnerPage() ? 0.12 : _FOCUS_DIM_FLOOR;
   return _densityMode === 'mesh' ? 0.34 : 0.015;
 }
 function applyRouteEmphasis(routeIds){
@@ -1209,6 +1236,7 @@ function applyDensityFilters(){
 function setDensityMode(mode, opts){
   opts = opts || {};
   if (opts.phaseTag !== undefined) _activePhaseTag = opts.phaseTag;
+  if (opts.phaseN !== undefined) _activePhaseN = opts.phaseN;
   if (mode && _DENSITY_LANES[mode]) _densityMode = mode;
   applyDensityFilters();
   // Re-stamp focus opacity — mesh floor is higher so newly unfiltered capillaries actually read.
@@ -2778,17 +2806,36 @@ function _phaseRouteIds(phase){
   }
   return [...new Set(out)].filter(id=>ROUTE_ID_SET.has(id));
 }
+// Cumulative featured routes through the active phase (Phase 2 = Phase 1 ∪ Phase 2 corridors).
+function _cumulativePhaseRouteIds(partner, phase){
+  const maxN = _phaseNumber(phase);
+  if (maxN == null) return _phaseRouteIds(phase);
+  const out = [];
+  for (const ph of ((partner&&partner.phases)||[])){
+    const pn = _phaseNumber(ph);
+    if (pn != null && pn <= maxN) out.push(..._phaseRouteIds(ph));
+  }
+  return [...new Set(out)];
+}
 function _useDensityFocus(){
   if (_tierVisual()) return false;
   return !!(MAP_DISPLAY && (MAP_DISPLAY.density_tier === 'high' || MAP_DISPLAY.density_tier === 'extreme' || MAP_DISPLAY.route_count > 40));
 }
 function applyPhaseFocus(phase){
-  if (!phase){ _activePhaseTag=null; if(_useDensityFocus()) setDensityMode(MAP_DISPLAY.default_mode||'backbone',{phaseTag:null}); applyStoryFocus(null); return; }
-  const phaseN = phase.n ?? phase.phase;
+  if (!phase){
+    _activePhaseTag=null; _activePhaseN=null;
+    applyDensityFilters();
+    if(_useDensityFocus()) setDensityMode(MAP_DISPLAY.default_mode||'backbone',{phaseTag:null, phaseN:null});
+    applyStoryFocus(null); return;
+  }
+  const phaseN = _phaseNumber(phase);
   const phaseTag = phaseN != null ? 'phase:'+phaseN : null;
+  const partner = (_CARO&&_CARO.partner) || (PARTNER_ACTIVE&&PARTNERS&&PARTNERS[PARTNER_ACTIVE.slug]) || null;
+  const routeIds = partner ? _cumulativePhaseRouteIds(partner, phase) : _phaseRouteIds(phase);
+  _activePhaseTag = phaseTag;
+  _activePhaseN = phaseN;
+  applyDensityFilters();
   if (_tierVisual()){
-    _activePhaseTag = phaseTag;
-    const routeIds = _phaseRouteIds(phase);
     if (routeIds.length) { applyRouteEmphasis(routeIds); return; }
     const cities = _phaseFocusCities(phase);
     if (cities.length) { applyStoryFocus(cities); return; }
@@ -2796,13 +2843,13 @@ function applyPhaseFocus(phase){
     return;
   }
   if (_useDensityFocus()){
-    _activePhaseTag = phaseTag;
-    setDensityMode('story', { phaseTag, silent:true });
-    applyStoryFocus(null);
+    setDensityMode('story', { phaseTag, phaseN, silent:true });
+    if (routeIds.length) applyRouteEmphasis(routeIds);
+    else applyStoryFocus(null);
     return;
   }
+  if (routeIds.length && _focusRoutes(routeIds)) return;
   const cities=_phaseFocusCities(phase);
-  if (cities.length>1 && _focusRoutes(_phaseRouteIds(phase))) return;
   if (!cities.length){ console.warn('[phase] no node cities resolved for', phase.cities, '— showing full map'); applyStoryFocus(null); return; }
   const scope = (cities.length<=1) ? 'intra' : phase.route_scope;
   _focusCities(cities, scope);
@@ -2839,8 +2886,10 @@ function _roadmapPromoteIds(partner){
   return [...new Set(ids)];
 }
 function applyEndStateFocus(partner){
-  if (_tierVisual()){ _activePhaseTag=null; applyStoryFocus(null); }
-  else if (_useDensityFocus()){ _activePhaseTag=null; setDensityMode('backbone',{phaseTag:null,silent:true}); applyStoryFocus(null); return; }
+  _activePhaseTag=null; _activePhaseN=null;
+  applyDensityFilters();
+  if (_tierVisual()){ applyStoryFocus(null); }
+  else if (_useDensityFocus()){ setDensityMode('backbone',{phaseTag:null,phaseN:null,silent:true}); applyStoryFocus(null); return; }
   const c=_endStateCities(partner);
   const roadmap=_roadmapPromoteIds(partner);
   if(roadmap.length && _focusRoutes(roadmap)){
@@ -3347,7 +3396,7 @@ function showChapter(i){
   const ch=_CARO.chapters[i];
   if (ch.kind==='phase'){
     const cur=ch.phase;
-    const rids=_phaseRouteIds(cur);
+    const rids=_cumulativePhaseRouteIds(_CARO.partner, cur);
     // For a SINGLE-city market phase (e.g. Grab→Singapore, all phases cities:["singapore"]) we frame the
     // whole city water network rather than zooming to one featured-route geometry: those intra-city links
     // are unreliable here (a 5 nm "Marina↔Sentosa" can resolve to a Sentosa-cove hop), so a lone-route zoom
