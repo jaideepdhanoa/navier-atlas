@@ -1,0 +1,132 @@
+{
+  "artifact": "PARTNER-MARKET-COVERAGE-RESEARCH",
+  "partner": "airasia-move",
+  "generated": "2026-06-27",
+  "operating_model": "Travel super-app / OTA (Capital A). Marine-relevant consumer mode = AirAsia Ride 'doorstep-to-departure' airport-transfer, sold pre-arrival at flight checkout, fixed fare. City rides Malaysia-only (full service); airport-transfer-only in TH/ID/SG/PH.",
+  "archetype": "super_app",
+  "archetype_chip_note": "super_app retained = gold convention (matches Grab); partner-safe, no normalization.",
+  "no_shrink_baseline": "No existing airasia-move.json in repo (data-clean or partner-pitch). Clean start; nothing to preserve.",
+  "ride_countries_sourced": [
+    "Malaysia",
+    "Thailand",
+    "Indonesia",
+    "Singapore",
+    "Philippines"
+  ],
+  "phase_plan": {
+    "phase_1": [
+      "Thailand",
+      "Indonesia",
+      "Malaysia"
+    ],
+    "phase_2": [
+      "Philippines",
+      "Singapore"
+    ]
+  },
+  "country_rollup": [
+    {
+      "country": "Malaysia",
+      "tier": "city_supported",
+      "ride": "full service (city+airport)",
+      "atlas_cluster": "malaysia",
+      "markets": [
+        "langkawi-malaysia",
+        "penang-malaysia",
+        "sabah-kota-kinabalu-malaysia",
+        "desaru-coast-malaysia",
+        "tioman-island"
+      ],
+      "geometry": "city briefs + BPs present; 4 markets text-only signature_routes (MINT-needed), tioman 1 bound route_id",
+      "density_lane": "new_display_coverage + true geometry build",
+      "note": "HOME MARKET + biggest build. Full-service per Ride FAQ."
+    },
+    {
+      "country": "Thailand",
+      "tier": "city_supported",
+      "ride": "targeted airport/tourist hubs",
+      "atlas_cluster": "thailand",
+      "markets": [
+        "phuket-phang-nga-thailand",
+        "koh-samui-thailand",
+        "krabi-thailand",
+        "bangkok-thailand",
+        "pattaya-thailand",
+        "hua-hin-thailand"
+      ],
+      "geometry": "SEALED (Grab Thailand gold, ~35 route_ids)",
+      "density_lane": "full_to_marquee_coverage (inherit Grab corridors)",
+      "note": "Strongest geometry; deck visual base."
+    },
+    {
+      "country": "Indonesia",
+      "tier": "city_supported (Bali/Jakarta named) + region_supported",
+      "ride": "airport transfers only (Bali, Jakarta)",
+      "atlas_cluster": "indonesia",
+      "markets": [
+        "bali-indonesia",
+        "lombok-indonesia",
+        "komodo-flores-indonesia",
+        "jakarta-indonesia",
+        "sumba-indonesia",
+        "raja-ampat-indonesia",
+        "likupang-north-sulawesi-indonesia",
+        "lake-toba-samosir-indonesia"
+      ],
+      "geometry": "SEALED/modeled (network just built PR#130) + frontier null route_ids",
+      "density_lane": "full_to_marquee_coverage (inherit just-built network)",
+      "note": "Reuse Gojek/Grab Indonesia corridors."
+    },
+    {
+      "country": "Philippines",
+      "tier": "country_supported",
+      "ride": "airport transfers only",
+      "atlas_cluster": null,
+      "markets": [
+        "boracay-philippines",
+        "cebu-philippines",
+        "manila-philippines",
+        "palawan-philippines",
+        "siargao-philippines"
+      ],
+      "geometry": "city briefs exist; seal status to confirm Phase 2",
+      "density_lane": "new_display_coverage",
+      "note": "Phase 2."
+    },
+    {
+      "country": "Singapore",
+      "tier": "city_supported",
+      "ride": "airport link / cross-border",
+      "atlas_cluster": "singapore",
+      "markets": [
+        "singapore"
+      ],
+      "geometry": "SEALED (cross-border Riau<->Singapore built)",
+      "density_lane": "thin_to_full",
+      "note": "Phase 2; cross-border to Bintan/Batam/Desaru/Tioman."
+    }
+  ],
+  "multi_partner_corridor_candidates": [
+    "Thailand Andaman/Gulf — Grab Thailand + AirAsia overlap (shared registry)",
+    "Indonesia Bali/Lombok/Komodo — Grab + Gojek + AirAsia (shared registry)",
+    "Singapore cross-border — Grab/Gojek + AirAsia",
+    "Langkawi<->Koh Lipe + Langkawi<->Phuket — Malaysia<->Thailand cross-border (new, AirAsia flies both)"
+  ],
+  "grok_seal_scope": {
+    "mint_needed": [
+      "langkawi-malaysia (intra-island + Langkawi<->Penang + cross-border Langkawi<->Koh Lipe/Tarutao)",
+      "penang-malaysia (George Town<->Butterworth + Batu Ferringhi + Penang<->Langkawi)",
+      "sabah-kota-kinabalu-malaysia (Jesselton<->Gaya/Manukan/Sapi + Gaya Island Resort + Semporna<->Sipadan)",
+      "desaru-coast-malaysia (Desaru jetties + cross-border Singapore<->Desaru)"
+    ],
+    "inherit_existing": [
+      "all Thailand markets (Grab)",
+      "all Indonesia markets (Gojek/Grab PR#130)",
+      "singapore"
+    ],
+    "partial": [
+      "tioman-island (1 route_id ics-1a53f8237d, SG-origin Quanta-LR roadmap)"
+    ]
+  },
+  "status": "research-complete / seal-needed (Phase 1). Demand pools sourced; capture band handed to model pass."
+}
