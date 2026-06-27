@@ -92,21 +92,21 @@ def main():
     # ---- 1. revenue_potential ladder (LB-110/111/113 — 6 rungs ascending) ----
     # Order: SOM floor -> SOM network -> SAM network -> TAM transfer (NEW) -> Journey GMV (renamed) -> Platform Rev on Navier
     rungs = [
-        ("som_floor",     "SOM \u2014 floor (published)",       "Navier transport revenue",
+        ("som_floor",     f"SOM floor (published) \u2014 sourced corridors today", "Navier transport revenue",
          f"sourced flagship corridors \u00b7 {cappct} capture \u00b7 today's demand",
          band(G["SOM_floor_navier_transport_rev_yr"]), "grounded"),
-        ("som_network",   "SOM \u2014 full network",            "Navier transport revenue",
+        ("som_network",   f"SOM full network (~{cappct} capture, today, +greenfield)", "Navier transport revenue",
          f"whole mapped network \u00b7 {cappct} capture \u00b7 today's demand (no growth assumed)",
          band(G["SOM_full_network_navier_transport_rev_yr"]), "med"),
-        ("sam_network",   "SAM \u2014 matured network",         "Navier transport revenue",
+        ("sam_network",   "SAM matured network \u2014 induced demand at scale", "Navier transport revenue",
          (f"faster, more comfortable boats grow the market (induced demand); we already capture ~{cappct} \u2014 growth is demand + width, not a capture ramp"
           if is_captive else
           f"faster, more comfortable boats grow the market \u00b7 leading-operator {maturepct} capture, network-wide"),
          band(G["SAM_navier_transport_rev_yr"]), "med-low"),
-        ("tam_transfer",  "Marine mobility TAM \u2014 induced marine-transfer market", "total water-transfer spend",
+        ("tam_transfer",  "Marine mobility TAM \u2014 total addressable water-transfer spend", "total water-transfer spend",
          "SAM divided by leading-operator capture \u2014 the full inducible water-transfer wallet at network maturity",
          band(G["marine_mobility_tam_yr"]), "med-low"),
-        ("journey_gmv",   "Journey GMV \u2014 food + stays + experiences (\u22483\u00d7 TAM)", "total journey wallet",
+        ("journey_gmv",   "Journey GMV \u2014 food, stays, and experiences (~3\u00d7 TAM)", "total journey wallet",
          "add food, stays, and experiences to every crossing in the induced market",
          band(G["journey_gmv_yr"]), "med-low"),
     ]

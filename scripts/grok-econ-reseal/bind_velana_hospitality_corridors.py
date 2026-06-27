@@ -16,9 +16,9 @@ REPORT = ROOT / "handoff" / "partner-map-model" / "velana-hospitality-bind-repor
 # Partner → primary Velana airport-to-resort leg (property-specific mint)
 VELANA_BY_PARTNER: dict[str, str] = {
     "constance": "e__velana__constance-halaveli-jetty",
-    "crown-champa": "e__velana__kurumba-jetty",
-    "sun-siyam": "e__velana__westin-miriandhoo-jetty",
-    "villa-hotels": "e__velana__baros-jetty",
+    "crown-champa": "e__velana__kuredu-jetty",
+    "sun-siyam": "e__velana__iru-fushi-jetty",
+    "villa-hotels": "e__velana__sun-island-jetty",
     "universal-enterprises": "e__velana__kurumba-jetty",
     "maldives": "e__velana__kurumba-jetty",
     "four-seasons": "e__velana__ritz-fari-jetty",
