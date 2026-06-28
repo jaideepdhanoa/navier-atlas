@@ -1,8 +1,23 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ `7b23d7eb` · Production: https://navier-atlas.vercel.app  
-**Updated:** 2026-06-27 (AFK session)  
+**Baseline:** `main` @ `abd7c599` · Production: https://navier-atlas.vercel.app  
+**Updated:** 2026-06-28 (parked)  
 **Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
+
+---
+
+## ⏸ Parked (2026-06-28) — Gojek deck economics handback
+
+Tasklet applied live slides 4+13; receipt PR #135 OPEN @ `93971c98`. See `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`.
+
+| Item | Owner | When back |
+|------|-------|-----------|
+| Merge PR #135 (BUILD-LOG) | Grok | first |
+| SOM rung ($87M) — metric basis | Grok | model pass |
+| Corridor count 43 vs 49 | Grok | confirm |
+| Lombok + Lake Toba KPI cards | Grok | seal/floor |
+| Map backgrounds | Jaideep | visual |
+| Google Sheets publish (gojek, airasia-move) | Grok | separate lane |
 
 ---
 

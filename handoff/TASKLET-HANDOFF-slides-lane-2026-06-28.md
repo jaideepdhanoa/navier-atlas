@@ -1,8 +1,8 @@
 # Tasklet handoff — Slides API lane (Gojek ladder + AirAsia deck)
 
-**Updated:** 2026-06-28 post **PR #134** merge (`deck-studio-record-sync-2026-06-28`)  
-**Baseline:** `main` after merge + deploy  
-**Grok model engine:** complete · **Tasklet Slides lane:** open
+**Updated:** 2026-06-28 post Tasklet handback (**PR #135** receipt)  
+**Baseline:** `main` @ `abd7c599` · PR #135 OPEN @ `93971c98`  
+**Grok model engine:** complete · **Tasklet Gojek apply:** ✅ slides 4+13 live · **AirAsia deck:** open
 
 ---
 
@@ -17,33 +17,31 @@
 
 ---
 
-## Workstream A — Gojek: apply refreshed ladder (Slides API)
+## Workstream A — Gojek: apply refreshed ladder (Slides API) — ✅ DONE (partial)
+
+**Handback:** `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`  
+**PR #135** @ `93971c98` · BUILD-LOG updated · merge **parked**
+
+### Applied live (2026-06-28)
+| Slide | Content | Result |
+|-------|---------|--------|
+| **4** (network overview) | corridors, spend, SAM | 60→43 · $127M→$169M · $280M→$372M |
+| **13** (The Prize) | ladder rungs (except SOM) | SAM $372M · TAM $1.5B · GMV $4.5B · platform $201M |
+
+Numeric tokens only — no title/label/caption changed; partner-copy lint unaffected.
+
+### Held → Grok
+| Item | Notes |
+|------|-------|
+| **SOM rung ($87M)** | $22M floor in values file vs "~14% +greenfield" descriptor on live rung |
+| **Corridor count** | 43 applied vs 49 in data pack — confirm card meaning |
+| **Lombok + Lake Toba KPIs** | `kpis: null` — held off-deck |
+| **Map backgrounds** | Jaideep lane |
 
 ### Do not redo
 - Slides 8–12 unit-econ deep-dives (Bali, SG, Riau, Komodo, Likupang)
 - Cover logo, `/gojek/*` links, 16-slide structure
 - `decks/gojek-indonesia/ECONOMICS-SIDECAR.json`
-
-### Apply now (in place, style-preserving)
-
-| Slide | Content | Source |
-|-------|---------|--------|
-| **3** (overview) | 4 network KPIs + **10-market grid** | `deck-studio/decks/gojek/deck-economics-values-gojek.json` → `slide3_kpi` |
-| **11** (The Prize) | 5 ladder rungs | same → `slide10_tam.rungs` |
-
-**MID ladder values (cite these):**
-
-| Rung | Value |
-|------|-------|
-| SOM floor | **$22M** |
-| SAM | **$372M** |
-| Marine TAM | **$1.5B** |
-| Journey GMV | **$4.5B** |
-| Partner platform revenue | **$201M** |
-
-**Hold null on deck:** `lombok` + `lake-toba` per-market KPI cards (`kpis: null` in values file).
-
-**Method:** pull live OID inventory first; text-replace only; `partner_copy_lint.py` blocking; update `decks/gojek-indonesia/BUILD-LOG.md`.
 
 ---
 

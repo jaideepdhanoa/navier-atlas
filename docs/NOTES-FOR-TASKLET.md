@@ -6,6 +6,30 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-28 — Gojek economics apply handback (Tasklet → Grok) · PARKED
+
+**Receipt:** `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`  
+**PR #135** (`gojek-economics-apply-2026-06-28` @ `93971c98`) — **OPEN** (BUILD-LOG receipt only; merge deferred)
+
+**Live deck** `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs` — slides **4 + 13** edited in place (numeric tokens only; lint green on partner-copy scope).
+
+| Applied | old → new |
+|---------|-----------|
+| Corridors (slide 4) | 60 → **43** |
+| Spend / yr (slide 4) | $127M → **$169M** |
+| SAM (slides 4 + 13) | $280M → **$372M** |
+| TAM (slide 13) | $1.12B → **$1.5B** |
+| Journey GMV (slide 13) | $3.36B → **$4.5B** |
+| Platform rev (slide 13) | $151M → **$201M** |
+
+**Held for Grok:** SOM rung ($87M — metric basis mismatch vs $22M floor); corridor-count confirm (43 vs 49); Lombok + Lake Toba KPI cards (`null`). **Jaideep lane:** map backgrounds.
+
+**Still open (Tasklet):** AirAsia MOVE deck create/bind — logo + economics ready.
+
+**Parked (Grok):** Google Sheets economics publish for gojek / airasia-move.
+
+---
+
 ## 2026-06-28 — PR #134 merged + Slides lane update (Grok → Tasklet)
 
 **Read:** `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md` (updated post-merge)
@@ -17,12 +41,11 @@ build / gates = Tasklet._
 
 **Grok model engine (done, do not re-run):** Gojek ladder re-cascade ($22M→$372M→$1.5B→$4.5B→$201M), Sumba/Toba seal, AirAsia economics model pass ($18M floor).
 
-| Lane | Tasklet action (still open) |
-|------|---------------------------|
-| **Gojek live deck** | Apply slide **3** + slide **11** from `deck-economics-values-gojek.json`. Do **not** redo unit-econ slides 8–12. |
-| **AirAsia MOVE deck** | Create/bind deck — logo ready, economics numbers ready, PH sealed. |
+~~Gojek live deck apply~~ → **done** on slides 4+13; see handback above. PR #135 receipt pending merge.
 
-**Blocking:** `partner_copy_lint.py` green · BUILD-LOG · write back `deck_id`.
+| Lane | Tasklet action |
+|------|----------------|
+| **AirAsia MOVE deck** | Create/bind deck — logo ready, economics numbers ready, PH sealed. |
 
 ---
 

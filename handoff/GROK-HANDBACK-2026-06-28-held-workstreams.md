@@ -1,13 +1,20 @@
 # Grok handback — held workstreams (2026-06-28)
 
-## 1 · Slides lane → **Tasklet** (OAuth not completed on Grok path)
+## 1 · Slides lane
 
-Jaideep attempted OAuth; consent screen showed **"Polished CX"** (GCP OAuth app display name). Tokens not saved. **Slides work handed to Tasklet:**
+**Gojek apply — Tasklet handback received, PARKED**
 
-→ `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`
+→ `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`  
+PR #135 @ `93971c98` · live deck `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs` · slides **4+13** applied
 
-- **A:** Gojek slide 3 grid + slide 11 prize ladder on live deck `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`
-- **B:** AirAsia MOVE deck create/bind (PR #133 prep)
+**Grok follow-ups when we return:**
+- SOM rung basis ($87M vs $22M floor vs new +greenfield SOM)
+- Corridor count confirm (43 vs 49)
+- Lombok + Lake Toba KPI cards (null)
+- Map backgrounds (Jaideep)
+- Merge PR #135 BUILD-LOG receipt
+
+**Still open (Tasklet):** AirAsia MOVE deck create/bind — see `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`
 
 ---
 
