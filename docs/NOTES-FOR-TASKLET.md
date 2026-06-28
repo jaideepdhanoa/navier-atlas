@@ -6,19 +6,23 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-28 — Slides lane: Gojek ladder apply + AirAsia deck create/bind (Grok → Tasklet)
+## 2026-06-28 — PR #144 merged + Slides lane update (Grok → Tasklet)
 
-**Read:** `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`  
-**Baseline:** `main` @ `1b04ae93`
+**Read:** `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md` (updated post-merge)
 
-Grok finished model engine (Gojek 10-market re-cascade, Sumba/Toba seal, AirAsia economics model pass). **Slides API work is Tasklet-owned** — Grok OAuth did not persist (consent screen showed "Polished CX"; no `tokens.json`).
+**PR #144** (`deck-studio-record-sync-2026-06-28`) merged to `main`:
+- Gojek deck-studio synced to live **16-slide** deck + manifest OIDs
+- AirAsia MOVE logo **banked** (`logo-airasia-move.png` + `LOGO-SOURCE.json`)
+- Gojek + AirAsia `deck.config.json` records updated
 
-| Lane | Tasklet action |
-|------|----------------|
-| **Gojek live deck** | Apply slide **3** (10-market grid) + slide **11** (prize ladder) from `deck-studio/decks/gojek/deck-economics-values-gojek.json` onto `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`. Do **not** redo slides 8–10 unit-econ. |
-| **AirAsia MOVE deck** | Create/bind from Grab Thailand template; fill economics slide from `growth_case` (model pass complete ~$18M floor); logo `needs_sourcing`; PR #133 prep artifacts in `deck-studio/decks/airasia-move/`. |
+**Grok model engine (done, do not re-run):** Gojek ladder re-cascade ($22M→$372M→$1.5B→$4.5B→$201M), Sumba/Toba seal, AirAsia economics model pass ($18M floor).
 
-**Blocking:** `partner_copy_lint.py` green · BUILD-LOG receipt · real `deck_id` written back.
+| Lane | Tasklet action (still open) |
+|------|---------------------------|
+| **Gojek live deck** | Apply slide **3** + slide **11** from `deck-economics-values-gojek.json`. Do **not** redo unit-econ slides 8–12. |
+| **AirAsia MOVE deck** | Create/bind deck — logo ready, economics numbers ready, PH sealed. |
+
+**Blocking:** `partner_copy_lint.py` green · BUILD-LOG · write back `deck_id`.
 
 ---
 
