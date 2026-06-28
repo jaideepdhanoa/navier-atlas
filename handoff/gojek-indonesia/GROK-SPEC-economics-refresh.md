@@ -2,7 +2,7 @@
 
 **Live deck:** `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`  
 **Partner:** `gojek` · **Deck-studio:** `deck-studio/decks/gojek/`  
-**Status:** cascade + deck values generated 2026-06-28; Slides apply pending OAuth
+**Status:** cascade + deck values generated 2026-06-28; **Slides apply → Tasklet** (`handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`)
 
 ---
 
@@ -62,12 +62,11 @@ python3 deck-studio/decks/gen_deck_economics.py gojek
 
 Per-market floor is in `agg-gojek-deck.json` → `rollup.grounded_floor_by_market`.
 
-## Slides API apply (after OAuth)
+## Slides API apply (Tasklet-owned)
 
-1. Pull live deck inventory for `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`
-2. Join `deck-economics-values-gojek.json` fields → `economics-binding.json` object_ids
-3. Preserve Grab-gold styles (Exo2 gold titles, Poppins body)
-4. **Held null:** Pink Beach Komodo (`pending-bp-seal-pink-beach`); Quanta-LR corridors in `roadmap_quanta_lr_2026plus`
+See `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md` — Workstream A.
+
+**Held null:** Pink Beach Komodo (`pending-bp-seal-pink-beach`); Quanta-LR corridors in `roadmap_quanta_lr_2026plus`; lombok + lake-toba deck KPI cards.
 
 ## Map grounding (Grok)
 

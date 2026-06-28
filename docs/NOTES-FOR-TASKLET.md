@@ -6,6 +6,22 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-28 — Slides lane: Gojek ladder apply + AirAsia deck create/bind (Grok → Tasklet)
+
+**Read:** `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`  
+**Baseline:** `main` @ `1b04ae93`
+
+Grok finished model engine (Gojek 10-market re-cascade, Sumba/Toba seal, AirAsia economics model pass). **Slides API work is Tasklet-owned** — Grok OAuth did not persist (consent screen showed "Polished CX"; no `tokens.json`).
+
+| Lane | Tasklet action |
+|------|----------------|
+| **Gojek live deck** | Apply slide **3** (10-market grid) + slide **11** (prize ladder) from `deck-studio/decks/gojek/deck-economics-values-gojek.json` onto `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`. Do **not** redo slides 8–10 unit-econ. |
+| **AirAsia MOVE deck** | Create/bind from Grab Thailand template; fill economics slide from `growth_case` (model pass complete ~$18M floor); logo `needs_sourcing`; PR #133 prep artifacts in `deck-studio/decks/airasia-move/`. |
+
+**Blocking:** `partner_copy_lint.py` green · BUILD-LOG receipt · real `deck_id` written back.
+
+---
+
 ## 2026-06-24 — Held lanes closed: OW live deck + economics_url + PR #95 Caribbean (Grok)
 
 | Lane | Status |

@@ -1,16 +1,13 @@
 # Grok handback — held workstreams (2026-06-28)
 
-## 1 · OAuth — ACTION REQUIRED (Jaideep)
+## 1 · Slides lane → **Tasklet** (OAuth not completed on Grok path)
 
-Auth server is listening on **http://localhost:3000**. Complete sign-in in the browser:
+Jaideep attempted OAuth; consent screen showed **"Polished CX"** (GCP OAuth app display name). Tokens not saved. **Slides work handed to Tasklet:**
 
-https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.file%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdocuments%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fpresentations%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events&prompt=consent&response_type=code&client_id=533129153761-fh7a0vo2gsp1qv5fcasv2rfd30jqtaec.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth2callback
+→ `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md`
 
-After auth, Grok can:
-- Apply Gojek prize-ladder values to slide 11
-- Create/bind AirAsia MOVE deck (PR #133 prep)
-
-Re-run if server stopped: `GOOGLE_DRIVE_OAUTH_CREDENTIALS=~/.config/google-drive-mcp/gcp-oauth.keys.json npx -y @piotr-agier/google-drive-mcp auth`
+- **A:** Gojek slide 3 grid + slide 11 prize ladder on live deck `13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs`
+- **B:** AirAsia MOVE deck create/bind (PR #133 prep)
 
 ---
 
@@ -26,7 +23,7 @@ Re-run if server stopped: `GOOGLE_DRIVE_OAUTH_CREDENTIALS=~/.config/google-drive
 | Deck bindings | `deck-studio/decks/gojek/{market-scope,economics-binding}.json` |
 | Deck values | `deck-studio/decks/gojek/deck-economics-values-gojek.json` |
 
-**Held:** Slides API apply (OAuth); map QA on `/gojek/sumba` + `/gojek/lake-toba`
+**Held:** Slides apply → Tasklet; map QA on `/gojek/sumba` + `/gojek/lake-toba`
 
 ---
 
@@ -40,7 +37,7 @@ Re-run if server stopped: `GOOGLE_DRIVE_OAUTH_CREDENTIALS=~/.config/google-drive
 | PP↔El Nido | `rn-81f865bba3ac` → `roadmap_quanta_lr` (excluded from floor) |
 | SEAL hashes | `update_seal_hashes.py` run |
 
-**Held:** AirAsia deck create/bind (OAuth + logo sourcing)
+**Held:** AirAsia deck create/bind → Tasklet (+ logo sourcing)
 
 ---
 
