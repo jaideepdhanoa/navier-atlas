@@ -1,7 +1,7 @@
 # Proposal fidelity — grab
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-27T17:29:55Z
+**Checked:** 2026-06-28T06:18:13Z
 
 ## Summary
 

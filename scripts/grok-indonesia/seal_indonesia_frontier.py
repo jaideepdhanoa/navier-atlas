@@ -162,7 +162,12 @@ def bind_item(item: dict, route_id: str) -> None:
     item.pop("_inherit_at", None)
 
 
-def apply_market_bindings(doc: dict, lake_ids: dict[str, str]) -> list[str]:
+def apply_market_bindings(
+    doc: dict,
+    lake_ids: dict[str, str],
+    sumba_ids: dict[str, str] | None = None,
+) -> list[str]:
+    sumba_ids = sumba_ids or {}
     changes: list[str] = []
 
     def touch(market_id: str, label: str) -> None:
@@ -291,8 +296,122 @@ def apply_market_bindings(doc: dict, lake_ids: dict[str, str]) -> list[str]:
                         fr["_hold_reason"] = "pending-bp-seal-pink-beach"
                         fr["_link_status"] = "held-null-with-reason"
 
+        if mid == "sumba":
+            sumba_routes = {
+                "tambolaka_nihi": sumba_ids.get("tambolaka_nihi"),
+                "nihi_surf": sumba_ids.get("nihi_surf"),
+                "lombok_sumba": "rn-e8aab4ebc00f",
+            }
+
+            def bind_sumba_item(item: dict) -> None:
+                fr = (item.get("from") or "").lower()
+                to = (item.get("to") or "").lower()
+                lab = (item.get("label") or "").lower()
+                text = f"{fr} {to} {lab}"
+                rid = None
+                if "nihi" in text and ("tambolaka" in text or "waingapu" in text or "gateway" in text):
+                    rid = sumba_routes["tambolaka_nihi"]
+                elif "surf" in text or ("nihi" in text and ("southwest" in text or "kodi" in text or "pero" in text)):
+                    rid = sumba_routes["nihi_surf"]
+                elif "bali" in text or "lombok" in text:
+                    rid = sumba_routes["lombok_sumba"]
+                if rid:
+                    bind_item(item, rid)
+                    touch(mid, item.get("label") or f"{item.get('from')} → {item.get('to')}")
+
+            for j in market.get("journeys_unlocked", []) or []:
+                if j.get("route_id") is None:
+                    bind_sumba_item(j)
+            for phase in market.get("phases", []) or []:
+                for fr in phase.get("featured_routes", []) or []:
+                    if fr.get("route_id") is None:
+                        bind_sumba_item(fr)
+
     doc["_indonesia_seal"] = {"at": TS, "source": "grok/seal_indonesia_frontier", "changes": len(changes)}
     return changes
+
+
+def mint_sumba_routes() -> dict[str, str]:
+    """Mint intra-Sumba Pioneer II legs for map grounding."""
+    fbt = load_json(DC / "FEATURES_BY_TYPE.json")
+    bp_idx = build_bp_index(fbt)
+    cities = build_city_index(fbt)
+    routes = route_features(load_json(DC / "ROUTES.json"))
+    existing = {r["properties"]["id"] for r in routes if r.get("properties", {}).get("id")}
+    CITY = "sumba-indonesia"
+
+    specs = [
+        {
+            "key": "tambolaka_nihi",
+            "from_bp": "bp-a972db35cd",
+            "to_bp": "bp-6793e1d6c4",
+            "from_label": "Tambolaka Airport gateway (Waikabubak)",
+            "to_label": "NIHI Sumba (private jetty + beach-landing)",
+            "distance_nm": 35.0,
+        },
+        {
+            "key": "nihi_surf",
+            "from_bp": "bp-6793e1d6c4",
+            "to_bp": "bp-939318080b",
+            "from_label": "NIHI Sumba (private jetty + beach-landing)",
+            "to_label": "Cap Karoso (Kerewe / Karoso SW coast)",
+            "distance_nm": 18.0,
+        },
+    ]
+
+    out: dict[str, str] = {}
+    allow_add: list[str] = []
+    for spec in specs:
+        fb, tb = spec["from_bp"], spec["to_bp"]
+        if fb not in bp_idx or tb not in bp_idx:
+            raise SystemExit(f"missing BP for {spec['key']}: {fb} {tb}")
+        rid = mint_route_id(fb, tb, tag="sumba_grounding")
+        out[spec["key"]] = rid
+        if rid in existing:
+            continue
+        a, b = bp_idx[fb]["coords"], bp_idx[tb]["coords"]
+        coords = straight_coords(a, b)
+        feat = {
+            "type": "Feature",
+            "geometry": {"type": "LineString", "coordinates": coords},
+            "properties": {
+                "id": rid,
+                "platform": platform_for(spec["distance_nm"]),
+                "distance_nm": spec["distance_nm"],
+                "edge_class": edge_class_for(CITY, CITY, spec["distance_nm"]),
+                "from": fb,
+                "to": tb,
+                "from_label": spec["from_label"],
+                "to_label": spec["to_label"],
+                "from_city": cities.get(CITY, "Sumba"),
+                "to_city": cities.get(CITY, "Sumba"),
+                "from_city_id": CITY,
+                "to_city_id": CITY,
+                "label": f"Sumba: {spec['from_label']} → {spec['to_label']}",
+                "trip_scope": trip_scope_for(CITY, CITY),
+                "traffic_weight": 0.55,
+                "_sumba_mint": True,
+                "_geometry_fix_source": "grok/seal_indonesia_frontier",
+                "_geometry_fix_at": TS,
+            },
+        }
+        routes.append(feat)
+        existing.add(rid)
+        allow_add.append(rid)
+
+    save_routes(DC / "ROUTES.json", routes)
+    allow_path = DC / "route_water_allowlist.json"
+    if allow_path.exists() and allow_add:
+        allow = load_json(allow_path)
+        ids = list(allow.get("ids", []))
+        seen = set(ids)
+        for rid in allow_add:
+            if rid not in seen:
+                ids.append(rid)
+                seen.add(rid)
+        allow["ids"] = ids
+        save_json(allow_path, allow)
+    return out
 
 
 def main() -> int:
@@ -301,12 +420,17 @@ def main() -> int:
     for k, rid in lake_ids.items():
         print(f"  {k}: {rid}")
 
+    print("→ minting Sumba grounding corridors…")
+    sumba_ids = mint_sumba_routes()
+    for k, rid in sumba_ids.items():
+        print(f"  {k}: {rid}")
+
     all_changes: list[str] = []
     for path in PARTNER_PATHS:
         if not path.is_file():
             continue
         doc = load_json(path)
-        changes = apply_market_bindings(doc, lake_ids)
+        changes = apply_market_bindings(doc, lake_ids, sumba_ids)
         path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
         print(f"✓ {path.relative_to(ROOT)} ({len(changes)} bindings)")
         all_changes.extend(changes)
@@ -315,6 +439,7 @@ def main() -> int:
         "phase": "indonesia-frontier-seal",
         "at": TS,
         "lake_toba_route_ids": lake_ids,
+        "sumba_route_ids": sumba_ids,
         "bindings": all_changes,
         "binding_count": len(all_changes),
     }

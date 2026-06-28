@@ -1,7 +1,7 @@
 # Proposal fidelity — noon
 
 **Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-27T17:34:02Z
+**Checked:** 2026-06-28T06:18:13Z
 
 ## Summary
 

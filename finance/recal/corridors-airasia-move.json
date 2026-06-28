@@ -1,0 +1,2076 @@
+{
+  "_doc": "Scoped corridors view for airasia-move Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-06-28T06:47:18Z",
+  "capture_rate": 0.1,
+  "markets": {
+    "airasia-move": {
+      "partner": "airasia-move",
+      "region": "Southeast Asia",
+      "label": "AirAsia MOVE \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "airasia-move-bite2-cascade",
+      "_partner_market_keys": [],
+      "_route_ids_requested": 89,
+      "_corridors_bound": 52,
+      "corridors": [
+        {
+          "route_id": "edge__karimunjawa-central-java-indonesia__jakarta-marina-ancol-karimunjawa-line-haul",
+          "from": "Karimunjawa Archipelago",
+          "to": "Jakarta",
+          "distance_nm": 223.5,
+          "vessel": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "karimunjawa-central-java-indonesia",
+          "to_node_id": "jakarta-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "gcn-0965643d33-shared",
+          "from": "George Town",
+          "to": "Batu Ferringhi resort strip",
+          "distance_nm": 6.6,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "penang-malaysia",
+          "to_node_id": "penang-malaysia",
+          "country": "Malaysia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-0965643d33",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 45,
+            "_fare_record": {
+              "value": 30.0,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "MYR",
+              "year": 2025,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No scheduled passenger boat George Town<->Batu Ferringhi; the resort strip is reached by road along the north coast. Modeled premium per-seat scenic speedboat transfer ~RM130/way ($30) by analogy to short Sabah/Langkawi private-speedboat seats.",
+              "method": "Greenfield - no comparable boat service exists. Modeled premium per-seat; flag to cascade (R5: no direct route = a finding).",
+              "fare_ladder_usd_pax": {
+                "budget": "n/a (road only)",
+                "standard": "n/a",
+                "premium": 30.0,
+                "charter": "~RM500/boat modeled"
+              }
+            },
+            "corridor_annual_oneway_pax": 38250,
+            "_demand_record": {
+              "value": 38250,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "penang"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-097bdf6e8e-shared",
+          "from": "Chalong Pier (Ao Chalong)",
+          "to": "Chalong Pier (Ao Chalong)",
+          "distance_nm": 10.0,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-097bdf6e8e",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55,
+            "_fare_record": {
+              "value": 35,
+              "unit": "USD/pax/day-trip ride (half-day Coral speedboat comparable, lunch/snorkel-inclusive)",
+              "currency_basis": "THB at ~36 THB/USD (same FX basis as existing phuket rows, 2026)",
+              "year": 2026,
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Modal product = shared speedboat Coral Island half/one-day trip ex-Chalong: Love Sea Tour Racha+Coral speedboat 1,200 THB adult (promo 1,050) (loveseatour.com/racha-coral-speed-boat/); JC Tour Coral+snorkel 1,200 THB (jctour-thai.com/coral); Andamarine one-day Racha Yai+Coral 1,250 THB/pax incl. buffet lunch (operator IG, 2026). Premium top of ladder: HYPE join-in day cruise 3,900 THB adult incl. transfer (operator rate sheet via boatingo.com/boats/hype-catamaran/). Anchor = modal speedboat product ~1,250 THB = ~USD 35, NOT the premium cat.",
+              "method": "observed operator per-seat pricing for the identical day-experience products; anchor at the volume-dominant product tier",
+              "fare_ladder_usd_pax": {
+                "loveseatour_racha_coral_promo": 29,
+                "jctour_coral_halfday": 33,
+                "andamarine_racha_coral_oneday": 35,
+                "sunset_dinner_catamaran_band": 60,
+                "hype_join_in_day_cruise_thb3900": 108
+              }
+            },
+            "corridor_annual_oneway_pax": 136659,
+            "_demand_record": {
+              "value": 136659,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "phuket-andaman"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-224eb8acd1-shared",
+          "from": "Komodo / Labuan Bajo",
+          "to": "Sumba (Nihi)",
+          "distance_nm": 90,
+          "vessel": "Quanta-LR",
+          "archetype": "intercity",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "sumba-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-224eb8acd1",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 200,
+            "_fare_record": {
+              "value": 200,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR->USD @ ~16,300/USD, 2026",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No scheduled per-seat premium boat transfer Labuan Bajo->Sumba. Budget floor = Pelni car ferry ~24h, IDR 244k (~$15) incl berth+3 meals (FB group, each way). Premium = NIHI private boat charters (whole-boat, luxury) or fly. Modeled premium per-seat for a fast luxury-resort sea transfer ~$200 (between $15 slow-ferry and whole-boat charter, scaled to Nihi-class clientele on a 90nm open-water crossing).",
+              "method": "modeled-premium-resort-transfer (R5 no-direct-route)",
+              "fare_ladder_usd_pax": {
+                "budget_pelni_ferry_24h": 15,
+                "standard_no_scheduled_service": null,
+                "premium_modeled_perseat_transfer": 200,
+                "whole_boat_nihi_private_charter": "luxury whole-boat (overclaim, excluded)"
+              },
+              "anchor_rationale": "Ultra-luxury resort corridor (NIHI). Currently no per-seat premium sea transfer; clientele flies or charters whole boats. Modeled per-seat anchor avoids both under-claim (slow Pelni) and over-claim (whole-boat charter). Greenfield-thin (R5)."
+            },
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "basis": "roadmap_quanta_lr",
+              "note": "PP\u2194El Nido held out of floor"
+            },
+            "demand_confidence": "low"
+          },
+          "_roadmap": true,
+          "_in_grounded_floor": false
+        },
+        {
+          "route_id": "gcn-3273659cd1-shared",
+          "from": "Lombok",
+          "to": "Komodo / Labuan Bajo",
+          "distance_nm": 237,
+          "vessel": "Quanta-LR",
+          "archetype": "intercity",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "lombok-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-3273659cd1",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 130,
+            "_fare_record": {
+              "value": 130,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR->USD @ ~16,300/USD, 2026",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No direct premium fast ferry on the 150nm crossing. Substitute premium point-to-point mode = flight Lombok(LOP)->Labuan Bajo(LBJ): IDR 1.5-2.5M ($100-170) one-way (Garuda/Wings/Lion, surfwells 2026). Pelni slow ferry IDR 236k ($27), 24-36h = budget floor. Liveaboard 4D3N $200-1000/pax = bundled cruise, excluded as overclaim. Modeled premium per-seat transfer anchored at air-fare midpoint ~$130.",
+              "method": "modeled-on-substitute-mode (R5 no-direct-route)",
+              "fare_ladder_usd_pax": {
+                "budget_pelni_ferry_24_36h": 27,
+                "standard_no_scheduled_fastboat": null,
+                "premium_substitute_airfare": "100-170",
+                "liveaboard_4d3n_per_pax_excluded": "200-1000",
+                "whole_boat_private_charter": "1500+/boat"
+              },
+              "anchor_rationale": "Navier Quanta-LR = fast point-to-point sea transfer; currently the only fast P2P option on this corridor is the FLIGHT, so the relevant traveler-paid comparable is the airfare, not the multi-day liveaboard. R5 greenfield-thin signal."
+            },
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "basis": "roadmap_quanta_lr",
+              "note": "PP\u2194El Nido held out of floor"
+            },
+            "demand_confidence": "low"
+          },
+          "_roadmap": true,
+          "_in_grounded_floor": false
+        },
+        {
+          "route_id": "gcn-334cc44485-shared",
+          "from": "ICONSIAM Pier (Chao Phraya)",
+          "to": "ICONSIAM Pier (Chao Phraya)",
+          "distance_nm": 5.3,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bangkok",
+          "to_node_id": "bangkok",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-334cc44485",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35,
+            "_fare_record": {
+              "value": 35,
+              "unit": "USD/pax/loop-ride (evening sail, F&B-inclusive comparable)",
+              "currency_basis": "THB 1,200; FX ~34 THB/USD, 2026",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Conservative mid of the live Jun-2026 promo band across 24 listed dinner-round products (899-2,000 THB; cluster at 1,150-1,550): click2gothailand.com top-10 guide (updated 1-Jun-2026); Bangkok Chaophraya Cruise operator site lists 1,550 THB/pax rack. Navier 8-pax product would be drinks/canape-class, not galley-buffet-class, hence mid-band anchor not premium.",
+              "method": "OTA-listed per-seat evening-sail pricing across the full operator set, conservative mid-band",
+              "fare_ladder_usd_pax": {
+                "sunset_round_low": 18,
+                "budget_dinner_round": 26,
+                "headline_anchor_mid_band": 35,
+                "operator_rack_bangkok_chaophraya": 46,
+                "wonderful_pearl_premium": 59
+              }
+            },
+            "corridor_annual_oneway_pax": 1200000,
+            "_demand_record": {
+              "value": 1200000,
+              "unit": "pax/yr (loop rides; one seat = one ride)",
+              "gross_pool_pax_yr": 1200000,
+              "gross_pool_basis": "Fleet x sailings x capacity x load (WaterB precedent), whole-market: ~10 cruise operators on the river (T2, Bangkok Post 23-Mar-2024 quoting Tristar/Chao Phraya Princess director Chatree Wangpanitkul); >=25 distinct scheduled hulls active Jun-2026 (T2, click2gothailand catalog: 24 dinner-round products + sunset rounds, after collapsing same-hull multi-pier listings; CP Princess alone fields 8 hulls). Capacities where published: CP Princess fleet 150-450 pax/hull (T2 BKK Post), Viva Alangka 700 / Royal Princess 600 / Alangka 400 (T2 guide), Chaophraya Cruise 290 (T1 operator site chaophrayacruise.com). Build: floor 20 hulls x 1 sailing/night x 250 avg cap x 40% load = 2,000/night = 730k/yr; base 25 hulls x 1 x 300 x 50% = 3,750/night = 1.37M, haircut to 1.2M; ceiling 25 hulls x 1.4 sailings (sunset+dinner doubles) x 325 x 60% = 6,800/night = 2.5M, capped at 2.0M. Cross-check: CP Princess alone runs 5-8 trips/day (T2 BKK Post) ~ 350k pax/yr at mid assumptions and is the largest operator -> market 3-4x Princess = 1.1-1.4M, consistent with base.",
+              "addressable_pax_yr_floor": 700000,
+              "addressable_pax_yr": 1200000,
+              "addressable_pax_yr_ceiling": 2000000,
+              "demand_confidence": "med",
+              "sources": [
+                {
+                  "label": "Bangkok Post - 'Staying afloat in a turbulent market' (23-Mar-2024): Chao Phraya Princess fleet 8 boats, 150-450 pax capacity, 300+ staff, 5-8 boat trips daily, ~10 cruise operators on the river, 2024 target 80% of 2019 customers",
+                  "url": "https://www.bangkokpost.com/business/general/2763423/staying-afloat-in-a-turbulent-market",
+                  "year": 2024,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Click2GoThailand Top-10 Bangkok Dinner Cruises (updated 1-Jun-2026) - live catalog of 24 dinner-round + 9 sunset-round products across ICONSIAM/Asiatique/River City piers with ship specs (Viva Alangka 700 pax, Royal Princess 600, Alangka 400) and promo fares 599-2,000 THB",
+                  "url": "https://www.click2gothailand.com/guides/00008/top-10-bangkok-dinner-cruises",
+                  "year": 2026,
+                  "tier": "T2"
+                },
+                {
+                  "label": "Chaophraya Cruise operator site - Chaophraya Cruise capacity 290 passengers (Grand Chaophraya + Chaophraya Cruise 2-hull fleet)",
+                  "url": "https://chaophrayacruise.com/en/",
+                  "year": 2025,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Bangkok Chaophraya Cruise operator site - 1,550 THB/pax, two daily cruises",
+                  "url": "https://www.bangkokchaophrayacruise.com/",
+                  "year": 2026,
+                  "tier": "T1"
+                }
+              ],
+              "haircut_rationale": "GROUNDED: real scheduled per-seat ridership today (LB-98 species 3). No big-round-number anchor exists; pool is built bottom-up from T1/T2 hull counts and capacities with T3 load/sailing-frequency inference (the only unsourced layers), mirroring the SG WaterB recipe. Base haircut below the raw mid build; ceiling capped below the raw ceiling. Navier 10% capture applied downstream by the engine, competing on product (8-pax premium electric, private-table small-group) at drinks-class price parity.",
+              "lb91_test": "PASS by construction: every counted pax bought a boat ride as the product. Asiatique/ICONSIAM mall foot traffic and free shuttle riders are NOT counted (R3-LAND / zero-fare exclusion).",
+              "dedupe": "ONE merged pool for all parallel dinner/sunset operators per LB-86 (no per-operator rows, no _subset_of chains). No overlap with bkk_hoponhopoff_river_1100k_yr (daytime sightseeing line, different product/fare class) nor with excluded commuter/shuttle/longtail species."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-3d7809869d-shared",
+          "from": "Bali (Benoa / Sanur)",
+          "to": "Nusa Penida / Lembongan",
+          "distance_nm": 13.5,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "bali-indonesia",
+          "to_node_id": "bali-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-3d7809869d",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "_fare_record": {
+              "value": 60,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med-high",
+              "source": "Premium private transfer tier, Sanur->Nusa Penida. Tripadvisor 'Private and Luxury' $75/adult (bundles tour, excluded as overclaim); Klook Premium Speedboat; standard fast boat $37-40. Anchored at $60 = clean premium point-to-point transfer, conservative vs $75 bundled.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "budget_shared": 13,
+                "standard_fastboat": 40,
+                "premium_transfer": 60,
+                "private_charter_per_seat": 75,
+                "whole_boat_charter": "500-610/boat"
+              },
+              "anchor_rationale": "Navier = premium private on-demand boat sold per-seat. Comparable = premium transfer tier, NOT budget ferry (under-claim) and NOT whole-boat charter (over-claim). Market parity, win on product."
+            },
+            "corridor_annual_oneway_pax": 123033,
+            "_demand_record": {
+              "value": 123033,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "bali-nusa-gili"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-5596b8c9ee-shared",
+          "from": "Kuah Jetty (Langkawi)",
+          "to": "George Town, Penang (Swettenham Pier)",
+          "distance_nm": 62.0,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "langkawi-malaysia",
+          "to_node_id": "penang-malaysia",
+          "country": "Malaysia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-5596b8c9ee",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 48,
+            "_fare_record": {
+              "value": 17.4,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "MYR; RM4.30/USD (2025-26 avg)",
+              "year": 2025,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Super Fast Ferry Ventures (restarted the lapsed route post-2023), Kuah Jetty <-> Swettenham Pier, ~3h: BusOnlineTicket 'RM70 per passenger', 3 departures/day each way listed; Easybook RM80 adult / RM60 child; live Klook listing (act. 40908, '100+ booked', dep 08:30 Penang / 15:00 Langkawi). Historical pre-Covid fare RM73.60 (prior R10 record). One 2026 guide (malaysialife.org) claims service has ceased again; Reddit/FB threads 2025-26 mixed.",
+              "method": "Premium per-seat anchor = RM75 mid of live OTA listings (RM70-80) = $17.40. Single class observed - no published premium tier above. ROUTE STATUS UNCERTAIN: operating-thin at best (R14) and possibly re-lapsed (R10); fare is anchored on real listings but flag for parent cascade review.",
+              "fare_ladder_usd_pax": {
+                "budget": null,
+                "standard": 16.3,
+                "premium": 18.6,
+                "charter": null
+              },
+              "_route_status_note": "lapsed pre-Covid -> restarted ~Nov 2023 by Super Fast Ferry Ventures -> 2026 operating status conflicted (live OTA listings vs '2026 ceased' editorial). Distance: OTAs quote ~2.5-3h crossing, consistent with parent 62nm estimate."
+            },
+            "corridor_annual_oneway_pax": 95200,
+            "_demand_record": {
+              "value": 95200,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "langkawi"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-869b9d144c-shared",
+          "from": "Bali",
+          "to": "Gili Islands / Lombok",
+          "distance_nm": 45,
+          "vessel": "Quanta-LR",
+          "archetype": "intercity",
+          "from_node_id": "bali-indonesia",
+          "to_node_id": "lombok-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-869b9d144c",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "_fare_record": {
+              "value": 64,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med-high",
+              "source": "Premium transfer tier, Bali->Gili Trawangan. Tripadvisor 'Luxury Speedboat Transfer' $64; standard $28-42; budget ~$20; whole-boat private $500-1200.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "budget": 20,
+                "standard": 42,
+                "premium_luxury": 64,
+                "whole_boat_charter": "500-1200/boat"
+              },
+              "anchor_rationale": "Premium transfer tier, per-seat. Market parity, win on product."
+            },
+            "corridor_annual_oneway_pax": 123033,
+            "_demand_record": {
+              "value": 123033,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "bali-nusa-gili"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-b3d5523f36-shared",
+          "from": "Telaga Harbour (Langkawi)",
+          "to": "Koh Lipe (Thailand)",
+          "distance_nm": 23.0,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "langkawi-malaysia",
+          "to_node_id": "langkawi-malaysia",
+          "country": "Malaysia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-b3d5523f36",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 48,
+            "_fare_record": {
+              "value": 41.9,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "MYR (Langkawi-origin); RM4.30/USD (2025-26 avg); reverse leg THB1,200-1,400 @ THB35/USD",
+              "year": 2025,
+              "source_tier": "T3",
+              "confidence": "high",
+              "source": "2025-26 season (Oct 2025-31 May 2026): Telaga Harbour -> Koh Lipe one-way adult RM180 = $41.9 (kohlipeisland.org season fare table; operators Tropical Charters + Bundhaya Speed Boat / Tigerline, ~90 min speedboat); DirectFerries cheapest $42 Koh Lipe-Telaga; ferrygogo 'from RM145' Bundhaya. Koh Lipe -> Langkawi THB1,200-1,400 ($34-40). Tarutao NP fee THB200 paid separately on arrival (NOT in fare - no netting needed).",
+              "method": "Premium per-seat anchor = published per-seat speedboat fare RM180. Single-tier but premium-positioned cross-border tourist speedboat (R13: tourist single-class at premium parity = solid anchor). Two+ agreeing T3 listings = high confidence. Seasonal: no service Jun-mid Oct.",
+              "fare_ladder_usd_pax": {
+                "budget": 33.7,
+                "standard": 41.9,
+                "premium": 41.9,
+                "charter": "private cross-border charter not scheduled/published"
+              }
+            },
+            "corridor_annual_oneway_pax": 95200,
+            "_demand_record": {
+              "value": 95200,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "langkawi"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-c46f3bf4b8-shared",
+          "from": "George Town (Swettenham)",
+          "to": "Butterworth (mainland)",
+          "distance_nm": 1.62,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "penang-malaysia",
+          "to_node_id": "penang-malaysia",
+          "country": "Malaysia",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-c46f3bf4b8",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 45,
+            "_fare_record": {
+              "value": 0.47,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "MYR",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Penang Port public ferry (George Town<->Butterworth) adult pedestrian fare RM2.00/way (RM1.00 under-12), per penangport.gov.my & 2023 fare notice. RM2 @4.30 = $0.47.",
+              "method": "Flat-fare public commuter ferry. R5-EXT: single-class commute boat, NO premium per-seat tier exists to anchor on. Never anchor Navier to a $0.47 commuter fare -> flag to cascade.",
+              "fare_ladder_usd_pax": {
+                "budget_public_ferry": 0.47,
+                "standard": 0.47,
+                "premium": "none (single-class)",
+                "charter": "n/a"
+              }
+            },
+            "corridor_annual_oneway_pax": 38250,
+            "_demand_record": {
+              "value": 38250,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "penang"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-e299366426-shared",
+          "from": "Sathorn (Central) Pier",
+          "to": "Phra Arthit Pier",
+          "distance_nm": 2.9,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bangkok",
+          "to_node_id": "bangkok",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-e299366426",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.4,
+            "_fare_record": {
+              "value": 4.4,
+              "unit": "USD/pax/day-pass (unlimited hopping, the dominant ticket for this product)",
+              "currency_basis": "THB 150; FX ~34 THB/USD, 2026",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Operator site chaophrayatouristboat.com/tourist_boat: 'All Day River Pass 150 Baht from normal price 225 Baht'; single-journey 40 THB (from 45). Booth price 150 THB corroborated by TripAdvisor review Oct-2025.",
+              "method": "observed operator per-seat price for the identical hop-on-hop-off product",
+              "fare_ladder_usd_pax": {
+                "single_journey": 1.2,
+                "day_pass_promo_headline": 4.4,
+                "day_pass_rack": 6.6
+              }
+            },
+            "corridor_annual_oneway_pax": 1100000,
+            "_demand_record": {
+              "value": 1100000,
+              "unit": "pax/yr (rides on the tourist line; one boarding = one ride)",
+              "gross_pool_pax_yr": 1100000,
+              "gross_pool_basis": "Chao Phraya Tourist Boat (blue flag, sole hop-on-hop-off operator, est. 2003, spun out of Chao Phraya Express Boat Co): operator-published fleet 5 boats (3 catamarans 190 pax + 2 monohulls 150 pax = 870 seats) and operator-published average 3,500 tourists/day (Chinese-language section of operator About page; figure reads as ~2019-era steady state). Schedule cross-check: published timetable 21 departures/direction/day = 42 one-way runs x ~174 avg seats = 7,308 seat-trips/day -> 3,500/day implies 48% load, plausible. Floor 800k (2,500/day, post-COVID recovery haircut consistent with Thailand 2024 arrivals 35.5M vs 39.9M 2019); base 1.1M (~3,000-3,300/day, T3 blog corroborator 'over 3,000/day during peak', thetravelauthor.com); ceiling 1.3M (operator avg 3,500/day held year-round).",
+              "addressable_pax_yr_floor": 800000,
+              "addressable_pax_yr": 1100000,
+              "addressable_pax_yr_ceiling": 1300000,
+              "demand_confidence": "med",
+              "sources": [
+                {
+                  "label": "Chao Phraya Tourist Boat operator site - fleet 5 (3x190-pax catamaran CTB1-3 + 2x150-pax monohull CTB4-5), avg 3,500 tourists/day, every-30-min service 11 piers Sathorn-Phra Arthit, evening extension to Asiatique",
+                  "url": "https://chaophrayatouristboat.com/tourist_boat",
+                  "year": 2025,
+                  "tier": "T1"
+                },
+                {
+                  "label": "Operator timetable (same page) - 21 scheduled departures per direction per day, 08:30-19:15; All Day River Pass 150/225 THB, single 40/45 THB",
+                  "url": "https://chaophrayatouristboat.com/tourist_boat",
+                  "year": 2025,
+                  "tier": "T1"
+                },
+                {
+                  "label": "The Travel Author review - '5 boats in the fleet... over 3000 passengers a day during the peak' (corroborator only)",
+                  "url": "https://thetravelauthor.com/chao-phraya-tourist-boat-bangkok-hop-on-hop-off-review/",
+                  "year": 2024,
+                  "tier": "T3"
+                },
+                {
+                  "label": "Chao Phraya Express Boat (Wikipedia) - commuter express ~40,000 pax/day: recorded ONLY to document species exclusion (commuter = LB-97, not this pool)",
+                  "url": "https://en.wikipedia.org/wiki/Chao_Phraya_Express_Boat",
+                  "year": 2024,
+                  "tier": "T2"
+                }
+              ],
+              "haircut_rationale": "GROUNDED: real observed water-experience ridership today (LB-98 species 3), single operator so no LB-86 dedupe needed. Floor takes a recovery haircut on the operator's published average because the 3,500/day figure dates from the site's ~2019-era copy and could NOT be re-verified for 2025 (held honest). Navier 10% capture applied downstream by the engine.",
+              "lb91_test": "PASS: riders buy the river ride as the product (day pass). Land-arriving visitors to riverside attractions are NOT counted; free mall shuttles excluded.",
+              "dedupe": "No overlap with the dinner-cruise pool (different product/daypart/fare class) or with commuter express boat (excluded species). Blue-flag is the only hop-on-hop-off operator on the river - no parallel-operator merge needed."
+            },
+            "demand_confidence": null
+          }
+        },
+        {
+          "route_id": "gcn-e927fe8958-shared",
+          "from": "Phuket",
+          "to": "Krabi (Ao Nang)",
+          "distance_nm": 40,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-e927fe8958",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55,
+            "_fare_record": {
+              "value": 44,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Phuket->Krabi (Ao Nang) speedboat premium tier ~comparable to Phi Phi route ($44). Krabi-specific demand re-source pending.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "budget": 18,
+                "vip_transfer": 22,
+                "private_speedboat": 44,
+                "private_charter": "333/2pax-tour"
+              }
+            },
+            "corridor_annual_oneway_pax": 136659,
+            "_demand_record": {
+              "value": 136659,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "phuket-andaman"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "gcn-f1b2ff834e-shared",
+          "from": "Ao Po Pier (Ao Po / Ao Por, NE Phuket)",
+          "to": "Khao Phing Kan (James Bond Island), Phang Nga Bay",
+          "distance_nm": 13.5,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "phuket-phang-nga-thailand",
+          "to_node_id": "phuket-phang-nga-thailand",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "_inherited_from_gcn": "gcn-f1b2ff834e",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55,
+            "_fare_record": {
+              "value": 90,
+              "unit": "USD/pax/day-cruise (premium small-group, lunch/kayak-inclusive comparable; THB 300 NP fee netted out on fare side per existing phuket rule)",
+              "currency_basis": "THB at ~36 THB/USD (same FX basis as existing phuket rows, 2026)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "John Gray's Hong by Starlight 3,350 THB/pax agent rate (phukettoursdirect.com/hong-by-starlight.html) / USD 108.89 retail (Agoda activities listing); Phuket Sail Tours sunset/day band 2,200-2,800 THB (phuketexpatguide.com operator comparison, 2026); Simba Sea Trips premium small-group products (TripAdvisor-listed, 18-adult cap, award-positioned above mass market). Anchor = conservative mid of the 2,500-3,900 THB premium band ~ USD 90.",
+              "method": "operator/agent-listed per-seat pricing for the identical premium small-group day-cruise products, conservative mid-band",
+              "fare_ladder_usd_pax": {
+                "pst_sunset_band_low_thb2200": 61,
+                "pst_band_high_thb2800": 78,
+                "johngray_agent_thb3350": 93,
+                "johngray_retail_agoda": 109,
+                "parent_pool_anchor_ref": 72
+              }
+            },
+            "corridor_annual_oneway_pax": 136659,
+            "_demand_record": {
+              "value": 136659,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "phuket-andaman"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "ics-2c1d5b96c1",
+          "from": "Sanur Beach Fast Boat Terminal",
+          "to": "Nusa Penida (Toyapakeh / Banjar Nyuh harbour)",
+          "distance_nm": 13.5,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "Bali",
+          "to_node_id": "Bali",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "ics-5038f54700",
+          "from": "Koh Samui (Lipa Noi)",
+          "to": "Donsak (Raja Ferry pier)",
+          "distance_nm": 14.3,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "_fare_record": {
+              "value": 15.2,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "same crossing as rn-347c44e1d360 (Raja vehicle-ferry pier pair) - inherits the fast-cat premium per-seat anchor",
+              "source_url": "https://www.omio.com/ferries/surat-thani/ko-samui-vxova",
+              "notes": "Raja's own product is the THB 160 single-class vehicle ferry (budget tier); premium per-seat tier on the crossing is the ~THB 500 fast-cat point (see rn-347c44e1d360). FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 12177,
+            "_demand_record": {
+              "value": 12177,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "koh-samui-gulf"
+            },
+            "_pool_override_recal": {
+              "pool": "Raja+Seatran Surat Thani-Samui ~2M/yr",
+              "pool_pax": 2000000,
+              "share_of_pool": 0.3333333333333333,
+              "final_pax_yr": 666667,
+              "source_url": "https://www.samuitimes.com/"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_subset_rule": "R-SUBSET: mint-slice pool of parent crossing \u2014 never sum with parent in aggregates",
+          "pool_id": "donsak_samui_carferry_2M",
+          "share_of_pool": 0.3333,
+          "_subset_of_old": "rn-347c44e1d360",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "ics-62e1590af9",
+          "from": "Thousand Islands \u2014 inner ring",
+          "to": "Thousand Islands \u2014 outer ring",
+          "distance_nm": 28.9,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "jakarta-indonesia__thousand-islands-inner-ring-bidadari-ayer-onrust-historical",
+          "to_node_id": "jakarta-indonesia__thousand-islands-outer-ring-macan-pelangi-putri-sepa-pantara",
+          "country": "Indonesia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40,
+            "_fare_record": {
+              "value": 16.6,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR modeled @ ~16,300 IDR/USD",
+              "year": 2025,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "No scheduled per-seat passenger service runs directly between the inner and outer rings; inter-island hopping is done by charter/private-tour boats. Modeled by distance interpolation on the observed Marina Ancol tariff curve (10nm Rp155k -> 35nm Rp335k); 22nm => ~Rp270,000.",
+              "method": "R5/R14 operating-thin/greenfield: no direct premium per-seat product to observe on this inter-ring leg => modeled fare. Interpolated premium per-seat ~Rp270k. Flag to parent cascade.",
+              "fare_ladder_usd_pax": {
+                "modeled_premium_per_seat": 16.6
+              }
+            },
+            "corridor_annual_oneway_pax": 8500,
+            "_demand_record": {
+              "value": 8500,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "jakarta"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_distance_nm_orig": 22,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "ics-9e59ba5c5c",
+          "from": "Marina Ancol",
+          "to": "Thousand Islands \u2014 inner ring (Bidadari / Ayer / Onrust)",
+          "distance_nm": 7.4,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "jakarta-indonesia__marina-ancol-jakarta-bay",
+          "to_node_id": "jakarta-indonesia__thousand-islands-inner-ring-bidadari-ayer-onrust-historical",
+          "country": "Indonesia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40,
+            "_fare_record": {
+              "value": 11.7,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR converted @ ~16,300 IDR/USD (2025 avg; fares are 2024-25 listings)",
+              "year": 2025,
+              "source_tier": "T2/T3",
+              "confidence": "med-high",
+              "source": "Official Marina Ancol speedboat tariff table (pulauseribu-resorts.com / visitpulauseribu.co.id): Ayer/Bidadari Rp155,000 one-way regular speedboat; budget wooden boat ex-Kaliadem Rp90-110k; private speedboat charter Rp2,400,000/boat (Ayer/Bidadari/Kelor-Onrust) => ~Rp200-300k/seat. Premium per-seat anchored at ~Rp190,000.",
+              "method": "Fare ladder: budget wooden boat ~Rp110k / standard speedboat Rp155k / PREMIUM private-speedboat-per-seat ~Rp190k (ANCHOR) / whole-boat charter Rp2.4M. Picked premium per-seat (R1, R1-RESORT). Short 10nm crossing; speedboat is the premium-vs-wooden-boat product.",
+              "fare_ladder_usd_pax": {
+                "budget_wooden_boat": 6.7,
+                "standard_speedboat": 9.5,
+                "premium_per_seat": 11.7,
+                "whole_boat_charter_per_boat": 147.2
+              }
+            },
+            "corridor_annual_oneway_pax": 8500,
+            "_demand_record": {
+              "value": 8500,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "jakarta"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_distance_nm_orig": 10,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "ics-fe31c28f2c",
+          "from": "Marina Ancol",
+          "to": "Thousand Islands \u2014 outer ring (Macan / Pelangi / Putri / Sepa)",
+          "distance_nm": 35.9,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "jakarta-indonesia__marina-ancol-jakarta-bay",
+          "to_node_id": "jakarta-indonesia__thousand-islands-outer-ring-macan-pelangi-putri-sepa-pantara",
+          "country": "Indonesia",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40,
+            "_fare_record": {
+              "value": 24.5,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "IDR converted @ ~16,300 IDR/USD (2025 avg; fares are 2024-25 listings)",
+              "year": 2025,
+              "source_tier": "T2/T3",
+              "confidence": "high",
+              "source": "Official Marina Ancol tariff table: Pelangi/Sepa/Macan & Kotok/Putri Rp335,000 one-way regular speedboat; Pulau Pantara Rp455,000 one-way; Tokopedia (endangeredstore) Pelangi/Sepa one-way Rp340,000. Resort day/2D1N packages (Sepa Rp1,250,000 one-day incl. transport+lunch+activities; Putri 2D1N Rp1,610,000-2,200,000) include premium boat but are bundles, not pure transfer. Premium per-seat transfer anchored ~Rp400,000.",
+              "method": "Fare ladder (resort-only, no budget wooden boat to outer resorts): standard speedboat Rp335k / PREMIUM resort speedboat ~Rp400k (ANCHOR, between Rp335k std and Rp455k Pantara) / Pantara Rp455k / whole-boat charter (over-claim, excluded). Picked premium per-seat (R1, R1-RESORT). 35nm resort transfer.",
+              "fare_ladder_usd_pax": {
+                "standard_speedboat": 20.6,
+                "premium_resort_speedboat": 24.5,
+                "pantara_tier": 27.9
+              }
+            },
+            "corridor_annual_oneway_pax": 8500,
+            "_demand_record": {
+              "value": 8500,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "jakarta"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_distance_nm_orig": 35,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-11d0c322c8c8",
+          "from": "Komodo / Labuan Bajo / Flores / Sumba",
+          "to": "Sumba",
+          "distance_nm": 82.9,
+          "vessel": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "sumba-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "basis": "roadmap_quanta_lr",
+              "note": "PP\u2194El Nido held out of floor"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_roadmap": true,
+          "_in_grounded_floor": false
+        },
+        {
+          "route_id": "rn-14140e408593",
+          "from": "Lombok",
+          "to": "Gili Trawangan main jetty",
+          "distance_nm": 62.6,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "lombok-indonesia",
+          "to_node_id": "bp-51392b1914",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 32928,
+            "_demand_record": {
+              "value": 32928,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "lombok"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-1f3002dd00e5",
+          "from": "Komodo",
+          "to": "Pelabuhan Labuan Bajo",
+          "distance_nm": 1.4,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "bp-b4d8be42e5",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 65,
+            "corridor_annual_oneway_pax": 15172,
+            "_demand_record": {
+              "value": 15172,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "komodo-flores"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-21d437d2bf84",
+          "from": "Koh Samui",
+          "to": "Koh Tao (Mae Haad)",
+          "distance_nm": 35.3,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "_fare_record": {
+              "value": 24.4,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "premium_fast_catamaran_per_seat (Lomprayah/Seatran Discovery high-speed cat is the top scheduled per-seat product on this 35 nm open-water leg)",
+              "source_url": "https://www.ticket2attraction.com/discount-tickets/ferry-samui-koh-tao/",
+              "notes": "Anchor THB 800/pp one-way = USD 24.4 (top of the published THB 700-850 fast-cat band: ticket2attraction Lomprayah ex-Pralarn from THB 700; ferryadvice 700; rome2rio THB 650-1,300; city-brief/siamtickets band 700-850). Fare ladder (THB/pp): budget Songserm/night boat ~500-600; fast-cat 700-850 <- premium scheduled tier, anchor 800; no scheduled per-seat speedboat above it (private charter only, e.g. Boonsiri Chumphon-Tao catamaran charter from THB 110,000/way - excluded as whole-boat overclaim). R13-type note: the fast cat IS the premium product on this crossing. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 12177,
+            "_demand_record": {
+              "value": 12177,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "koh-samui-gulf"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-2568d40ee060",
+          "from": "Riau Islands",
+          "to": "ONE\u00b015 Marina Sentosa Cove Singapore",
+          "distance_nm": 11.9,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "riau-islands-indonesia",
+          "to_node_id": "bp-b745fefecf",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "rn-347c44e1d360",
+          "from": "Koh Samui (Bangrak)",
+          "to": "Don Sak Ferry Harbour",
+          "distance_nm": 28.1,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "_fare_record": {
+              "value": 15.2,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "fast_catamaran_per_seat_above_car_ferry (Lomprayah high-speed cat ~45 min Samui<->Donsak vs 1.5-2h car ferries)",
+              "source_url": "https://www.omio.com/ferries/surat-thani/ko-samui-vxova",
+              "notes": "Anchor THB 500/pp one-way = USD 15.2: Lomprayah runs a ~45-min high-speed catamaran Samui<->Donsak (Tripadvisor review; lomprayah.com Surat Thani route via Donsak); Surat Thani-Samui combo (ferry+coach) averages ~USD 18 / THB 600-700 (Omio; travelfish '700 baht'), ferry-only leg de-bundled to ~THB 500. Fare ladder (THB/pp): Raja car ferry 160 (busonlineticket/siamtickets); Seatran car ferry 180-225 (siamtickets/ferrysamui); Lomprayah fast-cat ~500 <- premium per-seat anchor; +coach combos 600-700. R5-EXT validity check PASSED: a real premium per-seat tier (fast cat) exists above the standard car ferry - no cascade. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 12177,
+            "_demand_record": {
+              "value": 12177,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "koh-samui-gulf"
+            },
+            "_pool_override_recal": {
+              "pool": "Raja+Seatran Surat Thani-Samui ~2M/yr",
+              "pool_pax": 2000000,
+              "share_of_pool": 0.3333333333333333,
+              "final_pax_yr": 666667,
+              "source_url": "https://www.samuitimes.com/"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "pool_id": "donsak_samui_carferry_2M",
+          "share_of_pool": 0.3333,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-453a25f98ad9",
+          "from": "Komodo",
+          "to": "Pink Beach / Pantai Merah anchorage",
+          "distance_nm": 23.9,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "bp-3b1b42b475",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 65,
+            "corridor_annual_oneway_pax": 15172,
+            "_demand_record": {
+              "value": 15172,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "komodo-flores"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-488fcf2617fe",
+          "from": "Sanur Beach Fast Boat Terminal",
+          "to": "GoBoat.id - Nelayan Beach Canggu",
+          "distance_nm": 7.6,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-fd00aa8c14",
+          "to_node_id": "bp-e810decf31",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 85.0,
+            "_fare_record": {
+              "value": 85.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Avani Seminyak coastal transfer.",
+              "method": "minor-hotels/bali grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 2900,
+            "_demand_record": {
+              "value": 2900,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-bali-flagship-economics-DRAFT.json \u2014 Seminyak gateway pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-4f204600cf23",
+          "from": "Komodo",
+          "to": "Komodo Island \u2014 Ata Modo village",
+          "distance_nm": 24.8,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "bp-d5e8c01ab2",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 65,
+            "corridor_annual_oneway_pax": 15172,
+            "_demand_record": {
+              "value": 15172,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "komodo-flores"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-56e10fe5aab7",
+          "from": "Lombok",
+          "to": "Gili Air main jetty",
+          "distance_nm": 63.1,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "lombok-indonesia",
+          "to_node_id": "bp-53511a2655",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 32928,
+            "_demand_record": {
+              "value": 32928,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "lombok"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-5d1a30fbb0a9",
+          "from": "Singapore",
+          "to": "Desaru Coast / Johor",
+          "distance_nm": 29.5,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "singapore",
+          "to_node_id": "desaru-coast-malaysia",
+          "country": "CrossBorder",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55,
+            "_fare_record": {
+              "value": 47,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "SGD",
+              "year": 2026,
+              "fx_note": "1 SGD=0.78 USD (Wise/OFX 2026)",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "Tanah Merah\u2194Desaru Coast ferry (BatamFast). Fare ladder: promo/budget SGD26 (busonlineticket); standard one-way SGD50 (Traveloka); full published one-way ~SGD58-70 (redBus 'from SGD70', instarem breakdown base SGD68). Single operator, essentially single-class fast ferry serving Desaru Coast luxury resorts (One&Only, Anantara, Westin). Whole-vessel charter excluded (150-338 pax ferries).",
+              "method": "Premium per-seat = top of observed one-way published range ~SGD60 x0.78 = USD47. Single-class boat IS the premium-vs-causeway-drive transfer product (R13-style); no distinct premium class to observe.",
+              "fare_ladder_usd_pax": {
+                "budget": 20,
+                "standard": 39,
+                "premium": 47,
+                "charter": "whole-vessel 150-338 pax, n/a per-seat"
+              },
+              "opex_assignment_flag": "CROSS-BORDER: vessel home-ports Singapore (Tanah Merah), SG crew \u2192 assign SINGAPORE origin opex (cost_index 1.0). Destination Malaysia (Johor, index 0.55) is cheaper \u2014 if a future variant home-ports at Desaru Coast terminal, reassign to Malaysia. PARENT: decide origin (SG) vs destination (MY)."
+            },
+            "_demand_record": {
+              "value": 45777,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "singapore"
+            },
+            "corridor_annual_oneway_pax": 45777,
+            "_pool_override_recal": {
+              "source": "SG-Desaru nascent corridor ~150k/yr (ferry + private boat) \u00d7 10% capture",
+              "sourced_metric": "150,000 pax/yr",
+              "mode_share": null,
+              "capture_rate": 0.1,
+              "final_pax_yr": 15000,
+              "source_url": "https://desaruferries.com/"
+            },
+            "pool_basis": "addressable",
+            "_pool_sync_note": "LB-103: pool synced 15000 -> 22500 (stale vs _demand_record.value)",
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_distance_nm_orig": 32,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-5f35cc1efa05",
+          "from": "Sampalan Harbour",
+          "to": "Maruti Port - Nusa Penida",
+          "distance_nm": 5.6,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-fd58751e6e",
+          "to_node_id": "bp-fac995200e",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "rn-606b21464c26",
+          "from": "Jalan Crystal Bay",
+          "to": "Nusa Bahari Lembongan",
+          "distance_nm": 2.9,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-ab36f55357",
+          "to_node_id": "bp-2f5e7a5b8d",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "rn-66e9451f405f",
+          "from": "Cebu (Mactan)",
+          "to": "Bohol / Panglao",
+          "distance_nm": 35,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "cebu-philippines",
+          "to_node_id": "cebu-philippines__bohol-panglao",
+          "country": "Philippines",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 42,
+            "_fare_record": {
+              "value": 21,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "PHP@57/USD",
+              "year": 2026,
+              "source_tier": "T3",
+              "confidence": "med-high",
+              "source": "Premium per-seat = OceanJet Business Class fast-craft Cebu->Tagbilaran/Bohol PHP1200 ($21) vs Tourist/Open-Air PHP800 ($14). Corroborated thepinaysolobackpacker 2025 + triphappy 2026 + Klook listings. Whole-boat private charter = overclaim, excluded.",
+              "method": "observed-premium-tier",
+              "fare_ladder_usd_pax": {
+                "tourist_openair": 14,
+                "business_class": 21,
+                "whole_boat_charter": "private yacht, excluded as overclaim"
+              }
+            },
+            "corridor_annual_oneway_pax": 342720,
+            "_demand_record": {
+              "value": 342720,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "cebu"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-871e5ff3b6a7",
+          "from": "Komodo",
+          "to": "Meruorah Komodo Labuan Bajo",
+          "distance_nm": 1.5,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "bp-3497837a7b",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 65,
+            "corridor_annual_oneway_pax": 15172,
+            "_demand_record": {
+              "value": 15172,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "komodo-flores"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-91e276ba733c",
+          "from": "Bali",
+          "to": "Lombok",
+          "distance_nm": 52.7,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "bali-indonesia",
+          "to_node_id": "lombok-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "corridor_annual_oneway_pax": 123033,
+            "_demand_record": {
+              "value": 123033,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "bali-nusa-gili"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-c001edd855aa",
+          "from": "Bali",
+          "to": "Lombok",
+          "distance_nm": 55,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "bali-indonesia",
+          "to_node_id": "lombok-indonesia",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60,
+            "corridor_annual_oneway_pax": 123033,
+            "_demand_record": {
+              "value": 123033,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "bali-nusa-gili"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-c256a044c8be",
+          "from": "Bali Marina (Benoa)",
+          "to": "Six Senses Uluwatu",
+          "distance_nm": 7.7,
+          "vessel": "Pioneer II",
+          "archetype": "hospitality_developer",
+          "from_node_id": "bp-099b3f1f2b",
+          "to_node_id": "bp-b51d721f3b",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "captive": true,
+          "captive_resort": true,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 85.0,
+            "_fare_record": {
+              "value": 85.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Minor Hotels captive gateway \u2014 Anantara Uluwatu Benoa marina transfer.",
+              "method": "minor-hotels/bali grounded floor captive fare"
+            },
+            "corridor_annual_oneway_pax": 2900,
+            "_demand_record": {
+              "value": 2900,
+              "unit": "pax/yr one-way",
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "minor-hotels-bali-flagship-economics-DRAFT.json \u2014 Uluwatu gateway pool",
+              "method": "captive property-throughput floor (Tasklet DRAFT)"
+            },
+            "demand_confidence": "med"
+          },
+          "_geometry_bound_at": "2026-06-22"
+        },
+        {
+          "route_id": "rn-c5978b9ec0b4",
+          "from": "Komodo",
+          "to": "Padar Island Viewing-Platform Pier",
+          "distance_nm": 24.4,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "komodo-flores-indonesia",
+          "to_node_id": "bp-45d1ec065c",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 65,
+            "corridor_annual_oneway_pax": 15172,
+            "_demand_record": {
+              "value": 15172,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "komodo-flores"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-cf0b8fa978b0",
+          "from": "Gili Meno Harbour",
+          "to": "Ferry Terminal Gili Trawangan",
+          "distance_nm": 2,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-506dab0582",
+          "to_node_id": "bp-9c1764f569",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "rn-db5e83248f9d",
+          "from": "Koh Samui (Bangrak)",
+          "to": "Koh Phangan (Thong Sala)",
+          "distance_nm": 10.2,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "resort_scheduled_speedboat_per_seat (R1-RESORT: Santhiya Koh Phangan published per-seat speedboat transfer to/from Koh Samui)",
+              "source_url": "https://kohphangan.santhiya.com/transfer",
+              "notes": "Premium per-seat anchor THB 1,150/pp one-way = USD 35.0 (Santhiya Resort official scheduled speedboat Koh Phangan<->Koh Samui; private speedboat max 12 pax THB 10,000/boat/way on same page). Corroborating premium per-seat points: WowSamui Haad Rin speedboat transfer w/ hotel pickup THB 1,500/pp; Tripadvisor Full-Moon speedboat transfers from USD 34.53/adult. Fare ladder (THB/pp one-way): budget Songserm/Raja ~250-300; standard fast-cat Lomprayah/Seatran 300-400 (ferrysamui.com class 400, promo 250-275; siamtickets Lomprayah speedboat 350, Echo 500); PREMIUM per-seat speedboat 1,150-1,500 <- anchor 1,150; charter 8,500-10,000/boat (~10-12 pax, kohsanuk/Reddit). FX 32.85.",
+              "confidence": "T1"
+            },
+            "corridor_annual_oneway_pax": 12177,
+            "_demand_record": {
+              "value": 12177,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "koh-samui-gulf"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-f3670ea7d99b",
+          "from": "Singapore",
+          "to": "Bintan (Lagoi resort zone)",
+          "distance_nm": 21.9,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "singapore",
+          "to_node_id": "riau-islands-indonesia__bintan-bandar-bentan-telani-bbt-lagoi-resort-zone-tanjung-pi",
+          "country": "CrossBorder",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55,
+            "_fare_record": {
+              "value": 69,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "SGD",
+              "year": 2026,
+              "fx_note": "1 SGD=0.78 USD (2026)",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Bintan Resort Ferries (BRF, official) Tanah Merah\u2194Bandar Bentan Telani (Lagoi resort zone), fares eff. 12 Mar 2026: Economy one-way SGD62 adult; EMERALD CLASS one-way SGD89 adult (premium per-seat tier, incl levies). 3rd-party budget listings from SGD53. Charter = 180-270 pax whole vessel (excluded, R1).",
+              "method": "Premium per-seat anchor = BRF Emerald Class one-way SGD89 x0.78 = USD69. Clean operator-published premium class above Economy \u2014 textbook R1 premium ladder point.",
+              "fare_ladder_usd_pax": {
+                "budget": 41,
+                "standard_economy": 48,
+                "premium_emerald": 69,
+                "charter": "180-270 pax whole vessel, n/a"
+              },
+              "opex_assignment_flag": "CROSS-BORDER: vessel home-ports Singapore (Tanah Merah), SG crew \u2192 assign SINGAPORE origin opex (index 1.0). Destination Indonesia (Riau, index 0.45) far cheaper \u2014 if vessel home-ports at BBT/Bintan reassign to Indonesia. PARENT: decide origin (SG) vs destination (ID)."
+            },
+            "_demand_record": {
+              "value": 45777,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "singapore"
+            },
+            "corridor_annual_oneway_pax": 45777,
+            "_pool_override_recal": {
+              "source": "Bintan Resorts arrivals baseline ~700k/yr \u00d7 8% premium capture",
+              "sourced_metric": "700,000 pax/yr",
+              "mode_share": null,
+              "capture_rate": 0.08,
+              "final_pax_yr": 56000,
+              "source_url": "https://www.ttgasia.com/2024/05/30/big-plans-for-bintan/"
+            },
+            "pool_basis": "addressable",
+            "_pool_sync_note": "LB-103: pool synced 56000 -> 150000 (stale vs _demand_record.value)",
+            "demand_confidence": "modeled_FLAG"
+          },
+          "_distance_nm_orig": 40,
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-f464cef34281",
+          "from": "Marina Labuan Bajo",
+          "to": "Maumere Port (Lorenz Say) \u2014 Kelimutu access",
+          "distance_nm": 153.3,
+          "vessel": "Quanta-LR",
+          "archetype": "tourism",
+          "from_node_id": "bp-979464e82b",
+          "to_node_id": "bp-38fbfd051f",
+          "country": "Indonesia",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "corridor_annual_oneway_pax": 5000,
+            "_demand_record": {
+              "value": 5000,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "gojek-127/route+economics",
+              "method": "gojek-127/mint"
+            },
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "gojek-127/inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_gojek_127": true,
+          "_geometry_bound_at": "2026-06-27"
+        },
+        {
+          "route_id": "rn-fa231ce52b52",
+          "from": "Four Seasons Koh Samui (Laem Yai)",
+          "to": "Ang Thong Marine Park (Wua Talap)",
+          "distance_nm": 15.3,
+          "vessel": "Pioneer II",
+          "archetype": "luxury_charter",
+          "from_node_id": "koh-samui-thailand",
+          "to_node_id": "koh-samui-thailand",
+          "country": "Thailand",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "_fare_record": {
+              "value": 79.0,
+              "unit": "USD/pax/one-way",
+              "anchor_type": "licensed_premium_speedboat_day_tour_per_seat_net_of_park_fee (Ang Thong NMP from Samui)",
+              "source_url": "https://angthongmarinepark.com/",
+              "notes": "Anchor USD 79.0/pp one-way-equivalent: licensed Ang Thong speedboat day tours sell at THB 2,200 (angthongmarinepark.com, incl lunch/snorkel/kayak, 4.7/5 x 4,400 guests) up to THB 3,900 premium small-group (city brief / GetYourGuide-tier operators 2025); premium point ~THB 2,900 minus THB 300 DNP park fee (thailandee.com: foreigner entrance THB 300) = ~THB 2,600 = USD 79 (R3-PIER fee-netting: transport+experience portion only). Charter rung: Samui Boat Charter private half-day from USD 109.88/adult (Tripadvisor). Fare ladder (THB/pp): big-boat tour ~1,400-1,800; standard speedboat tour 2,200; PREMIUM small-group speedboat 2,900-3,900 <- anchor 2,900 gross / 2,600 net; private charter >= USD 110/pp. Note: day-tour RT+excursion pricing, not a clean point-to-point one-way transfer - treated as the per-seat premium willingness-to-pay on this corridor. FX 32.85.",
+              "confidence": "T3"
+            },
+            "corridor_annual_oneway_pax": 12177,
+            "_demand_record": {
+              "value": 12177,
+              "unit": "premium-eligible one-way pax/yr",
+              "basis": "arriving-seat distribution-capture",
+              "confidence": "modeled_FLAG",
+              "method": "hub_pool / n_near_corridors",
+              "hub": "koh-samui-gulf"
+            },
+            "demand_confidence": "modeled_FLAG"
+          },
+          "captive_resort": true,
+          "villas": 60,
+          "_captive_note": "Four Seasons Koh Samui = 60 pool villas. Ceiling = ceil(60/25)=3 vessels.",
+          "_airasia_demand_hardened": true
+        },
+        {
+          "route_id": "rn-01a8c29df66a",
+          "from": "Phuket (Rassada Pier)",
+          "to": "Ko Lanta (Saladan Pier)",
+          "distance_nm": 42.4,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 55.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-4a3b9db3cda5",
+          "from": "Pattaya (Bali Hai Pier)",
+          "to": "Koh Samet (Na Dan Pier)",
+          "distance_nm": 37.0,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 42.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 42.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-7512bdcf3d4c",
+          "from": "Centara Grand Hua Hin",
+          "to": "Cha-Am coastal hop",
+          "distance_nm": 13.4,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60.0,
+            "corridor_annual_oneway_pax": 7836,
+            "_demand_record": {
+              "value": 7836,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 60.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-884b63688113",
+          "from": "Klong Jilad / Ao Nang",
+          "to": "Phi Phi (Tonsai)",
+          "distance_nm": 20.4,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 100.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 100.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-9c2bce5bffd0",
+          "from": "Hua Hin (pier)",
+          "to": "Pattaya (Bali Hai Pier)",
+          "distance_nm": 57.2,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 78.0,
+            "corridor_annual_oneway_pax": 4699,
+            "_demand_record": {
+              "value": 4699,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 78.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-b11478b5cb27",
+          "from": "Ao Sapparot",
+          "to": "Bang Bao (Koh Chang arrival)",
+          "distance_nm": 6.5,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 55.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-dcbcbe8bfb4f",
+          "from": "Bangkok (Chao Phraya / Gulf gateway)",
+          "to": "Pattaya (Bali Hai Pier)",
+          "distance_nm": 52.6,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 52.0,
+            "corridor_annual_oneway_pax": 14098,
+            "_demand_record": {
+              "value": 14098,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 52.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-ebf99670c0f7",
+          "from": "Koh Samui: Bophut Fisherman's Village Pier",
+          "to": "W Koh Samui",
+          "distance_nm": 1.2,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Singapore",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 85.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 85.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        },
+        {
+          "route_id": "rn-f09e06bc2910",
+          "from": "Centara Grand Mirage Pattaya",
+          "to": "Koh Larn",
+          "distance_nm": 5.0,
+          "vessel": "N30 Pioneer II",
+          "archetype": "intercity",
+          "country": "Thailand",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 60.0,
+            "corridor_annual_oneway_pax": 0,
+            "_demand_record": {
+              "value": 0,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "_fare_record": {
+              "value": 60.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "med",
+              "source": "economics_by_route_id.json",
+              "method": "bite2/econ_sidecar_inherit"
+            },
+            "demand_confidence": "med"
+          },
+          "_bite2_source": "economics_by_route_id",
+          "_vessel_key": "pioneer_ii"
+        }
+      ]
+    }
+  },
+  "_airasia_demand_applied_at": "2026-06-28T06:47:18Z",
+  "_anchor_ref": "handoff/airasia-move-2026-06-27/AIRASIA-DEMAND-ANCHORS.json"
+}

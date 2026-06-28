@@ -227,7 +227,9 @@ def main():
         print(f"appendix cards filled: {filled}/{len(out['appendix_cards'])}")
         return
 
-    agg = json.load(open(P("finance", "recal", f"agg-{partner}.json")))
+    agg_rel = binding.get("agg_source") or f"finance/recal/agg-{partner}.json"
+    growth_rel = binding.get("growth_source") or f"finance/recal/growth-{partner}.json"
+    agg = json.load(open(P(*agg_rel.split("/"))))
     rows = agg.get("rows", [])
 
     if validate:
@@ -284,7 +286,7 @@ def main():
             out_econ[str(sidx)] = {"status": "no_market_drop_slide", "market": None, "fields": None}
 
     # ---- slide-3 four network KPI cards + six per-market cards ----
-    growth = json.load(open(P("finance", "recal", f"growth-{partner}.json")))
+    growth = json.load(open(P(*growth_rel.split("/"))))
     def ladder(scn):
         d = growth.get(scn, {}) or {}
         return d
@@ -351,7 +353,7 @@ def main():
                    "All figures are grounded-floor / modeled, not measured.",
             "partner": partner,
             "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "sources": [f"finance/recal/agg-{partner}.json", f"finance/recal/growth-{partner}.json",
+            "sources": [agg_rel, growth_rel,
                         f"deck-studio/decks/{partner}/market-scope.json"],
             "representative_corridor_rule": "grounded first, then revenue_per_boat_yr desc",
             "capex_rule": "capex = model depreciation x 20yr dep-life (reproduces $900K US/EU, $600K RoW)",
