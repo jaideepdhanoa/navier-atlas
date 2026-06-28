@@ -1,5 +1,5 @@
 {
-  "_doc": "Economics sidecar for the Gojek × Navier Indonesia deck (slides 8–10, 'What one boat earns'). Source: data-clean/economics_by_route_id.json, market-tagged records, physics-grounded and partner-agnostic. Mirrors the live Slides values applied 2026-06-27.",
+  "_doc": "Economics sidecar for the Gojek \u00d7 Navier Indonesia deck (slides 8\u201310, 'What one boat earns'). Source: data-clean/economics_by_route_id.json, market-tagged records, physics-grounded and partner-agnostic. Mirrors the live Slides values applied 2026-06-27. P3-D: +Komodo/Likupang unit-econ proofs (model-grounded).",
   "_source_file": "data-clean/economics_by_route_id.json",
   "_deck": "https://docs.google.com/presentation/d/13nnvUWkTUbLNFLkxRpJPOGgbvDVRVDdXvdybRTseGBs/edit",
   "generated": "2026-06-27",
@@ -8,7 +8,7 @@
       "slide": 8,
       "cluster": "Bali",
       "route_id": "rn-c256a044c8be",
-      "corridor": "Bali Marina (Benoa) → Six Senses Uluwatu",
+      "corridor": "Bali Marina (Benoa) \u2192 Six Senses Uluwatu",
       "market": "Gojek",
       "country": "Indonesia",
       "distance_nm": 7.7,
@@ -93,7 +93,7 @@
       "slide": 9,
       "cluster": "Singapore",
       "route_id": "rn-76264638fa6b",
-      "corridor": "ONE°15 Marina, Sentosa Cove → Harbour Bay",
+      "corridor": "ONE\u00b015 Marina, Sentosa Cove \u2192 Harbour Bay",
       "market": "Gojek",
       "country": "Indonesia",
       "distance_nm": 11.2,
@@ -176,9 +176,9 @@
     },
     {
       "slide": 10,
-      "cluster": "Riau ↔ Singapore",
+      "cluster": "Riau \u2194 Singapore",
       "route_id": "rn-2568d40ee060",
-      "corridor": "Riau Islands → ONE°15 Marina, Sentosa",
+      "corridor": "Riau Islands \u2192 ONE\u00b015 Marina, Sentosa",
       "market": "Gojek",
       "country": "Indonesia",
       "distance_nm": 11.9,
@@ -258,6 +258,177 @@
         "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
         "demand": "sourced corridor demand pool"
       }
+    },
+    {
+      "slide": 11,
+      "cluster": "Komodo",
+      "route_id": "rn-871e5ff3b6a7",
+      "corridor": "Komodo -> Meruorah Komodo Labuan Bajo",
+      "market": "Gojek",
+      "country": "Indonesia",
+      "distance_nm": 1.5,
+      "vessel": "N30 Pioneer II",
+      "fare_today_usd": 50,
+      "navier_fare_usd": 50.0,
+      "mid": {
+        "rev_per_boat_yr": 587840.0,
+        "margin": 0.87,
+        "payback_years": 1.17,
+        "co2_saved_t_per_boat_yr": 22.4,
+        "vessels_10pct": 0,
+        "market_rev_yr": null
+      },
+      "band": {
+        "payback_years": [
+          1.81,
+          1.17,
+          0.76
+        ],
+        "vessels_10pct": [
+          0,
+          0,
+          0
+        ]
+      },
+      "breakdown": {
+        "revenue_build": {
+          "comparable_fare_usd": 50,
+          "navier_fare_usd": 50.0,
+          "pax_capacity": 8,
+          "load_factor": 0.55,
+          "pax_per_trip": 4.4,
+          "trips_per_day": 15,
+          "trips_per_year": 2672,
+          "pax_per_year": 11757.0,
+          "revenue_per_boat_yr": 587840.0
+        },
+        "run_cost": {
+          "energy_usd_yr": 457.0,
+          "crew_usd_yr": 21600.0,
+          "marina_overhead_usd_yr": 10000.0,
+          "maintenance_usd_yr": 10000.0,
+          "insurance_usd_yr": 15000.0,
+          "charging_berth_usd_yr": 18000.0,
+          "annual_opex_usd_yr": 75057.0,
+          "depreciation_usd_yr": 30000.0
+        },
+        "result": {
+          "ebitda_per_boat_yr": 512783.0,
+          "margin": 0.87,
+          "payback_years": 1.17,
+          "co2_saved_t_per_boat_yr": 22.4
+        }
+      },
+      "assumptions": {
+        "one_way_min": 4.5,
+        "turnaround_min": 20.0,
+        "boarding_dwell_min": 10.0,
+        "cycle_min": 34.5,
+        "service_window_h": 12,
+        "trips_per_day": 15,
+        "trips_per_day_capacity": 20,
+        "max_trips_per_day_cap": 15,
+        "trips_per_day_capped": true,
+        "trips_per_day_derivation": "min(cap 15, floor(12h service window / 34.5min cycle [4.5min one-way + 20.0min turnaround + 10.0min boarding])) = 15 legs/day",
+        "operating_days_yr": 274,
+        "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+        "mechanical_uptime": 0.75,
+        "weather_factor": 1.0,
+        "revenue_leg_pct": 0.65,
+        "load_factor": 0.55,
+        "pax_capacity": 8
+      },
+      "estimation_basis": null,
+      "provenance": {
+        "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+        "demand": "sourced corridor demand pool"
+      }
+    },
+    {
+      "slide": 12,
+      "cluster": "Likupang",
+      "route_id": "ics-c142307006",
+      "corridor": "Mall -> Likupang / Manado / Bunaken, North Sulawesi, Indonesia",
+      "market": "Gojek",
+      "country": "Indonesia",
+      "distance_nm": 7.1,
+      "vessel": "N30 Pioneer II",
+      "fare_today_usd": 50,
+      "navier_fare_usd": 50.0,
+      "mid": {
+        "rev_per_boat_yr": 548460.0,
+        "margin": 0.86,
+        "payback_years": 1.27,
+        "co2_saved_t_per_boat_yr": 98.9,
+        "vessels_10pct": 0,
+        "market_rev_yr": null
+      },
+      "band": {
+        "payback_years": [
+          1.98,
+          1.27,
+          0.82
+        ],
+        "vessels_10pct": [
+          0,
+          0,
+          0
+        ]
+      },
+      "breakdown": {
+        "revenue_build": {
+          "comparable_fare_usd": 50,
+          "navier_fare_usd": 50.0,
+          "pax_capacity": 8,
+          "load_factor": 0.55,
+          "pax_per_trip": 4.4,
+          "trips_per_day": 14,
+          "trips_per_year": 2493,
+          "pax_per_year": 10969.0,
+          "revenue_per_boat_yr": 548460.0
+        },
+        "run_cost": {
+          "energy_usd_yr": 2018.0,
+          "crew_usd_yr": 21600.0,
+          "marina_overhead_usd_yr": 10000.0,
+          "maintenance_usd_yr": 10000.0,
+          "insurance_usd_yr": 15000.0,
+          "charging_berth_usd_yr": 18000.0,
+          "annual_opex_usd_yr": 76618.0,
+          "depreciation_usd_yr": 30000.0
+        },
+        "result": {
+          "ebitda_per_boat_yr": 471842.0,
+          "margin": 0.86,
+          "payback_years": 1.27,
+          "co2_saved_t_per_boat_yr": 98.9
+        }
+      },
+      "assumptions": {
+        "one_way_min": 21.3,
+        "turnaround_min": 20.0,
+        "boarding_dwell_min": 10.0,
+        "cycle_min": 51.3,
+        "service_window_h": 12,
+        "trips_per_day": 14,
+        "trips_per_day_capacity": 14,
+        "max_trips_per_day_cap": 15,
+        "trips_per_day_capped": false,
+        "trips_per_day_derivation": "floor(12h service window / 51.3min cycle [21.3min one-way + 20.0min turnaround + 10.0min boarding]) = 14 legs/day",
+        "operating_days_yr": 274,
+        "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+        "mechanical_uptime": 0.75,
+        "weather_factor": 1.0,
+        "revenue_leg_pct": 0.65,
+        "load_factor": 0.55,
+        "pax_capacity": 8
+      },
+      "estimation_basis": null,
+      "provenance": {
+        "fare": "comparable premium water-transfer, per-seat (premium anchor; discount_factor=1.0)",
+        "demand": "sourced corridor demand pool"
+      }
     }
-  ]
+  ],
+  "_p3d_at": "2026-06-28T06:21:58Z"
 }
