@@ -1,12 +1,12 @@
 # Tasklet handoff — Slides API lane (Gojek ladder + AirAsia deck)
 
-**Updated:** 2026-06-28 post **PR #144** merge (`deck-studio-record-sync-2026-06-28`)  
+**Updated:** 2026-06-28 post **PR #134** merge (`deck-studio-record-sync-2026-06-28`)  
 **Baseline:** `main` after merge + deploy  
 **Grok model engine:** complete · **Tasklet Slides lane:** open
 
 ---
 
-## PR #144 merged — what changed
+## PR #134 merged — what changed
 
 | Item | Status |
 |------|--------|
@@ -50,7 +50,7 @@
 ## Workstream B — AirAsia MOVE: create/bind deck
 
 ### Ready (no longer blocking)
-- Logo **banked** (PR #144)
+- Logo **banked** (PR #134)
 - Economics **model-pass-complete** — floor ~$18M, SAM ~$356M, TAM ~$1.42B (`finance/recal/growth-airasia-move.json`)
 - PH 18 corridors sealed (PR #132)
 

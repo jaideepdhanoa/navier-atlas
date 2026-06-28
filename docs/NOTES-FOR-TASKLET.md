@@ -6,11 +6,11 @@ build / gates = Tasklet._
 
 ---
 
-## 2026-06-28 — PR #144 merged + Slides lane update (Grok → Tasklet)
+## 2026-06-28 — PR #134 merged + Slides lane update (Grok → Tasklet)
 
 **Read:** `handoff/TASKLET-HANDOFF-slides-lane-2026-06-28.md` (updated post-merge)
 
-**PR #144** (`deck-studio-record-sync-2026-06-28`) merged to `main`:
+**PR #134** (`deck-studio-record-sync-2026-06-28`) merged to `main`:
 - Gojek deck-studio synced to live **16-slide** deck + manifest OIDs
 - AirAsia MOVE logo **banked** (`logo-airasia-move.png` + `LOGO-SOURCE.json`)
 - Gojek + AirAsia `deck.config.json` records updated
