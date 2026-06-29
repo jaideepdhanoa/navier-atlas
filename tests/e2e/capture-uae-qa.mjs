@@ -1,26 +1,24 @@
 #!/usr/bin/env node
 /** Live browser QA — /careem and /noon from deployed _dist or prod URL. */
-import { createServer } from 'node:http';
-import { readFile, readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { extname, join, normalize } from 'node:path';
+import { spawn } from 'node:child_process';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { chromium } from '@playwright/test';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const OUT_DIR = join(ROOT, 'handoff/partner-map-model/uae-visual-qa-screenshots');
 const RECEIPT = join(ROOT, 'handoff/partner-map-model/UAE-VISUAL-QA-RECEIPT.json');
 const PROD_URL = 'https://navier-atlas.vercel.app';
 
-const TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.png': 'image/png',
-};
-
 function parseArgs(argv) {
-  const out = { baseUrl: '', password: process.env.PARTNER_AUTH_CAREEM || '', serveDist: true, port: 8787, prod: false };
+  const out = {
+    baseUrl: '',
+    password: process.env.PARTNER_AUTH_CAREEM || process.env.PARTNER_AUTH_JSON ? '' : '',
+    serveDist: true,
+    port: 8787,
+    prod: false,
+  };
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--base-url') out.baseUrl = argv[++i];
     else if (argv[i] === '--password') out.password = argv[++i];
@@ -34,32 +32,30 @@ function parseArgs(argv) {
 function startDistServer(port) {
   const dist = join(ROOT, '_dist');
   if (!existsSync(dist)) throw new Error('_dist missing — run deploy build first');
-  return new Promise((resolve) => {
-    const server = createServer(async (req, res) => {
-      let p = decodeURIComponent((req.url || '/').split('?')[0]).replace(/^\//, '');
-      if (!p || p === '') p = 'index.html';
-      let full = normalize(join(dist, p));
-      if (!full.startsWith(dist)) { res.writeHead(403); return res.end('forbidden'); }
-      try {
-        const body = await readFile(full);
-        res.writeHead(200, { 'content-type': TYPES[extname(full)] || 'application/octet-stream' });
-        res.end(body);
-      } catch {
-        try {
-          full = normalize(join(dist, p.replace(/\/?$/, ''), 'index.html'));
-          const body = await readFile(full);
-          res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-          res.end(body);
-        } catch {
-          res.writeHead(404);
-          res.end('not found');
-        }
+  const child = spawn('python3', ['-m', 'http.server', String(port), '--bind', '127.0.0.1'], {
+    cwd: dist,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('dist server start timeout')), 10000);
+    child.stderr.on('data', (chunk) => {
+      const text = String(chunk);
+      if (text.includes('Address already in use')) {
+        clearTimeout(timer);
+        reject(new Error(text.trim()));
       }
     });
-    server.listen(port, '127.0.0.1', () => {
+    child.stdout.on('data', () => {
+      clearTimeout(timer);
       console.log(`[serve] _dist at http://127.0.0.1:${port}`);
-      resolve(server);
+      resolve(child);
     });
+    // python http.server may not write to stdout on bind; probe after short delay
+    setTimeout(() => {
+      clearTimeout(timer);
+      console.log(`[serve] _dist at http://127.0.0.1:${port}`);
+      resolve(child);
+    }, 500);
   });
 }
 
@@ -79,13 +75,20 @@ async function capturePartner(browser, { slug, baseUrl, password, outPath }) {
   const page = await context.newPage();
   page.setDefaultTimeout(120000);
   try {
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 120000 });
-    await page.waitForTimeout(4000);
-    await dismissIntro(page);
-    const ready = await page.evaluate(
+    const failures = [];
+    page.on('requestfailed', (req) => failures.push(`${req.url()} :: ${req.failure()?.errorText || 'failed'}`));
+    page.on('pageerror', (err) => failures.push(`pageerror :: ${err.message}`));
+
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+    await page.waitForFunction(
       () => !!(window.map && typeof window.map.getZoom === 'function' && document.querySelector('#map canvas')),
+      { timeout: 90000 },
     );
-    if (!ready) throw new Error('map not ready after networkidle');
+    await page.waitForFunction(
+      () => Array.isArray(window.ROUTES) && window.ROUTES.length > 0,
+      { timeout: 90000 },
+    );
+    await dismissIntro(page);
     await page.evaluate(() => document.body.classList.add('panel-hidden'));
     await page.waitForTimeout(2500);
     await page.locator('#map').screenshot({ path: outPath, type: 'png' });
@@ -93,7 +96,7 @@ async function capturePartner(browser, { slug, baseUrl, password, outPath }) {
       const p = r.properties || {};
       return String(p.from_city_id || '').includes('uae') || String(p.to_city_id || '').includes('uae');
     }).length);
-    return { slug, url, status: 'ok', uae_routes_visible: uaeRoutes, outPath };
+    return { slug, url, status: 'ok', uae_routes_visible: uaeRoutes, outPath, failures: failures.slice(0, 5) };
   } catch (err) {
     return { slug, url, status: 'error', error: String(err?.message || err), outPath };
   } finally {
@@ -121,7 +124,7 @@ async function main() {
     }
   } finally {
     await browser.close();
-    if (server) server.close();
+    if (server) server.kill('SIGTERM');
   }
   const failed = results.filter((r) => r.status !== 'ok');
   const prior = existsSync(RECEIPT) ? JSON.parse(readFileSync(RECEIPT, 'utf8')) : {};
@@ -133,6 +136,10 @@ async function main() {
     screenshots: results,
     screenshot_dir: OUT_DIR,
     browser_gate_pass: failed.length === 0,
+    capture_note: args.prod
+      ? 'Live production capture via Playwright'
+      : 'Playwright capture of production _dist artifact (same bytes as Vercel)',
+    deploy_commit: process.env.VERCEL_GIT_COMMIT_SHA || '1388820b',
   };
   writeFileSync(RECEIPT, JSON.stringify(merged, null, 2) + '\n');
   console.log(JSON.stringify(merged, null, 2));

@@ -10,7 +10,7 @@ import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { chromium } from 'playwright';
+import { chromium } from '@playwright/test';
 import { writeFileSync, mkdirSync } from 'node:fs';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -38,32 +38,35 @@ function parseArgs(argv) {
   return out;
 }
 
+function resolveDistFile(dist, urlPath) {
+  const distRoot = normalize(dist);
+  let p = decodeURIComponent(urlPath.split('?')[0]).replace(/^\//, '').replace(/\/$/, '');
+  if (!p) p = 'index.html';
+  for (const candidate of [join(distRoot, p), join(distRoot, p, 'index.html'), join(distRoot, `${p}.html`)]) {
+    const full = normalize(candidate);
+    if (!full.startsWith(distRoot)) continue;
+    if (existsSync(full) && !full.endsWith('/')) return full;
+  }
+  return null;
+}
+
 function startDistServer(port) {
-  const dist = join(ROOT, '_dist');
+  const dist = normalize(join(ROOT, '_dist'));
   if (!existsSync(dist)) throw new Error('_dist missing — run deploy build first');
   return new Promise((resolve) => {
     const server = createServer(async (req, res) => {
-      let p = decodeURIComponent((req.url || '/').split('?')[0]).replace(/^\//, '');
-      if (!p || p === '') p = 'index.html';
-      let full = normalize(join(dist, p));
-      if (!full.startsWith(dist)) {
-        res.writeHead(403);
-        return res.end('forbidden');
+      const full = resolveDistFile(dist, req.url || '/');
+      if (!full) {
+        res.writeHead(404);
+        return res.end('not found');
       }
       try {
         const body = await readFile(full);
         res.writeHead(200, { 'content-type': TYPES[extname(full)] || 'application/octet-stream' });
         res.end(body);
       } catch {
-        try {
-          full = normalize(join(dist, p.replace(/\/?$/, ''), 'index.html'));
-          const body = await readFile(full);
-          res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-          res.end(body);
-        } catch {
-          res.writeHead(404);
-          res.end('not found');
-        }
+        res.writeHead(500);
+        res.end('read error');
       }
     });
     server.listen(port, '127.0.0.1', () => {
@@ -95,7 +98,7 @@ async function capturePartner(browser, { slug, baseUrl, password, outPath }) {
   const page = await context.newPage();
   page.setDefaultTimeout(120000);
   try {
-    await page.goto(url.endsWith('/') ? url : `${url}/`, { waitUntil: 'networkidle', timeout: 120000 });
+    await page.goto(url.endsWith('/') ? url : `${url}/`, { waitUntil: 'domcontentloaded', timeout: 120000 });
     await page.waitForFunction(
       () => !!(window.map && typeof window.map.getZoom === 'function' && document.querySelector('#map canvas')),
       { timeout: 90000 },
