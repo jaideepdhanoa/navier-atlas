@@ -2516,6 +2516,15 @@ const _REGION_DISPLAY_ALIAS = {
   'Caucasus':'Caspian','Central Asia':'Caspian'
 };
 function _normRegionDisplay(r){ return _REGION_DISPLAY_ALIAS[r] || r; }
+function _regionSlugForLabel(label){
+  if (typeof REGION_BRIEFS==='undefined' || !label) return null;
+  for (const slug in REGION_BRIEFS){
+    if (slug.startsWith('_')) continue;
+    const rb=REGION_BRIEFS[slug];
+    if ((rb.display||slug)===label) return slug;
+  }
+  return String(label).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+}
 function _regionBriefHtml(rb, slug){
   const label = rb.display || slug;
   let h = (_navStack.length ? _navBackHtml() : '') + `<div class="panel-hero">
@@ -4241,7 +4250,7 @@ document.querySelectorAll('.chip').forEach(b => {
   // Tier 1: regions (Global resets). Clicking a region fits it AND drills into its clusters.
   function renderRegions(){
     closeMore(); host.innerHTML='';
-    const open=(label,btn)=>{ clearActive(); if(btn) btn.classList.add('active'); fitRegion(label); renderClusters(label); };
+    const open=(label,btn)=>{ if(btn) btn.classList.add('active'); const slug=_regionSlugForLabel(label); if(slug) showRegionBrief(slug); else { clearActive(); fitRegion(label); renderClusters(label); } };
     labels.slice(0,MAX_INLINE).forEach(label=>{
       const btn=document.createElement('button'); btn.className='chip region'; btn.textContent=label;
       btn.addEventListener('click',()=>open(label,btn)); host.appendChild(btn);
@@ -4347,7 +4356,7 @@ document.querySelectorAll('.chip').forEach(b => {
     closeMore(); host.innerHTML='';
     _crumb(rootLabel, resetNavRoot);
     const region = o.region ? norm(o.region) : (o.cityId && cityRegion[o.cityId]);
-    if (!skipRegion && region && regions[region]) { _sep(); _crumb(region, ()=>{ clearActive(); fitRegion(region); renderClusters(region); }); }
+    if (!skipRegion && region && regions[region]) { _sep(); _crumb(region, ()=>{ const slug=_regionSlugForLabel(region); if(slug) showRegionBrief(slug); else { clearActive(); fitRegion(region); renderClusters(region); } }); }
     // Cluster level (root › Region › Cluster › City): the country/archipelago the city belongs to.
     const clId = o.clusterId || (o.cityId && typeof CITY_TO_CLUSTER!=='undefined' && CITY_TO_CLUSTER[o.cityId]);
     const clNav = clId && clusterFromId(clId);
