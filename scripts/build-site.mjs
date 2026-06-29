@@ -358,6 +358,7 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
     { source: '/southeast-asia', destination: '/region/southeast-asia', permanent: false },
     { source: '/sea', destination: '/region/southeast-asia', permanent: false },
     { source: '/mena', destination: '/region/mena', permanent: false },
+    { source: '/maghreb', destination: '/region/maghreb', permanent: false },
     { source: '/europe', destination: '/region/europe', permanent: false },
 
     { source: '/south-asia', destination: '/region/south-asia', permanent: false },
@@ -497,4 +498,4 @@ for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
 if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
 console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market + ${sharePages} share pages${skipped?` (${skipped} market sub-page(s) skipped)`:''}.`);
 console.log(`Share URLs: ${SITE_URL}/region/<slug> · ${SITE_URL}/cluster/<id> · ${SITE_URL}/city/<id> · ${SITE_URL}/<partner>/<market>/city/<id>`);
-console.log(`Short region URLs: ${SITE_URL}/southeast-asia · ${SITE_URL}/sea · ${SITE_URL}/mena (→ /region/...)`);
+console.log(`Short region URLs: ${SITE_URL}/southeast-asia · ${SITE_URL}/sea · ${SITE_URL}/mena · ${SITE_URL}/maghreb (→ /region/...)`);

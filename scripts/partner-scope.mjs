@@ -48,7 +48,10 @@ export function sealedRegistryKeys(partner) {
   return keys;
 }
 
-function crossBorderCityIds(clusterById) {
+function crossBorderCityIds(clusterById, partner = null) {
+  const narrow = partner?._map_scope?.cross_border_city_ids;
+  if (Array.isArray(narrow) && narrow.length) return new Set(narrow);
+
   const out = new Set(['riau-islands-indonesia', 'desaru-coast-malaysia', 'langkawi-malaysia']);
   for (const cid of ['singapore', 'malaysia']) {
     const c = clusterById.get(cid);
@@ -57,9 +60,9 @@ function crossBorderCityIds(clusterById) {
   return out;
 }
 
-export function resolveRegistryKeyToCityIds(key, clusterById) {
+export function resolveRegistryKeyToCityIds(key, clusterById, partner = null) {
   const alias = MARKET_CLUSTER_ALIASES[key];
-  if (alias === '__cross_border__') return crossBorderCityIds(clusterById);
+  if (alias === '__cross_border__') return crossBorderCityIds(clusterById, partner);
 
   const clusterId = alias || key;
   const cluster = clusterById.get(clusterId);
@@ -90,13 +93,13 @@ export function resolveInheritedCityIds(partner, clusterById, { pageKind = 'hub-
   if (pageKind === 'market' && market) {
     const key = market.slug || market.id;
     for (const c of marketCities(market)) out.add(c);
-    for (const id of resolveRegistryKeyToCityIds(key, clusterById)) out.add(id);
+    for (const id of resolveRegistryKeyToCityIds(key, clusterById, partner)) out.add(id);
     return out;
   }
 
   if (pageKind === 'hub-index') {
     for (const key of sealedRegistryKeys(partner)) {
-      for (const id of resolveRegistryKeyToCityIds(key, clusterById)) out.add(id);
+      for (const id of resolveRegistryKeyToCityIds(key, clusterById, partner)) out.add(id);
     }
     for (const c of partner.end_state?.end_state_cities || []) out.add(c);
     return out;
