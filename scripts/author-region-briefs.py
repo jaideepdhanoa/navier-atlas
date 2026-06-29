@@ -20,7 +20,7 @@ _ALIAS = {
     "Europe-Mediterranean": "Europe", "Europe-Atlantic": "Europe",
     "Europe-Baltic": "Europe", "Europe-Med": "Europe",
     "Asia": "East Asia",
-    "Middle East": "MENA", "Maghreb": "MENA",
+    "Middle East": "MENA",  # Maghreb is its own macro-region brief (split 2026-06-29) — NOT aliased to MENA
     "Caucasus": "Caspian", "Central Asia": "Caspian",
 }
 def _norm(r): return _ALIAS.get(r, r)
@@ -93,6 +93,10 @@ SIG = {
         ("Los Cabos — Palmilla ↔ San José del Cabo Marina", "ics-b5861451fb"),
         ("Puerto Vallarta — the Bay of Banderas marina leg", "ics-0216f2c9e3"),
     ],
+    "maghreb": None,     # curated Maghreb signatures (Tangier–Tarifa, Gulf of Tunis, Kerkennah/Djerba)
+                         # are display-only in the cluster briefs (route_id null); sealed Maghreb geometry
+                         # exists (e.g. Casablanca–Agadir/Essaouira) but no marquee corridor is bound yet.
+                         # null beats confidently-wrong — bind when Yassir/Bolt Maghreb corridors seal.
     "caribbean": None,   # 0 resolvable sealed corridors today — null beats confidently-wrong
     "north-america": [
         ("Palm Beach → Miami — the Atlantic coastal commute", "edge-1140"),
@@ -138,7 +142,7 @@ DEPTH = {
  "seasonality": "Monsoon timing differs by coast — Thailand's Andaman and Gulf run opposite seasons, and Indonesia's east dries as the west wets — so a regional operator can chase calm water across the calendar rather than shutting down.",
 },
 "mena": {
- "why_marine_mobility": "The Middle East and North Africa pair some of the world's most ambitious waterfront building programs with congested coastal cities and captive resort islands. Gulf metros are minutes apart by water yet an hour by road; Red Sea and giga-project resorts are designed around arrival by sea; and Mediterranean rivieras already price a premium transfer. Marine mobility is the overlay these programs are still assembling by road, helicopter, and conventional craft.",
+ "why_marine_mobility": "The Middle East pairs some of the world's most ambitious waterfront building programs with congested coastal cities and captive resort islands across the Gulf, the Red Sea, and the Levant. Gulf metros are minutes apart by water yet an hour by road; Red Sea and giga-project resorts are designed around arrival by sea; and the Gulf of Aqaba already prices a premium cross-water transfer. Marine mobility is the overlay these programs are still assembling by road, helicopter, and conventional craft.",
  "demand_signals": [
    {"archetype": "essential_mobility", "label": "Gulf metros built on the water's edge", "note": "Dubai, Abu Dhabi, Doha and Manama ring their populations around marinas, islands, and corniches — short water lines that today lose to congested causeways."},
    {"archetype": "luxury", "label": "Giga-project resorts arrive by sea", "note": "Red Sea Global, NEOM, The Pearl and Lusail are designed for water arrival; a clean, fast hydrofoil is the on-brand transfer their guests expect."},
@@ -332,6 +336,26 @@ DEPTH = {
  "competitive_landscape": "Cross-Caspian movement today relies on infrequent ferries and energy-sector craft. A premium foiling tier would add speed and reliability the current options lack.",
  "seasonality": "The northern Caspian can ice in winter and the sea sees strong seasonal winds; scheduling follows the calm-water seasons.",
 },
+"maghreb": {
+ "why_marine_mobility": "North Africa faces the sea on almost every side, yet its coastal travel still runs on slow vehicle ferries, congested coast roads, and seasonal diesel fast-ferries. Morocco threads the Atlantic and the Mediterranean around the busy Strait of Gibraltar; Algeria's life concentrates in its Mediterranean port cities; and Tunisia rings a coast of bays, marinas and islands where the road is long and the sea is direct. A quiet, scheduled foiling tier turns those crossings — the Strait, the urban bays, the island shuttles — into the fast, clean leg they have never had.",
+ "demand_signals": [
+   {"archetype": "essential_mobility", "label": "The Strait of Gibraltar at scale", "note": "Tangier–Tarifa is one of the world's busiest passenger-sea crossings, with enormous summer volumes during the Marhaba diaspora movement and year-round trade — a short ~16 nm hop run today on large diesel fast-ferries."},
+   {"archetype": "super_app", "label": "Home-grown super-apps already at the curb", "note": "Yassir, born in Algeria, alongside platforms like Bolt and Careem, already moves daily ride-hailing across Maghreb cities — the water leg between port, marina and island is the natural premium extension of that habit."},
+   {"archetype": "tourism", "label": "Marina and island leisure coast", "note": "Tangier Marina, Casablanca, the Tunisian Sahel marinas of Port El Kantaoui and Monastir, and the islands of Kerkennah and Djerba anchor a growing Mediterranean resort and yachting economy built around arrival by water."},
+ ],
+ "use_cases": [
+   {"archetype": "essential_mobility", "title": "The Strait and coastal commuter corridors", "body": "Tangier–Tarifa and dense coastal corridors like Casablanca–Rabat and the Tunis bay carry heavy commuter and trade demand — exactly where a fast, scheduled foiling line beats both the road and the slow ferry."},
+   {"archetype": "tourism", "title": "Marina-to-marina and resort hops", "body": "Tangier's and Casablanca's urban bays, the Tunisian Sahel marinas of Port El Kantaoui and Monastir, and Algeria's port-city waterfronts turn a premium foiling transfer into part of the visit."},
+   {"archetype": "essential_mobility", "title": "Island shuttles upgraded", "body": "The Kerkennah and Djerba island crossings, run today on slow vehicle ferries, are exactly the short legs a quiet, dry, zero-emission hydrofoil serves better."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "The urban bays and island shuttles — the Tangier and Casablanca marina runs, the Gulf of Tunis hops, Sfax–Kerkennah and Jorf–Djerba — sit inside Pioneer II's all-electric ≤70 nm band, quiet and zero-emission off redeveloped marinas.",
+   "quanta_lr": "The exposed crossings and longer coastal trunks — the Strait of Gibraltar, the Atlantic Casablanca–Rabat–Agadir corridor, and cross-Mediterranean hops — extend into Quanta-LR's hybrid ≤700 nm range, where sea-keeping and range matter.",
+ },
+ "transit_planning": "For a Maghreb port authority or super-app: the coastline already carries heavy ferry and commuter traffic, and the digital mobility habit is already there. A foiling tier adds a fast, clean premium leg on the Strait, the urban bays, and the island crossings — without new road or rail.",
+ "competitive_landscape": "Today the coast splits between large diesel fast-ferries on the international Strait crossing, slow vehicle ferries to the islands, and congested coast roads and rail along the bays. None offers a fast, quiet, clean premium tier — exactly the empty middle electric-hydrofoil mobility fills.",
+ "seasonality": "The Strait peaks massively in summer with the Marhaba diaspora movement and runs year-round for trade; the Mediterranean bays, marinas and islands enjoy a long warm season (roughly April–October) with a calm, sheltered coast — so an operator can follow premium demand across the calendar.",
+},
 }
 
 # Six summaries were just shy of the cluster-depth bar (>=250 chars). Extend each with one
@@ -379,7 +403,7 @@ for slug, base in cur.items():
     OUT[slug] = rec
 
 (DC / "region_briefs.json").write_text(json.dumps(OUT, ensure_ascii=False, indent=2) + "\n")
-print("wrote region_briefs.json — 11 regions enriched")
+print(f"wrote region_briefs.json — {len(OUT)-1} regions enriched")
 for slug in OUT:
     if slug == "_doc":
         continue

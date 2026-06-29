@@ -37,7 +37,7 @@ _REGION_ALIASES = {
     "Europe-Mediterranean": "Europe", "Europe-Atlantic": "Europe",
     "Europe-Baltic": "Europe", "Europe-Med": "Europe",
     "Asia": "East Asia",
-    "Middle East": "MENA", "Maghreb": "MENA",
+    "Middle East": "MENA",  # Maghreb is its own macro-region (split 2026-06-29) — NOT folded into MENA
     "Caucasus": "Caspian", "Central Asia": "Caspian",
 }
 def _norm_region(r):
@@ -72,7 +72,8 @@ ALGERIA_CLUSTER = {
 }
 
 # ── canonical macro-region for the North-Africa clusters (Jaideep's call,
-#    2026-06-29): morocco / algeria / tunisia all tag `Maghreb` (→ MENA brief).
+#    2026-06-29): morocco / algeria / tunisia all tag `Maghreb` — its own
+#    macro-region brief at /region/maghreb (split from MENA 2026-06-29).
 #    Cities cascade to the cluster tag automatically via B3b. ──────────────────
 REGION_CANON = {
     "morocco": "Maghreb",
