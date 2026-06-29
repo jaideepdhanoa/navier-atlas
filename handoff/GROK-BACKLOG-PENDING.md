@@ -41,8 +41,8 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 |----------|-------|-----|
 | **P0a** | **Phase-map cumulative scoping** | ✅ Done — cumulative phases + three-tier opacity |
 | **P0c** | **Partner scope live inheritance** | ✅ Done — hub partners inherit CLUSTERS.json at build; `partner-scope.mjs` + §3.8 drift gate |
-| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ PASS_WITH_FLAGS · Grab ⏳ (114 DROP apply in flight) |
-| **P1** | **UAE channel graphs (Grok-only)** | ✅ v1 Palm + Marina + Creek (`channel_graphs/`); AD islands + Deira next |
+| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ · Grab ✅ · Bolt ✅ · Rapido ✅ — all PASS_WITH_FLAGS @ `75403712` |
+| **P1** | **UAE channel graphs (Grok-only)** | ✅ v2 Palm + Marina + Creek + AD islands + Deira; wired into `channel_solver.py` |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
 | **P3** | Mesh geometry | ~3,035 non-story fails (deferred until proposal surfaces credible) |
 
