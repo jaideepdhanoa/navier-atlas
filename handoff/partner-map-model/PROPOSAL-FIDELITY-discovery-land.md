@@ -1,24 +1,24 @@
 # Proposal fidelity — discovery-land
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T12:38:42Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T13:00:22Z
 
 ## Summary
 
 - Items audited: 40
-- KEEP: 38
-- DROP: 2
+- KEEP: 40
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Nassau & The Bahamas → Nassau & The Bahamas | `ics-3e84761396` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Nassau & The Bahamas' → 'Nas |
+| journey | — | Nassau & The Bahamas → Nassau & The Bahamas | `—` | **KEEP** | — |
 | journey | — | Miami → Nassau | `edge__miami-florida-usa__nassau-bahamas` | **KEEP** | — |
-| featured | 1 | Nassau & The Bahamas → Nassau & The Bahamas | `ics-3e84761396` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Nassau & The Bahamas' → 'Nas |
+| featured | 1 | Nassau & The Bahamas → Nassau & The Bahamas | `—` | **KEEP** | — |
 | featured | 2 | Miami → Nassau & The Bahamas | `edge__miami-florida-usa__nassau-bahamas` | **KEEP** | — |
 | featured | 3 | Governor's Harbour Airport → Governor's Harbour Fe | `ics-582bb891bc` | **KEEP** | — |
 | journey | market:nassau-bahamas | Marsh Harbour → Baker's Bay (Great Guana Cay) | `—` | **KEEP** | — |

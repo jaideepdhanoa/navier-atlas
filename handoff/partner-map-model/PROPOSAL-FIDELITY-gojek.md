@@ -1,16 +1,16 @@
 # Proposal fidelity — gojek
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T12:38:44Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T13:00:24Z
 
 ## Summary
 
 - Items audited: 118
-- KEEP: 117
-- DROP: 1
+- KEEP: 118
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 1
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -118,7 +118,7 @@
 | journey | market:likupang | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | journey | market:likupang | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | journey | market:likupang | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
-| journey | market:likupang | Manado → Lembeh Strait (muck-diving) | `ics-c142307006` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manado' → 'Lembeh Strait (mu |
+| journey | market:likupang | Manado → Lembeh Strait (muck-diving) | `—` | **KEEP** | — |
 | featured | likupang/p1 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | featured | likupang/p1 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | featured | likupang/p2 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |

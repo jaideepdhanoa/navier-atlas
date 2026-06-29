@@ -1,16 +1,16 @@
 # Proposal fidelity — ola
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T12:38:49Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T13:00:27Z
 
 ## Summary
 
 - Items audited: 72
-- KEEP: 70
-- DROP: 2
+- KEEP: 72
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -19,7 +19,7 @@
 | journey | — | Gateway of India → Mandwa (Alibaug) | `ics-45ea784fef` | **KEEP** | — |
 | journey | — | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | journey | — | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
-| journey | — | Goa → Old Goa Ferry Terminal | `ics-30e7ae3007` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Goa' → 'Old Goa Ferry Termin |
+| journey | — | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
 | featured | 1 | Junglighat Jetty → Port Blair | `rn-f6d2eee38e08` | **KEEP** | — |
 | featured | 2 | Howrah Ferry Ghat → Fairlie Place Ferry | `rn-97202b12d2ce` | **KEEP** | — |
 | featured | 3 | Goa → Mumbai Harbour | `—` | **KEEP** | — |
@@ -35,7 +35,7 @@
 | featured | mumbai/p3 | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | featured | mumbai/p3 | Mumbai Harbour → Bhaucha Dhakka (Ferry Wharf) | `—` | **KEEP** | — |
 | journey | market:goa | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
-| journey | market:goa | Goa → Old Goa Ferry Terminal | `ics-30e7ae3007` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Goa' → 'Old Goa Ferry Termin |
+| journey | market:goa | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
 | journey | market:goa | Goa → Grande Island / Bat Island | `—` | **KEEP** | — |
 | journey | market:goa | Goa → Mumbai | `—` | **KEEP** | — |
 | featured | goa/p1 | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |

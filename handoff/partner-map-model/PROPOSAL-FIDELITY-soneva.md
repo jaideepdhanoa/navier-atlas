@@ -1,22 +1,22 @@
 # Proposal fidelity — soneva
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T12:38:58Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T13:00:35Z
 
 ## Summary
 
 - Items audited: 25
-- KEEP: 24
-- DROP: 1
+- KEEP: 25
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 1
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Velana International → Four Seasons Landaa Giraava | `e__mald__5108f439d6bc` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Velana International' → 'Fou; inheritance_debt: _inherit_source=grok/normalize/four-seasons |
+| journey | — | Velana International → Four Seasons Landaa Giraava | `—` | **KEEP** | inheritance_debt: _inherit_source=grok/normalize/four-seasons |
 | journey | — | Bora Bora Airport → Four Seasons Bora Bora | `—` | **KEEP** | — |
 | journey | — | Mahé → Four Seasons Desroches | `—` | **KEEP** | inheritance_debt: _inherit_source=grok/normalize/four-seasons |
 | journey | — | Four Seasons Kuda Huraa → North Malé reef sites | `—` | **KEEP** | — |

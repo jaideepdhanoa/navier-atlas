@@ -1,16 +1,16 @@
 # Proposal fidelity — adani-ports
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T12:38:36Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T13:00:17Z
 
 ## Summary
 
 - Items audited: 72
-- KEEP: 71
-- DROP: 1
+- KEEP: 72
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 1
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -19,7 +19,7 @@
 | journey | — | Gateway of India / Bhaucha Dhakka → Mandwa / Aliba | `ics-45ea784fef` | **KEEP** | — |
 | journey | — | Gateway of India / Bhaucha Dhakka → Mandwa / Aliba | `ics-45ea784fef` | **KEEP** | — |
 | journey | — | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
-| journey | — | Goa → Old Goa Ferry Terminal | `ics-30e7ae3007` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Goa' → 'Old Goa Ferry Termin |
+| journey | — | Goa → Old Goa Ferry Terminal | `—` | **KEEP** | — |
 | featured | 1 | Port Blair (Haddo Wharf / Phoenix Bay Jetty) → Ros | `rn-d3c5a1881a8e` | **KEEP** | — |
 | featured | 2 | Howrah ↔ Fairlie | `—` | **KEEP** | — |
 | featured | 3 | Goa → Mumbai Harbour | `—` | **KEEP** | — |

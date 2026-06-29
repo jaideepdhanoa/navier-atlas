@@ -74,16 +74,21 @@
       "archetype": "super_app",
       "from_node_id": "singapore",
       "to_node_id": "desaru-coast-malaysia",
-      "route_id": "rn-ef7c059adbde",
-      "_link_status": "linked-grok-node",
+      "_link_status": "unlinked-bp-hold",
       "model_link": "rn-5d1a30fbb0a9",
       "economics_status": "cascaded",
       "_economics_source": "economics_by_route_id.json",
       "_economics_authored_for": "grab",
       "_economics_cascade_at": "2026-06-21T14:24:45Z",
-      "route_ids": null,
       "_reground_at": "2026-06-29T12:02:47Z",
-      "_link_kind": "corridor-label"
+      "_link_source": "grok/reground_bp_binding_holds",
+      "_link_kind": "model-link-promote",
+      "display": "text_only",
+      "_fidelity_trim": {
+        "at": "2026-06-29T13:00:11Z",
+        "reason": "bp_binding_hold_null",
+        "detail": "labels ≠ route endpoints: card 'Singapore (Tanah Merah)' → 'Desaru Coast (Johor, Malaysia)' vs route 'Singapore (Constan"
+      }
     },
     {
       "from": "Bali / Nusa Penida / Lembongan / Gilis / Lombok / Sumba / Komodo",
@@ -95,13 +100,17 @@
       "archetype": "tourism",
       "from_node_id": "bali-indonesia",
       "to_node_id": "lombok-indonesia",
-      "route_id": "rn-c001edd855aa",
-      "_link_status": "linked-grok-node",
+      "route_id": null,
+      "_link_status": "aspirational-no-built-route",
       "from_label": "Bali / Nusa Penida / Lembongan / Gilis / Lombok / Sumba / Komodo",
       "to_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
       "_reground_at": "2026-06-29T12:02:47Z",
       "route_ids": null,
-      "_link_kind": "corridor-label"
+      "_link_source": "grok/relink_partner_journeys/bp_gate",
+      "display": "text_only",
+      "_link_kind": "aspirational-chip",
+      "economics_status": "roadmap_excluded",
+      "render": "roadmap-amber-dashed"
     }
   ],
   "differentiation": {
@@ -169,7 +178,7 @@
           ],
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-node",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_source": "grok/relink_partner_journeys/node",
           "economics_status": "cascaded",
           "model_link": "rn-ea2233879811",
           "_economics_source": "economics_by_route_id.json",
@@ -191,7 +200,7 @@
           ],
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-node",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_source": "grok/relink_partner_journeys/node",
           "economics_status": "cascaded",
           "model_link": "rn-82453f6cb33e",
           "_economics_source": "economics_by_route_id.json",
@@ -259,7 +268,7 @@
           ],
           "_link_kind": "corridor-label",
           "_link_status": "linked-grok-node",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_source": "grok/relink_partner_journeys/node",
           "economics_status": "cascaded",
           "model_link": "rn-76264638fa6b",
           "_economics_source": "economics_by_route_id.json",
@@ -350,8 +359,8 @@
           "route_id": "rn-eb5758aeba2a",
           "route_ids": null,
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/relink_partner_journeys/node",
           "economics_status": "economics_pending",
           "_reground_at": "2026-06-29T12:02:47Z",
           "from_label": "Chalong Pier",
@@ -429,7 +438,21 @@
       ],
       "region_wide_end_state": true,
       "route_scope": "regional",
-      "featured_routes": [],
+      "featured_routes": [
+        {
+          "label": "Manila (Bay / Pasig) ↔ Cavite / Bataan",
+          "from_node_id": "manila-philippines",
+          "to_node_id": "manila-philippines",
+          "distance_nm": 39.1,
+          "platform": "Pioneer II",
+          "route_id": null,
+          "_link_kind": "backfill-from-journey",
+          "_link_status": "unlinked-intra-city",
+          "_link_source": "grok/backfill_phase_featured_routes",
+          "economics_status": "cascaded",
+          "display": "text_only"
+        }
+      ],
       "timeline": "2028+",
       "rationale": "From three proven clusters, the same playbook extends to every coastal market Grab serves — starting with the Philippines, where the government is itself reviving urban ferries (Pasig/MAPALLA) and the archipelago is tailor-made for a foiling network.",
       "use_cases": [
@@ -618,7 +641,8 @@
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "from_label": "Bedok Jetty (East Coast Park)",
           "to_label": "Marina Bay Water Taxi Stops (MPA pilot — Esplanade / Bayfront / Promontory)",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Marina Bay",
@@ -638,7 +662,8 @@
           "_economics_source": "economics_by_route_id.json",
           "_economics_authored_for": "grab",
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Singapore",
@@ -728,7 +753,7 @@
               "route_id": "rn-82453f6cb33e",
               "_link_kind": "corridor-label",
               "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "route_ids": [
                 "rn-82453f6cb33e"
@@ -884,13 +909,17 @@
           "archetype": "intercity",
           "from_node_id": "desaru-coast-malaysia",
           "to_node_id": "bp-814d17ab61",
-          "route_id": "rn-f2a4c410dfa8",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "from_label": "Desaru Coast (Johor)",
           "to_label": "Villa Marina Condominium",
           "_reground_at": "2026-06-29T12:02:47Z",
           "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Singapore",
@@ -1197,7 +1226,8 @@
           "_link_kind": "corridor-label",
           "from_label": "Bali Marina (Benoa)",
           "to_label": "Six Senses Uluwatu",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Bali / Nusa Penida / Lembongan / Gilis / Lombok / Sumba / Komodo",
@@ -1209,13 +1239,17 @@
           "archetype": "intercity",
           "from_node_id": "bali-indonesia",
           "to_node_id": "lombok-indonesia",
-          "route_id": "rn-91e276ba733c",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "from_label": "Bali / Nusa Penida / Lembongan / Gilis / Lombok / Sumba / Komodo",
           "to_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
           "_reground_at": "2026-06-29T12:02:47Z",
           "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Lombok",
@@ -1227,11 +1261,15 @@
           "archetype": "intercity",
           "from_node_id": "lombok-indonesia",
           "to_node_id": "komodo-flores-indonesia",
-          "route_id": "rn-d2f360f76d12",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "_reground_at": "2026-06-29T12:02:47Z",
           "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Komodo / Labuan Bajo",
@@ -1243,11 +1281,15 @@
           "archetype": "intercity",
           "from_node_id": "komodo-flores-indonesia",
           "to_node_id": "sumba-indonesia",
-          "route_id": "rn-11d0c322c8c8",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "_reground_at": "2026-06-29T12:02:47Z",
           "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "proof_points": [
@@ -1308,7 +1350,7 @@
               "route_id": "rn-c256a044c8be",
               "_link_kind": "corridor-label",
               "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "route_ids": [
                 "rn-c256a044c8be"
@@ -1342,15 +1384,17 @@
               "to_node_id": "lombok-indonesia",
               "distance_nm": 52.7,
               "platform": "Quanta-LR",
-              "route_id": "rn-91e276ba733c",
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "route_id": null,
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "route_ids": null,
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Bali / Nusa Penida / Lembongan / Gilis / Lombok / Sumba / Komodo",
               "to_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -1378,15 +1422,17 @@
               "to_node_id": "sumba-indonesia",
               "distance_nm": 82.9,
               "platform": "Quanta-LR",
-              "route_id": "rn-11d0c322c8c8",
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "route_id": null,
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "route_ids": null,
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
               "to_label": "Sumba",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -1471,8 +1517,8 @@
           "archetype": "tourism",
           "from_node_id": "Jakarta",
           "to_node_id": "Jakarta",
-          "route_id": "ics-fe31c28f2c",
-          "_link_status": "linked-grok-scoped",
+          "route_id": "ics-9e59ba5c5c",
+          "_link_status": "unlinked-no-bp-grounding",
           "model_link": "ics-9e59ba5c5c",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -1481,8 +1527,11 @@
           "from_label": "Marina Ancol",
           "to_label": "Thousand Islands inner ring (Bidadari/Ayer/Onrust)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "route_ids": [
+            "ics-9e59ba5c5c"
+          ],
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "_link_kind": "model-link-promote"
         },
         {
           "from": "Marina Ancol",
@@ -1495,7 +1544,7 @@
           "from_node_id": "Jakarta",
           "to_node_id": "Jakarta",
           "route_id": "ics-fe31c28f2c",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "unlinked-no-bp-grounding",
           "model_link": "ics-fe31c28f2c",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -1504,8 +1553,11 @@
           "from_label": "Marina Ancol",
           "to_label": "Thousand Islands inner ring (Bidadari/Ayer/Onrust)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "route_ids": [
+            "ics-fe31c28f2c"
+          ],
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "_link_kind": "model-link-promote"
         },
         {
           "from": "Marina Ancol",
@@ -1518,7 +1570,7 @@
           "from_node_id": "Jakarta",
           "to_node_id": "Jakarta",
           "route_id": "ics-fe31c28f2c",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "unlinked-no-bp-grounding",
           "model_link": "ics-fe31c28f2c",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -1527,8 +1579,11 @@
           "from_label": "Marina Ancol",
           "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "route_ids": [
+            "ics-fe31c28f2c"
+          ],
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "_link_kind": "model-link-promote"
         },
         {
           "from": "Marina Ancol",
@@ -1541,7 +1596,7 @@
           "from_node_id": "Jakarta",
           "to_node_id": "Jakarta",
           "route_id": "ics-fe31c28f2c",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "unlinked-no-bp-grounding",
           "model_link": "ics-fe31c28f2c",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -1550,8 +1605,11 @@
           "from_label": "Marina Ancol",
           "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "route_ids": [
+            "ics-fe31c28f2c"
+          ],
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "_link_kind": "model-link-promote"
         }
       ],
       "proof_points": [
@@ -1609,9 +1667,9 @@
               "to_node_id": "Jakarta",
               "distance_nm": 35.9,
               "platform": "Pioneer II",
-              "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "route_id": "ics-9e59ba5c5c",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-9e59ba5c5c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1620,8 +1678,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-9e59ba5c5c"
+              ],
+              "_link_kind": "model-link-promote"
             },
             {
               "label": "Marina Ancol ↔ Thousand Islands outer ring (Sepa/Pelangi/Putri)",
@@ -1630,8 +1690,8 @@
               "distance_nm": 35.9,
               "platform": "Pioneer II",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1640,8 +1700,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             },
             {
               "label": "Marina Ancol ↔ Thousand Islands outer ring (Sepa/Pelangi/Putri)",
@@ -1650,8 +1712,8 @@
               "distance_nm": 35.9,
               "platform": "Quanta-LR",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1660,8 +1722,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             }
           ],
           "use_cases": [
@@ -1688,8 +1752,8 @@
               "distance_nm": 35.9,
               "platform": "Quanta-LR",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1698,8 +1762,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             },
             {
               "label": "Marina Ancol ↔ Thousand Islands outer ring (Sepa/Pelangi/Putri)",
@@ -1708,8 +1774,8 @@
               "distance_nm": 35.9,
               "platform": "Pioneer II",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1718,8 +1784,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             }
           ],
           "use_cases": [
@@ -1745,9 +1813,9 @@
               "to_node_id": "Jakarta",
               "distance_nm": 35.9,
               "platform": "Pioneer II",
-              "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "route_id": "ics-9e59ba5c5c",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-9e59ba5c5c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1756,8 +1824,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-9e59ba5c5c"
+              ],
+              "_link_kind": "model-link-promote"
             },
             {
               "label": "Marina Ancol ↔ Thousand Islands outer ring (Sepa/Pelangi/Putri)",
@@ -1766,8 +1836,8 @@
               "distance_nm": 35.9,
               "platform": "Pioneer II",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1776,8 +1846,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             },
             {
               "label": "Marina Ancol ↔ Thousand Islands outer ring (Sepa/Pelangi/Putri)",
@@ -1786,8 +1858,8 @@
               "distance_nm": 35.9,
               "platform": "Quanta-LR",
               "route_id": "ics-fe31c28f2c",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "unlinked-no-bp-grounding",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "model_link": "ics-fe31c28f2c",
               "economics_status": "cascaded",
               "_economics_source": "economics_by_route_id.json",
@@ -1796,8 +1868,10 @@
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Ancol",
               "to_label": "Thousand Islands outer ring (Sepa/Pelangi/Putri)",
-              "route_ids": null,
-              "_link_kind": "corridor-label"
+              "route_ids": [
+                "ics-fe31c28f2c"
+              ],
+              "_link_kind": "model-link-promote"
             }
           ],
           "use_cases": [
@@ -1909,7 +1983,8 @@
           "economics_status": "cascaded",
           "from_label": "Bali Marina (Benoa)",
           "to_label": "Gili Trawangan Main Harbour",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Bangsal Harbour (Pelabuhan Bangsal)",
@@ -1931,7 +2006,8 @@
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "Bangsal Harbour (Pelabuhan Bangsal)",
           "to_label": "Gili Air main jetty",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Lombok",
@@ -1943,13 +2019,16 @@
           "archetype": "intercity",
           "from_node_id": "lombok-indonesia",
           "to_node_id": "komodo-flores-indonesia",
-          "route_id": "rn-d2f360f76d12",
+          "route_id": null,
           "route_ids": null,
-          "_link_status": "linked-grok-node",
+          "_link_status": "aspirational-no-built-route",
           "economics_status": "economics_pending",
           "_seal_at": "2026-06-28T06:44:49Z",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Mandalika Marina Zone (ITDC KEK SEZ greenfield)",
@@ -1971,7 +2050,8 @@
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "Mandalika Marina Zone (ITDC KEK SEZ greenfield)",
           "to_label": "Kuta Lombok main beach",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         }
       ],
       "proof_points": [
@@ -2035,7 +2115,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-27T15:43:09Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -2054,7 +2134,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-27T15:43:09Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -2093,7 +2173,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Bali Marina (Benoa)",
@@ -2105,16 +2185,18 @@
               "to_node_id": "komodo-flores-indonesia",
               "distance_nm": 236.7,
               "platform": "Quanta-LR",
-              "route_id": "rn-d2f360f76d12",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-27T15:43:09Z",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
               "to_label": "Komodo / Labuan Bajo / Flores / Sumba",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -2147,7 +2229,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Bali Marina (Benoa)",
@@ -2165,7 +2247,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-27T15:43:09Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -2267,14 +2349,17 @@
           "archetype": "tourism",
           "from_node_id": "komodo-flores-indonesia",
           "to_node_id": "bp-3b1b42b475",
-          "route_id": "rn-453a25f98ad9",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "route_ids": null,
           "economics_status": "economics_pending",
           "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
           "to_label": "Pink Beach / Pantai Merah anchorage (Komodo NP)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Labuan Bajo",
@@ -2304,14 +2389,17 @@
           "archetype": "intercity",
           "from_node_id": "komodo-flores-indonesia",
           "to_node_id": "sumba-indonesia",
-          "route_id": "rn-11d0c322c8c8",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "route_ids": null,
           "economics_status": "economics_pending",
           "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
           "to_label": "Sumba",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Komodo / Labuan Bajo / Flores / Sumba",
@@ -2323,14 +2411,17 @@
           "archetype": "intercity",
           "from_node_id": "komodo-flores-indonesia",
           "to_node_id": "bp-b4d8be42e5",
-          "route_id": "rn-1f3002dd00e5",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "route_ids": null,
           "economics_status": "economics_pending",
           "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
           "to_label": "Pelabuhan Labuan Bajo (Pelindo / Pelni)",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "proof_points": [
@@ -2388,15 +2479,17 @@
               "to_node_id": "bp-d5e8c01ab2",
               "distance_nm": 24.8,
               "platform": "Pioneer II",
-              "route_id": "rn-4f204600cf23",
-              "_link_status": "linked-grok-node",
+              "route_id": null,
+              "_link_status": "aspirational-no-built-route",
               "route_ids": null,
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
               "to_label": "Komodo Island — Ata Modo village (indigenous community)",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             },
             {
               "label": "Labuan Bajo ↔ Pink Beach / manta points",
@@ -2419,15 +2512,17 @@
               "to_node_id": "bp-3497837a7b",
               "distance_nm": 1.5,
               "platform": "Pioneer II",
-              "route_id": "rn-871e5ff3b6a7",
-              "_link_status": "linked-grok-node",
+              "route_id": null,
+              "_link_status": "aspirational-no-built-route",
               "route_ids": null,
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
               "to_label": "Meruorah Komodo Labuan Bajo",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -2486,15 +2581,17 @@
               "to_node_id": "bp-45d1ec065c",
               "distance_nm": 24.4,
               "platform": "Pioneer II",
-              "route_id": "rn-c5978b9ec0b4",
-              "_link_status": "linked-grok-node",
+              "route_id": null,
+              "_link_status": "aspirational-no-built-route",
               "route_ids": null,
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Komodo / Labuan Bajo / Flores / Sumba",
               "to_label": "Padar Island Viewing-Platform Pier (Komodo NP)",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             },
             {
               "label": "Padang Bai (Bali east — Pioneer II Bali↔Lombok pointer, NOT LBJ) ↔ Meruorah Komodo Labuan Bajo",
@@ -2506,7 +2603,7 @@
               "_link_status": "linked-grok-node",
               "route_ids": null,
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Padang Bai (Bali east — Pioneer II Bali↔Lombok pointer, NOT LBJ)",
@@ -2524,7 +2621,7 @@
                 "rn-f464cef34281"
               ],
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Marina Labuan Bajo (KEK LBJ — ITDC)",
@@ -2650,7 +2747,8 @@
           "_link_status": "linked-grok-node",
           "_link_kind": "corridor-label",
           "economics_status": "cascaded",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Tambolaka / Waingapu gateway",
@@ -2670,7 +2768,8 @@
           "_link_kind": "corridor-label",
           "economics_status": "economics_pending",
           "_seal_at": "2026-06-28T06:44:49Z",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "NIHI Sumba (private jetty + beach-landing)",
@@ -2692,7 +2791,8 @@
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "NIHI Sumba (private jetty + beach-landing)",
           "to_label": "Cap Karoso (Kerewe / Karoso SW coast)",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
@@ -2704,15 +2804,18 @@
           "archetype": "intercity",
           "from_node_id": "lombok-indonesia",
           "to_node_id": "sumba-indonesia",
-          "route_id": "rn-e8aab4ebc00f",
+          "route_id": null,
           "route_ids": null,
-          "_link_status": "linked-grok-node",
+          "_link_status": "aspirational-no-built-route",
           "economics_status": "economics_pending",
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
           "to_label": "Sumba",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "proof_points": [
@@ -2776,7 +2879,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -2795,7 +2898,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -2834,7 +2937,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Meruorah Komodo Labuan Bajo",
@@ -2846,16 +2949,18 @@
               "to_node_id": "sumba-indonesia",
               "distance_nm": 255,
               "platform": "Quanta-LR",
-              "route_id": "rn-e8aab4ebc00f",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway",
               "to_label": "Sumba",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -2888,7 +2993,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Meruorah Komodo Labuan Bajo",
@@ -2906,7 +3011,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3009,14 +3114,17 @@
           "archetype": "tourism",
           "from_node_id": "raja-ampat-indonesia",
           "to_node_id": "Mansuar Island south",
-          "route_id": "ics-da5220fd24",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "route_ids": null,
           "economics_status": "economics_pending",
           "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
           "to_label": "Mansuar Island South",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Raja Ampat / Sorong / Misool / Cenderawasih",
@@ -3028,13 +3136,17 @@
           "archetype": "tourism",
           "from_node_id": "raja-ampat-indonesia",
           "to_node_id": "Misool / Cenderawasih (Aman-fit candidate locations)",
-          "route_id": "ics-5840f85047",
-          "_link_status": "linked-grok-node",
+          "route_id": null,
+          "_link_status": "aspirational-no-built-route",
           "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
           "to_label": "Misool",
           "_reground_at": "2026-06-29T12:02:47Z",
           "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "economics_status": "roadmap_excluded",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Raja Ampat",
@@ -3046,12 +3158,15 @@
           "archetype": "tourism",
           "from_node_id": "raja-ampat-indonesia",
           "to_node_id": "Mioskon islet (between Mansuar + Gam)",
-          "route_id": "ics-71281cdfb5",
+          "route_id": null,
           "route_ids": null,
-          "_link_status": "linked-grok-node",
+          "_link_status": "aspirational-no-built-route",
           "economics_status": "economics_pending",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         },
         {
           "from": "Raja Ampat",
@@ -3063,12 +3178,15 @@
           "archetype": "tourism",
           "from_node_id": "raja-ampat-indonesia",
           "to_node_id": "Waisai waterfront",
-          "route_id": "ics-90f2ce57d8",
+          "route_id": null,
           "route_ids": null,
-          "_link_status": "linked-grok-node",
+          "_link_status": "aspirational-no-built-route",
           "economics_status": "economics_pending",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "proof_points": [
@@ -3126,15 +3244,17 @@
               "to_node_id": "Mansuar Island south",
               "distance_nm": 41.2,
               "platform": "Pioneer II",
-              "route_id": "ics-da5220fd24",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
               "to_label": "Mansuar Island South",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             },
             {
               "label": "Raja Ampat / Sorong / Misool / Cenderawasih ↔ Mioskon Islet",
@@ -3142,15 +3262,17 @@
               "to_node_id": "Mioskon islet (between Mansuar + Gam)",
               "distance_nm": 40,
               "platform": "Pioneer II",
-              "route_id": "ics-71281cdfb5",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
               "to_label": "Mioskon Islet",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -3177,15 +3299,17 @@
               "to_node_id": "Mansuar Island south",
               "distance_nm": 41.2,
               "platform": "Pioneer II",
-              "route_id": "ics-da5220fd24",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
               "to_label": "Mansuar Island South",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             },
             {
               "label": "Raja Ampat / Sorong / Misool / Cenderawasih ↔ Mioskon Islet",
@@ -3193,15 +3317,17 @@
               "to_node_id": "Mioskon islet (between Mansuar + Gam)",
               "distance_nm": 40,
               "platform": "Pioneer II",
-              "route_id": "ics-71281cdfb5",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
               "to_label": "Mioskon Islet",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -3228,15 +3354,17 @@
               "to_node_id": "Misool / Cenderawasih (Aman-fit candidate locations)",
               "distance_nm": 114.6,
               "platform": "Quanta-LR",
-              "route_id": "ics-5840f85047",
+              "route_id": null,
               "route_ids": null,
-              "_link_status": "linked-grok-node",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "aspirational-no-built-route",
+              "_link_source": "grok/relink_partner_journeys/bp_gate",
               "economics_status": "economics_pending",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Raja Ampat / Sorong / Misool / Cenderawasih",
               "to_label": "Misool",
-              "_link_kind": "corridor-label"
+              "display": "text_only",
+              "_link_kind": "aspirational-chip",
+              "render": "roadmap-amber-dashed"
             }
           ],
           "use_cases": [
@@ -3756,7 +3884,8 @@
           "_link_kind": "corridor-label",
           "economics_status": "economics_pending",
           "_seal_at": "2026-06-28T06:44:49Z",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Tuktuk Siadong village pier",
@@ -3778,7 +3907,8 @@
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "Tuktuk Siadong village pier",
           "to_label": "Ambarita",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Tigaraja Port (Parapat)",
@@ -3800,7 +3930,8 @@
           "_seal_at": "2026-06-28T06:44:49Z",
           "from_label": "Tigaraja Port (Parapat)",
           "to_label": "Tomok pier (Samosir)",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         }
       ],
       "proof_points": [
@@ -3864,7 +3995,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3883,7 +4014,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3921,7 +4052,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3940,7 +4071,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3978,7 +4109,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -3997,7 +4128,7 @@
               ],
               "_link_status": "linked-grok-node",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "_seal_at": "2026-06-28T06:44:49Z",
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -4095,8 +4226,8 @@
           "to_node_id": "bp-3a1cb874f2",
           "route_id": "rn-eb5758aeba2a",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/relink_partner_journeys/node",
           "from_label": "Chalong Pier",
           "to_label": "Karon Beach",
           "_reground_at": "2026-06-29T12:02:47Z",
@@ -4114,9 +4245,9 @@
           "from_node_id": "bp-4e9a8f7cea",
           "to_node_id": "bp-3a1cb874f2",
           "route_id": "rn-eb5758aeba2a",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "_link_kind": "corridor-label",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_source": "grok/relink_partner_journeys/node",
           "from_label": "Chalong Pier",
           "to_label": "Karon Beach",
           "_reground_at": "2026-06-29T12:02:47Z",
@@ -4135,8 +4266,8 @@
           "to_node_id": "bp-3a1cb874f2",
           "route_id": "rn-eb5758aeba2a",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/relink_partner_journeys/node",
           "model_link": "gcn-0cc5f4e157-shared",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -4160,8 +4291,8 @@
           "to_node_id": "bp-3a1cb874f2",
           "route_id": "rn-eb5758aeba2a",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/reground_proposal_surfaces",
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/relink_partner_journeys/node",
           "model_link": "rn-7a2f24dc6eb0",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -4231,8 +4362,8 @@
               "platform": "Pioneer II",
               "route_id": "rn-eb5758aeba2a",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "economics_pending",
               "route_ids": null,
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -4266,8 +4397,8 @@
               "platform": "Quanta-LR",
               "route_id": "rn-eb5758aeba2a",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/relink_partner_journeys/node",
               "economics_status": "cascaded",
               "route_ids": null,
               "_reground_at": "2026-06-29T12:02:47Z",
@@ -4298,8 +4429,8 @@
               "route_id": "rn-eb5758aeba2a",
               "_link_kind": "corridor-label",
               "distance_nm": 19.5,
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/relink_partner_journeys/node",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Chalong Pier",
               "to_label": "Karon Beach",
@@ -4313,8 +4444,8 @@
               "route_id": "rn-eb5758aeba2a",
               "_link_kind": "corridor-label",
               "distance_nm": 19.5,
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/relink_partner_journeys/node",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Chalong Pier",
               "to_label": "Karon Beach",
@@ -4328,8 +4459,8 @@
               "route_id": "rn-eb5758aeba2a",
               "_link_kind": "corridor-label",
               "distance_nm": 19.5,
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/reground_proposal_surfaces",
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/relink_partner_journeys/node",
               "_reground_at": "2026-06-29T12:02:47Z",
               "from_label": "Chalong Pier",
               "to_label": "Karon Beach",
@@ -4435,7 +4566,8 @@
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "from_label": "Cebu Port Pier 1 (OceanJet)",
           "to_label": "Tagbilaran (Bohol)",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "Manila",
@@ -4447,16 +4579,21 @@
           "archetype": "intercity",
           "from_node_id": "manila-philippines",
           "to_node_id": "palawan-philippines",
-          "route_id": "edge__manila-philippines__palawan-el-nido-coron-amanpulo",
-          "_link_status": "linked-grok-node",
+          "_link_status": "unlinked-bp-hold",
           "model_link": "rn-6193fc15dcee",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
           "_economics_authored_for": "grab",
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "_link_source": "grok/reground_bp_binding_holds",
+          "_link_kind": "model-link-promote",
+          "display": "text_only",
+          "_fidelity_trim": {
+            "at": "2026-06-29T13:00:11Z",
+            "reason": "bp_binding_hold_null",
+            "detail": "labels ≠ route endpoints: card 'Manila' → 'Coron / El Nido (Palawan)' vs route 'Esplanade Seaside Terminal (Manila South"
+          }
         },
         {
           "from": "Cebu Port Pier 1 (OceanJet)",
@@ -4478,7 +4615,8 @@
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "from_label": "Cebu Port Pier 1 (OceanJet)",
           "to_label": "Tagbilaran (Bohol)",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         }
       ],
       "proof_points": [
@@ -4721,7 +4859,8 @@
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "from_label": "Bach Dang Speed Ferry Terminal",
           "to_label": "Vung Tau - Con Dao Express Ferry Harbour",
-          "_reground_at": "2026-06-29T12:02:47Z"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/relink_partner_journeys/node"
         },
         {
           "from": "HoiAn Flow | Kite Surf Wind Center",
@@ -4733,8 +4872,8 @@
           "archetype": "tourism",
           "from_node_id": "Da Nang / Hoi An / Lăng Cô, Vietnam",
           "to_node_id": "Da Nang / Hoi An / Lăng Cô, Vietnam",
-          "route_id": null,
-          "_link_status": "unlinked-no-bp-grounding",
+          "route_id": "ics-1312999652",
+          "_link_status": "linked-grok-scoped",
           "model_link": "ics-1312999652",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
@@ -4744,7 +4883,9 @@
           "to_label": "Bến tàu Cù lao Chàm",
           "_reground_at": "2026-06-29T11:58:41Z",
           "route_ids": null,
-          "_binding_fix_at": "2026-06-29T12:02:45Z"
+          "_binding_fix_at": "2026-06-29T12:02:45Z",
+          "_link_kind": "corridor-label",
+          "_link_source": "grok/relink_partner_journeys/scoped"
         },
         {
           "from": "Ha Long / Tuan Chau",
@@ -4757,15 +4898,18 @@
           "from_node_id": "Ha Long Bay",
           "to_node_id": "Ha Long Bay",
           "route_id": "ics-f21c5d7e8d",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "unlinked-no-bp-grounding",
           "model_link": "ics-f21c5d7e8d",
           "economics_status": "cascaded",
           "_economics_source": "economics_by_route_id.json",
           "_economics_authored_for": "grab",
           "_economics_cascade_at": "2026-06-21T14:24:45Z",
           "_reground_at": "2026-06-29T12:02:47Z",
-          "route_ids": null,
-          "_link_kind": "corridor-label"
+          "route_ids": [
+            "ics-f21c5d7e8d"
+          ],
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
+          "_link_kind": "model-link-promote"
         }
       ],
       "proof_points": [
@@ -5454,14 +5598,14 @@
   },
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-29T12:02:47Z",
+      "at": "2026-06-29T12:56:09Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
         "total": 125,
-        "linked": 108,
-        "cleared_mislink": 10,
+        "linked": 49,
+        "cleared_mislink": 0,
         "borrowed_brief": 0,
-        "matched_scoped": 24,
+        "matched_scoped": 1,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,
@@ -5920,10 +6064,10 @@
     }
   },
   "_bp_binding_hold": {
-    "at": "2026-06-29T12:04:09Z",
+    "at": "2026-06-29T13:00:11Z",
     "stats": {
-      "unchanged": 105,
-      "held": 20
+      "unchanged": 124,
+      "held": 2
     }
   }
 }
