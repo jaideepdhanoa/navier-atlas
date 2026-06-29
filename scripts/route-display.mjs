@@ -262,7 +262,9 @@ export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pa
   return [...keptIntra, ...keptInter];
 }
 
-function resolveDensityPolicy(md, routeCount, keep = []) {
+function resolveDensityPolicy(md, routeCount, keep = [], pageKind = 'flat') {
+  // Aggregate atlas always ships the full network; lane filters + zoom opacity handle legibility.
+  if (pageKind === 'aggregate') return 'tier_visual';
   if (isLegacyDensity(md)) return 'legacy';
   const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
   if (routeCount >= AUTO_LEGACY_ROUTE_THRESHOLD || touchesDense) return 'legacy';
@@ -455,6 +457,18 @@ export function defaultDensityMode(tier, storyCount) {
 
 export function buildMapDisplay(partner, { market = null, routeCount = 0, storyCount = 0, pageKind = 'flat', densityPolicy = null } = {}) {
   const md = { ...(partner?.map_display || {}), ...(market?.map_display || {}) };
+  if (pageKind === 'aggregate') {
+    return {
+      density_tier: inferDensityTier(routeCount, partner, market),
+      density_policy: 'tier_visual',
+      default_mode: 'full_network',
+      page_kind: pageKind,
+      route_count: routeCount,
+      story_count: storyCount,
+      scope_mode: 'full_network',
+      modes: [],
+    };
+  }
   const legacy = densityPolicy === 'legacy' || (densityPolicy == null && isLegacyDensity(md));
   const tier = inferDensityTier(routeCount, partner, market);
   if (legacy) {
@@ -492,7 +506,7 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
 
   const rawRoutes = scoped.ROUTES || [];
   const preTier = inferDensityTier(rawRoutes.length, partner, market);
-  const densityPolicy = resolveDensityPolicy(md, rawRoutes.length, keep);
+  const densityPolicy = resolveDensityPolicy(md, rawRoutes.length, keep, pageKind);
 
   let filtered = filterRoutesForPage(rawRoutes, {
     keep,
