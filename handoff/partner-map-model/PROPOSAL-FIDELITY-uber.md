@@ -1,16 +1,16 @@
 # Proposal fidelity — uber
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:31Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:53:56Z
 
 ## Summary
 
-- Items audited: 96
+- Items audited: 94
 - KEEP: 94
-- DROP: 2
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -34,7 +34,6 @@
 | journey | market:mena | Dubai → Abu Dhabi | `e__uae__1b860507c38f` | **KEEP** | — |
 | featured | mena/p1 | Ras Al Khaimah Harbour → RAK Corniche public pier  | `rn-2a5c2fe11732` | **KEEP** | — |
 | featured | mena/p2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | mena/p3 | Dubai island Marina Slipway → Yas Marina Abu Dhabi | `e__uae__1b860507c38f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Dubai island Marina Slipway' |
 | featured | mena/p4 | A continuous in-app water tier along the whole Gul | `—` | **KEEP** | — |
 | journey | market:miami | Nassau & The Bahamas → Miami | `—` | **KEEP** | — |
 | journey | market:miami | Palm Beach / Treasure Coast → Miami | `—` | **KEEP** | — |
@@ -81,7 +80,6 @@
 | journey | market:brazil-latam | Rio → Buzios | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Florianópolis & Santa Catarina → Florianópolis & S | `—` | **KEEP** | — |
-| featured | brazil-latam/p1 | Florianópolis & Santa Catarina → Florianópolis & S | `ics-2df0a1d37f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Florianópolis & Santa Catari |
 | featured | brazil-latam/p2 | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
 | featured | brazil-latam/p3 | Rio (Praca XV) ↔ Niteroi | `—` | **KEEP** | — |
 | journey | market:italy-luxury | Naples → Capri | `rn-01c592b8150e` | **KEEP** | — |

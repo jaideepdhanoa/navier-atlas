@@ -181,6 +181,11 @@ def main() -> int:
     ap.add_argument("--story", action="store_true", default=True)
     ap.add_argument("--fail-only", action=argparse.BooleanOptionalAction, default=True)
     ap.add_argument("--uae-only", action="store_true", help="only routes touching UAE cities")
+    ap.add_argument(
+        "--mesh-fails",
+        action="store_true",
+        help="scan all non-story routes failing QA (mesh burn-down via channel solver)",
+    )
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--route", nargs="+")
     ap.add_argument("--min-land-km", type=float, default=0.0)
@@ -219,10 +224,15 @@ def main() -> int:
                 continue
             targets.append((rid, ev["interior_land_km"]))
     else:
-        scan_ids = list(story.keys()) if not args.uae_only else [
-            rid for rid, feat in by_id.items()
-            if uae_route(feat.get("properties") or {})
-        ]
+        if args.mesh_fails:
+            scan_ids = [rid for rid in by_id if rid not in story]
+        elif args.uae_only:
+            scan_ids = [
+                rid for rid, feat in by_id.items()
+                if uae_route(feat.get("properties") or {})
+            ]
+        else:
+            scan_ids = list(story.keys())
         for rid in scan_ids:
             feat = by_id.get(rid)
             if not feat:

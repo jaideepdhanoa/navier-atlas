@@ -1,16 +1,16 @@
 # Proposal fidelity — six-senses
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:26Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:53:42Z
 
 ## Summary
 
-- Items audited: 73
+- Items audited: 71
 - KEEP: 71
-- DROP: 2
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -82,10 +82,8 @@
 | journey | market:fiji | Malolo → Mamanuca islands | `—` | **KEEP** | — |
 | journey | market:fiji | Mamanucas → Yasawa Islands | `—` | **KEEP** | — |
 | journey | market:fiji | Nadi / Mamanucas → Outer Yasawas & remote resorts | `—` | **KEEP** | — |
-| featured | fiji/p1 | Fiji (Nadi · Mamanuca · Yasawa) → Fiji | `ics-f9a0a44809` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Fiji (Nadi · Mamanuca · Yasa |
 | featured | fiji/p1 | Malolo ↔ Mamanuca islands | `—` | **KEEP** | — |
 | featured | fiji/p1 | Mamanucas ↔ Yasawa Islands | `—` | **KEEP** | — |
 | featured | fiji/p2 | Nadi / Mamanucas ↔ Outer Yasawas & remote resorts | `—` | **KEEP** | — |
-| featured | fiji/p3 | Fiji (Nadi · Mamanuca · Yasawa) → Fiji | `ics-f9a0a44809` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Fiji (Nadi · Mamanuca · Yasa |
 | featured | fiji/p3 | Malolo ↔ Mamanuca islands | `—` | **KEEP** | — |
 | featured | fiji/p3 | Mamanucas ↔ Yasawa Islands | `—` | **KEEP** | — |

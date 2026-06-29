@@ -1,7 +1,7 @@
 # Proposal fidelity — singapore-mpa
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T12:19:01Z
+**Checked:** 2026-06-29T14:53:41Z
 
 ## Summary
 

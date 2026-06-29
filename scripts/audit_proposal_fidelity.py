@@ -536,6 +536,8 @@ def audit_partner(slug: str, doc: dict, indexes) -> dict:
     record = {
         "partner": slug,
         "verdict": partner_verdict(items),
+        "layout": doc.get("layout"),
+        "hub": is_hub_partner(doc),
         "checked_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "counts": counts,
         "items": items,
@@ -663,19 +665,20 @@ def main() -> int:
             gate_fail = True
             gate_reasons.append(f"{r['partner']}: {jbe} journey BP error(s)")
         if args.strict_deploy_gate:
-            if jbe > 0:
+            deploy_critical = r["partner"] in REFERENCE_PARTNERS or r.get("hub")
+            if jbe > 0 and deploy_critical:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: journey_bp={jbe}")
-            if gge > 0:
+            if gge > 0 and deploy_critical:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: geometry_gate={gge}")
             if pge > 0:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: placeholder={pge}")
-            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "REWRITE":
+            if r["verdict"] == "REWRITE" and deploy_critical:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: REWRITE verdict")
-            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "PASS_WITH_FLAGS":
+            if deploy_critical and r["verdict"] == "PASS_WITH_FLAGS":
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: PASS_WITH_FLAGS (trim flags remain)")
 

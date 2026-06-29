@@ -1,7 +1,7 @@
 # Proposal fidelity — cote-dazur
 
 **Verdict:** TRIM
-**Checked:** 2026-06-29T12:17:19Z
+**Checked:** 2026-06-29T14:52:48Z
 
 ## Summary
 

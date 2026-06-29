@@ -1,13 +1,13 @@
 # Proposal fidelity — yango
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:33Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:54:01Z
 
 ## Summary
 
-- Items audited: 95
+- Items audited: 94
 - KEEP: 94
-- DROP: 1
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
 - BP-binding errors: 0
@@ -16,7 +16,6 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| featured | 1 | Rabat ↔ Sale | `—` | **DROP** | phase_narrative_fit: Phase 1 Dubai beachhead but route cities ['tangier-morocco'] |
 | featured | 2 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | featured | 3 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | journey | market:cote-divoire | Plateau → Treichville | `rn-3c93ccbea798` | **KEEP** | — |

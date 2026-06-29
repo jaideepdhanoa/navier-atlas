@@ -43,8 +43,8 @@ const TARGETS = [
     label: 'Bolt UAE market',
     paths: [
       { name: 'market-uae', entry: 'uae' },
-      { name: 'market-uae-phase-1', entry: 'uae', phaseN: 1 },
-      { name: 'market-uae-phase-2', entry: 'uae', phaseN: 2 },
+      { name: 'market-uae-phase-1', entry: 'uae', phaseN: 1, marketSlug: 'uae' },
+      { name: 'market-uae-phase-2', entry: 'uae', phaseN: 2, marketSlug: 'uae' },
     ],
   },
   {
@@ -52,7 +52,7 @@ const TARGETS = [
     label: 'Yango UAE market',
     paths: [
       { name: 'market-uae', entry: 'uae' },
-      { name: 'market-uae-phase-1', entry: 'uae', phaseN: 1 },
+      { name: 'market-uae-phase-1', entry: 'uae', phaseN: 1, marketSlug: 'uae' },
     ],
   },
   {
@@ -60,8 +60,8 @@ const TARGETS = [
     label: 'Grab Singapore',
     paths: [
       { name: 'market-singapore', entry: 'singapore' },
-      { name: 'market-singapore-phase-1', entry: 'singapore', phaseN: 1 },
-      { name: 'market-singapore-phase-2', entry: 'singapore', phaseN: 2 },
+      { name: 'market-singapore-phase-1', entry: 'singapore', phaseN: 1, marketSlug: 'singapore' },
+      { name: 'market-singapore-phase-2', entry: 'singapore', phaseN: 2, marketSlug: 'singapore' },
     ],
   },
 ];
@@ -152,15 +152,28 @@ async function waitMapReady(page) {
   );
 }
 
-async function focusPhase(page, phaseN) {
+async function focusPhase(page, phaseN, { marketSlug } = {}) {
   if (!phaseN) return;
-  await page.evaluate((n) => {
+  await page.evaluate(({ n, market }) => {
+    const partner = window.PARTNERS?.[window.PARTNER_ACTIVE?.slug || ''];
+    if (!partner) return;
+    if (market && partner.markets && typeof openHubMarket === 'function') {
+      const mk = partner.markets.find((m) => m.slug === market);
+      if (mk) openHubMarket(partner, mk, false);
+    } else if (typeof startPartnerCarousel === 'function' && !window._CARO) {
+      startPartnerCarousel(partner);
+    }
     if (typeof showPhase === 'function') showPhase(n - 1);
-  }, phaseN);
-  await page.waitForTimeout(3500);
+  }, { n: phaseN, market: marketSlug || '' });
+  await page.waitForFunction(
+    (n) => window._activePhaseN === n,
+    phaseN,
+    { timeout: 30000 },
+  ).catch(() => page.waitForTimeout(3500));
+  await page.waitForTimeout(2000);
 }
 
-async function captureView(browser, { slug, name, url, password, outPath, viewport, phaseN }) {
+async function captureView(browser, { slug, name, url, password, outPath, viewport, phaseN, marketSlug }) {
   const context = await browser.newContext({
     viewport,
     httpCredentials: password ? { username: 'navier', password } : undefined,
@@ -173,7 +186,7 @@ async function captureView(browser, { slug, name, url, password, outPath, viewpo
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
     await waitMapReady(page);
     await dismissIntro(page);
-    await focusPhase(page, phaseN);
+    await focusPhase(page, phaseN, { marketSlug });
     await page.evaluate(() => document.body.classList.add('panel-hidden'));
     await page.waitForTimeout(2000);
     await page.locator('#map').screenshot({ path: outPath, type: 'png' });
@@ -232,6 +245,7 @@ async function main() {
             outPath,
             viewport: vp.size,
             phaseN: path.phaseN,
+            marketSlug: path.marketSlug,
           }));
         }
       }
@@ -242,9 +256,14 @@ async function main() {
   }
 
   const failed = results.filter((r) => r.status !== 'ok');
+  const prodAttempted = args.prod;
   const receipt = {
     browser_qa_at: new Date().toISOString(),
     deploy_url: PROD_URL,
+    prod_capture_attempted: prodAttempted,
+    prod_capture_note: prodAttempted
+      ? 'Live prod URL with Basic auth (requires PARTNER_AUTH_JSON or per-slug env)'
+      : '_dist artifact (byte-identical to Vercel deploy)',
     capture_base_url: baseUrl,
     screenshot_dir: OUT_DIR,
     screenshots: results,

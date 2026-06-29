@@ -1,16 +1,16 @@
 # Proposal fidelity — four-seasons
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:17Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:52:51Z
 
 ## Summary
 
-- Items audited: 39
+- Items audited: 38
 - KEEP: 38
-- DROP: 1
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 1
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -34,7 +34,6 @@
 | featured | maldives/p2 | Velana ↔ Landaa Giraavaru | `—` | **KEEP** | — |
 | featured | maldives/p2 | Kuda Huraa ↔ Landaa Giraavaru | `—` | **KEEP** | — |
 | featured | maldives/p2 | Hulhumale Watersports Club & Excursions/Seaholics  | `ics-5f12d7eb91` | **KEEP** | — |
-| featured | maldives/p3 | Malé / Maldives (national) → Malé / Maldives | `ics-0a9c3fa047` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Malé / Maldives (national)'  |
 | journey | market:french-polynesia | Bora Bora Airport (motu Mute) → Four Seasons Bora  | `—` | **KEEP** | — |
 | journey | market:french-polynesia | Four Seasons Bora Bora → Vaitape / Bora Bora villa | `—` | **KEEP** | — |
 | journey | market:french-polynesia | Bora Bora → Taha'a / Raiatea | `—` | **KEEP** | — |

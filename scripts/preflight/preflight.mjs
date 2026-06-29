@@ -259,7 +259,7 @@ head('§3.7  proposal fidelity (hard gate: BP · geometry · placeholders · REW
 {
   const fidelityArgs = [
     'scripts/audit_proposal_fidelity.py',
-    '--hub-partners',
+    '--all-partners',
     '--strict-deploy-gate',
   ];
   const py = spawnSync('python3', fidelityArgs, { cwd: ROOT, encoding: 'utf8' });

@@ -1,16 +1,16 @@
 # Proposal fidelity — freenow
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:18Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:52:53Z
 
 ## Summary
 
-- Items audited: 19
+- Items audited: 17
 - KEEP: 17
-- DROP: 2
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -26,7 +26,6 @@
 | featured | 2 | Marina Zeas (Piraeus) → 2nd Glyfada Marina | `rn-89552c9786ec` | **KEEP** | — |
 | featured | 2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Anantara World Islands Reso | `gcn-6a2841d6db-bolt` | **KEEP** | — |
-| featured | 3 | Red Sea Global (RSG + AMAALA) → Nujuma, a Ritz-Car | `rn-1a140dacd3e6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Red Sea Global (RSG + AMAALA |
 | featured | 3 | Molo Beverello (Naples) → Casamicciola | `rn-31d27d5fc623` | **KEEP** | — |
 | featured | 3 | Mykonos New Port (Tourlos) → Naxos Port (Chora) | `rn-dc595b5a6ab8` | **KEEP** | — |
 | featured | france/p1 | Corsica — Ajaccio, Bonifacio & Bastia → Bonifacio | `ics-6e37714d71` | **KEEP** | — |
@@ -34,4 +33,3 @@
 | featured | ireland/p1 | Dublin Docklands (North Wall Quay) → Dún Laoghaire | `rn-455eede91b5a` | **KEEP** | — |
 | featured | italy/p1 | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | featured | spain/p1 | Barcelona & the Costa Brava → Palamós | `ics-81984b66e9` | **KEEP** | — |
-| featured | united-kingdom/p1 | London (River Thames) → London | `ics-5e35d5734e` | **DROP** | bp_binding: labels ≠ route endpoints: card 'London (River Thames)' → 'Lo |

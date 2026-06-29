@@ -1,7 +1,7 @@
 # Proposal fidelity — airasia-move
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:28:12Z
+**Checked:** 2026-06-29T14:52:43Z
 
 ## Summary
 

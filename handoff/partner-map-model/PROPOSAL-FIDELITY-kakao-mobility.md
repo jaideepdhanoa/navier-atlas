@@ -1,7 +1,7 @@
 # Proposal fidelity — kakao-mobility
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:28:20Z
+**Checked:** 2026-06-29T14:53:03Z
 
 ## Summary
 

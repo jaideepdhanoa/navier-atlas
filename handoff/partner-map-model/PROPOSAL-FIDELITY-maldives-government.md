@@ -1,7 +1,7 @@
 # Proposal fidelity — maldives-government
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T12:18:53Z
+**Checked:** 2026-06-29T14:53:31Z
 
 ## Summary
 

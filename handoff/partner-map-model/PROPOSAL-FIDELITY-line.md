@@ -1,16 +1,16 @@
 # Proposal fidelity — line
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T14:28:20Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:53:03Z
 
 ## Summary
 
-- Items audited: 25
+- Items audited: 24
 - KEEP: 24
-- DROP: 1
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 1
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -38,6 +38,5 @@
 | journey | market:thailand | Krabi → Nonthasak Marine | `—` | **KEEP** | — |
 | journey | market:thailand | Krabi → Marina Seaview Krabi | `—` | **KEEP** | — |
 | journey | market:thailand | Koh Phangan → Thong Sala Pier (Koh Phangan main) | `—` | **KEEP** | — |
-| featured | thailand/p1 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
 | featured | thailand/p2 | Banyan Tree Krabi → Koh Phi Phi Tour Pier | `rn-41b28873ff52` | **KEEP** | — |
 | featured | thailand/p3 | Koh Phangan → Thong Sala Pier (Koh Phangan main) | `—` | **KEEP** | — |

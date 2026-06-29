@@ -1,7 +1,7 @@
 # Proposal fidelity — wsf
 
 **Verdict:** TRIM
-**Checked:** 2026-06-29T12:19:39Z
+**Checked:** 2026-06-29T14:53:59Z
 
 ## Summary
 

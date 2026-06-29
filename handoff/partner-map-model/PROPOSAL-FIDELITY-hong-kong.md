@@ -1,7 +1,7 @@
 # Proposal fidelity — hong-kong
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T12:17:56Z
+**Checked:** 2026-06-29T14:53:03Z
 
 ## Summary
 

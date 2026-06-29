@@ -1,7 +1,7 @@
 # Proposal fidelity — saudi-pif
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T12:19:00Z
+**Checked:** 2026-06-29T14:53:37Z
 
 ## Summary
 
