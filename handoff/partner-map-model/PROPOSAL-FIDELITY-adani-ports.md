@@ -1,7 +1,7 @@
 # Proposal fidelity — adani-ports
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T13:00:17Z
+**Checked:** 2026-06-29T13:02:50Z
 
 ## Summary
 

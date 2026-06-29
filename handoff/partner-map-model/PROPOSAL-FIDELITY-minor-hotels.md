@@ -1,7 +1,7 @@
 # Proposal fidelity — minor-hotels
 
 **Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-29T13:00:27Z
+**Checked:** 2026-06-29T13:03:01Z
 
 ## Summary
 

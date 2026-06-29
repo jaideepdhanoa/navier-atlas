@@ -1,7 +1,7 @@
 # Proposal fidelity — caribbean
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T13:00:21Z
+**Checked:** 2026-06-29T13:02:54Z
 
 ## Summary
 
