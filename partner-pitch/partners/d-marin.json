@@ -19,24 +19,27 @@
   "multimodal_fit": "A D-Marin marina becomes the hub: guests arrive by road or air, step onto a foiling transfer to the islands or the next marina, and the legacy tender/charter fleet keeps only the longest or most bespoke legs. Each marina is both a charging node and a demand node.",
   "journeys_unlocked": [
     {
-      "from": "Split",
-      "to": "Hvar",
+      "from": "Hvar & the Pakleni Islands",
+      "to": "Split",
       "today": "Scheduled catamaran — sells out in summer.",
       "with_navier": "On-demand foiling crossing.",
       "distance_nm": 25.2,
       "platform": "Pioneer II",
       "archetype": "tourism",
-      "from_node_id": "split-croatia",
-      "to_node_id": "hvar-croatia",
+      "from_node_id": "hvar-croatia",
+      "to_node_id": "hvar-croatia__split",
       "route_id": "edge__hvar-croatia__split",
       "route_ids": [
         "edge__hvar-croatia__split"
       ],
       "_link_kind": "hospitality-flagship",
       "_link_status": "linked-grok-bite2-tail",
-      "_link_source": "grok/rebind_bite2_hospitality_tail",
+      "_link_source": "grok/reground_proposal_surfaces",
       "economics_status": "economics_pending",
-      "display": "text_only"
+      "display": "text_only",
+      "from_label": "Hvar & the Pakleni Islands",
+      "to_label": "Split",
+      "_reground_at": "2026-06-29T15:58:49Z"
     },
     {
       "from": "Korčula",
@@ -47,16 +50,16 @@
       "platform": "Pioneer II",
       "archetype": "tourism",
       "from_node_id": "korcula-croatia",
-      "to_node_id": "dubrovnik-croatia",
+      "to_node_id": "korcula-croatia__dubrovnik",
       "route_id": "edge__korcula-croatia__dubrovnik",
       "route_ids": [
         "edge__korcula-croatia__dubrovnik"
       ],
       "_link_kind": "hospitality-flagship",
       "_link_status": "linked-grok-bite2-tail",
-      "_link_source": "grok/rebind_bite2_hospitality_tail",
       "economics_status": "economics_pending",
-      "display": "text_only"
+      "display": "text_only",
+      "_reground_at": "2026-06-29T15:58:49Z"
     }
   ],
   "differentiation": {
@@ -117,16 +120,20 @@
       "rationale": "Prove the marina-as-mobility-node model where island-transfer demand and berth strength align.",
       "featured_routes": [
         {
-          "label": "Split ↔ Hvar",
-          "from_node_id": "split-croatia",
-          "to_node_id": "hvar-croatia",
+          "label": "Trajektna luka Split ↔ Hvar Town Port",
+          "from_node_id": "split-croatia__trajektna-luka-split",
+          "to_node_id": "hvar-croatia__hvar-town-port",
           "distance_nm": 20.06,
           "platform": "Pioneer II",
-          "route_id": null,
+          "route_id": "ics-d6ad319f86",
           "route_ids": null,
-          "_link_status": "unlinked-no-bp-grounding",
-          "_link_source": "grok/relink_partner_journeys/bp_gate",
-          "economics_status": "economics_pending"
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/reground_proposal_surfaces",
+          "economics_status": "economics_pending",
+          "_link_kind": "corridor-label",
+          "from_label": "Trajektna luka Split",
+          "to_label": "Hvar Town Port",
+          "_reground_at": "2026-06-29T15:58:49Z"
         }
       ],
       "use_cases": [
@@ -154,11 +161,9 @@
           "to_node_id": "dubrovnik-croatia",
           "distance_nm": 45.9,
           "platform": "Pioneer II",
-          "route_id": "rn-ebb2c7e82b38",
+          "route_id": null,
           "route_ids": null,
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
-          "_link_source": "grok/relink_partner_journeys/node",
+          "_link_status": "unlinked-no-bp-grounding",
           "economics_status": "economics_pending"
         }
       ],
@@ -181,16 +186,20 @@
       "rationale": "Complete the network-wide layer, including the UAE marinas as a Gulf anchor.",
       "featured_routes": [
         {
-          "label": "split-croatia ↔ venice-italy",
+          "label": "Split & Central Dalmatia ↔ Venice Lagoon",
           "from_node_id": "split-croatia",
           "to_node_id": "venice-italy",
           "distance_nm": 211.4,
           "platform": "Quanta-LR",
-          "route_id": null,
+          "route_id": "rn-ae7179e3ce7b",
           "route_ids": null,
-          "_link_status": "unlinked-no-bp-grounding",
-          "_link_source": "grok/relink_partner_journeys/bp_gate",
-          "economics_status": "economics_pending"
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/reground_proposal_surfaces",
+          "economics_status": "economics_pending",
+          "_link_kind": "corridor-label",
+          "from_label": "Split & Central Dalmatia",
+          "to_label": "Venice Lagoon",
+          "_reground_at": "2026-06-29T15:58:49Z"
         }
       ],
       "use_cases": [
@@ -242,12 +251,12 @@
   "tier": "flagship",
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-29T14:54:47Z",
+      "at": "2026-06-29T15:58:46Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
         "total": 5,
-        "linked": 1,
-        "cleared_mislink": 1,
+        "linked": 2,
+        "cleared_mislink": 0,
         "borrowed_brief": 0,
         "matched_scoped": 0,
         "network_chip": 0,
@@ -572,6 +581,15 @@
         "journey_gmv"
       ],
       "platform_rev_excluded": "hospitality/destination — not a super-app partner"
+    }
+  },
+  "_reground": {
+    "at": "2026-06-29T15:58:49Z",
+    "source": "grok/reground_proposal_surfaces",
+    "stats": {
+      "sync_journey_labels": 1,
+      "sync_featured_label": 2,
+      "unchanged": 2
     }
   }
 }
