@@ -2501,6 +2501,47 @@ function _clusterBriefHtml(cb){
   if (cb.precedents&&cb.precedents.length){ h+=`<div class="panel-section"><h3>Precedents</h3>${cb.precedents.map(x=>`<div class="pcaro-route">${escapeHtml(typeof x==='string'?x:(x.label||x.name||''))}</div>`).join('')}</div>`; }
   return h;
 }
+function _regionBriefHtml(rb, slug){
+  const label = rb.display || slug;
+  let h = (_navStack.length ? _navBackHtml() : '') + `<div class="panel-hero">
+    <div class="type-row"><span class="type-pill cluster">region</span><span class="brief-arch">Macro-region</span></div>
+    <h2>${escapeHtml(label)}</h2>
+    ${rb.tagline?`<div class="subtitle">${escapeHtml(rb.tagline)}</div>`:''}
+    <div class="share-row">${_shareLinkBtnHtml()}</div>
+  </div>`;
+  if (rb.summary) h+=`<div class="panel-section"><div class="what-distinct">${escapeHtml(rb.summary)}</div></div>`;
+  const cls = [];
+  if (typeof NAV_CLUSTERS!=='undefined') {
+    for (const c of NAV_CLUSTERS) {
+      const r0 = c.region;
+      const r = ({'SEA':'Southeast Asia','Middle East':'MENA','Maghreb':'MENA'}[r0]||r0);
+      if (r === label) cls.push(c);
+    }
+  }
+  cls.sort((a,b)=>(a.cluster_label||a.cluster_id).localeCompare(b.cluster_label||b.cluster_id));
+  if (cls.length) {
+    h+=`<div class="panel-section"><h3>Countries &amp; archipelagos</h3><div class="cl-city-grid">`;
+    for (const c of cls.slice(0, 24)) {
+      const name = c.cluster_label || c.cluster_id;
+      h+=`<button type="button" class="cl-city" data-cluster="${escapeHtml(c.cluster_id)}">${escapeHtml(name)}</button>`;
+    }
+    h+=`</div></div>`;
+  }
+  return h;
+}
+function showRegionBrief(slug){
+  const rb = (typeof REGION_BRIEFS!=='undefined') ? REGION_BRIEFS[slug] : null;
+  if (!rb) return;
+  const label = rb.display || slug;
+  _navEnter({ key:'region:'+slug, label, render:()=>showRegionBrief(slug) });
+  if (typeof window._openRegionView==='function') window._openRegionView(slug);
+  const p = document.getElementById('panel');
+  p.innerHTML = _regionBriefHtml(rb, slug);
+  p.scrollTop = 0;
+  _writeShareUrl({ type:'region', id:slug });
+  _wireShareCopy(p);
+  p.querySelectorAll('.cl-city[data-cluster]').forEach(el=>el.addEventListener('click', ()=>showClusterBrief(el.dataset.cluster)));
+}
 function showClusterBrief(cid){
   const cb = (typeof CLUSTER_BRIEFS!=='undefined') ? CLUSTER_BRIEFS[cid] : null;
   if (!cb) return;
@@ -3994,6 +4035,10 @@ if (typeof CLUSTER_BRIEFS!=='undefined') for (const cid in CLUSTER_BRIEFS) {
   const cb=CLUSTER_BRIEFS[cid];
   SEARCH_INDEX.push({ id:cid, name:cb.display||cb.display_name||cid, type:'cluster' });
 }
+if (typeof REGION_BRIEFS!=='undefined') for (const slug in REGION_BRIEFS) {
+  const rb=REGION_BRIEFS[slug]; if (!rb || slug.startsWith('_')) continue;
+  SEARCH_INDEX.push({ id:slug, name:rb.display||slug, type:'region' });
+}
 const searchBox = document.getElementById('search');
 const suggest = document.getElementById('suggest');
 searchBox.addEventListener('input', () => {
@@ -4006,7 +4051,8 @@ searchBox.addEventListener('input', () => {
   suggest.querySelectorAll('div').forEach((d,i) => {
     d.addEventListener('click', () => {
       const h = hits[i];
-      if (h.type==='cluster') { showClusterBrief(h.id); }
+      if (h.type==='region') { showRegionBrief(h.id); }
+      else if (h.type==='cluster') { showClusterBrief(h.id); }
       else {
         map.flyTo({ center:h.coords, zoom: h.type==='city'?10: h.type==='locale'?12: 14, duration:1300, essential:true });
         showDetail(h.ref.properties, h.coords);
@@ -4038,7 +4084,8 @@ document.querySelectorAll('.chip').forEach(b => {
   const rootLabel = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER]
     ? (PARTNERS[BUILD_PARTNER].display || BUILD_PARTNER) : 'Global';
   const ALIAS = { 'SEA':'Southeast Asia', 'LatAm-Caribbean':'Latin America', 'Latin-America':'Latin America', 'Caribbean':'Caribbean',
-    'Europe-Mediterranean':'Europe', 'Europe-Atlantic':'Europe', 'Europe-Baltic':'Europe', 'Europe-Med':'Europe', 'Asia':'East Asia' };
+    'Europe-Mediterranean':'Europe', 'Europe-Atlantic':'Europe', 'Europe-Baltic':'Europe', 'Europe-Med':'Europe', 'Asia':'East Asia',
+    'Middle East':'MENA', 'Maghreb':'MENA' };
   const norm = r => ALIAS[r] || r;
   const regions = {};   // label -> bbox {minX,minY,maxX,maxY}
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
@@ -4226,6 +4273,12 @@ document.querySelectorAll('.chip').forEach(b => {
     else renderRegions();
   }
   const resetNavRoot = ()=>{ clearActive(); renderEntry(); if (isPartner) try { _resetPartnerHome(); } catch(e){} };
+  window._openRegionView = (labelOrSlug)=>{
+    const rb = (typeof REGION_BRIEFS!=='undefined') ? REGION_BRIEFS[labelOrSlug] : null;
+    const label = rb ? (rb.display||labelOrSlug) : (ALIAS[labelOrSlug]||labelOrSlug);
+    if (!regions[label]) return;
+    clearActive(); fitRegion(label); renderClusters(label);
+  };
   // city id → normalized region (all tiers), for the breadcrumb.
   const cityRegion={};
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){ const p=f.properties||{}; if(p.id&&p.region) cityRegion[p.id]=norm(p.region); }
@@ -4365,14 +4418,15 @@ panelToggle.addEventListener('click', () => {
 })();
 
 // ============ URL state + share links ============
-// Path URLs (/cluster/, /city/, /grab/penang/city/) carry OG previews for WhatsApp/X/Facebook.
-// Hash routes (#/cluster/, …) remain as backward-compatible aliases.
-const _SEMANTIC_HASH = /^#\/(story|partner|cluster|city)\//;
+// Path URLs (/region/, /cluster/, /city/, /grab/penang/city/) carry OG previews for WhatsApp/X/Facebook.
+// Hash routes (#/region/, #/cluster/, …) remain as backward-compatible aliases.
+const _SEMANTIC_HASH = /^#\/(story|partner|cluster|city|region)\//;
 function _isSemanticHash(h){ return _SEMANTIC_HASH.test(h||''); }
 function _partnerSlugs(){ return (typeof PARTNERS!=='undefined' && PARTNERS) ? Object.keys(PARTNERS) : []; }
 function _parsePathRoute(pathname){
   const p = String(pathname||'').replace(/\/$/,'').split('/').filter(Boolean);
   if (!p.length) return null;
+  if (p[0]==='region' && p[1]) return { type:'region', id:decodeURIComponent(p[1]) };
   if (p[0]==='cluster' && p[1]) return { type:'cluster', id:decodeURIComponent(p[1]) };
   if (p[0]==='city' && p[1] && !_partnerSlugs().includes(p[0])) return { type:'city', id:decodeURIComponent(p[1]) };
   if (_partnerSlugs().includes(p[0])){
@@ -4387,6 +4441,7 @@ function _parsePathRoute(pathname){
 function _isSharePath(){ return !!_parsePathRoute(location.pathname); }
 function _shareCanonicalPath(route){
   if (!route) return location.pathname||'/';
+  if (route.type==='region') return '/region/'+encodeURIComponent(route.id);
   if (route.type==='cluster') return '/cluster/'+encodeURIComponent(route.id);
   if (route.type==='city'){
     if (route.partner && route.market) return '/'+route.partner+'/'+route.market+'/city/'+encodeURIComponent(route.id);
@@ -4418,6 +4473,7 @@ function _openCityDeepLink(id){
 }
 function _applyShareRoute(route){
   if (!route) return false;
+  if (route.type==='region'){ showRegionBrief(route.id); return true; }
   if (route.type==='cluster'){ showClusterBrief(route.id); return true; }
   if (route.type==='city'){ _openCityDeepLink(route.id); return true; }
   if (route.type==='phase'){
@@ -4440,6 +4496,7 @@ function _applyHashRoute(h, animate){
     const ph=h.match(/#\/partner\/[^/]+\/phase\/(\d+)/);
     if (ph && typeof _CARO!=='undefined' && _CARO){ showPhase(Math.max(0,(+ph[1])-1)); return true; }
   }
+  if (h.startsWith('#/region/')) { const rid=decodeURIComponent(h.slice(9).split(/[?#]/)[0]); if (rid) showRegionBrief(rid); return true; }
   if (h.startsWith('#/cluster/')) { const cid=decodeURIComponent(h.slice(10).split(/[?#]/)[0]); if (cid) showClusterBrief(cid); return true; }
   if (h.startsWith('#/city/')) { _openCityDeepLink(decodeURIComponent(h.slice(7).split(/[?#]/)[0])); return true; }
   const m = h.match(/#camera=([-\d.]+),([-\d.]+),([-\d.]+)/);

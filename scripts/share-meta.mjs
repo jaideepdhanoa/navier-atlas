@@ -81,6 +81,20 @@ export function cityMeta(brief, props) {
   };
 }
 
+export function regionMeta(brief, stats = {}) {
+  const name = brief.display || brief.label || brief.region_slug;
+  const cities = stats.cities ? `${stats.cities} cities` : null;
+  const clusters = stats.clusters ? `${stats.clusters} clusters` : null;
+  const scope = [cities, clusters].filter(Boolean).join(' · ');
+  const base = brief.tagline || brief.summary || `Explore ${name} on the Navier mobility network.`;
+  return {
+    title: `${name} · Navier Atlas`,
+    description: trunc(scope ? `${base} (${scope})` : base),
+    ogBadge: 'Region',
+    ogType: 'region',
+  };
+}
+
 export function partnerMeta(partner, market) {
   if (market) {
     const partnerName = partner.display || partner.partner_id;

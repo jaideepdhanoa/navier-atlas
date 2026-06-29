@@ -46,6 +46,7 @@ function isPublic(pathname) {
   if (pathname === '/' || pathname === '/atlas-data.js' || pathname === '/index.html') return true;
   if (pathname.startsWith('/cluster/')) return true;
   if (pathname.startsWith('/city/')) return true;
+  if (pathname.startsWith('/region/')) return true;
   if (pathname.startsWith('/api/og')) return true;
   return false;
 }

@@ -110,7 +110,11 @@ export default async function handler(req, res) {
   const badge = (searchParams.get('badge') || 'Mobility').slice(0, 36);
   const type = searchParams.get('type') || 'share';
 
-  const accent = type === 'cluster' ? '#7dd3fc' : type === 'city' ? '#6ee7b7' : type === 'market' ? '#e0cb8f' : '#a78bfa';
+  const accent = type === 'cluster' ? '#7dd3fc'
+    : type === 'city' ? '#6ee7b7'
+    : type === 'region' ? '#38bdf8'
+    : type === 'market' ? '#e0cb8f'
+    : '#a78bfa';
 
   const image = new ImageResponse(card({ title, subtitle, badge, accent }), { width: 1200, height: 630 });
   const buffer = Buffer.from(await image.arrayBuffer());

@@ -24,8 +24,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, trunc,
+  SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, regionMeta, trunc,
 } from './share-meta.mjs';
+import { collectRegionStats } from './region-share.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
@@ -117,6 +118,9 @@ function loadData() {
   const clp = path.join(DC, 'CLUSTERS.json');
   data.CLUSTERS = fs.existsSync(clp) ? readJson(clp) : { clusters: [] };
   data.CLUSTER_BRIEFS = dir('cluster_briefs', 'cluster_id');
+  const rbp = path.join(DC, 'region_briefs.json');
+  data.REGION_BRIEFS = fs.existsSync(rbp) ? readJson(rbp) : {};
+  delete data.REGION_BRIEFS._doc;
   // Route unit-economics sidecar → {route_id: record} (so partner pages can show the per-corridor card + dots).
   const ep = path.join(DC, 'economics_by_route_id.json');
   data.ROUTE_ECONOMICS = {};
@@ -345,6 +349,16 @@ fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   cleanUrls: true,
   trailingSlash: false,
   redirects: [
+    { source: '/southeast-asia', destination: '/region/southeast-asia', permanent: false },
+    { source: '/sea', destination: '/region/southeast-asia', permanent: false },
+    { source: '/mena', destination: '/region/mena', permanent: false },
+    { source: '/europe', destination: '/region/europe', permanent: false },
+
+    { source: '/south-asia', destination: '/region/south-asia', permanent: false },
+    { source: '/east-asia', destination: '/region/east-asia', permanent: false },
+    { source: '/latin-america', destination: '/region/latin-america', permanent: false },
+    { source: '/north-america', destination: '/region/north-america', permanent: false },
+    { source: '/oceania', destination: '/region/oceania', permanent: false },
     { source: '/uber-india-derivative', destination: '/uber-india', permanent: true },
     { source: '/uber-india-derivative/:path*', destination: '/uber-india/:path*', permanent: true },
     { source: '/grab-thailand-derivative', destination: '/grab-thailand', permanent: true },
@@ -467,6 +481,14 @@ for (const [cityId, brief] of Object.entries(data.CITY_BRIEFS)) {
     { type: 'city', id: cityId }, cityMeta(brief, props));
 }
 
+const regionStats = collectRegionStats(data);
+for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
+  if (slug.startsWith('_')) continue;
+  writeShareTree(path.join('region', slug), indexHtml, '/atlas-data.js',
+    { type: 'region', id: slug }, regionMeta(brief, regionStats[slug] || {}));
+}
+
 if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
 console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market + ${sharePages} share pages${skipped?` (${skipped} market sub-page(s) skipped)`:''}.`);
-console.log(`Share URLs: ${SITE_URL}/cluster/<id> · ${SITE_URL}/city/<id> · ${SITE_URL}/<partner>/<market>/city/<id>`);
+console.log(`Share URLs: ${SITE_URL}/region/<slug> · ${SITE_URL}/cluster/<id> · ${SITE_URL}/city/<id> · ${SITE_URL}/<partner>/<market>/city/<id>`);
+console.log(`Short region URLs: ${SITE_URL}/southeast-asia · ${SITE_URL}/sea · ${SITE_URL}/mena (→ /region/...)`);
