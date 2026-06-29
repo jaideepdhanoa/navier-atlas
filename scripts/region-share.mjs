@@ -26,17 +26,24 @@ export function regionSlug(label) {
 
 export function collectRegionStats(data) {
   const stats = {};
+  // FEATURES_BY_TYPE can carry duplicate rows per city id (mesh build artifact) — count unique ids only.
+  const cityIdsBySlug = {};
   for (const t of ['city', 'priority_city']) {
     for (const f of data.FEATURES_BY_TYPE[t] || []) {
-      const r0 = f.properties?.region;
-      if (!r0) continue;
+      const p = f.properties;
+      const id = p?.id;
+      const r0 = p?.region;
+      if (!id || !r0) continue;
       const label = normRegion(r0);
       const slug = regionSlug(label);
       if (!slug || label === 'Global') continue;
       const bucket = stats[slug] || (stats[slug] = { slug, label, cities: 0, clusters: new Set() });
-      bucket.cities += 1;
-      const cid = f.properties?.cluster_id;
-      if (cid) bucket.clusters.add(cid);
+      const seen = cityIdsBySlug[slug] || (cityIdsBySlug[slug] = new Set());
+      if (!seen.has(id)) {
+        seen.add(id);
+        bucket.cities += 1;
+      }
+      if (p.cluster_id) bucket.clusters.add(p.cluster_id);
     }
   }
   for (const c of (data.CLUSTERS?.clusters || [])) {
