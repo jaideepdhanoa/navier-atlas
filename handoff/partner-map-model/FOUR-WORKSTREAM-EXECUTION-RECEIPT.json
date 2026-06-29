@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-06-29T12:40:00Z",
+  "plan": "handoff/UAE-GEOMETRY-RECOVERY-PLAN.md",
+  "workstreams": {
+    "A_uae_geometry": {
+      "A1_hand_waypoints": {
+        "catalog_pairs": 788,
+        "avg_waypoints": 3.02,
+        "receipt": "handoff/partner-map-model/UAE-HAND-WAYPOINTS-v1.json",
+        "gate_pass": true
+      },
+      "A2_channel_primary_mint": {
+        "uae_routes_reminted": 906,
+        "fixed": 906,
+        "held": 0,
+        "channel_graphs": "handoff/partner-map-model/UAE-CHANNEL-GRAPHS-v2.json",
+        "land_mask": "grok-routing-output/uae_gulf_land_v2.wkb (existing frond v2)"
+      },
+      "A3_sync_and_mesh": {
+        "geometry_synced": 5862,
+        "uae_mesh_capped": 462,
+        "receipt": "handoff/partner-map-model/UAE-MESH-TRAFFIC-CAP-RECEIPT.json"
+      },
+      "A5_visual_qa": {
+        "receipt": "handoff/partner-map-model/UAE-VISUAL-QA-RECEIPT.json",
+        "proposal_routes": 20,
+        "visual_pass": 20,
+        "gate_pass": true
+      }
+    },
+    "B_global_mesh": {
+      "before_mesh_fail": 1900,
+      "after_wave1_mesh_fail": 1742,
+      "after_wave2_mesh_fail": 697,
+      "wave1_fixed": 1043,
+      "wave2_fixed": 1049,
+      "wave2_held": 706,
+      "note": "Two waves applied; 697 mesh fails remain"
+    },
+    "C_hub_reground": {
+      "reground_surfaces": 24,
+      "relink_linked": 744,
+      "hub_pass_before": 3,
+      "hub_pass_after": 15,
+      "hub_rewrite_after": 0,
+      "target_20_of_29": "15/29 PASS — TRIM hubs remain (acceptable for gate; not REWRITE)"
+    },
+    "D_schema": {
+      "partners_passing": "63/63",
+      "script": "scripts/fix_partner_schema_enums.py"
+    },
+    "gate_expansion": {
+      "preflight_3_7": "expanded to --hub-partners",
+      "schema_3_7b": "reference 5 unchanged"
+    }
+  }
+}

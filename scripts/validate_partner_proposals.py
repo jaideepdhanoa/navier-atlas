@@ -56,13 +56,14 @@ def narrative_readiness() -> tuple[int, list[str]]:
     return len(gaps), lines
 
 
-def validate(schema_path: Path = SCHEMA_PATH) -> int:
+def validate(schema_path: Path = SCHEMA_PATH, *, partner_filter: list[str] | None = None) -> int:
     schema = json.loads(schema_path.read_text())
     validator = Draft7Validator(schema)
 
     files = sorted(
         p for p in PARTNERS.glob("*.json")
         if not p.name.startswith("_")
+        and (not partner_filter or p.stem in partner_filter)
     )
     failures: list[tuple[str, list[str]]] = []
     total_errors = 0
@@ -95,9 +96,12 @@ def validate(schema_path: Path = SCHEMA_PATH) -> int:
     if schema_ok:
         print("  ✅ all partner proposals pass schema validation")
 
-    # Narrative readiness report (advisory by default; gating with --strict-narrative)
-    narr_gaps, narr_lines = narrative_readiness()
-    print("\n".join(narr_lines))
+    # Narrative readiness report (advisory; skip when scoping to explicit partners)
+    if not partner_filter:
+        narr_gaps, narr_lines = narrative_readiness()
+        print("\n".join(narr_lines))
+    else:
+        narr_gaps = 0
 
     strict_narr = "--strict-narrative" in sys.argv
     strict_link = "--strict-linkage" in sys.argv
@@ -132,4 +136,8 @@ def validate(schema_path: Path = SCHEMA_PATH) -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(validate())
+    pf: list[str] = []
+    if "--partner" in sys.argv:
+        i = sys.argv.index("--partner")
+        pf = [a for a in sys.argv[i + 1 :] if not a.startswith("--")]
+    sys.exit(validate(partner_filter=pf or None))

@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts" / "grok-geometry"))
 
 from channel_solver import (  # noqa: E402
+    channel_graph_waypoints,
     densify,
     get_land_checker,
     hand_waypoints_for,
@@ -108,19 +109,30 @@ def solve_route(
     nudge_only: bool = False,
     channel_only: bool = False,
 ) -> dict | None:
-    if not channel_only:
+    # Channel graph + HAND_WAYPOINTS first (A2: frond/trunk primary, nudge fallback)
+    if not nudge_only:
+        graph_wps = channel_graph_waypoints(a, b)
+        if graph_wps:
+            solved = solve_hand(lc, a, b, graph_wps, method="channel_graph")
+            if solved and solved.get("qa_pass"):
+                return solved
+
+        wps = hand_waypoints_for(from_id, to_id, from_city_id=from_city_id, to_city_id=to_city_id)
+        if wps:
+            solved = solve_hand(lc, a, b, wps)
+            if solved and solved.get("qa_pass"):
+                return solved
+
+    if channel_only:
+        return None
+
+    if not nudge_only:
         res = nudge_solve(lc, a, b, dist_nm)
         if res:
             return res
 
     if nudge_only:
-        return None
-
-    wps = hand_waypoints_for(from_id, to_id, from_city_id=from_city_id, to_city_id=to_city_id)
-    if wps:
-        solved = solve_hand(lc, a, b, wps)
-        if solved and solved.get("qa_pass"):
-            return solved
+        return nudge_solve(lc, a, b, dist_nm)
 
     res = solve_endpoints(
         a, b,
@@ -167,7 +179,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--story", action="store_true", default=True)
-    ap.add_argument("--fail-only", action="store_true", default=True)
+    ap.add_argument("--fail-only", action=argparse.BooleanOptionalAction, default=True)
+    ap.add_argument("--uae-only", action="store_true", help="only routes touching UAE cities")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--route", nargs="+")
     ap.add_argument("--min-land-km", type=float, default=0.0)
@@ -180,9 +193,18 @@ def main() -> int:
     if merged:
         print(f"merged {merged} HAND_WAYPOINTS entries", flush=True)
 
+    UAE_CITIES = {
+        "dubai-uae", "abu-dhabi-uae", "sharjah-uae", "ras-al-khaimah-uae",
+        "fujairah-uae", "ajman-uae", "umm-al-quwain-uae",
+    }
+
     story = collect_story_registry()
     feats, by_id = load_routes()
     lc = get_land_checker()
+
+    def uae_route(props: dict) -> bool:
+        fc, tc = props.get("from_city_id"), props.get("to_city_id")
+        return fc in UAE_CITIES or tc in UAE_CITIES
 
     targets: list[tuple[str, float]] = []
     if args.route:
@@ -197,11 +219,17 @@ def main() -> int:
                 continue
             targets.append((rid, ev["interior_land_km"]))
     else:
-        for rid in story:
+        scan_ids = list(story.keys()) if not args.uae_only else [
+            rid for rid, feat in by_id.items()
+            if uae_route(feat.get("properties") or {})
+        ]
+        for rid in scan_ids:
             feat = by_id.get(rid)
             if not feat:
                 continue
             props = feat.get("properties") or {}
+            if args.uae_only and not uae_route(props):
+                continue
             coords = (feat.get("geometry") or {}).get("coordinates") or []
             ev = evaluate_route(coords, sea_nm=props.get("distance_nm"))
             if args.fail_only and ev["qa_pass"]:

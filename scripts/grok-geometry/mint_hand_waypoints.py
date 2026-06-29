@@ -102,6 +102,8 @@ def merge_waypoint_catalogs() -> int:
         ("bp-56d5f5bd8d", "bp-29c2c81221"): [[55.12, 25.08], [55.10, 25.06], [55.08, 25.04]],
         ("bp-56d5f5bd8d", "bp-f0fde14967"): [[55.12, 25.08], [55.08, 25.05], [55.05, 25.02]],
         ("bp-56d5f5bd8d", "bp-d6496ac4e8"): [[55.12, 25.08], [55.14, 25.10], [55.16, 25.12]],
+        ("bp-56d5f5bd8d", "bp-b13fc69aba"): [[55.12, 25.08], [55.10, 25.06], [55.08, 25.04], [55.06, 25.02]],
+        ("bp-b13fc69aba", "bp-56d5f5bd8d"): [[55.06, 25.02], [55.08, 25.04], [55.10, 25.06], [55.12, 25.08]],
         ("bp-df8901f3ae", "bp-e981496917"): [[55.18, 25.22], [55.20, 25.18], [55.22, 25.14]],
         ("dubai-uae", "sharjah-uae"): [[55.30, 25.20], [55.38, 25.22], [55.42, 25.24]],
         ("dubai-uae", "ras-al-khaimah-uae"): [[55.20, 25.30], [55.45, 25.55], [55.75, 25.72]],
@@ -113,6 +115,15 @@ def merge_waypoint_catalogs() -> int:
     }
     for key, wps in city_wps.items():
         put(key[0], key[1], wps)
+
+    uae_cat = ROOT / "data-clean" / "uae_hand_waypoints.json"
+    if uae_cat.exists():
+        try:
+            doc = json.loads(uae_cat.read_text())
+            for row in doc.get("pairs") or []:
+                put(row.get("from"), row.get("to"), row.get("waypoints") or [])
+        except Exception:
+            pass
 
     return added
 

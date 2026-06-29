@@ -33,9 +33,11 @@ PARTNERS_DC = ROOT / "data-clean" / "partners"
 HANDOFF = ROOT / "handoff" / "partner-map-model"
 
 REFERENCE_PARTNERS = frozenset({"careem", "noon", "grab", "rapido", "bolt"})
+HUB_LAYOUTS = frozenset({"hub", "network"})
 DISTANCE_TOL = 0.25
 LAND_KM_FAIL = 0.4
 CROSS_EMIRATE_NM = 40.0
+_GEOMETRY_CACHE: dict[str, float | None] = {}
 
 PHASE_BEACHHEAD_CITIES = frozenset({"dubai-uae", "sharjah-uae"})
 
@@ -108,10 +110,10 @@ def build_indexes():
         fn, tn = p.get("from"), p.get("to")
         return RouteRec(
             id=rid,
-            from_label=bp_label(fn),
-            to_label=bp_label(tn),
-            from_city_id=city_of(fn),
-            to_city_id=city_of(tn),
+            from_label=p.get("from_label") or bp_label(fn) or (fn or ""),
+            to_label=p.get("to_label") or bp_label(tn) or (tn or ""),
+            from_city_id=p.get("from_city_id") or city_of(fn),
+            to_city_id=p.get("to_city_id") or city_of(tn),
             from_node=fn,
             to_node=tn,
             distance_nm=p.get("distance_nm"),
@@ -180,9 +182,13 @@ def check_bp_binding(item: dict, rec: RouteRec | None) -> list[dict]:
     from_l = item.get("from") or item.get("from_label") or ""
     to_l = item.get("to") or item.get("to_label") or ""
     if item.get("label") and not from_l:
-        parts = item["label"].split("→", 1)
-        if len(parts) == 2:
-            from_l, to_l = parts[0].strip(), parts[1].strip()
+        lab = item["label"]
+        for sep in ("→", "↔", "->"):
+            if sep in lab:
+                parts = lab.split(sep, 1)
+                if len(parts) == 2:
+                    from_l, to_l = parts[0].strip(), parts[1].strip()
+                break
 
     if not directional_endpoints_match(from_l, to_l, rec):
         flags.append({
@@ -289,19 +295,44 @@ def check_cross_emirate_sanity(item: dict, kind: str, phase_key, rec: RouteRec |
     return flags
 
 
+def _route_land_km(route_by_id: dict, rid: str) -> float | None:
+    if rid in _GEOMETRY_CACHE:
+        return _GEOMETRY_CACHE[rid]
+    entry = route_by_id.get(rid)
+    if not entry:
+        _GEOMETRY_CACHE[rid] = None
+        return None
+    p = entry["props"]
+    land_f = None
+    coords = (entry.get("feature") or {}).get("geometry", {}).get("coordinates") or []
+    if len(coords) >= 2:
+        try:
+            sys.path.insert(0, str(ROOT / "scripts" / "grok-geometry"))
+            from route_land_qa import evaluate_route  # noqa: WPS433
+
+            ev = evaluate_route(coords, sea_nm=p.get("distance_nm"))
+            land_f = float(ev.get("interior_land_km") or 0)
+        except Exception:
+            land_f = None
+    if land_f is None:
+        land = p.get("_geometry_land_km")
+        if land is None:
+            land = p.get("interior_land_km")
+        if land is not None:
+            try:
+                land_f = float(land)
+            except (TypeError, ValueError):
+                land_f = None
+    _GEOMETRY_CACHE[rid] = land_f
+    return land_f
+
+
 def check_geometry_preview(route_by_id: dict, rid: str | None) -> list[dict]:
     flags = []
     if not rid or rid not in route_by_id:
         return flags
-    p = route_by_id[rid]["props"]
-    land = p.get("_geometry_land_km")
-    if land is None:
-        land = p.get("interior_land_km")
-    if land is None:
-        return flags
-    try:
-        land_f = float(land)
-    except (TypeError, ValueError):
+    land_f = _route_land_km(route_by_id, rid)
+    if land_f is None:
         return flags
     if land_f > LAND_KM_FAIL:
         flags.append({
@@ -310,6 +341,17 @@ def check_geometry_preview(route_by_id: dict, rid: str | None) -> list[dict]:
             "detail": f"interior_land_km={land_f:.2f} (threshold {LAND_KM_FAIL})",
         })
     return flags
+
+
+def check_placeholder_surface(item: dict) -> list[dict]:
+    src = str(item.get("_link_source") or "")
+    if "placeholder" in src.lower():
+        return [{
+            "check": "placeholder_surface",
+            "severity": "error",
+            "detail": f"_link_source={src}",
+        }]
+    return []
 
 
 def check_inheritance_debt(item: dict) -> list[dict]:
@@ -378,6 +420,7 @@ def audit_item(
     flags.extend(check_phase_narrative_fit(item, phase_key, doc, rec, city_of))
     flags.extend(check_cross_emirate_sanity(item, kind, phase_key, rec))
     flags.extend(check_geometry_preview(route_by_id, rid))
+    flags.extend(check_placeholder_surface(item))
     flags.extend(check_inheritance_debt(item))
 
     action = recommend_action(flags, kind, phase_key)
@@ -510,18 +553,66 @@ def journey_bp_errors(record: dict) -> int:
     )
 
 
+def geometry_gate_errors(record: dict) -> int:
+    """Featured/journey routes with interior_land_km > LAND_KM_FAIL — §3.7 hard gate."""
+    return sum(
+        1
+        for it in record.get("items", [])
+        if it.get("surface") in ("journey", "featured")
+        and any(f.get("check") == "geometry_preview" for f in it.get("flags", []))
+    )
+
+
+def placeholder_gate_errors(record: dict) -> int:
+    return sum(
+        1
+        for it in record.get("items", [])
+        if any(f.get("check") == "placeholder_surface" for f in it.get("flags", []))
+    )
+
+
+def is_hub_partner(doc: dict) -> bool:
+    return doc.get("layout") in HUB_LAYOUTS and bool(doc.get("markets"))
+
+
+def resolve_audit_slugs(args) -> list[str]:
+    if args.partner:
+        return list(args.partner)
+    if args.all_partners:
+        return sorted(
+            p.stem for p in PARTNERS_DC.glob("*.json") if not p.name.startswith("_")
+        )
+    if args.hub_partners:
+        slugs = []
+        for path in sorted(PARTNERS_DC.glob("*.json")):
+            if path.name.startswith("_"):
+                continue
+            doc = load_json(path)
+            if is_hub_partner(doc):
+                slugs.append(path.stem)
+        return slugs
+    return sorted(REFERENCE_PARTNERS)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--partner", nargs="*", help="Limit to partner slug(s)")
+    ap.add_argument("--hub-partners", action="store_true", help="Audit all hub-layout partners (~29)")
+    ap.add_argument("--all-partners", action="store_true", help="Audit all data-clean partners (62)")
     ap.add_argument(
         "--strict-journey-gate",
         action="store_true",
         help="Exit 1 if any audited partner has S-tier (journey) BP-binding errors",
     )
+    ap.add_argument(
+        "--strict-deploy-gate",
+        action="store_true",
+        help="Exit 1 on §3.7 hard gates: journey BP, geometry, placeholders, reference REWRITE",
+    )
     args = ap.parse_args()
 
     indexes = build_indexes()
-    slugs = args.partner or sorted(REFERENCE_PARTNERS)
+    slugs = resolve_audit_slugs(args)
 
     results = []
     for slug in slugs:
@@ -532,6 +623,8 @@ def main() -> int:
         doc = load_json(path)
         rec = audit_partner(slug, doc, indexes)
         rec["journey_bp_errors"] = journey_bp_errors(rec)
+        rec["geometry_gate_errors"] = geometry_gate_errors(rec)
+        rec["placeholder_gate_errors"] = placeholder_gate_errors(rec)
         results.append(rec)
         write_partner_md(slug, rec)
         save_json(HANDOFF / f"PROPOSAL-FIDELITY-{slug}.json", rec)
@@ -550,19 +643,40 @@ def main() -> int:
 
     print(f"Proposal fidelity — {len(results)} partners")
     gate_fail = False
+    gate_reasons: list[str] = []
     for r in results:
         c = r["counts"]
         jbe = r.get("journey_bp_errors", 0)
+        gge = r.get("geometry_gate_errors", 0)
+        pge = r.get("placeholder_gate_errors", 0)
         print(
             f"  {r['verdict']:16} {r['partner']:10} "
             f"items={c['items']} keep={c['keep']} drop={c['drop']} "
             f"defer={c['defer']} bp_err={c['bp_errors']} journey_bp={jbe}"
+            + (f" geom={gge}" if gge else "")
+            + (f" placeholder={pge}" if pge else "")
         )
         if args.strict_journey_gate and jbe > 0:
             gate_fail = True
+            gate_reasons.append(f"{r['partner']}: {jbe} journey BP error(s)")
+        if args.strict_deploy_gate:
+            if jbe > 0:
+                gate_fail = True
+                gate_reasons.append(f"{r['partner']}: journey_bp={jbe}")
+            if gge > 0:
+                gate_fail = True
+                gate_reasons.append(f"{r['partner']}: geometry_gate={gge}")
+            if pge > 0:
+                gate_fail = True
+                gate_reasons.append(f"{r['partner']}: placeholder={pge}")
+            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "REWRITE":
+                gate_fail = True
+                gate_reasons.append(f"{r['partner']}: REWRITE verdict")
 
     if gate_fail:
-        print("✗ strict journey BP gate FAILED — fix S-tier journeys before deploy")
+        print("✗ deploy gate FAILED:")
+        for reason in gate_reasons:
+            print(f"    - {reason}")
         return 1
     return 0
 

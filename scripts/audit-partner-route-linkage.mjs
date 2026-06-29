@@ -52,8 +52,19 @@ function loadAllowlist() {
   return new Set(doc.partners || []);
 }
 
+function isPlaceholderSurface(o) {
+  if (!o || typeof o !== 'object') return false;
+  return String(o._link_source || '').includes('placeholder');
+}
+
+function phaseIntentionalNull(ph) {
+  const ft = ph?._fidelity_trim;
+  return Boolean(ft && ft.intentional_null);
+}
+
 function isGeometryPendingChip(o) {
   if (!o || typeof o !== 'object') return false;
+  if (isPlaceholderSurface(o)) return false; // placeholders are blocking errors, not pending chips
   if (o.display === 'text_only'
     || o.flag === 'network-chip-text-only'
     || o._link_status === 'unlinked-intra-city'
@@ -74,6 +85,10 @@ function isGeometryPendingChip(o) {
 function auditFeaturedRoutes(items, label, routeIds) {
   const gaps = [];
   for (const r of (items || [])) {
+    if (isPlaceholderSurface(r)) {
+      gaps.push({ label, issue: 'placeholder_surface', featured_label: r.label || r.title || null });
+      continue;
+    }
     if (isGeometryPendingChip(r)) continue;
     if (typeof r === 'string') {
       gaps.push({ label, issue: 'no_route_id', featured_label: r });
@@ -95,7 +110,9 @@ function auditPhases(phases, prefix, routeIds) {
   for (const ph of (phases || [])) {
     const plabel = `${prefix} phase ${ph.n ?? ph.phase ?? '?'}`;
     const featured = ph.featured_routes || [];
-    if (!featured.length) gaps.push({ scope: plabel, issue: 'no_featured_routes' });
+    if (!featured.length && !phaseIntentionalNull(ph)) {
+      gaps.push({ scope: plabel, issue: 'no_featured_routes' });
+    }
     gaps.push(...auditFeaturedRoutes(featured, plabel, routeIds));
     const substantive = featured.filter((r) => !isGeometryPendingChip(r));
     const linked = substantive.filter((r) => typeof r !== 'string' && routeIdsOfItem(r).length).length;

@@ -56,8 +56,7 @@
       "_link_kind": "corridor-label",
       "_link_status": "unlinked-intra-city",
       "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-      "display": "text_only",
-      "_link_source": "grok/apply_proposal_fidelity_from_audit"
+      "display": "text_only"
     },
     {
       "from": "Split",
@@ -67,17 +66,13 @@
       "distance_nm": 19.5,
       "platform": "Pioneer II",
       "archetype": "tourism",
-      "from_node_id": "split-croatia",
-      "to_node_id": "split-croatia",
+      "from_node_id": "bp-48ab3b5ea4",
+      "to_node_id": "bp-a87e1c5a3b",
       "route_id": "rn-cc40790a3078",
       "_link_kind": "corridor-label",
-      "_link_status": "linked-grok-scoped",
+      "_link_status": "linked-grok-node",
       "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-      "_link_source": "grok/apply_proposal_fidelity_from_audit",
-      "_fidelity_trim": {
-        "at": "2026-06-29T11:29:20Z",
-        "audit_rec": "TRIM"
-      }
+      "_reground_at": "2026-06-29T12:02:47Z"
     },
     {
       "from": "Nice Airport",
@@ -92,26 +87,27 @@
       "route_id": null,
       "_link_kind": "corridor-label",
       "_link_status": "aspirational-no-built-route",
-      "_link_source": "grok/relink_partner_journeys/node",
       "display": "text_only",
       "economics_status": "roadmap_excluded",
       "render": "roadmap-amber-dashed"
     },
     {
-      "from": "Cais do Sodré (Lisbon)",
-      "to": "Cacilhas (Almada)",
-      "today": "10-min Transtejo diesel ferry on a fixed timetable.",
-      "with_navier": "A foiling Pioneer II water-taxi across the Tagus — on-demand in the Bolt app.",
-      "distance_nm": 1.5,
+      "from": "Dubai Marina Yacht Club (DMYC)",
+      "to": "Le Méridien & Westin Mina Seyahi Marina",
+      "today": "30–50 min on Sheikh Zayed Road.",
+      "with_navier": "A direct foiling run — no road at all.",
+      "distance_nm": 2.1,
       "platform": "Pioneer II",
-      "archetype": "commuter",
-      "from_node_id": "lisbon-tagus-portugal",
-      "to_node_id": "lisbon-tagus-portugal",
-      "route_id": null,
-      "aspirational": false,
-      "_link_status": "unlinked-intra-city",
-      "display": "text_only",
-      "_link_source": "grok/apply_proposal_fidelity_from_audit"
+      "archetype": "ridehail",
+      "from_node_id": "bp-06edb1cb16",
+      "to_node_id": "bp-e10a7e3bcd",
+      "route_id": "gcn-0ca7f3ffe7-careem",
+      "route_ids": null,
+      "_link_kind": "corridor-label",
+      "_link_status": "linked-grok-node",
+      "from_label": "Dubai Marina Yacht Club (DMYC)",
+      "to_label": "Le Méridien & Westin Mina Seyahi Marina",
+      "_reground_at": "2026-06-29T12:02:47Z"
     }
   ],
   "differentiation": {
@@ -160,9 +156,21 @@
           "distance_nm": null,
           "_link_status": "aspirational-no-built-route",
           "display": "text_only",
-          "_link_source": "grok/mark_unlinked_aspirational",
           "economics_status": "roadmap_excluded",
           "render": "roadmap-amber-dashed"
+        },
+        {
+          "label": "ACI Marina Trogir ↔ Hvar Town Harbour",
+          "route_id": "rn-7c1e7f62f283",
+          "_link_kind": "corridor-label",
+          "distance_nm": 22.2,
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/reground_proposal_surfaces",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "ACI Marina Trogir",
+          "to_label": "Hvar Town Harbour",
+          "from_node_id": "bp-90d0392e3c",
+          "to_node_id": "bp-a87e1c5a3b"
         }
       ],
       "use_cases": [
@@ -200,41 +208,59 @@
       "rationale": "Connect the whole Med island-and-coast demand graph.",
       "featured_routes": [
         {
-          "label": "Venice lagoon (zero-wake)",
-          "route_id": null,
-          "display": "network_chip",
-          "_link_kind": "network-bundle",
-          "distance_nm": null,
-          "_link_status": "linked-grok-grounding",
-          "route_ids": [
-            "rn-093619ef734a",
-            "rn-3483f535e23c",
-            "rn-4786b67e0653",
-            "rn-ae7179e3ce7b",
-            "ics-6a056aee6e",
-            "ics-7e7f2104ce",
-            "ics-8e168d368c"
-          ],
-          "_link_source": "grok/relink_partner_journeys/grounding"
+          "label": "Porto di Pozzuoli ↔ Marina Grande (Capri)",
+          "route_id": "rn-2508d7811cef",
+          "_link_kind": "corridor-label",
+          "distance_nm": 17.2,
+          "_link_status": "linked-grok-node",
+          "_link_source": "grok/reground_proposal_surfaces",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "Porto di Pozzuoli",
+          "to_label": "Marina Grande (Capri)",
+          "from_node_id": "bp-0c2c47e2c0",
+          "to_node_id": "bp-43726d5c40"
         },
         {
-          "label": "Nice ↔ Monaco",
+          "label": "San Marco (Venice) ↔ Lido di Venezia",
           "route_id": null,
           "display": "network_chip",
           "_link_kind": "network-bundle",
-          "distance_nm": null,
+          "distance_nm": 2.5,
           "_link_status": "linked-grok-grounding",
           "route_ids": [
             "rn-093619ef734a",
-            "rn-c0f2e69be06c",
             "rn-3483f535e23c",
-            "rn-4786b67e0653",
-            "rn-ae7179e3ce7b",
-            "ics-6a056aee6e",
-            "ics-7e7f2104ce",
-            "ics-8e168d368c"
+            "rn-4e14e737c02e",
+            "rn-25ecd5e661cc"
           ],
-          "_link_source": "grok/relink_partner_journeys/grounding"
+          "_link_source": "grok/reground_proposal_surfaces",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "San Marco (Venice)",
+          "to_label": "Lido di Venezia",
+          "from_node_id": "bp-9c4dc1bf0b",
+          "to_node_id": "bp-a4bab9759a",
+          "_binding_fix_at": "2026-06-29T12:02:45Z"
+        },
+        {
+          "label": "San Marco (Venice) ↔ Lido di Venezia",
+          "route_id": null,
+          "display": "network_chip",
+          "_link_kind": "network-bundle",
+          "distance_nm": 2.5,
+          "_link_status": "linked-grok-grounding",
+          "route_ids": [
+            "rn-093619ef734a",
+            "rn-3483f535e23c",
+            "rn-4e14e737c02e",
+            "rn-25ecd5e661cc"
+          ],
+          "_link_source": "grok/reground_proposal_surfaces",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "San Marco (Venice)",
+          "to_label": "Lido di Venezia",
+          "from_node_id": "bp-9c4dc1bf0b",
+          "to_node_id": "bp-a4bab9759a",
+          "_binding_fix_at": "2026-06-29T12:02:45Z"
         }
       ],
       "use_cases": [
@@ -267,16 +293,18 @@
       "rationale": "Replicate the proven Med model into the Gulf where Bolt also operates.",
       "featured_routes": [
         {
-          "label": "Corridor seal pending — roadmap",
-          "from_node_id": "dubai-uae",
-          "to_node_id": "dubai-uae",
-          "distance_nm": 0,
-          "platform": "Pioneer II",
-          "route_id": null,
-          "display": "text_only",
+          "label": "Ushuaïa Dubai Harbour Experience ↔ Marina Mall / Breakwater Marina",
+          "route_id": "gcn-4ae479b872-bolt",
+          "from_node_id": "bp-933fd357b6",
+          "to_node_id": "bp-b3458dd3c6",
           "_link_kind": "corridor-label",
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+          "distance_nm": 57.4,
+          "_link_status": "linked-grok-node",
+          "route_ids": null,
+          "_link_source": "grok/reground_proposal_surfaces",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "Ushuaïa Dubai Harbour Experience",
+          "to_label": "Marina Mall / Breakwater Marina"
         }
       ],
       "use_cases": [
@@ -834,6 +862,63 @@
       },
       "journeys_unlocked": [
         {
+          "from": "Split Riva",
+          "to": "Trogir Riva",
+          "today": "A congested coast-road drive to Trogir in summer.",
+          "with_navier": "An 8nm foiling hop from Split to Trogir.",
+          "distance_nm": 8.5,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-3b46a2ce8e",
+          "to_node_id": "bp-240dfc6250",
+          "route_id": "rn-97acf274a21e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Split Riva",
+          "to_label": "Trogir Riva",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "TP Line | Dubrovnik",
+          "to": "Kolocep Harbour",
+          "today": "A slow ferry or excursion boat to the Elaphiti.",
+          "with_navier": "An 8nm on-demand hop to the Elaphiti islands.",
+          "distance_nm": 4.2,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-23fd4e0cd2",
+          "to_node_id": "bp-43c9a6baa6",
+          "route_id": "rn-86a2678bad4c",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "TP Line | Dubrovnik",
+          "to_label": "Kolocep Harbour",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Ferry Port Split",
+          "to": "Ferry - Šolta",
+          "today": "A diesel ferry to Šolta on a fixed timetable.",
+          "with_navier": "A 9nm foiling run to Šolta.",
+          "distance_nm": 9.0,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-4f1acd9ed2",
+          "to_node_id": "bp-b66fc1922a",
+          "route_id": "rn-8433d89475d9",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Ferry Port Split",
+          "to_label": "Ferry - Šolta",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
           "from": "Dubrovnik",
           "to": "Cavtat",
           "today": "A coastal drive or excursion boat to Cavtat.",
@@ -841,34 +926,14 @@
           "distance_nm": 6.2,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "split-croatia",
-          "to_node_id": "split-croatia",
+          "from_node_id": "bp-16dccd589f",
+          "to_node_id": "bp-cavtat-croatia-quay",
           "route_id": "rn-27a8218aa694",
           "_link_kind": "corridor-label",
           "_link_status": "linked",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
           "display": "text_only",
-          "_fidelity_trim": {
-            "at": "2026-06-29T11:29:20Z",
-            "audit_rec": "TRIM"
-          },
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
-        },
-        {
-          "from": "Dubrovnik",
-          "to": "Kotor (Montenegro)",
-          "today": "A long border drive or a cruise to the Bay of Kotor.",
-          "with_navier": "A 40nm Pioneer-range cross-border run to Kotor.",
-          "distance_nm": 40,
-          "platform": "Pioneer II",
-          "archetype": "intercity",
-          "from_node_id": "split-croatia",
-          "to_node_id": "split-croatia",
-          "route_id": null,
-          "_link_status": "unlinked-intra-city",
-          "render": "solid",
-          "_link_source": "grok/bolt_crossborder_bind",
-          "display": "text_only"
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -886,16 +951,49 @@
           "rationale": "Short, dense, high-frequency island water with a slow ferry incumbent.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "split-croatia",
-              "to_node_id": "split-croatia",
-              "distance_nm": 0,
+              "from_label": "Split Riva",
+              "to_label": "Trogir Riva",
+              "from_node_id": "bp-3b46a2ce8e",
+              "to_node_id": "bp-240dfc6250",
+              "distance_nm": 8.5,
               "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "render": "solid",
+              "route_id": "rn-97acf274a21e",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "TP Line | Dubrovnik",
+              "to_label": "Kolocep Harbour",
+              "from_node_id": "bp-23fd4e0cd2",
+              "to_node_id": "bp-43c9a6baa6",
+              "distance_nm": 4.2,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-86a2678bad4c",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Ferry Port Split",
+              "to_label": "Ferry - Šolta",
+              "from_node_id": "bp-4f1acd9ed2",
+              "to_node_id": "bp-b66fc1922a",
+              "distance_nm": 9.0,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-8433d89475d9",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -922,8 +1020,8 @@
             {
               "from_label": "Dubrovnik",
               "to_label": "Cavtat",
-              "from_node_id": "split-croatia",
-              "to_node_id": "split-croatia",
+              "from_node_id": "bp-16dccd589f",
+              "to_node_id": "bp-cavtat-croatia-quay",
               "distance_nm": 6.2,
               "platform": "Pioneer II",
               "render": "solid",
@@ -932,39 +1030,37 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
-              },
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
-              "from_label": "Zadar (Murter / Biograd gateway)",
-              "to_label": "Kornati National Park",
-              "from_node_id": "split-croatia",
-              "to_node_id": "split-croatia",
-              "distance_nm": 20,
+              "from_label": "Trajektna luka Split",
+              "to_label": "Hvar Town Harbour",
+              "from_node_id": "bp-45758734d6",
+              "to_node_id": "bp-a87e1c5a3b",
+              "distance_nm": 20.1,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
-            },
-            {
-              "from_label": "Split",
-              "to_label": "Hvar",
-              "from_node_id": "split-croatia",
-              "to_node_id": "split-croatia",
-              "distance_nm": 19.5,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "rn-cc40790a3078",
+              "route_id": "rn-e5f8515b10ff",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "ACI Marina Split",
+              "to_label": "Bol port",
+              "from_node_id": "bp-48ab3b5ea4",
+              "to_node_id": "bp-5bea05fe41",
+              "distance_nm": 21.1,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-b3d4e2d907b1",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -997,7 +1093,6 @@
               "route_id": null,
               "_link_kind": "backfill-from-journey",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/backfill_phase_featured_routes",
               "economics_status": "economics_pending",
               "display": "text_only"
             }
@@ -1047,12 +1142,12 @@
           "distance_nm": 39.9,
           "platform": "Pioneer II",
           "archetype": "tourism",
-          "from_node_id": "dar-es-salaam-tanzania",
-          "to_node_id": "zanzibar-tanzania",
+          "from_node_id": "bp-57f67d6e16",
+          "to_node_id": "bp-47c05d748b",
           "route_id": "rn-46bee519109a",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "_link_kind": "corridor-label",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Mombasa",
@@ -1068,13 +1163,13 @@
           "_link_status": "aspirational-no-built-route",
           "display": "text_only",
           "_link_kind": "aspirational-chip",
-          "_link_source": "grok/mark_unlinked_aspirational",
           "economics_status": "roadmap_excluded",
           "render": "roadmap-amber-dashed"
         }
       ],
       "phases": [
         {
+          "n": 1,
           "phase": 1,
           "label": "Prove",
           "featured_routes": [
@@ -1085,8 +1180,25 @@
               "distance_nm": 39.9,
               "platform": "Pioneer II",
               "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "from_node_id": "bp-57f67d6e16",
+              "to_node_id": "bp-47c05d748b"
+            },
+            {
+              "from": "Mombasa Old Port Jetty",
+              "to": "Diani Beach Landing",
+              "route_id": "ics-0b3b436e41",
+              "distance_nm": 17.2,
+              "platform": "Pioneer II",
               "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "from_label": "Mombasa Old Port Jetty",
+              "to_label": "Diani Beach Landing",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "from_node_id": "Mombasa",
+              "to_node_id": "Mombasa",
+              "route_ids": null,
+              "_link_kind": "corridor-label"
             }
           ]
         }
@@ -1195,13 +1307,13 @@
           "distance_nm": 3.6,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "hurghada-el-gouna-egypt",
-          "to_node_id": "hurghada-el-gouna-egypt",
-          "route_id": "rn-cf19a27c2e8a",
+          "from_node_id": "bp-88f64aa99f",
+          "to_node_id": "bp-fb14b3dfe2",
+          "route_id": "rn-08faa8cf54f2",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Cairo - Maadi",
@@ -1211,33 +1323,49 @@
           "distance_nm": 6.2,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "hurghada-el-gouna-egypt",
-          "to_node_id": "hurghada-el-gouna-egypt",
+          "from_node_id": "bp-cairo-maadi",
+          "to_node_id": "bp-cairo-zamalek",
           "route_id": "rn-4d2d789c04ad",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
-          "from": "Hurghada",
-          "to": "El Gouna",
-          "today": "A 30-40 min coast-road drive.",
-          "with_navier": "A direct 14nm foiling link between the two anchor resorts.",
-          "distance_nm": 14,
+          "from": "Marina El Gouna",
+          "to": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+          "today": "A slow diesel excursion boat to the reefs.",
+          "with_navier": "A fast, quiet foiling hop to Giftun, on demand.",
+          "distance_nm": 50.9,
           "platform": "Pioneer II",
-          "archetype": "tourism",
-          "from_node_id": "hurghada-el-gouna-egypt",
-          "to_node_id": "hurghada-el-gouna-egypt",
-          "route_id": "rn-abf46355ef7f",
+          "archetype": "ridehail",
+          "from_node_id": "bp-fb14b3dfe2",
+          "to_node_id": "bp-b393d9d9fe",
+          "route_id": "gcn-73d7e2f19c-bolt",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit",
-          "_fidelity_trim": {
-            "at": "2026-06-29T11:29:20Z",
-            "audit_rec": "TRIM"
-          }
+          "from_label": "Marina El Gouna",
+          "to_label": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Marina El Gouna",
+          "to": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+          "today": "A coast-road taxi or a slow boat.",
+          "with_navier": "A 10nm electric coast hop between resort hubs.",
+          "distance_nm": 50.9,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-fb14b3dfe2",
+          "to_node_id": "bp-b393d9d9fe",
+          "route_id": "gcn-73d7e2f19c-bolt",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Marina El Gouna",
+          "to_label": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -1260,30 +1388,44 @@
             {
               "from_label": "El Gouna (internal lagoon)",
               "to_label": "El Gouna Downtown / Abu Tig",
-              "from_node_id": "hurghada-el-gouna-egypt",
-              "to_node_id": "hurghada-el-gouna-egypt",
+              "from_node_id": "bp-88f64aa99f",
+              "to_node_id": "bp-fb14b3dfe2",
               "distance_nm": 3.6,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "rn-cf19a27c2e8a",
+              "route_id": "rn-08faa8cf54f2",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Cairo - Maadi",
               "to_label": "Cairo - Zamalek / Downtown",
-              "from_node_id": "cairo-egypt",
-              "to_node_id": "cairo-egypt",
+              "from_node_id": "bp-cairo-maadi",
+              "to_node_id": "bp-cairo-zamalek",
               "distance_nm": 6.2,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-4d2d789c04ad",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Marina El Gouna",
+              "to_label": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+              "from_node_id": "bp-fb14b3dfe2",
+              "to_node_id": "bp-b393d9d9fe",
+              "distance_nm": 50.9,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "gcn-73d7e2f19c-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1316,46 +1458,46 @@
           "rationale": "Extends the proven leisure model and adds the high-value Cairo commute.",
           "featured_routes": [
             {
+              "from_label": "Marina El Gouna",
+              "to_label": "Four Seasons Resort Sharm El Sheikh — Resort Jetty",
+              "from_node_id": "bp-fb14b3dfe2",
+              "to_node_id": "bp-b393d9d9fe",
+              "distance_nm": 50.9,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "gcn-73d7e2f19c-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Greater Cairo - Maspero (Downtown)",
               "to_label": "Greater Cairo - Warraq / El Qanater",
-              "from_node_id": "cairo-egypt",
-              "to_node_id": "cairo-egypt",
+              "from_node_id": "bp-cairo-maspero",
+              "to_node_id": "bp-cairo-warraq",
               "distance_nm": 3.5,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-148c41cefa55",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Hurghada",
               "to_label": "El Gouna",
-              "from_node_id": "hurghada-el-gouna-egypt",
-              "to_node_id": "hurghada-el-gouna-egypt",
-              "distance_nm": 14,
+              "from_node_id": "bp-fa2f652c5a",
+              "to_node_id": "bp-88f64aa99f",
+              "distance_nm": 14.0,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-abf46355ef7f",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
-            },
-            {
-              "from_label": "Hurghada",
-              "to_label": "Soma Bay",
-              "from_node_id": "hurghada-el-gouna-egypt",
-              "to_node_id": "hurghada-el-gouna-egypt",
-              "distance_nm": 24.7,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "rn-fbbb4fae5cbe",
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1384,7 +1526,6 @@
               "display": "text_only",
               "_link_status": "unlinked-intra-city",
               "_link_kind": "aspirational-phase-chip",
-              "_link_source": "grok/mark_unlinked_aspirational",
               "economics_status": "roadmap_excluded",
               "render": "roadmap-amber-dashed"
             }
@@ -1502,13 +1643,13 @@
           "distance_nm": 2.9,
           "platform": "Pioneer II",
           "archetype": "commuter",
-          "from_node_id": "tallinn-estonia",
-          "to_node_id": "tallinn-estonia",
+          "from_node_id": "bp-tallinn-old-city-harbour",
+          "to_node_id": "bp-e9401a593c",
           "route_id": "rn-889f513853ae",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Tallinn",
@@ -1518,13 +1659,13 @@
           "distance_nm": 17.3,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "tallinn-estonia",
-          "to_node_id": "tallinn-estonia",
+          "from_node_id": "bp-tallinn-old-city-harbour",
+          "to_node_id": "bp-prangli",
           "route_id": "rn-aeb90d25487f",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Tallinn",
@@ -1534,13 +1675,13 @@
           "distance_nm": 3.5,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "tallinn-estonia",
-          "to_node_id": "tallinn-estonia",
+          "from_node_id": "bp-tallinn-old-city-harbour",
+          "to_node_id": "bp-viimsi",
           "route_id": "rn-d6554a0bc2c8",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Tallinn",
@@ -1550,13 +1691,13 @@
           "distance_nm": 5.6,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "tallinn-estonia",
-          "to_node_id": "tallinn-estonia",
+          "from_node_id": "bp-tallinn-old-city-harbour",
+          "to_node_id": "bp-kakumae",
           "route_id": "rn-44d0d47fe330",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -1576,44 +1717,44 @@
             {
               "from_label": "Tallinn Old City Harbour",
               "to_label": "Pirita Marina",
-              "from_node_id": "tallinn-estonia",
-              "to_node_id": "tallinn-estonia",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-e9401a593c",
               "distance_nm": 2.9,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-889f513853ae",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Tallinn",
               "to_label": "Prangli",
-              "from_node_id": "tallinn-estonia",
-              "to_node_id": "tallinn-estonia",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-prangli",
               "distance_nm": 17.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-aeb90d25487f",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Tallinn",
               "to_label": "Viimsi",
-              "from_node_id": "tallinn-estonia",
-              "to_node_id": "tallinn-estonia",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-viimsi",
               "distance_nm": 3.5,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-d6554a0bc2c8",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1641,16 +1782,16 @@
             {
               "from_label": "Tallinn",
               "to_label": "Kakumäe",
-              "from_node_id": "tallinn-estonia",
-              "to_node_id": "tallinn-estonia",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-kakumae",
               "distance_nm": 5.6,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-44d0d47fe330",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Tallinn",
@@ -1663,22 +1804,21 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Tallinn",
               "to_label": "Naissaar",
-              "from_node_id": "tallinn-estonia",
-              "to_node_id": "tallinn-estonia",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-naissaar",
               "distance_nm": 10.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-16666eaf140c",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1704,16 +1844,18 @@
           "rationale": "A genuine near-term cross-Gulf leg inside Pioneer's envelope plus Navier becoming the standard operator and earning ride revenue.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "stockholm-sweden",
-              "to_node_id": "stockholm-sweden",
-              "distance_nm": 0,
-              "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "from_label": "Tallinn Old City Harbour — Terminal D (Tallink)",
+              "to_label": "Kakumäe Marina",
+              "from_node_id": "bp-tallinn-old-city-harbour",
+              "to_node_id": "bp-kakumae",
+              "distance_nm": 5.6,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "rn-44d0d47fe330",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1828,13 +1970,13 @@
           "distance_nm": 1.5,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "helsinki-finland",
-          "to_node_id": "helsinki-finland",
+          "from_node_id": "bp-fe03528b18",
+          "to_node_id": "bp-lonna",
           "route_id": "rn-312e87d88d71",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Helsinki Market Square",
@@ -1844,13 +1986,13 @@
           "distance_nm": 1.7,
           "platform": "Pioneer II",
           "archetype": "tourism",
-          "from_node_id": "helsinki-finland",
-          "to_node_id": "helsinki-finland",
+          "from_node_id": "bp-fe03528b18",
+          "to_node_id": "bp-1104e2096f",
           "route_id": "rn-ca17345bf0e8",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Helsinki",
@@ -1860,13 +2002,13 @@
           "distance_nm": 1.9,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "helsinki-finland",
-          "to_node_id": "helsinki-finland",
+          "from_node_id": "bp-fe03528b18",
+          "to_node_id": "bp-pihlajasaari",
           "route_id": "rn-c470fde6e58f",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Helsinki",
@@ -1876,13 +2018,13 @@
           "distance_nm": 1.3,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "helsinki-finland",
-          "to_node_id": "helsinki-finland",
+          "from_node_id": "bp-fe03528b18",
+          "to_node_id": "bp-korkeasaari",
           "route_id": "rn-2025e138f6c3",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -1902,44 +2044,44 @@
             {
               "from_label": "Helsinki",
               "to_label": "Lonna",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-lonna",
               "distance_nm": 1.5,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-312e87d88d71",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Helsinki Market Square",
               "to_label": "Suomenlinna",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-1104e2096f",
               "distance_nm": 1.7,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-ca17345bf0e8",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Helsinki",
               "to_label": "Pihlajasaari",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-pihlajasaari",
               "distance_nm": 1.9,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-c470fde6e58f",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -1967,44 +2109,44 @@
             {
               "from_label": "Helsinki",
               "to_label": "Korkeasaari (Zoo island)",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-korkeasaari",
               "distance_nm": 1.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-2025e138f6c3",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Helsinki",
               "to_label": "Kruunuvuorenranta (Laajasalo)",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-kruunuvuorenranta",
               "distance_nm": 2.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-4ab75813e3cc",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Helsinki",
               "to_label": "Vallisaari",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
+              "from_node_id": "bp-fe03528b18",
+              "to_node_id": "bp-vallisaari",
               "distance_nm": 1.8,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-8523ec0a5309",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2030,16 +2172,20 @@
           "rationale": "A genuine cross-Gulf leg inside Pioneer's envelope plus Navier becoming the standard operator and earning ride revenue.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "helsinki-finland",
-              "to_node_id": "helsinki-finland",
-              "distance_nm": 0,
-              "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "from_label": "Viking Line",
+              "to_label": "Stockholm",
+              "from_node_id": "bp-d44335284f",
+              "to_node_id": "bp-25cfffceec",
+              "distance_nm": 2.2,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "rn-db397ab37430",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked",
+              "economics_status": "roadmap_excluded",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2151,6 +2297,24 @@
       },
       "journeys_unlocked": [
         {
+          "from": "Vieux Port (Cannes)",
+          "to": "Port de Saint-Tropez",
+          "today": "A diesel excursion boat to the Lerins islands.",
+          "with_navier": "A 1.5nm electric hop to Île Sainte-Marguerite.",
+          "distance_nm": 23.7,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-a31f8397f8",
+          "to_node_id": "bp-b4b9fda511",
+          "route_id": "rn-cb30f287dc0d",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Vieux Port (Cannes)",
+          "to_label": "Port de Saint-Tropez",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
           "from": "Menton",
           "to": "Monaco",
           "today": "A congested corniche drive into Monaco.",
@@ -2158,44 +2322,49 @@
           "distance_nm": 4.6,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "cote-dazur-france",
-          "to_node_id": "monaco-monaco",
+          "from_node_id": "bp-0654c5b61c",
+          "to_node_id": "bp-29d7c0f1e4",
           "route_id": "rn-5fb120384595",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
-          "from": "Monaco",
-          "to": "Sanremo",
-          "today": "A cross-border drive into Italy.",
-          "with_navier": "A 13nm Pioneer-range cross-border hop to Sanremo.",
-          "distance_nm": 16.2,
+          "from": "Nice Port",
+          "to": "Port Hercule (Monaco)",
+          "today": "A winding corniche drive to Monaco.",
+          "with_navier": "A 5nm hop along the coast to Monaco.",
+          "distance_nm": 7.0,
           "platform": "Pioneer II",
-          "archetype": "intercity",
-          "from_node_id": "monaco-monaco",
-          "to_node_id": "cote-dazur-france",
-          "route_id": "rn-6af10d73458f",
+          "archetype": "commute",
+          "from_node_id": "bp-76ed735c5d",
+          "to_node_id": "bp-530b89283a",
+          "route_id": "rn-c0f2e69be06c",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "from_label": "Nice Port",
+          "to_label": "Port Hercule (Monaco)",
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
-          "from": "St-Tropez",
-          "to": "Pampelonne",
-          "today": "A peninsula road jammed solid in summer to reach the Pampelonne beach clubs.",
-          "with_navier": "A ~3nm tender hop to Pampelonne, bypassing the road.",
-          "distance_nm": 3,
+          "from": "Vieux Port (Cannes)",
+          "to": "Port de Saint-Tropez",
+          "today": "A trafficked coastal-road drive between Antibes and Cannes.",
+          "with_navier": "A 6nm direct foiling run Antibes–Cannes.",
+          "distance_nm": 23.7,
           "platform": "Pioneer II",
-          "archetype": "leisure",
-          "from_node_id": "saint-tropez-france",
-          "to_node_id": "saint-tropez-france",
-          "route_id": null,
-          "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/bolt_residual_mint",
-          "display": "text_only"
+          "archetype": "commute",
+          "from_node_id": "bp-a31f8397f8",
+          "to_node_id": "bp-b4b9fda511",
+          "route_id": "rn-cb30f287dc0d",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Vieux Port (Cannes)",
+          "to_label": "Port de Saint-Tropez",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -2214,11 +2383,26 @@
           "rationale": "Dense, ultra-high-value, short coastal water with a congested-corniche incumbent.",
           "featured_routes": [
             {
+              "from_label": "Port de Cannes, Jetée Albert Edouard",
+              "to_label": "Centre Nautique Municipal Les Voiles de Lérins",
+              "from_node_id": "Cote d'Azur (French Riviera), France",
+              "to_node_id": "Cote d'Azur (French Riviera), France",
+              "distance_nm": 3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-529325c5eb",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Antibes",
               "to_label": "Cannes",
-              "from_node_id": "antibes-france",
-              "to_node_id": "cannes-france",
-              "distance_nm": 6,
+              "from_node_id": "bp-1fcd8ee4cb",
+              "to_node_id": "bp-cannes-quai-laubeuf",
+              "distance_nm": 5.6,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-3fab58bb5f82",
@@ -2226,8 +2410,8 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/mark_unlinked_aspirational",
-              "economics_status": "roadmap_excluded"
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2258,44 +2442,44 @@
             {
               "from_label": "Menton",
               "to_label": "Monaco",
-              "from_node_id": "cote-dazur-france",
-              "to_node_id": "monaco-monaco",
+              "from_node_id": "bp-0654c5b61c",
+              "to_node_id": "bp-29d7c0f1e4",
               "distance_nm": 4.6,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-5fb120384595",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
-              "from_label": "Nice",
-              "to_label": "Monaco",
-              "from_node_id": "nice-france",
-              "to_node_id": "monaco-monaco",
-              "distance_nm": 7,
+              "from_label": "Nice Port",
+              "to_label": "Port Hercule (Monaco)",
+              "from_node_id": "bp-76ed735c5d",
+              "to_node_id": "bp-530b89283a",
+              "distance_nm": 7.0,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-c0f2e69be06c",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
-              "from_label": "Monaco",
-              "to_label": "Sanremo",
-              "from_node_id": "monaco-monaco",
-              "to_node_id": "cote-dazur-france",
-              "distance_nm": 16.2,
+              "from_label": "Nice",
+              "to_label": "Monaco",
+              "from_node_id": "bp-76ed735c5d",
+              "to_node_id": "bp-530b89283a",
+              "distance_nm": 7.0,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "rn-6af10d73458f",
+              "route_id": "rn-c0f2e69be06c",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2322,18 +2506,50 @@
           "rationale": "Pioneer-range cross-border reach plus Navier becoming the standard operator and earning ride revenue.",
           "featured_routes": [
             {
-              "from_label": "St-Tropez",
-              "to_label": "Pampelonne",
-              "from_node_id": "saint-tropez-france",
-              "to_node_id": "saint-tropez-france",
-              "distance_nm": 3,
+              "from_label": "Nice Port",
+              "to_label": "Port Hercule (Monaco)",
+              "from_node_id": "bp-76ed735c5d",
+              "to_node_id": "bp-530b89283a",
+              "distance_nm": 7.0,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "rn-c0f2e69be06c",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Vieux Port (Cannes)",
+              "to_label": "Saint-Tropez — Vieux Port (Bateaux Verts)",
+              "from_node_id": "bp-a1807ad7f6",
+              "to_node_id": "bp-st-tropez-vieux-port",
+              "distance_nm": 23.8,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": null,
+              "route_id": "rn-186b89d0af31",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_link_status": "linked-grok-node",
+              "_link_kind": "corridor-label",
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Nice Port",
+              "to_label": "Saint-Tropez — Vieux Port (Bateaux Verts)",
+              "from_node_id": "bp-ec830cbbf7",
+              "to_node_id": "bp-st-tropez-vieux-port",
+              "distance_nm": 38.4,
+              "platform": "Pioneer II",
+              "render": "amber-dashed",
+              "route_id": "rn-d1e8ad221645",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_status": "linked-grok-node",
+              "_link_kind": "corridor-label",
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2440,20 +2656,85 @@
       },
       "journeys_unlocked": [
         {
-          "from": "Rhodes",
-          "to": "Marmaris (Turkey)",
-          "today": "A diesel ferry across to the Turkish coast on a timetable.",
-          "with_navier": "A 22nm cross-border Pioneer-range run to Marmaris.",
-          "distance_nm": 24.9,
+          "from": "Mykonos Old Port",
+          "to": "Delos — Delos boat pier (archaeological site landing)",
+          "today": "A diesel excursion boat to the Delos archaeological site on a timetable.",
+          "with_navier": "A 3.5nm quiet electric hop to Delos, on demand.",
+          "distance_nm": 4.3,
           "platform": "Pioneer II",
-          "archetype": "intercity",
-          "from_node_id": "rhodes-dodecanese-greece",
-          "to_node_id": "bodrum-turkey",
-          "route_id": "rn-a95f11ef9a7e",
+          "archetype": "tourism",
+          "from_node_id": "bp-ab903a7678",
+          "to_node_id": "bp-delos-archaeological-landing",
+          "route_id": "rn-6be8bfbbdcd8",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-node",
+          "_link_status": "linked",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/node"
+          "display": "text_only",
+          "from_label": "Mykonos Old Port",
+          "to_label": "Delos — Delos boat pier (archaeological site landing)",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "2nd Glyfada Marina",
+          "to": "Astir Marina Vouliagmenis",
+          "today": "A coastal-road drive along the Riviera.",
+          "with_navier": "A 5nm foiling hop down the Athens Riviera.",
+          "distance_nm": 4.1,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-9b16a5268e",
+          "to_node_id": "bp-a15e37fa6b",
+          "route_id": "rn-c2f16c0e44f5",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "2nd Glyfada Marina",
+          "to_label": "Astir Marina Vouliagmenis",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Mykonos & the Cyclades",
+          "to": "Marina Studios - Naxos, Greece",
+          "today": "A ferry between the two Cyclades hubs on a fixed schedule.",
+          "with_navier": "A 6nm on-demand inter-island foiling run.",
+          "distance_nm": 8.9,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "mykonos-greece",
+          "to_node_id": "bp-89f157bb97",
+          "_link_kind": "corridor-label",
+          "_link_status": "unlinked-bp-hold",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Mykonos & the Cyclades",
+          "to_label": "Marina Studios - Naxos, Greece",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/reground_bp_binding_holds",
+          "_fidelity_trim": {
+            "at": "2026-06-29T12:04:09Z",
+            "reason": "bp_binding_hold_null",
+            "detail": "labels ≠ route endpoints: card 'Mykonos & the Cyclades' → 'Marina Studios - Naxos, Greece' vs route 'Paros & Antiparos' "
+          }
+        },
+        {
+          "from": "Marina Zeas (Piraeus)",
+          "to": "2nd Glyfada Marina",
+          "today": "A congested coastal drive from the port to the Riviera.",
+          "with_navier": "An 8nm coastal flight from Piraeus to Glyfada.",
+          "distance_nm": 6.7,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-da66e9759a",
+          "to_node_id": "bp-9b16a5268e",
+          "route_id": "rn-89552c9786ec",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Marina Zeas (Piraeus)",
+          "to_label": "2nd Glyfada Marina",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -2472,16 +2753,54 @@
           "rationale": "Short, sheltered, highest-demand water with a slow diesel-ferry incumbent to beat.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "athens-saronic-greece",
-              "to_node_id": "athens-saronic-greece",
-              "distance_nm": 0,
+              "from_label": "Mykonos Old Port",
+              "to_label": "Delos — Delos boat pier (archaeological site landing)",
+              "from_node_id": "bp-ab903a7678",
+              "to_node_id": "bp-delos-archaeological-landing",
+              "distance_nm": 4.3,
               "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "render": "solid",
+              "route_id": "rn-6be8bfbbdcd8",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "2nd Glyfada Marina",
+              "to_label": "Astir Marina Vouliagmenis",
+              "from_node_id": "bp-9b16a5268e",
+              "to_node_id": "bp-a15e37fa6b",
+              "distance_nm": 4.1,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-c2f16c0e44f5",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Mykonos & the Cyclades",
+              "to_label": "Marina Studios - Naxos, Greece",
+              "from_node_id": "mykonos-greece",
+              "to_node_id": "bp-89f157bb97",
+              "distance_nm": 8.9,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "unlinked-bp-hold",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "_link_source": "grok/reground_bp_binding_holds",
+              "_fidelity_trim": {
+                "at": "2026-06-29T12:04:09Z",
+                "reason": "bp_binding_hold_null",
+                "detail": "labels ≠ route endpoints: card 'Mykonos & the Cyclades' → 'Marina Studios - Naxos, Greece' vs route 'Paros & Antiparos' "
+              }
             }
           ],
           "use_cases": [
@@ -2510,10 +2829,40 @@
           "rationale": "Densify the proven hops and lift throughput on peak summer corridors.",
           "featured_routes": [
             {
+              "from_label": "Marina Zeas (Piraeus)",
+              "to_label": "2nd Glyfada Marina",
+              "from_node_id": "bp-da66e9759a",
+              "to_node_id": "bp-9b16a5268e",
+              "distance_nm": 6.7,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-89552c9786ec",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Piraeus Port",
+              "to_label": "Aegina Port",
+              "from_node_id": "athens-saronic-greece__piraeus-port",
+              "to_node_id": "athens-saronic-greece__aegina-port",
+              "distance_nm": 15.57,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-0c4a9cc9b3",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Santorini (Thira)",
               "to_label": "Ios",
-              "from_node_id": "athens-saronic-greece",
-              "to_node_id": "athens-saronic-greece",
+              "from_node_id": "bp-b1ae938928",
+              "to_node_id": "bp-adf6be257d",
               "distance_nm": 0.3,
               "platform": "Pioneer II",
               "render": "solid",
@@ -2522,27 +2871,7 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
-              },
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
-            },
-            {
-              "from_label": "Rhodes",
-              "to_label": "Marmaris (Turkey)",
-              "from_node_id": "rhodes-dodecanese-greece",
-              "to_node_id": "bodrum-turkey",
-              "distance_nm": 22,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": null,
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "aspirational-no-built-route",
-              "_link_source": "grok/bolt_crossborder_bind",
-              "display": "text_only",
-              "economics_status": "roadmap_excluded"
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2577,8 +2906,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -2695,8 +3023,7 @@
           "to_node_id": "dublin-ireland",
           "route_id": null,
           "_link_status": "unlinked-no-route",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
           "from": "Howth",
@@ -2710,8 +3037,7 @@
           "to_node_id": "dublin-ireland",
           "route_id": null,
           "_link_status": "unlinked-no-route",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
           "from": "Dublin Docklands",
@@ -2721,28 +3047,31 @@
           "distance_nm": 3.9,
           "platform": "Pioneer II",
           "archetype": "commuter",
-          "from_node_id": "dublin-ireland",
-          "to_node_id": "dublin-ireland",
+          "from_node_id": "bp-22cfa96ff9",
+          "to_node_id": "bp-dun-laoghaire-harbour",
           "route_id": "rn-455eede91b5a",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
-          "from": "Dublin Port",
-          "to": "Holyhead (Wales)",
-          "today": "A large diesel ferry across the Irish Sea on a fixed schedule.",
-          "with_navier": "A staged Irish-Sea roadmap crossing to Holyhead (aspirational, edge of Pioneer range).",
-          "distance_nm": 67,
+          "from": "Dublin Docklands (North Wall Quay)",
+          "to": "Dún Laoghaire Harbour — Carlisle Pier",
+          "today": "A DART or road loop out to the Howth peninsula.",
+          "with_navier": "A 7nm direct water line to Howth harbour.",
+          "distance_nm": 3.9,
           "platform": "Pioneer II",
-          "archetype": "intercity",
-          "from_node_id": "dublin-ireland",
-          "to_node_id": "dublin-ireland",
-          "route_id": null,
-          "_link_status": "unlinked-no-route",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "archetype": "commute",
+          "from_node_id": "bp-22cfa96ff9",
+          "to_node_id": "bp-dun-laoghaire-harbour",
+          "route_id": "rn-455eede91b5a",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Dublin Docklands (North Wall Quay)",
+          "to_label": "Dún Laoghaire Harbour — Carlisle Pier",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -2770,8 +3099,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Howth",
@@ -2784,22 +3112,21 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Dublin Docklands",
               "to_label": "Dún Laoghaire",
-              "from_node_id": "dublin-ireland",
-              "to_node_id": "dublin-ireland",
+              "from_node_id": "bp-22cfa96ff9",
+              "to_node_id": "bp-dun-laoghaire-harbour",
               "distance_nm": 3.9,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-455eede91b5a",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -2824,18 +3151,32 @@
           "rationale": "Captures the day-trip leisure market and densifies the commuter spine.",
           "featured_routes": [
             {
+              "from_label": "Dublin Docklands (North Wall Quay)",
+              "to_label": "Dún Laoghaire Harbour — Carlisle Pier",
+              "from_node_id": "bp-22cfa96ff9",
+              "to_node_id": "bp-dun-laoghaire-harbour",
+              "distance_nm": 3.9,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-455eede91b5a",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Dun Laoghaire",
               "to_label": "Howth",
-              "from_node_id": "dublin-ireland",
-              "to_node_id": "dublin-ireland",
+              "from_node_id": "bp-dun-laoghaire-harbour",
+              "to_node_id": "bp-howth",
               "distance_nm": 6.5,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-12e7db59f876",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Dublin City (Docklands)",
@@ -2848,22 +3189,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
-            },
-            {
-              "from_label": "Dublin Port",
-              "to_label": "Holyhead (Wales)",
-              "from_node_id": "dublin-ireland",
-              "to_node_id": "dublin-ireland",
-              "distance_nm": 67,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": null,
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -2896,7 +3222,6 @@
               "route_id": null,
               "_link_kind": "backfill-from-journey",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/backfill_phase_featured_routes",
               "economics_status": "economics_pending",
               "display": "text_only"
             }
@@ -3013,12 +3338,12 @@
           "distance_nm": 2.5,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "amalfi-coast-italy",
-          "to_node_id": "amalfi-coast-italy",
+          "from_node_id": "bp-9c4dc1bf0b",
+          "to_node_id": "bp-a4bab9759a",
           "route_id": "rn-093619ef734a",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped",
-          "_link_kind": "corridor-label"
+          "_link_status": "linked-grok-node",
+          "_link_kind": "corridor-label",
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "San Marco",
@@ -3028,28 +3353,50 @@
           "distance_nm": 2.2,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "amalfi-coast-italy",
-          "to_node_id": "amalfi-coast-italy",
+          "from_node_id": "bp-9c4dc1bf0b",
+          "to_node_id": "bp-6774b3c63f",
           "route_id": "rn-3483f535e23c",
-          "_link_status": "linked-grok-scoped",
-          "_link_source": "grok/relink_partner_journeys/scoped",
-          "_link_kind": "corridor-label"
+          "_link_status": "linked-grok-node",
+          "_link_kind": "corridor-label",
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
-          "from": "Sorrento",
-          "to": "Capri",
-          "today": "A crowded diesel ferry to Capri on a timetable.",
-          "with_navier": "A 9.5nm on-demand run to Capri.",
-          "distance_nm": 7.5,
+          "from": "Yachting Santa Margherita",
+          "to": "Molo Beverello (Naples)",
+          "today": "A congested coast-road drive or excursion boat to Portofino.",
+          "with_navier": "A 2nm hop along the Ligurian riviera to Portofino.",
+          "distance_nm": 13,
           "platform": "Pioneer II",
-          "archetype": "tourism",
-          "from_node_id": "amalfi-coast-italy",
-          "to_node_id": "amalfi-coast-italy",
-          "route_id": "rn-41ee5cb908d0",
+          "archetype": "commute",
+          "from_node_id": "bp-271d041850",
+          "to_node_id": "bp-f72c86331d",
+          "route_id": "rn-104bef78acf7",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "display": "text_only",
+          "from_label": "Yachting Santa Margherita",
+          "to_label": "Molo Beverello (Naples)",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Amalfi",
+          "to": "Positano — Spiaggia Grande Pier",
+          "today": "A crawling Amalfi coast-road drive or a crowded ferry.",
+          "with_navier": "A 4nm foiling hop along the Amalfi coast.",
+          "distance_nm": 5.32,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "amalfi-coast-italy__amalfi",
+          "to_node_id": "naples-capri-procida-italy__positano-spiaggia-grande-pier",
+          "route_id": "ics-8302248934",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Amalfi",
+          "to_label": "Positano — Spiaggia Grande Pier",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -3077,8 +3424,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "San Marco",
@@ -3091,8 +3437,22 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
+              "display": "text_only"
+            },
+            {
+              "from_label": "Yachting Santa Margherita",
+              "to_label": "Molo Beverello (Naples)",
+              "from_node_id": "bp-271d041850",
+              "to_node_id": "bp-f72c86331d",
+              "distance_nm": 13,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-104bef78acf7",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -3118,6 +3478,21 @@
           "rationale": "Replicate the playbook to the marquee summer coasts and lift peak throughput.",
           "featured_routes": [
             {
+              "from_label": "Amalfi",
+              "to_label": "Positano — Spiaggia Grande Pier",
+              "from_node_id": "amalfi-coast-italy__amalfi",
+              "to_node_id": "naples-capri-procida-italy__positano-spiaggia-grande-pier",
+              "distance_nm": 5.32,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-8302248934",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Venice Marco Polo",
               "to_label": "San Marco",
               "from_node_id": "venice-italy",
@@ -3128,15 +3503,14 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Capri",
               "to_label": "Positano",
-              "from_node_id": "amalfi-coast-italy",
-              "to_node_id": "amalfi-coast-italy",
-              "distance_nm": 9,
+              "from_node_id": "naples-capri-procida-italy__capri-marina-grande",
+              "to_node_id": "naples-capri-procida-italy__positano-spiaggia-grande-pier",
+              "distance_nm": 11.95,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "ics-9546e52c39",
@@ -3144,21 +3518,7 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
-            },
-            {
-              "from_label": "Sorrento",
-              "to_label": "Capri",
-              "from_node_id": "amalfi-coast-italy",
-              "to_node_id": "amalfi-coast-italy",
-              "distance_nm": 7.5,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "rn-41ee5cb908d0",
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -3192,7 +3552,6 @@
               "route_id": null,
               "_link_kind": "backfill-from-journey",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/backfill_phase_featured_routes",
               "economics_status": "economics_pending",
               "display": "text_only"
             }
@@ -3311,7 +3670,6 @@
           "to_node_id": "lagos-nigeria",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/bolt_nigeria_lagos_mint",
           "economics_status": "pending-seal",
           "display": "text_only"
         },
@@ -3327,7 +3685,6 @@
           "to_node_id": "lagos-nigeria",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/bolt_nigeria_lagos_mint",
           "economics_status": "pending-seal",
           "display": "text_only"
         },
@@ -3343,7 +3700,6 @@
           "to_node_id": "lagos-nigeria",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/bolt_nigeria_lagos_mint",
           "economics_status": "pending-seal",
           "display": "text_only"
         },
@@ -3359,7 +3715,6 @@
           "to_node_id": "lagos-nigeria",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "_link_source": "grok/bolt_nigeria_lagos_mint",
           "economics_status": "pending-seal",
           "display": "text_only"
         }
@@ -3389,8 +3744,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Osborne (Ikoyi)",
@@ -3403,8 +3757,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "CMS / Marina",
@@ -3417,8 +3770,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -3453,8 +3805,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Victoria Island",
@@ -3467,8 +3818,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Falomo / Five Cowries (Ikoyi)",
@@ -3481,8 +3831,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -3517,8 +3866,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "CMS / Marina",
@@ -3531,8 +3879,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -3647,13 +3994,13 @@
           "distance_nm": 7.7,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "lisbon-tagus-portugal",
-          "to_node_id": "lisbon-tagus-portugal",
+          "from_node_id": "bp-porto-cais-da-ribeira",
+          "to_node_id": "bp-gaia-cais-de-gaia",
           "route_id": "rn-0db0c9859f5c",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Vila Real de Santo Antonio (Portugal)",
@@ -3663,13 +4010,50 @@
           "distance_nm": 0.7,
           "platform": "Pioneer II",
           "archetype": "intercity",
-          "from_node_id": "lisbon-tagus-portugal",
-          "to_node_id": "lisbon-tagus-portugal",
+          "from_node_id": "bp-vila-real-santo-antonio",
+          "to_node_id": "bp-ayamonte-spain",
           "route_id": "rn-bd10456904cc",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Terreiro do Paço (Cais da Alfândega)",
+          "to": "Ponta da Piedade (sea caves jetty)",
+          "today": "A diesel excursion boat to the Ponta da Piedade cliffs.",
+          "with_navier": "A 1.2nm electric hop to the Ponta da Piedade sea caves.",
+          "distance_nm": 100.9,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-terreiro-do-paco-lisbon",
+          "to_node_id": "bp-ponta-da-piedade",
+          "route_id": "rn-67dc105ba6e9",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Terreiro do Paço (Cais da Alfândega)",
+          "to_label": "Ponta da Piedade (sea caves jetty)",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Cais do Sodré Terminal Fluvial (Transtejo)",
+          "to": "Cacilhas Terminal Fluvial",
+          "today": "A slow diesel commuter ferry across the Tagus.",
+          "with_navier": "A 1.5nm fast electric cross-river commute to Cacilhas.",
+          "distance_nm": 1.8,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "lisbon-tagus-portugal__cais-do-sodr-terminal-fluvial-transtejo",
+          "to_node_id": "lisbon-tagus-portugal__cacilhas-terminal-fluvial",
+          "route_id": "ics-a1f9af348e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Cais do Sodré Terminal Fluvial (Transtejo)",
+          "to_label": "Cacilhas Terminal Fluvial",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -3690,8 +4074,8 @@
             {
               "from_label": "Porto (Cais da Ribeira)",
               "to_label": "Vila Nova de Gaia (Cais de Gaia)",
-              "from_node_id": "porto-portugal",
-              "to_node_id": "porto-portugal",
+              "from_node_id": "bp-porto-ribeira",
+              "to_node_id": "bp-porto-gaia",
               "distance_nm": 0.2,
               "platform": "Pioneer II",
               "render": "solid",
@@ -3700,14 +4084,14 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Vila Real de Santo Antonio (Portugal)",
               "to_label": "Ayamonte (Spain)",
-              "from_node_id": "algarve-portugal",
-              "to_node_id": "algarve-portugal",
-              "distance_nm": 0.8,
+              "from_node_id": "bp-vila-real-santo-antonio",
+              "to_node_id": "bp-ayamonte-spain",
+              "distance_nm": 0.7,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-2f31310c4e84",
@@ -3715,13 +4099,13 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Lagos",
               "to_label": "Ponta da Piedade",
-              "from_node_id": "algarve-portugal",
-              "to_node_id": "algarve-portugal",
+              "from_node_id": "bp-lagos-marina",
+              "to_node_id": "bp-ponta-da-piedade",
               "distance_nm": 1.8,
               "platform": "Pioneer II",
               "render": "solid",
@@ -3730,11 +4114,7 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
-              },
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -3760,46 +4140,48 @@
           "rationale": "Densify the Lisbon network and replicate to Porto.",
           "featured_routes": [
             {
+              "from_label": "Cais do Sodré Terminal Fluvial (Transtejo)",
+              "to_label": "Cacilhas Terminal Fluvial",
+              "from_node_id": "lisbon-tagus-portugal__cais-do-sodr-terminal-fluvial-transtejo",
+              "to_node_id": "lisbon-tagus-portugal__cacilhas-terminal-fluvial",
+              "distance_nm": 1.8,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-a1f9af348e",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Belém — Terminal Fluvial (Trafaria/Porto Brandão)",
+              "to_label": "Trafaria Terminal Fluvial",
+              "from_node_id": "lisbon-tagus-portugal__bel-m-terminal-fluvial-trafaria-porto-brand-o",
+              "to_node_id": "lisbon-tagus-portugal__trafaria-terminal-fluvial",
+              "distance_nm": 2.4,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-6b939c627f",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Olhao",
               "to_label": "Culatra / Farol",
-              "from_node_id": "algarve-portugal",
-              "to_node_id": "algarve-portugal",
+              "from_node_id": "bp-olhao-cais",
+              "to_node_id": "bp-culatra-farol",
               "distance_nm": 2.5,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "rn-7e047d3229fc",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
-            },
-            {
-              "from_label": "Faro",
-              "to_label": "Ilha Deserta (Barreta)",
-              "from_node_id": "algarve-portugal",
-              "to_node_id": "algarve-portugal",
-              "distance_nm": 4.7,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "rn-cd1337338a68",
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
-            },
-            {
-              "from_label": "Terreiro do Paco (Lisbon)",
-              "to_label": "Barreiro",
-              "from_node_id": "lisbon-tagus-portugal",
-              "to_node_id": "lisbon-tagus-portugal",
-              "distance_nm": 5.4,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "rn-a4d791eb5afd",
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -3824,16 +4206,22 @@
           "rationale": "Tourism depth and cross-border reach plus Navier becoming the standard operator and earning ride revenue.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "lisbon-tagus-portugal",
-              "to_node_id": "lisbon-tagus-portugal",
-              "distance_nm": 0,
+              "label": "Cais do Sodré Ferry Terminal ↔ Montijo Ferry Terminal",
+              "from_node_id": "bp-cais-do-sodre-lisbon",
+              "to_node_id": "bp-montijo",
+              "distance_nm": 8.3,
               "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "route_id": "rn-353c95a901f9",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked-grok-node",
+              "_link_source": "grok/reground_proposal_surfaces",
+              "economics_status": "economics_pending",
+              "route_ids": [
+                "rn-20d8de578b2f"
+              ],
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "from_label": "Cais do Sodré Ferry Terminal",
+              "to_label": "Montijo Ferry Terminal"
             }
           ],
           "use_cases": [
@@ -3942,6 +4330,24 @@
       },
       "journeys_unlocked": [
         {
+          "from": "Lusail Marina",
+          "to": "Ritz-Carlton Doha — private marina",
+          "today": "A road drive from Lusail down to The Pearl.",
+          "with_navier": "A 3.5nm foiling hop from Lusail Marina to The Pearl.",
+          "distance_nm": 1.8,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-3b1ca046eb",
+          "to_node_id": "bp-e2017d2227",
+          "route_id": "rn-30d3fa93ca0e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Lusail Marina",
+          "to_label": "Ritz-Carlton Doha — private marina",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
           "from": "Doha Corniche",
           "to": "The Pearl",
           "today": "A coastal-road drive from the Corniche to The Pearl.",
@@ -3949,13 +4355,55 @@
           "distance_nm": 4.9,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "doha-qatar",
-          "to_node_id": "doha-qatar",
-          "route_id": "rn-f15bb66e8e87",
+          "from_node_id": "bp-9f419d9b83",
+          "to_node_id": "bp-2a5d05a105",
+          "route_id": "gcn-4c7a1915c8-qatar",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Al Wakrah (Qatar)",
+          "to": "The Pearl-Qatar — Marsa Arabia Marina (St. Regis)",
+          "today": "A road loop from The Pearl to the Corniche and Old Doha Port.",
+          "with_navier": "A 4.4nm foiling run to the Corniche/Old Doha Port.",
+          "distance_nm": 4.7,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "al-wakrah-qatar",
+          "to_node_id": "bp-1df5c8b461",
+          "_link_kind": "corridor-label",
+          "_link_status": "unlinked-bp-hold",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Al Wakrah (Qatar)",
+          "to_label": "The Pearl-Qatar — Marsa Arabia Marina (St. Regis)",
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "_link_source": "grok/reground_bp_binding_holds",
+          "_fidelity_trim": {
+            "at": "2026-06-29T12:04:09Z",
+            "reason": "bp_binding_hold_null",
+            "detail": "labels ≠ route endpoints: card 'Al Wakrah (Qatar)' → 'The Pearl-Qatar — Marsa Arabia Marina (St. Regis)' vs route 'Doha'"
+          }
+        },
+        {
+          "from": "Al Shyoukh Terminal (Banana Island shuttle departure)",
+          "to": "Banana Island Resort Doha (Anantara) — island jetty",
+          "today": "A diesel resort ferry to Banana Island on a timetable.",
+          "with_navier": "A 4.5nm on-demand foiling transfer to Banana Island.",
+          "distance_nm": 6.8,
+          "platform": "Pioneer II",
+          "archetype": "resort-shuttle",
+          "from_node_id": "bp-8c5102947a",
+          "to_node_id": "bp-647ca1f134",
+          "route_id": "gcn-de7142cf37-bolt",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Al Shyoukh Terminal (Banana Island shuttle departure)",
+          "to_label": "Banana Island Resort Doha (Anantara) — island jetty",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -3975,8 +4423,8 @@
             {
               "from_label": "Lusail Marina",
               "to_label": "The Pearl",
-              "from_node_id": "doha-qatar",
-              "to_node_id": "doha-qatar",
+              "from_node_id": "bp-3b1ca046eb",
+              "to_node_id": "bp-2a5d05a105",
               "distance_nm": 2.1,
               "platform": "Pioneer II",
               "render": "solid",
@@ -3984,11 +4432,47 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit",
               "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Al Wakrah (Qatar)",
+              "to_label": "The Pearl-Qatar — Marsa Arabia Marina (St. Regis)",
+              "from_node_id": "al-wakrah-qatar",
+              "to_node_id": "bp-1df5c8b461",
+              "distance_nm": 4.7,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "unlinked-bp-hold",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "_link_source": "grok/reground_bp_binding_holds",
               "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
+                "at": "2026-06-29T12:04:09Z",
+                "reason": "bp_binding_hold_null",
+                "detail": "labels ≠ route endpoints: card 'Al Wakrah (Qatar)' → 'The Pearl-Qatar — Marsa Arabia Marina (St. Regis)' vs route 'Doha'"
+              }
+            },
+            {
+              "from_label": "Al Wakrah (Qatar)",
+              "to_label": "The Pearl-Qatar — Marsa Arabia Marina (St. Regis)",
+              "from_node_id": "al-wakrah-qatar",
+              "to_node_id": "bp-1df5c8b461",
+              "distance_nm": 4.7,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "unlinked-bp-hold",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "_link_source": "grok/reground_bp_binding_holds",
+              "_fidelity_trim": {
+                "at": "2026-06-29T12:04:09Z",
+                "reason": "bp_binding_hold_null",
+                "detail": "labels ≠ route endpoints: card 'Al Wakrah (Qatar)' → 'The Pearl-Qatar — Marsa Arabia Marina (St. Regis)' vs route 'Doha'"
               }
             }
           ],
@@ -4015,32 +4499,52 @@
           "rationale": "Densify the bay network and add the resort-island transfer.",
           "featured_routes": [
             {
-              "from_label": "Doha (Al Shyoukh Terminal)",
-              "to_label": "Banana Island Resort (Anantara)",
-              "from_node_id": "doha-qatar",
-              "to_node_id": "doha-qatar",
+              "from_label": "Al Shyoukh Terminal (Banana Island shuttle departure)",
+              "to_label": "Banana Island Resort Doha (Anantara) — island jetty",
+              "from_node_id": "bp-8c5102947a",
+              "to_node_id": "bp-647ca1f134",
               "distance_nm": 6.8,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-de7142cf37-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
-              "from_label": "Al Wakrah",
-              "to_label": "Banana Island",
-              "from_node_id": "al-wakrah-qatar",
-              "to_node_id": "doha-qatar",
-              "distance_nm": 11,
+              "from_label": "Doha (Al Shyoukh Terminal)",
+              "to_label": "Banana Island Resort (Anantara)",
+              "from_node_id": "bp-8c5102947a",
+              "to_node_id": "bp-647ca1f134",
+              "distance_nm": 6.8,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "rn-0b99edfc9e67",
+              "route_id": "gcn-de7142cf37-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked-grok-node",
-              "_link_source": "grok/relink_partner_journeys/node"
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Al Wakrah (Qatar)",
+              "to_label": "Lusail Marina",
+              "from_node_id": "al-wakrah-qatar",
+              "to_node_id": "bp-3b1ca046eb",
+              "distance_nm": 6.1,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "unlinked-bp-hold",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "_link_source": "grok/reground_bp_binding_holds",
+              "_fidelity_trim": {
+                "at": "2026-06-29T12:04:09Z",
+                "reason": "bp_binding_hold_null",
+                "detail": "labels ≠ route endpoints: card 'Al Wakrah (Qatar)' → 'Lusail Marina' vs route 'Doha' → 'Lusail Marina'"
+              }
             }
           ],
           "use_cases": [
@@ -4066,16 +4570,18 @@
           "rationale": "Navier becoming the standard operator and earning ride revenue with honest staging of any future regional leg.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "doha-qatar",
-              "to_node_id": "doha-qatar",
-              "distance_nm": 0,
-              "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "from_label": "Dammam Corniche Waterfront",
+              "to_label": "Wyndham Grand Manama — Bahrain Bay waterfront",
+              "from_node_id": "bp-dammam-corniche",
+              "to_node_id": "bp-8ba5149065",
+              "distance_nm": 28.7,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "gcn-7aa2645694-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -4190,13 +4696,13 @@
           "distance_nm": 6.3,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "jeddah-ksa",
-          "to_node_id": "jeddah-ksa",
+          "from_node_id": "bp-b0f7e7c8ed",
+          "to_node_id": "bp-4829af4d93",
           "route_id": "gcn-adcdd3d09c-bolt",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Jeddah Corniche",
@@ -4206,13 +4712,48 @@
           "distance_nm": 6.3,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "jeddah-ksa",
-          "to_node_id": "jeddah-ksa",
+          "from_node_id": "bp-b0f7e7c8ed",
+          "to_node_id": "bp-4829af4d93",
           "route_id": "gcn-adcdd3d09c-bolt",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Jeddah Corniche — North Public Pier",
+          "to": "Jeddah Central Development — Cruise Terminal & Waterfront Marina",
+          "today": "A coastal-road drive south to Half Moon Bay.",
+          "with_navier": "A 13nm foiling hop down the Eastern Province coast.",
+          "distance_nm": 6.3,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-b0f7e7c8ed",
+          "to_node_id": "bp-4829af4d93",
+          "route_id": "gcn-adcdd3d09c-bolt",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked-grok-node",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "from_label": "Jeddah Corniche — North Public Pier",
+          "to_label": "Jeddah Central Development — Cruise Terminal & Waterfront Marina",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Dammam Corniche Waterfront",
+          "to": "Manama Pier (Bahrain Financial Harbour)",
+          "today": "A road loop around the bay to Tarout Island.",
+          "with_navier": "An 8nm direct water line to Tarout Island.",
+          "distance_nm": 29.3,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-dammam-corniche",
+          "to_node_id": "bp-053c417fe9",
+          "route_id": "rn-3fcef88ee5f5",
+          "_link_status": "linked-grok-node",
+          "_link_kind": "corridor-label",
+          "from_label": "Dammam Corniche Waterfront",
+          "to_label": "Manama Pier (Bahrain Financial Harbour)",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -4232,30 +4773,44 @@
             {
               "from_label": "Jeddah Corniche",
               "to_label": "Jeddah Central (PIF waterfront)",
-              "from_node_id": "jeddah-ksa",
-              "to_node_id": "jeddah-ksa",
+              "from_node_id": "bp-b0f7e7c8ed",
+              "to_node_id": "bp-4829af4d93",
               "distance_nm": 6.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-adcdd3d09c-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Jeddah Corniche",
               "to_label": "Jeddah Yacht Club & Marina",
-              "from_node_id": "jeddah-ksa",
-              "to_node_id": "jeddah-ksa",
+              "from_node_id": "bp-b0f7e7c8ed",
+              "to_node_id": "bp-4829af4d93",
               "distance_nm": 6.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-adcdd3d09c-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Jeddah Corniche — North Public Pier",
+              "to_label": "Jeddah Central Development — Cruise Terminal & Waterfront Marina",
+              "from_node_id": "bp-b0f7e7c8ed",
+              "to_node_id": "bp-4829af4d93",
+              "distance_nm": 6.3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "gcn-adcdd3d09c-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_status": "linked-grok-node",
+              "_link_kind": "corridor-label",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -4283,8 +4838,8 @@
             {
               "from_label": "Dammam Corniche",
               "to_label": "Khobar Corniche",
-              "from_node_id": "eastern-province-ksa",
-              "to_node_id": "eastern-province-ksa",
+              "from_node_id": "bp-dammam-corniche",
+              "to_node_id": "bp-alkhobar-corniche",
               "distance_nm": 14.0,
               "platform": "Pioneer II",
               "render": "solid",
@@ -4292,18 +4847,14 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit",
               "display": "text_only",
-              "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
-              }
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Khobar Corniche",
               "to_label": "Half Moon Bay",
-              "from_node_id": "eastern-province-ksa",
-              "to_node_id": "eastern-province-ksa",
+              "from_node_id": "bp-alkhobar-corniche",
+              "to_node_id": "bp-half-moon-bay-ksa",
               "distance_nm": 13.0,
               "platform": "Pioneer II",
               "render": "solid",
@@ -4311,12 +4862,22 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit",
               "display": "text_only",
-              "_fidelity_trim": {
-                "at": "2026-06-29T11:29:20Z",
-                "audit_rec": "TRIM"
-              }
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Dammam Corniche Waterfront",
+              "to_label": "Manama Pier (Bahrain Financial Harbour)",
+              "from_node_id": "bp-dammam-corniche",
+              "to_node_id": "bp-053c417fe9",
+              "distance_nm": 29.3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-3fcef88ee5f5",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_status": "linked-grok-node",
+              "_link_kind": "corridor-label",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -4349,16 +4910,44 @@
             {
               "from_label": "Jeddah Corniche",
               "to_label": "Jeddah Central (PIF waterfront)",
-              "from_node_id": "jeddah-ksa",
-              "to_node_id": "jeddah-ksa",
+              "from_node_id": "bp-b0f7e7c8ed",
+              "to_node_id": "bp-4829af4d93",
               "distance_nm": 6.3,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-adcdd3d09c-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Jeddah Corniche — North Public Pier",
+              "to_label": "Jeddah Central Development — Cruise Terminal & Waterfront Marina",
+              "from_node_id": "bp-b0f7e7c8ed",
+              "to_node_id": "bp-4829af4d93",
+              "distance_nm": 6.3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "gcn-adcdd3d09c-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Dammam Corniche Waterfront",
+              "to_label": "Manama Pier (Bahrain Financial Harbour)",
+              "from_node_id": "bp-dammam-corniche",
+              "to_node_id": "bp-053c417fe9",
+              "distance_nm": 29.3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-3fcef88ee5f5",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -4475,8 +5064,7 @@
           "to_node_id": "cape-town-south-africa",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
           "from": "V&A Waterfront",
@@ -4490,8 +5078,7 @@
           "to_node_id": "cape-town-south-africa",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
           "from": "Hout Bay",
@@ -4505,8 +5092,7 @@
           "to_node_id": "cape-town-south-africa",
           "route_id": null,
           "_link_status": "unlinked-intra-city",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
           "from": "Cape Town",
@@ -4522,8 +5108,7 @@
           "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         }
       ],
       "phases": [
@@ -4551,8 +5136,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "V&A Waterfront",
@@ -4565,8 +5149,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -4605,8 +5188,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             },
             {
               "from_label": "Cape Town",
@@ -4620,8 +5202,7 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -4656,8 +5237,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -4779,8 +5359,26 @@
           "to_node_id": "mallorca-spain",
           "route_id": null,
           "_link_status": "unlinked-no-route",
+          "display": "text_only"
+        },
+        {
+          "from": "Puerto Portals",
+          "to": "Puerto de Palma",
+          "today": "A crawl along the A-7 / coast road in peak season.",
+          "with_navier": "A 3.5nm foiling hop along the Costa del Sol, booked in-app.",
+          "distance_nm": 5.8,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-69fdd8329b",
+          "to_node_id": "bp-c7b6551ac0",
+          "route_id": "rn-3b8e9da00462",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
           "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "from_label": "Puerto Portals",
+          "to_label": "Puerto de Palma",
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Lloret de Mar",
@@ -4790,49 +5388,34 @@
           "distance_nm": 5.9,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "mallorca-spain",
-          "to_node_id": "mallorca-spain",
+          "from_node_id": "Lloret de Mar",
+          "to_node_id": "Tossa de Mar",
           "route_id": "ics-c250dbc94d",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "route_ids": null,
+          "_link_kind": "corridor-label"
         },
         {
-          "from": "Port de Sóller (Mallorca)",
-          "to": "Sa Calobra / Torrent de Pareis (Mallorca)",
+          "from": "Marina Port de Mallorca (Palma)",
+          "to": "Marina del Port de Sóller",
           "today": "A famously tortuous mountain drive or a packed excursion boat.",
           "with_navier": "A direct foiling hop to Sa Calobra, on demand.",
           "distance_nm": 14.32,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "mallorca-spain",
-          "to_node_id": "mallorca-spain",
+          "from_node_id": "mallorca-spain__marina-port-de-mallorca-palma",
+          "to_node_id": "mallorca-spain__marina-del-port-de-s-ller",
           "route_id": "ics-7085b9f5f4",
           "_link_kind": "corridor-label",
           "_link_status": "linked",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
           "display": "text_only",
-          "_fidelity_trim": {
-            "at": "2026-06-29T11:29:20Z",
-            "audit_rec": "TRIM"
-          },
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
-        },
-        {
-          "from": "Tarifa",
-          "to": "Tangier (Morocco)",
-          "today": "A diesel fast-ferry across the Strait on a timetable.",
-          "with_navier": "A foiling cross-Strait link to Tangier (intercity, see cross-border).",
-          "distance_nm": 18,
-          "platform": "Pioneer II",
-          "archetype": "intercity",
-          "from_node_id": "mallorca-spain",
-          "to_node_id": "mallorca-spain",
-          "route_id": null,
-          "_link_status": "unlinked-no-route",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "_reground_at": "2026-06-29T12:02:47Z",
+          "from_label": "Marina Port de Mallorca (Palma)",
+          "to_label": "Marina del Port de Sóller",
+          "_link_source": "grok/reground_proposal_surfaces"
         }
       ],
       "phases": [
@@ -4862,22 +5445,39 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
+              "display": "text_only"
+            },
+            {
+              "from_label": "Puerto Portals",
+              "to_label": "Puerto de Palma",
+              "from_node_id": "bp-69fdd8329b",
+              "to_node_id": "bp-c7b6551ac0",
+              "distance_nm": 5.8,
+              "platform": "Pioneer II",
+              "render": "aspirational",
+              "route_id": "rn-3b8e9da00462",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "render_note": "boarding point not yet sealed — aspirational leg",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Lloret de Mar",
               "to_label": "Tossa de Mar",
-              "from_node_id": "costa-brava-spain",
-              "to_node_id": "costa-brava-spain",
+              "from_node_id": "Lloret de Mar",
+              "to_node_id": "Tossa de Mar",
               "distance_nm": 5.9,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "ics-c250dbc94d",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "route_ids": null,
+              "_link_kind": "corridor-label"
             }
           ],
           "use_cases": [
@@ -4910,11 +5510,11 @@
           "rationale": "Dense, protected island water where ferries are diesel and timetables are rigid.",
           "featured_routes": [
             {
-              "from_label": "Port de Sóller (Mallorca)",
-              "to_label": "Sa Calobra / Torrent de Pareis (Mallorca)",
-              "from_node_id": "mallorca-spain",
-              "to_node_id": "ibiza-spain",
-              "distance_nm": 9,
+              "from_label": "Marina Port de Mallorca (Palma)",
+              "to_label": "Marina del Port de Sóller",
+              "from_node_id": "mallorca-spain__marina-port-de-mallorca-palma",
+              "to_node_id": "mallorca-spain__marina-del-port-de-s-ller",
+              "distance_nm": 14.32,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "ics-7085b9f5f4",
@@ -4922,25 +5522,41 @@
               "_link_kind": "corridor-label",
               "_link_status": "linked",
               "display": "text_only",
-              "_link_source": "grok/mark_unlinked_aspirational",
-              "economics_status": "roadmap_excluded"
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "_link_source": "grok/reground_proposal_surfaces"
             },
             {
-              "from_label": "Tarifa",
-              "to_label": "Tangier (Morocco)",
-              "from_node_id": "mallorca-spain",
-              "to_node_id": "tangier-morocco",
-              "distance_nm": 18,
+              "from_label": "Ibiza Harbour",
+              "to_label": "La Savina (Formentera)",
+              "from_node_id": "ibiza-spain__ibiza-harbour",
+              "to_node_id": "ibiza-spain__la-savina-formentera",
+              "distance_nm": 10.63,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "ics-605dcb641e",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Puerto Portals",
+              "to_label": "Puerto de Palma",
+              "from_node_id": "bp-69fdd8329b",
+              "to_node_id": "bp-c7b6551ac0",
+              "distance_nm": 5.8,
               "platform": "Pioneer II",
               "render": "aspirational",
-              "route_id": null,
+              "route_id": "rn-3b8e9da00462",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "render_note": "boarding point not yet sealed — aspirational leg",
-              "_link_status": "unlinked-no-route",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
               "display": "text_only",
-              "_link_kind": "aspirational-chip",
-              "_link_source": "grok/mark_unlinked_aspirational",
-              "economics_status": "roadmap_excluded"
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -4968,6 +5584,37 @@
           "rationale": "Connects the Balearic hubs to the mainland on the only clean, fast option.",
           "featured_routes": [
             {
+              "from_label": "Grimaldi Trasmed | Palma",
+              "to_label": "Grimaldi Trasmed | Ibiza",
+              "from_node_id": "mallorca-spain__grimaldi-trasmed-palma",
+              "to_node_id": "ibiza-spain__grimaldi-trasmed-ibiza",
+              "distance_nm": 67.87,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "ics-4c8c95334c",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z",
+              "route_ids": null,
+              "_link_kind": "corridor-label"
+            },
+            {
+              "from_label": "Port de Cala Ratjada",
+              "to_label": "Ciutadella — Port (Son Blanc)",
+              "from_node_id": "mallorca-spain__port-de-cala-ratjada",
+              "to_node_id": "menorca-spain__ciutadella-port-son-blanc",
+              "distance_nm": 24.16,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "ics-f88551e209",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "economics_status": "roadmap_excluded",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Barcelona",
               "to_label": "Palma de Mallorca",
               "from_node_id": "mallorca-spain",
@@ -4979,23 +5626,7 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "render_note": "boarding point not yet sealed — aspirational leg",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
-            },
-            {
-              "from_label": "Dénia",
-              "to_label": "Palma de Mallorca",
-              "from_node_id": "mallorca-spain",
-              "to_node_id": "mallorca-spain",
-              "distance_nm": 130,
-              "platform": "Quanta-LR",
-              "render": "aspirational",
-              "route_id": null,
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "render_note": "boarding point not yet sealed — aspirational leg",
-              "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -5101,6 +5732,44 @@
       },
       "journeys_unlocked": [
         {
+          "from": "Slussen SL Ferry terminal",
+          "to": "Allmänna gränd",
+          "today": "A short but crowded ferry or a long walk around.",
+          "with_navier": "A quick electric hop to Djurgarden museums island.",
+          "distance_nm": 0.9,
+          "platform": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bp-07229443bf",
+          "to_node_id": "bp-10b74d6375",
+          "route_id": "rn-7061b9e5930e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Slussen SL Ferry terminal",
+          "to_label": "Allmänna gränd",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
+          "from": "Nybrokajen (Stockholm)",
+          "to": "Nacka Strand",
+          "today": "A congested road-and-bridge commute across the inlets.",
+          "with_navier": "A 3nm flying water commute, booked in-app.",
+          "distance_nm": 4.5,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-e10922257c",
+          "to_node_id": "bp-d077eaf53d",
+          "route_id": "rn-1fc1a669275e",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+          "display": "text_only",
+          "from_label": "Nybrokajen (Stockholm)",
+          "to_label": "Nacka Strand",
+          "_reground_at": "2026-06-29T12:02:47Z"
+        },
+        {
           "from": "Stockholm (Stadshuskajen / Klara Malarstrand)",
           "to": "Drottningholm",
           "today": "A slow excursion boat or a drive around the lake.",
@@ -5112,23 +5781,26 @@
           "to_node_id": "stockholm-sweden",
           "route_id": null,
           "_link_status": "unlinked-no-route",
-          "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "display": "text_only"
         },
         {
-          "from": "Stockholm (Vartahamnen / Stadsgarden)",
-          "to": "Mariehamn (Aland)",
-          "today": "An overnight Baltic ferry.",
-          "with_navier": "A Quanta-LR regional crossing to Åland (roadmap).",
-          "distance_nm": 75,
-          "platform": "Quanta-LR",
-          "archetype": "intercity",
-          "from_node_id": "stockholm-sweden",
-          "to_node_id": "stockholm-sweden",
-          "route_id": null,
-          "_link_status": "unlinked-no-route",
+          "from": "Klara Mälarstrand",
+          "to": "Boda brygga",
+          "today": "A congested road commute around Lake Malaren.",
+          "with_navier": "A direct 8.6nm flying commute across the lake.",
+          "distance_nm": 18.8,
+          "platform": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bp-59b170bb9f",
+          "to_node_id": "bp-e9856744b1",
+          "route_id": "rn-66180c77771f",
+          "_link_kind": "corridor-label",
+          "_link_status": "linked",
+          "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
           "display": "text_only",
-          "_link_source": "grok/apply_proposal_fidelity_from_audit"
+          "from_label": "Klara Mälarstrand",
+          "to_label": "Boda brygga",
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -5146,6 +5818,36 @@
           "rationale": "Highest-frequency commuter-and-leisure water in the city core; pure Pioneer II range.",
           "featured_routes": [
             {
+              "from_label": "Slussen SL Ferry terminal",
+              "to_label": "Allmänna gränd",
+              "from_node_id": "bp-07229443bf",
+              "to_node_id": "bp-10b74d6375",
+              "distance_nm": 0.9,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-7061b9e5930e",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Nybrokajen (Stockholm)",
+              "to_label": "Nacka Strand",
+              "from_node_id": "bp-e10922257c",
+              "to_node_id": "bp-d077eaf53d",
+              "distance_nm": 4.5,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-1fc1a669275e",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Stockholm (Stadshuskajen / Klara Malarstrand)",
               "to_label": "Drottningholm",
               "from_node_id": "stockholm-sweden",
@@ -5156,8 +5858,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -5186,16 +5887,49 @@
           "rationale": "Extends the proven core into the high-value archipelago commute and leisure runs.",
           "featured_routes": [
             {
-              "label": "Corridor seal pending — roadmap",
-              "from_node_id": "stockholm-sweden",
-              "to_node_id": "stockholm-sweden",
-              "distance_nm": 0,
+              "from_label": "Klara Mälarstrand",
+              "to_label": "Boda brygga",
+              "from_node_id": "bp-59b170bb9f",
+              "to_node_id": "bp-e9856744b1",
+              "distance_nm": 18.8,
               "platform": "Pioneer II",
-              "route_id": null,
-              "display": "text_only",
+              "render": "solid",
+              "route_id": "rn-66180c77771f",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit/placeholder"
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Strömkajen (Stockholm)",
+              "to_label": "Allmänna gränd",
+              "from_node_id": "bp-e995cb5a06",
+              "to_node_id": "bp-10b74d6375",
+              "distance_nm": 5.8,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-6b6babc145f9",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Strömkajen (Stockholm)",
+              "to_label": "Boda brygga",
+              "from_node_id": "bp-e995cb5a06",
+              "to_node_id": "bp-e9856744b1",
+              "distance_nm": 18.3,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "rn-f270f57e95eb",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked",
+              "display": "text_only",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -5230,8 +5964,7 @@
               "route_id": null,
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-no-route",
-              "display": "text_only",
-              "_link_source": "grok/apply_proposal_fidelity_from_audit"
+              "display": "text_only"
             }
           ],
           "use_cases": [
@@ -5351,7 +6084,6 @@
           "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped",
           "economics_status": "bound",
           "display": "text_only"
         },
@@ -5369,7 +6101,6 @@
           "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped",
           "economics_status": "bound",
           "display": "text_only"
         },
@@ -5387,7 +6118,6 @@
           "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped",
           "economics_status": "bound",
           "display": "text_only"
         },
@@ -5405,7 +6135,6 @@
           "_link_kind": "corridor-label",
           "_link_status": "unlinked-intra-city",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped",
           "economics_status": "bound",
           "display": "text_only"
         }
@@ -5436,7 +6165,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             },
             {
@@ -5451,7 +6179,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             },
             {
@@ -5466,7 +6193,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             }
           ],
@@ -5503,7 +6229,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             },
             {
@@ -5518,7 +6243,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             },
             {
@@ -5533,7 +6257,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             }
           ],
@@ -5570,7 +6293,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "unlinked-intra-city",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             },
             {
@@ -5585,7 +6307,6 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_status": "unlinked-intra-city",
               "_link_kind": "corridor-label",
-              "_link_source": "grok/relink_partner_journeys/scoped",
               "display": "text_only"
             }
           ],
@@ -5705,13 +6426,13 @@
           "distance_nm": 1.9,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "dubai-uae",
-          "to_node_id": "dubai-uae",
-          "route_id": "gcn-8d63400ee6-bolt",
+          "from_node_id": "bp-69b8c08204",
+          "to_node_id": "bp-f4ac4e0a50",
+          "route_id": "gcn-8d63400ee6-careem",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Dubai Harbour Marina",
@@ -5721,13 +6442,13 @@
           "distance_nm": 2.1,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "dubai-uae",
-          "to_node_id": "dubai-uae",
+          "from_node_id": "bp-56d5f5bd8d",
+          "to_node_id": "bp-cef3fdf035",
           "route_id": "gcn-5f710d44d4-bolt",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "Kempinski Hotel & Residences Palm Jumeirah Jetty",
@@ -5737,13 +6458,13 @@
           "distance_nm": 2,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "dubai-uae",
-          "to_node_id": "dubai-uae",
-          "route_id": "gcn-53d48bd905-bolt",
+          "from_node_id": "bp-1ff5dcf05e",
+          "to_node_id": "bp-0157d8dd51",
+          "route_id": "gcn-53d48bd905-careem",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         },
         {
           "from": "La Mer / J1 Beach Jetty",
@@ -5753,13 +6474,13 @@
           "distance_nm": 2,
           "platform": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "dubai-uae",
-          "to_node_id": "dubai-uae",
-          "route_id": "gcn-196f720eb3-bolt",
+          "from_node_id": "bp-2c31ab96c5",
+          "to_node_id": "bp-b13fc69aba",
+          "route_id": "gcn-196f720eb3-careem",
           "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped",
+          "_link_status": "linked-grok-node",
           "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-          "_link_source": "grok/relink_partner_journeys/scoped"
+          "_reground_at": "2026-06-29T12:02:47Z"
         }
       ],
       "phases": [
@@ -5779,44 +6500,44 @@
             {
               "from_label": "One&Only The Palm Jetty",
               "to_label": "Jumeirah Zabeel Saray Jetty",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
+              "from_node_id": "bp-69b8c08204",
+              "to_node_id": "bp-f4ac4e0a50",
               "distance_nm": 1.9,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "gcn-8d63400ee6-bolt",
+              "route_id": "gcn-8d63400ee6-careem",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Dubai Harbour Marina",
               "to_label": "Bluewaters Marina",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
+              "from_node_id": "bp-56d5f5bd8d",
+              "to_node_id": "bp-cef3fdf035",
               "distance_nm": 2.1,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-5f710d44d4-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Kempinski Hotel & Residences Palm Jumeirah Jetty",
               "to_label": "Atlantis The Palm Jetty",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
+              "from_node_id": "bp-1ff5dcf05e",
+              "to_node_id": "bp-0157d8dd51",
               "distance_nm": 2,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "gcn-53d48bd905-bolt",
+              "route_id": "gcn-53d48bd905-careem",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -5847,44 +6568,44 @@
             {
               "from_label": "La Mer / J1 Beach Jetty",
               "to_label": "Nikki Beach Resort Pearl Jumeirah Jetty",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
+              "from_node_id": "bp-2c31ab96c5",
+              "to_node_id": "bp-b13fc69aba",
               "distance_nm": 2,
               "platform": "Pioneer II",
               "render": "solid",
-              "route_id": "gcn-196f720eb3-bolt",
+              "route_id": "gcn-196f720eb3-careem",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Kempinski Hotel & Residences Palm Jumeirah Jetty",
+              "to_label": "Atlantis The Palm Jetty",
+              "from_node_id": "bp-1ff5dcf05e",
+              "to_node_id": "bp-0157d8dd51",
+              "distance_nm": 2,
+              "platform": "Pioneer II",
+              "render": "solid",
+              "route_id": "gcn-53d48bd905-careem",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             },
             {
               "from_label": "Dubai Creek Marina",
               "to_label": "Al Seef Marine Transport Station",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
+              "from_node_id": "bp-d6496ac4e8",
+              "to_node_id": "bp-0f0e3b5e54",
               "distance_nm": 1.7,
               "platform": "Pioneer II",
               "render": "solid",
               "route_id": "gcn-e71d4cf5b6-bolt",
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
-            },
-            {
-              "from_label": "Yacht Marina",
-              "to_label": "The Westin Dubai Mina Seyahi Beach Resort & Marina",
-              "from_node_id": "dubai-uae",
-              "to_node_id": "dubai-uae",
-              "distance_nm": 2.1,
-              "platform": "Pioneer II",
-              "render": "solid",
-              "route_id": "gcn-0ca7f3ffe7-bolt",
-              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
-              "_link_kind": "corridor-label",
-              "_link_status": "linked-grok-scoped",
-              "_link_source": "grok/relink_partner_journeys/scoped"
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -5912,10 +6633,38 @@
           "rationale": "A genuine near-term inter-emirate leg plus Navier becoming the standard operator and earning ride revenue.",
           "featured_routes": [
             {
+              "from_label": "Jebel Dhanna / Ruwais Ferry Terminal",
+              "to_label": "Sir Bani Yas Cruise Beach",
+              "from_node_id": "bp-7a8bdcb2fc",
+              "to_node_id": "bp-b50938e27f",
+              "distance_nm": 5.9,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "gcn-8b5dd5d484-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
+              "from_label": "Dubai Creek Golf & Yacht Club Marina",
+              "to_label": "Al Seef Marine Transport Station",
+              "from_node_id": "bp-d6496ac4e8",
+              "to_node_id": "bp-0f0e3b5e54",
+              "distance_nm": 1.7,
+              "platform": "Quanta-LR",
+              "render": "amber-dashed",
+              "route_id": "gcn-e71d4cf5b6-bolt",
+              "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
+              "_link_kind": "corridor-label",
+              "_link_status": "linked-grok-node",
+              "_reground_at": "2026-06-29T12:02:47Z"
+            },
+            {
               "from_label": "Marina Mall / Breakwater Marina",
               "to_label": "Bahrain Financial Harbour Marina",
-              "from_node_id": "abu-dhabi-uae",
-              "to_node_id": "manama-bahrain",
+              "from_node_id": "bp-b3458dd3c6",
+              "to_node_id": "bp-053c417fe9",
               "distance_nm": 230.9,
               "platform": "Quanta-LR",
               "render": "amber-dashed",
@@ -5923,7 +6672,7 @@
               "model_link": "https://docs.google.com/spreadsheets/d/1XkD0x-PfDyY34ZBy5jX2u1LqoibAd_xMiyO-Re2UWUk/edit",
               "_link_kind": "corridor-label",
               "_link_status": "linked-grok-node",
-              "_link_source": "grok/relink_partner_journeys/node"
+              "_reground_at": "2026-06-29T12:02:47Z"
             }
           ],
           "use_cases": [
@@ -5960,14 +6709,14 @@
   },
   "_provenance": {
     "journey_relink": {
-      "at": "2026-06-25T05:58:39Z",
+      "at": "2026-06-29T12:02:47Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
-        "total": 273,
-        "linked": 127,
-        "cleared_mislink": 0,
-        "borrowed_brief": 3,
-        "matched_scoped": 107,
+        "total": 208,
+        "linked": 94,
+        "cleared_mislink": 2,
+        "borrowed_brief": 0,
+        "matched_scoped": 1,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,
@@ -6918,15 +7667,27 @@
     "nigeria_lagos_mint_at": "2026-06-24T15:20:23Z",
     "crossborder_bind_at": "2026-06-24T15:34:38Z"
   },
-  "_fidelity_trim": {
-    "at": "2026-06-29T11:29:20Z",
-    "source": "grok/apply_proposal_fidelity_from_audit",
+  "_reground": {
+    "at": "2026-06-29T12:02:47Z",
+    "source": "grok/reground_proposal_surfaces",
     "stats": {
-      "dropped": 112,
-      "trimmed": 10,
-      "capped_journeys": 4,
-      "capped_featured": 3,
-      "placeholder_phases": 8
+      "sync_journey_labels": 8,
+      "sync_featured_label": 6,
+      "unchanged": 194
+    }
+  },
+  "_route_binding_fix": {
+    "at": "2026-06-29T12:02:45Z",
+    "stats": {
+      "unchanged": 206,
+      "promoted_route_id": 2
+    }
+  },
+  "_bp_binding_hold": {
+    "at": "2026-06-29T12:04:09Z",
+    "stats": {
+      "unchanged": 202,
+      "held": 6
     }
   }
 }

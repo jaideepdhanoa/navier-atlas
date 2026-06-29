@@ -1,25 +1,25 @@
 # Proposal fidelity — noon
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-29T11:31:56Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T12:19:51Z
 
 ## Summary
 
 - Items audited: 9
-- KEEP: 7
+- KEEP: 9
 - DROP: 0
-- DEFER: 1
-- TRIM/REWRITE: 1
+- DEFER: 0
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **TRIM** | geometry_preview: interior_land_km=2.01 (threshold 0.4) |
+| journey | — | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | journey | — | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `rn-02a40748974d` | **KEEP** | — |
 | journey | — | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |
-| featured | 1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **DEFER** | geometry_preview: interior_land_km=2.01 (threshold 0.4) |
+| featured | 1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | featured | 1 | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `rn-02a40748974d` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Wynn Al Marjan Island arriv | `gcn-9e515da38a-bolt` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |

@@ -254,24 +254,42 @@ head('§3.5  route linkage audit (story / featured_routes)');
   } else ok('route linkage audit passed (allowlist respected)');
 }
 
-// ─── §3.7 · Proposal fidelity (S-tier journey BP exactness) ─────────────────
-head('§3.7  proposal fidelity (S-tier journey BP gate)');
+// ─── §3.7 · Proposal fidelity (hard deploy gate — always on) ────────────────
+head('§3.7  proposal fidelity (hard gate: BP · geometry · placeholders · REWRITE)');
 {
-  // Pilot: Careem post-trim must pass in RELEASE. Noon/Grab reported advisory until trim lane ships.
-  const gatePartners = RELEASE ? ['careem'] : ['careem', 'noon', 'grab'];
-  const fidelityArgs = ['scripts/audit_proposal_fidelity.py', '--partner', ...gatePartners];
-  if (RELEASE) fidelityArgs.push('--strict-journey-gate');
+  const fidelityArgs = [
+    'scripts/audit_proposal_fidelity.py',
+    '--hub-partners',
+    '--strict-deploy-gate',
+  ];
   const py = spawnSync('python3', fidelityArgs, { cwd: ROOT, encoding: 'utf8' });
   if (py.stdout) process.stdout.write(py.stdout);
   if (py.stderr) process.stderr.write(py.stderr);
-  if (RELEASE && py.status !== 0) {
-    fail('proposal fidelity §3.7 — S-tier journey BP errors on gated partner(s)');
-  } else if (!RELEASE && py.status !== 0) {
-    ok('proposal fidelity — advisory (pass --release to enforce Careem journey gate)');
+  if (py.status !== 0) {
+    fail('proposal fidelity §3.7 — hub partner gate failed (BP / geometry / placeholder / REWRITE)');
   } else {
-    ok(RELEASE
-      ? 'proposal fidelity journey BP gate passed (Careem)'
-      : 'proposal fidelity audit complete (Careem + Noon + Grab advisory)');
+    ok('proposal fidelity §3.7 passed (all hub-layout partners)');
+  }
+}
+
+// ─── §3.7b · Reference partner schema + linkage (deploy gate) ─────────────────
+head('§3.7b  reference partner schema validation');
+{
+  const REF = ['careem', 'noon', 'grab', 'rapido', 'bolt'];
+  let schemaBad = 0;
+  for (const slug of REF) {
+    const py = spawnSync('python3', [
+      'scripts/validate_partner_proposals.py',
+      '--partner', slug,
+    ], { cwd: ROOT, encoding: 'utf8' });
+    if (py.stdout) process.stdout.write(py.stdout);
+    if (py.stderr) process.stderr.write(py.stderr);
+    if (py.status !== 0) schemaBad++;
+  }
+  if (schemaBad) {
+    fail(`reference partner schema validation failed (${schemaBad}/${REF.length})`);
+  } else {
+    ok(`reference partner schema validation passed (${REF.length} partners)`);
   }
 }
 
