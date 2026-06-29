@@ -449,9 +449,8 @@ export function inferDensityTier(routeCount, partner, market) {
 }
 
 export function defaultDensityMode(tier, storyCount) {
-  if (storyCount > 0 && (tier === 'high' || tier === 'extreme')) return 'story';
-  if (tier === 'extreme') return 'story';
-  if (tier === 'high') return 'backbone';
+  // Partner landing / "The network" overview: full mesh. Phase carousel tightens via applyPhaseFocus.
+  if (tier === 'extreme' || tier === 'high' || storyCount > 0) return 'mesh';
   return 'backbone';
 }
 

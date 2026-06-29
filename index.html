@@ -1256,9 +1256,11 @@ function setDensityMode(mode, opts){
   if (opts.phaseN !== undefined) _activePhaseN = opts.phaseN;
   if (mode && _DENSITY_LANES[mode]) _densityMode = mode;
   applyDensityFilters();
-  // Re-stamp focus opacity — mesh floor is higher so newly unfiltered capillaries actually read.
-  if (_HUB && _HUB.partner){ const a=_hubAnchors(_HUB.partner); if(a.length) applyStoryFocus(a); }
-  else if (PARTNER_ACTIVE && PARTNER_ACTIVE.scopeCities){ applyStoryFocus(PARTNER_ACTIVE.scopeCities); }
+  // Carousel chapters own map focus (end-state / phase emphasis). Hub index + legacy story-list use scope here.
+  if (!opts.skipFocus && !_CARO) {
+    if (_HUB && _HUB.partner){ const a=_hubAnchors(_HUB.partner); if(a.length) applyStoryFocus(a); }
+    else if (PARTNER_ACTIVE && PARTNER_ACTIVE.scopeCities){ applyStoryFocus(PARTNER_ACTIVE.scopeCities); }
+  }
   if (!opts.silent) _updateDensityLegend();
 }
 
@@ -2894,7 +2896,7 @@ function applyPhaseFocus(phase){
   if (!phase){
     _activePhaseTag=null; _activePhaseN=null;
     applyDensityFilters();
-    if(_useDensityFocus()) setDensityMode(MAP_DISPLAY.default_mode||'backbone',{phaseTag:null, phaseN:null});
+    if(_useDensityFocus()) setDensityMode('mesh',{phaseTag:null, phaseN:null, skipFocus:true});
     applyStoryFocus(null); return;
   }
   const phaseN = _phaseNumber(phase);
@@ -2904,7 +2906,7 @@ function applyPhaseFocus(phase){
   _activePhaseTag = phaseTag;
   _activePhaseN = phaseN;
   // Full network at low opacity; prior phases medium; current phase full emphasis.
-  if (_useDensityFocus()) setDensityMode('mesh', { phaseTag, phaseN, silent:true });
+  if (_useDensityFocus()) setDensityMode('mesh', { phaseTag, phaseN, silent:true, skipFocus:true });
   applyDensityFilters();
   if (current.length || prior.length) { applyPhaseRouteEmphasis(current, prior); return; }
   const cities=_phaseFocusCities(phase);
@@ -2947,7 +2949,7 @@ function applyEndStateFocus(partner){
   _activePhaseTag=null; _activePhaseN=null;
   applyDensityFilters();
   if (_tierVisual()){ applyStoryFocus(null); }
-  else if (_useDensityFocus()){ setDensityMode('backbone',{phaseTag:null,phaseN:null,silent:true}); applyStoryFocus(null); return; }
+  else if (_useDensityFocus()){ setDensityMode('mesh',{phaseTag:null,phaseN:null,silent:true,skipFocus:true}); applyStoryFocus(null); return; }
   const c=_endStateCities(partner);
   const roadmap=_roadmapPromoteIds(partner);
   if(roadmap.length && _focusRoutes(roadmap)){
@@ -3567,7 +3569,7 @@ function _wireHubIndex(panel, partner){
   panel.querySelectorAll('.hub-card[data-mslug]').forEach(el=>{
     const m=(partner.markets||[]).find(x=>x.slug===el.dataset.mslug);
     el.addEventListener('mouseenter',()=>{ const a=_resolvePhaseCities((m&&m.anchor_cities)||[]); if(a.length) applyStoryFocus(a); });
-    el.addEventListener('mouseleave',()=>applyStoryFocus(anchors.length?anchors:null));
+    el.addEventListener('mouseleave',()=>applyStoryFocus(null));
     el.addEventListener('click',()=>openHubMarket(partner,m,true));
   });
 }
@@ -3577,7 +3579,8 @@ function renderHubIndex(partner, tab){
   // Hub index is a back-stack ROOT (drilling a map node from here can step back to it).
   _navStack=[]; _navCurrent={ key:'hubindex:'+(partner.partner_id||''), label:(partner.display||'markets'), render:()=>renderHubIndex(partner) };
   const anchors=_hubAnchors(partner);
-  applyStoryFocus(anchors.length?anchors:null);        // spotlight every market's footprint (global reach)
+  if (_useDensityFocus()) setDensityMode('mesh',{phaseTag:null,phaseN:null,silent:true,skipFocus:true});
+  applyStoryFocus(null);                               // hub landing: full scoped network (phase tour tightens)
   const pw=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w'))||420;
   _fitCities(anchors, {top:80,right:pw+40,bottom:80,left:120});
   const panel=document.getElementById('panel');
