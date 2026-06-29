@@ -37,7 +37,7 @@ REGION_ALIASES = {
     "Europe-Mediterranean": "Europe", "Europe-Atlantic": "Europe",
     "Europe-Baltic": "Europe", "Europe-Med": "Europe",
     "Asia": "East Asia",
-    "Middle East": "MENA", "Maghreb": "MENA",
+    "Middle East": "MENA",  # Maghreb split to its own brief (2026-06-29) — no longer aliased to MENA
     "Caucasus": "Caspian", "Central Asia": "Caspian",
 }
 def norm_region(r):
