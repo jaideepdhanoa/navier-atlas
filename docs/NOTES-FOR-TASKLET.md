@@ -6,6 +6,88 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-29 — Split Maghreb from MENA (Jaideep → Tasklet) · `/region/maghreb`
+
+**Decision:** North Africa is its own macro-region brief — **not** folded into MENA via alias.
+Gulf/Levant stays **`mena`**; Morocco/Algeria/Tunisia roll into **`maghreb`**.
+
+**Data is already cluster-tagged correctly** (PR #138 / `seal-integrity-fix.py` B5b):
+`morocco`, `algeria`, `tunisia` → `region: "Maghreb"`; member cities cascade `Maghreb`.
+Grok will remove the render alias once the brief exists; **Tasklet owns content + scope_stats**.
+
+### Target footprint (from live `CLUSTERS.json` today)
+
+| Brief slug | Display | Clusters | Cities (member ids) |
+|------------|---------|----------|---------------------|
+| **`maghreb`** | Maghreb | 3: `morocco`, `algeria`, `tunisia` | **11** |
+| **`mena`** (revised) | MENA | 9: `bahrain`, `egypt`, `israel`, `ksa-commercial`, `lebanon`, `oman`, `qatar`, `saudi-arabia`, `uae` | **27** |
+
+Current `mena` brief still says **12 / 33** because `Maghreb → MENA` alias rolls both together.
+After split, `validate-region-briefs.py --strict` must see `scope_stats` == share-card == browse-grid **per slug**.
+
+### P0 — Tasklet deliverables
+
+1. **`data-clean/region_briefs.json` — add `maghreb` entry** at cluster-depth standard (same section
+   system as the other 11 regions): `scope_stats`, `why_marine_mobility`, `demand_signals` (≥2),
+   structured `use_cases`, `navier_fit`, `signature_routes`, `transit_planning`,
+   `competitive_landscape`, `seasonality`. Suggested tagline axis: *Mediterranean Atlantic facade,
+   ferry culture, super-app Maghreb partners (Yassir), riviera + port-city hops*.
+
+2. **`mena` brief — rewrite for Gulf/Levant only.** Drop North-Africa prose (Casablanca, Tunis, etc.).
+   Retain Gulf/Red Sea/Aqaba narrative. Update `scope_stats` to **9 clusters · 27 cities**. Re-roll
+   `signature_routes` from MENA-tagged clusters only (existing 5 Gulf routes are fine; verify none
+   reference Maghreb city ids).
+
+3. **`maghreb` `signature_routes`** — ID-matched rollup from `morocco` / `algeria` / `tunisia`
+   cluster briefs + sealed `ROUTES.json`. Today Morocco/Tunisia cluster briefs mostly have
+   `route_id: null` (display-only); **`null` beats confidently-wrong** if no sealed geometry — same
+   rule as Caribbean/Caspian. When Yassir/Bolt Maghreb corridors seal, bind ids here.
+
+4. **`scripts/author-region-briefs.py`** — extend `SIG` map + `_ALIAS` so `Maghreb` stats compute to
+   slug `maghreb` (not `mena`). Re-run author pass or hand-edit; gate must pass.
+
+5. **Optional cluster brief:** `cluster_briefs/algeria.json` stub (cluster exists; no brief yet).
+   Morocco + Tunisia briefs already exist.
+
+### P1 — Seal / taxonomy guardrails (Tasklet)
+
+- **Do not** re-alias `Maghreb → MENA` in seal scripts. `CLUSTERS.region` stays `Maghreb` for the
+  three North-African country clusters; `MENA` for Gulf/Levant only.
+- `seal-integrity-fix.py` `REGION_ALIASES`: remove `"Maghreb": "MENA"` when Grok lands render split
+  (or Tasklet can drop it now — either lane, but both must agree before deploy).
+- Seal gate: if a city `region` contradicts its cluster `region` (after B3b cascade), fail seal.
+
+### Grok render lane (after Tasklet ships brief) — not blocking Tasklet
+
+Grok will wire (no content authorship):
+
+- Remove `Maghreb: 'MENA'` from `REGION_ALIASES` in `scripts/region-share.mjs`, `index.html`
+  `_REGION_DISPLAY_ALIAS`, `scripts/validate-region-briefs.py`, `scripts/author-region-briefs.py`.
+- `collectRegionStats()` → separate `maghreb` + `mena` slugs automatically once alias is gone.
+- Region nav L1 chip: **Maghreb** appears as its own macro-region (alongside MENA).
+- Share tree: `/region/maghreb` + short alias `/maghreb` → `/region/maghreb` (mirror `/mena`).
+- Rebuild `_dist/` + deploy.
+
+### Validation receipts (Tasklet lane, before handback)
+
+```bash
+python3 scripts/validate-seal-integrity.py --strict    # exit 0
+python3 scripts/validate-region-briefs.py --strict     # 12 regions, 0 incomplete
+# expect: maghreb scope_stats == 3 clusters · 11 cities
+# expect: mena scope_stats == 9 clusters · 27 cities
+```
+
+### RACI
+
+| Work | Owner |
+|------|-------|
+| `maghreb` brief content + `mena` brief trim | **Tasklet** |
+| `scope_stats` / signature route rollup / author script | **Tasklet** |
+| `CLUSTERS.region` tags (already Maghreb) | **Tasklet** (done) |
+| Remove render alias, share URLs, nav chip, deploy | **Grok** (after brief lands) |
+
+---
+
 ## 2026-06-29 — FEATURES_BY_TYPE dedupe + cluster orphan hygiene (Grok → Tasklet)
 
 **Trigger:** Region share OG inflated SEA to 304 cities (raw `FEATURES_BY_TYPE.city` row count). Partner
