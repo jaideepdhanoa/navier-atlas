@@ -1,16 +1,16 @@
 # Proposal fidelity — uber
 
-**Verdict:** REWRITE
-**Checked:** 2026-06-29T15:14:27Z
+**Verdict:** TRIM
+**Checked:** 2026-06-29T17:05:36Z
 
 ## Summary
 
 - Items audited: 96
-- KEEP: 88
-- DROP: 8
+- KEEP: 94
+- DROP: 2
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 8
+- BP-binding errors: 2
 
 ## Trim list
 
@@ -24,7 +24,7 @@
 | featured | 1 | Dakshineswar Ferry Ghat → Belur Math Ferry Ghat | `rn-b44cfaae1be2` | **KEEP** | — |
 | featured | 2 | Fairlie Place Ferry → Bagbazar Ghat | `rn-46a91df66302` | **KEEP** | — |
 | featured | 2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | 2 | Sydney Harbour → Watsons Bay | `ics-3c91a5bf67` | **KEEP** | — |
+| featured | 2 | Sydney Harbour → Watsons Bay | `—` | **KEEP** | — |
 | featured | 3 | Chennai Port WQIV Cruise Terminal → Marina Beach W | `rn-6e53a9fad2f1` | **KEEP** | — |
 | featured | 3 | Molo Beverello (Naples) → Sorrento Marina Piccola | `rn-140626297ee9` | **KEEP** | — |
 | featured | 3 | Port Hercule (Monaco) → Port de Villefranche-sur-M | `ics-4269303d3c` | **KEEP** | — |
@@ -34,68 +34,68 @@
 | journey | market:mena | Dubai → Abu Dhabi | `e__uae__1b860507c38f` | **KEEP** | — |
 | featured | mena/p1 | Ras Al Khaimah Harbour → RAK Corniche public pier  | `rn-2a5c2fe11732` | **KEEP** | — |
 | featured | mena/p2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | mena/p3 | Dubai ↔ Abu Dhabi | `e__uae__1b860507c38f` | **KEEP** | — |
+| featured | mena/p3 | Dubai island Marina Slipway → Yas Marina Abu Dhabi | `e__uae__1b860507c38f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Dubai island Marina Slipway' |
 | featured | mena/p4 | A continuous in-app water tier along the whole Gul | `—` | **KEEP** | — |
-| journey | market:miami | Nassau & The Bahamas → Miami | `edge-1106` | **KEEP** | — |
-| journey | market:miami | Palm Beach / Treasure Coast → Miami | `edge-1140` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Palm Beach / Treasure Coast' |
-| journey | market:miami | Miami → Nassau & The Bahamas | `edge__miami-florida-usa__nassau-bahamas` | **KEEP** | — |
+| journey | market:miami | Nassau & The Bahamas → Miami | `—` | **KEEP** | — |
+| journey | market:miami | Palm Beach / Treasure Coast → Miami | `—` | **KEEP** | — |
+| journey | market:miami | Miami → Nassau & The Bahamas | `—` | **KEEP** | — |
 | journey | market:miami | West Palm Beach → Palm Beach / Singer Island | `—` | **KEEP** | — |
 | featured | miami/p1 | Miami ↔ Key West | `—` | **KEEP** | — |
 | featured | miami/p2 | Miami ↔ Key West | `—` | **KEEP** | — |
 | featured | miami/p3 | Miami ↔ Key West | `—` | **KEEP** | — |
 | featured | miami/p4 | Miami ↔ Key West | `—` | **KEEP** | — |
 | featured | miami/p5 | Miami ↔ Key West | `—` | **KEEP** | — |
-| journey | market:bay-area | San Francisco Bay Area → San Francisco Bay Area | `ics-55f418e3b7` | **KEEP** | — |
+| journey | market:bay-area | San Francisco Bay Area → San Francisco Bay Area | `—` | **KEEP** | — |
 | journey | market:bay-area | SF → Sausalito / Tiburon | `—` | **KEEP** | — |
 | journey | market:bay-area | SF → Redwood City / South Bay | `—` | **KEEP** | — |
 | journey | market:bay-area | SF → Berkeley / Richmond | `—` | **KEEP** | — |
-| featured | bay-area/p1 | San Francisco Bay Area → San Francisco Bay Area | `ics-55f418e3b7` | **KEEP** | — |
+| featured | bay-area/p1 | San Francisco Bay Area → San Francisco Bay Area | `—` | **KEEP** | — |
 | featured | bay-area/p2 | SF ↔ Redwood City | `—` | **KEEP** | — |
 | featured | bay-area/p2 | SF ↔ Berkeley | `—` | **KEEP** | — |
 | featured | bay-area/p2 | Oakland ↔ Peninsula | `—` | **KEEP** | — |
 | featured | bay-area/p3 | whole-Bay mesh | `—` | **KEEP** | — |
 | featured | bay-area/p3 | Larkspur ↔ SF ↔ South Bay | `—` | **KEEP** | — |
 | featured | bay-area/p3 | Alameda ↔ Peninsula | `—` | **KEEP** | — |
-| journey | market:hawaii | Honolulu / Oʻahu → Maui County (Maui · Lānaʻi · Mo | `edge-1135` | **KEEP** | — |
-| journey | market:hawaii | Hawaiʻi Island (Kona · Kohala · Hilo) → Maui Count | `edge-1125` | **KEEP** | — |
-| journey | market:hawaii | Kauaʻi → Honolulu / Oʻahu | `edge-1123` | **KEEP** | — |
+| journey | market:hawaii | Honolulu / Oʻahu → Maui County (Maui · Lānaʻi · Mo | `—` | **KEEP** | — |
+| journey | market:hawaii | Hawaiʻi Island (Kona · Kohala · Hilo) → Maui Count | `—` | **KEEP** | — |
+| journey | market:hawaii | Kauaʻi → Honolulu / Oʻahu | `—` | **KEEP** | — |
 | journey | market:hawaii | Lahaina Harbor → Manele Small Boat Harbor | `ics-e82d2ae202ed` | **KEEP** | — |
 | featured | hawaii/p1 | Lahaina Harbor → Manele Small Boat Harbor | `ics-e82d2ae202ed` | **KEEP** | — |
 | featured | hawaii/p2 | Nāwiliwili Harbor → Honolulu Harbor | `ics-42fbb80da505` | **KEEP** | — |
-| featured | hawaii/p3 | Honolulu / Oʻahu → Maui County (Maui · Lānaʻi · Mo | `edge-1135` | **KEEP** | — |
+| featured | hawaii/p3 | Honolulu / Oʻahu → Maui County (Maui · Lānaʻi · Mo | `—` | **KEEP** | — |
 | journey | market:mediterranean | Athens (Flisvos / Piraeus) → Hydra, Saronic Gulf | `—` | **KEEP** | — |
-| journey | market:mediterranean | Mykonos → Santorini | `rn-cb0ec9d194ca` | **KEEP** | — |
+| journey | market:mediterranean | Mykonos → Santorini | `—` | **KEEP** | — |
 | journey | market:mediterranean | Split → Hvar Town | `rn-cc40790a3078` | **KEEP** | — |
 | journey | market:mediterranean | Split Ferry Port → Ferry - Šolta | `rn-8af39f1da94d` | **KEEP** | — |
 | featured | mediterranean/p1 | Split Ferry Port → Ferry - Šolta | `rn-8af39f1da94d` | **KEEP** | — |
 | featured | mediterranean/p2 | ACI Marina Trogir → Hvar Town Harbour | `rn-7c1e7f62f283` | **KEEP** | — |
 | featured | mediterranean/p3 | E1 Gate Ferry to Kos - Piraeus Port → Skala Marina | `rn-16fa8284adf1` | **KEEP** | — |
-| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `ics-0bc6865ade` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Sydney Harbour' → 'Sydney Ha |
-| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `ics-4e0a23c993` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Sydney Harbour' → 'Sydney Ha |
-| journey | market:sydney-nsw | Sydney Harbour → Watsons Bay / Eastern beaches | `ics-3c91a5bf67` | **KEEP** | — |
-| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `ics-0bc6865ade` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Sydney Harbour' → 'Sydney Ha |
-| featured | sydney-nsw/p1 | Sydney Harbour → Sydney Harbour | `ics-4e0a23c993` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Sydney Harbour' → 'Sydney Ha |
-| featured | sydney-nsw/p2 | Sydney Harbour → Sydney Harbour | `ics-0bc6865ade` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Sydney Harbour' → 'Sydney Ha |
-| featured | sydney-nsw/p3 | Sydney Harbour → Watsons Bay | `ics-26759e3e76` | **KEEP** | — |
+| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `—` | **KEEP** | — |
+| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `—` | **KEEP** | — |
+| journey | market:sydney-nsw | Sydney Harbour → Watsons Bay / Eastern beaches | `—` | **KEEP** | — |
+| journey | market:sydney-nsw | Sydney Harbour → Sydney Harbour | `—` | **KEEP** | — |
+| featured | sydney-nsw/p1 | Sydney Harbour → Sydney Harbour | `—` | **KEEP** | — |
+| featured | sydney-nsw/p2 | Sydney Harbour → Sydney Harbour | `—` | **KEEP** | — |
+| featured | sydney-nsw/p3 | Sydney Harbour → Watsons Bay | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Rio (Praca XV) → Niteroi | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Rio → Buzios | `—` | **KEEP** | — |
-| journey | market:brazil-latam | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `ics-0effac4535` | **KEEP** | — |
-| journey | market:brazil-latam | Florianópolis & Santa Catarina → Florianópolis & S | `ics-2df0a1d37f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Florianópolis & Santa Catari |
-| featured | brazil-latam/p1 | Florianópolis & Santa Catarina ↔ Florianópolis & S | `ics-2df0a1d37f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Florianópolis & Santa Catari |
-| featured | brazil-latam/p2 | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `ics-0effac4535` | **KEEP** | — |
+| journey | market:brazil-latam | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
+| journey | market:brazil-latam | Florianópolis & Santa Catarina → Florianópolis & S | `—` | **KEEP** | — |
+| featured | brazil-latam/p1 | Florianópolis & Santa Catarina → Florianópolis & S | `ics-2df0a1d37f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Florianópolis & Santa Catari |
+| featured | brazil-latam/p2 | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
 | featured | brazil-latam/p3 | Rio (Praca XV) ↔ Niteroi | `—` | **KEEP** | — |
 | journey | market:italy-luxury | Naples → Capri | `rn-01c592b8150e` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
-| journey | market:italy-luxury | Amalfi Coast / Bay of Naples → Costa Smeralda, Sar | `rn-b8a995b3aa7c` | **KEEP** | — |
+| journey | market:italy-luxury | Amalfi Coast / Bay of Naples → Costa Smeralda, Sar | `—` | **KEEP** | — |
 | featured | italy-luxury/p1 | Molo Beverello (Naples) → Marina Grande (Capri) | `rn-01c592b8150e` | **KEEP** | — |
 | featured | italy-luxury/p2 | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
-| featured | italy-luxury/p3 | Amalfi Coast → Costa Smeralda & Sardinia | `rn-b8a995b3aa7c` | **KEEP** | — |
+| featured | italy-luxury/p3 | Amalfi Coast → Costa Smeralda & Sardinia | `—` | **KEEP** | — |
 | journey | market:cote-dazur | Nice (Airport / Port) → Monaco | `rn-d66efc6795b3` | **KEEP** | — |
 | journey | market:cote-dazur | Cannes → Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
-| journey | market:cote-dazur | Port Hercule (Monaco) → Port de Villefranche-sur-M | `ics-4269303d3c` | **KEEP** | — |
-| journey | market:cote-dazur | Costa Smeralda & Sardinia → Côte d'Azur (French Ri | `rn-147bf78ddf5b` | **KEEP** | — |
-| featured | cote-dazur/p1 | Port Hercule (Monaco) → Port de Villefranche-sur-M | `ics-4269303d3c` | **KEEP** | — |
+| journey | market:cote-dazur | Port Hercule (Monaco) → Port de Villefranche-sur-M | `—` | **KEEP** | — |
+| journey | market:cote-dazur | Costa Smeralda & Sardinia → Côte d'Azur (French Ri | `—` | **KEEP** | — |
+| featured | cote-dazur/p1 | Port Hercule (Monaco) → Port de Villefranche-sur-M | `—` | **KEEP** | — |
 | featured | cote-dazur/p2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | cote-dazur/p3 | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
 | journey | market:kolkata_hooghly_waterfront | Howrah → Shipping / Millennium Park | `rn-e9a7f7e474e3` | **KEEP** | — |

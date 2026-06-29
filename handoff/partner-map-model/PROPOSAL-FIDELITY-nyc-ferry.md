@@ -1,34 +1,34 @@
 # Proposal fidelity — nyc-ferry
 
-**Verdict:** REWRITE
-**Checked:** 2026-06-29T15:14:15Z
+**Verdict:** TRIM
+**Checked:** 2026-06-29T17:05:23Z
 
 ## Summary
 
 - Items audited: 16
-- KEEP: 12
-- DROP: 4
+- KEEP: 15
+- DROP: 1
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 4
+- BP-binding errors: 1
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Wall St / Pier 11 → Brooklyn (DUMBO) / Long Island | `—` | **KEEP** | — |
-| journey | — | Wall St / Pier 11 → Rockaway | `ics-f993f1e653` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Wall St / Pier 11' → 'Rockaw |
-| journey | — | Midtown (E 34th) → Yonkers / NJ Gold Coast | `ics-25a683a51c` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Midtown (E 34th)' → 'Yonkers |
-| journey | — | New York Harbor: Harbor Freight → Frank A. Vincent | `—` | **KEEP** | — |
-| featured | 1 | Wall St / Pier 11 ↔ Brooklyn (DUMBO) / Long Island | `—` | **KEEP** | — |
-| featured | 1 | Wall St / Pier 11 ↔ Rockaway | `ics-f993f1e653` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Wall St / Pier 11' → 'Rockaw |
-| featured | 1 | Midtown (E 34th) ↔ Yonkers / NJ Gold Coast | `ics-25a683a51c` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Midtown (E 34th)' → 'Yonkers |
-| featured | 2 | New York Harbor: South Ferry/Terminal → New York H | `—` | **KEEP** | — |
-| featured | 2 | New York Harbor: Cape Liberty Cruise Port → Elco F | `—` | **KEEP** | — |
-| featured | 2 | New York Harbor: Cape Liberty Cruise Port → Bay Ri | `—` | **KEEP** | — |
-| featured | 3 | New York Harbor: St. George Ferry Terminal → Elco  | `—` | **KEEP** | — |
-| featured | 3 | New York Harbor: Harbor Freight Transport Corporat | `—` | **KEEP** | — |
-| featured | 3 | New York Harbor: Half Moon Harbour → Grand Cove Ma | `—` | **KEEP** | — |
-| featured | 4 | New York Harbor: Pier 11 / Wall Street → Paulus Ho | `—` | **KEEP** | — |
-| featured | 4 | New York Harbor: Pier 11 / Wall Street → Hoboken T | `—` | **KEEP** | — |
-| featured | 4 | New York Harbor: Pier 11 / Wall Street → Long Isla | `—` | **KEEP** | — |
+| journey | — | Wall St / Pier 11 → Brooklyn (DUMBO) / Long Island | `ics-38e18c9220` | **KEEP** | — |
+| journey | — | Pier 11 / Wall Street → South Williamsburg | `ics-f993f1e653` | **KEEP** | — |
+| journey | — | Midtown / Pier 79 (W 39th St) → Hoboken Terminal | `ics-25a683a51c` | **KEEP** | — |
+| journey | — | New York Harbor: Harbor Freight → Frank A. Vincent | `ics-23d2f2724f` | **KEEP** | — |
+| featured | 1 | Pier 11 / Wall Street → Brooklyn / DUMBO Pier 1 | `ics-38e18c9220` | **KEEP** | — |
+| featured | 1 | Pier 11 / Wall Street → South Williamsburg | `ics-f993f1e653` | **KEEP** | — |
+| featured | 1 | Midtown / Pier 79 (W 39th St) → Hoboken Terminal | `ics-25a683a51c` | **KEEP** | — |
+| featured | 2 | New York Harbor → New York Harbor | `ics-4ffc6e9f72` | **DROP** | bp_binding: labels ≠ route endpoints: card 'New York Harbor' → 'New York |
+| featured | 2 | Cape Liberty Cruise Port → Elco Fisherman's Marina | `ics-5a2b98675d` | **KEEP** | — |
+| featured | 2 | Cape Liberty Cruise Port → Bay Ridge | `ics-5d44acda8c` | **KEEP** | — |
+| featured | 3 | St. George Ferry Terminal → Elco Fisherman's Marin | `ics-b2b4435ce6` | **KEEP** | — |
+| featured | 3 | Harbor Freight Transport Corporation → Elco Fisher | `ics-b52afea4dd` | **KEEP** | — |
+| featured | 3 | Half Moon Harbour → Grand Cove Marina | `ics-c239910b5b` | **KEEP** | — |
+| featured | 4 | Pier 11 / Wall Street → Paulus Hook (Jersey City) | `ics-bdacfbafa1` | **KEEP** | — |
+| featured | 4 | Pier 11 / Wall Street → Hoboken Terminal | `ics-d5de69a39d` | **KEEP** | — |
+| featured | 4 | Pier 11 / Wall Street → Long Island City | `ics-db90a41958` | **KEEP** | — |

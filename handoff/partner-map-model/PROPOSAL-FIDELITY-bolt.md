@@ -1,12 +1,12 @@
 # Proposal fidelity — bolt
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T15:13:41Z
+**Checked:** 2026-06-29T17:05:13Z
 
 ## Summary
 
-- Items audited: 206
-- KEEP: 206
+- Items audited: 210
+- KEEP: 210
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -38,7 +38,7 @@
 | journey | market:east-africa | Dar es Salaam → Stone Town (Zanzibar) | `rn-46bee519109a` | **KEEP** | — |
 | journey | market:east-africa | Mombasa → Diani / Ukunda | `—` | **KEEP** | — |
 | featured | east-africa/p1 | Dar es Salaam → Stone Town | `rn-46bee519109a` | **KEEP** | — |
-| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `—` | **KEEP** | — |
+| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `ics-0b3b436e41` | **KEEP** | — |
 | journey | market:egypt | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-08faa8cf54f2` | **KEEP** | — |
 | journey | market:egypt | Cairo - Maadi → Cairo - Zamalek / Downtown | `rn-4d2d789c04ad` | **KEEP** | — |
 | journey | market:egypt | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
@@ -175,15 +175,15 @@
 | featured | south-africa/p3 | Cape Town → Exposed-coast reach (Quanta-LR reserve | `—` | **KEEP** | — |
 | journey | market:spain | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | journey | market:spain | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| journey | market:spain | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
+| journey | market:spain | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
 | journey | market:spain | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p1 | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | featured | spain/p1 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
+| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
 | featured | spain/p2 | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p2 | Ibiza Harbour → La Savina (Formentera) | `ics-605dcb641e` | **KEEP** | — |
 | featured | spain/p2 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `—` | **KEEP** | — |
+| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `ics-4c8c95334c` | **KEEP** | — |
 | featured | spain/p3 | Port de Cala Ratjada → Ciutadella — Port (Son Blan | `ics-f88551e209` | **KEEP** | — |
 | featured | spain/p3 | Barcelona → Palma de Mallorca | `—` | **KEEP** | — |
 | journey | market:sweden | Slussen SL Ferry terminal → Allmänna gränd | `rn-7061b9e5930e` | **KEEP** | — |
@@ -222,3 +222,7 @@
 | featured | uae/p3 | Jebel Dhanna / Ruwais Ferry Terminal → Sir Bani Ya | `gcn-8b5dd5d484-bolt` | **KEEP** | — |
 | featured | uae/p3 | Dubai Creek Golf & Yacht Club Marina → Al Seef Mar | `gcn-e71d4cf5b6-bolt` | **KEEP** | — |
 | featured | uae/p3 | Marina Mall / Breakwater Marina → Bahrain Financia | `rn-c69c27c8b6e4` | **KEEP** | — |
+| journey | market:taiwan | Kaohsiung harbour → Cijin Island | `—` | **KEEP** | — |
+| journey | market:taiwan | Magong South Sea Visitor Center / Magong Harbour ( | `—` | **KEEP** | — |
+| featured | taiwan/p1 | Kaohsiung ↔ Cijin | `—` | **KEEP** | — |
+| featured | taiwan/p2 | Magong South Sea Visitor Center / Magong Harbour ( | `—` | **KEEP** | — |

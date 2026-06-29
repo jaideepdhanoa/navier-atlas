@@ -665,22 +665,22 @@ def main() -> int:
             gate_fail = True
             gate_reasons.append(f"{r['partner']}: {jbe} journey BP error(s)")
         if args.strict_deploy_gate:
-            # Tiered §3.7: placeholder all partners; journey_bp hub-scope or reference-only
-            # when --all-partners; REWRITE/PASS_WITH_FLAGS reference partners only.
-            journey_gate = (not args.all_partners) or r["partner"] in REFERENCE_PARTNERS
-            if jbe > 0 and journey_gate:
+            # §3.7 full hub gate (post PR #140): placeholder all partners; journey_bp /
+            # REWRITE / PASS_WITH_FLAGS on hub-layout + reference partners.
+            deploy_critical = r["partner"] in REFERENCE_PARTNERS or r.get("hub")
+            if jbe > 0 and deploy_critical:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: journey_bp={jbe}")
-            if gge > 0:
+            if gge > 0 and deploy_critical:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: geometry_gate={gge}")
             if pge > 0:
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: placeholder={pge}")
-            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "REWRITE":
+            if deploy_critical and r["verdict"] == "REWRITE":
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: REWRITE verdict")
-            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "PASS_WITH_FLAGS":
+            if deploy_critical and r["verdict"] == "PASS_WITH_FLAGS":
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: PASS_WITH_FLAGS (trim flags remain)")
 

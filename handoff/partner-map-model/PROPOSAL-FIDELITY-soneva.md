@@ -1,7 +1,7 @@
 # Proposal fidelity — soneva
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T15:14:16Z
+**Checked:** 2026-06-29T17:05:36Z
 
 ## Summary
 
@@ -34,10 +34,10 @@
 | featured | maldives/p3 | Velana International (Malé) ↔ Soneva Fushi (Baa At | `—` | **KEEP** | — |
 | featured | maldives/p3 | Velana International (Malé) ↔ Soneva Jani (Noonu A | `—` | **KEEP** | — |
 | featured | maldives/p3 | Soneva Fushi ↔ Soneva Jani | `—` | **KEEP** | — |
-| journey | market:thailand | Koh Mai Si airstrip → Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
-| journey | market:thailand | Trat / eastern-Gulf coast → Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
-| journey | market:thailand | Soneva Kiri → Koh Kood marine sites | `—` | **KEEP** | — |
+| journey | market:thailand | Koh Mai Si airstrip → Soneva Kiri (Koh Kood) | `e__kood__9ab875643dd4` | **KEEP** | — |
+| journey | market:thailand | Trat / eastern-Gulf coast → Soneva Kiri (Koh Kood) | `e__kood__0987ae6d8dd5` | **KEEP** | — |
+| journey | market:thailand | Soneva Kiri → Koh Kood marine sites | `e__kood__9ab875643dd4` | **KEEP** | — |
 | journey | market:thailand | Soneva Kiri → Koh Mak / nearby islands | `—` | **KEEP** | — |
-| featured | thailand/p1 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
+| featured | thailand/p1 | Laem Sok Pier (Trat — Koh Kood gateway) → Soneva K | `e__kood__0987ae6d8dd5` | **KEEP** | — |
 | featured | thailand/p2 | Soneva Kiri ↔ Koh Mak / nearby islands | `—` | **KEEP** | — |
-| featured | thailand/p3 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
+| featured | thailand/p3 | Laem Sok Pier (Trat — Koh Kood gateway) → Soneva K | `e__kood__0987ae6d8dd5` | **KEEP** | — |

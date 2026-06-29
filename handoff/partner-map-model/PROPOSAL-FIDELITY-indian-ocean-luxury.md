@@ -1,24 +1,24 @@
 # Proposal fidelity — indian-ocean-luxury
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T15:14:00Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T17:05:19Z
 
 ## Summary
 
 - Items audited: 7
-- KEEP: 5
-- DROP: 2
+- KEEP: 7
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Velana International → Four Seasons Landaa Giraava | `e__mald__5108f439d6bc` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Velana International' → 'Fou |
+| journey | — | Dharavandhoo Airport, Baa → Four Seasons Landaa Gi | `e__mald__5108f439d6bc` | **KEEP** | — |
 | journey | — | Bora Bora Airport → Four Seasons Bora Bora | `—` | **KEEP** | — |
-| journey | — | Mahé → Four Seasons Desroches | `ics-170b25c514` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Mahé' → 'Four Seasons Desroc |
+| journey | — | Mahé & Inner Islands → Anse Royale | `ics-170b25c514` | **KEEP** | — |
 | journey | — | Four Seasons Kuda Huraa → North Malé reef sites | `—` | **KEEP** | — |
 | featured | 1 | Four Seasons Kuda Huraa ↔ North Malé reef sites | `—` | **KEEP** | — |
 | featured | 2 | Four Seasons Kuda Huraa ↔ North Malé reef sites | `—` | **KEEP** | — |
