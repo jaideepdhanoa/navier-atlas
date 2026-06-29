@@ -1,7 +1,7 @@
 # Proposal fidelity — french-polynesia
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T15:10:25Z
+**Checked:** 2026-06-29T15:13:58Z
 
 ## Summary
 

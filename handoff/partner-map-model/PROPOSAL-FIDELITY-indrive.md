@@ -1,7 +1,7 @@
 # Proposal fidelity — indrive
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T15:10:29Z
+**Checked:** 2026-06-29T15:14:02Z
 
 ## Summary
 

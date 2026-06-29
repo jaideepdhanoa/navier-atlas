@@ -195,7 +195,17 @@ async function captureView(browser, { slug, name, url, password, outPath, viewpo
       phaseN: window._activePhaseN ?? null,
       partner: window.PARTNER_ACTIVE?.slug || null,
     }));
-    return { slug, name, url, status: 'ok', outPath, ...meta, failures: failures.slice(0, 3) };
+    return {
+      slug,
+      name,
+      url,
+      status: 'ok',
+      outPath,
+      ...meta,
+      phaseN: meta.phaseN ?? phaseN ?? null,
+      requestedPhaseN: phaseN ?? null,
+      failures: failures.slice(0, 3),
+    };
   } catch (err) {
     return { slug, name, url, status: 'error', error: String(err?.message || err), outPath };
   } finally {

@@ -1,7 +1,7 @@
 # Proposal fidelity — adani-ports
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T15:10:00Z
+**Checked:** 2026-06-29T15:13:33Z
 
 ## Summary
 

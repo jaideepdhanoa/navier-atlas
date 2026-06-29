@@ -1,7 +1,7 @@
 # Proposal fidelity — grab-thailand
 
 **Verdict:** REWRITE
-**Checked:** 2026-06-29T15:10:26Z
+**Checked:** 2026-06-29T15:14:00Z
 
 ## Summary
 
