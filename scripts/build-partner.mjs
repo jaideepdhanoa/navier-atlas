@@ -21,6 +21,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { uniqueCityCount } from './region-share.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
@@ -136,7 +137,7 @@ for (const [pid,pr] of Object.entries(PARTNERS)){ if(pid===slug) continue;
   if ((pr.hero && pr.hero.title && out.includes(pr.hero.title)) || out.includes('"'+pid+'":') || out.includes("'"+pid+"':")) crossHits.push(pid); }
 
 const report = { slug, input:path.relative(ROOT,INPUT), keptCities:[...keepCities],
-  counts:{ cities:(scopedFBT.city||[]).length, priority:(scopedFBT.priority_city||[]).length, pois:(scopedFBT.poi||[]).length,
+  counts:{ cities:uniqueCityCount(scopedFBT), priority:(scopedFBT.priority_city||[]).length, pois:(scopedFBT.poi||[]).length,
     routes:scopedRoutes.length, stories:scopedStories.length, briefs:Object.keys(scopedBriefs).length, partners:1 },
   leaks, crossHits };
 if (leaks.length || crossHits.length){ console.error('ABORT — safety sweep failed:\n', JSON.stringify(report,null,2)); process.exit(1); }

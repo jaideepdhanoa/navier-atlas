@@ -24,6 +24,39 @@ export function regionSlug(label) {
     .replace(/^-+|-+$/g, '');
 }
 
+/** Unique city ids from FEATURES_BY_TYPE (mesh builds often ship ~6–8 duplicate rows per id). */
+export function uniqueCityIds(fbt) {
+  const ids = new Set();
+  for (const t of ['city', 'priority_city']) {
+    for (const f of fbt?.[t] || []) {
+      const id = f.properties?.id;
+      if (id) ids.add(id);
+    }
+  }
+  return ids;
+}
+
+export function uniqueCityCount(fbt) {
+  return uniqueCityIds(fbt).size;
+}
+
+/** City nodes with no CLUSTERS.member_city_ids entry (would surface as peer chips below cluster tier). */
+export function auditClusterOrphans(data) {
+  const clustered = new Set();
+  for (const c of data.CLUSTERS?.clusters || []) {
+    for (const id of c.member_city_ids || []) clustered.add(id);
+  }
+  const orphans = new Set();
+  for (const t of ['city', 'priority_city']) {
+    for (const f of data.FEATURES_BY_TYPE?.[t] || []) {
+      const id = f.properties?.id;
+      if (!id || id.includes('__') || clustered.has(id)) continue;
+      orphans.add(id);
+    }
+  }
+  return [...orphans].sort();
+}
+
 export function collectRegionStats(data) {
   const stats = {};
   // FEATURES_BY_TYPE can carry duplicate rows per city id (mesh build artifact) — count unique ids only.

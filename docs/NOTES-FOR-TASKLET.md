@@ -6,6 +6,92 @@ build / gates = Tasklet._
 
 ---
 
+## 2026-06-29 — FEATURES_BY_TYPE dedupe + cluster orphan hygiene (Grok → Tasklet)
+
+**Trigger:** Region share OG inflated SEA to 304 cities (raw `FEATURES_BY_TYPE.city` row count). Partner
+proposals had the same class of bug earlier (Bolt stat chip showed 551). Grok patched render-side dedupes;
+**root fix belongs in the seal pipeline.**
+
+### P0 — Seal `FEATURES_BY_TYPE` with one Feature per `city_id`
+
+Mesh merges currently ship **~6–8 duplicate Point features per city id** (global: 1,700 rows → **249**
+unique ids; SEA: 298 rows → **44** unique). Symptoms:
+
+| Layer | Symptom |
+|-------|---------|
+| **Counts / OG copy** | Inflated city totals when code uses `.length` instead of unique ids (Grok dedupes at read time today). |
+| **MapLibre GeoJSON** | Stacked pins at high zoom — `map.addSource('cities', …)` feeds the raw array; clustering masks it at low zoom only. |
+| **Hub degree** | `degree` is recomputed per duplicate row (same id, same value — wasteful not wrong). |
+
+**Ask:** In `build.py` / seal step, **dedupe `city` + `priority_city` arrays by `properties.id`**
+(last-write-wins or merge coords from highest-confidence row). Add a **seal gate**:
+
+```
+assert len(unique city ids) == len(city features emitted)
+```
+
+Grok render lane will keep defensive `Set` dedupes until this ships; prefer fixing upstream so map layers
+and exports are clean too.
+
+### P0 — Every city node in exactly one cluster
+
+Nav drill is **Region → Cluster → City** (`CLUSTERS.member_city_ids` authoritative). **14 orphan cities**
+were surfacing as peer chips below cluster tier (Cyprus, Croatia, Kenya coast, Morocco Rabat, Algeria,
+ABC rollup `aruba-curacao-bonaire`, twin `sabah-kk`, etc.).
+
+**Grok shipped (#79aq housekeeping):**
+
+- Wired orphans into existing clusters + minted **`algeria`** (Maghreb, 4 cities).
+- Deleted twin **`sabah-kk`** → canonical **`sabah-kota-kinabalu-malaysia`** (already in `malaysia` cluster).
+- Kept **`aruba-curacao-bonaire`** as ABC hub rollup **and** added it to `abc-islands` alongside per-island nodes.
+- Script: `scripts/grok-taxonomy/fix_cascade_orphans.mjs` (exits non-zero if orphans remain).
+- **Build gate:** `build-site.mjs` aborts when `auditClusterOrphans()` finds any city not in `member_city_ids`.
+- **Nav:** removed orphan safety-net city chips from `index.html` — cluster tier is the only path to cities on aggregate.
+
+**Ask:** Add complementary **Tasklet seal gate** (mirror Grok check):
+
+```
+∀ id ∈ FEATURES_BY_TYPE.{city,priority_city}: id ∈ ⋃ CLUSTERS.member_city_ids
+```
+
+Fail seal if any city lacks cluster membership. When minting a new city, **always** append to the country
+cluster in the same changeset.
+
+### P1 — Sync `properties.cluster_id` from membership
+
+`CLUSTERS.member_city_ids` is what Grok reads; city-node `cluster_id` property is still largely unset /
+stale (sub-cluster last-write-wins noted in §2026-06-19 taxonomy audit). Non-blocking for nav today, but
+breaks any Tasklet tooling that reads the node property. **Please backfill `cluster_id` on every city feature
+from the primary cluster row** (prefer parent cluster when `parent_cluster_id` is set on sub-clusters).
+
+### P1 — Duplicate city twins at mint time
+
+Examples Grok has had to delete/remap downstream:
+
+| Twin (delete) | Canonical |
+|---------------|-----------|
+| `sabah-kk` | `sabah-kota-kinabalu-malaysia` |
+| `phuket-thailand` | `phuket-phang-nga-thailand` |
+
+**Guardrail:** reject seal if a new city id aliases an existing canonical id (or auto-remap in build.py).
+
+### P2 — Cluster brief coverage
+
+New **`algeria`** cluster has no `cluster_briefs/algeria.json` yet — nav works; browse panel is thin until
+Tasklet authors the brief (Yassir Algeria partner already references the 4 cities).
+
+### RACI (this theme)
+
+| Work | Owner |
+|------|-------|
+| Dedupe `FEATURES_BY_TYPE` at seal; map-layer cleanliness | **Tasklet** |
+| Seal gates (unique city features; cluster membership) | **Tasklet** |
+| `cluster_id` property backfill | **Tasklet** |
+| `CLUSTERS.json` orphan wiring, twin deletes, `algeria` mint | **Grok** (done) |
+| Render dedupes, build gate, nav orphan chip removal | **Grok** (done) |
+
+---
+
 ## 2026-06-28 — Gojek economics apply handback (Tasklet → Grok) · PARKED
 
 **Receipt:** `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`  

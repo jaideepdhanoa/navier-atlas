@@ -25,13 +25,25 @@ const CITY_ID_REMAP = {
 };
 
 const CLUSTER_ADD = {
-  morocco: ['tangier-morocco'],
+  'abc-islands': ['aruba-curacao-bonaire'],
+  croatia: ['zadar-croatia'],
+  cyprus: ['ayia-napa-cyprus', 'paphos-cyprus'],
+  kenya: ['diani-ukunda-kenya', 'kilifi-kenya', 'malindi-kenya', 'watamu-kenya'],
+  morocco: ['tangier-morocco', 'rabat-sale-morocco'],
   tunisia: ['tunis-tunisia'],
   'kazakhstan-caspian': ['aktau-kazakhstan', 'kuryk-kazakhstan'],
   'azerbaijan-caspian': ['baku-azerbaijan'],
 };
 
 const NEW_CLUSTERS = [
+  {
+    cluster_id: 'algeria',
+    cluster_label: 'Algeria',
+    region: 'Maghreb',
+    type: 'coastal',
+    member_city_ids: ['algiers-algeria', 'bejaia-algeria', 'oran-algeria', 'mostaganem-algeria'],
+    anchor_source: 'algiers-algeria',
+  },
   {
     cluster_id: 'lebanon',
     cluster_label: 'Lebanon',

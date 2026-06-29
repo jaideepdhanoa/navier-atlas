@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
 import {
   SITE_URL, injectShareMeta, clusterMeta, cityMeta, partnerMeta, regionMeta, trunc,
 } from './share-meta.mjs';
-import { collectRegionStats } from './region-share.mjs';
+import { auditClusterOrphans, collectRegionStats, uniqueCityCount } from './region-share.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
@@ -253,8 +253,7 @@ function scopeForPartner(data, slug, opts = {}) {
     cityIdOf,
     inheritClusters: opts.inheritClusters === true,
   });
-  const cityCount = new Set([...(FEATURES_BY_TYPE.city || []), ...(FEATURES_BY_TYPE.priority_city || [])]
-    .map(f => f.properties?.id).filter(Boolean)).size;
+  const cityCount = uniqueCityCount(FEATURES_BY_TYPE);
   const rd = scoped._route_display || {};
   delete scoped._route_display;
   return {
@@ -300,6 +299,13 @@ fs.rmSync(DIST, { recursive: true, force: true });
 fs.mkdirSync(DIST, { recursive: true });
 const profile = parseProfile();
 const data = loadData();
+const clusterOrphans = auditClusterOrphans(data);
+if (clusterOrphans.length) {
+  console.error(`build-site: ABORT — ${clusterOrphans.length} city node(s) not in any CLUSTERS.member_city_ids (would show as orphan nav chips):`);
+  for (const id of clusterOrphans) console.error(`  · ${id}`);
+  console.error('Run scripts/grok-taxonomy/fix_cascade_orphans.mjs or wire into CLUSTERS.json before deploy.');
+  process.exit(1);
+}
 const { byId: clusterById } = loadClusters(DC);
 let aggregateData = applyProfile(data, profile);
 // Aggregate atlas: annotate all routes + backbone default for dense regions at render time.

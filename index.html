@@ -4111,13 +4111,16 @@ document.querySelectorAll('.chip').forEach(b => {
     (clustersByRegion[r] = clustersByRegion[r] || []).push({ id:c.cluster_id, label:c.cluster_label||c.cluster_id, cities });
   }
   for (const r in clustersByRegion) clustersByRegion[r].sort((a,b)=> a.label.localeCompare(b.label));   // alphabetical (matches L1 regions)
-  // All city nodes per region (for the orphan safety net + fallback) and the set already in a cluster.
-  const cityNodesByRegion = {}, clusteredCityIds = new Set();
+  // All city nodes per region (partner flat-city row when region+cluster tiers collapse to one list).
+  const cityNodesByRegion = {}, citySeenByRegion = {};
   for (const t of ['city','priority_city']) for (const f of (FEATURES_BY_TYPE[t]||[])){
-    const p=f.properties, co=f.geometry&&f.geometry.coordinates; if(!p||!p.region||!co) continue;
-    (cityNodesByRegion[norm(p.region)] = cityNodesByRegion[norm(p.region)] || []).push({ id:p.id, coords:co, props:p, name:(p.shortName||p.name||p.id) });
+    const p=f.properties, co=f.geometry&&f.geometry.coordinates; if(!p||!p.region||!co||!p.id) continue;
+    const r = norm(p.region);
+    const seen = citySeenByRegion[r] || (citySeenByRegion[r] = new Set());
+    if (seen.has(p.id)) continue;
+    seen.add(p.id);
+    (cityNodesByRegion[r] = cityNodesByRegion[r] || []).push({ id:p.id, coords:co, props:p, name:(p.shortName||p.name||p.id) });
   }
-  for (const r in clustersByRegion) for (const cl of clustersByRegion[r]) for (const c of cl.cities) clusteredCityIds.add(c.id);
   // Hub partners (Bolt, Uber, Yango): always show region tier when multiple regions — cluster
   // chips alone overflow the row (18+ markets). Drill: Region → Cluster → City.
   const partnerDoc = isPartner && typeof PARTNERS!=='undefined' && PARTNERS[BUILD_PARTNER];
@@ -4203,13 +4206,8 @@ document.querySelectorAll('.chip').forEach(b => {
       btn.addEventListener('click',()=>openCluster(cl, label, btn));
       host.appendChild(btn);
     });
-    // Safety net: any region city not in a cluster → a direct city chip (aggregate only; partner hub
-    // reaches cities via market cards + cluster drill-down — untagged rollout cities must not peer with countries).
-    if (!isPartner) (cityNodesByRegion[label]||[]).filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).sort((a,b)=>a.name.localeCompare(b.name)).forEach(c=>{
-      const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
-      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
-    });
-    if (!cls.length && !(cityNodesByRegion[label]||[]).length) renderRegions();   // empty region → don't strand the row
+    // Every city must sit in a cluster (build-site aborts on orphans). No peer city chips below cluster tier.
+    if (!cls.length) renderRegions();   // empty region → don't strand the row
   }
   // Flat cluster row (partner: single region → skip the region tier, list countries/clusters directly).
   function renderAllClusters(){
@@ -4219,11 +4217,7 @@ document.querySelectorAll('.chip').forEach(b => {
       btn.addEventListener('click',()=>openCluster(cl, cl.region, btn));
       host.appendChild(btn);
     });
-    if (!isPartner) allCityNodes.filter(c=>!clusteredCityIds.has(c.id)&&!c.props.parent_city_id).forEach(c=>{
-      const btn=document.createElement('button'); btn.className='chip market'; btn.textContent=c.name;
-      btn.addEventListener('click',()=>{ clearActive(); btn.classList.add('active'); flyCity(c); }); host.appendChild(btn);
-    });
-    if (!uniqueClusters.length && (!isPartner && !allCityNodes.length)) renderEntry();
+    if (!uniqueClusters.length) renderEntry();
   }
   // Flat city row (partner: single region + single cluster → cities only, e.g. Careem/UAE).
   function renderAllCities(){
