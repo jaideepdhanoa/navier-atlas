@@ -1,7 +1,7 @@
 # Proposal fidelity — bolt
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:52:46Z
+**Checked:** 2026-06-29T15:10:08Z
 
 ## Summary
 
@@ -38,7 +38,7 @@
 | journey | market:east-africa | Dar es Salaam → Stone Town (Zanzibar) | `rn-46bee519109a` | **KEEP** | — |
 | journey | market:east-africa | Mombasa → Diani / Ukunda | `—` | **KEEP** | — |
 | featured | east-africa/p1 | Dar es Salaam → Stone Town | `rn-46bee519109a` | **KEEP** | — |
-| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `ics-0b3b436e41` | **KEEP** | — |
+| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `—` | **KEEP** | — |
 | journey | market:egypt | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-08faa8cf54f2` | **KEEP** | — |
 | journey | market:egypt | Cairo - Maadi → Cairo - Zamalek / Downtown | `rn-4d2d789c04ad` | **KEEP** | — |
 | journey | market:egypt | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
@@ -72,15 +72,15 @@
 | featured | finland/p2 | Helsinki → Kruunuvuorenranta (Laajasalo) | `rn-4ab75813e3cc` | **KEEP** | — |
 | featured | finland/p2 | Helsinki → Vallisaari | `rn-8523ec0a5309` | **KEEP** | — |
 | featured | finland/p3 | Viking Line → Stockholm | `rn-db397ab37430` | **KEEP** | — |
-| journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-cb30f287dc0d` | **KEEP** | — |
-| journey | market:france-riviera | Menton → Monaco | `rn-5fb120384595` | **KEEP** | — |
-| journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |
-| journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-cb30f287dc0d` | **KEEP** | — |
+| journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
+| journey | market:france-riviera | Menton → Monaco | `rn-377e4ce2bf83` | **KEEP** | — |
+| journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
+| journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
 | featured | france-riviera/p1 | Port de Cannes, Jetée Albert Edouard → Centre Naut | `ics-529325c5eb` | **KEEP** | — |
 | featured | france-riviera/p1 | Antibes → Cannes | `rn-3fab58bb5f82` | **KEEP** | — |
-| featured | france-riviera/p2 | Menton → Monaco | `rn-5fb120384595` | **KEEP** | — |
-| featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |
-| featured | france-riviera/p2 | Nice → Monaco | `rn-c0f2e69be06c` | **KEEP** | — |
+| featured | france-riviera/p2 | Menton → Monaco | `rn-377e4ce2bf83` | **KEEP** | — |
+| featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
+| featured | france-riviera/p2 | Nice → Monaco | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | france-riviera/p3 | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |
 | featured | france-riviera/p3 | Vieux Port (Cannes) → Saint-Tropez — Vieux Port (B | `rn-186b89d0af31` | **KEEP** | — |
 | featured | france-riviera/p3 | Nice Port → Saint-Tropez — Vieux Port (Bateaux Ver | `rn-d1e8ad221645` | **KEEP** | — |
@@ -175,15 +175,15 @@
 | featured | south-africa/p3 | Cape Town → Exposed-coast reach (Quanta-LR reserve | `—` | **KEEP** | — |
 | journey | market:spain | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | journey | market:spain | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| journey | market:spain | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
+| journey | market:spain | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
 | journey | market:spain | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p1 | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | featured | spain/p1 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
+| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
 | featured | spain/p2 | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p2 | Ibiza Harbour → La Savina (Formentera) | `ics-605dcb641e` | **KEEP** | — |
 | featured | spain/p2 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `ics-4c8c95334c` | **KEEP** | — |
+| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `—` | **KEEP** | — |
 | featured | spain/p3 | Port de Cala Ratjada → Ciutadella — Port (Son Blan | `ics-f88551e209` | **KEEP** | — |
 | featured | spain/p3 | Barcelona → Palma de Mallorca | `—` | **KEEP** | — |
 | journey | market:sweden | Slussen SL Ferry terminal → Allmänna gränd | `rn-7061b9e5930e` | **KEEP** | — |

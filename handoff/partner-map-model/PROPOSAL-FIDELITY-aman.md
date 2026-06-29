@@ -1,16 +1,16 @@
 # Proposal fidelity — aman
 
-**Verdict:** PASS
-**Checked:** 2026-06-29T14:52:43Z
+**Verdict:** REWRITE
+**Checked:** 2026-06-29T15:10:04Z
 
 ## Summary
 
 - Items audited: 73
-- KEEP: 73
-- DROP: 0
+- KEEP: 65
+- DROP: 8
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 0
+- BP-binding errors: 8
 
 ## Trim list
 
@@ -45,28 +45,28 @@
 | featured | philippines/p3 | Amanpulo (Pamalican) ↔ Cuyo archipelago islands | `—` | **KEEP** | — |
 | featured | philippines/p3 | Amanpulo ↔ Pamalican sandbars & dive sites | `—` | **KEEP** | — |
 | featured | philippines/p3 | Amanpulo ↔ El Nido / Palawan mainland | `—` | **KEEP** | — |
-| journey | market:indonesia | Bali (Amankila / east coast) → Lombok (Gili / west | `rn-c001edd855aa` | **KEEP** | — |
+| journey | market:indonesia | Bali (Amankila / east coast) → Lombok (Gili / west | `—` | **KEEP** | — |
 | journey | market:indonesia | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | journey | market:indonesia | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| journey | market:indonesia | Lombok / Sumbawa → Komodo / Flores (Labuan Bajo) | `rn-d2f360f76d12` | **KEEP** | — |
-| featured | indonesia/p1 | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `rn-c001edd855aa` | **KEEP** | — |
+| journey | market:indonesia | Lombok / Sumbawa → Komodo / Flores (Labuan Bajo) | `—` | **KEEP** | — |
+| featured | indonesia/p1 | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `—` | **KEEP** | — |
 | featured | indonesia/p1 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | indonesia/p1 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| featured | indonesia/p2 | Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway  | `rn-d2f360f76d12` | **KEEP** | — |
+| featured | indonesia/p2 | Lombok / Mandalika / Gilis / Sumbawa-Moyo gateway  | `—` | **KEEP** | — |
 | featured | indonesia/p3 | Bali (Amankila / east coast) ↔ Lombok (Gili / west | `—` | **KEEP** | — |
 | featured | indonesia/p3 | Bali / Lombok ↔ Amanwana (Moyo Island) | `—` | **KEEP** | — |
 | featured | indonesia/p3 | Amankila (Bali east coast) ↔ Nusa Penida / Lembong | `—` | **KEEP** | — |
-| journey | market:thailand | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
+| journey | market:thailand | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
 | journey | market:thailand | Amanpuri → Phang Nga Bay karsts & private islands | `—` | **KEEP** | — |
-| journey | market:thailand | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-b1313beb0eaa` | **KEEP** | — |
-| journey | market:thailand | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
-| featured | thailand/p1 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
+| journey | market:thailand | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manoh Pier (Koh Yao Yai)' →  |
+| journey | market:thailand | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
+| featured | thailand/p1 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
 | featured | thailand/p1 | Amanpuri ↔ Phang Nga Bay karsts & private islands | `—` | **KEEP** | — |
-| featured | thailand/p1 | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-b1313beb0eaa` | **KEEP** | — |
-| featured | thailand/p2 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
-| featured | thailand/p3 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
+| featured | thailand/p1 | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manoh Pier (Koh Yao Yai)' →  |
+| featured | thailand/p2 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
+| featured | thailand/p3 | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
 | featured | thailand/p3 | Amanpuri ↔ Phang Nga Bay karsts & private islands | `—` | **KEEP** | — |
-| featured | thailand/p3 | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-b1313beb0eaa` | **KEEP** | — |
+| featured | thailand/p3 | Manoh Pier (Koh Yao Yai) → Thap Lamu Pier (Similan | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Manoh Pier (Koh Yao Yai)' →  |
 | journey | market:montenegro | Tivat Airport / Porto Montenegro → Aman Sveti Stef | `—` | **KEEP** | — |
 | journey | market:montenegro | Sveti Stefan → Bay of Kotor (Perast / Kotor town) | `—` | **KEEP** | — |
 | journey | market:montenegro | Sveti Stefan → Dubrovnik & the South Dalmatian coa | `—` | **KEEP** | — |

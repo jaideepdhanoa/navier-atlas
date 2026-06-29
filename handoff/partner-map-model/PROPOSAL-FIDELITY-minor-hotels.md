@@ -1,36 +1,36 @@
 # Proposal fidelity — minor-hotels
 
-**Verdict:** PASS
-**Checked:** 2026-06-29T14:53:31Z
+**Verdict:** REWRITE
+**Checked:** 2026-06-29T15:10:46Z
 
 ## Summary
 
 - Items audited: 107
-- KEEP: 107
-- DROP: 0
+- KEEP: 97
+- DROP: 10
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 0
+- BP-binding errors: 8
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **DROP** | phase_narrative_fit: Phase 1 beachhead but 42.4nm leg |
 | featured | 1 | Anantara Layan → Phang Nga Bay | `—` | **KEEP** | — |
-| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **DROP** | phase_narrative_fit: Phase 1 beachhead but 42.4nm leg |
 | featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | 3 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
 | featured | 3 | Velana Seaplane → Kurumba Maldives | `—` | **KEEP** | — |
 | featured | 3 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Rassada Pier (Phuket Deep Sea Port) → Manoh Pier ( | `rn-830bd4d377ca` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-b28ac4ca3d14` | **KEEP** | — |
+| journey | market:phuket_phang_nga | Rassada Pier (Phuket Deep Sea Port) → Manoh Pier ( | `rn-01a8c29df66a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Rassada Pier (Phuket Deep Se |
+| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
+| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
+| journey | market:phuket_phang_nga | Ao Po Grand Marina → Anantara Layan Phuket Beach J | `rn-eb5758aeba2a` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Ao Po Grand Marina' → 'Anant |
 | featured | phuket_phang_nga/p1 | Boonsiri Ferry Ao Nang → Ao Nang Nopparat Thara Be | `rn-c4a82886cf91` | **KEEP** | — |
-| featured | phuket_phang_nga/p2 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
-| featured | phuket_phang_nga/p3 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| featured | phuket_phang_nga/p2 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
+| featured | phuket_phang_nga/p3 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
 | journey | market:palm_jumeirah | DXB / Dubai Marina → Anantara The Palm Dubai Resor | `—` | **KEEP** | — |
 | journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
@@ -82,18 +82,18 @@
 | featured | uae_wider/p2 | Al Khan Lagoon mouth → Sharjah Boat Slider Ramp | `rn-7e32fc3a444d` | **KEEP** | — |
 | featured | uae_wider/p2 | Sharjah Boat Slider Ramp → Sharjah Maritime Museum | `rn-f10abdaac041` | **KEEP** | — |
 | featured | uae_wider/p3 | Marina 2 Ajman Corniche → Sharjah Marine Club / Kh | `rn-e18102cbc6de` | **KEEP** | — |
-| featured | uae_wider/p3 | Ras Al Khaimah (RAK) → Sharjah | `—` | **KEEP** | — |
+| featured | uae_wider/p3 | Ras Al Khaimah (RAK) → Sharjah | `rn-46bf5bf09b13` | **KEEP** | — |
 | featured | uae_wider/p3 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
 | featured | med_europe/p1 | Anantara Convento di Amalfi Grand Hotel — marina/c | `—` | **KEEP** | — |
 | featured | med_europe/p2 | Anantara Plaza Nice Hotel — marina/city → coast | `—` | **KEEP** | — |
 | featured | med_europe/p3 | Avani Rio Novo Venice Hotel — canal/lagoon → city | `—` | **KEEP** | — |
-| journey | market:australia_coastal | hope harbour marina → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | hope harbour marina → Gold Coast City Marina & Shi | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
+| journey | market:australia_coastal | hope harbour marina → Oaks Gold Coast Hotel | `ics-cf96fcb966` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| featured | australia_coastal/p1 | hope harbour marina → Gold Coast City Marina & Shi | `ics-cf96fcb966` | **KEEP** | — |
+| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `ics-2da36d1954` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Gold Coast' → 'Gold Coast' v |
+| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `ics-2da36d1954` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Gold Coast' → 'Gold Coast' v |
 | featured | australia_coastal/p2 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
 | featured | australia_coastal/p3 | hope harbour marina → Gold Coast City Marina & Shi | `ics-cf96fcb966` | **KEEP** | — |
 | featured | australia_coastal/p3 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
@@ -113,7 +113,7 @@
 | journey | market:gulf_singletons | Harbour → Tivoli LA VIE Muscat | `—` | **KEEP** | — |
 | journey | market:gulf_singletons | Brezza Marina Pasta Bar → Tivoli LA VIE Muscat | `—` | **KEEP** | — |
 | journey | market:gulf_singletons | Dibba Fisheries Harbour - Employer Office → Tivoli | `—` | **KEEP** | — |
-| journey | market:gulf_singletons | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
+| journey | market:gulf_singletons | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
 | featured | gulf_singletons/p1 | Harbour → Grand Hyatt Muscat | `rn-8c9dc26d38ef` | **KEEP** | — |
 | featured | gulf_singletons/p1 | Brezza Marina Pasta Bar ↔ Tivoli LA VIE Muscat | `—` | **KEEP** | — |
 | featured | gulf_singletons/p1 | Dibba Fisheries Harbour - Employer Office → Grand  | `rn-c3dbcab91125` | **KEEP** | — |
@@ -122,4 +122,4 @@
 | featured | gulf_singletons/p2 | Harbour → W Muscat (Mina Al Sultan Qaboos Boulevar | `rn-f954a0a3999a` | **KEEP** | — |
 | featured | gulf_singletons/p3 | Marina Service Center مركز سند للخدمات - العذيبة → | `rn-3adc7ac9090b` | **KEEP** | — |
 | featured | gulf_singletons/p3 | Royal Yacht Squadron of Oman (Sidab) → Crowne Plaz | `rn-0617c35e6808` | **KEEP** | — |
-| featured | gulf_singletons/p3 | Al Wakrah (Qatar) → Banana Island Resort Doha (Ana | `—` | **KEEP** | — |
+| featured | gulf_singletons/p3 | Al Wakrah (Qatar) → Banana Island Resort Doha (Ana | `rn-85c4f5910921` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Al Wakrah (Qatar)' → 'Banana |

@@ -1,7 +1,7 @@
 # Proposal fidelity — noon
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:53:31Z
+**Checked:** 2026-06-29T15:10:46Z
 
 ## Summary
 
@@ -23,5 +23,5 @@
 | featured | 1 | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `rn-02a40748974d` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Wynn Al Marjan Island arriv | `gcn-9e515da38a-bolt` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |
-| featured | 3 | Abu Dhabi → Muscat | `edge-0687` | **KEEP** | — |
-| featured | 3 | Fujairah → Muscat | `edge-0712` | **KEEP** | — |
+| featured | 3 | Abu Dhabi → Muscat | `—` | **KEEP** | — |
+| featured | 3 | Fujairah → Muscat | `—` | **KEEP** | — |

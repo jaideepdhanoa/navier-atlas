@@ -1,32 +1,31 @@
 # Proposal fidelity — saudi-pif
 
-**Verdict:** REWRITE
-**Checked:** 2026-06-29T14:53:37Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T15:10:46Z
 
 ## Summary
 
-- Items audited: 14
-- KEEP: 5
-- DROP: 9
+- Items audited: 13
+- KEEP: 13
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 9
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | The Red Sea — Shura Island → Outer-island resorts  | `rn-1a140dacd3e6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'The Red Sea — Shura Island'  |
-| journey | — | The Red Sea destination → AMAALA (Triple Bay) | `ics-748e4ff724` | **DROP** | bp_binding: labels ≠ route endpoints: card 'The Red Sea destination' → ' |
-| journey | — | Jeddah Corniche → Jeddah Central (PIF waterfront)  | `rn-9118c2932ba6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Jeddah Corniche' → 'Jeddah C |
+| journey | — | The Red Sea — Shura Island → Outer-island resorts  | `—` | **KEEP** | — |
+| journey | — | The Red Sea destination → AMAALA (Triple Bay) | `—` | **KEEP** | — |
+| journey | — | Jeddah Corniche → Jeddah Central (PIF waterfront)  | `—` | **KEEP** | — |
 | journey | — | NEOM — Sindalah → Magna / Oxagon coast | `—` | **KEEP** | — |
-| journey | — | Khobar / Dammam (Eastern Province) → Manama, Bahra | `e__ep-khobar__manama-bahrain` | **KEEP** | — |
-| featured | 1 | Shura ↔ outer-island resorts — The Red Sea lagoon | `rn-1a140dacd3e6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Shura' → 'outer-island resor |
-| featured | 1 | The Red Sea ↔ AMAALA — flagship corridor (Quanta-L | `ics-748e4ff724` | **DROP** | bp_binding: labels ≠ route endpoints: card 'The Red Sea' → 'AMAALA — fla |
+| featured | 1 | Shura ↔ outer-island resorts — The Red Sea lagoon | `—` | **KEEP** | — |
+| featured | 1 | The Red Sea ↔ AMAALA — flagship corridor (Quanta-L | `—` | **KEEP** | — |
 | featured | 1 | NEOM — Sindalah ↔ Magna ↔ Oxagon coast | `—` | **KEEP** | — |
-| featured | 2 | Jeddah Corniche ↔ Jeddah Central (PIF waterfront) | `rn-9118c2932ba6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Jeddah Corniche' → 'Jeddah C |
-| featured | 2 | Jeddah ↔ KAEC ↔ Thuwal (KAUST) | `rn-9118c2932ba6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Jeddah' → 'KAEC ↔ Thuwal (KA |
-| featured | 2 | Obhur Creek ↔ Jeddah Yacht Club | `rn-9118c2932ba6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Obhur Creek' → 'Jeddah Yacht |
-| featured | 3 | Khobar / Dammam ↔ Manama (Bahrain) — cross-Gulf, s | `e__ep-khobar__manama-bahrain` | **KEEP** | — |
+| featured | 2 | Jeddah Corniche ↔ Jeddah Central (PIF waterfront) | `—` | **KEEP** | — |
+| featured | 2 | Jeddah ↔ KAEC ↔ Thuwal (KAUST) | `—` | **KEEP** | — |
+| featured | 2 | Obhur Creek ↔ Jeddah Yacht Club | `—` | **KEEP** | — |
+| featured | 3 | Khobar / Dammam ↔ Manama (Bahrain) — cross-Gulf, s | `—` | **KEEP** | — |
 | featured | 3 | Red Sea ↔ AMAALA ↔ NEOM — full Quanta-LR through-r | `—` | **KEEP** | — |
-| featured | 3 | One foiling standard, coast to coast | `rn-4f307035b288` | **DROP** | bp_binding: labels ≠ route endpoints: card '' → '' vs route 'Red Sea Mar |
+| featured | 3 | One foiling standard, coast to coast | `—` | **KEEP** | — |

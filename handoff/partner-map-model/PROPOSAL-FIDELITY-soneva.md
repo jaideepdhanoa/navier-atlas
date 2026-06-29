@@ -1,7 +1,7 @@
 # Proposal fidelity — soneva
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:53:50Z
+**Checked:** 2026-06-29T15:10:47Z
 
 ## Summary
 
@@ -16,9 +16,9 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Velana International → Four Seasons Landaa Giraava | `—` | **KEEP** | inheritance_debt: _inherit_source=grok/normalize/four-seasons |
+| journey | — | Velana International → Four Seasons Landaa Giraava | `—` | **KEEP** | — |
 | journey | — | Bora Bora Airport → Four Seasons Bora Bora | `—` | **KEEP** | — |
-| journey | — | Mahé → Four Seasons Desroches | `—` | **KEEP** | inheritance_debt: _inherit_source=grok/normalize/four-seasons |
+| journey | — | Mahé → Four Seasons Desroches | `—` | **KEEP** | — |
 | journey | — | Four Seasons Kuda Huraa → North Malé reef sites | `—` | **KEEP** | — |
 | featured | 1 | Launch the silent foiling transfer at Soneva Fushi | `—` | **KEEP** | — |
 | featured | 2 | Extend to Soneva Jani and Secret with resort-to-re | `—` | **KEEP** | — |
@@ -34,10 +34,10 @@
 | featured | maldives/p3 | Velana International (Malé) ↔ Soneva Fushi (Baa At | `—` | **KEEP** | — |
 | featured | maldives/p3 | Velana International (Malé) ↔ Soneva Jani (Noonu A | `—` | **KEEP** | — |
 | featured | maldives/p3 | Soneva Fushi ↔ Soneva Jani | `—` | **KEEP** | — |
-| journey | market:thailand | Koh Mai Si airstrip → Soneva Kiri (Koh Kood) | `e__kood__9ab875643dd4` | **KEEP** | — |
-| journey | market:thailand | Trat / eastern-Gulf coast → Soneva Kiri (Koh Kood) | `e__kood__0987ae6d8dd5` | **KEEP** | — |
-| journey | market:thailand | Soneva Kiri → Koh Kood marine sites | `e__kood__9ab875643dd4` | **KEEP** | — |
+| journey | market:thailand | Koh Mai Si airstrip → Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
+| journey | market:thailand | Trat / eastern-Gulf coast → Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
+| journey | market:thailand | Soneva Kiri → Koh Kood marine sites | `—` | **KEEP** | — |
 | journey | market:thailand | Soneva Kiri → Koh Mak / nearby islands | `—` | **KEEP** | — |
-| featured | thailand/p1 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `e__kood__0987ae6d8dd5` | **KEEP** | — |
+| featured | thailand/p1 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |
 | featured | thailand/p2 | Soneva Kiri ↔ Koh Mak / nearby islands | `—` | **KEEP** | — |
-| featured | thailand/p3 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `e__kood__0987ae6d8dd5` | **KEEP** | — |
+| featured | thailand/p3 | Trat / mainland coast ↔ Soneva Kiri (Koh Kood) | `—` | **KEEP** | — |

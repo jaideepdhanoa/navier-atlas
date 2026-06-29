@@ -1,33 +1,33 @@
 # Proposal fidelity — airasia-move
 
-**Verdict:** PASS
-**Checked:** 2026-06-29T14:52:43Z
+**Verdict:** REWRITE
+**Checked:** 2026-06-29T15:10:04Z
 
 ## Summary
 
 - Items audited: 180
-- KEEP: 180
-- DROP: 0
+- KEEP: 159
+- DROP: 21
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 0
+- BP-binding errors: 20
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| featured | 1 | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `—` | **KEEP** | — |
+| featured | 1 | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `rn-347c44e1d360` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Raja Ferry Lipa Noi Pier (Ko |
 | featured | 1 | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
-| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **DROP** | phase_narrative_fit: Phase 1 beachhead but 42.4nm leg |
 | featured | 2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
-| featured | 2 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
+| featured | 2 | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
 | featured | 2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
-| featured | 3 | Krabi → Langkawi | `—` | **KEEP** | — |
-| featured | 3 | Singapore → Tioman Island | `—` | **KEEP** | — |
-| journey | market:koh_samui_gulf | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `—` | **KEEP** | — |
-| journey | market:koh_samui_gulf | Koh Phangan → Thong Sala Pier (Koh Phangan main) | `—` | **KEEP** | — |
+| featured | 3 | Krabi → Langkawi | `rn-853cbe7dd006` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Krabi' → 'Langkawi' vs route |
+| featured | 3 | Singapore → Tioman Island | `ics-1a53f8237d` | **KEEP** | — |
+| journey | market:koh_samui_gulf | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `rn-347c44e1d360` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Raja Ferry Lipa Noi Pier (Ko |
+| journey | market:koh_samui_gulf | Koh Phangan → Thong Sala Pier (Koh Phangan main) | `rn-db5e83248f9d` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Koh Phangan' → 'Thong Sala P |
 | journey | market:koh_samui_gulf | Koh Phangan → Don Sak Ferry Harbour (Surat Thani m | `—` | **KEEP** | — |
-| journey | market:koh_samui_gulf | Koh Phangan → Mae Haad Pier (Koh Tao main) | `—` | **KEEP** | — |
+| journey | market:koh_samui_gulf | Koh Phangan → Mae Haad Pier (Koh Tao main) | `rn-21d437d2bf84` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Koh Phangan' → 'Mae Haad Pie |
 | featured | koh_samui_gulf/p1 | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `ics-5038f54700` | **KEEP** | — |
 | featured | koh_samui_gulf/p1 | Koh Phangan → Thong Sala Pier (Koh Phangan main) | `—` | **KEEP** | — |
 | featured | koh_samui_gulf/p1 | Koh Phangan → Don Sak Ferry Harbour (Surat Thani m | `—` | **KEEP** | — |
@@ -35,38 +35,38 @@
 | featured | koh_samui_gulf/p3 | Bophut / Fisherman's Village Jetty → Maenam Pier | `rn-0e850c291876` | **KEEP** | — |
 | featured | koh_samui_gulf/p3 | Nathon Pier → Bangrak (Big Buddha) Pier | `rn-f2ca85cdc57b` | **KEEP** | — |
 | featured | koh_samui_gulf/p3 | Maenam Pier → Thong Sala Pier | `rn-4cc25e9c8dba` | **KEEP** | — |
-| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
 | journey | market:phuket_andaman | Phuket → Krabi (Ao Nang) | `gcn-e927fe8958-shared` | **KEEP** | — |
-| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
-| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
-| featured | phuket_andaman/p1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
+| journey | market:phuket_andaman | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
+| featured | phuket_andaman/p1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
 | featured | phuket_andaman/p2 | Ao Nang / Nopparat Thara Pier → Railay East Pier | `—` | **KEEP** | — |
 | featured | phuket_andaman/p3 | Khong Kha Pier (Chao Fa) → Klong Jilad Pier | `—` | **KEEP** | — |
 | journey | market:bangkok | ICONSIAM Pier (Chao Phraya) → ICONSIAM Pier (Chao  | `—` | **KEEP** | — |
 | journey | market:bangkok | Sathorn (Central) Pier → Phra Arthit Pier | `gcn-e299366426-shared` | **KEEP** | — |
-| journey | market:bangkok | Bangkok (Gulf mouth) → Pattaya (Bali Hai Pier) | `—` | **KEEP** | — |
+| journey | market:bangkok | Bangkok (Gulf mouth) → Pattaya (Bali Hai Pier) | `rn-dcbcbe8bfb4f` | **KEEP** | — |
 | journey | market:bangkok | Bali Hai Pier → Na Ban Pier (Koh Larn) | `rn-f09e06bc2910` | **KEEP** | — |
 | featured | bangkok/p1 | bangkok-thailand → bangkok-thailand | `—` | **KEEP** | — |
 | featured | bangkok/p1 | Sathorn (Central) Pier → Phra Athit Pier (Khao San | `rn-787957da1609` | **KEEP** | — |
 | featured | bangkok/p2 | Bali Hai Pier → Na Ban Pier (Koh Larn) | `rn-f09e06bc2910` | **KEEP** | — |
 | featured | bangkok/p2 | bangkok-thailand → bangkok-thailand | `—` | **KEEP** | — |
-| featured | bangkok/p3 | Bangkok → Pattaya | `—` | **KEEP** | — |
-| journey | market:eastern_seaboard | Bangkok (Gulf mouth) → Pattaya (Bali Hai Pier) | `—` | **KEEP** | — |
+| featured | bangkok/p3 | Bangkok → Pattaya | `rn-dcbcbe8bfb4f` | **KEEP** | — |
+| journey | market:eastern_seaboard | Bangkok (Gulf mouth) → Pattaya (Bali Hai Pier) | `rn-dcbcbe8bfb4f` | **KEEP** | — |
 | journey | market:eastern_seaboard | Bali Hai Pier → Na Ban Pier (Koh Larn) | `rn-f09e06bc2910` | **KEEP** | — |
-| journey | market:eastern_seaboard | Pattaya (Bali Hai Pier) → Koh Samet (Na Dan Pier) | `—` | **KEEP** | — |
-| journey | market:eastern_seaboard | Pattaya → Koh Samet | `—` | **KEEP** | — |
+| journey | market:eastern_seaboard | Pattaya (Bali Hai Pier) → Koh Samet (Na Dan Pier) | `rn-4a3b9db3cda5` | **KEEP** | — |
+| journey | market:eastern_seaboard | Pattaya → Koh Samet | `rn-4a3b9db3cda5` | **KEEP** | — |
 | featured | eastern_seaboard/p1 | Bali Hai Pier → Na Ban Pier (Koh Larn) | `rn-f09e06bc2910` | **KEEP** | — |
-| featured | eastern_seaboard/p2 | Bangkok → Pattaya | `—` | **KEEP** | — |
-| featured | eastern_seaboard/p2 | Pattaya → Koh Samet | `—` | **KEEP** | — |
+| featured | eastern_seaboard/p2 | Bangkok → Pattaya | `rn-dcbcbe8bfb4f` | **KEEP** | — |
+| featured | eastern_seaboard/p2 | Pattaya → Koh Samet | `rn-4a3b9db3cda5` | **KEEP** | — |
 | featured | eastern_seaboard/p3 | koh-samet-thailand → koh-samet-thailand | `—` | **KEEP** | — |
-| journey | market:royal_coast | Hua Hin → Pattaya | `—` | **KEEP** | — |
-| journey | market:royal_coast | Hua Hin → Cha-Am | `—` | **KEEP** | — |
-| journey | market:royal_coast | Bangkok → Hua Hin | `—` | **KEEP** | — |
-| featured | royal_coast/p1 | Hua Hin → Cha-Am | `—` | **KEEP** | — |
-| featured | royal_coast/p2 | Hua Hin → Pattaya | `—` | **KEEP** | — |
-| featured | royal_coast/p3 | Hua Hin → Pattaya | `—` | **KEEP** | — |
-| journey | market:bali-nusa-gili | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `—` | **KEEP** | — |
-| journey | market:bali-nusa-gili | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `—` | **KEEP** | — |
+| journey | market:royal_coast | Hua Hin → Pattaya | `rn-9c2bce5bffd0` | **KEEP** | — |
+| journey | market:royal_coast | Hua Hin → Cha-Am | `rn-7512bdcf3d4c` | **KEEP** | — |
+| journey | market:royal_coast | Bangkok → Hua Hin | `rn-01f164a3d43c` | **KEEP** | — |
+| featured | royal_coast/p1 | Hua Hin → Cha-Am | `rn-7512bdcf3d4c` | **KEEP** | — |
+| featured | royal_coast/p2 | Hua Hin → Pattaya | `rn-9c2bce5bffd0` | **KEEP** | — |
+| featured | royal_coast/p3 | Hua Hin → Pattaya | `rn-9c2bce5bffd0` | **KEEP** | — |
+| journey | market:bali-nusa-gili | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `rn-91e276ba733c` | **KEEP** | — |
+| journey | market:bali-nusa-gili | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `rn-c001edd855aa` | **KEEP** | — |
 | journey | market:bali-nusa-gili | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | journey | market:bali-nusa-gili | Sampalan Harbour (Nusa Penida E) → Maruti Port - N | `rn-5f35cc1efa05` | **KEEP** | — |
 | featured | bali-nusa-gili/p1 | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
@@ -78,82 +78,82 @@
 | featured | bali-nusa-gili/p3 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | bali-nusa-gili/p3 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | journey | market:lombok | Bali Marina (Benoa) → Gili Trawangan Main Harbour | `gcn-869b9d144c-shared` | **KEEP** | — |
-| journey | market:lombok | Lombok (Bangsal / Senggigi) → Gili Trawangan / Men | `rn-14140e408593` | **KEEP** | — |
-| journey | market:lombok | Lombok → Komodo / Labuan Bajo | `rn-d2f360f76d12` | **KEEP** | — |
+| journey | market:lombok | Lombok (Bangsal / Senggigi) → Gili Trawangan / Men | `—` | **KEEP** | — |
+| journey | market:lombok | Lombok → Komodo / Labuan Bajo | `—` | **KEEP** | — |
 | journey | market:lombok | Kuta Lombok / Mandalika → Gili Islands | `—` | **KEEP** | — |
 | featured | lombok/p1 | lombok-indonesia → lombok-indonesia | `—` | **KEEP** | — |
 | featured | lombok/p1 | lombok-indonesia → lombok-indonesia | `—` | **KEEP** | — |
 | featured | lombok/p2 | Bali Marina (Benoa) → Gili Trawangan Main Harbour | `gcn-869b9d144c-shared` | **KEEP** | — |
-| featured | lombok/p2 | lombok-indonesia → komodo-flores-indonesia | `rn-d2f360f76d12` | **KEEP** | — |
+| featured | lombok/p2 | lombok-indonesia → komodo-flores-indonesia | `—` | **KEEP** | — |
 | featured | lombok/p3 | Bali Marina (Benoa) → Gili Trawangan Main Harbour | `gcn-869b9d144c-shared` | **KEEP** | — |
 | featured | lombok/p3 | lombok-indonesia → lombok-indonesia | `—` | **KEEP** | — |
-| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Pink Beach | `—` | **KEEP** | — |
+| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Pink Beach | `rn-453a25f98ad9` | **KEEP** | — |
 | journey | market:komodo-flores | Labuan Bajo → Pink Beach / manta points | `—` | **KEEP** | — |
-| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Sumba | `—` | **KEEP** | — |
-| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Pelabuhan  | `—` | **KEEP** | — |
-| featured | komodo-flores/p1 | Komodo / Labuan Bajo / Flores / Sumba → Komodo Isl | `—` | **KEEP** | — |
+| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Sumba | `rn-11d0c322c8c8` | **KEEP** | — |
+| journey | market:komodo-flores | Komodo / Labuan Bajo / Flores / Sumba → Pelabuhan  | `rn-1f3002dd00e5` | **KEEP** | — |
+| featured | komodo-flores/p1 | Komodo / Labuan Bajo / Flores / Sumba → Komodo Isl | `rn-4f204600cf23` | **KEEP** | — |
 | featured | komodo-flores/p1 | komodo-flores-indonesia → bp-c698de013f | `—` | **KEEP** | — |
-| featured | komodo-flores/p1 | Komodo / Labuan Bajo / Flores / Sumba → Meruorah K | `—` | **KEEP** | — |
+| featured | komodo-flores/p1 | Komodo / Labuan Bajo / Flores / Sumba → Meruorah K | `rn-871e5ff3b6a7` | **KEEP** | — |
 | featured | komodo-flores/p2 | komodo-flores-indonesia → bp-edd0558c06 | `—` | **KEEP** | — |
-| featured | komodo-flores/p3 | Komodo / Labuan Bajo / Flores / Sumba → Padar Isla | `—` | **KEEP** | — |
+| featured | komodo-flores/p3 | Komodo / Labuan Bajo / Flores / Sumba → Padar Isla | `rn-c5978b9ec0b4` | **KEEP** | — |
 | featured | komodo-flores/p3 | Padang Bai (Bali east — Pioneer II Bali↔Lombok poi | `gcn-3273659cd1-shared` | **KEEP** | — |
 | featured | komodo-flores/p3 | Marina Labuan Bajo (KEK LBJ — ITDC) → Maumere Port | `rn-f464cef34281` | **KEEP** | — |
-| journey | market:jakarta | Marina Ancol → Pulau Bidadari / Onrust | `—` | **KEEP** | — |
-| journey | market:jakarta | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| journey | market:jakarta | Marina Ancol → Pulau Macan / Pelangi / Sepa (outer | `—` | **KEEP** | — |
-| journey | market:jakarta | Marina Ancol → Thousand Islands outer ring (Sepa/P | `—` | **KEEP** | — |
-| featured | jakarta/p1 | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| featured | jakarta/p1 | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `—` | **KEEP** | — |
-| featured | jakarta/p2 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `—` | **KEEP** | — |
-| featured | jakarta/p2 | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| featured | jakarta/p3 | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| featured | jakarta/p3 | Marina Ancol → Thousand Islands inner ring (Bidada | `—` | **KEEP** | — |
-| featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `—` | **KEEP** | — |
+| journey | market:jakarta | Marina Ancol → Pulau Bidadari / Onrust | `ics-9e59ba5c5c` | **KEEP** | — |
+| journey | market:jakarta | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| journey | market:jakarta | Marina Ancol → Pulau Macan / Pelangi / Sepa (outer | `ics-fe31c28f2c` | **KEEP** | — |
+| journey | market:jakarta | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
+| featured | jakarta/p1 | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| featured | jakarta/p1 | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
+| featured | jakarta/p2 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
+| featured | jakarta/p2 | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| featured | jakarta/p3 | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| featured | jakarta/p3 | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-62e1590af9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Marina Ancol' → 'Thousand Is |
+| featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | journey | market:sumba | Komodo / Labuan Bajo → Sumba (Nihi coast) | `gcn-224eb8acd1-shared` | **KEEP** | — |
-| journey | market:sumba | Tambolaka / Waingapu gateway → Nihi Sumba | `rn-33fe0cc24a60` | **KEEP** | — |
+| journey | market:sumba | Tambolaka / Waingapu gateway → Nihi Sumba | `—` | **KEEP** | — |
 | journey | market:sumba | Nihi Sumba → Southwest surf bays | `—` | **KEEP** | — |
-| journey | market:sumba | Bali / Lombok → Sumba | `rn-e8aab4ebc00f` | **KEEP** | — |
+| journey | market:sumba | Bali / Lombok → Sumba | `—` | **KEEP** | — |
 | featured | sumba/p1 | sumba-indonesia → sumba-indonesia | `—` | **KEEP** | — |
 | featured | sumba/p1 | sumba-indonesia → sumba-indonesia | `—` | **KEEP** | — |
 | featured | sumba/p2 | Meruorah Komodo Labuan Bajo → NIHI Sumba (private  | `gcn-224eb8acd1-shared` | **KEEP** | — |
-| featured | sumba/p2 | lombok-indonesia → sumba-indonesia | `rn-e8aab4ebc00f` | **KEEP** | — |
+| featured | sumba/p2 | lombok-indonesia → sumba-indonesia | `—` | **KEEP** | — |
 | featured | sumba/p3 | Meruorah Komodo Labuan Bajo → NIHI Sumba (private  | `gcn-224eb8acd1-shared` | **KEEP** | — |
 | featured | sumba/p3 | sumba-indonesia → sumba-indonesia | `—` | **KEEP** | — |
 | journey | market:kota-kinabalu | Kota Kinabalu (Jesselton Point) → Gaya Island Reso | `rn-2a148be8da55` | **KEEP** | — |
-| journey | market:kota-kinabalu | Sabah / Kota Kinabalu → Manukan Island | `—` | **KEEP** | — |
+| journey | market:kota-kinabalu | Sabah / Kota Kinabalu → Manukan Island | `rn-9cf6a4039290` | **KEEP** | — |
 | journey | market:kota-kinabalu | Kota Kinabalu (Jesselton Point) → Mamutik / Sulug  | `rn-4a35d08732bc` | **KEEP** | — |
 | journey | market:kota-kinabalu | Semporna Jetty (Sipadan gateway) → Sipadan Island  | `—` | **KEEP** | — |
 | featured | kota-kinabalu/p1 | Jesselton Point Ferry Terminal (KK) → Gaya Island  | `rn-2a148be8da55` | **KEEP** | — |
-| featured | kota-kinabalu/p1 | Sabah / Kota Kinabalu → Manukan Island | `—` | **KEEP** | — |
+| featured | kota-kinabalu/p1 | Sabah / Kota Kinabalu → Manukan Island | `rn-9cf6a4039290` | **KEEP** | — |
 | featured | kota-kinabalu/p2 | Semporna Jetty (Sipadan gateway) → Sipadan Island  | `—` | **KEEP** | — |
 | featured | kota-kinabalu/p3 | Jesselton Point Ferry Terminal (KK) → Mamutik Isla | `rn-4a35d08732bc` | **KEEP** | — |
 | journey | market:langkawi | Kuah Jetty Point Complex → Kilim Karst Geoforest P | `rn-76bf7675c6e3` | **KEEP** | — |
 | journey | market:langkawi | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
 | journey | market:langkawi | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
-| journey | market:langkawi | Krabi → Langkawi | `—` | **KEEP** | — |
+| journey | market:langkawi | Krabi → Langkawi | `rn-853cbe7dd006` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Krabi' → 'Langkawi' vs route |
 | featured | langkawi/p1 | Kuah Jetty Point Complex → Kilim Karst Geoforest P | `rn-76bf7675c6e3` | **KEEP** | — |
 | featured | langkawi/p2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
 | featured | langkawi/p2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
-| featured | langkawi/p3 | Krabi → Langkawi | `—` | **KEEP** | — |
+| featured | langkawi/p3 | Krabi → Langkawi | `rn-853cbe7dd006` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Krabi' → 'Langkawi' vs route |
 | journey | market:penang | George Town (Raja Tun Uda terminal) → Butterworth  | `gcn-c46f3bf4b8-shared` | **KEEP** | — |
 | journey | market:penang | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `gcn-0965643d33-shared` | **KEEP** | — |
 | journey | market:penang | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
 | featured | penang/p1 | Raja Tun Uda Ferry Terminal (George Town) → Sultan | `gcn-c46f3bf4b8-shared` | **KEEP** | — |
 | featured | penang/p2 | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `gcn-0965643d33-shared` | **KEEP** | — |
 | featured | penang/p3 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
-| journey | market:desaru | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
+| journey | market:desaru | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
 | journey | market:desaru | Desaru Coast resort jetties → Desaru intra-coast ( | `rn-59e1b8a8a6ca` | **KEEP** | — |
-| featured | desaru/p1 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
+| featured | desaru/p1 | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
 | featured | desaru/p2 | One&Only Desaru Coast — beach jetty → Anantara Des | `rn-59e1b8a8a6ca` | **KEEP** | — |
-| featured | desaru/p3 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
-| journey | market:tioman | Singapore (Tanah Merah Ferry Terminal) → Tioman Is | `—` | **KEEP** | — |
-| featured | tioman/p1 | Singapore → Tioman Island | `—` | **KEEP** | — |
+| featured | desaru/p3 | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
+| journey | market:tioman | Singapore (Tanah Merah Ferry Terminal) → Tioman Is | `ics-1a53f8237d` | **KEEP** | — |
+| featured | tioman/p1 | Singapore → Tioman Island | `ics-1a53f8237d` | **KEEP** | — |
 | journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-30120bc0105a` | **KEEP** | — |
-| journey | market:manila | Manila Bay (Mall of Asia pier) → Nasugbu / Pico de | `—` | **KEEP** | — |
+| journey | market:manila | Manila Bay (Mall of Asia pier) → Nasugbu / Pico de | `rn-e9ddb844af0a` | **KEEP** | — |
 | journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-ad4885ae93c7` | **KEEP** | — |
 | journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-6193fc15dcee` | **KEEP** | — |
-| featured | manila/p1 | Manila / Cebu / Palawan / Boracay / Siargao → Pico | `—` | **KEEP** | — |
+| featured | manila/p1 | Manila / Cebu / Palawan / Boracay / Siargao → Pico | `rn-e9ddb844af0a` | **KEEP** | — |
 | featured | manila/p1 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-30120bc0105a` | **KEEP** | — |
 | featured | manila/p2 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-ad4885ae93c7` | **KEEP** | — |
 | featured | manila/p3 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-6193fc15dcee` | **KEEP** | — |
@@ -167,10 +167,10 @@
 | featured | cebu/p3 | Cebu-Mactan Ferry Terminal → Malapascua Island (Lo | `rn-c3336ac6b5a7` | **KEEP** | — |
 | journey | market:boracay | Caticlan Jetty Port → Boracay Island (Cagban / Tam | `rn-95cb8fe771c3` | **KEEP** | — |
 | journey | market:boracay | Boracay Transfer → Discovery Shores Boracay | `rn-1a4e733333cd` | **KEEP** | — |
-| journey | market:boracay | Boracay Island → Carabao Island (Romblon) | `—` | **KEEP** | — |
+| journey | market:boracay | Boracay Island → Carabao Island (Romblon) | `rn-609ddbca5a68` | **KEEP** | — |
 | featured | boracay/p1 | Caticlan Jetty Port → Cagban Jetty Port (Boracay) | `rn-95cb8fe771c3` | **KEEP** | — |
 | featured | boracay/p1 | Boracay Transfer → Discovery Shores Boracay | `rn-1a4e733333cd` | **KEEP** | — |
-| featured | boracay/p2 | Boracay → San Jose (Said) Port, Carabao Island | `—` | **KEEP** | — |
+| featured | boracay/p2 | Boracay → San Jose (Said) Port, Carabao Island | `rn-609ddbca5a68` | **KEEP** | — |
 | featured | boracay/p3 | Caticlan Jetty Port → Cagban Jetty Port (Boracay) | `rn-95cb8fe771c3` | **KEEP** | — |
 | journey | market:palawan | Honda Bay Boat Terminal (Sta. Lourdes) → Luli Isla | `rn-e4513003bcc5` | **KEEP** | — |
 | journey | market:palawan | El Nido town → Bacuit Bay islands (Miniloc / Pangu | `rn-10169cc46537` | **KEEP** | — |
@@ -180,19 +180,19 @@
 | featured | palawan/p1 | Honda Bay Boat Terminal (Sta. Lourdes) → Luli Isla | `rn-e4513003bcc5` | **KEEP** | — |
 | featured | palawan/p2 | Coron Town Pier (Coron Port) → Busuanga Bay Lodge  | `rn-b604a03f6078` | **KEEP** | — |
 | featured | palawan/p3 | Puerto Princesa Port → El Nido Ferry Terminal | `rn-81f865bba3ac` | **KEEP** | — |
-| journey | market:siargao | Siargao → Socorro | `—` | **KEEP** | — |
-| journey | market:siargao | Siargao → Nay Palad Hideaway jetty | `—` | **KEEP** | — |
+| journey | market:siargao | Siargao → Socorro | `ics-2193fd3739` | **KEEP** | — |
+| journey | market:siargao | Siargao → Nay Palad Hideaway jetty | `rn-c13d8e22a145` | **KEEP** | — |
 | journey | market:siargao | Siargao (Dapa) → Dinagat Islands | `rn-5233d5cb30eb` | **KEEP** | — |
-| featured | siargao/p1 | Siargao → Socorro | `—` | **KEEP** | — |
-| featured | siargao/p1 | Siargao → Nay Palad Hideaway jetty | `—` | **KEEP** | — |
+| featured | siargao/p1 | Siargao → Socorro | `ics-2193fd3739` | **KEEP** | — |
+| featured | siargao/p1 | Siargao → Nay Palad Hideaway jetty | `rn-c13d8e22a145` | **KEEP** | — |
 | featured | siargao/p2 | Dapa Port (Siargao) → Dinagat Islands (San Jose Po | `rn-5233d5cb30eb` | **KEEP** | — |
-| featured | siargao/p3 | Siargao → Socorro | `—` | **KEEP** | — |
-| journey | market:singapore | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `—` | **KEEP** | — |
-| journey | market:singapore | Singapore (Tanah Merah) → Bintan (Bandar Bentan Te | `—` | **KEEP** | — |
-| journey | market:singapore | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
-| journey | market:singapore | Singapore (Tanah Merah Ferry Terminal) → Tioman Is | `—` | **KEEP** | — |
-| featured | singapore/p1 | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `—` | **KEEP** | — |
-| featured | singapore/p1 | Singapore → Riau Islands (Kepulauan Riau) — Batam  | `—` | **KEEP** | — |
-| featured | singapore/p1 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
-| featured | singapore/p2 | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `—` | **KEEP** | — |
-| featured | singapore/p3 | Singapore → Tioman Island | `—` | **KEEP** | — |
+| featured | siargao/p3 | Siargao → Socorro | `ics-2193fd3739` | **KEEP** | — |
+| journey | market:singapore | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `rn-2568d40ee060` | **KEEP** | — |
+| journey | market:singapore | Singapore (Tanah Merah) → Bintan (Bandar Bentan Te | `rn-f3670ea7d99b` | **KEEP** | — |
+| journey | market:singapore | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
+| journey | market:singapore | Singapore (Tanah Merah Ferry Terminal) → Tioman Is | `ics-1a53f8237d` | **KEEP** | — |
+| featured | singapore/p1 | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `rn-2568d40ee060` | **KEEP** | — |
+| featured | singapore/p1 | Singapore → Riau Islands (Kepulauan Riau) — Batam  | `rn-f3670ea7d99b` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Singapore' → 'Riau Islands ( |
+| featured | singapore/p1 | Desaru Coast (Johor) → Constant Wind | `rn-5d1a30fbb0a9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Desaru Coast (Johor)' → 'Con |
+| featured | singapore/p2 | Riau Islands (Kepulauan Riau) — Batam / Bintan / A | `rn-2568d40ee060` | **KEEP** | — |
+| featured | singapore/p3 | Singapore → Tioman Island | `ics-1a53f8237d` | **KEEP** | — |

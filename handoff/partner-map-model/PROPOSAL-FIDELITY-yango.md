@@ -1,13 +1,13 @@
 # Proposal fidelity — yango
 
-**Verdict:** PASS
-**Checked:** 2026-06-29T14:54:01Z
+**Verdict:** TRIM
+**Checked:** 2026-06-29T15:11:02Z
 
 ## Summary
 
-- Items audited: 94
+- Items audited: 95
 - KEEP: 94
-- DROP: 0
+- DROP: 1
 - DEFER: 0
 - TRIM/REWRITE: 0
 - BP-binding errors: 0
@@ -16,6 +16,7 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
+| featured | 1 | Lusail Marina ↔ Ritz-Carlton Doha — private marina | `rn-30d3fa93ca0e` | **DROP** | phase_narrative_fit: Phase 1 Dubai beachhead but route cities ['al-wakrah-qatar'] |
 | featured | 2 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | featured | 3 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | journey | market:cote-divoire | Plateau → Treichville | `rn-3c93ccbea798` | **KEEP** | — |
@@ -85,7 +86,7 @@
 | featured | ksa-commercial/p2 | The Red Sea → AMAALA (Triple Bay) | `gcn-5296100ae8-red-sea-global` | **KEEP** | — |
 | featured | ksa-commercial/p3 | Shura Island hub → AMAALA (Triple Bay) | `gcn-5296100ae8-red-sea-global` | **KEEP** | — |
 | featured | ksa-commercial/p3 | The Red Sea → NEOM (Sindalah) / Jeddah gateway | `rn-623a6aa42aba` | **KEEP** | — |
-| featured | ksa-commercial/p3 | Red Sea Global (RSG + AMAALA) → Jeddah | `—` | **KEEP** | — |
+| featured | ksa-commercial/p3 | Red Sea Global (RSG + AMAALA) → Jeddah | `rn-d1c5fd6a269a` | **KEEP** | — |
 | journey | market:turkey | Eminönü → Üsküdar | `rn-b2cd8bef343b` | **KEEP** | — |
 | journey | market:turkey | Karaköy → Kadıköy | `rn-dfbac40b8b7c` | **KEEP** | — |
 | journey | market:turkey | İzmir (Konak) → Karşıyaka | `rn-6e92c1f7cd69` | **KEEP** | — |

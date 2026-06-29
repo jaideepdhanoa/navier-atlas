@@ -1,7 +1,7 @@
 # Proposal fidelity — discovery-land
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T14:52:50Z
+**Checked:** 2026-06-29T15:10:21Z
 
 ## Summary
 
@@ -19,8 +19,8 @@
 | journey | — | Nassau & The Bahamas → Nassau & The Bahamas | `—` | **KEEP** | — |
 | journey | — | Miami → Nassau | `edge__miami-florida-usa__nassau-bahamas` | **KEEP** | — |
 | featured | 1 | Nassau & The Bahamas → Nassau & The Bahamas | `—` | **KEEP** | — |
-| featured | 2 | Miami → Nassau & The Bahamas | `edge__miami-florida-usa__nassau-bahamas` | **KEEP** | — |
-| featured | 3 | Governor's Harbour Airport → Governor's Harbour Fe | `ics-582bb891bc` | **KEEP** | — |
+| featured | 2 | Miami → Nassau & The Bahamas | `—` | **KEEP** | — |
+| featured | 3 | Governor's Harbour Airport → Governor's Harbour Fe | `—` | **KEEP** | — |
 | journey | market:nassau-bahamas | Marsh Harbour → Baker's Bay (Great Guana Cay) | `—` | **KEEP** | — |
 | journey | market:nassau-bahamas | Treasure Cay → Baker's Bay | `—` | **KEEP** | — |
 | journey | market:nassau-bahamas | Baker's Bay → Hope Town / Elbow Cay | `—` | **KEEP** | — |

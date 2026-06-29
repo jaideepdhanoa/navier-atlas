@@ -1,16 +1,16 @@
 {
   "partner": "line",
-  "verdict": "PASS",
+  "verdict": "REWRITE",
   "layout": "network",
   "hub": true,
-  "checked_at": "2026-06-29T14:53:03Z",
+  "checked_at": "2026-06-29T15:10:36Z",
   "counts": {
-    "items": 24,
-    "keep": 24,
-    "drop": 0,
+    "items": 25,
+    "keep": 16,
+    "drop": 9,
     "defer": 0,
     "trim": 0,
-    "bp_errors": 0
+    "bp_errors": 9
   },
   "items": [
     {
@@ -30,10 +30,10 @@
       "surface": "journey",
       "phase": null,
       "corridor": "Busan → Busan/Geoje Cluster",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-00024a3bd3",
+      "route_endpoints": "Busan → Busan/Geoje Cluster",
       "distance_card_nm": 3.5,
-      "distance_route_nm": null,
+      "distance_route_nm": 3.5,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -43,10 +43,10 @@
       "surface": "journey",
       "phase": null,
       "corridor": "Busan / Geoje → Fukuoka (Hakata)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-e44147de575d",
+      "route_endpoints": "Busan / Geoje → Fukuoka (Hakata)",
       "distance_card_nm": 109.8,
-      "distance_route_nm": null,
+      "distance_route_nm": 109.8,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -69,10 +69,10 @@
       "surface": "featured",
       "phase": 1,
       "corridor": "Busan → Busan/Geoje Cluster",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-00024a3bd3",
+      "route_endpoints": "Busan → Busan/Geoje Cluster",
       "distance_card_nm": 3.5,
-      "distance_route_nm": null,
+      "distance_route_nm": 3.5,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -82,10 +82,10 @@
       "surface": "featured",
       "phase": 2,
       "corridor": "Busan / Geoje → Fukuoka (Hakata)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-e44147de575d",
+      "route_endpoints": "Busan / Geoje → Fukuoka (Hakata)",
       "distance_card_nm": 109.8,
-      "distance_route_nm": null,
+      "distance_route_nm": 109.8,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -95,23 +95,29 @@
       "surface": "featured",
       "phase": 4,
       "corridor": "Yeosu / Tongyeong (Hallyeohaesang) → Yeosu / Tongyeong",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-843b41b72d",
+      "route_endpoints": "Yeosu Ferry Terminal → Yeosu / Tongyeong",
       "distance_card_nm": 4.8,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 4.8,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Yeosu / Tongyeong (Hallyeohaesang)' → 'Yeosu / Tongyeong' vs route 'Yeosu Ferry Terminal' → 'Yeosu / Tongyeong'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": 4,
       "corridor": "Busan / Geoje → Fukuoka (Hakata)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-e44147de575d",
+      "route_endpoints": "Busan / Geoje → Fukuoka (Hakata)",
       "distance_card_nm": 109.8,
-      "distance_route_nm": null,
+      "distance_route_nm": 109.8,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -121,14 +127,20 @@
       "surface": "journey",
       "phase": "market:japan",
       "corridor": "Setouchi (Naoshima / Teshima Inland Sea) → Setouchi",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-987e1b9cc7",
+      "route_endpoints": "[hide] Imperial-family Setouchi overlook — NEGATIVE-confirmation → Setouchi",
       "distance_card_nm": 9.3,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 9.3,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Setouchi (Naoshima / Teshima Inland Sea)' → 'Setouchi' vs route '[hide] Imperial-family Setouchi overlook — NEGATIVE-confirmation' → 'Setouchi'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -147,14 +159,20 @@
       "surface": "journey",
       "phase": "market:japan",
       "corridor": "Tokyo Bay (Tokyo–Yokohama) → Tokyo Bay",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-0be05f213b",
+      "route_endpoints": "Anniversary Cruise Pier → Tokyo Bay",
       "distance_card_nm": 2.4,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 2.4,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Tokyo Bay (Tokyo–Yokohama)' → 'Tokyo Bay' vs route 'Anniversary Cruise Pier' → 'Tokyo Bay'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -186,14 +204,20 @@
       "surface": "featured",
       "phase": "japan/p3",
       "corridor": "Tokyo Bay (Tokyo–Yokohama) → Tokyo Bay",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-e6e369b77c",
+      "route_endpoints": "Anniversary Cruise Pier → Tokyo Bay",
       "distance_card_nm": 2.3,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 2.3,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Tokyo Bay (Tokyo–Yokohama)' → 'Tokyo Bay' vs route 'Anniversary Cruise Pier' → 'Tokyo Bay'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -212,10 +236,10 @@
       "surface": "journey",
       "phase": "market:taiwan",
       "corridor": "Donggang → Xiaoliuqiu (Liuqiu)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-91951379c0",
+      "route_endpoints": "Donggang → Liuqiu (Xiaoliuqiu)",
       "distance_card_nm": 9.7,
-      "distance_route_nm": null,
+      "distance_route_nm": 9.7,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -225,10 +249,10 @@
       "surface": "journey",
       "phase": "market:taiwan",
       "corridor": "Magong South Sea Visitor Center / Magong Harbour (馬公南海遊客中心), Penghu → Qimei Nanhu Port (七美南滏港), Qimei Island",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-25ecef3e3b",
+      "route_endpoints": "Magong South Sea Visitor Center / Magong Harbour (馬公南海遊客中心), Penghu → Qimei Nanhu Port (七美南滏港), Qimei Island",
       "distance_card_nm": 25.2,
-      "distance_route_nm": null,
+      "distance_route_nm": 25.2,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -251,10 +275,10 @@
       "surface": "featured",
       "phase": "taiwan/p2",
       "corridor": "Magong South Sea Visitor Center / Magong Harbour (馬公南海遊客中心), Penghu → Qimei Nanhu Port (七美南滏港), Qimei Island",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "ics-25ecef3e3b",
+      "route_endpoints": "Magong South Sea Visitor Center / Magong Harbour (馬公南海遊客中心), Penghu → Qimei Nanhu Port (七美南滏港), Qimei Island",
       "distance_card_nm": 25.2,
-      "distance_route_nm": null,
+      "distance_route_nm": 25.2,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -264,40 +288,77 @@
       "surface": "journey",
       "phase": "market:thailand",
       "corridor": "Krabi → Nonthasak Marine",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-4e06ca55ff7a",
+      "route_endpoints": "Phuket → Nonthasak Marine",
       "distance_card_nm": 19,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 19,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Krabi' → 'Nonthasak Marine' vs route 'Phuket' → 'Nonthasak Marine'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": "market:thailand",
       "corridor": "Krabi → Marina Seaview Krabi",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-759caec9f963",
+      "route_endpoints": "Phuket → Marina Seaview Krabi",
       "distance_card_nm": 39.7,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 39.7,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Krabi' → 'Marina Seaview Krabi' vs route 'Phuket' → 'Marina Seaview Krabi'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": "market:thailand",
       "corridor": "Koh Phangan → Thong Sala Pier (Koh Phangan main)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db5e83248f9d",
+      "route_endpoints": "Koh Samui → Thong Sala Pier",
       "distance_card_nm": 10.2,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 10.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Koh Phangan' → 'Thong Sala Pier (Koh Phangan main)' vs route 'Koh Samui' → 'Thong Sala Pier'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
+    },
+    {
+      "surface": "featured",
+      "phase": "thailand/p1",
+      "corridor": "Koh Phangan ↔ Thong Sala Pier (Koh Phangan main)",
+      "route_id": "rn-db5e83248f9d",
+      "route_endpoints": "Koh Samui → Thong Sala Pier",
+      "distance_card_nm": 10.2,
+      "distance_route_nm": 10.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Koh Phangan' → 'Thong Sala Pier (Koh Phangan main)' vs route 'Koh Samui' → 'Thong Sala Pier'"
+        }
+      ],
+      "errors": 1,
+      "warnings": 0,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -316,17 +377,23 @@
       "surface": "featured",
       "phase": "thailand/p3",
       "corridor": "Koh Phangan → Thong Sala Pier (Koh Phangan main)",
-      "route_id": null,
-      "route_endpoints": null,
+      "route_id": "rn-db5e83248f9d",
+      "route_endpoints": "Koh Samui → Thong Sala Pier",
       "distance_card_nm": 10.2,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": 10.2,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Koh Phangan' → 'Thong Sala Pier (Koh Phangan main)' vs route 'Koh Samui' → 'Thong Sala Pier'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     }
   ],
-  "journey_bp_errors": 0,
+  "journey_bp_errors": 5,
   "geometry_gate_errors": 0,
   "placeholder_gate_errors": 0
 }
