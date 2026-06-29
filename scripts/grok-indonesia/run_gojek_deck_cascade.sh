@@ -41,6 +41,11 @@ PY
 step "4 gen_deck_economics (deck values)"
 python3 "$ROOT/deck-studio/decks/gen_deck_economics.py" gojek
 
+step "5 publish transparent economics sheet"
+PY="$ROOT/deck-studio/.venv/bin/python3"
+"$PY" "$ROOT/finance/publish_partner_economics.py" gojek \
+  --title "Navier — Gojek Indonesia Unit Economics"
+
 echo ""
 echo "┌─────────────────────────────────────────────────────────────┐"
 echo "│ Gojek 10-market deck economics — COMPLETE                     │"

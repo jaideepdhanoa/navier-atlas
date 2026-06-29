@@ -57,7 +57,12 @@ python3 "$BY/build_economics_sidecar.py" \
   --aggdir "$RECAL" \
   --url-map "$ROOT/finance/economics_url_map.json" || true
 
-step "7 mark PH/SG economics_status bound where sidecar exists"
+step "7 publish transparent economics sheet"
+PY="$ROOT/deck-studio/.venv/bin/python3"
+"$PY" "$ROOT/finance/publish_partner_economics.py" airasia-move \
+  --title "Navier — AirAsia MOVE Unit Economics"
+
+step "8 mark PH/SG economics_status bound where sidecar exists"
 python3 - <<'PY' "$ROOT"
 import json, sys
 from pathlib import Path

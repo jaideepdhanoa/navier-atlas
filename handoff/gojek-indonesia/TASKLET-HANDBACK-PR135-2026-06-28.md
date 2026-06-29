@@ -1,6 +1,6 @@
 # Tasklet handback — Gojek economics re-cascade apply (PR #135)
 
-**Status:** ⏸ PARKED — receipt recorded; merge + Grok follow-ups deferred  
+**Status:** ✅ RESOLVED (2026-06-29) — PR #135 merged; Grok follow-ups complete  
 **Date:** 2026-06-28  
 **Lane:** Tasklet Slides API (in-place, style-preserving)
 
@@ -45,9 +45,9 @@ Source: `deck-studio/decks/gojek/deck-economics-values-gojek.json` cross-checked
 
 | Item | Status | Notes |
 |------|--------|-------|
-| **SOM ladder rung ($87M)** | HELD | Values file maps `$22M` floor; live rung descriptor reads "~14% capture +greenfield" — metric basis mismatch. Need post-seal full-network SOM at +greenfield basis **or** descriptor rewrite to floor basis. |
-| **Corridor count (43)** | FLAG | Applied from deck-values sidecard; data pack `corridors_bound: 49` includes roadmap/Quanta-LR held null. Confirm which count the card should display. |
-| **Lombok + Lake Toba KPI cards** | NULL | `kpis: null` in values file — no grounded floor; held off-deck. |
+| **SOM ladder rung** | ✅ **$110M** applied live (slide 13) | `SOM_full_network_navier_transport_rev_yr` mid from `growth-gojek.json`; replaces stale $87M. Slide-3 card still shows $22M **floor** (correct split). |
+| **Corridor count** | ✅ **43 confirmed** | Grounded-floor ladder count (`agg-gojek.json` / `growth-gojek.json` source_rollup). 49 = scoped total incl. 6 Quanta-LR roadmap (>70nm). |
+| **Lombok + Lake Toba KPI cards** | ✅ **estimated tier** | `routes_mapped` + `addressable_pool` only; rev/fleet null — sealed geometry, estimated demand, no grounded floor row. |
 | **Map backgrounds** | Jaideep lane | Thailand artifact plates; Indonesia map insert not in Tasklet scope. |
 
 ---

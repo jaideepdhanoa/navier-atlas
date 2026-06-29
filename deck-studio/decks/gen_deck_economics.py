@@ -295,7 +295,8 @@ def main():
     def mid(k):
         v = g.get(k); return v.get("mid") if isinstance(v, dict) else v
     pool = g.get("M_today_transport_spend_yr")
-    som = g.get("SOM_floor_navier_transport_rev_yr")
+    som_floor = g.get("SOM_floor_navier_transport_rev_yr")
+    som_net = mid("SOM_full_network_navier_transport_rev_yr") or som_floor
     sam = mid("SAM_navier_transport_rev_yr")
     tam_marine = mid("marine_mobility_tam_yr")      # induced marine-transfer market (~4x SAM)
     journey_gmv = mid("TAM_journey_gmv_yr")          # + food/stays/experiences (~3x TAM)
@@ -306,14 +307,14 @@ def main():
         {"value": (f"{n_corr}" if n_corr is not None else None),
          "meaning": "premium water corridors mapped from real demand"},
         {"value": usd_compact(pool), "meaning": "premium sea-transfer spend already moving on these lanes, per year"},
-        {"value": (f"${som/1e6:.0f}M floor" if som else None), "meaning": "SOM floor — Navier fare, today's trips, ~10% capture"},
+        {"value": (f"${som_floor/1e6:.0f}M floor" if som_floor else None), "meaning": "SOM floor — Navier fare, today's trips, ~10% capture"},
         {"value": usd_compact(tam_marine), "meaning": "marine-transfer TAM (induced market), mid of model band"},
     ]
     pj_path = P("partner-pitch", "partners", f"{partner}.json")
     partner_meta = json.load(open(pj_path)) if os.path.isfile(pj_path) else {}
     show_plat = shows_platform_revenue(partner_meta)
     slide10_rungs = [
-        {"rung": "SOM", "value": usd_compact(som)},
+        {"rung": "SOM", "value": usd_compact(som_net), "basis": "SOM_full_network_navier_transport_rev_yr"},
         {"rung": "SAM", "value": usd_compact(sam)},
         {"rung": "TAM", "value": usd_compact(tam_marine)},
         {"rung": "Journey GMV", "value": usd_compact(journey_gmv)},
@@ -330,7 +331,24 @@ def main():
     for mk in markets:
         k = mk["key"]; m = gfm.get(k)
         if not m:
-            per_market[k] = {"label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False), "kpis": None}
+            est_rows = [r for r in rows_by_mkt[k] if r.get("status") == "estimated"]
+            if est_rows:
+                pool = sum((r.get("pool_yr") or 0) for r in est_rows)
+                per_market[k] = {
+                    "label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False),
+                    "kpis": {
+                        "routes_mapped": len(est_rows),
+                        "addressable_pool_usd_m": round(pool / 1e6, 2),
+                        "navier_rev_floor_usd_m": None,
+                        "fleet_at_floor": None,
+                        "modeled_riders_per_day_floor": None,
+                        "co2_saved_t_yr": None,
+                    },
+                    "tier": "estimated",
+                    "note": "sealed geometry / estimated demand — no grounded floor row yet",
+                }
+            else:
+                per_market[k] = {"label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False), "kpis": None}
             continue
         pax_day = round(sum(((r.get("mid", {}) or {}).get("pax_per_year") or
                              (r.get("thin", {}) or {}).get("pax_per_year") or 0) for r in rows_by_mkt[k]) / 365)
