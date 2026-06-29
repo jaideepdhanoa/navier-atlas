@@ -2501,6 +2501,19 @@ function _clusterBriefHtml(cb){
   if (cb.precedents&&cb.precedents.length){ h+=`<div class="panel-section"><h3>Precedents</h3>${cb.precedents.map(x=>`<div class="pcaro-route">${escapeHtml(typeof x==='string'?x:(x.label||x.name||''))}</div>`).join('')}</div>`; }
   return h;
 }
+// Normalise a raw cluster.region tag to its macro-region display label. Mirrors REGION_ALIASES in
+// scripts/region-share.mjs — keep the two in sync so a cluster lands in the same region brief that the
+// /region/<slug> share-card counts it under (incl. Caspian = Caucasus + Central Asia).
+const _REGION_DISPLAY_ALIAS = {
+  'SEA':'Southeast Asia',
+  'LatAm-Caribbean':'Latin America','Latin-America':'Latin America',
+  'Caribbean':'Caribbean',
+  'Europe-Mediterranean':'Europe','Europe-Atlantic':'Europe','Europe-Baltic':'Europe','Europe-Med':'Europe',
+  'Asia':'East Asia',
+  'Middle East':'MENA','Maghreb':'MENA',
+  'Caucasus':'Caspian','Central Asia':'Caspian'
+};
+function _normRegionDisplay(r){ return _REGION_DISPLAY_ALIAS[r] || r; }
 function _regionBriefHtml(rb, slug){
   const label = rb.display || slug;
   let h = (_navStack.length ? _navBackHtml() : '') + `<div class="panel-hero">
@@ -2510,23 +2523,66 @@ function _regionBriefHtml(rb, slug){
     <div class="share-row">${_shareLinkBtnHtml()}</div>
   </div>`;
   if (rb.summary) h+=`<div class="panel-section"><div class="what-distinct">${escapeHtml(rb.summary)}</div></div>`;
+  // Footprint — rolled-up scope across the region's clusters and gateway cities.
+  if (rb.scope_stats && (rb.scope_stats.clusters || rb.scope_stats.cities)){
+    const ss = rb.scope_stats;
+    h+=`<div class="panel-section"><div class="region-scope" style="display:flex;gap:32px;flex-wrap:wrap">`;
+    if (ss.clusters) h+=`<div><div style="font-size:26px;font-weight:700;color:#e8edf4;line-height:1.1">${escapeHtml(String(ss.clusters))}</div><div style="font-size:11.5px;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase;margin-top:2px">Coastal clusters</div></div>`;
+    if (ss.cities) h+=`<div><div style="font-size:26px;font-weight:700;color:#e8edf4;line-height:1.1">${escapeHtml(String(ss.cities))}</div><div style="font-size:11.5px;color:#94a3b8;letter-spacing:.05em;text-transform:uppercase;margin-top:2px">Gateway cities</div></div>`;
+    h+=`</div></div>`;
+  }
+  if (rb.why_marine_mobility) h+=`<div class="panel-section"><h3>Why marine mobility here</h3><div class="what-distinct">${escapeHtml(rb.why_marine_mobility)}</div></div>`;
+  if (rb.demand_signals&&rb.demand_signals.length){
+    h+=`<div class="panel-section"><h3>Demand signals</h3>`;
+    for (const d of rb.demand_signals) h+=`<div class="brief-signal"><div class="brief-sig-top"><span class="brief-sig-label">${escapeHtml(d.label||'')}</span>${d.archetype?`<span class="brief-arch">${escapeHtml(_archLabel(d.archetype))}</span>`:''}</div>${d.value?`<div class="brief-sig-val">${escapeHtml(d.value)}</div>`:''}${d.note?`<div class="brief-sig-note">${escapeHtml(d.note)}</div>`:''}</div>`;
+    h+=`</div>`;
+  }
+  if (rb.use_cases&&rb.use_cases.length){
+    h+=`<div class="panel-section"><h3>Use cases</h3>`;
+    for (const u of rb.use_cases){ const pc=_platColor(u.platform);
+      h+=`<div class="brief-uc"><div class="brief-uc-top"><span class="brief-arch">${escapeHtml(_archLabel(u.archetype))}</span>${u.platform?`<span class="badge platform" style="color:${pc};border-color:${pc}66">${escapeHtml(u.platform)}</span>`:''}</div><div class="brief-uc-title">${escapeHtml(u.title||'')}</div>${u.body?`<div class="brief-uc-body">${escapeHtml(u.body)}</div>`:''}</div>`; }
+    h+=`</div>`;
+  }
+  if (rb.navier_fit&&(rb.navier_fit.pioneer_ii||rb.navier_fit.quanta_lr)){
+    h+=`<div class="panel-section"><h3>How Navier fits</h3>`;
+    if (rb.navier_fit.pioneer_ii) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#6ee7b7">Pioneer II · ≤70 nm electric</span><div>${escapeHtml(rb.navier_fit.pioneer_ii)}</div></div>`;
+    if (rb.navier_fit.quanta_lr) h+=`<div class="brief-fit"><span class="brief-fit-tag" style="color:#fbbf24">Quanta-LR · ≤700 nm hybrid</span><div>${escapeHtml(rb.navier_fit.quanta_lr)}</div></div>`;
+    h+=`</div>`;
+  }
+  // Signature routes — marquee corridors rolled up 1:1 from the region's clusters (ID-matched; only
+  // those that resolve to sealed geometry are shown — null/unsealed regions simply omit the section).
+  if (rb.signature_routes&&rb.signature_routes.length){
+    let rows='';
+    for (const r of rb.signature_routes){
+      const o = (typeof r==='string') ? {label:r} : (r||{});
+      if (_geometryPending(o)) continue;
+      const lbl = String(o.label||'').replace(/^[↔→\s]+/,'');
+      const rids = _routeIdsOf(o).filter(id=>typeof ROUTE_ID_SET!=='undefined' && ROUTE_ID_SET.has(id));
+      if (!rids.length) continue;
+      rows+=`<div class="pcaro-route clickable" data-routes="${escapeHtml(rids.join(','))}"><span class="pcaro-route-l">${escapeHtml(lbl)}</span></div>`;
+    }
+    if (rows) h+=`<div class="panel-section"><h3>Signature routes</h3>${rows}</div>`;
+  }
+  // Countries & archipelagos — every cluster whose normalised region matches this brief.
   const cls = [];
   if (typeof NAV_CLUSTERS!=='undefined') {
     for (const c of NAV_CLUSTERS) {
-      const r0 = c.region;
-      const r = ({'SEA':'Southeast Asia','Middle East':'MENA','Maghreb':'MENA'}[r0]||r0);
-      if (r === label) cls.push(c);
+      if (_normRegionDisplay(c.region) === label) cls.push(c);
     }
   }
   cls.sort((a,b)=>(a.cluster_label||a.cluster_id).localeCompare(b.cluster_label||b.cluster_id));
   if (cls.length) {
     h+=`<div class="panel-section"><h3>Countries &amp; archipelagos</h3><div class="cl-city-grid">`;
-    for (const c of cls.slice(0, 24)) {
+    for (const c of cls) {
       const name = c.cluster_label || c.cluster_id;
       h+=`<button type="button" class="cl-city" data-cluster="${escapeHtml(c.cluster_id)}">${escapeHtml(name)}</button>`;
     }
     h+=`</div></div>`;
   }
+  if (rb.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(rb.transit_planning)}</div></div>`;
+  if (rb.competitive_landscape) h+=`<div class="panel-section"><h3>Competitive landscape</h3><div class="what-distinct">${escapeHtml(rb.competitive_landscape)}</div></div>`;
+  if (rb.seasonality) h+=`<div class="panel-section"><h3>Seasonality</h3><div class="what-distinct">${escapeHtml(rb.seasonality)}</div></div>`;
+  if (rb.regulatory_note) h+=`<div class="panel-section"><h3>Regulatory</h3><div class="what-distinct">${escapeHtml(rb.regulatory_note)}</div></div>`;
   return h;
 }
 function showRegionBrief(slug){
@@ -2541,6 +2597,11 @@ function showRegionBrief(slug){
   _writeShareUrl({ type:'region', id:slug });
   _wireShareCopy(p);
   p.querySelectorAll('.cl-city[data-cluster]').forEach(el=>el.addEventListener('click', ()=>showClusterBrief(el.dataset.cluster)));
+  // Clickable rolled-up signature routes → open the corridor on the map.
+  p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
+    const id=(el.dataset.routes||'').split(',')[0];
+    const f = ROUTE_FC.features.find(x=>x.properties && x.properties.id===id); if (f) selectRoute(f);
+  }));
 }
 function showClusterBrief(cid){
   const cb = (typeof CLUSTER_BRIEFS!=='undefined') ? CLUSTER_BRIEFS[cid] : null;
