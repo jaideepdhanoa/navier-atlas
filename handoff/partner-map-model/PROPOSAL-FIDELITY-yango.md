@@ -1,7 +1,7 @@
 # Proposal fidelity — yango
 
 **Verdict:** TRIM
-**Checked:** 2026-06-29T13:03:11Z
+**Checked:** 2026-06-29T14:28:33Z
 
 ## Summary
 

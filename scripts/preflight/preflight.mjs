@@ -308,6 +308,41 @@ head('§3.8  partner scope drift (hub _map_scope vs CLUSTERS.json)');
   } else ok('partner scope aligned with live cluster inheritance');
 }
 
+// ─── §3.6b · Reference partner browser visual QA ─────────────────────────────
+head('§3.6b  reference partner browser visual QA');
+{
+  const distDir = path.join(ROOT, '_dist');
+  const captureScript = path.join(ROOT, 'tests/e2e/capture-reference-qa.mjs');
+  const receiptPath = path.join(ROOT, 'handoff/partner-map-model/REFERENCE-VISUAL-QA-RECEIPT.json');
+  if (!fs.existsSync(distDir)) {
+    fail('browser visual QA — _dist/ missing; run build before preflight');
+  } else if (!fs.existsSync(captureScript)) {
+    fail('browser visual QA — capture-reference-qa.mjs missing');
+  } else {
+    const e2eDir = path.join(ROOT, 'tests/e2e');
+    const cap = spawnSync(process.execPath, [captureScript, '--serve-dist'], {
+      cwd: e2eDir,
+      encoding: 'utf8',
+      env: { ...process.env, ROOT },
+      timeout: 600000,
+    });
+    if (cap.stdout) process.stdout.write(cap.stdout);
+    if (cap.stderr) process.stderr.write(cap.stderr);
+    if (cap.status !== 0) {
+      fail('reference browser visual QA failed — see REFERENCE-VISUAL-QA-RECEIPT.json');
+    } else if (fs.existsSync(receiptPath)) {
+      const receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+      if (!receipt.browser_gate_pass) {
+        fail('reference browser visual QA gate_pass false');
+      } else {
+        ok(`reference browser visual QA passed (${(receipt.screenshots || []).length} screenshots)`);
+      }
+    } else {
+      ok('reference browser visual QA passed');
+    }
+  }
+}
+
 // ─── §3.6 · Route geometry (story routes land QA) ───────────────────────────
 head('§3.6  route geometry audit (story land QA)');
 {

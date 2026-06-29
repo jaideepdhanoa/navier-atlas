@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-06-29T14:30:00Z",
+  "plan": "front-end bar-raiser backlog (2026-06-29)",
+  "tier1_geometry": {
+    "story_fail_before": 9,
+    "story_fail_after": 0,
+    "story_fix": "fix_story_sweet_spot.py --apply on 9 detour-ratio fails",
+    "mesh_fail": 697,
+    "mesh_wave4_fixed": 0,
+    "mesh_note": "697 held — auto coastal solver exhausted; mesh cap + FE opacity discipline remain"
+  },
+  "tier1_browser_qa": {
+    "script": "tests/e2e/capture-reference-qa.mjs",
+    "preflight_gate": "scripts/preflight/preflight.mjs §3.6b",
+    "screenshots": 16,
+    "partners": ["careem", "noon", "bolt", "yango", "grab"],
+    "phase_scoped": true,
+    "receipt": "handoff/partner-map-model/REFERENCE-VISUAL-QA-RECEIPT.json"
+  },
+  "tier1_fe2_dedup": {
+    "script": "scripts/grok-fe2/apply_fe2_referenced_dedup.py",
+    "groups_merged": 201,
+    "poi_dropped": 255,
+    "features_before": 11762,
+    "features_after": 11515,
+    "report": "handoff/partner-map-model/fe2-referenced-dedup-report.json"
+  },
+  "tier2_fidelity": {
+    "grab_verdict": "PASS",
+    "minor_hotels_verdict": "PASS",
+    "careem_noon_in_hub_gate": true,
+    "network_thesis_added": ["careem", "noon"],
+    "distance_honesty_script": "scripts/fix_partner_distance_honesty.py",
+    "hub_trims_remaining": ["cabify", "four-seasons", "freenow", "line", "six-senses", "uber", "yango"]
+  },
+  "tier3_polish": {
+    "map_idle_gate": true,
+    "mobile_qa": "capture-reference-qa.mjs --mobile",
+    "atlas_data_per_partner_mb": 2.6,
+    "perf_split": "deferred — lazy route bundles next"
+  },
+  "tier4_gates": {
+    "reference_partners_in_fidelity_audit": true,
+    "pass_with_flags_blocks_reference_deploy": true,
+    "mesh_geometry_strict": "advisory (697 backlog)"
+  }
+}

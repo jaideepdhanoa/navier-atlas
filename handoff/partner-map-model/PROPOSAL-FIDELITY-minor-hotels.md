@@ -1,15 +1,15 @@
 # Proposal fidelity — minor-hotels
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-29T13:03:01Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:28:22Z
 
 ## Summary
 
 - Items audited: 107
-- KEEP: 103
+- KEEP: 107
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 4
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -32,12 +32,12 @@
 | featured | phuket_phang_nga/p2 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | featured | phuket_phang_nga/p3 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | journey | market:palm_jumeirah | DXB / Dubai Marina → Anantara The Palm Dubai Resor | `—` | **KEEP** | — |
-| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **TRIM** | distance_honesty: card 11.9nm vs route 23.15nm (49% delta) |
-| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **TRIM** | distance_honesty: card 11.9nm vs route 23.15nm (49% delta) |
+| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
+| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | journey | market:palm_jumeirah | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | palm_jumeirah/p1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **TRIM** | distance_honesty: card 11.9nm vs route 23.15nm (49% delta) |
+| featured | palm_jumeirah/p1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | featured | palm_jumeirah/p2 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
-| featured | palm_jumeirah/p3 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **TRIM** | distance_honesty: card 11.9nm vs route 23.15nm (49% delta) |
+| featured | palm_jumeirah/p3 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
 | featured | palm_jumeirah/p3 | Palm Jumeirah Marina West → Atlantis The Palm Jett | `—` | **KEEP** | — |
 | journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | journey | market:bali | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |

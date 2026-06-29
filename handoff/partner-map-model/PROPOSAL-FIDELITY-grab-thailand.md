@@ -1,7 +1,7 @@
 # Proposal fidelity — grab-thailand
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T13:02:57Z
+**Checked:** 2026-06-29T14:28:19Z
 
 ## Summary
 

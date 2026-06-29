@@ -1,15 +1,15 @@
 # Proposal fidelity — grab
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-06-29T13:02:58Z
+**Verdict:** PASS
+**Checked:** 2026-06-29T14:28:20Z
 
 ## Summary
 
 - Items audited: 126
-- KEEP: 123
+- KEEP: 126
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 3
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -48,16 +48,16 @@
 | featured | bali/p1 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | bali/p2 | Bali / Nusa Penida / Lembongan / Gilis / Lombok /  | `—` | **KEEP** | — |
 | featured | bali/p3 | Komodo / Labuan Bajo / Flores / Sumba → Sumba | `—` | **KEEP** | — |
-| journey | market:jakarta | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-9e59ba5c5c` | **TRIM** | distance_honesty: card 35.9nm vs route 7.4nm (385% delta) |
+| journey | market:jakarta | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-9e59ba5c5c` | **KEEP** | — |
 | journey | market:jakarta | Marina Ancol → Thousand Islands inner ring (Bidada | `ics-fe31c28f2c` | **KEEP** | — |
 | journey | market:jakarta | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | journey | market:jakarta | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
-| featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-9e59ba5c5c` | **TRIM** | distance_honesty: card 35.9nm vs route 7.4nm (385% delta) |
+| featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p1 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p2 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p2 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
-| featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-9e59ba5c5c` | **TRIM** | distance_honesty: card 35.9nm vs route 7.4nm (385% delta) |
+| featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | featured | jakarta/p3 | Marina Ancol → Thousand Islands outer ring (Sepa/P | `ics-fe31c28f2c` | **KEEP** | — |
 | journey | market:lombok | Bali Marina (Benoa) → Gili Trawangan Main Harbour | `gcn-869b9d144c-shared` | **KEEP** | — |

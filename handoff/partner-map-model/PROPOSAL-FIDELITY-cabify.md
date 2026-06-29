@@ -1,7 +1,7 @@
 # Proposal fidelity — cabify
 
 **Verdict:** TRIM
-**Checked:** 2026-06-29T13:02:54Z
+**Checked:** 2026-06-29T14:28:15Z
 
 ## Summary
 

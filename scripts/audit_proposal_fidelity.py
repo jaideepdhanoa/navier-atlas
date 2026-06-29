@@ -583,13 +583,16 @@ def resolve_audit_slugs(args) -> list[str]:
             p.stem for p in PARTNERS_DC.glob("*.json") if not p.name.startswith("_")
         )
     if args.hub_partners:
-        slugs = []
+        slugs: list[str] = []
         for path in sorted(PARTNERS_DC.glob("*.json")):
             if path.name.startswith("_"):
                 continue
             doc = load_json(path)
             if is_hub_partner(doc):
                 slugs.append(path.stem)
+        for ref in sorted(REFERENCE_PARTNERS):
+            if ref not in slugs:
+                slugs.append(ref)
         return slugs
     return sorted(REFERENCE_PARTNERS)
 
@@ -672,6 +675,9 @@ def main() -> int:
             if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "REWRITE":
                 gate_fail = True
                 gate_reasons.append(f"{r['partner']}: REWRITE verdict")
+            if r["partner"] in REFERENCE_PARTNERS and r["verdict"] == "PASS_WITH_FLAGS":
+                gate_fail = True
+                gate_reasons.append(f"{r['partner']}: PASS_WITH_FLAGS (trim flags remain)")
 
     if gate_fail:
         print("✗ deploy gate FAILED:")
