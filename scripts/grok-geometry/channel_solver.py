@@ -158,6 +158,7 @@ HAND_WAYPOINTS: dict[tuple[str, str], list[list[float]]] = {
 
 _lc_singleton: "LandChecker | None" = None
 _seaward_cache: dict | None = None
+_channel_graphs_cache: list | None = None
 
 
 def hav_nm(a, b) -> float:
@@ -244,6 +245,82 @@ def load_seaward() -> dict:
     if _seaward_cache is None:
         _seaward_cache = json.loads(SEAWARD.read_text()) if SEAWARD.exists() else {}
     return _seaward_cache
+
+
+def load_channel_graphs() -> list[dict]:
+    """UAE channel graph segments authored in data-clean/channel_graphs/."""
+    global _channel_graphs_cache
+    if _channel_graphs_cache is not None:
+        return _channel_graphs_cache
+    graph_dir = ROOT / "data-clean" / "channel_graphs"
+    graphs: list[dict] = []
+    if graph_dir.exists():
+        for path in sorted(graph_dir.glob("uae-*.geojson")):
+            fc = json.loads(path.read_text())
+            props = fc.get("properties") or {}
+            bbox = props.get("bbox")
+            segments: list[list[list[float]]] = []
+            for feat in fc.get("features") or []:
+                coords = (feat.get("geometry") or {}).get("coordinates") or []
+                if len(coords) >= 2:
+                    segments.append(coords)
+            if bbox and segments:
+                graphs.append({"id": path.stem, "bbox": bbox, "segments": segments})
+    _channel_graphs_cache = graphs
+    return graphs
+
+
+def _in_bbox(lon: float, lat: float, bbox: list[float]) -> bool:
+    w, s, e, n = bbox
+    return w <= lon <= e and s <= lat <= n
+
+
+def _nearest_seg_index(pt: list[float], seg: list[list[float]]) -> tuple[int, list[float]]:
+    best_i, best_d, best_p = 0, 1e18, pt
+    for i in range(len(seg) - 1):
+        a, b = seg[i], seg[i + 1]
+        # project pt onto segment ab
+        ax, ay, bx, by, px, py = a[0], a[1], b[0], b[1], pt[0], pt[1]
+        ab2 = (bx - ax) ** 2 + (by - ay) ** 2
+        if ab2 <= 0:
+            cand = a
+            t = 0.0
+        else:
+            t = max(0.0, min(1.0, ((px - ax) * (bx - ax) + (py - ay) * (by - ay)) / ab2))
+            cand = [ax + t * (bx - ax), ay + t * (by - ay)]
+        d = hav_nm(pt, cand)
+        if d < best_d:
+            best_d, best_i, best_p = d, i, cand
+    return best_i, best_p
+
+
+def channel_graph_waypoints(a: list[float], b: list[float]) -> list[list[float]] | None:
+    """Snap A→B through authored UAE channel graphs when both ends sit in one graph bbox."""
+    for g in load_channel_graphs():
+        bbox = g["bbox"]
+        if not (_in_bbox(a[0], a[1], bbox) and _in_bbox(b[0], b[1], bbox)):
+            continue
+        segments = g["segments"]
+        if not segments:
+            continue
+        # pick segment pair minimizing endpoint distance
+        best: list[list[float]] | None = None
+        best_cost = 1e18
+        for seg in segments:
+            ia, pa = _nearest_seg_index(a, seg)
+            ib, pb = _nearest_seg_index(b, seg)
+            if ia <= ib:
+                mid = seg[ia : ib + 1]
+            else:
+                mid = list(reversed(seg[ib : ia + 1]))
+            wps = [p for p in mid if p != a and p != b]
+            cost = hav_nm(a, pa) + hav_nm(b, pb) + sum(hav_nm(mid[i], mid[i + 1]) for i in range(len(mid) - 1))
+            if cost < best_cost and wps:
+                best_cost = cost
+                best = wps
+        if best:
+            return best[:12]
+    return None
 
 
 def densify(seq: list, step_nm: float = 0.25) -> list[list[float]]:
@@ -548,6 +625,12 @@ def solve_endpoints(
     wps = hand_waypoints_for(from_id, to_id)
     if wps:
         res = solve_hand(lc, a, b, wps)
+        if res:
+            return res
+
+    graph_wps = channel_graph_waypoints(a, b)
+    if graph_wps:
+        res = solve_hand(lc, a, b, graph_wps, method="channel_graph")
         if res:
             return res
 

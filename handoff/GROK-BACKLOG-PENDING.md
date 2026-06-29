@@ -1,23 +1,25 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ `abd7c599` · Production: https://navier-atlas.vercel.app  
-**Updated:** 2026-06-28 (parked)  
+**Baseline:** `main` @ `a459f7f5` · Production: https://navier-atlas.vercel.app  
+**Updated:** 2026-06-29 (AFK autonomous lane)  
 **Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
 
 ---
 
-## ⏸ Parked (2026-06-28) — Gojek deck economics handback
+## ⛔ SKIPPED (2026-06-29) — Deck / Slides / Sheets lane
 
-Tasklet applied live slides 4+13; receipt PR #135 OPEN @ `93971c98`. See `handoff/gojek-indonesia/TASKLET-HANDBACK-PR135-2026-06-28.md`.
+Per Jaideep AFK directive: all deck updates explicitly skipped. No OAuth, no Slides apply, no Sheets publish.
 
-| Item | Owner | When back |
-|------|-------|-----------|
-| Merge PR #135 (BUILD-LOG) | Grok | first |
-| SOM rung ($87M) — metric basis | Grok | model pass |
-| Corridor count 43 vs 49 | Grok | confirm |
-| Lombok + Lake Toba KPI cards | Grok | seal/floor |
-| Map backgrounds | Jaideep | visual |
-| Google Sheets publish (gojek, airasia-move) | Grok | separate lane |
+| Item | Status |
+|------|--------|
+| Gojek deck PR #135 merge | ⛔ SKIPPED |
+| SOM rung ($87M) / Lombok + Lake Toba KPI cards | ⛔ SKIPPED |
+| AirAsia MOVE deck create/bind | ⛔ SKIPPED |
+| Google Sheets publish (gojek, airasia-move) | ⛔ SKIPPED |
+| Grab/Minor live Slides apply | ⛔ SKIPPED (OAuth omitted) |
+
+**Gojek map scope fix** (Malaysia bleed) ✅ done @ `a459f7f5` — deployed.  
+**Maghreb split** ✅ PR #139 merged @ `2401c147` — `/maghreb` live.
 
 ---
 
@@ -39,7 +41,7 @@ KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo a
 |----------|-------|-----|
 | **P0a** | **Phase-map cumulative scoping** | ✅ Done — cumulative phases + three-tier opacity |
 | **P0c** | **Partner scope live inheritance** | ✅ Done — hub partners inherit CLUSTERS.json at build; `partner-scope.mjs` + §3.8 drift gate |
-| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ PASS_WITH_FLAGS · Grab ⏳ (108 DROP) |
+| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ PASS_WITH_FLAGS · Grab ⏳ (114 DROP apply in flight) |
 | **P1** | **UAE channel graphs (Grok-only)** | ✅ v1 Palm + Marina + Creek (`channel_graphs/`); AD islands + Deira next |
 | **P2** | FE-2 dedup | ~193 referenced-copy groups |
 | **P3** | Mesh geometry | ~3,035 non-story fails (deferred until proposal surfaces credible) |

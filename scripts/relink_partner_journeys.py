@@ -118,6 +118,11 @@ _COMMON_PLACE = frozenset(
 )
 
 # Multi-word label anchors — when present in a journey label, route endpoints must match.
+# Proposal surface caps (§B1) — enforced after relink on hub/partner JSON.
+PROPOSAL_MAX_JOURNEYS = 4
+PROPOSAL_MAX_FEATURED = 3
+INHERIT_BLOCK_MARKERS = ("grok/normalize/noon", "grok/normalize")
+
 _LABEL_ANCHOR_PHRASES = (
     "sir bani yas", "bani yas", "sharm el sheikh", "hurghada", "el gouna",
     "helsinki", "tallinn", "desroches", "corniche", "dubai marina",
@@ -162,6 +167,47 @@ def _anchor_tokens(s: str | None) -> list[str]:
         for t in sorted(_tokens(s), key=len, reverse=True)
         if len(t) >= 4 and t not in _COMMON_PLACE
     ]
+
+
+def is_inherit_debt(item: dict) -> bool:
+    src = str(item.get("_inherit_source") or "")
+    return any(m in src for m in INHERIT_BLOCK_MARKERS)
+
+
+def proposal_nodes_grounded(item: dict) -> bool:
+    """Proposal links require bp-* endpoints unless explicitly text-only / unlinked."""
+    if item.get("display") in ("text_only", "network_chip"):
+        return True
+    if item.get("route_id") is None and not item.get("route_ids"):
+        return True
+    fn = item.get("from_node_id") or item.get("from_node")
+    tn = item.get("to_node_id") or item.get("to_node")
+    return bool(fn and tn and str(fn).startswith("bp-") and str(tn).startswith("bp-"))
+
+
+def cap_proposal_surfaces(partner: dict) -> dict[str, int]:
+    """Trim journeys_unlocked and featured_routes to policy caps."""
+    stats = {"capped_journeys": 0, "capped_featured": 0}
+
+    def cap_journeys(obj: dict) -> None:
+        ju = obj.get("journeys_unlocked") or []
+        if len(ju) > PROPOSAL_MAX_JOURNEYS:
+            stats["capped_journeys"] += len(ju) - PROPOSAL_MAX_JOURNEYS
+            obj["journeys_unlocked"] = ju[:PROPOSAL_MAX_JOURNEYS]
+
+    def cap_phases(phases: list) -> None:
+        for ph in phases or []:
+            fr = ph.get("featured_routes") or []
+            if len(fr) > PROPOSAL_MAX_FEATURED:
+                stats["capped_featured"] += len(fr) - PROPOSAL_MAX_FEATURED
+                ph["featured_routes"] = fr[:PROPOSAL_MAX_FEATURED]
+
+    cap_journeys(partner)
+    cap_phases(partner.get("phases") or [])
+    for m in partner.get("markets") or []:
+        cap_journeys(m)
+        cap_phases(m.get("phases") or [])
+    return stats
 
 
 def directional_endpoints_match(from_l: str | None, to_l: str | None, rec: RouteRec) -> bool:
@@ -1464,6 +1510,14 @@ def relink_item(
 
     stats.total += 1
 
+    if is_inherit_debt(item):
+        item.pop("_inherit_source", None)
+        item.pop("_inherit_at", None)
+        if item.get("route_id"):
+            item["route_id"] = None
+            item["route_ids"] = None
+            stats.cleared_mislink += 1
+
     if is_geometry_pending(item) and item.get("display") == "text_only":
         stats.geometry_pending += 1
         return
@@ -1542,6 +1596,13 @@ def relink_item(
                 stats.still_null += 1
             item.pop("_link_kind", None)
             item.pop("_link_source", None)
+        elif not proposal_nodes_grounded(item):
+            item["route_id"] = None
+            item["route_ids"] = None
+            item["_link_status"] = "unlinked-no-bp-grounding"
+            item.pop("_link_kind", None)
+            item["_link_source"] = "grok/relink_partner_journeys/bp_gate"
+            stats.still_null += 1
         else:
             item["route_id"] = rid
             item["_link_kind"] = "corridor-label" if (from_l or item.get("label")) else "corridor-node"
@@ -1734,6 +1795,8 @@ def walk_partner(
             m.get("phases") or [], m_scope, city_ids,
             routes, routes_by_city, brief_idx, stats, kw,
         )
+
+    cap_proposal_surfaces(partner)
 
 
 def render_bucket(item: dict, routes: dict[str, RouteRec]) -> str:

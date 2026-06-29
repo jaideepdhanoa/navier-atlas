@@ -17,7 +17,7 @@ from route_land_qa import evaluate_route  # noqa: E402
 
 OUT_DIR = ROOT / "data-clean" / "channel_graphs"
 WKB_V2 = ROOT / "grok-routing-output" / "uae_gulf_land_v2.wkb"
-RECEIPT = ROOT / "handoff" / "partner-map-model" / "UAE-CHANNEL-GRAPHS-v1.json"
+RECEIPT = ROOT / "handoff" / "partner-map-model" / "UAE-CHANNEL-GRAPHS-v2.json"
 
 # Hand-authored centerlines from satellite/OSM + LB-208 Palm land mask gaps.
 GRAPHS: dict[str, dict] = {
@@ -117,6 +117,77 @@ GRAPHS: dict[str, dict] = {
             ],
         },
     },
+    "uae-abudhabi": {
+        "label": "Abu Dhabi islands — Yas / Saadiyat / Lulu / Reem / Hudayriyat",
+        "bbox": [54.28, 24.38, 54.68, 24.58],
+        "segments": {
+            "yas_saadiyat": [
+                [54.606, 24.481],
+                [54.580, 24.500],
+                [54.550, 24.520],
+                [54.520, 24.535],
+                [54.490, 24.545],
+            ],
+            "saadiyat_lulu": [
+                [54.490, 24.545],
+                [54.450, 24.530],
+                [54.410, 24.510],
+                [54.370, 24.495],
+                [54.341, 24.501],
+            ],
+            "lulu_reem": [
+                [54.341, 24.501],
+                [54.360, 24.495],
+                [54.390, 24.492],
+                [54.403, 24.492],
+            ],
+            "reem_hudayriyat": [
+                [54.403, 24.492],
+                [54.380, 24.470],
+                [54.350, 24.440],
+                [54.320, 24.420],
+                [54.300, 24.405],
+            ],
+            "yas_marina_apron": [
+                [54.606, 24.481],
+                [54.620, 24.470],
+                [54.630, 24.460],
+            ],
+        },
+    },
+    "uae-deira": {
+        "label": "Deira Islands / Palm Deira apron channels",
+        "bbox": [55.30, 25.28, 55.38, 25.36],
+        "segments": {
+            "deira_coast_apron": [
+                [55.320, 25.285],
+                [55.330, 25.295],
+                [55.340, 25.305],
+                [55.350, 25.315],
+            ],
+            "palm_deira_spine": [
+                [55.350, 25.315],
+                [55.355, 25.325],
+                [55.360, 25.335],
+                [55.365, 25.345],
+            ],
+            "deira_creek_mouth": [
+                [55.320, 25.285],
+                [55.310, 25.278],
+                [55.300, 25.270],
+            ],
+            "island_ring_W": [
+                [55.340, 25.305],
+                [55.332, 25.312],
+                [55.325, 25.320],
+            ],
+            "island_ring_E": [
+                [55.350, 25.315],
+                [55.358, 25.322],
+                [55.365, 25.330],
+            ],
+        },
+    },
 }
 
 
@@ -130,7 +201,7 @@ def line_feature(seg_id: str, coords: list, area: str, label: str) -> dict:
             "segment": seg_id,
             "label": label,
             "authored_by": "grok/author_uae_channel_graphs",
-            "version": "v1",
+            "version": "v2",
         },
     }
 
@@ -159,7 +230,7 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     receipt = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "version": "v1",
+        "version": "v2",
         "areas": {},
     }
 
@@ -177,7 +248,7 @@ def main() -> None:
                 "label": spec["label"],
                 "bbox": spec["bbox"],
                 "authored_by": "grok/author_uae_channel_graphs",
-                "version": "v1",
+                "version": "v2",
             },
             "features": features,
         }
