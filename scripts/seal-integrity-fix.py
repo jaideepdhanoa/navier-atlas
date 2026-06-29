@@ -71,6 +71,15 @@ ALGERIA_CLUSTER = {
     "anchor_lb174_note": "Created in seal-integrity-fix (NOTES §2026-06-29 P2): bind 4 orphaned Algerian coastal city nodes to a real cluster.",
 }
 
+# ── canonical macro-region for the North-Africa clusters (Jaideep's call,
+#    2026-06-29): morocco / algeria / tunisia all tag `Maghreb` (→ MENA brief).
+#    Cities cascade to the cluster tag automatically via B3b. ──────────────────
+REGION_CANON = {
+    "morocco": "Maghreb",
+    "algeria": "Maghreb",
+    "tunisia": "Maghreb",
+}
+
 # ── orphan → existing-cluster binding (real cities missing from membership) ──
 BIND_TO_CLUSTER = {
     "kenya":   ["diani-ukunda-kenya", "kilifi-kenya", "malindi-kenya", "watamu-kenya"],
@@ -153,6 +162,14 @@ def main():
             c["member_city_ids"].extend(new)
             c["members_present"] = len(c["member_city_ids"])
             changed.append(f"bind: +{len(new)} → {cid} ({', '.join(new)})")
+
+    # ── B5b: canonicalize North-Africa cluster macro-region (Jaideep 2026-06-29) ─
+    for cid, target in REGION_CANON.items():
+        c = by_id.get(cid)
+        if c and c.get("region") != target:
+            old = c.get("region")
+            c["region"] = target
+            changed.append(f"B5b: cluster region {cid} {old} → {target}")
 
     # ── normalize members_present = len(member_city_ids) on every cluster ─────
     for c in clusters_doc["clusters"]:
