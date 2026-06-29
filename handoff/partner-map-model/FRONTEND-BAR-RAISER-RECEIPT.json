@@ -23,7 +23,7 @@
     "screenshots": 16,
     "partners": ["careem", "noon", "bolt", "yango", "grab"],
     "phase_scoped": true,
-    "phaseN_note": "receipt uses requestedPhaseN when carousel _activePhaseN unset",
+    "phaseN_fixed": "2026-06-29 — flat partners use __PARTNER_BUILD__ + intro dismiss; phaseN now populated",
     "receipt": "handoff/partner-map-model/REFERENCE-VISUAL-QA-RECEIPT.json"
   },
   "tier1_fe2_dedup": {
@@ -54,6 +54,23 @@
     "deploy_critical_gate": "hub + reference partners (journey_bp, geometry, REWRITE, PASS_WITH_FLAGS)",
     "placeholder_gate": "all partners",
     "mesh_geometry": "0 fail"
+  },
+  "bolt_taiwan": {
+    "market": "taiwan",
+    "url": "/bolt/taiwan",
+    "cities": ["kaohsiung-taiwan", "penghu-taiwan"],
+    "inheritance": "CLUSTERS.json taiwan cluster + covered footprint",
+    "status": "live in data-clean"
+  },
+  "story_allowlist_advisory": {
+    "count": 78,
+    "story_fail": 0,
+    "note": "Allowlisted story routes bypass strict land QA; channel-graph mint wave (not fix_route_geometry)"
+  },
+  "hub_hospitality_journey_bp": {
+    "status": "advisory",
+    "count_approx": 17,
+    "note": "REWRITE/journey_bp on hospitality hubs — not deploy-blocking under tiered §3.7 gate"
   },
   "prod_capture": {
     "status": "blocked_without_auth",

@@ -155,18 +155,25 @@ async function waitMapReady(page) {
 async function focusPhase(page, phaseN, { marketSlug } = {}) {
   if (!phaseN) return;
   await page.evaluate(({ n, market }) => {
-    const partner = window.PARTNERS?.[window.PARTNER_ACTIVE?.slug || ''];
+    const slug = window.__PARTNER_BUILD__ || window.PARTNER_ACTIVE?.slug;
+    const partner = slug ? window.PARTNERS?.[slug] : null;
     if (!partner) return;
+    const intro = document.getElementById('intro-modal');
+    if (intro) intro.hidden = true;
     if (market && partner.markets && typeof openHubMarket === 'function') {
       const mk = partner.markets.find((m) => m.slug === market);
       if (mk) openHubMarket(partner, mk, false);
-    } else if (typeof startPartnerCarousel === 'function' && !window._CARO) {
-      startPartnerCarousel(partner);
+    } else if (typeof startPartnerCarousel === 'function') {
+      if (!window._CARO) startPartnerCarousel(partner);
     }
-    if (typeof showPhase === 'function') showPhase(n - 1);
+    if (typeof showPhase === 'function' && window._CARO) showPhase(n - 1);
   }, { n: phaseN, market: marketSlug || '' });
   await page.waitForFunction(
-    (n) => window._activePhaseN === n,
+    (n) => {
+      if (window._activePhaseN === n) return true;
+      const ch = window._CARO?.chapters?.[window._CARO?.i];
+      return ch?.kind === 'phase' && (ch.phase?.n ?? ch.phaseIndex + 1) === n;
+    },
     phaseN,
     { timeout: 30000 },
   ).catch(() => page.waitForTimeout(3500));
