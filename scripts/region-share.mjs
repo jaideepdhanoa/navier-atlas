@@ -11,6 +11,11 @@ export const REGION_ALIASES = {
   Asia: 'East Asia',
   'Middle East': 'MENA',
   Maghreb: 'MENA',
+  // Caspian basin — Baku (Caucasus) + Aktau/Kuryk (Central Asia) roll into the
+  // `caspian` region brief; without these aliases the card auto-populated zero
+  // clusters (the slugs `caucasus`/`central-asia` never matched `caspian`).
+  Caucasus: 'Caspian',
+  'Central Asia': 'Caspian',
 };
 
 export function normRegion(label) {

@@ -1,0 +1,388 @@
+#!/usr/bin/env python3
+"""Author the enriched data-clean/region_briefs.json (all 11 regions to cluster depth).
+Preserves existing tagline/summary; injects depth fields; validates every signature
+route_id resolves in ROUTES.json (null beats confidently-wrong)."""
+import json
+from pathlib import Path
+
+DC = Path("data-clean")
+cur = json.loads((DC / "region_briefs.json").read_text())
+routes = json.loads((DC / "ROUTES.json").read_text())
+rf = routes["features"] if isinstance(routes, dict) and "features" in routes else routes
+ROUTE_IDS = {f.get("properties", {}).get("id") for f in rf}
+
+# exact share-card stats — computed in pure Python here, mirroring collectRegionStats() in
+# scripts/region-share.mjs, so scope_stats == the /region/<slug> share card without a side file.
+_ALIAS = {
+    "SEA": "Southeast Asia",
+    "LatAm-Caribbean": "Latin America", "Latin-America": "Latin America",
+    "Caribbean": "Caribbean",
+    "Europe-Mediterranean": "Europe", "Europe-Atlantic": "Europe",
+    "Europe-Baltic": "Europe", "Europe-Med": "Europe",
+    "Asia": "East Asia",
+    "Middle East": "MENA", "Maghreb": "MENA",
+    "Caucasus": "Caspian", "Central Asia": "Caspian",
+}
+def _norm(r): return _ALIAS.get(r, r)
+def _slugify(label): return label.lower().replace(" ", "-")
+def _compute_stats():
+    fbt = json.loads((DC / "FEATURES_BY_TYPE.json").read_text())
+    clusters = json.loads((DC / "CLUSTERS.json").read_text())["clusters"]
+    cities, clset = {}, {}
+    seen = {}
+    for t in ("city", "priority_city"):
+        for f in fbt.get(t, []):
+            p = f.get("properties") or {}
+            cid, r0 = p.get("id"), p.get("region")
+            if not cid or not r0:
+                continue
+            slug = _slugify(_norm(r0))
+            seen.setdefault(slug, set())
+            if cid not in seen[slug]:
+                seen[slug].add(cid)
+                cities[slug] = cities.get(slug, 0) + 1
+            if p.get("cluster_id"):
+                clset.setdefault(slug, set()).add(p["cluster_id"])
+    for c in clusters:
+        slug = _slugify(_norm(c.get("region")))
+        if slug in cities and c.get("cluster_id"):
+            clset.setdefault(slug, set()).add(c["cluster_id"])
+    return {slug: (len(clset.get(slug, set())), cities[slug]) for slug in cities}
+STATS = _compute_stats()
+
+# marquee signature routes per region — ID-matched rollup from constituent clusters
+SIG = {
+    "southeast-asia": [
+        ("Bali ↔ Lombok — the headline resort crossing", "rn-c001edd855aa"),
+        ("Lombok ↔ Komodo — the eastern long-range expedition trunk", "rn-d2f360f76d12"),
+        ("Phuket ↔ Krabi — the marquee Andaman crossing", "rn-ebc8e494a09c"),
+        ("Manila → Palawan (El Nido / Coron / Amanpulo) — the national long-range hero", "edge__manila-philippines__palawan-el-nido-coron-amanpulo"),
+        ("Singapore → Desaru Coast — the cross-border Johor Strait hop", "rn-ef7c059adbde"),
+    ],
+    "mena": [
+        ("Dubai ↔ Abu Dhabi — the Gulf metro corridor", "rn-25065af2bcb4"),
+        ("Doha Corniche ↔ The Pearl — the all-electric waterfront hop", "rn-44cec9c94d4c"),
+        ("Red Sea Global ↔ NEOM — the long-range giga-project trunk", "rn-623a6aa42aba"),
+        ("Muscat ↔ Salalah — the long-range Dhofar coastal trunk", "edge-0753"),
+        ("Sharm El Sheikh ↔ NEOM (Sindalah) — the Gulf of Aqaba cross-border hop", "edge-0762"),
+    ],
+    "europe": [
+        ("Split ↔ Hvar — the marquee Dalmatian crossing", "edge__hvar-croatia__split"),
+        ("Santorini ↔ Mykonos — the marquee Cyclades crossing", "edge__santorini-greece__mykonos"),
+        ("Naples ↔ Capri — the Bay of Naples crossing", "e__naples-capri-procida-italy__beverello__naples-capri-procida-italy__marina-grande"),
+        ("Nice ↔ Monaco (Port Hercule) — the iconic Riviera hop", "e__cote-dazur-france__port-de-nice__monaco-monaco__port-hercule"),
+        ("Bergen ↔ Stavanger — the Norwegian west-coast trunk", "e__bergen-norway__strandkaiterminalen__stavanger-norway__fiskepiren-ferry-terminal"),
+    ],
+    "south-asia": [
+        ("Goa ↔ Mumbai — the long-range west-coast trunk", "rn-ff5ccaf1831e"),
+        ("Malé (Velana) → Soneva Fushi — the flagship resort transfer", "e__velana__soneva-fushi-jetty"),
+        ("Colombo ↔ Malé — the South Asian regional gateway", "edge-1155"),
+        ("Praslin ↔ La Digue — the iconic Seychelles Inner-Islands hop", "ics-2dd01cb8df"),
+        ("Kochi ↔ Kerala Backwaters — the heritage-waterway leg", "ics-68fc0a687b"),
+    ],
+    "east-asia": [
+        ("Seto Inland Sea ↔ Tokyo Bay — the long-range coastal trunk", "rn-bc1541dd93c5"),
+        ("Busan / Geoje ↔ Jeju — the long-range island-sea trunk", "rn-6786317ef18f"),
+        ("Ishigaki ↔ Kabira Bay — the subtropical Yaeyama hop", "ics-d71f97fdcc"),
+        ("Magong ↔ Penghu (Sheraton Grand) — the archipelago resort hop", "ics-79ad6bdcfc"),
+        ("Busan / Geoje ↔ Yeosu / Tongyeong — the Hallyeo maritime corridor", "ics-01732febf5"),
+    ],
+    "latin-america": [
+        ("Rio de Janeiro ↔ Angra dos Reis / Ilha Grande — the headline leisure corridor", "ics-6536c49acf"),
+        ("Cancún ↔ Isla Mujeres — the marquee Caribbean day-island crossing", "ics-4d043fa75a"),
+        ("Los Cabos — Palmilla ↔ San José del Cabo Marina", "ics-b5861451fb"),
+        ("Puerto Vallarta — the Bay of Banderas marina leg", "ics-0216f2c9e3"),
+    ],
+    "caribbean": None,   # 0 resolvable sealed corridors today — null beats confidently-wrong
+    "north-america": [
+        ("Palm Beach → Miami — the Atlantic coastal commute", "edge-1140"),
+        ("Miami ↔ Nassau (Bahamas) — the cross-Gulf-Stream crossing", "edge__miami-florida-usa__nassau-bahamas"),
+        ("Oʻahu (Ko Olina) ↔ Maui (Maalaea) — the marquee inter-island corridor", "edge-1127"),
+        ("Honolulu (Oʻahu) ↔ Kauaʻi — the Garden Isle channel crossing", "edge__oahu-honolulu-hawaii-usa__kauaʻi-nāwiliwili"),
+        ("Tampa Bay ↔ Naples — the Gulf-coast long-range trunk", "edge__tampa-bay-sarasota-florida-usa__boca-grande-link-south"),
+    ],
+    "oceania": [
+        ("Port Denarau (Nadi) ↔ Mamanuca resort islands — the mainland gateway transfer", "ics-d552817910"),
+        ("Tahiti (Papeete) ↔ Moorea — the gateway crossing", "ics-14f623ea21"),
+        ("Bora Bora ↔ Raiatea — the Society Islands hop", "ics-2fd7c1b2c3"),
+        ("Castaway Island ↔ Mana Island — the Mamanuca resort hop", "ics-2fcf17436a"),
+    ],
+    "africa": [
+        ("Dar es Salaam ↔ Zanzibar (Stone Town) — the iconic ferry crossing", "ics-dcfe6bc5ce"),
+        ("Stone Town ↔ Prison Island (Changuu) — the Zanzibar day-trip hop", "ics-5e2ca22157"),
+        ("Stone Town ↔ Kizimkazi — the south-Unguja diving coast", "ics-6a678fc084"),
+    ],
+    "caspian": None,     # 0 resolvable sealed corridors today
+}
+
+# depth prose, per region. archetypes use the canonical chip set.
+DEPTH = {
+"southeast-asia": {
+ "why_marine_mobility": "No single country tells the Southeast Asian story, because the region IS water: Indonesia alone spans more than 17,000 islands, and the Philippines, Thailand, and Malaysia each run their tourism and daily life across straits, gulfs, and archipelagos. Today that water leg is the weakest link — diesel ferries that are slow and weather-bound, or wet, loud speedboats with no schedule. Super-apps already own how the region books a ride; the premium water tier between island and mainland is the piece still missing.",
+ "demand_signals": [
+   {"archetype": "super_app", "label": "Super-app demand already at the dock", "note": "Grab, Gojek, and their peers move tens of millions of daily trips. The handoff from a booked car to the boat is where the experience breaks — exactly the seam a clean, scheduled foiling leg closes."},
+   {"archetype": "tourism", "label": "Archipelago tourism at scale", "note": "Bali, Phuket, Boracay, El Nido, Komodo and dozens more pull global visitor volumes whose first and last impression is the transfer boat."},
+   {"archetype": "essential_mobility", "label": "Island life depends on the crossing", "note": "For millions, the ferry isn't a holiday — it's the commute, the hospital run, the supply line. Reliability and weather tolerance are not luxuries here."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Resort and island gateway transfers", "body": "Airport-to-island and island-to-island legs — Bali–Lombok, Phuket–Krabi, Caticlan–Boracay — run today on ferries and speedboats. A quiet, stable foiling shuttle turns the worst part of the trip into a highlight."},
+   {"archetype": "super_app", "title": "The water leg inside the app", "body": "A foiling corridor booked in the same app as the car and the scooter — one journey, one receipt — extends a super-app's reach onto water it cannot serve today."},
+   {"archetype": "essential_mobility", "title": "Cross-border and commuter corridors", "body": "Singapore–Desaru and Sabah–Brunei show the cross-border pattern: a short open-water hop that road and bridge make slow, where a scheduled premium boat is simply faster."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "The dense inter-island mesh — Bali–Lombok, the Andaman and Gulf-of-Thailand crossings, the Visayas corridors — sits squarely in Pioneer II's all-electric ≤70 nm band: quiet, zero-emission, marina-to-marina.",
+   "quanta_lr": "The long trunks — Lombok–Komodo, Phuket–Langkawi, mainland-to-far-archipelago runs — extend into Quanta-LR's hybrid ≤700 nm range, opening corridors no electric ferry can reach.",
+ },
+ "transit_planning": "For a super-app or a tourism authority: Southeast Asia is the clearest case for a premium water tier layered on existing demand. The cars and scooters are booked; the islands are the destination; only the crossing is unsolved. A foiling mesh slots into the app and the dock that already exist.",
+ "competitive_landscape": "Today the water leg splits between public ferries (cheap, slow, weather-limited) and private speedboats (fast, expensive, unscheduled, noisy). Neither is premium-reliable. Electric-hydrofoil mobility occupies the empty middle — scheduled, quiet, and stable in chop.",
+ "seasonality": "Monsoon timing differs by coast — Thailand's Andaman and Gulf run opposite seasons, and Indonesia's east dries as the west wets — so a regional operator can chase calm water across the calendar rather than shutting down.",
+},
+"mena": {
+ "why_marine_mobility": "The Middle East and North Africa pair some of the world's most ambitious waterfront building programs with congested coastal cities and captive resort islands. Gulf metros are minutes apart by water yet an hour by road; Red Sea and giga-project resorts are designed around arrival by sea; and Mediterranean rivieras already price a premium transfer. Marine mobility is the overlay these programs are still assembling by road, helicopter, and conventional craft.",
+ "demand_signals": [
+   {"archetype": "essential_mobility", "label": "Gulf metros built on the water's edge", "note": "Dubai, Abu Dhabi, Doha and Manama ring their populations around marinas, islands, and corniches — short water lines that today lose to congested causeways."},
+   {"archetype": "luxury", "label": "Giga-project resorts arrive by sea", "note": "Red Sea Global, NEOM, The Pearl and Lusail are designed for water arrival; a clean, fast hydrofoil is the on-brand transfer their guests expect."},
+   {"archetype": "tourism", "label": "Cross-border Gulf and Red Sea hops", "note": "Muscat–Fujairah, Eastern Province–Bahrain, and Sharm–NEOM are short cross-water legs that road routing makes long."},
+ ],
+ "use_cases": [
+   {"archetype": "essential_mobility", "title": "Cross-emirate and cross-city commuting", "body": "Dubai–Abu Dhabi and Doha–Lusail are the headline metro-to-metro water corridors — a quiet foiling line that beats the highway at peak."},
+   {"archetype": "luxury", "title": "Resort and island gateway transfers", "body": "Doha–The Pearl, Red Sea Global–NEOM, and Muscat's resort coast turn the guest transfer into part of the experience rather than a logistics problem."},
+   {"archetype": "tourism", "title": "Cross-border Gulf and Aqaba corridors", "body": "Sharm–NEOM and Eastern Province–Manama show the cross-border opportunity: short open-water hops where a scheduled premium boat replaces a long land detour."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Intra-metro and resort legs — Dubai–Abu Dhabi, Doha–The Pearl, the UAE east coast — fit Pioneer II's all-electric ≤70 nm band, ideal for the region's harbour-craft and clean-mobility mandates.",
+   "quanta_lr": "The giga-project trunks — Red Sea Global–NEOM, Muscat–Salalah, cross-Gulf and cross-Aqaba hops — extend into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a Gulf authority or a hospitality developer: the waterfront is already built and the road is already congested. A foiling line is the missing piece that makes island and cross-metro arrival fast, quiet, and on-brand — without new bridges or causeways.",
+ "competitive_landscape": "Premium transfer today means a chauffeured car stuck in traffic, a helicopter at helicopter cost, or a conventional launch that is slow and fuel-heavy. Electric-hydrofoil mobility is faster than the road, a fraction of the helicopter, and clean enough for the region's sustainability mandates.",
+ "seasonality": "The Gulf and Red Sea run year-round with a hot, calm summer and mild winter; sea state is rarely a constraint, so corridors operate on a stable all-year schedule.",
+},
+"europe": {
+ "why_marine_mobility": "Europe's coasts are a near-perfect foiling map: short-sea crossings between islands and headlands that congestion, seasonality, and geography already make premium. The Greek Cyclades, the Croatian Adriatic, the French and Italian rivieras, the Norwegian fjords, and the Baltic and Atlantic city harbours all run heavy water traffic today — much of it on diesel ferries and fast craft that are loud, fuel-heavy, and weather-limited.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Mediterranean island tourism at volume", "note": "The Cyclades, Dalmatia, the Balearics, Capri and the Côte d'Azur draw enormous summer visitor flows whose journeys hinge on the island crossing."},
+   {"archetype": "essential_mobility", "label": "Fjord and archipelago lifelines", "note": "Norway's west coast and the Baltic archipelagos depend on year-round water links where road detours run hours."},
+   {"archetype": "essential_mobility", "label": "Harbour commuter corridors", "note": "Cross-channel and cross-harbour commutes — the Bosphorus, city-to-city Adriatic and North-Sea hops — already carry scheduled premium demand."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Marquee island crossings", "body": "Split–Hvar, Santorini–Mykonos, Naples–Capri and Nice–Monaco are the iconic legs — exactly where a quiet, stable hydrofoil lifts the experience above the crowded ferry deck."},
+   {"archetype": "essential_mobility", "title": "Fjord and coastal trunks", "body": "Bergen–Stavanger and the fjord crossings are year-round lifelines where a fast electric leg cuts a long, scenic but slow journey."},
+   {"archetype": "essential_mobility", "title": "Commuter and cross-water city links", "body": "The Bosphorus and short cross-harbour corridors carry daily commuters who already pay for speed and reliability."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Most European crossings — Cyclades, Dalmatia, Bay of Naples, the Riviera, fjord and harbour legs — sit inside Pioneer II's all-electric ≤70 nm band, matching Europe's strict emissions and harbour-noise rules.",
+   "quanta_lr": "The long open-water trunks — Split–Venice, Riviera–Sardinia, Amalfi–Costa Smeralda, Çeşme–Istanbul — reach into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a European port city or regional authority: foiling lines decarbonise the busiest tourist and commuter crossings without new infrastructure, and they do it quietly enough to satisfy the strictest harbour and marine-park rules.",
+ "competitive_landscape": "Conventional fast ferries dominate but are noisy, fuel-heavy, and uncomfortable in chop; private launches are expensive and unscheduled. Electric-hydrofoil mobility is the quiet, stable, emissions-clean upgrade on the same routes.",
+ "seasonality": "Mediterranean demand peaks May–October and the meltemi and bora winds shape summer scheduling; Atlantic and Baltic corridors run year-round with winter sea-state planning. Stability in chop is a real competitive edge here.",
+},
+"south-asia": {
+ "why_marine_mobility": "South Asia couples some of the planet's largest urban populations with island gateways and backwater geographies that road and conventional ferry serve poorly. India's west coast, Kerala's waterways, the Andamans, the Maldivian atolls, and the Sri Lankan and Seychellois island chains all run on water — and ride-hailing has already taught the region to book mobility on a phone.",
+ "demand_signals": [
+   {"archetype": "luxury", "label": "Resort-atoll transfers at the top of the market", "note": "The Maldives runs almost entirely on resort transfers — seaplane and launch today — a captive, premium, year-round flow built for a quiet foiling upgrade."},
+   {"archetype": "essential_mobility", "label": "Mega-city and backwater corridors", "note": "Mumbai harbour, Kochi's backwaters, and Goa's coast pair dense demand with water surfaces that roads cannot relieve."},
+   {"archetype": "tourism", "label": "Island-nation gateway hops", "note": "Praslin–La Digue, Mahé–Praslin, and the Andaman gateway are tourist-critical crossings run on conventional ferries today."},
+ ],
+ "use_cases": [
+   {"archetype": "luxury", "title": "Maldivian resort transfers", "body": "Malé–Soneva Fushi and Malé–Six Senses Laamu are flagship resort legs where a stable, quiet hydrofoil competes directly with the seaplane on comfort and reach."},
+   {"archetype": "essential_mobility", "title": "West-coast and backwater corridors", "body": "Goa–Mumbai and Kochi–Backwaters pair long-range coastal trunks with dense urban water that a foiling line serves where road cannot."},
+   {"archetype": "tourism", "title": "Inner-island tourist hops", "body": "Praslin–La Digue and the Andaman gateway are the marquee leisure crossings — short, scenic, and ferry-bound today."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Atoll, backwater, and inner-island legs — Maldivian transfers, Kochi, the Seychelles hops, Mumbai harbour — fit Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "The long trunks — Goa–Mumbai, Colombo–Malé, southern-atoll runs — extend into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a resort group or a coastal-city authority: South Asia offers both the captive premium market (atoll transfers) and the dense-demand market (mega-city harbours) — a foiling tier serves the top and the middle of the same map.",
+ "competitive_landscape": "Today it is seaplanes and launches at the luxury end (costly, weather-limited) and public ferries at the essential end (slow, crowded). Electric-hydrofoil mobility sits between — faster and quieter than the ferry, cheaper and lower-impact than the seaplane.",
+ "seasonality": "The southwest monsoon (roughly June–September) governs the Indian and Sri Lankan coasts; the Maldives and Seychelles run year-round with monsoon-shifted calm sides — so an operator can follow calm water seasonally.",
+},
+"east-asia": {
+ "why_marine_mobility": "East Asia is a string of island nations and inland seas wrapped around dense, tech-forward cities. Japan's Seto Inland Sea and Ryukyu chain, Korea's southern island sea, Taiwan's Penghu archipelago, and the Pearl River Delta all carry heavy, habitual water traffic — and these are exactly the markets most ready to book a premium water leg on a phone.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Inland-sea and island tourism", "note": "The Seto Inland Sea art islands, Jeju, the Yaeyamas, and Penghu pull strong domestic and regional visitor flows across short crossings."},
+   {"archetype": "essential_mobility", "label": "Coastal-city commuter density", "note": "Pearl River Delta and Korean and Japanese coastal cities concentrate enormous commuter demand on the water's edge."},
+   {"archetype": "tourism", "label": "Resort-coast and archipelago hops", "note": "Jeju's resort coast and the Penghu inter-island links are tourist-critical legs served by conventional ferries today."},
+ ],
+ "use_cases": [
+   {"archetype": "essential_mobility", "title": "Island-sea trunk corridors", "body": "Busan/Geoje–Jeju and Seto Inland Sea–Tokyo Bay are the long coastal trunks where a fast foiling line reshapes a slow ferry journey."},
+   {"archetype": "tourism", "title": "Subtropical and archipelago hops", "body": "Ishigaki–Kabira and the Penghu resort legs are short, scenic crossings ideal for a quiet, stable hydrofoil."},
+   {"archetype": "essential_mobility", "title": "Hallyeo and coastal commuter links", "body": "Busan–Yeosu/Tongyeong and the southern-coast corridors carry mixed commuter and tourist demand on a daily rhythm."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Most East-Asian crossings — Ryukyu hops, Penghu links, Jeju's resort coast, the Hallyeo corridor — sit inside Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "The long island-sea trunks — Busan/Geoje–Jeju, Seto Inland Sea–Tokyo Bay — reach into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a Japanese, Korean, or Taiwanese operator: the demand and the digital habit already exist; a foiling tier decarbonises the busiest island crossings and adds a premium option the conventional ferry cannot match.",
+ "competitive_landscape": "High-speed ferries are well established but loud, fuel-heavy, and rough in swell. Electric-hydrofoil mobility is the quiet, stable, zero-local-emission upgrade on the same proven routes.",
+ "seasonality": "Typhoon season (roughly July–October) shapes summer scheduling across the region; spring and autumn are peak calm-water windows, and the inland seas stay relatively sheltered year-round.",
+},
+"latin-america": {
+ "why_marine_mobility": "Latin America wraps Pacific and Atlantic coasts around leisure archipelagos and waterfront cities where a quiet foiling tier unlocks resort transfers and commuter relief without new highway spend. Brazil's Costa Verde, Mexico's Caribbean and Baja coasts, and the Pacific resort bays all run heavy water traffic on conventional craft today.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Leisure-archipelago demand", "note": "Rio's Costa Verde / Ilha Grande, Cancún–Isla Mujeres, and Los Cabos pull strong leisure flows across short, scenic crossings."},
+   {"archetype": "essential_mobility", "label": "Waterfront-city corridors", "note": "Coastal megacities pair dense demand with bays and channels that road traffic clogs."},
+   {"archetype": "luxury", "label": "Resort-marina transfers", "note": "Riviera Nayarit, Los Cabos, and Angra's marinas serve a premium transfer market built for a clean hydrofoil."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Day-island and leisure crossings", "body": "Cancún–Isla Mujeres and Rio–Ilha Grande are the marquee leisure legs — short crossings where a quiet, stable foiling shuttle outclasses the crowded ferry."},
+   {"archetype": "luxury", "title": "Resort-marina transfers", "body": "Los Cabos and Puerto Vallarta marina legs turn the guest transfer into part of the stay."},
+   {"archetype": "essential_mobility", "title": "Bay and coastal commuter relief", "body": "Waterfront cities can move people across the bay faster by foiling line than by congested shore road."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Bay, day-island, and resort-marina legs — Cancún–Isla Mujeres, the Costa Verde and Baja hops — sit inside Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "Longer Pacific and Atlantic coastal trunks extend into Quanta-LR's hybrid ≤700 nm range as corridors mature.",
+ },
+ "transit_planning": "For a coastal-city or tourism authority: a foiling tier adds premium leisure transfers and bay-crossing commuter relief on the water that is already the city's front door — no new road needed.",
+ "competitive_landscape": "Diesel ferries and pangas dominate today — affordable but slow, loud, and weather-limited at the leisure end. Electric-hydrofoil mobility is the quiet, reliable premium tier on the same routes.",
+ "seasonality": "The Caribbean and Pacific coasts have a wet/hurricane season (roughly June–November) and a dry, calm high season; an operator schedules premium demand into the calm-water months.",
+},
+"caribbean": {
+ "why_marine_mobility": "The Caribbean is defined by water: resort transfers, inter-island commutes, and cruise-gateway hops where diesel ferries and small aircraft are often the only options. A premium electric-hydrofoil mesh raises reliability and cuts noise across hundreds of short-sea corridors — but the region's sealed hero corridors are still being built, so the network here is shown by its clusters and gateways rather than by marquee routes yet.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Island-hopping leisure at scale", "note": "The Caribbean's economy runs on resort and cruise-gateway transfers across short, scenic crossings."},
+   {"archetype": "essential_mobility", "label": "Inter-island lifelines", "note": "For island communities the inter-island boat is essential infrastructure, not a holiday extra."},
+   {"archetype": "luxury", "label": "Private-island and resort transfers", "note": "High-end resorts and private islands depend on a premium, reliable transfer that conventional craft deliver inconsistently."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Resort and cruise-gateway transfers", "body": "Short island-to-island and gateway-to-resort legs where a quiet, stable hydrofoil lifts the arrival experience above the diesel ferry."},
+   {"archetype": "essential_mobility", "title": "Inter-island commuter links", "body": "Daily inter-island travel that conventional ferries serve slowly — a foiling line adds speed and reliability."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "The Caribbean's dense short-sea mesh fits Pioneer II's all-electric ≤70 nm band — quiet, zero-emission island hops.",
+   "quanta_lr": "Longer inter-island and cross-channel trunks extend into Quanta-LR's hybrid ≤700 nm range as corridors are sealed.",
+ },
+ "transit_planning": "For a Caribbean tourism authority or resort group: the opportunity is a premium, reliable water mesh across corridors small aircraft and diesel ferries serve today — explore the clusters and gateways below as the sealed corridor map fills in.",
+ "competitive_landscape": "Today it is diesel ferries (cheap, slow, weather-bound) and small aircraft (fast, costly, capacity-limited). Electric-hydrofoil mobility occupies the reliable, quiet premium middle.",
+ "seasonality": "Hurricane season (roughly June–November) shapes scheduling; the December–April dry season is the calm-water peak.",
+},
+"north-america": {
+ "why_marine_mobility": "North America's harbour cities and coastal corridors are natural foiling markets where the water is simply faster than gridlocked road. The Pacific Northwest island mesh, the Florida coast and the Bahamas crossing, the Hawaiian channels, and the great harbour cities all carry heavy water traffic — and commuters and visitors who already pay for speed.",
+ "demand_signals": [
+   {"archetype": "essential_mobility", "label": "Harbour-city congestion relief", "note": "Florida's coast, NYC harbour, and the Salish Sea pair dense demand with road networks that gridlock at peak."},
+   {"archetype": "tourism", "label": "Island-channel leisure", "note": "The Hawaiian inter-island channels and the Bahamas crossing carry strong, premium-priced visitor demand."},
+   {"archetype": "essential_mobility", "label": "Island-community lifelines", "note": "Pacific Northwest and New England island communities depend on year-round water links."},
+ ],
+ "use_cases": [
+   {"archetype": "essential_mobility", "title": "Coastal commuter corridors", "body": "Palm Beach–Miami and Gulf-coast trunks move commuters faster by water than by congested interstate."},
+   {"archetype": "tourism", "title": "Island-channel crossings", "body": "Oʻahu–Maui, Honolulu–Kauaʻi, and Miami–Nassau are the marquee channel crossings — long, premium legs where speed and stability matter most."},
+   {"archetype": "essential_mobility", "title": "Archipelago lifelines", "body": "Salish Sea and San Juan island links are year-round essential corridors a quiet foiling line serves cleanly."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Harbour-commute and short coastal legs — Palm Beach–Miami, the Salish Sea mesh — sit inside Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "The open-water channels — Oʻahu–Maui, Miami–Nassau, Tampa–Naples — reach into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a US or Canadian harbour authority: a foiling line relieves the most congested waterfront commutes and adds a premium island-channel option, all on water the city already fronts.",
+ "competitive_landscape": "Conventional ferries and water taxis are established but slow and fuel-heavy; small aircraft serve the channels at high cost. Electric-hydrofoil mobility is the quiet, fast, clean upgrade across both.",
+ "seasonality": "Atlantic hurricane season and Pacific winter storms shape scheduling; summer is the peak calm-water and visitor window across most corridors.",
+},
+"oceania": {
+ "why_marine_mobility": "Oceania spans Australasian harbour cities and the Pacific island chains where inter-island transport is essential infrastructure and tourism depends on reliable water links. Fiji's Mamanuca and Yasawa groups and French Polynesia's Society Islands run almost entirely on resort and inter-island transfers today.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Pacific resort-island transfers", "note": "Fiji's Mamanucas and French Polynesia's Society Islands pull strong, premium visitor flows across short island crossings."},
+   {"archetype": "essential_mobility", "label": "Inter-island lifelines", "note": "For Pacific island communities the boat is the road — reliability and weather tolerance are essential."},
+   {"archetype": "tourism", "label": "Gateway-to-resort hops", "note": "Nadi–Mamanuca and Tahiti–Moorea are the gateway transfers that frame the whole visit."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Gateway-to-island transfers", "body": "Port Denarau–Mamanuca and Tahiti–Moorea are the marquee gateway legs — short crossings where a quiet, stable hydrofoil sets the tone for the stay."},
+   {"archetype": "tourism", "title": "Resort-island hops", "body": "Bora Bora–Raiatea and the Mamanuca inter-island links are scenic premium hops served by conventional craft today."},
+   {"archetype": "essential_mobility", "title": "Inter-island community links", "body": "Year-round island links where a reliable foiling line outperforms weather-bound ferries."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "The Pacific resort and inter-island mesh — Mamanuca, Society Islands, gateway transfers — fits Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "Longer Australasian coastal and inter-archipelago trunks extend into Quanta-LR's hybrid ≤700 nm range.",
+ },
+ "transit_planning": "For a Pacific resort group or island authority: a foiling tier upgrades the transfer that defines the visitor experience and strengthens the essential inter-island links communities rely on.",
+ "competitive_landscape": "Today it is conventional resort launches and ferries — slow, loud, and weather-limited. Electric-hydrofoil mobility is the quiet, stable, clean premium transfer on the same routes.",
+ "seasonality": "The South Pacific cyclone season (roughly November–April) shapes scheduling; the dry season is the calm-water visitor peak.",
+},
+"africa": {
+ "why_marine_mobility": "Africa's coastal cities, island states, and lake corridors pair essential-mobility demand with rapidly scaling ride-hailing — a greenfield premium water tier for crossings that ferries serve slowly today. The East African coast, the Indian Ocean islands, and the West African waterfronts all run heavy water traffic on conventional craft.",
+ "demand_signals": [
+   {"archetype": "tourism", "label": "Indian-Ocean island tourism", "note": "Zanzibar and the East African coast pull strong visitor flows across iconic ferry crossings."},
+   {"archetype": "essential_mobility", "label": "Coastal-city and lake corridors", "note": "Coastal megacities and the great lakes pair dense demand with water surfaces underserved by reliable transport."},
+   {"archetype": "ride_hail", "label": "Ride-hailing scaling on the coast", "note": "African super-apps and ride-hailing platforms are scaling fast in coastal cities — the water leg is the natural premium extension."},
+ ],
+ "use_cases": [
+   {"archetype": "tourism", "title": "Island ferry crossings upgraded", "body": "Dar es Salaam–Zanzibar and the Stone Town day-trip hops are iconic, heavily used crossings where a quiet, stable hydrofoil lifts a slow ferry journey."},
+   {"archetype": "essential_mobility", "title": "Coastal and lake commuter corridors", "body": "Coastal cities and lake gateways can move people faster across the water than around congested shore roads."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Island-crossing and coastal legs — Dar es Salaam–Zanzibar, the Stone Town hops — fit Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "Longer coastal and inter-island trunks extend into Quanta-LR's hybrid ≤700 nm range as corridors are sealed.",
+ },
+ "transit_planning": "For an African coastal authority or super-app: the demand and the digital habit are scaling together; a foiling tier adds a premium, reliable water leg on the busiest crossings without new road or rail.",
+ "competitive_landscape": "Today it is diesel ferries (cheap, slow, crowded) and informal boats. Electric-hydrofoil mobility is the quiet, reliable premium upgrade on the same well-travelled corridors.",
+ "seasonality": "The Indian Ocean monsoon (the kaskazi and kusi winds) shapes the East African coast's calendar; an operator schedules premium demand into the calm-water seasons.",
+},
+"caspian": {
+ "why_marine_mobility": "The Caspian basin links Azerbaijan's and Kazakhstan's coastal cities across the world's largest inland sea, where cross-shore mobility is ferry-dependent and built around energy and trade gateways. The network here is early — shown by its gateway cities rather than by sealed hero corridors yet — but the cross-sea geography is a natural fit for a premium foiling overlay.",
+ "demand_signals": [
+   {"archetype": "essential_mobility", "label": "Cross-sea gateway demand", "note": "Baku, Aktau, and Kuryk anchor energy and trade flows where cross-shore movement is slow and ferry-dependent today."},
+   {"archetype": "essential_mobility", "label": "Coastal-city corridors", "note": "Caspian coastal cities pair concentrated demand with water links that conventional craft serve infrequently."},
+ ],
+ "use_cases": [
+   {"archetype": "essential_mobility", "title": "Cross-shore gateway links", "body": "Short cross-water legs between Caspian gateway cities where a fast, reliable foiling line would replace infrequent ferry service."},
+ ],
+ "navier_fit": {
+   "pioneer_ii": "Near-shore and intra-bay Caspian legs fit Pioneer II's all-electric ≤70 nm band.",
+   "quanta_lr": "Longer cross-sea trunks would extend into Quanta-LR's hybrid ≤700 nm range as corridors are sealed.",
+ },
+ "transit_planning": "For a Caspian coastal authority: the inland-sea geography concentrates demand on a handful of gateway cities — explore them below as the sealed corridor map develops.",
+ "competitive_landscape": "Cross-Caspian movement today relies on infrequent ferries and energy-sector craft. A premium foiling tier would add speed and reliability the current options lack.",
+ "seasonality": "The northern Caspian can ice in winter and the sea sees strong seasonal winds; scheduling follows the calm-water seasons.",
+},
+}
+
+# Six summaries were just shy of the cluster-depth bar (>=250 chars). Extend each with one
+# grounded, plain-English clause — same register as the regions that already pass. Wording-tuning
+# only (Jaideep invited it); no number/claim invented.
+SUMMARY_OVERRIDE = {
+    "africa": "Africa's coastal megacities, island nations, and lake corridors combine essential mobility demand with rapidly scaling ride-hailing platforms — a greenfield premium water tier for crossings that ferries serve slowly today. From the East African coast to the Indian Ocean islands and the West African waterfronts, dense populations already move heavily by water on conventional craft.",
+    "caspian": "The Caspian basin links Azerbaijan, Kazakhstan, and Turkmenistan coastal cities across the world's largest inland sea, where cross-shore mobility is ferry-dependent and built around energy and trade gateways. The network here is early — represented by its gateway cities rather than sealed hero corridors yet — but the cross-sea geography is a natural fit for a quiet, premium foiling overlay.",
+    "east-asia": "East Asia spans Japan's inland sea and Ryukyu chains, Korea's coastal cities, Taiwan's island hops, and Greater China's Pearl River Delta — dense, tech-forward markets where premium water mobility can slot into existing super-app habits. Commuters and visitors already pay for speed and reliability, and much of the heavy short-hop water traffic still runs on slower conventional ferries today.",
+    "latin-america": "Latin America combines Pacific and Atlantic coastal corridors, Caribbean leisure islands, and congested waterfront cities where a quiet foiling tier unlocks resort transfers and commuter relief without new highway spend. Brazil's Costa Verde, Mexico's Caribbean and Baja coasts, and the Pacific resort bays all carry heavy water traffic on conventional craft that a faster, cleaner tier can upgrade.",
+    "north-america": "North America's harbour cities and coastal corridors — from Pacific Northwest islands to the Florida keys, NYC harbour commuting, and Great Lakes gateways — are natural foiling markets where water is faster than gridlocked road. These markets carry heavy ferry and water-taxi volumes today, with commuters and visitors who already pay a premium for the time they save on the water.",
+    "oceania": "Oceania spans Australia's harbour cities, New Zealand's coastal corridors, and Pacific island chains where inter-island transport is essential infrastructure and tourism depends on reliable water links. Fiji's Mamanuca and Yasawa groups and French Polynesia's Society Islands run almost entirely on resort and inter-island transfers, much of it on slower conventional vessels today.",
+}
+
+OUT = {"_doc": cur["_doc"]}
+for slug, base in cur.items():
+    if slug == "_doc":
+        continue
+    cl, ci = STATS[slug]
+    d = DEPTH[slug]
+    sig = SIG[slug]
+    rec = {
+        "region_slug": base["region_slug"],
+        "display": base["display"],
+        "tagline": base["tagline"],
+        "summary": SUMMARY_OVERRIDE.get(slug, base["summary"]),
+        "scope_stats": {"clusters": cl, "cities": ci},
+        "why_marine_mobility": d["why_marine_mobility"],
+        "demand_signals": d["demand_signals"],
+        "use_cases": d["use_cases"],
+        "navier_fit": d["navier_fit"],
+        "signature_routes": (
+            [{"label": lbl, "route_id": rid} for (lbl, rid) in sig] if sig else None
+        ),
+        "transit_planning": d["transit_planning"],
+        "competitive_landscape": d["competitive_landscape"],
+        "seasonality": d["seasonality"],
+        "regulatory_note": None,  # region scale: licensing is per-country → defer to cluster briefs
+    }
+    # validate signature route_ids resolve
+    if rec["signature_routes"]:
+        bad = [r["route_id"] for r in rec["signature_routes"] if r["route_id"] not in ROUTE_IDS]
+        if bad:
+            raise SystemExit(f"UNRESOLVED route_id in {slug}: {bad}")
+    OUT[slug] = rec
+
+(DC / "region_briefs.json").write_text(json.dumps(OUT, ensure_ascii=False, indent=2) + "\n")
+print("wrote region_briefs.json — 11 regions enriched")
+for slug in OUT:
+    if slug == "_doc":
+        continue
+    r = OUT[slug]
+    nsr = len(r["signature_routes"]) if r["signature_routes"] else 0
+    print(f"  {slug:16} stats={r['scope_stats']} sig_routes={nsr} ds={len(r['demand_signals'])} uc={len(r['use_cases'])}")
