@@ -4,6 +4,20 @@ _Last updated 2026-05-30 (overnight session)._
 
 ---
 
+## 2026-06-30 — PTA category replication (batch 3): Transport for NSW · Washington State Ferries · NYC Ferry · Uber Boat by Thames Clippers
+
+Rolled the Bahrain MOTC gold pattern through four mature Western ferry authorities — same de-jargon, domestic-first arc, public-value economics, sourced boarding points, and hand-waypointed zero-land-crossing Grok routing handoffs. These networks are BP-rich, so each dossier carries the full published stop list.
+
+**Sourced master-plan grounding (boarding points to the real network):**
+- **Transport for NSW (Sydney Ferries)** — full F1–F10 wharf network (Circular Quay, Manly, Taronga, Watsons Bay, Rose Bay, Double Bay, Cremorne, Mosman, Neutral Bay, Milsons Point, Barangaroo, Pyrmont Bay, the Parramatta River chain to Parramatta, Olympic Park, Cockatoo Island, Balmain, Birchgrove, Greenwich, Woolwich, Abbotsford, etc.); NSW net-zero-2050 fleet mandate + first NSW electric ferry at Sydney Fish Market (2029). 31 BPs.
+- **Washington State Ferries** — the 20-terminal / 10-route system (Seattle/Colman, Bainbridge, Bremerton, Kingston, Edmonds, Mukilteo, Clinton, Fauntleroy, Vashon, Southworth, Point Defiance, Tahlequah, Anacortes, Lopez, Shaw, Orcas, Friday Harbor, Coupeville, Port Townsend); largest US hybrid-electric ferry program; WSF 2040 Long Range Plan. 19 BPs.
+- **NYC Ferry** — the six-route / ~25-landing system (Wall St/Pier 11, E 34th, Hunters Point, Greenpoint, India St, Schaefer Landing/S Williamsburg, DUMBO/Fulton, Sunset Park/BAT, Bay Ridge, Astoria, Roosevelt Island, Long Island City, Soundview, St. George, Stuyvesant Cove, Rockaway, Battery Park City, Governors Island, etc.); NYCEDC citywide plan; carbon-neutral-2050 goal. 25 BPs.
+- **Uber Boat by Thames Clippers / TfL** — the RB1/RB2/RB4/RB6 pier network (Putney, Wandsworth, Chelsea Harbour, Cadogan, Battersea Power Station, St George Wharf/Vauxhall, Millbank, Westminster, London Eye, Embankment, Festival/Bankside, Blackfriars, London Bridge City, Tower, Canary Wharf, Greenland/Surrey Quays, Masthouse Terrace, Greenwich, North Greenwich, Royal Wharf, Woolwich, Barking Riverside); London net-zero-2030 + first hybrid river buses. 24 BPs.
+
+**Same reshape as batch 2:** dropped the Journey-GMV super-app ladder rung, plain operating-revenue ladder + public-value block, plain horizon names (Starter/Full/Mature network), phase rationale/narrative de-jargoned, all featured-routes/journeys rebuilt on real pier/wharf/terminal nodes with `route_id: null` + `_link_status: "pending-seal"`. Cities verified: `sydney-australia`, `seattle-puget-sound-usa`, `new-york-harbor-usa`, `london-thames-uk` all resolve. Four Grok routing specs written with partner-specific hazard tables (Sydney Heads/Sow-and-Pigs/Garden Island; Rich Passage/orca waters/Deception Pass; East River currents/bridge piers; Thames wash limits/bridge spans/PLA reaches). All four strict gates + build green; fidelity PASS journey_bp=0 on all four.
+
+---
+
 ## 2026-06-30 — PTA category replication (batch 2): Dubai RTA · Abu Dhabi ITC · RAK RAKTA · Hong Kong TD
 
 Rolled the Bahrain MOTC gold pattern through four more transport authorities with full depth — same de-contamination, domestic-first arc, public-value economics, sourced boarding points, and hand-waypointed zero-land-crossing Grok routing handoffs.
