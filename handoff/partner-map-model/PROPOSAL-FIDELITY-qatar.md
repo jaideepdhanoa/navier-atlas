@@ -1,12 +1,12 @@
 # Proposal fidelity — qatar
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:23Z
+**Checked:** 2026-06-30T14:03:36Z
 
 ## Summary
 
-- Items audited: 8
-- KEEP: 8
+- Items audited: 12
+- KEEP: 12
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -16,11 +16,15 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Yas Marina → Four Seasons Al Maryah Jetty | `rn-80c408c085a6` | **KEEP** | — |
-| journey | — | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `rn-9349160e716f` | **KEEP** | — |
-| journey | — | Fujairah → Khorfakkan Corniche / Port | `rn-bc685bdb0da3` | **KEEP** | — |
-| journey | — | ميناء صيادين غليلة → ميناء صيادين خورخوير | `rn-501c17b57a72` | **KEEP** | — |
-| featured | 1 | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `rn-9349160e716f` | **KEEP** | — |
-| featured | 2 | ميناء صيادين غليلة → ميناء صيادين خورخوير | `rn-501c17b57a72` | **KEEP** | — |
-| featured | 3 | cross-border business travel | `—` | **KEEP** | — |
-| featured | 4 | Fujairah → Khorfakkan Corniche / Port | `rn-bc685bdb0da3` | **KEEP** | — |
+| journey | — | Lusail Ferry Terminal → Corniche Ferry Stop (West  | `—` | **KEEP** | — |
+| journey | — | Corniche Ferry Stop (West Bay) → The Pearl Ferry S | `—` | **KEEP** | — |
+| journey | — | Old Doha Port (Mina District) → Hamad Internationa | `—` | **KEEP** | — |
+| journey | — | Old Doha Port (Mina District) → Al Wakrah (Souq Al | `—` | **KEEP** | — |
+| journey | — | Old Doha Port (Mina District) → Sa'ada Marina (Bah | `—` | **KEEP** | — |
+| featured | 1 | Lusail ↔ West Bay / Corniche inner-bay shuttle | `—` | **KEEP** | — |
+| featured | 1 | Corniche ↔ The Pearl | `—` | **KEEP** | — |
+| featured | 2 | Old Doha Port ↔ Hamad International Airport waterf | `—` | **KEEP** | — |
+| featured | 2 | Doha ↔ Al Wakrah | `—` | **KEEP** | — |
+| featured | 2 | Old Doha Port ↔ Katara Cultural Village | `—` | **KEEP** | — |
+| featured | 2 | Lusail ↔ Simaisma ↔ Al Khor (northern coast) | `—` | **KEEP** | — |
+| featured | 3 | Qatar ↔ Bahrain (Old Doha Port ↔ Sa'ada Marina) | `—` | **KEEP** | — |
