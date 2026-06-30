@@ -4,6 +4,61 @@ _Last updated 2026-05-30 (overnight session)._
 
 ---
 
+## 2026-06-30 — PTA category replication (batch 2): Dubai RTA · Abu Dhabi ITC · RAK RAKTA · Hong Kong TD
+
+Rolled the Bahrain MOTC gold pattern through four more transport authorities with full depth — same de-contamination, domestic-first arc, public-value economics, sourced boarding points, and hand-waypointed zero-land-crossing Grok routing handoffs.
+
+**Sourced master-plan grounding (boarding points to the real network):**
+- **Dubai RTA** — Marine Transport Master Plan 2030 (ridership 14.7M→22.2M/yr, 7→35 lines, 48→79 stations); Creek/Water Canal/Marina/Harbour/Jumeirah-coast/islands network incl. Souk Al Marfa at Dubai Islands; live abra/water-bus/water-taxi/ferry; optional domestic Dubai↔Abu Dhabi express.
+- **Abu Dhabi ITC** — Abu Dhabi Maritime public water-transport network (700k+ pax to date); Yas Bay, Al Bandar, Saadiyat, Rabdan, Reem, Corniche, Al Raha; Oct-2025 schedule expansion; mangrove/lagoon channels.
+- **RAK RAKTA** — Transport Master Plan 2030 + Marine Transport Project (heritage abra, Al Marjan↔Al Qawasim Corniche classic taxi); Al Marjan/Wynn (2027), Al Hamra, Mina Al Arab resort-island spine; optional Dubai express.
+- **Hong Kong TD** — ~95 licensed ferry routes (11 in-harbour, 84 outer); six outlying-island lifelines (Cheung Chau, Mui Wo, Peng Chau, Lamma, Discovery Bay), Star Ferry; government electric/hybrid-ferry pilot; Climate Action Plan 2050.
+
+**Same contamination pattern caught and removed on all four** (esp. RAKTA, which carried internal "Tasklet/Grok route seal ledger," "exact-bind Musandam/Khasab," and Quanta-LR roadmap notes in partner-facing fields): de-jargoned, scrubbed cross-border/out-of-scope corridors, rebuilt `end_state`/`wow_corridors`, reshaped economics to the public-value convention (no SOM/SAM/TAM/super-app ladder).
+
+**Per authority:** 5–16 sourced boarding points, domestic-first phases, 4 plain-English unlocked journeys, clean proof points / objections / ask / close, a PTA dossier (anchors + hazards), and a Grok routing spec with explicit hand-waypoints + `interior_land_km==0` gate. All route_ids honest null + `_link_status: "pending-seal"`. Unresolved/mint-new berths flagged for Grok, not faked.
+
+**Gates:** schema exit 0 · fidelity all 4 PASS (journey_bp=0) · linkage 0 gaps · geometry strict-severe exit 0 · seal-integrity exit 0 · build exit 0.
+
+---
+
+## 2026-06-30 — PTA category replication: Qatar MOT + Singapore MPA
+
+Rolled the Bahrain MOTC gold pattern through **Qatar MOT** and **Singapore MPA** with full depth.
+
+**Both pages had the same contamination Bahrain did — caught and removed:**
+- **Qatar:** display read "Qatar Tourism"; journeys were pasted-in UAE/RAK corridors (Yas Marina, La Mer
+  Dubai, Fujairah↔Khorfakkan, Arabic RAK fishing ports); `{home}`/"inter-emirate" token leaks; full
+  super-app GMV ladder; internal-jargon KPIs.
+- **Singapore MPA:** journeys/KPIs were Grab/Indonesia (Bali↔Lombok↔Komodo, "Every coastal Grab market",
+  MAPALLA); `_economics_authored_for: "grab"`; `{home}`/"inter-emirate" leaks; super-app ladder.
+
+**Rewritten to the PTA pattern (sourced, domestic-first, jargon-free):**
+- **Qatar** grounded in the Ministry's real Water Taxi project — Lusail/Pearl/Corniche terminals completed
+  Nov 2024 with electric-charging pontoons; the published Al Wakrah→Al Khor network (8 stations, 3 lines);
+  the new Qatar–Bahrain ferry (Nov 2025); 25%-by-2030 GHG target. Domestic Doha-Bay + east-coast spine;
+  cross-Gulf link to Bahrain is optional Phase 3.
+- **Singapore MPA** grounded in the real clean-harbour-craft mandate — all new craft electric/B100/net-zero
+  from 2030, net-zero harbour craft 2050; live e-HC charging pilot at Marina South Pier; live Southern-Islands
+  & Pulau Ubin ferries; Causeway ~350k crossings/day. Domestic harbour + islands spine; Batam/Bintan/Johor
+  relief corridors optional Phase 3. MPA's genuine "prove first-of-class, export the standard" angle kept.
+- Economics reshaped to the **PTA public-value convention** (plain rungs; super-app GMV rung dropped;
+  `public_value` levers added; numbers flagged for Grok regen from the clean domestic networks).
+- All `route_id`s null + `_link_status: "pending-seal"` (honest intentional-null). City IDs with no registry
+  entry (`al-khor-qatar`, `batam-indonesia`, `bintan-indonesia`) kept in labels/narrative only and flagged
+  for Grok to mint — not listed in `cities` arrays.
+
+**Grok handoffs (mint + route, zero land crossings):**
+`GROK-SPEC-qatar-domestic-routing-2026-06-30.md`, `GROK-SPEC-singapore-mpa-domestic-routing-2026-06-30.md`,
+backed by `PTA-DOSSIER-qatar.json` and `PTA-DOSSIER-singapore-mpa.json` (anchors + hazards: Pearl/Lusail
+reclamation, HIA land, Doha reef flats; Singapore TSS/anchorages, the Causeway, Sisters' Islands reefs,
+Pulau Tekong live-firing areas).
+
+**Gates:** schema 63/63 · fidelity qatar + singapore-mpa PASS (journey_bp=0) · linkage 0 gaps ·
+geometry exit 0 · seal-integrity exit 0 · build exit 0.
+
+---
+
 ## 2026-06-30 — Public Transport Authority category: Bahrain MOTC gold reference
 
 New proposal category for **public transport authorities** (distinct from mobility partners:
