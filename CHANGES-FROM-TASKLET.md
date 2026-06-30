@@ -1,6 +1,36 @@
 # Changes from Tasklet — pitch layer + route-label + Quanta-LR curation
 
-_Last updated 2026-05-30 (overnight session)._
+_Last updated 2026-07-01 (overnight session)._
+
+---
+
+## 2026-07-01 — PTA category replication (batch 5): Stockholm · Lisbon · Auckland · Vancouver SeaBus · Boston MBTA · Hamburg HADAG · Bangkok Chao Phraya · + India (Kochi Water Metro · Mumbai/MMB)
+
+Rolled the Bahrain MOTC gold pattern through **nine more public transport / port authorities** — seven international plus the two India flagships in PTA framing (Jaideep-approved). Same de-jargon, domestic-first arc, public-value economics, sourced boarding points, honest-null routes (`geometry_seal_pending`), honest-pending economics (empty ladders + qualitative public-value levers; renderer guards on `(rungs||[]).length`), and hand-waypointed zero-land-crossing Grok routing handoffs.
+
+**International (7):**
+- **Stockholm — Waxholmsbolaget** (`stockholm-sweden`): archipelago + inner-city commuter boats (SL/Region Stockholm). 22 BPs (Strömkajen, Nybroplan, Slussen, Djurgården, Nacka/Saltsjöbaden, Vaxholm, Lidingö, Ekerö/Drottningholm…), 12 corridors.
+- **Lisbon — Transtejo/Soflusa** (`lisbon-tagus-portugal`): Tagus cross-river commuter ferries. 16 BPs (Cais do Sodré, Terreiro do Paço, Belém, Cacilhas, Montijo, Seixal, Barreiro, Trafaria, Porto Brandão…). ⚑ **ID-match note for Grok:** feature/cluster id is `lisbon-tagus-portugal` but the brief's internal `city_id` is `lisbon-tagus` — bind by ID-match, do not mint a divergent node.
+- **Auckland — Auckland Transport (AT Metro ferries)** (`auckland-new-zealand`): Waitematā/Hauraki Gulf. 18 BPs (Downtown, Devonport, Stanley Bay, Bayswater, Northcote Pt, Birkenhead, Half Moon Bay, Hobsonville, West Harbour, Gulf Harbour, Waiheke/Matiatia, Rangitoto…).
+- **Vancouver — TransLink SeaBus + passenger ferries** (`vancouver-canada`): Burrard Inlet. 12 BPs (Waterfront, Lonsdale Quay, plus False Creek landings as study stops).
+- **Boston — MBTA Ferry** (`boston-new-england-usa`): Boston Harbor. 20 BPs (Long Wharf, Rowes Wharf, Hingham, Hull, Charlestown Navy Yard, Logan, East Boston, Quincy/Squantum Point, Lynn, Winthrop…).
+- **Hamburg — HADAG** (`hamburg-germany` ⚑ **new geography**): Elbe harbour ferries (HVV). 18 BPs (Landungsbrücken, Altona/Fischmarkt, Finkenwerder, Teufelsbrück, Övelgönne, Neumühlen, Cranz, Blankenese…).
+- **Bangkok — Chao Phraya** (`bangkok-thailand`): river + canal boats (MINE Smart Ferry electric + Chao Phraya Express). 18 BPs (Sathorn/Taksin, Sapan Taksin, ICONSIAM, Tha Tien, Tha Chang, Phra Arthit, Nonthaburi, Rama VII, Pakkret…).
+
+**India PTA-framing (2) — Jaideep-approved:**
+- **Kochi — Water Metro (KMRL)** (`kochi-india` ⚑ **new geography**): India's flagship electric water-metro across Kochi's backwater islands. 20 BPs (Vyttila hub, High Court, Vypin, Bolgatty, Fort Kochi, Mattancherry, Willingdon Island, Kakkanad, Eloor, South Chittoor…).
+- **Mumbai — Maharashtra Maritime Board** (`mumbai-india`): harbour + coastal. 18 BPs (Gateway of India, Ferry Wharf/Bhaucha Dhakka, Mandwa, Elephanta, Belapur, Nerul, Vashi, Mora, Rewas, the new Mumbai Coastal Road jetties…).
+
+**New geography seeded by Tasklet (Brisbane batch-4 precedent):**
+- `hamburg-germany` — minted a `priority_city` feature (anchor ~[9.969, 53.546], `_seed_node` + provenance) **and a new `germany` cluster** (region Europe, `members_present: 1`). City brief shipped both trees.
+- `kochi-india` — minted a `priority_city` feature (anchor at the Vyttila hub, `_seed_node` + provenance), registered into the existing **`india`** cluster (`members_present` 6→7). City brief shipped both trees.
+- Grok reconciles/snaps both seed anchors during seal, then ID-matches the BPs and builds the routes.
+
+**Gates (all green):** schema PASS (9/9 new); fidelity 9/9 PASS (journey_bp=0); linkage 0 gaps; geometry 0 fail; seal-integrity invariants hold (104 clusters, 252 city features); `build.mjs` + `build-site.mjs` exit 0 — all 9 pages render (Hamburg/Kochi resolve via seed anchor; pois/routes 0 pre-seal, honest-null).
+
+**Pre-existing item flagged (not mine):** `line-man-wongnai-derivative` fails schema (missing `partner_context`, `proof_points`) and `kakao-mobility/seoul-han-river` skips the site build (no cities resolved). Both are committed at branch HEAD, outside this changeset.
+
+**Grok handoffs:** `GROK-SPEC-{stockholm-waxholm,lisbon-transtejo,auckland-ferries,vancouver-seabus,boston-mbta-ferry,hamburg-hadag,bangkok-chao-phraya,kochi-water-metro,mumbai-mmb}-domestic-routing-2026-07-01.md` — mint/seal BPs, route every pair with hand-waypoints (interior_land_km==0), reconcile the two seed cities, rebind route_ids, regenerate economics under the PTA convention.
 
 ---
 
