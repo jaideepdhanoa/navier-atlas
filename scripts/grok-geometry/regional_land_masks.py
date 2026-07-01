@@ -8,8 +8,8 @@ from functools import lru_cache
 WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     # Upper Gulf of Thailand ferry corridor (Bangkok ↔ Pattaya ↔ Hua Hin)
     ("gulf_thailand_upper", 100.35, 11.15, 101.55, 13.85),
-    # Chao Phraya river transit lane (Bangkok ICONSIAM → Gulf mouth)
-    ("chao_phraya_bangkok", 100.48, 13.05, 100.62, 13.78),
+    # Chao Phraya river transit lane (Bangkok ICONSIAM → Nonthaburi / Pakkret)
+    ("chao_phraya_bangkok", 100.48, 13.05, 100.62, 13.95),
     # Pattaya ↔ Koh Samet crossing
     ("gulf_thailand_samet", 100.82, 12.45, 101.52, 12.95),
     # Table Bay (V&A ↔ Robben Island) + Atlantic approaches to Hout Bay
@@ -30,12 +30,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("aegean_cyclades", 24.80, 36.30, 26.20, 37.80),
     # Dalmatian coast channels (Split ↔ Dubrovnik)
     ("dalmatia_croatia", 15.80, 42.55, 18.50, 43.85),
-    # Puget Sound / San Juan / BC Ferries lanes (Georgia Strait + Gulf Islands)
-    ("puget_sound", -123.55, 48.35, -122.00, 49.45),
+    # Puget Sound / San Juan / WSF lanes (Seattle ↔ Tacoma ↔ San Juans)
+    ("puget_sound", -123.55, 47.25, -122.00, 49.45),
     # Seattle inner Sound + Elliott Bay approaches
     ("puget_seattle", -122.75, 47.40, -122.15, 47.75),
-    # Boston harbour + outer islands
-    ("boston_harbour", -71.15, 42.30, -70.05, 42.85),
+    # Boston harbour + outer islands (Hingham / Hull / Quincy corridors)
+    ("boston_harbour", -71.20, 42.22, -70.05, 42.85),
     # Sydney Harbour approaches
     ("sydney_harbour", 151.15, -33.92, 151.35, -33.78),
     # Bonifacio Strait (Corsica ↔ Sardinia)
@@ -52,12 +52,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("dubai_coast", 51.00, 24.00, 57.00, 26.50),
     # Lagos Lagoon (extended for Eti-Osa / Lekki waterfront hops)
     ("lagos_lagoon", 3.20, 6.30, 3.65, 6.65),
-    # River Thames / estuary ferry lanes
-    ("thames_london", -0.30, 51.44, 0.05, 51.58),
+    # River Thames / estuary ferry lanes (extended east to Barking Riverside)
+    ("thames_london", -0.30, 51.44, 0.15, 51.58),
     # Krabi / Phang Nga shallow bay corridors
     ("krabi_andaman", 97.60, 7.50, 99.00, 8.95),
-    # New York Harbor + East River
-    ("ny_harbor", -74.20, 40.60, -73.90, 40.88),
+    # New York Harbor + East River + outer Sound/Rockaway approaches
+    ("ny_harbor", -74.20, 40.55, -73.80, 40.88),
     # Bora Bora / Society lagoon passages
     ("bora_bora_lagoon", -152.30, -17.55, -149.50, -16.40),
     # Nicoya / Papagayo gulf ferry lanes
@@ -196,8 +196,8 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("algeria_med_coast", 2.50, 36.50, 5.50, 37.20),
     # Eastern Gulf of Thailand (Pattaya ↔ Koh Chang / Rayong)
     ("gulf_thailand_east", 101.50, 11.50, 103.00, 13.00),
-    # Stockholm archipelago + Lake Mälaren ferry hops (Bolt Sweden)
-    ("stockholm_archipelago", 17.50, 59.20, 18.75, 59.50),
+    # Stockholm archipelago + Lake Mälaren + outer islands (Utö)
+    ("stockholm_archipelago", 17.50, 58.95, 18.75, 59.55),
     # Bali Strait / Nusa Penida micro-hops
     ("bali_nusa_penida", 115.00, -8.90, 115.30, -8.70),
     # Biscayne Bay / Miami waterfront (Uber Miami)
@@ -234,6 +234,14 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("taiwan_strait_west", 119.35, 23.15, 119.75, 23.65),
     # French Riviera / Monaco coastal shelf (Bolt Cannes ↔ Monaco)
     ("french_riviera_coast", 6.85, 43.40, 7.25, 43.65),
+    # Brisbane River (CityCat / Cross River ferry spine)
+    ("brisbane_river", 152.95, -27.55, 153.12, -27.40),
+    # San Francisco Bay + Delta approaches (SF Bay Ferry)
+    ("sf_bay", -122.55, 37.45, -121.75, 38.15),
+    # Hamburg Elbe / Norderelbe (HADAG ferry lanes)
+    ("hamburg_elbe", 9.75, 53.47, 10.05, 53.60),
+    # Sydney Harbour + Parramatta River ferry (Transport NSW — extended west)
+    ("sydney_harbour_ext", 150.95, -33.90, 151.32, -33.77),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)

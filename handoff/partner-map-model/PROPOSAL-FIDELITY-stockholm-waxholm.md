@@ -1,31 +1,31 @@
 # Proposal fidelity — stockholm-waxholm
 
-**Verdict:** PASS
-**Checked:** 2026-07-01T02:14:50Z
+**Verdict:** PASS_WITH_FLAGS
+**Checked:** 2026-07-01T03:14:59Z
 
 ## Summary
 
 - Items audited: 13
-- KEEP: 13
+- KEEP: 12
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 0
+- TRIM/REWRITE: 1
 - BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Strömkajen (central Stockholm) → Vaxholm | `—` | **KEEP** | — |
-| journey | — | Strömkajen (central Stockholm) → Nacka Strand | `rn-922cd027a47b` | **KEEP** | — |
-| journey | — | Frihamnen → Nybroplan | `rn-efd3dadebbed` | **KEEP** | — |
-| journey | — | Vaxholm → Grinda | `—` | **KEEP** | — |
-| featured | 1 | Strömkajen (central Stockholm) ↔ Vaxholm | `—` | **KEEP** | — |
-| featured | 1 | Strömkajen (central Stockholm) ↔ Nacka Strand | `rn-922cd027a47b` | **KEEP** | — |
-| featured | 1 | Frihamnen ↔ Nybroplan | `rn-efd3dadebbed` | **KEEP** | — |
-| featured | 2 | Vaxholm ↔ Grinda | `—` | **KEEP** | — |
-| featured | 2 | Stavsnäs ↔ Sandhamn | `—` | **KEEP** | — |
-| featured | 2 | Vaxholm ↔ Ljusterö (Linanäs) | `—` | **KEEP** | — |
-| featured | 3 | Strömkajen (central Stockholm) ↔ Sandhamn | `—` | **KEEP** | — |
-| featured | 3 | Stavsnäs ↔ Nämdö | `rn-4c3942e10464` | **KEEP** | — |
-| featured | 3 | Strömkajen (central Stockholm) ↔ Utö | `—` | **KEEP** | — |
+| journey | — | Strömkajen (central Stockholm) → Vaxholm | `rn-b9c0a089fb61` | **KEEP** | — |
+| journey | — | Strömkajen (central Stockholm) → Nacka Strand | `—` | **KEEP** | — |
+| journey | — | Frihamnen → Nybroplan | `—` | **KEEP** | — |
+| journey | — | Vaxholm → Grinda | `rn-74e760c9c73c` | **KEEP** | — |
+| featured | 1 | Strömkajen (central Stockholm) ↔ Vaxholm | `rn-b9c0a089fb61` | **KEEP** | — |
+| featured | 1 | Strömkajen (central Stockholm) ↔ Nacka Strand | `—` | **KEEP** | — |
+| featured | 1 | Frihamnen ↔ Nybroplan | `—` | **KEEP** | — |
+| featured | 2 | Vaxholm ↔ Grinda | `rn-74e760c9c73c` | **KEEP** | — |
+| featured | 2 | Stavsnäs ↔ Sandhamn | `rn-8b9e8987c141` | **KEEP** | — |
+| featured | 2 | Vaxholm ↔ Ljusterö (Linanäs) | `rn-a3cc72c67a37` | **KEEP** | — |
+| featured | 3 | Strömkajen (central Stockholm) ↔ Sandhamn | `rn-afc06d85e708` | **KEEP** | — |
+| featured | 3 | Stavsnäs ↔ Nämdö | `—` | **KEEP** | — |
+| featured | 3 | Strömkajen (central Stockholm) ↔ Utö | `rn-72110604025d` | **TRIM** | distance_honesty: card 30.0nm vs route 21.6nm (39% delta) |

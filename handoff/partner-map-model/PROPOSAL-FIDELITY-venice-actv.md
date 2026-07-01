@@ -1,7 +1,7 @@
 # Proposal fidelity — venice-actv
 
 **Verdict:** PASS
-**Checked:** 2026-07-01T02:14:50Z
+**Checked:** 2026-07-01T03:14:59Z
 
 ## Summary
 
@@ -19,12 +19,12 @@
 | journey | — | Fondamente Nove → Murano (Faro) | `—` | **KEEP** | — |
 | journey | — | Murano (Faro) → Burano | `—` | **KEEP** | — |
 | journey | — | Burano → Torcello | `—` | **KEEP** | — |
-| journey | — | San Zaccaria → Lido (Santa Maria Elisabetta) | `rn-25ecd5e661cc` | **KEEP** | — |
+| journey | — | San Zaccaria → Lido (Santa Maria Elisabetta) | `—` | **KEEP** | — |
 | featured | 1 | Fondamente Nove ↔ Murano (Faro) | `—` | **KEEP** | — |
-| featured | 1 | San Zaccaria ↔ Lido (Santa Maria Elisabetta) | `rn-25ecd5e661cc` | **KEEP** | — |
+| featured | 1 | San Zaccaria ↔ Lido (Santa Maria Elisabetta) | `—` | **KEEP** | — |
 | featured | 1 | San Marco (Vallaresso) ↔ San Giorgio Maggiore | `—` | **KEEP** | — |
 | featured | 2 | Murano (Faro) ↔ Burano | `—` | **KEEP** | — |
 | featured | 2 | Burano ↔ Torcello | `—` | **KEEP** | — |
 | featured | 2 | Fondamente Nove ↔ Burano | `—` | **KEEP** | — |
 | featured | 3 | Tronchetto ↔ Lido (Santa Maria Elisabetta) | `—` | **KEEP** | — |
-| featured | 3 | Lido (Santa Maria Elisabetta) ↔ Sant'Elena | `rn-da744c48af27` | **KEEP** | — |
+| featured | 3 | Lido (Santa Maria Elisabetta) ↔ Sant'Elena | `—` | **KEEP** | — |

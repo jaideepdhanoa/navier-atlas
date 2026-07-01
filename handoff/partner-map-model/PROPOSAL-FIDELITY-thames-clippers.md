@@ -1,7 +1,7 @@
 # Proposal fidelity — thames-clippers
 
 **Verdict:** PASS
-**Checked:** 2026-07-01T02:14:50Z
+**Checked:** 2026-07-01T03:14:59Z
 
 ## Summary
 
@@ -16,15 +16,15 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Embankment Pier → Canary Wharf Pier | `—` | **KEEP** | — |
-| journey | — | Canary Wharf Pier → North Greenwich Pier | `rn-bb52199b9317` | **KEEP** | — |
-| journey | — | Battersea Power Station Pier → London Bridge City  | `rn-cb2f4f28eae9` | **KEEP** | — |
-| journey | — | Putney Pier → Blackfriars Pier | `—` | **KEEP** | — |
-| featured | 1 | Embankment Pier ↔ Canary Wharf Pier | `—` | **KEEP** | — |
-| featured | 1 | Canary Wharf Pier ↔ North Greenwich Pier | `rn-bb52199b9317` | **KEEP** | — |
-| featured | 1 | Battersea Power Station Pier ↔ London Bridge City  | `rn-cb2f4f28eae9` | **KEEP** | — |
-| featured | 2 | Putney Pier ↔ Blackfriars Pier | `—` | **KEEP** | — |
-| featured | 2 | Canary Wharf Pier ↔ Rotherhithe | `rn-d0354a511872` | **KEEP** | — |
-| featured | 3 | North Greenwich Pier ↔ Barking Riverside Pier | `—` | **KEEP** | — |
-| featured | 3 | Woolwich ↔ Canary Wharf Pier | `—` | **KEEP** | — |
-| featured | 4 | Westminster Pier ↔ Greenwich Pier | `—` | **KEEP** | — |
+| journey | — | Embankment Pier → Canary Wharf Pier | `rn-de142563d383` | **KEEP** | — |
+| journey | — | Canary Wharf Pier → North Greenwich Pier | `—` | **KEEP** | — |
+| journey | — | Battersea Power Station Pier → London Bridge City  | `—` | **KEEP** | — |
+| journey | — | Putney Pier → Blackfriars Pier | `rn-cd5eda268899` | **KEEP** | — |
+| featured | 1 | Embankment Pier ↔ Canary Wharf Pier | `rn-de142563d383` | **KEEP** | — |
+| featured | 1 | Canary Wharf Pier ↔ North Greenwich Pier | `—` | **KEEP** | — |
+| featured | 1 | Battersea Power Station Pier ↔ London Bridge City  | `—` | **KEEP** | — |
+| featured | 2 | Putney Pier ↔ Blackfriars Pier | `rn-cd5eda268899` | **KEEP** | — |
+| featured | 2 | Canary Wharf Pier ↔ Rotherhithe | `—` | **KEEP** | — |
+| featured | 3 | North Greenwich Pier ↔ Barking Riverside Pier | `rn-390ad1237fa5` | **KEEP** | — |
+| featured | 3 | Woolwich ↔ Canary Wharf Pier | `rn-ad2f83b1877d` | **KEEP** | — |
+| featured | 4 | Westminster Pier ↔ Greenwich Pier | `rn-d1a78c99ed15` | **KEEP** | — |

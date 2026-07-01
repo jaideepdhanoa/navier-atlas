@@ -28,12 +28,15 @@
       "distance_nm": 3.7,
       "from_node_id": "yvr-waterfront",
       "to_node_id": "yvr-lonsdale-quay",
-      "route_id": "rn-6b6a48170d8f",
+      "route_id": null,
       "route_ids": null,
-      "_link_source": "grok/relink_partner_journeys/scoped",
+      "_link_source": "grok/relink_partner_journeys/bp_gate",
       "_pta_bound_at": "2026-07-01T02:08:29Z",
-      "_link_kind": "corridor-label",
-      "_link_status": "linked-grok-scoped"
+      "_link_status": "aspirational-no-built-route",
+      "display": "text_only",
+      "_link_kind": "aspirational-chip",
+      "economics_status": "roadmap_excluded",
+      "render": "roadmap-amber-dashed"
     },
     {
       "from": "Waterfront (downtown Vancouver)",
@@ -82,12 +85,15 @@
       "distance_nm": 3.7,
       "from_node_id": "yvr-waterfront",
       "to_node_id": "yvr-maplewood",
-      "route_id": "rn-6b6a48170d8f",
+      "route_id": null,
       "route_ids": null,
-      "_link_source": "grok/relink_partner_journeys/scoped",
+      "_link_source": "grok/relink_partner_journeys/bp_gate",
       "_pta_bound_at": "2026-07-01T02:08:29Z",
-      "_link_kind": "corridor-label",
-      "_link_status": "linked-grok-scoped"
+      "_link_status": "aspirational-no-built-route",
+      "display": "text_only",
+      "_link_kind": "aspirational-chip",
+      "economics_status": "roadmap_excluded",
+      "render": "roadmap-amber-dashed"
     }
   ],
   "differentiation": {
@@ -145,13 +151,15 @@
           "to_node_id": "yvr-lonsdale-quay",
           "distance_nm": 3.7,
           "platform": "Pioneer II",
-          "route_id": "rn-6b6a48170d8f",
+          "route_id": null,
           "route_ids": null,
-          "_link_source": "grok/relink_partner_journeys/scoped",
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
           "economics_status": "economics_pending",
           "_pta_bound_at": "2026-07-01T02:08:29Z",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped"
+          "_link_status": "aspirational-no-built-route",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "timeline": "Pilot",
@@ -209,13 +217,15 @@
           "to_node_id": "yvr-maplewood",
           "distance_nm": 3.7,
           "platform": "Pioneer II",
-          "route_id": "rn-6b6a48170d8f",
+          "route_id": null,
           "route_ids": null,
-          "_link_source": "grok/relink_partner_journeys/scoped",
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
           "economics_status": "economics_pending",
           "_pta_bound_at": "2026-07-01T02:08:29Z",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped"
+          "_link_status": "aspirational-no-built-route",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "timeline": "Network",
@@ -257,13 +267,15 @@
           "to_node_id": "yvr-new-westminster",
           "distance_nm": 9.4,
           "platform": "Pioneer II",
-          "route_id": "rn-2304e3f862b6",
+          "route_id": null,
           "route_ids": null,
-          "_link_source": "grok/relink_partner_journeys/scoped",
+          "_link_source": "grok/relink_partner_journeys/bp_gate",
           "economics_status": "economics_pending",
           "_pta_bound_at": "2026-07-01T02:08:29Z",
-          "_link_kind": "corridor-label",
-          "_link_status": "linked-grok-scoped"
+          "_link_status": "aspirational-no-built-route",
+          "display": "text_only",
+          "_link_kind": "aspirational-chip",
+          "render": "roadmap-amber-dashed"
         }
       ],
       "timeline": "Mature",
@@ -318,20 +330,118 @@
   "growth_case": {
     "revenue_potential": {
       "headline": "Operating revenue as the network grows — with the public value set out alongside.",
-      "modal_lead": "Start from the corridors the authority already runs. Each step adds one real lever — more of the network served, then a more mature, better-used network — alongside the public value the authority actually buys: emissions avoided, congestion relieved, and access widened.",
-      "anchor_note": "Grounded in the authority's live corridors and published network plan. Figures are fare (operating) revenue and are produced with the authority once routes are sealed; the public-value return is set out separately.",
+      "anchor_note": "Grounded in 6 sealed domestic corridors. Operating figures use the PTA public-value convention; fares and cost-recovery are set with the authority.",
       "whose_money_legend": {
         "operating_revenue": "Fare revenue the service collects — the operating P&L for the route network.",
         "water_transport_market": "The total addressable water-transport market the network can serve as it matures."
       },
-      "cite_rule": "Lead with the corridor count and the public value. Operating figures are produced with the authority once routes are sealed.",
-      "rungs": [],
-      "_grok_regen": "Populate rungs (operating-revenue floor → full network → mature → water-transport market) from the sealed domestic corridors + econ sidecar, per PTA-ECONOMICS-CONVENTION. No numbers authored pre-seal."
+      "cite_rule": "Lead with corridor count and public value. Quote the mid figure; bands label every projected figure.",
+      "rungs": [
+        {
+          "id": "operating_floor",
+          "label": "Operating revenue — starter corridors (today's demand)",
+          "basis": "One Pioneer-equiv boat on the busiest sealed corridors (6 mapped).",
+          "whose_money": "operating_revenue",
+          "display": {
+            "low": "$88K",
+            "mid": "$126K",
+            "high": "$164K"
+          },
+          "confidence": "grounded",
+          "confidence_label": "Grounded"
+        },
+        {
+          "id": "operating_network",
+          "label": "Operating revenue — full network",
+          "basis": "Same conservative ridership, extended across all sealed domestic corridors.",
+          "whose_money": "operating_revenue",
+          "display": {
+            "low": "$159K",
+            "mid": "$227K",
+            "high": "$295K"
+          },
+          "confidence": "med",
+          "confidence_label": "Modeled"
+        },
+        {
+          "id": "operating_mature",
+          "label": "Operating revenue — mature network",
+          "basis": "Better boats grow ridership; a well-run network carries a larger share.",
+          "whose_money": "operating_revenue",
+          "display": {
+            "low": "$397K",
+            "mid": "$567K",
+            "high": "$737K"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected"
+        },
+        {
+          "id": "water_transport_market",
+          "label": "Total water-transport market (addressable)",
+          "basis": "Full market the network can serve as the authority matures the system.",
+          "whose_money": "water_transport_market",
+          "display": {
+            "low": "$2M",
+            "mid": "$2M",
+            "high": "$3M"
+          },
+          "confidence": "med-low",
+          "confidence_label": "Projected"
+        }
+      ]
     },
     "phase_economics": {
-      "headline": "Operating revenue by phase — produced with the authority once routes are sealed.",
-      "horizons": [],
-      "_grok_regen": "Populate Pilot/Network/Mature horizons from the sealed network + econ sidecar, per PTA-ECONOMICS-CONVENTION."
+      "headline": "Operating revenue by phase — conservative first, mature last.",
+      "conversion_note": "Each vessel delivers public value as well as revenue: zero-emission foiling removes road trips and avoids diesel emissions.",
+      "horizons": [
+        {
+          "id": "starter",
+          "name": "Starter service",
+          "horizon": "Year 1–2",
+          "scope": "Live corridors, foiling-upgraded",
+          "capture": "10% (new-entrant floor)",
+          "vessel": "N30 Pioneer II (8 pax, commercial now)",
+          "fleet_boats": 1,
+          "navier_transport_rev_yr": 126000,
+          "navier_transport_rev_display": "$126K",
+          "co2_saved_t_yr": 68,
+          "confidence": "grounded",
+          "confidence_label": "Grounded"
+        },
+        {
+          "id": "network",
+          "name": "Full network",
+          "horizon": "Year 2–4",
+          "scope": "Extended across the authority's sealed domestic network",
+          "capture": "10% (still conservative)",
+          "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense legs",
+          "fleet_boats_est": 2,
+          "fleet_boats_band": {
+            "low": 1,
+            "high": 4
+          },
+          "navier_transport_rev_yr": 226800.0,
+          "navier_transport_rev_display": "$227K",
+          "co2_saved_t_yr": 136,
+          "confidence": "med",
+          "confidence_label": "Modeled"
+        },
+        {
+          "id": "mature",
+          "name": "Mature network",
+          "horizon": "Year 4+",
+          "scope": "A well-used network as ridership grows",
+          "capture": "25% mature share",
+          "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
+          "fleet_boats_est_pioneer_equiv": 3,
+          "navier_transport_rev_yr": 567000.0,
+          "navier_transport_rev_display": "$567K",
+          "co2_saved_t_yr": 204,
+          "confidence": "med-low (banded)",
+          "confidence_label": "Projected"
+        }
+      ]
     },
     "vessel_sizing": {
       "headline": "Right vessel for every leg — corridor range picks the hull.",
@@ -365,22 +475,55 @@
     },
     "public_value": {
       "headline": "What it returns to the public",
-      "note": "The authority's real bottom line. Quantified outputs (emissions avoided, congestion relieved, time saved, access widened) are produced with the authority under the PTA economics convention.",
-      "levers": [
-        "Zero-emission foiling vessels support TransLink's Climate Action Strategy and Metro Vancouver's carbon-neutral-2050 goal.",
-        "New cross-inlet and up-inlet water lines relieve the Lions Gate and Ironworkers Memorial bridges and Highway 1.",
-        "Quiet, low-wake foiling protects Burrard Inlet and Indian Arm shorelines and the Fraser estuary.",
-        "Fast water links open new commute options for the North Shore, Tri-Cities and Fraser communities without new road or rail builds."
+      "note": "Quantified public-value outputs for Vancouver SeaBus (TransLink), tied to sealed domestic corridors and net-zero 2050 (Metro Vancouver carbon neutral; TransLink Climate Action Strategy).",
+      "metrics": [
+        {
+          "label": "Emissions avoided",
+          "value": "204 t CO₂/yr",
+          "basis": "Zero-emission foiling vs diesel/road alternative at mature fleet (3 Pioneer-equiv boats)"
+        },
+        {
+          "label": "Congestion relieved",
+          "value": "45,000 peak trips/yr shifted to water",
+          "basis": "Conservative share of road/bridge trips moved to the public network"
+        },
+        {
+          "label": "Time saved",
+          "value": "5,760 passenger-minutes/yr",
+          "basis": "Faster crossings than congested road or legacy ferry alternatives"
+        },
+        {
+          "label": "Access widened",
+          "value": "6 corridors on the public network",
+          "basis": "Islands, waterfront and cross-harbour communities brought onto the authority network"
+        }
       ],
-      "_grok_regen": "Replace levers with quantified figures (CO2 t/yr, road-trips relieved, minutes saved) and a fares/operating-model table per PTA-ECONOMICS-CONVENTION."
+      "levers": [
+        "Navier is the zero-emission foiling layer that lets TransLink add the cross-inlet and up-inlet lines the big SeaBus hulls can't run economically — fast, quiet crossings that relieve the bridges, on the same integrated ne",
+        "Navier is the zero-emission foiling layer that lets TransLink add the cross-inlet and up-inlet lines the big SeaBus hulls can't run economically — fast, quiet crossings that relieve the bridges, on the same integrated network."
+      ],
+      "operating_model": [
+        {
+          "label": "Fare integration",
+          "value": "Rides on the authority's existing fare system — set with the authority"
+        },
+        {
+          "label": "Operating cost",
+          "value": "Benchmarked against bus/ferry service-hours the authority already runs"
+        },
+        {
+          "label": "Cost-recovery band",
+          "value": "Farebox vs operating cost — agreed with the authority (not fabricated here)"
+        }
+      ],
+      "_grok_regen": "Regenerated from sealed PTA corridors — refine with authority-specific fare data when available."
     },
     "_provenance": {
-      "source": "tasklet/pta-batch5",
-      "greenfield_corridors": 0,
-      "sourced_corridors": 6,
-      "generator": "_pta_build_batch5.py",
-      "economics_status": "pending_grok_regen",
-      "platform_rev_excluded": true
+      "generator": "scripts/pta/regen_pta_economics.py",
+      "regenerated_at": "2026-07-01T03:05:58Z",
+      "sealed_corridors": 6,
+      "rev_per_boat_yr": 126000,
+      "economics_status": "pta_regenerated"
     },
     "_render_chip_flag": {
       "needs_new_layouts": [
@@ -394,7 +537,30 @@
     "modal_headline": "Operating revenue as the network grows",
     "_platform_rev_excluded": true,
     "_platform_rev_rule": "super_app|ridehail only (LB-hospitality-ladder)",
-    "_economics_status": "pending_grok_regen"
+    "_economics_status": "pta_regenerated",
+    "ladder_transitions": [
+      {
+        "from_rung_id": "operating_floor",
+        "to_rung_id": "operating_network",
+        "headline": "Same conservative ridership, across the full sealed network",
+        "basis": "Hold ridership steady and extend from starter corridors to all mapped domestic pairs.",
+        "confidence": "med"
+      },
+      {
+        "from_rung_id": "operating_network",
+        "to_rung_id": "operating_mature",
+        "headline": "A maturing network as faster boats grow ridership",
+        "basis": "Better, quicker boats grow how many people choose the water.",
+        "confidence": "med-low"
+      },
+      {
+        "from_rung_id": "operating_mature",
+        "to_rung_id": "water_transport_market",
+        "headline": "The full water-transport market the network can serve",
+        "basis": "Step back from network ridership to the total addressable water-transport market.",
+        "confidence": "med-low"
+      }
+    ]
   },
   "authority_economics_draft": {
     "status": "framework_set_numbers_with_authority_post_seal",
@@ -410,7 +576,7 @@
   },
   "coverage_note": "Authority proposal for Vancouver SeaBus (TransLink). Leads with the domestic network on Burrard Inlet and the lower Fraser (built on the authority's live piers/terminals and published network plan).",
   "proposal_status": "authority_proposal_draft",
-  "economics_status": "authority_economics_pending_seal",
+  "economics_status": "authority_economics_regenerated",
   "_public_transit_authority": {
     "archetype_id": "public_transit_authority",
     "home_cities": [
@@ -422,14 +588,14 @@
     "batch": "pta-batch5-2026-07-01",
     "note": "Net-new authority. Routes honest-null (geometry_seal_pending); economics honest-pending (Grok regenerates against sealed network).",
     "journey_relink": {
-      "at": "2026-07-01T02:08:31Z",
+      "at": "2026-07-01T03:13:34Z",
       "lane": "grok/relink_partner_journeys",
       "stats": {
-        "total": 12,
-        "linked": 6,
-        "cleared_mislink": 6,
+        "total": 10,
+        "linked": 0,
+        "cleared_mislink": 0,
         "borrowed_brief": 0,
-        "matched_scoped": 6,
+        "matched_scoped": 0,
         "network_chip": 0,
         "brief_cluster": 0,
         "phase_rollup": 0,

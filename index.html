@@ -3317,6 +3317,24 @@ function _growthCaseHtml(gc, opts){
     h+=`<div class="gc-lead-wrap">${leadCorr}
       ${rp.anchor_note?`<p class="gc-anchor">${escapeHtml(rp.anchor_note)}</p>`:''}</div>`;
   }
+  // 0) Public value — PTA authority headline (what the authority buys).
+  const pv=gc.public_value||{};
+  const pvMetrics=(pv.metrics||[]).filter(m=>m&&m.label);
+  const pvLevers=(pv.levers||[]).filter(Boolean);
+  if(pv.headline&&(pvMetrics.length||pvLevers.length)){
+    h+=`<div class="panel-section gc-public-value"><h3>${escapeHtml(pv.headline)}</h3>`;
+    if(pv.note) h+=`<div class="pcaro-narr">${escapeHtml(pv.note)}</div>`;
+    if(pvMetrics.length){
+      h+=`<dl class="gc-pv-dl">${pvMetrics.map(m=>`<dt>${escapeHtml(m.label)}</dt><dd>${escapeHtml(String(m.value||''))}${m.basis?`<span class="muted"> — ${escapeHtml(m.basis)}</span>`:''}</dd>`).join('')}</dl>`;
+    }
+    if(pvLevers.length){
+      h+=`<ul class="gc-pv-levers">${pvLevers.map(l=>`<li>${escapeHtml(String(l))}</li>`).join('')}</ul>`;
+    }
+    if(pv.operating_model&&pv.operating_model.length){
+      h+=`<div class="gc-pv-op"><h4>Operating model</h4><dl class="gc-pv-dl">${pv.operating_model.map(r=>`<dt>${escapeHtml(r.label||'')}</dt><dd>${escapeHtml(String(r.value||''))}</dd>`).join('')}</dl></div>`;
+    }
+    h+=`</div>`;
+  }
   // 1) Revenue ladder — build up from floor (ascending rungs). ladder_transitions bridge each step
   // (authored math only — never invented in render).
   const bridges=(gc.ladder_transitions||[]).filter(t=>showPlat||(!/platform_rev/.test(String(t.from_rung_id||''))&&!/platform_rev/.test(String(t.to_rung_id||''))));

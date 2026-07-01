@@ -1,6 +1,6 @@
 # PTA Pair-Gap Table
 
-Generated: 2026-07-01T01:54:49Z
+Generated: 2026-07-01T03:05:32Z
 
 ## Fleet summary
 

@@ -91,6 +91,14 @@ def mint_bp_poi(bp: dict, city_id: str, slug: str, fbt: dict) -> str:
     return pid
 
 
+def _qa_accept(coords: list) -> tuple[bool, float]:
+    """Regional land QA (matches channel_solver + deploy geometry gate)."""
+    from route_land_qa import evaluate_route  # noqa: WPS433
+
+    ev = evaluate_route(coords)
+    return bool(ev.get("qa_pass")), float(ev.get("interior_land_km", 0.0))
+
+
 def route_geometry(
     from_node: str,
     to_node: str,
@@ -99,6 +107,8 @@ def route_geometry(
     mask,
     lc,
 ) -> tuple[list[list[float]], float] | None:
+    from channel_solver import connect_chain, densify  # noqa: WPS433
+
     manual = hand_waypoints_for(from_node, to_node) or hand_waypoints_for(
         from_node, to_node, from_city_id=from_node, to_city_id=to_node
     )
@@ -106,11 +116,14 @@ def route_geometry(
     if manual:
         mid_lists.append([(w[0], w[1]) for w in manual])
     if lc:
-        from channel_solver import connect_chain  # noqa: WPS433
-
         chain = connect_chain(lc, [a, b])
-        if chain and len(chain) > 2:
-            mid_lists.append([tuple(p) for p in chain[1:-1]])
+        if chain:
+            geom = densify(chain)
+            ok, land = _qa_accept(geom)
+            if ok and land <= LAND_THRESH_KM:
+                return geom, land
+            if chain and len(chain) > 2:
+                mid_lists.append([tuple(p) for p in chain[1:-1]])
         mid_lists.append([])
 
     for mids in mid_lists:
@@ -118,18 +131,19 @@ def route_geometry(
             solved = solve_hand(lc, a, b, mids)
             if solved and solved.get("qa_pass") and solved.get("geometry"):
                 coords = solved["geometry"]
-                land = solved.get("interior_land_km", interior_land_km(coords, mask))
-                if land <= LAND_THRESH_KM:
-                    return coords, land
+                land = float(solved.get("interior_land_km", 0.0))
+                ok, land2 = _qa_accept(coords)
+                if ok and min(land, land2) <= LAND_THRESH_KM:
+                    return coords, min(land, land2) if land > 0 else land2
         if mids:
             coords = build_coastal_path(a, b, mask, manual_waypoints=mids)
-            land = interior_land_km(coords, mask)
-            if land <= LAND_THRESH_KM:
+            ok, land = _qa_accept(coords)
+            if ok and land <= LAND_THRESH_KM:
                 return coords, land
 
     coords = build_coastal_path(a, b, mask)
-    land = interior_land_km(coords, mask)
-    if land <= LAND_THRESH_KM:
+    ok, land = _qa_accept(coords)
+    if ok and land <= LAND_THRESH_KM:
         return coords, land
     return None
 

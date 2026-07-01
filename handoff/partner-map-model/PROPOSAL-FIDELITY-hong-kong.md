@@ -1,7 +1,7 @@
 # Proposal fidelity — hong-kong
 
 **Verdict:** PASS
-**Checked:** 2026-07-01T02:14:50Z
+**Checked:** 2026-07-01T03:14:59Z
 
 ## Summary
 
@@ -16,10 +16,10 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Central → Cheung Chau | `rn-ad390ee14e1c` | **KEEP** | — |
-| journey | — | Central → Yung Shue Wan (Lamma) | `rn-68779d8545dd` | **KEEP** | — |
-| journey | — | Central → Tsim Sha Tsui | `rn-1ac139f7489e` | **KEEP** | — |
-| journey | — | North Point → Hung Hom | `rn-d7294a3ddd04` | **KEEP** | — |
+| journey | — | Central → Cheung Chau | `—` | **KEEP** | — |
+| journey | — | Central → Yung Shue Wan (Lamma) | `—` | **KEEP** | — |
+| journey | — | Central → Tsim Sha Tsui | `—` | **KEEP** | — |
+| journey | — | North Point → Hung Hom | `—` | **KEEP** | — |
 | featured | 1 | Central Ferry Piers (4-7) ↔ Tsim Sha Tsui (Star Fe | `—` | **KEEP** | — |
 | featured | 1 | Central Ferry Piers (4-7) ↔ Yung Shue Wan (Lamma) | `—` | **KEEP** | — |
 | featured | 1 | North Point Ferry Pier ↔ Hung Hom Ferry Pier | `—` | **KEEP** | — |
