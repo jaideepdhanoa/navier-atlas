@@ -4,6 +4,38 @@ _Last updated 2026-05-30 (overnight session)._
 
 ---
 
+## 2026-06-30 — Public Transport Authority category: Bahrain MOTC gold reference
+
+New proposal category for **public transport authorities** (distinct from mobility partners:
+public-good framing, the authority's own mandate/precedents, domestic-first). Bahrain MOTC is the
+**gold reference**; pattern then replicates to Qatar MOTC, Singapore MPA, and beyond.
+
+**Tasklet lane (this PR — partner-facing content + presentation only):**
+- Rewrote `bahrain-motc.json` (both trees): new authority narrative arc (network & gap → new public
+  mode → **home-water network first** → optional regional links → mandate delivery → plain ask).
+- **Killed Prove/Scale/Mature** scaffolding and all internal jargon (Grok/Tasklet/seal-lane/N30 ladder/
+  super-app/journey-wallet/SOM-SAM-TAM/`{home}`/"inter-emirate"). 0 rendered-text jargon hits.
+- **Fixed wrong data:** removed the Ras-Al-Khaimah/Dubai journeys that had been copy-pasted into Bahrain.
+- **Domestic-first, grounded in real precedent:** the live Masar **water taxi** (Apr 2025, 6 stations),
+  the **Bahrain–Qatar ferry** (Nov 2025), King Fahd Causeway (~33M crossings/yr), net-zero 2060 / −30% 2035.
+- **Economics → PTA public-value + operating convention** (presentation): rungs/horizons relabeled plain,
+  super-app rung dropped, ladder bridges de-jargoned, `public_value` block added. **Model numbers untouched.**
+- All routes `route_id: null` + `_link_status: "pending-seal"` (intentional-null). **All 4 strict gates pass;
+  build clean.** Fidelity `bahrain-motc` = PASS, journey_bp=0.
+
+**New evidence/handoff files:**
+- `PTA-DOSSIER-bahrain-motc.json` — sourced mandate/targets/precedent + the domestic boarding-point network
+  (15 BPs w/ anchor coords, 8 domestic pairs, 2 regional links) + routing hazards. Dossier schema = PTA template.
+- `GROK-SPEC-bahrain-motc-domestic-routing-2026-06-30.md` — **routing handoff**: mint/bind BPs, route every
+  pair with **hand-curated waypoints, ZERO land crossings** (causeway/reef/shallow rules), land/water QA gate,
+  then rebind `route_id`s + regenerate economics under the convention.
+- `PTA-ECONOMICS-CONVENTION.md` — the public-value + fares/operating frame (replaces the mobility ladder).
+
+**Grok lane (next):** seal the domestic routes with hand waypoints (no land crossings), rebind route_ids,
+regenerate quantified public-value + operating-model numbers, add a `public_value` render slot.
+
+---
+
 ## 2026-06-29 — Fidelity debt burn-down COMPLETE (A · B · C) → Grok may tighten gates
 
 Closes `docs/NOTES-FOR-TASKLET.md § 2026-06-29 — Fidelity debt burn-down` and
