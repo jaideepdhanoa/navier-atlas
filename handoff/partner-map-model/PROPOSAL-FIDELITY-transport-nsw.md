@@ -1,33 +1,30 @@
 # Proposal fidelity — transport-nsw
 
-**Verdict:** REWRITE
-**Checked:** 2026-06-29T17:05:36Z
+**Verdict:** PASS
+**Checked:** 2026-07-01T02:14:50Z
 
 ## Summary
 
-- Items audited: 15
+- Items audited: 12
 - KEEP: 12
-- DROP: 3
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 3
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Circular Quay → Manly | `—` | **KEEP** | — |
-| journey | — | Circular Quay → Watsons Bay / Rose Bay | `—` | **KEEP** | — |
-| journey | — | Circular Quay → Parramatta | `—` | **KEEP** | — |
-| journey | — | Sydney CBD → Sydney Olympic Park | `—` | **KEEP** | — |
-| featured | 1 | Circular Quay ↔ Manly | `ics-bb25fb0b69` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Circular Quay' → 'Manly' vs  |
-| featured | 1 | Circular Quay ↔ Watsons Bay / Rose Bay | `ics-26759e3e76` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Circular Quay' → 'Watsons Ba |
-| featured | 1 | Circular Quay ↔ Parramatta | `ics-0bc6865ade` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Circular Quay' → 'Parramatta |
-| featured | 2 | Watsons Bay → Manly Wharf | `—` | **KEEP** | — |
-| featured | 2 | Sydney Harbour: Woolwich Marina → FFB Dragon Boat  | `—` | **KEEP** | — |
-| featured | 2 | Sydney Harbour: Clifton Gardens Wharf → Freedom Bo | `—` | **KEEP** | — |
-| featured | 3 | Sydney Harbour → Watsons Bay | `—` | **KEEP** | — |
-| featured | 3 | Sydney Harbour: Circular Quay, Sydney → Sydney Har | `—` | **KEEP** | — |
-| featured | 3 | Sydney Harbour: Rose Bay Marina → Yarra Bay Sailin | `—` | **KEEP** | — |
-| featured | 4 | Sydney Harbour: Yarra Bay Sailing Club → Georges R | `—` | **KEEP** | — |
-| featured | 4 | Sydney Harbour: Clifton Gardens Wharf → Tunks Park | `—` | **KEEP** | — |
+| journey | — | Circular Quay ferry wharves → Manly Wharf | `rn-4b15eb9191eb` | **KEEP** | — |
+| journey | — | Circular Quay ferry wharves → Barangaroo Wharf | `rn-7e10cb0fd569` | **KEEP** | — |
+| journey | — | Circular Quay ferry wharves → Watsons Bay Wharf | `rn-e8fb595fd48f` | **KEEP** | — |
+| journey | — | Barangaroo Wharf → Parramatta Wharf | `—` | **KEEP** | — |
+| featured | 1 | Circular Quay ferry wharves ↔ Manly Wharf | `rn-4b15eb9191eb` | **KEEP** | — |
+| featured | 1 | Circular Quay ferry wharves ↔ Barangaroo Wharf | `rn-7e10cb0fd569` | **KEEP** | — |
+| featured | 1 | Circular Quay ferry wharves ↔ Watsons Bay Wharf | `rn-e8fb595fd48f` | **KEEP** | — |
+| featured | 2 | Barangaroo Wharf ↔ Parramatta Wharf | `—` | **KEEP** | — |
+| featured | 2 | Circular Quay ferry wharves ↔ Mosman Bay Wharf | `—` | **KEEP** | — |
+| featured | 3 | Circular Quay ferry wharves ↔ Cockatoo Island Whar | `rn-6e3c1c97b308` | **KEEP** | — |
+| featured | 3 | Barangaroo Wharf ↔ Sydney Fish Market Wharf | `rn-999b0444b779` | **KEEP** | — |
+| featured | 4 | Circular Quay ferry wharves ↔ Taronga Zoo Wharf | `—` | **KEEP** | — |

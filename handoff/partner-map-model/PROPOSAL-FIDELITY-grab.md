@@ -1,7 +1,7 @@
 # Proposal fidelity — grab
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:19Z
+**Checked:** 2026-07-01T02:14:50Z
 
 ## Summary
 
@@ -110,15 +110,15 @@
 | featured | likupang/p2 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | featured | likupang/p3 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
 | featured | likupang/p3 | Likupang (North Sulawesi) → Likupang / Manado / Bu | `—` | **KEEP** | — |
-| journey | market:lake-toba | Parapat → Tomok / Tuk Tuk (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
-| journey | market:lake-toba | Tuktuk Siadong village pier → Ambarita | `rn-89174b6f31fe` | **KEEP** | — |
-| journey | market:lake-toba | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
-| featured | lake-toba/p1 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
-| featured | lake-toba/p1 | Tuktuk Siadong village pier → Ambarita | `rn-89174b6f31fe` | **KEEP** | — |
-| featured | lake-toba/p2 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
-| featured | lake-toba/p2 | Tuktuk Siadong village pier → Ambarita | `rn-89174b6f31fe` | **KEEP** | — |
-| featured | lake-toba/p3 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `rn-db305ed7f029` | **KEEP** | — |
-| featured | lake-toba/p3 | Tuktuk Siadong village pier → Ambarita | `rn-89174b6f31fe` | **KEEP** | — |
+| journey | market:lake-toba | Parapat → Tomok / Tuk Tuk (Samosir) | `—` | **KEEP** | — |
+| journey | market:lake-toba | Tuktuk Siadong village pier → Ambarita | `—` | **KEEP** | — |
+| journey | market:lake-toba | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `—` | **KEEP** | — |
+| featured | lake-toba/p1 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `—` | **KEEP** | — |
+| featured | lake-toba/p1 | Tuktuk Siadong village pier → Ambarita | `—` | **KEEP** | — |
+| featured | lake-toba/p2 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `—` | **KEEP** | — |
+| featured | lake-toba/p2 | Tuktuk Siadong village pier → Ambarita | `—` | **KEEP** | — |
+| featured | lake-toba/p3 | Tigaraja Port (Parapat) → Tomok pier (Samosir) | `—` | **KEEP** | — |
+| featured | lake-toba/p3 | Tuktuk Siadong village pier → Ambarita | `—` | **KEEP** | — |
 | journey | market:phuket | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
 | journey | market:phuket | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
 | journey | market:phuket | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |

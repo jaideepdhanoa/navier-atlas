@@ -1,12 +1,12 @@
 # Proposal fidelity — singapore-mpa
 
 **Verdict:** PASS
-**Checked:** 2026-06-30T14:03:39Z
+**Checked:** 2026-07-01T02:14:50Z
 
 ## Summary
 
-- Items audited: 13
-- KEEP: 13
+- Items audited: 11
+- KEEP: 11
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -20,12 +20,10 @@
 | journey | — | Marina South Pier → St John's / Lazarus Island | `—` | **KEEP** | — |
 | journey | — | Changi Point Ferry Terminal → Pulau Ubin | `—` | **KEEP** | — |
 | journey | — | Marina Bay / CBD → Keppel Bay / HarbourFront | `—` | **KEEP** | — |
-| journey | — | Singapore (Tanah Merah) → Bintan (Bandar Bentan Te | `—` | **KEEP** | — |
 | featured | 1 | East Coast (Marina East) ↔ Marina Bay / CBD | `—` | **KEEP** | — |
 | featured | 1 | Marina South Pier ↔ the Southern Islands (St John' | `—` | **KEEP** | — |
 | featured | 2 | Marina Bay / CBD ↔ Keppel Bay / HarbourFront | `—` | **KEEP** | — |
 | featured | 2 | Sentosa Cove ↔ the Southern Islands | `—` | **KEEP** | — |
 | featured | 2 | Changi Point ↔ Pulau Ubin | `—` | **KEEP** | — |
-| featured | 2 | West Coast Pier ↔ Keppel Bay / HarbourFront (worki | `—` | **KEEP** | — |
 | featured | 3 | Singapore (Tanah Merah) ↔ Bintan / Batam | `—` | **KEEP** | — |
 | featured | 3 | Singapore ↔ Johor / Desaru (Causeway relief) | `—` | **KEEP** | — |

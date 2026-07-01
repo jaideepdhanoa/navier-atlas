@@ -1,7 +1,7 @@
 # Proposal fidelity — airasia-move
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:10Z
+**Checked:** 2026-07-01T02:14:49Z
 
 ## Summary
 
@@ -19,9 +19,9 @@
 | featured | 1 | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `—` | **KEEP** | — |
 | featured | 1 | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
 | featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
-| featured | 2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
+| featured | 2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `—` | **KEEP** | — |
 | featured | 2 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
-| featured | 2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
+| featured | 2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `—` | **KEEP** | — |
 | featured | 3 | Krabi → Langkawi | `—` | **KEEP** | — |
 | featured | 3 | Singapore → Tioman Island | `—` | **KEEP** | — |
 | journey | market:koh_samui_gulf | Raja Ferry Lipa Noi Pier (Koh Samui) → Raja Ferry  | `—` | **KEEP** | — |
@@ -129,19 +129,19 @@
 | featured | kota-kinabalu/p2 | Semporna Jetty (Sipadan gateway) → Sipadan Island  | `—` | **KEEP** | — |
 | featured | kota-kinabalu/p3 | Jesselton Point Ferry Terminal (KK) → Mamutik Isla | `rn-4a35d08732bc` | **KEEP** | — |
 | journey | market:langkawi | Kuah Jetty Point Complex → Kilim Karst Geoforest P | `rn-76bf7675c6e3` | **KEEP** | — |
-| journey | market:langkawi | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
-| journey | market:langkawi | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
+| journey | market:langkawi | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `—` | **KEEP** | — |
+| journey | market:langkawi | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `—` | **KEEP** | — |
 | journey | market:langkawi | Krabi → Langkawi | `—` | **KEEP** | — |
 | featured | langkawi/p1 | Kuah Jetty Point Complex → Kilim Karst Geoforest P | `rn-76bf7675c6e3` | **KEEP** | — |
-| featured | langkawi/p2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `gcn-b3d5523f36-shared` | **KEEP** | — |
-| featured | langkawi/p2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
+| featured | langkawi/p2 | Telaga Harbour Park → Bundhaya Pier (Koh Lipe, TH  | `—` | **KEEP** | — |
+| featured | langkawi/p2 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `—` | **KEEP** | — |
 | featured | langkawi/p3 | Krabi → Langkawi | `—` | **KEEP** | — |
 | journey | market:penang | George Town (Raja Tun Uda terminal) → Butterworth  | `gcn-c46f3bf4b8-shared` | **KEEP** | — |
-| journey | market:penang | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `gcn-0965643d33-shared` | **KEEP** | — |
-| journey | market:penang | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
+| journey | market:penang | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `—` | **KEEP** | — |
+| journey | market:penang | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `—` | **KEEP** | — |
 | featured | penang/p1 | Raja Tun Uda Ferry Terminal (George Town) → Sultan | `gcn-c46f3bf4b8-shared` | **KEEP** | — |
-| featured | penang/p2 | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `gcn-0965643d33-shared` | **KEEP** | — |
-| featured | penang/p3 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `gcn-5596b8c9ee-shared` | **KEEP** | — |
+| featured | penang/p2 | Raja Tun Uda Ferry Terminal (George Town) → Shangr | `—` | **KEEP** | — |
+| featured | penang/p3 | Langkawi Cruise Terminal (Kuah, Star Cruises berth | `—` | **KEEP** | — |
 | journey | market:desaru | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
 | journey | market:desaru | Desaru Coast resort jetties → Desaru intra-coast ( | `rn-59e1b8a8a6ca` | **KEEP** | — |
 | featured | desaru/p1 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
@@ -149,14 +149,14 @@
 | featured | desaru/p3 | Desaru Coast (Johor) → Constant Wind | `—` | **KEEP** | — |
 | journey | market:tioman | Singapore (Tanah Merah Ferry Terminal) → Tioman Is | `—` | **KEEP** | — |
 | featured | tioman/p1 | Singapore → Tioman Island | `—` | **KEEP** | — |
-| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-30120bc0105a` | **KEEP** | — |
+| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
 | journey | market:manila | Manila Bay (Mall of Asia pier) → Nasugbu / Pico de | `—` | **KEEP** | — |
-| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-ad4885ae93c7` | **KEEP** | — |
-| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-6193fc15dcee` | **KEEP** | — |
+| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
+| journey | market:manila | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
 | featured | manila/p1 | Manila / Cebu / Palawan / Boracay / Siargao → Pico | `—` | **KEEP** | — |
-| featured | manila/p1 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-30120bc0105a` | **KEEP** | — |
-| featured | manila/p2 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-ad4885ae93c7` | **KEEP** | — |
-| featured | manila/p3 | Esplanade Seaside Terminal (Manila South Harbor) → | `rn-6193fc15dcee` | **KEEP** | — |
+| featured | manila/p1 | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
+| featured | manila/p2 | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
+| featured | manila/p3 | Esplanade Seaside Terminal (Manila South Harbor) → | `—` | **KEEP** | — |
 | journey | market:cebu | Cebu (Mactan / Cebu City pier) → Bohol (Panglao /  | `rn-66e9451f405f` | **KEEP** | — |
 | journey | market:cebu | Mactan (Cebu) resort jetties → Mactan island resor | `rn-4f6e8fe32136` | **KEEP** | — |
 | journey | market:cebu | Cebu-Mactan Ferry Terminal → Camotes Consuelo Whar | `rn-c9b668f91b41` | **KEEP** | — |

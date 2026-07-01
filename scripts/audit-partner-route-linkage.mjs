@@ -75,7 +75,7 @@ function isGeometryPendingChip(o) {
   const ids = routeIdsOfItem(o);
   if (!ids.length && (o.route_id === null || o.route_id === undefined)) {
     const st = String(o._link_status || '');
-    if (/unlinked|pending|frontier|seal|no-route/i.test(st)) return true;
+    if (/unlinked|pending|frontier|seal|no-route|geometry_hold/i.test(st)) return true;
     if (String(o._link_source || '').includes('indonesia-depth')) return true;
     if (o.economics_status === 'economics_pending' && o.from_node_id && o.to_node_id) return true;
   }

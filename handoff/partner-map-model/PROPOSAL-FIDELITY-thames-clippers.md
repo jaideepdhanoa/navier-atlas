@@ -1,34 +1,30 @@
 # Proposal fidelity — thames-clippers
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T17:05:36Z
+**Verdict:** PASS
+**Checked:** 2026-07-01T02:14:50Z
 
 ## Summary
 
-- Items audited: 16
-- KEEP: 14
-- DROP: 2
+- Items audited: 12
+- KEEP: 12
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | London (Embankment / Tower) → Canary Wharf | `—` | **KEEP** | — |
-| journey | — | Central London → Thamesmead / Royal Docks (new dev | `—` | **KEEP** | — |
-| journey | — | Putney (west) → Barking Riverside / Woolwich (east | `—` | **KEEP** | — |
-| journey | — | London: Hermitage Community Moorings → Poplar Wate | `—` | **KEEP** | — |
-| featured | 1 | London (Embankment / Tower) ↔ Canary Wharf | `ics-5e35d5734e` | **DROP** | bp_binding: labels ≠ route endpoints: card 'London (Embankment / Tower)' |
-| featured | 1 | Central London ↔ Thamesmead / Royal Docks (new dev | `ics-a7b6b93c46` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Central London' → 'Thamesmea |
-| featured | 1 | Putney (west) ↔ Barking Riverside / Woolwich (east | `—` | **KEEP** | — |
-| featured | 2 | London: Hermitage Community Moorings → Harbour Cyc | `—` | **KEEP** | — |
-| featured | 2 | London: Islington Boat Club → Lee Valley Marina Sp | `—` | **KEEP** | — |
-| featured | 2 | London: Little Venice → Fulham Reach Boat Club | `—` | **KEEP** | — |
-| featured | 3 | London: Westminster Pier → London | `—` | **KEEP** | — |
-| featured | 3 | London: Westminster Pier → London | `—` | **KEEP** | — |
-| featured | 3 | London: Laburnum Boat Club → Poplar Waterside & Ma | `—` | **KEEP** | — |
-| featured | 4 | London: Harbour Cycles → Imperial Wharf Marina | `—` | **KEEP** | — |
-| featured | 4 | London: Laburnum Boat Club → Limehouse Waterside & | `—` | **KEEP** | — |
-| featured | 4 | London: Little Venice → London Corinthian Sailing  | `—` | **KEEP** | — |
+| journey | — | Embankment Pier → Canary Wharf Pier | `—` | **KEEP** | — |
+| journey | — | Canary Wharf Pier → North Greenwich Pier | `rn-bb52199b9317` | **KEEP** | — |
+| journey | — | Battersea Power Station Pier → London Bridge City  | `rn-cb2f4f28eae9` | **KEEP** | — |
+| journey | — | Putney Pier → Blackfriars Pier | `—` | **KEEP** | — |
+| featured | 1 | Embankment Pier ↔ Canary Wharf Pier | `—` | **KEEP** | — |
+| featured | 1 | Canary Wharf Pier ↔ North Greenwich Pier | `rn-bb52199b9317` | **KEEP** | — |
+| featured | 1 | Battersea Power Station Pier ↔ London Bridge City  | `rn-cb2f4f28eae9` | **KEEP** | — |
+| featured | 2 | Putney Pier ↔ Blackfriars Pier | `—` | **KEEP** | — |
+| featured | 2 | Canary Wharf Pier ↔ Rotherhithe | `rn-d0354a511872` | **KEEP** | — |
+| featured | 3 | North Greenwich Pier ↔ Barking Riverside Pier | `—` | **KEEP** | — |
+| featured | 3 | Woolwich ↔ Canary Wharf Pier | `—` | **KEEP** | — |
+| featured | 4 | Westminster Pier ↔ Greenwich Pier | `—` | **KEEP** | — |

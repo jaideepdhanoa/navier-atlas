@@ -1,13 +1,13 @@
 # Proposal fidelity — dubai-rta
 
-**Verdict:** TRIM
-**Checked:** 2026-06-29T17:05:15Z
+**Verdict:** PASS
+**Checked:** 2026-07-01T02:14:49Z
 
 ## Summary
 
-- Items audited: 13
-- KEEP: 12
-- DROP: 1
+- Items audited: 11
+- KEEP: 11
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
 - BP-binding errors: 0
@@ -16,16 +16,14 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Yas Marina → Four Seasons Al Maryah Jetty | `rn-80c408c085a6` | **KEEP** | — |
-| journey | — | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `rn-9349160e716f` | **KEEP** | — |
-| journey | — | Dubai → Fujairah (east coast) | `—` | **KEEP** | — |
-| journey | — | ميناء صيادين غليلة → ميناء صيادين خورخوير | `rn-501c17b57a72` | **KEEP** | — |
-| featured | 1 | Dubai Marina / Harbour ↔ Palm Jumeirah / Dubai Isl | `—` | **KEEP** | — |
-| featured | 1 | Dubai Creek ↔ Dubai Marina | `—` | **DROP** | phase_narrative_fit: Phase 1 Dubai beachhead but route cities ['ras-al-khaimah-ua |
-| featured | 2 | Dubai Creek Marina → Al Seef Marine Transport Stat | `rn-355d8ba3c15a` | **KEEP** | — |
-| featured | 3 | Dubai ↔ Abu Dhabi waterfront | `—` | **KEEP** | — |
-| featured | 3 | Dubai Harbour Marina → Wynn Al Marjan Island arriv | `gcn-9e515da38a-bolt` | **KEEP** | — |
-| featured | 3 | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |
-| featured | 4 | Dubai ↔ Doha | `—` | **KEEP** | — |
-| featured | 4 | Dubai ↔ Manama | `—` | **KEEP** | — |
-| featured | 4 | Dubai ↔ Muscat | `—` | **KEEP** | — |
+| journey | — | Dubai Marina → Palm Jumeirah | `—` | **KEEP** | — |
+| journey | — | Al Seef (Dubai Creek) → Dubai Festival City | `—` | **KEEP** | — |
+| journey | — | La Mer / J1 Beach → Dubai Marina | `—` | **KEEP** | — |
+| journey | — | Mina Rashid → Dubai Islands / Souk Al Marfa | `—` | **KEEP** | — |
+| featured | 1 | Dubai Marina ↔ Palm Jumeirah (Nakheel Mall / The P | `—` | **KEEP** | — |
+| featured | 1 | Dubai Marina ↔ Bluewaters Island | `—` | **KEEP** | — |
+| featured | 1 | Al Seef Marine Transport Station (Dubai Creek) ↔ D | `—` | **KEEP** | — |
+| featured | 2 | Al Seef Marine Transport Station (Dubai Creek) ↔ M | `—` | **KEEP** | — |
+| featured | 2 | La Mer / J1 Beach ↔ Dubai Marina | `—` | **KEEP** | — |
+| featured | 2 | Mina Rashid waterfront ↔ Dubai Islands / Souk Al M | `—` | **KEEP** | — |
+| featured | 3 | Dubai Harbour ↔ Abu Dhabi Corniche | `—` | **KEEP** | — |

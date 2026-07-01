@@ -40,8 +40,8 @@ def main() -> int:
         targets.append(row)
 
     if not targets and not args.partner:
-        print("Use --all or --partner <slug>")
-        return 1
+        print("No expansion targets (spine already complete)")
+        return 0
 
     if args.partner and not targets:
         for slug in args.partner:

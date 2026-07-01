@@ -1,7 +1,7 @@
 # Proposal fidelity — bolt
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:13Z
+**Checked:** 2026-07-01T02:14:49Z
 
 ## Summary
 
@@ -73,12 +73,12 @@
 | featured | finland/p2 | Helsinki → Vallisaari | `rn-8523ec0a5309` | **KEEP** | — |
 | featured | finland/p3 | Viking Line → Stockholm | `rn-db397ab37430` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
-| journey | market:france-riviera | Menton → Monaco | `rn-377e4ce2bf83` | **KEEP** | — |
+| journey | market:france-riviera | Menton → Monaco | `—` | **KEEP** | — |
 | journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
 | featured | france-riviera/p1 | Port de Cannes, Jetée Albert Edouard → Centre Naut | `ics-529325c5eb` | **KEEP** | — |
 | featured | france-riviera/p1 | Antibes → Cannes | `rn-3fab58bb5f82` | **KEEP** | — |
-| featured | france-riviera/p2 | Menton → Monaco | `rn-377e4ce2bf83` | **KEEP** | — |
+| featured | france-riviera/p2 | Menton → Monaco | `—` | **KEEP** | — |
 | featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | france-riviera/p2 | Nice → Monaco | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | france-riviera/p3 | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |

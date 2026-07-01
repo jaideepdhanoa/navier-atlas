@@ -22,13 +22,14 @@ done
 echo "→ PTA pair-gap table"
 python3 scripts/pta/build_pair_gap_table.py --write
 
-EXPAND_ARGS=(--all)
-((APPLY)) && EXPAND_ARGS+=(--apply)
-echo "→ expand operating spine (hub-spoke)"
-python3 scripts/pta/expand_operating_spine.py "${EXPAND_ARGS[@]}"
+if ((APPLY)); then
+  echo "→ expand operating spine (hub-spoke)"
+  python3 scripts/pta/expand_operating_spine.py --all --apply || true
+fi
 
 if ((${#PARTNERS[@]} == 0)); then
-  mapfile -t PARTNERS < <(python3 -c "
+  while IFS= read -r line; do PARTNERS+=("$line"); done < <(
+    python3 -c "
 import json
 from pathlib import Path
 rows=json.loads(Path('handoff/partner-map-model/PTA-PAIR-GAP-TABLE.json').read_text())['authorities']

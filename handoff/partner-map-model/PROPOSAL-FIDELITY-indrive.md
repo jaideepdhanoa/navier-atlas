@@ -1,7 +1,7 @@
 # Proposal fidelity — indrive
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:20Z
+**Checked:** 2026-07-01T02:14:50Z
 
 ## Summary
 
@@ -44,13 +44,13 @@
 | journey | market:morocco-atlantic | Marina Agadir → Taghazout Bay | `—` | **KEEP** | — |
 | journey | market:morocco-atlantic | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-89fa57385b31` | **KEEP** | — |
 | journey | market:morocco-atlantic | Essaouira → Sidi Kaouki / southern coast | `—` | **KEEP** | — |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | featured | morocco-atlantic/p2 | Essaouira → Sidi Kaouki | `—` | **KEEP** | — |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **KEEP** | — |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | journey | market:india | Versova Ferry Wharf → Gateway of India | `—` | **KEEP** | — |
 | journey | market:india | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | journey | market:india | Goa → Mumbai Harbour | `—` | **KEEP** | — |
