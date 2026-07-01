@@ -108,12 +108,12 @@ def build_public_value(slug: str, dossier: dict, corridors: int, fleet_mature: i
             },
         ],
         "levers": [
-            x
+            x.strip()
             for x in [
-                (dossier.get("interpretation_for_navier") or "")[:220],
+                dossier.get("interpretation_for_navier") or "",
                 (dossier.get("policy_targets") or {}).get("relevance") or "",
             ]
-            if x
+            if x and x.strip()
         ][:3],
         "operating_model": [
             {"label": "Fare integration", "value": "Rides on the authority's existing fare system — set with the authority"},
@@ -131,7 +131,6 @@ def build_growth_case(slug: str, dossier: dict, corridors: int) -> dict:
     floor = REV_PER_BOAT_YR
     network_mid = floor * max(1.0, math.sqrt(corridors / 8.0)) * INDUCED_MID
     mature_mid = network_mid * (CAPTURE_MATURE_MID / CAPTURE_FLOOR)
-    tam_mid = mature_mid * 4.0
     fleet_starter = 1
     fleet_network = max(2, min(12, int(math.ceil(corridors / 4))))
     fleet_mature = max(fleet_network, min(30, int(math.ceil(corridors / 2))))
@@ -161,15 +160,6 @@ def build_growth_case(slug: str, dossier: dict, corridors: int) -> dict:
             "basis": "Better boats grow ridership; a well-run network carries a larger share.",
             "whose_money": "operating_revenue",
             "display": money_band(mature_mid),
-            "confidence": "med-low",
-            "confidence_label": "Projected",
-        },
-        {
-            "id": "water_transport_market",
-            "label": "Total water-transport market (addressable)",
-            "basis": "Full market the network can serve as the authority matures the system.",
-            "whose_money": "water_transport_market",
-            "display": money_band(tam_mid),
             "confidence": "med-low",
             "confidence_label": "Projected",
         },
@@ -229,9 +219,7 @@ def build_growth_case(slug: str, dossier: dict, corridors: int) -> dict:
             "anchor_note": f"Grounded in {corridors} sealed domestic corridors. Operating figures use the PTA public-value convention; fares and cost-recovery are set with the authority.",
             "whose_money_legend": {
                 "operating_revenue": "Fare revenue the service collects — the operating P&L for the route network.",
-                "water_transport_market": "The total addressable water-transport market the network can serve as it matures.",
             },
-            "cite_rule": "Lead with corridor count and public value. Quote the mid figure; bands label every projected figure.",
             "rungs": rungs,
         },
         "phase_economics": {
@@ -255,14 +243,9 @@ def build_growth_case(slug: str, dossier: dict, corridors: int) -> dict:
                 "basis": "Better, quicker boats grow how many people choose the water.",
                 "confidence": "med-low",
             },
-            {
-                "from_rung_id": "operating_mature",
-                "to_rung_id": "water_transport_market",
-                "headline": "The full water-transport market the network can serve",
-                "basis": "Step back from network ridership to the total addressable water-transport market.",
-                "confidence": "med-low",
-            },
         ],
+        "modal_headline": "What it returns to the public",
+        "modal_lead": "Start from corridors the authority already serves. Each maturity stage widens access and deepens public value — emissions avoided, congestion relieved, and time saved — on a fare-integrated operating model set with the authority.",
         "_provenance": {
             "generator": "scripts/pta/regen_pta_economics.py",
             "regenerated_at": utc_now(),
@@ -281,15 +264,9 @@ def apply_partner(path: Path, gc_patch: dict, apply: bool) -> bool:
     doc = json.loads(path.read_text())
     gc = doc.setdefault("growth_case", {})
     vessel_sizing = gc.get("vessel_sizing")
-    modal_lead = gc.get("modal_lead")
-    modal_headline = gc.get("modal_headline")
     gc.update(gc_patch)
     if vessel_sizing:
         gc["vessel_sizing"] = vessel_sizing
-    if modal_lead:
-        gc["modal_lead"] = modal_lead
-    if modal_headline:
-        gc["modal_headline"] = modal_headline
     doc["economics_status"] = "authority_economics_regenerated"
     if apply:
         path.write_text(json.dumps(doc, indent=2) + "\n")

@@ -524,6 +524,36 @@ body.panel-hidden #footer { display:block; }
 .gc-vessel-qlr .gc-vessel-name { color:#fbbf24; }
 .gc-vessel-meta { font-size:10.5px; color:var(--text-2); margin:1px 0 4px; }
 .gc-vessel-role { font-size:11px; color:var(--text-1); line-height:1.45; }
+/* PTA public-value economics (replaces commercial TAM ladder) */
+.pta-pv-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 10px; }
+.pta-pv-card { border:1px solid var(--line-strong); border-radius:10px; padding:11px 12px; background:rgba(110,231,183,0.04); border-top:2px solid #6ee7b7; }
+.pta-pv-label { font-size:9.5px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-2); margin-bottom:4px; }
+.pta-pv-value { font-size:16px; font-weight:700; color:var(--text-0); line-height:1.25; letter-spacing:-0.02em; }
+.pta-pv-basis { font-size:10.5px; color:var(--text-2); line-height:1.45; margin-top:5px; }
+.pta-pv-narr { margin:8px 0 12px; }
+.pta-pv-levers { margin:0; padding-left:18px; font-size:12.5px; color:var(--text-1); line-height:1.6; }
+.pta-pv-levers li { margin-bottom:6px; }
+.pta-op-model h3 { margin-bottom:8px; }
+.pta-op-grid { display:flex; flex-direction:column; gap:6px; }
+.pta-op-row { display:grid; grid-template-columns:130px 1fr; gap:8px 12px; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px; background:rgba(255,255,255,0.02); }
+.pta-op-label { font-size:10px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-2); }
+.pta-op-value { font-size:12px; color:var(--text-0); line-height:1.5; }
+.pta-phases { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.pta-phase-kpis { display:flex; gap:10px; margin:6px 0 8px; }
+.pta-kpi { display:flex; flex-direction:column; gap:1px; }
+.pta-kpi-n { font-size:15px; font-weight:700; color:#6ee7b7; }
+.pta-kpi-l { font-size:9px; color:var(--text-2); text-transform:uppercase; letter-spacing:0.05em; }
+.pta-phase-meta dt { font-size:9px; }
+.pta-phase-lead { margin-bottom:10px; }
+.pta-subsidy-note { margin-top:10px; font-size:10.5px; color:var(--text-2); font-style:italic; line-height:1.5; padding:8px 10px; border-left:2px solid rgba(110,231,183,0.35); }
+.pta-rev-appendix { margin-top:14px; }
+.pta-rev-appendix summary { font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-2); cursor:pointer; }
+.pta-rev-table { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+.pta-rev-row { display:grid; grid-template-columns:1fr auto auto; gap:8px 12px; align-items:center; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px; font-size:11px; }
+.pta-rev-label { color:var(--text-1); line-height:1.4; }
+.pta-rev-mid { font-weight:700; color:var(--text-0); white-space:nowrap; }
+.pta-rev-band { font-size:10px; white-space:nowrap; }
+@media (max-width:720px){ .pta-pv-grid { grid-template-columns:1fr; } .pta-phases { grid-template-columns:1fr; } .pta-op-row { grid-template-columns:1fr; } }
 /* Route unit-economics block */
 .rec-tags { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px; }
 .rec-vessel { font-size:10px; color:var(--text-2); border:1px solid var(--line-strong); border-radius:999px; padding:2px 8px; }
@@ -3299,9 +3329,92 @@ function _gcFleet(h){
   if (h.fleet_boats_est_pioneer_equiv!=null) return _gcNum(h.fleet_boats_est_pioneer_equiv)+' <span class="muted">Pioneer-equiv</span>';
   return '';
 }
+function _isPtaPartner(partner){
+  if (!partner) return false;
+  if (String(partner.archetype||'').toLowerCase()==='public_transit') return true;
+  return !!(partner._public_transit_authority);
+}
+function _isPtaEconomics(gc, partner){
+  if (_isPtaPartner(partner)) return true;
+  if (!gc) return false;
+  return !!(gc.public_value && (gc._economics_status==='pta_regenerated' || gc._provenance?.economics_status==='pta_regenerated'));
+}
+function _ptaEconomicsHtml(gc, opts){
+  if (!gc) return '';
+  opts=opts||{};
+  const pubVal=gc.public_value||{}, pe=gc.phase_economics||{}, prov=gc._provenance||{};
+  const corridors=prov.sealed_corridors;
+  let h='';
+  const headline=pubVal.headline||gc.modal_headline||'What it returns to the public';
+  if (!opts.inModal){
+    h+=`<div class="chap-cap"><div class="eyebrow">Public value & operating model</div>
+      <h2>${escapeHtml(headline)}</h2>
+      ${corridors!=null?`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(corridors)}</span> sealed corridors on the authority network</div>`:''}
+      ${pubVal.note?`<p class="gc-anchor">${escapeHtml(pubVal.note)}</p>`:''}</div>`;
+  } else {
+    if (corridors!=null) h+=`<div class="gc-lead"><span class="gc-lead-n">${_gcNum(corridors)}</span> sealed corridors on the authority network</div>`;
+    if (pubVal.note) h+=`<p class="gc-anchor">${escapeHtml(pubVal.note)}</p>`;
+  }
+  const pvMetrics=(pubVal.metrics||[]).filter(m=>m&&m.label);
+  if (pvMetrics.length){
+    h+=`<div class="pta-pv-grid">${pvMetrics.map(m=>`<div class="pta-pv-card">
+      <div class="pta-pv-label">${escapeHtml(m.label)}</div>
+      <div class="pta-pv-value">${escapeHtml(String(m.value||''))}</div>
+      ${m.basis?`<div class="pta-pv-basis">${escapeHtml(m.basis)}</div>`:''}
+    </div>`).join('')}</div>`;
+  }
+  const pvLevers=(pubVal.levers||[]).filter(Boolean);
+  if (pvLevers.length) h+=`<div class="pta-pv-narr"><ul class="pta-pv-levers">${pvLevers.map(l=>`<li>${escapeHtml(String(l))}</li>`).join('')}</ul></div>`;
+  if (pubVal.operating_model&&pubVal.operating_model.length){
+    h+=`<div class="panel-section pta-op-model"><h3>Operating model</h3><div class="pta-op-grid">${pubVal.operating_model.map(r=>`<div class="pta-op-row">
+      <div class="pta-op-label">${escapeHtml(r.label||'')}</div>
+      <div class="pta-op-value">${escapeHtml(String(r.value||''))}</div>
+    </div>`).join('')}</div></div>`;
+  }
+  const horizons=(pe.horizons||[]);
+  if (horizons.length){
+    h+=`<div class="panel-section"><h3>Network maturity</h3>`;
+    if (pe.conversion_note) h+=`<div class="pcaro-narr pta-phase-lead">${escapeHtml(pe.conversion_note)}</div>`;
+    h+=`<div class="pta-phases">`;
+    for (const z of horizons){
+      const rev=z.navier_transport_rev_display;
+      const fleet=_gcFleet(z);
+      h+=`<div class="pta-phase gc-hz gc-hz-${escapeHtml(z.id||'')}">
+        <div class="gc-hz-top"><span class="gc-hz-name">${escapeHtml(z.name||'')}</span><span class="gc-hz-when">${escapeHtml(z.horizon||'')}</span></div>
+        ${z.scope?`<div class="gc-hz-scope">${escapeHtml(z.scope)}</div>`:''}
+        <div class="pta-phase-kpis">
+          ${z.co2_saved_t_yr!=null?`<div class="pta-kpi"><span class="pta-kpi-n">${_gcNum(z.co2_saved_t_yr)} t</span><span class="pta-kpi-l">CO₂ avoided/yr</span></div>`:''}
+          ${fleet?`<div class="pta-kpi"><span class="pta-kpi-n">${fleet}</span><span class="pta-kpi-l">Fleet</span></div>`:''}
+        </div>
+        <dl class="gc-hz-dl pta-phase-meta">
+          ${z.vessel?`<dt>Vessel mix</dt><dd>${escapeHtml(z.vessel)}</dd>`:''}
+          ${rev?`<dt>Indicative fare revenue</dt><dd>${escapeHtml(rev)}<span class="muted">/yr</span></dd>`:''}
+        </dl>
+        ${z.confidence?_gcConfBadge(z.confidence, z.confidence_label):''}
+      </div>`;
+    }
+    h+=`</div><div class="pta-subsidy-note">Public-network fares are typically subsidized. Indicative fare revenue shows operating scale — cost-recovery and subsidy are set with the authority, not modeled here.</div></div>`;
+  }
+  const rungs=(gc.revenue_potential?.rungs||[]).filter(r=>r.id!=='water_transport_market');
+  if (rungs.length&&!opts.inModal){
+    h+=`<details class="pta-rev-appendix"><summary>Indicative operating revenue by network stage</summary><div class="pta-rev-table">`;
+    for (const r of rungs){
+      const d=r.display||{};
+      h+=`<div class="pta-rev-row">
+        <div class="pta-rev-label">${escapeHtml(r.label||'')}</div>
+        <div class="pta-rev-mid">${escapeHtml(d.mid||'')}</div>
+        ${d.low&&d.high?`<div class="pta-rev-band muted">${escapeHtml(d.low)} – ${escapeHtml(d.high)}</div>`:''}
+        ${r.confidence?_gcConfBadge(r.confidence, r.confidence_label):''}
+      </div>`;
+    }
+    h+=`</div></details>`;
+  }
+  return h;
+}
 function _growthCaseHtml(gc, opts){
   if (!gc) return '';
   opts=opts||{};
+  if (_isPtaEconomics(gc, opts.partner)) return _ptaEconomicsHtml(gc, opts);
   const showPlat=opts.showPlatformRev!==false;
   const rp=gc.revenue_potential||{}, pe=gc.phase_economics||{}, vs=gc.vessel_sizing||{}, prov=gc._provenance||{};
   let h='';
@@ -3402,7 +3515,7 @@ function _growthCaseHtml(gc, opts){
 function _chapterHtml(ch, partner){
   if (ch.kind==='endstate') return _endstateHtml(partner);
   if (ch.kind==='phase')    return _phaseBlockHtml(ch.phase);
-  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case, {partnerDisplay:partner.display||partner.partner_id||'The platform', showPlatformRev:_showsPlatformRevenue(partner)});
+  if (ch.kind==='growth')   return _growthCaseHtml(partner.growth_case, {partner, partnerDisplay:partner.display||partner.partner_id||'The platform', showPlatformRev:_showsPlatformRevenue(partner)});
   if (ch.kind==='proof')    return _whyNavierHtml(partner.why_navier_now)+_diffHtml(partner.differentiation)+_proofHtml(partner.proof_points)+_objHtml(partner.objections);
   if (ch.kind==='ask')      { const c=partner.close; const closeHtml=!c?'':(typeof c==='string'?`<div class="panel-section pcaro-close"><div class="b">${escapeHtml(c)}</div></div>`:`<div class="panel-section pcaro-close"><div class="t">${escapeHtml(c.title||'')}</div>${c.body?`<div class="b">${escapeHtml(c.body)}</div>`:''}</div>`); return _askHtml(partner.the_ask)+closeHtml; }
   return '';
@@ -3760,13 +3873,19 @@ function _introStep2Html(partner){
   const gcPartner=_introGrowthPartner(partner), gc=gcPartner&&gcPartner.growth_case;
   if (!gc) return _introStep1Html(partner);
   const gcData=gc;
-  const headline=gcData.modal_headline||'How big is the opportunity?';
+  const isPta=_isPtaEconomics(gc, gcPartner);
   const showPlat=_showsPlatformRevenue(gcPartner);
-  const lead=gcData.modal_lead||(showPlat?'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.':'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, and journey wallet.');
-  return `<div class="intro-mark">The opportunity</div>
+  const headline=isPta
+    ?(gcData.modal_headline||gcData.public_value?.headline||'What it returns to the public')
+    :(gcData.modal_headline||'How big is the opportunity?');
+  const lead=isPta
+    ?(gcData.modal_lead||'Start from corridors the authority already serves. Each maturity stage widens access and deepens public value — emissions avoided, congestion relieved, and time saved — on a fare-integrated operating model set with the authority.')
+    :(gcData.modal_lead||(showPlat?'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, journey wallet, platform take.':'We start from grounded corridor demand. Each step adds one realistic expansion lever — network width, induced demand, and journey wallet.'));
+  const mark=isPta?'Public value':'The opportunity';
+  return `<div class="intro-mark">${mark}</div>
     <h2 class="intro-step-h">${escapeHtml(headline)}</h2>
     <p class="intro-step-lead">${escapeHtml(lead)}</p>
-    ${_growthCaseHtml(gc, {inModal:true, partnerDisplay:gcPartner.display||gcPartner.partner_id||'The platform', showPlatformRev:showPlat})}`;
+    ${_growthCaseHtml(gc, {inModal:true, partner:gcPartner, partnerDisplay:gcPartner.display||gcPartner.partner_id||'The platform', showPlatformRev:showPlat})}`;
 }
 function _introIsHubContext(partner){
   if (partner&&partner._hubOf) return true;
@@ -3790,7 +3909,7 @@ function _syncIntroChrome(){
   const isHub=_introIsHubContext(partner)&&!_introSpokeReturn;
   if (_introStep===1){
     foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
-      <div class="intro-foot-right">${hasStep2?`<button type="button" class="intro-start" id="intro-next">See the opportunity →</button>`:`<button type="button" class="intro-start" id="intro-start">${isSpoke?'Explore this market →':'Take the tour →'}</button>`}</div>`;
+      <div class="intro-foot-right">${hasStep2?`<button type="button" class="intro-start" id="intro-next">${_isPtaEconomics(gc, gcP)?'See public value →':'See the opportunity →'}</button>`:`<button type="button" class="intro-start" id="intro-start">${isSpoke?'Explore this market →':'Take the tour →'}</button>`}</div>`;
   } else {
     foot.innerHTML=`<button type="button" class="intro-skip" id="intro-skip">Skip to the map</button>
       <div class="intro-foot-right"><button type="button" class="intro-back" id="intro-back">Back</button>
