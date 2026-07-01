@@ -4,6 +4,24 @@ _Last updated 2026-05-30 (overnight session)._
 
 ---
 
+## 2026-06-30 — PTA category replication (batch 2): Dubai RTA · Abu Dhabi ITC · RAK RAKTA · Hong Kong TD
+
+Rolled the Bahrain MOTC gold pattern through four more transport authorities with full depth — same de-contamination, domestic-first arc, public-value economics, sourced boarding points, and hand-waypointed zero-land-crossing Grok routing handoffs.
+
+**Sourced master-plan grounding (boarding points to the real network):**
+- **Dubai RTA** — Marine Transport Master Plan 2030 (ridership 14.7M→22.2M/yr, 7→35 lines, 48→79 stations); Creek/Water Canal/Marina/Harbour/Jumeirah-coast/islands network incl. Souk Al Marfa at Dubai Islands; live abra/water-bus/water-taxi/ferry; optional domestic Dubai↔Abu Dhabi express.
+- **Abu Dhabi ITC** — Abu Dhabi Maritime public water-transport network (700k+ pax to date); Yas Bay, Al Bandar, Saadiyat, Rabdan, Reem, Corniche, Al Raha; Oct-2025 schedule expansion; mangrove/lagoon channels.
+- **RAK RAKTA** — Transport Master Plan 2030 + Marine Transport Project (heritage abra, Al Marjan↔Al Qawasim Corniche classic taxi); Al Marjan/Wynn (2027), Al Hamra, Mina Al Arab resort-island spine; optional Dubai express.
+- **Hong Kong TD** — ~95 licensed ferry routes (11 in-harbour, 84 outer); six outlying-island lifelines (Cheung Chau, Mui Wo, Peng Chau, Lamma, Discovery Bay), Star Ferry; government electric/hybrid-ferry pilot; Climate Action Plan 2050.
+
+**Same contamination pattern caught and removed on all four** (esp. RAKTA, which carried internal "Tasklet/Grok route seal ledger," "exact-bind Musandam/Khasab," and Quanta-LR roadmap notes in partner-facing fields): de-jargoned, scrubbed cross-border/out-of-scope corridors, rebuilt `end_state`/`wow_corridors`, reshaped economics to the public-value convention (no SOM/SAM/TAM/super-app ladder).
+
+**Per authority:** 5–16 sourced boarding points, domestic-first phases, 4 plain-English unlocked journeys, clean proof points / objections / ask / close, a PTA dossier (anchors + hazards), and a Grok routing spec with explicit hand-waypoints + `interior_land_km==0` gate. All route_ids honest null + `_link_status: "pending-seal"`. Unresolved/mint-new berths flagged for Grok, not faked.
+
+**Gates:** schema exit 0 · fidelity all 4 PASS (journey_bp=0) · linkage 0 gaps · geometry strict-severe exit 0 · seal-integrity exit 0 · build exit 0.
+
+---
+
 ## 2026-06-30 — PTA category replication: Qatar MOT + Singapore MPA
 
 Rolled the Bahrain MOTC gold pattern through **Qatar MOT** and **Singapore MPA** with full depth.
