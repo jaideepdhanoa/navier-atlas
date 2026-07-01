@@ -1,12 +1,12 @@
 # Proposal fidelity — singapore-mpa
 
 **Verdict:** PASS
-**Checked:** 2026-06-29T17:05:28Z
+**Checked:** 2026-06-30T14:03:39Z
 
 ## Summary
 
-- Items audited: 11
-- KEEP: 11
+- Items audited: 13
+- KEEP: 13
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -16,14 +16,16 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | ONE°15 Marina Sentosa Cove → Harbour Bay | `rn-76264638fa6b` | **KEEP** | — |
-| journey | — | Singapore (Tanah Merah) → Bintan — Lagoi resorts ( | `—` | **KEEP** | — |
-| journey | — | Singapore (Tanah Merah / East Coast) → Desaru Coas | `—` | **KEEP** | — |
-| journey | — | Bali (Sanur / Benoa) → Lombok & the Gilis | `rn-c001edd855aa` | **KEEP** | — |
-| featured | 1 | Bedok Jetty (East Coast Park) → Marina Bay Water T | `—` | **KEEP** | — |
-| featured | 1 | ONE°15 Marina Sentosa Cove → Harbour Bay | `rn-76264638fa6b` | **KEEP** | — |
-| featured | 1 | Marina Bay Water Taxi Stops (MPA pilot — Esplanade | `rn-e94c308a28e3` | **KEEP** | — |
-| featured | 2 | Jurong Island Banyan Basin Jetty → Harbour Bay | `rn-55f72072dd69` | **KEEP** | — |
-| featured | 2 | Marina Bay ↔ Sentosa / southern islands | `—` | **KEEP** | — |
-| featured | 3 | Singapore / Desaru ↔ East-coast Malaysia & outer R | `—` | **KEEP** | — |
-| featured | 4 | Singapore (Tanah Merah) ↔ Batam / Bintan | `—` | **KEEP** | — |
+| journey | — | Marina East / Bedok Jetty (East Coast) → Marina Ba | `—` | **KEEP** | — |
+| journey | — | Marina South Pier → St John's / Lazarus Island | `—` | **KEEP** | — |
+| journey | — | Changi Point Ferry Terminal → Pulau Ubin | `—` | **KEEP** | — |
+| journey | — | Marina Bay / CBD → Keppel Bay / HarbourFront | `—` | **KEEP** | — |
+| journey | — | Singapore (Tanah Merah) → Bintan (Bandar Bentan Te | `—` | **KEEP** | — |
+| featured | 1 | East Coast (Marina East) ↔ Marina Bay / CBD | `—` | **KEEP** | — |
+| featured | 1 | Marina South Pier ↔ the Southern Islands (St John' | `—` | **KEEP** | — |
+| featured | 2 | Marina Bay / CBD ↔ Keppel Bay / HarbourFront | `—` | **KEEP** | — |
+| featured | 2 | Sentosa Cove ↔ the Southern Islands | `—` | **KEEP** | — |
+| featured | 2 | Changi Point ↔ Pulau Ubin | `—` | **KEEP** | — |
+| featured | 2 | West Coast Pier ↔ Keppel Bay / HarbourFront (worki | `—` | **KEEP** | — |
+| featured | 3 | Singapore (Tanah Merah) ↔ Bintan / Batam | `—` | **KEEP** | — |
+| featured | 3 | Singapore ↔ Johor / Desaru (Causeway relief) | `—` | **KEEP** | — |
