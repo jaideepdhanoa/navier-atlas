@@ -104,6 +104,10 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("desaru_strait", 103.65, 0.95, 104.55, 1.55),
     # Korea south coast (Yeosu / Tongyeong archipelago)
     ("korea_south_coast", 127.50, 34.50, 129.50, 35.20),
+    # Han River transit lane (Gimpo Ara → Yeouido → Jamsil → Ttukseom / Seoul Forest)
+    ("han_river_seoul", 126.55, 37.44, 127.12, 37.58),
+    # Incheon Bay / West Sea island approaches (Muuido · Yeongjong)
+    ("incheon_bay", 126.30, 37.34, 126.62, 37.52),
     # Bahía de Banderas (Puerto Vallarta / Riviera Nayarit)
     ("mexico_bahia_banderas", -106.00, 20.40, -105.20, 21.10),
     # Ligurian coast (Genoa ↔ Portofino / Cinque Terre)
