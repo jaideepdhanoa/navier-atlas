@@ -160,10 +160,18 @@ def recommend_hub_spoke_pairs(d: dict) -> list[dict]:
     return recs
 
 
-def analyze_authority(slug: str) -> dict | None:
+def load_dossier(slug: str) -> tuple[dict | None, str]:
+    local = ROOT / "handoff/partner-map-model" / f"PTA-DOSSIER-{slug}.json"
+    if local.is_file():
+        return json.loads(local.read_text()), "local"
     ref = EXTRA_REFS.get(slug, REF_TIP)
     path = f"handoff/partner-map-model/PTA-DOSSIER-{slug}.json"
     d = git_show(ref, path)
+    return d, ref if d else "missing"
+
+
+def analyze_authority(slug: str) -> dict | None:
+    d, ref = load_dossier(slug)
     if not d:
         return None
 
@@ -189,7 +197,7 @@ def analyze_authority(slug: str) -> dict | None:
     return {
         "partner_id": slug,
         "display": d.get("authority", {}).get("display", slug),
-        "git_ref": ref,
+        "source": ref,
         "boarding_points": len(bps),
         "bps_in_pairs": len(used),
         "orphan_bps": len(orphans),
@@ -221,16 +229,17 @@ def analyze_authority(slug: str) -> dict | None:
 
 
 def list_dossier_slugs() -> list[str]:
-    raw = subprocess.check_output(
-        ["git", "ls-tree", "-r", "--name-only", REF_TIP, "handoff/partner-map-model"],
-        text=True,
-    )
-    slugs = []
-    for line in raw.strip().split("\n"):
-        m = re.match(r"handoff/partner-map-model/PTA-DOSSIER-(.+)\.json", line)
-        if m:
-            slugs.append(m.group(1))
-    slugs.extend(EXTRA_REFS.keys())
+    handoff = ROOT / "handoff/partner-map-model"
+    slugs = [p.name.replace("PTA-DOSSIER-", "").replace(".json", "") for p in handoff.glob("PTA-DOSSIER-*.json")]
+    if not slugs:
+        raw = subprocess.check_output(
+            ["git", "ls-tree", "-r", "--name-only", REF_TIP, "handoff/partner-map-model"],
+            text=True,
+        )
+        for line in raw.strip().split("\n"):
+            m = re.match(r"handoff/partner-map-model/PTA-DOSSIER-(.+)\.json", line)
+            if m:
+                slugs.append(m.group(1))
     return sorted(set(slugs))
 
 

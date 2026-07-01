@@ -8,8 +8,21 @@
     "geography_type": "northern emirate with a long Gulf coastline, reclaimed resort islands and waterfront lagoon communities",
     "home_waters_label": "Ras Al Khaimah's coast, islands and lagoons",
     "vocabulary": {
-      "correct": ["the emirate", "Ras Al Khaimah's waters", "the coast", "the islands", "the corniche", "domestic", "across the UAE"],
-      "banned": ["intra-{home}", "{home}", "inter-emirate proof gate", "Qatar Tourism-branded"]
+      "correct": [
+        "the emirate",
+        "Ras Al Khaimah's waters",
+        "the coast",
+        "the islands",
+        "the corniche",
+        "domestic",
+        "across the UAE"
+      ],
+      "banned": [
+        "intra-{home}",
+        "{home}",
+        "inter-emirate proof gate",
+        "Qatar Tourism-branded"
+      ]
     }
   },
   "mandate": {
@@ -49,49 +62,196 @@
   "domestic_network": {
     "note": "Candidate boarding points with APPROXIMATE anchor coordinates [lng, lat] for Grok to snap to real berths/marinas during seal. Coordinates are anchors, not sealed geometry. Network strings the resort islands, lagoon communities and the city corniche.",
     "boarding_points": [
-      {"node": "rak-al-marjan-island", "name": "Al Marjan Island", "anchor_lnglat": [55.6900, 25.6850], "type": "core_demand_anchor", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-wynn-arrival-lagoon", "name": "Wynn Al Marjan Island arrival lagoon", "anchor_lnglat": [55.6880, 25.6920], "type": "core_demand_anchor", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-al-hamra-marina", "name": "Al Hamra Marina / Village", "anchor_lnglat": [55.7880, 25.6880], "type": "waterfront_community", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-jazirat-al-hamra", "name": "Jazirat Al Hamra waterfront", "anchor_lnglat": [55.7950, 25.7100], "type": "waterfront_community", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-mina-al-arab", "name": "Mina Al Arab lagoons", "anchor_lnglat": [55.8600, 25.7250], "type": "waterfront_community", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-corniche-qawasim", "name": "Al Qawasim Corniche (RAK city)", "anchor_lnglat": [55.9450, 25.7880], "type": "core_live_station", "city": "ras-al-khaimah-uae"},
-      {"node": "rak-creek-old-town", "name": "Ras Al Khaimah Creek / Old Town", "anchor_lnglat": [55.9400, 25.7800], "type": "core_live_station", "city": "ras-al-khaimah-uae"}
+      {
+        "node": "rak-al-marjan-island",
+        "name": "Al Marjan Island",
+        "anchor_lnglat": [
+          55.69,
+          25.685
+        ],
+        "type": "core_demand_anchor",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-wynn-arrival-lagoon",
+        "name": "Wynn Al Marjan Island arrival lagoon",
+        "anchor_lnglat": [
+          55.688,
+          25.692
+        ],
+        "type": "core_demand_anchor",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-al-hamra-marina",
+        "name": "Al Hamra Marina / Village",
+        "anchor_lnglat": [
+          55.788,
+          25.688
+        ],
+        "type": "waterfront_community",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-jazirat-al-hamra",
+        "name": "Jazirat Al Hamra waterfront",
+        "anchor_lnglat": [
+          55.795,
+          25.71
+        ],
+        "type": "waterfront_community",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-mina-al-arab",
+        "name": "Mina Al Arab lagoons",
+        "anchor_lnglat": [
+          55.86,
+          25.725
+        ],
+        "type": "waterfront_community",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-corniche-qawasim",
+        "name": "Al Qawasim Corniche (RAK city)",
+        "anchor_lnglat": [
+          55.945,
+          25.788
+        ],
+        "type": "core_live_station",
+        "city": "ras-al-khaimah-uae"
+      },
+      {
+        "node": "rak-creek-old-town",
+        "name": "Ras Al Khaimah Creek / Old Town",
+        "anchor_lnglat": [
+          55.94,
+          25.78
+        ],
+        "type": "core_live_station",
+        "city": "ras-al-khaimah-uae"
+      }
     ],
     "domestic_pairs": [
-      {"pair_id": "rak-d01", "from": "rak-al-marjan-island", "to": "rak-al-hamra-marina", "approx_nm": 6.0, "rationale": "The two flagship resort/marina districts; today a coastal road loop. Anchor corridor."},
-      {"pair_id": "rak-d02", "from": "rak-al-hamra-marina", "to": "rak-mina-al-arab", "approx_nm": 4.5, "rationale": "Al Hamra to the Mina Al Arab lagoon community; short coastal hop."},
-      {"pair_id": "rak-d03", "from": "rak-mina-al-arab", "to": "rak-corniche-qawasim", "approx_nm": 5.0, "rationale": "Lagoon community to the city corniche core; relieves the coastal road into RAK city."},
-      {"pair_id": "rak-d04", "from": "rak-al-marjan-island", "to": "rak-corniche-qawasim", "approx_nm": 15.0, "rationale": "Full-length resort-island-to-city water spine (mirrors the Classic Taxi road link, on water)."},
-      {"pair_id": "rak-d05", "from": "rak-creek-old-town", "to": "rak-jazirat-al-hamra", "approx_nm": 10.0, "rationale": "Heritage creek (Marine Project Phase 1) to the Jazirat Al Hamra heritage waterfront."},
-      {"pair_id": "rak-d06", "from": "rak-al-marjan-island", "to": "rak-jazirat-al-hamra", "approx_nm": 6.5, "rationale": "Resort island to the heritage village waterfront; tourism corridor."}
+      {
+        "pair_id": "rak-d01",
+        "from": "rak-al-marjan-island",
+        "to": "rak-al-hamra-marina",
+        "approx_nm": 6.0,
+        "rationale": "The two flagship resort/marina districts; today a coastal road loop. Anchor corridor."
+      },
+      {
+        "pair_id": "rak-d02",
+        "from": "rak-al-hamra-marina",
+        "to": "rak-mina-al-arab",
+        "approx_nm": 4.5,
+        "rationale": "Al Hamra to the Mina Al Arab lagoon community; short coastal hop."
+      },
+      {
+        "pair_id": "rak-d03",
+        "from": "rak-mina-al-arab",
+        "to": "rak-corniche-qawasim",
+        "approx_nm": 5.0,
+        "rationale": "Lagoon community to the city corniche core; relieves the coastal road into RAK city."
+      },
+      {
+        "pair_id": "rak-d04",
+        "from": "rak-al-marjan-island",
+        "to": "rak-corniche-qawasim",
+        "approx_nm": 15.0,
+        "rationale": "Full-length resort-island-to-city water spine (mirrors the Classic Taxi road link, on water)."
+      },
+      {
+        "pair_id": "rak-d05",
+        "from": "rak-creek-old-town",
+        "to": "rak-jazirat-al-hamra",
+        "approx_nm": 10.0,
+        "rationale": "Heritage creek (Marine Project Phase 1) to the Jazirat Al Hamra heritage waterfront."
+      },
+      {
+        "pair_id": "rak-d06",
+        "from": "rak-al-marjan-island",
+        "to": "rak-jazirat-al-hamra",
+        "approx_nm": 6.5,
+        "rationale": "Resort island to the heritage village waterfront; tourism corridor."
+      },
+      {
+        "pair_id": "rak-x01",
+        "from": "rak-al-marjan-island",
+        "to": "rak-wynn-arrival-lagoon",
+        "approx_nm": 0.4,
+        "rationale": "Hub-spoke: Al Marjan Island ↔ Wynn Al Marjan Island arrival lagoon (orphan BP on published network)"
+      }
     ]
   },
   "regional_links": {
     "note": "Secondary and clearly optional. The Al Marjan <-> Dubai Islands leg is DOMESTIC within the UAE. Cross-border legs (Musandam/Oman) are out of the core proposal.",
     "links": [
-      {"link_id": "rak-r01", "from": "rak-al-marjan-island", "to": "dubai-islands-souk-al-marfa", "approx_nm": 48, "status": "domestic_uae_optional", "note": "Within-UAE express linking the Al Marjan resort district to Dubai's northern waterfront; long-range (Quanta-LR class), optional after the RAK coastal spine is proven."}
+      {
+        "link_id": "rak-r01",
+        "from": "rak-al-marjan-island",
+        "to": "dubai-islands-souk-al-marfa",
+        "approx_nm": 48,
+        "status": "domestic_uae_optional",
+        "note": "Within-UAE express linking the Al Marjan resort district to Dubai's northern waterfront; long-range (Quanta-LR class), optional after the RAK coastal spine is proven."
+      }
     ]
   },
   "routing_hazards": {
     "instruction": "Every domestic and regional leg must be routed through navigable open water and dredged channels with NO land crossings. Hand-curated waypoints required wherever reclaimed-island breakwaters, lagoon entrances, the commercial port TSS or northern reef flats would otherwise be clipped.",
     "hazards": [
-      {"hazard": "Al Marjan Island breakwaters", "detail": "Al Marjan is reclaimed (coral-shaped fronds) enclosed by breakwaters; route around the outer breakwater through the marked openings, never across the fronds or land."},
-      {"hazard": "Mina Al Arab & Al Hamra lagoons", "detail": "These are dredged lagoon communities; snap entries to the channel mouths and keep geometry in charted channels, not across the shallow lagoon flats."},
-      {"hazard": "Saqr Port & RAK commercial port (north)", "detail": "Saqr Port is a major bulk-cargo port north of the city; keep all geometry clear of its traffic separation scheme and approaches."},
-      {"hazard": "RAK Creek mouth & northern shallows", "detail": "The creek mouth and the northern coast carry shallow reef/sand flats; follow charted channels and hand-waypoint around the flats."},
-      {"hazard": "Al Marjan <-> Dubai offshore (optional link only)", "detail": "If routed, keep the line in open Gulf water clear of the Saqr Port and Dubai (Hamriyah/Dubai Islands) approaches and any reclamation; hand-waypoint the full leg."}
+      {
+        "hazard": "Al Marjan Island breakwaters",
+        "detail": "Al Marjan is reclaimed (coral-shaped fronds) enclosed by breakwaters; route around the outer breakwater through the marked openings, never across the fronds or land."
+      },
+      {
+        "hazard": "Mina Al Arab & Al Hamra lagoons",
+        "detail": "These are dredged lagoon communities; snap entries to the channel mouths and keep geometry in charted channels, not across the shallow lagoon flats."
+      },
+      {
+        "hazard": "Saqr Port & RAK commercial port (north)",
+        "detail": "Saqr Port is a major bulk-cargo port north of the city; keep all geometry clear of its traffic separation scheme and approaches."
+      },
+      {
+        "hazard": "RAK Creek mouth & northern shallows",
+        "detail": "The creek mouth and the northern coast carry shallow reef/sand flats; follow charted channels and hand-waypoint around the flats."
+      },
+      {
+        "hazard": "Al Marjan <-> Dubai offshore (optional link only)",
+        "detail": "If routed, keep the line in open Gulf water clear of the Saqr Port and Dubai (Hamriyah/Dubai Islands) approaches and any reclamation; hand-waypoint the full leg."
+      }
     ]
   },
   "sources": [
-    {"what": "RAKTA Transport Master Plan 2030 (Yellow Route announcement)", "url": "https://www.rakta.gov.ae/news/rak-transport-authority-launches-the-yellow-route-as-part-of-the-internal-public-transport-project-connecting-visitors-residents-to-jebel-jais/"},
-    {"what": "RAKTA Marine Transport Project Phase 1 (heritage abra)", "url": "https://heartofrak.com/en/rak-guide/life-in-rak/public-transport"},
-    {"what": "RAKTA Classic Taxi — Al Marjan Island <-> Al Qawasim Corniche", "url": "https://www.instagram.com/reel/DSKCP0XE7CY/"},
-    {"what": "RAKTA + RAKTDA + Skyports eVTOL MOU", "url": "https://raktda.com/rak-skports-mou/"},
-    {"what": "UAE Net Zero 2050", "url": "https://u.ae/en/information-and-services/environment-and-energy/climate-change/the-uae-net-zero-2050"}
+    {
+      "what": "RAKTA Transport Master Plan 2030 (Yellow Route announcement)",
+      "url": "https://www.rakta.gov.ae/news/rak-transport-authority-launches-the-yellow-route-as-part-of-the-internal-public-transport-project-connecting-visitors-residents-to-jebel-jais/"
+    },
+    {
+      "what": "RAKTA Marine Transport Project Phase 1 (heritage abra)",
+      "url": "https://heartofrak.com/en/rak-guide/life-in-rak/public-transport"
+    },
+    {
+      "what": "RAKTA Classic Taxi — Al Marjan Island <-> Al Qawasim Corniche",
+      "url": "https://www.instagram.com/reel/DSKCP0XE7CY/"
+    },
+    {
+      "what": "RAKTA + RAKTDA + Skyports eVTOL MOU",
+      "url": "https://raktda.com/rak-skports-mou/"
+    },
+    {
+      "what": "UAE Net Zero 2050",
+      "url": "https://u.ae/en/information-and-services/environment-and-energy/climate-change/the-uae-net-zero-2050"
+    }
   ],
   "provenance": {
     "author": "Tasklet",
     "date": "2026-06-30",
-    "purpose": "Grounds the RAK RAKTA proposal rewrite, the Grok domestic-routing handoff, and public-value economics under the PTA category (Bahrain MOTC gold pattern)."
+    "purpose": "Grounds the RAK RAKTA proposal rewrite, the Grok domestic-routing handoff, and public-value economics under the PTA category (Bahrain MOTC gold pattern).",
+    "spine_expanded_at": "2026-07-01T01:53:46Z",
+    "spine_expanded_pairs": [
+      "rak-x01"
+    ]
   }
 }
