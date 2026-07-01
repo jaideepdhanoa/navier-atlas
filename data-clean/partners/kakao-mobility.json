@@ -1281,30 +1281,30 @@
       "multimodal_fit": "Kakao T already routes the first and last mile across Seoul; the foiling pier becomes the water node on the Han River — Kakao T to Yeouido, foil up the river to Jamsil, Kakao T onward — a river layer in the multimodal map Kakao already runs.",
       "journeys_unlocked": [
         {
-          "from": "Gimpo / Yeouido",
-          "to": "Jamsil / Ttukseom",
+          "from": "Gimpo Ara Marina",
+          "to": "Jamsil Ttukseom Riverside Pier",
           "today": "A slow Hangang Bus or a congested cross-city road / metro trip.",
           "with_navier": "A fast silent Pioneer II foiling commute straight up the Han River at 30+ kt, booked in Kakao T — the genuine transport the river bus isn't.",
-          "distance_nm": 11.9,
+          "distance_nm": 13.1,
           "platform": "Pioneer II",
           "archetype": "commute",
-          "from_node_id": "bp-kakao-yeouido",
-          "to_node_id": "bp-kakao-ttukseom",
-          "route_id": "rn-bca95ab1f7cf",
+          "from_node_id": "bp-kakao-gimpo-ara",
+          "to_node_id": "bp-kakao-jamsil",
+          "route_id": "rn-806c3d8d2fe9",
           "_link_status": "linked-grok-scoped",
           "route_ids": [
-            "rn-bca95ab1f7cf"
+            "rn-806c3d8d2fe9"
           ],
           "_link_kind": "hub-market-featured",
           "economics_status": "economics_bound",
           "_link_source": "grok/kakao_seoul_seal"
         },
         {
-          "from": "Yeouido",
-          "to": "Seoul Forest / Ttukseom",
+          "from": "Yeouido Hangang Park Pier",
+          "to": "Ttukseom Hangang Park Pier",
           "today": "A slow river bus or a road trip across the city.",
           "with_navier": "A fast clean Pioneer II river hop — commute by day, leisure by evening, in-app.",
-          "distance_nm": 25.9,
+          "distance_nm": 8.3,
           "platform": "Pioneer II",
           "archetype": "commute",
           "from_node_id": "bp-kakao-yeouido",
@@ -1319,11 +1319,11 @@
           "_link_source": "grok/kakao_seoul_seal"
         },
         {
-          "from": "Incheon",
-          "to": "Muuido / Yeongjong (West Sea islands)",
+          "from": "Incheon Coastal Passenger Terminal",
+          "to": "Muuido Island Ferry Berth",
           "today": "Road-and-ferry transfers to the airport-adjacent West Sea islands.",
           "with_navier": "A fast smooth Pioneer II / N35 run out to the Incheon islands — an airport-adjacent day-trip and arrival tier, in-app.",
-          "distance_nm": 10,
+          "distance_nm": 11.7,
           "platform": "N35",
           "archetype": "tourism",
           "from_node_id": "bp-kakao-incheon-terminal",
@@ -1337,11 +1337,11 @@
           "economics_status": "economics_bound"
         },
         {
-          "from": "Han River (Yeouido)",
-          "to": "Incheon Bay",
+          "from": "Yeouido Hangang Park Pier",
+          "to": "Incheon Coastal Passenger Terminal",
           "today": "No direct water mobility — a road or metro trip from the river to the coast.",
           "with_navier": "A river-to-sea Quanta-LR / Pioneer II connector down the Han River to Incheon Bay, in-app.",
-          "distance_nm": 34,
+          "distance_nm": 16.9,
           "platform": "Pioneer II",
           "archetype": "intercity",
           "from_node_id": "bp-kakao-yeouido",
@@ -1405,14 +1405,18 @@
           "narrative": "Switch on the Han River as a genuine commute — Gimpo/Yeouido↔Jamsil↔Ttukseom — a fast silent foiling tier booked in Kakao T that the slow river bus can't match.",
           "featured_routes": [
             {
-              "label": "Gimpo / Yeouido ↔ Jamsil / Ttukseom",
-              "from_node_id": "seoul-incheon-korea",
-              "to_node_id": "seoul-incheon-korea",
-              "distance_nm": 11,
+              "label": "Gimpo Ara Marina ↔ Jamsil Ttukseom Riverside Pier",
+              "from_node_id": "bp-kakao-gimpo-ara",
+              "to_node_id": "bp-kakao-jamsil",
+              "distance_nm": 13.1,
               "platform": "Pioneer II",
-              "route_id": null,
-              "_link_status": "unlinked-intra-city",
-              "display": "text_only"
+              "route_id": "rn-806c3d8d2fe9",
+              "_link_status": "linked-grok-scoped",
+              "route_ids": [
+                "rn-806c3d8d2fe9"
+              ],
+              "_link_source": "grok/kakao_seoul_seal",
+              "economics_status": "economics_bound"
             }
           ],
           "use_cases": [
@@ -1433,17 +1437,21 @@
           "narrative": "Add the Incheon West Sea island runs — Muuido, Yeongjong — a premium day-trip and arrival tier, plus the river-to-sea connector.",
           "featured_routes": [
             {
-              "label": "Incheon ↔ Muuido / Yeongjong",
-              "from_node_id": "seoul-incheon-korea",
-              "to_node_id": "seoul-incheon-korea",
-              "distance_nm": 11.9,
+              "label": "Incheon Coastal Passenger Terminal ↔ Muuido Island Ferry Berth",
+              "from_node_id": "bp-kakao-incheon-terminal",
+              "to_node_id": "bp-kakao-muuido",
+              "distance_nm": 11.7,
               "platform": "N35",
-              "route_id": null,
-              "_link_status": "unlinked-no-bp-grounding",
+              "route_id": "rn-62345e60f1a1",
+              "_link_status": "linked-grok-scoped",
               "from_label": "Incheon",
               "to_label": "Muuido / Yeongjong",
               "_reground_at": "2026-06-29T12:34:49Z",
-              "route_ids": null
+              "route_ids": [
+                "rn-62345e60f1a1"
+              ],
+              "_link_source": "grok/kakao_seoul_seal",
+              "economics_status": "economics_bound"
             }
           ],
           "use_cases": [
@@ -1464,14 +1472,18 @@
           "narrative": "Complete the Seoul water network — the full Han River commute spine plus the Incheon Bay connector — a city-wide in-app foiling layer.",
           "featured_routes": [
             {
-              "label": "Han River (Yeouido) ↔ Incheon Bay",
-              "from_node_id": "seoul-incheon-korea",
-              "to_node_id": "seoul-incheon-korea",
-              "distance_nm": 34,
+              "label": "Yeouido Hangang Park Pier ↔ Incheon Coastal Passenger Terminal",
+              "from_node_id": "bp-kakao-yeouido",
+              "to_node_id": "bp-kakao-incheon-terminal",
+              "distance_nm": 16.9,
               "platform": "Pioneer II",
-              "route_id": null,
-              "_link_status": "unlinked-intra-city",
-              "display": "text_only"
+              "route_id": "rn-3f7b5af983cd",
+              "_link_status": "linked-grok-scoped",
+              "route_ids": [
+                "rn-3f7b5af983cd"
+              ],
+              "_link_source": "grok/kakao_seoul_seal",
+              "economics_status": "economics_bound"
             }
           ],
           "use_cases": [
@@ -1492,7 +1504,7 @@
         "next_step": "Scope a Phase-1 pilot (~8 vessels) on the entry corridor, building to ~60 vessels as the network matures (addressable ceiling ~150)."
       },
       "_kakao_seoul_sealed": {
-        "at": "2026-07-01T07:41:08Z",
+        "at": "2026-07-01T08:10:47Z",
         "routes": {
           "commute_gimpo_jamsil": "rn-806c3d8d2fe9",
           "commute_yeouido_ttukseom": "rn-bca95ab1f7cf",

@@ -40,6 +40,12 @@ const ARCHETYPE_LABELS = {
   charter: 'Charter',
 };
 
+function isLiveDeckUrl(url) {
+  return typeof url === 'string'
+    && url.startsWith('https://docs.google.com/presentation/d/')
+    && !url.includes('pending-grok-create-or-bind');
+}
+
 function readDeckIndex(root) {
   const deckDir = path.join(root, DECK_ROOT);
   const byPartner = {};
@@ -50,7 +56,16 @@ function readDeckIndex(root) {
     try {
       const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
       const pid = cfg.partner_id || cfg.deck_key;
-      if (pid) byPartner[pid] = { deck_key: cfg.deck_key, display_name: cfg.display_name };
+      if (!pid) continue;
+      const live = cfg.live_deck_url
+        || (cfg.deck_id ? `https://docs.google.com/presentation/d/${cfg.deck_id}/edit` : null);
+      const deckUrl = isLiveDeckUrl(live) ? live : null;
+      byPartner[pid] = {
+        deck_key: cfg.deck_key,
+        display_name: cfg.display_name,
+        deck_url: deckUrl,
+        deck_status: deckUrl ? 'ready' : 'in_progress',
+      };
     } catch { /* skip */ }
   }
   return byPartner;
@@ -88,7 +103,8 @@ export function buildPartnersManifest({ partners, economicsUrlMap, root }) {
         proposal_path: `/${slug}`,
         economics_url: p.economics_url || econ[slug] || null,
         has_growth_case: Boolean(p.growth_case),
-        deck_status: decks[slug] ? 'in_progress' : 'none',
+        deck_status: decks[slug]?.deck_status || (decks[slug] ? 'in_progress' : 'none'),
+        deck_url: decks[slug]?.deck_url || null,
         deck_label: decks[slug]?.display_name || null,
         markets_count: Array.isArray(p.markets) ? p.markets.length : 0,
       };
@@ -193,7 +209,7 @@ export function renderPartnersHubHtml(manifest) {
             <div class="tag">Internal · proposals · models · decks</div>
           </div>
         </div>
-        <p class="intro" style="margin-top:14px">Browse the full partner roster like the Atlas <b>Browse</b> dialog — grouped, filterable, with quick links to each proposal page and unit-economics sheet. Deck URLs stay hidden until iterations are done.</p>
+        <p class="intro" style="margin-top:14px">Browse the full partner roster like the Atlas <b>Browse</b> dialog — grouped, filterable, with quick links to each proposal page, unit-economics sheet, and live Google Slides deck where published.</p>
       </div>
       <div class="stats" id="stats"></div>
     </div>
@@ -222,11 +238,13 @@ export function renderPartnersHubHtml(manifest) {
 
     function renderStats() {
       const econ = MANIFEST.filter(p => p.economics_url).length;
-      const deck = MANIFEST.filter(p => p.deck_status === 'in_progress').length;
+      const deckReady = MANIFEST.filter(p => p.deck_url).length;
+      const deckWip = MANIFEST.filter(p => p.deck_status === 'in_progress' && !p.deck_url).length;
       document.getElementById('stats').innerHTML =
         '<div class="stat"><div class="v">' + MANIFEST.length + '</div><div class="k">Partners</div></div>' +
         '<div class="stat"><div class="v">' + econ + '</div><div class="k">Models</div></div>' +
-        '<div class="stat"><div class="v">' + deck + '</div><div class="k">Decks WIP</div></div>';
+        '<div class="stat"><div class="v">' + deckReady + '</div><div class="k">Decks live</div></div>' +
+        (deckWip ? '<div class="stat"><div class="v">' + deckWip + '</div><div class="k">Decks WIP</div></div>' : '');
     }
 
     function matchesQ(p, term) {
@@ -241,19 +259,23 @@ export function renderPartnersHubHtml(manifest) {
       const rg = p.region ? '<span class="pidx-badge region">' + esc(p.region) + '</span>' : '';
       const econBadge = p.economics_url
         ? '<span class="pidx-badge ok">model</span>' : '<span class="pidx-badge muted">no model</span>';
-      const deckBadge = p.deck_status === 'in_progress'
-        ? '<span class="pidx-badge pending">deck WIP</span>' : '';
+      const deckBadge = p.deck_url
+        ? '<span class="pidx-badge ok">deck</span>'
+        : (p.deck_status === 'in_progress' ? '<span class="pidx-badge pending">deck WIP</span>' : '');
       const growth = p.has_growth_case ? '<span class="pidx-badge ok">growth</span>' : '';
       const econBtn = p.economics_url
         ? '<a class="btn" href="' + esc(p.economics_url) + '" target="_blank" rel="noopener">Unit economics</a>'
         : '<span class="btn disabled">Unit economics</span>';
+      const deckBtn = p.deck_url
+        ? '<a class="btn" href="' + esc(p.deck_url) + '" target="_blank" rel="noopener">Open deck</a>'
+        : (p.deck_status === 'in_progress' ? '<span class="btn disabled">Deck (in progress)</span>' : '');
       return '<article class="card">' +
         '<h2 class="t">' + esc(p.display) + mk + rg + econBadge + deckBadge + growth + '</h2>' +
         '<p class="s">' + (esc(p.blurb) || '<span class="slug">' + esc(p.slug) + '</span>') + '</p>' +
         '<div class="card-actions">' +
         '<a class="btn primary" href="' + esc(p.proposal_path) + '">Open proposal</a>' +
         econBtn +
-        (p.deck_status === 'in_progress' ? '<span class="btn disabled">Deck (in progress)</span>' : '') +
+        deckBtn +
         '</div></article>';
     }
 

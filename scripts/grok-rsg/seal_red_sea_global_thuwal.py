@@ -318,6 +318,8 @@ def patch_surface(fbt: dict, routes: list, apply: bool) -> dict:
 
 
 def bind_link(item: dict, spec: dict, rid: str, bp_idx: dict) -> None:
+    fr_name = bp_idx[spec["from_bp"]]["name"]
+    to_name = bp_idx[spec["to_bp"]]["name"]
     item["from_node_id"] = spec["from_bp"]
     item["to_node_id"] = spec["to_bp"]
     item["route_id"] = rid
@@ -326,6 +328,11 @@ def bind_link(item: dict, spec: dict, rid: str, bp_idx: dict) -> None:
     item["_link_source"] = "grok/rsg_thuwal_seal"
     item["economics_status"] = "economics_bound"
     item.pop("display", None)
+    if "from" in item:
+        item["from"] = fr_name
+        item["to"] = to_name
+    if "label" in item:
+        item["label"] = f"{fr_name} ↔ {to_name}"
     r = route_by_id(load_json(ROUTES_PATH)).get(rid)
     if r:
         item["distance_nm"] = props(r).get("distance_nm")
@@ -383,6 +390,20 @@ def bind_partner(receipt: dict, apply: bool) -> None:
             save_json(path, doc)
 
 
+def scrub_story_allowlist(apply: bool) -> None:
+    from scrub_story_allowlist import main as scrub_main  # noqa: E402
+
+    argv = ["scrub_story_allowlist.py"]
+    if apply:
+        argv.append("--apply")
+    old = sys.argv
+    try:
+        sys.argv = argv
+        scrub_main()
+    finally:
+        sys.argv = old
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true")
@@ -392,6 +413,7 @@ def main() -> int:
     receipt = patch_surface(fbt, routes, apply=args.apply)
     if args.apply:
         bind_partner(receipt, apply=True)
+        scrub_story_allowlist(apply=True)
     save_json(REPORT, receipt)
     print(json.dumps(receipt, indent=2))
     return 1 if receipt["failed"] else 0

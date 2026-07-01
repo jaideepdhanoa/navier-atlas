@@ -164,39 +164,89 @@ def seal_routes(fbt: dict, routes: list) -> dict:
     return {"minted": minted, "rids": rids, "failed": failed}
 
 
-def bind_market(doc: dict, rids: dict[str, str]) -> None:
-    label_map = [
-        ("Gimpo / Yeouido", "commute_gimpo_jamsil"),
-        ("Yeouido", "commute_yeouido_ttukseom"),
-        ("Incheon", "incheon_muuido"),
-        ("Han River", "river_incheon_connector"),
-    ]
+JOURNEY_BIND = {
+    ("Gimpo / Yeouido", "Jamsil / Ttukseom"): (
+        "commute_gimpo_jamsil",
+        "bp-kakao-gimpo-ara",
+        "bp-kakao-jamsil",
+    ),
+    ("Yeouido", "Seoul Forest / Ttukseom"): (
+        "commute_yeouido_ttukseom",
+        "bp-kakao-yeouido",
+        "bp-kakao-ttukseom",
+    ),
+    ("Incheon", "Muuido / Yeongjong (West Sea islands)"): (
+        "incheon_muuido",
+        "bp-kakao-incheon-terminal",
+        "bp-kakao-muuido",
+    ),
+    ("Han River (Yeouido)", "Incheon Bay"): (
+        "river_incheon_connector",
+        "bp-kakao-yeouido",
+        "bp-kakao-incheon-terminal",
+    ),
+}
+
+FEATURED_BIND = {
+    "Gimpo / Yeouido ↔ Jamsil / Ttukseom": "commute_gimpo_jamsil",
+    "Incheon ↔ Muuido / Yeongjong": "incheon_muuido",
+    "Han River (Yeouido) ↔ Incheon Bay": "river_incheon_connector",
+}
+
+
+def bind_journey(j: dict, key: str, fr_bp: str, to_bp: str, rid: str, bp_idx: dict) -> None:
+    j["from_node_id"] = fr_bp
+    j["to_node_id"] = to_bp
+    j["route_id"] = rid
+    j["route_ids"] = [rid]
+    j["_link_status"] = "linked-grok-scoped"
+    j["_link_source"] = "grok/kakao_seoul_seal"
+    j["economics_status"] = "economics_bound"
+    j.pop("display", None)
+    j["from"] = bp_idx[fr_bp]["name"]
+    j["to"] = bp_idx[to_bp]["name"]
+    for r in load_json(ROUTES_PATH):
+        p = props(r)
+        if p.get("id") == rid and p.get("distance_nm") is not None:
+            j["distance_nm"] = p["distance_nm"]
+            break
+
+
+def bind_market(doc: dict, rids: dict[str, str], bp_idx: dict) -> None:
     for m in doc.get("markets", []):
         if m.get("id") != MARKET and m.get("slug") != MARKET:
             continue
         for j in m.get("journeys_unlocked", []):
-            for prefix, key in label_map:
-                if str(j.get("from", "")).startswith(prefix) or prefix in str(j.get("from", "")):
-                    rid = rids.get(key)
-                    if rid:
-                        j["from_node_id"] = {
-                            "commute_gimpo_jamsil": "bp-kakao-gimpo-ara",
-                            "commute_yeouido_ttukseom": "bp-kakao-yeouido",
-                            "incheon_muuido": "bp-kakao-incheon-terminal",
-                            "river_incheon_connector": "bp-kakao-yeouido",
-                        }[key]
-                        j["to_node_id"] = {
-                            "commute_gimpo_jamsil": "bp-kakao-jamsil",
-                            "commute_yeouido_ttukseom": "bp-kakao-ttukseom",
-                            "incheon_muuido": "bp-kakao-muuido",
-                            "river_incheon_connector": "bp-kakao-incheon-terminal",
-                        }[key]
-                        j["route_id"] = rid
-                        j["route_ids"] = [rid]
-                        j["_link_status"] = "linked-grok-scoped"
-                        j["_link_source"] = "grok/kakao_seoul_seal"
-                        j["economics_status"] = "economics_bound"
-                        j.pop("display", None)
+            pair = (str(j.get("from", "")), str(j.get("to", "")))
+            spec = JOURNEY_BIND.get(pair)
+            if not spec:
+                continue
+            key, fr_bp, to_bp = spec
+            rid = rids.get(key)
+            if rid:
+                bind_journey(j, key, fr_bp, to_bp, rid, bp_idx)
+        for phase in m.get("phases", []):
+            for fr in phase.get("featured_routes", []):
+                key = FEATURED_BIND.get(fr.get("label", ""))
+                rid = rids.get(key) if key else None
+                if not rid:
+                    continue
+                spec = next(s for s in ROUTES_SPEC if s[0] == key)
+                fr_bp, to_bp = spec[1], spec[2]
+                fr["from_node_id"] = fr_bp
+                fr["to_node_id"] = to_bp
+                fr["route_id"] = rid
+                fr["route_ids"] = [rid]
+                fr["_link_status"] = "linked-grok-scoped"
+                fr["_link_source"] = "grok/kakao_seoul_seal"
+                fr["economics_status"] = "economics_bound"
+                fr.pop("display", None)
+                fr["label"] = f"{bp_idx[fr_bp]['name']} ↔ {bp_idx[to_bp]['name']}"
+                for r in load_json(ROUTES_PATH):
+                    p = props(r)
+                    if p.get("id") == rid and p.get("distance_nm") is not None:
+                        fr["distance_nm"] = p["distance_nm"]
+                        break
         m["_kakao_seoul_sealed"] = {"at": now_iso(), "routes": rids}
 
 
@@ -222,9 +272,10 @@ def main() -> int:
     if args.apply:
         save_routes(ROUTES_PATH, routes)
         save_json(FBT_PATH, fbt)
+        bp_idx = build_bp_index(fbt)
         for path in (PITCH, DC):
             doc = load_json(path)
-            bind_market(doc, result["rids"])
+            bind_market(doc, result["rids"], bp_idx)
             doc.setdefault("_kakao_seoul_sealed", {"at": now_iso(), "routes": result["rids"]})
             save_json(path, doc)
 
