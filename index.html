@@ -2621,6 +2621,7 @@ function showClusterBrief(cid){
   _navEnter({ key:'cluster:'+cid, label, render:()=>showClusterBrief(cid) });
   const cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[cid] : null;
   if (typeof window!=='undefined' && window._topNavDrill && _geoMode()) window._topNavDrill({ clusterId:cid, clusterLabel:label, region:cl&&cl.region });
+  if (typeof window._topNavClusterCities==='function' && _geoMode()) window._topNavClusterCities(cid);
   const p = document.getElementById('panel');
   p.innerHTML = _clusterBriefHtml(cb);
   p.scrollTop = 0;
@@ -4398,6 +4399,13 @@ document.querySelectorAll('.chip').forEach(b => {
     if (o.routeLabel){ _sep(); _crumb(o.routeLabel, null); }
   }
   window._topNavDrill = renderBreadcrumb;
+  window._topNavClusterCities = (cid)=>{
+    const clNav = clusterFromId(cid);
+    if (!clNav) return;
+    const cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[cid] : null;
+    const regionLabel = cl && cl.region ? norm(cl.region) : '';
+    renderClusterCities(regionLabel, clNav);
+  };
   window._topNavReset = resetNavRoot;
   document.addEventListener('click', closeMore);
   const g=document.querySelector('.chip.lead[data-c="global"]');
