@@ -1,0 +1,86 @@
+{
+  "dossier_id": "pta-dossier-helsinki-hsl",
+  "schema": "pta_authority_dossier/v1",
+  "authority": {
+    "display": "Helsinki — HSL Region Ferry Network",
+    "legal_name": "Helsingin seudun liikenne / Helsinki Region Transport (HSL) — the public transport authority for the Helsinki metropolitan region",
+    "country": "Finland",
+    "geography_type": "the Helsinki archipelago and Gulf of Finland shoreline — the city's Market Square, the sea-fortress and recreation islands, the growing Laajasalo waterfront districts, and the regional coast east to Porvoo",
+    "home_waters_label": "the Helsinki archipelago",
+    "anchor_city_id": "helsinki-finland",
+    "vocabulary": {
+      "correct": ["public ferry network", "HSL ticket", "island connection", "archipelago link", "emission-free public transport"],
+      "banned": ["cruise", "super-app", "ride-hail", "resort transfer"]
+    }
+  },
+  "mandate": {
+    "summary": "HSL plans and procures public transport for the Helsinki metropolitan region — buses, trams, metro, commuter rail and the public ferry to Suomenlinna. Its ferry mandate is affordable, reliable, year-round island connectivity on a single public ticket, and the decarbonization of every mode it runs.",
+    "current_priorities": [
+      "Emission-free public transport region-wide",
+      "Connecting the new Laajasalo / Kruunuvuorenranta waterfront residential districts to the centre",
+      "Year-round, all-weather island connectivity on the HSL ticket"
+    ]
+  },
+  "policy_targets": {
+    "net_zero_year": 2035,
+    "interim_target": "HSL commits to emission-free public transport by 2035 and zero-emission own operations by 2030; the City of Helsinki targets carbon-neutrality by 2035; Finland's Climate Act legislates national net-zero by 2035 — among the world's most ambitious.",
+    "vision": "An emission-free public transport region where every ferry link is zero-emission and runs on the same HSL ticket as the metro and tram",
+    "relevance": "HSL has already committed to zero-emission ferries; a foiling-electric platform delivers that on the archipelago links today — fast, low-wake and silent through a sensitive, recreation-heavy waterway, and viable year-round through Baltic conditions."
+  },
+  "precedent": {
+    "headline": "HSL already runs the Suomenlinna ferry as public transport and has committed to making it emission-free.",
+    "existing_program": {
+      "operator": "HSL (Helsinki Region Transport)",
+      "program": "The year-round Market Square (Kauppatori) → Suomenlinna ferry, part of the HSL public-transport network and ticket, serving the UNESCO World Heritage sea fortress and its residents; HSL's published commitment is emission-free public transport by 2035 and zero-emission operations by 2030",
+      "proof_stat": "A public, ticketed ferry already integral to Helsinki's transit network — the link a foiling-electric fleet decarbonizes and accelerates",
+      "note": "Public transport authority network; the mandate is connectivity + decarbonization, not tourism."
+    }
+  },
+  "interpretation_for_navier": "Anchor on the flagship public ferry (Market Square↔Suomenlinna) and the new Laajasalo commuter waterfront (Market Square↔Kruunuvuorenranta), then the recreation-island network (Vallisaari, Lonna, Korkeasaari Zoo, Pihlajasaari), then the regional line-haul east to Porvoo. Domestic-first. Geometry ALREADY SEALED — bind real route_ids. EXCLUDE the cross-border Helsinki↔Tallinn / ↔Sweden corridors from HSL's domestic arc (outside its mandate).",
+  "domestic_network": {
+    "note": "Real atlas boarding points (bp-<hash> / bp-<name>) with real coords; real sealed routes (rn-<hash>) already in ROUTES.json — BIND them. Distances from the sealed atlas.",
+    "boarding_points": [
+      {"node": "bp-fe03528b18", "name": "Helsinki Market Square (Kauppatori)", "anchor_lnglat": [24.9559, 60.1675], "type": "central_hub", "city": "helsinki-finland"},
+      {"node": "bp-1104e2096f", "name": "Suomenlinna Main Pier", "anchor_lnglat": [24.9886, 60.1456], "type": "flagship_island_terminal", "city": "helsinki-finland"},
+      {"node": "bp-kruunuvuorenranta", "name": "Kruunuvuorenranta (Laajasalo)", "anchor_lnglat": [25.026, 60.177], "type": "commuter_waterfront", "city": "helsinki-finland"},
+      {"node": "bp-vallisaari", "name": "Vallisaari Island Pier", "anchor_lnglat": [24.992, 60.143], "type": "recreation_island", "city": "helsinki-finland"},
+      {"node": "bp-lonna", "name": "Lonna Island Pier", "anchor_lnglat": [24.972, 60.149], "type": "recreation_island", "city": "helsinki-finland"},
+      {"node": "bp-korkeasaari", "name": "Korkeasaari (Zoo Island) Pier", "anchor_lnglat": [24.9856, 60.1758], "type": "recreation_island", "city": "helsinki-finland"},
+      {"node": "bp-pihlajasaari", "name": "Pihlajasaari Island Pier", "anchor_lnglat": [24.918, 60.143], "type": "recreation_island", "city": "helsinki-finland"},
+      {"node": "bp-porvoo", "name": "Porvoo River Quay", "anchor_lnglat": [25.665, 60.392], "type": "regional_heritage_town", "city": "helsinki-finland"}
+    ],
+    "sealed_pairs": [
+      {"route_id": "rn-ca17345bf0e8", "from": "bp-fe03528b18", "to": "bp-1104e2096f", "nm": 1.7, "platform": "Pioneer II", "rationale": "Market Square ↔ Suomenlinna — HSL's flagship year-round public ferry to the UNESCO sea fortress and its residents."},
+      {"route_id": "rn-4ab75813e3cc", "from": "bp-fe03528b18", "to": "bp-kruunuvuorenranta", "nm": 2.3, "platform": "Pioneer II", "rationale": "Market Square ↔ Kruunuvuorenranta (Laajasalo) — the growing waterfront residential district; a genuine commuter link."},
+      {"route_id": "rn-8523ec0a5309", "from": "bp-fe03528b18", "to": "bp-vallisaari", "nm": 1.8, "platform": "Pioneer II", "rationale": "Market Square ↔ Vallisaari — recreation-island public access."},
+      {"route_id": "rn-312e87d88d71", "from": "bp-fe03528b18", "to": "bp-lonna", "nm": 1.5, "platform": "Pioneer II", "rationale": "Market Square ↔ Lonna — recreation-island public access."},
+      {"route_id": "rn-2025e138f6c3", "from": "bp-fe03528b18", "to": "bp-korkeasaari", "nm": 1.3, "platform": "Pioneer II", "rationale": "Market Square ↔ Korkeasaari (Zoo Island) — family/recreation public link."},
+      {"route_id": "rn-c470fde6e58f", "from": "bp-fe03528b18", "to": "bp-pihlajasaari", "nm": 1.9, "platform": "Pioneer II", "rationale": "Market Square ↔ Pihlajasaari — recreation-island public access."},
+      {"route_id": "rn-a02134ddb302", "from": "bp-fe03528b18", "to": "bp-porvoo", "nm": 30.0, "platform": "Pioneer II", "rationale": "Market Square ↔ Porvoo — a regional line-haul east to the historic town where foiling range makes a scheduled coastal service viable."}
+    ]
+  },
+  "regional_links": {
+    "note": "Real cross-border corridors exist in the atlas (Helsinki↔Tallinn ~204 nm Quanta-LR; Helsinki↔Sweden) but are OUTSIDE HSL's domestic mandate — EXCLUDED from this authority arc. Also a junk 'Viking Line → Stockholm 2.2nm' leg needs cleanup (mis-scaled).",
+    "links": []
+  },
+  "routing_hazards": {
+    "instruction": "Route the charted archipelago fairways; respect winter sea-ice, dense summer recreational-boat traffic, protected Vallisaari/Pihlajasaari nature areas, and the shallow Kruunuvuorenselkä approaches. Provide explicit hand waypoints for the Suomenlinna and Porvoo approaches.",
+    "hazards": [
+      {"hazard": "Baltic winter sea-ice", "detail": "The archipelago freezes in winter; year-round service needs ice-capable routing and scheduling (the Suomenlinna ferry runs year-round today)."},
+      {"hazard": "Protected island nature reserves", "detail": "Vallisaari and Pihlajasaari have protected habitats; low-wake, low-noise approaches matter — a foiling-electric strength."},
+      {"hazard": "Dense summer recreational traffic", "detail": "The inner archipelago is crowded with private craft in summer; route the marked fairways defensively."},
+      {"hazard": "Shallow, rocky archipelago fairways + Porvoo river approach", "detail": "Charted fairways only; the 30 nm Porvoo line-haul ends in a shallow river-quay approach requiring hand waypoints."}
+    ]
+  },
+  "sources": [
+    {"what": "HSL — Carbon neutral public transport: emission-free by 2035, zero-emission own operations by 2030", "url": "https://www.hsl.fi/en/hsl/responsibility/carbon-neutral-public-transport"},
+    {"what": "Suomenlinna official — HSL ferry from Market Square, part of Helsinki public transport, year-round", "url": "https://suomenlinna.fi/en/explore/arriving/"},
+    {"what": "Carbon-neutral Helsinki 2035 Action Plan", "url": "https://carbonneutralcities.org/wp-content/uploads/2019/06/Carbon_neutral_Helsinki_Action_Plan_1503019_EN.pdf"}
+  ],
+  "provenance": {
+    "author": "Tasklet",
+    "date": "2026-07-02",
+    "purpose": "Phase C Batch-7 anchor-ready net-new PTA dossier. Real sealed atlas geometry (bp-/rn-) bound directly. Domestic-first (Tallinn/Sweden cross-border excluded). Policy + HSL facts web-verified.",
+    "coordinate_grade": "sealed_atlas"
+  }
+}
