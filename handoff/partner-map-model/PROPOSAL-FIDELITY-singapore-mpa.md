@@ -1,7 +1,7 @@
 # Proposal fidelity — singapore-mpa
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T19:35:42Z
+**Checked:** 2026-07-02T21:06:54Z
 
 ## Summary
 

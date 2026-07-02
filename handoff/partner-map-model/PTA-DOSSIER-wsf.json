@@ -1,51 +1,70 @@
 {
   "dossier_id": "pta-dossier-wsf",
-  "schema": "pta_authority_dossier/v1",
-  "authority": {
-    "display": "Washington State Ferries",
-    "legal_name": "Washington State Ferries (a division of WSDOT)",
-    "country": "United States",
-    "geography_type": "an inland sea (Puget Sound / Salish Sea) of deep channels, narrow passages and islands",
-    "home_waters_label": "Puget Sound and the San Juan Islands",
-    "vocabulary": {
-      "correct": [
-        "Puget Sound",
-        "the Salish Sea",
-        "the Sound",
-        "the network",
-        "domestic",
-        "across Washington"
-      ],
-      "banned": [
-        "intra-{home}",
-        "{home}",
-        "inter-emirate",
-        "super-app",
-        "GMV"
-      ]
+  "authority": "Washington State Ferries (WSF)",
+  "operator": "Washington State Ferries, a division of the Washington State Department of Transportation (WSDOT)",
+  "jurisdiction": "Washington State, USA — Puget Sound & the San Juan Islands",
+  "city_feature_id": "seattle-usa",
+  "cluster": "pacific-northwest",
+  "authority_profile": {
+    "scale": "Largest ferry system in the United States — ~24 million riders/year, 10 routes, 20 terminals; part of the state highway system.",
+    "mandate": "Essential public mobility across Puget Sound and the San Juan Islands; auto- and passenger-ferry backbone under WSDOT."
+  },
+  "decarbonization_anchor": "WSF is executing a fleet-wide hybrid-electric conversion and new-build program with shore-charging infrastructure, under Washington's legislated climate commitments (Climate Commitment Act) and the state's net-zero direction. A zero-emission passenger-only foiling tier is an additive complement to the auto-ferry electrification program.",
+  "domestic_first_note": "Leads entirely with the domestic Puget Sound / San Juan Islands network built on WSF's live terminals and published network plan. No cross-border corridors.",
+  "corridors": [
+    {
+      "pair": "Seattle (Colman Dock) ↔ Bainbridge Island",
+      "route_id": null,
+      "state": "pending-seal",
+      "note": "flagship Seattle-side commuter channel"
+    },
+    {
+      "pair": "Seattle (Colman Dock) ↔ Bremerton",
+      "route_id": "rn-01adad364cdf",
+      "state": "sealed"
+    },
+    {
+      "pair": "Edmonds ↔ Kingston",
+      "route_id": null,
+      "state": "pending-seal"
+    },
+    {
+      "pair": "Mukilteo ↔ Clinton",
+      "route_id": "rn-0574f069dd70",
+      "state": "sealed"
+    },
+    {
+      "pair": "Fauntleroy ↔ Vashon Island",
+      "route_id": null,
+      "state": "pending-seal"
+    },
+    {
+      "pair": "Vashon Island ↔ Southworth",
+      "route_id": null,
+      "state": "pending-seal"
+    },
+    {
+      "pair": "Port Townsend ↔ Coupeville",
+      "route_id": "rn-db80b9ca9f0e",
+      "state": "sealed"
+    },
+    {
+      "pair": "Anacortes ↔ Friday Harbor (San Juan Islands)",
+      "route_id": "rn-e7e480584051",
+      "state": "sealed"
     }
+  ],
+  "hazards": [
+    "Puget Sound is sheltered home water but has strong tidal currents in the passes (Deception Pass, San Juan channels) — route hand-waypoints must respect current and traffic separation schemes.",
+    "Heavy commercial and naval traffic near the Seattle waterfront and Bremerton (Puget Sound Naval Shipyard) — corridors keep clear of restricted naval zones.",
+    "The foiling tier is passenger-only and additive; it does not replace the auto-ferry backbone that carries vehicles and freight."
+  ],
+  "positioning": "Passenger-only, zero-emission foiling layer above the auto-ferry backbone: fast, frequent, low-wake hops on the busy Seattle-side commuter channels (Bainbridge, Bremerton, Kingston, Vashon), complementing the electrifying auto fleet and opening frequencies the big auto boats can't run economically.",
+  "provenance": {
+    "author": "tasklet",
+    "date": "2026-07-02",
+    "source": "wsf.json live authority state (Grok-regenerated economics + journey relink); WSF/WSDOT public facts"
   },
-  "mandate": {
-    "summary": "Washington State Ferries, a division of the Washington State Department of Transportation, is the largest ferry system in the United States - an essential part of the state highway system carrying ~24 million riders a year across Puget Sound and the San Juan Islands on 10 routes and 20 terminals.",
-    "current_priorities": [
-      "Run the 20-terminal, 10-route network as essential marine highway infrastructure",
-      "Deliver the 2040 Long Range Plan - vessel renewal, terminal upgrades and service restoration",
-      "Electrify the fleet - the largest hybrid-electric ferry conversion in North America, with charging at up to 16 terminals (first five: Bainbridge, Seattle/Colman Dock, Clinton, Bremerton, Kingston)",
-      "Restore service to pre-pandemic levels and add passenger-only fast-ferry capacity"
-    ]
-  },
-  "policy_targets": {
-    "net_zero_year": 2050,
-    "vision": "WSF 2040 Long Range Plan; Washington state greenhouse-gas reduction & clean-transportation goals",
-    "decarb_note": "WSF is converting its fleet to hybrid-electric and building shore charging at up to 16 terminals - the largest hybrid-electric ferry program in North America.",
-    "relevance": "A zero-emission foiling tier is a natural passenger-only complement to the auto-ferry electrification program: fast, low-wake hops on the high-demand commuter channels, opening frequencies the big auto boats can't run economically."
-  },
-  "precedent": {
-    "headline": "WSF is the largest ferry system in the US - ~24M riders/yr, 10 routes, 20 terminals - and is already electrifying.",
-    "network": "Routes incl. Seattle-Bainbridge, Seattle-Bremerton, Edmonds-Kingston, Mukilteo-Clinton, Fauntleroy-Vashon-Southworth, Pt Defiance-Tahlequah, Port Townsend-Coupeville, and the Anacortes-San Juan Islands network (Lopez, Shaw, Orcas, Friday Harbor).",
-    "note": "Ferries are core highway infrastructure in Washington, not a novelty. Navier adds a fast passenger-only foiling layer on the commuter channels."
-  },
-  "interpretation_for_navier": "Navier is the zero-emission, software-defined passenger-only foiling layer above WSF's auto-ferry backbone - fast, frequent, low-wake hops on the busy Seattle-side commuter channels (Bainbridge, Bremerton, Kingston, Vashon) that complement the electrifying auto fleet, plus quiet access on the wake- and orca-sensitive San Juan waters.",
   "domestic_network": {
     "note": "Candidate boarding points with APPROXIMATE anchor coordinates [lng, lat] for Grok to snap to real piers/wharves/terminals during seal. Coordinates are anchors, not sealed geometry. Core mirrors the authority's live public-ferry stops; new/committed stops are flagged.",
     "boarding_points": [
@@ -378,37 +397,6 @@
         "hazard": "Anacortes <-> Sidney international",
         "detail": "The Sidney BC leg crosses into Canadian waters - excluded from the domestic proposal."
       }
-    ]
-  },
-  "sources": [
-    {
-      "what": "WSF 2040 Long Range Plan (10 routes, 20 terminals, ~24.5M riders)",
-      "url": "https://wsdot.wa.gov/sites/default/files/2021-10/WSF-LongRangePlan-2040Plan.pdf"
-    },
-    {
-      "what": "WSF ferry system electrification (16 terminals; first five)",
-      "url": "https://wsdot.wa.gov/construction-planning/major-projects/ferry-system-electrification"
-    },
-    {
-      "what": "WSF schedules / route list",
-      "url": "https://wsdot.com/ferries/schedule/"
-    },
-    {
-      "what": "Washington State Ferries (overview)",
-      "url": "https://en.wikipedia.org/wiki/Washington_State_Ferries"
-    }
-  ],
-  "provenance": {
-    "author": "Tasklet",
-    "date": "2026-06-30",
-    "purpose": "Grounds the Washington State Ferries proposal rewrite, the Grok domestic-routing handoff, and the public-value economics under the PTA category (Bahrain MOTC gold pattern).",
-    "spine_expanded_at": "2026-07-01T01:53:39Z",
-    "spine_expanded_pairs": [
-      "wsf-x01",
-      "wsf-x02",
-      "wsf-x03",
-      "wsf-x04",
-      "wsf-x05"
     ]
   }
 }
