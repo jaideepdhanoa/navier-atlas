@@ -34,11 +34,13 @@ Five authorities authored from real, web-verified sources (gold dossier + author
 Both are **net-new partners** (no existing partner JSON). Kolkata = WBTC / Hooghly River; Helsinki = HSL. Grok economics + `archetype: public_transit` applied; fidelity **PASS**.
 
 ### ✅ Grok lane — seals, economics, mint-heavy geometry **COMPLETE** (2026-07-02)
-Handback: `handoff/grok-handback-TASKLET-PTA-GROK-LANE-COMPLETE-2026-07-02.md`
-- **Phase B (5):** seals + `regen_pta_economics.py --apply` + fidelity **PASS** (bc-ferries bcf-d04 honest-null)
-- **Phase C (2):** economics regen + fidelity **PASS**
-- **Mint-heavy five:** all 6 `priority_city` + 24 BPs minted; starter routes partial (3×1 route, 3×0) — **Tasklet unblocked** for dossier/PR lane
-- **Batch-5 follow-ups:** mumbai-mmb PASS; bahrain-motc PASS
+Handbacks: `handoff/grok-handback-TASKLET-PTA-MAIN-LANDED-2026-07-02.md` (authoritative) · prior lane docs archived in same folder.
+- **Phase B (5):** seals + economics regen + fidelity **PASS**
+- **Phase C anchor (2):** kolkata + helsinki economics + fidelity **PASS**
+- **Phase C mint-heavy (6):** Tasklet #163–#168 + Grok partial seals + economics on **`main`**
+- **Batch-5 P0 (#162):** qatar + singapore-mpa taxonomy scrub on **`main`**
+- **WSF (#169):** close scrub + dossier on **`main`**; economics untouched
+- **Grok lane:** **CLOSED** — Tasklet → Phase D
 
 ---
 
@@ -265,10 +267,10 @@ Per-partner narrative checklist:
 - [x] Gothenburg Västtrafik — **PR #168** (4 BPs; 1 sealed `rn-f1d39ae68265` + 3 pending; electric-hydrofoil-trial anchor)
 - [x] Rotterdam MRDH/Waterbus — **PR #167** (4 BPs; 4 pending-seal; largest NL public ferry system, electrifying)
 
-**Grok next (mint-heavy seal + economics):** seal each authority's pending-seal pairs (hand-waypoints, no land crossings) per `GROK-SPEC-{slug}-mint-authority-2026-07-02.md`; regen authority public-value economics.
+**Grok seal + economics (mint-heavy):** ✅ **DONE on `main`** — partial seals per `PTA-SEAL-RECEIPT-*.json`; all fidelity **PASS**; residual honest-nulls documented in main handback §2.
 
-### ✅ Phase C — COMPLETE (all 8 Batch-7 authorities shipped)
-Kolkata #160 · Helsinki #161 · Oslo #163 · Amsterdam #164 · Copenhagen #165 · Wellington #166 · Rotterdam #167 · Gothenburg #168. Plus wsf finish #169 and batch-5 taxonomy scrub #162.
+### ✅ Phase C — COMPLETE & MERGED on `main` (all 8 Batch-7 authorities)
+Kolkata #160 · Helsinki #161 · Oslo #163 · Amsterdam #164 · Copenhagen #165 · Wellington #166 · Rotterdam #167 · Gothenburg #168 · wsf #169 · batch-5 scrub #162 · Grok seal lane.
 
 ---
 
