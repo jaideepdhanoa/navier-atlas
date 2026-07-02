@@ -229,6 +229,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--partner", required=True)
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--force-reseal", action="store_true", help="Update geometry on existing route_ids")
     ap.add_argument("--dc", default="data-clean")
     args = ap.parse_args()
 
@@ -285,9 +286,8 @@ def main() -> int:
         to_bp = node_to_bp[tn]
         tag = f"pta-{slug}"
         rid = mint_route_id(from_bp, to_bp, tag=tag)
-        if rid in existing:
-            route_map[(fn, tn)] = rid
-            continue
+        existing_rid = pair.get("route_id") if pair.get("route_id", "").startswith("rn-") else None
+        target_rid = existing_rid or rid
 
         a = tuple(node_meta[fn]["anchor_lnglat"])
         b = tuple(node_meta[tn]["anchor_lnglat"])
@@ -298,6 +298,38 @@ def main() -> int:
         coords, land_km = geom
         from_city = node_meta[fn].get("city")
         to_city = node_meta[tn].get("city")
+
+        route_map[(fn, tn)] = target_rid
+        route_map[(from_bp, to_bp)] = target_rid
+
+        if target_rid in existing and not args.force_reseal:
+            continue
+
+        if target_rid in existing and args.force_reseal:
+            for i, r in enumerate(routes):
+                if route_id_of(r) == target_rid:
+                    feat = make_route_feature(
+                        from_bp,
+                        to_bp,
+                        node_meta[fn].get("name", fn),
+                        node_meta[tn].get("name", tn),
+                        from_city,
+                        to_city,
+                        coords,
+                        cities,
+                        source=f"pta_{slug}",
+                        land_km=land_km,
+                    )
+                    feat["properties"]["id"] = target_rid
+                    feat["properties"]["_pta_pair_id"] = pair.get("pair_id")
+                    feat["properties"]["_pta_node_from"] = fn
+                    feat["properties"]["_pta_node_to"] = tn
+                    feat["properties"]["_pta_resealed_at"] = utc_now()
+                    routes[i] = feat
+                    minted.append({"pair_id": pair.get("pair_id"), "route_id": target_rid, "land_km": land_km, "reseal": True})
+                    break
+            continue
+
         feat = make_route_feature(
             from_bp,
             to_bp,
@@ -310,14 +342,13 @@ def main() -> int:
             source=f"pta_{slug}",
             land_km=land_km,
         )
-        feat["properties"]["id"] = rid
+        feat["properties"]["id"] = target_rid
         feat["properties"]["_pta_pair_id"] = pair.get("pair_id")
         feat["properties"]["_pta_node_from"] = fn
         feat["properties"]["_pta_node_to"] = tn
         routes.append(feat)
-        existing.add(rid)
-        route_map[(fn, tn)] = rid
-        minted.append({"pair_id": pair.get("pair_id"), "route_id": rid, "land_km": land_km})
+        existing.add(target_rid)
+        minted.append({"pair_id": pair.get("pair_id"), "route_id": target_rid, "land_km": land_km})
 
     bound_total = 0
     for ppath in partner_paths:

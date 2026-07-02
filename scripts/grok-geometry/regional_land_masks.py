@@ -246,6 +246,18 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("hamburg_elbe", 9.75, 53.47, 10.05, 53.60),
     # Sydney Harbour + Parramatta River ferry (Transport NSW — extended west)
     ("sydney_harbour_ext", 150.95, -33.90, 151.32, -33.77),
+    # Pasig River (MMDA Pasig River Ferry — Metro Manila)
+    ("pasig_river_manila", 120.99, 14.55, 121.09, 14.60),
+    # Saigon River + Thanh Da Canal (HCMC Saigon Waterbus Line 1)
+    ("saigon_river_hcmc", 106.68, 10.76, 106.76, 10.84),
+    # Guanabara Bay (CCR Barcas — Rio ↔ Niterói / Paquetá / Governador)
+    ("guanabara_bay_rio", -43.22, -22.95, -43.08, -22.75),
+    # River Mersey (Mersey Ferries — Liverpool ↔ Wallasey ↔ Birkenhead)
+    ("mersey_liverpool", -3.04, 53.38, -3.00, 53.42),
+    # Toronto Inner Harbour (Island Ferry — Jack Layton ↔ Centre / Hanlan's / Ward's)
+    ("toronto_inner_harbour", -79.42, 43.61, -79.34, 43.65),
+    # Firth of Clyde gateway crossings (CalMac — Arran / Bute / Cowal / Mull)
+    ("firth_of_clyde", -5.20, 55.55, -4.78, 56.48),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)

@@ -48,6 +48,14 @@ PHASE_BC_SLUGS = frozenset(
         "wellington-metlink",
         "rotterdam-mrdh",
         "gothenburg-vasttrafik",
+        # Phase D (Batch-8) Wave 1 + Wave 2
+        "manila-pasig-ferry",
+        "hcmc-saigon-waterbus",
+        "rio-ccr-barcas",
+        "mersey-ferries",
+        "toronto-island-ferry",
+        "calmac",
+        "seoul-hangang-bus",
     }
 )
 
@@ -135,6 +143,13 @@ def sealed_corridors(slug: str) -> int:
         if failed == 0 and total:
             return total
         return max(0, total - failed)
+    mint_receipt = HANDOFF / f"GEOMETRY-MINT-RECEIPT-{slug}.json"
+    if mint_receipt.is_file():
+        r = json.loads(mint_receipt.read_text())
+        sealed = [s for s in r.get("sealed_routes") or [] if s.get("status") != "existing"]
+        if sealed:
+            return len(sealed)
+        return len(r.get("sealed_routes") or [])
     return dossier_pairs(slug) or bound_routes_in_partner(slug)
 
 
