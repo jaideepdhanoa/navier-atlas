@@ -246,8 +246,11 @@ Per-partner narrative checklist:
 - [ ] Then run the Batch-6 deliverable set (dossier → rewrite → Grok spec → seal handoff).
 
 **Phase C checkbox ledger:**
-- [ ] Kolkata WBTC (dossier+rewrite+spec)
-- [ ] Helsinki HSL (dossier+rewrite+spec)
+- [x] Kolkata WBTC (dossier+build+spec) — **PR #160 open** (2026-07-02). Anchor-ready; 5 real `rn-` routes BOUND (not null); 'Dheu' electric-ferry story web-verified; fidelity PASS (items=9); build 0.
+- [x] Helsinki HSL (dossier+build+spec) — **PR #161 open** (2026-07-02). Anchor-ready; 7 real `rn-` routes BOUND; HSL emission-free-2035 story verified; Tallinn/Sweden cross-border excluded; fidelity PASS (items=11); build 0.
+- [ ] Mint-heavy five (Oslo, Amsterdam, Wellington → cleanup+mint; Copenhagen, Gothenburg, Rotterdam → full new-geo mint) — **BLOCKED on Grok geometry mint** (no sealed routes exist). Tasklet authors dossiers + honest-null partners once Grok mints/cleans city nodes.
+
+> **Phase-C anchor-ready insight (new):** unlike Batch-5/6 (null route_ids + seal-pending), Kolkata & Helsinki had **already-sealed** geometry in `ROUTES.json`, so route_ids are **bound to real `rn-` ids** and pass the audit's land-crossing + bp_binding checks. Build helpers persisted: `build_kolkata.py`, `build_helsinki.py`.
 - [ ] Oslo Ruter (mint + deliverables)
 - [ ] Amsterdam GVB (mint + deliverables)
 - [ ] Wellington Metlink (mint + deliverables)
