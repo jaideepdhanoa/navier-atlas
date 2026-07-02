@@ -217,8 +217,8 @@ Per-partner narrative checklist:
 **Phase B checkbox ledger:**
 - [x] PR-6 dossier+rewrite+spec: bc-ferries, hawaii — merged #155–#156
 - [x] PR-8–#10: fullers360, maldives-government, norway-fjords — merged #157–#159
-- [ ] PR-7 remainder: **wsf** full dossier+rewrite (not shipped); **shun-tak** deferred (scope call)
-- [ ] Grok seal + economics regen for all 5 merged Phase-B partners
+- [x] PR-7 remainder: **wsf** dossier + close phase-ladder scrub + seal spec — **PR #169** (surgical finish; Grok economics untouched). **shun-tak** deferred (scope call).
+- [x] Grok seal + economics regen for all 5 merged Phase-B partners — **COMPLETE** (Grok lane 2026-07-02, fidelity PASS).
 
 ---
 
@@ -255,15 +255,20 @@ Per-partner narrative checklist:
 **Phase C checkbox ledger:**
 - [x] Kolkata WBTC — **merged #160**. 5 sealed `rn-` routes bound; fidelity PASS.
 - [x] Helsinki HSL — **merged #161**. 7 sealed `rn-` routes bound; fidelity PASS.
-- [ ] Mint-heavy five — **BLOCKED on Grok `GEOMETRY-MINT-RECEIPT-*`** (see `handoff/grok-handback-TASKLET-PTA-POST-MERGE-2026-07-02.md` §2d). Tasklet may draft dossiers; partner JSON PRs wait for mint receipts.
+- [x] Mint-heavy five (six authorities) — **UNBLOCKED + SHIPPED** off Grok's `GEOMETRY-MINT-RECEIPT-*` (Grok lane complete 2026-07-02). All six authored from receipts + verified decarbonisation anchors; fidelity PASS; honest-pending economics. Builder persisted: `build_mintheavy.py`.
 
 > **Phase-C anchor-ready insight (new):** unlike Batch-5/6 (null route_ids + seal-pending), Kolkata & Helsinki had **already-sealed** geometry in `ROUTES.json`, so route_ids are **bound to real `rn-` ids** and pass the audit's land-crossing + bp_binding checks. Build helpers persisted: `build_kolkata.py`, `build_helsinki.py`.
-- [ ] Oslo Ruter (mint + deliverables)
-- [ ] Amsterdam GVB (mint + deliverables)
-- [ ] Wellington Metlink (mint + deliverables)
-- [ ] Copenhagen Movia (mint + deliverables)
-- [ ] Gothenburg Västtrafik (mint + deliverables)
-- [ ] Rotterdam RET/Waterbus (mint + deliverables)
+- [x] Oslo Ruter — **PR #163** (4 BPs bound; 4 corridors pending-seal; Ruter–Norled electrification anchor)
+- [x] Amsterdam GVB — **PR #164** (4 BPs bound; 4 pending-seal; free electric IJ ferries anchor)
+- [x] Wellington Metlink — **PR #166** (4 BPs; 1 sealed `rn-a3c31405844f` + 3 pending; *Ika Rere* anchor)
+- [x] Copenhagen Movia — **PR #165** (4 BPs; 1 sealed `rn-f7d4a824ec58` + 3 pending; fully-electric-since-2020 anchor)
+- [x] Gothenburg Västtrafik — **PR #168** (4 BPs; 1 sealed `rn-f1d39ae68265` + 3 pending; electric-hydrofoil-trial anchor)
+- [x] Rotterdam MRDH/Waterbus — **PR #167** (4 BPs; 4 pending-seal; largest NL public ferry system, electrifying)
+
+**Grok next (mint-heavy seal + economics):** seal each authority's pending-seal pairs (hand-waypoints, no land crossings) per `GROK-SPEC-{slug}-mint-authority-2026-07-02.md`; regen authority public-value economics.
+
+### ✅ Phase C — COMPLETE (all 8 Batch-7 authorities shipped)
+Kolkata #160 · Helsinki #161 · Oslo #163 · Amsterdam #164 · Copenhagen #165 · Wellington #166 · Rotterdam #167 · Gothenburg #168. Plus wsf finish #169 and batch-5 taxonomy scrub #162.
 
 ---
 
