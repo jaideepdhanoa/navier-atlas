@@ -18,6 +18,20 @@
 - **PR-4 · #152** — nyc-ferry, sf-bay-ferry, transport-nsw, boston-mbta-ferry, stockholm-waxholm distance sync. Audits PASS.
 - **PR-5 · #154** — authority hero voice pass. 5 authorities aligned to gold "Authority proposal" eyebrow + place-specific network titles. bc-ferries/hawaii deferred to Phase B full rewrites. Bahrain 21.2nm inner-harbour anomaly flagged for Grok.
 - **⚠️ Grok sequencing note (from PR-1):** these presentation fields are now Tasklet-final post-regen. Do **not** blindly re-run `regen_pta_economics.py` on the 24 or it reverts operating_model/levers/headlines.
+
+### ✅ Phase B — outside-lane new authorities — COMPLETE (2026-07-02) · PRs #155–#159 open, awaiting Jaideep merge
+Five authorities authored from real, web-verified sources (gold dossier + authority rewrite + Grok seal spec), each a self-verified **per-authority PR**. Commercial SOM/SAM/TAM/GMV `growth_case` **removed** on all (renderer gates economics on `_economics_status==pta_regenerated` + `!!growth_case`; so no economics panel renders until Grok re-authors authority economics). Source finance files retained in-repo. All fidelity PASS, build exit 0.
+- **PR-6 · #155** — `bc-ferries` (Coastal Ferry Act; Clean Futures Plan / net-zero 2050 / Island Class hybrids). 8 domestic pairs.
+- **PR-7 · #156** — `hawaii` (DOT Harbors; live Maui–Lānaʻi ferry; post-Superferry reconnection; carbon-neutral 2045). 7 pairs.
+- **PR-8 · #157** — `fullers360` (Auckland Transport PPP; live plug-in electric-hybrid fast ferries; Zero Carbon Act). 8 pairs. Replaced sailing-club/boat-ramp junk corridors.
+- **PR-9 · #158** — `maldives-government` (MTCC / RTL national ferry). **resort→public correction**: dropped resort-transfer jetties + resort proof-spine; leads with public RTL network; JIH Global kept as local proof. 7 pairs; distant-atoll reach kept qualitative (null-beats-wrong).
+- **PR-10 · #159** — `norway-fjords` (Parliament's binding **2026 zero-emission UNESCO fjord mandate**; MF Ampere / MF Hydra proof). 6 pairs. Banned-term cleanup.
+- **⚠️ growth_case fix pushed to #155/#156** after catching the commercial ladder still present on the first two.
+- **⛔ shun-tak — DEFERRED (needs Jaideep scope call).** Commercial cross-boundary franchise (HK↔Macau↔PRD), not a domestic ministry; current phases mis-attribute other operators' intra-HK routes (Star/Sun Ferry). Not forced into the domestic PTA pattern. Recommend GBA cross-boundary *commercial* lane. Memo: `/tasklet/agent/home/pta-program/SHUN-TAK-SCOPE-DECISION.md`. No PR opened.
+- **Reusable tooling (persisted):** `pta_rewrite.py` (dossier-driven authority rewrite; PLANS[] per partner), `scrub_forbidden.py` (removes commercial growth_case → pending state), `pr_maldives_narrative.py` (resort→public reframe). Dossiers in `dossiers/`, specs in `specs/`.
+
+### ⏭ Phase C — Batch-7 anchor-ready (Kolkata WBTC + Helsinki HSL) — NEXT
+Both are **net-new partners** (no existing partner JSON). Creation path confirmed: partners auto-discovered by directory scan of `partner-pitch/partners/` + `data-clean/partners/` (no manifest to edit). Each needs: verify atlas anchoring (real nodes/city present), author gold dossier, create partner JSON both trees (bc-ferries as structural template), Grok seal spec, per-authority PR. Kolkata = WBTC / Hooghly River; Helsinki = HSL.
 - **Next:** Phase B (Batch-6 new lane — PR-6/7).
 
 ---
