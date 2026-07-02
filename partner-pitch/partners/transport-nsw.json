@@ -78,7 +78,7 @@
       "today": "Today it's a road trip or a slower displacement ferry.",
       "with_navier": "The full Parramatta River corridor (displacement / no-foil on the upper river) linking the CBD to Parramatta's second CBD.",
       "platform": "Pioneer II",
-      "distance_nm": 16.0,
+      "distance_nm": 9.8,
       "from_node_id": "syd-barangaroo",
       "to_node_id": "syd-parramatta",
       "route_id": "rn-0d609ac0ab33",
@@ -215,7 +215,7 @@
           "label": "Barangaroo Wharf ↔ Parramatta Wharf",
           "from_node_id": "syd-barangaroo",
           "to_node_id": "syd-parramatta",
-          "distance_nm": 16.0,
+          "distance_nm": 9.8,
           "platform": "Pioneer II",
           "route_id": "rn-0d609ac0ab33",
           "route_ids": [
@@ -232,7 +232,7 @@
           "label": "Circular Quay ferry wharves ↔ Mosman Bay Wharf",
           "from_node_id": "syd-circular-quay",
           "to_node_id": "syd-mosman-bay",
-          "distance_nm": 1.0,
+          "distance_nm": 1.9,
           "platform": "Pioneer II",
           "route_id": "rn-2b603df666b7",
           "route_ids": [
@@ -435,13 +435,12 @@
   },
   "growth_case": {
     "revenue_potential": {
-      "headline": "Operating revenue as the network grows — with the public value set out alongside.",
+      "headline": "Indicative operating revenue as the network matures — public value leads.",
       "anchor_note": "Grounded in 30 sealed domestic corridors. Operating figures use the PTA public-value convention; fares and cost-recovery are set with the authority.",
       "whose_money_legend": {
         "operating_revenue": "Fare revenue the service collects — the operating P&L for the route network.",
         "water_transport_market": "The total addressable water-transport market the network can serve as it matures."
       },
-      "cite_rule": "Lead with corridor count and public value. Quote the mid figure; bands label every projected figure.",
       "rungs": [
         {
           "id": "operating_floor",
@@ -481,24 +480,11 @@
           },
           "confidence": "med-low",
           "confidence_label": "Projected"
-        },
-        {
-          "id": "water_transport_market",
-          "label": "Total water-transport market (addressable)",
-          "basis": "Full market the network can serve as the authority matures the system.",
-          "whose_money": "water_transport_market",
-          "display": {
-            "low": "$3M",
-            "mid": "$4M",
-            "high": "$6M"
-          },
-          "confidence": "med-low",
-          "confidence_label": "Projected"
         }
       ]
     },
     "phase_economics": {
-      "headline": "Operating revenue by phase — conservative first, mature last.",
+      "headline": "Network maturity — public value and indicative fare revenue.",
       "conversion_note": "Each vessel delivers public value as well as revenue: zero-emission foiling removes road trips and avoids diesel emissions.",
       "horizons": [
         {
@@ -586,14 +572,6 @@
       "rev_per_boat_yr": 126000,
       "economics_status": "pta_regenerated"
     },
-    "_render_chip_flag": {
-      "needs_new_layouts": [
-        "revenue_ladder",
-        "phase_economics_table",
-        "vessel_sizing_cards"
-      ],
-      "confidence_display": "Tag every banded rung; lead with floor + corridor COUNT (ID-traceable). Never headline the 'high' band."
-    },
     "modal_lead": "Start from the corridors the authority already runs. Each step adds one real lever — more of the network served, then a more mature, better-used network — alongside the public value the authority actually buys: emissions avoided, congestion relieved, and access widened.",
     "modal_headline": "Operating revenue as the network grows",
     "ladder_transitions": [
@@ -619,35 +597,8 @@
         "confidence": "med-low"
       }
     ],
-    "marine_mobility_tam": {
-      "low": 29907596.0,
-      "mid": 58985911.0,
-      "high": 106335146.0
-    },
-    "journey_gmv": {
-      "low": 59815191.0,
-      "mid": 176957733.0,
-      "high": 425340582.0
-    },
     "_platform_rev_excluded": true,
     "_platform_rev_rule": "super_app|ridehail only (LB-hospitality-ladder)",
-    "_marine_tam_split_provenance": {
-      "date": "2026-06-26T19:09:10.467118Z",
-      "formula": "marine_mobility_tam = SAM_full_network / mature_capture_rate (LB-110)",
-      "field_renames": {
-        "tam_gmv": "journey_gmv (LB-111; alias preserved one cycle)",
-        "partner_platform_rev": "partner_platform_rev_on_navier (LB-113)"
-      },
-      "ladder_rung_count": 5,
-      "rungs_ascending": [
-        "som_floor",
-        "som_network",
-        "sam_network",
-        "tam_transfer",
-        "journey_gmv"
-      ],
-      "platform_rev_excluded": "hospitality/destination — not a super-app partner"
-    },
     "public_value": {
       "headline": "What it returns to the public",
       "note": "Quantified public-value outputs for Transport for NSW, tied to sealed domestic corridors and net-zero 2050.",
@@ -674,13 +625,13 @@
         }
       ],
       "levers": [
-        "Navier is the software-defined, zero-emission foiling upgrade to a public ferry mode Sydney already runs at scale. Foiling hulls are faster, near-silent and low-wake - ideal for the wake-sensitive Parramatta River and fo",
+        "Navier is the software-defined, zero-emission foiling upgrade to a public ferry mode Sydney already runs at scale. Foiling hulls are faster, near-silent and low-wake - ideal for the wake-sensitive Parramatta River and for fast cross-harbour hops - while the heritage Manly and inner-harbour services continue underneath.",
         "A zero-emission foiling tier is exactly the fleet renewal the net-zero mandate requires - faster and quieter than the current RiverCat/Emerald displacement fleet, and able to open low-wake river and cross-harbour lines."
       ],
       "operating_model": [
         {
           "label": "Fare integration",
-          "value": "Rides on the authority's existing fare system — set with the authority"
+          "value": "Rides on the Opal card across the Sydney Ferries network — set with the authority."
         },
         {
           "label": "Operating cost",
@@ -690,8 +641,7 @@
           "label": "Cost-recovery band",
           "value": "Farebox vs operating cost — agreed with the authority (not fabricated here)"
         }
-      ],
-      "_grok_regen": "Regenerated from sealed PTA corridors — refine with authority-specific fare data when available."
+      ]
     },
     "_economics_status": "pta_regenerated"
   },
