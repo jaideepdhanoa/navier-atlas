@@ -20,6 +20,40 @@ CAPTURE_FLOOR = 0.10
 CAPTURE_MATURE_MID = 0.25
 INDUCED_MID = 1.8
 
+def _load_batch5_slugs() -> frozenset[str]:
+    gap = HANDOFF / "PTA-PAIR-GAP-TABLE.json"
+    if not gap.is_file():
+        return frozenset()
+    rows = json.loads(gap.read_text()).get("authorities") or []
+    return frozenset(r["partner_id"] for r in rows if r.get("partner_id"))
+
+
+# Batch-5 partners: Tasklet owns presentation fields after #150 scrub.
+BATCH5_SLUGS = _load_batch5_slugs()
+
+# Phase B/C partners Grok may fully regen (outside batch-5 guardrail).
+PHASE_BC_SLUGS = frozenset(
+    {
+        "bc-ferries",
+        "hawaii",
+        "fullers360",
+        "maldives-government",
+        "norway-fjords",
+        "kolkata-wbtc",
+        "helsinki-hsl",
+    }
+)
+
+PRESERVE_GC_KEYS = frozenset(
+    {
+        "modal_lead",
+        "modal_headline",
+        "vessel_sizing",
+        "ladder_transitions",
+    }
+)
+PRESERVE_PV_KEYS = frozenset({"levers", "operating_model", "headline", "note"})
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -41,19 +75,28 @@ def money_band(mid: float, *, low_factor: float = 0.7, high_factor: float = 1.3)
     }
 
 
-def sealed_corridors(slug: str) -> int:
-    total = dossier_pairs(slug)
-    receipt = HANDOFF / f"PTA-SEAL-RECEIPT-{slug}.json"
-    if receipt.is_file():
-        r = json.loads(receipt.read_text())
-        failed = len(r.get("failed") or [])
-        if failed == 0 and total:
-            return total
-        minted = len(r.get("minted") or [])
-        if minted:
-            return minted
-        return max(0, total - failed)
-    return total
+def bound_routes_in_partner(slug: str) -> int:
+    seen: set[str] = set()
+    for tree in (DC, PP):
+        path = tree / "partners" / f"{slug}.json"
+        if not path.is_file():
+            continue
+        doc = json.loads(path.read_text())
+        for kind, _pn, item in _iter_route_items(doc):
+            rid = item.get("route_id") or ((item.get("route_ids") or [None])[0])
+            if rid:
+                seen.add(rid)
+    return len(seen)
+
+
+def _iter_route_items(doc: dict):
+    for phase in doc.get("phases", []) or []:
+        for fr in phase.get("featured_routes", []) or []:
+            if isinstance(fr, dict):
+                yield "featured", fr
+    for j in doc.get("journeys_unlocked", []) or []:
+        if isinstance(j, dict):
+            yield "journey", j
 
 
 def dossier_pairs(slug: str) -> int:
@@ -61,9 +104,28 @@ def dossier_pairs(slug: str) -> int:
     if not dossier.is_file():
         return 0
     d = json.loads(dossier.read_text())
-    pairs = len(d.get("domestic_network", {}).get("domestic_pairs") or [])
+    net = d.get("domestic_network", {})
+    sealed = net.get("sealed_pairs")
+    if sealed:
+        return len(sealed)
+    pairs = len(net.get("domestic_pairs") or [])
     links = len(d.get("regional_links", {}).get("links") or [])
     return pairs + links
+
+
+def sealed_corridors(slug: str) -> int:
+    receipt = HANDOFF / f"PTA-SEAL-RECEIPT-{slug}.json"
+    if receipt.is_file():
+        r = json.loads(receipt.read_text())
+        failed = len(r.get("failed") or [])
+        minted = len(r.get("minted") or [])
+        if minted:
+            return minted
+        total = dossier_pairs(slug)
+        if failed == 0 and total:
+            return total
+        return max(0, total - failed)
+    return dossier_pairs(slug) or bound_routes_in_partner(slug)
 
 
 def net_zero_label(dossier: dict) -> str:
@@ -258,16 +320,77 @@ def build_growth_case(slug: str, dossier: dict, corridors: int) -> dict:
     }
 
 
-def apply_partner(path: Path, gc_patch: dict, apply: bool) -> bool:
+def merge_growth_case(existing: dict, patch: dict) -> dict:
+    """Patch metrics/numbers only — preserve Tasklet presentation on batch-5."""
+    out = dict(existing)
+    for key, val in patch.items():
+        if key in PRESERVE_GC_KEYS and key in existing:
+            continue
+        if key == "public_value" and isinstance(val, dict):
+            pv_old = existing.get("public_value") or {}
+            pv_new = dict(val)
+            for pk in PRESERVE_PV_KEYS:
+                if pk in pv_old:
+                    pv_new[pk] = pv_old[pk]
+            if pv_old.get("metrics") and isinstance(pv_new.get("metrics"), list):
+                # Refresh metric values but keep labels/basis wording when customized.
+                old_by_label = {m.get("label"): m for m in pv_old["metrics"] if isinstance(m, dict)}
+                merged_metrics = []
+                for m in pv_new["metrics"]:
+                    lbl = m.get("label")
+                    if lbl in old_by_label and old_by_label[lbl].get("basis"):
+                        keep = dict(old_by_label[lbl])
+                        keep["value"] = m.get("value", keep.get("value"))
+                        merged_metrics.append(keep)
+                    else:
+                        merged_metrics.append(m)
+                pv_new["metrics"] = merged_metrics
+            out["public_value"] = pv_new
+            continue
+        if key in ("revenue_potential", "phase_economics") and isinstance(val, dict) and isinstance(existing.get(key), dict):
+            sub = dict(existing[key])
+            for sk, sv in val.items():
+                if sk in ("headline", "anchor_note", "whose_money_legend", "conversion_note") and sk in sub:
+                    continue
+                sub[sk] = sv
+            out[key] = sub
+            continue
+        out[key] = val
+    return out
+
+
+def apply_partner(path: Path, gc_patch: dict, apply: bool, slug: str, *, full_apply: bool) -> bool:
     if not path.is_file():
         return False
     doc = json.loads(path.read_text())
     gc = doc.setdefault("growth_case", {})
-    vessel_sizing = gc.get("vessel_sizing")
-    gc.update(gc_patch)
-    if vessel_sizing:
-        gc["vessel_sizing"] = vessel_sizing
-    doc["economics_status"] = "authority_economics_regenerated"
+    if full_apply:
+        vessel_sizing = gc.get("vessel_sizing")
+        gc.clear()
+        gc.update(gc_patch)
+        if vessel_sizing:
+            gc["vessel_sizing"] = vessel_sizing
+        doc["archetype"] = "public_transit"
+        doc["economics_status"] = "pta_regenerated"
+        doc["_economics_status"] = "pta_regenerated"
+        if not doc.get("_public_transit_authority"):
+            dossier_path = HANDOFF / f"PTA-DOSSIER-{slug}.json"
+            home_cities: list[str] = []
+            if dossier_path.is_file():
+                d = json.loads(dossier_path.read_text())
+                anchor = (d.get("authority") or {}).get("anchor_city_id")
+                if anchor:
+                    home_cities = [anchor]
+            if not home_cities:
+                home_cities = list(doc.get("cities") or doc.get("end_state", {}).get("end_state_cities") or [])[:1]
+            doc["_public_transit_authority"] = {
+                "archetype_id": "public_transit_authority",
+                "applied_at": utc_now(),
+                "home_cities": home_cities,
+            }
+    else:
+        doc["growth_case"] = merge_growth_case(gc, gc_patch)
+        doc["economics_status"] = "authority_economics_regenerated"
     if apply:
         path.write_text(json.dumps(doc, indent=2) + "\n")
     return True
@@ -291,15 +414,21 @@ def main() -> int:
 
     report = {"generated_at": utc_now(), "partners": []}
     for slug in slugs:
+        if slug in BATCH5_SLUGS and slug not in PHASE_BC_SLUGS:
+            print(f"⊘ {slug}: skipped (batch-5 presentation guard — not Phase B/C)")
+            continue
         dossier_path = HANDOFF / f"PTA-DOSSIER-{slug}.json"
         if not dossier_path.is_file():
             continue
         dossier = json.loads(dossier_path.read_text())
         corridors = sealed_corridors(slug)
         gc_patch = build_growth_case(slug, dossier, corridors)
+        full_apply = slug in PHASE_BC_SLUGS
         for p in (DC / "partners" / f"{slug}.json", PP / "partners" / f"{slug}.json"):
-            apply_partner(p, gc_patch, args.apply)
-        report["partners"].append({"partner": slug, "corridors": corridors, "floor": REV_PER_BOAT_YR})
+            apply_partner(p, gc_patch, args.apply, slug, full_apply=full_apply)
+        report["partners"].append(
+            {"partner": slug, "corridors": corridors, "floor": REV_PER_BOAT_YR, "mode": "full" if full_apply else "metrics_only"}
+        )
         print(f"{'✓' if args.apply else '·'} {slug}: {corridors} corridors → floor {fmt_money(REV_PER_BOAT_YR)}")
 
     receipt = HANDOFF / "PTA-ECONOMICS-REGEN.json"

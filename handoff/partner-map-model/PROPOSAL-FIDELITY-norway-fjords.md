@@ -1,27 +1,28 @@
 # Proposal fidelity — norway-fjords
 
-**Verdict:** PASS
-**Checked:** 2026-07-01T03:14:59Z
+**Verdict:** PASS_WITH_FLAGS
+**Checked:** 2026-07-02T19:16:19Z
 
 ## Summary
 
-- Items audited: 9
-- KEEP: 9
+- Items audited: 10
+- KEEP: 7
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 0
+- TRIM/REWRITE: 3
 - BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Bergen (Strandkaiterminalen) → Stavanger (Fiskepir | `—` | **KEEP** | — |
-| journey | — | Festøya ferjekai → Solavågen ferjekai | `ics-538b6e5b17` | **KEEP** | — |
-| journey | — | Sør-Hidle hurtigbåtkai → Tau Båthavn | `ics-1ce41762cb` | **KEEP** | — |
-| journey | — | Bergen — Alvøen Kai → Bildøy Marina | `ics-c313e212ce` | **KEEP** | — |
-| featured | 1 | Bergen (Strandkaiterminalen) ↔ Stavanger (Fiskepir | `—` | **KEEP** | — |
-| featured | 1 | Festøya ferjekai → Solavågen ferjekai | `ics-538b6e5b17` | **KEEP** | — |
-| featured | 2 | Sør-Hidle hurtigbåtkai → Tau Båthavn | `ics-1ce41762cb` | **KEEP** | — |
-| featured | 2 | Alvøen Kai → Bildøy Marina AS | `ics-c313e212ce` | **KEEP** | — |
-| featured | 3 | Sør-Hidle hurtigbåtkai → Tau Båthavn | `ics-1ce41762cb` | **KEEP** | — |
+| journey | — | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **TRIM** | distance_honesty: card 11.0nm vs route 8.0nm (38% delta) |
+| journey | — | Geiranger Pier (Geirangerfjord) ↔ Hellesylt Pier ( | `—` | **KEEP** | — |
+| journey | — | Bergen — Strandkaiterminalen ↔ Balestrand Terminal | `rn-1bd6a964d4d1` | **KEEP** | — |
+| journey | — | Stavanger Ferry Terminal ↔ Lysebotn Pier (Lysefjor | `rn-190d394a7093` | **KEEP** | — |
+| featured | 1 | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **TRIM** | distance_honesty: card 11.0nm vs route 8.0nm (38% delta) |
+| featured | 1 | Geiranger Pier (Geirangerfjord) ↔ Hellesylt Pier ( | `—` | **KEEP** | — |
+| featured | 2 | Bergen — Strandkaiterminalen ↔ Balestrand Terminal | `rn-1bd6a964d4d1` | **KEEP** | — |
+| featured | 2 | Balestrand Terminal (Sognefjord) ↔ Flåm Ferry Term | `rn-3662cf99068b` | **KEEP** | — |
+| featured | 2 | Bergen — Strandkaiterminalen ↔ Kleppestø (Askøy) T | `rn-3e61d91dadf4` | **TRIM** | distance_honesty: card 4.0nm vs route 2.5nm (60% delta) |
+| featured | 3 | Stavanger Ferry Terminal ↔ Lysebotn Pier (Lysefjor | `rn-190d394a7093` | **KEEP** | — |

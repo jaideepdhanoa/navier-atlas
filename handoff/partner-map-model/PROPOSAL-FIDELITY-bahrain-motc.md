@@ -1,7 +1,7 @@
 # Proposal fidelity — bahrain-motc
 
 **Verdict:** PASS
-**Checked:** 2026-07-01T03:14:58Z
+**Checked:** 2026-07-02T19:16:13Z
 
 ## Summary
 
