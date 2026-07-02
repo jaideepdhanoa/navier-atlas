@@ -41,6 +41,13 @@ PHASE_BC_SLUGS = frozenset(
         "norway-fjords",
         "kolkata-wbtc",
         "helsinki-hsl",
+        # Batch-7 mint-heavy (Tasklet #163–#168)
+        "oslo-ruter",
+        "amsterdam-gvb",
+        "copenhagen-movia",
+        "wellington-metlink",
+        "rotterdam-mrdh",
+        "gothenburg-vasttrafik",
     }
 )
 
@@ -104,6 +111,9 @@ def dossier_pairs(slug: str) -> int:
     if not dossier.is_file():
         return 0
     d = json.loads(dossier.read_text())
+    pending = d.get("pending_pairs") or []
+    if pending:
+        return len(pending) + len(d.get("sealed_pairs") or [])
     net = d.get("domestic_network", {})
     sealed = net.get("sealed_pairs")
     if sealed:
@@ -143,7 +153,8 @@ def build_public_value(slug: str, dossier: dict, corridors: int, fleet_mature: i
     trips = int(corridors * 120 * 250 * CAPTURE_MATURE_MID)  # corridors × daily trips × days × share
     minutes = corridors * 8 * 120  # ~8 min saved × daily riders proxy
     nz = net_zero_label(dossier)
-    authority = (dossier.get("authority") or {}).get("display") or slug
+    auth = dossier.get("authority")
+    authority = (auth.get("display") if isinstance(auth, dict) else auth) or slug
     return {
         "headline": "What it returns to the public",
         "note": f"Quantified public-value outputs for {authority}, tied to sealed domestic corridors and {nz}.",
@@ -378,7 +389,11 @@ def apply_partner(path: Path, gc_patch: dict, apply: bool, slug: str, *, full_ap
             home_cities: list[str] = []
             if dossier_path.is_file():
                 d = json.loads(dossier_path.read_text())
-                anchor = (d.get("authority") or {}).get("anchor_city_id")
+                auth = d.get("authority")
+                anchor = (
+                    (auth.get("anchor_city_id") if isinstance(auth, dict) else None)
+                    or d.get("city_feature_id")
+                )
                 if anchor:
                     home_cities = [anchor]
             if not home_cities:

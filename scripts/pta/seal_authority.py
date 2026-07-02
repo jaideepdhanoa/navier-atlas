@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts/pta"))
 sys.path.insert(0, str(ROOT / "scripts/grok-bolt-yango"))
 sys.path.insert(0, str(ROOT / "scripts/grok-geometry"))
 
@@ -46,6 +47,54 @@ def bp_id_for(node: str) -> str:
     return f"bp-{h}"
 
 
+def resolve_dossier_network(dossier: dict, slug: str) -> tuple[list, list]:
+    """Support Phase-B domestic_network dossiers and mint-heavy compact format."""
+    if "domestic_network" in dossier:
+        net = dossier["domestic_network"]
+        bps = list(net.get("boarding_points") or [])
+        pairs = list(net.get("domestic_pairs") or [])
+        for link in dossier.get("regional_links", {}).get("links", []) or []:
+            if link.get("from") and link.get("to"):
+                pairs.append(link)
+        return bps, pairs
+
+    city_id = dossier.get("city_feature_id") or slug
+    bps = []
+    for bp in dossier.get("boarding_points") or []:
+        row = dict(bp)
+        row.setdefault("city", city_id)
+        if "anchor_lnglat" not in row and "lng" in row:
+            row["anchor_lnglat"] = [row["lng"], row["lat"]]
+        bps.append(row)
+
+    pairs = []
+    for p in dossier.get("pending_pairs") or []:
+        pairs.append(
+            {
+                "from": p["from"],
+                "to": p["to"],
+                "pair_id": p.get("pair_id") or f"{p['from']}|{p['to']}",
+            }
+        )
+    for p in dossier.get("sealed_pairs") or []:
+        if p.get("from") and p.get("to"):
+            pairs.append(p)
+
+    return bps, pairs
+
+
+def seed_mint_pair_waypoints() -> None:
+    """Load PAIR_WAYPOINTS from mint_authority_city into HAND_WAYPOINTS."""
+    try:
+        from mint_authority_city import PAIR_WAYPOINTS  # noqa: WPS433
+    except ImportError:
+        return
+    for key, wps in PAIR_WAYPOINTS.items():
+        parts = key.split("|", 1)
+        if len(parts) == 2:
+            HAND_WAYPOINTS[(parts[0], parts[1])] = wps
+
+
 def load_hand_catalog(slug: str) -> None:
     path = DC / f"pta_hand_waypoints_{slug.replace('-', '_')}.json"
     if not path.is_file():
@@ -59,7 +108,7 @@ def load_hand_catalog(slug: str) -> None:
 
 def mint_bp_poi(bp: dict, city_id: str, slug: str, fbt: dict) -> str:
     node = bp["node"]
-    pid = bp_id_for(node)
+    pid = bp.get("bp_id") or bp_id_for(node)
     pois = fbt.setdefault("poi", [])
     for poi in pois:
         props = poi.get("properties", poi)
@@ -199,16 +248,16 @@ def main() -> int:
     existing = {route_id_of(r) for r in routes}
 
     load_hand_catalog(slug)
+    seed_mint_pair_waypoints()
     mask = load_land_mask()
     lc = get_land_checker()
     cities = build_city_index(fbt)
 
-    bps = dossier["domestic_network"]["boarding_points"]
+    bps, pairs = resolve_dossier_network(dossier, slug)
+    if not bps:
+        print(f"✗ no boarding_points in dossier for {slug}", file=sys.stderr)
+        return 1
     node_meta: dict[str, dict] = {b["node"]: b for b in bps}
-    pairs = list(dossier["domestic_network"].get("domestic_pairs", []))
-    for link in dossier.get("regional_links", {}).get("links", []):
-        if link.get("from") in node_meta and link.get("to") in node_meta:
-            pairs.append(link)
 
     node_to_bp: dict[str, str] = {}
 
