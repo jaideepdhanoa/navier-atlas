@@ -32,7 +32,8 @@ See `routing_hazards` in the dossier.
 Hawaiʻi is isolated; `regional_links` is intentionally empty. Do not invent an external corridor.
 
 ## 5. Economics regen (Grok lane)
-Run `regen_pta_economics.py` for `hawaii` against the dossier → `growth_case.public_value` + authority operating-model + headlines, under the Phase-A presentation convention (no forbidden GMV/TAM keys, revenue as supporting layer). Note the partner still carries a good `end_state`/`objections`/`proof_points` narrative — regen should not clobber those.
+**NOTE — growth_case removed.** The prior commercial `growth_case` (SOM/SAM/TAM/GMV ladder) has been **removed** from both partner trees; the partner is now `_pta_economics_status: grok_authority_regen_pending` and renders **no** economics panel until you re-author. Source finance data remains in-repo at `finance/recal/growth-hawaii.json`.
+Re-author `growth_case` for `hawaii` from the dossier + finance source → `public_value` + authority operating-model + headlines, and set `_economics_status: pta_regenerated` so `_isPtaEconomics()` renders the PTA branch. Apply the Phase-A presentation convention (no forbidden GMV/TAM keys, revenue as supporting layer). Note the partner still carries a good `end_state`/`objections`/`proof_points` narrative — do not clobber those.
 
 ## 6. Acceptance
 - `audit_proposal_fidelity.py --partner hawaii` → PASS
