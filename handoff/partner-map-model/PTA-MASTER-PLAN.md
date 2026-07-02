@@ -30,9 +30,15 @@ Five authorities authored from real, web-verified sources (gold dossier + author
 - **⛔ shun-tak — DEFERRED (needs Jaideep scope call).** Commercial cross-boundary franchise (HK↔Macau↔PRD), not a domestic ministry; current phases mis-attribute other operators' intra-HK routes (Star/Sun Ferry). Not forced into the domestic PTA pattern. Recommend GBA cross-boundary *commercial* lane. Memo: `/tasklet/agent/home/pta-program/SHUN-TAK-SCOPE-DECISION.md`. No PR opened.
 - **Reusable tooling (persisted):** `pta_rewrite.py` (dossier-driven authority rewrite; PLANS[] per partner), `scrub_forbidden.py` (removes commercial growth_case → pending state), `pr_maldives_narrative.py` (resort→public reframe). Dossiers in `dossiers/`, specs in `specs/`.
 
-### ✅ Phase C anchor-ready — Kolkata + Helsinki **MERGED** (#160–#161) · mint-heavy five next (Grok-blocked)
-Both are **net-new partners** (no existing partner JSON). Creation path confirmed: partners auto-discovered by directory scan of `partner-pitch/partners/` + `data-clean/partners/` (no manifest to edit). Each needs: verify atlas anchoring (real nodes/city present), author gold dossier, create partner JSON both trees (bc-ferries as structural template), Grok seal spec, per-authority PR. Kolkata = WBTC / Hooghly River; Helsinki = HSL.
-- **Next:** Phase B (Batch-6 new lane — PR-6/7).
+### ✅ Phase C anchor-ready — Kolkata + Helsinki **MERGED** (#160–#161)
+Both are **net-new partners** (no existing partner JSON). Kolkata = WBTC / Hooghly River; Helsinki = HSL. Grok economics + `archetype: public_transit` applied; fidelity **PASS**.
+
+### ✅ Grok lane — seals, economics, mint-heavy geometry **COMPLETE** (2026-07-02)
+Handback: `handoff/grok-handback-TASKLET-PTA-GROK-LANE-COMPLETE-2026-07-02.md`
+- **Phase B (5):** seals + `regen_pta_economics.py --apply` + fidelity **PASS** (bc-ferries bcf-d04 honest-null)
+- **Phase C (2):** economics regen + fidelity **PASS**
+- **Mint-heavy five:** all 6 `priority_city` + 24 BPs minted; starter routes partial (3×1 route, 3×0) — **Tasklet unblocked** for dossier/PR lane
+- **Batch-5 follow-ups:** mumbai-mmb PASS; bahrain-motc PASS
 
 ---
 

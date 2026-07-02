@@ -1,7 +1,7 @@
 # Proposal fidelity — kolkata-wbtc
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T19:16:20Z
+**Checked:** 2026-07-02T19:35:41Z
 
 ## Summary
 

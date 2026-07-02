@@ -1,16 +1,16 @@
 # Proposal fidelity — kakao-mobility
 
-**Verdict:** PASS
-**Checked:** 2026-07-01T03:14:59Z
+**Verdict:** TRIM
+**Checked:** 2026-07-02T19:35:41Z
 
 ## Summary
 
 - Items audited: 38
-- KEEP: 38
-- DROP: 0
+- KEEP: 37
+- DROP: 1
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 0
+- BP-binding errors: 1
 
 ## Trim list
 
@@ -47,10 +47,10 @@
 | featured | yeosu-tongyeong/p1 | Yeosu / Tongyeong (Hallyeohaesang) → Yeosu / Tongy | `—` | **KEEP** | — |
 | featured | yeosu-tongyeong/p2 | Yeosu ↔ Geumodo / Geomundo | `—` | **KEEP** | — |
 | featured | yeosu-tongyeong/p3 | Yeosu / Tongyeong (Hallyeohaesang) → Yeosu / Tongy | `—` | **KEEP** | — |
-| journey | market:seoul-han-river | Gimpo / Yeouido → Jamsil / Ttukseom | `—` | **KEEP** | — |
-| journey | market:seoul-han-river | Yeouido → Seoul Forest / Ttukseom | `—` | **KEEP** | — |
-| journey | market:seoul-han-river | Incheon → Muuido / Yeongjong (West Sea islands) | `—` | **KEEP** | — |
-| journey | market:seoul-han-river | Han River (Yeouido) → Incheon Bay | `—` | **KEEP** | — |
-| featured | seoul-han-river/p1 | Gimpo / Yeouido ↔ Jamsil / Ttukseom | `—` | **KEEP** | — |
-| featured | seoul-han-river/p2 | Incheon → Muuido / Yeongjong | `—` | **KEEP** | — |
-| featured | seoul-han-river/p3 | Han River (Yeouido) ↔ Incheon Bay | `—` | **KEEP** | — |
+| journey | market:seoul-han-river | Gimpo Ara Marina → Jamsil Ttukseom Riverside Pier | `rn-806c3d8d2fe9` | **KEEP** | — |
+| journey | market:seoul-han-river | Yeouido Hangang Park Pier → Ttukseom Hangang Park  | `rn-bca95ab1f7cf` | **KEEP** | — |
+| journey | market:seoul-han-river | Incheon Coastal Passenger Terminal → Muuido Island | `rn-62345e60f1a1` | **KEEP** | — |
+| journey | market:seoul-han-river | Yeouido Hangang Park Pier → Incheon Coastal Passen | `rn-3f7b5af983cd` | **KEEP** | — |
+| featured | seoul-han-river/p1 | Gimpo Ara Marina ↔ Jamsil Ttukseom Riverside Pier | `rn-806c3d8d2fe9` | **KEEP** | — |
+| featured | seoul-han-river/p2 | Incheon → Muuido / Yeongjong | `rn-62345e60f1a1` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Incheon' → 'Muuido / Yeongjo |
+| featured | seoul-han-river/p3 | Yeouido Hangang Park Pier ↔ Incheon Coastal Passen | `rn-3f7b5af983cd` | **KEEP** | — |

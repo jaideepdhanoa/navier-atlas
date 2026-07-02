@@ -1,28 +1,28 @@
 # Proposal fidelity — norway-fjords
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-02T19:16:19Z
+**Verdict:** PASS
+**Checked:** 2026-07-02T19:35:42Z
 
 ## Summary
 
 - Items audited: 10
-- KEEP: 7
+- KEEP: 10
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 3
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **TRIM** | distance_honesty: card 11.0nm vs route 8.0nm (38% delta) |
+| journey | — | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **KEEP** | — |
 | journey | — | Geiranger Pier (Geirangerfjord) ↔ Hellesylt Pier ( | `—` | **KEEP** | — |
 | journey | — | Bergen — Strandkaiterminalen ↔ Balestrand Terminal | `rn-1bd6a964d4d1` | **KEEP** | — |
 | journey | — | Stavanger Ferry Terminal ↔ Lysebotn Pier (Lysefjor | `rn-190d394a7093` | **KEEP** | — |
-| featured | 1 | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **TRIM** | distance_honesty: card 11.0nm vs route 8.0nm (38% delta) |
+| featured | 1 | Flåm Ferry Terminal (Aurlandsfjord) ↔ Gudvangen Pi | `rn-3a9127bcad90` | **KEEP** | — |
 | featured | 1 | Geiranger Pier (Geirangerfjord) ↔ Hellesylt Pier ( | `—` | **KEEP** | — |
 | featured | 2 | Bergen — Strandkaiterminalen ↔ Balestrand Terminal | `rn-1bd6a964d4d1` | **KEEP** | — |
 | featured | 2 | Balestrand Terminal (Sognefjord) ↔ Flåm Ferry Term | `rn-3662cf99068b` | **KEEP** | — |
-| featured | 2 | Bergen — Strandkaiterminalen ↔ Kleppestø (Askøy) T | `rn-3e61d91dadf4` | **TRIM** | distance_honesty: card 4.0nm vs route 2.5nm (60% delta) |
+| featured | 2 | Bergen — Strandkaiterminalen ↔ Kleppestø (Askøy) T | `rn-3e61d91dadf4` | **KEEP** | — |
 | featured | 3 | Stavanger Ferry Terminal ↔ Lysebotn Pier (Lysefjor | `rn-190d394a7093` | **KEEP** | — |

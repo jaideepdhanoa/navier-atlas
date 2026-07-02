@@ -1,7 +1,7 @@
 # Proposal fidelity — helsinki-hsl
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T19:16:21Z
+**Checked:** 2026-07-02T19:35:41Z
 
 ## Summary
 

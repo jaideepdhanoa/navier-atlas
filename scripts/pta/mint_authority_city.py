@@ -50,10 +50,10 @@ CITY_SPECS: dict[str, dict] = {
         "cluster_id": "norway",
         "coordinates": [10.7522, 59.9139],
         "boarding_points": [
-            {"node": "oslo-aker-brygge", "name": "Aker Brygge Ferry Terminal", "anchor_lnglat": [10.727, 59.911]},
-            {"node": "oslo-nesoddtangen", "name": "Nesoddtangen Ferry Terminal", "anchor_lnglat": [10.659, 59.864]},
-            {"node": "oslo-hovedoya", "name": "Hovedøya Island Pier", "anchor_lnglat": [10.770, 59.896]},
-            {"node": "oslo-bygdoy", "name": "Bygdøy Ferry Pier", "anchor_lnglat": [10.682, 59.903]},
+            {"node": "oslo-aker-brygge", "name": "Aker Brygge Ferry Terminal", "anchor_lnglat": [10.732, 59.908]},
+            {"node": "oslo-nesoddtangen", "name": "Nesoddtangen Ferry Terminal", "anchor_lnglat": [10.665, 59.862]},
+            {"node": "oslo-hovedoya", "name": "Hovedøya Island Pier", "anchor_lnglat": [10.768, 59.894]},
+            {"node": "oslo-bygdoy", "name": "Bygdøy Ferry Pier", "anchor_lnglat": [10.688, 59.901]},
         ],
         "starter_pairs": [
             ("oslo-aker-brygge", "oslo-nesoddtangen"),
@@ -69,10 +69,10 @@ CITY_SPECS: dict[str, dict] = {
         "cluster_id": "netherlands",
         "coordinates": [4.9041, 52.3676],
         "boarding_points": [
-            {"node": "ams-centraal-ij", "name": "Centraal Station IJ Pontoon", "anchor_lnglat": [4.902, 52.379]},
-            {"node": "ams-buiksloterweg", "name": "Buiksloterweg Ferry Pontoon", "anchor_lnglat": [4.918, 52.401]},
-            {"node": "ams-ijplein", "name": "IJplein Ferry Pontoon", "anchor_lnglat": [4.913, 52.385]},
-            {"node": "ams-ndsm", "name": "NDSM Ferry Pontoon", "anchor_lnglat": [4.895, 52.402]},
+            {"node": "ams-centraal-ij", "name": "Centraal Station IJ Pontoon", "anchor_lnglat": [4.897, 52.383]},
+            {"node": "ams-buiksloterweg", "name": "Buiksloterweg Ferry Pontoon", "anchor_lnglat": [4.920, 52.400]},
+            {"node": "ams-ijplein", "name": "IJplein Ferry Pontoon", "anchor_lnglat": [4.910, 52.388]},
+            {"node": "ams-ndsm", "name": "NDSM Ferry Pontoon", "anchor_lnglat": [4.892, 52.405]},
         ],
         "starter_pairs": [
             ("ams-centraal-ij", "ams-buiksloterweg"),
@@ -246,11 +246,11 @@ PAIR_WAYPOINTS: dict[str, list[list[float]]] = {
     "oslo-aker-brygge|oslo-hovedoya": [[10.745, 59.904], [10.758, 59.899]],
     "oslo-aker-brygge|oslo-bygdoy": [[10.705, 59.907], [10.692, 59.904]],
     "oslo-hovedoya|oslo-bygdoy": [[10.725, 59.899], [10.698, 59.901]],
-    # Amsterdam — IJ (centreline)
-    "ams-centraal-ij|ams-buiksloterweg": [[4.905, 52.384], [4.910, 52.392], [4.915, 52.398]],
-    "ams-centraal-ij|ams-ijplein": [[4.904, 52.381], [4.908, 52.383]],
-    "ams-centraal-ij|ams-ndsm": [[4.903, 52.386], [4.899, 52.394], [4.896, 52.400]],
-    "ams-buiksloterweg|ams-ndsm": [[4.907, 52.401], [4.901, 52.401]],
+    # Amsterdam — IJ (centreline, mid-channel)
+    "ams-centraal-ij|ams-buiksloterweg": [[4.905, 52.388], [4.912, 52.394], [4.916, 52.398]],
+    "ams-centraal-ij|ams-ijplein": [[4.903, 52.385], [4.906, 52.386]],
+    "ams-centraal-ij|ams-ndsm": [[4.900, 52.388], [4.896, 52.395], [4.894, 52.402]],
+    "ams-buiksloterweg|ams-ndsm": [[4.906, 52.402], [4.899, 52.403]],
     # Wellington — harbour
     "wlg-queens-wharf|wlg-days-bay": [[174.82, -41.27], [174.87, -41.24], [174.9, -41.22]],
     "wlg-queens-wharf|wlg-seatoun": [[174.8, -41.3], [174.82, -41.31]],

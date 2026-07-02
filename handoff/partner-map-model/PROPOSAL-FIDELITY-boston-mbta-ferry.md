@@ -1,15 +1,15 @@
 # Proposal fidelity — boston-mbta-ferry
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-01T03:14:58Z
+**Verdict:** PASS
+**Checked:** 2026-07-02T19:35:40Z
 
 ## Summary
 
 - Items audited: 13
-- KEEP: 11
+- KEEP: 13
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 2
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -25,7 +25,7 @@
 | featured | 1 | Long Wharf ↔ Logan Airport ferry dock | `rn-b1104ed2e1eb` | **KEEP** | — |
 | featured | 2 | Long Wharf ↔ Hingham Shipyard | `—` | **KEEP** | — |
 | featured | 2 | Long Wharf ↔ Hull (Pemberton Point) | `rn-4648b70105a3` | **KEEP** | — |
-| featured | 2 | Hingham Shipyard ↔ Hull (Pemberton Point) | `rn-a0edcc795e58` | **TRIM** | distance_honesty: card 3.0nm vs route 2.3nm (30% delta) |
+| featured | 2 | Hingham Shipyard ↔ Hull (Pemberton Point) | `rn-a0edcc795e58` | **KEEP** | — |
 | featured | 3 | Long Wharf ↔ Winthrop | `rn-99a8856990c8` | **KEEP** | — |
 | featured | 3 | Long Wharf ↔ Lynn | `—` | **KEEP** | — |
-| featured | 3 | Quincy (Fore River) ↔ Logan Airport ferry dock | `rn-0183727f495b` | **TRIM** | distance_honesty: card 6.0nm vs route 8.2nm (27% delta) |
+| featured | 3 | Quincy (Fore River) ↔ Logan Airport ferry dock | `rn-0183727f495b` | **KEEP** | — |

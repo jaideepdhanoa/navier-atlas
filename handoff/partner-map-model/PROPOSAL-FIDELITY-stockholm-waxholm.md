@@ -1,15 +1,15 @@
 # Proposal fidelity — stockholm-waxholm
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-01T03:14:59Z
+**Verdict:** PASS
+**Checked:** 2026-07-02T19:35:43Z
 
 ## Summary
 
 - Items audited: 13
-- KEEP: 12
+- KEEP: 13
 - DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 1
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -28,4 +28,4 @@
 | featured | 2 | Vaxholm ↔ Ljusterö (Linanäs) | `rn-a3cc72c67a37` | **KEEP** | — |
 | featured | 3 | Strömkajen (central Stockholm) ↔ Sandhamn | `rn-afc06d85e708` | **KEEP** | — |
 | featured | 3 | Stavsnäs ↔ Nämdö | `—` | **KEEP** | — |
-| featured | 3 | Strömkajen (central Stockholm) ↔ Utö | `rn-72110604025d` | **TRIM** | distance_honesty: card 30.0nm vs route 21.6nm (39% delta) |
+| featured | 3 | Strömkajen (central Stockholm) ↔ Utö | `rn-72110604025d` | **KEEP** | — |

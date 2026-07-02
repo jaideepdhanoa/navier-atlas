@@ -1,15 +1,15 @@
 # Proposal fidelity — bc-ferries
 
-**Verdict:** TRIM
-**Checked:** 2026-07-02T19:18:26Z
+**Verdict:** PASS
+**Checked:** 2026-07-02T19:35:39Z
 
 ## Summary
 
 - Items audited: 13
-- KEEP: 10
-- DROP: 1
+- KEEP: 13
+- DROP: 0
 - DEFER: 0
-- TRIM/REWRITE: 2
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -19,13 +19,13 @@
 | journey | — | Vancouver Harbour (downtown waterfront) ↔ Victoria | `rn-2de87d2e3342` | **KEEP** | — |
 | journey | — | Vancouver Harbour (downtown waterfront) ↔ Nanaimo  | `rn-c7a008ab42de` | **KEEP** | — |
 | journey | — | Tsawwassen Ferry Terminal ↔ Swartz Bay Ferry Termi | `rn-a205466e4f2a` | **KEEP** | — |
-| journey | — | Swartz Bay Ferry Terminal ↔ Fulford Harbour (Salt  | `rn-864ead3912d6` | **TRIM** | distance_honesty: card 7.0nm vs route 5.0nm (40% delta) |
-| featured | 1 | Vancouver Harbour (downtown waterfront) ↔ Victoria | `rn-2de87d2e3342` | **DROP** | phase_narrative_fit: Phase 1 beachhead but 52.8nm leg |
+| journey | — | Swartz Bay Ferry Terminal ↔ Fulford Harbour (Salt  | `rn-864ead3912d6` | **KEEP** | — |
 | featured | 1 | Vancouver Harbour (downtown waterfront) ↔ Nanaimo  | `rn-c7a008ab42de` | **KEEP** | — |
 | featured | 1 | Tsawwassen Ferry Terminal ↔ Swartz Bay Ferry Termi | `rn-a205466e4f2a` | **KEEP** | — |
+| featured | 2 | Vancouver Harbour (downtown waterfront) ↔ Victoria | `rn-2de87d2e3342` | **KEEP** | — |
 | featured | 2 | Horseshoe Bay Terminal (West Vancouver) ↔ Departur | `—` | **KEEP** | — |
 | featured | 2 | Horseshoe Bay Terminal (West Vancouver) ↔ Langdale | `rn-99b9afc109b1` | **KEEP** | — |
-| featured | 2 | Swartz Bay Ferry Terminal ↔ Fulford Harbour (Salt  | `rn-864ead3912d6` | **TRIM** | distance_honesty: card 7.0nm vs route 5.0nm (40% delta) |
+| featured | 2 | Swartz Bay Ferry Terminal ↔ Fulford Harbour (Salt  | `rn-864ead3912d6` | **KEEP** | — |
 | featured | 2 | Fulford Harbour (Salt Spring Island) ↔ Ganges (Sal | `rn-b0fd24e28df4` | **KEEP** | — |
 | featured | 2 | Long Harbour (Salt Spring Island) ↔ Village Bay (M | `rn-15a9c512a7dd` | **KEEP** | — |
 | featured | 3 | Victoria Inner Harbour ↔ Seattle | `—` | **KEEP** | — |

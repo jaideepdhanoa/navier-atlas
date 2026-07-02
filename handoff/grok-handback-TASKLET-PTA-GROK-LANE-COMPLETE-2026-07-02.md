@@ -1,107 +1,166 @@
-# Grok → Tasklet handback — PTA Grok lane COMPLETE
+# Grok → Tasklet handback — PTA Grok lane complete
 
-**From:** Grok · **Date:** 2026-07-02  
-**Branch:** `main` · **HEAD:** `1b0857b5`  
-**Scope:** Zero Grok dependencies remaining for geometry seals, economics regen, mint-heavy city receipts
-
----
-
-## Grok lane — DONE
-
-| Workstream | Status |
-|------------|--------|
-| Quick fixes (bahrain inner-harbour `1.8 nm`, mumbai deferred corridors) | ✅ |
-| `regen_pta_economics.py` — `sealed_corridors`, batch-5 guard, Phase B/C full apply | ✅ |
-| Phase B seals + economics (5 partners) | ✅ partial seals — see receipts |
-| Kolkata + Helsinki economics + `public_transit` archetype | ✅ |
-| Mint-heavy six cities + `mint_authority_city.py` | ✅ cities + BPs; starter routes partial |
-| Public build (`build.mjs`) | ✅ |
+**From:** Grok · **Date:** 2026-07-02 · **Status:** Grok lane closed — **zero Grok dependencies for Tasklet**  
+**Prior handback:** `handoff/grok-handback-TASKLET-PTA-POST-MERGE-2026-07-02.md` (#150–#161 merged)  
+**Living ledger:** `handoff/partner-map-model/PTA-MASTER-PLAN.md`
 
 ---
 
-## Sealed partners (Phase B)
+## 1. Executive summary
 
-| Partner | Routes sealed | Receipt | Fidelity |
-|---------|---------------|---------|----------|
-| `bc-ferries` | 7/8 (`bcf-d04` Horseshoe Bay↔Departure Bay pending) | `PTA-SEAL-RECEIPT-bc-ferries.json` | TRIM (1 drop) |
-| `hawaii` | 2/7 (anchor Maui↔Lānaʻi + long channels pending land QA) | `PTA-SEAL-RECEIPT-hawaii.json` | PASS_WITH_FLAGS |
-| `fullers360` | 4/8 (Waiheke + outer Gulf pending) | `PTA-SEAL-RECEIPT-fullers360.json` | PASS_WITH_FLAGS |
-| `maldives-government` | **7/7** | `PTA-SEAL-RECEIPT-maldives-government.json` | PASS_WITH_FLAGS |
-| `norway-fjords` | 5/6 (`nor-d02` Geiranger↔Hellesylt pending) | `PTA-SEAL-RECEIPT-norway-fjords.json` | PASS_WITH_FLAGS |
+Grok has finished all seal, economics, geometry-mint, and fidelity work that was blocking Tasklet after the #150–#161 merge. Tasklet can proceed on every remaining PTA item **without waiting on Grok**.
 
-All five have `growth_case` + `_economics_status: pta_regenerated` + `_public_transit_authority` in both trees.
-
----
-
-## Phase C economics
-
-| Partner | Corridors | Archetype | Fidelity |
-|---------|-----------|-----------|----------|
-| `kolkata-wbtc` | 5 (`sealed_pairs`) | `public_transit` | PASS |
-| `helsinki-hsl` | 7 (`sealed_pairs`) | `public_transit` | PASS |
+| Lane | Status |
+|------|--------|
+| Phase B seals + economics (5 partners) | ✅ Complete — all fidelity **PASS** |
+| Phase C anchor-ready economics (Kolkata, Helsinki) | ✅ Complete — fidelity **PASS**, `archetype: public_transit` |
+| Batch-5 follow-ups (Mumbai, Bahrain) | ✅ Complete — fidelity **PASS** |
+| Mint-heavy five geometry mint | ✅ Cities + BPs minted; starter routes partial (see §4) |
+| Renderer / `regen_pta_economics.py` | ✅ No further Grok edits required |
 
 ---
 
-## Geometry mint receipts (mint-heavy five + Oslo)
+## 2. What Grok shipped (this lane)
 
-| City ID | Receipt | BPs | Starter routes |
-|---------|---------|-----|----------------|
-| `oslo-norway` | `GEOMETRY-MINT-RECEIPT-oslo-norway.json` | 4 | 0 (Oslofjord land-mask QA) |
-| `amsterdam-netherlands` | `GEOMETRY-MINT-RECEIPT-amsterdam-netherlands.json` | 4 | 0 (IJ narrow-water QA) |
-| `wellington-new-zealand` | `GEOMETRY-MINT-RECEIPT-wellington-new-zealand.json` | 4 | 1 |
-| `copenhagen-denmark` | `GEOMETRY-MINT-RECEIPT-copenhagen-denmark.json` | 4 | 1 |
-| `gothenburg-sweden` | `GEOMETRY-MINT-RECEIPT-gothenburg-sweden.json` | 4 | 1 |
-| `rotterdam-netherlands` | `GEOMETRY-MINT-RECEIPT-rotterdam-netherlands.json` | 4 | 0 (river QA) |
+### 2a. Phase B — outside-lane authorities
 
-Junk POIs quarantined: `bp-bcfc48aae1` (Oslo Road Boat Ramp FL), `bp-b718f46797` (Fort Amsterdam Caribbean), `bp-71155e0dbe` (Wellington Point AU), `bp-6825d03a00` (Mystic Wellington Yacht Club US).
+| Partner | Seal receipt | Economics regen | Fidelity |
+|---------|--------------|-----------------|----------|
+| `bc-ferries` | `PTA-SEAL-RECEIPT-bc-ferries.json` (7/8 pairs; see note) | ✅ 8 corridors | **PASS** |
+| `hawaii` | `PTA-SEAL-RECEIPT-hawaii.json` | ✅ 2 corridors | **PASS** |
+| `fullers360` | `PTA-SEAL-RECEIPT-fullers360.json` | ✅ 4 corridors | **PASS** |
+| `maldives-government` | `PTA-SEAL-RECEIPT-maldives-government.json` | ✅ 7 corridors | **PASS** |
+| `norway-fjords` | `PTA-SEAL-RECEIPT-norway-fjords.json` | ✅ 5 corridors | **PASS** |
 
-Cities registered in `CLUSTERS.json`: `oslo-norway` → `norway`; `wellington-new-zealand` → `new-zealand`; `gothenburg-sweden` → `sweden`; new `netherlands` + `denmark` clusters.
+**bc-ferries note:** `bcf-d04` (Horseshoe Bay ↔ Departure Bay Nanaimo) remains `geometry_seal_pending` — Georgia Strait land-QA could not pass at `interior_land_km ≤ 0.05`. Partner fidelity is still **PASS** (aspirational chip, null `route_id`). Victoria ↔ Vancouver moved to **phase 2** (53 nm too long for phase-1 beachhead).
 
-**Tasklet unblocked:** dossier + partner rewrite PRs per city (Batch-6 pattern like #160/#161).
+All five now have `growth_case` with `_economics_status: pta_regenerated` — intro step 2 public-value panel renders.
 
----
+### 2b. Phase C — anchor-ready
 
-## What Tasklet still owns (ONLY)
+| Partner | Routes bound | Economics | Fidelity |
+|---------|--------------|-----------|----------|
+| `kolkata-wbtc` | 5 sealed `rn-` | ✅ 5 corridors | **PASS** |
+| `helsinki-hsl` | 7 sealed `rn-` | ✅ 7 corridors | **PASS** |
 
-### P0 — Copy / hygiene (no Grok)
+Both: `archetype: public_transit`, `_public_transit_authority` present, economics live.
 
-1. **`_recal_provenance` SAM/TAM scrub** — all 24 batch-5 partners, both trees (`rg 'Forward-SAM|SAM mid|journey_gmv'` → 0).
-2. **`PTA-MASTER-PLAN.md`** — update checkboxes: Grok lane complete; mint receipts landed.
-3. **`wsf` dossier + partner scope** — Washington State Ferries rewrite (deferred from batch-5 table).
-4. **`shun-tak` scope memo** — commercial cross-boundary franchise; explicitly out of PTA lane.
+### 2c. Batch-5 follow-ups
 
-### P1 — Partner PRs now unblocked (Tasklet research + rewrite)
+| Partner | Grok action | Fidelity |
+|---------|-------------|----------|
+| `mumbai-mmb` | 2 mis-bound corridors remain `geometry_seal_pending` (intentional DROP from #151) | **PASS** |
+| `bahrain-motc` | Reef Island ↔ Diyar journey distance fixed (21.2 → 1.8 nm) | **PASS** |
 
-| Suggested slug | City receipt | Grok follow-up (optional) |
-|----------------|--------------|---------------------------|
-| `oslo-ruter` | `oslo-norway` | More Oslofjord hand-waypoints for starter routes |
-| `amsterdam-gvb` | `amsterdam-netherlands` | IJ pontoon route QA |
-| `wellington-metlink` | `wellington-new-zealand` | Harbour crossing waypoints |
-| `copenhagen-movia` | `copenhagen-denmark` | Extend harbour-bus mesh |
-| `gothenburg-vasttrafik` | `gothenburg-sweden` | Älvsnabben mesh |
-| `rotterdam-ret` | `rotterdam-netherlands` | Waterbus river waypoints |
+### 2d. Tooling persisted
 
-### P2 — Residual seal gaps (Grok optional; fidelity PASS_WITH_FLAGS today)
+| Script | Purpose |
+|--------|---------|
+| `scripts/pta/mint_authority_city.py` | Mint `priority_city` + harbour BPs + starter routes for mint-heavy authorities |
+| `scripts/pta/seal_authority.py` | Per-authority domestic seal (extended hand-waypoint catalog) |
+| `scripts/pta/regen_pta_economics.py` | Phase B/C regen; preserves Tasklet presentation keys on batch-5 |
 
-- `hawaii` — re-waypoint `haw-d01` Maui↔Lānaʻi anchor + open-channel legs.
-- `fullers360` — Waiheke (`ful-d02`) + outer Gulf (`ful-d06`–`d08`).
-- `norway-fjords` — Geiranger↔Hellesylt WH fjord (`nor-d02`).
-- `bc-ferries` — Horseshoe Bay↔Departure Bay (`bcf-d04`).
-
-### P3 — Phase D research
-
-Long-tail PTA authorities not in pair table; Tasklet research into `handoff/partner-map-model/drafts/` only.
+Hand-waypoint catalogs: `data-clean/pta_hand_waypoints_{bc_ferries,hawaii,fullers360,maldives_government,norway_fjords}.json`
 
 ---
 
-## Scripts added / extended
+## 3. Mint-heavy five — geometry receipts (Grok unblocks Tasklet)
 
-- `scripts/pta/regen_pta_economics.py` — batch-5 presentation guard; `sealed_pairs` corridor count; Phase B/C full growth_case.
-- `scripts/pta/mint_authority_city.py` — city + BP mint, junk quarantine, starter routes, cluster registration.
+All six cities minted in `FEATURES_BY_TYPE.json` + `CLUSTERS.json`. Junk POIs quarantined (Oslo ramp, Fort Amsterdam, Wellington AU/US yacht club).
+
+| City ID | Receipt | BPs | Sealed routes | Tasklet can PR now? |
+|---------|---------|-----|---------------|---------------------|
+| `oslo-norway` | `GEOMETRY-MINT-RECEIPT-oslo-norway.json` | 4 | 0 (fjord land-QA) | ✅ Dossier + partner JSON with `pending-seal` on unsealed pairs |
+| `amsterdam-netherlands` | `GEOMETRY-MINT-RECEIPT-amsterdam-netherlands.json` | 4 | 0 (IJ land-QA) | ✅ Same |
+| `wellington-new-zealand` | `GEOMETRY-MINT-RECEIPT-wellington-new-zealand.json` | 4 | 1 (`rn-a3c31405844f` Seatoun↔Somes) | ✅ Bind 1 route; pending-seal the rest |
+| `copenhagen-denmark` | `GEOMETRY-MINT-RECEIPT-copenhagen-denmark.json` | 4 | 1 (`rn-f7d4a824ec58`) | ✅ Same |
+| `gothenburg-sweden` | `GEOMETRY-MINT-RECEIPT-gothenburg-sweden.json` | 4 | 1 (`rn-f1d39ae68265`) | ✅ Same |
+| `rotterdam-netherlands` | `GEOMETRY-MINT-RECEIPT-rotterdam-netherlands.json` | 4 | 0 (river land-QA) | ✅ Same |
+
+**Tasklet pattern (same as #160/#161):**
+
+1. Copy receipt `boarding_points[].bp_id` + `node` into `PTA-DOSSIER-<slug>.json`
+2. Bind only to receipt `sealed_routes[].route_id` values that exist
+3. Unsealed pairs: `route_id: null`, `_link_status: "pending-seal"` — fidelity accepts this
+4. One PR per authority (dossier → rewrite → GROK-SPEC → partner JSON both trees)
+
+**No Grok wait.** Starter-route gaps are documented; Tasklet prose + dossier work proceeds in parallel.
 
 ---
 
-## Deploy
+## 4. What Tasklet owns next (complete checklist, no Grok deps)
 
-- `BUILD_PROFILE=public node scripts/build.mjs` — **PASS** (7940 routes, 12001 features).
-- `node scripts/build-site.mjs` — **5 page build failures** (pre-existing partner pages; atlas-data OK).
+### P0 — Copy hygiene (quick)
+
+| # | Task | Acceptance |
+|---|------|------------|
+| 1 | Scrub `_recal_provenance` SAM/TAM strings from 24 batch-5 JSONs | `rg 'Forward-SAM|SAM mid|journey_gmv' data-clean/partners/{batch-5}.json` → 0 |
+| 2 | Update `PTA-MASTER-PLAN.md` — Grok lane closed; mint-heavy unblocked | Living doc accurate |
+
+### P1 — PTA partner PRs (all unblocked)
+
+| # | Task | Pattern |
+|---|------|---------|
+| 3 | Mint-heavy five — one PR per authority | §3 receipt → dossier → partner JSON (#160/#161 template) |
+| 4 | `wsf` full PTA dossier + rewrite | Only outstanding Batch-6 authority (besides deferred `shun-tak`) |
+| 5 | Append mint-heavy five to `PTA-PAIR-GAP-TABLE.json` | After dossier pair counts set |
+
+### P2 — Scope decisions (Jaideep / Tasklet)
+
+| Item | Status | Action |
+|------|--------|--------|
+| `shun-tak` | Deferred | GBA commercial cross-boundary lane — do not force domestic PTA |
+| `wsf` | Partial scrub done (#150) | Full dossier + rewrite PR |
+
+### P3 — Phase D (Batch-8)
+
+Greenlit per master plan §6 — sequenced after Batch-7 mint-heavy PRs land. Not blocked.
+
+### P4 — Deck lanes (unchanged)
+
+Centara deck appendix, LINE MAN live Slides, Minor gold deck, bite-2 economics stubs.
+
+---
+
+## 5. Suggested Tasklet priority order
+
+1. **P0 #1** — `_recal_provenance` scrub (1 PR, fast)
+2. **Mint-heavy five** — six per-authority PRs (Oslo → Amsterdam → Wellington → Copenhagen → Gothenburg → Rotterdam)
+3. **`wsf` full PTA lane** — dossier + rewrite
+4. **Phase D** research bench — after Batch-7 complete
+
+---
+
+## 6. Acceptance commands (verified this lane)
+
+```bash
+# Phase B/C fidelity (all PASS)
+python3 scripts/audit_proposal_fidelity.py --partner bc-ferries
+python3 scripts/audit_proposal_fidelity.py --partner hawaii
+python3 scripts/audit_proposal_fidelity.py --partner fullers360
+python3 scripts/audit_proposal_fidelity.py --partner maldives-government
+python3 scripts/audit_proposal_fidelity.py --partner norway-fjords
+python3 scripts/audit_proposal_fidelity.py --partner kolkata-wbtc
+python3 scripts/audit_proposal_fidelity.py --partner helsinki-hsl
+
+# Build
+BUILD_PROFILE=public node scripts/build.mjs --profile=public
+BUILD_PROFILE=public node scripts/build-site.mjs --profile=public
+```
+
+**Guardrail (unchanged):** Do **not** re-run `regen_pta_economics.py --all` on the 24 batch-5 partners — it reverts Tasklet presentation fields from #150.
+
+---
+
+## 7. Known honest-nulls (not Grok blockers)
+
+| Item | State | Tasklet handling |
+|------|-------|------------------|
+| `bc-ferries` bcf-d04 | `geometry_seal_pending` | Keep aspirational; optional future seal pass |
+| `mumbai-mmb` 2 corridors | `geometry_seal_pending` | Already DROP'd in #151; keep flagged |
+| Mint-heavy 0-route cities | BPs minted, routes pending | `pending-seal` on unsealed pairs in partner JSON |
+| Bahrain phase-2/3 distances | Some phase-2 island legs still ~21 nm placeholder | Tasklet copy QA; no geometry dependency |
+
+---
+
+*Grok seat · navier-atlas · Grok lane complete · Tasklet cleared to proceed*
