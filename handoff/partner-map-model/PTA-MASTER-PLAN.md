@@ -9,6 +9,19 @@
 
 ---
 
+## ▶ Progress log
+
+### ✅ Phase A — Batch-5 completion — COMPLETE (2026-07-02) · PRs #150–#154 open, awaiting Jaideep merge
+- **PR-1 · #150** — economics presentation scrub, all 24 authorities (48 files, −1,086 net lines). Removed `_render_chip_flag`, `_marine_tam_split_provenance` (7), `_grok_regen`, forbidden `journey_gmv`+`marine_mobility_tam` (4); relabeled revenue/phase headlines to lead with public value; de-duped 13 partners' levers from real dossier `decarb_note`; authority-specific fare systems in operating_model. Build 0, forbidden-key sweep 0.
+- **PR-2 · #151** — mumbai-mmb fidelity TRIM. 9 distance syncs + 2 mis-bound routes unbound (junk endpoints) & flagged for Grok re-seal. Audit PASS.
+- **PR-3 · #153** — brisbane-citycat + hamburg-hadag distance sync. Audits PASS.
+- **PR-4 · #152** — nyc-ferry, sf-bay-ferry, transport-nsw, boston-mbta-ferry, stockholm-waxholm distance sync. Audits PASS.
+- **PR-5 · #154** — authority hero voice pass. 5 authorities aligned to gold "Authority proposal" eyebrow + place-specific network titles. bc-ferries/hawaii deferred to Phase B full rewrites. Bahrain 21.2nm inner-harbour anomaly flagged for Grok.
+- **⚠️ Grok sequencing note (from PR-1):** these presentation fields are now Tasklet-final post-regen. Do **not** blindly re-run `regen_pta_economics.py` on the 24 or it reverts operating_model/levers/headlines.
+- **Next:** Phase B (Batch-6 new lane — PR-6/7).
+
+---
+
 ## 0. How to use this document
 
 - **Order matters.** Phases A → B → C → D. Within Phase A, follow Grok's PR order (PR-1 first — fastest win, unblocks nothing but clears the most debt).
