@@ -11,7 +11,7 @@
 
 ## ▶ Progress log
 
-### ✅ Phase A — Batch-5 completion — COMPLETE (2026-07-02) · PRs #150–#154 open, awaiting Jaideep merge
+### ✅ Phase A — Batch-5 completion — COMPLETE (2026-07-02) · PRs #150–#154 **MERGED** (`main@64c2b8cc`)
 - **PR-1 · #150** — economics presentation scrub, all 24 authorities (48 files, −1,086 net lines). Removed `_render_chip_flag`, `_marine_tam_split_provenance` (7), `_grok_regen`, forbidden `journey_gmv`+`marine_mobility_tam` (4); relabeled revenue/phase headlines to lead with public value; de-duped 13 partners' levers from real dossier `decarb_note`; authority-specific fare systems in operating_model. Build 0, forbidden-key sweep 0.
 - **PR-2 · #151** — mumbai-mmb fidelity TRIM. 9 distance syncs + 2 mis-bound routes unbound (junk endpoints) & flagged for Grok re-seal. Audit PASS.
 - **PR-3 · #153** — brisbane-citycat + hamburg-hadag distance sync. Audits PASS.
@@ -19,7 +19,7 @@
 - **PR-5 · #154** — authority hero voice pass. 5 authorities aligned to gold "Authority proposal" eyebrow + place-specific network titles. bc-ferries/hawaii deferred to Phase B full rewrites. Bahrain 21.2nm inner-harbour anomaly flagged for Grok.
 - **⚠️ Grok sequencing note (from PR-1):** these presentation fields are now Tasklet-final post-regen. Do **not** blindly re-run `regen_pta_economics.py` on the 24 or it reverts operating_model/levers/headlines.
 
-### ✅ Phase B — outside-lane new authorities — COMPLETE (2026-07-02) · PRs #155–#159 open, awaiting Jaideep merge
+### ✅ Phase B — outside-lane new authorities — COMPLETE (2026-07-02) · PRs #155–#159 **MERGED**
 Five authorities authored from real, web-verified sources (gold dossier + authority rewrite + Grok seal spec), each a self-verified **per-authority PR**. Commercial SOM/SAM/TAM/GMV `growth_case` **removed** on all (renderer gates economics on `_economics_status==pta_regenerated` + `!!growth_case`; so no economics panel renders until Grok re-authors authority economics). Source finance files retained in-repo. All fidelity PASS, build exit 0.
 - **PR-6 · #155** — `bc-ferries` (Coastal Ferry Act; Clean Futures Plan / net-zero 2050 / Island Class hybrids). 8 domestic pairs.
 - **PR-7 · #156** — `hawaii` (DOT Harbors; live Maui–Lānaʻi ferry; post-Superferry reconnection; carbon-neutral 2045). 7 pairs.
@@ -30,7 +30,7 @@ Five authorities authored from real, web-verified sources (gold dossier + author
 - **⛔ shun-tak — DEFERRED (needs Jaideep scope call).** Commercial cross-boundary franchise (HK↔Macau↔PRD), not a domestic ministry; current phases mis-attribute other operators' intra-HK routes (Star/Sun Ferry). Not forced into the domestic PTA pattern. Recommend GBA cross-boundary *commercial* lane. Memo: `/tasklet/agent/home/pta-program/SHUN-TAK-SCOPE-DECISION.md`. No PR opened.
 - **Reusable tooling (persisted):** `pta_rewrite.py` (dossier-driven authority rewrite; PLANS[] per partner), `scrub_forbidden.py` (removes commercial growth_case → pending state), `pr_maldives_narrative.py` (resort→public reframe). Dossiers in `dossiers/`, specs in `specs/`.
 
-### ⏭ Phase C — Batch-7 anchor-ready (Kolkata WBTC + Helsinki HSL) — NEXT
+### ✅ Phase C anchor-ready — Kolkata + Helsinki **MERGED** (#160–#161) · mint-heavy five next (Grok-blocked)
 Both are **net-new partners** (no existing partner JSON). Creation path confirmed: partners auto-discovered by directory scan of `partner-pitch/partners/` + `data-clean/partners/` (no manifest to edit). Each needs: verify atlas anchoring (real nodes/city present), author gold dossier, create partner JSON both trees (bc-ferries as structural template), Grok seal spec, per-authority PR. Kolkata = WBTC / Hooghly River; Helsinki = HSL.
 - **Next:** Phase B (Batch-6 new lane — PR-6/7).
 
@@ -178,11 +178,11 @@ Per-partner narrative checklist:
 ### PR-6 / PR-7 — Batch 6 new PTA lane → **detailed in Phase B**
 
 **Phase A checkbox ledger:**
-- [ ] PR-1 economics scrub (24)
-- [ ] PR-2 mumbai-mmb TRIM
-- [ ] PR-3 brisbane + hamburg TRIM
-- [ ] PR-4 nyc/sf/tfnsw/boston/stockholm TRIM
-- [ ] PR-5 P2 narrative (8 + Bahrain stub)
+- [x] PR-1 economics scrub (24) — merged #150
+- [x] PR-2 mumbai-mmb TRIM — merged #151
+- [x] PR-3 brisbane + hamburg TRIM — merged #153
+- [x] PR-4 nyc/sf/tfnsw/boston/stockholm TRIM — merged #152
+- [x] PR-5 P2 narrative (5 hero + Bahrain flag) — merged #154
 
 ---
 
@@ -209,9 +209,10 @@ Per-partner narrative checklist:
 - `maldives-government` — National Ferry Network; keep distinct from hospitality Maldives partners; RTL/atoll equity framing.
 
 **Phase B checkbox ledger:**
-- [ ] PR-6 dossier+rewrite+spec: bc-ferries, hawaii
-- [ ] PR-7 dossier+rewrite+spec: wsf, fullers360, maldives-government, norway-fjords, shun-tak
-- [ ] Grok seal PRs follow each (post-merge)
+- [x] PR-6 dossier+rewrite+spec: bc-ferries, hawaii — merged #155–#156
+- [x] PR-8–#10: fullers360, maldives-government, norway-fjords — merged #157–#159
+- [ ] PR-7 remainder: **wsf** full dossier+rewrite (not shipped); **shun-tak** deferred (scope call)
+- [ ] Grok seal + economics regen for all 5 merged Phase-B partners
 
 ---
 
@@ -246,9 +247,9 @@ Per-partner narrative checklist:
 - [ ] Then run the Batch-6 deliverable set (dossier → rewrite → Grok spec → seal handoff).
 
 **Phase C checkbox ledger:**
-- [x] Kolkata WBTC (dossier+build+spec) — **PR #160 open** (2026-07-02). Anchor-ready; 5 real `rn-` routes BOUND (not null); 'Dheu' electric-ferry story web-verified; fidelity PASS (items=9); build 0.
-- [x] Helsinki HSL (dossier+build+spec) — **PR #161 open** (2026-07-02). Anchor-ready; 7 real `rn-` routes BOUND; HSL emission-free-2035 story verified; Tallinn/Sweden cross-border excluded; fidelity PASS (items=11); build 0.
-- [ ] Mint-heavy five (Oslo, Amsterdam, Wellington → cleanup+mint; Copenhagen, Gothenburg, Rotterdam → full new-geo mint) — **BLOCKED on Grok geometry mint** (no sealed routes exist). Tasklet authors dossiers + honest-null partners once Grok mints/cleans city nodes.
+- [x] Kolkata WBTC — **merged #160**. 5 sealed `rn-` routes bound; fidelity PASS.
+- [x] Helsinki HSL — **merged #161**. 7 sealed `rn-` routes bound; fidelity PASS.
+- [ ] Mint-heavy five — **BLOCKED on Grok `GEOMETRY-MINT-RECEIPT-*`** (see `handoff/grok-handback-TASKLET-PTA-POST-MERGE-2026-07-02.md` §2d). Tasklet may draft dossiers; partner JSON PRs wait for mint receipts.
 
 > **Phase-C anchor-ready insight (new):** unlike Batch-5/6 (null route_ids + seal-pending), Kolkata & Helsinki had **already-sealed** geometry in `ROUTES.json`, so route_ids are **bound to real `rn-` ids** and pass the audit's land-crossing + bp_binding checks. Build helpers persisted: `build_kolkata.py`, `build_helsinki.py`.
 - [ ] Oslo Ruter (mint + deliverables)
