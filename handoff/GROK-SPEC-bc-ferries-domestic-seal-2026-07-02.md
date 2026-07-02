@@ -36,7 +36,8 @@ See `routing_hazards` in the dossier for the full list.
 `bcf-r01` (Victoria ↔ Seattle) is `roadmap_excluded` / `economics_status: roadmap_excluded`. International, out of phase-1 scope. Leave unsealed.
 
 ## 5. Economics regen (Grok lane)
-Run `regen_pta_economics.py` for `bc-ferries` against the dossier to generate `growth_case.public_value` + authority operating-model + headlines. **Apply the Phase-A presentation convention** (no `_render_chip_flag`/`_marine_tam_split_provenance`, revenue as supporting layer, authority-specific fare framing — BC Ferries fares under the Coastal Ferry Act). Do not emit forbidden `journey_gmv`/`marine_mobility_tam`.
+**NOTE — growth_case removed.** The prior commercial `growth_case` (SOM/SAM/TAM/GMV ladder) has been **removed** from both partner trees; the partner is now `_pta_economics_status: grok_authority_regen_pending` and renders **no** economics panel until you re-author. Source finance data remains in-repo at `finance/recal/growth-bc-ferries.json`.
+Re-author `growth_case` for `bc-ferries` from the dossier + finance source → `public_value` + authority operating-model + headlines, and set `_economics_status: pta_regenerated` so `_isPtaEconomics()` renders the PTA branch. **Apply the Phase-A presentation convention** (no `_render_chip_flag`/`_marine_tam_split_provenance`, revenue as supporting layer, authority-specific fare framing — BC Ferries fares under the Coastal Ferry Act). Do not emit forbidden `journey_gmv`/`marine_mobility_tam`.
 
 ## 6. Acceptance
 - `audit_proposal_fidelity.py --partner bc-ferries` → PASS
