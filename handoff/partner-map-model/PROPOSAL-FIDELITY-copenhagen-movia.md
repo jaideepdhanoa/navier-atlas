@@ -1,7 +1,7 @@
 # Proposal fidelity — copenhagen-movia
 
 **Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-03T02:50:51Z
+**Checked:** 2026-07-03T02:54:01Z
 
 ## Summary
 

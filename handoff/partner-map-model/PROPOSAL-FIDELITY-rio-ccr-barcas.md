@@ -1,7 +1,7 @@
 # Proposal fidelity — rio-ccr-barcas
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T22:12:37Z
+**Checked:** 2026-07-03T02:54:02Z
 
 ## Summary
 

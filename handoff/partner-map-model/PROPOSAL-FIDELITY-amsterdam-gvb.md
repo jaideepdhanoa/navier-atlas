@@ -1,7 +1,7 @@
 # Proposal fidelity — amsterdam-gvb
 
 **Verdict:** PASS
-**Checked:** 2026-07-03T02:50:50Z
+**Checked:** 2026-07-03T02:54:01Z
 
 ## Summary
 
