@@ -82,6 +82,38 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("gulf_of_finland_tallinn", 24.55, 59.40, 25.00, 59.55),
     # Hooghly river + Kolkata harbour waterfront (extended north)
     ("hooghly_kolkata", 88.20, 22.45, 88.50, 22.95),
+    # Caspian Sea littoral (Baku bay, Aktau, Kuryk)
+    ("caspian_sea", 46.50, 39.50, 56.50, 47.50),
+    # Maputo Bay + Inhaca channel
+    ("maputo_bay", 32.40, -26.10, 33.10, -25.70),
+    # Karachi harbour + Manora approaches
+    ("karachi_harbour", 66.80, 24.60, 67.20, 25.10),
+    # Greater Accra / Tema lagoon fringe
+    ("accra_tema_coast", -0.35, 5.45, 0.25, 5.75),
+    # Volta estuary / Ada Foah waterfront
+    ("volta_estuary_ada", 0.55, 5.74, 0.78, 5.88),
+    # Bolgoda Lake + Colombo south lagoon
+    ("bolgoda_lake", 79.85, 6.62, 80.05, 6.88),
+    # Colombo littoral (Negombo ↔ Port City)
+    ("colombo_littoral", 79.75, 6.85, 79.95, 7.15),
+    # Luanda Bay + Marginal waterfront
+    ("luanda_bay", 13.12, -8.96, 13.38, -8.74),
+    # Mussulo lagoon sandbar channel
+    ("mussulo_lagoon", 13.08, -8.96, 13.28, -8.84),
+    # Geiranger fjord + Hellesylt (full through-fjord ferry lane)
+    ("geiranger_fjord", 6.82, 62.06, 7.22, 62.15),
+    # Dakar cape / Gorée approaches
+    ("dakar_cape", -17.58, 14.60, -17.38, 14.76),
+    # Callao / Lima harbour bay
+    ("callao_bay", -77.28, -12.12, -77.02, -11.92),
+    # Lobito–Benguela coastal shelf
+    ("lobito_coast", 13.30, -12.58, 13.58, -12.32),
+    # Bahrain Bay + east shore channels
+    ("bahrain_bay", 50.48, 26.05, 50.78, 26.38),
+    # Doha Bay + Al Wakrah approaches
+    ("qatar_doha_bay", 51.38, 25.12, 51.68, 25.48),
+    # Musandam fjords (Khasab / Kumzar / Sham)
+    ("musandam_fjords", 56.00, 25.85, 56.55, 26.45),
     # Casablanca harbour + Atlantic approaches
     ("casablanca_harbor", -9.90, 31.30, -9.75, 31.55),
     # Pearl River Delta (Hong Kong ↔ Shenzhen Shekou ferry context)
