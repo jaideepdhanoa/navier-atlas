@@ -308,6 +308,16 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("copenhagen_harbour", 12.56, 55.66, 12.62, 55.70),
     # Gothenburg southern archipelago (Saltholmen ↔ Vrångö channel)
     ("gothenburg_archipelago", 11.72, 57.58, 11.88, 57.68),
+    # Wouri estuary + Douala–Limbe–Kribi coastal shelf (Yango Cameroon)
+    ("wouri_estuary_cameroon", 9.15, 2.85, 9.95, 4.15),
+    # Pointe-Noire Atlantic headland + Côte Sauvage (Congo-Brazzaville)
+    ("pointe_noire_congo", 11.70, -4.90, 11.92, -4.55),
+    # Walvis Bay lagoon + Pelican Point + Sandwich Harbour (Namibia proxy)
+    ("walvis_bay_namibia", 14.30, -23.45, 14.58, -22.65),
+    # La Guaira / Caracas gateway + Los Roques approach (Venezuela)
+    ("venezuela_caribbean_coast", -67.05, 10.45, -66.65, 12.05),
+    # Lake Maracaibo open crossing (Maracaibo ↔ Cabimas)
+    ("lake_maracaibo", -72.05, 10.15, -71.20, 10.75),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
