@@ -172,7 +172,12 @@ function scopeForPartner(data, slug, opts = {}) {
   const partner = data.PARTNERS[slug];
   const { cityIdOf, resolve } = scoper(data.FEATURES_BY_TYPE);
   const keep = new Set();   // the page's footprint (phase cities by default; markets' cities for a hub)
-  const citySrc = opts.keepCities || [].concat(...((partner.phases || []).map(ph => ph.cities || [])));
+  const citySrc = opts.keepCities || [].concat(
+    ...((partner.phases || []).map(ph => ph.cities || [])),
+    ...((partner._public_transit_authority || {}).home_cities || []),
+    ...(partner.cities || []),
+    ...((partner.end_state || {}).end_state_cities || []),
+  );
   for (const c of resolve(citySrc)) keep.add(c);
   if (!keep.size) return { error: 'no cities resolved' };
 

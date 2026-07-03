@@ -80,7 +80,13 @@ const resolve = (loose) => {
   return out;
 };
 const keepCities = new Set();
-for (const ph of (partner.phases||[])) for (const c of resolve(ph.cities)) keepCities.add(c);
+const citySrc = [].concat(
+  ...((partner.phases || []).map(ph => ph.cities || [])),
+  ...((partner._public_transit_authority || {}).home_cities || []),
+  ...(partner.cities || []),
+  ...((partner.end_state || {}).end_state_cities || []),
+);
+for (const c of resolve(citySrc)) keepCities.add(c);
 if (!keepCities.size) { console.error('no cities resolved for partner — aborting'); process.exit(1); }
 
 // ---- scope each data layer ----
