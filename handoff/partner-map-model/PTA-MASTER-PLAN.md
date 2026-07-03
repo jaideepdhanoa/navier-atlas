@@ -42,6 +42,13 @@ Handbacks: `handoff/grok-handback-TASKLET-PTA-MAIN-LANDED-2026-07-02.md` (author
 - **WSF (#169):** close scrub + dossier on **`main`**; economics untouched
 - **Grok lane:** **CLOSED** — Tasklet → Phase D
 
+### ✅ Phase D — Batch 8 (7 authorities) **COMPLETE** (2026-07-02) · Grok lane CLOSED (`main@1687754d`)
+Handback: `handoff/grok-handback-TASKLET-PTA-PHASE-D-2026-07-02.md` (authoritative).
+- **Wave 1 sealed (3):** Manila Pasig (5 corridors, 0 km) · HCMC Saigon Waterbus (4) · Rio CCR Barcas (4) — fidelity **PASS**, economics live.
+- **Wave 2 greenfield seed-and-seal (4):** Mersey (3/3) · Toronto Island (3/3) · CalMac (3/4, Oban↔Craignure honest-null) · Seoul Hangang (4/4, kakao node collision resolved). Grok minted seed cities + BPs + routes; **Tasklet bound partner JSONs** from `GEOMETRY-MINT-RECEIPT-*` (both trees, exact ID match, fidelity PASS).
+- **Close-out:** PRs #170–#173 superseded (merged/closed); gap table → 37 authorities / 461 BPs; economics regen complete for all 7.
+- **Grok lane:** **CLOSED** — full PTA program Batches 1–8 landed.
+
 ---
 
 ## 0. How to use this document
@@ -302,10 +309,10 @@ Phase C (Batch-7 new authorities)
    new-geo mint (where needed) ──► dossier ──► rewrite ──► Grok spec ──► Grok seal ──► regen
    Kolkata + Helsinki first (anchors ready)
 
-Phase D (Batch-8) — GREENLIT (Jaideep 2026-07-02), runs as its own wave after Batch 7.
-   CalMac · Mersey · Saigon Waterbus · Pasig · CCR Barcas · Toronto Island · Seoul/Hangang
-   Seoul/Hangang: reconcile IDs vs existing kakao-mobility node (hygiene, not a blocker);
-   authority + commercial paths run in parallel.
+Phase D (Batch-8) — ✅ COMPLETE (Jaideep greenlit 2026-07-02; landed main@1687754d).
+   Wave 1 sealed: Pasig · Saigon Waterbus · CCR Barcas
+   Wave 2 greenfield seed-and-seal: Mersey · Toronto Island · CalMac · Seoul/Hangang
+   Seoul/Hangang ID collision RESOLVED (canonical shared kakao nodes); parallel paths intact.
 ```
 
 **Grok is idle / watching:** will regen economics after Batch-6 dossiers + seals land; will rebuild+deploy after Tasklet PRs merge to `main`. **Do NOT** re-run full `relink_hub_market_featured.py` on `norway-fjords`.
