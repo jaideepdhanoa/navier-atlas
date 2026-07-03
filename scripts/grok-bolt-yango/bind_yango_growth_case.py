@@ -262,7 +262,10 @@ def main():
     econ_map = load_json(econ_map_path)
     seal_manifest = load_json(INGEST / "inputs/seal-manifest.json")
     economics_url = econ_map.get("economics_url", {}).get("yango", "")
-    corridor_count = seal_manifest.get("partners", {}).get("yango", {}).get("corridor_count", 183)
+    corridor_count = (
+        agg.get("rollup", {}).get("n_corridors_total")
+        or seal_manifest.get("partners", {}).get("yango", {}).get("corridor_count", 183)
+    )
 
     growth = build_growth_case(agg, economics_url, corridor_count)
 
