@@ -1,0 +1,276 @@
+{
+  "_note": "R4c bind map — aspirational batch-5 chips → real sealed ROUTES corridors. 18 high-confidence binds; 6 kept honest-aspirational (null-beats-wrong). Render-field flip (dashed→solid, display/_link_kind/render) is Grok renderer lane; economics_status preserved (do NOT revert #150 scrub).",
+  "_grok_apply_block": {
+    "directive": "Fold into next Grok pass (confirmed Jaideep 2026-07-02). Apply per chip where action=='bind_sealed'.",
+    "per_bind_fields": {
+      "route_id": "<- from bind.route_id",
+      "route_ids": ["<- [bind.route_id]"],
+      "distance_nm": "<- bind.sealed_distance_nm (overwrite chip's straight-line estimate with real sealed geometry)",
+      "_link_status": "sealed",
+      "_link_kind": "sealed",
+      "display": "interactive",
+      "render": "sealed-solid"
+    },
+    "preserve": ["economics_status", "growth_case (do NOT touch — #150 scrub stays)", "from/to labels (keep chip display copy)"],
+    "keep_aspirational_rule": "action=='keep_aspirational' → leave chip exactly as-is (route_id null, roadmap-amber-dashed).",
+    "verify_before_ship": [
+      {"partner": "singapore-mpa", "chip": "Changi Point Ferry Terminal → Pulau Ubin", "reason": "chip 14.2nm vs sealed 2.1nm (large delta). Real Changi↔Ubin bumboat hop is ~2nm — sealed value is correct, chip estimate was inflated. Confirm endpoints match then bind.", "recommended": "bind after endpoint confirm"},
+      {"partner": "rakta", "chip": "Al Marjan Island/Wynn → Al Hamra Marina", "reason": "chip 1.0nm vs sealed 5.3nm (5x). Coastal hand-waypoint path plausibly longer than straight-line; confirm sealed route hugs coast (no land cut) before binding.", "recommended": "bind after land-QA confirm"}
+    ],
+    "acceptance": "18 chips sealed-solid + 6 aspirational-dashed; 0 land crossings post-apply; economics_status unchanged on all 6 authorities."
+  },
+  "binds": {
+    "singapore-mpa": [
+      {
+        "from": "Marina East / Bedok Jetty (East Coast)",
+        "to": "Marina Bay / CBD",
+        "chip_distance_nm": 5.8,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      },
+      {
+        "from": "Marina South Pier",
+        "to": "St John's / Lazarus Island",
+        "chip_distance_nm": 3.3,
+        "action": "bind_sealed",
+        "route_id": "rn-ae618a6e531d",
+        "sealed_distance_nm": 3.3,
+        "sealed_from_label": "Marina South Pier (e-HC charging pilot)",
+        "sealed_to_label": "St John's / Lazarus Island"
+      },
+      {
+        "from": "Changi Point Ferry Terminal",
+        "to": "Pulau Ubin",
+        "chip_distance_nm": 14.2,
+        "action": "bind_sealed",
+        "route_id": "rn-d2a077df54f4",
+        "sealed_distance_nm": 2.1,
+        "sealed_from_label": "Changi Point Ferry Terminal",
+        "sealed_to_label": "Pulau Ubin"
+      },
+      {
+        "from": "Marina Bay / CBD",
+        "to": "Keppel Bay / HarbourFront",
+        "chip_distance_nm": 6.7,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      }
+    ],
+    "abu-dhabi-itc": [
+      {
+        "from": "Yas Bay",
+        "to": "Al Bandar (Al Raha Beach)",
+        "chip_distance_nm": 0.6,
+        "action": "bind_sealed",
+        "route_id": "rn-2c00a6c6ca01",
+        "sealed_distance_nm": 0.6,
+        "sealed_from_label": "Yas Bay",
+        "sealed_to_label": "Al Bandar (Al Raha Beach)"
+      },
+      {
+        "from": "Abu Dhabi Corniche",
+        "to": "Louvre Abu Dhabi (Saadiyat)",
+        "chip_distance_nm": 5.6,
+        "action": "bind_sealed",
+        "route_id": "rn-c91345d867d2",
+        "sealed_distance_nm": 5.6,
+        "sealed_from_label": "Abu Dhabi Corniche / Breakwater (Marina Mall)",
+        "sealed_to_label": "Louvre Abu Dhabi (Saadiyat Cultural District)"
+      },
+      {
+        "from": "Reem Island",
+        "to": "Abu Dhabi Corniche",
+        "chip_distance_nm": 4.7,
+        "action": "bind_sealed",
+        "route_id": "rn-4868214bddb4",
+        "sealed_distance_nm": 4.7,
+        "sealed_from_label": "Reem Island",
+        "sealed_to_label": "Abu Dhabi Corniche / Breakwater (Marina Mall)"
+      },
+      {
+        "from": "Eastern Mangroves",
+        "to": "Yas Marina",
+        "chip_distance_nm": 8.3,
+        "action": "bind_sealed",
+        "route_id": "rn-675621620739",
+        "sealed_distance_nm": 8.3,
+        "sealed_from_label": "Eastern Mangroves",
+        "sealed_to_label": "Yas Marina"
+      }
+    ],
+    "bahrain-motc": [
+      {
+        "from": "Bahrain Bay / Four Seasons (Manama)",
+        "to": "Sa'ada Marina (Muharraq)",
+        "chip_distance_nm": 1.8,
+        "action": "bind_sealed",
+        "route_id": "rn-5e90f69a5e03",
+        "sealed_distance_nm": 2.1,
+        "sealed_from_label": "Bahrain Bay / Four Seasons",
+        "sealed_to_label": "Sa'ada Marina (Muharraq)"
+      },
+      {
+        "from": "Bahrain Financial Harbour (Manama)",
+        "to": "Amwaj Islands",
+        "chip_distance_nm": 6.5,
+        "action": "bind_sealed",
+        "route_id": "rn-f5130a29396c",
+        "sealed_distance_nm": 5.6,
+        "sealed_from_label": "Bahrain Financial Harbour / Harbour House",
+        "sealed_to_label": "Amwaj Islands"
+      },
+      {
+        "from": "Manama Corniche",
+        "to": "Bahrain International Airport jetty",
+        "chip_distance_nm": 2.7,
+        "action": "bind_sealed",
+        "route_id": "rn-b46c855eb3bf",
+        "sealed_distance_nm": 2.7,
+        "sealed_from_label": "Manama East Coast / Corniche",
+        "sealed_to_label": "Bahrain International Airport jetty (Muharraq)"
+      },
+      {
+        "from": "Reef Island (Manama)",
+        "to": "Diyar Al Muharraq",
+        "chip_distance_nm": 1.8,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      }
+    ],
+    "dubai-rta": [
+      {
+        "from": "Dubai Marina",
+        "to": "Palm Jumeirah",
+        "chip_distance_nm": 2.4,
+        "action": "bind_sealed",
+        "route_id": "rn-e437a388ec3c",
+        "sealed_distance_nm": 2.4,
+        "sealed_from_label": "Dubai Marina",
+        "sealed_to_label": "Palm Jumeirah (Nakheel Mall / The Pointe)"
+      },
+      {
+        "from": "Al Seef (Dubai Creek)",
+        "to": "Dubai Festival City",
+        "chip_distance_nm": 1.5,
+        "action": "bind_sealed",
+        "route_id": "rn-15c6fdffe852",
+        "sealed_distance_nm": 3.3,
+        "sealed_from_label": "Al Seef Marine Transport Station (Dubai Creek)",
+        "sealed_to_label": "Dubai Festival City Station"
+      },
+      {
+        "from": "La Mer / J1 Beach",
+        "to": "Dubai Marina",
+        "chip_distance_nm": 9.9,
+        "action": "bind_sealed",
+        "route_id": "rn-c1700abedaae",
+        "sealed_distance_nm": 9.9,
+        "sealed_from_label": "La Mer / J1 Beach",
+        "sealed_to_label": "Dubai Marina"
+      },
+      {
+        "from": "Mina Rashid",
+        "to": "Dubai Islands / Souk Al Marfa",
+        "chip_distance_nm": 4.1,
+        "action": "bind_sealed",
+        "route_id": "rn-c287ad25a7a4",
+        "sealed_distance_nm": 4.1,
+        "sealed_from_label": "Mina Rashid waterfront",
+        "sealed_to_label": "Dubai Islands / Souk Al Marfa"
+      }
+    ],
+    "qatar": [
+      {
+        "from": "Lusail Ferry Terminal",
+        "to": "Corniche Ferry Stop (West Bay)",
+        "chip_distance_nm": 4.9,
+        "action": "bind_sealed",
+        "route_id": "rn-e8434c243233",
+        "sealed_distance_nm": 7.6,
+        "sealed_from_label": "Lusail Ferry Terminal",
+        "sealed_to_label": "Corniche Ferry Stop (West Bay)"
+      },
+      {
+        "from": "Corniche Ferry Stop (West Bay)",
+        "to": "The Pearl Ferry Stop",
+        "chip_distance_nm": 4.9,
+        "action": "bind_sealed",
+        "route_id": "rn-0fbd458499ba",
+        "sealed_distance_nm": 4.3,
+        "sealed_from_label": "Corniche Ferry Stop (West Bay)",
+        "sealed_to_label": "The Pearl Ferry Stop"
+      },
+      {
+        "from": "Old Doha Port (Mina District)",
+        "to": "Hamad International Airport waterfront",
+        "chip_distance_nm": 4.7,
+        "action": "bind_sealed",
+        "route_id": "rn-bcd8eaa6e454",
+        "sealed_distance_nm": 3.5,
+        "sealed_from_label": "Old Doha Port (Mina District)",
+        "sealed_to_label": "Hamad International Airport waterfront"
+      },
+      {
+        "from": "Old Doha Port (Mina District)",
+        "to": "Al Wakrah (Souq Al Wakrah marina)",
+        "chip_distance_nm": 10.1,
+        "action": "bind_sealed",
+        "route_id": "rn-db0bfc88c74e",
+        "sealed_distance_nm": 8.1,
+        "sealed_from_label": "Old Doha Port (Mina District)",
+        "sealed_to_label": "Al Wakrah (Souq Al Wakrah marina)"
+      }
+    ],
+    "rakta": [
+      {
+        "from": "Al Marjan Island / Wynn",
+        "to": "Al Hamra Marina",
+        "chip_distance_nm": 1,
+        "action": "bind_sealed",
+        "route_id": "rn-9a52a1ef2286",
+        "sealed_distance_nm": 5.3,
+        "sealed_from_label": "Al Marjan Island",
+        "sealed_to_label": "Al Hamra Marina / Village"
+      },
+      {
+        "from": "Mina Al Arab",
+        "to": "RAK city corniche",
+        "chip_distance_nm": 0.4,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      },
+      {
+        "from": "Al Marjan Island",
+        "to": "RAK city corniche",
+        "chip_distance_nm": 0.4,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      },
+      {
+        "from": "RAK Creek / Old Town",
+        "to": "Jazirat Al Hamra",
+        "chip_distance_nm": 13.6,
+        "action": "keep_aspirational",
+        "route_id": null,
+        "sealed_distance_nm": null,
+        "sealed_from_label": null,
+        "sealed_to_label": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "dossier_id": "pta-dossier-seoul-hangang-bus",
+  "slug": "seoul-hangang-bus",
+  "authority": "Seoul Metropolitan Government — Hangang Bus (Han River Bus)",
+  "operator_note": "Seoul Metropolitan Government public water-transit service; operated via Seoul city with I'SEOUL / Hangang Bus branding. Public transport authority stakeholder = Seoul Metropolitan Government (separate stakeholder from kakao-mobility commercial path).",
+  "city_node": "seoul-incheon-korea",
+  "city_node_status": "existing_seed (dual-platform; _seed_node true; shared with kakao-mobility seoul-han-river market)",
+  "cluster_id": "korea",
+  "decarbonization_anchor": "Hangang Bus launched official operations 18 Sep 2025 as a new public transport mode on the Han River; hybrid vessels with a stated pathway toward electrification, positioned by Seoul as a low-carbon commuting alternative to congested road corridors across a 10M-person city.",
+  "network_reality": "Single trunk line, ~28.9 km, 7 piers: Magok, Mangwon, Yeouido, Oksu, Apgujeong, Ttukseom, Jamsil. Operates Eastern (Jamsil <-> Yeouido) and Western (Magok <-> Yeouido) route patterns. Widely reported as slow relative to demand — the credible authority gap a fast, silent foiling tier addresses.",
+  "piers": [
+    {"name": "Magok Pier", "reconcile": "hangang_exclusive_mint"},
+    {"name": "Mangwon Pier", "reconcile": "hangang_exclusive_mint"},
+    {"name": "Yeouido Pier", "reconcile": "shared_with_kakao (bp-kakao-yeouido) — canonicalize to one physical pier node"},
+    {"name": "Oksu Pier", "reconcile": "hangang_exclusive_mint"},
+    {"name": "Apgujeong Pier", "reconcile": "hangang_exclusive_mint"},
+    {"name": "Ttukseom Pier", "reconcile": "shared_with_kakao (bp-kakao-ttukseom) — canonicalize to one physical pier node"},
+    {"name": "Jamsil Pier", "reconcile": "shared_with_kakao (bp-kakao-jamsil area) — canonicalize to one physical pier node"}
+  ],
+  "corridors": [
+    {"name": "Jamsil <-> Yeouido (Eastern Route)", "note": "trunk east segment"},
+    {"name": "Magok <-> Yeouido (Western Route)", "note": "trunk west segment"},
+    {"name": "Yeouido <-> Ttukseom", "note": "central commute reach"},
+    {"name": "Magok <-> Jamsil (full-line through-run)", "note": "~28.9 km end-to-end"}
+  ],
+  "reconciliation_rule": "Han River piers are physically singular. Where Hangang and kakao-mobility name the same pier (Yeouido, Ttukseom, Jamsil), Grok must bind BOTH proposals to ONE canonical pier node (do not double-plot). Keep the two proposals as separate markets/stakeholders (SMG public transit vs kakao commercial); only the physical BP nodes are shared. Mint Hangang-exclusive piers (Magok, Mangwon, Oksu, Apgujeong) new.",
+  "geometry_note": "All legs are riverine inside the global land-mask — require explicit hand waypoints (interior_land_km == 0) following the Han River channel; no land crossings.",
+  "provenance": "english.seoul.go.kr Hangang Bus; chosun.com 2025-09-15 (7 piers Magok/Mangwon/Yeouido/Oksu/Apgujeong/Ttukseom/Jamsil, 28.9 km); miceseoul Eastern/Western route split. Retrieved 2026-07-02."
+}
