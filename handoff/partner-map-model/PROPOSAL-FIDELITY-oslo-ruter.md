@@ -1,7 +1,7 @@
 # Proposal fidelity — oslo-ruter
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T21:07:32Z
+**Checked:** 2026-07-03T02:50:49Z
 
 ## Summary
 
@@ -16,10 +16,10 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Aker Brygge Ferry Terminal → Nesoddtangen Ferry Te | `—` | **KEEP** | — |
-| journey | — | Aker Brygge Ferry Terminal → Hovedøya Island Pier | `—` | **KEEP** | — |
-| journey | — | Aker Brygge Ferry Terminal → Bygdøy Ferry Pier | `—` | **KEEP** | — |
-| featured | 1 | Aker Brygge Ferry Terminal → Nesoddtangen Ferry Te | `—` | **KEEP** | — |
-| featured | 1 | Aker Brygge Ferry Terminal → Hovedøya Island Pier | `—` | **KEEP** | — |
-| featured | 2 | Aker Brygge Ferry Terminal → Bygdøy Ferry Pier | `—` | **KEEP** | — |
+| journey | — | Aker Brygge Ferry Terminal → Nesoddtangen Ferry Te | `rn-45978de65bf0` | **KEEP** | — |
+| journey | — | Aker Brygge Ferry Terminal → Hovedøya Island Pier | `rn-0e449f8dedb5` | **KEEP** | — |
+| journey | — | Aker Brygge Ferry Terminal → Bygdøy Ferry Pier | `rn-619511a4cb90` | **KEEP** | — |
+| featured | 1 | Aker Brygge Ferry Terminal → Nesoddtangen Ferry Te | `rn-45978de65bf0` | **KEEP** | — |
+| featured | 1 | Aker Brygge Ferry Terminal → Hovedøya Island Pier | `rn-0e449f8dedb5` | **KEEP** | — |
+| featured | 2 | Aker Brygge Ferry Terminal → Bygdøy Ferry Pier | `rn-619511a4cb90` | **KEEP** | — |
 | featured | 2 | Hovedøya Island Pier → Bygdøy Ferry Pier | `rn-26cf42f31a87` | **KEEP** | — |

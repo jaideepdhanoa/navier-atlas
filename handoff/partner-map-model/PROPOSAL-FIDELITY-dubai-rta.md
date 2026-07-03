@@ -1,7 +1,7 @@
 # Proposal fidelity — dubai-rta
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T19:35:40Z
+**Checked:** 2026-07-03T02:51:03Z
 
 ## Summary
 
@@ -16,14 +16,14 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Dubai Marina → Palm Jumeirah | `—` | **KEEP** | — |
-| journey | — | Al Seef (Dubai Creek) → Dubai Festival City | `—` | **KEEP** | — |
-| journey | — | La Mer / J1 Beach → Dubai Marina | `—` | **KEEP** | — |
-| journey | — | Mina Rashid → Dubai Islands / Souk Al Marfa | `—` | **KEEP** | — |
-| featured | 1 | Dubai Marina ↔ Palm Jumeirah (Nakheel Mall / The P | `—` | **KEEP** | — |
+| journey | — | Dubai Marina → Palm Jumeirah | `rn-e437a388ec3c` | **KEEP** | — |
+| journey | — | Al Seef (Dubai Creek) → Dubai Festival City | `rn-15c6fdffe852` | **KEEP** | — |
+| journey | — | La Mer / J1 Beach → Dubai Marina | `rn-c1700abedaae` | **KEEP** | — |
+| journey | — | Mina Rashid → Dubai Islands / Souk Al Marfa | `rn-c287ad25a7a4` | **KEEP** | — |
+| featured | 1 | Dubai Marina ↔ Palm Jumeirah (Nakheel Mall / The P | `rn-e437a388ec3c` | **KEEP** | — |
 | featured | 1 | Dubai Marina ↔ Bluewaters Island | `—` | **KEEP** | — |
 | featured | 1 | Al Seef Marine Transport Station (Dubai Creek) ↔ D | `—` | **KEEP** | — |
 | featured | 2 | Al Seef Marine Transport Station (Dubai Creek) ↔ M | `—` | **KEEP** | — |
-| featured | 2 | La Mer / J1 Beach ↔ Dubai Marina | `—` | **KEEP** | — |
-| featured | 2 | Mina Rashid waterfront ↔ Dubai Islands / Souk Al M | `—` | **KEEP** | — |
+| featured | 2 | La Mer / J1 Beach ↔ Dubai Marina | `rn-c1700abedaae` | **KEEP** | — |
+| featured | 2 | Mina Rashid waterfront ↔ Dubai Islands / Souk Al M | `rn-c287ad25a7a4` | **KEEP** | — |
 | featured | 3 | Dubai Harbour ↔ Abu Dhabi Corniche | `—` | **KEEP** | — |

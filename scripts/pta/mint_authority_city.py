@@ -242,14 +242,14 @@ def mint_bp_poi(bp: dict, city_id: str, fbt: dict) -> str:
 
 PAIR_WAYPOINTS: dict[str, list[list[float]]] = {
     # Oslo — Oslofjord ferry lanes (mid-fjord)
-    "oslo-aker-brygge|oslo-nesoddtangen": [[10.71, 59.885], [10.68, 59.872], [10.665, 59.866]],
-    "oslo-aker-brygge|oslo-hovedoya": [[10.745, 59.904], [10.758, 59.899]],
-    "oslo-aker-brygge|oslo-bygdoy": [[10.705, 59.907], [10.692, 59.904]],
+    "oslo-aker-brygge|oslo-nesoddtangen": [[10.718, 59.898], [10.695, 59.885], [10.678, 59.872], [10.665, 59.862]],
+    "oslo-aker-brygge|oslo-hovedoya": [[10.748, 59.902], [10.762, 59.896], [10.768, 59.894]],
+    "oslo-aker-brygge|oslo-bygdoy": [[10.712, 59.905], [10.698, 59.902], [10.688, 59.901]],
     "oslo-hovedoya|oslo-bygdoy": [[10.725, 59.899], [10.698, 59.901]],
     # Amsterdam — IJ (centreline, mid-channel)
     "ams-centraal-ij|ams-buiksloterweg": [[4.905, 52.388], [4.912, 52.394], [4.916, 52.398]],
     "ams-centraal-ij|ams-ijplein": [[4.903, 52.385], [4.906, 52.386]],
-    "ams-centraal-ij|ams-ndsm": [[4.900, 52.388], [4.896, 52.395], [4.894, 52.402]],
+    "ams-centraal-ij|ams-ndsm": [[4.898, 52.382], [4.895, 52.388], [4.893, 52.395], [4.892, 52.402]],
     "ams-buiksloterweg|ams-ndsm": [[4.906, 52.402], [4.899, 52.403]],
     # Wellington — harbour
     "wlg-queens-wharf|wlg-days-bay": [[174.82, -41.27], [174.87, -41.24], [174.9, -41.22]],
@@ -257,12 +257,12 @@ PAIR_WAYPOINTS: dict[str, list[list[float]]] = {
     "wlg-queens-wharf|wlg-somes-island": [[174.81, -41.28], [174.84, -41.265]],
     # Copenhagen — harbour bus lanes
     "cph-nyhavn|cph-opera": [[12.596, 55.681]],
-    "cph-nyhavn|cph-refshaleoen": [[12.6, 55.688], [12.605, 55.692]],
+    "cph-nyhavn|cph-refshaleoen": [[12.595, 55.682], [12.602, 55.688], [12.608, 55.692]],
     "cph-opera|cph-nordre-toldbod": [[12.598, 55.684]],
     "cph-nordre-toldbod|cph-refshaleoen": [[12.602, 55.69]],
     # Gothenburg — archipelago
     "got-saltholmen|got-styrso-bratten": [[11.84, 57.65], [11.82, 57.64]],
-    "got-saltholmen|got-vrango": [[11.82, 57.63], [11.78, 57.61]],
+    "got-saltholmen|got-vrango": [[11.83, 57.64], [11.80, 57.62], [11.77, 57.61], [11.76, 57.60]],
     "got-styrso-bratten|got-vrango": [[11.78, 57.62]],
     "got-saltholmen|got-fiskebackskil": [[11.89, 57.67], [11.91, 57.68]],
     # Rotterdam — Nieuwe Maas / Waterbus (river centreline)

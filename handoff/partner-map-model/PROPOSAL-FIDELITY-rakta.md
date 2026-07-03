@@ -1,7 +1,7 @@
 # Proposal fidelity — rakta
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T19:35:42Z
+**Checked:** 2026-07-03T02:51:04Z
 
 ## Summary
 
@@ -16,11 +16,11 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Al Marjan Island / Wynn → Al Hamra Marina | `—` | **KEEP** | — |
+| journey | — | Al Marjan Island / Wynn → Al Hamra Marina | `rn-9a52a1ef2286` | **KEEP** | — |
 | journey | — | Mina Al Arab → RAK city corniche | `—` | **KEEP** | — |
 | journey | — | Al Marjan Island → RAK city corniche | `—` | **KEEP** | — |
 | journey | — | RAK Creek / Old Town → Jazirat Al Hamra | `—` | **KEEP** | — |
-| featured | 1 | Al Marjan Island ↔ Al Hamra Marina / Village | `—` | **KEEP** | — |
+| featured | 1 | Al Marjan Island ↔ Al Hamra Marina / Village | `rn-9a52a1ef2286` | **KEEP** | — |
 | featured | 1 | Al Hamra Marina / Village ↔ Mina Al Arab lagoons | `—` | **KEEP** | — |
 | featured | 1 | Mina Al Arab lagoons ↔ Al Qawasim Corniche (RAK ci | `—` | **KEEP** | — |
 | featured | 2 | Al Marjan Island ↔ Al Qawasim Corniche (RAK city) | `—` | **KEEP** | — |

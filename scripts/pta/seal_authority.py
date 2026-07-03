@@ -32,8 +32,22 @@ from bolt_yango_routing_shared import (  # noqa: E402
 from channel_solver import HAND_WAYPOINTS, get_land_checker, hand_waypoints_for, solve_hand  # noqa: E402
 
 HANDOFF = ROOT / "handoff/partner-map-model"
+REMEDIATION = HANDOFF / "pta-remediation"
 DC = ROOT / "data-clean"
 PP = ROOT / "partner-pitch"
+
+
+def resolve_dossier_path(slug: str) -> Path | None:
+    """R2 compact dossiers first (when present), then remediation / legacy PTA dossiers."""
+    candidates = [
+        REMEDIATION / "dossiers" / "R2" / f"{slug}.json",
+        REMEDIATION / "dossiers" / f"PTA-DOSSIER-{slug}.json",
+        HANDOFF / f"PTA-DOSSIER-{slug}.json",
+    ]
+    for path in candidates:
+        if path.is_file():
+            return path
+    return None
 
 
 def utc_now() -> str:
@@ -47,8 +61,87 @@ def bp_id_for(node: str) -> str:
     return f"bp-{h}"
 
 
+# R2 compact dossiers reference existing gold BPs by display name (from GROK-SPEC-R2-*).
+R2_EXISTING_BY_NAME: dict[str, dict[str, dict]] = {
+    "seoul-hangang-bus": {
+        "Magok": {"node": "hgb-magok", "bp_id": "bp-7ee5f26a66", "anchor_lnglat": [126.827, 37.566]},
+        "Yeouido": {"node": "kakao-yeouido", "bp_id": "bp-kakao-yeouido", "anchor_lnglat": [126.924, 37.521]},
+        "Ttukseom": {"node": "kakao-ttukseom", "bp_id": "bp-kakao-ttukseom", "anchor_lnglat": [127.098, 37.529]},
+        "Jamsil": {"node": "kakao-jamsil", "bp_id": "bp-kakao-jamsil", "anchor_lnglat": [127.082, 37.513]},
+    },
+    "calmac": {
+        "Ardrossan": {"node": "cal-ardrossan", "bp_id": "bp-32d27b20cb", "anchor_lnglat": [-4.84, 55.641]},
+        "Brodick": {"node": "cal-brodick", "bp_id": "bp-de106c7bbc", "anchor_lnglat": [-5.138, 55.577]},
+        "Wemyss Bay": {"node": "cal-wemyss-bay", "bp_id": "bp-0f2025a2a5", "anchor_lnglat": [-4.888, 55.876]},
+        "Rothesay": {"node": "cal-rothesay", "bp_id": "bp-e1ce1ab4fb", "anchor_lnglat": [-5.057, 55.836]},
+        "Gourock": {"node": "cal-gourock", "bp_id": "bp-7816c29753", "anchor_lnglat": [-4.815, 55.961]},
+        "Dunoon": {"node": "cal-dunoon", "bp_id": "bp-6b68f29ca5", "anchor_lnglat": [-4.923, 55.951]},
+    },
+    "kolkata-wbtc": {
+        "Howrah Ferry Ghat": {"node": "kol-howrah", "bp_id": "bp-d5ddcaa659", "anchor_lnglat": [88.346, 22.585]},
+        "Millennium Park Jetty": {"node": "kol-millennium", "bp_id": "bp-4767db5fe8", "anchor_lnglat": [88.347, 22.569]},
+        "Fairlie Place Ferry": {"node": "kol-fairlie", "bp_id": "bp-c3d1996f22", "anchor_lnglat": [88.351, 22.572]},
+        "Dakshineswar Ferry Ghat": {"node": "kol-dakshineswar", "bp_id": "bp-3121aedcd3", "anchor_lnglat": [88.358, 22.655]},
+        "Belur Math Ferry Ghat": {"node": "kol-belur", "bp_id": "bp-063ee377c3", "anchor_lnglat": [88.356, 22.632]},
+        "Chandannagar Riverfront": {"node": "kol-chandannagar", "bp_id": "bp-0ffc8ae32c", "anchor_lnglat": [88.368, 22.862]},
+    },
+}
+
+
+def _resolve_r2_compact(dossier: dict, slug: str) -> tuple[list, list]:
+    """Tasklet R2 dossiers: new_piers + corridors by display name."""
+    city_id = dossier.get("city_feature_id") or slug
+    by_name: dict[str, dict] = dict(R2_EXISTING_BY_NAME.get(slug, {}))
+    for pier in dossier.get("new_piers") or []:
+        name = pier.get("name") or pier.get("seed_id", "")
+        node = pier.get("seed_id") or pier.get("node") or name
+        by_name[name] = {
+            "node": node,
+            "bp_id": pier.get("bp_id") or bp_id_for(node),
+            "name": name,
+            "anchor_lnglat": [pier["lng"], pier["lat"]],
+            "city": city_id,
+        }
+
+    bps: list[dict] = []
+    node_seen: set[str] = set()
+    for row in by_name.values():
+        node = row["node"]
+        if node in node_seen:
+            continue
+        node_seen.add(node)
+        bps.append(
+            {
+                "node": node,
+                "bp_id": row.get("bp_id"),
+                "name": row.get("name", node),
+                "anchor_lnglat": row["anchor_lnglat"],
+                "city": row.get("city", city_id),
+            }
+        )
+
+    def node_for(label: str) -> str | None:
+        if label in by_name:
+            return by_name[label]["node"]
+        for key, row in by_name.items():
+            if key.lower() == label.lower() or label.lower() in key.lower() or key.lower() in label.lower():
+                return row["node"]
+        return None
+
+    pairs: list[dict] = []
+    for leg in dossier.get("corridors") or []:
+        if not isinstance(leg, (list, tuple)) or len(leg) != 2:
+            continue
+        fn, tn = node_for(leg[0]), node_for(leg[1])
+        if fn and tn:
+            pairs.append({"from": fn, "to": tn, "pair_id": f"{fn}|{tn}"})
+    return bps, pairs
+
+
 def resolve_dossier_network(dossier: dict, slug: str) -> tuple[list, list]:
     """Support Phase-B domestic_network dossiers and mint-heavy compact format."""
+    if dossier.get("new_piers") is not None and dossier.get("corridors"):
+        return _resolve_r2_compact(dossier, slug)
     if "domestic_network" in dossier:
         net = dossier["domestic_network"]
         bps = list(net.get("boarding_points") or [])
@@ -234,9 +327,12 @@ def main() -> int:
     args = ap.parse_args()
 
     slug = args.partner
-    dossier_path = HANDOFF / f"PTA-DOSSIER-{slug}.json"
-    if not dossier_path.is_file():
-        print(f"✗ no dossier: {dossier_path}", file=sys.stderr)
+    dossier_path = resolve_dossier_path(slug)
+    if dossier_path is None:
+        print(
+            f"✗ no dossier for {slug} (checked handoff + pta-remediation/dossiers + R2/)",
+            file=sys.stderr,
+        )
         return 1
 
     dossier = load_json(dossier_path)

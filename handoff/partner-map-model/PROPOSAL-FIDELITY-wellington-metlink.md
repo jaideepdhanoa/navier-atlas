@@ -1,7 +1,7 @@
 # Proposal fidelity — wellington-metlink
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T21:07:30Z
+**Checked:** 2026-07-03T02:50:53Z
 
 ## Summary
 
@@ -16,10 +16,10 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Seatoun Wharf → Somes Island (Matiu) Pier | `rn-f55dd2cca72d` | **KEEP** | — |
+| journey | — | Seatoun Wharf → Somes Island (Matiu) Pier | `rn-a3c31405844f` | **KEEP** | — |
 | journey | — | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
-| journey | — | Queens Wharf Ferry Terminal → Seatoun Wharf | `—` | **KEEP** | — |
-| featured | 1 | Seatoun Wharf → Somes Island (Matiu) Pier | `rn-f55dd2cca72d` | **KEEP** | — |
+| journey | — | Queens Wharf Ferry Terminal → Seatoun Wharf | `rn-a16f13a19d35` | **KEEP** | — |
+| featured | 1 | Seatoun Wharf → Somes Island (Matiu) Pier | `rn-a3c31405844f` | **KEEP** | — |
 | featured | 1 | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
-| featured | 2 | Queens Wharf Ferry Terminal → Seatoun Wharf | `—` | **KEEP** | — |
+| featured | 2 | Queens Wharf Ferry Terminal → Seatoun Wharf | `rn-a16f13a19d35` | **KEEP** | — |
 | featured | 2 | Queens Wharf Ferry Terminal → Somes Island (Matiu) | `rn-026c943e221c` | **KEEP** | — |

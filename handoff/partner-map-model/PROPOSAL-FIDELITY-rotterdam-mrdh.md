@@ -1,7 +1,7 @@
 # Proposal fidelity — rotterdam-mrdh
 
 **Verdict:** PASS
-**Checked:** 2026-07-02T21:06:50Z
+**Checked:** 2026-07-03T02:50:49Z
 
 ## Summary
 
@@ -16,10 +16,10 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Erasmusbrug (Willemsplein) Waterbus → Dordrecht Me | `—` | **KEEP** | — |
-| journey | — | Erasmusbrug (Willemsplein) Waterbus → Kinderdijk W | `—` | **KEEP** | — |
-| journey | — | Erasmusbrug (Willemsplein) Waterbus → Hoek van Hol | `—` | **KEEP** | — |
-| featured | 1 | Erasmusbrug (Willemsplein) Waterbus → Dordrecht Me | `—` | **KEEP** | — |
-| featured | 1 | Erasmusbrug (Willemsplein) Waterbus → Kinderdijk W | `—` | **KEEP** | — |
-| featured | 2 | Dordrecht Merwekade Waterbus → Kinderdijk Waterbus | `—` | **KEEP** | — |
-| featured | 2 | Erasmusbrug (Willemsplein) Waterbus → Hoek van Hol | `—` | **KEEP** | — |
+| journey | — | Erasmusbrug (Willemsplein) Waterbus → Dordrecht Me | `rn-3f66b28288bb` | **KEEP** | — |
+| journey | — | Erasmusbrug (Willemsplein) Waterbus → Kinderdijk W | `rn-abc26e08d412` | **KEEP** | — |
+| journey | — | Erasmusbrug (Willemsplein) Waterbus → Hoek van Hol | `rn-1b4b7ebdff41` | **KEEP** | — |
+| featured | 1 | Erasmusbrug (Willemsplein) Waterbus → Dordrecht Me | `rn-3f66b28288bb` | **KEEP** | — |
+| featured | 1 | Erasmusbrug (Willemsplein) Waterbus → Kinderdijk W | `rn-abc26e08d412` | **KEEP** | — |
+| featured | 2 | Dordrecht Merwekade Waterbus → Kinderdijk Waterbus | `rn-5fa92c917969` | **KEEP** | — |
+| featured | 2 | Erasmusbrug (Willemsplein) Waterbus → Hoek van Hol | `rn-1b4b7ebdff41` | **KEEP** | — |

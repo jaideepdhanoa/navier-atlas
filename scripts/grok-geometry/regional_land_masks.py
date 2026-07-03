@@ -258,6 +258,24 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("toronto_inner_harbour", -79.42, 43.61, -79.34, 43.65),
     # Firth of Clyde gateway crossings (CalMac — Arran / Bute / Cowal / Mull)
     ("firth_of_clyde", -5.20, 55.55, -4.78, 56.48),
+    # Nieuwe Maas / Rotterdam Waterbus corridor (Erasmusbrug ↔ Dordrecht / Hoek)
+    ("rotterdam_nieuwe_maas", 4.05, 51.78, 4.75, 52.02),
+    # Hebrides / Minch ferry lanes (CalMac R2 deepening)
+    ("hebrides_minch", -7.5, 56.0, -5.5, 58.5),
+    # Hawaii inter-island channels (Maui ↔ Lānaʻi / Molokaʻi approaches)
+    ("hawaii_channel", -158.5, 20.5, -154.5, 22.5),
+    # Georgia Strait + Gulf Islands (bc-ferries R5 land-QA)
+    ("georgia_strait", -125.5, 48.5, -122.5, 49.5),
+    # Oslofjord inner ferry lanes (Aker Brygge ↔ Nesoddtangen / islands)
+    ("oslofjord_inner", 10.55, 59.82, 10.85, 59.95),
+    # Amsterdam IJ harbour ferry lane (Centraal ↔ NDSM)
+    ("amsterdam_ij", 4.86, 52.36, 4.94, 52.42),
+    # Wellington Harbour (Queens Wharf ↔ Seatoun / Somes)
+    ("wellington_harbour", 174.75, -41.35, 174.92, -41.22),
+    # Copenhagen inner harbour (Nyhavn ↔ Refshaleøen)
+    ("copenhagen_harbour", 12.56, 55.66, 12.62, 55.70),
+    # Gothenburg southern archipelago (Saltholmen ↔ Vrångö channel)
+    ("gothenburg_archipelago", 11.72, 57.58, 11.88, 57.68),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)
