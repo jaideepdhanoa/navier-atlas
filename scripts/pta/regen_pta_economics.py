@@ -97,7 +97,7 @@ def bound_routes_in_partner(slug: str) -> int:
         if not path.is_file():
             continue
         doc = json.loads(path.read_text())
-        for kind, _pn, item in _iter_route_items(doc):
+        for _kind, item in _iter_route_items(doc):
             rid = item.get("route_id") or ((item.get("route_ids") or [None])[0])
             if rid:
                 seen.add(rid)
@@ -132,25 +132,31 @@ def dossier_pairs(slug: str) -> int:
 
 
 def sealed_corridors(slug: str) -> int:
+    """Count corridors for economics — max of seal receipt minted and partner-bound route_ids.
+
+    Tasklet may bind gateway corridors (e.g. CalMac firth-of-clyde) before/after a seal receipt;
+    economics must reconcile to all bound sealed pairs, not receipt minted alone.
+    """
+    bound = bound_routes_in_partner(slug)
     receipt = HANDOFF / f"PTA-SEAL-RECEIPT-{slug}.json"
     if receipt.is_file():
         r = json.loads(receipt.read_text())
         failed = len(r.get("failed") or [])
         minted = len(r.get("minted") or [])
         if minted:
-            return minted
+            return max(minted, bound) if bound else minted
         total = dossier_pairs(slug)
         if failed == 0 and total:
-            return total
-        return max(0, total - failed)
+            return max(total, bound) if bound else total
+        fallback = max(0, total - failed)
+        return max(fallback, bound) if bound else fallback
     mint_receipt = HANDOFF / f"GEOMETRY-MINT-RECEIPT-{slug}.json"
     if mint_receipt.is_file():
         r = json.loads(mint_receipt.read_text())
         sealed = [s for s in r.get("sealed_routes") or [] if s.get("status") != "existing"]
-        if sealed:
-            return len(sealed)
-        return len(r.get("sealed_routes") or [])
-    return dossier_pairs(slug) or bound_routes_in_partner(slug)
+        count = len(sealed) if sealed else len(r.get("sealed_routes") or [])
+        return max(count, bound) if bound else count
+    return dossier_pairs(slug) or bound
 
 
 def net_zero_label(dossier: dict) -> str:
