@@ -105,7 +105,7 @@ def _resolve_r2_compact(dossier: dict, slug: str) -> tuple[list, list]:
 
     bps: list[dict] = []
     node_seen: set[str] = set()
-    for row in by_name.values():
+    for label, row in by_name.items():
         node = row["node"]
         if node in node_seen:
             continue
@@ -114,7 +114,7 @@ def _resolve_r2_compact(dossier: dict, slug: str) -> tuple[list, list]:
             {
                 "node": node,
                 "bp_id": row.get("bp_id"),
-                "name": row.get("name", node),
+                "name": row.get("name") or label,
                 "anchor_lnglat": row["anchor_lnglat"],
                 "city": row.get("city", city_id),
             }

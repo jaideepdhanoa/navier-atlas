@@ -428,7 +428,9 @@ def apply_partner(path: Path, gc_patch: dict, apply: bool, slug: str, *, full_ap
         doc["growth_case"] = merge_growth_case(gc, gc_patch)
         doc["economics_status"] = "authority_economics_regenerated"
     if apply:
-        path.write_text(json.dumps(doc, indent=2) + "\n")
+        payload = json.dumps(doc, indent=2) + "\n"
+        json.loads(payload)  # round-trip guard — no trailing commas / invalid JSON
+        path.write_text(payload)
     return True
 
 
