@@ -64,7 +64,7 @@ REMOVED_CITIES = frozenset(
     }
 )
 
-BIND_MARKETS = frozenset({"senegal", "colombia", "norway", "kazakhstan"})
+BIND_MARKETS = frozenset({"senegal", "colombia", "peru", "kazakhstan"})
 INTENTIONAL_NULL_LABELS = frozenset(
     {
         ("Aktau", "Kenderli"),

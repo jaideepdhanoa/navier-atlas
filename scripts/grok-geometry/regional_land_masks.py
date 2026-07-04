@@ -104,8 +104,12 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("geiranger_fjord", 6.82, 62.06, 7.22, 62.15),
     # Dakar cape / Gorée approaches
     ("dakar_cape", -17.58, 14.60, -17.38, 14.76),
-    # Callao / Lima harbour bay
-    ("callao_bay", -77.28, -12.12, -77.02, -11.92),
+    # Callao / Lima harbour bay (extended for Costa Verde / La Punta)
+    ("callao_bay", -77.32, -12.22, -77.00, -11.92),
+    # Paracas bay + Ballestas reserve approaches
+    ("paracas_bay", -76.55, -13.92, -76.12, -13.62),
+    # Lima–Paracas Pacific coastal shelf (112nm Quanta-LR roadmap leg)
+    ("lima_paracas_shelf", -77.20, -13.90, -76.10, -12.10),
     # Lobito–Benguela coastal shelf
     ("lobito_coast", 13.30, -12.58, 13.58, -12.32),
     # Bahrain Bay + east shore channels
