@@ -1,0 +1,50 @@
+{
+  "batch": "caspian-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "scope_note": "Deepen the two shallow Caspian clusters (azerbaijan-caspian, kazakhstan-caspian) with real source-backed boarding points, intra-national corridors, and hand-waypoint guidance. Caspian is a CLOSED sea; Baku<->Aktau is ~250+ nm (cross-border) >> N30 70nm range -> NOT a Navier corridor (stays ferry-context only). All Navier corridors here are intra-national coastal.",
+  "no_invention_rule": "Every BP is a real named place with a source URL. Approximate positions describe the named place; Grok does deterministic gazetteer promotion + exact coords + ID-match seal.",
+  "clusters": {
+    "azerbaijan-caspian": {
+      "region": "Caucasus",
+      "cluster_label": "Azerbaijan (Caspian)",
+      "existing_sealed_bps": 5,
+      "geography_note": "Baku is on the SOUTH shore of the Absheron peninsula (Baku Bay opens south/southeast). Sea Breeze (Nardaran) and Bilgah are on the NORTH shore of Absheron. A sea route between them MUST round the eastern tip of the peninsula (Cape Shuvalan / Amburan area) offshore -- never cross the peninsula by land.",
+      "boarding_point_candidates": [
+        {"name": "Baku Seaside Boulevard Pier", "type": "excursion_pier", "existing": true, "existing_id_hint": "bp-baku-boulevard-pier", "source_url": "https://azerbaijan.travel/boat-trips-boulevard", "note": "City-center excursion pier at the Seaside National Park; daily boat departures."},
+        {"name": "Sea Breeze Marina Village (Nardaran)", "type": "marina", "existing": false, "source_url": "https://seabreeze.az/en/", "note": "Large master-planned Caspian resort city on the north Absheron coast; Marina Village + Mirvari / Caspian Dreamliner yacht operations."},
+        {"name": "White Beach Club jetty (Sea Breeze)", "type": "beach_club", "existing": false, "source_url": "https://whitebeach.az/en/", "note": "Beach club within Sea Breeze resort; waterfront terrace + beach access."},
+        {"name": "Bilgah Beach Hotel jetty", "type": "resort_jetty", "existing": false, "source_url": "https://www.livetheworld.com//post/summer-holiday-on-the-coast-of-the-biggest-lake-in-the-world-caspian-sea-blat", "note": "Bilgah settlement ~44 km north of Baku city; beach hotel on the north Absheron coast."},
+        {"name": "Amburan Beach Club (Bilgah)", "type": "beach_club", "existing": false, "source_url": "https://www.livetheworld.com//post/summer-holiday-on-the-coast-of-the-biggest-lake-in-the-world-caspian-sea-blat", "note": "Premium beach club adjacent to Bilgah; north Absheron coast."},
+        {"name": "Port of Baku (Alat) ferry terminal", "type": "ferry_terminal", "existing": false, "source_url": "https://caravanistan.com/transport/caspian-sea-ferry/", "note": "Main Baku international/ferry port relocated to Alat ~70 km south of Baku; Trans-Caspian gateway. Endpoint for a southern coastal commuter corridor; also ferry-context node."}
+      ],
+      "corridors": [
+        {"from": "Baku Seaside Boulevard Pier", "to": "Sea Breeze Marina Village", "approx_nm": 20, "desc": "city-center to north-coast resort city", "hand_waypoint_required": true, "hand_waypoint_note": "Round the eastern tip of the Absheron peninsula OFFSHORE (east of Cape Shuvalan/Amburan). Do NOT route across the peninsula neck. Waypoint ~1-2 nm off the eastern headland."},
+        {"from": "Baku Seaside Boulevard Pier", "to": "Bilgah / Amburan Beach", "approx_nm": 24, "desc": "city-center to north-coast beach cluster", "hand_waypoint_required": true, "hand_waypoint_note": "Same Absheron-tip rounding as above; continue NW along the north coast to Bilgah."},
+        {"from": "Sea Breeze Marina Village", "to": "Bilgah / Amburan Beach", "approx_nm": 4, "desc": "north-coast resort hop", "hand_waypoint_required": false, "hand_waypoint_note": "Short coastal run along the north Absheron shore; keep offshore of Nardaran shallows."},
+        {"from": "Baku Seaside Boulevard Pier", "to": "Port of Baku (Alat)", "approx_nm": 38, "desc": "city to Trans-Caspian port / worker shuttle", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run SOUTH along Baku Bay; clear the Bayil/Shikhov headland and Alat port breakwaters with an offshore waypoint. Range-edge (near 70nm round trip) -- verify N30 duty cycle."}
+      ]
+    },
+    "kazakhstan-caspian": {
+      "region": "Central Asia",
+      "cluster_label": "Kazakhstan (Caspian)",
+      "existing_sealed_bps": 5,
+      "geography_note": "Aktau (Mangystau) sits on a cliff coast; Kuryk port is ~40 nm south in a bay. Coastal routing hugs the Mangystau shore; round the intervening headlands offshore.",
+      "boarding_point_candidates": [
+        {"name": "Aktau Seaport", "type": "seaport", "existing": true, "source_url": "https://www.getyourguide.com/caspian-sea-l222576/", "note": "Aktau commercial + passenger seaport; yacht 'Maestro' 1-hour Caspian cruises operate from here."},
+        {"name": "Aktau Embankment / Seaside Promenade (Skalnaya Tropa)", "type": "promenade_landing", "existing": false, "source_url": "https://welcome.kz/en/info-cities/mangystau/aktau/coast", "note": "1.5 km cliff-and-sea walking promenade with 24 viewing platforms; central waterfront landing."},
+        {"name": "Caspian Riviera Grand Palace private seafront", "type": "resort_jetty", "existing": false, "source_url": "https://www.tripadvisor.com/Hotel_Review-g674570-d5538596-Reviews-Caspian_Riviera_Grand_Palace-Aktau_Mangystau_Province.html", "note": "Aktau seafront hotel with private beach/terrace on the Caspian shore."},
+        {"name": "Kuryk Port ferry terminal", "type": "ferry_terminal", "existing": true, "existing_note": "kuryk-kazakhstan (1 BP sealed)", "source_url": "https://portkuryk.kz/en/uslugi/bilety-na-parom", "note": "Kuryk deep-water ferry/RoRo port ~30 km from Kuryk village; Trans-Caspian gateway. Aktau<->Kuryk shuttle candidate."}
+      ],
+      "corridors": [
+        {"from": "Aktau Seaport", "to": "Kuryk Port", "approx_nm": 40, "desc": "Mangystau coastal port shuttle", "hand_waypoint_required": true, "hand_waypoint_note": "Route SOUTH along the Mangystau cliff coast; place an offshore waypoint to clear the headland(s) between Aktau and the Kuryk bay entrance. No land crossing across the peninsula."},
+        {"from": "Aktau Embankment / Seaside Promenade", "to": "Caspian Riviera Grand Palace", "approx_nm": 2, "desc": "intra-city waterfront hop", "hand_waypoint_required": false, "hand_waypoint_note": "Short run along the Aktau cliff shore."},
+        {"from": "Aktau Seaport", "to": "Aktau Embankment / Seaside Promenade", "approx_nm": 2, "desc": "port to city promenade", "hand_waypoint_required": false, "hand_waypoint_note": "Short protected run inside the Aktau waterfront."}
+      ]
+    }
+  },
+  "excluded_context_only": [
+    {"corridor": "Baku (Alat) <-> Aktau/Kuryk", "reason": "Cross-border closed-sea ferry ~250+ nm >> N30 70nm range. Context/ferry only; NOT a Navier corridor. Keep in coverage prose, not in minted routes."}
+  ]
+}

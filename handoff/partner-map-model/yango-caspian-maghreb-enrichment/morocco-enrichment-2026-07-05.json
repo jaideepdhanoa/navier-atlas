@@ -1,0 +1,56 @@
+{
+  "batch": "morocco-topup-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "cluster": "morocco (Maghreb)",
+  "existing_cities": ["tangier-morocco (3 BP, thin)", "casablanca-morocco (6 BP)", "rabat-sale-morocco (2 BP, thin)", "al-hoceima-morocco (2 BP, thin)", "agadir-essaouira-morocco (40 BP, DEEP -- leave)"],
+  "scope_note": "Morocco confirmed Yango market. Agadir-Essaouira is already deep; this pass tops up the three thin cities -- Tangier, Rabat-Sale, Al-Hoceima -- with real sourced marinas and short-hop corridors on each coast. Morocco has TWO coasts (Mediterranean strait coast + Atlantic coast) that never chain into one national corridor.",
+  "no_invention_rule": "Every BP is a real named marina/port with a source URL. Grok does deterministic ID-match, coords, and seal.",
+  "hazards_global": "Strait of Gibraltar shipping lanes + the Spanish enclaves of Ceuta and Melilla. All corridors must stay in Moroccan waters and route offshore of Ceuta/Melilla headlands; Grok's land/border mask must treat the enclaves as no-go.",
+  "sub_networks": {
+    "tangier_strait": {
+      "member_city": "tangier-morocco (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Tanja Marina Bay (Basin 1)", "type": "marina", "source_url": "https://oceanposse.com/tanja-marina-bay-international/", "note": "Morocco's first urban marina in the heart of Tangier; 1,400-berth capacity across two basins, Blue-Flag."},
+        {"name": "Tanja Marina Bay (Basin 2 / superyacht)", "type": "marina", "source_url": "https://www.tangerport.com/marina/", "note": "Second basin of the urban marina."},
+        {"name": "Malabata waterfront", "type": "beach_landing", "source_url": "https://www.harbourmaps.com/en/most-popular-marinas/morocco", "note": "Beach-resort waterfront east of the marina toward Cap Malabata."}
+      ],
+      "corridors": [
+        {"from": "Tanja Marina Bay", "to": "Marina Smir (M'diq)", "approx_nm": 22, "desc": "strait to Mediterranean resort marina", "hand_waypoint_required": true, "hand_waypoint_note": "Round Cap Malabata then run E along the Med coast; offshore waypoint to stay SOUTH of the Ceuta (Spanish) headland -- never route through Ceuta waters."}
+      ]
+    },
+    "mediterranean_coast": {
+      "new_city": {"id_hint": "mdiq-tetouan-morocco", "name": "M'diq / Tetouan", "source_url": "https://www.sailingtoday.co.uk/cruising/cruising-advice/morocco-sailing-guide-north-african-cruising-tips/", "note": "Marina Smir + Kabila + M'diq: the Tetouan-region Mediterranean resort marinas."},
+      "member_city": "al-hoceima-morocco (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Marina Smir", "type": "marina", "source_url": "https://www.sailingtoday.co.uk/cruising/cruising-advice/morocco-sailing-guide-north-african-cruising-tips/", "note": "Full marina at M'diq near Tetouan on the Mediterranean coast."},
+        {"name": "M'diq / Kabila waterfront", "type": "marina", "source_url": "https://www.harbourmaps.com/en/most-popular-marinas/morocco", "note": "Resort marina/port just north of Marina Smir."},
+        {"name": "Al-Hoceima port", "type": "port", "source_url": "https://www.harbourmaps.com/en/most-popular-marinas/morocco", "note": "Bay port of Al-Hoceima; existing anchor."},
+        {"name": "Cala Iris", "type": "harbour", "source_url": "https://www.harbourmaps.com/en/most-popular-marinas/morocco", "note": "Small harbour/anchorage west of Al-Hoceima."}
+      ],
+      "corridors": [
+        {"from": "Marina Smir", "to": "M'diq / Kabila", "approx_nm": 4, "desc": "Med resort-marina hop", "hand_waypoint_required": true, "hand_waypoint_note": "Short coastal hop north; offshore of the M'diq breakwater."},
+        {"from": "Al-Hoceima port", "to": "Cala Iris", "approx_nm": 18, "desc": "Al-Hoceima bay to west harbour", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run west within the Bay of Al-Hoceima; offshore of the Penon de Velez (Spanish islet) -- stay in Moroccan water."}
+      ],
+      "range_note": "M'diq/Tetouan cluster and Al-Hoceima cluster are ~70 nm apart -- range-edge; keep as two local clusters, not one continuous corridor."
+    },
+    "atlantic_capital_coast": {
+      "member_city": "rabat-sale-morocco (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Marina Bouregreg (Rabat bank)", "type": "marina", "source_url": "https://www.bouregreg.com/bouregreg-marina/?lang=en", "note": "At the mouth of the Bouregreg River, sheltered from Atlantic swell, on the Rabat side."},
+        {"name": "Marina Bouregreg (Sale bank)", "type": "marina", "source_url": "https://anchorages.co/?p=128655", "note": "Sale riverfront side of the same marina, opposite Rabat's historic skyline."},
+        {"name": "Mohammedia marina", "type": "marina", "id_hint": "mohammedia-morocco (new city)", "source_url": "https://www.harbourmaps.com/en/most-popular-marinas/morocco", "note": "Atlantic marina between Rabat and Casablanca."}
+      ],
+      "corridors": [
+        {"from": "Marina Bouregreg (Rabat)", "to": "Marina Bouregreg (Sale)", "approx_nm": 1, "desc": "cross-river twin-city hop", "hand_waypoint_required": true, "hand_waypoint_note": "Cross the Bouregreg river mouth between the twin banks; stay inside the breakwater training walls."},
+        {"from": "Marina Bouregreg", "to": "Mohammedia marina", "approx_nm": 28, "desc": "Atlantic coastal run toward Casablanca", "hand_waypoint_required": true, "hand_waypoint_note": "Open Atlantic coastal run SW; offshore waypoints clear of the surf line. Atlantic swell exposure -- Grok verify sea-state assumptions."},
+        {"from": "Mohammedia marina", "to": "Casablanca port", "approx_nm": 12, "desc": "marina to the economic capital", "hand_waypoint_required": true, "hand_waypoint_note": "Short Atlantic coastal hop into the Port of Casablanca; offshore of the Mohammedia refinery jetties."}
+      ]
+    }
+  },
+  "excluded_context_only": [
+    {"corridor": "Atlantic coast <-> Mediterranean coast as one run", "reason": "Separated by the Strait of Gibraltar and >>70 nm; the two coasts are distinct networks."},
+    {"corridor": "Al-Hoceima <-> Saidia / Melilla", "reason": ">70 nm and passes the Spanish enclave of Melilla; context-only."}
+  ]
+}

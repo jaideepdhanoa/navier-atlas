@@ -1,0 +1,43 @@
+{
+  "batch": "algeria-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "cluster": "algeria (Maghreb)",
+  "existing_thin_cities": ["algiers-algeria (2 BP)", "oran-algeria (1 BP)", "bejaia-algeria (1 BP)", "mostaganem-algeria (1 BP)"],
+  "scope_note": "Algeria confirmed Yango market. Its marquee water network is the Bay of Algiers -- a wide bay ringed by marinas and ports that today connect only by a congested coast road. Oran, Bejaia and Mostaganem are separate coastal anchors too far apart (>>70 nm) to chain to Algiers; deepen the Algiers bay and lightly deepen Oran's own gulf; leave the far anchors honest-thin.",
+  "no_invention_rule": "Every BP is a real named marina/port with a source URL. Grok does deterministic ID-match, coords, and seal.",
+  "sub_networks": {
+    "bay_of_algiers": {
+      "member_city": "algiers-algeria (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Port de Sidi Fredj (marina)", "type": "marina", "source_url": "https://anchorages.co/go/algeria/port-de-sidi-fredj/", "note": "450-berth marina on the Sidi Fredj peninsula ~30 km west of Algiers (Staoueli); one of the finest marinas on the Mediterranean south shore."},
+        {"name": "El Djamila / Ain Benian marina", "type": "marina", "source_url": "https://aroundus.com/p/11231834-el-djamila", "note": "Coastal port and marina at Ain Benian, between Sidi Fredj and Algiers."},
+        {"name": "Port d'Alger (city waterfront)", "type": "port", "source_url": "https://www.navily.com/region/wilaya-dalger/1953", "note": "Central Algiers port on the bay; existing anchor."},
+        {"name": "Tamentfoust (east bay harbour)", "type": "harbour", "source_url": "https://anchorages.co/go/algeria/tamentfoust/", "note": "Fishing harbour on the eastern Bay of Algiers below the Roman ruins of Rusguniae, near Cap Matifou."}
+      ],
+      "corridors": [
+        {"from": "Port de Sidi Fredj", "to": "El Djamila / Ain Benian", "approx_nm": 6, "desc": "west-peninsula marina to bay marina", "hand_waypoint_required": true, "hand_waypoint_note": "Round the Sidi Fredj peninsula offshore before the coastal run east; do not cut across the headland."},
+        {"from": "El Djamila / Ain Benian", "to": "Port d'Alger", "approx_nm": 8, "desc": "coastal run into the city port", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal hop east into the Bay of Algiers; offshore waypoint to clear the Ain Benian shoal."},
+        {"from": "Port d'Alger", "to": "Tamentfoust", "approx_nm": 9, "desc": "cross-bay hop to the east shore", "hand_waypoint_required": true, "hand_waypoint_note": "Cross the Bay of Algiers to the east side and round Cap Matifou headland offshore into Tamentfoust."}
+      ]
+    },
+    "gulf_of_oran": {
+      "member_city": "oran-algeria (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Port d'Oran (waterfront)", "type": "port", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/algeria", "note": "Main Oran port on the Gulf of Oran; existing anchor."},
+        {"name": "Ain El Turck / Kristel waterfront", "type": "beach_landing", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/algeria", "note": "Resort waterfront on the Gulf of Oran west of the city."}
+      ],
+      "corridors": [
+        {"from": "Port d'Oran", "to": "Ain El Turck / Kristel", "approx_nm": 12, "desc": "Gulf of Oran resort hop", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run within the Gulf of Oran; offshore waypoint to clear the Mers-el-Kebir headland."}
+      ]
+    }
+  },
+  "honest_thin_anchors": [
+    {"city": "bejaia-algeria", "note": "Bejaia marina/port on the Gulf of Bejaia -- real anchor but ~100 nm east of Algiers; keep as single-node coastal anchor, no long corridor to Algiers.", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/algeria"},
+    {"city": "mostaganem-algeria", "note": "Mostaganem marina on its own gulf ~50 nm ENE of Oran -- keep as single-node coastal anchor.", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/algeria"}
+  ],
+  "excluded_context_only": [
+    {"corridor": "Algiers <-> Oran / Algiers <-> Bejaia", "reason": ">>70 nm along the coast; out of N30 range. Separate local clusters, never one national corridor."}
+  ]
+}
