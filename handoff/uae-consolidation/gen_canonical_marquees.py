@@ -40,6 +40,34 @@ IN_RANGE=(0.4,30.0)
 ISLAND=re.compile(r'island|palm|saadiyat|\byas\b|world islands|sir bani|delma|lulu|reem|al aliah|marjan|nurai|zaya|جزيرة',re.I)
 JUNK=re.compile(r'jet ?ski|water ?sport|waves marine|helipad|seaplane|slipway|parking|cross-border\b.*endpoint|quanta|lr endpoint|dry dock|boat ?yard',re.I)
 
+# ---- River cities: iconic short-hop exception to the firm 3nm floor ----
+# River commuter piers (e.g. Chao Phraya Express) are legitimately < 3 nm; the
+# distance-sweet-spot hero score is wrong for them, so they get a river score.
+RIVER_CITIES={'bangkok-thailand'}
+RIVER_FLOOR=0.4
+ICON=re.compile(r'iconsiam|grand palace|wat |wat$|oriental|asiatique|khao ?san|phra ar?thit|tha chang|tha tien|wang lang|temple of dawn',re.I)
+
+# ---- Label scrub: aggregate region labels -> primary place name (explicit, no guessing) ----
+LABEL_SCRUB={
+ 'Cartagena & The Rosario Islands':'Cartagena',
+ 'Mahé & Inner Islands':'Mahé','Mahé & the Inner Islands':'Mahé',
+ 'Bora Bora & Society Islands':'Bora Bora','Bora & Society Islands':'Bora Bora',
+ 'Hvar & the Pakleni Islands':'Hvar',
+ 'Korčula & the South Dalmatian Islands':'Korčula',
+}
+# Aggregates that need a REAL specific pier (null beats wrong): flag, don't invent
+NEEDS_SOURCING={'Andaman & Nicobar Islands','US & British Virgin Islands'}
+_scrub_applied={}      # node_id -> {orig, clean}
+_scrub_sourcing={}     # node_id -> {label, city_id}
+def scrub_label(lab,node_id,city_id):
+    if lab in LABEL_SCRUB:
+        clean=LABEL_SCRUB[lab]
+        if node_id: _scrub_applied[node_id]={'orig':lab,'clean':clean}
+        return clean
+    if lab in NEEDS_SOURCING and node_id:
+        _scrub_sourcing[node_id]={'label':lab,'city_id':city_id}
+    return lab
+
 def num(v):
     try: return float(v)
     except: return 0.0
@@ -61,7 +89,21 @@ def is_clean(p):
 
 def hero_eligible(p):
     d=p.get('distance_nm') or 0
+    # River-city exception: iconic river hops allowed down to RIVER_FLOOR
+    if p.get('from_city_id') in RIVER_CITIES or p.get('to_city_id') in RIVER_CITIES:
+        return d>=RIVER_FLOOR
     return d>=3.0                                     # firm floor: no trivial hops, no exceptions
+
+def is_river(p):
+    return p.get('from_city_id') in RIVER_CITIES or p.get('to_city_id') in RIVER_CITIES
+
+def river_score(p,feat_freq):
+    # For rivers: iconic destinations + express-boat traffic beat raw distance
+    d=p.get('distance_nm') or 0
+    icon=1 if ICON.search(f"{p.get('from_label')} {p.get('to_label')}") else 0
+    key=frozenset((p.get('from'),p.get('to')))
+    return (2.0*num(p.get('traffic_weight')) + 2.0*icon
+            + 0.4*min(d,3.0) + 0.3*feat_freq.get(key,0))
 
 def hero_score(p,feat_freq):
     d=p.get('distance_nm') or 0
@@ -118,11 +160,15 @@ for r in routes:
     if p.get('from_city'): city_label[fc]=p.get('from_city')
     if p.get('to_city'):   city_label[tc]=p.get('to_city')
     key=frozenset((p.get('from'),p.get('to')))
+    riv=is_river(p)
+    flab=scrub_label(p.get('from_label'),p.get('from'),fc)
+    tlab=scrub_label(p.get('to_label'),p.get('to'),tc)
+    score=river_score(p,feat_freq) if riv else hero_score(p,feat_freq)
     cand={'route_id':p.get('id'),'from_node_id':p.get('from'),'to_node_id':p.get('to'),
-          'from_label':p.get('from_label'),'to_label':p.get('to_label'),
+          'from_label':flab,'to_label':tlab,
           'from_city_id':fc,'to_city_id':tc,
           'distance_nm':round(p.get('distance_nm') or 0,1),'trip_scope':p.get('trip_scope'),
-          'hero_score':round(hero_score(p,feat_freq),2),
+          'hero_score':round(score,2),'_river':riv,
           '_island':bool(ISLAND.search(f"{p.get('from_label')} {p.get('to_label')}")),
           '_cross_city':fc!=tc,
           'partners_currently_featuring':sorted(feat_partners.get(key,set()))}
@@ -162,12 +208,21 @@ for e in current_entries:
 
 out={'_meta':{'generated':'2026-07-05','granularity':'city','wow_max':WOW_N,'featured_max':FEAT_N,
       'n_cities':len(out_cities),'ranking':'hero (water-beats-road): distance sweet-spot + island + cross-city; traffic/crowd = tiebreaker',
-      'quality_gate':'in-range 3-30nm firm floor, on-water, junk-endpoint filter, no trivial <3nm hops'},
+      'quality_gate':'in-range 3-30nm firm floor, on-water, junk-endpoint filter, no trivial <3nm hops',
+      'river_exception':f'river cities {sorted(RIVER_CITIES)} allowed down to {RIVER_FLOOR}nm with river score (traffic+icon)',
+      'label_scrub':f'{len(_scrub_applied)} aggregate labels trimmed to primary place name; {len(_scrub_sourcing)} flagged needs_bp_sourcing'},
      'cities':out_cities}
 json.dump(out,open(os.path.join(BASE,'CANONICAL-MARQUEES.json'),'w'),indent=2)
 json.dump({'generated':'2026-07-05','total_current_entries':len(current_entries),
       'retired_count':len(retire),'retired':retire},
       open(os.path.join(BASE,'MARQUEE-RETIRE-LIST.json'),'w'),indent=2)
+# ---- label scrub handoff (for Grok / locale-cleanup to fix source BP labels) ----
+json.dump({'generated':'2026-07-05',
+      'note':'Display-label scrub for aggregate region endpoints. applied = safe trim to primary place name (fix source BP label in data-clean/ROUTES). needs_bp_sourcing = aggregate territory used as endpoint; DO NOT invent a pier (null beats wrong) — source a real specific pier.',
+      'applied':[{'node_id':k,**v} for k,v in sorted(_scrub_applied.items())],
+      'needs_bp_sourcing':[{'node_id':k,**v} for k,v in sorted(_scrub_sourcing.items())]},
+      open(os.path.join(BASE,'LABEL-SCRUB.json'),'w'),indent=2)
+print(f"label scrub: {len(_scrub_applied)} trimmed, {len(_scrub_sourcing)} need sourcing")
 
 # ---- console summary ----
 cities_with_signal=sum(1 for c in out_cities.values() if c['marquee_wow'])

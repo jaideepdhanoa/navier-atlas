@@ -34,8 +34,24 @@ Anything genuinely ambiguous is left for Grok to confirm against resealed geomet
 **null beats wrong.** Seal gate rejects any partner featured/wow entry not in its
 cities' canonical sets.
 
-## Residual notes for the locale-cleanup lane
-- A few aggregate/junk BP display labels persist (e.g. Colombia "Cartagena & The
-  Rosario Islands" used as an endpoint) — flag for label scrub, not corridor drop.
-- Thailand cities are sparse here (river piers < 3 nm culled by the firm floor);
-  revisit Chao Phraya iconic short hops if a river exception is wanted later.
+## v2.1 — label scrub + Bangkok river exception (both applied)
+**Label scrub (`LABEL-SCRUB.json`).** Aggregate region labels used as endpoints are
+handled two ways (explicit map, no guessing):
+- **Trimmed to primary place name (6):** "Cartagena & The Rosario Islands"→"Cartagena",
+  "Mahé & Inner Islands"→"Mahé", "Bora Bora & Society Islands"→"Bora Bora",
+  "Hvar & the Pakleni Islands"→"Hvar". Display labels cleaned now; `applied[]` carries
+  `node_id`→`{orig,clean}` for Grok/locale-cleanup to fix the **source BP label** in
+  `data-clean`/`ROUTES`.
+- **Flagged `needs_bp_sourcing` (2):** "Andaman & Nicobar Islands", "US & British Virgin
+  Islands" — territory-aggregates used as a single endpoint. **Not invented** (null beats
+  wrong); Grok sources a real specific pier (e.g. Port Blair, Charlotte Amalie/Road Town).
+
+**Bangkok river exception.** River-commuter cities (`RIVER_CITIES={bangkok-thailand}`)
+are exempt from the firm 3 nm floor down to **0.4 nm** and use a **river score**
+(traffic + iconic-destination bonus, not distance-sweet-spot). Restores the Chao Phraya
+Express marquees: Sathorn (Central/Taksin) ↔ Khao San (Phra Arthit), ↔ Grand Palace
+(Tha Chang), ↔ ICONSIAM; Tha Tien ↔ Wang Lang (Wat Arun cross-river). All selected
+candidates are clean-geometry (`land=None`); land-flagged river false-positives are left
+for Grok to channel-route, not featured.
+
+`RIVER_CITIES` is extensible — add other genuine river-commuter cities as they surface.

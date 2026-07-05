@@ -39,6 +39,9 @@ Corridors were being **hand-curated per partner** at every layer, so partners sh
 - **1,293 marquee entries** (945 featured + 348 wow) in **3 competing schemas** (822 from/to dicts, 348 strings, 123 named).
 - No canonical per-cluster set — every partner spotlights a different subset of the same city.
 - **Confirmed strange/out-of-range featured routes:** Careem (+Noon) feature `Abu Dhabi→Muscat` & `Fujairah→Muscat` (UAE→Oman, ~200nm); Bolt features `Barcelona→Palma` (~130nm open sea). These are the "strange routes" Jaideep saw.
+- **RESOLVED — canonical marquee sets built (`CANONICAL-MARQUEES.json`, v2.1):** Curated **city-level** (not country-cluster) so every partner in a city inherits the SAME set — all UAE partners see one Dubai set, one Abu Dhabi set, etc. **217 cities**, wow ≤5 / featured ≤8. Ranking = **hero (water-beats-road)**: distance sweet-spot (~12nm) + island + cross-city; traffic/crowd = tiebreaker only. **Firm 3nm floor** kills trivial resort hops. **978 current entries retired** → `MARQUEE-RETIRE-LIST.json` (archive, not delete). Junk-endpoint filter + out-of-range gate exclude the Muscat/Palma junk by construction.
+  - **Label scrub (`LABEL-SCRUB.json`):** 6 aggregate endpoint labels trimmed to primary place name ("Cartagena & The Rosario Islands"→"Cartagena", "Mahé & Inner Islands"→"Mahé", etc.) with `node_id`→`{orig,clean}` for you to fix the **source BP label**; 2 territory-aggregates ("Andaman & Nicobar Islands", "US & British Virgin Islands") flagged `needs_bp_sourcing` — **do not invent a pier; source a real one** (null beats wrong).
+  - **Bangkok river exception:** `RIVER_CITIES={bangkok-thailand}` exempt from the 3nm floor down to 0.4nm with a river score (traffic + iconic-destination). Restores Chao Phraya Express marquees (Sathorn↔Khao San/Grand Palace/ICONSIAM; Tha Tien↔Wang Lang/Wat Arun). Only clean-geometry hops selected; land-flagged river false-positives left for you to channel-route.
 
 ### Layer D — Singapore (diagnosed this session — same pattern as UAE)
 - 342 Singapore-region routes; 25 land-flagged; **23 clip >0.2km land**; 2 have no geometry fix; 13 over 30nm (cross-border Batam/Bintan/Riau — range-check, don't auto-kill legit cross-border).
@@ -87,5 +90,6 @@ Corridors were being **hand-curated per partner** at every layer, so partners sh
 - `CORRIDOR-INHERITANCE-CONTRACT.md` · `CROSS-PARTNER-INHERITANCE-AUDIT.json`
 - `FINANCE-CORRIDOR-INHERITANCE-CONTRACT.md` · `FINANCE-CORRIDOR-AUDIT.json`
 - `FEATURED-WOW-STANDARDIZATION.md` · `FEATURED-WOW-AUDIT.json`
+- `CANONICAL-MARQUEES.json` (city-level sets) · `MARQUEE-RETIRE-LIST.json` · `CANONICAL-MARQUEES-REVIEW.md` · `CANONICAL-MARQUEES-ADDENDUM.md` · `LABEL-SCRUB.json` · `gen_canonical_marquees.py`
 - `SINGAPORE-DIAGNOSIS.json` · `GROK-MASTER-HANDOFF-2026-07-05.md` (this note)
 - Skill: `/tasklet/workspace/home/corridor-inheritance/SKILL.md`
