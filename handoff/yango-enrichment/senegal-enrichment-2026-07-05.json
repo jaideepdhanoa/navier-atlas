@@ -1,0 +1,53 @@
+{
+  "batch": "senegal-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "cluster": "senegal",
+  "existing_cities": ["dakar-senegal"],
+  "existing_anchor": "bp-yb2-dakar-goree-embarcadere",
+  "scope_note": "Senegal is currently a single-city (Dakar) thin cluster on one anchor pier. It naturally forms TWO short-hop sub-networks: (1) the Cap-Vert peninsula around Dakar (Goree + Iles de la Madeleine + Ile de Ngor), and (2) the Petite Cote resort coast ~40 nm south (Saly + Somone lagoon + Mbour). Deepen Dakar and add the Petite Cote as sourced registry additions so the market reads as a real network.",
+  "no_invention_rule": "Every BP is a real named embarcadere/island/marina with a source URL. New Petite Cote cities (Saly, Somone, Mbour) are legitimate sourced registry additions, additive only. Grok does deterministic ID-match + coords + seal.",
+  "hazards_global": "Cap-Vert is the westernmost point of continental Africa (Les Almadies / Pointe des Almadies). Routes between Dakar port (SE side) and Ngor/Almadies (NW side) MUST round the peninsula tip OFFSHORE - never cross the Dakar peninsula by land. Atlantic swell on the exposed NW Almadies shore.",
+  "sub_networks": {
+    "cap_vert_dakar": {
+      "member_city": "dakar-senegal (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Embarcadere de Goree (Dakar passenger terminal)", "type": "ferry_terminal", "existing": true, "existing_id_hint": "bp-yb2-dakar-goree-embarcadere", "source_url": "https://justme.travel/a-unique-day-trip-the-haunting-memory-of-goree-island-senegal/", "note": "Dakar port passenger terminal; hourly Goree ferry (existing anchor)."},
+        {"name": "Soumbedioune fishing harbour / pier", "type": "fishing_pier", "source_url": "https://www.tripadvisor.com/Attraction_Review-g293831-d14067682-Reviews-Iles_de_la_Madeleine-Dakar_Dakar_Region.html", "note": "Soumbedioune pirogue harbour on the Corniche; departure for Iles de la Madeleine national park."},
+        {"name": "Ngor beach pirogue landing", "type": "beach_landing", "source_url": "https://www.facebook.com/WhyILoveSenegal/posts/4646834332032501/", "note": "Ngor village beach on the northern tip; short pirogue hop to Ile de Ngor."}
+      ],
+      "offshore_islands": [
+        {"name": "Ile de Goree", "type": "island_pier", "source_url": "https://www.kupi.com/en/explore/senegal/dakar/goree-island", "note": "UNESCO island ~2 nm SE of Dakar port; has its own jetty."},
+        {"name": "Iles de la Madeleine", "type": "island_approach", "source_url": "https://www.tripadvisor.com/Attraction_Review-g293831-d14067682-Reviews-Iles_de_la_Madeleine-Dakar_Dakar_Region.html", "note": "National-park islands ~2.5 nm off the Corniche; water approach (protected)."},
+        {"name": "Ile de Ngor", "type": "island_pier", "source_url": "https://www.rome2rio.com/s/Ngor/%C3%8Ele-de-Gor%C3%A9e-Island", "note": "Small island ~0.3 nm off Ngor beach at the northern tip."}
+      ],
+      "corridors": [
+        {"from": "Embarcadere de Goree (Dakar)", "to": "Ile de Goree", "approx_nm": 2, "desc": "UNESCO island ferry hop", "hand_waypoint_required": false, "hand_waypoint_note": "Direct SE across the inner Dakar roadstead to Goree jetty; sheltered by the peninsula."},
+        {"from": "Soumbedioune", "to": "Iles de la Madeleine", "approx_nm": 2.5, "desc": "national-park island run", "hand_waypoint_required": true, "hand_waypoint_note": "Short W run into open Atlantic off the Corniche; offshore approach, no landing on the protected core."},
+        {"from": "Ngor beach", "to": "Ile de Ngor", "approx_nm": 0.3, "desc": "beach-island pirogue hop", "hand_waypoint_required": false, "hand_waypoint_note": "Very short protected hop across the Ngor channel."},
+        {"from": "Embarcadere de Goree (Dakar)", "to": "Ngor beach / Almadies", "approx_nm": 8, "desc": "peninsula-rounding metro run", "hand_waypoint_required": true, "hand_waypoint_note": "Round the Cap-Vert / Les Almadies tip (westernmost Africa) OFFSHORE from the SE port side to the NW Ngor side. NEVER cross the peninsula by land. Atlantic swell on the Almadies shore."}
+      ]
+    },
+    "petite_cote": {
+      "new_cities": [
+        {"id_hint": "saly-senegal", "name": "Saly (Saly Portudal)", "source_url": "https://www.hotels.com/re1691287-at14/villas-hotels-in-saly-petite-cote-senegal/", "note": "Senegal's flagship beach-resort town on the Petite Cote; sandy beaches + marina."},
+        {"id_hint": "somone-senegal", "name": "La Somone", "source_url": "https://www.visitezlesenegal.com/en/destinations/petite-cote/", "note": "Seaside resort at the Somone lagoon reserve between two fishing villages; lagoon boat trips."},
+        {"id_hint": "mbour-senegal", "name": "Mbour", "source_url": "https://www.expedia.com/Saly-Petite-Cote.dx6135699", "note": "Major fishing port town anchoring the Petite Cote just S of Saly."}
+      ],
+      "boarding_point_candidates": [
+        {"name": "Saly marina / beach landing", "type": "marina", "source_url": "https://www.hotels.com/re1691287-at14/villas-hotels-in-saly-petite-cote-senegal/", "note": "Resort marina/beach launch at Saly Portudal."},
+        {"name": "Somone lagoon mouth landing", "type": "lagoon_landing", "source_url": "https://theculturetrip.com/africa/senegal/articles/the-best-things-to-do-on-la-petite-cote-senegal", "note": "Boat launch at the Somone lagoon reserve."},
+        {"name": "Mbour fishing port", "type": "fishing_port", "source_url": "https://www.expedia.com/Saly-Petite-Cote.dx6135699", "note": "Large artisanal fishing port at Mbour."}
+      ],
+      "corridors": [
+        {"from": "Saly marina", "to": "Somone lagoon mouth", "approx_nm": 8, "desc": "Petite Cote resort-to-lagoon hop", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run N along the sandy Petite Cote to the Somone lagoon mouth, then into the lagoon; respect lagoon shoals/depth mask."},
+        {"from": "Saly marina", "to": "Mbour fishing port", "approx_nm": 5, "desc": "resort-to-port hop", "hand_waypoint_required": true, "hand_waypoint_note": "Short coastal run S to Mbour; offshore of the fishing-fleet moorings."}
+      ]
+    }
+  },
+  "excluded_context_only": [
+    {"corridor": "Dakar <-> Saly (Petite Cote) as a Navier corridor", "reason": "~40 nm one-way coastal - within N30 range but a distinct resort commuter; keep Cap-Vert and Petite Cote as two clusters. Grok may mint a single range-edge Dakar<->Saly link ONLY if duty-cycle verifies; otherwise leave as ferry/context."},
+    {"corridor": "Dakar <-> Saint-Louis / Cap Skirring (Casamance)", "reason": ">140 nm; far beyond range; context-only."}
+  ]
+}
