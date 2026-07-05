@@ -29,8 +29,8 @@ const CLUSTER_ADD = {
   croatia: ['zadar-croatia'],
   cyprus: ['ayia-napa-cyprus', 'paphos-cyprus'],
   kenya: ['diani-ukunda-kenya', 'kilifi-kenya', 'malindi-kenya', 'watamu-kenya'],
-  morocco: ['tangier-morocco', 'rabat-sale-morocco'],
-  tunisia: ['tunis-tunisia'],
+  morocco: ['tangier-morocco', 'rabat-sale-morocco', 'mdiq-tetouan-morocco', 'mohammedia-morocco'],
+  tunisia: ['tunis-tunisia', 'bizerte-tunisia', 'hammamet-tunisia', 'sousse-tunisia', 'monastir-tunisia'],
   'kazakhstan-caspian': ['aktau-kazakhstan', 'kuryk-kazakhstan'],
   'azerbaijan-caspian': ['baku-azerbaijan'],
 };
