@@ -6,7 +6,11 @@
 **Companion:** `UAE-SPAGHETTI-DIAGNOSIS-AND-PLAN.md`, `UAE-DIAGNOSIS.json`.
 
 ## Goal
-Reduce the UAE from **~666 rendered routes / 348 BPs** to **~35–45 significant, clean, in-range, no-land-crossing corridors** on **~60–80 real on-water BPs**, and render the **same** UAE network for every partner.
+Rebuild the **global** UAE view (the master `ROUTES.json` network, not just partner scopes) into a set of corridors where **every corridor is significant, unique (no duplicates/parallels), in-range, and has zero land crossings**. The UAE is a fantastic marine-mobility playground — **there is NO cap of ~45**. Keep **as many corridors as the real geography genuinely supports** (comfortably more than 45), provided each one clears the significance + dedupe + no-land-crossing bar. We are removing spaghetti and dirty BPs, **not** thinning a good network.
+
+Then: the global set is the single source of truth, and **every partner inherits it by cluster/city membership** (see `CORRIDOR-INHERITANCE-CONTRACT.md`) — so the global view and all four partner views are identical for any shared cluster.
+
+Quantitatively: from **~666 rendered / 348 BPs** with 202 land-crossers → a de-duped, land-clean set on **~60–90 real on-water BPs**, corridor count set by geography (significant OD pairs + sensible hub-and-spoke), **0 land flags**.
 
 ---
 ## Step 1 — Drop dirty BPs (deterministic signatures)
@@ -17,8 +21,8 @@ Quarantine/drop any UAE BP matching:
 4. **Planned/duplicate jetties** — collapse duplicates to one canonical node per landmark (e.g. the multiple Palm-resort jetties → keep the real transfer piers, merge the rest).
 Null-beats-wrong: if a BP can't be resolved to a real on-water pier, drop it, don't guess.
 
-## Step 2 — Kill all-pairs meshing; keep only significant corridors
-Replace full-mesh with **hub-and-spoke + marquee OD pairs**. Delete: trivial sub-2 nm hops, redundant parallel edges, and any edge whose both endpoints are better served by a hub. Target named set below.
+## Step 2 — Kill all-pairs meshing; keep every significant corridor (no cap)
+Replace full-mesh with **hub-and-spoke + marquee OD pairs**. The enemy is not corridor *count* — it is **duplicates, trivial sub-2 nm hops, redundant parallel edges, and land-crossers**. Delete those. **Keep every corridor that is a genuine, distinct, on-water OD pair**, even if that yields well over 45. The named lists below are the **significance floor / seed, not a ceiling** — add any further real, distinct, in-range, on-water OD pair Grok can source (more resort-island, marina-to-marina, and cross-bay links are welcome as long as they're not duplicates or land-crossers).
 
 ### Dubai (Gulf coast) — ~8 corridors
 - Dubai Marina ↔ Palm Jumeirah (Atlantis / One&Only jetties)
@@ -67,16 +71,24 @@ Drop all UAE↔Qatar/Bahrain edges (over-range, quarantined). Keep at most the o
 - **Acceptance gate: 0 rendered UAE routes with `_qa_land_flag=true`.** Every Palm/island/creek corridor rounds the breakwater/land offshore.
 - Enforce range: drop/keep-null any surviving corridor > 70 nm.
 
-## Step 4 — Unify the partners (one shared UAE scope)
-Root cause of per-partner divergence: routes are **not** partner-tagged; the front-end renders each partner's own `_map_scope`. Bolt, Yango, Noon, and Careem(mirror) each carry a different UAE scope.
+## Step 4 — Unify via inheritance, not curation (see `CORRIDOR-INHERITANCE-CONTRACT.md`)
+Root cause of per-partner divergence: a corridor is treated as a **partner** property — each partner hand-curates its own `_map_scope` subset, so four partners drifted into four UAE maps. Fix the model, not just the data:
 
-**Action:** define ONE canonical UAE `_map_scope` block (identical `registry_keys` + `cluster_city_ids` + `inheritance_policy`, pointing at the consolidated corridor set) and write it identically into `careem.json`, `bolt.json`, `yango.json`, `noon.json`. Partner **narrative/economics stay partner-specific**; only the UAE geometry scope is unified. Tasklet will stage the shared `_map_scope` block; Grok confirms the registry_keys resolve post-reseal.
+1. The **consolidated global corridor set is the single source of truth**; each corridor is stamped with `cluster_id`.
+2. **Delete** the four per-partner UAE corridor curations.
+3. Each partner's UAE `_map_scope` becomes a **cluster/city membership list + `"inheritance_policy": "inherit_all_cluster_corridors"`** — **no corridor arrays in partner files**.
+4. Renderer derives `partner_corridors = global_canonical ∩ partner.clusters`, so every partner in a cluster shows the **identical** corridors (and identical to the global view). Partner **narrative/economics stay partner-specific**; only geometry is inherited.
+5. **New seal gate `validate_partner_inheritance.py`:** FAIL if any partner enumerates a corridor not derivable from its clusters, or omits one that is. This is what prevents a future 4-scope split — apply it across **all** partners/markets, not just UAE.
 
-## Step 5 — Then Singapore
-Apply the same de-mesh + land-QA-to-zero policy to Singapore (tighten its Batam/Johor land-cutters) as the second marquee. Separate follow-up spec.
+Tasklet stages the membership `_map_scope` blocks post-reseal; Grok wires the derivation + parity gate.
+
+## Step 5 — Then Singapore + roll the gate globally
+Apply the same de-mesh + land-QA-to-zero policy to Singapore (tighten its Batam/Johor land-cutters) as the second marquee. Then run `validate_partner_inheritance.py` across **every** partner/market so no other geography can develop a UAE-style 4-scope split. Separate follow-up spec for Singapore.
 
 ## Guardrails
 - ID-based matching only; null beats confidently-wrong; do not invent BPs, corridors, or coords.
+- **No corridor cap** — keep every significant, distinct, in-range, on-water OD pair; only kill duplicates, trivial hops, and land-crossers.
+- Every surviving corridor is stamped with `cluster_id` so inheritance can derive partner views.
 - No live partner deck is edited by this work.
-- East coast and Gulf coast are permanently separate clusters.
-- Report back: new UAE route count, BP count, land-flag count (must be 0), and per-partner render parity (all four identical).
+- East coast (Gulf of Oman) and Gulf coast are permanently separate clusters.
+- Report back: new **global** UAE corridor count, BP count, land-flag count (**must be 0**), and inheritance parity — global view == each partner's derived view for every shared cluster.
