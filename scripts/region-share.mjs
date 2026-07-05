@@ -2,6 +2,7 @@
 export const REGION_ALIASES = {
   SEA: 'Southeast Asia',
   'LatAm-Caribbean': 'Latin America',
+  'LatAm-Pacific': 'Latin America',
   'Latin-America': 'Latin America',
   Caribbean: 'Caribbean',
   'Europe-Mediterranean': 'Europe',
