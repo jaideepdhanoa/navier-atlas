@@ -14,7 +14,7 @@ By contrast Singapore looks calmer only because it has fewer BPs and lighter mes
 
 ## Why it happened (root causes)
 1. **All-pairs meshing.** The generator connected *every* BP in a city to *every* other BP → combinatorial explosion. That's the spaghetti.
-2. **Land-crossing geometry was rendered anyway.** There are already **788 hand-waypoint pairs** authored for the UAE, but they were never fully applied at seal — so 202 straight-line land-cutters are still on the map despite being QA-flagged.
+2. **Land-crossing geometry is rendered anyway — and patching it isn't working.** There are already **788 hand-waypoint pairs** authored (manual detours that bend a route around a headland/island). **Correction to an earlier note: these WERE applied** — of the ~266 UAE routes still land-flagged, 246 carry a `_geometry_fix` stamp and all have bent multi-point paths. The problem is they're **insufficient**: ~233 still genuinely clip land after bending (median ~3 km, tail to ~90 km), ~33 are stale flags (fix worked, flag never cleared), and 64 flagged routes have no waypoint pair at all. Conclusion: patching 788 partial detours onto an over-meshed ~1,000-route pile can't win — many flagged routes are corridors that shouldn't exist at all.
 3. **Dirty boarding points.** Bare city centroids (`Abu Dhabi`, `Fujairah`, `Ras Al Khaimah`), activity operators that aren't real transfer piers (`Jet Ski Abu Dhabi Waves`, `MSC`, `Boat ramp`, `DiveCampus Diving Club`), plus planned/duplicate jetties.
 4. **West coast + east coast meshed together.** Gulf-side emirates (Dubai/AD/Sharjah/RAK) and the Gulf-of-Oman side (Fujairah/Khor Fakkan/Dibba) were treated as one pool → routes drawn straight across the mountains.
 
@@ -36,10 +36,10 @@ So all four are filtering the *same* messy 666-route pool through *four differen
 3. Apply the existing 788 hand-waypoints (and add the missing ones) so **every** remaining corridor routes cleanly on water — target **0** `_qa_land_flag` rendered.
 4. Purge the 23 over-range, the zero-distance, and the cross-border leaks (keep only 1–2 *deliberate* cross-border marquees).
 5. Split east coast (Fujairah/Khor Fakkan/Dibba) into its own cluster — never mesh it to the Gulf side.
-   **Target: ~666 → ~35–45 significant clean corridors.**
+   **Target: no corridor cap — keep every significant, distinct, in-range, on-water OD pair (comfortably more than 45); only kill duplicates, trivial hops, and land-crossers. This is the GLOBAL `ROUTES.json` view, not just partner scopes.**
 
-**Layer 2 — unify the partners (Tasklet scope lane):**
-Define **one canonical UAE `_map_scope`** and apply it identically to `careem`, `bolt`, `yango`, `noon`. All four then render the same clean UAE network. (Partner *narrative/economics* stay partner-specific; only the geometry scope is unified.)
+**Layer 2 — inheritance, not per-partner curation (see `CORRIDOR-INHERITANCE-CONTRACT.md`):**
+Stamp every surviving corridor with a `cluster_id`; the global set is the single source of truth. Delete the four divergent per-partner UAE curations. Each partner's `_map_scope` becomes a **cluster/city membership list + inherit-all policy** — the renderer derives `partner_corridors = global ∩ partner.clusters`, so all four render identically to each other and to the global view. A new seal gate (`validate_partner_inheritance.py`) fails any partner that enumerates or omits a corridor its clusters don't justify — rolled across all partners so no future 4-scope split can happen.
 
 ## Ownership & sequencing
 - **Tasklet (this handoff):** the diagnosis above, the significant-corridor target list, the BP-cleanup signatures, and the unified `_map_scope` definition → `GROK-SPEC-uae-corridor-consolidation.md`.
