@@ -1,32 +1,41 @@
-# Addendum — canonical marquee sets for ALL markets (one pass, no per-market cycles)
+# Addendum — canonical marquee sets (v2: city-level + hero-ranked)
 
-**Date:** 2026-07-05 · **From:** Tasklet · Companion to `GROK-MASTER-HANDOFF-2026-07-05.md`.
+## What changed from v1
+1. **Granularity → city.** Sets are now keyed by `city_id`, not the country-cluster.
+   Every partner operating in a city inherits the **same** set for that city
+   (all UAE partners see the same **Dubai** set, the same **Abu Dhabi** set, etc.).
+   A partner's featured/wow = union of the marquee sets for the cities in its clusters.
+   Inter-city corridors appear in **both** endpoint cities' pools.
+2. **Ranking → hero (water-beats-road), not popularity.** v1 floated trivial 2 nm
+   resort hops because it scored on crowd-feature-frequency + traffic. v2 scores on:
+   distance sweet-spot (peaks ~12 nm) + island endpoint + cross-city water-advantage;
+   traffic_weight / crowd-features are **tiebreakers only**.
+3. **Firm 3 nm floor, no exceptions.** Trivial hops (Kempinski↔Atlantis 2.0 nm,
+   One&Only↔Zabeel Saray 1.9 nm, Al Marjan↔Wynn 0.4 nm) are gone by construction.
+4. **Junk-endpoint filter.** Excludes jet-ski / water-sports / helipad / seaplane /
+   slipway / parking / mislabeled cross-border artifacts (killed the bad-geocode
+   "Dubai Marina → Old Doha Port @ 4.5 nm").
 
-## Why this is done now (not one market at a time)
-Curation is done at the **OD-pair level (BP node pair + cluster_id)**, ID-based — *not* at the volatile `route_id` level. Grok's reseal changes route IDs/geometry, **not** which named waterfront OD pairs are the marquees. So Tasklet completed the canonical curation for the **entire roster in a single pass**; Grok only needs to **bind `route_id` after reseal** (deterministic). No dependency, no cycles.
+## Coverage
+- **217 cities** with ≥1 marquee; **163** with ≥3.
+- **978 current entries retired** (348 free-text strings, 27 no-BP-id, 603 not-in-canonical) → archive, not delete.
+- WOW ≤5, FEATURED ≤8 per city.
 
-## What was produced
-- **`CANONICAL-MARQUEES.json`** — one canonical set per cluster: `marquee_wow` (≤6) + `marquee_featured` (≤8), each entry `{route_id (hint), from_node_id, to_node_id, from_label, to_label, cluster_id, distance_nm, partner_feature_count, partners_currently_featuring, _score}`.
-  - **91 clusters** have canonical sets · **40** carry real crowd-signal (≥1 partner currently features) · 51 are greenfield (top clean-by-traffic, honest).
-- **`MARQUEE-RETIRE-LIST.json`** — **926 current entries retired** (348 free-text strings with no ID, 104 unresolved BP pairs not in ROUTES, rest = not in cluster canonical top set). Retire = archive to `handoff/archive/`, not delete.
-- **`CANONICAL-MARQUEES-REVIEW.md`** — human-readable table for the contested markets (UAE, Thailand, Indonesia, India, Colombia, Singapore, Qatar, Egypt, Morocco, Tunisia).
-- **`gen_canonical_marquees.py`** — deterministic generator (re-runnable post-reseal).
+## UAE worked example (identical for Careem / Bolt / Yango / Noon)
+**Dubai:** Dubai Creek/Old Souq ↔ Atlantis The Palm (12.6) · Dubai Harbour ↔ The World Islands (8.2) · Mina Rashid ↔ Dubai Islands (4.1) · Old Souq ↔ Harbour Seafood (12.0) · Dubai Marina ↔ Al Jaddaf upper Creek (13.5).
+**Abu Dhabi:** Yas Marina ↔ Zaya Nurai Island (12.6) · Yas ↔ Saadiyat Beach Club (13.0) · Emirates Palace ↔ Saadiyat (10.4) · Jebel Dhanna ↔ Sir Bani Yas (9.8) · Eastern Mangroves ↔ Yas (8.3).
+**Sharjah:** Sharjah ↔ Dubai Islands (6.4) · Al Majaz ↔ Park Island (19.9) · Al Noor ↔ Al Qasba (3.4) · Vida UAQ ↔ Sharjah Waterfront (7.3).
+**Ras Al Khaimah:** Al Marjan Island ↔ RAK city (15.1) · RAK ↔ Al Marjan arrival marina (16.0) · Al Marjan ↔ Jazirat Al Hamra (5.9).
 
-## Quality gate (what can NOT enter a marquee set)
-`_qa_land_flag` / `_quarantine` · land_km > 0.2 · distance ∉ [0.4, 30] nm · missing endpoint labels · **self-referential** (same place both ends) · `(planned)` down-weighted. Result: `Abu Dhabi→Muscat`, `Fujairah→Muscat`, `Barcelona→Palma`, and the self-referential Cartagena dup are **provably excluded**. A `_label_needs_cleanup` flag marks any pick whose label carries geocoding-provenance noise (currently 0 in the selected set).
+## Grok's job (unchanged contract)
+Curation is OD-pair level (BP node pair + city_id + cluster_id). Grok **binds/re-stamps
+`route_id`** deterministically after reseal; the named waterfront pairs are canonical.
+Anything genuinely ambiguous is left for Grok to confirm against resealed geometry —
+**null beats wrong.** Seal gate rejects any partner featured/wow entry not in its
+cities' canonical sets.
 
-## What Grok does with this
-1. After UAE (then each market's) reseal, **bind `route_id`** to each canonical marquee by its BP node pair (`from_node_id`,`to_node_id`) → resealed corridor. If a marquee's BP pair didn't survive reseal, drop it and pull the next-ranked clean candidate from `CANONICAL-MARQUEES.json` (already ordered by score).
-2. **Derive every partner's featured/wow** as `cluster.marquee_corridors ∩ partner.clusters` — identical set for all partners in a market (UAE-Dubai partners all see the same marquees).
-3. **Collapse schema** to the single `{route_id, from_label, to_label, cluster_id}` shape; archive retired entries.
-4. Gate: `validate_partner_inheritance.py` rejects any featured/wow entry not in the cluster canonical set, wrong-schema, or land/range-dirty.
-
-## Worked example — UAE (all four partners inherit this identical set)
-1. Kempinski Palm Jumeirah ↔ Atlantis The Palm (2.0 nm)
-2. One&Only The Palm ↔ Jumeirah Zabeel Saray (1.9 nm)
-3. La Mer / J1 Beach ↔ Nikki Beach Pearl Jumeirah (1.2 nm)
-4. Côte d'Azur Resort Marina ↔ Anantara World Islands (2.4 nm)
-5. Vida Beach Umm Al Quwain ↔ Sharjah Waterfront City (7.3 nm)
-6. Ras Al Khaimah Harbour ↔ RAK Corniche (0.4 nm)
-
-_Note: canonical granularity follows CLUSTERS.json (UAE is one country-cluster). All UAE partners inherit the same set, so Dubai marquee consistency is achieved by construction._
+## Residual notes for the locale-cleanup lane
+- A few aggregate/junk BP display labels persist (e.g. Colombia "Cartagena & The
+  Rosario Islands" used as an endpoint) — flag for label scrub, not corridor drop.
+- Thailand cities are sparse here (river piers < 3 nm culled by the firm floor);
+  revisit Chao Phraya iconic short hops if a river exception is wanted later.

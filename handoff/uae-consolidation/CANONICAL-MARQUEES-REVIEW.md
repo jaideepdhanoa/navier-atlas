@@ -1,103 +1,114 @@
-# Canonical marquee sets — review (contested markets)
+# Canonical marquee sets — city-level review (v2, hero-ranked)
 
-_Generated 2026-07-05 · ID-based OD-pair curation · quality-gated · route_id is a Grok-bind hint._
+_217 cities · ranking: hero (water-beats-road): distance sweet-spot + island + cross-city; traffic/crowd = tiebreaker_
 
-Every partner sharing a market inherits the **same** set below. Land-crossers & out-of-range junk are excluded by the quality gate.
+_Quality gate: in-range 3-30nm firm floor, on-water, junk-endpoint filter, no trivial <3nm hops_
 
-## United Arab Emirates (`uae`)
-_382 clean candidates · 6 strong · showing canonical wow (≤6):_
+Every partner operating in a city inherits the **same** set below. `wow` = top 5; `featured` = top 8.
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Kempinski Hotel & Residences Palm Jumeirah Jetty ↔ Atlantis The Palm Jetty | 2 | bolt, yango |
-| 2 | One&Only The Palm Jetty ↔ Jumeirah Zabeel Saray Jetty | 1.9 | bolt, yango |
-| 3 | La Mer / J1 Beach Jetty ↔ Nikki Beach Resort Pearl Jumeirah Jetty | 1.2 | bolt, yango |
-| 4 | Côte d'Azur Resort Marina ↔ Anantara World Islands Resort Jetty | 2.4 | uber |
-| 5 | Vida Beach Resort Umm Al Quwain ↔ Sharjah Waterfront City marina | 7.3 | careem, noon |
-| 6 | Ras Al Khaimah Harbour ↔ RAK Corniche public pier | 0.4 | uber |
 
-## Thailand (`thailand`)
-_307 clean candidates · 6 strong · showing canonical wow (≤6):_
+## Dubai — `dubai-uae` (cluster: uae)  · 42 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 12.6 | island | Dubai Old Souq Marine Transport Station ↔ Atlantis The Palm Jetty |
+| 2 | 8.2 | island | Dubai Harbour ↔ The World Islands |
+| 3 | 4.1 | island | Mina Rashid waterfront ↔ Dubai Islands / Souk Al Marfa |
+| 4 | 12.0 | coastal | Dubai Old Souq Marine Transport Station ↔ The Harbour Seafood |
+| 5 | 13.5 | coastal | Dubai Marina ↔ Al Jaddaf Marine Station (upper Creek) |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Koh Samui ↔ Thong Sala Pier | 10.2 | airasia-move, grab-thailand, line, line-man-wongnai |
-| 2 | Lomprayah Pralarn Pier (Mae Nam) ↔ Thong Sala Pier (Koh Phangan) | 7.5 | airasia-move, grab-thailand, line-man-wongnai |
-| 3 | Koh Samui ↔ Don Sak Ferry Harbour | 28.1 | airasia-move, grab-thailand, line-man-wongnai |
-| 4 | Banyan Tree Krabi ↔ Koh Phi Phi Tour Pier | 8.6 | line |
-| 5 | Chalong Pier ↔ Klong Jilad Ferry Pier | 25.8 | — |
-| 6 | Phuket - Rassada Pier (RESOLVED this pass, Nominatim in-bbox) ↔ Phi Phi (Tonsai Pier, RESOLVED this pass, OSM ferry_terminal) | 22.7 | — |
+## Abu Dhabi — `abu-dhabi-uae` (cluster: uae)  · 33 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 12.6 | island | Yas Marina ↔ Zaya Nurai Island Jetty |
+| 2 | 13.0 | island | Yas Marina ↔ Saadiyat Beach Club Jetty |
+| 3 | 10.4 | island | Emirates Palace Marina ↔ Saadiyat Beach Club Jetty |
+| 4 | 9.8 | island | Jebel Dhanna / Ruwais Ferry Terminal ↔ Sir Bani Yas Anantara Jetty |
+| 5 | 8.3 | island | Eastern Mangroves ↔ Yas Marina |
 
-## Indonesia (`indonesia`)
-_358 clean candidates · 19 strong · showing canonical wow (≤6):_
+## sharjah-uae — `sharjah-uae` (cluster: uae)  · 43 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 6.4 | island | Sharjah ↔ Dubai Islands Marina |
+| 2 | 19.9 | island | Al Majaz Waterfront pier ↔ Park Island |
+| 3 | 3.4 | island | Al Noor Island jetty ↔ Al Qasba canal jetty |
+| 4 | 7.3 | coastal | Vida Beach Resort Umm Al Quwain ↔ Sharjah Waterfront City marina |
+| 5 | 8.8 | coastal | Al Majaz Waterfront pier ↔ Dubai Marine Beach Resort & Spa |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Harbour Stockyard PT. Krakatau Steel ↔ Villa Marina Anyer | 10 | airasia-move, gojek, grab |
-| 2 | Mall ↔ Likupang / Manado / Bunaken, North Sulawesi, Indonesia | 7.1 | gojek, grab |
-| 3 | Bali Marina (Benoa) ↔ Six Senses Uluwatu | 7.7 | airasia-move, gojek, grab |
-| 4 | Sanur Beach Fast Boat Terminal ↔ GoBoat.id - Nelayan Beach Canggu | 7.6 | airasia-move, gojek |
-| 5 | Tigaraja Port (Parapat) ↔ Tomok pier (Samosir) | 3.2 | gojek, grab |
-| 6 | Tuktuk Siadong village pier ↔ Ambarita | 8.0 | gojek, grab |
+## Ras Al Khaimah — `ras-al-khaimah-uae` (cluster: uae)  · 22 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 15.1 | island | Al Marjan Island ↔ Al Qawasim Corniche (RAK city) |
+| 2 | 16.0 | island | Ras Al Khaimah ↔ Al Marjan Island public arrival marina |
+| 3 | 5.9 | island | Al Marjan Island ↔ Jazirat Al Hamra waterfront |
+| 4 | 5.3 | island | Al Marjan Island ↔ Al Hamra Marina / Village |
+| 5 | 11.9 | coastal | Ras Al Khaimah ↔ ميناء صيادين غليلة |
 
-## India (`india`)
-_106 clean candidates · 14 strong · showing canonical wow (≤6):_
+## Fujairah — `fujairah-uae` (cluster: uae)  · 23 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 11.4 | coastal | Fujairah ↔ Khorfakkan Corniche / Port |
+| 2 | 13.6 | coastal | Fujairah ↔ AL Luolo'aya fishermen's Harbour |
+| 3 | 8.4 | coastal | Fujairah Marina ↔ Murbah sea port st—China harbour office for construction |
+| 4 | 6.8 | coastal | Murbah sea port st—China harbour office for construction ↔ Khorfakkan Corniche / Port |
+| 5 | 7.0 | coastal | AL Luolo'aya fishermen's Harbour ↔ Iberotel Miramar Al Aqah Beach Resort jetty |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Willingdon Island ↔ Kerala Backwaters & Kochi | 6.8 | ola, uber-india |
-| 2 | Fairlie Place Ferry ↔ Bagbazar Ghat | 1.7 | ola, rapido, uber, uber-india |
-| 3 | Gateway of India ↔ Mumbai Harbour | 3.5 | ola, uber-india |
-| 4 | Howrah Ferry Ghat ↔ Fairlie Place Ferry | 0.8 | ola, rapido, uber, uber-india |
-| 5 | Howrah Ferry Ghat ↔ Millennium Park Jetty | 0.9 | ola, rapido, uber, uber-india |
-| 6 | Dakshineswar Ferry Ghat ↔ Belur Math Ferry Ghat | 1.3 | ola, rapido, uber, uber-india |
+## Cartagena & the Rosario Islands — `cartagena-colombia` (cluster: colombia)  · 10 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 18.3 | island | Club de pesca de Cartagena - Marina ↔ Rosario Islands |
+| 2 | 9.0 | island | Rosario Islands ↔ Isla baru Playa blanca |
+| 3 | 5.7 | island | Cartagena & The Rosario Islands ↔ Rosario Islands |
+| 4 | 3.1 | island | Tierra Bomba Island Punta Arena ↔ Conjunto Residencial La Marina |
+| 5 | 12.2 | coastal | Club de pesca de Cartagena - Marina ↔ Isla baru Playa blanca |
 
-## Colombia (`colombia`)
-_11 clean candidates · 4 strong · showing canonical wow (≤6):_
+## Bangkok — `bangkok-thailand` (cluster: thailand)  · 3 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 8.4 | coastal | Sathorn (Central / Taksin) ↔ Nonthaburi (N30) |
+| 2 | 3.3 | coastal | Nonthaburi (N30) ↔ Pak Kret (N33) |
+| 3 | 3.2 | coastal | Sathorn (Central / Taksin) ↔ Thewes (N15) |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Club de pesca de Cartagena - Marina ↔ Isla baru Playa blanca | 12.2 | didi |
-| 2 | Club de pesca de Cartagena - Marina ↔ Rosario Islands | 18.3 | didi |
-| 3 | Club de pesca de Cartagena - Marina ↔ Bocachica Tierrabomba Jetty | 5.7 | yango |
-| 4 | Club de pesca de Cartagena - Marina ↔ Todomar CHL Marina Bocagrande | 0.4 | yango |
+## Doha — `doha-qatar` (cluster: qatar)  · 54 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 8.5 | island | Al Wakrah Souq Harbour ↔ Al Shyoukh Terminal (Banana Island shuttle departure) |
+| 2 | 8.6 | cross-city | Al Wakrah Souq Harbour ↔ Doha Corniche Dhow Harbour (MIA-side) |
+| 3 | 8.1 | cross-city | Old Doha Port (Mina District) ↔ Al Wakrah (Souq Al Wakrah marina) |
+| 4 | 21.2 | cross-city | Manama ↔ Eastern Province |
+| 5 | 3.9 | cross-city | Simaisma ↔ Al Khor Corniche / marina |
 
-## Singapore (`singapore`)
-_194 clean candidates · 2 strong · showing canonical wow (≤6):_
+## Mumbai — `mumbai-india` (cluster: india)  · 21 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 3.5 | coastal | Gateway of India ↔ Mumbai Harbour |
+| 2 | 5.6 | coastal | Elephanta Caves ↔ Mumbai Trans-Harbour Navi Mumbai Toll Plaza |
+| 3 | 12.4 | coastal | Versova Ferry Wharf ↔ Gateway of India |
+| 4 | 12.7 | coastal | Belapur (Navi Mumbai) ↔ Gateway of India |
+| 5 | 13.4 | coastal | Gorai / Marve Jetty ↔ Nariman Point Water-Taxi Jetty |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Marina Bay Water Taxi Stops (MPA pilot — Esplanade / Bayfront / Promontory) ↔ Changi Point Ferry Terminal | 14.2 | gojek, grab |
-| 2 | Bedok Jetty (East Coast Park) ↔ Marina Bay Water Taxi Stops (MPA pilot — Esplanade / Bayfront / Promontory) | 5.8 | grab |
+## Kochi — `kochi-india` (cluster: india)  · 5 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 6.1 | coastal | High Court (Ernakulam) ↔ Kumbalam |
+| 2 | 4.2 | coastal | High Court (Ernakulam) ↔ Nettoor |
+| 3 | 3.6 | coastal | High Court (Ernakulam) ↔ Eroor |
+| 4 | 3.4 | coastal | Vyttila (mobility hub) ↔ InfoPark |
+| 5 | 3.1 | coastal | Vyttila (mobility hub) ↔ Kakkanad |
 
-## Qatar (`qatar`)
-_108 clean candidates · 3 strong · showing canonical wow (≤6):_
+## Baku — `baku-azerbaijan` (cluster: azerbaijan-caspian)  · 1 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 3.3 | coastal | Baku Boulevard Seafront (Bulvar) ↔ Bibi-Heybat |
 
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Al Shyoukh Terminal (Banana Island shuttle departure) ↔ Banana Island Resort Doha (Anantara) — island jetty | 6.8 | bolt, yango |
-| 2 | Doha ↔ The Pearl-Qatar — Marsa Arabia Marina | 4.7 | bolt, yango |
-| 3 | The Pearl-Qatar — Porto Arabia Marina ↔ Lusail Marina | 1.4 | bolt, yango |
+## Dakar — `dakar-senegal` (cluster: senegal)  · 2 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 7.3 | coastal | Dakar — Embarcadère de Gorée ↔ Ngor / Almadies |
+| 2 | 3.5 | coastal | Dakar — Embarcadère de Gorée ↔ Îles de la Madeleine |
 
-## Egypt (Red Sea Riviera) (`egypt`)
-_137 clean candidates · 0 strong · showing canonical wow (≤6):_
-
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Sailors Beach Club ↔ Safaga Internation Maritime Seaport | 26.7 | — |
-| 2 | Hurghada ↔ Tito’s marina & Aqua Park & Beach Use | 1.9 | — |
-| 3 | Sharm El Sheikh ↔ Marina Divers Sharm | 6.2 | — |
-
-## Morocco (`morocco`)
-_25 clean candidates · 1 strong · showing canonical wow (≤6):_
-
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Essaouira ↔ Sidi Kaouki | 9.3 | indrive |
-
-## Tunisia (`tunisia`)
-_2 clean candidates · 1 strong · showing canonical wow (≤6):_
-
-| # | Marquee corridor | nm | currently featured by |
-|---|---|---|---|
-| 1 | Djerba & Kerkennah ↔ Ajim | 17.7 | yassir |
+## Lima Peru — `lima-peru` (cluster: peru)  · 3 clean candidates
+| # | nm | type | corridor |
+|---|----|------|----------|
+| 1 | 8.3 | island | Callao Port Terminal ↔ Palomino Islands (sea-lion colony) |
+| 2 | 10.4 | coastal | Costa Verde (Chorrillos / Club de Regatas) ↔ Callao Port Terminal |
+| 3 | 3.0 | coastal | La Punta (Callao Yacht Harbour) ↔ Isla San Lorenzo |
