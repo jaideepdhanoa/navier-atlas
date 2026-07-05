@@ -1,0 +1,62 @@
+{
+  "batch": "tunisia-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "cluster": "tunisia (Maghreb)",
+  "existing_members": ["djerba-tunisia", "tunis-tunisia"],
+  "scope_note": "Tunisia's coast forms THREE natural short-hop sub-networks: (1) the Gulf of Tunis around the capital, (2) the Sahel resort coast (Hammamet-Sousse-Monastir), and (3) Djerba island in the Gulf of Gabes. Deepen Tunis + Djerba and add the Sahel cities (real, sourced) so the market reads as a genuine network, not two orphan pins.",
+  "no_invention_rule": "Every BP and city is a real named place with a source URL. New cities (Sousse/Monastir/Hammamet, Bizerte) are legitimate sourced registry additions, not inventions. Grok does deterministic ID-match + coords + seal.",
+  "sub_networks": {
+    "gulf_of_tunis": {
+      "member_city": "tunis-tunisia (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Sidi Bou Said Marina", "type": "marina", "source_url": "https://anchorages.co/go/tunisia/sidi-bou-said-marina/", "note": "Basin cut into the cliff below the blue-and-white village, ~4 nm north of Tunis; also cited by Imray."},
+        {"name": "La Goulette yacht club / port", "type": "port_marina", "source_url": "https://www.imray.com/news/north-africa/", "note": "On the sandbar between Lake Tunis and the Gulf of Tunis; yacht club + cruise + ferry gateway to Tunis/Carthage."},
+        {"name": "Gammarth / La Marsa waterfront", "type": "beach_landing", "source_url": "https://www.imray.com/news/north-africa/", "note": "Northern beach-resort stretch of the Gulf of Tunis above Sidi Bou Said."}
+      ],
+      "corridors": [
+        {"from": "La Goulette", "to": "Sidi Bou Said Marina", "approx_nm": 5, "desc": "port to cliffside village marina", "hand_waypoint_required": true, "hand_waypoint_note": "Cross the inner Gulf of Tunis and round Cap Carthage headland offshore; do not cut across the Carthage promontory."},
+        {"from": "Sidi Bou Said Marina", "to": "Gammarth / La Marsa", "approx_nm": 4, "desc": "marina to north beach resorts", "hand_waypoint_required": true, "hand_waypoint_note": "Round the Sidi Bou Said / Cap Carthage headland to the north beach."}
+      ]
+    },
+    "north_coast": {
+      "new_city": {"id_hint": "bizerte-tunisia", "name": "Bizerte", "source_url": "https://www.imray.com/news/north-africa/", "note": "Northernmost Tunisian city; historic old port + marina + yacht club on a lagoon channel."},
+      "boarding_point_candidates": [
+        {"name": "Bizerte marina / old port", "type": "marina", "source_url": "https://www.imray.com/news/north-africa/", "note": "Marina and yacht club at the mouth of the Bizerte lagoon channel."}
+      ],
+      "corridors": [
+        {"from": "Bizerte marina", "to": "Sidi Bou Said Marina", "approx_nm": 35, "desc": "north-coast run to the capital", "hand_waypoint_required": true, "hand_waypoint_note": "Follow the north coast SE; round Cap Farina / Cap Zebib headlands with offshore waypoints. Near N30 range edge -- verify duty cycle."}
+      ]
+    },
+    "sahel_resort_coast": {
+      "new_cities": [
+        {"id_hint": "hammamet-tunisia", "name": "Yasmine Hammamet", "source_url": "https://www.noonsite.com/place/tunisia/", "note": "Purpose-built marina resort town on the Gulf of Hammamet; one of Tunisia's three wintering marinas."},
+        {"id_hint": "sousse-tunisia", "name": "Sousse (Port El Kantaoui)", "source_url": "https://www.noonsite.com/place/tunisia/", "note": "Port El Kantaoui purpose-built marina ~10 km north of Sousse; major Sahel resort."},
+        {"id_hint": "monastir-tunisia", "name": "Monastir", "source_url": "https://oceanposse.com/category/tunisia/", "note": "Cap Monastir Marina: full-service, 400 berths, yachts up to 40 m."}
+      ],
+      "boarding_point_candidates": [
+        {"name": "Yasmine Hammamet Marina", "type": "marina", "source_url": "https://www.noonsite.com/place/tunisia/", "note": "Large marina + medina resort on the Gulf of Hammamet."},
+        {"name": "Port El Kantaoui (Sousse)", "type": "marina", "source_url": "https://www.noonsite.com/place/tunisia/", "note": "Marina village north of Sousse."},
+        {"name": "Cap Monastir Marina", "type": "marina", "source_url": "https://oceanposse.com/category/tunisia/", "note": "400-berth full-service marina at Monastir headland."}
+      ],
+      "corridors": [
+        {"from": "Yasmine Hammamet Marina", "to": "Port El Kantaoui (Sousse)", "approx_nm": 22, "desc": "Gulf of Hammamet resort hop", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run south across the Gulf of Hammamet; offshore waypoint to clear the Hammamet/Sousse shoals."},
+        {"from": "Port El Kantaoui (Sousse)", "to": "Cap Monastir Marina", "approx_nm": 12, "desc": "Sousse to Monastir marina hop", "hand_waypoint_required": true, "hand_waypoint_note": "Round Cap Monastir headland offshore into the marina basin."}
+      ]
+    },
+    "djerba_gulf_of_gabes": {
+      "member_city": "djerba-tunisia (deepen)",
+      "boarding_point_candidates": [
+        {"name": "Marina Djerba (Houmt Souk Marina)", "type": "marina", "existing": true, "existing_id_hint": "bp-85bc806add", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/tunisia", "note": "Main Djerba marina at Houmt Souk (existing anchor)."},
+        {"name": "Ajim port (Djerba west)", "type": "ferry_port", "source_url": "https://www.harbourmaps.com/en/most-popular-harbours/tunisia", "note": "Djerba's west-point ferry port; the island's mainland link across the Ajim-Jorf strait."}
+      ],
+      "corridors": [
+        {"from": "Marina Djerba (Houmt Souk)", "to": "Ajim port", "approx_nm": 14, "desc": "island north-to-west-point hop", "hand_waypoint_required": true, "hand_waypoint_note": "Route through the Gulf of Gabes staying OUTSIDE the extensive Djerba shallows/sandbanks; offshore waypoint west of the island before the Ajim-Jorf strait. Gulf of Gabes is very shallow -- Grok must respect the depth mask."}
+      ]
+    }
+  },
+  "excluded_context_only": [
+    {"corridor": "Gulf of Tunis <-> Sahel <-> Djerba as one continuous run", "reason": "Total coast is long; each sub-network is a separate short-hop cluster. Do not mint a single Tunis-to-Djerba super-corridor (>>70 nm)."}
+  ]
+}
