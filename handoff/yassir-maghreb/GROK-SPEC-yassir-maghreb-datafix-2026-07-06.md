@@ -31,6 +31,15 @@ If any boarding points for these cities inherit the anchor coord, re-check them 
 
 (Position is fine — 1 km. Label only. Drop the country suffix to match every sibling label; use en-dash.)
 
+## 4. Morocco endpoint city_id mis-tag (70 routes) — WS-4 spatial re-stamp
+70 routes carry `from_city_id`/`to_city_id` = **`casablanca-morocco`** but their endpoints are actually elsewhere on the Atlantic coast (Agadir, Essaouira, Sidi Kaouki, Mirleft, Tamri, Taghazout, Aglou, Légzira, Anchor Point, and some real Rabat/El Jadida). The whole central-Atlantic coast appears to have been defaulted to `casablanca-morocco` at the city grain.
+- **Impact:** cluster_id (`morocco`) is correct, so the map isn't dark — but **city-level route grouping is wrong**. Casablanca's city page would surface Agadir/Essaouira routes; Agadir/Essaouira/etc. pages under-count. This bites the deck's per-city route slides.
+- **Fix:** re-stamp endpoint `from_city_id`/`to_city_id` by nearest-anchor to the correct member city (spatial anchor, your WS-4 lane). Keep `cluster_id = morocco`.
+- **Scanner note:** these are endpoint-label ↔ city_id disagreements — deterministic to detect.
+
+## Isolated cities (context, not this spec)
+- **Tangier and Al Hoceima have 0 sealed corridors** — they'll render as empty dots. Both are BP/corridor mint candidates (Tangier especially: Tanger City Port marina, Cap Malabata/Spartel, Tanger Med, cross-Strait). Tasklet will source real piers into the BP wishlist; not a re-stamp.
+
 ## Acceptance
 - `rn-27da217834e5` → `tunisia`, `rn-13faccfd5399` → `algeria`; both carry a valid `cluster_city_id`; 0 Maghreb routes stamped `mauritius`.
 - Three city anchors move to the sourced coords; BP hygiene clean on affected cities.
