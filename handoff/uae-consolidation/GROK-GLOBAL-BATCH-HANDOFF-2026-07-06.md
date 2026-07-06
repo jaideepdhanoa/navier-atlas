@@ -81,6 +81,23 @@ Then the remaining 99 two-plus clusters in the same batch.
 
 ---
 
+## BP-hygiene precondition (`BP-CLEANUP-REGISTER.json` — NEW, attached)
+
+The UAE reseal fixed geometry but left dirty boarding points behind. Rather than keep discovering these one-off through marquee curation, I ran a **global BP-hygiene scan** over every BP that participates in a corridor (sealed `ROUTES.json`, **4,038 BPs**). Grok consumes this register **during Pass 1** — cleaning the BP *before* it meshes, not after. Deterministic dispositions only; **Tasklet flags, Grok applies, nobody invents a pier**:
+
+| Disposition | Count | Meaning | Grok action |
+|---|---|---|---|
+| `DROP_junk` | 43 | Not a passenger pier (seaplane bases, watersports clubs, boatyards, LLC offices, "…construction", medical) | Drop BP + its corridors |
+| `RETAG_city_mismatch` | 209 | BP coordinate >60 km from assigned city centroid **and** ≥2× closer to another city's | Retag `city_id` to `nearest` (register gives the candidate + km proof) |
+| `DUP_coord` | 154 | Same rounded coordinate, different labels — geocode collision | Merge/repoint (register lists the colliding BP ids) |
+| `RELABEL_aggregate` | 1 | Aggregate territory label as single endpoint | Trim to primary place (`suggest` field) |
+
+Spread is **global, not UAE-specific**: Thailand 35 · Indonesia 29 · Egypt 28 · Qatar 21 · UAE 19 · USA 12 · Turkey 12 · CalMac 11 … Worst offenders: *Salalah tagged `muscat-oman`* (874 km off), *Hua Hin tagged `krabi-thailand`* (536 km), the entire *Turkish Aegean (Bodrum/Antalya/Kos) mis-tagged `istanbul-turkey`*.
+
+**This is the corridor-participating subset of the #119 mis-geocode debt** (1,297 total true mis-geocodes) — the highest-priority slice because these BPs actually render on the map. Fold the register into the reseal's dirty-BP drop step per cluster. `RETAG_city_mismatch` gives a candidate but **retag only where the register's `nearest` is unambiguous**; anything doubtful → leave assigned + flag, null beats wrong. Regenerate the register after reseal to confirm 0 residual.
+
+---
+
 ## Per-market geometry fragments (embedded — not sequential merges)
 
 - **Hand-waypoints:** `data-clean/uae_hand_waypoints.json` + all `data-clean/pta_hand_waypoints_*.json` (Bangkok Chao Phraya, Singapore MPA, Hong Kong, Istanbul, Venice, etc.). Load per market.
