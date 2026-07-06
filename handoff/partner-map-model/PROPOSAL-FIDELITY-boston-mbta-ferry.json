@@ -1,16 +1,16 @@
 {
   "partner": "boston-mbta-ferry",
-  "verdict": "PASS",
+  "verdict": "TRIM",
   "layout": "single",
   "hub": false,
-  "checked_at": "2026-07-06T01:15:46Z",
+  "checked_at": "2026-07-06T03:21:42Z",
   "counts": {
     "items": 13,
-    "keep": 13,
-    "drop": 0,
+    "keep": 12,
+    "drop": 1,
     "defer": 0,
     "trim": 0,
-    "bp_errors": 0
+    "bp_errors": 1
   },
   "items": [
     {
@@ -135,13 +135,24 @@
       "phase": 2,
       "corridor": "Hingham Shipyard ↔ Hull (Pemberton Point)",
       "route_id": "rn-a0edcc795e58",
-      "route_endpoints": "Hingham Shipyard → Hull (Pemberton Point)",
+      "route_endpoints": null,
       "distance_card_nm": 2.3,
-      "distance_route_nm": 2.3,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "rn-a0edcc795e58 not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id rn-a0edcc795e58 missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",

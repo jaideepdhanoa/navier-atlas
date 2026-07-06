@@ -76,6 +76,11 @@ def wow_of(obj: dict[str, Any] | None) -> list[Any] | None:
     return w.get("wow_corridors") if isinstance(w, dict) else None
 
 
+def phase_intentional_null(ph: dict[str, Any] | None) -> bool:
+    ft = (ph or {}).get("_fidelity_trim") or {}
+    return bool(ft.get("intentional_null"))
+
+
 def iter_marquee_entries(partner: dict[str, Any]) -> list[dict[str, Any]]:
     pid = partner.get("partner_id", "unknown")
     entries: list[dict[str, Any]] = []
@@ -114,13 +119,13 @@ def iter_marquee_entries(partner: dict[str, Any]) -> list[dict[str, Any]]:
             if w is not None:
                 add(w, "wow", f"markets[{mk}].why_navier_now.wow_corridors")
             for pi, ph in enumerate(m.get("phases") or []):
-                if isinstance(ph, dict):
+                if isinstance(ph, dict) and not phase_intentional_null(ph):
                     add(ph.get("featured_routes"), "featured", f"markets[{mk}].phases[{pi}].featured_routes")
         return entries
 
     if not has_canonical:
         for pi, ph in enumerate(partner.get("phases") or []):
-            if isinstance(ph, dict):
+            if isinstance(ph, dict) and not phase_intentional_null(ph):
                 add(ph.get("featured_routes"), "featured", f"phases[{pi}].featured_routes")
     for mi, m in enumerate(partner.get("markets") or []):
         if not isinstance(m, dict):
@@ -129,7 +134,7 @@ def iter_marquee_entries(partner: dict[str, Any]) -> list[dict[str, Any]]:
         add(m.get("featured_routes"), "featured", f"markets[{mk}].featured_routes")
         add(wow_of(m), "wow", f"markets[{mk}].why_navier_now.wow_corridors")
         for pi, ph in enumerate(m.get("phases") or []):
-            if isinstance(ph, dict):
+            if isinstance(ph, dict) and not phase_intentional_null(ph):
                 add(ph.get("featured_routes"), "featured", f"markets[{mk}].phases[{pi}].featured_routes")
     return entries
 
@@ -201,7 +206,8 @@ def validate_partner(
 ) -> dict[str, Any]:
     pid = partner.get("partner_id", "unknown")
     city_ids = partner_scope_city_ids(partner, cluster_by_id)
-    cluster_ids = partner_cluster_ids(city_ids, city_to_cluster)
+    contested = set(partner.get("_map_scope", {}).get("contested_cluster_ids") or [])
+    cluster_ids = partner_cluster_ids(city_ids, city_to_cluster) | contested
     inherited = inherited_route_ids(city_ids, cluster_ids, by_route_id)
 
     schema_failures: list[dict[str, Any]] = []

@@ -1,7 +1,7 @@
 # Proposal fidelity — hawaii
 
 **Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-06T01:15:47Z
+**Checked:** 2026-07-06T03:21:42Z
 
 ## Summary
 

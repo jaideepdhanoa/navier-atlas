@@ -1,16 +1,16 @@
 # Proposal fidelity — minor-hotels
 
-**Verdict:** PASS
-**Checked:** 2026-07-06T01:15:47Z
+**Verdict:** TRIM
+**Checked:** 2026-07-06T03:21:43Z
 
 ## Summary
 
 - Items audited: 107
-- KEEP: 107
-- DROP: 0
+- KEEP: 105
+- DROP: 2
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 0
+- BP-binding errors: 2
 
 ## Trim list
 
@@ -19,16 +19,16 @@
 | featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | featured | 1 | Anantara Layan → Phang Nga Bay | `—` | **KEEP** | — |
 | featured | 1 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
-| featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
+| featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
+| featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
 | featured | 3 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
 | featured | 3 | Velana Seaplane → Kurumba Maldives | `—` | **KEEP** | — |
 | featured | 3 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
-| journey | market:phuket_phang_nga | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
-| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
-| featured | phuket_phang_nga/p1 | Boonsiri Ferry Ao Nang → Ao Nang Nopparat Thara Be | `rn-c4a82886cf91` | **KEEP** | — |
+| journey | market:phuket_phang_nga | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
+| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
+| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
+| journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
+| featured | phuket_phang_nga/p1 | Boonsiri Ferry Ao Nang → Ao Nang Nopparat Thara Be | `—` | **KEEP** | — |
 | featured | phuket_phang_nga/p2 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | featured | phuket_phang_nga/p3 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | journey | market:palm_jumeirah | DXB / Dubai Marina → Anantara The Palm Dubai Resor | `—` | **KEEP** | — |
@@ -39,13 +39,13 @@
 | featured | palm_jumeirah/p2 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
 | featured | palm_jumeirah/p3 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
 | featured | palm_jumeirah/p3 | Palm Jumeirah Marina West → Atlantis The Palm Jett | `—` | **KEEP** | — |
-| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| journey | market:bali | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
-| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| featured | bali/p1 | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
-| featured | bali/p2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
-| featured | bali/p3 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
+| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
+| journey | market:bali | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `—` | **KEEP** | — |
+| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
+| journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
+| featured | bali/p1 | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `—` | **KEEP** | — |
+| featured | bali/p2 | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
+| featured | bali/p3 | Bali Marina (Benoa) → Six Senses Uluwatu | `—` | **KEEP** | — |
 | journey | market:maldives | Kudahuvadhoo Airport, Dhaalu → Niyama Private Isla | `—` | **KEEP** | — |
 | journey | market:maldives | Maafaru Airport, Noonu → Anantara Dhigu Maldives R | `—` | **KEEP** | — |
 | journey | market:maldives | Dharavandhoo Airport, Baa → Anantara Kihavah Maldi | `—` | **KEEP** | — |
@@ -63,12 +63,12 @@
 | journey | market:thailand_gulf | Avani Samui Resort → Anantara Koh Yao Yai Resort & | `—` | **KEEP** | — |
 | journey | market:thailand_gulf | Avani Samui Resort → Anantara Koh Yao Yai Resort & | `—` | **KEEP** | — |
 | featured | thailand_gulf/p1 | Koh Phangan → Anantara Rasananda Koh Phangan | `—` | **KEEP** | — |
-| featured | thailand_gulf/p1 | Centara Reserve Samui (Chaweng) → Vana Belle Koh S | `rn-60c154e568de` | **KEEP** | — |
-| featured | thailand_gulf/p1 | Anantara Bophut Koh Samui → W Koh Samui (Mae Nam) | `rn-1bae4d942e1f` | **KEEP** | — |
-| featured | thailand_gulf/p2 | Bophut Fisherman's Village Pier → W Koh Samui (Mae | `rn-ebf99670c0f7` | **KEEP** | — |
+| featured | thailand_gulf/p1 | Centara Reserve Samui (Chaweng) → Vana Belle Koh S | `—` | **KEEP** | — |
+| featured | thailand_gulf/p1 | Anantara Bophut Koh Samui → W Koh Samui (Mae Nam) | `—` | **KEEP** | — |
+| featured | thailand_gulf/p2 | Bophut Fisherman's Village Pier → W Koh Samui (Mae | `—` | **KEEP** | — |
 | featured | thailand_gulf/p2 | Koh Phangan → Six Senses Samui (Choeng Mon) | `—` | **KEEP** | — |
-| featured | thailand_gulf/p2 | Maenam Beach (Santiburi / W feeder) → Anantara Bop | `rn-5d2f8d7593ce` | **KEEP** | — |
-| featured | thailand_gulf/p3 | Banyan Tree Koh Samui (Lamai) → Le Méridien Koh Sa | `rn-d275f9622d40` | **KEEP** | — |
+| featured | thailand_gulf/p2 | Maenam Beach (Santiburi / W feeder) → Anantara Bop | `—` | **KEEP** | — |
+| featured | thailand_gulf/p3 | Banyan Tree Koh Samui (Lamai) → Le Méridien Koh Sa | `—` | **KEEP** | — |
 | featured | thailand_gulf/p3 | Koh Phangan → Samui N | `—` | **KEEP** | — |
 | featured | thailand_gulf/p3 | Koh Phangan → Anantara Lawana Koh Samui (Chaweng N | `—` | **KEEP** | — |
 | journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
@@ -87,13 +87,13 @@
 | featured | med_europe/p1 | Anantara Convento di Amalfi Grand Hotel — marina/c | `—` | **KEEP** | — |
 | featured | med_europe/p2 | Anantara Plaza Nice Hotel — marina/city → coast | `—` | **KEEP** | — |
 | featured | med_europe/p3 | Avani Rio Novo Venice Hotel — canal/lagoon → city | `—` | **KEEP** | — |
-| journey | market:australia_coastal | hope harbour marina → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | hope harbour marina → Gold Coast City Marina & Shi | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
-| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
+| journey | market:australia_coastal | hope harbour marina → Oaks Gold Coast Hotel | `ics-cf96fcb966` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| journey | market:australia_coastal | Marina Mirage, Main Beach → Oaks Gold Coast Hotel | `ics-2da36d1954` | **KEEP** | — |
+| featured | australia_coastal/p1 | hope harbour marina → Gold Coast City Marina & Shi | `ics-cf96fcb966` | **KEEP** | — |
+| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `ics-2da36d1954` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Gold Coast' → 'Gold Coast' v |
+| featured | australia_coastal/p1 | Gold Coast → Gold Coast | `ics-2da36d1954` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Gold Coast' → 'Gold Coast' v |
 | featured | australia_coastal/p2 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
 | featured | australia_coastal/p3 | hope harbour marina → Gold Coast City Marina & Shi | `ics-cf96fcb966` | **KEEP** | — |
 | featured | australia_coastal/p3 | Gold Coast → Gold Coast | `—` | **KEEP** | — |
@@ -117,7 +117,7 @@
 | featured | gulf_singletons/p1 | Harbour → Grand Hyatt Muscat | `rn-8c9dc26d38ef` | **KEEP** | — |
 | featured | gulf_singletons/p1 | Brezza Marina Pasta Bar ↔ Tivoli LA VIE Muscat | `—` | **KEEP** | — |
 | featured | gulf_singletons/p1 | Dibba Fisheries Harbour - Employer Office → Grand  | `rn-c3dbcab91125` | **KEEP** | — |
-| featured | gulf_singletons/p2 | Anantara Desaru Coast Resort & Villas — beach jett | `rn-ffcdd3a58748` | **KEEP** | — |
+| featured | gulf_singletons/p2 | Anantara Desaru Coast Resort & Villas — beach jett | `—` | **KEEP** | — |
 | featured | gulf_singletons/p2 | W Muscat (Mina Al Sultan Qaboos Boulevard) → Crown | `rn-cd2c8509e6f6` | **KEEP** | — |
 | featured | gulf_singletons/p2 | Harbour → W Muscat (Mina Al Sultan Qaboos Boulevar | `rn-f954a0a3999a` | **KEEP** | — |
 | featured | gulf_singletons/p3 | Marina Service Center مركز سند للخدمات - العذيبة → | `rn-3adc7ac9090b` | **KEEP** | — |

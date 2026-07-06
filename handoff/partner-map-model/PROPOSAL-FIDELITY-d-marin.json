@@ -1,16 +1,16 @@
 {
   "partner": "d-marin",
-  "verdict": "PASS",
+  "verdict": "REWRITE",
   "layout": "single",
   "hub": false,
-  "checked_at": "2026-07-06T01:15:46Z",
+  "checked_at": "2026-07-06T03:21:42Z",
   "counts": {
     "items": 5,
-    "keep": 5,
-    "drop": 0,
+    "keep": 2,
+    "drop": 3,
     "defer": 0,
     "trim": 0,
-    "bp_errors": 0
+    "bp_errors": 3
   },
   "items": [
     {
@@ -18,35 +18,57 @@
       "phase": null,
       "corridor": "Hvar & the Pakleni Islands → Split",
       "route_id": "edge__hvar-croatia__split",
-      "route_endpoints": "Hvar & the Pakleni Islands → Split",
+      "route_endpoints": null,
       "distance_card_nm": 25.2,
-      "distance_route_nm": 25.2,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "edge__hvar-croatia__split not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id edge__hvar-croatia__split missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": null,
       "corridor": "Korčula → Dubrovnik",
       "route_id": "edge__korcula-croatia__dubrovnik",
-      "route_endpoints": "Korčula & the South Dalmatian Islands → Dubrovnik",
+      "route_endpoints": null,
       "distance_card_nm": 46.3,
-      "distance_route_nm": 46.3,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "edge__korcula-croatia__dubrovnik not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id edge__korcula-croatia__dubrovnik missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": 1,
       "corridor": "Trajektna luka Split → Hvar Town Port",
-      "route_id": "ics-d6ad319f86",
-      "route_endpoints": "Trajektna luka Split → Hvar Town Port",
+      "route_id": null,
+      "route_endpoints": null,
       "distance_card_nm": 20.06,
-      "distance_route_nm": 20.06,
+      "distance_route_nm": null,
       "flags": [],
       "errors": 0,
       "warnings": 0,
@@ -56,30 +78,36 @@
       "surface": "featured",
       "phase": 2,
       "corridor": "Korčula ↔ Dubrovnik",
-      "route_id": null,
-      "route_endpoints": null,
-      "distance_card_nm": 45.9,
-      "distance_route_nm": null,
-      "flags": [],
-      "errors": 0,
+      "route_id": "rn-859abcf7ec1e",
+      "route_endpoints": "Car ferry terminal Orebic to Korcula → Kut Harbor Marina",
+      "distance_card_nm": 43.3,
+      "distance_route_nm": 43.3,
+      "flags": [
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "labels ≠ route endpoints: card 'Korčula' → 'Dubrovnik' vs route 'Car ferry terminal Orebic to Korcula' → 'Kut Harbor Marina'"
+        }
+      ],
+      "errors": 1,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": 3,
       "corridor": "Split & Central Dalmatia → Venice Lagoon",
-      "route_id": "rn-ae7179e3ce7b",
-      "route_endpoints": "Split & Central Dalmatia → Venice",
+      "route_id": null,
+      "route_endpoints": null,
       "distance_card_nm": 211.4,
-      "distance_route_nm": 211.4,
+      "distance_route_nm": null,
       "flags": [],
       "errors": 0,
       "warnings": 0,
       "recommendation": "KEEP"
     }
   ],
-  "journey_bp_errors": 0,
+  "journey_bp_errors": 2,
   "geometry_gate_errors": 0,
   "placeholder_gate_errors": 0
 }

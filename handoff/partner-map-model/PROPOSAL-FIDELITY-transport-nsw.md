@@ -1,7 +1,7 @@
 # Proposal fidelity — transport-nsw
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T01:15:48Z
+**Checked:** 2026-07-06T03:21:43Z
 
 ## Summary
 
@@ -18,11 +18,11 @@
 |---------|-------|----------|-------|-----|-------|
 | journey | — | Circular Quay ferry wharves → Manly Wharf | `—` | **KEEP** | — |
 | journey | — | Circular Quay ferry wharves → Barangaroo Wharf | `—` | **KEEP** | — |
-| journey | — | Circular Quay ferry wharves → Watsons Bay Wharf | `rn-a125df4284ba` | **KEEP** | — |
+| journey | — | Circular Quay ferry wharves → Watsons Bay Wharf | `—` | **KEEP** | — |
 | journey | — | Barangaroo Wharf → Parramatta Wharf | `rn-0d609ac0ab33` | **KEEP** | — |
 | featured | 1 | Circular Quay ferry wharves ↔ Manly Wharf | `—` | **KEEP** | — |
 | featured | 1 | Circular Quay ferry wharves ↔ Barangaroo Wharf | `—` | **KEEP** | — |
-| featured | 1 | Circular Quay ferry wharves ↔ Watsons Bay Wharf | `rn-a125df4284ba` | **KEEP** | — |
+| featured | 1 | Circular Quay ferry wharves ↔ Watsons Bay Wharf | `—` | **KEEP** | — |
 | featured | 2 | Barangaroo Wharf ↔ Parramatta Wharf | `rn-0d609ac0ab33` | **KEEP** | — |
 | featured | 2 | Circular Quay ferry wharves ↔ Mosman Bay Wharf | `rn-2b603df666b7` | **KEEP** | — |
 | featured | 3 | Circular Quay ferry wharves ↔ Cockatoo Island Whar | `—` | **KEEP** | — |

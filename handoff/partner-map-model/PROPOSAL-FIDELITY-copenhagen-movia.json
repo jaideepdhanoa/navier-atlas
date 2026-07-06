@@ -1,16 +1,16 @@
 {
   "partner": "copenhagen-movia",
-  "verdict": "PASS_WITH_FLAGS",
+  "verdict": "REWRITE",
   "layout": "network",
   "hub": false,
-  "checked_at": "2026-07-06T01:15:46Z",
+  "checked_at": "2026-07-06T03:21:42Z",
   "counts": {
     "items": 7,
-    "keep": 5,
-    "drop": 0,
+    "keep": 3,
+    "drop": 4,
     "defer": 0,
-    "trim": 2,
-    "bp_errors": 0
+    "trim": 0,
+    "bp_errors": 4
   },
   "items": [
     {
@@ -18,32 +18,48 @@
       "phase": null,
       "corridor": "Nyhavn Harbour Bus Stop → Opera House Ferry Stop",
       "route_id": "rn-f7d4a824ec58",
-      "route_endpoints": "Nyhavn Harbour Bus Stop → Opera House Ferry Stop",
+      "route_endpoints": null,
       "distance_card_nm": 0.3,
-      "distance_route_nm": 0.4,
+      "distance_route_nm": null,
       "flags": [
         {
-          "check": "distance_honesty",
-          "severity": "warn",
-          "detail": "card 0.3nm vs route 0.4nm (25% delta)"
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "rn-f7d4a824ec58 not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id rn-f7d4a824ec58 missing from ROUTES.json"
         }
       ],
-      "errors": 0,
-      "warnings": 1,
-      "recommendation": "TRIM"
+      "errors": 2,
+      "warnings": 0,
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": null,
       "corridor": "Nyhavn Harbour Bus Stop → Refshaleøen Ferry Stop",
       "route_id": "rn-72c8fc7fb527",
-      "route_endpoints": "Nyhavn Harbour Bus Stop → Refshaleøen Ferry Stop",
+      "route_endpoints": null,
       "distance_card_nm": 1.0,
-      "distance_route_nm": 0.9,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "rn-72c8fc7fb527 not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id rn-72c8fc7fb527 missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
@@ -63,32 +79,48 @@
       "phase": 1,
       "corridor": "Nyhavn Harbour Bus Stop → Opera House Ferry Stop",
       "route_id": "rn-f7d4a824ec58",
-      "route_endpoints": "Nyhavn Harbour Bus Stop → Opera House Ferry Stop",
+      "route_endpoints": null,
       "distance_card_nm": 0.3,
-      "distance_route_nm": 0.4,
+      "distance_route_nm": null,
       "flags": [
         {
-          "check": "distance_honesty",
-          "severity": "warn",
-          "detail": "card 0.3nm vs route 0.4nm (25% delta)"
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "rn-f7d4a824ec58 not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id rn-f7d4a824ec58 missing from ROUTES.json"
         }
       ],
-      "errors": 0,
-      "warnings": 1,
-      "recommendation": "TRIM"
+      "errors": 2,
+      "warnings": 0,
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
       "phase": 1,
       "corridor": "Nyhavn Harbour Bus Stop → Refshaleøen Ferry Stop",
       "route_id": "rn-72c8fc7fb527",
-      "route_endpoints": "Nyhavn Harbour Bus Stop → Refshaleøen Ferry Stop",
+      "route_endpoints": null,
       "distance_card_nm": 1.0,
-      "distance_route_nm": 0.9,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "rn-72c8fc7fb527 not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id rn-72c8fc7fb527 missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -117,7 +149,7 @@
       "recommendation": "KEEP"
     }
   ],
-  "journey_bp_errors": 0,
+  "journey_bp_errors": 2,
   "geometry_gate_errors": 0,
   "placeholder_gate_errors": 0
 }

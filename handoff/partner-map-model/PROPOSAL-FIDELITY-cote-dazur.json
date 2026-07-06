@@ -1,16 +1,16 @@
 {
   "partner": "cote-dazur",
-  "verdict": "PASS",
+  "verdict": "REWRITE",
   "layout": "single",
   "hub": false,
-  "checked_at": "2026-07-06T01:15:46Z",
+  "checked_at": "2026-07-06T03:21:42Z",
   "counts": {
     "items": 5,
-    "keep": 5,
-    "drop": 0,
+    "keep": 3,
+    "drop": 2,
     "defer": 0,
     "trim": 0,
-    "bp_errors": 0
+    "bp_errors": 2
   },
   "items": [
     {
@@ -18,26 +18,48 @@
       "phase": null,
       "corridor": "Nice (Port) → Monaco (Port Hercule)",
       "route_id": "e__cote-dazur-france__port-de-nice__monaco-monaco__port-hercule",
-      "route_endpoints": "Port de Nice → Port Hercule",
+      "route_endpoints": null,
       "distance_card_nm": 6.5,
-      "distance_route_nm": 6.5,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "e__cote-dazur-france__port-de-nice__monaco-monaco__port-hercule not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id e__cote-dazur-france__port-de-nice__monaco-monaco__port-hercule missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "journey",
       "phase": null,
       "corridor": "Cannes → Îles de Lérins (Sainte-Marguerite)",
       "route_id": "ics-529325c5eb",
-      "route_endpoints": "Port de Cannes, Jetée Albert Edouard → Centre Nautique Municipal Les Voiles de Lérins",
+      "route_endpoints": null,
       "distance_card_nm": 3,
-      "distance_route_nm": 3,
-      "flags": [],
-      "errors": 0,
+      "distance_route_nm": null,
+      "flags": [
+        {
+          "check": "route_missing",
+          "severity": "error",
+          "detail": "ics-529325c5eb not in gold"
+        },
+        {
+          "check": "bp_binding",
+          "severity": "error",
+          "detail": "route_id ics-529325c5eb missing from ROUTES.json"
+        }
+      ],
+      "errors": 2,
       "warnings": 0,
-      "recommendation": "KEEP"
+      "recommendation": "DROP"
     },
     {
       "surface": "featured",
@@ -79,7 +101,7 @@
       "recommendation": "KEEP"
     }
   ],
-  "journey_bp_errors": 0,
+  "journey_bp_errors": 2,
   "geometry_gate_errors": 0,
   "placeholder_gate_errors": 0
 }

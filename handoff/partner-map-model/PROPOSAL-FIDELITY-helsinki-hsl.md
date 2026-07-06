@@ -1,12 +1,12 @@
 # Proposal fidelity — helsinki-hsl
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T01:15:47Z
+**Checked:** 2026-07-06T03:21:42Z
 
 ## Summary
 
-- Items audited: 11
-- KEEP: 11
+- Items audited: 10
+- KEEP: 10
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -25,5 +25,4 @@
 | featured | 2 | Helsinki Market Square (Kauppatori) ↔ Vallisaari I | `rn-8523ec0a5309` | **KEEP** | — |
 | featured | 2 | Helsinki Market Square (Kauppatori) ↔ Lonna Island | `rn-312e87d88d71` | **KEEP** | — |
 | featured | 2 | Helsinki Market Square (Kauppatori) ↔ Korkeasaari  | `rn-2025e138f6c3` | **KEEP** | — |
-| featured | 2 | Helsinki Market Square (Kauppatori) ↔ Pihlajasaari | `rn-c470fde6e58f` | **KEEP** | — |
 | featured | 3 | Helsinki Market Square (Kauppatori) ↔ Porvoo River | `rn-a02134ddb302` | **KEEP** | — |

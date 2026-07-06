@@ -1,12 +1,12 @@
 # Proposal fidelity — cabify
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T01:15:46Z
+**Checked:** 2026-07-06T03:21:42Z
 
 ## Summary
 
-- Items audited: 14
-- KEEP: 14
+- Items audited: 6
+- KEEP: 6
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -20,13 +20,5 @@
 | journey | — | Cancún → Isla Mujeres | `—` | **KEEP** | — |
 | journey | — | Puerto Vallarta → Marietas Islands | `—` | **KEEP** | — |
 | journey | — | Cartagena (Marina) → Rosario Islands | `—` | **KEEP** | — |
-| featured | 1 | Cartí ↔ Guna Yala overnight-island resorts | `—` | **KEEP** | — |
-| featured | 2 | Cancún ↔ Isla Mujeres | `—` | **KEEP** | — |
-| featured | 2 | Samaná town (Santa Bárbara) ↔ Cayo Levantado | `—` | **KEEP** | — |
-| featured | 3 | Cartagena ↔ Rosario Islands | `—` | **KEEP** | — |
-| featured | 3 | Cancún ↔ Isla Mujeres | `—` | **KEEP** | — |
-| featured | 4 | Cartí ↔ San Blas cays | `—` | **KEEP** | — |
-| featured | 4 | Samaná ↔ Cayo Levantado | `—` | **KEEP** | — |
-| featured | 4 | Playa del Carmen ↔ Cozumel | `—` | **KEEP** | — |
-| featured | spain/p1 | island-hopping | `—` | **KEEP** | — |
-| featured | colombia/p1 | island-hopping | `—` | **KEEP** | — |
+| journey | market:spain | Marina Santa Eulalia → Marina Ibiza | `rn-71292a6fedf1` | **KEEP** | — |
+| journey | market:colombia | Cartagena → Rosario Islands | `—` | **KEEP** | — |

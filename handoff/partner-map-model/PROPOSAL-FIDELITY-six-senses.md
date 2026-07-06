@@ -1,7 +1,7 @@
 # Proposal fidelity — six-senses
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T01:15:47Z
+**Checked:** 2026-07-06T03:21:43Z
 
 ## Summary
 
@@ -22,7 +22,7 @@
 | journey | — | Four Seasons Kuda Huraa → North Malé reef sites | `—` | **KEEP** | — |
 | featured | 1 | Kadhdhoo Airport, Laamu → Six Senses Laamu | `e__mald__b95e8093ec6d` | **KEEP** | — |
 | featured | 2 | Extend to Six Senses Zil Pasyon on Félicité — sile | `—` | **KEEP** | — |
-| featured | 3 | Mahé & the Inner Islands → Mahé & Inner Islands | `ics-46062fd820` | **KEEP** | — |
+| featured | 3 | Mahé & the Inner Islands → Mahé & Inner Islands | `—` | **KEEP** | — |
 | journey | market:maldives | Kadhdhoo Airport (Laamu) → Six Senses Laamu | `—` | **KEEP** | — |
 | journey | market:maldives | Velana International (Malé) → Six Senses Laamu | `—` | **KEEP** | — |
 | journey | market:maldives | Six Senses Laamu → Laamu reef & research sites | `—` | **KEEP** | — |
@@ -35,15 +35,15 @@
 | featured | maldives/p3 | Velana International (Malé) ↔ Six Senses Laamu | `—` | **KEEP** | — |
 | featured | maldives/p3 | Six Senses Laamu ↔ Laamu reef & research sites | `—` | **KEEP** | — |
 | journey | market:seychelles | Praslin → Six Senses Zil Pasyon (Félicité) | `—` | **KEEP** | — |
-| journey | market:seychelles | Mahé → Félicité / inner islands | `ics-46062fd820` | **KEEP** | — |
+| journey | market:seychelles | Mahé → Félicité / inner islands | `—` | **KEEP** | — |
 | journey | market:seychelles | Six Senses Zil Pasyon → La Digue | `—` | **KEEP** | — |
 | journey | market:seychelles | Félicité → Sister islands & marine sites | `—` | **KEEP** | — |
 | featured | seychelles/p1 | Praslin ↔ Six Senses Zil Pasyon (Félicité) | `—` | **KEEP** | — |
-| featured | seychelles/p1 | Mahé & the Inner Islands → Mahé & Inner Islands | `ics-46062fd820` | **KEEP** | — |
+| featured | seychelles/p1 | Mahé & the Inner Islands → Mahé & Inner Islands | `—` | **KEEP** | — |
 | featured | seychelles/p1 | Six Senses Zil Pasyon ↔ La Digue | `—` | **KEEP** | — |
 | featured | seychelles/p2 | Félicité ↔ Sister islands & marine sites | `—` | **KEEP** | — |
 | featured | seychelles/p3 | Praslin ↔ Six Senses Zil Pasyon (Félicité) | `—` | **KEEP** | — |
-| featured | seychelles/p3 | Mahé & the Inner Islands → Mahé & Inner Islands | `ics-46062fd820` | **KEEP** | — |
+| featured | seychelles/p3 | Mahé & the Inner Islands → Mahé & Inner Islands | `—` | **KEEP** | — |
 | featured | seychelles/p3 | Six Senses Zil Pasyon ↔ La Digue | `—` | **KEEP** | — |
 | journey | market:vietnam | Vung Tau → Six Senses Con Dao | `—` | **KEEP** | — |
 | journey | market:vietnam | Six Senses Con Dao → Con Dao national-park reefs | `—` | **KEEP** | — |
@@ -56,15 +56,15 @@
 | featured | vietnam/p3 | Vung Tau ↔ Six Senses Con Dao | `—` | **KEEP** | — |
 | featured | vietnam/p3 | Six Senses Con Dao ↔ Con Dao national-park reefs | `—` | **KEEP** | — |
 | featured | vietnam/p3 | Six Senses Con Dao ↔ Con Dao outer islands | `—` | **KEEP** | — |
-| journey | market:thailand | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
+| journey | market:thailand | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
 | journey | market:thailand | Yao Noi → Phang Nga karsts & hongs | `—` | **KEEP** | — |
 | journey | market:thailand | Yao Noi → James Bond Island & Koh Yao Yai | `—` | **KEEP** | — |
 | journey | market:thailand | Phang Nga Bay → Krabi / Koh Lanta & the southern A | `—` | **KEEP** | — |
-| featured | thailand/p1 | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
+| featured | thailand/p1 | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
 | featured | thailand/p1 | Yao Noi ↔ Phang Nga karsts & hongs | `—` | **KEEP** | — |
 | featured | thailand/p1 | Yao Noi ↔ James Bond Island & Koh Yao Yai | `—` | **KEEP** | — |
 | featured | thailand/p2 | Phang Nga Bay ↔ Krabi / Koh Lanta & the southern A | `—` | **KEEP** | — |
-| featured | thailand/p3 | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
+| featured | thailand/p3 | Chalong Pier → Karon Beach | `—` | **KEEP** | — |
 | featured | thailand/p3 | Yao Noi ↔ Phang Nga karsts & hongs | `—` | **KEEP** | — |
 | featured | thailand/p3 | Yao Noi ↔ James Bond Island & Koh Yao Yai | `—` | **KEEP** | — |
 | journey | market:oman | Dubai / Ras Al Khaimah → Six Senses Zighy Bay | `—` | **KEEP** | — |
@@ -78,7 +78,7 @@
 | featured | oman/p3 | Dubai / Ras Al Khaimah ↔ Six Senses Zighy Bay | `—` | **KEEP** | — |
 | featured | oman/p3 | Khasab ↔ Musandam khors (fjords) | `—` | **KEEP** | — |
 | featured | oman/p3 | Zighy Bay ↔ Telegraph Island & the inner fjords | `—` | **KEEP** | — |
-| journey | market:fiji | Nadi / Port Denarau → Six Senses Fiji (Malolo) | `ics-f9a0a44809` | **KEEP** | — |
+| journey | market:fiji | Nadi / Port Denarau → Six Senses Fiji (Malolo) | `—` | **KEEP** | — |
 | journey | market:fiji | Malolo → Mamanuca islands | `—` | **KEEP** | — |
 | journey | market:fiji | Mamanucas → Yasawa Islands | `—` | **KEEP** | — |
 | journey | market:fiji | Nadi / Mamanucas → Outer Yasawas & remote resorts | `—` | **KEEP** | — |
