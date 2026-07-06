@@ -3,7 +3,8 @@
 **Date:** 2026-07-06  
 **Status:** ✅ Complete — merged to main, prod deployed  
 **Prod:** https://navier-atlas.vercel.app  
-**Handoff:** PR #189 `tasklet/global-geometry-completion-2026-07-06`
+**Deploy:** `930fb56b` → https://navier-atlas-qujpj8scg-jaideepdhanoas-projects.vercel.app  
+**Handoff:** PR #189 `tasklet/global-geometry-completion-2026-07-06` (artifacts incorporated into main)
 
 ## Run order executed
 
