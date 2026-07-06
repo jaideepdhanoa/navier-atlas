@@ -1,0 +1,52 @@
+{
+  "batch": "peru-enrichment",
+  "date": "2026-07-05",
+  "owner": "tasklet",
+  "status": "research-complete / seal-needed",
+  "cluster": "peru",
+  "existing_cities": ["lima-peru", "paracas-peru"],
+  "existing_anchor": "yg-pe-callao",
+  "scope_note": "Peru is a coastal cluster with TWO natural short-hop sub-networks that never chain into one run: (1) the Lima/Callao metro coast (La Punta peninsula + the offshore Callao islands + the Costa Verde marinas + Ancon bay to the north), and (2) the Paracas bay 130+ nm south (El Chaco jetty + the Ballestas marine reserve). Current density is thin (2 cities, 1 anchor BP). Deepen both with real sourced boarding points and clean offshore-island corridors.",
+  "no_invention_rule": "Every BP is a real named pier/marina/island with a source URL. Grok does deterministic ID-match + coords + seal.",
+  "hazards_global": "The Callao islands sit in open Pacific off a naval base (Isla San Lorenzo / El Fronton are naval/restricted on land) - routes are water-only island approaches, never landings on restricted islands. Humboldt swell on the Costa Verde: keep offshore of the surf line. Callao<->Paracas (~130 nm) is FAR beyond N30 range - two separate clusters, never one corridor.",
+  "sub_networks": {
+    "lima_callao_metro": {
+      "member_city": "lima-peru (deepen)",
+      "boarding_point_candidates": [
+        {"name": "La Punta Bay pier (Callao)", "type": "excursion_pier", "existing_hint": "yg-pe-callao (anchor near here)", "source_url": "https://www.getyourguide.com/san-lorenzo-island-l182594/cruises-boat-tours-tc48/", "note": "La Punta peninsula bay; primary yacht/excursion boarding point for the Callao islands."},
+        {"name": "Darsena Pier (Plaza Grau, Callao)", "type": "pier", "source_url": "https://www.tierrasvivas.com/en/palomino-islands-peru", "note": "Muelle Darsena at Plaza Grau; departure point for Palomino Islands tours."},
+        {"name": "Marina Club / Nautical Club Pier (Callao)", "type": "marina", "source_url": "https://www.tierrasvivas.com/en/palomino-islands-peru", "note": "Nautical Club pier alternative departure for the Callao island runs."},
+        {"name": "Lima Marina Club (Chorrillos, Costa Verde)", "type": "marina", "source_url": "https://www.instagram.com/p/DaPCpbMOXdy/", "note": "Lima's exclusive seafront marina at Chorrillos on the Costa Verde; also Club de Regatas Lima adjacency."},
+        {"name": "Marina & Yacht Club Ancon", "type": "marina", "source_url": "https://www.predictwind.com/marinas/peru/lima-region/marina-and-yacht-club-ancon", "note": "60-year-old yacht club in Ancon bay ~35 km north of Lima; sheltered bay resort. Also Yacht Club Ancon (Wikipedia)."}
+      ],
+      "offshore_islands": [
+        {"name": "Isla San Lorenzo", "type": "island_approach", "source_url": "https://www.condorxtreme.com/en/promotions/san-lorenzo-island-tour/", "note": "Largest Peruvian island, ~3 nm off La Punta; water approach only."},
+        {"name": "Palomino Islands (via El Fronton / Cavinzas)", "type": "island_approach", "source_url": "https://www.ineedtours.com/en/boat-trip-to-the-palomino-islands-and-swimming-with-sea-lions_t_1184542.html", "note": "Sea-lion colony ~8 nm off Callao; passes El Fronton and Cavinzas reserve."}
+      ],
+      "corridors": [
+        {"from": "La Punta Bay pier", "to": "Isla San Lorenzo", "approx_nm": 3, "desc": "Callao island hop", "hand_waypoint_required": true, "hand_waypoint_note": "Depart La Punta bay westward into open water; approach San Lorenzo's north/east shore. Stay clear (offshore) of the naval base and restricted island land."},
+        {"from": "Darsena Pier (Callao)", "to": "Palomino Islands", "approx_nm": 8, "desc": "sea-lion colony run", "hand_waypoint_required": true, "hand_waypoint_note": "Route past El Fronton and Cavinzas as water waypoints; do not land on restricted islands. Open-Pacific swell - offshore approach."},
+        {"from": "Lima Marina Club (Chorrillos)", "to": "La Punta Bay pier", "approx_nm": 6, "desc": "Costa Verde metro run", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run NW along the Costa Verde cliff shore (Barranco/Miraflores/Magdalena) into Callao bay; keep offshore of the surf line."},
+        {"from": "La Punta Bay pier", "to": "Marina & Yacht Club Ancon", "approx_nm": 18, "desc": "north-bay coastal run", "hand_waypoint_required": true, "hand_waypoint_note": "Coastal run N past the Pasamayo cliffs; offshore waypoint to clear the headland before entering Ancon bay. Range-OK one-way; verify duty cycle."}
+      ]
+    },
+    "paracas_bay": {
+      "member_city": "paracas-peru (deepen)",
+      "new_city": {"id_hint": "pisco-san-andres-peru", "name": "Pisco / San Andres", "source_url": "https://www.navily.com/region/lima-region/7146", "note": "Fishing port + San Andres jetty just N of Paracas inside Pisco/Paracas bay."},
+      "boarding_point_candidates": [
+        {"name": "Paracas (El Chaco) jetty", "type": "excursion_pier", "existing": true, "source_url": "https://www.tierrasvivas.com/en/palomino-islands-peru", "note": "El Chaco boardwalk jetty; main embarkation for the Ballestas within the sheltered Paracas Bay."},
+        {"name": "San Andres pier (Pisco)", "type": "fishing_pier", "source_url": "https://www.navily.com/region/lima-region/7146", "note": "Fishing-village pier N of Paracas inside the bay."}
+      ],
+      "offshore_islands": [
+        {"name": "Ballestas Islands", "type": "island_approach", "source_url": "https://www.tierrasvivas.com/en/palomino-islands-peru", "note": "Marine-reserve rock islands ~9 nm off El Chaco; guano/sea-lion/penguin colony - water approach only, no landing."}
+      ],
+      "corridors": [
+        {"from": "Paracas (El Chaco)", "to": "Ballestas Islands", "approx_nm": 9, "desc": "marine-reserve cruise", "hand_waypoint_required": true, "hand_waypoint_note": "Exit Paracas Bay NW past the Paracas peninsula, then open-water approach to the Ballestas; no landing (protected reserve)."},
+        {"from": "Paracas (El Chaco)", "to": "San Andres (Pisco)", "approx_nm": 5, "desc": "intra-bay village hop", "hand_waypoint_required": false, "hand_waypoint_note": "Short protected run inside Paracas/Pisco bay."}
+      ]
+    }
+  },
+  "excluded_context_only": [
+    {"corridor": "Callao <-> Paracas as one run", "reason": "~130 nm >> N30 70 nm range. Two distinct clusters."}
+  ]
+}
