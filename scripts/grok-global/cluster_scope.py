@@ -75,7 +75,6 @@ UAE_PRE_SEALED_CLUSTERS = frozenset(
         "ras-al-khaimah-uae",
         "sharjah-uae",
         "uae",
-        "uae-east-coast",
         "uae-sir-bani-yas",
     }
 )

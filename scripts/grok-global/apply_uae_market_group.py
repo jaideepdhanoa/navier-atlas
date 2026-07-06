@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """WS-1 — unify UAE market scope across all 5 UAE partners.
 
-Market uae = {uae, uae-east-coast}. East coast is UAE and must never be excluded.
+Market uae = single country cluster (fujairah/east-coast folded into uae per 2026-07-06 merge).
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ REPORT_PATH = ROOT / "grok-routing-output" / "uae-market-group-apply-report.json
 
 UAE_ONLY_PARTNERS = frozenset({"careem", "noon"})
 UAE_SCOPE_PARTNERS = ("careem", "noon", "bolt", "uber", "yango")
-UAE_CLUSTERS = ("uae", "uae-east-coast")
+UAE_CLUSTERS = ("uae",)
 
 
 def utc_now() -> str:

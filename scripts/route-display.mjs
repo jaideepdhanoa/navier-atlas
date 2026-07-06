@@ -342,12 +342,27 @@ function isLegacyDensity(md) {
   return md?.density_policy === 'legacy';
 }
 
+const COMMERCIAL_SUPPRESS_ARCHETYPES = new Set([
+  'ridehail', 'super_app', 'mobility_platform',
+]);
+
+function suppressCommercialSovereign(p, partner) {
+  if (!p._commercial_suppress_sovereign) return false;
+  const arch = partner?.archetype || '';
+  const pid = partner?.partner_id || '';
+  if (COMMERCIAL_SUPPRESS_ARCHETYPES.has(arch)) return true;
+  if (pid === 'bolt' || pid === 'yango' || pid === 'uber' || pid === 'careem'
+    || pid === 'noon' || pid === 'indrive' || pid === 'cabify') return true;
+  return false;
+}
+
 /** Geographic scope only — tier affects paint, not inclusion (default). */
-function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf }) {
+function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf, partner = null }) {
   const keepSet = new Set(keep);
   return routes.filter((f) => {
     const p = f.properties || {};
     if (p.render_hidden === true) return false;
+    if (partner && suppressCommercialSovereign(p, partner)) return false;
     if (pageKind === 'market') {
       const cf = cityIdOf(p.from);
       const ct = cityIdOf(p.to);
@@ -364,13 +379,14 @@ function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf }) {
 }
 
 /** Legacy tier-based inclusion filter (opt-in via map_display.density_policy = legacy). */
-function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf }) {
+function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf, partner = null }) {
   const keepSet = new Set(keep);
   const netSet = new Set(net);
 
   const filtered = routes.filter((f) => {
     const p = f.properties || {};
     if (p.render_hidden === true) return false;
+    if (partner && suppressCommercialSovereign(p, partner)) return false;
     const id = p.id;
     if (id && storyById.has(id)) return true;
 
@@ -415,12 +431,12 @@ function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf }
 }
 
 /** Filter routes included on a scoped partner page. */
-export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, cityIdOf, densityPolicy = 'tier_visual' }) {
+export function filterRoutesForPage(routes, { keep, net, storyById, pageKind, cityIdOf, densityPolicy = 'tier_visual', partner = null }) {
   if (pageKind === 'aggregate') return routes;
   if (densityPolicy === 'legacy') {
-    return filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf });
+    return filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf, partner });
   }
-  return filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf });
+  return filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf, partner });
 }
 
 export function annotateRoutes(routes, { storyById = new Map(), keep = [], cityIdOf } = {}) {
@@ -525,6 +541,7 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
     pageKind,
     cityIdOf,
     densityPolicy: 'tier_visual',
+    partner,
   });
 
   const cullTier = preTier !== 'normal' ? preTier : inferDensityTier(filtered.length, partner, market);
@@ -540,6 +557,7 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
       pageKind,
       cityIdOf,
       densityPolicy: 'legacy',
+      partner,
     });
   }
 
