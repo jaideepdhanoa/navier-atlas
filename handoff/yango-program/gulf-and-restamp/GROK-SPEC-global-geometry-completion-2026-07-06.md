@@ -41,6 +41,11 @@ Merge #185; seal Baku/Aktau + Tunisia + Algeria + Morocco geometry (35 BPs / 23 
 ## WS-5 — Split-cluster market groups (canonical; derive post-WS-4)
 A market may span >1 cluster. Confirmed seeds (`confirmed_market_groups`): UAE={uae, uae-east-coast}; Qatar={doha-qatar, al-wakrah-qatar} (empty `qatar` shell = alias only). **After WS-4 restamp**, derive the full market-group map (any country with ≥2 route-bearing clusters — e.g. Turkey={turkish-riviera-aegean, istanbul-*}), and add a gate so partner scope resolution always expands a market to its full cluster set. No market silently drops a cluster.
 
+**WS-5b — Front-end navigation collapse (Jaideep directive, authoritative).** A market group renders as **ONE browse/nav chip**, even though geometry keeps its sub-clusters separate. Two layers, kept distinct:
+- **Geometry layer:** `uae` and `uae-east-coast` stay separate clusters (correct — different water bodies, non-contiguous coastline, Musandam land between).
+- **Navigation/browse layer:** collapse to a **single "United Arab Emirates" chip**. Remove the standalone "UAE East Coast (Gulf of Oman)" chip from the Browse rail. Selecting UAE shows all UAE geometry (both sub-clusters) on the map.
+- Generalize: the Browse nav is keyed on **market group**, not raw cluster_id. Every confirmed market group in `confirmed_market_groups` collapses to one nav chip (Qatar → one "Qatar" chip over doha-qatar + al-wakrah-qatar, etc.). Sub-clusters never surface as separate top-level browse chips.
+
 ## WS-6 — Cluster renames (partner-prefixed → canonical geography)
 Corridors belong to geography, not partners. Restamp route `cluster_id` + rebind marquees + update bolt/yango scope keys:
 - `bolt-croatia` (130) → `dalmatia-croatia`
