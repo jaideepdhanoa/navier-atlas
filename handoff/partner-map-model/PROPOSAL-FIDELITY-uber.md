@@ -1,7 +1,7 @@
 # Proposal fidelity — uber
 
 **Verdict:** TRIM
-**Checked:** 2026-07-03T02:54:02Z
+**Checked:** 2026-07-06T00:49:30Z
 
 ## Summary
 
@@ -23,18 +23,18 @@
 | featured | 1 | Howrah Ferry Ghat → Millennium Park Jetty | `rn-e9a7f7e474e3` | **KEEP** | — |
 | featured | 1 | Dakshineswar Ferry Ghat → Belur Math Ferry Ghat | `rn-b44cfaae1be2` | **KEEP** | — |
 | featured | 2 | Fairlie Place Ferry → Bagbazar Ghat | `rn-46a91df66302` | **KEEP** | — |
-| featured | 2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
+| featured | 2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
 | featured | 2 | Sydney Harbour → Watsons Bay | `—` | **KEEP** | — |
 | featured | 3 | Chennai Port WQIV Cruise Terminal → Marina Beach W | `rn-6e53a9fad2f1` | **KEEP** | — |
 | featured | 3 | Molo Beverello (Naples) → Sorrento Marina Piccola | `rn-140626297ee9` | **KEEP** | — |
 | featured | 3 | Port Hercule (Monaco) → Port de Villefranche-sur-M | `ics-4269303d3c` | **KEEP** | — |
 | journey | market:mena | Dubai Marina → Downtown / Festival City | `—` | **KEEP** | — |
-| journey | market:mena | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
+| journey | market:mena | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
 | journey | market:mena | Abu Dhabi Corniche → Saadiyat / Yas Island | `—` | **KEEP** | — |
-| journey | market:mena | Dubai → Abu Dhabi | `e__uae__1b860507c38f` | **KEEP** | — |
-| featured | mena/p1 | Ras Al Khaimah Harbour → RAK Corniche public pier  | `rn-2a5c2fe11732` | **KEEP** | — |
-| featured | mena/p2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | mena/p3 | Dubai island Marina Slipway → Yas Marina Abu Dhabi | `e__uae__1b860507c38f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Dubai island Marina Slipway' |
+| journey | market:mena | Dubai → Abu Dhabi | `—` | **KEEP** | — |
+| featured | mena/p1 | Ras Al Khaimah Harbour → RAK Corniche public pier  | `—` | **KEEP** | — |
+| featured | mena/p2 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
+| featured | mena/p3 | Dubai island Marina Slipway → Yas Marina Abu Dhabi | `—` | **KEEP** | — |
 | featured | mena/p4 | A continuous in-app water tier along the whole Gul | `—` | **KEEP** | — |
 | journey | market:miami | Nassau & The Bahamas → Miami | `—` | **KEEP** | — |
 | journey | market:miami | Palm Beach / Treasure Coast → Miami | `—` | **KEEP** | — |
@@ -64,7 +64,7 @@
 | featured | hawaii/p2 | Nāwiliwili Harbor → Honolulu Harbor | `ics-42fbb80da505` | **KEEP** | — |
 | featured | hawaii/p3 | Honolulu / Oʻahu → Maui County (Maui · Lānaʻi · Mo | `—` | **KEEP** | — |
 | journey | market:mediterranean | Athens (Flisvos / Piraeus) → Hydra, Saronic Gulf | `—` | **KEEP** | — |
-| journey | market:mediterranean | Mykonos → Santorini | `—` | **KEEP** | — |
+| journey | market:mediterranean | Mykonos → Santorini | `rn-cb0ec9d194ca` | **KEEP** | — |
 | journey | market:mediterranean | Split → Hvar Town | `rn-cc40790a3078` | **KEEP** | — |
 | journey | market:mediterranean | Split Ferry Port → Ferry - Šolta | `rn-8af39f1da94d` | **KEEP** | — |
 | featured | mediterranean/p1 | Split Ferry Port → Ferry - Šolta | `rn-8af39f1da94d` | **KEEP** | — |
@@ -87,7 +87,7 @@
 | journey | market:italy-luxury | Naples → Capri | `rn-01c592b8150e` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
-| journey | market:italy-luxury | Amalfi Coast / Bay of Naples → Costa Smeralda, Sar | `—` | **KEEP** | — |
+| journey | market:italy-luxury | Amalfi Coast / Bay of Naples → Costa Smeralda, Sar | `rn-140626297ee9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Amalfi Coast / Bay of Naples; distance_honesty: card 231.7nm vs route 13.9nm (1567% delta) |
 | featured | italy-luxury/p1 | Molo Beverello (Naples) → Marina Grande (Capri) | `rn-01c592b8150e` | **KEEP** | — |
 | featured | italy-luxury/p2 | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | featured | italy-luxury/p3 | Amalfi Coast → Costa Smeralda & Sardinia | `—` | **KEEP** | — |

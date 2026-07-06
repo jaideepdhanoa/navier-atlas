@@ -299,10 +299,12 @@ def apply_partner_marquees(
 
     is_hub = doc.get("layout") in ("hub", "network") and bool(doc.get("markets"))
 
-    # Flat partners: sync why_navier_now.wow + clear phase featured (legacy retired)
+    # Flat partners: schema expects why_navier_now.wow_corridors as strings
     if not is_hub:
         wnn = dict(doc.get("why_navier_now") or {})
-        wnn["wow_corridors"] = wow
+        wnn["wow_corridors"] = [
+            f"{w['from_label']} → {w['to_label']}" for w in wow if w.get("from_label") and w.get("to_label")
+        ]
         doc["why_navier_now"] = wnn
         for pi, ph in enumerate(doc.get("phases") or []):
             if isinstance(ph, dict) and ph.get("featured_routes"):

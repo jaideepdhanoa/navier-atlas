@@ -1,15 +1,15 @@
 # Proposal fidelity — bolt
 
-**Verdict:** PASS
-**Checked:** 2026-07-03T02:54:01Z
+**Verdict:** PASS_WITH_FLAGS
+**Checked:** 2026-07-06T00:49:29Z
 
 ## Summary
 
-- Items audited: 210
-- KEEP: 210
+- Items audited: 204
+- KEEP: 202
 - DROP: 0
-- DEFER: 0
-- TRIM/REWRITE: 0
+- DEFER: 1
+- TRIM/REWRITE: 1
 - BP-binding errors: 0
 
 ## Trim list
@@ -19,11 +19,11 @@
 | journey | — | Athens → Hydra (Saronic) | `—` | **KEEP** | — |
 | journey | — | Split → Hvar | `rn-cc40790a3078` | **KEEP** | — |
 | journey | — | Nice Airport → Monaco | `—` | **KEEP** | — |
-| journey | — | Dubai Marina Yacht Club (DMYC) → Le Méridien & Wes | `gcn-0ca7f3ffe7-careem` | **KEEP** | — |
+| journey | — | Dubai Marina Yacht Club (DMYC) → Le Méridien & Wes | `—` | **KEEP** | — |
 | featured | 1 | Athens ↔ Saronic islands | `—` | **KEEP** | — |
 | featured | 1 | ACI Marina Trogir → Hvar Town Harbour | `rn-7c1e7f62f283` | **KEEP** | — |
 | featured | 2 | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
-| featured | 3 | Ushuaïa Dubai Harbour Experience → Marina Mall / B | `gcn-4ae479b872-bolt` | **KEEP** | — |
+| featured | 3 | Ushuaïa Dubai Harbour Experience → Marina Mall / B | `—` | **KEEP** | — |
 | journey | market:croatia | Split Riva → Trogir Riva | `rn-97acf274a21e` | **KEEP** | — |
 | journey | market:croatia | TP Line | Dubrovnik → Kolocep Harbour | `rn-86a2678bad4c` | **KEEP** | — |
 | journey | market:croatia | Ferry Port Split → Ferry - Šolta | `rn-8433d89475d9` | **KEEP** | — |
@@ -38,12 +38,12 @@
 | journey | market:east-africa | Dar es Salaam → Stone Town (Zanzibar) | `rn-46bee519109a` | **KEEP** | — |
 | journey | market:east-africa | Mombasa → Diani / Ukunda | `—` | **KEEP** | — |
 | featured | east-africa/p1 | Dar es Salaam → Stone Town | `rn-46bee519109a` | **KEEP** | — |
-| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `ics-0b3b436e41` | **KEEP** | — |
-| journey | market:egypt | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-08faa8cf54f2` | **KEEP** | — |
+| featured | east-africa/p1 | Mombasa Old Port Jetty → Diani Beach Landing | `—` | **KEEP** | — |
+| journey | market:egypt | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-cf19a27c2e8a` | **KEEP** | — |
 | journey | market:egypt | Cairo - Maadi → Cairo - Zamalek / Downtown | `rn-4d2d789c04ad` | **KEEP** | — |
 | journey | market:egypt | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
 | journey | market:egypt | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
-| featured | egypt/p1 | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-08faa8cf54f2` | **KEEP** | — |
+| featured | egypt/p1 | El Gouna (internal lagoon) → El Gouna Downtown / A | `rn-cf19a27c2e8a` | **KEEP** | — |
 | featured | egypt/p1 | Cairo - Maadi → Cairo - Zamalek / Downtown | `rn-4d2d789c04ad` | **KEEP** | — |
 | featured | egypt/p1 | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
 | featured | egypt/p2 | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
@@ -73,12 +73,12 @@
 | featured | finland/p2 | Helsinki → Vallisaari | `rn-8523ec0a5309` | **KEEP** | — |
 | featured | finland/p3 | Viking Line → Stockholm | `rn-db397ab37430` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
-| journey | market:france-riviera | Menton → Monaco | `—` | **KEEP** | — |
+| journey | market:france-riviera | Menton → Monaco | `rn-377e4ce2bf83` | **TRIM** | geometry_preview: interior_land_km=5.20 (threshold 0.4) |
 | journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
 | featured | france-riviera/p1 | Port de Cannes, Jetée Albert Edouard → Centre Naut | `ics-529325c5eb` | **KEEP** | — |
 | featured | france-riviera/p1 | Antibes → Cannes | `rn-3fab58bb5f82` | **KEEP** | — |
-| featured | france-riviera/p2 | Menton → Monaco | `—` | **KEEP** | — |
+| featured | france-riviera/p2 | Menton → Monaco | `rn-377e4ce2bf83` | **DEFER** | geometry_preview: interior_land_km=5.20 (threshold 0.4) |
 | featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | france-riviera/p2 | Nice → Monaco | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | france-riviera/p3 | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |
@@ -175,15 +175,15 @@
 | featured | south-africa/p3 | Cape Town → Exposed-coast reach (Quanta-LR reserve | `—` | **KEEP** | — |
 | journey | market:spain | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | journey | market:spain | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| journey | market:spain | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
+| journey | market:spain | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
 | journey | market:spain | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p1 | L'Estartit → Illes Medes | `—` | **KEEP** | — |
 | featured | spain/p1 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `ics-c250dbc94d` | **KEEP** | — |
+| featured | spain/p1 | Lloret de Mar → Tossa de Mar | `—` | **KEEP** | — |
 | featured | spain/p2 | Marina Port de Mallorca (Palma) → Marina del Port  | `ics-7085b9f5f4` | **KEEP** | — |
 | featured | spain/p2 | Ibiza Harbour → La Savina (Formentera) | `ics-605dcb641e` | **KEEP** | — |
 | featured | spain/p2 | Puerto Portals → Puerto de Palma | `rn-3b8e9da00462` | **KEEP** | — |
-| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `ics-4c8c95334c` | **KEEP** | — |
+| featured | spain/p3 | Grimaldi Trasmed | Palma → Grimaldi Trasmed | Ibiz | `—` | **KEEP** | — |
 | featured | spain/p3 | Port de Cala Ratjada → Ciutadella — Port (Son Blan | `ics-f88551e209` | **KEEP** | — |
 | featured | spain/p3 | Barcelona → Palma de Mallorca | `—` | **KEEP** | — |
 | journey | market:sweden | Slussen SL Ferry terminal → Allmänna gränd | `rn-7061b9e5930e` | **KEEP** | — |
@@ -209,19 +209,13 @@
 | featured | thailand/p2 | Phuket → Similan Islands (seasonal) | `—` | **KEEP** | — |
 | featured | thailand/p3 | Phuket → Langkawi (Malaysia) | `—` | **KEEP** | — |
 | featured | thailand/p3 | Phuket → Koh Samui | `—` | **KEEP** | — |
-| journey | market:uae | One&Only The Palm Jetty → Jumeirah Zabeel Saray Je | `gcn-8d63400ee6-careem` | **KEEP** | — |
-| journey | market:uae | Dubai Harbour Marina → Bluewaters Marina | `gcn-5f710d44d4-bolt` | **KEEP** | — |
-| journey | market:uae | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `gcn-53d48bd905-careem` | **KEEP** | — |
-| journey | market:uae | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `gcn-196f720eb3-careem` | **KEEP** | — |
-| featured | uae/p1 | One&Only The Palm Jetty → Jumeirah Zabeel Saray Je | `gcn-8d63400ee6-careem` | **KEEP** | — |
-| featured | uae/p1 | Dubai Harbour Marina → Bluewaters Marina | `gcn-5f710d44d4-bolt` | **KEEP** | — |
-| featured | uae/p1 | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `gcn-53d48bd905-careem` | **KEEP** | — |
-| featured | uae/p2 | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `gcn-196f720eb3-careem` | **KEEP** | — |
-| featured | uae/p2 | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `gcn-53d48bd905-careem` | **KEEP** | — |
-| featured | uae/p2 | Dubai Creek Marina → Al Seef Marine Transport Stat | `gcn-e71d4cf5b6-bolt` | **KEEP** | — |
-| featured | uae/p3 | Jebel Dhanna / Ruwais Ferry Terminal → Sir Bani Ya | `gcn-8b5dd5d484-bolt` | **KEEP** | — |
-| featured | uae/p3 | Dubai Creek Golf & Yacht Club Marina → Al Seef Mar | `gcn-e71d4cf5b6-bolt` | **KEEP** | — |
-| featured | uae/p3 | Marina Mall / Breakwater Marina → Bahrain Financia | `rn-c69c27c8b6e4` | **KEEP** | — |
+| journey | market:uae | One&Only The Palm Jetty → Jumeirah Zabeel Saray Je | `—` | **KEEP** | — |
+| journey | market:uae | Dubai Harbour Marina → Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
+| journey | market:uae | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `rn-9eb8c1a0d47f` | **KEEP** | — |
+| journey | market:uae | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `—` | **KEEP** | — |
+| featured | uae/p1 | Kempinski Hotel & Residences Palm Jumeirah Jetty ↔ | `rn-9eb8c1a0d47f` | **KEEP** | — |
+| featured | uae/p2 | Dubai Harbour Marina ↔ Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
+| featured | uae/p3 | regional corridor | `—` | **KEEP** | — |
 | journey | market:taiwan | Kaohsiung harbour → Cijin Island | `—` | **KEEP** | — |
 | journey | market:taiwan | Magong South Sea Visitor Center / Magong Harbour ( | `—` | **KEEP** | — |
 | featured | taiwan/p1 | Kaohsiung ↔ Cijin | `—` | **KEEP** | — |

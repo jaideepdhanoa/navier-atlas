@@ -1,12 +1,12 @@
 # Proposal fidelity — careem
 
 **Verdict:** PASS
-**Checked:** 2026-07-03T02:54:01Z
+**Checked:** 2026-07-06T00:49:29Z
 
 ## Summary
 
-- Items audited: 9
-- KEEP: 9
+- Items audited: 6
+- KEEP: 6
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -16,15 +16,12 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| journey | — | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
-| journey | — | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `rn-02a40748974d` | **KEEP** | — |
-| journey | — | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |
-| featured | 1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
-| featured | 1 | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `rn-02a40748974d` | **KEEP** | — |
-| featured | 1 | Dubai Harbour Marina → Al Khan Lagoon mouth | `gcn-8e3c2d581c-bolt` | **KEEP** | — |
-| featured | 2 | Dubai Harbour Marina → Wynn Al Marjan Island arriv | `gcn-9e515da38a-bolt` | **KEEP** | — |
-| featured | 3 | Abu Dhabi → Muscat | `—` | **KEEP** | — |
-| featured | 3 | Fujairah → Muscat | `—` | **KEEP** | — |
+| journey | — | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
+| journey | — | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `—` | **KEEP** | — |
+| journey | — | Dubai Harbour Marina → Al Khan Lagoon mouth | `—` | **KEEP** | — |
+| featured | 1 | coastal commuting | `—` | **KEEP** | — |
+| featured | 2 | inter-emirate travel | `—` | **KEEP** | — |
+| featured | 3 | national coverage | `—` | **KEEP** | — |
 
 ## Careem Phase 1 target keep set (post-trim)
 

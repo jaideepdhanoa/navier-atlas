@@ -1,7 +1,7 @@
 # Proposal fidelity — minor-hotels
 
 **Verdict:** PASS
-**Checked:** 2026-07-03T02:54:02Z
+**Checked:** 2026-07-06T00:49:30Z
 
 ## Summary
 
@@ -23,7 +23,7 @@
 | featured | 2 | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | featured | 3 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
 | featured | 3 | Velana Seaplane → Kurumba Maldives | `—` | **KEEP** | — |
-| featured | 3 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
+| featured | 3 | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
 | journey | market:phuket_phang_nga | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `rn-01a8c29df66a` | **KEEP** | — |
 | journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
 | journey | market:phuket_phang_nga | Chalong Pier → Karon Beach | `rn-eb5758aeba2a` | **KEEP** | — |
@@ -32,12 +32,12 @@
 | featured | phuket_phang_nga/p2 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | featured | phuket_phang_nga/p3 | phuket-phang-nga-thailand__phuket → koh-lanta-thai | `—` | **KEEP** | — |
 | journey | market:palm_jumeirah | DXB / Dubai Marina → Anantara The Palm Dubai Resor | `—` | **KEEP** | — |
-| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
-| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
-| journey | market:palm_jumeirah | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `rn-af9d261fd724` | **KEEP** | — |
-| featured | palm_jumeirah/p1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
+| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
+| journey | market:palm_jumeirah | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
+| journey | market:palm_jumeirah | Côte d'Azur Resort Marina (Heart of Europe) → Anan | `—` | **KEEP** | — |
+| featured | palm_jumeirah/p1 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
 | featured | palm_jumeirah/p2 | Dubai Harbour Marina → Anantara The Palm Dubai Jet | `—` | **KEEP** | — |
-| featured | palm_jumeirah/p3 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `rn-b1ba183aa886` | **KEEP** | — |
+| featured | palm_jumeirah/p3 | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
 | featured | palm_jumeirah/p3 | Palm Jumeirah Marina West → Atlantis The Palm Jett | `—` | **KEEP** | — |
 | journey | market:bali | Bali Marina (Benoa) → Six Senses Uluwatu | `rn-c256a044c8be` | **KEEP** | — |
 | journey | market:bali | Sanur Beach Fast Boat Terminal → GoBoat.id - Nelay | `rn-488fcf2617fe` | **KEEP** | — |
@@ -71,19 +71,19 @@
 | featured | thailand_gulf/p3 | Banyan Tree Koh Samui (Lamai) → Le Méridien Koh Sa | `rn-d275f9622d40` | **KEEP** | — |
 | featured | thailand_gulf/p3 | Koh Phangan → Samui N | `—` | **KEEP** | — |
 | featured | thailand_gulf/p3 | Koh Phangan → Anantara Lawana Koh Samui (Chaweng N | `—` | **KEEP** | — |
-| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
-| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
-| journey | market:uae_wider | Mina Al Arab marina / lagoon basin → Anantara Mina | `rn-239a65d9ff67` | **KEEP** | — |
-| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
+| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
+| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
+| journey | market:uae_wider | Mina Al Arab marina / lagoon basin → Anantara Mina | `—` | **KEEP** | — |
+| journey | market:uae_wider | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
 | featured | uae_wider/p1 | Marina Bay 1 ↔ Desert Islands Resort & Spa by Anan | `—` | **KEEP** | — |
-| featured | uae_wider/p1 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
-| featured | uae_wider/p1 | Mina Al Arab marina / lagoon basin → InterContinen | `rn-1ad18654169b` | **KEEP** | — |
-| featured | uae_wider/p2 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-239a65d9ff67` | **KEEP** | — |
-| featured | uae_wider/p2 | Al Khan Lagoon mouth → Sharjah Boat Slider Ramp | `rn-7e32fc3a444d` | **KEEP** | — |
-| featured | uae_wider/p2 | Sharjah Boat Slider Ramp → Sharjah Maritime Museum | `rn-f10abdaac041` | **KEEP** | — |
-| featured | uae_wider/p3 | Marina 2 Ajman Corniche → Sharjah Marine Club / Kh | `rn-e18102cbc6de` | **KEEP** | — |
+| featured | uae_wider/p1 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
+| featured | uae_wider/p1 | Mina Al Arab marina / lagoon basin → InterContinen | `—` | **KEEP** | — |
+| featured | uae_wider/p2 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
+| featured | uae_wider/p2 | Al Khan Lagoon mouth → Sharjah Boat Slider Ramp | `—` | **KEEP** | — |
+| featured | uae_wider/p2 | Sharjah Boat Slider Ramp → Sharjah Maritime Museum | `—` | **KEEP** | — |
+| featured | uae_wider/p3 | Marina 2 Ajman Corniche → Sharjah Marine Club / Kh | `—` | **KEEP** | — |
 | featured | uae_wider/p3 | Ras Al Khaimah (RAK) → Sharjah | `—` | **KEEP** | — |
-| featured | uae_wider/p3 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `rn-259c74613206` | **KEEP** | — |
+| featured | uae_wider/p3 | Anantara Mina Al Arab Ras Al Khaimah Resort jetty  | `—` | **KEEP** | — |
 | featured | med_europe/p1 | Anantara Convento di Amalfi Grand Hotel — marina/c | `—` | **KEEP** | — |
 | featured | med_europe/p2 | Anantara Plaza Nice Hotel — marina/city → coast | `—` | **KEEP** | — |
 | featured | med_europe/p3 | Avani Rio Novo Venice Hotel — canal/lagoon → city | `—` | **KEEP** | — |

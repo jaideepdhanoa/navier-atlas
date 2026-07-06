@@ -1,7 +1,7 @@
 # Proposal fidelity — line
 
 **Verdict:** TRIM
-**Checked:** 2026-07-03T02:54:02Z
+**Checked:** 2026-07-06T00:49:30Z
 
 ## Summary
 

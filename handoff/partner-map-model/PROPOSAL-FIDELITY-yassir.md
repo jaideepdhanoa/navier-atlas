@@ -1,12 +1,12 @@
 # Proposal fidelity — yassir
 
 **Verdict:** PASS
-**Checked:** 2026-07-03T02:54:03Z
+**Checked:** 2026-07-06T00:49:31Z
 
 ## Summary
 
-- Items audited: 32
-- KEEP: 32
+- Items audited: 28
+- KEEP: 28
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -19,11 +19,9 @@
 | journey | — | Tunis / La Goulette → Sidi Bou Said / La Marsa | `rn-74a61d330456` | **KEEP** | — |
 | journey | — | Sfax / mainland → Kerkennah Islands | `—` | **KEEP** | — |
 | journey | — | Tanger Med (Ksar el Majaz) → Ceuta (Spanish enclav | `rn-24c3aa4c2acf` | **KEEP** | — |
-| journey | — | Casablanca Marina → Rabat — Bouregreg Marina | `rn-a30214f88daf` | **KEEP** | — |
 | featured | 1 | La Goulette Port → Sidi Bou Said Marina | `rn-74a61d330456` | **KEEP** | — |
 | featured | 1 | Sfax ↔ Kerkennah | `—` | **KEEP** | — |
 | featured | 2 | Tangier Marina Bay ↔ Tarifa-area premium water leg | `—` | **KEEP** | — |
-| featured | 2 | Casablanca Marina → Rabat — Bouregreg Marina | `rn-a30214f88daf` | **KEEP** | — |
 | featured | 2 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | featured | 3 | Djerba & Kerkennah (Tunisia) → Ajim | `—` | **KEEP** | — |
 | featured | 3 | Tanger Med (Ksar el Majaz) → Ceuta (Spanish enclav | `rn-24c3aa4c2acf` | **KEEP** | — |
@@ -33,7 +31,6 @@
 | featured | yassir-tunisia/p1 | La Goulette Port → Sidi Bou Said Marina | `rn-74a61d330456` | **KEEP** | — |
 | featured | yassir-tunisia/p1 | Sfax ↔ Kerkennah | `—` | **KEEP** | — |
 | featured | yassir-tunisia/p2 | Tangier Marina Bay ↔ Tarifa-area premium water leg | `—` | **KEEP** | — |
-| featured | yassir-tunisia/p2 | Casablanca Marina → Rabat — Bouregreg Marina | `rn-a30214f88daf` | **KEEP** | — |
 | featured | yassir-tunisia/p2 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | featured | yassir-tunisia/p3 | Djerba & Kerkennah (Tunisia) → Ajim | `—` | **KEEP** | — |
 | featured | yassir-tunisia/p3 | Tanger Med (Ksar el Majaz) → Ceuta (Spanish enclav | `rn-24c3aa4c2acf` | **KEEP** | — |
@@ -43,7 +40,6 @@
 | featured | yassir-morocco/p1 | La Goulette Port → Sidi Bou Said Marina | `rn-74a61d330456` | **KEEP** | — |
 | featured | yassir-morocco/p1 | Sfax ↔ Kerkennah | `—` | **KEEP** | — |
 | featured | yassir-morocco/p2 | Tangier Marina Bay ↔ Tarifa-area premium water leg | `—` | **KEEP** | — |
-| featured | yassir-morocco/p2 | Casablanca Marina → Rabat — Bouregreg Marina | `rn-a30214f88daf` | **KEEP** | — |
 | featured | yassir-morocco/p2 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | featured | yassir-morocco/p3 | Djerba & Kerkennah (Tunisia) → Ajim | `—` | **KEEP** | — |
 | featured | yassir-morocco/p3 | Tanger Med (Ksar el Majaz) → Ceuta (Spanish enclav | `rn-24c3aa4c2acf` | **KEEP** | — |
