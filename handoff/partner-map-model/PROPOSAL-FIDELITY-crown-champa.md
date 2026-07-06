@@ -1,7 +1,7 @@
 # Proposal fidelity — crown-champa
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T00:49:29Z
+**Checked:** 2026-07-06T01:15:46Z
 
 ## Summary
 

@@ -1,12 +1,12 @@
 # Proposal fidelity — careem
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T00:49:29Z
+**Checked:** 2026-07-06T01:15:46Z
 
 ## Summary
 
-- Items audited: 6
-- KEEP: 6
+- Items audited: 3
+- KEEP: 3
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -19,9 +19,6 @@
 | journey | — | Dubai Harbour Marina → Nikki Beach Resort Pearl Ju | `—` | **KEEP** | — |
 | journey | — | Vida Beach Resort Umm Al Quwain → Sharjah Waterfro | `—` | **KEEP** | — |
 | journey | — | Dubai Harbour Marina → Al Khan Lagoon mouth | `—` | **KEEP** | — |
-| featured | 1 | coastal commuting | `—` | **KEEP** | — |
-| featured | 2 | inter-emirate travel | `—` | **KEEP** | — |
-| featured | 3 | national coverage | `—` | **KEEP** | — |
 
 ## Careem Phase 1 target keep set (post-trim)
 

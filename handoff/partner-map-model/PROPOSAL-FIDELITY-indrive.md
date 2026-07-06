@@ -1,16 +1,16 @@
 # Proposal fidelity — indrive
 
-**Verdict:** REWRITE
-**Checked:** 2026-07-06T00:49:30Z
+**Verdict:** PASS
+**Checked:** 2026-07-06T01:16:30Z
 
 ## Summary
 
-- Items audited: 57
-- KEEP: 40
-- DROP: 9
-- DEFER: 6
-- TRIM/REWRITE: 2
-- BP-binding errors: 9
+- Items audited: 48
+- KEEP: 48
+- DROP: 0
+- DEFER: 0
+- TRIM/REWRITE: 0
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -26,7 +26,6 @@
 | featured | 2 | Marina Zeas (Piraeus) → 2nd Glyfada Marina | `rn-89552c9786ec` | **KEEP** | — |
 | featured | 2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
 | featured | 2 | Dubai Harbour Marina → Anantara World Islands Reso | `—` | **KEEP** | — |
-| featured | 3 | Red Sea Global (RSG + AMAALA) → Nujuma, a Ritz-Car | `rn-1a140dacd3e6` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Red Sea Global (RSG + AMAALA |
 | featured | 3 | Molo Beverello (Naples) → Casamicciola | `rn-31d27d5fc623` | **KEEP** | — |
 | featured | 3 | Mykonos New Port (Tourlos) → Naxos Port (Chora) | `—` | **KEEP** | — |
 | journey | market:egypt-red-sea | Hurghada / El Gouna → Sharm el Sheikh | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
@@ -40,36 +39,28 @@
 | featured | egypt-red-sea/p3 | Marina El Gouna → Four Seasons Resort Sharm El She | `gcn-73d7e2f19c-bolt` | **KEEP** | — |
 | featured | egypt-red-sea/p3 | El Gouna ↔ Hurghada Marina | `—` | **KEEP** | — |
 | featured | egypt-red-sea/p3 | Hurghada Marina → Palm Royale Resort soma Bay | `rn-52521422c232` | **KEEP** | — |
-| journey | market:morocco-atlantic | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **TRIM** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
-| journey | market:morocco-atlantic | Marina Agadir → Taghazout Bay | `ics-7d8b3ee339` | **KEEP** | — |
-| journey | market:morocco-atlantic | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **TRIM** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
+| journey | market:morocco-atlantic | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| journey | market:morocco-atlantic | Marina Agadir → Taghazout Bay | `—` | **KEEP** | — |
+| journey | market:morocco-atlantic | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | journey | market:morocco-atlantic | Essaouira → Sidi Kaouki / southern coast | `ics-06dfaf332d` | **KEEP** | — |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
-| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p1 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | featured | morocco-atlantic/p2 | Essaouira → Sidi Kaouki | `—` | **KEEP** | — |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
-| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `rn-e2510433b07c` | **DEFER** | geometry_preview: interior_land_km=1.82 (threshold 0.4) |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
+| featured | morocco-atlantic/p3 | Marina d'Agadir → Taghazout Bay Resort Beach (Fair | `—` | **KEEP** | — |
 | journey | market:india | Versova Ferry Wharf → Gateway of India | `ics-mum-versova-gateway` | **KEEP** | — |
 | journey | market:india | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | journey | market:india | Goa → Mumbai Harbour | `rn-ff5ccaf1831e` | **KEEP** | — |
-| journey | market:india | Goa → Old Goa Ferry Terminal | `ics-f8ba590813` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Goa' → 'Old Goa Ferry Termin |
 | featured | india/p1 | Versova Ferry Wharf → Gateway of India | `ics-mum-versova-gateway` | **KEEP** | — |
 | featured | india/p1 | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | featured | india/p1 | Goa → Mumbai Harbour | `rn-ff5ccaf1831e` | **KEEP** | — |
-| featured | india/p2 | Goa → Old Goa Ferry Terminal | `ics-f8ba590813` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Goa' → 'Old Goa Ferry Termin |
 | featured | india/p3 | Versova Ferry Wharf → Gateway of India | `ics-mum-versova-gateway` | **KEEP** | — |
 | featured | india/p3 | Elephanta Caves → Mumbai Trans-Harbour Navi Mumbai | `ics-6a150e9b8e` | **KEEP** | — |
 | featured | india/p3 | Goa → Mumbai Harbour | `rn-ff5ccaf1831e` | **KEEP** | — |
-| journey | market:sub-saharan-africa | Lagos (Lagos Lagoon) → Lagos | `ics-145919c3ee` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Lagos (Lagos Lagoon)' → 'Lag |
 | journey | market:sub-saharan-africa | Zanzibar (Stone Town) → Dar es Salaam | `ics-0ea2807c3e` | **KEEP** | — |
-| journey | market:sub-saharan-africa | Cape Town → Cape Town | `ics-3b4c8c1a39` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Cape Town' → 'Cape Town' vs  |
-| journey | market:sub-saharan-africa | Dar es Salaam → Prison Island | `ics-5e2ca22157` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Dar es Salaam' → 'Prison Isl |
-| featured | sub-saharan-africa/p1 | Lagos (Lagos Lagoon) → Lagos | `ics-87af96ae79` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Lagos (Lagos Lagoon)' → 'Lag |
 | featured | sub-saharan-africa/p1 | Zanzibar → Dar Es Salaam Ferry Terminal | `ics-0ea2807c3e` | **KEEP** | — |
 | featured | sub-saharan-africa/p1 | Cape Town → Cape Town | `—` | **KEEP** | — |
 | featured | sub-saharan-africa/p2 | Dar es Salaam → Zanzibar | `—` | **KEEP** | — |
-| featured | sub-saharan-africa/p3 | Lagos (Lagos Lagoon) → Lagos | `ics-991e0bf363` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Lagos (Lagos Lagoon)' → 'Lag |
 | featured | sub-saharan-africa/p3 | Zanzibar → Dar Es Salaam Ferry Terminal | `—` | **KEEP** | — |
-| featured | sub-saharan-africa/p3 | Cape Town → Cape Town | `ics-a1bd529dd0` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Cape Town' → 'Cape Town' vs  |

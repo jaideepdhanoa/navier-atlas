@@ -1,16 +1,16 @@
 # Proposal fidelity — uber
 
-**Verdict:** TRIM
-**Checked:** 2026-07-06T00:49:30Z
+**Verdict:** PASS
+**Checked:** 2026-07-06T01:15:48Z
 
 ## Summary
 
-- Items audited: 96
+- Items audited: 94
 - KEEP: 94
-- DROP: 2
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
-- BP-binding errors: 2
+- BP-binding errors: 0
 
 ## Trim list
 
@@ -81,13 +81,11 @@
 | journey | market:brazil-latam | Rio → Buzios | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
 | journey | market:brazil-latam | Florianópolis & Santa Catarina → Florianópolis & S | `—` | **KEEP** | — |
-| featured | brazil-latam/p1 | Florianópolis & Santa Catarina → Florianópolis & S | `ics-2df0a1d37f` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Florianópolis & Santa Catari |
 | featured | brazil-latam/p2 | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
 | featured | brazil-latam/p3 | Rio (Praca XV) ↔ Niteroi | `—` | **KEEP** | — |
 | journey | market:italy-luxury | Naples → Capri | `rn-01c592b8150e` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | journey | market:italy-luxury | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
-| journey | market:italy-luxury | Amalfi Coast / Bay of Naples → Costa Smeralda, Sar | `rn-140626297ee9` | **DROP** | bp_binding: labels ≠ route endpoints: card 'Amalfi Coast / Bay of Naples; distance_honesty: card 231.7nm vs route 13.9nm (1567% delta) |
 | featured | italy-luxury/p1 | Molo Beverello (Naples) → Marina Grande (Capri) | `rn-01c592b8150e` | **KEEP** | — |
 | featured | italy-luxury/p2 | Porto di Pozzuoli → Marina Grande (Capri) | `rn-2508d7811cef` | **KEEP** | — |
 | featured | italy-luxury/p3 | Amalfi Coast → Costa Smeralda & Sardinia | `—` | **KEEP** | — |

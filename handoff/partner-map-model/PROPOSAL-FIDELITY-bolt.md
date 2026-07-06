@@ -1,15 +1,15 @@
 # Proposal fidelity — bolt
 
-**Verdict:** PASS_WITH_FLAGS
-**Checked:** 2026-07-06T00:49:29Z
+**Verdict:** PASS
+**Checked:** 2026-07-06T01:16:30Z
 
 ## Summary
 
-- Items audited: 204
-- KEEP: 202
+- Items audited: 201
+- KEEP: 201
 - DROP: 0
-- DEFER: 1
-- TRIM/REWRITE: 1
+- DEFER: 0
+- TRIM/REWRITE: 0
 - BP-binding errors: 0
 
 ## Trim list
@@ -73,15 +73,15 @@
 | featured | finland/p2 | Helsinki → Vallisaari | `rn-8523ec0a5309` | **KEEP** | — |
 | featured | finland/p3 | Viking Line → Stockholm | `rn-db397ab37430` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
-| journey | market:france-riviera | Menton → Monaco | `rn-377e4ce2bf83` | **TRIM** | geometry_preview: interior_land_km=5.20 (threshold 0.4) |
-| journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
+| journey | market:france-riviera | Menton → Monaco | `—` | **KEEP** | — |
+| journey | market:france-riviera | Nice Port → Port Hercule (Monaco) | `—` | **KEEP** | — |
 | journey | market:france-riviera | Vieux Port (Cannes) → Port de Saint-Tropez | `rn-3f177aa9d890` | **KEEP** | — |
 | featured | france-riviera/p1 | Port de Cannes, Jetée Albert Edouard → Centre Naut | `ics-529325c5eb` | **KEEP** | — |
 | featured | france-riviera/p1 | Antibes → Cannes | `rn-3fab58bb5f82` | **KEEP** | — |
-| featured | france-riviera/p2 | Menton → Monaco | `rn-377e4ce2bf83` | **DEFER** | geometry_preview: interior_land_km=5.20 (threshold 0.4) |
-| featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `rn-d66efc6795b3` | **KEEP** | — |
-| featured | france-riviera/p2 | Nice → Monaco | `rn-d66efc6795b3` | **KEEP** | — |
-| featured | france-riviera/p3 | Nice Port → Port Hercule (Monaco) | `rn-c0f2e69be06c` | **KEEP** | — |
+| featured | france-riviera/p2 | Menton → Monaco | `—` | **KEEP** | — |
+| featured | france-riviera/p2 | Nice Port → Port Hercule (Monaco) | `—` | **KEEP** | — |
+| featured | france-riviera/p2 | Nice → Monaco | `—` | **KEEP** | — |
+| featured | france-riviera/p3 | Nice Port → Port Hercule (Monaco) | `—` | **KEEP** | — |
 | featured | france-riviera/p3 | Vieux Port (Cannes) → Saint-Tropez — Vieux Port (B | `rn-186b89d0af31` | **KEEP** | — |
 | featured | france-riviera/p3 | Nice Port → Saint-Tropez — Vieux Port (Bateaux Ver | `rn-d1e8ad221645` | **KEEP** | — |
 | journey | market:greece | Mykonos Old Port → Delos — Delos boat pier (archae | `rn-6be8bfbbdcd8` | **KEEP** | — |
@@ -213,9 +213,6 @@
 | journey | market:uae | Dubai Harbour Marina → Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
 | journey | market:uae | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `rn-9eb8c1a0d47f` | **KEEP** | — |
 | journey | market:uae | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `—` | **KEEP** | — |
-| featured | uae/p1 | Kempinski Hotel & Residences Palm Jumeirah Jetty ↔ | `rn-9eb8c1a0d47f` | **KEEP** | — |
-| featured | uae/p2 | Dubai Harbour Marina ↔ Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
-| featured | uae/p3 | regional corridor | `—` | **KEEP** | — |
 | journey | market:taiwan | Kaohsiung harbour → Cijin Island | `—` | **KEEP** | — |
 | journey | market:taiwan | Magong South Sea Visitor Center / Magong Harbour ( | `—` | **KEEP** | — |
 | featured | taiwan/p1 | Kaohsiung ↔ Cijin | `—` | **KEEP** | — |

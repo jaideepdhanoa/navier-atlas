@@ -1,13 +1,13 @@
 # Proposal fidelity — yango
 
-**Verdict:** TRIM
-**Checked:** 2026-07-06T00:49:30Z
+**Verdict:** PASS
+**Checked:** 2026-07-06T01:15:48Z
 
 ## Summary
 
-- Items audited: 73
-- KEEP: 72
-- DROP: 1
+- Items audited: 69
+- KEEP: 69
+- DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
 - BP-binding errors: 0
@@ -16,16 +16,12 @@
 
 | Surface | Phase | Corridor | Route | Rec | Flags |
 |---------|-------|----------|-------|-----|-------|
-| featured | 1 | Aktau seafront ↔ Aktau beaches | `rn-49adc6cc42bc` | **DROP** | phase_narrative_fit: Phase 1 Dubai beachhead but route cities ['aktau-kazakhstan' |
 | featured | 2 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | featured | 3 | Rabat ↔ Sale | `—` | **KEEP** | — |
 | journey | market:uae | One&Only The Palm Jetty → Jumeirah Zabeel Saray Je | `—` | **KEEP** | — |
 | journey | market:uae | Dubai Harbour Marina → Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
 | journey | market:uae | Kempinski Hotel & Residences Palm Jumeirah Jetty → | `rn-9eb8c1a0d47f` | **KEEP** | — |
 | journey | market:uae | La Mer / J1 Beach Jetty → Nikki Beach Resort Pearl | `—` | **KEEP** | — |
-| featured | uae/p1 | Kempinski Hotel & Residences Palm Jumeirah Jetty ↔ | `rn-9eb8c1a0d47f` | **KEEP** | — |
-| featured | uae/p2 | Dubai Harbour Marina ↔ Bluewaters Marina | `rn-69428b758c23` | **KEEP** | — |
-| featured | uae/p3 | regional corridor | `—` | **KEEP** | — |
 | journey | market:qatar | Lusail Marina → Ritz-Carlton Doha — private marina | `rn-30d3fa93ca0e` | **KEEP** | — |
 | journey | market:qatar | Doha Corniche → The Pearl | `gcn-4c7a1915c8-qatar` | **KEEP** | — |
 | journey | market:qatar | Al Wakrah (Qatar) → The Pearl-Qatar — Marsa Arabia | `—` | **KEEP** | — |

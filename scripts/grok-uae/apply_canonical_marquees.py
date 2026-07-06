@@ -275,29 +275,36 @@ def apply_partner_marquees(
 ) -> dict[str, Any]:
     doc = copy.deepcopy(partner)
     changes: dict[str, Any] = {"partner_id": partner_id, "actions": []}
+    is_hub = doc.get("layout") in ("hub", "network") and bool(doc.get("markets"))
 
     # Unified _map_scope
     scope = dict(doc.get("_map_scope") or {})
     scope.update(
         {
-            "_doc": "UAE consolidation — unified cluster membership (apply_canonical_marquees.py)",
+            "_doc": "UAE consolidation — inherit-all policy (apply_canonical_marquees.py)",
             "generated": utc_now(),
             "source": "uae_consolidation_canonical",
             "registry_keys": sorted(set(scope.get("registry_keys") or []) | {"uae"}),
-            "cluster_city_ids": unified_city_ids,
             "inheritance_policy": "inherit_all_cluster_corridors",
         }
     )
+    # Hub partners: materialize cluster_city_ids from live CLUSTERS.json via sync script.
+    # Flat partners (careem/noon): end_state_cities + phases carry membership — avoid scope drift.
+    if is_hub:
+        scope["cluster_city_ids"] = unified_city_ids
+    else:
+        scope.pop("cluster_city_ids", None)
     doc["_map_scope"] = scope
-    changes["actions"].append(f"_map_scope.cluster_city_ids → {len(unified_city_ids)} UAE cities")
+    if is_hub:
+        changes["actions"].append(f"_map_scope.cluster_city_ids → {len(unified_city_ids)} UAE cities")
+    else:
+        changes["actions"].append("_map_scope.inheritance_policy only (flat partner — cities via end_state)")
 
     # Root canonical presentation arrays
     doc["featured_routes"] = featured
     doc["wow_corridors"] = wow
     changes["actions"].append(f"featured_routes → {len(featured)} canonical entries")
     changes["actions"].append(f"wow_corridors → {len(wow)} canonical entries")
-
-    is_hub = doc.get("layout") in ("hub", "network") and bool(doc.get("markets"))
 
     # Flat partners: schema expects why_navier_now.wow_corridors as strings
     if not is_hub:
