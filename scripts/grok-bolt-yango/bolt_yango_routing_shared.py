@@ -630,6 +630,8 @@ def make_route_feature(
     *,
     source: str = "boltyango",
     land_km: float = 0.0,
+    cluster_id: str | None = None,
+    cluster_city_id: str | None = None,
 ) -> dict:
     dist_nm = path_length_km(coords) * NM_PER_KM
     rid = mint_route_id(from_id, to_id)
@@ -643,7 +645,7 @@ def make_route_feature(
     else:
         city_label = label
 
-    return {
+    feat: dict = {
         "type": "Feature",
         "geometry": {"type": "LineString", "coordinates": coords},
         "properties": {
@@ -670,3 +672,12 @@ def make_route_feature(
             "_coastal_geometry": True,
         },
     }
+    if cluster_id:
+        feat["properties"]["cluster_id"] = cluster_id
+    if cluster_city_id:
+        feat["properties"]["cluster_city_id"] = cluster_city_id
+    elif from_city and to_city and from_city == to_city:
+        feat["properties"]["cluster_city_id"] = from_city
+    elif from_city:
+        feat["properties"]["cluster_city_id"] = from_city
+    return feat
