@@ -1,0 +1,33 @@
+{
+  "market": "UAE",
+  "generated": "2026-07-05",
+  "source": "data-clean/ROUTES.json @ sha 2828a1f",
+  "totals": {
+    "uae_touching_routes": 936,
+    "rendered_visible": 666,
+    "hidden_or_quarantined": 270,
+    "unique_bp_endpoints_visible": 348
+  },
+  "dirty_in_visible": {
+    "land_crossing_qa_flagged": 202,
+    "land_crossing_intra_city": 176,
+    "land_crossing_over_5km_interior": 78,
+    "over_range_gt70nm": 23,
+    "zero_distance": 1,
+    "cross_border_noise": 10
+  },
+  "clean_but_still_spaghetti": {
+    "clean_routes": 450,
+    "trivial_sub_2nm_hops": 146,
+    "core_2_40nm": 287
+  },
+  "root_causes": [
+    "All-pairs mesh generation: BPs within a city fully-connected -> combinatorial route explosion (hub BPs at degree 40-42).",
+    "Land-crossing geometry rendered despite _qa_land_flag=true: 788 hand-waypoint pairs exist but were never fully applied at seal -> 202 land-cutting routes still visible.",
+    "Dirty BPs: bare city centroids ('Abu Dhabi','Fujairah','Ras Al Khaimah'), activity operators ('Jet Ski Abu Dhabi Waves','MSC','Boat ramp','DiveCampus'), planned/duplicate jetties.",
+    "West-coast (Gulf) and east-coast (Gulf of Oman / Fujairah) treated as one mesh -> routes cut across the Hajar mountains / Musandam.",
+    "Cross-border Qatar/Oman/Bahrain edges leak into the UAE view."
+  ],
+  "partner_divergence_cause": "Routes carry NO commercial-partner tag (only _pta_partner + vessel platform). The front-end renders each partner's own _map_scope (registry_keys + cluster_city_ids + inheritance_policy). Bolt, Yango, Careem(mirror of Noon), and Noon each define a DIFFERENT UAE scope, so each filters the same messy 666-route pool differently -> four different-looking maps. Fix = one canonical UAE scope applied identically to all four.",
+  "target": "Reduce ~666 rendered -> ~35-45 significant, clean, in-range, no-land-crossing corridors; ~60-80 real on-water BPs; ONE shared UAE _map_scope across careem/bolt/yango/noon."
+}
