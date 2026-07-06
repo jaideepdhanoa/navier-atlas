@@ -970,6 +970,28 @@ for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[
 const CLUSTER_BY_ID = {}; if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])) if (c && c.cluster_id) CLUSTER_BY_ID[c.cluster_id]=c;
 // Nav-visible clusters only — sub-clusters (parent_cluster_id / nav_hidden) are routing anchors, not tier-2 peers.
 const NAV_CLUSTERS = ((typeof CLUSTERS!=='undefined') ? (CLUSTERS.clusters||[]) : []).filter(c => c && c.cluster_id && !c.parent_cluster_id && !c.nav_hidden);
+// WS-5b — market-group nav collapse: one browse chip per group; geometry keeps sub-clusters separate.
+const _MG_DOC = (typeof MARKET_GROUPS!=='undefined' && MARKET_GROUPS) || { groups:{} };
+const _MG = _MG_DOC.groups || {};
+const NAV_MARKET_MEMBERS = {};   // nav primary id → all geometry cluster_ids in the group
+const CLUSTER_TO_NAV = {};       // geometry cluster_id → nav primary id
+for (const [groupKey, members] of Object.entries(_MG)) {
+  const mlist = Array.isArray(members) ? members : [];
+  let primary = (typeof CLUSTER_BRIEFS!=='undefined' && CLUSTER_BRIEFS[groupKey]) ? groupKey
+    : mlist.find(m => typeof CLUSTER_BRIEFS!=='undefined' && CLUSTER_BRIEFS[m]) || mlist[0] || groupKey;
+  NAV_MARKET_MEMBERS[primary] = [...new Set(mlist.length ? mlist : [primary])];
+  for (const m of NAV_MARKET_MEMBERS[primary]) CLUSTER_TO_NAV[m] = primary;
+}
+function _navPrimary(cid){ return (CLUSTER_TO_NAV[cid] || cid); }
+function _marketMembers(navId){ return (NAV_MARKET_MEMBERS[navId] || [navId]); }
+function _clusterMemberCities(navId){
+  const out=[], seen=new Set();
+  for (const clId of _marketMembers(navId)) {
+    const cl = CLUSTER_BY_ID[clId]; if (!cl) continue;
+    for (const id of (cl.member_city_ids||[])) if (!id.includes('__') && NODE_INDEX[id] && !seen.has(id)) { seen.add(id); out.push(id); }
+  }
+  return out;
+}
 // Authoritative city→cluster map from top-level CLUSTERS.member_city_ids (skip locale ids in member lists).
 const CITY_TO_CLUSTER = {}; for (const c of NAV_CLUSTERS) for (const id of (c.member_city_ids||[])) if (!id.includes('__')) CITY_TO_CLUSTER[id]=c.cluster_id;
 const _clusterOf = (id, fallback) => CITY_TO_CLUSTER[id] || fallback || null;
@@ -2645,24 +2667,25 @@ function showRegionBrief(slug){
   }));
 }
 function showClusterBrief(cid){
-  const cb = (typeof CLUSTER_BRIEFS!=='undefined') ? CLUSTER_BRIEFS[cid] : null;
+  const navId = _navPrimary(cid);
+  const cb = (typeof CLUSTER_BRIEFS!=='undefined') ? (CLUSTER_BRIEFS[navId] || CLUSTER_BRIEFS[cid]) : null;
   if (!cb) return;
-  const label = cb.display||cb.display_name||cid;
-  _navEnter({ key:'cluster:'+cid, label, render:()=>showClusterBrief(cid) });
-  const cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[cid] : null;
-  if (typeof window!=='undefined' && window._topNavDrill && _geoMode()) window._topNavDrill({ clusterId:cid, clusterLabel:label, region:cl&&cl.region });
-  if (typeof window._topNavClusterCities==='function' && _geoMode()) window._topNavClusterCities(cid);
+  const label = cb.display||cb.display_name||navId;
+  _navEnter({ key:'cluster:'+navId, label, render:()=>showClusterBrief(navId) });
+  const cl = (typeof CLUSTER_BY_ID!=='undefined') ? CLUSTER_BY_ID[navId] : null;
+  if (typeof window!=='undefined' && window._topNavDrill && _geoMode()) window._topNavDrill({ clusterId:navId, clusterLabel:label, region:cl&&cl.region });
+  if (typeof window._topNavClusterCities==='function' && _geoMode()) window._topNavClusterCities(navId);
   const p = document.getElementById('panel');
   p.innerHTML = _clusterBriefHtml(cb);
   p.scrollTop = 0;
   // Frame the cluster: prefer its member cities (CLUSTERS.member_city_ids — the true extent); fall back to
-  // the hero corridors' geometry, then the cluster anchor point.
-  const members = cl ? (cl.member_city_ids||[]).filter(id=>NODE_INDEX[id]) : [];
+  // the hero corridors' geometry, then the cluster anchor point. Market groups aggregate sub-cluster cities.
+  const members = _clusterMemberCities(navId);
   const heroIds=[]; for (const r of (cb.signature_routes||[])) for (const id of _routeIdsOf(r)) if (ROUTE_ID_SET.has(id)) heroIds.push(id);
   if (members.length){ try { _focusCities(members,'intra'); _fitCities(members, 140); } catch(e){} }
   else if (heroIds.length){ try { _focusRoutes(heroIds); _fitRoutes(_routeFeats(heroIds), 160); } catch(e){} }
   else if (cl && Array.isArray(cl.anchor)){ try { map.flyTo({center:cl.anchor, zoom:6.5, duration:1100, essential:true}); } catch(e){} }
-  _writeShareUrl({ type:'cluster', id:cid });
+  _writeShareUrl({ type:'cluster', id:navId });
   _wireShareCopy(p);
   // Clickable signature routes → open the route on the map.
   p.querySelectorAll('.pcaro-route.clickable[data-routes]').forEach(el=>el.addEventListener('click', ()=>{
@@ -4174,8 +4197,10 @@ function _renderPartnerGrid(q){
 // that cluster's pitch panel. First-class clusters (resolving hero corridors) lead; tag-only are flagged.
 function _renderClusterGrid(q){
   q = (q||'').trim().toLowerCase();
+  const seenNav = new Set();
   const all = Object.values((typeof CLUSTER_BRIEFS!=='undefined' && CLUSTER_BRIEFS) || {})
-    .filter(c => !q || ((c.display||c.cluster_id||'')+' '+(c.region||'')+' '+(c.tagline||'')).toLowerCase().includes(q));
+    .filter(c => !q || ((c.display||c.cluster_id||'')+' '+(c.region||'')+' '+(c.tagline||'')).toLowerCase().includes(q))
+    .filter(c => { const navId=_navPrimary(c.cluster_id); if (seenNav.has(navId)) return false; seenNav.add(navId); c._navId=navId; return true; });
   const groups = {}; for (const c of all){ const r=c.region||'Other'; (groups[r]=groups[r]||[]).push(c); }
   const regions = Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length || a.localeCompare(b));
   let html='';
@@ -4183,7 +4208,8 @@ function _renderClusterGrid(q){
     const items = groups[r].sort((a,b)=>(a.tier==='tag-only')-(b.tier==='tag-only') || (a.display||a.cluster_id).localeCompare(b.display||b.cluster_id));
     html += `<div class="pidx-group"><div class="pidx-cat">${escapeHtml(r)}</div><div class="pidx-cards">` + items.map(c=>{
       const tag = c.tier==='tag-only' ? `<span class="pidx-badge" style="opacity:.7">early</span>` : '';
-      return `<button class="card pidx-card" data-cluster="${escapeHtml(c.cluster_id)}"><div class="t">${escapeHtml(c.display||c.cluster_id)}${tag}</div>${c.tagline?`<div class="s">${escapeHtml(c.tagline)}</div>`:''}</button>`;
+      const navId = c._navId || _navPrimary(c.cluster_id);
+      return `<button class="card pidx-card" data-cluster="${escapeHtml(navId)}"><div class="t">${escapeHtml(c.display||navId)}${tag}</div>${c.tagline?`<div class="s">${escapeHtml(c.tagline)}</div>`:''}</button>`;
     }).join('') + `</div></div>`;
   }
   clusterGrid.innerHTML = all.length ? html : `<div class="empty">No regions match “${escapeHtml(q)}”.</div>`;
@@ -4379,9 +4405,13 @@ document.querySelectorAll('.chip').forEach(b => {
     else if (cl.cities.length===1) openCity(cl.cities[0], regionLabel, cl, null);
     else { fitCities(cl.cities); renderClusterCities(regionLabel, cl); }
   };
-  const clusterFromId = (clId)=>{ const c=CLUSTER_BY_ID[clId]; if(!c) return null;
-    const cities=(c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
-    cities.sort((a,b)=>a.name.localeCompare(b.name)); return cities.length?{ id:c.cluster_id, label:c.cluster_label||c.cluster_id, cities }:null; };
+  const clusterFromId = (clId)=>{ const navId=_navPrimary(clId); const c=CLUSTER_BY_ID[navId]||CLUSTER_BY_ID[clId]; if(!c) return null;
+    const cityIds=_clusterMemberCities(navId);
+    const cities=cityIds.map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
+    cities.sort((a,b)=>a.name.localeCompare(b.name));
+    const brief=(typeof CLUSTER_BRIEFS!=='undefined')?(CLUSTER_BRIEFS[navId]||CLUSTER_BRIEFS[clId]):null;
+    const label=(brief&&(brief.display||brief.display_name))||(c.cluster_label||navId);
+    return cities.length?{ id:navId, label, cities }:null; };
   const MAX_INLINE = 99;   // show every region inline (the row flex-wraps) — no "More" dropdown
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
 

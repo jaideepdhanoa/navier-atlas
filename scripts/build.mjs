@@ -80,6 +80,9 @@ if (existsSync(econPath)) { const econ = readJson(econPath); for (const r of (ec
 // Pairs with the cluster_id now tagged on city nodes + the cluster_briefs surface to drive cluster nav.
 const clustersPath = join(DC, 'CLUSTERS.json');
 data.CLUSTERS = existsSync(clustersPath) ? readJson(clustersPath) : { clusters: [] };
+// Market groups (WS-5b nav collapse): geometry keeps sub-clusters separate; browse keys on group.
+const marketGroupsPath = join(ROOT, 'handoff/yango-program/gulf-and-restamp/MARKET-GROUPS.json');
+data.MARKET_GROUPS = existsSync(marketGroupsPath) ? readJson(marketGroupsPath) : { groups: {} };
 
 // Defensive strip: internal classification fields that must never reach the public artifact. The render
 // never reads these. Belt-and-suspenders over Tasklet's externalizer — the 2026-06-01 P0+P1 reseal leaked
