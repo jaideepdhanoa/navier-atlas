@@ -1,0 +1,32 @@
+{
+  "receipt": "GLOBAL Pass-2 marquee curation \u2014 validated against sealed geometry",
+  "date": "2026-07-06",
+  "pass": "2 (Tasklet global marquee curation)",
+  "input": "grok-routing-output/sealed-corridors/*.json (57 manifests, Grok Pass-1 566b447f)",
+  "sealed_geometry_ref": "data-clean/ROUTES.json @ main (4,267 routes, 647 cluster-stamped)",
+  "generator": "gen_canonical_marquees.py v2.3 (--source manifests)",
+  "routes_seen": 768,
+  "routes_clean_eligible": 484,
+  "groups_cluster_city": 81,
+  "clusters_covered": 55,
+  "marquee_wow_total": 303,
+  "marquee_featured_total": 390,
+  "unique_route_ids": 292,
+  "validation": {
+    "bind_ok": "390/390",
+    "unresolved_route_ids": 0,
+    "endpoint_mismatch": 0,
+    "land_gt_0_2km": 0,
+    "below_floor": 0,
+    "gate": "PASS \u2014 100% bind, 0 land, 0 below-floor, 0 endpoint mismatch"
+  },
+  "uae_parity": {
+    "groups": 8,
+    "note": "8 cluster::city groups preserved; UAE geometry unchanged (Pass-1 skipped UAE per handback)"
+  },
+  "residuals_locale_lane": {
+    "junk_suspects": "0 aggregate labels trimmed; 0 flagged needs_bp_sourcing",
+    "note": "2 business-POI suspect endpoints in SUSPECT-ENDPOINTS.json + a few residual city_id cross-tags (e.g. Lombok route under bali-indonesia; Singapore-side pointer under desaru-coast). Locale-cleanup lane (#119) \u2014 geometry valid, grouping imperfect; null-beats-wrong, not invented, non-blocking for Pass 3."
+  },
+  "next": "Grok Pass 3 \u2014 apply CANONICAL-MARQUEES.json globally (bind route_id from properties.id, no re-stamp) + label scrub + finance cascade + deploy"
+}
