@@ -1,7 +1,7 @@
 # Proposal fidelity — bangkok-chao-phraya
 
 **Verdict:** REWRITE
-**Checked:** 2026-07-06T03:21:42Z
+**Checked:** 2026-07-06T05:04:08Z
 
 ## Summary
 
