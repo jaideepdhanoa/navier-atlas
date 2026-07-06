@@ -81,6 +81,8 @@ UAE_PRE_SEALED_CLUSTERS = frozenset(
 )
 
 RIVER_CITIES = frozenset({"bangkok-thailand"})
+ISLAND_CITIES = frozenset({"kaohsiung-taiwan", "penghu-taiwan", "koh-larn-thailand"})
+ISLAND_FLOOR_NM = 0.4
 
 NEVER_MINT_PAIRS = frozenset(
     {
@@ -131,5 +133,7 @@ def resolve_cluster_city_ids(
 
 def min_nm_for_cluster(cluster_id: str, city_ids: set[str]) -> float:
     if cluster_id in RIVER_CITIES or RIVER_CITIES & city_ids:
-        return 0.4
+        return ISLAND_FLOOR_NM
+    if cluster_id in ISLAND_CITIES or ISLAND_CITIES & city_ids:
+        return ISLAND_FLOOR_NM
     return 3.0
