@@ -351,7 +351,13 @@ function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf }) {
     if (pageKind === 'market') {
       const cf = cityIdOf(p.from);
       const ct = cityIdOf(p.to);
-      return keepSet.has(cf) && keepSet.has(ct);
+      if (keepSet.has(cf) && keepSet.has(ct)) return true;
+      // Cross-border connective tissue: trunk / Quanta-LR backbone edges render
+      // when at least one endpoint is in scope (the far endpoint is an out-of-cluster
+      // cross-border node). Mirrors classifyRenderLane's backbone touchesKeep rule.
+      const tier = resolveTier(p, resolveTW(p));
+      if ((tier === 'trunk' || p.platform === 'Quanta-LR') && (keepSet.has(cf) || keepSet.has(ct))) return true;
+      return false;
     }
     return true;
   });
