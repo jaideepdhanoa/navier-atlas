@@ -380,7 +380,12 @@ function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf }
     const tier = resolveTier(p, tw);
 
     if (pageKind === 'market') {
-      return keepSet.has(cf) && keepSet.has(ct);
+      if (keepSet.has(cf) && keepSet.has(ct)) return true;
+      // Cross-border connective tissue: trunk / Quanta-LR backbone edges render when
+      // at least one endpoint is in scope. Kept consistent with the tier_visual path so
+      // dense (legacy) markets don't strip the cross-border edges back out on the 2nd pass.
+      if ((tier === 'trunk' || p.platform === 'Quanta-LR') && (keepSet.has(cf) || keepSet.has(ct))) return true;
+      return false;
     }
 
     if (pageKind === 'hub-index') {
