@@ -56,9 +56,17 @@ Corridors belong to geography, not partners. Restamp route `cluster_id` + rebind
 ## WS-7 — Over-dense cluster de-spaghetti (UAE first; Tasklet register)
 **Root cause (unifies UAE spaghetti + empty-cities):** the reseal stamped only ~55 clusters and never curated them for density, while 85% of routes stayed unstamped/dark (WS-4). So lit clusters over-render (UAE = 115-edge hairball) and everything else shows zero. This is NOT a per-cluster cap — it's per-route stamping that never ran globally + no density curation on the few lit clusters.
 - Apply `UAE-DESPAGHETTI-REGISTER.json` to global `ROUTES.json`: **cut 55 of 115** — 25 exact parallel dupes, 1 Musandam land-crosser, collapse the 29-edge Dubai↔Abu Dhabi >40nm fan to **2 canonical marquee corridors**. Keep all genuine distinct intra-city on-water OD pairs.
-- **Still open (finer pass):** Dubai intra 51 near-parallel edges need OD-pair-level review (keep distinct Creek/Harbour/Marina/JBR pairs, drop redundant radials). Tasklet authors second register.
+- **Dubai OD-level pass: DONE — see WS-8 + `DUBAI-DESPAGHETTI.json`.**
 - **Starved emirates** (Sharjah 0, Fujairah 0, Umm Al Quwain 0, Ajman 3, RAK 5): source-led intra-city BP pairs. Tasklet flags, Grok sources, nobody invents a pier.
 - **After WS-4 restamp, re-run this density scan on every newly-lit over-dense cluster** (Jakarta, Istanbul, etc.) — same cut rules. Tasklet delivers registers per over-dense cluster.
+
+## WS-8 — Dubai intra-city OD-level de-spaghetti (Tasklet register: `DUBAI-DESPAGHETTI.json`)
+OD-pair review of all **35 intra-Dubai edges** (both endpoints `dubai-uae`) with a real land-crossing test (60-point interior sampling against a land mask). Result:
+- **CUT 14 land-crossing straight lines** (`cut_land_crossers`): edges drawn as straight lines from Creek-interior nodes (Festival City / Al Seef / Old Souq / Business Bay) out to the offshore Bluewaters/Palm cluster — they cut across the Jumeirah peninsula / mainland (interior-land fraction 0.13–1.00). These are the weird long lines fanning across Dubai. Remove from global `ROUTES.json`.
+- **CUT 2 mis-city junk** (`cut_miscity`): `Sharjah Aquarium` (belongs to `sharjah`), `Ghantoot Marina` (belongs to `abu-dhabi`) — both mis-tagged into `dubai-uae`. Re-tag or drop.
+- **HOLD 2 planned** (`penalty_planned_hold`): Marsa Al Arab (planned), Dubai Islands Marina (Nakheel) — planned-penalty; leave until operational.
+- **KEEP 17 genuine on-water pairs** (`keep_onwater`): the real coastal/island network — Palm (Atlantis/One&Only) ↔ Bluewaters ↔ Dubai Harbour ↔ World Islands ↔ Mina Rashid ↔ Bulgari/Jumeirah Bay. **These are the intra-Dubai routes that already exist and must stay lit.**
+- **CREEK RE-MINT GAP** (`creek_remint_gap`): the entire Dubai Creek/Canal water-bus spine (Festival City ↔ Al Seef ↔ Old Souq ↔ Al Fahidi ↔ Al Ghubaiba ↔ Baniyas ↔ Business Bay ↔ Marasi ↔ Dubai Canal — 10 real abra/water-bus stations, coords in the file) was **only ever minted as straight lines that cut across the meandering creek**, so all read as land-crossers and get cut above — leaving the Creek looking empty. **Re-mint the creek spine with creek-following hand-waypoints (no land crossing), sequential along the waterway.** Tasklet flags the nodes + suggested chain order; Grok routes with waypoints. Nobody invents a pier.
 
 ---
 ## Gates (all must pass before deploy)
