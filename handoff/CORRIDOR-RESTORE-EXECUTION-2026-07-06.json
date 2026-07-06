@@ -1,0 +1,40 @@
+{
+  "generated": "2026-07-06T17:30:00Z",
+  "lane": "grok-corridor-restore-market-coverage",
+  "routes_before": 4221,
+  "routes_after": 4275,
+  "delta": 54,
+  "actions": {
+    "A_cluster_id_restamp": 355,
+    "peak_corridor_restore_A": 28,
+    "peak_corridor_restore_B_qlr": 23,
+    "minting_gap_hua_hin": 3
+  },
+  "audit_after": {
+    "A_restamp_mismatch": 0,
+    "B_truly_empty_markets": 7,
+    "C_sparse_markets": 13,
+    "D_isolated_cities": 38,
+    "E_unresolved_endpoints": 66
+  },
+  "named_corridors_verified": [
+    "phuket-phang-nga-thailand ↔ langkawi-malaysia (rn-853cbe7dd006)",
+    "bangkok-thailand ↔ hua-hin-thailand (rn-92e0e31051ee)",
+    "pattaya-thailand ↔ hua-hin-thailand (rn-d8e9f5d942ea)"
+  ],
+  "deferred_honest_null": {
+    "B_empty_markets": 7,
+    "C_sparse_markets": 13,
+    "D_isolated_cities_remaining": 38,
+    "E_registry_gap": 66,
+    "C_longhaul_review": 18,
+    "note": "Require Tasklet BP wishlists + sourced piers — nobody invents"
+  },
+  "scripts": [
+    "scripts/grok-global/apply_market_coverage_restamp.py",
+    "scripts/grok-global/apply_corridor_restore.py",
+    "scripts/grok-global/market_coverage_audit.py"
+  ],
+  "preflight_gate": "§3.9 market_coverage_audit (A_restamp hard fail on --release)",
+  "seal_gold": "#corridor-restore-market-coverage-2026-07-06"
+}

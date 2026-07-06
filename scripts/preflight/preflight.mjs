@@ -343,6 +343,36 @@ head('§3.6b  reference partner browser visual QA');
   }
 }
 
+// ─── §3.9 · Market coverage audit (cluster taxonomy + empty-market advisory) ─
+head('§3.9  market coverage audit (cluster_id taxonomy)');
+{
+  const auditArgs = [
+    'scripts/grok-global/market_coverage_audit.py',
+    '--routes', path.join(ROOT, 'data-clean/ROUTES.json'),
+    '--clusters', path.join(ROOT, 'data-clean/CLUSTERS.json'),
+    '--json-out', path.join(ROOT, 'handoff/partner-map-model/MARKET-COVERAGE-AUDIT-LIVE.json'),
+  ];
+  const audit = spawnSync('python3', auditArgs, { cwd: ROOT, encoding: 'utf8' });
+  if (audit.stdout) process.stdout.write(audit.stdout);
+  if (audit.stderr) process.stderr.write(audit.stderr);
+  let restampCount = null;
+  try {
+    const live = JSON.parse(fs.readFileSync(path.join(ROOT, 'handoff/partner-map-model/MARKET-COVERAGE-AUDIT-LIVE.json'), 'utf8'));
+    restampCount = (live.A_restamp || []).length;
+    const empty = (live.B_truly_empty_markets || []).length;
+    const sparse = (live.C_sparse_markets || []).length;
+    const isolated = Object.values(live.D_isolated_cities || {}).reduce((n, a) => n + a.length, 0);
+    if (restampCount > 0) {
+      fail(`cluster_id taxonomy mismatch — ${restampCount} routes need canonical restamp (run apply_market_coverage_restamp.py)`);
+    } else {
+      ok(`cluster_id taxonomy clean · empty=${empty} sparse=${sparse} isolated_cities=${isolated} (advisory)`);
+    }
+  } catch (e) {
+    if (RELEASE) fail('market coverage audit failed to produce receipt — ' + (e && e.message ? e.message : e));
+    else ok('market coverage audit — skipped (no receipt)');
+  }
+}
+
 // ─── §3.6 · Route geometry (story routes land QA) ───────────────────────────
 head('§3.6  route geometry audit (story land QA)');
 {
