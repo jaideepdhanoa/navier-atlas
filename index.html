@@ -3259,19 +3259,26 @@ function _featuredRouteHtml(r){
     chips.push(`<span class="pcaro-jchip econ" title="Unit economics — opens route detail">◆ ${escapeHtml(lab)}</span>`); }
   return `<div class="pcaro-route${click?' clickable':''}${isNet?' network':''}"${isNet&&n?` title="Network bundle — lights ${n} corridor${n===1?'':'s'}"`:''}${rids.length?` data-routes="${escapeHtml(rids.join(','))}"`:''}${fn?` data-from="${escapeHtml(fn)}"`:''}${tn?` data-to="${escapeHtml(tn)}"`:''}><span class="pcaro-route-l">${escapeHtml(routeLabel||'')}</span>${chips.length?`<span class="pcaro-route-chips">${chips.join('')}</span>`:''}</div>`;
 }
+function _isPartnerFacingKpi(k){
+  const lab=String((k&&k.label)||'').toLowerCase(), val=String((k&&k.value)||'').toLowerCase();
+  if (/geometry-present|route id policy|treatment|launch status|grok seal|atlas_status|review pool|null until|not promoted|amber cross-border|pending-grok|fidelity/.test(lab+' '+val)) return false;
+  if (/^(null|—|-|n\/a)$/.test(val) || /null until|not promoted|selected review pool|pending-grok/.test(val)) return false;
+  return !!(lab||val);
+}
 function _phaseBlockHtml(cur){
   cur=cur||{};
   // Use cases are heterogeneous strings or {label, summary}/{title, body} objects.
   const uc=_useCaseItemsHtml(cur.use_cases);
+  const kpis=(cur.kpis||[]).filter(_isPartnerFacingKpi);
   // Suppress the standalone vessel-count line when a Vessels/fleet KPI already shows it (avoids the
   // boats-vs-KPI double-count — they disagree in the data; the KPI is the authored, narrative-matching one).
-  const hasVesselKpi = (cur.kpis||[]).some(k=>/vessel|boat|fleet/i.test(k.label||''));
+  const hasVesselKpi = kpis.some(k=>/vessel|boat|fleet/i.test(k.label||''));
   return `<div class="panel-section">
     ${cur.timeline?`<div class="pcaro-routes-h">${escapeHtml(cur.timeline)}</div>`:''}
     ${(cur.boats!=null && !hasVesselKpi)?`<div class="pcaro-boats">${cur.boats===1?'1 vessel':escapeHtml(String(cur.boats))+' vessels'} at this phase</div>`:''}
     ${cur.narrative?`<div class="pcaro-narr">${escapeHtml(cur.narrative)}</div>`:''}
     ${cur.rationale?`<div class="pcaro-rationale">${escapeHtml(cur.rationale)}</div>`:''}
-    ${(cur.kpis&&cur.kpis.length)?`<div class="pcaro-kpis">${cur.kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
+    ${kpis.length?`<div class="pcaro-kpis">${kpis.map(k=>`<div class="pcaro-kpi"><div class="v">${escapeHtml(k.value||'')}</div><div class="l">${escapeHtml(k.label||'')}</div></div>`).join('')}</div>`:''}
     ${(()=>{ const fr=(cur.featured_routes||[]).map(_featuredRouteHtml).filter(Boolean).join(''); return fr?`<div class="pcaro-routes-h">Featured routes</div>${fr}`:''; })()}
     ${uc?`<div class="pcaro-routes-h">Use cases</div>${uc}`:''}
   </div>`;
