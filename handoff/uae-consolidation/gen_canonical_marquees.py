@@ -38,7 +38,8 @@ cluster_label={cl['cluster_id']:cl['cluster_label'] for cl in clusters}
 
 IN_RANGE=(0.4,30.0)
 ISLAND=re.compile(r'island|palm|saadiyat|\byas\b|world islands|sir bani|delma|lulu|reem|al aliah|marjan|nurai|zaya|جزيرة',re.I)
-JUNK=re.compile(r'jet ?ski|water ?sport|waves marine|helipad|seaplane|slipway|parking|cross-border\b.*endpoint|quanta|lr endpoint|dry dock|boat ?yard',re.I)
+JUNK=re.compile(r'jet ?ski|water ?sport|waves marine|helipad|seaplane|slipway|parking|cross-border\b.*endpoint|quanta|lr endpoint|dry dock|boat ?yard|under ?construction|for construction|harbour office|harbor office|sea ?port st|fishermen|medical cent|hospital|clinic|mineral water|gulf craft|\bllc\b|factory|\bmall\b|mineral',re.I)
+_junk_suspects={}   # node_id -> label (mis-geocoded business-POI endpoints, Grok locale lane)
 
 # ---- River cities: iconic short-hop exception to the firm 3nm floor ----
 # River commuter piers (e.g. Chao Phraya Express) are legitimately < 3 nm; the
@@ -82,7 +83,10 @@ def is_clean(p):
     fl,tl=p.get('from_label'),p.get('to_label')
     if not (fl and tl): return False
     blob=f"{fl} {tl}"
-    if JUNK.search(blob): return False
+    if JUNK.search(blob):
+        if JUNK.search(str(fl)): _junk_suspects[p.get('from')]=fl
+        if JUNK.search(str(tl)): _junk_suspects[p.get('to')]=tl
+        return False
     def basew(s): return re.sub(r'[^a-z]','',str(s).lower())[:18]
     if basew(fl)==basew(tl): return False           # self-referential
     return True
@@ -150,15 +154,20 @@ for f in sorted(glob.glob(os.path.join(BASE,'partners','*.json'))):
             if isinstance(ph,dict): harvest(ph.get('featured_routes'),partner,'featured',mk)
         harvest(wow_of(m),partner,'wow',mk)
 
-# ---- build clean candidate pool grouped by CITY (inter-city -> both cities) ----
+# ---- build clean candidate pool grouped by (CLUSTER, CITY) composite ----
+# City-level sub-sets, disambiguated by cluster so shared city_ids across clusters
+# (e.g. UAE Gulf-coast `sharjah-uae` vs east-coast enclaves also tagged
+# `sharjah-uae`) do NOT cross-contaminate. cluster_id is authoritative on sealed
+# routes; fall back to the city->cluster map for not-yet-resealed markets.
 city_label={}
-city_candidates=collections.defaultdict(dict)   # city_id -> {bpkey: cand}
+city_candidates=collections.defaultdict(dict)   # (cluster_id, city_id) -> {bpkey: cand}
 for r in routes:
     p=r['properties']
     if not is_clean(p) or not hero_eligible(p): continue
     fc,tc=p.get('from_city_id'),p.get('to_city_id')
     if p.get('from_city'): city_label[fc]=p.get('from_city')
     if p.get('to_city'):   city_label[tc]=p.get('to_city')
+    rcl=p.get('cluster_id') or city2cluster.get(fc) or city2cluster.get(tc)
     key=frozenset((p.get('from'),p.get('to')))
     riv=is_river(p)
     flab=scrub_label(p.get('from_label'),p.get('from'),fc)
@@ -166,7 +175,7 @@ for r in routes:
     score=river_score(p,feat_freq) if riv else hero_score(p,feat_freq)
     cand={'route_id':p.get('id'),'from_node_id':p.get('from'),'to_node_id':p.get('to'),
           'from_label':flab,'to_label':tlab,
-          'from_city_id':fc,'to_city_id':tc,
+          'from_city_id':fc,'to_city_id':tc,'cluster_id':rcl,
           'distance_nm':round(p.get('distance_nm') or 0,1),'trip_scope':p.get('trip_scope'),
           'hero_score':round(score,2),'_river':riv,
           '_island':bool(ISLAND.search(f"{p.get('from_label')} {p.get('to_label')}")),
@@ -174,24 +183,25 @@ for r in routes:
           'partners_currently_featuring':sorted(feat_partners.get(key,set()))}
     for cid in {fc,tc}:
         if not cid: continue
-        # keep the higher-scoring instance if duplicate bpkey lands in a city twice
-        if key not in city_candidates[cid] or cand['hero_score']>city_candidates[cid][key]['hero_score']:
-            city_candidates[cid][key]=cand
+        gk=(rcl,cid)
+        # keep the higher-scoring instance if duplicate bpkey lands in a group twice
+        if key not in city_candidates[gk] or cand['hero_score']>city_candidates[gk][key]['hero_score']:
+            city_candidates[gk][key]=cand
 
-# ---- select per-city canonical wow (<=5) + featured (<=8) ----
+# ---- select per-(cluster,city) canonical wow (<=5) + featured (<=8) ----
 WOW_N, FEAT_N = 5, 8
 out_cities={}
 canonical_keys=set()
-for cid,cands in city_candidates.items():
+for (rcl,cid),cands in city_candidates.items():
     ranked=sorted(cands.values(),key=lambda c:-c['hero_score'])
     wow=ranked[:WOW_N]
     featured=ranked[:FEAT_N]
-    for i,c in enumerate(wow): c_=dict(c); c_['rank']=i+1
     for c in featured: canonical_keys.add(frozenset((c['from_node_id'],c['to_node_id'])))
     def stamp(lst): return [{**c,'rank':i+1} for i,c in enumerate(lst)]
-    out_cities[cid]={
-        'city_id':cid,'city_label':city_label.get(cid,cid),
-        'cluster_id':city2cluster.get(cid),'cluster_label':cluster_label.get(city2cluster.get(cid)),
+    gkey=f"{rcl}::{cid}"
+    out_cities[gkey]={
+        'group_key':gkey,'city_id':cid,'city_label':city_label.get(cid,cid),
+        'cluster_id':rcl,'cluster_label':cluster_label.get(rcl),
         'n_clean_candidates':len(cands),
         'marquee_wow':stamp(wow),'marquee_featured':stamp(featured)}
 
@@ -206,8 +216,9 @@ for e in current_entries:
     elif key not in canonical_keys:
         retire.append({**e,'reason':'not_in_canonical_city_set'})
 
-out={'_meta':{'generated':'2026-07-05','granularity':'city','wow_max':WOW_N,'featured_max':FEAT_N,
-      'n_cities':len(out_cities),'ranking':'hero (water-beats-road): distance sweet-spot + island + cross-city; traffic/crowd = tiebreaker',
+out={'_meta':{'generated':'2026-07-05','granularity':'cluster::city','wow_max':WOW_N,'featured_max':FEAT_N,
+      'source':'sealed ROUTES.json (cluster_id-stamped)','route_id_field':'properties.id (sealed) — bound directly, no re-stamp needed',
+      'n_groups':len(out_cities),'ranking':'hero (water-beats-road): distance sweet-spot + island + cross-city; traffic/crowd = tiebreaker',
       'quality_gate':'in-range 3-30nm firm floor, on-water, junk-endpoint filter, no trivial <3nm hops',
       'river_exception':f'river cities {sorted(RIVER_CITIES)} allowed down to {RIVER_FLOOR}nm with river score (traffic+icon)',
       'label_scrub':f'{len(_scrub_applied)} aggregate labels trimmed to primary place name; {len(_scrub_sourcing)} flagged needs_bp_sourcing'},
@@ -223,6 +234,13 @@ json.dump({'generated':'2026-07-05',
       'needs_bp_sourcing':[{'node_id':k,**v} for k,v in sorted(_scrub_sourcing.items())]},
       open(os.path.join(BASE,'LABEL-SCRUB.json'),'w'),indent=2)
 print(f"label scrub: {len(_scrub_applied)} trimmed, {len(_scrub_sourcing)} need sourcing")
+# ---- suspect endpoints (mis-geocoded business-POI BPs) for Grok locale-cleanup lane ----
+json.dump({'generated':'2026-07-05',
+      'note':'BP endpoints matching business-POI / non-pier patterns, excluded from marquees. These are mis-geocoded locale entries (a Grok / #119 locale-cleanup item), NOT marquee-curation bugs. Fix or drop the source BP; do not invent a pier.',
+      'count':len(_junk_suspects),
+      'suspects':[{'node_id':k,'label':v} for k,v in sorted(_junk_suspects.items())]},
+      open(os.path.join(BASE,'SUSPECT-ENDPOINTS.json'),'w'),indent=2)
+print(f"suspect endpoints flagged: {len(_junk_suspects)}")
 
 # ---- console summary ----
 cities_with_signal=sum(1 for c in out_cities.values() if c['marquee_wow'])
@@ -230,10 +248,9 @@ print(f"cities: {len(out_cities)} ({cities_with_signal} with >=1 marquee)")
 print(f"current marquee entries: {len(current_entries)}  |  retired: {len(retire)}")
 sc=collections.Counter(e['reason'] for e in retire)
 print("retire reasons:",dict(sc))
-for cid in ['dubai-uae','abu-dhabi-uae','sharjah-uae','ras-al-khaimah-uae']:
-    c=out_cities.get(cid)
-    if not c: continue
-    print(f"\n=== {c['city_label']} ({cid}) — {c['n_clean_candidates']} clean cands ===")
+for gkey,c in sorted(out_cities.items()):
+    if c['cluster_id'] not in ('uae','uae-east-coast'): continue
+    print(f"\n=== {c['city_label']} [{c['cluster_id']}] — {c['n_clean_candidates']} clean cands ===")
     for m in c['marquee_wow']:
         tag='island' if m['_island'] else ('x-city' if m['_cross_city'] else '')
         print(f"  {m['rank']}. {m['hero_score']:4.1f} | {m['distance_nm']:4.1f}nm {tag:6s} | {m['from_label']} -> {m['to_label']}")
