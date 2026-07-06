@@ -33,6 +33,8 @@ const CLUSTER_ADD = {
   tunisia: ['tunis-tunisia', 'bizerte-tunisia', 'hammamet-tunisia', 'sousse-tunisia', 'monastir-tunisia'],
   'kazakhstan-caspian': ['aktau-kazakhstan', 'kuryk-kazakhstan'],
   'azerbaijan-caspian': ['baku-azerbaijan'],
+  peru: ['pisco-san-andres-peru'],
+  senegal: ['saly-senegal', 'somone-senegal', 'mbour-senegal'],
 };
 
 const NEW_CLUSTERS = [
