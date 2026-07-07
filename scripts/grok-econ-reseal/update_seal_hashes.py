@@ -41,18 +41,22 @@ def count_blob(name: str, path: Path) -> int | dict:
 
 def main() -> int:
     seal = json.loads(SEAL_PATH.read_text())
-    seal["sealed_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    seal["sealed_at"] = now
     blobs = seal.setdefault("blobs", {})
+    files = seal.setdefault("files", {})
     for blob_name, rel in BLOB_FILES.items():
         path = DC / rel
         if not path.exists():
             print(f"skip {rel}: missing")
             continue
+        digest = sha256_file(path)
         blobs[blob_name] = {
-            "sha256": sha256_file(path),
+            "sha256": digest,
             "count": count_blob(blob_name, path),
             "bytes": path.stat().st_size,
         }
+        files[rel] = {"sha256": digest, "updated": now}
         print(f"  {blob_name}: {blobs[blob_name]['sha256'][:16]}… count={blobs[blob_name]['count']}")
 
     meta = seal.setdefault("meta", {})
