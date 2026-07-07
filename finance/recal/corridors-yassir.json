@@ -1,0 +1,839 @@
+{
+  "_doc": "Scoped corridors view for yassir Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-07-07T03:01:14Z",
+  "capture_rate": 0.18,
+  "markets": {
+    "yassir": {
+      "partner": "yassir",
+      "region": "Maghreb / Francophone Africa",
+      "label": "Yassir \u00d7 Navier \u2014 scoped cascade",
+      "fleet_basis": "network_sum",
+      "fleet_rounding": "ceil",
+      "_scope": "yassir-bite2-cascade",
+      "_partner_market_keys": [
+        "yassir-tunisia",
+        "yassir-morocco",
+        "yassir-algeria",
+        "yassir-senegal"
+      ],
+      "_route_ids_requested": 2,
+      "_corridors_bound": 30,
+      "corridors": [
+        {
+          "from": "Jorf (mainland)",
+          "to": "Ajim (Djerba Island)",
+          "distance_nm": 1.1,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Embarcadere d'El Jorf (mainland ferry ramp)",
+            "to": "Embarcadere d'Ajim (Djerba ferry ramp)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "route_id": "rn-4668b16ef32c",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 2463750,
+            "_demand_record": {
+              "value": 2463750,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_throughput",
+              "full_pool_preharvest": 4927500,
+              "haircut_applied_pct": 0.0,
+              "detail": "Boat is the dominant island-access mode here (the only alternative is the 7 km El Kantara causeway ~30-60 min further). Official PPP project page: the Jorf<->Ajim bac runs ~132 voyages/day in both directions, carrying on average 13,500 passengers and 2,500 vehicles per DAY. Annual passengers = 13,500 x 365 = 4,927,500 total movements (both directions). est_demand_oneway_yr = 4,927,500 / 2 = ~2,463,750. full_pool_preharvest = 4,927,500. NO haircut (this IS the addressable pool). Note: foot pax cross free, cars ~2 TND -- the public-ferry economics differ from a premium shuttle, but the PASSENGER",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "ridehail"
+        },
+        {
+          "from": "La Goulette",
+          "to": "Sidi Bou Said",
+          "distance_nm": 4.0,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "_atlas_status": "bound",
+          "route_id": "rn-d0ef490c589b",
+          "L3_locals": {
+            "_status": "TIER_B_HEADLINE_PLACEHOLDER",
+            "_note": "Headline-only roll-up; fare + demand TBD per parent cascade.",
+            "comparable_fare_usd_pax": 27.0,
+            "corridor_annual_oneway_pax": 222000,
+            "_fare_record": {
+              "value": 27.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM charter-divided tier: Gulf of Tunis / Sidi Bou Said per-seat excursion cruise ~EUR 25 (pirate-boat dinner cruise 'from EUR 30'; 3h marina cruise EUR 15-20) x 1.08 ~= $27. Nearest premium per-seat water product on this corridor; no scheduled fast catamaran exists.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 0.5
+            },
+            "_demand_record": {
+              "value": 222000,
+              "unit": "pax/yr one-way",
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 7400000,
+              "haircut_applied_pct": 3.0,
+              "detail": "RE-ANCHOR of the existing registry stub (was demand null). Affluent Gulf-of-Tunis leisure+commuter coast. Base = TGM (Tunis-Goulette-Marsa) line ridership ~7.4M pax/yr (Railway Gazette: TGM 7.40M in 2017, 7.38M in 2016, 8.29M in 2015) -- the TGM serves both endpoints (La Goulette and Sidi Bou Said are on the line). Apply a LOW 3% premium-willing fast-water haircut (short 4 nm hop, mostly leisure substitution) = ~222,000 one-way/yr. full_pool_preharvest = 7,400,000 = the WHOLE 18-station TGM line. WARNING: this 7.4M pool is SHARED with the other two TGM-parallel water corridors (Tunis<->La Goul",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "tourism"
+        },
+        {
+          "from": "Sfax",
+          "to": "Sidi Youssef (Kerkennah Islands)",
+          "distance_nm": 11,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Port de Sfax (Sonotrak ferry terminal)",
+            "to": "Port de Sidi Youssef, Kerkennah (Iles Kerkennah)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "route_id": null,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 1750000,
+            "_demand_record": {
+              "value": 1750000,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_throughput",
+              "full_pool_preharvest": 3500000,
+              "haircut_applied_pct": 0.0,
+              "detail": "Boat is the ONLY mode -> the addressable pool IS the ferry throughput, near-full, NO haircut (the Phuket->Phi Phi analogue). Sonotrak reportedly carries almost 3.5 million passengers/year on the Sfax<->Sidi Youssef route. Throughput counts both embark+disembark movements -> est_demand_oneway_yr = 3,500,000 / 2 = ~1,750,000. full_pool_preharvest = 3,500,000. Service is dense: ~8-10 sailings/day each way in low season, near-hourly until midnight in summer; permanent island population 15,501 (2014 census) plus heavy summer/diaspora tourism and daily commuters. NOTE: the 3.5M figure is from a sing",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "ridehail"
+        },
+        {
+          "from": "Sousse (Port El Kantaoui)",
+          "to": "Monastir (Marina)",
+          "distance_nm": 12,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Port El Kantaoui marina, Hammam Sousse (Sousse governorate)",
+            "to": "Marina de Monastir (Cap Marina / Port de plaisance de Monastir)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "route_id": "rn-27da217834e5",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 32.0,
+            "_fare_record": {
+              "value": 32.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM charter-divided tier: Port El Kantaoui per-seat catamaran / 'pirate boat' coastal cruise ~EUR 25-35 (Catamaran Amira day-cruise; half-day pirate-boat Sousse-Monastir) -> midpoint ~EUR 30 x 1.08 ~= $32. This is the nearest premium per-seat water product operating on this exact coast.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 0.8
+            },
+            "corridor_annual_oneway_pax": 344000,
+            "_demand_record": {
+              "value": 344000,
+              "unit": "pax/yr one-way",
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 8600000,
+              "haircut_applied_pct": 4.0,
+              "detail": "Sahel resort+commuter coast. Base = Sahel Metro (Metro du Sahel) ridership: SNCFT official 'more than 8.6 million passengers/year, ~23,600 pax/day, 31 stations' on the Sousse<->Monastir<->Mahdia electrified line, of which the Sousse-Monastir segment (university, Monastir airport, beach resorts) is the busiest. Apply a 4% premium-willing fast-water haircut = ~344,000 one-way/yr. full_pool_preharvest = 8,600,000. CONSERVATIVE: 8.6M is the WHOLE line incl. the Mahdia spur; a Sousse-Monastir-only segment split + the saturated coastal-road AADT (unsourced) would refine (and likely raise the relevan",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "commute"
+        },
+        {
+          "from": "Tunis (La Goulette)",
+          "to": "La Marsa / Gammarth",
+          "distance_nm": 7,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Port de La Goulette / Tunis Marine",
+            "to": "La Marsa Plage corniche quay / Gammarth beach jetty (greenfield boarding point)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "_atlas_status": "bound",
+          "route_id": "rn-3a88bb1bc7a3",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 222000,
+            "_demand_record": {
+              "value": 222000,
+              "unit": "pax/yr one-way",
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 7400000,
+              "haircut_applied_pct": 3.0,
+              "detail": "Affluent north-coast corridor on the TGM's northern reach (Marsa Plage is the line's northern terminus). Base = TGM 7.4M pax/yr; apply a LOW 3% premium-willing haircut (La Marsa is the far end of the line, lower O-D flow, but the highest-income catchment in Tunisia -> premium propensity offsets) = ~222,000 one-way/yr. full_pool_preharvest = 7,400,000 (whole TGM line). WARNING: SHARED 7.4M pool with the two other TGM-parallel corridors -- do NOT sum additively.",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "commute"
+        },
+        {
+          "from": "Tunis (La Goulette)",
+          "to": "Palermo (Sicily, Italy)",
+          "distance_nm": 170,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Port de La Goulette international ferry terminal (CTN), Tunis",
+            "to": "Stazione Marittima, Porto di Palermo, Sicily"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "route_id": null,
+          "L3_locals": {},
+          "archetype": "intercity"
+        },
+        {
+          "from": "Tunis (Tunis Marine)",
+          "to": "La Goulette",
+          "distance_nm": 5,
+          "vessel": "Pioneer II",
+          "from_node_id": "tunis-tunisia",
+          "to_node_id": "tunis-tunisia",
+          "country": "Tunisia",
+          "endpoint_boarding_points": {
+            "from": "Tunis Marine quay (Lake of Tunis western edge), Tunis",
+            "to": "Port de La Goulette (Halq al-Wadi)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "route_id": "rn-74a61d330456",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 296000,
+            "_demand_record": {
+              "value": 296000,
+              "unit": "pax/yr one-way",
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 7400000,
+              "haircut_applied_pct": 4.0,
+              "detail": "PRIMARY Lake-of-Tunis modal-shift corridor. Base = TGM line ridership ~7.4M pax/yr (Railway Gazette). The Tunis Marine<->La Goulette lake crossing is the TGM's core commuter flow (city centre to the eastern suburbs/port). Apply a 4% premium-willing fast-shuttle haircut = ~296,000 one-way/yr. full_pool_preharvest = 7,400,000 (whole TGM line). WARNING: SHARED 7.4M pool with the other two TGM-parallel corridors -- do NOT sum additively. This is the corridor to which the full TGM pool is most naturally attributed (core flow).",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "commute"
+        },
+        {
+          "from": "Agadir Marina",
+          "to": "Taghazout",
+          "distance_nm": 9,
+          "vessel": "Pioneer II",
+          "from_node_id": "agadir-essaouira-morocco",
+          "to_node_id": "agadir-essaouira-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Agadir Marina (Marina d'Agadir)",
+            "to": "Taghazout Bay jetty / Anza-Taghazout"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "_geometry_bound_at": "2026-06-20",
+          "route_id": "e__agadir-essaouira-morocco__agadir__agadir-essaouira-morocco__taghazout",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 77500,
+            "_demand_record": {
+              "value": 77500,
+              "unit": "pax/yr one-way",
+              "basis": "airport_transfer",
+              "full_pool_preharvest": 3100000,
+              "haircut_applied_pct": 5.0,
+              "detail": "Tourist-inflow anchor. Agadir Al Massira airport handled ~3.1M passengers in 2024 (saturated vs 2.5M capacity; +36% in first 11 months). Arrivals ~= 1,550,000 (half of total pax). Apply a 5% premium beach/resort-shuttle propensity (mid-band: high-value leisure inflow to the Agadir-Taghazout bay, congested coastal road) = ~77,500 one-way/yr. full_pool_preharvest = 3,100,000 (total airport pax; arrivals ~1.55M). Context: Souss-Massa region logged 8.8M overnight stays in 2025 (~20% of Morocco's national total).",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "ridehail"
+        },
+        {
+          "from": "Al Hoceima",
+          "to": "Cala Iris",
+          "distance_nm": 16,
+          "vessel": "Pioneer II",
+          "from_node_id": "al-hoceima-morocco",
+          "to_node_id": "al-hoceima-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Port d'Al Hoceima (Quemado)",
+            "to": "Port de Cala Iris"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_geometry_bound_at": "2026-06-20",
+          "route_id": "rn-c2a689f7600d",
+          "L3_locals": {},
+          "archetype": "commute"
+        },
+        {
+          "from": "Casablanca",
+          "to": "Mohammedia",
+          "distance_nm": 13,
+          "vessel": "Pioneer II",
+          "from_node_id": "casablanca-morocco",
+          "to_node_id": "casablanca-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Port de Casablanca (passenger/marina quay)",
+            "to": "Port de Mohammedia"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_geometry_bound_at": "2026-06-20",
+          "route_id": "rn-967b688b5591",
+          "L3_locals": {},
+          "archetype": "commute"
+        },
+        {
+          "from": "Casablanca",
+          "to": "Rabat",
+          "distance_nm": 46,
+          "vessel": "Pioneer II",
+          "from_node_id": "casablanca-morocco",
+          "to_node_id": "casablanca-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Port de Casablanca",
+            "to": "Marina Bouregreg (Rabat-Sale) / Port de Rabat"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "_geometry_bound_at": "2026-06-20",
+          "route_id": "rn-a30214f88daf",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 165000,
+            "_demand_record": {
+              "value": 165000,
+              "unit": "pax/yr one-way",
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 5500000,
+              "haircut_applied_pct": 3.0,
+              "detail": "Greenfield coastal corridor on Morocco's densest ground O-D. CONSERVATIVE modal-shift base = the Al Boraq HSR line (Tangier<->Casablanca via Rabat & Kenitra) carried 5,500,000 passengers in 2024, with Rabat the principal intermediate stop -> use 5.5M as the rail pool floor. Apply a 3% premium-willing fast-shuttle haircut (bottom of band; this is a LONG ~46 nm sea leg vs a fast 1h train, so substitution willingness is modest) = ~165,000 one-way/yr. full_pool_preharvest = 5,500,000. NOTE this is conservative: it excludes the high-frequency TNR Navette commuters and the saturated A1 road AADT (un",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "commute"
+        },
+        {
+          "from": "Nador (Beni Ensar)",
+          "to": "Almeria (Spain)",
+          "distance_nm": 92,
+          "vessel": "Pioneer II",
+          "from_node_id": "tangier-morocco",
+          "to_node_id": "tangier-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Port de Nador Beni Ensar, Nador",
+            "to": "Puerto de Almeria, Andalusia"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "route_id": null,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 82.0,
+            "_fare_record": {
+              "value": 82.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM tier: adult foot-passenger one-way Almeria<->Nador ~EUR 70-79 (Balearia/Ferryhopper) x 1.08 ~= $76-85; midpoint ~$82. Longer Alboran crossing -> higher than the Strait routes.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 76.0
+            }
+          },
+          "archetype": "intercity"
+        },
+        {
+          "from": "Rabat",
+          "to": "Sale",
+          "distance_nm": 0.5,
+          "vessel": "Pioneer II",
+          "from_node_id": "rabat-sale-morocco",
+          "to_node_id": "rabat-sale-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Marina Bouregreg / Oudayas quay, Rabat",
+            "to": "Bab Lamrissa quay, Sale"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_new_node_chip": true,
+          "route_id": null
+        },
+        {
+          "from": "Rabat",
+          "to": "Sale",
+          "distance_nm": 0.5,
+          "vessel": "Pioneer II",
+          "from_node_id": "tangier-morocco",
+          "to_node_id": "tangier-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Marina Bouregreg / Oudayas quay, Rabat",
+            "to": "Bab Lamrissa quay, Sale"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "partner": "yassir",
+          "_inheritance_basis": "yango-morocco",
+          "_partner_evidence_tier": "country_supported",
+          "_route_id_status": "held_null",
+          "route_id": null,
+          "L3_locals": {},
+          "archetype": "commute"
+        },
+        {
+          "from": "Tanger Med",
+          "to": "Ceuta (Spanish enclave)",
+          "distance_nm": 22,
+          "vessel": "Pioneer II",
+          "from_node_id": "tangier-morocco",
+          "to_node_id": "tangier-morocco",
+          "country": "Morocco",
+          "endpoint_boarding_points": {
+            "from": "Tanger Med Passenger Port / Fnideq quay",
+            "to": "Puerto de Ceuta (estacion maritima)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "route_id": "rn-24c3aa4c2acf",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 36.0,
+            "_fare_record": {
+              "value": 36.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM tier (nearest comparable = Algeciras<->Ceuta fast ferry): avg foot-passenger fare ~EUR 33 x 1.08 ~= $36 (one-way ~EUR 25-35), 60 min fast ferry.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 27.0
+            }
+          },
+          "archetype": "intercity"
+        },
+        {
+          "from": "Tangier Marina Bay",
+          "to": "Tarifa (cross-strait excluded)",
+          "distance_nm": 8.0,
+          "vessel": "Pioneer II",
+          "from_node_id": "tangier-morocco",
+          "to_node_id": null,
+          "country": "Morocco",
+          "aspirational_leg": true,
+          "_aspirational_reason": "cross-strait excluded",
+          "route_id": null,
+          "L3_locals": {
+            "_status": "TIER_B_HEADLINE_PLACEHOLDER",
+            "_note": "Headline-only roll-up; fare + demand TBD per parent cascade.",
+            "comparable_fare_usd_pax": 43.5,
+            "corridor_annual_oneway_pax": 760778,
+            "_fare_record": {
+              "value": 43.5,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM tier: standard adult FOOT-PASSENGER one-way fast-ferry fare Tarifa<->Tangier Ville ~EUR 40.25 (traveller-reported foot fare) x 1.08 = ~$43.5; DirectFerries lists 'from $46'. THIS is the Navier-modeled per-seat tier.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 32.0
+            },
+            "_demand_record": {
+              "value": 760778,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_throughput",
+              "full_pool_preharvest": 1521555,
+              "haircut_applied_pct": 0.0,
+              "detail": "RE-ANCHOR of the existing registry stub (was demand null). Boat is the ONLY/dominant mode for this crossing -> the addressable pool IS the ferry throughput, near-full, no haircut. Port of Tarifa handled 1,521,555 passengers in 2025 (+14% YoY; ~1.33M in 2024), essentially all on the Tarifa<->Tangier Ville fast-ferry route. Port stats count both embark+disembark movements -> est_demand_oneway_yr = 1,521,555 / 2 = ~760,778. full_pool_preharvest = 1,521,555 (2025 total movements). One of the busiest passenger crossings between Europe and Africa.",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "tourism"
+        },
+        {
+          "route_id": "rn-10e3075622ec",
+          "from": "Gare Maritime / Port d'Oran",
+          "to": "Ain El Turck / Kristel waterfront",
+          "distance_nm": 2.3,
+          "vessel": "Pioneer II",
+          "from_node_id": "bp-b20b54ce2f",
+          "to_node_id": "bp-367e35a790",
+          "from_city_id": "oran-algeria",
+          "to_city_id": "oran-algeria",
+          "country": "Algeria",
+          "archetype": "super_app",
+          "partner": "yassir",
+          "_atlas_spine": true,
+          "L3_locals": {},
+          "_economics_status": "spine_only_pending_l3"
+        },
+        {
+          "route_id": "rn-13faccfd5399",
+          "from": "Port de Sidi Fredj (marina)",
+          "to": "El Djamila / A\u00efn B\u00e9nian",
+          "distance_nm": 13.8,
+          "vessel": "Pioneer II",
+          "from_node_id": "bp-a1f3b40032",
+          "to_node_id": "bp-829ac544cb",
+          "from_city_id": "algiers-algeria",
+          "to_city_id": "algiers-algeria",
+          "country": "Algeria",
+          "archetype": "super_app",
+          "partner": "yassir",
+          "_atlas_spine": true,
+          "L3_locals": {},
+          "_economics_status": "spine_only_pending_l3"
+        },
+        {
+          "route_id": "rn-68329d377c1b",
+          "from": "Port of Annaba (M\u00f4le Cigogne / Quai Nord)",
+          "to": "Annaba Corniche \u2014 Plage Rizi Amor / Saint-Cloud",
+          "distance_nm": 2.1,
+          "vessel": "Pioneer II",
+          "from_node_id": "bp-98bfa968fd",
+          "to_node_id": "bp-8487ccc099",
+          "from_city_id": "annaba-algeria",
+          "to_city_id": "annaba-algeria",
+          "country": "Algeria",
+          "archetype": "super_app",
+          "partner": "yassir",
+          "_atlas_spine": true,
+          "L3_locals": {},
+          "_economics_status": "spine_only_pending_l3"
+        },
+        {
+          "route_id": "rn-725099096c9e",
+          "from": "La P\u00eacherie / Port d'Alger",
+          "to": "El Djamila / A\u00efn B\u00e9nian",
+          "distance_nm": 8.5,
+          "vessel": "Pioneer II",
+          "archetype": "super_app",
+          "from_node_id": "bp-996024d3e8",
+          "to_node_id": "bp-829ac544cb",
+          "from_city_id": "algiers-algeria",
+          "to_city_id": "algiers-algeria",
+          "country": "Algeria",
+          "partner": "yassir",
+          "_candidate_id": "dz-algiers-bay-pecherie-el-djamila",
+          "_vessel_gate": "N30 Pioneer II commercial-now",
+          "_economics_status": "commercial_now",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 3.7,
+            "corridor_annual_oneway_pax": 170280
+          }
+        },
+        {
+          "route_id": "rn-9dc681a39d3c",
+          "from": "Port d'Oran",
+          "to": "Mostaganem port",
+          "distance_nm": 81.7,
+          "vessel": "Quanta-LR",
+          "archetype": "super_app",
+          "from_node_id": "bp-b20b54ce2f",
+          "to_node_id": "bp-0771df6b72",
+          "from_city_id": "oran-algeria",
+          "to_city_id": "mostaganem-algeria",
+          "country": "Algeria",
+          "partner": "yassir",
+          "_candidate_id": "dz-oran-mostaganem-summer",
+          "_vessel_gate": "Quanta-LR roadmap",
+          "_economics_status": "commercial_now",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 5.93,
+            "corridor_annual_oneway_pax": 40500
+          }
+        },
+        {
+          "route_id": "rn-cfbf3e236a28",
+          "from": "La P\u00eacherie / Port d'Alger / Gare Maritime",
+          "to": "Tamentfoust (east bay harbour)",
+          "distance_nm": 10.3,
+          "vessel": "Pioneer II",
+          "from_node_id": "bp-996024d3e8",
+          "to_node_id": "bp-2e488d1da6",
+          "from_city_id": "algiers-algeria",
+          "to_city_id": "algiers-algeria",
+          "country": "Algeria",
+          "archetype": "super_app",
+          "partner": "yassir",
+          "_atlas_spine": true,
+          "L3_locals": {},
+          "_economics_status": "spine_only_pending_l3"
+        },
+        {
+          "route_id": "rn-d905df532664",
+          "from": "Port de B\u00e9ja\u00efa",
+          "to": "Port d'Alger",
+          "distance_nm": 113.8,
+          "vessel": "Quanta-LR",
+          "archetype": "super_app",
+          "from_node_id": "bp-aade21b717",
+          "to_node_id": "bp-996024d3e8",
+          "from_city_id": "bejaia-algeria",
+          "to_city_id": "algiers-algeria",
+          "country": "Algeria",
+          "partner": "yassir",
+          "_candidate_id": "dz-bejaia-algiers-hsc",
+          "_vessel_gate": "Quanta-LR roadmap",
+          "_economics_status": "roadmap_excluded"
+        },
+        {
+          "from": "Dakar",
+          "to": "Saint-Louis (du Senegal)",
+          "distance_nm": 90,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Gare maritime de Dakar",
+            "to": "Saint-Louis (embarcadere fleuve Senegal / Hydrobase)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "route_id": null,
+          "L3_locals": {},
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar (Gare maritime / Port)",
+          "to": "Ziguinchor (Port de Ziguinchor, Casamance)",
+          "distance_nm": 200,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Gare maritime de Dakar (Port Autonome de Dakar)",
+            "to": "Port de Ziguinchor (escale possible a Carabane)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "route_id": null,
+          "L3_locals": {
+            "comparable_fare_usd_pax": 26.96,
+            "_fare_record": {
+              "value": 26.96,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM seat tier: 4th-category pullman armchair, NON-RESIDENT alien fare 15,500 FCFA per leg => $26.96. Premium cabins go higher: 3rd cat (8-place cabin) non-resident 18,500 FCFA ($32.2), 2nd cat (4-place) 28,500 ($49.6), 1st cat (2-place cabin) non-resident 30,500 FCFA ($53.0).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 8.7
+            },
+            "corridor_annual_oneway_pax": 90000,
+            "_demand_record": {
+              "value": 90000,
+              "unit": "pax/yr one-way",
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 105000,
+              "haircut_applied_pct": null,
+              "detail": "NEW. Real scheduled overnight RoPax ferry, the COSAMA service (vessels Aguene, Diambogne, and Aline Sitoe Diatta; each ~504 pax + 28 vehicles). Per the Port Autonome schedule there are ~4 departures/week in EACH direction (Aguene Tue+Fri, Diambogne Thu+Sun from Dakar). est_demand_oneway_yr derived from realized throughput: ~504 pax-capacity x ~4 sailings/wk x 52 wk = ~104,832 one-way seats/yr per direction; at the high load factors this route is known for (frequently fully booked, the only affordable Dakar-Casamance link avoiding The Gambia) => ~90,000 realized one-way pax/yr/direction (full_p",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar (Plage de Ngor)",
+          "to": "Ile de Ngor",
+          "distance_nm": 0.3,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Embarcadere de la Plage de Ngor (Almadies, Dakar)",
+            "to": "Ile de Ngor (debarcadere)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_atlas_status": "bound",
+          "route_id": "rn-dc2e7e55b6e6",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 0.87,
+            "_fare_record": {
+              "value": 0.87,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Pirogue shuttle 1,000 FCFA ALLER-RETOUR => ~500 one-way => $0.87. NOTE: this corridor has essentially no premium tier today (single low fare); $0.87 doubles as both anchor and floor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 0.87
+            }
+          },
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar (Soumbedioune / Mole)",
+          "to": "Parc National des Iles de la Madeleine (Ile aux Serpents/Sarpan)",
+          "distance_nm": 2.2,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Port de peche de Soumbedioune (Dakar) / Mole de Dakar",
+            "to": "Crique Hubert, Ile au Sarpan (Parc National des Iles de la Madeleine)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_atlas_status": "bound",
+          "route_id": "rn-b281b65142d4",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 3.48,
+            "_fare_record": {
+              "value": 3.48,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Divided-pirogue per-seat: 4,000 FCFA/pers ALLER-RETOUR for the crossing (excl. 1,000 FCFA park entry + 5,000 FCFA/group guide) => ~2,000 one-way => $3.48.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            }
+          },
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar (Yoff / Almadies)",
+          "to": "Dakar (Soumbedioune / Plateau)",
+          "distance_nm": 8,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Plage / port de peche de Yoff (or Ngor/Almadies)",
+            "to": "Port de peche de Soumbedioune / embarcadere Dakar-Plateau"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "_atlas_status": "bound",
+          "route_id": "rn-7e112fcb44dd",
+          "L3_locals": {},
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar / Mbour-Petite Cote",
+          "to": "Foundiougne (Sine-Saloum delta)",
+          "distance_nm": 60,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "endpoint_boarding_points": {
+            "from": "Gare maritime de Dakar (or Mbour/Joal embarcadere)",
+            "to": "Foundiougne (embarcadere / ancien bac), Sine-Saloum delta"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "_in_grounded_floor": false,
+          "route_id": null,
+          "L3_locals": {},
+          "archetype": "super_app"
+        },
+        {
+          "from": "Dakar Port",
+          "to": "\u00cele de Gor\u00e9e",
+          "distance_nm": 2.5,
+          "vessel": "Pioneer II",
+          "from_node_id": "dakar-senegal",
+          "to_node_id": "dakar-senegal",
+          "country": "Senegal",
+          "_premium_reanchored": {
+            "gross": 800000,
+            "premium_share": 0.1,
+            "class": "short_commuter_hop",
+            "addressable": 80000
+          },
+          "_atlas_status": "bound",
+          "route_id": "rn-35617f774f7f",
+          "L3_locals": {
+            "_status": "TIER_B_HEADLINE_PLACEHOLDER",
+            "_note": "Headline-only roll-up; fare + demand TBD per parent cascade.",
+            "comparable_fare_usd_pax": 5.22,
+            "corridor_annual_oneway_pax": 80000,
+            "_fare_record": {
+              "value": 5.22,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "PREMIUM tier: non-resident (foreign) adult tourist fare 6,000 FCFA ALLER-RETOUR (effective Oct 2025) => ~3,000 FCFA one-way => $5.22. (Pre-Oct-2025 non-resident fare was 5,200 FCFA RT.)",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.3
+            },
+            "_demand_record": {
+              "value": 800000,
+              "unit": "pax/yr one-way",
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 800000,
+              "haircut_applied_pct": null,
+              "detail": "RE-ANCHOR of existing stub (was null). Goree is the single most-visited site in Senegal (UNESCO World Heritage, 1978) and the public scheduled chaloupe (Liaison Maritime Dakar-Goree, run by SONAPAD / Port Autonome de Dakar, 3 vessels, ~12 rotations/day) is the ONLY access mode - so the island's annual visitor flow IS the addressable corridor pool (Phuket->Phi Phi logic). est_demand_oneway_yr = ~800,000 directional (Dakar->Goree) visitor trips/yr, the APIX-published tourist-flux figure for the island; CORROBORATED by Le Monde (3,000-6,000 visitors/day pre-COVID -> ~1.1M-2.2M one-way legs at pea",
+              "method": "coverage-pass-2026-06-19",
+              "addressable_pax_yr": 80000,
+              "addressable_pax_yr_ceiling": 800000,
+              "confidence": "med",
+              "premium_addressable_note": "premium-addressable 10% slice of 800,000 gross short_commuter_hop pool grounded at 0.25 addressable capture; full pool in SAM/TAM upside (Jaideep 2026-06-19)"
+            },
+            "demand_confidence": "med",
+            "pool_basis": "addressable"
+          },
+          "archetype": "super_app"
+        }
+      ]
+    }
+  }
+}
