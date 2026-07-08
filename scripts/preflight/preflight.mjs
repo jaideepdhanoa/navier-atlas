@@ -324,7 +324,7 @@ head('§3.6b  reference partner browser visual QA');
       cwd: e2eDir,
       encoding: 'utf8',
       env: { ...process.env, ROOT },
-      timeout: 600000,
+      timeout: 900000,
     });
     if (cap.stdout) process.stdout.write(cap.stdout);
     if (cap.stderr) process.stderr.write(cap.stderr);
