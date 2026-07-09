@@ -1,0 +1,956 @@
+{
+  "market": "Mexico Caribbean",
+  "lane": "BP + city/cluster brief + route opportunity research",
+  "as_of": "2026-07-09",
+  "status": "research_complete_with_display_holds",
+  "existing_atlas_baseline": {
+    "repo": "/tmp/navier-atlas",
+    "canonical_city_ids": [
+      "cancun-riviera-maya-mexico",
+      "cozumel-mexico",
+      "playa-del-carmen-mexico"
+    ],
+    "cluster": {
+      "cluster_id": "mexico",
+      "cluster_label": "Mexico",
+      "type": "country",
+      "member_city_ids": [
+        "cancun-riviera-maya-mexico",
+        "cozumel-mexico",
+        "los-cabos-mexico",
+        "playa-del-carmen-mexico",
+        "puerto-vallarta-mexico"
+      ],
+      "hierarchy_rule": "Preserve this existing country cluster; do not create a competing Mexico-Caribbean cluster in this handoff."
+    },
+    "matching_external_bp_files": [],
+    "routes": [
+      {
+        "route_id": "ics-413f51cd44",
+        "label": "Puerto Juárez ↔ Isla Mujeres — Magna",
+        "distance_nm": 5.27,
+        "status": "exact existing match",
+        "from_bp_id": "bp-062decef2f",
+        "to_bp_id": "bp-d08462d3d9"
+      },
+      {
+        "route_id": "e__playa-del-carmen-mexico__playa-del-carmen-ferry__cozumel-mexico__cozumel-ferry-san-miguel",
+        "label": "Playa del Carmen Ferry Terminal → Cozumel Ferry Terminal",
+        "distance_nm": 9.5,
+        "status": "exact existing match but quarantined and relevance=hide",
+        "quarantine_reason": "both canonical city berths unresolved"
+      }
+    ],
+    "partner_market": {
+      "market_id": "mexico-caribbean",
+      "anchor_cities": [
+        "cancun-riviera-maya-mexico"
+      ],
+      "issues": [
+        "Playa–Cozumel partner journey has route_id null despite an exact quarantined route existing.",
+        "Holbox journey is unlinked and carries an implausible 2.4 nm distance.",
+        "Banco Chinchorro narrative is attached to mismatched Puerto Morelos/Playa marina labels.",
+        "Partner copy overstates DiDi coverage as all Riviera Maya."
+      ]
+    },
+    "read_files": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "data-clean/FEATURES_BY_TYPE.json",
+      "data-clean/city_briefs/cancun-riviera-maya-mexico.json",
+      "data-clean/city_briefs/cozumel-mexico.json",
+      "data-clean/city_briefs/playa-del-carmen-mexico.json",
+      "partner-pitch/partners/didi.json"
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "didi-mx-cities",
+      "url": "https://web.didiglobal.com/mx/conductor/ciudades/",
+      "title": "Ciudades en las que DiDi está disponible",
+      "publisher": "DiDi Mexico",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official DiDi driver city directory explicitly lists Cancún, Chetumal and Campeche. Searches of the same directory found no entries for Playa del Carmen, Cozumel, Puerto Morelos, Isla Mujeres, Holbox or Tulum.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-stats",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/",
+      "title": "Portal Estadístico",
+      "publisher": "Administración Portuaria Integral de Quintana Roo (APIQROO)",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "Official port-statistics system and year selector for route-passenger and cruise records.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-cozumel-route-2025",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/puertoRutaPasaje.php?puerto=1&anio=2025",
+      "title": "Ruta de pasajeros Cozumel 2025",
+      "publisher": "APIQROO",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "2025 Cozumel federal passenger-route totals: 1,932,907 entries, 1,920,863 exits, 3,853,770 total passenger movements; monthly low 246,590 in September and high 385,338 in August.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-isla-route-2025",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/puertoRutaPasaje.php?puerto=5&anio=2025",
+      "title": "Ruta de pasajeros Isla Mujeres 2025",
+      "publisher": "APIQROO",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "2025 Isla Mujeres federal passenger-route totals: 2,703,490 entries, 2,754,814 exits, 5,458,304 total passenger movements; monthly low 344,021 in September and high 551,255 in July.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-chetumal-route-2025",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/puertoRutaPasaje.php?puerto=7&anio=2025",
+      "title": "Ruta de pasajeros Chetumal 2025",
+      "publisher": "APIQROO",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "2025 Chetumal federal passenger-route totals: 11,796 entries, 13,276 exits, 25,072 total passenger movements; monthly low 1,136 in June and high 3,325 in January. It is a port aggregate and is not allocated here to a single destination.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-cozumel-cruise-2025",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/puertoCrucero.php?puerto=1&anio=2025",
+      "title": "Cruceros Cozumel 2025",
+      "publisher": "APIQROO",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "Cozumel recorded 1,300 cruise calls and 4,732,250 cruise passenger visits in 2025; monthly passenger low 258,399 in September and high 571,791 in December. This is context, not ferry-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-chetumal-port",
+      "url": "https://www.apiqroo.com.mx/chetumal/",
+      "title": "Chetumal — El Puerto",
+      "publisher": "APIQROO",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Chetumal is an official port with waiting room, parking and services; links the two Belize passenger operators; embedded official location centers on 18.4918983, -88.2996736.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "apiqroo-ports-directory",
+      "url": "https://www.apiqroo.com.mx/chetumal/",
+      "title": "APIQROO ports navigation",
+      "publisher": "APIQROO",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official APIQROO navigation separately identifies Puerto Juárez, Chetumal, Cozumel, Isla Mujeres, Playa del Carmen, Puerto Morelos and Bacalar port pages.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "ultramar-fares",
+      "url": "https://www.ultramarferry.com/en/fares",
+      "title": "Fares",
+      "publisher": "Ultramar",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current published one-way adult fares: Playa del Carmen–Cozumel MXN 320 premium-plus, MXN 190 Quintana Roo resident, MXN 100 local; Puerto Juárez–Isla Mujeres MXN 290 premium-plus, MXN 100 Quintana Roo resident, MXN 55 local. Page identifies route terminals and links map locations.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "ultramar-departures",
+      "url": "https://www.ultramarferry.com/en/routes-and-departures",
+      "title": "Routes and departures",
+      "publisher": "Ultramar",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Ultramar currently publishes departures for Playa del Carmen–Cozumel and Puerto Juárez–Isla Mujeres, confirming scheduled service. The page did not expose a durable source date in extraction.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "winjet-schedules",
+      "url": "https://winjet.mx/en/schedules/",
+      "title": "Schedules",
+      "publisher": "Winjet",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Winjet publishes the Playa del Carmen–Cozumel scheduled crossing, corroborating a second current operator.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "sp-belize-express-chetumal",
+      "url": "https://www.sanpedrowatertaxi.com/",
+      "title": "Chetumal",
+      "publisher": "San Pedro Belize Express Water Taxi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Operator sells Chetumal–San Pedro international ferry service; page lists 10:00 departure, 1 hour 30 minute duration, and one-way prices of MXN 1,340 standard and MXN 1,050 Mexican citizen.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "asur-traffic-page",
+      "url": "https://www.asur.com.mx/trafico-de-pasajeros-2",
+      "title": "Tráfico de pasajeros",
+      "publisher": "Grupo Aeroportuario del Sureste (ASUR)",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Official gateway to ASUR airport passenger-traffic workbook.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "asur-traffic-workbook",
+      "url": "https://www.asur.com.mx/media/Inversionistas/Trafico%20de%20pasajeros/Trafico_de_pasajeros_ASUR.xlsx",
+      "title": "Tráfico de pasajeros ASUR workbook",
+      "publisher": "ASUR",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "2025 total passengers: Cancún International 29,345,538 and Cozumel International 646,606. These are broad airport flows, not water-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "api-campeche-lerma",
+      "url": "https://apicampeche.com.mx/lerma/",
+      "title": "Lerma",
+      "publisher": "Administración Portuaria Integral de Campeche",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official Lerma port page describes PEMEX fuel facilities, fishing-vessel repair, medium-height vessels and fuel suppliers; it does not identify a passenger ferry terminal or scheduled passenger route.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "elcid-puerto-morelos",
+      "url": "https://elcidmarinas.com/destination/destination-cancun-riviera-maya/",
+      "title": "Marina El Cid Cancún–Riviera Maya",
+      "publisher": "El Cid Marinas",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "An operating marina exists at Puerto Morelos. It does not by itself prove scheduled passenger service or a DiDi city footprint.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "holbox-express",
+      "url": "https://holboxexpress.com/holbox-ferry-rates-and-departures-timetable/",
+      "title": "Holbox ferry rates and departures timetable",
+      "publisher": "Holbox Express",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "A current Chiquilá–Holbox ferry market exists. It does not prove DiDi operates in either Chiquilá or Holbox.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "name": "Cancún & the Riviera Maya",
+      "city_id": "cancun-riviera-maya-mexico",
+      "atlas_status": "existing_canonical",
+      "didi_footprint_status": "verified_city",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Umbrella canonical market containing the Puerto Juárez–Isla Mujeres route and some Riviera Maya BPs.",
+      "recommendation": "retain_canonical",
+      "display_readiness": "existing; route-specific claims need corrections"
+    },
+    {
+      "name": "Cozumel",
+      "city_id": "cozumel-mexico",
+      "atlas_status": "existing_canonical",
+      "didi_footprint_status": "not_verified_in_official_city_directory",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Island endpoint of the high-volume Playa del Carmen passenger route and a major cruise port.",
+      "recommendation": "retain_canonical; do not claim local DiDi service without new evidence",
+      "display_readiness": "brief exists; route hidden until berth binding is resolved"
+    },
+    {
+      "name": "Playa del Carmen",
+      "city_id": "playa-del-carmen-mexico",
+      "atlas_status": "existing_canonical",
+      "didi_footprint_status": "not_verified_in_official_city_directory",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Mainland endpoint of the scheduled Cozumel route.",
+      "recommendation": "retain_canonical; treat DiDi linkage as adjacent-to-Cancún unless separately verified",
+      "display_readiness": "brief exists; route hidden until berth binding is resolved"
+    },
+    {
+      "name": "Chetumal",
+      "city_id": null,
+      "atlas_status": "unbound_candidate",
+      "didi_footprint_status": "verified_city",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Official international passenger port linking Mexico to Belize operators.",
+      "recommendation": "backlog_priority_candidate_after_city_id_and_bp_binding",
+      "display_readiness": "not display-ready"
+    },
+    {
+      "name": "Campeche",
+      "city_id": null,
+      "atlas_status": "evaluated_not_qualified_for_this_lane",
+      "didi_footprint_status": "verified_city",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Coastal DiDi city, but official Lerma page describes fuel/fishing/support activity rather than a passenger terminal.",
+      "recommendation": "drop_from_passenger_bp_scope_until_official_passenger_terminal_and_route_exist",
+      "display_readiness": "not display-ready"
+    },
+    {
+      "name": "Puerto Morelos",
+      "city_id": null,
+      "atlas_status": "locale_inside_existing_cancun_riviera_maya_scope",
+      "didi_footprint_status": "not_verified_in_official_city_directory",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Operating marina; no scheduled passenger route established in this research.",
+      "recommendation": "do_not_mint_city; retain existing marina as a locale BP only",
+      "display_readiness": "existing marina POI/BP only"
+    },
+    {
+      "name": "Isla Mujeres",
+      "city_id": null,
+      "atlas_status": "locale_inside_existing_cancun_riviera_maya_scope",
+      "didi_footprint_status": "not_verified_in_official_city_directory",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Verified ferry destination already modeled within the Cancún umbrella city.",
+      "recommendation": "do_not_mint_city_in_this_handoff; preserve current canonical hierarchy",
+      "display_readiness": "route endpoint is displayable through existing umbrella city route"
+    },
+    {
+      "name": "Holbox",
+      "city_id": null,
+      "atlas_status": "future_opportunity_only",
+      "didi_footprint_status": "not_verified_in_official_city_directory",
+      "didi_evidence_source_ids": [
+        "didi-mx-cities"
+      ],
+      "water_role": "Real Chiquilá–Holbox ferry market, but no official DiDi footprint was found for either endpoint.",
+      "recommendation": "exclude_from_DiDi_city_expansion_and_direct_Cancún_route_claims",
+      "display_readiness": "not display-ready"
+    }
+  ],
+  "boarding_points": [
+    {
+      "name": "Terminal Marítima Puerto Juárez",
+      "classification": "verified_existing_boarding_point",
+      "atlas_id": "bp-062decef2f",
+      "canonical_city_id": "cancun-riviera-maya-mexico",
+      "coordinates": {
+        "lon": -86.807181,
+        "lat": 21.18831,
+        "coordinate_source": "existing Atlas BP; official operator/APIQ confirm terminal identity"
+      },
+      "bp_type": "ferry_terminal",
+      "service_status": "operational scheduled ferry",
+      "source_ids": [
+        "apiqroo-ports-directory",
+        "ultramar-departures",
+        "ultramar-fares"
+      ],
+      "publish_status": "eligible through exact existing route"
+    },
+    {
+      "name": "Terminal Marítima de Isla Mujeres",
+      "classification": "verified_existing_boarding_point",
+      "atlas_id": "bp-d08462d3d9",
+      "canonical_city_id": "cancun-riviera-maya-mexico",
+      "coordinates": {
+        "lon": -86.746464,
+        "lat": 21.255314,
+        "coordinate_source": "existing Atlas BP; official operator/APIQ confirm terminal identity"
+      },
+      "bp_type": "ferry_terminal",
+      "service_status": "operational scheduled ferry",
+      "source_ids": [
+        "apiqroo-ports-directory",
+        "ultramar-departures",
+        "ultramar-fares"
+      ],
+      "publish_status": "eligible through exact existing route"
+    },
+    {
+      "name": "Playa del Carmen Ferry Terminal / Muelle Fiscal",
+      "classification": "candidate_needing_coordinate_and_city_binding_confirmation",
+      "atlas_id": "bp-pdc-muelle-fiscal",
+      "canonical_city_id": "playa-del-carmen-mexico",
+      "coordinates": {
+        "lon": -87.074971,
+        "lat": 20.612926,
+        "coordinate_source": "existing quarantined ROUTES.json endpoint; conflicts with existing bp-pdc-muelle-fiscal point at -87.0697,20.6259"
+      },
+      "bp_type": "ferry_terminal",
+      "service_status": "operational scheduled ferry",
+      "source_ids": [
+        "apiqroo-ports-directory",
+        "ultramar-departures",
+        "ultramar-fares",
+        "winjet-schedules"
+      ],
+      "publish_status": "hold: reconcile coordinate and bind canonical endpoint"
+    },
+    {
+      "name": "Cozumel Ferry Terminal (San Miguel)",
+      "classification": "candidate_needing_canonical_city_binding",
+      "atlas_id": "bp-1f95439031",
+      "canonical_city_id": "cozumel-mexico",
+      "coordinates": {
+        "lon": -86.95121,
+        "lat": 20.512376,
+        "coordinate_source": "existing Atlas BP under Cancún umbrella; exact canonical route endpoint is quarantined"
+      },
+      "bp_type": "ferry_terminal",
+      "service_status": "operational scheduled ferry",
+      "source_ids": [
+        "apiqroo-ports-directory",
+        "ultramar-departures",
+        "ultramar-fares",
+        "winjet-schedules"
+      ],
+      "publish_status": "hold: reparent or alias to canonical Cozumel berth and clear route quarantine"
+    },
+    {
+      "name": "Marina El Cid Puerto Morelos",
+      "classification": "verified_existing_boarding_point",
+      "atlas_id": "bp-608e348da1",
+      "canonical_city_id": "cancun-riviera-maya-mexico",
+      "coordinates": {
+        "lon": -86.890358,
+        "lat": 20.831331,
+        "coordinate_source": "existing Atlas BP; marina operator confirms facility"
+      },
+      "bp_type": "marina",
+      "service_status": "operational marina; scheduled passenger service not proven",
+      "source_ids": [
+        "elcid-puerto-morelos"
+      ],
+      "publish_status": "POI/BP only; do not use as route-demand proof"
+    },
+    {
+      "name": "Chetumal passenger port / Muelle Fiscal",
+      "classification": "candidate_needing_atlas_city_and_bp_binding",
+      "atlas_id": null,
+      "canonical_city_id": null,
+      "coordinates": {
+        "lon": -88.2996736,
+        "lat": 18.4918983,
+        "coordinate_source": "APIQROO official page embedded location"
+      },
+      "bp_type": "international_passenger_terminal",
+      "service_status": "operational; official page links Belize operators",
+      "source_ids": [
+        "apiqroo-chetumal-port",
+        "sp-belize-express-chetumal"
+      ],
+      "publish_status": "backlog, not display-ready"
+    },
+    {
+      "name": "San Pedro Belize Express International Ferry Terminal",
+      "classification": "candidate_needing_coordinate_source_and_foreign_city_binding",
+      "atlas_id": null,
+      "canonical_city_id": null,
+      "coordinates": null,
+      "bp_type": "international_passenger_terminal",
+      "service_status": "operator endpoint for Chetumal service",
+      "source_ids": [
+        "sp-belize-express-chetumal"
+      ],
+      "publish_status": "backlog, not display-ready"
+    },
+    {
+      "name": "Puerto de Lerma",
+      "classification": "non_bp_poi_for_this_passenger_lane",
+      "atlas_id": null,
+      "canonical_city_id": null,
+      "coordinates": null,
+      "bp_type": "commercial_fishing_fuel_port",
+      "service_status": "official port, but passenger terminal/service not established",
+      "source_ids": [
+        "api-campeche-lerma"
+      ],
+      "publish_status": "reject/drop from passenger BP scope"
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "name": "Puerto Juárez ↔ Isla Mujeres",
+      "status": "current_route_evidence_and_exact_atlas_match",
+      "opportunity_timing": "current premium-layer opportunity",
+      "route_id": "ics-413f51cd44",
+      "from": {
+        "endpoint_name": "Terminal Marítima Puerto Juárez",
+        "city_id": "cancun-riviera-maya-mexico",
+        "atlas_bp_id": "bp-062decef2f"
+      },
+      "to": {
+        "endpoint_name": "Terminal Marítima de Isla Mujeres",
+        "city_id": "cancun-riviera-maya-mexico",
+        "atlas_bp_id": "bp-d08462d3d9"
+      },
+      "distance_nm": 5.27,
+      "distance_source": "existing ROUTES.json exact route",
+      "water_relevance": "Short open-water island crossing with very large existing scheduled passenger flow.",
+      "likely_vessel_range_class": "Pioneer II / short-range all-electric",
+      "hand_waypoints_required": false,
+      "hand_waypoint_note": "Existing geometry records zero land intersection; still run production geometry QA.",
+      "current_service_sources": [
+        "ultramar-departures",
+        "apiqroo-isla-route-2025"
+      ],
+      "annual_one_way_pax": 5458304,
+      "annual_one_way_pax_definition": "APIQROO 2025 passenger entries plus exits at Isla Mujeres; each terminal movement is one one-way passenger leg, not unique persons.",
+      "economics_readiness": "demand baseline ready; fare segmentation available; vessel economics still require capacity, load factor and service plan"
+    },
+    {
+      "name": "Playa del Carmen ↔ Cozumel (San Miguel)",
+      "status": "current_route_evidence_but_atlas_route_quarantined",
+      "opportunity_timing": "current premium-layer opportunity after BP binding",
+      "route_id": "e__playa-del-carmen-mexico__playa-del-carmen-ferry__cozumel-mexico__cozumel-ferry-san-miguel",
+      "from": {
+        "endpoint_name": "Playa del Carmen Ferry Terminal / Muelle Fiscal",
+        "city_id": "playa-del-carmen-mexico",
+        "atlas_bp_id": "bp-pdc-muelle-fiscal (coordinate conflict)"
+      },
+      "to": {
+        "endpoint_name": "Cozumel Ferry Terminal (San Miguel)",
+        "city_id": "cozumel-mexico",
+        "atlas_bp_id": "bp-1f95439031 (currently parented to Cancún umbrella)"
+      },
+      "distance_nm": 9.5,
+      "distance_source": "existing ROUTES.json exact route",
+      "water_relevance": "Direct reef-channel crossing with multiple scheduled ferry operators and large measured passenger flow.",
+      "likely_vessel_range_class": "Pioneer II / short-range all-electric",
+      "hand_waypoints_required": false,
+      "hand_waypoint_note": "Existing route geometry reports zero land intersection, but route remains quarantined because both canonical city berths are unresolved.",
+      "current_service_sources": [
+        "ultramar-departures",
+        "winjet-schedules",
+        "apiqroo-cozumel-route-2025"
+      ],
+      "annual_one_way_pax": 3853770,
+      "annual_one_way_pax_definition": "APIQROO 2025 Cozumel passenger-route entries plus exits; each terminal movement is one one-way passenger leg, not unique persons.",
+      "economics_readiness": "demand and public fares ready; display/economics handoff blocked by canonical BP reconciliation"
+    },
+    {
+      "name": "Chetumal ↔ San Pedro, Belize",
+      "status": "current_operator_service_future_atlas_opportunity",
+      "opportunity_timing": "backlog expansion only",
+      "route_id": null,
+      "from": {
+        "endpoint_name": "Chetumal passenger port / Muelle Fiscal",
+        "city_id": null,
+        "atlas_bp_id": null
+      },
+      "to": {
+        "endpoint_name": "San Pedro Belize Express International Ferry Terminal",
+        "city_id": null,
+        "atlas_bp_id": null
+      },
+      "distance_nm": null,
+      "distance_source": null,
+      "water_relevance": "Cross-border bay/Caribbean passenger connection currently sold by an official operator.",
+      "likely_vessel_range_class": null,
+      "hand_waypoints_required": true,
+      "hand_waypoint_note": "Required before routing because Chetumal Bay, Belizean cays/shoals and the international border make a straight-line geometry unsafe; verify navigable channel and exact foreign terminal first.",
+      "current_service_sources": [
+        "apiqroo-chetumal-port",
+        "sp-belize-express-chetumal"
+      ],
+      "annual_one_way_pax": null,
+      "annual_one_way_pax_definition": "APIQROO reports 25,072 Chetumal port passenger movements in 2025, but this research does not allocate that aggregate to San Pedro alone.",
+      "economics_readiness": "not ready; city IDs, exact San Pedro BP coordinate, route distance, service days, capacity and route-specific ridership split remain open"
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "apiq-2025-isla-mujeres-passenger-route",
+      "geography": "Isla Mujeres passenger route",
+      "record_type": "water_route_passenger_movements",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 5458304,
+      "metric_unit": "passenger one-way terminal movements",
+      "annual_one_way_pax": 5458304,
+      "components": {
+        "entries": 2703490,
+        "exits": 2754814
+      },
+      "seasonality": {
+        "monthly_low": {
+          "month": "September",
+          "value": 344021
+        },
+        "monthly_high": {
+          "month": "July",
+          "value": 551255
+        }
+      },
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "apiqroo-isla-route-2025"
+      ],
+      "assumption_record": "No tourism-to-route conversion. Sum of official entries and exits is treated as annual one-way passenger legs; not unique people."
+    },
+    {
+      "record_id": "apiq-2025-cozumel-passenger-route",
+      "geography": "Cozumel passenger route",
+      "record_type": "water_route_passenger_movements",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 3853770,
+      "metric_unit": "passenger one-way terminal movements",
+      "annual_one_way_pax": 3853770,
+      "components": {
+        "entries": 1932907,
+        "exits": 1920863
+      },
+      "seasonality": {
+        "monthly_low": {
+          "month": "September",
+          "value": 246590
+        },
+        "monthly_high": {
+          "month": "August",
+          "value": 385338
+        }
+      },
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "apiqroo-cozumel-route-2025"
+      ],
+      "assumption_record": "No tourism-to-route conversion. Sum of official entries and exits is treated as annual one-way passenger legs; not unique people."
+    },
+    {
+      "record_id": "apiq-2025-chetumal-passenger-route-aggregate",
+      "geography": "Chetumal port passenger route aggregate",
+      "record_type": "water_port_passenger_movements",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 25072,
+      "metric_unit": "passenger one-way terminal movements",
+      "annual_one_way_pax": null,
+      "components": {
+        "entries": 11796,
+        "exits": 13276
+      },
+      "seasonality": {
+        "monthly_low": {
+          "month": "June",
+          "value": 1136
+        },
+        "monthly_high": {
+          "month": "January",
+          "value": 3325
+        }
+      },
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "apiqroo-chetumal-route-2025"
+      ],
+      "assumption_record": "Port aggregate is not assigned to the Chetumal–San Pedro corridor because the official table does not provide an endpoint split."
+    },
+    {
+      "record_id": "ultramar-pdc-cozumel-published-fares",
+      "geography": "Playa del Carmen ↔ Cozumel",
+      "record_type": "published_one_way_fares",
+      "period": "accessed 2026-07-09",
+      "metric_value": null,
+      "metric_unit": "MXN",
+      "annual_one_way_pax": null,
+      "fare": {
+        "premium_plus_adult_one_way_mxn": 320,
+        "quintana_roo_resident_adult_one_way_mxn": 190,
+        "local_adult_one_way_mxn": 100
+      },
+      "service_days": null,
+      "seasonality": null,
+      "source_ids": [
+        "ultramar-fares"
+      ],
+      "assumption_record": "Published fare classes are benchmarks only; do not assume passenger mix or realized yield."
+    },
+    {
+      "record_id": "ultramar-puerto-juarez-isla-published-fares",
+      "geography": "Puerto Juárez ↔ Isla Mujeres",
+      "record_type": "published_one_way_fares",
+      "period": "accessed 2026-07-09",
+      "metric_value": null,
+      "metric_unit": "MXN",
+      "annual_one_way_pax": null,
+      "fare": {
+        "premium_plus_adult_one_way_mxn": 290,
+        "quintana_roo_resident_adult_one_way_mxn": 100,
+        "local_adult_one_way_mxn": 55
+      },
+      "service_days": null,
+      "seasonality": null,
+      "source_ids": [
+        "ultramar-fares"
+      ],
+      "assumption_record": "Published fare classes are benchmarks only; do not assume passenger mix or realized yield."
+    },
+    {
+      "record_id": "spbe-chetumal-san-pedro-fare-schedule",
+      "geography": "Chetumal ↔ San Pedro, Belize",
+      "record_type": "operator_fare_and_trip_time",
+      "period": "accessed 2026-07-09",
+      "metric_value": null,
+      "metric_unit": "MXN/minutes",
+      "annual_one_way_pax": null,
+      "fare": {
+        "standard_one_way_mxn": 1340,
+        "mexican_citizen_one_way_mxn": 1050
+      },
+      "service_days": null,
+      "schedule": {
+        "departure_local": "10:00",
+        "published_duration_minutes": 90
+      },
+      "seasonality": null,
+      "source_ids": [
+        "sp-belize-express-chetumal"
+      ],
+      "assumption_record": "No frequency or annual service-day assumption because the accessible operator page did not establish durable operating days."
+    },
+    {
+      "record_id": "asur-cancun-airport-2025",
+      "geography": "Cancún International Airport",
+      "record_type": "airport_passenger_flow",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 29345538,
+      "metric_unit": "total airport passengers",
+      "annual_one_way_pax": null,
+      "service_days": null,
+      "fare": null,
+      "seasonality": null,
+      "source_ids": [
+        "asur-traffic-workbook"
+      ],
+      "assumption_record": "Broad gateway flow only. Zero passengers are assigned to a water corridor without a mode-choice and origin/destination assumption."
+    },
+    {
+      "record_id": "asur-cozumel-airport-2025",
+      "geography": "Cozumel International Airport",
+      "record_type": "airport_passenger_flow",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 646606,
+      "metric_unit": "total airport passengers",
+      "annual_one_way_pax": null,
+      "service_days": null,
+      "fare": null,
+      "seasonality": null,
+      "source_ids": [
+        "asur-traffic-workbook"
+      ],
+      "assumption_record": "Broad island gateway flow only; not ferry demand."
+    },
+    {
+      "record_id": "apiq-cozumel-cruise-2025",
+      "geography": "Cozumel cruise port",
+      "record_type": "cruise_passenger_visits",
+      "period": "2025-01-01/2025-12-31",
+      "metric_value": 4732250,
+      "metric_unit": "cruise passenger visits",
+      "annual_one_way_pax": null,
+      "components": {
+        "cruise_calls": 1300
+      },
+      "seasonality": {
+        "monthly_low": {
+          "month": "September",
+          "value": 258399
+        },
+        "monthly_high": {
+          "month": "December",
+          "value": 571791
+        }
+      },
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "apiqroo-cozumel-cruise-2025"
+      ],
+      "assumption_record": "Tourism context only. No cruise passengers are converted to ferry or Navier demand."
+    }
+  ],
+  "brief_maturity": {
+    "overall": "medium narrative maturity; low-to-medium source and geometry maturity",
+    "scoring_scale": "1=missing/unreliable, 3=usable with material gaps, 5=finance/display ready",
+    "canonical_brief_paths": [
+      "data-clean/city_briefs/cancun-riviera-maya-mexico.json",
+      "data-clean/city_briefs/cozumel-mexico.json",
+      "data-clean/city_briefs/playa-del-carmen-mexico.json"
+    ],
+    "field_scores": [
+      {
+        "field": "identity_and_hierarchy",
+        "score": 5,
+        "finding": "All three requested canonical IDs exist; CLUSTERS.json preserves them as members of country cluster 'mexico'.",
+        "enhancement": "Preserve IDs and cluster membership; add Chetumal only through the normal city-ID process."
+      },
+      {
+        "field": "tagline_summary",
+        "score": 3,
+        "finding": "Strong market framing, but phrases such as 'tens of millions of visitors', 'among the busiest in the hemisphere' and 'heavily congested' are not tied to exact dated sources.",
+        "enhancement": "Retain prose but attach APIQROO 2025 route counts, ASUR 2025 gateway counts and neutral qualifiers."
+      },
+      {
+        "field": "demand_signals",
+        "score": 2,
+        "finding": "Current briefs mostly use qualitative values; no annual route counts, periods or assumption records.",
+        "enhancement": "Add 5,458,304 Isla Mujeres and 3,853,770 Cozumel 2025 passenger movements with entry/exit definitions; keep airport/cruise totals separate from route demand."
+      },
+      {
+        "field": "journeys_and_distances",
+        "score": 2,
+        "finding": "Cancún umbrella brief says ~8 nm Puerto Juárez–Isla and ~12 nm Playa–Cozumel, while exact Atlas routes are 5.27 nm and 9.5 nm. The partner file also contains a nonsensical 2.4 nm Holbox journey.",
+        "enhancement": "Use exact matched route distances only; quarantine or delete unmatched direct-Cancún/Holbox distance claims."
+      },
+      {
+        "field": "boarding_point_grounding",
+        "score": 2,
+        "finding": "Puerto Juárez–Isla is grounded. Playa–Cozumel exact route remains hidden because both canonical city berths are unresolved; the Playa BP coordinate conflicts with the route endpoint.",
+        "enhancement": "Reconcile Playa terminal coordinate, alias/reparent Cozumel terminal to cozumel-mexico, then clear route quarantine through standard QA."
+      },
+      {
+        "field": "sources",
+        "score": 2,
+        "finding": "Cancún brief has label-only sources and no URLs; Cozumel/Playa sources are generic root pages.",
+        "enhancement": "Add exact APIQROO table, operator fare/departure, ASUR workbook and port-page URLs with year/access dates."
+      },
+      {
+        "field": "seasonality",
+        "score": 3,
+        "finding": "Hurricane/nortes framing is useful but unsourced and not quantified.",
+        "enhancement": "Add observed 2025 monthly highs/lows from APIQROO; source any weather-window claim separately before finance use."
+      },
+      {
+        "field": "regulatory_note",
+        "score": 3,
+        "finding": "Correctly points to APIQROO/SEMAR, but authority/permit claims remain generic.",
+        "enhancement": "Keep neutral; identify exact port/capitanía permitting owner during diligence rather than asserting easy permitting."
+      },
+      {
+        "field": "partner_neutrality",
+        "score": 2,
+        "finding": "Cancún canonical brief names Uber Mexico and includes ride-hail-specific rationale. Canonical briefs should remain partner-neutral.",
+        "enhancement": "Move all Uber/DiDi/super-app framing to partner narrative; use generic 'mobility platform' only if needed in canonical internal archetype fields."
+      },
+      {
+        "field": "route_and_display_readiness",
+        "score": 2,
+        "finding": "One exact route is ready; the signature Playa–Cozumel route is quarantined/hide. Chetumal is fully unbound.",
+        "enhancement": "Do not publish quarantined or unbound routes. Hand finance only exact route IDs and documented passenger counts."
+      }
+    ],
+    "recommended_posture": "enhance_in_place_not_replace"
+  },
+  "partner_narrative_notes": {
+    "proposed_partner_narrative": "DiDi can anchor the confirmed Cancún road leg into a measured water network: Puerto Juárez–Isla Mujeres carried 5.46 million passenger movements in 2025, while the adjacent Playa del Carmen–Cozumel channel carried 3.85 million. Start with an exact, BP-grounded Cancún island crossing; treat Playa–Cozumel as an adjacent market opportunity until local DiDi coverage and canonical berths are verified. Chetumal is a separate backlog expansion: DiDi is officially listed there and an international passenger port already links to Belize, but Atlas IDs and route geometry are not ready.",
+    "approved_claims": [
+      "DiDi's official Mexico city directory lists Cancún, Chetumal and Campeche.",
+      "APIQROO recorded 5,458,304 Isla Mujeres passenger-route movements and 3,853,770 Cozumel passenger-route movements in 2025.",
+      "Puerto Juárez–Isla Mujeres has an exact existing Atlas route and verified BPs.",
+      "Playa–Cozumel is current scheduled ferry service, but its Atlas route is hidden pending berth resolution.",
+      "Chetumal has an official passenger port and operator-sold Belize service; it is backlog, not display-ready."
+    ],
+    "claims_to_soften_or_remove": [
+      "'DiDi operates throughout Cancún and the Riviera Maya' — official evidence found only an explicit Cancún listing, not Playa del Carmen, Cozumel or Puerto Morelos.",
+      "'No queue' — no operational evidence supports guaranteed queue elimination.",
+      "'No new infrastructure' — berth, charging, permits and terminal-interface needs must be scoped.",
+      "'Hemisphere's busiest' or 'heavily congested' — use measured APIQROO volumes unless a ranking/queue source is added.",
+      "Holbox and outer-reef direct routes — retain as future concepts only after BP, geometry, range and DiDi footprint checks."
+    ],
+    "handoff_order": [
+      "Phase A: Puerto Juárez–Isla Mujeres exact route",
+      "Phase B: resolve Playa–Cozumel BPs, then model measured flow",
+      "Backlog: mint Chetumal city/BP and hand-waypoint cross-border geometry"
+    ]
+  },
+  "gaps": [
+    {
+      "gap": "Reconcile Playa del Carmen terminal: bp-pdc-muelle-fiscal is ~1.4 km from the existing route endpoint and may represent the wrong pier.",
+      "owner": "Atlas geometry/BP owner",
+      "next_action": "Use APIQROO/SEMAR terminal documentation or a directly attributable official map coordinate; choose one canonical berth and rerun land/berth QA.",
+      "priority": "P0"
+    },
+    {
+      "gap": "Cozumel terminal BP is parented to the Cancún umbrella instead of cozumel-mexico; exact city berth remains unresolved.",
+      "owner": "Atlas BP/city owner",
+      "next_action": "Alias or reparent the verified San Miguel ferry terminal to cozumel-mexico and clear quarantine only after route QA.",
+      "priority": "P0"
+    },
+    {
+      "gap": "Official DiDi footprint is not established for Playa del Carmen, Cozumel, Puerto Morelos, Isla Mujeres or Holbox.",
+      "owner": "DiDi partnership owner",
+      "next_action": "Obtain a DiDi coverage export, help-center city list or written confirmation before local-service claims.",
+      "priority": "P0"
+    },
+    {
+      "gap": "Chetumal lacks canonical city ID, Atlas BP ID and San Pedro endpoint coordinate.",
+      "owner": "Atlas city/BP owner",
+      "next_action": "Mint through standard canonical pipeline; source exact foreign terminal coordinate; then create hand-waypointed geometry.",
+      "priority": "P1"
+    },
+    {
+      "gap": "Chetumal APIQROO passenger total is a port aggregate, not a San Pedro route split.",
+      "owner": "Finance research owner",
+      "next_action": "Request operator/APIQROO endpoint-level ridership, service days and vessel capacity; leave corridor annual_one_way_pax null meanwhile.",
+      "priority": "P1"
+    },
+    {
+      "gap": "Published operator schedule pages expose no durable source date/service-day record in extraction.",
+      "owner": "Operations diligence owner",
+      "next_action": "Archive dated timetables or operator confirmation before setting annual rotations.",
+      "priority": "P1"
+    },
+    {
+      "gap": "Canonical brief has generic weather and congestion assertions.",
+      "owner": "Brief editor",
+      "next_action": "Attach dated weather/closure and queue evidence or soften claims; add observed APIQROO monthly seasonality.",
+      "priority": "P2"
+    },
+    {
+      "gap": "Campeche is DiDi-covered but no qualified passenger terminal/route was found.",
+      "owner": "Market research owner",
+      "next_action": "Do not add; revisit only with official scheduled passenger-service evidence.",
+      "priority": "P3"
+    }
+  ],
+  "do_not_publish": [
+    "Any new Chetumal, Campeche, Puerto Morelos, Isla Mujeres or Holbox city object from this artifact; all are unbound or intentionally retained as locales/backlog.",
+    "The quarantined Playa del Carmen–Cozumel route until both canonical berths are resolved.",
+    "The partner-file Holbox journey with 2.4 nm distance or direct Cancún–Holbox range claims.",
+    "The partner-file Banco Chinchorro/reef card whose labels do not match the bound marina endpoints.",
+    "DiDi service claims for Playa del Carmen, Cozumel, Puerto Morelos, Isla Mujeres or Holbox without a new official source.",
+    "Airport or cruise totals as water-route demand; annual_one_way_pax remains null for those records.",
+    "Chetumal's 25,072 port movements as San Pedro corridor demand; endpoint split is unavailable.",
+    "Fleet counts, load factors, fares/yield mix or revenue derived from broad tourism volume without explicit finance assumptions.",
+    "Claims that clean foiling automatically eases permitting or needs no infrastructure.",
+    "Campeche Lerma as a passenger boarding point; official evidence describes fuel/fishing/support uses, not passenger service."
+  ],
+  "summary_counts": {
+    "sources": 17,
+    "cities_reviewed": 8,
+    "existing_canonical_cities": 3,
+    "qualified_new_city_candidates": 1,
+    "qualified_new_city_candidate_names": [
+      "Chetumal"
+    ],
+    "cities_rejected_or_held": 4,
+    "boarding_point_records": 8,
+    "verified_existing_boarding_points": 3,
+    "bp_candidates_needing_binding_or_confirmation": 4,
+    "non_bp_pois_or_rejects": 1,
+    "candidate_corridors": 3,
+    "exact_existing_route_ids": 2,
+    "display_ready_exact_routes": 1,
+    "demand_records": 9,
+    "demand_records_with_non_null_annual_one_way_pax": 2,
+    "open_gaps": 8,
+    "do_not_publish_items": 10
+  }
+}
