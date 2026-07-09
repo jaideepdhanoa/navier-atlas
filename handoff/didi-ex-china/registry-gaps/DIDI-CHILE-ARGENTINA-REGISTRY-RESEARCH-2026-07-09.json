@@ -1,0 +1,1348 @@
+{
+  "market": "Chile and Argentina",
+  "lane": "true-registry-gap city/BP/brief discovery",
+  "as_of": "2026-07-09",
+  "status": "research-complete / registry-and-seal-needed; economics not ready",
+  "scope_note": "High-value source-backed markets only; broad-footprint-first, exact-bind-second. Candidate labels are evidence queues, not final registry assertions.",
+  "existing_atlas_baseline": {
+    "repo": "/tmp/navier-atlas",
+    "clusters_json": "data-clean/CLUSTERS.json",
+    "routes_json": "data-clean/ROUTES.json",
+    "partner_json": "partner-pitch/partners/didi.json",
+    "clusters_found_for_chile": 0,
+    "clusters_found_for_argentina": 0,
+    "canonical_city_ids_found": [],
+    "exact_candidate_route_pair_matches_in_routes_json": 0,
+    "matching_external_boarding_point_files": [],
+    "matching_canonical_city_briefs": [],
+    "matching_canonical_cluster_briefs": [],
+    "current_didi_partner_network_footprint_includes_chile_or_argentina": false,
+    "current_didi_map_scope_includes_chile_or_argentina": false,
+    "audit_artifact_baseline": "/tasklet/agent/home/didi-ex-china-audit/didi-atlas-latam-audit-2026-07-09.json marks each country a true_registry_gap with zero clusters/member cities/routes/BPs/briefs.",
+    "official_city_inventory_source": "/tasklet/agent/home/didi-ex-china-audit/didi-latam-footprint-2026-07-09.json",
+    "no_shrink_note": "This discovery is additive. It does not demote any current DiDi proposal market."
+  },
+  "sources": [
+    {
+      "id": "didi_chile_cities",
+      "url": "https://web.didiglobal.com/cl/conductor/ciudades/",
+      "title": "Ciudades donde DiDi está disponible en Chile",
+      "publisher": "DiDi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official operating-city inventory; names Valparaíso, Viña del Mar, Concepción, Puerto Montt, Punta Arenas and Valdivia among current Chile service labels.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi_argentina_cities",
+      "url": "https://web.didiglobal.com/ar/conductor/ciudades/",
+      "title": "Ciudades donde DiDi está disponible en Argentina",
+      "publisher": "DiDi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official operating-city inventory; names Buenos Aires, Rosario and Bariloche among current Argentina service labels.",
+      "confidence": "high"
+    },
+    {
+      "id": "tabsa_terminals",
+      "url": "https://www.tabsa.cl/oficinas-terminales",
+      "title": "Oficinas y terminales",
+      "publisher": "TABSA",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Embarcadero Tres Puentes in Punta Arenas serves Punta Arenas–Porvenir; also lists Porvenir route office.",
+      "confidence": "high"
+    },
+    {
+      "id": "tabsa_timetable",
+      "url": "https://www.tabsa.cl/ruta/parenas-porvenir/itinerarios",
+      "title": "Itinerarios Punta Arenas / Porvenir",
+      "publisher": "TABSA",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current dynamic official schedule endpoint pair; captured table was dynamic/partly blank, so no fixed frequency or fare is asserted.",
+      "confidence": "medium"
+    },
+    {
+      "id": "niebla_corral",
+      "url": "https://empresasrvc.cl/rutas-y-tarifas-2/",
+      "title": "Rutas y tarifas — Ruta Niebla–Corral",
+      "publisher": "Empresas RVC",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Names Terminal Portuario Niebla, directional schedule, adult CLP 500 one-way / CLP 1,000 return and vehicle tariffs; warns schedules depend on weather/tides.",
+      "confidence": "high"
+    },
+    {
+      "id": "calbuco_puluqui",
+      "url": "https://transportespuelche.cl/calbuco-islapuluqui/",
+      "title": "Ruta Calbuco–Isla Puluqui",
+      "publisher": "Transportes Puelche",
+      "date": "2026-04-01",
+      "accessed": "2026-07-09",
+      "proves": "Official 30-minute route, Mon–Sun timetable for 1 Apr–31 Aug 2026, adult CLP 600 and vehicle fares.",
+      "confidence": "high"
+    },
+    {
+      "id": "canal_dalcahue",
+      "url": "https://transportespuelche.cl/canal-dalcahue/",
+      "title": "Ruta Canal Dalcahue: El Pasaje–Coyumbe",
+      "publisher": "Transportes Puelche",
+      "date": "2026-01-01",
+      "accessed": "2026-07-09",
+      "proves": "Official 10-minute crossing, 24/7 Mon–Sun continuous departures about every 10 minutes, passengers free; tariffs effective 1 Jan 2026.",
+      "confidence": "high"
+    },
+    {
+      "id": "lota_santa_maria",
+      "url": "https://transportespuelche.cl/santa-maria-lota/",
+      "title": "Ruta Isla Santa María–Lota",
+      "publisher": "Transportes Puelche",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official Lota (Pueblo Hundido)–Isla Santa María (Puerto Sur) route, 3-hour duration, operating-day pattern and national-adult CLP 4,470 fare.",
+      "confidence": "high"
+    },
+    {
+      "id": "chacao",
+      "url": "https://www.transmarchilay.cl/horarios-y-tarifas/",
+      "title": "Horarios y tarifas — Canal de Chacao",
+      "publisher": "Transmarchilay",
+      "date": "2026-01-01",
+      "accessed": "2026-07-09",
+      "proves": "Official Chacao–Pargua multi-vessel schedule and 2026 vehicle/bicycle tariffs; does not publish a standalone passenger fare in captured table.",
+      "confidence": "high"
+    },
+    {
+      "id": "valparaiso_muelle_prat",
+      "url": "https://www.puertovalparaiso.cl/puerto-valparaiso-avanza-en-plan-para-potenciar-el-turismo-en-muelle-prat/",
+      "title": "Puerto Valparaíso avanza en plan para potenciar el turismo en Muelle Prat",
+      "publisher": "Empresa Portuaria Valparaíso",
+      "date": "2025-06-10",
+      "accessed": "2026-07-09",
+      "proves": "Muelle Prat is an active regulated tourism-launch site; 50 launches authorized to operate and 30 said to be working. Proves excursion boarding, not a scheduled point-to-point corridor.",
+      "confidence": "high"
+    },
+    {
+      "id": "talcahuano_muelle_blanco",
+      "url": "https://www.directemar.cl/directemar/site/tax/port/fid_adjunto/taxport_34___30.html",
+      "title": "Resoluciones Locales AA.MM — Muelle Blanco, Talcahuano",
+      "publisher": "DIRECTEMAR",
+      "date": "2022-08-12",
+      "accessed": "2026-07-09",
+      "proves": "Lists a resolution enabling operation of Muelle Blanco; does not by itself prove a current scheduled passenger route.",
+      "confidence": "medium"
+    },
+    {
+      "id": "tigre_mobility",
+      "url": "https://www.tigre.gob.ar/urbanismo/movilidad_urbana",
+      "title": "Movilidad urbana — Transporte fluvial",
+      "publisher": "Municipalidad de Tigre",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Estación Fluvial Domingo Faustino Sarmiento at Mitre 305 is the departure point for collective launches; lists Delta Argentino, Jilguero, Interisleña and water taxis.",
+      "confidence": "high"
+    },
+    {
+      "id": "tigre_452",
+      "url": "https://www.tigre.gob.ar/public/assets/frontend/documentos/urbanismo/movilidad/LINEA_452.pdf",
+      "title": "Empresa Interisleña Línea 452 — servicios y horarios",
+      "publisher": "Municipalidad de Tigre / Interisleña",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official timetable names explicit Delta endpoints, service days/times, river-by-river paths and approximate durations; used for Estación Fluvial Tigre–Arroyo Cruz Colorada/Casa Bellini candidate.",
+      "confidence": "high"
+    },
+    {
+      "id": "rosario_terminal",
+      "url": "https://enapro.com.ar/terminal-fluvial/",
+      "title": "Terminal Fluvial de Pasajeros de Rosario",
+      "publisher": "ENAPRO",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official passenger terminal; authorized operators; Isla Sabino Corsi summer service every 60 minutes daily 10:00–16:00 with last return 19:00, while the rest-of-year service is suspended until notice.",
+      "confidence": "high"
+    },
+    {
+      "id": "bariloche_panuelo",
+      "url": "https://barilocheturismo.gob.ar/es/puerto-panuelo",
+      "title": "Puerto Pañuelo",
+      "publisher": "EMPROTUR Bariloche",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tourism source says excursions depart Puerto Pañuelo for Puerto Blest and Isla Victoria/Bosque de Arrayanes.",
+      "confidence": "high"
+    },
+    {
+      "id": "bariloche_blest",
+      "url": "https://barilocheturismo.gob.ar/es/puerto-blest-y-cascada-de-los-cantaros",
+      "title": "Puerto Blest y Cascada de los Cántaros",
+      "publisher": "EMPROTUR Bariloche",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official excursion origin Puerto Pañuelo and approximately one-hour initial lake navigation.",
+      "confidence": "high"
+    },
+    {
+      "id": "buquebus_terminals",
+      "url": "https://www.buquebus.com/info/terminales",
+      "title": "Terminales fluviales en Argentina y Uruguay",
+      "publisher": "Buquebus",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Puerto Madero passenger terminal in Buenos Aires and daily Colonia–Buenos Aires connection; also confirms daily Buenos Aires–Montevideo frequencies.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "country": "Chile",
+      "name": "Valparaíso",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Valparaíso",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P1",
+      "water_relevance": "Pacific port/bay",
+      "recommended_role": "display/brief candidate; BP discovery",
+      "notes": "Muelle Prat is verified for tourist launches, but no scheduled transport corridor was sourced."
+    },
+    {
+      "country": "Chile",
+      "name": "Viña del Mar",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Viña del Mar",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P2",
+      "water_relevance": "Pacific beachfront metro paired with Valparaíso",
+      "recommended_role": "shared Valparaíso–Viña market brief candidate",
+      "notes": "No verified passenger BP or point-to-point route found in this pass; do not promote geometry from coastline alone."
+    },
+    {
+      "country": "Chile",
+      "name": "Concepción",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Concepción",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P1",
+      "water_relevance": "Biobío coastal metro gateway",
+      "recommended_role": "regional brief anchor",
+      "notes": "Official ferry evidence is at Lota, not Concepción/Talcahuano; DiDi service-polygon overlap with Lota must be checked."
+    },
+    {
+      "country": "Chile",
+      "name": "Puerto Montt",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Puerto Montt",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P0",
+      "water_relevance": "Reloncaví/Chiloé ferry gateway",
+      "recommended_role": "marquee registry/brief anchor",
+      "notes": "Strongest south-Chile multi-corridor hub, but Calbuco, Pargua, Chacao and Dalcahue are not proven inside the DiDi city service polygon."
+    },
+    {
+      "country": "Chile",
+      "name": "Valdivia",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Valdivia",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P0",
+      "water_relevance": "river/estuary gateway to Corral Bay",
+      "recommended_role": "marquee registry/brief anchor",
+      "notes": "Niebla is the official ferry origin; exact DiDi pickup coverage at Niebla needs polygon/app confirmation."
+    },
+    {
+      "country": "Chile",
+      "name": "Punta Arenas",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Punta Arenas",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P0",
+      "water_relevance": "Strait of Magellan gateway",
+      "recommended_role": "marquee registry/brief anchor",
+      "notes": "Exact official city and Tres Puentes terminal evidence align; Porvenir-side DiDi coverage is not claimed."
+    },
+    {
+      "country": "Argentina",
+      "name": "Buenos Aires",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Buenos Aires",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P0",
+      "water_relevance": "Río de la Plata / delta metro",
+      "recommended_role": "marquee registry/brief anchor",
+      "notes": "Supports Puerto Madero international ferry and, only after metro-boundary verification, Tigre first/last mile."
+    },
+    {
+      "country": "Argentina",
+      "name": "Rosario",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Rosario",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P1",
+      "water_relevance": "Paraná River waterfront",
+      "recommended_role": "seasonal river brief candidate",
+      "notes": "Isla Sabino Corsi service is summer-only; rest-of-year operation is suspended until further notice."
+    },
+    {
+      "country": "Argentina",
+      "name": "Bariloche",
+      "atlas_city_id": null,
+      "proposed_registry_label_only": "Bariloche",
+      "registry_status": "true_registry_gap_candidate_not_final",
+      "didi_evidence": "city_supported: official DiDi city list",
+      "priority": "P1",
+      "water_relevance": "Nahuel Huapi lake tourism gateway",
+      "recommended_role": "lake brief candidate",
+      "notes": "Puerto Pañuelo excursions are verified; exact schedules, fares, volumes and jetty coordinates remain open."
+    }
+  ],
+  "official_city_triage_not_promoted": [
+    {
+      "country": "Chile",
+      "official_label": "Antofagasta",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official coastal DiDi city, but no high-value scheduled passenger-water route/BP pair was verified in this pass."
+    },
+    {
+      "country": "Chile",
+      "official_label": "Arica",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official coastal DiDi city, but no high-value scheduled passenger-water route/BP pair was verified in this pass."
+    },
+    {
+      "country": "Chile",
+      "official_label": "Iquique",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official coastal DiDi city, but no high-value scheduled passenger-water route/BP pair was verified in this pass."
+    },
+    {
+      "country": "Chile",
+      "official_label": "La Serena–Coquimbo",
+      "didi_evidence": "combined_service_area_label / source_cleanup_needed",
+      "triage": "defer",
+      "reason": "Coastal combined official label; requires service-area cleanup and a sourced passenger-water route before registry promotion."
+    },
+    {
+      "country": "Chile",
+      "official_label": "Magallanes",
+      "didi_evidence": "region_label / source_cleanup_needed",
+      "triage": "represented_by_punta_arenas_candidate_only",
+      "reason": "Do not interpret a regional DiDi label as city coverage; Punta Arenas is separately city-supported and has the strongest terminal evidence."
+    },
+    {
+      "country": "Argentina",
+      "official_label": "Mar del Plata",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official coastal DiDi city; no scheduled point-to-point passenger-water corridor was verified. Tourist boat activity alone was not promoted."
+    },
+    {
+      "country": "Argentina",
+      "official_label": "La Plata",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Río de la Plata-adjacent official city; no sufficiently strong current passenger route/BP pair was verified in this pass."
+    },
+    {
+      "country": "Argentina",
+      "official_label": "Paraná",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official river city; no operator/authority route package met the high-value evidence threshold in this pass."
+    },
+    {
+      "country": "Argentina",
+      "official_label": "Santa Fe",
+      "didi_evidence": "city_supported",
+      "triage": "defer",
+      "reason": "Official river city; no operator/authority route package met the high-value evidence threshold in this pass."
+    },
+    {
+      "country": "Argentina",
+      "official_label": "Concordia / Formosa / Posadas / Resistencia",
+      "didi_evidence": "each city_supported",
+      "triage": "defer_as_secondary_river_queue",
+      "reason": "Broad official river footprint retained for future scan; not promoted without a high-value current passenger-water route, endpoint pair and operator evidence."
+    }
+  ],
+  "boarding_points": [
+    {
+      "country": "Chile",
+      "market_anchor": "Punta Arenas",
+      "name": "Embarcadero Tres Puentes",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "ferry terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "tabsa_terminals"
+      ],
+      "notes": "Official TABSA terminal for Punta Arenas–Porvenir; coordinate not copied from map link pending controlled geocode."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Punta Arenas",
+      "name": "Porvenir route arrival ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_exact_terminal_name_and_coordinate",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "tabsa_timetable"
+      ],
+      "notes": "Official endpoint city is Porvenir; exact arrival-ramp label was not present in captured source."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Valdivia",
+      "name": "Terminal Portuario Niebla",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "ferry terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "niebla_corral"
+      ],
+      "notes": "Operator explicitly names the terminal."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Valdivia",
+      "name": "Corral ferry landing",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_exact_terminal_name_and_coordinate",
+      "kind": "ferry landing",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "niebla_corral"
+      ],
+      "notes": "Route endpoint is verified; exact landing name/address not stated on captured page."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "Calbuco ferry landing",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "ferry landing",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "calbuco_puluqui"
+      ],
+      "notes": "Official route endpoint; regional DiDi service-boundary match is not proven."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "Isla Puluqui ferry landing",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "island ferry landing",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "calbuco_puluqui"
+      ],
+      "notes": "Official route endpoint; exact named ramp not stated."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "Pargua ferry ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "chacao"
+      ],
+      "notes": "Official schedule endpoint; outside exact Puerto Montt city bind unless service polygon proves otherwise."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "Chacao ferry ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "chacao"
+      ],
+      "notes": "Official schedule endpoint on Chiloé; no city-level DiDi proof for Chacao."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "El Pasaje ferry ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "canal_dalcahue"
+      ],
+      "notes": "Official Canal Dalcahue endpoint."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Puerto Montt",
+      "name": "Coyumbe ferry ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "canal_dalcahue"
+      ],
+      "notes": "Official Canal Dalcahue endpoint."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Concepción",
+      "name": "Lota (Pueblo Hundido) ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_and_didi_service_boundary_confirmation",
+      "kind": "ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "lota_santa_maria"
+      ],
+      "notes": "Verified route endpoint, but Lota is not separately named on the DiDi official city inventory used here."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Concepción",
+      "name": "Isla Santa María (Puerto Sur) ramp",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "island ferry ramp",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "lota_santa_maria"
+      ],
+      "notes": "Verified route endpoint; no DiDi endpoint claim."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Valparaíso",
+      "name": "Muelle Prat",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point_non_transport_corridor",
+      "kind": "tourism-launch pier",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "valparaiso_muelle_prat"
+      ],
+      "notes": "Active regulated tourism launches; no explicit point-to-point route suitable for canonical corridor was found."
+    },
+    {
+      "country": "Chile",
+      "market_anchor": "Concepción",
+      "name": "Muelle Blanco, Talcahuano",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_current_passenger_service_confirmation",
+      "kind": "pier",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "talcahuano_muelle_blanco"
+      ],
+      "notes": "Pier operation is enabled, but current passenger timetable/operator/destination is unverified; do not publish as BP yet."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Buenos Aires",
+      "name": "Terminal Fluvial de Puerto Madero (Buquebus)",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "international ferry terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "buquebus_terminals"
+      ],
+      "notes": "Address/coordinate not captured; terminal identity and service role verified."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Buenos Aires",
+      "name": "Estación Fluvial Domingo Faustino Sarmiento, Tigre",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "public river-transport terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "tigre_mobility"
+      ],
+      "notes": "Mitre 305, Tigre Centro; exact DiDi Buenos Aires service-polygon inclusion still needs confirmation."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Buenos Aires",
+      "name": "Arroyo Cruz Colorada / Casa Bellini Line 452 endpoint",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_confirmation",
+      "kind": "delta landing/route endpoint",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "tigre_452"
+      ],
+      "notes": "Explicit timetable endpoint; verify exact dock and navigable endpoint coordinates."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Rosario",
+      "name": "Terminal Fluvial de Pasajeros de Rosario",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "river passenger terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "rosario_terminal"
+      ],
+      "notes": "Official ENAPRO terminal; source gives Los Inmigrantes 410 in a related visit section, but coordinate not captured."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Rosario",
+      "name": "Isla Sabino Corsi landing",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_and_seasonal_reactivation_confirmation",
+      "kind": "island landing",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "rosario_terminal"
+      ],
+      "notes": "Summer crossing is evidenced; non-summer service suspended until notice."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Bariloche",
+      "name": "Puerto Pañuelo",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point",
+      "kind": "lake excursion port",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "bariloche_panuelo"
+      ],
+      "notes": "Official departure point for Puerto Blest and Isla Victoria/Arrayanes excursions."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Bariloche",
+      "name": "Puerto Blest landing",
+      "atlas_bp_id": null,
+      "status": "candidate_needing_coordinate_and_operator_confirmation",
+      "kind": "lake excursion landing",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "bariloche_blest"
+      ],
+      "notes": "Destination is verified by official tourism; exact landing geometry/operator timetable/fare remain open."
+    },
+    {
+      "country": "Argentina",
+      "market_anchor": "Buenos Aires",
+      "name": "Terminal Fluvial Puerto de Colonia",
+      "atlas_bp_id": null,
+      "status": "verified_existing_boarding_point_outside_country_scope",
+      "kind": "international ferry terminal",
+      "coordinates": null,
+      "evidence_source_ids": [
+        "buquebus_terminals"
+      ],
+      "notes": "Uruguay endpoint; included only to describe existing route. Requires cross-border/legal review and is not an Argentina registry city claim."
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "candidate_key": "cl-punta-arenas-porvenir",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Punta Arenas",
+      "from_endpoint": "Embarcadero Tres Puentes, Punta Arenas",
+      "to_endpoint": "Porvenir route arrival ramp (exact ramp name pending)",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "tabsa_terminals",
+        "tabsa_timetable"
+      ],
+      "service_snapshot": "Official route and dynamic timetable; fixed weekly frequency/fare not captured.",
+      "approx_water_relevance": "Open Strait of Magellan ferry crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "range class unassigned until sealed water distance and sea-state review",
+      "hand_waypoint_requirements": "Manual harbor-exit and arrival-approach points required; confirm a water-only track across the Strait and avoid port structures.",
+      "why_it_matters": "Best exact DiDi-city-to-terminal match in this pass.",
+      "priority": "P0"
+    },
+    {
+      "candidate_key": "cl-niebla-corral",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Valdivia",
+      "from_endpoint": "Terminal Portuario Niebla",
+      "to_endpoint": "Corral ferry landing (exact terminal label pending)",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "niebla_corral"
+      ],
+      "service_snapshot": "Directional departures shown from 07:00 through 00:00; operator warns weather/tide variability.",
+      "approx_water_relevance": "Valdivia River/Corral Bay crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "likely short protected/estuarine class; exact class waits on sealed distance",
+      "hand_waypoint_requirements": "Required: follow navigable estuary/channel centerline; straight-line geometry may cut shoreline or peninsulas. Confirm both ramps manually.",
+      "why_it_matters": "High-frequency low-fare public crossing near a named DiDi city.",
+      "priority": "P0"
+    },
+    {
+      "candidate_key": "cl-calbuco-puluqui",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Puerto Montt regional",
+      "from_endpoint": "Calbuco ferry landing",
+      "to_endpoint": "Isla Puluqui ferry landing",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "calbuco_puluqui"
+      ],
+      "service_snapshot": "30 minutes; Mon–Sun; eight listed departures each direction for 1 Apr–31 Aug 2026.",
+      "approx_water_relevance": "Sheltered Reloncaví/Calbuco archipelago crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "likely short protected-water class; exact class waits on sealed distance",
+      "hand_waypoint_requirements": "Required: hand-route through navigable channel and around shoreline; confirm island ramp so chord never crosses land.",
+      "why_it_matters": "Frequent island-essential service in the broader Puerto Montt gateway.",
+      "priority": "P0"
+    },
+    {
+      "candidate_key": "cl-pargua-chacao",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Puerto Montt / Chiloé regional",
+      "from_endpoint": "Pargua ferry ramp",
+      "to_endpoint": "Chacao ferry ramp",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "chacao"
+      ],
+      "service_snapshot": "Official around-the-clock multi-vessel schedule; times subject to operational/weather/traffic conditions.",
+      "approx_water_relevance": "Canal de Chacao trunk crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "likely short channel class; exact class waits on sealed distance",
+      "hand_waypoint_requirements": "Manual ramp coordinates and channel-center waypoint required; inspect traffic lanes/tides and keep line off shore/breakwaters.",
+      "why_it_matters": "Highest-frequency Chiloé gateway, but exact DiDi binding is regional not city-exact.",
+      "priority": "P0"
+    },
+    {
+      "candidate_key": "cl-el-pasaje-coyumbe",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Puerto Montt / Chiloé regional",
+      "from_endpoint": "El Pasaje ferry ramp",
+      "to_endpoint": "Coyumbe ferry ramp",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "canal_dalcahue"
+      ],
+      "service_snapshot": "10 minutes; Mon–Sun; continuous about every 10 minutes; 24 hours.",
+      "approx_water_relevance": "Short Canal Dalcahue crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "short protected-channel class",
+      "hand_waypoint_requirements": "Manual confirmation of both ramps and one channel-center waypoint; direct chord must be tested for shoreline clipping.",
+      "why_it_matters": "Dense always-on island crossing; strong operational proof but no exact DiDi endpoint proof.",
+      "priority": "P1"
+    },
+    {
+      "candidate_key": "cl-lota-santa-maria",
+      "route_id": null,
+      "country_anchor": "Chile",
+      "market_anchor": "Concepción regional",
+      "from_endpoint": "Lota (Pueblo Hundido) ramp",
+      "to_endpoint": "Isla Santa María (Puerto Sur) ramp",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "lota_santa_maria"
+      ],
+      "service_snapshot": "3 hours; outbound Sun and Tue–Fri, inbound Mon and Tue–Fri; no Saturday service listed.",
+      "approx_water_relevance": "Exposed coastal/offshore island crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "long/endurance class; Navier platform unassigned until sealed distance/sea-state review",
+      "hand_waypoint_requirements": "Hand-set harbor exit and Puerto Sur approach; open-water midline likely clear, but validate shoals and do not use a land-snapping road path.",
+      "why_it_matters": "Real island lifeline for Biobío; DiDi bind is only to the broader Concepción market pending service polygon check.",
+      "priority": "P1"
+    },
+    {
+      "candidate_key": "ar-tigre-casa-bellini",
+      "route_id": null,
+      "country_anchor": "Argentina",
+      "market_anchor": "Buenos Aires / Tigre",
+      "from_endpoint": "Estación Fluvial Domingo Faustino Sarmiento, Tigre",
+      "to_endpoint": "Arroyo Cruz Colorada–Casa Bellini",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence",
+      "evidence_source_ids": [
+        "tigre_mobility",
+        "tigre_452"
+      ],
+      "service_snapshot": "Line 452 Ramal 4; about 1.5 hours; published daily departures and returns.",
+      "approx_water_relevance": "Protected but highly braided Paraná Delta waterways.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "protected-water class; distance/range unassigned because river path is not a geodesic",
+      "hand_waypoint_requirements": "Mandatory multi-point hand path following Río Tigre → Río Luján → Río Sarmiento → Arroyo Espera → Casa Ganarchelli deviation; a straight line would cross islands/land.",
+      "why_it_matters": "Best source-backed on-demand/public-transit water mesh near Buenos Aires; verify DiDi metro polygon.",
+      "priority": "P0"
+    },
+    {
+      "candidate_key": "ar-rosario-sabino-corsi",
+      "route_id": null,
+      "country_anchor": "Argentina",
+      "market_anchor": "Rosario",
+      "from_endpoint": "Terminal Fluvial de Pasajeros de Rosario",
+      "to_endpoint": "Isla Sabino Corsi landing",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "seasonal_current_route_evidence_with_offseason_suspension",
+      "evidence_source_ids": [
+        "rosario_terminal"
+      ],
+      "service_snapshot": "Summer from 5 Dec 2025: daily every 60 minutes, 10:00–16:00, last return 19:00; rest of year suspended until notice.",
+      "approx_water_relevance": "Short Paraná River island crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "short river class",
+      "hand_waypoint_requirements": "Mandatory channel and island-landing waypoints; validate sandbars/current and prevent straight-line island crossing.",
+      "why_it_matters": "Exact DiDi city plus official passenger terminal; seasonal status limits economics.",
+      "priority": "P1"
+    },
+    {
+      "candidate_key": "ar-panuelo-blest",
+      "route_id": null,
+      "country_anchor": "Argentina",
+      "market_anchor": "Bariloche",
+      "from_endpoint": "Puerto Pañuelo",
+      "to_endpoint": "Puerto Blest landing",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_excursion_evidence",
+      "evidence_source_ids": [
+        "bariloche_panuelo",
+        "bariloche_blest"
+      ],
+      "service_snapshot": "Official tourism route; approximately one hour of initial navigation; fare and operating days not captured.",
+      "approx_water_relevance": "Lake Nahuel Huapi arm navigation.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "lake class; exact range unassigned until route distance is sealed",
+      "hand_waypoint_requirements": "Required hand waypoints through the Brazo Blest water corridor and around peninsulas/islands; no straight chord across land.",
+      "why_it_matters": "Exact DiDi city and mature lake-excursion demand context, but no route volumes/fares yet.",
+      "priority": "P1"
+    },
+    {
+      "candidate_key": "ar-buenos-aires-colonia",
+      "route_id": null,
+      "country_anchor": "Argentina",
+      "market_anchor": "Buenos Aires",
+      "from_endpoint": "Terminal Fluvial de Puerto Madero, Buenos Aires",
+      "to_endpoint": "Terminal Fluvial Puerto de Colonia, Uruguay",
+      "endpoint_city_ids": [
+        null,
+        null
+      ],
+      "evidence_state": "current_route_evidence_cross_border",
+      "evidence_source_ids": [
+        "buquebus_terminals"
+      ],
+      "service_snapshot": "Daily Buenos Aires–Colonia connection; exact fare/frequency snapshot not captured.",
+      "approx_water_relevance": "Wide Río de la Plata international crossing.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "long/high-speed ferry class; Navier platform unassigned until sealed distance and certification review",
+      "hand_waypoint_requirements": "Manual port-exit/arrival approaches and navigation-channel waypoints; no land crossing expected, but shipping channels and jurisdiction boundary must be reviewed.",
+      "why_it_matters": "Marquee existing passenger ferry, but cross-border immigration/customs and range make it a separate legal/technical lane.",
+      "priority": "P2"
+    }
+  ],
+  "demand_records": [
+    {
+      "candidate_key": "cl-punta-arenas-porvenir",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": null,
+      "fare_currency": null,
+      "fare_basis": null,
+      "service_days_and_seasonality": "Official route and dynamic timetable; fixed weekly frequency/fare not captured.",
+      "source_ids": [
+        "tabsa_terminals",
+        "tabsa_timetable"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "cl-niebla-corral",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": 500,
+      "fare_currency": "CLP",
+      "fare_basis": "adult one-way; CLP 1,000 return",
+      "service_days_and_seasonality": "Directional departures shown from 07:00 through 00:00; operator warns weather/tide variability.",
+      "source_ids": [
+        "niebla_corral"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "cl-calbuco-puluqui",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": 600,
+      "fare_currency": "CLP",
+      "fare_basis": "adult; vehicle fares separate",
+      "service_days_and_seasonality": "30 minutes; Mon–Sun; eight listed departures each direction for 1 Apr–31 Aug 2026.",
+      "source_ids": [
+        "calbuco_puluqui"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "cl-pargua-chacao",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": 19800,
+      "fare_currency": "CLP",
+      "fare_basis": "general citycar/vehicle fare, not a passenger fare",
+      "service_days_and_seasonality": "Official around-the-clock multi-vessel schedule; times subject to operational/weather/traffic conditions.",
+      "source_ids": [
+        "chacao"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "cl-el-pasaje-coyumbe",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": 0,
+      "fare_currency": "CLP",
+      "fare_basis": "passengers free; auto CLP 3,500",
+      "service_days_and_seasonality": "10 minutes; Mon–Sun; continuous about every 10 minutes; 24 hours.",
+      "source_ids": [
+        "canal_dalcahue"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "cl-lota-santa-maria",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": 4470,
+      "fare_currency": "CLP",
+      "fare_basis": "national adult; resident/foreign/discount categories differ",
+      "service_days_and_seasonality": "3 hours; outbound Sun and Tue–Fri, inbound Mon and Tue–Fri; no Saturday service listed.",
+      "source_ids": [
+        "lota_santa_maria"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "ar-tigre-casa-bellini",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": null,
+      "fare_currency": null,
+      "fare_basis": null,
+      "service_days_and_seasonality": "Line 452 Ramal 4; about 1.5 hours; published daily departures and returns.",
+      "source_ids": [
+        "tigre_mobility",
+        "tigre_452"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "ar-rosario-sabino-corsi",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": null,
+      "fare_currency": null,
+      "fare_basis": null,
+      "service_days_and_seasonality": "Summer from 5 Dec 2025: daily every 60 minutes, 10:00–16:00, last return 19:00; rest of year suspended until notice.",
+      "source_ids": [
+        "rosario_terminal"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "ar-panuelo-blest",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": null,
+      "fare_currency": null,
+      "fare_basis": null,
+      "service_days_and_seasonality": "Official tourism route; approximately one hour of initial navigation; fare and operating days not captured.",
+      "source_ids": [
+        "bariloche_panuelo",
+        "bariloche_blest"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    },
+    {
+      "candidate_key": "ar-buenos-aires-colonia",
+      "annual_one_way_pax": null,
+      "annual_pax_source": null,
+      "fare_value": null,
+      "fare_currency": null,
+      "fare_basis": null,
+      "service_days_and_seasonality": "Daily Buenos Aires–Colonia connection; exact fare/frequency snapshot not captured.",
+      "source_ids": [
+        "buquebus_terminals"
+      ],
+      "economics_status": "not_model_ready",
+      "assumption_record": "No broad tourism/metro count is converted to route demand. Annual one-way passengers remain null pending operator/regulator route counts."
+    }
+  ],
+  "brief_maturity": {
+    "canonical_brief_search": {
+      "cluster_briefs_checked": true,
+      "city_briefs_checked": true,
+      "matching_chile_or_argentina_canonical_briefs_found": 0,
+      "matching_city_ids_found": [],
+      "assessment": "No canonical cluster/city brief exists because both countries have no Atlas cluster/city registry baseline."
+    },
+    "field_score_scale": "0 absent; 1 placeholder; 2 partial/sourced; 3 publication-grade",
+    "markets": [
+      {
+        "market": "Punta Arenas",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Valdivia–Niebla–Corral",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Puerto Montt/Chiloé gateway",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Concepción/Biobío",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Valparaíso–Viña del Mar",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Buenos Aires/Tigre Delta",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Rosario",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      },
+      {
+        "market": "Bariloche",
+        "canonical_status": "absent",
+        "scores": {
+          "tagline": 0,
+          "summary": 0,
+          "why_marine_mobility": 0,
+          "demand_signals": 0,
+          "use_cases": 0,
+          "journeys_or_signature_routes": 0,
+          "navier_fit": 0,
+          "transit_planning": 0,
+          "competitive_landscape": 0,
+          "regulatory_note": 0,
+          "seasonality": 0,
+          "precedents": 0,
+          "sources": 0
+        },
+        "recommendation": "Create a new partner-neutral canonical brief only after registry labels and at least one BP/corridor are approved; reuse the standard fields and source each demand/regulatory statement. Keep DiDi framing outside the canonical brief."
+      }
+    ],
+    "priority_enhancements": [
+      "Add exact operator route counts or public passenger statistics; do not substitute tourism totals.",
+      "Seal endpoint coordinates and water-only geometry before writing distance/platform claims.",
+      "Add maritime regulator/port-authority notes per route.",
+      "Add weather/tide/ice/wind seasonality from official hydrographic or operator sources.",
+      "Treat Valparaíso Muelle Prat as excursion-only until a point-to-point transport endpoint is sourced."
+    ]
+  },
+  "partner_narrative_notes": {
+    "proposed_partner_narrative_block": {
+      "headline": "DiDi can connect the ride to the ramp in Chile and Argentina—starting where official city coverage and real passenger-water infrastructure overlap.",
+      "body": "The strongest source-backed openings are Punta Arenas/Tres Puentes, Valdivia’s Niebla–Corral gateway, Puerto Montt’s broader Chiloé access system, Buenos Aires/Tigre’s public delta network, Rosario’s seasonal island crossing and Bariloche’s lake-excursion ports. DiDi city evidence is exact only for the named official cities; nearby ferry towns and island endpoints remain regional candidates until service polygons are verified.",
+      "proof_points": [
+        "Chile official list names six prioritized coastal/river anchors.",
+        "Argentina official list names Buenos Aires, Rosario and Bariloche.",
+        "Operators and authorities verify real terminals and routes; no Atlas IDs currently exist for either country.",
+        "The Tigre network already behaves like a multi-branch water-transit mesh, but requires hand-routed geometry through rivers and channels."
+      ],
+      "guardrails": [
+        "Do not imply DiDi operates in Porvenir, Corral, Calbuco, Chacao, Dalcahue, Lota, Tigre or island endpoints without app/service-polygon proof.",
+        "Do not call Muelle Prat a scheduled transit corridor.",
+        "Do not present seasonal Rosario service as year-round.",
+        "Do not present Buenos Aires–Colonia as an ordinary domestic route; it is international."
+      ]
+    },
+    "canonical_brief_rule": "All eventual Atlas briefs remain partner-neutral. DiDi-specific dispatch, first/last-mile and in-app framing belongs only in partner proposal copy."
+  },
+  "gaps": [
+    {
+      "id": "G1",
+      "owner": "Atlas registry / Grok seal",
+      "next_action": "Approve country/cluster/city hierarchy candidates for Chile and Argentina; assign final IDs only after review.",
+      "blocks": [
+        "all map display",
+        "route IDs",
+        "brief IDs"
+      ]
+    },
+    {
+      "id": "G2",
+      "owner": "Geometry research / Grok seal",
+      "next_action": "Obtain authoritative coordinates for every candidate ramp/landing and hand-route all braided river, channel and lake paths; run land-crossing QA.",
+      "blocks": [
+        "route sealing",
+        "distance_nm",
+        "vessel range assignment"
+      ]
+    },
+    {
+      "id": "G3",
+      "owner": "DiDi coverage research",
+      "next_action": "Verify app/service polygons for Niebla, Calbuco/Pargua/Chacao/Dalcahue, Lota/Talcahuano and Tigre; city-list evidence alone is insufficient for nearby municipalities.",
+      "blocks": [
+        "exact partner-city binding"
+      ]
+    },
+    {
+      "id": "G4",
+      "owner": "Tasklet demand/economics",
+      "next_action": "Request annual one-way passenger counts and route-level fare tables from TABSA, RVC/Puelche/Transmarchilay, Tigre/Interisleña, ENAPRO, Bariloche operators and Buquebus.",
+      "blocks": [
+        "finance model",
+        "TAM",
+        "fleet sizing"
+      ]
+    },
+    {
+      "id": "G5",
+      "owner": "Tasklet brief research",
+      "next_action": "After registry approval, build partner-neutral briefs field-by-field with official demand, seasonality, regulator and competitive-service sources.",
+      "blocks": [
+        "full sub-proposal parity"
+      ]
+    },
+    {
+      "id": "G6",
+      "owner": "Legal/regulatory",
+      "next_action": "Separate Buenos Aires–Colonia for immigration/customs/cabotage/certification review before any Navier-operable claim.",
+      "blocks": [
+        "cross-border promotion"
+      ]
+    },
+    {
+      "id": "G7",
+      "owner": "Port/service verification",
+      "next_action": "Confirm current scheduled passenger use at Muelle Blanco Talcahuano and identify any explicit endpoints; otherwise keep it out of BP registry.",
+      "blocks": [
+        "Talcahuano BP promotion"
+      ]
+    },
+    {
+      "id": "G8",
+      "owner": "Rosario operator/ENAPRO",
+      "next_action": "Confirm next summer’s Isla Sabino Corsi start date, fare, operator and landing coordinate; current page says non-summer service is suspended.",
+      "blocks": [
+        "year-round economics"
+      ]
+    }
+  ],
+  "do_not_publish": [
+    "No proposed slug, city label, BP label or corridor key in this artifact is a final registry ID.",
+    "Do not mint route_id values. No candidate endpoint pair matched an existing canonical ROUTES.json route; every route_id is null.",
+    "Do not infer DiDi coverage at ferry endpoints from the nearest named DiDi city.",
+    "Do not convert a city tourism count, airport flow or metro population into annual_one_way_pax.",
+    "Do not publish Muelle Blanco as a passenger BP until current operator/timetable/destination evidence is found.",
+    "Do not publish Muelle Prat bay excursions as a point-to-point transport corridor.",
+    "Do not publish Rosario–Isla Sabino Corsi as year-round service.",
+    "Do not assign vessel/platform class from elapsed ferry duration alone.",
+    "Do not render straight geodesics through Tigre Delta islands, Corral Bay shoreline, Chiloé channels, or Nahuel Huapi peninsulas.",
+    "Do not treat Puerto Madero–Colonia as domestic or deployment-ready without cross-border review."
+  ],
+  "summary_counts": {
+    "sources": 17,
+    "city_market_candidates": 9,
+    "didi_city_supported_candidates": 9,
+    "boarding_points_total": 22,
+    "verified_existing_bps_including_non_corridor_or_foreign": 8,
+    "bp_candidates_needing_confirmation": 14,
+    "candidate_corridors": 10,
+    "existing_route_id_matches": 0,
+    "current_or_officially_evidenced_route_candidates": 9,
+    "seasonal_or_excursion_candidates": 2,
+    "demand_records": 10,
+    "demand_records_with_annual_one_way_pax": 0,
+    "fare_records_with_any_route_specific_fare": 5,
+    "canonical_briefs_found": 0,
+    "gaps": 8,
+    "do_not_publish_rules": 10,
+    "official_city_labels_or_rollups_deferred_not_promoted": 10
+  }
+}

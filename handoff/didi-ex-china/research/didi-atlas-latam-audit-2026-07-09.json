@@ -1,0 +1,2148 @@
+{
+  "audit": "DiDi Atlas LATAM coverage audit",
+  "audit_date": "2026-07-09",
+  "generated_at": "2026-07-09T19:35:16.483257+00:00",
+  "repo_root": "/tmp/navier-atlas",
+  "commit": "ae1b96917eaed901a84302b856ce53f6efd767ae",
+  "commit_date": "2026-07-09 00:01:55 -0700",
+  "source_modified": false,
+  "countries": [
+    "Mexico",
+    "Brazil",
+    "Colombia",
+    "Chile",
+    "Costa Rica",
+    "Panama",
+    "Argentina",
+    "Ecuador",
+    "Peru",
+    "Dominican Republic"
+  ],
+  "methodology": {
+    "evidence_rule": "Existing official DiDi country-list rows establish country_supported evidence. Existing Atlas coastal/island clusters may be inherited; no new city/geography is invented from country evidence.",
+    "route_count_rule": "routes_cluster_stamped counts ROUTES.properties.cluster_id. routes_touching_city/members counts stable endpoint city IDs. Both are reported because current cluster stamping is corrupted in Mexico/Galápagos and partially elsewhere.",
+    "poi_bp_rule": "pois are FEATURES_BY_TYPE.poi rows by parent_city_id. route_endpoint_bps are unique from_node/to_node IDs on routes whose corresponding endpoint city matches the city/cluster. atlas-external has no LATAM files.",
+    "marquee_rule": "Counts come only from handoff/global-marquee-pass2/CANONICAL-MARQUEES.json.",
+    "finance_rule": "Durable counts come from finance/model/corridors.json. Recal counts are credited to a geography only when route_id resolves in current ROUTES.json; stale IDs remain unresolved rather than label-matched.",
+    "classification_rule": {
+      "already_full": "In current DiDi map scope and an anchor of a full market.",
+      "thin_to_full": "In current DiDi map scope but not an anchor of a full market.",
+      "new_display_coverage": "Existing Atlas member city in an officially supported DiDi country, absent from current DiDi scope.",
+      "true_registry_gap": "Officially supported DiDi country has no canonical Atlas cluster; retained at country level with no invented city ID.",
+      "not_in_atlas": "No Atlas cluster and insufficient source evidence to call a true gap.",
+      "exclude_inland": "Exact source city is inland/non-marine; none were available in this country-only source inventory."
+    }
+  },
+  "sources_read": [
+    "partner-pitch/partners/didi.json",
+    "data-clean/partners/didi.json",
+    "data-clean/CLUSTERS.json",
+    "data-clean/ROUTES.json",
+    "data-clean/FEATURES_BY_TYPE.json",
+    "data-clean/city_briefs/*.json",
+    "atlas-external/boarding-points/ (Singapore and Riau only; no LATAM file)",
+    "finance/model/corridors.json",
+    "finance/model/country-reference.json",
+    "finance/recal/agg-didi.json",
+    "finance/recal/growth-didi.json",
+    "finance/recal/corridors-didi.json",
+    "handoff/global-marquee-pass2/CANONICAL-MARQUEES.json",
+    "handoff/partner-map-model/partner-market-coverage-research.json",
+    "handoff/partner-map-model/partner-market-canonical-bindings.json",
+    "handoff/partner-map-model/partner-global-registry-map.json",
+    "handoff/partner-map-model/spine-parity-didi.json",
+    "handoff/partner-map-model/PROPOSAL-FIDELITY-didi.json",
+    "handoff/partner-map-model/partner-page-qa-didi.json"
+  ],
+  "summary": {
+    "countries_requested": 10,
+    "countries_with_atlas_cluster": 8,
+    "countries_without_atlas_cluster": 2,
+    "countries_with_current_full_didi_market": 6,
+    "current_full_market_count": 7,
+    "atlas_member_cities": 20,
+    "city_classification_counts": {
+      "already_full": 10,
+      "thin_to_full": 3,
+      "new_display_coverage": 7
+    },
+    "cluster_classification_counts": {
+      "thin_to_full": 2,
+      "already_full": 4,
+      "new_display_coverage": 2
+    },
+    "country_gap_classification_counts": {
+      "true_registry_gap": 2
+    },
+    "briefs_present": 19,
+    "briefs_total": 20,
+    "pois": 523,
+    "routes_cluster_stamped": 353,
+    "canonical_marquee_wow": 8,
+    "canonical_marquee_featured": 9,
+    "finance_model_corridors": 0,
+    "finance_recal_declared_corridors": 38,
+    "finance_recal_current_route_ids": 8,
+    "finance_recal_stale_route_ids": 30,
+    "proposal_market_journeys": 28,
+    "proposal_market_journey_route_ids": 0,
+    "proposal_phase_count": 21,
+    "proposal_phase_featured_routes": 0,
+    "gate_statuses": {
+      "A": "FAIL",
+      "B": "FAIL",
+      "C": "FAIL",
+      "C.1": "FAIL",
+      "D": "FAIL",
+      "E": "PASS",
+      "F": "PASS",
+      "G": "PASS"
+    },
+    "defect_counts": {
+      "P0": 3,
+      "P1": 6,
+      "P2": 3
+    }
+  },
+  "country_audit": [
+    {
+      "country": "Mexico",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "mexico",
+        "cluster_label": "Mexico",
+        "type": "country",
+        "members_present": 5,
+        "members_missing": []
+      },
+      "classification": "thin_to_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "cancun-riviera-maya-mexico",
+        "cozumel-mexico",
+        "los-cabos-mexico",
+        "playa-del-carmen-mexico",
+        "puerto-vallarta-mexico"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 5,
+        "routes_cluster_stamped": 76,
+        "routes_touching_members": 57,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 21,
+        "member_routes_stamped_outside_cluster": 2,
+        "pois": 141,
+        "route_endpoint_bps": 49,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 6,
+        "full_subproposals": 2,
+        "briefs_present": 5
+      },
+      "route_integrity": {
+        "verdict": "FAIL",
+        "foreign_stamped_route_id_samples": [
+          "edge-1109",
+          "ics-120ffd491e",
+          "ics-1c15311b1a",
+          "ics-219bb0a086",
+          "ics-2b657cfa2b",
+          "ics-3edeb53d95",
+          "ics-541d98d225",
+          "ics-67dc749096"
+        ],
+        "member_route_outside_cluster_id_samples": [
+          "ics-3b1885b0e5",
+          "ics-c1f5deb1fa"
+        ]
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "cancun-riviera-maya-mexico",
+          "cozumel-mexico",
+          "los-cabos-mexico",
+          "playa-del-carmen-mexico",
+          "puerto-vallarta-mexico"
+        ],
+        "covered_network_footprint_ids": [
+          "cancun-riviera-maya-mexico",
+          "cozumel-mexico",
+          "los-cabos-mexico",
+          "mexico-caribbean",
+          "mexico-pacific",
+          "playa-del-carmen-mexico",
+          "puerto-vallarta-mexico"
+        ],
+        "full_market_ids": [
+          "mexico-pacific",
+          "mexico-caribbean"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "cancun-riviera-maya-mexico",
+          "los-cabos-mexico",
+          "puerto-vallarta-mexico"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "mexico-pacific",
+            "field_count": 22,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          },
+          {
+            "market_id": "mexico-caribbean",
+            "field_count": 22,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 5,
+        "total": 5,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "cancun-riviera-maya-mexico",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 24,
+            "routes_with_cluster_city_id": 24,
+            "pois": 75,
+            "route_endpoint_bps": 25,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 3
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "mexico-caribbean",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "mexico-caribbean",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/cancun-riviera-maya-mexico.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "cozumel-mexico",
+          "classification": "thin_to_full",
+          "atlas_city_feature_present": false,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 0,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/cozumel-mexico.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 1,
+            "signature_route_count": 1,
+            "source_count": 2,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "los-cabos-mexico",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 16,
+            "routes_with_cluster_city_id": 16,
+            "pois": 34,
+            "route_endpoint_bps": 12,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 3
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "mexico-pacific",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "mexico-pacific",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/los-cabos-mexico.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "playa-del-carmen-mexico",
+          "classification": "thin_to_full",
+          "atlas_city_feature_present": false,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 0,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/playa-del-carmen-mexico.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 1,
+            "signature_route_count": 2,
+            "source_count": 2,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "puerto-vallarta-mexico",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 16,
+            "routes_with_cluster_city_id": 16,
+            "pois": 32,
+            "route_endpoint_bps": 12,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "mexico-pacific",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "mexico-pacific",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/puerto-vallarta-mexico.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Brazil",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "brazil",
+        "cluster_label": "Brazil",
+        "type": "country",
+        "members_present": 3,
+        "members_missing": []
+      },
+      "classification": "already_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "angra-dos-reis-ilha-grande-brazil",
+        "florianopolis-brazil",
+        "rio-de-janeiro-brazil"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 3,
+        "routes_cluster_stamped": 59,
+        "routes_touching_members": 59,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 0,
+        "pois": 194,
+        "route_endpoint_bps": 49,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 1,
+        "full_subproposals": 1,
+        "briefs_present": 3
+      },
+      "route_integrity": {
+        "verdict": "PASS",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": []
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "angra-dos-reis-ilha-grande-brazil",
+          "florianopolis-brazil",
+          "rio-de-janeiro-brazil"
+        ],
+        "covered_network_footprint_ids": [
+          "angra-dos-reis-ilha-grande-brazil",
+          "brazil",
+          "florianopolis-brazil",
+          "rio-de-janeiro-brazil"
+        ],
+        "full_market_ids": [
+          "brazil"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "angra-dos-reis-ilha-grande-brazil",
+          "florianopolis-brazil",
+          "rio-de-janeiro-brazil"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "brazil",
+            "field_count": 23,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 3,
+        "total": 3,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "angra-dos-reis-ilha-grande-brazil",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 17,
+            "pois": 74,
+            "route_endpoint_bps": 1,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 1
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "brazil",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "brazil",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/angra-dos-reis-ilha-grande-brazil.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 4,
+            "signature_route_count": 4,
+            "source_count": 2,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "florianopolis-brazil",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 20,
+            "routes_with_cluster_city_id": 20,
+            "pois": 61,
+            "route_endpoint_bps": 16,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "brazil",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "brazil",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/florianopolis-brazil.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 3,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "rio-de-janeiro-brazil",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 39,
+            "routes_with_cluster_city_id": 18,
+            "pois": 59,
+            "route_endpoint_bps": 32,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 1
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "brazil",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "brazil",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/rio-de-janeiro-brazil.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Colombia",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "colombia",
+        "cluster_label": "Colombia",
+        "type": "coastal",
+        "members_present": 2,
+        "members_missing": []
+      },
+      "classification": "thin_to_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "cartagena-colombia",
+        "barranquilla-colombia"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 2,
+        "routes_cluster_stamped": 15,
+        "routes_touching_members": 16,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 1,
+        "pois": 49,
+        "route_endpoint_bps": 15,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 1,
+        "briefs_present": 2
+      },
+      "route_integrity": {
+        "verdict": "FAIL",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": [
+          "rn-cee507485c05"
+        ]
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "cartagena-colombia",
+          "barranquilla-colombia"
+        ],
+        "covered_network_footprint_ids": [
+          "cartagena-colombia",
+          "colombia"
+        ],
+        "full_market_ids": [
+          "colombia"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "cartagena-colombia"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "colombia",
+            "field_count": 22,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 2,
+        "total": 2,
+        "didi_specific": 1,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "cartagena-colombia",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 15,
+            "routes_with_cluster_city_id": 6,
+            "pois": 47,
+            "route_endpoint_bps": 13,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "colombia",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "colombia",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/cartagena-colombia.json",
+            "maturity": "starter",
+            "declared_tier": "starter",
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": true
+          }
+        },
+        {
+          "city_id": "barranquilla-colombia",
+          "classification": "thin_to_full",
+          "atlas_city_feature_present": false,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 2,
+            "route_endpoint_bps": 2,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/barranquilla-colombia.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Chile",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": null,
+      "classification": "true_registry_gap",
+      "classification_level": "country",
+      "member_cities": [],
+      "counts": {
+        "clusters": 0,
+        "member_cities": 0,
+        "routes_cluster_stamped": 0,
+        "routes_touching_members": 0,
+        "pois": 0,
+        "route_endpoint_bps": 0,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 0,
+        "briefs_present": 0
+      },
+      "current_didi": {
+        "map_scope_included": false,
+        "map_scope_city_ids": [],
+        "covered_network_footprint_ids": [],
+        "full_market_ids": []
+      },
+      "brief_availability": {
+        "status": "research-needed",
+        "note": "No canonical Atlas cluster/city IDs; country-level DiDi evidence exists, but an exact coastal city/BP inventory is still required. No city ID is invented in this audit."
+      }
+    },
+    {
+      "country": "Costa Rica",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "costa-rica",
+        "cluster_label": "Costa Rica",
+        "type": "coastal",
+        "members_present": 1,
+        "members_missing": []
+      },
+      "classification": "already_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "nicoya-papagayo-costa-rica"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 1,
+        "routes_cluster_stamped": 67,
+        "routes_touching_members": 67,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 0,
+        "pois": 39,
+        "route_endpoint_bps": 50,
+        "canonical_marquee_wow": 5,
+        "canonical_marquee_featured": 6,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 1,
+        "briefs_present": 1
+      },
+      "route_integrity": {
+        "verdict": "PASS",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": []
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "nicoya-papagayo-costa-rica"
+        ],
+        "covered_network_footprint_ids": [
+          "costa-rica"
+        ],
+        "full_market_ids": [
+          "costa-rica"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "nicoya-papagayo-costa-rica"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "costa-rica",
+            "field_count": 23,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 1,
+        "total": 1,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "nicoya-papagayo-costa-rica",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 67,
+            "routes_with_cluster_city_id": 22,
+            "pois": 39,
+            "route_endpoint_bps": 50,
+            "canonical_marquee_wow": 5,
+            "canonical_marquee_featured": 6,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "costa-rica",
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": {
+            "market_id": "costa-rica",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/nicoya-papagayo-costa-rica.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 3,
+            "source_count": 5,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Panama",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "panama",
+        "cluster_label": "Panama",
+        "type": "coastal",
+        "members_present": 1,
+        "members_missing": []
+      },
+      "classification": "already_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "san-blas-panama"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 1,
+        "routes_cluster_stamped": 47,
+        "routes_touching_members": 47,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 0,
+        "pois": 48,
+        "route_endpoint_bps": 38,
+        "canonical_marquee_wow": 1,
+        "canonical_marquee_featured": 1,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 1,
+        "full_subproposals": 1,
+        "briefs_present": 1
+      },
+      "route_integrity": {
+        "verdict": "PASS",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": []
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "san-blas-panama"
+        ],
+        "covered_network_footprint_ids": [
+          "panama",
+          "san-blas-panama"
+        ],
+        "full_market_ids": [
+          "panama"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "san-blas-panama"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "panama",
+            "field_count": 23,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 1,
+        "total": 1,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "san-blas-panama",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 47,
+            "routes_with_cluster_city_id": 0,
+            "pois": 48,
+            "route_endpoint_bps": 38,
+            "canonical_marquee_wow": 1,
+            "canonical_marquee_featured": 1,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 1
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "panama",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "panama",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/san-blas-panama.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 3,
+            "source_count": 4,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Argentina",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": null,
+      "classification": "true_registry_gap",
+      "classification_level": "country",
+      "member_cities": [],
+      "counts": {
+        "clusters": 0,
+        "member_cities": 0,
+        "routes_cluster_stamped": 0,
+        "routes_touching_members": 0,
+        "pois": 0,
+        "route_endpoint_bps": 0,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 0,
+        "briefs_present": 0
+      },
+      "current_didi": {
+        "map_scope_included": false,
+        "map_scope_city_ids": [],
+        "covered_network_footprint_ids": [],
+        "full_market_ids": []
+      },
+      "brief_availability": {
+        "status": "research-needed",
+        "note": "No canonical Atlas cluster/city IDs; country-level DiDi evidence exists, but an exact coastal city/BP inventory is still required. No city ID is invented in this audit."
+      }
+    },
+    {
+      "country": "Ecuador",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "galapagos-ecuador",
+        "cluster_label": "Galápagos",
+        "type": "archipelago",
+        "members_present": 4,
+        "members_missing": []
+      },
+      "classification": "new_display_coverage",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "floreana-galapagos-ecuador",
+        "isabela-galapagos-ecuador",
+        "san-cristobal-galapagos-ecuador",
+        "santa-cruz-galapagos-ecuador"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 4,
+        "routes_cluster_stamped": 46,
+        "routes_touching_members": 3,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 46,
+        "member_routes_stamped_outside_cluster": 3,
+        "pois": 6,
+        "route_endpoint_bps": 0,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 0,
+        "briefs_present": 4
+      },
+      "route_integrity": {
+        "verdict": "FAIL",
+        "foreign_stamped_route_id_samples": [
+          "ics-2fe885536a",
+          "ics-3b1885b0e5",
+          "ics-6a2d222c1d",
+          "ics-73527c3365",
+          "ics-9409a653d6",
+          "ics-9797408cf4",
+          "ics-bcf8a66caf",
+          "ics-c1f5deb1fa"
+        ],
+        "member_route_outside_cluster_id_samples": [
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__isabela-galapagos-ecuador__puerto-villamil",
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__san-cristobal-galapagos-ecuador__puerto-baquerizo-moreno",
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra"
+        ]
+      },
+      "current_didi": {
+        "map_scope_included": false,
+        "map_scope_city_ids": [],
+        "covered_network_footprint_ids": [],
+        "full_market_ids": [],
+        "anchor_city_ids_in_full_markets": [],
+        "full_subproposal_completeness": []
+      },
+      "brief_availability": {
+        "present": 4,
+        "total": 4,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "floreana-galapagos-ecuador",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": false,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 0,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/floreana-galapagos-ecuador.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 1,
+            "signature_route_count": 1,
+            "source_count": 2,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "isabela-galapagos-ecuador",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 1,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/isabela-galapagos-ecuador.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "san-cristobal-galapagos-ecuador",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 1,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/san-cristobal-galapagos-ecuador.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "santa-cruz-galapagos-ecuador",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 3,
+            "routes_with_cluster_city_id": 0,
+            "pois": 4,
+            "route_endpoint_bps": 0,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/santa-cruz-galapagos-ecuador.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Peru",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "peru",
+        "cluster_label": "Peru",
+        "type": "coastal",
+        "members_present": 3,
+        "members_missing": []
+      },
+      "classification": "new_display_coverage",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "lima-peru",
+        "paracas-peru",
+        "pisco-san-andres-peru"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 3,
+        "routes_cluster_stamped": 11,
+        "routes_touching_members": 12,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 1,
+        "pois": 10,
+        "route_endpoint_bps": 10,
+        "canonical_marquee_wow": 0,
+        "canonical_marquee_featured": 0,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 0,
+        "briefs_present": 2
+      },
+      "route_integrity": {
+        "verdict": "FAIL",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": [
+          "rn-f0a756c7f278"
+        ]
+      },
+      "current_didi": {
+        "map_scope_included": false,
+        "map_scope_city_ids": [],
+        "covered_network_footprint_ids": [],
+        "full_market_ids": [],
+        "anchor_city_ids_in_full_markets": [],
+        "full_subproposal_completeness": []
+      },
+      "brief_availability": {
+        "present": 2,
+        "total": 3,
+        "didi_specific": 0,
+        "status": "partial"
+      },
+      "cities": [
+        {
+          "city_id": "lima-peru",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 10,
+            "routes_with_cluster_city_id": 0,
+            "pois": 7,
+            "route_endpoint_bps": 7,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/lima-peru.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 4,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "paracas-peru",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 3,
+            "routes_with_cluster_city_id": 0,
+            "pois": 2,
+            "route_endpoint_bps": 2,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/paracas-peru.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 2,
+            "signature_route_count": 3,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        },
+        {
+          "city_id": "pisco-san-andres-peru",
+          "classification": "new_display_coverage",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 1,
+            "routes_with_cluster_city_id": 0,
+            "pois": 1,
+            "route_endpoint_bps": 1,
+            "canonical_marquee_wow": 0,
+            "canonical_marquee_featured": 0,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": false,
+            "anchor_in_full_subproposal": false,
+            "full_market_id": null,
+            "direct_covered_network_footprint": false
+          },
+          "full_subproposal": null,
+          "brief": {
+            "available": false,
+            "path": "data-clean/city_briefs/pisco-san-andres-peru.json",
+            "maturity": "missing",
+            "declared_tier": null,
+            "core_fields_nonempty": 0,
+            "core_fields_total": 12,
+            "journey_count": 0,
+            "signature_route_count": 0,
+            "source_count": 0,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    },
+    {
+      "country": "Dominican Republic",
+      "evidence": {
+        "tier": "country_supported",
+        "source_type": "official_country_list",
+        "source_url": "https://web.didiglobal.com/",
+        "binding_status": "country_scope_only_not_city_bound"
+      },
+      "atlas_cluster": {
+        "cluster_id": "dominican-republic",
+        "cluster_label": "Dominican Republic",
+        "type": "island",
+        "members_present": 1,
+        "members_missing": []
+      },
+      "classification": "already_full",
+      "classification_level": "cluster",
+      "member_city_ids": [
+        "samana-dominican-republic"
+      ],
+      "counts": {
+        "clusters": 1,
+        "member_cities": 1,
+        "routes_cluster_stamped": 32,
+        "routes_touching_members": 32,
+        "routes_stamped_to_cluster_but_no_member_endpoint": 0,
+        "member_routes_stamped_outside_cluster": 0,
+        "pois": 36,
+        "route_endpoint_bps": 28,
+        "canonical_marquee_wow": 2,
+        "canonical_marquee_featured": 2,
+        "finance_model_corridors": 0,
+        "finance_recal_current_route_id_matches": 0,
+        "full_subproposals": 1,
+        "briefs_present": 1
+      },
+      "route_integrity": {
+        "verdict": "PASS",
+        "foreign_stamped_route_id_samples": [],
+        "member_route_outside_cluster_id_samples": []
+      },
+      "current_didi": {
+        "map_scope_included": true,
+        "map_scope_city_ids": [
+          "samana-dominican-republic"
+        ],
+        "covered_network_footprint_ids": [
+          "dominican-republic",
+          "samana-dominican-republic"
+        ],
+        "full_market_ids": [
+          "dominican-republic"
+        ],
+        "anchor_city_ids_in_full_markets": [
+          "samana-dominican-republic"
+        ],
+        "full_subproposal_completeness": [
+          {
+            "market_id": "dominican-republic",
+            "field_count": 23,
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14,
+            "phase_count": 3
+          }
+        ]
+      },
+      "brief_availability": {
+        "present": 1,
+        "total": 1,
+        "didi_specific": 0,
+        "status": "complete"
+      },
+      "cities": [
+        {
+          "city_id": "samana-dominican-republic",
+          "classification": "already_full",
+          "atlas_city_feature_present": true,
+          "counts": {
+            "routes_touching_city": 32,
+            "routes_with_cluster_city_id": 0,
+            "pois": 36,
+            "route_endpoint_bps": 28,
+            "canonical_marquee_wow": 2,
+            "canonical_marquee_featured": 2,
+            "finance_model_corridors": 0,
+            "finance_recal_current_route_id_matches_touching_city": 0
+          },
+          "current_didi": {
+            "map_scope_included": true,
+            "anchor_in_full_subproposal": true,
+            "full_market_id": "dominican-republic",
+            "direct_covered_network_footprint": true
+          },
+          "full_subproposal": {
+            "market_id": "dominican-republic",
+            "required_fields_nonempty": 14,
+            "required_fields_total": 14
+          },
+          "brief": {
+            "available": true,
+            "path": "data-clean/city_briefs/samana-dominican-republic.json",
+            "maturity": "canonical_complete_untiered",
+            "declared_tier": null,
+            "core_fields_nonempty": 12,
+            "core_fields_total": 12,
+            "journey_count": 3,
+            "signature_route_count": 3,
+            "source_count": 3,
+            "has_didi_specific_content": false
+          }
+        }
+      ]
+    }
+  ],
+  "canonical_comparison": {
+    "didi_bindings_count": 7,
+    "bound_market_ids": [
+      "brazil",
+      "mexico-pacific",
+      "mexico-caribbean",
+      "colombia",
+      "panama",
+      "costa-rica",
+      "dominican-republic"
+    ],
+    "canonical_binding_city_ids": [
+      "angra-dos-reis-ilha-grande-brazil",
+      "cancun-riviera-maya-mexico",
+      "cartagena-colombia",
+      "cozumel-mexico",
+      "florianopolis-brazil",
+      "los-cabos-mexico",
+      "nicoya-papagayo-costa-rica",
+      "playa-del-carmen-mexico",
+      "puerto-vallarta-mexico",
+      "rio-de-janeiro-brazil",
+      "samana-dominican-republic",
+      "san-blas-panama"
+    ],
+    "economics_ready_city_ids": [],
+    "note": "The comparison file binds 7 current markets and 12 cities, but is stale relative to CLUSTERS/map scope because Colombia now also inherits barranquilla-colombia."
+  },
+  "proposal_parity_gates": {
+    "A": {
+      "status": "FAIL",
+      "summary": "All 10 anchors resolve, but roster/crosswalk and linkage parity fail.",
+      "checks": {
+        "anchor_city_resolution": {
+          "status": "PASS",
+          "resolved": 10,
+          "total": 10,
+          "resolved_city_ids": [
+            "angra-dos-reis-ilha-grande-brazil",
+            "cancun-riviera-maya-mexico",
+            "cartagena-colombia",
+            "florianopolis-brazil",
+            "los-cabos-mexico",
+            "nicoya-papagayo-costa-rica",
+            "puerto-vallarta-mexico",
+            "rio-de-janeiro-brazil",
+            "samana-dominican-republic",
+            "san-blas-panama"
+          ]
+        },
+        "anchor_crosswalk_artifact": {
+          "status": "FAIL",
+          "present": false,
+          "expected": "partner-pitch/DIDI-ANCHOR-CITY-CROSSWALK.json"
+        },
+        "roster_reconciliation": {
+          "status": "FAIL",
+          "full_market_count": 7,
+          "anchor_city_count": 10,
+          "map_scope_cluster_city_id_count": 18,
+          "assigned_latam_scope_city_id_count": 13,
+          "assigned_scope_without_full_anchor": [
+            "barranquilla-colombia",
+            "cozumel-mexico",
+            "playa-del-carmen-mexico"
+          ],
+          "scope_ids_outside_assigned_canonical_cities": [
+            "hong-kong",
+            "macau-china",
+            "mexico-caribbean",
+            "mexico-pacific",
+            "shanghai-china"
+          ],
+          "non_city_ids_in_cluster_city_ids": [
+            "mexico-caribbean",
+            "mexico-pacific"
+          ],
+          "roll_up_markets_present": false
+        },
+        "journey_route_linkage": {
+          "status": "FAIL",
+          "hub_journeys": 4,
+          "hub_journey_route_ids": 0,
+          "market_journeys": 28,
+          "market_journey_route_ids": 0,
+          "phase_featured_routes": 0
+        },
+        "stale_receipt": {
+          "status": "FAIL",
+          "receipt": "handoff/partner-map-model/spine-parity-didi.json",
+          "receipt_verdict": "PASS",
+          "geometry_linked": 82,
+          "geometry_total": 95,
+          "note": "A PASS at 86.3% is not spine identity, and the current proposal journey relink provenance reports linked=0."
+        }
+      }
+    },
+    "B": {
+      "status": "FAIL",
+      "summary": "The finance spine is absent from the durable model and stale/contradictory elsewhere.",
+      "checks": {
+        "durable_model": {
+          "status": "FAIL",
+          "didi_market_count": 0,
+          "corridor_count": 0
+        },
+        "recal_scoped_view": {
+          "status": "FAIL",
+          "declared_corridors": 38,
+          "current_route_ids_resolved": 8,
+          "stale_route_ids": 30,
+          "stale_route_id_list": [
+            "e__samana-dominican-republic__turks-caicos",
+            "e__san-blas-panama__cartagena-colombia",
+            "edge-1088",
+            "ics-0effac4535",
+            "ics-121f3d1628",
+            "ics-2c0462e53e",
+            "ics-2c66505042",
+            "ics-58accdef81",
+            "ics-58af4a4a7a",
+            "ics-6536c49acf",
+            "ics-70df874036",
+            "ics-b98d3376f8",
+            "ics-b98ea23eee",
+            "ics-c7f9a1723e",
+            "ics-e10b53b415",
+            "ics-e6e8db7a6b",
+            "rn-0931127fbf2f",
+            "rn-249011467661",
+            "rn-25bd003736cd",
+            "rn-28283e0e27a4",
+            "rn-342daebb3603",
+            "rn-3d3a08c42c16",
+            "rn-42f2340027cc",
+            "rn-4ab58a9e0d63",
+            "rn-74a4db70919a",
+            "rn-761106cfaa0a",
+            "rn-780e81cf832c",
+            "rn-a5d53d26dfe1",
+            "rn-b7b7d78c475e",
+            "rn-fc0f6a62c378"
+          ]
+        },
+        "aggregate": {
+          "status": "FAIL",
+          "n_corridors_total": 0,
+          "grounded_floor_market_rev_yr": 0.0
+        },
+        "embedded_growth_contradiction": {
+          "status": "FAIL",
+          "embedded_som_floor_mid": 5768158,
+          "embedded_marine_tam_mid": 508751562,
+          "embedded_journey_gmv_mid": 1526254686,
+          "embedded_partner_platform_rev_mid": 68681461,
+          "recal_growth_som_floor": null,
+          "recal_growth_as_of": "2026-06-07"
+        },
+        "growth_shape": {
+          "status": "PASS",
+          "required_blocks_present": true
+        },
+        "demand_provenance": {
+          "status": "FAIL",
+          "recal_corridors": 38,
+          "source_tiers": {
+            "T3": 38
+          },
+          "source_methods": {
+            "bite2/econ_sidecar_inherit": 38
+          },
+          "note": "All demand records are T3 inherited from economics_by_route_id.json; no DiDi-specific demand anchors are present."
+        },
+        "greenfield_census": {
+          "status": "FAIL",
+          "embedded_mode": "census",
+          "embedded_sourced_corridors": 35,
+          "embedded_greenfield_corridors": 341,
+          "recal_growth_source": "growth-config default",
+          "borrowed_peer_census": "grab-greenfield-census.json",
+          "note": "grab-greenfield-census.json is a borrowed peer census, not a labelled global template or DiDi census."
+        },
+        "country_reference": {
+          "status": "FAIL",
+          "covered": [
+            "Brazil",
+            "Colombia",
+            "Peru"
+          ],
+          "missing_assigned": [
+            "Mexico",
+            "Chile",
+            "Costa Rica",
+            "Panama",
+            "Argentina",
+            "Ecuador",
+            "Dominican Republic"
+          ],
+          "missing_current_full_market_countries": [
+            "Mexico",
+            "Costa Rica",
+            "Panama",
+            "Dominican Republic"
+          ]
+        },
+        "country_fields_in_recal": {
+          "status": "FAIL",
+          "distinct_values": {
+            "Samaná": 6,
+            "San Blas": 6,
+            "cartagena-colombia": 4,
+            "Angra dos Reis": 4,
+            "Puerto Vallarta & Riviera Nayarit": 3,
+            "Los Cabos": 3,
+            "Cartagena & the Rosario Islands": 1,
+            "Cancún & the Riviera Maya": 1,
+            "Cancún & The Riviera Maya": 1,
+            "Florianópolis & Santa Catarina": 1,
+            "Palmilla": 1,
+            "Puntarenas": 1,
+            "cancun-riviera-maya-mexico": 1,
+            "Papagayo": 5
+          },
+          "note": "Values are city/market labels, not canonical country names, so opex/CAPEX lookup cannot be trusted."
+        }
+      }
+    },
+    "C": {
+      "status": "FAIL",
+      "summary": "Seven current markets have full narrative fields, but expansion markets and phase bindings are incomplete.",
+      "checks": {
+        "current_market_fields": {
+          "status": "PASS",
+          "markets": 7,
+          "required_fields_per_market": 14,
+          "all_nonempty": true
+        },
+        "assigned_country_inclusion": {
+          "status": "FAIL",
+          "countries_with_full_markets": [
+            "Mexico",
+            "Brazil",
+            "Colombia",
+            "Costa Rica",
+            "Panama",
+            "Dominican Republic"
+          ],
+          "countries_without_full_markets": [
+            "Chile",
+            "Argentina",
+            "Ecuador",
+            "Peru"
+          ]
+        },
+        "phases": {
+          "status": "FAIL",
+          "phase_count": 21,
+          "with_featured_routes": 0,
+          "with_fleet_confidence": 0,
+          "markets_with_subpage_vessel_sizing": 0
+        },
+        "rollups": {
+          "status": "PASS",
+          "roll_up_markets_count": 0,
+          "note": "No stubs exist; missing countries are absent rather than hidden as roll-ups."
+        }
+      }
+    },
+    "C.1": {
+      "status": "FAIL",
+      "summary": "Hub vessel method exists, but per-market/per-phase vessel and route bindings do not.",
+      "checks": {
+        "hub_vessel_sizing": {
+          "status": "PASS",
+          "present": true
+        },
+        "subpage_vessel_sizing": {
+          "status": "FAIL",
+          "present": 0,
+          "total": 7
+        },
+        "phase_fleet_confidence": {
+          "status": "FAIL",
+          "present": 0,
+          "total": 21
+        },
+        "phase_featured_routes": {
+          "status": "FAIL",
+          "count": 0
+        }
+      }
+    },
+    "D": {
+      "status": "FAIL",
+      "summary": "No transparent sheet/deck binding; model, recal, proposal and data-clean do not form a coherent cascade.",
+      "checks": {
+        "proposal_data_clean_identity": {
+          "status": "PASS",
+          "sha256_equal": true
+        },
+        "economics_url": {
+          "status": "FAIL",
+          "value": null
+        },
+        "sheet_id": {
+          "status": "FAIL",
+          "present": false,
+          "source": "finance/PARTNER-SHEET-IDS.json"
+        },
+        "transparent_sheet_artifact": {
+          "status": "FAIL",
+          "present": false
+        },
+        "deck_artifact": {
+          "status": "FAIL",
+          "present": false,
+          "searched": "deck-studio/**/*didi*"
+        },
+        "model_sheet_proposal_agreement": {
+          "status": "FAIL",
+          "note": "Durable model and recal aggregate are zero while the proposal/data-clean embed non-zero economics."
+        }
+      }
+    },
+    "E": {
+      "status": "PASS",
+      "summary": "No special sovereign/sanctions framing is required for this assigned LatAm audit.",
+      "checks": {
+        "special_framing_required": false
+      }
+    },
+    "F": {
+      "status": "PASS",
+      "summary": "DiDi carries all five deck narrative source fields and the strict narrative guard reported all deck-eligible partners ready.",
+      "checks": {
+        "fields": {
+          "partner_context": true,
+          "hero": true,
+          "why_now": true,
+          "network_thesis": true,
+          "proof_points": true
+        },
+        "network_thesis_shape": {
+          "headline": true,
+          "body": true,
+          "stats": 3
+        },
+        "strict_narrative_guard": "PASS (30/30 deck-eligible partners)"
+      }
+    },
+    "G": {
+      "status": "PASS",
+      "summary": "Partner copy lint passes.",
+      "checks": {
+        "command": "python3 scripts/audit_partner_copy.py partner-pitch/partners/didi.json",
+        "result": "PASS — 0 internal-jargon leaks"
+      }
+    }
+  },
+  "stale_numbers_register": [
+    {
+      "surface": "partner-pitch + data-clean growth_case",
+      "value": {
+        "som_floor_mid": 5768158,
+        "marine_mobility_tam_mid": 508751562,
+        "journey_gmv_mid": 1526254686,
+        "partner_platform_rev_mid": 68681461
+      },
+      "contradiction": "finance/recal/agg-didi.json has 0 corridors/$0 and growth-didi.json has null rungs."
+    },
+    {
+      "surface": "embedded growth provenance",
+      "value": {
+        "sourced_corridors": 35,
+        "greenfield_corridors": 341
+      },
+      "contradiction": "Current scoped recal has 38 rows, only 8 current route IDs, and 30 stale route IDs."
+    },
+    {
+      "surface": "finance/recal/growth-didi.json",
+      "value": "2026-06-07",
+      "contradiction": "Uses grab-greenfield-census.json and a Grab-specific commission legend for DiDi."
+    },
+    {
+      "surface": "handoff receipts",
+      "value": {
+        "spine_geometry_ratio": 0.863,
+        "spine_verdict": "PASS",
+        "page_qa_map_routes_in_scope": 180
+      },
+      "contradiction": "Current proposal journey relink says linked=0; current market journeys have no route IDs; ratio PASS violates identity."
+    }
+  ],
+  "missing_artifacts": [
+    "partner-pitch/DIDI-ANCHOR-CITY-CROSSWALK.json",
+    "DiDi entry in finance/PARTNER-SHEET-IDS.json",
+    "DiDi transparent economics sheet artifact",
+    "proposal economics_url",
+    "DiDi deck-studio artifacts",
+    "fresh render/spine identity receipt after cascade"
+  ],
+  "defect_register": [
+    {
+      "id": "DIDI-LATAM-01",
+      "priority": "P0",
+      "title": "Rebuild one canonical DiDi finance spine",
+      "evidence": "finance/model has 0 DiDi corridors; scoped recal declares 38 but only 8 route IDs exist in current ROUTES and 30 are stale; agg is zero while proposal SOM floor is $5,768,158.",
+      "next_action": "After route-cluster repair, materialize DiDi from the global inherited route set, add canonical country fields, rerun aggregate/growth/splice, and replace stale recal files."
+    },
+    {
+      "id": "DIDI-LATAM-02",
+      "priority": "P0",
+      "title": "Repair global route cluster stamping before inheriting Ecuador/Peru",
+      "evidence": {
+        "verdict": "FAIL",
+        "foreign_stamped_route_id_samples": [
+          "ics-2fe885536a",
+          "ics-3b1885b0e5",
+          "ics-6a2d222c1d",
+          "ics-73527c3365",
+          "ics-9409a653d6",
+          "ics-9797408cf4",
+          "ics-bcf8a66caf",
+          "ics-c1f5deb1fa"
+        ],
+        "member_route_outside_cluster_id_samples": [
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__isabela-galapagos-ecuador__puerto-villamil",
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__san-cristobal-galapagos-ecuador__puerto-baquerizo-moreno",
+          "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra"
+        ],
+        "ecuador_cluster_stamped_routes": 46,
+        "ecuador_member_routes": 3,
+        "mexico_foreign_stamped": 21
+      },
+      "next_action": "Restamp ROUTES by stable endpoint city IDs and rerun the corridor-inheritance validator. Do not activate Galápagos economics until 46 foreign routes are removed from galapagos-ecuador and its 3 real member routes are correctly stamped."
+    },
+    {
+      "id": "DIDI-LATAM-03",
+      "priority": "P0",
+      "title": "Reconcile DiDi map/full-market/network rosters",
+      "evidence": {
+        "map_scope_ids": 18,
+        "assigned_latam_scope_ids": 13,
+        "anchor_ids": 10,
+        "scope_without_anchor": [
+          "barranquilla-colombia",
+          "cozumel-mexico",
+          "playa-del-carmen-mexico"
+        ],
+        "out_of_payload_scope_ids": [
+          "hong-kong",
+          "macau-china",
+          "mexico-caribbean",
+          "mexico-pacific",
+          "shanghai-china"
+        ],
+        "non_city_scope_ids": [
+          "mexico-caribbean",
+          "mexico-pacific"
+        ]
+      },
+      "next_action": "Create the anchor crosswalk; remove covered:false China leakage and non-city IDs from cluster_city_ids; promote or explicitly hold every inherited city."
+    },
+    {
+      "id": "DIDI-LATAM-04",
+      "priority": "P1",
+      "title": "Add country-supported display coverage for Ecuador and Peru",
+      "evidence": {
+        "ecuador_city_ids": [
+          "floreana-galapagos-ecuador",
+          "isabela-galapagos-ecuador",
+          "san-cristobal-galapagos-ecuador",
+          "santa-cruz-galapagos-ecuador"
+        ],
+        "peru_city_ids": [
+          "lima-peru",
+          "paracas-peru",
+          "pisco-san-andres-peru"
+        ]
+      },
+      "next_action": "After global route-cluster QA, inherit the existing clusters into DiDi map scope and author full DiDi market subproposals. Country evidence is official; no new geography is needed."
+    },
+    {
+      "id": "DIDI-LATAM-05",
+      "priority": "P1",
+      "title": "Deepen three thin current cities to full subproposal coverage",
+      "evidence": {
+        "city_ids": [
+          "barranquilla-colombia",
+          "cozumel-mexico",
+          "playa-del-carmen-mexico"
+        ]
+      },
+      "next_action": "Promote each city into a full anchor/phase roster with real featured route IDs and economics coverage; preserve cluster inheritance."
+    },
+    {
+      "id": "DIDI-LATAM-06",
+      "priority": "P1",
+      "title": "Fix country-reference and country-key coverage",
+      "evidence": {
+        "missing_assigned": [
+          "Mexico",
+          "Chile",
+          "Costa Rica",
+          "Panama",
+          "Argentina",
+          "Ecuador",
+          "Dominican Republic"
+        ],
+        "missing_current": [
+          "Mexico",
+          "Costa Rica",
+          "Panama",
+          "Dominican Republic"
+        ],
+        "recal_country_values": {
+          "Samaná": 6,
+          "San Blas": 6,
+          "cartagena-colombia": 4,
+          "Angra dos Reis": 4,
+          "Puerto Vallarta & Riviera Nayarit": 3,
+          "Los Cabos": 3,
+          "Cartagena & the Rosario Islands": 1,
+          "Cancún & the Riviera Maya": 1,
+          "Cancún & The Riviera Maya": 1,
+          "Florianópolis & Santa Catarina": 1,
+          "Palmilla": 1,
+          "Puntarenas": 1,
+          "cancun-riviera-maya-mexico": 1,
+          "Papagayo": 5
+        }
+      },
+      "next_action": "Add source-tiered country-reference rows, normalize each scoped corridor to canonical country names, and rerun both model and transparent-sheet engines."
+    },
+    {
+      "id": "DIDI-LATAM-07",
+      "priority": "P1",
+      "title": "Replace T3 inherited demand and borrowed Grab census",
+      "evidence": {
+        "demand_tiers": {
+          "T3": 38
+        },
+        "borrowed_census": "grab-greenfield-census.json"
+      },
+      "next_action": "Build DiDi/market-specific demand anchors. Until a DiDi census exists, use only the explicitly labelled global template band; never grab-greenfield-census.json."
+    },
+    {
+      "id": "DIDI-LATAM-08",
+      "priority": "P1",
+      "title": "Bind phase routes and phase fleet methodology",
+      "evidence": {
+        "phases": 21,
+        "phase_featured_routes": 0,
+        "phase_fleet_confidence": 0,
+        "subpage_vessel_sizing": 0
+      },
+      "next_action": "Regate global corridors, then populate each market phase with inherited route IDs, model links, grounded boat counts, fleet_confidence, and a subpage vessel_sizing block."
+    },
+    {
+      "id": "DIDI-LATAM-09",
+      "priority": "P1",
+      "title": "Close brief and partner-overlay gaps",
+      "evidence": {
+        "briefs_present": 19,
+        "briefs_total": 20,
+        "missing_city_ids": [
+          "pisco-san-andres-peru"
+        ],
+        "didi_specific_brief_city_ids": [
+          "cartagena-colombia"
+        ]
+      },
+      "next_action": "Create the missing canonical brief and add source-backed DiDi overlays where market promotion requires them; do not rewrite otherwise complete canonical briefs."
+    },
+    {
+      "id": "DIDI-LATAM-10",
+      "priority": "P2",
+      "title": "Create missing sheet/deck delivery artifacts",
+      "evidence": {
+        "economics_url": null,
+        "sheet_id": false,
+        "transparent_sheet": false,
+        "deck": false
+      },
+      "next_action": "After finance passes, create/update the transparent sheet in place, bind economics_url, build the sidecar, generate deck artifacts, and save render/delivery receipts."
+    },
+    {
+      "id": "DIDI-LATAM-11",
+      "priority": "P2",
+      "title": "Invalidate stale PASS receipts",
+      "evidence": {
+        "spine_parity": "PASS at 82/95 (86.3%)",
+        "page_qa_checked_at": "2026-06-21T14:25:19Z",
+        "current_market_journey_route_ids": 0
+      },
+      "next_action": "Require identity, not a ratio, and regenerate receipts from the current commit after all repairs."
+    },
+    {
+      "id": "DIDI-LATAM-12",
+      "priority": "P2",
+      "title": "Expand canonical marquee curation beyond three clusters",
+      "evidence": {
+        "canonical_marquee_featured": 9,
+        "canonical_marquee_wow": 8,
+        "cities_with_marquee": [
+          "nicoya-papagayo-costa-rica",
+          "san-blas-panama",
+          "samana-dominican-republic"
+        ]
+      },
+      "next_action": "Curate one canonical marquee set per repaired cluster and inherit it; do not hand-author partner-only geometry."
+    }
+  ]
+}
