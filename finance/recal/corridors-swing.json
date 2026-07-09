@@ -1,315 +1,885 @@
 {
-  "_doc": "Scoped corridors view for swing (South Korea). Kakao spine inherited 1:1.",
-  "_built_at": "2026-07-09",
+  "_doc": "Scoped corridors view for swing Bite-2 economics cascade",
+  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
+  "_built_at": "2026-07-09T22:01:52Z",
   "capture_rate": 0.1,
   "markets": {
-    "swing-korea": {
+    "swing": {
       "partner": "swing",
       "region": "East Asia",
-      "label": "South Korea — Seoul · Busan · Jeju · South Coast",
+      "label": "Swing \u2014 scoped cascade",
       "fleet_basis": "network_sum",
       "fleet_rounding": "ceil",
-      "_scope": "kakao-mobility-bite2-cascade",
-      "_partner_market_keys": [],
-      "_route_ids_requested": 11,
-      "_corridors_bound": 11,
+      "_scope": "swing-bite2-cascade",
+      "_partner_market_keys": [
+        "korea-swing"
+      ],
+      "_route_ids_requested": 15,
+      "_corridors_bound": 39,
       "corridors": [
         {
-          "route_id": "ics-00024a3bd3",
-          "from": "Busan",
-          "to": "Busan/Geoje Cluster",
-          "distance_nm": 3.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Busan",
+          "route_id": "rn-7c451ce2752d",
+          "from": "Oksu Pier",
+          "to": "Apgujeong Pier",
+          "distance_nm": 1.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-hangang-bus",
+          "to_node_id": "seoul-hangang-bus",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 19.8,
-            "corridor_annual_oneway_pax": 21150,
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
             "_demand_record": {
-              "value": 21150,
+              "value": 95455,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
             },
             "_fare_record": {
-              "value": 19.8,
+              "value": 4.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "med"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-2b5e1073dc",
-          "from": "Yeosu Ferry Terminal",
-          "to": "Yeosu / Tongyeong",
-          "distance_nm": 6.0,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Yeosu",
+          "route_id": "rn-b4b6294b39e2",
+          "from": "Apgujeong Pier",
+          "to": "Seoul Forest Wharf",
+          "distance_nm": 1.7,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-hangang-bus",
+          "to_node_id": "seoul-hangang-bus",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 26.8,
-            "corridor_annual_oneway_pax": 23400,
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
             "_demand_record": {
-              "value": 23400,
+              "value": 95455,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
             },
             "_fare_record": {
-              "value": 26.8,
+              "value": 4.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "med"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-58f34f8676",
-          "from": "Seongsan Eup",
-          "to": "Seopjikoji",
-          "distance_nm": 3.6,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Seongsan Eup",
+          "route_id": "rn-fd62bdd18267",
+          "from": "Busan Coastal Ferry Terminal (Yeonan Yeogaek \u2014 Jeju line)",
+          "to": "Saryangdo Island ferry pier",
+          "distance_nm": 54.8,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "busan-geoje-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 20.08,
-            "corridor_annual_oneway_pax": 21240,
+            "comparable_fare_usd_pax": 5.57,
+            "corridor_annual_oneway_pax": 134248,
             "_demand_record": {
-              "value": 21240,
+              "value": 134248,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
             },
             "_fare_record": {
-              "value": 20.08,
+              "value": 5.57,
               "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "high"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-5c38811a71",
-          "from": "Jeju",
-          "to": "Seogwipo Jungmun",
-          "distance_nm": 7.1,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Jeju",
+          "route_id": "rn-0bf2689ed1c9",
+          "from": "Busan Coastal Ferry Terminal (Yeonan Yeogaek \u2014 Jeju line)",
+          "to": "Yokjido Island ferry pier",
+          "distance_nm": 49.0,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 29.88,
-            "corridor_annual_oneway_pax": 24390,
+            "comparable_fare_usd_pax": 6.14,
+            "corridor_annual_oneway_pax": 134248,
             "_demand_record": {
-              "value": 24390,
+              "value": 134248,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
             },
             "_fare_record": {
-              "value": 29.88,
+              "value": 6.14,
               "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "high"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-6f074085c9",
-          "from": "Incheon",
-          "to": "Muuido / Yeongjong",
-          "distance_nm": 11.9,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Seoul-Incheon",
+          "route_id": "rn-c33493f0f593",
+          "from": "Saryangdo Island ferry pier",
+          "to": "Yokjido Island ferry pier",
+          "distance_nm": 12.6,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 43.32,
-            "corridor_annual_oneway_pax": 28710,
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 134248,
             "_demand_record": {
-              "value": 28710,
+              "value": 134248,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
             },
             "_fare_record": {
-              "value": 43.32,
+              "value": 8.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "high"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-843b41b72d",
-          "from": "Yeosu Ferry Terminal",
-          "to": "Yeosu / Tongyeong",
-          "distance_nm": 4.8,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Yeosu",
+          "route_id": "rn-eab1a8d9b140",
+          "from": "Yokjido Island ferry pier",
+          "to": "Tongyeong Ferry Terminal",
+          "distance_nm": 14.8,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "busan-geoje-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 23.44,
-            "corridor_annual_oneway_pax": 22320,
+            "comparable_fare_usd_pax": 6.14,
+            "corridor_annual_oneway_pax": 134248,
             "_demand_record": {
-              "value": 22320,
+              "value": 134248,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
             },
             "_fare_record": {
-              "value": 23.44,
+              "value": 6.14,
               "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "high"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-dc7202dc23",
-          "from": "Jeju",
-          "to": "Seogwipo Jungmun",
-          "distance_nm": 10.4,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Jeju",
+          "route_id": "rn-50bd5ea42fec",
+          "from": "Jongdal Port (Udo Ferry)",
+          "to": "Jeju Ferry Passenger Terminal",
+          "distance_nm": 22.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 39.12,
-            "corridor_annual_oneway_pax": 27360,
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
             "_demand_record": {
-              "value": 27360,
+              "value": 29535,
               "unit": "pax/yr one-way",
               "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
             },
             "_fare_record": {
-              "value": 39.12,
+              "value": 8.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "low"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-ed8db10726",
-          "from": "Hide-water-body NE-monsoon + W-Pacific typhoon-recurve DUAL operational overlay",
-          "to": "Busan / Geoje / Hallyeo, Korea",
-          "distance_nm": 2.3,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Busan",
+          "route_id": "rn-8a05c6dc9a81",
+          "from": "Jeju Yacht Club / Aewol Marina pipeline",
+          "to": "Jeju Ferry Passenger Terminal",
+          "distance_nm": 10.6,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 16.44,
-            "corridor_annual_oneway_pax": 20070,
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
             "_demand_record": {
-              "value": 20070,
+              "value": 29535,
               "unit": "pax/yr one-way",
               "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
             },
             "_fare_record": {
-              "value": 16.44,
+              "value": 8.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "low"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         },
         {
-          "route_id": "ics-ffeada3079",
-          "from": "Yeosu Ferry Terminal",
-          "to": "Yeosu / Tongyeong",
-          "distance_nm": 6.3,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Yeosu",
+          "route_id": "rn-7288c917e055",
+          "from": "Jeju Ferry Passenger Terminal",
+          "to": "Seongsan Port (Udo ferry gateway + Seongsan Ilchulbong tender)",
+          "distance_nm": 22.3,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 27.64,
-            "corridor_annual_oneway_pax": 23670,
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
             "_demand_record": {
-              "value": 23670,
+              "value": 29535,
               "unit": "pax/yr one-way",
               "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
             },
             "_fare_record": {
-              "value": 27.64,
+              "value": 8.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "low"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-c35e6140fd66",
+          "from": "Jeju Ferry Passenger Terminal",
+          "to": "Hallim Port (Biyangdo ferry gateway)",
+          "distance_nm": 15.4,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
+            "_demand_record": {
+              "value": 29535,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "low"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-ff2684a4219c",
+          "from": "Gimpo Ara Marina",
+          "to": "Incheon Coastal Passenger Terminal",
+          "distance_nm": 12.9,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 120137,
+            "_demand_record": {
+              "value": 120137,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www.icpa.or.kr/icferry/mobile/main.do?menuKey=779",
+              "method": "korea_l3/pool_alloc:incheon_coastal_terminal_pool (pool=1081234/n=9)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-66dce8d7e72d",
+          "from": "Incheon Coastal Passenger Terminal",
+          "to": "Muuido Island Ferry Berth",
+          "distance_nm": 11.7,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 120137,
+            "_demand_record": {
+              "value": 120137,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www.icpa.or.kr/icferry/mobile/main.do?menuKey=779",
+              "method": "korea_l3/pool_alloc:incheon_coastal_terminal_pool (pool=1081234/n=9)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-7e7e6da7abba",
+          "from": "Incheon Coastal Passenger Terminal",
+          "to": "Yeongjong Island Marina",
+          "distance_nm": 6.6,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 120137,
+            "_demand_record": {
+              "value": 120137,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www.icpa.or.kr/icferry/mobile/main.do?menuKey=779",
+              "method": "korea_l3/pool_alloc:incheon_coastal_terminal_pool (pool=1081234/n=9)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-5689dc99e479",
+          "from": "Muuido Island Ferry Berth",
+          "to": "Yeongjong Island Marina",
+          "distance_nm": 9.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 120137,
+            "_demand_record": {
+              "value": 120137,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www.icpa.or.kr/icferry/mobile/main.do?menuKey=779",
+              "method": "korea_l3/pool_alloc:incheon_coastal_terminal_pool (pool=1081234/n=9)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-ba28d38bee02",
+          "from": "Tongyeong Passenger Ferry Terminal",
+          "to": "Geumodo Yeocheon Ferry Terminal",
+          "distance_nm": 37.3,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 22.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 22.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-b93989547df9",
+          "from": "Tongyeong Passenger Ferry Terminal",
+          "to": "Yeosu Passenger Ferry Terminal",
+          "distance_nm": 33.6,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 22.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 22.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-f4f4e680146e",
+          "from": "Tongyeong Passenger Ferry Terminal",
+          "to": "Yokjido Ferry Terminal",
+          "distance_nm": 14.7,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.86,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 8.86,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-2a7a816ff5a9",
+          "from": "Geumodo Yeocheon Ferry Terminal",
+          "to": "Yeosu Passenger Ferry Terminal",
+          "distance_nm": 14.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-4f591a53d3b3",
+          "from": "Geumodo Yeocheon Ferry Terminal",
+          "to": "Yokjido Ferry Terminal",
+          "distance_nm": 25.9,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-79388bf546a1",
+          "from": "Samdeok Yokji Ferry Terminal",
+          "to": "Yeosu Passenger Ferry Terminal",
+          "distance_nm": 31.7,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 22.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 22.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-649a78c56f95",
+          "from": "Yeosu Passenger Ferry Terminal",
+          "to": "Gaochi Passenger Ferry Terminal",
+          "distance_nm": 34.8,
+          "vessel": "Pioneer II",
+          "archetype": "regional",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 22.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 22.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-716172aedee7",
+          "from": "Yeosu Passenger Ferry Terminal",
+          "to": "Yokjido Ferry Terminal",
+          "distance_nm": 26.4,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-972f52f72589",
+          "from": "Yeosu Passenger Ferry Terminal",
+          "to": "Samcheonpo Ferry Terminal",
+          "distance_nm": 19.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "yeosu-tongyeong-korea",
+          "to_node_id": "yeosu-tongyeong-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 134248,
+            "_demand_record": {
+              "value": 134248,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOMSA Tongyeong district coastal 2025",
+              "method": "korea_l3/pool_alloc:tongyeong_district_pool (pool=1745223/n=13)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-e44147de575d",
+          "from": "Busan / Geoje",
+          "to": "Fukuoka (Hakata)",
+          "distance_nm": 109.8,
+          "vessel": "Quanta-LR",
+          "archetype": "regional",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "korea__busan-geoje-cross-strait-fukuoka-cross-border",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 67.9,
+            "corridor_annual_oneway_pax": 182011,
+            "_demand_record": {
+              "value": 182011,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://busan.mof.go.kr/ko/page.do?menuIdx=4608",
+              "method": "korea_l3/direct_port_pair"
+            },
+            "_fare_record": {
+              "value": 67.9,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "high"
+          },
+          "_vessel_key": "quanta_lr",
+          "_korea_spine": true,
+          "_edge_class": "trunk"
         },
         {
           "route_id": "rn-6786317ef18f",
@@ -318,72 +888,540 @@
           "distance_nm": 157.2,
           "vessel": "Quanta-LR",
           "archetype": "intercity",
-          "country": "Busan / Geoje",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 159480,
+            "comparable_fare_usd_pax": 32.1,
+            "corridor_annual_oneway_pax": 29535,
             "_demand_record": {
-              "value": 159480,
+              "value": 29535,
               "unit": "pax/yr one-way",
               "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
             },
             "_fare_record": {
-              "value": 220.0,
+              "value": 32.1,
               "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "KOREA-L3-SOURCING",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "low"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
+          "_vessel_key": "quanta_lr",
+          "_korea_spine": true,
+          "_edge_class": "trunk"
         },
         {
-          "route_id": "rn-e44147de575d",
-          "from": "Busan / Geoje",
-          "to": "Fukuoka (Hakata)",
-          "distance_nm": 109.8,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "Busan / Geoje",
+          "route_id": "rn-38d097ab8503",
+          "from": "Busan",
+          "to": "Busan/Geoje Cluster",
+          "distance_nm": 3.5,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "busan-geoje-korea",
+          "to_node_id": "busan-geoje-korea",
+          "country": "South Korea",
           "pool_basis": "addressable",
           "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 116820,
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 200000,
             "_demand_record": {
-              "value": 116820,
+              "value": 200000,
               "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Geoje Oedo cruise piers ~1M customers/yr (allocation pool)",
+              "method": "korea_l3/pool_alloc:oedo_geoje_cruise_pool (pool=1000000/n=5)"
             },
             "_fare_record": {
-              "value": 220.0,
+              "value": 4.0,
               "unit": "USD/pax/one-way",
               "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
             },
-            "demand_confidence": "med-low"
+            "demand_confidence": "med"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-2be3c3285c7a",
+          "from": "Seopjikoji",
+          "to": "Jeju",
+          "distance_nm": 5.3,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
+            "_demand_record": {
+              "value": 29535,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "low"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-dd841301f944",
+          "from": "Seongsan Eup",
+          "to": "Seopjikoji",
+          "distance_nm": 3.6,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 29535,
+            "_demand_record": {
+              "value": 29535,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "low"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-ed5d6c0609fe",
+          "from": "Jeju",
+          "to": "Seogwipo Jungmun",
+          "distance_nm": 7.1,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
+            "_demand_record": {
+              "value": 29535,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "low"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-2c32d38bb153",
+          "from": "Jeju",
+          "to": "Seongsan Eup",
+          "distance_nm": 16.2,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "jeju-korea",
+          "to_node_id": "jeju-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 29535,
+            "_demand_record": {
+              "value": 29535,
+              "unit": "pax/yr one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "greenfield_convention",
+              "method": "korea_l3/greenfield_factor=0.22\u00d7median_allocated"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "low"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-047fe5d8e686",
+          "from": "Jamsil Pier",
+          "to": "Yeouido Pier",
+          "distance_nm": 7.5,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-6d96e229ce7e",
+          "from": "Magok Pier",
+          "to": "Yeouido Pier",
+          "distance_nm": 5.4,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-ce55c292989a",
+          "from": "Yeouido Pier",
+          "to": "Ttukseom Pier",
+          "distance_nm": 8.3,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-451fa6544ccd",
+          "from": "Magok Pier",
+          "to": "Jamsil Pier",
+          "distance_nm": 12.6,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 8.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-dd8e26889f29",
+          "from": "Magok",
+          "to": "Mangwon Pier",
+          "distance_nm": 3.4,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-hangang-bus",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-0a711c22926a",
+          "from": "Mangwon Pier",
+          "to": "Yeouido",
+          "distance_nm": 2.2,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-hangang-bus",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
+        },
+        {
+          "route_id": "rn-6e4ab1de83d4",
+          "from": "Yeouido",
+          "to": "Oksu Pier",
+          "distance_nm": 4.4,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-hangang-bus",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-bc4b1bfe4b23",
+          "from": "Seoul Forest Wharf",
+          "to": "Ttukseom",
+          "distance_nm": 3.0,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-hangang-bus",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "coastal"
+        },
+        {
+          "route_id": "rn-529e3834c165",
+          "from": "Ttukseom",
+          "to": "Jamsil",
+          "distance_nm": 1.2,
+          "vessel": "Pioneer II",
+          "archetype": "local",
+          "from_node_id": "seoul-incheon-korea",
+          "to_node_id": "seoul-incheon-korea",
+          "country": "South Korea",
+          "pool_basis": "addressable",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.0,
+            "corridor_annual_oneway_pax": 95455,
+            "_demand_record": {
+              "value": 95455,
+              "unit": "pax/yr one-way",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "Seoul City Hangang Bus run-rate (~1.05M/yr; spec headline)",
+              "method": "korea_l3/pool_alloc:hangang_runrate_pool (pool=1050000/n=11)"
+            },
+            "_fare_record": {
+              "value": 4.0,
+              "unit": "USD/pax/one-way",
+              "source_tier": "T3",
+              "confidence": "low",
+              "source": "band_default",
+              "method": "korea_l3/fare"
+            },
+            "demand_confidence": "med"
+          },
+          "_vessel_key": "pioneer_ii",
+          "_korea_spine": true,
+          "_edge_class": "local"
         }
-      ],
-      "_provenance": {
-        "inherited_from": "finance/recal/corridors-kakao-mobility.json market kakao-mobility",
-        "rule": "finance-corridor inheritance — identical route_id spine per shared geography; only overlay may differ",
-        "built_at": "2026-07-09",
-        "built_by": "tasklet/five-partners-batch"
-      }
+      ]
     }
   }
 }
