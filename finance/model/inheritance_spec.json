@@ -1,5 +1,5 @@
 {
-  "_doc": "LB-257 (Tasklet, 2026-06-20): SCOPED-CORRIDOR INHERITANCE SPEC for partners that own NO corridors in corridors.json but carry a transparent sheet + (stale) growth_case from an older export. The shared global corridor network is reused — these partners do NOT get new/duplicate corridors. Grok builds each a SCOPED corridors.json (copy the listed registry markets, re-tag `partner` to the inheriting partner) and runs `aggregate.py --partner <tag> --corridors <scoped.json>` then growth/frontend/splice. Country tags + geometry are inherited unchanged from the shared rows (overlap across partners is expected and correct).",
+  "_doc": "LB-257 (Tasklet, 2026-06-20): SCOPED-CORRIDOR INHERITANCE SPEC for partners that own NO corridors in corridors.json but carry a transparent sheet + (stale) growth_case from an older export. The shared global corridor network is reused \u2014 these partners do NOT get new/duplicate corridors. Grok builds each a SCOPED corridors.json (copy the listed registry markets, re-tag `partner` to the inheriting partner) and runs `aggregate.py --partner <tag> --corridors <scoped.json>` then growth/frontend/splice. Country tags + geometry are inherited unchanged from the shared rows (overlap across partners is expected and correct).",
   "_mechanism": {
     "build_scoped_view": "For partner P: scoped.json = { '_doc','capture_rate','markets': { <each inherit_markets key>: <copy of registry market with markets[k].partner set to P> } }. Do NOT edit finance/model/corridors.json itself.",
     "run": "uv run python3 finance/model/aggregate.py --partner <partner_tag> --corridors <scoped.json> --json /tmp/agg-<P>.json  ->  growth.py --partner <P> --agg /tmp/agg-<P>.json [--greenfield off]  ->  growth_frontend_block.py  ->  splice into data-clean/partners/<P>.json",
@@ -7,7 +7,7 @@
   },
   "_archetypes": {
     "contested_ridehail": "Platform competes for the WHOLE market pool in each geography (Uber/Bolt/Yango/etc.). Inherit the FULL shared market(s) for each covered geography. Standard LB-254 ladder (contested capture ramps from the floor). greenfield per growth-config default.",
-    "captive_luxury": "Single-brand resort operator. Per LB-254: anchor TAM on the TRUE transport-spend pool (sum demand x fare) of the inherited corridors and use captive-aware capture (~0.90 floor/pool) — do NOT divide a 90% floor by 10%. BUT a single brand does not address the whole national pool: its realizable pool is its property/guest share. Registry nodes are city-level (no resort nodes), so the pool cannot be sub-selected by geometry. => captive partners are RUN-BLOCKED pending a sourced `captive_pool_fraction` (operator share of the market's premium marine-transfer demand) per inherited market. null-beats-confidently-wrong: do NOT run them on the full national pool."
+    "captive_luxury": "Single-brand resort operator. Per LB-254: anchor TAM on the TRUE transport-spend pool (sum demand x fare) of the inherited corridors and use captive-aware capture (~0.90 floor/pool) \u2014 do NOT divide a 90% floor by 10%. BUT a single brand does not address the whole national pool: its realizable pool is its property/guest share. Registry nodes are city-level (no resort nodes), so the pool cannot be sub-selected by geometry. => captive partners are RUN-BLOCKED pending a sourced `captive_pool_fraction` (operator share of the market's premium marine-transfer demand) per inherited market. null-beats-confidently-wrong: do NOT run them on the full national pool."
   },
   "partners": {
     "uber": {
@@ -17,16 +17,45 @@
       "greenfield": "growth-config default",
       "_note": "Uber competes platform-wide; inherits the full shared market for each geography it declares AND where the registry already has corridors. Declared markets with no registry corridors are GAPS (Tasklet sourcing queue), not invented.",
       "inherit_markets": {
-        "mena": ["uae-careem", "qatar"],
-        "mediterranean": ["bolt-greece", "bolt-croatia"],
-        "italy-luxury": ["bolt-italy"],
-        "cote-dazur": ["bolt-france-riviera"],
-        "istanbul": ["yango-turkey"],
-        "lagos": ["yango-lagos"],
-        "ksa-red-sea": ["saudi-redsea", "saudi-redsea-resort"],
-        "egypt": ["bolt-egypt"]
+        "mena": [
+          "uae-careem",
+          "qatar"
+        ],
+        "mediterranean": [
+          "bolt-greece",
+          "bolt-croatia"
+        ],
+        "italy-luxury": [
+          "bolt-italy"
+        ],
+        "cote-dazur": [
+          "bolt-france-riviera"
+        ],
+        "istanbul": [
+          "yango-turkey"
+        ],
+        "lagos": [
+          "yango-lagos"
+        ],
+        "ksa-red-sea": [
+          "saudi-redsea",
+          "saudi-redsea-resort"
+        ],
+        "egypt": [
+          "bolt-egypt"
+        ]
       },
-      "gaps_no_registry_corridors": ["miami", "bay-area", "hawaii", "sydney-nsw", "brazil-latam", "india", "japan", "hong-kong-prd", "mexico"],
+      "gaps_no_registry_corridors": [
+        "miami",
+        "bay-area",
+        "hawaii",
+        "sydney-nsw",
+        "brazil-latam",
+        "india",
+        "japan",
+        "hong-kong-prd",
+        "mexico"
+      ],
       "_gaps_doc": "9 declared Uber markets have ZERO corridors in the registry. They feed the Tasklet corridor-sourcing queue; the cascade must NOT fabricate them. Uber's refreshed TAM covers ONLY the 8 geographies above until these are sourced."
     },
     "four-seasons": {
@@ -36,13 +65,29 @@
       "run_blocked_pending": "captive_pool_fraction (per inherited market)",
       "greenfield": "off",
       "inherit_markets": {
-        "maldives": ["maldives-jih"],
-        "french-polynesia": ["french-polynesia"],
-        "thailand": ["koh-samui"],
-        "indonesia": ["bali"]
+        "maldives": [
+          "maldives-jih"
+        ],
+        "french-polynesia": [
+          "french-polynesia"
+        ],
+        "thailand": [
+          "koh-samui"
+        ],
+        "indonesia": [
+          "bali"
+        ]
       },
-      "captive_pool_fraction": {"maldives-jih": null, "french-polynesia": null, "koh-samui": null, "bali": null},
-      "gaps_no_registry_corridors": ["seychelles", "mauritius"],
+      "captive_pool_fraction": {
+        "maldives-jih": null,
+        "french-polynesia": null,
+        "koh-samui": null,
+        "bali": null
+      },
+      "gaps_no_registry_corridors": [
+        "seychelles",
+        "mauritius"
+      ],
       "_gaps_doc": "Four Seasons declares Seychelles + Mauritius but the registry has NO Seychelles/Mauritius corridors. Tasklet sourcing queue; not invented."
     },
     "constance": {
@@ -51,8 +96,14 @@
       "ready_to_cascade": false,
       "run_blocked_pending": "captive_pool_fraction (per inherited market)",
       "greenfield": "off",
-      "inherit_markets": {"maldives": ["maldives-jih"]},
-      "captive_pool_fraction": {"maldives-jih": null},
+      "inherit_markets": {
+        "maldives": [
+          "maldives-jih"
+        ]
+      },
+      "captive_pool_fraction": {
+        "maldives-jih": null
+      },
       "gaps_no_registry_corridors": [],
       "_note": "Constance end_state is explicitly its OWN Maldives islands (addressable_market_count=1), so it must NOT inherit the full maldives-jih national pool. captive_pool_fraction required before cascade."
     },
@@ -91,11 +142,96 @@
         ]
       },
       "gaps_no_registry_corridors": []
+    },
+    "dott": {
+      "partner_tag": "dott",
+      "archetype": "contested_ridehail",
+      "ready_to_cascade": true,
+      "greenfield": "growth-config default",
+      "_note": "TIER-Dott \u2014 Europe+ME largest shared micromobility operator (250K vehicles, 400+ cities, 18 countries; official locations page 2026-07-09). Inherits the shared market spine for each geography with registry corridors. Declared markets without registry corridors (Denmark, Germany, UK, Switzerland, Netherlands, Norway, Poland, Austria, Belgium, Hungary) are coverage/narrative markets, NOT invented economics.",
+      "inherit_markets": {
+        "uae": [
+          "bolt-uae"
+        ],
+        "ksa-jeddah": [
+          "bolt-ksa-commercial"
+        ],
+        "israel": [
+          "bolt-israel"
+        ],
+        "greece": [
+          "bolt-greece"
+        ],
+        "italy": [
+          "bolt-italy"
+        ],
+        "spain": [
+          "bolt-spain"
+        ],
+        "finland": [
+          "bolt-finland"
+        ],
+        "france": [
+          "bolt-france-riviera"
+        ]
+      },
+      "gaps_no_registry_corridors": [
+        "denmark",
+        "germany",
+        "uk",
+        "switzerland",
+        "netherlands",
+        "norway",
+        "poland-tricity",
+        "austria",
+        "belgium",
+        "hungary"
+      ]
+    },
+    "voi": {
+      "partner_tag": "voi",
+      "archetype": "contested_ridehail",
+      "ready_to_cascade": true,
+      "greenfield": "growth-config default",
+      "_note": "Voi Technology \u2014 Europe leading e-scooter/e-bike operator (160K vehicles, 130+ cities, 13 countries; official page + 2025 annual report). Inherits shared market spine where registry corridors exist. Nordics/UK/DE/DK/NO/NL/CH declared markets without registry corridors are coverage/narrative, NOT invented.",
+      "inherit_markets": {
+        "sweden": [
+          "bolt-sweden"
+        ],
+        "finland": [
+          "bolt-finland"
+        ],
+        "italy": [
+          "bolt-italy"
+        ],
+        "spain": [
+          "bolt-spain"
+        ],
+        "france": [
+          "bolt-france-riviera"
+        ]
+      },
+      "gaps_no_registry_corridors": [
+        "norway",
+        "denmark",
+        "germany",
+        "uk",
+        "switzerland",
+        "netherlands",
+        "austria",
+        "belgium"
+      ]
     }
   },
   "_tasklet_sourcing_queue": {
     "_doc": "Research items this spec surfaces back to Tasklet (NOT Grok). Sourcing these unblocks the gaps/captive runs above.",
-    "captive_pool_fractions": ["four-seasons: maldives-jih, french-polynesia, koh-samui, bali", "constance: maldives-jih"],
-    "new_geography_corridors": ["uber: miami, bay-area, hawaii, sydney-nsw, brazil-latam, india, japan, hong-kong-prd, mexico", "four-seasons: seychelles, mauritius"]
+    "captive_pool_fractions": [
+      "four-seasons: maldives-jih, french-polynesia, koh-samui, bali",
+      "constance: maldives-jih"
+    ],
+    "new_geography_corridors": [
+      "uber: miami, bay-area, hawaii, sydney-nsw, brazil-latam, india, japan, hong-kong-prd, mexico",
+      "four-seasons: seychelles, mauritius"
+    ]
   }
 }
