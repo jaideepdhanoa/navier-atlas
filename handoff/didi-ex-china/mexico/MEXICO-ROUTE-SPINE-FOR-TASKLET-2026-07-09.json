@@ -1,0 +1,141 @@
+{
+  "at": "2026-07-09T23:19:38Z",
+  "partner": "didi",
+  "status": "seal-complete / cascade-needed",
+  "finance_market_keys": [
+    "mexico-caribbean",
+    "mexico-pacific"
+  ],
+  "cluster_id": "mexico",
+  "caribbean": [
+    {
+      "route_id": "ics-413f51cd44",
+      "od": "Puerto Juárez ↔ Isla Mujeres",
+      "from_bp": "bp-062decef2f",
+      "to_bp": "bp-d08462d3d9",
+      "from_city_id": "cancun-riviera-maya-mexico",
+      "to_city_id": "cancun-riviera-maya-mexico",
+      "distance_nm": 5.27,
+      "service_status": "current_scheduled",
+      "demand_hint": {
+        "geography": "Puerto Juárez–Isla Mujeres",
+        "passenger_movements_2025_approx": 5460000,
+        "note": "APIQ/operator series — Tasklet must set directional one-way + fare mix before model use",
+        "model_use": "blocked_until_direction_and_fare_mix"
+      },
+      "sub_proposal": "mexico-caribbean",
+      "priority": 1
+    },
+    {
+      "route_id": "ics-dd1d814699",
+      "od": "Playa del Carmen ↔ Cozumel (Ultramar/Winjet)",
+      "from_bp": "bp-pdc-muelle-fiscal",
+      "to_bp": "bp-1f95439031",
+      "from_city_id": "playa-del-carmen-mexico",
+      "to_city_id": "cozumel-mexico",
+      "distance_nm": 9.53,
+      "service_status": "current_scheduled",
+      "demand_hint": {
+        "geography": "Playa del Carmen–Cozumel",
+        "passenger_movements_2025_approx": 3850000,
+        "departures_2025": 27920,
+        "fare_mxn_one_way_observed": {
+          "ultramar_premium_plus": 320,
+          "winjet_from_playa": 335
+        },
+        "note": "No FX conversion or yield mix in Grok lane — Tasklet owns USD fare + direction split",
+        "model_use": "blocked_until_fare_yield_and_direction"
+      },
+      "sub_proposal": "mexico-caribbean",
+      "priority": 1,
+      "alias_route_ids": [
+        "e__playa-del-carmen-mexico__playa-del-carmen-ferry__cozumel-mexico__cozumel-ferry-san-miguel",
+        "ics-9d3a6b961f"
+      ]
+    },
+    {
+      "route_id": "ics-03e3853317",
+      "od": "Cancún Ultramar ↔ Isla Mujeres",
+      "from_city_id": "cancun-riviera-maya-mexico",
+      "to_city_id": "cancun-riviera-maya-mexico",
+      "distance_nm": 5.49,
+      "service_status": "current_scheduled",
+      "sub_proposal": "mexico-caribbean",
+      "priority": 2
+    },
+    {
+      "route_id": "ics-aa6ff40d2d",
+      "od": "Punta Sam ↔ Isla Mujeres (car ferry)",
+      "from_city_id": "cancun-riviera-maya-mexico",
+      "to_city_id": "cancun-riviera-maya-mexico",
+      "distance_nm": 3.35,
+      "service_status": "current_scheduled",
+      "sub_proposal": "mexico-caribbean",
+      "priority": 2
+    }
+  ],
+  "pacific": [
+    {
+      "route_id": "ics-89a8844858",
+      "od": "Puerto Vallarta / Los Muertos → Yelapa",
+      "from_city_id": "puerto-vallarta-mexico",
+      "to_city_id": "puerto-vallarta-mexico",
+      "distance_nm": 14.5,
+      "service_status": "current_water_taxi_evidence",
+      "demand_hint": {
+        "fare_mxn_one_way_observed": 350,
+        "note": "No audited annual ridership — Tasklet sources or leaves null",
+        "model_use": "blocked_until_ridership"
+      },
+      "sub_proposal": "mexico-pacific",
+      "priority": 1
+    },
+    {
+      "route_id": "ics-de6758216f",
+      "od": "Puerto Vallarta → Punta de Mita",
+      "from_city_id": "puerto-vallarta-mexico",
+      "to_city_id": "puerto-vallarta-mexico",
+      "distance_nm": 9.9,
+      "service_status": "future_opportunity",
+      "sub_proposal": "mexico-pacific",
+      "priority": 2
+    },
+    {
+      "route_id": "ics-db0930d9d1",
+      "od": "Cabo San Lucas Marina → Puerto Los Cabos / SJC",
+      "from_city_id": "los-cabos-mexico",
+      "to_city_id": "los-cabos-mexico",
+      "distance_nm": 17.0,
+      "service_status": "future_opportunity",
+      "sub_proposal": "mexico-pacific",
+      "priority": 2
+    },
+    {
+      "route_id": "ics-b5861451fb",
+      "od": "Palmilla → San José del Cabo Marina",
+      "from_city_id": "los-cabos-mexico",
+      "to_city_id": "los-cabos-mexico",
+      "distance_nm": 3.4,
+      "service_status": "future_opportunity",
+      "sub_proposal": "mexico-pacific",
+      "priority": 3
+    }
+  ],
+  "all_route_ids": [
+    "ics-413f51cd44",
+    "ics-dd1d814699",
+    "ics-03e3853317",
+    "ics-aa6ff40d2d",
+    "ics-89a8844858",
+    "ics-de6758216f",
+    "ics-db0930d9d1",
+    "ics-b5861451fb"
+  ],
+  "rules": [
+    "Null beats wrong — do not invent pax or USD fares",
+    "No grab-greenfield-census",
+    "No catch-all didi market key for economics",
+    "Finance spine route_ids must equal this list in shared mexico markets",
+    "port_total / passenger_movements are allocation pools until direction+fare resolved"
+  ]
+}
