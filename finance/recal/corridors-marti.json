@@ -1,0 +1,1074 @@
+{
+  "_doc": "Scoped corridors view for Marti (Türkiye). Restored yango-turkey L3 spine — see market _provenance.",
+  "_built_at": "2026-07-09",
+  "capture_rate": 0.1,
+  "markets": {
+    "marti-turkey": {
+      "partner": "marti",
+      "region": "MENA",
+      "label": "Türkiye — Istanbul Bosphorus, İzmir Bay & the Aegean Coast",
+      "fleet_basis": "grounded",
+      "capture_rate": 0.18,
+      "_scope_isolated": true,
+      "_tier": "A",
+      "corridors": [
+        {
+          "route_id": null,
+          "from": "Istanbul (Galataport)",
+          "to": "Beşiktaş / Bosphorus",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 13.0,
+            "_fare_record": {
+              "value": 13.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "EXISTING anchor retained — private/tourist Bosphorus hop-on premium (~600 TL). For reference, the IMM Sea Taxi shared per-seat on this 2.6 nm leg = (500+2.6×750)/10 = 245 TL = $5.28; whole-boat charter 2450 TL = $52.8.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.51
+            },
+            "corridor_annual_oneway_pax": 400000,
+            "_demand_record": {
+              "value": 400000,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 400000,
+              "haircut_applied_pct": 0.0,
+              "detail": "EXISTING registry corridor kept & re-anchored. 400k = the modeled premium tourist+commuter capture on the European-shore Bosphorus segment (Galataport cruise terminal ~1.5M+ cruise pax/yr through the terminal; the broader Şehir Hatları Boğaz/tour line + Ortaköy-Beşiktaş-Eminönü pool sits inside the 40M-pax/yr Şehir Hatları network). Flagged for downstream re-derivation against the network pool; kept at the existing 400k to avoid double-counting the cross-Bosphorus lines below.",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Kos (Greece)",
+          "distance_nm": 12,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "bodrum",
+          "to_node_id": "rhodes-dodecanese-greece",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Bodrum Cruise Port / Castle harbour (Bodrum Express Lines berth)",
+            "to": "Kos — Mandraki / main port, Kos Town"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35.0,
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Scheduled fast catamaran Bodrum→Kos adult one-way €25-40 (Bodrum Express Lines / ferrybodrum); midpoint €32 × 1.08 = $34.6 ≈ $35.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 17.0
+            },
+            "corridor_annual_oneway_pax": 138149,
+            "_demand_record": {
+              "value": 138149,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 138149,
+              "haircut_applied_pct": 0.0,
+              "detail": "RE-ANCHOR (existing registry corridor). Replaces the shared 1.15M national pool with a Bodrum-SPECIFIC MEASURED ferry pool: Bodrum Cruise Port ran 722 ferry sailings to the Greek islands carrying ~138,000 pax in 2024 (Bodrum Cruise Port; 2025: 138,149 ferry pax), overwhelmingly the Bodrum↔Kos route. This is realized cross-border water traffic → full pool is the base, premium capture downstream, haircut 0. GATEWAY FLAG: this 138k figure is the TOTAL Bodrum-port Greek-island ferry pool; do not also add a separate Bodrum→Greek-island corridor. National context: 1,153,727 Turkey→Greek-islands sea ",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Marmaris",
+          "to": "Rhodes (Greece)",
+          "distance_nm": 30,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "rhodes-dodecanese-greece",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Marmaris — Netsel Marina / Marmaris cruise port",
+            "to": "Rhodes — commercial harbour, Rhodes Town"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 59.0,
+            "_fare_record": {
+              "value": 59.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Scheduled fast catamaran Marmaris→Rhodes one-way ~€55 (Yeşil Marmaris Lines), ~45 min; €55 × 1.08 = $59.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 49.0
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "cross_border",
+              "full_pool_preharvest": 1153727,
+              "detail": "RE-ANCHOR (existing registry corridor) kept. Cross-border, est_demand NULL. Draws from the shared ~1.15M national Turkey→Greek-islands sea pool (DHA 2024) with Bodrum→Kos / Çeşme→Chios / Fethiye→Rhodes — do NOT sum. No Marmaris-specific ferry-pax split sourced this pass. Context: Dalaman airport 5,662,465 pax (2024); Rhodes is the largest Dodecanese island.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Fethiye",
+          "to": "Göcek (12 Islands bays)",
+          "distance_nm": 8,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "bodrum-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Fethiye — town harbour / Ece Marina",
+            "to": "Göcek — D-Marin Göcek / Skopea Marina"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 38.0,
+            "_fare_record": {
+              "value": 38.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "12-Islands day-cruise per-adult comparable ~$35-40 (GetYourGuide/Tripadvisor Göcek & Fethiye tours); $38 premium per-seat anchor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 5662465,
+              "detail": "RE-ANCHOR (existing registry corridor) kept. 12-Islands day-cruise + Göcek yachting. est_demand NULL — no day-cruise headcount published. full_pool UPDATED to Dalaman airport 5,662,465 pax (2024, full-year — supersedes the prior summer-only 3.93M). Göcek = marquee yacht-charter base (200+ charter yachts).",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Çeşme",
+          "to": "Chios (Greece)",
+          "distance_nm": 7,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "cesme-izmir",
+          "to_node_id": null,
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Çeşme — ferry port (İzmir province)",
+            "to": "Chios — main harbour, Chios Town"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "_demand_record": {
+              "value": null,
+              "basis": "cross_border",
+              "full_pool_preharvest": 1153727,
+              "detail": "RE-ANCHOR (existing registry corridor) kept. Cross-border, est_demand NULL. Draws from the shared ~1.15M national Turkey→Greek-islands sea pool (DHA 2024) — do NOT sum. Çeşme↔Chios runs up to ~36 sailings/week in season (Direct Ferries), ~25 min. Gap: Çeşme-specific ferry-pax split and fare not separately sourced.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_to_needs_minting": true,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Karaköy",
+          "to": "Kadıköy",
+          "distance_nm": 2.4,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Karaköy — Şehir Hatları pier (Galata side)",
+            "to": "Kadıköy — Şehir Hatları main pier (Asian side)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 4.96,
+            "_fare_record": {
+              "value": 4.96,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 2.4 nm = (500+2.4×750)/10 = 230 TL ÷ 46.4 = $4.96 (whole-boat charter 2300 TL = $49.6).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.28
+            },
+            "corridor_annual_oneway_pax": 725476,
+            "_demand_record": {
+              "value": 7254757,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 7254757,
+              "haircut_applied_pct": 0.0,
+              "detail": "SOURCED full annual line ridership for the Karaköy-Kadıköy line = 7,254,757 (2013-2014 period, ITU/Şehir Hatları Planning Unit data). This is a realized water-pool already carrying millions/yr → full pool is the base, premium capture downstream. Peak was 8,281,267 (2010-2011); the 2013-14 figure reflects the Marmaray-opening dip. CONFIDENCE MEDIUM: figure is 2013-14 (last published per-line split); treat as conservative order-of-magnitude (network has since recovered to 40M/yr for Şehir Hatları, 2023).",
+              "method": "coverage-pass-2026-06-19",
+              "addressable_pax_yr": 725476,
+              "addressable_pax_yr_ceiling": 7254757,
+              "confidence": "med",
+              "premium_addressable_note": "premium-addressable 10% slice of 7,254,757 gross short_commuter_hop pool grounded at 0.25 addressable capture; full pool in SAM/TAM upside (Jaideep 2026-06-19)"
+            },
+            "demand_confidence": "med",
+            "pool_basis": "addressable"
+          },
+          "_premium_reanchored": {
+            "gross": 7254757,
+            "premium_share": 0.1,
+            "class": "short_commuter_hop",
+            "addressable": 725476
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Eminönü",
+          "to": "Kadıköy",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Eminönü — Şehir Hatları pier (Sirkeci/Old City)",
+            "to": "Kadıköy — Şehir Hatları main pier"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 5.28,
+            "_fare_record": {
+              "value": 5.28,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 2.6 nm = (500+2.6×750)/10 = 245 TL ÷ 46.4 = $5.28 (whole-boat 2450 TL = $52.8).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.28
+            },
+            "corridor_annual_oneway_pax": 1091427,
+            "_demand_record": {
+              "value": 10914274,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 10914274,
+              "haircut_applied_pct": 0.0,
+              "detail": "SOURCED full annual line ridership for the Eminönü-Kadıköy line = 10,914,274 (2013-2014, ITU/Şehir Hatları Planning Unit). Largest single cross-Bosphorus vapur line. Peak 12,776,060 (2012-2013). Realized water pool → full pool is the base, premium capture downstream. CONFIDENCE MEDIUM: 2013-14 (post-Marmaray dip); conservative order-of-magnitude.",
+              "method": "coverage-pass-2026-06-19",
+              "addressable_pax_yr": 1091427,
+              "addressable_pax_yr_ceiling": 10914274,
+              "confidence": "med",
+              "premium_addressable_note": "premium-addressable 10% slice of 10,914,274 gross short_commuter_hop pool grounded at 0.25 addressable capture; full pool in SAM/TAM upside (Jaideep 2026-06-19)"
+            },
+            "demand_confidence": "med",
+            "pool_basis": "addressable"
+          },
+          "_premium_reanchored": {
+            "gross": 10914274,
+            "premium_share": 0.1,
+            "class": "short_commuter_hop",
+            "addressable": 1091427
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Eminönü",
+          "to": "Üsküdar",
+          "distance_nm": 0.9,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Eminönü — Şehir Hatları pier",
+            "to": "Üsküdar — Şehir Hatları pier (Asian side)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 2.53,
+            "_fare_record": {
+              "value": 2.53,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 0.9 nm = (500+0.9×750)/10 = 117.5 TL ÷ 46.4 = $2.53 (whole-boat 1175 TL = $25.3).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.15
+            },
+            "corridor_annual_oneway_pax": 880476,
+            "_demand_record": {
+              "value": 8804764,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 8804764,
+              "haircut_applied_pct": 0.0,
+              "detail": "SOURCED full annual line ridership for the Eminönü-Üsküdar line = 8,804,764 (2013-2014, ITU/Şehir Hatları Planning Unit). Peak 11,701,415 (2012-2013); the 2013-14 figure shows a ~25% drop because Marmaray (opened 29-Oct-2013) passes through Sirkeci & Üsküdar directly under this corridor. Realized water pool → full pool base, premium capture downstream. CONFIDENCE MEDIUM (2013-14; conservative).",
+              "method": "coverage-pass-2026-06-19",
+              "addressable_pax_yr": 880476,
+              "addressable_pax_yr_ceiling": 8804764,
+              "confidence": "med",
+              "premium_addressable_note": "premium-addressable 10% slice of 8,804,764 gross short_commuter_hop pool grounded at 0.25 addressable capture; full pool in SAM/TAM upside (Jaideep 2026-06-19)"
+            },
+            "demand_confidence": "med",
+            "pool_basis": "addressable"
+          },
+          "_premium_reanchored": {
+            "gross": 8804764,
+            "premium_share": 0.1,
+            "class": "short_commuter_hop",
+            "addressable": 880476
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Beşiktaş",
+          "to": "Kadıköy",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Beşiktaş — Şehir Hatları pier",
+            "to": "Kadıköy — Şehir Hatları main pier"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 5.28,
+            "_fare_record": {
+              "value": 5.28,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 2.6 nm = (500+2.6×750)/10 = 245 TL ÷ 46.4 = $5.28.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.28
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 40000000,
+              "detail": "Major cross-Bosphorus commuter line but NO separately-published per-line ridership post-2014 (the ITU study covered only Eminönü-Kadıköy, Karaköy-Kadıköy, Eminönü-Üsküdar). est_demand NULL. full_pool recorded = the 40M-pax/yr Şehir Hatları network (2023); the five main piers (Eminönü, Kadıköy, Üsküdar, Karaköy, Beşiktaş) carry ~75% of network traffic — Beşiktaş-Kadıköy is squarely in this cluster (order-of-magnitude likely 4-8M/yr by analogy to the sourced sister lines). Orchestrator to gateway-",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Kadıköy",
+          "to": "Kabataş",
+          "distance_nm": 2.6,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Kadıköy — Şehir Hatları main pier",
+            "to": "Kabataş — Şehir Hatları pier (tram/funicular hub)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 5.28,
+            "_fare_record": {
+              "value": 5.28,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 2.6 nm = (500+2.6×750)/10 = 245 TL ÷ 46.4 = $5.28.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 1.23
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 40000000,
+              "detail": "Busy cross-Bosphorus commuter line feeding the Kabataş tram/funicular interchange; NO separately-published per-line ridership post-2014. est_demand NULL. full_pool = 40M Şehir Hatları network (2023); Kadıköy is the network's busiest Asian pier. Orchestrator to gateway-allocate; do not sum with sourced sister lines.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Kabataş",
+          "to": "Büyükada (Princes' Islands)",
+          "distance_nm": 11,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Kabataş — Şehir Hatları / İDO pier",
+            "to": "Büyükada — historic vapur iskelesi (main island pier)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 18.86,
+            "_fare_record": {
+              "value": 18.86,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 11 nm = (500+11×750)/10 = 875 TL ÷ 46.4 = $18.86 (whole-boat 8750 TL = $188.6). Scheduled premium = İDO/Şehir Hatları fast-ferry Adalar tier.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 2.96
+            },
+            "corridor_annual_oneway_pax": 2000000,
+            "_demand_record": {
+              "value": 2000000,
+              "unit": "pax/yr one-way",
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 2000000,
+              "haircut_applied_pct": 0.0,
+              "detail": "FULL Büyükada annual visitor pool ~2,000,000 (Para Dergi: 'her yıl adayı iki milyon turist ziyaret ediyor'). Boat is the only access mode → full pool is the base, premium capture downstream. SHARED-POOL FLAG: the wider Adalar (Princes' Islands) district draws ~13.5M visitors/yr (Bianet) across all islands/feeders — this same Adalar pool also feeds the Bostancı→Büyükada corridor below, which is set NULL to avoid double-count. Confidence MEDIUM (secondary press citing island figures).",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bostancı",
+          "to": "Büyükada (Princes' Islands)",
+          "distance_nm": 4.5,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bostancı — Şehir Hatları / İDO pier (Asian side)",
+            "to": "Büyükada — main island pier"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.35,
+            "_fare_record": {
+              "value": 8.35,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 4.5 nm = (500+4.5×750)/10 = 387.5 TL ÷ 46.4 = $8.35 (whole-boat 3875 TL = $83.5).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 2.96
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 13500000,
+              "detail": "SHARED-POOL FLAG: draws from the SAME ~13.5M Adalar / ~2M Büyükada visitor pool already anchored at Kabataş→Büyükada above. est_demand NULL to avoid double-counting; full_pool recorded (13.5M Adalar district) so the orchestrator can split the island pool across the Bostancı (Asian/short) and Kabataş (European/long) feeders. Bostancı is the shortest and a major Asian-side embarkation point for the islands.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Sabiha Gökçen Airport (Pendik)",
+          "to": "Kabataş / Beşiktaş (city)",
+          "distance_nm": 15,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "istanbul-turkey",
+          "to_node_id": "istanbul-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Pendik — İDO / Şehir Hatları pier (SAW airport landside link)",
+            "to": "Kabataş / Beşiktaş — city core piers"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 25.3,
+            "_fare_record": {
+              "value": 25.3,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "IMM Sea Taxi shared per-seat on 15 nm = (500+15×750)/10 = 1175 TL ÷ 46.4 = $25.3 (whole-boat charter 11,750 TL = $253).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "airport_transfer",
+              "full_pool_preharvest": 41000000,
+              "detail": "ASPIRATIONAL / no scheduled sea link today: there is no direct airport-quay ferry to Sabiha Gökçen (SAW); the nearest water access is the Pendik İDO pier ~several km from the terminal, and Istanbul Airport (IST) on the Black Sea side has no sea link at all. est_demand NULL. full_pool recorded = SAW ~41M annual pax (2024 order; DHMİ — SAW is Turkey's 3rd-busiest airport) as the upstream pool a future premium airport→city water shuttle could tap (resort/premium propensity slice only). Gap: no Turk",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Kuşadası",
+          "to": "Samos (Greece)",
+          "distance_nm": 12,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "cesme-izmir",
+          "to_node_id": null,
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Kuşadası — cruise port (Ege Ports)",
+            "to": "Samos — Vathy / Pythagorio harbour"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "_demand_record": {
+              "value": null,
+              "basis": "cross_border",
+              "full_pool_preharvest": 1153727,
+              "detail": "Cross-border (aspirational). est_demand NULL. Draws from the SAME ~1.15M national Turkey→Greek-islands sea pool (DHA 2024) — do NOT sum. Kuşadası is a top Aegean cruise port; Samos is the natural Greek-island counterpart. Gap: Kuşadası→Samos fare and corridor-specific volume not separately sourced.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_to_needs_minting": true,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "aspirational": true,
+          "_aspirational_reason": "cross-border Aegean — no_endpoints"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Datça",
+          "distance_nm": 10,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bodrum",
+          "to_node_id": "bodrum",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Castle harbour / Bodrum Cruise Port quay (Bodrum Ferryboat berth)",
+            "to": "Datça — Kairos Marina (pax) / Körmen Port (car ferry)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 15.1,
+            "_fare_record": {
+              "value": 15.1,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Bodrum→Datça scheduled ferry one-way 700 TL (Jun 2025, Turkey's For Life / bodrumferibot) ÷ 46.4 = $15.1; return 1,250 TL = $26.9.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 4375662,
+              "detail": "Established scheduled car+pax ferry beating a ~3 h road detour, but no per-route annual headcount published → est_demand NULL. full_pool recorded = Milas-Bodrum airport 4,375,662 pax (2024) as the Bodrum-cluster arrivals pool feeding peninsula water demand; orchestrator to take a modal-shift premium slice (3-8%). Gap: Bodrum Ferryboat per-route pax not published.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Gümüşlük",
+          "distance_nm": 9,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum",
+          "to_node_id": "bodrum",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Castle harbour day-boat quay",
+            "to": "Gümüşlük — fishing harbour / Rabbit Island bay"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 30.0,
+            "_fare_record": {
+              "value": 30.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Bodrum/Gümüşlük day-boat tour comparable ~$30/adult (Tripadvisor/GetYourGuide Bodrum cruises) used as premium per-seat leisure anchor (not pure point-to-point).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 4375662,
+              "detail": "Leisure day-boat destination (Black Island, Cleopatra/Rabbit Island, sunset dining). est_demand NULL — no per-destination day-cruise headcount published. full_pool = Milas-Bodrum 4.38M arrivals (2024); orchestrator to take a leisure-cruise slice. Gap: operator-level Gümüşlük boat-tour volume.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Turgutreis",
+          "distance_nm": 10,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum",
+          "to_node_id": "bodrum",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Castle harbour quay",
+            "to": "Turgutreis — D-Marin Turgutreis Marina"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 35.0,
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Bodrum-peninsula day/sunset cruise comparable ~$35/adult (Tripadvisor/Viator Bodrum & Turgutreis tours).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 4375662,
+              "detail": "Peninsula resort+marina node (D-Marin Turgutreis, ~550 berths) and the embarkation point for Didim/Greek-island catamarans. est_demand NULL — no per-route pax published. full_pool = Milas-Bodrum 4.38M arrivals (2024). Orchestrator to take a leisure/transfer slice.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Didim",
+          "distance_nm": 20,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "bodrum",
+          "to_node_id": "bodrum",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Castle harbour (via Turgutreis, D-Marin Turgutreis)",
+            "to": "Didim — D-Marina Didim / Altınkum harbour"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 27.0,
+            "_fare_record": {
+              "value": 27.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Didim→Turgutreis/Bodrum catamaran ~€25 (Didim Sea Lines / Voices Newspaper 2024 tariff) × 1.08 = $27.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "modal_shift_rail_road",
+              "full_pool_preharvest": 4375662,
+              "detail": "Scheduled seasonal Didim↔Turgutreis↔Bodrum catamaran beating a ~2 h road detour. est_demand NULL — no per-route pax published. full_pool = Milas-Bodrum 4.38M arrivals (2024) as the Bodrum-cluster pool (Didim/Altınkum is a major adjacent resort). Orchestrator to take a modal-shift premium slice.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Bodrum",
+          "to": "Yalıkavak",
+          "distance_nm": 9,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum",
+          "to_node_id": "bodrum",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Bodrum — Castle harbour / Bodrum Cruise Port quay",
+            "to": "Yalıkavak — Yalıkavak Marina (Palmarina)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40.0,
+            "_fare_record": {
+              "value": 40.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Bodrum-peninsula premium day/charter tender comparable ~$40/seat (Viator/GetYourGuide Bodrum luxury cruises) — superyacht-marina premium tier.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 4375662,
+              "detail": "Flagship superyacht/luxury-marina node (620 berths, to 135 m). Highest premium-willingness on the peninsula. est_demand NULL — no marina-visitor headcount published. full_pool = Milas-Bodrum 4.38M arrivals (2024); orchestrator to take a premium leisure/tender slice. Gap: Yalıkavak Marina annual footfall/berth-occupancy pax not published.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Marmaris",
+          "to": "Göcek",
+          "distance_nm": 24,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "bodrum-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Marmaris — Netsel Marina",
+            "to": "Göcek — D-Marin Göcek / Skopea Marina"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 45.0,
+            "_fare_record": {
+              "value": 45.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Marmaris/Göcek gulet & blue-cruise day-leg per-seat comparable ~$45 (Blue Cruise / Tripadvisor Marmaris-Datça/Göcek cabin charters, per-day per-person).",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 5662465,
+              "detail": "Core 'Blue Cruise' gulet leg (Marmaris→Göcek/12-Islands). est_demand NULL — no day-cruise/charter headcount published. full_pool = Dalaman airport 5,662,465 pax (2024), the regional arrivals pool for the Marmaris/Göcek/Fethiye charter belt. Orchestrator to take a charter/leisure slice. Göcek = D-Marin Göcek (380 berths, superyachts to 70 m), Türkiye's safest natural marina.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Marmaris",
+          "to": "Datça",
+          "distance_nm": 18,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "bodrum-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Marmaris — Netsel Marina",
+            "to": "Datça — town harbour / Kairos Marina"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40.0,
+            "_fare_record": {
+              "value": 40.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Marmaris→Datça cabin-charter/day-boat per-person comparable ~$40 (Blue Cruise Bodrum Marmaris-Datça route). Scheduled point-to-point not separately tariffed → leisure anchor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 5662465,
+              "detail": "Day-boat / cabin-charter leg along the Datça peninsula coast. est_demand NULL — no per-route headcount published. full_pool = Dalaman airport 5,662,465 pax (2024) regional pool. Orchestrator to take a leisure slice.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Fethiye",
+          "to": "Ölüdeniz",
+          "distance_nm": 6,
+          "vessel": "Pioneer II",
+          "archetype": "ridehail",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "bodrum-turkey",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Fethiye — town harbour / Ece Marina",
+            "to": "Ölüdeniz — Blue Lagoon beach jetty / Belcekız"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 59.0,
+            "_fare_record": {
+              "value": 59.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Fethiye/Ölüdeniz 6-Islands + Butterfly Valley + Blue Lagoon boat trip ~$59/adult (Tripadvisor) as premium per-seat day-cruise anchor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 5662465,
+              "detail": "Marquee Lycian-coast day-boat corridor (Ölüdeniz Blue Lagoon, Butterfly Valley, 6 Islands). est_demand NULL — Ölüdeniz Nature Park visitor count not cleanly sourced this pass. full_pool = Dalaman airport 5,662,465 pax (2024). Orchestrator to take a day-cruise slice. Gap: Ölüdeniz Blue Lagoon annual visitor count.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Fethiye",
+          "to": "Rhodes (Greece)",
+          "distance_nm": 42,
+          "vessel": "Pioneer II",
+          "archetype": "intercity",
+          "from_node_id": "bodrum-turkey",
+          "to_node_id": "rhodes-dodecanese-greece",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Fethiye — town harbour (Sea Star Lindos berth)",
+            "to": "Rhodes — Touristiko / Mandraki harbour, Rhodes Town"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 64.0,
+            "_fare_record": {
+              "value": 64.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Fethiye→Rhodes fast catamaran from $64 one-way (Direct Ferries), ~1h40.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)",
+              "commuter_floor_usd": 58.0
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "cross_border",
+              "full_pool_preharvest": 1153727,
+              "detail": "NEW cross-border corridor. est_demand NULL. Draws from the shared ~1.15M national Turkey→Greek-islands sea pool (DHA 2024) with Bodrum→Kos / Marmaris→Rhodes / Çeşme→Chios — do NOT sum. Daily seasonal catamaran (Sea Star Lindos), ~1h40. Context: Dalaman airport 5.66M pax (2024).",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20",
+          "_geometry_bound_at": "2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "İzmir",
+          "to": "Çeşme",
+          "distance_nm": 38,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "cesme-izmir",
+          "to_node_id": "cesme-izmir",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "İzmir — Alsancak / Konak pier",
+            "to": "Çeşme — Çeşme ferry port"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {},
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "İzmir (Konak)",
+          "to": "Karşıyaka",
+          "distance_nm": 2.5,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "cesme-izmir",
+          "to_node_id": "cesme-izmir",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "İzmir — Konak vapur iskelesi (city core)",
+            "to": "Karşıyaka — Karşıyaka İZDENİZ pier"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 14621849,
+            "_demand_record": {
+              "value": 14621849,
+              "unit": "pax/yr one-way",
+              "basis": "ferry_ridership_pool",
+              "full_pool_preharvest": 14621849,
+              "haircut_applied_pct": 0.0,
+              "detail": "MEASURED municipal pool. İZDENİZ A.Ş. (İzmir metro bay ferries) carried 14,621,849 passengers in 2023 (+1,256,843 vehicles, +225,960 cyclists) across 9 bay piers (Bostanlı, Karşıyaka, Mordoğan, Foça, Alsancak, Pasaport, Konak, Göztepe, Üçkuyular). This is realized water-pool ridership → full pool is the base, haircut 0, premium capture downstream (mirrors Istanbul cross-Bosphorus logic). GATEWAY FLAG: 14.62M is the WHOLE İZDENİZ network total; Konak↔Karşıyaka is the busiest/representative line and is used here as the single İzmir-bay gateway corridor — do NOT add other İzmir bay corridors on t",
+              "method": "coverage-pass-2026-06-19"
+            },
+            "demand_confidence": "med"
+          },
+          "_in_grounded_floor": false,
+          "_floor_no_fare": true,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Antalya",
+          "to": "Kemer",
+          "distance_nm": 22,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "antalya",
+          "to_node_id": "antalya",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Antalya — Kaleiçi old harbour / Setur Antalya Marina",
+            "to": "Kemer — Kemer Marina (Kemer Turkiz)"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 45.0,
+            "_fare_record": {
+              "value": 45.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Kemer full-day pirate-boat cruise comparable ~$41-53 (Viator/Tinggly/Tripadvisor); $45 premium per-seat anchor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 17280000,
+              "detail": "Congested summer coastal corridor (D400) where a fast sea shuttle could substitute; today only leisure pirate-boat cruises run. est_demand NULL — no scheduled-shuttle or day-cruise headcount published. full_pool = Antalya province 17.28M visitors (2024 record, incl. 352,754 air-transfer pax). Orchestrator to take a premium modal-shift / leisure slice. Gap: Antalya↔Kemer road AADT and boat-tour volume.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        },
+        {
+          "route_id": null,
+          "from": "Antalya",
+          "to": "Side",
+          "distance_nm": 33,
+          "vessel": "Pioneer II",
+          "archetype": "commute",
+          "from_node_id": "antalya",
+          "to_node_id": "antalya",
+          "country": "Turkey",
+          "endpoint_boarding_points": {
+            "from": "Antalya — Kaleiçi old harbour / Setur Antalya Marina",
+            "to": "Side — Side ancient harbour"
+          },
+          "_needs_geometry_binding": true,
+          "_source": "coverage-2026-06-19",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50.0,
+            "_fare_record": {
+              "value": 50.0,
+              "unit": "USD/pax/one-way",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Side full-day boat cruise comparable ~$44-60/adult (Tripadvisor/GetYourGuide Side cruises); $50 premium per-seat anchor.",
+              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
+            },
+            "_demand_record": {
+              "value": null,
+              "basis": "visitor_pool",
+              "full_pool_preharvest": 17280000,
+              "detail": "Eastern-gulf resort corridor (Side/Manavgat is a major Antalya resort cluster). est_demand NULL — no scheduled-shuttle/day-cruise headcount published. full_pool = Antalya province 17.28M visitors (2024). Orchestrator to take a premium leisure/modal-shift slice. Gap: Antalya↔Side road AADT and boat-tour volume.",
+              "method": "coverage-pass-2026-06-19 (NULL beats confidently-wrong)"
+            }
+          },
+          "_in_grounded_floor": false,
+          "_node_retag": "turkey-coast-split-2026-06-20"
+        }
+      ],
+      "country": "Turkey",
+      "_provenance": {
+        "restored_from": "finance/model/corridors.json@44060e8a28 market yango-turkey",
+        "restored_at": "2026-07-09",
+        "reason": "Turkey removed from Yango surfaces (scope, not data quality). Corridors belong to geography; restored as marti-turkey for the Marti proposal.",
+        "restored_by": "tasklet/five-partners-batch"
+      }
+    }
+  }
+}
