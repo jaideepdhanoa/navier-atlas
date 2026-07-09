@@ -1,0 +1,60 @@
+{
+  "_doc": "Tasklet BP wishlist — flags real, verifiable ferry terminals + intended OD pairs for empty markets & isolated cities. Tasklet flags; Grok sources exact coords, geocodes, water-routes, mints, seals. NOBODY INVENTS A PIER — all named terminals below are real, verifiable ferry ports; Grok confirms coordinates before minting.",
+  "generated": "2026-07-06",
+  "author": "tasklet",
+  "hygiene_exceptions_required": {
+    "_note": "Some real, high-volume corridors are intra-city (same city_id both ends) or <3nm and were culled as self-referential/sub-floor junk. These island/harbour clusters need an ISLAND_CITIES exception analogous to RIVER_CITIES (floor ~0.4nm, keep intra-city where genuinely on-water and cross-BP).",
+    "ISLAND_CITIES": ["kaohsiung-taiwan", "penghu-taiwan", "koh-larn-thailand"]
+  },
+  "tier1_deck_backed_was_live": [
+    {
+      "market": "taiwan",
+      "cluster_id": "taiwan",
+      "priority": "HIGHEST",
+      "why": "Fully built canonical market (rich cluster brief + kaohsiung/penghu city briefs + Grab deck slide 'Penghu (Taiwan) — the next beachhead'). Dropped from grab.json _map_scope on 2026-07-06 because inherit-all found 0 canonical corridors — its only ROUTES entries were self-referential ics- intra-city hops, culled as junk. Needs REAL OD-pair corridors minted so the cluster has corridors to inherit; then re-enters Grab scope automatically.",
+      "boarding_points_named": [
+        {"name": "Kaohsiung Ferry / Gushan Pier", "city_id": "kaohsiung-taiwan", "real": true},
+        {"name": "Cijin ferry pier", "city_id": "kaohsiung-taiwan", "real": true},
+        {"name": "Donggang (East Port) ferry terminal", "city_id": "kaohsiung-taiwan", "real": true},
+        {"name": "Xiaoliuqiu / Liuqiu (Baisha / Dafu harbour)", "city_id": "kaohsiung-taiwan", "real": true},
+        {"name": "Budai Port (Chiayi)", "city_id": "kaohsiung-taiwan", "real": true, "note": "mainland trunk origin; may warrant own city_id"},
+        {"name": "Magong Harbour (Penghu)", "city_id": "penghu-taiwan", "real": true},
+        {"name": "Xiyu / Waian (Penghu)", "city_id": "penghu-taiwan", "real": true},
+        {"name": "Baisha / Chihkan (Penghu)", "city_id": "penghu-taiwan", "real": true}
+      ],
+      "od_pairs_intended": [
+        {"pair": ["Kaohsiung Ferry", "Cijin"], "nm": 1, "signal": "3.2M riders/yr", "note": "intra-Kaohsiung; needs ISLAND_CITIES exception (<3nm)"},
+        {"pair": ["Donggang", "Xiaoliuqiu"], "nm": 9, "signal": "1.1M crossings/yr", "note": "intra-kaohsiung city_id; needs exception"},
+        {"pair": ["Budai", "Magong"], "nm": 33, "note": "mainland↔Penghu trunk (cross-city)"},
+        {"pair": ["Magong", "Xiyu/Baisha"], "nm": 12, "note": "Penghu inter-island loop; intra-penghu; needs exception"},
+        {"pair": ["Kaohsiung", "Magong"], "nm": 73, "tier": "quanta_lr", "note": "GENUINE cross-city — restore from peak geometry e__kaohsiung-taiwan__kaohsiung-port__penghu-taiwan__magong-harbor"}
+      ]
+    }
+  ],
+  "tier2_empty_markets": [
+    {"market": "balearic-islands-spain", "named_piers": ["Palma de Mallorca", "Ibiza (Eivissa) port", "Formentera (La Savina)", "Maó/Mahón (Menorca)"], "od_intents": [["Ibiza", "Formentera (~3nm)"], ["Palma", "Ibiza (Q-LR ~75nm)"]]},
+    {"market": "bay-of-naples-amalfi-coast-italy", "named_piers": ["Naples (Molo Beverello)", "Capri (Marina Grande)", "Sorrento", "Positano", "Amalfi", "Ischia", "Procida"], "od_intents": [["Naples", "Capri (~17nm)"], ["Sorrento", "Capri (~7nm)"], ["Positano", "Amalfi (~4nm)"], ["Naples", "Ischia (~16nm)"]]},
+    {"market": "ksa-commercial", "named_piers": ["Yanbu", "Jeddah (Al Salam / Corniche)", "King Abdullah Economic City (KAEC)"], "note": "coordinate with existing KSA sealing lane; Yanbu currently isolated"},
+    {"market": "leeward-antilles-northern", "named_piers": ["Oranjestad (Aruba)", "Willemstad (Curaçao)", "Kralendijk (Bonaire)"], "od_intents": [["Aruba", "Curaçao (Q-LR ~70nm)"], ["Curaçao", "Bonaire (~30nm)"]]},
+    {"market": "shanghai-china", "named_piers": ["Shanghai (Wusongkou / Shiliupu)", "Putuoshan (Zhoushan archipelago)"], "note": "verify on-water feasibility & policy before minting"},
+    {"market": "st-lucia-grenadines", "named_piers": ["Castries / Rodney Bay (St Lucia)", "Bequia (Port Elizabeth)", "Union Island", "Kingstown (St Vincent)"], "od_intents": [["St Lucia", "St Vincent (Q-LR ~50nm)"], ["Bequia", "Union Island (~25nm)"]]}
+  ],
+  "tier3_isolated_cities": {
+    "_note": "35 canonical cities with a boarding point but zero corridors. ~19 previously carried only self-referential intra-city micro-hops (correctly culled). Real inter-city corridors need sourcing. Grouped by cluster; named coastal neighbours to pair.",
+    "morocco": {"cities": ["tangier-morocco", "casablanca-morocco", "al-hoceima-morocco", "agadir-essaouira-morocco", "rabat-sale-morocco", "mohammedia-morocco"], "od_intents": [["Casablanca", "Mohammedia (~12nm)"], ["Agadir", "Essaouira (~85nm Q-LR)"], ["Tangier", "Al Hoceima (Q-LR)"]]},
+    "greece": {"cities": ["corfu-ionian-greece", "halkidiki-greece", "milos-western-cyclades-greece", "skiathos-sporades-greece", "crete-greece"], "od_intents": [["Milos", "Sifnos/Serifos (~15nm)"], ["Skiathos", "Skopelos (~12nm)"]]},
+    "india": {"cities": ["kerala-backwaters-india", "chennai-india", "kochi-india"], "note": "high-value consumer scope; Kochi harbour + Kerala backwater hops; Chennai coastal"},
+    "kenya": {"cities": ["mombasa-kenya", "kilifi-kenya", "malindi-kenya", "watamu-kenya"], "od_intents": [["Mombasa", "Kilifi (~30nm)"], ["Kilifi", "Watamu/Malindi (~15nm)"]]},
+    "italy": {"cities": ["ponza-pontine-italy", "portofino-cinque-terre-italy", "tuscan-archipelago-italy"], "od_intents": [["Portofino", "Cinque Terre (~20nm)"], ["Ponza", "Anzio/mainland (~22nm)"]]},
+    "cote-dazur-france-archipelago": {"cities": ["nice-france", "antibes-france", "saint-tropez-france"], "note": "Nice/Cannes↔St-Tropez already in Batch 2b restore; Antibes↔Nice (~8nm) + Antibes↔St-Tropez source"},
+    "indonesia": {"cities": ["lake-toba-samosir-indonesia", "likupang-north-sulawesi-indonesia"], "note": "Lake Toba = inland lake ferry (Parapat↔Tomok ~4nm); Likupang↔Bunaken/Lembeh"},
+    "spain": {"cities": ["costa-brava-spain"], "od_intents": [["Costa Brava (Palamós/Roses)", "coastal hops or Barcelona"]]},
+    "israel": {"cities": ["haifa-israel"], "od_intents": [["Haifa", "Acre/Akko (~8nm)"]]},
+    "thailand": {"cities": ["koh-lanta-thailand"], "note": "covered by Batch 2b restore (↔Phi Phi/Krabi/Phuket)"},
+    "egypt": {"cities": ["cairo-egypt"], "note": "Nile river corridor — needs RIVER_CITIES treatment, not coastal"},
+    "pakistan": {"cities": ["gwadar-pakistan"], "note": "Gwadar↔Ormara or Karachi coastal (Q-LR)"},
+    "ksa-commercial": {"cities": ["yanbu-ksa"], "note": "see tier2 ksa-commercial"},
+    "shanghai-china": {"cities": ["shanghai-china"], "note": "see tier2 shanghai"},
+    "taiwan": {"cities": ["kaohsiung-taiwan", "penghu-taiwan"], "note": "see tier1 — highest priority"}
+  }
+}
