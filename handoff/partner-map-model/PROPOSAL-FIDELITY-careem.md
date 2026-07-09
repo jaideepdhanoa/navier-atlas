@@ -1,7 +1,7 @@
 # Proposal fidelity — careem
 
 **Verdict:** PASS
-**Checked:** 2026-07-06T05:04:09Z
+**Checked:** 2026-07-09T05:20:36Z
 
 ## Summary
 
