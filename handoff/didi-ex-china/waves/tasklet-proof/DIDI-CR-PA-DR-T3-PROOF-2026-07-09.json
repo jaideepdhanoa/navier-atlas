@@ -1,0 +1,504 @@
+{
+  "schema_version": "1.0",
+  "artifact": "DIDI-CR-PA-DR-T3-PROOF-2026-07-09",
+  "researched_at": "2026-07-09",
+  "repo": "jaideepdhanoa/navier-atlas",
+  "repo_commit": "ba48bc5d",
+  "inputs_read": [
+    "handoff/didi-ex-china/waves/TASKLET-T3-CR-PA-DR-HANDOFF.md",
+    "handoff/didi-ex-china/waves/CR-PA-DR-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json",
+    "handoff/didi-ex-china/waves/DIDI-COSTA-RICA-PANAMA-DOMINICAN-DEEPENING-2026-07-09.json",
+    "finance/model/country-reference.json"
+  ],
+  "status": "proof_pass_complete_dispositions_evidence_incomplete",
+  "finance_gate": "blocked_pending_primary_evidence",
+  "finance_gate_reasons": [
+    "Neither sealed Gulf of Nicoya ferry route has a publicly recovered official annual one-way passenger count with explicit passenger and direction semantics.",
+    "Neither sealed Panama route has route-specific Guna boarding/operation approval; the official Guna rules instead establish that permission is required.",
+    "No primary operator/current timetable/current fare source was recovered for Samaná–Sabana de la Mar.",
+    "Samaná–Cayo Levantado has primary current-operation proof but no defensible route passenger volume.",
+    "Costa Rica, Panama, and Dominican Republic are absent from country-reference.json at ba48bc5d."
+  ],
+  "method_rules_applied": [
+    "No peak-day annualization.",
+    "No airport, tourism, cruise, whale-watching, or metro-total conversion to route demand.",
+    "No passenger inference from vehicle totals.",
+    "No splitting of terminal totals across routes.",
+    "No doubling or halving of counts without source direction semantics.",
+    "No current-operation inference from route geometry.",
+    "No city-level DiDi inference from country-level presence.",
+    "Null retained wherever primary evidence was insufficient."
+  ],
+  "source_ledger": [
+    {
+      "source_id": "cr-aresep-ferry-tariffs-2026",
+      "url": "https://aresep.go.cr/cabotaje/tarifas/",
+      "publisher": "Autoridad Reguladora de los Servicios Públicos (ARESEP), Costa Rica",
+      "publication_date": "2026-06-26",
+      "effective_date": "2026-07-01",
+      "title": "Tarifas del ferry (Cabotaje Mayor)",
+      "exact_quoted_fact": "Las tarifas del servicio de transporte de pasajeros modalidad cabotaje mayor empiezan a regir el miércoles 1 de julio de 2026.",
+      "facts": [
+        {
+          "route_coverage": "Puntarenas–Paquera",
+          "operator": "Naviera Tambor S.A.",
+          "fare_class": "Adultos",
+          "value": 810,
+          "currency": "CRC",
+          "units": "CRC per passenger trip"
+        },
+        {
+          "route_coverage": "Puntarenas–Paquera",
+          "operator": "Naviera Tambor S.A.",
+          "fare_class": "Menores",
+          "value": 480,
+          "currency": "CRC",
+          "units": "CRC per passenger trip"
+        },
+        {
+          "route_coverage": "Puntarenas–Paquera",
+          "operator": "Naviera Tambor S.A.",
+          "fare_class": "Adulto Mayor",
+          "value": 0,
+          "currency": "CRC",
+          "units": "exempt passenger trip"
+        },
+        {
+          "route_coverage": "Puntarenas–Playa Naranjo",
+          "operator": "COONATRAMAR R.L.",
+          "fare_class": "Adultos",
+          "value": 1000,
+          "currency": "CRC",
+          "units": "CRC per passenger trip"
+        },
+        {
+          "route_coverage": "Puntarenas–Playa Naranjo",
+          "operator": "COONATRAMAR R.L.",
+          "fare_class": "Menores",
+          "value": 600,
+          "currency": "CRC",
+          "units": "CRC per passenger trip"
+        },
+        {
+          "route_coverage": "Puntarenas–Playa Naranjo",
+          "operator": "COONATRAMAR R.L.",
+          "fare_class": "Adulto Mayor",
+          "value": 0,
+          "currency": "CRC",
+          "units": "exempt passenger trip"
+        }
+      ],
+      "directionality": "Published for each route; no directional price differential is stated.",
+      "passenger_vs_vehicle": "Passenger fare table; vehicle tariffs are separate and were not used.",
+      "benchmark_or_realized_yield": "regulated published passenger fare, not realized operator yield",
+      "classification": "usable_for_base_case",
+      "limitations": "A fare is usable only with an independently sourced passenger-demand denominator; it does not prove ridership or realized yield."
+    },
+    {
+      "source_id": "cr-bccr-usd-crc-2026-07-09",
+      "url": "https://sdd.bccr.fi.cr/es/IndicadoresEconomicos/Inicio/Contenedor/6?Cuadro=1",
+      "publisher": "Banco Central de Costa Rica (BCCR)",
+      "publication_date": "2026-07-09",
+      "effective_date": "2026-07-09",
+      "title": "Tipo de cambio de compra y de venta del dólar de los Estados Unidos de América",
+      "exact_quoted_fact": "09 jul 2026 — Compra 450,34; Venta 453,77. Fuente: Banco Central de Costa Rica.",
+      "units": "CRC per USD",
+      "time_period": "daily reference rate",
+      "directionality": null,
+      "passenger_vs_vehicle": null,
+      "fare_class_currency": "CRC/USD reference-rate conversion",
+      "benchmark_or_realized_yield": "official reference exchange rate, not operator yield",
+      "classification": "usable_for_base_case",
+      "conversion_policy": "Use the BCCR venta rate of 453.77 CRC/USD because the model converts CRC passenger fares to USD. USD = CRC / 453.77.",
+      "limitations": "Converted values are reporting conversions, not operator settlement evidence."
+    },
+    {
+      "source_id": "cr-naviera-tambor-current-service",
+      "url": "https://navieratambor.com/horarios-y-tarifas",
+      "publisher": "Naviera Tambor S.A.",
+      "publication_date": null,
+      "effective_date": "2026-04-20 until further notice",
+      "title": "Horarios y tarifas",
+      "exact_quoted_fact": "A partir del 20 de Abril 2026 hasta nuevo aviso",
+      "route_coverage": "Puntarenas–Paquera",
+      "directionality": "The page provides separate Puntarenas and Paquera departure columns.",
+      "passenger_vs_vehicle": "Passenger and vehicle classes are separately listed.",
+      "benchmark_or_realized_yield": "current-operations proof; published fares are not realized yield",
+      "classification": "current_ops_proof_only",
+      "limitations": "The operator page does not publish annual route passengers."
+    },
+    {
+      "source_id": "cr-coonatramar-current-service",
+      "url": "https://coonatramar.com/181212-2/",
+      "publisher": "COONATRAMAR R.L.",
+      "publication_date": null,
+      "effective_date": "2026-07-04 through 2026-07-20 for the linked current Spanish timetable image",
+      "title": "Horario Regular del Servicio de Ferry",
+      "exact_quoted_fact": "Horario Regular del Servicio de Ferry. Recuerde consultar en nuestras redes sociales para actualizarse sobre horarios especiales.",
+      "route_coverage": "Puntarenas–Playa Naranjo",
+      "directionality": "Operator route page; no annual direction-specific passenger count.",
+      "passenger_vs_vehicle": "Service proof only.",
+      "benchmark_or_realized_yield": "current-operations proof only",
+      "classification": "current_ops_proof_only",
+      "limitations": "The page and linked timetable image do not publish annual passenger demand. Current fares are taken from ARESEP, not inferred from the image."
+    },
+    {
+      "source_id": "dr-mitur-cayo-levantado-current-activity",
+      "url": "https://www.godominicanrepublic.com/things-to-do/cayo-levantado",
+      "publisher": "Ministry of Tourism of the Dominican Republic / GoDominicanRepublic",
+      "publication_date": null,
+      "effective_date": "current page accessed 2026-07-09",
+      "title": "Cayo Levantado",
+      "exact_quoted_fact": "Boat taxis depart regularly from the Samaná port on Avenida Marina, bringing visitors daily to this small island.",
+      "route_coverage": "Samaná port to Cayo Levantado",
+      "directionality": "Outbound Samaná-to-island movement is explicit; return service and directional counts are not quantified.",
+      "passenger_vs_vehicle": "Passenger boat taxis; no vehicle count.",
+      "units": null,
+      "time_period": "regular/daily current activity, no numeric observation period",
+      "benchmark_or_realized_yield": "current-operations proof only",
+      "classification": "current_ops_proof_only",
+      "limitations": "No passenger count, fare, capacity, realized yield, or allocation across public beach, hotel, excursion, and cruise traffic is published."
+    },
+    {
+      "source_id": "pa-guna-maritime-authority-definition",
+      "url": "https://www.gunayala.org.pa/index_transporte_maritimo.htm",
+      "publisher": "Congresos Generales de Gunayala — Secretaría de Transporte Marítimo",
+      "publication_date": null,
+      "effective_date": "current indexed authority page accessed 2026-07-09",
+      "title": "Secretaría de Transporte Marítimo",
+      "exact_quoted_fact": "Permiso de tránsito: Documento autorizada y expedita por la Secretaría de Transporte Marítimo a una nave para transitar en las aguas territoriales de Gunayala.",
+      "route_coverage": "Gunayala territorial waters generally; not route-specific",
+      "directionality": null,
+      "passenger_vs_vehicle": "Vessel governance; does not provide passenger volume.",
+      "benchmark_or_realized_yield": "permission/governance evidence",
+      "classification": "permission_required",
+      "limitations": "No route-specific permit or boarding authorization for either sealed OD was published. The page was temporarily unavailable to direct retrieval during the pass; the exact text was recovered from the indexed official page."
+    },
+    {
+      "source_id": "pa-guna-maritime-regulation-article-123",
+      "url": "https://www.gunayala.org.pa/Reglamento%20Mar%C3%ADtimo.2020.%20febrero%202022.Oficial.pdf",
+      "publisher": "Congreso General Guna / Secretaría de Transporte Marítimo",
+      "publication_date": "2022-02 (from official PDF filename/version)",
+      "effective_date": null,
+      "title": "Reglamento de Transporte Marítimo",
+      "exact_quoted_fact": "Artículo 123. El permiso de operación se concederá mediante resolución motivada.",
+      "route_coverage": "Navigation transporting passengers or cargo in Gunayala generally; not route-specific",
+      "directionality": null,
+      "passenger_vs_vehicle": "Passenger/cargo navigation permission; no passenger count.",
+      "benchmark_or_realized_yield": "permission/governance evidence",
+      "classification": "permission_required",
+      "limitations": "The official indexed PDF establishes an operation-permit mechanism but does not evidence that a permit has been issued for Puerto Cartí–Cartí Sugdup or El Porvenir–Cayos Limones. The host became unavailable during direct PDF retrieval, so only the exact indexed clause is used."
+    }
+  ],
+  "fx_conversion": {
+    "source_id": "cr-bccr-usd-crc-2026-07-09",
+    "date": "2026-07-09",
+    "rate_type": "venta",
+    "crc_per_usd": 453.77,
+    "formula": "USD = CRC / 453.77",
+    "converted_fares": [
+      {
+        "route_id": "rn-7e59f984abec",
+        "fare_class": "Adultos",
+        "crc": 810,
+        "usd": 1.7850
+      },
+      {
+        "route_id": "rn-7e59f984abec",
+        "fare_class": "Menores",
+        "crc": 480,
+        "usd": 1.0578
+      },
+      {
+        "route_id": "rn-7e59f984abec",
+        "fare_class": "Adulto Mayor",
+        "crc": 0,
+        "usd": 0.0
+      },
+      {
+        "route_id": "rn-eb4ca32edbef",
+        "fare_class": "Adultos",
+        "crc": 1000,
+        "usd": 2.2038
+      },
+      {
+        "route_id": "rn-eb4ca32edbef",
+        "fare_class": "Menores",
+        "crc": 600,
+        "usd": 1.3223
+      },
+      {
+        "route_id": "rn-eb4ca32edbef",
+        "fare_class": "Adulto Mayor",
+        "crc": 0,
+        "usd": 0.0
+      }
+    ]
+  },
+  "route_dispositions": [
+    {
+      "route_id": "rn-7e59f984abec",
+      "od": "Paquera ↔ Puntarenas",
+      "sealed_service_status": "current_scheduled",
+      "proof_items": {
+        "official_annual_one_way_passengers": {
+          "value": null,
+          "units": "passenger trips per year",
+          "time_period": null,
+          "directionality": null,
+          "passenger_vs_vehicle": "Passenger-only value required; no vehicle substitution used.",
+          "classification": "not_publicly_supported",
+          "reason": "No official public annual route value with explicit one-way/directional passenger semantics was recovered."
+        },
+        "current_passenger_fares": {
+          "classification": "usable_for_base_case",
+          "source_id": "cr-aresep-ferry-tariffs-2026",
+          "effective_date": "2026-07-01",
+          "fare_classes_crc": {
+            "adult": 810,
+            "minor": 480,
+            "senior": 0
+          },
+          "fare_classes_usd_at_2026_07_09_bccr_sale": {
+            "adult": 1.7850,
+            "minor": 1.0578,
+            "senior": 0.0
+          },
+          "realized_operator_yield": null
+        },
+        "current_operation": {
+          "classification": "current_ops_proof_only",
+          "source_id": "cr-naviera-tambor-current-service"
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "route_disposition": "Keep current-scheduled status. Fare may be carried as a sourced regulated fare, but annual demand and route revenue remain null."
+    },
+    {
+      "route_id": "rn-eb4ca32edbef",
+      "od": "Playa Naranjo ↔ Puntarenas",
+      "sealed_service_status": "current_scheduled",
+      "proof_items": {
+        "official_annual_one_way_passengers": {
+          "value": null,
+          "units": "passenger trips per year",
+          "time_period": null,
+          "directionality": null,
+          "passenger_vs_vehicle": "Passenger-only value required; no vehicle substitution used.",
+          "classification": "not_publicly_supported",
+          "reason": "No official public annual route value with explicit one-way/directional passenger semantics was recovered."
+        },
+        "current_passenger_fares": {
+          "classification": "usable_for_base_case",
+          "source_id": "cr-aresep-ferry-tariffs-2026",
+          "effective_date": "2026-07-01",
+          "fare_classes_crc": {
+            "adult": 1000,
+            "minor": 600,
+            "senior": 0
+          },
+          "fare_classes_usd_at_2026_07_09_bccr_sale": {
+            "adult": 2.2038,
+            "minor": 1.3223,
+            "senior": 0.0
+          },
+          "realized_operator_yield": null
+        },
+        "current_operation": {
+          "classification": "current_ops_proof_only",
+          "source_id": "cr-coonatramar-current-service"
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "route_disposition": "Keep current-scheduled status. Fare may be carried as a sourced regulated fare, but annual demand and route revenue remain null."
+    },
+    {
+      "route_id": "rn-55b63e976bb7",
+      "od": "Marina Papagayo ↔ Four Seasons Papagayo",
+      "sealed_service_status": "future_opportunity_not_current_scheduled",
+      "proof_items": {
+        "current_scheduled_operation": {
+          "value": null,
+          "classification": "not_publicly_supported",
+          "reason": "Official facility pages prove the endpoints, not a current scheduled passenger service between them."
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "route_disposition": "Remain future opportunity and non-current. No current demand, fare, schedule, or revenue may be modeled."
+    },
+    {
+      "route_id": "rn-8fb072f5a8a8",
+      "od": "Puerto Cartí ↔ Cartí Sugdup",
+      "sealed_service_status": "guna_transfer_pattern_schedule_unverified",
+      "proof_items": {
+        "guna_governance": {
+          "classification": "permission_required",
+          "source_ids": [
+            "pa-guna-maritime-authority-definition",
+            "pa-guna-maritime-regulation-article-123"
+          ],
+          "fact": "The Guna maritime authority issues vessel transit permits, and Article 123 requires an operation permit by reasoned resolution."
+        },
+        "route_specific_boarding_and_operation_approval": {
+          "value": null,
+          "classification": "permission_required",
+          "reason": "No public resolution, permit number, approved operator, boarding authorization, timetable, or fare for this exact sealed OD was recovered."
+        }
+      },
+      "finance_gate": "blocked_pending_primary_evidence",
+      "route_disposition": "No Panama base-case demand, fare, revenue, or active-service claim until route-specific Guna approval and operator proof are obtained."
+    },
+    {
+      "route_id": "rn-87eec178e86f",
+      "od": "El Porvenir ↔ Cayos Limones",
+      "sealed_service_status": "transfer_or_excursion_unverified",
+      "proof_items": {
+        "guna_governance": {
+          "classification": "permission_required",
+          "source_ids": [
+            "pa-guna-maritime-authority-definition",
+            "pa-guna-maritime-regulation-article-123"
+          ],
+          "fact": "The Guna maritime authority issues vessel transit permits, and Article 123 requires an operation permit by reasoned resolution."
+        },
+        "route_specific_boarding_and_operation_approval": {
+          "value": null,
+          "classification": "permission_required",
+          "reason": "No public resolution, permit number, approved operator, boarding authorization, timetable, or fare for this exact sealed OD was recovered."
+        }
+      },
+      "finance_gate": "blocked_pending_primary_evidence",
+      "route_disposition": "No Panama base-case demand, fare, revenue, or active-service claim until route-specific Guna approval and operator proof are obtained."
+    },
+    {
+      "route_id": "rn-64effc46b976",
+      "od": "Samaná ↔ Sabana de la Mar",
+      "sealed_service_status": "current_route_evidence_primary_confirm_needed",
+      "proof_items": {
+        "primary_current_operator": {
+          "value": null,
+          "classification": "not_publicly_supported",
+          "reason": "No official operator-owned current service page or authority operator designation was recovered."
+        },
+        "primary_current_timetable": {
+          "value": null,
+          "classification": "not_publicly_supported",
+          "reason": "Search results contained user posts, resellers, and travel aggregators, but no primary current timetable."
+        },
+        "primary_current_passenger_fare": {
+          "value": null,
+          "currency": null,
+          "classification": "not_publicly_supported",
+          "reason": "No primary current fare or fare class/effective date was recovered. Secondary $5-style claims were not promoted to model truth."
+        }
+      },
+      "finance_gate": "blocked_pending_primary_evidence",
+      "route_disposition": "Retain the sealed primary-confirm-needed status. Do not treat geometry, reseller listings, social posts, or old terminal assets as proof of current operator/timetable/fare. Demand and revenue remain null."
+    },
+    {
+      "route_id": "rn-c3a4ef933700",
+      "od": "Samaná ↔ Cayo Levantado",
+      "sealed_service_status": "excursion_activity_unverified_volume",
+      "proof_items": {
+        "current_activity": {
+          "classification": "current_ops_proof_only",
+          "source_id": "dr-mitur-cayo-levantado-current-activity",
+          "fact": "Official tourism authority says boat taxis depart regularly from Samaná port and bring visitors daily to the island."
+        },
+        "route_passenger_volume": {
+          "value": null,
+          "units": "passenger trips",
+          "time_period": null,
+          "directionality": null,
+          "classification": "not_publicly_supported",
+          "reason": "The primary source gives frequency language but no passenger count. Whale, tourism, cruise, hotel, beach, or excursion totals were not converted."
+        },
+        "realized_operator_yield": {
+          "value": null,
+          "classification": "not_publicly_supported"
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "route_disposition": "Current activity may be described narrowly; volume, fare, realized yield, and route revenue remain null."
+    }
+  ],
+  "held_null_dispositions": [
+    {
+      "route_id": null,
+      "od": "Cartí ↔ Colón",
+      "sealed_status": "future_unsealed_research_concept",
+      "classification": "not_publicly_supported",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "Remain null. No route ID, sealed geometry, Guna authority approval, operator, timetable, demand, fare, or economics may be added."
+    }
+  ],
+  "failed_searches": [
+    {
+      "proof_item": "Official annual one-way passengers for each Gulf of Nicoya ferry route",
+      "sources_checked": [
+        "MOPT official cabotage/transport Power BI report",
+        "ARESEP current tariffs and indexed tariff/board records",
+        "MOPT/INEC/open-data search",
+        "Naviera Tambor operator site",
+        "COONATRAMAR operator site"
+      ],
+      "why_insufficient": "The current public sources proved fares and schedules. No accessible table yielded separate annual passenger counts for each sealed route with explicit one-way/direction semantics. Old tariff-search snippets were context-ambiguous and were not used. Vehicle figures and tourism totals were excluded.",
+      "classification": "not_publicly_supported"
+    },
+    {
+      "proof_item": "Primary current operator/timetable/fare for Samaná–Sabana de la Mar",
+      "sources_checked": [
+        "Autoridad Portuaria Dominicana",
+        "Ministerio de Turismo / GoDominicanRepublic",
+        "INTRANT",
+        "municipal and operator-oriented web searches",
+        "reseller and social leads"
+      ],
+      "why_insufficient": "No primary operator/current schedule/current fare was recovered. APORDOM terminal/infrastructure references, resellers, Rome2Rio/1MAP-style aggregators, Facebook posts, and tourism products do not establish the requested operator facts.",
+      "classification": "not_publicly_supported"
+    },
+    {
+      "proof_item": "Current passenger volume for Samaná–Cayo Levantado",
+      "sources_checked": [
+        "Dominican Ministry of Tourism destination page",
+        "APORDOM",
+        "resort transfer pages",
+        "excursion/tourism searches"
+      ],
+      "why_insufficient": "The official tourism page proves regular daily boat-taxi activity but publishes no passenger volume. Tourism, whale-watching, cruise, hotel, and excursion totals are non-route denominators and were not converted.",
+      "classification": "current_ops_proof_only"
+    },
+    {
+      "proof_item": "Route-specific Guna boarding permission for both sealed Panama routes",
+      "sources_checked": [
+        "Congresos Generales de Gunayala maritime authority page",
+        "Official Guna maritime transport regulation",
+        "Panama government and tourism authority governance searches"
+      ],
+      "why_insufficient": "General Guna authority and permit requirements are public, but no route-specific resolution/permit/boarding approval for either exact sealed OD was recovered.",
+      "classification": "permission_required"
+    }
+  ],
+  "country_reference_opex_source_gaps": {
+    "checked_file": "finance/model/country-reference.json",
+    "checked_commit": "ba48bc5d",
+    "countries_absent": [
+      "Costa Rica",
+      "Panama",
+      "Dominican Republic"
+    ],
+    "missing_source_fields_per_country": [
+      "electricity_usd_per_kwh",
+      "electricity_basis",
+      "grid_co2_kg_per_kwh",
+      "grid_co2_basis",
+      "captain_crew_usd_per_year",
+      "crew_basis",
+      "marina_overhead_usd_per_year",
+      "marina_basis"
+    ],
+    "classification": "not_publicly_supported",
+    "scope_note": "Only missing country-reference operating/source fields are listed. CAPEX, demand, fare, and route geometry fields were not treated as country-reference opex-source fields. No fallback country values may be used."
+  },
+  "completion_statement": "Every requested proof item has a disposition, including explicit nulls. This does not mean the wave has non-null finance proof: it remains blocked pending the primary evidence listed above."
+}

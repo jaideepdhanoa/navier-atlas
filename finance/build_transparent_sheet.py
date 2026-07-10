@@ -807,9 +807,9 @@ sc(ws4,f"A{mr}",("FORWARD-SAM anchor \u2014 Navier transport rev/yr (2030-dated;
 sc(ws4,f"C{mr}","=som_floor_rev",fill=f_calc,fmt=USD,align=ctr,bd=True)
 sc(ws4,f"E{mr}",("Live sum of forward-SAM corridor market-rev (10% capture, 2030-dated destination-cap demand). Held OUT of any near-term grounded number." if ALL_FWD else "Live sum of grounded-floor corridor market-rev only (Floor bucket = Grounded; cascade-estimated rows held out). Matches growth.py _headline_anchor and deck TAM."),align=wrap,bd=True,font=SMALL)
 som_floor_ref=f"$C${mr}"; mr+=1
-sc(ws4,f"A{mr}","M_today \u2014 full transport spend on sourced corridors",bd=True,font=BOLD)
+sc(ws4,f"A{mr}","M_today \u2014 model comparable-fare transport pool on sourced corridors",bd=True,font=BOLD)
 sc(ws4,f"C{mr}",f"={_pool_expr}",fill=f_calc,fmt=USD,align=ctr,bd=True)
-sc(ws4,f"E{mr}","Direct sum of sourced one-way demand \u00d7 comparable fare on grounded corridors; independent of display-rounded capture.",align=wrap,bd=True,font=SMALL)
+sc(ws4,f"E{mr}","Direct sum of sourced one-way demand \u00d7 the disclosed model comparable fare on grounded corridors; includes any labelled premium re-fare applied above and is independent of display-rounded capture.",align=wrap,bd=True,font=SMALL)
 Mt=f"$C${mr}"; mr+=2
 lad(("SOM full network (~%.0f%% capture, today, +greenfield)" % (_som_cap_val*100)),
     f"={Mt}*{somcap_ref}*{gr_lo}",f"={Mt}*{somcap_ref}*{gr_mi}",f"={Mt}*{somcap_ref}*{gr_hi}",

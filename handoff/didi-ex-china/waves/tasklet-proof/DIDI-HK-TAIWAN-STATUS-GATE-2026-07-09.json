@@ -1,0 +1,555 @@
+{
+  "artifact": "DiDi Hong Kong / Taiwan operation-status evidence gate",
+  "wave": "East Asia current-operation status gates",
+  "as_of": "2026-07-09",
+  "repo": "jaideepdhanoa/navier-atlas",
+  "repo_commit": "ba48bc5d",
+  "inputs_read": [
+    "handoff/didi-ex-china/waves/DIDI-JAPAN-HONG-KONG-TAIWAN-DEEPENING-2026-07-09.json",
+    "handoff/didi-ex-china/waves/DIDI-JAPAN-HONG-KONG-TAIWAN-STATUS-2026-07-09.md",
+    "handoff/didi-ex-china/waves/G2-DIDI-JAPAN-HONG-KONG-TAIWAN-REGISTRY-RECEIPT-2026-07-09.json"
+  ],
+  "finance_gate": "blocked_pending_primary_evidence",
+  "finance_gate_reason": "This is an operation-status proof pass. It adds no sourced route-level annual passenger counts, realized fares/yields, route permission, or sealed route IDs. Taiwan remains blocked for current partner operation.",
+  "status_summary": {
+    "Hong Kong": "current_operation_supported",
+    "Taiwan": "historical_only",
+    "Macau": "not_publicly_supported",
+    "Japan": "current_operation_supported"
+  },
+  "methodology_notes": [
+    "Current operation requires dated or live first-party service evidence beyond storefront availability; secondary reporting is corroborative only.",
+    "Operation proof is not route demand, fare, yield, or marine permission.",
+    "Null is retained for unsupported route-level finance fields and all route IDs."
+  ],
+  "market_status_gates": [
+    {
+      "market": "Hong Kong",
+      "gate": "current_operation_supported",
+      "as_of": "2026-07-09",
+      "scope_supported": "DiDi passenger taxi-hailing of Hong Kong taxis; passenger booking workflow and driver-side taxi onboarding are current. A cross-border Guangdong–Hong Kong car booking product is advertised but not permission-verified here.",
+      "scope_not_supported": "No inference to a general private-car ride-share operation, platform-specific regulatory approval, route-level demand, or marine-route permission.",
+      "proof_item_dispositions": {
+        "historical_launch": "historical_only",
+        "passenger_app_availability": "current_ops_proof_only",
+        "passenger_booking_capability": "current_ops_proof_only",
+        "taxi_hailing": "current_ops_proof_only",
+        "driver_app_and_onboarding": "current_ops_proof_only",
+        "current_passenger_operation": "current_ops_proof_only",
+        "private_car_ride_share": "not_publicly_supported",
+        "cross_border_car_booking": "current_ops_proof_only",
+        "cross_border_car_permission": "permission_required",
+        "platform_specific_permission": "permission_required"
+      },
+      "basis_source_ids": [
+        "hk-official-passenger",
+        "hk-official-taxi-booking",
+        "hk-official-driver",
+        "hk-google-play-2026",
+        "hk-bloomberg-2025",
+        "hk-transport-department-taxi"
+      ],
+      "decision": "Clear the operation-status gate only for the Hong Kong taxi-hailing product. Keep all route demand and permission fields null unless separately sourced."
+    },
+    {
+      "market": "Taiwan",
+      "gate": "historical_only",
+      "as_of": "2026-07-09",
+      "scope_supported": "Historical 2018 launch/activity and December 2018 suspension/cessation are supported.",
+      "scope_not_supported": "No current first-party passenger service-area page, live booking capability, licensed partner-branded service, or current government operating receipt was found. Taiwan storefront availability of a Hong Kong app is not Taiwan service.",
+      "proof_item_dispositions": {
+        "historical_launch": "historical_only",
+        "historical_hitch_product": "historical_only",
+        "historical_suspension_or_withdrawal": "historical_only",
+        "passenger_app_availability": "benchmark_only",
+        "current_passenger_booking_capability": "not_publicly_supported",
+        "current_passenger_operation": "not_publicly_supported",
+        "current_partner_branded_service": "not_publicly_supported",
+        "current_permission": "permission_required"
+      },
+      "basis_source_ids": [
+        "tw-pts-suspension",
+        "tw-pts-regulatory-history",
+        "tw-app-store-hk-not-tw",
+        "didi-japan-jv-launch"
+      ],
+      "decision": "Keep Taiwan hard-held. Do not publish it as a current DiDi market. Reopen only with a dated primary DiDi, operator-partner, or regulator receipt showing current passenger service."
+    },
+    {
+      "market": "Macau",
+      "gate": "not_publicly_supported",
+      "as_of": "2026-07-09",
+      "scope_supported": "None for this pass.",
+      "scope_not_supported": "Current DiDi passenger operation. Existing country-supported Atlas binding is not an exact operation receipt.",
+      "proof_item_dispositions": {
+        "current_passenger_operation": "not_publicly_supported",
+        "passenger_booking_capability": "not_publicly_supported",
+        "permission": "permission_required"
+      },
+      "basis_source_ids": [],
+      "decision": "Held regardless, per sealed wave instruction."
+    },
+    {
+      "market": "Japan",
+      "gate": "current_operation_supported",
+      "as_of": "2026-07-09",
+      "scope_supported": "DiDi Mobility Japan currently provides passenger taxi dispatch in the named official service areas, and the live corporate profile names SoftBank Corp. and DiDi Mobility Pte. Ltd. as shareholders.",
+      "scope_not_supported": "No inference of DiDi supply on remote island endpoints omitted by the official roster; no route-level passenger demand implied.",
+      "proof_item_dispositions": {
+        "historical_jv_launch": "historical_only",
+        "current_jv_corporate_status": "current_ops_proof_only",
+        "current_passenger_taxi_operation": "current_ops_proof_only",
+        "current_exact_service_areas": "current_ops_proof_only",
+        "remote_island_supply": "not_publicly_supported"
+      },
+      "basis_source_ids": [
+        "didi-japan-jv-launch",
+        "didi-japan-company-current",
+        "didi-japan-service-roster",
+        "didi-japan-2026-updates",
+        "didi-japan-coupon"
+      ],
+      "decision": "Record current taxi-operation and DiDi–SoftBank corporate status only where the official roster/profile supports it."
+    }
+  ],
+  "evidence_ledger": [
+    {
+      "source_id": "hk-official-passenger",
+      "url": "https://hk.didiglobal.com/",
+      "publisher": "DiDi Hong Kong",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「歡迎喺香港乘搭DiDi!」; 「的士」; 「2018年服務香港至今」; 「10710 註冊司機」; 「270萬 完成行程次數」; 「5分鐘 平均接駕時間」",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Hong Kong local taxi-hailing; not a route-specific marine or private-car service-area proof",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger taxi trips and registered drivers; the page does not state whether trip count is cumulative as of a dated cut-off.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Live first-party passenger surface. Metrics are not used as route demand because they are undated, cumulative-looking, citywide platform totals."
+    },
+    {
+      "source_id": "hk-official-taxi-booking",
+      "url": "https://hk.didiglobal.com/taxi",
+      "publisher": "DiDi Hong Kong",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「DiDi Taxi」; 「配對最近司機，5分鐘內上車」; 「如何預約DiDi的士」; 「輸入上落車點」; 「配對司機」; 「支付車資」",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Hong Kong taxi booking workflow",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger booking capability for taxis; no private-car ride-share claim.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "First-party live booking instructions establish a current product surface beyond mere storefront availability; no completed test booking was performed."
+    },
+    {
+      "source_id": "hk-official-driver",
+      "url": "https://hk.didiglobal.com/taxi-driver",
+      "publisher": "DiDi Hong Kong",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「下載司機版App」; required documents include 「的士司機証」 and 「正式駕駛執照」; 「強大司機版App，助您接單賺錢」",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Hong Kong licensed-taxi driver onboarding",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Driver-side taxi onboarding; not passenger demand and not proof of private-car authorization.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "First-party live driver surface. It supports an active taxi-supply workflow, not just passenger app availability."
+    },
+    {
+      "source_id": "hk-google-play-2026",
+      "url": "https://play.google.com/store/apps/details?id=com.sdu.didi.psnger&hl=zh_TW",
+      "publisher": "DiDi / Google Play",
+      "publication_or_effective_date": "2026-06-29",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「DiDi（滴滴）目前在中國香港提供的士與跨境專車（粵港車）兩種服務。」; 「的士：服務香港多年…可直接透過DiDi（滴滴）平台預約呼叫的士。」; updated 「2026年6月29日」",
+      "units": null,
+      "time_period": "2026-06-29",
+      "route_or_line_coverage": "Hong Kong passenger app: local taxi booking and advertised Guangdong–Hong Kong cross-border car booking",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger booking capability; cross-border vehicle service is advertised but permission was not independently verified.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Dated developer description corroborates the live first-party Hong Kong site. App availability alone would not clear the gate."
+    },
+    {
+      "source_id": "hk-bloomberg-2025",
+      "url": "https://www.bloomberg.com/news/articles/2025-04-25/china-s-didi-recruits-ride-hailing-drivers-in-hong-kong-push",
+      "publisher": "Bloomberg",
+      "publication_or_effective_date": "2025-04-25",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "“Didi has been offering limited taxi services in Hong Kong for some time, but lacks a ride-share option.”",
+      "units": null,
+      "time_period": "2025-04-25",
+      "route_or_line_coverage": "Hong Kong market; taxi versus ride-share distinction",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Secondary current-market corroboration; no passenger or vehicle volume stated.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Corroborative only. Model truth rests on current first-party Hong Kong surfaces."
+    },
+    {
+      "source_id": "hk-transport-department-taxi",
+      "url": "https://www.td.gov.hk/en/transport_in_hong_kong/public_transport/taxi/index.html",
+      "publisher": "Hong Kong Transport Department",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "“Taxi is one of the key public passenger transport service providers in Hong Kong.”",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Hong Kong licensed-taxi regulatory context",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "General taxi regulatory context, not a DiDi-specific platform approval.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "permission_required",
+      "notes": "No direct DiDi-specific permit/approval was located. The operation claim is therefore limited to the licensed-taxi dispatch product shown by DiDi; no inference to private-car ride-share."
+    },
+    {
+      "source_id": "tw-pts-suspension",
+      "url": "https://news.pts.org.tw/article/416741",
+      "publisher": "Public Television Service (Taiwan)",
+      "publication_or_effective_date": "2018-12-19",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「中國最大線上叫車平台『滴滴出行』，傳出在台灣的叫車服務全面喊停。台灣代理商委託的公關公司證實，只是暫停服務，並非退出台灣市場。」; the app showed 「所在區域服務調整中」 and was unusable.",
+      "units": null,
+      "time_period": "2018-12-19",
+      "route_or_line_coverage": "Taiwan passenger ride-hailing service status in December 2018",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger app and service status; no route or vehicle count.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "historical_only",
+      "notes": "Strong historical cessation/suspension evidence, but not proof that suspension remains in force in 2026."
+    },
+    {
+      "source_id": "tw-pts-regulatory-history",
+      "url": "https://news.pts.org.tw/article/416741",
+      "publisher": "Public Television Service (Taiwan)",
+      "publication_or_effective_date": "2018-12-19",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "PTS reported that the February 2018 「滴滴順風車」 product was regarded by the Directorate General of Highways as involving unlicensed for-profit passenger carriage and had accumulated more than NTD 430 million in penalties, then under appeal.",
+      "units": null,
+      "time_period": "2018-12-19",
+      "route_or_line_coverage": "Taiwan historical Hitch/carpool product; not current taxi operations",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Historical passenger/private-car regulatory issue; penalty amount is not route demand or fare.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "permission_required",
+      "notes": "Secondary report quoting regulator position. No current DiDi Taiwan permission or licensed operating receipt was found."
+    },
+    {
+      "source_id": "tw-app-store-hk-not-tw",
+      "url": "https://apps.apple.com/tw/app/%E6%BB%B4%E6%BB%B4-didi%E9%A6%99%E6%B8%AF%E5%84%AA%E6%83%A0call%E8%BB%8A%E7%9A%84%E5%A3%ABtaxi/id554499054",
+      "publisher": "Apple App Store / DiDi",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "Taiwan storefront result is titled 「滴滴-DiDi香港優惠Call車的士Taxi」 and describes Hong Kong taxi booking.",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "App availability in Taiwan storefront; service geography expressly Hong Kong",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "App distribution only; not Taiwan passenger operation.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "benchmark_only",
+      "notes": "Explicitly rejected as current Taiwan operations proof."
+    },
+    {
+      "source_id": "didi-japan-jv-launch",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=494&type=news",
+      "publisher": "DiDi Global",
+      "publication_or_effective_date": "2018-07-19",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "“official launch DiDi Mobility Japan Corp. (‘DiDi Japan’), a joint-venture with SoftBank, to offer on-demand taxi-hailing services…”",
+      "units": null,
+      "time_period": "2018-07-19",
+      "route_or_line_coverage": "Japan national launch/JV history",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger taxi-hailing platform; no current volume.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "historical_only",
+      "notes": "Also says users in Taiwan could use the Greater China app to hail taxis in Japan; this is not evidence of service in Taiwan."
+    },
+    {
+      "source_id": "didi-japan-company-current",
+      "url": "https://didimobility.co.jp/aboutus/",
+      "publisher": "DiDi Mobility Japan",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "Company: 「DiDiモビリティジャパン株式会社」; business: 「『DiDi』の日本市場での提供およびそれに付帯する事業」; shareholders: 「ソフトバンク株式会社」 and 「DiDi Mobility Pte. Ltd.」",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Japan corporate/JV status",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Current company/shareholder status; not passenger volume.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Live first-party corporate profile supports retaining DiDi–SoftBank JV framing."
+    },
+    {
+      "source_id": "didi-japan-service-roster",
+      "url": "https://didimobility.co.jp/service/user/",
+      "publisher": "DiDi Mobility Japan",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "「タクシーをご利用のお客様」; 「かんたん3ステップでタクシーを配車」; current roster names Tokyo wards, 横須賀市, 熱海市, 広島市, 廿日市市, 那覇市, 宮古島市 and 石垣市, with 「一部離島は除く」 for Okinawa.",
+      "units": null,
+      "time_period": "live page as accessed 2026-07-09",
+      "route_or_line_coverage": "Exact current Japanese taxi service areas relevant to the sealed spine",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger taxi booking/service area; does not establish supply at unlisted island endpoints.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Live first-party area roster accessed 2026-07-09."
+    },
+    {
+      "source_id": "didi-japan-2026-updates",
+      "url": "https://didimobility.co.jp/info/",
+      "publisher": "DiDi Mobility Japan",
+      "publication_or_effective_date": "2026-07-03",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "The current official news index lists dated 2026 items including 「藤井隆さんを起用した新CM開始！」 (2026-07-03), 「夏の移動がおトクになる『夏の乗っトク祭』」 (2026-07-01), and 「新サービス『DiDi かんたん配車』」 (2026-04-07).",
+      "units": null,
+      "time_period": "2026-07-03",
+      "route_or_line_coverage": "Japan current passenger service activity",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Current passenger/taxi product activity; not route demand.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Dated 2026 evidence independently anchors current Japan operation."
+    },
+    {
+      "source_id": "didi-japan-coupon",
+      "url": "https://didimobility.co.jp/otoku5000/",
+      "publisher": "DiDi Mobility Japan",
+      "publication_or_effective_date": "effective 2024-09-02, end date undecided",
+      "accessed": "2026-07-09",
+      "exact_quoted_fact": "First-time-user coupon page: 「対象エリア」 includes Hokkaido, Tokyo, Kanagawa, Shizuoka, Hiroshima and Okinawa; 「キャンペーン期間 2024年9月2日(月)～終了未定」.",
+      "units": null,
+      "time_period": "effective 2024-09-02, end date undecided",
+      "route_or_line_coverage": "Selected Japan service prefectures",
+      "directionality": null,
+      "passenger_vs_vehicle_distinction": "Passenger promotion; discount, not fare or realized yield.",
+      "fare_class_currency": null,
+      "benchmark_or_realized_yield": "not_applicable_operation_status",
+      "classification": "current_ops_proof_only",
+      "notes": "Current live promotion corroboration only; not route economics."
+    }
+  ],
+  "route_by_route_disposition": [
+    {
+      "candidate_id": "tokyo-bay-kurihama-kanaya",
+      "route_id": null,
+      "sealed_endpoint_a": "Kurihama Port",
+      "sealed_endpoint_b": "Kanaya Port",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "Both endpoints are within the Tokyo Bay/Japan spine; current DiDi proof is city-area taxi dispatch (Tokyo/Yokosuka side), not ferry demand.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "tokyo-oshima",
+      "route_id": null,
+      "sealed_endpoint_a": "Tokyo / Takeshiba",
+      "sealed_endpoint_b": "Oshima",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "DiDi current operation is supported at Tokyo; Oshima DiDi supply is not proven. Route demand remains null.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "atami-oshima",
+      "route_id": null,
+      "sealed_endpoint_a": "Atami Port",
+      "sealed_endpoint_b": "Oshima",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "DiDi current service roster names Atami; Oshima supply is not proven. Route demand remains null.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "miyajimaguchi-miyajima",
+      "route_id": null,
+      "sealed_endpoint_a": "Miyajimaguchi",
+      "sealed_endpoint_b": "Miyajima",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "DiDi roster names Hiroshima/Hatsukaichi; this does not turn ferry passengers into DiDi or Navier demand.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "naha-zamami-aka",
+      "route_id": null,
+      "sealed_endpoint_a": "Tomari Port, Naha",
+      "sealed_endpoint_b": "Zamami Port / Aka Port",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "DiDi roster names Naha and warns some remote islands are excluded; no DiDi supply is claimed at Zamami/Aka.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "ishigaki-taketomi",
+      "route_id": null,
+      "sealed_endpoint_a": "Ishigaki ferry terminal",
+      "sealed_endpoint_b": "Taketomi Port",
+      "market": "Japan",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "DiDi roster names Ishigaki and excludes some remote islands; Taketomi supply is not proven.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "hk-north-point-hung-hom",
+      "route_id": null,
+      "sealed_endpoint_a": "North Point (West) Ferry Pier",
+      "sealed_endpoint_b": "Hung Hom (North) Ferry Pier",
+      "market": "Hong Kong",
+      "operation_status_gate": "current_operation_supported",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "current_ops_proof_only",
+      "finance_gate": "t3_buildable_null_only",
+      "disposition": "Hong Kong taxi-hailing operation gate is cleared. No route-level DiDi demand, marine demand allocation, or marine permission is supplied.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    },
+    {
+      "candidate_id": "kaohsiung-magong",
+      "route_id": null,
+      "sealed_endpoint_a": "Kaohsiung Penghu Ferry terminal",
+      "sealed_endpoint_b": "Magong/Penghu Ferry terminal",
+      "market": "Taiwan",
+      "operation_status_gate": "historical_only",
+      "demand_value": null,
+      "fare_value": null,
+      "permission_value": null,
+      "classification": "not_publicly_supported",
+      "finance_gate": "blocked_pending_primary_evidence",
+      "disposition": "The ferry may be current, but current DiDi Taiwan passenger operation is unsupported. Keep partner gate hard-held.",
+      "guardrails": [
+        "No route ID minted.",
+        "No city/platform totals allocated to route demand.",
+        "No passenger directionality inferred.",
+        "No current operation inferred from geometry."
+      ]
+    }
+  ],
+  "failed_searches": [
+    {
+      "item": "Taiwan current official DiDi operation page/service roster",
+      "result": "No current Taiwan-specific DiDi first-party service page or exact service-area roster found.",
+      "why_insufficient": "Country/global pages and a Taiwan storefront listing for the Hong Kong app do not establish Taiwan service."
+    },
+    {
+      "item": "DiDi Australia public country list as contrary evidence for Taiwan",
+      "result": "The live page says DiDi currently operates in 13 named countries and omits Taiwan, but it also omits demonstrably current Japan and Hong Kong special-market service.",
+      "why_insufficient": "The list is incomplete for this task and cannot silently become cessation proof. It was rejected as model truth."
+    },
+    {
+      "item": "Taiwan current government permission or operator-partner receipt",
+      "result": "Searches of Ministry of Transportation and Communications, Highway Bureau, government, and current taxi-platform terms produced no DiDi-specific current operating receipt.",
+      "why_insufficient": "Historical penalties and general taxi rules do not prove a current authorization or current service."
+    },
+    {
+      "item": "Taiwan current partner-branded passenger service",
+      "result": "No reliable current partner-branded DiDi service found.",
+      "why_insufficient": "Travel guides, social posts, and generic China-use instructions are not Taiwan operator truth."
+    },
+    {
+      "item": "Hong Kong DiDi-specific government platform approval",
+      "result": "No direct DiDi-specific permit/approval located.",
+      "why_insufficient": "Current operation is therefore stated narrowly as DiDi taxi dispatch using taxi-driver onboarding; no private-car regulatory conclusion is made."
+    },
+    {
+      "item": "Hong Kong dated official promotions on hk.didiglobal.com",
+      "result": "No indexed 2025/2026 dated promotion page located.",
+      "why_insufficient": "Current gate instead relies on live first-party booking/driver surfaces plus a developer listing updated 2026-06-29 and dated Bloomberg corroboration."
+    },
+    {
+      "item": "Route-level finance proof",
+      "result": "Not searched anew because this sealed task is an operation-status pass and the wave already records route fares/demand gaps.",
+      "why_insufficient": "No current-operation source contains route-level annual passengers, realized operator yield, or marine permissions."
+    }
+  ],
+  "completion_statement": "Every requested operation-status item has an explicit disposition, including null/not-supported outcomes. No production repository or external service was edited."
+}

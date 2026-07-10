@@ -1,0 +1,516 @@
+{
+  "artifact": "DiDi Mexico residual T3 finance proof",
+  "as_of": "2026-07-09",
+  "repository": {
+    "owner": "jaideepdhanoa",
+    "repo": "navier-atlas",
+    "commit": "d3817d9",
+    "scope": "six residual Mexico corridors from the sealed eight-ID DiDi spine"
+  },
+  "method": {
+    "incremental": true,
+    "existing_artifacts_read": [
+      "handoff/didi-ex-china/mexico/TASKLET-T3-HANDOFF.md",
+      "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json",
+      "handoff/didi-ex-china/mexico/G2-G3-SEAL-RECEIPT-2026-07-09.json",
+      "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.md",
+      "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.json",
+      "finance/model/corridors.json",
+      "partner-pitch/partners/didi.json",
+      "/tasklet/agent/home/didi-ex-china-audit/mexico/DIDI-MEXICO-LA-PAZ-MAZATLAN-ACAPULCO-REGISTRY-2026-07-09.json"
+    ],
+    "rules_applied": [
+      "Exact sealed route IDs only; no substitute OD or nearby terminal.",
+      "No peak-day annualization, terminal-total allocation, directional doubling/halving, geometry-derived operations, or country-to-city DiDi inference.",
+      "Passenger journeys are kept distinct from vehicle movements and cargo.",
+      "Published fares are identified as benchmarks rather than realized operator yield.",
+      "Null is retained where exact primary evidence is absent."
+    ]
+  },
+  "finance_gate": "t3_buildable_non_null",
+  "finance_gate_note": "Exactly one of the six rows, ics-aa6ff40d2d Punta Sam–Isla Mujeres, now has exact-route primary annual passenger demand plus an exact-route published adult fare. It can move from all-null L3_locals to a non-null comparable demand/fare record. The other five rows remain null for annual demand; three future-opportunity rows also lack exact current service and fare proof.",
+  "rows_moving_from_null": [
+    "ics-aa6ff40d2d"
+  ],
+  "rows_remaining_demand_null": [
+    "ics-03e3853317",
+    "ics-89a8844858",
+    "ics-de6758216f",
+    "ics-db0930d9d1",
+    "ics-b5861451fb"
+  ],
+  "sources": [
+    {
+      "source_id": "S1",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/informeTransbordador.php?anio=2025",
+      "title": "INFORMACIÓN de transbordadores 2025",
+      "publisher": "Administración Portuaria Integral de Quintana Roo (APIQROO)",
+      "publication_or_effective_date": "2025-12",
+      "accessed": "2026-07-09",
+      "source_type": "official port statistical table",
+      "exact_fact": "The 2025 table labels passenger ENTRADAS, SALIDAS and TOTAL. Isla Mujeres shows 121,959 entradas and 116,169 salidas, total 238,128 passengers. Punta Sam shows the mirrored 116,169 entradas and 121,959 salidas, total 238,128 passengers. Each endpoint also shows 2,712 total vessel movements and 433,640 cargo units.",
+      "units_and_period": "passenger one-way crossing journeys, full calendar year 2025; vessel movements and cargo are separately labeled",
+      "route_coverage": "Punta Sam–Isla Mujeres transbordador corridor, both directions",
+      "directionality": "Endpoint entradas/salidas are explicitly reported and mirrored. Use one endpoint passenger total, 238,128, without doubling or halving; do not sum the duplicate endpoint totals.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S2",
+      "url": "https://ultracarga.com/ruta-punta-sam-isla-mujeres/",
+      "title": "Ruta Punta Sam - Isla Mujeres",
+      "publisher": "Ultra Carga / Ultramar",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "current operator route, timetable and tariff page",
+      "exact_fact": "The page names origin Punta Sam and destination Isla Mujeres, and the reverse direction. It publishes four weekday departures per direction and three departures per direction on Saturday and Sunday. The tariff section says prices are per one-way trip and publishes Pasajero Adulto MXN 290, Pasajero Niño 3 a 9 años MXN 190, Pasajero Adulto Quintanarroense MXN 80, Pasajero Niño Quintanarroense MXN 60, and Pasajero INAPAM MXN 70.",
+      "units_and_period": "MXN per passenger per one-way trip; live timetable and tariffs with no stated effective date",
+      "route_coverage": "exact Punta Sam–Isla Mujeres car-ferry route, both directions",
+      "fare_nature": "published retail tariff benchmark, not realized operator yield",
+      "confidence": "high for current publication; effective-date history not stated"
+    },
+    {
+      "source_id": "S3",
+      "url": "https://www.ultramarferry.com/es/tarifas",
+      "title": "Tarifas",
+      "publisher": "Ultramar",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "current operator fare page",
+      "exact_fact": "Ultramar publishes adult one-way MXN 290 and round-trip MXN 580 for Cancún Puerto Juárez–Isla Mujeres, and separately publishes the same tourist adult prices for Cancún Playa Tortugas–Isla Mujeres and Cancún Playa Caracol–Isla Mujeres.",
+      "units_and_period": "MXN per passenger; live page, no stated effective date",
+      "route_coverage": "multiple distinct Cancún terminals to Isla Mujeres",
+      "fare_nature": "published retail tariff benchmark, not realized operator yield",
+      "limitation": "The sealed row ics-03e3853317 names its origin only as 'Ultramar' and has no boarding-point binding. This multi-terminal fare page cannot identify which Cancún terminal the row represents, so no fare is assigned to that ID.",
+      "confidence": "high for the operator prices; unusable for exact-row allocation"
+    },
+    {
+      "source_id": "S4",
+      "url": "https://ultramarsales.ultramarferry.com/es/ferry-isla-mujeres.php",
+      "title": "Cancún–Isla Mujeres routes and schedules",
+      "publisher": "Ultramar",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "current operator schedule page",
+      "exact_fact": "The page offers Cancún–Isla Mujeres service and presents separately named Cancún terminals, including Puerto Juárez and hotel-zone terminals.",
+      "units_and_period": "scheduled departures on live booking page",
+      "route_coverage": "multiple Cancún terminals to Isla Mujeres",
+      "limitation": "Operator/current-service evidence is not enough to map the sealed origin label 'Ultramar' to one exact terminal without minting or inferring a boarding point.",
+      "confidence": "high for current operator operation; not exact-row allocable"
+    },
+    {
+      "source_id": "S5",
+      "url": "https://www.garciarentals.com/en/book-water-taxi-to-yelapa",
+      "title": "Water Taxi Tickets to Yelapa",
+      "publisher": "Garcia Rentals / Jungle Rentals",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "current commercial booking page",
+      "exact_fact": "The page says public water taxis run daily from Puerto Vallarta, lists Los Muertos Pier departures at 11:00, 11:45, 15:00 and 17:00, return departures from Yelapa at 08:00, 09:30, 12:00 and 16:00, and quotes MXN 550 round trip per person.",
+      "units_and_period": "MXN per person round trip; current schedule, no effective date",
+      "route_coverage": "Los Muertos Pier, Puerto Vallarta–Yelapa, both directions",
+      "fare_nature": "booking-page retail benchmark, not realized operator yield",
+      "confidence": "medium; current exact-route commercial evidence but not an authority statistic or audited operator annual report"
+    },
+    {
+      "source_id": "S6",
+      "url": "https://watertaxitoyelapa.com/water-taxi-to-yelapa-en/",
+      "title": "Water taxi from Puerto Vallarta to Yelapa",
+      "publisher": "Water Taxi to Yelapa",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "current route booking page",
+      "exact_fact": "The page says daily departures only from Los Muertos Pier, publishes MXN 550 per person round trip, lists four Puerto Vallarta-to-Yelapa departures and six Yelapa-to-Puerto Vallarta departures, and states 16% federal sales tax is not included.",
+      "units_and_period": "MXN per passenger round trip plus stated 16% tax; live page, no effective date",
+      "route_coverage": "Los Muertos Pier, Puerto Vallarta–Yelapa, both directions",
+      "fare_nature": "published booking benchmark, not realized operator yield",
+      "confidence": "medium; exact-route current commercial evidence"
+    },
+    {
+      "source_id": "S7",
+      "url": "https://www.jalisco.gob.mx/es/prensa/noticias/160524",
+      "title": "Iniciaron trabajos de rehabilitación del muelle de Playa de los Muertos en Puerto Vallarta",
+      "publisher": "Government of Jalisco",
+      "publication_or_effective_date": "2023-06-20",
+      "accessed": "2026-07-09",
+      "source_type": "official government infrastructure notice",
+      "exact_fact": "The notice says rehabilitation of the Playa de los Muertos pier was undertaken to improve safety and efficiency for tourist-service providers, tourists and maritime-transport users under Jalisco's maritime-connectivity program.",
+      "units_and_period": "infrastructure/current-use context; no route passenger counts",
+      "route_coverage": "Los Muertos pier, Puerto Vallarta; not an exact Yelapa demand table",
+      "confidence": "high for pier/public-use context; no route-level finance value"
+    },
+    {
+      "source_id": "S8",
+      "url": "https://www.diputados.gob.mx/LeyesBiblio/pdf/LNCM.pdf",
+      "title": "Ley de Navegación y Comercio Marítimos",
+      "publisher": "Cámara de Diputados del H. Congreso de la Unión",
+      "publication_or_effective_date": "text current through DOF reform 2025-11-14",
+      "accessed": "2026-07-09",
+      "source_type": "federal statute",
+      "exact_fact": "Article 42 states that shipowners engaged in inland navigation and cabotage require a permit from the Secretaría to provide passenger transport and tourist-cruise services; it separately states that passenger transport and nautical tourism with recreational/sport vessels require a port-captain permit.",
+      "units_and_period": "legal permission requirement, current federal law",
+      "route_coverage": "Mexico generally; no route-specific permit grant",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S9",
+      "url": "https://web.didiglobal.com/mx/conductor/ciudades/",
+      "title": "Ciudades donde opera DiDi en México",
+      "publisher": "DiDi Mexico",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09",
+      "source_type": "official DiDi road-driver city index",
+      "exact_fact": "The official index says DiDi operates in listed Mexican cities and includes Cancún and Puerto Vallarta. It does not identify a DiDi ferry, water-taxi, marine-crossing product, marine operator, or count of marine crossings.",
+      "units_and_period": "city service-presence page; no marine-network metric",
+      "route_coverage": "city-level road-platform presence only",
+      "limitation": "Cannot prove city-to-island operation, a marine product, a crossing count, or Los Cabos marine operation.",
+      "confidence": "high for listed road cities; unusable as marine-census evidence"
+    },
+    {
+      "source_id": "S10",
+      "url": "https://www.yelapa.info/transport1.html",
+      "title": "Transportation to Yelapa",
+      "publisher": "Yelapa.info",
+      "publication_or_effective_date": null,
+      "accessed": "2026-07-09 via existing sealed finance artifact",
+      "source_type": "route information page already used by the sealed model",
+      "exact_fact": "The prior artifact records a public adult one-way fare of MXN 350 for Puerto Vallarta–Yelapa.",
+      "units_and_period": "MXN per adult one-way; year tagged 2025 in the existing model record",
+      "route_coverage": "Puerto Vallarta–Yelapa",
+      "fare_nature": "published benchmark, not realized yield",
+      "limitation": "Current booking pages S5 and S6 publish a different round-trip product (MXN 550, with S6 excluding tax). Product/channel differences prevent silently replacing or averaging the existing MXN 350 one-way benchmark.",
+      "confidence": "medium"
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "ics-03e3853317",
+      "sealed_od": "Cancún Ultramar ↔ Isla Mujeres",
+      "corridor_model_from": "Ultramar",
+      "corridor_model_to": "Terminal Martima De Isla Mujeres",
+      "distance_nm": 5.49,
+      "sealed_service_status": "current_scheduled",
+      "route_disposition": "Exact-row origin terminal remains unresolved. Ultramar publicly operates several separately named Cancún–Isla Mujeres routes, but the sealed row has no boarding-point binding and cannot inherit Puerto Juárez or hotel-zone demand/fare by inference.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "unit": "passenger one-way crossing journeys, both directions combined",
+          "period": null,
+          "reason": "APIQROO's passenger-route total is explicitly Puerto Juárez–Isla Mujeres and cannot be assigned to an origin named only 'Ultramar'; no exact terminal/operator allocation was found."
+        },
+        "fare_timetable": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "S3 and S4 show multiple distinct Ultramar Cancún terminals. Exact-row terminal identity is absent, so no fare or timetable is attached to this ID."
+        },
+        "current_operation": {
+          "classification": "current_ops_proof_only",
+          "value": "Ultramar currently publishes Cancún–Isla Mujeres services",
+          "source_ids": ["S3", "S4"],
+          "reason": "This supports the general current-service context but not the exact sealed origin-terminal mapping."
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "Federal passenger-service permission is required; no route-specific permit instrument was located."
+        }
+      },
+      "finance_gate": "blocked_pending_primary_evidence",
+      "row_can_move_from_null": false
+    },
+    {
+      "route_id": "ics-aa6ff40d2d",
+      "sealed_od": "Punta Sam ↔ Isla Mujeres (car ferry)",
+      "corridor_model_from": "Punta Sam ferry terminal",
+      "corridor_model_to": "Terminal Martima De Isla Mujeres",
+      "distance_nm": 3.35,
+      "sealed_service_status": "current_scheduled",
+      "route_disposition": "New exact-route primary evidence closes the demand and comparable-fare gap. Use APIQROO's one-endpoint 2025 passenger total without doubling or halving and Ultra Carga's published adult one-way fare as a benchmark, not yield.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "usable_for_base_case",
+          "value": 238128,
+          "unit": "passenger one-way crossing journeys, both directions combined",
+          "period": "2025 full calendar year",
+          "source_ids": ["S1"],
+          "route_line_coverage": "Punta Sam–Isla Mujeres transbordadores, all represented operators",
+          "directionality": {
+            "punta_sam_entries": 116169,
+            "punta_sam_exits": 121959,
+            "isla_mujeres_entries": 121959,
+            "isla_mujeres_exits": 116169,
+            "adjudication": "Use either endpoint total 238,128. The rows mirror the same corridor; do not sum them."
+          },
+          "passenger_vs_vehicle": "Passenger columns only. Vessel movements and cargo are separately labeled and are not passenger demand.",
+          "confidence": "high"
+        },
+        "fare_timetable": {
+          "classification": "usable_for_base_case",
+          "published_fare_mxn_pax_one_way": 290,
+          "fare_class": "adult passenger",
+          "currency": "MXN",
+          "source_ids": ["S2"],
+          "fare_nature": "published comparable retail fare, not realized operator yield",
+          "effective_date": null,
+          "timetable": "Four departures per direction Monday–Friday; three per direction Saturday and Sunday on the live page; subject to change without notice.",
+          "standardized_usd_comparable_candidate": {
+            "value": 15.07,
+            "formula": "MXN 290 / 19.2375083333333 MXN per USD",
+            "fx_basis": "2025 World Bank annual-average FX already approved in the sealed Mexico finance evidence artifact",
+            "warning": "A standardized comparator only; not operator yield and not a claim that the undated live tariff was effective throughout 2025."
+          },
+          "confidence": "high for published exact-route fare and timetable"
+        },
+        "current_operation": {
+          "classification": "current_ops_proof_only",
+          "value": "Current scheduled Punta Sam–Isla Mujeres service is published in both directions",
+          "source_ids": ["S2"],
+          "confidence": "high"
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "The federal statute establishes the permission requirement. Current operation is not substituted for a route-specific permission document, which was not located."
+        }
+      },
+      "suggested_non_null_model_fields": {
+        "annual_one_way_pax": 238128,
+        "comparable_fare_usd_pax": 15.07,
+        "demand_record_note": "2025 APIQROO transbordador passenger total for one endpoint; both-direction one-way journeys combined; do not sum mirrored endpoint rows.",
+        "fare_record_note": "Current Ultra Carga published adult one-way fare MXN 290; standardized with the sealed 2025 annual-average FX; benchmark, not realized yield."
+      },
+      "finance_gate": "t3_buildable_non_null",
+      "row_can_move_from_null": true
+    },
+    {
+      "route_id": "ics-89a8844858",
+      "sealed_od": "Puerto Vallarta / Los Muertos → Yelapa",
+      "corridor_model_from": "Puerto Vallarta & Riviera Nayarit",
+      "corridor_model_to": "Yelapa",
+      "distance_nm": 14.5,
+      "sealed_service_status": "current_water_taxi_evidence",
+      "route_disposition": "Current route and retail-fare evidence exists, but no exact-route annual passenger series was found. Existing MXN 350 one-way and current MXN 550 round-trip products should not be averaged or treated as realized yield.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "unit": "passenger one-way crossing journeys, both directions combined",
+          "period": null,
+          "reason": "No authority, port, operator annual report, statistical table, concession record, or procurement document located an annual Los Muertos–Yelapa passenger count. Pier usage and tourism totals are not route demand."
+        },
+        "fare_timetable": {
+          "classification": "benchmark_only",
+          "value": {
+            "existing_model_benchmark": "MXN 350 adult one-way from S10",
+            "current_booking_benchmarks": "MXN 550 round trip per person from S5 and S6; S6 says 16% tax excluded"
+          },
+          "source_ids": ["S5", "S6", "S10"],
+          "fare_nature": "published retail products, not realized operator yield",
+          "reason": "The products differ by channel, trip basis and tax treatment. Preserve the existing benchmark unless the model owner selects a documented fare product; do not average them."
+        },
+        "current_operation": {
+          "classification": "current_ops_proof_only",
+          "value": "Daily Los Muertos–Yelapa water-taxi schedules are currently published in both directions",
+          "source_ids": ["S5", "S6", "S7"],
+          "confidence": "medium-high"
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "Federal passenger-service permission is required; no route/operator-specific permit instrument was located."
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "row_can_move_from_null": false,
+      "null_field_blocking_finance": "annual_one_way_pax"
+    },
+    {
+      "route_id": "ics-de6758216f",
+      "sealed_od": "Puerto Vallarta → Punta de Mita",
+      "corridor_model_from": "Puerto Vallarta & Riviera Nayarit",
+      "corridor_model_to": "Punta De Mita",
+      "distance_nm": 9.9,
+      "sealed_service_status": "future_opportunity",
+      "route_disposition": "No exact scheduled passenger line, exact-route annual demand, or exact-route public fare was established. Government coastal-connectivity language is not current-operation proof.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No exact-route primary passenger series was found."
+        },
+        "fare_timetable": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "Charters, excursions and nearby routes are not a scheduled Puerto Vallarta–Punta de Mita tariff."
+        },
+        "current_operation": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No current exact-OD scheduled passenger service was found; the sealed future_opportunity status is preserved."
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "Any launched passenger service would require the applicable federal/port-captain permissions; no route-specific grant was found."
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "row_can_move_from_null": false
+    },
+    {
+      "route_id": "ics-db0930d9d1",
+      "sealed_od": "Cabo San Lucas Marina → Los Cabos, Baja Sur",
+      "corridor_model_from": "Cabo San Lucas Marina",
+      "corridor_model_to": "Los Cabos, Baja Sur",
+      "distance_nm": 17.0,
+      "sealed_service_status": "future_opportunity",
+      "route_disposition": "No exact destination terminal is bound and no exact scheduled line, route demand, or fare was found. Excursions, private charters and tourism totals are not substitutes.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No exact-route annual passenger count was found; Los Cabos tourism and marina totals are out of scope."
+        },
+        "fare_timetable": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No exact scheduled OD or public passenger tariff was established."
+        },
+        "current_operation": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No current exact-OD scheduled passenger service was found; geometry and tour listings were not used as proof."
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "Any launched passenger service would require applicable permission; no exact-route grant was found."
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "row_can_move_from_null": false
+    },
+    {
+      "route_id": "ics-b5861451fb",
+      "sealed_od": "Palmilla → San José del Cabo Marina",
+      "corridor_model_from": "Palmilla",
+      "corridor_model_to": "San José Del Cabo Marina",
+      "distance_nm": 3.4,
+      "sealed_service_status": "future_opportunity",
+      "route_disposition": "No exact scheduled line, route-level annual passenger series, or exact public fare was found. Resort transfers, fishing/whale-watch products and road transfers are not route evidence.",
+      "proof_items": {
+        "annual_ridership": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No exact Palmilla–San José del Cabo Marina passenger series was found."
+        },
+        "fare_timetable": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No exact scheduled passenger timetable or tariff was established."
+        },
+        "current_operation": {
+          "classification": "not_publicly_supported",
+          "value": null,
+          "reason": "No current exact-OD scheduled passenger operation was found."
+        },
+        "permission": {
+          "classification": "permission_required",
+          "value": null,
+          "source_ids": ["S8"],
+          "reason": "Any launched passenger service would require applicable permission; no exact-route grant was found."
+        }
+      },
+      "finance_gate": "t3_buildable_null_only",
+      "row_can_move_from_null": false
+    }
+  ],
+  "didi_marine_network_census": {
+    "requested_metric": "DiDi-specific Mexico marine crossings/network width",
+    "classification": "not_publicly_supported",
+    "crossing_count": null,
+    "period": null,
+    "geography": "Mexico",
+    "disposition": "No defensible public DiDi-specific marine crossing census was found. DiDi's official Mexico city index proves road-platform city presence in Cancún and Puerto Vallarta, not a DiDi marine product or any crossing operation. The six sealed Atlas corridors are opportunities/current third-party ferry routes, not a DiDi-operated marine network census.",
+    "source_ids": ["S9"],
+    "prohibited_substitutions_rejected": [
+      "No Grab or peer marine census borrowed.",
+      "No count of Atlas route rows relabeled as DiDi-operated crossings.",
+      "No country-level DiDi presence converted to city or marine-operation proof.",
+      "No zero asserted from absence of public evidence; the value remains null."
+    ],
+    "finance_gate": "blocked_pending_primary_evidence"
+  },
+  "failed_searches": [
+    {
+      "route_id": "ics-03e3853317",
+      "item": "exact terminal allocation and annual ridership",
+      "searched": "Ultramar current terminal pages, schedules/fares, APIQROO route-passenger statistics and transbordador statistics",
+      "result": "Multiple Cancún terminals are separately published, while the sealed origin is only 'Ultramar'. Puerto Juárez statistics cannot be assigned without an exact boarding-point/terminal binding."
+    },
+    {
+      "route_id": "ics-03e3853317",
+      "item": "route-specific permission",
+      "searched": "federal navigation-law permission framework and public web results for operator/route permits",
+      "result": "The legal requirement is public; no exact-route permit instrument was located."
+    },
+    {
+      "route_id": "ics-aa6ff40d2d",
+      "item": "route-specific permission grant",
+      "searched": "federal permission framework, APIQROO and operator pages",
+      "result": "Current operation and the generic legal requirement are established, but no public route/operator permit document was located."
+    },
+    {
+      "route_id": "ics-89a8844858",
+      "item": "annual ridership",
+      "searched": "Jalisco government maritime-connectivity notices, Los Muertos pier records, route operators/booking pages, statistical-agency and port queries",
+      "result": "Current service and pier use are visible, but no exact-route annual passenger count or audited allocation is public."
+    },
+    {
+      "route_id": "ics-de6758216f",
+      "item": "demand, fare and current operation",
+      "searched": "Puerto Vallarta/Punta de Mita authority, operator, timetable, tariff and coastal-connectivity queries",
+      "result": "Only broad coastal-connectivity context, excursions, charters or nearby services were found; none proves the sealed scheduled OD."
+    },
+    {
+      "route_id": "ics-db0930d9d1",
+      "item": "demand, fare and current operation",
+      "searched": "Cabo San Lucas Marina, Puerto Los Cabos/Los Cabos authority, marina, timetable, ferry, water-taxi, operator and tariff queries",
+      "result": "Tour/charter products and marina context do not establish the sealed scheduled route or annual passenger demand."
+    },
+    {
+      "route_id": "ics-b5861451fb",
+      "item": "demand, fare and current operation",
+      "searched": "Palmilla/San José del Cabo Marina authority, operator, ferry, water-taxi, timetable and tariff queries",
+      "result": "No exact scheduled passenger line or route statistic was located."
+    },
+    {
+      "route_id": null,
+      "item": "DiDi-specific Mexico marine crossing census",
+      "searched": "Official DiDi Mexico city/service pages and public queries for DiDi ferry, water taxi, boat, marine crossing and marine partnership in Mexico",
+      "result": "Official material supports city-level road-platform presence only. No DiDi marine service/crossing list or count was found."
+    },
+    {
+      "route_id": null,
+      "item": "exact route-specific permissions across the six rows",
+      "searched": "Federal legal text and public authority/operator web results",
+      "result": "The governing permission requirement is clear, but public exact-route permits/concessions were not located for any of the six IDs."
+    }
+  ],
+  "quality_checks": {
+    "all_six_exact_route_ids_present": true,
+    "requested_proof_items_disposed_for_every_route": true,
+    "passenger_vehicle_distinction_explicit": true,
+    "directional_counts_not_doubled_or_halved": true,
+    "no_peak_observation_annualized": true,
+    "no_terminal_total_allocated_without_source": true,
+    "no_geometry_used_as_operations_proof": true,
+    "no_peer_census_used": true,
+    "production_files_modified": false
+  }
+}

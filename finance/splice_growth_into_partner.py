@@ -140,9 +140,16 @@ def main():
     if not isinstance(pp.get("growth_case"), dict):
         pp["growth_case"] = {}
     gcblock = pp["growth_case"]
+    economics_url = pp.get("economics_url") or gcblock.get("economics_url")
 
     # replace revenue_potential + phase_economics + vessel_sizing
     gcblock["revenue_potential"] = fe["revenue_potential"]
+    # economics_url is a render contract: replacing generated rungs must not
+    # silently remove their deep links to the live unit-economics sheet.
+    if economics_url:
+        gcblock["economics_url"] = economics_url
+        for rung in gcblock["revenue_potential"].get("rungs", []):
+            rung["economics_url"] = economics_url
     gcblock["phase_economics"]   = fe["phase_economics"]
     gcblock["vessel_sizing"]     = fe.get("vessel_sizing", gcblock.get("vessel_sizing"))
     gcblock["_provenance"]       = fe.get("_provenance", gcblock.get("_provenance"))
