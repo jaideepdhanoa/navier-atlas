@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T06:00:37Z
+**Checked:** 2026-07-10T15:04:36Z
 
 ## Summary
 
-- Items audited: 98
-- KEEP: 98
+- Items audited: 109
+- KEEP: 109
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -114,3 +114,14 @@
 | journey | market:argentina | Buenos Aires Puerto Madero → Colonia del Sacrament | `—` | **KEEP** | — |
 | journey | market:argentina | Tigre → Casa Bellini / Cruz Colorada | `—` | **KEEP** | — |
 | journey | market:argentina | Rosario → Isla Sabino Corsi | `—` | **KEEP** | — |
+| journey | market:australia | Brisbane → River and bay corridors | `—` | **KEEP** | — |
+| journey | market:new-zealand | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
+| featured | new-zealand/pNone | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
+| featured | new-zealand/pNone | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
+| featured | new-zealand/pNone | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
+| journey | market:japan | Tokyo Bay / gateway cities → Coastal and island ga | `—` | **KEEP** | — |
+| journey | market:hong-kong | North Point Ferry Pier → Hung Hom Ferry Pier | `rn-d7294a3ddd04` | **KEEP** | — |
+| featured | hong-kong/pNone | North Point Ferry Pier → Hung Hom Ferry Pier | `rn-d7294a3ddd04` | **KEEP** | — |
+| featured | hong-kong/pNone | North Point Ferry Pier → Hung Hom Ferry Pier | `rn-d7294a3ddd04` | **KEEP** | — |
+| featured | hong-kong/pNone | North Point Ferry Pier → Hung Hom Ferry Pier | `rn-d7294a3ddd04` | **KEEP** | — |
+| journey | market:egypt | Cairo → Nile river opportunities | `—` | **KEEP** | — |
