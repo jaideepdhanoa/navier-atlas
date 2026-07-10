@@ -1,0 +1,41 @@
+{
+  "at": "2026-07-10T02:22:43Z",
+  "lane": "finance-inheritance tunisia yango/yassir",
+  "status": "fixed",
+  "root_cause": "yango-tunisia alone carried stale route_id rn-74a61d330456 (not in gold ROUTES.json; used twice for Tunis Marine->La Goulette and Yasmine Hammamet->Nabeul). yassir-tunisia already nulled those ODs on 2026-07-07 rebind.",
+  "action": "Null rn-74a61d330456 on both yango-tunisia corridors to match yassir + gold.",
+  "changes": [
+    {
+      "market": "yango-tunisia",
+      "od": "Tunis (Tunis Marine) -> La Goulette",
+      "before": "rn-74a61d330456",
+      "after": null
+    },
+    {
+      "market": "yango-tunisia",
+      "od": "Yasmine Hammamet -> Nabeul",
+      "before": "rn-74a61d330456",
+      "after": null
+    }
+  ],
+  "geometry_hygiene": {
+    "route_id": "rn-27da217834e5",
+    "before": "mauritius",
+    "after": "tunisia"
+  },
+  "spines_after": {
+    "yango-tunisia": [
+      "rn-27da217834e5",
+      "rn-3a88bb1bc7a3",
+      "rn-4668b16ef32c",
+      "rn-d0ef490c589b"
+    ],
+    "yassir-tunisia": [
+      "rn-27da217834e5",
+      "rn-3a88bb1bc7a3",
+      "rn-4668b16ef32c",
+      "rn-d0ef490c589b"
+    ],
+    "identical": true
+  }
+}
