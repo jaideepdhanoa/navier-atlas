@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "partner": "didi",
+  "wave": "brazil_t3_finance_and_cross_wave_proof",
+  "date": "2026-07-09",
+  "base_commit": "d3817d9",
+  "status": "tasklet_finance_cascade_complete_grok_sidecar_reseal_pending",
+  "brazil": {
+    "finance_market_key": "brazil",
+    "sealed_route_ids": [
+      "rn-1886629dbf0c",
+      "rn-80f0d0ebe0bd",
+      "rn-369ef0eb69d9",
+      "rn-00bb6ded4be5"
+    ],
+    "annual_passenger_trips": 13123615,
+    "published_fare_transport_pool_usd": 13218121.3154,
+    "model_comparable_fare_transport_pool_increment_usd": 236225070,
+    "permission": "required_not_transferred"
+  },
+  "combined_didi_model": {
+    "markets": [
+      "brazil",
+      "mexico-caribbean",
+      "mexico-pacific"
+    ],
+    "corridors_total": 12,
+    "grounded_corridors": 6,
+    "unsupported_corridors": 6,
+    "grounded_fleet": 199,
+    "grounded_floor_usd_yr": 37809632,
+    "model_transport_pool_usd_yr": 382569906,
+    "marine_mobility_tam_mid_usd_yr": 3374266571,
+    "journey_gmv_mid_usd_yr": 10122799713
+  },
+  "live_delivery": {
+    "sheet_id": "1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM",
+    "sheet_version_at_upload": "21",
+    "master_tracker_id": "1q80EzTowmY8tUuGg1z5TsTatjMru5xWW1XcIhV-E0Ko",
+    "master_tracker_row": 8,
+    "verified": true
+  },
+  "holds": {
+    "colombia": "unmaterialized_pending_shared_finance_spine_alignment_and_route_level_demand_fare_proof",
+    "costa_rica_panama_dominican_republic": "null_pending_primary_route_evidence",
+    "ecuador_peru": "null_pending_primary_route_evidence",
+    "taiwan": "historical_only_no_current_economics",
+    "macau": "held",
+    "hong_kong": "current_taxi_hailing_supported_no_marine_economics"
+  },
+  "gates": {
+    "partner_copy": "PASS",
+    "partner_inheritance": "PASS",
+    "finance_inheritance": "PASS for affected DiDi additions; no Colombia market created",
+    "sheet_model_parity": "PASS",
+    "unsupported_values_preserved_null": true
+  },
+  "sha256": {
+    "finance/model/corridors.json": "96911004192968ca80294ddabaffcbc1d8546a12eb15c80c49613fe3ee311df8",
+    "finance/recal/agg-didi.json": "1a4f9dceb22411c61a5475e755b9bea04411b6cb53891c6a62e1445709390aaa",
+    "finance/didi-growth-case.json": "d2fb7cc1dfc17268112c332b83c10cb634bdd613f4c464fbaeb137e724c6c12b",
+    "finance/recal/growth-didi.json": "d2fb7cc1dfc17268112c332b83c10cb634bdd613f4c464fbaeb137e724c6c12b",
+    "finance/build_transparent_sheet.py": "e3d811f5b8979230a1f3a82a73a0ebad1ea0d6afb57bd6826554d65f719d9727",
+    "finance/build_master_sheet.py": "3b718d6f16e238bc3e90ff37a010f2c9dd733f9d626e0eb8124bddae52024e9a",
+    "finance/splice_growth_into_partner.py": "035b637a2f358de63907ce76a44fa4657881c49a98fd0d47beb0bb8aa87026db",
+    "partner-pitch/partners/_growth-draft/didi.growth.json": "d7343ba72cdc7149022d97cc3188100e5f8f78ad38855fbf1ba3e106903e1057",
+    "partner-pitch/partners/didi.json": "86442a37384fba8791cc93a2cb0749e94a50f9e4a3a04887523532aa2826b606",
+    "handoff/didi-ex-china/waves/tasklet-proof/DIDI-BR-CO-T3-PROOF-2026-07-09.json": "ca50139a786bb2f2b7878d71c03cc472f44a7d345da0e014c013bed368718de3"
+  },
+  "next_owner": "Grok",
+  "next_actions": [
+    "Build route-keyed economics sidecar for the four sealed Rio IDs.",
+    "Reseal DiDi economics and economics_url without changing Mexico.",
+    "Preserve permission and fare-basis caveats.",
+    "Reconcile Colombia to the shared global finance spine before materialization.",
+    "Return inheritance, linkage, copy, and render receipts."
+  ]
+}
