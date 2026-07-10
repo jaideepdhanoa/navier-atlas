@@ -17,3 +17,10 @@
 3. Preserve permission caveats and the published-fare-versus-premium-model distinction.
 4. Reconcile Colombia to the shared global finance spine before any DiDi Colombia market is materialized.
 5. Return strict inheritance, linkage, copy, and render receipts.
+
+## Mexico residual proof unlock
+
+- `ics-aa6ff40d2d` Punta Sam ↔ Isla Mujeres is newly grounded with APIQROO 2025 annual passengers (238,128, both-direction one-way journeys) and Ultra Carga MXN 290 adult one-way published comparable fare (USD 15.07 using the sealed 2025 FX).
+- Fare remains a retail benchmark, not realized yield. Permission remains required; no exact permit grant was located.
+- Five other residual rows remain demand-null; DiDi-specific marine census remains null.
+- Full receipt: `DIDI-MEXICO-RESIDUAL-T3-PROOF-2026-07-09.json`.
