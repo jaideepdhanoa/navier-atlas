@@ -195,27 +195,10 @@ function rankRouteForCull(f, storyById) {
  */
 export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pageKind, keep = [], inheritClusters = false }) {
   if (pageKind === 'aggregate' || densityTier === 'normal') return routes;
-  // Hub index with live cluster inheritance: keep inter-city corridors; only thin intra-city mesh.
+  // Hub index with live cluster inheritance: ship the full canonical set.
+  // Density is a paint/zoom concern — never delete inherited geography (Dott/Voi #216).
   if (pageKind === 'hub-index' && inheritClusters) {
-    const intraCap = densityTier === 'extreme' ? 24 : 32;
-    const intraByCity = new Map();
-    const inter = [];
-    for (const f of routes) {
-      const cf = cityIdOf(f.properties?.from);
-      const ct = cityIdOf(f.properties?.to);
-      if (cf && ct && cf === ct) {
-        if (!intraByCity.has(cf)) intraByCity.set(cf, []);
-        intraByCity.get(cf).push(f);
-      } else {
-        inter.push(f);
-      }
-    }
-    const keptIntra = [];
-    for (const list of intraByCity.values()) {
-      const sorted = [...list].sort((a, b) => rankRouteForCull(b, storyById) - rankRouteForCull(a, storyById));
-      keptIntra.push(...sorted.slice(0, intraCap));
-    }
-    return [...keptIntra, ...inter];
+    return routes;
   }
 
   const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
@@ -262,9 +245,11 @@ export function densityCullRoutes(routes, { storyById, cityIdOf, densityTier, pa
   return [...keptIntra, ...keptInter];
 }
 
-function resolveDensityPolicy(md, routeCount, keep = [], pageKind = 'flat') {
+function resolveDensityPolicy(md, routeCount, keep = [], pageKind = 'flat', { inheritClusters = false } = {}) {
   // Aggregate atlas always ships the full network; lane filters + zoom opacity handle legibility.
   if (pageKind === 'aggregate') return 'tier_visual';
+  // Live-inheritance hubs must never auto-switch to legacy tier deletion (threshold 40).
+  if (pageKind === 'hub-index' && inheritClusters) return 'tier_visual';
   if (isLegacyDensity(md)) return 'legacy';
   const touchesDense = keep.some((id) => HIGH_DENSITY_CITY_IDS.has(id));
   if (routeCount >= AUTO_LEGACY_ROUTE_THRESHOLD || touchesDense) return 'legacy';
@@ -532,7 +517,7 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
 
   const rawRoutes = scoped.ROUTES || [];
   const preTier = inferDensityTier(rawRoutes.length, partner, market);
-  const densityPolicy = resolveDensityPolicy(md, rawRoutes.length, keep, pageKind);
+  const densityPolicy = resolveDensityPolicy(md, rawRoutes.length, keep, pageKind, { inheritClusters });
 
   let filtered = filterRoutesForPage(rawRoutes, {
     keep,
@@ -544,21 +529,24 @@ export function applyRouteDisplay(scoped, { partner, market = null, pageKind, ke
     partner,
   });
 
-  const cullTier = preTier !== 'normal' ? preTier : inferDensityTier(filtered.length, partner, market);
-  if (pageKind !== 'aggregate' && cullTier !== 'normal') {
-    filtered = densityCullRoutes(filtered, { storyById, cityIdOf, densityTier: cullTier, pageKind, keep, inheritClusters });
-  }
+  // Full-set inheritance: skip cull + legacy re-filter for hub-index live cluster pages.
+  if (!(pageKind === 'hub-index' && inheritClusters)) {
+    const cullTier = preTier !== 'normal' ? preTier : inferDensityTier(filtered.length, partner, market);
+    if (pageKind !== 'aggregate' && cullTier !== 'normal') {
+      filtered = densityCullRoutes(filtered, { storyById, cityIdOf, densityTier: cullTier, pageKind, keep, inheritClusters });
+    }
 
-  if (densityPolicy === 'legacy') {
-    filtered = filterRoutesForPage(filtered, {
-      keep,
-      net,
-      storyById,
-      pageKind,
-      cityIdOf,
-      densityPolicy: 'legacy',
-      partner,
-    });
+    if (densityPolicy === 'legacy') {
+      filtered = filterRoutesForPage(filtered, {
+        keep,
+        net,
+        storyById,
+        pageKind,
+        cityIdOf,
+        densityPolicy: 'legacy',
+        partner,
+      });
+    }
   }
 
   const ROUTES = annotateRoutes(filtered, { storyById, keep, cityIdOf });

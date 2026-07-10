@@ -16,6 +16,22 @@ export const MARKET_CLUSTER_ALIASES = {
   'koh-samui': 'thailand',
   penang: 'malaysia',
   'cross-border': '__cross_border__',
+  // Micromobility hub market slugs → canonical country/coastal clusters
+  'france-riviera': 'cote-dazur-france-archipelago',
+  'bolt-france-riviera': 'cote-dazur-france-archipelago',
+  'ksa-commercial': 'saudi-arabia',
+  'bolt-ksa-commercial': 'saudi-arabia',
+  'bolt-sweden': 'sweden',
+  'bolt-finland': 'finland',
+  'bolt-greece': 'greece',
+  'bolt-israel': 'israel',
+  'bolt-spain': 'spain',
+  'bolt-uae': 'uae',
+  'dubai-uae': 'uae',
+  'amalfi-coast-italy': 'bay-of-naples-amalfi-coast-italy',
+  'lake-como-italy': 'italy',
+  'halkidiki-greece': 'greece',
+  'rhodes-dodecanese-greece': 'greece',
 };
 
 export function loadClusters(dcRoot = path.join(ROOT, 'data-clean')) {
@@ -98,10 +114,11 @@ export function resolveInheritedCityIds(partner, clusterById, { pageKind = 'hub-
   }
 
   if (pageKind === 'hub-index') {
+    // Authoritative scope = sealed registry keys → live cluster members only.
+    // Do not union end_state_cities (often holds aspirational/stale markets).
     for (const key of sealedRegistryKeys(partner)) {
       for (const id of resolveRegistryKeyToCityIds(key, clusterById, partner)) out.add(id);
     }
-    for (const c of partner.end_state?.end_state_cities || []) out.add(c);
     return out;
   }
 
@@ -113,10 +130,15 @@ export function hubRolloutCities(partner, clusterById, { pageKind = 'hub-index',
     ? marketCities(market)
     : [].concat(...(partner.markets || []).map(marketCities));
   const inherited = [...resolveInheritedCityIds(partner, clusterById, { pageKind, market })];
-  // Live inheritance is authoritative; legacy allowlist only fills gaps on hub-index.
+  // Live inheritance is authoritative. Do NOT union frozen _map_scope.cluster_city_ids —
+  // that allowlist has leaked stale markets (e.g. beirut-lebanon) after partners exited.
+  // Optional opt-in: partner._map_scope.union_legacy_city_ids === true
   if (pageKind === 'hub-index') {
-    const legacy = partner._map_scope?.cluster_city_ids || [];
-    return [...new Set([...fromMarkets, ...inherited, ...legacy])];
+    if (partner._map_scope?.union_legacy_city_ids === true) {
+      const legacy = partner._map_scope?.cluster_city_ids || [];
+      return [...new Set([...fromMarkets, ...inherited, ...legacy])];
+    }
+    return [...new Set([...fromMarkets, ...inherited])];
   }
   return [...new Set([...fromMarkets, ...inherited])];
 }

@@ -31,7 +31,9 @@ import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
-import { loadClusters, hubRolloutCities, isHubPartner } from './partner-scope.mjs';
+import {
+  loadClusters, hubRolloutCities, isHubPartner, sealedRegistryKeys, MARKET_CLUSTER_ALIASES,
+} from './partner-scope.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DC = path.join(ROOT, 'data-clean');
@@ -196,10 +198,26 @@ function scopeForPartner(data, slug, opts = {}) {
   // cluster-tagged — so a Grab Taiwan market doesn't drag in all of Japan/Korea the way coarse continental
   // region-expansion did. Fall back to region ONLY for rollout cities not yet cluster-tagged upstream
   // (~25%), so coverage never regresses while tagging completes.
-  const partnerClusters = new Set([...keep].map(id => cityCluster[id]).filter(Boolean));
+  const pageKind = opts.pageKind || 'flat';
+  const inheritClusters = opts.inheritClusters === true;
+  // For hub inheritance, sealed registry keys are authoritative cluster membership
+  // (avoids dual-mapped cities like monaco-monaco → monaco leaking stale micro-clusters).
+  const partnerClusters = new Set();
+  if (inheritClusters && partner) {
+    for (const key of sealedRegistryKeys(partner)) {
+      const alias = MARKET_CLUSTER_ALIASES[key];
+      if (alias === '__cross_border__') continue;
+      const cid = alias || key;
+      if (cid) partnerClusters.add(cid);
+    }
+  } else {
+    for (const id of keep) {
+      const c = cityCluster[id];
+      if (c) partnerClusters.add(c);
+    }
+  }
   const fallbackRegions = new Set([...keep].filter(id => !cityCluster[id]).map(id => cityRegion[id]).filter(Boolean));
   const net = new Set(keep);   // NETWORK footprint = rollout cities ∪ cities in those clusters (∪ region fallback)
-  const pageKind = opts.pageKind || 'flat';
   const expandNetwork = opts.expandRegion !== false
     && pageKind !== 'market'
     && !(pageKind === 'flat' && !partner?.map_display?.expand_network);
@@ -212,8 +230,21 @@ function scopeForPartner(data, slug, opts = {}) {
 
   // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
   // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
+  // Hub live-inheritance: select by canonical cluster_id membership (ROUTES ∩ partner clusters),
+  // not density-culled endpoint heuristics (Dott/Voi #216).
   const routesWithin = opts.routesWithin ?? (pageKind === 'market' || pageKind === 'flat');
-  const ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return routesWithin ? (a && b) : (a || b); });
+  let ROUTES;
+  if (inheritClusters && pageKind === 'hub-index' && partnerClusters.size) {
+    ROUTES = (data.ROUTES || []).filter((f) => {
+      const p = f.properties || {};
+      if (p.render_hidden === true) return false;
+      if (p._quarantine === true || p.relevance === 'hide') return false;
+      const cid = p.cluster_id;
+      return !!(cid && partnerClusters.has(cid));
+    });
+  } else {
+    ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return routesWithin ? (a && b) : (a || b); });
+  }
   const phaseEndpoints = new Set();
   for (const f of (data.ROUTES || [])) { const p = f.properties || {}; if (keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to))) { if (p.from) phaseEndpoints.add(p.from); if (p.to) phaseEndpoints.add(p.to); } }
   const FEATURES_BY_TYPE = {};

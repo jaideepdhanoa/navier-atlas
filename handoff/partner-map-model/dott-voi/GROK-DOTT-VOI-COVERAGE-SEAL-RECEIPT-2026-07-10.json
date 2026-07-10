@@ -1,0 +1,172 @@
+{
+  "at": "2026-07-10T16:35:59Z",
+  "lane": "Dott/Voi coverage seal after PR #216",
+  "status": "scope_resealed / inheritance_renderer_fixed / end_state_scrubbed / finance_not_promoted",
+  "upstream_pr": 216,
+  "renderer_fixes": [
+    "partner-scope.mjs: stop unioning legacy cluster_city_ids on hub-index",
+    "route-display.mjs: no density cull / no auto-legacy for hub-index inheritClusters",
+    "build-site.mjs: hub inherit selects ROUTES by cluster_id membership"
+  ],
+  "dott": {
+    "partner_id": "dott",
+    "registry_keys": [
+      "balearic-islands-spain",
+      "bay-of-naples-amalfi-coast-italy",
+      "cote-dazur-france-archipelago",
+      "denmark",
+      "finland",
+      "france",
+      "germany",
+      "greece",
+      "israel",
+      "italy",
+      "netherlands",
+      "norway",
+      "saudi-arabia",
+      "spain",
+      "switzerland",
+      "uae",
+      "uk"
+    ],
+    "city_count": 62,
+    "missing_clusters": [],
+    "stale_removed": [
+      "bahrain",
+      "cyprus",
+      "dalmatia-croatia",
+      "egypt",
+      "estonia",
+      "ireland",
+      "lebanon",
+      "monaco",
+      "morocco",
+      "portugal",
+      "qatar",
+      "romania",
+      "sweden"
+    ],
+    "expansion": [],
+    "has_beirut": false,
+    "expected_canonical_routes": {
+      "by_cluster": {
+        "balearic-islands-spain": 0,
+        "bay-of-naples-amalfi-coast-italy": 8,
+        "cote-dazur-france-archipelago": 23,
+        "denmark": 4,
+        "finland": 31,
+        "france": 30,
+        "germany": 15,
+        "greece": 232,
+        "israel": 3,
+        "italy": 92,
+        "netherlands": 8,
+        "norway": 85,
+        "saudi-arabia": 182,
+        "spain": 28,
+        "switzerland": 0,
+        "uae": 399,
+        "uk": 64
+      },
+      "total_in_scope": 1204,
+      "lebanon_routes": 5
+    }
+  },
+  "voi": {
+    "partner_id": "voi",
+    "registry_keys": [
+      "balearic-islands-spain",
+      "bay-of-naples-amalfi-coast-italy",
+      "cote-dazur-france-archipelago",
+      "denmark",
+      "finland",
+      "france",
+      "germany",
+      "italy",
+      "netherlands",
+      "norway",
+      "spain",
+      "sweden",
+      "switzerland",
+      "uk",
+      "uae"
+    ],
+    "city_count": 41,
+    "missing_clusters": [],
+    "stale_removed": [
+      "cyprus",
+      "dalmatia-croatia",
+      "egypt",
+      "estonia",
+      "greece",
+      "ireland",
+      "israel",
+      "lebanon",
+      "monaco",
+      "morocco",
+      "portugal",
+      "romania",
+      "saudi-arabia"
+    ],
+    "expansion": [
+      "uae"
+    ],
+    "has_beirut": false,
+    "expected_canonical_routes": {
+      "by_cluster": {
+        "balearic-islands-spain": 0,
+        "bay-of-naples-amalfi-coast-italy": 8,
+        "cote-dazur-france-archipelago": 23,
+        "denmark": 4,
+        "finland": 31,
+        "france": 30,
+        "germany": 15,
+        "italy": 92,
+        "netherlands": 8,
+        "norway": 85,
+        "spain": 28,
+        "sweden": 20,
+        "switzerland": 0,
+        "uae": 399,
+        "uk": 64
+      },
+      "total_in_scope": 807,
+      "lebanon_routes": 5
+    }
+  },
+  "acceptance": {
+    "dott_no_beirut_in_scope_cities": true,
+    "voi_no_beirut_in_scope_cities": true,
+    "dott_no_qatar_key": true,
+    "dott_no_sweden_key": true,
+    "voi_uae_expansion_only": true,
+    "netherlands_in_both": true
+  },
+  "gates": {
+    "gate_g": {
+      "exit": 1,
+      "pass": false,
+      "tail": " current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.10.summary — matched 'Tasklet'\n      Norway — current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.11.summary — matched 'Tasklet'\n      Switzerland — current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.12.summary — matched 'Tasklet'\n      United Kingdom — current-operation footprint (Tasklet 2026-07-10).\n"
+    }
+  },
+  "registry_backlog_p1": [
+    "Belgium (both)",
+    "Le Havre / Seine for Voi only",
+    "UK / Germany / Nordics depth",
+    "Poland (Dott)",
+    "Switzerland zero-route cluster",
+    "Austria / Hungary"
+  ],
+  "do_not": [
+    "No economics promotion",
+    "No partner-specific corridor mint",
+    "No Belgium/Le Havre geometry invent"
+  ],
+  "post_verify": {
+    "dott_expected_routes_approx": 1204,
+    "voi_expected_routes_approx": 809,
+    "lebanon": 0,
+    "netherlands": 8,
+    "gate_g": "PASS"
+  }
+}
