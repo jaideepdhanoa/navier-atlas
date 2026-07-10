@@ -2600,14 +2600,13 @@
       ]
     },
     {
-      "id": "uk",
-      "slug": "uk",
-      "label": "United Kingdom",
+      "id": "uk-water-systems",
+      "slug": "uk-water-systems",
+      "label": "UK — London Thames & Firth of Clyde",
       "region": "Europe",
-      "summary": "United Kingdom — current-operation footprint.",
+      "summary": "London and Clyde only — Liverpool not in current Voi evidence.",
       "anchor_cities": [
         "london-thames-uk",
-        "liverpool-mersey-uk",
         "firth-of-clyde-scotland"
       ],
       "phases": [
@@ -2616,10 +2615,10 @@
           "name": "Prove",
           "featured_routes": [
             {
-              "route_id": "rn-b5bcd18d66bb",
-              "from_label": "Oban",
-              "to_label": "Lochboisdale (South Uist)",
-              "cluster_id": "uk"
+              "route_id": "rn-cd3981212e33",
+              "from_label": "Canary Wharf Pier",
+              "to_label": "Wandsworth Riverside Quarter Pier",
+              "cluster_id": "london-thames-uk"
             }
           ]
         },
@@ -2628,10 +2627,10 @@
           "name": "Expand",
           "featured_routes": [
             {
-              "route_id": "rn-b5bcd18d66bb",
-              "from_label": "Oban",
-              "to_label": "Lochboisdale (South Uist)",
-              "cluster_id": "uk"
+              "route_id": "rn-cd3981212e33",
+              "from_label": "Canary Wharf Pier",
+              "to_label": "Wandsworth Riverside Quarter Pier",
+              "cluster_id": "london-thames-uk"
             }
           ]
         },
@@ -2640,41 +2639,41 @@
           "name": "Full network",
           "featured_routes": [
             {
-              "route_id": "rn-b5bcd18d66bb",
-              "from_label": "Oban",
-              "to_label": "Lochboisdale (South Uist)",
-              "cluster_id": "uk"
+              "route_id": "rn-cd3981212e33",
+              "from_label": "Canary Wharf Pier",
+              "to_label": "Wandsworth Riverside Quarter Pier",
+              "cluster_id": "london-thames-uk"
             }
           ]
         }
       ],
       "featured_routes": [
         {
-          "route_id": "rn-b5bcd18d66bb",
-          "from_label": "Oban",
-          "to_label": "Lochboisdale (South Uist)",
-          "cluster_id": "uk"
+          "route_id": "rn-cd3981212e33",
+          "from_label": "Canary Wharf Pier",
+          "to_label": "Wandsworth Riverside Quarter Pier",
+          "cluster_id": "london-thames-uk"
         },
         {
-          "route_id": "rn-5d2e47128d7e",
-          "from_label": "Oban",
-          "to_label": "Castlebay (Barra)",
-          "cluster_id": "uk"
+          "route_id": "rn-331246c3e472",
+          "from_label": "Canary Wharf Pier",
+          "to_label": "Chelsea Harbour Pier",
+          "cluster_id": "london-thames-uk"
         }
       ],
       "journeys_unlocked": [
         {
-          "from": "Oban",
-          "to": "Lochboisdale (South Uist)",
-          "from_label": "Oban",
-          "to_label": "Lochboisdale (South Uist)",
-          "label": "Oban → Lochboisdale (South Uist)",
-          "route_id": "rn-b5bcd18d66bb",
-          "_link_status": "linked-coverage-seal",
-          "_link_source": "grok/dott-voi-linkage-2026-07-10",
+          "from": "Canary Wharf Pier",
+          "to": "Wandsworth Riverside Quarter Pier",
+          "from_label": "Canary Wharf Pier",
+          "to_label": "Wandsworth Riverside Quarter Pier",
+          "label": "Canary Wharf Pier → Wandsworth Riverside Quarter Pier",
+          "route_id": "rn-cd3981212e33",
+          "_link_status": "linked-uk-decompose",
+          "_link_source": "grok/wave1-p0",
           "economics_status": "roadmap_excluded",
-          "today": "Road and short-hop demand on the waterfront.",
-          "with_navier": "A clean water hop for the densest corridors.",
+          "today": "Existing water service on this system.",
+          "with_navier": "A clean hop on the densest corridors.",
           "platform": "Pioneer II",
           "archetype": "commuter"
         }
@@ -2840,16 +2839,24 @@
       "_operation_status": "current_operation_supported"
     },
     {
-      "id": "uk",
-      "registry_key": "uk",
+      "id": "london-thames-uk",
+      "registry_key": "london-thames-uk",
       "covered": true,
       "tier": "country_supported",
       "render": "geometry",
       "map_promote": true,
-      "label": "United Kingdom",
-      "region": "Europe",
-      "_evidence": "tasklet/dott-voi-coverage-2026-07-10",
-      "_operation_status": "current_operation_supported"
+      "label": "London Thames",
+      "region": "Europe"
+    },
+    {
+      "id": "firth-of-clyde-scotland",
+      "registry_key": "firth-of-clyde-scotland",
+      "covered": true,
+      "tier": "country_supported",
+      "render": "geometry",
+      "map_promote": true,
+      "label": "Firth of Clyde",
+      "region": "Europe"
     }
   ],
   "featured_routes": [
@@ -2897,7 +2904,8 @@
       "spain",
       "sweden",
       "switzerland",
-      "uk"
+      "london-thames-uk",
+      "firth-of-clyde-scotland"
     ],
     "cluster_city_ids": [
       "amalfi-coast-italy",
@@ -2918,7 +2926,6 @@
       "ibiza-spain",
       "lake-como-italy",
       "lake-geneva-switzerland",
-      "liverpool-mersey-uk",
       "london-thames-uk",
       "mallorca-spain",
       "marseille-calanques-france",
@@ -2992,6 +2999,17 @@
         "uae"
       ],
       "missing_atlas_clusters": []
+    },
+    "_uk_decompose": {
+      "inherits": [
+        "london-thames-uk",
+        "firth-of-clyde-scotland"
+      ],
+      "excludes": [
+        "liverpool-mersey-uk",
+        "scotland-hebrides"
+      ],
+      "reason": "Voi supports London and Glasgow; not Liverpool"
     }
   },
   "_provenance": {
