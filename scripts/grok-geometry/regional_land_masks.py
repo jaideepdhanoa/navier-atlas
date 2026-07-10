@@ -322,6 +322,27 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("venezuela_caribbean_coast", -67.05, 10.45, -66.65, 12.05),
     # Lake Maracaibo open crossing (Maracaibo ↔ Cabimas)
     ("lake_maracaibo", -72.05, 10.15, -71.20, 10.75),
+    # --- DiDi Chile / Argentina ferry lanes (hand-route un-quarantine 2026-07-10) ---
+    # Magellan Strait Punta Arenas ↔ Porvenir (TABSA)
+    ("magellan_strait_pa_porvenir", -70.95, -53.35, -70.28, -53.05),
+    # Valdivia estuary Niebla ↔ Corral
+    ("valdivia_niebla_corral", -73.46, -39.91, -73.38, -39.85),
+    # Calbuco ↔ Isla Puluqui channel
+    ("calbuco_puluqui_channel", -73.18, -41.83, -73.02, -41.74),
+    # Canal de Chacao (Pargua ↔ Chacao)
+    ("chacao_channel_chile", -73.55, -41.86, -73.46, -41.78),
+    # Canal Dalcahue micro-crossing
+    ("canal_dalcahue", -73.67, -42.395, -73.635, -42.365),
+    # Gulf of Arauco Lota ↔ Isla Santa María
+    ("gulf_arauco_lota", -73.60, -37.18, -73.10, -36.98),
+    # Tigre Paraná Delta Line 452 channels
+    ("tigre_parana_delta", -58.62, -34.46, -58.48, -34.36),
+    # Rosario Paraná island hop
+    ("rosario_parana", -60.66, -32.96, -60.60, -32.90),
+    # Nahuel Huapi lake (Puerto Pañuelo ↔ Puerto Blest) — coarse mask treats lake as land
+    ("nahuel_huapi_lake", -71.90, -41.18, -71.40, -40.98),
+    # Río de la Plata Buenos Aires ↔ Colonia international ferry lane
+    ("rio_de_la_plata_ba_colonia", -58.45, -34.72, -57.78, -34.42),
 ]
 
 # Simplified land exclusions inside water bboxes (lon, lat vertices)

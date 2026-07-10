@@ -1,32 +1,41 @@
 {
-  "at": "2026-07-10T06:00:35Z",
+  "at": "2026-07-10T15:37:54Z",
   "status": "unmaterialized_hold",
-  "decision": "C — keep DiDi Colombia unmaterialized in finance until route-level demand/fare proof + spine decision",
-  "yango_colombia_finance_spine": [
+  "decision": "C — keep DiDi Colombia unmaterialized in finance",
+  "spine_choice": "deferred",
+  "option_A_didi_geometry_marquee": [
+    "rn-aa790551baa7"
+  ],
+  "option_B_yango_finance_spine": [
     "rn-20762e2b40f5",
     "rn-3ebf0c9aece2",
     "rn-59374c41f8ab",
     "rn-74aa778f6655",
     "rn-84ffd58e7f82"
-  ],
-  "didi_featured_route_ids": [
-    "rn-aa790551baa7"
   ],
   "intersection": [],
-  "only_in_didi_featured": [
-    "rn-aa790551baa7"
-  ],
-  "only_in_yango_finance": [
-    "rn-20762e2b40f5",
-    "rn-3ebf0c9aece2",
-    "rn-59374c41f8ab",
-    "rn-74aa778f6655",
-    "rn-84ffd58e7f82"
-  ],
-  "notes": [
-    "rn-aa790551baa7 is DiDi geometry marquee (service unverified) and not on yango-colombia 6-ID spine",
-    "Do not create didi-colombia finance market until alignment A/B chosen with demand proof",
-    "No finance cascade for Colombia in this lane"
-  ],
-  "finance_inheritance_impact": "none — no didi-colombia market key created"
+  "demand_gate": {
+    "rn-aa790551baa7": {
+      "annual_one_way_pax": null,
+      "fare": null,
+      "disposition": "not_publicly_supported",
+      "source": "DIDI-BR-CO-T3-PROOF-2026-07-09"
+    },
+    "la_bodeguita_terminal_aggregate_2023": {
+      "pax": 619282,
+      "classification": "benchmark_only_terminal_not_od",
+      "note": "Cannot map 1:1 to Bocachica or Rosario"
+    }
+  },
+  "didi_cities_directory": {
+    "cartagena": true,
+    "barranquilla": true,
+    "source": "https://web.didiglobal.com/co/conductor/ciudades/"
+  },
+  "finance_market_key": null,
+  "do_not": [
+    "Do not invent OD annual pax from terminal aggregates",
+    "Do not force-align DiDi marquee to yango 5/6-ID spine without demand + product choice",
+    "Do not cascade Colombia economics"
+  ]
 }

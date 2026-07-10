@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T15:04:36Z
+**Checked:** 2026-07-10T15:38:19Z
 
 ## Summary
 
-- Items audited: 109
-- KEEP: 109
+- Items audited: 113
+- KEEP: 113
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -111,9 +111,13 @@
 | journey | market:chile | Punta Arenas Tres Puentes → Porvenir | `—` | **KEEP** | — |
 | journey | market:chile | Niebla → Corral | `—` | **KEEP** | — |
 | journey | market:chile | Pargua → Chacao | `—` | **KEEP** | — |
-| journey | market:argentina | Buenos Aires Puerto Madero → Colonia del Sacrament | `—` | **KEEP** | — |
-| journey | market:argentina | Tigre → Casa Bellini / Cruz Colorada | `—` | **KEEP** | — |
-| journey | market:argentina | Rosario → Isla Sabino Corsi | `—` | **KEEP** | — |
+| journey | market:argentina | Terminal Fluvial de Pasajeros de Rosario → Isla Sa | `rn-f451444da7fe` | **KEEP** | — |
+| featured | argentina/pNone | Terminal Fluvial de Pasajeros de Rosario → Isla Sa | `rn-f451444da7fe` | **KEEP** | — |
+| featured | argentina/pNone | Puerto Pañuelo → Puerto Blest landing | `rn-97c9f0b33379` | **KEEP** | — |
+| featured | argentina/pNone | Terminal Fluvial de Pasajeros de Rosario → Isla Sa | `rn-f451444da7fe` | **KEEP** | — |
+| featured | argentina/pNone | Puerto Pañuelo → Puerto Blest landing | `rn-97c9f0b33379` | **KEEP** | — |
+| featured | argentina/pNone | Terminal Fluvial de Pasajeros de Rosario → Isla Sa | `rn-f451444da7fe` | **KEEP** | — |
+| featured | argentina/pNone | Puerto Pañuelo → Puerto Blest landing | `rn-97c9f0b33379` | **KEEP** | — |
 | journey | market:australia | Brisbane → River and bay corridors | `—` | **KEEP** | — |
 | journey | market:new-zealand | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
 | featured | new-zealand/pNone | Queens Wharf Ferry Terminal → Days Bay Wharf | `rn-aa439fa75f13` | **KEEP** | — |
