@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T02:17:27Z
+**Checked:** 2026-07-10T03:04:40Z
 
 ## Summary
 
-- Items audited: 90
-- KEEP: 90
+- Items audited: 92
+- KEEP: 92
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -66,6 +66,7 @@
 | journey | market:colombia | Cartagena → Barú / Playa Blanca | `—` | **KEEP** | — |
 | journey | market:colombia | San Blas (Guna Yala) Archipelago — Panama → Cartag | `—` | **KEEP** | — |
 | journey | market:colombia | Cartagena → Santa Marta / Tayrona coast | `—` | **KEEP** | — |
+| featured | colombia/p1 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | featured | colombia/p2 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | featured | colombia/p3 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | journey | market:panama | Puerto Cartí → Cartí Sugdup (Gardi Sugdub) communi | `rn-8fb072f5a8a8` | **KEEP** | — |
@@ -102,6 +103,7 @@
 | journey | market:dominican-republic | Samaná Peninsula & Bay — Dominican Republic → Las  | `—` | **KEEP** | — |
 | journey | market:dominican-republic | Samaná Peninsula & Bay — Dominican Republic → Turk | `—` | **KEEP** | — |
 | featured | dominican-republic/p1 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
+| featured | dominican-republic/p1 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
 | featured | dominican-republic/p2 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
 | featured | dominican-republic/p2 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
 | featured | dominican-republic/p3 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
