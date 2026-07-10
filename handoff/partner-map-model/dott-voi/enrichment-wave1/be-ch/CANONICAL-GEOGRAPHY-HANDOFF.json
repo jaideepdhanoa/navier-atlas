@@ -1,0 +1,892 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-07-10",
+  "lane": "Belgium + Switzerland shared Dott/Voi enrichment",
+  "partners": [
+    "Dott",
+    "Voi"
+  ],
+  "countries": [
+    "Belgium",
+    "Switzerland"
+  ],
+  "status": "research_handoff_review_needed_not_seal_complete",
+  "source_rows_reviewed": 45,
+  "current_rows": 45,
+  "marine_relevant_rows": 21,
+  "exact_binds": 1,
+  "unresolved_rows": 20,
+  "inland_excludes": 24,
+  "classification_counts": {
+    "existing_cluster_city_gap": 1,
+    "existing_exact_id": 1,
+    "inland_exclude": 24,
+    "new_city_brief_needed": 12,
+    "new_cluster_brief_needed": 7
+  },
+  "current_partner_baseline": {
+    "Dott": {
+      "registry_keys_contains_switzerland": true,
+      "registry_keys_contains_belgium": false,
+      "cluster_city_ids_contains_lake_geneva_switzerland": true,
+      "inheritance_policy": "evidence_supported_clusters_only_no_legacy_union"
+    },
+    "Voi": {
+      "registry_keys_contains_switzerland": true,
+      "registry_keys_contains_belgium": false,
+      "cluster_city_ids_contains_lake_geneva_switzerland": true,
+      "inheritance_policy": "evidence_supported_clusters_only_no_legacy_union"
+    },
+    "note": "No-shrink baseline only; existing broad Swiss scope does not turn unresolved city rows into exact city-ID binds."
+  },
+  "repo_artifacts_inspected": [
+    "data-clean/CLUSTERS.json",
+    "data-clean/ROUTES.json",
+    "data-clean/FEATURES_BY_TYPE.json",
+    "data-clean/city_briefs/lake-geneva-switzerland.json",
+    "data-clean/partners/dott.json",
+    "data-clean/partners/voi.json",
+    "partner-pitch/partners/dott.json",
+    "partner-pitch/partners/voi.json"
+  ],
+  "binding_summary": {
+    "exact_existing_cluster_binds": [
+      {
+        "partner": "Voi",
+        "official_scope": "Switzerland country row",
+        "cluster_id": "switzerland",
+        "evidence_tier": "country_supported",
+        "caveat": "Does not prove exact service at every Atlas city."
+      }
+    ],
+    "existing_cluster_city_gaps": [
+      {
+        "partner": "Voi",
+        "official_city": "Nyon",
+        "cluster_id": "switzerland",
+        "aggregate_city_id": "lake-geneva-switzerland",
+        "existing_bp_ids": [
+          "bp-33cf0d3529",
+          "bp-228bbe0e1b"
+        ],
+        "required_action": "Document Nyon membership/alias and resolve duplicate Nyon POIs before partner city binding."
+      }
+    ],
+    "exact_city_id_binds": []
+  },
+  "proposed_global_clusters": [
+    {
+      "name": "Belgium waterways",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P0",
+      "country": "Belgium",
+      "reason": "No Belgium cluster exists; one global cluster is required before any Belgium partner membership can inherit canonical routes."
+    }
+  ],
+  "proposed_global_cities": [
+    {
+      "name": "Antwerp",
+      "city_id": null,
+      "proposed_city_id": "antwerp-belgium",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P1",
+      "official_partner_rows": [
+        "Voi"
+      ]
+    },
+    {
+      "name": "Brussels",
+      "city_id": null,
+      "proposed_city_id": "brussels-belgium",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P0",
+      "official_partner_rows": [
+        "Dott",
+        "Voi"
+      ]
+    },
+    {
+      "name": "Ghent",
+      "city_id": null,
+      "proposed_city_id": "ghent-belgium",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P1",
+      "official_partner_rows": [
+        "Dott"
+      ]
+    },
+    {
+      "name": "Liège",
+      "city_id": null,
+      "proposed_city_id": "liege-belgium",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P1",
+      "official_partner_rows": [
+        "Dott"
+      ]
+    },
+    {
+      "name": "Herstal",
+      "city_id": null,
+      "proposed_city_id": "herstal-belgium",
+      "cluster_id": null,
+      "proposed_cluster_id": "belgium",
+      "status": "not_banked",
+      "priority": "P1",
+      "official_partner_rows": [
+        "Dott"
+      ],
+      "hold": "No specific Herstal boarding point was verified in this pass; do not reuse a Liège stop by proximity."
+    },
+    {
+      "name": "Basel Rhine",
+      "city_id": null,
+      "proposed_city_id": "basel-rhine-switzerland",
+      "cluster_id": "switzerland",
+      "status": "not_banked",
+      "priority": "P0",
+      "official_partner_rows": [
+        "Dott: Basel/Birsfelden/Muttenz",
+        "Voi: Basel"
+      ],
+      "required_aliases": [
+        "Basel",
+        "Birsfelden",
+        "Muttenz"
+      ]
+    },
+    {
+      "name": "Zürich",
+      "city_id": null,
+      "proposed_city_id": "zurich-switzerland",
+      "cluster_id": "switzerland",
+      "status": "not_banked",
+      "priority": "P0",
+      "official_partner_rows": [
+        "Dott",
+        "Voi"
+      ]
+    },
+    {
+      "name": "Lake Constance — Switzerland",
+      "city_id": null,
+      "proposed_city_id": "lake-constance-switzerland",
+      "cluster_id": "switzerland",
+      "status": "not_banked",
+      "priority": "P1",
+      "official_partner_rows": [
+        "Dott: Goldach/Horn/Romanshorn/Rorschach/Rorschacherberg"
+      ],
+      "required_aliases": [
+        "Goldach",
+        "Horn",
+        "Romanshorn",
+        "Rorschach",
+        "Rorschacherberg"
+      ],
+      "hold": "Municipal marinas at Goldach and Rorschacherberg need public-pickup/access QA; no passenger-service claim is made."
+    }
+  ],
+  "candidate_boarding_points": [
+    {
+      "water_system": "Scheldt — Antwerp",
+      "name": "Sint Anna",
+      "country": "Belgium",
+      "city_or_service_area": "Antwerp",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.slimnaarantwerpen.be/en/public-transport/boat",
+        "publisher": "Smart Ways to Antwerp (City of Antwerp mobility)",
+        "title": "DeWaterbus and ferry",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Scheldt — Antwerp",
+      "name": "Steenplein",
+      "country": "Belgium",
+      "city_or_service_area": "Antwerp",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.slimnaarantwerpen.be/en/public-transport/boat",
+        "publisher": "Smart Ways to Antwerp (City of Antwerp mobility)",
+        "title": "DeWaterbus and ferry",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Brussels–Scheldt Maritime Canal",
+      "name": "Cruise Terminal",
+      "country": "Belgium",
+      "city_or_service_area": "Brussels",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.waterbus.eu/en/navigationalRoutes.php",
+        "publisher": "Waterbus Brussels",
+        "title": "Navigational route and boarding stops",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Brussels–Scheldt Maritime Canal",
+      "name": "Sainctelette",
+      "country": "Belgium",
+      "city_or_service_area": "Brussels",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.waterbus.eu/en/navigationalRoutes.php",
+        "publisher": "Waterbus Brussels",
+        "title": "Navigational route and boarding stops",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Brussels–Scheldt Maritime Canal",
+      "name": "Quai des Péniches / Akenkaai",
+      "country": "Belgium",
+      "city_or_service_area": "Brussels",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.waterbus.eu/en/navigationalRoutes.php",
+        "publisher": "Waterbus Brussels",
+        "title": "Navigational route and boarding stops",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Ghent inland waterways",
+      "name": "Graslei",
+      "country": "Belgium",
+      "city_or_service_area": "Ghent",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://visit.gent.be/en/see-do/gent-watertoerist",
+        "publisher": "Visit Gent (City of Ghent tourism)",
+        "title": "Gent Watertoerist — departure Graslei",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Ghent inland waterways",
+      "name": "Portus Ganda",
+      "country": "Belgium",
+      "city_or_service_area": "Ghent",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://visit.gent.be/en/see-do/portus-ganda",
+        "publisher": "Visit Gent (City of Ghent tourism)",
+        "title": "Portus Ganda marina",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": "Official city tourism identifies a marina; exact public Navier pickup suitability still needs local/geometry QA."
+    },
+    {
+      "water_system": "Meuse — Liège",
+      "name": "Guillemins",
+      "country": "Belgium",
+      "city_or_service_area": "Liège",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.navettefluviale.be/en/6-stops/",
+        "publisher": "La Navette Fluviale",
+        "title": "Six official Liège river-ferry stops",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Meuse — Liège",
+      "name": "Fragnée",
+      "country": "Belgium",
+      "city_or_service_area": "Liège",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.navettefluviale.be/en/6-stops/",
+        "publisher": "La Navette Fluviale",
+        "title": "Six official Liège river-ferry stops",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Rhine — Basel region",
+      "name": "Basel Schifflände",
+      "country": "Switzerland",
+      "city_or_service_area": "Basel",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://bpg.ch/schifffahrt/schleusenfahrt",
+        "publisher": "Basler Personenschifffahrt AG",
+        "title": "Basel–Rheinfelden lock cruise with intermediate landing sites",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Rhine — Basel region",
+      "name": "Muttenz Waldhaus",
+      "country": "Switzerland",
+      "city_or_service_area": "Muttenz",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://bpg.ch/schifffahrt/schleusenfahrt",
+        "publisher": "Basler Personenschifffahrt AG",
+        "title": "Basel–Rheinfelden lock cruise with intermediate landing sites",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Rhine — Basel region",
+      "name": "Schweizerhalle",
+      "country": "Switzerland",
+      "city_or_service_area": "Muttenz/Basel region",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://bpg.ch/schifffahrt/schleusenfahrt",
+        "publisher": "Basler Personenschifffahrt AG",
+        "title": "Basel–Rheinfelden lock cruise with intermediate landing sites",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Zürich",
+      "name": "Zürich Bürkliplatz",
+      "country": "Switzerland",
+      "city_or_service_area": "Zürich",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.zsg.ch/wp-content/uploads/2026_Fahrplan_A4_Web2.pdf",
+        "publisher": "Zürichsee-Schifffahrtsgesellschaft (ZSG)",
+        "title": "Official Lake Zürich 2026 timetable",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Zürich",
+      "name": "Küsnacht ZH",
+      "country": "Switzerland",
+      "city_or_service_area": "Küsnacht",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.zsg.ch/wp-content/uploads/2026_Fahrplan_A4_Web2.pdf",
+        "publisher": "Zürichsee-Schifffahrtsgesellschaft (ZSG)",
+        "title": "Official Lake Zürich 2026 timetable",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Geneva",
+      "name": "Nyon",
+      "country": "Switzerland",
+      "city_or_service_area": "Nyon",
+      "existing_bp_id": "bp-33cf0d3529",
+      "bp_id": "bp-33cf0d3529",
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "existing_atlas_bp_evidence_refresh",
+      "citation": {
+        "url": "https://www.cgn.ch/en/contact-access",
+        "publisher": "Compagnie Générale de Navigation sur le lac Léman (CGN)",
+        "title": "CGN landing stages",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": "Exact existing Atlas POI name under city_id lake-geneva-switzerland; a duplicate Nyon Ferry Dock POI also exists and requires dedupe review."
+    },
+    {
+      "water_system": "Lake Geneva",
+      "name": "Rolle",
+      "country": "Switzerland",
+      "city_or_service_area": "Rolle",
+      "existing_bp_id": "bp-539902097c",
+      "bp_id": "bp-539902097c",
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "existing_atlas_bp_evidence_refresh",
+      "citation": {
+        "url": "https://www.cgn.ch/en/contact-access",
+        "publisher": "Compagnie Générale de Navigation sur le lac Léman (CGN)",
+        "title": "CGN landing stages",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Constance",
+      "name": "Horn Hafen",
+      "country": "Switzerland",
+      "city_or_service_area": "Horn",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.bodensee-schiffe.ch/kursschifffahrt-fahrplaene/",
+        "publisher": "Schweizerische Bodensee-Schifffahrt AG (SBS)",
+        "title": "Official Lake Constance timetable",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Constance",
+      "name": "Romanshorn Hafen",
+      "country": "Switzerland",
+      "city_or_service_area": "Romanshorn",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.bodensee-schiffe.ch/kursschifffahrt-fahrplaene/",
+        "publisher": "Schweizerische Bodensee-Schifffahrt AG (SBS)",
+        "title": "Official Lake Constance timetable",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Constance",
+      "name": "Rorschach Hafen",
+      "country": "Switzerland",
+      "city_or_service_area": "Rorschach",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.bodensee-schiffe.ch/kursschifffahrt-fahrplaene/",
+        "publisher": "Schweizerische Bodensee-Schifffahrt AG (SBS)",
+        "title": "Official Lake Constance timetable",
+        "source_date": "2026",
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": null
+    },
+    {
+      "water_system": "Lake Constance",
+      "name": "Hafen Rietli",
+      "country": "Switzerland",
+      "city_or_service_area": "Goldach",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://www.goldach.ch/hafenrietli",
+        "publisher": "Municipality of Goldach",
+        "title": "Hafen Rietli",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": "Municipal marina evidence; exact public passenger pickup suitability still requires local QA."
+    },
+    {
+      "water_system": "Lake Constance",
+      "name": "Bootshafen Hörnlibuck",
+      "country": "Switzerland",
+      "city_or_service_area": "Rorschacherberg",
+      "existing_bp_id": null,
+      "bp_id": null,
+      "proposed_bp_id": null,
+      "coordinates": null,
+      "status": "candidate_not_banked",
+      "citation": {
+        "url": "https://rorschacherberg.ch/sport-freizeitanlage/bootshafen-hoernlibuck/",
+        "publisher": "Municipality of Rorschacherberg",
+        "title": "Bootshafen Hörnlibuck",
+        "source_date": null,
+        "accessed_date": "2026-07-10",
+        "source_tier": 1
+      },
+      "note": "Municipal marina evidence; exact public passenger pickup suitability still requires local QA."
+    }
+  ],
+  "candidate_routes": [
+    {
+      "water_system": "Scheldt — Antwerp",
+      "route_id": null,
+      "from_bp_name": "Sint Anna",
+      "from_bp_id": null,
+      "to_bp_name": "Steenplein",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Voi"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Brussels–Scheldt Maritime Canal",
+      "route_id": null,
+      "from_bp_name": "Sainctelette",
+      "from_bp_id": null,
+      "to_bp_name": "Cruise Terminal",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P0",
+      "partner_unlock": [
+        "Dott",
+        "Voi"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Ghent inland waterways",
+      "route_id": null,
+      "from_bp_name": "Graslei",
+      "from_bp_id": null,
+      "to_bp_name": "Portus Ganda",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Dott"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting",
+        "Candidate only; lock/bridge/navigation and exact public landing access require QA."
+      ]
+    },
+    {
+      "water_system": "Meuse — Liège",
+      "route_id": null,
+      "from_bp_name": "Guillemins",
+      "from_bp_id": null,
+      "to_bp_name": "Fragnée",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Dott"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Rhine — Basel region",
+      "route_id": null,
+      "from_bp_name": "Basel Schifflände",
+      "from_bp_id": null,
+      "to_bp_name": "Muttenz Waldhaus",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P0",
+      "partner_unlock": [
+        "Dott",
+        "Voi"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Lake Zürich",
+      "route_id": null,
+      "from_bp_name": "Zürich Bürkliplatz",
+      "from_bp_id": null,
+      "to_bp_name": "Küsnacht ZH",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P0",
+      "partner_unlock": [
+        "Dott",
+        "Voi"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Lake Geneva",
+      "route_id": null,
+      "from_bp_name": "Nyon",
+      "from_bp_id": "bp-33cf0d3529",
+      "to_bp_name": "Rolle",
+      "to_bp_id": "bp-539902097c",
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Voi"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting",
+        "Existing Atlas Lake Geneva routes are mis-stamped cluster_id indonesia; repair before route minting."
+      ]
+    },
+    {
+      "water_system": "Lake Constance",
+      "route_id": null,
+      "from_bp_name": "Horn Hafen",
+      "from_bp_id": null,
+      "to_bp_name": "Romanshorn Hafen",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Dott"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    },
+    {
+      "water_system": "Lake Constance",
+      "route_id": null,
+      "from_bp_name": "Romanshorn Hafen",
+      "from_bp_id": null,
+      "to_bp_name": "Rorschach Hafen",
+      "to_bp_id": null,
+      "geometry": null,
+      "status": "research_candidate_not_banked",
+      "priority": "P1",
+      "partner_unlock": [
+        "Dott"
+      ],
+      "canonical_scope": "global geography; inherit to every partner in the sealed cluster",
+      "constraints": [
+        "same water system",
+        "domestic only",
+        "short/local leg",
+        "must pass water-only geometry QA before minting"
+      ]
+    }
+  ],
+  "p0_recommendations": [
+    {
+      "rank": 1,
+      "system": "Brussels–Scheldt Maritime Canal",
+      "why": "Exact current Brussels city evidence for both Dott and Voi; one new Belgium global cluster/city and one canonical route unlock both partners.",
+      "next": "Create/review Belgium cluster and Brussels city brief; bank two official Waterbus BPs; geometry-seal one local canal leg; derive partner scope by cluster membership."
+    },
+    {
+      "rank": 2,
+      "system": "Rhine — Basel region",
+      "why": "Exact current Basel evidence for both partners plus Dott Birsfelden/Muttenz rows; official BPG landing chain exists.",
+      "next": "Create/review one Basel Rhine city brief with documented Basel/Birsfelden/Muttenz membership; bank Schifflände and Muttenz Waldhaus; seal one canonical Rhine leg."
+    },
+    {
+      "rank": 3,
+      "system": "Lake Zürich",
+      "why": "Exact current Zürich evidence for both partners and official ZSG landing/timetable evidence.",
+      "next": "Create/review Zürich city brief, bank Bürkliplatz and Küsnacht landing records, then geometry-seal one short domestic lake leg."
+    }
+  ],
+  "p1_recommendations": [
+    "Antwerp Scheldt crossing (Voi)",
+    "Ghent Graslei–Portus Ganda candidate (Dott; navigation/access QA)",
+    "Liège Guillemins–Fragnée (Dott; Herstal remains BP hold)",
+    "Nyon–Rolle using existing Lake Geneva POIs after cluster-stamp and duplicate-POI repair (Voi)",
+    "Lake Constance Horn–Romanshorn–Rorschach mesh (Dott; Goldach/Rorschacherberg municipal marinas require access QA)"
+  ],
+  "risks_and_holds": [
+    {
+      "severity": "P0",
+      "issue": "All 14 existing Lake Geneva routes inspected carry cluster_id indonesia although cluster_city_id is lake-geneva-switzerland.",
+      "hold": "Do not inherit or mint Nyon routes until canonical cluster stamping is repaired and validated."
+    },
+    {
+      "severity": "P0",
+      "issue": "No Belgium cluster or stable Belgium city IDs exist in current Atlas.",
+      "hold": "No Belgium partner map binding is display-ready."
+    },
+    {
+      "severity": "P1",
+      "issue": "Atlas has duplicate Nyon POIs: bp-228bbe0e1b “Nyon Ferry Dock” and bp-33cf0d3529 “Nyon”.",
+      "hold": "Resolve canonical BP identity before route minting."
+    },
+    {
+      "severity": "P1",
+      "issue": "Herstal and Birsfelden official partner rows lack a verified specific named passenger boarding point in this pass.",
+      "hold": "Keep those service-area bindings unresolved at BP level; do not borrow a nearby city’s BP."
+    },
+    {
+      "severity": "P1",
+      "issue": "Biel is a marine-relevant official Voi row but was outside the named priority set and received no BP/route research.",
+      "hold": "Keep as new_city_brief_needed P2 research queue; no route promotion."
+    },
+    {
+      "severity": "P2",
+      "issue": "Broad Voi country rows are country-supported evidence only.",
+      "hold": "They may inherit existing sealed Atlas geography but cannot create new cities or claim exact pickup."
+    }
+  ],
+  "deterministic_next_actions_for_grok": [
+    "Review EXACT-BIND-LEDGER.json; preserve every null and not_banked marker. Do not fuzzy-bind excluded or unresolved rows.",
+    "Repair Lake Geneva route cluster_id from indonesia only through canonical registry validation; run route/cluster integrity gates and record the diff before Nyon work.",
+    "Create one global Belgium cluster proposal for review, then city briefs for Brussels, Antwerp, Ghent, Liège and Herstal; do not put routes directly in partner files.",
+    "Create/review global city briefs for Basel Rhine, Zürich and Lake Constance Switzerland with explicit aliases/member service areas exactly as listed; keep Biel, Herstal and Goldach on hold where BP support is absent.",
+    "Bank only reviewer-approved, cited named BPs. Do not create coordinates from this handoff; source or validate coordinates independently in canonical registries.",
+    "Geometry-test candidate routes as short domestic same-water-system legs. Mint canonical route IDs only after water-only QA; route_id is null in this handoff by design.",
+    "Derive Dott/Voi rendered corridors strictly as global canonical routes intersected with reviewed partner cluster memberships. Run validate_partner_inheritance.py and render QA.",
+    "Return sealed IDs, alias map, BP provenance, route geometry/IDs, validation outputs and anchor-city render screenshots. No economics cascade is authorized by this lane."
+  ],
+  "files": {
+    "exact_bind_ledger": "EXACT-BIND-LEDGER.json",
+    "failed_sources": "FAILED-SOURCES.md",
+    "status": "STATUS.md"
+  }
+}
