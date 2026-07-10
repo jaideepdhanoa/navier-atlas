@@ -33,6 +33,11 @@
 
 - economics_url: https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit
 
+## Deploy
+
+- Alias: https://navier-atlas.vercel.app
+- DiDi: https://navier-atlas.vercel.app/didi
+
 ## Colombia
 
 - Status: **unmaterialized_hold**
