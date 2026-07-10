@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mint Chile + Argentina (Wave C) registry after Jaideep approval.
+"""Mint Chile + Argentina (Wave C) registry after Registry owner approval.
 
 Includes Buenos Aires ↔ Colonia (Uruguay) cross-border corridor.
 
@@ -35,7 +35,7 @@ RECEIPT = OUT / "GROK-CHILE-ARGENTINA-MINT-RECEIPT-2026-07-09.json"
 RECEIPT_MD = OUT / "GROK-CHILE-ARGENTINA-MINT-RECEIPT-2026-07-09.md"
 
 LANE = "chile-argentina-registry-mint-2026-07-10"
-APPROVAL = "Jaideep approval 2026-07-10: Tasklet suggestions + include cross-border"
+APPROVAL = "Registry owner approval 2026-07-10: Tasklet suggestions + include cross-border"
 
 
 def utc_now() -> str:
