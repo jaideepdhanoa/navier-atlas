@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-07-10",
+  "status": "source_fixed_deploy_stale_plus_one_scope_precision_repair",
+  "observed_partner_page_routes": 208,
+  "reproduced_pre_fix_build_routes": 206,
+  "current_source_build": {
+    "tip": "feddb58",
+    "routes": 767,
+    "cities": 57,
+    "pois": 1918,
+    "exact_cluster_memberships": 15,
+    "nonempty_route_clusters": 13,
+    "routes_by_cluster": {
+      "argentina": 4,
+      "australia": 92,
+      "brazil": 59,
+      "chile": 6,
+      "colombia": 14,
+      "costa-rica": 65,
+      "dominican-republic": 29,
+      "egypt": 179,
+      "japan": 161,
+      "mexico": 57,
+      "new-zealand": 42,
+      "panama": 47,
+      "peru": 12
+    }
+  },
+  "global_route_registry": {
+    "rows": 6251,
+    "visible_rows": 5861
+  },
+  "scope_keys": {
+    "total": 78,
+    "exact_cluster_ids": [
+      "argentina",
+      "australia",
+      "brazil",
+      "chile",
+      "colombia",
+      "costa-rica",
+      "dominican-republic",
+      "egypt",
+      "galapagos-ecuador",
+      "japan",
+      "mexico",
+      "new-zealand",
+      "panama",
+      "peru",
+      "uruguay"
+    ],
+    "city_ids_resolving_to_existing_clusters_count": 61,
+    "unresolved_aliases": [
+      "mexico-caribbean",
+      "mexico-pacific"
+    ],
+    "zero_visible_route_exact_clusters": [
+      "galapagos-ecuador",
+      "uruguay"
+    ]
+  },
+  "root_cause": {
+    "production_count": "The deployed partner page is still serving the pre-fix density-culling generation; 208 is not the current source-derived intersection.",
+    "source_inheritance": "Current source derives the full canonical route set for the 15 exact cluster memberships and builds 767 visible routes.",
+    "deploy": "The post-fix deployment run failed in the Vercel upload/SSL stage, so source and production are out of sync."
+  },
+  "residual_scope_precision": {
+    "issue": "DiDi has Hong Kong city support but not proven Macau support. The combined hong-kong-macau cluster cannot be inherited without leaking Macau.",
+    "current_visible_hong_kong_only_routes": 37,
+    "current_visible_macau_only_routes": 16,
+    "cross_city_visible_routes": 0,
+    "required_fix": "Split/retag Hong Kong and Macau as separate geography-owned clusters while preserving route IDs; then add only the Hong Kong cluster to DiDi.",
+    "expected_routes_after_safe_hong_kong_split": 804,
+    "macau_hold": "Do not add Macau to DiDi without current local passenger-operation evidence."
+  },
+  "acceptance": [
+    "Fresh production deploy succeeds",
+    "/didi route count matches source build (767 before Hong Kong split)",
+    "No legacy density cull",
+    "Hong Kong split preserves 37 HK-only routes and does not expose 16 Macau-only routes",
+    "Galápagos remains quarantined and Uruguay remains zero-route until separately sealed",
+    "No economics promotion"
+  ]
+}
