@@ -1,0 +1,64 @@
+# Deploy _dist/ to Vercel production via GitHub-hosted runners.
+# Use when local CLI upload fails (TLS bad_record_mac on large files).
+#
+#   gh workflow run deploy-dist.yml
+#
+# Secret: VERCEL_TOKEN (required). Optional: VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+name: deploy-dist
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref_note:
+        description: "Optional note for the run summary"
+        required: false
+        default: ""
+
+concurrency:
+  group: deploy-dist-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python geometry deps
+        run: pip install --quiet shapely global-land-mask numpy
+
+      - name: Install preflight deps
+        run: |
+          if [ -f scripts/preflight/package.json ]; then
+            (cd scripts/preflight && npm install --silent --no-audit --no-fund)
+          fi
+
+      - name: Build + preflight + deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Fallbacks when optional secrets unset (.vercel/ is gitignored)
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || 'team_y5zoRoQKTRtBgU8TapkYj9u1' }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || 'prj_LoLPuM2n1lXml3uGWt8iml8ASo2r' }}
+        run: |
+          set -euo pipefail
+          : "${VERCEL_TOKEN:?VERCEL_TOKEN secret missing — set repo secret VERCEL_TOKEN}"
+          chmod +x scripts/deploy.sh
+          mkdir -p .vercel
+          printf '%s\n' "{\"projectId\":\"${VERCEL_PROJECT_ID}\",\"orgId\":\"${VERCEL_ORG_ID}\",\"projectName\":\"navier-atlas\"}" > .vercel/project.json
+          ./scripts/deploy.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "ref: ${{ github.sha }}"
+          echo "note: ${{ inputs.ref_note }}"
+          echo "actor: ${{ github.actor }}"
