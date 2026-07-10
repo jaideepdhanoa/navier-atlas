@@ -1,0 +1,175 @@
+{
+  "at": "2026-07-10T02:07:07Z",
+  "partner": "didi",
+  "lane": "G4 Mexico economics sidecar + reseal",
+  "status": "g4-complete",
+  "upstream": {
+    "geometry_receipt": "56b570c2",
+    "t3_receipt": "handoff/didi-ex-china/mexico/TASKLET-T3-CASCADE-RECEIPT-2026-07-09.json",
+    "spine": "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json"
+  },
+  "route_id_spine": {
+    "mexico-caribbean": [
+      "ics-413f51cd44",
+      "ics-dd1d814699",
+      "ics-03e3853317",
+      "ics-aa6ff40d2d"
+    ],
+    "mexico-pacific": [
+      "ics-89a8844858",
+      "ics-de6758216f",
+      "ics-db0930d9d1",
+      "ics-b5861451fb"
+    ],
+    "exact_match_corridors_and_agg": true
+  },
+  "sidecar": {
+    "added": 0,
+    "updated": 8,
+    "records_total": 228,
+    "didi_spine_records": 8,
+    "pending_spine": 0,
+    "by_author": {
+      "null": 142,
+      "caribbean": 8,
+      "centara-thailand": 3,
+      "didi": 8,
+      "french-polynesia": 3,
+      "grab": 8,
+      "minor-hotels": 13,
+      "naver": 39,
+      "ocean-whisperer": 2,
+      "saudi-redsea-pif": 2
+    },
+    "joined": [
+      {
+        "route_id": "ics-413f51cd44",
+        "present": true,
+        "authored_for": "didi",
+        "status": "grounded",
+        "market_rev_yr": 8150050.0,
+        "fare_today_usd": 15.07
+      },
+      {
+        "route_id": "ics-dd1d814699",
+        "present": true,
+        "authored_for": "didi",
+        "status": "grounded",
+        "market_rev_yr": 6254760.0,
+        "fare_today_usd": 16.63
+      },
+      {
+        "route_id": "ics-03e3853317",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": null
+      },
+      {
+        "route_id": "ics-aa6ff40d2d",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": null
+      },
+      {
+        "route_id": "ics-89a8844858",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": 18.19
+      },
+      {
+        "route_id": "ics-de6758216f",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": null
+      },
+      {
+        "route_id": "ics-db0930d9d1",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": null
+      },
+      {
+        "route_id": "ics-b5861451fb",
+        "present": true,
+        "authored_for": "didi",
+        "status": "estimated",
+        "market_rev_yr": null,
+        "fare_today_usd": null
+      }
+    ],
+    "path": "data-clean/economics_by_route_id.json",
+    "sha256": "519c8dda572131b246e5869d50f30e25483e12e343e719890ad099bbe71fd50a"
+  },
+  "labels": {
+    "scanned_spine_featured": 27,
+    "normalized": 0
+  },
+  "economics_url": "https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit",
+  "grounded": {
+    "corridors": 2,
+    "held_null": 6,
+    "transport_spend_pool_yr": 146344836.0,
+    "navier_transport_revenue_floor_yr": 14404810.0
+  },
+  "gates": {
+    "gate_g": {
+      "exit": 0,
+      "pass": true,
+      "tail": "PASS — 0 internal-jargon leaks across 95 partner file(s)."
+    },
+    "inheritance_strict": {
+      "exit": 0,
+      "pass": true,
+      "tail": "Partner corridor inheritance gate\n  partners checked: 2\n  passing: 2\n  failing: 0\n  schema issues: 0\n  subset issues: 0\n\nReport → grok-routing-output/partner-inheritance-report.json\n\n  ✅ all partners pass inheritance gate"
+    },
+    "finance_inheritance": {
+      "exit": 1,
+      "pass": false,
+      "tail": "Finance corridor spine inheritance gate\n  multi-partner geographies checked: 14\n  divergent: 1\n\n  ✗ tunisia — partners yango, yassir\n    markets: yango-tunisia, yassir-tunisia\n    union 5 · common 4 · counts {'yango-tunisia': 5, 'yassir-tunisia': 4}\n\nReport → grok-routing-output/finance-inheritance-report.json"
+    },
+    "route_linkage": {
+      "exit": 0,
+      "pass": true,
+      "tail": "Route linkage audit → /Users/jaideep/navier-atlas/handoff/partner-map-model/PARTNER-ROUTE-LINKAGE-AUDIT.json\n  partners: 95\n  with gaps: 0\n  blocking (strict): 0 (0 gaps)\n  allowlist: 0\n  story-ready (≥3 linked routes): 95"
+    },
+    "fidelity": {
+      "exit": 0,
+      "pass": true,
+      "tail": "Proposal fidelity — 1 partners\n  PASS             didi       items=51 keep=51 drop=0 defer=0 bp_err=0 journey_bp=0"
+    }
+  },
+  "seal_economics_sha256": "519c8dda572131b246e5869d50f30e25483e12e343e719890ad099bbe71fd50a",
+  "sha256": {
+    "finance/recal/agg-didi.json": "330ca0d10bbd70abf0f53b56e4f41136794465863f5272cb2f475e16d6460f28",
+    "finance/didi-growth-case.json": "dc3413b0263052a628f37e03fdb7f9dfb80bcd02c70fd3f46fc5381725ca7b53",
+    "partner-pitch/partners/didi.json": "3530f93d58e2b175b583edef55948b7ef725e85c499f749e4312280c8bde331b",
+    "data-clean/partners/didi.json": "3530f93d58e2b175b583edef55948b7ef725e85c499f749e4312280c8bde331b",
+    "data-clean/economics_by_route_id.json": "519c8dda572131b246e5869d50f30e25483e12e343e719890ad099bbe71fd50a"
+  },
+  "rules_honored": [
+    "null beats wrong",
+    "no grab census / no catch-all didi market",
+    "exact 8-ID spine",
+    "no live deck edits",
+    "Mexico calibration only"
+  ],
+  "full_program_boundary": "Mexico T3+G4 only. Broader 16-jurisdiction DiDi proposal remains phased.",
+  "commit": "d0cbde3c5ccbc669be1576d21809b81ee5587fd7",
+  "gates_summary": {
+    "gate_g": "PASS",
+    "inheritance_strict": "PASS — 0 schema, 0 subset",
+    "finance_inheritance": "PASS for Mexico (single-partner); pre-existing Tunisia yango/yassir divergence only",
+    "route_linkage": "PASS — 0 blocking gaps",
+    "fidelity": "PASS — didi keep=51 drop=0 bp_err=0"
+  }
+}
