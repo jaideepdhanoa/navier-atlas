@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T02:14:22Z
+**Checked:** 2026-07-10T02:17:27Z
 
 ## Summary
 
-- Items audited: 64
-- KEEP: 64
+- Items audited: 90
+- KEEP: 90
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -68,15 +68,41 @@
 | journey | market:colombia | Cartagena → Santa Marta / Tayrona coast | `—` | **KEEP** | — |
 | featured | colombia/p2 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | featured | colombia/p3 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
+| journey | market:panama | Puerto Cartí → Cartí Sugdup (Gardi Sugdub) communi | `rn-8fb072f5a8a8` | **KEEP** | — |
+| journey | market:panama | El Porvenir (Gaigirgordub) Dock & Airstrip → Cayos | `rn-87eec178e86f` | **KEEP** | — |
 | journey | market:panama | Cartí (Cartí Sugdup) → Isla Perro / Cayos Holandes | `—` | **KEEP** | — |
 | journey | market:panama | El Porvenir → Achutupu / eastern Guna Yala | `—` | **KEEP** | — |
 | journey | market:panama | San Blas (Guna Yala) Archipelago — Panama → Playón | `—` | **KEEP** | — |
 | journey | market:panama | Cartí → Guna Yala overnight-island resorts | `—` | **KEEP** | — |
+| featured | panama/p1 | Puerto Cartí → Cartí Sugdup (Gardi Sugdub) communi | `rn-8fb072f5a8a8` | **KEEP** | — |
+| featured | panama/p1 | El Porvenir (Gaigirgordub) Dock & Airstrip → Cayos | `rn-87eec178e86f` | **KEEP** | — |
+| featured | panama/p2 | Puerto Cartí → Cartí Sugdup (Gardi Sugdub) communi | `rn-8fb072f5a8a8` | **KEEP** | — |
+| featured | panama/p2 | El Porvenir (Gaigirgordub) Dock & Airstrip → Cayos | `rn-87eec178e86f` | **KEEP** | — |
+| featured | panama/p3 | Puerto Cartí → Cartí Sugdup (Gardi Sugdub) communi | `rn-8fb072f5a8a8` | **KEEP** | — |
+| featured | panama/p3 | El Porvenir (Gaigirgordub) Dock & Airstrip → Cayos | `rn-87eec178e86f` | **KEEP** | — |
+| journey | market:costa-rica | Paquera Ferry Terminal → Puntarenas Ferry Terminal | `rn-7e59f984abec` | **KEEP** | — |
+| journey | market:costa-rica | Playa Naranjo Ferry Terminal → Puntarenas Ferry Te | `rn-eb4ca32edbef` | **KEEP** | — |
+| journey | market:costa-rica | Marina Papagayo → Four Seasons Resort Costa Rica a | `rn-55b63e976bb7` | **KEEP** | — |
 | journey | market:costa-rica | Marina Papagayo → Playas del Coco / resort coast | `—` | **KEEP** | — |
 | journey | market:costa-rica | Puntarenas → Paquera (Gulf of Nicoya) | `—` | **KEEP** | — |
 | journey | market:costa-rica | Gulf of Papagayo & Nicoya Peninsula — Costa Rica → | `—` | **KEEP** | — |
 | journey | market:costa-rica | Gulf of Papagayo & Nicoya Peninsula — Costa Rica → | `—` | **KEEP** | — |
+| featured | costa-rica/p1 | Paquera Ferry Terminal → Puntarenas Ferry Terminal | `rn-7e59f984abec` | **KEEP** | — |
+| featured | costa-rica/p1 | Playa Naranjo Ferry Terminal → Puntarenas Ferry Te | `rn-eb4ca32edbef` | **KEEP** | — |
+| featured | costa-rica/p2 | Paquera Ferry Terminal → Puntarenas Ferry Terminal | `rn-7e59f984abec` | **KEEP** | — |
+| featured | costa-rica/p2 | Playa Naranjo Ferry Terminal → Puntarenas Ferry Te | `rn-eb4ca32edbef` | **KEEP** | — |
+| featured | costa-rica/p2 | Marina Papagayo → Four Seasons Resort Costa Rica a | `rn-55b63e976bb7` | **KEEP** | — |
+| featured | costa-rica/p3 | Paquera Ferry Terminal → Puntarenas Ferry Terminal | `rn-7e59f984abec` | **KEEP** | — |
+| featured | costa-rica/p3 | Playa Naranjo Ferry Terminal → Puntarenas Ferry Te | `rn-eb4ca32edbef` | **KEEP** | — |
+| featured | costa-rica/p3 | Marina Papagayo → Four Seasons Resort Costa Rica a | `rn-55b63e976bb7` | **KEEP** | — |
+| journey | market:dominican-republic | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
+| journey | market:dominican-republic | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
 | journey | market:dominican-republic | Samaná town (Santa Bárbara) → Cayo Levantado | `—` | **KEEP** | — |
 | journey | market:dominican-republic | Samaná → Las Galeras | `—` | **KEEP** | — |
 | journey | market:dominican-republic | Samaná Peninsula & Bay — Dominican Republic → Las  | `—` | **KEEP** | — |
 | journey | market:dominican-republic | Samaná Peninsula & Bay — Dominican Republic → Turk | `—` | **KEEP** | — |
+| featured | dominican-republic/p1 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
+| featured | dominican-republic/p2 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
+| featured | dominican-republic/p2 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
+| featured | dominican-republic/p3 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
+| featured | dominican-republic/p3 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
