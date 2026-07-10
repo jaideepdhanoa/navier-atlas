@@ -64,6 +64,13 @@
 - **fidelity:** PASS (exit 0)
 - **route_linkage:** PASS (exit 0)
 
+## Deploy
+
+- **Alias:** https://navier-atlas.vercel.app
+- **Production:** https://navier-atlas-6rxsvlm2v-jaideepdhanoas-projects.vercel.app
+- **DiDi:** https://navier-atlas.vercel.app/didi
+- Pre-flight: PASSED
+
 ## Render QA
 
 - Live deck not edited
