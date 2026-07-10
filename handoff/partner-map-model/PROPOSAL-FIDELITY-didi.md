@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T02:07:07Z
+**Checked:** 2026-07-10T02:14:22Z
 
 ## Summary
 
-- Items audited: 51
-- KEEP: 51
+- Items audited: 64
+- KEEP: 64
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -20,10 +20,20 @@
 | journey | — | Cancún → Isla Mujeres | `—` | **KEEP** | — |
 | journey | — | Puerto Vallarta → Marietas Islands | `—` | **KEEP** | — |
 | journey | — | Cartagena (Marina) → Rosario Islands | `—` | **KEEP** | — |
-| journey | market:brazil | Rio (Marina da Glória) → Angra dos Reis / Ilha Gra | `—` | **KEEP** | — |
-| journey | market:brazil | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
-| journey | market:brazil | Angra dos Reis + Ilha Grande (Costa Verde) → Angra | `—` | **KEEP** | — |
-| journey | market:brazil | Florianópolis & Santa Catarina → Florianópolis & S | `—` | **KEEP** | — |
+| journey | market:brazil | Praça XV Terminal (central Rio) → Arariboia Termin | `rn-1886629dbf0c` | **KEEP** | — |
+| journey | market:brazil | Praça XV Terminal (central Rio) → Charitas Termina | `rn-80f0d0ebe0bd` | **KEEP** | — |
+| journey | market:brazil | Praça XV Terminal (central Rio) → Paquetá Island T | `rn-00bb6ded4be5` | **KEEP** | — |
+| journey | market:brazil | Praça XV Terminal (central Rio) → Cocotá Terminal  | `rn-369ef0eb69d9` | **KEEP** | — |
+| featured | brazil/p1 | Praça XV Terminal (central Rio) → Arariboia Termin | `rn-1886629dbf0c` | **KEEP** | — |
+| featured | brazil/p1 | Praça XV Terminal (central Rio) → Charitas Termina | `rn-80f0d0ebe0bd` | **KEEP** | — |
+| featured | brazil/p2 | Praça XV Terminal (central Rio) → Arariboia Termin | `rn-1886629dbf0c` | **KEEP** | — |
+| featured | brazil/p2 | Praça XV Terminal (central Rio) → Charitas Termina | `rn-80f0d0ebe0bd` | **KEEP** | — |
+| featured | brazil/p2 | Praça XV Terminal (central Rio) → Paquetá Island T | `rn-00bb6ded4be5` | **KEEP** | — |
+| featured | brazil/p2 | Praça XV Terminal (central Rio) → Cocotá Terminal  | `rn-369ef0eb69d9` | **KEEP** | — |
+| featured | brazil/p3 | Praça XV Terminal (central Rio) → Arariboia Termin | `rn-1886629dbf0c` | **KEEP** | — |
+| featured | brazil/p3 | Praça XV Terminal (central Rio) → Charitas Termina | `rn-80f0d0ebe0bd` | **KEEP** | — |
+| featured | brazil/p3 | Praça XV Terminal (central Rio) → Paquetá Island T | `rn-00bb6ded4be5` | **KEEP** | — |
+| featured | brazil/p3 | Praça XV Terminal (central Rio) → Cocotá Terminal  | `rn-369ef0eb69d9` | **KEEP** | — |
 | journey | market:mexico-pacific | Los Cabos → Los Cabos, Baja Sur | `—` | **KEEP** | — |
 | journey | market:mexico-pacific | Puerto Vallarta & Riviera Nayarit → Puerto Vallart | `—` | **KEEP** | — |
 | journey | market:mexico-pacific | Puerto Vallarta → Yelapa / southern Banderas Bay | `—` | **KEEP** | — |
@@ -51,10 +61,13 @@
 | featured | mexico-caribbean/p3 | Muelle Fiscal Playa del Carmen → Passenger Ferry U | `ics-dd1d814699` | **KEEP** | — |
 | featured | mexico-caribbean/p3 | Ultramar → Terminal Martima De Isla Mujeres | `ics-03e3853317` | **KEEP** | — |
 | featured | mexico-caribbean/p3 | Punta Sam ferry terminal → Terminal Martima De Isl | `ics-aa6ff40d2d` | **KEEP** | — |
+| journey | market:colombia | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | journey | market:colombia | Cartagena (Marina) → Rosario Islands | `—` | **KEEP** | — |
 | journey | market:colombia | Cartagena → Barú / Playa Blanca | `—` | **KEEP** | — |
 | journey | market:colombia | San Blas (Guna Yala) Archipelago — Panama → Cartag | `—` | **KEEP** | — |
 | journey | market:colombia | Cartagena → Santa Marta / Tayrona coast | `—` | **KEEP** | — |
+| featured | colombia/p2 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
+| featured | colombia/p3 | Club de pesca de Cartagena - Marina → Bocachica Ti | `rn-aa790551baa7` | **KEEP** | — |
 | journey | market:panama | Cartí (Cartí Sugdup) → Isla Perro / Cayos Holandes | `—` | **KEEP** | — |
 | journey | market:panama | El Porvenir → Achutupu / eastern Guna Yala | `—` | **KEEP** | — |
 | journey | market:panama | San Blas (Guna Yala) Archipelago — Panama → Playón | `—` | **KEEP** | — |

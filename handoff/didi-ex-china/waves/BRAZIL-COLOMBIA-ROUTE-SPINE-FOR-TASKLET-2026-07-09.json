@@ -1,0 +1,154 @@
+{
+  "at": "2026-07-10T02:14:11Z",
+  "partner": "didi",
+  "status": "seal-complete / cascade-needed",
+  "finance_market_keys": [
+    "brazil",
+    "colombia"
+  ],
+  "cluster_ids": [
+    "brazil",
+    "colombia"
+  ],
+  "brazil": [
+    {
+      "route_id": "rn-1886629dbf0c",
+      "od": "Praça XV ↔ Arariboia (Niterói)",
+      "from_bp": "bp-660ea6736a",
+      "to_bp": "bp-45ba34fda2",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "distance_nm": 2.7,
+      "service_status": "current_scheduled",
+      "sub_proposal": "brazil",
+      "priority": 1,
+      "demand_hint": {
+        "note": "Peak-day system observations exist; annual line-by-line pax still null. Tasklet owns annual one-way + fare effective year.",
+        "model_use": "blocked_until_annual_line_pax",
+        "fare_benchmark_brl": 5.0,
+        "fare_note": "State notice R$5 Arariboia/Cocotá/Paquetá — effective year needs confirmation before USD yield."
+      }
+    },
+    {
+      "route_id": "rn-80f0d0ebe0bd",
+      "od": "Praça XV ↔ Charitas (Niterói)",
+      "from_bp": "bp-660ea6736a",
+      "to_bp": "bp-85947006eb",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "distance_nm": 4.4,
+      "service_status": "current_scheduled",
+      "sub_proposal": "brazil",
+      "priority": 1,
+      "demand_hint": {
+        "note": "Official peak-day Charitas boardings (7,928) must not be annualized.",
+        "model_use": "blocked_until_annual_line_pax",
+        "fare_benchmark_brl": 7.7,
+        "fare_note": "2025 Charitas benchmark R$7.70 — Tasklet confirms currency/yield mix."
+      }
+    },
+    {
+      "route_id": "rn-00bb6ded4be5",
+      "od": "Praça XV ↔ Paquetá",
+      "from_bp": "bp-660ea6736a",
+      "to_bp": "bp-e2aae460aa",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "distance_nm": 9.2,
+      "service_status": "current_scheduled",
+      "sub_proposal": "brazil",
+      "priority": 2,
+      "demand_hint": {
+        "model_use": "blocked_until_annual_line_pax",
+        "fare_benchmark_brl": 5.0
+      }
+    },
+    {
+      "route_id": "rn-369ef0eb69d9",
+      "od": "Praça XV ↔ Cocotá",
+      "from_bp": "bp-660ea6736a",
+      "to_bp": "bp-53684b584c",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "distance_nm": 6.0,
+      "service_status": "current_scheduled",
+      "sub_proposal": "brazil",
+      "priority": 2,
+      "demand_hint": {
+        "model_use": "blocked_until_annual_line_pax",
+        "fare_benchmark_brl": 5.0
+      }
+    }
+  ],
+  "colombia": [
+    {
+      "route_id": "rn-aa790551baa7",
+      "od": "Club de Pesca Marina ↔ Bocachica (Tierrabomba)",
+      "from_city_id": "cartagena-colombia",
+      "to_city_id": "cartagena-colombia",
+      "distance_nm": 5.74,
+      "service_status": "atlas_geometry_current_service_unverified",
+      "sub_proposal": "colombia",
+      "priority": 2,
+      "demand_hint": {
+        "model_use": "blocked_until_service_proof_and_annual_pax",
+        "note": "Do not map La Bodeguita terminal entries 1:1 onto this corridor."
+      }
+    }
+  ],
+  "held_null": [
+    {
+      "od": "Cais da Lapa ↔ Vila do Abraão (Estação Abraão)",
+      "route_id": null,
+      "reason": "historical_operation_current_timetable_unverified",
+      "sub_proposal": "brazil",
+      "city_ids": [
+        "angra-dos-reis-ilha-grande-brazil"
+      ]
+    },
+    {
+      "od": "Costa da Lagoa lacustrine line",
+      "route_id": null,
+      "reason": "current_service_evidence_route_geometry_unsealed",
+      "sub_proposal": "brazil",
+      "city_ids": [
+        "florianopolis-brazil"
+      ]
+    },
+    {
+      "od": "Muelle La Bodeguita ↔ Isla Grande / Rosario",
+      "route_id": null,
+      "reason": "la_bodeguita_bp_and_destination_split_unsealed",
+      "sub_proposal": "colombia",
+      "city_ids": [
+        "cartagena-colombia"
+      ]
+    },
+    {
+      "od": "Barranquilla Río-Bus",
+      "route_id": null,
+      "reason": "future_project_not_current_scheduled",
+      "sub_proposal": "colombia",
+      "city_ids": [
+        "barranquilla-colombia"
+      ]
+    }
+  ],
+  "all_route_ids": [
+    "rn-1886629dbf0c",
+    "rn-80f0d0ebe0bd",
+    "rn-00bb6ded4be5",
+    "rn-369ef0eb69d9",
+    "rn-aa790551baa7"
+  ],
+  "rules": [
+    "Null beats wrong — do not invent annual one-way pax or USD fares",
+    "Do not annualize Rio peak-day boardings",
+    "Do not map La Bodeguita terminal totals 1:1 to any corridor",
+    "Do not publish Río-Bus as current scheduled service",
+    "Do not claim 99 city-level service in Angra",
+    "No grab-greenfield-census / no catch-all didi market",
+    "Only exact gold route IDs; no minting",
+    "Cartagena rn-aa790551baa7 is geometry baseline until service proof"
+  ]
+}
