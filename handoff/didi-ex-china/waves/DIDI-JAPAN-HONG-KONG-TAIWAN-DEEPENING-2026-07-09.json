@@ -1,0 +1,1884 @@
+{
+  "market": "Japan via DiDi Mobility Japan; Hong Kong; Taiwan verification gate",
+  "lane": "BP + brief maturity + demand/fare + operating-status precision",
+  "as_of": "2026-07-09",
+  "status": "research-complete_with_baseline_and_operation_gates / seal-needed",
+  "existing_atlas_baseline": {
+    "requested_repo_path": "/tmp/navier-atlas",
+    "availability": "unavailable_in_subagent_environment",
+    "fallback_files_reviewed": [
+      "/tasklet/agent/home/burndown-2026-06-29/stage/partner-pitch/partners/didi.json",
+      "/tasklet/agent/home/didi-ex-china-audit/didi-atlas-global-audit-2026-07-09.json",
+      "/tasklet/agent/home/didi-ex-china-audit/handoff/DIDI-ROUTE-STAMP-DEFECT-LEDGER-2026-07-09.json"
+    ],
+    "partner_json_observation": "Fallback DiDi proposal is LatAm-led; _map_scope includes hong-kong-macau and cluster_city_ids hong-kong/macau-china. It does not yet include the Japan or Taiwan city IDs in its shown map scope.",
+    "cluster_route_observation": "Fallback route-stamp ledger records Japan cluster with 8 supplied city IDs and 161 stamped routes, Hong Kong–Macau with 2 cities and 54 stamped routes, and Taiwan with 2 cities and 7 stamped routes. It does not expose route IDs/endpoints, so no exact ROUTES.json ID matches were claimed.",
+    "boarding_point_files": "Matching atlas-external boarding-point files could not be inspected because the requested repo snapshot was absent.",
+    "no_repo_edits": true
+  },
+  "sources": [
+    {
+      "source_id": "didi-jp-areas",
+      "url": "https://didimobility.co.jp/service/user/",
+      "title": "DiDi user service areas",
+      "publisher": "DiDi Mobility Japan",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current official service-area roster names Niseko/Kutchan; Tokyo; Shizuoka including Atami and Ito; Hiroshima/Hatsukaichi and other Setouchi cities; Naha/main-island municipalities; Miyakojima; and Ishigaki. It warns that some remote islands are excluded.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "didi-jp-jv",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=494&type=news",
+      "title": "DiDi and SoftBank Launch Joint Venture in Japan to Offer Taxi-Hailing Services",
+      "publisher": "DiDi Global",
+      "date": "2018-07-19",
+      "accessed": "2026-07-09",
+      "proves": "Establishes DiDi Mobility Japan as the DiDi–SoftBank joint venture and says the service is taxi-hailing in Japan. It does not prove present Taiwan or Hong Kong local ride supply.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "softbank-jv",
+      "url": "https://group.softbank/en/news/press/20180719",
+      "title": "DiDi and SoftBank Establish Joint Venture in Japan",
+      "publisher": "SoftBank Group",
+      "date": "2018-07-19",
+      "accessed": "2026-07-09",
+      "proves": "Independent first-party JV framing for Japan.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "didi-hokkaido",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=684&type=news",
+      "title": "DiDi Japan Launches Taxi-Hailing Service in Hokkaido",
+      "publisher": "DiDi Global",
+      "date": "2020-06-25",
+      "accessed": "2026-07-09",
+      "proves": "Historical launch receipt for Hokkaido; current exact coverage is instead taken from the live DiDi Mobility Japan roster.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "didi-hk-app",
+      "url": "https://apps.apple.com/hk/app/didi-china-ride-hailing/id554499054?l=en-GB",
+      "title": "DiDi China: Ride Hailing — Hong Kong App Store listing",
+      "publisher": "Apple / DiDi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "A current Hong Kong storefront listing and recent developer activity prove app availability, not by themselves a current Hong Kong city service-area roster.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "didi-country-list",
+      "url": "https://web.didiglobal.com/au/help-center/how-many-countries-does-didi-operate-in/",
+      "title": "How many countries does DiDi operate in?",
+      "publisher": "DiDi Australia",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official country list surfaced in search did not name Taiwan; absence is not treated as definitive cessation evidence, but no current official Taiwan operation receipt was found.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "tokyowan-ports",
+      "url": "https://en.tokyowanferry.com/doarding/kurihama_kanaya/",
+      "title": "Information on Kurihama Port and Kanaya Port",
+      "publisher": "Tokyo Wan Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current ferry connects Kurihama Port and Kanaya Port across Tokyo Bay in about 40 minutes.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokyowan-fare",
+      "url": "https://en.tokyowanferry.com/fare/",
+      "title": "Price list",
+      "publisher": "Tokyo Wan Ferry",
+      "date": "2025-07-01",
+      "accessed": "2026-07-09",
+      "proves": "Current page gives adult one-way passenger fare of JPY 1,100 and round trip JPY 2,000; page notes cash-only ticket sales.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokai-guide",
+      "url": "https://www.tokaikisen.co.jp/en/time_price/guide/",
+      "title": "Timetable and Fares",
+      "publisher": "Tokai Kisen",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current official timetable/fare hub for Izu Islands; service dates June 1–September 30, 2026.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokai-2026-pdf",
+      "url": "https://www.tokaikisen.co.jp/wordpress/wp-content/uploads/2026/06/f34c489539069b66052dcc5221af5953.pdf",
+      "title": "High-speed jet ferry / large passenger ship timetable, July–September 2026",
+      "publisher": "Tokai Kisen",
+      "date": "2026-06",
+      "accessed": "2026-07-09",
+      "proves": "Current schedule proves Tokyo–Oshima and onward Izu-island service, Atami–Oshima service, Shimoda services, and service-day/seasonality patterns. Fare values were not extracted from this timetable.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "zamami-fare",
+      "url": "https://www.vill.zamami.okinawa.jp/sempaku/ryokin_jikoku/",
+      "title": "Vessel fare table",
+      "publisher": "Zamami Village",
+      "date": "2025-11-25",
+      "accessed": "2026-07-09",
+      "proves": "Official current terminal distinction and fares: Ferry Zamami uses Tomari south bank; Queen Zamami uses north bank. Naha–Zamami/Aka adult one-way is JPY 2,900 by ferry and JPY 3,950 by high-speed boat; JPY 100 island tax applies.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "zamami-book",
+      "url": "https://yoyaku.vill.zamami.okinawa.jp/zamami_web/ennmnu0101!doAvailability.action",
+      "title": "Zamami Village passenger seating availability",
+      "publisher": "Zamami Village",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current live booking/availability page proves operating sailings and shows vessel, departure time and Aka stop where applicable.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "okinawa-ferries",
+      "url": "https://visitokinawajapan.com/plan-your-trip/getting-around-okinawa/ferries-between-islands/",
+      "title": "Ferries between islands",
+      "publisher": "Okinawa Convention & Visitors Bureau",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tourism guide identifies Tomarin/Tomari Wharf Passenger Terminal and Zamami travel times of roughly 50–70 minutes by express ferry or two hours by regular ferry.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "yaeyama-official",
+      "url": "https://yaeyama.co.jp/global/en.html",
+      "title": "Welcome to Yaeyama Kanko Ferry",
+      "publisher": "Yaeyama Kanko Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator page exposes timetable, operation status, tickets, access and route map for Ishigaki/Yaeyama ferry services. Exact coordinates and current fare values require follow-up.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "miyajima-fare",
+      "url": "https://jr-miyajimaferry.co.jp/en/fare/",
+      "title": "Fare",
+      "publisher": "West Japan Railway Miyajima Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official one-way adult fare is JPY 180; a separate JPY 100 Miyajima visitor tax applies on entry.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "miyajima-tax",
+      "url": "https://another1000years-miyajima.jp/en/visitortax/index.html",
+      "title": "Miyajima Visitor Tax",
+      "publisher": "Hatsukaichi City",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tax page confirms JPY 100 per person per visit, generally collected by passenger-boat operators.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-ferry-details",
+      "url": "https://www.td.gov.hk/en/transport_in_hong_kong/public_transport/ferries/service_details/index.html",
+      "title": "Franchised and Licensed Ferry Service Details",
+      "publisher": "Hong Kong Transport Department",
+      "date": "2025-01-25",
+      "accessed": "2026-07-09",
+      "proves": "Official route/terminal/schedule/fare evidence. North Point (West) Ferry Pier–Hung Hom (North) Ferry Pier is about 8 minutes, daily, HKD 10 adult one-way at the cited effective date.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-ferries-overview",
+      "url": "https://www.td.gov.hk/en/transport_in_hong_kong/public_transport/ferries/index.html",
+      "title": "Ferries",
+      "publisher": "Hong Kong Transport Department",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official system overview states 10 operators and 21 regular licensed passenger ferry services as of the page reference date.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-airport-2025",
+      "url": "https://www.hongkongairport.com/en/media-centre/press-release/2026/pr_1849",
+      "title": "HKIA Serves 61 Million Passengers in 2025",
+      "publisher": "Airport Authority Hong Kong",
+      "date": "2026-01-15",
+      "accessed": "2026-07-09",
+      "proves": "HKIA handled 61 million passengers in calendar 2025; this is an airport catchment indicator, not ferry-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-visitors-2025",
+      "url": "https://www.discoverhongkong.com/content/dam/dhk/intl/corporate/newsroom/press-release/hktb/2026/01-2025-Full-Year-Visitor-Arrivals-E.pdf",
+      "title": "HKTB announces 2025 full-year visitor arrivals",
+      "publisher": "Hong Kong Tourism Board",
+      "date": "2026-01",
+      "accessed": "2026-07-09",
+      "proves": "Hong Kong received about 49.9 million visitors in 2025; this broad visitor count must not be converted directly into route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "okinawa-visitors-2024",
+      "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/010/225/r8guide_english_p1-6.pdf",
+      "title": "Overview of the Environment in Okinawa Prefecture",
+      "publisher": "Okinawa Prefecture",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Reports 9,668,800 visitors to Okinawa in 2024; catchment context only.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-home",
+      "url": "https://tnc-kao.com.tw/",
+      "title": "Penghu Ferry booking system",
+      "publisher": "Taiwan Navigation Co.",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator booking surface for Kaohsiung–Penghu, including orders, vehicle shipping, fares and passenger guide.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-schedule",
+      "url": "https://tnc-kao.com.tw/schedule/timetable",
+      "title": "Kaohsiung ↔ Penghu timetable",
+      "publisher": "Taiwan Navigation Co.",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Current 115-year (2026) sailing calendar proves the route is active but weather-disruption prone.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-fare",
+      "url": "https://tnc-kao.com.tw/schedule/ticket",
+      "title": "Penghu Ferry fare information",
+      "publisher": "Taiwan Navigation Co.",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official fare page exists, but values are embedded in images and were not safely extracted; fare remains null.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "jnto-stats",
+      "url": "https://statistics.jnto.go.jp/en/graph/",
+      "title": "Japan tourism statistics data list",
+      "publisher": "Japan National Tourism Organization",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official national visitor-arrivals series. National totals are not route demand and are not used as such.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "hokkaido-niseko-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Hokkaido / Niseko",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Niseko Town and Kutchan Town are explicitly on the live service list. Marine relevance is weak within Niseko; do not force a ferry corridor.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "low",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "izu-islands-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Izu Islands",
+      "partner_evidence_tier": "country_supported_only",
+      "operating_status_note": "Current ferry service is verified, but the DiDi Japan service roster does not name the Izu islands themselves. Treat as ferry destination / partner opportunity, not proven DiDi local supply.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "izu-peninsula-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Izu Peninsula",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Atami and Ito are explicitly named by DiDi Japan; these are useful ferry-terminal catchments.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "miyako-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Miyako",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Miyakojima City is explicit; source also warns some remote islands are excluded.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "okinawa-main-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Okinawa main island",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Naha and multiple main-island municipalities are explicit; Kume Island is named, but some remote islands are excluded.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "setouchi-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Setouchi",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Hiroshima, Hatsukaichi, Mihara, Onomichi, Fukuyama and Kure are explicit.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "tokyo-bay-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Tokyo Bay",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Tokyo wards plus Yokosuka and Miura are explicit on the current list.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "yaeyama-japan",
+      "country_or_territory": "Japan",
+      "market_label": "Yaeyama",
+      "partner_evidence_tier": "city_supported",
+      "operating_status_note": "Ishigaki City is explicit, while some remote islands are excluded.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-jp-areas"
+      ]
+    },
+    {
+      "city_id": "hong-kong",
+      "country_or_territory": "Hong Kong",
+      "market_label": "Hong Kong",
+      "partner_evidence_tier": "verification_needed",
+      "operating_status_note": "Existing Atlas map scope includes Hong Kong, and an HK App Store receipt exists, but no current official DiDi city service-area roster was found in this pass.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": [
+        "didi-hk-app"
+      ]
+    },
+    {
+      "city_id": "macau-china",
+      "country_or_territory": "Macau",
+      "market_label": "Macau",
+      "partner_evidence_tier": "do_not_overclaim",
+      "operating_status_note": "Existing proposal binds Macau on China country support only. No current exact Macau operating receipt was produced in this pass.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": []
+    },
+    {
+      "city_id": "kaohsiung-taiwan",
+      "country_or_territory": "Taiwan",
+      "market_label": "Kaohsiung",
+      "partner_evidence_tier": "gate_retained",
+      "operating_status_note": "No current official Taiwan DiDi operation receipt found. Ferry terminal/route evidence can be banked, but partner promotion is held.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": []
+    },
+    {
+      "city_id": "penghu-taiwan",
+      "country_or_territory": "Taiwan",
+      "market_label": "Penghu",
+      "partner_evidence_tier": "gate_retained",
+      "operating_status_note": "No current official Taiwan DiDi operation receipt found. Current ferry service exists independently of DiDi.",
+      "atlas_baseline_status": "canonical_city_id_supplied_in_payload",
+      "water_relevance": "high",
+      "source_ids": []
+    }
+  ],
+  "boarding_points": [
+    {
+      "boarding_point_id": "jp-hokkaido-niseko-market",
+      "name": "Niseko Town market area",
+      "city_id": "hokkaido-niseko-japan",
+      "classification": "non_bp_poi_market_only",
+      "terminal_kind": null,
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "didi-jp-areas"
+      ],
+      "notes": "Official DiDi service area, but no sourced ferry terminal or waterfront boarding function; retain as market-only, not a BP."
+    },
+    {
+      "boarding_point_id": "jp-tokyo-bay-kurihama-port",
+      "name": "Kurihama Port",
+      "city_id": "tokyo-bay-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "tokyowan-ports"
+      ],
+      "notes": "Current Tokyo Wan Ferry endpoint."
+    },
+    {
+      "boarding_point_id": "jp-tokyo-bay-kanaya-port",
+      "name": "Kanaya Port",
+      "city_id": "tokyo-bay-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "tokyowan-ports"
+      ],
+      "notes": "Current Tokyo Wan Ferry endpoint; canonical city ID remains Tokyo Bay market-level."
+    },
+    {
+      "boarding_point_id": "jp-tokyo-takeshiba-terminal",
+      "name": "Tokyo / Takeshiba Passenger Ship Terminal",
+      "city_id": "tokyo-bay-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "notes": "Tokai Kisen Tokyo endpoint; exact Atlas BP name/binding must be checked."
+    },
+    {
+      "boarding_point_id": "jp-izu-oshima-port",
+      "name": "Oshima port (Motomachi or Okata operational port)",
+      "city_id": "izu-islands-japan",
+      "classification": "candidate_needing_exact_pier_confirmation",
+      "terminal_kind": "island_ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "notes": "Schedule proves Oshima call; daily operational port may vary, so do not collapse to a single pier without day-specific confirmation."
+    },
+    {
+      "boarding_point_id": "jp-izu-atami-port",
+      "name": "Atami Port",
+      "city_id": "izu-peninsula-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "notes": "Current Atami–Oshima endpoint."
+    },
+    {
+      "boarding_point_id": "jp-setouchi-miyajimaguchi",
+      "name": "Miyajimaguchi ferry terminal",
+      "city_id": "setouchi-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "miyajima-fare"
+      ],
+      "notes": "Source verifies the ferry product; coordinate and Atlas BP binding still need checking."
+    },
+    {
+      "boarding_point_id": "jp-setouchi-miyajima",
+      "name": "Miyajima ferry terminal",
+      "city_id": "setouchi-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "island_ferry_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "miyajima-fare",
+        "miyajima-tax"
+      ],
+      "notes": "Current passenger-ferry destination and tax collection point."
+    },
+    {
+      "boarding_point_id": "jp-okinawa-tomari-south",
+      "name": "Tomari Port south bank / Tomarin",
+      "city_id": "okinawa-main-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "zamami-fare",
+        "okinawa-ferries"
+      ],
+      "notes": "Ferry Zamami boarding location; distinct from Queen Zamami pier."
+    },
+    {
+      "boarding_point_id": "jp-okinawa-tomari-north",
+      "name": "Tomari Port north bank high-speed-boat pier",
+      "city_id": "okinawa-main-japan",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "zamami-fare"
+      ],
+      "notes": "Queen Zamami boarding location; roughly ten minutes on foot from Tomarin ticket counter per official page."
+    },
+    {
+      "boarding_point_id": "jp-zamami-port",
+      "name": "Zamami Port",
+      "city_id": null,
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "island_ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "notes": "Current village ferry endpoint; no supplied canonical island city ID."
+    },
+    {
+      "boarding_point_id": "jp-aka-port",
+      "name": "Aka Port",
+      "city_id": null,
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "island_ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "notes": "Current village ferry endpoint/stop; no supplied canonical island city ID."
+    },
+    {
+      "boarding_point_id": "jp-yaeyama-ishigaki-terminal",
+      "name": "Ishigaki ferry terminal / operator access point",
+      "city_id": "yaeyama-japan",
+      "classification": "candidate_needing_exact_name_and_coordinate_confirmation",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "notes": "Operator verifies access and route map; exact canonical terminal label and coordinate require confirmation."
+    },
+    {
+      "boarding_point_id": "jp-yaeyama-taketomi-port",
+      "name": "Taketomi Port",
+      "city_id": null,
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "island_ferry_port",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "notes": "Current Yaeyama destination candidate; exact current fare not captured."
+    },
+    {
+      "boarding_point_id": "hk-north-point-west",
+      "name": "North Point (West) Ferry Pier",
+      "city_id": "hong-kong",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_pier",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "notes": "Government-verified boarding location near North Point Promenade."
+    },
+    {
+      "boarding_point_id": "hk-hung-hom-north",
+      "name": "Hung Hom (North) Ferry Pier",
+      "city_id": "hong-kong",
+      "classification": "verified_existing_boarding_point",
+      "terminal_kind": "ferry_pier",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "notes": "Government-verified boarding location at Wa Shun Street."
+    },
+    {
+      "boarding_point_id": "tw-kaohsiung-penghu-terminal",
+      "name": "Kaohsiung terminal for Penghu Ferry",
+      "city_id": "kaohsiung-taiwan",
+      "classification": "candidate_needing_exact_pier_confirmation",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "penghu-home",
+        "penghu-schedule"
+      ],
+      "notes": "Current route endpoint; exact pier name and coordinate require operator/port confirmation before seal."
+    },
+    {
+      "boarding_point_id": "tw-magong-penghu-terminal",
+      "name": "Magong/Penghu Ferry terminal",
+      "city_id": "penghu-taiwan",
+      "classification": "candidate_needing_exact_pier_confirmation",
+      "terminal_kind": "passenger_terminal",
+      "latitude": null,
+      "longitude": null,
+      "coordinate_status": "needs_official_coordinate_confirmation",
+      "atlas_binding_status": "unknown_baseline_files_unavailable",
+      "source_ids": [
+        "penghu-home",
+        "penghu-fare"
+      ],
+      "notes": "Operator contact page identifies Magong address, but exact pier geometry still needs confirmation."
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "candidate_id": "tokyo-bay-kurihama-kanaya",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Kurihama Port",
+        "city_id": "tokyo-bay-japan"
+      },
+      "endpoint_b": {
+        "name": "Kanaya Port",
+        "city_id": "tokyo-bay-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokyowan-ports",
+        "tokyowan-fare"
+      ],
+      "approx_water_relevance": "direct cross-bay water crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "about 40 minutes; current 2026 schedule is calendar-dependent",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Strong first/last-mile handoff corridor; do not treat existing ferry passengers as Navier demand."
+    },
+    {
+      "candidate_id": "tokyo-oshima",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Tokyo / Takeshiba",
+        "city_id": "tokyo-bay-japan"
+      },
+      "endpoint_b": {
+        "name": "Oshima",
+        "city_id": "izu-islands-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "approx_water_relevance": "open-water island route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "high-speed jet daily patterns vary by July–September sub-period; large passenger ship has date-coded service",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Current operator route; long-range vessel class remains unassigned until water distance is measured."
+    },
+    {
+      "candidate_id": "atami-oshima",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Atami Port",
+        "city_id": "izu-peninsula-japan"
+      },
+      "endpoint_b": {
+        "name": "Oshima",
+        "city_id": "izu-islands-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "approx_water_relevance": "open-water island route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "published 2026 summer service; typically 45 minutes on cited timetable",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "DiDi exact support exists at Atami, not proven on Oshima."
+    },
+    {
+      "candidate_id": "miyajimaguchi-miyajima",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Miyajimaguchi",
+        "city_id": "setouchi-japan"
+      },
+      "endpoint_b": {
+        "name": "Miyajima",
+        "city_id": "setouchi-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "miyajima-fare",
+        "miyajima-tax"
+      ],
+      "approx_water_relevance": "short sheltered crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "current fare product; exact service-day table not captured",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Use as terminal-handoff demand story, not necessarily as replacement water service."
+    },
+    {
+      "candidate_id": "naha-zamami-aka",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Tomari Port, Naha",
+        "city_id": "okinawa-main-japan"
+      },
+      "endpoint_b": {
+        "name": "Zamami Port / Aka Port",
+        "city_id": null
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book",
+        "okinawa-ferries"
+      ],
+      "approx_water_relevance": "island crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "regular ferry and high-speed boat; live availability; roughly 50–70 minutes express or two hours regular",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Remote-island DiDi supply is not established; mainland Naha pickup is established."
+    },
+    {
+      "candidate_id": "ishigaki-taketomi",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Ishigaki ferry terminal",
+        "city_id": "yaeyama-japan"
+      },
+      "endpoint_b": {
+        "name": "Taketomi Port",
+        "city_id": null
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "approx_water_relevance": "short island crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "current operator timetable/operation-status pages; values not extracted",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Ishigaki DiDi coverage is exact; Taketomi local DiDi supply is not proven and remote-island exclusions apply."
+    },
+    {
+      "candidate_id": "hk-north-point-hung-hom",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "North Point (West) Ferry Pier",
+        "city_id": "hong-kong"
+      },
+      "endpoint_b": {
+        "name": "Hung Hom (North) Ferry Pier",
+        "city_id": "hong-kong"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "approx_water_relevance": "cross-harbour water crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "daily; about 8 minutes; extra weekday-only early sailings",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Ferry is current; DiDi Hong Kong local operating tier remains verification-needed."
+    },
+    {
+      "candidate_id": "kaohsiung-magong",
+      "route_id": null,
+      "route_id_status": "null_until_exact_ROUTES.json_match",
+      "endpoint_a": {
+        "name": "Kaohsiung Penghu Ferry terminal",
+        "city_id": "kaohsiung-taiwan"
+      },
+      "endpoint_b": {
+        "name": "Magong/Penghu Ferry terminal",
+        "city_id": "penghu-taiwan"
+      },
+      "evidence_status": "current_route_evidence_partner_gate",
+      "source_ids": [
+        "penghu-home",
+        "penghu-schedule",
+        "penghu-fare"
+      ],
+      "approx_water_relevance": "offshore strait route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "2026 sailing calendar; disruption notices are weather-dependent",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Bank geometry/economics evidence only. Do not promote under DiDi until Taiwan operation receipt clears gate."
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "tokyowan-adult-fare",
+      "geography": "Tokyo Bay",
+      "corridor_candidate_id": "tokyo-bay-kurihama-kanaya",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 1100,
+      "unit": "JPY adult one-way",
+      "period": "effective page 2025-07-01; accessed 2026-07-09",
+      "seasonality": "2026 service follows calendar schedules and may be weather-suspended",
+      "service_days": "calendar-dependent current service",
+      "source_ids": [
+        "tokyowan-fare",
+        "tokyowan-ports"
+      ],
+      "assumption_record": "No passenger count or Navier capture assumption made."
+    },
+    {
+      "record_id": "zamami-ferry-fare",
+      "geography": "Okinawa",
+      "corridor_candidate_id": "naha-zamami-aka",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 2900,
+      "unit": "JPY adult one-way regular ferry",
+      "period": "posted 2025-11-25; accessed 2026-07-09",
+      "seasonality": "weather and vessel schedule sensitive",
+      "service_days": "live availability, exact annual service-day count not captured",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "assumption_record": "JPY 100 island tax is additional; no route-demand conversion."
+    },
+    {
+      "record_id": "zamami-fast-fare",
+      "geography": "Okinawa",
+      "corridor_candidate_id": "naha-zamami-aka",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 3950,
+      "unit": "JPY adult one-way high-speed boat",
+      "period": "posted 2025-11-25; accessed 2026-07-09",
+      "seasonality": "weather and vessel schedule sensitive",
+      "service_days": "live availability, exact annual service-day count not captured",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "assumption_record": "JPY 100 island tax is additional; no route-demand conversion."
+    },
+    {
+      "record_id": "miyajima-fare",
+      "geography": "Setouchi",
+      "corridor_candidate_id": "miyajimaguchi-miyajima",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 180,
+      "unit": "JPY adult one-way",
+      "period": "current page accessed 2026-07-09",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "miyajima-fare"
+      ],
+      "assumption_record": "JPY 100 visitor tax is additional on entry; no passenger count captured."
+    },
+    {
+      "record_id": "hk-north-point-hung-hom-fare",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": "hk-north-point-hung-hom",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 10,
+      "unit": "HKD adult single journey",
+      "period": "effective 2025-01-25",
+      "seasonality": "daily service; public-holiday rule affects starred early sailings",
+      "service_days": "daily",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "assumption_record": "No route passenger count or capture rate inferred."
+    },
+    {
+      "record_id": "hk-airport-2025",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": null,
+      "metric_type": "airport_passenger_flow",
+      "annual_one_way_pax": null,
+      "value": 61000000,
+      "unit": "airport passenger movements in calendar year",
+      "period": "2025",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "hk-airport-2025"
+      ],
+      "assumption_record": "Broad airport flow only; explicitly not route demand and not one-way pax."
+    },
+    {
+      "record_id": "hk-visitors-2025",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": null,
+      "metric_type": "visitor_arrivals",
+      "annual_one_way_pax": null,
+      "value": 49900000,
+      "unit": "visitor arrivals, approximate",
+      "period": "2025",
+      "seasonality": "December 2025 was 4.65 million per source summary",
+      "service_days": null,
+      "source_ids": [
+        "hk-visitors-2025"
+      ],
+      "assumption_record": "Broad tourism count; no conversion to any ferry/Navier route."
+    },
+    {
+      "record_id": "okinawa-visitors-2024",
+      "geography": "Okinawa Prefecture",
+      "corridor_candidate_id": null,
+      "metric_type": "visitor_arrivals",
+      "annual_one_way_pax": null,
+      "value": 9668800,
+      "unit": "visitors",
+      "period": "2024",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "okinawa-visitors-2024"
+      ],
+      "assumption_record": "Prefecture-wide tourism context only; no conversion to Naha–Zamami or another route."
+    },
+    {
+      "record_id": "penghu-current-fare-gap",
+      "geography": "Taiwan",
+      "corridor_candidate_id": "kaohsiung-magong",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": null,
+      "unit": "TWD adult one-way",
+      "period": "current page accessed 2026-07-09",
+      "seasonality": "2026 calendar and typhoon/weather disruption notices",
+      "service_days": "published sailing calendar; annual count not captured",
+      "source_ids": [
+        "penghu-schedule",
+        "penghu-fare"
+      ],
+      "assumption_record": "Official fare values are image-embedded; null retained rather than transcribing an unverified third-party figure."
+    }
+  ],
+  "brief_maturity": [
+    {
+      "city_id": "hokkaido-niseko-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "izu-islands-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "izu-peninsula-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "miyako-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "okinawa-main-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "setouchi-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "tokyo-bay-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "yaeyama-japan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "hong-kong",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "macau-china",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "kaohsiung-taiwan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    },
+    {
+      "city_id": "penghu-taiwan",
+      "canonical_brief_found": false,
+      "assessment_status": "blocked_baseline_unavailable",
+      "fields": {
+        "identity_and_role": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "water_access_and_terminals": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "current_service": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "demand_evidence": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "fare_and_benchmark": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "seasonality_and_service_days": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "operations_and_constraints": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "economics_assumptions": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "source_provenance": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        },
+        "partner_neutrality": {
+          "score": null,
+          "status": "not_assessed",
+          "reason": "Canonical cluster/city brief was not available in the accessible snapshot."
+        }
+      },
+      "recommended_enhancement": "Preserve the canonical partner-neutral brief; add only source-backed terminal, current-service, fare, seasonality and broad-demand context from this artifact after baseline review."
+    }
+  ],
+  "partner_narrative_notes": {
+    "japan": {
+      "publishable_draft": "Frame the opportunity through DiDi Mobility Japan, the DiDi–SoftBank taxi-hailing joint venture. The strongest handoff markets are exact current DiDi service areas at ferry gateways: Tokyo/Yokosuka, Atami/Ito, Hiroshima/Hatsukaichi, Naha, Miyakojima and Ishigaki. Keep the vessel network and terminal facts partner-neutral in canonical briefs; put app-dispatch and first/last-mile language only in the DiDi sub-proposal.",
+      "guardrails": [
+        "Do not imply DiDi operates ferries or Navier routes today.",
+        "Do not claim DiDi local service on Izu islands or every Okinawa/Yaeyama remote island.",
+        "Niseko is exact DiDi coverage but not a strong marine BP story without a separately sourced coastal corridor."
+      ]
+    },
+    "hong_kong": {
+      "publishable_draft": "Hong Kong has dense, government-documented ferry terminals and daily cross-harbour services that are strong mobility handoff points. Keep partner phrasing conditional until an official current DiDi Hong Kong city-service receipt is secured.",
+      "guardrails": [
+        "An HK App Store listing is not enough to state citywide ride supply.",
+        "Do not roll Macau into Hong Kong operating proof.",
+        "Do not imply an existing DiDi–ferry integration."
+      ]
+    },
+    "taiwan": {
+      "publishable_draft": null,
+      "gate": "retain",
+      "reason": "Current Kaohsiung–Penghu ferry evidence is banked, but no current official Taiwan DiDi operating receipt was found.",
+      "required_receipt": "Current official DiDi Taiwan service-area/help page, Taiwan regulator/operating-company record tied to present consumer service, or a current localized official app/service page that proves rides can be ordered in Taiwan—not merely that Taiwan users can use DiDi abroad."
+    },
+    "macau": {
+      "publishable_draft": null,
+      "guardrail": "Existing Atlas country-supported binding is not an exact current Macau DiDi operations receipt; do not say DiDi operates in Macau."
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "baseline-repo",
+      "owner": "Parent agent / Atlas repository owner",
+      "next_action": "Provide or restore /tmp/navier-atlas and inspect CLUSTERS.json, ROUTES.json, canonical briefs and matching BP JSONs before publication.",
+      "severity": "blocking_for_brief_and_route_id_parity"
+    },
+    {
+      "gap_id": "route-id-exact-match",
+      "owner": "Atlas/Grok geometry owner",
+      "next_action": "Match each candidate against current ROUTES.json by exact endpoints/ID; retain null route_id until matched.",
+      "severity": "seal-needed"
+    },
+    {
+      "gap_id": "bp-coordinate-bindings",
+      "owner": "Atlas/Grok geometry owner",
+      "next_action": "Confirm official coordinates, canonical names and existing BP IDs for all 17 terminals; split Oshima Motomachi/Okata and Tomari north/south explicitly.",
+      "severity": "seal-needed"
+    },
+    {
+      "gap_id": "hk-operation-receipt",
+      "owner": "DiDi coverage researcher",
+      "next_action": "Obtain a current official DiDi Hong Kong city/service-area or regulatory operating receipt. App-store availability alone is insufficient.",
+      "severity": "proposal-wording-gate"
+    },
+    {
+      "gap_id": "taiwan-operation-receipt",
+      "owner": "DiDi coverage researcher",
+      "next_action": "Seek a current official Taiwan operation receipt. Until found, retain gate for Kaohsiung and Penghu.",
+      "severity": "hard_partner_gate"
+    },
+    {
+      "gap_id": "macau-operation-receipt",
+      "owner": "DiDi coverage researcher",
+      "next_action": "Find a current exact Macau consumer operation source before any Macau DiDi claim.",
+      "severity": "hard_wording_gate"
+    },
+    {
+      "gap_id": "route-pax",
+      "owner": "Finance research",
+      "next_action": "Obtain route-specific annual passenger counts for promoted ferry corridors from operators/transport authorities; do not use broad visitors or airport flow as substitutes.",
+      "severity": "economics-blocker"
+    },
+    {
+      "gap_id": "penghu-fare-ocr",
+      "owner": "Finance research",
+      "next_action": "Extract and second-source the current official image-based Kaohsiung–Penghu fare table and effective date.",
+      "severity": "economics-gap"
+    },
+    {
+      "gap_id": "miyako-route",
+      "owner": "Japan ferry researcher",
+      "next_action": "Source current official Miyako–Tarama or other relevant Miyako marine service before proposing a Miyako corridor; none is asserted here.",
+      "severity": "market-depth-gap"
+    },
+    {
+      "gap_id": "brief-review",
+      "owner": "Proposal editor",
+      "next_action": "Read each canonical brief and score the ten maturity fields; merge enhancements rather than replace briefs.",
+      "severity": "blocking_for_brief_maturity"
+    }
+  ],
+  "do_not_publish": [
+    {
+      "claim": "DiDi currently operates in Taiwan.",
+      "reason": "No current official operation receipt found; gate retained."
+    },
+    {
+      "claim": "DiDi currently operates in Macau.",
+      "reason": "Existing country-supported Atlas inheritance is not an exact Macau receipt."
+    },
+    {
+      "claim": "DiDi city service in Hong Kong is fully verified.",
+      "reason": "Current local app listing exists, but exact current official city-service proof remains missing."
+    },
+    {
+      "claim": "DiDi serves the Izu Islands or every Okinawa/Yaeyama remote island.",
+      "reason": "Official Japan roster names gateway markets and says some remote islands are excluded; Izu islands are not named."
+    },
+    {
+      "claim": "Airport or tourism totals equal ferry/Navier demand.",
+      "reason": "All broad flow records are context only; annual_one_way_pax remains null."
+    },
+    {
+      "claim": "Any candidate route has the listed candidate_id as a canonical route_id.",
+      "reason": "ROUTES.json was unavailable and every route_id is intentionally null."
+    },
+    {
+      "claim": "Niseko Town/resort area is a marine boarding point.",
+      "reason": "It is a verified DiDi service market but no ferry-terminal/waterfront BP function was sourced; treat as non-BP market context."
+    },
+    {
+      "claim": "Any null-coordinate terminal is map-sealed.",
+      "reason": "Official coordinates and Atlas BP bindings are pending."
+    },
+    {
+      "claim": "DiDi or Navier operates the cited ferry services.",
+      "reason": "Sources prove third-party/public ferry operations only."
+    }
+  ],
+  "summary_counts": {
+    "sources": 25,
+    "cities": 12,
+    "cities_city_supported_japan": 7,
+    "cities_partner_gate_or_verification": 4,
+    "boarding_points": 18,
+    "boarding_points_verified_existing": 13,
+    "boarding_points_candidates": 4,
+    "boarding_points_non_bp_poi": 1,
+    "boarding_points_with_verified_coordinates": 0,
+    "candidate_corridors": 8,
+    "candidate_corridors_current_route_evidence": 8,
+    "candidate_corridors_with_nonnull_route_id": 0,
+    "demand_records": 9,
+    "demand_records_with_annual_one_way_pax": 0,
+    "briefs_fully_assessed": 0,
+    "gaps": 10,
+    "do_not_publish": 9
+  }
+}

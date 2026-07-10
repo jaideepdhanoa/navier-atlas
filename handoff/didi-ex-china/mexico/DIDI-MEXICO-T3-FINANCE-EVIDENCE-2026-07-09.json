@@ -1,0 +1,475 @@
+{
+  "market": "Mexico — Caribbean ferry corridors and country reference",
+  "lane": "T3 finance evidence only: corridor passenger-count adjudication, fare FX, and Mexico country-reference inputs",
+  "as_of": "2026-07-09",
+  "status": "complete_with_provisional_modeled_fields_and_explicit_blockers",
+  "existing_atlas_baseline": {
+    "repo_snapshot": "/tmp/navier-atlas (read only; no edits made)",
+    "input_handoff": "/tasklet/agent/home/didi-ex-china-audit/mexico/DIDI-MEXICO-L3-DEMAND-FARE-SOURCING-2026-07-09.json",
+    "country_reference_file": "finance/model/country-reference.json",
+    "country_reference_status": "Mexico absent in inspected snapshot",
+    "relevant_existing_route_ids": [
+      "ics-dd1d814699",
+      "ics-413f51cd44"
+    ],
+    "baseline_correction": "The handoff left annual_one_way_pax null and carried APIQROO prose value 5,457,733 for Isla Mujeres. The official APIQROO table exposes ENTRADAS and SALIDAS and supports gross one-way crossing totals; its Isla Mujeres total is 5,458,304, not 5,457,733."
+  },
+  "sources": [
+    {
+      "source_id": "S1",
+      "url": "https://cgc.qroo.gob.mx/logra-quintana-roo-crecimiento-sostenido-en-la-actividad-maritima-durante-2025/",
+      "title": "Logra Quintana Roo crecimiento sostenido en la actividad marítima durante 2025",
+      "publisher": "Coordinación General de Comunicación, Government of Quintana Roo / APIQROO",
+      "date": "2026-01-08",
+      "accessed": "2026-07-09",
+      "proves": "Official prose reports 3,853,770 passengers on Cozumel-Playa del Carmen and 5,457,733 on the Isla Mujeres-Puerto Juárez passenger route. It also reports 27,920 ferry departures for Cozumel-Playa.",
+      "confidence": "high for publication provenance; medium for Isla exact number because it conflicts with APIQROO statistical table",
+      "exact_quotes": [
+        "En cuanto a la ruta federal Cozumel-Playa del Carmen se consolida como un eje estratégico para la movilidad turística y cotidiana, al registrar 3 millones 853 mil 770 pasajeros, lo que representa un incremento del 8% respecto a 2024, así como 27 mil 920 salidas de ferris, con un crecimiento del 39% en comparación con el año anterior.",
+        "En Isla Mujeres, la ruta federal de pasajeros a Puerto Juárez se posiciona como la principal línea de conectividad del municipio, al garantizar el traslado permanente de residentes, trabajadores y visitantes.",
+        "Durante 2025 se registraron 5 millones 457 mil 733 pasajeros"
+      ]
+    },
+    {
+      "source_id": "S2",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/informeRutaPasaje.php?anio=2025",
+      "title": "Ruta de pasajeros — 2025",
+      "publisher": "Administración Portuaria Integral de Quintana Roo (APIQROO)",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "Official route table labels passenger columns ENTRADAS and SALIDAS and TOTAL. Cozumel: 1,932,907 entradas + 1,920,863 salidas = 3,853,770. Playa mirrors the same corridor with directions reversed; do not sum the Cozumel and Playa rows. Isla Mujeres: 2,692,716 entradas + 2,765,588 salidas = 5,458,304.",
+      "confidence": "high",
+      "exact_table_labels": [
+        "PUERTO",
+        "MOVIMIENTOS",
+        "PASAJEROS",
+        "ENTRADAS",
+        "SALIDAS",
+        "TOTAL"
+      ],
+      "exact_rows": {
+        "Cozumel": {
+          "passenger_entradas": 1932907,
+          "passenger_salidas": 1920863,
+          "passenger_total": 3853770
+        },
+        "Playa del Carmen": {
+          "passenger_entradas": 1920863,
+          "passenger_salidas": 1932907,
+          "passenger_total": 3853770
+        },
+        "Isla Mujeres": {
+          "passenger_entradas": 2692716,
+          "passenger_salidas": 2765588,
+          "passenger_total": 5458304
+        }
+      }
+    },
+    {
+      "source_id": "S3",
+      "url": "https://servicios.apiqroo.com.mx/estadistica/datos/puertoRutaPasaje.php?puerto=5&anio=2025",
+      "title": "Isla Mujeres route-passenger monthly detail — 2025",
+      "publisher": "APIQROO",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "Monthly official detail sums to 18,876 movement entradas, 19,184 movement salidas, 2,692,716 passenger entradas, 2,765,588 passenger salidas, total 5,458,304 passengers.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S4",
+      "url": "https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?accion=consultarCuadro&idCuadro=CF86&locale=es&sector=6",
+      "title": "Cuadro CF86 — Tipo de cambio FIX",
+      "publisher": "Banco de México",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Central-bank FIX series SF17908 is denominated pesos per dollar; Banxico describes FIX as the exchange rate used to settle USD obligations payable in Mexico after publication in the Diario Oficial. Monthly-average observations are available for audit and current-period conversions.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S5",
+      "url": "https://api.worldbank.org/v2/country/MEX/indicator/PA.NUS.FCRF?format=json&per_page=10",
+      "title": "Official exchange rate (LCU per US$, period average) — Mexico",
+      "publisher": "World Bank World Development Indicators",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "2025 official period-average exchange rate is 19.2375083333333 MXN per USD. Used as the consistent, conservative comparable-fare basis.",
+      "confidence": "high for annual comparative conversion; tier 2 behind Banxico for transaction settlement"
+    },
+    {
+      "source_id": "S6",
+      "url": "https://api.worldbank.org/v2/country/MEX/indicator/PA.NUS.PPP?format=json&per_page=10",
+      "title": "PPP conversion factor, GDP (LCU per international $) — Mexico",
+      "publisher": "World Bank World Development Indicators",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "2025 GDP PPP conversion factor is 10.328951 MXN per international dollar. Dividing by the official exchange rate gives a 0.536917 relative price-level proxy.",
+      "confidence": "high for source value; medium/low for its use as a Navier operating cost index"
+    },
+    {
+      "source_id": "S7",
+      "url": "https://www.economia.gob.mx/datamexico/es/profile/occupation/capitanes-y-conductores-de-transporte-maritimo",
+      "title": "Capitanes y Conductores de Transporte Marítimo",
+      "publisher": "Data México, Secretaría de Economía",
+      "date": "2026-Q1",
+      "accessed": "2026-07-09",
+      "proves": "Official labor profile says the national occupation averaged MXN 9.12k per month in 2026 Q1, with 3.17k workers and about 44.8 hours/week; Quintana Roo had the largest workforce (1.94k). It does not provide a finance-ready employer-loaded senior licensed captain cost for Quintana Roo.",
+      "confidence": "high for observed survey statistic; low as direct employer-cost input"
+    },
+    {
+      "source_id": "S8",
+      "url": "https://airegulasolutions.com/cfe/tarifas?year=2026&month=5&tariffCode=PDBT&state=QUINTANA%20ROO&page=1&pageSize=100",
+      "title": "CFE tariff mirror — PDBT, Quintana Roo",
+      "publisher": "AI Regula Solutions (mirror linking each row to CFE)",
+      "date": "2026-06-23",
+      "accessed": "2026-07-09",
+      "proves": "Mirror displays CFE PDBT energy charge MXN 3.9680/kWh and fixed charge MXN 45.2600/month for Benito Juárez, Cozumel, Isla Mujeres and Solidaridad, each linked to the official CFE tariff page. Direct CFE automation was blocked by Incapsula, so this is not a primary-source capture.",
+      "confidence": "medium",
+      "official_cfe_url": "https://app.cfe.mx/aplicaciones/ccfe/tarifas/tarifascrenegocio/tarifas/pequenademandabt.aspx"
+    },
+    {
+      "source_id": "S9",
+      "url": "https://www.gob.mx/cms/uploads/attachment/file/1081506/aviso_factor_de_emision_electrico_coa_2026.pdf",
+      "title": "Aviso a los establecimientos sujetos a reporte en el RENE",
+      "publisher": "SEMARNAT, Registro Nacional de Emisiones",
+      "date": "2026-05-29",
+      "accessed": "2026-07-09",
+      "proves": "Because Mexico's 2025 factor was still being estimated, 2026 COA reporting must use the 2024 National Electric System factor: 0.444 tCO2e/MWh, numerically equal to 0.444 kgCO2e/kWh.",
+      "confidence": "high",
+      "exact_quote": "se deberá utilizar el factor de emisión del Sistema Eléctrico Nacional 2024 ... 0.444 tCO2e / MWh"
+    },
+    {
+      "source_id": "S10",
+      "url": "https://www.ultramarferry.com/es/tarifas",
+      "title": "Puerto Juárez / Isla Mujeres fares",
+      "publisher": "Ultramar Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Input handoff captured tourist adult fare MXN 290 one way.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S11",
+      "url": "https://www.ultramarferry.com/en/fares",
+      "title": "Playa del Carmen / Cozumel fares",
+      "publisher": "Ultramar Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Input handoff captured adult Premium Plus fare MXN 320 one way.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S12",
+      "url": "https://winjet.mx/",
+      "title": "Winjet Fast Ferry — Cozumel / Playa del Carmen",
+      "publisher": "Winjet",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Input handoff captured regular adult one-way fare from Playa of MXN 335 including stated DSA.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S13",
+      "url": "https://www.yelapa.info/transport1.html",
+      "title": "Yelapa transportation",
+      "publisher": "Yelapa.info",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Input handoff captured local destination-page indication of MXN 350 one way; not an official tariff.",
+      "confidence": "medium-low"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "playa-del-carmen-mexico",
+      "role": "Playa-Cozumel finance corridor endpoint",
+      "new_geometry_or_city_claims": false
+    },
+    {
+      "city_id": "cozumel-mexico",
+      "role": "Playa-Cozumel finance corridor endpoint",
+      "new_geometry_or_city_claims": false
+    },
+    {
+      "city_id": "cancun-riviera-maya-mexico",
+      "role": "Puerto Juárez-Isla Mujeres finance corridor cluster",
+      "new_geometry_or_city_claims": false
+    }
+  ],
+  "boarding_points": [],
+  "candidate_corridors": [
+    {
+      "name": "Playa del Carmen Ferry Terminal — Cozumel Ferry Terminal (San Miguel)",
+      "route_id": "ics-dd1d814699",
+      "route_id_match_basis": "Carried from existing audited handoff as exact current ROUTES endpoint/operator-pair match; gross APIQROO flow is corridor-wide, not operator-specific.",
+      "from": "Playa del Carmen Ferry Terminal",
+      "to": "Cozumel Ferry Terminal (San Miguel)",
+      "from_city_id": "playa-del-carmen-mexico",
+      "to_city_id": "cozumel-mexico",
+      "water_relevance": "current high-volume federal passenger ferry crossing",
+      "likely_vessel_range_class": "Pioneer II (<=70 nm), from existing handoff",
+      "hand_waypoints": {
+        "required": false,
+        "reason": "No new geometry work; retain existing handoff requirement for final sealed terminal approaches."
+      }
+    },
+    {
+      "name": "Puerto Juárez — Isla Mujeres",
+      "route_id": "ics-413f51cd44",
+      "route_id_match_basis": "Carried from existing audited handoff as exact endpoint-pair match; existing Atlas label is operator-specific while APIQROO flow is corridor-wide.",
+      "from": "Puerto Juárez passenger ferry terminal",
+      "to": "Isla Mujeres passenger terminal",
+      "from_city_id": "cancun-riviera-maya-mexico",
+      "to_city_id": "cancun-riviera-maya-mexico",
+      "water_relevance": "current high-volume federal passenger ferry crossing",
+      "likely_vessel_range_class": "Pioneer II (<=70 nm), from existing handoff",
+      "hand_waypoints": {
+        "required": false,
+        "reason": "No new geometry work; final terminal approaches remain a geometry handoff item."
+      }
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "T3-DR1",
+      "geography": "Playa del Carmen-Cozumel",
+      "route_id": null,
+      "period": "2025",
+      "metric": "gross_corridor_annual_oneway_pax",
+      "value": 3853770,
+      "annual_one_way_pax": 3853770,
+      "unit": "passenger one-way crossing journeys, both directions combined",
+      "source_ids": [
+        "S1",
+        "S2"
+      ],
+      "adjudication": "USE WITHOUT DIVIDING OR MULTIPLYING. APIQROO total is passenger ENTRADAS plus passenger SALIDAS. Each boarding/crossing in one direction is one movement. Do not sum the mirrored Cozumel and Playa rows, and do not assign 100% to one operator or one Atlas route.",
+      "operator_scope": "all passenger-ferry operators represented by APIQROO route statistic",
+      "confidence": "high"
+    },
+    {
+      "record_id": "T3-DR2",
+      "geography": "Puerto Juárez-Isla Mujeres",
+      "route_id": null,
+      "period": "2025",
+      "metric": "gross_corridor_annual_oneway_pax",
+      "value": 5458304,
+      "annual_one_way_pax": 5458304,
+      "unit": "passenger one-way crossing journeys, both directions combined",
+      "source_ids": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "adjudication": "USE APIQROO TABLE TOTAL 5,458,304 WITHOUT DIVIDING OR MULTIPLYING. Structurally the prose figure 5,457,733 describes the same both-direction passenger-movement concept, but it conflicts by 571 passengers with the decomposable official table and should not be the canonical model input.",
+      "published_prose_value": 5457733,
+      "difference_table_minus_prose": 571,
+      "difference_percent_of_table": 0.010461,
+      "operator_scope": "all passenger-ferry operators represented by APIQROO route statistic",
+      "confidence": "high for table total; medium for prose figure"
+    }
+  ],
+  "fx_basis": {
+    "recommended_basis": "World Bank WDI 2025 official exchange rate, period average",
+    "mxn_per_usd": 19.2375083333333,
+    "period": "2025 annual average",
+    "source_ids": [
+      "S4",
+      "S5"
+    ],
+    "why_suitable": "A completed annual average matches the 2025 demand period and provides one reproducible basis for fare comparables. It also yields lower USD fare equivalents than the stronger-peso 2026 monthly averages, making it conservative for modeled revenue. Banxico FIX remains the primary basis for transaction-date settlement/accounting.",
+    "formula": "USD = MXN / 19.2375083333333",
+    "converted_fares": [
+      {
+        "fare_mxn": 290,
+        "product": "Ultramar tourist adult, Puerto Juarez-Isla Mujeres",
+        "source_ids": [
+          "S10"
+        ],
+        "mxn_per_usd": 19.2375083333333,
+        "usd_exact": 15.074717316561726,
+        "usd_rounded_2dp": 15.07
+      },
+      {
+        "fare_mxn": 320,
+        "product": "Ultramar Premium Plus adult, Playa-Cozumel",
+        "source_ids": [
+          "S11"
+        ],
+        "mxn_per_usd": 19.2375083333333,
+        "usd_exact": 16.63417083206811,
+        "usd_rounded_2dp": 16.63
+      },
+      {
+        "fare_mxn": 335,
+        "product": "Winjet regular adult one-way from Playa, Playa-Cozumel",
+        "source_ids": [
+          "S12"
+        ],
+        "mxn_per_usd": 19.2375083333333,
+        "usd_exact": 17.413897589821303,
+        "usd_rounded_2dp": 17.41
+      },
+      {
+        "fare_mxn": 350,
+        "product": "Yelapa water-taxi one-way indication",
+        "source_ids": [
+          "S13"
+        ],
+        "mxn_per_usd": 19.2375083333333,
+        "usd_exact": 18.1936243475745,
+        "usd_rounded_2dp": 18.19
+      }
+    ],
+    "rounding_policy": "Retain full precision in calculations; publish comparables to USD 0.01. Do not recalculate some fares at spot/FIX and others at this annual basis."
+  },
+  "country_reference_recommendation": {
+    "country": "Mexico",
+    "schema_target": "finance/model/country-reference.json",
+    "row_status": "provisional_T3; grid factor source-ready; energy is a small-business comparator; captain/marina/cost_index are modeled and require finance approval",
+    "captain_usd_yr": {
+      "value": 14000,
+      "classification": "MODELED, not an official wage fact",
+      "source_tier": "T1 observed benchmark + T4 model judgment",
+      "source_ids": [
+        "S5",
+        "S7"
+      ],
+      "observed_anchor": {
+        "mxn_per_month": 9120,
+        "annual_cash_usd_at_2025_average_fx": 5688.89
+      },
+      "treatment": "Use USD 14,000/year only as a provisional loaded planning allowance for a commercial captain. It deliberately exceeds the national survey cash-wage anchor to allow for licensing, employer burden, seniority and tourist-market hiring, but no operator quote validates the uplift.",
+      "confidence": "low",
+      "sensitivity_usd_yr": [
+        6000,
+        14000,
+        26000
+      ]
+    },
+    "energy_usd_kwh": {
+      "value": 0.23,
+      "requested_alias": "commercial_electricity_usd_per_kwh",
+      "classification": "SOURCE-ANCHORED CONVERSION, tariff applicability provisional",
+      "source_tier": "T2 mirror of CFE primary tariff + T1 Banxico FX",
+      "source_ids": [
+        "S4",
+        "S8"
+      ],
+      "calculation": "MXN 3.9680/kWh / 17.3819 MXN/USD (Banxico CF86 June 2026 monthly average) = USD 0.228283/kWh; rounded to 0.23",
+      "fixed_charge_context": "MXN 45.2600/month / 17.3819 = USD 2.6039/month, excluded from per-kWh value",
+      "treatment": "PDBT is a small low-voltage business comparator. It is not a bankable fast-charging tariff and excludes VAT, connection work, demand/capacity/reactive charges and any move to GDBT/GDMTH. Obtain CFE supply study for vessel charging load.",
+      "confidence": "medium-low"
+    },
+    "grid_co2_kg_kwh": {
+      "value": 0.444,
+      "requested_alias": "grid_co2_kg_per_kwh",
+      "classification": "OFFICIAL SOURCE VALUE",
+      "source_tier": "T1 Mexican official",
+      "source_ids": [
+        "S9"
+      ],
+      "calculation": "0.444 tCO2e/MWh = 0.444 kgCO2e/kWh",
+      "treatment": "Use for 2026 COA-style indirect-emissions calculations until SENER publishes the 2025 factor; relabel vintage as 2024 grid factor.",
+      "confidence": "high"
+    },
+    "marina_overhead_usd_yr": {
+      "value": 11000,
+      "classification": "MODELED, not a published marina tariff",
+      "source_tier": "T4 model proxy",
+      "source_ids": [
+        "S5",
+        "S6"
+      ],
+      "calculation": "Existing Singapore model anchor USD 20,000 × Mexico relative price proxy 0.536917 = USD 10,738; rounded to USD 11,000. This is model-on-model and not an observed Mexico berth quote.",
+      "treatment": "Covers annual berth, port fees and local marine admin per vessel under repo definition; excludes insurance and fast-charge infrastructure. Replace with berth/port/operator quotes for Puerto Juárez, Isla Mujeres, Playa and Cozumel.",
+      "confidence": "low",
+      "sensitivity_usd_yr": [
+        8000,
+        11000,
+        18000
+      ]
+    },
+    "cost_index": {
+      "value": 0.54,
+      "classification": "MODELED FROM OFFICIAL MACRO SERIES",
+      "source_tier": "T2 multilateral official-series calculation",
+      "source_ids": [
+        "S5",
+        "S6"
+      ],
+      "calculation": "10.328951 MXN/int$ PPP conversion factor / 19.2375083333333 MXN/USD official exchange rate = 0.536917; rounded to 0.54",
+      "treatment": "Use only as a broad relative price-level proxy, not as proof of maritime OPEX. Do not use it to override sourced labor, tariff or marina inputs.",
+      "confidence": "medium-low"
+    }
+  },
+  "brief_maturity": {
+    "applicable": false,
+    "reason": "Narrow T3 finance lane; no canonical brief edits or replacement recommendations."
+  },
+  "partner_narrative_notes": [
+    "DiDi-specific narrative is out of scope. Finance-safe wording: Mexico Caribbean corridors have official gross crossing volumes, but these are total market journeys, not Navier obtainable demand or DiDi conversions.",
+    "Keep the canonical count and fare methodology partner-neutral; market-share, capture-rate and realized-yield assumptions belong only in an explicit partner economics scenario."
+  ],
+  "gaps": [
+    {
+      "gap": "APIQROO prose/table discrepancy of 571 Isla Mujeres passengers",
+      "owner": "Finance research / APIQROO liaison",
+      "next_action": "Request APIQROO confirmation or frozen downloadable 2025 workbook. Until then use decomposable table total 5,458,304 and retain prose number only as a discrepancy note."
+    },
+    {
+      "gap": "Passenger totals lack operator/product mix",
+      "owner": "Partner finance diligence",
+      "next_action": "Obtain APIQROO/operator split and realized fare-class mix before applying capture rate or yield."
+    },
+    {
+      "gap": "Commercial captain employer-loaded cost",
+      "owner": "Finance / Mexico operator",
+      "next_action": "Collect 2-3 quotations or payroll benchmarks for licensed passenger-vessel captains in Quintana Roo and Pacific tourist markets; replace USD 14,000 modeled allowance."
+    },
+    {
+      "gap": "Charging tariff/load applicability",
+      "owner": "Operations / CFE interconnection",
+      "next_action": "Specify charger kW, monthly kWh, load factor and voltage; obtain CFE supply classification/quote including demand, capacity, VAT and connection capex."
+    },
+    {
+      "gap": "Marina overhead",
+      "owner": "Operations / port commercial",
+      "next_action": "Obtain annual berth, APIQROO port, passenger/embarkation and local admin quotations per vessel at each endpoint; replace USD 11,000 proxy."
+    },
+    {
+      "gap": "2025 Mexico national grid factor",
+      "owner": "Sustainability finance",
+      "next_action": "Monitor SENER publication; SEMARNAT explicitly says it was still in estimation as of 2026-05-29."
+    }
+  ],
+  "do_not_publish": [
+    "Do not divide either APIQROO passenger total by two: that would turn gross one-way crossing journeys into approximate round trips and understate corridor_annual_oneway_pax.",
+    "Do not multiply by two: both ENTRADAS and SALIDAS are already included.",
+    "Do not sum the Cozumel and Playa table rows; they are mirrored endpoint views of the same 3,853,770 corridor journeys.",
+    "Do not use 5,457,733 as the canonical Isla Mujeres model total while the official decomposable table says 5,458,304.",
+    "Do not assign total corridor passengers to Ultramar, Winjet, Magna, DiDi, Navier or any single Atlas edge.",
+    "Do not treat converted public fares as realized yield; discounts, child/resident products, fees and operator mix remain unknown.",
+    "Do not describe captain_usd_yr, marina_overhead_usd_yr or cost_index as sourced Mexican facts; they are provisional modeled fields.",
+    "Do not treat PDBT USD 0.23/kWh as a fast-charging all-in tariff.",
+    "Do not label 0.444 kgCO2e/kWh as a 2025 grid factor; it is the 2024 factor mandated for 2026 reporting while 2025 is pending."
+  ],
+  "summary_counts": {
+    "sources": 13,
+    "cities": 3,
+    "boarding_points": 0,
+    "candidate_corridors": 2,
+    "demand_records": 2,
+    "gross_corridor_annual_oneway_pax_ready": 2,
+    "fare_conversions": 4,
+    "country_reference_fields": 5,
+    "official_or_source_anchored_fields": 2,
+    "modeled_or_applicability_provisional_fields": 4,
+    "gaps": 6,
+    "do_not_publish_rules": 9
+  },
+  "validation": {
+    "json_valid": true,
+    "repo_edits": 0,
+    "validated_by": "python json load + arithmetic assertions"
+  }
+}

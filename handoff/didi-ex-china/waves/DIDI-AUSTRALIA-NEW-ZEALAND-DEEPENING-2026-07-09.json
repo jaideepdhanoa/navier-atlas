@@ -1,0 +1,1123 @@
+{
+  "market": "Australia and New Zealand",
+  "lane": "BP + brief maturity + demand/fare source research",
+  "as_of": "2026-07-09",
+  "status": "research-complete-with-repository-access-blocker / seal-needed / economics-held-pending-route-pax",
+  "existing_atlas_baseline": {
+    "requested_repo": "/tmp/navier-atlas",
+    "repo_access_status": "unavailable in this subagent sandbox; /tasklet/agent/home/apps/navier-atlas contains only a .tasklet-source-revision placeholder",
+    "fallback_local_artifacts_read": [
+      "/tasklet/agent/home/didi-ex-china-audit/didi-atlas-global-audit-2026-07-09.json",
+      "/tasklet/agent/home/didi-ex-china-audit/DIDI-SCOPE-LEDGER-2026-07-09.json",
+      "/tasklet/agent/home/didi-ex-china-audit/handoff/DIDI-ROUTE-STAMP-DEFECT-LEDGER-2026-07-09.json",
+      "/tasklet/agent/home/_pmap/didi.json"
+    ],
+    "canonical_files_not_directly_read": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "data-clean/city_briefs/*.json",
+      "data-clean/cluster_briefs/*.json",
+      "atlas-external/boarding-points/*.json",
+      "partner-pitch/partners/didi.json"
+    ],
+    "audit_snapshot": {
+      "australia": {
+        "cluster_id": "australia",
+        "existing_city_ids": [
+          "brisbane-australia",
+          "gold-coast-australia",
+          "sydney-australia",
+          "whitsundays-australia"
+        ],
+        "strict_route_rows": 92,
+        "feature_poi_count": 273,
+        "atlas_external_boarding_point_files": 0,
+        "cluster_brief": null,
+        "city_brief_count": 4
+      },
+      "new_zealand": {
+        "cluster_id": "new-zealand",
+        "existing_city_ids": [
+          "auckland-new-zealand",
+          "bay-of-islands-new-zealand",
+          "wellington-new-zealand"
+        ],
+        "raw_route_rows": 52,
+        "strict_country_route_rows": 42,
+        "foreign_misstamped_route_rows": 10,
+        "feature_poi_count": 173,
+        "atlas_external_boarding_point_files": 0,
+        "cluster_brief": null,
+        "city_brief_count": 2,
+        "missing_city_brief": "wellington-new-zealand"
+      }
+    },
+    "route_match_policy": "No candidate below is assigned a route_id because direct ROUTES.json access was blocked; route_id remains null unless an exact canonical ID match is independently known.",
+    "boarding_point_policy": "Official/operator-confirmed stops are verified as real-world BPs but remain Atlas candidates until coordinates and canonical registry parity are checked. No coordinates were invented."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "url": "https://web.didiglobal.com/au/help-center/where-is-didi-available/",
+      "title": "Where is DiDi available?",
+      "publisher": "DiDi Australia",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official list includes Brisbane and Gold Coast in Queensland and Sydney in New South Wales. Whitsundays/Airlie Beach was not observed as an exact city label in the fetched list.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S02",
+      "url": "https://web.didiglobal.com/nz/driver/cities/",
+      "title": "Cities",
+      "publisher": "DiDi New Zealand",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official New Zealand service-city page lists Auckland, Christchurch and Wellington. Bay of Islands is not listed as a service city.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S03",
+      "url": "https://translink.com.au/travel-with-us/around-brisbane/ferries",
+      "title": "Brisbane ferries",
+      "publisher": "Translink, Queensland Government",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Brisbane has current CityCat and ferry services and official stop/timetable links.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S04",
+      "url": "https://www.brisbane.qld.gov.au/traffic-and-transport/public-transport/citycat-and-ferry-services",
+      "title": "CityCat and ferry services",
+      "publisher": "Brisbane City Council",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Council confirms CityCat/ferry operations and terminal context, including Northshore Hamilton and UQ St Lucia corridor endpoints.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S05",
+      "url": "https://translink.com.au/tickets-and-fares/50-cent-fares",
+      "title": "50 cent fares",
+      "publisher": "Translink, Queensland Government",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "A flat AUD 0.50 fare applies per journey across Translink, including Brisbane CityCat and ferry services; Airtrain is excluded.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S06",
+      "url": "https://transportnsw.info/routes/details/sydney-ferries/f1/090F1",
+      "title": "F1 Manly",
+      "publisher": "Transport for NSW",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official current ferry route connects Circular Quay and Manly Wharf.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S07",
+      "url": "https://transportnsw.info/tickets-fares/fares/adult-opal-fares",
+      "title": "Adult fares",
+      "publisher": "Transport for NSW",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official Opal/contactless fare framework and current caps; the dynamic ferry distance table did not render in the scrape, so no route-specific Manly fare is asserted.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S08",
+      "url": "https://www.transport.nsw.gov.au/data-and-research/passenger-travel/ferry-patronage",
+      "title": "Ferry patronage",
+      "publisher": "Transport for NSW",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official source exists for monthly ferry patronage by route/system. A verified annual F1 total was not extracted in this pass.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S09",
+      "url": "https://hopo.com.au/",
+      "title": "Hopo Gold Coast Ferry",
+      "publisher": "Hopo / The Tour Collective",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current tourism ferry product on Gold Coast waterways. Search/fetched content supports Sea World and Surfers Paradise service; current stop-by-stop timetable and fare basis need live recheck.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S10",
+      "url": "https://www.cruisewhitsundays.com/resort-connections-fares/",
+      "title": "Resort Connections Fares",
+      "publisher": "Cruise Whitsundays",
+      "date": "fares updated 2026-04-11; Daydream prices valid 2026-04-01 to 2027-03-31",
+      "accessed": "2026-07-09",
+      "proves": "Current per-person fares and terminals: Port of Airlie to/from Daydream Island AUD 49.50 adult; Port of Airlie to/from Hamilton Island AUD 74.50 adult; Hamilton Island Marina, Hamilton Island Airport and Whitsunday Coast Airport transfer links are described.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S11",
+      "url": "https://www.cruisewhitsundays.com/island-transfers-timetable/",
+      "title": "Resort Connections Timetable",
+      "publisher": "Cruise Whitsundays",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator timetable framework for Port of Airlie, Daydream Island, Hamilton Island Marina and Hamilton Island Airport; individual daily departures should be frozen at model handoff because schedules change.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S12",
+      "url": "https://teq.queensland.com/content/dam/teq/corporate/corporate-searchable-assets/industry/research/regional-snapshots/202406-ye-june-2024/Whitsundays.pdf",
+      "title": "Whitsundays Regional Snapshot",
+      "publisher": "Tourism and Events Queensland",
+      "date": "year ending 2024-06",
+      "accessed": "2026-07-09",
+      "proves": "Whitsundays received 969,000 visitors and AUD 1.6 billion visitor spend in the year ending June 2024. This is regional visitor context only, not route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S13",
+      "url": "https://www.whitsundayrc.qld.gov.au/files/assets/public/v/1/our-council/documents/plans-strategies-and-reports/annual_performance_plan___wca___17_june_25.pdf",
+      "title": "Whitsunday Coast Airport Annual Performance Plan",
+      "publisher": "Whitsunday Regional Council",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Reports 510,835 airport passenger movements for year ending December 2024. This is access-market throughput, not ferry demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S14",
+      "url": "https://at.govt.nz/bus-train-ferry/ferry-services",
+      "title": "Ferry services",
+      "publisher": "Auckland Transport",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official current Auckland ferry network and links to timetables for Downtown, Devonport, Waiheke and other terminals.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S15",
+      "url": "https://at.govt.nz/bus-train-ferry/fares-and-discounts/ferry-fares",
+      "title": "Ferry fares",
+      "publisher": "Auckland Transport",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Fares are one-way unless stated; Downtown–Devonport same-day adult day-trip ticket is NZD 23. AT HOP/contactless and route-specific exceptions are documented.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S16",
+      "url": "https://at.govt.nz/bus-train-ferry/fares-and-discounts/public-transport-fare-changes",
+      "title": "Public transport fare changes 2026",
+      "publisher": "Auckland Transport",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Official 2026 adult inner-harbour ferry fare is NZD 7.80 by HOP/contactless and NZD 12 cash; exact inclusion of each candidate terminal must follow AT's route category.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S17",
+      "url": "https://at.govt.nz/media/zgrj3dfs/auckland-transport-annual-report-2025.pdf",
+      "title": "Auckland Transport Annual Report 2025",
+      "publisher": "Auckland Transport",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Official annual report is the correct patronage source. A ferry-only annual total was not reliably extracted in this pass and remains null.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S18",
+      "url": "https://www.fndc.govt.nz/Services/Transport/ferries/Bay-of-Islands-passenger-ferry",
+      "title": "Bay of Islands passenger ferry",
+      "publisher": "Far North District Council",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Three passenger ferry services operate between Paihia and Russell; this validates both terminals and the current corridor.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S19",
+      "url": "https://northlandferries.co.nz/bay-of-islands-ferry/",
+      "title": "Bay of Islands Ferry",
+      "publisher": "Northland Ferries",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Operator confirms Paihia–Russell passenger ferry and Opua–Okiato vehicle ferry. Paihia–Russell adult passenger fare shown is NZD 19.40 return; crossing is approximately 15 minutes per official destination listing/search evidence.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S20",
+      "url": "https://www.metlink.org.nz/getting-started/wellington-harbour-ferries",
+      "title": "Wellington Harbour Ferry",
+      "publisher": "Metlink, Greater Wellington Regional Council",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current commuter service runs Queens Wharf–Days Bay, with some trips continuing to Matiu/Somes Island. Adult Queens Wharf–Days Bay one-way fare is NZD 17; Matiu/Somes tickets are return and booking requirements apply.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S21",
+      "url": "https://backend.metlink.org.nz/assets/Uploads/QDF-Matiu-Island-Days-Bay-Queens-Wharf-May-19-2026.pdf",
+      "title": "Days Bay – Queens Wharf – Matiu/Somes Island timetable",
+      "publisher": "Metlink",
+      "date": "effective 2026-05-19",
+      "accessed": "2026-07-09",
+      "proves": "Current dated timetable for the Wellington harbour ferry endpoints and Matiu/Somes continuation.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S22",
+      "url": "https://www.bne.com.au/brisbane-airport-welcomes-226-million-passengers-in-fy24",
+      "title": "Brisbane Airport Welcomes 22.6 million Passengers in FY24",
+      "publisher": "Brisbane Airport Corporation",
+      "date": "2024",
+      "accessed": "2026-07-09",
+      "proves": "22.6 million airport passengers in FY2024, an access-market throughput signal only.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S23",
+      "url": "https://www.sydneyairport.com.au/corporate/media/corporate-newsroom/sydney-airport-annual-traffic-performance-q4-2024",
+      "title": "Sydney Airport Annual Traffic Performance Q4 2024",
+      "publisher": "Sydney Airport",
+      "date": "2025-01",
+      "accessed": "2026-07-09",
+      "proves": "More than 41 million passengers passed through Sydney Airport terminals in calendar 2024; this is not F1 Manly demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S24",
+      "url": "https://www.goldcoastairport.com.au/corporate-partnerships/about-us/about-us/passenger-traffic-statistics",
+      "title": "Passenger Traffic Statistics",
+      "publisher": "Gold Coast Airport",
+      "date": "updated 2026-03",
+      "accessed": "2026-07-09",
+      "proves": "Gold Coast Airport connects more than 6 million travellers each year. The embedded dashboard did not expose a precise annual series in the scrape.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S25",
+      "url": "https://www.aucklandairport.co.nz/content/dam/aia/files/corporate/sustainability/ethical-business/AIA%20-%20FY25%20Modern%20Slavery%20Statement.pdf",
+      "title": "FY25 Modern Slavery Statement",
+      "publisher": "Auckland Airport",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Auckland Airport welcomed 18.7 million passengers in FY2025; airport throughput is not ferry-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S26",
+      "url": "https://www.wellingtonairport.co.nz/documents/4514/Wellington_Airport_Annual_Review_2025.pdf",
+      "title": "Annual Review 2025",
+      "publisher": "Wellington Airport",
+      "date": "year ended 2025-03-31",
+      "accessed": "2026-07-09",
+      "proves": "FY2025 domestic passengers 4,525,989 and international passengers 790,869, totaling 5,316,858 by explicit arithmetic. This is airport access-market throughput only.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "brisbane-australia",
+      "country": "Australia",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 15,
+      "audit_feature_poi_count": 56,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "verified official city list",
+      "water_market": "Brisbane River urban public ferry network"
+    },
+    {
+      "city_id": "gold-coast-australia",
+      "country": "Australia",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 27,
+      "audit_feature_poi_count": 77,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "verified official city list",
+      "water_market": "tourism ferry on Gold Coast waterways; not a public Translink ferry network"
+    },
+    {
+      "city_id": "sydney-australia",
+      "country": "Australia",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 35,
+      "audit_feature_poi_count": 84,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "verified official city list",
+      "water_market": "large public harbour ferry network"
+    },
+    {
+      "city_id": "whitsundays-australia",
+      "country": "Australia",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 15,
+      "audit_feature_poi_count": 56,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "not verified by exact Whitsundays/Airlie Beach label on official DiDi AU list",
+      "water_market": "island resort transfers and tourism day-cruise network"
+    },
+    {
+      "city_id": "auckland-new-zealand",
+      "country": "New Zealand",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 30,
+      "audit_feature_poi_count": 92,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "verified official city list",
+      "water_market": "public harbour and gulf ferry network"
+    },
+    {
+      "city_id": "bay-of-islands-new-zealand",
+      "country": "New Zealand",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 12,
+      "audit_feature_poi_count": 41,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "present per audit; content not directly readable",
+      "didi_availability": "not listed as a DiDi service city on official NZ page",
+      "water_market": "short passenger ferry and vehicle-ferry crossings"
+    },
+    {
+      "city_id": "wellington-new-zealand",
+      "country": "New Zealand",
+      "canonical_registry_status": "existing",
+      "audit_route_rows": 0,
+      "audit_feature_poi_count": 40,
+      "atlas_external_bp_files": 0,
+      "canonical_city_brief": "missing per audit",
+      "didi_availability": "verified official city list",
+      "water_market": "commuter harbour ferry; Atlas route gap"
+    }
+  ],
+  "boarding_points": [
+    {
+      "name": "University of Queensland St Lucia Ferry Terminal",
+      "city_id": "brisbane-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "Brisbane CityCat/ferry network",
+      "source_ids": ["S03", "S04"]
+    },
+    {
+      "name": "Northshore Hamilton Ferry Terminal",
+      "city_id": "brisbane-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "Brisbane CityCat/ferry network",
+      "source_ids": ["S03", "S04"]
+    },
+    {
+      "name": "South Bank ferry terminal",
+      "city_id": "brisbane-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_exact_terminal_suffix_and_coordinate_confirmation",
+      "coordinates": null,
+      "current_service": "Brisbane river ferry network",
+      "source_ids": ["S03", "S04"]
+    },
+    {
+      "name": "Circular Quay Wharf 3",
+      "city_id": "sydney-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_platform_confirmation",
+      "coordinates": null,
+      "current_service": "F1 Manly",
+      "source_ids": ["S06"]
+    },
+    {
+      "name": "Manly Wharf",
+      "city_id": "sydney-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "F1 Manly",
+      "source_ids": ["S06"]
+    },
+    {
+      "name": "Sea World Hopo stop",
+      "city_id": "gold-coast-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_current-stop-and-source-confirmation",
+      "coordinates": null,
+      "current_service": "Hopo tourism ferry",
+      "source_ids": ["S09"]
+    },
+    {
+      "name": "Surfers Paradise Hopo stop",
+      "city_id": "gold-coast-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_exact-landing-name-coordinate-and-current-timetable-confirmation",
+      "coordinates": null,
+      "current_service": "Hopo tourism ferry",
+      "source_ids": ["S09"]
+    },
+    {
+      "name": "HOTA ferry landing",
+      "city_id": "gold-coast-australia",
+      "country": "Australia",
+      "classification": "reject_drop",
+      "atlas_status": "do_not_ingest_as_current",
+      "coordinates": null,
+      "reason": "Hopo states HOTA Express stopped operating effective 2025-12-07; a landing may physically exist but is not validated as a current scheduled BP.",
+      "source_ids": ["S09"]
+    },
+    {
+      "name": "Port of Airlie Marina",
+      "city_id": "whitsundays-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "Cruise Whitsundays resort connections",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "name": "Daydream Island Resort jetty",
+      "city_id": "whitsundays-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_exact-official-name-coordinate-and-access-rule-tag",
+      "coordinates": null,
+      "current_service": "Cruise Whitsundays resort connection; day-guest restrictions apply",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "name": "Hamilton Island Marina",
+      "city_id": "whitsundays-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "Cruise Whitsundays resort connections",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "name": "Hamilton Island Airport Jetty",
+      "city_id": "whitsundays-australia",
+      "country": "Australia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_restricted-access-tag",
+      "coordinates": null,
+      "current_service": "flight-connecting passengers only",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "name": "Downtown Ferry Terminal",
+      "city_id": "auckland-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_berth-specific-coordinate-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Auckland ferry network",
+      "source_ids": ["S14", "S15"]
+    },
+    {
+      "name": "Devonport Ferry Terminal",
+      "city_id": "auckland-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate_and_registry_confirmation",
+      "coordinates": null,
+      "current_service": "Auckland ferry network",
+      "source_ids": ["S14", "S15"]
+    },
+    {
+      "name": "Waiheke Island ferry terminal",
+      "city_id": "auckland-new-zealand",
+      "country": "New Zealand",
+      "classification": "candidate_needing_coordinate_source_confirmation",
+      "atlas_status": "do_not_ingest_until-Matiatia-vs-other-terminal-is-disambiguated",
+      "coordinates": null,
+      "reason": "The official fare page verifies Waiheke service but this research pass did not freeze the exact landing name/platform for the proposed Downtown corridor.",
+      "source_ids": ["S14", "S15"]
+    },
+    {
+      "name": "Paihia passenger ferry wharf",
+      "city_id": "bay-of-islands-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_exact-official-name-coordinate-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Paihia–Russell passenger ferries",
+      "source_ids": ["S18", "S19"]
+    },
+    {
+      "name": "Russell passenger ferry wharf",
+      "city_id": "bay-of-islands-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_exact-official-name-coordinate-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Paihia–Russell passenger ferries",
+      "source_ids": ["S18", "S19"]
+    },
+    {
+      "name": "Opua vehicle ferry landing",
+      "city_id": "bay-of-islands-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate-mode-tag-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Opua–Okiato vehicle ferry",
+      "source_ids": ["S19"]
+    },
+    {
+      "name": "Okiato vehicle ferry landing",
+      "city_id": "bay-of-islands-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate_needing_coordinate-mode-tag-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Opua–Okiato vehicle ferry",
+      "source_ids": ["S19"]
+    },
+    {
+      "name": "Queens Wharf ferry terminal",
+      "city_id": "wellington-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "high-priority-candidate-needing-coordinate-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Wellington harbour ferry",
+      "source_ids": ["S20", "S21"]
+    },
+    {
+      "name": "Days Bay Wharf",
+      "city_id": "wellington-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "high-priority-candidate-needing-coordinate-and-registry-confirmation",
+      "coordinates": null,
+      "current_service": "Wellington harbour ferry",
+      "source_ids": ["S20", "S21"]
+    },
+    {
+      "name": "Matiu/Somes Island Wharf",
+      "city_id": "wellington-new-zealand",
+      "country": "New Zealand",
+      "classification": "verified_existing_boarding_point",
+      "atlas_status": "candidate-needing-coordinate-booking-seasonality-and-access-tags",
+      "coordinates": null,
+      "current_service": "selected Wellington harbour ferry trips; booking required",
+      "source_ids": ["S20", "S21"]
+    },
+    {
+      "name": "Brisbane Airport terminals",
+      "city_id": "brisbane-australia",
+      "country": "Australia",
+      "classification": "non_BP_POI",
+      "atlas_status": "retain-as-access-demand-context-only",
+      "coordinates": null,
+      "source_ids": ["S22"]
+    },
+    {
+      "name": "Auckland Airport terminals",
+      "city_id": "auckland-new-zealand",
+      "country": "New Zealand",
+      "classification": "non_BP_POI",
+      "atlas_status": "retain-as-access-demand-context-only",
+      "coordinates": null,
+      "source_ids": ["S25"]
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "route_id": null,
+      "name": "UQ St Lucia – Northshore Hamilton",
+      "city_id": "brisbane-australia",
+      "endpoint_a": "University of Queensland St Lucia Ferry Terminal",
+      "endpoint_b": "Northshore Hamilton Ferry Terminal",
+      "service_evidence": "current Brisbane CityCat/ferry network",
+      "opportunity_type": "current-route / DiDi first-last-mile integration",
+      "approx_water_relevance": "high; long urban river trunk",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "urban river / short-range electric candidate; validate duty cycle",
+      "hand_waypoint_requirement": "required; trace Brisbane River bends and prevent straight chords across land",
+      "annual_one_way_pax": null,
+      "source_ids": ["S03", "S04", "S05"]
+    },
+    {
+      "route_id": null,
+      "name": "Circular Quay – Manly",
+      "city_id": "sydney-australia",
+      "endpoint_a": "Circular Quay Wharf 3",
+      "endpoint_b": "Manly Wharf",
+      "service_evidence": "current F1 public ferry",
+      "opportunity_type": "current-route / interchange and first-last-mile integration",
+      "approx_water_relevance": "high; harbour crossing",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "harbour / medium short-sea; distance and duty cycle must be measured",
+      "hand_waypoint_requirement": "required; route must clear harbour headlands and follow navigable water, not straight-line over land",
+      "annual_one_way_pax": null,
+      "source_ids": ["S06", "S07", "S08"]
+    },
+    {
+      "route_id": null,
+      "name": "Sea World – Surfers Paradise",
+      "city_id": "gold-coast-australia",
+      "endpoint_a": "Sea World Hopo stop",
+      "endpoint_b": "Surfers Paradise Hopo stop",
+      "service_evidence": "current tourism ferry evidence; exact 2026 timetable needs freeze",
+      "opportunity_type": "current-tourism-service / future mobility deepening",
+      "approx_water_relevance": "high; Broadwater/Nerang River water corridor",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "sheltered-water short-range",
+      "hand_waypoint_requirement": "required; navigate waterways and avoid Southport/Surfers land crossings",
+      "annual_one_way_pax": null,
+      "source_ids": ["S09"]
+    },
+    {
+      "route_id": null,
+      "name": "Port of Airlie – Daydream Island",
+      "city_id": "whitsundays-australia",
+      "endpoint_a": "Port of Airlie Marina",
+      "endpoint_b": "Daydream Island Resort jetty",
+      "service_evidence": "current Cruise Whitsundays resort connection",
+      "opportunity_type": "current-route / resort and visitor access",
+      "approx_water_relevance": "high; mainland-island transfer",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "coastal inter-island; range class pending measured route and sea-state duty cycle",
+      "hand_waypoint_requirement": "required; use navigable passage around islands and harbour approaches",
+      "annual_one_way_pax": null,
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "route_id": null,
+      "name": "Port of Airlie – Hamilton Island Marina",
+      "city_id": "whitsundays-australia",
+      "endpoint_a": "Port of Airlie Marina",
+      "endpoint_b": "Hamilton Island Marina",
+      "service_evidence": "current Cruise Whitsundays resort connection",
+      "opportunity_type": "current-route / resort and visitor access",
+      "approx_water_relevance": "high; mainland-island transfer",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "coastal inter-island; range class pending measured route and sea-state duty cycle",
+      "hand_waypoint_requirement": "required; route around islands/reefs must be hand-validated",
+      "annual_one_way_pax": null,
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "route_id": null,
+      "name": "Downtown Auckland – Devonport",
+      "city_id": "auckland-new-zealand",
+      "endpoint_a": "Downtown Ferry Terminal",
+      "endpoint_b": "Devonport Ferry Terminal",
+      "service_evidence": "current Auckland Transport ferry",
+      "opportunity_type": "current-route / first-last-mile integration",
+      "approx_water_relevance": "high; inner-harbour crossing",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "inner-harbour short-range",
+      "hand_waypoint_requirement": "recommended; align harbour channel and berth approaches, avoid wharf/land chord artifacts",
+      "annual_one_way_pax": null,
+      "source_ids": ["S14", "S15", "S16", "S17"]
+    },
+    {
+      "route_id": null,
+      "name": "Downtown Auckland – Waiheke Island",
+      "city_id": "auckland-new-zealand",
+      "endpoint_a": "Downtown Ferry Terminal",
+      "endpoint_b": "Waiheke Island ferry terminal (exact landing unresolved)",
+      "service_evidence": "current Auckland ferry service, but landing/operator variant must be disambiguated",
+      "opportunity_type": "current-route / future partner access",
+      "approx_water_relevance": "high; gulf island crossing",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "harbour/gulf medium-range; measure exact service geometry",
+      "hand_waypoint_requirement": "required; Hauraki Gulf routing and exact Waiheke landing must be frozen",
+      "annual_one_way_pax": null,
+      "source_ids": ["S14", "S15"]
+    },
+    {
+      "route_id": null,
+      "name": "Paihia – Russell",
+      "city_id": "bay-of-islands-new-zealand",
+      "endpoint_a": "Paihia passenger ferry wharf",
+      "endpoint_b": "Russell passenger ferry wharf",
+      "service_evidence": "three current passenger-ferry services per council",
+      "opportunity_type": "current-route / visitor and local crossing",
+      "approx_water_relevance": "high; direct bay crossing",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "short sheltered-water",
+      "hand_waypoint_requirement": "recommended; short water chord but exact wharf approaches must be preserved",
+      "annual_one_way_pax": null,
+      "source_ids": ["S18", "S19"]
+    },
+    {
+      "route_id": null,
+      "name": "Queens Wharf – Days Bay",
+      "city_id": "wellington-new-zealand",
+      "endpoint_a": "Queens Wharf ferry terminal",
+      "endpoint_b": "Days Bay Wharf",
+      "service_evidence": "current Metlink commuter ferry",
+      "opportunity_type": "current-route / highest-priority Wellington Atlas gap",
+      "approx_water_relevance": "high; cross-harbour commuter service",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "harbour medium short-range; wind/sea-state reserve validation essential",
+      "hand_waypoint_requirement": "required; preserve harbour routing and terminal approaches",
+      "annual_one_way_pax": null,
+      "source_ids": ["S20", "S21"]
+    },
+    {
+      "route_id": null,
+      "name": "Queens Wharf – Matiu/Somes Island",
+      "city_id": "wellington-new-zealand",
+      "endpoint_a": "Queens Wharf ferry terminal",
+      "endpoint_b": "Matiu/Somes Island Wharf",
+      "service_evidence": "selected current trips via Days Bay; bookings required",
+      "opportunity_type": "current-limited-service / visitor access",
+      "approx_water_relevance": "high; harbour island access",
+      "approx_distance_km": null,
+      "likely_vessel_range_class": "harbour short-range",
+      "hand_waypoint_requirement": "required; model actual via-Days-Bay service if representing timetable, not a direct chord",
+      "annual_one_way_pax": null,
+      "source_ids": ["S20", "S21"]
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "D01",
+      "city_id": "brisbane-australia",
+      "flow_type": "airport_passenger_throughput",
+      "period": "FY2024",
+      "value": 22600000,
+      "unit": "passenger movements",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Top-of-funnel access-market signal only; no conversion to ferry demand permitted.",
+      "source_ids": ["S22"]
+    },
+    {
+      "record_id": "D02",
+      "city_id": "brisbane-australia",
+      "flow_type": "public_ferry_fare",
+      "period": "current as accessed 2026-07-09",
+      "value": 0.5,
+      "currency": "AUD",
+      "unit": "per Translink journey",
+      "annual_one_way_pax": null,
+      "service_days": "public timetable; exact route schedule not frozen",
+      "seasonality": "not quantified",
+      "source_ids": ["S05"]
+    },
+    {
+      "record_id": "D03",
+      "city_id": "sydney-australia",
+      "flow_type": "airport_passenger_throughput",
+      "period": "calendar 2024",
+      "value": 41000000,
+      "qualifier": "more_than",
+      "unit": "passenger movements",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Airport throughput is not F1 ferry demand and must not be allocated without an explicit capture model.",
+      "source_ids": ["S23"]
+    },
+    {
+      "record_id": "D04",
+      "city_id": "sydney-australia",
+      "flow_type": "route_patronage",
+      "period": null,
+      "value": null,
+      "unit": "one-way passenger boardings",
+      "annual_one_way_pax": null,
+      "route_scope": "F1 Circular Quay–Manly",
+      "assumption_record": "Official patronage dataset identified but exact annual route total not extracted; null beats a systemwide or airport proxy.",
+      "source_ids": ["S08"]
+    },
+    {
+      "record_id": "D05",
+      "city_id": "gold-coast-australia",
+      "flow_type": "airport_passenger_throughput",
+      "period": "current page, updated 2026-03",
+      "value": 6000000,
+      "qualifier": "more_than_per_year",
+      "unit": "travellers",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Broad access-market context only; not Hopo demand.",
+      "source_ids": ["S24"]
+    },
+    {
+      "record_id": "D06",
+      "city_id": "whitsundays-australia",
+      "flow_type": "regional_visitors",
+      "period": "year ending 2024-06",
+      "value": 969000,
+      "unit": "visitors",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "seasonality": "not quantified in extracted record",
+      "assumption_record": "Regional visitor count cannot be converted into Port of Airlie route demand without itinerary share, party size, directionality and seasonality assumptions.",
+      "source_ids": ["S12"]
+    },
+    {
+      "record_id": "D07",
+      "city_id": "whitsundays-australia",
+      "flow_type": "airport_passenger_throughput",
+      "period": "year ending 2024-12",
+      "value": 510835,
+      "unit": "passenger movements",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Whitsunday Coast Airport movements are access context; do not treat as island ferry boardings.",
+      "source_ids": ["S13"]
+    },
+    {
+      "record_id": "D08",
+      "city_id": "whitsundays-australia",
+      "flow_type": "route_fare",
+      "period": "valid 2026-04-01 to 2027-03-31 for Daydream pricing",
+      "value": 49.5,
+      "currency": "AUD",
+      "unit": "adult per person, Port of Airlie to/from Daydream Island",
+      "annual_one_way_pax": null,
+      "service_days": "current timetable exists; departure count not frozen",
+      "seasonality": "capacity and day-guest restrictions apply; quantify before modeling",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "record_id": "D09",
+      "city_id": "whitsundays-australia",
+      "flow_type": "route_fare",
+      "period": "current fares updated 2026-04-11",
+      "value": 74.5,
+      "currency": "AUD",
+      "unit": "adult per person, Port of Airlie to/from Hamilton Island",
+      "annual_one_way_pax": null,
+      "service_days": "current timetable exists; departure count not frozen",
+      "seasonality": "not quantified",
+      "source_ids": ["S10", "S11"]
+    },
+    {
+      "record_id": "D10",
+      "city_id": "auckland-new-zealand",
+      "flow_type": "airport_passenger_throughput",
+      "period": "FY2025",
+      "value": 18700000,
+      "unit": "passenger movements",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Airport throughput is top-of-funnel context only, not Auckland ferry demand.",
+      "source_ids": ["S25"]
+    },
+    {
+      "record_id": "D11",
+      "city_id": "auckland-new-zealand",
+      "flow_type": "inner_harbour_ferry_fare",
+      "period": "2026 fare schedule",
+      "value": 7.8,
+      "currency": "NZD",
+      "unit": "adult one-way HOP/contactless inner-harbour fare",
+      "annual_one_way_pax": null,
+      "service_days": "public timetable; exact departures not frozen",
+      "seasonality": "not quantified",
+      "source_ids": ["S15", "S16"]
+    },
+    {
+      "record_id": "D12",
+      "city_id": "auckland-new-zealand",
+      "flow_type": "ferry_patronage",
+      "period": "FY2025",
+      "value": null,
+      "unit": "boardings",
+      "annual_one_way_pax": null,
+      "route_scope": "Auckland ferry network or route-specific",
+      "assumption_record": "Annual report located but ferry-only total was not safely extracted. Keep null until table/page is verified.",
+      "source_ids": ["S17"]
+    },
+    {
+      "record_id": "D13",
+      "city_id": "bay-of-islands-new-zealand",
+      "flow_type": "route_fare",
+      "period": "current as accessed 2026-07-09",
+      "value": 19.4,
+      "currency": "NZD",
+      "unit": "adult return, Paihia–Russell passenger ferry",
+      "annual_one_way_pax": null,
+      "service_days": "three operators/services; exact service-day and departure table not frozen",
+      "seasonality": "tourism exposure likely but not quantified",
+      "source_ids": ["S18", "S19"]
+    },
+    {
+      "record_id": "D14",
+      "city_id": "wellington-new-zealand",
+      "flow_type": "route_fare",
+      "period": "current as accessed 2026-07-09",
+      "value": 17,
+      "currency": "NZD",
+      "unit": "adult one-way, Queens Wharf–Days Bay",
+      "annual_one_way_pax": null,
+      "service_days": "dated timetable effective 2026-05-19; day pattern must be counted from PDF before modeling",
+      "seasonality": "Matiu/Somes continuation has booking/access constraints; commuter route seasonality not quantified",
+      "source_ids": ["S20", "S21"]
+    },
+    {
+      "record_id": "D15",
+      "city_id": "wellington-new-zealand",
+      "flow_type": "airport_passenger_throughput",
+      "period": "FY2025 ended 2025-03-31",
+      "value": 5316858,
+      "unit": "passenger movements",
+      "calculation": "4,525,989 domestic + 790,869 international",
+      "annual_one_way_pax": null,
+      "route_scope": null,
+      "assumption_record": "Explicit arithmetic only; no conversion to harbour ferry demand.",
+      "source_ids": ["S26"]
+    },
+    {
+      "record_id": "D16",
+      "city_id": "wellington-new-zealand",
+      "flow_type": "route_patronage",
+      "period": null,
+      "value": null,
+      "unit": "one-way passenger boardings",
+      "annual_one_way_pax": null,
+      "route_scope": "Queens Wharf–Days Bay",
+      "assumption_record": "No verified annual route patronage found in this pass; leave null.",
+      "source_ids": ["S20", "S21"]
+    }
+  ],
+  "brief_maturity": {
+    "review_constraint": "Canonical brief bodies could not be read because the requested repository was absent. This is an existence/coverage maturity score, not a semantic content score.",
+    "australia_cluster": {
+      "cluster_brief": {"score": 0, "max": 2, "assessment": "missing per audit"},
+      "city_brief_coverage": {"score": 2, "max": 2, "assessment": "4 of 4 cities have a brief per audit"},
+      "market_overview": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "water_system_and_operator_ecosystem": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "demand_and_fare_evidence": {"score": null, "max": 2, "assessment": "not inspectable; this artifact supplies source-led enhancements"},
+      "geometry_and_bp_specificity": {"score": 0, "max": 2, "assessment": "external BP files absent; canonical route content not directly readable"},
+      "source_hygiene_and_partner_neutrality": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "recommended_enhancements": [
+        "Add a partner-neutral Australia cluster brief that distinguishes public urban ferry, tourism ferry and island-transfer archetypes.",
+        "Enrich, do not replace, all four city briefs with verified terminals, fare dates, operator names and demand caveats.",
+        "Keep broad airport/visitor counts explicitly separated from route demand.",
+        "Add hand-routed water geometry and BP registry parity before economics sealing."
+      ]
+    },
+    "new_zealand_cluster": {
+      "cluster_brief": {"score": 0, "max": 2, "assessment": "missing per audit"},
+      "city_brief_coverage": {"score": 1, "max": 2, "assessment": "2 of 3 cities have a brief; Wellington missing"},
+      "market_overview": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "water_system_and_operator_ecosystem": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "demand_and_fare_evidence": {"score": null, "max": 2, "assessment": "not inspectable; this artifact supplies source-led enhancements"},
+      "geometry_and_bp_specificity": {"score": 0, "max": 2, "assessment": "external BP files absent; Wellington has zero strict routes despite a current ferry"},
+      "source_hygiene_and_partner_neutrality": {"score": null, "max": 2, "assessment": "not inspectable"},
+      "data_quality_penalty": {"score": 0, "max": 2, "assessment": "ten Kotor/Montenegro routes are mis-stamped into New Zealand and must be removed from NZ scope"},
+      "recommended_enhancements": [
+        "Create a partner-neutral New Zealand cluster brief covering Auckland public ferries, Bay of Islands local/tourism crossings and Wellington commuter harbour service.",
+        "Create the missing Wellington city brief rather than altering the Auckland or Bay of Islands briefs wholesale.",
+        "Purge the ten Kotor defects from the New Zealand scope before any route counts, maps or economics are published.",
+        "Add Queens Wharf–Days Bay as a source-backed current corridor only after BP/geometry sealing."
+      ]
+    }
+  },
+  "partner_narrative_notes": {
+    "placement": "separate DiDi-only narrative; do not place in canonical city or cluster briefs",
+    "verified_service_footprint": {
+      "australia": ["Brisbane", "Gold Coast", "Sydney"],
+      "new_zealand": ["Auckland", "Wellington"],
+      "unverified_or_not_listed_exactly": ["Whitsundays/Airlie Beach", "Bay of Islands"]
+    },
+    "proposed_narrative": [
+      "Position DiDi as the road-side access layer around established ferry systems, not as proof of ferry demand.",
+      "Lead with Brisbane, Sydney, Auckland and Wellington where official DiDi city presence overlaps verified public ferry endpoints.",
+      "Treat Gold Coast as a tourism-waterway pilot and Whitsundays as a resort-transfer opportunity; do not imply DiDi is officially available in Whitsundays without a service-boundary check.",
+      "Do not imply Bay of Islands is a DiDi city; frame any Paihia–Russell concept as future coverage or partner adjacency only.",
+      "For finance, use route fares as observed benchmarks but keep annual_one_way_pax null until operator/regulator route patronage is obtained."
+    ]
+  },
+  "gaps": [
+    {
+      "gap": "Requested canonical repository unavailable; direct CLUSTERS/ROUTES/brief/BP/partner JSON review not completed.",
+      "owner": "Atlas repo custodian",
+      "next_action": "Mount or clone the pinned /tmp/navier-atlas revision read-only, then rerun exact route-ID, brief-content and BP-registry parity checks."
+    },
+    {
+      "gap": "Ten Kotor/Montenegro routes contaminate New Zealand scope.",
+      "owner": "Grok/Atlas data steward",
+      "next_action": "Remove New Zealand tags/cluster membership from all ten listed defects, assign them only to Kotor/Montenegro, regenerate partner scope and verify NZ strict count."
+    },
+    {
+      "gap": "No external boarding-point files for either cluster and no verified coordinates in this handoff.",
+      "owner": "Geometry/BP researcher",
+      "next_action": "Resolve each official terminal against port/operator/government geospatial records; record lat/lon, precision, landing/platform, access restrictions and source URL."
+    },
+    {
+      "gap": "Wellington has a live harbour ferry but zero strict Atlas routes and no city brief.",
+      "owner": "Atlas content + geometry",
+      "next_action": "Create partner-neutral Wellington brief and hand-routed Queens Wharf–Days Bay corridor after exact BP coordinates and canonical ID creation."
+    },
+    {
+      "gap": "Route-level annual passenger totals missing for every candidate corridor.",
+      "owner": "Finance/research",
+      "next_action": "Extract route-level annual boardings from TfNSW, Auckland Transport, Metlink, Translink/operator FOI or annual reports; retain null where only system/airport/visitor totals exist."
+    },
+    {
+      "gap": "Service-day counts and seasonality not frozen for Hopo, Cruise Whitsundays, Bay of Islands and Matiu/Somes services.",
+      "owner": "Operations research",
+      "next_action": "Archive dated timetables, count operating days/departures and record seasonal suspensions/capacity restrictions before utilization modeling."
+    },
+    {
+      "gap": "Exact current Hopo Gold Coast stop list and fare basis remain unstable; HOTA Express is discontinued.",
+      "owner": "Gold Coast researcher",
+      "next_action": "Obtain a dated operator timetable/map and fare sheet; confirm Sea World and Surfers Paradise landing names and do not restore HOTA as current without evidence."
+    },
+    {
+      "gap": "Waiheke endpoint is not disambiguated to an exact landing/operator in this pass.",
+      "owner": "Auckland geometry researcher",
+      "next_action": "Freeze Downtown berth, exact Waiheke terminal (likely Matiatia only if officially confirmed), operator, fare category and route geometry."
+    },
+    {
+      "gap": "DiDi service-boundary evidence is city-level, not terminal-level, and does not verify Whitsundays or Bay of Islands.",
+      "owner": "DiDi partnership lead",
+      "next_action": "Request service-area polygons or written coverage confirmation for each ferry endpoint before making first/last-mile availability claims."
+    }
+  ],
+  "do_not_publish": [
+    "Do not publish the 52 raw New Zealand route count; the strict count is 42 after ten foreign Kotor defects are excluded.",
+    "Do not publish any of the ten Kotor route IDs as New Zealand: rn-814e50139d2f, rn-f8d63f4a46a6, rn-8a3b2a4099b2, rn-05d25e61cc48, rn-aac7fd6c2037, rn-a81957832f0d, rn-026c33a86f9b, rn-084bc7c5537e, rn-12835a796e79, rn-fbf2d32941fe.",
+    "Do not publish route_id values for the candidate corridors until exact ROUTES.json matches are checked.",
+    "Do not publish invented BP coordinates; all coordinates remain null in this artifact.",
+    "Do not call airport passenger movements ferry passengers or route demand.",
+    "Do not call Whitsundays regional visitors Port of Airlie ferry demand.",
+    "Do not present any annual_one_way_pax estimate from this artifact; all route-level values remain null.",
+    "Do not state DiDi availability in Whitsundays/Airlie Beach or Bay of Islands without direct official service-boundary confirmation.",
+    "Do not treat the discontinued HOTA Express landing as a current Hopo stop.",
+    "Do not publish Matiu/Somes as an unrestricted commuter endpoint; booking/access conditions apply.",
+    "Do not publish the Hamilton Island Airport Jetty as generally open; operator says it is for flight-connecting passengers only.",
+    "Do not publish semantic maturity claims about existing canonical brief bodies until the repository is mounted and those briefs are read.",
+    "Do not replace existing canonical briefs wholesale; add partner-neutral enhancements and keep DiDi framing separate."
+  ],
+  "summary_counts": {
+    "markets": 2,
+    "cities": 7,
+    "sources": 26,
+    "boarding_point_records": 24,
+    "verified_real_world_boarding_points": 20,
+    "candidate_or_disambiguation_boarding_points": 1,
+    "non_bp_pois": 2,
+    "reject_drop_records": 1,
+    "candidate_corridors": 10,
+    "corridors_with_non_null_route_id": 0,
+    "demand_records": 16,
+    "demand_records_with_non_null_annual_one_way_pax": 0,
+    "foreign_new_zealand_route_defects": 10,
+    "gaps": 9,
+    "do_not_publish_rules": 13
+  }
+}

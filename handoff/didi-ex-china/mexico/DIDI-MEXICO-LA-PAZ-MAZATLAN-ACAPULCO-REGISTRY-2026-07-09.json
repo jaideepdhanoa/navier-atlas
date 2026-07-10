@@ -1,0 +1,826 @@
+{
+  "market": "DiDi Mexico registry expansion — La Paz, Mazatlán, and Acapulco",
+  "lane": "exact city/BP registry, canonical-brief maturity, current/future corridor evidence, and demand/fare sourcing",
+  "as_of": "2026-07-09",
+  "status": "research_complete_with_registry_and_geometry_gates",
+  "existing_atlas_baseline": {
+    "checkout": "/tmp/navier-atlas",
+    "head": "749b10b7e269000c54ceaf9fbc8feb73e2967da3",
+    "sealed_mexico_commit": "56b570c2",
+    "files_checked": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "data-clean/FEATURES_BY_TYPE.json",
+      "data-clean/cluster_briefs/mexico.json",
+      "data-clean/city_briefs/*.json",
+      "partner-pitch/partners/didi.json",
+      "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json"
+    ],
+    "exact_match_method": "Case/accent-insensitive text and structured-ID scan for La Paz, Mazatlán/Mazatlan, Acapulco, Pichilingue, Roqueta, Caleta and Isla de la Piedra; then structured inspection of Mexico cluster cities, route endpoints/IDs and DiDi _map_scope.",
+    "result": "No canonical city IDs, aliases, route IDs, features, BPs or city briefs matched any of the three cities. Mexico cluster currently contains Los Cabos and Puerto Vallarta on the Pacific plus Caribbean cities; DiDi _map_scope includes those existing Mexico IDs, not these three.",
+    "partner_json_note": "Current Mexico-Pacific partner narrative mentions a future longer trunk toward La Paz, but La Paz has no canonical city/BP binding; this is narrative opportunity, not registry proof."
+  },
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://web.didiglobal.com/mx/ciudades/",
+      "title": "Ciudades donde DiDi está disponible",
+      "publisher": "DiDi Mexico",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official Mexico city index links the city-specific La Paz, Mazatlán and Acapulco service pages; this is exact-city evidence, not merely country support.",
+      "confidence": "high"
+    },
+    {
+      "id": "S2",
+      "url": "https://web.didiglobal.com/mx/ciudades/la-paz/",
+      "title": "DiDi en La Paz",
+      "publisher": "DiDi Mexico",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official city landing page says DiDi is available in La Paz and describes requesting trips there.",
+      "confidence": "high"
+    },
+    {
+      "id": "S3",
+      "url": "https://web.didiglobal.com/mx/ciudades/mazatlan/",
+      "title": "DiDi en Mazatlán",
+      "publisher": "DiDi Mexico",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official city landing page says DiDi is available in Mazatlán and describes requesting trips there.",
+      "confidence": "high"
+    },
+    {
+      "id": "S4",
+      "url": "https://web.didiglobal.com/mx/ciudades/acapulco/",
+      "title": "DiDi en Acapulco",
+      "publisher": "DiDi Mexico",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official city landing page says DiDi is available in Acapulco and describes requesting trips there.",
+      "confidence": "high"
+    },
+    {
+      "id": "S5",
+      "url": "https://apibcs.com.mx/puerto-pichilingue/",
+      "title": "Puerto de Pichilingue",
+      "publisher": "Administración Portuaria Integral de Baja California Sur (APIBCS)",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Pichilingue is 17 km from La Paz, has a ferry zone and passenger/ferry ramps, handles regular La Paz–Mazatlán and La Paz–Topolobampo ferries, and publishes 24°16′08″N, 110°19′39″W.",
+      "confidence": "high"
+    },
+    {
+      "id": "S6",
+      "url": "https://www.bajaferries.com.mx/rutas_horario",
+      "title": "Rutas y horarios",
+      "publisher": "Baja Ferries",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator page lists La Paz–Mazatlán and Mazatlán–La Paz. Live page data at access showed La Paz departures Tue/Thu/Sat (boarding 17:30, departure 19:00, arrival 09:00) and Mazatlán departures Wed/Fri/Sun (boarding 14:30, departure 16:00, arrival 08:00). Page does not state an effective date.",
+      "confidence": "high"
+    },
+    {
+      "id": "S7",
+      "url": "https://www.bajaferries.com.mx/tarifas",
+      "title": "Tarifas",
+      "publisher": "Baja Ferries",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator tariff table groups both directions of La Paz–Mazatlán and displays MXN 2,150 for an adult passenger. Page does not state fare effective dates or whether fees/promotions alter checkout price.",
+      "confidence": "high"
+    },
+    {
+      "id": "S8",
+      "url": "https://www.puertomazatlan.com.mx/transparencia/datos-abiertos/",
+      "title": "Datos Abiertos — Transbordadores y Embarcaciones de Ruta (2025)",
+      "publisher": "ASIPONA Mazatlán",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Official monthly XLS files identify the Mazatlán ferry OD labels, operators, arrivals and passenger movements. Summing all 12 files yields La Paz→Mazatlán entries: 42,000 Baja Ferries + 7,714 Transportación Marítima de California; Mazatlán→La Paz exits: 43,786 + 8,758. Files also report Mazatlán–Puerto Bellato entries/exits.",
+      "confidence": "high"
+    },
+    {
+      "id": "S9",
+      "url": "https://www.puertomazatlan.com.mx/APIWEB/GC/PMDP_2025-2030_DEL_PUERTO_DE_MAZATLAN.pdf",
+      "title": "Programa Maestro de Desarrollo Portuario de Mazatlán 2025–2030",
+      "publisher": "ASIPONA Mazatlán",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Official port plan identifies a ferry terminal/breakwater and states the port serves ferry and cruise passengers. It supports facility existence, not a small-craft berth assignment.",
+      "confidence": "high"
+    },
+    {
+      "id": "S10",
+      "url": "https://www.puertomazatlan.com.mx/APIWEB/CONTRATOS/CCPD/BAJAFERRIES_SA_DE_CV_155_09.pdf",
+      "title": "Baja Ferries terminal contract",
+      "publisher": "ASIPONA Mazatlán",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official port contract names the Terminal de Transbordadores de Mazatlán and a passenger waiting-room operating area.",
+      "confidence": "high"
+    },
+    {
+      "id": "S11",
+      "url": "https://mazatlan.gob.mx/noticias/mazatlan-registra-100-por-ciento-de-satisfaccion-turistica-durante-semana-santa-y-pascua-2026/",
+      "title": "Mazatlán registra 100 por ciento de satisfacción turística durante Semana Santa y Pascua 2026",
+      "publisher": "Gobierno Municipal de Mazatlán",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Municipal tourism survey names “Embarcadero a la Isla de la Piedra” as a real strategic visitor point. It does not provide a berth coordinate, route schedule, fare or passenger count.",
+      "confidence": "high"
+    },
+    {
+      "id": "S12",
+      "url": "https://visitmazatlan.travel/es/conoce-mazatlan/joyas-locales/playas/",
+      "title": "Playas de Mazatlán",
+      "publisher": "Visit Mazatlán",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official destination site says Isla de la Piedra is accessible by launch and clarifies it is a peninsula, strengthening the land-crossing/hand-waypoint gate.",
+      "confidence": "medium-high"
+    },
+    {
+      "id": "S13",
+      "url": "https://puertoacapulco.com.mx/index.php/tarifas_infraestructura/",
+      "title": "Tarifas — ASIPONA Acapulco",
+      "publisher": "ASIPONA Acapulco",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official port site provides the Terminal Marítima address on Av. Costera Miguel Alemán in central Acapulco, confirming an existing passenger maritime facility; local Roqueta use is not established.",
+      "confidence": "high"
+    },
+    {
+      "id": "S14",
+      "url": "https://www.facebook.com/SecretariadeTurismodeAcapulco/posts/961514872671565/",
+      "title": "Descubre la mágica Isla de la Roqueta",
+      "publisher": "Secretaría de Turismo de Acapulco",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official municipal tourism post says boats carrying tourists to Isla de la Roqueta depart from the pier at Playa Caleta. It does not name or locate the island arrival structure, or provide fare/schedule/pax.",
+      "confidence": "medium-high"
+    },
+    {
+      "id": "S15",
+      "url": "http://seed2015_2021.guerrero.gob.mx/wp-content/uploads/2017/09/7-ACAPULCO-int.pdf",
+      "title": "Acapulco municipal profile",
+      "publisher": "Gobierno del Estado de Guerrero",
+      "date": "2017",
+      "accessed": "2026-07-09",
+      "proves": "Government profile identifies Isla de la Roqueta as an island around which visitors navigate by boat; useful as destination/POI evidence, not as boarding-facility proof.",
+      "confidence": "medium"
+    },
+    {
+      "id": "S16",
+      "url": "https://www.puertomazatlan.com.mx/",
+      "title": "Puerto de Mazatlán",
+      "publisher": "ASIPONA Mazatlán",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official port landing page explicitly presents ferries to La Paz and port infrastructure.",
+      "confidence": "high"
+    },
+    {
+      "id": "S17",
+      "url": "https://www.puertomazatlan.com.mx/APIWEB/PL/TRANSPARENCIA/ADELA/ESTADISTICA_DE_MOVIMIENTO_DE_CARGA_MENSUAL/TRANSBORDADORES_Y_EMBARCACIONES_DE_RUTA/2025/TYEDR_DIC_2025.xlsx",
+      "title": "Movimiento portuario mensual — Transbordadores y Embarcaciones de Ruta — December 2025",
+      "publisher": "ASIPONA Mazatlán / Coordinación General de Puertos y Marina Mercante",
+      "date": "2025-12",
+      "accessed": "2026-07-09",
+      "proves": "One of the 12 official monthly worksheets used for the annual sum; documents field layout and December operator/route/direction/passenger records. S8 links all 12 months.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "name": "La Paz",
+      "state": "Baja California Sur",
+      "country": "Mexico",
+      "canonical_city_id": null,
+      "canonical_alias_match": null,
+      "registry_status": "missing_from_current_atlas",
+      "exact_match_result": {
+        "CLUSTERS.json": false,
+        "ROUTES.json": false,
+        "FEATURES_BY_TYPE.json": false,
+        "partner_pitch_didi_map_scope": false,
+        "city_brief": false
+      },
+      "didi_operation_evidence": {
+        "status": "exact_city_supported",
+        "source_ids": [
+          "S1",
+          "S2"
+        ],
+        "country_only": false
+      },
+      "recommended_action": "Create a new canonical city registry entry only after governance selects the ID and sourced BP geometry is approved; do not alias to an existing resort city."
+    },
+    {
+      "name": "Mazatlán",
+      "state": "Sinaloa",
+      "country": "Mexico",
+      "canonical_city_id": null,
+      "canonical_alias_match": null,
+      "registry_status": "missing_from_current_atlas",
+      "exact_match_result": {
+        "CLUSTERS.json": false,
+        "ROUTES.json": false,
+        "FEATURES_BY_TYPE.json": false,
+        "partner_pitch_didi_map_scope": false,
+        "city_brief": false
+      },
+      "didi_operation_evidence": {
+        "status": "exact_city_supported",
+        "source_ids": [
+          "S1",
+          "S3"
+        ],
+        "country_only": false
+      },
+      "recommended_action": "Create a new canonical city registry entry only after governance selects the ID and sourced BP geometry is approved; do not alias to an existing resort city."
+    },
+    {
+      "name": "Acapulco",
+      "state": "Guerrero",
+      "country": "Mexico",
+      "canonical_city_id": null,
+      "canonical_alias_match": null,
+      "registry_status": "missing_from_current_atlas",
+      "exact_match_result": {
+        "CLUSTERS.json": false,
+        "ROUTES.json": false,
+        "FEATURES_BY_TYPE.json": false,
+        "partner_pitch_didi_map_scope": false,
+        "city_brief": false
+      },
+      "didi_operation_evidence": {
+        "status": "exact_city_supported",
+        "source_ids": [
+          "S1",
+          "S4"
+        ],
+        "country_only": false
+      },
+      "recommended_action": "Create a new canonical city registry entry only after governance selects the ID and sourced BP geometry is approved; do not alias to an existing resort city."
+    }
+  ],
+  "boarding_points": [
+    {
+      "name": "Puerto de Pichilingue — ferry zone",
+      "city": "La Paz",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "verified_existing_boarding_point",
+      "use": "active long-distance passenger ferry terminal; nautical-tourism marina also present",
+      "coordinates": {
+        "lat": 24.2688889,
+        "lon": -110.3275,
+        "source_dms": "24°16′08″N, 110°19′39″W",
+        "derivation": "decimal conversion of official APIBCS DMS"
+      },
+      "source_ids": [
+        "S5"
+      ],
+      "publish_gate": "Facility verified. Exact Navier berth/ramp, operator permission, landside access and hydrographic approach still require field confirmation."
+    },
+    {
+      "name": "Terminal de Transbordadores de Mazatlán",
+      "city": "Mazatlán",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "verified_existing_boarding_point",
+      "use": "active long-distance passenger/vehicle ferry terminal",
+      "coordinates": null,
+      "source_ids": [
+        "S8",
+        "S9",
+        "S10",
+        "S16"
+      ],
+      "publish_gate": "Do not mint coordinates from a generic port centroid. Confirm the passenger gate and exact Navier-compatible berth with ASIPONA/operator."
+    },
+    {
+      "name": "Embarcadero a la Isla de la Piedra — Mazatlán side",
+      "city": "Mazatlán",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "verified_existing_boarding_point_name_only",
+      "use": "existing local visitor launch point",
+      "coordinates": null,
+      "source_ids": [
+        "S11",
+        "S12"
+      ],
+      "publish_gate": "Municipal source verifies the named embarkation point, but not exact side, berth coordinate, operator, schedule or fare. Survey before minting geometry."
+    },
+    {
+      "name": "Isla de la Piedra arrival embarcadero",
+      "city": "Mazatlán",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "candidate_needing_coordinate_and_source_confirmation",
+      "use": "putative opposite endpoint for local launch crossing",
+      "coordinates": null,
+      "source_ids": [
+        "S12"
+      ],
+      "publish_gate": "Destination is a peninsula and is launch-accessible, but no authoritative exact arrival-facility name/coordinate was found. Do not publish as a BP."
+    },
+    {
+      "name": "Terminal Marítima de Acapulco",
+      "city": "Acapulco",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "verified_existing_boarding_point",
+      "use": "official maritime/cruise passenger terminal; suitability for local service unproven",
+      "coordinates": null,
+      "address": "Av. Costera Miguel Alemán s/n, Col. Acapulco de Juárez Centro, 39300 Acapulco de Juárez, Guerrero",
+      "source_ids": [
+        "S13"
+      ],
+      "publish_gate": "Confirm exact pier face, access regime and whether local small passenger craft may use it; do not infer Roqueta service from terminal existence."
+    },
+    {
+      "name": "Muelle de Playa Caleta",
+      "city": "Acapulco",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "verified_existing_boarding_point_name_only",
+      "use": "tourist boat departure point for Isla de la Roqueta",
+      "coordinates": null,
+      "source_ids": [
+        "S14"
+      ],
+      "publish_gate": "Official municipal tourism evidence verifies departures, but exact coordinate, operator roster, dock geometry and accessibility require confirmation."
+    },
+    {
+      "name": "Isla de la Roqueta arrival pier/landing",
+      "city": "Acapulco",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "candidate_needing_coordinate_and_source_confirmation",
+      "use": "potential destination of current tourist boats",
+      "coordinates": null,
+      "source_ids": [
+        "S14",
+        "S15"
+      ],
+      "publish_gate": "Island is a verified boat destination/POI, but exact passenger landing facility was not sourced. Do not publish as BP."
+    },
+    {
+      "name": "Isla de la Roqueta (island attraction)",
+      "city": "Acapulco",
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "non_bp_poi",
+      "use": "marine tourism destination",
+      "coordinates": null,
+      "source_ids": [
+        "S15"
+      ],
+      "publish_gate": "POI only; never substitute island centroid for a boarding point."
+    },
+    {
+      "name": "Puerto Bellato arrival facility (exact official worksheet spelling)",
+      "city": null,
+      "city_id": null,
+      "atlas_bp_id": null,
+      "classification": "candidate_needing_coordinate_and_source_confirmation",
+      "use": "opposite endpoint on ASIPONA Mazatlán current route label",
+      "coordinates": null,
+      "source_ids": [
+        "S8"
+      ],
+      "publish_gate": "The traffic worksheet proves an OD label, not a passenger facility coordinate. Also resolve likely place-name spelling against authoritative Islas Marías registry before publication."
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "name": "Puerto de Pichilingue ↔ Terminal de Transbordadores de Mazatlán",
+      "status": "current_route_evidence",
+      "route_id": null,
+      "route_match": "No exact existing ROUTES.json route ID matched.",
+      "endpoints": [
+        {
+          "name": "Puerto de Pichilingue — ferry zone",
+          "city": "La Paz",
+          "city_id": null
+        },
+        {
+          "name": "Terminal de Transbordadores de Mazatlán",
+          "city": "Mazatlán",
+          "city_id": null
+        }
+      ],
+      "water_relevance": "Direct Gulf of California passenger/vehicle ferry OD now operated by Baja Ferries and Transportación Marítima de California.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "Quanta-LR / long-range study only; current overnight schedule is a hard gate against treating this as Pioneer II without independently verified route length and operating profile.",
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Use surveyed Pichilingue navigation channel, port approaches and chart-safe offshore path. Do not auto-route from generic city/port centroids."
+      },
+      "service_evidence": {
+        "days_each_direction_per_current_Baja_Ferries_page": 3,
+        "schedule_source_effective_date": null,
+        "source_ids": [
+          "S5",
+          "S6",
+          "S8"
+        ]
+      },
+      "economics_gate": "Observed ferry passengers and published ferry fare describe the incumbent long-distance service. They are not a 1:1 Navier demand or willingness-to-pay forecast."
+    },
+    {
+      "name": "Mazatlán-side Embarcadero a la Isla de la Piedra ↔ Isla de la Piedra arrival facility TBD",
+      "status": "current_local_crossing_evidence_incomplete",
+      "route_id": null,
+      "route_match": "No exact existing ROUTES.json route ID matched.",
+      "endpoints": [
+        {
+          "name": "Embarcadero a la Isla de la Piedra — Mazatlán side",
+          "city": "Mazatlán",
+          "city_id": null
+        },
+        {
+          "name": "Isla de la Piedra arrival embarcadero (unverified)",
+          "city": "Mazatlán",
+          "city_id": null
+        }
+      ],
+      "water_relevance": "Official tourism sources establish launch access and the municipal embarkation point; Isla de la Piedra is a peninsula, so this is a local harbor/estuary shortcut rather than an island-only need.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "Pioneer II candidate only after exact endpoint geometry, distance, depth/wake and demand checks.",
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Straight-line geometry can cross the peninsula, port works or shallow land. Exact opposite landing and navigable channel must be hand-drawn."
+      },
+      "service_evidence": {
+        "service_days": null,
+        "seasonality": null,
+        "fare": null,
+        "annual_one_way_pax": null,
+        "source_ids": [
+          "S11",
+          "S12"
+        ]
+      },
+      "economics_gate": "No authoritative local passenger count, fare or schedule found."
+    },
+    {
+      "name": "Muelle de Playa Caleta ↔ Isla de la Roqueta landing TBD",
+      "status": "current_tourist_boat_evidence_incomplete",
+      "route_id": null,
+      "route_match": "No exact existing ROUTES.json route ID matched.",
+      "endpoints": [
+        {
+          "name": "Muelle de Playa Caleta",
+          "city": "Acapulco",
+          "city_id": null
+        },
+        {
+          "name": "Isla de la Roqueta landing (unverified)",
+          "city": "Acapulco",
+          "city_id": null
+        }
+      ],
+      "water_relevance": "Official municipal tourism says boats depart Caleta pier carrying tourists to Roqueta; destination landing is not yet verified.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "Pioneer II candidate only after exact landing, route distance, marine-park/port permissions and sea-state review.",
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Nearshore rocks, island approaches and the unknown landing make auto-routed straight geometry unsafe."
+      },
+      "service_evidence": {
+        "service_days": null,
+        "seasonality": null,
+        "fare": null,
+        "annual_one_way_pax": null,
+        "source_ids": [
+          "S14",
+          "S15"
+        ]
+      },
+      "economics_gate": "No authoritative passenger count, route fare, service-day calendar or seasonality series found."
+    },
+    {
+      "name": "Mazatlán ferry terminal ↔ Puerto Bellato facility TBD",
+      "status": "current_route_evidence",
+      "route_id": null,
+      "route_match": "No exact existing ROUTES.json route ID matched.",
+      "endpoints": [
+        {
+          "name": "Terminal de Transbordadores de Mazatlán",
+          "city": "Mazatlán",
+          "city_id": null
+        },
+        {
+          "name": "Puerto Bellato facility (worksheet label; exact facility unverified)",
+          "city": null,
+          "city_id": null
+        }
+      ],
+      "water_relevance": "ASIPONA monthly route-traffic sheets report an “Embarcaciones de Ruta” OD under Empresa Turística Integral Islas Marías.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "Long-range study required; no Navier class assignment until authoritative endpoint, route length and offshore operating envelope are confirmed.",
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Offshore/island passage requires chart-safe hand routing and exact terminal approaches."
+      },
+      "service_evidence": {
+        "annual_arrivals_at_Mazatlan_on_labeled_route": 20,
+        "annual_departures_from_Mazatlan_on_labeled_route": 22,
+        "annual_passenger_movements_entries": 1663,
+        "annual_passenger_movements_exits": 1857,
+        "year": 2025,
+        "source_ids": [
+          "S8"
+        ]
+      },
+      "economics_gate": "Worksheet movement totals are incumbent route observations only; direction semantics and exact destination facility must be resolved before modeling."
+    },
+    {
+      "name": "La Paz ↔ Los Cabos / East Cape coastal trunk",
+      "status": "future_opportunity_only",
+      "route_id": null,
+      "route_match": "No exact existing ROUTES.json route ID matched; current DiDi partner JSON mentions a future Los Cabos-to-La Paz Baja run but supplies no La Paz BP binding.",
+      "endpoints": [
+        {
+          "name": "La Paz endpoint TBD (Pichilingue is not assumed)",
+          "city": "La Paz",
+          "city_id": null
+        },
+        {
+          "name": "Los Cabos endpoint TBD",
+          "city": "Los Cabos",
+          "city_id": "los-cabos-mexico"
+        }
+      ],
+      "water_relevance": "Potential Sea of Cortez coastal line-haul; no current passenger route or exact endpoints established in this audit.",
+      "distance_nm": null,
+      "likely_vessel_range_class": "Quanta-LR concept only; hard gate on exact ODs, charted distance, sea-state/weather window and port permissions.",
+      "hand_waypoints": {
+        "required": true,
+        "reason": "A straight city-to-city line can cut across the Baja peninsula/land. Route must follow the eastern coastline via hand waypoints after endpoints are selected."
+      },
+      "service_evidence": null,
+      "economics_gate": "Do not model or publish until endpoints and distance are grounded; no annual pax or fare applies."
+    }
+  ],
+  "demand_records": [
+    {
+      "corridor": "La Paz→Mazatlán (port entries at Mazatlán)",
+      "year": 2025,
+      "metric": "annual incumbent ferry passenger movements, one direction",
+      "annual_one_way_pax": 49714,
+      "breakdown": [
+        {
+          "operator": "Baja Ferries",
+          "pax": 42000
+        },
+        {
+          "operator": "Transportación Marítima de California",
+          "pax": 7714
+        }
+      ],
+      "service_days": "Baja Ferries current page: Tue/Thu/Sat; second operator calendar not established here",
+      "fare": {
+        "adult_one_way_mxn": 2150,
+        "operator": "Baja Ferries",
+        "effective_date": null
+      },
+      "seasonality": "Monthly worksheets exist; no seasonal conversion assumption made in this artifact.",
+      "source_ids": [
+        "S6",
+        "S7",
+        "S8"
+      ],
+      "assumption_record": "Exact sum of 12 ASIPONA 2025 monthly passenger cells for rows labeled LA PAZ, B.C - MAZATLÁN / ENTRADA. Incumbent ferry observed flow only; do not map 1:1 into Navier demand."
+    },
+    {
+      "corridor": "Mazatlán→La Paz (port exits from Mazatlán)",
+      "year": 2025,
+      "metric": "annual incumbent ferry passenger movements, one direction",
+      "annual_one_way_pax": 52544,
+      "breakdown": [
+        {
+          "operator": "Baja Ferries",
+          "pax": 43786
+        },
+        {
+          "operator": "Transportación Marítima de California",
+          "pax": 8758
+        }
+      ],
+      "service_days": "Baja Ferries current page: Wed/Fri/Sun; second operator calendar not established here",
+      "fare": {
+        "adult_one_way_mxn": 2150,
+        "operator": "Baja Ferries",
+        "effective_date": null
+      },
+      "seasonality": "Monthly worksheets exist; no seasonal conversion assumption made in this artifact.",
+      "source_ids": [
+        "S6",
+        "S7",
+        "S8"
+      ],
+      "assumption_record": "Exact sum of 12 ASIPONA 2025 monthly passenger cells for rows labeled MAZATLÁN - LA PAZ B.C / SALIDA. Incumbent ferry observed flow only; do not map 1:1 into Navier demand."
+    },
+    {
+      "corridor": "Mazatlán–Puerto Bellato (worksheet label)",
+      "year": 2025,
+      "metric": "annual incumbent route passenger movements at Mazatlán",
+      "annual_one_way_pax": null,
+      "observed": {
+        "entries_pax": 1663,
+        "exits_pax": 1857,
+        "entries_arrivals": 20,
+        "exits_departures": 22
+      },
+      "fare": null,
+      "seasonality": "Monthly worksheets exist; no demand conversion made.",
+      "source_ids": [
+        "S8"
+      ],
+      "assumption_record": "Direction and destination-facility semantics are not sufficiently resolved to populate annual_one_way_pax."
+    },
+    {
+      "corridor": "Mazatlán ↔ Isla de la Piedra local launch",
+      "year": null,
+      "metric": "local passenger demand",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "service_days": null,
+      "seasonality": "Easter-week municipal survey confirms tourism relevance but is not a route-demand count.",
+      "source_ids": [
+        "S11",
+        "S12"
+      ],
+      "assumption_record": "No broad visitor count has been converted into route demand."
+    },
+    {
+      "corridor": "Playa Caleta ↔ Isla de la Roqueta",
+      "year": null,
+      "metric": "local passenger demand",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "service_days": null,
+      "seasonality": null,
+      "source_ids": [
+        "S14",
+        "S15"
+      ],
+      "assumption_record": "Official evidence establishes boat access, not volume or economics; null retained."
+    }
+  ],
+  "brief_maturity": {
+    "canonical_cluster_brief": "data-clean/cluster_briefs/mexico.json",
+    "canonical_cluster_tier": "first-class",
+    "standalone_city_briefs": {
+      "La Paz": null,
+      "Mazatlán": null,
+      "Acapulco": null
+    },
+    "assessment": [
+      {
+        "field": "identity/tagline/summary",
+        "score": "mature_for_existing_three-resort_scope_but_incomplete_for_registry_expansion",
+        "evidence": "Brief is coherent and partner-neutral but frames Mexico as three resort capitals and omits La Paz, Mazatlán and Acapulco."
+      },
+      {
+        "field": "why_marine_mobility/use_cases",
+        "score": "mature_existing_scope; weak_new_city_coverage",
+        "evidence": "Strong general case, no sourced local use case for the three registry-gap cities."
+      },
+      {
+        "field": "demand_signals",
+        "score": "partial",
+        "evidence": "Qualitative and Caribbean-heavy; no La Paz–Mazatlán official ferry totals, fares or local-route null discipline."
+      },
+      {
+        "field": "navier_fit/range_gating",
+        "score": "partial",
+        "evidence": "Mentions a Los Cabos–La Paz Quanta-LR trunk, but lacks endpoints, verified distance and land-crossing hand-waypoint warning."
+      },
+      {
+        "field": "signature_routes",
+        "score": "mature_for_existing_scope; none_for_new_cities",
+        "evidence": "No exact route IDs exist for audited cities; all proposed route_id values must remain null."
+      },
+      {
+        "field": "transit_planning/competitive_landscape",
+        "score": "good_but_needs_long-distance_ferry_distinction",
+        "evidence": "Should distinguish incumbent overnight RoPax from a prospective fast-water product and preserve non-transferability of port totals."
+      },
+      {
+        "field": "regulatory_note",
+        "score": "good_high_level",
+        "evidence": "Still needs port-specific ASIPONA/APIBCS permission, berth assignment and local Capitanía review."
+      },
+      {
+        "field": "seasonality",
+        "score": "partial_and_overgeneralized",
+        "evidence": "Existing coast-wide language is not a city-level operating calendar. No city-specific service seasonality was verified here."
+      },
+      {
+        "field": "sources",
+        "score": "weak",
+        "evidence": "Only two general links in canonical brief. Add official city/port/operator evidence without inserting DiDi framing."
+      },
+      {
+        "field": "city_briefs",
+        "score": "missing",
+        "evidence": "No canonical city briefs found for La Paz, Mazatlán or Acapulco."
+      }
+    ],
+    "recommended_partner_neutral_enhancements": [
+      "Add concise city-neutral registry entries and city briefs only after canonical IDs and at least one verified BP per city pass geometry review.",
+      "Add Pichilingue and Mazatlán ferry-terminal facts, 2025 incumbent ferry passenger observations, and explicit “not transferable 1:1 to Navier” language.",
+      "Add Mazatlán–Isla de la Piedra and Caleta–Roqueta as evidence-backed local opportunities with null fares/pax until authoritative data exists.",
+      "Add hand-waypoint and range gates for Sea of Cortez/offshore/peninsula routes; do not imply that all Mexico legs fit Pioneer II.",
+      "Do not add DiDi operations or app integration language to canonical briefs."
+    ]
+  },
+  "partner_narrative_notes": {
+    "proposed_block_status": "partner_specific_only_do_not_merge_into_canonical_brief",
+    "notes": [
+      "All three cities have exact-city support on official DiDi Mexico pages, so partner framing can say DiDi operates in La Paz, Mazatlán and Acapulco; do not reduce this to country-only support.",
+      "La Paz + Mazatlán offer the strongest substantiated intercity story: DiDi first/last mile at both ends of an incumbent passenger ferry OD. Position the ferry counts as market evidence, not capturable Navier volume.",
+      "Mazatlán’s Isla de la Piedra and Acapulco’s Caleta–Roqueta are plausible in-app local tourism layers, but remain geometry/economics holds until exact landing points, operators, schedules, fares and pax are verified.",
+      "The existing Los Cabos→La Paz expansion concept needs a La Paz canonical city/BP and a hand-routed East Cape alignment; never draw a straight cross-peninsula segment.",
+      "No claim should say DiDi controls ferry demand, has port integration, or already provides pier-side dispatch without partner/port evidence."
+    ]
+  },
+  "gaps": [
+    {
+      "gap": "Canonical IDs and aliases absent for all three cities.",
+      "owner": "Atlas registry/governance",
+      "next_action": "Approve new city IDs; do not alias to Los Cabos or Puerto Vallarta."
+    },
+    {
+      "gap": "Only Pichilingue has an official precise coordinate; other exact BP coordinates are unresolved.",
+      "owner": "Geometry/BP research",
+      "next_action": "Obtain authoritative terminal diagrams or port/operator confirmations, then survey exact boarding faces."
+    },
+    {
+      "gap": "Mazatlán Isla de la Piedra opposite landing is unresolved.",
+      "owner": "Mazatlán local operator / municipal tourism",
+      "next_action": "Confirm both public launch names, coordinates, operators, schedule, fare, accessibility and annual passenger movements."
+    },
+    {
+      "gap": "Roqueta arrival landing is unresolved.",
+      "owner": "Acapulco tourism / local boat operators",
+      "next_action": "Confirm exact landing, concession/operator, permit regime, fare, service days, seasonality and passenger counts."
+    },
+    {
+      "gap": "La Paz–Mazatlán route distance and chart-safe geometry not verified in cited sources.",
+      "owner": "Navier marine ops / geometry",
+      "next_action": "Use hydrographic charts and exact berth coordinates to compute navigable distance and sea-state/range envelope."
+    },
+    {
+      "gap": "Baja Ferries pages do not publish effective dates; second operator fare/schedule not captured.",
+      "owner": "Finance evidence",
+      "next_action": "Archive dated operator quotes/tickets and obtain Transportación Marítima de California timetable/fare."
+    },
+    {
+      "gap": "City-level tourism/airport totals were not used as corridor demand.",
+      "owner": "Finance research",
+      "next_action": "If needed, source official annual flows and create explicit capture assumptions separately; retain annual_one_way_pax null for local ODs until route data exists."
+    },
+    {
+      "gap": "No city briefs exist for the three cities.",
+      "owner": "Canonical content",
+      "next_action": "Enhance Mexico brief and create partner-neutral city briefs after registry/BP approval; preserve current brief rather than replace it wholesale."
+    }
+  ],
+  "do_not_publish": [
+    "Any invented canonical city ID, alias, BP ID, coordinate or route ID for these cities.",
+    "A generic city/port/POI centroid as a passenger boarding point.",
+    "The unverified Isla de la Piedra or Roqueta destination landing as a confirmed BP.",
+    "49,714 or 52,544 incumbent ferry passengers as Navier addressable or capturable demand without a documented conversion model.",
+    "MXN 2,150 as a Navier fare; it is a Baja Ferries adult tariff snapshot with no stated effective date.",
+    "A straight Los Cabos–La Paz map segment across land or any auto-routed peninsula/offshore corridor without hand waypoints.",
+    "Pioneer II assignment to La Paz–Mazatlán or Mazatlán–Puerto Bellato without verified navigable distance and operational range review.",
+    "Claims that DiDi has port agreements, ferry integration, pier-side dispatch, or exclusive demand.",
+    "Claims that citywide airport/tourism/cruise volumes equal route demand.",
+    "The worksheet spelling “Puerto Bellato” as an authoritative canonical place/BP name until resolved."
+  ],
+  "summary_counts": {
+    "cities_audited": 3,
+    "existing_canonical_city_matches": 0,
+    "exact_city_didi_evidence": 3,
+    "boarding_point_records": 9,
+    "verified_existing_bp_or_name_only": 5,
+    "candidate_bps_needing_confirmation": 3,
+    "non_bp_pois": 1,
+    "candidate_corridors": 5,
+    "current_route_or_crossing_evidence": 4,
+    "future_opportunity_only": 1,
+    "matched_existing_route_ids": 0,
+    "demand_records": 5,
+    "demand_records_with_non_null_annual_one_way_pax": 2,
+    "sources": 17,
+    "unresolved_gaps": 8
+  }
+}

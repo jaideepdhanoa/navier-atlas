@@ -1,0 +1,889 @@
+{
+  "market": "Ecuador/Galápagos and Peru Pacific",
+  "lane": "BP + brief maturity + demand/fare research",
+  "as_of": "2026-07-09",
+  "status": "research_complete_with_P0_route-stamp_blocker_and_data_gaps",
+  "existing_atlas_baseline": {
+    "source": "Current 2026-07-09 DiDi LATAM audit derived from the canonical Atlas checkout; raw /tmp/navier-atlas checkout was unavailable in this subagent sandbox.",
+    "clusters": [
+      {
+        "cluster_id": "galapagos-ecuador",
+        "type": "archipelago",
+        "member_city_ids": [
+          "floreana-galapagos-ecuador",
+          "isabela-galapagos-ecuador",
+          "san-cristobal-galapagos-ecuador",
+          "santa-cruz-galapagos-ecuador"
+        ],
+        "briefs_present": 4,
+        "pois": 6,
+        "route_endpoint_bps": 0,
+        "routes_touching_members": 3,
+        "routes_cluster_stamped": 46,
+        "route_integrity": "FAIL",
+        "corruption_detail": "All 46 routes stamped galapagos-ecuador have neither endpoint in a Galápagos member city. The three real member routes are stamped outside the cluster. Do not inherit this stamp set into DiDi scope or finance."
+      },
+      {
+        "cluster_id": "peru",
+        "type": "coastal",
+        "member_city_ids": [
+          "lima-peru",
+          "paracas-peru",
+          "pisco-san-andres-peru"
+        ],
+        "briefs_present": 2,
+        "pois": 10,
+        "route_endpoint_bps": 10,
+        "routes_touching_members": 12,
+        "routes_cluster_stamped": 11,
+        "route_integrity": "FAIL_one_member_route_outside_cluster",
+        "member_route_outside_cluster_id": "rn-f0a756c7f278"
+      }
+    ],
+    "current_didi_binding": {
+      "map_scope_included": false,
+      "full_subproposals": 0,
+      "evidence_tier": "country_supported_only",
+      "warning": "DiDi Global lists Ecuador and Peru at country level; this does not prove DiDi service in Galápagos, Paracas, Pisco/San Andrés, or at any pier."
+    },
+    "exact_current_galapagos_member_route_ids": [
+      "e__santa-cruz-galapagos-ecuador__puerto-ayora__isabela-galapagos-ecuador__puerto-villamil",
+      "e__santa-cruz-galapagos-ecuador__puerto-ayora__san-cristobal-galapagos-ecuador__puerto-baquerizo-moreno",
+      "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra"
+    ],
+    "repository_access_note": "The requested /tmp/navier-atlas data-clean/CLUSTERS.json, ROUTES.json, city briefs, boarding-point files, and partner-pitch/partners/didi.json were not mounted. Baseline facts above are taken from /tasklet/agent/home/didi-ex-china-audit/didi-atlas-latam-audit-2026-07-09.json and its route-stamp defect ledger, both generated from the current canonical checkout. No repository files were edited."
+  },
+  "sources": [
+    {
+      "source_id": "EC-DPNG-VISITORS-2024",
+      "url": "https://galapagos.gob.ec/2024/informe_anual_visitantes_2024.pdf",
+      "title": "Informe Anual 2024: Ingreso de visitantes a las áreas protegidas de Galápagos",
+      "publisher": "Dirección del Parque Nacional Galápagos",
+      "date": "2024",
+      "accessed": "2026-07-09",
+      "proves": "279,277 Galápagos tourist arrivals in 2024; 55% foreign and 45% national; 79% land-based and 21% cruise-based visitor mode; 55% arrived through Baltra and 45% through San Cristóbal.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "EC-DPNG-INTERISLAND",
+      "url": "https://galapagos.gob.ec/transporte-entre-islas-pobladas/",
+      "title": "Transporte entre islas pobladas",
+      "publisher": "Parque Nacional Galápagos",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Passenger launches of up to 20 people operate from the main pier of each populated port; typical trip time 2–3 hours; $30 per person per route; January–June has calmer seas than July–December; lists Santa Cruz–San Cristóbal, Santa Cruz–Isabela and Santa Cruz–Floreana schedules, with Floreana Tuesday/Thursday.",
+      "confidence": "high_official_current_page"
+    },
+    {
+      "source_id": "EC-MIT-WATER-TAXI-RULE",
+      "url": "https://www.mit.gob.ec/mtop-norma-actividad-de-taxis-acuaticos-en-galapagos/",
+      "title": "Subsecretaría de Puertos norma actividad de taxis acuáticos en Galápagos",
+      "publisher": "Ministerio de Infraestructura y Transporte (formerly MTOP)",
+      "date": "2015-04-13",
+      "accessed": "2026-07-09",
+      "proves": "Resolution 0032 regulates public maritime passenger transport, including routes at Puerto Baquerizo Moreno, Puerto Ayora, Puerto Villamil and Puerto Velasco Ibarra, plus operating limits; this is regulatory context, not proof of current fare beyond the newer DPNG page.",
+      "confidence": "high_official_historical"
+    },
+    {
+      "source_id": "EC-CGREG-AYORA-PIER",
+      "url": "https://www.gobiernogalapagos.gob.ec/wp-content/uploads/downloads/2024/07/CAMPOVERDE-ABIGAIL-LIQ-24-AL-26-ABR.pdf",
+      "title": "Official travel report: Muelle Gus Angermeyer to Puerto Baquerizo Moreno",
+      "publisher": "Consejo de Gobierno del Régimen Especial de Galápagos",
+      "date": "2024-04-24",
+      "accessed": "2026-07-09",
+      "proves": "Names Muelle Gus Angermeyer and records a 15:00 maritime departure to Puerto Baquerizo Moreno with 17:00 arrival.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "EC-ABG-VILLAMIL-PIER",
+      "url": "https://bioseguridadgalapagos.gob.ec/wp-content/uploads/downloads/transparencia/financiero/2023/03/n/diego_soria_22_al_23_marzo.pdf",
+      "title": "Official travel report: Puerto Villamil–Puerto Ayora",
+      "publisher": "Agencia de Regulación y Control de la Bioseguridad y Cuarentena para Galápagos (ABG)",
+      "date": "2023-03",
+      "accessed": "2026-07-09",
+      "proves": "Records transfer to the passenger pier and a 15:00–17:00 Puerto Villamil–Puerto Ayora maritime trip.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "EC-ABG-SANCRISTOBAL-PIER",
+      "url": "https://bioseguridadgalapagos.gob.ec/wp-content/uploads/downloads/transparencia/financiero/2023/02/n/jonathan_gomez_criollo_12_16_febrero.pdf",
+      "title": "Official travel report: Muelle Tiburón Martillo",
+      "publisher": "Agencia de Regulación y Control de la Bioseguridad y Cuarentena para Galápagos (ABG)",
+      "date": "2023-02",
+      "accessed": "2026-07-09",
+      "proves": "Names Muelle Tiburón Martillo as the inspection point for passenger baggage and cargo bound to other populated ports.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "EC-CGREG-FLOREANA-PIER",
+      "url": "https://www.gobiernogalapagos.gob.ec/wp-content/uploads/downloads/2021/12/SEMINARIO-MILTON-LIQ-17-AL-23-OCT-CUR-1886.pdf",
+      "title": "Official travel report: inauguration of tourism and cargo pier at Puerto Velasco Ibarra",
+      "publisher": "Consejo de Gobierno del Régimen Especial de Galápagos",
+      "date": "2021-10",
+      "accessed": "2026-07-09",
+      "proves": "Names the tourism and cargo pier at Puerto Velasco Ibarra, Floreana, and records its inauguration context.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "PE-CEPLAN-ICA-2024",
+      "url": "https://observatorio.ceplan.gob.pe/ficha/o8_ica",
+      "title": "Desarrollo sostenible del turismo basado en bellezas naturales y arqueológicas",
+      "publisher": "Centro Nacional de Planeamiento Estratégico (CEPLAN)",
+      "date": "2026-02 update; statistics for 2024",
+      "accessed": "2026-07-09",
+      "proves": "Ica recorded 1,119,437 visits to principal tourist sites, 1,657,046 lodging arrivals, and 2,194,261 overnight stays in 2024; these are broad regional flows, not corridor passengers.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "PE-SERNANP-BALLESTAS",
+      "url": "https://visitaareasnaturales.sernanp.gob.pe/anps/reserva-nacional-siipg-islas-ballestas/",
+      "title": "Reserva Nacional SIIPG – Islas Ballestas",
+      "publisher": "Servicio Nacional de Áreas Naturales Protegidas por el Estado (SERNANP)",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Ballestas is open Monday–Sunday 06:00–13:00, year-round; Paracas–Ballestas is 21.4 km and 1h40 round trip; national adult ANP entry is S/11, local adult S/5, combined Paracas/Ballestas promotional entry S/17; no SERNANP-authorized operator list is currently published.",
+      "confidence": "high_official_current_page"
+    },
+    {
+      "source_id": "PE-OPERATOR-BALLESTAS-FARE",
+      "url": "https://islasballestas.pe/tour-islas-ballestas-grupal.php",
+      "title": "Tour Islas Ballestas desde Paracas",
+      "publisher": "IslasBallestas.pe (commercial operator/booking site)",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Advertised operator fare of S/40 per person regular and S/60 on specified holidays; this is not a regulated tariff and should be re-quoted before finance use.",
+      "confidence": "medium_commercial"
+    },
+    {
+      "source_id": "PE-MINCETUR-ELCHACO",
+      "url": "https://www.regionica.gob.pe/pdf/grde/desarrollo%20turistico/plan%20regional%20de%20dsllo%20turistico.pdf",
+      "title": "Plan Regional de Desarrollo Turístico de Ica",
+      "publisher": "Gobierno Regional de Ica",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Reports five artisanal fishing landing places in the area and that one in Paracas is used to embark tourists to Islas Ballestas; supports El Chaco tourist-boarding function but not a coordinate.",
+      "confidence": "high_official_plan"
+    },
+    {
+      "source_id": "PE-SERNANP-PALOMINO",
+      "url": "https://visitaareasnaturales.sernanp.gob.pe/anps/reserva-nacional-siipg-islas-cavinzas-e-islotes-palomino/",
+      "title": "Islas Cavinzas e Islotes Palomino – Reserva Nacional SIIPG",
+      "publisher": "SERNANP",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official access guidance identifies Callao Muelle Plaza Grau / Marina Club as the maritime departure area for Palomino.",
+      "confidence": "high_official_current_page"
+    },
+    {
+      "source_id": "PE-CALLAO-DARSENA",
+      "url": "https://www.gob.pe/institucion/municallao/noticias/600301-estos-son-los-lugares-que-puedes-conocer-en-el-dia-del-turismo-chalaco",
+      "title": "Estos son los lugares que puedes conocer en el Día del Turismo Chalaco",
+      "publisher": "Municipalidad Provincial del Callao",
+      "date": "2022",
+      "accessed": "2026-07-09",
+      "proves": "States that small launches depart Muelle Dársena for coastal tours; supports a verified tourist departure function.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "PE-APN-PORT-LIST",
+      "url": "https://www.gob.pe/institucion/apn/informes-publicaciones/6544126-anexo-1-lista-de-terminales-portuarios-y-embarcaderos-que-conforman-el-spn-y-su-clasificacion",
+      "title": "Anexo 1 – Lista de terminales portuarios y embarcaderos que conforman el SPN y su clasificación",
+      "publisher": "Autoridad Portuaria Nacional",
+      "date": "2024-12",
+      "accessed": "2026-07-09",
+      "proves": "Provides the official national port/landing-facility classification baseline; facility listing alone does not prove public passenger service.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "PE-OSITRAN-SANMARTIN",
+      "url": "https://www.ositran.gob.pe/anterior/puertos/terminal-portuario-general-san-martin-paracas-pisco/",
+      "title": "Terminal Portuario General San Martín – Paracas, Pisco",
+      "publisher": "OSITRAN",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Describes regulated multipurpose commercial cargo terminal services; it does not establish a public passenger boarding point.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "PE-PRODUCE-SANANDRES",
+      "url": "https://www.gob.pe/institucion/fondepes/noticias/1098798-produce-expediente-tecnico-para-rehabilitacion-temporal-del-muelle-marginal-del-dpa-san-andres-se-entregara-en-febrero",
+      "title": "PRODUCE: expediente técnico para rehabilitación temporal del muelle marginal del DPA San Andrés",
+      "publisher": "FONDEPES / Ministerio de la Producción",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Confirms the Desembarcadero Pesquero Artesanal de San Andrés exists and had a marginal-pier rehabilitation process; it does not prove public passenger authorization or present operational status.",
+      "confidence": "high_official"
+    },
+    {
+      "source_id": "DIDI-GLOBAL-COUNTRIES",
+      "url": "https://web.didiglobal.com/",
+      "title": "DiDi Global",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Country-level DiDi presence in Ecuador and Peru only; no city/pier-level binding for the researched geographies.",
+      "confidence": "high_official_country_only"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "floreana-galapagos-ecuador",
+      "canonical_name": "Floreana / Puerto Velasco Ibarra",
+      "country": "Ecuador",
+      "atlas_status": "existing_city_id",
+      "water_role": "populated-island port",
+      "verified_boarding_context": "Puerto Velasco Ibarra tourism/cargo pier; DPNG inter-island passenger service Tuesday and Thursday.",
+      "coordinate": null
+    },
+    {
+      "city_id": "isabela-galapagos-ecuador",
+      "canonical_name": "Isabela / Puerto Villamil",
+      "country": "Ecuador",
+      "atlas_status": "existing_city_id",
+      "water_role": "populated-island port",
+      "verified_boarding_context": "Puerto Villamil passenger pier; daily inter-island passenger launch context.",
+      "coordinate": null
+    },
+    {
+      "city_id": "san-cristobal-galapagos-ecuador",
+      "canonical_name": "San Cristóbal / Puerto Baquerizo Moreno",
+      "country": "Ecuador",
+      "atlas_status": "existing_city_id",
+      "water_role": "populated-island port and air gateway",
+      "verified_boarding_context": "Muelle Tiburón Martillo; daily inter-island passenger launch context.",
+      "coordinate": null
+    },
+    {
+      "city_id": "santa-cruz-galapagos-ecuador",
+      "canonical_name": "Santa Cruz / Puerto Ayora",
+      "country": "Ecuador",
+      "atlas_status": "existing_city_id",
+      "water_role": "inter-island hub",
+      "verified_boarding_context": "Muelle Gus Angermeyer; hub for the three evidenced populated-island links.",
+      "coordinate": null
+    },
+    {
+      "city_id": "lima-peru",
+      "canonical_name": "Lima / Callao",
+      "country": "Peru",
+      "atlas_status": "existing_city_id",
+      "water_role": "coastal metropolis and excursion origin",
+      "verified_boarding_context": "Muelle Dársena / Plaza Grau and Marina Club departures toward Palomino; verify which current Atlas BP record maps to each facility.",
+      "coordinate": null
+    },
+    {
+      "city_id": "paracas-peru",
+      "canonical_name": "Paracas",
+      "country": "Peru",
+      "atlas_status": "existing_city_id",
+      "water_role": "marine-protected-area excursion gateway",
+      "verified_boarding_context": "El Chaco tourist embarkation function to Islas Ballestas.",
+      "coordinate": null
+    },
+    {
+      "city_id": "pisco-san-andres-peru",
+      "canonical_name": "Pisco / San Andrés",
+      "country": "Peru",
+      "atlas_status": "existing_city_id",
+      "water_role": "artisanal fishing waterfront; passenger role unproven",
+      "verified_boarding_context": "DPA San Andrés exists, but passenger authorization and current pier operations are not proven.",
+      "coordinate": null
+    }
+  ],
+  "boarding_points": [
+    {
+      "name": "Muelle Gus Angermeyer",
+      "city_id": "santa-cruz-galapagos-ecuador",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "EC-CGREG-AYORA-PIER",
+        "EC-DPNG-INTERISLAND"
+      ],
+      "proof": "Official records name the pier and document inter-island maritime departures.",
+      "atlas_match_status": "candidate_exact_name_match_pending_raw_BP_file_check"
+    },
+    {
+      "name": "Muelle de Pasajeros de Puerto Villamil",
+      "city_id": "isabela-galapagos-ecuador",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "EC-ABG-VILLAMIL-PIER",
+        "EC-DPNG-INTERISLAND"
+      ],
+      "proof": "ABG document records the passenger pier and Puerto Villamil–Puerto Ayora movement.",
+      "atlas_match_status": "candidate_exact_name_match_pending_raw_BP_file_check"
+    },
+    {
+      "name": "Muelle Tiburón Martillo",
+      "city_id": "san-cristobal-galapagos-ecuador",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "EC-ABG-SANCRISTOBAL-PIER",
+        "EC-DPNG-INTERISLAND"
+      ],
+      "proof": "ABG names it as passenger/cargo inspection point for travel to other populated ports.",
+      "atlas_match_status": "candidate_exact_name_match_pending_raw_BP_file_check"
+    },
+    {
+      "name": "Muelle turístico y de carga de Puerto Velasco Ibarra",
+      "city_id": "floreana-galapagos-ecuador",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "EC-CGREG-FLOREANA-PIER",
+        "EC-DPNG-INTERISLAND"
+      ],
+      "proof": "CGREG names the facility; DPNG gives the Floreana passenger schedule.",
+      "atlas_match_status": "candidate_exact_name_match_pending_raw_BP_file_check"
+    },
+    {
+      "name": "Embarcadero turístico de El Chaco",
+      "city_id": "paracas-peru",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "PE-MINCETUR-ELCHACO",
+        "PE-SERNANP-BALLESTAS"
+      ],
+      "proof": "Official tourism planning identifies a Paracas landing used to embark Ballestas tourists; SERNANP documents the live Paracas–Ballestas visit circuit.",
+      "atlas_match_status": "exact_coordinate_and_current_BP_id_confirmation_required"
+    },
+    {
+      "name": "Muelle Dársena / Plaza Grau",
+      "city_id": "lima-peru",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "source_ids": [
+        "PE-CALLAO-DARSENA",
+        "PE-SERNANP-PALOMINO"
+      ],
+      "proof": "Municipality says small launches depart the pier; SERNANP identifies Plaza Grau as Palomino access area.",
+      "atlas_match_status": "exact_BP_record_and_access_gate_confirmation_required"
+    },
+    {
+      "name": "Marina Club, Callao",
+      "city_id": "lima-peru",
+      "classification": "verified_existing_boarding_point_private_or_controlled_access",
+      "coordinates": null,
+      "source_ids": [
+        "PE-SERNANP-PALOMINO"
+      ],
+      "proof": "SERNANP identifies Marina Club as a maritime access point to Palomino.",
+      "atlas_match_status": "confirm_operator_access_and_do_not_merge_with_Muelle_Darsena_without_coordinates"
+    },
+    {
+      "name": "Desembarcadero Pesquero Artesanal de San Andrés",
+      "city_id": "pisco-san-andres-peru",
+      "classification": "candidate_needing_passenger_authorization_and_operational_confirmation",
+      "coordinates": null,
+      "source_ids": [
+        "PE-PRODUCE-SANANDRES"
+      ],
+      "proof": "Official source proves the fishing landing exists and was under rehabilitation, not that it is a passenger terminal.",
+      "atlas_match_status": "hold_not_publish_as_passenger_BP"
+    },
+    {
+      "name": "Terminal Portuario General San Martín",
+      "city_id": "paracas-peru",
+      "classification": "non_BP_POI",
+      "coordinates": null,
+      "source_ids": [
+        "PE-OSITRAN-SANMARTIN",
+        "PE-APN-PORT-LIST"
+      ],
+      "proof": "Official sources establish a regulated multipurpose commercial terminal, not public passenger boarding.",
+      "atlas_match_status": "do_not_treat_as_public_passenger_BP"
+    },
+    {
+      "name": "Islas Ballestas",
+      "city_id": null,
+      "classification": "non_BP_POI",
+      "coordinates": null,
+      "source_ids": [
+        "PE-SERNANP-BALLESTAS"
+      ],
+      "proof": "Protected marine attraction visited by boat; no passenger landing is established.",
+      "atlas_match_status": "destination_POI_only"
+    },
+    {
+      "name": "Islotes Palomino",
+      "city_id": null,
+      "classification": "non_BP_POI",
+      "coordinates": null,
+      "source_ids": [
+        "PE-SERNANP-PALOMINO"
+      ],
+      "proof": "Protected marine excursion destination; no passenger landing is established.",
+      "atlas_match_status": "destination_POI_only"
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "route_id": "e__santa-cruz-galapagos-ecuador__puerto-ayora__isabela-galapagos-ecuador__puerto-villamil",
+      "match_basis": "exact current ROUTES audit ID and endpoint names",
+      "from_endpoint": "Muelle Gus Angermeyer, Puerto Ayora",
+      "from_city_id": "santa-cruz-galapagos-ecuador",
+      "to_endpoint": "Muelle de Pasajeros de Puerto Villamil",
+      "to_city_id": "isabela-galapagos-ecuador",
+      "evidence_status": "current_route_evidence",
+      "water_relevance": "essential inter-island passenger transport",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "known_vessel_context": "small passenger launch, up to 20 passengers",
+      "hand_waypoint_requirements": {
+        "required": false,
+        "reason": "No land crossing is apparent from the named port pair; retain harbor-mouth review before publishing geometry."
+      },
+      "service": "Daily context; DPNG lists Santa Cruz 13:45–16:00 and Isabela 06:00–08:30.",
+      "fare": {
+        "amount": 30,
+        "currency": "USD",
+        "basis": "per person per route",
+        "source_id": "EC-DPNG-INTERISLAND"
+      }
+    },
+    {
+      "route_id": "e__santa-cruz-galapagos-ecuador__puerto-ayora__san-cristobal-galapagos-ecuador__puerto-baquerizo-moreno",
+      "match_basis": "exact current ROUTES audit ID and endpoint names",
+      "from_endpoint": "Muelle Gus Angermeyer, Puerto Ayora",
+      "from_city_id": "santa-cruz-galapagos-ecuador",
+      "to_endpoint": "Muelle Tiburón Martillo, Puerto Baquerizo Moreno",
+      "to_city_id": "san-cristobal-galapagos-ecuador",
+      "evidence_status": "current_route_evidence",
+      "water_relevance": "essential inter-island passenger transport",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "known_vessel_context": "small passenger launch, up to 20 passengers",
+      "hand_waypoint_requirements": {
+        "required": false,
+        "reason": "No land crossing is apparent from the named port pair; retain harbor-mouth review before publishing geometry."
+      },
+      "service": "Daily context; DPNG lists Santa Cruz 13:45–16:00 and San Cristóbal 07:00–09:30.",
+      "fare": {
+        "amount": 30,
+        "currency": "USD",
+        "basis": "per person per route",
+        "source_id": "EC-DPNG-INTERISLAND"
+      }
+    },
+    {
+      "route_id": "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra",
+      "match_basis": "exact current ROUTES audit ID and endpoint names",
+      "from_endpoint": "Muelle Gus Angermeyer, Puerto Ayora",
+      "from_city_id": "santa-cruz-galapagos-ecuador",
+      "to_endpoint": "Muelle turístico y de carga, Puerto Velasco Ibarra",
+      "to_city_id": "floreana-galapagos-ecuador",
+      "evidence_status": "current_route_evidence",
+      "water_relevance": "essential but low-frequency inter-island passenger transport",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "known_vessel_context": "small passenger launch, up to 20 passengers",
+      "hand_waypoint_requirements": {
+        "required": false,
+        "reason": "No land crossing is apparent from the named port pair; retain harbor-mouth review before publishing geometry."
+      },
+      "service": "Tuesday and Thursday; Santa Cruz 08:00–09:45, Floreana 15:00–17:00.",
+      "fare": {
+        "amount": 30,
+        "currency": "USD",
+        "basis": "per person per route",
+        "source_id": "EC-DPNG-INTERISLAND"
+      }
+    },
+    {
+      "route_id": null,
+      "match_basis": "No exact current route ID was confirmed",
+      "from_endpoint": "Embarcadero turístico de El Chaco, Paracas",
+      "from_city_id": "paracas-peru",
+      "to_endpoint": "Islas Ballestas marine circuit",
+      "to_city_id": null,
+      "evidence_status": "current_excursion_evidence",
+      "water_relevance": "core protected-area marine excursion",
+      "distance": {
+        "value": 21.4,
+        "unit": "km",
+        "basis": "SERNANP published Paracas–Ballestas circuit/round-trip distance"
+      },
+      "likely_vessel_range_class": "short_coastal_excursion",
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Use the authorized tourism circuit and a harbor-mouth/offshore path; do not render a simple point-to-point line through land or protected no-go areas."
+      },
+      "service": "Visitor access Monday–Sunday 06:00–13:00; year-round, subject to maritime/park conditions.",
+      "fare": {
+        "operator_amount_regular": 40,
+        "operator_amount_holiday": 60,
+        "currency": "PEN",
+        "basis": "commercial tour price; ANP entry separate",
+        "source_id": "PE-OPERATOR-BALLESTAS-FARE"
+      }
+    },
+    {
+      "route_id": null,
+      "match_basis": "No exact current route ID was confirmed",
+      "from_endpoint": "Muelle Dársena / Plaza Grau or Marina Club, Callao",
+      "from_city_id": "lima-peru",
+      "to_endpoint": "Islotes Palomino marine circuit",
+      "to_city_id": null,
+      "evidence_status": "current_excursion_evidence",
+      "water_relevance": "established urban marine-wildlife excursion",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Route must clear Callao port/breakwaters and respect San Lorenzo/Palomino navigation and protected-area constraints; obtain operator track or charted waypoints."
+      },
+      "service": null,
+      "fare": null
+    },
+    {
+      "route_id": null,
+      "match_basis": "Future hypothesis only; no current service evidence",
+      "from_endpoint": "Lima/Callao verified passenger departure point (final selection pending)",
+      "from_city_id": "lima-peru",
+      "to_endpoint": "Embarcadero turístico de El Chaco, Paracas",
+      "to_city_id": "paracas-peru",
+      "evidence_status": "future_opportunity_not_current_service",
+      "water_relevance": "potential intercity coastal link, but demand, distance, sea-state and regulatory case unproven",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "A naive endpoint line risks coastal/peninsula land crossing and port-restricted areas. Requires hydrographic route design with offshore hand waypoints and harbor approaches."
+      },
+      "service": null,
+      "fare": null
+    },
+    {
+      "route_id": null,
+      "match_basis": "Future hypothesis only; DPA is not verified for passengers",
+      "from_endpoint": "Desembarcadero Pesquero Artesanal de San Andrés",
+      "from_city_id": "pisco-san-andres-peru",
+      "to_endpoint": "Embarcadero turístico de El Chaco, Paracas",
+      "to_city_id": "paracas-peru",
+      "evidence_status": "future_opportunity_on_hold",
+      "water_relevance": "possible local bay shuttle only if passenger use becomes lawful and operational",
+      "distance": null,
+      "likely_vessel_range_class": null,
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Keep clear of fishing operations, restricted terminal waters and shallow/nearshore hazards; use Capitanía/APN-approved approach track."
+      },
+      "service": null,
+      "fare": null
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "GALAPAGOS-ARRIVALS-2024",
+      "geography": "Galápagos archipelago",
+      "metric": "tourist arrivals",
+      "period": "2024",
+      "value": 279277,
+      "unit": "visitors",
+      "breakdown": {
+        "foreign_share": 0.55,
+        "national_share": 0.45,
+        "land_based_share": 0.79,
+        "cruise_based_share": 0.21,
+        "baltra_gateway_share": 0.55,
+        "san_cristobal_gateway_share": 0.45
+      },
+      "annual_one_way_pax": null,
+      "assumption_record": "Do not convert archipelago arrivals or land-based share into any inter-island route demand. A visitor may take zero, one or multiple launch legs.",
+      "source_id": "EC-DPNG-VISITORS-2024",
+      "confidence": "high"
+    },
+    {
+      "record_id": "GALAPAGOS-INTERISLAND-FARE-SCHEDULE",
+      "geography": "Populated-island passenger-launch network",
+      "metric": "published fare and operating pattern",
+      "period": "page accessed 2026-07-09",
+      "value": 30,
+      "unit": "USD per person per route",
+      "service_days": "Santa Cruz–Isabela and Santa Cruz–San Cristóbal described in daily launch context; Santa Cruz–Floreana Tuesday/Thursday",
+      "seasonality": "January–June calmer water; July–December stronger swell",
+      "annual_one_way_pax": null,
+      "assumption_record": "Fare and schedule are not passenger-volume evidence. Obtain operator manifests or authority statistics before economics.",
+      "source_id": "EC-DPNG-INTERISLAND",
+      "confidence": "high_for_published_fare_and_schedule"
+    },
+    {
+      "record_id": "ICA-TOURISM-2024",
+      "geography": "Ica region",
+      "metric": "tourism flow context",
+      "period": "2024",
+      "value": {
+        "principal_site_visits": 1119437,
+        "lodging_arrivals": 1657046,
+        "overnight_stays": 2194261
+      },
+      "unit": "visits/arrivals/nights as labelled",
+      "annual_one_way_pax": null,
+      "assumption_record": "Regional tourism totals are not Paracas, Ballestas, Pisco or maritime route demand. Preserve as TAM context only.",
+      "source_id": "PE-CEPLAN-ICA-2024",
+      "confidence": "high"
+    },
+    {
+      "record_id": "BALLESTAS-CIRCUIT-PUBLISHED",
+      "geography": "Paracas–Islas Ballestas",
+      "metric": "visitor access, circuit distance/time and fees",
+      "period": "page accessed 2026-07-09",
+      "value": {
+        "distance_km_round_trip": 21.4,
+        "duration_minutes_round_trip": 100,
+        "adult_national_entry_PEN": 11,
+        "local_adult_entry_PEN": 5,
+        "combined_paracas_ballestas_entry_PEN": 17,
+        "operator_regular_PEN": 40,
+        "operator_holiday_PEN": 60
+      },
+      "service_days": "Monday–Sunday",
+      "service_hours": "06:00–13:00 visitor window",
+      "seasonality": "SERNANP describes year-round recommended visitation; actual sailings remain weather/authority dependent",
+      "annual_one_way_pax": null,
+      "assumption_record": "ANP tickets, operator price and visitor windows are separate. No audited annual Ballestas passenger count was found, so no corridor demand is inferred.",
+      "source_ids": [
+        "PE-SERNANP-BALLESTAS",
+        "PE-OPERATOR-BALLESTAS-FARE"
+      ],
+      "confidence": "high_official_for_ANP; medium_for_operator_price"
+    },
+    {
+      "record_id": "PALOMINO-DEPARTURE-CONTEXT",
+      "geography": "Callao–Islotes Palomino",
+      "metric": "verified departure-area evidence",
+      "period": "page accessed 2026-07-09",
+      "value": null,
+      "unit": null,
+      "annual_one_way_pax": null,
+      "fare": null,
+      "service_days": null,
+      "assumption_record": "Official pages prove access/departure context but not an annual passenger count, current schedule or fare.",
+      "source_ids": [
+        "PE-SERNANP-PALOMINO",
+        "PE-CALLAO-DARSENA"
+      ],
+      "confidence": "high_for_departure_context_only"
+    }
+  ],
+  "brief_maturity": {
+    "method": "Field-level scores use the current Atlas LATAM audit's canonical brief metadata. Core text was not rewritten. Scores distinguish canonical content from a separate DiDi overlay.",
+    "cities": [
+      {
+        "city_id": "floreana-galapagos-ecuador",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 1,
+        "signature_routes": 1,
+        "sources": 2,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "complete_but_thin",
+        "recommended_enhancement": "Add official pier naming, Tuesday/Thursday service constraint, $30 fare, seasonality, and explicit low-frequency access context; retain partner neutrality."
+      },
+      {
+        "city_id": "isabela-galapagos-ecuador",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 3,
+        "signature_routes": 4,
+        "sources": 3,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "mature",
+        "recommended_enhancement": "Verify Puerto Villamil passenger-pier name/coordinate and cite official daily schedule/fare and July–December swell caveat."
+      },
+      {
+        "city_id": "san-cristobal-galapagos-ecuador",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 3,
+        "signature_routes": 4,
+        "sources": 3,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "mature",
+        "recommended_enhancement": "Name Muelle Tiburón Martillo, distinguish air-gateway arrivals from inter-island demand, and add official service/fare evidence."
+      },
+      {
+        "city_id": "santa-cruz-galapagos-ecuador",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 3,
+        "signature_routes": 4,
+        "sources": 3,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "mature_but_route_stamp_blocked",
+        "recommended_enhancement": "Name Gus Angermeyer, position Santa Cruz as the three-link hub, and add operating-day/sea-state facts after route-stamp repair."
+      },
+      {
+        "city_id": "lima-peru",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 3,
+        "signature_routes": 4,
+        "sources": 3,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "mature",
+        "recommended_enhancement": "Disambiguate Muelle Dársena/Plaza Grau from Marina Club, add Palomino protected-area access evidence, and keep Lima–Paracas as future-only."
+      },
+      {
+        "city_id": "paracas-peru",
+        "canonical_brief": "present",
+        "core_fields": "12/12",
+        "journeys": 2,
+        "signature_routes": 3,
+        "sources": 3,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "complete_with_demand_gap",
+        "recommended_enhancement": "Add El Chaco function, SERNANP 21.4-km/100-minute circuit, visitor window, fee stack and the warning that no annual route-pax count is verified."
+      },
+      {
+        "city_id": "pisco-san-andres-peru",
+        "canonical_brief": "missing",
+        "core_fields": "0/12",
+        "journeys": 0,
+        "signature_routes": 0,
+        "sources": 0,
+        "declared_tier": null,
+        "partner_specific_content": false,
+        "score": "missing",
+        "recommended_enhancement": "Create a new partner-neutral canonical brief. Lead with fishing-waterfront reality, DPA rehabilitation/authorization uncertainty, General San Martín as non-passenger commercial POI, and no published passenger corridor."
+      }
+    ],
+    "overall": {
+      "present": 6,
+      "total": 7,
+      "mature_or_complete": 6,
+      "missing": 1,
+      "wholesale_replacement_recommended": false
+    }
+  },
+  "partner_narrative_notes": {
+    "placement": "Separate DiDi proposal overlay only; do not insert into canonical city briefs.",
+    "positioning": [
+      "Galápagos is a regulated, conservation-sensitive, port-to-door coordination problem, not an unrestricted mobility market. Frame DiDi as timed first/last-mile orchestration around authority-published launches, with no implication of DiDi boat operations or confirmed local rideshare coverage.",
+      "Santa Cruz is the operational interchange; Isabela and San Cristóbal are daily links, while Floreana is a lower-frequency Tuesday/Thursday link. Use the official $30 fare and 2–3-hour duration only as current traveler context, not Navier revenue or demand.",
+      "The 279,277 annual visitor total is an archipelago TAM signal. Never map it directly to route riders; use a bottom-up manifest/occupancy model after route-stamp repair.",
+      "Peru should split proven excursion gateways (Callao–Palomino and Paracas–Ballestas) from speculative intercity coastal links. The strongest near-term proposal story is dispatch, ticketing handoff and timed ground transfer at verified excursion origins.",
+      "Pisco/San Andrés is a research/permission lane, not a sellable passenger route today. The fishing landing and commercial General San Martín terminal must not be represented as public passenger piers without APN/Capitanía/operator confirmation.",
+      "Country-level DiDi presence supports a partnership conversation but not city-level availability claims in Galápagos, Paracas or Pisco."
+    ]
+  },
+  "gaps": [
+    {
+      "gap_id": "G-01",
+      "priority": "P0",
+      "owner": "Atlas data/geometry",
+      "gap": "Galápagos cluster-stamp corruption: 46 foreign routes stamped in, three real routes stamped out.",
+      "next_action": "Restamp by stable endpoint city IDs, remove all 46 foreign stamps, attach the three exact real route IDs, and rerun corridor-inheritance/no-shrink validation before DiDi scope or finance."
+    },
+    {
+      "gap_id": "G-02",
+      "priority": "P0",
+      "owner": "Atlas repository owner",
+      "gap": "Raw current CLUSTERS.json, ROUTES.json, city briefs and boarding-point JSON were not available in this sandbox.",
+      "next_action": "Re-run exact BP-ID/name/coordinate and route endpoint validation in the canonical checkout; preserve this artifact as research input, not an automatic patch."
+    },
+    {
+      "gap_id": "G-03",
+      "priority": "P1",
+      "owner": "Research + Galápagos authority/operator outreach",
+      "gap": "No route-level annual passenger counts, load factors, cancellations or manifested flows were found for the three inter-island links.",
+      "next_action": "Request 2024–2026 route-by-route manifests/statistics from DPNG/SPTMF/ABG or licensed operators; retain annual_one_way_pax=null until received."
+    },
+    {
+      "gap_id": "G-04",
+      "priority": "P1",
+      "owner": "Finance",
+      "gap": "No verified cost base, operator revenue split or Navier addressable share for Galápagos.",
+      "next_action": "Build only after G-01/G-03; keep official $30 fare separate from any assumed Navier ticket or vessel economics."
+    },
+    {
+      "gap_id": "G-05",
+      "priority": "P1",
+      "owner": "Canonical content",
+      "gap": "pisco-san-andres-peru canonical brief is missing.",
+      "next_action": "Create a partner-neutral 12-field brief with official fishing-port/rehabilitation sources and explicit no-public-passenger-service caveat."
+    },
+    {
+      "gap_id": "G-06",
+      "priority": "P1",
+      "owner": "Peru APN/Capitanía/FONDEPES outreach",
+      "gap": "DPA San Andrés current structural status and passenger authorization are unverified.",
+      "next_action": "Obtain current operating certificate, permitted uses, passenger handling approval and exact access point; otherwise retain hold_not_publish."
+    },
+    {
+      "gap_id": "G-07",
+      "priority": "P1",
+      "owner": "Paracas operator/SERNANP outreach",
+      "gap": "No audited annual Ballestas boat passenger count or operator-authorized roster was found.",
+      "next_action": "Request monthly ticket/embarkation totals, sailings, capacity, weather cancellations and fee stack. Do not turn Ica regional visits into route demand."
+    },
+    {
+      "gap_id": "G-08",
+      "priority": "P1",
+      "owner": "Callao operator/SERNANP outreach",
+      "gap": "Palomino schedule, fare, annual riders and exact operator departure-point allocation are missing.",
+      "next_action": "Confirm whether each operator uses Muelle Dársena/Plaza Grau or Marina Club and obtain track, schedule, fare and annual volumes."
+    },
+    {
+      "gap_id": "G-09",
+      "priority": "P1",
+      "owner": "Geometry",
+      "gap": "Hand waypoints/operator tracks are absent for Ballestas, Palomino, Lima–Paracas and any San Andrés–Paracas concept.",
+      "next_action": "Acquire Capitanía-approved tracks or digitize chart-safe offshore/habor approach waypoints; reject any geometry that crosses land, port exclusion zones or protected no-go areas."
+    },
+    {
+      "gap_id": "G-10",
+      "priority": "P1",
+      "owner": "DiDi partnership",
+      "gap": "No official city-level DiDi coverage proof for the researched cities/piers.",
+      "next_action": "Obtain DiDi coverage/API confirmation for Puerto Ayora, Puerto Villamil, Puerto Baquerizo Moreno, Puerto Velasco Ibarra, Callao, Paracas and Pisco/San Andrés before claiming local ride availability."
+    }
+  ],
+  "do_not_publish": [
+    "Do not publish the current galapagos-ecuador cluster stamp: it contains 46 foreign routes and excludes all three real member routes.",
+    "Do not quote 279,277 Galápagos visitors, Ica regional tourism totals, or any attraction visit total as annual route passengers.",
+    "Do not assign annual_one_way_pax without route-level manifests or an explicit, approved bottom-up assumption model.",
+    "Do not claim DiDi city-level coverage from country-level Ecuador/Peru evidence.",
+    "Do not label Terminal Portuario General San Martín as a public passenger boarding point.",
+    "Do not label DPA San Andrés as a public passenger boarding point until structural status and passenger authorization are proven.",
+    "Do not create a landing BP at Islas Ballestas or Islotes Palomino; both are destination POIs/marine circuits in this evidence set.",
+    "Do not merge Muelle Dársena/Plaza Grau and Marina Club without exact coordinates, access and operator evidence.",
+    "Do not publish straight-line coastal geometry for Ballestas, Palomino, Lima–Paracas or San Andrés–Paracas without hand waypoints and restricted-area review.",
+    "Do not move DiDi-specific language into canonical briefs; use the separate partner overlay."
+  ],
+  "summary_counts": {
+    "markets": 2,
+    "existing_city_ids": 7,
+    "source_records": 17,
+    "boarding_point_records": 11,
+    "verified_or_verified_controlled_access_boarding_points": 7,
+    "boarding_point_candidates_on_hold": 1,
+    "non_BP_POIs": 3,
+    "candidate_corridors": 7,
+    "exact_current_route_id_matches": 3,
+    "current_service_or_excursion_corridors": 5,
+    "future_or_hold_corridors": 2,
+    "demand_records": 5,
+    "annual_one_way_pax_non_null": 0,
+    "briefs_present": 6,
+    "briefs_missing": 1,
+    "P0_gaps": 2,
+    "P1_gaps": 8
+  },
+  "validation": {
+    "json_validated": true,
+    "validated_at": "2026-07-09",
+    "validator": "python3 json.loads + required-key/array/count assertions",
+    "result": "PASS"
+  }
+}

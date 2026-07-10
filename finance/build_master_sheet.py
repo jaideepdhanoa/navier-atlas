@@ -39,7 +39,7 @@ GLOBAL_ECON_SHEETS = ("Assumptions", "Country opex", "Corridor economics", "Glob
 
 # Stable row order; any slug in PARTNER-SHEET-IDS.json not listed here appends alphabetically.
 PARTNER_ORDER = [
-    "grab", "careem", "bolt", "yango", "uber",
+    "grab", "careem", "bolt", "yango", "didi", "uber",
     "rapido", "ola", "noon",
     "jih-global", "qatar", "saudi-pif", "red-sea-global",
     "constance", "four-seasons",
@@ -50,6 +50,7 @@ PARTNER_DISPLAY: dict[str, str] = {
     "careem": "Careem",
     "bolt": "Bolt",
     "yango": "Yango",
+    "didi": "DiDi (Mexico calibration)",
     "uber": "Uber",
     "rapido": "Rapido (India)",
     "ola": "Ola (India)",
@@ -71,6 +72,7 @@ PARTNER_NOTES: dict[str, str] = {
     "qatar": "Doha 4/4 in-range corridors bound. Banana Island captive carries floor.",
     "bolt": "MENA grounded floor + Med/Baltic aspirational tail (Bucket C bound).",
     "yango": "MENA + Africa grounded + CIS/Caspian/Africa aspirational tail (Bucket C bound).",
+    "didi": "Mexico calibration — two exact Caribbean OD demand anchors; Pacific demand held null.",
     "constance": "Captive resort-transfer; network-sum captive fleet. Greenfield OFF.",
     "four-seasons": "Captive resort-transfer; network-sum captive fleet. Greenfield OFF.",
     "uber": "Global mobility rollup; MENA + Med + Hawaii + LatAm scoped markets.",

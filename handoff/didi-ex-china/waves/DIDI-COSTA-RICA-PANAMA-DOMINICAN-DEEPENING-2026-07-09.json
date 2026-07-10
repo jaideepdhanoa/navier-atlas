@@ -1,0 +1,2224 @@
+{
+  "market": [
+    "Costa Rica",
+    "Panama",
+    "Dominican Republic"
+  ],
+  "market_ids": [
+    "nicoya-papagayo-costa-rica",
+    "san-blas-panama",
+    "samana-dominican-republic"
+  ],
+  "lane": "full BP + brief maturity + demand/fare research",
+  "as_of": "2026-07-09",
+  "status": "research-complete / seal-needed / finance-inputs-incomplete",
+  "existing_atlas_baseline": {
+    "repo_snapshot": "/tmp/navier-atlas (read-only; no repository edits)",
+    "files_read": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "data-clean/FEATURES_BY_TYPE.json",
+      "data-clean/city_briefs/nicoya-papagayo-costa-rica.json",
+      "data-clean/city_briefs/san-blas-panama.json",
+      "data-clean/city_briefs/samana-dominican-republic.json",
+      "partner-pitch/city_briefs/*.json for the three markets",
+      "partner-pitch/partners/didi.json",
+      "grok-routing-output/sealed-corridors/*.json for the three markets"
+    ],
+    "canonical_city_ids": [
+      "nicoya-papagayo-costa-rica",
+      "san-blas-panama",
+      "samana-dominican-republic"
+    ],
+    "boarding_points_by_market": {
+      "nicoya-papagayo-costa-rica": 39,
+      "san-blas-panama": 48,
+      "samana-dominican-republic": 36
+    },
+    "boarding_point_total": 123,
+    "baseline_note": "Atlas BPs are preserved as baseline but classified conservatively. Existing Atlas membership is not equivalent to verified boardability."
+  },
+  "sources": [
+    {
+      "source_id": "src-didi-cr-cities",
+      "url": "https://web.didiglobal.com/cr/conductor/ciudades/",
+      "title": "Ciudades donde opera DiDi en Costa Rica",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official city list names Liberia, San Carlos and San José; Liberia is the exact gateway overlap for Papagayo/Guanacaste.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-ict-2024",
+      "url": "https://www.ict.go.cr/es/noticias-destacadas/2397-costa-rica-recibio-2-6-millones-de-turistas-durante-el-2024.html",
+      "title": "Costa Rica recibió 2,6 millones de turistas durante el 2024",
+      "publisher": "Instituto Costarricense de Turismo",
+      "date": "2025-01-16",
+      "accessed": "2026-07-09",
+      "proves": "2,661,488 air tourist arrivals in 2024; 881,289 entered through Daniel Oduber airport in Guanacaste. These are catchment totals, not water-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-aresep-fares",
+      "url": "https://aresep.go.cr/cabotaje/tarifas/",
+      "title": "Tarifas del ferry (Cabotaje Mayor)",
+      "publisher": "Autoridad Reguladora de los Servicios Públicos (ARESEP)",
+      "date": "2026-06-25",
+      "accessed": "2026-07-09",
+      "proves": "Regulated adult fares effective 2026-07-01: CRC 810 Puntarenas–Paquera and CRC 1,000 Puntarenas–Playa Naranjo; identifies Naviera Tambor and COONATRAMAR.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-naviera-tambor",
+      "url": "https://navieratambor.com/horarios-y-tarifas",
+      "title": "Horarios y tarifas",
+      "publisher": "Naviera Tambor",
+      "date": "2026-04-20",
+      "accessed": "2026-07-09",
+      "proves": "Current Paquera timetable shown as eight daily departure times in each direction and adult fare CRC 810; timetable says in force from 20 April 2026 until further notice.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-marina-papagayo",
+      "url": "https://peninsulapapagayo.com/marina/",
+      "title": "Marina Papagayo",
+      "publisher": "Peninsula Papagayo",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official existence of Marina Papagayo as a marine access facility in the resort cluster.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-didi-pa-city",
+      "url": "https://web.didiglobal.com/pa/conductor/ciudades/ciudad-de-panama/",
+      "title": "Socios Conductores en Ciudad de Panamá",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official exact-city evidence for DiDi Express in Panama City; does not prove service at Cartí or in Guna Yala.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-tourism-panama-guna",
+      "url": "https://www.tourismpanama.com/outdoors-and-nature/beaches-islands/beaches-in-the-caribbean/san-blas-islands/",
+      "title": "Gunayala: Discover Idyllic Islands and Ancient Culture",
+      "publisher": "Visit Panamá / Autoridad de Turismo de Panamá",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official destination evidence: Gunayala/San Blas is an Indigenous destination with more than 365 islands and sustainable-tourism positioning. No route passenger volume is stated.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-guna-local-guide",
+      "url": "https://www.gunayalapanamatravel.com/san-blas-panama-complete-travel-guide-everything-you-need-to-know-before-you-go/",
+      "title": "San Blas Panama, Complete Guide",
+      "publisher": "Guna Yala Panama Travel (licensed local, 100% Guna-operated operator)",
+      "date": "2025-07-25",
+      "accessed": "2026-07-09",
+      "proves": "Advance coordination, three official ports, local self-rule, 365 islands/49 inhabited/32 tourism-open, and Guna-operated tourism context.",
+      "confidence": "medium-high"
+    },
+    {
+      "source_id": "src-guna-island-times",
+      "url": "https://www.gunayalapanamatravel.com/package/boat-day-tour/",
+      "title": "San Blas Day Tour from Cartí Port",
+      "publisher": "Guna Yala Panama Travel",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current excursion pattern from port to islands; operator material describes approximately 30–35 minute boat legs to several excursion islands. It does not provide annual passenger flow.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "src-didi-do-cities",
+      "url": "https://web.didiglobal.com/do/conductor/ciudades/",
+      "title": "Ciudades donde opera DiDi en República Dominicana",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official list names La Romana, Puerto Plata, Punta Cana, San Francisco de Macorís, San Pedro de Macorís, Santiago and Santo Domingo; Samaná is not listed. Supports country presence, not exact Samaná service.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-mitur-samana",
+      "url": "https://situr.mitur.gob.do/wp-content/uploads/2025/01/Informe-Samana.pdf",
+      "title": "Informe de inversiones: Samaná",
+      "publisher": "Ministerio de Turismo de República Dominicana / SITUR",
+      "date": "2025-01",
+      "accessed": "2026-07-09",
+      "proves": "Official Samaná tourism supply: about 2.6K rooms across 46 open hotels; 15 approved 2023–2024 projects with 877 rooms and US$113.1M investment. Supply is not route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-dr-whales-2024-visitors",
+      "url": "https://presidencia.gob.do/noticias/anuncian-preparativos-para-la-temporada-de-ballenas-jorobadas-en-samana",
+      "title": "Anuncian preparativos para la temporada de ballenas jorobadas en Samaná",
+      "publisher": "Presidencia de la República Dominicana",
+      "date": "2024-10",
+      "accessed": "2026-07-09",
+      "proves": "61,558 whale-watch visitors traveled to Samaná in Q1 2024: 40,667 foreign (66.1%) and 20,891 local. This is seasonal destination demand, not one ferry route.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-dr-whales-2025",
+      "url": "https://ambiente.gob.do/medio-ambiente-firma-acuerdo-interinstitucional-que-inicia-la-temporada-2025-de-observacion-de-ballenas-jorobadas-en-samana/",
+      "title": "Inicio de la Temporada 2025 de Observación de Ballenas Jorobadas en Samaná",
+      "publisher": "Ministerio de Medio Ambiente y Recursos Naturales, República Dominicana",
+      "date": "2025-01-15",
+      "accessed": "2026-07-09",
+      "proves": "Official 2025 whale-observation season ran 15 January through 31 March under an interinstitutional conservation agreement.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-jac-air-2024",
+      "url": "https://jac.gob.do/wp-content/uploads/2024/07/Informe-Estadistico-Diciembre-2024-Ingles.pdf",
+      "title": "Statistical Report of Commercial Air Transport in the Dominican Republic 2024",
+      "publisher": "Junta de Aviación Civil, República Dominicana",
+      "date": "2025",
+      "accessed": "2026-07-09",
+      "proves": "Official report covers El Catey/Samaná airport; 2024 airport passenger total used here is 101,555. This is airport throughput, not water-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "src-samana-ferry-seller",
+      "url": "https://www.civitatis.com/en/samana/ferry-sabana-mar/",
+      "title": "Ferry to Sabana de la Mar from Samaná",
+      "publisher": "Civitatis",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Reseller offers the public bay crossing as a one-hour trip at US$16 at access time. Verify at operator/wharf before economics.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "src-samana-ferry-schedule",
+      "url": "https://samanatours.com/dominican-republic/ferry-tickets-samana-sabana-de-la-mar/",
+      "title": "Ferry Tickets: Samaná & Sabana de la Mar",
+      "publisher": "Samaná Tours",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Search-indexed current seller page lists Samaná departures at 09:00, 11:00, 15:00 and 16:20. Page was bot-blocked during full read; confirm directly.",
+      "confidence": "low-medium"
+    }
+  ],
+  "cities": [
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "display": "Gulf of Papagayo & Nicoya Peninsula",
+      "country": "Costa Rica",
+      "canonical_city_id": "nicoya-papagayo-costa-rica",
+      "atlas_status": "existing",
+      "didi_evidence_tier": "city_supported_gateway_overlap",
+      "didi_exact_city_or_gateway": "Liberia",
+      "didi_source_id": "src-didi-cr-cities",
+      "water_relevance": "Pacific resort marina/water-taxi coast plus Gulf of Nicoya public ferry system",
+      "note": "DiDi officially lists Liberia. Do not imply DiDi operates every coastal town or ferry terminal."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "display": "San Blas (Guna Yala) Archipelago",
+      "country": "Panama",
+      "canonical_city_id": "san-blas-panama",
+      "atlas_status": "existing",
+      "didi_evidence_tier": "country_supported_with_gateway_city",
+      "didi_exact_city_or_gateway": "Ciudad de Panamá",
+      "didi_source_id": "src-didi-pa-city",
+      "water_relevance": "Cartí-port panga access and all inter-island movement; sovereign Guna operating context",
+      "note": "DiDi exact evidence is Panama City only. No exact Cartí/Guna Yala service evidence."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "display": "Samaná Peninsula & Bay",
+      "country": "Dominican Republic",
+      "canonical_city_id": "samana-dominican-republic",
+      "atlas_status": "existing",
+      "didi_evidence_tier": "country_supported_not_city_supported",
+      "didi_exact_city_or_gateway": null,
+      "didi_source_id": "src-didi-do-cities",
+      "water_relevance": "public bay ferry, Cayo Levantado transfers, whale-watch and beach excursions",
+      "note": "Official DiDi list does not name Samaná. Use inherited/country-supported framing only."
+    }
+  ],
+  "boarding_points": [
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-3b2eff4649",
+      "name": "Marina Papagayo",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://peninsulapapagayo.com/marina/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-1faedc294c",
+      "name": "Four Seasons Resort Costa Rica at Peninsula Papagayo (Playa Blanca / Playa Virador)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.fourseasons.com/costarica/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-bd549b9d6b",
+      "name": "Andaz Costa Rica Resort at Peninsula Papagayo (Playa Arenilla)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.hyatt.com/andaz/lirap-andaz-costa-rica-resort-at-peninsula-papagayo",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-c582393792",
+      "name": "Playa del Coco (Playas del Coco) beach landing & water-taxi hub",
+      "atlas_type": "water_taxi_stop",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.5508&mlon=-85.7025",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "water_taxi",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-aa29102d36",
+      "name": "Playa Hermosa (Guanacaste)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.5760&mlon=-85.6810",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-1adfeac794",
+      "name": "Playa Panama (Bahia Culebra)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.5870&mlon=-85.6610",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-8414c436d1",
+      "name": "Playa Ocotal",
+      "atlas_type": "dive_centre",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.5455&mlon=-85.7065",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-b1b5408d7d",
+      "name": "Playa Matapalo (RIU Palace / RIU Guanacaste)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.6900&mlon=-85.7060",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-4004c82dec",
+      "name": "Bahia Salinas / Playa El Jobo (Dreams Las Mareas)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=11.0420&mlon=-85.7080",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-b2863c3a20",
+      "name": "Marina Flamingo (Playa Flamingo)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.visitmarinaflamingo.com/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-a4c90aa3a4",
+      "name": "Playa Potrero",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.4490&mlon=-85.7800",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-83a8837785",
+      "name": "Playa Conchal (Reserva Conchal / The Westin Golf Resort)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.marriott.com/en-us/hotels/lirwi-the-westin-reserva-conchal-an-all-inclusive-golf-resort-spa/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-9055b69040",
+      "name": "Playa Brasilito",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.4078&mlon=-85.7958",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-d739b6e747",
+      "name": "Tamarindo beach & estuary water-taxi",
+      "atlas_type": "water_taxi_stop",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.2992&mlon=-85.8425",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "water_taxi",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-1cd51457e6",
+      "name": "Nosara / Playa Guiones",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.9460&mlon=-85.6620",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-3411394964",
+      "name": "Playa Samara",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.8800&mlon=-85.5290",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-806f8046bf",
+      "name": "Playa Carrillo",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.8640&mlon=-85.4790",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-f79715455d",
+      "name": "Puntarenas Ferry Terminal (Gulf of Nicoya car/passenger ferries)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://nicoyapeninsula.com/travel-info/ferry/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-2a771d12a4",
+      "name": "Puntarenas Cruise Terminal (Muelle de Cruceros)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.incop.go.cr/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-906030bde9",
+      "name": "Paquera Ferry Terminal",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://nicoyapeninsula.com/travel-info/ferry/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-e35dcefd78",
+      "name": "Playa Naranjo Ferry Terminal",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://nicoyapeninsula.com/travel-info/ferry/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-b70f85580f",
+      "name": "Tambor / Bahia Ballena (Barcelo Tambor)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.7345&mlon=-85.0140",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-401cc8f8f9",
+      "name": "Curu National Wildlife Refuge dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.8090&mlon=-84.9270",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-110c80da57",
+      "name": "Isla Tortuga",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.7630&mlon=-84.8955",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-4c4455ba0b",
+      "name": "Montezuma beach & Jaco water-taxi",
+      "atlas_type": "water_taxi_stop",
+      "atlas_source_url": "https://www.zumatours.net/water-taxi-boat-montezuma-jaco/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "water_taxi",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-3be395dd31",
+      "name": "Santa Teresa / Mal Pais",
+      "atlas_type": "water_taxi_stop",
+      "atlas_source_url": "https://tropicaltourshuttles.com/taxi-boat/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "water_taxi",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-35c95a4294",
+      "name": "Cabuya / Cabo Blanco Absolute Nature Reserve",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5830&mlon=-85.1130",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-3a57c41bf1",
+      "name": "Isla San Lucas National Park",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.9370&mlon=-84.8970",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-ece28eddd6",
+      "name": "Safe Harbor Los Suenos Marina (Playa Herradura)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://safeharbor.com/locations/safe-harbor-los-suenos/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-9c1ca5a8e4",
+      "name": "Playa Herradura / Jaco water-taxi beach (taxi-boat mainland hub)",
+      "atlas_type": "water_taxi_stop",
+      "atlas_source_url": "https://www.malpais.net/tours-trips/taxi-boat-montezuma-jaco/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "water_taxi",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-7f1459675d",
+      "name": "Marina Pez Vela (Quepos / Manuel Antonio)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://marinapezvela.com/about-us/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-a7bc0f5fdb",
+      "name": "Liberia (LIR) Airport - Papagayo air-sea handoff (ABSENCE opening)",
+      "atlas_type": "seaplane_base",
+      "atlas_source_url": "https://peninsulapapagayo.com/",
+      "research_classification": "future_opportunity",
+      "operating_model": "future_opportunity",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-dd18a30f06",
+      "name": "North Guanacaste commuter water-bus (ABSENCE opening)",
+      "atlas_type": "water_bus_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.5500&mlon=-85.7010",
+      "research_classification": "future_opportunity",
+      "operating_model": "future_opportunity",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-3c3024d33e",
+      "name": "Witch's Rock / Roca Bruja (Santa Rosa National Park, Playa Naranjo)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=10.8060&mlon=-85.7560",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-c11b038a17",
+      "name": "Playa Grande / Las Baulas National Marine Park",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "unknown",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-aebd44cfd0",
+      "name": "Puerto Caldera (commercial port)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-76be611ff0",
+      "name": "Tarcoles river mouth / inner Gulf of Nicoya turbidity (operational note)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-9cb7ef7af8",
+      "name": "Costa Rica military ABSENCE (Servicio Nacional de Guardacostas only)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "reject_drop",
+      "operating_model": "not_a_boarding_point",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "boarding_point_id": "bp-71943d541d",
+      "name": "Casa Presidencial (Zapote, San Jose) - state-overlook NEGATIVE",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "reject_drop",
+      "operating_model": "not_a_boarding_point",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-d0c610c51c",
+      "name": "Puerto Cartí (Cartí / Gardi mainland dock)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4483&mlon=-78.9716",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-12bd0baa1e",
+      "name": "Cartí Sugdup (Gardi Sugdub) community dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4710&mlon=-78.9601",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-9f5bc7700c",
+      "name": "El Porvenir (Gaigirgordub) Dock & Airstrip",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5583&mlon=-78.9492",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-287a92b230",
+      "name": "Cayos Limones (Lemon Cays)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5597&mlon=-78.8794",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-45d15101f5",
+      "name": "Cayos Chichime (Chichime Cays)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5905&mlon=-78.8795",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-354fb78c0a",
+      "name": "Isla Perro (Achutupu / Dog Island, central)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4809&mlon=-78.8500",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-8ad2b57645",
+      "name": "Cayos Holandeses (Hollandes Cays — 'The Swimming Pool')",
+      "atlas_type": "floating_pontoon",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5910&mlon=-78.6600",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-9b200cbc96",
+      "name": "Cayos Coco Banderos (Ordupuquip)",
+      "atlas_type": "floating_pontoon",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4950&mlon=-78.6230",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-6f87d1f50b",
+      "name": "Río Sidra (Mamartupu / Niatupu) dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4470&mlon=-78.8303",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-8d9ac217b4",
+      "name": "Narganá / Corazón de Jesús (Yandup) dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4445&mlon=-78.5834",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-65e76b8efb",
+      "name": "Playón Chico (Ukupseni) dock & airstrip",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.3100&mlon=-78.2342",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-8ba884103f",
+      "name": "Achutupu (eastern) community dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.1900&mlon=-77.9727",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-2256b03b6c",
+      "name": "Mamitupu / Ailigandí area dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.2233&mlon=-78.0256",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-1beb423e6c",
+      "name": "Ustupu (Ogobsucum) dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.1332&mlon=-77.9291",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-7509defbb7",
+      "name": "Mulatupu / Nuevo Sasardí dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9465&mlon=-77.7518",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-58ce6f5c70",
+      "name": "Isla Pinos (Tupbak) dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9992&mlon=-77.7595",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-28a08733de",
+      "name": "Yandup Island Lodge jetty (Playón Chico)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.yandupisland.com/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-55e584d506",
+      "name": "Dolphin Island Lodge jetty (Uaguitupu)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.dolphinlodge.net/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-3c9bfad658",
+      "name": "Coral Lodge jetty (Santa Isabel)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.corallodge.com/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-1bcf10c16c",
+      "name": "Linton Bay Marina (Puerto Lindo)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.lintonbaymarina.com/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-07e6fe3cbc",
+      "name": "Panamarina (Puerto Lindo)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.6092&mlon=-79.6089",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-19f6984157",
+      "name": "Muelle de Portobelo (Portobelo town pier)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.5563&mlon=-79.6550",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-f7940b3212",
+      "name": "Isla Grande jetty (La Guaira launch)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.6305&mlon=-79.5637",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-0482e8062a",
+      "name": "Shelter Bay Marina (Fort Sherman)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://shelterbaymarina.com/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-0fc781fbe2",
+      "name": "Colón 2000 Cruise Terminal (Manzanillo Bay)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.cruisemapper.com/ports/colon-port-87",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-f0b249081d",
+      "name": "Club Náutico Caribe (Colón)",
+      "atlas_type": "yacht_club",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.3635&mlon=-79.8950",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-da346e8d5b",
+      "name": "Fuerte Amador Resort & Marina (Flamenco Marina)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.flamencomarina.com/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-665f519fb0",
+      "name": "La Playita de Amador (Sea Las Perlas / Taboga launch)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://ferrypearlislands.com/en/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-f51bb47f27",
+      "name": "Amador Cruise Terminal (Panama Pacific Cruise Port)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9164&mlon=-79.5206",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-b1e88cf27f",
+      "name": "Balboa Yacht Club (Club de Yates de Balboa)",
+      "atlas_type": "yacht_club",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9393&mlon=-79.5546",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-31c392e880",
+      "name": "Naos Harbor / Isla Naos pier (STRI)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9175&mlon=-79.5329",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-a7e659463d",
+      "name": "Muelle de Taboga (Isla Taboga)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.7982&mlon=-79.5548",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-08a1796804",
+      "name": "Contadora Island Dock (Sea Las Perlas / Punta Galeón)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://isladecontadora.com/en/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-ec4e13c171",
+      "name": "Hacienda del Mar jetty (Isla San José)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://haciendadelmar.net/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-0c6ee86f26",
+      "name": "Isla del Rey / San Miguel town dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.4773&mlon=-78.9791",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-7e3440503d",
+      "name": "Saboga Island dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.6670&mlon=-79.0507",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-7e45b7e6bb",
+      "name": "Isla Pedro González (Pearl Island development)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.3950&mlon=-79.0500",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-206d45b872",
+      "name": "Playa El Arenal (Pedasí — Isla Iguana launch)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=7.5589&mlon=-80.0195",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-78154b59fb",
+      "name": "Isla Iguana Wildlife Refuge landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=7.6281&mlon=-79.9996",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-d169f12252",
+      "name": "Playa Venao (soft-landing surf beach)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=7.4157&mlon=-80.1738",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-17d40e3aa7",
+      "name": "Playa Los Destiladeros (Pedasí boutique-hotel coast)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=7.4731&mlon=-79.9996",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-c5250c4df6",
+      "name": "Cartí / Guna Yala air-sea handoff (planned — no incumbent)",
+      "atlas_type": "seaplane_base",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=9.4490&mlon=-78.9690",
+      "research_classification": "future_opportunity",
+      "operating_model": "future_opportunity",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-ea562022b4",
+      "name": "Panama City water-mobility node (planned — no incumbent commuter network)",
+      "atlas_type": "water_bus_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=8.9150&mlon=-79.5290",
+      "research_classification": "future_opportunity",
+      "operating_model": "future_opportunity",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-679afe9bbd",
+      "name": "Cristóbal / MIT / Colón container terminals",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-53dc49ecc0",
+      "name": "Palacio de las Garzas (Presidential Palace, Casco Viejo)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "unknown",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-2bc08a3ae7",
+      "name": "Bahía de Panamá Wetlands (Ramsar / upper-bay mudflats)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-5f5f211515",
+      "name": "Port of Balboa (PSA / Panama Ports Co. container terminal)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "san-blas-panama",
+      "boarding_point_id": "bp-604fcd9baf",
+      "name": "Panama Canal — restricted transit waterway",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-379a0d564b",
+      "name": "Santa Bárbara de Samaná Ferry Dock & Cayo Levantado Launch",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2026&mlon=-69.3321",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-2d25647258",
+      "name": "Muelle Moto Marina (Samaná town)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2024&mlon=-69.3309",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-ada44cecd7",
+      "name": "Marina Puerto Bahía (The Bannister Hotel)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.puertobahia.do/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-80f05b5195",
+      "name": "Cayo Levantado Public Dock",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.1661&mlon=-69.2778",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-327b32ddf7",
+      "name": "Cayo Levantado Resort jetty (Bahia Principe Luxury Cayo Levantado)",
+      "atlas_type": "hotel_jetty",
+      "atlas_source_url": "https://www.cayolevantadoresort.com/",
+      "research_classification": "candidate_needing_boarding_confirmation",
+      "operating_model": "resort_transfer",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-624d465eef",
+      "name": "Las Galeras Beach Landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2944&mlon=-69.208",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-a61c456b54",
+      "name": "Las Terrenas Sailing Club",
+      "atlas_type": "yacht_club",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.3188&mlon=-69.5565",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-02c8e2abcd",
+      "name": "Pueblo de los Pescadores beach landing (Las Terrenas)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.322&mlon=-69.5406",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-734bdfc461",
+      "name": "Playa El Limón / Playa Morón landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.3171&mlon=-69.4182",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-c066c0a54c",
+      "name": "Playa Rincón boat landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2886&mlon=-69.2476",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-dff4e40ef2",
+      "name": "Playa Frontón boat-only landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2971&mlon=-69.1515",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-a557583054",
+      "name": "Los Haitises National Park boat access",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.0640&mlon=-69.4511",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-87d41b3355",
+      "name": "Sánchez waterfront (western bay gateway)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.2235&mlon=-69.6147",
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-2d1d8f15f2",
+      "name": "Samaná Bay scheduled water-mobility — ABSENCE opening",
+      "atlas_type": "water_bus_terminal",
+      "atlas_source_url": "https://www.godominicanrepublic.com/things-to-do/marina-puerto-bahia",
+      "research_classification": "future_opportunity",
+      "operating_model": "future_opportunity",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-d1a6d2933d",
+      "name": "Marina Cap Cana",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://marinacapcana.com/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-e2c3f616aa",
+      "name": "Juanillo Beach club landing (Cap Cana)",
+      "atlas_type": "beach_club_jetty",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.476&mlon=-68.398",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "excursion_or_soft_landing",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-5538d46794",
+      "name": "Bávaro / Cabeza de Toro marina",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.6519&mlon=-68.3629",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-e25cb2f69d",
+      "name": "La Marina Casa de Campo",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.marinacasadecampo.com.do/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-d5d96eb13f",
+      "name": "Puerto de Bayahibe (Saona / Catalina gateway)",
+      "atlas_type": "ferry_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.3715&mlon=-68.8409",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_transport_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-defe81bacf",
+      "name": "Isla Saona — Mano Juan public dock",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.1767&mlon=-68.7838",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-a53b97222f",
+      "name": "Isla Catalina excursion landing",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.3430&mlon=-68.9520",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-466ce14583",
+      "name": "La Romana International Tourist Port (cruise)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.4167&mlon=-68.9590",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-68d3d22503",
+      "name": "Amber Cove Cruise Terminal (Maimón, Puerto Plata)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.8318&mlon=-70.7724",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-ce719e0f18",
+      "name": "Taíno Bay Cruise Terminal (Puerto Plata town)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.puertoplatadr.com/cruiseports/",
+      "research_classification": "verified_existing_boarding_point",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-b8d2c17149",
+      "name": "Ocean World Marina (Cofresí, Puerto Plata)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=19.7836&mlon=-70.7610",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-ee60684ace",
+      "name": "Puerto Sans Souci (Santo Domingo — cruise + marina)",
+      "atlas_type": "cruise_terminal",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.4713&mlon=-69.8762",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "cruise",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-fd97672622",
+      "name": "Club Náutico de Santo Domingo (Boca Chica)",
+      "atlas_type": "yacht_club",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.4450&mlon=-69.6267",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-8f10df88de",
+      "name": "Marina Zar-Par (Boca Chica)",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.4430&mlon=-69.6093",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-b0a2c94808",
+      "name": "Marina Pedernales / Cabo Rojo tourism development",
+      "atlas_type": "marina",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.0282&mlon=-71.7461",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "marina_private_or_charter",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-5f07af0cfa",
+      "name": "Bahía de las Águilas boat landing (Jaragua NP)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=17.8686&mlon=-71.6452",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "public_or_excursion",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-6f978a2824",
+      "name": "Ceramar Shipyard (Las Calderas, Baní)",
+      "atlas_type": "shipyard_partner",
+      "atlas_source_url": "https://www.openstreetmap.org/?mlat=18.2156&mlon=-70.5157",
+      "research_classification": "candidate_needing_coordinate_and_primary_source_confirmation",
+      "operating_model": "industrial",
+      "coordinates": null,
+      "coordinate_note": "Coordinates were not re-published in this audit; consult canonical Atlas feature geometry. OSM links are candidate evidence, not sufficient primary-source verification."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-f7e8a1a75c",
+      "name": "Samaná Bay & Silver Bank Marine Mammal Sanctuary (seasonal protocol)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-7a1cd7d6df",
+      "name": "Puerto Río Haina (commercial port)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-df80418a60",
+      "name": "DP World Caucedo (container terminal)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-1582aacf70",
+      "name": "Base Naval Las Calderas (Armada de RD)",
+      "atlas_type": "working_harbour",
+      "atlas_source_url": null,
+      "research_classification": "non_bp_poi",
+      "operating_model": "restricted_or_context_only",
+      "coordinates": null,
+      "coordinate_note": null
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "boarding_point_id": "bp-6db531589e",
+      "name": "DR state-overlook — NEGATIVE confirmation (Palacio Nacional inland)",
+      "atlas_type": "public_pier",
+      "atlas_source_url": null,
+      "research_classification": "reject_drop",
+      "operating_model": "not_a_boarding_point",
+      "coordinates": null,
+      "coordinate_note": null
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "route_id": "rn-7e59f984abec",
+      "endpoints": [
+        {
+          "name": "Puntarenas Ferry Terminal",
+          "boarding_point_id": "bp-f79715455d",
+          "city_id": "nicoya-papagayo-costa-rica"
+        },
+        {
+          "name": "Paquera Ferry Terminal",
+          "boarding_point_id": "bp-906030bde9",
+          "city_id": "nicoya-papagayo-costa-rica"
+        }
+      ],
+      "distance_nm": 9.3,
+      "water_relevance": "existing Gulf of Nicoya public car/passenger ferry",
+      "service_class": "public_transport",
+      "evidence_state": "current_route_evidence",
+      "likely_vessel_range_class": "Pioneer II / short-range bay",
+      "hand_waypoints_required": false,
+      "notes": "Exact route ID matched in canonical ROUTES.json. Current schedule and fare evidenced; passenger volume unavailable."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "route_id": "rn-eb4ca32edbef",
+      "endpoints": [
+        {
+          "name": "Puntarenas Ferry Terminal",
+          "boarding_point_id": "bp-f79715455d",
+          "city_id": "nicoya-papagayo-costa-rica"
+        },
+        {
+          "name": "Playa Naranjo Ferry Terminal",
+          "boarding_point_id": "bp-e35dcefd78",
+          "city_id": "nicoya-papagayo-costa-rica"
+        }
+      ],
+      "distance_nm": 7.5,
+      "water_relevance": "existing Gulf of Nicoya public car/passenger ferry",
+      "service_class": "public_transport",
+      "evidence_state": "current_route_evidence",
+      "likely_vessel_range_class": "Pioneer II / short-range bay",
+      "hand_waypoints_required": false,
+      "notes": "Exact route ID matched. Official fare evidenced; current operator timetable was not captured."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "route_id": "rn-55b63e976bb7",
+      "endpoints": [
+        {
+          "name": "Marina Papagayo",
+          "boarding_point_id": "bp-3b2eff4649",
+          "city_id": "nicoya-papagayo-costa-rica"
+        },
+        {
+          "name": "Four Seasons Resort Costa Rica at Peninsula Papagayo",
+          "boarding_point_id": "bp-1faedc294c",
+          "city_id": "nicoya-papagayo-costa-rica"
+        }
+      ],
+      "distance_nm": 2.0,
+      "water_relevance": "resort/marina transfer within Papagayo",
+      "service_class": "resort_transfer",
+      "evidence_state": "future_opportunity_not_current_scheduled_service",
+      "likely_vessel_range_class": "Pioneer II / very short resort hop",
+      "hand_waypoints_required": false,
+      "notes": "Route exists in Atlas but no current scheduled service/fare/volume was verified."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "route_id": "rn-1efe26f3c0f4",
+      "endpoints": [
+        {
+          "name": "Playa del Coco beach landing & water-taxi hub",
+          "boarding_point_id": "bp-c582393792",
+          "city_id": "nicoya-papagayo-costa-rica"
+        },
+        {
+          "name": "Playa Hermosa",
+          "boarding_point_id": "bp-aa29102d36",
+          "city_id": "nicoya-papagayo-costa-rica"
+        }
+      ],
+      "distance_nm": 2.8,
+      "water_relevance": "north Guanacaste beach-to-beach water mobility",
+      "service_class": "water_taxi_candidate",
+      "evidence_state": "future_opportunity_route_specific_service_unverified",
+      "likely_vessel_range_class": "Pioneer II / very short coastal",
+      "hand_waypoints_required": false,
+      "notes": "Both OSM-sourced Atlas BPs need primary-source/landing confirmation."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "route_id": "rn-8fb072f5a8a8",
+      "endpoints": [
+        {
+          "name": "Puerto Cartí (Cartí/Gardi mainland dock)",
+          "boarding_point_id": "bp-d0c610c51c",
+          "city_id": "san-blas-panama"
+        },
+        {
+          "name": "Cartí Sugdup (Gardi Sugdub) community dock",
+          "boarding_point_id": "bp-12bd0baa1e",
+          "city_id": "san-blas-panama"
+        }
+      ],
+      "distance_nm": 2.8,
+      "water_relevance": "mainland-port to island-community transfer",
+      "service_class": "Guna-operated_panga_or_transfer",
+      "evidence_state": "current_transfer_pattern_route_schedule_unverified",
+      "likely_vessel_range_class": "Pioneer II / short archipelago",
+      "hand_waypoints_required": false,
+      "notes": "Exact Atlas route ID; general Guna boat-transfer evidence only. Sovereign/community approval is mandatory."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "route_id": "rn-87eec178e86f",
+      "endpoints": [
+        {
+          "name": "El Porvenir (Gaigirgordub) Dock & Airstrip",
+          "boarding_point_id": "bp-9f5bc7700c",
+          "city_id": "san-blas-panama"
+        },
+        {
+          "name": "Cayos Limones (Lemon Cays)",
+          "boarding_point_id": "bp-287a92b230",
+          "city_id": "san-blas-panama"
+        }
+      ],
+      "distance_nm": 4.1,
+      "water_relevance": "inter-island tourism/community transfer",
+      "service_class": "excursion_or_local_transfer",
+      "evidence_state": "future_opportunity_route_specific_service_unverified",
+      "likely_vessel_range_class": "Pioneer II / short archipelago",
+      "hand_waypoints_required": false,
+      "notes": "No route-specific fare, schedule or passenger count found."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "route_id": null,
+      "endpoints": [
+        {
+          "name": "Puerto Cartí (Cartí/Gardi mainland dock)",
+          "boarding_point_id": "bp-d0c610c51c",
+          "city_id": "san-blas-panama"
+        },
+        {
+          "name": "Colón Caribbean waterfront",
+          "boarding_point_id": null,
+          "city_id": null
+        }
+      ],
+      "distance_nm": null,
+      "water_relevance": "potential all-water alternative/extension along Caribbean coast",
+      "service_class": "future_opportunity",
+      "evidence_state": "unsealed_research_concept",
+      "likely_vessel_range_class": "Quanta LR only after distance/weather validation",
+      "hand_waypoints_required": true,
+      "hand_waypoint_note": "Mandatory hand waypoints along the Caribbean coast to prevent a straight segment crossing the Panamanian isthmus or restricted Canal waters.",
+      "notes": "No route ID, distance, demand or operator evidence. Keep out of economics and public copy."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "route_id": "rn-64effc46b976",
+      "endpoints": [
+        {
+          "name": "Santa Bárbara de Samaná Ferry Dock",
+          "boarding_point_id": "bp-379a0d564b",
+          "city_id": "samana-dominican-republic"
+        },
+        {
+          "name": "Sabana de la Mar Ferry Terminal",
+          "boarding_point_id": null,
+          "city_id": null
+        }
+      ],
+      "distance_nm": 8.9,
+      "water_relevance": "existing public passenger ferry across Samaná Bay",
+      "service_class": "public_transport",
+      "evidence_state": "current_route_evidence",
+      "likely_vessel_range_class": "Pioneer II / short bay",
+      "hand_waypoints_required": false,
+      "notes": "Exact Atlas route ID. Seller fare/time/schedule evidence exists but primary operator/authority confirmation remains needed."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "route_id": "rn-c3a4ef933700",
+      "endpoints": [
+        {
+          "name": "Santa Bárbara de Samaná Ferry Dock & Cayo Levantado Launch",
+          "boarding_point_id": "bp-379a0d564b",
+          "city_id": "samana-dominican-republic"
+        },
+        {
+          "name": "Cayo Levantado Public Dock",
+          "boarding_point_id": "bp-80f05b5195",
+          "city_id": "samana-dominican-republic"
+        }
+      ],
+      "distance_nm": 3.9,
+      "water_relevance": "high-frequency excursion/resort island transfer pattern",
+      "service_class": "excursion_and_resort_transfer",
+      "evidence_state": "current_activity_route_fare_and_volume_unverified",
+      "likely_vessel_range_class": "Pioneer II / short bay",
+      "hand_waypoints_required": false,
+      "notes": "Exact Atlas route ID; do not call it scheduled public transport without operator evidence."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "route_id": "rn-60740d4c3114",
+      "endpoints": [
+        {
+          "name": "Samaná",
+          "boarding_point_id": null,
+          "city_id": "samana-dominican-republic"
+        },
+        {
+          "name": "Las Galeras",
+          "boarding_point_id": null,
+          "city_id": "samana-dominican-republic"
+        }
+      ],
+      "distance_nm": 35.0,
+      "water_relevance": "coastal link replacing slow peninsula road detour",
+      "service_class": "future_opportunity",
+      "evidence_state": "atlas_route_only_no_current_service_evidence",
+      "likely_vessel_range_class": "Quanta LR / medium coastal",
+      "hand_waypoints_required": true,
+      "hand_waypoint_note": "Retain sealed coastal routing around Cabo Samaná; a naïve straight chord may cross land.",
+      "notes": "Generic endpoints are not yet confirmed boarding points; keep out of economics."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "route_id": "rn-21a0133c6d5c",
+      "endpoints": [
+        {
+          "name": "Las Galeras Beach Landing",
+          "boarding_point_id": "bp-624d465eef",
+          "city_id": "samana-dominican-republic"
+        },
+        {
+          "name": "Playa Rincón boat landing",
+          "boarding_point_id": "bp-c066c0a54c",
+          "city_id": "samana-dominican-republic"
+        }
+      ],
+      "distance_nm": 2.3,
+      "water_relevance": "existing beach excursion pattern",
+      "service_class": "excursion",
+      "evidence_state": "current_activity_route_specific_volume_unverified",
+      "likely_vessel_range_class": "Pioneer II / very short coastal",
+      "hand_waypoints_required": false,
+      "notes": "Both landings currently rely on OSM links and require primary/operator confirmation."
+    }
+  ],
+  "demand_records": [
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "record_type": "tourism_air_arrivals",
+      "period": "2024",
+      "value": 2661488,
+      "unit": "air tourist arrivals",
+      "scope": "Costa Rica national",
+      "source_id": "src-ict-2024",
+      "annual_one_way_pax": null,
+      "assumption_record": "Broad national catchment only; no allocation to Guanacaste or a water route."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "record_type": "tourism_air_arrivals",
+      "period": "2024",
+      "value": 881289,
+      "unit": "tourist entries",
+      "scope": "Daniel Oduber International Airport, Guanacaste",
+      "source_id": "src-ict-2024",
+      "annual_one_way_pax": null,
+      "assumption_record": "Airport gateway flow, not Papagayo/Nicoya route demand; no conversion applied."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "record_type": "fare_and_schedule",
+      "period": "effective 2026-07-01; timetable from 2026-04-20 until further notice",
+      "route_id": "rn-7e59f984abec",
+      "fare": 810,
+      "currency": "CRC",
+      "fare_basis": "adult one-way regulated passenger fare",
+      "schedule": "04:00, 06:30, 09:00, 12:00, 15:00, 18:00, 20:00, 22:00 shown from each end",
+      "service_days": "not explicitly stated on captured page",
+      "source_ids": [
+        "src-aresep-fares",
+        "src-naviera-tambor"
+      ],
+      "annual_one_way_pax": null,
+      "assumption_record": "No passenger counts found; eight listed departures are not converted into demand."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "record_type": "fare",
+      "period": "effective 2026-07-01",
+      "route_id": "rn-eb4ca32edbef",
+      "fare": 1000,
+      "currency": "CRC",
+      "fare_basis": "adult one-way regulated passenger fare",
+      "schedule": null,
+      "service_days": null,
+      "source_id": "src-aresep-fares",
+      "annual_one_way_pax": null,
+      "assumption_record": "No current timetable or passenger volume captured."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "record_type": "destination_scale",
+      "period": "current page accessed 2026-07-09",
+      "value": 365,
+      "unit": "more-than islands",
+      "scope": "Gunayala archipelago",
+      "source_id": "src-tourism-panama-guna",
+      "annual_one_way_pax": null,
+      "assumption_record": "Geographic scale, not demand."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "record_type": "tourism_supply",
+      "period": "operator guide updated 2025-07-25",
+      "value": 32,
+      "unit": "islands open to tourism",
+      "scope": "Gunayala",
+      "source_id": "src-guna-local-guide",
+      "annual_one_way_pax": null,
+      "assumption_record": "Operator-reported tourism supply; not visitor or route volume."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "record_type": "trip_time",
+      "period": "current operator material accessed 2026-07-09",
+      "value": "30–35",
+      "unit": "minutes",
+      "scope": "Cartí-area port to selected excursion islands",
+      "source_id": "src-guna-island-times",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "service_days": "advance coordination required; no fixed schedule captured",
+      "assumption_record": "Applies to selected operator excursions, not all Atlas corridors."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "record_type": "seasonal_visitors",
+      "period": "Q1 2024",
+      "value": 61558,
+      "unit": "whale-observation visitors",
+      "scope": "Samaná",
+      "source_id": "src-dr-whales-2024-visitors",
+      "breakdown": {
+        "foreign": 40667,
+        "local": 20891,
+        "foreign_share_percent": 66.1
+      },
+      "annual_one_way_pax": null,
+      "assumption_record": "Destination-wide seasonal whale-watch participation; not ferry or Cayo Levantado route demand."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "record_type": "seasonality",
+      "period": "2025 season",
+      "value": "2025-01-15 to 2025-03-31",
+      "unit": "official observation season window",
+      "scope": "Samaná Bay whale observation",
+      "source_id": "src-dr-whales-2025",
+      "annual_one_way_pax": null,
+      "assumption_record": "Operational conservation window; not volume."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "record_type": "airport_passengers",
+      "period": "2024",
+      "value": 101555,
+      "unit": "commercial airport passengers",
+      "scope": "El Catey/Samaná airport",
+      "source_id": "src-jac-air-2024",
+      "annual_one_way_pax": null,
+      "assumption_record": "Airport throughput is not water-route demand and may include both arrivals and departures."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "record_type": "tourism_supply",
+      "period": "report published 2025-01",
+      "value": 2600,
+      "unit": "approximately open hotel rooms",
+      "scope": "Samaná, 46 hotels",
+      "source_id": "src-mitur-samana",
+      "annual_one_way_pax": null,
+      "assumption_record": "Supply measure only; no occupancy-to-route conversion."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "record_type": "fare_and_schedule",
+      "period": "current pages accessed 2026-07-09",
+      "route_id": "rn-64effc46b976",
+      "fare": 16,
+      "currency": "USD",
+      "fare_basis": "reseller one-way ticket",
+      "travel_time_minutes": 60,
+      "schedule": "Samaná departures indexed as 09:00, 11:00, 15:00, 16:20",
+      "service_days": null,
+      "source_ids": [
+        "src-samana-ferry-seller",
+        "src-samana-ferry-schedule"
+      ],
+      "annual_one_way_pax": null,
+      "assumption_record": "Commercial reseller evidence only; fare and timetable require primary operator/authority confirmation before finance use."
+    }
+  ],
+  "brief_maturity": {
+    "nicoya-papagayo-costa-rica": {
+      "canonical_path": "data-clean/city_briefs/nicoya-papagayo-costa-rica.json",
+      "overall_score_100": 76,
+      "field_scores": {
+        "identity": 5,
+        "tagline": 4,
+        "summary": 4,
+        "demand_signals": 3,
+        "use_cases": 5,
+        "journeys": 4,
+        "navier_fit": 4,
+        "competitive_landscape": 3,
+        "seasonality": 4,
+        "regulatory_note": 3,
+        "signature_routes": 4,
+        "precedents": 3,
+        "sources": 3
+      },
+      "strengths": [
+        "Complete canonical schema",
+        "Clear split between resort and public-ferry demand",
+        "Three signature journeys and vessel fit"
+      ],
+      "enhancements": [
+        "Replace/augment press-style airport signal with official ICT 2024 figures",
+        "Add regulated 2026 ferry fares and live schedule",
+        "Keep route passenger volumes null until operator/authority evidence",
+        "Correct terminal BP source quality; current Atlas ferry links use a tourism-info site rather than primary operator/port coordinates"
+      ],
+      "preserve_partner_neutrality": true
+    },
+    "san-blas-panama": {
+      "canonical_path": "data-clean/city_briefs/san-blas-panama.json",
+      "overall_score_100": 68,
+      "field_scores": {
+        "identity": 5,
+        "tagline": 3,
+        "summary": 4,
+        "demand_signals": 2,
+        "use_cases": 4,
+        "journeys": 3,
+        "navier_fit": 4,
+        "competitive_landscape": 3,
+        "seasonality": 3,
+        "regulatory_note": 5,
+        "signature_routes": 3,
+        "precedents": 3,
+        "sources": 2
+      },
+      "strengths": [
+        "Guna sovereignty and benefit-sharing correctly foregrounded",
+        "Strong access-friction and inter-island use-case framing",
+        "Complete canonical schema"
+      ],
+      "enhancements": [
+        "Drop or source the “80% of income” claim before publication",
+        "Do not describe San Blas as “an hour from Panama City”; verify road-plus-boat timing",
+        "Separate current Guna panga transfers from future fast-ferry concepts",
+        "Verify each community dock with Guna/port/operator evidence; OSM alone is insufficient",
+        "Direct Colón concept needs hand-waypoint geometry, distance and authority review"
+      ],
+      "preserve_partner_neutrality": true
+    },
+    "samana-dominican-republic": {
+      "canonical_path": "data-clean/city_briefs/samana-dominican-republic.json",
+      "overall_score_100": 74,
+      "field_scores": {
+        "identity": 5,
+        "tagline": 4,
+        "summary": 4,
+        "demand_signals": 3,
+        "use_cases": 5,
+        "journeys": 3,
+        "navier_fit": 4,
+        "competitive_landscape": 3,
+        "seasonality": 4,
+        "regulatory_note": 4,
+        "signature_routes": 3,
+        "precedents": 3,
+        "sources": 3
+      },
+      "strengths": [
+        "Strong whale-sensitive clean-propulsion logic",
+        "Clear public/excursion/resort use cases",
+        "Complete canonical schema"
+      ],
+      "enhancements": [
+        "Add official 61,558 Q1 2024 whale-observation visitors with explicit non-route caveat",
+        "Add public Samaná–Sabana de la Mar ferry as a distinct transport lane",
+        "Add official 2024 El Catey throughput and hotel supply only as catchment/supply signals",
+        "Confirm exact protection rules and vessel protocols with authority",
+        "Do not treat Samaná–Las Galeras generic endpoints as BPs until landings are sourced"
+      ],
+      "preserve_partner_neutrality": true
+    }
+  },
+  "partner_narrative_notes": {
+    "nicoya-papagayo-costa-rica": [
+      "DiDi officially names Liberia: frame DiDi as airport/resort last-mile orchestration into verified marinas/ferry terminals, not as a marine operator.",
+      "Public-ferry upgrade and luxury resort transfer are separate products with different fare and service expectations.",
+      "Country/city evidence does not prove DiDi availability at every beach landing."
+    ],
+    "san-blas-panama": [
+      "Use Panama City exact-city evidence only for urban trip origination/coordination; do not claim DiDi at Cartí.",
+      "Any DiDi × Navier product must be Guna-owned or Guna-partnered, respect comarca authority, and preserve local operator economics.",
+      "Position 4x4-to-port plus Guna-operated boat as today’s chain; future all-water links remain speculative."
+    ],
+    "samana-dominican-republic": [
+      "DiDi has Dominican country presence but Samaná is absent from the official city list; use country-supported/inherited wording only.",
+      "Separate public Samaná–Sabana ferry, Cayo Levantado resort/excursion transfers, and regulated whale-watching activity.",
+      "A future app layer can coordinate airport/hotel/wharf handoffs only after local service and operator integration are verified."
+    ]
+  },
+  "gaps": [
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "gap": "No annual or route-level passenger counts for Puntarenas–Paquera or Puntarenas–Playa Naranjo.",
+      "owner": "finance research",
+      "next_action": "Request INCOP/CTP/ARESEP/operator ridership and vehicle/passenger series by route and year."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "gap": "Current Playa Naranjo operator schedule not captured.",
+      "owner": "research",
+      "next_action": "Confirm COONATRAMAR timetable and direct ticketing fare page."
+    },
+    {
+      "market_id": "nicoya-papagayo-costa-rica",
+      "gap": "Many beach/hotel BPs are OSM or property-page candidates without proof of a boardable dock/soft landing.",
+      "owner": "geometry/registry",
+      "next_action": "Obtain primary operator/property evidence and coordinate confirmation before sealing."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "gap": "No official annual Gunayala visitor or route passenger series found.",
+      "owner": "finance research",
+      "next_action": "Request ATP and Guna General Congress/port permit and visitor-fee totals; keep annual_one_way_pax null."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "gap": "Port names/coordinates and community-dock boarding permissions are not confirmed by Guna authority.",
+      "owner": "local partnerships + geometry",
+      "next_action": "Validate with Congreso General Guna and licensed Guna operators; do not publish OSM coordinates as authoritative."
+    },
+    {
+      "market_id": "san-blas-panama",
+      "gap": "Colón–Cartí concept has no sealed geometry, distance, fare, schedule or authority approval.",
+      "owner": "Grok seal + partnerships",
+      "next_action": "If retained, add coast-following hand waypoints, check weather/range/restricted waters, then obtain Guna and Panama maritime review."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "gap": "Public ferry evidence is from sellers/search index, not the primary operator or transport authority.",
+      "owner": "research",
+      "next_action": "Confirm operator name, service days, both-direction timetable, wharf coordinates and walk-up fare."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "gap": "No route-specific Cayo Levantado or Samaná–Sabana annual passenger count.",
+      "owner": "finance research",
+      "next_action": "Request operator/resort/port/Ministry data; do not use whale visitors as route demand."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "gap": "DiDi exact-city service is unproven in Samaná.",
+      "owner": "partner coverage",
+      "next_action": "Obtain official/app service-area evidence before claiming local DiDi availability."
+    },
+    {
+      "market_id": "samana-dominican-republic",
+      "gap": "Whale sanctuary vessel/noise/speed rules were not extracted.",
+      "owner": "regulatory research",
+      "next_action": "Retrieve current Ministry permit protocol and encode seasonal operating constraints."
+    }
+  ],
+  "do_not_publish": [
+    "Do not publish or model any non-null annual_one_way_pax from this artifact; no route-level annual count was verified.",
+    "Do not convert Costa Rica national/Guanacaste airport arrivals, Samaná airport throughput, hotel rooms, or whale visitors into route demand without a separately approved assumption.",
+    "Do not claim DiDi exact-city coverage in Guna Yala/Cartí or Samaná; official evidence supports Panama City and Dominican country presence only.",
+    "Do not call OSM-only points verified boarding locations or publish their coordinates as authority-grade.",
+    "Do not call planned “ABSENCE opening” nodes incumbent terminals.",
+    "Do not publish the Cartí–Colón future concept as an existing route or assign a route_id.",
+    "Do not mix public transport, Guna panga transfers, water taxi, resort transfer, whale excursion and future opportunity into one service class.",
+    "Do not publish canonical brief claims “80% of Guna income from tourism” or “an hour from Panama City” until a primary source is attached.",
+    "Do not treat the US$16 Samaná ferry reseller fare or indexed timetable as finance-grade until primary confirmation.",
+    "Do not edit canonical briefs with DiDi-specific language; keep partner narrative separate."
+  ],
+  "summary_counts": {
+    "markets": 3,
+    "cities": 3,
+    "sources": 16,
+    "boarding_points": 123,
+    "boarding_points_by_market": {
+      "nicoya-papagayo-costa-rica": 39,
+      "san-blas-panama": 48,
+      "samana-dominican-republic": 36
+    },
+    "boarding_point_classifications": {
+      "verified_existing_boarding_point": 19,
+      "candidate_needing_boarding_confirmation": 10,
+      "candidate_needing_coordinate_and_primary_source_confirmation": 75,
+      "future_opportunity": 5,
+      "non_bp_poi": 11,
+      "reject_drop": 3
+    },
+    "candidate_corridors": 11,
+    "corridors_with_existing_exact_route_id": 10,
+    "corridors_with_null_route_id": 1,
+    "demand_records": 12,
+    "demand_records_with_non_null_annual_one_way_pax": 0,
+    "gaps": 10,
+    "do_not_publish": 10
+  }
+}
