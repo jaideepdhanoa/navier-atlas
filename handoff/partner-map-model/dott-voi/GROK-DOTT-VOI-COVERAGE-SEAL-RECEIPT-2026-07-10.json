@@ -1,7 +1,7 @@
 {
-  "at": "2026-07-10T16:35:59Z",
+  "at": "2026-07-10T17:27:48Z",
   "lane": "Dott/Voi coverage seal after PR #216",
-  "status": "scope_resealed / inheritance_renderer_fixed / end_state_scrubbed / finance_not_promoted",
+  "status": "scope_resealed / voi_europe_only / dott_uae_confirmed / finance_not_promoted",
   "upstream_pr": 216,
   "renderer_fixes": [
     "partner-scope.mjs: stop unioning legacy cluster_city_ids on hub-index",
@@ -47,6 +47,10 @@
       "sweden"
     ],
     "expansion": [],
+    "marquee_normalization": {
+      "dropped": [],
+      "kept": 57
+    },
     "has_beirut": false,
     "expected_canonical_routes": {
       "by_cluster": {
@@ -88,10 +92,9 @@
       "spain",
       "sweden",
       "switzerland",
-      "uk",
-      "uae"
+      "uk"
     ],
-    "city_count": 41,
+    "city_count": 36,
     "missing_clusters": [],
     "stale_removed": [
       "cyprus",
@@ -106,11 +109,14 @@
       "morocco",
       "portugal",
       "romania",
-      "saudi-arabia"
-    ],
-    "expansion": [
+      "saudi-arabia",
       "uae"
     ],
+    "expansion": [],
+    "marquee_normalization": {
+      "dropped": [],
+      "kept": 3
+    },
     "has_beirut": false,
     "expected_canonical_routes": {
       "by_cluster": {
@@ -127,10 +133,9 @@
         "spain": 28,
         "sweden": 20,
         "switzerland": 0,
-        "uae": 399,
         "uk": 64
       },
-      "total_in_scope": 807,
+      "total_in_scope": 408,
       "lebanon_routes": 5
     }
   },
@@ -139,14 +144,21 @@
     "voi_no_beirut_in_scope_cities": true,
     "dott_no_qatar_key": true,
     "dott_no_sweden_key": true,
-    "voi_uae_expansion_only": true,
+    "dott_uae_current_coverage": true,
+    "dott_abu_dhabi_dubai_in_scope": true,
+    "voi_europe_only_no_uae_or_mena_scope": true,
     "netherlands_in_both": true
   },
   "gates": {
     "gate_g": {
-      "exit": 1,
-      "pass": false,
-      "tail": " current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.10.summary — matched 'Tasklet'\n      Norway — current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.11.summary — matched 'Tasklet'\n      Switzerland — current-operation footprint (Tasklet 2026-07-10).\n  [voi] markets.12.summary — matched 'Tasklet'\n      United Kingdom — current-operation footprint (Tasklet 2026-07-10).\n"
+      "exit": 0,
+      "pass": true,
+      "tail": "PASS — 0 internal-jargon leaks across 95 partner file(s).\n"
+    },
+    "partner_inheritance_strict": {
+      "exit": 0,
+      "pass": true,
+      "tail": "Partner corridor inheritance gate\n  partners checked: 4\n  passing: 4\n  failing: 0\n  schema issues: 0\n  subset issues: 0\n\n  ✅ all partners pass inheritance gate\n"
     }
   },
   "registry_backlog_p1": [
@@ -160,13 +172,7 @@
   "do_not": [
     "No economics promotion",
     "No partner-specific corridor mint",
-    "No Belgium/Le Havre geometry invent"
-  ],
-  "post_verify": {
-    "dott_expected_routes_approx": 1204,
-    "voi_expected_routes_approx": 809,
-    "lebanon": 0,
-    "netherlands": 8,
-    "gate_g": "PASS"
-  }
+    "No Belgium/Le Havre geometry invent",
+    "No Voi UAE/MENA expansion coverage"
+  ]
 }
