@@ -1,0 +1,2322 @@
+{
+  "market": "Japan, Hong Kong and Taiwan",
+  "lane": "PHASE 2 exact-ID + current-operation gate for DiDi",
+  "as_of": "2026-07-10",
+  "status": "research-complete / seal-needed; Taiwan hard hold; Hong Kong operation pass; Japan JV-scoped with city holds",
+  "repo_commit": "20876d00d6d4d7f9831a5c93ed3dda9b0ee84673",
+  "repo_read_only": true,
+  "repo_dirty_preexisting": true,
+  "existing_atlas_baseline": {
+    "files_reconciled": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "data-clean/FEATURES_BY_TYPE.json",
+      "partner-pitch/partners/didi.json",
+      "data-clean/partners/didi.json",
+      "data-clean/city_briefs/*.json",
+      "data-clean/cluster_briefs/japan.json",
+      "data-clean/cluster_briefs/taiwan.json",
+      "data-clean/cluster_briefs/hong-kong-macau.json (absent; recorded as canonical gap)",
+      "atlas-external/boarding-points/*.json (only Singapore and Riau Islands exist; no matching JP/HK/TW file)",
+      "HEAD:finance/model/corridors.json",
+      "HEAD:finance/recal/corridors-didi.json",
+      "HEAD:finance/recal/agg-didi.json",
+      "HEAD:finance/recal/growth-didi.json",
+      "HEAD:finance/didi-growth-case.json",
+      "HEAD:data-clean/economics_by_route_id.json"
+    ],
+    "registry_counts": {
+      "clusters": 109,
+      "routes": 6251,
+      "pois": 11472
+    },
+    "didi_surface": "Eight Japan city IDs and Hong Kong already exist exactly in both network_footprint and _map_scope; Taiwan is absent.",
+    "finance_reconciliation": {
+      "worktree_note": "Finance artifacts were pre-existing deletions in the dirty worktree, so committed HEAD objects were inspected with git show without restoring or editing the repository.",
+      "didi_specific_files": "corridors-didi, agg-didi, growth-didi and didi-growth-case contain no JP/HK/TW candidate match.",
+      "global_model_exact_match": "finance/model/corridors.json contains Kaohsiung–Magong with route_id null and direct 2024 operator annual carriage count 95,705; preserved in candidate/demand ledgers.",
+      "economics_sidecar": "data-clean/economics_by_route_id.json has no exact route-ID record for Kaohsiung–Magong; Taiwan pending pins cover other Penghu corridors.",
+      "verdict": "Zero DiDi finance promotion: Taiwan operation hold and unsealed/unresolved endpoint geometry remain, despite exact Kaohsiung–Magong route demand evidence."
+    }
+  },
+  "current_operation_verdicts": {
+    "Japan": {
+      "verdict": "conditional pass via DiDi Mobility Japan taxi JV/partner only",
+      "current_entity": "DiDi Mobility Japan",
+      "city_level": "see cities[]"
+    },
+    "Hong Kong": {
+      "verdict": "pass",
+      "basis": "current official local consumer passenger and taxi-booking pages"
+    },
+    "Taiwan": {
+      "verdict": "hard hold",
+      "basis": "no authoritative current local consumer-operation receipt found"
+    },
+    "Macau": {
+      "verdict": "excluded/held",
+      "basis": "scope conflict; not researched or promoted"
+    }
+  },
+  "sources": [
+    {
+      "source_id": "didi-jp-areas",
+      "url": "https://didimobility.co.jp/service/user/",
+      "title": "DiDi user service areas",
+      "publisher": "DiDi Mobility Japan",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current official service-area roster names Niseko/Kutchan; Tokyo; Shizuoka including Atami and Ito; Hiroshima/Hatsukaichi and other Setouchi cities; Naha/main-island municipalities; Miyakojima; and Ishigaki. It warns that some remote islands are excluded.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "didi-jp-jv",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=494&type=news",
+      "title": "DiDi and SoftBank Launch Joint Venture in Japan to Offer Taxi-Hailing Services",
+      "publisher": "DiDi Global",
+      "date": "2018-07-19",
+      "accessed": "2026-07-09",
+      "proves": "Establishes DiDi Mobility Japan as the DiDi–SoftBank joint venture and says the service is taxi-hailing in Japan. It does not prove present Taiwan or Hong Kong local ride supply.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "softbank-jv",
+      "url": "https://group.softbank/en/news/press/20180719",
+      "title": "DiDi and SoftBank Establish Joint Venture in Japan",
+      "publisher": "SoftBank Group",
+      "date": "2018-07-19",
+      "accessed": "2026-07-09",
+      "proves": "Independent first-party JV framing for Japan.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "didi-hokkaido",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=684&type=news",
+      "title": "DiDi Japan Launches Taxi-Hailing Service in Hokkaido",
+      "publisher": "DiDi Global",
+      "date": "2020-06-25",
+      "accessed": "2026-07-09",
+      "proves": "Historical launch receipt for Hokkaido; current exact coverage is instead taken from the live DiDi Mobility Japan roster.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "didi-hk-app",
+      "url": "https://apps.apple.com/hk/app/didi-china-ride-hailing/id554499054?l=en-GB",
+      "title": "DiDi China: Ride Hailing — Hong Kong App Store listing",
+      "publisher": "Apple / DiDi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "A current Hong Kong storefront listing and recent developer activity prove app availability, not by themselves a current Hong Kong city service-area roster.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "didi-country-list",
+      "url": "https://web.didiglobal.com/au/help-center/how-many-countries-does-didi-operate-in/",
+      "title": "How many countries does DiDi operate in?",
+      "publisher": "DiDi Australia",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official country list surfaced in search did not name Taiwan; absence is not treated as definitive cessation evidence, but no current official Taiwan operation receipt was found.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "tokyowan-ports",
+      "url": "https://en.tokyowanferry.com/doarding/kurihama_kanaya/",
+      "title": "Information on Kurihama Port and Kanaya Port",
+      "publisher": "Tokyo Wan Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current ferry connects Kurihama Port and Kanaya Port across Tokyo Bay in about 40 minutes.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokyowan-fare",
+      "url": "https://en.tokyowanferry.com/fare/",
+      "title": "Price list",
+      "publisher": "Tokyo Wan Ferry",
+      "date": "2025-07-01",
+      "accessed": "2026-07-09",
+      "proves": "Current page gives adult one-way passenger fare of JPY 1,100 and round trip JPY 2,000; page notes cash-only ticket sales.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokai-guide",
+      "url": "https://www.tokaikisen.co.jp/en/time_price/guide/",
+      "title": "Timetable and Fares",
+      "publisher": "Tokai Kisen",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current official timetable/fare hub for Izu Islands; service dates June 1–September 30, 2026.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "tokai-2026-pdf",
+      "url": "https://www.tokaikisen.co.jp/wordpress/wp-content/uploads/2026/06/f34c489539069b66052dcc5221af5953.pdf",
+      "title": "High-speed jet ferry / large passenger ship timetable, July–September 2026",
+      "publisher": "Tokai Kisen",
+      "date": "2026-06",
+      "accessed": "2026-07-09",
+      "proves": "Current schedule proves Tokyo–Oshima and onward Izu-island service, Atami–Oshima service, Shimoda services, and service-day/seasonality patterns. Fare values were not extracted from this timetable.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "zamami-fare",
+      "url": "https://www.vill.zamami.okinawa.jp/sempaku/ryokin_jikoku/",
+      "title": "Vessel fare table",
+      "publisher": "Zamami Village",
+      "date": "2025-11-25",
+      "accessed": "2026-07-09",
+      "proves": "Official current terminal distinction and fares: Ferry Zamami uses Tomari south bank; Queen Zamami uses north bank. Naha–Zamami/Aka adult one-way is JPY 2,900 by ferry and JPY 3,950 by high-speed boat; JPY 100 island tax applies.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "zamami-book",
+      "url": "https://yoyaku.vill.zamami.okinawa.jp/zamami_web/ennmnu0101!doAvailability.action",
+      "title": "Zamami Village passenger seating availability",
+      "publisher": "Zamami Village",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current live booking/availability page proves operating sailings and shows vessel, departure time and Aka stop where applicable.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "okinawa-ferries",
+      "url": "https://visitokinawajapan.com/plan-your-trip/getting-around-okinawa/ferries-between-islands/",
+      "title": "Ferries between islands",
+      "publisher": "Okinawa Convention & Visitors Bureau",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tourism guide identifies Tomarin/Tomari Wharf Passenger Terminal and Zamami travel times of roughly 50–70 minutes by express ferry or two hours by regular ferry.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "yaeyama-official",
+      "url": "https://yaeyama.co.jp/global/en.html",
+      "title": "Welcome to Yaeyama Kanko Ferry",
+      "publisher": "Yaeyama Kanko Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator page exposes timetable, operation status, tickets, access and route map for Ishigaki/Yaeyama ferry services. Exact coordinates and current fare values require follow-up.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "miyajima-fare",
+      "url": "https://jr-miyajimaferry.co.jp/en/fare/",
+      "title": "Fare",
+      "publisher": "West Japan Railway Miyajima Ferry",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official one-way adult fare is JPY 180; a separate JPY 100 Miyajima visitor tax applies on entry.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "miyajima-tax",
+      "url": "https://another1000years-miyajima.jp/en/visitortax/index.html",
+      "title": "Miyajima Visitor Tax",
+      "publisher": "Hatsukaichi City",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tax page confirms JPY 100 per person per visit, generally collected by passenger-boat operators.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-ferry-details",
+      "url": "https://www.td.gov.hk/en/transport_in_hong_kong/public_transport/ferries/service_details/index.html",
+      "title": "Franchised and Licensed Ferry Service Details",
+      "publisher": "Hong Kong Transport Department",
+      "date": "2025-01-25",
+      "accessed": "2026-07-09",
+      "proves": "Official route/terminal/schedule/fare evidence. North Point (West) Ferry Pier–Hung Hom (North) Ferry Pier is about 8 minutes, daily, HKD 10 adult one-way at the cited effective date.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-ferries-overview",
+      "url": "https://www.td.gov.hk/en/transport_in_hong_kong/public_transport/ferries/index.html",
+      "title": "Ferries",
+      "publisher": "Hong Kong Transport Department",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official system overview states 10 operators and 21 regular licensed passenger ferry services as of the page reference date.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-airport-2025",
+      "url": "https://www.hongkongairport.com/en/media-centre/press-release/2026/pr_1849",
+      "title": "HKIA Serves 61 Million Passengers in 2025",
+      "publisher": "Airport Authority Hong Kong",
+      "date": "2026-01-15",
+      "accessed": "2026-07-09",
+      "proves": "HKIA handled 61 million passengers in calendar 2025; this is an airport catchment indicator, not ferry-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "hk-visitors-2025",
+      "url": "https://www.discoverhongkong.com/content/dam/dhk/intl/corporate/newsroom/press-release/hktb/2026/01-2025-Full-Year-Visitor-Arrivals-E.pdf",
+      "title": "HKTB announces 2025 full-year visitor arrivals",
+      "publisher": "Hong Kong Tourism Board",
+      "date": "2026-01",
+      "accessed": "2026-07-09",
+      "proves": "Hong Kong received about 49.9 million visitors in 2025; this broad visitor count must not be converted directly into route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "okinawa-visitors-2024",
+      "url": "https://www.pref.okinawa.jp/_res/projects/default_project/_page_/001/010/225/r8guide_english_p1-6.pdf",
+      "title": "Overview of the Environment in Okinawa Prefecture",
+      "publisher": "Okinawa Prefecture",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Reports 9,668,800 visitors to Okinawa in 2024; catchment context only.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-home",
+      "url": "https://tnc-kao.com.tw/",
+      "title": "Penghu Ferry booking system",
+      "publisher": "Taiwan Navigation Co.",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator booking surface for Kaohsiung–Penghu, including orders, vehicle shipping, fares and passenger guide.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-schedule",
+      "url": "https://tnc-kao.com.tw/schedule/timetable",
+      "title": "Kaohsiung ↔ Penghu timetable",
+      "publisher": "Taiwan Navigation Co.",
+      "date": "2026",
+      "accessed": "2026-07-09",
+      "proves": "Current 115-year (2026) sailing calendar proves the route is active but weather-disruption prone.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "penghu-fare",
+      "url": "https://tnc-kao.com.tw/schedule/ticket",
+      "title": "Penghu Ferry fare information",
+      "publisher": "Taiwan Navigation Co.",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official fare page exists, but values are embedded in images and were not safely extracted; fare remains null.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "jnto-stats",
+      "url": "https://statistics.jnto.go.jp/en/graph/",
+      "title": "Japan tourism statistics data list",
+      "publisher": "Japan National Tourism Organization",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official national visitor-arrivals series. National totals are not route demand and are not used as such.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi-jp-service-areas",
+      "url": "https://didimobility.co.jp/service/user/",
+      "title": "DiDi service areas (passenger)",
+      "publisher": "DiDi Mobility Japan",
+      "date": null,
+      "accessed": "2026-07-10",
+      "proves": "Current official service-area list and remote-island exclusions used for city-by-city Japan gate.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi-jp-company",
+      "url": "https://didimobility.co.jp/company/",
+      "title": "Company profile",
+      "publisher": "DiDi Mobility Japan",
+      "date": null,
+      "accessed": "2026-07-10",
+      "proves": "Current Japanese operating entity is DiDi Mobility Japan and its business includes taxi-hailing platform services.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi-japan-launch-2018-historical-only",
+      "url": "https://www.didiglobal.com/news/newsDetail?id=494&type=news",
+      "title": "DiDi and SoftBank Launch Joint Venture in Japan to Offer Taxi-Hailing Services",
+      "publisher": "DiDi Global",
+      "date": "2018-07-19",
+      "accessed": "2026-07-10",
+      "proves": "Historical JV structure and app travel interoperability; not sufficient by itself for 2026 city operation.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi-hk-passenger",
+      "url": "https://didi.com.hk/en/passenger.html",
+      "title": "DiDi Hong Kong Passenger",
+      "publisher": "DiDi Hong Kong",
+      "date": null,
+      "accessed": "2026-07-10",
+      "proves": "Current official consumer page offers Hong Kong taxi booking, passenger service, pricing and safety information.",
+      "confidence": "high"
+    },
+    {
+      "id": "didi-hk-booking",
+      "url": "https://didi.com.hk/en/taxi-booking-app-hong-kong.html",
+      "title": "Hong Kong Taxi Booking App",
+      "publisher": "DiDi Hong Kong",
+      "date": null,
+      "accessed": "2026-07-10",
+      "proves": "Current official local page invites consumers to book Hong Kong taxis immediately via DiDi.",
+      "confidence": "high"
+    },
+    {
+      "id": "penghu-wheel-2024-pax",
+      "url": "https://finance.ettoday.net/news/3012624",
+      "title": "Penghu Wheel passenger count rises 80% after two years",
+      "publisher": "ETtoday Finance (reporting Taiwan Navigation Co. operating data)",
+      "date": "2025-08-11",
+      "accessed": "2026-07-10",
+      "proves": "The Kaohsiung–Penghu service carried 95,705 passengers in 2024, average 311 per sailing; direct route-specific one-way carriage count, not visitor inference.",
+      "confidence": "medium-high"
+    },
+    {
+      "id": "didi-global-current-home",
+      "url": "https://web.didiglobal.com/",
+      "title": "DiDi Global current website",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-10",
+      "proves": "Current global corporate surface; targeted research found no current Taiwan local consumer-operation receipt. Absence is a hold signal, not proof of cessation.",
+      "confidence": "medium"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "hokkaido-niseko-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed for Kutchan/Niseko area",
+      "current_operation_reason": "Official current service-area page names Kutchan Town, Niseko Town and Rankoshi Town in Hokkaido. This is DiDi Mobility Japan taxi-hailing coverage.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "izu-islands-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "operation hold",
+      "current_operation_verdict": "not current-operation confirmed",
+      "current_operation_reason": "Official current service-area page does not name Oshima/Izu Islands; remote-island operation is not established.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "izu-peninsula-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed for relevant mainland cities",
+      "current_operation_reason": "Official current page names Atami City and Ito City; Shimoda is not listed. Use only the named mainland service areas.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "miyako-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed",
+      "current_operation_reason": "Official current page lists Miyakojima City; some remote islands are excluded.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "okinawa-main-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed with remote-island caveat",
+      "current_operation_reason": "Official current page lists Naha City and broad Okinawa areas, while noting some remote islands are excluded.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "setouchi-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed for ferry gateway",
+      "current_operation_reason": "Official current page lists Hatsukaichi City and Hiroshima City.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "tokyo-bay-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed for named mainland service areas",
+      "current_operation_reason": "Official current page lists Tokyo 23 wards and major Kanagawa/Chiba cities including Yokosuka; Futtsu/Kanaya is not named.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "yaeyama-japan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "japan",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "JV-supported existing",
+      "current_operation_verdict": "current operation confirmed for Ishigaki only",
+      "current_operation_reason": "Official current page lists Ishigaki City; Taketomi is not named and some remote islands are excluded.",
+      "operation_source_ids": [
+        "didi-jp-service-areas"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "partner-specific Japan copy must say DiDi Mobility Japan taxi JV/partner, never ordinary direct global DiDi"
+    },
+    {
+      "city_id": "hong-kong",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "hong-kong-macau",
+      "partner_network_footprint_exact": true,
+      "partner_map_scope_exact": true,
+      "classification": "display-ready exact existing",
+      "current_operation_verdict": "current consumer operation confirmed",
+      "current_operation_reason": "Current official DiDi Hong Kong passenger and taxi-booking pages invite users to book taxis and describe live passenger service. This clears the prior hard hold; app-store evidence was not used.",
+      "operation_source_ids": [
+        "didi-hk-passenger",
+        "didi-hk-booking"
+      ],
+      "no_shrink_disposition": "retain_existing_partner_surface; do not delete from source omission",
+      "publication_gate": "may_publish_current DiDi HK taxi handoff framing"
+    },
+    {
+      "city_id": "macau-china",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "hong-kong-macau",
+      "partner_network_footprint_exact": false,
+      "partner_map_scope_exact": false,
+      "classification": "operation hold",
+      "current_operation_verdict": "excluded/held for scope conflict",
+      "current_operation_reason": "Macau is excluded from this gate and must not be inherited or promoted from Hong Kong evidence.",
+      "operation_source_ids": [],
+      "no_shrink_disposition": "not_currently_on_didi_surface",
+      "publication_gate": "hard hold: no DiDi-specific promotion"
+    },
+    {
+      "city_id": "kaohsiung-taiwan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "taiwan",
+      "partner_network_footprint_exact": false,
+      "partner_map_scope_exact": false,
+      "classification": "operation hold",
+      "current_operation_verdict": "current consumer operation not confirmed",
+      "current_operation_reason": "No authoritative current local DiDi passenger-operation source was found. Historical Greater China app travel interoperability and travel aggregation do not pass.",
+      "operation_source_ids": [
+        "didi-global-current-home",
+        "didi-japan-launch-2018-historical-only"
+      ],
+      "no_shrink_disposition": "not_currently_on_didi_surface",
+      "publication_gate": "hard hold: no DiDi-specific promotion"
+    },
+    {
+      "city_id": "penghu-taiwan",
+      "name": null,
+      "territory": null,
+      "atlas_cluster_exact": true,
+      "atlas_cluster_parent_id": "taiwan",
+      "partner_network_footprint_exact": false,
+      "partner_map_scope_exact": false,
+      "classification": "operation hold",
+      "current_operation_verdict": "current consumer operation not confirmed",
+      "current_operation_reason": "No authoritative current local DiDi passenger-operation source was found; Penghu also lacks city-specific current-operation proof.",
+      "operation_source_ids": [
+        "didi-global-current-home",
+        "didi-japan-launch-2018-historical-only"
+      ],
+      "no_shrink_disposition": "not_currently_on_didi_surface",
+      "publication_gate": "hard hold: no DiDi-specific promotion"
+    }
+  ],
+  "boarding_points": [
+    {
+      "candidate_key": "phase2-bp-01",
+      "name": "Niseko Town market area",
+      "territory": null,
+      "proposed_city_id": "hokkaido-niseko-japan",
+      "atlas_bp_id": null,
+      "atlas_bp_exact": false,
+      "atlas_bp_name": null,
+      "atlas_parent_city_id": null,
+      "atlas_coordinates": null,
+      "classification": "reject/non-BP",
+      "registry_binding_status": "non-BP POI",
+      "notes": "Market area is useful first/last-mile context, not a ferry boarding point.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "didi-jp-areas"
+      ],
+      "publication_gate": "hold"
+    },
+    {
+      "candidate_key": "phase2-bp-02",
+      "name": "Kurihama Port",
+      "territory": null,
+      "proposed_city_id": "tokyo-bay-japan",
+      "atlas_bp_id": "bp-75a3630126",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Tokyo-Wan Ferry Port Kurihama Passenger Terminal",
+      "atlas_parent_city_id": "izu-peninsula-japan",
+      "atlas_coordinates": [
+        139.715289,
+        35.220131
+      ],
+      "classification": "seal-needed",
+      "registry_binding_status": "exact existing / parent mismatch",
+      "notes": "Exact terminal exists, but parent_city_id is izu-peninsula-japan while candidate used tokyo-bay-japan.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "tokyowan-ports"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-03",
+      "name": "Kanaya Port",
+      "territory": null,
+      "proposed_city_id": "tokyo-bay-japan",
+      "atlas_bp_id": "bp-7f208529b4",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Tokyo-Wan Ferry Kanaya Port Passenger Terminal",
+      "atlas_parent_city_id": "izu-islands-japan",
+      "atlas_coordinates": [
+        139.817631,
+        35.169058
+      ],
+      "classification": "seal-needed",
+      "registry_binding_status": "exact existing / parent mismatch",
+      "notes": "Exact terminal exists, but parent_city_id is izu-islands-japan while candidate used tokyo-bay-japan.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "tokyowan-ports"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-04",
+      "name": "Tokyo / Takeshiba Passenger Ship Terminal",
+      "territory": null,
+      "proposed_city_id": "tokyo-bay-japan",
+      "atlas_bp_id": "bp-77a783f14d",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Takeshiba Pier (Tokyo) — Izu Islands line-haul origin",
+      "atlas_parent_city_id": "izu-islands-japan",
+      "atlas_coordinates": [
+        139.763635,
+        35.653939
+      ],
+      "classification": "seal-needed",
+      "registry_binding_status": "exact existing / parent mismatch and duplicate",
+      "notes": "Source-backed Izu line-haul origin exists under izu-islands-japan; duplicate bp-434559c290 exists under tokyo-bay-japan. Canonicalization required.",
+      "related_or_alternative_ids": [
+        "bp-434559c290"
+      ],
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-05",
+      "name": "Oshima port (Motomachi or Okata operational port)",
+      "territory": null,
+      "proposed_city_id": "izu-islands-japan",
+      "atlas_bp_id": null,
+      "atlas_bp_exact": false,
+      "atlas_bp_name": null,
+      "atlas_parent_city_id": null,
+      "atlas_coordinates": null,
+      "classification": "seal-needed",
+      "registry_binding_status": "multiple exact existing alternatives",
+      "notes": "Operator uses Motomachi or Okata by operating conditions; do not stamp a synthetic current-port BP.",
+      "related_or_alternative_ids": [
+        "bp-606140fa2f",
+        "bp-facd35ed66"
+      ],
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-06",
+      "name": "Atami Port",
+      "territory": null,
+      "proposed_city_id": "izu-peninsula-japan",
+      "atlas_bp_id": "bp-92c78fad06",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Atami Port",
+      "atlas_parent_city_id": "izu-peninsula-japan",
+      "atlas_coordinates": [
+        139.076439,
+        35.090032
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact existing BP under izu-peninsula-japan.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-07",
+      "name": "Miyajimaguchi ferry terminal",
+      "territory": null,
+      "proposed_city_id": "setouchi-japan",
+      "atlas_bp_id": "bp-abb698ae52",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Miyajimaguchi — JR Miyajima Ferry (mainland)",
+      "atlas_parent_city_id": "setouchi-japan",
+      "atlas_coordinates": [
+        132.304883,
+        34.311222
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact source-backed existing BP under setouchi-japan.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "miyajima-fare"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-08",
+      "name": "Miyajima ferry terminal",
+      "territory": null,
+      "proposed_city_id": "setouchi-japan",
+      "atlas_bp_id": "bp-eaa8a3c1d7",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Miyajima — Itsukushima Pier (island side)",
+      "atlas_parent_city_id": "setouchi-japan",
+      "atlas_coordinates": [
+        132.322237,
+        34.302211
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact source-backed existing BP under setouchi-japan.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "miyajima-fare",
+        "miyajima-tax"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-09",
+      "name": "Tomari Port south bank / Tomarin",
+      "territory": null,
+      "proposed_city_id": "okinawa-main-japan",
+      "atlas_bp_id": null,
+      "atlas_bp_exact": false,
+      "atlas_bp_name": null,
+      "atlas_parent_city_id": null,
+      "atlas_coordinates": null,
+      "classification": "true registry gap",
+      "registry_binding_status": "berth-specific registry gap",
+      "notes": "Generic Tomari BP exists, but south-bank/regular-ferry berth is not exact-bound; nearby route node bp-naha-tomari-port is absent from FEATURES_BY_TYPE.",
+      "related_or_alternative_ids": [
+        "bp-128f73f88f",
+        "bp-naha-tomari-port"
+      ],
+      "source_ids": [
+        "zamami-fare",
+        "okinawa-ferries"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-10",
+      "name": "Tomari Port north bank high-speed-boat pier",
+      "territory": null,
+      "proposed_city_id": "okinawa-main-japan",
+      "atlas_bp_id": null,
+      "atlas_bp_exact": false,
+      "atlas_bp_name": null,
+      "atlas_parent_city_id": null,
+      "atlas_coordinates": null,
+      "classification": "true registry gap",
+      "registry_binding_status": "berth-specific registry gap",
+      "notes": "High-speed north-bank berth is not exact-bound; no fuzzy stamp to generic Tomari terminal.",
+      "related_or_alternative_ids": [
+        "bp-128f73f88f"
+      ],
+      "source_ids": [
+        "zamami-fare"
+      ],
+      "publication_gate": "seal/canonicalize first"
+    },
+    {
+      "candidate_key": "phase2-bp-11",
+      "name": "Zamami Port",
+      "territory": null,
+      "proposed_city_id": null,
+      "atlas_bp_id": "bp-zamami-port",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Zamami Port (Zamami-ko)",
+      "atlas_parent_city_id": "okinawa-main-japan",
+      "atlas_coordinates": [
+        127.3013511,
+        26.226452
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact route endpoint and source-backed Atlas BP.",
+      "related_or_alternative_ids": [
+        "bp-ff50080137"
+      ],
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-12",
+      "name": "Aka Port",
+      "territory": null,
+      "proposed_city_id": null,
+      "atlas_bp_id": "bp-fb57638d3c",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Aka Port (Aka-jima)",
+      "atlas_parent_city_id": "okinawa-main-japan",
+      "atlas_coordinates": [
+        127.284963,
+        26.190424
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact existing Atlas BP.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-13",
+      "name": "Ishigaki ferry terminal / operator access point",
+      "territory": null,
+      "proposed_city_id": "yaeyama-japan",
+      "atlas_bp_id": "bp-ishigaki-ritou-terminal",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Ishigaki Port Ritou (Island-Ferry) Terminal",
+      "atlas_parent_city_id": "yaeyama-japan",
+      "atlas_coordinates": [
+        124.1555288,
+        24.3375501
+      ],
+      "classification": "JV-supported existing",
+      "registry_binding_status": "exact existing",
+      "notes": "Exact existing source-backed Atlas BP.",
+      "related_or_alternative_ids": [],
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-14",
+      "name": "Taketomi Port",
+      "territory": null,
+      "proposed_city_id": null,
+      "atlas_bp_id": "bp-taketomi-east-port",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Taketomi East Port (Taketomi Higashi-ko)",
+      "atlas_parent_city_id": "yaeyama-japan",
+      "atlas_coordinates": [
+        124.0999908,
+        24.3356709
+      ],
+      "classification": "operation hold",
+      "registry_binding_status": "exact existing / partner operation hold",
+      "notes": "Exact existing Atlas BP; current DiDi Mobility Japan service on Taketomi is not proven.",
+      "related_or_alternative_ids": [
+        "bp-c38958c071"
+      ],
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "publication_gate": "hold"
+    },
+    {
+      "candidate_key": "phase2-bp-15",
+      "name": "North Point (West) Ferry Pier",
+      "territory": null,
+      "proposed_city_id": "hong-kong",
+      "atlas_bp_id": "bp-3d87991519",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "North Point Ferry Pier",
+      "atlas_parent_city_id": "hong-kong",
+      "atlas_coordinates": [
+        114.198,
+        22.2915
+      ],
+      "classification": "display-ready exact existing",
+      "registry_binding_status": "exact existing route endpoint",
+      "notes": "Exact endpoint of current Atlas route rn-d7294a3ddd04; duplicate North Point BP also exists.",
+      "related_or_alternative_ids": [
+        "bp-207a83a3bb"
+      ],
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-16",
+      "name": "Hung Hom (North) Ferry Pier",
+      "territory": null,
+      "proposed_city_id": "hong-kong",
+      "atlas_bp_id": "bp-8b029bcd34",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Hung Hom Ferry Pier",
+      "atlas_parent_city_id": "hong-kong",
+      "atlas_coordinates": [
+        114.183,
+        22.303
+      ],
+      "classification": "display-ready exact existing",
+      "registry_binding_status": "exact existing route endpoint",
+      "notes": "Exact endpoint of current Atlas route rn-d7294a3ddd04; duplicate Hung Hom BP also exists.",
+      "related_or_alternative_ids": [
+        "bp-216db2cca3"
+      ],
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "publication_gate": "eligible after route and narrative gates"
+    },
+    {
+      "candidate_key": "phase2-bp-17",
+      "name": "Kaohsiung terminal for Penghu Ferry",
+      "territory": null,
+      "proposed_city_id": "kaohsiung-taiwan",
+      "atlas_bp_id": null,
+      "atlas_bp_exact": false,
+      "atlas_bp_name": null,
+      "atlas_parent_city_id": null,
+      "atlas_coordinates": null,
+      "classification": "operation hold",
+      "registry_binding_status": "true registry gap plus operation hold",
+      "notes": "No exact BP match. Existing route uses unresolved/quarantined node kaohsiung-taiwan__kaohsiung-port; nearby cruise/container POIs are not this passenger terminal.",
+      "related_or_alternative_ids": [
+        "kaohsiung-taiwan__kaohsiung-port",
+        "bp-5e2dba0471",
+        "bp-0579ad26dd"
+      ],
+      "source_ids": [
+        "penghu-home",
+        "penghu-schedule"
+      ],
+      "publication_gate": "hold"
+    },
+    {
+      "candidate_key": "phase2-bp-18",
+      "name": "Magong/Penghu Ferry terminal",
+      "territory": null,
+      "proposed_city_id": "penghu-taiwan",
+      "atlas_bp_id": "bp-42b7325105",
+      "atlas_bp_exact": true,
+      "atlas_bp_name": "Magong Harbor Passenger Terminal",
+      "atlas_parent_city_id": "penghu-taiwan",
+      "atlas_coordinates": [
+        119.562783,
+        23.569402
+      ],
+      "classification": "operation hold",
+      "registry_binding_status": "exact existing feature / route-node mismatch",
+      "notes": "Exact passenger terminal feature exists, but existing quarantined route uses unresolved node penghu-taiwan__magong-harbor. Taiwan operation hold remains.",
+      "related_or_alternative_ids": [
+        "penghu-taiwan__magong-harbor"
+      ],
+      "source_ids": [
+        "penghu-home",
+        "penghu-fare"
+      ],
+      "publication_gate": "hold"
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "candidate_id": "tokyo-bay-kurihama-kanaya",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Kurihama Port",
+        "city_id": "tokyo-bay-japan"
+      },
+      "endpoint_b": {
+        "name": "Kanaya Port",
+        "city_id": "tokyo-bay-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokyowan-ports",
+        "tokyowan-fare"
+      ],
+      "approx_water_relevance": "direct cross-bay water crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "about 40 minutes; current 2026 schedule is calendar-dependent",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Strong first/last-mile handoff corridor; do not treat existing ferry passengers as Navier demand.",
+      "classification": "operation hold",
+      "current_operation_gate_reason": "Kanaya/Futtsu is not named on the current DiDi Mobility Japan service-area page.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "tokyo-oshima",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Tokyo / Takeshiba",
+        "city_id": "tokyo-bay-japan"
+      },
+      "endpoint_b": {
+        "name": "Oshima",
+        "city_id": "izu-islands-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "approx_water_relevance": "open-water island route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "high-speed jet daily patterns vary by July–September sub-period; large passenger ship has date-coded service",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Current operator route; long-range vessel class remains unassigned until water distance is measured.",
+      "classification": "operation hold",
+      "current_operation_gate_reason": "Izu Oshima is not named on the current DiDi Mobility Japan service-area page.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "atami-oshima",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Atami Port",
+        "city_id": "izu-peninsula-japan"
+      },
+      "endpoint_b": {
+        "name": "Oshima",
+        "city_id": "izu-islands-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "tokai-2026-pdf"
+      ],
+      "approx_water_relevance": "open-water island route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "published 2026 summer service; typically 45 minutes on cited timetable",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "DiDi exact support exists at Atami, not proven on Oshima.",
+      "classification": "operation hold",
+      "current_operation_gate_reason": "Atami is current-operation confirmed; Oshima is not.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "miyajimaguchi-miyajima",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Miyajimaguchi",
+        "city_id": "setouchi-japan"
+      },
+      "endpoint_b": {
+        "name": "Miyajima",
+        "city_id": "setouchi-japan"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "miyajima-fare",
+        "miyajima-tax"
+      ],
+      "approx_water_relevance": "short sheltered crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "current fare product; exact service-day table not captured",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Use as terminal-handoff demand story, not necessarily as replacement water service.",
+      "classification": "seal-needed",
+      "current_operation_gate_reason": "Both BPs are exact existing and Hatsukaichi is current-operation confirmed; no exact ROUTES.json endpoint-ID pair exists.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "naha-zamami-aka",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Tomari Port, Naha",
+        "city_id": "okinawa-main-japan"
+      },
+      "endpoint_b": {
+        "name": "Zamami Port / Aka Port",
+        "city_id": null
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book",
+        "okinawa-ferries"
+      ],
+      "approx_water_relevance": "island crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "regular ferry and high-speed boat; live availability; roughly 50–70 minutes express or two hours regular",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Remote-island DiDi supply is not established; mainland Naha pickup is established.",
+      "classification": "seal-needed",
+      "current_operation_gate_reason": "Naha/Okinawa coverage is current; remote-island caveat requires local supply/app check. Existing route endpoints are incomplete/dangling.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "ishigaki-taketomi",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Ishigaki ferry terminal",
+        "city_id": "yaeyama-japan"
+      },
+      "endpoint_b": {
+        "name": "Taketomi Port",
+        "city_id": null
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "yaeyama-official"
+      ],
+      "approx_water_relevance": "short island crossing",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "current operator timetable/operation-status pages; values not extracted",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Ishigaki DiDi coverage is exact; Taketomi local DiDi supply is not proven and remote-island exclusions apply.",
+      "classification": "operation hold",
+      "current_operation_gate_reason": "Ishigaki is confirmed; Taketomi operation is not confirmed and remote-island exclusions apply.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "hk-north-point-hung-hom",
+      "route_id": "rn-d7294a3ddd04",
+      "route_id_status": "exact endpoint-ID match in ROUTES.json",
+      "endpoint_a": {
+        "name": "North Point (West) Ferry Pier",
+        "city_id": "hong-kong"
+      },
+      "endpoint_b": {
+        "name": "Hung Hom (North) Ferry Pier",
+        "city_id": "hong-kong"
+      },
+      "evidence_status": "current_route_evidence",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "approx_water_relevance": "cross-harbour water crossing",
+      "distance_nm": 1.1,
+      "vessel_range_class": "Pioneer II",
+      "service_pattern": "daily; about 8 minutes; extra weekday-only early sailings",
+      "hand_waypoints_required": false,
+      "hand_waypoint_reason": null,
+      "notes": "Ferry is current; DiDi Hong Kong local operating tier remains verification-needed.",
+      "classification": "display-ready exact existing",
+      "current_operation_gate_reason": "Current DiDi Hong Kong consumer taxi operation is confirmed and endpoint IDs match exactly.",
+      "atlas_route_exact": true,
+      "atlas_route_endpoints": {
+        "from": "bp-3d87991519",
+        "to": "bp-8b029bcd34"
+      },
+      "nearby_existing_route_not_bound": null,
+      "nearby_existing_route_status": null,
+      "annual_one_way_pax": null,
+      "finance_gate": "HOLD: no exact annual route demand in evidence; airport/visitor/ferry context cannot be converted to route demand."
+    },
+    {
+      "candidate_id": "kaohsiung-magong",
+      "route_id": null,
+      "route_id_status": "null: no exact endpoint-ID match",
+      "endpoint_a": {
+        "name": "Kaohsiung Penghu Ferry terminal",
+        "city_id": "kaohsiung-taiwan"
+      },
+      "endpoint_b": {
+        "name": "Magong/Penghu Ferry terminal",
+        "city_id": "penghu-taiwan"
+      },
+      "evidence_status": "current_route_evidence_partner_gate",
+      "source_ids": [
+        "penghu-home",
+        "penghu-schedule",
+        "penghu-fare"
+      ],
+      "approx_water_relevance": "offshore strait route",
+      "distance_nm": null,
+      "vessel_range_class": null,
+      "service_pattern": "2026 sailing calendar; disruption notices are weather-dependent",
+      "hand_waypoints_required": true,
+      "hand_waypoint_reason": "Nearby quarantined route reports 12.3231 km interior land crossing; correct endpoints/geometry and add manual water waypoints before seal.",
+      "notes": "Bank geometry/economics evidence only. Do not promote under DiDi until Taiwan operation receipt clears gate.",
+      "classification": "operation hold",
+      "current_operation_gate_reason": "Taiwan current consumer operation is unconfirmed. Nearby Atlas route is quarantined/hidden and candidate lacks exact endpoint-ID binding.",
+      "atlas_route_exact": false,
+      "atlas_route_endpoints": null,
+      "nearby_existing_route_not_bound": "rn-5085d4e1f498",
+      "nearby_existing_route_status": "quarantined; relevance=hide; endpoint unresolved",
+      "annual_one_way_pax": 95705,
+      "finance_gate": "HOLD despite exact 2024 route demand: Taiwan operation is unconfirmed and endpoint/geometry binding is unresolved; no DiDi finance promotion."
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "tokyowan-adult-fare",
+      "geography": "Tokyo Bay",
+      "corridor_candidate_id": "tokyo-bay-kurihama-kanaya",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 1100,
+      "unit": "JPY adult one-way",
+      "period": "effective page 2025-07-01; accessed 2026-07-09",
+      "seasonality": "2026 service follows calendar schedules and may be weather-suspended",
+      "service_days": "calendar-dependent current service",
+      "source_ids": [
+        "tokyowan-fare",
+        "tokyowan-ports"
+      ],
+      "assumption_record": "No passenger count or Navier capture assumption made.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "zamami-ferry-fare",
+      "geography": "Okinawa",
+      "corridor_candidate_id": "naha-zamami-aka",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 2900,
+      "unit": "JPY adult one-way regular ferry",
+      "period": "posted 2025-11-25; accessed 2026-07-09",
+      "seasonality": "weather and vessel schedule sensitive",
+      "service_days": "live availability, exact annual service-day count not captured",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "assumption_record": "JPY 100 island tax is additional; no route-demand conversion.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "zamami-fast-fare",
+      "geography": "Okinawa",
+      "corridor_candidate_id": "naha-zamami-aka",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 3950,
+      "unit": "JPY adult one-way high-speed boat",
+      "period": "posted 2025-11-25; accessed 2026-07-09",
+      "seasonality": "weather and vessel schedule sensitive",
+      "service_days": "live availability, exact annual service-day count not captured",
+      "source_ids": [
+        "zamami-fare",
+        "zamami-book"
+      ],
+      "assumption_record": "JPY 100 island tax is additional; no route-demand conversion.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "miyajima-fare",
+      "geography": "Setouchi",
+      "corridor_candidate_id": "miyajimaguchi-miyajima",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 180,
+      "unit": "JPY adult one-way",
+      "period": "current page accessed 2026-07-09",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "miyajima-fare"
+      ],
+      "assumption_record": "JPY 100 visitor tax is additional on entry; no passenger count captured.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "hk-north-point-hung-hom-fare",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": "hk-north-point-hung-hom",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": 10,
+      "unit": "HKD adult single journey",
+      "period": "effective 2025-01-25",
+      "seasonality": "daily service; public-holiday rule affects starred early sailings",
+      "service_days": "daily",
+      "source_ids": [
+        "hk-ferry-details"
+      ],
+      "assumption_record": "No route passenger count or capture rate inferred.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "hk-airport-2025",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": null,
+      "metric_type": "airport_passenger_flow",
+      "annual_one_way_pax": null,
+      "value": 61000000,
+      "unit": "airport passenger movements in calendar year",
+      "period": "2025",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "hk-airport-2025"
+      ],
+      "assumption_record": "Broad airport flow only; explicitly not route demand and not one-way pax.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "hk-visitors-2025",
+      "geography": "Hong Kong",
+      "corridor_candidate_id": null,
+      "metric_type": "visitor_arrivals",
+      "annual_one_way_pax": null,
+      "value": 49900000,
+      "unit": "visitor arrivals, approximate",
+      "period": "2025",
+      "seasonality": "December 2025 was 4.65 million per source summary",
+      "service_days": null,
+      "source_ids": [
+        "hk-visitors-2025"
+      ],
+      "assumption_record": "Broad tourism count; no conversion to any ferry/Navier route.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "okinawa-visitors-2024",
+      "geography": "Okinawa Prefecture",
+      "corridor_candidate_id": null,
+      "metric_type": "visitor_arrivals",
+      "annual_one_way_pax": null,
+      "value": 9668800,
+      "unit": "visitors",
+      "period": "2024",
+      "seasonality": null,
+      "service_days": null,
+      "source_ids": [
+        "okinawa-visitors-2024"
+      ],
+      "assumption_record": "Prefecture-wide tourism context only; no conversion to Naha–Zamami or another route.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "penghu-current-fare-gap",
+      "geography": "Taiwan",
+      "corridor_candidate_id": "kaohsiung-magong",
+      "metric_type": "route_fare",
+      "annual_one_way_pax": null,
+      "value": null,
+      "unit": "TWD adult one-way",
+      "period": "current page accessed 2026-07-09",
+      "seasonality": "2026 calendar and typhoon/weather disruption notices",
+      "service_days": "published sailing calendar; annual count not captured",
+      "source_ids": [
+        "penghu-schedule",
+        "penghu-fare"
+      ],
+      "assumption_record": "Official fare values are image-embedded; null retained rather than transcribing an unverified third-party figure.",
+      "finance_eligibility": "context_only",
+      "route_demand_inference_prohibited": true
+    },
+    {
+      "record_id": "penghu-wheel-2024-route-pax",
+      "geography": "Taiwan",
+      "corridor_candidate_id": "kaohsiung-magong",
+      "metric_type": "route_passenger_flow",
+      "annual_one_way_pax": 95705,
+      "value": 95705,
+      "unit": "passenger carriages / one-way route legs",
+      "period": "2024",
+      "seasonality": "year-round service; summer-skewed; Friday night sailings often about 90% load per source",
+      "service_days": "exact annual service-day count not captured",
+      "source_ids": [
+        "penghu-wheel-2024-pax"
+      ],
+      "assumption_record": "Operator annual carriage count on the only year-round Kaohsiung–Penghu passenger service is direct route demand. It is not inferred from tourism or airport flow. No Navier capture assumption is made.",
+      "finance_eligibility": "evidence-qualified but promotion held pending Taiwan current-operation receipt and sealed exact endpoint/geometry binding",
+      "route_demand_inference_prohibited": false
+    }
+  ],
+  "brief_maturity": {
+    "method": "Canonical cluster/city briefs were read first and scored field-by-field across 10 partner-neutral narrative fields; enhancements only, no replacement or repo edit.",
+    "fields_scored": [
+      "summary",
+      "demand_signals",
+      "use_cases",
+      "navier_fit",
+      "signature_routes",
+      "transit_planning",
+      "competitive_landscape",
+      "regulatory_note",
+      "seasonality",
+      "sources"
+    ],
+    "city_briefs": [
+      {
+        "city_id": "hokkaido-niseko-japan",
+        "path": "data-clean/city_briefs/hokkaido-niseko-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "izu-islands-japan",
+        "path": "data-clean/city_briefs/izu-islands-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "izu-peninsula-japan",
+        "path": "data-clean/city_briefs/izu-peninsula-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "miyako-japan",
+        "path": "data-clean/city_briefs/miyako-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "okinawa-main-japan",
+        "path": "data-clean/city_briefs/okinawa-main-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "setouchi-japan",
+        "path": "data-clean/city_briefs/setouchi-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "tokyo-bay-japan",
+        "path": "data-clean/city_briefs/tokyo-bay-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "yaeyama-japan",
+        "path": "data-clean/city_briefs/yaeyama-japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "macau-china",
+        "path": "data-clean/city_briefs/macau-china.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": false,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 8,
+        "fields_total": 10,
+        "maturity": "developing",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "hong-kong",
+        "path": "data-clean/city_briefs/hong-kong.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": true,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 10,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "kaohsiung-taiwan",
+        "path": "data-clean/city_briefs/kaohsiung-taiwan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      },
+      {
+        "city_id": "penghu-taiwan",
+        "path": "data-clean/city_briefs/penghu-taiwan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": false,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 9,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve canonical partner-neutral brief; add sourced terminal/current-operation-neutral facts only. DiDi operation language belongs in partner narrative."
+      }
+    ],
+    "cluster_briefs": [
+      {
+        "cluster_id": "japan",
+        "path": "data-clean/cluster_briefs/japan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": true,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 10,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Preserve structure; add source-led exact terminal/route facts without DiDi branding."
+      },
+      {
+        "cluster_id": "taiwan",
+        "path": "data-clean/cluster_briefs/taiwan.json",
+        "present": true,
+        "field_presence": {
+          "summary": true,
+          "demand_signals": true,
+          "use_cases": true,
+          "navier_fit": true,
+          "signature_routes": true,
+          "transit_planning": true,
+          "competitive_landscape": true,
+          "regulatory_note": true,
+          "seasonality": true,
+          "sources": true
+        },
+        "fields_present": 10,
+        "fields_total": 10,
+        "maturity": "mature",
+        "recommendation": "Enhancement needed: keep the marine case but neutralize brand-specific Grab/acquisition and super-app assertions in canonical copy; DiDi-specific framing remains outside canonical."
+      },
+      {
+        "cluster_id": "hong-kong-macau",
+        "path": "data-clean/cluster_briefs/hong-kong-macau.json",
+        "present": false,
+        "field_presence": {
+          "summary": false,
+          "demand_signals": false,
+          "use_cases": false,
+          "navier_fit": false,
+          "signature_routes": false,
+          "transit_planning": false,
+          "competitive_landscape": false,
+          "regulatory_note": false,
+          "seasonality": false,
+          "sources": false
+        },
+        "fields_present": 0,
+        "fields_total": 10,
+        "maturity": "missing",
+        "recommendation": "No canonical cluster brief exists; do not create one for this partner gate. Hong Kong city brief is sufficient; Macau remains excluded from DiDi overlay."
+      }
+    ],
+    "overall": "All 12 city briefs exist. Japan and Taiwan cluster briefs exist; hong-kong-macau cluster brief is absent. Operation and exact-ID gates belong in partner layer. Taiwan canonical cluster copy contains brand-specific Grab/super-app claims and should be neutralized in a separate editorial pass, not overwritten by this gate."
+  },
+  "partner_narrative_notes": {
+    "Japan": "Always label the integration as DiDi Mobility Japan taxi JV/partner coverage. Never imply ordinary direct global DiDi rideshare operation. Publish only named current service areas; hold Izu Oshima, Taketomi and the Kanaya/Futtsu side pending confirmation.",
+    "Hong Kong": "Current official local consumer taxi operation is now confirmed. North Point–Hung Hom may be framed as a display-ready taxi-to-ferry handoff using existing route geometry; do not imply DiDi operates the ferry.",
+    "Taiwan": "Hard hold. Preserve Kaohsiung–Magong only as partner-neutral route/geometry context. No DiDi narrative, map-scope inheritance or finance promotion without a current authoritative Taiwan local-operation receipt.",
+    "Macau": "Excluded/held for scope conflict. Do not promote or inherit Macau from Hong Kong evidence."
+  },
+  "exact_atlas_bindings": {
+    "city_ledger": [
+      {
+        "city_id": "hokkaido-niseko-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "izu-islands-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "operation hold"
+      },
+      {
+        "city_id": "izu-peninsula-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "miyako-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "okinawa-main-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "setouchi-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "tokyo-bay-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "yaeyama-japan",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "JV-supported existing"
+      },
+      {
+        "city_id": "hong-kong",
+        "cluster_exact": true,
+        "partner_surface_exact": true,
+        "classification": "display-ready exact existing"
+      },
+      {
+        "city_id": "macau-china",
+        "cluster_exact": true,
+        "partner_surface_exact": false,
+        "classification": "operation hold"
+      },
+      {
+        "city_id": "kaohsiung-taiwan",
+        "cluster_exact": true,
+        "partner_surface_exact": false,
+        "classification": "operation hold"
+      },
+      {
+        "city_id": "penghu-taiwan",
+        "cluster_exact": true,
+        "partner_surface_exact": false,
+        "classification": "operation hold"
+      }
+    ],
+    "bp_match_ledger": [
+      {
+        "candidate_key": "phase2-bp-01",
+        "name": "Niseko Town market area",
+        "atlas_bp_id": null,
+        "exact": false,
+        "classification": "reject/non-BP",
+        "binding_status": "non-BP POI"
+      },
+      {
+        "candidate_key": "phase2-bp-02",
+        "name": "Kurihama Port",
+        "atlas_bp_id": "bp-75a3630126",
+        "exact": true,
+        "classification": "seal-needed",
+        "binding_status": "exact existing / parent mismatch"
+      },
+      {
+        "candidate_key": "phase2-bp-03",
+        "name": "Kanaya Port",
+        "atlas_bp_id": "bp-7f208529b4",
+        "exact": true,
+        "classification": "seal-needed",
+        "binding_status": "exact existing / parent mismatch"
+      },
+      {
+        "candidate_key": "phase2-bp-04",
+        "name": "Tokyo / Takeshiba Passenger Ship Terminal",
+        "atlas_bp_id": "bp-77a783f14d",
+        "exact": true,
+        "classification": "seal-needed",
+        "binding_status": "exact existing / parent mismatch and duplicate"
+      },
+      {
+        "candidate_key": "phase2-bp-05",
+        "name": "Oshima port (Motomachi or Okata operational port)",
+        "atlas_bp_id": null,
+        "exact": false,
+        "classification": "seal-needed",
+        "binding_status": "multiple exact existing alternatives"
+      },
+      {
+        "candidate_key": "phase2-bp-06",
+        "name": "Atami Port",
+        "atlas_bp_id": "bp-92c78fad06",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-07",
+        "name": "Miyajimaguchi ferry terminal",
+        "atlas_bp_id": "bp-abb698ae52",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-08",
+        "name": "Miyajima ferry terminal",
+        "atlas_bp_id": "bp-eaa8a3c1d7",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-09",
+        "name": "Tomari Port south bank / Tomarin",
+        "atlas_bp_id": null,
+        "exact": false,
+        "classification": "true registry gap",
+        "binding_status": "berth-specific registry gap"
+      },
+      {
+        "candidate_key": "phase2-bp-10",
+        "name": "Tomari Port north bank high-speed-boat pier",
+        "atlas_bp_id": null,
+        "exact": false,
+        "classification": "true registry gap",
+        "binding_status": "berth-specific registry gap"
+      },
+      {
+        "candidate_key": "phase2-bp-11",
+        "name": "Zamami Port",
+        "atlas_bp_id": "bp-zamami-port",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-12",
+        "name": "Aka Port",
+        "atlas_bp_id": "bp-fb57638d3c",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-13",
+        "name": "Ishigaki ferry terminal / operator access point",
+        "atlas_bp_id": "bp-ishigaki-ritou-terminal",
+        "exact": true,
+        "classification": "JV-supported existing",
+        "binding_status": "exact existing"
+      },
+      {
+        "candidate_key": "phase2-bp-14",
+        "name": "Taketomi Port",
+        "atlas_bp_id": "bp-taketomi-east-port",
+        "exact": true,
+        "classification": "operation hold",
+        "binding_status": "exact existing / partner operation hold"
+      },
+      {
+        "candidate_key": "phase2-bp-15",
+        "name": "North Point (West) Ferry Pier",
+        "atlas_bp_id": "bp-3d87991519",
+        "exact": true,
+        "classification": "display-ready exact existing",
+        "binding_status": "exact existing route endpoint"
+      },
+      {
+        "candidate_key": "phase2-bp-16",
+        "name": "Hung Hom (North) Ferry Pier",
+        "atlas_bp_id": "bp-8b029bcd34",
+        "exact": true,
+        "classification": "display-ready exact existing",
+        "binding_status": "exact existing route endpoint"
+      },
+      {
+        "candidate_key": "phase2-bp-17",
+        "name": "Kaohsiung terminal for Penghu Ferry",
+        "atlas_bp_id": null,
+        "exact": false,
+        "classification": "operation hold",
+        "binding_status": "true registry gap plus operation hold"
+      },
+      {
+        "candidate_key": "phase2-bp-18",
+        "name": "Magong/Penghu Ferry terminal",
+        "atlas_bp_id": "bp-42b7325105",
+        "exact": true,
+        "classification": "operation hold",
+        "binding_status": "exact existing feature / route-node mismatch"
+      }
+    ],
+    "route_match_ledger": [
+      {
+        "candidate_id": "tokyo-bay-kurihama-kanaya",
+        "route_id": null,
+        "classification": "operation hold",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "tokyo-oshima",
+        "route_id": null,
+        "classification": "operation hold",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "atami-oshima",
+        "route_id": null,
+        "classification": "operation hold",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "miyajimaguchi-miyajima",
+        "route_id": null,
+        "classification": "seal-needed",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "naha-zamami-aka",
+        "route_id": null,
+        "classification": "seal-needed",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "ishigaki-taketomi",
+        "route_id": null,
+        "classification": "operation hold",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "hk-north-point-hung-hom",
+        "route_id": "rn-d7294a3ddd04",
+        "classification": "display-ready exact existing",
+        "exact_endpoint_match": true,
+        "nearby_not_bound": null
+      },
+      {
+        "candidate_id": "kaohsiung-magong",
+        "route_id": null,
+        "classification": "operation hold",
+        "exact_endpoint_match": false,
+        "nearby_not_bound": "rn-5085d4e1f498"
+      }
+    ]
+  },
+  "null_hold_ledger": [
+    {
+      "type": "city",
+      "id": "izu-islands-japan",
+      "reason": "Official current service-area page does not name Oshima/Izu Islands; remote-island operation is not established."
+    },
+    {
+      "type": "city",
+      "id": "macau-china",
+      "reason": "Macau is excluded from this gate and must not be inherited or promoted from Hong Kong evidence."
+    },
+    {
+      "type": "city",
+      "id": "kaohsiung-taiwan",
+      "reason": "No authoritative current local DiDi passenger-operation source was found. Historical Greater China app travel interoperability and travel aggregation do not pass."
+    },
+    {
+      "type": "city",
+      "id": "penghu-taiwan",
+      "reason": "No authoritative current local DiDi passenger-operation source was found; Penghu also lacks city-specific current-operation proof."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-01",
+      "name": "Niseko Town market area",
+      "reason": "Market area is useful first/last-mile context, not a ferry boarding point."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-05",
+      "name": "Oshima port (Motomachi or Okata operational port)",
+      "reason": "Operator uses Motomachi or Okata by operating conditions; do not stamp a synthetic current-port BP."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-09",
+      "name": "Tomari Port south bank / Tomarin",
+      "reason": "Generic Tomari BP exists, but south-bank/regular-ferry berth is not exact-bound; nearby route node bp-naha-tomari-port is absent from FEATURES_BY_TYPE."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-10",
+      "name": "Tomari Port north bank high-speed-boat pier",
+      "reason": "High-speed north-bank berth is not exact-bound; no fuzzy stamp to generic Tomari terminal."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-14",
+      "name": "Taketomi Port",
+      "reason": "Exact existing Atlas BP; current DiDi Mobility Japan service on Taketomi is not proven."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-17",
+      "name": "Kaohsiung terminal for Penghu Ferry",
+      "reason": "No exact BP match. Existing route uses unresolved/quarantined node kaohsiung-taiwan__kaohsiung-port; nearby cruise/container POIs are not this passenger terminal."
+    },
+    {
+      "type": "boarding_point",
+      "id": "phase2-bp-18",
+      "name": "Magong/Penghu Ferry terminal",
+      "reason": "Exact passenger terminal feature exists, but existing quarantined route uses unresolved node penghu-taiwan__magong-harbor. Taiwan operation hold remains."
+    },
+    {
+      "type": "corridor",
+      "id": "tokyo-bay-kurihama-kanaya",
+      "route_id": null,
+      "reason": "Kanaya/Futtsu is not named on the current DiDi Mobility Japan service-area page."
+    },
+    {
+      "type": "corridor",
+      "id": "tokyo-oshima",
+      "route_id": null,
+      "reason": "Izu Oshima is not named on the current DiDi Mobility Japan service-area page."
+    },
+    {
+      "type": "corridor",
+      "id": "atami-oshima",
+      "route_id": null,
+      "reason": "Atami is current-operation confirmed; Oshima is not."
+    },
+    {
+      "type": "corridor",
+      "id": "miyajimaguchi-miyajima",
+      "route_id": null,
+      "reason": "Both BPs are exact existing and Hatsukaichi is current-operation confirmed; no exact ROUTES.json endpoint-ID pair exists."
+    },
+    {
+      "type": "corridor",
+      "id": "naha-zamami-aka",
+      "route_id": null,
+      "reason": "Naha/Okinawa coverage is current; remote-island caveat requires local supply/app check. Existing route endpoints are incomplete/dangling."
+    },
+    {
+      "type": "corridor",
+      "id": "ishigaki-taketomi",
+      "route_id": null,
+      "reason": "Ishigaki is confirmed; Taketomi operation is not confirmed and remote-island exclusions apply."
+    },
+    {
+      "type": "corridor",
+      "id": "kaohsiung-magong",
+      "route_id": null,
+      "reason": "Taiwan current consumer operation is unconfirmed. Nearby Atlas route is quarantined/hidden and candidate lacks exact endpoint-ID binding."
+    }
+  ],
+  "no_shrink_comparison": {
+    "prior_artifact_counts": {
+      "cities": 12,
+      "boarding_points": 18,
+      "candidate_corridors": 8,
+      "demand_records": 9
+    },
+    "current_gate_counts": {
+      "cities": 12,
+      "boarding_points": 18,
+      "candidate_corridors": 8,
+      "demand_records": 10
+    },
+    "existing_didi_surface_baseline": {
+      "Japan_city_ids": 8,
+      "Hong_Kong_city_ids": 1,
+      "Taiwan_city_ids": 0
+    },
+    "retained_existing_didi_surface_ids": [
+      "hokkaido-niseko-japan",
+      "izu-islands-japan",
+      "izu-peninsula-japan",
+      "miyako-japan",
+      "okinawa-main-japan",
+      "setouchi-japan",
+      "tokyo-bay-japan",
+      "yaeyama-japan",
+      "hong-kong"
+    ],
+    "removed_or_demoted_in_repo": 0,
+    "rule": "No repository edits. Existing partner surfaces are preserved even when this gate flags an operation hold; holds control new claims/promotion pending human/Grok resolution."
+  },
+  "ordered_grok_actions": [
+    {
+      "order": 1,
+      "owner": "Grok/Atlas",
+      "action": "Do not edit/delete existing DiDi map-scope rows from this gate. Apply publication gates: Japan=DiDi Mobility Japan JV wording; Hong Kong=operation pass; Taiwan/Macau=hard hold."
+    },
+    {
+      "order": 2,
+      "owner": "Grok/Atlas",
+      "action": "Canonicalize duplicate/parent-conflicted Japan BPs: Kurihama, Kanaya, Takeshiba, Oshima operational alternatives, and Tomari north/south berths. Return stable BP IDs."
+    },
+    {
+      "order": 3,
+      "owner": "Grok/Atlas",
+      "action": "Seal only endpoint-ID exact route candidates. HK rn-d7294a3ddd04 is display-ready. Keep every other candidate route_id null until exact BP IDs and water geometry exist."
+    },
+    {
+      "order": 4,
+      "owner": "Grok/Atlas",
+      "action": "Repair/quarantine-review Taiwan rn-5085d4e1f498: resolve Kaohsiung/Magong nodes, eliminate 12.3231 km interior land crossing with hand waypoints, and keep relevance=hide while Taiwan operation hold remains."
+    },
+    {
+      "order": 5,
+      "owner": "Tasklet research",
+      "action": "Obtain authoritative current Taiwan local consumer-operation receipt or explicit non-operation confirmation; recheck Japan Oshima/Taketomi/Futtsu city coverage with current service-area/app evidence."
+    },
+    {
+      "order": 6,
+      "owner": "Finance",
+      "action": "Preserve the existing 95,705 annual one-way Kaohsiung–Magong route-demand record, but do not cascade/promote it for DiDi until Taiwan operation clears and exact endpoint/route geometry seals. Other candidates still require route-specific annual demand and capture assumptions; visitor/airport totals remain context only."
+    }
+  ],
+  "gaps": [
+    {
+      "id": "gap-jp-islands-operation",
+      "owner": "Tasklet research",
+      "next_action": "Verify Oshima and Taketomi current DiDi Mobility Japan availability through official support/app service-area evidence.",
+      "status": "operation hold"
+    },
+    {
+      "id": "gap-jp-bp-canonicalization",
+      "owner": "Grok/Atlas",
+      "next_action": "Resolve BP duplicates, parent mismatches, dynamic Oshima port handling and Tomari berth split.",
+      "status": "seal-needed"
+    },
+    {
+      "id": "gap-taiwan-operation",
+      "owner": "Tasklet research",
+      "next_action": "Obtain authoritative current Taiwan local passenger-operation evidence; historical/app-store/travel evidence does not pass.",
+      "status": "hard hold"
+    },
+    {
+      "id": "gap-taiwan-route-geometry",
+      "owner": "Grok/Atlas",
+      "next_action": "Resolve quarantined endpoint nodes and land crossing for rn-5085d4e1f498; do not bind it to candidate until exact endpoint IDs match.",
+      "status": "quarantined"
+    },
+    {
+      "id": "gap-finance-demand",
+      "owner": "Finance/Tasklet research",
+      "next_action": "Preserve Kaohsiung–Magong 95,705 direct route demand; source annual route-specific one-way counts for other candidates and never infer from airport/visitor totals.",
+      "status": "finance hold except route-demand evidence present for Kaohsiung–Magong"
+    }
+  ],
+  "do_not_publish": [
+    "Japan as ordinary/direct global DiDi coverage; it must be DiDi Mobility Japan taxi JV/partner.",
+    "DiDi operation on Izu Oshima, Taketomi, Kanaya/Futtsu side, Taiwan or Macau without a current authoritative receipt.",
+    "App-store availability, historic launch copy or overseas travel aggregation as current-operation proof.",
+    "Kaohsiung–Magong under DiDi; rn-5085d4e1f498 is quarantined/hidden with unresolved endpoints and land crossing.",
+    "Any route-level demand or finance result derived from airport passengers, visitor totals or broad ferry context.",
+    "Niseko Town market area as a boarding point."
+  ],
+  "summary_counts": {
+    "sources": 32,
+    "cities": 12,
+    "boarding_points": 18,
+    "candidate_corridors": 8,
+    "demand_records": 10,
+    "city_classifications": {
+      "JV-supported existing": 7,
+      "operation hold": 4,
+      "display-ready exact existing": 1
+    },
+    "bp_classifications": {
+      "reject/non-BP": 1,
+      "seal-needed": 4,
+      "JV-supported existing": 6,
+      "true registry gap": 2,
+      "operation hold": 3,
+      "display-ready exact existing": 2
+    },
+    "route_classifications": {
+      "operation hold": 5,
+      "seal-needed": 2,
+      "display-ready exact existing": 1
+    },
+    "exact_city_bindings": 12,
+    "exact_bp_bindings": 13,
+    "exact_route_bindings": 1,
+    "route_ids_null": 7,
+    "operation_hold_cities": 4,
+    "finance_promotions": 0
+  },
+  "validation": {
+    "json_parse": "pass",
+    "invariants": "pass: no-shrink counts; all non-null IDs exist; HK endpoint exact; Taiwan route unbound; only exact Kaohsiung–Magong annual route demand preserved"
+  }
+}
