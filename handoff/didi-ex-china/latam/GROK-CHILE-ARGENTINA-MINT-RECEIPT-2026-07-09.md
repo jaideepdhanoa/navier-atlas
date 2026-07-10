@@ -38,6 +38,12 @@
 - **inheritance_strict:** PASS (exit 0)
 - **fidelity:** PASS (exit 0)
 
+## Deploy
+
+- Alias: https://navier-atlas.vercel.app
+- DiDi Chile: https://navier-atlas.vercel.app/didi/chile
+- DiDi Argentina: https://navier-atlas.vercel.app/didi/argentina
+
 ## Next
 
 - Hand-route water-only geometries; re-run land-crossing QA
