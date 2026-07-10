@@ -1,12 +1,12 @@
 # Proposal fidelity — didi
 
 **Verdict:** PASS
-**Checked:** 2026-07-10T03:04:40Z
+**Checked:** 2026-07-10T06:00:37Z
 
 ## Summary
 
-- Items audited: 92
-- KEEP: 92
+- Items audited: 98
+- KEEP: 98
 - DROP: 0
 - DEFER: 0
 - TRIM/REWRITE: 0
@@ -108,3 +108,9 @@
 | featured | dominican-republic/p2 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
 | featured | dominican-republic/p3 | Santa Bárbara de Samaná Ferry Dock & Cayo Levantad | `rn-64effc46b976` | **KEEP** | — |
 | featured | dominican-republic/p3 | Cayo Levantado Public Dock → Santa Bárbara de Sama | `rn-c3a4ef933700` | **KEEP** | — |
+| journey | market:chile | Punta Arenas Tres Puentes → Porvenir | `—` | **KEEP** | — |
+| journey | market:chile | Niebla → Corral | `—` | **KEEP** | — |
+| journey | market:chile | Pargua → Chacao | `—` | **KEEP** | — |
+| journey | market:argentina | Buenos Aires Puerto Madero → Colonia del Sacrament | `—` | **KEEP** | — |
+| journey | market:argentina | Tigre → Casa Bellini / Cruz Colorada | `—` | **KEEP** | — |
+| journey | market:argentina | Rosario → Isla Sabino Corsi | `—` | **KEEP** | — |

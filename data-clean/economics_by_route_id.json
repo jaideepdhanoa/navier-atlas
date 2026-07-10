@@ -1,9 +1,9 @@
 {
  "_meta": {
   "doc": "Route-keyed unit-economics sidecar for the Atlas front end.",
-  "generated": "2026-07-10T02:07:04Z",
+  "generated": "2026-07-10T06:00:35Z",
   "gold_routes_total": 6241,
-  "records": 228,
+  "records": 232,
   "pending_route_pin": 1219,
   "partners": [
    "bolt",
@@ -47,6 +47,28 @@
    "updated": 8,
    "grounded": 2,
    "estimated_null": 6
+  },
+  "didi_brazil_mexico_t3_g4": {
+   "at": "2026-07-10T06:00:35Z",
+   "rio": [
+    "rn-1886629dbf0c",
+    "rn-80f0d0ebe0bd",
+    "rn-369ef0eb69d9",
+    "rn-00bb6ded4be5"
+   ],
+   "mexico_spine": [
+    "ics-413f51cd44",
+    "ics-dd1d814699",
+    "ics-03e3853317",
+    "ics-aa6ff40d2d",
+    "ics-89a8844858",
+    "ics-de6758216f",
+    "ics-db0930d9d1",
+    "ics-b5861451fb"
+   ],
+   "added": 4,
+   "updated": 8,
+   "didi_records": 12
   }
  },
  "records": [
@@ -29650,6 +29672,97 @@
    ]
   },
   {
+   "route_id": "rn-1886629dbf0c",
+   "registry_market_id": "brazil",
+   "authored_for": "didi",
+   "corridor": "Praça XV Terminal (central Rio) -> Arariboia Terminal (Niterói)",
+   "market": "Brazil",
+   "country": "Brazil",
+   "distance_nm": 2.7,
+   "status": "grounded",
+   "demand_confidence": "high",
+   "fare_today_usd": 18.0,
+   "navier_fare_usd": 18.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 211622.0,
+    "margin": 0.62,
+    "payback_years": 4.53,
+    "co2_saved_t_per_boat_yr": 43.2,
+    "vessels_10pct": 92,
+    "market_rev_yr": 19469224.0
+   },
+   "band": {
+    "payback_years": [
+     8.91,
+     4.53,
+     2.59
+    ],
+    "vessels_10pct": [
+     133,
+     92,
+     62
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 8.1,
+    "turnaround_min": 20.0,
+    "boarding_dwell_min": 10.0,
+    "cycle_min": 38.1,
+    "service_window_h": 12,
+    "trips_per_day": 15,
+    "trips_per_day_capacity": 18,
+    "max_trips_per_day_cap": 15,
+    "trips_per_day_capped": true,
+    "trips_per_day_derivation": "min(cap 15, floor(12h service window / 38.1min cycle [8.1min one-way + 20.0min turnaround + 10.0min boarding])) = 15 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.65,
+    "load_factor": 0.55,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 18.0,
+     "navier_fare_usd": 18.0,
+     "pax_capacity": 8,
+     "load_factor": 0.55,
+     "pax_per_trip": 4.4,
+     "trips_per_day": 15,
+     "trips_per_year": 2672,
+     "pax_per_year": 11757.0,
+     "revenue_per_boat_yr": 211622.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 1057.0,
+     "crew_usd_yr": 25200.0,
+     "marina_overhead_usd_yr": 10000.0,
+     "maintenance_usd_yr": 10000.0,
+     "insurance_usd_yr": 15000.0,
+     "charging_berth_usd_yr": 18000.0,
+     "annual_opex_usd_yr": 79257.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 132365.0,
+     "margin": 0.62,
+     "payback_years": 4.53,
+     "co2_saved_t_per_boat_yr": 43.2
+    }
+   },
+   "provenance": {
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
+    "source": "finance/recal/agg-didi.json",
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
+   }
+  },
+  {
    "route_id": "ics-413f51cd44",
    "registry_market_id": "mexico-caribbean",
    "authored_for": "didi",
@@ -29732,11 +29845,12 @@
     }
    },
    "provenance": {
-    "fare": "comparable public adult benchmark (not operator yield)",
-    "demand": "sourced corridor demand pool (direction+fare-mix resolved by Tasklet T3)",
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -29822,11 +29936,376 @@
     }
    },
    "provenance": {
-    "fare": "comparable public adult benchmark (not operator yield)",
-    "demand": "sourced corridor demand pool (direction+fare-mix resolved by Tasklet T3)",
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
+   }
+  },
+  {
+   "route_id": "rn-00bb6ded4be5",
+   "registry_market_id": "brazil",
+   "authored_for": "didi",
+   "corridor": "Praça XV Terminal (central Rio) -> Paquetá Island Terminal",
+   "market": "Brazil",
+   "country": "Brazil",
+   "distance_nm": 9.2,
+   "status": "grounded",
+   "demand_confidence": "high",
+   "fare_today_usd": 18.0,
+   "navier_fare_usd": 18.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 169250.0,
+    "margin": 0.52,
+    "payback_years": 6.81,
+    "co2_saved_t_per_boat_yr": 117.8,
+    "vessels_10pct": 12,
+    "market_rev_yr": 2031000.0
+   },
+   "band": {
+    "payback_years": [
+     16.43,
+     6.81,
+     3.59
+    ],
+    "vessels_10pct": [
+     17,
+     12,
+     8
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 27.6,
+    "turnaround_min": 20.0,
+    "boarding_dwell_min": 10.0,
+    "cycle_min": 57.6,
+    "service_window_h": 12,
+    "trips_per_day": 12,
+    "trips_per_day_capacity": 12,
+    "max_trips_per_day_cap": 15,
+    "trips_per_day_capped": false,
+    "trips_per_day_derivation": "floor(12h service window / 57.6min cycle [27.6min one-way + 20.0min turnaround + 10.0min boarding]) = 12 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.65,
+    "load_factor": 0.55,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 18.0,
+     "navier_fare_usd": 18.0,
+     "pax_capacity": 8,
+     "load_factor": 0.55,
+     "pax_per_trip": 4.4,
+     "trips_per_day": 12,
+     "trips_per_year": 2137,
+     "pax_per_year": 9403.0,
+     "revenue_per_boat_yr": 169250.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 2882.0,
+     "crew_usd_yr": 25200.0,
+     "marina_overhead_usd_yr": 10000.0,
+     "maintenance_usd_yr": 10000.0,
+     "insurance_usd_yr": 15000.0,
+     "charging_berth_usd_yr": 18000.0,
+     "annual_opex_usd_yr": 81082.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 88168.0,
+     "margin": 0.52,
+     "payback_years": 6.81,
+     "co2_saved_t_per_boat_yr": 117.8
+    }
+   },
+   "provenance": {
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
+    "source": "finance/recal/agg-didi.json",
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
+   }
+  },
+  {
+   "route_id": "rn-80f0d0ebe0bd",
+   "registry_market_id": "brazil",
+   "authored_for": "didi",
+   "corridor": "Praça XV Terminal (central Rio) -> Charitas Terminal (Niterói, fast catamaran)",
+   "market": "Brazil",
+   "country": "Brazil",
+   "distance_nm": 4.4,
+   "status": "grounded",
+   "demand_confidence": "high",
+   "fare_today_usd": 18.0,
+   "navier_fare_usd": 18.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 211622.0,
+    "margin": 0.62,
+    "payback_years": 4.56,
+    "co2_saved_t_per_boat_yr": 70.5,
+    "vessels_10pct": 7,
+    "market_rev_yr": 1481354.0
+   },
+   "band": {
+    "payback_years": [
+     8.98,
+     4.56,
+     2.6
+    ],
+    "vessels_10pct": [
+     10,
+     7,
+     4
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 13.2,
+    "turnaround_min": 20.0,
+    "boarding_dwell_min": 10.0,
+    "cycle_min": 43.2,
+    "service_window_h": 12,
+    "trips_per_day": 15,
+    "trips_per_day_capacity": 16,
+    "max_trips_per_day_cap": 15,
+    "trips_per_day_capped": true,
+    "trips_per_day_derivation": "min(cap 15, floor(12h service window / 43.2min cycle [13.2min one-way + 20.0min turnaround + 10.0min boarding])) = 15 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.65,
+    "load_factor": 0.55,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 18.0,
+     "navier_fare_usd": 18.0,
+     "pax_capacity": 8,
+     "load_factor": 0.55,
+     "pax_per_trip": 4.4,
+     "trips_per_day": 15,
+     "trips_per_year": 2672,
+     "pax_per_year": 11757.0,
+     "revenue_per_boat_yr": 211622.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 1723.0,
+     "crew_usd_yr": 25200.0,
+     "marina_overhead_usd_yr": 10000.0,
+     "maintenance_usd_yr": 10000.0,
+     "insurance_usd_yr": 15000.0,
+     "charging_berth_usd_yr": 18000.0,
+     "annual_opex_usd_yr": 79923.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 131699.0,
+     "margin": 0.62,
+     "payback_years": 4.56,
+     "co2_saved_t_per_boat_yr": 70.5
+    }
+   },
+   "provenance": {
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
+    "source": "finance/recal/agg-didi.json",
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
+   }
+  },
+  {
+   "route_id": "rn-369ef0eb69d9",
+   "registry_market_id": "brazil",
+   "authored_for": "didi",
+   "corridor": "Praça XV Terminal (central Rio) -> Cocotá Terminal (Ilha do Governador)",
+   "market": "Brazil",
+   "country": "Brazil",
+   "distance_nm": 6.0,
+   "status": "grounded",
+   "demand_confidence": "high",
+   "fare_today_usd": 18.0,
+   "navier_fare_usd": 18.0,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 211622.0,
+    "margin": 0.62,
+    "payback_years": 4.58,
+    "co2_saved_t_per_boat_yr": 96.1,
+    "vessels_10pct": 2,
+    "market_rev_yr": 423244.0
+   },
+   "band": {
+    "payback_years": [
+     9.06,
+     4.58,
+     2.61
+    ],
+    "vessels_10pct": [
+     3,
+     2,
+     1
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 18.0,
+    "turnaround_min": 20.0,
+    "boarding_dwell_min": 10.0,
+    "cycle_min": 48.0,
+    "service_window_h": 12,
+    "trips_per_day": 15,
+    "trips_per_day_capacity": 15,
+    "max_trips_per_day_cap": 15,
+    "trips_per_day_capped": false,
+    "trips_per_day_derivation": "floor(12h service window / 48.0min cycle [18.0min one-way + 20.0min turnaround + 10.0min boarding]) = 15 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.65,
+    "load_factor": 0.55,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 18.0,
+     "navier_fare_usd": 18.0,
+     "pax_capacity": 8,
+     "load_factor": 0.55,
+     "pax_per_trip": 4.4,
+     "trips_per_day": 15,
+     "trips_per_year": 2672,
+     "pax_per_year": 11757.0,
+     "revenue_per_boat_yr": 211622.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 2350.0,
+     "crew_usd_yr": 25200.0,
+     "marina_overhead_usd_yr": 10000.0,
+     "maintenance_usd_yr": 10000.0,
+     "insurance_usd_yr": 15000.0,
+     "charging_berth_usd_yr": 18000.0,
+     "annual_opex_usd_yr": 80550.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 131072.0,
+     "margin": 0.62,
+     "payback_years": 4.58,
+     "co2_saved_t_per_boat_yr": 96.1
+    }
+   },
+   "provenance": {
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
+    "source": "finance/recal/agg-didi.json",
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
+   }
+  },
+  {
+   "route_id": "ics-aa6ff40d2d",
+   "registry_market_id": "mexico-caribbean",
+   "authored_for": "didi",
+   "corridor": "Punta Sam ferry terminal -> Terminal Martima De Isla Mujeres",
+   "market": "Mexico – Caribbean",
+   "country": "Mexico",
+   "distance_nm": 3.35,
+   "status": "grounded",
+   "demand_confidence": "high",
+   "fare_today_usd": 15.07,
+   "navier_fare_usd": 15.07,
+   "vessel": "N30 Pioneer II",
+   "mid": {
+    "rev_per_boat_yr": 177175.0,
+    "margin": 0.53,
+    "payback_years": 6.34,
+    "co2_saved_t_per_boat_yr": 54.5,
+    "vessels_10pct": 2,
+    "market_rev_yr": 354350.0
+   },
+   "band": {
+    "payback_years": [
+     14.79,
+     6.34,
+     3.39
+    ],
+    "vessels_10pct": [
+     2,
+     2,
+     1
+    ]
+   },
+   "estimation_basis": null,
+   "assumptions": {
+    "one_way_min": 10.1,
+    "turnaround_min": 20.0,
+    "boarding_dwell_min": 10.0,
+    "cycle_min": 40.0,
+    "service_window_h": 12,
+    "trips_per_day": 15,
+    "trips_per_day_capacity": 17,
+    "max_trips_per_day_cap": 15,
+    "trips_per_day_capped": true,
+    "trips_per_day_derivation": "min(cap 15, floor(12h service window / 40.0min cycle [10.1min one-way + 20.0min turnaround + 10.0min boarding])) = 15 legs/day",
+    "operating_days_yr": 274,
+    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
+    "mechanical_uptime": 0.75,
+    "weather_factor": 1.0,
+    "revenue_leg_pct": 0.65,
+    "load_factor": 0.55,
+    "pax_capacity": 8
+   },
+   "breakdown": {
+    "revenue_build": {
+     "comparable_fare_usd": 15.07,
+     "navier_fare_usd": 15.07,
+     "pax_capacity": 8,
+     "load_factor": 0.55,
+     "pax_per_trip": 4.4,
+     "trips_per_day": 15,
+     "trips_per_year": 2672,
+     "pax_per_year": 11757.0,
+     "revenue_per_boat_yr": 177175.0
+    },
+    "run_cost": {
+     "energy_usd_yr": 3353.0,
+     "crew_usd_yr": 25200.0,
+     "marina_overhead_usd_yr": 11000.0,
+     "maintenance_usd_yr": 10000.0,
+     "insurance_usd_yr": 15000.0,
+     "charging_berth_usd_yr": 18000.0,
+     "annual_opex_usd_yr": 82553.0,
+     "depreciation_usd_yr": 30000.0
+    },
+    "result": {
+     "ebitda_per_boat_yr": 94622.0,
+     "margin": 0.53,
+     "payback_years": 6.34,
+     "co2_saved_t_per_boat_yr": 54.5
+    }
+   },
+   "provenance": {
+    "fare": "published comparable adult benchmark — not operator realized yield",
+    "demand": "sourced corridor demand pool",
+    "permission": "required_not_transferred",
+    "source": "finance/recal/agg-didi.json",
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -29914,99 +30393,10 @@
    "provenance": {
     "fare": "null_until_sourced",
     "demand": "held_null — unsupported ridership",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
-   }
-  },
-  {
-   "route_id": "ics-aa6ff40d2d",
-   "registry_market_id": "mexico-caribbean",
-   "authored_for": "didi",
-   "corridor": "Punta Sam ferry terminal -> Terminal Martima De Isla Mujeres",
-   "market": "Mexico – Caribbean",
-   "country": "Mexico",
-   "distance_nm": 3.35,
-   "status": "estimated",
-   "demand_confidence": null,
-   "fare_today_usd": null,
-   "navier_fare_usd": null,
-   "vessel": "N30 Pioneer II",
-   "mid": {
-    "rev_per_boat_yr": null,
-    "margin": null,
-    "payback_years": null,
-    "co2_saved_t_per_boat_yr": 54.5,
-    "vessels_10pct": null,
-    "market_rev_yr": null
-   },
-   "band": {
-    "payback_years": [
-     null,
-     null,
-     null
-    ],
-    "vessels_10pct": [
-     null,
-     null,
-     null
-    ]
-   },
-   "estimation_basis": "sourced_greenfield_tier",
-   "assumptions": {
-    "one_way_min": 10.1,
-    "turnaround_min": 20.0,
-    "boarding_dwell_min": 10.0,
-    "cycle_min": 40.0,
-    "service_window_h": 12,
-    "trips_per_day": 15,
-    "trips_per_day_capacity": 17,
-    "max_trips_per_day_cap": 15,
-    "trips_per_day_capped": true,
-    "trips_per_day_derivation": "min(cap 15, floor(12h service window / 40.0min cycle [10.1min one-way + 20.0min turnaround + 10.0min boarding])) = 15 legs/day",
-    "operating_days_yr": 274,
-    "operating_days_derivation": "365 x 0.75 mechanical uptime x 1.0 weather",
-    "mechanical_uptime": 0.75,
-    "weather_factor": 1.0,
-    "revenue_leg_pct": 0.65,
-    "load_factor": 0.55,
-    "pax_capacity": 8
-   },
-   "breakdown": {
-    "revenue_build": {
-     "comparable_fare_usd": null,
-     "navier_fare_usd": null,
-     "pax_capacity": 8,
-     "load_factor": 0.55,
-     "pax_per_trip": 4.4,
-     "trips_per_day": 15,
-     "trips_per_year": 2672,
-     "pax_per_year": 11757.0,
-     "revenue_per_boat_yr": null
-    },
-    "run_cost": {
-     "energy_usd_yr": 3353.0,
-     "crew_usd_yr": 25200.0,
-     "marina_overhead_usd_yr": 11000.0,
-     "maintenance_usd_yr": 10000.0,
-     "insurance_usd_yr": 15000.0,
-     "charging_berth_usd_yr": 18000.0,
-     "annual_opex_usd_yr": 82553.0,
-     "depreciation_usd_yr": 30000.0
-    },
-    "result": {
-     "ebitda_per_boat_yr": null,
-     "margin": null,
-     "payback_years": null,
-     "co2_saved_t_per_boat_yr": 54.5
-    }
-   },
-   "provenance": {
-    "fare": "null_until_sourced",
-    "demand": "held_null — unsupported ridership",
-    "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -30094,9 +30484,10 @@
    "provenance": {
     "fare": "null_until_sourced",
     "demand": "held_null — unsupported ridership",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -30184,9 +30575,10 @@
    "provenance": {
     "fare": "null_until_sourced",
     "demand": "held_null — unsupported ridership",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -30274,9 +30666,10 @@
    "provenance": {
     "fare": "null_until_sourced",
     "demand": "held_null — unsupported ridership",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
@@ -30364,9 +30757,10 @@
    "provenance": {
     "fare": "null_until_sourced",
     "demand": "held_null — unsupported ridership",
+    "permission": "required_not_transferred",
     "source": "finance/recal/agg-didi.json",
-    "lane": "didi-mexico-g4-2026-07-09",
-    "sealed_at": "2026-07-10T02:07:04Z"
+    "lane": "didi-g4-brazil-mexico-t3-2026-07-10",
+    "sealed_at": "2026-07-10T06:00:35Z"
    }
   },
   {
