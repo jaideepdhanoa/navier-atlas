@@ -569,25 +569,35 @@ def main() -> int:
     recompute_rollup(agg)
     save(AGG, agg)
 
-    # economics sidecar
-    side = load(SIDECAR) if SIDECAR.exists() else {"_meta": {}, "records": {}}
+    # economics sidecar — records is a LIST of {route_id, ...} (build.mjs iterates)
+    side = load(SIDECAR) if SIDECAR.exists() else {"_meta": {}, "records": []}
     recs = side.get("records")
-    if not isinstance(recs, dict):
-        recs = {}
-        side["records"] = recs
+    if not isinstance(recs, list):
+        # recover if a prior run wrote a dict
+        if isinstance(recs, dict):
+            recs = [{"route_id": k, **v} for k, v in recs.items()]
+        else:
+            recs = []
+    by_idx = {r.get("route_id"): i for i, r in enumerate(recs) if r.get("route_id")}
     for row in new_rows:
         rid = row["route_id"]
         rec = economics_record(row)
+        rec["route_id"] = rid
         rec["annual_one_way_pax"] = row["mid"].get("_demand_pax")
-        recs[rid] = rec
+        if rid in by_idx:
+            recs[by_idx[rid]] = rec
+        else:
+            by_idx[rid] = len(recs)
+            recs.append(rec)
+    side["records"] = recs
     side.setdefault("_meta", {})
+    side["_meta"]["records"] = len(recs)
     side["_meta"]["didi_t2_t7_g4"] = {
         "at": utc_now(),
         "routes": [c["route_id"] for c in CANDIDATES],
         "added": len(new_rows),
     }
     side["_meta"]["generated"] = utc_now()
-    # write compact-ish
     SIDECAR.write_text(json.dumps(side, indent=1, ensure_ascii=False) + "\n")
 
     # partner stamp
