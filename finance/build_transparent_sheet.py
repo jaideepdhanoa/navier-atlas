@@ -580,11 +580,13 @@ for idx,rec in enumerate(rows):
     # LB-88: captive-resort fleet ceiling caps vessels (floored AND raw); rev scales to cap
     fcap=f"{CL('Fleet ceiling (captive villas/25)')}{R}"
     F(ves,f"=IF(OR({dem}=\"\",{ppy}=0),\"\",MIN(IF({fcap}=\"\",9.9E+99,{fcap}),FLOOR({nrd}/{ppy},1)))",NUM)
-    F(mrev,f"=IF({ves}=\"\",\"\",{ves}*{rev})",USD)
+    # aggregate.py rounds per-boat revenue to whole dollars before scaling by fleet.
+    # Mirror that here so the independent workbook and model have exact floor parity.
+    F(mrev,f"=IF({ves}=\"\",\"\",{ves}*ROUND({rev},0))",USD)
     # R-FLOOR-2 / G51 network-sum basis: unfloored fractional vessels + raw market rev
     vraw=f"{CL('Vessels raw (unfloored)')}{R}"; mrevraw=f"{CL('Market rev/yr raw')}{R}"
     F(vraw,f"=IF(OR({dem}=\"\",{ppy}=0),\"\",MIN(IF({fcap}=\"\",9.9E+99,{fcap}),{nrd}/{ppy}))",NUM2)
-    F(mrevraw,f"=IF({vraw}=\"\",\"\",{vraw}*{rev})",USD)
+    F(mrevraw,f"=IF({vraw}=\"\",\"\",{vraw}*ROUND({rev},0))",USD)
     sc(ws,f"{CL('Subset of (excl. from market fleet)')}{R}",rec["subset"],fill=f_input,align=wrap,bd=True,font=Font(size=8,color="555555"))
     # LB-33 forward-SAM flag: 2030-dated / low-confidence demand — engine row computed
     # at MID but held OUT of the grounded floor (separate FORWARD SAM total below).
@@ -761,17 +763,27 @@ def mult(label,node,key,note,fmt=NUM2):
 mult("Induced demand (k)",M["induced_demand"],"ind","Faster/quieter product grows the crossing market beyond today's trips.")
 mult("Mature capture rate (c)",M["mature_capture_rate"],"cap","Navier's corridor share once it is the established premium default (vs 10% floor).",PCT)
 mult("Journey GMV multiple (m)",M["journey_gmv_multiple"],"gmv","Whole island-journey wallet (transport+food+stay+experiences) as a multiple of the boat fare.")
-mult("Greenfield network factor (g)",M["greenfield_corridor_factor"],"green","Width lever: addressable network vs the sourced subset (ID-based census).")
+_green_note = ("Width lever: global template band pending a DiDi-specific census; this is not a Grab or DiDi counted census."
+               if PARTNER == "didi" else
+               "Width lever: addressable network vs the sourced subset (ID-based census).")
+mult("Greenfield network factor (g)",M["greenfield_corridor_factor"],"green",_green_note)
 # platform take (scalar)
 take_r=mr
 sc(ws4,f"A{mr}","Platform take rate",bd=True,font=BOLD); sc(ws4,f"C{mr}",v(M["platform_take_rate"]),fill=f_input,fmt=PCT,align=ctr,bd=True)
 sc(ws4,f"E{mr}","Super-app blended commission on journey GMV (derived line only).",align=wrap,bd=True,font=SMALL)
 take_ref=f"$C${take_r}"; mr+=2
 som_cap_r=mr
-# LB-254: capture that ACTUALLY built the floor (floor/pool) — captive ~0.90, contested ~0.10,
-# blended for mixed. M_today = floor / this = the true transport-spend pool (no floor/0.10 inflation).
+# LB-254 / exact-parity guard: derive the true sourced transport-spend pool independently
+# from grounded corridor demand × comparable fare. Do not recover it from aggregate.py's
+# display-rounded effective_capture; that creates small but real model↔sheet ladder drift.
+_pool_bucket = "Forward SAM" if ALL_FWD else "Grounded"
+_pool_expr = (f"ROUND(SUMPRODUCT(--('Corridor economics'!${FLOORcol}${DATA0}:${FLOORcol}${LASTROW}=\"{_pool_bucket}\"),"
+              f"'Corridor economics'!${CL('Demand pool 1-way/yr')}${DATA0}:${CL('Demand pool 1-way/yr')}${LASTROW},"
+              f"'Corridor economics'!${CL('Premium fare $/pax')}${DATA0}:${CL('Premium fare $/pax')}${LASTROW}),0)")
+# Capture that ACTUALLY built the floor (floor/pool) — captive ~0.90, contested ~0.10,
+# blended for mixed. Keep the aggregate value only for narrative/band classification.
 _som_cap_val = EFF_CAPTURE if EFF_CAPTURE else v(LAD["som_capture_rate"])
-sc(ws4,f"A{mr}","SOM capture rate (floor)",bd=True,font=BOLD); sc(ws4,f"C{mr}",_som_cap_val,fill=f_input,fmt=PCT,align=ctr,bd=True)
+sc(ws4,f"A{mr}","SOM capture rate (floor)",bd=True,font=BOLD); sc(ws4,f"C{mr}",f"=som_floor_rev/({_pool_expr})",fill=f_calc,fmt=PCT,align=ctr,bd=True)
 sc(ws4,f"E{mr}",("Captive sole-operator capture (~%.0f%%) that builds the published floor; M_today = floor \u00f7 this = the true corridor spend pool." % (_som_cap_val*100)
                  if IS_CAPTIVE and EFF_CAPTURE else
                  "New-entrant ~%.0f%% share of today's pool (= the published floor)." % (_som_cap_val*100)),align=wrap,bd=True,font=SMALL)
@@ -796,8 +808,8 @@ sc(ws4,f"C{mr}","=som_floor_rev",fill=f_calc,fmt=USD,align=ctr,bd=True)
 sc(ws4,f"E{mr}",("Live sum of forward-SAM corridor market-rev (10% capture, 2030-dated destination-cap demand). Held OUT of any near-term grounded number." if ALL_FWD else "Live sum of grounded-floor corridor market-rev only (Floor bucket = Grounded; cascade-estimated rows held out). Matches growth.py _headline_anchor and deck TAM."),align=wrap,bd=True,font=SMALL)
 som_floor_ref=f"$C${mr}"; mr+=1
 sc(ws4,f"A{mr}","M_today \u2014 full transport spend on sourced corridors",bd=True,font=BOLD)
-sc(ws4,f"C{mr}",f"={som_floor_ref}/{somcap_ref}",fill=f_calc,fmt=USD,align=ctr,bd=True)
-sc(ws4,f"E{mr}","Anchor = SOM floor \u00f7 capture rate; recovers the whole crossing pool's premium-transfer spend today.",align=wrap,bd=True,font=SMALL)
+sc(ws4,f"C{mr}",f"={_pool_expr}",fill=f_calc,fmt=USD,align=ctr,bd=True)
+sc(ws4,f"E{mr}","Direct sum of sourced one-way demand \u00d7 comparable fare on grounded corridors; independent of display-rounded capture.",align=wrap,bd=True,font=SMALL)
 Mt=f"$C${mr}"; mr+=2
 lad(("SOM full network (~%.0f%% capture, today, +greenfield)" % (_som_cap_val*100)),
     f"={Mt}*{somcap_ref}*{gr_lo}",f"={Mt}*{somcap_ref}*{gr_mi}",f"={Mt}*{somcap_ref}*{gr_hi}",

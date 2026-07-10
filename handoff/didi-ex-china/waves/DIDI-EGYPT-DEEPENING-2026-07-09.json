@@ -1,0 +1,749 @@
+{
+  "market": "Egypt",
+  "lane": "BP + brief maturity + demand/fare research; separate Cairo/Nile and Red Sea stories",
+  "as_of": "2026-07-09",
+  "status": "research_complete_with_repository_and_terminal-geocoding_blockers",
+  "existing_atlas_baseline": {
+    "requested_repository": "/tmp/navier-atlas",
+    "repository_read_status": "blocked: /tmp/navier-atlas was not present in this subagent environment",
+    "fallback_artifacts_read": [
+      "/tasklet/agent/home/didi-ex-china-audit/didi-atlas-global-audit-2026-07-09.json",
+      "/tasklet/agent/home/burndown-2026-06-29/stage/partner-pitch/partners/didi.json"
+    ],
+    "canonical_files_not_available": [
+      "data-clean/CLUSTERS.json",
+      "data-clean/ROUTES.json",
+      "canonical cluster briefs",
+      "canonical city briefs",
+      "atlas-external/boarding-points/*.json"
+    ],
+    "partner_config_observation": "The staged DiDi partner config is global and generic. Egypt appears in a pre-launch market set but there is no Egypt-specific narrative in that file.",
+    "audit_observation": {
+      "country_code": "EG",
+      "coverage_tier": "foundational",
+      "proposal_stage": "prelaunch",
+      "priority": "priority",
+      "city_count": 4,
+      "existing_route_count_reported": 0,
+      "geometry_count_reported": 0,
+      "city_ids": [
+        "cairo-egypt",
+        "hurghada-el-gouna-egypt",
+        "redsea-egypt",
+        "sharm-el-sheikh-egypt"
+      ]
+    },
+    "route_match_rule": "Because ROUTES.json was unavailable and the fallback audit reports zero existing Egypt routes, no candidate was assigned a route_id. Every route_id below is null pending an exact canonical-ID match.",
+    "baseline_confidence": "medium"
+  },
+  "sources": [
+    {
+      "source_id": "S1",
+      "url": "https://careers.didiglobal.com/jobDetail:20523",
+      "title": "DiDi Global careers job detail (Egypt/Cairo role)",
+      "publisher": "DiDi Global",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "DiDi maintained an Egypt/Cairo organizational hiring footprint; useful as official company evidence, but not a city-by-city live service map.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S2",
+      "url": "https://apps.apple.com/eg/app/didi-rider/id1362398401",
+      "title": "DiDi Rider: Affordable rides",
+      "publisher": "Apple App Store (Egypt storefront); app by DiDi",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "The DiDi Rider app is distributed in Egypt's App Store. Storefront availability alone does not prove service in all four Atlas cities.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S3",
+      "url": "https://english.ahram.org.eg/News/546477.aspx",
+      "title": "DiDi launches DiDi Express in Cairo, Alexandria",
+      "publisher": "Ahram Online",
+      "date": "2025-09-02",
+      "accessed": "2026-07-09",
+      "proves": "Current secondary evidence of a DiDi product launch in Cairo and Alexandria; supports a Cairo partner story but does not establish Hurghada, El Gouna, Safaga, or Sharm coverage.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S4",
+      "url": "https://www.egypttelegraph.com/article/228595/%D8%A3%D8%B3%D8%B9%D8%A7%D8%B1-%D9%88%D9%85%D9%88%D8%A7%D8%B9%D9%8A%D8%AF-%D8%B1%D8%AD%D9%84%D8%A7%D8%AA-%D8%A7%D9%84%D8%A3%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D8%A7%D9%84%D9%86%D9%87%D8%B1%D9%8A-%D9%81%D9%8A-%D8%B9%D9%8A%D8%AF-%D8%A7%D9%84%D9%81%D8%B7%D8%B1-2026",
+      "title": "Prices and schedules: river-bus trips during Eid al-Fitr 2026",
+      "publisher": "Egypt Telegraph",
+      "date": "2026-03-20",
+      "accessed": "2026-07-09",
+      "proves": "A Cairo river-bus leisure service ran daily during Eid 2026 from Happy Land berth at Al-Mazallat to Al-Qanater: EGP 120 per person return, about four hours return sailing, with about three hours at the Qanater berth; also mentions one-hour short trips without an exact published fare.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S5",
+      "url": "https://www.youm7.com/story/2023/1/26/%D8%A7%D9%84%D9%86%D9%82%D9%84-%D8%A7%D9%84%D8%B9%D8%A7%D9%85-%D9%8A%D8%B3%D8%AA%D8%B9%D8%AF-%D9%84%D8%A7%D8%B3%D8%AA%D9%84%D8%A7%D9%85-%D9%85%D8%AD%D8%B7%D8%A9-%D9%85%D8%A7%D8%B3%D8%A8%D9%8A%D8%B1%D9%88-%D9%84%D9%84%D8%A3%D8%AA%D9%88%D8%A8%D9%8A%D8%B3-%D8%A7%D9%84%D9%86%D9%87%D8%B1%D9%89/6061466",
+      "title": "Cairo public transport prepares to receive Maspero river-bus station at Ahl Masr Walk",
+      "publisher": "Youm7",
+      "date": "2023-01-26",
+      "accessed": "2026-07-09",
+      "proves": "Maspero was being prepared as a river-bus station and the authority discussed resuming University/Zoo services. This is historical candidate evidence, not proof of operation in July 2026.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S6",
+      "url": "https://english.ahram.org.eg/News/557936.aspx",
+      "title": "A ‘Swim Bus’ on the Nile",
+      "publisher": "Ahram Online",
+      "date": "2025-12-05",
+      "accessed": "2026-07-09",
+      "proves": "Egypt's General Authority for River Transport described a trial amphibious tourist bus for Cairo. The article explicitly says tourism only, not public passenger transport; this must remain future/opportunity evidence rather than a live corridor.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S7",
+      "url": "https://www.adportsgroup.com/en/news-and-media/2026/05/19/ad-ports-group-launches-cruise-and-ferry-terminal-services-in-egypt",
+      "title": "AD Ports Group Launches Cruise and Ferry Terminal Services in Egypt, Strengthening Cruise Tourism Across the Red Sea",
+      "publisher": "AD Ports Group",
+      "date": "2026-05-19",
+      "accessed": "2026-07-09",
+      "proves": "Cruise services commenced at Sharm El Sheikh, Hurghada, and Safaga terminals; passenger services launched at Hurghada and Safaga; Safaga–NEOM ferry operations supported Hajj-worker transport. No passenger volume or public fare is stated.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S8",
+      "url": "https://www.adportsgroup.com/en/news-and-media/2024/06/12/ad-ports-group-and-red-sea-port-authority-sign-three-concession-agreements",
+      "title": "AD Ports Group and Red Sea Port Authority Sign Three Concession Agreements to Strengthen Egypt’s Cruise Tourism Sector at Safaga, Hurghada and Sharm El Sheikh Ports",
+      "publisher": "AD Ports Group",
+      "date": "2024-06-12",
+      "accessed": "2026-07-09",
+      "proves": "Official concession evidence naming the three real cruise terminals and a 15-year operating/development arrangement with Egypt's Red Sea Ports Authority; in 2024 they were expected operational in 2025, superseded by S7's May 2026 commencement evidence.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S9",
+      "url": "https://www.experienceegypt.eg/en/attraction-details/152/island-life-",
+      "title": "Island Life",
+      "publisher": "Experience Egypt, Ministry of Tourism and Antiquities",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Giftun Islands are a short boat ride from Hurghada, visits are pre-arranged and fee-bearing, and special Mahmeya boats run daily from Hurghada each morning and return at sunset. Exact departure berth, fare, capacity, and annual riders are not supplied.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S10",
+      "url": "https://www.experienceegypt.eg/en/city/16/sharm-al-sheikh",
+      "title": "Sharm al-Sheikh",
+      "publisher": "Experience Egypt, Ministry of Tourism and Antiquities",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official tourism framing for Sharm as a major marine resort between Ras Muhammad National Park and Nabq Protectorate, with an international airport. It supports destination context, not a currently scheduled water route or berth.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S11",
+      "url": "https://www.elgouna.com/things-to-do/activities/boat-rentals",
+      "title": "Boat Rentals",
+      "publisher": "El Gouna",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "El Gouna officially markets boat rentals and water-based leisure from its resort environment. The page does not identify a public passenger terminal, scheduled corridor, route fare, or passenger count.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S12",
+      "url": "https://sis.gov.eg/en/media-center/news/egypt-tourism-records-historic-growth-in-2025-receiving-19-million-tourists/",
+      "title": "Egypt tourism records historic growth in 2025 receiving 19 million tourists",
+      "publisher": "Egypt State Information Service, citing Ministry of Tourism and Antiquities",
+      "date": "2026-01-03",
+      "accessed": "2026-07-09",
+      "proves": "Egypt received nearly 19 million tourists in 2025, 21% above 2024. This is a national tourism context metric and must not be converted into route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S13",
+      "url": "https://sis.gov.eg/en/media-center/news/cairo-intl-airport-records-2025-daily-traffic-peak-with-103-000-passengers/",
+      "title": "Cairo Int'l Airport records 2025 daily traffic peak with 103,000 passengers",
+      "publisher": "Egypt State Information Service, citing Ministry of Civil Aviation",
+      "date": "2025-12-25",
+      "accessed": "2026-07-09",
+      "proves": "Cairo International Airport handled 30.94 million passengers in 2025 (up 6.8% from 28.97 million in 2024) and a 103,000-passenger daily peak. Airport throughput is not Nile-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S14",
+      "url": "https://www.ifc.org/en/pressroom/2025/egypt-partners-with-ifc-to-introduce-public-private-partnerships-at-11-airports",
+      "title": "Egypt Partners with IFC to Introduce Public Private Partnerships at 11 Airports",
+      "publisher": "International Finance Corporation with Government of Egypt",
+      "date": "2025-03-24",
+      "accessed": "2026-07-09",
+      "proves": "Hurghada International Airport was selected as the PPP pilot and described as Egypt's second busiest by annual passengers and aviation traffic. No exact passenger total is provided on the page.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "cairo-egypt",
+      "name": "Cairo",
+      "atlas_status": "existing_canonical_id",
+      "story": "Nile urban/leisure passenger mobility and terminal first/last mile",
+      "didi_evidence": "Current secondary evidence supports Cairo product activity; official DiDi careers evidence supports an Egypt/Cairo footprint.",
+      "water_evidence": "A current Eid 2026 river-bus service is evidenced from Happy Land/Al-Mazallat to Al-Qanater. Other historic stations require revalidation.",
+      "route_count_in_fallback_audit": 0,
+      "recommended_action": "Deepen the canonical brief without changing partner neutrality; verify the operating station roster and obtain authority coordinates before stamping BPs."
+    },
+    {
+      "city_id": "hurghada-el-gouna-egypt",
+      "name": "Hurghada / El Gouna",
+      "atlas_status": "existing_canonical_id",
+      "story": "Airport/resort/cruise-terminal transfers plus fee-bearing island excursions",
+      "didi_evidence": "No source in this research proves live DiDi coverage in Hurghada or El Gouna.",
+      "water_evidence": "Hurghada cruise/passenger terminal operations and daily Hurghada–Mahmeya island boats are verified; El Gouna boat rentals are verified but not public transport.",
+      "route_count_in_fallback_audit": 0,
+      "recommended_action": "Geocode official terminal entrances and determine exact island-boat departure berth; keep El Gouna rentals out of scheduled-transit claims."
+    },
+    {
+      "city_id": "redsea-egypt",
+      "name": "Red Sea (regional market)",
+      "atlas_status": "existing_canonical_id",
+      "story": "Regional cruise/ferry gateway and intermodal port transfers",
+      "didi_evidence": "No source in this research proves live DiDi coverage across the broad Red Sea region.",
+      "water_evidence": "Safaga passenger/cruise services and a Safaga–NEOM Hajj-worker ferry operation are verified as of May 2026.",
+      "route_count_in_fallback_audit": 0,
+      "recommended_action": "Treat this as a regional wrapper, not a substitute for city/port IDs; create no corridor scope until exact terminal-city binding is reviewed."
+    },
+    {
+      "city_id": "sharm-el-sheikh-egypt",
+      "name": "Sharm el-Sheikh",
+      "atlas_status": "existing_canonical_id",
+      "story": "Cruise-port and airport/resort first/last mile with protected-area marine excursions as a future adjacency",
+      "didi_evidence": "No source in this research proves live DiDi coverage in Sharm el-Sheikh.",
+      "water_evidence": "The Sharm cruise terminal is operational for cruise calls as of May 2026. Tourism sources verify marine destination relevance, not scheduled Ras Muhammad or Tiran passenger corridors.",
+      "route_count_in_fallback_audit": 0,
+      "recommended_action": "Verify cruise-terminal gate coordinates and source operator schedules before proposing any excursion route."
+    }
+  ],
+  "boarding_points": [
+    {
+      "bp_id": null,
+      "name": "Happy Land river-bus berth, Al-Mazallat",
+      "city_id": "cairo-egypt",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "current_use": "Origin for daily Eid 2026 river-bus trips to Al-Qanater and one-hour local trips",
+      "source_ids": ["S4"],
+      "publishability": "name_and_function_only; coordinates require authority or field confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "Al-Qanater al-Khayriyya river-bus landing",
+      "city_id": null,
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "current_use": "Turnaround/visitor landing for the Happy Land leisure trip in Eid 2026",
+      "source_ids": ["S4"],
+      "publishability": "name_and_function_only; exact landing name and coordinates require authority confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "Maspero river-bus station at Ahl Masr Walk",
+      "city_id": "cairo-egypt",
+      "classification": "candidate_needing_current_status_and_coordinate_confirmation",
+      "coordinates": null,
+      "current_use": null,
+      "source_ids": ["S5"],
+      "publishability": "do_not_publish_as_operational; 2023 preparation evidence is stale"
+    },
+    {
+      "bp_id": null,
+      "name": "University Bridge river-bus station",
+      "city_id": "cairo-egypt",
+      "classification": "candidate_needing_current_status_and_coordinate_confirmation",
+      "coordinates": null,
+      "current_use": null,
+      "source_ids": ["S5"],
+      "publishability": "do_not_publish_as_operational; only historical resumption discussion found"
+    },
+    {
+      "bp_id": null,
+      "name": "Zoo river-bus station",
+      "city_id": "cairo-egypt",
+      "classification": "candidate_needing_current_status_and_coordinate_confirmation",
+      "coordinates": null,
+      "current_use": null,
+      "source_ids": ["S5"],
+      "publishability": "do_not_publish_as_operational; only historical resumption discussion found"
+    },
+    {
+      "bp_id": null,
+      "name": "Hurghada Cruise Terminal",
+      "city_id": "hurghada-el-gouna-egypt",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "current_use": "Cruise/passenger terminal services commenced by May 2026",
+      "source_ids": ["S7", "S8"],
+      "publishability": "terminal existence and function publishable; exact passenger gate coordinates need port confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "Safaga Cruise Terminal",
+      "city_id": "redsea-egypt",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "current_use": "Cruise/passenger service plus Safaga–NEOM Hajj-worker ferry facilitation as of May 2026",
+      "source_ids": ["S7", "S8"],
+      "publishability": "terminal existence and function publishable; exact passenger gate coordinates need port confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "Sharm El Sheikh Cruise Port",
+      "city_id": "sharm-el-sheikh-egypt",
+      "classification": "verified_existing_boarding_point",
+      "coordinates": null,
+      "current_use": "Operational cruise terminal; direct mega-cruise call documented in May 2026",
+      "source_ids": ["S7", "S8"],
+      "publishability": "terminal existence and function publishable; exact passenger gate coordinates need port confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "Hurghada departure berth for Mahmeya/Giftun boats (exact berth unpublished)",
+      "city_id": "hurghada-el-gouna-egypt",
+      "classification": "candidate_needing_terminal_identity_coordinate_and_operator_confirmation",
+      "coordinates": null,
+      "current_use": "Official tourism source says special Mahmeya boats leave Hurghada daily in the morning",
+      "source_ids": ["S9"],
+      "publishability": "do_not_stamp_until exact berth is verified"
+    },
+    {
+      "bp_id": null,
+      "name": "Mahmeya landing, Giftun Islands (exact landing identity unpublished)",
+      "city_id": "hurghada-el-gouna-egypt",
+      "classification": "candidate_needing_coordinate_and_access-confirmation",
+      "coordinates": null,
+      "current_use": "Destination in a pre-arranged, fee-bearing daily excursion program",
+      "source_ids": ["S9"],
+      "publishability": "destination existence publishable; do not stamp a terminal coordinate without protected-area/operator confirmation"
+    },
+    {
+      "bp_id": null,
+      "name": "El Gouna boat-rental departure point (exact quay unspecified)",
+      "city_id": "hurghada-el-gouna-egypt",
+      "classification": "candidate_needing_coordinate_source_and_public-access_confirmation",
+      "coordinates": null,
+      "current_use": "Private/leisure boat rentals, not evidenced scheduled passenger transport",
+      "source_ids": ["S11"],
+      "publishability": "do_not_publish_as_public_transit"
+    },
+    {
+      "bp_id": null,
+      "name": "Ras Muhammad National Park",
+      "city_id": "sharm-el-sheikh-egypt",
+      "classification": "non_bp_poi",
+      "coordinates": null,
+      "current_use": "Protected-area marine destination context",
+      "source_ids": ["S10"],
+      "publishability": "do_not_treat_as_boarding_point_without a named authorized landing"
+    },
+    {
+      "bp_id": null,
+      "name": "Nabq Protectorate",
+      "city_id": "sharm-el-sheikh-egypt",
+      "classification": "non_bp_poi",
+      "coordinates": null,
+      "current_use": "Protected-area destination context",
+      "source_ids": ["S10"],
+      "publishability": "do_not_treat_as_boarding_point_without a named authorized landing"
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "route_id": null,
+      "corridor_key": "cairo-happy-land-qanater-riverbus",
+      "story": "Cairo/Nile",
+      "endpoint_a": {
+        "name": "Happy Land river-bus berth, Al-Mazallat",
+        "city_id": "cairo-egypt"
+      },
+      "endpoint_b": {
+        "name": "Al-Qanater al-Khayriyya river-bus landing",
+        "city_id": null
+      },
+      "evidence_status": "current_route_evidence_for_eid_2026; year-round continuity not established",
+      "water_relevance": "direct Nile passenger/leisure service",
+      "distance_km": null,
+      "likely_vessel_range_class": "river passenger vessel; numeric range class cannot be assigned without geometry",
+      "hand_waypoint_requirements": "none indicated for an all-Nile route; exact channel geometry still requires review",
+      "fare": {
+        "amount": 120,
+        "currency": "EGP",
+        "basis": "per person return",
+        "source_date": "2026-03-20"
+      },
+      "service_pattern": "daily during Eid al-Fitr 2026; approximately four hours return sailing plus approximately three hours at Al-Qanater",
+      "annual_one_way_pax": null,
+      "source_ids": ["S4"]
+    },
+    {
+      "route_id": null,
+      "corridor_key": "cairo-university-zoo-riverbus-reactivation",
+      "story": "Cairo/Nile",
+      "endpoint_a": {
+        "name": "University Bridge river-bus station",
+        "city_id": "cairo-egypt"
+      },
+      "endpoint_b": {
+        "name": "Zoo river-bus station",
+        "city_id": "cairo-egypt"
+      },
+      "evidence_status": "historical_reactivation_candidate_only; not current route evidence",
+      "water_relevance": "direct urban Nile linkage if reactivated",
+      "distance_km": null,
+      "likely_vessel_range_class": "short urban river; numeric range class cannot be assigned without geometry",
+      "hand_waypoint_requirements": "none expected, but exact channels/berths must be inspected",
+      "fare": null,
+      "service_pattern": null,
+      "annual_one_way_pax": null,
+      "source_ids": ["S5"]
+    },
+    {
+      "route_id": null,
+      "corridor_key": "hurghada-mahmeya-giftun-daily-excursion",
+      "story": "Red Sea",
+      "endpoint_a": {
+        "name": "Hurghada departure berth for Mahmeya boats (exact berth TBD)",
+        "city_id": "hurghada-el-gouna-egypt"
+      },
+      "endpoint_b": {
+        "name": "Mahmeya landing, Giftun Islands (exact landing TBD)",
+        "city_id": "hurghada-el-gouna-egypt"
+      },
+      "evidence_status": "current_daily_excursion_evidence; exact boarding geometry and fare unresolved",
+      "water_relevance": "direct Red Sea island access",
+      "distance_km": null,
+      "likely_vessel_range_class": "nearshore excursion vessel; numeric range class cannot be assigned without verified endpoints",
+      "hand_waypoint_requirements": "likely none for open-water geometry, but reefs/protected-area navigation require operator or chart-derived hand waypoints",
+      "fare": null,
+      "service_pattern": "daily morning departure from Hurghada and return at sunset per official tourism source; date-specific timetable not published",
+      "annual_one_way_pax": null,
+      "source_ids": ["S9"]
+    },
+    {
+      "route_id": null,
+      "corridor_key": "safaga-neom-hajj-worker-ferry",
+      "story": "Red Sea",
+      "endpoint_a": {
+        "name": "Safaga Cruise/Passenger Terminal",
+        "city_id": "redsea-egypt"
+      },
+      "endpoint_b": {
+        "name": "NEOM Port passenger facility (exact terminal name not stated)",
+        "city_id": null
+      },
+      "evidence_status": "current_operation_evidence_for_hajj-worker_transport_as_of_2026-05-19",
+      "water_relevance": "direct international Red Sea ferry",
+      "distance_km": null,
+      "likely_vessel_range_class": "long-range sea ferry; exact class requires route geometry and vessel data",
+      "hand_waypoint_requirements": "yes; international open-water route must use verified maritime geometry and port approaches, not a straight line",
+      "fare": null,
+      "service_pattern": "Hajj-worker transport; exact dates, frequency, and public availability not stated",
+      "annual_one_way_pax": null,
+      "source_ids": ["S7"]
+    },
+    {
+      "route_id": null,
+      "corridor_key": "sharm-ras-muhammad-marine-excursion-opportunity",
+      "story": "Red Sea",
+      "endpoint_a": {
+        "name": "Sharm El Sheikh excursion departure berth (exact berth TBD; not assumed to be cruise port)",
+        "city_id": "sharm-el-sheikh-egypt"
+      },
+      "endpoint_b": {
+        "name": "Ras Muhammad authorized marine landing/mooring (exact facility TBD)",
+        "city_id": null
+      },
+      "evidence_status": "future_opportunity_only; no scheduled service, fare, or authorized passenger landing verified",
+      "water_relevance": "high marine-tourism relevance, but protected-area access rules apply",
+      "distance_km": null,
+      "likely_vessel_range_class": "unknown until endpoints and geometry are verified",
+      "hand_waypoint_requirements": "yes; reefs, protected waters, and the Sinai coastline make operator/chart-approved waypoints mandatory",
+      "fare": null,
+      "service_pattern": null,
+      "annual_one_way_pax": null,
+      "source_ids": ["S10"]
+    },
+    {
+      "route_id": null,
+      "corridor_key": "el-gouna-resort-water-transfer-opportunity",
+      "story": "Red Sea",
+      "endpoint_a": {
+        "name": "El Gouna boat-rental departure point (exact quay TBD)",
+        "city_id": "hurghada-el-gouna-egypt"
+      },
+      "endpoint_b": {
+        "name": "El Gouna resort-water destination dock (exact dock TBD)",
+        "city_id": "hurghada-el-gouna-egypt"
+      },
+      "evidence_status": "future_opportunity_only; boat rentals verified, scheduled point-to-point passenger service not verified",
+      "water_relevance": "resort lagoon/coastal leisure relevance",
+      "distance_km": null,
+      "likely_vessel_range_class": "short resort/coastal craft; exact class unavailable",
+      "hand_waypoint_requirements": "yes if mapped; lagoon entrances and land barriers make straight-line geometry unsafe",
+      "fare": null,
+      "service_pattern": null,
+      "annual_one_way_pax": null,
+      "source_ids": ["S11"]
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "DR1",
+      "geography": "Egypt national",
+      "metric": "international tourist arrivals",
+      "period": "2025",
+      "value": 19000000,
+      "unit": "tourists (nearly)",
+      "growth": "21% versus 2024",
+      "annual_one_way_pax": null,
+      "route_linkage": "none",
+      "assumption_record": "National arrivals are context only. No allocation to Cairo, Hurghada, Sharm, any terminal, or any water corridor is permitted without a sourced segmentation model.",
+      "source_ids": ["S12"]
+    },
+    {
+      "record_id": "DR2",
+      "geography": "Cairo International Airport",
+      "metric": "annual airport passenger throughput",
+      "period": "2025",
+      "value": 30940000,
+      "unit": "passengers",
+      "growth": "6.8% versus 2024 (28.97 million)",
+      "annual_one_way_pax": null,
+      "route_linkage": "airport-to-Nile and city-transfer context only",
+      "assumption_record": "Airport throughput includes arrivals, departures, connections, and potentially repeated persons. It is not converted to Nile route demand.",
+      "source_ids": ["S13"]
+    },
+    {
+      "record_id": "DR3",
+      "geography": "Cairo International Airport",
+      "metric": "single-day passenger traffic peak",
+      "period": "2025-12-25",
+      "value": 103000,
+      "unit": "passengers across 696 flights (approximately)",
+      "annual_one_way_pax": null,
+      "route_linkage": "none",
+      "assumption_record": "Peak-day throughput is a seasonality/operations marker only and is not annualized or converted to transfer demand.",
+      "source_ids": ["S13"]
+    },
+    {
+      "record_id": "DR4",
+      "geography": "Hurghada International Airport",
+      "metric": "airport rank",
+      "period": "as stated 2025-03-24",
+      "value": 2,
+      "unit": "national rank by annual passengers and aviation traffic",
+      "annual_one_way_pax": null,
+      "route_linkage": "resort/island/cruise first-last-mile context only",
+      "assumption_record": "No exact passenger number was published in the source; no route conversion is made.",
+      "source_ids": ["S14"]
+    },
+    {
+      "record_id": "DR5",
+      "geography": "Cairo Nile: Happy Land–Al-Qanater",
+      "metric": "published return fare and service window",
+      "period": "Eid al-Fitr 2026",
+      "value": 120,
+      "unit": "EGP per person return",
+      "seasonality": "Eid holiday leisure program",
+      "service_days": "daily during the reported Eid program; exact start/end dates not stated in the scraped text",
+      "journey_time": "about four hours return sailing, plus about three hours at Al-Qanater",
+      "annual_one_way_pax": null,
+      "assumption_record": "No ridership or capacity is published. The fare is not generalized to ordinary weekdays or other stations.",
+      "source_ids": ["S4"]
+    },
+    {
+      "record_id": "DR6",
+      "geography": "Hurghada–Mahmeya/Giftun",
+      "metric": "service cadence",
+      "period": "page current when accessed 2026-07-09",
+      "value": "daily morning outbound, sunset return",
+      "unit": "operator excursion pattern",
+      "fare": null,
+      "annual_one_way_pax": null,
+      "assumption_record": "Daily operation does not disclose seats sold, vessel capacity, cancellations, or annual riders. No demand number is inferred.",
+      "source_ids": ["S9"]
+    },
+    {
+      "record_id": "DR7",
+      "geography": "Sharm El Sheikh, Hurghada, and Safaga terminals",
+      "metric": "terminal service commencement",
+      "period": "announced 2026-05-19",
+      "value": 3,
+      "unit": "cruise terminals with commenced services",
+      "fare": null,
+      "annual_one_way_pax": null,
+      "assumption_record": "Terminal count and ship-call evidence are not passenger volume. No cruise or ferry riders are inferred.",
+      "source_ids": ["S7"]
+    }
+  ],
+  "brief_maturity": {
+    "canonical_read_status": "blocked_repository_absent",
+    "overall_score": null,
+    "score_scale": "0 absent, 1 weak, 2 partial, 3 decision-ready; null where canonical text could not be inspected",
+    "fields": [
+      {
+        "field": "canonical_partner_neutrality",
+        "score": null,
+        "assessment": "Cannot verify because canonical cluster/city briefs were unavailable.",
+        "enhancement": "Keep all DiDi claims in the partner narrative; use neutral terms such as first/last-mile operator in canonical briefs."
+      },
+      {
+        "field": "Cairo_Nile_problem_and_use_case",
+        "score": 2,
+        "assessment": "Fallback audit is foundational, but current research now supports a real seasonal river-bus example and airport context.",
+        "enhancement": "Add a concise Nile section distinguishing existing leisure river bus, historical urban stations needing revalidation, and future tourist-only amphibious trials."
+      },
+      {
+        "field": "Red_Sea_problem_and_use_case",
+        "score": 2,
+        "assessment": "Official terminal and island-excursion evidence is strong, but city coverage, exact BPs, and route economics are missing.",
+        "enhancement": "Separate (a) cruise/ferry terminal first-last mile, (b) daily fee-bearing island excursion, and (c) protected-area future opportunities."
+      },
+      {
+        "field": "boarding_point_precision",
+        "score": 1,
+        "assessment": "Real facilities are named, but no authority-grade coordinates or passenger-gate entrances were recovered.",
+        "enhancement": "Obtain port/authority GIS or operator confirmations before BP stamping."
+      },
+      {
+        "field": "corridor_and_geometry_readiness",
+        "score": 1,
+        "assessment": "No Egypt routes or geometry are reported in the fallback audit, and ROUTES.json could not be checked.",
+        "enhancement": "Match exact endpoints, then build water-safe geometry with hand waypoints for reefs, port approaches, lagoons, and international ferry routes."
+      },
+      {
+        "field": "demand_quantification",
+        "score": 1,
+        "assessment": "National tourism and airport throughput provide context; no route-level annual passenger counts were found.",
+        "enhancement": "Request station ticket sales, cruise manifests/call summaries, ferry ridership, and island-operator bookings."
+      },
+      {
+        "field": "fare_and_unit_economics_inputs",
+        "score": 1,
+        "assessment": "Only the seasonal Happy Land–Al-Qanater return fare is current and route specific; Red Sea public fares are unresolved.",
+        "enhancement": "Collect operator tariff sheets, inclusions/fees, capacity, trip duration, fuel profile, service days, and cancellation seasonality."
+      },
+      {
+        "field": "seasonality_and_service_calendar",
+        "score": 1,
+        "assessment": "Eid, daily island excursions, and Hajj-worker ferry use are evidenced but not complete calendars.",
+        "enhancement": "Add monthly operating calendars and weather/sea-state cancellation records."
+      },
+      {
+        "field": "regulatory_and_environmental_constraints",
+        "score": 1,
+        "assessment": "Protected-area and port-authority relevance is evident, but permit/landing conditions are not documented.",
+        "enhancement": "Source EEAA/protectorate landing rules, River Transport Authority station approvals, RSPA passenger-gate requirements, and international ferry controls."
+      },
+      {
+        "field": "source_quality",
+        "score": 2,
+        "assessment": "Core Red Sea terminal, tourism, airport, and DiDi organizational sources are official or institutional; Cairo river-bus operations rely on current reputable media reporting.",
+        "enhancement": "Replace remaining media-only Cairo station/fare evidence with Cairo Public Transport Authority or GART publications."
+      }
+    ],
+    "recommendation": "Enhance, do not replace, the canonical briefs once available. The immediate editorial win is a visibly separate Cairo/Nile story and Red Sea gateway/island story, with a strict current-service versus opportunity label."
+  },
+  "partner_narrative_notes": {
+    "placement": "partner-specific block only; do not copy DiDi claims into canonical city/cluster briefs",
+    "Cairo_Nile": [
+      "Position DiDi as the land-side digital connective tissue to verified Nile departure points, beginning with a station-level pilot rather than claiming a citywide water network.",
+      "Use Cairo International Airport's 30.94 million 2025 passenger throughput only as transfer context; do not imply a conversion rate to Nile rides.",
+      "The defensible proof point is the EGP 120 Happy Land–Al-Qanater return Eid service. Maspero and University/Zoo stations remain revalidation leads.",
+      "Exclude the trial amphibious bus from live public-transit claims because the cited authority description says tourist-only and trial basis."
+    ],
+    "Red_Sea": [
+      "Lead with three now-operating cruise terminals—Hurghada, Safaga, Sharm—and a clear first/last-mile handoff proposition around passenger gates, hotels, airports, and resorts.",
+      "Use Hurghada–Mahmeya/Giftun as evidence that fee-bearing daily boat demand exists, while explicitly stating that the departure berth, fare, and annual volume remain unverified.",
+      "Treat Safaga–NEOM as a real, seasonal/special-purpose international ferry flow, not as a mass-market commuter route.",
+      "Treat Ras Muhammad, Nabq, and El Gouna water activity as future adjacencies until a named authorized terminal and current operator schedule are sourced."
+    ],
+    "DiDi_current_evidence_boundary": "Cairo is supported by a 2025 product-launch report plus official Egypt/Cairo organizational evidence. This research does not prove live DiDi service in Hurghada, El Gouna, Safaga, or Sharm; proposals should say coverage validation required.",
+    "finance_handoff": "No Egypt route is finance-ready. Keep annual_one_way_pax null. The sole current route fare captured is EGP 120 return for a specific Eid 2026 Cairo leisure service."
+  },
+  "gaps": [
+    {
+      "gap": "Canonical repo and briefs unavailable",
+      "owner": "Atlas data owner",
+      "next_action": "Mount /tmp/navier-atlas and re-run exact CLUSTERS/ROUTES/brief/BP matching before any merge or route ID assignment."
+    },
+    {
+      "gap": "Current Cairo river-bus station roster and ordinary-day timetable unavailable",
+      "owner": "Egypt research / Cairo Public Transport Authority liaison",
+      "next_action": "Obtain an official station list, 2026 timetable, fares, service days, ridership, and coordinates from Cairo Public Transport Authority or GART."
+    },
+    {
+      "gap": "Maspero, University Bridge, and Zoo operating status is stale",
+      "owner": "Egypt research",
+      "next_action": "Confirm each station in person or through an authority notice; reject/drop any facility that is closed or non-public."
+    },
+    {
+      "gap": "Red Sea terminal passenger-gate coordinates absent",
+      "owner": "Geometry/GIS + RSPA/AD Ports liaison",
+      "next_action": "Acquire authoritative entrances/berths for Hurghada, Safaga, and Sharm and separate ship berth coordinates from ride-hail pickup gates."
+    },
+    {
+      "gap": "Hurghada–Mahmeya exact berth, fare, capacity, and ridership absent",
+      "owner": "Commercial research / operator outreach",
+      "next_action": "Request current tariff, inclusions, departure quay, vessel capacity, annual bookings, operating days, and cancellation record from the operator."
+    },
+    {
+      "gap": "Sharm excursion terminals and protected-area permissions absent",
+      "owner": "Egypt marine research / EEAA liaison",
+      "next_action": "Source named authorized departure/landing points, operator schedules, and EEAA/protectorate access rules for Ras Muhammad, Nabq, and any Tiran proposal."
+    },
+    {
+      "gap": "Live DiDi footprint outside Cairo not verified",
+      "owner": "DiDi partnership owner",
+      "next_action": "Obtain DiDi's official July 2026 Egypt service-area list or in-app geofence evidence for Hurghada, El Gouna, Safaga, and Sharm."
+    },
+    {
+      "gap": "Route-level annual passenger demand absent",
+      "owner": "Finance / demand research",
+      "next_action": "Collect station ticket sales, cruise passenger summaries, ferry manifests, and island-operator booking totals; keep model demand null until sourced."
+    },
+    {
+      "gap": "Water-safe geometry unavailable",
+      "owner": "Geometry team",
+      "next_action": "After endpoints are verified, draw port approaches, Nile channels, lagoon entrances, and reef-safe tracks with human-reviewed hand waypoints."
+    }
+  ],
+  "do_not_publish": [
+    "Do not state that DiDi is live in Hurghada, El Gouna, Safaga, or Sharm based on this research.",
+    "Do not assign any route_id until ROUTES.json is mounted and an exact ID match is confirmed.",
+    "Do not publish guessed coordinates for any Cairo berth, Red Sea passenger gate, island landing, or protected-area access point.",
+    "Do not call Maspero, University Bridge, or Zoo stations operational in 2026 without current authority confirmation.",
+    "Do not present El Gouna boat rentals as scheduled public passenger transport.",
+    "Do not present Ras Muhammad or Nabq as boarding points; they are non-BP destination POIs unless a named authorized landing is verified.",
+    "Do not claim a current Sharm–Ras Muhammad or Sharm–Tiran scheduled service from the tourism context sources.",
+    "Do not convert Egypt's 19 million tourists or Cairo Airport's 30.94 million passengers into route demand.",
+    "Do not annualize Eid river-bus service or its EGP 120 return fare.",
+    "Do not treat Safaga–NEOM Hajj-worker operations as a year-round public commuter ferry.",
+    "Do not treat the Cairo amphibious-bus trial as public passenger transport.",
+    "Do not draw straight-line marine routes through land, port infrastructure, lagoons, reefs, or protected waters."
+  ],
+  "summary_counts": {
+    "cities": 4,
+    "sources": 14,
+    "boarding_point_records": 13,
+    "verified_existing_boarding_points": 5,
+    "candidates_needing_confirmation": 6,
+    "non_bp_pois": 2,
+    "reject_drop_records": 0,
+    "candidate_corridors": 6,
+    "corridors_with_current_route_or_operation_evidence": 3,
+    "historical_reactivation_candidates": 1,
+    "future_opportunity_corridors": 2,
+    "corridors_with_non_null_route_id": 0,
+    "demand_records": 7,
+    "route_level_annual_one_way_pax_values": 0,
+    "route_specific_current_fares": 1,
+    "open_gaps": 9,
+    "do_not_publish_rules": 12
+  }
+}

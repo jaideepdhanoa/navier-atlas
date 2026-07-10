@@ -1,0 +1,108 @@
+{
+  "at": "2026-07-09",
+  "partner": "didi",
+  "scope": "Mexico calibration T3 only",
+  "status": "cascade-complete / G4-seal-needed",
+  "upstream_grok_receipt": {
+    "commit": "56b570c2",
+    "state": "seal-complete / cascade-needed",
+    "spine": "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json"
+  },
+  "finance_market_keys": [
+    "mexico-caribbean",
+    "mexico-pacific"
+  ],
+  "route_id_spine": {
+    "mexico-caribbean": [
+      "ics-413f51cd44",
+      "ics-dd1d814699",
+      "ics-03e3853317",
+      "ics-aa6ff40d2d"
+    ],
+    "mexico-pacific": [
+      "ics-89a8844858",
+      "ics-de6758216f",
+      "ics-db0930d9d1",
+      "ics-b5861451fb"
+    ]
+  },
+  "route_spine_exact_match": true,
+  "grounded": {
+    "corridors": 2,
+    "held_null_corridors": 6,
+    "transport_spend_pool_yr": 146344836.0,
+    "effective_capture": 0.0984,
+    "navier_transport_revenue_floor_yr": 14404810.0,
+    "fleet_mid": 86,
+    "co2_saved_t_yr": 8898.2
+  },
+  "growth_mid": {
+    "som_full_network_navier_transport_rev_yr": 70583569.0,
+    "sam_navier_transport_rev_yr": 322690363.0,
+    "marine_mobility_tam_yr": 1290761454.0,
+    "journey_gmv_yr": 3872284361.0,
+    "partner_platform_rev_on_navier_yr": 174252796.0,
+    "greenfield_basis": "global template band 3.44 / 4.90 / 6.36; not a DiDi or Grab counted census"
+  },
+  "demand_and_fare_guardrails": {
+    "anchors": [
+      {
+        "route_id": "ics-413f51cd44",
+        "gross_oneway_crossing_journeys_both_directions_2025": 5458304,
+        "comparable_public_adult_fare_usd": 15.07
+      },
+      {
+        "route_id": "ics-dd1d814699",
+        "gross_oneway_crossing_journeys_both_directions_2025": 3853770,
+        "comparable_public_adult_fare_usd": 16.63
+      }
+    ],
+    "fare_interpretation": "Comparable public adult benchmarks, not realized operator yield or resident-weighted fare mix.",
+    "pacific_annual_ridership": "null",
+    "unsupported_caribbean_rows": "null",
+    "port_totals_mapped_1_to_1": false
+  },
+  "country_reference": {
+    "country": "Mexico",
+    "present": true,
+    "singapore_fallback": false,
+    "evidence": "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.json"
+  },
+  "live_sheet": {
+    "id": "1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM",
+    "url": "https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit",
+    "published_version": 11,
+    "model_sheet_exact_integer_parity": true
+  },
+  "master_tracker": {
+    "id": "1PPK-QuTWJzXqSHfYFxvcjWSoY1XvZ1uk7OmS63k89ls",
+    "updated_in_place": true,
+    "didi_row_verified": true
+  },
+  "gates": {
+    "gate_g": "PASS — 0 internal-jargon leaks across pitch and data-clean DiDi files",
+    "route_spine": "PASS — 8/8 exact ordered IDs; 0 duplicates",
+    "finance_inheritance": "PASS — no multi-partner divergence in mexico-caribbean/mexico-pacific",
+    "partner_inheritance_non_strict": "PASS — 0 subset issues",
+    "partner_inheritance_strict": "G4 action — 16 pre-existing featured-route schema issues (missing cluster_id/from_label/to_label); no subset divergence",
+    "narrative_readiness": "PASS for all 30 deck-eligible partners; unrelated legacy schema failures remain outside DiDi"
+  },
+  "g4_required": [
+    "Build economics_by_route_id sidecar against the sealed gold and these exact route IDs.",
+    "Reseal DiDi partner/data-clean economics and economics_url.",
+    "Normalize the 16 featured-route schema entries without changing the inherited corridor set.",
+    "Rerun Gate G, strict inheritance, finance inheritance, linkage, and render QA.",
+    "Return commit hash plus G4 receipt; do not touch the live deck directly."
+  ],
+  "full_program_boundary": "This receipt closes Mexico T3 only. The 16-jurisdiction ex-China proposal remains in phased execution.",
+  "sha256": {
+    "finance/model/corridors.json": "ce844ffbbbaee2d470c365f9c302e36c5079b18a53a799c2fad2d2a9d046c857",
+    "finance/model/country-reference.json": "e232b0702a64f247ef78595edbaddb9a1fbfc1dc0708b0e66b055954e9f37bcc",
+    "finance/recal/agg-didi.json": "330ca0d10bbd70abf0f53b56e4f41136794465863f5272cb2f475e16d6460f28",
+    "finance/didi-growth-case.json": "dc3413b0263052a628f37e03fdb7f9dfb80bcd02c70fd3f46fc5381725ca7b53",
+    "partner-pitch/partners/didi.json": "7b98f1e6c8a081e7c6bc6378e6896033ae2d631682752c4bef6a1ace24465021",
+    "partner-pitch/partners/_growth-draft/didi.growth.json": "ed9f420aaac5bfca300b95b6f20d3e785743ac3fb18ff6a680d54aec97b2cb59",
+    "finance/build_transparent_sheet.py": "dab4e24278263cd057a475f22fb8fc82fad589ee294d1aeb7e3fa3cba2d8a079",
+    "finance/model/growth.py": "6e94dd5bd18651840cb78679564ba6d55680f57adede7c86a2a90f85dd12dd6c"
+  }
+}

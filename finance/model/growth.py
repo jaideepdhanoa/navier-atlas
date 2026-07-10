@@ -62,6 +62,10 @@ elif _gf_json:
     _cz = json.load(open(_gf_json))
     _fac = _cz["derived_greenfield_factor"]["headline_tier1_plus_tier2"]
     g_green = {b: _fac[b] for b in BANDS}; _gf_mode = "census"; _gf_src = _gf_json
+elif partner == "didi" and _gf.get("mode") == "census":
+    # DiDi has no partner-specific census yet. Reuse the global template BAND as an
+    # explicit planning assumption; never inherit Grab's counted corpus/provenance.
+    g_green = {b: _gf[b] for b in BANDS}; _gf_mode = "template"; _gf_src = "global template band (not a DiDi or Grab census)"
 elif _gf.get("mode") == "census":
     g_green = {b: _gf[b] for b in BANDS}; _gf_mode = "census"; _gf_src = "growth-config default"
 else:
@@ -204,7 +208,10 @@ result = {
         "som_floor_grounded_fleet": roll["grounded_floor"]["fleet"],
         "som_estimated_total_rev_yr": roll["estimated_total"]["market_rev_yr"],
     },
-    "_whose_money_legend": cfg["_whose_money_legend"],
+    # The shared config historically named Grab in what is otherwise a generic legend.
+    # Keep partner output neutral so inheriting partners never carry peer-specific prose.
+    "_whose_money_legend": {k: (v.replace("The partner's (Grab's) own", "The partner's own") if isinstance(v, str) else v)
+                             for k, v in cfg["_whose_money_legend"].items()},
     "greenfield": {
         "mode": _gf_mode,
         "source": _gf_src,
@@ -232,8 +239,10 @@ result["_forward_sam_only"] = FORWARD_SAM_ONLY
 result["_headline_anchor"] = "forward_sam" if FORWARD_SAM_ONLY else "grounded"
 g = result["forward_sam"] if FORWARD_SAM_ONLY else result["grounded"]
 _anchor_lbl = "forward-SAM (2030+ mapped network)" if FORWARD_SAM_ONLY else "grounded"
-_nsrc = roll.get("n_corridors_total") or roll.get("n_corridors_near_term") or "the sourced"
-_gflabel = "+greenfield" if _gf_mode == "census" else "greenfield OFF"
+_nsrc = roll.get("n_grounded") or roll.get("n_corridors_total") or roll.get("n_corridors_near_term") or "the sourced"
+_gflabel = ("+measured greenfield" if _gf_mode == "census" else
+            "+global-template greenfield" if _gf_mode == "template" else
+            "greenfield OFF")
 
 if g.get("SOM_full_network_navier_transport_rev_yr") is None:
     # Both anchors null: nothing sourced or estimated yet. Honest no-op (null-beats-guess).
