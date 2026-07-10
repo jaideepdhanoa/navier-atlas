@@ -34,12 +34,16 @@ jobs:
           python-version: "3.11"
 
       - name: Install Python geometry deps
-        run: pip install --quiet shapely global-land-mask numpy
+        run: pip install --quiet shapely global-land-mask numpy jsonschema
 
-      - name: Install preflight deps
+      - name: Install preflight + e2e deps
         run: |
           if [ -f scripts/preflight/package.json ]; then
             (cd scripts/preflight && npm install --silent --no-audit --no-fund)
+          fi
+          if [ -f tests/e2e/package.json ]; then
+            (cd tests/e2e && npm install --silent --no-audit --no-fund)
+            (cd tests/e2e && npx playwright install --with-deps chromium)
           fi
 
       - name: Build + preflight + deploy
