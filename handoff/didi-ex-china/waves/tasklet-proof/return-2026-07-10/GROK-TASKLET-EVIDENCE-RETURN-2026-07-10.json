@@ -1,0 +1,77 @@
+{
+  "as_of": "2026-07-10",
+  "status": "research_complete / grok_materialization_review_needed",
+  "upstream_receipt": "handoff/didi-ex-china/waves/tasklet-proof/GROK-OPEN-ITEMS-SEAL-RECEIPT-2026-07-10.json",
+  "record_count": 47,
+  "classification_counts": {
+    "usable_for_base_case": 7,
+    "permission_required": 2,
+    "not_publicly_supported": 30,
+    "benchmark_only": 8
+  },
+  "decisions": {
+    "T1_colombia_spine": "C_hold",
+    "T2_costa_rica": {
+      "status": "evidence_ready_for_controlled_model_review",
+      "routes": [
+        {
+          "route_id": "rn-7e59f984abec",
+          "annual_one_way_pax": 642133
+        },
+        {
+          "route_id": "rn-eb4ca32edbef",
+          "annual_one_way_pax": 317859
+        }
+      ],
+      "constraint": "Use exact published direction rows; ARESEP fares already banked; no inferred realized yield."
+    },
+    "T3_panama_guna": "permission_required_hold",
+    "T4_dominican_republic": "null_hold",
+    "T5_galapagos": "benchmark_only_no_annualization",
+    "T6_peru": "null_hold",
+    "T7_chile_argentina": {
+      "status": "two_exact_route_totals_found; eight_routes_null",
+      "candidates": [
+        {
+          "entity": "rn-f451444da7fe",
+          "value": 38900,
+          "unit": "operator/port-authority reported passengers transported on the crossing; aggregate directions, not stated as unique persons or round trips",
+          "period": "2025-2026 summer operating season"
+        },
+        {
+          "entity": "rn-04b92d6952d2",
+          "value": 2177670,
+          "unit": "annual passenger movements in regular vessel services on the port pair; both directions aggregated, not unique visitors or round trips",
+          "period": "2024"
+        }
+      ],
+      "constraint": "Preserve published period and direction semantics; do not convert vehicle/visitor evidence."
+    },
+    "T8_ferry_town_service": {
+      "status": "Tigre_exact_zone_proof_only; Chile_holds",
+      "constraint": "Tigre zone proof does not prove ferry-ramp pickup or realized supply. Chile featured stays empty."
+    },
+    "T9_hong_kong": "historical_benchmark_only",
+    "T10_taiwan": "hard_hold_no_current_local_DiDi_proof",
+    "T11_egypt": "facility_names_or_port_benchmarks_only; berth_coordinates_null",
+    "T12_geography_controls": "El_Gouna_no_inheritance; NEOM_Saudi_only"
+  },
+  "next_actions": [
+    "Grok reviews and materializes only T2 and the two T7 exact-route totals after confirming model period/unit fields.",
+    "Keep Colombia on decision C and all T3/T4/T6/T10/T11 passenger/economics fields null.",
+    "Keep Galápagos and Hong Kong values benchmark-only; do not annualize or silently refresh stale periods.",
+    "Use Tigre only as city/service-zone proof; keep Chile featured routes empty pending exact town/ferry-ramp proof.",
+    "Enforce El Gouna component hold and NEOM Saudi attribution in Egypt scope logic."
+  ],
+  "files": {
+    "master_ledger": "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/MASTER-EVIDENCE-LEDGER.json",
+    "human_receipt": "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/GROK-TASKLET-EVIDENCE-RETURN-2026-07-10.md",
+    "lane_ledgers": [
+      "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/ca-dr/EVIDENCE-LEDGER.json",
+      "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/cl-ar/EVIDENCE-LEDGER.json",
+      "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/colombia/EVIDENCE-LEDGER.json",
+      "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/ec-pe/EVIDENCE-LEDGER.json",
+      "handoff/didi-ex-china/waves/tasklet-proof/return-2026-07-10/hk-tw-egypt/EVIDENCE-LEDGER.json"
+    ]
+  }
+}

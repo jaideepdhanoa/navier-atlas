@@ -1,0 +1,186 @@
+{
+  "as_of": "2026-07-10",
+  "lane": "Colombia P0 — exact Cartagena OD demand/fare/schedule and spine recommendation",
+  "asks": [
+    "T1"
+  ],
+  "repo_ground_truth": {
+    "route_id": "rn-aa790551baa7",
+    "route_label": "Club de pesca de Cartagena - Marina ↔ Bocachica Tierrabomba Jetty",
+    "from_id": "cartagena-colombia__club-de-pesca-de-cartagena-marina",
+    "to_id": "cartagena-colombia__bocachica-tierrabomba-jetty",
+    "from_city_id": "cartagena-colombia",
+    "to_city_id": "cartagena-colombia",
+    "cluster_id": "colombia",
+    "source_file": "/tmp/navier-atlas-audit/data-clean/ROUTES.json"
+  },
+  "records": [
+    {
+      "ask": "T1",
+      "entity": "rn-aa790551baa7",
+      "route_label": "Club de pesca de Cartagena - Marina ↔ Bocachica Tierrabomba Jetty",
+      "finding": null,
+      "value": null,
+      "unit": null,
+      "period": null,
+      "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/2018%20Diseno%20transporte%20acu%C3%A1tico%20Conceptual_version%20final_2018.pdf",
+      "source_title": "Diseño Conceptual de Alternativa e Integración Modal",
+      "publisher": "Financiera de Desarrollo Nacional Colombia / FIDUAGRARIA; BID cooperation study",
+      "source_date": "2018-01",
+      "retrieved_at": "2026-07-10",
+      "quote": "Table 3 lists ‘BChica-Bodeguita’ (not Club de Pesca–Bocachica) with Pas 82 and Interv(min) 15 for the modeled 2017 AM peak situation; the report says the routes were simulated ‘durante la hora pico de la temporada media del año.’",
+      "classification": "not_publicly_supported",
+      "confidence": "high",
+      "materialization_status": "null",
+      "requested_metrics": {
+        "annual_one_way_passenger_journeys": null,
+        "current_published_fare_cop_per_boarding": null,
+        "current_schedule": null,
+        "realized_yield": null
+      },
+      "unit_semantics": "No qualifying exact-OD value was found. Nearby figures are old daily passenger totals, modeled AM-peak passengers, terminal entries, or user-reported whole-trip costs; none is an annual exact Club de Pesca–Bocachica one-way boarding total.",
+      "notes": "Exact repo endpoint resolution was retained. No source proved a current scheduled public passenger service from Club de Pesca to Bocachica. Official studies instead identify La Bodeguita–Bocachica or multi-stop Bocachica–Caño de Oro–La Bodeguita. Club de Pesca references describe a marina/navigation-of-pleasure context, not an exact scheduled passenger line. Do not transplant La Bodeguita evidence onto the Club de Pesca BP, annualize a study day, or treat a general/average fare as route yield.",
+      "supporting_sources": [
+        {
+          "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/IV-Tecnico_Info%204%20V1.pdf",
+          "source_title": "Plan Maestro de Movilidad — Informe 4, Informe Final V1",
+          "publisher": "Distrito de Cartagena / Seguimiento POT",
+          "source_date": "undated final report; model base year 2012; file posted 2025-04",
+          "quote": "‘La Bodeguita – Bocachica con 706 pasajeros / día’; excluding tourists, ‘La Bodeguita – Bocachica 686 pasajeros / día.’ The report separately states an overall aquatic-service ‘tarifa promedio de $4.182 pesos por pasajero.’",
+          "unit_semantics": "Old bidirectional/unspecified-direction passengers per study day for the wrong origin. COP 4,182 is an all-service average, not an exact-OD fare and not realized current yield.",
+          "why_not_usable": "Wrong origin, old base year, not annual, no directionality definition, and no current route-specific fare or timetable. No annualization was performed."
+        },
+        {
+          "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/2018%20Diseno%20transporte%20acu%C3%A1tico%20Conceptual_version%20final_2018.pdf",
+          "source_title": "Diseño Conceptual de Alternativa e Integración Modal",
+          "publisher": "Financiera de Desarrollo Nacional Colombia / FIDUAGRARIA; BID cooperation study",
+          "source_date": "2018-01",
+          "quote": "‘BChica-Bodeguita’ — Pas 82, Interv(min) 15, Ciclo(min) 118 in Table 3, Situación Base 2017.",
+          "unit_semantics": "82 modeled passengers in the AM peak hour; 15 minutes is a model operational interval constrained by the study, not a retrieved current public timetable.",
+          "why_not_usable": "Wrong origin, modeled peak-hour quantity rather than annual observed passenger boardings, and historical/model schedule rather than current operation."
+        },
+        {
+          "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/ITDP%20Acuatico%20Ago%202008%20W%20Pipicano.pdf",
+          "source_title": "Asistencia técnica para el diseño conceptual del transporte acuático de la ciudad de Cartagena — Memoria Técnica",
+          "publisher": "Institute for Transportation and Development Policy (ITDP), hosted by Distrito de Cartagena",
+          "source_date": "2008-08",
+          "quote": "The study lists the historical route ‘Bocachica-Caño de Loro-La Bodeguita’ operating within 06:00–18:00, but also says ‘No se tienen tarifas preestablecidas’ and records ‘No hay horarios fijos’ among La Bodeguita user responses.",
+          "unit_semantics": "Historical operation window and qualitative service condition; not a fixed timetable or current fare. Reported costs included the complete journey to final city destination and could include a land leg.",
+          "why_not_usable": "Historical, multi-stop, wrong mainland endpoint, no fixed schedule, and no exact passenger-fare semantics."
+        },
+        {
+          "source_url": "https://cartagenadeindias.travel/wp-content/uploads/2024/01/12.-Boletin-Estadistico-Especial-%C2%A1-Asi-vamos-con-el-ano-2023-corte-Diciembre-.pdf",
+          "source_title": "Indicadores de Turismo: Cartagena de Indias, diciembre 2023",
+          "publisher": "Corporación Turismo Cartagena de Indias",
+          "source_date": "2024-01; data year 2023",
+          "quote": "The official bulletin reports 619,282 passenger entries at Muelle La Bodeguita in 2023.",
+          "unit_semantics": "Terminal entries, with no destination or direction split; not route passengers for Bocachica and not Club de Pesca boardings.",
+          "why_not_usable": "Aggregate terminal traffic must not be assigned 1:1 to rn-aa790551baa7 or to any La Bodeguita OD."
+        }
+      ],
+      "failed_searches": [
+        {
+          "query": "site:dimar.mil.co \"Bocachica\" \"La Bodeguita\" pasajeros horario tarifa",
+          "result": "No exact current fare, schedule, or annual OD passenger series found. DIMAR material supports La Bodeguita as an authorized island passenger point, not Club de Pesca–Bocachica."
+        },
+        {
+          "query": "site:datos.gov.co Bocachica pasajeros muelle Bodeguita transporte acuático",
+          "result": "No qualifying OD dataset result."
+        },
+        {
+          "query": "site:mintransporte.gov.co Bocachica pasajeros Cartagena transporte marítimo estadísticas",
+          "result": "Only national/mode-level maritime statistics surfaced; no Cartagena exact OD."
+        },
+        {
+          "query": "site:supertransporte.gov.co Cartagena Bocachica transporte fluvial marítimo pasajeros tarifa",
+          "result": "Mode/department reports surfaced, not an exact OD annual passenger, fare, and timetable record."
+        },
+        {
+          "query": "site:secop.gov.co Bocachica lancha pasajeros Cartagena muelle transporte 2024",
+          "result": "No qualifying current permit/contract with exact OD statistics and tariff."
+        },
+        {
+          "query": "site:cartagena.gov.co Bocachica lancha transporte pasajeros muelle horario tarifa",
+          "result": "Historical/planning studies surfaced; no current exact Club de Pesca service proof."
+        },
+        {
+          "query": "\"Club de Pesca\" \"Bocachica\" lancha Cartagena",
+          "result": "Tour, regatta, marina, and social-media mentions only; no scheduled public passenger service or OD passenger series."
+        },
+        {
+          "query": "Bocachica Cartagena transporte público lancha tarifa 2025 horario Bodeguita",
+          "result": "Secondary tour/booking and social pages advertised transfers or tours (including COP 15,000+ and generic schedules), but they were not authoritative, often packaged round trips, and used La Bodeguita rather than Club de Pesca."
+        }
+      ]
+    },
+    {
+      "ask": "T1",
+      "entity": "candidate exact Cartagena OD: Muelle La Bodeguita ↔ Bocachica",
+      "route_label": "La Bodeguita ↔ Bocachica",
+      "finding": "This is the strongest documented exact Cartagena OD, but only as historical/planning evidence. It does not clear the requested current annual passenger + fare + schedule gate and has no supplied exact canonical route ID that may replace rn-aa790551baa7.",
+      "value": null,
+      "unit": null,
+      "period": null,
+      "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/IV-Tecnico_Info%204%20V1.pdf",
+      "source_title": "Plan Maestro de Movilidad — Informe 4, Informe Final V1",
+      "publisher": "Distrito de Cartagena / Seguimiento POT",
+      "source_date": "undated final report; model base year 2012; file posted 2025-04",
+      "retrieved_at": "2026-07-10",
+      "quote": "‘La Bodeguita – Bocachica con 706 pasajeros / día’; excluding tourists, ‘La Bodeguita – Bocachica 686 pasajeros / día.’",
+      "classification": "benchmark_only",
+      "confidence": "high",
+      "materialization_status": "hold",
+      "benchmark_values": {
+        "old_passengers_per_study_day_all_purposes": 706,
+        "old_passengers_per_study_day_excluding_tourists": 686,
+        "modeled_2017_am_peak_passengers": 82,
+        "modeled_2017_interval_minutes": 15,
+        "overall_aquatic_average_fare_cop_per_passenger_old": 4182
+      },
+      "requested_metrics": {
+        "annual_one_way_passenger_journeys": null,
+        "current_published_fare_cop_per_boarding": null,
+        "current_schedule": null,
+        "realized_yield": null
+      },
+      "unit_semantics": "The 706/686 figures are passengers per study day with directionality not specified; they are not annual counts. The 82 figure is modeled AM-peak passengers. The 15-minute interval is a study/model parameter. COP 4,182 is an old systemwide average reported fare, not an exact-OD passenger tariff.",
+      "notes": "Do not annualize 706 or 686, convert them into directional trips, or attach them to the Club de Pesca route. A better OD cannot be substituted without a sealed exact route ID in the global canonical route set and the required current evidence.",
+      "failed_searches": [
+        "No current authoritative La Bodeguita–Bocachica timetable was found.",
+        "No current authoritative exact-OD fare was found.",
+        "No annual exact-OD passenger/boarding series was found.",
+        "The 2023 La Bodeguita total is terminal aggregate only and cannot supply the missing OD annual total."
+      ]
+    }
+  ],
+  "corridor_inheritance_check": {
+    "recommendation": "C — hold",
+    "reason": "Option A remains null on exact-OD annual passenger journeys, current fare, and current timetable. Option B cannot be adopted as-is: the existing Grok receipt already holds Colombia, demand is not proved for its route set, and rn-3ebf0c9aece2 appears in finance/model/corridors.json as Barranquilla–Puerto Colombia but is absent from the current global canonical data-clean/ROUTES.json; four other option-B IDs are canonical. Geography corridors cannot be sourced from a partner finance-only spine. No finance materialization is authorized.",
+    "option_A": {
+      "route_ids": [
+        "rn-aa790551baa7"
+      ],
+      "status": "hold_null_evidence"
+    },
+    "option_B": {
+      "route_ids": [
+        "rn-20762e2b40f5",
+        "rn-3ebf0c9aece2",
+        "rn-59374c41f8ab",
+        "rn-74aa778f6655",
+        "rn-84ffd58e7f82"
+      ],
+      "global_canonical_presence": {
+        "rn-20762e2b40f5": true,
+        "rn-3ebf0c9aece2": false,
+        "rn-59374c41f8ab": true,
+        "rn-74aa778f6655": true,
+        "rn-84ffd58e7f82": true
+      },
+      "status": "not_eligible_as_is"
+    },
+    "receipt_respected": "/tmp/navier-atlas-audit/handoff/didi-ex-china/waves/tasklet-proof/GROK-COLOMBIA-SPINE-RECONCILIATION-2026-07-10.json — decision C, unmaterialized_hold"
+  },
+  "next_action": "Issue one formal data/permission request to the Cartagena mobility authority, DIMAR/Capitanía de Puerto, Muelle La Bodeguita administration, and the authorized Bocachica carrier(s): request a current route authorization and named operator; current published tariff per passenger boarding; current dated timetable/service window; and monthly origin-destination passenger boardings for at least one complete recent calendar year, with directionality, passenger-vs-ticket semantics, and tourist/resident treatment stated. If the supported origin is La Bodeguita rather than Club de Pesca, obtain/seal its exact canonical BP and route ID before any spine change. Until then preserve nulls and option C.",
+  "lane_conclusion": "Still null for rn-aa790551baa7. Historical official documents prove a different La Bodeguita–Bocachica OD and provide old daily/model benchmarks, but no public source produced a current exact annual one-way passenger total, authoritative current exact-OD fare, and current timetable. Recommend C (hold); do not materialize finance."
+}
