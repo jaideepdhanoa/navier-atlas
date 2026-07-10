@@ -8,6 +8,19 @@ end-to-end going forward, per the Tasklet↔Grok division of labor.
 > Supersedes the older partial copy under `_ingest/gold-delta-LB230-LB241/finance/model/`
 > (which only had `aggregate.py` + `corridors.json`). Use this root-level `finance/` tree.
 
+## Country opex hygiene (2026-07-10)
+
+Missing corridor countries **no longer silent-Singapore**. Resolution + lint:
+
+```bash
+python3 finance/lint_country_opex.py              # exit 1 if R16 fallbacks remain
+python3 finance/model/country_opex_resolve.py      # (import only; used by aggregate/sheets)
+# After Tasklet seals rates:
+bash scripts/grok-econ-reseal/rebuild_after_country_opex.sh --build
+```
+
+Docs: `REBUILD-AFTER-COUNTRY-OPEX.md`, `handoff/country-opex/`.
+
 ## Files
 
 ```
@@ -15,12 +28,15 @@ finance/
   model/
     aggregate.py            stage 1 — joins per-corridor L3 sourcing with per-country opex
     atom.py                 loaded by aggregate.py (importlib) — per-corridor economics atom
+    country_opex_resolve.py country → opex key (aliases, dual-leg, labeled R16 fallback)
     growth.py               stage 2 — growth-case cascade (floor -> SAM/TAM ladder)
     growth_frontend_block.py stage 3 — front-end growth block for partner pages
     growth-config.json      growth parameters (read by growth.py)
     vessel-constants.json   N30 vessel + opex constants
-    country-reference.json  per-country opex / fx / labor reference (39 rows)
+    country-reference.json  per-country opex / fx / labor reference
     corridors.json          canonical corridor registry snapshot (see "Corridors" below)
+  lint_country_opex.py      fail-loud inventory of missing country-ref keys
+  REBUILD-AFTER-COUNTRY-OPEX.md  post-seal rebuild runbook
   splice_growth_into_partner.py  stage 4 — splices growth_case into partner-pitch/partners/<p>.json
   build_economics_sidecar.py     gold sidecar builder (reads a gold ROUTES.json + agg-<p>.json)
   economics_url_map.json         deck/economics URL map (read by the sidecar builder)

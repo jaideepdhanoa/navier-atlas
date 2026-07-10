@@ -24,6 +24,8 @@ GLOBAL_MODE = PARTNER == "global"
 HOSPITALITY_CAPEX = arg("--capex-tier", "") == "hospitality"
 DEDUP_MODE = arg("--dedup", "unique" if GLOBAL_MODE else "none")
 SKIP_README = "--skip-readme" in sys.argv
+# Fail build if any corridor still needs R16 Singapore (or home-port) opex fallback.
+STRICT_COUNTRY_OPEX = "--strict-country-opex" in sys.argv
 PARTNER_LABEL = "Global (unique geometry)" if (GLOBAL_MODE and DEDUP_MODE == "unique") else (
     "Global" if GLOBAL_MODE else PARTNER.title())
 # --corridors <path>: override the corridor registry source. Mirrors aggregate.py so the
@@ -35,6 +37,19 @@ const = json.load(open(os.path.join(MODEL, "vessel-constants.json")))
 corr  = json.load(open(CORR_PATH))
 cref  = json.load(open(os.path.join(MODEL, "country-reference.json")))["countries"]
 gcfg  = json.load(open(os.path.join(MODEL, "growth-config.json")))
+
+# Shared country → opex resolver (aliases + labeled R16 fallback)
+import importlib.util as _ilu
+_res_spec = _ilu.spec_from_file_location(
+    "country_opex_resolve", os.path.join(MODEL, "country_opex_resolve.py")
+)
+_res_mod = _ilu.module_from_spec(_res_spec)
+# Register before exec so @dataclass works under importlib (Py3.9)
+sys.modules["country_opex_resolve"] = _res_mod
+_res_spec.loader.exec_module(_res_mod)
+resolve_opex_country = _res_mod.resolve_opex_country
+format_fallback_banner = _res_mod.format_fallback_banner
+OPEX_RESOLUTIONS = []  # collected per engine row for banner / strict mode
 
 def v(node):    return node["value"] if isinstance(node, dict) and "value" in node else node
 def tier(node): return node.get("source_tier","") if isinstance(node, dict) else ""
@@ -141,7 +156,16 @@ for mid, mk in corr["markets"].items():
         if is_dup: continue
         nm=c["distance_nm"]; L3=c.get("L3_locals") or {}
         fr=L3.get("_fare_record") or {}; dr=L3.get("_demand_record") or {}
-        country=c.get("country");  country = country if country in cref else "Singapore"
+        _ores = resolve_opex_country(c.get("country"), cref)
+        country = _ores.opex_country
+        OPEX_RESOLUTIONS.append(_ores)
+        if _ores.used_fallback:
+            print(
+                f"[country-opex] FALLBACK partner={PARTNER} corridor="
+                f"{c.get('from','')} → {c.get('to','')} raw={_ores.raw_country!r} "
+                f"→ opex={country!r} policy={_ores.policy}",
+                file=sys.stderr,
+            )
         w=L3.get("weather_uptime_factor")
         _season_days=L3.get("season_days")  # L3 override wins over 365×uptime×weather (atom.py)
         # demand pool — mirror atom.py LENS 2: average of native proxies (arrivals/ferry)
@@ -202,9 +226,30 @@ for mid, mk in corr["markets"].items():
                  tier_excl=_tier_excl,
                  floor_bucket=floor_bucket(mid, _corridor, _tier_excl, _fwd, pool, _status),
                  # LB-88: captive-resort vessel ceiling = ceil(villas/25)
-                 fleet_cap=(math.ceil(c["villas"]/25) if (c.get("captive_resort") and c.get("villas")) else None))
+                 fleet_cap=(math.ceil(c["villas"]/25) if (c.get("captive_resort") and c.get("villas")) else None),
+                 opex_fallback=_ores.used_fallback,
+                 opex_raw_country=_ores.raw_country,
+                 opex_policy=_ores.policy)
         (roadmap if nm>range_nm else rows).append(rec)
 rows.sort(key=lambda r:(r["country"], r["nm"]))
+
+# Fail-loud summary (always); optional hard fail under --strict-country-opex
+_fallback_rows = [r for r in rows if r.get("opex_fallback")]
+_fallback_countries = sorted({r.get("opex_raw_country") or "(null)" for r in _fallback_rows})
+_OPEX_BANNER = format_fallback_banner(OPEX_RESOLUTIONS)
+if _fallback_rows:
+    print(
+        f"[country-opex] WARNING partner={PARTNER}: {len(_fallback_rows)} corridor row(s) "
+        f"using R16/home-port opex fallback for raw countries: {_fallback_countries}. "
+        f"Seal country-reference then rebuild (see handoff/country-opex/).",
+        file=sys.stderr,
+    )
+    if STRICT_COUNTRY_OPEX:
+        print(
+            f"[country-opex] STRICT fail: --strict-country-opex set and fallbacks remain.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
 
 # Enrich global unique rows with geometry-owner metadata from agg-unique-global.json
 GEOMETRY_META: dict[tuple[str, str], dict] = {}
@@ -302,6 +347,21 @@ content=[
  ("   Green  = COMPUTED by formula.",None,f_calc),
  ("   Every fare & demand figure carries a Source tier (T1 official \u2192 T5 modeled) + Confidence (high/med/low). Null beats a wrong number: no published pool \u2192 blank, not a guess.",None,None),
 ]
+# Fail-loud country-opex banner on Read me (never silent Singapore)
+if _OPEX_BANNER:
+    content = [
+        ("COUNTRY OPEX FALLBACK (read before using numbers)", BOLD, f_band),
+        (_OPEX_BANNER.replace("\n", " | "), None, f_band),
+        (
+            "Energy / crew / berth admin VLOOKUPs use the Country opex tab. "
+            "Fallback rows resolve to Singapore (R16 home-port) until Tasklet seals "
+            "the real country in finance/model/country-reference.json. "
+            "Rebuild via finance/REBUILD-AFTER-COUNTRY-OPEX.md.",
+            None,
+            f_band,
+        ),
+        ("", None, None),
+    ] + content
 if ws0 is not None:
     rr=4
     for text,font,fill in content:
@@ -414,9 +474,34 @@ for ct in used_countries:
     sc(ws2,f"G{cr}",_capex_for_country(ct),fill=f_input,fmt=USD,align=ctr,bd=True)
     _capex_note = "CAPEX LB-260 hospitality N30 list = $1M (region-independent)" if HOSPITALITY_CAPEX else "CAPEX LB-243 US/EU=$900K else $600K"
     note=f"{src(row['captain_usd_yr'])} | {src(row['energy_usd_kwh'])} | {src(row['marina_overhead_usd_yr'])} | {_capex_note}"
+    # Flag when this country row is only present as an R16 fallback target for missing labels
+    _fb_for_ct = [r for r in _fallback_rows if r.get("country") == ct]
+    if _fb_for_ct:
+        _raws = sorted({r.get("opex_raw_country") or "?" for r in _fb_for_ct})
+        note = (
+            f"⚠ FALLBACK TARGET — used for raw countries {_raws} pending country-reference seal. "
+            + note
+        )
     sc(ws2,f"H{cr}",note,align=wrap,bd=True,font=SMALL)
     cr+=1
 country_last=cr-1
+# Banner row under the country table when any fallback is active
+if _fallback_rows:
+    sc(
+        ws2,
+        f"A{cr}",
+        (
+            f"⚠ {len(_fallback_rows)} corridor row(s) resolved via R16/home-port fallback "
+            f"(raw: {', '.join(_fallback_countries)}). "
+            "Not locally grounded — see handoff/country-opex/ + finance/REBUILD-AFTER-COUNTRY-OPEX.md."
+        ),
+        font=Font(bold=True, size=9, color="9C5700"),
+        fill=f_band,
+        align=wrap,
+        bd=True,
+    )
+    ws2.merge_cells(f"A{cr}:H{cr}")
+    cr += 1
 copex=f"'Country opex'!$A${country_first}:$G${country_last}"
 addname("country_opex",copex)
 # column index map for VLOOKUP: A=1 country,2 captain,3 energy,4 grid,5 berth/port admin,6 costidx,7 capex
@@ -854,3 +939,9 @@ wb.save(OUT)
 print("wrote", OUT)
 print("engine rows:", len(rows), "| roadmap:", len(roadmap), "| countries:", len(used_countries))
 print("named ranges:", len(named))
+if _fallback_rows:
+    print(
+        f"country-opex fallbacks: {len(_fallback_rows)} rows | raw countries: {_fallback_countries}"
+    )
+else:
+    print("country-opex fallbacks: 0 (all engine countries in country-reference)")

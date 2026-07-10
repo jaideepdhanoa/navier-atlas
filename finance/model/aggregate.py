@@ -14,7 +14,9 @@ Design (locked):
   - Parity pricing (discount 1.0). Per-seat shuttle only.
   - NULL beats a guess: grounded demand and cascade-estimated demand are kept
     SEPARATE so the rollup shows a grounded FLOOR and an estimated TOTAL.
-  - Cross-border opex = vessel home-port country (R16) = Singapore default.
+  - Cross-border / missing country opex: resolve via country_opex_resolve
+    (aliases + R16 home-port Singapore fallback). Fallbacks are labeled on
+    _opex_country_resolution — never silent. Source rates before reseal.
   - Duplicates (_dup_of, or label seen in a real market) excluded from rollup.
 
 Usage: python3 aggregate.py [--json out.json] [--partner grab] [--dedup unique]
@@ -55,8 +57,17 @@ cref  = json.load(open(os.path.join(HERE, "country-reference.json")))["countries
 spec = importlib.util.spec_from_file_location("atom", os.path.join(HERE, "atom.py"))
 atom = importlib.util.module_from_spec(spec); spec.loader.exec_module(atom)
 
+# Shared opex-country resolver (aliases, dual-leg, R16 fallback)
+_resolve_spec = importlib.util.spec_from_file_location(
+    "country_opex_resolve", os.path.join(HERE, "country_opex_resolve.py")
+)
+_resolve_mod = importlib.util.module_from_spec(_resolve_spec)
+sys.modules["country_opex_resolve"] = _resolve_mod  # required for @dataclass under importlib
+_resolve_spec.loader.exec_module(_resolve_mod)
+resolve_opex_country = _resolve_mod.resolve_opex_country
+CROSS_BORDER_HOMEPORT = _resolve_mod.CROSS_BORDER_HOMEPORT  # R16 home-port
+
 SCEN = const["operating_defaults"]["_utilization_scenarios"]
-CROSS_BORDER_HOMEPORT = "Singapore"   # R16: default home-port opex for cross-border
 
 def cval(country, key):
     row = cref.get(country)
@@ -111,11 +122,18 @@ def enrich(c, market, market_obj=None):
     """Return a deep copy with L3 opex injected from country layer + demand mapped."""
     c = copy.deepcopy(c)
     L3 = c.setdefault("L3_locals", {})
-    # --- country selection (R16: cross-border or any non-cref country -> home-port) ---
-    country = c.get("country")
-    if country not in cref:               # 'CrossBorder' or missing -> home-port opex (R16)
-        country = CROSS_BORDER_HOMEPORT
+    # --- country selection (aliases + R16 home-port fallback; always labeled) ---
+    _res = resolve_opex_country(c.get("country"), cref, homeport=CROSS_BORDER_HOMEPORT)
+    country = _res.opex_country
     c["_opex_country"] = country
+    c["_opex_country_resolution"] = _res.as_dict()
+    if _res.used_fallback:
+        # Fail-loud on stderr so cascades/sheet rebuilds surface missing country-ref.
+        print(
+            f"[country-opex] FALLBACK market corridor country={_res.raw_country!r} "
+            f"→ opex={country!r} policy={_res.policy}",
+            file=sys.stderr,
+        )
     # LB-243/LB-260: capex rule — hospitality (capex_tier) -> $1M; else region-keyed US/EU $900K / ROW $600K.
     if L3.get("capex_usd_override") is None:
         L3["capex_usd_override"] = capex_for(country, market_obj)

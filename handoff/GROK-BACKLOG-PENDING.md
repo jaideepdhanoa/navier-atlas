@@ -1,8 +1,23 @@
 # Grok backlog — pending work (living queue)
 
 **Baseline:** `main` @ `a459f7f5` · Production: https://navier-atlas.vercel.app  
-**Updated:** 2026-06-29 (AFK autonomous lane)  
+**Updated:** 2026-07-10 (country-opex AFK package)  
 **Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
+
+---
+
+## Country opex (2026-07-10) — waiting on Tasklet rates
+
+| Item | Status |
+|------|--------|
+| Tasklet handoff | `handoff/country-opex/TASKLET-COUNTRY-OPEX-HANDOFF-2026-07-10.md` |
+| Missing rates | South Korea, Namibia, Venezuela, Cameroon, Congo (Brazzaville), Argentina, Costa Rica |
+| Label fixes (done) | `USVI / BVI` → USVI; `CrossBorder` → Singapore R16 |
+| Fail-loud lint | `python3 finance/lint_country_opex.py` |
+| Rebuild after seal | `finance/REBUILD-AFTER-COUNTRY-OPEX.md` + `scripts/grok-econ-reseal/rebuild_after_country_opex.sh` |
+| Kakao sheet | **HOLD** until South Korea sealed (`handoff/country-opex/KAKAO-ECON-HOLD.md`) |
+| Wave1 mints | Still held (null coords) |
+| Local Vercel large upload | Still broken — use GHA `deploy-dist.yml` |
 
 ---
 

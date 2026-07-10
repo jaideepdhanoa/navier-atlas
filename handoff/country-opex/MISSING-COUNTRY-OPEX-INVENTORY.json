@@ -1,0 +1,234 @@
+{
+  "as_of": "2026-07-10",
+  "sealed_by": "grok-afk-country-opex-package",
+  "country_reference_path": "finance/model/country-reference.json",
+  "n_countries_in_ref": 56,
+  "schema_example_singapore": {
+    "captain_usd_yr": {
+      "value": 48000,
+      "source_tier": "T5",
+      "confidence": "low",
+      "source": "Modeled SG marine crew ~SGD 4-5k/mo blended"
+    },
+    "energy_usd_kwh": {
+      "value": 0.21,
+      "source_tier": "T1",
+      "confidence": "high",
+      "source": "SG regulated tariff 28.1c SGD = $0.21"
+    },
+    "grid_co2_kg_kwh": {
+      "value": 0.4,
+      "source_tier": "T2",
+      "confidence": "high",
+      "source": "SG gas-fired grid ~0.40"
+    },
+    "marina_overhead_usd_yr": {
+      "value": 20000,
+      "source_tier": "T5",
+      "confidence": "low",
+      "source": "SG high-cost berth modeled"
+    },
+    "cost_index": {
+      "value": 1.0,
+      "confidence": "high"
+    }
+  },
+  "required_fields": [
+    "captain_usd_yr",
+    "energy_usd_kwh",
+    "grid_co2_kg_kwh",
+    "marina_overhead_usd_yr",
+    "cost_index"
+  ],
+  "field_shape": {
+    "captain_usd_yr": {
+      "value": "number USD/yr",
+      "source_tier": "T1..T5",
+      "confidence": "high|med|low",
+      "source": "string evidence"
+    },
+    "cost_index": {
+      "value": "number vs SG=1.0",
+      "confidence": "high|med|low"
+    }
+  },
+  "missing_countries_need_tasklet_rates": [
+    "Argentina",
+    "Cameroon",
+    "Congo (Brazzaville)",
+    "Costa Rica",
+    "Namibia",
+    "South Korea",
+    "Venezuela"
+  ],
+  "fallback_hits": [
+    {
+      "raw_country": "South Korea",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'South Korea' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 123,
+      "markets": [
+        "korea-kakao-mobility",
+        "korea-naver",
+        "korea-swing"
+      ],
+      "partners": [
+        "kakao-mobility",
+        "naver",
+        "swing"
+      ]
+    },
+    {
+      "raw_country": "Cameroon",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Cameroon' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 3,
+      "markets": [
+        "yango-cameroon"
+      ],
+      "partners": [
+        "yango"
+      ]
+    },
+    {
+      "raw_country": "Namibia",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Namibia' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 3,
+      "markets": [
+        "yango-namibia"
+      ],
+      "partners": [
+        "yango"
+      ]
+    },
+    {
+      "raw_country": "Venezuela",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Venezuela' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 3,
+      "markets": [
+        "yango-venezuela"
+      ],
+      "partners": [
+        "yango"
+      ]
+    },
+    {
+      "raw_country": "Argentina",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Argentina' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 2,
+      "markets": [
+        "argentina"
+      ],
+      "partners": [
+        "didi"
+      ]
+    },
+    {
+      "raw_country": "Congo (Brazzaville)",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Congo (Brazzaville)' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 2,
+      "markets": [
+        "yango-congo-brazzaville"
+      ],
+      "partners": [
+        "yango"
+      ]
+    },
+    {
+      "raw_country": "Costa Rica",
+      "opex_country": "Singapore",
+      "in_reference": false,
+      "used_fallback": true,
+      "policy": "r16_homeport_fallback",
+      "note": "Country 'Costa Rica' not in country-reference; using R16 home-port opex 'Singapore'. Source + seal real rates before partner sheet rebuild.",
+      "counterpart": null,
+      "n_corridors": 2,
+      "markets": [
+        "costa-rica"
+      ],
+      "partners": [
+        "didi"
+      ]
+    }
+  ],
+  "fixed_this_session_without_new_rates": {
+    "USVI / BVI": "\u2192 U.S. Virgin Islands (dual_leg_origin_primary; BVI counterpart in cref)",
+    "CrossBorder": "\u2192 Singapore (R16 homeport; all current corridors SG-origin)"
+  },
+  "partner_impact": {
+    "swing": {
+      "missing": [
+        "South Korea"
+      ],
+      "sheet_id": "1PxUtIzZqbpIAZ752UR1DhBBhn0PynoftYfrtu7EbY98"
+    },
+    "naver": {
+      "missing": [
+        "South Korea"
+      ],
+      "sheet_id": "1Xv-qS4fMtB2QQPWqi0XAUTg_oas591c12jwhULeEndI"
+    },
+    "kakao-mobility": {
+      "missing": [
+        "South Korea"
+      ],
+      "sheet_id": null,
+      "hold": "Do not create sheet until South Korea sealed"
+    },
+    "yango": {
+      "missing": [
+        "Namibia",
+        "Venezuela",
+        "Cameroon",
+        "Congo (Brazzaville)"
+      ],
+      "sheet_id": "1fvB_tc8IWUTlKMWjPcoJde_uPnGKVqoCxxsgd5IL1rM"
+    },
+    "didi": {
+      "missing": [
+        "Argentina",
+        "Costa Rica"
+      ],
+      "sheet_id": "1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM"
+    },
+    "caribbean-mobility": {
+      "missing": [],
+      "note": "USVI/BVI label fixed to U.S. Virgin Islands; optional republish",
+      "sheet_id": "1J9rb-rAXkLnJPrKO8WhG7bLkofG-IB5En6hrjnwDyt0"
+    }
+  },
+  "rebuild": {
+    "runbook": "finance/REBUILD-AFTER-COUNTRY-OPEX.md",
+    "script": "scripts/grok-econ-reseal/rebuild_after_country_opex.sh",
+    "lint": "python3 finance/lint_country_opex.py",
+    "strict_sheet": "python3 finance/build_transparent_sheet.py --partner <p> --strict-country-opex --out /tmp/x.xlsx"
+  }
+}
