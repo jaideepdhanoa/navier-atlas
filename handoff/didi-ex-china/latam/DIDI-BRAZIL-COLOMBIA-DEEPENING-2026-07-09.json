@@ -1,0 +1,1627 @@
+{
+  "market": "Brazil via 99 and Colombia",
+  "lane": "full BP + brief maturity + demand/fare source research for existing Atlas cities",
+  "as_of": "2026-07-09",
+  "status": "research-complete for Atlas binding, partner-operation evidence, priority BP inventory and current-service classification / seal-needed; finance research-needed because route-level annual one-way passengers remain unavailable",
+  "existing_atlas_baseline": {
+    "repo_read_only": "/tmp/navier-atlas",
+    "clusters": [
+      {
+        "cluster_id": "brazil",
+        "member_city_ids": [
+          "angra-dos-reis-ilha-grande-brazil",
+          "florianopolis-brazil",
+          "rio-de-janeiro-brazil"
+        ],
+        "anchor_source": "bp-2f52d0faf1",
+        "anchor_name": "Marina Pier Costa Verde"
+      },
+      {
+        "cluster_id": "colombia",
+        "member_city_ids": [
+          "cartagena-colombia",
+          "barranquilla-colombia"
+        ],
+        "anchor_source": "bp-899770a893",
+        "anchor_name": "Cruise Terminal Pier 3 Cartagena",
+        "corridor_render_gap": "present in CLUSTERS.json"
+      }
+    ],
+    "partner_json": "partner-pitch/partners/didi.json",
+    "partner_baseline_note": "Existing DiDi partner file includes Brazil/Colombia market coverage; this pass deepens five existing Atlas cities and does not shrink baseline coverage.",
+    "canonical_route_scan": {
+      "matching_non_null_ids_used": [
+        "rn-1886629dbf0c",
+        "rn-80f0d0ebe0bd",
+        "rn-00bb6ded4be5",
+        "rn-369ef0eb69d9",
+        "rn-aa790551baa7"
+      ],
+      "other_existing_route_note": "ROUTES.json also contains rn-84ffd58e7f82 (Marina Cartagena→Bocachica) and many auto-generated city routes; they were not promoted because exact current service evidence was not established."
+    },
+    "boarding_point_registry_note": "No matching atlas-external/boarding-points/*.json directory/files were present. Existing BPs were instead found in data-clean/FEATURES_BY_TYPE.json and atlas-external/pier-slug-bp-crosswalk.json. Counts are broad and polluted, so only evidence-backed terminals are listed below.",
+    "canonical_briefs_read": [
+      "data-clean/city_briefs/angra-dos-reis-ilha-grande-brazil.json",
+      "data-clean/city_briefs/florianopolis-brazil.json",
+      "data-clean/city_briefs/rio-de-janeiro-brazil.json",
+      "data-clean/city_briefs/cartagena-colombia.json",
+      "data-clean/city_briefs/barranquilla-colombia.json"
+    ],
+    "no_shrink_reconciliation": {
+      "scope_ledger_cluster_ids": [
+        "brazil",
+        "colombia"
+      ],
+      "scope_ledger_member_city_ids": [
+        "angra-dos-reis-ilha-grande-brazil",
+        "florianopolis-brazil",
+        "rio-de-janeiro-brazil",
+        "cartagena-colombia",
+        "barranquilla-colombia"
+      ],
+      "artifact_member_city_ids": [
+        "angra-dos-reis-ilha-grande-brazil",
+        "florianopolis-brazil",
+        "rio-de-janeiro-brazil",
+        "cartagena-colombia",
+        "barranquilla-colombia"
+      ],
+      "result": "pass: exact set equality; 2 clusters and all 5 canonical city IDs preserved",
+      "fuzzy_city_ids_created": 0
+    },
+    "repo_availability_note": "The prior artifact recorded a successful read of /tmp/navier-atlas and exact IDs. During this improvement pass /tmp/navier-atlas was no longer mounted, so the pass preserved rather than re-derived all canonical cluster/city/BP/route IDs and did not introduce any new ID."
+  },
+  "sources": [
+    {
+      "source_id": "S01",
+      "url": "https://99app.com/cidades/",
+      "title": "Cidades",
+      "publisher": "99",
+      "date": "current page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Official 99 service inventory exactly lists Rio de Janeiro and Florianópolis as served cities and Baia da Ilha Grande as a served Rio de Janeiro region. It does not list Angra dos Reis by name, so Angra/Ilha Grande is region-supported rather than city-supported.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S02",
+      "url": "https://99app.com/alianca-mobilidade-sustentavel/",
+      "title": "Aliança pela Mobilidade Sustentável",
+      "publisher": "99",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official 99 page says the app facilitates mobility for more than 40 million Brazilians in 3,300 municipalities; supports Brazil country-level inheritance, not a specific Angra service claim.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S03",
+      "url": "https://web.didiglobal.com/co/conductor/ciudades/",
+      "title": "Servicios de DiDi por Ciudad",
+      "publisher": "DiDi Colombia",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official DiDi Colombia city inventory names both Barranquilla and Cartagena.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S04",
+      "url": "https://angra.rj.gov.br/noticias/11-06-2015/angra-receber-novo-catamar-da-ccr-barcas-",
+      "title": "Angra receberá novo catamarã da CCR Barcas",
+      "publisher": "Prefeitura de Angra dos Reis",
+      "date": "2015-06-11",
+      "accessed": "2026-07-09",
+      "proves": "Official municipal notice identifies the Angra–Vila do Abraão public route and reported a 40-minute catamaran trip at launch. It is historical operating evidence, not a current timetable.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S05",
+      "url": "https://www.angra.rj.gov.br/downloads/Turis/Ordenamento/ORDENAMENTO_TURISMO_NAUTICO.pdf",
+      "title": "Ordenamento do Turismo Náutico",
+      "publisher": "Prefeitura de Angra dos Reis / TurisAngra",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official planning document says Vila do Abraão has Estação Abraão and the Barcas pier, and describes nautical-tourism boarding infrastructure.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S06",
+      "url": "https://planodiretor.angra.rj.gov.br/downloads/caderno-leitura-tecnica.pdf",
+      "title": "Caderno Leitura Técnica",
+      "publisher": "Prefeitura de Angra dos Reis",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official technical plan says Cais da Lapa is used by ferries and Cais de Santa Luzia by other vessels; validates real mainland boarding infrastructure.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S07",
+      "url": "https://portal.angra.rj.gov.br/noticia.asp?vid_noticia=70551&IndexSigla=FTAR",
+      "title": "Milhares de turistas desembarcam em Angra neste domingo",
+      "publisher": "Prefeitura de Angra dos Reis / TurisAngra",
+      "date": "2024-11 (exact day not captured)",
+      "accessed": "2026-07-09",
+      "proves": "Municipal report says more than 190,000 cruise tourists disembarked in the prior season and 54 calls were expected through April 2025. This is cruise/tourism context, not ferry-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S08",
+      "url": "https://barcasrio.com.br/",
+      "title": "Barcas Rio",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current official operator site confirms the state ferry system and schedule/fleet context; individual line frequencies must be checked on the live timetable at handoff.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S09",
+      "url": "http://www.rj.gov.br/transporte/node/901",
+      "title": "Tarifa das barcas será reajustada em fevereiro",
+      "publisher": "Secretaria de Transporte e Mobilidade Urbana, Governo do RJ",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official notice says Arariboia, Cocotá and Paquetá fares become R$5.00 from 8 February; page year was not exposed by the scraper, so effective-year confirmation remains required before economics.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S10",
+      "url": "http://www.rj.gov.br/transporte/node/875",
+      "title": "Barcas batem sexto recorde de passageiros em oito meses",
+      "publisher": "Secretaria de Transporte e Mobilidade Urbana, Governo do RJ",
+      "date": "2025-06 (exact day not captured)",
+      "accessed": "2026-07-09",
+      "proves": "Official state report records 58,000+ system boardings in one day and 7,928 boardings on Charitas that day; these are peak-day observations, not annual demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S11",
+      "url": "https://www.riogaleao.com/passageiros/terminal/numeros-do-aeroporto/",
+      "title": "Números do aeroporto",
+      "publisher": "RIOgaleão",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official airport statistics report 17,906,990 passengers in Jan–Dec 2025 and monthly 2026 figures. Airport throughput is a top-of-funnel signal only.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S12",
+      "url": "https://www.pmf.sc.gov.br/sistemas/consulta/setur/arquivos/produto3.pdf",
+      "title": "Florianópolis no Mar",
+      "publisher": "Prefeitura de Florianópolis / SETUR",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official municipal study says regular lacustrine passenger lines exist only on Lagoa da Conceição, serving land-isolated Costa da Lagoa; supports a real current water-mobility use case.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S13",
+      "url": "https://cooperbarco.wordpress.com/",
+      "title": "Cooperbarco",
+      "publisher": "Cooperbarco",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Operator page lists Costa da Lagoa boat service as daily and displays a R$30 fare; exact fare basis, passenger category and page update date require reconfirmation before modeling.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S14",
+      "url": "https://floripa-airport.com/noticias/recorde-historico-floripa-airport-ultrapassa-5-milhoes-de-passageiros-em-2025.html",
+      "title": "Recorde histórico: Floripa Airport ultrapassa 5 milhões de passageiros em 2025",
+      "publisher": "Floripa Airport / Zurich Airport Brasil",
+      "date": "2026-01-22",
+      "accessed": "2026-07-09",
+      "proves": "Official release reports 5.1 million airport passengers in 2025, including 1.2 million international. This is broad visitor throughput, not route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S15",
+      "url": "https://www.dimar.mil.co/muelle-la-bodeguita-lugar-autorizado-para-el-transporte-publico-de-pasajeros-hacia-las-islas-del",
+      "title": "Muelle La Bodeguita, lugar autorizado para el transporte público de pasajeros hacia las islas",
+      "publisher": "DIMAR Colombia",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Maritime authority confirms Muelle La Bodeguita is an authorized public-passenger departure point toward island destinations and describes safety/terminal controls.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S16",
+      "url": "https://cartagenadeindias.travel/wp-content/uploads/2024/01/12.-Boletin-Estadistico-Especial-%C2%A1-Asi-vamos-con-el-ano-2023-corte-Diciembre-.pdf",
+      "title": "Indicadores de Turismo: Cartagena de Indias, diciembre 2023",
+      "publisher": "Corporación Turismo Cartagena de Indias",
+      "date": "2024-01 file publication",
+      "accessed": "2026-07-09",
+      "proves": "Official tourism bulletin reports 619,282 passenger entries at Muelle La Bodeguita in 2023 versus 586,160 in 2022 (+6%). It is mixed terminal entries, not a route-specific one-way count.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S17",
+      "url": "https://islasdelrosariotours.com/products/traslado-lancha-rapida-isla-grande-cartagena",
+      "title": "Traslado lancha rápida Isla Grande–Cartagena",
+      "publisher": "Islas del Rosario Tours",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Current operator product page shows COP115,000 transfer price plus COP40,000 port tax, Cartagena departures 08:00–09:00, Isla Grande return 14:00, and about 50 minutes. Price direction/product inclusions need booking-screen reconfirmation.",
+      "confidence": "medium"
+    },
+    {
+      "source_id": "S18",
+      "url": "https://www.aerocivil.gov.co/publicaciones/4179/aeronautica-civil-publica-el-ranking-de-movilizacion-de-pasajeros-durante-2023-en-los-aeropuertos-del-pais/",
+      "title": "Aeronáutica Civil publica el ranking de movilización de pasajeros durante 2023",
+      "publisher": "Aeronáutica Civil de Colombia",
+      "date": "2024-02-13; modified 2025-04-04",
+      "accessed": "2026-07-09",
+      "proves": "Official table reports 6,388,148 passengers at Cartagena Rafael Núñez and 3,184,185 at Barranquilla Ernesto Cortissoz in 2023. Airport counts are not marine-route demand.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S19",
+      "url": "https://barranquilla.gov.co/mi-barranquilla/riobus-ruta-completa-embarcacion-barranquilla-rio-magdalena",
+      "title": "Río-Bus: ruta completa de la embarcación por el río Magdalena",
+      "publisher": "Alcaldía de Barranquilla",
+      "date": null,
+      "accessed": "2026-07-09",
+      "proves": "Official city project page documents the Río-Bus vessel demonstration/project and proposed river-station network. It does not prove a currently scheduled passenger service.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S20",
+      "url": "https://www.pmf.sc.gov.br/arquivos/arquivos/pdf/11_01_2022_14.28.46.f7fee34c07bf0f9b83527e7e5784bd84.pdf",
+      "title": "Florianópolis para crianças: 10 roteiros a pé pela capital",
+      "publisher": "Prefeitura de Florianópolis",
+      "date": "2022-01-11",
+      "accessed": "2026-07-09",
+      "proves": "Official visitor guide says Costa da Lagoa is reached by boat, corroborating water-dependence and tourism relevance but not volumes or fares.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S21",
+      "url": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+      "title": "Linhas, horários e tarifas",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": "live page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Current official operator overview lists Angra dos Reis–Ilha Grande at R$20.50 and 110 minutes, Praça XV–Arariboia at R$5.00/22 minutes, Praça XV–Charitas at R$7.70/28 minutes, Praça XV–Paquetá at R$5.00/81 minutes, and Praça XV–Cocotá at R$5.00/61 minutes.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S22",
+      "url": "https://barcasrio.com.br/linhas_/1009/",
+      "title": "Praça Arariboia – Praça XV",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": "live page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Official live line page gives R$5.00 fare, up to 22 minutes, weekday departures, Saturday 30-minute headways and Sunday/holiday 60-minute headways.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S23",
+      "url": "https://barcasrio.com.br/linhas_/1009-2/",
+      "title": "Praça XV – Charitas",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": "live page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Official live line page gives R$7.70 fare, up to 28 minutes, weekday schedules and explicitly says the Charitas line does not operate on weekends or holidays.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S24",
+      "url": "https://barcasrio.com.br/linhas_/1009-3/",
+      "title": "Praça XV – Paquetá",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": "live page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Official live line page gives R$5.00 fare, up to 81 minutes, and departure tables for weekdays plus weekends/holidays in both directions.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S25",
+      "url": "https://barcasrio.com.br/linhas_/1009-4-3/",
+      "title": "Praça XV – Cocotá",
+      "publisher": "Barcas Rio / Governo do Estado do Rio de Janeiro",
+      "date": "live page; publication date not shown",
+      "accessed": "2026-07-09",
+      "proves": "Official live line page gives R$5.00 fare, up to 61 minutes, Praça XV departures 17:30/18:40/19:50, Cocotá departures 07:00/08:00/09:20, and explicitly says the line does not operate weekends or holidays.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S26",
+      "url": "https://cartagenadeindias.travel/wp-content/uploads/2026/02/BOLETIN-CONSOLIDADO-2025_compressed.pdf",
+      "title": "Cartagena de Indias – Balance cierre 2025",
+      "publisher": "Corporación Turismo Cartagena de Indias",
+      "date": "2026-02 file publication; reporting year 2025",
+      "accessed": "2026-07-09",
+      "proves": "Official 2025 tourism bulletin reports 745,079 passengers moved through Muelle La Bodeguita Jan–Dec 2025 (+18.2% vs 2024), 19,155 sailings, 56+ island destinations, 295 registered vessels and 100 operators; it also reports 3,822,913 air arrivals in 2025. Terminal traffic is mixed and not route/direction-specific.",
+      "confidence": "high"
+    },
+    {
+      "source_id": "S27",
+      "url": "https://www.dimar.mil.co/mas-de-48-mil-pasajeros-se-movilizaron-por-maritima-desde-cartagena-durante-semana-santa-dimar",
+      "title": "Más de 48 mil pasajeros se movilizaron por vía marítima desde Cartagena durante Semana Santa: DIMAR",
+      "publisher": "Dirección General Marítima (DIMAR), Colombia",
+      "date": "2025-04-21",
+      "accessed": "2026-07-09",
+      "proves": "DIMAR reports 48,479 maritime passengers moved in 2,830 vessels during eight days of Holy Week 2025 from La Bodeguita, Pegasos, marinas and other Cartagena points, up 12% from 2024. This is an event-period multi-origin total, not annual or route-specific demand.",
+      "confidence": "high"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "display": "Angra dos Reis + Ilha Grande (Costa Verde)",
+      "country": "Brazil",
+      "cluster_id": "brazil",
+      "canonical_brief_path": "data-clean/city_briefs/angra-dos-reis-ilha-grande-brazil.json",
+      "partner_evidence": {
+        "partner": "99",
+        "tier": "region_supported",
+        "source_ids": [
+          "S01",
+          "S02"
+        ],
+        "note": "Official 99 inventory exactly lists Baia da Ilha Grande, which supports inheritance into the existing Atlas Angra dos Reis + Ilha Grande market. Angra dos Reis itself is not named; do not upgrade this to city_supported."
+      },
+      "atlas_bp_baseline_count": 74,
+      "atlas_bp_quality_note": "Very broad/misassigned catchment: includes Rio, Búzios, Cabo Frio and other out-of-city points. Do not treat count as Angra-local supply.",
+      "promotion_lane": "full_to_marquee_coverage",
+      "research_conclusion": "Official 99 region support and current Barcas Rio fare/time evidence now exist for Angra–Ilha Grande; exact service days/frequency and annual route ridership remain missing.",
+      "research_state": "research-complete for operating evidence and Atlas binding / finance research-needed / seal-needed where geometry is unresolved"
+    },
+    {
+      "city_id": "florianopolis-brazil",
+      "display": "Florianópolis & Santa Catarina",
+      "country": "Brazil",
+      "cluster_id": "brazil",
+      "canonical_brief_path": "data-clean/city_briefs/florianopolis-brazil.json",
+      "partner_evidence": {
+        "partner": "99",
+        "tier": "city_supported",
+        "source_ids": [
+          "S01"
+        ],
+        "note": "Rio and Florianópolis appear on the official 99 city inventory."
+      },
+      "atlas_bp_baseline_count": 61,
+      "atlas_bp_quality_note": "Registry catchment spills into Itajaí, Navegantes, Bombinhas and Porto Belo and contains obvious false-positive person/business names; city-local BP QA is required.",
+      "promotion_lane": "thin_to_full_coverage",
+      "research_conclusion": "Current regular water mobility is specifically the Costa da Lagoa lacustrine line; proposed open-coast routes remain future opportunities.",
+      "research_state": "research-complete for operating evidence and Atlas binding / finance research-needed / seal-needed where geometry is unresolved"
+    },
+    {
+      "city_id": "rio-de-janeiro-brazil",
+      "display": "Rio de Janeiro & Costa Verde",
+      "country": "Brazil",
+      "cluster_id": "brazil",
+      "canonical_brief_path": "data-clean/city_briefs/rio-de-janeiro-brazil.json",
+      "partner_evidence": {
+        "partner": "99",
+        "tier": "city_supported",
+        "source_ids": [
+          "S01"
+        ],
+        "note": "Official 99 inventory names Rio de Janeiro."
+      },
+      "atlas_bp_baseline_count": 59,
+      "atlas_bp_quality_note": "Registry catchment contains Costa Verde/Búzios/Paraty and unrelated false positives; authoritative ferry terminals below are the safe subset.",
+      "promotion_lane": "full_to_marquee_coverage",
+      "research_conclusion": "Best geometry/service baseline: four exact canonical public-ferry route IDs plus current official fares, travel times and service-day patterns; annual line-by-line ridership remains missing.",
+      "research_state": "research-complete for operating evidence and Atlas binding / finance research-needed / seal-needed where geometry is unresolved"
+    },
+    {
+      "city_id": "cartagena-colombia",
+      "display": "Cartagena & the Rosario Islands",
+      "country": "Colombia",
+      "cluster_id": "colombia",
+      "canonical_brief_path": "data-clean/city_briefs/cartagena-colombia.json",
+      "partner_evidence": {
+        "partner": "DiDi",
+        "tier": "city_supported",
+        "source_ids": [
+          "S03"
+        ],
+        "note": "Official DiDi Colombia city inventory names Cartagena."
+      },
+      "atlas_bp_baseline_count": 47,
+      "atlas_bp_quality_note": "Registry includes Santa Marta points and generic/retail POIs; exact marine-terminal subset needs QA. Cluster anchor is a Cartagena cruise pier, not La Bodeguita.",
+      "promotion_lane": "full_to_marquee_coverage",
+      "research_conclusion": "Strong tourism-terminal evidence now includes 2025 official La Bodeguita annual traffic and a current operator fare/time product. Route-specific annual one-way demand remains unknown.",
+      "research_state": "research-complete for operating evidence and Atlas binding / finance research-needed / seal-needed where geometry is unresolved"
+    },
+    {
+      "city_id": "barranquilla-colombia",
+      "display": "Barranquilla",
+      "country": "Colombia",
+      "cluster_id": "colombia",
+      "canonical_brief_path": "data-clean/city_briefs/barranquilla-colombia.json",
+      "partner_evidence": {
+        "partner": "DiDi",
+        "tier": "city_supported",
+        "source_ids": [
+          "S03"
+        ],
+        "note": "Official DiDi Colombia city inventory names Barranquilla."
+      },
+      "atlas_bp_baseline_count": 2,
+      "atlas_bp_quality_note": "Only two coarse BPs exist: Puerto Colombia/Bocas de Ceniza and Barranquilla river-front; no official operating passenger terminal was verified.",
+      "promotion_lane": "thin_to_full_coverage",
+      "research_conclusion": "Río-Bus is project/demonstration evidence, not proof of a current scheduled service. Keep corridors future-only until operating authority, stations, timetable and fares are verified.",
+      "research_state": "research-complete for operating evidence and Atlas binding / finance research-needed / seal-needed where geometry is unresolved"
+    }
+  ],
+  "boarding_points": [
+    {
+      "name": "Marina Pier Costa Verde",
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-2f52d0faf1",
+      "coordinates": null,
+      "evidence": "Atlas high-confidence operational marina; cluster anchor. Source is Google Places rather than an official operator.",
+      "source_ids": [],
+      "publish_status": "display-only after coordinate/provenance QA"
+    },
+    {
+      "name": "Cais da Lapa",
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-ff2a6bbcaf",
+      "coordinates": null,
+      "evidence": "Official municipal plan identifies Cais da Lapa as the ferry quay; Atlas has exact-name BP.",
+      "source_ids": [
+        "S06"
+      ],
+      "publish_status": "BP identity safe; coordinate must be reconciled against registry"
+    },
+    {
+      "name": "Cais das Barcas / Estação Abraão, Vila do Abraão",
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "classification": "candidate_needing_coordinate/source_confirmation",
+      "atlas_bp_id": null,
+      "coordinates": null,
+      "evidence": "Official municipal document confirms two passenger-support structures at Vila do Abraão; exact facility naming/coordinate merge with Atlas typo/alias is unresolved.",
+      "source_ids": [
+        "S05"
+      ],
+      "publish_status": "seal-needed"
+    },
+    {
+      "name": "Praça XV Terminal",
+      "city_id": "rio-de-janeiro-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-660ea6736a",
+      "coordinates": null,
+      "evidence": "Current official ferry system and four exact canonical routes use this terminal.",
+      "source_ids": [
+        "S08"
+      ],
+      "publish_status": "route-bound"
+    },
+    {
+      "name": "Arariboia Terminal (Niterói)",
+      "city_id": "rio-de-janeiro-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-45ba34fda2",
+      "coordinates": null,
+      "evidence": "Official ferry line and exact canonical route endpoint; Atlas parent-city assignment is anomalously Angra and needs correction.",
+      "source_ids": [
+        "S08"
+      ],
+      "publish_status": "route-bound; parent QA needed"
+    },
+    {
+      "name": "Charitas Terminal (Niterói)",
+      "city_id": "rio-de-janeiro-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-85947006eb",
+      "coordinates": null,
+      "evidence": "Official peak-day demand record and exact canonical route endpoint.",
+      "source_ids": [
+        "S10"
+      ],
+      "publish_status": "route-bound"
+    },
+    {
+      "name": "Cocotá Terminal",
+      "city_id": "rio-de-janeiro-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-53684b584c",
+      "coordinates": null,
+      "evidence": "Current-fare notice and exact canonical route endpoint.",
+      "source_ids": [
+        "S09"
+      ],
+      "publish_status": "route-bound"
+    },
+    {
+      "name": "Paquetá Island Terminal",
+      "city_id": "rio-de-janeiro-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-e2aae460aa",
+      "coordinates": null,
+      "evidence": "Current-fare notice and exact canonical route endpoint; Atlas parent-city assignment is anomalously Angra.",
+      "source_ids": [
+        "S09"
+      ],
+      "publish_status": "route-bound; parent QA needed"
+    },
+    {
+      "name": "Terminal Lacustre Ponto de Saída Costa da Lagoa",
+      "city_id": "florianopolis-brazil",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-7adc0d37cf",
+      "coordinates": null,
+      "evidence": "Exact Atlas public-pier name and official municipal evidence of the regular Costa da Lagoa line.",
+      "source_ids": [
+        "S12"
+      ],
+      "publish_status": "BP identity safe; route geometry needed"
+    },
+    {
+      "name": "Costa da Lagoa community landing(s)",
+      "city_id": "florianopolis-brazil",
+      "classification": "candidate_needing_coordinate/source_confirmation",
+      "atlas_bp_id": null,
+      "coordinates": null,
+      "evidence": "Official documents prove boat-only/regular service to the community, but multiple stopping points and exact endpoint coordinate were not resolved.",
+      "source_ids": [
+        "S12",
+        "S20"
+      ],
+      "publish_status": "seal-needed"
+    },
+    {
+      "name": "Muelle Turístico La Bodeguita",
+      "city_id": "cartagena-colombia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": null,
+      "coordinates": null,
+      "evidence": "DIMAR-authorized public-passenger terminal and official annual terminal data. No exact Atlas BP ID was found.",
+      "source_ids": [
+        "S15",
+        "S16"
+      ],
+      "publish_status": "registry bind + coordinate seal needed"
+    },
+    {
+      "name": "Isla Grande landing",
+      "city_id": "cartagena-colombia",
+      "classification": "candidate_needing_coordinate/source_confirmation",
+      "atlas_bp_id": "bp-709896d994",
+      "coordinates": null,
+      "evidence": "Atlas has generic Isla grande ferry terminal and operator sells direct transfer; exact island landing used by product is not named.",
+      "source_ids": [
+        "S17"
+      ],
+      "publish_status": "do not route-bind until exact dock confirmed"
+    },
+    {
+      "name": "Bocachica Tierrabomba Jetty",
+      "city_id": "cartagena-colombia",
+      "classification": "verified_existing_boarding_point",
+      "atlas_bp_id": "bp-cartagena-bocachica",
+      "coordinates": null,
+      "evidence": "Exact Atlas canonical BP and two canonical routes; this research did not verify current public timetable/fare.",
+      "source_ids": [],
+      "publish_status": "geometry baseline only"
+    },
+    {
+      "name": "Cruise Terminal Pier 3 Cartagena",
+      "city_id": "cartagena-colombia",
+      "classification": "non_bp_poi_for_this_lane",
+      "atlas_bp_id": "bp-899770a893",
+      "coordinates": null,
+      "evidence": "Atlas cluster anchor and operational cruise terminal, but not the verified origin for island passenger transfers in this lane.",
+      "source_ids": [],
+      "publish_status": "do not substitute for La Bodeguita"
+    },
+    {
+      "name": "Barranquilla River-front",
+      "city_id": "barranquilla-colombia",
+      "classification": "candidate_needing_coordinate/source_confirmation",
+      "atlas_bp_id": "bp-574ef0c2d1",
+      "coordinates": null,
+      "evidence": "Coarse Atlas river BP; no current scheduled passenger terminal/operator source verified.",
+      "source_ids": [
+        "S19"
+      ],
+      "publish_status": "future-only"
+    },
+    {
+      "name": "Puerto Colombia / Bocas de Ceniza",
+      "city_id": "barranquilla-colombia",
+      "classification": "non_bp_poi_for_this_lane",
+      "atlas_bp_id": "bp-fe30890718",
+      "coordinates": null,
+      "evidence": "Coarse beach/coastal Atlas point, not verified as an operating passenger terminal.",
+      "source_ids": [],
+      "publish_status": "do not publish as current BP"
+    },
+    {
+      "name": "Río-Bus proposed stations",
+      "city_id": "barranquilla-colombia",
+      "classification": "candidate_needing_coordinate/source_confirmation",
+      "atlas_bp_id": null,
+      "coordinates": null,
+      "evidence": "Official project source supports a proposed river network, but station names/operating status were not sufficiently stable for BP creation.",
+      "source_ids": [
+        "S19"
+      ],
+      "publish_status": "future-only; no current-service claim"
+    }
+  ],
+  "candidate_corridors": [
+    {
+      "corridor": "Cais da Lapa, Angra dos Reis → Cais das Barcas/Estação Abraão, Vila do Abraão",
+      "route_id": null,
+      "from_city_id": "angra-dos-reis-ilha-grande-brazil",
+      "to_city_id": "angra-dos-reis-ilha-grande-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "essential island access across sheltered Baía da Ilha Grande",
+      "distance_nm": 9,
+      "distance_basis": "canonical brief approximation; not re-surveyed",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Current official operator overview confirms the line and normal operation, but the detailed service-day/frequency table was not extractable; leave schedule granularity unresolved.",
+      "fare": {
+        "amount": 20.5,
+        "currency": "BRL",
+        "basis": "current Barcas Rio official line overview; direction/category not separately stated"
+      },
+      "source_ids": [
+        "S04",
+        "S05",
+        "S06",
+        "S21"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Island-dense bay; straight-line geometry may clip islands or conservation areas."
+      },
+      "economics_status": "hold—current fare/time supported, but annual one-way route passengers and detailed calendar are missing",
+      "travel_time_minutes": 110,
+      "endpoint_a": "Cais da Lapa, Angra dos Reis",
+      "endpoint_b": "Cais das Barcas / Estação Abraão, Vila do Abraão",
+      "city_ids": [
+        "angra-dos-reis-ilha-grande-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Island-dense bay; straight-line geometry may clip islands or conservation areas."
+      }
+    },
+    {
+      "corridor": "Praça XV Terminal → Arariboia Terminal (Niterói)",
+      "route_id": "rn-1886629dbf0c",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "core cross-bay commuter ferry",
+      "distance_nm": 2.7,
+      "distance_basis": "exact canonical ROUTES.json record",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Weekdays plus Saturdays and Sundays/holidays; official page shows Saturday 30-minute and Sunday/holiday 60-minute headways, with denser weekday timetable.",
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official Barcas Rio line page accessed 2026-07-09"
+      },
+      "source_ids": [
+        "S08",
+        "S09",
+        "S10",
+        "S21",
+        "S22"
+      ],
+      "hand_waypoints": {
+        "required": false,
+        "reason": "Open bay crossing, but port-traffic lane review remains required."
+      },
+      "economics_status": "hold—line-specific annual boardings missing",
+      "travel_time_minutes": 22,
+      "endpoint_a": "Praça XV Terminal",
+      "endpoint_b": "Arariboia Terminal, Niterói",
+      "city_ids": [
+        "rio-de-janeiro-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": false,
+        "reason": "Open bay crossing, but port-traffic lane review remains required."
+      }
+    },
+    {
+      "corridor": "Praça XV Terminal → Charitas Terminal",
+      "route_id": "rn-80f0d0ebe0bd",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "premium fast-catamaran cross-bay commuter line",
+      "distance_nm": 4.4,
+      "distance_basis": "exact canonical ROUTES.json record",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Weekdays only; official page explicitly says no weekends or holidays.",
+      "fare": {
+        "amount": 7.7,
+        "currency": "BRL",
+        "basis": "current official Barcas Rio line page accessed 2026-07-09"
+      },
+      "source_ids": [
+        "S08",
+        "S10",
+        "S21",
+        "S23"
+      ],
+      "hand_waypoints": {
+        "required": false,
+        "reason": "Open bay crossing; navigation-channel review required."
+      },
+      "economics_status": "hold—7,928 is one peak day, not annual line demand",
+      "travel_time_minutes": 28,
+      "endpoint_a": "Praça XV Terminal",
+      "endpoint_b": "Charitas Terminal",
+      "city_ids": [
+        "rio-de-janeiro-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": false,
+        "reason": "Open bay crossing; navigation-channel review required."
+      }
+    },
+    {
+      "corridor": "Praça XV Terminal → Paquetá Island Terminal",
+      "route_id": "rn-00bb6ded4be5",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "essential island passenger access",
+      "distance_nm": 9.2,
+      "distance_basis": "exact canonical ROUTES.json record",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Weekdays plus weekends and holidays; official page publishes timetables in both directions.",
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official Barcas Rio line page accessed 2026-07-09"
+      },
+      "source_ids": [
+        "S08",
+        "S09",
+        "S21",
+        "S24"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Route must respect islands, channels and Guanabara navigation constraints."
+      },
+      "economics_status": "hold—annual line ridership missing",
+      "travel_time_minutes": 81,
+      "endpoint_a": "Praça XV Terminal",
+      "endpoint_b": "Paquetá Island Terminal",
+      "city_ids": [
+        "rio-de-janeiro-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Route must respect islands, channels and Guanabara navigation constraints."
+      }
+    },
+    {
+      "corridor": "Praça XV Terminal → Cocotá Terminal",
+      "route_id": "rn-369ef0eb69d9",
+      "from_city_id": "rio-de-janeiro-brazil",
+      "to_city_id": "rio-de-janeiro-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "cross-bay/airport-island commuter ferry",
+      "distance_nm": 6.0,
+      "distance_basis": "exact canonical ROUTES.json record",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Weekdays only; current page shows Praça XV departures 17:30, 18:40, 19:50 and Cocotá departures 07:00, 08:00, 09:20; no weekends/holidays.",
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official Barcas Rio line page accessed 2026-07-09"
+      },
+      "source_ids": [
+        "S08",
+        "S09",
+        "S21",
+        "S25"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Guanabara airport-island shoreline and navigation channels make straight-line routing unsafe."
+      },
+      "economics_status": "hold—annual line ridership missing",
+      "travel_time_minutes": 61,
+      "endpoint_a": "Praça XV Terminal",
+      "endpoint_b": "Cocotá Terminal",
+      "city_ids": [
+        "rio-de-janeiro-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Guanabara airport-island shoreline and navigation channels make straight-line routing unsafe."
+      }
+    },
+    {
+      "corridor": "Terminal Lacustre Ponto de Saída Costa da Lagoa → Costa da Lagoa community landing(s)",
+      "route_id": null,
+      "from_city_id": "florianopolis-brazil",
+      "to_city_id": "florianopolis-brazil",
+      "status": "current_route_evidence",
+      "water_relevance": "only regular lacustrine transport to a community isolated by land",
+      "distance_nm": null,
+      "distance_basis": null,
+      "likely_vessel_range_class": "Pioneer II / short electric, pending measured route and dock survey",
+      "service_days": "Operator says daily; schedule granularity not captured",
+      "fare": {
+        "amount": 30.0,
+        "currency": "BRL",
+        "basis": "operator page display; category/direction/update date unverified"
+      },
+      "source_ids": [
+        "S12",
+        "S13",
+        "S20"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Lagoa shoreline, multiple stops and shallow/regulated water require hand routing."
+      },
+      "economics_status": "hold—annual ridership, exact stops and fare basis missing",
+      "endpoint_a": "Terminal Lacustre Ponto de Saída Costa da Lagoa",
+      "endpoint_b": "Costa da Lagoa community landing(s), exact stop unresolved",
+      "city_ids": [
+        "florianopolis-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Lagoa shoreline, multiple stops and shallow/regulated water require hand routing."
+      }
+    },
+    {
+      "corridor": "Florianópolis Centro waterfront → mainland São José/Palhoça waterfront",
+      "route_id": null,
+      "from_city_id": "florianopolis-brazil",
+      "to_city_id": null,
+      "status": "future_opportunity",
+      "water_relevance": "potential bridge-congestion bypass; no current service proven",
+      "distance_nm": null,
+      "distance_basis": null,
+      "likely_vessel_range_class": null,
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "S12"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Bridge approaches, shallow bay and exact terminal choices are unresolved."
+      },
+      "economics_status": "do not model—candidate endpoints and demand unverified",
+      "endpoint_a": "Florianópolis Centro waterfront, exact terminal unresolved",
+      "endpoint_b": "São José or Palhoça mainland waterfront, exact terminal unresolved",
+      "city_ids": [
+        "florianopolis-brazil"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Bridge approaches, shallow bay and exact terminal choices are unresolved."
+      }
+    },
+    {
+      "corridor": "Muelle Turístico La Bodeguita → Isla Grande, Islas del Rosario",
+      "route_id": null,
+      "from_city_id": "cartagena-colombia",
+      "to_city_id": "cartagena-colombia",
+      "status": "current_route_evidence",
+      "water_relevance": "major tourism/island-transfer corridor",
+      "distance_nm": 18,
+      "distance_basis": "canonical brief approximation; operator page reports ~50 minutes but no distance",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": "Operator product indicates daily-style departures 08:00–09:00 and return 14:00; calendar availability must be checked",
+      "fare": {
+        "amount": 115000,
+        "currency": "COP",
+        "basis": "operator transfer price",
+        "additional_fee": {
+          "amount": 40000,
+          "currency": "COP",
+          "label": "port tax"
+        }
+      },
+      "source_ids": [
+        "S15",
+        "S16",
+        "S17",
+        "S26",
+        "S27"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Barú/archipelago geometry and park/navigation constraints; exact Isla Grande dock is unresolved."
+      },
+      "economics_status": "fare usable only as a dated benchmark; annual route passengers still null",
+      "endpoint_a": "Muelle Turístico La Bodeguita",
+      "endpoint_b": "Isla Grande, Islas del Rosario, exact dock unresolved",
+      "city_ids": [
+        "cartagena-colombia"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Barú/archipelago geometry and park/navigation constraints; exact Isla Grande dock is unresolved."
+      }
+    },
+    {
+      "corridor": "Muelle Turístico La Bodeguita → Bocachica, Tierra Bomba",
+      "route_id": null,
+      "from_city_id": "cartagena-colombia",
+      "to_city_id": "cartagena-colombia",
+      "status": "route_candidate_with_current_terminal_evidence_only",
+      "water_relevance": "island/community and visitor transfer in Cartagena Bay",
+      "distance_nm": null,
+      "distance_basis": null,
+      "likely_vessel_range_class": "Pioneer II / short electric pending exact route",
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "S15"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Use navigable Cartagena Bay channel and avoid port/security areas."
+      },
+      "economics_status": "hold—route timetable, operator, fare and annual passengers missing",
+      "endpoint_a": "Muelle Turístico La Bodeguita",
+      "endpoint_b": "Bocachica, Tierra Bomba, exact dock unresolved",
+      "city_ids": [
+        "cartagena-colombia"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Use navigable Cartagena Bay channel and avoid port/security areas."
+      }
+    },
+    {
+      "corridor": "Club de pesca de Cartagena - Marina → Bocachica Tierrabomba Jetty",
+      "route_id": "rn-aa790551baa7",
+      "from_city_id": "cartagena-colombia",
+      "to_city_id": "cartagena-colombia",
+      "status": "atlas_geometry_existing_current_service_unverified",
+      "water_relevance": "Cartagena Bay island connection",
+      "distance_nm": 5.74,
+      "distance_basis": "exact canonical ROUTES.json record",
+      "likely_vessel_range_class": "Pioneer II / short electric",
+      "service_days": null,
+      "fare": null,
+      "source_ids": [],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Existing route should still be checked against active port channels and hand waypoints."
+      },
+      "economics_status": "do not model until current-service evidence exists",
+      "endpoint_a": "Club de pesca de Cartagena - Marina",
+      "endpoint_b": "Bocachica Tierrabomba Jetty",
+      "city_ids": [
+        "cartagena-colombia"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Existing route should still be checked against active port channels and hand waypoints."
+      }
+    },
+    {
+      "corridor": "Barranquilla riverfront / Intendencia Fluvial area → proposed Río-Bus river stations",
+      "route_id": null,
+      "from_city_id": "barranquilla-colombia",
+      "to_city_id": "barranquilla-colombia",
+      "status": "future_opportunity",
+      "water_relevance": "urban river passenger layer on Magdalena",
+      "distance_nm": null,
+      "distance_basis": null,
+      "likely_vessel_range_class": null,
+      "service_days": null,
+      "fare": null,
+      "source_ids": [
+        "S19"
+      ],
+      "hand_waypoints": {
+        "required": true,
+        "reason": "Heavy cargo traffic, river currents, station uncertainty and operational channels require authority-led geometry."
+      },
+      "economics_status": "do not model—scheduled operating service not verified",
+      "endpoint_a": "Barranquilla riverfront / Intendencia Fluvial area, exact station unresolved",
+      "endpoint_b": "Proposed Río-Bus river station(s), exact endpoints unresolved",
+      "city_ids": [
+        "barranquilla-colombia"
+      ],
+      "hand_waypoint_requirements": {
+        "required": true,
+        "reason": "Heavy cargo traffic, river currents, station uncertainty and operational channels require authority-led geometry."
+      }
+    }
+  ],
+  "demand_records": [
+    {
+      "record_id": "D01",
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "corridor": null,
+      "metric": "cruise visitors disembarked in prior season",
+      "reported_value": 190000,
+      "unit": "visitors",
+      "period": "prior cruise season reported Nov 2024",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Cruise season; 54 calls expected through Apr 2025",
+      "assumption_boundary": "Broad cruise arrivals only. No conversion to ferry or Angra–Abraão demand is allowed.",
+      "source_ids": [
+        "S07"
+      ]
+    },
+    {
+      "record_id": "D02",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": "Barcas Rio system",
+      "metric": "record-day boardings",
+      "reported_value": 58000,
+      "unit": "boardings, lower bound",
+      "period": "single record day in 2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": null,
+      "assumption_boundary": "Single peak day, system-wide. Do not annualize or allocate to routes without official line/day series.",
+      "source_ids": [
+        "S10"
+      ]
+    },
+    {
+      "record_id": "D03",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": "Praça XV–Charitas",
+      "metric": "record-day boardings",
+      "reported_value": 7928,
+      "unit": "boardings",
+      "period": "same single record day in 2025",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 7.7,
+        "currency": "BRL",
+        "basis": "current official Barcas Rio line page accessed 2026-07-09"
+      },
+      "seasonality": null,
+      "assumption_boundary": "Peak-day line boardings, not annual average and direction not separated.",
+      "source_ids": [
+        "S10",
+        "S23"
+      ]
+    },
+    {
+      "record_id": "D04",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": null,
+      "metric": "RIOgaleão annual airport passengers",
+      "reported_value": 17906990,
+      "unit": "arrivals+departures passenger movements",
+      "period": "2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Monthly source series available; no ferry linkage established.",
+      "assumption_boundary": "Airport throughput is broad top-of-funnel demand. No percentage may be assigned to a water route without an explicit primary-demand study.",
+      "source_ids": [
+        "S11"
+      ]
+    },
+    {
+      "record_id": "D05",
+      "city_id": "florianopolis-brazil",
+      "corridor": null,
+      "metric": "Floripa Airport annual passengers",
+      "reported_value": 5100000,
+      "unit": "passengers, rounded official report",
+      "period": "2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Brief says Dec–Mar peak; airport source itself gives annual total only in captured text.",
+      "assumption_boundary": "Airport throughput is not Costa da Lagoa or coastal-route demand.",
+      "source_ids": [
+        "S14"
+      ]
+    },
+    {
+      "record_id": "D06",
+      "city_id": "florianopolis-brazil",
+      "corridor": "Costa da Lagoa regular boat line",
+      "metric": "operator fare benchmark",
+      "reported_value": 30.0,
+      "unit": "BRL",
+      "period": "page accessed 2026-07-09; update date not shown",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 30.0,
+        "currency": "BRL",
+        "basis": "displayed operator price; category/direction unverified"
+      },
+      "seasonality": "Operator says daily; annual passenger counts unavailable.",
+      "assumption_boundary": "Do not model until fare basis, stops, timetable and passenger history are confirmed with operator/municipality.",
+      "source_ids": [
+        "S12",
+        "S13"
+      ]
+    },
+    {
+      "record_id": "D07",
+      "city_id": "cartagena-colombia",
+      "corridor": "Muelle La Bodeguita mixed island traffic",
+      "metric": "terminal passenger entries",
+      "reported_value": 619282,
+      "unit": "entries to terminal",
+      "period": "2023",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Full-year total; source also records 4,036 entries for a two-day Jan 2024 event, showing event peaks.",
+      "assumption_boundary": "Mixed destinations/products and entries only; not one route, not necessarily unique travelers, and directionality is unclear. No allocation to Isla Grande without a share assumption.",
+      "source_ids": [
+        "S16"
+      ]
+    },
+    {
+      "record_id": "D08",
+      "city_id": "cartagena-colombia",
+      "corridor": "Cartagena–Isla Grande operator product",
+      "metric": "published transfer price and schedule",
+      "reported_value": 115000,
+      "unit": "COP transfer price",
+      "period": "page accessed 2026-07-09; update date not shown",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 115000,
+        "currency": "COP",
+        "additional_fee": {
+          "amount": 40000,
+          "currency": "COP",
+          "label": "port tax"
+        }
+      },
+      "seasonality": "Departures shown 08:00–09:00; return 14:00; booking-calendar service days not captured.",
+      "assumption_boundary": "One operator/product benchmark. Do not treat as market average, guaranteed daily capacity or round-trip price until confirmed.",
+      "source_ids": [
+        "S17"
+      ]
+    },
+    {
+      "record_id": "D09",
+      "city_id": "cartagena-colombia",
+      "corridor": null,
+      "metric": "Rafael Núñez Airport annual passengers",
+      "reported_value": 6388148,
+      "unit": "passenger movements",
+      "period": "2023",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Official source includes semester split: 3,145,611 H1 and 3,242,537 H2.",
+      "assumption_boundary": "Airport total is broad tourism/access context only; no conversion to island-transfer demand.",
+      "source_ids": [
+        "S18"
+      ]
+    },
+    {
+      "record_id": "D10",
+      "city_id": "barranquilla-colombia",
+      "corridor": null,
+      "metric": "Ernesto Cortissoz Airport annual passengers",
+      "reported_value": 3184185,
+      "unit": "passenger movements",
+      "period": "2023",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Official source includes 1,461,764 H1 and 1,722,421 H2.",
+      "assumption_boundary": "Airport total is not Río-Bus or coastal-route demand.",
+      "source_ids": [
+        "S18"
+      ]
+    },
+    {
+      "record_id": "D11",
+      "city_id": "barranquilla-colombia",
+      "corridor": "Río-Bus concept",
+      "metric": "current scheduled-service demand",
+      "reported_value": null,
+      "unit": null,
+      "period": "as of 2026-07-09",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": null,
+      "assumption_boundary": "Official project evidence does not establish a current timetable, fare or passenger history. Keep all economics null.",
+      "source_ids": [
+        "S19"
+      ]
+    },
+    {
+      "record_id": "D12",
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "corridor": "Angra dos Reis–Ilha Grande",
+      "metric": "current official line fare and travel time",
+      "reported_value": 20.5,
+      "unit": "BRL fare",
+      "period": "live page accessed 2026-07-09",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 20.5,
+        "currency": "BRL",
+        "basis": "current Barcas Rio official overview; category/direction not separately stated"
+      },
+      "seasonality": "Current line confirmed; detailed service days/frequency not captured.",
+      "assumption_boundary": "Fare/time evidence does not provide annual passengers or frequency; do not infer capacity or ridership.",
+      "source_ids": [
+        "S21"
+      ]
+    },
+    {
+      "record_id": "D13",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": "Praça XV–Arariboia",
+      "metric": "current official fare/service benchmark",
+      "reported_value": 5.0,
+      "unit": "BRL fare",
+      "period": "live page accessed 2026-07-09",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official line page"
+      },
+      "seasonality": "Daily; weekend/holiday headways published.",
+      "assumption_boundary": "Published timetable/fare does not establish annual line ridership.",
+      "source_ids": [
+        "S22"
+      ]
+    },
+    {
+      "record_id": "D14",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": "Praça XV–Paquetá",
+      "metric": "current official fare/service benchmark",
+      "reported_value": 5.0,
+      "unit": "BRL fare",
+      "period": "live page accessed 2026-07-09",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official line page"
+      },
+      "seasonality": "Weekday and weekend/holiday timetables published.",
+      "assumption_boundary": "Published timetable/fare does not establish annual line ridership.",
+      "source_ids": [
+        "S24"
+      ]
+    },
+    {
+      "record_id": "D15",
+      "city_id": "rio-de-janeiro-brazil",
+      "corridor": "Praça XV–Cocotá",
+      "metric": "current official fare/service benchmark",
+      "reported_value": 5.0,
+      "unit": "BRL fare",
+      "period": "live page accessed 2026-07-09",
+      "annual_one_way_pax": null,
+      "fare": {
+        "amount": 5.0,
+        "currency": "BRL",
+        "basis": "current official line page"
+      },
+      "seasonality": "Weekdays only; three departures per direction shown.",
+      "assumption_boundary": "Published timetable/fare does not establish actual sailings, load factor or annual line ridership.",
+      "source_ids": [
+        "S25"
+      ]
+    },
+    {
+      "record_id": "D16",
+      "city_id": "cartagena-colombia",
+      "corridor": "Muelle La Bodeguita mixed island traffic",
+      "metric": "annual terminal passengers moved",
+      "reported_value": 745079,
+      "unit": "passengers moved",
+      "period": "Jan–Dec 2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Annual total; bulletin does not expose monthly split in captured text.",
+      "assumption_boundary": "Mixed traffic across 56+ island destinations, 100 operators and both terminal processes. Do not allocate to any single route or infer one-way direction.",
+      "source_ids": [
+        "S26"
+      ]
+    },
+    {
+      "record_id": "D17",
+      "city_id": "cartagena-colombia",
+      "corridor": "Cartagena maritime system / multiple origins",
+      "metric": "Holy Week maritime passengers",
+      "reported_value": 48479,
+      "unit": "passengers",
+      "period": "eight days, Holy Week 2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Major holiday peak; 12% higher than 2024 according to DIMAR.",
+      "assumption_boundary": "Eight-day, multi-origin and multi-destination total from La Bodeguita, Pegasos, marinas and other points. Do not annualize or allocate to Isla Grande.",
+      "source_ids": [
+        "S27"
+      ]
+    },
+    {
+      "record_id": "D18",
+      "city_id": "cartagena-colombia",
+      "corridor": null,
+      "metric": "Cartagena annual air arrivals",
+      "reported_value": 3822913,
+      "unit": "air arrivals",
+      "period": "Jan–Dec 2025",
+      "annual_one_way_pax": null,
+      "fare": null,
+      "seasonality": "Annual total; 21.1% international and 78.9% domestic.",
+      "assumption_boundary": "Airport arrival context only. No conversion to marine-route demand.",
+      "source_ids": [
+        "S26"
+      ]
+    }
+  ],
+  "brief_maturity": [
+    {
+      "city_id": "angra-dos-reis-ilha-grande-brazil",
+      "overall_score_5": 4.0,
+      "field_scores": {
+        "tagline": "strong",
+        "summary": "strong",
+        "demand_signals": "partial—descriptive, no annual route passengers",
+        "use_cases": "strong",
+        "journeys": "strong—approximate distances but no BP IDs",
+        "navier_fit": "strong",
+        "competitive_landscape": "strong",
+        "seasonality": "strong qualitative",
+        "regulatory_note": "strong high-level",
+        "sources": "weak—only two generic links, no line/fare/terminal sources",
+        "partner_neutrality": "strong"
+      },
+      "recommended_enhancements": [
+        "Add Cais da Lapa and Vila do Abraão terminal identities with official sources.",
+        "Add explicit source dates and assumption boundaries for 190,000 cruise visitors.",
+        "Do not repeat 99 in canonical brief.",
+        "Add current Barcas Rio R$20.50/110-minute benchmark and retain the 2015 40-minute catamaran only as historical contrast; obtain current frequency and annual ridership."
+      ],
+      "partner_neutrality_rule": "Keep canonical brief partner-neutral; apply 99/DiDi framing only in partner_narrative_notes."
+    },
+    {
+      "city_id": "florianopolis-brazil",
+      "overall_score_5": 3.1,
+      "field_scores": {
+        "tagline": "good",
+        "summary": "partial—overweights future open-coast routes",
+        "demand_signals": "weak—unsourced qualitative claims",
+        "use_cases": "good but mostly future",
+        "journeys": "partial—approximate routes lack verified endpoints",
+        "navier_fit": "good conceptual",
+        "competitive_landscape": "partial—now superseded by verified Costa da Lagoa service evidence",
+        "seasonality": "good qualitative",
+        "regulatory_note": "partial",
+        "sources": "weak—labels without URLs",
+        "partner_neutrality": "strong"
+      },
+      "recommended_enhancements": [
+        "Lead with the verified Costa da Lagoa regular lacustrine line and boat-dependent community.",
+        "Separate current lake service from future Bombinhas/Porto Belo/Arvoredo opportunities.",
+        "Add official PMF URLs, operator fare with date caveat, exact terminal BP and route survey gap.",
+        "Keep 99 city evidence outside canonical brief."
+      ],
+      "partner_neutrality_rule": "Keep canonical brief partner-neutral; apply 99/DiDi framing only in partner_narrative_notes."
+    },
+    {
+      "city_id": "rio-de-janeiro-brazil",
+      "overall_score_5": 3.7,
+      "field_scores": {
+        "tagline": "strong",
+        "summary": "strong but has unquantified “huge volumes”",
+        "demand_signals": "partial—now sourceable but no annual line table",
+        "use_cases": "strong",
+        "journeys": "good—exact canonical route IDs exist but brief omits them",
+        "navier_fit": "strong",
+        "competitive_landscape": "good but incumbent naming may be stale after operational transition",
+        "seasonality": "good qualitative",
+        "regulatory_note": "good high-level",
+        "sources": "weak—labels without URLs/dates",
+        "partner_neutrality": "strong"
+      },
+      "recommended_enhancements": [
+        "Bind the four exact Praça XV route IDs and authoritative terminal BPs.",
+        "Replace “one of busiest”/“huge” with official dated values or neutral wording.",
+        "Add current concession/operator naming and current fare effective date.",
+        "Do not use record-day counts as annual demand; obtain line-month tables.",
+        "Add current official line travel times, fares and weekday/weekend service patterns from the four exact Barcas Rio pages."
+      ],
+      "partner_neutrality_rule": "Keep canonical brief partner-neutral; apply 99/DiDi framing only in partner_narrative_notes."
+    },
+    {
+      "city_id": "cartagena-colombia",
+      "overall_score_5": 3.8,
+      "field_scores": {
+        "tagline": "strong but “slow, crowded” needs sourcing",
+        "summary": "strong",
+        "demand_signals": "partial—qualitative; now official terminal total is available",
+        "use_cases": "strong",
+        "journeys": "good—La Bodeguita identity needs exact BP and route geometry",
+        "navier_fit": "strong conceptual",
+        "competitive_landscape": "partial—crowding claim should be attributed",
+        "seasonality": "good qualitative",
+        "regulatory_note": "strong",
+        "sources": "weak—labels without URLs",
+        "partner_neutrality": "strong"
+      },
+      "recommended_enhancements": [
+        "Add La Bodeguita as the authoritative public-passenger origin and bind exact BP.",
+        "Add official 619,282 terminal entries for 2023 with mixed-terminal caveat.",
+        "Add operator fare/time benchmark as dated, non-market-average evidence.",
+        "Separate current Rosario transfers from future Santa Marta line-haul.",
+        "Supersede 2023 terminal context with the 2025 official 745,079-passenger total while retaining strict mixed-terminal/no-route-allocation caveats."
+      ],
+      "partner_neutrality_rule": "Keep canonical brief partner-neutral; apply 99/DiDi framing only in partner_narrative_notes."
+    },
+    {
+      "city_id": "barranquilla-colombia",
+      "overall_score_5": 2.6,
+      "field_scores": {
+        "tagline": "good",
+        "summary": "weak-to-partial—asserts no organized passenger layer without sufficiently current proof",
+        "demand_signals": "weak—all values null",
+        "use_cases": "conceptual future only",
+        "journeys": "partial—approximate and unsealed",
+        "navier_fit": "conceptual",
+        "competitive_landscape": "weak—absolute no-service claim conflicts with Río-Bus project ambiguity",
+        "seasonality": "good qualitative",
+        "regulatory_note": "partial",
+        "sources": "weak—Wikipedia-heavy",
+        "partner_neutrality": "strong"
+      },
+      "recommended_enhancements": [
+        "Replace Wikipedia with official Alcaldía, port, DIMAR/river-authority and environmental sources.",
+        "Classify Río-Bus strictly as proposed/demonstration until timetable and fare are verified.",
+        "Remove absolute “no organised passenger-vessel layer” unless regulator/operator scan confirms it.",
+        "Obtain exact station names, project phase, route geometry and passenger study before economics."
+      ],
+      "partner_neutrality_rule": "Keep canonical brief partner-neutral; apply 99/DiDi framing only in partner_narrative_notes."
+    }
+  ],
+  "partner_narrative_notes": {
+    "positioning": "DiDi/99 can own the first/last-mile orchestration around real ferry terminals without claiming to operate ferries today: app discovery, timed ground-to-water transfer, ticketing/booking handoff, driver staging, luggage handling and premium multimodal service.",
+    "market_notes": [
+      {
+        "market": "Brazil via 99",
+        "notes": [
+          "Use city-supported 99 evidence for Rio and Florianópolis. Use only country-supported inheritance for Angra.",
+          "Rio is the public-transport flagship: exact ferry geometry plus high observed boardings. Lead with 99 first/last mile at Praça XV/Charitas/Arariboia and a premium foiling layer, not replacement rhetoric.",
+          "Angra is the island-access flagship: orchestrate Rio/airport/road arrival to Cais da Lapa and timed transfer to car-free Ilha Grande. Keep cruise visitors as context, not route demand.",
+          "Florianópolis is a smaller proof point around a real boat-dependent community; start with Costa da Lagoa, not speculative open-coast routes."
+        ]
+      },
+      {
+        "market": "Colombia",
+        "notes": [
+          "Official DiDi city pages directly support Cartagena and Barranquilla.",
+          "Cartagena is the best near-term tourism product: DiDi airport/hotel pickup → La Bodeguita → Isla Grande/Barú, with a published operator fare and official terminal entries.",
+          "Barranquilla is a public-sector/future-infrastructure narrative. Position DiDi as demand aggregation and multimodal integration contingent on Río-Bus becoming operational; never imply current service."
+        ]
+      }
+    ],
+    "subproposal_modules": [
+      "Partner footprint proof",
+      "Current passenger-water baseline",
+      "Multimodal user journey",
+      "Boarding-point operating plan",
+      "Demand evidence and assumption ledger",
+      "Pilot corridor selection",
+      "Regulatory/terminal workstream",
+      "Economics sensitivity cases only after route-level demand",
+      "Geometry seal and render QA"
+    ],
+    "finance_handoff": "Promote no corridor to base-case revenue yet. Use fares only as benchmarks and run sensitivities with explicit capture assumptions after obtaining annual route/direction counts. Cartagena terminal entries may support a terminal TAM envelope, never Isla Grande route demand directly.",
+    "geometry_handoff": "Seal official terminals first; preserve exact four Rio route IDs; hand-route island/lake/port corridors; do not assign route IDs to Angra–Abraão, Costa da Lagoa, La Bodeguita–Isla Grande or Río-Bus until deterministic ROUTES.json matches exist."
+  },
+  "gaps": [
+    {
+      "gap": "Angra–Ilha Grande detailed current timetable/frequency and annual passengers",
+      "owner": "Tasklet/source research + Rio state operator/SETRAM",
+      "next_action": "Obtain the detailed Barcas Rio service-day table and state open-data ridership by line; current official R$20.50 fare and 110-minute time are already captured.",
+      "blocks": "economics"
+    },
+    {
+      "gap": "Atlas Angra BP catchment is heavily polluted/misassigned",
+      "owner": "Grok/Atlas registry",
+      "next_action": "Re-parent Rio/Búzios/Cabo Frio points; reconcile exact Cais da Lapa and Vila do Abraão aliases and coordinates.",
+      "blocks": "BP seal/render"
+    },
+    {
+      "gap": "Rio annual line-by-line ridership",
+      "owner": "Tasklet + SETRAM/AGETRANSP",
+      "next_action": "Obtain 2025/2026 monthly boardings by Arariboia, Charitas, Paquetá and Cocotá; current official fares/travel times/service-day patterns are already captured.",
+      "blocks": "finance base case"
+    },
+    {
+      "gap": "Florianópolis Costa da Lagoa exact stop sequence, coordinates, capacity and fare basis",
+      "owner": "Tasklet + PMF/Cooperbarco, then Grok",
+      "next_action": "Contact operator/municipality for timetable, passenger counts and GIS stop list; hand-seal lagoon route.",
+      "blocks": "economics and geometry"
+    },
+    {
+      "gap": "Cartagena La Bodeguita exact Atlas BP/coordinate and route-destination split",
+      "owner": "Grok registry + Tasklet/Corpoturismo",
+      "next_action": "Create/merge authoritative La Bodeguita BP and request the 745,079 2025 passenger total split by destination/operator/direction and month.",
+      "blocks": "route binding and economics"
+    },
+    {
+      "gap": "Cartagena operator fare product basis",
+      "owner": "Tasklet/operator",
+      "next_action": "Confirm COP115,000 is one-way versus round-trip, capacity, taxes, operating calendar and exact Isla Grande dock.",
+      "blocks": "fare model"
+    },
+    {
+      "gap": "Barranquilla Río-Bus current status, stations, operator, timetable, fare and demand study",
+      "owner": "Tasklet + Alcaldía/Área Metropolitana/river authority",
+      "next_action": "Obtain project-phase document and current operating notice; until then keep future-only and all demand null.",
+      "blocks": "publication and economics"
+    },
+    {
+      "gap": "Canonical brief source quality",
+      "owner": "Tasklet content maintainer",
+      "next_action": "Patch briefs later with URLs/dates/assumption notes after user accepts handoff; do not edit repo in this task.",
+      "blocks": "brief maturity"
+    }
+  ],
+  "do_not_publish": [
+    "Do not claim 99 city-level service in Angra dos Reis. Official 99 inventory supports Baia da Ilha Grande at region tier, not Angra by exact city name.",
+    "Do not annualize Rio record-day system or Charitas counts.",
+    "Do not convert Angra cruise visitors, airport passengers or broad tourism flows into ferry-route passengers.",
+    "Do not allocate La Bodeguita 619,282 entries to Isla Grande, Barú or any single route without destination shares and direction rules.",
+    "Do not state the COP115,000 Cartagena operator price is a market average or round-trip fare until confirmed.",
+    "Do not present Barranquilla Río-Bus as a current scheduled service.",
+    "Do not present Puerto Colombia/Bocas de Ceniza as an operating passenger BP based on the coarse Atlas record.",
+    "Do not substitute Cartagena Cruise Terminal Pier 3 for Muelle La Bodeguita in island-transfer geometry.",
+    "Do not publish approximate canonical-brief distances as surveyed nautical geometry.",
+    "Do not mint route IDs. Only the five IDs copied exactly from ROUTES.json may appear as non-null route_id values in this artifact.",
+    "Do not allocate the 745,079 La Bodeguita passengers in 2025 or the 48,479 Holy Week maritime passengers to Isla Grande or any single route."
+  ],
+  "summary_counts": {
+    "atlas_clusters": 2,
+    "cities": 5,
+    "exact_city_supported_partner_markets": 4,
+    "region_supported_partner_markets": 1,
+    "sources": 27,
+    "boarding_points_reviewed": 17,
+    "bp_verified_existing": 10,
+    "bp_candidates_need_confirmation": 5,
+    "non_bp_pois": 2,
+    "candidate_corridors": 11,
+    "corridors_with_exact_existing_route_id": 5,
+    "corridors_with_null_route_id": 6,
+    "demand_records": 18,
+    "records_with_annual_one_way_pax": 0,
+    "unresolved_gaps": 8,
+    "fuzzy_city_ids_created": 0,
+    "no_shrink_city_set_pass": true
+  },
+  "publication_status": {
+    "partner_coverage_narrative": "publishable with evidence-tier labels and do_not_publish guardrails",
+    "current_service_corridors": "publishable as sourced corridor context for Angra, Rio, Costa da Lagoa and Cartagena; not finance-base-case ready",
+    "future_opportunities": "brief-only and must be labeled future",
+    "economics": "hold; no candidate corridor has a supported annual_one_way_pax value",
+    "geometry": "seal-needed for every null route_id; five pre-existing route IDs may be preserved but not represented as service proof by themselves"
+  },
+  "research_assessment": {
+    "overall": "research-complete / seal-needed for proposal coverage; finance research-needed",
+    "research_complete": [
+      "Exact Atlas cluster/member-city baseline reconciliation for Brazil and Colombia, with no shrink from the scope ledger.",
+      "Best-available official 99/DiDi operating evidence for all five Atlas cities: exact city support for Rio, Florianópolis, Cartagena and Barranquilla; exact regional support for the Baía da Ilha Grande Atlas market containing Angra/Ilha Grande.",
+      "Priority real-world boarding-point inventory and current-versus-future corridor classification.",
+      "Exact preservation of only five pre-existing ROUTES.json IDs matched during the available repo read; all other route_id values are null.",
+      "Dated source-backed fare/service-day benchmarks where official or operator pages expose them, plus explicit non-conversion boundaries for broad demand."
+    ],
+    "research_needed": [
+      "Route-level annual one-way passenger series for every corridor proposed for economics.",
+      "Current authoritative passenger series by Rio ferry line, Angra–Ilha Grande line, Costa da Lagoa stops, and Cartagena destination/operator/direction.",
+      "Exact coordinate/GIS and dock identity confirmation for unresolved island/community endpoints.",
+      "Current scheduled-service evidence for Barranquilla Río-Bus; keep future-only until obtained."
+    ]
+  }
+}
