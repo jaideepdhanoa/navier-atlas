@@ -73,8 +73,8 @@ VOI_CLUSTERS = [
     "switzerland",
     "uk",
 ]
-# UAE retained as expansion (not current operation)
-VOI_EXPANSION = ["uae"]
+# Voi is Europe-only; no UAE/MENA current or expansion coverage.
+VOI_EXPANSION: list[str] = []
 VOI_STALE = {
     "cyprus",
     "dalmatia-croatia",
@@ -89,6 +89,7 @@ VOI_STALE = {
     "portugal",
     "romania",
     "saudi-arabia",
+    "uae",
 }
 
 
@@ -187,10 +188,13 @@ def seal_partner(
     expansion_clusters: list[str] | None = None,
     remove_stale: set[str] | None = None,
     by_id: dict[str, dict],
+    routes: list,
 ) -> dict:
     path = DC / "partners" / f"{partner_id}.json"
     pitch = ROOT / "partner-pitch" / "partners" / f"{partner_id}.json"
     doc = load(path)
+    # Visible archetype chips use the canonical underscore form.
+    doc["archetype"] = "ride_hail"
     expansion_clusters = expansion_clusters or []
     remove_stale = remove_stale or set()
 
@@ -320,6 +324,10 @@ def seal_partner(
         for i, ph in enumerate(doc["phases"]):
             ph["cities"] = anchors[: max(3, (i + 1) * 4)]
 
+    if partner_id == "voi":
+        enforce_voi_europe_only(doc)
+    marquee_rep = canonicalize_marquees(doc, routes, set(clusters))
+
     save(path, doc)
     if pitch.exists():
         shutil.copyfile(path, pitch)
@@ -331,8 +339,162 @@ def seal_partner(
         "missing_clusters": missing,
         "stale_removed": sorted(remove_stale),
         "expansion": expansion_clusters,
+        "marquee_normalization": marquee_rep,
         "has_beirut": any("beirut" in c or "lebanon" in c for c in cities),
     }
+
+
+MENA_CITY_TOKENS = (
+    "-uae", "dubai", "abu-dhabi", "abu dhabi", "-ksa", "saudi",
+    "qatar", "doha", "al-wakrah", "israel", "tel-aviv", "haifa",
+    "lebanon", "beirut", "egypt", "hurghada", "sharm-el-sheikh",
+    "bahrain", "manama", "morocco", "tangier",
+)
+
+
+def contains_mena_reference(value) -> bool:
+    text = json.dumps(value, ensure_ascii=False).lower()
+    return any(token in text for token in MENA_CITY_TOKENS)
+
+
+def enforce_voi_europe_only(doc: dict) -> None:
+    """Remove live/aspirational MENA coverage while preserving held audit metadata."""
+    doc["journeys_unlocked"] = [
+        row for row in (doc.get("journeys_unlocked") or [])
+        if not contains_mena_reference(row)
+    ]
+
+    end_state = doc.get("end_state") or {}
+    end_state["addressable_regions"] = [
+        region for region in (end_state.get("addressable_regions") or [])
+        if str(region).lower() != "mena"
+    ]
+    end_state["addressable_footprint"] = (
+        "Voi's addressable water footprint is Europe-only: the Mediterranean, Atlantic, "
+        "Baltic and Nordic waterfront cities already supported by Voi's operating footprint."
+    )
+    end_state["end_state_cities"] = [
+        city for city in (end_state.get("end_state_cities") or [])
+        if not contains_mena_reference(city)
+    ]
+    end_state["narrative"] = (
+        "Steady state is a Europe-only Voi water tier across the Mediterranean, Atlantic, "
+        "Baltic and Nordic waterfronts."
+    )
+    doc["end_state"] = end_state
+
+    for row in doc.get("proof_points") or []:
+        evidence = str(row.get("evidence") or "")
+        row["evidence"] = evidence.replace(
+            "The Cyclades, Dalmatia, Amalfi, the Riviera and the Gulf",
+            "The Baltic, Atlantic and Mediterranean waterfronts",
+        ).replace(
+            "every Med and Gulf market",
+            "Voi's European waterfront markets",
+        )
+    for row in doc.get("objections") or []:
+        concern = str(row.get("concern") or "")
+        response = str(row.get("response") or "")
+        row["concern"] = concern.replace(
+            "the Mediterranean and Gulf",
+            "Voi's European waterfront markets",
+        )
+        row["response"] = response.replace(
+            "Across the Saronic, the Dalmatian coast and the Gulf",
+            "Across the Baltic, Atlantic and Mediterranean coasts",
+        ).replace(
+            "the longer island and cross-gulf legs",
+            "the longer European island and regional legs",
+        )
+
+    doc["coverage_note"] = (
+        "Voi operates in Europe only. No UAE, Middle East or other MENA market is in current "
+        "or expansion map coverage."
+    )
+
+
+def canonicalize_marquees(doc: dict, routes: list, allowed_cluster_ids: set[str]) -> dict:
+    """Keep highlights as strict, exact-ID subsets of inherited canonical routes."""
+    route_by_id = {}
+    for feat in routes:
+        props = feat.get("properties") or {}
+        rid = props.get("id")
+        if rid and props.get("cluster_id") in allowed_cluster_ids:
+            route_by_id[rid] = props
+
+    dropped = []
+
+    def normalize(entries, path):
+        out = []
+        seen = set()
+        for i, entry in enumerate(entries or []):
+            rid = entry.get("route_id") if isinstance(entry, dict) else None
+            props = route_by_id.get(rid)
+            if not props or rid in seen:
+                dropped.append({"path": f"{path}[{i}]", "route_id": rid})
+                continue
+            out.append({
+                "route_id": rid,
+                "from_label": props.get("from_label"),
+                "to_label": props.get("to_label"),
+                "cluster_id": props.get("cluster_id"),
+            })
+            seen.add(rid)
+        return out
+
+    if "featured_routes" in doc:
+        doc["featured_routes"] = normalize(doc.get("featured_routes"), "featured_routes")
+    if "wow_corridors" in doc:
+        doc["wow_corridors"] = normalize(doc.get("wow_corridors"), "wow_corridors")
+    root_wnn = doc.get("why_navier_now")
+    if isinstance(root_wnn, dict) and "wow_corridors" in root_wnn:
+        root_wnn["wow_corridors"] = normalize(root_wnn.get("wow_corridors"), "why_navier_now.wow_corridors")
+    for pi, phase in enumerate(doc.get("phases") or []):
+        if isinstance(phase, dict) and "featured_routes" in phase:
+            phase["featured_routes"] = normalize(phase.get("featured_routes"), f"phases[{pi}].featured_routes")
+    for mi, market in enumerate(doc.get("markets") or []):
+        if not isinstance(market, dict):
+            continue
+        mid = market.get("id") or market.get("slug") or str(mi)
+        if "featured_routes" in market:
+            market["featured_routes"] = normalize(market.get("featured_routes"), f"markets[{mid}].featured_routes")
+        if "wow_corridors" in market:
+            market["wow_corridors"] = normalize(market.get("wow_corridors"), f"markets[{mid}].wow_corridors")
+        wnn = market.get("why_navier_now")
+        if isinstance(wnn, dict) and "wow_corridors" in wnn:
+            wnn["wow_corridors"] = normalize(wnn.get("wow_corridors"), f"markets[{mid}].why_navier_now.wow_corridors")
+        for pi, phase in enumerate(market.get("phases") or []):
+            if isinstance(phase, dict) and "featured_routes" in phase:
+                phase["featured_routes"] = normalize(
+                    phase.get("featured_routes"),
+                    f"markets[{mid}].phases[{pi}].featured_routes",
+                )
+    return {"dropped": dropped, "kept": sum(1 for _ in iter_highlight_route_ids(doc))}
+
+
+def iter_highlight_route_ids(doc: dict):
+    def yield_from(entries):
+        for entry in entries or []:
+            if isinstance(entry, dict) and entry.get("route_id"):
+                yield entry["route_id"]
+    yield from yield_from(doc.get("featured_routes"))
+    yield from yield_from(doc.get("wow_corridors"))
+    root_wnn = doc.get("why_navier_now") or {}
+    yield from yield_from(root_wnn.get("wow_corridors"))
+    for phase in doc.get("phases") or []:
+        if isinstance(phase, dict):
+            yield from yield_from(phase.get("featured_routes"))
+    for market in doc.get("markets") or []:
+        if not isinstance(market, dict):
+            continue
+        yield from yield_from(market.get("featured_routes"))
+        yield from yield_from(market.get("wow_corridors"))
+        market_wnn = market.get("why_navier_now")
+        if isinstance(market_wnn, dict):
+            yield from yield_from(market_wnn.get("wow_corridors"))
+        for phase in market.get("phases") or []:
+            if isinstance(phase, dict):
+                yield from yield_from(phase.get("featured_routes"))
 
 
 def count_routes_by_cluster(routes: list, cluster_ids: set[str]) -> dict:
@@ -363,6 +525,7 @@ def main() -> int:
         expansion_clusters=[],
         remove_stale=DOTT_STALE,
         by_id=by_id,
+        routes=routes,
     )
     voi_rep = seal_partner(
         "voi",
@@ -370,6 +533,7 @@ def main() -> int:
         expansion_clusters=VOI_EXPANSION,
         remove_stale=VOI_STALE,
         by_id=by_id,
+        routes=routes,
     )
 
     dott_clusters = set(DOTT_CLUSTERS)
@@ -390,11 +554,30 @@ def main() -> int:
         gates["gate_g"] = {"exit": r.returncode, "pass": r.returncode == 0, "tail": (r.stdout or r.stderr or "")[-400:]}
     except Exception as e:
         gates["gate_g"] = {"pass": False, "error": str(e)}
+    try:
+        r = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/validate_partner_inheritance.py"),
+                "--partner", "dott", "voi", "--strict", "--include-pitch",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        gates["partner_inheritance_strict"] = {
+            "exit": r.returncode,
+            "pass": r.returncode == 0,
+            "tail": (r.stdout or r.stderr or "")[-600:],
+        }
+    except Exception as e:
+        gates["partner_inheritance_strict"] = {"pass": False, "error": str(e)}
 
     receipt = {
         "at": utc_now(),
         "lane": "Dott/Voi coverage seal after PR #216",
-        "status": "scope_resealed / inheritance_renderer_fixed / finance_not_promoted",
+        "status": "scope_resealed / voi_europe_only / dott_uae_confirmed / finance_not_promoted",
         "upstream_pr": 216,
         "renderer_fixes": [
             "partner-scope.mjs: stop unioning legacy cluster_city_ids on hub-index",
@@ -408,7 +591,12 @@ def main() -> int:
             "voi_no_beirut_in_scope_cities": not voi_rep["has_beirut"],
             "dott_no_qatar_key": "qatar" not in dott_rep["registry_keys"],
             "dott_no_sweden_key": "sweden" not in dott_rep["registry_keys"],
-            "voi_uae_expansion_only": "uae" in voi_rep["expansion"],
+            "dott_uae_current_coverage": "uae" in dott_rep["registry_keys"],
+            "dott_abu_dhabi_dubai_in_scope": {"abu-dhabi-uae", "dubai-uae"}.issubset(
+                set(city_ids_for_clusters(by_id, dott_rep["registry_keys"]))
+            ),
+            "voi_europe_only_no_uae_or_mena_scope": "uae" not in voi_rep["registry_keys"]
+            and not any(c in {"uae", "saudi-arabia", "israel"} for c in voi_rep["registry_keys"]),
             "netherlands_in_both": "netherlands" in dott_rep["registry_keys"]
             and "netherlands" in voi_rep["registry_keys"],
         },
@@ -425,6 +613,7 @@ def main() -> int:
             "No economics promotion",
             "No partner-specific corridor mint",
             "No Belgium/Le Havre geometry invent",
+            "No Voi UAE/MENA expansion coverage",
         ],
     }
     save(OUT / "GROK-DOTT-VOI-COVERAGE-SEAL-RECEIPT-2026-07-10.json", receipt)
@@ -446,7 +635,7 @@ def main() -> int:
         f"- Stale removed: {', '.join(dott_rep['stale_removed'])}",
         "",
         "## Voi",
-        f"- Registry keys: {len(voi_rep['registry_keys'])} (+ UAE expansion)",
+        f"- Registry keys: {len(voi_rep['registry_keys'])} (Europe only; no UAE/MENA coverage)",
         f"- Scope cities: {voi_rep['city_count']} (beirut={voi_rep['has_beirut']})",
         f"- Canonical routes in scope clusters: **{voi_counts['total_in_scope']}**",
         f"- Stale removed: {', '.join(voi_rep['stale_removed'])}",
@@ -457,6 +646,10 @@ def main() -> int:
         md.append(f"- `{k}`: **{v}**")
     md.append("")
     md.append(f"Gate G: {'PASS' if gates.get('gate_g', {}).get('pass') else 'FAIL'}")
+    md.append(
+        f"Partner inheritance (strict, data + pitch): "
+        f"{'PASS' if gates.get('partner_inheritance_strict', {}).get('pass') else 'FAIL'}"
+    )
     md.append("")
     md.append("Machine: `handoff/partner-map-model/dott-voi/GROK-DOTT-VOI-COVERAGE-SEAL-RECEIPT-2026-07-10.json`")
     (OUT / "GROK-DOTT-VOI-COVERAGE-SEAL-RECEIPT-2026-07-10.md").write_text("\n".join(md) + "\n")
