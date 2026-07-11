@@ -17,8 +17,9 @@ Source of truth: `github.com/jaideepdhanoa/navier-atlas` @ `main`. Everything be
   per-corridor demand/fare in `L3_locals`). The single economic source of truth.
 - `finance/model/aggregate.py` — grounded-floor + cascade engine (reads `corridors.json`).
 - `finance/model/growth.py` — SOM floor → SAM → TAM journey-GMV → partner platform-rev ladder.
-- `finance/model/country-reference.json` — per-country opex/energy/grid/crew/marina. **Missing row ⇒ silent
-  Singapore fallback (LB-243).** Preflight before cascading new markets.
+- `finance/model/country-reference.json` — per-country opex/energy/grid/crew/marina. Missing/incomplete exact
+  country rows now fail closed; explicitly held corridors are excluded and disclosed. Run
+  `scripts/validate_country_reference.py` before every cascade, sheet, sidecar, or deck seal.
 - `finance/model/vessel-constants.json`, `growth-config.json` — scenario bands, hull constants, capex tiers.
 - `finance/model/build_transparent_sheet.py` — the **second, independent** cost engine (must agree with the
   model — golden rule #7).

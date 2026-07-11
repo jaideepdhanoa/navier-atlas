@@ -1,0 +1,26 @@
+name: Country reference fail-closed gate
+
+on:
+  pull_request:
+    paths:
+      - "finance/model/corridors.json"
+      - "finance/model/country-reference.json"
+      - "finance/model/aggregate.py"
+      - "finance/build_transparent_sheet.py"
+      - "scripts/validate_country_reference.py"
+  push:
+    branches: [main]
+    paths:
+      - "finance/model/corridors.json"
+      - "finance/model/country-reference.json"
+      - "finance/model/aggregate.py"
+      - "finance/build_transparent_sheet.py"
+      - "scripts/validate_country_reference.py"
+
+jobs:
+  validate-country-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require exact complete country costs or explicit holds
+        run: python3 scripts/validate_country_reference.py

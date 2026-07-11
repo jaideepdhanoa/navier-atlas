@@ -35,6 +35,17 @@ const = json.load(open(os.path.join(MODEL, "vessel-constants.json")))
 corr  = json.load(open(CORR_PATH))
 cref  = json.load(open(os.path.join(MODEL, "country-reference.json")))["countries"]
 gcfg  = json.load(open(os.path.join(MODEL, "growth-config.json")))
+COUNTRY_REQUIRED_FIELDS = ("captain_usd_yr", "energy_usd_kwh", "grid_co2_kg_kwh", "marina_overhead_usd_yr", "cost_index")
+
+def validate_country(country):
+    if not country or country not in cref:
+        raise ValueError(f"Missing exact country-reference row for {country!r}; no fallback is permitted")
+    row = cref[country]
+    for key in COUNTRY_REQUIRED_FIELDS:
+        node = row.get(key)
+        value = node.get("value") if isinstance(node, dict) else node
+        if not isinstance(value, (int, float)):
+            raise ValueError(f"Incomplete country-reference value: {country}.{key}; hold the corridor or source the field")
 
 def v(node):    return node["value"] if isinstance(node, dict) and "value" in node else node
 def tier(node): return node.get("source_tier","") if isinstance(node, dict) else ""
@@ -122,12 +133,19 @@ def floor_bucket(mid, corridor, tier_excl, fwd, demand, status=None):
     return "Grounded" if demand else "Estimated"
 
 # ---- corridors (range gate + dedupe, mirrors aggregate.py) ----
-rows=[]; roadmap=[]; seen={}
+rows=[]; roadmap=[]; economics_holds=[]; seen={}
 mkt_fleet_basis={}   # display name -> (fleet_basis, fleet_rounding)  [R-FLOOR-2 / G51]
 for mid, mk in corr["markets"].items():
     if not GLOBAL_MODE and mk.get("partner","grab") != PARTNER: continue
     mkt_fleet_basis[mkt_disp(mid)] = (mk.get("fleet_basis","per_corridor_floor"), mk.get("fleet_rounding"))
     for c in mk["corridors"]:
+        if c.get("_economics_hold_reason"):
+            economics_holds.append({
+                "market": mkt_disp(mid), "route_id": c.get("route_id"),
+                "corridor": f"{c.get('from','')} → {c.get('to','')}",
+                "country": c.get("country"), "reason": c["_economics_hold_reason"],
+            })
+            continue
         if c.get("_premium_cascade"): continue  # R5-EXT public-transit/no-premium-tier — excluded
         key=(c.get("from","").strip().lower(), c.get("to","").strip().lower())
         if DEDUP_MODE == "unique":
@@ -141,7 +159,7 @@ for mid, mk in corr["markets"].items():
         if is_dup: continue
         nm=c["distance_nm"]; L3=c.get("L3_locals") or {}
         fr=L3.get("_fare_record") or {}; dr=L3.get("_demand_record") or {}
-        country=c.get("country");  country = country if country in cref else "Singapore"
+        country=c.get("country"); validate_country(country)
         w=L3.get("weather_uptime_factor")
         _season_days=L3.get("season_days")  # L3 override wins over 365×uptime×weather (atom.py)
         # demand pool — mirror atom.py LENS 2: average of native proxies (arrivals/ferry)
@@ -301,6 +319,7 @@ content=[
  ("   Yellow = INPUTS you can change (fare, distance, demand, weather).",None,f_input),
  ("   Green  = COMPUTED by formula.",None,f_calc),
  ("   Every fare & demand figure carries a Source tier (T1 official \u2192 T5 modeled) + Confidence (high/med/low). Null beats a wrong number: no published pool \u2192 blank, not a guess.",None,None),
+ (f"   Economics holds: {len(economics_holds)} corridor(s) are explicitly excluded; see the Economics holds tab. Missing country costs never borrow Singapore or another market.",BOLD,f_band),
 ]
 if ws0 is not None:
     rr=4
@@ -349,7 +368,7 @@ if OPS.get("capture_override_enabled") and cap_cc is not None:
 r=param(r,"Discount factor (vs comparable fare)",discount,"frac","T1","high","Market parity \u2014 better product, not cheaper (locked).",NUM2,"discount")
 r=param(r,"Diesel CO\u2082 per gallon",diesel_co2pg,"kg/gal",tier(CAR["diesel_kg_co2_per_gal"]),conf(CAR["diesel_kg_co2_per_gal"]),src(CAR["diesel_kg_co2_per_gal"]),NUM2,"diesel_co2pg")
 r+=1
-sec(r,"OPEX defaults  (global fallbacks \u2014 localized energy, crew, berth admin on Country opex tab)"); r+=1; hrow(r); r+=1
+sec(r,"OPEX defaults  (global vessel assumptions \u2014 country costs use exact-key rows only)"); r+=1; hrow(r); r+=1
 r=param(r,"Vessel insurance \u2014 H&M + P&I (% of CAPEX/yr)",ins_pct,"frac",tier(OPS["insurance_pct_of_capex"]),conf(OPS["insurance_pct_of_capex"]),
       src(OPS["insurance_pct_of_capex"])+". Multiplied by regional CAPEX (Country opex col G). Not included in berth/port admin.",PCT,"ins_pct")
 r=param(r,"Fast-charge berth & demand charges (global default)",charge_berth,"USD/yr",tier(OPS["charging_berth_annual_usd"]),conf(OPS["charging_berth_annual_usd"]),
@@ -421,7 +440,19 @@ copex=f"'Country opex'!$A${country_first}:$G${country_last}"
 addname("country_opex",copex)
 # column index map for VLOOKUP: A=1 country,2 captain,3 energy,4 grid,5 berth/port admin,6 costidx,7 capex
 
-# ------------------------------------------------------------ TAB 3 Corridor economics (engine)
+# ------------------------------------------------------------ TAB 3 Economics holds (fail-closed ledger)
+wsh=wb.create_sheet("Economics holds"); wsh.sheet_view.showGridLines=False
+for i,wd in enumerate([24,58,20,24,86],1): wsh.column_dimensions[get_column_letter(i)].width=wd
+sc(wsh,"A1","Economics holds — excluded before model and sheet calculation",font=H2,fill=f_navy); wsh.merge_cells("A1:E1")
+hh=["Market","Corridor","Route ID","Country label","Hold reason"]
+for i,h in enumerate(hh): sc(wsh,f"{get_column_letter(i+1)}3",h,font=HDR,fill=f_steel,align=ctrw,bd=True)
+for rr,h in enumerate(economics_holds,4):
+    for cc,key in enumerate(("market","corridor","route_id","country","reason"),1):
+        sc(wsh,f"{get_column_letter(cc)}{rr}",h.get(key),align=wrap,bd=True,font=SMALL if cc>1 else BOLD)
+if not economics_holds:
+    sc(wsh,"A4","None — all in-scope corridors have complete exact-key country references.",font=BOLD,fill=f_calc); wsh.merge_cells("A4:E4")
+
+# ------------------------------------------------------------ TAB 4 Corridor economics (engine)
 ws=wb.create_sheet("Corridor economics"); ws.sheet_view.showGridLines=False
 # scenario toggle mirror at top
 _corr_hdr = ("Corridor economics \u2014 unique geometry (one row per pier-pair; canonical list for Global TAM)"
