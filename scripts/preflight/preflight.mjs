@@ -373,6 +373,23 @@ head('§3.9  market coverage audit (cluster_id taxonomy)');
   }
 }
 
+// ─── §3.9b · Taxonomy display capitalization + nest hygiene ─────────────────
+head('§3.9b  cluster taxonomy display (Region→Cluster→City→Locale labels)');
+{
+  const tax = spawnSync(
+    'python3',
+    ['scripts/grok-taxonomy/validate_cluster_taxonomy.py'],
+    { cwd: ROOT, encoding: 'utf8' },
+  );
+  if (tax.stdout) process.stdout.write(tax.stdout);
+  if (tax.stderr) process.stderr.write(tax.stderr);
+  if (tax.status !== 0) {
+    fail('cluster taxonomy display gate failed — missing/lowercase cluster_label or city names (see TAXONOMY-RULES.md)');
+  } else {
+    ok('cluster taxonomy display + nest hygiene passed');
+  }
+}
+
 // ─── §3.6 · Route geometry (story routes land QA) ───────────────────────────
 head('§3.6  route geometry audit (story land QA)');
 {
