@@ -1316,9 +1316,9 @@
     },
     {
       "cluster_id": "norway",
-      "cluster_label": "Norway (the Fjords)",
+      "cluster_label": "Norway",
       "region": "Europe",
-      "type": "coastal",
+      "type": "country",
       "anchor": [
         5.312566,
         60.401401
@@ -1335,7 +1335,11 @@
       "members_present": 4,
       "members_missing": [],
       "anchor_source": "bp-e6f7d9a75f",
-      "anchor_lb174_note": "LB-174 burn-down (LB-194 housekeeping #79z): re-anchored from bergen-norway (virtual city_id) to bp-879ab6b19c (Cruise Terminal Bergen — cruise_terminal; pick=name-canonical, refs=0)"
+      "anchor_lb174_note": "LB-174 burn-down (LB-194 housekeeping #79z): re-anchored from bergen-norway (virtual city_id) to bp-879ab6b19c (Cruise Terminal Bergen — cruise_terminal; pick=name-canonical, refs=0)",
+      "label": "Norway",
+      "display": "Norway",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "oman",
@@ -1959,19 +1963,37 @@
       "cluster_id": "uk",
       "cluster_label": "United Kingdom",
       "region": "Europe",
-      "type": "coastal",
+      "type": "country",
       "anchor": [
         0.024882,
         51.497615
       ],
-      "member_city_ids": [],
+      "member_city_ids": [
+        "london-thames-uk",
+        "liverpool-mersey-uk",
+        "firth-of-clyde-scotland",
+        "calmac",
+        "portsmouth-uk",
+        "southampton-uk",
+        "isle-of-wight-solent-uk",
+        "portsmouth-united-kingdom",
+        "isle-of-wight-united-kingdom",
+        "southampton-united-kingdom",
+        "bristol-uk",
+        "bristol-united-kingdom"
+      ],
       "members_present": 3,
       "members_missing": [],
       "anchor_source": "bp-32d27b20cb",
       "anchor_lb174_note": "LB-174 burn-down (LB-194 housekeeping #79z): re-anchored from london-thames-uk (virtual city_id) to bp-148c862a3a (Uber Boat by Thames Clippers - Royal Wharf Pier — public_pier; pick=name-canonical, refs=0)",
-      "_deprecated": true,
       "_deprecated_note": "Decomposed into london-thames-uk, liverpool-mersey-uk, firth-of-clyde-scotland, scotland-hebrides",
-      "_deprecated_at": "2026-07-10T22:03:17Z"
+      "_deprecated_at": "2026-07-10T22:03:17Z",
+      "label": "United Kingdom",
+      "display": "United Kingdom",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11",
+      "_taxonomy_note": "Country nav node. Water-system subclusters (London, Liverpool, Glasgow, …) are parent_cluster_id=uk + nav_hidden so they do not appear as top-level orphans.",
+      "_uk_decompose_note": "Water-system subclusters retained for route scoping (Dott Clyde-only, Voi London+Clyde) but nested under United Kingdom for nav display."
     },
     {
       "cluster_id": "usvi-bvi",
@@ -2038,12 +2060,24 @@
         53.546
       ],
       "member_city_ids": [
-        "hamburg-germany"
+        "hamburg-germany",
+        "kiel-germany",
+        "laboe-germany",
+        "rostock-germany",
+        "berlin-waterways-germany",
+        "berlin-germany",
+        "bonn-rhine-germany",
+        "cologne-rhine-germany",
+        "dusseldorf-rhine-germany",
+        "cologne-germany",
+        "dusseldorf-germany"
       ],
       "members_present": 1,
       "members_missing": [],
       "anchor_source": "tasklet/pta-batch5-seed",
-      "_seed_note": "New cluster seeded by Tasklet for the Hamburg Harbour Ferries (HADAG) PTA proposal; Grok reconciles during seal."
+      "_seed_note": "New cluster seeded by Tasklet for the Hamburg Harbour Ferries (HADAG) PTA proposal; Grok reconciles during seal.",
+      "label": "Germany",
+      "display": "Germany"
     },
     {
       "cluster_id": "netherlands",
@@ -2173,43 +2207,67 @@
     },
     {
       "cluster_id": "london-thames-uk",
-      "label": "London Thames",
-      "display": "London Thames",
+      "label": "London",
+      "display": "London",
       "region": "Europe",
       "member_city_ids": [
         "london-thames-uk"
       ],
-      "_source": "grok/wave1-p0-2026-07-10"
+      "_source": "grok/wave1-p0-2026-07-10",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "London",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "liverpool-mersey-uk",
-      "label": "Liverpool Mersey",
-      "display": "Liverpool Mersey",
+      "label": "Liverpool",
+      "display": "Liverpool",
       "region": "Europe",
       "member_city_ids": [
         "liverpool-mersey-uk"
       ],
-      "_source": "grok/wave1-p0-2026-07-10"
+      "_source": "grok/wave1-p0-2026-07-10",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Liverpool",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "firth-of-clyde-scotland",
-      "label": "Firth of Clyde",
-      "display": "Firth of Clyde",
+      "label": "Glasgow",
+      "display": "Glasgow",
       "region": "Europe",
       "member_city_ids": [
         "firth-of-clyde-scotland"
       ],
-      "_source": "grok/wave1-p0-2026-07-10"
+      "_source": "grok/wave1-p0-2026-07-10",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Glasgow",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "scotland-hebrides",
-      "label": "Scotland Hebrides / CalMac network",
-      "display": "Scotland Hebrides / CalMac network",
+      "label": "Hebrides",
+      "display": "Hebrides",
       "region": "Europe",
       "member_city_ids": [
         "calmac"
       ],
-      "_source": "grok/wave1-p0-2026-07-10"
+      "_source": "grok/wave1-p0-2026-07-10",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Hebrides",
+      "type": "archipelago",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "hong-kong",
@@ -2341,8 +2399,8 @@
     },
     {
       "cluster_id": "solent-isle-of-wight-uk",
-      "label": "Solent / Isle of Wight",
-      "display": "Solent / Isle of Wight",
+      "label": "Portsmouth",
+      "display": "Portsmouth",
       "region": "Europe",
       "member_city_ids": [
         "portsmouth-uk",
@@ -2353,86 +2411,131 @@
         "southampton-united-kingdom"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Portsmouth",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "bristol-avon-uk",
-      "label": "Bristol Harbour / Avon",
-      "display": "Bristol Harbour / Avon",
+      "label": "Bristol",
+      "display": "Bristol",
       "region": "Europe",
       "member_city_ids": [
         "bristol-uk",
         "bristol-united-kingdom"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Bristol",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11"
     },
     {
       "cluster_id": "clyde-scotland",
-      "label": "River Clyde",
-      "display": "River Clyde",
+      "label": "Glasgow",
+      "display": "Glasgow",
       "region": "Europe",
       "member_city_ids": [],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "uk",
+      "nav_hidden": true,
+      "cluster_label": "Glasgow",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z",
+      "_taxonomy_cleanup_source": "grok/uk-norway-taxonomy-cleanup-2026-07-11",
+      "_alias_of": "firth-of-clyde-scotland",
+      "_deprecated_note": "Alias of firth-of-clyde-scotland; prefer firth-of-clyde-scotland for Clyde routes"
     },
     {
       "cluster_id": "kiel-fjord-germany",
-      "label": "Kiel Fjord",
-      "display": "Kiel Fjord",
+      "label": "Kiel",
+      "display": "Kiel",
       "region": "Europe",
       "member_city_ids": [
         "kiel-germany",
         "laboe-germany"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:15Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:15Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Kiel",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "lubeck-trave-germany",
-      "label": "Trave / Lübeck–Travemünde",
-      "display": "Trave / Lübeck–Travemünde",
+      "label": "Lübeck",
+      "display": "Lübeck",
       "region": "Europe",
       "member_city_ids": [],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Lübeck",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "flensburg-fjord-germany",
-      "label": "Flensburg Fjord",
-      "display": "Flensburg Fjord",
+      "label": "Flensburg",
+      "display": "Flensburg",
       "region": "Europe",
       "member_city_ids": [],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Flensburg",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "rostock-warnow-germany",
-      "label": "Warnow / Rostock",
-      "display": "Warnow / Rostock",
+      "label": "Rostock",
+      "display": "Rostock",
       "region": "Europe",
       "member_city_ids": [
         "rostock-germany"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:15Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:15Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Rostock",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "berlin-waterways-germany",
-      "label": "Berlin waterways",
-      "display": "Berlin waterways",
+      "label": "Berlin",
+      "display": "Berlin",
       "region": "Europe",
       "member_city_ids": [
         "berlin-waterways-germany",
         "berlin-germany"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Berlin",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "rhine-nrw-germany",
-      "label": "Rhine spine",
-      "display": "Rhine spine",
+      "label": "Rhine",
+      "display": "Rhine",
       "region": "Europe",
       "member_city_ids": [
         "bonn-rhine-germany",
@@ -2442,7 +2545,12 @@
         "dusseldorf-germany"
       ],
       "_source": "grok/dott-voi-coordinate-gated-wave1-2026-07-11",
-      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z"
+      "_wave1_coord_seal_at": "2026-07-11T05:01:14Z",
+      "parent_cluster_id": "germany",
+      "nav_hidden": true,
+      "cluster_label": "Rhine",
+      "type": "city-water",
+      "_taxonomy_cleanup_at": "2026-07-11T05:38:32Z"
     },
     {
       "cluster_id": "seine-estuary-le-havre",
