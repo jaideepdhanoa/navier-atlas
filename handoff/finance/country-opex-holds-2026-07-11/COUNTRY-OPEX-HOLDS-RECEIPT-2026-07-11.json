@@ -1,0 +1,48 @@
+{
+  "at": "2026-07-11T16:58:07Z",
+  "source": "grok/country-opex-holds-2026-07-11",
+  "policy": "null beats wrong; no inventing rates; exact country key + five numeric fields or explicit hold",
+  "countries_added": [
+    "Costa Rica",
+    "Argentina",
+    "Namibia",
+    "Cameroon",
+    "Congo (Brazzaville)"
+  ],
+  "countries_deferred": [
+    {
+      "country": "Venezuela",
+      "reason": "World Bank PA.NUS.GDP.PLI has no recent observation (last published 2011); cost_index cannot be current. Corridor holds retained."
+    }
+  ],
+  "corridor_holds_cleared": {
+    "costa-rica": 2,
+    "yango-namibia": 3,
+    "yango-cameroon": 3,
+    "yango-congo-brazzaville": 2
+  },
+  "corridor_holds_retained": {
+    "argentina": "demand_not_exact_annual_oneway (country-ref now present)",
+    "yango-venezuela": "country_reference_incomplete \u2014 deferred Venezuela row",
+    "caribbean-mobility": "cross_border_home_port_unverified (USVI and BVI rows exist; home port not evidenced)"
+  },
+  "gate_after": {
+    "active_corridors": 1358,
+    "held_corridors": 6,
+    "status": "PASS"
+  },
+  "field_sources_summary": {
+    "cost_index": "World Bank PA.NUS.GDP.PLI 2025 / Singapore 2025",
+    "energy_usd_kwh": "GlobalPetrolPrices Dec-2025 business (CR, AR, CM) / residential Namibia; Climatescope 2024 Congo",
+    "grid_co2_kg_kwh": "Climate Registry 2025 CR; planning secondary for others (low conf, replaceable)",
+    "captain_usd_yr": "T4 planning allowance peer-anchored LatAm/Africa bands \u2014 not operator quotes",
+    "marina_overhead_usd_yr": "T4/T5 planning berth/terminal overhead \u2014 not published port tariffs"
+  },
+  "cascade_authorization": {
+    "costa-rica": "Country-ref complete + A1 demand (642,133 / 317,859). Aggregate/growth/sheet cascade is now unblocked on country gate; still requires explicit greenlight for finance rebuild + sheet publish.",
+    "argentina": "NO cascade \u2014 demand semantics hold",
+    "yango_namibia_cameroon_congo": "Country gate cleared; route_id null corridors may still be outside production floor \u2014 no invent demand",
+    "venezuela": "NO cascade",
+    "caribbean_mobility": "NO cascade \u2014 home port hold"
+  }
+}

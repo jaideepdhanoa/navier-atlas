@@ -1,0 +1,204 @@
+{
+  "at": "2026-07-11T16:58:07Z",
+  "source": "grok/wave1-held-bp-disposition-2026-07-11",
+  "policy": "null beats wrong; exact-ID / T1-T2 only; no invented coordinates",
+  "n_held": 21,
+  "n_permanent": 6,
+  "n_research_gated": 15,
+  "n_sealed_this_pass": 0,
+  "note": "Autonomous pass reviewed all 21 held BPs. None had newly available exact T1/T2 named-landing coordinates that meet the coordinate-gated seal gate. All remain held with explicit dispositions. Hand-geometry routes for sealed BPs completed separately.",
+  "permanent_holds": [
+    {
+      "name": "Portus Ganda",
+      "lane": "be-ch",
+      "country": "Belgium",
+      "water_system": "Ghent inland waterways",
+      "reason": "OpenStreetMap returns two different marina nodes named Portus Ganda on different sides of the basin, while the city citation does not identify a specific public boarding landing. A basin/marina label is insufficient to choose one pickup point.",
+      "disposition": "permanent_hold_identity_ambiguity",
+      "disposition_reason": "Multiple exact features; selecting one would invent identity."
+    },
+    {
+      "name": "Estación Marítima de Formentera (Port of Ibiza)",
+      "lane": "dott-at-hu-balearics",
+      "country": "Spain",
+      "water_system": "Ibiza/Formentera channel",
+      "reason": "Match to existing canonical route endpoints before creating any BP; preserve route IDs and avoid duplicate Ibiza–La Savina geometry.",
+      "disposition": "permanent_hold_dedupe_canonical",
+      "disposition_reason": "Must reuse existing route endpoints; no new BP mint."
+    },
+    {
+      "name": "La Savina passenger terminal",
+      "lane": "dott-at-hu-balearics",
+      "country": "Spain",
+      "water_system": "Ibiza/Formentera channel",
+      "reason": "Match to existing canonical route endpoints before creating any BP; preserve route IDs and avoid duplicate Ibiza–La Savina geometry.",
+      "disposition": "permanent_hold_dedupe_canonical",
+      "disposition_reason": "Must reuse existing route endpoints; no new BP mint."
+    },
+    {
+      "name": "Egholmfærgen ferry landing, Aalborg (Egholm Færgevej 23)",
+      "lane": "nordics",
+      "country": "Denmark",
+      "water_system": "Limfjord/Aalborg–Egholm",
+      "reason": "Exact-feature ambiguity: two separately mapped, current Aalborg-side terminal quays (Egholm I and Egholm II) satisfy the candidate and lie at Egholm Færgevej. Selecting either would be an unsupported remint/split of the supplied candidate. Canonical geography must first identify the intended quay or explicitly model the facility as a dual-slip terminal.",
+      "disposition": "permanent_hold_identity_ambiguity",
+      "disposition_reason": "Multiple exact features; selecting one would invent identity."
+    },
+    {
+      "name": "Broomielaw Pontoon",
+      "lane": "uk-de",
+      "country": "United Kingdom",
+      "water_system": "River Clyde",
+      "reason": "Closed until further notice per Glasgow City Council.; source status: hold_closed",
+      "disposition": "permanent_hold_closed",
+      "disposition_reason": "Source reports closed until further notice; null beats wrong."
+    },
+    {
+      "name": "Govan Pontoon",
+      "lane": "uk-de",
+      "country": "United Kingdom",
+      "water_system": "River Clyde",
+      "reason": "No exact named T1/T2 coordinate object could be reconciled to Glasgow City Council’s Govan Pontoon; nearby unnamed pier/harbour features are insufficient. The council also reports the pontoon closed until further notice.",
+      "disposition": "permanent_hold_closed",
+      "disposition_reason": "Source reports closed until further notice; null beats wrong."
+    }
+  ],
+  "research_gated_holds": [
+    {
+      "name": "Sint Anna",
+      "lane": "be-ch",
+      "country": "Belgium",
+      "water_system": "Scheldt — Antwerp",
+      "reason": "Only a T3 commercial map pin was found. The OSM search surfaced a nearby public-transport stop named Sint-Anna Veerdienst, not an exact ferry-terminal/landing object; copying that point would violate exact-feature requirements.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Muttenz Waldhaus",
+      "lane": "be-ch",
+      "country": "Switzerland",
+      "water_system": "Rhine — Basel region",
+      "reason": "Federal geodata search returned a bus stop and Restaurant Waldhaus, but no exact boat landing. No exact named OSM ferry/landing object was found, so neither nearby feature may be substituted.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Bootshafen Hörnlibuck",
+      "lane": "be-ch",
+      "country": "Switzerland",
+      "water_system": "Lake Constance",
+      "reason": "The exact named marina did not resolve in the federal or OSM searches. Available evidence was a T3 commercial map pin or a nearby bus stop, neither of which is coordinate-ready for the marina.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Hafen Hard",
+      "lane": "dott-at-hu-balearics",
+      "country": "Austria",
+      "water_system": "Lake Constance",
+      "reason": "specific official municipal marina; passenger-transfer suitability not yet proven",
+      "disposition": "hold_pending_transfer_suitability",
+      "disposition_reason": "Marina identity without proven passenger transfer."
+    },
+    {
+      "name": "Klosterneuburg ferry landing",
+      "lane": "dott-at-hu-balearics",
+      "country": "Austria",
+      "water_system": "Danube — Korneuburg/Klosterneuburg reach",
+      "reason": "Held for exact feature identity: the plausible opposite-bank OSM terminal is unnamed, so it does not meet the exact-named T2 threshold. A terminal-specific official map/geospatial record is required.",
+      "disposition": "hold_pending_exact_feature",
+      "disposition_reason": "Exact-feature gate not cleared; no coordinate inventing."
+    },
+    {
+      "name": "Margitsziget stop",
+      "lane": "dott-at-hu-balearics",
+      "country": "Hungary",
+      "water_system": "Hungarian Danube",
+      "reason": "Held for exact feature identity: multiple island landings exist and no exact named Sportuszoda T1/T2 coordinate was found. A current operator map pin or authoritative geospatial record is required.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Viikinsaari Island landing",
+      "lane": "nordics",
+      "country": "Finland",
+      "water_system": "Tampere/Pyhäjärvi",
+      "reason": "Operator names the destination as Viikinsaari Island, not a formal pier name; Grok must confirm terminal naming before bank.",
+      "disposition": "hold_pending_name_validation",
+      "disposition_reason": "Exact local label not confirmed; null beats wrong."
+    },
+    {
+      "name": "Egholm ferry landing",
+      "lane": "nordics",
+      "country": "Denmark",
+      "water_system": "Limfjord/Aalborg–Egholm",
+      "reason": "Municipal page describes the Egholm ferry landing functionally; Grok must verify canonical local label and exact point.",
+      "disposition": "hold_pending_name_validation",
+      "disposition_reason": "Exact local label not confirmed; null beats wrong."
+    },
+    {
+      "name": "Nordermole Travemünde landing",
+      "lane": "uk-de",
+      "country": "Germany",
+      "water_system": "Trave / Travemünde–Priwall",
+      "reason": "The official source identifies the Priwall VI passenger ferry at Nordermole, but exact-feature searches found only the Nordermole lighthouse/promenade and unnamed nearby piers. No exact T1/T2 passenger-landing object was verified.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Priwall ferry landing",
+      "lane": "uk-de",
+      "country": "Germany",
+      "water_system": "Trave / Travemünde–Priwall",
+      "reason": "Nearby named OSM 'Priwallfähre' terminals are for the separate vehicle ferry farther upriver; they cannot be substituted for the Priwall VI Nordermole passenger-ferry landing named by Stadtwerke Lübeck.",
+      "disposition": "hold_pending_exact_feature",
+      "disposition_reason": "Exact-feature gate not cleared; no coordinate inventing."
+    },
+    {
+      "name": "Flensburg Fördebrücke",
+      "lane": "uk-de",
+      "country": "Germany",
+      "water_system": "Flensburg Fjord",
+      "reason": "Exact-feature searches found bus stops named Fördebrücke but no exact named ferry pier/landing object that can be tied to the MS Viking operation. A bus-stop or harbour-center coordinate is prohibited.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "Glücksburg Seebrücke",
+      "lane": "uk-de",
+      "country": "Germany",
+      "water_system": "Flensburg Fjord",
+      "reason": "Only a T3 map-listing coordinate was found for the exact name; no T1/T2 coordinate/geolocation source was verified, so the point remains held.",
+      "disposition": "hold_pending_t1_t2_coordinate",
+      "disposition_reason": "No T1/T2 exact-named landing object; cannot invent coordinates."
+    },
+    {
+      "name": "KD Bonn-Bad Godesberg landing stage",
+      "lane": "uk-de",
+      "country": "Germany",
+      "water_system": "Rhine",
+      "reason": "Exact local landing-stage label should be confirmed before banking.; source status: hold_name_validation",
+      "disposition": "hold_pending_exact_feature",
+      "disposition_reason": "Exact-feature gate not cleared; no coordinate inventing."
+    },
+    {
+      "name": "Port-Deauville–Les Marinas",
+      "lane": "voi-lehavre-dott-poland",
+      "country": "France",
+      "water_system": "Seine estuary / Baie de Seine",
+      "reason": "Only general marina/harbour coordinates were found. No T1/T2 object could be reconciled to the exact Deauville/Trouville passenger landing; a marina centroid or harbour-entrance point is prohibited.",
+      "disposition": "hold_pending_exact_feature",
+      "disposition_reason": "Exact-feature gate not cleared; no coordinate inventing."
+    },
+    {
+      "name": "Westerplatte water-tram stop",
+      "lane": "voi-lehavre-dott-poland",
+      "country": "Poland",
+      "water_system": "Gulf of Gdańsk / Tricity waterways",
+      "reason": "Exact passenger landing could not be isolated. General Westerplatte or quay coordinates would be speculative.",
+      "disposition": "hold_pending_exact_feature",
+      "disposition_reason": "Exact-feature gate not cleared; no coordinate inventing."
+    }
+  ],
+  "status": "disposition_complete_no_mints"
+}

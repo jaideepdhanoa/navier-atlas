@@ -1,83 +1,81 @@
 # Grok backlog — pending work (living queue)
 
-**Baseline:** `main` @ `a459f7f5` · Production: https://navier-atlas.vercel.app  
-**Updated:** 2026-06-29 (AFK autonomous lane)  
-**Intake:** Jaideep directive — proposal route quality + UAE channel routing (plan-first)
+**Baseline:** `main` @ tip after Wave1 hand-geometry + country-opex holds pass (2026-07-11)  
+**Production:** https://navier-atlas.vercel.app  
+**Updated:** 2026-07-11 (autonomous backlog pass)  
+**Rule:** null beats wrong · exact-ID only · no inventing rates · corridors own geography · merge/mint/deploy under greenlight
 
 ---
 
-## ⛔ SKIPPED (2026-06-29) — Deck / Slides / Sheets lane
+## Closed this pass (2026-07-11)
 
-Per Jaideep AFK directive: all deck updates explicitly skipped. No OAuth, no Slides apply, no Sheets publish.
-
-| Item | Status |
-|------|--------|
-| Gojek deck PR #135 merge | ⛔ SKIPPED |
-| SOM rung ($87M) / Lombok + Lake Toba KPI cards | ⛔ SKIPPED |
-| AirAsia MOVE deck create/bind | ⛔ SKIPPED |
-| Google Sheets publish (gojek, airasia-move) | ⛔ SKIPPED |
-| Grab/Minor live Slides apply | ⛔ SKIPPED (OAuth omitted) |
-
-**Gojek map scope fix** (Malaysia bleed) ✅ done @ `a459f7f5` — deployed.  
-**Maghreb split** ✅ PR #139 merged @ `2401c147` — `/maghreb` live.
+| Item | Verdict |
+|------|---------|
+| **PR #221** DiDi T1–T12 controlled review | ✅ Merged `ca6494e8` (docs-only; AR demand semantics already in #226) |
+| **Wave1 hand geometry** (15 pairs) | ✅ Sealed — `GROK-WAVE1-HAND-GEOMETRY-SEAL-RECEIPT-2026-07-11` |
+| **Wave1 held BPs** (21) | ✅ Disposition complete — 0 mints (no T1/T2); permanent + research-gated holds recorded |
+| **Country-opex CR×2, Namibia×3, Cameroon×3, Congo×2** | ✅ Country-ref rows + holds cleared → active 1358 / held 6 |
+| **Living backlog refresh** | ✅ This file |
 
 ---
 
-## 0. Decisions (locked)
+## Active backlog (remaining)
 
-| Decision | Status |
-|----------|--------|
-| **Google OAuth refresh** (Grab KPI apply + Minor live appendix) | ⛔ **SKIPPED / OMITTED** — not pursuing; deck lane deprioritized |
-| **#118 Grab Slides apply** | ⛔ Omitted with OAuth skip |
-| **#112 Minor live appendix apply** | ⛔ Omitted with OAuth skip |
+### P0 — Release
 
-KPI JSON, values sidecars, binding re-pull, and dry apply plans remain in repo as reference only.
+| Priority | Track | Status |
+|----------|-------|--------|
+| **P0** | **Swing deck regen slides 8–11** | **Held** — model/workbook parity done (#232); live deck still claims unsupported Y1 profitability; fix six OPEX lines + sheet links `1PxUt…`. Brief: `handoff/post-224-release-verification/SWING-POST-223-DECK-REGEN-BRIEF.json` |
 
----
+### P1 — Economics holds (6 corridors)
 
-## 1. Active priorities (plan approved 2026-06-27)
+| Partner | Holds | Why | Next |
+|---------|------:|-----|------|
+| **DiDi Argentina** | 2 | `demand_not_exact_annual_oneway` (benchmark only) | Exact annual one-way evidence, or leave null |
+| **Yango Venezuela** | 3 | No current WB `cost_index` (PLI last 2011) | Source current PLI/PPP + crew/energy/port |
+| **caribbean-mobility** | 1 | USVI→BVI `cross_border_home_port_unverified` | Evidenced home-port country for opex inheritance |
 
-| Priority | Track | Why |
-|----------|-------|-----|
-| **P0a** | **Phase-map cumulative scoping** | ✅ Done — cumulative phases + three-tier opacity |
-| **P0c** | **Partner scope live inheritance** | ✅ Done — hub partners inherit CLUSTERS.json at build; `partner-scope.mjs` + §3.8 drift gate |
-| **P0b** | **Proposal route quality audit** | Careem ✅ · Noon ✅ · Grab ✅ · Bolt ✅ · Rapido ✅ — all PASS_WITH_FLAGS @ `75403712` |
-| **P1** | **UAE channel graphs (Grok-only)** | ✅ v2 Palm + Marina + Creek + AD islands + Deira; wired into `channel_solver.py` |
-| **P2** | FE-2 dedup | ~193 referenced-copy groups |
-| **P3** | Mesh geometry | ~3,035 non-story fails (deferred until proposal surfaces credible) |
+Country-ref complete for: Costa Rica (cascade greenlight pending), Namibia, Cameroon, Congo (Brazzaville), Argentina (demand still blocks).
 
-**Plan doc:** `handoff/PROPOSAL-ROUTE-QUALITY-PLAN-2026-06-27.md`
+### P1 — Wave1 residual
 
-### Locked display rules
+| Surface | Open | Notes |
+|---------|-----:|-------|
+| Held BPs | 21 | Dispositioned; mint only on new T1/T2 exact-named landings |
+| Hand geometry routes | 0 | All 15 sealed this pass |
+| Coord-held routes | ~14 | Depend on held BPs / noncoordinate gates |
 
-- **Phase map opacity:** current phase full · prior phases medium · mesh low
-- **Phase map:** cumulative `featured_routes` through active phase N only
-- **Cross-emirate legs:** allowed when geometry + phase narrative fit
-- **Channel graphs:** Grok drafts from satellite, self-validates
-- **Hub map scope:** live cluster inheritance at build (`scripts/partner-scope.mjs`); sync JSON via `node scripts/sync-partner-map-scope.mjs`
+### P2 — Sheets / partners
 
----
+| Item | Notes |
+|------|-------|
+| **constance / saudi-pif sheets** | Fail-closed skip / low-confidence: no invent rates; constance captive resort; saudi-pif largely 2030-dated / greenfield OFF. Do not force-publish empty corridors. |
+| **Costa Rica DiDi finance cascade** | Country gate + A1 demand ready; needs **explicit greenlight** for aggregate → growth → sheet → deck |
+| **Yango NAM/CM/CG corridors** | Country gate clear; `route_id` null — no invent demand/geometry |
 
-## 2. Closed / unblocked
+### P3 — Deferred (not release chain)
 
-| Issue | Verdict |
-|-------|---------|
-| **#127, #121, #104, #115, #119** | ✅ CLOSED |
-| **#112 binding re-pull** | ✅ QA PASS (live apply omitted) |
-| Formal gold SEAL sign-off | Unblocked (#119 PASS) — Tasklet |
-
----
-
-## 3. Dependencies (revised)
-
-| Item | Owner | Notes |
-|------|-------|-------|
-| Phase-narrative fit + featured trim | **Grok** | Null beats wrong; e.g. drop RAK from Careem Phase 1 |
-| UAE channel graphs | **Grok** | Satellite draft + self-validate; no Tasklet |
-| `CORRIDOR-ENDPOINT-GROUNDING.json` | Grok | BP endpoint authority for proposal surfaces |
-| Cluster brief `signature_routes` | Grok audit | Trim to phase-aligned S-tier only |
-| Deck lane (Grab/Minor live apply) | — | **Omitted** |
+| Item | Notes |
+|------|-------|
+| FE-2 dedup | ~193 referenced-copy groups |
+| Mesh geometry | ~3k non-story fails — deferred until proposal surfaces credible |
+| Deck OAuth lane (Grab/Minor live apply) | Omitted / skipped per prior AFK directive |
 
 ---
 
-*Grok seat · Credibility pass: proposal surfaces before mesh capacity work*
+## Open PRs
+
+_None at last check (post-#221)._
+
+---
+
+## Locked display / finance rules
+
+- Phase map opacity: current full · prior medium · mesh low  
+- Hub map scope: live cluster inheritance at build  
+- Country-opex: exact country key + five numerics, or descriptive `_economics_hold_reason` — **no Singapore fallback**  
+- Inland-water geometry: named water + water-adjacent endpoints; land-mask false positives recorded, not invented water
+
+---
+
+*Grok seat · Credibility pass: release (Swing deck) → residual holds → deferred mesh*
