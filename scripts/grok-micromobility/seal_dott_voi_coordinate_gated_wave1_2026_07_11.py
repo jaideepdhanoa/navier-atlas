@@ -155,25 +155,64 @@ def poi_indexes(fbt: dict) -> tuple[dict[str, dict], dict[tuple[str, str], str]]
     return by_id, by_name
 
 
+# Water-system / city-group cluster_id → country parent (Region→Cluster→City→Locale).
+# Children must be nav_hidden; never surface raw slugs as top-level chips.
+# Keep in sync with scripts/grok-taxonomy/nest_water_system_clusters_*.py + validate_cluster_taxonomy.py
+CLUSTER_PARENT: dict[str, str] = {
+    "gulf-of-gdansk-tricity": "poland",
+    "kolobrzeg-parseta-baltic": "poland",
+    "lake-jamno-mielno": "poland",
+    "szczecin-lagoon-swina": "poland",
+    "vistula-lagoon": "poland",
+    "ustka-slupia-baltic": "poland",
+    "hungarian-danube": "hungary",
+    "lake-balaton-hungary": "hungary",
+    "woerthersee-austria": "austria",
+    "korneuburg-klosterneuburg-danube": "austria",
+    "linz-upper-danube": "austria",
+    "seine-estuary-le-havre": "france",
+    "lake-constance": "switzerland",
+    "solent-isle-of-wight-uk": "uk",
+    "rhine-nrw-germany": "germany",
+    "flensburg-fjord-germany": "germany",
+    "berlin-waterways-germany": "germany",
+    "kiel-fjord-germany": "germany",
+}
+
+
 def ensure_cluster(clusters: list, cluster_id: str, label: str, region: str, members: list[str]) -> dict:
+    """Mint/update a cluster. Water-system ids nest under country (parent + nav_hidden)."""
+    parent = CLUSTER_PARENT.get(cluster_id)
+    # Human label: never leave display equal to raw multi-hyphen slug
+    display = label
+    if not display or display == cluster_id:
+        display = cluster_id.replace("-", " ").title()
     for c in clusters:
         if c.get("cluster_id") == cluster_id:
             m = list(dict.fromkeys((c.get("member_city_ids") or []) + members))
             c["member_city_ids"] = m
-            c.setdefault("label", label)
-            c.setdefault("display", label)
+            c.setdefault("label", display)
+            c.setdefault("cluster_label", display)
+            c.setdefault("display", display)
             c.setdefault("region", region)
+            if parent:
+                c["parent_cluster_id"] = parent
+                c["nav_hidden"] = True
             c["_wave1_coord_seal_at"] = utc_now()
             return c
     c = {
         "cluster_id": cluster_id,
-        "label": label,
-        "display": label,
+        "label": display,
+        "cluster_label": display,
+        "display": display,
         "region": region,
         "member_city_ids": list(dict.fromkeys(members)),
         "_source": SOURCE,
         "_wave1_coord_seal_at": utc_now(),
     }
+    if parent:
+        c["parent_cluster_id"] = parent
+        c["nav_hidden"] = True
     clusters.append(c)
     return c
 
