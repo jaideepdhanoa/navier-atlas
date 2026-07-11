@@ -274,6 +274,19 @@ def sc(ws, ref, val, font=None, fill=None, fmt=None, align=None, bd=False):
     if bd:c.border=border
     return c
 
+# Model parity (LB post-#224 / Swing $3 SOM delta): Python round() is banker's
+# round-half-even; Excel/Google Sheets ROUND is half-away-from-zero.
+# 5 trips/day × 274 op-days × 0.65 rev-leg = 890.5 → model 890, Sheets ROUND → 891.
+# Use this helper at every boundary that mirrors Python round(x) / round(x, 0).
+def round_half_even(expr: str) -> str:
+    """Positive-number round-half-even expression matching Python 3 round()."""
+    x = f"({expr})"
+    return (
+        f'IF(ABS(MOD(ABS({x}),1)-0.5)<1E-9,'
+        f'2*ROUND({x}/2,0),'
+        f'ROUND({x},0))'
+    )
+
 named={}
 def addname(name, ref): named[name]=ref
 
@@ -579,10 +592,12 @@ for idx,rec in enumerate(rows):
     if rec.get("season_days") is not None:
         sc(ws,od,rec["season_days"],fill=f_input,fmt=NUM,align=ctr,bd=True)
     else:
-        F(od,f"=ROUND(365*mech_uptime*{wf},0)",NUM)
+        # atom.py: season_days = round(365 * op_capacity * weather)  → half-even
+        F(od,f"={round_half_even(f'365*mech_uptime*{wf}')}",NUM)
     F(upt,"=mech_uptime",PCT)
     F(rlp,"=revleg_sel",PCT)
-    F(tpy,f"=ROUND({tpd}*{od}*revleg_sel,0)",NUM)
+    # atom.py: trips_per_year = round(trips_per_day * season_days * rev_leg)  → half-even
+    F(tpy,f"={round_half_even(f'{tpd}*{od}*revleg_sel')}",NUM)
     F(lf,"=load_sel",NUM2)
     F(ppt,f"=pax_cap*{lf}",NUM2)
     F(ppy,f"={ppt}*{tpy}",NUM)
@@ -611,13 +626,14 @@ for idx,rec in enumerate(rows):
     # LB-88: captive-resort fleet ceiling caps vessels (floored AND raw); rev scales to cap
     fcap=f"{CL('Fleet ceiling (captive villas/25)')}{R}"
     F(ves,f"=IF(OR({dem}=\"\",{ppy}=0),\"\",MIN(IF({fcap}=\"\",9.9E+99,{fcap}),FLOOR({nrd}/{ppy},1)))",NUM)
-    # aggregate.py rounds per-boat revenue to whole dollars before scaling by fleet.
-    # Mirror that here so the independent workbook and model have exact floor parity.
-    F(mrev,f"=IF({ves}=\"\",\"\",{ves}*ROUND({rev},0))",USD)
-    # R-FLOOR-2 / G51 network-sum basis: unfloored fractional vessels + raw market rev
+    # atom.py: rev_per_year = round(navier_fare * pax_per_year, 0); market_rev uses
+    # that whole-dollar per-boat revenue × floored vessels. Half-even for .5 ties.
+    F(mrev,f"=IF({ves}=\"\",\"\",{ves}*{round_half_even(rev)})",USD)
+    # R-FLOOR-2 / G51 network-sum basis: unfloored fractional vessels × UNROUNDED
+    # per-vessel revenue (no second ROUND). Closing the $2.74 raw SOM residue.
     vraw=f"{CL('Vessels raw (unfloored)')}{R}"; mrevraw=f"{CL('Market rev/yr raw')}{R}"
     F(vraw,f"=IF(OR({dem}=\"\",{ppy}=0),\"\",MIN(IF({fcap}=\"\",9.9E+99,{fcap}),{nrd}/{ppy}))",NUM2)
-    F(mrevraw,f"=IF({vraw}=\"\",\"\",{vraw}*ROUND({rev},0))",USD)
+    F(mrevraw,f"=IF({vraw}=\"\",\"\",{vraw}*{rev})",USD)
     sc(ws,f"{CL('Subset of (excl. from market fleet)')}{R}",rec["subset"],fill=f_input,align=wrap,bd=True,font=Font(size=8,color="555555"))
     # LB-33 forward-SAM flag: 2030-dated / low-confidence demand — engine row computed
     # at MID but held OUT of the grounded floor (separate FORWARD SAM total below).
@@ -625,9 +641,9 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Forward SAM (2030-dated; held OUT of grounded floor)')}{R}",rec["fwd"],fill=f_input,align=ctr,bd=True,font=Font(size=8,color="9C4500"))
     sc(ws,f"{CL('Upside tier (LB-99; held OUT of grounded floor)')}{R}",rec["tier_excl"],fill=f_input,align=ctr,bd=True,font=Font(size=8,color="9C4500"))
     sc(ws,f"{CL('Fleet ceiling (captive villas/25)')}{R}",rec["fleet_cap"],fill=f_input,fmt=NUM,align=ctr,bd=True,font=SMALL)
-    # band paybacks (self-contained per band)
+    # band paybacks (self-contained per band) — trips/yr half-even like selected scenario
     for b,name in (("thin","Payback THIN"),("mid","Payback MID"),("full","Payback FULL")):
-        tpyb=f"ROUND({tpd}*{od}*revleg_{b},0)"
+        tpyb=round_half_even(f"{tpd}*{od}*revleg_{b}")
         revb=f"({nf}*pax_cap*load_{b}*{tpyb})"
         enb=f"((battery/range_nm)*{nm}*{tpyb}*VLOOKUP({ctry},country_opex,3,FALSE))"
         opxb=f"({enb}+{cap}+{mar}+{mnt}+{insr}+{chg})"
