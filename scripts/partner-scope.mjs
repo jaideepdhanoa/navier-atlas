@@ -19,6 +19,8 @@ export const MARKET_CLUSTER_ALIASES = {
   // Micromobility hub market slugs → canonical country/coastal clusters
   'france-riviera': 'cote-dazur-france-archipelago',
   'bolt-france-riviera': 'cote-dazur-france-archipelago',
+  // Only for partners that still inherit full KSA. Dott/Voi set market.scope_registry_key
+  // to the city id (jeddah-ksa) so sealedRegistryKeys never resolves this alias for them.
   'ksa-commercial': 'saudi-arabia',
   'bolt-ksa-commercial': 'saudi-arabia',
   'bolt-sweden': 'sweden',
@@ -88,6 +90,13 @@ function crossBorderCityIds(clusterById, partner = null) {
 }
 
 export function resolveRegistryKeyToCityIds(key, clusterById, partner = null) {
+  // Prefer exact cluster / city key first so city-level seals (jeddah-ksa, doha-qatar)
+  // are not swallowed by market-slug aliases (ksa-commercial → saudi-arabia).
+  if (key && clusterById.has(key)) {
+    const exact = clusterById.get(key);
+    if (exact?.member_city_ids?.length) return new Set(exact.member_city_ids);
+  }
+
   const alias = MARKET_CLUSTER_ALIASES[key];
   if (alias === '__cross_border__') return crossBorderCityIds(clusterById, partner);
 
@@ -95,7 +104,7 @@ export function resolveRegistryKeyToCityIds(key, clusterById, partner = null) {
   const cluster = clusterById.get(clusterId);
   if (cluster?.member_city_ids?.length) return new Set(cluster.member_city_ids);
 
-  // City-level id (e.g. bali-indonesia) or unknown — pass through if it looks like a city id
+  // City-level id (e.g. jeddah-ksa, doha-qatar, bali-indonesia) — pass through as a single keep city
   if (key.includes('-') || clusterById.has(key)) {
     const c2 = clusterById.get(key);
     if (c2) return new Set(c2.member_city_ids || []);

@@ -79,6 +79,12 @@ def resolve_registry_key_to_city_ids(
     cluster_by_id: dict[str, dict],
     partner: dict[str, Any] | None = None,
 ) -> set[str]:
+    # Prefer exact cluster key first so city-level seals are not swallowed by market aliases.
+    if key and key in cluster_by_id:
+        exact = cluster_by_id[key]
+        if exact.get("member_city_ids"):
+            return set(exact["member_city_ids"])
+
     alias = MARKET_CLUSTER_ALIASES.get(key)
     if alias == "__cross_border__":
         return cross_border_city_ids(cluster_by_id, partner)
@@ -86,8 +92,9 @@ def resolve_registry_key_to_city_ids(
     cluster = cluster_by_id.get(cluster_id)
     if cluster and cluster.get("member_city_ids"):
         return set(cluster["member_city_ids"])
-    if "-" in key or cluster_id in cluster_by_id:
-        c2 = cluster_by_id.get(cluster_id)
+    # City-level id (e.g. jeddah-ksa, doha-qatar) — pass through as a single keep city
+    if "-" in key or key in cluster_by_id:
+        c2 = cluster_by_id.get(key)
         if c2:
             return set(c2.get("member_city_ids") or [])
         return {key}
