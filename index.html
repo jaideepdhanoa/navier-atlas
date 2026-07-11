@@ -963,6 +963,70 @@ const VESSEL_SPECS = window.VESSEL_SPECS;
 var CITY_BRIEFS = (typeof window!=='undefined' && window.CITY_BRIEFS) || {};
 var PARTNERS    = (typeof window!=='undefined' && window.PARTNERS)    || {};
 
+// ── Display capitalization (permanent) ──────────────────────────────────────
+// IDs stay kebab-case; user-visible city/locale names never do.
+// Data-clean should already be Title Case; this in-memory pass is the last line
+// of defense so map labels / chips never show "tampere-finland" / "turku-finland".
+const _CITY_NAME_OVERRIDES = {
+  'tampere-finland':'Tampere', 'turku-finland':'Turku', 'helsinki-finland':'Helsinki',
+  'siofok':'Siófok', 'dusseldorf-rhine-germany':'Düsseldorf', 'liege-belgium':'Liège',
+  'isle-of-wight-solent-uk':'Isle of Wight', 'berlin-waterways-germany':'Berlin',
+  'bonn-rhine-germany':'Bonn', 'cologne-rhine-germany':'Cologne',
+  'hard-at':'Hard', 'velden-at':'Velden', 'portsmouth-uk':'Portsmouth',
+  'southampton-uk':'Southampton', 'bristol-uk':'Bristol', 'kiel-germany':'Kiel',
+  'laboe-germany':'Laboe', 'rostock-germany':'Rostock', 'bregenz':'Bregenz',
+  'klagenfurt':'Klagenfurt', 'krumpendorf':'Krumpendorf', 'korneuburg':'Korneuburg',
+  'linz':'Linz', 'budapest':'Budapest', 'tihany':'Tihany',
+};
+const _GEO_NAME_SUFFIXES = new Set(['uk','usa','uae','ksa','at','de','fr','pl','hu','fi','no','se','dk','nl','be','ch','it','es','pt','ie','germany','finland','austria','hungary','poland','france','switzerland','belgium','netherlands','norway','sweden','denmark']);
+function _isSlugishName(val, id) {
+  if (val == null || !String(val).trim()) return true;
+  const s = String(val).trim();
+  const eid = id == null ? '' : String(id).trim();
+  if (s === s.toLowerCase() && /[a-zA-Z]/.test(s)) return true; // all-lowercase never a proper chip
+  if (eid && s === eid) return true;
+  if (eid && s.includes('-') && s.toLowerCase() === eid.toLowerCase()) return true;
+  return false;
+}
+function _humanizeCitySlug(id) {
+  if (!id) return '';
+  if (_CITY_NAME_OVERRIDES[id]) return _CITY_NAME_OVERRIDES[id];
+  let parts = String(id).split('-').filter(Boolean);
+  while (parts.length > 1 && _GEO_NAME_SUFFIXES.has(parts[parts.length - 1].toLowerCase())) parts.pop();
+  const small = new Set(['of','the','and','de','du','da','di','van','von','la','le']);
+  return parts.map((p, i) => {
+    const low = p.toLowerCase();
+    if (i > 0 && small.has(low)) return low;
+    return low.charAt(0).toUpperCase() + low.slice(1);
+  }).join(' ') || String(id);
+}
+/** City/locale display name — never the raw id when a human name exists or can be derived. */
+function _cityDisplayName(propsOrId, fallbackId) {
+  if (typeof propsOrId === 'string') {
+    const n = NODE_INDEX && NODE_INDEX[propsOrId];
+    return _cityDisplayName(n && n.props, propsOrId);
+  }
+  const p = propsOrId || {};
+  const id = p.id || fallbackId || '';
+  for (const f of ['shortName', 'name', 'fullName']) {
+    if (p[f] && !_isSlugishName(p[f], id)) return p[f];
+  }
+  return _humanizeCitySlug(id) || id;
+}
+// Sanitize sealed features in-memory before NODE_INDEX / map sources read shortName.
+if (typeof FEATURES_BY_TYPE !== 'undefined' && FEATURES_BY_TYPE) {
+  for (const t of ['city', 'priority_city', 'locale']) {
+    for (const f of (FEATURES_BY_TYPE[t] || [])) {
+      const p = f.properties || f;
+      if (!p || !p.id) continue;
+      const good = _cityDisplayName(p, p.id);
+      if (_isSlugishName(p.name, p.id)) p.name = good;
+      if (_isSlugishName(p.shortName, p.id)) p.shortName = good;
+      if (_isSlugishName(p.fullName, p.id)) p.fullName = good;
+    }
+  }
+}
+
 const NODE_INDEX = {}; // id -> {coords, props}
 for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[t]) { const p=f.properties; if (p.id) NODE_INDEX[p.id]={coords:f.geometry.coordinates, props:p}; }
 // Cluster lookup (CLUSTERS.json): cluster_id -> {cluster_label, region, type, anchor, member_city_ids}.
@@ -1004,7 +1068,7 @@ const _clusterOf = (id, fallback) => CITY_TO_CLUSTER[id] || fallback || null;
 // Locales grouped by parent city — tier 4 of Region → Cluster → City → Locale.
 const LOCALES_BY_PARENT = {};
 for (const f of (FEATURES_BY_TYPE.locale||[])) { const p=f.properties||{}, pid=p.parent_city_id; if (!pid||!p.id) continue;
-  (LOCALES_BY_PARENT[pid]=LOCALES_BY_PARENT[pid]||[]).push({ id:p.id, coords:f.geometry.coordinates, props:p, name:(p.shortName||p.name||p.id) }); }
+  (LOCALES_BY_PARENT[pid]=LOCALES_BY_PARENT[pid]||[]).push({ id:p.id, coords:f.geometry.coordinates, props:p, name:_cityDisplayName(p, p.id) }); }
 for (const pid in LOCALES_BY_PARENT) LOCALES_BY_PARENT[pid].sort((a,b)=>a.name.localeCompare(b.name));
 // Map labels show only the PRIMARY place: several nodes carry a bundled "A / B / C" shortName
 // (e.g. "Manila / Cebu / Palawan / Boracay / Siargao") that reads as one mega-city when zoomed out.
@@ -2551,7 +2615,7 @@ function _clusterBriefHtml(cb){
   const _members = _cl ? (_cl.member_city_ids||[]).filter(id=>NODE_INDEX[id]) : [];
   if (_members.length){
     h+=`<div class="panel-section"><h3>Cities in this cluster</h3><div class="cl-cities">`;
-    for (const id of _members){ const np=NODE_INDEX[id].props; h+=`<button class="cl-city" data-city="${escapeHtml(id)}">${escapeHtml(np.shortName||np.name||id)}</button>`; }
+    for (const id of _members){ const np=NODE_INDEX[id].props; h+=`<button class="cl-city" data-city="${escapeHtml(id)}">${escapeHtml(_cityDisplayName(np, id))}</button>`; }
     h+=`</div></div>`;
   }
   if (cb.transit_planning) h+=`<div class="panel-section"><h3>For a transport authority</h3><div class="what-distinct">${escapeHtml(cb.transit_planning)}</div></div>`;
@@ -4355,7 +4419,7 @@ document.querySelectorAll('.chip').forEach(b => {
   const _navClusters = (typeof NAV_CLUSTERS!=='undefined') ? NAV_CLUSTERS : ((typeof CLUSTERS!=='undefined') ? (CLUSTERS.clusters||[]).filter(c=>!c.parent_cluster_id&&!c.nav_hidden) : []);
   for (const c of _navClusters){
     const r = norm(c.region); if (!r) continue;
-    const cities = (c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
+    const cities = (c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:_cityDisplayName(n.props, id) }:null; }).filter(Boolean);
     if (!cities.length) continue;
     cities.sort((a,b)=>a.name.localeCompare(b.name));
     (clustersByRegion[r] = clustersByRegion[r] || []).push({ id:c.cluster_id, label:_clusterDisplayName(c, c.cluster_id), cities });
@@ -4369,7 +4433,7 @@ document.querySelectorAll('.chip').forEach(b => {
     const seen = citySeenByRegion[r] || (citySeenByRegion[r] = new Set());
     if (seen.has(p.id)) continue;
     seen.add(p.id);
-    (cityNodesByRegion[r] = cityNodesByRegion[r] || []).push({ id:p.id, coords:co, props:p, name:(p.shortName||p.name||p.id) });
+    (cityNodesByRegion[r] = cityNodesByRegion[r] || []).push({ id:p.id, coords:co, props:p, name:_cityDisplayName(p, p.id) });
   }
   // Hub partners (Bolt, Uber, Yango): always show region tier when multiple regions — cluster
   // chips alone overflow the row (18+ markets). Drill: Region → Cluster → City.
@@ -4420,7 +4484,7 @@ document.querySelectorAll('.chip').forEach(b => {
   };
   const clusterFromId = (clId)=>{ const navId=_navPrimary(clId); const c=CLUSTER_BY_ID[navId]||CLUSTER_BY_ID[clId]; if(!c) return null;
     const cityIds=_clusterMemberCities(navId);
-    const cities=cityIds.map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
+    const cities=cityIds.map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:_cityDisplayName(n.props, id) }:null; }).filter(Boolean);
     cities.sort((a,b)=>a.name.localeCompare(b.name));
     const brief=(typeof CLUSTER_BRIEFS!=='undefined')?(CLUSTER_BRIEFS[navId]||CLUSTER_BRIEFS[clId]):null;
     const label=(brief&&(brief.display||brief.display_name))||_clusterDisplayName(c, navId);
