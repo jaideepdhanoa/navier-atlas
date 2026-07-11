@@ -10,6 +10,9 @@ Rule (locked):
     parent_cluster_id + nav_hidden=true and a human-readable cluster_label.
   - Never surface hyphenated water-system IDs as top-level browse chips.
   - City features belong to a cluster's member_city_ids; locales nest under cities.
+  - Display capitalization: every cluster_label and city/locale name must be a
+    human proper-noun form — never the raw kebab-case id, never all-lowercase.
+    IDs stay lowercase; user-visible names do not. (UI reads cluster_label first.)
 
 Usage:
   python3 scripts/grok-taxonomy/validate_cluster_taxonomy.py
@@ -25,6 +28,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CLUSTERS_PATH = ROOT / "data-clean/CLUSTERS.json"
+FBT_PATH = ROOT / "data-clean/FEATURES_BY_TYPE.json"
 
 # Sovereign / multi-island / primary market clusters allowed at top level (no parent).
 # Keep in sync with product nav — water systems must NOT be listed here.
@@ -166,6 +170,72 @@ def is_raw_label(cluster_id: str, label: str | None) -> bool:
     return label.strip().lower() == cluster_id.strip().lower()
 
 
+def is_bad_display_name(val: str | None, entity_id: str | None = None) -> bool:
+    """True when a user-visible name is missing, all-lowercase, or the raw kebab slug.
+
+    Title Case of a single-word id is fine: id `belgium` → label `Belgium`,
+    id `linz` → name `Linz`. Case-insensitive equality alone is NOT a failure.
+    """
+    if not val or not str(val).strip():
+        return True
+    s = str(val).strip()
+    # All-lowercase with letters → never a proper display chip (e.g. "belgium", "bregenz")
+    if s == s.lower() and any(ch.isalpha() for ch in s):
+        return True
+    # Leading ASCII lowercase
+    if s[0].isascii() and s[0].islower() and s[0].isalpha():
+        return True
+    if entity_id:
+        eid = str(entity_id).strip()
+        # Exact raw id reused as display
+        if s == eid:
+            return True
+        # Kebab-case slug reused as display (e.g. name "tampere-finland")
+        if "-" in s and s.lower() == eid.lower():
+            return True
+    return False
+
+
+def check_display_capitalization(clusters: list[dict], errors: list[dict]) -> None:
+    """Every cluster needs a proper cluster_label; cities/locales need proper names."""
+    for c in clusters:
+        cid = c.get("cluster_id") or ""
+        # Prefer cluster_label — UI primary. label/display alone are not enough.
+        clabel = c.get("cluster_label")
+        if is_bad_display_name(clabel, cid):
+            errors.append(
+                {
+                    "cluster_id": cid,
+                    "error": "missing_or_lowercase_cluster_label",
+                    "cluster_label": clabel,
+                    "label": c.get("label"),
+                    "display": c.get("display"),
+                    "hint": "Set cluster_label to human Title Case (e.g. Belgium), never the raw cluster_id",
+                }
+            )
+
+    if not FBT_PATH.exists():
+        return
+    fbt = json.loads(FBT_PATH.read_text(encoding="utf-8"))
+    for kind in ("city", "priority_city", "locale"):
+        for feat in fbt.get(kind) or []:
+            p = feat.get("properties") or feat
+            fid = p.get("id") or ""
+            for field in ("name", "shortName"):
+                val = p.get(field)
+                if is_bad_display_name(val, fid):
+                    errors.append(
+                        {
+                            "feature_kind": kind,
+                            "feature_id": fid,
+                            "error": "missing_or_lowercase_feature_name",
+                            "field": field,
+                            "value": val,
+                            "hint": "Human Title Case name required; never raw city/locale id as display",
+                        }
+                    )
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", dest="json_out")
@@ -174,6 +244,8 @@ def main() -> int:
     clusters = json.loads(CLUSTERS_PATH.read_text())["clusters"]
     errors: list[dict] = []
     warnings: list[dict] = []
+
+    check_display_capitalization(clusters, errors)
 
     for c in clusters:
         cid = c.get("cluster_id") or ""
@@ -257,7 +329,10 @@ def main() -> int:
 
     report = {
         "status": "PASS" if not errors else "FAIL",
-        "rule": "Region→Cluster→City→Locale; water-systems nest under country with nav_hidden",
+        "rule": (
+            "Region→Cluster→City→Locale; water-systems nest under country with nav_hidden; "
+            "display labels Title Case (never raw slug / all-lowercase)"
+        ),
         "errors": errors,
         "warnings": warnings,
         "n_clusters": len(clusters),

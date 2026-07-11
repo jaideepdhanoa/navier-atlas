@@ -968,6 +968,12 @@ for (const t of Object.keys(FEATURES_BY_TYPE)) for (const f of FEATURES_BY_TYPE[
 // Cluster lookup (CLUSTERS.json): cluster_id -> {cluster_label, region, type, anchor, member_city_ids}.
 // Pairs with cluster_id on city nodes + the cluster_briefs surface to drive Region → Cluster → City nav.
 const CLUSTER_BY_ID = {}; if (typeof CLUSTERS!=='undefined') for (const c of (CLUSTERS.clusters||[])) if (c && c.cluster_id) CLUSTER_BY_ID[c.cluster_id]=c;
+// Display name: cluster_label is canonical (Title Case). Fall back to label/display before raw id
+// so a missing cluster_label never surfaces kebab-case chips like "belgium".
+function _clusterDisplayName(c, fallbackId) {
+  if (!c) return fallbackId || '';
+  return c.cluster_label || c.label || c.display || fallbackId || c.cluster_id || '';
+}
 // Nav-visible clusters only — sub-clusters (parent_cluster_id / nav_hidden) are routing anchors, not tier-2 peers.
 const NAV_CLUSTERS = ((typeof CLUSTERS!=='undefined') ? (CLUSTERS.clusters||[]) : []).filter(c => c && c.cluster_id && !c.parent_cluster_id && !c.nav_hidden);
 // WS-5b — market-group nav collapse: one browse chip per group; geometry keeps sub-clusters separate.
@@ -1683,7 +1689,7 @@ map.on('load', () => {
           || String(NODE_INDEX[a].props.name||a).localeCompare(String(NODE_INDEX[b].props.name||b)))[0];
         pos = NODE_INDEX[pick].coords;
       } else if (Array.isArray(c.anchor) && c.anchor.length===2){ pos = c.anchor; }
-      return pos ? { type:'Feature', geometry:{type:'Point', coordinates:pos}, properties:{ cluster_id:c.cluster_id, label:c.cluster_label||c.cluster_id } } : null;
+      return pos ? { type:'Feature', geometry:{type:'Point', coordinates:pos}, properties:{ cluster_id:c.cluster_id, label:_clusterDisplayName(c, c.cluster_id) } } : null;
     }).filter(Boolean) };
   map.addSource('cluster-pins', { type:'geojson', data:_clusterPins });
   map.addLayer({ id:'cluster-points', type:'circle', source:'cluster-pins', maxzoom:7,
@@ -2413,7 +2419,7 @@ function _cityBriefHtml(brief, props, coords){
     <div class="type-row"><span class="type-pill ${isLocale?'locale':'city'}">${isLocale?'area':'city'}</span>${brief.region?`<span class="brief-arch">${escapeHtml(brief.region)}</span>`:''}</div>
     <h2>${escapeHtml(brief.display||brief.display_name||props.shortName||props.name||cid)}</h2>
     ${brief.tagline?`<div class="subtitle">${escapeHtml(brief.tagline)}</div>`:''}
-    <div class="share-row">${_shareLinkBtnHtml()}${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(c.cluster_label)} ↗</button>`:''; })()}</div>
+    <div class="share-row">${_shareLinkBtnHtml()}${(()=>{ const cc=_clusterOf(props.id, props.cluster_id); const c=cc&&CLUSTER_BY_ID[cc]; return c?`<button class="brief-cluster" data-cluster="${escapeHtml(cc)}">Part of ${escapeHtml(_clusterDisplayName(c))} ↗</button>`:''; })()}</div>
     ${_rangeCtrlHtml(coords)}
   </div>`;
   if (ov){
@@ -2633,11 +2639,11 @@ function _regionBriefHtml(rb, slug){
       if (_normRegionDisplay(c.region) === label) cls.push(c);
     }
   }
-  cls.sort((a,b)=>(a.cluster_label||a.cluster_id).localeCompare(b.cluster_label||b.cluster_id));
+  cls.sort((a,b)=>_clusterDisplayName(a).localeCompare(_clusterDisplayName(b)));
   if (cls.length) {
     h+=`<div class="panel-section"><h3>Countries &amp; archipelagos</h3><div class="cl-city-grid">`;
     for (const c of cls) {
-      const name = c.cluster_label || c.cluster_id;
+      const name = _clusterDisplayName(c);
       h+=`<button type="button" class="cl-city" data-cluster="${escapeHtml(c.cluster_id)}">${escapeHtml(name)}</button>`;
     }
     h+=`</div></div>`;
@@ -4352,7 +4358,7 @@ document.querySelectorAll('.chip').forEach(b => {
     const cities = (c.member_city_ids||[]).map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
     if (!cities.length) continue;
     cities.sort((a,b)=>a.name.localeCompare(b.name));
-    (clustersByRegion[r] = clustersByRegion[r] || []).push({ id:c.cluster_id, label:c.cluster_label||c.cluster_id, cities });
+    (clustersByRegion[r] = clustersByRegion[r] || []).push({ id:c.cluster_id, label:_clusterDisplayName(c, c.cluster_id), cities });
   }
   for (const r in clustersByRegion) clustersByRegion[r].sort((a,b)=> a.label.localeCompare(b.label));   // alphabetical (matches L1 regions)
   // All city nodes per region (partner flat-city row when region+cluster tiers collapse to one list).
@@ -4417,7 +4423,7 @@ document.querySelectorAll('.chip').forEach(b => {
     const cities=cityIds.map(id=>{ const n=NODE_INDEX[id]; return n?{ id, coords:n.coords, props:n.props, name:(n.props.shortName||n.props.name||id) }:null; }).filter(Boolean);
     cities.sort((a,b)=>a.name.localeCompare(b.name));
     const brief=(typeof CLUSTER_BRIEFS!=='undefined')?(CLUSTER_BRIEFS[navId]||CLUSTER_BRIEFS[clId]):null;
-    const label=(brief&&(brief.display||brief.display_name))||(c.cluster_label||navId);
+    const label=(brief&&(brief.display||brief.display_name))||_clusterDisplayName(c, navId);
     return cities.length?{ id:navId, label, cities }:null; };
   const MAX_INLINE = 99;   // show every region inline (the row flex-wraps) — no "More" dropdown
   let moreMenu = null; const closeMore = ()=>{ if (moreMenu) moreMenu.style.display='none'; };
