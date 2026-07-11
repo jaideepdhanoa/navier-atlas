@@ -1,0 +1,134 @@
+{
+  "status": "release_held_regeneration_required",
+  "as_of": "2026-07-11T04:38:42Z",
+  "partner": "swing",
+  "deck_id": "1GMtfP8ThaOzAF2BgTiWxUHeH6fgSyDixmarParV4yNQ",
+  "sheet_id": "1PxUtIzZqbpIAZ752UR1DhBBhn0PynoftYfrtu7EbY98",
+  "source_aggregate": "finance/recal/agg-swing.json",
+  "country_cost": "South Korea",
+  "model_rollup": {
+    "som_floor_usd": 10453754,
+    "transport_spend_pool_usd": 104537675
+  },
+  "live_workbook_rollup": {
+    "som_floor_usd": 10453757,
+    "transport_spend_pool_usd": 104537675,
+    "model_sheet_som_delta_usd": 3
+  },
+  "live_deck_findings": [
+    "Slides 8-10 still use pre-correction per-boat economics and claim profitability; all three claims are contradicted by the current South Korea-costed MID model.",
+    "Slides 8-11 link to obsolete Sheet 1v0ywhNFk_fA1JRVhizWlz89RKgQWlID9RD3LfBhVB2Y instead of the registered Swing Sheet.",
+    "Slides 8-10 combine marina with charging and maintenance with insurance; rebuild with six flush OPEX lines.",
+    "Slide 11 rounded ladder values match the rebuilt workbook; preserve numbers but refresh links and plain-English labels.",
+    "The source aggregate and live workbook differ by $3 on the SOM floor; reconcile the independent engines before release."
+  ],
+  "selected_route_mid_case": [
+    {
+      "slide": 8,
+      "route_id": "rn-ed5d6c0609fe",
+      "corridor": "Jeju -> Seogwipo Jungmun",
+      "distance_nm": 7.1,
+      "fare_usd": 8.0,
+      "trips_per_day": 14,
+      "operating_days_yr": 274,
+      "revenue_leg_pct": 0.65,
+      "pax_per_trip": 4.4,
+      "paid_pax_yr": 10969.0,
+      "revenue_per_boat_yr": 87754.0,
+      "opex_yr": 232451.0,
+      "ebitda_yr": -144697.0,
+      "margin": -1.649,
+      "payback_years": null,
+      "co2_saved_t_yr": 108.5,
+      "capex_usd": 600000,
+      "cost_components": {
+        "energy_usd_yr": 3500.0,
+        "crew_usd_yr": 134951.0,
+        "marina_overhead_usd_yr": 51000,
+        "maintenance_usd_yr": 10000,
+        "insurance_usd_yr": 15000.0,
+        "charging_berth_usd_yr": 18000,
+        "depreciation_usd_yr": 30000.0
+      },
+      "ebitda_break_even_fare_usd": 21.19,
+      "current_live_claim_supported": false
+    },
+    {
+      "slide": 9,
+      "route_id": "rn-38d097ab8503",
+      "corridor": "Busan -> Busan/Geoje Cluster",
+      "distance_nm": 3.5,
+      "fare_usd": 18.0,
+      "trips_per_day": 15,
+      "operating_days_yr": 274,
+      "revenue_leg_pct": 0.65,
+      "pax_per_trip": 4.4,
+      "paid_pax_yr": 11757.0,
+      "revenue_per_boat_yr": 211622.0,
+      "opex_yr": 230800.0,
+      "ebitda_yr": -19178.0,
+      "margin": -0.091,
+      "payback_years": null,
+      "co2_saved_t_yr": 57.3,
+      "capex_usd": 600000,
+      "cost_components": {
+        "energy_usd_yr": 1849.0,
+        "crew_usd_yr": 134951.0,
+        "marina_overhead_usd_yr": 51000,
+        "maintenance_usd_yr": 10000,
+        "insurance_usd_yr": 15000.0,
+        "charging_berth_usd_yr": 18000,
+        "depreciation_usd_yr": 30000.0
+      },
+      "ebitda_break_even_fare_usd": 19.63,
+      "current_live_claim_supported": false
+    },
+    {
+      "slide": 10,
+      "route_id": "rn-66dce8d7e72d",
+      "corridor": "Incheon Coastal Passenger Terminal -> Muuido Island Ferry Berth",
+      "distance_nm": 11.7,
+      "fare_usd": 8.0,
+      "trips_per_day": 11,
+      "operating_days_yr": 274,
+      "revenue_leg_pct": 0.65,
+      "pax_per_trip": 4.4,
+      "paid_pax_yr": 8620.0,
+      "revenue_per_boat_yr": 68957.0,
+      "opex_yr": 233483.0,
+      "ebitda_yr": -164526.0,
+      "margin": -2.386,
+      "payback_years": null,
+      "co2_saved_t_yr": 140.4,
+      "capex_usd": 600000,
+      "cost_components": {
+        "energy_usd_yr": 4532.0,
+        "crew_usd_yr": 134951.0,
+        "marina_overhead_usd_yr": 51000,
+        "maintenance_usd_yr": 10000,
+        "insurance_usd_yr": 15000.0,
+        "charging_berth_usd_yr": 18000,
+        "depreciation_usd_yr": 30000.0
+      },
+      "ebitda_break_even_fare_usd": 27.09,
+      "current_live_claim_supported": false
+    }
+  ],
+  "deterministic_action": [
+    "Reconcile the $3 model-to-workbook SOM delta without papering it over.",
+    "Regenerate slides 8-10 from current agg-swing.json and the current transparent workbook; do not retain profitable-from-year-one copy unless the rebuilt model supports it.",
+    "Use exact sealed route IDs above; no corridor or route substitutions without an ID-based source match.",
+    "Render Energy, Captain/crew, Marina+overhead, Maintenance, Insurance, and Charging berth as six flush OPEX lines.",
+    "Point every model/economics link on slides 8-11 to the registered Swing Sheet ID.",
+    "Keep slide 11 midpoint ladder values at $51M, $231M, $922M, $2.77B, and $124M unless source inputs change.",
+    "Apply through the Slides API, pull the full live inventory afterward, run partner-copy lint and visual QA, and update deck config plus manifest."
+  ],
+  "acceptance": {
+    "model_sheet_som_delta_usd": 0,
+    "unsupported_profitability_claims": 0,
+    "obsolete_sheet_links": 0,
+    "opex_lines": 6,
+    "source_country": "South Korea",
+    "live_inventory_reconciled": true
+  }
+}
