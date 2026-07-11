@@ -53,11 +53,15 @@ Trigger the cascade whenever any of these change:
    (opex, greenfield width, CAPEX) lives in **both**, and each has its **own** per-partner override map (e.g. the
    sheet's greenfield override block, ~L520). After any global rule change, verify the partner JSON and the sheet
    tell the *same* story — a mismatch ships a deck that contradicts its own backing sheet.
-8. **Every partner country needs a `country-reference.json` row (LB-243).** Both engines silently fall back to
-   **Singapore** opex/energy/grid-CO₂/crew/marina costs for any country missing from `model/country-reference.json`.
-   That is invisible and confidently-wrong (it once put Singapore captain salaries on Greece, Croatia, Senegal…).
-   Before cascading a partner with new markets, run the preflight in §B.0. Add honest source-tiered rows for any
-   gap, *then* cascade.
+8. **Country economics fail closed; no fallback country exists (LB-243 hardening, 2026-07-10).** Every active
+   corridor must resolve its exact `country` string to a `country-reference.json` row with five numeric fields:
+   captain, commercial energy, grid CO₂, berth/port administration, and cost index. `aggregate.py` and
+   `build_transparent_sheet.py` must raise on a missing/incomplete row; they must never borrow Singapore or another
+   market. If research cannot support all five values, add a descriptive `_economics_hold_reason` to the corridor:
+   both engines exclude it and the workbook publishes it on the **Economics holds** tab. Composite/pseudo labels
+   (`CrossBorder`, `USVI / BVI`) are forbidden: assign an evidenced vessel home-port country or hold the corridor.
+   A T4/T5 modeled field is allowed only when every input is sourced, the formula and operational assumptions are
+   explicit, and confidence is labeled. Run the gate in §B.0 before every aggregate, sheet, sidecar, or deck seal.
 9. **CAPEX is region-keyed for commercial, $1M for hospitality (LB-243 + LB-260):**
    - **Commercial / ride-hail (region rule, LB-243):** **US + EU = $900K/vessel; everywhere else = $600K.** Keyed on
      the corridor's country in `aggregate.py`, rendered as a **per-country CAPEX column** in the transparent sheet
@@ -135,18 +139,18 @@ Engine reads `corridors.json` by default; pass `--corridors /tmp/corridors-P.jso
 partner. Run from `finance/model/` unless noted. `openpyxl` isn't preinstalled → run sheet builders via
 `uv run --with openpyxl python3 ...`.
 
-**§B.0 — Preflight: country-reference coverage (do this before step 1 whenever P has new markets).**
-Catches the silent Singapore-opex fallback (golden rule #8). Add honest rows for any miss, then proceed.
+**§B.0 — Mandatory fail-closed country-reference gate (before step 1 and again before delivery).**
+From repository root, validate the exact partner scope. A PASS means every active corridor has an exact complete
+row; explicitly held corridors are listed but cannot enter model or sheet totals. Any error blocks the cascade.
 ```
-python3 - << 'EOF'
-import json
-corr=json.load(open('corridors.json'))['markets']
-cref=set(json.load(open('country-reference.json'))['countries'])
-P='bolt'  # set to the partner you're cascading
-need={m['country'] for k,m in corr.items() if k.startswith(P+'-') for c in [m] }  # adapt to your shape
-print('missing from country-reference:', sorted(need - cref) or 'none ✅')
-EOF
+python3 scripts/validate_country_reference.py --partner P \
+  --corridors finance/model/corridors.json \
+  --country-reference finance/model/country-reference.json \
+  --json /tmp/P-country-reference-gate.json
 ```
+For a new country: save authoritative wage/on-cost, commercial-tariff, grid-factor, port/terminal, FX and price-level
+evidence. Never convert a partial row into a production value by copying/scaling a neighbor silently. If one field
+remains unsupported, hold the affected corridors and show the hold in the sheet; do not merely omit the warning.
 
 ```
 # 1. aggregate corridors → rollup (grounded floor + cascade-estimated upside)

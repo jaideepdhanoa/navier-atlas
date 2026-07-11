@@ -14,7 +14,7 @@ Design (locked):
   - Parity pricing (discount 1.0). Per-seat shuttle only.
   - NULL beats a guess: grounded demand and cascade-estimated demand are kept
     SEPARATE so the rollup shows a grounded FLOOR and an estimated TOTAL.
-  - Cross-border opex = vessel home-port country (R16) = Singapore default.
+  - Country opex is exact-key only. Cross-border corridors must declare their evidenced home-port country; no fallback.
   - Duplicates (_dup_of, or label seen in a real market) excluded from rollup.
 
 Usage: python3 aggregate.py [--json out.json] [--partner grab] [--dedup unique]
@@ -56,13 +56,23 @@ spec = importlib.util.spec_from_file_location("atom", os.path.join(HERE, "atom.p
 atom = importlib.util.module_from_spec(spec); spec.loader.exec_module(atom)
 
 SCEN = const["operating_defaults"]["_utilization_scenarios"]
-CROSS_BORDER_HOMEPORT = "Singapore"   # R16: default home-port opex for cross-border
+COUNTRY_REQUIRED_FIELDS = ("captain_usd_yr", "energy_usd_kwh", "grid_co2_kg_kwh", "marina_overhead_usd_yr", "cost_index")
 
 def cval(country, key):
     row = cref.get(country)
-    if not row or key not in row: return None
-    v = row[key]
-    return v["value"] if isinstance(v, dict) and "value" in v else v
+    if not row:
+        raise ValueError(f"Missing exact country-reference row for {country!r}; no fallback is permitted")
+    v = row.get(key)
+    value = v.get("value") if isinstance(v, dict) else v
+    if not isinstance(value, (int, float)):
+        raise ValueError(f"Incomplete country-reference value: {country}.{key}; hold the corridor or source the field")
+    return value
+
+def validate_country(country):
+    if not country or country not in cref:
+        raise ValueError(f"Missing exact country-reference row for {country!r}; no fallback is permitted")
+    for key in COUNTRY_REQUIRED_FIELDS:
+        cval(country, key)
 
 PIONEER_RANGE_NM = const["vessels"]["pioneer_ii"]["range_nm"]
 PIONEER_RANGE_NM = PIONEER_RANGE_NM["value"] if isinstance(PIONEER_RANGE_NM, dict) else PIONEER_RANGE_NM
@@ -111,10 +121,9 @@ def enrich(c, market, market_obj=None):
     """Return a deep copy with L3 opex injected from country layer + demand mapped."""
     c = copy.deepcopy(c)
     L3 = c.setdefault("L3_locals", {})
-    # --- country selection (R16: cross-border or any non-cref country -> home-port) ---
+    # --- exact country selection: missing/pseudo labels fail closed; held corridors are skipped upstream ---
     country = c.get("country")
-    if country not in cref:               # 'CrossBorder' or missing -> home-port opex (R16)
-        country = CROSS_BORDER_HOMEPORT
+    validate_country(country)
     c["_opex_country"] = country
     # LB-243/LB-260: capex rule — hospitality (capex_tier) -> $1M; else region-keyed US/EU $900K / ROW $600K.
     if L3.get("capex_usd_override") is None:
@@ -189,7 +198,7 @@ def main():
     # Global run: physics are partner-independent — the SAME pier-pair may legitimately appear in
     # bolt-uae, yango-uae, uae-careem, etc. Only honor explicit _dup_of in global mode.
     seen_labels = {}
-    rows = []; roadmap = []
+    rows = []; roadmap = []; economics_holds = []
     # PARTNER SCOPING (multi-partner safety): only aggregate markets owned by this partner.
     # --partner global: process ALL markets (route physics are partner-independent); market.partner
     # is provenance only. Output defaults to finance/recal/agg-global.json.
@@ -200,6 +209,13 @@ def main():
         if not in_scope(mid):
             continue
         for c in mk["corridors"]:
+            if c.get("_economics_hold_reason"):
+                economics_holds.append({
+                    "market": mid, "route_id": c.get("route_id"),
+                    "corridor": f"{c.get('from','')} -> {c.get('to','')}",
+                    "country": c.get("country"), "reason": c["_economics_hold_reason"],
+                })
+                continue
             if c.get("_premium_cascade"): continue  # R5-EXT: public-transit/no-premium-tier — excluded from floor & estimation
             key = (c.get("from","").strip().lower(), c.get("to","").strip().lower())
             if global_mode:
@@ -281,12 +297,12 @@ def main():
     pools_by_country = {}; all_pools = []
     for mid, mk in corr["markets"].items():
         for c in mk["corridors"]:
-            if c.get("_dup_of") or c.get("_premium_cascade") or c.get("_forward_sam") or c.get("_subset_of"): continue
+            if c.get("_dup_of") or c.get("_premium_cascade") or c.get("_forward_sam") or c.get("_subset_of") or c.get("_economics_hold_reason"): continue
             L3 = c.get("L3_locals") or {}
             pax = L3.get("corridor_annual_oneway_pax")
             if pax is None:
                 pax = L3.get("demand_ferry_rides_yr") or L3.get("demand_arrivals_rides_yr")
-            cty = c.get("country") or (CROSS_BORDER_HOMEPORT if mid=="cross-border" else None)
+            cty = c.get("country")
             if pax:
                 pools_by_country.setdefault(cty, []).append(pax)
                 all_pools.append(pax)
@@ -429,6 +445,7 @@ def main():
         "n_corridors_total": len(uniq), "n_grounded": len(grounded), "n_estimated": len(estimated),
         "n_forward_sam": len(forward_sam),
         "n_duplicates_excluded": sum(1 for r in rows if r["is_dup"]),
+        "n_economics_holds": len(economics_holds),
         "dedup_mode": dedup_mode if (global_mode and dedup_mode) else None,
         "n_unique_geometry": len(uniq) if (global_mode and dedup_mode == "unique") else None,
         "grounded_floor": {
@@ -481,9 +498,11 @@ def main():
     print(f"\n--- ROLLUP ({partner}) ---")
     print(json.dumps(rollup, indent=2))
     print("\n* = fleet estimated via cascade (country/region median demand); grounded floor excludes these.")
+    if economics_holds:
+        print(f"HELD: {len(economics_holds)} corridor(s) excluded from all economics; see economics_holds in JSON output.")
 
     # ---- LB-82 CARRY-FORWARD: merge prev rows for unscoped markets ----
-    out_obj = {"rows": rows, "rollup": rollup}
+    out_obj = {"rows": rows, "rollup": rollup, "economics_holds": economics_holds}
     default_recal = os.path.join(os.path.dirname(HERE), "recal",
                                  "agg-global.json" if global_mode else f"agg-{partner}.json")
     out_path = sys.argv[sys.argv.index("--json")+1] if "--json" in sys.argv else None

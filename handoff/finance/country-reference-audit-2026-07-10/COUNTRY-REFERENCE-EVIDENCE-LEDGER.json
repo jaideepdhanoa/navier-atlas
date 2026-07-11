@@ -1,0 +1,2010 @@
+{
+  "schema": "navier.country-reference-decision-ledger.v1",
+  "date": "2026-07-10",
+  "policy": "Exact complete country row or explicit corridor economics hold. No fallback country.",
+  "final_decisions": {
+    "South Korea": {
+      "decision": "SEAL_READY",
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": 74973,
+          "source_tier": "T4",
+          "confidence": "med-low",
+          "source": "KOSWEC 2026 Korea Seafarer's Statistical Year Book coastal Leisure & Ferry Boat: Master KRW3.890m/mo + OS deck rating KRW3.506m/mo; 12 months; 20.160716% itemized employer on-cost; World Bank 2025 FX KRW1,422.440833/USD. Formula and citations: handoff/finance/country-reference-audit-2026-07-10/COUNTRY-REFERENCE-EVIDENCE-LEDGER.json."
+        },
+        "energy_usd_kwh": {
+          "value": 0.1214,
+          "source_tier": "T2",
+          "confidence": "med",
+          "source": "KEPCO Dec-2025 Electricity Statistics: 2025 general-service realized revenue / electricity sold = KRW172.6879/kWh; World Bank 2025 FX = USD0.1214025/kWh. National commercial class; site demand/tax treatment remains a deployment sensitivity."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.4173,
+          "source_tier": "T1",
+          "confidence": "high",
+          "source": "Korea Energy Agency TIPS, updated Dec-2025: 2023 consumption-end factor 0.4173 tCO2e/MWh = 0.4173 kgCO2e/kWh."
+        },
+        "marina_overhead_usd_yr": {
+          "value": 51000,
+          "source_tier": "T4",
+          "confidence": "low",
+          "source": "Conservative planning ceiling from Busan MOF designated-port tariff: KRW135/GT per entry or departure; 49-GT upper-bound category; 15 revenue sailings/day model cap × 2 movements; 365 days; plus KRW3,913 monthly coastal-vessel berth fee; World Bank 2025 FX. Formula = (135×49×30×365 + 3,913×12)/1,422.440833 = USD50,956, rounded USD51k. Replace with site tariffs and actual GT/calls before contracting."
+        },
+        "cost_index": {
+          "value": 0.949,
+          "confidence": "high",
+          "source": "World Bank 2025 GDP price-level index PA.NUS.GDP.PLI: Korea 57.3893307 / Singapore 60.4907041 = 0.9487298."
+        }
+      },
+      "production_action": "Use exact row for Swing/Naver/Kakao. Marina is a transparent conservative planning ceiling; replace at contracting."
+    },
+    "Namibia": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "captain_usd_yr",
+        "marina_overhead_usd_yr"
+      ],
+      "production_action": "Exclude 3 Yango corridors from all economics."
+    },
+    "Venezuela": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "captain_usd_yr",
+        "energy_usd_kwh",
+        "marina_overhead_usd_yr",
+        "cost_index"
+      ],
+      "production_action": "Exclude 3 Yango corridors from all economics."
+    },
+    "Cameroon": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "captain_usd_yr",
+        "marina_overhead_usd_yr"
+      ],
+      "production_action": "Exclude 3 Yango corridors from all economics."
+    },
+    "Congo (Brazzaville)": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "captain_usd_yr",
+        "energy_usd_kwh",
+        "marina_overhead_usd_yr"
+      ],
+      "production_action": "Exclude 2 Yango corridors from all economics."
+    },
+    "Argentina": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "captain_usd_yr fully-loaded ART component",
+        "marina_overhead_usd_yr",
+        "Uruguay endpoint allocation"
+      ],
+      "production_action": "Exclude 2 DiDi corridors from all economics."
+    },
+    "Costa Rica": {
+      "decision": "ECONOMICS_HOLD",
+      "unresolved": [
+        "marina_overhead_usd_yr"
+      ],
+      "production_action": "Exclude 2 DiDi Gulf of Nicoya corridors from all economics."
+    }
+  },
+  "label_repairs": {
+    "USVI / BVI": {
+      "result": "country=U.S. Virgin Islands; destination_country=British Virgin Islands; economics held until vessel home port is verified"
+    },
+    "CrossBorder": {
+      "result": "four Singapore-origin routes assigned country=Singapore and destination country explicitly recorded; assignment already supported by each route fare record"
+    }
+  },
+  "raw_research": {
+    "argentina": {
+      "country": "Argentina",
+      "target_geography": [
+        "DiDi Rosario terminal–Isla Sabino Corsi",
+        "Puerto Madero–Colonia"
+      ],
+      "research_as_of": "2026-07-10",
+      "verdict": "PARTIAL_HOLD",
+      "currency_vintage": {
+        "provider": "Banco Central de la República Argentina (BCRA)",
+        "series": "Cotizaciones/USD; DOLAR E.E.U.U.",
+        "date": "2026-07-08",
+        "ars_per_usd": 1488.0,
+        "source_url": "https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones/USD",
+        "quotation": "BCRA API result: fecha 2026-07-08; codigoMoneda USD; tipoCotizacion 1488.00000000."
+      },
+      "inflation_vintage": {
+        "provider": "INDEC series distributed through datos.gob.ar",
+        "series": "IPC nivel general nacional, base diciembre 2016=100, monthly",
+        "wage_base_month": "2025-03",
+        "wage_base_index": 8353.3158,
+        "latest_used_month": "2026-05",
+        "latest_used_index": 11607.3937,
+        "factor": 1.3895552350600704,
+        "source_url": "https://infra.datos.gob.ar/catalog/sspm/dataset/145/distribution/145.3/download/indice-precios-al-consumidor-nivel-general-base-diciembre-2016-mensual.csv",
+        "quotation": "CSV rows: 2025-03-01, ipc_ng_nacional=8353.3158; 2026-05-01, ipc_ng_nacional=11607.3937. May 2026 is the latest observation in the downloaded official distribution as of the research date."
+      },
+      "field_research": {
+        "captain_usd_yr": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_tier": "T2",
+          "definition_test": "FAIL: official wages, SAC, inflation and enumerated statutory percentages are source-backed, but mandatory ART workers-compensation is explicitly variable and no vessel/operator quote was found. Therefore the result is not fully loaded.",
+          "source_facts": [
+            {
+              "fact": "The homologated FENA/guild scale fixes March 2025 monthly basic pay at ARS 3,849,854.49 for CAPITAN FLUVIAL and ARS 1,541,409.99 for MARINERO.",
+              "source": "Ministerio de Capital Humano, Disposición 908/2025, Acuerdo 1204/25, Annex, page 4 of the imported report (salary table; image page 3 of the agreement).",
+              "url": "https://www.argentina.gob.ar/normativa/416777_disp908-anexo1_pdf/archivo",
+              "norm_url": "https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-908-2025-416777"
+            },
+            {
+              "fact": "The same agreement states the January, February and March 2025 values apply to embarked personnel represented by the signatory maritime guilds; the parties planned a later April 2025–March 2026 update.",
+              "source": "Disposición 908/2025 annex, agreement clauses PRIMERO and TERCERO, pages 1–2 of the agreement.",
+              "url": "https://www.argentina.gob.ar/normativa/416777_disp908-anexo1_pdf/archivo"
+            },
+            {
+              "fact": "All workers receive Sueldo Anual Complementario (SAC); each half-year installment is 50% of the highest monthly remuneration in the semester.",
+              "source": "Argentina.gob.ar, Salario, Aguinaldo section.",
+              "url": "https://www.argentina.gob.ar/trabajo/buscastrabajo/conocetusderechos/salario"
+            },
+            {
+              "fact": "The official employer table lists Jubilación 16%, PAMI 2%, Obra Social 6%, Fondo Nacional de Empleo 1.5%, and Seguro de Vida Obligatorio 0.3%, totaling 25.8%; it lists ART as 'Lo que cotice la ART'.",
+              "source": "Argentina.gob.ar, Tabla de Aportes y Contribuciones - Seguridad Social.",
+              "url": "https://www.argentina.gob.ar/trabajo/buscastrabajo/conocetusderechos/salario"
+            }
+          ],
+          "modeled_provisional_value_excluding_art_usd_yr": 82335.57,
+          "modeling_formula": "((ARS 3,849,854.49 captain + ARS 1,541,409.99 marinero) × (IPC May-2026 11,607.3937 / IPC Mar-2025 8,353.3158) × 13 months × 1.258) / 1,488 ARS/USD = USD 82,335.57/year. Thirteen months represents 12 monthly wages plus one full monthly-equivalent SAC. The 25.8% factor includes only the percentages enumerated by the official table and excludes ART.",
+          "modeled_inputs": {
+            "captain_role": "CAPITAN FLUVIAL",
+            "captain_monthly_ars_march_2025": 3849854.49,
+            "deckhand_role": "MARINERO",
+            "deckhand_monthly_ars_march_2025": 1541409.99,
+            "inflated_captain_monthly_ars_may_2026": 5349585.46,
+            "inflated_deckhand_monthly_ars_may_2026": 2141874.32,
+            "paid_month_equivalents": 13,
+            "enumerated_employer_on_cost_rate": 0.258,
+            "art_rate": null,
+            "ars_per_usd": 1488.0
+          },
+          "unresolved": [
+            "Mandatory ART rate/premium for this maritime operation and vessel class.",
+            "No later homologated FENA scale covering May/July 2026 was located; CPI escalation is modeling, not a claim that the agreement itself indexes wages.",
+            "Confirm the FENA scale and CAPITAN FLUVIAL/MARINERO classifications apply to the actual operator and craft."
+          ]
+        },
+        "energy_usd_kwh": {
+          "recommended_value": 0.08,
+          "confidence": "medium-low",
+          "source_tier": "T1",
+          "source_facts": [
+            {
+              "geography": "Rosario, Santa Fe",
+              "fact": "EPE Tarifa 2 Grandes Demandas, maximum demand >20 kW, low voltage and demand <300 kW, effective for consumption from 1 June 2026: peak ARS 116.09722/kWh, rest ARS 112.71193/kWh, valley ARS 111.13614/kWh. Monthly commercial charge ARS 98,968.32; capacity charges ARS 32,619.260/kW-month peak contracted, ARS 14,544.911/kW-month off-peak contracted, and ARS 10,424.299/kW-month acquired power.",
+              "source": "Empresa Provincial de la Energía de Santa Fe, Cuadro Tarifario Completo Mensual, Tarifa 2 - Grandes Demandas, page 1.",
+              "url": "https://www.epe.santafe.gov.ar/institucional/grandes-usuarios",
+              "tax_note": "The table lists VAT 27% for registered taxpayers (normally an input tax), provincial FER 1.5%, Rosario municipal levies 6%, 0.6%, and 1.8%, plus ARS 230.81/month renewable-energy levy. These are identified but not embedded in the marginal-energy candidate."
+            },
+            {
+              "geography": "Buenos Aires (Edesur distribution area; comparator for Puerto Madero)",
+              "fact": "Edesur Tarifa 3 Grandes Demandas, low voltage and contracted demand <300 kW, effective 1 July 2026: peak ARS 122.164/kWh, rest ARS 118.112/kWh, valley ARS 117.242/kWh. Monthly fixed charge ARS 195,056.67; contracted-demand charge ARS 13,478.56/kW-month; acquired-demand charge ARS 10,709.37/kW-month.",
+              "source": "Edesur Cuadro Tarifario, Resolución ENReGE 205/26, official tariff image.",
+              "url": "https://www.edesur.com.ar/novedades/cuadro-tarifario/",
+              "image_url": "https://www.edesur.com.ar/wp-content/uploads/2026/07/CT_JUL26_WEB.jpg",
+              "exclusion_note": "The official image states values exclude VAT and all other applicable taxes."
+            }
+          ],
+          "conversions": [
+            "Rosario rest-energy component: 112.71193 / 1,488 = USD 0.075747/kWh.",
+            "Buenos Aires rest-energy component: 118.112 / 1,488 = USD 0.079376/kWh. Rounded to USD 0.08/kWh for the repository row because Puerto Madero is in the target geography and this value also remains within 6% of Rosario."
+          ],
+          "modeling_scope": "Marginal variable-energy component before taxes. Fixed, contracted-demand and acquired-demand charges cannot be allocated per kWh without charger kW, load factor and monthly throughput; they must remain in the site/charging-infrastructure model rather than be silently embedded here.",
+          "unresolved": [
+            "Confirm the precise distributor/connection point for the Puerto Madero terminal.",
+            "Obtain contracted kW and monthly charging kWh before calculating an all-in delivered tariff.",
+            "Determine recoverability/applicability of local taxes for the operating entity."
+          ]
+        },
+        "grid_co2_kg_kwh": {
+          "recommended_value": 0.219,
+          "confidence": "high",
+          "source_tier": "T1",
+          "source_facts": [
+            {
+              "fact": "CAMMESA's official Factor de Emisión workbook reports monthly OFERTA unit-emission factors and underlying total thermal emissions and total supply. For calendar 2025, summed thermal emissions are 32.19823025423137 million tCO2 and summed OFERTA TOTAL is 147,092,572.573 MWh.",
+              "source": "CAMMESA, Factor de Emisión workbook, sheet 'Factor de Emisión': row 38 TERMICA emissions, row 12 OFERTA TOTAL, Jan–Dec 2025 columns; row 48 is monthly EMISIONES UNITARIO OFERTA.",
+              "url": "https://cammesaweb.cammesa.com/download/factor-de-emision/",
+              "download_url": "https://cammesaweb.cammesa.com/download/factor-de-emision/?wpdmdl=41432"
+            }
+          ],
+          "modeling_formula": "32.19823025423137 million tCO2 × 1,000,000 / 147,092,572.573 MWh = 0.2188977301 tCO2/MWh = 0.2188977301 kgCO2/kWh; rounded to 0.219.",
+          "vintage": "calendar year 2025, latest complete year; 2026 workbook observations through May were not used as an incomplete-year factor",
+          "unresolved": []
+        },
+        "marina_overhead_usd_yr": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_tier": "T1",
+          "definition_test": "FAIL: an official recurring Puerto Buenos Aires vessel charge was found, but berth/terminal concession charges, Rosario terminal charges and mandatory Prefectura administration were not completely sourced.",
+          "source_facts": [
+            {
+              "fact": "Puerto Buenos Aires' official regime defines fluvial passenger vessels serving Buenos Aires–Uruguay. For vessels with TRN <150, the charge is USD 1,586 per vessel per calendar quarter or fraction; the direct annualized port-charge lower bound is USD 6,344.",
+              "source": "Administración General de Puertos, Disposición 195/GG/2023, Anexo I, Module I, 1.3.2.2, page 7 of 30.",
+              "url": "https://www.argentina.gob.ar/transporte/administracion-general-puertos-se/puertos/tarifas"
+            },
+            {
+              "fact": "The same tariff sets a Buenos Aires–Colonia passenger port charge of USD 2.16 per embarking passenger; this is variable passenger cost, not annual per-vessel overhead.",
+              "source": "Disposición 195/GG/2023, Anexo I, Module III, 1.1.2, pages 14–15 of 30.",
+              "url": "https://www.argentina.gob.ar/transporte/administracion-general-puertos-se/puertos/tarifas"
+            }
+          ],
+          "modeled_lower_bound_usd_yr": 6344.0,
+          "modeling_formula": "USD 1,586/quarter × 4 = USD 6,344/year, assuming the Navier craft is below 150 TRN and is continuously based/operating at Puerto Buenos Aires.",
+          "vessel_assumption": "Passenger vessel below 150 TRN. No calls-per-year assumption is needed for this quarterly charge.",
+          "unresolved": [
+            "Berth/mooring and private terminal/concession fee at Puerto Madero/Dársena Norte.",
+            "Rosario terminal/berth tariff for Rosario–Isla Sabino Corsi.",
+            "Prefectura vessel registration, safety-certificate and other mandatory annual administration by vessel class.",
+            "Whether the actual Puerto Madero operating location falls within the cited AGP tariff jurisdiction and whether any operator-specific concession tariff supersedes or supplements it."
+          ]
+        },
+        "cost_index": {
+          "recommended_value": 0.76,
+          "confidence": "medium",
+          "source_tier": "T2",
+          "source_facts": [
+            {
+              "country": "Argentina",
+              "year": 2025,
+              "ppp_conversion_factor_lcu_per_intl_dollar": 567.297421343424,
+              "official_exchange_rate_lcu_per_usd": 1240.85125,
+              "price_level_ratio": 0.45718406726303745,
+              "ppp_url": "https://api.worldbank.org/v2/country/ARG/indicator/PA.NUS.PPP?format=json&per_page=10",
+              "fx_url": "https://api.worldbank.org/v2/country/ARG/indicator/PA.NUS.FCRF?format=json&per_page=10"
+            },
+            {
+              "country": "Singapore",
+              "year": 2025,
+              "ppp_conversion_factor_lcu_per_intl_dollar": 0.790885710223008,
+              "official_exchange_rate_lcu_per_usd": 1.30745,
+              "price_level_ratio": 0.604907040592763,
+              "ppp_url": "https://api.worldbank.org/v2/country/SGP/indicator/PA.NUS.PPP?format=json&per_page=10",
+              "fx_url": "https://api.worldbank.org/v2/country/SGP/indicator/PA.NUS.FCRF?format=json&per_page=10"
+            }
+          ],
+          "modeling_formula": "[(ARG PPP / ARG official FX) / (SGP PPP / SGP official FX)] = [(567.297421343424 / 1240.85125) / (0.790885710223008 / 1.30745)] = 0.7557922732, rounded to 0.76 with Singapore=1.00.",
+          "vintage": "World Bank 2025 observations; API source last updated 2026-07-01",
+          "unresolved": []
+        }
+      },
+      "candidate_repository_row": {
+        "Argentina": {
+          "captain_usd_yr": {
+            "value": null,
+            "source_tier": "T2",
+            "confidence": "low",
+            "source": "HOLD. Official FENA March-2025 CAPITAN FLUVIAL + MARINERO scale, INDEC CPI to May-2026, 13 wage-month equivalents, official 25.8% enumerated employer contributions and BCRA 2026-07-08 FX produce USD 82,335.57 excluding ART. ART is mandatory and officially listed as variable ('Lo que cotice la ART'), so the fully loaded value cannot be sealed."
+          },
+          "energy_usd_kwh": {
+            "value": 0.08,
+            "source_tier": "T1",
+            "confidence": "med-low",
+            "source": "Official June/July-2026 large-demand variable energy tariffs: EPE Rosario T2 B1 rest ARS 112.71193/kWh = USD 0.07575; Edesur Buenos Aires T3 BT<300kW rest ARS 118.112/kWh = USD 0.07938 at BCRA ARS 1,488/USD (2026-07-08). Candidate is rounded Buenos Aires value; fixed/demand charges and taxes are identified but excluded pending load profile/entity tax treatment."
+          },
+          "grid_co2_kg_kwh": {
+            "value": 0.219,
+            "source_tier": "T1",
+            "confidence": "high",
+            "source": "CAMMESA official Factor de Emisión workbook, calendar-2025 weighted OFERTA factor: 32.198230254 MMtCO2 / 147,092,572.573 MWh = 0.218897730 kgCO2/kWh, rounded."
+          },
+          "marina_overhead_usd_yr": {
+            "value": null,
+            "source_tier": "T1",
+            "confidence": "low",
+            "source": "HOLD. Official Puerto Buenos Aires tariff gives a USD 6,344/year recurring lower bound for a fluvial passenger vessel below 150 TRN, but berth/terminal concession, Rosario terminal, and mandatory Prefectura annual charges remain unresolved."
+          },
+          "cost_index": {
+            "value": 0.76,
+            "source_tier": "T2",
+            "confidence": "med",
+            "source": "World Bank 2025 PPP conversion factor divided by official exchange rate for Argentina, normalized to the same ratio for Singapore: 0.755792, rounded to 0.76 (Singapore=1.00)."
+          }
+        }
+      },
+      "corridor_application": {
+        "rosario_isla_sabino_corsi": "Both endpoints are in Argentina. The Argentina row may apply to a vessel home-ported, crewed, charged and administered in Argentina, but economics remain suppressed while captain_usd_yr and marina_overhead_usd_yr are null.",
+        "puerto_madero_colonia": "Cross-border corridor. Apply an Argentina row only to an Argentina-home-ported vessel for Argentina-side crew/charging/administration. Colonia is in Uruguay; Uruguayan port/passenger/immigration/terminal costs are not covered. A Uruguay-home-ported vessel requires a separate Uruguay country row. Do not treat the Buenos Aires passenger fee as covering the Colonia endpoint."
+      },
+      "nearby_row_comparison": [
+        "Energy USD 0.08/kWh is near the existing Brazil USD 0.09 and below Singapore USD 0.21; this is source-driven and excludes demand/fixed allocation.",
+        "Grid factor 0.219 is below the existing modeled Brazil 0.50 and Singapore 0.40. It comes directly from CAMMESA's emissions and supply totals, not an inference from renewable share.",
+        "The provisional crew subtotal excluding ART (USD 82.3k) is materially above the repository's existing modeled Latin-American USD 14k rows and Singapore USD 48k. This is an anomaly from the official Argentine maritime basic scale, CPI update, SAC and statutory contributions; it was not tuned downward, and the repository value is held null because ART is missing.",
+        "Cost index 0.76 is above existing low-confidence Brazil 0.38, Colombia 0.42 and Peru 0.45 rows. It follows the same-year World Bank 2025 PPP/official-FX normalization and is not tuned to those modeled rows.",
+        "The official Buenos Aires recurring port-charge lower bound USD 6,344 is below existing modeled Latin-American marina values around USD 10k, but it is not complete enough to seal."
+      ],
+      "unresolved_fields": [
+        "captain_usd_yr",
+        "marina_overhead_usd_yr"
+      ],
+      "cascade_instruction": "Do not seal or cascade. Suppress Argentina-affected corridor economics rather than borrowing Singapore or a neighboring country until both null fields are resolved."
+    },
+    "cameroon": {
+      "country": "Cameroon",
+      "target_geography": [
+        "Yango Douala–Manoka/Limbe",
+        "Yango Kribi–Douala"
+      ],
+      "research_date": "2026-07-10",
+      "current_reference_file": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+      "repository_schema": {
+        "captain_usd_yr": "fully-loaded annual crew cost for one vessel (1 captain + deckhand blended)",
+        "energy_usd_kwh": "commercial/business electricity tariff",
+        "grid_co2_kg_kwh": "grid carbon intensity for charging-emissions calc",
+        "marina_overhead_usd_yr": "annual berth, port fees, and local marine admin per vessel (excludes vessel H&M+P&I and fast-charge infrastructure)",
+        "cost_index": "relative cost level vs Singapore=1.00"
+      },
+      "verdict": "PARTIAL_HOLD",
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "HELD: no authoritative current Cameroon wage for a licensed passenger-vessel captain and deckhand was located. The 2023 statutory minimum wage is not a defensible proxy for a licensed captain, and an employer on-cost cannot be completed without role wages and the confirmed occupational-risk class."
+        },
+        "energy_usd_kwh": {
+          "value": 0.122,
+          "source_tier": "T1",
+          "confidence": "medium",
+          "source": "ENEO publication of ARSEL Decision 0096/ARSEL/DG/DCEC/SDCT (28 May 2012): medium-voltage general regime under 1 MW, 70 XAF/kWh during 23:00–18:00 at 0–200 monthly subscribed-power utilization hours, converted at BEAC 10 Jul 2026 USD/XAF midpoint 573.714. Excludes the 3,700 XAF/kW-month subscribed-power charge and recoverable VAT; evening 18:00–23:00 energy is 85 XAF/kWh."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.354,
+          "source_tier": "T2",
+          "confidence": "high",
+          "source": "JICA Climate-FIT Version 7.0 (March 2026), Table 3, Cameroon row, Electricity Consumption combined-margin grid emission factor: 0.354 t-CO2/MWh = 0.354 kg-CO2/kWh; table directs use of IFI Technical Working Group harmonized factors."
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "HELD: the official Port of Kribi tariff book supplies commercial-vessel call/stay tariffs but no uniquely applicable annual berth/terminal package for a small scheduled electric passenger craft; no complete official Douala/Manoka/Limbe schedule was located. Pleasure-craft annual rates were rejected because the corridors are commercial passenger service."
+        },
+        "cost_index": {
+          "value": 0.564,
+          "source_tier": "T1",
+          "confidence": "high",
+          "source": "World Bank WDI PA.NUS.GDP.PLI, 2025: Cameroon 34.1 and Singapore 60.5; normalized cost index = 34.1 / 60.5 = 0.563636, rounded to 0.564."
+        }
+      },
+      "facts_and_modeling": {
+        "captain_usd_yr": {
+          "status": "unresolved",
+          "required_model": "(licensed_captain_monthly_xaf + deckhand_monthly_xaf) * 12 * (1 + mandatory_employer_on_cost_rate) / xaf_per_usd",
+          "source_facts": [
+            {
+              "fact": "Cameroon Prime Minister Decree 2023/00338/PM dated 21 March 2023 is the official SMIG decree.",
+              "source_url": "https://www.spm.gov.cm/site/?q=fr/content/decret-n%C2%B0202300338pm-du-21-mars-2023-fixant-le-salaire-minimum-interprofessionnel-garanti",
+              "quotation_or_reference": "Official page title: 'DECRET N°2023/00338/PM DU 21 MARS 2023 fixant le Salaire Minimum Interprofessionnel Garanti (SMIG)'.",
+              "use_in_candidate": "Not used: a general wage floor does not establish licensed-captain or deckhand pay."
+            },
+            {
+              "fact": "CNPS states that the general-regime family-benefit contribution is 7%, fully employer-paid; its official schedules also show a 4.2% employer pension share and occupational-risk rates that vary by risk group.",
+              "source_url": "https://www.cnps.cm/fr/employeurs/obligations-de-lemployeur1.html",
+              "quotation_or_reference": "CNPS: 'Régime général ... 7%' and 'Les cotisations de cette branche sont entièrement à la charge de l’employeur.'",
+              "supplementary_source_url": "https://www.cnps.cm/images/documentutile/ANNUAIRE%20STATISTIQUE%20CNPS%202024oBILINGUE.pdf",
+              "use_in_candidate": "Not applied because the correct maritime occupational-risk group and both role wages remain unverified."
+            }
+          ],
+          "missing_inputs": [
+            "Current authoritative monthly/base wage or collective-agreement grade for a locally licensed passenger-vessel captain",
+            "Current authoritative monthly/base wage or collective-agreement grade for a deckhand/matelot on this vessel class",
+            "Confirmed CNPS occupational-risk group for scheduled coastal passenger-vessel crew",
+            "Any mandatory maritime allowances, paid months, leave relief, or sector-specific employer charges"
+          ],
+          "rejected_proxies": [
+            "Statutory SMIG for both roles: not skill- or licence-matched",
+            "WageIndicator/SalaryExpert/Indeed and similar aggregators: not authoritative when a collective or statutory maritime schedule is required",
+            "Scaling Nigeria, Côte d'Ivoire, Senegal, or Singapore crew cost: prohibited unsupported cross-country scaling"
+          ]
+        },
+        "energy_usd_kwh": {
+          "status": "numeric_with_conditions",
+          "tariff_class": "ENEO medium voltage, general regime under 1 MW, assumed appropriate to a commercial shore charger",
+          "source_facts": [
+            {
+              "fact": "The ENEO-hosted ARSEL decision states that medium-voltage pricing has a 3,700 XAF/kW monthly fixed subscribed-power charge plus a time/use-dependent proportional charge.",
+              "source_url": "https://eneocameroon.cm/index.php/fr/clients-particuliers-vos-factures-et-paiement/clients-particuliers-vos-factures-et-paiement-tarifs-delectricite",
+              "quotation_or_reference": "Decision 0096/ARSEL/DG/DCEC/SDCT, Article 1, II: 'une prime fixe mensuelle de 3700FCFA par kW de puissance souscrite' and general regime <1 MW energy rates: 70 XAF/kWh for 23:00–18:00 and 85 XAF/kWh for 18:00–23:00 at 0–200 hours. The decision is dated 28 May 2012 and effective 1 June 2012; ENEO still publishes it as its tariff page as of the research date."
+            },
+            {
+              "fact": "The same decision labels tariffs as tax-exclusive and preserves VAT exemption only for electricity consumption at or below 110 kWh.",
+              "source_url": "https://eneocameroon.cm/index.php/fr/clients-particuliers-vos-factures-et-paiement/clients-particuliers-vos-factures-et-paiement-tarifs-delectricite",
+              "quotation_or_reference": "Article 1: 'tarifs de vente hors taxes'; Article 2 preserves VAT exemption for 'consommations d’électricité inférieures ou égales à 110 kWh'."
+            },
+            {
+              "fact": "Cameroon DGI publishes the general VAT rate as 19.25%.",
+              "source_url": "https://www.impots.cm/sites/default/files/documents/FICHE%20TVA.pdf",
+              "quotation_or_reference": "DGI VAT fact sheet, page 3: 'Taux général : 19,25 % (soit un taux de 17,5 % majoré des centimes additionnels communaux de 10 %)'."
+            }
+          ],
+          "modeling": {
+            "assumption": "Charging scheduled primarily in the ENEO 23:00–18:00 period and within the 0–200 monthly utilization-hours band; connected load below 1 MW.",
+            "formula": "70 XAF/kWh / 573.714 XAF/USD = 0.122012 USD/kWh, rounded to 0.122.",
+            "candidate_tax_treatment": "Tax-exclusive. VAT is normally an input tax for a registered business and is not added to the model row. If VAT is nonrecoverable, gross energy-only cash cost is 70 * 1.1925 / 573.714 = 0.145499 USD/kWh.",
+            "fixed_and_demand_charges": "The 3,700 XAF/kW-month subscribed-power charge is excluded because no charger contracted-kW and monthly-kWh profile was supplied. Effective all-in USD/kWh must add (3,700 * subscribed_kW / monthly_kWh) / 573.714, plus nonrecoverable tax if applicable.",
+            "other_sensitivities": [
+              "Charging during 18:00–23:00 uses 85 XAF/kWh = 0.148157 USD/kWh tax-exclusive, or 0.176678 USD/kWh with nonrecoverable VAT.",
+              "If the site is instead eligible for low-voltage non-residential service, the published top cited band is 99 XAF/kWh = 0.172560 USD/kWh tax-exclusive, or 0.205778 USD/kWh with nonrecoverable VAT. This was not selected because a vessel charger is more plausibly medium voltage."
+            ],
+            "exclusions": [
+              "Subscribed-capacity charge",
+              "Connection works and charging infrastructure",
+              "Power-factor, reactive-energy, outage/back-up generation, and site-specific levies not evidenced in the cited tariff",
+              "Recoverable VAT"
+            ]
+          }
+        },
+        "grid_co2_kg_kwh": {
+          "status": "resolved",
+          "source_facts": [
+            {
+              "fact": "JICA's March 2026 Climate-FIT publishes a Cameroon electricity-consumption grid factor of 0.354 t-CO2/MWh.",
+              "source_url": "https://www.jica.go.jp/english/activities/issues/climate/__icsFiles/afieldfile/2026/04/08/Appendix_en_ver7.0.pdf",
+              "quotation_or_reference": "Table 3 'Grid Emission Factors', Cameroon row: Firm Energy 0.354; Intermittent Energy 0.545; Energy Efficiency 0.354; Electricity Consumption 0.354; Operating Margin 0.659, all t-CO2/MWh. Table note: use updated IFI TWG factors when provided."
+            },
+            {
+              "fact": "The underlying harmonized grid-factor dataset is published through UNFCCC for IFI accounting.",
+              "source_url": "https://unfccc.int/documents/461676",
+              "quotation_or_reference": "UNFCCC document listing for the Harmonized IFI Default Grid Factors dataset; JICA Table 3 supplies the directly readable Cameroon electricity-consumption value."
+            }
+          ],
+          "modeling": {
+            "formula": "0.354 t-CO2/MWh * 1000 kg/t / 1000 kWh/MWh = 0.354 kg-CO2/kWh.",
+            "note": "This is a published electricity-consumption factor, not an inference from renewable share."
+          }
+        },
+        "marina_overhead_usd_yr": {
+          "status": "unresolved",
+          "source_facts": [
+            {
+              "fact": "Port Autonome de Kribi's official tariff book is homologated by Decision 0012/APN/DG/DEPDP/CE-CTDQ dated 17 September 2018.",
+              "source_url": "https://pak.cm/wp-content/uploads/2025/05/RECUEIL-GENERAL-DES-TARIFS-AU-PAK.pdf",
+              "quotation_or_reference": "Tariff book cover and homologation decision; general provisions state vessel services are invoiced in EUR and tariffs are tax-exclusive."
+            },
+            {
+              "fact": "For Cameroon-flag floating craft under 100 gross tons, Kribi publishes an annual entry/exit forfait of EUR 799.5; commercial quay stay is EUR 55 per indivisible 24-hour period through the fourth consecutive day and EUR 155 thereafter.",
+              "source_url": "https://pak.cm/wp-content/uploads/2025/05/RECUEIL-GENERAL-DES-TARIFS-AU-PAK.pdf",
+              "quotation_or_reference": "Section 1.3.8: 'Tous les autres engins flottants de moins de 100 tonneaux | 799,5€'; quay stay 'Par tranches indivisibles de 24 heures jusqu’au 4ème jour ... 55€' and beyond the fourth day '155€'."
+            },
+            {
+              "fact": "Kribi separately publishes annual water-area and environment/security rates for pleasure craft.",
+              "source_url": "https://pak.cm/wp-content/uploads/2025/05/RECUEIL-GENERAL-DES-TARIFS-AU-PAK.pdf",
+              "quotation_or_reference": "Section 1.3.7 annual water-area use: EUR 488; section 1.6 pleasure-craft environment: EUR 183/year; adjacent security schedule lists pleasure craft EUR 92/year."
+            }
+          ],
+          "why_no_numeric_model": [
+            "The Navier use case is scheduled commercial passenger transport, so pleasure-craft/yacht annual rates are not an applicable marina class.",
+            "The commercial Kribi schedule requires vessel gross tonnage, class, nightly/call pattern, quay versus terminal arrangement, and flags/permits; no agreed assumptions were supplied.",
+            "A daily EUR 55 quay-stay multiplication would silently assume use of the commercial PAK quay every operating day and would not represent Manoka, Limbe, or Douala terminals.",
+            "No complete, current official Douala/Manoka/Limbe small-passenger-craft berth/terminal tariff and no confirmed mandatory annual vessel registration/certificate schedule were obtained.",
+            "Insurance and charging infrastructure are intentionally excluded by schema."
+          ],
+          "illustrative_not_candidate": {
+            "description": "Kribi-only floor before any berth stays, security, environment, terminal/passenger, registration, or Douala-side costs",
+            "formula": "EUR 799.5 annual entry/exit forfait * 655.957 XAF/EUR / 573.714 XAF/USD",
+            "value_usd": 914.0,
+            "warning": "Not a complete marina_overhead_usd_yr and therefore not placed in the candidate row."
+          }
+        },
+        "cost_index": {
+          "status": "resolved",
+          "source_facts": [
+            {
+              "fact": "World Bank WDI Price level index (GDP), indicator PA.NUS.GDP.PLI, reports 2025 values of Cameroon 34.1 and Singapore 60.5.",
+              "source_url": "https://data.worldbank.org/indicator/PA.NUS.GDP.PLI?locations=CM-SG",
+              "quotation_or_reference": "Selected Countries and Economies: Cameroon, most recent year 2025, value 34.1; Singapore, most recent year 2025, value 60.5."
+            }
+          ],
+          "modeling": {
+            "formula": "Cameroon PLI / Singapore PLI = 34.1 / 60.5 = 0.5636363636",
+            "rounded_candidate": 0.564,
+            "interpretation": "National GDP price-level index normalized to Singapore=1.00; it is broader than corridor-specific marine costs and should not substitute for crew or port source facts."
+          }
+        }
+      },
+      "currency_conversion": {
+        "source": "Banque des États de l'Afrique Centrale (BEAC)",
+        "source_url": "https://www.beac.int/",
+        "value_date": "2026-07-10",
+        "published_pair": "USD/XAF",
+        "buy_xaf_per_usd": 571.2624,
+        "sell_xaf_per_usd": 576.1656,
+        "model_midpoint_xaf_per_usd": 573.714,
+        "formula": "(571.2624 + 576.1656) / 2 = 573.714 XAF/USD",
+        "quotation_or_reference": "BEAC homepage exchange table search result: USD/XAF 571.2624 buy and 576.1656 sell; value date 10/07/2026; source Banque des États de l'Afrique Centrale.",
+        "euro_peg": {
+          "xaf_per_eur": 655.957,
+          "note": "Published BEAC EUR/XAF buy and sell are both 655.957; used only for the non-candidate Kribi illustration."
+        }
+      },
+      "comparison_to_nearby_existing_rows": [
+        {
+          "country": "Côte d'Ivoire",
+          "existing_values": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.13,
+            "grid_co2_kg_kwh": 0.4,
+            "marina_overhead_usd_yr": 8000,
+            "cost_index": 0.3
+          },
+          "comparison": "Cameroon candidate electricity 0.122 tax-exclusive is close to the existing 0.13 modeled Côte d'Ivoire row; Cameroon's published grid factor 0.354 is modestly lower than the existing modeled 0.4. The Cameroon cost index 0.564 is much higher because it is a direct 2025 World Bank PLI normalization, whereas the existing Côte d'Ivoire 0.30 is explicitly a low-confidence modeled proxy. No tuning was performed."
+        },
+        {
+          "country": "Nigeria",
+          "existing_values": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.13,
+            "grid_co2_kg_kwh": 0.4,
+            "marina_overhead_usd_yr": 9000,
+            "cost_index": 0.32
+          },
+          "comparison": "Cameroon electricity and grid values are directionally near Nigeria's existing modeled row. Cameroon crew and port values remain null rather than being copied from Nigeria. The 0.564 World Bank-derived cost index is not forced toward Nigeria's unsupported 0.32 proxy."
+        },
+        {
+          "country": "Senegal",
+          "existing_values": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.18,
+            "grid_co2_kg_kwh": 0.55,
+            "marina_overhead_usd_yr": 8000,
+            "cost_index": 0.32
+          },
+          "comparison": "Cameroon has lower published energy-only and charging-emission values than Senegal's modeled row. The difference follows cited ENEO/IFI inputs, not a regional smoothing adjustment."
+        }
+      ],
+      "unresolved_fields": [
+        "captain_usd_yr",
+        "marina_overhead_usd_yr"
+      ],
+      "seal_rule_application": "Two fields are null. Cameroon cannot seal, no country row should be cascaded, and economics for the affected corridors must remain suppressed rather than inheriting Singapore or a nearby country."
+    },
+    "congo-brazzaville": {
+      "country_key": "Congo (Brazzaville)",
+      "iso3": "COG",
+      "country_identity_note": "Republic of the Congo / Congo-Brazzaville. No Democratic Republic of the Congo (COD/DRC) evidence or values were used.",
+      "target_geography": "Yango Pointe-Noire Bay–Côte Sauvage/Pointe-Indienne",
+      "reference_file_read": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+      "repository_schema": {
+        "captain_usd_yr": "fully-loaded annual crew cost for one vessel (1 captain + deckhand blended)",
+        "energy_usd_kwh": "commercial/business electricity tariff",
+        "grid_co2_kg_kwh": "grid carbon intensity for charging-emissions calc",
+        "marina_overhead_usd_yr": "annual berth, port fees, and local marine admin per vessel (excludes vessel H&M+P&I and fast-charge infrastructure)",
+        "cost_index": "relative cost level vs Singapore=1.00"
+      },
+      "research_date": "2026-07-10",
+      "verdict": "PARTIAL_HOLD",
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "Held: an official maritime agreement provides a deckhand wage but not a licensed-captain wage; its mines-and-petroleum scope also is not proven applicable to a Pointe-Noire passenger shuttle. A complete two-role fully-loaded annual crew cost cannot be formed."
+        },
+        "energy_usd_kwh": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "Held: no current official E2C commercial/professional tariff schedule with applicable energy, fixed/demand, taxes and surcharge treatment was located. The official 1994 SNE schedule is stale and was rejected."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.45,
+          "source_tier": "T2",
+          "confidence": "low",
+          "source": "African Development Bank, Congo CAB PGES summary, section 4.2 (2016 publication URL): published Congo grid emission factor of 0.45 tCO2/MWh; unit-equivalent to 0.45 kgCO2/kWh. Low confidence only because the factor is old, not because it was inferred."
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "Held: no current Port Autonome de Pointe-Noire tariff book or official small-passenger-vessel berth/terminal/harbour-dues and mandatory marine-administration schedule was located. A 1994 cargo-handling remuneration order is not a berth/port-dues basis."
+        },
+        "cost_index": {
+          "value": 0.57,
+          "confidence": "high"
+        }
+      },
+      "facts_and_modeling": {
+        "captain_usd_yr": {
+          "status": "unresolved",
+          "source_facts": [
+            {
+              "fact": "The collective agreement is expressly for seafarers in the Republic of the Congo mines and petroleum sector.",
+              "source": "UNICONGO, Convention collective spécifique fixant les conditions d'emploi des marins du secteur mines et pétrole en République du Congo",
+              "url": "https://www.unicongo.cg/wp-content/uploads/2024/02/Convention-Marine-Marchandes.pdf",
+              "reference": "Annex 1, salary grid near PDF page 17; agreement title",
+              "quotation": "CONVENTION COLLECTIVE SPECIFIQUE FIXANT LES CONDITIONS D'EMPLOI DES MARINS DU SECTEUR MINES ET PETROLE EN REPUBLIQUE DU CONGO"
+            },
+            {
+              "fact": "The execution-personnel salary grid lists a basic Matelot at a sea salary of XAF 189,089 per month.",
+              "source": "UNICONGO maritime collective agreement",
+              "url": "https://www.unicongo.cg/wp-content/uploads/2024/02/Convention-Marine-Marchandes.pdf",
+              "reference": "Annex 1, Grille des salaires du personnel d'exécution, Matelot row (near PDF page 17)",
+              "quotation": "MATELOT ... 94 089 ... 119 089 ... 189 089"
+            },
+            {
+              "fact": "The agreement mandates XAF 25,000 monthly housing assistance and a year-end bonus equal to one month of average gross salary.",
+              "source": "UNICONGO maritime collective agreement",
+              "url": "https://www.unicongo.cg/wp-content/uploads/2024/02/Convention-Marine-Marchandes.pdf",
+              "reference": "Articles 33 and 51",
+              "quotation": "L'employeur versera une allocation mensuelle d'aide au logement de vingt cinq mille francs cfa ... Il est attribué une prime de fin d'année représentant un mois de salaire brut moyen."
+            },
+            {
+              "fact": "The Republic of the Congo government obligations guide gives detailed employer CNSS rates totaling 20.28%: family benefits 10.03%, occupational accidents 2.25%, and pensions 8%, with monthly bases capped respectively at XAF 600,000, 600,000, and 1,200,000.",
+              "source": "Republic of the Congo government, Les obligations sociales des entreprises",
+              "url": "https://fonction-publique.gouv.cg/sites/default/files/2021-07/Les_obligations_sociales_des_entreprises.pdf",
+              "reference": "PDF page 5, table 'Taux de cotisations au 1er janvier 2016'",
+              "quotation": "Prestations familiales ... 10,03% ... 600 000; Accidents du travail 2,25% ... 600 000; Assurance pensions 8% ... 1 200 000; Total 20,28%."
+            }
+          ],
+          "model_formula_if_missing_inputs_are_obtained": "crew_usd_yr = [sum over captain and deckhand of (12 * official monthly wage + mandatory annual bonus + mandatory annual allowances + 12 * (10.03% * min(monthly contributory base, 600000) + 2.25% * min(monthly contributory base, 600000) + 8% * min(monthly contributory base, 1200000)))] / 581.93 XAF per USD. This formula is not executed because an applicable licensed-captain wage and the exact contributory treatment of bonuses/allowances are missing.",
+          "blocker": "No source-backed wage for one licensed captain in an agreement applicable to this passenger-shuttle operation; the available agreement is sector-specific."
+        },
+        "energy_usd_kwh": {
+          "status": "unresolved",
+          "source_facts": [
+            {
+              "fact": "E2C is the Republic of the Congo electricity utility and describes a transmission network including Pointe-Noire.",
+              "source": "Énergie Électrique du Congo (E2C)",
+              "url": "https://e2c.cg/",
+              "reference": "Official utility home page",
+              "quotation": "La puissance totale disponible est d'environ 600 MW ... tensions de 110 kv et 220kv de Pointe Noire à Owando."
+            },
+            {
+              "fact": "An official Ministry of Finance-hosted 1994 electricity order includes medium/high-voltage tariff T13 with a stated energy component of XAF 21.48/kWh, monthly fixed charge XAF 1,260 per subscribed kW, another proportional component of XAF 28.68, and reactive-energy excess XAF 15.48/kvarh, all before taxes. It governed the predecessor SNE, not a verified current E2C tariff.",
+              "source": "Republic of the Congo, Arrêté no. 681 portant revalorisation des tarifs d'électricité",
+              "url": "https://www.finances.gouv.cg/fr/download/file/fid/3246",
+              "reference": "PDF pages 1 and 3, Article 2 and table III",
+              "quotation": "Les nouveaux tarifs hors taxes de vente de l'énergie électrique ... III - TARIFS EN MOYENNE TENSION ET HAUTE TENSION ... T13 ... 1 260 ... 28,68 ... 21,48 ... 15,48."
+            }
+          ],
+          "rejected_model": "21.48 XAF/kWh / 581.93 = USD 0.03691/kWh before taxes and fixed/demand charges. Rejected because the tariff dates to 1994, is for SNE rather than a verified current E2C bill, and does not establish the present Pointe-Noire charging tariff class or taxes. No value is recommended.",
+          "blocker": "Current E2C professional/commercial or MV tariff, subscribed-demand assumption, fixed charges, tax/surcharge treatment, and applicability at the Pointe-Noire charging site are missing."
+        },
+        "grid_co2_kg_kwh": {
+          "status": "resolved_with_low_confidence",
+          "source_facts": [
+            {
+              "fact": "The AfDB-published Congo environmental plan explicitly gives a Congo grid emission factor of 0.45 tCO2/MWh.",
+              "source": "African Development Bank, Dorsale à fibre optique d'Afrique centrale (CAB), Résumé du PGES, Congo",
+              "url": "https://www.afdb.org/sites/default/files/documents/environmental-and-social-assessments/congo-dorsale_a_fibre_optique_dafrique_centrale_cab_-resume_pges-03_2016.pdf",
+              "reference": "Section 4.2, Changements Climatiques",
+              "quotation": "au regard d’un facteur d'émission de la grille pour le Congo à 0,45 t CO2 / MWh"
+            }
+          ],
+          "formula": "0.45 tCO2/MWh * 1000 kg/t / 1000 kWh/MWh = 0.45 kgCO2/kWh.",
+          "caveat": "Published country-grid factor, not inferred from generation mix; however, it is from a 2016 project document and may not reflect today's Pointe-Noire marginal grid."
+        },
+        "marina_overhead_usd_yr": {
+          "status": "unresolved",
+          "source_facts": [
+            {
+              "fact": "The Port Autonome de Pointe-Noire official domain was searched, but no tariff book specifying a small passenger vessel's berth, terminal, harbour dues, passenger fees, registration or annual certificates was found.",
+              "source": "Port Autonome de Pointe-Noire",
+              "url": "https://papn-cg.org/",
+              "reference": "Official port website search, accessed 2026-07-10",
+              "quotation": null
+            },
+            {
+              "fact": "A Republic of the Congo 1994 order found through UNICONGO changes remuneration authorized for cargo-handling contractors by 20%; it does not establish vessel berth or harbour dues and is therefore unusable for this field.",
+              "source": "Republic of the Congo, Arrêté no. 4063 (1994), via UNICONGO",
+              "url": "https://www.unicongo.cg/wp-content/uploads/2023/03/Arrete-n%C2%B04063_1994_Transport-MaritimePort-Autonome-de-Pointe-NoireTransports-Fluvaux_Modification-Tarifs-Remuneration.pdf",
+              "reference": "Order text",
+              "quotation": "Les tarifs de rémunération que les entrepreneurs de manutention au port de Pointe-Noire sont autorisés à percevoir sont augmentés de 20 %."
+            }
+          ],
+          "required_formula_once_inputs_exist": "annual marina overhead = annual berth/license fee + (official harbour/terminal/passenger/call fee per call * supported annual calls) + mandatory annual registration/certification/inspection fees. Vessel dimensions, GT, passenger count and annual calls must be stated. Insurance and charging infrastructure must remain excluded.",
+          "blocker": "No official current PAPN or relevant local terminal schedule and no defensible berth/call assumption."
+        },
+        "cost_index": {
+          "status": "resolved",
+          "source_facts": [
+            {
+              "fact": "World Bank 2025 GDP price-level index: Congo, Rep. = 34.7.",
+              "source": "World Bank, World Development Indicators, PA.NUS.GDP.PLI",
+              "url": "https://data.worldbank.org/indicator/PA.NUS.GDP.PLI?locations=CG",
+              "reference": "Selected Countries and Economies, most recent year 2025",
+              "quotation": "Congo, Rep. — 2025 — 34.7"
+            },
+            {
+              "fact": "World Bank 2025 GDP price-level index: Singapore = 60.5.",
+              "source": "World Bank, World Development Indicators, PA.NUS.GDP.PLI",
+              "url": "https://data.worldbank.org/indicator/PA.NUS.GDP.PLI?locations=SG",
+              "reference": "Selected Countries and Economies, most recent year 2025",
+              "quotation": "Singapore — 2025 — 60.5"
+            }
+          ],
+          "formula": "34.7 / 60.5 = 0.573553719; rounded to 0.57 with Singapore = 1.00.",
+          "caveat": "GDP-wide price level, not a marine-sector price index. It is used only for the repository cost_index, not to fabricate crew or marina costs."
+        }
+      },
+      "currency_conversion": {
+        "selected_rate": {
+          "value_xaf_per_usd": 581.93,
+          "vintage": "2025 period average",
+          "source": "World Bank, Official exchange rate (LCU per US$, period average), PA.NUS.FCRF; underlying International Financial Statistics database",
+          "url": "https://data.worldbank.org/indicator/PA.NUS.FCRF?locations=CG",
+          "quotation": "Congo, Rep. — 2025 — 581.93"
+        },
+        "beac_cross_check": {
+          "status": "not_used",
+          "source": "BEAC, Cours de référence de la BEAC",
+          "url": "https://www.beac.int/wp-content/uploads/cours_reference.pdf",
+          "vintage": "2019-12-04 static PDF returned during research",
+          "quotation": "USD/XAF — achat 588,8384 — vente 596,4493",
+          "reason_not_used": "The official PDF exposed by the search was dated 2019 and is stale. The named World Bank 2025 period-average rate is used for any illustrative conversion instead."
+        },
+        "conversion_usage": "No currency conversion feeds a sealed numeric cost field because crew, energy and marina are held. The rate appears only in rejected/conditional formulas."
+      },
+      "nearby_row_comparison": {
+        "existing_rows": {
+          "Nigeria": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.13,
+            "grid_co2_kg_kwh": 0.4,
+            "marina_overhead_usd_yr": 9000,
+            "cost_index": 0.32,
+            "note": "Existing row labels most costs as modeled T3/T4."
+          },
+          "Senegal": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.18,
+            "grid_co2_kg_kwh": 0.55,
+            "marina_overhead_usd_yr": 8000,
+            "cost_index": 0.32,
+            "note": "Existing row labels most costs as modeled T3/T4."
+          },
+          "Singapore": {
+            "captain_usd_yr": 48000,
+            "energy_usd_kwh": 0.21,
+            "grid_co2_kg_kwh": 0.4,
+            "marina_overhead_usd_yr": 20000,
+            "cost_index": 1.0
+          }
+        },
+        "anomalies": [
+          "The source-derived Congo cost_index of 0.57 is materially above the existing Nigeria and Senegal values of 0.32. This is retained because it is the same-vintage World Bank Congo/Singapore ratio, not tuned to peers.",
+          "The Congo published grid factor of 0.45 lies between Nigeria 0.40 and Senegal 0.55 and is not anomalous, but its 2016 vintage warrants low confidence.",
+          "No peer value was borrowed for crew, electricity or port overhead; nulls are deliberate to prevent the Singapore fallback or unsupported regional scaling."
+        ]
+      },
+      "unresolved_fields": [
+        "captain_usd_yr",
+        "energy_usd_kwh",
+        "marina_overhead_usd_yr"
+      ],
+      "cascade_instruction": "Do not add or seal this country row and do not cascade Pointe-Noire corridor economics. Suppress the affected economics until all five numeric values are source-backed; never borrow Singapore or a nearby-country row."
+    },
+    "costa-rica": {
+      "metadata": {
+        "country": "Costa Rica",
+        "target_geography": "Gulf of Nicoya / Puntarenas and Paquera / Playa Naranjo ferry routes",
+        "research_date": "2026-07-10",
+        "reference_schema_file": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+        "purpose": "Reopened hold: targeted MOPT/ARESEP/terminal/operator/concession/inspection/registration search; review only, no repository or route-record changes",
+        "vintage_policy": "2025/2026 sources used where available; each input retains its own vintage",
+        "reopened_hold_scope": "Exact tariff, concession, berth, inspection, vessel-registration and terminal-use evidence for Puntarenas–Paquera and Puntarenas–Playa Naranjo"
+      },
+      "reference_field_definitions": {
+        "captain_usd_yr": "Fully loaded annual crew cost for one vessel: one captain plus one deckhand blended.",
+        "energy_usd_kwh": "Commercial/business electricity tariff.",
+        "grid_co2_kg_kwh": "Published grid carbon intensity.",
+        "marina_overhead_usd_yr": "Annual berth, port fees, and marine administration per vessel; insurance and charging infrastructure excluded.",
+        "cost_index": "Relative cost level with Singapore = 1.00."
+      },
+      "facts": {
+        "crew_wages": {
+          "vintage": "2026, effective 2026-01-01",
+          "currency": "CRC",
+          "captain_classification": "Worker in Specialized Occupation (Trabajador en Ocupación Especializada), used as a provisional minimum-wage proxy",
+          "captain_monthly_crc": 487335.0,
+          "deckhand_classification": "Worker in Non-qualified Occupation (Trabajador en Ocupación No Calificada), used as a provisional minimum-wage proxy",
+          "deckhand_daily_crc": 12436.41,
+          "deckhand_monthly_crc": 373092.3,
+          "classification_basis": "The official 2026 occupational guide is illustrative, not exhaustive. The modeled pairing uses the specialized monthly category for a licensed captain and the non-qualified monthly category for a deckhand. This is a wage-floor proxy, not an observed Gulf of Nicoya market wage survey.",
+          "special_rule": "The wage decree says fishing and water-transport occupations unable to return to the initial departure point after the ordinary workday are entitled to food. No food allowance is added because the roster/return condition was not supplied.",
+          "sources": [
+            "S1",
+            "S2"
+          ]
+        },
+        "employer_load": {
+          "vintage": "2025 baseline updated for the January 2026 IVM step",
+          "base_employer_social_charge_rate": 0.2667,
+          "january_2026_employer_ivm_increment": 0.0016,
+          "modeled_2026_employer_social_charge_rate": 0.2683,
+          "aguinaldo_rate": 0.0833333333,
+          "method_note": "PROCOMER's March 2025 VUI instruction states 26.67% social charges and 8.33% aguinaldo. CCSS states that from January 2026 the employer IVM contribution rises by CRC 160 per CRC 100,000 of salary, i.e. 0.16 percentage point. The model adds 0.0016 to 0.2667. It does not include activity-specific INS occupational-risk insurance, overtime, relief crew, meals, uniforms, training, or license renewals.",
+          "sources": [
+            "S3",
+            "S4"
+          ]
+        },
+        "exchange_rate": {
+          "publisher": "Banco Central de Costa Rica (BCCR)",
+          "observation_date": "2026-07-10 access-date snapshot",
+          "unit": "CRC per USD",
+          "buy": 448.82,
+          "sell": 455.1,
+          "rate_used": 455.1,
+          "rate_choice": "BCCR reference selling rate, conservatively used to translate CRC costs into USD",
+          "source": "S5"
+        },
+        "electricity": {
+          "vintage": "ARESEP 2026 workbook, current on research date",
+          "utility": "CoopeGuanacaste R.L.",
+          "territorial_applicability": "CoopeGuanacaste states that it distributes electricity to homes, businesses and industries across an extensive part of the Nicoya Peninsula and maintains service in Paquera. This supports applicability to Paquera/Playa Naranjo-side operations; charging on the Puntarenas side may fall under ICE and should be confirmed by service address.",
+          "tariff_class": "T-CO — Comercios y Servicios",
+          "schedule": {
+            "energy_at_or_below_3000_kwh_crc_kwh": 90.07,
+            "first_3000_kwh_block_crc": 171120.0,
+            "energy_above_3000_kwh_crc_kwh": 57.04,
+            "first_10_kw_block_crc": 84246.9,
+            "power_above_10_kw_crc_kw": 8424.69
+          },
+          "normalized_energy_charge_crc_kwh": 57.04,
+          "normalization": "Uses only the published marginal energy charge above 3,000 kWh for a commercial/service account. A ferry charger is expected to exceed that threshold, but the model does not have a load profile or billed maximum demand.",
+          "exclusions": [
+            "The fixed first-3,000-kWh block",
+            "Demand/power charges",
+            "Any value-added tax or other invoice taxes not displayed in the ARESEP table",
+            "Connection, transformer, metering, or charging-infrastructure costs",
+            "Losses and utility-specific riders not displayed in the extracted table"
+          ],
+          "sources": [
+            "S6",
+            "S7"
+          ]
+        },
+        "grid_emissions": {
+          "publication_vintage": "IMN 15th edition, July 2025",
+          "factor_year": 2024,
+          "value_kg_co2e_kwh": 0.127,
+          "uncertainty_standard_recommended": "16.1%",
+          "method_note": "Directly adopts the published national electricity-consumption emission factor. It is not inferred from renewable-generation share.",
+          "source": "S8"
+        },
+        "cost_level": {
+          "indicator": "World Bank PA.NUS.GDP.PLI — Price level index (GDP)",
+          "vintage": 2025,
+          "costa_rica": 59.1,
+          "singapore": 60.5,
+          "normalization": "59.1 / 60.5",
+          "source": "S9"
+        },
+        "marina_and_marine_administration": {
+          "value": null,
+          "research_result": "The reopened search found a current statutory formula for the annual navigation-certificate canon and official historical evidence of an operator concession canon, but still did not find a current route-applicable berth/terminal-use tariff or concession payment that can be converted into a complete annual per-vessel total. The repository field therefore remains null.",
+          "route_terminal_fact": "The official 2006 Naviera Tambor concession states that service uses existing terminals that are public (State) property and under MOPT. This identifies the relevant facility class and rules out substituting a yacht-marina price, but it does not state a terminal-use charge.",
+          "annual_certificate_canon": {
+            "law": "Ley 8000, Article 31, current legal text version 7/7 dated 2023-12-13",
+            "requirement": "Every vessel must pay a canon to obtain the annual MOPT navigation certificate.",
+            "basis_2026_crc": 462200,
+            "basis_source": "Poder Judicial 2026 salario base under Law 7337",
+            "length_brackets": {
+              "<35_ft": {
+                "rate": 0.05,
+                "crc": 23110.0,
+                "usd": 50.78
+              },
+              "35_to_50_ft": {
+                "rate": 0.08,
+                "crc": 36976.0,
+                "usd": 81.25
+              },
+              ">50_ft": {
+                "rate": 0.1,
+                "crc": 46220.0,
+                "usd": 101.56
+              }
+            },
+            "fx_crc_per_usd": 455.1,
+            "formula": "2026 salario base CRC 462,200 × statutory length rate (5%, 8%, or 10%) / CRC 455.10 per USD",
+            "candidate_use": "Not inserted into marina_overhead_usd_yr because candidate vessel length is unspecified and this canon is only one component; berth/terminal/concession cost remains unresolved."
+          },
+          "annual_inspection_fact": "An official 2015 Government/MOPT notice says passenger and cabotage vessels are inspected annually to renew the navigation certificate and that proof of the Guardacostas payment is required. The statutory certificate canon above supplies the amount formula, but no separate inspection charge was identified.",
+          "historical_concession_canon": {
+            "source_vintage": "ARESEP resolution RRG-8666-2008, tariff projection for 2009 and 2010",
+            "coonatramar_crc_thousands": 814.0,
+            "naviera_tambor_crc_thousands": 1055.0,
+            "qualification": "ARESEP grouped canon within operating expenses and said these amounts came from a new canon study then awaiting Contraloría approval. They are stale, operator-level rather than demonstrably per-vessel, and the decision does not establish that they are berth/terminal charges. They are not used or inflation-scaled."
+          },
+          "registration_fact": "Registro Nacional publishes vessel registration charges based on contractual/fiscal value plus stamps and a Guardacostas registration right. Ley 8000 Article 33 sets that Guardacostas registration right at 5%, 10%, or 15% of the statutory salary base by length. Registration is a one-time event, vessel value is unknown, and no annualization life is supplied, so it is excluded from the annual candidate.",
+          "why_complete_value_still_not_modeled": [
+            "No current MOPT/operator/terminal tariff or concession document was found that states berth, ramp, terminal-use, or route-concession payment for a new vessel on either route.",
+            "The current annual certificate canon is length-based, but candidate vessel length is unspecified.",
+            "The 2008 ARESEP concession-canon values are stale, were projections from a study then awaiting approval, and are operator-level; silently indexing or dividing them by historical fleet count would violate the evidence rule.",
+            "State ownership of the terminals does not prove that terminal use is free.",
+            "Registration charges are event-based and partly vessel-value-based, not annual operating fees.",
+            "Generic marina or Caldera commercial-port tariffs are not comparable to these MOPT public cabotage terminals.",
+            "Insurance and charging infrastructure remain excluded by definition."
+          ],
+          "sources_reviewed": [
+            "S10",
+            "S11",
+            "S12",
+            "S13",
+            "S14",
+            "S15",
+            "S16",
+            "S17"
+          ]
+        }
+      },
+      "conversions_and_models": {
+        "crew": {
+          "formula_crc": "((487,335.00 + 373,092.30) * 12) * (1 + 0.2683 + 1/12)",
+          "base_annual_wages_crc": 10325127.6,
+          "employer_social_charges_crc": 2770231.74,
+          "aguinaldo_crc": 860427.3,
+          "modeled_total_crc": 13955786.64,
+          "fx_crc_per_usd": 455.1,
+          "formula_usd": "13,955,786.64 / 455.10",
+          "modeled_total_usd": 30665.32,
+          "recommended_rounded_usd": 30665,
+          "interpretation": "Provisional statutory-floor lower-bound for one captain plus one deckhand. Not a Gulf of Nicoya observed wage and not fully all-in because activity-specific occupational-risk insurance and operational staffing additions are unresolved."
+        },
+        "energy": {
+          "formula": "57.04 CRC/kWh / 455.10 CRC/USD",
+          "value_usd_kwh": 0.1253350912,
+          "recommended_rounded_usd_kwh": 0.125,
+          "interpretation": "Marginal commercial energy-only rate for CoopeGuanacaste T-CO above 3,000 kWh; not an all-in bill."
+        },
+        "cost_index": {
+          "formula": "59.1 / 60.5",
+          "value": 0.9768595041,
+          "recommended_rounded": 0.977
+        },
+        "mandatory_navigation_certificate_partial": {
+          "status": "supported partial marine-administration component; not a complete marina_overhead value",
+          "formula": "CRC 462,200 × 5%/8%/10% according to vessel length, divided by CRC 455.10/USD",
+          "results_by_length": {
+            "<35_ft": {
+              "rate": 0.05,
+              "crc": 23110.0,
+              "usd": 50.78
+            },
+            "35_to_50_ft": {
+              "rate": 0.08,
+              "crc": 36976.0,
+              "usd": 81.25
+            },
+            ">50_ft": {
+              "rate": 0.1,
+              "crc": 46220.0,
+              "usd": 101.56
+            }
+          },
+          "included_in_candidate": false,
+          "reason": "Vessel length and all route terminal/berth/concession charges are unresolved."
+        }
+      },
+      "candidate_row": {
+        "Costa Rica": {
+          "captain_usd_yr": {
+            "value": 30665,
+            "source_tier": "T4",
+            "confidence": "low",
+            "source": "Modeled 2026 statutory-floor lower bound: captain CRC 487,335/month + deckhand CRC 373,092.30/month, plus 26.83% employer social charges and 8.33% aguinaldo; converted at BCCR 2026-07-10 reference sell rate CRC 455.10/USD. Excludes unresolved INS occupational-risk rate, food if legally triggered, overtime/relief, training and licensing."
+          },
+          "energy_usd_kwh": {
+            "value": 0.125,
+            "source_tier": "T1",
+            "confidence": "medium",
+            "source": "ARESEP 2026 CoopeGuanacaste T-CO marginal commercial energy charge above 3,000 kWh: CRC 57.04/kWh / BCCR CRC 455.10/USD. Demand, fixed-block charges, taxes and charger infrastructure excluded. Confirm the actual supply address/utility."
+          },
+          "grid_co2_kg_kwh": {
+            "value": 0.127,
+            "source_tier": "T1",
+            "confidence": "high",
+            "source": "Instituto Meteorológico Nacional, GEI emission factors, 15th edition (July 2025), national electricity-use factor for 2024: 0.127 kg CO2e/kWh; recommended standard uncertainty 16.1%."
+          },
+          "marina_overhead_usd_yr": {
+            "value": null,
+            "source_tier": null,
+            "confidence": "none",
+            "source": "PARTIAL ADMIN INPUT FOUND, COMPLETE FIELD UNSUPPORTED. Ley 8000 Article 31 requires an annual navigation-certificate canon equal to 5%/8%/10% of the Law 7337 salary base by vessel length (2026: CRC 23,110 / 36,976 / 46,220; USD 50.78 / 81.25 / 101.56 at BCCR CRC 455.10/USD). Candidate vessel length is unspecified, and no current route-specific berth/terminal/concession charge was found for the MOPT public ferry terminals. Do not use the partial canon alone, historic operator canon, generic marina rates, or Singapore as a substitute."
+          },
+          "cost_index": {
+            "value": 0.977,
+            "confidence": "high",
+            "source": "World Bank 2025 Price level index (GDP), PA.NUS.GDP.PLI: Costa Rica 59.1 / Singapore 60.5 = 0.97686, normalized with Singapore = 1.00."
+          }
+        }
+      },
+      "field_assessments": {
+        "captain_usd_yr": {
+          "status": "provisional_modeled_lower_bound",
+          "confidence": "low",
+          "cascade_ready": false,
+          "reason": "Transparent official inputs support a reproducible floor, but market wages, activity-specific INS occupational-risk premium, food applicability, licenses/training and roster coverage are unresolved."
+        },
+        "energy_usd_kwh": {
+          "status": "supported_energy_only_rate",
+          "confidence": "medium",
+          "cascade_ready": true,
+          "reason": "Current primary tariff and named business class are available, but the scalar excludes fixed/demand/tax components and assumes the CoopeGuanacaste-side supply address."
+        },
+        "grid_co2_kg_kwh": {
+          "status": "supported",
+          "confidence": "high",
+          "cascade_ready": true,
+          "reason": "Current official publication directly reports the national grid-consumption factor."
+        },
+        "marina_overhead_usd_yr": {
+          "status": "partial_admin_component_supported_complete_field_null",
+          "confidence": "none for complete field; high for statutory certificate-canon formula",
+          "cascade_ready": false,
+          "reason": "The annual navigation-certificate canon is now source-backed, but vessel length and current route terminal/berth/concession fees remain unresolved, so no complete per-vessel annual total is defensible."
+        },
+        "cost_index": {
+          "status": "supported",
+          "confidence": "high",
+          "cascade_ready": true,
+          "reason": "Both countries use the same World Bank indicator and 2025 vintage; normalization is direct."
+        }
+      },
+      "unresolved_fields": [
+        {
+          "field": "marina_overhead_usd_yr",
+          "blocking": true,
+          "needed_to_resolve": "Current MOPT/terminal/operator agreement or tariff showing berth/ramp/terminal/concession charges for a new vessel; candidate vessel length for the Ley 8000 annual certificate-canon bracket; calls or berth-days per year, home terminal, and confirmation of any other recurring permits."
+        },
+        {
+          "field": "captain_usd_yr",
+          "blocking": true,
+          "needed_to_resolve": "Local market wages or payroll for a licensed captain and deckhand; INS occupational-risk class/rate; food entitlement applicability; required certificates/licenses; annual work schedule and relief/overtime assumption."
+        },
+        {
+          "field": "energy_usd_kwh",
+          "blocking": false,
+          "needed_to_resolve": "Exact charging address, distributor, annual kWh, monthly peak kW/load profile, applicable taxes, and whether an all-in bill or energy-only marginal rate is desired."
+        }
+      ],
+      "verdict": {
+        "status": "NO_CASCADE",
+        "reason": "marina_overhead_usd_yr remains null because only one mandatory annual administration component was resolved; route terminal/berth/concession cost and vessel length remain unknown. Crew is also a low-confidence statutory-floor lower bound. Suppress Costa Rica route economics rather than borrowing Singapore or another country.",
+        "route_economics_instruction": "Suppress Puntarenas–Paquera and Puntarenas–Playa Naranjo economics until all five fields are numeric and reviewed.",
+        "route_records_touched": false,
+        "repository_files_modified": false
+      },
+      "sources": [
+        {
+          "id": "S1",
+          "publisher": "Procuraduría General de la República / Sistema Costarricense de Información Jurídica",
+          "title": "Decreto Ejecutivo 45303-MTSS — Fijación de salarios mínimos para el sector privado",
+          "vintage": "2026; effective 2026-01-01",
+          "url": "https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param1=NRTC&nValor1=1&nValor2=105838&nValor3=148681&strTipM=TC",
+          "locator": "Article 1(a) and 1(b)",
+          "quotation": "Trabajadores en Ocupación No Calificada ¢12.436,41 [per ordinary day] ... Trabajadores en Ocupación Especializada ¢487.335,00 [per month]. The decree also states that fishing and water-transport occupations unable to return to the initial departure point at the end of the ordinary day are entitled to food.",
+          "authority": "primary law"
+        },
+        {
+          "id": "S2",
+          "publisher": "Ministerio de Trabajo y Seguridad Social occupational guide, hosted in ARESEP's public documentary repository",
+          "title": "Anexo — Lista de Salarios Mínimos por Ocupación 2026",
+          "vintage": "2026",
+          "url": "https://sgd.aresep.go.cr/WeblinkPublico/DocView.aspx?id=5577250&dbid=0&repo=RepositorioDocumental",
+          "locator": "Search-result description / introductory note",
+          "quotation": "Esta lista es una guía ilustrativa, elaborada de conformidad con esos perfiles, contiene algunas ocupaciones seleccionadas por el Departamento de Salarios Mínimos.",
+          "authority": "primary ministry guide",
+          "access_note": "The document viewer was not directly extractable during research; wage amounts therefore come from S1, not from this guide."
+        },
+        {
+          "id": "S3",
+          "publisher": "Promotora del Comercio Exterior de Costa Rica (PROCOMER), Ventanilla Única de Inversión",
+          "title": "Instructivo Solicitud de ingreso VUI",
+          "vintage": "March 2025",
+          "url": "https://procomer.com/wp-content/uploads/2025/03/Instructivo-Solicitud-de-ingreso-VUI.pdf",
+          "locator": "Search-indexed payroll-cost instruction",
+          "quotation": "Costarricense del Seguro Social (incluye cargas sociales y aguinaldo) cargas sociales (26.67% del salario) y aguinaldo (8.33% del salario).",
+          "authority": "official government investment portal"
+        },
+        {
+          "id": "S4",
+          "publisher": "Caja Costarricense de Seguro Social (CCSS)",
+          "title": "Aporte para el IVM aumentará a partir de enero de 2026",
+          "vintage": "January 2026 change",
+          "url": "https://www.ccss.sa.cr/noticias/noticia?v=822124515110",
+          "locator": "Employer/worker contribution increase",
+          "quotation": "En términos generales, el incremento corresponde a 160 colones, tanto para los trabajadores como para los patronos, por cada 100 mil colones de salario.",
+          "authority": "primary social-security administrator"
+        },
+        {
+          "id": "S5",
+          "publisher": "Banco Central de Costa Rica",
+          "title": "Tipo cambio de compra y de venta del dólar de los Estados Unidos de América",
+          "vintage": "Accessed 2026-07-10",
+          "url": "https://sdd.bccr.fi.cr/es/IndicadoresEconomicos/Inicio/Contenedor/6?Cuadro=1",
+          "locator": "BCCR reference-rate current display",
+          "quotation": "Compra USD ₡448,82; Venta USD ₡455,10.",
+          "authority": "primary central bank"
+        },
+        {
+          "id": "S6",
+          "publisher": "Autoridad Reguladora de los Servicios Públicos (ARESEP)",
+          "title": "Tarifas vigentes de electricidad / Tarifas eléctricas 2013 a 2026 workbook",
+          "vintage": "2026",
+          "url": "https://aresep.go.cr/electricidad/tarifas/",
+          "download_url": "https://aresep-my.sharepoint.com/:x:/g/personal/multimedia_aresep_go_cr/ET6L4k-QyphAgLpEwSYeNegBbLvOGM7mF0n2vZxId_SGeQ?e=YGhFZr&download=1",
+          "locator": "Workbook sheet 'CG vig', Table 11, rows 12–18, T-CO Comercios y Servicios",
+          "quotation": "Consumo de Energía menor o igual a 3000 kWh: 90.07; Bloque 0-3000 kWh: 171120; Bloque mayor a 3000 kWh: 57.04; Bloque 0-10 kW: 84246.9; Bloque mayor a 10 kW: 8424.69. Values shown for each month of 2026.",
+          "authority": "primary regulator"
+        },
+        {
+          "id": "S7",
+          "publisher": "CoopeGuanacaste R.L.",
+          "title": "Utility service-area and Paquera service pages",
+          "vintage": "Current pages accessed 2026-07-10",
+          "url": "https://coopeguanacaste.com/",
+          "additional_url": "https://coopeguanacaste.com/area-comercial/",
+          "locator": "Homepage description and commercial-office listing",
+          "quotation": "Distribuimos energía eléctrica a hogares, comercios e industrias de una extensa zona de la Península de Nicoya. ... MONA PAQUERA, Ubicación Puntarenas, Paquera.",
+          "authority": "primary utility"
+        },
+        {
+          "id": "S8",
+          "publisher": "Instituto Meteorológico Nacional, Costa Rica",
+          "title": "Factores de emisión de gases de efecto invernadero, 15a edición 2025",
+          "vintage": "Updated July 2025; factor year 2024",
+          "url": "https://cglobal.imn.ac.cr/index.php/publications/factores-de-emision-2025/",
+          "pdf_url": "https://cglobal.imn.ac.cr/documentos/publicaciones/factoresemision/factoresemision2025/FactoresEmision-GEI-2025.pdf",
+          "locator": "Section 'Uso de electricidad', table of last five years",
+          "quotation": "El factor de emisión por consumo de electricidad varía anualmente ... 2024 0,127 [kg CO2e/kWh] ... Incertidumbre estándar recomendada 16,1%.",
+          "authority": "primary national emissions authority"
+        },
+        {
+          "id": "S9",
+          "publisher": "World Bank",
+          "title": "Price level index (GDP), indicator PA.NUS.GDP.PLI",
+          "vintage": "2025",
+          "url": "https://data.worldbank.org/indicator/PA.NUS.GDP.PLI?locations=CR-SG",
+          "locator": "2025 country observations",
+          "quotation": "Costa Rica 2025: 59.1; Singapore 2025: 60.5.",
+          "authority": "primary international statistical source"
+        },
+        {
+          "id": "S10",
+          "publisher": "Ministerio de Obras Públicas y Transportes, Dirección de Navegación y Seguridad",
+          "title": "Dirección de Navegación y Seguridad",
+          "vintage": "Current page accessed 2026-07-10",
+          "url": "https://www.mopt.go.cr/elmopt/organigrama/navegacion-seguridad",
+          "locator": "Functions and regulated navigation activities",
+          "quotation": "The Directorate authorizes and supervises navigation-related safety and maritime activities; the page did not provide a complete annual vessel fee schedule usable for this model.",
+          "authority": "primary ministry"
+        },
+        {
+          "id": "S11",
+          "publisher": "Instituto Costarricense de Puertos del Pacífico (INCOP)",
+          "title": "Memoria Institucional 2024",
+          "vintage": "2024, published 2025",
+          "url": "https://incop.go.cr/wp-content/uploads/2025/08/PLANI/MEMORIA%20INST%202024.pdf",
+          "locator": "Institutional port-services overview",
+          "quotation": "INCOP reports Pacific port-service and concession oversight, but the document did not establish an annual ferry-vessel berth/terminal-use charge for Puntarenas–Paquera or Puntarenas–Playa Naranjo.",
+          "authority": "primary port authority"
+        },
+        {
+          "id": "S12",
+          "publisher": "Imprenta Nacional / Asamblea Legislativa and MOPT",
+          "title": "Naviera Tambor — Contrato de concesión del derecho de línea para Puntarenas–Paquera",
+          "vintage": "Contract signed 2006-07-25; official publication 2006-11-20",
+          "url": "https://www.imprentanacional.go.cr/pub/2006/11/20/COMP_20_11_2006.html",
+          "locator": "Article 3, service provision; contract antecedents and certificate obligations",
+          "quotation": "En la prestación del Servicio La Concesionaria utilizará las Terminales ya existentes, las cuales son de Propiedad Pública (Estatal) y se encuentran bajo cargo de El Ministerio. The concession also requires two registered vessels and current national/classification certificates throughout the concession.",
+          "authority": "primary official gazette / concession",
+          "use": "Establishes public MOPT terminal class and vessel/certificate obligations; provides no berth or terminal-use fee."
+        },
+        {
+          "id": "S13",
+          "publisher": "Autoridad Reguladora de los Servicios Públicos (ARESEP), published by Imprenta Nacional",
+          "title": "Resolution RRG-8666-2008 — Coonatramar / Naviera Tambor ferry tariff review",
+          "vintage": "2008; projections for 2009–2010",
+          "url": "https://www.imprentanacional.go.cr/pub/2008/08/08/COMP_08_08_2008.html",
+          "locator": "RRG-8666-2008, operating-expense projection, Canon paragraph; Resultando I",
+          "quotation": "Canon: ... nuevo estudio de cánones que se encuentra para aprobación de la Contraloría General de la República ... año 2009, ¢814,0 (miles) para COONATRAMAR, R.L. y ¢1.055,0 (miles) para Naviera Tambor S.A. The decision also records 2008 navigation certificates expiring in January 2009 for the two authorized Coonatramar ferries.",
+          "authority": "primary regulator / official gazette",
+          "use": "Historical lead only; not current, not clearly terminal-specific, and not demonstrably per-vessel."
+        },
+        {
+          "id": "S14",
+          "publisher": "Procuraduría General de la República / SINALEVI",
+          "title": "Ley 8000 — Ley de Creación del Servicio Nacional de Guardacostas, current text",
+          "vintage": "Version 7 of 7, dated 2023-12-13",
+          "url": "https://pgrweb.go.cr/scij/Busqueda/Normativa/Normas/nrm_texto_completo.aspx?param2=NRTC&nValor1=1&nValor2=47634&strTipM=TC",
+          "locator": "Articles 31 and 33",
+          "quotation": "Artículo 31: Toda embarcación deberá cancelar un canon ... como requisito para obtener el certificado anual de navegabilidad ... less than 35 ft: 5%; 35–50 ft: 8%; more than 50 ft: 10% of the Law 7337 salary base. Article 33 sets separate registration rights of 5%/10%/15% by the same length brackets.",
+          "authority": "primary current law"
+        },
+        {
+          "id": "S15",
+          "publisher": "Poder Judicial de Costa Rica",
+          "title": "Poder Judicial fija en CRC 462,200 el salario base para 2026",
+          "vintage": "Effective 2026-01-01; decision session 113-2025 of 2025-12-16",
+          "url": "https://pj.poder-judicial.go.cr/index.php/component/content/article/2333-poder-judicial-fija-en-462-200-00-el-salario-base-para-multas-y-penas-por-la-comision-de-figuras-delictivas-en-el-2026?catid=8&Itemid=409",
+          "locator": "Opening notice",
+          "quotation": "A partir del 1° de enero del 2026 ... salario base ... es de ¢462.200,00 ... [and applies to] otras leyes que refieran a la citada norma.",
+          "authority": "primary judiciary source"
+        },
+        {
+          "id": "S16",
+          "publisher": "Registro Nacional de Costa Rica",
+          "title": "Aranceles Registro Bienes Muebles — Inscripción de Embarcaciones",
+          "vintage": "Current page accessed 2026-07-10",
+          "url": "https://www.rnpdigital.com/tramites_servicios/tramitesregistros/bienes%20muebles/bienes_muebles_aranceles.htm",
+          "locator": "Inscripción de Embarcaciones table",
+          "quotation": "Registration: 1 colón per thousand of base value, minimum CRC 2,000; motor vessels also pay Agrarian Stamp 3 colones per thousand and other stamps; Guardacostas canon according to circular.",
+          "authority": "primary national registry",
+          "use": "Event/value-based registration is not a complete annual operating amount."
+        },
+        {
+          "id": "S17",
+          "publisher": "Government of Costa Rica / MOPT",
+          "title": "MOPT comienza inspección anual de toda embarcación turística, recreo y pasajeros",
+          "vintage": "2015-09-18",
+          "url": "https://presidencia.gobiernocarlosalvarado.cr/comunicados/2015/09/mopt-comienza-inspeccion-anual-de-toda-embarcacion-turistica-recreo-y-pasajeros/",
+          "locator": "Opening paragraphs and document requirements",
+          "quotation": "Iniciará la inspección anual de las embarcaciones de clase pasajeros ... y cabotaje ... indispensables para renovar el Certificado de Navegabilidad ... [owner must present] original y copia del entero de gobierno cancelado a favor del Servicio Nacional de Guardacostas.",
+          "authority": "primary government notice"
+        }
+      ],
+      "anomaly_review": {
+        "captain_usd_yr": "USD 30,665 is about 2.19× the existing Mexico and Colombia USD 14,000 rows. Do not tune it downward: Costa Rica is a two-role statutory-floor model with explicit employer load, while those nearby rows are low-confidence modeled comparators and may not be role-equivalent. Costa Rica remains low confidence because INS risk premium and market/roster inputs are missing.",
+        "energy_usd_kwh": "USD 0.125/kWh is below Mexico 0.23 and Colombia 0.15. The difference follows the current CoopeGuanacaste T-CO marginal commercial energy schedule; it is energy-only and should not be forced toward neighboring values.",
+        "grid_co2_kg_kwh": "0.127 kg CO2e/kWh is below Mexico 0.444 and Colombia 0.20. It is a directly published IMN factor, not a renewable-share inference, so no tuning is appropriate.",
+        "marina_overhead_usd_yr": "Mexico and Colombia contain low-confidence modeled values of USD 11,000 and USD 10,000. Those do not justify a Costa Rica value. The only current exact Costa Rica amount found is a small length-based annual certificate canon component; terminal economics remain unknown.",
+        "cost_index": "0.977 is much higher than Mexico 0.54 and Colombia 0.42 in the current file. It is a direct same-indicator 2025 World Bank normalization (59.1/60.5); it is a broad GDP price-level measure and must not be used to scale marina costs or override sourced inputs."
+      },
+      "reopened_hold_search": {
+        "result": "Hold not cleared.",
+        "primary_documents_found": [
+          "Official 2006 Naviera Tambor MOPT concession: public State-owned terminals under MOPT; current certificate obligations; no stated terminal-use price.",
+          "Official ARESEP RRG-8666-2008: historical projected concession-canon values and annual certificate validity; too stale/ambiguous for current per-vessel use.",
+          "Current Ley 8000 Article 31: exact annual navigation-certificate canon formula by vessel length.",
+          "Poder Judicial: 2026 Law 7337 salary base CRC 462,200.",
+          "Registro Nacional: event-based vessel-registration tariff and value-dependent stamps.",
+          "Official MOPT/Government inspection notice: annual inspection/certificate requirement and Guardacostas payment evidence."
+        ],
+        "negative_finding": "No authoritative current document located a berth, ramp, terminal-use, port-call, or route-concession fee that can be assigned to a Navier vessel on Puntarenas–Paquera or Puntarenas–Playa Naranjo."
+      }
+    },
+    "namibia": {
+      "country": "Namibia",
+      "target_geography": [
+        "Yango Walvis Bay Waterfront–Pelican Point",
+        "Sandwich Harbour",
+        "Swakopmund"
+      ],
+      "reference_file_reviewed": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+      "research_date": "2026-07-10",
+      "verdict": "PARTIAL_HOLD",
+      "schema_note": "candidate_row exactly mirrors the five-field object shape used under countries in country-reference.json.",
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "low",
+          "source": "HOLD — no authoritative Namibia source was found for both a licensed small-passenger-vessel captain/skipper wage and a deckhand wage in Walvis Bay/Swakopmund, and the complete mandatory employer burden could therefore not be applied. The N$18/hour national floor is not an occupation-specific market wage and is not substituted."
+        },
+        "energy_usd_kwh": {
+          "value": 0.145,
+          "source_tier": "T1",
+          "confidence": "medium-high",
+          "source": "Electricity Control Board, Erongo RED Schedule of Approved Tariffs valid from 07/2025: General 3 Phase TOU standard-period unit charge N$2.4700/kWh plus ECB levy N$0.0212, NEF levy N$0.0160 and local-authority surcharge N$0.0900; converted at World Bank 2025 period-average N$17.8887333333/USD. Formula: (2.4700+0.0212+0.0160+0.0900)/17.8887333333 = USD 0.145186/kWh, rounded 0.145. N$58/summated amp/month capacity charge is excluded because connected amperage/utilisation is unknown. VAT is excluded on the modeling assumption of recoverable input VAT for a VAT-registered operator."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.139,
+          "source_tier": "T2",
+          "confidence": "medium",
+          "source": "UNFCCC-hosted IFI Dataset of Default Grid Factors v3.2 (published April 2022), Namibia row, Electricity Consumption combined-margin factor: 138.57700071594977 gCO2/kWh. Conversion: 138.57700071594977/1000 = 0.138577 kgCO2/kWh, rounded 0.139. This is a published consumption grid factor, not an inference from renewable share."
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "low",
+          "source": "HOLD — Namport publishes Walvis Bay craft-licence, light-dues and berth-dues schedules and Namibia publishes ship-safety survey fees, but the target's actual Waterfront/private-jetty or Namport facility, berth contract, vessel LOA/GT, calls and berth duration are not supplied. The official rates therefore cannot be converted into a complete recurring annual berth/terminal/port-plus-administration cost without inventing operational assumptions."
+        },
+        "cost_index": {
+          "value": 0.67,
+          "source_tier": "T1",
+          "confidence": "high",
+          "source": "World Bank World Development Indicators, Price level index (GDP), PA.NUS.GDP.PLI, 2025: Namibia 40.681123608914 and Singapore 60.4907040592763, API last updated 2026-07-01. Formula with Singapore normalized to 1.00: 40.681123608914/60.4907040592763 = 0.6725186000, rounded 0.67."
+        }
+      },
+      "recommended_values": {
+        "captain_usd_yr": null,
+        "energy_usd_kwh": 0.145,
+        "grid_co2_kg_kwh": 0.139,
+        "marina_overhead_usd_yr": null,
+        "cost_index": 0.67
+      },
+      "exchange_rate": {
+        "source_fact": {
+          "publisher": "World Bank, World Development Indicators",
+          "indicator": "PA.NUS.FCRF — Official exchange rate (LCU per US$, period average)",
+          "country": "Namibia",
+          "vintage": "2025",
+          "value": 17.8887333333333,
+          "unit": "Namibian dollars per US dollar",
+          "api_last_updated": "2026-07-01",
+          "url": "https://api.worldbank.org/v2/country/NAM/indicator/PA.NUS.FCRF?format=json&per_page=100",
+          "quotation": "Official exchange rate (LCU per US$, period average) ... date 2025 ... value 17.8887333333333."
+        },
+        "modeling": "All N$-to-USD conversions in the candidate use local-currency amount / 17.8887333333333. No web-calculator exchange rate is used."
+      },
+      "field_research": {
+        "captain_usd_yr": {
+          "definition_applied": "Fully loaded annual cost for one licensed captain plus one deckhand, including mandatory employer on-costs.",
+          "source_facts": [
+            {
+              "publisher": "International Labour Organization",
+              "date": "2024-11-26",
+              "url": "https://www.ilo.org/resource/article/how-namibia-sets-historic-national-minimum-wage",
+              "quotation": "In early 2022, the Wages Commission proposed a minimum wage of N$18 per hour ... implementation on January 1, 2025.",
+              "use": "General legal wage floor only; not evidence of captain or deckhand market wages."
+            },
+            {
+              "publisher": "Government of Namibia, Fishers Conditions of Employment Regulations, Government Gazette 8785 (2025), hosted by Legal Assistance Centre",
+              "reference": "model employment agreement, section 3.4",
+              "url": "https://www.lac.org.na/laws/2025/8785.pdf",
+              "quotation": "Contribution to the Social Security Fund amounts to 0.9 percent of the Employee’s basic salary up to N$81.",
+              "use": "One mandatory social-security input, but not the entire employer burden and not a role wage."
+            },
+            {
+              "publisher": "Government of Namibia, Fishers Conditions of Employment Regulations, Government Gazette 8785 (2025)",
+              "reference": "model employment agreement",
+              "url": "https://www.lac.org.na/laws/2025/8785.pdf",
+              "quotation": "The model contract leaves basic salary to be inserted by the parties rather than prescribing a captain or deckhand wage.",
+              "use": "Confirms that the regulation does not supply the required role-specific wage pair."
+            }
+          ],
+          "modeling": null,
+          "unresolved": [
+            "Monthly base wage for a locally licensed passenger-vessel captain/skipper in Walvis Bay or Swakopmund.",
+            "Monthly base wage for one deckhand in the same operating market.",
+            "Complete employer on-cost stack applicable to this passenger-boat operator, including the applicable Employees' Compensation Fund assessment and whether any payroll levy applies.",
+            "Any mandatory allowances, overtime pattern or sector collective agreement applicable to these roles."
+          ],
+          "why_null": "Using the national minimum wage for both roles would understate a licensed captain and would violate the instruction not to replace missing local role inputs with an unrelated proxy. Because wage roles are absent, months, complete on-cost rate and the USD conversion cannot yield a defensible annual value."
+        },
+        "energy_usd_kwh": {
+          "source_facts": [
+            {
+              "publisher": "Electricity Control Board of Namibia",
+              "document": "Schedule of Approved Tariffs Valid from 07/2025 for Erongo RED",
+              "reference": "GENERAL 3 PHASE TOU table",
+              "url": "https://www.ecb.org.na/wp-content/uploads/2025/07/Erongo-RED-2025.pdf",
+              "quotation": "Unit Charge-N$/kWh: Peak 2.9400, Standard 2.4700, Off-Peak 2.0000; Capacity Charge N$/summated Ampere/month 58.00; ECB levy N$/kWh 0.0212; NEF levy N$/kWh 0.0160; Local Authority Surcharge N$/kWh 0.0900.",
+              "geography_fit": "Erongo RED is the regional distributor serving the Walvis Bay/Swakopmund target geography; General 3 Phase TOU is a business/non-residential three-phase charging class."
+            },
+            {
+              "publisher": "Namibia Revenue Agency",
+              "url": "https://www.namra.org.na/tax-types/page/value-added-tax-vat-30120/",
+              "quotation": "VAT is levied at the standard rate of 15% on the supply of most goods and services ... A tax invoice contains total amount exclusive of VAT, the VAT charged and total amount inclusive of VAT.",
+              "use": "Tax context; the ECB tariff PDF extraction does not state whether displayed approved charges include VAT."
+            }
+          ],
+          "modeling": {
+            "tariff_period": "Standard TOU period; no unprovided load-weighted charging profile is invented.",
+            "formula_local_currency": "N$2.4700 + N$0.0212 + N$0.0160 + N$0.0900 = N$2.5972/kWh",
+            "formula_usd": "N$2.5972/kWh / N$17.8887333333333 per USD = USD0.1451863557/kWh",
+            "rounded_candidate": 0.145,
+            "published_variable_range_context": {
+              "off_peak_usd_kwh_including_levies": 0.119,
+              "peak_usd_kwh_including_levies": 0.171
+            },
+            "exclusions": [
+              "N$58 per summated amp per month capacity charge, because connected amperage and annual kWh are not provided; it cannot honestly be converted to USD/kWh.",
+              "VAT. The row is modeled net of recoverable input VAT for a VAT-registered commercial operator. If VAT is not recoverable, the gross variable rate would require a 15% uplift.",
+              "Any private Waterfront/landlord electricity markup and charging infrastructure cost."
+            ]
+          },
+          "unresolved": [
+            "Actual charging TOU profile.",
+            "Connected amperage and annual kWh needed to allocate the capacity charge.",
+            "Confirmation that the operator takes supply directly from Erongo RED rather than through a private waterfront submeter."
+          ]
+        },
+        "grid_co2_kg_kwh": {
+          "source_facts": [
+            {
+              "publisher": "IFI Technical Working Group on GHG Accounting; workbook hosted by UNFCCC",
+              "document": "The IFI Dataset of Default Grid Factors v3.2",
+              "published": "2022-04",
+              "url": "https://unfccc.int/sites/default/files/resource/Harmonized_IFI_Default_Grid_Factors_2021_v3.2_0.xlsx",
+              "reference": "Dataset sheet, Namibia row, Electricity Consumption column",
+              "quotation": "Namibia ... Electricity Consumption 138.57700071594977 [gCO2/kWh].",
+              "method_note_quotation": "The IFI Dataset (Version 3.x) will be used by IFIs as the default basis of their GHG emissions accounting."
+            }
+          ],
+          "modeling": {
+            "formula": "138.57700071594977 gCO2/kWh / 1000 = 0.1385770007 kgCO2/kWh",
+            "rounded_candidate": 0.139
+          },
+          "unresolved": [
+            "A newer Namibia-government or NamPower national consumption-grid factor was not located; the selected published IFI factor is older and should be refreshed when an authoritative newer factor appears."
+          ]
+        },
+        "marina_overhead_usd_yr": {
+          "source_facts": [
+            {
+              "publisher": "Namibian Ports Authority (Namport)",
+              "document": "Port & Syncrolift Tariffs Booklet 2025/26",
+              "reference": "clause 3.8.1 Craft Licences",
+              "url": "https://www.namport.com.na/files/documents/c4a_Namport%20Port%20&%20Sycrolift%20Tariffs%20Booklet%202025-26.pdf",
+              "quotation": "Charges ... per calendar year ... per metre of length overall ... Ferry boats, fishing boats, launches, cruise passenger ferries ... N$178.00."
+            },
+            {
+              "publisher": "Namibian Ports Authority (Namport)",
+              "document": "Port & Syncrolift Tariffs Booklet 2025/26",
+              "reference": "clause 2.2.3 Light Dues",
+              "url": "https://www.namport.com.na/files/documents/c4a_Namport%20Port%20&%20Sycrolift%20Tariffs%20Booklet%202025-26.pdf",
+              "quotation": "Small craft licensed by Namport ... per metre ... per calendar year ... N$29.00."
+            },
+            {
+              "publisher": "Namibian Ports Authority (Namport)",
+              "document": "Port & Syncrolift Tariffs Booklet 2025/26",
+              "reference": "clauses 2.3.1–2.3.3 Berth Dues",
+              "url": "https://www.namport.com.na/files/documents/c4a_Namport%20Port%20&%20Sycrolift%20Tariffs%20Booklet%202025-26.pdf",
+              "quotation": "All vessels occupying a berth or mooring belonging to Namport, except when exempted ... per 100 gross tonnes or part thereof per 6 hour period or part thereof N$65.00; Small craft harbour per 30 minutes or part thereof N$288.00; Permanent mooring buoy per 100 gross tonnes or part thereof per 12 hour period or part thereof N$130.00."
+            },
+            {
+              "publisher": "Namibian Ports Authority (Namport)",
+              "document": "Port & Syncrolift Tariffs Booklet 2025/26",
+              "reference": "clause 2.3.2(g)",
+              "url": "https://www.namport.com.na/files/documents/c4a_Namport%20Port%20&%20Sycrolift%20Tariffs%20Booklet%202025-26.pdf",
+              "quotation": "Passenger ships and cruise liners on normal business are exempted for a period of 24 hours, where after 50% of normal tariff will be applicable.",
+              "use": "Creates a material classification/duration dependency; it cannot be assumed to eliminate all berth cost for the proposed operation."
+            },
+            {
+              "publisher": "Government of Namibia, Merchant Shipping Fees Regulations, Government Gazette 8134 (2023), hosted by Legal Assistance Centre",
+              "reference": "regulation 9(1), passenger-ship safety survey",
+              "url": "https://www.lac.org.na/laws/2023/8134.pdf",
+              "quotation": "Survey of a passenger ship for a passenger ship safety certificate ... Less than 25 tons: N$1215; 25–50 tons: N$2420; 50–100 tons: N$3626."
+            }
+          ],
+          "modeling": null,
+          "unresolved": [
+            "Whether the operation actually berths at a Namport-controlled berth/mooring, the private Walvis Bay Waterfront jetty, Walvis Bay Yacht Club, or another terminal.",
+            "Vessel length overall and gross tonnage.",
+            "Number of port entries/calls, berth time per call and whether Namport's passenger-ship exemption applies.",
+            "Private jetty/terminal concession, passenger handling or access fees.",
+            "Safety-certificate validity/renewal pattern and all other certificates applicable to the chosen vessel class."
+          ],
+          "why_null": "The official schedules are real but cannot yield the required complete annual amount without facility, vessel and calls assumptions. Calculating only N$178/m craft licence plus N$29/m light dues would be an incomplete lower bound, not marina/terminal overhead."
+        },
+        "cost_index": {
+          "source_facts": [
+            {
+              "publisher": "World Bank, World Development Indicators",
+              "indicator": "PA.NUS.GDP.PLI — Price level index (GDP)",
+              "country": "Namibia",
+              "vintage": "2025",
+              "value": 40.681123608914,
+              "api_last_updated": "2026-07-01",
+              "url": "https://api.worldbank.org/v2/country/NAM/indicator/PA.NUS.GDP.PLI?format=json&per_page=100"
+            },
+            {
+              "publisher": "World Bank, World Development Indicators",
+              "indicator": "PA.NUS.GDP.PLI — Price level index (GDP)",
+              "country": "Singapore",
+              "vintage": "2025",
+              "value": 60.4907040592763,
+              "api_last_updated": "2026-07-01",
+              "url": "https://api.worldbank.org/v2/country/SGP/indicator/PA.NUS.GDP.PLI?format=json&per_page=100"
+            },
+            {
+              "publisher": "World Bank, International Comparison Program",
+              "url": "https://www.worldbank.org/en/programs/icp/brief/ICP2021_DataViz_5",
+              "quotation": "The price level index (PLI)—the ratio of a PPP to its corresponding market exchange rate—is used to compare the price levels of economies."
+            }
+          ],
+          "modeling": {
+            "formula": "Namibia PLI / Singapore PLI = 40.681123608914 / 60.4907040592763 = 0.6725186000323221",
+            "normalization": "Singapore = 1.00",
+            "rounded_candidate": 0.67,
+            "sensitivity": "Using 2024 values (Namibia 38.4841786748317; Singapore 61.958627493) gives approximately 0.62. Latest common-year 2025 is selected."
+          },
+          "unresolved": []
+        }
+      },
+      "nearby_existing_row_comparison": {
+        "repository_rows_compared": {
+          "Mozambique": {
+            "captain_usd_yr": 10000,
+            "energy_usd_kwh": 0.1,
+            "grid_co2_kg_kwh": 0.1,
+            "marina_overhead_usd_yr": 7000,
+            "cost_index": 0.28
+          },
+          "Senegal": {
+            "captain_usd_yr": 12000,
+            "energy_usd_kwh": 0.18,
+            "grid_co2_kg_kwh": 0.55,
+            "marina_overhead_usd_yr": 8000,
+            "cost_index": 0.32
+          },
+          "Morocco": {
+            "captain_usd_yr": 14000,
+            "energy_usd_kwh": 0.12,
+            "grid_co2_kg_kwh": 0.6,
+            "marina_overhead_usd_yr": 10000,
+            "cost_index": 0.38
+          }
+        },
+        "anomalies_and_explanation": [
+          "Namibia energy at USD0.145/kWh is above Mozambique/Morocco and below Senegal; this follows the current Erongo RED commercial tariff and is not tuned to neighbors.",
+          "Namibia grid factor 0.139 kgCO2/kWh is far below Senegal/Morocco and near Mozambique. It comes directly from the published IFI Namibia electricity-consumption factor; it is not inferred from renewable share or adjusted for visual parity.",
+          "Namibia cost_index 0.67 is materially above the existing African reference rows (0.28–0.38). This is the direct same-year World Bank PLI ratio to Singapore. It is retained despite the anomaly rather than tuned downward.",
+          "Existing nearby rows have crew and marina numbers, but Namibia remains null because the assignment prohibits borrowing or silently scaling another country's values."
+        ]
+      },
+      "seal_assessment": {
+        "all_five_numeric": false,
+        "null_fields": [
+          "captain_usd_yr",
+          "marina_overhead_usd_yr"
+        ],
+        "required_action": "Keep Namibia held. Suppress affected Walvis Bay Waterfront–Pelican Point, Sandwich Harbour and Swakopmund corridor economics; do not borrow Singapore or any neighboring country. Do not cascade.",
+        "verdict": "PARTIAL_HOLD"
+      }
+    },
+    "south-korea": {
+      "country": "South Korea",
+      "iso3": "KOR",
+      "target_geography": "National shared spine for Swing, Naver, and Kakao Mobility: Seoul Han River, Busan, Jeju, Incheon, and island ferry terminals",
+      "research_date": "2026-07-10",
+      "verdict": "PARTIAL_HOLD",
+      "reference_schema_path": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": 74973,
+          "source_tier": "T4",
+          "confidence": "med-low",
+          "source": "Modeled from KOSWEC 2026 Korea Seafarer's Statistical Year Book coastal Leisure & Ferry Boat monthly total wages (Master KRW 3.890m; OS deck rating KRW 3.506m), 12 months, explicit 20.160716% employer on-cost, and World Bank 2025 official exchange rate 1,422.440833 KRW/USD. One licensed captain plus one deckhand."
+        },
+        "energy_usd_kwh": {
+          "value": 0.1214,
+          "source_tier": "T2",
+          "confidence": "medium",
+          "source": "KEPCO December 2025 Electricity Statistics, full-year general-service realized revenue divided by general-service electricity sold, converted at World Bank 2025 official exchange rate. Commercial/general-service class, not residential."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.4173,
+          "source_tier": "T1",
+          "confidence": "high",
+          "source": "Korea Energy Agency TIPS, electricity emission factors updated December 2025: 2023 consumption-end CO2e factor 0.4173 tCO2e/MWh, numerically equal to kgCO2e/kWh."
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "none",
+          "source": "Held: no defensible current national annual berth/terminal/port plus mandatory marine-administration total was found for the heterogeneous Han River, Busan, Jeju, Incheon, and island-terminal network. No Singapore or yacht-marina proxy used."
+        },
+        "cost_index": {
+          "value": 0.949,
+          "confidence": "high",
+          "source": "World Bank 2025 GDP price-level index (PA.NUS.GDP.PLI): Korea 57.3893307237476 / Singapore 60.4907040592763 = 0.9487297530; Singapore normalized to 1.00."
+        }
+      },
+      "facts_and_models": {
+        "captain_usd_yr": {
+          "definition": "Fully loaded annual crew cost for one vessel: one licensed captain plus one deckhand, excluding vessel insurance and non-labor vessel expenses.",
+          "wage_source": {
+            "authority": "Korean Seafarers' Welfare & Employment Center (KOSWEC)",
+            "publication": "2026 Korea Seafarer's Statistical Year Book",
+            "table": "3. Wage Status, Coastal Ships, (10) Leisure & Ferry Boat, by rank, printed pages 253-254",
+            "url": "https://www.koswec.or.kr/koswec/information/sailorshipstatistics/detailSailorShipStaticsPage.do",
+            "quotation": "Leisure & Ferry Boat (Coastal Ships) ... Master ... Total 3,890 [thousand KRW]; Deck Dept. ... OS ... Total 3,506 [thousand KRW].",
+            "role_selection": "Master is used for the licensed captain; OS in the Deck Department is used for the deckhand. This is the closest official vessel/service category to small domestic passenger/leisure water transport and is preferable to a generic occupation average.",
+            "wage_components": "The table's Total includes basic/ordinary wage, overtime/production allowance, bonus, and other amounts. For the selected rows: Master 3,054 + 591 + 0 + 245 = 3,890 thousand KRW/month; OS 2,752 + 533 + 0 + 221 = 3,506 thousand KRW/month.",
+            "months": 12
+          },
+          "employer_on_cost": {
+            "total_rate_percent": 20.160716,
+            "items_percent_of_wage": {
+              "national_pension_employer": 4.75,
+              "national_health_insurance_employer": 3.595,
+              "long_term_care_employer": 0.472383,
+              "employment_insurance_unemployment_employer": 0.9,
+              "employment_stabilization_vocational_development_small_employer_assumption": 0.25,
+              "industrial_accident_water_transport": 1.8,
+              "commuting_accident": 0.06,
+              "statutory_retirement_accrual": 8.333333
+            },
+            "assumptions": [
+              "2026 pension total 9.5% is split equally, giving 4.75% employer.",
+              "2026 health total 7.19% is split equally, giving 3.595% employer; long-term care is 13.14% of the health premium, so employer effective rate is 3.595% x 13.14% = 0.472383%.",
+              "Employment-stabilization/vocational-development uses the lowest 0.25% employer band, corresponding to a small operator; unemployment insurance employer share is 0.9%.",
+              "MOEL 2025 industrial-accident schedule category 501, land and water transport, is 18 per thousand; the separate commuting-accident component is modeled at 0.6 per thousand.",
+              "Retirement accrual is 30 days' average wage per completed year, modeled as 1/12 = 8.333333%."
+            ],
+            "sources": [
+              {
+                "authority": "National Pension Service",
+                "url": "https://www.nps.or.kr/eng/ntnlpnsplan/cntb/getOHAI0013M0.do",
+                "quotation": "Employee, 9.5% ... 4.75%, 4.75%."
+              },
+              {
+                "authority": "National Health Insurance Service",
+                "url": "http://www.nhis.or.kr/english/wbheaa02500m01.do",
+                "reference": "2026 workplace health-insurance contribution rate and equal employer/employee sharing."
+              },
+              {
+                "authority": "National Health Insurance Service EDI",
+                "url": "https://edi.nhis.or.kr/portal/images/popup/20251204_pop01longdesc.html",
+                "reference": "2026 long-term-care insurance rate stated as a percentage of the health-insurance premium."
+              },
+              {
+                "authority": "Invest Korea / KOTRA",
+                "publication": "2025 Labor Laws in Korea",
+                "url": "https://www.investkorea.org/file/ik-en/252025Labor_Laws_in_Korea.pdf",
+                "reference": "PDF pages 30 and 73-82: retirement-benefit rule and social-insurance contribution framework.",
+                "quotation": "At least 30 days' worth of average wage per every year of continuous service."
+              },
+              {
+                "authority": "Ministry of Employment and Labor",
+                "publication": "2025 industrial-accident insurance premium-rate schedule",
+                "url": "https://www.moel.go.kr/common/downloadFile.do?file_seq=20250101395&bbs_seq=20241201937&bbs_id=19&file_ext=pdf",
+                "reference": "Rate table: category 501 land and water transport, 18 per thousand."
+              }
+            ]
+          },
+          "exchange_rate": {
+            "authority": "World Bank",
+            "indicator": "PA.NUS.FCRF — Official exchange rate (LCU per US$, period average)",
+            "vintage": 2025,
+            "krw_per_usd": 1422.44083333333,
+            "url": "https://api.worldbank.org/v2/country/KR/indicator/PA.NUS.FCRF?format=json&date=2025&per_page=10"
+          },
+          "formula": "((3,890,000 + 3,506,000) KRW/month x 12) x (1 + 20.160716% employer on-cost) / 1,422.440833 KRW/USD = USD 74,973.27; candidate rounded to USD 74,973.",
+          "modeling_limitations": [
+            "KOSWEC reports observed total monthly earnings, not a statutory minimum or a Navier-specific offer.",
+            "Pension and other contribution ceilings are not applied employee-by-employee; applying percentages to full observed wages is conservative but can overstate actual statutory contributions above a cap.",
+            "Small-employer employment-insurance band is assumed; actual rate depends on operator size.",
+            "Applicability of standard employee social-insurance treatment to every seafarer contract should be checked at contracting; the row intentionally includes the common mandatory employer burden rather than silently excluding it."
+          ]
+        },
+        "energy_usd_kwh": {
+          "authority": "Korea Electric Power Corporation (KEPCO)",
+          "publication": "December 2025 Electricity Statistics Monthly Report",
+          "url": "https://www.kepco.co.kr/home/customer/library/electricity-statistics/monthly-stats/boardList.do",
+          "tariff_class": "General service (일반용), the commercial/business segment; residential is a separate segment and is not used.",
+          "source_cells": [
+            {
+              "sheet": "18.계약종별 판매전력량",
+              "row": "2025.01~12",
+              "general_service_sales_mwh": 138315365.194,
+              "reference": "The sheet total is 549,417,259.36 MWh; the general-service value is reported in the same MWh scale."
+            },
+            {
+              "sheet": "18-2.계약종별 판매수입",
+              "row": "2025.01~12",
+              "general_service_revenue_million_krw": 23885478.138,
+              "reference": "Workbook unit: million KRW."
+            }
+          ],
+          "formula": "23,885,478.138 million KRW x 1,000,000 / (138,315,365.194 MWh x 1,000 kWh/MWh) = 172.6879 KRW/kWh; 172.6879 / 1,422.440833 = USD 0.1214025/kWh; candidate rounded to 0.1214.",
+          "fixed_demand_tax_treatment": "This is an annual realized revenue-per-kWh average, not a single posted time-of-use tariff. It therefore blends the basic/demand and volumetric charges recognized in KEPCO general-service sales revenue across customers and seasons. The workbook does not separately identify VAT or the Electric Power Industry Basis Fund in these two totals, so neither is silently added. Site-specific demand, voltage, load factor, seasonal/time-of-use, VAT, and fund treatment remains a deployment sensitivity.",
+          "geography": "National KEPCO general-service average is used deliberately for the national shared-spine row, avoiding unsupported weights across Seoul, Incheon, Busan, Jeju, and islands. A site tariff should replace it when charger voltage and demand profile are known."
+        },
+        "grid_co2_kg_kwh": {
+          "authority": "Korea Energy Agency, TIPS Energy/Greenhouse-Gas Statistics",
+          "url": "https://tips.energy.or.kr/carbon/Ggas_tatistics03.do",
+          "publication_update": "2025-12",
+          "factor_year": 2023,
+          "boundary": "Consumption-end indirect electricity; CO2-equivalent including CO2, CH4, and N2O with global-warming potentials.",
+          "published_value": 0.4173,
+          "published_unit": "tCO2e/MWh",
+          "quotation": "Electricity emission factors (2025.12) ... '23 ... consumption-end ... CO2-eq emission factor 0.4173 t CO2eq/MWh.",
+          "conversion": "1 t/MWh = 1 kg/kWh, so 0.4173 tCO2e/MWh = 0.4173 kgCO2e/kWh.",
+          "not_inferred_from": "Renewable share or generation mix"
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "required_scope": "Annual berth/terminal/port charges plus mandatory marine administration per vessel; vessel insurance and charging infrastructure excluded.",
+          "official_tariff_evidence_found": [
+            {
+              "authority": "Ministry of Oceans and Fisheries, Busan Regional Office",
+              "url": "https://busan.mof.go.kr/ko/page.do?menuIdx=4524",
+              "reference": "Official port-facility-fee page includes vessel entry/departure and berth/anchorage schedules. A small-vessel designated-port illustration previously transcribed from the schedule used KRW 135 per GT per entry or departure and KRW 3,913/month for a coastal vessel below 50 GT.",
+              "illustrative_not_candidate_formula": "At 49 GT, one entry and one departure on each of 365 days plus 12 monthly berth charges: 135 x 49 x 2 x 365 + 3,913 x 12 = KRW 4,875,906 = USD 3,427.84 at the 2025 World Bank FX."
+            },
+            {
+              "authority": "Busan Port Authority",
+              "url": "https://www.busanpa.com/index.bpa?menuCd=DOM_000000104002003001",
+              "reference": "Official tariff page located; deployment-specific facility and exemption classification still required."
+            },
+            {
+              "authority": "Incheon Port Authority",
+              "url": "https://www.icpa.or.kr/main.do?menuKey=72",
+              "reference": "Official tariff page located; deployment-specific facility and exemption classification still required."
+            },
+            {
+              "authority": "Korea Maritime Transportation Safety Authority (KOMSA)",
+              "url": "https://komsa.or.kr/bbs/BBSMSTR_000000000725.do",
+              "reference": "Inspection fee schedule was located. The extracted attachment is dated 2019; it lists, for example, a KRW 321,200 regular inspection base fee for a 30-<50 GT passenger vessel. It is not treated as a current 2025/2026 input."
+            }
+          ],
+          "why_no_national_average": [
+            "The official designated-seaport illustration does not establish the fees or access terms for Seoul Han River landings, Jeju terminals, or island-ferry terminals.",
+            "Terminal/call fees, exemptions, passenger-facility charges, and whether a dedicated berth is available depend on the facility and service contract.",
+            "No authoritative operating-day/call distribution across the target geographies exists, so geographic weights would be invented.",
+            "The only extracted KOMSA inspection schedule is not current enough for a 2025/2026 row, and current registration/certificate totals were not established.",
+            "Generic yacht-marina pricing is not an acceptable substitute for public ferry/urban-water terminals."
+          ],
+          "resolution_needed": "Obtain current tariff letters or schedules from the actual Han River, Busan, Jeju, Incheon, and island terminals; confirm vessel GT/length, annual calls, berth type, passenger throughput fees/exemptions, and current KOMSA/registration/certificate charges. Then build a geography-weighted per-vessel annual formula."
+        },
+        "cost_index": {
+          "authority": "World Bank",
+          "indicator": "PA.NUS.GDP.PLI — Price level ratio of PPP conversion factor (GDP) to market exchange rate",
+          "vintage": 2025,
+          "korea": 57.3893307237476,
+          "singapore": 60.4907040592763,
+          "singapore_normalized_formula": "57.3893307237476 / 60.4907040592763 = 0.9487297530461939",
+          "candidate": 0.949,
+          "url": "https://api.worldbank.org/v2/country/KR;SG/indicator/PA.NUS.GDP.PLI?format=json&date=2025&per_page=10",
+          "note": "Uses the same internationally comparable price-level measure for both economies; it is not inferred from wages or nominal FX."
+        }
+      },
+      "nearby_row_anomaly_check": {
+        "rows_checked": [
+          "Singapore",
+          "Taiwan"
+        ],
+        "observations": [
+          "Korea crew USD 74,973 is above the existing Singapore USD 48,000 row. This is not tuned down: Korea explicitly includes two role-specific KOSWEC wages plus mandatory employer burden, while the Singapore row is tagged T5/low and described as a modeled blended marine-crew figure. The existing Singapore crew row may not be definitionally comparable.",
+          "Korea realized general-service electricity USD 0.1214/kWh is below existing Singapore USD 0.21 and Taiwan USD 0.18. This is plausible but not directly apples-to-apples because Korea uses an authoritative annual realized class average whereas Taiwan's existing row is a modeled tariff blend. Site demand and taxes can lift Korea's deployment price.",
+          "Korea consumption-end grid factor 0.4173 kgCO2e/kWh is close to existing Singapore 0.40 and below Taiwan 0.46. It is retained exactly because it is a published factor, not calibrated to neighbors.",
+          "Korea cost index 0.949 is appropriately close to Singapore 1.00 under the World Bank 2025 GDP price-level index.",
+          "No marina figure is borrowed from Singapore USD 20,000 or Taiwan USD 14,000; both nearby rows are T5/low models and include scopes that may differ from the requested exclusion of insurance."
+        ]
+      },
+      "unresolved_fields": [
+        "marina_overhead_usd_yr"
+      ],
+      "seal_rule_application": "At least one required field is null. South Korea must remain held; affected corridor economics must be suppressed and must not borrow Singapore or any other country's marina overhead.",
+      "recommended_action": "Do not cascade. Preserve the four researched values as candidates, resolve deployment-specific port/terminal and current marine-administration charges, then rerun review for all-five-numeric SEAL_READY status."
+    },
+    "venezuela": {
+      "_doc": "Source-backed Venezuela country-cost research for Navier's L3 country-reference schema. Null means the field is not safe to seal; no proxy country is permitted.",
+      "country": "Venezuela",
+      "target_geography": [
+        "La Guaira",
+        "Caraballeda",
+        "Los Roques",
+        "Maracaibo",
+        "Cabimas"
+      ],
+      "research_date": "2026-07-10",
+      "reference_file": "/tasklet/agent/home/didi-controlled-review/source/country-reference.json",
+      "schema": {
+        "captain_usd_yr": "fully-loaded annual crew cost for one vessel: one licensed captain plus one deckhand, including mandatory employer on-costs",
+        "energy_usd_kwh": "commercial/business electricity tariff appropriate to charging geography",
+        "grid_co2_kg_kwh": "published grid carbon intensity",
+        "marina_overhead_usd_yr": "annual berth/terminal/port fees and mandatory marine administration per vessel; insurance and charging infrastructure excluded",
+        "cost_index": "relative cost level with Singapore = 1.00"
+      },
+      "currency_and_hyperinflation_control": {
+        "official_exchange_rate_context_only": {
+          "value": 709.6935,
+          "units": "VES per USD",
+          "value_date": "2026-07-10",
+          "publisher": "Banco Central de Venezuela (BCV)",
+          "url": "https://www.bcv.org.ve/bcv/coleccion-electronica",
+          "quotation": "El tipo de cambio publicado por el BCV es el promedio ponderado resultante de las operaciones diarias de las mesas de cambio activas de las instituciones bancarias participantes. USD 709,69350000. Fecha Valor: Viernes, 10 Julio 2026.",
+          "use_in_candidate": false,
+          "reason_not_used": "No wage, commercial-tariff, or marine-fee input of the same 2026-07-10 vintage was found. Applying this rate to 2014, 2019, or 2022 bolivar facts would mix dates and produce a false USD value. The 2014 port-law rates are already denominated in USD and do not require conversion."
+        },
+        "hyperinflation_evidence": {
+          "publisher": "International Monetary Fund",
+          "vintage": "World Economic Outlook, April 2026",
+          "value": 387.4,
+          "units": "percent annual average consumer-price inflation projected for 2026",
+          "url": "https://www.imf.org/en/countries/ven",
+          "quotation": "2026 Projected Consumer Prices (% Change): 387.4",
+          "implication": "Cross-vintage bolivar conversion and old nominal-price carry-forward are unsafe. Every converted candidate input must have a named, matching-date official exchange rate; none of the local-cost inputs met that test."
+        }
+      },
+      "facts": {
+        "captain_usd_yr": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_facts": [
+            {
+              "fact": "The official national minimum monthly wage was VES 130 from 15 March 2022.",
+              "publisher": "Gaceta Oficial de la Republica Bolivariana de Venezuela, Decree 4,653, G.O. 6,691 Extraordinary",
+              "date": "2022-03-15",
+              "url": "https://historico.tsj.gob.ve/gaceta_ext/marzo/1532022/E-1532022-6445.pdf",
+              "reference": "Article 1",
+              "quotation": "se establece la cantidad CIENTO TREINTA BOLIVARES SIN CENTIMOS (Bs. 130,00) mensuales"
+            }
+          ],
+          "required_inputs": {
+            "licensed_captain_monthly_wage_ves": null,
+            "deckhand_monthly_wage_ves": null,
+            "months": 12,
+            "mandatory_employer_oncost_rate": null,
+            "matching_vintage_ves_per_usd": null
+          },
+          "intended_formula_not_evaluated": "((licensed_captain_monthly_wage_ves + deckhand_monthly_wage_ves) * 12 * (1 + mandatory_employer_oncost_rate)) / matching_vintage_ves_per_usd",
+          "modeling_assessment": "The minimum wage is not an occupational wage for a licensed captain or deckhand and is four years older than the model date. No current primary occupational wage schedule for both roles and no complete official mandatory employer on-cost rate were found. Using the 2026-07-10 BCV rate against the 2022 wage is prohibited date mixing."
+        },
+        "energy_usd_kwh": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_facts": [
+            {
+              "fact": "The World Bank Doing Business 2020 profile reports an all-in modeled commercial-warehouse electricity price of 123.8 US cents/kWh for Corpoelec in Caracas, using tariffs effective in January 2019.",
+              "publisher": "World Bank Group",
+              "vintage": "Doing Business 2020; data collected May 2019; January-current-year tariffs",
+              "url": "https://archive.doingbusiness.org/content/dam/doingBusiness/country/v/venezuela/VEN.pdf",
+              "reference": "PDF page 18, Getting Electricity - Standardized Connection; methodology on PDF page 17",
+              "quotation": "Name of utility: Corpoelec; Price of electricity (US cents per kWh): 123.8; City Covered: Caracas. Price based on monthly bill for commercial warehouse in case study.",
+              "case_assumptions": {
+                "customer_class": "commercial warehouse",
+                "connection": "three-phase, 140 kVA, power factor 1",
+                "monthly_consumption_kwh": 26880,
+                "hourly_consumption_kwh": 112,
+                "fixed_and_demand_charges": "included in case-study monthly bill but not separately disclosed",
+                "taxes": "value-added tax excluded",
+                "outages": "ignored by the standardized case assumption"
+              }
+            }
+          ],
+          "modeling_assessment": "The 1.238 USD/kWh observation is a stale 2019 Caracas standardized-case result, not a current tariff sheet and not specific to La Guaira/Caraballeda/Los Roques or Maracaibo/Cabimas. Its own profile gives tariff transparency 0/8. No current official commercial tariff class, energy/demand/fixed-charge schedule, tax treatment, or service-area applicability was found, so it cannot be inflated or exchange-converted to 2026."
+        },
+        "grid_co2_kg_kwh": {
+          "recommended_value": 0.368,
+          "exact_unrounded_value": 0.36775198318125013,
+          "confidence": "medium",
+          "source_tier": "T2",
+          "source_facts": [
+            {
+              "fact": "The IFI Harmonized Default Grid Emission Factor dataset version 3.0 publishes Venezuela's electricity-consumption factor as 367.75198318125013 gCO2/kWh.",
+              "publisher": "International Financial Institutions Technical Working Group on GHG Accounting; file hosted by UNFCCC",
+              "vintage": "Version 3.0, published December 2021",
+              "url": "https://unfccc.int/sites/default/files/resource/Harmonized_Grid_Emission_factor_data_set.xlsx",
+              "reference": "Dataset worksheet, Venezuela row, Electricity Consumption column",
+              "quotation": "Venezuela, Bolivarian Republic of | ... | Electricity Consumption 367.75198318125013 [gCO2/kWh]"
+            }
+          ],
+          "formula": "367.75198318125013 gCO2/kWh / 1000 = 0.36775198318125013 kgCO2/kWh; repository candidate rounded to 0.368.",
+          "modeling_assessment": "This is a published consumption factor, not an inference from renewable share. It is national rather than corridor-specific and is older than the model date, hence medium rather than high confidence."
+        },
+        "marina_overhead_usd_yr": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_facts": [
+            {
+              "fact": "The 2014 official port-fee law sets public-port passenger-vessel arrival and dock formulas in USD.",
+              "publisher": "Gaceta Oficial 6,150 Extraordinary; official copy hosted by Bolivariana de Puertos",
+              "date": "2014-11-18",
+              "url": "https://www.bolipuertos.gob.ve/wp-content/uploads/2021/05/Ley-de-Tasas-Portuarias-.pdf",
+              "reference": "Articles 12, 15 and 17",
+              "quotation": "Article 12: passenger vessels in traffic between national ports, USD 0.05 x TRB per arrival. Article 15: passenger vessels in traffic between national ports, USD 0.27 x metres of length x hours or fraction. Article 17: vessels registered in the Venezuelan Naval Registry carrying out cabotage receive a 50% reduction in arrival and dock fees."
+            }
+          ],
+          "required_inputs": {
+            "current_applicable_tariff_confirmation": null,
+            "terminal_or_marina_by_corridor": null,
+            "vessel_gross_tonnage_trb": null,
+            "vessel_length_m": null,
+            "hours_at_dock_per_call": null,
+            "annual_calls": null,
+            "passenger_embarkation_or_terminal_fees": null,
+            "los_roques_conservation_or_entry_vessel_fees": null,
+            "mandatory_inea_registration_and_certificate_fees": null
+          },
+          "formula_not_evaluated": "annual arrival fees + annual dock-hour fees + passenger/terminal fees + annualized mandatory vessel registration/certificate fees",
+          "modeling_assessment": "The law supplies only part of a possible public-port formula and is from 2014. It does not establish that Navier would use a Bolipuertos public dock rather than a ferry terminal or marina, does not cover a verified current fee schedule for Caraballeda, Los Roques, or Cabimas, and does not provide all mandatory marine-administration inputs. No vessel size/call pattern was supplied. A generic yacht-marina assumption would be inappropriate."
+        },
+        "cost_index": {
+          "recommended_value": null,
+          "confidence": "low",
+          "source_facts": [
+            {
+              "fact": "The most recent same-vintage World Bank Price Level Index (GDP) observation found for both Venezuela and Singapore is 2011: Venezuela 62.503965442419 and Singapore 67.3202336842181.",
+              "publisher": "World Bank, World Development Indicators API",
+              "vintage": "2011 observations; API last updated 2026-07-01",
+              "urls": [
+                "https://api.worldbank.org/v2/country/VEN/indicator/PA.NUS.GDP.PLI?date=2011&format=json",
+                "https://api.worldbank.org/v2/country/SGP/indicator/PA.NUS.GDP.PLI?date=2011&format=json"
+              ],
+              "reference": "Indicator PA.NUS.GDP.PLI, Price level index (GDP)",
+              "quotation": "VEN 2011 value 62.503965442419; SGP 2011 value 67.3202336842181"
+            }
+          ],
+          "historic_diagnostic_not_candidate": {
+            "value": 0.9284514913509186,
+            "formula": "62.503965442419 / 67.3202336842181",
+            "reason_rejected": "A 2011 relative price level is not a defensible current cost index after Venezuela's currency redenominations and extreme inflation; IMF projects 387.4% inflation for 2026. No current same-vintage authoritative Venezuela/Singapore price-level pair was found."
+          },
+          "modeling_assessment": "Do not carry the historical 0.93 ratio forward, inflation-adjust one side, or tune Venezuela to nearby Latin-American rows."
+        }
+      },
+      "candidate_row": {
+        "captain_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "low",
+          "source": "Held: no current primary occupational wages for one licensed captain plus one deckhand, complete employer on-cost rate, and matching-date official exchange rate."
+        },
+        "energy_usd_kwh": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "low",
+          "source": "Held: only a stale 2019 World Bank commercial-warehouse case for Caracas was found; no current official applicable commercial tariff schedule for target charging geographies."
+        },
+        "grid_co2_kg_kwh": {
+          "value": 0.368,
+          "source_tier": "T2",
+          "confidence": "med",
+          "source": "IFI Harmonized Default Grid Emission Factor Dataset v3.0, Venezuela electricity-consumption factor 367.751983 gCO2/kWh; divided by 1000 and rounded."
+        },
+        "marina_overhead_usd_yr": {
+          "value": null,
+          "source_tier": null,
+          "confidence": "low",
+          "source": "Held: 2014 public-port law is partial and stale; current applicable local berth/terminal, passenger, Los Roques, and mandatory INEA fees plus vessel/call assumptions unresolved."
+        },
+        "cost_index": {
+          "value": null,
+          "confidence": "low",
+          "source": "Held: latest same-vintage World Bank Venezuela/Singapore price-level pair found is 2011 and is not current-safe under extreme inflation."
+        }
+      },
+      "nearby_row_comparison": {
+        "repository_rows": {
+          "Brazil": {
+            "captain_usd_yr": 14000,
+            "energy_usd_kwh": 0.09,
+            "grid_co2_kg_kwh": 0.5,
+            "marina_overhead_usd_yr": 10000,
+            "cost_index": 0.38
+          },
+          "Colombia": {
+            "captain_usd_yr": 14000,
+            "energy_usd_kwh": 0.15,
+            "grid_co2_kg_kwh": 0.2,
+            "marina_overhead_usd_yr": 10000,
+            "cost_index": 0.42
+          },
+          "Peru": {
+            "captain_usd_yr": 14000,
+            "energy_usd_kwh": 0.13,
+            "grid_co2_kg_kwh": 0.25,
+            "marina_overhead_usd_yr": 10000,
+            "cost_index": 0.45
+          }
+        },
+        "assessment": [
+          "Venezuela's published grid factor 0.368 kgCO2/kWh lies between Colombia's 0.20 and Brazil's 0.50 and is not anomalous enough to warrant adjustment.",
+          "The historic 2019 Caracas commercial-price result of 1.238 USD/kWh is roughly 8-14 times the neighboring reference values; its age, standardized-case exchange-rate exposure, and tariff-transparency score of zero make it a warning, not a candidate.",
+          "The rejected 2011 price-level ratio of 0.93 is far above the repository's 0.38-0.45 regional rows. Extreme subsequent inflation and currency changes make the vintage mismatch decisive; it must not be tuned downward or sealed.",
+          "No comparison was used to fill a missing Venezuela value."
+        ]
+      },
+      "unresolved_fields": [
+        "captain_usd_yr",
+        "energy_usd_kwh",
+        "marina_overhead_usd_yr",
+        "cost_index"
+      ],
+      "verdict": "PARTIAL_HOLD",
+      "seal_ready": false,
+      "cascade_allowed": false,
+      "corridor_economics_instruction": "Suppress Venezuela corridor economics for La Guaira/Caraballeda/Los Roques and Maracaibo/Cabimas. Do not borrow Singapore or another country's row. The grid factor may be retained as researched evidence, but the country row cannot seal until all five values are numeric."
+    }
+  }
+}
