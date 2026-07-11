@@ -54,11 +54,22 @@ export function isHubPartner(partner) {
 export function sealedRegistryKeys(partner) {
   const keys = new Set();
   for (const m of partner.markets || []) {
-    if (m.slug) keys.add(m.slug);
-    if (m.id) keys.add(m.id);
+    const scoped = [].concat(m.scope_registry_keys || m.scope_registry_key || []).filter(Boolean);
+    if (scoped.length) {
+      for (const key of scoped) keys.add(key);
+    } else {
+      if (m.slug) keys.add(m.slug);
+      if (m.id) keys.add(m.id);
+    }
   }
   for (const fp of partner.network_footprint || []) {
-    if (fp.covered === true) keys.add(fp.registry_key || fp.id);
+    if (fp.covered !== true) continue;
+    const scoped = [].concat(fp.scope_registry_keys || fp.scope_registry_key || []).filter(Boolean);
+    if (scoped.length) {
+      for (const key of scoped) keys.add(key);
+    } else {
+      keys.add(fp.registry_key || fp.id);
+    }
   }
   for (const k of partner._map_scope?.registry_keys || []) keys.add(k);
   return keys;
@@ -107,9 +118,12 @@ export function resolveInheritedCityIds(partner, clusterById, { pageKind = 'hub-
   if (!isHubPartner(partner)) return out;
 
   if (pageKind === 'market' && market) {
-    const key = market.slug || market.id;
+    const scoped = [].concat(market.scope_registry_keys || market.scope_registry_key || []).filter(Boolean);
+    const keys = scoped.length ? scoped : [market.slug || market.id].filter(Boolean);
     for (const c of marketCities(market)) out.add(c);
-    for (const id of resolveRegistryKeyToCityIds(key, clusterById, partner)) out.add(id);
+    for (const key of keys) {
+      for (const id of resolveRegistryKeyToCityIds(key, clusterById, partner)) out.add(id);
+    }
     return out;
   }
 

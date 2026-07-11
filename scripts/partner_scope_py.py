@@ -37,12 +37,25 @@ def is_hub_partner(partner: dict[str, Any]) -> bool:
 def sealed_registry_keys(partner: dict[str, Any]) -> set[str]:
     keys: set[str] = set()
     for m in partner.get("markets") or []:
-        if m.get("slug"):
-            keys.add(m["slug"])
-        if m.get("id"):
-            keys.add(m["id"])
+        scoped = m.get("scope_registry_keys") or m.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        scoped = [k for k in scoped if k]
+        if scoped:
+            keys.update(scoped)
+        else:
+            if m.get("slug"):
+                keys.add(m["slug"])
+            if m.get("id"):
+                keys.add(m["id"])
     for fp in partner.get("network_footprint") or []:
-        if fp.get("covered") is True:
+        if fp.get("covered") is not True:
+            continue
+        scoped = fp.get("scope_registry_keys") or fp.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        scoped = [k for k in scoped if k]
+        if scoped:
+            keys.update(scoped)
+        else:
             keys.add(fp.get("registry_key") or fp.get("id"))
     for k in partner.get("_map_scope", {}).get("registry_keys") or []:
         keys.add(k)
@@ -100,9 +113,13 @@ def resolve_inherited_city_ids(
     if not is_hub_partner(partner):
         return out
     if page_kind == "market" and market:
-        key = market.get("slug") or market.get("id")
+        scoped = market.get("scope_registry_keys") or market.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        keys = [k for k in scoped if k] or [market.get("slug") or market.get("id")]
         out.update(market_cities(market))
-        out.update(resolve_registry_key_to_city_ids(key, cluster_by_id, partner))
+        for key in keys:
+            if key:
+                out.update(resolve_registry_key_to_city_ids(key, cluster_by_id, partner))
         return out
     if page_kind == "hub-index":
         for key in sealed_registry_keys(partner):
