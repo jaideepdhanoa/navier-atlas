@@ -115,7 +115,8 @@
     }
   ],
   "deterministic_action": [
-    "Reconcile the $3 model-to-workbook SOM delta without papering it over.",
+    "Patch finance/build_transparent_sheet.py for model-equivalent round-half-even and unrounded raw-revenue multiplication; no economics-source edit.",
+    "Run a global workbook blast-radius audit, rebuild affected Sheets in place, and require route-level plus rollup parity before deck regeneration.",
     "Regenerate slides 8-10 from current agg-swing.json and the current transparent workbook; do not retain profitable-from-year-one copy unless the rebuilt model supports it.",
     "Use exact sealed route IDs above; no corridor or route substitutions without an ID-based source match.",
     "Render Energy, Captain/crew, Marina+overhead, Maintenance, Insurance, and Charging berth as six flush OPEX lines.",
@@ -130,5 +131,46 @@
     "opex_lines": 6,
     "source_country": "South Korea",
     "live_inventory_reconciled": true
+  },
+  "model_sheet_delta_root_cause": {
+    "classification": "workbook_formula_rounding_mismatch_not_source_data",
+    "canonical_model_semantics": "Python round-half-even",
+    "workbook_semantics": "Excel/Google Sheets ROUND half-away-from-zero",
+    "tie_expression": "5 trips/day * 274 operating days/year * 0.65 revenue legs = 890.5 trips/year",
+    "affected_routes": [
+      {
+        "route_id": "rn-79388bf546a1",
+        "corridor": "Samdeok Yokji Ferry Terminal -> Yeosu Passenger Ferry Terminal"
+      },
+      {
+        "route_id": "rn-b93989547df9",
+        "corridor": "Tongyeong Passenger Ferry Terminal -> Yeosu Passenger Ferry Terminal"
+      },
+      {
+        "route_id": "rn-649a78c56f95",
+        "corridor": "Yeosu Passenger Ferry Terminal -> Gaochi Passenger Ferry Terminal"
+      },
+      {
+        "route_id": "rn-ba28d38bee02",
+        "corridor": "Tongyeong Passenger Ferry Terminal -> Geumodo Yeocheon Ferry Terminal"
+      }
+    ],
+    "per_route_effect": {
+      "model_trips_per_year": 890,
+      "workbook_trips_per_year": 891,
+      "floored_market_revenue_delta_usd": 291,
+      "raw_market_revenue_delta_usd_approx": 0.6849
+    },
+    "rollup_effect": {
+      "floored_route_revenue_sum_delta_usd": 1164,
+      "raw_som_delta_usd_unrounded": 2.73833974734589,
+      "raw_som_display_delta_usd": 3
+    },
+    "required_generator_fix": [
+      "In finance/build_transparent_sheet.py, replace workbook ROUND at model rounding boundaries with an explicit positive-number round-half-even expression matching Python.",
+      "For Market rev/yr raw, multiply Vessels raw by the unrounded Revenue / boat / yr cell; do not ROUND the per-vessel value before multiplication.",
+      "Apply the same round-half-even treatment to thin/mid/full payback revenue formulas so scenario rows cannot diverge on .5 ties.",
+      "Do not change corridor demand, fare, route IDs, agg-swing.json, growth_case, or the canonical SOM floor."
+    ]
   }
 }
