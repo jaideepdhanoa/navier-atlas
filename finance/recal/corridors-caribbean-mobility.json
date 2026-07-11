@@ -1,0 +1,477 @@
+{
+  "_doc": "scoped corridors for caribbean-mobility rebuilt from canonical post #223 fail-closed",
+  "_rebuilt_at": "2026-07-11T03:50:57.599706+00:00",
+  "_source": "finance/model/corridors.json",
+  "markets": {
+    "caribbean-mobility": {
+      "partner": "caribbean-mobility",
+      "region": "Caribbean",
+      "label": "Caribbean Mobility Partner — batch-1 prove markets",
+      "fleet_basis": "aspirational",
+      "capture_rate": 0.12,
+      "_scope_isolated": true,
+      "corridors": [
+        {
+          "route_id": "ics-05ae8c432d",
+          "from": "Downtown Nassau / cruise-port waterfront",
+          "to": "Paradise Island / Atlantis-marina catchment",
+          "distance_nm": 1.01,
+          "vessel": "N30 Pioneer II",
+          "archetype": "tourism",
+          "country": "Bahamas",
+          "partner": "caribbean-mobility",
+          "_candidate_id": "carib-bahamas-nassau-paradise-island-water-layer",
+          "_route_id_status": "sealed_grok_pr65",
+          "from_node_id": "nassau-bahamas__nassau-cruise-port",
+          "to_node_id": "nassau-bahamas__paradise-island-ferry-terminal",
+          "from_city_id": "nassau-bahamas",
+          "to_city_id": "nassau-bahamas",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 18.0,
+            "corridor_annual_oneway_pax": 67200
+          }
+        },
+        {
+          "route_id": null,
+          "from": "San Juan Terminal / Old San Juan waterfront",
+          "to": "Cataño Terminal / Bacardi catchment",
+          "distance_nm": 1.6,
+          "vessel": "N30 Pioneer II or N35 Shuttle on dense short leg",
+          "archetype": "tourism",
+          "country": "Puerto Rico",
+          "partner": "caribbean-mobility",
+          "_candidate_id": "carib-puerto-rico-san-juan-catano-metro-water-layer",
+          "_route_id_status": "held_null",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 8.0,
+            "corridor_annual_oneway_pax": 34200
+          }
+        },
+        {
+          "route_id": "ics-c24cfec613",
+          "from": "Red Hook Ferry Terminal, St. Thomas",
+          "to": "Cruz Bay Ferry Dock, St. John",
+          "distance_nm": 3.11,
+          "vessel": "N30 Pioneer II / N35 Shuttle on frequency layer",
+          "archetype": "tourism",
+          "country": "U.S. Virgin Islands",
+          "partner": "caribbean-mobility",
+          "_candidate_id": "carib-usvi-red-hook-cruz-bay-short-hop",
+          "_route_id_status": "sealed_grok_pr65",
+          "from_node_id": "usvi-bvi__urman-victor-fredericks-marine-terminal-red-hook",
+          "to_node_id": "usvi-bvi__saint-john-ferry-terminal",
+          "from_city_id": "usvi-bvi",
+          "to_city_id": "usvi-bvi",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 16.0,
+            "corridor_annual_oneway_pax": 36000
+          }
+        },
+        {
+          "route_id": "ics-3868c0e408",
+          "from": "St. Thomas ferry terminals (Charlotte Amalie / Red Hook)",
+          "to": "Tortola ferry terminals (Road Town / West End)",
+          "distance_nm": 15.7,
+          "vessel": "N30 Pioneer II where sea-state/range gates pass; otherwise review",
+          "archetype": "tourism",
+          "country": "U.S. Virgin Islands",
+          "partner": "caribbean-mobility",
+          "_candidate_id": "carib-usvi-bvi-st-thomas-tortola-cross-border",
+          "_route_id_status": "sealed_grok_pr65",
+          "from_node_id": "US & British Virgin Islands",
+          "to_node_id": "US & British Virgin Islands",
+          "from_city_id": "usvi-bvi",
+          "to_city_id": "usvi-bvi",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 55.0
+          },
+          "_destination_country": "British Virgin Islands",
+          "_opex_assignment_basis": "origin-country proxy; actual vessel home port unverified",
+          "_economics_hold_reason": "cross_border_home_port_unverified"
+        },
+        {
+          "route_id": "rn-3a37afb0fb5c",
+          "from": "Bridgetown Cruise Terminal / Port of Bridgetown",
+          "to": "Bridgetown / Carlisle Bay / west-coast visitor catchment",
+          "distance_nm": 0.9,
+          "vessel": "N30 Pioneer II",
+          "archetype": "tourism",
+          "country": "Barbados",
+          "partner": "caribbean-mobility",
+          "_candidate_id": "carib-barbados-bridgetown-port-waterfront-extension",
+          "_route_id_status": "sealed_grok_pr65",
+          "from_node_id": "bp-a87826ea84",
+          "to_node_id": "bp-6961419b71",
+          "from_city_id": "barbados",
+          "to_city_id": "barbados",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 18.0,
+            "corridor_annual_oneway_pax": 18000
+          }
+        }
+      ]
+    },
+    "caribbean": {
+      "region": "Caribbean — Dutch Caribbean / ABC (Aruba · Curaçao · Bonaire)",
+      "label": "Caribbean × Navier — the below-the-hurricane-belt island-hopping network",
+      "partner": "caribbean",
+      "fleet_basis": "island-hopping-network",
+      "fleet_rounding": "phase-cap",
+      "_fleet_basis_note": "Grounded spine = Curaçao↔Bonaire inter-island + intra-island cruise/airport/resort/dive transfers across all 3 islands (Pioneer II, ≤70nm, commercial now). Klein Curaçao = seasonal amber. Aruba↔Curaçao (~70nm edge) and Aruba↔Bonaire (~95-100nm) = Quanta-LR roadmap (amber-dashed), never grounded on a 70nm boat.",
+      "capture_rate": 0.55,
+      "_capture_note": "Captive ~55% (FP-style, per Jaideep 24-Jun; ABC resort/dive/cruise/inter-island-air transfer is largely captive). NOT FP's flat ~90%-saturation treatment — ABC has genuine network WIDTH to expand (3 islands, multi-corridor), so the cascade ladder MUST rise (broad-footprint growth ladder; SOM below SAM/TAM). See ABC-BUILD-PLAN.md.",
+      "capex_tier": "commercial",
+      "_capex_note": "GENERIC commercial network → $900K/vessel Caribbean commercial tier (per Jaideep 24-Jun, decision #4 in ABC-BUILD-PLAN.md: Caribbean treated as the $900K tier, NOT the $600K Dutch-Caribbean-OCT tier, NOT the $1M hospitality tier). Tier stays DISTINCT from ocean-whisperer ($1M hospitality).",
+      "_greenfield": "ABC has no own census → cascade uses the labelled global template band (3.44/4.9/6.36), never a peer census file. Sanity gate: journey-GMV TAM must not exceed ABC's whole tourism economy.",
+      "corridors": [
+        {
+          "route_id": "rn-0f8e77cfef46",
+          "from": "Curaçao (Spanish Water / Caracasbaai)",
+          "to": "Bonaire (Kralendijk town pier)",
+          "distance_nm": 38,
+          "distance_nm_verified": 33.3,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "curacao-curacao__spanish-water-jan-thiel",
+          "to_node_id": "bonaire-bonaire__kralendijk-town-pier",
+          "country": "Curaçao",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 75,
+            "fare_basis_note": "MODELED sea-transfer substitute for the inter-island turboprop (Divi Divi/EZ Air ~$90-130 one-way). Flagged for cascade; not sealed.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.6,
+            "weather_uptime_factor": 0.85,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (inter_island_air_substitution_pool)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_note": "Below the hurricane belt → year-round operability (uptime 0.85 even on the open inter-island leg).",
+            "_fare_record": {
+              "value": 75,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (ANG pegged)",
+              "year": 2026,
+              "source_tier": "T4",
+              "confidence": "low-med",
+              "source": "MODELED against the live Divi Divi/EZ Air Curaçao↔Bonaire one-way fare band (~$90-130); sea transfer priced below air. To be finalized in cascade.",
+              "method": "Modeled per-seat vs. air substitution pool. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-7839c5ad6d42",
+          "from": "Oranjestad Cruise Terminal (Aruba)",
+          "to": "Palm Beach resort strip (Aruba)",
+          "distance_nm": 6,
+          "distance_nm_verified": 3.4,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "aruba-aruba__oranjestad-cruise-terminal",
+          "to_node_id": "aruba-aruba__palm-beach-resort-strip",
+          "country": "Aruba",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40,
+            "fare_basis_note": "MODELED premium cruise→resort shore transfer. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.58,
+            "weather_uptime_factor": 0.9,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (aruba cruise)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Aruba)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 40,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (AWG pegged)",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED premium cruise-shore / resort transfer band. To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-b3209572e89e",
+          "from": "Queen Beatrix Airport waterfront (Aruba)",
+          "to": "Palm Beach resort strip (Aruba)",
+          "distance_nm": 5,
+          "distance_nm_verified": 4.7,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "aruba-aruba__queen-beatrix-airport-waterfront",
+          "to_node_id": "aruba-aruba__palm-beach-resort-strip",
+          "country": "Aruba",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 45,
+            "fare_basis_note": "MODELED premium air→resort transfer. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.58,
+            "weather_uptime_factor": 0.9,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (aruba stopover)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Aruba)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 45,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (AWG pegged)",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED premium air→resort transfer band. To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-b07d96b330cd",
+          "from": "Willemstad / Sint Anna Bay (Curaçao)",
+          "to": "Spanish Water / Jan Thiel resort & leisure cluster (Curaçao)",
+          "distance_nm": 7,
+          "distance_nm_verified": 5.4,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "curacao-curacao__willemstad-sint-anna-bay",
+          "to_node_id": "curacao-curacao__spanish-water-jan-thiel",
+          "country": "Curaçao",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 40,
+            "fare_basis_note": "MODELED premium cruise/town→resort transfer. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.6,
+            "weather_uptime_factor": 0.9,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (curacao cruise)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 40,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (ANG pegged)",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED premium cruise/town→resort transfer band. To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-a88f7e7cffc2",
+          "from": "Hato (Curaçao Int'l) airport waterfront",
+          "to": "Spanish Water / Jan Thiel resort cluster (Curaçao)",
+          "distance_nm": 10,
+          "distance_nm_verified": 8.8,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "curacao-curacao__hato-airport-waterfront",
+          "to_node_id": "curacao-curacao__spanish-water-jan-thiel",
+          "country": "Curaçao",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 50,
+            "fare_basis_note": "MODELED premium air→resort transfer. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.6,
+            "weather_uptime_factor": 0.9,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (curacao stayover)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Curaçao)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 50,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD (ANG pegged)",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED premium air→resort transfer band. To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-f23a5af76773",
+          "from": "Kralendijk Town Pier (Bonaire)",
+          "to": "Klein Bonaire dive transfer (Bonaire National Marine Park)",
+          "distance_nm": 2,
+          "distance_nm_verified": 0.8,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "bonaire-bonaire__kralendijk-town-pier",
+          "to_node_id": "bonaire-bonaire__klein-bonaire-dive-transfer",
+          "country": "Bonaire",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 30,
+            "fare_basis_note": "MODELED dive-transfer fare. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 38000,
+            "marina_overhead_annual_usd": 16000,
+            "grid_kg_co2_per_kwh": 0.5,
+            "weather_uptime_factor": 0.92,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (bonaire dive)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Bonaire)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_note": "Marine-park zero-wake mandate — the regulatory tailwind. Bonaire uses USD (special municipality of NL).",
+            "_fare_record": {
+              "value": 30,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED dive-transfer band (Klein Bonaire). To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-99a4997572f3",
+          "from": "Kralendijk Town Pier (Bonaire)",
+          "to": "Harbour Village Marina / dive-resort jetty cluster (Bonaire)",
+          "distance_nm": 2,
+          "distance_nm_verified": 0.6,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "bonaire-bonaire__kralendijk-town-pier",
+          "to_node_id": "bonaire-bonaire__harbour-village-marina",
+          "country": "Bonaire",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 28,
+            "fare_basis_note": "MODELED town/cruise→dive-resort transfer. Flagged for cascade.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 38000,
+            "marina_overhead_annual_usd": 16000,
+            "grid_kg_co2_per_kwh": 0.5,
+            "weather_uptime_factor": 0.92,
+            "sources": [
+              "ABC-DEMAND-ANCHORS.json (bonaire cruise)",
+              "ABC-COUNTRY-REFERENCE-ROWS.json (Bonaire)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 28,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED short town/cruise→dive-resort transfer. To be finalized in cascade.",
+              "method": "Modeled premium-per-seat. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "grounded",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z"
+        },
+        {
+          "route_id": "rn-09a43a616a1a",
+          "from": "Curaçao (Spanish Water / Caracasbaai)",
+          "to": "Klein Curaçao day-trip jetty",
+          "distance_nm": 15,
+          "distance_nm_verified": 14.0,
+          "vessel": "Pioneer II",
+          "archetype": "tourism",
+          "from_node_id": "curacao-curacao__spanish-water-jan-thiel",
+          "to_node_id": "curacao-curacao__klein-curacao-day-trip",
+          "country": "Curaçao",
+          "pool_basis": "gross",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 110,
+            "fare_basis_note": "MODELED premium day-trip excursion (seasonal). Flagged for cascade; season_days to be set.",
+            "energy_usd_per_kwh": 0.35,
+            "captain_annual_usd": 40000,
+            "marina_overhead_annual_usd": 18000,
+            "grid_kg_co2_per_kwh": 0.6,
+            "weather_uptime_factor": 0.6,
+            "season_days": null,
+            "sources": [
+              "ABC-BOARDING-POINT-SPEC.json (Klein Curaçao)"
+            ],
+            "_status": "MODELED_PENDING_CASCADE",
+            "_fare_record": {
+              "value": 110,
+              "unit": "USD/pax/one-way",
+              "currency_basis": "USD",
+              "year": 2026,
+              "source_tier": "T5",
+              "confidence": "low",
+              "source": "MODELED premium seasonal excursion. To be finalized in cascade with season_days.",
+              "method": "Modeled premium-per-seat; seasonal. NOT sealed."
+            }
+          },
+          "geom_verdict": "CLEAN_OPENWATER",
+          "shippable": true,
+          "_status": "SEALED",
+          "_tier": "seasonal",
+          "_bind_source": "grok-tasklet-import/caribbean",
+          "_bind_at": "2026-06-24T02:58:59Z",
+          "render": "seasonal-amber"
+        }
+      ]
+    }
+  }
+}
