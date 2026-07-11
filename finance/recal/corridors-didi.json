@@ -1,1273 +1,676 @@
 {
-  "_doc": "Scoped corridors view for didi Bite-2 economics cascade",
-  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
-  "_built_at": "2026-06-26T19:09:05Z",
-  "capture_rate": 0.1,
+  "_doc": "scoped corridors for didi rebuilt from canonical post #223 fail-closed",
+  "_rebuilt_at": "2026-07-11T03:50:57.581548+00:00",
+  "_source": "finance/model/corridors.json",
   "markets": {
-    "didi": {
+    "mexico-caribbean": {
       "partner": "didi",
-      "region": "LatAm + Global South",
-      "label": "DiDi \u2014 scoped cascade",
-      "fleet_basis": "network_sum",
-      "fleet_rounding": "ceil",
-      "_scope": "didi-bite2-cascade",
-      "_partner_market_keys": [],
-      "_route_ids_requested": 38,
-      "_corridors_bound": 38,
+      "region": "Latin America",
+      "label": "Mexico — Caribbean",
+      "country": "Mexico",
+      "fleet_basis": "grounded",
+      "capture_rate": 0.1,
+      "_tier": "A",
       "corridors": [
         {
-          "route_id": "e__samana-dominican-republic__turks-caicos",
-          "from": "Saman\u00e1",
-          "to": "Turks & Caicos",
-          "distance_nm": 246.9,
-          "vessel": "Quanta-LR",
+          "from": "Terminal Maritima Puerto Juarez",
+          "to": "Terminal Martima De Isla Mujeres",
+          "distance_nm": 5.27,
+          "vessel": "Pioneer II",
+          "route_id": "ics-413f51cd44",
+          "country": "Mexico",
+          "from_node_id": "cancun-riviera-maya-mexico",
+          "to_node_id": "cancun-riviera-maya-mexico",
+          "endpoint_boarding_points": {
+            "from": "bp-062decef2f",
+            "to": "bp-d08462d3d9"
+          },
           "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-mexico-t3-2026-07-09",
           "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 240210,
+            "corridor_annual_oneway_pax": 5458304,
+            "comparable_fare_usd_pax": 15.07,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 240210,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 5458304,
+              "unit": "gross passenger one-way crossing journeys across both directions/year",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://servicios.apiqroo.com.mx/estadistica/datos/informeRutaPasaje.php?anio=2025",
+              "method": "APIQROO Isla Mujeres ENTRADAS + SALIDAS table total. The canonical route_id represents the Puerto Juárez–Isla Mujeres OD, not a single operator; no doubling or halving."
             },
             "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
-        },
-        {
-          "route_id": "e__san-blas-panama__cartagena-colombia",
-          "from": "San Blas",
-          "to": "Cartagena & the Rosario Islands",
-          "distance_nm": 202.9,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 200610,
-            "_demand_record": {
-              "value": 200610,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
+              "value": 15.07,
+              "unit": "USD/pax/one-way comparable public adult fare",
+              "year": 2025,
+              "source_tier": "T2",
               "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
+              "source": "https://www.ultramarferry.com/es/tarifas",
+              "method": "MXN 290 public adult online fare / 19.2375083333333 MXN/USD 2025 official-period-average FX. Conservative comparable benchmark; not claimed as operator realized yield or resident-weighted fare mix.",
+              "mxn": 290,
+              "fx_mxn_per_usd": 19.2375083333333
+            }
+          }
         },
         {
-          "route_id": "edge-1088",
-          "from": "Cartagena & the Rosario Islands",
-          "to": "Aruba",
-          "distance_nm": 439.6,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "cartagena-colombia",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 250000,
-            "_demand_record": {
-              "value": 250000,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
-        },
-        {
-          "route_id": "ics-0effac4535",
-          "from": "Angra dos Reis",
-          "to": "Angra Dos Reis",
-          "distance_nm": 3.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Angra dos Reis",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 19.8,
-            "corridor_annual_oneway_pax": 21150,
-            "_demand_record": {
-              "value": 21150,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 19.8,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-121f3d1628",
-          "from": "Marina Vallarta",
-          "to": "Puerto Vallarta & Riviera Nayarit",
-          "distance_nm": 3.2,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Puerto Vallarta & Riviera Nayarit",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 18.96,
-            "corridor_annual_oneway_pax": 20880,
-            "_demand_record": {
-              "value": 20880,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 18.96,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-1ef9b3ecdc",
-          "from": "Los Cabos",
-          "to": "La Ribera",
-          "distance_nm": 16.2,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Los Cabos",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 55.36,
-            "corridor_annual_oneway_pax": 32580,
-            "_demand_record": {
-              "value": 32580,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 55.36,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-2c0462e53e",
-          "from": "Cartagena & the Rosario Islands",
-          "to": "Cartagena & The Rosario Islands",
-          "distance_nm": 4.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Cartagena & the Rosario Islands",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 22.6,
-            "corridor_annual_oneway_pax": 22050,
-            "_demand_record": {
-              "value": 22050,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 22.6,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-2c66505042",
-          "from": "Club de pesca de Cartagena - Marina",
-          "to": "Isla baru Playa blanca",
-          "distance_nm": 12.2,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "cartagena-colombia",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 44.16,
-            "corridor_annual_oneway_pax": 28980,
-            "_demand_record": {
-              "value": 28980,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 44.16,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-39e68b6194",
-          "from": "Canc\u00fan & the Riviera Maya",
-          "to": "Canc\u00fan & The Riviera Maya",
-          "distance_nm": 2.4,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Canc\u00fan & the Riviera Maya",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 16.72,
-            "corridor_annual_oneway_pax": 20160,
-            "_demand_record": {
-              "value": 20160,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 16.72,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-580360f22d",
-          "from": "Angra dos Reis",
-          "to": "Angra Dos Reis",
-          "distance_nm": 11.6,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Angra dos Reis",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 42.48,
-            "corridor_annual_oneway_pax": 28440,
-            "_demand_record": {
-              "value": 28440,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 42.48,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-58accdef81",
-          "from": "Marina Vallarta",
-          "to": "Puerto Vallarta & Riviera Nayarit",
-          "distance_nm": 3.6,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Puerto Vallarta & Riviera Nayarit",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 20.08,
-            "corridor_annual_oneway_pax": 21240,
-            "_demand_record": {
-              "value": 21240,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 20.08,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-58af4a4a7a",
-          "from": "Puerto Vallarta & Riviera Nayarit",
-          "to": "Yelapa",
-          "distance_nm": 13.4,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Puerto Vallarta & Riviera Nayarit",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 47.52,
-            "corridor_annual_oneway_pax": 30060,
-            "_demand_record": {
-              "value": 30060,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 47.52,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-6536c49acf",
-          "from": "Angra dos Reis",
-          "to": "Angra Dos Reis",
-          "distance_nm": 13.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Angra dos Reis",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 47.8,
-            "corridor_annual_oneway_pax": 30150,
-            "_demand_record": {
-              "value": 30150,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 47.8,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-6ee0d44804",
-          "from": "Cancun Adventures",
-          "to": "Marina Puerto Isla Mujeres",
-          "distance_nm": 3.8,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Canc\u00fan & The Riviera Maya",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 20.64,
-            "corridor_annual_oneway_pax": 21420,
-            "_demand_record": {
-              "value": 21420,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 20.64,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-70df874036",
-          "from": "Florian\u00f3polis Centro",
-          "to": "Florian\u00f3polis & Santa Catarina",
-          "distance_nm": 10.3,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Florian\u00f3polis & Santa Catarina",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 38.84,
-            "corridor_annual_oneway_pax": 27270,
-            "_demand_record": {
-              "value": 27270,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 38.84,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-9f6ef631b4",
-          "from": "Los Cabos",
-          "to": "Santa Mar\u00eda",
-          "distance_nm": 10.6,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Los Cabos",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 39.68,
-            "corridor_annual_oneway_pax": 27540,
-            "_demand_record": {
-              "value": 27540,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 39.68,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-b5861451fb",
-          "from": "Palmilla",
-          "to": "San Jos\u00e9 Del Cabo Marina",
-          "distance_nm": 3.4,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Palmilla",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 19.52,
-            "corridor_annual_oneway_pax": 21060,
-            "_demand_record": {
-              "value": 21060,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 19.52,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-b98d3376f8",
-          "from": "Club de pesca de Cartagena - Marina",
-          "to": "Marina Santa Marta",
-          "distance_nm": 92.67,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "cartagena-colombia",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 101403,
-            "_demand_record": {
-              "value": 101403,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
-        },
-        {
-          "route_id": "ics-b98ea23eee",
-          "from": "Puntarenas",
-          "to": "Paquera",
-          "distance_nm": 9.6,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Puntarenas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 36.88,
-            "corridor_annual_oneway_pax": 26640,
-            "_demand_record": {
-              "value": 26640,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 36.88,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-c7f9a1723e",
-          "from": "Cabo San Lucas Marina",
-          "to": "Los Cabos, Baja Sur",
-          "distance_nm": 5.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Los Cabos",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 25.4,
-            "corridor_annual_oneway_pax": 22950,
-            "_demand_record": {
-              "value": 22950,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 25.4,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "ics-dd1d814699",
           "from": "Muelle Fiscal Playa del Carmen",
           "to": "Passenger Ferry Ultramar Cozumel",
           "distance_nm": 9.53,
-          "vessel": "N30 Pioneer II",
+          "vessel": "Pioneer II",
+          "route_id": "ics-dd1d814699",
+          "country": "Mexico",
+          "from_node_id": "playa-del-carmen-mexico",
+          "to_node_id": "cozumel-mexico",
+          "endpoint_boarding_points": {
+            "from": "bp-pdc-muelle-fiscal",
+            "to": "bp-1f95439031"
+          },
           "archetype": "intercity",
-          "country": "cancun-riviera-maya-mexico",
-          "pool_basis": "addressable",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-mexico-t3-2026-07-09",
           "L3_locals": {
-            "comparable_fare_usd_pax": 36.68,
-            "corridor_annual_oneway_pax": 26577,
+            "corridor_annual_oneway_pax": 3853770,
+            "comparable_fare_usd_pax": 16.63,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 26577,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 3853770,
+              "unit": "gross passenger one-way crossing journeys across both directions/year",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://servicios.apiqroo.com.mx/estadistica/datos/informeRutaPasaje.php?anio=2025",
+              "method": "APIQROO Cozumel ENTRADAS + SALIDAS table total. Playa row mirrors the same corridor and is not added again; no doubling or halving."
             },
             "_fare_record": {
-              "value": 36.68,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+              "value": 16.63,
+              "unit": "USD/pax/one-way comparable public adult fare",
+              "year": 2025,
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "source": "https://www.ultramarferry.com/en/fares",
+              "method": "Lower observed MXN 320 public adult one-way fare / 19.2375083333333 MXN/USD 2025 official-period-average FX. Conservative comparable benchmark; no equal-operator weighting and not claimed as realized yield.",
+              "mxn": 320,
+              "fx_mxn_per_usd": 19.2375083333333
+            }
+          }
         },
         {
-          "route_id": "ics-e10b53b415",
-          "from": "Club de pesca de Cartagena - Marina",
-          "to": "Rosario Islands",
-          "distance_nm": 18.29,
-          "vessel": "N30 Pioneer II",
+          "from": "Ultramar",
+          "to": "Terminal Martima De Isla Mujeres",
+          "distance_nm": 5.49,
+          "vessel": "Pioneer II",
+          "route_id": "ics-03e3853317",
+          "country": "Mexico",
+          "from_node_id": "cancun-riviera-maya-mexico",
+          "to_node_id": "cancun-riviera-maya-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
+          },
           "archetype": "intercity",
-          "country": "cartagena-colombia",
-          "pool_basis": "addressable",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": false,
+          "_source": "didi-mexico-t3-2026-07-09",
+          "L3_locals": {},
+          "_finance_status": "current route; corridor demand and comparable fare held null pending exact terminal/operator allocation"
+        },
+        {
+          "from": "Punta Sam ferry terminal",
+          "to": "Terminal Martima De Isla Mujeres",
+          "distance_nm": 3.35,
+          "vessel": "Pioneer II",
+          "route_id": "ics-aa6ff40d2d",
+          "country": "Mexico",
+          "from_node_id": "cancun-riviera-maya-mexico",
+          "to_node_id": "cancun-riviera-maya-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
+          },
+          "archetype": "intercity",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-mexico-residual-t3-proof-2026-07-09",
           "L3_locals": {
-            "comparable_fare_usd_pax": 61.21,
-            "corridor_annual_oneway_pax": 34461,
+            "corridor_annual_oneway_pax": 238128,
+            "comparable_fare_usd_pax": 15.07,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 34461,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 238128,
+              "unit": "gross passenger one-way crossing journeys across both directions/year",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://servicios.apiqroo.com.mx/estadistica/datos/informeTransbordador.php?anio=2025",
+              "method": "APIQROO Punta Sam endpoint ENTRADAS + SALIDAS total. Isla Mujeres row mirrors the same corridor and is not added again; passenger columns only; no doubling or halving."
             },
             "_fare_record": {
-              "value": 61.21,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+              "value": 15.07,
+              "unit": "USD/pax/one-way comparable public adult fare",
+              "year": 2025,
+              "source_tier": "T2",
+              "confidence": "medium",
+              "source": "https://ultracarga.com/ruta-punta-sam-isla-mujeres/",
+              "method": "Current published MXN 290 adult one-way fare / 19.2375083333333 MXN/USD 2025 official-period-average FX. Comparable retail benchmark; effective-date history is unstated and it is not realized operator yield.",
+              "mxn": 290,
+              "fx_mxn_per_usd": 19.2375083333333
+            }
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
+          "_finance_status": "grounded exact-route 2025 passenger total + current published adult one-way comparable fare; permission required; realized yield null"
+        }
+      ],
+      "_provenance": {
+        "sealed_spine": "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json",
+        "finance_evidence": "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.json",
+        "note": "Two exact OD anchors grounded; other spine rows retained with null economics."
+      }
+    },
+    "mexico-pacific": {
+      "partner": "didi",
+      "region": "Latin America",
+      "label": "Mexico — Pacific",
+      "country": "Mexico",
+      "fleet_basis": "grounded",
+      "capture_rate": 0.1,
+      "_tier": "B",
+      "corridors": [
         {
-          "route_id": "ics-e6e8db7a6b",
-          "from": "Angra dos Reis",
-          "to": "Angra Dos Reis",
-          "distance_nm": 2.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Angra dos Reis",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 17.0,
-            "corridor_annual_oneway_pax": 20250,
-            "_demand_record": {
-              "value": 20250,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 17.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-0931127fbf2f",
-          "from": "Papagayo",
-          "to": "Four Seasons Resort Costa Rica at Peninsula Papagayo",
-          "distance_nm": 18.2,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Papagayo",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 60.96,
-            "corridor_annual_oneway_pax": 34380,
-            "_demand_record": {
-              "value": 34380,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 60.96,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-249011467661",
-          "from": "San Blas",
-          "to": "Play\u00f3n Chico (Ukupseni) dock & airstrip",
-          "distance_nm": 84.6,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 94140,
-            "_demand_record": {
-              "value": 94140,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
-        },
-        {
-          "route_id": "rn-25bd003736cd",
-          "from": "Saman\u00e1",
-          "to": "Sabana de la Mar Ferry Terminal",
-          "distance_nm": 7.9,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 32.12,
-            "corridor_annual_oneway_pax": 25110,
-            "_demand_record": {
-              "value": 25110,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 32.12,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-28283e0e27a4",
-          "from": "Papagayo",
-          "to": "Playa Hermosa",
+          "from": "Puerto Vallarta & Riviera Nayarit",
+          "to": "Yelapa",
           "distance_nm": 14.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Papagayo",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 50.6,
-            "corridor_annual_oneway_pax": 31050,
-            "_demand_record": {
-              "value": 31050,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 50.6,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+          "vessel": "Pioneer II",
+          "route_id": "ics-89a8844858",
+          "country": "Mexico",
+          "from_node_id": "puerto-vallarta-mexico",
+          "to_node_id": "puerto-vallarta-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "archetype": "intercity",
+          "service_status": "current_water_taxi_evidence",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": false,
+          "_source": "didi-mexico-t3-2026-07-09",
+          "L3_locals": {
+            "comparable_fare_usd_pax": 18.19,
+            "_fare_record": {
+              "value": 18.19,
+              "unit": "USD/pax/one-way comparable published fare",
+              "year": 2025,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "https://www.yelapa.info/transport1.html",
+              "method": "MXN 350 adult public one-way fare / 19.2375083333333 MXN/USD 2025 official-period-average FX. Ridership remains null."
+            }
+          },
+          "_finance_status": "annual ridership unpublished; held out of grounded floor"
         },
         {
-          "route_id": "rn-342daebb3603",
-          "from": "Saman\u00e1",
-          "to": "Las Galeras Beach Landing",
-          "distance_nm": 21.7,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 70.76,
-            "corridor_annual_oneway_pax": 37530,
-            "_demand_record": {
-              "value": 37530,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 70.76,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+          "from": "Puerto Vallarta & Riviera Nayarit",
+          "to": "Punta De Mita",
+          "distance_nm": 9.9,
+          "vessel": "Pioneer II",
+          "route_id": "ics-de6758216f",
+          "country": "Mexico",
+          "from_node_id": "puerto-vallarta-mexico",
+          "to_node_id": "puerto-vallarta-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "archetype": "intercity",
+          "service_status": "future_opportunity",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": false,
+          "_source": "didi-mexico-t3-2026-07-09",
+          "L3_locals": {},
+          "_finance_status": "annual ridership unpublished; held out of grounded floor"
         },
         {
-          "route_id": "rn-3d3a08c42c16",
-          "from": "San Blas",
-          "to": "Cart\u00ed / Guna Yala air-sea handoff",
-          "distance_nm": 46.0,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 138.8,
-            "corridor_annual_oneway_pax": 59400,
-            "_demand_record": {
-              "value": 59400,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 138.8,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+          "from": "Cabo San Lucas Marina",
+          "to": "Los Cabos, Baja Sur",
+          "distance_nm": 17.0,
+          "vessel": "Pioneer II",
+          "route_id": "ics-db0930d9d1",
+          "country": "Mexico",
+          "from_node_id": "los-cabos-mexico",
+          "to_node_id": "los-cabos-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "archetype": "intercity",
+          "service_status": "future_opportunity",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": false,
+          "_source": "didi-mexico-t3-2026-07-09",
+          "L3_locals": {},
+          "_finance_status": "annual ridership unpublished; held out of grounded floor"
         },
         {
-          "route_id": "rn-42f2340027cc",
-          "from": "Saman\u00e1",
-          "to": "Los Haitises National Park boat access",
-          "distance_nm": 10.1,
-          "vessel": "N30 Pioneer II",
+          "from": "Palmilla",
+          "to": "San José Del Cabo Marina",
+          "distance_nm": 3.4,
+          "vessel": "Pioneer II",
+          "route_id": "ics-b5861451fb",
+          "country": "Mexico",
+          "from_node_id": "los-cabos-mexico",
+          "to_node_id": "los-cabos-mexico",
+          "endpoint_boarding_points": {
+            "from": null,
+            "to": null
+          },
           "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
+          "service_status": "future_opportunity",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": false,
+          "_source": "didi-mexico-t3-2026-07-09",
+          "L3_locals": {},
+          "_finance_status": "annual ridership unpublished; held out of grounded floor"
+        }
+      ],
+      "_provenance": {
+        "sealed_spine": "handoff/didi-ex-china/mexico/MEXICO-ROUTE-SPINE-FOR-TASKLET-2026-07-09.json",
+        "finance_evidence": "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.json",
+        "note": "Exact route spine retained; annual demand held null and out of grounded floor."
+      }
+    },
+    "brazil": {
+      "display_name": "Brazil · Rio ferry calibration",
+      "partner": "didi",
+      "country": "Brazil",
+      "country_slug": "brazil",
+      "currency": "BRL",
+      "scope": "sealed exact-ID Rio lines only",
+      "archetype": "ridehail",
+      "_tier": "T3_grounded",
+      "_source": "Tasklet BR/CO T3 proof ledger; Grok G2 sealed route spine",
+      "_colombia_disposition": "held_unmaterialized_pending_shared_finance_spine_alignment_and_route_level_demand_fare_proof",
+      "corridors": [
+        {
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Arariboia Terminal (Niterói)",
+          "distance_nm": 2.7,
+          "vessel": "Pioneer II",
+          "route_id": "rn-1886629dbf0c",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-45ba34fda2"
+          },
+          "archetype": "ridehail",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": 38.28,
-            "corridor_annual_oneway_pax": 27090,
+            "corridor_annual_oneway_pax": 10848719,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 27090,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 10848719,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
             },
             "_fare_record": {
-              "value": 38.28,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
         },
         {
-          "route_id": "rn-4ab58a9e0d63",
-          "from": "Papagayo",
-          "to": "Santa Teresa / Mal Pais",
-          "distance_nm": 72.7,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "Papagayo",
-          "pool_basis": "addressable",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Charitas Terminal (Niterói, fast catamaran)",
+          "distance_nm": 4.4,
+          "vessel": "Pioneer II",
+          "route_id": "rn-80f0d0ebe0bd",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-59ca648cd4"
+          },
+          "archetype": "ridehail",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": 213.56,
-            "corridor_annual_oneway_pax": 83430,
+            "corridor_annual_oneway_pax": 825637,
+            "comparable_fare_usd_pax": 1.5001,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 83430,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 825637,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
             },
             "_fare_record": {
-              "value": 213.56,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
+              "value": 1.5001,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 7.70 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 7.7,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
         },
         {
-          "route_id": "rn-74a4db70919a",
-          "from": "San Blas",
-          "to": "Cart\u00ed Sugdup (Gardi Sugdub) community dock",
-          "distance_nm": 44.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Cocotá Terminal (Ilha do Governador)",
+          "distance_nm": 6.0,
+          "vessel": "Pioneer II",
+          "route_id": "rn-369ef0eb69d9",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-e1702c2318"
+          },
+          "archetype": "ridehail",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": 134.6,
-            "corridor_annual_oneway_pax": 58050,
+            "corridor_annual_oneway_pax": 278607,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 58050,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 278607,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
             },
             "_fare_record": {
-              "value": 134.6,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
         },
         {
-          "route_id": "rn-761106cfaa0a",
-          "from": "Papagayo",
-          "to": "Playa del Coco (Playas del Coco) beach landing & water-taxi hub",
-          "distance_nm": 13.1,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Papagayo",
-          "pool_basis": "addressable",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Paquetá Island Terminal",
+          "distance_nm": 9.2,
+          "vessel": "Pioneer II",
+          "route_id": "rn-00bb6ded4be5",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-113820adbb"
+          },
+          "archetype": "ridehail",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": 46.68,
-            "corridor_annual_oneway_pax": 29790,
+            "corridor_annual_oneway_pax": 1170652,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 29790,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
+              "value": 1170652,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
             },
             "_fare_record": {
-              "value": 46.68,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
+        }
+      ]
+    },
+    "costa-rica": {
+      "display_name": "Costa Rica — Nicoya",
+      "partner": "didi",
+      "country": "Costa Rica",
+      "country_slug": "costa-rica",
+      "currency": "USD",
+      "scope": "ex-china-latam",
+      "archetype": "ridehail",
+      "_tier": "t2_t7_evidence",
+      "corridors": [
+        {
+          "from": "Paquera Ferry Terminal",
+          "to": "Puntarenas Ferry Terminal (Gulf of Nicoya car/passenger ferries)",
+          "distance_nm": 9.3,
+          "vessel": "Pioneer II",
+          "route_id": "rn-7e59f984abec",
+          "country": "Costa Rica",
+          "from_node_id": "nicoya-papagayo-costa-rica",
+          "to_node_id": "nicoya-papagayo-costa-rica",
+          "endpoint_boarding_points": {
+            "from": "bp-906030bde9",
+            "to": "bp-f79715455d"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-t2-t7-evidence-2026-07-10",
+          "_permission_status": "Incumbent regulated service; DiDi/Navier entry permission not transferred",
+          "_international": false,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 642133,
+            "pool_basis": "directional_one_way",
+            "_demand_record": {
+              "value": 642133,
+              "unit": "one-way passenger journeys (named Paquera→Puntarenas direction)",
+              "period": "2024 calendar year",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "MOPT 2024 statistical yearbook Cuadro 6.2",
+              "ask": "T2",
+              "method": "Tasklet PR #218 usable_for_base_case — exact published value, no doubling/halving/annualization"
+            },
+            "comparable_fare_usd_pax": 1.785,
+            "_fare_record": {
+              "value": 1.785,
+              "unit": "USD/pax/one-way comparable published tariff",
+              "source_tier": "T1/T2",
+              "confidence": "med",
+              "note": "ARESEP RE-0074-IT-2026 adult CRC 810 / BCCR venta 453.77 — benchmark not yield"
+            }
+          },
+          "_economics_hold_reason": "country_reference_incomplete: Gulf of Nicoya terminal/berth cost unresolved"
         },
         {
-          "route_id": "rn-780e81cf832c",
-          "from": "Saman\u00e1",
-          "to": "Cayo Levantado Public Dock",
-          "distance_nm": 4.9,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 23.72,
-            "corridor_annual_oneway_pax": 22410,
-            "_demand_record": {
-              "value": 22410,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 23.72,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+          "from": "Playa Naranjo Ferry Terminal",
+          "to": "Puntarenas Ferry Terminal (Gulf of Nicoya car/passenger ferries)",
+          "distance_nm": 7.5,
+          "vessel": "Pioneer II",
+          "route_id": "rn-eb4ca32edbef",
+          "country": "Costa Rica",
+          "from_node_id": "nicoya-papagayo-costa-rica",
+          "to_node_id": "nicoya-papagayo-costa-rica",
+          "endpoint_boarding_points": {
+            "from": "bp-e35dcefd78",
+            "to": "bp-f79715455d"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-t2-t7-evidence-2026-07-10",
+          "_permission_status": "Incumbent regulated service; DiDi/Navier entry permission not transferred",
+          "_international": false,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 317859,
+            "pool_basis": "directional_one_way",
+            "_demand_record": {
+              "value": 317859,
+              "unit": "one-way passenger journeys (named Playa Naranjo→Puntarenas direction)",
+              "period": "2024 calendar year",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "MOPT 2024 statistical yearbook Cuadro 6.2",
+              "ask": "T2",
+              "method": "Tasklet PR #218 usable_for_base_case — exact published value, no doubling/halving/annualization"
+            },
+            "comparable_fare_usd_pax": 2.2038,
+            "_fare_record": {
+              "value": 2.2038,
+              "unit": "USD/pax/one-way comparable published tariff",
+              "source_tier": "T1/T2",
+              "confidence": "med",
+              "note": "ARESEP adult CRC 1000 / BCCR venta 453.77 — benchmark not yield"
+            }
+          },
+          "_economics_hold_reason": "country_reference_incomplete: Gulf of Nicoya terminal/berth cost unresolved"
+        }
+      ]
+    },
+    "argentina": {
+      "display_name": "Argentina",
+      "partner": "didi",
+      "country": "Argentina",
+      "country_slug": "argentina",
+      "currency": "USD",
+      "scope": "ex-china-latam",
+      "archetype": "ridehail",
+      "_tier": "t2_t7_evidence",
+      "corridors": [
+        {
+          "from": "Terminal Fluvial de Pasajeros de Rosario",
+          "to": "Isla Sabino Corsi landing",
+          "distance_nm": 1.59,
+          "vessel": "Pioneer II",
+          "route_id": "rn-f451444da7fe",
+          "country": "Argentina",
+          "from_node_id": "rosario-argentina",
+          "to_node_id": "rosario-argentina",
+          "endpoint_boarding_points": {
+            "from": "bp-5e3e9b3572",
+            "to": "bp-265c1a29a6"
+          },
+          "archetype": "ridehail",
+          "service_status": "seasonal",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": false,
+          "_source": "didi-t2-t7-evidence-2026-07-10",
+          "_permission_status": "Incumbent regulated service; DiDi/Navier entry permission not transferred",
+          "_international": false,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 38900,
+            "pool_basis": "season_total_not_calendar_year",
+            "_demand_record": {
+              "value": 38900,
+              "unit": "operator/port-authority passengers transported; aggregate directions",
+              "period": "2025-2026 summer operating season",
+              "source_tier": "T1",
+              "confidence": "med",
+              "source": "ENAPRO 2025-2026 season report",
+              "ask": "T7",
+              "method": "Tasklet PR #218 usable_for_base_case — exact published value, no doubling/halving/annualization"
+            }
+          },
+          "_economics_hold_reason": "country_reference_incomplete: workers-compensation and terminal/port inputs unresolved"
         },
         {
-          "route_id": "rn-a5d53d26dfe1",
-          "from": "San Blas",
-          "to": "Nargan\u00e1 / Coraz\u00f3n de Jes\u00fas (Yandup) dock",
-          "distance_nm": 62.2,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 184.16,
-            "corridor_annual_oneway_pax": 73980,
-            "_demand_record": {
-              "value": 73980,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 184.16,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+          "from": "Terminal Fluvial de Puerto Madero (Buquebus)",
+          "to": "Terminal Fluvial Puerto de Colonia",
+          "distance_nm": 28.44,
+          "vessel": "Pioneer II",
+          "route_id": "rn-04b92d6952d2",
+          "country": "Argentina",
+          "from_node_id": "buenos-aires-argentina",
+          "to_node_id": "colonia-del-sacramento-uruguay",
+          "endpoint_boarding_points": {
+            "from": "bp-34fefc544b",
+            "to": "bp-bfbf96a218"
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-b7b7d78c475e",
-          "from": "Saman\u00e1",
-          "to": "Santa B\u00e1rbara de Saman\u00e1 Ferry Dock & Cayo Levantado Launch",
-          "distance_nm": 2.3,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "Saman\u00e1",
-          "pool_basis": "addressable",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": false,
+          "_source": "didi-t2-t7-evidence-2026-07-10",
+          "_permission_status": "Incumbent regulated service; DiDi/Navier entry permission not transferred",
+          "_international": true,
           "L3_locals": {
-            "comparable_fare_usd_pax": 16.44,
-            "corridor_annual_oneway_pax": 20070,
+            "corridor_annual_oneway_pax": 2177670,
+            "pool_basis": "both_directions_movements",
             "_demand_record": {
-              "value": 20070,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 16.44,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
+              "value": 2177670,
+              "unit": "annual passenger movements both directions aggregated",
+              "period": "2024",
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Uruguay national port-pair statistics 2024",
+              "ask": "T7",
+              "method": "Tasklet PR #218 usable_for_base_case — exact published value, no doubling/halving/annualization"
+            }
           },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-c7ea7b8632d4",
-          "from": "Puerto Cart\u00ed",
-          "to": "Cart\u00ed / Guna Yala air-sea handoff",
-          "distance_nm": 2.5,
-          "vessel": "N30 Pioneer II",
-          "archetype": "intercity",
-          "country": "San Blas",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 17.0,
-            "corridor_annual_oneway_pax": 20250,
-            "_demand_record": {
-              "value": 20250,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 17.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "pioneer_ii"
-        },
-        {
-          "route_id": "rn-fc0f6a62c378",
-          "from": "Papagayo",
-          "to": "Playa Naranjo Ferry Terminal",
-          "distance_nm": 112.8,
-          "vessel": "Quanta-LR",
-          "archetype": "intercity",
-          "country": "Papagayo",
-          "pool_basis": "addressable",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 220.0,
-            "corridor_annual_oneway_pax": 119520,
-            "_demand_record": {
-              "value": 119520,
-              "unit": "pax/yr one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "_fare_record": {
-              "value": 220.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med",
-              "source": "economics_by_route_id.json",
-              "method": "bite2/econ_sidecar_inherit"
-            },
-            "demand_confidence": "med-low"
-          },
-          "_bite2_source": "economics_by_route_id",
-          "_vessel_key": "quanta_lr"
+          "_economics_hold_reason": "country_reference_incomplete: workers-compensation and terminal/port inputs unresolved"
         }
       ]
     }
