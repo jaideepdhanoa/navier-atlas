@@ -230,15 +230,21 @@ function scopeForPartner(data, slug, opts = {}) {
 
   // ROUTES + city dots span the whole regional NETWORK (drives the end-state map). Boarding-point
   // POIs stay scoped to the rollout cities (keep) — keeps the bundle lean + the detail meaningful.
-  // Hub live-inheritance: select by canonical cluster_id membership (ROUTES ∩ partner clusters),
-  // not density-culled endpoint heuristics (Dott/Voi #216).
+  // Hub live-inheritance: prefer endpoint city ∈ keep (so city-level sealed keys like jeddah-ksa /
+  // doha-qatar keep corridors without pulling whole saudi-arabia / qatar). Fall back to
+  // cluster_id ∈ partnerClusters for routes missing city ids (country-key seals: germany, uae, …).
   const routesWithin = opts.routesWithin ?? (pageKind === 'market' || pageKind === 'flat');
   let ROUTES;
-  if (inheritClusters && pageKind === 'hub-index' && partnerClusters.size) {
+  if (inheritClusters && pageKind === 'hub-index' && (keep.size || partnerClusters.size)) {
     ROUTES = (data.ROUTES || []).filter((f) => {
       const p = f.properties || {};
       if (p.render_hidden === true) return false;
       if (p._quarantine === true || p.relevance === 'hide') return false;
+      const fromCity = cityIdOf(p.from) || p.from_city_id || null;
+      const toCity = cityIdOf(p.to) || p.to_city_id || null;
+      const a = !!(fromCity && keep.has(fromCity));
+      const b = !!(toCity && keep.has(toCity));
+      if (a || b) return routesWithin ? (a && b) : true;
       const cid = p.cluster_id;
       return !!(cid && partnerClusters.has(cid));
     });

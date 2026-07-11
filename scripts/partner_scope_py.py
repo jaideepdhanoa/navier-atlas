@@ -37,12 +37,25 @@ def is_hub_partner(partner: dict[str, Any]) -> bool:
 def sealed_registry_keys(partner: dict[str, Any]) -> set[str]:
     keys: set[str] = set()
     for m in partner.get("markets") or []:
-        if m.get("slug"):
-            keys.add(m["slug"])
-        if m.get("id"):
-            keys.add(m["id"])
+        scoped = m.get("scope_registry_keys") or m.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        scoped = [k for k in scoped if k]
+        if scoped:
+            keys.update(scoped)
+        else:
+            if m.get("slug"):
+                keys.add(m["slug"])
+            if m.get("id"):
+                keys.add(m["id"])
     for fp in partner.get("network_footprint") or []:
-        if fp.get("covered") is True:
+        if fp.get("covered") is not True:
+            continue
+        scoped = fp.get("scope_registry_keys") or fp.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        scoped = [k for k in scoped if k]
+        if scoped:
+            keys.update(scoped)
+        else:
             keys.add(fp.get("registry_key") or fp.get("id"))
     for k in partner.get("_map_scope", {}).get("registry_keys") or []:
         keys.add(k)
@@ -66,6 +79,12 @@ def resolve_registry_key_to_city_ids(
     cluster_by_id: dict[str, dict],
     partner: dict[str, Any] | None = None,
 ) -> set[str]:
+    # Prefer exact cluster key first so city-level seals are not swallowed by market aliases.
+    if key and key in cluster_by_id:
+        exact = cluster_by_id[key]
+        if exact.get("member_city_ids"):
+            return set(exact["member_city_ids"])
+
     alias = MARKET_CLUSTER_ALIASES.get(key)
     if alias == "__cross_border__":
         return cross_border_city_ids(cluster_by_id, partner)
@@ -73,8 +92,9 @@ def resolve_registry_key_to_city_ids(
     cluster = cluster_by_id.get(cluster_id)
     if cluster and cluster.get("member_city_ids"):
         return set(cluster["member_city_ids"])
-    if "-" in key or cluster_id in cluster_by_id:
-        c2 = cluster_by_id.get(cluster_id)
+    # City-level id (e.g. jeddah-ksa, doha-qatar) — pass through as a single keep city
+    if "-" in key or key in cluster_by_id:
+        c2 = cluster_by_id.get(key)
         if c2:
             return set(c2.get("member_city_ids") or [])
         return {key}
@@ -100,9 +120,13 @@ def resolve_inherited_city_ids(
     if not is_hub_partner(partner):
         return out
     if page_kind == "market" and market:
-        key = market.get("slug") or market.get("id")
+        scoped = market.get("scope_registry_keys") or market.get("scope_registry_key") or []
+        scoped = scoped if isinstance(scoped, list) else [scoped]
+        keys = [k for k in scoped if k] or [market.get("slug") or market.get("id")]
         out.update(market_cities(market))
-        out.update(resolve_registry_key_to_city_ids(key, cluster_by_id, partner))
+        for key in keys:
+            if key:
+                out.update(resolve_registry_key_to_city_ids(key, cluster_by_id, partner))
         return out
     if page_kind == "hub-index":
         for key in sealed_registry_keys(partner):
