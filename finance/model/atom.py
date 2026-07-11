@@ -38,36 +38,57 @@ def compute_atom(corridor, vessel_key="pioneer_ii"):
     L3  = corridor["L3_locals"]
     dist = corridor["distance_nm"]
     seg  = corridor.get("archetype", "ridehail")
+    country = corridor.get("country")
+    country_ops = (ops.get("country_operating_overrides") or {}).get(country) or {}
 
     # ---- TRIPS / YEAR (L1 geometry + L2 distance) ----
     cruise = vget(v, "cruise_speed_kt")          # kt = nm/hr
     one_way_hr = dist / cruise
-    turn_hr = vget(ops, "turnaround_charge_min") / 60.0
+    turn_min = (vget(country_ops, "turnaround_min") if country_ops.get("turnaround_min") is not None
+                else vget(ops, "turnaround_charge_min"))
+    turn_hr = turn_min / 60.0
     # boarding/scheduling dwell added to every cycle so short hops don't imply
     # an unrealistic sailing every few minutes (Jaideep 2026-06-19).
-    dwell_hr = vget(ops, "boarding_dwell_min") / 60.0
-    cycle_hr = one_way_hr + turn_hr + dwell_hr     # one revenue leg + turnaround + boarding dwell
+    dwell_min = (vget(country_ops, "boarding_dwell_min") if country_ops.get("boarding_dwell_min") is not None
+                 else vget(ops, "boarding_dwell_min"))
+    dwell_hr = dwell_min / 60.0
+    # South Korea uses the retained energy-proportional charging PLANNING PROXY.
+    # This is not a certified charge curve and requires engineering validation.
+    charge_cfg = country_ops.get("charge_recovery") or {}
+    charge_recovery_min = 0.0
+    charge_proxy_label = None
+    if charge_cfg.get("method") == "energy_proportional_planning_proxy":
+        charge_recovery_min = (dist / vget(charge_cfg, "range_nm")
+                               * vget(charge_cfg, "full_range_charge_min"))
+        charge_proxy_label = charge_cfg.get("engineering_status")
+    charge_recovery_hr = charge_recovery_min / 60.0
+    cycle_hr = one_way_hr + turn_hr + dwell_hr + charge_recovery_hr
     op_capacity = vget(ops, "monthly_operational_capacity")
     # weather/seasonality haircut layered on mechanical uptime (L3 override wins)
     weather = L3.get("weather_uptime_factor")
     if weather is None: weather = vget(ops, "weather_uptime_factor")
     season_days = L3.get("season_days") or round(365 * op_capacity * weather)
-    service_hr_per_day = vget(ops, "service_window_hr_per_day")
+    service_hr_per_day = (vget(country_ops, "service_window_hr_per_day")
+                          if country_ops.get("service_window_hr_per_day") is not None
+                          else vget(ops, "service_window_hr_per_day"))
     # cap revenue sailings/day at a believable on-demand duty cycle, not capacity-max,
     # so a boat is never assumed "full all day" (Jaideep 2026-06-19). L3-overridable.
     # LB-256: high-frequency commuter / water-shuttle archetypes sustain more
     # sailings/day than the premium on-demand default cap. Per-corridor L3 wins;
     # else an archetype-keyed cap; else the global default cap.
-    max_tpd = L3.get("max_trips_per_day")
-    if max_tpd is None:
+    schedule_derived_no_fixed_cap = bool(country_ops.get("schedule_derived_no_fixed_cap"))
+    max_tpd = None if schedule_derived_no_fixed_cap else L3.get("max_trips_per_day")
+    if max_tpd is None and not schedule_derived_no_fixed_cap:
         _tpd_map = ops.get("max_trips_per_day_by_archetype") or {}
         if seg in _tpd_map and not str(seg).startswith("_"):
             max_tpd = _tpd_map[seg]
         else:
             max_tpd = vget(ops, "max_trips_per_day")
     trips_per_day_capacity = math.floor(service_hr_per_day / cycle_hr) if cycle_hr > 0 else 0
-    trips_per_day = min(trips_per_day_capacity, max_tpd)
-    trips_per_day_capped = trips_per_day < trips_per_day_capacity
+    trips_per_day = (trips_per_day_capacity if schedule_derived_no_fixed_cap
+                     else min(trips_per_day_capacity, max_tpd))
+    trips_per_day_capped = (not schedule_derived_no_fixed_cap
+                            and trips_per_day < trips_per_day_capacity)
     # revenue-leg factor: not every theoretical leg earns full fare (deadhead/idle/gaps)
     rev_leg = L3.get("revenue_leg_factor")
     if rev_leg is None: rev_leg = vget(ops, "revenue_leg_factor")
@@ -262,8 +283,12 @@ def compute_atom(corridor, vessel_key="pioneer_ii"):
             "one_way_min": round(one_way_hr * 60, 1),
             "turnaround_min": round(turn_hr * 60, 1),
             "boarding_dwell_min": round(dwell_hr * 60, 1),
+            "charge_recovery_min": round(charge_recovery_min, 3),
+            "charge_recovery_method": charge_cfg.get("method"),
+            "charge_recovery_engineering_status": charge_proxy_label,
             "cycle_min": round(cycle_hr * 60, 1),
             "service_window_h": service_hr_per_day,
+            "gross_legs_per_day": trips_per_day,
             "trips_per_day": trips_per_day,
             "trips_per_day_capacity": trips_per_day_capacity,
             "max_trips_per_day_cap": max_tpd,
@@ -272,9 +297,9 @@ def compute_atom(corridor, vessel_key="pioneer_ii"):
                 (f"min(cap {max_tpd}, " if trips_per_day_capped else "")
                 + f"floor({service_hr_per_day}h service window / {round(cycle_hr*60,1)}min cycle "
                 f"[{round(one_way_hr*60,1)}min one-way + {round(turn_hr*60,1)}min turnaround "
-                f"+ {round(dwell_hr*60,1)}min boarding])"
+                f"+ {round(dwell_hr*60,1)}min boarding + {round(charge_recovery_min,3)}min charge recovery])"
                 + (f") = {trips_per_day}" if trips_per_day_capped else f" = {trips_per_day}")
-                + " legs/day"),
+                + " gross legs/day"),
             "operating_days_yr": season_days,
             "operating_days_derivation": ("L3 season_days override" if L3.get("season_days")
                                           else f"365 x {op_capacity} mechanical uptime x {weather} weather"),

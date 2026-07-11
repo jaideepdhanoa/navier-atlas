@@ -53,15 +53,17 @@ def main() -> int:
     pax_cap = v(P2["pax_capacity"])
     load = OPS["_utilization_scenarios"]["mid"]["load_factor"]
     revleg = OPS["_utilization_scenarios"]["mid"]["revenue_leg_factor"]
+    country_overrides = OPS.get("country_operating_overrides") or {}
     disc_map = OPS.get("discount_factor") or {}
     capt_rate = v(OPS["navier_capture_rate"])
     capt_on_addr = OPS.get("capture_on_addressable")
     capt_on_addr = v(capt_on_addr) if capt_on_addr is not None else capt_rate
 
-    # LB-255 premium re-fare (mirror build_transparent_sheet / atom)
-    REFARE_ON = True
-    REFARE_CEIL = 8.0
-    REFARE_FLOOR = 18.0
+    # LB-255 premium re-fare (mirror build_transparent_sheet / atom from source config)
+    refare = OPS.get("premium_refare") or {}
+    REFARE_ON = bool(refare.get("enabled", False))
+    REFARE_CEIL = v(refare.get("subsidized_fare_ceiling", 0.0))
+    REFARE_FLOOR = v(refare.get("premium_ondemand_floor", 0.0))
 
     corr = json.loads(corr_path.read_text())
     agg = json.loads(agg_path.read_text())
@@ -97,14 +99,26 @@ def main() -> int:
                 disc = v(disc)
             if disc is None:
                 disc = 1.0
+            country_ov = country_overrides.get(c.get("country")) or {}
             eff_cap = (
                 tpd_map[arche]
                 if arche in tpd_map and not str(arche).startswith("_")
                 else max_tpd
             )
+            row_service_hr = v(country_ov.get("service_window_hr_per_day", service_hr))
+            row_turn_min = v(country_ov.get("turnaround_min", turn_min))
+            row_dwell = v(country_ov.get("boarding_dwell_min", dwell))
+            charge_cfg = country_ov.get("charge_recovery") or {}
+            charge_min = 0.0
+            if charge_cfg.get("method") == "energy_proportional_planning_proxy":
+                charge_min = nm / v(charge_cfg["range_nm"]) * v(charge_cfg["full_range_charge_min"])
             ow = 60 * nm / cruise
-            cyc = ow + turn_min + dwell
-            tpd = min(eff_cap, math.floor(60 * service_hr / cyc) if cyc else 0)
+            cyc = ow + row_turn_min + row_dwell + charge_min
+            schedule_capacity = math.floor(60 * row_service_hr / cyc) if cyc else 0
+            tpd = (schedule_capacity if country_ov.get("schedule_derived_no_fixed_cap")
+                   else min(eff_cap, schedule_capacity))
+            row_load = v(country_ov.get("mid_load_factor", load))
+            row_revleg = v(country_ov.get("mid_revenue_leg_factor", revleg))
             season = L3.get("season_days")
             if season is None:
                 w = L3.get("weather_uptime_factor")
@@ -112,13 +126,13 @@ def main() -> int:
                 od = round(365 * mech * w)
             else:
                 od = season
-            tpy = round(tpd * od * revleg)
+            tpy = round(tpd * od * row_revleg)
 
             fare = L3.get("comparable_fare_usd_pax")
             if fare is not None and REFARE_ON and fare <= REFARE_CEIL and fare < REFARE_FLOOR:
                 fare = REFARE_FLOOR
             nf = (fare or 0) * disc
-            ppt = pax_cap * load
+            ppt = pax_cap * row_load
             ppy = ppt * tpy
             rev = round(nf * ppy, 0)
 
@@ -149,7 +163,9 @@ def main() -> int:
             vessels = math.floor(nrd / ppy) if (nrd is not None and ppy) else 0
             mrev = round(rev * vessels, 0) if vessels else 0
             vraw = (nrd / ppy) if (nrd is not None and ppy) else 0
-            mrev_raw = vraw * (nf * ppy)  # unrounded per-boat revenue
+            # South Korea sheet mirrors atom.py whole-dollar per-boat revenue;
+            # other markets retain the prior unrounded raw-sheet convention.
+            mrev_raw = vraw * (rev if c.get("country") == "South Korea" else (nf * ppy))
 
             ar = agg_by.get(rid) or {}
             midr = ar.get("mid") or {}
@@ -187,7 +203,9 @@ def main() -> int:
                         {"route_id": rid, "field": field, "sim": a, "model": b}
                     )
             if ar.get("status") == "grounded":
-                sim_floor += mrev
+                # Aggregate rollup uses the network-sum/raw vessel basis, not the
+                # display-only per-corridor floored fleet/revenue value.
+                sim_floor += mrev_raw
                 if demand is not None and fare is not None:
                     # pool uses comparable fare (pre-discount) × demand one-way
                     # match growth: demand * fare (model comparable)
@@ -229,7 +247,7 @@ def main() -> int:
         and all(
             rows_checked
             and any(
-                r["route_id"] == rid and r["sim"]["trips_per_year"] == 890
+                r["route_id"] == rid and r["sim"]["trips_per_year"] == 712
                 for r in rows_checked
             )
             for rid in (

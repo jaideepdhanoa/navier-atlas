@@ -74,6 +74,17 @@ crew_factor=v(OPS["crew_fte_factor"]); ins_pct=v(OPS["insurance_pct_of_capex"])
 charge_berth=v(OPS["charging_berth_annual_usd"])
 
 bands = {b: (SCEN[b]["load_factor"], SCEN[b]["revenue_leg_factor"]) for b in ("thin","mid","full")}
+COUNTRY_OPS = OPS.get("country_operating_overrides") or {}
+KOREA_COUNTRY = "South Korea"
+KOREA_OPS = COUNTRY_OPS[KOREA_COUNTRY]
+korea_mid_load = v(KOREA_OPS["mid_load_factor"])
+korea_mid_revleg = v(KOREA_OPS["mid_revenue_leg_factor"])
+korea_service_hr = v(KOREA_OPS["service_window_hr_per_day"])
+korea_turn_min = v(KOREA_OPS["turnaround_min"])
+korea_dwell_min = v(KOREA_OPS["boarding_dwell_min"])
+korea_charge_cfg = KOREA_OPS["charge_recovery"]
+korea_charge_range_nm = v(korea_charge_cfg["range_nm"])
+korea_full_range_charge_min = v(korea_charge_cfg["full_range_charge_min"])
 
 # LB-254: effective capture (floor / true transport-spend pool) + captive flag from the partner
 # aggregate, so the Market-sizing ladder (the SECOND cost engine — golden rule #7) anchors on the
@@ -304,8 +315,9 @@ content=[
  ("A standalone, transparent unit-economics model for the per-seat electric-shuttle business on each partner corridor. Every output is a live formula you can click and trace back to one named assumption cell. Nothing is hardcoded.",None,None),
  ("",None,None),
  ("The one equation (per boat, per year)",BOLD,None),
- ("REVENUE = trips/day \u00d7 operating days/yr \u00d7 revenue-leg factor \u00d7 (pax capacity \u00d7 load factor) \u00d7 Navier fare",MONO,f_light),
- ("    trips/day      = FLOOR(service window hr \u00f7 cycle time);  cycle = one-way time + turnaround",MONO,None),
+ ("REVENUE = gross legs/day \u00d7 operating days/yr \u00d7 revenue-leg utilization \u00d7 (pax capacity \u00d7 seat occupancy) \u00d7 Navier fare",MONO,f_light),
+ ("    gross legs/day = FLOOR(service window min \u00f7 cycle time); South Korea cycle = one-way + 20 min turnaround + 10 min boarding + charge recovery",MONO,None),
+ ("    South Korea charge recovery = distance_nm / 70 \u00d7 45 min — PLANNING PROXY requiring engineering validation; not a certified charge curve",MONO,None),
  ("    one-way time   = distance(nm) \u00f7 cruise speed(kt)",MONO,None),
  ("    operating days = 365 \u00d7 mechanical uptime \u00d7 weather factor",MONO,None),
  ("    Navier fare    = comparable premium transfer fare \u00d7 discount (=1.0, market parity)",MONO,None),
@@ -326,7 +338,7 @@ content=[
  ("Vessels supported = FLOOR(Navier rides/yr \u00f7 pax/yr per boat);  Market rev = vessels \u00d7 rev/boat. The 'Market sizing' tab rolls these up into the SOM \u2192 SAM \u2192 TAM ladder.",None,None),
  ("",None,None),
  ("The scenario toggle (what we flex)",BOLD,None),
- ("'Corridor economics' has a SCENARIO cell = THIN / MID / FULL. It flexes load factor (occupancy) and revenue-leg factor (share of legs that earn full fare). Max trips/day is fixed across all three bands (see Assumptions). MID is the headline. Change SCENARIO and the whole model recomputes. Payback THIN/MID/FULL columns always show all three at once.",None,None),
+ ("'Corridor economics' has a SCENARIO cell = THIN / MID / FULL. It flexes seat occupancy and revenue-leg utilization as separate inputs. South Korea MID uses 65% for each, with gross legs/day schedule-derived and uncapped; thin/full occupancy bookends remain 45%/70%. Other countries retain their existing caps and bands. Payback THIN/MID/FULL columns always show all three at once.",None,None),
  ("",None,None),
  ("Colour & provenance legend",BOLD,None),
  ("   Yellow = INPUTS you can change (fare, distance, demand, weather).",None,f_input),
@@ -387,10 +399,19 @@ r=param(r,"Vessel insurance \u2014 H&M + P&I (% of CAPEX/yr)",ins_pct,"frac",tie
 r=param(r,"Fast-charge berth & demand charges (global default)",charge_berth,"USD/yr",tier(OPS["charging_berth_annual_usd"]),conf(OPS["charging_berth_annual_usd"]),
       src(OPS["charging_berth_annual_usd"])+". Dedicated charge berth + utility demand charges. Excludes per-kWh propulsion energy and berth/port admin. L3-overridable per market.",USD,"charge_berth")
 r+=1
+sec(r,"South Korea schedule / capacity override  (country == 'South Korea' only)"); r+=1; hrow(r); r+=1
+r=param(r,"South Korea MID seat occupancy",korea_mid_load,"share of seats",tier(KOREA_OPS["mid_load_factor"]),conf(KOREA_OPS["mid_load_factor"]),src(KOREA_OPS["mid_load_factor"]),PCT,"korea_mid_load")
+r=param(r,"South Korea MID revenue-leg utilization",korea_mid_revleg,"share of gross legs",tier(KOREA_OPS["mid_revenue_leg_factor"]),conf(KOREA_OPS["mid_revenue_leg_factor"]),src(KOREA_OPS["mid_revenue_leg_factor"]),PCT,"korea_mid_revleg")
+r=param(r,"South Korea service window",korea_service_hr,"hr/day",tier(KOREA_OPS["service_window_hr_per_day"]),conf(KOREA_OPS["service_window_hr_per_day"]),src(KOREA_OPS["service_window_hr_per_day"]),NUM,"korea_service_hr")
+r=param(r,"South Korea turnaround",korea_turn_min,"min/gross leg",tier(KOREA_OPS["turnaround_min"]),conf(KOREA_OPS["turnaround_min"]),src(KOREA_OPS["turnaround_min"]),NUM,"korea_turn_min")
+r=param(r,"South Korea boarding dwell",korea_dwell_min,"min/gross leg",tier(KOREA_OPS["boarding_dwell_min"]),conf(KOREA_OPS["boarding_dwell_min"]),src(KOREA_OPS["boarding_dwell_min"]),NUM,"korea_dwell_min")
+r=param(r,"South Korea charge-planning range basis",korea_charge_range_nm,"nm",korea_charge_cfg.get("source_tier",""),korea_charge_cfg.get("confidence",""),korea_charge_cfg.get("source","")+" "+korea_charge_cfg.get("engineering_status",""),NUM,"korea_charge_range_nm")
+r=param(r,"South Korea full-range charge-planning time",korea_full_range_charge_min,"min",korea_charge_cfg.get("source_tier",""),korea_charge_cfg.get("confidence",""),"PLANNING PROXY: charge recovery = distance_nm / 70 × 45. Requires engineering validation; not a certified charge curve.",NUM,"korea_full_range_charge_min")
+r+=1
 # scenario bands
-sec(r,"Utilization scenarios  (load factor + revenue-leg factor)"); r+=1
+sec(r,"Utilization scenarios  (seat occupancy + revenue-leg utilization)"); r+=1
 scen_hdr_r=r
-for i,h in enumerate(["Scenario","Load factor","Rev-leg factor","","","Note"]): sc(ws1,f"{get_column_letter(i+1)}{r}",h,font=HDR,fill=f_steel,align=ctr,bd=True)
+for i,h in enumerate(["Scenario","Seat occupancy","Revenue-leg utilization","","","Note"]): sc(ws1,f"{get_column_letter(i+1)}{r}",h,font=HDR,fill=f_steel,align=ctr,bd=True)
 r+=1
 band_rows={}
 for b in ("thin","mid","full"):
@@ -408,9 +429,9 @@ sc(ws1,f"A{r}","SCENARIO (toggle me)",font=BOLD,fill=f_band,bd=True)
 sel=sc(ws1,f"B{r}","MID",fill=f_band,align=ctr,bd=True,font=Font(bold=True,size=12)); addname("scenario",f"'Assumptions'!$B${r}")
 dv=DataValidation(type="list",formula1='"THIN,MID,FULL"',allow_blank=False); ws1.add_data_validation(dv); dv.add(sel)
 sc(ws1,f"C{r}","\u2190 set THIN / MID / FULL",font=SMALL,align=Alignment(vertical="center")); r+=1
-sc(ws1,f"A{r}","Selected load factor",bd=True)
+sc(ws1,f"A{r}","Selected global seat occupancy",bd=True)
 sc(ws1,f"B{r}",f'=VLOOKUP(scenario,{band_tbl},2,FALSE)',fill=f_calc,fmt=NUM2,align=ctr,bd=True); addname("load_sel",f"'Assumptions'!$B${r}"); r+=1
-sc(ws1,f"A{r}","Selected rev-leg factor",bd=True)
+sc(ws1,f"A{r}","Selected global revenue-leg utilization",bd=True)
 sc(ws1,f"B{r}",f'=VLOOKUP(scenario,{band_tbl},3,FALSE)',fill=f_calc,fmt=NUM2,align=ctr,bd=True); addname("revleg_sel",f"'Assumptions'!$B${r}"); r+=1
 
 # ------------------------------------------------------------ TAB 2 Country opex
@@ -496,13 +517,14 @@ cols = _cols_head + [
  ("Fare conf.","fare_conf",8,None,"in"),
  ("Weather factor","weather",9,NUM2,"in"),
  ("One-way min","",8,NUM1,"f"),
+ ("Charge recovery min","",10,NUM1,"f"),
  ("Cycle min","",8,NUM1,"f"),
- ("Trips/day","",8,NUM,"f"),
+ ("Gross legs/day","",10,NUM,"f"),
  ("Op days/yr","",8,NUM,"f"),
  ("Mech uptime","",8,PCT,"f"),
- ("Rev-leg %","",8,PCT,"f"),
- ("Trips/yr","",8,NUM,"f"),
- ("Load factor","",8,NUM2,"f"),
+ ("Revenue-leg utilization","",11,PCT,"f"),
+ ("Revenue legs/yr","",10,NUM,"f"),
+ ("Seat occupancy","",9,PCT,"f"),
  ("Pax/trip","",8,NUM2,"f"),
  ("Pax/yr","",9,NUM,"f"),
  ("Navier fare $","",9,USD2,"f"),
@@ -570,9 +592,9 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Fare conf.')}{R}",rec["fare_conf"],fill=f_input,align=ctr,bd=True,font=SMALL)
     sc(ws,f"{CL('Weather factor')}{R}",rec["weather"],fill=f_input,fmt=NUM2,align=ctr,bd=True)
     nm=f"{CL('Distance')}{R}"; fare=f"{CL('Premium fare $/pax')}{R}"; wf=f"{CL('Weather factor')}{R}"; ctry=f"{CL('Country')}{R}"
-    ow=f"{CL('One-way min')}{R}"; cyc=f"{CL('Cycle min')}{R}"; tpd=f"{CL('Trips/day')}{R}"
-    upt=f"{CL('Mech uptime')}{R}"; rlp=f"{CL('Rev-leg %')}{R}"
-    od=f"{CL('Op days/yr')}{R}"; tpy=f"{CL('Trips/yr')}{R}"; lf=f"{CL('Load factor')}{R}"
+    ow=f"{CL('One-way min')}{R}"; charge=f"{CL('Charge recovery min')}{R}"; cyc=f"{CL('Cycle min')}{R}"; tpd=f"{CL('Gross legs/day')}{R}"
+    upt=f"{CL('Mech uptime')}{R}"; rlp=f"{CL('Revenue-leg utilization')}{R}"
+    od=f"{CL('Op days/yr')}{R}"; tpy=f"{CL('Revenue legs/yr')}{R}"; lf=f"{CL('Seat occupancy')}{R}"
     ppt=f"{CL('Pax/trip')}{R}"; ppy=f"{CL('Pax/yr')}{R}"; nf=f"{CL('Navier fare $')}{R}"
     rev=f"{CL('Revenue/yr')}{R}"; en=f"{CL('Energy/yr')}{R}"; cap=f"{CL('Crew/yr')}{R}"
     mar=f"{CL('Berth & port admin/yr')}{R}"; mnt=f"{CL('Maint/yr')}{R}"; opx=f"{CL('OPEX/yr')}{R}"
@@ -587,18 +609,19 @@ for idx,rec in enumerate(rows):
     def F(ref,formula,fmt=None,align=ctr):
         sc(ws,ref,formula,fill=f_calc,fmt=fmt,align=align,bd=True,font=Font(size=9))
     F(ow,f"=60*{nm}/cruise_kt",NUM1)
-    F(cyc,f"={ow}+turn_min+dwell_min",NUM1)
-    F(tpd,f"=MIN({rec.get('eff_cap',max_tpd)},FLOOR(60*service_hr/{cyc},1))",NUM)
+    F(charge,f'=IF({ctry}="{KOREA_COUNTRY}",{nm}/korea_charge_range_nm*korea_full_range_charge_min,0)',NUM1)
+    F(cyc,f'=IF({ctry}="{KOREA_COUNTRY}",{ow}+korea_turn_min+korea_dwell_min+{charge},{ow}+turn_min+dwell_min)',NUM1)
+    F(tpd,f'=IF({ctry}="{KOREA_COUNTRY}",FLOOR(60*korea_service_hr/{cyc},1),MIN({rec.get("eff_cap",max_tpd)},FLOOR(60*service_hr/{cyc},1)))',NUM)
     if rec.get("season_days") is not None:
         sc(ws,od,rec["season_days"],fill=f_input,fmt=NUM,align=ctr,bd=True)
     else:
         # atom.py: season_days = round(365 * op_capacity * weather)  → half-even
         F(od,f"={round_half_even(f'365*mech_uptime*{wf}')}",NUM)
     F(upt,"=mech_uptime",PCT)
-    F(rlp,"=revleg_sel",PCT)
-    # atom.py: trips_per_year = round(trips_per_day * season_days * rev_leg)  → half-even
-    F(tpy,f"={round_half_even(f'{tpd}*{od}*revleg_sel')}",NUM)
-    F(lf,"=load_sel",NUM2)
+    F(rlp,f'=IF(AND({ctry}="{KOREA_COUNTRY}",scenario="MID"),korea_mid_revleg,revleg_sel)',PCT)
+    # atom.py: revenue legs/year = round(gross legs/day * season days * revenue-leg utilization)
+    F(tpy,f"={round_half_even(f'{tpd}*{od}*{rlp}')}",NUM)
+    F(lf,f'=IF(AND({ctry}="{KOREA_COUNTRY}",scenario="MID"),korea_mid_load,load_sel)',PCT)
     F(ppt,f"=pax_cap*{lf}",NUM2)
     F(ppy,f"={ppt}*{tpy}",NUM)
     F(nf,f"={fare}*discount",USD2)
@@ -629,11 +652,12 @@ for idx,rec in enumerate(rows):
     # atom.py: rev_per_year = round(navier_fare * pax_per_year, 0); market_rev uses
     # that whole-dollar per-boat revenue × floored vessels. Half-even for .5 ties.
     F(mrev,f"=IF({ves}=\"\",\"\",{ves}*{round_half_even(rev)})",USD)
-    # R-FLOOR-2 / G51 network-sum basis: unfloored fractional vessels × UNROUNDED
-    # per-vessel revenue (no second ROUND). Closing the $2.74 raw SOM residue.
+    # R-FLOOR-2 / G51 network-sum basis. South Korea mirrors atom.py exactly:
+    # unfloored vessel fraction × whole-dollar (half-even) per-boat revenue.
+    # Other countries retain the prior unrounded sheet behavior (no blast radius).
     vraw=f"{CL('Vessels raw (unfloored)')}{R}"; mrevraw=f"{CL('Market rev/yr raw')}{R}"
     F(vraw,f"=IF(OR({dem}=\"\",{ppy}=0),\"\",MIN(IF({fcap}=\"\",9.9E+99,{fcap}),{nrd}/{ppy}))",NUM2)
-    F(mrevraw,f"=IF({vraw}=\"\",\"\",{vraw}*{rev})",USD)
+    F(mrevraw,f'=IF({vraw}="","",{vraw}*IF({ctry}="{KOREA_COUNTRY}",{round_half_even(rev)},{rev}))',USD)
     sc(ws,f"{CL('Subset of (excl. from market fleet)')}{R}",rec["subset"],fill=f_input,align=wrap,bd=True,font=Font(size=8,color="555555"))
     # LB-33 forward-SAM flag: 2030-dated / low-confidence demand — engine row computed
     # at MID but held OUT of the grounded floor (separate FORWARD SAM total below).
@@ -643,8 +667,10 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Fleet ceiling (captive villas/25)')}{R}",rec["fleet_cap"],fill=f_input,fmt=NUM,align=ctr,bd=True,font=SMALL)
     # band paybacks (self-contained per band) — trips/yr half-even like selected scenario
     for b,name in (("thin","Payback THIN"),("mid","Payback MID"),("full","Payback FULL")):
-        tpyb=round_half_even(f"{tpd}*{od}*revleg_{b}")
-        revb=f"({nf}*pax_cap*load_{b}*{tpyb})"
+        revleg_b=(f'IF({ctry}="{KOREA_COUNTRY}",korea_mid_revleg,revleg_mid)' if b == "mid" else f"revleg_{b}")
+        load_b=(f'IF({ctry}="{KOREA_COUNTRY}",korea_mid_load,load_mid)' if b == "mid" else f"load_{b}")
+        tpyb=round_half_even(f"{tpd}*{od}*{revleg_b}")
+        revb=f"({nf}*pax_cap*{load_b}*{tpyb})"
         enb=f"((battery/range_nm)*{nm}*{tpyb}*VLOOKUP({ctry},country_opex,3,FALSE))"
         opxb=f"({enb}+{cap}+{mar}+{mnt}+{insr}+{chg})"
         ebtb=f"({revb}-{opxb})"
