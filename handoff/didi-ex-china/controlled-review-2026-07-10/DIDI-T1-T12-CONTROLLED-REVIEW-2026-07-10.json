@@ -1,0 +1,564 @@
+{
+  "as_of": "2026-07-10",
+  "source_pr": 218,
+  "scope": "Controlled review of all 47 T1–T12 evidence records",
+  "policy": {
+    "production_economics_requires": "exact sealed route ID + exact annual one-way passengers + supported fare + country-reference coverage",
+    "null_preferred_to_unsupported": true,
+    "no_geometry_changes": true,
+    "no_finance_cascade_performed": true
+  },
+  "decision_counts": {
+    "A1_economics_evidence_ready": 2,
+    "A2_control_ready": 3,
+    "B_benchmark_only": 10,
+    "C_hold_null": 32
+  },
+  "finance_decision": {
+    "A1_economics_evidence_ready_route_ids": [
+      "rn-7e59f984abec",
+      "rn-eb4ca32edbef"
+    ],
+    "A1_cascade_blocker": "Costa Rica is absent from finance/model/country-reference.json; source it before aggregate/growth/sheet work.",
+    "B_remove_from_annual_one_way_fields": [
+      "rn-04b92d6952d2",
+      "rn-f451444da7fe"
+    ],
+    "A2_controls_only": [
+      "El Gouna operational inheritance gate",
+      "NEOM / neom-sindalah-ksa country attribution",
+      "Tigre"
+    ],
+    "all_other_materialization": "hold/null"
+  },
+  "current_main_audit": {
+    "all_four_candidates_present_in_finance_registry": true,
+    "costa_rica_routes_in_grounded_floor": true,
+    "argentina_routes_in_grounded_floor": false,
+    "semantic_defect": "Rosario and Colonia/Buenos Aires totals are stored in corridor_annual_oneway_pax despite being aggregate-direction totals; Rosario is also exposed as annual_one_way_pax in the partner source.",
+    "country_reference_missing": [
+      "Argentina",
+      "Costa Rica",
+      "Uruguay"
+    ]
+  },
+  "records": [
+    {
+      "ask": "T2",
+      "entity": "rn-7e59f984abec",
+      "route_label": "Paquera Ferry Terminal → Puntarenas Ferry Terminal (Gulf of Nicoya car/passenger ferries)",
+      "source_url": "https://repositorio.mopt.go.cr/bitstreams/c12904ff-adce-4ba1-ada3-923b9450cf33/download",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "A1_economics_evidence_ready",
+      "economics_eligibility": "evidence_ready_but_cascade_blocked",
+      "reason": "Exact sealed OD, exact named direction, 2024 calendar-year one-way passenger journeys. Country-cost row still required before cascade.",
+      "required_action": "Retain exact demand and published tariff benchmark; source country-reference row before aggregate/growth/sheet cascade."
+    },
+    {
+      "ask": "T2",
+      "entity": "rn-eb4ca32edbef",
+      "route_label": "Playa Naranjo Ferry Terminal → Puntarenas Ferry Terminal (Gulf of Nicoya car/passenger ferries)",
+      "source_url": "https://repositorio.mopt.go.cr/bitstreams/c12904ff-adce-4ba1-ada3-923b9450cf33/download",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "A1_economics_evidence_ready",
+      "economics_eligibility": "evidence_ready_but_cascade_blocked",
+      "reason": "Exact sealed OD, exact named direction, 2024 calendar-year one-way passenger journeys. Country-cost row still required before cascade.",
+      "required_action": "Retain exact demand and published tariff benchmark; source country-reference row before aggregate/growth/sheet cascade."
+    },
+    {
+      "ask": "T3",
+      "entity": "rn-8fb072f5a8a8",
+      "route_label": "Puerto Cartí → Cartí Sugdup (Gardi Sugdub) community dock",
+      "source_url": "https://www.gunayala.org.pa/Reglamento%20Mar%C3%ADtimo.2020.%20febrero%202022.Oficial.pdf",
+      "original_classification": "permission_required",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T3",
+      "entity": "rn-87eec178e86f",
+      "route_label": "El Porvenir (Gaigirgordub) Dock & Airstrip → Cayos Limones",
+      "source_url": "https://www.gunayala.org.pa/Reglamento%20Mar%C3%ADtimo.2020.%20febrero%202022.Oficial.pdf",
+      "original_classification": "permission_required",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T4",
+      "entity": "rn-64effc46b976",
+      "route_label": "Santa Bárbara de Samaná Ferry Dock & Cayo Levantado Launch → Sabana de la Mar Ferry Terminal (Los Haitises gateway)",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T4",
+      "entity": "rn-c3a4ef933700",
+      "route_label": "Cayo Levantado Public Dock → Santa Bárbara de Samaná Ferry Dock & Cayo Levantado Launch",
+      "source_url": "https://www.godominicanrepublic.com/things-to-do/cayo-levantado",
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-27ac33a14eb2",
+      "route_label": "Embarcadero Tres Puentes → Porvenir ferry arrival ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-4176c336f07a",
+      "route_label": "Terminal Portuario Niebla → Corral ferry landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-60ac3dd2ce79",
+      "route_label": "Calbuco ferry landing → Isla Puluqui ferry landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-a5ddce927bd3",
+      "route_label": "Pargua ferry ramp → Chacao ferry ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-eaedbbb4abe9",
+      "route_label": "El Pasaje ferry ramp → Coyumbe ferry ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-c6a108b7f3d2",
+      "route_label": "Lota Pueblo Hundido ramp → Isla Santa María Puerto Sur ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-f6d1302e7121",
+      "route_label": "Estación Fluvial Domingo Faustino Sarmiento → Arroyo Cruz Colorada / Casa Bellini Line 452 endpoint",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-f451444da7fe",
+      "route_label": "Terminal Fluvial de Pasajeros de Rosario → Isla Sabino Corsi landing",
+      "source_url": "https://enapro.com.ar/2026/04/14/la-terminal-fluvial-de-rosario-con-un-verano-record-casi-40-000-pasajeros-en-la-temporada-2025-2026/",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "38,900 is a complete seasonal-service total with both directions aggregated, not exact annual one-way passengers. Do not place in corridor_annual_oneway_pax.",
+      "required_action": "Set annual_one_way_pax/corridor_annual_oneway_pax to null; preserve the published total only as a direction-qualified benchmark."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-97c9f0b33379",
+      "route_label": "Puerto Pañuelo → Puerto Blest landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T7",
+      "entity": "rn-04b92d6952d2",
+      "route_label": "Terminal Fluvial de Puerto Madero (Buquebus) → Terminal Fluvial Puerto de Colonia",
+      "source_url": "https://www.gub.uy/instituto-nacional-estadistica/comunicacion/publicaciones/anuario-estadistico-nacional-2025-vol-102/47-transporte-14",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "2,177,670 is an annual port-pair total with both directions aggregated, not exact one-way passengers. Do not place in corridor_annual_oneway_pax.",
+      "required_action": "Set annual_one_way_pax/corridor_annual_oneway_pax to null; preserve the published total only as a direction-qualified benchmark."
+    },
+    {
+      "ask": "T8",
+      "entity": "Niebla",
+      "route_label": "Terminal Portuario Niebla → Corral ferry landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Corral",
+      "route_label": "Terminal Portuario Niebla → Corral ferry landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Calbuco",
+      "route_label": "Calbuco ferry landing → Isla Puluqui ferry landing",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Pargua",
+      "route_label": "Pargua ferry ramp → Chacao ferry ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Chacao",
+      "route_label": "Pargua ferry ramp → Chacao ferry ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Dalcahue",
+      "route_label": "El Pasaje ferry ramp → Coyumbe ferry ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Lota",
+      "route_label": "Lota Pueblo Hundido ramp → Isla Santa María Puerto Sur ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Porvenir",
+      "route_label": "Embarcadero Tres Puentes → Porvenir ferry arrival ramp",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T8",
+      "entity": "Tigre",
+      "route_label": "Estación Fluvial Domingo Faustino Sarmiento → Arroyo Cruz Colorada / Casa Bellini Line 452 endpoint",
+      "source_url": "https://web.didiglobal.com/ar/conductor/",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "A2_control_ready",
+      "economics_eligibility": "not_applicable",
+      "reason": "Exact evidence supports a scope/operation control, not passenger economics.",
+      "required_action": "Apply only the stated control; do not infer demand, local supply, berth pickup, or adjacent-city operation."
+    },
+    {
+      "ask": "T1",
+      "entity": "rn-aa790551baa7",
+      "route_label": "Club de pesca de Cartagena - Marina ↔ Bocachica Tierrabomba Jetty",
+      "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/2018%20Diseno%20transporte%20acu%C3%A1tico%20Conceptual_version%20final_2018.pdf",
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T1",
+      "entity": "candidate exact Cartagena OD: Muelle La Bodeguita ↔ Bocachica",
+      "route_label": "La Bodeguita ↔ Bocachica",
+      "source_url": "https://seguimientopot.cartagena.gov.co/sites/default/files/2025-04/IV-Tecnico_Info%204%20V1.pdf",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T5",
+      "entity": "e__santa-cruz-galapagos-ecuador__puerto-ayora__isabela-galapagos-ecuador__puerto-villamil",
+      "route_label": "Puerto Ayora ↔ Puerto Villamil (Isabela)",
+      "source_url": "https://www.observatoriogalapagos.gob.ec/wp-content/uploads/2023/09/Informe-semestral-estadisticas-enero_junio-2022-.pdf",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T5",
+      "entity": "e__santa-cruz-galapagos-ecuador__puerto-ayora__san-cristobal-galapagos-ecuador__puerto-baquerizo-moreno",
+      "route_label": "Puerto Ayora ↔ Puerto Baquerizo Moreno (San Cristóbal)",
+      "source_url": "https://www.observatoriogalapagos.gob.ec/wp-content/uploads/2023/09/Informe-semestral-estadisticas-enero_junio-2022-.pdf",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T5",
+      "entity": "e__santa-cruz-galapagos-ecuador__puerto-ayora__floreana-galapagos-ecuador__puerto-velasco-ibarra",
+      "route_label": "Puerto Ayora ↔ Puerto Velasco Ibarra (Floreana)",
+      "source_url": "https://www.observatoriogalapagos.gob.ec/wp-content/uploads/2023/09/Informe-semestral-estadisticas-enero_junio-2022-.pdf",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T6",
+      "entity": "Embarcadero turístico de El Chaco, Paracas → Islas Ballestas marine circuit",
+      "route_label": "Embarcadero turístico de El Chaco, Paracas → Islas Ballestas marine circuit",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T6",
+      "entity": "Muelle Plaza Grau, Callao → Islas Cavinzas e Islotes Palomino marine circuit",
+      "route_label": "Muelle Plaza Grau, Callao → Islas Cavinzas e Islotes Palomino marine circuit",
+      "source_url": "https://visitaareasnaturales.sernanp.gob.pe/anps/reserva-nacional-siipg-islas-cavinzas-e-islotes-palomino/",
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T6",
+      "entity": "Marina Club, Callao → Islas Cavinzas e Islotes Palomino marine circuit",
+      "route_label": "Marina Club, Callao → Islas Cavinzas e Islotes Palomino marine circuit",
+      "source_url": "https://visitaareasnaturales.sernanp.gob.pe/anps/reserva-nacional-siipg-islas-cavinzas-e-islotes-palomino/",
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T9",
+      "entity": "rn-d7294a3ddd04",
+      "route_label": "Hong Kong: North Point Ferry Pier → Hung Hom Ferry Pier",
+      "source_url": "https://www.legco.gov.hk/research-publications/english/1819in11-waterborne-transport-services-in-selected-places-20190404-e.pdf",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T10",
+      "entity": "rn-5085d4e1f498",
+      "route_label": "Kaohsiung Port (Kaohsiung) → Magong Harbor (Penghu)",
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Happy Land river-bus berth, Al-Mazallat",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Al-Qanater al-Khayriyya river-bus landing",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Maspero river-bus station at Ahl Masr Walk",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "University Bridge river-bus station",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Zoo river-bus station",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Hurghada Cruise Terminal",
+      "route_label": null,
+      "source_url": "https://www.mts.gov.eg/en/port/%D9%85%D9%8A%D9%86%D8%A7%D8%A1-%D8%A7%D9%84%D8%BA%D8%B1%D8%AF%D9%82%D8%A9/",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T11",
+      "entity": "Safaga Cruise Terminal",
+      "route_label": null,
+      "source_url": "https://www.mts.gov.eg/en/port/%D9%85%D9%8A%D9%86%D8%A7%D8%A1-%D8%B3%D9%81%D8%A7%D8%AC%D8%A7/",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T11",
+      "entity": "Sharm El Sheikh Cruise Port",
+      "route_label": null,
+      "source_url": "https://www.mts.gov.eg/en/port/%D9%85%D9%8A%D9%86%D8%A7%D8%A1-%D8%B4%D8%B1%D9%85-%D8%A7%D9%84%D8%B4%D9%8A%D8%AE/",
+      "original_classification": "benchmark_only",
+      "controlled_decision": "B_benchmark_only",
+      "economics_eligibility": "not_eligible",
+      "reason": "Useful sourced context, but period/direction/currentness or endpoint semantics do not satisfy exact annual one-way production economics.",
+      "required_action": "Keep in evidence ledger only; do not annualize, direction-split, or attach to a different route."
+    },
+    {
+      "ask": "T11",
+      "entity": "Hurghada departure berth for Giftun/Mahmeya boats",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T11",
+      "entity": "Mahmeya landing, Giftun Islands",
+      "route_label": null,
+      "source_url": null,
+      "original_classification": "not_publicly_supported",
+      "controlled_decision": "C_hold_null",
+      "economics_eligibility": "not_eligible",
+      "reason": "Required exact operation, endpoint, permission, or annual route-demand proof is absent.",
+      "required_action": "Retain null/hold until the named evidence gate is satisfied."
+    },
+    {
+      "ask": "T12",
+      "entity": "El Gouna operational inheritance gate",
+      "route_label": null,
+      "source_url": "https://web.didiglobal.com/eg/driver/cities/portsaid/",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "A2_control_ready",
+      "economics_eligibility": "not_applicable",
+      "reason": "Exact evidence supports a scope/operation control, not passenger economics.",
+      "required_action": "Apply only the stated control; do not infer demand, local supply, berth pickup, or adjacent-city operation."
+    },
+    {
+      "ask": "T12",
+      "entity": "NEOM / neom-sindalah-ksa country attribution",
+      "route_label": null,
+      "source_url": "https://www.neom.com/en-us/about",
+      "original_classification": "usable_for_base_case",
+      "controlled_decision": "A2_control_ready",
+      "economics_eligibility": "not_applicable",
+      "reason": "Exact evidence supports a scope/operation control, not passenger economics.",
+      "required_action": "Apply only the stated control; do not infer demand, local supply, berth pickup, or adjacent-city operation."
+    }
+  ]
+}
