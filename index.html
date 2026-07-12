@@ -1056,7 +1056,18 @@ function _navPrimary(cid){ return (CLUSTER_TO_NAV[cid] || cid); }
 function _marketMembers(navId){ return (NAV_MARKET_MEMBERS[navId] || [navId]); }
 function _clusterMemberCities(navId){
   const out=[], seen=new Set();
-  for (const clId of _marketMembers(navId)) {
+  // Primary + market-group members, PLUS geometry sub-clusters nested under this nav
+  // cluster (parent_cluster_id / nav_hidden). Example: France → cote-dazur-france-archipelago
+  // holds Nice/Cannes/Antibes; without expansion, drilling into France dims all Riviera
+  // routes stamped to those city ids (only the coarse cote-dazur-france shell was in keep).
+  const clIds = new Set(_marketMembers(navId));
+  if (typeof CLUSTERS !== 'undefined') {
+    for (const c of (CLUSTERS.clusters || [])) {
+      if (!c || !c.cluster_id) continue;
+      if (c.parent_cluster_id === navId || clIds.has(c.parent_cluster_id)) clIds.add(c.cluster_id);
+    }
+  }
+  for (const clId of clIds) {
     const cl = CLUSTER_BY_ID[clId]; if (!cl) continue;
     for (const id of (cl.member_city_ids||[])) if (!id.includes('__') && NODE_INDEX[id] && !seen.has(id)) { seen.add(id); out.push(id); }
   }
@@ -1082,8 +1093,25 @@ function _cityIdOf(id){
   if (CITY_IDS.has(id)) return id;
   const n = NODE_INDEX[id];
   if (n && n.props && CITY_IDS.has(n.props.parent_city_id)) return n.props.parent_city_id;
+  if (n && n.props && CITY_IDS.has(n.props.city_id)) return n.props.city_id;
   const pre = String(id).split('__')[0];
   return CITY_IDS.has(pre) ? pre : null;
+}
+/** Authoritative city for a route endpoint: node resolve, then stamped from_city_id/to_city_id. */
+function _routeCityOf(endpointId, stampedCityId){
+  return _cityIdOf(endpointId) || (stampedCityId && CITY_IDS.has(stampedCityId) ? stampedCityId : null) || stampedCityId || null;
+}
+/** MapLibre expression: route touches any of the given city ids (via resolved or stamped cities). */
+function _routeTouchesCitiesExpr(cities){
+  const lit = ['literal', cities];
+  return ['any',
+    ['in', ['get', '_cfrom'], lit],
+    ['in', ['get', '_cto'], lit],
+    ['in', ['get', 'from_city_id'], lit],
+    ['in', ['get', 'to_city_id'], lit],
+    ['in', ['get', 'from'], lit],
+    ['in', ['get', 'to'], lit],
+  ];
 }
 
 // ============ Route geometry: land-safe smoothing + zoom hierarchy (v11, Item 1) ============
@@ -1241,7 +1269,10 @@ const ROUTE_FC = { type:'FeatureCollection', features: ROUTES.filter(f=>{
     properties:{...p, scale_class: longhaul?'longhaul':'local', render_tier:tier, render_tw:Math.round(tw*1000)/1000,
                 render_lane: lane,
                 render_capillary: capillary || p.render_capillary || undefined,
-                _cfrom:_cityIdOf(p.from), _cto:_cityIdOf(p.to)}};
+                // Fall back to stamped city ids when endpoint node is missing/mis-labeled
+                // (e.g. from:"Monaco" with from_city_id:"cannes-france") so cluster/city
+                // focus does not dim the entire mesh when drilling Region→Cluster→City.
+                _cfrom:_routeCityOf(p.from, p.from_city_id), _cto:_routeCityOf(p.to, p.to_city_id)}};
 })};
 
 // ============ Route display — tier_visual (default) or legacy density modes ============
@@ -2140,8 +2171,9 @@ function clearRouteHighlight(){
 }
 function setRouteHighlight(id){
   if (!id) return clearRouteHighlight();
-  const hit=['any',['==',['get','from'],id],['==',['get','to'],id]];
-  const econHit=['any',['==',['get','from'],id],['==',['get','to'],id],['==',['get','_cfrom'],id],['==',['get','_cto'],id]];
+  // Match endpoint node id, resolved city (_cfrom/_cto), or stamped from_city_id/to_city_id.
+  const hit=_routeTouchesCitiesExpr([id]);
+  const econHit=hit;
   try {
     // Rebuild via tierOpacity so the highlight case lives in the stop outputs and zoom stays top-level.
     const dim = _tierVisual() ? _FOCUS_DIM_FLOOR : 0.12;
@@ -2962,8 +2994,31 @@ function _applyFocusPaint(routeIn, inSet){
 }
 function _focusCities(cities, routeScope){
   if (!cities || !cities.length){ applyStoryFocus(null); return; }
-  const cf=['in',['get','_cfrom'],['literal',cities]], ct=['in',['get','_cto'],['literal',cities]];
-  _applyFocusPaint((routeScope==='intra')?['all',cf,ct]:['any',cf,ct], ['in',['get','id'],['literal',cities]]);
+  // Use resolved + stamped city fields so focus survives missing/mis-labeled boarding-point ids.
+  const touch = _routeTouchesCitiesExpr(cities);
+  // 'intra': both endpoints in the city set (when both resolve); fall back to any-touch if either end is unknown.
+  const both = ['all',
+    ['in', ['get', '_cfrom'], ['literal', cities]],
+    ['in', ['get', '_cto'], ['literal', cities]],
+  ];
+  // Prefer both-ends when both _cfrom/_cto are in set; also keep one-touch via stamped city when
+  // the other end is outside the drill (cross-cluster trunk) — use any-touch for scope!==intra.
+  const routeIn = (routeScope === 'intra')
+    ? ['any', both,
+        // one endpoint stamped/resolved in set AND the other missing (null) — still show
+        ['all',
+          ['any',
+            ['in', ['get', '_cfrom'], ['literal', cities]],
+            ['in', ['get', 'from_city_id'], ['literal', cities]],
+          ],
+          ['any',
+            ['in', ['get', '_cto'], ['literal', cities]],
+            ['in', ['get', 'to_city_id'], ['literal', cities]],
+          ],
+        ],
+      ]
+    : touch;
+  _applyFocusPaint(routeIn, ['in',['get','id'],['literal',cities]]);
 }
 // Route-LEVEL focus: light ONLY the given route ids (a phase's / journey's featured routes), dim the rest,
 // and spotlight just those routes' endpoint cities. The precise alternative to city-level focus, now that
@@ -4091,9 +4146,9 @@ function applyStoryFocus(cityIds) {
     return;
   }
   const inSet = ['in', ['get','id'], ['literal', cityIds]];
-  const routeIn = ['any', ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
-  const econIn = ['any', ['in', ['get','_cfrom'], ['literal', cityIds]], ['in', ['get','_cto'], ['literal', cityIds]],
-    ['in', ['get','from'], ['literal', cityIds]], ['in', ['get','to'], ['literal', cityIds]]];
+  // Match resolved city (_cfrom/_cto), stamped city, or raw endpoint id — not only from/to node ids.
+  const routeIn = _routeTouchesCitiesExpr(cityIds);
+  const econIn = routeIn;
   try {
     // Fold the focus case into the stop outputs so the top-level zoom curve stays MapLibre-valid.
     const dim = _routeFocusDim();
