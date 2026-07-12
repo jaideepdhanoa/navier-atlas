@@ -51,6 +51,16 @@ node scripts/audit-partner-route-linkage.mjs "${LINKAGE_ARGS[@]}" || {
   echo "  ⚠ route linkage gaps (allowlisted partners OK) — set RELEASE=1 only when allowlist is empty"
 }
 
+echo "→ partner footprint→market keep inheritance gate…"
+python3 scripts/audit_partner_route_inheritance_health.py --fail-on-a || {
+  if [ -n "${RELEASE:-}" ]; then
+    echo "✗ RELEASE=1 deploy blocked — covered footprint cities lack markets[] keep (Dott/Doha-class gap)" >&2
+    echo "  See handoff/partner-map-model/RULE-COVERED-FOOTPRINT-MARKET-KEEP.md" >&2
+    exit 1
+  fi
+  echo "  ⚠ A_footprint_without_market findings — fix markets[] or demote footprint; RELEASE=1 will block"
+}
+
 echo "→ route geometry audit…"
 python3 scripts/audit-route-geometry.py || true
 python3 scripts/audit-route-geometry.py --strict-severe 2>/dev/null || {
