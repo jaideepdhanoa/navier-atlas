@@ -158,12 +158,23 @@ def run_scenarios(c, vessel_key):
     # when present -> zero blast radius on every other partner/corridor. Marquee realism corridors are
     # point estimates, so the thin/mid/full band intentionally collapses to the override point.
     ov = (c.get("L3_locals") or {}).get("_realism_override") or c.get("_realism_override")
+    country_ov = ((const["operating_defaults"].get("country_operating_overrides") or {})
+                  .get(c.get("country")) or {})
     for name, band in SCEN.items():
         if name.startswith("_"): continue
         cc = copy.deepcopy(c)
         cc["L3_locals"]["load_factor"] = band["load_factor"]
         cc["L3_locals"]["revenue_leg_factor"] = band["revenue_leg_factor"]
-        if band.get("max_trips_per_day") is not None:
+        # South Korea changes only the MID occupancy; thin/full bookends remain global.
+        # Revenue-leg utilization is a separate 65% MID input, never multiplied into occupancy.
+        if name == "mid" and country_ov:
+            if country_ov.get("mid_load_factor") is not None:
+                cc["L3_locals"]["load_factor"] = atom.vget(country_ov, "mid_load_factor")
+            if country_ov.get("mid_revenue_leg_factor") is not None:
+                cc["L3_locals"]["revenue_leg_factor"] = atom.vget(country_ov, "mid_revenue_leg_factor")
+        if country_ov.get("schedule_derived_no_fixed_cap"):
+            cc["L3_locals"].pop("max_trips_per_day", None)
+        elif band.get("max_trips_per_day") is not None:
             cc["L3_locals"]["max_trips_per_day"] = band["max_trips_per_day"]
         if ov:
             if ov.get("load_factor") is not None:

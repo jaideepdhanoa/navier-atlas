@@ -242,6 +242,58 @@
     "confidence": "med"
    }
   },
+  "country_operating_overrides": {
+   "_doc": "Country-scoped operating corrections. These override schedule mechanics only for the exact country key; all other markets retain global defaults.",
+   "South Korea": {
+    "_doc": "Approved 2026-07-11 audit correction: MID seat occupancy and revenue-leg utilization are separate 65% inputs; gross legs/day are schedule-derived with no fixed 15-leg ceiling.",
+    "mid_load_factor": {
+     "value": 0.65,
+     "unit": "share of seats on revenue legs",
+     "source_tier": "T5",
+     "source": "South Korea economics revision approved 2026-07-11; retained audit scenario.",
+     "confidence": "med"
+    },
+    "mid_revenue_leg_factor": {
+     "value": 0.65,
+     "unit": "share of gross legs earning fare",
+     "source_tier": "T5",
+     "source": "South Korea economics revision approved 2026-07-11; retained audit scenario.",
+     "confidence": "med"
+    },
+    "service_window_hr_per_day": {
+     "value": 12,
+     "unit": "hr/day",
+     "source_tier": "T5",
+     "source": "Retained South Korea schedule audit, 2026-07-11.",
+     "confidence": "med"
+    },
+    "turnaround_min": {
+     "value": 20,
+     "unit": "min/gross leg",
+     "source_tier": "T5",
+     "source": "Retained South Korea schedule audit, 2026-07-11.",
+     "confidence": "med"
+    },
+    "boarding_dwell_min": {
+     "value": 10,
+     "unit": "min/gross leg",
+     "source_tier": "T3",
+     "source": "Retained existing boarding/scheduling dwell; South Korea schedule audit, 2026-07-11.",
+     "confidence": "med"
+    },
+    "schedule_derived_no_fixed_cap": true,
+    "charge_recovery": {
+     "method": "energy_proportional_planning_proxy",
+     "range_nm": 70,
+     "full_range_charge_min": 45,
+     "formula": "distance_nm / 70 * 45",
+     "engineering_status": "Planning proxy requiring engineering validation; not a certified charge curve.",
+     "source_tier": "T5",
+     "source": "Retained South Korea audit proxy based on Navier published 70-nm range and 45-minute DC fast-charge figures.",
+     "confidence": "low-med"
+    }
+   }
+  },
   "crew_fte_factor": {
    "value": 1.8,
    "source_tier": "T3",
