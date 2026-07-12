@@ -1,0 +1,63 @@
+{
+  "at": "2026-07-12T16:55:19Z",
+  "source": "grok/residual-holds-2026-07-12",
+  "decision": "permanent_holds_retained",
+  "n": 6,
+  "holds": [
+    {
+      "name": "Portus Ganda",
+      "lane": "be-ch",
+      "country": "Belgium",
+      "water_system": "Ghent inland waterways",
+      "reason": "OpenStreetMap returns two different marina nodes named Portus Ganda on different sides of the basin, while the city citation does not identify a specific public boarding landing. A basin/marina label is insufficient to choose one pickup point.",
+      "disposition": "permanent_hold_identity_ambiguity",
+      "disposition_reason": "Multiple exact features; selecting one would invent identity."
+    },
+    {
+      "name": "Estación Marítima de Formentera (Port of Ibiza)",
+      "lane": "dott-at-hu-balearics",
+      "country": "Spain",
+      "water_system": "Ibiza/Formentera channel",
+      "reason": "Match to existing canonical route endpoints before creating any BP; preserve route IDs and avoid duplicate Ibiza–La Savina geometry.",
+      "disposition": "permanent_hold_dedupe_canonical",
+      "disposition_reason": "Must reuse existing route endpoints; no new BP mint."
+    },
+    {
+      "name": "La Savina passenger terminal",
+      "lane": "dott-at-hu-balearics",
+      "country": "Spain",
+      "water_system": "Ibiza/Formentera channel",
+      "reason": "Match to existing canonical route endpoints before creating any BP; preserve route IDs and avoid duplicate Ibiza–La Savina geometry.",
+      "disposition": "permanent_hold_dedupe_canonical",
+      "disposition_reason": "Must reuse existing route endpoints; no new BP mint."
+    },
+    {
+      "name": "Egholmfærgen ferry landing, Aalborg (Egholm Færgevej 23)",
+      "lane": "nordics",
+      "country": "Denmark",
+      "water_system": "Limfjord/Aalborg–Egholm",
+      "reason": "Exact-feature ambiguity: two separately mapped, current Aalborg-side terminal quays (Egholm I and Egholm II) satisfy the candidate and lie at Egholm Færgevej. Selecting either would be an unsupported remint/split of the supplied candidate. Canonical geography must first identify the intended quay or explicitly model the facility as a dual-slip terminal.",
+      "disposition": "permanent_hold_identity_ambiguity",
+      "disposition_reason": "Multiple exact features; selecting one would invent identity."
+    },
+    {
+      "name": "Broomielaw Pontoon",
+      "lane": "uk-de",
+      "country": "United Kingdom",
+      "water_system": "River Clyde",
+      "reason": "Closed until further notice per Glasgow City Council.; source status: hold_closed",
+      "disposition": "permanent_hold_closed",
+      "disposition_reason": "Source reports closed until further notice; null beats wrong."
+    },
+    {
+      "name": "Govan Pontoon",
+      "lane": "uk-de",
+      "country": "United Kingdom",
+      "water_system": "River Clyde",
+      "reason": "No exact named T1/T2 coordinate object could be reconciled to Glasgow City Council’s Govan Pontoon; nearby unnamed pier/harbour features are insufficient. The council also reports the pontoon closed until further notice.",
+      "disposition": "permanent_hold_closed",
+      "disposition_reason": "Source reports closed until further notice; null beats wrong."
+    }
+  ],
+  "note": "Re-reviewed: still identity ambiguity / closed pontoons / dedupe-canonical. No seal."
+}
