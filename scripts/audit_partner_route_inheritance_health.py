@@ -11,9 +11,14 @@ Checks (fail-closed, exact-ID only — does not invent routes):
   G. Market page both-endpoint keep would drop all routes for a market (0 displayable)
 
 Writes: grok-routing-output/partner-route-inheritance-health.json
+
+Exit codes:
+  0 — no blocking findings (or report-only)
+  1 — blocking findings present when --fail-on-a / --strict
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -483,6 +488,19 @@ def audit_poi_misparent(fbt: dict) -> list[dict[str, Any]]:
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--fail-on-a",
+        action="store_true",
+        help="Exit 1 if any A_footprint_without_market findings (covered geometry with no market keep)",
+    )
+    ap.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit 1 on any HIGH severity finding (A/D/G displayable, etc.)",
+    )
+    args = ap.parse_args()
+
     routes = load_json(ROUTES_PATH)
     if not isinstance(routes, list):
         routes = routes.get("features") or routes.get("routes") or []
@@ -527,9 +545,12 @@ def main() -> int:
     # rollups
     by_code: Counter = Counter()
     high_partners = []
+    a_findings = []
     for r in partner_results:
         for f in r.get("findings") or []:
             by_code[f["code"]] += 1
+            if f["code"] == "A_footprint_without_market":
+                a_findings.append({"partner_id": r["partner_id"], **f})
         if any(f.get("severity") == "high" for f in r.get("findings") or []):
             high_partners.append(r["partner_id"])
 
@@ -544,6 +565,7 @@ def main() -> int:
             "partners_with_findings": sum(1 for r in partner_results if r.get("finding_count")),
             "partners_with_high": len(high_partners),
             "findings_by_code": dict(by_code),
+            "a_footprint_without_market_count": len(a_findings),
             "poi_name_parent_mismatches": len(poi_mismatches),
             "poi_mismatch_by_implied_city": dict(f_by_implied),
             "poi_mismatch_by_parent": dict(f_by_parent.most_common(20)),
@@ -558,7 +580,17 @@ def main() -> int:
             "G_market_zero_displayable_routes": "Market keep has geometry but 0 both-endpoint routes",
             "G_market_zero_geometry": "Market keep has no geometry",
         },
+        "rule": {
+            "id": "covered-footprint-must-have-market-keep",
+            "statement": (
+                "If network_footprint entry is covered=true and any resolved city has ROUTES "
+                "endpoints, then some markets[] keep (via scope_registry_key/keys or anchors) "
+                "MUST include those cities — or demote footprint render away from geometry."
+            ),
+            "gate": "python3 scripts/audit_partner_route_inheritance_health.py --fail-on-a",
+        },
         "high_severity_partners": sorted(high_partners),
+        "a_findings": a_findings,
         "partners": partner_results,
         "poi_mismatches_sample": poi_mismatches[:80],
         "poi_mismatches_total": len(poi_mismatches),
@@ -571,6 +603,7 @@ def main() -> int:
     print(f"  partners: {report['summary']['partners_checked']}")
     print(f"  with findings: {report['summary']['partners_with_findings']}")
     print(f"  with HIGH: {report['summary']['partners_with_high']}")
+    print(f"  A footprint-only gaps: {len(a_findings)}")
     print(f"  findings by code: {dict(by_code)}")
     print(f"  POI name/parent mismatches: {len(poi_mismatches)}")
     print(f"\nReport → {REPORT_PATH.relative_to(ROOT)}")
@@ -592,6 +625,16 @@ def main() -> int:
     for parent, n in f_by_parent.most_common(15):
         print(f"  {parent}: {n}")
 
+    if args.fail_on_a and a_findings:
+        print(f"\n✗ FAIL --fail-on-a: {len(a_findings)} covered-footprint cities lack market keep")
+        for a in a_findings[:20]:
+            print(f"  {a['partner_id']}: {a.get('key')}")
+        return 1
+    if args.strict and high_partners:
+        print(f"\n✗ FAIL --strict: HIGH findings on {sorted(high_partners)}")
+        return 1
+    if args.fail_on_a or args.strict:
+        print("\n  ✅ inheritance health gate pass")
     return 0
 
 

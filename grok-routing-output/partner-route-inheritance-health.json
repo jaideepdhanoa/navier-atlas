@@ -1,15 +1,16 @@
 {
-  "generated": "2026-07-12T20:34:31.089639+00:00",
+  "generated": "2026-07-12T20:38:53.722069+00:00",
   "summary": {
     "partners_checked": 95,
     "partners_with_findings": 16,
-    "partners_with_high": 3,
+    "partners_with_high": 1,
     "findings_by_code": {
       "B_city_key_as_cluster_id": 12,
       "C_keep_city_zero_routes": 48,
-      "A_footprint_without_market": 19,
+      "G_market_zero_displayable_routes": 1,
       "G_market_zero_geometry": 4
     },
+    "a_footprint_without_market_count": 0,
     "poi_name_parent_mismatches": 29,
     "poi_mismatch_by_implied_city": {
       "dubai-uae": 20,
@@ -41,11 +42,15 @@
     "G_market_zero_displayable_routes": "Market keep has geometry but 0 both-endpoint routes",
     "G_market_zero_geometry": "Market keep has no geometry"
   },
+  "rule": {
+    "id": "covered-footprint-must-have-market-keep",
+    "statement": "If network_footprint entry is covered=true and any resolved city has ROUTES endpoints, then some markets[] keep (via scope_registry_key/keys or anchors) MUST include those cities \u2014 or demote footprint render away from geometry.",
+    "gate": "python3 scripts/audit_partner_route_inheritance_health.py --fail-on-a"
+  },
   "high_severity_partners": [
-    "bolt",
-    "didi",
-    "yango"
+    "didi"
   ],
+  "a_findings": [],
   "partners": [
     {
       "partner_id": "abu-dhabi-itc",
@@ -69,11 +74,11 @@
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "andaman-india",
+          "key": "kerala-backwaters-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 29,
+          "endpoint_routes": 8,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         },
         {
@@ -89,21 +94,21 @@
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "goa-india",
+          "key": "andaman-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 16,
+          "endpoint_routes": 29,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         },
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "kerala-backwaters-india",
+          "key": "goa-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 8,
+          "endpoint_routes": 16,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         }
       ]
@@ -184,38 +189,12 @@
       "partner_id": "bolt",
       "hub": true,
       "scope_city_count": 105,
-      "sealed_key_count": 46,
-      "finding_count": 5,
+      "sealed_key_count": 50,
+      "finding_count": 3,
       "severity": {
-        "high": 2,
         "medium": 3
       },
       "findings": [
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "cyprus",
-          "label": "Cyprus",
-          "cities": [
-            "ayia-napa-cyprus",
-            "larnaca-cyprus",
-            "limassol-cyprus",
-            "paphos-cyprus"
-          ],
-          "geometry_route_endpoints": 10,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "auckland-new-zealand",
-          "label": "Auckland & the Hauraki Gulf",
-          "cities": [
-            "auckland-new-zealand"
-          ],
-          "geometry_route_endpoints": 28,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
         {
           "code": "C_keep_city_zero_routes",
           "severity": "medium",
@@ -349,111 +328,12 @@
       "hub": true,
       "scope_city_count": 61,
       "sealed_key_count": 78,
-      "finding_count": 15,
+      "finding_count": 7,
       "severity": {
-        "high": 9,
-        "medium": 6
+        "medium": 6,
+        "high": 1
       },
       "findings": [
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "cozumel-mexico",
-          "label": "Cozumel (San Miguel)",
-          "cities": [
-            "cozumel-mexico"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "playa-del-carmen-mexico",
-          "label": "Playa del Carmen",
-          "cities": [
-            "playa-del-carmen-mexico"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "floreana-galapagos-ecuador",
-          "label": null,
-          "cities": [
-            "floreana-galapagos-ecuador"
-          ],
-          "geometry_route_endpoints": 1,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "isabela-galapagos-ecuador",
-          "label": null,
-          "cities": [
-            "isabela-galapagos-ecuador"
-          ],
-          "geometry_route_endpoints": 1,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "san-cristobal-galapagos-ecuador",
-          "label": null,
-          "cities": [
-            "san-cristobal-galapagos-ecuador"
-          ],
-          "geometry_route_endpoints": 1,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "santa-cruz-galapagos-ecuador",
-          "label": null,
-          "cities": [
-            "santa-cruz-galapagos-ecuador"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "lima-peru",
-          "label": null,
-          "cities": [
-            "lima-peru"
-          ],
-          "geometry_route_endpoints": 10,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "paracas-peru",
-          "label": null,
-          "cities": [
-            "paracas-peru"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "pisco-san-andres-peru",
-          "label": null,
-          "cities": [
-            "pisco-san-andres-peru"
-          ],
-          "geometry_route_endpoints": 1,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
         {
           "code": "C_keep_city_zero_routes",
           "severity": "medium",
@@ -489,6 +369,19 @@
           "severity": "medium",
           "city_id": "vina-del-mar-chile",
           "detail": "city is in partner keep/scope but no ROUTES endpoints resolve to it"
+        },
+        {
+          "code": "G_market_zero_displayable_routes",
+          "severity": "high",
+          "market": "galapagos",
+          "keep_cities": [
+            "floreana-galapagos-ecuador",
+            "isabela-galapagos-ecuador",
+            "san-cristobal-galapagos-ecuador",
+            "santa-cruz-galapagos-ecuador"
+          ],
+          "endpoint_geometry_count": 6,
+          "detail": "market keep has geometry via city stamps but both-endpoint keep filter yields 0 routes (orphan BPs / wrong parent / cross-city only legs)"
         }
       ]
     },
@@ -505,21 +398,21 @@
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "nassau-bahamas",
-          "true_cluster_id": "bahamas",
-          "partner_clusters_has_key": true,
-          "partner_clusters_has_true": false,
-          "endpoint_routes": 33,
-          "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
-        },
-        {
-          "code": "B_city_key_as_cluster_id",
-          "severity": "info",
           "key": "los-cabos-mexico",
           "true_cluster_id": "mexico",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
           "endpoint_routes": 16,
+          "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
+        },
+        {
+          "code": "B_city_key_as_cluster_id",
+          "severity": "info",
+          "key": "nassau-bahamas",
+          "true_cluster_id": "bahamas",
+          "partner_clusters_has_key": true,
+          "partner_clusters_has_true": false,
+          "endpoint_routes": 33,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         }
       ]
@@ -1110,11 +1003,11 @@
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "andaman-india",
+          "key": "kerala-backwaters-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 29,
+          "endpoint_routes": 8,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         },
         {
@@ -1130,21 +1023,21 @@
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "goa-india",
+          "key": "andaman-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 16,
+          "endpoint_routes": 29,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         },
         {
           "code": "B_city_key_as_cluster_id",
           "severity": "info",
-          "key": "kerala-backwaters-india",
+          "key": "goa-india",
           "true_cluster_id": "india",
           "partner_clusters_has_key": true,
           "partner_clusters_has_true": false,
-          "endpoint_routes": 8,
+          "endpoint_routes": 16,
           "detail": "build-site partnerClusters uses city id as cluster_id; routes stamp parent cluster \u2014 cluster fallback never fires (endpoint keep must work)"
         }
       ]
@@ -1493,100 +1386,11 @@
       "hub": true,
       "scope_city_count": 52,
       "sealed_key_count": 35,
-      "finding_count": 10,
+      "finding_count": 2,
       "severity": {
-        "high": 8,
         "medium": 2
       },
       "findings": [
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "accra-tema-ghana",
-          "label": "Accra Tema Ghana",
-          "cities": [
-            "accra-tema-ghana"
-          ],
-          "geometry_route_endpoints": 2,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "karachi-pakistan",
-          "label": "Karachi Pakistan",
-          "cities": [
-            "karachi-pakistan"
-          ],
-          "geometry_route_endpoints": 7,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "lobito-benguela-angola",
-          "label": "Lobito Benguela Angola",
-          "cities": [
-            "lobito-benguela-angola"
-          ],
-          "geometry_route_endpoints": 1,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "luanda-angola",
-          "label": "Luanda Angola",
-          "cities": [
-            "luanda-angola"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "maputo-mozambique",
-          "label": "Maputo Mozambique",
-          "cities": [
-            "maputo-mozambique"
-          ],
-          "geometry_route_endpoints": 16,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "baku-azerbaijan",
-          "label": "Baku (Caspian)",
-          "cities": [
-            "baku-azerbaijan"
-          ],
-          "geometry_route_endpoints": 9,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "tunis-tunisia",
-          "label": "Tunis",
-          "cities": [
-            "tunis-tunisia"
-          ],
-          "geometry_route_endpoints": 4,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
-        {
-          "code": "A_footprint_without_market",
-          "severity": "high",
-          "key": "djerba-tunisia",
-          "label": "Djerba",
-          "cities": [
-            "djerba-tunisia"
-          ],
-          "geometry_route_endpoints": 3,
-          "detail": "covered footprint key has geometry cities that no markets[] keep resolves (Dott/Doha-class: footprint-only)"
-        },
         {
           "code": "C_keep_city_zero_routes",
           "severity": "medium",
