@@ -1,0 +1,29 @@
+{
+  "decision_id": "dott-doha-route-inheritance-fix-2026-07-12",
+  "partner": "dott",
+  "problem": "Doha is in Dott market scope (registry_key doha-qatar / network_footprint covered) but local Doha routes did not display because city-level inheritance matches endpoint city_id \u2208 keep, and most Doha metro boarding points + route city_ids were incorrectly parented to al-wakrah-qatar.",
+  "fix": {
+    "reparented_bp_count": 21,
+    "reparent_from": "al-wakrah-qatar",
+    "reparent_to": "doha-qatar",
+    "route_city_id_cascades": "exact BP id + clear Doha-metro labels",
+    "not_changed": [
+      "True Al Wakrah BPs remain al-wakrah-qatar",
+      "Al Khor / Semaisma not reparented without stronger evidence",
+      "No partner-specific corridors invented",
+      "Dott scope still city-level doha-qatar (not full qatar cluster inflation)",
+      "Bahrain/Dammam routes mis-tagged cluster=qatar remain out of Dott keep (correct)"
+    ]
+  },
+  "inheritance_mechanism": {
+    "build": "scripts/build-site.mjs scopeForPartner hub-index inheritClusters",
+    "rule": "keep route if endpoint city \u2208 keep (from city-level sealed keys) OR cluster_id \u2208 partnerClusters (country keys only; doha-qatar is city key so partnerClusters has doha-qatar not qatar)",
+    "why_empty_before": "endpoint cities resolved to al-wakrah-qatar \u2209 keep; cluster fallback failed because partnerClusters contained doha-qatar not qatar"
+  },
+  "acceptance": [
+    "Dott hub keep includes doha-qatar",
+    "Doha metro POIs parented to doha-qatar",
+    "Local Doha routes (Lusail/Pearl/Old Doha Port/etc.) appear via endpoint city match",
+    "Al Wakrah-only and non-Doha cluster-mis-tags do not inflate Dott scope"
+  ]
+}
