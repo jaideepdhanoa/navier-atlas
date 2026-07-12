@@ -65,7 +65,11 @@ export function sealedRegistryKeys(partner) {
     }
   }
   for (const fp of partner.network_footprint || []) {
-    if (fp.covered !== true) continue;
+    if (typeof fp === 'string') {
+      if (fp) keys.add(fp);
+      continue;
+    }
+    if (!fp || typeof fp !== 'object' || fp.covered !== true) continue;
     const scoped = [].concat(fp.scope_registry_keys || fp.scope_registry_key || []).filter(Boolean);
     if (scoped.length) {
       for (const key of scoped) keys.add(key);
