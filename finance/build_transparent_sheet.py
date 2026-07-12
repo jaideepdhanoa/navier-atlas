@@ -76,15 +76,26 @@ charge_berth=v(OPS["charging_berth_annual_usd"])
 bands = {b: (SCEN[b]["load_factor"], SCEN[b]["revenue_leg_factor"]) for b in ("thin","mid","full")}
 COUNTRY_OPS = OPS.get("country_operating_overrides") or {}
 KOREA_COUNTRY = "South Korea"
-KOREA_OPS = COUNTRY_OPS[KOREA_COUNTRY]
-korea_mid_load = v(KOREA_OPS["mid_load_factor"])
-korea_mid_revleg = v(KOREA_OPS["mid_revenue_leg_factor"])
-korea_service_hr = v(KOREA_OPS["service_window_hr_per_day"])
-korea_turn_min = v(KOREA_OPS["turnaround_min"])
-korea_dwell_min = v(KOREA_OPS["boarding_dwell_min"])
-korea_charge_cfg = KOREA_OPS["charge_recovery"]
-korea_charge_range_nm = v(korea_charge_cfg["range_nm"])
-korea_full_range_charge_min = v(korea_charge_cfg["full_range_charge_min"])
+KOREA_OPS = COUNTRY_OPS.get(KOREA_COUNTRY) or {}
+if KOREA_OPS:
+    korea_mid_load = v(KOREA_OPS["mid_load_factor"])
+    korea_mid_revleg = v(KOREA_OPS["mid_revenue_leg_factor"])
+    korea_service_hr = v(KOREA_OPS["service_window_hr_per_day"])
+    korea_turn_min = v(KOREA_OPS["turnaround_min"])
+    korea_dwell_min = v(KOREA_OPS["boarding_dwell_min"])
+    korea_charge_cfg = KOREA_OPS["charge_recovery"]
+    korea_charge_range_nm = v(korea_charge_cfg["range_nm"])
+    korea_full_range_charge_min = v(korea_charge_cfg["full_range_charge_min"])
+else:
+    # Non-SK sheet builds still import this module; only Korea corridors use these.
+    # Missing override → global defaults (null beats inventing SK-only params).
+    korea_mid_load = v(SCEN["mid"]["load_factor"])
+    korea_mid_revleg = v(SCEN["mid"]["revenue_leg_factor"])
+    korea_service_hr = service_hr
+    korea_turn_min = turn_min
+    korea_dwell_min = dwell_min
+    korea_charge_range_nm = range_nm
+    korea_full_range_charge_min = turn_min
 
 # LB-254: effective capture (floor / true transport-spend pool) + captive flag from the partner
 # aggregate, so the Market-sizing ladder (the SECOND cost engine — golden rule #7) anchors on the

@@ -9,7 +9,7 @@
 - All **39 routes** matched an existing canonical route ID; there are no name-only joins.
 - Removing the arbitrary 15-leg ceiling and applying a 12-hour operating window produces **3–21 gross legs/day**, with a median of **9**.
 - The schedule denominator includes 20-knot run time, 20-minute turnaround, 10-minute boarding dwell, and energy-proportional charging.
-- At **65% seat occupancy** and a separately visible **65% revenue-leg utilization**, **34** routes have positive EBITDA under the premium-local-analog scenario; **21** fall below three-year payback and **18** do not.
+- At **65% seat occupancy** and a separately visible **65% revenue-leg utilization**, **34** routes have positive EBITDA under the premium-local-analog scenario; **22** fall below three-year payback and **17** do not (after Magok→Seoul audit mapping correction).
 - The under-three-year set is **not cleared for production pricing**. The fare sources are local premium whole-vessel analogs translated through exact route duration; they are not exact fares for the canonical origin–destination pairs.
 - Korean crew cost and the existing **$51,000/year port and administration cost** are retained. No unsupported headcount or port-cost reduction is used.
 
@@ -78,11 +78,12 @@ All conversions use **KRW 1,422.4/USD** and 5.2 riders. The equivalent fare is d
 | `rn-50bd5ea42fec` | Jongdal Port (Udo Ferry) → Jeju Ferry Passenger Terminal | 6 | $105.45 | 1.70 yr |
 | `rn-7288c917e055` | Jeju Ferry Passenger Terminal → Seongsan Port (Udo ferry gateway + Seongsan Ilchulbong tender) | 6 | $105.45 | 1.70 yr |
 
+| `rn-dd8e26889f29` | Magok → Mangwon Pier | 16 | $33.80 | 2.22 yr |
+
 ### Held — cannot reach three-year payback under the same supported scenario
 
 | Route ID | Corridor | Gross legs/day | Current benchmark payback | Fare needed for 3-year payback |
 |---|---|---:|---:|---:|
-| `rn-dd8e26889f29` | Magok → Mangwon Pier | 16 | 8.61 yr | $29.07 |
 | `rn-047fe5d8e686` | Jamsil Pier → Yeouido Pier | 12 | 4.18 yr | $38.89 |
 | `rn-ce55c292989a` | Yeouido Pier → Ttukseom Pier | 11 | 5.35 yr | $42.42 |
 | `rn-66dce8d7e72d` | Incheon Coastal Passenger Terminal → Muuido Island Ferry Berth | 9 | 4.69 yr | $51.91 |
@@ -108,7 +109,7 @@ All conversions use **KRW 1,422.4/USD** and 5.2 riders. The equivalent fare is d
 3. Preserve the workbook-led crew and port costs.
 4. Do not promote the premium-analog fares as exact route fares. Bind exact route/operator pricing where available; otherwise retain explicit low-confidence comparable-fare provenance.
 5. Re-run model → workbook/Sheet → Swing, Kakao, and NAVER partner JSON → sidecar/manifest only after the two engines agree.
-6. Keep all 18 non-compliant routes visibly held. Do not tune unsupported assumptions solely to cross the three-year threshold.
+6. Keep all 17 non-compliant routes visibly held. Do not tune unsupported assumptions solely to cross the three-year threshold.
 7. Before any live-deck clearance, validate charging engineering and Korean safe manning, then replay copy, linkage, inheritance, finance-parity, and live-Slides readback gates.
 
 ## Artifacts
@@ -118,3 +119,9 @@ All conversions use **KRW 1,422.4/USD** and 5.2 riders. The equivalent fare is d
 - `KOREA-PREMIUM-FARE-EVIDENCE-2026-07-11.json` — source ledger
 - `KOREA-SEAFARER-WAGE-EVIDENCE-2026-07-11.json` — official wage extraction and workbook cross-check
 - `build_korea_schedule_scenario.py` — reproducible audit builder
+
+## Review corrections (2026-07-12)
+
+- Audit `market_for` now maps Hangang piers including **Magok** and **Mangwon** to Seoul (not Tongyeong fallback). `rn-dd8e26889f29` market_benchmark corrected to `seoul`.
+- Charge recovery is an **included** schedule-cycle planning proxy; engineering validation still required.
+- Premium-analog fares remain research-only; not cleared for production pricing.

@@ -85,6 +85,8 @@ def main() -> int:
             # scoped file is partner-only; canonical filters
             if Path(corr_path).name == "corridors.json" and mk.get("partner") != partner:
                 continue
+        # Mirror aggregate.py: network_sum markets roll raw; per_corridor_floor uses floored mrev.
+        fleet_basis = mk.get("fleet_basis", "per_corridor_floor")
         for c in mk.get("corridors") or []:
             if c.get("_economics_hold_reason") or c.get("_premium_cascade") or c.get("_dup_of"):
                 continue
@@ -203,9 +205,12 @@ def main() -> int:
                         {"route_id": rid, "field": field, "sim": a, "model": b}
                     )
             if ar.get("status") == "grounded":
-                # Aggregate rollup uses the network-sum/raw vessel basis, not the
-                # display-only per-corridor floored fleet/revenue value.
-                sim_floor += mrev_raw
+                # Match aggregate.py grounded_floor by market fleet_basis:
+                # network_sum → sum market_revenue_yr_raw; per_corridor_floor → floored mrev.
+                if fleet_basis == "network_sum":
+                    sim_floor += mrev_raw
+                else:
+                    sim_floor += mrev
                 if demand is not None and fare is not None:
                     # pool uses comparable fare (pre-discount) × demand one-way
                     # match growth: demand * fare (model comparable)

@@ -3,8 +3,8 @@
   "scenario_status": "source-backed audit scenario; not production-cascaded",
   "route_count": 39,
   "profitable_route_count": 34,
-  "under_3yr_route_count": 21,
-  "held_route_count": 18,
+  "under_3yr_route_count": 22,
+  "held_route_count": 17,
   "gross_legs_per_day_min": 3,
   "gross_legs_per_day_max": 21,
   "gross_legs_per_day_median": 9.0,
@@ -30,7 +30,7 @@
     "65% seat occupancy means 5.2 riders per revenue leg on an eight-seat N30.",
     "Port, Korean wages, maintenance, insurance, charge-berth cost and energy inputs are retained from the live workbook.",
     "Fare inputs are premium local whole-vessel marine analogs normalized to the modeled 5.2 riders, not exact canonical-OD fares; even sub-three-year rows require route-level pricing validation before production.",
-    "Charging is not yet a route-cycle time penalty. Energy feasibility and charger availability require engineering confirmation before production.",
+    "Charge recovery IS included in the schedule cycle as a planning proxy (distance/70nm × 45min). Battery reserve, charge curve, thermal derating, charger power, and berth availability still require engineering validation before production.",
     "Only rows with payback under three years are production candidates; other rows remain held rather than forced through unsupported assumptions."
   ],
   "routes": [
@@ -191,7 +191,7 @@
     {
       "route_id": "rn-dd8e26889f29",
       "corridor": "Magok → Mangwon Pier",
-      "market_benchmark": "tongyeong",
+      "market_benchmark": "seoul",
       "distance_nm": 3.4,
       "one_way_min": 10.2,
       "cycle_min": 42.4,
@@ -200,15 +200,15 @@
       "revenue_legs_per_year": 2850,
       "seat_occupancy": 0.65,
       "pax_per_revenue_leg": 5.2,
-      "charter_benchmark_krw": 150000,
-      "fare_equivalent_usd_per_rider": 20.28,
-      "annual_revenue_usd": 300540,
+      "charter_benchmark_krw": 250000,
+      "fare_equivalent_usd_per_rider": 33.8,
+      "annual_revenue_usd": 500900,
       "annual_opex_usd": 230867,
-      "ebitda_usd": 69673,
-      "payback_years": 8.61,
+      "ebitda_usd": 270033,
+      "payback_years": 2.22,
       "fare_needed_for_3yr_payback_usd": 29.07,
-      "under_3yr_payback": false,
-      "production_status": "held"
+      "under_3yr_payback": true,
+      "production_status": "candidate_needs_pricing_validation"
     },
     {
       "route_id": "rn-38d097ab8503",

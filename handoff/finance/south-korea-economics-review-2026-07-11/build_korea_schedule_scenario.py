@@ -41,12 +41,30 @@ def market_for(corridor: str) -> str:
         return 'busan'
     if any(x in s for x in ('incheon', 'yeongjong', 'muuido', 'gimpo')):
         return 'incheon'
-    if any(x in s for x in ('seoul', 'yeouido', 'jamsil', 'ttukseom', 'oksu', 'apgujeong')):
+    # Hangang / Seoul metro piers (include Magok, Mangwon — not only downtown labels)
+    if any(
+        x in s
+        for x in (
+            'seoul',
+            'yeouido',
+            'jamsil',
+            'ttukseom',
+            'oksu',
+            'apgujeong',
+            'magok',
+            'mangwon',
+            'hangang',
+            'seoul forest',
+            'seoulforest',
+        )
+    ):
         return 'seoul'
-    if any(x in s for x in ('jeju', 'udo', 'seogwipo', 'seongsan', 'jongdal')):
+    if any(x in s for x in ('jeju', 'udo', 'seogwipo', 'seongsan', 'jongdal', 'hallim', 'aewol', 'seopjikoji')):
         return 'jeju'
-    if 'yeosu' in s:
+    if 'yeosu' in s or 'geumodo' in s or 'samcheonpo' in s or 'gaochi' in s:
         return 'yeosu'
+    if any(x in s for x in ('tongyeong', 'yokjido', 'saryang', 'yokji')):
+        return 'tongyeong'
     return 'tongyeong'
 
 
@@ -175,7 +193,7 @@ def main() -> None:
             '65% seat occupancy means 5.2 riders per revenue leg on an eight-seat N30.',
             'Port, Korean wages, maintenance, insurance, charge-berth cost and energy inputs are retained from the live workbook.',
             'Fare inputs are premium local whole-vessel marine analogs normalized to the modeled 5.2 riders, not exact canonical-OD fares; even sub-three-year rows require route-level pricing validation before production.',
-            'Charging is not yet a route-cycle time penalty. Energy feasibility and charger availability require engineering confirmation before production.',
+            'Charge recovery IS included in the schedule cycle as a planning proxy (distance/70nm × 45min). Battery reserve, charge curve, thermal derating, charger power, and berth availability still require engineering validation before production.',
             'Only rows with payback under three years are production candidates; other rows remain held rather than forced through unsupported assumptions.'
         ],
         'routes': rows,
