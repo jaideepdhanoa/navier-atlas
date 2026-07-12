@@ -249,7 +249,18 @@ function scopeForPartner(data, slug, opts = {}) {
       return !!(cid && partnerClusters.has(cid));
     });
   } else {
-    ROUTES = (data.ROUTES || []).filter(f => { const p = f.properties || {}; const a = net.has(cityIdOf(p.from)), b = net.has(cityIdOf(p.to)); return routesWithin ? (a && b) : (a || b); });
+    // Prefer cityIdOf(endpoint); fall back to stamped from_city_id/to_city_id so
+    // city-level market pages (e.g. Dott/doha) keep sealed routes whose BP node
+    // is momentarily missing from FEATURES_BY_TYPE.
+    ROUTES = (data.ROUTES || []).filter(f => {
+      const p = f.properties || {};
+      if (p.render_hidden === true || p._quarantine === true || p.relevance === 'hide') return false;
+      const fromCity = cityIdOf(p.from) || p.from_city_id || null;
+      const toCity = cityIdOf(p.to) || p.to_city_id || null;
+      const a = !!(fromCity && net.has(fromCity));
+      const b = !!(toCity && net.has(toCity));
+      return routesWithin ? (a && b) : (a || b);
+    });
   }
   const phaseEndpoints = new Set();
   for (const f of (data.ROUTES || [])) { const p = f.properties || {}; if (keep.has(cityIdOf(p.from)) || keep.has(cityIdOf(p.to))) { if (p.from) phaseEndpoints.add(p.from); if (p.to) phaseEndpoints.add(p.to); } }

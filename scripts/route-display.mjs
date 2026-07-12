@@ -349,8 +349,8 @@ function filterRoutesTierVisual(routes, { keep, pageKind, cityIdOf, partner = nu
     if (p.render_hidden === true) return false;
     if (partner && suppressCommercialSovereign(p, partner)) return false;
     if (pageKind === 'market') {
-      const cf = cityIdOf(p.from);
-      const ct = cityIdOf(p.to);
+      const cf = cityIdOf(p.from) || p.from_city_id || null;
+      const ct = cityIdOf(p.to) || p.to_city_id || null;
       if (keepSet.has(cf) && keepSet.has(ct)) return true;
       // Cross-border connective tissue: trunk / Quanta-LR backbone edges render
       // when at least one endpoint is in scope (the far endpoint is an out-of-cluster
@@ -375,8 +375,8 @@ function filterRoutesLegacy(routes, { keep, net, storyById, pageKind, cityIdOf, 
     const id = p.id;
     if (id && storyById.has(id)) return true;
 
-    const cf = cityIdOf(p.from);
-    const ct = cityIdOf(p.to);
+    const cf = cityIdOf(p.from) || p.from_city_id || null;
+    const ct = cityIdOf(p.to) || p.to_city_id || null;
     const tw = resolveTW(p);
     const tier = resolveTier(p, tw);
 
