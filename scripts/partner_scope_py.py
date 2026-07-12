@@ -48,6 +48,12 @@ def sealed_registry_keys(partner: dict[str, Any]) -> set[str]:
             if m.get("id"):
                 keys.add(m["id"])
     for fp in partner.get("network_footprint") or []:
+        if isinstance(fp, str):
+            if fp:
+                keys.add(fp)
+            continue
+        if not isinstance(fp, dict):
+            continue
         if fp.get("covered") is not True:
             continue
         scoped = fp.get("scope_registry_keys") or fp.get("scope_registry_key") or []
