@@ -1,61 +1,89 @@
-# Grok handoff — WETA Bay network exact IDs and water-safe geometry
+# Grok handoff — WETA Bay route repair, hand-waypoints, and shuttle expansion screen
 
 **Date:** 2026-07-12  
 **Live deck:** `1frwn6G6NrGdzxbJEqlO_EZ6M-vWF2dLYN8PWhGwHRpw`  
 **Canonical city:** `san-francisco-bay-area-usa`  
 **Canonical cluster:** `san-francisco-bay-usa`
 
-## Mandate
+## Answer to the routing question
 
-Preserve the deck’s three distinct states: **existing WETA service**, **WETA-published expansion**, and **Navier candidate screen**. Do not turn a screen into an operating claim. Corridors are geography-owned; add any accepted route once to the global canonical graph, then inherit it through the Bay cluster.
+The earlier handoff had the right exact-ID/null discipline, but it was not explicit enough about geometry work. The canonical file `data-clean/pta_hand_waypoints_sf_bay_ferry.json` currently lists 17 route pairs with **empty waypoint arrays**. Current route metadata reports zero interior land distance, but that does not prove a route passes through the correct bridge span, avoids marsh/shoreline, follows a dredged channel, or enters a terminal basin safely.
 
-## Exact bindings already present
+Treat this as three separate lanes:
 
-### Existing WETA service context
-- `rn-cabe543d04e9` — San Francisco Ferry Building → Oakland – Jack London Square · `bp-b42a6feee3` → `bp-bb594ccb97` · 5.5 nm
-- `rn-e160b7ec05a5` — San Francisco Ferry Building → Alameda – Main Street · `bp-b42a6feee3` → `bp-ac1a92d1e7` · 5.4 nm
-- `rn-91fd068e22f6` — San Francisco Ferry Building → Richmond Ferry Terminal · `bp-b42a6feee3` → `bp-20bbecd2a7` · 7.2 nm
-- `rn-b8709495c648` — San Francisco Ferry Building → Vallejo Ferry Terminal · `bp-b42a6feee3` → `bp-06b627e7b0` · 19.1 nm
-- `rn-a82989283656` — San Francisco Ferry Building → Harbor Bay (Bay Farm Island) · `bp-b42a6feee3` → `bp-983f05f18e` · 7.6 nm
-- `rn-c0b8c9297a26` — San Francisco Ferry Building → South San Francisco (Oyster Point) · `bp-b42a6feee3` → `bp-28fc89a0d1` · 7.9 nm
+1. **Repair existing canonical service geometry and endpoints.**
+2. **Mint selected WETA-published and Navier-screened routes globally.**
+3. **Research/screen additional North, East and South Bay boarding points; do not mint routes to unsuitable or unapproved facilities.**
 
-### WETA-published expansion context
-- `rn-ea80446d67a4` — San Francisco Ferry Building → Mission Bay (16th St / China Basin) · `bp-b42a6feee3` → `bp-6f4ad8afd4` · 1.6 nm
-- `rn-1ffa4b3d5058` — San Francisco Ferry Building → Treasure Island · `bp-b42a6feee3` → `bp-6ecdc3f062` · 1.8 nm
-- `rn-38c306488017` — San Francisco Ferry Building → Berkeley Marina · `bp-b42a6feee3` → `bp-1a167470ce` · 5.5 nm
-- `rn-0c9c5c290e05` — San Francisco Ferry Building → Port of Redwood City · `bp-b42a6feee3` → `bp-8331815f23` · 19.5 nm
+The machine-readable queue is `WETA-BAY-SHUTTLE-CANDIDATES-AND-WAYPOINT-GATE-2026-07-12.json`.
 
-## Candidate connection status
+## Lane A — repair/mint first
 
-- **Oakland – Jack London Square → South San Francisco (Oyster Point)** — route `rn-5cd7878b37e0`; exact_route_present_geometry_recheck_required.
-- **Alameda – Main Street → South San Francisco (Oyster Point)** — route `null`; pending_global_canonical_mint.
-- **Oakland – Jack London Square → Port of Redwood City** — route `null`; pending_global_canonical_mint.
-- **Alameda – Main Street → Port of Redwood City** — route `null`; pending_global_canonical_mint.
-- **Port of Redwood City → Palo Alto Boat Launch** — route `null`; pending_global_canonical_mint.
-- **Palo Alto Boat Launch → Alviso Marina County Park** — route `null`; pending_global_canonical_mint.
-- **San Leandro candidate public landing → Mission Bay (16th St / China Basin)** — route `null`; pending_global_canonical_mint.
-- **San Leandro candidate public landing → South San Francisco (Oyster Point)** — route `null`; pending_global_canonical_mint.
+### A1. Alameda Main Street endpoint correction
 
-## Endpoint corrections / holds
+Current routes use approximate `bp-ac1a92d1e7` at `[-122.2792, 37.7906]`. Canonical source-backed `bp-98bb5bad66` is Main Street Alameda Ferry Terminal at `[-122.293984, 37.790723]`. Verify against WETA’s official terminal record, repoint/rebind all affected routes, and retire/dedupe the approximate endpoint. Do not preserve the wrong point merely to retain an ID.
 
-1. **Alameda Main Street:** current main contains both a source-backed terminal POI and a route-aligned approximate duplicate. Verify the official WETA terminal coordinate, then repoint/rebind. Do not keep the approximate Oakland-side point just to preserve an ID.
-2. **San Leandro:** no trustworthy public landing is bound in current main. The only name hit is a dispensary and is explicitly excluded. Keep the BP and all connected route IDs `null` until an authoritative waterfront facility is sourced.
-3. **South Bay candidates:** Coyote Point, Palo Alto and Alviso have exact canonical POI IDs in the ledger, but no candidate route IDs. They are screen-only anchors, not commitments.
+### A2. Alameda Seaplane Lagoon current-service route
 
-## Geometry work
+WETA officially operates Downtown San Francisco ↔ Alameda Seaplane Lagoon, and exact canonical POI `bp-3f1c5e31c4` exists. There is no correct `rn-*` route in the exact-ID ledger. Mint/bind San Francisco Ferry Building `bp-b42a6feee3` ↔ Seaplane Lagoon `bp-3f1c5e31c4` as **existing WETA service**, through the Bay Bridge navigation span and Alameda terminal-basin approach.
 
-- Hand-waypoint marked navigation spans at Bay bridges; never interpolate across pier fields.
-- Respect Coast Guard VTS and deep-draft traffic lanes; cross at right angles.
-- Follow dredged channels around San Bruno Shoal and through Redwood City / Palo Alto / Alviso approaches.
-- Hand-waypoint Oakland–Alameda estuary entrances and all terminal basins; add low-wake approach segments.
-- Preserve `interior_land_km == 0`; run no-orphan, duplicate, water-adjacency, inheritance, and rendered-map checks.
+### A3. Oakland ↔ Redwood City
 
-## Acceptance
+WETA identifies Redwood City among near-term/Tier 1 expansion opportunities, and its project material reports passenger demand to Oakland and San Francisco. Mint Oakland `bp-bb594ccb97` ↔ Port of Redwood City `bp-8331815f23` as **WETA-published expansion**, not current service. Hard-waypoint the Oakland–Alameda estuary exit, traffic-lane crossing, San Mateo–Hayward bridge span, and Redwood City dredged channel.
 
-- Existing / published / candidate labels remain distinct in data and rendered copy.
-- Every accepted BP has an exact canonical ID and an authoritative facility source. Where current canonical metadata lacks that source, verify it before treating the candidate as bound; unsupported points remain `null`.
-- Every accepted candidate route is added to global `ROUTES.json` under `san-francisco-bay-usa`, not to WETA alone.
-- All geometry gates pass with zero land crossings and a visual render receipt.
-- Return the final route/BP ID table, waypoint file, before/after Bay route count, and unresolved-null ledger.
+## Lane B — mandatory hand-waypoint cases
 
-The machine-readable companion is `WETA-BAY-NETWORK-EXACT-ID-LEDGER-2026-07-12.json`.
+Populate the currently empty Bay waypoint file. At minimum, explicitly review:
+
+- **Bay Bridge:** Ferry Building ↔ Oakland, Alameda Main, Seaplane Lagoon, Harbor Bay, Oyster Point and Redwood City; Alameda/Oakland ↔ Mission Bay candidates. Pass through a marked navigation span, not a pier field.
+- **Richmond–San Rafael Bridge:** northbound Vallejo/Mare Island/Delta routes and Richmond/Berkeley ↔ Larkspur candidates.
+- **San Mateo–Hayward Bridge:** every route continuing to Redwood City, Palo Alto or Alviso. Use a marked navigation span.
+- **Oakland–Alameda estuary / Bay Farm:** hand-waypoint basin exits and avoid straight segments across Alameda or Bay Farm. This is especially important for Oakland/Alameda/San Leandro ↔ Oyster Point/Redwood City/Mission Bay.
+- **San Bruno Shoal / South Bay:** follow the usable approaches to Oyster Point, Coyote Point and Redwood City. No straight-line shoal cuts.
+- **Redwood City / Alviso:** follow dredged/slough channels; do not cross marsh, salt ponds or shoreline polygons.
+- **Larkspur:** use the Richmond–San Rafael marked span where applicable, then the Corte Madera Creek/Larkspur approach.
+
+For every pair, either provide reviewed waypoint coordinates or an explicit reason why no intermediate waypoint is necessary. `[]` without an explanation is not acceptance evidence.
+
+## Lane C — additional shuttle screen
+
+### Strongest additions
+
+- **Alameda Seaplane Lagoon ↔ Mission Bay** — exact existing/future WETA facilities; candidate pair only.
+- **Harbor Bay ↔ Oyster Point** — exact existing WETA terminals; useful East Bay–Peninsula shuttle screen.
+- **Oakland ↔ Mission Bay** — candidate only; WETA’s adopted Mission Bay pair is Downtown SF–Mission Bay.
+- **Oyster Point ↔ Coyote Point ↔ Redwood City** — Peninsula chain screen. Coyote Point is an existing county marina, not a proven passenger terminal; facility/use/ADA/charging rights must be established first.
+- **San Leandro Wes McClure Boat Launch ↔ Mission Bay / Oyster Point** — the City confirms a public launch ramp and canonical ID `bp-f6212541ea` exists. This replaces the prior “no facility found” state, but it remains a **site-conversion candidate**, not a passenger terminal.
+- **Richmond ↔ Larkspur**, **Berkeley ↔ Larkspur**, and **Vallejo ↔ Larkspur** — North Bay regional-interchange screens. Larkspur belongs to Golden Gate Ferry/GGBHTD, so these require inter-agency coordination and cannot be presented as current WETA service.
+
+### Holds
+
+- **Palo Alto:** hold. Official city material describes the Baylands facility as hand launch for non-motorized/small craft. It is not an N30 passenger stop as-is.
+- **Alviso:** retain only as a research screen. The county confirms a boat launch/floating docks, but tide, bathymetry, environmental constraints, passenger use and commercial operations remain unresolved.
+- **Sausalito and Tiburon:** retain as Golden Gate Ferry context. Do not duplicate existing SF services as “new WETA routes”; only screen genuinely new cross-network links if both agencies support them.
+- **Private marinas / false positives:** do not bind Emeryville/private yacht harbors or the San Leandro dispensary name match.
+
+## Inheritance and labeling
+
+Any accepted route is added once to global `ROUTES.json` under `san-francisco-bay-usa`, then inherited. Maintain four labels without drift:
+
+1. existing WETA service;
+2. WETA-published future/expansion;
+3. existing Golden Gate Ferry context;
+4. Navier candidate screen.
+
+A candidate line is not a WETA route, terminal commitment, operating plan or approval.
+
+## Acceptance return
+
+Return:
+
+- corrected/minted BP and route ID table;
+- non-empty reviewed Bay waypoint file;
+- before/after rendered Bay maps showing bridge spans and South Bay channels;
+- `interior_land_km == 0` results plus bridge-pier/channel visual QA;
+- duplicate/orphan/water-adjacency/inheritance checks;
+- before/after Bay route count;
+- facility-source ledger and unresolved-null ledger.
+
+Do not write route IDs back to the deck/source until this return is green.

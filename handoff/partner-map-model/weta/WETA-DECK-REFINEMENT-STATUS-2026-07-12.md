@@ -29,9 +29,14 @@
 Prepared, not sealed:
 
 - `WETA-BAY-NETWORK-EXACT-ID-LEDGER-2026-07-12.json`
+- `WETA-BAY-SHUTTLE-CANDIDATES-AND-WAYPOINT-GATE-2026-07-12.json`
 - `GROK-SPEC-weta-bay-network-routing-2026-07-12.md`
 
-Exact existing IDs are recorded where present. Unsupported boarding-point and route bindings remain `null`. Any new geometry must be added globally under the corridor-inheritance contract and must pass zero-land-crossing/water-safe routing QA before the live Atlas or deck can treat it as bound.
+The routing handoff now identifies three explicit lanes: repair/mint current and WETA-published routes, populate hand-waypoints for bridge/channel/shoal cases, and screen additional North/East/South Bay shuttle sites. The current canonical WETA waypoint file contains 17 route keys but every waypoint array is empty; zero recorded interior-land distance is therefore not treated as sufficient bridge/channel evidence.
+
+Priority repairs are the Alameda Main Street endpoint conflict, the missing exact-ID Alameda Seaplane Lagoon current-service route, and the WETA-published Oakland–Redwood City route. Additional candidate pairs are classified separately from current WETA service, including Golden Gate Ferry inter-agency opportunities and facility-conversion holds. Palo Alto is held because official material describes a small/non-motorized hand-launch facility; San Leandro and Alviso remain site/facility screens rather than passenger terminals.
+
+Exact existing IDs are recorded where present. Unsupported boarding-point and route bindings remain `null`. Any accepted geometry must be added globally under the corridor-inheritance contract and must pass zero-land-crossing, bridge-span/channel, and rendered-map QA before the live Atlas or deck can treat it as bound.
 
 ## Approval boundary
 

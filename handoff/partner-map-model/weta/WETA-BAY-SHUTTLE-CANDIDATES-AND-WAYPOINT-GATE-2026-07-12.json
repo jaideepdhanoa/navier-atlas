@@ -1,0 +1,286 @@
+{
+  "artifact": "WETA Bay shuttle candidates and waypoint gate",
+  "as_of": "2026-07-12",
+  "source_revision": {
+    "routes_sha": "e70f3bbdb8cb0e430b377fd58fbca9db72c0f94a",
+    "features_sha": "8dd366c9d9bd806ec5d422d0f63dae8cf06b3a50",
+    "waypoint_sha": "8fca443fb9c64c44b6b1dfa6025cd8678dcb628d"
+  },
+  "finding": "The existing pta_hand_waypoints_sf_bay_ferry.json contains 17 route keys but every waypoint array is empty. Existing route metadata reports zero interior land distance, but that is not sufficient evidence for bridge-span, shoal, marsh, estuary, or terminal-basin safety.",
+  "rules": [
+    "Existing WETA service, WETA-published expansion, Golden Gate Ferry context, and Navier candidate screens must remain separate.",
+    "Corridors are global canonical geography; accepted routes are minted once under san-francisco-bay-usa and inherited, never authored as WETA-only routes.",
+    "A canonical POI ID proves a mapped facility, not passenger-vessel, commercial-use, ADA, charging, berth, environmental, or operator approval.",
+    "All candidate route IDs remain null until selected, hand-waypointed, and accepted with interior_land_km == 0 plus visual bridge/channel QA."
+  ],
+  "boarding_points": {
+    "ferry_building": {
+      "bp_id": "bp-b42a6feee3",
+      "label": "San Francisco Ferry Building",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal"
+    },
+    "oakland": {
+      "bp_id": "bp-bb594ccb97",
+      "label": "Oakland \u2013 Jack London Square",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal"
+    },
+    "alameda_main_correct": {
+      "bp_id": "bp-98bb5bad66",
+      "label": "Main Street Alameda Ferry Terminal",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal; replace approximate duplicate bp-ac1a92d1e7 after coordinate verification",
+      "official_source": "https://sanfranciscobayferry.com/terminal/main-street-alameda-ferry-terminal/"
+    },
+    "alameda_seaplane": {
+      "bp_id": "bp-3f1c5e31c4",
+      "label": "Alameda Seaplane Lagoon Ferry Terminal",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal",
+      "official_source": "https://sanfranciscobayferry.com/terminal/seaplane-lagoon-ferry-terminal/"
+    },
+    "harbor_bay": {
+      "bp_id": "bp-983f05f18e",
+      "label": "Harbor Bay Ferry Terminal",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal",
+      "official_source": "https://sanfranciscobayferry.com/terminal/harbor-bay-ferry-terminal/"
+    },
+    "richmond": {
+      "bp_id": "bp-20bbecd2a7",
+      "label": "Richmond Ferry Terminal",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal"
+    },
+    "vallejo": {
+      "bp_id": "bp-06b627e7b0",
+      "label": "Vallejo Ferry Terminal",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal"
+    },
+    "oyster_point": {
+      "bp_id": "bp-28fc89a0d1",
+      "label": "South San Francisco (Oyster Point)",
+      "owner_context": "WETA",
+      "facility_state": "existing passenger terminal"
+    },
+    "mission_bay": {
+      "bp_id": "bp-6f4ad8afd4",
+      "label": "Mission Bay (16th St / China Basin)",
+      "owner_context": "WETA",
+      "facility_state": "WETA-published future terminal; not current service"
+    },
+    "berkeley": {
+      "bp_id": "bp-1a167470ce",
+      "label": "Berkeley Marina",
+      "owner_context": "WETA",
+      "facility_state": "WETA-published future terminal; not current service"
+    },
+    "redwood_city": {
+      "bp_id": "bp-8331815f23",
+      "label": "Port of Redwood City",
+      "owner_context": "WETA / Port of Redwood City",
+      "facility_state": "future passenger landing in design/permitting; not current service",
+      "official_source": "https://sanfranciscobayferry.com/project/redwood-city-ferry-study/"
+    },
+    "coyote_point": {
+      "bp_id": "bp-86044cc8bf",
+      "label": "Coyote Point Marina",
+      "owner_context": "San Mateo County",
+      "facility_state": "existing marina; passenger-terminal, commercial-use, ADA and charging suitability unverified",
+      "official_source": "https://www.smcgov.org/parks/coyote-point-marina"
+    },
+    "san_leandro": {
+      "bp_id": "bp-f6212541ea",
+      "label": "Wes McClure Boat Launch",
+      "owner_context": "City of San Leandro",
+      "facility_state": "public launch ramp; not an existing passenger terminal; berth/interface conversion required",
+      "official_source": "https://www.sanleandro.org/582/Amenities"
+    },
+    "alviso": {
+      "bp_id": "bp-c22467ec77",
+      "label": "Alviso Marina County Park",
+      "owner_context": "Santa Clara County",
+      "facility_state": "public launch with floating docks; passenger/commercial suitability and tide-constrained channel unresolved",
+      "official_source": "https://parks.santaclaracounty.gov/locations/alviso-marina-county-park"
+    },
+    "palo_alto": {
+      "bp_id": "bp-c4da95f19d",
+      "label": "Palo Alto Baylands launch area",
+      "owner_context": "City of Palo Alto",
+      "facility_state": "HOLD \u2014 official material describes hand launch for non-motorized/small craft; not a passenger-vessel terminal as-is",
+      "official_source": "https://www.cityofpaloalto.org/Departments/Community-Services/Open-Space-Parks/Neighborhood-Parks/Baylands-Nature-Preserve"
+    },
+    "larkspur": {
+      "bp_id": "bp-9ac1cd7b77",
+      "label": "Larkspur Ferry Terminal",
+      "owner_context": "Golden Gate Ferry / GGBHTD",
+      "facility_state": "existing passenger terminal outside WETA operating network; inter-agency coordination required",
+      "official_source": "https://www.goldengate.org/ferry/riding-the-ferry/terminal-locations-parking/"
+    },
+    "sausalito": {
+      "bp_id": "bp-b0a2e24bcb",
+      "label": "Sausalito Ferry Terminal",
+      "owner_context": "Golden Gate Ferry / GGBHTD",
+      "facility_state": "existing passenger terminal outside WETA operating network; existing SF service context, not a new WETA claim",
+      "official_source": "https://www.goldengate.org/ferry/riding-the-ferry/terminal-locations-parking/"
+    },
+    "tiburon": {
+      "bp_id": "bp-26f702ee7b",
+      "label": "Tiburon Ferry Terminal",
+      "owner_context": "Golden Gate Ferry / GGBHTD",
+      "facility_state": "existing passenger terminal outside WETA operating network; inter-agency coordination required",
+      "official_source": "https://www.goldengate.org/ferry/route-schedule/tiburon-san-francisco/"
+    }
+  },
+  "route_queue": [
+    {
+      "priority": 1,
+      "classification": "existing_WETA_service_missing_correct_canonical_route",
+      "from": "ferry_building",
+      "to": "alameda_seaplane",
+      "route_id": null,
+      "action": "Mint/bind against exact BP IDs and official current-service context; do not treat the absent rn route as absent service.",
+      "waypoint_case": "Bay Bridge marked navigation span plus Alameda terminal-basin approach."
+    },
+    {
+      "priority": 1,
+      "classification": "WETA_published_Tier_1_expansion",
+      "from": "oakland",
+      "to": "redwood_city",
+      "route_id": null,
+      "action": "Mint globally as published expansion context, not current service.",
+      "official_source": "https://sanfranciscobayferry.com/sf-bay-ferry-commits-to-major-enhancement-expansion-and-electrification-of-regional-water-transit/",
+      "waypoint_case": "Clear hard-waypoint case: exit Oakland\u2013Alameda estuary without cutting Alameda/Bay Farm; cross deep-draft lanes; pass the San Mateo\u2013Hayward marked navigation span; follow the Redwood City dredged channel."
+    },
+    {
+      "priority": 2,
+      "classification": "Navier_candidate_screen",
+      "from": "alameda_seaplane",
+      "to": "mission_bay",
+      "route_id": null,
+      "action": "Mint only after WETA accepts the candidate pair.",
+      "waypoint_case": "Alameda basin/estuary exit, Bay Bridge marked span, Mission Bay low-wake approach."
+    },
+    {
+      "priority": 2,
+      "classification": "Navier_candidate_screen",
+      "from": "harbor_bay",
+      "to": "oyster_point",
+      "route_id": null,
+      "action": "Screen as a short cross-Bay shuttle between existing WETA terminals; route remains null until selected.",
+      "waypoint_case": "Bay Farm shoreline/airport exclusion awareness, deep-draft lane crossing at right angle, Oyster Point basin."
+    },
+    {
+      "priority": 2,
+      "classification": "Navier_candidate_screen",
+      "from": "oakland",
+      "to": "mission_bay",
+      "route_id": null,
+      "action": "Candidate only; WETA\u2019s adopted Mission Bay pair is Downtown SF\u2013Mission Bay, not Oakland\u2013Mission Bay.",
+      "waypoint_case": "Oakland estuary, Bay Bridge marked span, Mission Bay approach."
+    },
+    {
+      "priority": 2,
+      "classification": "Navier_candidate_screen",
+      "from": "oyster_point",
+      "to": "coyote_point",
+      "route_id": null,
+      "action": "Facility and operating-rights screen before mint.",
+      "waypoint_case": "San Bruno Shoal and Coyote Point marina entrance; no straight-line shoal cut."
+    },
+    {
+      "priority": 2,
+      "classification": "Navier_candidate_screen",
+      "from": "coyote_point",
+      "to": "redwood_city",
+      "route_id": null,
+      "action": "Facility and operating-rights screen before mint.",
+      "waypoint_case": "San Mateo\u2013Hayward marked span and Redwood City dredged channel."
+    },
+    {
+      "priority": 3,
+      "classification": "site_conversion_candidate",
+      "from": "san_leandro",
+      "to": "mission_bay",
+      "route_id": null,
+      "action": "Do not mint until the public ramp is shown suitable or a new passenger landing is identified.",
+      "waypoint_case": "Clear hard-waypoint case: San Leandro shoreline/channel, avoid Bay Farm/Alameda land, cross traffic lanes, then Mission Bay approach."
+    },
+    {
+      "priority": 3,
+      "classification": "site_conversion_candidate",
+      "from": "san_leandro",
+      "to": "oyster_point",
+      "route_id": null,
+      "action": "Do not mint until passenger-landing suitability is established.",
+      "waypoint_case": "San Leandro channel, airport/Bay Farm constraints, shoal-safe Oyster Point approach."
+    },
+    {
+      "priority": 3,
+      "classification": "inter_operator_candidate",
+      "from": "richmond",
+      "to": "larkspur",
+      "route_id": null,
+      "action": "Candidate regional interchange; requires Golden Gate Ferry/GGBHTD and WETA coordination.",
+      "waypoint_case": "Clear hard-waypoint case: Richmond\u2013San Rafael Bridge marked navigation span, then Corte Madera Creek/Larkspur channel."
+    },
+    {
+      "priority": 3,
+      "classification": "inter_operator_candidate",
+      "from": "berkeley",
+      "to": "larkspur",
+      "route_id": null,
+      "action": "Candidate regional interchange; Berkeley is future WETA context and Larkspur is Golden Gate Ferry.",
+      "waypoint_case": "Richmond\u2013San Rafael Bridge marked span and Larkspur channel; Berkeley marina entrance."
+    },
+    {
+      "priority": 3,
+      "classification": "inter_operator_candidate",
+      "from": "vallejo",
+      "to": "larkspur",
+      "route_id": null,
+      "action": "Candidate North Bay cross-network shuttle, not an existing WETA commitment.",
+      "waypoint_case": "San Pablo Bay traffic channels and Larkspur approach."
+    },
+    {
+      "priority": 4,
+      "classification": "environmental_and_facility_hold",
+      "from": "redwood_city",
+      "to": "alviso",
+      "route_id": null,
+      "action": "No mint until bathymetry/tide/environmental review and passenger landing suitability are proven.",
+      "waypoint_case": "Redwood City dredged channel, South Bay shoals, marsh/slough approach; straight line is unacceptable."
+    },
+    {
+      "priority": 4,
+      "classification": "facility_hold",
+      "from": "redwood_city",
+      "to": "palo_alto",
+      "route_id": null,
+      "action": "Hold. Palo Alto\u2019s cited site is a small/non-motorized hand-launch area, not an N30 passenger terminal.",
+      "waypoint_case": "Do not route until a viable terminal exists; marsh and channel constraints would require explicit waypoints."
+    }
+  ],
+  "explicit_exclusions": [
+    {
+      "candidate": "Palo Alto Baylands launch as an N30 stop",
+      "reason": "Official city material supports hand launch for non-motorized/small craft; a new passenger facility would be required."
+    },
+    {
+      "candidate": "Sausalito/Tiburon/Larkspur presented as WETA current service",
+      "reason": "They are Golden Gate Ferry facilities/services. They may be inter-agency candidates but cannot be labeled WETA operations."
+    },
+    {
+      "candidate": "Private marinas or bad name matches",
+      "reason": "Do not use Emeryville/private yacht harbors, the San Leandro dispensary false positive, or any marina merely because it exists in the POI registry."
+    }
+  ],
+  "grok_acceptance": [
+    "Populate a non-empty, reviewed Bay waypoint file for every bridge/channel/terminal-basin case; explain any route that legitimately needs no intermediate point.",
+    "Return before/after rendered maps with bridge spans and shallow approaches visible.",
+    "Return exact BP/route IDs, facility-source ledger, route labels, land-km metrics, route count delta, duplicate/orphan report, and unresolved-null ledger.",
+    "Do not change a candidate or inter-operator route into a WETA commitment."
+  ]
+}
