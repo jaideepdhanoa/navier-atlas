@@ -276,8 +276,14 @@ WATER_BBOXES: list[tuple[str, float, float, float, float]] = [
     ("french_riviera_coast", 6.85, 43.40, 7.25, 43.65),
     # Brisbane River (CityCat / Cross River ferry spine)
     ("brisbane_river", 152.95, -27.55, 153.12, -27.40),
-    # San Francisco Bay + Delta approaches (SF Bay Ferry)
-    ("sf_bay", -122.55, 37.45, -121.75, 38.15),
+    # SF Bay — pier aprons + open-water corridors only.
+    # Full-Bay bbox removed 2026-07-13: it treated Alameda/Bay Farm/peninsula as water
+    # and hid real land crossings. Local QA: scripts/grok-weta/sf_bay_local_mask.py
+    ("sf_bay_central_open", -122.45, 37.76, -122.28, 37.88),
+    ("sf_bay_san_pablo", -122.50, 37.92, -122.30, 38.10),
+    ("sf_bay_carquinez", -122.32, 38.04, -122.20, 38.10),
+    ("sf_bay_south_channel", -122.36, 37.52, -122.22, 37.66),
+    ("sf_bay_redwood_channel", -122.23, 37.49, -122.20, 37.52),
     # Hamburg Elbe / Norderelbe (HADAG ferry lanes)
     ("hamburg_elbe", 9.75, 53.47, 10.05, 53.60),
     # Sydney Harbour + Parramatta River ferry (Transport NSW — extended west)
