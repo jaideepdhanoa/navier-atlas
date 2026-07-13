@@ -1,0 +1,357 @@
+{
+  "research_date": "2026-07-13",
+  "partner": "inDrive",
+  "methodology": {
+    "rules": [
+      "Official inDrive evidence establishes partner presence; broad country/region evidence may only inherit existing Atlas geography.",
+      "Only route IDs already present in the supplied artifacts are recorded.",
+      "No route, demand, fare, capture rate, or finance input is invented.",
+      "Existing geography-level demand/fare evidence may be reused only on the same exact route/destination pool; no partner capture or commercial overlay is copied.",
+      "Annual demand is admitted only when the source semantics are explicitly one-way passenger-trips or an explicitly labeled destination pool; otherwise production value remains null."
+    ],
+    "status_vocabulary": [
+      "research-needed",
+      "research-complete / seal-needed",
+      "seal-complete / cascade-needed",
+      "complete"
+    ]
+  },
+  "supplied_artifacts": [
+    "/tasklet/agent/home/indrive-plan/partner-indrive-main.json",
+    "/tasklet/agent/home/indrive-plan/CLUSTERS-main.json",
+    "/tasklet/agent/home/didi-bolt-migration/corridors-main.json",
+    "/tasklet/agent/home/indrive-plan/INDRIVE-DIDI-COUNTRY-DECK-PLAN-2026-07-13.md"
+  ],
+  "country": "Brazil",
+  "overall_status": "research-needed",
+  "summary": {
+    "source_count": 8,
+    "exact_canonical_route_id_count": 4,
+    "supported_production_demand_fare_row_count": 4,
+    "candidate_unbound_fare_rows": 1,
+    "status_reason": "Rio has four exact existing route IDs with source-backed one-way demand and comparable public fares. Angra/Ilha Grande and Florianópolis remain unbound or lack route-level demand, so Brazil is not research-complete."
+  },
+  "operation_evidence": [
+    {
+      "market": "Brazil",
+      "tier": "country_supported",
+      "claim": "Official Brazil-localized inDrive page offers city rides and lists service availability in major Brazilian cities.",
+      "source_ids": [
+        "BR-S1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "Rio de Janeiro",
+      "tier": "city_supported",
+      "claim": "Official inDrive Rio page offers ride and moto service and a driver-finding flow in Rio de Janeiro.",
+      "source_ids": [
+        "BR-S2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "Florianópolis",
+      "tier": "city_supported",
+      "claim": "Official inDrive Florianópolis page offers ride and moto service and a driver-finding flow in Florianópolis.",
+      "source_ids": [
+        "BR-S3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "Angra dos Reis / Ilha Grande",
+      "tier": "country_supported",
+      "claim": "Brazil country presence supports inheritance into the existing Angra/Ilha Grande Atlas market, but no official inDrive Angra or Ilha Grande city/service-area page was found in this pass.",
+      "source_ids": [
+        "BR-S1"
+      ],
+      "confidence": "medium",
+      "city_level_operation_evidence": null
+    }
+  ],
+  "markets": [
+    {
+      "market": "Rio de Janeiro",
+      "atlas_registry_keys": [
+        "rio-de-janeiro-brazil"
+      ],
+      "partner_evidence_tier": "city_supported",
+      "status": "research-complete / seal-needed",
+      "context_facts": [
+        {
+          "fact": "Barcas Rio publishes Praça XV–Arariboia as a 22-minute crossing at BRL 5.00.",
+          "source_ids": [
+            "BR-S4"
+          ]
+        },
+        {
+          "fact": "Barcas Rio publishes Praça XV–Charitas as a 28-minute crossing at BRL 7.70.",
+          "source_ids": [
+            "BR-S4"
+          ]
+        },
+        {
+          "fact": "The supplied geography record cites AGETRANSP monthly reporting and sums 2023 bidirectional line boardings with one boarding defined as one one-way passenger-trip; no doubling or halving.",
+          "source_ids": [
+            "BR-S5"
+          ],
+          "artifact_reuse": true
+        }
+      ],
+      "canonical_routes": [
+        {
+          "route_id": "rn-1886629dbf0c",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Arariboia Terminal (Niterói)",
+          "distance_nm": 2.7
+        },
+        {
+          "route_id": "rn-80f0d0ebe0bd",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Charitas Terminal (Niterói, fast catamaran)",
+          "distance_nm": 4.4
+        },
+        {
+          "route_id": "rn-369ef0eb69d9",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Cocotá Terminal (Ilha do Governador)",
+          "distance_nm": 6.0
+        },
+        {
+          "route_id": "rn-00bb6ded4be5",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Paquetá Island Terminal",
+          "distance_nm": 9.2
+        }
+      ],
+      "demand_fare_rows": [
+        {
+          "route_id": "rn-1886629dbf0c",
+          "annual_oneway_pax": 10848719,
+          "demand_year": 2023,
+          "oneway_semantics": "Gross passenger boardings / one-way passenger-trips across both directions/year; one boarding equals one one-way trip; no doubling, halving, terminal allocation, or daily annualization.",
+          "comparable_fare_usd_pax_oneway": 0.9741,
+          "native_fare_brl": 5.0,
+          "fare_year": 2026,
+          "source_ids": [
+            "BR-S5",
+            "BR-S4"
+          ],
+          "reuse_scope": "Geography-level route demand/fare only; no inDrive capture or commercial overlay copied.",
+          "status": "supported"
+        },
+        {
+          "route_id": "rn-80f0d0ebe0bd",
+          "annual_oneway_pax": 825637,
+          "demand_year": 2023,
+          "oneway_semantics": "Gross passenger boardings / one-way passenger-trips across both directions/year; one boarding equals one one-way trip; no doubling, halving, terminal allocation, or daily annualization.",
+          "comparable_fare_usd_pax_oneway": 1.5001,
+          "native_fare_brl": 7.7,
+          "fare_year": 2026,
+          "source_ids": [
+            "BR-S5",
+            "BR-S4"
+          ],
+          "reuse_scope": "Geography-level route demand/fare only; no inDrive capture or commercial overlay copied.",
+          "status": "supported"
+        },
+        {
+          "route_id": "rn-369ef0eb69d9",
+          "annual_oneway_pax": 278607,
+          "demand_year": 2023,
+          "oneway_semantics": "Gross passenger boardings / one-way passenger-trips across both directions/year; one boarding equals one one-way trip; no doubling, halving, terminal allocation, or daily annualization.",
+          "comparable_fare_usd_pax_oneway": 0.9741,
+          "native_fare_brl": 5.0,
+          "fare_year": 2026,
+          "source_ids": [
+            "BR-S5",
+            "BR-S4"
+          ],
+          "reuse_scope": "Geography-level route demand/fare only; no inDrive capture or commercial overlay copied.",
+          "status": "supported"
+        },
+        {
+          "route_id": "rn-00bb6ded4be5",
+          "annual_oneway_pax": 1170652,
+          "demand_year": 2023,
+          "oneway_semantics": "Gross passenger boardings / one-way passenger-trips across both directions/year; one boarding equals one one-way trip; no doubling, halving, terminal allocation, or daily annualization.",
+          "comparable_fare_usd_pax_oneway": 0.9741,
+          "native_fare_brl": 5.0,
+          "fare_year": 2026,
+          "source_ids": [
+            "BR-S5",
+            "BR-S4"
+          ],
+          "reuse_scope": "Geography-level route demand/fare only; no inDrive capture or commercial overlay copied.",
+          "status": "supported"
+        }
+      ],
+      "must_remain_null": [
+        "inDrive capture rate",
+        "inDrive platform revenue/commercial overlay",
+        "Brazil country-reference economics until all five mandatory fields are sourced and validated"
+      ]
+    },
+    {
+      "market": "Angra dos Reis / Ilha Grande",
+      "atlas_registry_keys": [
+        "angra-dos-reis-ilha-grande-brazil"
+      ],
+      "partner_evidence_tier": "country_supported",
+      "status": "research-needed",
+      "context_facts": [
+        {
+          "fact": "Angra municipality says the city receives about 1.8 million visitors annually, including 1.2 million on Ilha Grande. This is a visitor pool, not route boardings and not one-way annual pax.",
+          "source_ids": [
+            "BR-S6"
+          ]
+        },
+        {
+          "fact": "Barcas Rio publishes Angra dos Reis–Ilha Grande as a 110-minute trip at BRL 20.50.",
+          "source_ids": [
+            "BR-S4"
+          ]
+        }
+      ],
+      "canonical_routes": [],
+      "unbound_route_evidence": [
+        {
+          "from": "Angra dos Reis",
+          "to": "Ilha Grande",
+          "published_trip_minutes": 110,
+          "native_fare_brl": 20.5,
+          "source_ids": [
+            "BR-S4"
+          ],
+          "canonical_route_id": null,
+          "annual_oneway_pax": null,
+          "production_fare_usd": null,
+          "status": "hold — exact canonical route ID absent from supplied files; visitor total cannot be converted to route demand"
+        }
+      ],
+      "must_remain_null": [
+        "canonical route_id",
+        "annual one-way route pax",
+        "USD fare until approved FX/date and canonical binding exist",
+        "inDrive capture/commercial overlay"
+      ]
+    },
+    {
+      "market": "Florianópolis",
+      "atlas_registry_keys": [
+        "florianopolis-brazil"
+      ],
+      "partner_evidence_tier": "city_supported",
+      "status": "research-needed",
+      "context_facts": [
+        {
+          "fact": "Florianópolis Airport reports 5.1 million passengers in 2025, including 1.2 million international passengers; these are airport throughput, not marine route demand.",
+          "source_ids": [
+            "BR-S8"
+          ]
+        },
+        {
+          "fact": "The municipal Ilha do Campeche site describes the protected island as approximately 1.6 km by 500 m and requires visitors to choose an official maritime transport or declare own transport.",
+          "source_ids": [
+            "BR-S7"
+          ]
+        },
+        {
+          "fact": "The municipal page lists four transport associations plus credentialed operators from origins including Campeche, Armação, Barra da Lagoa, Costa da Lagoa, Lagoa da Conceição, and São João do Rio Vermelho; it does not publish route-level annual boardings in the scraped content.",
+          "source_ids": [
+            "BR-S7"
+          ]
+        }
+      ],
+      "canonical_routes": [],
+      "demand_fare_rows": [],
+      "must_remain_null": [
+        "canonical route_id",
+        "annual one-way marine pax",
+        "route fare",
+        "inDrive capture/commercial overlay"
+      ]
+    }
+  ],
+  "hold_list": [
+    {
+      "market": "Angra dos Reis / Ilha Grande",
+      "hold": "No canonical route ID in supplied files; no official inDrive city page found; 1.2m Ilha Grande visitors are not route boardings."
+    },
+    {
+      "market": "Florianópolis",
+      "hold": "No canonical route IDs or route-level one-way demand/fare rows in supplied files."
+    },
+    {
+      "market": "Rio de Janeiro",
+      "hold": "Do not copy any DiDi/peer partner capture or commercial overlay; Brazil country-reference row still needs the five mandatory economics inputs before cascade."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "BR-S1",
+      "title": "inDrive Brazil",
+      "url": "https://indrive.com/pt-br",
+      "publisher": "inDrive",
+      "type": "official_partner",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S2",
+      "title": "inDrive Rio de Janeiro",
+      "url": "https://indrive.com/pt-br/rio-de-janeiro",
+      "publisher": "inDrive",
+      "type": "official_partner_city",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S3",
+      "title": "inDrive Florianópolis",
+      "url": "https://indrive.com/pt-br/florianopolis",
+      "publisher": "inDrive",
+      "type": "official_partner_city",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S4",
+      "title": "Routes, schedules and fares",
+      "url": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+      "publisher": "Barcas Rio",
+      "type": "official_operator",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S5",
+      "title": "Relatório Mensal de Atividades Janeiro 2024",
+      "url": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+      "publisher": "AGETRANSP",
+      "type": "transport_regulator",
+      "accessed": "via supplied geography record 2026-07-13"
+    },
+    {
+      "source_id": "BR-S6",
+      "title": "Angra implantará Taxa de Turismo Sustentável para fortalecer preservação",
+      "url": "https://www.angra.rj.gov.br/noticias/23-10-2025/angra-implantara-taxa-de-turismo-sustentavel-para-fortalecer-preservacao",
+      "publisher": "Prefeitura de Angra dos Reis",
+      "type": "local_government",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S7",
+      "title": "Ilha do Campeche — official visitor and transport portal",
+      "url": "https://ilhadocampeche.pmf.sc.gov.br/",
+      "publisher": "Prefeitura de Florianópolis",
+      "type": "local_government",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "BR-S8",
+      "title": "Recorde histórico: Floripa Airport ultrapassa 5 milhões de passageiros em 2025",
+      "url": "https://floripa-airport.com/noticias/102483-recorde-historico-floripa-airport-ultrapassa-5-milhoes-de-passageiros-em-2025",
+      "publisher": "Floripa Airport / Zurich Airport Brasil",
+      "type": "airport_operator",
+      "accessed": "2026-07-13"
+    }
+  ]
+}

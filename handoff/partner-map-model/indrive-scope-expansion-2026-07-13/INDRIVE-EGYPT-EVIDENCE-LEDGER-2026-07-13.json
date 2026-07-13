@@ -1,0 +1,446 @@
+{
+  "research_date": "2026-07-13",
+  "partner": "inDrive",
+  "methodology": {
+    "rules": [
+      "Official inDrive evidence establishes partner presence; broad country/region evidence may only inherit existing Atlas geography.",
+      "Only route IDs already present in the supplied artifacts are recorded.",
+      "No route, demand, fare, capture rate, or finance input is invented.",
+      "Existing geography-level demand/fare evidence may be reused only on the same exact route/destination pool; no partner capture or commercial overlay is copied.",
+      "Annual demand is admitted only when the source semantics are explicitly one-way passenger-trips or an explicitly labeled destination pool; otherwise production value remains null."
+    ],
+    "status_vocabulary": [
+      "research-needed",
+      "research-complete / seal-needed",
+      "seal-complete / cascade-needed",
+      "complete"
+    ]
+  },
+  "supplied_artifacts": [
+    "/tasklet/agent/home/indrive-plan/partner-indrive-main.json",
+    "/tasklet/agent/home/indrive-plan/CLUSTERS-main.json",
+    "/tasklet/agent/home/didi-bolt-migration/corridors-main.json",
+    "/tasklet/agent/home/indrive-plan/INDRIVE-DIDI-COUNTRY-DECK-PLAN-2026-07-13.md"
+  ],
+  "country": "Egypt",
+  "overall_status": "research-needed",
+  "summary": {
+    "source_count": 7,
+    "exact_canonical_route_id_count": 14,
+    "fully_supported_production_demand_fare_row_count": 0,
+    "candidate_destination_pool_demand_rows": 3,
+    "supported_production_fare_rows": 0,
+    "status_reason": "Official inDrive city evidence exists for Hurghada, Sharm El Sheikh, and Cairo. El Gouna is country-supported but lacks an exact inDrive city page. Supplied destination-pool estimates are retained as labeled candidates; no Egypt fare row clears production because the values are day-trip, Dubai, or legacy proxies rather than exact one-way local fares."
+  },
+  "operation_evidence": [
+    {
+      "market": "Egypt",
+      "tier": "country_supported",
+      "claim": "Official Egypt-localized inDrive city pages and service-area inventories establish current inDrive presence in Egypt.",
+      "source_ids": [
+        "EG-S1",
+        "EG-S2",
+        "EG-S3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "Hurghada",
+      "tier": "city_supported",
+      "claim": "Official inDrive Hurghada page offers a driver-finding flow and names Hurghada as a service area.",
+      "source_ids": [
+        "EG-S1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "Sharm El Sheikh",
+      "tier": "city_supported",
+      "claim": "Official inDrive Sharm El Sheikh page offers a driver-finding flow and names the city as a service area.",
+      "source_ids": [
+        "EG-S2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "market": "El Gouna",
+      "tier": "country_supported",
+      "claim": "No exact official inDrive El Gouna city page was found. Egypt country presence may inherit the existing El Gouna Atlas geography; nearby Hurghada city evidence does not prove El Gouna city-level service.",
+      "source_ids": [
+        "EG-S1"
+      ],
+      "confidence": "medium",
+      "city_level_operation_evidence": null
+    },
+    {
+      "market": "Cairo",
+      "tier": "city_supported",
+      "claim": "Official inDrive Cairo page establishes city service; Cairo is retained only as distribution context in this ledger.",
+      "source_ids": [
+        "EG-S3"
+      ],
+      "confidence": "high",
+      "marine_promotion": false
+    }
+  ],
+  "markets": [
+    {
+      "market": "Hurghada",
+      "atlas_registry_keys": [
+        "egypt-red-sea",
+        "hurghada-el-gouna-egypt"
+      ],
+      "partner_evidence_tier": "city_supported",
+      "status": "research-needed",
+      "context_facts": [
+        {
+          "fact": "Egypt’s official tourism portal describes Hurghada as a global tourist destination with year-round sunshine, coral reefs, coastline, beach resorts, water sports, and a marina.",
+          "source_ids": [
+            "EG-S4"
+          ]
+        },
+        {
+          "fact": "The official tourism portal identifies the Giftun Islands as an island-life attraction off Hurghada with crystal-blue water and white sandy beaches.",
+          "source_ids": [
+            "EG-S4"
+          ]
+        },
+        {
+          "fact": "The supplied route registry contains canonical Hurghada-area route IDs, but its fare values are proxy tiers rather than exact Egypt-native one-way scheduled fares.",
+          "source_ids": [],
+          "artifact_reuse": true
+        }
+      ]
+    },
+    {
+      "market": "El Gouna",
+      "atlas_registry_keys": [
+        "egypt-red-sea",
+        "hurghada-el-gouna-egypt"
+      ],
+      "partner_evidence_tier": "country_supported",
+      "status": "research-needed",
+      "context_facts": [
+        {
+          "fact": "Egypt’s official tourism portal locates El Gouna 25 km north of Hurghada and describes world-class marinas, winding canals and lagoons, beaches, sailing, and other amenities.",
+          "source_ids": [
+            "EG-S5"
+          ]
+        },
+        {
+          "fact": "El Gouna’s official Abu Tig Marina page describes yacht berthing, boat rentals, metered electricity/water, wastewater pump-out, fuel, 24-hour security, and dry storage for over 100 boats.",
+          "source_ids": [
+            "EG-S7"
+          ]
+        },
+        {
+          "fact": "The existing Hurghada–El Gouna registry record is a 14 nm corridor, but its demand is a modeled guest-pool haircut and its fare is explicitly a Dubai premium placeholder; neither should be treated as an Egypt-native production fare.",
+          "source_ids": [],
+          "artifact_reuse": true
+        }
+      ]
+    },
+    {
+      "market": "Sharm El Sheikh",
+      "atlas_registry_keys": [
+        "egypt-red-sea",
+        "sharm-el-sheikh-egypt"
+      ],
+      "partner_evidence_tier": "city_supported",
+      "status": "research-needed",
+      "context_facts": [
+        {
+          "fact": "Egypt’s official tourism portal places Sharm El Sheikh between Ras Muhammad National Park and the Nabq Protectorate and highlights its reefs, beaches, hotels, resorts, and international airport connectivity.",
+          "source_ids": [
+            "EG-S6"
+          ]
+        },
+        {
+          "fact": "Official inDrive copy specifically frames Sharm journeys to beaches and resorts, supporting a ground-to-water distribution narrative without proving marine demand.",
+          "source_ids": [
+            "EG-S2"
+          ]
+        },
+        {
+          "fact": "Supplied files contain canonical IDs for Sharm marina, Landmark Marina, Sharks Bay, and Ras Mohammed links; two IDs share Landmark–Sharks Bay endpoints and require canonical reconciliation before economics.",
+          "source_ids": [],
+          "artifact_reuse": true
+        }
+      ]
+    },
+    {
+      "market": "Cairo",
+      "atlas_registry_keys": [
+        "cairo-egypt"
+      ],
+      "partner_evidence_tier": "city_supported",
+      "status": "distribution-context-only",
+      "context_facts": [
+        {
+          "fact": "Official inDrive Cairo page establishes current city ride service and lists Hurghada and Sharm El Sheikh among Egypt service areas.",
+          "source_ids": [
+            "EG-S3"
+          ]
+        },
+        {
+          "fact": "No exact marine boarding-point, canonical route ID, or route-level demand/fare evidence for Cairo was established in this pass.",
+          "source_ids": []
+        }
+      ],
+      "canonical_routes": [],
+      "demand_fare_rows": [],
+      "must_remain_null": [
+        "Cairo marine route IDs",
+        "Cairo marine demand",
+        "Cairo marine fare",
+        "Cairo marine economics"
+      ]
+    }
+  ],
+  "canonical_routes": [
+    {
+      "route_id": "gcn-6f2754b63b-yango",
+      "from": "Hurghada",
+      "to": "El Gouna",
+      "supplied_artifact": "corridors-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "gcn-73d7e2f19c-bolt",
+      "from": "Hurghada / El Gouna",
+      "to": "Sharm El Sheikh",
+      "supplied_artifact": "corridors-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-b06f6971ed47",
+      "from": "Hurghada Marina",
+      "to": "Giftun Island (Orange Bay / Mahmya)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-f562c5e3e868",
+      "from": "Marina El Gouna",
+      "to": "Giftun Island (Orange Bay / Mahmya)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-c8d1f3720765",
+      "from": "Soma Bay Marina",
+      "to": "Giftun Island (Orange Bay / Mahmya)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-3d161664de08",
+      "from": "Hurghada Marina",
+      "to": "Sahl Hasheesh Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-b5e0aa24ef82",
+      "from": "Soma Bay Marina",
+      "to": "Sahl Hasheesh Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-236717891041",
+      "from": "Landmark Marina",
+      "to": "Sharks Bay Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-65d0faf55453",
+      "from": "Landmark Marina",
+      "to": "Ras Mohammed (reef jetty)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-5b13d8a6534e",
+      "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
+      "to": "Landmark Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-c16a1627130f",
+      "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
+      "to": "Ras Mohammed (reef jetty)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-42cf3b291895",
+      "from": "Sharks Bay Marina",
+      "to": "Ras Mohammed (reef jetty)",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-d0b2645ab338",
+      "from": "Landmark Marina",
+      "to": "Sharks Bay Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    },
+    {
+      "route_id": "rn-285fc16b29dc",
+      "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
+      "to": "Sharks Bay Marina",
+      "supplied_artifact": "partner-indrive-main.json",
+      "scope_note": "Focus-market or adjacent Red Sea cluster route; recorded exactly as supplied."
+    }
+  ],
+  "route_id_reconciliation_flags": [
+    {
+      "endpoint_pair": "Landmark Marina → Sharks Bay Marina",
+      "route_ids": [
+        "rn-236717891041",
+        "rn-d0b2645ab338"
+      ],
+      "hold": "Two canonical IDs with effectively identical endpoint labels appear in the supplied partner file; do not aggregate both until registry ownership/dedup is resolved."
+    }
+  ],
+  "demand_fare_rows": [
+    {
+      "route_id": "gcn-6f2754b63b-yango",
+      "route": "Hurghada → El Gouna",
+      "annual_oneway_pax_candidate": 10402,
+      "oneway_semantics": "Labeled pax/yr one-way, derived from an explicit El Gouna guest-arrival destination pool (~208,050) multiplied by a 5% premium-willing assumption.",
+      "production_annual_oneway_pax": null,
+      "candidate_fare_usd_pax_oneway": 40.8,
+      "production_fare_usd_pax_oneway": null,
+      "status": "hold",
+      "reason": "Demand is a modeled room/occupancy/stay/haircut estimate rather than observed route boardings; fare is explicitly a Dubai RTA premium-water-taxi placeholder, not Egypt-native. No partner capture copied."
+    },
+    {
+      "route_id": "rn-b06f6971ed47",
+      "route": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+      "annual_oneway_pax_candidate": 1204586,
+      "oneway_semantics": "Labeled one-way pax/yr derived from an explicit Hurghada visitor/airport-arrival pool (4,818,344) multiplied by a 25% island-excursion participation assumption; one participant is treated as one outbound one-way trip.",
+      "production_annual_oneway_pax": null,
+      "candidate_fare_usd_pax_oneway": 32.0,
+      "production_fare_usd_pax_oneway": null,
+      "status": "hold",
+      "reason": "No observed Giftun route count; 25% participation is an assumption. Fare evidence is a full day-trip per-seat proxy, not an exact one-way route fare. No partner capture copied."
+    },
+    {
+      "route_id": "rn-c16a1627130f",
+      "route": "Sharm Marina → Ras Mohammed (reef jetty)",
+      "annual_oneway_pax_candidate": 50000,
+      "oneway_semantics": "Labeled one-way pax/yr from an explicit Ras Mohammed visitor pool; treated as one outbound one-way trip per visitor. Tiran volume is excluded because undocumented.",
+      "production_annual_oneway_pax": null,
+      "candidate_fare_usd_pax_oneway": 50.0,
+      "production_fare_usd_pax_oneway": null,
+      "status": "hold",
+      "reason": "Visitor count is not observed route boardings and may include non-boat access; fare is a VIP/full day-trip proxy rather than exact one-way local scheduled fare. No partner capture copied."
+    },
+    {
+      "route_id": "gcn-73d7e2f19c-bolt",
+      "route": "Hurghada / El Gouna → Sharm El Sheikh",
+      "annual_oneway_pax_candidate": null,
+      "production_annual_oneway_pax": null,
+      "candidate_fare_usd_pax_oneway": 110.0,
+      "production_fare_usd_pax_oneway": null,
+      "status": "hold",
+      "reason": "Registry calls the route defunct/unserved and aspirational; the $110 value is legacy/historic premium context with no active service. Both production demand and fare remain null."
+    }
+  ],
+  "must_remain_null": [
+    "All Egypt production demand/fare values until exact route counts or explicit, approved destination-pool methodology and exact one-way local fares are accepted",
+    "All inDrive capture rates and commercial overlays",
+    "Cairo marine values",
+    "El Gouna city-level inDrive evidence",
+    "Country-reference economics until Egypt captain wage/on-cost, commercial energy, grid CO2, berth/port administration, and cost index are all sourced"
+  ],
+  "hold_list": [
+    {
+      "market": "El Gouna",
+      "hold": "No exact inDrive El Gouna city page; use country-supported inheritance only."
+    },
+    {
+      "market": "Hurghada / El Gouna",
+      "hold": "Guest- and airport-pool demand values are derived assumptions, not observed route boardings; fares are proxies."
+    },
+    {
+      "market": "Sharm El Sheikh",
+      "hold": "Ras Mohammed demand is a visitor pool, not observed route throughput; day-trip fare is not one-way. Duplicate Landmark–Sharks Bay IDs need dedup."
+    },
+    {
+      "market": "Hurghada / El Gouna ↔ Sharm",
+      "hold": "No active service and no demand; legacy $110 fare cannot be used."
+    },
+    {
+      "market": "Cairo",
+      "hold": "Distribution context only; no exact marine evidence in this pass."
+    },
+    {
+      "market": "Egypt country economics",
+      "hold": "Do not cascade until all five mandatory country-reference fields are sourced; do not fallback to Singapore or another country."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "EG-S1",
+      "title": "inDrive Hurghada",
+      "url": "https://indrive.com/en-eg/cities/hurghada",
+      "publisher": "inDrive",
+      "type": "official_partner_city",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S2",
+      "title": "inDrive Sharm El Sheikh",
+      "url": "https://indrive.com/en-eg/cities/sharm-el-sheikh",
+      "publisher": "inDrive",
+      "type": "official_partner_city",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S3",
+      "title": "inDrive Cairo",
+      "url": "https://indrive.com/en-eg/cities/cairo",
+      "publisher": "inDrive",
+      "type": "official_partner_city",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S4",
+      "title": "Hurghada",
+      "url": "https://www.experienceegypt.eg/en/city/23/hurghada-",
+      "publisher": "Experience Egypt / Egyptian Tourism Authority",
+      "type": "official_tourism",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S5",
+      "title": "Al Gouna",
+      "url": "https://www.experienceegypt.eg/en/city/24/al-gouna",
+      "publisher": "Experience Egypt / Egyptian Tourism Authority",
+      "type": "official_tourism",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S6",
+      "title": "Sharm al-Sheikh",
+      "url": "https://www.experienceegypt.eg/en/city/16/sharm-al-sheikh",
+      "publisher": "Experience Egypt / Egyptian Tourism Authority",
+      "type": "official_tourism",
+      "accessed": "2026-07-13"
+    },
+    {
+      "source_id": "EG-S7",
+      "title": "Abu Tig Marina",
+      "url": "https://www.elgouna.com/the-town/marinas/abu-tig-marina",
+      "publisher": "El Gouna",
+      "type": "official_destination_operator",
+      "accessed": "2026-07-13"
+    }
+  ]
+}
