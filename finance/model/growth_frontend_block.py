@@ -260,20 +260,40 @@ def main():
                        if is_captive else
                        f"matured default-operator capture as giga-projects fill (~{maturepct}), today's demand")
         scale_vessel= "N30 Pioneer II + N35 Shuttle (12\u201315 pax, 2027) on dense resort/transit legs"
+    # LB-89 phase caps are model outputs, not presentation suggestions. Use the summed
+    # per-market cap for each horizon so a large steady-state pool never renders as the
+    # Year-1 launch fleet. Revenue and CO2 scale from the same grounded per-boat unit.
+    _pcaps = rl.get("phase_caps_per_market_LB89") or {}
+    def _phase_cap(key, fallback):
+        vals = [v.get(key) for v in _pcaps.values() if isinstance(v.get(key), (int, float))]
+        return sum(vals) if vals else fallback
+    _prove_fleet = min(floor_fleet, _phase_cap("phase_1_fleet", floor_fleet)) if floor_fleet else None
+    _scale_uncapped = boats(scale_rev["mid"], REVPERBOAT)
+    _scale_fleet = min(_scale_uncapped, _phase_cap("phase_2_fleet", _scale_uncapped)) if _scale_uncapped else None
+    _mature_uncapped = boats(sam_net["mid"], REVPERBOAT)
+    _mature_fleet = min(_mature_uncapped, _phase_cap("phase_3_fleet", _mature_uncapped)) if _mature_uncapped else None
+    def _fleet_rev(n): return None if n is None else round(n * REVPERBOAT)
+    _prove_rev = _fleet_rev(_prove_fleet)
+    _scale_rev_cap = _fleet_rev(_scale_fleet)
+    _mature_rev_cap = _fleet_rev(_mature_fleet)
+    _mature_plat_cap = (round(plat["mid"] * _mature_rev_cap / sam_net["mid"])
+                        if (show_plat and plat.get("mid") and sam_net.get("mid") and _mature_rev_cap is not None) else None)
+
     phase_economics = {
         "headline": "Revenue potential by phase \u2014 conservative floor first, ecosystem prize last.",
         "conversion_note": f"Fleet & CO2 scale from the grounded unit: {floor_fleet} boats = {m(floor_rev)} "
-                           f"transport rev = {floor_co2:,.0f} t CO2/yr (~${REVPERBOAT/1e3:,.0f}K rev/boat).",
+                           f"transport rev = {floor_co2:,.0f} t CO2/yr (~${REVPERBOAT/1e3:,.0f}K rev/boat). "
+                           "Near-term phase fleets follow staged rollout limits.",
         "horizons": [
             {
                 "id": "prove", "name": "Prove", "horizon": "Year 1\u20132",
                 "scope": "Sourced flagship corridors go live",
                 "capture": "10% (new-entrant floor)",
                 "vessel": "N30 Pioneer II (8 pax, commercial now)",
-                "fleet_boats": floor_fleet,
-                "navier_transport_rev_yr": floor_rev, "navier_transport_rev_display": m(floor_rev),
+                "fleet_boats": _prove_fleet,
+                "navier_transport_rev_yr": _prove_rev, "navier_transport_rev_display": m(_prove_rev),
                 **({"partner_platform_rev_yr": None, "partner_platform_rev_display": "nascent"} if show_plat else {}),
-                "co2_saved_t_yr": round(floor_co2),
+                "co2_saved_t_yr": co2(_prove_rev),
                 "confidence": "grounded",
                 "confidence_label": "Grounded",
             },
@@ -282,11 +302,11 @@ def main():
                 "scope": scale_scope,
                 "capture": scale_cap,
                 "vessel": scale_vessel,
-                "fleet_boats_est": boats(scale_rev["mid"], REVPERBOAT),
-                "fleet_boats_band": {"low": boats(scale_rev["low"], REVPERBOAT), "high": boats(scale_rev["high"], REVPERBOAT)},
-                "navier_transport_rev_yr": scale_rev["mid"], "navier_transport_rev_display": m(scale_rev["mid"]),
+                "fleet_boats_est": _scale_fleet,
+                "fleet_boats_band": {"low": _scale_fleet, "high": _scale_fleet},
+                "navier_transport_rev_yr": _scale_rev_cap, "navier_transport_rev_display": m(_scale_rev_cap),
                 **({"partner_platform_rev_display": "building"} if show_plat else {}),
-                "co2_saved_t_yr": co2(scale_rev["mid"]),
+                "co2_saved_t_yr": co2(_scale_rev_cap),
                 "confidence": "med",
                 "confidence_label": "Modeled",
             },
@@ -297,15 +317,15 @@ def main():
                           "Induced marine-transfer demand + leading-operator capture across the network"),
                 "capture": f"{maturepct} mature share",
                 "vessel": "N35-led mix; Quanta-LR on 75\u2013150nm regional legs (H2 2026+)",
-                "fleet_boats_est_pioneer_equiv": boats(sam_net["mid"], REVPERBOAT),
-                "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
-                "navier_transport_rev_yr": sam_net["mid"], "navier_transport_rev_display": m(sam_net["mid"]),
+                "fleet_boats_est_pioneer_equiv": _mature_fleet,
+                "fleet_note": "Pioneer-equivalent rollout cap; N35 mix lowers hull count for the same throughput.",
+                "navier_transport_rev_yr": _mature_rev_cap, "navier_transport_rev_display": m(_mature_rev_cap),
                 **(
                     {
-                        "partner_platform_rev_yr": plat["mid"],
-                        "partner_platform_rev_display": m(plat["mid"]),
-                        "partner_platform_rev_on_navier_yr": plat["mid"],
-                        "partner_platform_rev_on_navier_display": m(plat["mid"]),
+                        "partner_platform_rev_yr": _mature_plat_cap,
+                        "partner_platform_rev_display": m(_mature_plat_cap),
+                        "partner_platform_rev_on_navier_yr": _mature_plat_cap,
+                        "partner_platform_rev_on_navier_display": m(_mature_plat_cap),
                     }
                     if show_plat
                     else {}
@@ -314,7 +334,7 @@ def main():
                 "marine_mobility_tam_display": m(band(G["marine_mobility_tam_yr"])["mid"]) + " marine TAM",
                 "journey_gmv_yr": band(G["journey_gmv_yr"])["mid"],
                 "journey_gmv_display": m(band(G["journey_gmv_yr"])["mid"]) + " Journey GMV",
-                "co2_saved_t_yr": co2(sam_net["mid"]),
+                "co2_saved_t_yr": co2(_mature_rev_cap),
                 "confidence": "med-low (banded)",
                 "confidence_label": "Projected",
             },

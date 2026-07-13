@@ -1,294 +1,330 @@
 {
-  "_doc": "Scoped corridors view for indrive Bite-2 economics cascade",
-  "_source": "/Users/jaideep/navier-atlas/finance/model/corridors.json",
-  "_built_at": "2026-06-26T19:09:07Z",
-  "capture_rate": 0.1,
+  "_meta": {
+    "partner": "indrive",
+    "generated": "2026-07-13",
+    "method": "Scoped finance view of the shared geography-owned network. Brazil inherits the established exact Rio spine; Egypt exact routes are visible as explicit holds until route-level demand and fare are supported.",
+    "source_registry": "finance/model/corridors.json"
+  },
   "markets": {
-    "indrive": {
+    "indrive-brazil": {
+      "display_name": "InDrive Brazil · Rio ferry calibration",
       "partner": "indrive",
-      "region": "Global South (MENA \u00b7 Africa \u00b7 South Asia \u00b7 LatAm)",
-      "label": "InDrive \u2014 scoped cascade",
-      "fleet_basis": "network_sum",
-      "fleet_rounding": "ceil",
-      "_scope": "indrive-bite2-cascade",
-      "_partner_market_keys": [],
-      "_route_ids_requested": 24,
-      "_corridors_bound": 6,
+      "country": "Brazil",
+      "country_slug": "brazil",
+      "currency": "BRL",
+      "scope": "exact-ID Rio lines shared with the canonical Brazil finance spine",
+      "archetype": "ridehail",
+      "_tier": "T3_grounded",
+      "_source": "Shared geography-owned Brazil spine; DiDi BR/CO T3 proof ledger; exact route demand/fare records preserved",
+      "_colombia_disposition": "held_unmaterialized_pending_shared_finance_spine_alignment_and_route_level_demand_fare_proof",
       "corridors": [
         {
-          "route_id": "gcn-73d7e2f19c-bolt",
-          "from": "Hurghada / El Gouna",
-          "to": "Sharm El Sheikh",
-          "distance_nm": 49.8,
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Arariboia Terminal (Niterói)",
+          "distance_nm": 2.7,
           "vessel": "Pioneer II",
-          "archetype": "tourism",
-          "from_node_id": "hurghada-el-gouna-egypt",
-          "to_node_id": "sharm-el-sheikh-egypt",
-          "country": "Egypt",
-          "pool_basis": "addressable",
-          "_inherited_from_gcn": "gcn-73d7e2f19c",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 110.0,
-            "_fare_record": {
-              "value": 110.0,
-              "unit": "USD/pax/one-way",
-              "year": 2026,
-              "source_tier": "T2",
-              "confidence": "med",
-              "source": "Kept from prior registry = $110/seat (historic fast-ferry premium fare level / cross-gulf premium tier). FLAG: legacy/aspirational - no active service.",
-              "method": "coverage-pass-2026-06-19 (premium scheduled per-seat tier; commuter floor recorded)"
-            },
-            "corridor_annual_oneway_pax": null,
-            "_demand_record": {
-              "value": null,
-              "unit": "pax/yr one-way (premium-willing slice)",
-              "source_tier": "T5",
-              "confidence": "low",
-              "basis": "defunct/unserved route - aspirational",
-              "source": "tourism",
-              "method": "normalized via rule=null_aspirational; anchor=egypt-DEMAND-ANCHORS-2026-06-19.json"
-            },
-            "demand_confidence": "low"
+          "route_id": "rn-1886629dbf0c",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-45ba34fda2"
           },
-          "aspirational": true,
-          "_in_grounded_floor": false,
-          "_tier": "modal_shift_greenfield"
-        },
-        {
-          "route_id": "ics-6a150e9b8e",
-          "from": "Elephanta Caves",
-          "to": "Mumbai Trans-Harbour Navi Mumbai Toll Plaza",
-          "distance_nm": 5.6,
-          "vessel": "Pioneer II",
           "archetype": "ridehail",
-          "from_node_id": "mumbai-india",
-          "to_node_id": "mumbai-india",
-          "country": "India",
-          "model_use": "draft_only_demand_null_held_out_until_route_counts_captured",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": null,
+            "corridor_annual_oneway_pax": 10848719,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 10848719,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
+            },
             "_fare_record": {
-              "value": 4.7,
-              "unit": "USD/pax/one-way",
-              "currency_basis": "INR/USD ~85, 2026",
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
               "year": 2026,
-              "source_tier": "T3",
+              "source_tier": "T1/T2",
               "confidence": "med-low",
-              "source": "M2M Ferries published Mumbai Ferry Wharf/Bhaucha Dhakka \u2194 Mandwa Ro-Pax fare floor: passenger fares from \u20b9400 onwards; motorcycle \u20b9210 onwards; 4-wheelers \u20b91,020 onwards; buses \u20b94,500 onwards; vehicle deck over 120 cars/two-wheelers/buses. Converted at ~INR85/USD: \u20b9400 \u2248 $4.70. This is a direct fare floor/comparable, not a premium Navier fare claim.",
-              "method": "Direct on-market public water-transfer fare floor only; not inserted as premium comparable fare. Premium Navier fare must be separately sourced before finance publish.",
-              "fare_ladder_usd_pax": {
-                "m2m_passenger_floor": 4.7,
-                "m2m_motorcycle_floor": 2.47,
-                "m2m_four_wheeler_floor": 12.0
-              }
-            },
-            "corridor_annual_oneway_pax": 10909,
-            "demand_confidence": "med-low",
-            "_demand_record": {
-              "value": 10909,
-              "unit": "pax/yr one-way (addressable)",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "PR #58 Mumbai spine route-count split (11 sealed rows \u00d7 anchor 120,000 pax/yr)",
-              "method": "Market anchor split after sealed route count captured; M2M fare floor unchanged.",
-              "observed_load_anchors": [
-                {
-                  "source": "Indian Express",
-                  "url": "https://indianexpress.com/article/cities/mumbai/water-taxi-service-mandwa-directly-from-belapur-not-dct-weekends-8431554/",
-                  "captured_metric": "Belapur\u2192Mandwa average ridership of 120 passengers; DCT had hardly any passengers; 200-seater NAYAN XI; fare \u20b9400 lower deck / \u20b9450 upper/business."
-                },
-                {
-                  "source": "The Hindu",
-                  "url": "https://www.thehindu.com/news/cities/mumbai/mumbai-water-taxis-prove-unaffordable-for-daily-commuter/article66126034.ece",
-                  "captured_metric": "Belapur\u2192Elephanta filling 80% capacity on 32-seat vessel with three round trips; Belapur\u2192JNPT doing very well; DCT\u2192Mandwa 60 round trips in 10 days with <10% passengers on 200-seat vessel."
-                },
-                {
-                  "source": "PIB MoPSW",
-                  "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1799056",
-                  "captured_metric": "Belapur jetty connects DCT, Nerul, Belapur, Elephanta and JNPT; enables Bhaucha Dhakka, Mandwa, Elephanta and Karanja movements."
-                }
-              ],
-              "basis": "addressable"
-            },
-            "_status": "DRAFT_FARE_FLOOR_DEMAND_SPLIT",
-            "public_fare_floor_usd_pax": 4.7
-          },
-          "_in_grounded_floor": false,
-          "_tier": "experience_upside"
-        },
-        {
-          "route_id": "ics-f8ba590813",
-          "from": "Panaji Jetty",
-          "to": "Goa",
-          "distance_nm": 6.0,
-          "vessel": "Pioneer II",
-          "archetype": "ridehail",
-          "from_node_id": "goa-india",
-          "to_node_id": "goa-india",
-          "country": "India",
-          "pool_basis": "addressable",
-          "_pr58_sealed": true,
-          "L3_locals": {
-            "comparable_fare_usd_pax": 8.0,
-            "corridor_annual_oneway_pax": 11250,
-            "_fare_record": {
-              "value": 8.0,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "handoff/INDIA-ECONOMICS-SIDECAR-V0-2026-06-20.json (goa)",
-              "method": "PR #58 India/Noon corridor market anchor split across sealed geometry rows"
-            },
-            "_demand_record": {
-              "value": 11250,
-              "unit": "pax/yr one-way (addressable)",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "basis": "addressable",
-              "source": "handoff/INDIA-ECONOMICS-SIDECAR-V0-2026-06-20.json (goa)",
-              "method": "Market-level anchor from INDIA-ECONOMICS-SIDECAR-V0 / UAE Careem ladder; split evenly across sealed corridors in market."
-            },
-            "demand_confidence": "med-low"
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
           }
         },
         {
-          "route_id": "ics-mum-versova-gateway",
-          "from": "Versova Ferry Wharf",
-          "to": "Gateway of India",
-          "distance_nm": 12.43,
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Charitas Terminal (Niterói, fast catamaran)",
+          "distance_nm": 4.4,
           "vessel": "Pioneer II",
+          "route_id": "rn-80f0d0ebe0bd",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-59ca648cd4"
+          },
           "archetype": "ridehail",
-          "from_node_id": "mumbai-india",
-          "to_node_id": "mumbai-india",
-          "country": "India",
-          "model_use": "draft_only_demand_null_held_out_until_route_counts_captured",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": null,
+            "corridor_annual_oneway_pax": 825637,
+            "comparable_fare_usd_pax": 1.5001,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 825637,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
+            },
             "_fare_record": {
-              "value": 4.7,
-              "unit": "USD/pax/one-way",
-              "currency_basis": "INR/USD ~85, 2026",
+              "value": 1.5001,
+              "unit": "USD/pax/one-way comparable published public tariff",
               "year": 2026,
-              "source_tier": "T3",
+              "source_tier": "T1/T2",
               "confidence": "med-low",
-              "source": "M2M Ferries published Mumbai Ferry Wharf/Bhaucha Dhakka \u2194 Mandwa Ro-Pax fare floor: passenger fares from \u20b9400 onwards; motorcycle \u20b9210 onwards; 4-wheelers \u20b91,020 onwards; buses \u20b94,500 onwards; vehicle deck over 120 cars/two-wheelers/buses. Converted at ~INR85/USD: \u20b9400 \u2248 $4.70. This is a direct fare floor/comparable, not a premium Navier fare claim.",
-              "method": "Direct on-market public water-transfer fare floor only; not inserted as premium comparable fare. Premium Navier fare must be separately sourced before finance publish.",
-              "fare_ladder_usd_pax": {
-                "m2m_passenger_floor": 4.7,
-                "m2m_motorcycle_floor": 2.47,
-                "m2m_four_wheeler_floor": 12.0
-              }
-            },
-            "corridor_annual_oneway_pax": 10909,
-            "demand_confidence": "med-low",
-            "_demand_record": {
-              "value": 10909,
-              "unit": "pax/yr one-way (addressable)",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "PR #58 Mumbai spine route-count split (11 sealed rows \u00d7 anchor 120,000 pax/yr)",
-              "method": "Market anchor split after sealed route count captured; M2M fare floor unchanged.",
-              "observed_load_anchors": [
-                {
-                  "source": "Indian Express",
-                  "url": "https://indianexpress.com/article/cities/mumbai/water-taxi-service-mandwa-directly-from-belapur-not-dct-weekends-8431554/",
-                  "captured_metric": "Belapur\u2192Mandwa average ridership of 120 passengers; DCT had hardly any passengers; 200-seater NAYAN XI; fare \u20b9400 lower deck / \u20b9450 upper/business."
-                },
-                {
-                  "source": "The Hindu",
-                  "url": "https://www.thehindu.com/news/cities/mumbai/mumbai-water-taxis-prove-unaffordable-for-daily-commuter/article66126034.ece",
-                  "captured_metric": "Belapur\u2192Elephanta filling 80% capacity on 32-seat vessel with three round trips; Belapur\u2192JNPT doing very well; DCT\u2192Mandwa 60 round trips in 10 days with <10% passengers on 200-seat vessel."
-                },
-                {
-                  "source": "PIB MoPSW",
-                  "url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1799056",
-                  "captured_metric": "Belapur jetty connects DCT, Nerul, Belapur, Elephanta and JNPT; enables Bhaucha Dhakka, Mandwa, Elephanta and Karanja movements."
-                }
-              ],
-              "basis": "addressable"
-            },
-            "_status": "DRAFT_FARE_FLOOR_DEMAND_SPLIT",
-            "public_fare_floor_usd_pax": 4.7
-          },
-          "_in_grounded_floor": false,
-          "_tier": "experience_upside"
-        },
-        {
-          "route_id": "rn-1a140dacd3e6",
-          "from": "Shura Island Marina",
-          "to": "Outer-island resorts (St Regis / Nujuma / Shebara)",
-          "distance_nm": 11.5,
-          "vessel": "Pioneer II",
-          "archetype": "luxury_charter",
-          "from_node_id": "red-sea-global-ksa",
-          "to_node_id": "red-sea-global-ksa",
-          "country": "Saudi Arabia",
-          "L3_locals": {
-            "comparable_fare_usd_pax": 175,
-            "_fare_record": {
-              "value": 175,
-              "unit": "USD/pax/one-way",
-              "currency_basis": "USD (SAR/BHD pegged); 2025",
-              "year": 2025,
-              "source_tier": "T5",
-              "confidence": "low",
-              "source": "Maldives resort speedboat transfer per-seat comparable (no incumbent on this greenfield Red Sea crossing, R5): MaldivesNomad resort transfers $65-350/pax 1-way; AtollTransfer $90-450/pax; premium private-resort $150-250 1-way; PointsGuy Marriott speedboat $142 RT. Premium per-seat point picked. 25nm outer-island luxury resort transfer -> premium per-seat $175.",
-              "method": "Modeled from Maldives premium resort speedboat per-seat comparable (R5 greenfield; R12 short luxury transfer not flight-substituted).",
-              "fare_ladder_usd_pax": {
-                "budget_public_ferry": 25,
-                "standard_resort_speedboat": 90,
-                "premium_per_seat_speedboat": 175,
-                "whole_boat_charter": 1000
-              }
-            },
-            "corridor_annual_oneway_pax": 500000,
-            "_demand_record": {
-              "value": 500000,
-              "unit": "pax/yr one-way",
-              "source_tier": "T2",
-              "confidence": "low-med",
-              "source": "Red Sea Global / The Red Sea destination capped at 1,000,000 visitors/yr at full completion 2030 across 50 resorts/8,000+ keys (RSG official; Monaco Yacht Show factsheet 2025; blooloop; ICWA). Shura Island hub->outer-island resorts is THE primary internal transfer leg; R3 discount ~50% (not all resorts outer-island; some mainland/nearshore) -> ~500k 1-way.",
-              "method": "Destination visitor cap (T1/T2) x R3 on-corridor discount. 2030 build-out target."
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 7.70 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 7.7,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
             }
-          },
-          "_forward_sam": true,
-          "captive": true,
-          "multi_leg": true,
-          "_geometry_bound_at": "2026-06-20"
+          }
         },
         {
-          "route_id": "rn-ff5ccaf1831e",
-          "from": "Goa",
-          "to": "Mumbai",
-          "distance_nm": 213.3,
-          "vessel": "Quanta-LR",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Cocotá Terminal (Ilha do Governador)",
+          "distance_nm": 6.0,
+          "vessel": "Pioneer II",
+          "route_id": "rn-369ef0eb69d9",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-e1702c2318"
+          },
           "archetype": "ridehail",
-          "from_node_id": "goa-india",
-          "to_node_id": "mumbai-india",
-          "country": "India",
-          "pool_basis": "addressable",
-          "_pr58_sealed": true,
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
           "L3_locals": {
-            "comparable_fare_usd_pax": 5.5,
-            "corridor_annual_oneway_pax": 5000,
-            "_fare_record": {
-              "value": 5.5,
-              "unit": "USD/pax/one-way",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "source": "handoff/INDIA-ECONOMICS-SIDECAR-V0-2026-06-20.json (mumbai)",
-              "method": "PR #58 India/Noon corridor market anchor split across sealed geometry rows"
-            },
+            "corridor_annual_oneway_pax": 278607,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
             "_demand_record": {
-              "value": 5000,
-              "unit": "pax/yr one-way (addressable)",
-              "source_tier": "T3",
-              "confidence": "med-low",
-              "basis": "addressable",
-              "source": "handoff/INDIA-ECONOMICS-SIDECAR-V0-2026-06-20.json (mumbai)",
-              "method": "Market-level anchor from INDIA-ECONOMICS-SIDECAR-V0 / UAE Careem ladder; split evenly across sealed corridors in market."
+              "value": 278607,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
             },
-            "demand_confidence": "med-low"
+            "_fare_record": {
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
+        },
+        {
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Paquetá Island Terminal",
+          "distance_nm": 9.2,
+          "vessel": "Pioneer II",
+          "route_id": "rn-00bb6ded4be5",
+          "country": "Brazil",
+          "from_node_id": "rio-de-janeiro-brazil",
+          "to_node_id": "rio-de-janeiro-brazil",
+          "endpoint_boarding_points": {
+            "from": "bp-660ea6736a",
+            "to": "bp-113820adbb"
+          },
+          "archetype": "ridehail",
+          "_incumbent_service_archetype": "public_transit_commute",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "didi-brazil-t3-2026-07-09",
+          "_permission_status": "Incumbent service is state-contracted/regulator-supervised; no transferable DiDi/Navier route-entry permission was found. Treat as addressable passenger pool, not operating authorization.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 1170652,
+            "comparable_fare_usd_pax": 0.9741,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 1170652,
+              "unit": "gross passenger boardings / one-way passenger-trips across both directions/year",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "https://www2.agetransp.rj.gov.br/arquivos/operacao-servicos/relatorio-de-atividades/Relat%C3%B3rio%20Mensal%20de%20Atividades%20Janeiro%202024.pdf",
+              "method": "Arithmetic sum of the 12 published AGETRANSP 2023 monthly totals for the exact named line. Bidirectional line total; one boarding equals one one-way passenger-trip. No doubling, halving, terminal allocation, or daily annualization."
+            },
+            "_fare_record": {
+              "value": 0.9741,
+              "unit": "USD/pax/one-way comparable published public tariff",
+              "year": 2026,
+              "source_tier": "T1/T2",
+              "confidence": "med-low",
+              "source": "https://barcasrio.com.br/linhas-horarios-e-tarifas/",
+              "method": "BRL 5.00 published line tariff divided by Banco Central do Brasil PTAX sell rate 5.1329 BRL/USD dated 2026-07-09. Passenger-facing benchmark only; not claimed as operator realized yield, paid-fare mix, subsidy receipt, or audited route revenue. Model premium re-fare rule may lift this benchmark for premium-service planning.",
+              "brl": 5.0,
+              "fx_brl_per_usd": 5.1329,
+              "fx_date": "2026-07-09",
+              "fx_source": "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='07-09-2026'&$top=100&$format=json"
+            }
+          }
+        }
+      ],
+      "capture_rate": 0.1
+    },
+    "indrive-egypt": {
+      "partner": "indrive",
+      "display_name": "InDrive Egypt · Red Sea candidate network",
+      "label": "Egypt · Red Sea candidate network",
+      "region": "MENA",
+      "country": "Egypt",
+      "country_slug": "egypt",
+      "currency": "EGP",
+      "scope": "five exact canonical Red Sea routes; economics held route by route",
+      "archetype": "ridehail",
+      "capture_rate": 0.1,
+      "fleet_basis": "held_pending_route_evidence",
+      "_tier": "geometry_exact_economics_held",
+      "corridors": [
+        {
+          "from": "Hurghada Marina",
+          "to": "Giftun Island (Orange Bay / Mahmya)",
+          "distance_nm": 6.6,
+          "vessel": "Pioneer II",
+          "route_id": "rn-b06f6971ed47",
+          "country": "Egypt",
+          "from_node_id": "redsea-egypt",
+          "to_node_id": "redsea-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-33e0fab89d",
+            "to": "bp-giftun-island"
+          },
+          "archetype": "tourism",
+          "_economics_hold_reason": "Exact canonical geometry exists, but an exact route-level annual one-way passenger count and locally comparable passenger fare have not both been supported for this route.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": null,
+            "comparable_fare_usd_pax": null
+          }
+        },
+        {
+          "from": "Hurghada Marina",
+          "to": "Sahl Hasheesh Marina",
+          "distance_nm": 9.5,
+          "vessel": "Pioneer II",
+          "route_id": "rn-3d161664de08",
+          "country": "Egypt",
+          "from_node_id": "redsea-egypt",
+          "to_node_id": "redsea-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-33e0fab89d",
+            "to": "bp-sahl-hasheesh"
+          },
+          "archetype": "ridehail",
+          "_economics_hold_reason": "Exact canonical geometry exists, but an exact route-level annual one-way passenger count and locally comparable passenger fare have not both been supported for this route.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": null,
+            "comparable_fare_usd_pax": null
+          }
+        },
+        {
+          "from": "Hurghada Marina",
+          "to": "Soma Bay Marina",
+          "distance_nm": 24.2,
+          "vessel": "Pioneer II",
+          "route_id": "rn-173d32792c07",
+          "country": "Egypt",
+          "from_node_id": "redsea-egypt",
+          "to_node_id": "redsea-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-33e0fab89d",
+            "to": "bp-41d0730e20"
+          },
+          "archetype": "ridehail",
+          "_economics_hold_reason": "Exact canonical geometry exists, but an exact route-level annual one-way passenger count and locally comparable passenger fare have not both been supported for this route.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": null,
+            "comparable_fare_usd_pax": null
+          }
+        },
+        {
+          "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
+          "to": "Ras Mohammed (reef jetty)",
+          "distance_nm": 11.7,
+          "vessel": "Pioneer II",
+          "route_id": "rn-c16a1627130f",
+          "country": "Egypt",
+          "from_node_id": "hurghada-el-gouna-egypt",
+          "to_node_id": "hurghada-el-gouna-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-1db7164837",
+            "to": "bp-ras-mohammed"
+          },
+          "archetype": "tourism",
+          "_economics_hold_reason": "Exact canonical geometry exists, but an exact route-level annual one-way passenger count and locally comparable passenger fare have not both been supported for this route.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": null,
+            "comparable_fare_usd_pax": null
+          }
+        },
+        {
+          "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
+          "to": "Sharks Bay Marina (purpose-built fast-boat terminal)",
+          "distance_nm": 5.4,
+          "vessel": "Pioneer II",
+          "route_id": "rn-285fc16b29dc",
+          "country": "Egypt",
+          "from_node_id": "hurghada-el-gouna-egypt",
+          "to_node_id": "hurghada-el-gouna-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-1db7164837",
+            "to": "bp-7bf7ba4d81"
+          },
+          "archetype": "ridehail",
+          "_economics_hold_reason": "Exact canonical geometry exists, but an exact route-level annual one-way passenger count and locally comparable passenger fare have not both been supported for this route.",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": null,
+            "comparable_fare_usd_pax": null
           }
         }
       ]

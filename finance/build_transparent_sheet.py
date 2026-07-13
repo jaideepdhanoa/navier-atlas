@@ -571,6 +571,7 @@ cols = _cols_head + [
  ("Payback FULL","",9,NUM2,"b"),
  ("Fare source (provenance)","fare_src",50,None,"in"),
  ("Demand source (provenance)","demand_src",50,None,"in"),
+ ("Route ID","route_id",16,None,"in"),
 ]
 # map header -> column letter
 colletter={}
@@ -689,6 +690,7 @@ for idx,rec in enumerate(rows):
     # provenance
     sc(ws,f"{CL('Fare source (provenance)')}{R}",rec["fare_src"],fill=f_grey,align=wrap,bd=True,font=Font(size=8,color="555555"))
     sc(ws,f"{CL('Demand source (provenance)')}{R}",rec["demand_src"],fill=f_grey,align=wrap,bd=True,font=Font(size=8,color="555555"))
+    sc(ws,f"{CL('Route ID')}{R}",rec.get("route_id"),fill=f_input,align=ctr,bd=True,font=SMALL)
 
 LASTROW=DATA0+len(rows)-1
 # totals row
@@ -816,6 +818,8 @@ PARTNER_NO_PLATFORM_REV = {"french-polynesia"}
 _override = PARTNER_MULTIPLIER_OVERRIDES.get(PARTNER, {})
 for _k, _v in _override.items():
     M[_k] = {**M[_k], **_v}
+if arg("--greenfield", None) == "off":
+    M["greenfield_corridor_factor"] = {"low":1.0,"mid":1.0,"high":1.0,"_doc":"Greenfield width disabled for this scoped build."}
 # LB-254: mirror growth.py mature_capture() exactly — contested ramp (0.15/0.25/0.40) only when
 # eff_capture is below the config band; hospitality/captive-blended floors (~0.49–0.55) must use
 # max(band, eff_capture) so SAM stays above SOM network (induced × mature > floor capture).
@@ -847,9 +851,11 @@ def mult(label,node,key,note,fmt=NUM2):
 mult("Induced demand (k)",M["induced_demand"],"ind","Faster/quieter product grows the crossing market beyond today's trips.")
 mult("Mature capture rate (c)",M["mature_capture_rate"],"cap","Navier's corridor share once it is the established premium default (vs 10% floor).",PCT)
 mult("Journey GMV multiple (m)",M["journey_gmv_multiple"],"gmv","Whole island-journey wallet (transport+food+stay+experiences) as a multiple of the boat fare.")
-_green_note = ("Width lever: global template band pending a DiDi-specific census; this is not a Grab or DiDi counted census."
-               if PARTNER == "didi" else
-               "Width lever: addressable network vs the sourced subset (ID-based census).")
+_green_note = ("No unsourced network-width multiplier is applied in this scoped build."
+               if arg("--greenfield", None) == "off" else
+               ("Width lever: global template band pending a DiDi-specific census; this is not a Grab or DiDi counted census."
+                if PARTNER == "didi" else
+                "Width lever: addressable network vs the sourced subset (ID-based census)."))
 mult("Greenfield network factor (g)",M["greenfield_corridor_factor"],"green",_green_note)
 # platform take (scalar)
 take_r=mr
