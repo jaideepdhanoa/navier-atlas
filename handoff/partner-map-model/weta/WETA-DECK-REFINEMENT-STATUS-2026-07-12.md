@@ -4,8 +4,8 @@
 
 - Live deck: `1frwn6G6NrGdzxbJEqlO_EZ6M-vWF2dLYN8PWhGwHRpw`
 - Slides: **15**
-- Live revision: `bZY6qybUBIO0sg`
-- Status: **PTA/RTA-standard refinement finished and QA-passed for internal partner review**
+- Live revision: `4TonRLaYt4ERpg` (Drive version 66)
+- Status: **PTA/RTA-standard refinement and Marin access narrative QA-passed for internal partner review**
 - External release clearance: **not granted**
 - Outreach authorization: **not granted**
 
@@ -13,8 +13,11 @@
 
 - Normalized all 15 slides to the authority-deck typography system: Playfair Display headlines, Exo 2 labels/metric emphasis, and Poppins body copy.
 - Tightened the narrative from Bay context and public-service need through product, operating logic, passenger experience, bounded demonstration, WETA-selected pilot, evidence-led scale, governance, and next step.
-- Rebuilt slide 9 around a banked Navier Atlas Bay render and a visible three-way distinction: **existing WETA service**, **WETA-published expansion areas**, and **Navier candidate screen**.
-- Added explicit language that map lines are screening geometry only and do not imply a WETA route, terminal, facility, or commitment.
+- Rebuilt slide 9 around a banked Navier Atlas Bay render and a visible distinction between **existing WETA service**, **WETA-published expansion**, **Golden Gate Ferry / Marin inter-agency context**, and other candidate access pockets.
+- Added the network-access thesis to slide 8: more—and closer—start and end points can reduce first/last-mile friction and make water transit useful to demand pockets below large-ferry scale.
+- Added Larkspur, Sausalito and Tiburon as Marin gateways, with Richmond/Berkeley/Vallejo ↔ Larkspur retained as candidate inter-agency links rather than current WETA service.
+- Synchronized the same qualified narrative to both proposal-source mirrors at commit `f3ed57b0e37de5ce3863600ecbb34ad11d8d7222`.
+- Added explicit language that map lines are screening geometry only and do not imply a WETA or Golden Gate Ferry route, terminal, facility, or commitment.
 
 ## QA evidence
 
