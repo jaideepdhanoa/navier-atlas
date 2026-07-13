@@ -2,11 +2,12 @@
   "deck_key": "didi",
   "partner_id": "didi",
   "display_name": "DiDi × Navier",
-  "status": "source_mapped__live_apply_in_progress",
+  "status": "live_applied__bolt_chassis__source_and_qa_synchronized__review_draft",
   "archetype": "ride_hail",
-  "scope_note": "LATAM-led and selective. Use only exact IDs and current-operation evidence; China excluded; Japan framed as DiDi Mobility Japan JV; Taiwan held.",
+  "scope_note": "LATAM-led and selective. Published economics are carried in full. China is excluded; Japan is DiDi Mobility Japan JV-only; Taiwan and Macau marine claims remain held; unsupported route demand, country-reference and exact-ID fields remain null.",
   "source_paths": [
     "partner-pitch/partners/didi.json",
+    "data-clean/partners/didi.json",
     "finance/model/corridors.json",
     "finance/recal/agg-didi.json",
     "finance/recal/growth-didi.json",
@@ -15,57 +16,71 @@
     "handoff/didi-ex-china/waves/tasklet-gates/"
   ],
   "economics": {
-    "transport_revenue_initial_yr": 38163982,
-    "current_passenger_spend_pool_yr": 386158495,
-    "marine_market_mid_yr": 3405917926,
-    "journey_spend_mid_yr": 10217753778,
-    "partner_platform_revenue_mid_yr": 459798920,
-    "initial_fleet_vessels": 201,
-    "demand_backed_routes": 7,
-    "held_routes": 5,
-    "economics_url": "https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit"
+    "transport_revenue_initial_yr": 39729526,
+    "current_passenger_spend_pool_yr": 403438351,
+    "marine_market_mid_yr": 3558326256,
+    "journey_spend_mid_yr": 10674978767,
+    "partner_platform_revenue_mid_yr": 480374045,
+    "initial_fleet_vessels": 210,
+    "demand_backed_routes": 9,
+    "held_routes": 2,
+    "total_corridors_in_rollup": 14,
+    "estimated_corridors_outside_grounded_floor": 5,
+    "economics_url": "https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit",
+    "source_aggregate": "finance/recal/agg-didi.json",
+    "source_growth": "finance/recal/growth-didi.json",
+    "display_rounding": {
+      "transport_revenue_initial_yr": "$39.7M",
+      "current_passenger_spend_pool_yr": "$403M",
+      "marine_market_mid_yr": "$3.56B",
+      "journey_spend_mid_yr": "$10.67B",
+      "partner_platform_revenue_mid_yr": "$480M"
+    },
+    "sheet_drive_version": "46",
+    "model_to_workbook_to_deck_parity": "passed",
+    "workbook_parity_receipt": "DIDI-WORKBOOK-PARITY-RECEIPT-2026-07-13.json"
   },
   "slides": [
     {
       "slide_index": 1,
       "slide_key": "hero",
-      "title": "The water mile belongs inside DiDi",
+      "title": "The water network for Latin America",
       "source_fields": [
         "partner-pitch/partners/didi.json.hero",
         "official DiDi global overview"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 2,
       "slide_key": "executive-thesis",
-      "title": "DiDi already owns the first and last mile",
+      "title": "DiDi owns the first and last mile",
       "source_fields": [
         "partner-pitch/partners/didi.json.network_thesis",
         "web.didiglobal.com"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 3,
       "slide_key": "three-cs",
-      "title": "Cost · Convenience · Comfort",
+      "title": "Cost · Comfort · Convenience",
       "source_fields": [
         "Navier product baseline",
         "partner multimodal_fit"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 4,
       "slide_key": "global-footprint",
-      "title": "A selective global opportunity",
+      "title": "Latin America first. Selective expansion after.",
       "source_fields": [
         "DiDi official country pages",
-        "tasklet operation gates",
+        "handoff/didi-ex-china/waves/tasklet-gates/",
         "finance/recal/agg-didi.json"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 5,
@@ -75,7 +90,7 @@
         "finance/model/corridors.json::brazil",
         "DIDI-BR-CO-T3 proof"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 6,
@@ -85,17 +100,18 @@
         "finance/model/corridors.json::mexico-caribbean",
         "DIDI Mexico proof"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 7,
       "slide_key": "northern-latam",
-      "title": "Northern LATAM — the next regional wave",
+      "title": "Northern Latin America — build the next wave",
       "source_fields": [
-        "DiDi LATAM handoff PR #212",
-        "Colombia parity blocker"
+        "finance/recal/agg-didi.json::costa-rica",
+        "handoff/didi-ex-china/waves/tasklet-proof/",
+        "Colombia/Panama/Dominican Republic demand holds"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 8,
@@ -106,52 +122,59 @@
         "tasklet-gates JP/HK/TW",
         "tasklet-gates Egypt"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 9,
       "slide_key": "economics",
-      "title": "A large prize from a small proof set",
+      "title": "Published economics: large prize, small proof set",
       "source_fields": [
+        "finance/recal/agg-didi.json",
         "finance/recal/growth-didi.json",
-        "finance/recal/agg-didi.json"
+        "finance/didi-growth-case.json",
+        "DiDi transparent economics Sheet 1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 10,
       "slide_key": "partnership-model",
-      "title": "One app, one water layer, clear roles",
+      "title": "One app. One water layer. Clear roles.",
       "source_fields": [
         "partner-pitch/partners/didi.json.the_ask"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 11,
       "slide_key": "ask",
-      "title": "Start with Brazil and Mexico",
+      "title": "Choose the first market and prove the water mile",
       "source_fields": [
         "partner-pitch/partners/didi.json.the_ask",
         "Tasklet recommended sequence"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     },
     {
       "slide_index": 12,
       "slide_key": "close",
-      "title": "The water mile belongs inside DiDi",
+      "title": "Explore the DiDi marine network",
       "source_fields": [
         "partner-pitch/partners/didi.json.close"
       ],
-      "status": "source_mapped"
+      "status": "live_applied__source_verified__visual_qa_passed"
     }
   ],
   "claim_rules": [
     "Plain English only.",
+    "Carry published economics in full; do not create a broad economics hold.",
     "No unsupported current-operation claim.",
-    "No invented route, city, boarding-point, demand, fare or economics value.",
-    "Japan is JV-only; Taiwan stays out; China excluded.",
+    "No invented route, city, boarding-point, demand, fare, country-reference or economics value.",
+    "China is excluded; Japan is JV-only; Taiwan and Macau marine claims remain held.",
+    "Unsupported annual_one_way_pax and exact IDs remain null; Argentina benchmark classification stays visible in source records.",
     "Route boxes use exact IDs and canonical formatting only."
-  ]
+  ],
+  "live_deck_id": "1UGvIK9VvzoxKnKcX0W3CQoT2VJqaqQewreJ5kmd64mc",
+  "live_revision_id": "d-pUjhTqxQtY_w",
+  "last_verified_at": "2026-07-13T04:10:58Z"
 }
