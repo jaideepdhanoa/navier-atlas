@@ -51,6 +51,44 @@ def is_supported(values: dict[str, Any]) -> bool:
     return all(values.get(k) is not None for k in VALUE_KEYS)
 
 
+def route_unit_economics(row: dict[str, Any]) -> dict[str, Any]:
+    """Per-boat, route-level unit economics from the sourced `thin` block.
+
+    This is the correct basis for a unit-economics slide (per-vessel run cost and
+    payback), distinct from the market-level rollup used for the country total.
+    """
+    t = row.get("thin") or {}
+    cc = t.get("cost_components") or {}
+    return {
+        "distance_nm": t.get("distance_nm"),
+        "vessel": t.get("vessel"),
+        "annual_one_way_pax_per_boat": t.get("pax_per_year"),
+        "one_way_fare_usd": t.get("navier_fare_usd"),
+        "revenue_per_boat_yr": t.get("revenue_per_boat_yr"),
+        "opex_lines": {
+            "energy_usd_yr": cc.get("energy_usd_yr"),
+            "crew_usd_yr": cc.get("crew_usd_yr"),
+            "marina_overhead_usd_yr": cc.get("marina_overhead_usd_yr"),
+            "maintenance_usd_yr": cc.get("maintenance_usd_yr"),
+            "insurance_usd_yr": cc.get("insurance_usd_yr"),
+            "charging_berth_usd_yr": cc.get("charging_berth_usd_yr"),
+        },
+        "total_run_cost_yr": t.get("annual_opex"),
+        "depreciation_usd_yr": t.get("depreciation"),
+        "ebitda_per_boat_yr": t.get("ebitda_per_boat_yr"),
+        "margin": t.get("margin"),
+        "payback_years": t.get("payback_years"),
+        "co2_saved_t_per_boat_yr": t.get("co2_saved_t_per_boat_yr"),
+    }
+
+
+ROUTE_LEVEL_KEYS = ("annual_one_way_pax_per_boat", "one_way_fare_usd", "revenue_per_boat_yr", "payback_years")
+
+
+def route_is_supported(ue: dict[str, Any]) -> bool:
+    return all(ue.get(k) is not None for k in ROUTE_LEVEL_KEYS)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--binding", required=True, type=Path)
@@ -81,55 +119,66 @@ def main() -> int:
     if duplicates:
         raise SystemExit(f"duplicate aggregate route IDs: {sorted(duplicates)}")
 
-    pair_values: list[dict[str, Any]] = []
-    for pair in binding["city_route_pairs"]:
-        rid = pair.get("route_id")
-        base = {
-            "pair_key": pair["pair_key"],
-            "city_key": pair["city_key"],
-            "city_label": pair["city_label"],
-            "route_label": pair["route_label"],
-            "route_id": rid,
+    # ---- single representative unit-economics route ----
+    er = binding["economics_route"]
+    rid = er.get("route_id")
+    econ_base = {
+        "label": er.get("label"),
+        "route_id": rid,
+        "desc": er.get("desc"),
+    }
+    if rid is None:
+        economics_route = {
+            **econ_base,
+            "status": "held",
+            "unit_economics": None,
+            "hold_reason": "Route ID and financial values remain blank pending local terminal, demand, and fare evidence.",
         }
-        if rid is None:
-            pair_values.append({
-                **base,
-                "status": "held",
-                "values": null_values(),
-                "hold_reason": pair["hold_reason"],
-            })
-            continue
+    else:
         if rid not in route_ids:
-            raise SystemExit(f"{pair['pair_key']}: route ID absent from canonical ROUTES.json: {rid}")
+            raise SystemExit(f"economics_route: route ID absent from canonical ROUTES.json: {rid}")
         row = row_by_route.get(rid)
         if row is None:
-            pair_values.append({
-                **base,
-                "status": "held",
-                "values": null_values(),
-                "hold_reason": pair.get("hold_reason") or "No route-level finance row is available.",
-            })
-            continue
-        if row.get("country") != binding["country"]:
+            economics_route = {**econ_base, "status": "held", "unit_economics": None,
+                               "hold_reason": "No route-level finance row is available."}
+        elif row.get("country") != binding["country"]:
             raise SystemExit(
-                f"{pair['pair_key']}: aggregate country {row.get('country')!r} "
-                f"does not match {binding['country']!r}"
+                f"economics_route: aggregate country {row.get('country')!r} does not match {binding['country']!r}"
             )
-        values = row_values(row)
-        if not is_supported(values):
-            pair_values.append({
-                **base,
-                "status": "held",
-                "values": null_values(),
-                "hold_reason": pair.get("hold_reason") or "Route-level demand, fare, or operating inputs are incomplete.",
-            })
         else:
-            pair_values.append({
-                **base,
-                "status": "supported",
-                "values": values,
-                "hold_reason": None,
-            })
+            ue = route_unit_economics(row)
+            if route_is_supported(ue):
+                economics_route = {**econ_base, "status": "supported", "unit_economics": ue, "hold_reason": None}
+            else:
+                economics_route = {**econ_base, "status": "held", "unit_economics": None,
+                                   "hold_reason": "Route-level demand, fare, or operating inputs are incomplete."}
+
+    # ---- TAM ladder rungs bound from grounded aggregate fields (never invented) ----
+    def resolve_field(root: Any, dotted: str) -> Any:
+        cur = root
+        for part in dotted.split("."):
+            if isinstance(cur, dict):
+                cur = cur.get(part)
+            else:
+                return None
+        return cur
+
+    tam_spec = binding.get("tam") or {}
+    tam_rungs: list[dict[str, Any]] = []
+    for rung in tam_spec.get("rungs") or []:
+        field = rung.get("aggregate_field") or ""
+        val = resolve_field(aggregate, field) if field else None
+        expected = rung.get("value_usd")
+        if expected is not None and val is not None and round(float(val), 2) != round(float(expected), 2):
+            raise SystemExit(
+                f"TAM rung '{rung.get('label')}' mismatch: aggregate {val} vs binding {expected}"
+            )
+        tam_rungs.append({"label": rung.get("label"), "value_usd": val, "note": rung.get("note")})
+    tam_out = {
+        "headline": tam_spec.get("headline"),
+        "rungs": tam_rungs,
+        "hold_reason": tam_spec.get("hold_reason"),
+    }
 
     total_spec = binding["country_total"]
     supported_ids = total_spec.get("supported_route_ids") or []
@@ -179,7 +228,7 @@ def main() -> int:
         country_status = "supported"
 
     out = {
-        "schema_version": "country-deck-economics-v2",
+        "schema_version": "country-deck-economics-v3",
         "deck_key": binding["deck_key"],
         "partner_id": binding["partner_id"],
         "country": binding["country"],
@@ -194,7 +243,8 @@ def main() -> int:
             "aggregate": sha256(args.aggregate),
             "routes": sha256(args.routes),
         },
-        "pairs": pair_values,
+        "economics_route": economics_route,
+        "tam": tam_out,
         "country_total": {
             "status": country_status,
             "values": country_values,

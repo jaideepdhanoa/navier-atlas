@@ -53,8 +53,10 @@ def validate_one(deck: Path) -> dict[str, Any]:
     req = config.get("current_spec_requirements") or {}
     if req.get("reference_deck_key") != "grab":
         fail(errors, "approved Grab reference lineage is missing")
-    if req.get("city_economics_pairing") is not True:
-        fail(errors, "city/economics pairing requirement is missing")
+    if req.get("spine") != "market-overview -> one slide per city -> one unit-economics -> TAM":
+        fail(errors, "locked country-review spine requirement is missing")
+    if req.get("city_source") != "canonical CLUSTERS.json membership":
+        fail(errors, "canonical city source requirement is missing")
     if req.get("shared_economics_generator") != "deck-studio/decks/gen_deck_economics.py":
         fail(errors, "shared economics generator binding is missing")
     if req.get("atlas_screenshot_automation") != "forbidden":
@@ -75,14 +77,18 @@ def validate_one(deck: Path) -> dict[str, Any]:
     if manifest.get("slide_count") != len(slides):
         fail(errors, "slide_count does not match slide list")
     roles = [s.get("purpose") for s in slides]
-    city_positions = [i for i, role in enumerate(roles) if role == "city_route_review"]
-    if len(city_positions) != len(binding.get("city_route_pairs") or []):
-        fail(errors, "city slide count does not match economics binding pair count")
-    for i in city_positions:
-        if i + 1 >= len(roles) or roles[i + 1] != "one_route_economics":
-            fail(errors, f"city slide {i + 1} is not followed by one-route economics")
-    if roles.count("one_route_economics") != len(city_positions):
-        fail(errors, "economics slide count does not equal city slide count")
+    for role, name in (("market_overview", "market overview"), ("one_route_economics", "unit-economics"), ("country_prize", "TAM")):
+        if roles.count(role) != 1:
+            fail(errors, f"exactly one {name} slide required, found {roles.count(role)}")
+    city_positions = [i for i, role in enumerate(roles) if role == "city_review"]
+    if not city_positions:
+        fail(errors, "at least one city slide required")
+    if len(city_positions) != len(scope.get("cities") or []):
+        fail(errors, "city slide count does not match canonical city roster")
+    if roles.count("market_overview") == 1 and roles.count("one_route_economics") == 1 and roles.count("country_prize") == 1 and city_positions:
+        mo, econ, tam = roles.index("market_overview"), roles.index("one_route_economics"), roles.index("country_prize")
+        if not (mo < min(city_positions) and max(city_positions) < econ < tam):
+            fail(errors, "spine order is not market-overview -> cities -> unit-economics -> TAM")
 
     content_ids = {s.get("slide_object_id") for s in content.get("slide_sources") or []}
     manifest_ids = {s.get("slide_object_id") for s in slides}
@@ -116,16 +122,12 @@ def validate_one(deck: Path) -> dict[str, Any]:
     if generated.get("checks", {}).get("borrowed_country_or_route_values") is not False:
         fail(errors, "borrowed route/country values are not explicitly false")
 
-    pair_by_key = {p["pair_key"]: p for p in generated.get("pairs") or []}
-    for pair in binding.get("city_route_pairs") or []:
-        got = pair_by_key.get(pair["pair_key"])
-        if not got:
-            fail(errors, f"missing generated pair: {pair['pair_key']}")
-            continue
-        if got.get("route_id") != pair.get("route_id"):
-            fail(errors, f"route ID changed during generation: {pair['pair_key']}")
-        if got.get("status") == "held" and any(v is not None for v in (got.get("values") or {}).values()):
-            fail(errors, f"held pair contains non-null values: {pair['pair_key']}")
+    gen_route = generated.get("economics_route") or {}
+    bind_route = binding.get("economics_route") or {}
+    if gen_route.get("route_id") != bind_route.get("route_id"):
+        fail(errors, "economics route ID changed during generation")
+    if bind_route.get("route_id") is None and gen_route.get("unit_economics") is not None:
+        fail(errors, "held economics route contains non-null values")
 
     if editplan.get("apply_status") != "blocked_pending_reference_duplication_and_live_inventory_pull":
         fail(errors, "source edit plan must remain blocked before live inventory pull")
@@ -136,7 +138,7 @@ def validate_one(deck: Path) -> dict[str, Any]:
         "deck_key": deck.name,
         "status": "PASS" if not errors else "FAIL",
         "slide_count": len(slides),
-        "city_economics_pairs": len(city_positions),
+        "city_slides": len(city_positions),
         "country_total_status": generated.get("country_total", {}).get("status"),
         "errors": errors,
     }
