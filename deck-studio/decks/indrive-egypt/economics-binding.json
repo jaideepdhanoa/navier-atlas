@@ -6,6 +6,61 @@
   "generator": "deck-studio/decks/gen_deck_economics.py",
   "aggregate_source": "finance/recal/agg-indrive.json",
   "canonical_routes_source": "data-clean/ROUTES.json",
+  "capture_treatment": "captive",
+  "unit_econ_anchor_options": {
+    "selection": "pending_jaideep",
+    "instruction": "Render the single unit-economics slide in BOTH variants (one per option) for Jaideep to choose the anchor. Do not invent a blended figure; each variant shows that one route's per-boat economics.",
+    "options": [
+      {
+        "route_id": "rn-b06f6971ed47",
+        "city_label": "Hurghada",
+        "route_label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+        "city_thesis": "Giftun Island is Hurghada's flagship excursion — white-sand islands and the Orange Bay and Mahmya reefs, reached by boat and drawing roughly 187,000 visitors a year.",
+        "per_boat": {
+          "annual_pax": 7588,
+          "fare_usd": 32.0,
+          "revenue_usd": 242827,
+          "opex_usd": 73959,
+          "opex_lines": {
+            "energy": 1359,
+            "crew": 21600,
+            "marina_overhead": 8000,
+            "maintenance": 10000,
+            "insurance": 15000,
+            "charging_berth": 18000
+          },
+          "ebitda_usd": 168868,
+          "margin": 0.695,
+          "payback_years": 3.55,
+          "capex_usd": 600000
+        }
+      },
+      {
+        "route_id": "rn-c16a1627130f",
+        "city_label": "Sharm El Sheikh",
+        "route_label": "Sharm Marina → Ras Mohammed (reef jetty)",
+        "city_thesis": "Ras Mohammed's reefs rank among the Red Sea's finest dive and snorkel sites, reached by boat from Sharm and drawing about 50,000 visitors a year.",
+        "per_boat": {
+          "annual_pax": 5962,
+          "fare_usd": 50.0,
+          "revenue_usd": 298114,
+          "opex_usd": 74494,
+          "opex_lines": {
+            "energy": 1894,
+            "crew": 21600,
+            "marina_overhead": 8000,
+            "maintenance": 10000,
+            "insurance": 15000,
+            "charging_berth": 18000
+          },
+          "ebitda_usd": 223620,
+          "margin": 0.75,
+          "payback_years": 2.68,
+          "capex_usd": 600000
+        }
+      }
+    ]
+  },
   "city_route_pairs": [
     {
       "pair_key": "hurghada",
@@ -29,9 +84,16 @@
   "country_total": {
     "expected_annual_revenue_usd": null,
     "expected_vessels_supported": null,
-    "supported_route_ids": ["rn-b06f6971ed47", "rn-c16a1627130f"],
-    "note": "Country totals are populated by the regenerated aggregate (finance/recal/agg-indrive.json) after the deterministic cascade runs on the promoted scoped corridors. Three further Red Sea routes remain held pending route-level demand and fare evidence.",
-    "held_route_ids": ["rn-3d161664de08", "rn-173d32792c07", "rn-285fc16b29dc"]
+    "supported_route_ids": [
+      "rn-b06f6971ed47",
+      "rn-c16a1627130f"
+    ],
+    "note": "Country totals are populated by the regenerated aggregate (finance/recal/agg-indrive.json) after the deterministic cascade runs on the promoted scoped corridors with captive capture. Indicative captive figures pending cascade: transport spend pool ~$8.5M/yr, grounded floor ~$7.65M/yr at ~90% capture, ~30 vessels. Three further Red Sea routes remain held pending route-level demand and fare evidence.",
+    "held_route_ids": [
+      "rn-3d161664de08",
+      "rn-173d32792c07",
+      "rn-285fc16b29dc"
+    ]
   },
   "rules": {
     "id_matching": "exact",
