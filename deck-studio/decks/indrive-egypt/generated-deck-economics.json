@@ -1,5 +1,5 @@
 {
-  "schema_version": "country-deck-economics-v2",
+  "schema_version": "country-deck-economics-v3",
   "deck_key": "indrive-egypt",
   "partner_id": "indrive",
   "country": "Egypt",
@@ -10,56 +10,71 @@
     "routes": "data-clean/ROUTES.json"
   },
   "source_sha256": {
-    "binding": "d62985dcb1b6f59c1267a641cdb644bb590da1ba4e865c845a0293ad30dd58ee",
-    "aggregate": "5df9f2ed2cdc1ed0fc0386589f170d29f61cf40478fd39e6238c44beae96997a",
+    "binding": "db796bda9b8cee0a1da1b1a472df104c9cccdf89038faf99a926710085b108e5",
+    "aggregate": "361197e0a77bf2a4b97fbd347e379fff3d29da4bc91d2462ea20b8051ef841b7",
     "routes": "de67a737e6df2d8af4b8cfd2ca7fbdc4c9699ff46a59244465c1ccbef000cf62"
   },
-  "pairs": [
-    {
-      "pair_key": "hurghada",
-      "city_key": "hurghada",
-      "city_label": "Hurghada",
-      "route_label": "Hurghada Marina → Giftun Island",
-      "route_id": null,
-      "status": "held",
-      "values": {
-        "annual_one_way_pax": null,
-        "one_way_fare_usd": null,
-        "annual_revenue_usd": null,
-        "vessels_supported": null
+  "economics_route": {
+    "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+    "route_id": "rn-b06f6971ed47",
+    "desc": "Flagship Red Sea luxury-belt excursion; provisional unit-economics anchor pending Jaideep's choice between Giftun and Ras Mohammed.",
+    "status": "supported",
+    "unit_economics": {
+      "distance_nm": 6.6,
+      "vessel": "N30 Pioneer II",
+      "annual_one_way_pax_per_boat": 7596.0,
+      "one_way_fare_usd": 32.0,
+      "revenue_per_boat_yr": 243072.0,
+      "opex_lines": {
+        "energy_usd_yr": 1361.0,
+        "crew_usd_yr": 21600.0,
+        "marina_overhead_usd_yr": 8000,
+        "maintenance_usd_yr": 10000,
+        "insurance_usd_yr": 15000.0,
+        "charging_berth_usd_yr": 18000
       },
-      "hold_reason": "Route ID and financial values remain blank pending authoritative terminal coordinates, annual passenger demand, and fare evidence."
+      "total_run_cost_yr": 73961.0,
+      "depreciation_usd_yr": 30000.0,
+      "ebitda_per_boat_yr": 169111.0,
+      "margin": 0.696,
+      "payback_years": 3.55,
+      "co2_saved_t_per_boat_yr": 84.6
     },
-    {
-      "pair_key": "sharm",
-      "city_key": "sharm",
-      "city_label": "Sharm El Sheikh",
-      "route_label": "Sharm Marina → Ras Mohammed",
-      "route_id": null,
-      "status": "held",
-      "values": {
-        "annual_one_way_pax": null,
-        "one_way_fare_usd": null,
-        "annual_revenue_usd": null,
-        "vessels_supported": null
+    "hold_reason": null
+  },
+  "tam": {
+    "headline": "Two promoted luxury-belt routes are a grounded floor, not a ceiling",
+    "rungs": [
+      {
+        "label": "Supported annual route revenue today",
+        "value_usd": 7420110.0,
+        "note": "Giftun + Ras Mohammed only, mid-band grounded floor at ~90% captive capture. Three further Red Sea routes remain held."
       },
-      "hold_reason": "Route ID and financial values remain blank pending authoritative terminal coordinates, annual passenger demand, and fare evidence."
-    }
-  ],
+      {
+        "label": "Addressable Egypt luxury-belt water-crossing spend",
+        "value_usd": 8500384.0,
+        "note": "Labeled destination-pool × fare for the two promoted routes (not observed boardings). Captive floor is ~90% of this pool."
+      }
+    ],
+    "hold_reason": null
+  },
   "country_total": {
-    "status": "held",
+    "status": "supported",
     "values": {
-      "annual_revenue_usd": null,
-      "vessels_supported": null,
-      "supported_route_count": 0
+      "annual_revenue_usd": 7420110.0,
+      "vessels_supported": 20,
+      "supported_route_count": 2
     },
-    "supported_route_ids": [],
-    "hold_reason": "Country financial values remain blank pending named-terminal validation and route-level passenger demand and fare evidence."
+    "supported_route_ids": [
+      "rn-b06f6971ed47",
+      "rn-c16a1627130f"
+    ],
+    "hold_reason": null
   },
   "checks": {
     "id_matching": "exact",
     "unsupported_values": "null",
     "borrowed_country_or_route_values": false,
-    "published_total_reconciled": false
+    "published_total_reconciled": true
   }
 }

@@ -297,60 +297,69 @@ DEFINITIONS: dict[str, dict[str, Any]] = {
         "deck_id": "1Nn3BRKUahikp87zC84JMdEVrcJYppm9ZXHgndAuzsEk",
         "logo": "deck-studio/assets/logos/partners/indrive/indrive-logo-white-cover.png",
         "aggregate": "finance/recal/agg-indrive.json",
-        "aggregate_market_key": None,
-        "scope_market_keys": [],
+        "aggregate_market_key": "indrive-egypt",
+        "scope_market_keys": ["indrive-egypt"],
         "country_total": {
-            "expected_annual_revenue_usd": None,
-            "expected_vessels_supported": None,
-            "supported_route_ids": [],
-            "hold_reason": "Country financial values remain blank pending named-terminal validation and route-level passenger demand and fare evidence.",
+            "expected_annual_revenue_usd": 7420110.0,
+            "expected_vessels_supported": 20,
+            "supported_route_ids": [
+                "rn-b06f6971ed47",
+                "rn-c16a1627130f",
+            ],
         },
         "market_overview": {
             "thesis": (
-                "Egypt's Red Sea Riviera — Hurghada and Sharm El Sheikh — runs constant boat traffic to its "
-                "reefs and islands, from Giftun Island off Hurghada to Ras Mohammed off Sharm. The demand is "
-                "real and tourism-driven, but named-terminal coordinates, route-level passenger counts, and "
-                "fares are still being validated locally, so Egypt is presented as an opportunity under review "
-                "rather than with supported economics."
+                "Egypt's Red Sea Riviera — Hurghada and Sharm El Sheikh — runs constant boat traffic to "
+                "Giftun Island and Ras Mohammed. Two luxury-belt routes are grounded on labeled destination-pool "
+                "demand and premium day-trip fares under captive capture; three further Red Sea routes stay held. "
+                "Cairo is out of scope (Nile); Alexandria remains candidate/null until a scheduled network is proven."
             ),
             "kpis": [
                 {"label": "Coastal cities in scope", "value": "2"},
-                {"label": "Supported routes", "value": "Under review"},
-                {"label": "Supported annual route revenue", "value": "Under review"},
-                {"label": "Vessels supported", "value": "Under review"},
+                {"label": "Supported routes", "value": "2"},
+                {"label": "Supported annual route revenue", "value": "$7.4M"},
+                {"label": "Vessels supported", "value": "20"},
             ],
         },
         "cities": [
             {
-                "key": "hurghada", "label": "Hurghada", "supported": False,
-                "hold_reason": "Route ID and financial values remain blank pending authoritative terminal coordinates, annual passenger demand, and fare evidence.",
+                "key": "hurghada", "label": "Hurghada", "supported": True,
+                "hold_reason": None,
                 "thesis": (
-                    "Hurghada is the main gateway to the northern Red Sea reefs, with heavy daily boat traffic "
-                    "out to Giftun Island and the surrounding marine park. The route is a natural fit for "
-                    "electric hydrofoils, but terminal coordinates, passenger demand, and fares are still under "
-                    "local review."
+                    "Giftun Island is Hurghada's flagship excursion — white-sand islands and the Orange Bay and "
+                    "Mahmya reefs, reached by boat and drawing roughly 187,000 visitors a year."
                 ),
             },
             {
-                "key": "sharm", "label": "Sharm El Sheikh", "supported": False,
-                "hold_reason": "Route ID and financial values remain blank pending authoritative terminal coordinates, annual passenger demand, and fare evidence.",
+                "key": "sharm", "label": "Sharm El Sheikh", "supported": True,
+                "hold_reason": None,
                 "thesis": (
-                    "Sharm El Sheikh anchors the southern Sinai reef tourism economy, with constant boat "
-                    "movements to Ras Mohammed and nearby dive sites. As with Hurghada, the opportunity is "
-                    "clear but terminal coordinates, demand, and fares are still being validated, so economics "
-                    "remain blank."
+                    "Ras Mohammed's reefs rank among the Red Sea's finest dive and snorkel sites, reached by boat "
+                    "from Sharm and drawing about 50,000 visitors a year."
                 ),
             },
         ],
         "economics_route": {
-            "label": "Hurghada Marina → Giftun Island",
-            "route_id": None,
-            "desc": "Island-access route under local terminal and operating review.",
+            "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+            "route_id": "rn-b06f6971ed47",
+            "desc": "Flagship Red Sea luxury-belt excursion; provisional unit-economics anchor pending Jaideep's choice between Giftun and Ras Mohammed.",
         },
         "tam": {
-            "headline": "Economics unlock once local demand and fares are confirmed",
-            "rungs": [],
-            "hold_reason": "TAM ladder remains blank pending named-terminal validation and route-level passenger demand and fare evidence.",
+            "headline": "Two promoted luxury-belt routes are a grounded floor, not a ceiling",
+            "rungs": [
+                {
+                    "label": "Supported annual route revenue today",
+                    "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.market_rev_yr",
+                    "value_usd": 7420110.0,
+                    "note": "Giftun + Ras Mohammed only, mid-band grounded floor at ~90% captive capture. Three further Red Sea routes remain held.",
+                },
+                {
+                    "label": "Addressable Egypt luxury-belt water-crossing spend",
+                    "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.transport_spend_pool_yr",
+                    "value_usd": 8500384.0,
+                    "note": "Labeled destination-pool × fare for the two promoted routes (not observed boardings). Captive floor is ~90% of this pool.",
+                },
+            ],
         },
     },
 }

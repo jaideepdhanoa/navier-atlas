@@ -1,15 +1,16 @@
 {
-  "schema_version": "country-economics-binding-v2",
+  "schema_version": "country-economics-binding-v3",
   "deck_key": "indrive-egypt",
   "partner_id": "indrive",
   "country": "Egypt",
   "generator": "deck-studio/decks/gen_deck_economics.py",
   "aggregate_source": "finance/recal/agg-indrive.json",
+  "aggregate_market_key": "indrive-egypt",
   "canonical_routes_source": "data-clean/ROUTES.json",
   "capture_treatment": "captive",
   "unit_econ_anchor_options": {
     "selection": "pending_jaideep",
-    "instruction": "Render the single unit-economics slide in BOTH variants (one per option) for Jaideep to choose the anchor. Do not invent a blended figure; each variant shows that one route's per-boat economics.",
+    "instruction": "Render the single unit-economics slide in BOTH variants (one per option) for Jaideep to choose the anchor. Do not invent a blended figure; each variant shows that one route's per-boat economics. Generator default below is Giftun (flagship / largest pool) until selection is locked.",
     "options": [
       {
         "route_id": "rn-b06f6971ed47",
@@ -17,20 +18,20 @@
         "route_label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
         "city_thesis": "Giftun Island is Hurghada's flagship excursion — white-sand islands and the Orange Bay and Mahmya reefs, reached by boat and drawing roughly 187,000 visitors a year.",
         "per_boat": {
-          "annual_pax": 7588,
+          "annual_pax": 7596,
           "fare_usd": 32.0,
-          "revenue_usd": 242827,
-          "opex_usd": 73959,
+          "revenue_usd": 243072,
+          "opex_usd": 73961,
           "opex_lines": {
-            "energy": 1359,
+            "energy": 1361,
             "crew": 21600,
             "marina_overhead": 8000,
             "maintenance": 10000,
             "insurance": 15000,
             "charging_berth": 18000
           },
-          "ebitda_usd": 168868,
-          "margin": 0.695,
+          "ebitda_usd": 169111,
+          "margin": 0.696,
           "payback_years": 3.55,
           "capex_usd": 600000
         }
@@ -41,19 +42,19 @@
         "route_label": "Sharm Marina → Ras Mohammed (reef jetty)",
         "city_thesis": "Ras Mohammed's reefs rank among the Red Sea's finest dive and snorkel sites, reached by boat from Sharm and drawing about 50,000 visitors a year.",
         "per_boat": {
-          "annual_pax": 5962,
+          "annual_pax": 5969,
           "fare_usd": 50.0,
-          "revenue_usd": 298114,
-          "opex_usd": 74494,
+          "revenue_usd": 298440,
+          "opex_usd": 74496,
           "opex_lines": {
-            "energy": 1894,
+            "energy": 1896,
             "crew": 21600,
             "marina_overhead": 8000,
             "maintenance": 10000,
             "insurance": 15000,
             "charging_berth": 18000
           },
-          "ebitda_usd": 223620,
+          "ebitda_usd": 223944,
           "margin": 0.75,
           "payback_years": 2.68,
           "capex_usd": 600000
@@ -61,44 +62,48 @@
       }
     ]
   },
-  "city_route_pairs": [
-    {
-      "pair_key": "hurghada",
-      "city_key": "hurghada",
-      "city_label": "Hurghada",
-      "route_label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
-      "route_id": "rn-b06f6971ed47",
-      "city_thesis": "Giftun Island is Hurghada's flagship excursion — white-sand islands and the Orange Bay and Mahmya reefs, reached by boat and drawing roughly 187,000 visitors a year.",
-      "selection_rule": "representative luxury-belt route; per-boat economics grounded on a premium day-trip per-seat fare"
-    },
-    {
-      "pair_key": "sharm",
-      "city_key": "sharm",
-      "city_label": "Sharm El Sheikh",
-      "route_label": "Sharm Marina → Ras Mohammed (reef jetty)",
-      "route_id": "rn-c16a1627130f",
-      "city_thesis": "Ras Mohammed's reefs rank among the Red Sea's finest dive and snorkel sites, reached by boat from Sharm and drawing about 50,000 visitors a year.",
-      "selection_rule": "representative luxury-belt route; per-boat economics grounded on a premium day-trip per-seat fare"
-    }
-  ],
+  "economics_route": {
+    "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+    "route_id": "rn-b06f6971ed47",
+    "desc": "Flagship Red Sea luxury-belt excursion; provisional unit-economics anchor pending Jaideep's choice between Giftun and Ras Mohammed."
+  },
+  "tam": {
+    "headline": "Two promoted luxury-belt routes are a grounded floor, not a ceiling",
+    "rungs": [
+      {
+        "label": "Supported annual route revenue today",
+        "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.market_rev_yr",
+        "value_usd": 7420110.0,
+        "note": "Giftun + Ras Mohammed only, mid-band grounded floor at ~90% captive capture. Three further Red Sea routes remain held."
+      },
+      {
+        "label": "Addressable Egypt luxury-belt water-crossing spend",
+        "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.transport_spend_pool_yr",
+        "value_usd": 8500384.0,
+        "note": "Labeled destination-pool × fare for the two promoted routes (not observed boardings). Captive floor is ~90% of this pool."
+      }
+    ]
+  },
   "country_total": {
-    "expected_annual_revenue_usd": null,
-    "expected_vessels_supported": null,
+    "expected_annual_revenue_usd": 7420110.0,
+    "expected_vessels_supported": 20,
     "supported_route_ids": [
       "rn-b06f6971ed47",
       "rn-c16a1627130f"
     ],
-    "note": "Country totals are populated by the regenerated aggregate (finance/recal/agg-indrive.json) after the deterministic cascade runs on the promoted scoped corridors with captive capture. Indicative captive figures pending cascade: transport spend pool ~$8.5M/yr, grounded floor ~$7.65M/yr at ~90% capture, ~30 vessels. Three further Red Sea routes remain held pending route-level demand and fare evidence.",
     "held_route_ids": [
       "rn-3d161664de08",
       "rn-173d32792c07",
       "rn-285fc16b29dc"
-    ]
+    ],
+    "note": "Mid-band grounded totals from finance/recal/agg-indrive.json after captive cascade (LB-254). Thin/today per-boat: Giftun 3.55-yr payback / 70% margin; Ras Mohammed 2.68-yr / 75%. Thin fleet raw ~29.8 boats; mid published fleet 20. Transport spend pool $8.50M; captive floor ~$7.65M raw."
   },
   "rules": {
     "id_matching": "exact",
     "unsupported_values": "null",
     "country_substitution": "forbidden",
+    "unit_economics_route": "single representative exact-bound route for the spine slide; dual variants live under unit_econ_anchor_options until Jaideep picks",
+    "tam_source": "aggregate grounded_floor_by_market.indrive-egypt (supported revenue floor + addressable spend pool); captive capture, no floor/0.10 recovery",
     "published_brazil_basis": null
   }
 }
