@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "artifact": "Egypt marine-mobility TAM ladder — correction of undercounted single-floor figure",
+    "partner": "indrive",
+    "market": "indrive-egypt",
+    "authored": "2026-07-14",
+    "owner": "Tasklet (sourcing) → Grok (cascade/bind)",
+    "reason": "The prior deck presented ~$8.5M (journey-GMV pool of two sealed captive corridors) as the Egypt TAM. That is the grounded floor (SOM), not the market. This artifact supplies the sourced upper rungs so growth_case reflects the true addressable Egypt marine-mobility opportunity. Captive rule LB-254 preserved: floor anchors on transport_spend_pool_yr, never floor/0.10.",
+    "discipline": "Exact where sourced; participation is an explicitly-labelled assumption band; unsourced corridors (Nile, Alexandria) held null. No invented demand, fares, or route IDs."
+  },
+  "rung_1_grounded_floor": {
+    "label_display": "Two boat-only routes we can size today",
+    "internal_label": "SOM — grounded floor",
+    "basis": "exact sourced visitor pools x observed day-trip fares, captive ~90% floor capture (LB-254); per-boat economics are fare-driven and capture-independent",
+    "routes": {
+      "rn-b06f6971ed47": {
+        "od": "Hurghada → Giftun Island",
+        "visitors_yr": 187512,
+        "fare_usd": 32,
+        "journey_gmv_usd": 6000384,
+        "source": "Egypt Tours Portal, accessed 2026-07-14"
+      },
+      "rn-c16a1627130f": {
+        "od": "Sharm → Ras Mohammed",
+        "visitors_yr": 50000,
+        "fare_usd": 50,
+        "journey_gmv_usd": 2500000,
+        "source": "Jakada Tours Egypt + corroboration, accessed 2026-07-14"
+      }
+    },
+    "journey_gmv_pool_usd": 8500384,
+    "navier_revenue_floor_usd": 7650346,
+    "assumptions": "none — fully sourced. This is the FLOOR, not the TAM."
+  },
+  "rung_2_serviceable_redsea": {
+    "label_display": "The wider Red Sea day-trip boat market",
+    "internal_label": "SAM — Red Sea day-trip boat market",
+    "sourced_base": {
+      "hurghada_arrivals_2023": 1900000,
+      "source": "UNWTO inbound figures via roadgenius.com, accessed 2026-07-14"
+    },
+    "participation_assumption_band": [
+      0.35,
+      0.55
+    ],
+    "participation_note": "LABELLED ASSUMPTION — reef/island snorkelling & diving day-trips are the headline Hurghada activity; band, not a sourced datum.",
+    "fare_usd": 32,
+    "hurghada_only_journey_gmv_usd": [
+      21280000,
+      33440000
+    ],
+    "held_upside": "Sharm/South Sinai + El Gouna, Marsa Alam, Dahab NOT added (no single clean public arrival figure) → this rung is a conservative floor of the true SAM; the three held Red Sea routes also land here once demand/fares are sourced.",
+    "assumptions": "participation band labelled; base sourced"
+  },
+  "rung_3_addressable_egypt_marine": {
+    "label_display": "Egypt's marine-mobility opportunity",
+    "internal_label": "TAM — Egypt marine mobility",
+    "context_totals": {
+      "egypt_arrivals_2024": 15780000,
+      "egypt_intl_tourism_spend_2024_usd": 15300000000,
+      "source": "UNWTO 2024 via roadgenius.com, accessed 2026-07-14"
+    },
+    "components": {
+      "red_sea_daytrips": "quantified in rung 2 (Hurghada sourced) + held resorts",
+      "nile_luxor_aswan_transit": {
+        "status": "HELD NULL",
+        "reason": "no route-level boardings sourced yet — candidate rung"
+      },
+      "alexandria_waterfront": {
+        "status": "HELD NULL",
+        "reason": "candidate geography only (PR #266); no scheduled network, no boardings"
+      }
+    },
+    "assumptions": "ceiling is context; marine slice quantified only where sourced; Nile + Alexandria explicitly null"
+  },
+  "ladder_transitions_plain_english": [
+    "Two islands, boat-only: about 187,500 people reach Giftun and about 50,000 reach Ras Mohammed each year by boat — the visitor flow we can put economics on today.",
+    "Hurghada alone hosts about 1.9 million visitors a year; a conservative share take a reef or island day-trip, which is several times larger than the two sealed routes — before Sharm and the other Red Sea resorts are added.",
+    "Egypt welcomes about 15.8 million visitors a year spending about $15 billion; the marine-relevant slice — Red Sea day-trips, plus Nile and Alexandria waterfront once sourced — is the full opportunity the two starter routes sit inside."
+  ]
+}
