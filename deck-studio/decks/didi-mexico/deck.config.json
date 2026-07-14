@@ -36,8 +36,10 @@
   "rules": [
     "Slides API only for live edits; do not create or round-trip a PPTX.",
     "Duplicate or bind the approved Grab mobility reference before applying source-backed substitutions.",
-    "Every city chapter is immediately followed by one representative route economics chapter.",
-    "Route IDs match canonical ROUTES.json exactly; unsupported values remain null.",
+    "Spine is locked: cover, why-partner, one country market overview, one slide per canonical city, one unit-economics slide, one country TAM ladder, integration, rollout, ask, close.",
+    "City slides follow canonical CLUSTERS.json membership for the country, never a route list.",
+    "The unit-economics slide uses one representative exact-bound route; route IDs match canonical ROUTES.json exactly; unsupported values remain null.",
+    "The TAM ladder uses grounded aggregate figures (supported route revenue floor, addressable water-crossing spend); never mixed-unit bars or internal metrics.",
     "Atlas route screenshot slots are reserved for Jaideep or another human and remain unpopulated by automation.",
     "N30 composites use source-approved market imagery, stable linked URLs, documented provenance, and minimal gold.",
     "Live deck IDs and slide manifests must be read back and synchronized after apply."
@@ -45,7 +47,8 @@
   "current_spec_requirements": {
     "reference_deck_key": "grab",
     "reference_deck_id": "11WCun1Xk1flPmqvvtYrYZXsL5yRb5KQoe0xvTQSppKo",
-    "city_economics_pairing": true,
+    "spine": "market-overview -> one slide per city -> one unit-economics -> TAM",
+    "city_source": "canonical CLUSTERS.json membership",
     "shared_economics_generator": "deck-studio/decks/gen_deck_economics.py",
     "atlas_screenshot_automation": "forbidden"
   },
@@ -54,6 +57,6 @@
     "gold": "minimal",
     "stable_linked_urls": true
   },
-  "generation_type": "deterministic_live_review_build",
-  "notes": "Approved Grab-lineage review build applied through Google Slides API and read back on 2026-07-13. Atlas screenshot slots remain reserved for human insertion. External release clearance is not claimed."
+  "generation_type": "deterministic_source_package",
+  "notes": "Source package only until preflight passes and an approved Slides API apply/readback is completed."
 }

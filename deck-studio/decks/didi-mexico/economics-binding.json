@@ -1,53 +1,34 @@
 {
-  "schema_version": "country-economics-binding-v2",
+  "schema_version": "country-economics-binding-v3",
   "deck_key": "didi-mexico",
   "partner_id": "didi",
   "country": "Mexico",
   "generator": "deck-studio/decks/gen_deck_economics.py",
   "aggregate_source": "finance/recal/agg-didi.json",
+  "aggregate_market_key": "mexico-caribbean",
   "canonical_routes_source": "data-clean/ROUTES.json",
-  "city_route_pairs": [
-    {
-      "pair_key": "cancun-isla-mujeres",
-      "city_key": "cancun-isla-mujeres",
-      "city_label": "Cancún and Isla Mujeres",
-      "route_label": "Puerto Juárez → Isla Mujeres",
-      "route_id": "ics-413f51cd44",
-      "city_thesis": "High-frequency island access from the Cancún waterfront.",
-      "hold_reason": null,
-      "selection_rule": "highest supported annual route revenue within the city chapter; source order breaks ties"
-    },
-    {
-      "pair_key": "playa-cozumel",
-      "city_key": "playa-cozumel",
-      "city_label": "Playa del Carmen and Cozumel",
-      "route_label": "Playa del Carmen → Cozumel",
-      "route_id": "ics-dd1d814699",
-      "city_thesis": "Mainland-to-island passenger connection.",
-      "hold_reason": null,
-      "selection_rule": "highest supported annual route revenue within the city chapter; source order breaks ties"
-    },
-    {
-      "pair_key": "vallarta-yelapa",
-      "city_key": "vallarta-yelapa",
-      "city_label": "Puerto Vallarta",
-      "route_label": "Puerto Vallarta → Yelapa",
-      "route_id": "ics-89a8844858",
-      "city_thesis": "Coastal access south of Puerto Vallarta.",
-      "hold_reason": "Annual revenue and fleet support remain blank because the route finance row is incomplete.",
-      "selection_rule": "highest supported annual route revenue within the city chapter; source order breaks ties"
-    },
-    {
-      "pair_key": "cabos",
-      "city_key": "cabos",
-      "city_label": "Los Cabos",
-      "route_label": "Cabo San Lucas Marina → Los Cabos",
-      "route_id": "ics-db0930d9d1",
-      "city_thesis": "Local marina connection in the Los Cabos area.",
-      "hold_reason": "Annual revenue and fleet support remain blank because route-level fare and financial inputs are incomplete.",
-      "selection_rule": "highest supported annual route revenue within the city chapter; source order breaks ties"
-    }
-  ],
+  "economics_route": {
+    "label": "Puerto Juárez → Isla Mujeres",
+    "route_id": "ics-413f51cd44",
+    "desc": "Cancún's highest-frequency island crossing."
+  },
+  "tam": {
+    "headline": "The supported routes are a floor, not a ceiling",
+    "rungs": [
+      {
+        "label": "Supported annual route revenue today",
+        "aggregate_field": "rollup.grounded_floor_by_market.mexico-caribbean.market_rev_yr",
+        "value_usd": 14759160.0,
+        "note": "Three sourced Caribbean crossings, 88 vessels at scale."
+      },
+      {
+        "label": "Addressable Mexico water-crossing spend",
+        "aggregate_field": "rollup.grounded_floor_by_market.mexico-caribbean.transport_spend_pool_yr",
+        "value_usd": 149933425.0,
+        "note": "Annual passenger spend across the coastal crossings the network can compete for."
+      }
+    ]
+  },
   "country_total": {
     "expected_annual_revenue_usd": 14759160.0,
     "expected_vessels_supported": 88,
@@ -61,6 +42,8 @@
     "id_matching": "exact",
     "unsupported_values": "null",
     "country_substitution": "forbidden",
+    "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
+    "tam_source": "aggregate grounded_floor_by_market (supported revenue floor + addressable spend pool); no mixed-unit bars",
     "published_brazil_basis": null
   }
 }

@@ -1,9 +1,10 @@
 {
-  "schema_version": "country-market-scope-v2",
+  "schema_version": "country-market-scope-v3",
   "deck_key": "didi-mexico",
   "partner_id": "didi",
   "country": "Mexico",
   "geography_rule": "global_canonical intersection partner clusters",
+  "city_source": "data-clean/CLUSTERS.json canonical member cities for the country cluster",
   "source_paths": [
     "partner-pitch/partners/didi.json",
     "data-clean/partners/didi.json",
@@ -14,39 +15,36 @@
     "mexico-caribbean",
     "mexico-pacific"
   ],
-  "city_route_pairs": [
+  "cities": [
     {
-      "pair_key": "cancun-isla-mujeres",
-      "city_key": "cancun-isla-mujeres",
-      "city_label": "Cancún and Isla Mujeres",
-      "route_label": "Puerto Juárez → Isla Mujeres",
-      "route_id": "ics-413f51cd44",
-      "city_thesis": "High-frequency island access from the Cancún waterfront."
+      "key": "cancun-isla",
+      "label": "Cancún and Isla Mujeres",
+      "supported": true,
+      "hold_reason": null
     },
     {
-      "pair_key": "playa-cozumel",
-      "city_key": "playa-cozumel",
-      "city_label": "Playa del Carmen and Cozumel",
-      "route_label": "Playa del Carmen → Cozumel",
-      "route_id": "ics-dd1d814699",
-      "city_thesis": "Mainland-to-island passenger connection."
+      "key": "playa-cozumel",
+      "label": "Playa del Carmen and Cozumel",
+      "supported": true,
+      "hold_reason": null
     },
     {
-      "pair_key": "vallarta-yelapa",
-      "city_key": "vallarta-yelapa",
-      "city_label": "Puerto Vallarta",
-      "route_label": "Puerto Vallarta → Yelapa",
-      "route_id": "ics-89a8844858",
-      "city_thesis": "Coastal access south of Puerto Vallarta."
+      "key": "vallarta",
+      "label": "Puerto Vallarta",
+      "supported": false,
+      "hold_reason": "Route-level fare and financial inputs are incomplete; economics remain blank until confirmed."
     },
     {
-      "pair_key": "cabos",
-      "city_key": "cabos",
-      "city_label": "Los Cabos",
-      "route_label": "Cabo San Lucas Marina → Los Cabos",
-      "route_id": "ics-db0930d9d1",
-      "city_thesis": "Local marina connection in the Los Cabos area."
+      "key": "cabos",
+      "label": "Los Cabos",
+      "supported": false,
+      "hold_reason": "Route-level fare and financial inputs are incomplete; economics remain blank until confirmed."
     }
   ],
+  "economics_route": {
+    "label": "Puerto Juárez → Isla Mujeres",
+    "route_id": "ics-413f51cd44",
+    "desc": "Cancún's highest-frequency island crossing."
+  },
   "unsupported_values_policy": "null"
 }
