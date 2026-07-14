@@ -1,0 +1,79 @@
+{
+  "receipt": "INDRIVE-EGYPT-CASCADE-RECEIPT-2026-07-14",
+  "generated": "2026-07-14",
+  "inputs": {
+    "pr_source": ["#265", "#266"],
+    "corridors": "finance/recal/corridors-indrive.json",
+    "capture_treatment": "captive (~0.90 floor, LB-254)",
+    "promoted_route_ids": ["rn-b06f6971ed47", "rn-c16a1627130f"],
+    "held_route_ids": ["rn-3d161664de08", "rn-173d32792c07", "rn-285fc16b29dc"]
+  },
+  "gates": {
+    "country_reference": "PASS",
+    "active_corridors": 6,
+    "held_corridors": 3
+  },
+  "cascade_steps": [
+    "validate_country_reference.py --partner indrive",
+    "aggregate.py --partner indrive --corridors finance/recal/corridors-indrive.json",
+    "growth.py --partner indrive",
+    "growth_frontend_block.py --partner indrive",
+    "splice_growth_into_partner.py --partner indrive",
+    "build_transparent_sheet.py --partner indrive --corridors finance/recal/corridors-indrive.json",
+    "gen_deck_economics.py → deck-studio/decks/indrive-egypt/generated-deck-economics.json"
+  ],
+  "egypt_market_mid_band": {
+    "fleet": 20,
+    "market_rev_yr": 7420110.0,
+    "transport_spend_pool_yr": 8500384.0,
+    "note": "Mid-band is the published country-total / TAM floor basis (matches Brazil deck convention)."
+  },
+  "egypt_thin_today_unit_econ": {
+    "rn-b06f6971ed47": {
+      "name": "Hurghada → Giftun",
+      "pax_per_boat_yr": 7596,
+      "fare_usd": 32.0,
+      "rev_per_boat_yr": 243072,
+      "opex_yr": 73961,
+      "margin": 0.696,
+      "payback_years": 3.55,
+      "vessels_supported_raw": 22.22,
+      "captive_floor_raw_usd": 5400346
+    },
+    "rn-c16a1627130f": {
+      "name": "Sharm → Ras Mohammed",
+      "pax_per_boat_yr": 5969,
+      "fare_usd": 50.0,
+      "rev_per_boat_yr": 298440,
+      "opex_yr": 74496,
+      "margin": 0.75,
+      "payback_years": 2.68,
+      "vessels_supported_raw": 7.54,
+      "captive_floor_raw_usd": 2250000
+    },
+    "market_thin_fleet_raw": 29.76,
+    "market_thin_floor_raw_usd": 7650346
+  },
+  "partner_level_growth_note": "Partner-wide effective_capture remains ~0.126 because Brazil is contested 0.10 and dominates the pool. Egypt market is captive; M_today anchors on transport_spend_pool_yr (no floor/0.10 recovery).",
+  "deck": {
+    "generated": "deck-studio/decks/indrive-egypt/generated-deck-economics.json",
+    "schema": "country-deck-economics-v3",
+    "economics_route_default": "rn-b06f6971ed47",
+    "unit_econ_selection": "pending_jaideep",
+    "country_total_status": "supported",
+    "slides_seal": "not_applied — dual unit-econ variants + live Slides apply still need Jaideep anchor pick and human Atlas screenshots"
+  },
+  "artifacts": {
+    "agg": "finance/recal/agg-indrive.json",
+    "growth": "finance/recal/growth-indrive.json",
+    "growth_frontend": "finance/recal/growth-frontend-indrive.json",
+    "partner_json": "partner-pitch/partners/indrive.json",
+    "sheet": "finance/_sheet_out/indrive_unit_econ.xlsx"
+  },
+  "still_null": {
+    "held_routes": ["Sahl Hasheesh", "Soma Bay", "Sharks Bay"],
+    "cairo": "excluded Nile/river",
+    "alexandria": "candidate geography only — see GROK-SPEC-alexandria-candidate-geography-2026-07-14.md"
+  },
+  "status": "cascade complete for source + deck economics sidecar; live Slides seal and unit-econ anchor selection still open"
+}
