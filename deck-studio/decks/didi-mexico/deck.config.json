@@ -1,40 +1,59 @@
 {
   "deck_key": "didi-mexico",
   "deck_id": "1llJbJgVOejzupIreUzsrvEkIL0Y8pgaW5WPO8OUh6R8",
-  "display_name": "DiDi × Navier — Mexico Water Mobility Proposal",
-  "deck_type": "country_proposal",
-  "partner_id": "didi",
-  "country": "Mexico",
-  "archetype": "super_app",
-  "live_deck_url": "https://docs.google.com/presentation/d/1llJbJgVOejzupIreUzsrvEkIL0Y8pgaW5WPO8OUh6R8/edit",
-  "reference_deck": {
-    "deck_key": "didi",
-    "deck_id": "1UGvIK9VvzoxKnKcX0W3CQoT2VJqaqQewreJ5kmd64mc"
-  },
+  "display_name": "DiDi × Navier — Mexico mobility review",
+  "deck_type": "country_mobility_review",
   "editing_mode": "slides_api_only",
-  "page_size_emu": {
-    "width": 9144000,
-    "height": 5143500
-  },
-  "economics_sheet_id": "1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM",
-  "economics_url": "https://docs.google.com/spreadsheets/d/1LY0Vp7FskgDDnEixkrEUCH0m-A_pYd2YCNuq3LF8ESM/edit",
+  "live_deck_url": "https://docs.google.com/presentation/d/1llJbJgVOejzupIreUzsrvEkIL0Y8pgaW5WPO8OUh6R8/edit",
+  "partner_id": "didi",
+  "slide_manifest": "deck-studio/decks/didi-mexico/slide-manifest.json",
+  "content_source": "deck-studio/decks/didi-mexico/content-source.json",
+  "image_manifest": "deck-studio/decks/didi-mexico/image-manifest.json",
   "source_paths": [
     "partner-pitch/partners/didi.json",
-    "data-clean/ROUTES.json",
+    "data-clean/partners/didi.json",
     "finance/recal/agg-didi.json",
-    "finance/model/country-reference.json"
+    "data-clean/ROUTES.json",
+    "deck-studio/decks/didi-mexico/market-scope.json",
+    "deck-studio/decks/didi-mexico/economics-binding.json",
+    "deck-studio/decks/didi-mexico/generated-deck-economics.json"
+  ],
+  "canonical_market_scope": [
+    "mexico-caribbean",
+    "mexico-pacific"
   ],
   "cover_logos": {
     "navier_logo": {
-      "status": "banked"
+      "status": "banked",
+      "asset_path": "deck-studio/assets/logos/navier/navier-wordmark-white.png"
     },
     "partner_logo": {
       "status": "banked",
-      "path": "deck-studio/assets/logos/partners/didi/didi-logo-official.png"
+      "asset_path": "deck-studio/assets/logos/partners/didi/didi-logo-official.png",
+      "provenance": "deck-studio/assets/logos/partners/didi/LOGO-SOURCE.json"
     }
   },
-  "slide_manifest": "slide-manifest.json",
-  "content_source": "content-source.json",
-  "image_manifest": "image-manifest.json",
-  "last_pulled_at": "2026-07-13T20:00:00Z"
+  "rules": [
+    "Slides API only for live edits; do not create or round-trip a PPTX.",
+    "Duplicate or bind the approved Grab mobility reference before applying source-backed substitutions.",
+    "Every city chapter is immediately followed by one representative route economics chapter.",
+    "Route IDs match canonical ROUTES.json exactly; unsupported values remain null.",
+    "Atlas route screenshot slots are reserved for Jaideep or another human and remain unpopulated by automation.",
+    "N30 composites use source-approved market imagery, stable linked URLs, documented provenance, and minimal gold.",
+    "Live deck IDs and slide manifests must be read back and synchronized after apply."
+  ],
+  "current_spec_requirements": {
+    "reference_deck_key": "grab",
+    "reference_deck_id": "11WCun1Xk1flPmqvvtYrYZXsL5yRb5KQoe0xvTQSppKo",
+    "city_economics_pairing": true,
+    "shared_economics_generator": "deck-studio/decks/gen_deck_economics.py",
+    "atlas_screenshot_automation": "forbidden"
+  },
+  "asset_policy": {
+    "n30_compositing": "market-specific",
+    "gold": "minimal",
+    "stable_linked_urls": true
+  },
+  "generation_type": "deterministic_source_package",
+  "notes": "Source package only until preflight passes and an approved Slides API apply/readback is completed."
 }
