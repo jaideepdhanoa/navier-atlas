@@ -173,11 +173,24 @@ def main() -> int:
             raise SystemExit(
                 f"TAM rung '{rung.get('label')}' mismatch: aggregate {val} vs binding {expected}"
             )
-        tam_rungs.append({"label": rung.get("label"), "value_usd": val, "note": rung.get("note")})
+        # Binding-supplied upper rungs (handoff ladder / labelled assumption bands) may set
+        # value_usd without an aggregate field. Aggregate remains authoritative when present.
+        if val is None and expected is not None:
+            val = expected
+        out_rung: dict[str, Any] = {
+            "label": rung.get("label"),
+            "value_usd": val,
+            "note": rung.get("note"),
+        }
+        for opt in ("value_usd_low", "value_usd_high", "value_basis", "status"):
+            if rung.get(opt) is not None:
+                out_rung[opt] = rung.get(opt)
+        tam_rungs.append(out_rung)
     tam_out = {
         "headline": tam_spec.get("headline"),
         "rungs": tam_rungs,
         "hold_reason": tam_spec.get("hold_reason"),
+        "source": tam_spec.get("source"),
     }
 
     total_spec = binding["country_total"]
