@@ -1,40 +1,58 @@
 {
   "deck_key": "indrive-egypt",
   "deck_id": "1hNyCMz8UTmfzTghYX5xwU9aZv0x3U975JJMkDVhUVCg",
-  "display_name": "inDrive × Navier — Egypt Water Mobility Proposal",
-  "deck_type": "country_proposal",
-  "partner_id": "indrive",
-  "country": "Egypt",
-  "archetype": "super_app",
-  "live_deck_url": "https://docs.google.com/presentation/d/1hNyCMz8UTmfzTghYX5xwU9aZv0x3U975JJMkDVhUVCg/edit",
-  "reference_deck": {
-    "deck_key": "didi",
-    "deck_id": "1UGvIK9VvzoxKnKcX0W3CQoT2VJqaqQewreJ5kmd64mc"
-  },
+  "display_name": "inDrive × Navier — Egypt mobility review",
+  "deck_type": "country_mobility_review",
   "editing_mode": "slides_api_only",
-  "page_size_emu": {
-    "width": 9144000,
-    "height": 5143500
-  },
-  "economics_sheet_id": "1xo2a-XalddB6kRiLKzB7RIrV-u29LJmt3N2zc7ik3_k",
-  "economics_url": "https://docs.google.com/spreadsheets/d/1xo2a-XalddB6kRiLKzB7RIrV-u29LJmt3N2zc7ik3_k/edit",
+  "live_deck_url": "https://docs.google.com/presentation/d/1hNyCMz8UTmfzTghYX5xwU9aZv0x3U975JJMkDVhUVCg/edit",
+  "partner_id": "indrive",
+  "slide_manifest": "deck-studio/decks/indrive-egypt/slide-manifest.json",
+  "content_source": "deck-studio/decks/indrive-egypt/content-source.json",
+  "image_manifest": "deck-studio/decks/indrive-egypt/image-manifest.json",
   "source_paths": [
     "partner-pitch/partners/indrive.json",
-    "data-clean/ROUTES.json",
+    "data-clean/partners/indrive.json",
     "finance/recal/agg-indrive.json",
-    "finance/model/country-reference.json"
+    "data-clean/ROUTES.json",
+    "deck-studio/decks/indrive-egypt/market-scope.json",
+    "deck-studio/decks/indrive-egypt/economics-binding.json",
+    "deck-studio/decks/indrive-egypt/generated-deck-economics.json"
+  ],
+  "canonical_market_scope": [
+    "Egypt routes held pending exact support"
   ],
   "cover_logos": {
     "navier_logo": {
-      "status": "banked"
+      "status": "banked",
+      "asset_path": "deck-studio/assets/logos/navier/navier-wordmark-white.png"
     },
     "partner_logo": {
       "status": "banked",
-      "path": "deck-studio/assets/logos/partners/indrive/indrive-logo-white-cover.png"
+      "asset_path": "deck-studio/assets/logos/partners/indrive/indrive-logo-white-cover.png",
+      "provenance": "deck-studio/assets/logos/partners/indrive/LOGO-SOURCE.json"
     }
   },
-  "slide_manifest": "slide-manifest.json",
-  "content_source": "content-source.json",
-  "image_manifest": "image-manifest.json",
-  "last_pulled_at": "2026-07-13T20:00:00Z"
+  "rules": [
+    "Slides API only for live edits; do not create or round-trip a PPTX.",
+    "Duplicate or bind the approved Grab mobility reference before applying source-backed substitutions.",
+    "Every city chapter is immediately followed by one representative route economics chapter.",
+    "Route IDs match canonical ROUTES.json exactly; unsupported values remain null.",
+    "Atlas route screenshot slots are reserved for Jaideep or another human and remain unpopulated by automation.",
+    "N30 composites use source-approved market imagery, stable linked URLs, documented provenance, and minimal gold.",
+    "Live deck IDs and slide manifests must be read back and synchronized after apply."
+  ],
+  "current_spec_requirements": {
+    "reference_deck_key": "grab",
+    "reference_deck_id": "11WCun1Xk1flPmqvvtYrYZXsL5yRb5KQoe0xvTQSppKo",
+    "city_economics_pairing": true,
+    "shared_economics_generator": "deck-studio/decks/gen_deck_economics.py",
+    "atlas_screenshot_automation": "forbidden"
+  },
+  "asset_policy": {
+    "n30_compositing": "market-specific",
+    "gold": "minimal",
+    "stable_linked_urls": true
+  },
+  "generation_type": "deterministic_source_package",
+  "notes": "Source package only until preflight passes and an approved Slides API apply/readback is completed."
 }

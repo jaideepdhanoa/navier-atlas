@@ -1,392 +1,217 @@
 #!/usr/bin/env python3
+"""Generate route-paired country-deck economics from canonical aggregate rows.
+
+This is the only country-review deck economics path. It never borrows a route,
+market, or country: unsupported values are emitted as null with a hold reason.
 """
-gen_deck_economics.py — deterministic deck VALUE generator (Grok-owned).
+from __future__ import annotations
 
-Produces every NUMBER a partner deck needs, pulled straight from the model engine
-(finance/recal/agg-<partner>.json + finance/recal/growth-<partner>.json). No hand-typing,
-no judgement. Pairs with deck-studio/decks/<partner>/economics-binding.json:
-  binding  = WHERE  (object_ids per field)        <- already in repo
-  this file = WHAT   (formatted value per field)   <- generated here
-Grok joins value[slide][field] -> binding[slide][field].object_id -> style-preserving text op.
+import argparse
+import hashlib
+import json
+from pathlib import Path
+from typing import Any
 
-Emits, keyed to the binding's field names:
-  - slide3_kpi      : the 4 network KPI cards  (+ six per-market cards for the slide-3 grid)
-  - slide10_tam     : the 5 TAM-ladder rungs
-  - economics_slides: per-market unit economics for every slide-7-family index
-                      (revenue build, the 6-line flush-left OPEX, results)
+VALUE_KEYS = (
+    "annual_one_way_pax",
+    "one_way_fare_usd",
+    "annual_revenue_usd",
+    "vessels_supported",
+)
 
-Usage (run from repo root):
-  python3 deck-studio/decks/gen_deck_economics.py <partner>
-  python3 deck-studio/decks/gen_deck_economics.py grab --validate   # reproduce gold, write nothing
 
-Sources (read-only, the ONLY origin of numbers):
-  finance/recal/agg-<partner>.json        rows[] (per-corridor thin/mid/full), rollup
-  finance/recal/growth-<partner>.json     grounded{} + estimated_total{} LB-254 ladder
-  deck-studio/decks/<partner>/market-scope.json     ordered deck markets (scope source)
-  deck-studio/decks/<partner>/economics-binding.json  which slides/fields exist
-"""
-import json, os, sys, datetime
-from collections import defaultdict
+def read_json(path: Path) -> Any:
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(ROOT, "finance"))
-from partner_platform_rev import shows_platform_revenue  # noqa: E402
 
-def P(*a): return os.path.join(ROOT, *a)
+def sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
-def money(x):
-    return None if x is None else f"${x:,.0f}"
-def pct(x):
-    return None if x is None else f"{round(x*100)}%"
-def f1(x):
-    return None if x is None else f"{x:.1f}"
 
-# ---- ladder formatting for headline KPIs / TAM rungs (M vs B autoscale) ----
-def usd_compact(x):
-    if x is None: return None
-    a = abs(x)
-    if a >= 1e9:  return f"${x/1e9:.1f}B"
-    if a >= 1e6:  return f"${x/1e6:.0f}M"
-    return f"${x:,.0f}"
+def null_values() -> dict[str, None]:
+    return {k: None for k in VALUE_KEYS}
 
-# ---------- representative-corridor selection (deterministic) ----------
-def representative_corridor(rows, market_key):
-    """Deck slide-7-family shows ONE flagship corridor per market.
-    Rule (fixed, no judgement): grounded corridors first, then by revenue_per_boat_yr desc.
-    If no grounded corridor exists for the market, fall back to estimated, same sort.
-    Returns the row dict or None."""
-    cand = [r for r in rows if r.get("market") == market_key and not (r.get("is_dup") or r.get("status") == "duplicate")]
-    if not cand:
-        return None
-    def keyf(r):
-        grounded = 0 if r.get("status") == "grounded" else 1
-        rev = (r.get("mid", {}) or {}).get("revenue_per_boat_yr") or 0
-        return (grounded, -rev)
-    cand.sort(key=keyf)
-    return cand[0]
 
-# ---------- per-slide econ field values from one corridor row ----------
-def econ_fields(row):
-    mid = row.get("mid", {}) or {}
-    cc  = mid.get("cost_components", {}) or {}
-    asmp = mid.get("assumptions", {}) or {}
-    rev = mid.get("revenue_per_boat_yr")
-    opex_total = mid.get("annual_opex")
-    profit = mid.get("ebitda_per_boat_yr")
-    dep = cc.get("depreciation_usd_yr")
-    # capex derived from the model's OWN depreciation output (capex = dep * dep_years[20]);
-    # this reproduces the region rule ($900K US/EU, $600K RoW) without re-encoding it.
-    capex = round(dep * 20) if dep else None
-    nm = row.get("nm")
-    vessel = mid.get("vessel") or "N30 Pioneer II"
-    pax_cap = asmp.get("pax_capacity")
-    corridor = row.get("corridor")
-    fare = mid.get("navier_fare_usd")
-    margin = mid.get("margin")
-    payback = mid.get("payback_years")
-    co2 = mid.get("co2_saved_t_per_boat_yr")
-    profitable = (profit or 0) > 0
-    summary = None
-    if rev is not None and opex_total is not None and profit is not None:
-        summary = (f"{money(rev)} revenue  \u2212  {money(opex_total)} run cost  =  "
-                   f"{money(profit)} profit / boat\u00b7yr  \u00b7  {pct(margin)} margin  \u00b7  "
-                   f"{f1(payback) + ' yrs payback' if payback is not None else 'payback n/a'}")
-    route_line = None
-    if corridor:
-        route_line = f"{corridor}  \u00b7  ~{round(nm)} nm  \u00b7  {vessel} ({pax_cap} seats)" if nm else f"{corridor}  \u00b7  {vessel} ({pax_cap} seats)"
+def row_values(row: dict[str, Any]) -> dict[str, Any]:
+    mid = row.get("mid") or {}
     return {
-        "title": (f"profitable from year one" if profitable else None),
-        "route_line": route_line,
-        "summary_line": summary,
-        "trips_per_day": (str(mid.get("trips_per_day")) if mid.get("trips_per_day") is not None else None),
-        "operating_days": (str(asmp.get("operating_days_yr")) if asmp.get("operating_days_yr") is not None else None),
-        "revenue_legs": pct(asmp.get("revenue_leg_pct")),
-        "seats_per_trip": f1(mid.get("pax_per_trip")),
-        "paid_seats_yr": (f"{round(mid.get('pax_per_year')):,}" if mid.get("pax_per_year") is not None else None),
-        "premium_fare": (f"{money(fare)} / seat" if fare is not None else None),
-        "revenue_per_boat": money(rev),
-        "opex_energy": money(cc.get("energy_usd_yr")),
-        "opex_crew": money(cc.get("crew_usd_yr")),
-        "opex_marina": money(cc.get("marina_overhead_usd_yr")),
-        "opex_maintenance": money(cc.get("maintenance_usd_yr")),
-        "opex_insurance": money(cc.get("insurance_usd_yr")),
-        "opex_charging_berth": money(cc.get("charging_berth_usd_yr")),
-        "opex_total": money(opex_total),
-        "result_profit": money(profit),
-        "result_margin": pct(margin),
-        "result_capex": money(capex),
-        "result_payback": (f"{f1(payback)} yrs" if payback is not None else None),
-        "result_co2": (f"{f1(co2)} t" if co2 is not None else None),
-    }
-
-def hospitality_appendix_fields(row: dict) -> dict:
-    """Format one sealed hospitality sidecar corridor for appendix cards."""
-    rev = row.get("revenue_per_vessel_year_usd")
-    opex = row.get("total_run_cost_usd")
-    kept = row.get("kept_per_vessel_year_usd")
-    margin = row.get("operating_margin")
-    payback = row.get("payback_years")
-    co2 = row.get("co2_avoided_tonnes_year")
-    dist = row.get("distance_nm_sealed") or row.get("distance_nm_working")
-    equation = None
-    if rev is not None and opex is not None and kept is not None:
-        equation = f"{money(rev)} revenue   −   {money(opex)} to run   =   "
-    return {
-        "eyebrow": None,
-        "title": row.get("corridor"),
-        "distance_line": row.get("distance_nm_working"),
-        "equation_line": equation,
-        "column1_value": money(rev),
-        "column2_value": money(opex),
-        "column3_value": money(kept),
-        "result_kept": money(kept),
-        "result_margin": pct(margin),
-        "result_payback": (f"{f1(payback)} yrs" if payback is not None else None),
-        "result_co2": (f"{co2} t/yr" if co2 is not None else None),
-        "co2_avoided_tonnes_year": co2,
-        "opex_energy": money(row.get("energy_usd")),
-        "opex_crew": money(row.get("captain_crew_usd")),
-        "opex_marina": money(row.get("marina_overhead_usd")),
-        "opex_maintenance": money(row.get("maintenance_usd")),
-        "opex_insurance": money(row.get("insurance_usd")),
-        "opex_shore_power": money(row.get("shore_power_berth_usd")),
-        "opex_total": money(opex),
-        "vessel_investment_usd": money(row.get("vessel_investment_usd")),
-        "route_id": row.get("route_id"),
-        "route_status": row.get("route_status"),
+        "annual_one_way_pax": mid.get("pax_per_year"),
+        "one_way_fare_usd": mid.get("navier_fare_usd"),
+        "annual_revenue_usd": mid.get("market_revenue_yr"),
+        "vessels_supported": mid.get("vessels_supported_10pct"),
     }
 
 
-def gen_hospitality_economics(partner: str, binding: dict) -> dict:
-    sidecar_path = binding.get("sidecar_source")
-    if not sidecar_path:
-        raise SystemExit(f"hospitality binding for {partner} missing sidecar_source")
-    sidecar = json.load(open(P(*sidecar_path.split("/"))))
-    if isinstance(sidecar, list):
-        by_cluster = {r["cluster_id"]: r for r in sidecar}
-    else:
-        by_cluster = sidecar.get("clusters") or sidecar
-    appendix = {}
-    for card in binding.get("appendix_cards", []):
-        cid = card.get("cluster_id")
-        row = by_cluster.get(cid) if isinstance(by_cluster, dict) else None
-        if row is None and isinstance(sidecar, list):
-            row = next((r for r in sidecar if r.get("cluster_id") == cid), None)
+def is_supported(values: dict[str, Any]) -> bool:
+    return all(values.get(k) is not None for k in VALUE_KEYS)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--binding", required=True, type=Path)
+    ap.add_argument("--aggregate", required=True, type=Path)
+    ap.add_argument("--routes", required=True, type=Path)
+    ap.add_argument("--out", required=True, type=Path)
+    args = ap.parse_args()
+
+    binding = read_json(args.binding)
+    aggregate = read_json(args.aggregate)
+    routes = read_json(args.routes)
+
+    route_ids = {
+        (r.get("properties") or {}).get("id")
+        for r in routes
+        if isinstance(r, dict)
+    }
+    rows = aggregate.get("rows") or []
+    row_by_route: dict[str, dict[str, Any]] = {}
+    duplicates: set[str] = set()
+    for row in rows:
+        rid = row.get("route_id")
+        if not rid:
+            continue
+        if rid in row_by_route:
+            duplicates.add(rid)
+        row_by_route[rid] = row
+    if duplicates:
+        raise SystemExit(f"duplicate aggregate route IDs: {sorted(duplicates)}")
+
+    pair_values: list[dict[str, Any]] = []
+    for pair in binding["city_route_pairs"]:
+        rid = pair.get("route_id")
+        base = {
+            "pair_key": pair["pair_key"],
+            "city_key": pair["city_key"],
+            "city_label": pair["city_label"],
+            "route_label": pair["route_label"],
+            "route_id": rid,
+        }
+        if rid is None:
+            pair_values.append({
+                **base,
+                "status": "held",
+                "values": null_values(),
+                "hold_reason": pair["hold_reason"],
+            })
+            continue
+        if rid not in route_ids:
+            raise SystemExit(f"{pair['pair_key']}: route ID absent from canonical ROUTES.json: {rid}")
+        row = row_by_route.get(rid)
         if row is None:
-            appendix[str(card["slide_index"])] = {
-                "status": "no_sidecar_row_hold_null",
-                "cluster_id": cid,
-                "fields": None,
-            }
+            pair_values.append({
+                **base,
+                "status": "held",
+                "values": null_values(),
+                "hold_reason": pair.get("hold_reason") or "No route-level finance row is available.",
+            })
             continue
-        fields = hospitality_appendix_fields(row)
-        fields["eyebrow"] = card.get("eyebrow")
-        if card.get("title"):
-            fields["title"] = card["title"]
-        if card.get("distance_line"):
-            fields["distance_line"] = card["distance_line"]
-        appendix[str(card["slide_index"])] = {
-            "status": row.get("route_status", "sealed"),
-            "cluster_id": cid,
-            "market_slug": card.get("market_slug"),
-            "route_id": row.get("route_id"),
-            "fields": fields,
-        }
-    return {
-        "_meta": {
-            "doc": "Hospitality deck VALUE sidecar — sealed sidecar only, no mobility ladder.",
-            "partner": partner,
-            "deck_type": "hospitality",
-            "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "sources": [sidecar_path, f"deck-studio/decks/{partner}/economics-binding.json"],
-            "economics_frame": binding.get("economics_frame"),
-            "operator_framing": (binding.get("economics_frame") or {}).get("operator_framing"),
-            "vessel_investment_usd": (binding.get("economics_frame") or {}).get("vessel_investment_usd"),
-            "provenance_note": "Hospitality appendix cards only — no SOM/SAM/TAM ladder.",
-        },
-        "appendix_cards": appendix,
-        "slide3_kpi": None,
-        "slide10_tam": None,
-        "economics_slides": None,
-    }
-
-
-def main():
-    if len(sys.argv) < 2:
-        print("usage: gen_deck_economics.py <partner> [--validate]", file=sys.stderr); sys.exit(2)
-    partner = sys.argv[1]
-    validate = "--validate" in sys.argv
-    binding_path = P("deck-studio", "decks", partner, "economics-binding.json")
-    binding = json.load(open(binding_path)) if os.path.isfile(binding_path) else {}
-    if binding.get("deck_type") == "hospitality":
-        out = gen_hospitality_economics(partner, binding)
-        outp = P("deck-studio", "decks", partner, f"deck-economics-values-{partner}.json")
-        json.dump(out, open(outp, "w"), indent=2)
-        filled = sum(1 for v in out["appendix_cards"].values() if v.get("fields"))
-        print(f"wrote {outp} (hospitality)")
-        print(f"appendix cards filled: {filled}/{len(out['appendix_cards'])}")
-        return
-
-    agg_rel = binding.get("agg_source") or f"finance/recal/agg-{partner}.json"
-    growth_rel = binding.get("growth_source") or f"finance/recal/growth-{partner}.json"
-    agg = json.load(open(P(*agg_rel.split("/"))))
-    rows = agg.get("rows", [])
-
-    if validate:
-        # Reproduce gold: for each econ slide in the binding, find the row whose
-        # revenue_per_boat matches the sample, then assert every formatted field matches.
-        rev_index = {}
-        for r in rows:
-            v = (r.get("mid", {}) or {}).get("revenue_per_boat_yr")
-            if v is not None:
-                rev_index.setdefault(round(v), r)
-        checks = passes = 0
-        for s in binding.get("economics_slides", []):
-            fld = s.get("fields", {})
-            samp_rev = fld.get("revenue_per_boat", {}).get("sample_value")
-            if not samp_rev: continue
-            target = int(samp_rev.replace("$", "").replace(",", ""))
-            row = rev_index.get(target)
-            if not row:
-                print(f"slide {s['slide_index']}: no row matches {samp_rev} (market changed) — skip"); continue
-            got = econ_fields(row)
-            for k in ["opex_energy","opex_crew","opex_marina","opex_maintenance","opex_total",
-                      "result_profit","result_margin","result_payback","result_co2",
-                      "trips_per_day","operating_days","revenue_legs","seats_per_trip","paid_seats_yr"]:
-                if k in fld:
-                    checks += 1
-                    want = fld[k].get("sample_value")
-                    if got.get(k) == want: passes += 1
-                    else: print(f"  slide {s['slide_index']} {k}: gen={got.get(k)!r} gold={want!r}")
-        print(f"VALIDATE {partner}: {passes}/{checks} field-formats reproduce gold")
-        return
-
-    scope = json.load(open(P("deck-studio", "decks", partner, "market-scope.json")))
-    markets = scope["markets"]
-    econ_slides = sorted([s["slide_index"] for s in binding.get("economics_slides", [])])
-
-    # map econ slides (in index order) -> markets (in scope order)
-    out_econ = {}
-    for i, sidx in enumerate(econ_slides):
-        if i < len(markets):
-            mk = markets[i]
-            row = representative_corridor(rows, mk["key"])
-            if row is None:
-                out_econ[str(sidx)] = {"status": "no_corridor_for_market_hold_null", "market": mk["label"], "fields": None}
-            else:
-                f = econ_fields(row)
-                f["header_market"] = f"WHAT ONE BOAT EARNS \u00b7 {mk['label'].upper()}"
-                if f.get("title"):
-                    market_short = mk["label"].split(" \u2014 ")[0]
-                    f["title"] = f"{market_short}: profitable from year one"
-                out_econ[str(sidx)] = {"status": row.get("status"), "market": mk["label"],
-                                       "corridor": row.get("corridor"), "route_id": row.get("route_id"),
-                                       "fields": f}
+        if row.get("country") != binding["country"]:
+            raise SystemExit(
+                f"{pair['pair_key']}: aggregate country {row.get('country')!r} "
+                f"does not match {binding['country']!r}"
+            )
+        values = row_values(row)
+        if not is_supported(values):
+            pair_values.append({
+                **base,
+                "status": "held",
+                "values": null_values(),
+                "hold_reason": pair.get("hold_reason") or "Route-level demand, fare, or operating inputs are incomplete.",
+            })
         else:
-            out_econ[str(sidx)] = {"status": "no_market_drop_slide", "market": None, "fields": None}
+            pair_values.append({
+                **base,
+                "status": "supported",
+                "values": values,
+                "hold_reason": None,
+            })
 
-    # ---- slide-3 four network KPI cards + six per-market cards ----
-    growth = json.load(open(P(*growth_rel.split("/"))))
-    def ladder(scn):
-        d = growth.get(scn, {}) or {}
-        return d
-    g = ladder("grounded")
-    rollup = agg.get("rollup", {}) or {}
-    def mid(k):
-        v = g.get(k); return v.get("mid") if isinstance(v, dict) else v
-    pool = g.get("M_today_transport_spend_yr")
-    som_floor = g.get("SOM_floor_navier_transport_rev_yr")
-    som_net = mid("SOM_full_network_navier_transport_rev_yr") or som_floor
-    sam = mid("SAM_navier_transport_rev_yr")
-    tam_marine = mid("marine_mobility_tam_yr")      # induced marine-transfer market (~4x SAM)
-    journey_gmv = mid("TAM_journey_gmv_yr")          # + food/stays/experiences (~3x TAM)
-    plat = mid("partner_platform_rev_yr")
-    n_corr = rollup.get("n_corridors_total")
+    total_spec = binding["country_total"]
+    supported_ids = total_spec.get("supported_route_ids") or []
+    if len(supported_ids) != len(set(supported_ids)):
+        raise SystemExit("country_total.supported_route_ids contains duplicates")
+    total_revenue = 0.0
+    total_vessels = 0
+    for rid in supported_ids:
+        if rid not in route_ids:
+            raise SystemExit(f"country total route absent from canonical ROUTES.json: {rid}")
+        row = row_by_route.get(rid)
+        if row is None:
+            raise SystemExit(f"country total route absent from aggregate: {rid}")
+        values = row_values(row)
+        if not is_supported(values):
+            raise SystemExit(f"country total route is not fully supported: {rid}")
+        if row.get("country") != binding["country"]:
+            raise SystemExit(f"country total route has wrong country: {rid}")
+        total_revenue += float(values["annual_revenue_usd"])
+        total_vessels += int(values["vessels_supported"])
 
-    slide3_cards = [
-        {"value": (f"{n_corr}" if n_corr is not None else None),
-         "meaning": "premium water corridors mapped from real demand"},
-        {"value": usd_compact(pool), "meaning": "premium sea-transfer spend already moving on these lanes, per year"},
-        {"value": (f"${som_floor/1e6:.0f}M floor" if som_floor else None), "meaning": "SOM floor — Navier fare, today's trips, ~10% capture"},
-        {"value": usd_compact(tam_marine), "meaning": "marine-transfer TAM (induced market), mid of model band"},
-    ]
-    pj_path = P("partner-pitch", "partners", f"{partner}.json")
-    partner_meta = json.load(open(pj_path)) if os.path.isfile(pj_path) else {}
-    show_plat = shows_platform_revenue(partner_meta)
-    slide10_rungs = [
-        {"rung": "SOM", "value": usd_compact(som_net), "basis": "SOM_full_network_navier_transport_rev_yr"},
-        {"rung": "SAM", "value": usd_compact(sam)},
-        {"rung": "TAM", "value": usd_compact(tam_marine)},
-        {"rung": "Journey GMV", "value": usd_compact(journey_gmv)},
-    ]
-    if show_plat:
-        slide10_rungs.append({"rung": "partner platform revenue", "value": usd_compact(plat)})
-
-    # six per-market cards (slide-3 grid) — pax/day, pool, rev floor, fleet, co2
-    gfm = rollup.get("grounded_floor_by_market", {}) or {}
-    per_market = {}
-    rows_by_mkt = defaultdict(list)
-    for r in rows:
-        rows_by_mkt[r.get("market")].append(r)
-    for mk in markets:
-        k = mk["key"]; m = gfm.get(k)
-        if not m:
-            est_rows = [r for r in rows_by_mkt[k] if r.get("status") == "estimated"]
-            if est_rows:
-                pool = sum((r.get("pool_yr") or 0) for r in est_rows)
-                per_market[k] = {
-                    "label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False),
-                    "kpis": {
-                        "routes_mapped": len(est_rows),
-                        "addressable_pool_usd_m": round(pool / 1e6, 2),
-                        "navier_rev_floor_usd_m": None,
-                        "fleet_at_floor": None,
-                        "modeled_riders_per_day_floor": None,
-                        "co2_saved_t_yr": None,
-                    },
-                    "tier": "estimated",
-                    "note": "sealed geometry / estimated demand — no grounded floor row yet",
-                }
-            else:
-                per_market[k] = {"label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False), "kpis": None}
-            continue
-        pax_day = round(sum(((r.get("mid", {}) or {}).get("pax_per_year") or
-                             (r.get("thin", {}) or {}).get("pax_per_year") or 0) for r in rows_by_mkt[k]) / 365)
-        per_market[k] = {
-            "label": mk["label"], "gulf_slide_only": mk.get("gulf_slide_only", False),
-            "kpis": {
-                "routes_mapped": sum(1 for r in rows_by_mkt[k]),
-                "addressable_pool_usd_m": round((m.get("transport_spend_pool_yr") or 0)/1e6, 2),
-                "navier_rev_floor_usd_m": round((m.get("market_rev_yr") or 0)/1e6, 2),
-                "fleet_at_floor": m.get("fleet"),
-                "modeled_riders_per_day_floor": pax_day,
-                "co2_saved_t_yr": round(m.get("co2_saved_t_yr") or 0),
-            },
+    expected_revenue = total_spec.get("expected_annual_revenue_usd")
+    expected_vessels = total_spec.get("expected_vessels_supported")
+    if expected_revenue is None:
+        if supported_ids:
+            raise SystemExit("null expected country revenue requires an empty supported-route list")
+        country_values = {
+            "annual_revenue_usd": None,
+            "vessels_supported": None,
+            "supported_route_count": 0,
         }
+        country_status = "held"
+    else:
+        if round(total_revenue, 2) != round(float(expected_revenue), 2):
+            raise SystemExit(
+                f"country revenue mismatch: generated {total_revenue} expected {expected_revenue}"
+            )
+        if total_vessels != int(expected_vessels):
+            raise SystemExit(
+                f"country vessel mismatch: generated {total_vessels} expected {expected_vessels}"
+            )
+        country_values = {
+            "annual_revenue_usd": round(total_revenue, 2),
+            "vessels_supported": total_vessels,
+            "supported_route_count": len(supported_ids),
+        }
+        country_status = "supported"
 
     out = {
-        "_meta": {
-            "doc": "Deterministic deck VALUE sidecar. Join field values onto economics-binding.json object_ids. "
-                   "Every number is read from the model engine; none are hand-typed. "
-                   "All figures are grounded-floor / modeled, not measured.",
-            "partner": partner,
-            "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "sources": [agg_rel, growth_rel,
-                        f"deck-studio/decks/{partner}/market-scope.json"],
-            "representative_corridor_rule": "grounded first, then revenue_per_boat_yr desc",
-            "capex_rule": "capex = model depreciation x 20yr dep-life (reproduces $900K US/EU, $600K RoW)",
-            "opex_total_rule": "sum of the six flush-left OPEX lines (energy, crew, marina, maintenance, insurance, charging_berth)",
-            "provenance_note": "grounded floor = demand x fare x ~10% capture; modeled, not a measured count",
+        "schema_version": "country-deck-economics-v2",
+        "deck_key": binding["deck_key"],
+        "partner_id": binding["partner_id"],
+        "country": binding["country"],
+        "generator": "deck-studio/decks/gen_deck_economics.py",
+        "source_files": {
+            "binding": str(args.binding),
+            "aggregate": str(args.aggregate),
+            "routes": str(args.routes),
         },
-        "slide3_kpi": {"network_cards": slide3_cards, "per_market_cards": per_market},
-        "slide10_tam": {"rungs": slide10_rungs},
-        "economics_slides": out_econ,
+        "source_sha256": {
+            "binding": sha256(args.binding),
+            "aggregate": sha256(args.aggregate),
+            "routes": sha256(args.routes),
+        },
+        "pairs": pair_values,
+        "country_total": {
+            "status": country_status,
+            "values": country_values,
+            "supported_route_ids": supported_ids,
+            "hold_reason": total_spec.get("hold_reason") if country_status == "held" else None,
+        },
+        "checks": {
+            "id_matching": "exact",
+            "unsupported_values": "null",
+            "borrowed_country_or_route_values": False,
+            "published_total_reconciled": country_status == "supported",
+        },
     }
-    outp = P("deck-studio", "decks", partner, f"deck-economics-values-{partner}.json")
-    json.dump(out, open(outp, "w"), indent=2)
-    print(f"wrote {outp}")
-    filled = sum(1 for v in out_econ.values() if v.get("fields"))
-    print(f"econ slides filled: {filled}/{len(econ_slides)} | per-market cards: {len(per_market)}")
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(json.dumps(out, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
