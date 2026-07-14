@@ -7,7 +7,7 @@
   },
   "markets": {
     "indrive-brazil": {
-      "display_name": "InDrive Brazil \u00b7 Rio ferry calibration",
+      "display_name": "InDrive Brazil · Rio ferry calibration",
       "partner": "indrive",
       "country": "Brazil",
       "country_slug": "brazil",
@@ -19,8 +19,8 @@
       "_colombia_disposition": "held_unmaterialized_pending_shared_finance_spine_alignment_and_route_level_demand_fare_proof",
       "corridors": [
         {
-          "from": "Pra\u00e7a XV Terminal (central Rio)",
-          "to": "Arariboia Terminal (Niter\u00f3i)",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Arariboia Terminal (Niterói)",
           "distance_nm": 2.7,
           "vessel": "Pioneer II",
           "route_id": "rn-1886629dbf0c",
@@ -67,8 +67,8 @@
           }
         },
         {
-          "from": "Pra\u00e7a XV Terminal (central Rio)",
-          "to": "Charitas Terminal (Niter\u00f3i, fast catamaran)",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Charitas Terminal (Niterói, fast catamaran)",
           "distance_nm": 4.4,
           "vessel": "Pioneer II",
           "route_id": "rn-80f0d0ebe0bd",
@@ -115,8 +115,8 @@
           }
         },
         {
-          "from": "Pra\u00e7a XV Terminal (central Rio)",
-          "to": "Cocot\u00e1 Terminal (Ilha do Governador)",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Cocotá Terminal (Ilha do Governador)",
           "distance_nm": 6.0,
           "vessel": "Pioneer II",
           "route_id": "rn-369ef0eb69d9",
@@ -163,8 +163,8 @@
           }
         },
         {
-          "from": "Pra\u00e7a XV Terminal (central Rio)",
-          "to": "Paquet\u00e1 Island Terminal",
+          "from": "Praça XV Terminal (central Rio)",
+          "to": "Paquetá Island Terminal",
           "distance_nm": 9.2,
           "vessel": "Pioneer II",
           "route_id": "rn-00bb6ded4be5",
@@ -215,17 +215,17 @@
     },
     "indrive-egypt": {
       "partner": "indrive",
-      "display_name": "InDrive Egypt \u00b7 Red Sea candidate network",
-      "label": "Egypt \u00b7 Red Sea candidate network",
+      "display_name": "InDrive Egypt · Red Sea candidate network",
+      "label": "Egypt · Red Sea candidate network",
       "region": "MENA",
       "country": "Egypt",
       "country_slug": "egypt",
       "currency": "EGP",
-      "scope": "five exact canonical Red Sea routes; two luxury-belt routes promoted on labeled destination-pool demand + premium day-trip per-seat fares (Giftun, Ras Mohammed); three held pending route-level evidence",
+      "scope": "five exact canonical Red Sea routes; two luxury-belt routes promoted on labeled destination-pool demand + premium day-trip per-seat fares (Giftun, Ras Mohammed), captive capture; three held pending route-level evidence",
       "archetype": "ridehail",
-      "capture_rate": 0.1,
-      "fleet_basis": "two luxury-belt routes on labeled destination-pool demand; three held",
-      "_tier": "geometry_exact; two routes economics-promoted on labeled pool; three held",
+      "capture_rate": 0.9,
+      "fleet_basis": "two luxury-belt captive routes on labeled destination-pool demand at ~90% floor capture; three held",
+      "_tier": "geometry_exact; two routes economics-promoted on labeled pool with captive capture; three held",
       "corridors": [
         {
           "from": "Hurghada Marina",
@@ -246,7 +246,9 @@
             "comparable_fare_usd_pax": 32.0
           },
           "_demand_basis": "Labeled destination pool: ~187,512 published annual Giftun Island visitors (~12% of Red Sea Governorate visitors), treated conservatively as one outbound one-way trip per visitor. Source: Egypt Tours Portal, accessed 2026-07-14.",
-          "_fare_basis": "Premium per-seat fare within observed Hurghada\u2192Giftun/Orange Bay day-trip market range (~$23\u201352). Not a scheduled ferry tariff."
+          "_fare_basis": "Premium per-seat fare within observed Hurghada→Giftun/Orange Bay day-trip market range (~$23–52). Not a scheduled ferry tariff.",
+          "captive": true,
+          "_capture_basis": "Boat-only access destination (island/offshore reef) — treated as captive at ~90% floor capture per LB-254; the fare-driven per-boat economics are capture-independent."
         },
         {
           "from": "Hurghada Marina",
@@ -307,7 +309,9 @@
             "comparable_fare_usd_pax": 50.0
           },
           "_demand_basis": "Labeled destination pool: ~50,000 annual Ras Mohammed National Park visitors (corroborated across independent tour operators), treated conservatively as one outbound one-way trip per visitor. Sources: Jakada Tours Egypt + corroboration, accessed 2026-07-14.",
-          "_fare_basis": "Premium/VIP per-seat fare within observed Sharm\u2192Ras Mohammed day-trip market range (~\u20ac12\u201352). Not a scheduled ferry tariff."
+          "_fare_basis": "Premium/VIP per-seat fare within observed Sharm→Ras Mohammed day-trip market range (~€12–52). Not a scheduled ferry tariff.",
+          "captive": true,
+          "_capture_basis": "Boat-only access destination (island/offshore reef) — treated as captive at ~90% floor capture per LB-254; the fare-driven per-boat economics are capture-independent."
         },
         {
           "from": "Sharm Marina (Sharm El Maya / Old Market Harbour)",
@@ -329,7 +333,9 @@
             "comparable_fare_usd_pax": null
           }
         }
-      ]
+      ],
+      "captive": true,
+      "_capture_basis": "Captive treatment (LB-254): Giftun Island and Ras Mohammed reef are reachable only by boat, so the marine visitor pool is the addressable base at ~90% floor capture. Headroom is induced demand + more destinations, not a capture-share expansion. TAM ladder anchors on transport_spend_pool_yr; do NOT recover the pool by floor/0.10. Approved by Jaideep 2026-07-14."
     }
   }
 }

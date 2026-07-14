@@ -1,0 +1,104 @@
+{
+  "receipt": "INDRIVE-EGYPT-UNIT-ECONOMICS-RECEIPT-v2 (captive)",
+  "generated": "2026-07-14",
+  "approved_by": "Jaideep 2026-07-14",
+  "capture_treatment": "captive (~0.90 floor capture, LB-254)",
+  "capex_tier": "region rule — Egypt non-US/EU $600K/vessel (ride-hail, NOT hospitality $1M)",
+  "engine_validation": {
+    "against": "Rio rn-1886629dbf0c",
+    "expected": {
+      "rev": 146448,
+      "opex": 79094,
+      "payback": 8.91
+    },
+    "reproduced": {
+      "rev": 146347,
+      "opex": 79094,
+      "payback": 8.92
+    },
+    "note": "rev $101 rounding from kWh/nm constant; opex exact"
+  },
+  "routes": [
+    {
+      "route_id": "rn-b06f6971ed47",
+      "name": "Hurghada Marina -> Giftun Island (Orange Bay / Mahmya)",
+      "city": "Hurghada",
+      "distance_nm": 6.6,
+      "vessel": "N30 Pioneer II",
+      "demand_oneway_pax_yr": 187512,
+      "demand_basis": "~187,512 published annual Giftun Island visitors (~12% of Red Sea Governorate visitors), one outbound one-way trip/visitor; egypttoursportal.com, accessed 2026-07-14. Corroborated as operating run by Boxi Marine public water-taxi (boximarine.com).",
+      "fare_usd": 32.0,
+      "per_boat": {
+        "annual_pax": 7588,
+        "revenue_usd": 242827,
+        "opex_usd": 73959,
+        "opex_lines": {
+          "energy": 1359,
+          "crew": 21600,
+          "marina_overhead": 8000,
+          "maintenance": 10000,
+          "insurance": 15000,
+          "charging_berth": 18000
+        },
+        "ebitda_usd": 168868,
+        "margin": 0.695,
+        "payback_years": 3.55,
+        "capex_usd": 600000
+      },
+      "pool_usd_yr": 6000384,
+      "captive_floor_usd_yr": 5400346,
+      "fleet_captive": 22.2
+    },
+    {
+      "route_id": "rn-c16a1627130f",
+      "name": "Sharm Marina -> Ras Mohammed (reef jetty)",
+      "city": "Sharm El Sheikh",
+      "distance_nm": 11.7,
+      "vessel": "N30 Pioneer II",
+      "demand_oneway_pax_yr": 50000,
+      "demand_basis": "~50,000 annual Ras Mohammed National Park visitors, corroborated across independent operators; jakadatoursegypt.com + corroboration, accessed 2026-07-14. One outbound one-way trip/visitor.",
+      "fare_usd": 50.0,
+      "per_boat": {
+        "annual_pax": 5962,
+        "revenue_usd": 298114,
+        "opex_usd": 74494,
+        "opex_lines": {
+          "energy": 1894,
+          "crew": 21600,
+          "marina_overhead": 8000,
+          "maintenance": 10000,
+          "insurance": 15000,
+          "charging_berth": 18000
+        },
+        "ebitda_usd": 223620,
+        "margin": 0.75,
+        "payback_years": 2.68,
+        "capex_usd": 600000
+      },
+      "pool_usd_yr": 2500000,
+      "captive_floor_usd_yr": 2250000,
+      "fleet_captive": 7.5
+    }
+  ],
+  "market_totals": {
+    "transport_spend_pool_yr": 8500384,
+    "grounded_floor_captive_usd_yr": 7650346,
+    "floor_if_contested_10pct_usd_yr": 850038,
+    "fleet_captive": 29.8,
+    "effective_capture": 0.9
+  },
+  "unit_econ_anchor": {
+    "selection": "pending_jaideep",
+    "options": [
+      "rn-b06f6971ed47",
+      "rn-c16a1627130f"
+    ],
+    "instruction": "render single unit-economics slide in both variants; Jaideep picks"
+  },
+  "held_routes": [
+    "rn-3d161664de08 Sahl Hasheesh",
+    "rn-173d32792c07 Soma Bay",
+    "rn-285fc16b29dc Sharks Bay"
+  ],
+  "status": "source + config + methodology only; deck lights up after deterministic cascade (aggregate->growth->sheet) + Slides seal per Grok spec; no external release"
+}
