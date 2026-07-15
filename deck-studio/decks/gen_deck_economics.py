@@ -52,12 +52,15 @@ def is_supported(values: dict[str, Any]) -> bool:
 
 
 def route_unit_economics(row: dict[str, Any]) -> dict[str, Any]:
-    """Per-boat, route-level unit economics from the sourced `thin` block.
+    """Per-boat, route-level unit economics from the `mid` scenario block.
 
-    This is the correct basis for a unit-economics slide (per-vessel run cost and
-    payback), distinct from the market-level rollup used for the country total.
+    Mid is the house headline basis: the country/TAM rollup (`row_values`) reads
+    `mid`, so the per-city unit-economics slide reads `mid` too. This keeps the
+    unit-economics slide and the TAM slide on one consistent scenario across all
+    partner decks rather than mixing a conservative per-boat basis with a
+    mid-centered rollup.
     """
-    t = row.get("thin") or {}
+    t = row.get("mid") or {}
     cc = t.get("cost_components") or {}
     return {
         "distance_nm": t.get("distance_nm"),
