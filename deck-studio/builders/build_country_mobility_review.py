@@ -339,11 +339,18 @@ DEFINITIONS: dict[str, dict[str, Any]] = {
                 ),
             },
         ],
-        "economics_route": {
-            "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
-            "route_id": "rn-b06f6971ed47",
-            "desc": "Flagship Red Sea luxury-belt excursion; provisional unit-economics anchor pending Jaideep's choice between Giftun and Ras Mohammed.",
-        },
+        "economics_routes": [
+            {
+                "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+                "route_id": "rn-b06f6971ed47",
+                "desc": "Flagship Red Sea luxury-belt excursion from Hurghada out to the Giftun islands.",
+            },
+            {
+                "label": "Sharm Marina → Ras Mohammed",
+                "route_id": "rn-c16a1627130f",
+                "desc": "Premium dive-and-snorkel day trip from Sharm El Sheikh to the Ras Mohammed reefs.",
+            },
+        ],
         "tam": {
             "headline": "Two boat-only routes are the floor — the Red Sea day-trip market sits well above them",
             "source": "handoff/partner-map-model/indrive-scope-expansion-2026-07-13/EGYPT-MARINE-TAM-LADDER-2026-07-14.json",
@@ -353,7 +360,7 @@ DEFINITIONS: dict[str, dict[str, Any]] = {
                     "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.transport_spend_pool_yr",
                     "value_usd": 8500384.0,
                     "value_basis": "sourced_captive_floor",
-                    "note": "Journey spend pool on Giftun + Ras Mohammed only. Navier revenue floor at ~90% captive capture is ~$7.65M. This is the FLOOR, not the market.",
+                    "note": "Total day-trip spend on the Giftun and Ras Mohammed journeys alone. Because almost every visitor to these islands travels by boat, Navier's supported revenue on these two routes is about $7.65M. This is the floor, not the whole market.",
                 },
                 {
                     "label": "The wider Red Sea day-trip boat market (Hurghada alone)",
@@ -368,7 +375,7 @@ DEFINITIONS: dict[str, dict[str, Any]] = {
                     "value_usd": None,
                     "status": "partial_context",
                     "value_basis": "context_ceiling_with_null_components",
-                    "note": "Red Sea day-trips (rung 2 + held resorts). Nile and Alexandria HELD NULL. Egypt tourism economy is context only.",
+                    "note": "The full Egypt opportunity would add the wider Red Sea market to Nile trips around Luxor and Aswan and to Alexandria's waterfront. Those are not yet sized here, so this step is shown as context rather than a single number.",
                 },
             ],
         },
@@ -401,7 +408,8 @@ def build(slug: str, definition: dict[str, Any]) -> None:
     label = definition["partner_label"]
 
     cities = deepcopy(definition["cities"])
-    econ_route = deepcopy(definition["economics_route"])
+    econ_routes = deepcopy(definition.get("economics_routes") or [definition["economics_route"]])
+    econ_route = econ_routes[0]
     tam = deepcopy(definition["tam"])
     market_overview = deepcopy(definition["market_overview"])
 
@@ -421,6 +429,7 @@ def build(slug: str, definition: dict[str, Any]) -> None:
         "finance_market_keys": definition["scope_market_keys"],
         "cities": [{k: c[k] for k in ("key", "label", "supported", "hold_reason")} for c in cities],
         "economics_route": econ_route,
+        "economics_routes": econ_routes,
         "unsupported_values_policy": "null",
     }
 
@@ -434,6 +443,7 @@ def build(slug: str, definition: dict[str, Any]) -> None:
         "aggregate_market_key": definition.get("aggregate_market_key"),
         "canonical_routes_source": "data-clean/ROUTES.json",
         "economics_route": econ_route,
+        "economics_routes": econ_routes,
         "tam": tam,
         "country_total": deepcopy(definition["country_total"]),
         "rules": {
@@ -477,15 +487,16 @@ def build(slug: str, definition: dict[str, Any]) -> None:
             rendered_text[f"slide_{cs['index']:02d}_hold"] = c["hold_reason"]
         city_slides.append(cs)
 
-    econ_body = (
-        f"Representative route: {econ_route['label']}. {econ_route['desc']} "
-        "Annual passenger demand, one-way fare, annual revenue, fleet support, and payback are shown "
-        "for this route from the sourced route model."
-    ) if econ_route.get("route_id") else (
-        f"Representative route: {econ_route['label']}. {econ_route['desc']} "
-        "Route details and economics are left blank until local terminal, demand, and fare evidence is confirmed."
-    )
-    add("one_route_economics", f"Route economics: {econ_route['label']}", econ_body)
+    for er in econ_routes:
+        econ_body = (
+            f"Representative route: {er['label']}. {er['desc']} "
+            "Annual passenger demand, one-way fare, annual revenue, fleet support, and payback are shown "
+            "for this route from the sourced route model."
+        ) if er.get("route_id") else (
+            f"Representative route: {er['label']}. {er['desc']} "
+            "Route details and economics are left blank until local terminal, demand, and fare evidence is confirmed."
+        )
+        add("one_route_economics", f"Route economics: {er['label']}", econ_body)
 
     tam_body = tam.get("headline", f"A focused path to scale in {country}")
     if tam.get("rungs"):
