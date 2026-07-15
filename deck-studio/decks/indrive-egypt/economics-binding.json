@@ -10,8 +10,20 @@
   "economics_route": {
     "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
     "route_id": "rn-b06f6971ed47",
-    "desc": "Flagship Red Sea luxury-belt excursion; provisional unit-economics anchor pending Jaideep's choice between Giftun and Ras Mohammed."
+    "desc": "Flagship Red Sea luxury-belt excursion from Hurghada out to the Giftun islands."
   },
+  "economics_routes": [
+    {
+      "label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)",
+      "route_id": "rn-b06f6971ed47",
+      "desc": "Flagship Red Sea luxury-belt excursion from Hurghada out to the Giftun islands."
+    },
+    {
+      "label": "Sharm Marina → Ras Mohammed",
+      "route_id": "rn-c16a1627130f",
+      "desc": "Premium dive-and-snorkel day trip from Sharm El Sheikh to the Ras Mohammed reefs."
+    }
+  ],
   "tam": {
     "headline": "Two boat-only routes are the floor — the Red Sea day-trip market sits well above them",
     "source": "handoff/partner-map-model/indrive-scope-expansion-2026-07-13/EGYPT-MARINE-TAM-LADDER-2026-07-14.json",
@@ -21,7 +33,7 @@
         "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.transport_spend_pool_yr",
         "value_usd": 8500384.0,
         "value_basis": "sourced_captive_floor",
-        "note": "Journey spend pool on Giftun + Ras Mohammed only. Navier revenue floor at ~90% captive capture is ~$7.65M. This is the FLOOR, not the market."
+        "note": "Total day-trip spend on the Giftun and Ras Mohammed journeys alone. Because almost every visitor to these islands travels by boat, Navier's supported revenue on these two routes is about $7.65M. This is the floor, not the whole market."
       },
       {
         "label": "The wider Red Sea day-trip boat market (Hurghada alone)",
@@ -36,7 +48,7 @@
         "value_usd": null,
         "status": "partial_context",
         "value_basis": "context_ceiling_with_null_components",
-        "note": "Red Sea day-trips (rung 2 + held resorts). Nile and Alexandria HELD NULL. Egypt tourism economy is context only."
+        "note": "The full Egypt opportunity would add the wider Red Sea market to Nile trips around Luxor and Aswan and to Alexandria's waterfront. Those are not yet sized here, so this step is shown as context rather than a single number."
       }
     ]
   },
@@ -46,11 +58,6 @@
     "supported_route_ids": [
       "rn-b06f6971ed47",
       "rn-c16a1627130f"
-    ],
-    "held_route_ids": [
-      "rn-3d161664de08",
-      "rn-173d32792c07",
-      "rn-285fc16b29dc"
     ]
   },
   "rules": {
@@ -60,22 +67,5 @@
     "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
     "tam_source": "aggregate grounded_floor_by_market (supported revenue floor + addressable spend pool); no mixed-unit bars",
     "published_brazil_basis": null
-  },
-  "capture_treatment": "captive",
-  "unit_econ_anchor_options": {
-    "selection": "pending_jaideep",
-    "instruction": "Spine economics_route defaults to Giftun. Render the single unit-economics slide for the selected anchor only; do not invent a blended figure; no 'pending' language on partner-facing slides.",
-    "options": [
-      {
-        "route_id": "rn-b06f6971ed47",
-        "city_label": "Hurghada",
-        "route_label": "Hurghada Marina → Giftun Island (Orange Bay / Mahmya)"
-      },
-      {
-        "route_id": "rn-c16a1627130f",
-        "city_label": "Sharm El Sheikh",
-        "route_label": "Sharm Marina → Ras Mohammed (reef jetty)"
-      }
-    ]
   }
 }

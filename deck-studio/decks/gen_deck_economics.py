@@ -119,39 +119,39 @@ def main() -> int:
     if duplicates:
         raise SystemExit(f"duplicate aggregate route IDs: {sorted(duplicates)}")
 
-    # ---- single representative unit-economics route ----
-    er = binding["economics_route"]
-    rid = er.get("route_id")
-    econ_base = {
-        "label": er.get("label"),
-        "route_id": rid,
-        "desc": er.get("desc"),
-    }
-    if rid is None:
-        economics_route = {
-            **econ_base,
-            "status": "held",
-            "unit_economics": None,
-            "hold_reason": "Route ID and financial values remain blank pending local terminal, demand, and fare evidence.",
-        }
-    else:
+    # ---- representative unit-economics route(s) ----
+    # A binding may carry a single `economics_route` (one unit-economics slide) or an
+    # explicit `economics_routes` list (one unit-economics slide per representative route,
+    # e.g. Egypt's two Red Sea anchors). Each route is resolved identically and never borrowed.
+    def resolve_econ_route(er: dict[str, Any]) -> dict[str, Any]:
+        rid = er.get("route_id")
+        econ_base = {"label": er.get("label"), "route_id": rid, "desc": er.get("desc")}
+        if rid is None:
+            return {
+                **econ_base,
+                "status": "held",
+                "unit_economics": None,
+                "hold_reason": "Route ID and financial values remain blank pending local terminal, demand, and fare evidence.",
+            }
         if rid not in route_ids:
             raise SystemExit(f"economics_route: route ID absent from canonical ROUTES.json: {rid}")
         row = row_by_route.get(rid)
         if row is None:
-            economics_route = {**econ_base, "status": "held", "unit_economics": None,
-                               "hold_reason": "No route-level finance row is available."}
-        elif row.get("country") != binding["country"]:
+            return {**econ_base, "status": "held", "unit_economics": None,
+                    "hold_reason": "No route-level finance row is available."}
+        if row.get("country") != binding["country"]:
             raise SystemExit(
                 f"economics_route: aggregate country {row.get('country')!r} does not match {binding['country']!r}"
             )
-        else:
-            ue = route_unit_economics(row)
-            if route_is_supported(ue):
-                economics_route = {**econ_base, "status": "supported", "unit_economics": ue, "hold_reason": None}
-            else:
-                economics_route = {**econ_base, "status": "held", "unit_economics": None,
-                                   "hold_reason": "Route-level demand, fare, or operating inputs are incomplete."}
+        ue = route_unit_economics(row)
+        if route_is_supported(ue):
+            return {**econ_base, "status": "supported", "unit_economics": ue, "hold_reason": None}
+        return {**econ_base, "status": "held", "unit_economics": None,
+                "hold_reason": "Route-level demand, fare, or operating inputs are incomplete."}
+
+    econ_specs = binding.get("economics_routes") or [binding["economics_route"]]
+    economics_routes = [resolve_econ_route(er) for er in econ_specs]
+    economics_route = economics_routes[0]
 
     # ---- TAM ladder rungs bound from grounded aggregate fields (never invented) ----
     def resolve_field(root: Any, dotted: str) -> Any:
@@ -257,6 +257,7 @@ def main() -> int:
             "routes": sha256(args.routes),
         },
         "economics_route": economics_route,
+        "economics_routes": economics_routes,
         "tam": tam_out,
         "country_total": {
             "status": country_status,

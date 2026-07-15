@@ -77,17 +77,21 @@ def validate_one(deck: Path) -> dict[str, Any]:
     if manifest.get("slide_count") != len(slides):
         fail(errors, "slide_count does not match slide list")
     roles = [s.get("purpose") for s in slides]
-    for role, name in (("market_overview", "market overview"), ("one_route_economics", "unit-economics"), ("country_prize", "TAM")):
+    for role, name in (("market_overview", "market overview"), ("country_prize", "TAM")):
         if roles.count(role) != 1:
             fail(errors, f"exactly one {name} slide required, found {roles.count(role)}")
+    econ_positions = [i for i, role in enumerate(roles) if role == "one_route_economics"]
+    if not econ_positions:
+        fail(errors, "at least one unit-economics slide required")
     city_positions = [i for i, role in enumerate(roles) if role == "city_review"]
     if not city_positions:
         fail(errors, "at least one city slide required")
     if len(city_positions) != len(scope.get("cities") or []):
         fail(errors, "city slide count does not match canonical city roster")
-    if roles.count("market_overview") == 1 and roles.count("one_route_economics") == 1 and roles.count("country_prize") == 1 and city_positions:
-        mo, econ, tam = roles.index("market_overview"), roles.index("one_route_economics"), roles.index("country_prize")
-        if not (mo < min(city_positions) and max(city_positions) < econ < tam):
+    if roles.count("market_overview") == 1 and econ_positions and roles.count("country_prize") == 1 and city_positions:
+        mo, tam = roles.index("market_overview"), roles.index("country_prize")
+        econ_contiguous = econ_positions == list(range(min(econ_positions), max(econ_positions) + 1))
+        if not (mo < min(city_positions) and max(city_positions) < min(econ_positions) and max(econ_positions) < tam and econ_contiguous):
             fail(errors, "spine order is not market-overview -> cities -> unit-economics -> TAM")
 
     content_ids = {s.get("slide_object_id") for s in content.get("slide_sources") or []}
