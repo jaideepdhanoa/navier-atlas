@@ -1,9 +1,10 @@
 {
-  "schema_version": "country-market-scope-v2",
+  "schema_version": "country-market-scope-v3",
   "deck_key": "didi-brazil",
   "partner_id": "didi",
   "country": "Brazil",
   "geography_rule": "global_canonical intersection partner clusters",
+  "city_source": "data-clean/CLUSTERS.json canonical member cities for the country cluster",
   "source_paths": [
     "partner-pitch/partners/didi.json",
     "data-clean/partners/didi.json",
@@ -13,39 +14,30 @@
   "finance_market_keys": [
     "brazil"
   ],
-  "city_route_pairs": [
+  "cities": [
     {
-      "pair_key": "rio-niteroi",
-      "city_key": "rio-niteroi",
-      "city_label": "Rio de Janeiro",
-      "route_label": "Praça XV → Arariboia",
-      "route_id": "rn-1886629dbf0c",
-      "city_thesis": "Cross-bay commuter connection between central Rio and Niterói."
+      "key": "rio",
+      "label": "Rio de Janeiro",
+      "supported": true,
+      "hold_reason": null
     },
     {
-      "pair_key": "rio-charitas",
-      "city_key": "rio-charitas",
-      "city_label": "Rio de Janeiro",
-      "route_label": "Praça XV → Charitas",
-      "route_id": "rn-80f0d0ebe0bd",
-      "city_thesis": "Fast cross-bay connection to Charitas."
+      "key": "angra",
+      "label": "Angra dos Reis and Ilha Grande",
+      "supported": false,
+      "hold_reason": "Route-level passenger demand and fares are under local review; economics remain blank until confirmed."
     },
     {
-      "pair_key": "rio-cocota",
-      "city_key": "rio-cocota",
-      "city_label": "Rio de Janeiro",
-      "route_label": "Praça XV → Cocotá",
-      "route_id": "rn-369ef0eb69d9",
-      "city_thesis": "City-to-island connection serving Ilha do Governador."
-    },
-    {
-      "pair_key": "rio-paqueta",
-      "city_key": "rio-paqueta",
-      "city_label": "Rio de Janeiro",
-      "route_label": "Praça XV → Paquetá",
-      "route_id": "rn-00bb6ded4be5",
-      "city_thesis": "Longer city-to-island passenger connection."
+      "key": "floripa",
+      "label": "Florianópolis",
+      "supported": false,
+      "hold_reason": "Route-level passenger demand and fares are under local review; economics remain blank until confirmed."
     }
   ],
+  "economics_route": {
+    "label": "Praça XV → Arariboia",
+    "route_id": "rn-1886629dbf0c",
+    "desc": "Rio's flagship cross-bay commuter connection between central Rio and Niterói."
+  },
   "unsupported_values_policy": "null"
 }

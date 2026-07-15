@@ -365,7 +365,7 @@ DEFINITIONS: dict[str, dict[str, Any]] = {
                 },
                 {
                     "label": "Egypt marine-mobility opportunity",
-                    "value_usd": null,
+                    "value_usd": None,
                     "status": "partial_context",
                     "value_basis": "context_ceiling_with_null_components",
                     "note": "Red Sea day-trips (rung 2 + held resorts). Nile and Alexandria HELD NULL. Egypt tourism economy is context only.",
