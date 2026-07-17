@@ -198,12 +198,24 @@ def main() -> int:
 
     total_spec = binding["country_total"]
     supported_ids = total_spec.get("supported_route_ids") or []
+    # Provisional floor corridors (e.g. Angra/Floripa -PROV) may sit in the aggregate
+    # and country floor before geometry is sealed into ROUTES.json. Count them toward
+    # country total from the aggregate only; do not require ROUTES membership.
+    pending_seal_ids = total_spec.get("pending_seal_route_ids") or []
     if len(supported_ids) != len(set(supported_ids)):
         raise SystemExit("country_total.supported_route_ids contains duplicates")
+    if len(pending_seal_ids) != len(set(pending_seal_ids)):
+        raise SystemExit("country_total.pending_seal_route_ids contains duplicates")
+    overlap = set(supported_ids) & set(pending_seal_ids)
+    if overlap:
+        raise SystemExit(f"route IDs listed as both supported and pending_seal: {sorted(overlap)}")
+
     total_revenue = 0.0
     total_vessels = 0
-    for rid in supported_ids:
-        if rid not in route_ids:
+
+    def accumulate(rid: str, *, require_routes: bool) -> None:
+        nonlocal total_revenue, total_vessels
+        if require_routes and rid not in route_ids:
             raise SystemExit(f"country total route absent from canonical ROUTES.json: {rid}")
         row = row_by_route.get(rid)
         if row is None:
@@ -216,11 +228,16 @@ def main() -> int:
         total_revenue += float(values["annual_revenue_usd"])
         total_vessels += int(values["vessels_supported"])
 
+    for rid in supported_ids:
+        accumulate(rid, require_routes=True)
+    for rid in pending_seal_ids:
+        accumulate(rid, require_routes=False)
+
     expected_revenue = total_spec.get("expected_annual_revenue_usd")
     expected_vessels = total_spec.get("expected_vessels_supported")
     if expected_revenue is None:
-        if supported_ids:
-            raise SystemExit("null expected country revenue requires an empty supported-route list")
+        if supported_ids or pending_seal_ids:
+            raise SystemExit("null expected country revenue requires empty supported and pending_seal lists")
         country_values = {
             "annual_revenue_usd": None,
             "vessels_supported": None,
@@ -239,9 +256,21 @@ def main() -> int:
         country_values = {
             "annual_revenue_usd": round(total_revenue, 2),
             "vessels_supported": total_vessels,
+            # Count of geometry-sealed routes only; pending_seal kept separate.
             "supported_route_count": len(supported_ids),
         }
         country_status = "supported"
+
+    country_total_out: dict[str, Any] = {
+        "status": country_status,
+        "values": country_values,
+        "supported_route_ids": supported_ids,
+        "hold_reason": total_spec.get("hold_reason") if country_status == "held" else None,
+    }
+    if pending_seal_ids:
+        country_total_out["pending_seal_route_ids"] = pending_seal_ids
+        if total_spec.get("pending_seal_note"):
+            country_total_out["pending_seal_note"] = total_spec.get("pending_seal_note")
 
     out = {
         "schema_version": "country-deck-economics-v3",
@@ -262,12 +291,7 @@ def main() -> int:
         "economics_route": economics_route,
         "economics_routes": economics_routes,
         "tam": tam_out,
-        "country_total": {
-            "status": country_status,
-            "values": country_values,
-            "supported_route_ids": supported_ids,
-            "hold_reason": total_spec.get("hold_reason") if country_status == "held" else None,
-        },
+        "country_total": country_total_out,
         "checks": {
             "id_matching": "exact",
             "unsupported_values": "null",

@@ -5,13 +5,13 @@
   "country": "Brazil",
   "generator": "deck-studio/decks/gen_deck_economics.py",
   "source_files": {
-    "binding": "out/indrive-brazil-economics-binding.json",
-    "aggregate": "agg-indrive.json",
-    "routes": "ROUTES.json"
+    "binding": "deck-studio/decks/indrive-brazil/economics-binding.json",
+    "aggregate": "finance/recal/agg-indrive.json",
+    "routes": "data-clean/ROUTES.json"
   },
   "source_sha256": {
-    "binding": "d039a98e045ce3c987d7d3743c64d44290c8d4a301771f0dfbddc430fb8a2fdf",
-    "aggregate": "79ab8d3e278d27b24dacf4ba29b10ba373bc2873a914d0e60ecc77efd91717fb",
+    "binding": "0fb22766cb1c19ed4bebf5b14e529dfd8153ed304f6ec526c9cdbbecf82d5505",
+    "aggregate": "a60270b46bc506a96f295aa8d57ad8d516e21ac0a212e82dddb101901df5519a",
     "routes": "e61d98cc75be4d0edc5eb3251b86d7dba0f11ec6a60a51c916729b90b76e327f"
   },
   "economics_route": {
@@ -157,47 +157,47 @@
     }
   ],
   "tam": {
-    "headline": "The four Rio routes are the floor — Brazil's water-crossing market runs far higher",
+    "headline": "Rio, Angra dos Reis and Florianópolis are the floor — Brazil's water-crossing market runs far higher",
     "rungs": [
       {
-        "label": "What the four Rio routes support today",
-        "value_usd": 36407526.0,
-        "note": "Navier's annual revenue across the four sourced Rio cross-bay routes at full fleet (113 boats). This is the grounded floor, not the whole market.",
+        "label": "What our sourced Brazil routes support today",
+        "value_usd": 56629134.0,
+        "note": "Navier's annual revenue across the sourced Brazil routes at full fleet (199 boats): the four Rio cross-bay routes, Angra dos Reis–Abraão, and the two Florianópolis corridors. Florianópolis volumes are a government pre-viability projection. This is the grounded floor, not the whole market.",
         "value_basis": "sourced_corridor_floor"
       },
       {
         "label": "Matured Brazil network Navier can serve",
-        "value_usd": 810251990.0,
+        "value_usd": 1264636759.0,
         "note": "Navier's own transport revenue once the full addressable Brazilian network runs at leading-operator capture, with faster, more comfortable boats growing the market. Mid case shown with a low–high range.",
-        "value_usd_low": 246492986.0,
-        "value_usd_high": 2337053359.0,
+        "value_usd_low": 384724870.0,
+        "value_usd_high": 3647659768.0,
         "value_basis": "growth_case_SAM_mid_full_network"
       },
       {
         "label": "Brazil marine-mobility opportunity",
-        "value_usd": 3241007960.0,
+        "value_usd": 5058547036.0,
         "note": "Total annual water-transfer spend the induced Brazilian crossing market can support at full network width.",
-        "value_usd_low": 1643286576.0,
-        "value_usd_high": 5842633398.0,
+        "value_usd_low": 2564832466.0,
+        "value_usd_high": 9119149419.0,
         "value_basis": "growth_case_marine_mobility_tam_mid"
       },
       {
         "label": "Whole-journey value across those crossings",
-        "value_usd": 9723023881.0,
+        "value_usd": 15175641109.0,
         "note": "Door-to-door value of every journey that includes one of these crossings — the full trip, not only the boat leg.",
-        "value_usd_low": 3286573152.0,
-        "value_usd_high": 23370533592.0,
+        "value_usd_low": 5129664931.0,
+        "value_usd_high": 36476597676.0,
         "value_basis": "growth_case_journey_gmv_mid"
       }
     ],
     "hold_reason": null,
-    "source": "handoff/partner-map-model/brazil-tam-2026-07-17/BRAZIL-MARINE-TAM-LADDER-2026-07-17.json"
+    "source": "finance/model/growth.py LB-254 ladder on Brazil pool (Rio + Angra + Florianópolis); engine output /tasklet/agent/home/didi-brazil-reapply/engine/GB.json"
   },
   "country_total": {
     "status": "supported",
     "values": {
-      "annual_revenue_usd": 36407526.0,
-      "vessels_supported": 113,
+      "annual_revenue_usd": 56629134.0,
+      "vessels_supported": 199,
       "supported_route_count": 4
     },
     "supported_route_ids": [
@@ -206,7 +206,13 @@
       "rn-369ef0eb69d9",
       "rn-00bb6ded4be5"
     ],
-    "hold_reason": null
+    "hold_reason": null,
+    "pending_seal_route_ids": [
+      "rn-angra-abraao-PROV",
+      "rn-floripa-r3-PROV",
+      "rn-floripa-r4-PROV"
+    ],
+    "pending_seal_note": "Angra dos Reis and Florianópolis corridors are staged with provisional IDs; Grok seals named rn- geometry into ROUTES.json/CLUSTERS.json before city-map render."
   },
   "checks": {
     "id_matching": "exact",
