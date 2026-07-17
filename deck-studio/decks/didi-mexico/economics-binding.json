@@ -13,24 +13,52 @@
     "desc": "Cancún's highest-frequency island crossing."
   },
   "tam": {
-    "headline": "The supported routes are a floor, not a ceiling",
+    "headline": "The three Caribbean crossings are the floor — Mexico's water-crossing market runs far higher",
+    "source": "handoff/partner-map-model/mexico-tam-2026-07-17/MEXICO-MARINE-TAM-LADDER-2026-07-17.json",
     "rungs": [
       {
-        "label": "Supported annual route revenue today",
+        "label": "What the three Caribbean crossings support today",
         "aggregate_field": "rollup.grounded_floor_by_market.mexico-caribbean.market_rev_yr",
-        "value_usd": 14759160.0,
-        "note": "Three sourced Caribbean crossings, 88 vessels at scale."
+        "value_usd": 28213152.0,
+        "value_basis": "sourced_corridor_floor",
+        "note": "Navier's annual revenue across the three sourced Quintana Roo crossings at full fleet (88 boats). This is the grounded floor, not the whole market."
       },
       {
-        "label": "Addressable Mexico water-crossing spend",
-        "aggregate_field": "rollup.grounded_floor_by_market.mexico-caribbean.transport_spend_pool_yr",
-        "value_usd": 149933425.0,
-        "note": "Annual passenger spend across the coastal crossings the network can compete for."
+        "label": "Matured Mexico network Navier can serve",
+        "value_usd": 631745862.0,
+        "value_usd_low": 192188265.0,
+        "value_usd_high": 1822178542.0,
+        "value_basis": "growth_case_SAM_mid_full_network",
+        "note": "Navier's own transport revenue once the full addressable Mexican network runs at leading-operator capture, with faster, more comfortable boats growing the market. Mid case shown with a low-high range."
+      },
+      {
+        "label": "Mexico marine-mobility opportunity",
+        "value_usd": 2526983449.0,
+        "value_usd_low": 1281255100.0,
+        "value_usd_high": 4555446354.0,
+        "value_basis": "growth_case_marine_mobility_tam_mid",
+        "note": "Total annual water-transfer spend the induced Mexican crossing market can support at full network width."
+      },
+      {
+        "label": "Whole-journey value across those crossings",
+        "value_usd": 7580950348.0,
+        "value_usd_low": 2562510201.0,
+        "value_usd_high": 18221785416.0,
+        "value_basis": "growth_case_journey_gmv_mid",
+        "note": "Door-to-door value of every journey that includes one of these crossings — the full trip DiDi's app coordinates end to end, not only the boat leg."
+      },
+      {
+        "label": "DiDi platform revenue on the Navier network",
+        "value_usd": 341142766.0,
+        "value_usd_low": 69187775.0,
+        "value_usd_high": 1311968550.0,
+        "value_basis": "growth_case_partner_platform_take_18pct",
+        "note": "DiDi's platform take on the journey value routed through the Navier network, at DiDi's standard 18% commission."
       }
     ]
   },
   "country_total": {
-    "expected_annual_revenue_usd": 14759160.0,
+    "expected_annual_revenue_usd": 28213152.0,
     "expected_vessels_supported": 88,
     "supported_route_ids": [
       "ics-413f51cd44",
@@ -43,7 +71,8 @@
     "unsupported_values": "null",
     "country_substitution": "forbidden",
     "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
-    "tam_source": "aggregate grounded_floor_by_market (supported revenue floor + addressable spend pool); no mixed-unit bars",
-    "published_brazil_basis": null
+    "tam_source": "SOM floor from aggregate grounded_floor_by_market; SAM/marine-TAM/journey-GMV/platform rungs from finance/model/growth.py LB-254 ladder on the Mexico pool (see tam.source)",
+    "published_brazil_basis": null,
+    "fare_basis": "premium-substitute (Uber Black $30 comparable), Jaideep-approved 2026-07-17; conservative for the longer Cozumel leg"
   }
 }

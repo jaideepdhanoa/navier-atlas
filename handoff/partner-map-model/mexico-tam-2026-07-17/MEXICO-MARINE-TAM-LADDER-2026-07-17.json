@@ -1,0 +1,84 @@
+{
+  "_doc": "Mexico (Quintana Roo Caribbean) marine-mobility TAM/SAM/SOM ladder — canonical LB-254 growth-case derivation for DiDi Mexico. Premium-substitute (Uber Black $30) fare basis, Jaideep-approved 2026-07-17.",
+  "_as_of": "2026-07-17",
+  "engine": "finance/model/growth.py (LB-254)",
+  "engine_config": "finance/model/growth-config.json",
+  "anchor": {
+    "M_today_transport_spend_pool_yr": 286506060.0,
+    "SOM_floor_navier_transport_rev_yr": 28213152.0,
+    "effective_capture_floor": 0.0985,
+    "is_captive": false,
+    "capture_regime": "contested (floor capture ~10%); mature capture band 0.15/0.25/0.40",
+    "source_rollup": "finance/recal/agg-didi.json rollup.grounded_floor_by_market.mexico-caribbean (fare basis: Uber Black $30 premium substitute)",
+    "sourced_corridors": [
+      "ics-413f51cd44",
+      "ics-dd1d814699",
+      "ics-aa6ff40d2d"
+    ],
+    "fleet_at_scale": 88
+  },
+  "parameters_used": {
+    "induced_demand": {
+      "low": 1.3,
+      "mid": 1.8,
+      "high": 2.5
+    },
+    "mature_capture_rate": {
+      "low": 0.15,
+      "mid": 0.25,
+      "high": 0.4
+    },
+    "greenfield_corridor_factor": {
+      "low": 3.44,
+      "mid": 4.9,
+      "high": 6.36
+    },
+    "_greenfield_mode": "global template band (not a DiDi census) — explicit planning assumption",
+    "journey_gmv_multiple": {
+      "low": 2.0,
+      "mid": 3.0,
+      "high": 4.0
+    },
+    "platform_take_rate": 0.18
+  },
+  "rungs_mid": {
+    "SOM_floor": {
+      "value_usd": 28213152.0,
+      "formula": "M_today * eff_capture (reproduces published floor)"
+    },
+    "SAM_navier_transport_rev": {
+      "value_usd": 631745862.0,
+      "low": 192188265.0,
+      "high": 1822178542.0,
+      "formula": "M_today * induced_demand * mature_capture * greenfield"
+    },
+    "marine_mobility_tam": {
+      "value_usd": 2526983449.0,
+      "low": 1281255100.0,
+      "high": 4555446354.0,
+      "formula": "M_today * induced_demand * greenfield"
+    },
+    "journey_gmv": {
+      "value_usd": 7580950348.0,
+      "low": 2562510201.0,
+      "high": 18221785416.0,
+      "formula": "M_today * induced_demand * journey_gmv_multiple * greenfield"
+    },
+    "partner_platform_rev_didi": {
+      "value_usd": 341142766.0,
+      "low": 69187775.0,
+      "high": 1311968550.0,
+      "formula": "network_journey_gmv * 0.18",
+      "scope": "DiDi only"
+    }
+  },
+  "deck_ladder_recipe": {
+    "didi-mexico": [
+      "SOM_floor",
+      "SAM_navier_transport_rev",
+      "marine_mobility_tam",
+      "journey_gmv",
+      "partner_platform_rev_didi"
+    ]
+  }
+}
