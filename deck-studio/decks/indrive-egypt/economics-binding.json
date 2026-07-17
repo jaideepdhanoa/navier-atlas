@@ -25,30 +25,39 @@
     }
   ],
   "tam": {
-    "headline": "Two boat-only routes are the floor — the Red Sea day-trip market sits well above them",
-    "source": "handoff/partner-map-model/indrive-scope-expansion-2026-07-13/EGYPT-MARINE-TAM-LADDER-2026-07-14.json",
+    "headline": "Two boat-only routes are the floor — the Red Sea, Nile and Alexandria market runs far higher",
+    "source": "finance/model/growth.py LB-254 ladder on the Egypt captive pool (width template ON, Jaideep 2026-07-17); engine output /tasklet/agent/home/indrive-egypt-rebuild/engine/GE_on.json",
     "rungs": [
       {
         "label": "Two boat-only routes we can size today",
         "aggregate_field": "rollup.grounded_floor_by_market.indrive-egypt.transport_spend_pool_yr",
         "value_usd": 8500384.0,
         "value_basis": "sourced_captive_floor",
-        "note": "Total day-trip spend on the Giftun and Ras Mohammed journeys alone. Because almost every visitor to these islands travels by boat, Navier's supported revenue on these two routes is about $7.65M. This is the floor, not the whole market."
+        "note": "Total day-trip spend on the Giftun and Ras Mohammed journeys alone. Because almost every visitor to these islands travels by boat, Navier's supported revenue on these two routes is about $7.42M. This is the floor, not the whole market."
       },
       {
-        "label": "The wider Red Sea day-trip boat market (Hurghada alone)",
-        "value_usd": 27360000.0,
-        "value_usd_low": 21280000.0,
-        "value_usd_high": 33440000.0,
-        "value_basis": "labelled_assumption_band_on_sourced_arrivals",
-        "note": "Hurghada ~1.9M arrivals (2023, UNWTO) × labelled 35–55% participation × $32. Sharm and other resorts are held upside."
+        "label": "Matured Egypt network Navier can serve",
+        "value_usd": 65445370.0,
+        "value_usd_low": 33182732.0,
+        "value_usd_high": 124737554.0,
+        "value_basis": "growth_case_SAM_mid_full_network",
+        "note": "Navier's own transport revenue once the full addressable Egyptian water network runs at leading-operator capture — the wider Red Sea day-trip belt plus Nile trips around Luxor and Aswan and Alexandria's waterfront. Mid case shown with a low–high range."
       },
       {
         "label": "Egypt marine-mobility opportunity",
-        "value_usd": null,
-        "status": "partial_context",
-        "value_basis": "context_ceiling_with_null_components",
-        "note": "The full Egypt opportunity would add the wider Red Sea market to Nile trips around Luxor and Aswan and to Alexandria's waterfront. Those are not yet sized here, so this step is shown as context rather than a single number."
+        "value_usd": 74973387.0,
+        "value_usd_low": 38013717.0,
+        "value_usd_high": 135156106.0,
+        "value_basis": "growth_case_marine_mobility_tam_mid",
+        "note": "Total annual water-transfer spend the induced Egyptian day-trip and waterfront market can support at full network width."
+      },
+      {
+        "label": "Whole-journey value across those trips",
+        "value_usd": 224920161.0,
+        "value_usd_low": 76027434.0,
+        "value_usd_high": 540624422.0,
+        "value_basis": "growth_case_journey_gmv_mid",
+        "note": "Door-to-door value of every journey that includes one of these water legs — the full trip, not only the boat leg."
       }
     ]
   },
@@ -70,7 +79,8 @@
     "unsupported_values": "null",
     "country_substitution": "forbidden",
     "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
-    "tam_source": "aggregate grounded_floor_by_market (supported revenue floor + addressable spend pool); no mixed-unit bars",
+    "tam_source": "SOM floor from aggregate grounded_floor_by_market; SAM/marine-TAM/journey-GMV rungs from finance/model/growth.py LB-254 ladder on the Egypt captive pool with greenfield width template ON (Jaideep 2026-07-17). inDrive stops at journey GMV — no 18% platform rung.",
+    "greenfield_width": "template_ON (Jaideep 2026-07-17: Egypt Red Sea reef/resort corridors far exceed the two sourced routes; template band 3.44/4.90/6.36 applied, borrowed not counted)",
     "published_brazil_basis": null
   },
   "capture_treatment": "captive"
