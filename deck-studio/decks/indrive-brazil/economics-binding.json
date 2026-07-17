@@ -35,19 +35,39 @@
     }
   ],
   "tam": {
-    "headline": "The supported routes are a floor, not a ceiling",
+    "headline": "The four Rio routes are the floor — Brazil's water-crossing market runs far higher",
+    "source": "handoff/partner-map-model/brazil-tam-2026-07-17/BRAZIL-MARINE-TAM-LADDER-2026-07-17.json",
     "rungs": [
       {
-        "label": "Supported annual route revenue today",
+        "label": "What the four Rio routes support today",
         "aggregate_field": "rollup.grounded_floor_by_market.indrive-brazil.market_rev_yr",
         "value_usd": 36407526.0,
-        "note": "Four sourced Rio cross-bay routes, 113 vessels at scale."
+        "value_basis": "sourced_corridor_floor",
+        "note": "Navier's annual revenue across the four sourced Rio cross-bay routes at full fleet (113 boats). This is the grounded floor, not the whole market."
       },
       {
-        "label": "Addressable Brazil water-crossing spend",
-        "aggregate_field": "rollup.grounded_floor_by_market.indrive-brazil.transport_spend_pool_yr",
-        "value_usd": 367461220.0,
-        "note": "Annual passenger spend across the bay and coastal crossings the network can compete for."
+        "label": "Matured Brazil network Navier can serve",
+        "value_usd": 810251990.0,
+        "value_usd_low": 246492986.0,
+        "value_usd_high": 2337053359.0,
+        "value_basis": "growth_case_SAM_mid_full_network",
+        "note": "Navier's own transport revenue once the full addressable Brazilian network runs at leading-operator capture, with faster, more comfortable boats growing the market. Mid case shown with a low–high range."
+      },
+      {
+        "label": "Brazil marine-mobility opportunity",
+        "value_usd": 3241007960.0,
+        "value_usd_low": 1643286576.0,
+        "value_usd_high": 5842633398.0,
+        "value_basis": "growth_case_marine_mobility_tam_mid",
+        "note": "Total annual water-transfer spend the induced Brazilian crossing market can support at full network width."
+      },
+      {
+        "label": "Whole-journey value across those crossings",
+        "value_usd": 9723023881.0,
+        "value_usd_low": 3286573152.0,
+        "value_usd_high": 23370533592.0,
+        "value_basis": "growth_case_journey_gmv_mid",
+        "note": "Door-to-door value of every journey that includes one of these crossings — the full trip, not only the boat leg."
       }
     ]
   },
@@ -66,7 +86,8 @@
     "unsupported_values": "null",
     "country_substitution": "forbidden",
     "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
-    "tam_source": "aggregate grounded_floor_by_market (supported revenue floor + addressable spend pool); no mixed-unit bars",
-    "published_brazil_basis": "shared unchanged across DiDi Brazil and inDrive Brazil"
+    "tam_source": "SOM floor from aggregate grounded_floor_by_market; SAM/marine-TAM/journey-GMV rungs from finance/model/growth.py LB-254 ladder on the Brazil pool (see tam.source)",
+    "published_brazil_basis": "shared unchanged across DiDi Brazil and inDrive Brazil (transport rungs 1-4)",
+    "platform_take_rung": "HELD for inDrive — inDrive's low/near-zero-commission model makes the standard 18% take-rate rung unsupportable; a whole-journey take rung is added only with inDrive's own sourced take rate (null-beats-guess)"
   }
 }
