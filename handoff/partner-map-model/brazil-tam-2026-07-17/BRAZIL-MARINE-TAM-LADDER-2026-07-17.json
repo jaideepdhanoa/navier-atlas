@@ -1,0 +1,97 @@
+{
+  "_doc": "Brazil marine-mobility TAM/SAM/SOM ladder — canonical LB-254 growth-case derivation. Shared basis for DiDi Brazil and inDrive Brazil.",
+  "_as_of": "2026-07-17",
+  "engine": "finance/model/growth.py (LB-254 captive-capture reconciliation)",
+  "engine_config": "finance/model/growth-config.json",
+  "anchor": {
+    "M_today_transport_spend_pool_yr": 367461220.0,
+    "SOM_floor_navier_transport_rev_yr": 36407526.0,
+    "effective_capture_floor": 0.0991,
+    "is_captive": false,
+    "capture_regime": "contested (floor capture ~10%); mature capture band 0.15/0.25/0.40 applies",
+    "source_rollup": "finance/recal/agg-didi.json (== agg-indrive.json) rollup.grounded_floor_by_market.brazil",
+    "sourced_corridors": [
+      "rn-1886629dbf0c",
+      "rn-80f0d0ebe0bd",
+      "rn-369ef0eb69d9",
+      "rn-00bb6ded4be5"
+    ],
+    "fleet_at_scale": 113
+  },
+  "parameters_used": {
+    "induced_demand": {
+      "low": 1.3,
+      "mid": 1.8,
+      "high": 2.5
+    },
+    "mature_capture_rate": {
+      "low": 0.15,
+      "mid": 0.25,
+      "high": 0.4
+    },
+    "greenfield_corridor_factor": {
+      "low": 3.44,
+      "mid": 4.9,
+      "high": 6.36
+    },
+    "_greenfield_mode": "global template band (not a DiDi/inDrive census) — explicit planning assumption",
+    "journey_gmv_multiple": {
+      "low": 2.0,
+      "mid": 3.0,
+      "high": 4.0
+    },
+    "platform_take_rate": 0.18
+  },
+  "rungs_mid": {
+    "SOM_floor": {
+      "value_usd": 36407526.0,
+      "formula": "M_today * eff_capture (reproduces published floor)"
+    },
+    "SAM_navier_transport_rev": {
+      "value_usd": 810251990.0,
+      "low": 246492986.0,
+      "high": 2337053359.0,
+      "formula": "M_today * induced_demand * mature_capture * greenfield"
+    },
+    "marine_mobility_tam": {
+      "value_usd": 3241007960.0,
+      "low": 1643286576.0,
+      "high": 5842633398.0,
+      "formula": "M_today * induced_demand * greenfield (LB-110)"
+    },
+    "journey_gmv": {
+      "value_usd": 9723023881.0,
+      "low": 3286573152.0,
+      "high": 23370533592.0,
+      "formula": "M_today * induced_demand * journey_gmv_multiple * greenfield"
+    },
+    "partner_platform_rev_didi": {
+      "value_usd": 437536075.0,
+      "low": 88737475.0,
+      "high": 1682678419.0,
+      "formula": "network_journey_gmv * 0.18 = M_today * induced * mature_capture * gmv_multiple * greenfield * take",
+      "scope": "DiDi only"
+    }
+  },
+  "deck_ladder_recipe": {
+    "didi-brazil": [
+      "SOM_floor",
+      "SAM_navier_transport_rev",
+      "marine_mobility_tam",
+      "journey_gmv",
+      "partner_platform_rev_didi"
+    ],
+    "indrive-brazil": [
+      "SOM_floor",
+      "SAM_navier_transport_rev",
+      "marine_mobility_tam",
+      "journey_gmv"
+    ],
+    "_platform_rung_policy": "Ride-hail/super-app decks append the partner platform-take rung (SPEC-deck-economics.md). DiDi charges a standard ~18% commission -> rung shown. inDrive's low/near-zero-commission model makes an 18% take-rate rung unsupportable -> HELD (null-beats-guess) pending inDrive's own sourced take rate."
+  },
+  "validation": {
+    "engine_parity": "Reproduced by running finance/model/growth.py --partner didi on the Brazil-scoped rollup; global DiDi mid SAM (403,438,351 pool) reproduces growth-didi.json 889,581,564 exactly.",
+    "mid_basis": "All deck rungs use MID per SPEC-deck-economics.md; low/high carried as range only.",
+    "rio_unit_economics_unchanged": "Praça XV → Arariboia rn-1886629dbf0c: $28 fare, $329,190 rev/boat-yr, 75.9% margin, 2.40yr payback (mid)."
+  }
+}
