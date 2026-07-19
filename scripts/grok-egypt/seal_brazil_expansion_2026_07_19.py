@@ -479,14 +479,26 @@ def main() -> int:
             brazil_cl = c
             break
     if brazil_cl is None:
-        brazil_cl = {"id": "brazil", "name": "Brazil", "city_ids": [], "route_ids": []}
+        brazil_cl = {
+            "cluster_id": "brazil",
+            "cluster_label": "Brazil",
+            "member_city_ids": [],
+            "city_ids": [],
+            "route_ids": [],
+        }
         clist.append(brazil_cl)
         clusters["clusters"] = clist
+    # build-site orphan gate reads member_city_ids only (city_ids is non-authoritative).
+    members = brazil_cl.setdefault("member_city_ids", [])
     city_ids = brazil_cl.setdefault("city_ids", brazil_cl.get("cities") or [])
     rids = brazil_cl.setdefault("route_ids", [])
     for cid in city_names:
+        if cid not in members:
+            members.append(cid)
         if cid not in city_ids:
             city_ids.append(cid)
+    brazil_cl["members_present"] = len(members)
+    brazil_cl["members_missing"] = []
     for sr in sealed_routes:
         rid = sr["route_id"]
         if rid not in rids:
