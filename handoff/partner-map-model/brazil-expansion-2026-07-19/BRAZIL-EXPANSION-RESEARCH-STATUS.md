@@ -1,6 +1,6 @@
 # Brazil coastal expansion — research status (2026-07-19)
 
-Source-led research pass for the Brazil priority-market expansion: **3 → 14 Atlas cities**. All artifacts in this folder; city briefs in `partner-pitch/city_briefs/`. Status label: **research-complete / seal-needed** for geometry; economics promotion pending fare-anchor approvals and Grok route IDs.
+Source-led research pass for the Brazil priority-market expansion: **3 → 14 Atlas cities**. All artifacts in this folder; city briefs in `partner-pitch/city_briefs/`. Status label: **research-complete / seal-needed** for geometry. Fare anchors **approved 2026-07-19** (see `FARE-ANCHORS-2026-07-19.md`); economics cascade fires once Grok returns sealed route IDs + distances. Five FULL-T1 markets: Salvador, Santos–Guarujá, São Sebastião–Ilhabela, Vitória–Vila Velha, Ilha do Mel (promoted).
 
 ## Totals
 - **13 market packages** (12 new + Angra densification)
@@ -17,7 +17,7 @@ Source-led research pass for the Brazil priority-market expansion: **3 → 14 At
 | sao-sebastiao-ilhabela-brazil | marquee | 12 (10) | 18 (13/5) | **FULL T1** | 12,584 users/day (Semil VDM 2024); 1.15M+ pax 86-day summer op; 15% of state trips; Hora Marcada queue-skip premium R$65.30–98 (3.4×) |
 | vitoria-vila-velha-brazil | full | 15 (12) | 13 (7/3) | **FULL T1** | ~500k pax yr-1, >1.2M cumulative Dec 2025 (SEMOBI/SEP); 4th station opened May 2026, 3 more funded |
 | sao-luis-alcantara-brazil | full | 9 (8) | 12 (2/3) | HOLD (`_economics_hold_reason`) | 1.8M pax 2017 record (EMAP); Carnival 71,737/11 days 2026; no recent annual series. **Correction:** 190–220k festival figure was Bahia's, not MA |
-| ilha-do-mel-brazil | display→full candidate | 9 (9) | 10 (9/2) | HOLD — promotion candidate | **383,162 boat boardings 2025** (Abaline); 247,020 park visitors 2025 (IAT); AGEPAR-homologated tariffs incl. R$69.07 nautical-taxi premium |
+| ilha-do-mel-brazil | full | 9 (9) | 10 (9/2) | **FULL T1 — promoted 2026-07-19 (Jaideep)** | **383,162 boat boardings 2025** (Abaline); 247,020 park visitors 2025 (IAT); AGEPAR-homologated tariffs incl. R$69.07 nautical-taxi premium |
 | porto-alegre-guaiba-brazil | full | 11 (9) | 14 (6/3) | HOLD | CatSul live R$16.90; 314k pax 2020; ~1.7k/day 2022; no continuous series (AIIB EIAS PDF = best lead) |
 | buzios-cabo-frio-arraial-brazil | full | 11 (10) | 12 (8/4) | display-only | Búzios 992,139 tourists 2023 + 76,276 cruise-tender pax Jan 2026 (official); Arraial Navy 300-person Farol cap; no regulated pax series |
 | paraty-brazil | display | 9 (9) | 10 (5/2) | display-only | ~3.5M visitors/yr (municipal estimate); ~50-schooner fleet; no official boarding series |
