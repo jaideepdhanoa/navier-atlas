@@ -159,9 +159,12 @@ def ensure_city(fbt: dict, city_id: str, name: str, anchor: list | None) -> None
             "properties": {
                 "id": city_id,
                 "name": name,
+                # Taxonomy gate requires Title Case shortName/fullName (never null / slug).
+                "shortName": name.split(",")[0].strip() if name else city_id,
+                "fullName": name,
                 "country": "Brazil",
                 "cluster_id": "brazil",
-                "region": "LatAm",
+                "region": "Latin-America",
                 "_sealed_at": NOW,
                 "_seal_lane": TAG,
             },
