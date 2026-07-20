@@ -41,16 +41,16 @@
       "source_tier": "T4", "confidence": "low"
     },
     "greenfield_corridor_factor": {
-      "_doc": "g_greenfield — WIDTH lever. The sourced corridors are only the existing-ferry subset; the addressable network is far larger. Now GROUNDED by greenfield_census.py: an ID-based census of the GOLD atlas corridor corpus (data-clean/ROUTES.json) in partner geography, Pioneer<=70nm, undirected-unique, sourced excluded, tiered by edge_class (local micro-segments excluded). Factor = 1 + (N_greenfield/N_sourced)*alpha_density. Applied to the matured rungs (SAM/TAM/network/platform), NOT to the SOM floor (floor stays the sourced corridors).",
+      "_doc": "g_greenfield — WIDTH lever. Prefer PER-PARTNER census at finance/recal/greenfield-census/<partner>.json (finance/model/greenfield_census.py). Formula: g = 1 + (N_greenfield/N_sourced)*alpha_density, with tail softening when count_ratio > Grab ref 9.7. growth.py auto-loads partner census when present. Legacy band below is Grab SEA historical ONLY — do not use as a global assumption.",
       "mode": "census",
       "off_value": 1.0,
       "low": 3.44, "mid": 4.9, "high": 6.36,
       "_census": {
-        "source": "grab-greenfield-census.json",
+        "source": "LEGACY grab-greenfield-census.json (superseded by finance/recal/greenfield-census/*.json)",
         "n_sourced": 35, "n_greenfield_headline": 341, "count_ratio": 9.7,
         "alpha_density": {"low": 0.25, "mid": 0.40, "high": 0.55,
           "_doc": "avg greenfield corridor demand / avg sourced corridor demand. Sourced = cherry-picked best; greenfield thinner."},
-        "_note": "tier1 market-making (island-hop/regional/inter-city/trunk) + tier2 cluster-spokes; Japan/Ryukyu carved out; local intra-hub micro-segments excluded."
+        "_note": "LEGACY Grab SEA: tier1+tier2; local micro excluded. Rebuild: python3 finance/model/greenfield_census.py --all && python3 finance/rebuild_all_from_greenfield_census.py"
       },
       "source_tier": "T4", "confidence": "med-low"
     },

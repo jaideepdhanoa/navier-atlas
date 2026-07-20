@@ -1,0 +1,80 @@
+{
+  "partner": "ocean-whisperer",
+  "at": "2026-07-20T06:54:22.172117+00:00",
+  "status": "ok",
+  "mode": "census",
+  "methodology": {
+    "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+    "max_nm": 70.0,
+    "alpha_density": {
+      "low": 0.25,
+      "mid": 0.4,
+      "high": 0.55
+    },
+    "sourced_definition": "grounded non-dup agg rows with route_id",
+    "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, ≤max_nm, not in sourced route_id/endpoint set",
+    "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 → 4.9 mid"
+  },
+  "n_sourced": 6,
+  "n_greenfield_headline": 27,
+  "n_atlas_in_geography": 38,
+  "n_skipped_over_nm": 2,
+  "n_skipped_already_sourced": 2,
+  "n_skipped_edge_class": 7,
+  "n_partner_cities": 9,
+  "n_partner_clusters": 1,
+  "count_ratio": 4.5,
+  "ratio_effective": 4.5,
+  "tail_softened": false,
+  "alpha_density": {
+    "low": 0.25,
+    "mid": 0.4,
+    "high": 0.55
+  },
+  "derived_greenfield_factor": {
+    "headline_tier1_plus_tier2": {
+      "low": 2.125,
+      "mid": 2.8,
+      "high": 3.475
+    }
+  },
+  "sourced_route_ids_sample": [
+    "rn-2d9e29672e25",
+    "rn-8ae6f0293d75",
+    "rn-aeda75f91a7b",
+    "rn-aefa1c104456",
+    "rn-c393337bbd61",
+    "rn-c7ee2a1d3722"
+  ],
+  "greenfield_route_ids_sample": [
+    "rn-0f8e77cfef46",
+    "rn-09a43a616a1a",
+    "rn-7839c5ad6d42",
+    "rn-b3209572e89e",
+    "rn-b07d96b330cd",
+    "rn-a88f7e7cffc2",
+    "rn-a3a94b8dbc88",
+    "rn-838ccd054530",
+    "rn-d1eb05689785",
+    "rn-29425ce31839",
+    "rn-43c96cef749c",
+    "rn-d9e239b44522",
+    "rn-56bef2c28c2c",
+    "rn-e5e0a3915dd8",
+    "rn-83cbd054a39d",
+    "rn-e79d114ec986",
+    "rn-dbf3ef739a32",
+    "rn-cb87959ada62",
+    "rn-fdceb6d62602",
+    "rn-7c106c43b8c6",
+    "rn-854d1f525a72",
+    "rn-436478217f2d",
+    "rn-733a5382280e",
+    "rn-631b19a06017",
+    "rn-24019a37a918",
+    "rn-7930996f0935",
+    "rn-d78b578a0b0b"
+  ],
+  "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+  "agg_path": "/Users/jaideep/navier-atlas/finance/recal/agg-ocean-whisperer.json"
+}

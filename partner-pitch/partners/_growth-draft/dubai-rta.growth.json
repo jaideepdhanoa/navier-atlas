@@ -4,8 +4,8 @@
   "source_rollup": "agg-dubai-rta.json",
   "rev_per_boat_yr": 410420,
   "greenfield_mode": "census",
-  "greenfield_corridors": 341,
-  "sourced_corridors": 35,
+  "greenfield_corridors": 156,
+  "sourced_corridors": 8,
   "generator": "growth_frontend_block.py",
   "platform_rev_excluded": true
  },
@@ -21,7 +21,7 @@
   "rungs": [
    {
     "id": "som_floor",
-    "label": "SOM — floor (published)",
+    "label": "SOM floor (published) — sourced corridors today",
     "whose_money": "Navier transport revenue",
     "basis": "sourced flagship corridors · 10% capture · today's demand",
     "low": null,
@@ -37,64 +37,64 @@
    },
    {
     "id": "som_network",
-    "label": "SOM — full network",
+    "label": "SOM full network (~10% capture, today, +greenfield)",
     "whose_money": "Navier transport revenue",
     "basis": "whole mapped network · 10% capture · today's demand (no growth assumed)",
-    "low": 8471065.0,
-    "mid": 12066343.0,
-    "high": 15661621.0,
+    "low": 9339103.0,
+    "mid": 13465054.0,
+    "high": 17591004.0,
     "display": {
-     "low": "$8.5M",
-     "mid": "$12M",
-     "high": "$16M"
+     "low": "$9.3M",
+     "mid": "$13M",
+     "high": "$18M"
     },
     "confidence": "med",
     "confidence_label": "Modeled"
    },
    {
     "id": "sam_network",
-    "label": "SAM — matured network",
+    "label": "SAM matured network — induced demand at scale",
     "whose_money": "Navier transport revenue",
     "basis": "faster, more comfortable boats grow the market · leading-operator 25% capture, network-wide",
-    "low": 16518577.0,
-    "mid": 54298544.0,
-    "high": 156616208.0,
+    "low": 18211251.0,
+    "mid": 60592743.0,
+    "high": 175910045.0,
     "display": {
-     "low": "$17M",
-     "mid": "$54M",
-     "high": "$157M"
+     "low": "$18M",
+     "mid": "$61M",
+     "high": "$176M"
     },
     "confidence": "med-low",
     "confidence_label": "Projected"
    },
    {
     "id": "tam_transfer",
-    "label": "Marine mobility TAM — induced marine-transfer market",
+    "label": "Marine mobility TAM — total addressable water-transfer spend",
     "whose_money": "total water-transfer spend",
     "basis": "SAM divided by leading-operator capture — the full inducible water-transfer wallet at network maturity",
-    "low": 110123850.0,
-    "mid": 217194176.0,
-    "high": 391540521.0,
+    "low": 121408343.0,
+    "mid": 242370970.0,
+    "high": 439775112.0,
     "display": {
-     "low": "$110M",
-     "mid": "$217M",
-     "high": "$392M"
+     "low": "$121M",
+     "mid": "$242M",
+     "high": "$440M"
     },
     "confidence": "med-low",
     "confidence_label": "Projected"
    },
    {
     "id": "journey_gmv",
-    "label": "Journey GMV — food + stays + experiences (≈3× TAM)",
+    "label": "Journey GMV — food, stays, and experiences (~3× TAM)",
     "whose_money": "total journey wallet",
     "basis": "add food, stays, and experiences to every crossing in the induced market",
-    "low": 220247699.0,
-    "mid": 651582527.0,
-    "high": 1566162084.0,
+    "low": 242816686.0,
+    "mid": 727112910.0,
+    "high": 1759100448.0,
     "display": {
-     "low": "$220M",
-     "mid": "$652M",
-     "high": "$1.57B"
+     "low": "$243M",
+     "mid": "$727M",
+     "high": "$1.76B"
     },
     "confidence": "med-low",
     "confidence_label": "Projected"
@@ -103,7 +103,7 @@
  },
  "phase_economics": {
   "headline": "Revenue potential by phase — conservative floor first, ecosystem prize last.",
-  "conversion_note": "Fleet & CO2 scale from the grounded unit: 6 boats = $2.5M transport rev = 934 t CO2/yr (~$410K rev/boat).",
+  "conversion_note": "Fleet & CO2 scale from the grounded unit: 6 boats = $2.5M transport rev = 934 t CO2/yr (~$410K rev/boat). Near-term phase fleets follow staged rollout limits.",
   "horizons": [
    {
     "id": "prove",
@@ -113,7 +113,7 @@
     "capture": "10% (new-entrant floor)",
     "vessel": "N30 Pioneer II (8 pax, commercial now)",
     "fleet_boats": 6,
-    "navier_transport_rev_yr": 2462519.0,
+    "navier_transport_rev_yr": 2462519,
     "navier_transport_rev_display": "$2.5M",
     "co2_saved_t_yr": 934,
     "confidence": "grounded",
@@ -126,14 +126,14 @@
     "scope": "Extend to the full mapped greenfield network",
     "capture": "10% (still conservative)",
     "vessel": "N30 Pioneer II + N35 Shuttle (12–15 pax, 2027) on dense legs",
-    "fleet_boats_est": 29,
+    "fleet_boats_est": 6,
     "fleet_boats_band": {
-     "low": 21,
-     "high": 38
+     "low": 6,
+     "high": 6
     },
-    "navier_transport_rev_yr": 12066343.0,
-    "navier_transport_rev_display": "$12M",
-    "co2_saved_t_yr": 4579,
+    "navier_transport_rev_yr": 2462519,
+    "navier_transport_rev_display": "$2.5M",
+    "co2_saved_t_yr": 934,
     "confidence": "med",
     "confidence_label": "Modeled"
    },
@@ -144,15 +144,15 @@
     "scope": "Induced marine-transfer demand + leading-operator capture across the network",
     "capture": "25% mature share",
     "vessel": "N35-led mix; Quanta-LR on 75–150nm regional legs (H2 2026+)",
-    "fleet_boats_est_pioneer_equiv": 132,
-    "fleet_note": "Pioneer-equivalent; N35 mix lowers hull count for the same throughput.",
-    "navier_transport_rev_yr": 54298544.0,
-    "navier_transport_rev_display": "$54M",
-    "marine_mobility_tam_yr": 217194176.0,
-    "marine_mobility_tam_display": "$217M marine TAM",
-    "journey_gmv_yr": 651582527.0,
-    "journey_gmv_display": "$652M Journey GMV",
-    "co2_saved_t_yr": 20606,
+    "fleet_boats_est_pioneer_equiv": 6,
+    "fleet_note": "Pioneer-equivalent rollout cap; N35 mix lowers hull count for the same throughput.",
+    "navier_transport_rev_yr": 2462519,
+    "navier_transport_rev_display": "$2.5M",
+    "marine_mobility_tam_yr": 242370970.0,
+    "marine_mobility_tam_display": "$242M marine TAM",
+    "journey_gmv_yr": 727112910.0,
+    "journey_gmv_display": "$727M Journey GMV",
+    "co2_saved_t_yr": 934,
     "confidence": "med-low (banded)",
     "confidence_label": "Projected"
    }

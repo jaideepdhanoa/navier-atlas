@@ -1,0 +1,89 @@
+{
+  "partner": "freenow",
+  "at": "2026-07-20T06:54:14.005394+00:00",
+  "status": "ok",
+  "mode": "census",
+  "methodology": {
+    "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+    "max_nm": 70.0,
+    "alpha_density": {
+      "low": 0.25,
+      "mid": 0.4,
+      "high": 0.55
+    },
+    "sourced_definition": "grounded non-dup agg rows with route_id",
+    "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, ≤max_nm, not in sourced route_id/endpoint set",
+    "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 → 4.9 mid"
+  },
+  "n_sourced": 2,
+  "n_greenfield_headline": 189,
+  "n_atlas_in_geography": 407,
+  "n_skipped_over_nm": 10,
+  "n_skipped_already_sourced": 0,
+  "n_skipped_edge_class": 194,
+  "n_partner_cities": 30,
+  "n_partner_clusters": 30,
+  "count_ratio": 94.5,
+  "ratio_effective": 22.42,
+  "tail_softened": true,
+  "alpha_density": {
+    "low": 0.25,
+    "mid": 0.4,
+    "high": 0.55
+  },
+  "derived_greenfield_factor": {
+    "headline_tier1_plus_tier2": {
+      "low": 6.605,
+      "mid": 9.968,
+      "high": 13.331
+    }
+  },
+  "sourced_route_ids_sample": [
+    "ics-5e35d5734e",
+    "ics-81984b66e9"
+  ],
+  "greenfield_route_ids_sample": [
+    "ics-01ece28e96",
+    "ics-1e317781e7",
+    "ics-2297b8e753",
+    "ics-37c0f7817c",
+    "ics-4d11170b39",
+    "ics-6c712dc200",
+    "ics-7a19c03269",
+    "ics-98d5918cf8",
+    "ics-99e755da2e",
+    "ics-a7b6b93c46",
+    "ics-aa83631753",
+    "ics-0521742d9b",
+    "ics-639e42b73b",
+    "ics-8cd9f4b5bb",
+    "ics-64e6a1eeec",
+    "ics-f88551e209",
+    "ics-8ecdd9d719",
+    "rn-e5d3acf5d5e0",
+    "rn-1e1e58175c99",
+    "rn-5c104a2a700c",
+    "rn-fb0a8634ad53",
+    "rn-a104a2ff92d8",
+    "rn-e499b74a73fb",
+    "rn-5ac128c2cf97",
+    "rn-3ca956aea112",
+    "rn-0252841ed343",
+    "rn-4caed0cd783f",
+    "rn-8a583e24424c",
+    "rn-beeb9f1023d1",
+    "rn-028bf45369fb",
+    "rn-6dbb0cf8333b",
+    "rn-caaadcd49497",
+    "rn-db8eb75cb3f7",
+    "rn-28693e3d3915",
+    "rn-dfca45a43763",
+    "rn-d1e45b878d69",
+    "rn-7294ea4442f5",
+    "rn-263ec3bf713a",
+    "rn-43a1d09dba3f",
+    "rn-90924c225e45"
+  ],
+  "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+  "agg_path": "/Users/jaideep/navier-atlas/finance/recal/agg-freenow.json"
+}

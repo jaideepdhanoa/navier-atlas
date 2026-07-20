@@ -25,9 +25,9 @@
     },
     "platform_take_rate": 0.18,
     "greenfield_corridor_factor": {
-      "low": 3.44,
-      "mid": 4.9,
-      "high": 6.36
+      "low": 1.0,
+      "mid": 1.0,
+      "high": 1.0
     }
   },
   "grounded": {
@@ -63,30 +63,41 @@
   "_whose_money_legend": {
     "navier_transport_revenue": "Fare the Navier boats collect. This is the corridor P&L (atom.py). SOM/SAM rungs are in this unit.",
     "journey_gmv": "Total spend on the whole island journey flowing through the super-app: transport + food + stays + experiences + ads + parcel/logistics. Gross, all merchants. TAM rung is in this unit.",
-    "platform_take": "The partner's (Grab's) own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
+    "platform_take": "The partner's own commission revenue on journey_gmv. Derived line — this is the number that makes a super-app care, not the boat fare."
   },
   "greenfield": {
-    "mode": "census",
-    "source": "growth-config default",
+    "mode": "off",
+    "source": "/Users/jaideep/navier-atlas/finance/recal/greenfield-census/grab-thailand.json",
     "factor_band": {
-      "low": 3.44,
-      "mid": 4.9,
-      "high": 6.36
+      "low": 1.0,
+      "mid": 1.0,
+      "high": 1.0
     },
     "_census": {
-      "source": "grab-greenfield-census.json",
-      "n_sourced": 35,
-      "n_greenfield_headline": 341,
-      "count_ratio": 9.7,
+      "source": "/Users/jaideep/navier-atlas/finance/recal/greenfield-census/grab-thailand.json",
+      "n_sourced": 0,
+      "n_greenfield_headline": 11,
+      "count_ratio": null,
       "alpha_density": {
         "low": 0.25,
         "mid": 0.4,
-        "high": 0.55,
-        "_doc": "avg greenfield corridor demand / avg sourced corridor demand. Sourced = cherry-picked best; greenfield thinner."
+        "high": 0.55
       },
-      "_note": "tier1 market-making (island-hop/regional/inter-city/trunk) + tier2 cluster-spokes; Japan/Ryukyu carved out; local intra-hub micro-segments excluded."
+      "methodology": {
+        "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+        "max_nm": 70.0,
+        "alpha_density": {
+          "low": 0.25,
+          "mid": 0.4,
+          "high": 0.55
+        },
+        "sourced_definition": "grounded non-dup agg rows with route_id",
+        "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, ≤max_nm, not in sourced route_id/endpoint set",
+        "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 → 4.9 mid"
+      },
+      "note": "No grounded sourced corridors — greenfield OFF (null-beats-guess)."
     },
-    "_doc": "WIDTH lever. SAM_sourced_only = depth on the sourced corridors (no greenfield). SAM/TAM/network/platform = full addressable network (sourced + greenfield). SOM floor is unaffected (it is the sourced corridors)."
+    "_doc": "WIDTH lever. SAM_sourced_only = depth on the sourced corridors (no greenfield). SAM/TAM/network/platform = full addressable network (sourced + greenfield). SOM floor is unaffected (it is the sourced corridors). Prefer finance/recal/greenfield-census/<partner>.json over Grab-global template."
   },
   "_forward_sam_only": false,
   "_headline_anchor": "grounded"
