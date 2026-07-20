@@ -138,6 +138,14 @@ function auditPartner(partner, routeIds, cityBriefs) {
   for (const m of (partner.markets || [])) {
     const mslug = m.slug || m.market_id || m.id || 'unknown';
     const mprefix = `${pid}/${mslug}`;
+    // Footprint market-keeps (RULE-COVERED-FOOTPRINT-MARKET-KEEP) are brief-only
+    // inheritance stubs — no story/journey surface required until sealed.
+    const briefOnlyKeep = Boolean(
+      m._brief_only
+      || (typeof m._market_keep_source === 'string'
+        && m._market_keep_source.includes('MARKET-KEEP'))
+    );
+    if (briefOnlyKeep) continue;
     gaps.push(...auditPhases(m.phases, mprefix, routeIds));
     gaps.push(...auditFeaturedRoutes(m.featured_routes, `${mprefix} featured`, routeIds));
     const mHasFeatured = (m.phases || []).some((ph) =>
