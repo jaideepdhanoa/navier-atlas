@@ -58,9 +58,37 @@ LAND_GATE_ACCEPT = 1.25  # still better than soft 3.5km; accept if best availabl
 LAND_GATE_ACCEPT_RIVER = 3.5
 RIVER_MARKETS = {"manaus-brazil", "belem-brazil"}
 # Costa Verde island channels: same soft bay gate when hand/adaptive spine applied.
-BAY_SOFT_MARKETS = {"paraty-brazil", "angra-dos-reis-ilha-grande-brazil", "buzios-cabo-frio-arraial-brazil"}
+BAY_SOFT_MARKETS = {
+    "paraty-brazil",
+    "angra-dos-reis-ilha-grande-brazil",
+    "buzios-cabo-frio-arraial-brazil",
+    "santos-guaruja-brazil",
+    "salvador-brazil",
+    "sao-sebastiao-ilhabela-brazil",
+    "sao-luis-alcantara-brazil",
+    "ilha-do-mel-brazil",
+    "porto-alegre-guaiba-brazil",
+    "recife-brazil",
+    "vitoria-vila-velha-brazil",
+}
 NM_PER_KM = 0.539957
 ATLAS_RE = re.compile(r"atlas_bp_id:\s*(bp-[a-zA-Z0-9-]+)")
+BP_IN_STRING = re.compile(r"(bp-[a-zA-Z0-9-]+)")
+
+
+def parse_endpoint(raw: str) -> str:
+    """Normalize inventory endpoint: strip cross-market annotations; extract bp- ids."""
+    s = (raw or "").strip()
+    if " (" in s:
+        s = s.split(" (", 1)[0].strip()
+    m = BP_IN_STRING.search(raw or "")
+    if m and (raw or "").startswith("bp-") or (m and "cross-market" in (raw or "")):
+        # prefer explicit leading bp or annotated atlas id
+        if (raw or "").strip().startswith("bp-"):
+            return (raw or "").split()[0].split("(")[0].strip()
+        return m.group(1)
+    return s
+
 
 DENSITY_TARGETS = {
     "paraty-brazil": 6,
@@ -689,8 +717,13 @@ def main() -> int:
             work.append({**inv, "priority": "density"})
 
     for item in work:
-        f_h, t_h = item["from_bp"], item["to_bp"]
+        f_h, t_h = parse_endpoint(item["from_bp"]), parse_endpoint(item["to_bp"])
         market = item["market"]
+        # resolve handoff or direct atlas bp id
+        if f_h not in handoff_to_atlas and f_h.startswith("bp-"):
+            handoff_to_atlas[f_h] = f_h
+        if t_h not in handoff_to_atlas and t_h.startswith("bp-"):
+            handoff_to_atlas[t_h] = t_h
         if f_h not in handoff_to_atlas or t_h not in handoff_to_atlas:
             failed.append({**item, "reason": "endpoint_bp_dropped_or_unmapped"})
             continue
