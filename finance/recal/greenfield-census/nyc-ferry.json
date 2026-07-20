@@ -1,0 +1,82 @@
+{
+  "partner": "nyc-ferry",
+  "at": "2026-07-20T06:54:21.824314+00:00",
+  "status": "ok",
+  "mode": "census",
+  "methodology": {
+    "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+    "max_nm": 70.0,
+    "alpha_density": {
+      "low": 0.25,
+      "mid": 0.4,
+      "high": 0.55
+    },
+    "sourced_definition": "grounded non-dup agg rows with route_id",
+    "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, ≤max_nm, not in sourced route_id/endpoint set",
+    "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 → 4.9 mid"
+  },
+  "n_sourced": 18,
+  "n_greenfield_headline": 17,
+  "n_atlas_in_geography": 62,
+  "n_skipped_over_nm": 0,
+  "n_skipped_already_sourced": 15,
+  "n_skipped_edge_class": 30,
+  "n_partner_cities": 2,
+  "n_partner_clusters": 1,
+  "count_ratio": 0.9444,
+  "ratio_effective": 0.9444,
+  "tail_softened": false,
+  "alpha_density": {
+    "low": 0.25,
+    "mid": 0.4,
+    "high": 0.55
+  },
+  "derived_greenfield_factor": {
+    "headline_tier1_plus_tier2": {
+      "low": 1.2361,
+      "mid": 1.3778,
+      "high": 1.5194
+    }
+  },
+  "sourced_route_ids_sample": [
+    "ics-23d2f2724f",
+    "ics-2531d38456",
+    "ics-3768445940",
+    "ics-4ffc6e9f72",
+    "ics-5a2b98675d",
+    "ics-5d44acda8c",
+    "ics-6481653e97",
+    "ics-91236e9098",
+    "ics-93302ccafd",
+    "ics-a5f00760b1",
+    "ics-b2b4435ce6",
+    "ics-b52afea4dd",
+    "ics-bdacfbafa1",
+    "ics-c239910b5b",
+    "ics-d14c2be8fb",
+    "ics-d5de69a39d",
+    "ics-db90a41958",
+    "ics-e79dc60dd1"
+  ],
+  "greenfield_route_ids_sample": [
+    "ics-1d6b5394c1",
+    "ics-ec28d37573",
+    "ics-46ae5518ca",
+    "ics-a6379e584c",
+    "ics-61b81bf6d1",
+    "ics-4cd57af7b7",
+    "ics-69383f7df3",
+    "ics-603ed9e77c",
+    "ics-87c8a85af0",
+    "ics-877f1db604",
+    "ics-055fd73aa8",
+    "ics-cb7533826d",
+    "ics-36a42dd3cb",
+    "ics-063f7a4d18",
+    "ics-08828b9b14",
+    "ics-5f0b116a5f",
+    "ics-e811c30ae5"
+  ],
+  "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+  "agg_path": "/Users/jaideep/navier-atlas/finance/recal/agg-nyc-ferry.json"
+}

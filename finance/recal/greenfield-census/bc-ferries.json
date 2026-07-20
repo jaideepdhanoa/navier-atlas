@@ -1,0 +1,82 @@
+{
+  "partner": "bc-ferries",
+  "at": "2026-07-20T06:54:08.356950+00:00",
+  "status": "ok",
+  "mode": "census",
+  "methodology": {
+    "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+    "max_nm": 70.0,
+    "alpha_density": {
+      "low": 0.25,
+      "mid": 0.4,
+      "high": 0.55
+    },
+    "sourced_definition": "grounded non-dup agg rows with route_id",
+    "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, ≤max_nm, not in sourced route_id/endpoint set",
+    "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 → 4.9 mid"
+  },
+  "n_sourced": 21,
+  "n_greenfield_headline": 14,
+  "n_atlas_in_geography": 72,
+  "n_skipped_over_nm": 0,
+  "n_skipped_already_sourced": 19,
+  "n_skipped_edge_class": 27,
+  "n_partner_cities": 4,
+  "n_partner_clusters": 3,
+  "count_ratio": 0.6667,
+  "ratio_effective": 0.6667,
+  "tail_softened": false,
+  "alpha_density": {
+    "low": 0.25,
+    "mid": 0.4,
+    "high": 0.55
+  },
+  "derived_greenfield_factor": {
+    "headline_tier1_plus_tier2": {
+      "low": 1.1667,
+      "mid": 1.2667,
+      "high": 1.3667
+    }
+  },
+  "sourced_route_ids_sample": [
+    "ics-003ff4d4d6",
+    "ics-100f5b075b",
+    "ics-2640262c90",
+    "ics-2655a1dd62",
+    "ics-2e531ad402",
+    "ics-328f3f8771",
+    "ics-386ddc2403",
+    "ics-571e719a99",
+    "ics-59cf112104",
+    "ics-7399ff8a96",
+    "ics-98c5ba69d8",
+    "ics-a459ca3bd2",
+    "ics-b4112eb86f",
+    "ics-b959b8a95f",
+    "ics-c9024e65be",
+    "ics-cf3100a196",
+    "ics-edfa2fcf29",
+    "ics-f511806ffc",
+    "ics-f66f90c650",
+    "ics-f7b1c15be0",
+    "ics-f8e08fb9e6"
+  ],
+  "greenfield_route_ids_sample": [
+    "ics-0038607154",
+    "ics-12d6775fa3",
+    "ics-f0a554937c",
+    "ics-4005779597",
+    "ics-40d510323b",
+    "ics-4bcb61e45c",
+    "ics-5d5b5ffa3d",
+    "ics-87463b314b",
+    "ics-8fd3195215",
+    "ics-9219c87072",
+    "ics-99cee42ef6",
+    "ics-d1d70f6a40",
+    "ics-e2673c3cd4",
+    "ics-e762010e47"
+  ],
+  "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+  "agg_path": "/Users/jaideep/navier-atlas/finance/recal/agg-bc-ferries.json"
+}

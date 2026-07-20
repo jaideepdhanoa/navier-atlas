@@ -56,18 +56,28 @@ _gf = M["greenfield_corridor_factor"]
 _gf_mode = None; _gf_src = None
 _gf_arg = arg("--greenfield", None)
 _gf_json = arg("--greenfield-json", None)
+# Auto-discover standardized per-partner census (finance/recal/greenfield-census/<p>.json)
+# when --greenfield-json is not passed. Replaces silent Grab-global 4.9× default.
+_auto_census = os.path.join(FIN, "recal", "greenfield-census", f"{partner}.json")
+if not _gf_json and os.path.exists(_auto_census) and _gf_arg != "off":
+    _gf_json = _auto_census
+
+_census_doc = None
 if _gf_arg == "off":
     g_green = {b: 1.0 for b in BANDS}; _gf_mode = "off"; _gf_src = "forced off (per-partner)"
 elif _gf_json:
-    _cz = json.load(open(_gf_json))
-    _fac = _cz["derived_greenfield_factor"]["headline_tier1_plus_tier2"]
-    g_green = {b: _fac[b] for b in BANDS}; _gf_mode = "census"; _gf_src = _gf_json
+    _census_doc = json.load(open(_gf_json))
+    _fac = _census_doc["derived_greenfield_factor"]["headline_tier1_plus_tier2"]
+    g_green = {b: float(_fac[b]) for b in BANDS}
+    _gf_mode = _census_doc.get("mode") or "census"
+    if _gf_mode in ("off", "census_empty"):
+        g_green = {b: 1.0 for b in BANDS}
+    _gf_src = _gf_json
 elif partner == "didi" and _gf.get("mode") == "census":
-    # DiDi has no partner-specific census yet. Reuse the global template BAND as an
-    # explicit planning assumption; never inherit Grab's counted corpus/provenance.
+    # Legacy fallback only when no partner census file exists.
     g_green = {b: _gf[b] for b in BANDS}; _gf_mode = "template"; _gf_src = "global template band (not a DiDi or Grab census)"
 elif _gf.get("mode") == "census":
-    g_green = {b: _gf[b] for b in BANDS}; _gf_mode = "census"; _gf_src = "growth-config default"
+    g_green = {b: _gf[b] for b in BANDS}; _gf_mode = "census"; _gf_src = "growth-config default (Grab legacy — prefer greenfield-census/<partner>.json)"
 else:
     g_green = {b: _gf.get("off_value", 1.0) for b in BANDS}; _gf_mode = "off"; _gf_src = "growth-config off"
 
@@ -216,10 +226,23 @@ result = {
         "mode": _gf_mode,
         "source": _gf_src,
         "factor_band": g_green,
-        "_census": _gf.get("_census") if _gf_mode == "census" and _gf_src == "growth-config default" else None,
+        "_census": (
+            {
+                "source": _gf_src,
+                "n_sourced": (_census_doc or {}).get("n_sourced"),
+                "n_greenfield_headline": (_census_doc or {}).get("n_greenfield_headline"),
+                "count_ratio": (_census_doc or {}).get("count_ratio"),
+                "alpha_density": (_census_doc or {}).get("alpha_density"),
+                "methodology": (_census_doc or {}).get("methodology"),
+                "note": (_census_doc or {}).get("note"),
+            }
+            if _census_doc
+            else (_gf.get("_census") if _gf_mode == "census" and "growth-config" in str(_gf_src) else None)
+        ),
         "_doc": "WIDTH lever. SAM_sourced_only = depth on the sourced corridors (no greenfield). "
                 "SAM/TAM/network/platform = full addressable network (sourced + greenfield). "
-                "SOM floor is unaffected (it is the sourced corridors).",
+                "SOM floor is unaffected (it is the sourced corridors). "
+                "Prefer finance/recal/greenfield-census/<partner>.json over Grab-global template.",
     },
 }
 
