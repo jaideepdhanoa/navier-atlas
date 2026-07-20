@@ -31,7 +31,9 @@ USE_GLOBAL = "--global" in sys.argv or arg("--mode") == "global"
 # Legacy per-partner agg files (fallback when agg-global.json is absent).
 PARTNERS = ["grab", "careem", "jih-global", "red-sea-global", "saudi-redsea-pif", "qatar",
             "bolt", "yango", "constance", "four-seasons", "uber", "french-polynesia", "saudi-pif",
-            "rakta", "bahrain-motc", "rapido", "ola", "uber-india"]
+            "rakta", "bahrain-motc", "rapido", "ola", "uber-india",
+            # LatAm platform partners (Brazil expansion 2026-07-19 + Mexico)
+            "didi", "indrive"]
 
 # ---- gold geometry: route_id set + unordered-endpoint index ----
 R = json.load(open(os.path.join(GOLD, "ROUTES.json")))
@@ -133,14 +135,25 @@ def ingest_rows(rows, source_partner=None):
         authored = market_partner.get(market, source_partner)
         by_rid[rid].append((authored, market, row))
 
+# Prefer explicit --global, else freshest complete rollup, else per-partner aggs.
+# NOTE: bare existence of a stale agg-global.json must NOT shadow partner aggs
+# (Brazil expansion 2026-07-19 lives in agg-didi/indrive + agg-unique-global only).
+unique_path = os.path.join(AGGDIR, "agg-unique-global.json")
 global_path = os.path.join(AGGDIR, "agg-global.json")
-if USE_GLOBAL or os.path.exists(global_path):
-    if not os.path.exists(global_path):
-        print(f"FATAL: --global requested but {global_path} missing. Run aggregate.py --partner global first.", file=sys.stderr)
+if USE_GLOBAL:
+    path = unique_path if os.path.exists(unique_path) else global_path
+    if not os.path.exists(path):
+        print(f"FATAL: --global requested but neither agg-unique-global.json nor agg-global.json in {AGGDIR}", file=sys.stderr)
         sys.exit(1)
-    ingest_rows(json.load(open(global_path)).get("rows", []))
+    print(f"ingest source: {path}")
+    ingest_rows(json.load(open(path)).get("rows", []))
+elif os.path.exists(unique_path):
+    # Unique-global is the post-dedup rollup Tasklet ships after multi-partner cascades.
+    print(f"ingest source: {unique_path}")
+    ingest_rows(json.load(open(unique_path)).get("rows", []))
 else:
     ALIASES = {"saudi-redsea": "saudi-redsea-pif", "grab-aggregate-results": "grab"}
+    ingested = []
     for partner in PARTNERS:
         p_resolved = ALIASES.get(partner, partner)
         candidates = [
@@ -153,6 +166,8 @@ else:
         if not path:
             continue
         ingest_rows(json.load(open(path)).get("rows", []), source_partner=partner)
+        ingested.append(partner)
+    print(f"ingest source: per-partner aggs ({', '.join(ingested)})")
 
 MARKET_DISPLAY = {
     "singapore":"Singapore", "cross-border":"Cross-Border", "bali":"Bali",
@@ -270,12 +285,16 @@ out = {
                "features by route_id. Corridor physics are partner-independent (built from "
                "agg-global.json). Partner deck links live in PARTNER_ECONOMICS at build time, "
                "not on each record. Presence of a record => has_economics=true.",
-        "source": "agg-global.json" if (USE_GLOBAL or os.path.exists(global_path)) else "per-partner-aggs",
+        "source": (
+            "agg-unique-global.json" if (not USE_GLOBAL and os.path.exists(unique_path))
+            else ("agg-global-or-unique (--global)" if USE_GLOBAL else "per-partner-aggs")
+        ),
         "generated": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "gold_routes_total": len(gold_rids),
         "records": len(records),
         "pending_route_pin": len(pending),
         "resolution": "ID-based only (route_id in gold, or exact unordered endpoint match). No fuzzy matching.",
+        "partners_note": "Brazil expansion (didi/indrive shared market) lands via agg-unique-global or agg-didi/agg-indrive.",
     },
     "records": records,
     "_pending_route_pin": pending,
