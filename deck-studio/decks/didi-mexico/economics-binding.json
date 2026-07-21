@@ -5,7 +5,7 @@
   "country": "Mexico",
   "generator": "deck-studio/decks/gen_deck_economics.py",
   "aggregate_source": "finance/recal/agg-didi.json",
-  "aggregate_market_key": "mexico-caribbean",
+  "aggregate_market_key": "mexico-caribbean+mexico-pacific",
   "canonical_routes_source": "data-clean/ROUTES.json",
   "economics_route": {
     "label": "Puerto Juárez → Isla Mujeres",
@@ -13,66 +13,92 @@
     "desc": "Cancún's highest-frequency island crossing."
   },
   "tam": {
-    "headline": "The three Caribbean crossings are the floor — Mexico's water-crossing market runs far higher",
-    "source": "handoff/partner-map-model/mexico-tam-2026-07-17/MEXICO-MARINE-TAM-LADDER-2026-07-17.json",
+    "headline": "These crossings are the floor — Mexico's water-crossing market runs far higher",
+    "source": "finance sheet 'Navier × DiDi Mexico — Corridor Unit Economics' (Market sizing tab, MID) + handoff/partner-map-model/mx-eg-expansion-2026-07-20/didi-mexico-growth-2026-07-21.json",
     "rungs": [
       {
-        "label": "What the three Caribbean crossings support today",
-        "aggregate_field": "rollup.grounded_floor_by_market.mexico-caribbean.market_rev_yr",
-        "value_usd": 28213152.0,
-        "value_basis": "sourced_corridor_floor",
-        "note": "Navier's annual revenue across the three sourced Quintana Roo crossings at full fleet (88 boats). This is the grounded floor, not the whole market."
+        "label": "SOM · Today — Navier fares on DiDi's network, serving 10% of current trips",
+        "value_usd": 163757327.0,
+        "value_usd_low": 113614533.0,
+        "value_usd_high": 213900121.0,
+        "value_basis": "growth_case_SOM_full_network_mid",
+        "note": "Navier's own transport revenue at a new-entrant ~10% capture of today's crossing demand, extended across the whole mapped Mexican network."
       },
       {
-        "label": "Matured Mexico network Navier can serve",
-        "value_usd": 631745862.0,
-        "value_usd_low": 192188265.0,
-        "value_usd_high": 1822178542.0,
+        "label": "SAM · Near term — faster, quieter boats grow the market, serving 25% at maturity",
+        "value_usd": 749744112.0,
+        "value_usd_low": 225407472.0,
+        "value_usd_high": 2176260300.0,
         "value_basis": "growth_case_SAM_mid_full_network",
         "note": "Navier's own transport revenue once the full addressable Mexican network runs at leading-operator capture, with faster, more comfortable boats growing the market. Mid case shown with a low-high range."
       },
       {
-        "label": "Mexico marine-mobility opportunity",
-        "value_usd": 2526983449.0,
-        "value_usd_low": 1281255100.0,
-        "value_usd_high": 4555446354.0,
+        "label": "TAM · Full market — the entire sea-transfer market we create",
+        "value_usd": 2998976449.0,
+        "value_usd_low": 1502716480.0,
+        "value_usd_high": 5440650750.0,
         "value_basis": "growth_case_marine_mobility_tam_mid",
         "note": "Total annual water-transfer spend the induced Mexican crossing market can support at full network width."
       },
       {
-        "label": "Whole-journey value across those crossings",
-        "value_usd": 7580950348.0,
-        "value_usd_low": 2562510201.0,
-        "value_usd_high": 18221785416.0,
+        "label": "GMV · Whole journey — add food, stays and experiences to every crossing",
+        "value_usd": 8996929346.0,
+        "value_usd_low": 3005432961.0,
+        "value_usd_high": 21762602999.0,
         "value_basis": "growth_case_journey_gmv_mid",
         "note": "Door-to-door value of every journey that includes one of these crossings — the full trip DiDi's app coordinates end to end, not only the boat leg."
       },
       {
-        "label": "DiDi platform revenue on the Navier network",
-        "value_usd": 341142766.0,
-        "value_usd_low": 69187775.0,
-        "value_usd_high": 1311968550.0,
+        "label": "DiDi platform revenue on Navier — 18% of Navier's journey GMV across the full network",
+        "value_usd": 404861821.0,
+        "value_usd_low": 81146690.0,
+        "value_usd_high": 1566907416.0,
         "value_basis": "growth_case_partner_platform_take_18pct",
         "note": "DiDi's platform take on the journey value routed through the Navier network, at DiDi's standard 18% commission."
       }
     ]
   },
   "country_total": {
-    "expected_annual_revenue_usd": 28213152.0,
-    "expected_vessels_supported": 88,
+    "expected_annual_revenue_usd": 30047216.0,
+    "expected_vessels_supported": 99,
     "supported_route_ids": [
       "ics-413f51cd44",
       "ics-dd1d814699",
-      "ics-aa6ff40d2d"
-    ]
+      "ics-aa6ff40d2d",
+      "rn-8e76868a5b01",
+      "rn-66e2241ca732"
+    ],
+    "_vessels_note": "Resealed 2026-07-21: Holbox 8.35→5.5nm dropped its fleet 9→8, so the grounded floor is 99 vessels (was 100). Floor revenue rose to $30,047,216 as each Holbox boat now runs more legs/day."
   },
   "rules": {
     "id_matching": "exact",
     "unsupported_values": "null",
     "country_substitution": "forbidden",
     "unit_economics_route": "single representative exact-bound route; all values bound from the aggregate, never hand-typed",
-    "tam_source": "SOM floor from aggregate grounded_floor_by_market; SAM/marine-TAM/journey-GMV/platform rungs from finance/model/growth.py LB-254 ladder on the Mexico pool (see tam.source)",
+    "tam_source": "SOM full mapped network + SAM/marine-TAM/journey-GMV/platform from the MID Market-sizing ladder (didi census greenfield 5.45); grounded floor = sum of 5 grounded Mexico corridors.",
     "published_brazil_basis": null,
-    "fare_basis": "premium-substitute (Uber Black $30 comparable), Jaideep-approved 2026-07-17; conservative for the longer Cozumel leg"
-  }
+    "fare_basis": "premium-substitute (Uber Black comparable) on Caribbean crossings; Jaideep-approved fixed anchors on new corridors ($20 Huatulco, $12 Holbox, 2026-07-21). Conservative on longer legs."
+  },
+  "economics_routes": [
+    {
+      "label": "Puerto Juárez → Isla Mujeres",
+      "route_id": "ics-413f51cd44",
+      "desc": "Cancún's highest-frequency island crossing."
+    },
+    {
+      "label": "Playa del Carmen → Cozumel",
+      "route_id": "ics-dd1d814699",
+      "desc": "The Riviera Maya's busiest island ferry corridor."
+    },
+    {
+      "label": "Marina Santa Cruz → Bahía Maguey",
+      "route_id": "rn-66e2241ca732",
+      "desc": "Huatulco's nine-bays coastal hop between Santa Cruz and the Maguey beach landing."
+    },
+    {
+      "label": "Chiquilá → Isla Holbox",
+      "route_id": "rn-8e76868a5b01",
+      "desc": "The sole passenger crossing to car-free Isla Holbox."
+    }
+  ]
 }
