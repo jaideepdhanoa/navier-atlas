@@ -1,0 +1,82 @@
+{
+ "partner": "indrive",
+ "country_scope": "Egypt",
+ "at": "2026-07-21T05:20:08.065410+00:00",
+ "status": "ok",
+ "mode": "census",
+ "methodology": {
+  "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+  "max_nm": 70.0,
+  "alpha_density": {
+   "low": 0.25,
+   "mid": 0.4,
+   "high": 0.55
+  },
+  "sourced_definition": "grounded non-dup agg rows with route_id",
+  "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, \u2264max_nm, not in sourced route_id/endpoint set",
+  "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 \u2192 4.9 mid"
+ },
+ "n_sourced": 2,
+ "n_greenfield_headline": 32,
+ "n_atlas_in_geography": 188,
+ "n_skipped_over_nm": 9,
+ "n_skipped_already_sourced": 0,
+ "n_skipped_edge_class": 147,
+ "n_partner_cities": 7,
+ "n_partner_clusters": 1,
+ "count_ratio": 16.0,
+ "ratio_effective": 10.645,
+ "tail_softened": true,
+ "alpha_density": {
+  "low": 0.25,
+  "mid": 0.4,
+  "high": 0.55
+ },
+ "derived_greenfield_factor": {
+  "headline_tier1_plus_tier2": {
+   "low": 3.6612,
+   "mid": 5.258,
+   "high": 6.8548
+  }
+ },
+ "sourced_route_ids_sample": [
+  "rn-b06f6971ed47",
+  "rn-c16a1627130f"
+ ],
+ "greenfield_route_ids_sample": [
+  "rn-0222c6fa4c71",
+  "rn-02df6af9dc37",
+  "rn-0c9d520b9fca",
+  "rn-10c11d3eef1c",
+  "rn-1b251aa68d62",
+  "rn-2ef3a8c72986",
+  "rn-30de63ab17e8",
+  "rn-3caf247d82e3",
+  "rn-3e6a26a3205f",
+  "rn-49f70ffdef24",
+  "rn-500cdb8334f9",
+  "rn-56f28d9648ed",
+  "rn-573db5c6cbd0",
+  "rn-62ad291098c8",
+  "rn-727df3e3fcd0",
+  "rn-8198740a6468",
+  "rn-8c427bd61de7",
+  "rn-8f3ba46afebd",
+  "rn-9ba8f1b28458",
+  "rn-a6efe9b85b68",
+  "rn-ab150fc1a5a1",
+  "rn-af97b2d29edb",
+  "rn-ba8c7da7043c",
+  "rn-bd15293f8f33",
+  "rn-c35490c8789e",
+  "rn-cf92de6963b0",
+  "rn-d5938a004c37",
+  "rn-db7e622b99ae",
+  "rn-e9181a44245c",
+  "rn-e94267ed0d82",
+  "rn-f40041105d82",
+  "rn-fbb960bf15c6"
+ ],
+ "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+ "agg_path": "finance/recal/agg-indrive.json"
+}

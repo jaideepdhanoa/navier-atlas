@@ -1,0 +1,93 @@
+{
+ "partner": "didi",
+ "country_scope": "Mexico",
+ "at": "2026-07-21T05:20:06.213565+00:00",
+ "status": "ok",
+ "mode": "census",
+ "methodology": {
+  "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+  "max_nm": 70.0,
+  "alpha_density": {
+   "low": 0.25,
+   "mid": 0.4,
+   "high": 0.55
+  },
+  "sourced_definition": "grounded non-dup agg rows with route_id",
+  "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, \u2264max_nm, not in sourced route_id/endpoint set",
+  "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 \u2192 4.9 mid"
+ },
+ "n_sourced": 5,
+ "n_greenfield_headline": 52,
+ "n_atlas_in_geography": 77,
+ "n_skipped_over_nm": 0,
+ "n_skipped_already_sourced": 5,
+ "n_skipped_edge_class": 20,
+ "n_partner_cities": 13,
+ "n_partner_clusters": 1,
+ "count_ratio": 10.4,
+ "ratio_effective": 9.805,
+ "tail_softened": true,
+ "alpha_density": {
+  "low": 0.25,
+  "mid": 0.4,
+  "high": 0.55
+ },
+ "derived_greenfield_factor": {
+  "headline_tier1_plus_tier2": {
+   "low": 3.4512,
+   "mid": 4.922,
+   "high": 6.3928
+  }
+ },
+ "sourced_route_ids_sample": [
+  "ics-413f51cd44",
+  "ics-aa6ff40d2d",
+  "ics-dd1d814699",
+  "rn-66e2241ca732",
+  "rn-8e76868a5b01"
+ ],
+ "greenfield_route_ids_sample": [
+  "ics-0216f2c9e3",
+  "ics-03c0c82858",
+  "ics-0885ec38ac",
+  "ics-08c88e9f73",
+  "ics-147a4220ce",
+  "ics-17d086f028",
+  "ics-1ef9b3ecdc",
+  "ics-205b922cfb",
+  "ics-22500c6d83",
+  "ics-28dde3bd7f",
+  "ics-2d472a555f",
+  "ics-2f990cd1b8",
+  "ics-39e68b6194",
+  "ics-3ae2b65ea5",
+  "ics-3b1885b0e5",
+  "ics-401160f622",
+  "ics-40cccb6206",
+  "ics-4b89352402",
+  "ics-4d043fa75a",
+  "ics-56071e44cd",
+  "ics-563e4ee928",
+  "ics-69912b2997",
+  "ics-6d4840c8bc",
+  "ics-6dd9994591",
+  "ics-6ee0d44804",
+  "ics-839074806f",
+  "ics-89a8844858",
+  "ics-8b1e9eea89",
+  "ics-8e4f1a1422",
+  "ics-92e0b04c12",
+  "ics-9f6ef631b4",
+  "ics-a68a69a8d9",
+  "ics-b5861451fb",
+  "ics-b7b4e05692",
+  "ics-ba07bc7253",
+  "ics-c1e9158ced",
+  "ics-c1f5deb1fa",
+  "ics-c6f43e2c86",
+  "ics-c8ff07415d",
+  "ics-cad5d1a0f9"
+ ],
+ "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+ "agg_path": "finance/recal/agg-didi.json"
+}
