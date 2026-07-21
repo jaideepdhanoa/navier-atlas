@@ -118,7 +118,7 @@ def derive_factor(n_sourced: int, n_greenfield: int, alpha: dict) -> dict:
     }
 
 
-def partner_cities_and_clusters(partner: str) -> tuple[set[str], set[str]]:
+def partner_cities_and_clusters(partner: str, country: str | None = None) -> tuple[set[str], set[str]]:
     cities: set[str] = set()
     clusters: set[str] = set()
     if CORRIDORS_PATH.exists():
@@ -131,11 +131,20 @@ def partner_cities_and_clusters(partner: str) -> tuple[set[str], set[str]]:
             elif p != partner.lower():
                 continue
             for c in m.get("corridors") or []:
+                # Country-scoped census: only that country's corridors contribute geography.
+                if country and c.get("country") != country:
+                    continue
                 for k in ("from_node_id", "to_node_id", "from_city_id", "to_city_id"):
                     v = c.get(k)
                     if v and isinstance(v, str) and not v.startswith("bp-"):
                         cities.add(v)
                 # from/to human labels never used as city ids
+    # Country-scoped census does NOT pull the whole-partner data-clean footprint
+    # (it spans every country the partner operates in). Geography for a country
+    # proposal is resolved from that country's corridors.json markets + the
+    # country-filtered sourced-route city stamps (added by census_partner).
+    if country:
+        return cities, clusters
     # partner JSON footprint / markets
     for base in (DC / "partners" / f"{partner}.json", ROOT / "partner-pitch" / "partners" / f"{partner}.json"):
         if not base.exists():
@@ -189,6 +198,7 @@ def census_partner(
     *,
     agg_path: Path | None = None,
     max_nm: float = MAX_NM_DEFAULT,
+    country: str | None = None,
 ) -> dict:
     alpha = alpha_from_config()
     agg_path = agg_path or (RECAL / f"agg-{partner}.json")
@@ -213,6 +223,9 @@ def census_partner(
     n_sourced_rows = 0
     for r in rows:
         if r.get("is_dup") or r.get("status") == "duplicate":
+            continue
+        # Country-scoped census: only sourced corridors in that country count.
+        if country and r.get("country") != country:
             continue
         # grounded floor contributors only (width base = published floor set)
         if r.get("status") not in ("grounded", None) and r.get("_in_grounded_floor") is False:
@@ -245,6 +258,8 @@ def census_partner(
             elif p != partner.lower():
                 continue
             for c in m.get("corridors") or []:
+                if country and c.get("country") != country:
+                    continue
                 rid = c.get("route_id")
                 if rid and rid in sourced_rids:
                     pair = undirected_pair(
@@ -263,7 +278,7 @@ def census_partner(
                     if pair:
                         sourced_pairs.add(pair)
 
-    cities, clusters = partner_cities_and_clusters(partner)
+    cities, clusters = partner_cities_and_clusters(partner, country=country)
     routes = load_routes()
     # Expand geography from sourced route city stamps (critical when corridors use labels)
     for feat in routes:
@@ -346,8 +361,14 @@ def census_partner(
         if pair and pair in sourced_pairs:
             n_skipped_sourced += 1
             continue
-        if pair and pair in green_pairs:
-            continue
+        # NOTE: `from`/`to` on ROUTES features are coarse cluster/city labels (e.g.
+        # "Rio de Janeiro & Costa Verde"), NOT fine boarding-point endpoints. Deduping
+        # greenfield by this coarse pair destructively collapses many distinct sealed
+        # route_ids into a handful of label-pairs, badly under-counting width for markets
+        # with coarse labels (Brazil: 55 route_ids → 6 label-pairs). ROUTES are already
+        # undirected-unique at seal time, so count greenfield by unique route_id — SYMMETRIC
+        # with the sourced side (also counted by unique route_id). Coarse-label dedup is
+        # apples-to-oranges against a route_id sourced count.
         if pair:
             green_pairs.add(pair)
         if rid:
@@ -357,7 +378,9 @@ def census_partner(
     # prefer unique route ids count for sourced when available
     if sourced_rids:
         n_sourced = len(sourced_rids)
-    n_greenfield = len(green_pairs) if green_pairs else len(set(green_rids))
+    # Greenfield counted by unique route_id (symmetric with sourced); fall back to
+    # coarse-label pairs only when routes carry no route_id at all.
+    n_greenfield = len(set(green_rids)) if green_rids else len(green_pairs)
 
     fac = derive_factor(n_sourced, n_greenfield, alpha)
     if n_sourced == 0:
@@ -377,6 +400,7 @@ def census_partner(
 
     out = {
         "partner": partner,
+        "country_scope": country,
         "at": utc_now(),
         "status": "ok",
         "mode": mode,
@@ -419,6 +443,7 @@ def main() -> int:
     ap.add_argument("--partner")
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--json", help="output path for single partner")
+    ap.add_argument("--country", help="scope census to a single country (per-partner-country census for country decks)")
     ap.add_argument("--max-nm", type=float, default=MAX_NM_DEFAULT)
     ap.add_argument("--outdir", default=str(CENSUS_DIR))
     args = ap.parse_args()
@@ -440,7 +465,7 @@ def main() -> int:
 
     index = {"at": utc_now(), "partners": {}, "methodology": "greenfield_census.py"}
     for partner in partners:
-        doc = census_partner(partner, max_nm=args.max_nm)
+        doc = census_partner(partner, max_nm=args.max_nm, country=args.country)
         path = Path(args.json) if args.json and len(partners) == 1 else outdir / f"{partner}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")

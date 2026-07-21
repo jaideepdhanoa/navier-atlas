@@ -815,11 +815,39 @@ PARTNER_MULTIPLIER_OVERRIDES = {
 # LB-172: Partners without a ridehailing/super-app counterparty skip Journey GMV
 # and Partner Platform Rev rungs (no platform take to collect).
 PARTNER_NO_PLATFORM_REV = {"french-polynesia"}
+# ── Greenfield WIDTH lever — per-partner LOCAL census (golden rule #7: match growth.py) ──
+# growth.py auto-discovers finance/recal/greenfield-census/<partner>.json — an ID-based census of
+# each partner's OWN sourced-vs-addressable corridors, computed locally from the corridor graph —
+# instead of the Grab-global template (4.9). This second cost engine now reads the SAME per-partner
+# local census so both engines tell one story and NO sheet needs a hand-patched greenfield cell.
+# Precedence:
+#   1) --greenfield off / purpose-built captive network  → 1.0 (null-beats-guess)
+#   2) explicit PARTNER_MULTIPLIER_OVERRIDES entry        → deliberate cap / reconciliation
+#   3) per-partner LOCAL census file                      → ID-based local calculation (matches growth.py)
+#   4) else                                               → labelled global template band
+GREENFIELD_FORCE_OFF = {"french-polynesia", "bolt-rebase", "saudi-pif", "red-sea-global"}
+# --greenfield-json <path>: explicit census override (mirrors growth.py). For a COUNTRY-SPECIFIC
+# proposal/sheet, pass the per-partner-COUNTRY census (finance/recal/greenfield-census/<partner>-<country>.json)
+# so both engines use the same country-scoped width. Falls back to the whole-partner <partner>.json.
+_census_path = arg("--greenfield-json", None) or os.path.join(HERE, "recal", "greenfield-census", f"{PARTNER}.json")
 _override = PARTNER_MULTIPLIER_OVERRIDES.get(PARTNER, {})
-for _k, _v in _override.items():
-    M[_k] = {**M[_k], **_v}
-if arg("--greenfield", None) == "off":
-    M["greenfield_corridor_factor"] = {"low":1.0,"mid":1.0,"high":1.0,"_doc":"Greenfield width disabled for this scoped build."}
+if arg("--greenfield", None) == "off" or PARTNER in GREENFIELD_FORCE_OFF:
+    M["greenfield_corridor_factor"] = {"low":1.0,"mid":1.0,"high":1.0,
+        "_doc":"Greenfield width disabled (purpose-built / captive network or --greenfield off)."}
+elif _override:
+    for _k, _v in _override.items():
+        M[_k] = {**M[_k], **_v}
+elif os.path.exists(_census_path):
+    _cd = json.load(open(_census_path))
+    _mode = _cd.get("mode")
+    if _mode in ("off", "census_empty"):
+        M["greenfield_corridor_factor"] = {"low":1.0,"mid":1.0,"high":1.0,
+            "_doc":f"Per-partner local census ({_mode}): no addressable greenfield width beyond the sourced floor."}
+    else:
+        _fac = _cd["derived_greenfield_factor"]["headline_tier1_plus_tier2"]
+        M["greenfield_corridor_factor"] = {"low":float(_fac["low"]),"mid":float(_fac["mid"]),"high":float(_fac["high"]),
+            "_doc":("Per-partner LOCAL census (finance/recal/greenfield-census/%s.json): %s sourced / %s greenfield corridors (ratio %s) — ID-based, matches growth.py."
+                    % (PARTNER, _cd.get("n_sourced"), _cd.get("n_greenfield_headline"), _cd.get("count_ratio")))}
 # LB-254: mirror growth.py mature_capture() exactly — contested ramp (0.15/0.25/0.40) only when
 # eff_capture is below the config band; hospitality/captive-blended floors (~0.49–0.55) must use
 # max(band, eff_capture) so SAM stays above SOM network (induced × mature > floor capture).
@@ -851,11 +879,8 @@ def mult(label,node,key,note,fmt=NUM2):
 mult("Induced demand (k)",M["induced_demand"],"ind","Faster/quieter product grows the crossing market beyond today's trips.")
 mult("Mature capture rate (c)",M["mature_capture_rate"],"cap","Navier's corridor share once it is the established premium default (vs 10% floor).",PCT)
 mult("Journey GMV multiple (m)",M["journey_gmv_multiple"],"gmv","Whole island-journey wallet (transport+food+stay+experiences) as a multiple of the boat fare.")
-_green_note = ("No unsourced network-width multiplier is applied in this scoped build."
-               if arg("--greenfield", None) == "off" else
-               ("Width lever: global template band pending a DiDi-specific census; this is not a Grab or DiDi counted census."
-                if PARTNER == "didi" else
-                "Width lever: addressable network vs the sourced subset (ID-based census)."))
+_green_note = (M.get("greenfield_corridor_factor", {}).get("_doc")
+               or "Width lever: addressable network vs the sourced subset (ID-based census).")
 mult("Greenfield network factor (g)",M["greenfield_corridor_factor"],"green",_green_note)
 # platform take (scalar)
 take_r=mr
