@@ -1,8 +1,8 @@
 # Tasklet return — Mexico + Egypt coastal expansion seal (2026-07-20)
 
-**From:** Grok · **To:** Tasklet · **Status:** `seal-complete / cascade-needed`  
-**PRs:** research handoff [#314](https://github.com/jaideepdhanoa/navier-atlas/pull/314) · geometry seal [#315](https://github.com/jaideepdhanoa/navier-atlas/pull/315) (both **merged**)  
-**Lane:** `mx-eg-expansion-2026-07-20`  
+**From:** Grok · **To:** Tasklet · **Status:** `seal-complete + hand-waypoints / cascade-needed`  
+**PRs:** research handoff [#314](https://github.com/jaideepdhanoa/navier-atlas/pull/314) · geometry seal [#315](https://github.com/jaideepdhanoa/navier-atlas/pull/315) · hand-waypoints (this return amend)  
+**Lane:** `mx-eg-expansion-2026-07-20` + `mx-eg-hand-wp-2026-07-20`  
 **Spec executed:** `GROK-SPEC-mx-eg-expansion-seal-2026-07-20.md`
 
 ---
@@ -18,6 +18,7 @@
 | City briefs → data-clean + `_index` | **Done** | 11 briefs |
 | Water-allowlist (Nile, Manialtepec, El Gouna, Holbox) | **Done** | Folded into `data-clean/bp_water_allowlist.json` |
 | Gold route IDs for Phase 3 | **Shipped** | Machine-readable list below |
+| Hand-waypoints (no land crossings) | **Done** | A+B hardened; 24/27 ≤0.40 km; Nile allowlist hand channel |
 | Phase 3 economics cascade | **Out of scope (Tasklet)** | Starts now on gold IDs |
 | Phase 4 deck catch-up | **Out of scope (Tasklet/Grok later)** | After cascade |
 
@@ -33,14 +34,29 @@
 |---|---|
 | BPs sealed / dropped | **49 / 0** (no silent drops) |
 | Routes built / failed | **27 / 2** |
-| Hard land-crossing fails | **0** (coastal soft gate for mask FPs: Sea of Cortez, Nile, lagoons) |
+| Hand-waypoints hard gate (≤0.40 km) | **24 / 27** after `mx-eg-hand-wp-2026-07-20` |
 | Mexico members | **13** · `members_missing: []` |
 | Egypt members | **7** · `members_missing: []` |
 | Cozumel + Playa gate | **PASS** |
-| Aspirational preserved | `cabos-r2` (`rn-…`), `alex-r3` (`rn-…`) — still flagged aspirational |
-| Cairo Nile | **2 geometry-only** routes (`economics_status: geometry_only_out_of_scope`) |
+| Aspirational preserved | `cabos-r2`, `alex-r3` — still flagged aspirational |
+| Cairo Nile | **2 geometry-only** + **hand channel spines** (ocean mask FP; not economics) |
 | El Gouna | BPs attached under `hurghada-el-gouna-egypt` (no new member) |
-| Partner inheritance | Cluster-level; DiDi Mexico / inDrive·Bolt·Yango Egypt inherit per corridor-inheritance (no per-partner hand-list) |
+| Partner inheritance | Cluster-level; DiDi Mexico / inDrive·Bolt·Yango Egypt inherit per corridor-inheritance |
+
+### Hand-waypoint outcomes (2026-07-20)
+
+| inventory_id | land before → after | method |
+|---|---|---|
+| cancun-r4 Punta Sam↔Isla Mujeres | 1.69 → **0.00** | water_polyline |
+| sayulita-r2 La Cruz↔Punta Mita | 0.45 → **0.11** | offset_search |
+| elgouna-r1 | 0.41 → **0.33** | water_polyline |
+| pv-r3 Marina↔Las Ánimas | 0.34 → **0.00** | hand+solve_hand |
+| alex-r2 Eastern Harbour↔Qaitbay | 0.20 → **0.06** | hand+solve_hand |
+| cairo-r1 / cairo-r2 | hand Nile channel | `nile_allowlist_hand_spine` (mask treats Nile as land) |
+
+**Residual holds (non-blocking):** `alex-r3` Montaza↔Abu Qir aspirational ~0.73 km; Holbox/PV minor &lt;0.35 already under soft visual bar. Self-pairs Dahab/Sayulita-r1 still inventory bugs.
+
+**Receipts:** `MX-EG-HAND-WAYPOINTS-RECEIPT-2026-07-20.json` · `mx_eg_expansion_hand_waypoints.json` · `MX-EG-HAND-WP-CANDIDATES-2026-07-20.json`
 
 ### Intentional route inventory fails (not geometry bugs)
 1. **`dahab-r1`** — self-pair (`dahab-lagoon-launch` → same). No distinct endpoints.
