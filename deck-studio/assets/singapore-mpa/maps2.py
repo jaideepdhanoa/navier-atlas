@@ -72,12 +72,15 @@ TODAY = [
  ('marina-south-pier', 'st-johns-lazarus'), ('marina-south-pier', 'kusu-island'),
  ('changi-point', 'pulau-ubin'), ('sentosa-cove-marina', 'st-johns-lazarus'),
 ]
-CAND = [  # candidate links (gold)
+CAND_NEW = [  # NEW candidate links (gold) — no service today
  ('marina-east-bedok','marina-bay-stops'), ('marina-bay-stops','keppel-harbourfront'),
- ('marina-south-pier','st-johns-lazarus'), ('marina-south-pier','kusu-island'),
- ('sentosa-cove-marina','st-johns-lazarus'), ('changi-point','pulau-ubin'),
  ('west-coast-pier','keppel-harbourfront'), ('jurong-island-banyan','keppel-harbourfront'),
 ]
+CAND_UPGRADE = [  # running today -> upgrade candidates (grey dash on candidate plate)
+ ('marina-south-pier','st-johns-lazarus'), ('marina-south-pier','kusu-island'),
+ ('sentosa-cove-marina','st-johns-lazarus'), ('changi-point','pulau-ubin'),
+]
+CAND = CAND_NEW + CAND_UPGRADE  # full proposed set (used by horizon-tomorrow)
 CENTROID = (103.82, 1.36)
 
 def ring_idx(pt):
@@ -256,9 +259,9 @@ fig.savefig('sg-network-today-v2.png', facecolor=BG); plt.close(fig)
 
 # ---- 2 · candidate links (text-free; dashed today visible; +Bukom, +Changi–East Coast) ----
 fig, ax = base(9.6, 5.4, B_MAIN)
-for a, b in TODAY: arc(ax, P(a), P(b), DIM, 1.6, style=(0,(4,3)), alpha=0.95, k=0.08)
-draw_bukom(ax, GREEN, 1.6, style=(0,(4,3)), alpha=0.95)
-for a, b in CAND:
+for a, b in CAND_UPGRADE: arc(ax, P(a), P(b), '#9fb0c3', 2.0, style=(0,(5,4)), alpha=1.0, k=0.14, z=6)
+draw_bukom(ax, GREEN, 2.0, style=(0,(5,4)), alpha=1.0)
+for a, b in CAND_NEW:
     if hand_key(a, b):
         pts = route_pts(a, b)
         ax.plot([p[0] for p in pts], [p[1] for p in pts], color=GOLD, lw=2.3, zorder=5, solid_capstyle='round')
