@@ -1,111 +1,380 @@
 {
-  "dossier_id": "pta-dossier-singapore-mpa",
-  "schema": "pta_authority_dossier/v1",
-  "authority": {
-    "display": "Singapore MPA",
-    "legal_name": "Maritime and Port Authority of Singapore (MPA)",
-    "country": "Singapore",
-    "geography_type": "island city-state with a busy harbour, southern islands, and two cross-border water surfaces",
-    "home_waters_label": "Singapore's harbour, the Southern Islands and the inner waterfront",
-    "vocabulary": {
-      "correct": ["Singapore", "the harbour", "the Southern Islands", "domestic", "national", "the inner waterfront", "the Port of Singapore"],
-      "banned": ["emirate", "inter-emirate", "intra-{home}", "{home}", "super-app", "journey wallet", "Grab market"]
-    }
-  },
-  "mandate": {
-    "summary": "MPA regulates and develops the Port of Singapore — the world's busiest transshipment hub — and stewards the harbour-craft fleet's transition to clean energy. Its remit covers harbour-craft licensing, berth and charging infrastructure, vessel standards, and the decarbonization of domestic marine transport.",
-    "current_priorities": [
-      "Decarbonize the domestic harbour-craft fleet (electrification + cleaner fuels)",
-      "Build national electric-harbour-craft (e-HC) charging infrastructure",
-      "Set vessel reference designs and standards for clean harbour craft",
-      "Deliver the Maritime Singapore Decarbonisation Blueprint 2050"
-    ]
-  },
-  "policy_targets": {
-    "harbour_craft_mandate": "From 2030, all new harbour craft operating in the Port of Singapore must be fully electric, capable of using B100 biofuel, or compatible with net-zero fuels.",
-    "net_zero_year": 2050,
-    "net_zero_scope": "Net-zero harbour craft (and pleasure craft) by 2050; national net-zero by 2050.",
-    "blueprint": "Maritime Singapore Decarbonisation Blueprint 2050.",
-    "relevance": "Foiling makes the electric option fast and practical — the credible way to meet the 2030 mandate without compromising speed or range. MPA can prove it first-of-class at home and export the standard."
-  },
-  "precedent": {
-    "headline": "Singapore has already mandated clean harbour craft — and is building the charging to run them.",
-    "harbour_craft_electrification": {
-      "mandate_year": 2030,
-      "rule": "All new harbour craft fully electric / B100-capable / net-zero-fuel compatible from 2030; net-zero harbour craft by 2050.",
-      "charging_pilot": "First e-HC charging point launched at Marina South Pier (Pyxis + SP Mobility, 2024); national e-HC charging masterplan and standards in development.",
-      "designs": "11 passenger-launch and cargo-lighter e-HC vessel designs shortlisted (2024); reference designs being developed with research institutes.",
-      "financing": "MPA EOIs for e-HC financing and insurance show strong institutional interest; premiums comparable to conventional craft.",
-      "key_fact_for_navier": "MPA has mandated clean harbour craft, built the first charging point, and is selecting reference vessel designs. A foiling vessel is the fast, premium, exportable option that fits the mandate from day one."
-    },
-    "causeway": {
-      "link": "Johor-Singapore Causeway (and the Second Link)",
-      "stat": "~350,000 crossings per day — one of the busiest land border crossings in the world; long peak queues.",
-      "rts_link": "The Johor Bahru-Singapore RTS Link (Bukit Chagar <-> Woodlands North) opens end-2026 to ease Causeway congestion.",
-      "relevance": "A fast cross-border marine link offers Causeway-peak relief — a recognized public-good framing. Secondary to the domestic harbour network."
-    },
-    "domestic_ferries_today": {
-      "southern_islands": "Marina South Pier runs daily ferries to St John's, Lazarus, Kusu and the Sisters' Islands.",
-      "pulau_ubin": "Changi Point Ferry Terminal runs on-demand bumboats to Pulau Ubin.",
-      "relevance": "Domestic water transport already exists on slow displacement craft — a foiling upgrade is an improvement to a live mode, not a novelty."
-    }
-  },
-  "interpretation_for_navier": "Navier is the clean-harbour-craft standard MPA's 2030 mandate is reaching for. Foiling cuts energy per passenger-mile dramatically, so electric range and speed both work; it is near-silent and low-wake in a dense, busy port; and the Quanta-LR hybrid covers the longer cross-border legs with no charging dependency. Singapore is the ideal jurisdiction to prove it first-of-class and export the benchmark — starting with the domestic harbour and Southern-Islands network, with cross-border relief corridors as an optional second step.",
-  "domestic_network": {
-    "note": "Candidate boarding points with APPROXIMATE anchor coordinates [lng, lat] for Grok to snap to real berths/jetties during seal. Coordinates are anchors, not sealed geometry. Several are LIVE ferry stops today (Marina South Pier, Changi Point, the Southern Islands); Marina South Pier is also the e-HC charging pilot site.",
-    "boarding_points": [
-      {"node": "marina-bay-stops", "name": "Marina Bay water-taxi stops (Esplanade / Bayfront / Promontory)", "anchor_lnglat": [103.8570, 1.2880], "type": "core_pilot_station", "city": "singapore"},
-      {"node": "marina-south-pier", "name": "Marina South Pier (e-HC charging pilot)", "anchor_lnglat": [103.8630, 1.2710], "type": "core_live_station", "city": "singapore"},
-      {"node": "marina-east-bedok", "name": "Marina East / Bedok Jetty (East Coast)", "anchor_lnglat": [103.9120, 1.3010], "type": "commuter_node", "city": "singapore"},
-      {"node": "sentosa-cove-marina", "name": "ONE\u00b015 Marina Sentosa Cove", "anchor_lnglat": [103.8390, 1.2440], "type": "harbour_node", "city": "singapore"},
-      {"node": "keppel-harbourfront", "name": "Keppel Bay / HarbourFront", "anchor_lnglat": [103.8200, 1.2650], "type": "harbour_node", "city": "singapore"},
-      {"node": "st-johns-lazarus", "name": "St John's / Lazarus Island", "anchor_lnglat": [103.8480, 1.2180], "type": "southern_island_live", "city": "singapore"},
-      {"node": "kusu-island", "name": "Kusu Island", "anchor_lnglat": [103.8600, 1.2250], "type": "southern_island_live", "city": "singapore"},
-      {"node": "changi-point", "name": "Changi Point Ferry Terminal", "anchor_lnglat": [103.9920, 1.3900], "type": "core_live_station", "city": "singapore"},
-      {"node": "pulau-ubin", "name": "Pulau Ubin", "anchor_lnglat": [103.9640, 1.4100], "type": "island_live", "city": "singapore"},
-      {"node": "west-coast-pier", "name": "West Coast Pier / Pasir Panjang", "anchor_lnglat": [103.7700, 1.2900], "type": "working_waterfront", "city": "singapore"},
-      {"node": "jurong-island-banyan", "name": "Jurong Island (Banyan Basin)", "anchor_lnglat": [103.7000, 1.2650], "type": "working_waterfront", "city": "singapore"}
-    ],
-    "domestic_pairs": [
-      {"pair_id": "sg-d01", "from": "marina-east-bedok", "to": "marina-bay-stops", "approx_nm": 5.6, "rationale": "A fast foiling commuter line from the East Coast straight up to the Marina Bay/CBD water-taxi stops — new capacity for a land-constrained city. Anchor commuter corridor."},
-      {"pair_id": "sg-d02", "from": "marina-bay-stops", "to": "keppel-harbourfront", "approx_nm": 4.2, "rationale": "Inner-harbour hop from Marina Bay/CBD to Keppel Bay / HarbourFront along the southern waterfront."},
-      {"pair_id": "sg-d03", "from": "marina-south-pier", "to": "st-johns-lazarus", "approx_nm": 4.0, "rationale": "Marina South Pier to St John's / Lazarus — a live Southern-Islands ferry corridor today, foiling-upgraded. Marina South Pier is the e-HC charging pilot site."},
-      {"pair_id": "sg-d04", "from": "marina-south-pier", "to": "kusu-island", "approx_nm": 3.6, "rationale": "Marina South Pier to Kusu Island — live Southern-Islands ferry corridor."},
-      {"pair_id": "sg-d05", "from": "sentosa-cove-marina", "to": "st-johns-lazarus", "approx_nm": 2.2, "rationale": "Sentosa Cove to the Southern Islands — short inner-harbour leisure/island hop."},
-      {"pair_id": "sg-d06", "from": "changi-point", "to": "pulau-ubin", "approx_nm": 1.5, "rationale": "Changi Point to Pulau Ubin — a live bumboat corridor today; a clean foiling upgrade to an existing island link."},
-      {"pair_id": "sg-d07", "from": "west-coast-pier", "to": "keppel-harbourfront", "approx_nm": 5.5, "rationale": "Working-waterfront run from the West Coast / Pasir Panjang to HarbourFront."},
-      {"pair_id": "sg-d08", "from": "jurong-island-banyan", "to": "keppel-harbourfront", "approx_nm": 7.5, "rationale": "Jurong Island industrial waterfront to HarbourFront along the working harbour."}
-    ]
-  },
-  "regional_links": {
-    "note": "Secondary and clearly optional. All are live ferry corridors today or recognized congestion-relief surfaces. None leads the proposal.",
-    "links": [
-      {"link_id": "sg-r01", "from": "changi-point", "to": "batam-indonesia", "approx_nm": 13, "status": "live_ferry_today", "note": "Singapore (Tanah Merah) <-> Batam is a live ferry corridor with millions of crossings yearly. Tanah Merah Ferry Terminal is the real cross-border berth; routed across the Singapore Strait. Pioneer/Quanta range."},
-      {"link_id": "sg-r02", "from": "changi-point", "to": "bintan-indonesia", "approx_nm": 22, "status": "live_ferry_today", "note": "Singapore (Tanah Merah) <-> Bintan (Bandar Bentan Telani); 350k+ tourists/yr. Quanta-LR range across the Strait."},
-      {"link_id": "sg-r03", "from": "marina-east-bedok", "to": "desaru-coast-malaysia", "approx_nm": 18, "status": "relief_corridor_candidate", "note": "Singapore <-> Johor/Desaru as a Causeway-relief surface; subject to bilateral operating review. Routing must go around the island ends of the Johor Strait, never through/over the Causeway."}
-    ]
-  },
-  "routing_hazards": {
-    "instruction": "Every domestic and regional leg must be routed through navigable open water with NO land crossings. The Port of Singapore is one of the world's busiest — foiling must use cleared corridors with geofenced low-wake/no-foil zones in anchorages and fairways. Hand-curated waypoints required throughout.",
-    "hazards": [
-      {"hazard": "Port anchorages & fairways / Traffic Separation Scheme", "detail": "The harbour and Singapore Strait carry heavy commercial traffic, anchorages and a Traffic Separation Scheme. Route on cleared corridors; cross fairways and the TSS only at marked points; geofence low-wake/no-foil zones in anchorages with full pilotage compliance."},
-      {"hazard": "Johor-Singapore Causeway", "detail": "The Causeway physically blocks the middle of the Johor Strait. Any Singapore<->Johor/Desaru leg must route AROUND the eastern (Tebrau Strait) or western end of the island — never through or over the Causeway embankment."},
-      {"hazard": "Sisters' Islands Marine Park & Southern reefs", "detail": "The Southern Islands are reef-fringed (Sisters' Islands is a protected marine park). Keep clear of reef flats, no-wake on approach, snap entries to charted channels."},
-      {"hazard": "Pulau Tekong & military/live-firing areas", "detail": "Avoid Pulau Tekong and the eastern live-firing/danger areas entirely; route the Changi<->Ubin leg through the charted Serangoon Harbour channel."},
-      {"hazard": "Singapore Strait crossing (Batam/Bintan)", "detail": "Cross-border legs cross the Singapore Strait shipping lanes; cross the TSS at right angles at marked points and snap the Indonesian approaches (Batam Centre, Bandar Bentan Telani) to their real ferry berths."}
-    ]
-  },
-  "sources": [
-    {"what": "MPA harbour-craft electrification (2030 mandate, net-zero 2050), e-HC charging pilot at Marina South Pier, reference designs", "url": "https://www.mpa.gov.sg/media-centre/details/singapore-gears-up-to-meet-net-zero-needs-of-shipping"},
-    {"what": "Net-zero harbour-craft regs from 2030 (industry coverage)", "url": "https://maritime-executive.com/article/singapore-rolls-out-net-zero-regs-for-harbor-craft-beginning-in-2030"},
-    {"what": "MPA call for electric harbour craft proposals", "url": "https://www.marinelink.com/news/mpa-calls-electric-harbor-craft-proposals-506438"},
-    {"what": "Johor-Singapore Causeway ~350k crossings/day; RTS Link end-2026", "url": "https://en.wikipedia.org/wiki/Johor%E2%80%93Singapore_Causeway"},
-    {"what": "Marina South Pier Southern-Islands ferries (St John's, Lazarus, Kusu, Sisters')", "url": "https://marinasouthferries.com/pages/ferry-schedule"}
-  ],
-  "provenance": {
-    "author": "Tasklet",
-    "date": "2026-06-30",
-    "purpose": "Grounds the Singapore MPA authority proposal rewrite, the Grok domestic-routing handoff, and the public-value economics. Follows the Bahrain MOTC gold reference (PTA category).",
-    "gold_reference": "bahrain-motc"
+ "dossier_id": "pta-dossier-singapore-mpa",
+ "schema": "pta_authority_dossier/v1",
+ "authority": {
+  "display": "Singapore MPA",
+  "legal_name": "Maritime and Port Authority of Singapore (MPA)",
+  "country": "Singapore",
+  "geography_type": "island city-state with a busy harbour, southern islands, and two cross-border water surfaces",
+  "home_waters_label": "Singapore's harbour, the Southern Islands and the inner waterfront",
+  "vocabulary": {
+   "correct": [
+    "Singapore",
+    "the harbour",
+    "the Southern Islands",
+    "domestic",
+    "national",
+    "the inner waterfront",
+    "the Port of Singapore"
+   ],
+   "banned": [
+    "emirate",
+    "inter-emirate",
+    "intra-{home}",
+    "{home}",
+    "super-app",
+    "journey wallet",
+    "Grab market"
+   ]
   }
+ },
+ "mandate": {
+  "summary": "MPA regulates and develops the Port of Singapore — the world's busiest transshipment hub — and stewards the harbour-craft fleet's transition to clean energy. Its remit covers harbour-craft licensing, berth and charging infrastructure, vessel standards, and the decarbonization of domestic marine transport.",
+  "current_priorities": [
+   "Decarbonize the domestic harbour-craft fleet (electrification + cleaner fuels)",
+   "Build national electric-harbour-craft (e-HC) charging infrastructure",
+   "Set vessel reference designs and standards for clean harbour craft",
+   "Deliver the Maritime Singapore Decarbonisation Blueprint 2050"
+  ]
+ },
+ "policy_targets": {
+  "harbour_craft_mandate": "From 2030, all new harbour craft operating in the Port of Singapore must be fully electric, capable of using B100 biofuel, or compatible with net-zero fuels.",
+  "net_zero_year": 2050,
+  "net_zero_scope": "Net-zero harbour craft (and pleasure craft) by 2050; national net-zero by 2050.",
+  "blueprint": "Maritime Singapore Decarbonisation Blueprint 2050.",
+  "relevance": "Foiling makes the electric option fast and practical — the credible way to meet the 2030 mandate without compromising speed or range. MPA can prove it first-of-class at home and export the standard."
+ },
+ "precedent": {
+  "headline": "Singapore has already mandated clean harbour craft — and is building the charging to run them.",
+  "harbour_craft_electrification": {
+   "mandate_year": 2030,
+   "rule": "All new harbour craft fully electric / B100-capable / net-zero-fuel compatible from 2030; net-zero harbour craft by 2050.",
+   "charging_pilot": "First e-HC charging point launched at Marina South Pier (Pyxis + SP Mobility, 2024); national e-HC charging masterplan and standards in development.",
+   "designs": "11 passenger-launch and cargo-lighter e-HC vessel designs shortlisted (2024); reference designs being developed with research institutes.",
+   "financing": "MPA EOIs for e-HC financing and insurance show strong institutional interest; premiums comparable to conventional craft.",
+   "key_fact_for_navier": "MPA has mandated clean harbour craft, built the first charging point, and is selecting reference vessel designs. A foiling vessel is the fast, premium, exportable option that fits the mandate from day one.",
+   "fleet_size": "~1,600 diesel harbour craft to transition (up to ~2,000 vessels ply port waters).",
+   "notification_rule": "Operators with new harbour-craft plans must inform MPA from January 2027 so designs can be adjusted (MPA EOI, Jul 2023)."
+  },
+  "causeway": {
+   "link": "Johor-Singapore Causeway (and the Second Link)",
+   "stat": "~350,000 crossings per day — one of the busiest land border crossings in the world; long peak queues.",
+   "rts_link": "The Johor Bahru-Singapore RTS Link (Bukit Chagar <-> Woodlands North) opens end-2026 to ease Causeway congestion.",
+   "relevance": "A fast cross-border marine link offers Causeway-peak relief — a recognized public-good framing. Secondary to the domestic harbour network."
+  },
+  "domestic_ferries_today": {
+   "southern_islands": "Marina South Pier (MRT NS28) is the gateway: Singapore Island Cruise & Ferry Services and Marina South Ferries run daily island-hopping to St John's, Lazarus, Kusu and Sisters' Islands; Marina South Ferries also sails Sentosa Jetty @ Cove (Sentosa Cove Village) <-> Lazarus in ~15 min.",
+   "pulau_ubin": "Changi Point Ferry Terminal <-> Pulau Ubin: 12-passenger bumboats, ~10 min, S$4-5 cash per leg, depart when full. Pulau Ubin draws ~300,000 visitors a year (NParks).",
+   "relevance": "Domestic water transport already exists on slow displacement craft — a foiling upgrade is an improvement to a live mode, not a novelty.",
+   "kusu_pilgrimage": "Annual Kusu Pilgrimage Season (Ninth Lunar Month, e.g. 21 Oct-19 Nov 2025): appointed operator runs hourly departures 7am-4pm from Marina South Pier; capacity-managed in peak years (50 pax/hour caps).",
+   "jetty_renewal": "St John's Island jetty and Kusu bumboat jetty closed 24 Apr 2025, extended to 23 Mar 2026, for repair; ferries rerouted to Lazarus Pulau Seringat Jetty. Island jetty infrastructure is being renewed now — a natural window to plan the next-generation service that will use it."
+  },
+  "first_electric_ferry": {
+   "headline": "Singapore's first fully electric ferry already runs daily.",
+   "detail": "Penguin-built 200-passenger electric ferry for Shell: Pasir Panjang Ferry Terminal <-> Pulau Bukom, 5.5 km in ~12 minutes; service sized to carry >3,000 passengers/day at maturity (launched May 2023).",
+   "relevance": "Electric passenger service in Singapore port waters is proven practice, not a concept."
+  },
+  "green_initiative": {
+   "name": "Maritime Singapore Green Initiative",
+   "detail": "MPA pledged up to S$100M; green incentives refreshed 2024, incl. port-dues reductions tied to clean harbour craft."
+  }
+ },
+ "interpretation_for_navier": "Navier is the clean-harbour-craft standard MPA's 2030 mandate is reaching for. Foiling cuts energy per passenger-mile dramatically, so electric range and speed both work; it is near-silent and low-wake in a dense, busy port; and the Quanta-LR hybrid covers the longer cross-border legs with no charging dependency. Singapore is the ideal jurisdiction to prove it first-of-class and export the benchmark — starting with the domestic harbour and Southern-Islands network, with cross-border relief corridors as an optional second step.",
+ "domestic_network": {
+  "note": "Candidate boarding points with APPROXIMATE anchor coordinates [lng, lat] for Grok to snap to real berths/jetties during seal. Coordinates are anchors, not sealed geometry. Several are LIVE ferry stops today (Marina South Pier, Changi Point, the Southern Islands); Marina South Pier is also the e-HC charging pilot site.",
+  "boarding_points": [
+   {
+    "node": "marina-bay-stops",
+    "name": "Marina Bay water-taxi stops (Esplanade / Bayfront / Promontory)",
+    "anchor_lnglat": [
+     103.857,
+     1.288
+    ],
+    "type": "core_pilot_station",
+    "city": "singapore"
+   },
+   {
+    "node": "marina-south-pier",
+    "name": "Marina South Pier (e-HC charging pilot)",
+    "anchor_lnglat": [
+     103.863,
+     1.271
+    ],
+    "type": "core_live_station",
+    "city": "singapore"
+   },
+   {
+    "node": "marina-east-bedok",
+    "name": "Marina East / Bedok Jetty (East Coast)",
+    "anchor_lnglat": [
+     103.912,
+     1.301
+    ],
+    "type": "commuter_node",
+    "city": "singapore"
+   },
+   {
+    "node": "sentosa-cove-marina",
+    "name": "ONE°15 Marina Sentosa Cove",
+    "anchor_lnglat": [
+     103.839,
+     1.244
+    ],
+    "type": "harbour_node",
+    "city": "singapore"
+   },
+   {
+    "node": "keppel-harbourfront",
+    "name": "Keppel Bay / HarbourFront",
+    "anchor_lnglat": [
+     103.82,
+     1.265
+    ],
+    "type": "harbour_node",
+    "city": "singapore"
+   },
+   {
+    "node": "st-johns-lazarus",
+    "name": "St John's / Lazarus Island",
+    "anchor_lnglat": [
+     103.848,
+     1.218
+    ],
+    "type": "southern_island_live",
+    "city": "singapore"
+   },
+   {
+    "node": "kusu-island",
+    "name": "Kusu Island",
+    "anchor_lnglat": [
+     103.86,
+     1.225
+    ],
+    "type": "southern_island_live",
+    "city": "singapore"
+   },
+   {
+    "node": "changi-point",
+    "name": "Changi Point Ferry Terminal",
+    "anchor_lnglat": [
+     103.992,
+     1.39
+    ],
+    "type": "core_live_station",
+    "city": "singapore"
+   },
+   {
+    "node": "pulau-ubin",
+    "name": "Pulau Ubin",
+    "anchor_lnglat": [
+     103.964,
+     1.41
+    ],
+    "type": "island_live",
+    "city": "singapore"
+   },
+   {
+    "node": "west-coast-pier",
+    "name": "West Coast Pier / Pasir Panjang",
+    "anchor_lnglat": [
+     103.77,
+     1.29
+    ],
+    "type": "working_waterfront",
+    "city": "singapore"
+   },
+   {
+    "node": "jurong-island-banyan",
+    "name": "Jurong Island (Banyan Basin)",
+    "anchor_lnglat": [
+     103.7,
+     1.265
+    ],
+    "type": "working_waterfront",
+    "city": "singapore"
+   }
+  ],
+  "domestic_pairs": [
+   {
+    "pair_id": "sg-d01",
+    "from": "marina-east-bedok",
+    "to": "marina-bay-stops",
+    "approx_nm": 5.6,
+    "rationale": "A fast foiling commuter line from the East Coast straight up to the Marina Bay/CBD water-taxi stops — new capacity for a land-constrained city. Anchor commuter corridor."
+   },
+   {
+    "pair_id": "sg-d02",
+    "from": "marina-bay-stops",
+    "to": "keppel-harbourfront",
+    "approx_nm": 4.2,
+    "rationale": "Inner-harbour hop from Marina Bay/CBD to Keppel Bay / HarbourFront along the southern waterfront."
+   },
+   {
+    "pair_id": "sg-d03",
+    "from": "marina-south-pier",
+    "to": "st-johns-lazarus",
+    "approx_nm": 4.0,
+    "rationale": "Marina South Pier to St John's / Lazarus — a live Southern-Islands ferry corridor today, foiling-upgraded. Marina South Pier is the e-HC charging pilot site."
+   },
+   {
+    "pair_id": "sg-d04",
+    "from": "marina-south-pier",
+    "to": "kusu-island",
+    "approx_nm": 3.6,
+    "rationale": "Marina South Pier to Kusu Island — live Southern-Islands ferry corridor."
+   },
+   {
+    "pair_id": "sg-d05",
+    "from": "sentosa-cove-marina",
+    "to": "st-johns-lazarus",
+    "approx_nm": 2.2,
+    "rationale": "Sentosa Cove to the Southern Islands — short inner-harbour leisure/island hop."
+   },
+   {
+    "pair_id": "sg-d06",
+    "from": "changi-point",
+    "to": "pulau-ubin",
+    "approx_nm": 1.5,
+    "rationale": "Changi Point to Pulau Ubin — a live bumboat corridor today; a clean foiling upgrade to an existing island link."
+   },
+   {
+    "pair_id": "sg-d07",
+    "from": "west-coast-pier",
+    "to": "keppel-harbourfront",
+    "approx_nm": 5.5,
+    "rationale": "Working-waterfront run from the West Coast / Pasir Panjang to HarbourFront."
+   },
+   {
+    "pair_id": "sg-d08",
+    "from": "jurong-island-banyan",
+    "to": "keppel-harbourfront",
+    "approx_nm": 7.5,
+    "rationale": "Jurong Island industrial waterfront to HarbourFront along the working harbour."
+   }
+  ]
+ },
+ "regional_links": {
+  "note": "Secondary and clearly optional. All are live ferry corridors today or recognized congestion-relief surfaces. None leads the proposal.",
+  "links": [
+   {
+    "link_id": "sg-r01",
+    "from": "changi-point",
+    "to": "batam-indonesia",
+    "approx_nm": 13,
+    "status": "live_ferry_today",
+    "note": "Singapore (Tanah Merah) <-> Batam is a live ferry corridor with millions of crossings yearly. Tanah Merah Ferry Terminal is the real cross-border berth; routed across the Singapore Strait. Pioneer/Quanta range."
+   },
+   {
+    "link_id": "sg-r02",
+    "from": "changi-point",
+    "to": "bintan-indonesia",
+    "approx_nm": 22,
+    "status": "live_ferry_today",
+    "note": "Singapore (Tanah Merah) <-> Bintan (Bandar Bentan Telani); 350k+ tourists/yr. Quanta-LR range across the Strait."
+   },
+   {
+    "link_id": "sg-r03",
+    "from": "marina-east-bedok",
+    "to": "desaru-coast-malaysia",
+    "approx_nm": 18,
+    "status": "relief_corridor_candidate",
+    "note": "Singapore <-> Johor/Desaru as a Causeway-relief surface; subject to bilateral operating review. Routing must go around the island ends of the Johor Strait, never through/over the Causeway."
+   }
+  ]
+ },
+ "routing_hazards": {
+  "instruction": "Every domestic and regional leg must be routed through navigable open water with NO land crossings. The Port of Singapore is one of the world's busiest — foiling must use cleared corridors with geofenced low-wake/no-foil zones in anchorages and fairways. Hand-curated waypoints required throughout.",
+  "hazards": [
+   {
+    "hazard": "Port anchorages & fairways / Traffic Separation Scheme",
+    "detail": "The harbour and Singapore Strait carry heavy commercial traffic, anchorages and a Traffic Separation Scheme. Route on cleared corridors; cross fairways and the TSS only at marked points; geofence low-wake/no-foil zones in anchorages with full pilotage compliance."
+   },
+   {
+    "hazard": "Johor-Singapore Causeway",
+    "detail": "The Causeway physically blocks the middle of the Johor Strait. Any Singapore<->Johor/Desaru leg must route AROUND the eastern (Tebrau Strait) or western end of the island — never through or over the Causeway embankment."
+   },
+   {
+    "hazard": "Sisters' Islands Marine Park & Southern reefs",
+    "detail": "The Southern Islands are reef-fringed (Sisters' Islands is a protected marine park). Keep clear of reef flats, no-wake on approach, snap entries to charted channels."
+   },
+   {
+    "hazard": "Pulau Tekong & military/live-firing areas",
+    "detail": "Avoid Pulau Tekong and the eastern live-firing/danger areas entirely; route the Changi<->Ubin leg through the charted Serangoon Harbour channel."
+   },
+   {
+    "hazard": "Singapore Strait crossing (Batam/Bintan)",
+    "detail": "Cross-border legs cross the Singapore Strait shipping lanes; cross the TSS at right angles at marked points and snap the Indonesian approaches (Batam Centre, Bandar Bentan Telani) to their real ferry berths."
+   },
+   {
+    "hazard": "Live-firing islands west of the Southern Islands (Pulau Sudong, Pulau Senang, Pulau Pawai)",
+    "detail": "Proclaimed SAF manoeuvring and live-firing grounds incl. surrounding waters; public must keep clear (MINDEF advisories). No route may approach these islands; keep all Southern-Islands legs east of the firing-ground boundary."
+   },
+   {
+    "hazard": "St John's / Kusu jetty works (to ~Mar 2026)",
+    "detail": "St John's Island jetty and Kusu bumboat jetty under repair; current public landings consolidate at Lazarus Pulau Seringat Jetty and Kusu main jetty. Bind boarding points to jetties verified open at service start."
+   }
+  ]
+ },
+ "sources": [
+  {
+   "what": "MPA harbour-craft electrification (2030 mandate, net-zero 2050), e-HC charging pilot at Marina South Pier, reference designs",
+   "url": "https://www.mpa.gov.sg/media-centre/details/singapore-gears-up-to-meet-net-zero-needs-of-shipping"
+  },
+  {
+   "what": "Net-zero harbour-craft regs from 2030 (industry coverage)",
+   "url": "https://maritime-executive.com/article/singapore-rolls-out-net-zero-regs-for-harbor-craft-beginning-in-2030"
+  },
+  {
+   "what": "MPA call for electric harbour craft proposals",
+   "url": "https://www.marinelink.com/news/mpa-calls-electric-harbor-craft-proposals-506438"
+  },
+  {
+   "what": "Johor-Singapore Causeway ~350k crossings/day; RTS Link end-2026",
+   "url": "https://en.wikipedia.org/wiki/Johor%E2%80%93Singapore_Causeway"
+  },
+  {
+   "what": "Marina South Pier Southern-Islands ferries (St John's, Lazarus, Kusu, Sisters')",
+   "url": "https://marinasouthferries.com/pages/ferry-schedule"
+  },
+  {
+   "what": "MPA EOI for e-HC adoption — 2030 rule verbatim + Jan 2027 notification (11 Jul 2023)",
+   "url": "https://www.mpa.gov.sg/media-centre/details/call-for-expression-of-interest-to-design-and-promote-adoption-of-electric-harbour-craft-in-singapore"
+  },
+  {
+   "what": "First e-HC charging point pilot at Marina South Pier (8 Apr 2024): 150kW DC, Pyxis + SP Mobility, national masterplan",
+   "url": "https://www.mpa.gov.sg/media-centre/details/first-pilot-trial-for-electric-harbour-craft-charging-point-launched-at-marina-south-pier"
+  },
+  {
+   "what": "Singapore's first fully electric ferry (Shell/Penguin, Pasir Panjang <-> Bukom, 200 pax)",
+   "url": "https://www.channelnewsasia.com/singapore/singapore-first-electric-ferry-ready-set-sail-may-maritime-sector-continues-green-push-emissions-3426151"
+  },
+  {
+   "what": "Kusu Pilgrimage Season 2025 ferry arrangements (SLA press release, 29 Sep 2025)",
+   "url": "https://www.sla.gov.sg/news/press-release/kusu-pilgrimage-season-2025/"
+  },
+  {
+   "what": "St John's / Kusu jetty temporary closure and Lazarus Seringat reroute (SLA)",
+   "url": "https://www.sla.gov.sg/news/press-release/update-on-visitor-access-to-st-john-s-island-and-kusu-island/"
+  },
+  {
+   "what": "Pulau Ubin ~300,000 visitors/year; bumboat service facts (NParks)",
+   "url": "https://pulau-ubin.nparks.gov.sg/visitubin/"
+  },
+  {
+   "what": "SAF live-firing islands advisory (Pulau Sudong, Senang, Pawai)",
+   "url": "https://www.mindef.gov.sg/news-and-events/events-and-advisories/9apr26-activity/"
+  },
+  {
+   "what": "Maritime Singapore Green Initiative (up to S$100M)",
+   "url": "https://www.mpa.gov.sg/maritime-singapore/sustainability/maritime-singapore-green-initiative"
+  }
+ ],
+ "provenance": {
+  "author": "Tasklet",
+  "date": "2026-06-30",
+  "purpose": "Grounds the Singapore MPA authority proposal rewrite, the Grok domestic-routing handoff, and the public-value economics. Follows the Bahrain MOTC gold reference (PTA category).",
+  "gold_reference": "bahrain-motc",
+  "research_refreshed": "2026-07-21",
+  "refresh_notes": "July 2026 sweep: electric-ferry precedent, Green Initiative, Jan-2027 notification rule, fleet size, Southern-Islands/Ubin service detail, Kusu pilgrimage ops, jetty-renewal window, live-firing hazard islands named. Sources appended."
+ }
 }
