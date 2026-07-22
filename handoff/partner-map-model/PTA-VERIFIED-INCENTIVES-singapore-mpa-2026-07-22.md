@@ -52,3 +52,19 @@ the search text were **not** used.
 - S19 CTA step 03: "If the demo earns it, we scope a co-funded trial — on MPA's terms."
 - No new routes added. East Coast ↔ Marina Bay / CBD commuter link was already on S11 (illustrative,
   pending joint study). No LTA mention on the deck.
+
+## Addendum — bigger-picture arc (2026-07-22, per Jaideep)
+
+Jaideep upgraded the LTA annex from back-pocket to in-deck. Three slides added to chapter 03:
+S12 "A TRANSIT LINE WITHOUT LAND", S13 "THE COASTAL LINE" (schematic plate), S14 "ONE WATERWAY,
+TWO MANDATES". Additional primary-sourced facts used:
+
+- Roads occupy ~12% of Singapore's total land area — LTA (lta.gov.sg/our_work/road) + MOT
+  parliamentary reply; MOT: housing ~15%, industry ~13%.
+- Thomson–East Coast Line ≈ S$25B — CNA comparison piece (DTL ~S$21B; cost/km $160M→$490M).
+- Rail network target ~360 km by the early 2030s — LTA Upcoming Projects + MOT.
+- LTMP 2040: "20-Minute Towns and a 45-Minute City" — LTA official.
+
+Coastal line corridor (Changi Point → East Coast → Marina Bay/CBD → Keppel/HarbourFront →
+West Coast Pier) is marked illustrative, pending joint study; endpoints are existing dossier
+anchors. No travel-time or ridership claims made.
