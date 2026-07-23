@@ -10,18 +10,10 @@
   "content_source": "deck-studio/decks/indrive-brazil/content-source.json",
   "image_manifest": "deck-studio/decks/indrive-brazil/image-manifest.json",
   "image_bind_precondition": {
-    "status": "live_resync_required",
-    "gate": "Do NOT bind or replaceImage any background until the live deck is re-synced. Every target id in image-manifest.json / slide-image-bindings.json is null on purpose. NOTE: no image needs generating for this deck — all backgrounds are INHERITED from DiDi Brazil.",
-    "reason": "The committed slide-manifest.json is STALE — it still shows the hedged spine ('PHASED REVIEW', 'A joint route review is the next step'), whereas this deck must match the de-hedged DiDi-Brazil-identical structure. Its slide object ids may not match the live deck. The de-hedge rebuild was applied at the .pptx level; it did not flow back to the repo.",
-    "inheritance": "This deck reuses DiDi Brazil's imagery: deck-scoped backgrounds are copied from didi-brazil (cover uses the inDrive logo; partner-roles/cover on-slide TEXT is inDrive-specific), and city econ backgrounds bind the SAME shared city-keyed plates. Zero net-new generation — depends only on DiDi Brazil's assets existing.",
-    "required_first_steps": [
-      "Pull a fresh live inventory via Slides API presentations.get and overwrite slide-manifest.json; reconcile to the de-hedged DiDi-Brazil-identical spine (Rio/Angra/Floripa + Salvador/Ilhabela/Santos–Guarujá/Vitória/Ilha do Mel).",
-      "Re-key image-manifest.json + slide-image-bindings.json to the live object ids, binding each role by expected_slide_title.",
-      "Bind the inherited DiDi Brazil assets (once those exist) + the inDrive cover logo; then run QA gate 13 (image-completeness)."
-    ],
-    "instructions": "handoff/partner-map-model/MX-EG-IMAGE-BIND-RESYNC-2026-07-23.md",
-    "flagged_by": "cowork/Claude",
-    "flagged_at": "2026-07-23"
+    "status": "live_bind_complete",
+    "completed_at": "2026-07-23T20:28:28.886319+00:00",
+    "prior_status": "live_resync_required",
+    "note": "Live resync + replaceImage applied 2026-07-23 after OAuth reauth"
   },
   "source_paths": [
     "partner-pitch/partners/indrive.json",

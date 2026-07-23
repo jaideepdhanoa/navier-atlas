@@ -10,18 +10,10 @@
   "content_source": "deck-studio/decks/didi-mexico/content-source.json",
   "image_manifest": "deck-studio/decks/didi-mexico/image-manifest.json",
   "image_bind_precondition": {
-    "status": "live_resync_required",
-    "gate": "Do NOT bind, generate, register, or replaceImage any background until the live deck is re-synced. Every target id in image-manifest.json / slide-image-bindings.json is null on purpose.",
-    "reason": "The committed slide-manifest.json is STALE. It shows the pre-correction hedged spine (e.g. 'PHASED REVIEW', 'A joint route review is the next step') and the pre-expansion city set (notes claim 18 slides); its slide object ids are ABSENT from the live deck. The de-hedge rebuild was applied at the .pptx level and further corrections were made live in Google Slides — neither flowed back to the repo. So slide IDs were deliberately left null and each image role binds by expected_slide_title instead.",
-    "required_first_steps": [
-      "Pull a fresh live inventory via Slides API presentations.get and overwrite slide-manifest.json.",
-      "Reconcile the live econ/city slides against the reconstructed city set in image-manifest.json (6 econ cities: Cancún–Isla Mujeres, Playa del Carmen–Cozumel, Puerto Vallarta, Los Cabos, Isla Holbox, Bahías de Huatulco). Add/remove roles to match the live deck.",
-      "Re-key image-manifest.json + slide-image-bindings.json to the live slide + image-element object ids, binding each role by its expected_slide_title.",
-      "Only then generate / register (stable source_url) / replaceImage the backgrounds, and run QA gate 13 (image-completeness)."
-    ],
-    "instructions": "handoff/partner-map-model/MX-EG-IMAGE-BIND-RESYNC-2026-07-23.md",
-    "flagged_by": "cowork/Claude",
-    "flagged_at": "2026-07-23"
+    "status": "live_bind_complete",
+    "completed_at": "2026-07-23T20:28:28.884442+00:00",
+    "prior_status": "live_resync_required",
+    "note": "Live resync + replaceImage applied 2026-07-23 after OAuth reauth"
   },
   "source_paths": [
     "partner-pitch/partners/didi.json",
