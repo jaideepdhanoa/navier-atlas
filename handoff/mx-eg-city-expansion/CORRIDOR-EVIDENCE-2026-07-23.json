@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "purpose": "Four-input sourcing evidence for 5 new city corridors (DiDi Mexico +2, inDrive Egypt +3). Jaideep instruction 2026-07-22: source demand ourselves and add these cities to the decks.",
+    "four_input_rule": "named pier-to-pier route + distance(nm) + benchmarked premium fare($/seat OW) + anchored demand(labeled). Fail closed otherwise.",
+    "fx": { "MXN": 17.5, "EGP": 51.1728 },
+    "fare_method": "premium-substitute benchmarking (Uber Black equivalent), Jaideep override Jul 2026; consistent with confirmed MX anchors ($30 Playa-Cozumel, $20 Huatulco, $12 Holbox)."
+  },
+  "didi_mexico": [
+    {
+      "city": "Puerto Vallarta",
+      "corridor": "Los Muertos Pier \u2192 Yelapa",
+      "origin_terminal": "Los Muertos Pier (Zona Rom\u00e1ntica, PV)",
+      "dest_terminal": "Yelapa (boat-only village, Cabo Corrientes)",
+      "distance_nm": 13.4,
+      "premium_fare_usd_ow": 25,
+      "demand_anchor": "~22,000 captive pax/yr (conservative floor)",
+      "demand_basis": "Yelapa is road-inaccessible \u2014 100% boat access (captive). Anchored bottoms-up on the published scheduled Los Muertos\u2013Yelapa co-op service (5 daily OW departures 11:00/11:45/13:00/15:00/17:00, 20-pax pangas, ~60% load), a conservative floor that EXCLUDES the larger Boca de Tomatl\u00e1n departure point, private charters and tour traffic. PV metro received 6.27M visitors in 2025.",
+      "sources": ["go2yelapa.com/eng/transport.html", "puertovallarta.net water-taxis-los-muertos-beach-pier-south", "vallartadaily.com PV tourism 2025 (6.27M)"],
+      "confidence": "medium",
+      "priority": "high"
+    },
+    {
+      "city": "Los Cabos",
+      "corridor": "Cabo San Lucas Marina \u2192 Puerto Los Cabos (San Jos\u00e9 del Cabo)",
+      "origin_terminal": "Cabo San Lucas Marina",
+      "dest_terminal": "Puerto Los Cabos Marina (San Jos\u00e9 del Cabo)",
+      "distance_nm": 16.5,
+      "premium_fare_usd_ow": 30,
+      "demand_anchor": "3.86M Los Cabos visitors/yr; 257,000 Cabo San Lucas marina cruise pax/yr (2024)",
+      "demand_basis": "Los Cabos destination welcomed a record 3.86M travelers (2023); Cabo San Lucas marina handled 257,000+ cruise passengers in 2024. The two towns are linked by the ~33km Tourist Corridor; corridor demand anchored on this resort-corridor visitor base (premium inter-town transfer, no scheduled ferry today).",
+      "sources": ["tourismanalytics.com/loscabos-statistics", "fiturca.com Los Cabos Tourism Observatory Oct24 (42.2K cruise pax Aug-24)", "mexiconewsdaily.com los-cabos-tourism-trends-2024 (257K cruise)", "travelagewest.com (3.86M)"],
+      "confidence": "medium",
+      "priority": "medium"
+    }
+  ],
+  "indrive_egypt": [
+    {
+      "city": "Cairo / The Nile",
+      "corridor": "Zamalek \u2192 Maadi",
+      "origin_terminal": "Zamalek (Nile island, west-central Cairo)",
+      "dest_terminal": "Maadi (Nile riverfront, south Cairo)",
+      "distance_nm": 7.0,
+      "premium_fare_usd_ow": 20,
+      "demand_anchor": "~180,000 riders/yr (existing paid Nile commuter demand)",
+      "demand_basis": "Nile Taxi (NTS) operates exactly this Zamalek\u2013Maadi commuter route today with 10 boats (120-seat capacity), serving ~180,000 clients/year. Current Nile Taxi Zamalek\u2192Maadi OW fare already ~US$21 (Bookaway), so a $20 premium-seat benchmark is grounded on an operating market. 12km/8mi apart; river routing ~7nm.",
+      "sources": ["Nile Taxi official (Instagram: 10 boats/120 seats, ~180,000 clients/yr Maadi-Zamalek)", "bookaway.com/routes/egypt/zamalek-to-maadi (OW from US$21)", "rome2rio Zamalek-Maadi 12km"],
+      "confidence": "high",
+      "priority": "high"
+    },
+    {
+      "city": "El Gouna",
+      "corridor": "Abu Tig Marina \u2192 Hurghada Marina",
+      "origin_terminal": "Abu Tig Marina (El Gouna, Orascom)",
+      "dest_terminal": "Hurghada Marina",
+      "distance_nm": 13.5,
+      "premium_fare_usd_ow": 25,
+      "demand_anchor": ">1,000,000 visitors/yr + 25,000 residents (El Gouna town)",
+      "demand_basis": "El Gouna (single master-developer resort town, Orascom) welcomes over 1 million visitors annually and has 25,000+ full-time residents across 50+ nationalities. Corridor connects El Gouna's Abu Tig Marina to the sourced Hurghada Marina 25km south. Premium Red Sea intercity speedboat-transfer market: shared transfer ~\u20ac10\u201325, private \u20ac75+; $25 premium-seat benchmark.",
+      "sources": ["arabnews.com/node/2615777 (>1M visitors/yr, 25,000 residents)", "robbreport.com El Gouna (~1M visitors/yr)", "en.wikipedia.org/wiki/El_Gouna (20km N of Hurghada)", "nawy.com Hurghada-El Gouna 25km", "El Gouna/Safaga speedboat transfer market pricing"],
+      "confidence": "medium",
+      "priority": "high"
+    },
+    {
+      "city": "Marsa Alam",
+      "corridor": "Port Ghalib Marina \u2192 Sha'ab Samadai (Dolphin House)",
+      "origin_terminal": "Port Ghalib Marina (Marsa Alam)",
+      "dest_terminal": "Sha'ab Samadai reef (Dolphin House)",
+      "distance_nm": 12.5,
+      "premium_fare_usd_ow": 30,
+      "demand_anchor": "~1.09M Marsa Alam air arrivals/yr; Samadai managed reef-excursion program",
+      "demand_basis": "Marsa Alam International Airport handled ~1.09M passengers/yr (record-breaking growth, +24% YoY). Port Ghalib is the marina gateway to the Samadai 'Dolphin House' protected reef, which runs a managed daily-visitor program (historically capped ~200/day, previously 500\u2013800/day). Reef-excursion market supports \u20ac70\u2013165 full-day trips, so $30 premium-seat OW is conservative.",
+      "sources": ["en.wikipedia.org/wiki/Marsa_Alam_International_Airport (1,089,000 pax)", "airserviceone.com Marsa Alam record growth (+24% YoY)", "hepca.org Samadai Study (200/day cap)", "wwhandbook.iwc.int Samadai (500-800/day historic)", "viator/marsaalamcity Dolphin House trip pricing \u20ac70-165"],
+      "confidence": "medium",
+      "priority": "medium"
+    }
+  ]
+}
