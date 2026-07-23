@@ -4,6 +4,8 @@ This repo copy mirrors the workspace skill `partner-deck-grok-handoff`. Use it w
 
 > **2026-06-21 upgrade — read this first.** The first Grok-built decks (e.g. the Bolt sandbox) failed parity: they were whole-file copies of the gold Grab deck with a few text boxes poked, leaving Grab's logo, Grab's Singapore routes, and Grab's economics numbers in place, with brand fonts reset to Arial-black and text overflowing. Root cause was **not** a Grok capability gap — it was that the handoff told Grok *what* to say but not *how* to edit. Going forward, Tasklet emits a deterministic **object-keyed edit plan** and Grok applies it verbatim. See `DECK-PARITY-DIAGNOSIS-2026-06-21.md` and `DETERMINISTIC-DECK-EDIT-PLAN-CONTRACT.md`.
 
+> **2026-07-23 upgrade — copy tone & completeness.** The DiDi/inDrive Mexico, Egypt and Brazil rebuilds shipped *mechanically* clean but read as **internal drafts, not partner pitches**: hedged "route-by-route / candidate markets / review" framing, a phased-review ask, dropped **Three C's** and confident **Partner Proposal** slides, thin bullet-list econ slides instead of the 3-column table, a prize ladder missing its **platform** tier, an Atlas link pointed at the wrong country, and model/QA jargon (`census g=`, "monotonic", "(MID)") plus the gold deck's Grab/Singapore/SEA **speaker notes** left in the file. None of these tripped the six mechanical gates. The rules below add the missing **copy-tone and content-completeness** gates. The confident bar-setter is the **99 × Navier Brazil** gold deck — match its register, not a "review" register.
+
 ## Deck archetypes
 
 Pick the archetype **before** building the edit plan — it sets the route rule, economics frame, and slide content:
@@ -35,7 +37,7 @@ Pick the archetype **before** building the edit plan — it sets the route rule,
    - attach a `qa.leak_denylist` and `qa.expected_object_ids` for Grok's gates.
 6. Add batch queue/status/prompt files under `handoff/partner-map-model/{batch}/`.
 7. Validate all Deck Studio JSON schemas.
-8. Tell Grok: copy gold deck → assert object-id baseline (drift gate) → apply `deck.editplan.json` via Slides API batchUpdate verbatim → run the six QA gates → return a receipt with deck id, op count, leak/style/budget/image scan results, and slide thumbnails.
+8. Tell Grok: copy gold deck → assert object-id baseline (drift gate) → apply `deck.editplan.json` via Slides API batchUpdate verbatim → run the twelve QA gates (six mechanical + six copy/tone/completeness) → return a receipt with deck id, op count, leak/style/budget/image/hedge/jargon/notes/spine/econ/link scan results, and slide thumbnails.
 
 ## Non-negotiables
 
@@ -47,6 +49,20 @@ Pick the archetype **before** building the edit plan — it sets the route rule,
 - Brand fonts (Exo 2 / Poppins) and captured colors must survive every edit; no Arial-14-black resets.
 - Deck-prep complete is not proposal complete.
 
+### Copy, tone & completeness (partner-facing register)
+
+These are the failures the six mechanical gates do not catch. The deck is a **confident pitch to the partner**, not an internal review.
+
+- **Confident register, never a hedge.** Banned copy anywhere a partner can read it: "route-by-route", "candidate market(s)", "held/pending until confirmed", "consider a pilot only once…", "phased review", and any cover/section title framed as a "…mobility review". Write the assertion, not the caveat.
+- **The Ask is fixed and forward.** Always **Next steps → ① working session · ② vessel demo · ③ pilot scope**. Never a VERIFY / PILOT / SCALE hold-flow or a "joint route review is the next step" line.
+- **No internal model/QA jargon on a slide or in notes.** Banned strings: `census g=`, "monotonic", "SOM Full ≤ SAM", "(MID)" / "(THIN)" / "(FULL)", "Mid basis", and any sidecar field name or basis/tier annotation. These live in the sidecar, never in partner-visible text.
+- **Scrub speaker notes.** Notes inherited from the gold deck (Grab / Singapore / SEA / "Jaideep direction" commentary) must be **removed**, not just the on-slide text. A clean slide with a dirty note still leaks.
+- **Spine must include the confidence slides.** A render-complete mobility deck carries the **Three C's** (Cost · Comfort · Convenience), the confident **Partner Proposal** ("Your world / Where you are today / What you're up against / Where Navier fits / Why now"), and the confident **close**. Missing any = not complete (this is a spine gate, per `SLIDE-SPINE-AND-VARIANTS.md`).
+- **Prize ladder is always five tiers** — SOM · SAM · TAM · GMV · **Platform revenue**. Never drop the platform rung; if the sidecar leaves `partner_platform_rev_on_navier` null, compute it as **18% × journey GMV** rather than omitting the tier.
+- **Econ slides are the 3-column table** — **Revenue build · Annual run cost · The result** — every line item tying to the economics sidecar. Never a thin bullet list. A longer-range / sub-30%-margin corridor is titled and framed **honestly** ("a longer-range corridor"); never claim "self-funding" on a 25-plus-year payback.
+- **Atlas link resolves to this deck's own `/{partner}/{country}`** — never the gold's path (the Mexico deck shipped pointing at `/didi/brazil`).
+- **Placeholder cities are de-hedged, not economics-faked.** Until the four-input gate clears (**route ID · distance · fare · anchored demand**), a market slide uses confident "corridors mapped, sourcing underway" copy and carries **no** econ card. Once all four clear, it graduates to a full sourced city slide **and** its own "WHAT ONE BOAT EARNS" card, and the country ladder is re-rolled to include it.
+
 ## QA gates Grok must pass (returned in the receipt)
 
 1. Drift gate — all plan object ids exist on the fresh copy.
@@ -55,3 +71,9 @@ Pick the archetype **before** building the edit plan — it sets the route rule,
 4. Budget scan — no edited text exceeds `char_budget`.
 5. Image-inheritance scan — no image still resolves to the gold deck's source asset.
 6. Render thumbnails attached for human spot-check.
+7. Hedge scan — zero hits on the banned-copy list ("route-by-route", "candidate market", "held/pending until confirmed", "phased review", "…mobility review" titles) across slides **and** notes.
+8. Jargon scan — zero hits on `census g=` / "monotonic" / "SOM Full ≤ SAM" / "(MID)"/"(THIN)"/"(FULL)" / "Mid basis" / sidecar field names, across slides **and** notes.
+9. Notes-clean scan — no speaker notes inherited from the gold deck (Grab / Singapore / SEA / internal-direction commentary).
+10. Spine-completeness — Three C's, Partner Proposal, the ① / ② / ③ Ask, and the close are all present; prize ladder carries all **five** tiers incl. Platform revenue.
+11. Econ-format — every unit-econ slide is the 3-column table (Revenue build · Annual run cost · The result) with line items tying to the sidecar; no thin bullet variant; no "self-funding" claim on a 25-plus-year payback.
+12. Atlas-link — resolves to this deck's own `/{partner}/{country}`, not the gold's.
