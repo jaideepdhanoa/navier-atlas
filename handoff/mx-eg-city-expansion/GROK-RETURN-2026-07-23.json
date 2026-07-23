@@ -1,0 +1,246 @@
+{
+  "at": "2026-07-23T05:01:53.659996+00:00",
+  "handoff": "handoff/mx-eg-city-expansion/GROK-HANDOFF-2026-07-23.md",
+  "pr": 332,
+  "samadai_mint": {
+    "route_id": "rn-c28e0cdf10f6",
+    "from_bp": "bp-e731545712",
+    "to_bp": "bp-samadai-reef-jetty",
+    "distance_nm": 38.7,
+    "note": "Published Sha'ab Samadai reef centroid is ~39nm from Port Ghalib (Tasklet ~12.5nm was low). Still ≤70nm N30 gate. Payback weak at long range."
+  },
+  "finance_actions": [
+    [
+      "yelapa",
+      "updated"
+    ],
+    [
+      "cabos",
+      "added"
+    ],
+    [
+      "cairo",
+      "added"
+    ],
+    [
+      "el_gouna",
+      "added"
+    ],
+    [
+      "marsa_alam",
+      "added"
+    ]
+  ],
+  "cascade": {
+    "steps": [
+      {
+        "cmd": "/Library/Developer/CommandLineTools/usr/bin/python3 /Users/jaideep/navier-atlas/finance/model/aggregate.py --partner didi --json /Users/jaideep/navier-atlas/finance/recal/agg-didi.json",
+        "code": 0,
+        "tail": "\": 0.0987\n  },\n  \"roadmap_quanta_lr_2026plus\": {\n    \"n_corridors\": 0,\n    \"note\": \"Beyond Pioneer II 70nm range; need Quanta-LR (H2 2026+, capacity/capex not locked). Economics held out of near-term number per null-beats-guess.\",\n    \"corridors\": []\n  }\n}\n\n* = fleet estimated via cascade (country/region median demand); grounded floor excludes these.\nHELD: 2 corridor(s) excluded from all economics; see economics_holds in JSON output.\nwrote /Users/jaideep/navier-atlas/finance/recal/agg-didi.json\n"
+      },
+      {
+        "cmd": "--partner indrive --corridors /Users/jaideep/navier-atlas/finance/recal/corridors-indrive.json --json /Users/jaideep/navier-atlas/finance/recal/agg-indrive.json",
+        "code": 0,
+        "tail": "r\": 80380310.0,\n    \"transport_spend_pool_yr\": 799435059.0,\n    \"effective_capture\": 0.1005\n  },\n  \"roadmap_quanta_lr_2026plus\": {\n    \"n_corridors\": 0,\n    \"note\": \"Beyond Pioneer II 70nm range; need Quanta-LR (H2 2026+, capacity/capex not locked). Economics held out of near-term number per null-beats-guess.\",\n    \"corridors\": []\n  }\n}\n\n* = fleet estimated via cascade (country/region median demand); grounded floor excludes these.\nwrote /Users/jaideep/navier-atlas/finance/recal/agg-indrive.json\n"
+      },
+      {
+        "cmd": "--partner global --dedup unique --json /Users/jaideep/navier-atlas/finance/recal/agg-unique-global.json",
+        "code": 0,
+        "tail": "\n      \"korea-naver: Busan / Geoje -> Jeju (157.2nm)\",\n      \"uae-voi: Abu Dhabi -> Muscat (360.9nm)\",\n      \"uae-voi: Fujairah -> Muscat (149.1nm)\",\n      \"uae-voi: Marina Mall / Breakwater Marina -> Sir Bani Yas Cruise Port (93.1nm)\"\n    ]\n  }\n}\n\n* = fleet estimated via cascade (country/region median demand); grounded floor excludes these.\nHELD: 6 corridor(s) excluded from all economics; see economics_holds in JSON output.\nwrote /Users/jaideep/navier-atlas/finance/recal/agg-unique-global.json\n"
+      },
+      {
+        "cmd": "--gold /Users/jaideep/navier-atlas/data-clean --aggdir /Users/jaideep/navier-atlas/finance/recal --out /Users/jaideep/navier-atlas/data-clean/economics_by_route_id.json",
+        "code": 0,
+        "tail": "ers/jaideep/navier-atlas/data-clean/economics_by_route_id.json\nrecords (route-pinned): 372 | pending (no gold route): 281\nby authored_for: {'bahrain-motc': 1, 'bolt': 36, 'careem': 29, 'caribbean': 7, 'caribbean-mobility': 2, 'didi': 29, 'french-polynesia': 9, 'grab': 33, 'indrive': 3, 'jih-global': 31, 'kakao-mobility': 39, 'noon': 1, 'ocean-whisperer': 6, 'qatar': 5, 'rakta': 34, 'rapido': 57, 'red-sea-global': 2, 'saudi-redsea-pif': 1, 'yango': 40, 'yassir': 7}\ngrounded: 261 | estimated: 111\n"
+      },
+      {
+        "cmd": "--agg /Users/jaideep/navier-atlas/finance/recal/agg-didi.json --greenfield-json /Users/jaideep/navier-atlas/finance/recal/greenfield-census/didi-mexico.json --json /Users/jaideep/navier-atlas/handoff/mx-eg-city-expansion/didi-mexico-growth-2026-07-23.json",
+        "code": 0,
+        "tail": " / $28.53B/yr\n  ---  PARTNER platform revenue on Navier network        $270M / $1.33B / $5.14B/yr\n  ---  today's journey GMV (existing demand, no induced) $2.23B / $3.35B / $4.46B/yr\n\nMID headline: floor $110M boat-fare  ->  SAM $2.47B Navier transport, $7.41B journey GMV through the network, $1.33B partner platform revenue.\n\n(estimated-total anchor adds the cascade-estimated corridors; see JSON.)\n\nwrote /Users/jaideep/navier-atlas/handoff/mx-eg-city-expansion/didi-mexico-growth-2026-07-23.json\n"
+      },
+      {
+        "cmd": "--agg /Users/jaideep/navier-atlas/finance/recal/agg-indrive.json --greenfield-json /Users/jaideep/navier-atlas/finance/recal/greenfield-census/indrive-egypt.json --json /Users/jaideep/navier-atlas/handoff/mx-eg-city-expansion/indrive-egypt-growth-2026-07-23.json",
+        "code": 0,
+        "tail": "/ $21.92B/yr\n  ---  PARTNER platform revenue on Navier network        $205M / $1.02B / $3.95B/yr\n  ---  today's journey GMV (existing demand, no induced) $1.60B / $2.40B / $3.20B/yr\n\nMID headline: floor $80M boat-fare  ->  SAM $1.89B Navier transport, $5.67B journey GMV through the network, $1.02B partner platform revenue.\n\n(estimated-total anchor adds the cascade-estimated corridors; see JSON.)\n\nwrote /Users/jaideep/navier-atlas/handoff/mx-eg-city-expansion/indrive-egypt-growth-2026-07-23.json\n"
+      }
+    ]
+  },
+  "unit_economics_mid": {
+    "ics-89a8844858": {
+      "corridor": "Los Muertos Pier (Puerto Vallarta) -> Yelapa",
+      "nm": 14.5,
+      "fare": 25.0,
+      "rev_per_boat_yr": 176330.0,
+      "margin": 0.5,
+      "payback_years": 6.79,
+      "vessels_10pct": 2
+    },
+    "rn-d206da44c580": {
+      "corridor": "Cabo San Lucas Marina -> Puerto Los Cabos Marina (San José del Cabo)",
+      "nm": 13.8,
+      "fare": 30.0,
+      "rev_per_boat_yr": 235092.0,
+      "margin": 0.62,
+      "payback_years": 4.09,
+      "vessels_10pct": 1
+    },
+    "rn-c37df5916b71": {
+      "corridor": "Cairo — Zamalek -> Cairo — Maadi Corniche",
+      "nm": 6.26,
+      "fare": 20.0,
+      "rev_per_boat_yr": 219384.0,
+      "margin": 0.66,
+      "payback_years": 4.13,
+      "vessels_10pct": 1
+    },
+    "rn-bb533d525e01": {
+      "corridor": "Hurghada Marina -> Marina El Gouna",
+      "nm": 14.2,
+      "fare": 25.0,
+      "rev_per_boat_yr": 176330.0,
+      "margin": 0.58,
+      "payback_years": 5.91,
+      "vessels_10pct": 2
+    },
+    "rn-c28e0cdf10f6": {
+      "corridor": "Divino Port Ghalib Marina -> Sha'ab Samadai reef jetty (Dolphin House)",
+      "nm": 38.7,
+      "fare": 30.0,
+      "rev_per_boat_yr": 93984.0,
+      "margin": 0.2,
+      "payback_years": 32.1,
+      "vessels_10pct": 20
+    }
+  },
+  "map_plates": [
+    {
+      "key": "didi-pv-yelapa",
+      "status": "ok",
+      "file": "deck-studio/assets/didi/city-maps/didi-puerto-vallarta-yelapa-exact-route-map.png",
+      "route_ids_resolved": [
+        {
+          "route_id": "ics-89a8844858",
+          "nm": 14.5,
+          "label": "Puerto Vallarta & Riviera Nayarit → Yelapa",
+          "n_coords": 59
+        }
+      ],
+      "route_ids_missing_skipped": [],
+      "sha256": "8c156002546bb8c3036474c7d101bc879e03d142c91c90d490a2953bb9a838d7",
+      "dimensions": "2048x1156",
+      "bytes": 152958,
+      "basemap": "CartoDB Dark Matter No Labels",
+      "geometry_source": "data-clean/ROUTES.json"
+    },
+    {
+      "key": "didi-cabos-coastal",
+      "status": "ok",
+      "file": "deck-studio/assets/didi/city-maps/didi-cabos-csl-sjc-exact-route-map.png",
+      "route_ids_resolved": [
+        {
+          "route_id": "rn-d206da44c580",
+          "nm": 13.8,
+          "label": "Cabo San Lucas ↔ San José del Cabo (coastal)",
+          "n_coords": 91
+        }
+      ],
+      "route_ids_missing_skipped": [],
+      "sha256": "45043bc8bac2e74383f4f972e5d1b48e882db500670707675836fe875048e0cb",
+      "dimensions": "2048x1156",
+      "bytes": 51969,
+      "basemap": "CartoDB Dark Matter No Labels",
+      "geometry_source": "data-clean/ROUTES.json"
+    },
+    {
+      "key": "indrive-cairo-nile",
+      "status": "ok",
+      "file": "deck-studio/assets/indrive-egypt/city-maps/indrive-cairo-zamalek-maadi-exact-route-map.png",
+      "route_ids_resolved": [
+        {
+          "route_id": "rn-c37df5916b71",
+          "nm": 6.26,
+          "label": "Maadi ↔ Downtown (Nile Taxi)",
+          "n_coords": 46
+        }
+      ],
+      "route_ids_missing_skipped": [],
+      "sha256": "0f690c473c57f95ba25d9a62f0e45ac5ae40a758e6e1cc7ae1bfd70a8babd97e",
+      "dimensions": "2048x1156",
+      "bytes": 365945,
+      "basemap": "CartoDB Dark Matter No Labels",
+      "geometry_source": "data-clean/ROUTES.json"
+    },
+    {
+      "key": "indrive-el-gouna",
+      "status": "ok",
+      "file": "deck-studio/assets/indrive-egypt/city-maps/indrive-el-gouna-exact-route-map.png",
+      "route_ids_resolved": [
+        {
+          "route_id": "rn-bb533d525e01",
+          "nm": 14.2,
+          "label": "Hurghada: Hurghada Marina → Marina El Gouna",
+          "n_coords": 40
+        }
+      ],
+      "route_ids_missing_skipped": [],
+      "sha256": "f2cb93732ba21b53a3f46a457191270f1955da6e93d99b55745d9d70906ad68f",
+      "dimensions": "2048x1156",
+      "bytes": 84339,
+      "basemap": "CartoDB Dark Matter No Labels",
+      "geometry_source": "data-clean/ROUTES.json"
+    },
+    {
+      "key": "indrive-marsa-alam",
+      "status": "ok",
+      "file": "deck-studio/assets/indrive-egypt/city-maps/indrive-marsa-alam-samadai-exact-route-map.png",
+      "route_ids_resolved": [
+        {
+          "route_id": "rn-c28e0cdf10f6",
+          "nm": 38.7,
+          "label": "Marsa Alam & Wadi El Gemal, Egypt: Divino Port Ghalib Marina → Sha'ab Samadai reef jetty (Dolphin House)",
+          "n_coords": 29
+        }
+      ],
+      "route_ids_missing_skipped": [],
+      "sha256": "ee4e3c9069404d27a65d0865b066b95cdd17c3f6ed460cb17ed7a26122712963",
+      "dimensions": "2048x1156",
+      "bytes": 83988,
+      "basemap": "CartoDB Dark Matter No Labels",
+      "geometry_source": "data-clean/ROUTES.json"
+    }
+  ],
+  "fare_flags": {
+    "egypt": "Tasklet-sourced/recommended premium benchmarks — pending formal Jaideep approval",
+    "mexico": "Yelapa $25 / Cabos $30 premium-substitute (aligned MX anchors)"
+  },
+  "live_decks": {
+    "didi-mexico": "1XwKRuJtMrou8NtBdc1oY3LL2Dk83dCs9MCLvNKgwq0c",
+    "indrive-egypt": "1Nn3BRKUahikp87zC84JMdEVrcJYppm9ZXHgndAuzsEk",
+    "slides_apply": "blocked_if_oauth_revoked — assets banked for apply"
+  },
+  "gates": {
+    "four_input": "5/5 PASS after Samadai mint",
+    "vessel": "all ≤70nm → N30 8 pax",
+    "giftun_sharm_preserved": true
+  },
+  "tam_ladders_mid": {
+    "didi-mexico": {
+      "som_floor_m": 30.63,
+      "som_full_m": 150.79,
+      "sam_m": 683.64,
+      "marine_tam_m": 2734.57,
+      "journey_gmv_m": 8203.71,
+      "platform_m": 369.17,
+      "census_g": 4.922
+    },
+    "indrive-egypt": {
+      "som_floor_m": 9.87,
+      "som_full_m": 51.91,
+      "sam_m": 93.43,
+      "marine_tam_m": 170.74,
+      "journey_gmv_m": 512.22,
+      "census_g": 5.258,
+      "note": "no platform rung on inDrive decks"
+    }
+  }
+}

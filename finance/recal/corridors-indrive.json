@@ -846,10 +846,10 @@
       "country": "Egypt",
       "country_slug": "egypt",
       "currency": "EGP",
-      "scope": "five exact canonical Red Sea routes; two luxury-belt routes promoted on labeled destination-pool demand + premium day-trip per-seat fares (Giftun, Ras Mohammed), captive capture; three held pending route-level evidence",
+      "scope": "Red Sea luxury-belt + Nile + El Gouna + Marsa Alam expansion 2026-07-23",
       "archetype": "ridehail",
       "capture_rate": 0.9,
-      "fleet_basis": "two luxury-belt captive routes on labeled destination-pool demand at ~90% floor capture; three held",
+      "fleet_basis": "grounded corridors with sourced demand+fare; holds remain held",
       "_tier": "geometry_exact; two routes economics-promoted on labeled pool with captive capture; three held",
       "corridors": [
         {
@@ -957,10 +957,172 @@
             "corridor_annual_oneway_pax": null,
             "comparable_fare_usd_pax": null
           }
+        },
+        {
+          "from": "Cairo — Zamalek",
+          "to": "Cairo — Maadi Corniche",
+          "distance_nm": 6.26,
+          "vessel": "Pioneer II",
+          "route_id": "rn-c37df5916b71",
+          "country": "Egypt",
+          "from_node_id": "cairo-egypt",
+          "to_node_id": "cairo-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-cairo-zamalek",
+            "to": "bp-cairo-maadi"
+          },
+          "archetype": "commuter",
+          "service_status": "current_nile_taxi",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "mx-eg-city-expansion-2026-07-23",
+          "captive": false,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 180000,
+            "comparable_fare_usd_pax": 20.0,
+            "pool_basis": "gross",
+            "demand_confidence": "high",
+            "_demand_record": {
+              "value": 180000,
+              "unit": "riders/year on Zamalek–Maadi Nile Taxi",
+              "year": 2025,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Nile Taxi NTS (~180k clients/yr, 10 boats)",
+              "method": "Existing paid Nile commuter demand on this exact corridor."
+            },
+            "_fare_record": {
+              "value": 20.0,
+              "unit": "USD/pax/one-way premium-substitute",
+              "year": 2026,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "bookaway Zamalek→Maadi ~US$21; Tasklet premium $20",
+              "method": "Grounded on operating Nile Taxi fare market."
+            }
+          },
+          "_demand_basis": "Nile Taxi operates Zamalek–Maadi today (~180k riders/yr).",
+          "_fare_basis": "Tasklet-sourced premium $20 (≈ operating market US$21).",
+          "_fare_approval": "tasklet_recommended_pending_jaideep"
+        },
+        {
+          "from": "Hurghada Marina",
+          "to": "Marina El Gouna",
+          "distance_nm": 14.2,
+          "vessel": "Pioneer II",
+          "route_id": "rn-bb533d525e01",
+          "country": "Egypt",
+          "from_node_id": "redsea-egypt",
+          "to_node_id": "redsea-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-33e0fab89d",
+            "to": "bp-fb14b3dfe2"
+          },
+          "archetype": "tourism",
+          "service_status": "premium_intercity_speedboat_market",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "mx-eg-city-expansion-2026-07-23",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 150000,
+            "comparable_fare_usd_pax": 25.0,
+            "pool_basis": "gross",
+            "demand_confidence": "med",
+            "_demand_record": {
+              "value": 150000,
+              "unit": "gross one-way/year (conservative marina-link share)",
+              "year": 2025,
+              "source_tier": "T2",
+              "confidence": "medium",
+              "source": "El Gouna >1M visitors/yr + 25k residents (Orascom)",
+              "method": "Conservative water-transfer share of El Gouna visitor+resident base on Marina El Gouna↔Hurghada Marina."
+            },
+            "_fare_record": {
+              "value": 25.0,
+              "unit": "USD/pax/one-way premium-substitute",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "shared speedboat €10–25 / private €75+; Tasklet $25 premium seat",
+              "method": "Premium Red Sea intercity seat benchmark."
+            }
+          },
+          "_demand_basis": "Conservative share of El Gouna >1M visitors + 25k residents.",
+          "_fare_basis": "Tasklet-sourced premium $25/seat OW.",
+          "_fare_approval": "tasklet_recommended_pending_jaideep"
+        },
+        {
+          "from": "Divino Port Ghalib Marina",
+          "to": "Sha'ab Samadai reef jetty (Dolphin House)",
+          "distance_nm": 38.7,
+          "vessel": "Pioneer II",
+          "route_id": "rn-c28e0cdf10f6",
+          "country": "Egypt",
+          "from_node_id": "marsa-alam-wadi-el-gemal-egypt",
+          "to_node_id": "marsa-alam-wadi-el-gemal-egypt",
+          "endpoint_boarding_points": {
+            "from": "bp-e731545712",
+            "to": "bp-samadai-reef-jetty"
+          },
+          "archetype": "tourism",
+          "service_status": "managed_reef_excursion",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "mx-eg-city-expansion-2026-07-23",
+          "captive": true,
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 73000,
+            "comparable_fare_usd_pax": 30.0,
+            "pool_basis": "gross",
+            "demand_confidence": "med",
+            "_demand_record": {
+              "value": 73000,
+              "unit": "gross one-way/year",
+              "year": 2025,
+              "source_tier": "T2",
+              "confidence": "medium",
+              "source": "HEPCA Samadai ~200/day cap; Marsa Alam airport ~1.09M pax",
+              "method": "Managed reef program ~200 visitors/day × 365 as outbound one-ways (conservative vs historic 500–800/day)."
+            },
+            "_fare_record": {
+              "value": 30.0,
+              "unit": "USD/pax/one-way premium-substitute",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "reef day-trip €70–165 market; Tasklet $30 premium seat OW",
+              "method": "Conservative premium seat within full-day excursion market."
+            }
+          },
+          "_demand_basis": "Samadai managed reef ~200/day → ~73k one-ways/yr.",
+          "_fare_basis": "Tasklet-sourced premium $30/seat OW.",
+          "_fare_approval": "tasklet_recommended_pending_jaideep",
+          "_capture_basis": "Managed boat-only reef access — captive floor.",
+          "_mint": {
+            "route_id": "rn-c28e0cdf10f6",
+            "distance_nm": 38.7,
+            "land_km_interior": 3.03134802630843,
+            "from_bp": "bp-e731545712",
+            "to_bp": "bp-samadai-reef-jetty",
+            "status": "minted",
+            "straight_nm": 38.12
+          }
         }
       ],
       "captive": true,
       "_capture_basis": "Captive treatment (LB-254): Giftun Island and Ras Mohammed reef are reachable only by boat, so the marine visitor pool is the addressable base at ~90% floor capture. Headroom is induced demand + more destinations, not a capture-share expansion. TAM ladder anchors on transport_spend_pool_yr; do NOT recover the pool by floor/0.10. Approved by Jaideep 2026-07-14."
+    }
+  },
+  "_mx_eg_city_expansion_2026_07_23": {
+    "at": "2026-07-23T04:59:34.103944+00:00",
+    "samadai": {
+      "route_id": "rn-c28e0cdf10f6",
+      "distance_nm": 38.7,
+      "land_km_interior": 3.03134802630843,
+      "from_bp": "bp-e731545712",
+      "to_bp": "bp-samadai-reef-jetty",
+      "status": "minted",
+      "straight_nm": 38.12
     }
   }
 }
