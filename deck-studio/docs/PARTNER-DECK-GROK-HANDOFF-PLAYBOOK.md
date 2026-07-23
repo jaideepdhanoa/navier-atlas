@@ -37,7 +37,7 @@ Pick the archetype **before** building the edit plan — it sets the route rule,
    - attach a `qa.leak_denylist` and `qa.expected_object_ids` for Grok's gates.
 6. Add batch queue/status/prompt files under `handoff/partner-map-model/{batch}/`.
 7. Validate all Deck Studio JSON schemas.
-8. Tell Grok: copy gold deck → assert object-id baseline (drift gate) → apply `deck.editplan.json` via Slides API batchUpdate verbatim → run the twelve QA gates (six mechanical + six copy/tone/completeness) → return a receipt with deck id, op count, leak/style/budget/image/hedge/jargon/notes/spine/econ/link scan results, and slide thumbnails.
+8. Tell Grok: copy gold deck → assert object-id baseline (drift gate) → apply `deck.editplan.json` via Slides API batchUpdate verbatim → run the thirteen QA gates (six mechanical + seven copy/tone/completeness) → return a receipt with deck id, op count, leak/style/budget/image/hedge/jargon/notes/spine/econ/link/image-completeness scan results, and slide thumbnails.
 
 ## Non-negotiables
 
@@ -62,6 +62,7 @@ These are the failures the six mechanical gates do not catch. The deck is a **co
 - **Econ slides are the 3-column table** — **Revenue build · Annual run cost · The result** — every line item tying to the economics sidecar. Never a thin bullet list. A longer-range / sub-30%-margin corridor is titled and framed **honestly** ("a longer-range corridor"); never claim "self-funding" on a 25-plus-year payback.
 - **Atlas link resolves to this deck's own `/{partner}/{country}`** — never the gold's path (the Mexico deck shipped pointing at `/didi/brazil`).
 - **Placeholder cities are de-hedged, not economics-faked.** Until the four-input gate clears (**route ID · distance · fare · anchored demand**), a market slide uses confident "corridors mapped, sourcing underway" copy and carries **no** econ card. Once all four clear, it graduates to a full sourced city slide **and** its own "WHAT ONE BOAT EARNS" card, and the country ladder is re-rolled to include it.
+- **Every background role is declared and deck/city-specific — no template-inherited images.** The deck's `image-manifest.json` must enumerate **all** background roles (not just cover + Atlas slots) bound to live object ids, and `slide-image-bindings.json` **must exist** (its absence is what let backgrounds drift). `partner_roles_bg` / `tam_bg` / `value_prop_bg` / `close_bg` are **one composite per deck**; `econ_market_bg` is **one per city** (city-keyed, reusable). A deck is not render-complete if any background role is undeclared, the bindings file is missing, two city econ slides share one plate, or any background still resolves to the gold/template chassis or a sibling deck's asset. Per `IMAGE-ROLE-CONTRACT.md`; unresolved image roles stay `needs_generation`/`needs_sourcing`, never a borrowed plate.
 
 ## QA gates Grok must pass (returned in the receipt)
 
@@ -77,3 +78,4 @@ These are the failures the six mechanical gates do not catch. The deck is a **co
 10. Spine-completeness — Three C's, Partner Proposal, the ① / ② / ③ Ask, and the close are all present; prize ladder carries all **five** tiers incl. Platform revenue.
 11. Econ-format — every unit-econ slide is the 3-column table (Revenue build · Annual run cost · The result) with line items tying to the sidecar; no thin bullet variant; no "self-funding" claim on a 25-plus-year payback.
 12. Atlas-link — resolves to this deck's own `/{partner}/{country}`, not the gold's.
+13. Image-completeness — `image-manifest.json` declares every background role bound to a live object id, `slide-image-bindings.json` exists, no per-deck background (`partner_roles_bg`/`tam_bg`/`value_prop_bg`/`close_bg`) or per-city `econ_market_bg` is shared across two slides, and no background resolves to the gold/template chassis or a sibling deck's asset.
