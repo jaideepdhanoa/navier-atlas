@@ -235,10 +235,25 @@ def main():
                 is_dup = c.get("_dup_of") is not None or (key in seen_labels and seen_labels[key] != mid)
                 seen_labels.setdefault(key, mid)
             nm = c["distance_nm"]
-            vk = vessel_for(nm)
+            # LB-268 (Jaideep 2026-07-28): a corridor may explicitly opt in to a specific hull via
+            # "vessel_key" (e.g. "n45" for US/EU premium dense corridors). Fail closed: the key must
+            # exist in vessel-constants, be commercial_now, and cover the distance — else fall through
+            # to the default range gate. Default behavior (no vessel_key) is unchanged.
+            vk_explicit = c.get("vessel_key")
+            if vk_explicit:
+                _vdef = const["vessels"].get(vk_explicit)
+                _vstat = _vdef.get("status") if _vdef else None
+                _vrange = _vdef.get("range_nm") if _vdef else None
+                _vrange = _vrange["value"] if isinstance(_vrange, dict) else _vrange
+                if _vdef and _vstat == "commercial_now" and _vrange is not None and nm <= _vrange:
+                    vk = vk_explicit
+                else:
+                    vk = vessel_for(nm)
+            else:
+                vk = vessel_for(nm)
             ec = enrich(c, mid, mk)
             # --- RANGE GATE: corridors beyond Pioneer II range need roadmap Quanta-LR ---
-            if vk != "pioneer_ii":
+            if vk not in ("pioneer_ii",) and not (vk_explicit and vk == vk_explicit):
                 roadmap.append({"market": mid, "corridor": f"{c['from']} -> {c['to']}",
                                 "nm": nm, "fare": (ec.get("L3_locals") or {}).get("comparable_fare_usd_pax"),
                                 "country": ec.get("_opex_country"), "vessel": "Quanta-LR (roadmap 2026+)"})

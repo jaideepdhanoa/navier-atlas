@@ -1920,6 +1920,37 @@
       },
       "_added_at": "2026-07-11T16:57:42Z",
       "_added_by": "grok/country-opex-holds-2026-07-11"
+    },
+    "United States": {
+      "captain_usd_yr": {
+        "value": 203000,
+        "source_tier": "T2",
+        "confidence": "med",
+        "source": "BLS OEWS May-2023: 53-5021 Captains/Mates/Pilots mean annual NY-Newark-Jersey City $102,500, Boston-Cambridge-Nashua $69,240; 53-5011 Sailors/Marine Oilers NY $65,510, Boston $43,030 (bls.gov/oes/2023/may/oes_35620.htm, oes_71650.htm). Formula: 1 captain + 1 deckhand, 50/50 NY/Boston market blend = wages $140,140/vessel/yr x 1.4521 BLS ECEC benefits load (private transportation/material-moving: total comp $35.81/hr vs wages $24.66/hr, Mar-2026 release) = $203,497 -> anchored $203,000. Highest-wage market in the reference (US Northeast unionized marine labor). Evidence: COST-POLICY-CENSUS.md + COST-GAPFILL-PASS2.md."
+      },
+      "energy_usd_kwh": {
+        "value": 0.21,
+        "source_tier": "T1",
+        "confidence": "med-high",
+        "source": "Con Edison small-business TOU observed Jul-2026: off-peak energy $0.0199/kWh + delivery $0.2038 (summer) / $0.1719 (other) per kWh + $34/mo customer charge (coned.com time-of-use). Overnight off-peak charging basis: 0.0199 + blended delivery ~0.19 = ~$0.21/kWh EXCLUDING demand charges (marina tariff class/demand charges unquoted - flagged). Eversource MA commercial tariff not verified this pass; Con Ed basis applied as the conservative Northeast anchor. Evidence: COST-POLICY-CENSUS.md S9/S10."
+      },
+      "grid_co2_kg_kwh": {
+        "value": 0.32,
+        "source_tier": "T1",
+        "confidence": "high",
+        "source": "EPA eGRID 2023 subregion total output CO2 rates: NYCW (NYC/Westchester) 864.469 lb/MWh = 0.392 kg/kWh; NEWE (New England) 539.275 lb/MWh = 0.245 kg/kWh (epa.gov/egrid summary data). Fleet-weighted 50/50 NY/New England blend = 0.318 -> anchored 0.32. Upstate NY (NYUP 242 lb/MWh) not used - fleet charges downstate. Evidence: COST-GAPFILL-PASS2.md."
+      },
+      "marina_overhead_usd_yr": {
+        "value": 36000,
+        "source_tier": "T5",
+        "confidence": "low",
+        "source": "FLAGGED ESTIMATE - Jaideep-approved flagged estimate line 2026-07-27 pending written commercial berth quotes (dockage tariffs fail-closed across NYC/Boston premium facilities). Published bounds: Town of Barnstable 2026 rate card (T1 municipal) 30-ft commercial $1.75/ft/day May-Oct + $8/ft/mo Nov-Apr = $11,100/yr floor; Nantucket Boat Basin published high-season transient $12.00-13.25/ft/night = $34,440-38,028 for 82 nights (seasonal only). NYC/Boston premium commercial berth + insurance + admin modeled $36,000/vessel/yr between these bounds; above UAE $22k - US Northeast is the most expensive berth market in the reference. Replace with quotes before any operating commitment. Evidence: COST-GAPFILL-PASS2.md."
+      },
+      "cost_index": {
+        "value": 1.95,
+        "confidence": "med-low",
+        "source": "Relative to Singapore=1.00. R7 two-sided: crew ~4.2x SG nominal (blended loaded crew $203k vs SG $48k captain-anchor - basis mismatch noted, SG row is captain-lean); commercial electricity ~1.0x SG ($0.21 vs $0.21); World Bank 2025 US price level ~1.5x SG. Wage-dominant blend (50% crew / 25% energy / 25% price level) = 1.95. Highest cost index in the reference - US Northeast is the most expensive operating environment modeled. T3 modeled; evidence: COST-GAPFILL-PASS2.md section 4."
+      }
     }
   },
   "_abc_islands_additions_at": "2026-06-24T04:06:43Z",
@@ -1954,5 +1985,6 @@
   "_didi_mexico_t3_at": "2026-07-09",
   "_didi_mexico_t3_evidence": "handoff/didi-ex-china/mexico/DIDI-MEXICO-T3-FINANCE-EVIDENCE-2026-07-09.json",
   "_country_opex_holds_pass_at": "2026-07-11T16:57:42Z",
-  "_country_opex_holds_pass_note": "Added Costa Rica, Argentina, Namibia, Cameroon, Congo (Brazzaville). Venezuela deferred (no current WB cost_index). Caribbean USVI→BVI home-port still unverified."
+  "_country_opex_holds_pass_note": "Added Costa Rica, Argentina, Namibia, Cameroon, Congo (Brazzaville). Venezuela deferred (no current WB cost_index). Caribbean USVI→BVI home-port still unverified.",
+  "_usa_northeast_additions_at": "2026-07-28 Northeast USA program Phase 2 (anchors approved by Jaideep 2026-07-27)"
 }

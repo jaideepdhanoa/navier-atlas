@@ -1,5 +1,5 @@
 {
- "_doc": "L1 GLOBAL vessel constants. Source of truth for the financial atom. Every value carries provenance. Do NOT put localized opex here (captain wage, energy $/kWh, marina fee) — those live in L3 market locals.",
+ "_doc": "L1 GLOBAL vessel constants. Source of truth for the financial atom. Every value carries provenance. Do NOT put localized opex here (captain wage, energy $/kWh, marina fee) \u2014 those live in L3 market locals.",
  "_version": "v0.1",
  "_as_of": "2026-06-21",
  "vessels": {
@@ -85,29 +85,100 @@
     "source": "Navier locked spec",
     "confidence": "high"
    }
+  },
+  "n45": {
+   "label": "N45",
+   "status": "commercial_now",
+   "_note": "20-pax hybrid (hybrid from day 1). Added for US/EU premium dense corridors per Jaideep directive 2026-07-28 (Northeast USA program). Locked: pax=20 (Jaideep permanent rule), capex=$2.5M US/EU premium markets, cruise 20kn, range 70nm (Jaideep: same speed/range as N30). Energy & maintenance are LABELLED T3 scaling assumptions pending Navier locked N45 spec \u2014 do not treat as measured.",
+   "range_nm": {
+    "value": 70,
+    "unit": "nm",
+    "source_tier": "T1",
+    "source": "Jaideep directive 2026-07-28 (Northeast USA program): same range as N30",
+    "confidence": "high"
+   },
+   "cruise_speed_kt": {
+    "value": 20,
+    "unit": "kt",
+    "source_tier": "T1",
+    "source": "Jaideep directive 2026-07-28 (Northeast USA program): same 20kn cruise",
+    "confidence": "high"
+   },
+   "top_speed_kt": {
+    "value": 30,
+    "unit": "kt",
+    "source_tier": "T3",
+    "source": "assumed same as N30 pending locked spec",
+    "confidence": "low"
+   },
+   "pax_capacity": {
+    "value": 20,
+    "unit": "pax",
+    "source_tier": "T1",
+    "source": "Navier locked: N45 = 20 passengers (Jaideep permanent rule 2026-07-21)",
+    "confidence": "high"
+   },
+   "capex_usd": {
+    "value": 2500000,
+    "unit": "USD",
+    "source_tier": "T1",
+    "source": "Jaideep directive 2026-07-28 (Northeast USA program): $2.5M for US/EU premium markets",
+    "confidence": "high",
+    "notes": "US/EU premium-market price. Non-US/EU N45 pricing NOT set \u2014 corridors outside US/EU must carry an explicit capex_usd_override or fail closed."
+   },
+   "battery_kwh": {
+    "value": 285,
+    "unit": "kWh",
+    "source_tier": "T3",
+    "source": "MODELLED: N30 energy-per-nm (114kWh/70nm) scaled by pax ratio 20/8=2.5x -> 4.07 kWh/nm equivalent. Hybrid day-1; modelled as grid-electric equivalent",
+    "confidence": "low",
+    "notes": "Placeholder for energy-cost math only (atom uses battery/range = kWh/nm). Replace with locked N45 spec."
+   },
+   "annual_maintenance_usd": {
+    "value": 25000,
+    "unit": "USD/yr",
+    "source_tier": "T3",
+    "source": "MODELLED: N30 $10K scaled by pax ratio 2.5x; hybrid powertrain likely raises this",
+    "confidence": "low"
+   },
+   "depreciation_years": {
+    "value": 20,
+    "unit": "yr",
+    "source_tier": "T2",
+    "source": "same commercial marine convention as N30 (Jaideep locked 2026-06-07)",
+    "confidence": "med"
+   },
+   "diesel_comparable_nm_per_gal": {
+    "value": 1.0,
+    "unit": "nm/gal",
+    "source_tier": "T3",
+    "source": "MODELLED: N30 diesel comparable (1.5 nm/gal) scaled for a 20-pax class diesel ferry; conservative",
+    "confidence": "low",
+    "notes": "Carbon/cost-savings comparison only; replace with locked comparable."
+   }
   }
  },
  "operating_defaults": {
   "_doc": "GLOBAL operating defaults (segment-driven). Overridable per market in L3.",
   "_utilization_scenarios": {
-   "_doc": "Headline = MID. Thin/Full are the sensitivity bookends we always show as a band (Jaideep 2026-06-06: report a band, not a single number). weather_uptime_factor stays per-market on top of these. Recalibrated 2026-06-21 (Jaideep): 15 tpd all scenarios; rev-leg thin .55, mid(HEADLINE) .65, full .75 — load factor is the primary sensitivity axis.",
+   "_doc": "Headline = MID. Thin/Full are the sensitivity bookends we always show as a band (Jaideep 2026-06-06: report a band, not a single number). weather_uptime_factor stays per-market on top of these. Recalibrated 2026-06-21 (Jaideep): 15 tpd all scenarios; rev-leg thin .55, mid(HEADLINE) .65, full .75 \u2014 load factor is the primary sensitivity axis.",
    "thin": {
     "load_factor": 0.45,
     "revenue_leg_factor": 0.55,
     "max_trips_per_day": 15,
-    "note": "thin/one-way/seasonal corridor — conservative floor"
+    "note": "thin/one-way/seasonal corridor \u2014 conservative floor"
    },
    "mid": {
     "load_factor": 0.55,
     "revenue_leg_factor": 0.65,
     "max_trips_per_day": 15,
-    "note": "HEADLINE — realistic busy two-way corridor"
+    "note": "HEADLINE \u2014 realistic busy two-way corridor"
    },
    "full": {
     "load_factor": 0.7,
     "revenue_leg_factor": 0.75,
     "max_trips_per_day": 15,
-    "note": "mature/dense corridor — optimistic ceiling"
+    "note": "mature/dense corridor \u2014 optimistic ceiling"
    }
   },
   "load_factor_default": {
@@ -151,7 +222,7 @@
    "ridehail": {
     "value": 1.0,
     "confidence": "high",
-    "notes": "Market parity — better product, not cheaper."
+    "notes": "Market parity \u2014 better product, not cheaper."
    },
    "commute": {
     "value": 1.0,
@@ -212,7 +283,7 @@
   "max_trips_per_day": {
    "value": 15,
    "source_tier": "T3",
-   "source": "Cap on revenue sailings/day — 15 across thin/mid/full scenarios (Jaideep 2026-06-21).",
+   "source": "Cap on revenue sailings/day \u2014 15 across thin/mid/full scenarios (Jaideep 2026-06-21).",
    "confidence": "med"
   },
   "max_trips_per_day_by_archetype": {
@@ -231,7 +302,7 @@
     "value": 6.0,
     "unit": "USD/pax/one-way",
     "source_tier": "T3",
-    "source": "Empirical break in the sourced fare distribution: genuine premium scheduled fast-ferry/hydrofoil per-seat fares bottom out ~$7-11; everything at/below ~$6 (Cairo $0.2, Abidjan $0.9-1.2, Lisbon commuter $1.6-3.4, Helsinki $3.6, Istanbul Eminönü-Üsküdar $2.5) is a subsidized public-transit floor.",
+    "source": "Empirical break in the sourced fare distribution: genuine premium scheduled fast-ferry/hydrofoil per-seat fares bottom out ~$7-11; everything at/below ~$6 (Cairo $0.2, Abidjan $0.9-1.2, Lisbon commuter $1.6-3.4, Helsinki $3.6, Istanbul Emin\u00f6n\u00fc-\u00dcsk\u00fcdar $2.5) is a subsidized public-transit floor.",
     "confidence": "med"
    },
    "premium_ondemand_floor": {

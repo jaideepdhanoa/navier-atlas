@@ -1,0 +1,97 @@
+{
+ "partner": "uber",
+ "country_scope": "United States",
+ "at": "2026-07-28T14:43:19.532686+00:00",
+ "status": "ok",
+ "mode": "census",
+ "methodology": {
+  "formula": "g = 1 + (N_greenfield / N_sourced) * alpha_density",
+  "max_nm": 70.0,
+  "alpha_density": {
+   "low": 0.25,
+   "mid": 0.4,
+   "high": 0.55
+  },
+  "sourced_definition": "grounded non-dup agg rows with route_id",
+  "greenfield_definition": "atlas ROUTES in partner geography, undirected-unique, \u2264max_nm, not in sourced route_id/endpoint set",
+  "replaces": "growth-config Grab default n_sourced=35 n_greenfield=341 \u2192 4.9 mid"
+ },
+ "n_sourced": 2,
+ "n_greenfield_headline": 37,
+ "n_atlas_in_geography": 79,
+ "n_skipped_over_nm": 0,
+ "n_skipped_already_sourced": 1,
+ "n_skipped_edge_class": 41,
+ "n_partner_cities": 3,
+ "n_partner_clusters": 1,
+ "count_ratio": 18.5,
+ "ratio_effective": 11.02,
+ "tail_softened": true,
+ "alpha_density": {
+  "low": 0.25,
+  "mid": 0.4,
+  "high": 0.55
+ },
+ "derived_greenfield_factor": {
+  "headline_tier1_plus_tier2": {
+   "low": 3.755,
+   "mid": 5.408,
+   "high": 7.061
+  }
+ },
+ "sourced_route_ids_sample": [
+  "ics-c7c6e76d27",
+  "rn-0e2b916d3b8d"
+ ],
+ "greenfield_route_ids_sample": [
+  "ics-0eb7b6593b",
+  "ics-3768445940",
+  "ics-411ccfe7ad",
+  "ics-5556bb7b2e",
+  "ics-5a2b98675d",
+  "ics-5d44acda8c",
+  "ics-9e6f92bb08",
+  "ics-a20a0ff9ca",
+  "ics-af5c3025d1",
+  "ics-b2b4435ce6",
+  "ics-bc60048ac8",
+  "ics-c239910b5b",
+  "ics-d14c2be8fb",
+  "ics-ea9fd24802",
+  "ics-fbad25a92b",
+  "e__boston-new-england-usa__hyannis-terminal__nantucket-steamship-wharf",
+  "e__boston-new-england-usa__hyannis-terminal__oak-bluffs-martha-s-vineyard",
+  "ics-f54bb93712",
+  "ics-83665b6587",
+  "ics-db85a99a00",
+  "ics-e2862233fd",
+  "ics-8c51b96507",
+  "ics-4871828625",
+  "ics-7cfde003dc",
+  "ics-9325e51551",
+  "ics-4ccb6c0110",
+  "ics-0f22989283",
+  "ics-88575f5a12",
+  "ics-01526397cc",
+  "ics-386fbbf122",
+  "ics-3b05a4e262",
+  "ics-4df4cecf34",
+  "ics-a5f00760b1",
+  "ics-d5de69a39d",
+  "ics-dae71e1b16",
+  "ics-db90a41958",
+  "ics-e6600f77e9"
+ ],
+ "note": "ID-based census: grounded agg route_ids = sourced; atlas ROUTES in partner cities/clusters within 70.0 nm, excluding sourced pairs = greenfield.",
+ "agg_path": "../recal/agg-uber-usa.json",
+ "_junk_quarantine": {
+  "terms": [
+   "harbor freight",
+   "harbor house rehab",
+   "safe harbour insurance",
+   "safe harbor insurance",
+   "classic harbor line"
+  ],
+  "note": "ICS geocoding-junk endpoints (Harbor Freight, Harbor House Rehab, Safe Harbour Insurance, Classic Harbor Line) excluded from census pool per Jaideep 2026-07-28; flagged for Phase-1 cleanup."
+ }
+}
