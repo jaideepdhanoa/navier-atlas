@@ -243,7 +243,15 @@ async function main() {
     viewports.push({ label: 'mobile', size: { width: 390, height: 844 } });
   }
 
-  const browser = await chromium.launch({ headless: true });
+  // Prefer bundled Playwright Chromium; fall back to system Chrome when browsers
+  // aren't installed (CDN install can hang/timeout on restricted networks).
+  let browser;
+  try {
+    browser = await chromium.launch({ headless: true });
+  } catch (launchErr) {
+    console.warn('[qa] bundled Chromium missing — falling back to channel: chrome', launchErr?.message || launchErr);
+    browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  }
   const results = [];
   try {
     for (const target of targets) {
