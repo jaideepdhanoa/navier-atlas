@@ -1,51 +1,191 @@
 {
   "package": "proposal-fidelity-audit",
-  "checked_at": "2026-07-09T06:19:18.583048+00:00",
+  "checked_at": "2026-07-28T21:13:23.448651+00:00",
   "partners": [
     {
-      "partner": "helsinki-hsl",
-      "verdict": "PASS",
-      "layout": "network",
-      "hub": false,
-      "checked_at": "2026-07-09T06:19:18Z",
+      "partner": "blade",
+      "verdict": "PASS_WITH_FLAGS",
+      "layout": "hub",
+      "hub": true,
+      "checked_at": "2026-07-28T21:13:23Z",
       "counts": {
-        "items": 3,
-        "keep": 3,
+        "items": 12,
+        "keep": 4,
         "drop": 0,
-        "defer": 0,
-        "trim": 0,
+        "defer": 2,
+        "trim": 6,
         "bp_errors": 0
       },
       "journey_bp_errors": 0,
-      "geometry_gate_errors": 0,
+      "geometry_gate_errors": 6,
       "placeholder_gate_errors": 0,
-      "items": 3
+      "items": 12
     }
   ],
   "detail_by_partner": {
-    "helsinki-hsl": {
-      "partner": "helsinki-hsl",
-      "verdict": "PASS",
-      "layout": "network",
-      "hub": false,
-      "checked_at": "2026-07-09T06:19:18Z",
+    "blade": {
+      "partner": "blade",
+      "verdict": "PASS_WITH_FLAGS",
+      "layout": "hub",
+      "hub": true,
+      "checked_at": "2026-07-28T21:13:23Z",
       "counts": {
-        "items": 3,
-        "keep": 3,
+        "items": 12,
+        "keep": 4,
         "drop": 0,
-        "defer": 0,
-        "trim": 0,
+        "defer": 2,
+        "trim": 6,
         "bp_errors": 0
       },
       "items": [
         {
           "surface": "journey",
           "phase": null,
-          "corridor": "Helsinki Market Square (Kauppatori) → Kruunuvuorenranta (Laajasalo)",
-          "route_id": "rn-4ab75813e3cc",
-          "route_endpoints": "Helsinki Market Square (Kauppatori) → Kruunuvuorenranta (Laajasalo)",
-          "distance_card_nm": 2.3,
-          "distance_route_nm": 2.3,
+          "corridor": "East 34th Street (Manhattan) → LGA Marine Air Terminal (Bowery Bay)",
+          "route_id": "rn-0e2b916d3b8d",
+          "route_endpoints": "East 34th Street (Manhattan) → LGA Marine Air Terminal (Bowery Bay)",
+          "distance_card_nm": 5.9,
+          "distance_route_nm": 5.9,
+          "flags": [],
+          "errors": 0,
+          "warnings": 0,
+          "recommendation": "KEEP"
+        },
+        {
+          "surface": "journey",
+          "phase": null,
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Paulus Hook (Jersey City)",
+          "route_id": "ics-bdacfbafa1",
+          "route_endpoints": "Pier 11 / Wall Street → Paulus Hook (Jersey City)",
+          "distance_card_nm": 2.0,
+          "distance_route_nm": 1.41,
+          "flags": [
+            {
+              "check": "distance_honesty",
+              "severity": "warn",
+              "detail": "card 2.0nm vs route 1.41nm (42% delta)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "journey",
+          "phase": null,
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Long Wharf (Sag Harbor Village Dock)",
+          "route_id": "rn-e2c8f0d3fe0d",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Long Wharf (Sag Harbor Village Dock)",
+          "distance_card_nm": 100.9,
+          "distance_route_nm": 101.2,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=3.42 (threshold 0.4)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "journey",
+          "phase": null,
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Viking Fleet Dock — Montauk Harbor",
+          "route_id": "rn-1119113a9806",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Viking Fleet Dock — Montauk Harbor",
+          "distance_card_nm": 104.4,
+          "distance_route_nm": 104.7,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=2.88 (threshold 0.4)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "journey",
+          "phase": "market:usa-ny-harbor",
+          "corridor": "East 34th Street (Manhattan) → LGA Marine Air Terminal (Bowery Bay)",
+          "route_id": "rn-0e2b916d3b8d",
+          "route_endpoints": "East 34th Street (Manhattan) → LGA Marine Air Terminal (Bowery Bay)",
+          "distance_card_nm": 5.9,
+          "distance_route_nm": 5.9,
+          "flags": [],
+          "errors": 0,
+          "warnings": 0,
+          "recommendation": "KEEP"
+        },
+        {
+          "surface": "journey",
+          "phase": "market:usa-ny-harbor",
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Paulus Hook (Jersey City)",
+          "route_id": "ics-bdacfbafa1",
+          "route_endpoints": "Pier 11 / Wall Street → Paulus Hook (Jersey City)",
+          "distance_card_nm": 2.0,
+          "distance_route_nm": 1.41,
+          "flags": [
+            {
+              "check": "distance_honesty",
+              "severity": "warn",
+              "detail": "card 2.0nm vs route 1.41nm (42% delta)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "journey",
+          "phase": "market:usa-ny-harbor",
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Long Wharf (Sag Harbor Village Dock)",
+          "route_id": "rn-e2c8f0d3fe0d",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Long Wharf (Sag Harbor Village Dock)",
+          "distance_card_nm": 100.9,
+          "distance_route_nm": 101.2,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=3.42 (threshold 0.4)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "journey",
+          "phase": "market:usa-ny-harbor",
+          "corridor": "Wall Street / Pier 11 (Manhattan) → Viking Fleet Dock — Montauk Harbor",
+          "route_id": "rn-1119113a9806",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Viking Fleet Dock — Montauk Harbor",
+          "distance_card_nm": 104.4,
+          "distance_route_nm": 104.7,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=2.88 (threshold 0.4)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "TRIM"
+        },
+        {
+          "surface": "featured",
+          "phase": "usa-ny-harbor/p1",
+          "corridor": "East 34th Street → LGA Marine Air Terminal",
+          "route_id": "rn-0e2b916d3b8d",
+          "route_endpoints": "East 34th Street (Manhattan) → LGA Marine Air Terminal (Bowery Bay)",
+          "distance_card_nm": null,
+          "distance_route_nm": 5.9,
           "flags": [],
           "errors": 0,
           "warnings": 0,
@@ -53,12 +193,12 @@
         },
         {
           "surface": "featured",
-          "phase": 1,
-          "corridor": "Helsinki Market Square (Kauppatori) → Kruunuvuorenranta (Laajasalo)",
-          "route_id": "rn-4ab75813e3cc",
-          "route_endpoints": "Helsinki Market Square (Kauppatori) → Kruunuvuorenranta (Laajasalo)",
-          "distance_card_nm": 2.3,
-          "distance_route_nm": 2.3,
+          "phase": "usa-ny-harbor/p1",
+          "corridor": "Pier 11 → Paulus Hook",
+          "route_id": "ics-bdacfbafa1",
+          "route_endpoints": "Pier 11 / Wall Street → Paulus Hook (Jersey City)",
+          "distance_card_nm": null,
+          "distance_route_nm": 1.41,
           "flags": [],
           "errors": 0,
           "warnings": 0,
@@ -66,20 +206,45 @@
         },
         {
           "surface": "featured",
-          "phase": 2,
-          "corridor": "Helsinki Market Square (Kauppatori) → Lonna Island Pier",
-          "route_id": "rn-312e87d88d71",
-          "route_endpoints": "Helsinki Market Square (Kauppatori) → Lonna Island Pier",
-          "distance_card_nm": 1.5,
-          "distance_route_nm": 1.5,
-          "flags": [],
+          "phase": "usa-ny-harbor/p2",
+          "corridor": "Pier 11 → Sag Harbor",
+          "route_id": "rn-e2c8f0d3fe0d",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Long Wharf (Sag Harbor Village Dock)",
+          "distance_card_nm": null,
+          "distance_route_nm": 101.2,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=3.42 (threshold 0.4)"
+            }
+          ],
           "errors": 0,
-          "warnings": 0,
-          "recommendation": "KEEP"
+          "warnings": 1,
+          "recommendation": "DEFER"
+        },
+        {
+          "surface": "featured",
+          "phase": "usa-ny-harbor/p2",
+          "corridor": "Pier 11 → Montauk",
+          "route_id": "rn-1119113a9806",
+          "route_endpoints": "Wall Street / Pier 11 (Manhattan) → Viking Fleet Dock — Montauk Harbor",
+          "distance_card_nm": null,
+          "distance_route_nm": 104.7,
+          "flags": [
+            {
+              "check": "geometry_preview",
+              "severity": "warn",
+              "detail": "interior_land_km=2.88 (threshold 0.4)"
+            }
+          ],
+          "errors": 0,
+          "warnings": 1,
+          "recommendation": "DEFER"
         }
       ],
       "journey_bp_errors": 0,
-      "geometry_gate_errors": 0,
+      "geometry_gate_errors": 6,
       "placeholder_gate_errors": 0
     }
   }

@@ -33,7 +33,7 @@ PARTNERS = ["grab", "careem", "jih-global", "red-sea-global", "saudi-redsea-pif"
             "bolt", "yango", "constance", "four-seasons", "uber", "french-polynesia", "saudi-pif",
             "rakta", "bahrain-motc", "rapido", "ola", "uber-india",
             # LatAm platform partners (Brazil expansion 2026-07-19 + Mexico)
-            "didi", "indrive"]
+            "didi", "indrive", "blade"]
 
 # ---- gold geometry: route_id set + unordered-endpoint index ----
 R = json.load(open(os.path.join(GOLD, "ROUTES.json")))
@@ -126,6 +126,8 @@ def ingest_rows(rows, source_partner=None):
         rid = resolved.get(key)
         if not rid and mid.get("route_id") in gold_rids:
             rid = mid.get("route_id")
+        if not rid and row.get("route_id") in gold_rids:
+            rid = row.get("route_id")
         if not rid:
             pending.append({"authored_for": source_partner or market_partner.get(market),
                             "market": market, "corridor": label,
