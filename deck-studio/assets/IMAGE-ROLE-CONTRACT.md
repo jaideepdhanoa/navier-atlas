@@ -8,13 +8,19 @@ must satisfy every role before a deck is render-complete.
 All final images must obey `docs/IMAGE-RULES.md`: **N30/N35 composites only, no Atlas-generated images,
 provenance required.** Logos are the only non-composite assets.
 
-## Mood & lighting standard (Jaideep directive 2026-07-28) — MANDATORY
+## Mood & lighting standard (Jaideep directive 2026-07-28, refined same day) — MANDATORY
 
-Every generated composite must read **bright, sunny, welcoming, and exciting**: clear blue sky,
-brilliant daylight, sparkling water, energetic premium-travel mood. **No dark, gloomy, overcast,
-moody, dusk, or night plates.** Golden-hour is allowed only if the frame stays bright and vivid —
-if in doubt, shoot midday sun. This applies to every role in every deck lineage (mobility,
-hospitality, authority). A plate that fails this bar fails QA regardless of composition quality.
+Every generated composite must read **vivid, welcoming, and exciting** — premium-travel energy.
+**Bright sunny daylight, warm golden hour, and night city-lights plates are all acceptable**, as long
+as the frame stays vibrant and luminous. **Banned: gloomy, overcast, rainy, hazy, washed-out, or
+flat-grey plates.** If a frame reads moody or depressing, it fails QA regardless of composition quality.
+
+## Vessel fidelity standard (Jaideep directive 2026-07-28) — MANDATORY
+
+Any plate featuring a Navier vessel must be a **true composite of the official vessel reference render**
+(N30 refs under `deck-image-gen/ref/`): exact hull shape, wraparound glass cabin, white stern pods,
+foil struts. Generic boats, off-model hulls, or shrinking the vessel to an unrecognizable speck all
+fail QA. Scenic no-boat backgrounds are fine where the role doesn't call for a vessel.
 
 ## Roles (per deck)
 
