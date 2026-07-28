@@ -51359,6 +51359,543 @@
       ],
       "captive": true,
       "_capture_basis": "Captive treatment (LB-254): Giftun Island and Ras Mohammed reef are reachable only by boat, so the marine visitor pool is the addressable base at ~90% floor capture. Headroom is induced demand + more destinations, not a capture-share expansion. TAM ladder anchors on transport_spend_pool_yr; do NOT recover the pool by floor/0.10. Approved by Jaideep 2026-07-14."
+    },
+    "usa-ny-harbor": {
+      "display_name": "USA · New York Harbor + East End",
+      "partner": "uber",
+      "country": "United States",
+      "country_slug": "united-states",
+      "currency": "USD",
+      "scope": "NY Harbor T1 corridors + Manhattan↔East End long-haul (approved anchor table 2026-07-27)",
+      "archetype": "ridehail",
+      "_tier": "T1_grounded",
+      "_source": "Northeast USA program Phase 0 census 2026-07-27 (/tasklet/agent/home/northeast-program/census/)",
+      "_premium_fare_basis": "Premium-substitute benchmarking (Jaideep override Jul-2026; anchors approved 2026-07-27): Uber Black computed/flat fares, Blade by-the-seat air, and incumbent premium fast-ferry tariffs per corridor _fare_record. Evidence: FARE-ANCHOR-PROPOSAL.md + census/FARES-*.md.",
+      "corridors": [
+        {
+          "from": "East 34th Street (Manhattan)",
+          "to": "LGA Marine Air Terminal (Bowery Bay)",
+          "distance_nm": 5.9,
+          "vessel": "Pioneer II",
+          "route_id": "rn-0e2b916d3b8d",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 1387826,
+            "comparable_fare_usd_pax": 75,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 1387826,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2023,
+              "source_tier": "T1",
+              "confidence": "med-high",
+              "source": "NYC TLC trip records CY2023 (Yellow+Green+non-HVFHV FHV), LGA zone 138 ↔ Manhattan filter (DEMAND-GAPFILL-PASS3.md)",
+              "method": "Count of licensed taxi/FHV trips between LGA and Manhattan. UNDERSTATED: excludes Uber/Lyft (HVFHV) trips - the majority of the for-hire market - plus all private-car access. 1 trip counted as 1 passenger (occupancy >1 uncounted). Airport context: LGA 33.63M pax 2024, 85% car-based access (PANYNJ ATR)."
+            },
+            "_fare_record": {
+              "value": 75.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Uber Black JFK↔Manhattan flat $85; NYC black-car guides $100-150 (FARES-PASS2)",
+              "method": "Anchored below the JFK Uber Black flat for the shorter LGA run; premium door-to-door substitute."
+            },
+            "_fare_anchor_basis": "Approved anchor 2026-07-28; sits between Uber Black E34th->LGA (~$48-100/vehicle, TaxiFareFinder 2026) and Blade heli $195-275/seat. N30 clears at 2.12yr."
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-5f0981ff77",
+            "to": "bp-lga-marine-air"
+          }
+        },
+        {
+          "from": "Wall Street / Pier 11 (Manhattan)",
+          "to": "North Williamsburg (Brooklyn)",
+          "distance_nm": 2.4,
+          "vessel": "Pioneer II",
+          "route_id": "rn-5c8ceecea4d9",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 2792467,
+            "comparable_fare_usd_pax": 35,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 2792467,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "NYCEDC NYC Ferry Open Data, East River (ER) route hourly boardings aggregated to CY2024 (DEMAND-GAPFILL-PASS3.md)",
+              "method": "Direct route-level sum of published ER-route boardings; East River is NYC Ferry's highest-ridership route (FY24 annual report)."
+            },
+            "_fare_record": {
+              "value": 25.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Uber Black computed ~$44/car Manhattan↔N Williamsburg (FARES-PASS2)",
+              "method": "Anchored below the per-car Uber Black quote; per-seat premium water substitute."
+            },
+            "_fare_anchor_basis": "Uber Black Pier 11 -> N Williamsburg $37.63/vehicle (TaxiFareFinder 2026); $35/seat is the credible ceiling.",
+            "capex_usd_override": 2500000
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-58a56df431",
+            "to": "bp-1c4d49ace6"
+          },
+          "vessel_key": "n45",
+          "_economics_hold_reason": "HOLD (payback threshold): fails ~3yr on both hulls at the credible $35 anchor — N45 payback 4.84yr. Ceiling = whole Uber Black vehicle $37.63. Jaideep 2026-07-28 B+C."
+        },
+        {
+          "from": "Wall Street / Pier 11 (Manhattan)",
+          "to": "Paulus Hook (Jersey City)",
+          "distance_nm": 1.41,
+          "vessel": "Pioneer II",
+          "route_id": "ics-bdacfbafa1",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 213380,
+            "comparable_fare_usd_pax": 50,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 213380,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "NTD 2024: NY Waterway 4,694,357 UPT network-wide; operator publishes 22 distinct commuter routes (CAPACITY-GAPFILL.md)",
+              "method": "MODELED equal-share allocation: 4,694,357 / 22 routes = 213,380. UNDERSTATED for Paulus Hook - a flagship trans-Hudson crossing; route-level count not published. Flagged per fail-closed policy."
+            },
+            "_fare_record": {
+              "value": 20.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Uber Black computed ~$35/car Manhattan↔Paulus Hook (FARES-PASS2)",
+              "method": "Anchored below the per-car Uber Black quote; per-seat premium water substitute."
+            },
+            "_fare_anchor_basis": "Uber Black Pier 11 -> Paulus Hook $56.26/vehicle (TaxiFareFinder 2026); anchored $50/seat.",
+            "capex_usd_override": 2500000
+          },
+          "vessel_key": "n45"
+        },
+        {
+          "from": "Wall Street / Pier 11 (Manhattan)",
+          "to": "Long Wharf (Sag Harbor Village Dock)",
+          "distance_nm": 101.2,
+          "vessel": "Quanta-LR",
+          "route_id": "rn-e2c8f0d3fe0d",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 47366,
+            "comparable_fare_usd_pax": 625.0,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 47366,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "Blade Air Mobility 2024 10-K: 94,733 Short Distance seats flown + $72.2M Short Distance revenue (RIDERSHIP-PASS3)",
+              "method": "MODELED 50% split of Blade's demonstrated premium by-the-seat air demand across the two Manhattan↔East End corridors (Hamptons-only split not disclosed). UNDERSTATED: excludes Hampton Jitney, LIRR premium, and private-car East End travel."
+            },
+            "_fare_record": {
+              "value": 625.0,
+              "unit": "USD/pax/one-way premium anchor",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "BLADE Hamptons 2026 Summer Pass: $795/seat Manhattan-Sag Harbor (blade.com/hamptons, May 21-Sep 8 2026). Anchored ~20% under the Blade seat.",
+              "method": "Premium-substitute benchmarking (Jaideep B directive 2026-07-28): scheduled premium air is the true substitute on this corridor; prior $295.0 anchor (vs ground/charter blend) sat below marine-viability line."
+            },
+            "_fare_anchor_basis": "Premium substitute: BLADE helicopter/seaplane Manhattan-Sag Harbor $795/seat (2026 Summer Pass, primary source). Tailwind seaplane East Hampton $695-1095 (2023, corroborating). Hampton Jitney ~$50-80 (bus, not substitute-class). Anchored $625/seat = ~20% under Blade; prior $295.0 anchor failed 3yr structurally (2 legs/day ceiling on ~100nm corridor).",
+            "capex_usd_override": 1500000,
+            "_capex_basis": "Quanta LR hybrid $1.5M US/EU premium (Jaideep 2026-07-28); explicit override because enrich() defaults US to N30 $900K"
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-58a56df431",
+            "to": "bp-505629a487"
+          },
+          "_roadmap_note": "101nm leg - Quanta-LR (75-150nm gate); held from Pioneer II near-term floor by range.",
+          "vessel_key": "quanta_lr",
+          "_vessel_basis": "Quanta LR hybrid per Jaideep directive 2026-07-28 — range gate cleared by hybrid LR; $1.5M US/EU capex",
+          "_hold_released": "released 2026-07-28: Quanta LR hybrid (Jaideep 2026-07-28) clears the 70nm range gate. Prior: None",
+          "_reanchored_2026_07_28": "$295.0 -> $625.0 vs Blade $795 seat (B directive extension; pending Jaideep confirmation)"
+        },
+        {
+          "from": "Wall Street / Pier 11 (Manhattan)",
+          "to": "Viking Fleet Dock — Montauk Harbor",
+          "distance_nm": 104.7,
+          "vessel": "Quanta-LR",
+          "route_id": "rn-1119113a9806",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": false,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 47367,
+            "comparable_fare_usd_pax": 645.0,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 47367,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "Blade Air Mobility 2024 10-K: 94,733 Short Distance seats flown (RIDERSHIP-PASS3)",
+              "method": "MODELED 50% split of Blade premium air seats across the two East End corridors; same caveats as Sag Harbor."
+            },
+            "_fare_record": {
+              "value": 645.0,
+              "unit": "USD/pax/one-way premium anchor",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "BLADE Hamptons 2026 Summer Pass: $795/seat Manhattan-Montauk (blade.com/hamptons, May 21-Sep 8 2026). Anchored ~20% under the Blade seat.",
+              "method": "Premium-substitute benchmarking (Jaideep B directive 2026-07-28): scheduled premium air is the true substitute on this corridor; prior $345.0 anchor (vs ground/charter blend) sat below marine-viability line."
+            },
+            "_fare_anchor_basis": "Premium substitute: BLADE helicopter/seaplane Manhattan-Montauk $795/seat (2026 Summer Pass, primary source). Tailwind seaplane East Hampton $695-1095 (2023, corroborating). Hampton Jitney ~$50-80 (bus, not substitute-class). Anchored $645/seat = ~20% under Blade; prior $345.0 anchor failed 3yr structurally (2 legs/day ceiling on ~100nm corridor).",
+            "capex_usd_override": 1500000,
+            "_capex_basis": "Quanta LR hybrid $1.5M US/EU premium (Jaideep 2026-07-28); explicit override because enrich() defaults US to N30 $900K"
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-58a56df431",
+            "to": "bp-55f162ae8f"
+          },
+          "_roadmap_note": "105nm leg - Quanta-LR (75-150nm gate); held from Pioneer II near-term floor by range.",
+          "vessel_key": "quanta_lr",
+          "_vessel_basis": "Quanta LR hybrid per Jaideep directive 2026-07-28 — range gate cleared by hybrid LR; $1.5M US/EU capex",
+          "_hold_released": "released 2026-07-28: Quanta LR hybrid (Jaideep 2026-07-28) clears the 70nm range gate. Prior: None",
+          "_reanchored_2026_07_28": "$345.0 -> $645.0 vs Blade $795 seat (B directive extension; pending Jaideep confirmation)"
+        }
+      ]
+    },
+    "usa-new-england": {
+      "display_name": "USA · Boston Harbor + Cape & Islands",
+      "partner": "uber",
+      "country": "United States",
+      "country_slug": "united-states",
+      "currency": "USD",
+      "scope": "Boston Harbor + Cape Cod & Islands T1 corridors (approved anchor table 2026-07-27)",
+      "archetype": "ridehail",
+      "_tier": "T1_grounded",
+      "_source": "Northeast USA program Phase 0 census 2026-07-27 (/tasklet/agent/home/northeast-program/census/)",
+      "_premium_fare_basis": "Premium-substitute benchmarking (Jaideep override Jul-2026; anchors approved 2026-07-27): Uber Black computed/flat fares, Blade by-the-seat air, and incumbent premium fast-ferry tariffs per corridor _fare_record. Evidence: FARE-ANCHOR-PROPOSAL.md + census/FARES-*.md.",
+      "corridors": [
+        {
+          "from": "Long Wharf (Boston)",
+          "to": "Hingham Shipyard",
+          "distance_nm": 9.2,
+          "vessel": "Pioneer II",
+          "route_id": "rn-6e97c92755a8",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 169875,
+            "comparable_fare_usd_pax": 65,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 169875,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "NTD 2024: MBTA ferry 1,359,001 UPT systemwide; MBTA lists 8 ferry routes (CAPACITY-GAPFILL.md)",
+              "method": "MODELED equal-share allocation: 1,359,001 / 8 routes = 169,875. UNDERSTATED for Hingham - the F1 Hingham run is the system's dominant route; per-route split not published. Flagged."
+            },
+            "_fare_record": {
+              "value": 35.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Uber Black computed ~$78/car Boston↔Hingham (FARES-PASS2); MBTA std $9.75",
+              "method": "Anchored well below the per-car Uber Black quote; per-seat premium water substitute."
+            },
+            "_fare_anchor_basis": "Uber Black Long Wharf -> Hingham Shipyard $70.44/vehicle (TaxiFareFinder 2026); anchored $65/seat.",
+            "capex_usd_override": 2500000
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-98fe0af19b",
+            "to": "bp-cb7113ff22"
+          },
+          "vessel_key": "n45"
+        },
+        {
+          "from": "Long Wharf (Boston)",
+          "to": "Salem Ferry Wharf",
+          "distance_nm": 12.34,
+          "vessel": "Pioneer II",
+          "route_id": "ics-3b05a4e262",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 194296,
+            "comparable_fare_usd_pax": 70,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 194296,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "source": "BHCC Salem Ferry 2026: vessel Nathaniel Bowditch 149 pax (T1 operator); 4 departures/direction/day baseline; season May 22 - Oct 31 = 163 days (CAPACITY-GAPFILL.md)",
+              "method": "CAPACITY BASIS (Jaideep-approved 2026-07-27): 149 x 4 x 2 directions x 163 days = 194,296 seat-capacity/yr. Conservative: excludes the published 5th Thu-Sat sailing. Route ridership unpublished."
+            },
+            "_fare_record": {
+              "value": 45.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "BHCC Salem fast ferry published fare ~$43 one-way (FARES-PASS2)",
+              "method": "Anchored at the incumbent premium fast-ferry tariff."
+            },
+            "_fare_anchor_basis": "Uber Black Long Wharf -> Salem $77.53/vehicle (RideGuru 2026); anchored $70/seat.",
+            "capex_usd_override": 2500000
+          },
+          "vessel_key": "n45"
+        },
+        {
+          "from": "Long Wharf (Boston)",
+          "to": "Provincetown (MacMillan Pier)",
+          "distance_nm": 42.86,
+          "vessel": "Pioneer II",
+          "route_id": "ics-4df4cecf34",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 139464,
+            "comparable_fare_usd_pax": 115,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 139464,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med-low",
+              "source": "Bay State Cruise Co 2026: Provincetown III certified 149 pax (T1); 3 departures/direction/day; season May 16 - Oct 18 = 156 days (CAPACITY-GAPFILL.md)",
+              "method": "CAPACITY BASIS (Jaideep-approved 2026-07-27): 149 x 3 x 2 x 156 = 139,464 seat-capacity/yr. Conservative: excludes BHCC's competing Provincetown service (Salacia, 600 pax) entirely."
+            },
+            "_fare_record": {
+              "value": 95.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Bay State fast ferry $87-102 one-way + $5 fuel surcharge, 2026 published (BOSTON-CAPE-CENSUS S4)",
+              "method": "Anchored inside the incumbent premium fast-ferry band."
+            },
+            "_fare_anchor_basis": "Premium substitute band: Bay State fast ferry $92-107/seat incl. fuel surcharge; Cape Air BOS-PVC $119-259/seat; Uber Black ~$466/vehicle. Anchored $115/seat (ferry-premium, bottom of air band).",
+            "capex_usd_override": 2500000
+          },
+          "vessel_key": "n45",
+          "_economics_hold_reason": "HOLD (payback threshold): N45 payback 6.80yr at $115. Clearing 3yr needs ~$174/seat — 1.7x the fast-ferry seat; not credibly anchored. Jaideep 2026-07-28 B+C."
+        },
+        {
+          "from": "Long Wharf (Boston)",
+          "to": "Logan Airport ferry dock",
+          "distance_nm": 1.1,
+          "vessel": "Pioneer II",
+          "route_id": "rn-b1104ed2e1eb",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 169875,
+            "comparable_fare_usd_pax": 25,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 169875,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "NTD 2024: MBTA ferry 1,359,001 UPT systemwide across 8 published routes; Massport confirms the Logan Water Transportation Dock year-round link (BOSTON-CAPE-CENSUS S2)",
+              "method": "MODELED equal-share allocation: 1,359,001 / 8 = 169,875. Logan-route split unpublished; no double-count - each MBTA route share used at most once across this market. Flagged."
+            },
+            "_fare_record": {
+              "value": 20.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "MBTA std $9.75; Uber Black Logan run with tolls substantially higher (FARES-PASS2)",
+              "method": "Premium anchored at ~2x the public tariff, below the premium ground substitute."
+            },
+            "_fare_anchor_basis": "Uber Black Long Wharf -> Logan $29.56/vehicle (TaxiFareFinder 2026); today's harbor water taxi ~$20/seat. Anchored $25/seat.",
+            "capex_usd_override": 2500000
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-98fe0af19b",
+            "to": "bp-c324600173"
+          },
+          "vessel_key": "n45",
+          "_economics_hold_reason": "HOLD (payback threshold): N45 payback 11.1yr at $25; clearing 3yr needs ~$46/seat vs a $29.56 whole Uber Black vehicle. Jaideep 2026-07-28 B+C."
+        },
+        {
+          "from": "Hyannis Terminal",
+          "to": "Nantucket (Steamship Wharf)",
+          "distance_nm": 24.1,
+          "vessel": "Pioneer II",
+          "route_id": "e__boston-new-england-usa__hyannis-terminal__nantucket-steamship-wharf",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 544425,
+            "comparable_fare_usd_pax": 99,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 544425,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Steamship Authority 2024 traffic statistics: Nantucket route 544,425 one-way passenger passages (steamshipauthority.com/about/traffic-statistics)",
+              "method": "Route-level published figure, SSA only. UNDERSTATED: excludes Hy-Line's 928,922 operator-wide UPT (route split unpublished - flagged additional pool, not counted)."
+            },
+            "_fare_record": {
+              "value": 99.0,
+              "unit": "USD/pax/one-way premium anchor",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Cape Air HYA-ACK scheduled airfare band $69-99/seat (FARES-PASS2); Jaideep directive 2026-07-28: shift to $99",
+              "method": "Anchored at top of sourced premium-substitute band (Cape Air $99 = highest published seat)."
+            },
+            "_fare_anchor_basis": "Premium substitute band: Cape Air HYA-ACK $69-99/seat; Hy-Line fast ferry $52-61/seat. Anchored $99/seat = Cape Air top-of-band per Jaideep 2026-07-28 (was $85 mid-band, 3.95yr payback; $99 clears 3.0yr).",
+            "capex_usd_override": 2500000
+          },
+          "vessel_key": "n45",
+          "_hold_released": "released 2026-07-28: re-anchored $99 top-of-band (Jaideep 2026-07-28) — clears 3yr. Prior: HOLD (payback threshold, borderline): N45 payback 3.95yr at $85; clears 3.0yr only at ~$99-100/seat = very top of the sourced Cape Air band. Escalated to Jaideep as borderline. Jaideep 2026-07-28 B+C."
+        },
+        {
+          "from": "Woods Hole",
+          "to": "Vineyard Haven (Tisbury), Martha's Vineyard",
+          "distance_nm": 6.1,
+          "vessel": "Pioneer II",
+          "route_id": "ics-c7c6e76d27",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 2396540,
+            "comparable_fare_usd_pax": 60,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 2396540,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2024,
+              "source_tier": "T1",
+              "confidence": "high",
+              "source": "Steamship Authority 2024 traffic statistics: Vineyard route 2,396,540 one-way passenger passages",
+              "method": "Route-level published figure; excludes 492,473 one-way autos (vehicle passages not counted as pax)."
+            },
+            "_fare_record": {
+              "value": 40.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Falmouth↔Edgartown premium passenger boat $35-45 one-way, primary-sourced (FARES-GAPFILL)",
+              "method": "Anchored inside the premium small-boat band for the same island pair."
+            },
+            "_fare_anchor_basis": "Premium substitute band: Cape Air to MVY ~$59/seat (Hyannis-origin proxy); Falmouth-Edgartown premium fast boat $35-45/seat; SSA $11 (subsidized, not the comparable). Anchored $60/seat.",
+            "capex_usd_override": 2500000
+          },
+          "vessel_key": "n45"
+        },
+        {
+          "from": "Seastreak Ferry Terminal at New Bedford",
+          "to": "Steamship Authority Oak Bluffs Terminal",
+          "distance_nm": 27.3,
+          "vessel": "Pioneer II",
+          "route_id": "rn-ba49e90cdbec",
+          "country": "United States",
+          "archetype": "ridehail",
+          "service_status": "current_scheduled",
+          "in_phase1_shuttle": true,
+          "_in_grounded_floor": true,
+          "_source": "usa-northeast-t1-2026-07-28",
+          "L3_locals": {
+            "corridor_annual_oneway_pax": 143040,
+            "comparable_fare_usd_pax": 55,
+            "pool_basis": "gross",
+            "_demand_record": {
+              "value": 143040,
+              "unit": "one-way passenger-trips/year (pool basis per method)",
+              "year": 2026,
+              "source_tier": "T4",
+              "confidence": "low",
+              "source": "Seastreak: MV Express + Whaling City Express certified 149 pax each (T1, CAPACITY-GAPFILL.md); published pattern 4 departures/direction/day, 55-min crossing (BOSTON-CAPE-CENSUS S9)",
+              "method": "CAPACITY BASIS: 149 x 4 x 2 x 120-day conservative season assumption = 143,040 seat-capacity/yr. Season dates not primary-sourced - 120 days is deliberately below the visible May-Oct pattern; route-level ridership unpublished (network NTD 1.31M includes NYC commuter runs). Flagged."
+            },
+            "_fare_record": {
+              "value": 50.0,
+              "unit": "USD/pax/one-way premium anchor (Jaideep-approved 2026-07-27)",
+              "year": 2026,
+              "source_tier": "T2",
+              "confidence": "med",
+              "source": "Seastreak New Bedford↔Vineyard express $49 one-way (FARES-PASS2)",
+              "method": "Anchored at the incumbent premium fast-ferry tariff."
+            },
+            "_fare_anchor_basis": "Seastreak NB -> Oak Bluffs $49/seat (2026, plus peak surcharges); anchored $55/seat premium.",
+            "capex_usd_override": 2500000
+          },
+          "endpoint_boarding_points": {
+            "from": "bp-41b26f2bfc",
+            "to": "bp-83a62832de"
+          },
+          "vessel_key": "n45",
+          "_economics_hold_reason": "HOLD (payback threshold): N45 payback 21.8yr at $55 — 27nm leg, low frequency; clearing 3yr needs ~$117/seat vs $49 Seastreak. Jaideep 2026-07-28 B+C."
+        }
+      ]
     }
   },
   "_meta": {
@@ -51556,5 +52093,17 @@
       "status": "minted",
       "straight_nm": 38.12
     }
+  },
+  "_usa_northeast_t1": {
+    "date": "2026-07-28",
+    "approved": "Jaideep fare-anchor table + 3 flags, 2026-07-27 ('Okay approved')",
+    "evidence": "/tasklet/agent/home/northeast-program/census/ (COST-POLICY, RIDERSHIP-PASS2, DEMAND-GAPFILL-PASS3, COST-GAPFILL-PASS2, CAPACITY-GAPFILL, FARES-*)",
+    "held_display_tier": {
+      "sag-harbor-local-mesh": "geometry exists; no premium fare substitute + no local demand anchor",
+      "newport-block-island": "display tier per plan",
+      "casco-bay": "display tier per plan (Casco Bay Lines 1.09M UPT sourced if promoted)"
+    },
+    "berth_note": "US marina_overhead is a Jaideep-approved FLAGGED ESTIMATE pending written quotes; see country-reference row.",
+    "quanta_lr_note": "Sag Harbor + Montauk live on Quanta LR hybrid per Jaideep 2026-07-28; Nantucket re-anchored $99 same directive."
   }
 }

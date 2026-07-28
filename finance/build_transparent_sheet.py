@@ -223,12 +223,27 @@ for mid, mk in corr["markets"].items():
         # LB-256 archetype-keyed sailings cap (mirror atom.py)
         _arche_cap=c.get("archetype")
         eff_cap=TPD_MAP[_arche_cap] if (_arche_cap in TPD_MAP and not str(_arche_cap).startswith("_")) else max_tpd
+        # LB-268 (Jaideep 2026-07-28): per-corridor vessel opt-in (e.g. "n45"). Mirror
+        # aggregate.py exactly: key must exist, be commercial_now, and cover the distance;
+        # else fall back to the N30 default (and the N30 range gate below).
+        _vkey=c.get("vessel_key")
+        _vdef=(const["vessels"].get(_vkey) if _vkey else None)
+        _vrange=(v(_vdef["range_nm"]) if _vdef and _vdef.get("range_nm") is not None else None)
+        if _vdef and _vdef.get("status")=="commercial_now" and _vrange is not None and nm<=_vrange:
+            _ves_key=_vkey
+        else:
+            _ves_key="pioneer_ii"
+        _VD=const["vessels"][_ves_key]
         _corridor=f"{c['from']} \u2192 {c['to']}"
         _fwd=("FWD-SAM (2030)" if c.get("_forward_sam") else None)
         _tier_excl=(c.get("_tier") if c.get("_in_grounded_floor") is False else None)
         _status=STATUS_BY_ROUTE.get((mid, pier_key(_corridor)))
         rec=dict(market=mkt_disp(mid), country=country, corridor=_corridor,
                  route_id=c.get("route_id"), nm=nm, fare=_fare, eff_cap=eff_cap,
+                 ves_label=_VD["label"], ves_pax=v(_VD["pax_capacity"]),
+                 ves_kwhnm=round(v(_VD["battery_kwh"])/v(_VD["range_nm"]),3),
+                 ves_maint=v(_VD["annual_maintenance_usd"]),
+                 ves_capex=(L3.get("capex_usd_override") if _ves_key!="pioneer_ii" else None),
                  provenance=mk.get("partner", "grab"),
                  fare_tier=fr.get("source_tier"), fare_conf=fr.get("confidence"), fare_src=_fare_src,
                  demand=pool, cap=cap_row,
@@ -243,7 +258,7 @@ for mid, mk in corr["markets"].items():
                  floor_bucket=floor_bucket(mid, _corridor, _tier_excl, _fwd, pool, _status),
                  # LB-88: captive-resort vessel ceiling = ceil(villas/25)
                  fleet_cap=(math.ceil(c["villas"]/25) if (c.get("captive_resort") and c.get("villas")) else None))
-        (roadmap if nm>range_nm else rows).append(rec)
+        (roadmap if (nm>range_nm and _ves_key=="pioneer_ii") else rows).append(rec)
 rows.sort(key=lambda r:(r["country"], r["nm"]))
 
 # Enrich global unique rows with geometry-owner metadata from agg-unique-global.json
@@ -527,6 +542,11 @@ cols = _cols_head + [
  ("Fare tier","fare_tier",7,None,"in"),
  ("Fare conf.","fare_conf",8,None,"in"),
  ("Weather factor","weather",9,NUM2,"in"),
+ ("Vessel","ves_label",10,None,"in"),
+ ("Vessel pax","ves_pax",7,NUM,"in"),
+ ("Vessel kWh/nm","ves_kwhnm",9,NUM2,"in"),
+ ("Vessel maint $/yr","ves_maint",10,USD,"in"),
+ ("Vessel CAPEX $","",11,USD,"f"),
  ("One-way min","",8,NUM1,"f"),
  ("Charge recovery min","",10,NUM1,"f"),
  ("Cycle min","",8,NUM1,"f"),
@@ -603,6 +623,10 @@ for idx,rec in enumerate(rows):
     sc(ws,f"{CL('Fare tier')}{R}",rec["fare_tier"],fill=f_input,align=ctr,bd=True,font=SMALL)
     sc(ws,f"{CL('Fare conf.')}{R}",rec["fare_conf"],fill=f_input,align=ctr,bd=True,font=SMALL)
     sc(ws,f"{CL('Weather factor')}{R}",rec["weather"],fill=f_input,fmt=NUM2,align=ctr,bd=True)
+    sc(ws,f"{CL('Vessel')}{R}",rec["ves_label"],fill=f_input,align=ctr,bd=True,font=SMALL)
+    sc(ws,f"{CL('Vessel pax')}{R}",rec["ves_pax"],fill=f_input,fmt=NUM,align=ctr,bd=True)
+    sc(ws,f"{CL('Vessel kWh/nm')}{R}",rec["ves_kwhnm"],fill=f_input,fmt=NUM2,align=ctr,bd=True)
+    sc(ws,f"{CL('Vessel maint $/yr')}{R}",rec["ves_maint"],fill=f_input,fmt=USD,align=ctr,bd=True)
     nm=f"{CL('Distance')}{R}"; fare=f"{CL('Premium fare $/pax')}{R}"; wf=f"{CL('Weather factor')}{R}"; ctry=f"{CL('Country')}{R}"
     ow=f"{CL('One-way min')}{R}"; charge=f"{CL('Charge recovery min')}{R}"; cyc=f"{CL('Cycle min')}{R}"; tpd=f"{CL('Gross legs/day')}{R}"
     upt=f"{CL('Mech uptime')}{R}"; rlp=f"{CL('Revenue-leg utilization')}{R}"
@@ -617,9 +641,14 @@ for idx,rec in enumerate(rows):
     dem=f"{CL('Demand pool 1-way/yr')}{R}"; nrd=f"{CL('Navier rides/yr')}{R}"
     capc=f"{CL('Capture %')}{R}"
     ves=f"{CL('Vessels @capture')}{R}"; mrev=f"{CL('Market rev/yr')}{R}"
+    vp=f"{CL('Vessel pax')}{R}"; vkn=f"{CL('Vessel kWh/nm')}{R}"; vmn=f"{CL('Vessel maint $/yr')}{R}"; vcx=f"{CL('Vessel CAPEX $')}{R}"
     # formulas (computed, green)
     def F(ref,formula,fmt=None,align=ctr):
         sc(ws,ref,formula,fill=f_calc,fmt=fmt,align=align,bd=True,font=Font(size=9))
+    if rec.get("ves_capex"):
+        sc(ws,vcx,rec["ves_capex"],fill=f_input,fmt=USD,align=ctr,bd=True)
+    else:
+        F(vcx,f"=VLOOKUP({ctry},country_opex,7,FALSE)",USD)
     F(ow,f"=60*{nm}/cruise_kt",NUM1)
     F(charge,f'=IF({ctry}="{KOREA_COUNTRY}",{nm}/korea_charge_range_nm*korea_full_range_charge_min,0)',NUM1)
     F(cyc,f'=IF({ctry}="{KOREA_COUNTRY}",{ow}+korea_turn_min+korea_dwell_min+{charge},{ow}+turn_min+dwell_min)',NUM1)
@@ -634,16 +663,16 @@ for idx,rec in enumerate(rows):
     # atom.py: revenue legs/year = round(gross legs/day * season days * revenue-leg utilization)
     F(tpy,f"={round_half_even(f'{tpd}*{od}*{rlp}')}",NUM)
     F(lf,f'=IF(AND({ctry}="{KOREA_COUNTRY}",scenario="MID"),korea_mid_load,load_sel)',PCT)
-    F(ppt,f"=pax_cap*{lf}",NUM2)
+    F(ppt,f"={vp}*{lf}",NUM2)
     F(ppy,f"={ppt}*{tpy}",NUM)
     F(nf,f"={fare}*discount",USD2)
     F(rev,f"={nf}*{ppy}",USD)
     # opex
-    F(en,f"=(battery/range_nm)*{nm}*{tpy}*VLOOKUP({ctry},country_opex,3,FALSE)",USD)
+    F(en,f"={vkn}*{nm}*{tpy}*VLOOKUP({ctry},country_opex,3,FALSE)",USD)
     F(cap,f"=VLOOKUP({ctry},country_opex,2,FALSE)*crew_factor",USD)
     F(mar,f"=VLOOKUP({ctry},country_opex,5,FALSE)",USD)
-    F(mnt,"=maint",USD)
-    cpx=f"VLOOKUP({ctry},country_opex,7,FALSE)"  # LB-243 per-country capex
+    F(mnt,f"={vmn}",USD)
+    cpx=vcx  # LB-243 per-country capex, or explicit per-corridor vessel CAPEX (LB-268)
     F(insr,f"={cpx}*ins_pct",USD)
     F(chg,"=charge_berth",USD)
     F(opx,f"={en}+{cap}+{mar}+{mnt}+{insr}+{chg}",USD)
@@ -651,7 +680,7 @@ for idx,rec in enumerate(rows):
     F(ebt,f"={rev}-{opx}",USD)
     F(mgn,f"=IF({rev}=0,\"\",{ebt}/{rev})",PCT)
     F(pbk,f"=IF({ebt}<=0,\"\",{cpx}/{ebt})",NUM2)
-    F(co2,f"=(({nm}*{tpy}/diesel_nmpg)*diesel_co2pg-(battery/range_nm)*{nm}*{tpy}*VLOOKUP({ctry},country_opex,4,FALSE))/1000",NUM1)
+    F(co2,f"=(({nm}*{tpy}/diesel_nmpg)*diesel_co2pg-{vkn}*{nm}*{tpy}*VLOOKUP({ctry},country_opex,4,FALSE))/1000",NUM1)
     # demand inputs
     sc(ws,dem,rec["demand"],fill=f_input,fmt=NUM,align=ctr,bd=True)
     sc(ws,f"{CL('Demand tier')}{R}",rec["demand_tier"],fill=f_input,align=ctr,bd=True,font=SMALL)
@@ -682,8 +711,8 @@ for idx,rec in enumerate(rows):
         revleg_b=(f'IF({ctry}="{KOREA_COUNTRY}",korea_mid_revleg,revleg_mid)' if b == "mid" else f"revleg_{b}")
         load_b=(f'IF({ctry}="{KOREA_COUNTRY}",korea_mid_load,load_mid)' if b == "mid" else f"load_{b}")
         tpyb=round_half_even(f"{tpd}*{od}*{revleg_b}")
-        revb=f"({nf}*pax_cap*{load_b}*{tpyb})"
-        enb=f"((battery/range_nm)*{nm}*{tpyb}*VLOOKUP({ctry},country_opex,3,FALSE))"
+        revb=f"({nf}*{vp}*{load_b}*{tpyb})"
+        enb=f"({vkn}*{nm}*{tpyb}*VLOOKUP({ctry},country_opex,3,FALSE))"
         opxb=f"({enb}+{cap}+{mar}+{mnt}+{insr}+{chg})"
         ebtb=f"({revb}-{opxb})"
         sc(ws,f"{CL(name)}{R}",f"=IF({ebtb}<=0,\"\",{cpx}/{ebtb})",fill=f_band,fmt=NUM2,align=ctr,bd=True,font=Font(size=9))
