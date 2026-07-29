@@ -8,6 +8,20 @@ must satisfy every role before a deck is render-complete.
 All final images must obey `docs/IMAGE-RULES.md`: **N30/N35 composites only, no Atlas-generated images,
 provenance required.** Logos are the only non-composite assets.
 
+## Mood & lighting standard (Jaideep directive 2026-07-28, refined same day) — MANDATORY
+
+Every generated composite must read **vivid, welcoming, and exciting** — premium-travel energy.
+**Bright sunny daylight, warm golden hour, and night city-lights plates are all acceptable**, as long
+as the frame stays vibrant and luminous. **Banned: gloomy, overcast, rainy, hazy, washed-out, or
+flat-grey plates.** If a frame reads moody or depressing, it fails QA regardless of composition quality.
+
+## Vessel fidelity standard (Jaideep directive 2026-07-28) — MANDATORY
+
+Any plate featuring a Navier vessel must be a **true composite of the official vessel reference render**
+(N30 refs under `deck-image-gen/ref/`): exact hull shape, wraparound glass cabin, white stern pods,
+foil struts. Generic boats, off-model hulls, or shrinking the vessel to an unrecognizable speck all
+fail QA. Scenic no-boat backgrounds are fine where the role doesn't call for a vessel.
+
 ## Roles (per deck)
 
 | role | slide | scope | reuse | source |
@@ -171,7 +185,7 @@ brand system but differ in image wiring. For `deck_type: hospitality`, this adde
 mobility families. Full slide map: `deck-studio/docs/SLIDE-SPINE-AND-VARIANTS.md` (Template A).
 
 ### Added role: `cluster_hero` (slides 9–14)
-Six market-specific cluster deep-dive slides. Each carries a **generated N30 dusk-waterfront composite**
+Six market-specific cluster deep-dive slides. Each carries a **generated N30 bright-daylight waterfront composite**
 for that cluster (not an Atlas screenshot, not the mobility econ landmark plate). Scope `market`,
 reusable by any hospitality deck featuring that cluster. Bank under
 `assets/{deck}/clusters/final-{market}.png`, register in `ASSET-REGISTRY.json` (`role: cluster_hero`),
