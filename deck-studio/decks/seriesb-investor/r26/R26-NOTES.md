@@ -37,3 +37,26 @@ Jaideep on slide 20: why 11× (N30 vs Targa 32) but only 8× (N45 vs Princess 55
 
 ## Scripts
 `/tasklet/agent/home/scripts/seriesb-rebuild/r26/r26-build.ts`, `r26b-cargo-card.ts`.
+
+## R26c addendum (Jaideep round 4, 2026-08-06)
+**Ask:** (1) efficiency row above the energy line so the derivation is visible; (2) reprice electricity at STELCO mid-band $0.30/kWh (was floor $0.20 — "too aggressively optimistic").
+
+**Slide 20 (sb_unitecon40) — new state:**
+- New first row in all four columns: "Energy use per mile" — N30 1.6 kWh/nm · Targa 32 2.4 L/nm · N45 4.1 kWh/nm · Princess 55 10.9 L/nm.
+- Repriced at $0.30/kWh: N30 energy $18.8K/yr (was $12.3K) · N45 $46.9K/yr (was $31.3K).
+- Totals: N30 $103.8K vs Targa $183.5K · N45 $216.9K vs Princess $697.1K.
+- Delta strips: "7× less energy — $80K/yr saved" · "13× less energy — $480K/yr saved".
+  Consistency fix: "saved" now = all-three-lines delta on BOTH panels (R26 had panel B as energy-only $599K while panel A was total $86K).
+- Footnote: mid-band tariff language + both diesel burn bases (Targa dealer sea trial · Princess measured burn).
+- Multiples: 140.5/18.8 = 7.5 → 7× (floor) · 630.0/46.9 = 13.4 → 13×.
+
+**Master stat (S7 pillars + S15 moat):** "11–20× less energy per mile" → "7–13× lower energy cost per mile vs diesel" (×2 via scoped replaceAllText). Wording also corrected: it is a cost multiple, not a physical-energy multiple (physical ratio is 14–26× at 9.7 kWh/L diesel — larger; cost framing is the conservative one).
+
+**Memo (live doc + local MD, 4 subs):** $5 → $8 electricity leg · 7×/13× lower energy cost · "roughly 2–3× cheaper to run" (was 2–3.5×; new ratios 1.8×/3.2×).
+
+**Q&A bank:** Q24 rewritten at $0.30 with net-of-three-lines savings ($480K / $80K).
+
+**Left alone (flagged):** S34 premium payback P&L footnote cites "energy from the live Maldives operating model" — locked R21/R24 cascade ($752K owner profit); repricing there not authorized. JIH sheet/deck still hybrid ÷4÷2 at $0.20 — separate commercial context, awaiting Jaideep's word.
+
+**Script:** r26c-efficiency-row.ts (48 requests, verified render pages 7/15/20).
+**PDF:** /tasklet/agent/home/seriesb-rebuild/r26/Navier-Series-B-R26c-42slides.pdf
