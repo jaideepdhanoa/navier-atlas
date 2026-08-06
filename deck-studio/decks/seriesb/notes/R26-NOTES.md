@@ -126,3 +126,8 @@ Jaideep on slide 20: why 11× (N30 vs Targa 32) but only 8× (N45 vs Princess 55
 **Left unchanged + flagged:** s31 2028 column "N120 Morpheus — drawing board → first hull" and s44 N120 TRL slide (N120 remains a real rung; only N220 was renamed). Teaser still carries old "Navier Network" slide as its #3 (Sampriti's new S4/S5 postdate teaser build).
 **QA scratch:** `134wiE-a8kpfCwMRku4wT44PBr3P-PdLKI2jHkgqECiU` (browser-delete).
 **Script:** /tasklet/agent/home/scripts/seriesb-rebuild/r28/r28-n180-memo.ts
+
+## R28b addendum (Jaideep, 2026-08-06) — Q34 cargo-pricing correction
+**Jaideep rejected the R28 Q34 framing** ("~10× sea freight, at or below air"). Authoritative pricing = deck slide 39 `sb_cargo_econ` ("Night Cargo — Example Economics", ILLUSTRATIVE), which was **never changed and needed no restore**: **$0.75–1.50/kg** (LOW $0.75 · MID $1.00 · HIGH $1.50), midway between sourced bands (ocean $0.03–0.50/kg, air $2.50–4.50/kg). "10× ocean" ≈ $2.50–3.00/kg prices ABOVE the deck's own band — retired everywhere.
+**Edits:** memo §8 cargo paragraph (live + local MD) now carries "$0.75–1.50 per kilogram, a fraction of air rates and a healthy multiple of ocean"; Q34 rewritten (live + local) to anchor on the deck band and explicitly warn off "10×". Sampriti's Claude-derived "10× of $0.30/kg" figure is what Q34 now corrects.
+**QA scratch copies created this round (browser-delete):** 2× "[QA SCRATCH — safe to delete] r28 cargo check" (one orphaned by a failed script run, one used: `16IxvvZJ7F5F6DnlwCovtZt7lu3nOkEdFpZw10tvJabo`). Plus the r28 verify scratch from earlier.
