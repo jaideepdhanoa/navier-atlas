@@ -107,3 +107,22 @@ Jaideep on slide 20: why 11× (N30 vs Targa 32) but only 8× (N45 vs Princess 55
 **QA scratch decks created (Jaideep browser-delete):** `1f4fo-wup0Zs9ZlOYxwLDSy-XXkSnQUxiVEFVO5_qPf8`, `1zq1NJiRoVE40-GZzkLjSKe-WOHPtRP1Zim9BB_zCYaw` (both "[QA SCRATCH — safe to delete]").
 **Render-verified:** via Drive PDF export of pruned scratch (browser auth-walled; Google session needs Jaideep re-login). Slides 4/5/23 verified clean after r27b fixes + source-append revert.
 **Scripts:** /tasklet/agent/home/scripts/seriesb-rebuild/r27/{r27-build.ts,r27b-fixes.ts}
+
+## R28 addendum (Jaideep round 8, 2026-08-06) — N180 ladder + Sampriti memo revision
+**Ladder rule change (permanent):** N220 retired → top rung is now **N180** (unnamed). Public ladder: N30 Quanta · N45 Explorer · N80 Valkyrie · N120 Morpheus · N180. This makes "180 ft" a public Navier class, resolving the memo §11 firewall flag.
+**Deck edits (all render-verified):**
+- s5 phase 05: "80–220 ft" → **"80–180 ft"** (Sampriti's original restored)
+- s13 GMVP ladder (+ teaser s10): "N120 —" → "N120 · N180 — ocean ferry and cargo / contested logistics"
+- s23 cargo lede: "…night freight on the passenger network is how it starts." → "…night freight on the passenger fleet is the pilot-phase test." (Sampriti: night cargo = pilot trial, cost-gated — not the starting model)
+- s31 H1-2027 milestone: "N120 Morpheus program — kickoff on contract" → **"N180 program — kickoff on contract"** (now matches memo §11; the on-contract Gulf program is the 180-ft one — deck previously mislabeled it N120)
+**Memo edits (live doc + local MD, 5 edits):**
+- §1 opens with Sampriti's "future we see" arc (ships got bigger not faster → others tried, hull-first control-last → disciplined sequence), definition sentence kept verbatim
+- §3: "Four larger platforms (45/80/120/180 ft)"
+- §8: night freight → pilot-phase trial, corridor-by-corridor, cost-gated; "(N80, N120)" → "(N80–N180)"
+- §11: "Gulf 180-ft program kickoff, on contract" → "N180 program kickoff (Gulf) — on contract"
+**Q&A:** Q34 (cargo pricing — 10× ocean ≈ $2.50–3/kg lands at/below air band floor; anchored framing) + Q35 (FY2028 revenue — 🔴 needs representative model; no improvised numbers) appended to live doc + local.
+**Standing design preference (Sampriti 2026-08-06):** more white space, cleaner, not text-heavy; text on clean fields not busy graphics. Apply to all future Series B slide work.
+**Valuation/round-terms from her debrief:** verbal-only per standing rule — nothing written.
+**Left unchanged + flagged:** s31 2028 column "N120 Morpheus — drawing board → first hull" and s44 N120 TRL slide (N120 remains a real rung; only N220 was renamed). Teaser still carries old "Navier Network" slide as its #3 (Sampriti's new S4/S5 postdate teaser build).
+**QA scratch:** `134wiE-a8kpfCwMRku4wT44PBr3P-PdLKI2jHkgqECiU` (browser-delete).
+**Script:** /tasklet/agent/home/scripts/seriesb-rebuild/r28/r28-n180-memo.ts
