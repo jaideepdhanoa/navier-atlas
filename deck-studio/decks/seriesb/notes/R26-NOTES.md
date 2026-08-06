@@ -86,3 +86,24 @@ Jaideep on slide 20: why 11× (N30 vs Targa 32) but only 8× (N45 vs Princess 55
 ### Flagged, not touched
 - Memo §11 "Gulf 180-ft program kickoff, on contract" — possible LC-180 firewall breach (spec + region + contract status). Awaiting Jaideep ruling.
 - JIH sheet still hybrid @ $0.20 — separate commercial context, awaiting call.
+
+## Teaser rebuild (Jaideep round 6, 2026-08-06)
+**Ask:** Rebuild teaser from current R26d master content. Include Gulf + Quanta slides; no round slide.
+**Method:** Drive-duplicated master (perfect fidelity incl. R26d figures) → pruned 46→18 slides → cover retag "Investor Deck"→"Investor Teaser" → closer chapter tag 05·FINANCIALS→04·GTM (both element-scoped, API-verified).
+**New teaser:** `1JJ-QWO5-W1K_GQaUu7NCARrY7_C3COAl0s-4HnUz8GY` — "Navier — Series B Teaser" (18 slides).
+**Old teaser:** `1wyc6ereNDU3VZc8aTXw0Wy6oJJ6tzuHmXA3CuwMtM0M` renamed "[SUPERSEDED 2026-08-06 — do not share]". Jaideep browser-delete when ready.
+**Order (master idx):** 1,2,4,6,7,8,9,10,11,13,14,16,17,18,19,21,25,33.
+**Note:** master has 46 slides (42 export-visible + 4 skipped appendix: sb_prod_cost, g3f556ac5e67_1_714, g3f556ac5e67_1_798, g3f6623c186e_4_145) — none selected.
+**Browser session:** Google re-auth wall hit (password challenge) — PDF export blocked until Jaideep logs back in. Structural + text verification done via API.
+
+## R27 addendum (Jaideep round 7, 2026-08-06) — Sampriti's new slides rebuilt natively
+**Ask:** Sampriti pasted two mockup screenshots into slides 4 & 5 (from an external 23-slide draft) and reinserted slide 7 (native, with Why-now box — no work needed). Rebuild 4 & 5 natively + transcript-driven enhancements (Joe Batcha / GKB call) + Q&A update.
+**Slide 4 — THE NETWORK SHIFT (native):** "From a few giant ships to thousands of fast ones." Two panels: SHIPPING TODAY (sparse gray 5-node mega-port diagram, "20 knots · infrequent departures · fixed terminals") vs THE NAVIER NETWORK (dense 16-node gold mesh, "30 knots · departures all day · direct routes"). Kept protocol line (marinas=nodes…NavierOS=protocol) bottom-left; "The internet did this to information. We are doing it to payloads." bottom-right gold.
+**Slide 5 — THE MASTER PLAN (native):** "Prove the system. Then compound the network." 6-phase timeline: 01 Prove flight/PIONEER (gold=done) → 02 Prove endurance/QUANTA (done) → 03 Prove network/MALDIVES (white+NOW) → 04 Add throughput/REGIONAL → 05 Scale corridors/GLOBAL → 06 Own the nodes/NETWORK. Bottom bar: "The vessel creates the route. The route creates the node."
+**⚠️ Firewall decision:** Sampriti's mock said "80–180 ft" on phase 05 → rendered as **"80–220 ft"** (public N80/N120/N220 ladder) to keep LC-180 firewall. Flag to Jaideep.
+**Slide 23 enhancement:** "We live this gap." strip — own Türkiye→U.S. shipments ~$40K/~40 days sea vs ~$400K/2–3 days air (Sampriti firsthand, call 2026-08-06).
+**Q&A bank:** Q25–Q33 added (recurring rev per vessel, production ramp 20→40/yr, fabless/NVIDIA model, payload/foil-assist, how-big-can-foils-get + Plainview, exit paths, offshore energy crew transfer, defense commercial-first, hardware margins 20%→40–45%). Appended to live doc + local MD. Production-ramp answer partially closes the open production Q&A item.
+**Transcript discrepancies flagged (deck unchanged):** (1) Sampriti quoted Quanta 2,400 NMi unmanned / 800 NMi manned vs deck canon ~2,000 NMi — needs Jaideep reconciliation; (2) she sized Series B "70–100M" on call vs locked $100–150M ask slide; (3) Saronic $3-per-$1 comparison spoken — stays off-deck (no primary source); (4) Maldives payback "5–6 months" spoken vs modeled figures.
+**QA scratch decks created (Jaideep browser-delete):** `1f4fo-wup0Zs9ZlOYxwLDSy-XXkSnQUxiVEFVO5_qPf8`, `1zq1NJiRoVE40-GZzkLjSKe-WOHPtRP1Zim9BB_zCYaw` (both "[QA SCRATCH — safe to delete]").
+**Render-verified:** via Drive PDF export of pruned scratch (browser auth-walled; Google session needs Jaideep re-login). Slides 4/5/23 verified clean after r27b fixes + source-append revert.
+**Scripts:** /tasklet/agent/home/scripts/seriesb-rebuild/r27/{r27-build.ts,r27b-fixes.ts}
