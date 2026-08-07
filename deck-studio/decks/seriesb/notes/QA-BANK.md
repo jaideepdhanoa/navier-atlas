@@ -53,7 +53,7 @@
 
 **Q7. "You benchmarked only defense vessels — where are Candela, Artemis, Vessev, Mobyfly?"** 🟡
 - Position: main deck stays dominance-framed, no competitor logos (same choice SpaceX makes). Sourced commercial-field comparison lives in the appendix as ready ammo.
-- Verbal answer: they build electric boats; we build a platform. Checkable facts they cannot claim: American-built (Jones Act + US defense procurement eligible; Candela=SE, Artemis=UK, Vessev=NZ, Mobyfly=CH); range (pure-electric field = tens of NMi, Quanta ~2,000 NMi hybrid); 10,000+ in-service hours; network + software layer per hull. Autonomy/defense interest everyone will claim — anchor on build country, range, hours.
+- Verbal answer: they build electric boats; we build a platform. Checkable facts they cannot claim: American-built (Jones Act + US defense procurement eligible; Candela=SE, Artemis=UK, Vessev=NZ, Mobyfly=CH); range (pure-electric field = tens of NMi, Quanta ~2,000 NMi hybrid); 10,000+ hours on the water; network + software layer per hull. Autonomy/defense interest everyone will claim — anchor on build country, range, hours.
 - Done (Aug 5) — appendix slide 29 "They Build Boats. Navier Builds the Platform." live in Series B deck; Mobyfly footnoted as design-stage.
 
 ## Process rules (from this call)

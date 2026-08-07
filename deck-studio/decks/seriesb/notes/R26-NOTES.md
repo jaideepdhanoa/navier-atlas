@@ -181,3 +181,19 @@ All prior stats retained. 40–80× headline unchanged (modes-level comparison).
 - Comment email archived; confirmation posted to #tasklet-google-slide-comments.
 - Note: deck now reads **47 slides** (Jaideep reverted the appendix TAM slide to the original, restoring one slide). Slide 28 footer + one-pager realigned to $1.1T+ in R28c.
 - Alternates banked under `/tasklet/agent/home/seriesb-rebuild/cover-candidates/` if Sampriti wants a different direction.
+
+## R28e addendum (Sampriti comment, 2026-08-06 evening) — "in service" language
+Sampriti (deck comment, slide 9): never say a Navier boat is "in service" — implies WE operate it. Say "delivered." She retitled slide 9 herself ("The N30 Pioneer — Delivered").
+Cascade applied:
+- Master deck: 2× "IN SERVICE" chips (slides 38 competitor-ref, 45 TRL strip) → "DELIVERED".
+- Teaser slide 7 title: "The N30 Pioneer — In Service" → "— Delivered".
+- Memo (live + MD): "hours in service" ×2 → "hours on the water"; "certified and in service" → "certified and delivered".
+- QA bank (live + MD): "10,000+ in-service hours" → "10,000+ hours on the water".
+- One-pager: clean, no occurrences.
+**Standing language rule:** Navier fleet = "delivered" / "hours on the water" — never "in service" (that phrasing is for competitor vessels operated by others, e.g. Candela P-12 "in service Stockholm").
+
+## R28f addendum (Sampriti comment, slide 5) — market arrows
+Sampriti: "shall we make an arrow and point to market it opens?" (slide 5 Master Plan — confirmed by Jaideep).
+Applied: per-phase slim gold down-arrow (1.5pt, FILL_ARROW, deck gold #C59D5F) + white Exo 2 bold 8pt market label in the free band between tag row and bar. Element IDs r28fs5_ar0–5 / r28fs5_mk0–5.
+Markets (trace the approved segment story): 01 PIONEER→RECREATIONAL · 02 QUANTA→DEFENSE + LONG RANGE · 03 MALDIVES→MOBILITY · 04 REGIONAL→EXPRESS CARGO · 05 GLOBAL→MASS TRANSIT + FREIGHT · 06 NETWORK→INFRASTRUCTURE.
+Render-verified via pruned scratch export. Teaser has no Master Plan slide yet — the pending spine rebuild must inherit this element set.

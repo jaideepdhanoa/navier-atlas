@@ -110,7 +110,7 @@ In the Maldives, Navier earns ~$1.0M per vessel sale plus ~$262K per vessel per 
 
 **Unit economics, against the incumbent.** Same price, same fares — only the running costs change. On our Maldives operator’s own schedule and fares (8 daily legs, 300 days a year), the N30 runs at 7× lower energy cost per mile than its 30-ft diesel counterpart, and the electric N45 13× lower than the Princess 55 it replaces. All-in, a Navier vessel is roughly 2–3× cheaper to run — even carrying a software line the diesels don’t have: $60K–$120K per hull per year, paid back to Navier as recurring revenue.
 
-The field, for contrast: the commercial electric-foiler field tops out at roughly 70 nautical miles of range, and none of it is built in America; no other builder has 10,000 commercial hours in service or a long-range hull in trials. Software and autonomy are easy to claim — country of build, hours in service, and range are checkable, and each is Navier’s alone.
+The field, for contrast: the commercial electric-foiler field tops out at roughly 70 nautical miles of range, and none of it is built in America; no other builder has 10,000 commercial hours on the water or a long-range hull in trials. Software and autonomy are easy to claim — country of build, hours on the water, and range are checkable, and each is Navier’s alone.
 
 ## 7. Why Now
 
@@ -191,7 +191,7 @@ Investors interested in participating can contact us for details. Terms availabl
 
 - **Production ramp.** The near-term fleet is built on a certified, already-in-production platform; deliveries are contracted and sequenced (first vessel October 2026, 20 by end of 2027), and the shipyard-license model adds capacity without adding factories.
 - **Capital intensity.** Navier does not own the fleets. Asset partners finance the vessels (JIH in the Maldives); Navier earns on the sale and on the recurring software and network lines.
-- **Regulatory and certification.** Maritime certification is measured in months, not the decade aviation requires — the first fleet is already certified and in service across multiple jurisdictions.
+- **Regulatory and certification.** Maritime certification is measured in months, not the decade aviation requires — the first fleet is already certified and delivered across multiple jurisdictions.
 - **Round timing.** The two-stage structure de-risks the raise itself: the first close keeps execution at full speed while the full round — already in advanced discussions with a lead — completes.
 
 ## Press
