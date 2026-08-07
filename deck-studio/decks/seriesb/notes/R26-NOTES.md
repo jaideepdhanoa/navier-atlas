@@ -197,3 +197,13 @@ Sampriti: "shall we make an arrow and point to market it opens?" (slide 5 Master
 Applied: per-phase slim gold down-arrow (1.5pt, FILL_ARROW, deck gold #C59D5F) + white Exo 2 bold 8pt market label in the free band between tag row and bar. Element IDs r28fs5_ar0–5 / r28fs5_mk0–5.
 Markets (trace the approved segment story): 01 PIONEER→RECREATIONAL · 02 QUANTA→DEFENSE + LONG RANGE · 03 MALDIVES→MOBILITY · 04 REGIONAL→EXPRESS CARGO · 05 GLOBAL→MASS TRANSIT + FREIGHT · 06 NETWORK→INFRASTRUCTURE.
 Render-verified via pruned scratch export. Teaser has no Master Plan slide yet — the pending spine rebuild must inherit this element set.
+
+## R28g addendum (Jaideep, 2026-08-06 late) — slide 5 market chips
+Jaideep: triangle arrows + bold market row "not very appealing." Replaced R28f treatment:
+- Deleted r28fs5_ar0–5 (FILL_ARROW triangles) + r28fs5_mk0–5 (bold white labels).
+- New: hairline gold stem (0.75pt, 55% alpha) + slim outlined pill per phase (ROUND_RECTANGLE,
+  fill #17212F, 0.75pt gold outline 80% alpha, white Exo 2 bold 7.5pt caps, variable width sized to text).
+- Element IDs r28gs5_st0–5 / r28gs5_ch0–5. Render-verified (scratch "s5 chips check").
+Markets unchanged: RECREATIONAL · DEFENSE + LONG RANGE · MOBILITY · EXPRESS CARGO · MASS TRANSIT + FREIGHT · INFRASTRUCTURE.
+Scratch decks pending browser-delete: "s5 arrow check" (stale, still shows old arrows), "s5 chips check".
+NB: google_drive_download_file saves exports under /tasklet/agent/home/ named after the Drive file (ignores downloadPath).
