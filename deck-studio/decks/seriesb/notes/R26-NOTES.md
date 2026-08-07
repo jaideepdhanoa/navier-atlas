@@ -148,3 +148,20 @@ All prior stats retained. 40–80× headline unchanged (modes-level comparison).
 **One-pager:** carries no per-kg bands — no change.
 **Teaser:** gap panel not present — no change.
 **Scratch:** `[QA SCRATCH — safe to delete] r28b bands check` (`1ZJXzqzgkvlVXXmFvjfiOt6Q5sH9QabzTEbiLHNijlzs`) for browser-delete.
+
+## R28c addendum (Jaideep round 10, 2026-08-06 evening) — cargo slide de-verbose + short-sea positioning + TAM revert alignment
+
+**Trigger 1 (Jaideep):** slide 23 too verbose/jargony after R28b explainer lines. **Trigger 2 (Sampriti voice note):** cargo positioning = short-sea/regional/island only — transatlantic can't be beaten (container ships carry thousands of boxes; big freighter aircraft own trunk air). **Trigger 3 (Jaideep):** he reverted the appendix TAM slide (41) to the original $1.1T+ design ($100B+ mobility / $700B+ logistics / $300B+ security) — the R20b $600B+ version is retired.
+
+**Slide 23 (`g3f6623c186e_4_78`):**
+- Title → "Navier Cargo — The Gap Between Air & Ocean"
+- Lede → "Short-sea and island freight — regional corridors, not ocean crossings." (play/wedge hierarchy still owns slides 25–26)
+- R28b band-explainer lines DELETED from AIR + OCEAN panels (each panel back to 2 short lines)
+- GAP paragraph → "Islands and coasts pay air prices — or wait on ocean time."
+- Türkiye strip: named transatlantic lane removed → "Shipping our own vessels overseas: ~$40K/~40 days by sea — or ~$400K/2–3 days by air." (bold lead-in untouched)
+**Slide 28 (`g3f6623c186e_4_268`):** "Top-down ceiling: $600B+ across water mobility, logistics & defense" → "$1.1T+ across mobility, logistics & security" (matches reverted slide 41).
+**Memo (live + MD):** short-sea scoping sentence added before the freighter play sentence ("on ocean crossings, ships carrying thousands of containers are unbeatable on cost, and we do not compete there"). Memo had no $600B+ refs.
+**One-pager (live docx replaced in place + local):** "$600B+ waterborne economy" → "$1.1T+"; cargo sentence now "for short-sea and island corridors — not ocean crossings — … trialed first as night freight" (was "seeded by").
+**Q&A (live + MD):** Q37 added — why we don't compete with container ships / no transatlantic claims.
+**Note:** teaser rebuild (pending) must inherit the cleaned slide 23 and $1.1T+ framing. Band-explainer detail lives on in Q36 only.
+**Scratch for browser-delete:** `1Xbw61Vt7erY7V_mKF7Yv86kINZnow6YeZ3XtHJO98-Y` ("r28c cargo cleanup").
