@@ -201,3 +201,11 @@ No — don't use "10×." Our own deck (Night Cargo — Example Economics) prices
 Do not improvise this on calls. The answer must come from the representative financial model (revenue / profit / scale by year) — the same open item Joe Batcha requested under NDA. Until that model is approved, the safe answer: "We share the full year-by-year model in diligence; the shape is Maldives deliveries scaling through 2027, first cargo corridor and N180 program kickoff in 2027, software and network share compounding on every delivered hull." **Action: build and approve the representative model — it closes Q26's ramp table, this question, and the Batcha NDA request in one artifact.**
 
 > Note (2026-08-06): valuation targets and round terms from Sampriti's debrief stay out of all written material per standing rule — verbal only. Pitch to Mark Leslie's group (via Tim) scheduled next Wednesday; the question list above is the prep set.
+
+
+**Q36 — Why is the ocean band so wide ($0.03–0.50/kg is a 15× spread)? Shouldn't you normalize by distance ($/kg-mile)?**
+The spread is shipment size + lane type + market cycle — not distance. The $0.03 floor is a full 40-ft container on a dense trunk lane in a soft market (roughly $600–750 per box across 22–25 tonnes of payload). The $0.50 ceiling is small-parcel freight — less-than-container-load, short-sea, island feeder lanes — where handling dominates the bill. On top of that, spot container rates have swung roughly 10× within three years (2021 peak vs 2023 trough).
+
+Distance-normalized, the gap survives. Same lane, Shanghai→LA (~10,500 km): air at $3.50/kg ≈ $0.33 per tonne-km; full-container ocean at $0.075/kg ≈ $0.007 per tonne-km — about 45×, inside the 40–80× on the slide. We quote per kilogram because that is how freight is actually bought; neither mode prices linearly with distance — terminal and handling costs are large fixed chunks.
+
+The point that matters for Navier: on our corridors — short island and coastal lanes — ocean sits at the top of its band ($0.20–0.50/kg parcel/feeder reality) and air, where it exists at all, at the top of its band too. Our illustrative $0.75–1.50/kg is priced against that local reality, not against a Shanghai→LA container.

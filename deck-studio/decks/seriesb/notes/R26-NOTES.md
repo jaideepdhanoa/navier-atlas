@@ -131,3 +131,20 @@ Jaideep on slide 20: why 11× (N30 vs Targa 32) but only 8× (N45 vs Princess 55
 **Jaideep rejected the R28 Q34 framing** ("~10× sea freight, at or below air"). Authoritative pricing = deck slide 39 `sb_cargo_econ` ("Night Cargo — Example Economics", ILLUSTRATIVE), which was **never changed and needed no restore**: **$0.75–1.50/kg** (LOW $0.75 · MID $1.00 · HIGH $1.50), midway between sourced bands (ocean $0.03–0.50/kg, air $2.50–4.50/kg). "10× ocean" ≈ $2.50–3.00/kg prices ABOVE the deck's own band — retired everywhere.
 **Edits:** memo §8 cargo paragraph (live + local MD) now carries "$0.75–1.50 per kilogram, a fraction of air rates and a healthy multiple of ocean"; Q34 rewritten (live + local) to anchor on the deck band and explicitly warn off "10×". Sampriti's Claude-derived "10× of $0.30/kg" figure is what Q34 now corrects.
 **QA scratch copies created this round (browser-delete):** 2× "[QA SCRATCH — safe to delete] r28 cargo check" (one orphaned by a failed script run, one used: `16IxvvZJ7F5F6DnlwCovtZt7lu3nOkEdFpZw10tvJabo`). Plus the r28 verify scratch from earlier.
+
+## R28b addendum (Jaideep round 9, 2026-08-06) — freight band cleanup
+
+**Trigger:** Jaideep questioned the 15× spread inside the ocean band ($0.03–0.50/kg) and asked whether a distance metric ($/kg-mile) was needed. Answer: spread = shipment size + lane type + market cycle, not distance; per-tonne-km the gap survives (~45× same-lane). He approved on-slide cleanup.
+
+**Slide 23 (master `g3f6623c186e_4_78`):** one 10.5pt gray explainer line inserted under each big number, element-scoped:
+- AIR [`g3f6623c186e_4_84` @19]: "$2.50 dense trunk lanes → $4.50 thin and urgent lanes"
+- OCEAN [`g3f6623c186e_4_86` @21]: "$0.03 full containers on trunk lanes → $0.50 parcels on island lanes"
+All prior stats retained. 40–80× headline unchanged (modes-level comparison). Render-verified via scratch copy.
+
+**Memo (live + local MD):** cargo paragraph band qualifiers added — air "dense trunk lanes at the floor, thin and urgent lanes at the ceiling"; ocean "cents per kilogram" → "$0.03–0.50 per kilogram — full containers on trunk lanes at the floor, small parcels on island lanes at the ceiling".
+
+**Q&A bank (live + local):** Q36 added — why the ocean band is wide; per-tonne-km math (air ~$0.33 vs ocean ~$0.007 per tonne-km, ~45×); why per-kg is the quoting basis; Navier corridors price against top-of-band local reality.
+
+**One-pager:** carries no per-kg bands — no change.
+**Teaser:** gap panel not present — no change.
+**Scratch:** `[QA SCRATCH — safe to delete] r28b bands check` (`1ZJXzqzgkvlVXXmFvjfiOt6Q5sH9QabzTEbiLHNijlzs`) for browser-delete.
