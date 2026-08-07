@@ -172,3 +172,12 @@ All prior stats retained. 40–80× headline unchanged (modes-level comparison).
 - **Slide 23 lede** → "Dedicated foiling freighters for short-sea and island corridors." (Jaideep's exact phrasing; occurrences=1, live-verified via text readback)
 - **Memo (live + MD):** negative sentence deleted; play sentence now "The play is dedicated foiling freighters for short-sea and island corridors, built on the same proven core…"
 - **One-pager (live in-place + local):** "corridors — not ocean crossings — priced" → "corridors, priced"
+
+## R28e addendum (Sampriti Drive comment, 2026-08-06 7:02 PM) — cover hero swap
+
+**Comment (slide 1, cover):** "i don't find tis picture inspiring."
+- Old cover photo = hazy pink-dusk static side profile (violated mood standard: no hazy/washed-out).
+- New cover hero = `deck-studio/assets/seriesb/r22/s2-plate-v2.jpg` (golden-hour aerial, vessel foiling at speed, lit wake). Approved R22 asset; hash-verified not used elsewhere in the deck (121 images checked). Swapped via Slides API `replaceImage` CENTER_CROP on element `g3f645480738_0_366`; live-verified in browser.
+- Comment email archived; confirmation posted to #tasklet-google-slide-comments.
+- Note: deck now reads **47 slides** (Jaideep reverted the appendix TAM slide to the original, restoring one slide). Slide 28 footer + one-pager realigned to $1.1T+ in R28c.
+- Alternates banked under `/tasklet/agent/home/seriesb-rebuild/cover-candidates/` if Sampriti wants a different direction.
