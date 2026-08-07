@@ -165,3 +165,10 @@ All prior stats retained. 40–80× headline unchanged (modes-level comparison).
 **Q&A (live + MD):** Q37 added — why we don't compete with container ships / no transatlantic claims.
 **Note:** teaser rebuild (pending) must inherit the cleaned slide 23 and $1.1T+ framing. Band-explainer detail lives on in Q36 only.
 **Scratch for browser-delete:** `1Xbw61Vt7erY7V_mKF7Yv86kINZnow6YeZ3XtHJO98-Y` ("r28c cargo cleanup").
+
+## R28d addendum (Jaideep round 11, 2026-08-06) — positive framing: drop "not ocean crossings"
+
+**Rule (standing):** focus on what we do, not what we don't. Scope cargo positively as "dedicated foiling freighters for short-sea and island corridors" — never name what we avoid in deck/memo/one-pager. (Q37 in the Q&A bank keeps the full defensive answer for verbal use.)
+- **Slide 23 lede** → "Dedicated foiling freighters for short-sea and island corridors." (Jaideep's exact phrasing; occurrences=1, live-verified via text readback)
+- **Memo (live + MD):** negative sentence deleted; play sentence now "The play is dedicated foiling freighters for short-sea and island corridors, built on the same proven core…"
+- **One-pager (live in-place + local):** "corridors — not ocean crossings — priced" → "corridors, priced"
