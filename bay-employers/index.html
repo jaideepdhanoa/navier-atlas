@@ -432,13 +432,16 @@ footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
             <div class="field"><label for="f-cc">Who else should see this? (optional)</label><input id="f-cc" name="cc" type="email" placeholder="colleague@company.com" /></div>
             <input type="hidden" id="f-flavor" name="flavor" value="A" />
           </div>
-          <p class="form-note">Letters of intent are non-binding. Submitting opens an email draft to Navier with your details — nothing is charged or reserved.</p>
-          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-            <button type="submit" class="btn btn-primary">Send non-binding letter of intent</button>
+          <p class="form-note">Letters of intent are non-binding. Submitting sends your details to Navier — nothing is charged or reserved.</p>
+          <!-- honeypot: leave empty -->
+          <input type="text" name="hp" id="f-hp" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0" />
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button type="submit" class="btn btn-primary" id="loi-submit">Send non-binding letter of intent</button>
+            <span id="loi-status" style="font-size:13px;color:var(--text-2)" hidden></span>
           </div>
         </form>
         <div class="success" id="loi-success">
-          <strong>Draft ready.</strong> Your mail client should open with a non-binding letter of intent. If it doesn’t, email <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a> with your company, nearest terminal, and seat interest.
+          <strong>Received.</strong> Thanks — we have your non-binding letter of intent and will follow up. Questions anytime: <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a>.
         </div>
       </div>
     </div>
@@ -864,39 +867,108 @@ footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
     });
   });
 
-  document.getElementById('loi-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const name = fd.get('name'), company = fd.get('company'), role = fd.get('role');
-    const email = fd.get('email'), stop = fd.get('stop'), line = fd.get('line');
-    const employees = fd.get('employees') || 'n/a', cc = fd.get('cc');
-    const flav = fd.get('flavor') === 'B' ? 'Option B — Anchor a line' : 'Option A — Reserve seats';
-    const stopLabel = nodesByKey[stop]?.label || stop;
-    const lineLabel = lines.find((l) => l.id === line)?.name || (line || 'Not sure yet');
+  function buildLoiPayload(fd) {
+    const stop = fd.get('stop');
+    const line = fd.get('line');
     const c = window.__BAY_CALC__ || {};
-    const subject = encodeURIComponent(`Bay employer letter of intent — ${company}`);
+    return {
+      name: fd.get('name'),
+      company: fd.get('company'),
+      role: fd.get('role'),
+      email: fd.get('email'),
+      stop,
+      stopLabel: nodesByKey[stop]?.label || stop,
+      line: line || '',
+      lineLabel: lines.find((l) => l.id === line)?.name || (line || 'Not sure yet'),
+      employees: fd.get('employees') || 'n/a',
+      cc: fd.get('cc') || '',
+      flavor: fd.get('flavor') || 'A',
+      flavorLabel: fd.get('flavor') === 'B' ? 'Option B — Anchor a line' : 'Option A — Reserve seats',
+      netIncremental: money(c.net_incremental || 0),
+      perRider: money(c.per_rider || 0),
+      seats: c.S != null ? String(c.S) : '',
+      hp: fd.get('hp') || '',
+      source: 'bay-employers',
+    };
+  }
+
+  function openMailtoFallback(payload) {
+    const subject = encodeURIComponent(`Bay employer letter of intent — ${payload.company}`);
     const body = encodeURIComponent(
 `Non-binding letter of intent — Bay Area employer water network
 
 I am submitting a non-binding letter of intent. This costs nothing and commits nothing.
 
-Name: ${name}
-Company: ${company}
-Role: ${role}
-Email: ${email}
-Nearest office terminal: ${stopLabel}
-Preferred line: ${lineLabel}
-Estimated interested employees: ${employees}
-Path: ${flav}
+Name: ${payload.name}
+Company: ${payload.company}
+Role: ${payload.role}
+Email: ${payload.email}
+Nearest office terminal: ${payload.stopLabel}
+Preferred line: ${payload.lineLabel}
+Estimated interested employees: ${payload.employees}
+Path: ${payload.flavorLabel}
 
-Planning estimate (not a quote): net incremental ~${money(c.net_incremental || 0)}/mo (~${money(c.per_rider || 0)}/rider) at ${c.S || '—'} seats.
+Planning estimate (not a quote): net incremental ~${payload.netIncremental}/mo (~${payload.perRider}/rider) at ${payload.seats || '—'} seats.
 
 Please follow up to discuss next steps.`
     );
     let mailto = `mailto:jaideep@navierboat.com?subject=${subject}&body=${body}`;
-    if (cc) mailto += `&cc=${encodeURIComponent(cc)}`;
+    if (payload.cc) mailto += `&cc=${encodeURIComponent(payload.cc)}`;
     window.location.href = mailto;
-    document.getElementById('loi-success').classList.add('show');
+  }
+
+  document.getElementById('loi-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = document.getElementById('loi-submit');
+    const status = document.getElementById('loi-status');
+    const success = document.getElementById('loi-success');
+    const payload = buildLoiPayload(new FormData(form));
+
+    btn.disabled = true;
+    status.hidden = false;
+    status.textContent = 'Sending…';
+    success.classList.remove('show');
+
+    try {
+      const res = await fetch('/api/loi', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      let data = null;
+      try { data = await res.json(); } catch { /* non-json */ }
+
+      if (res.ok && data && data.ok) {
+        status.textContent = '';
+        status.hidden = true;
+        success.classList.add('show');
+        form.reset();
+        document.getElementById('f-flavor').value = flavor;
+        return;
+      }
+
+      // Not configured / delivery failed → mailto so interest is never dropped
+      if (res.status === 503 || res.status === 502 || res.status >= 500) {
+        status.textContent = 'Opening email draft as backup…';
+        openMailtoFallback(payload);
+        success.innerHTML = '<strong>Draft ready.</strong> We could not reach the server intake, so your mail client should open with a non-binding letter. Or email <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a> directly.';
+        success.classList.add('show');
+        return;
+      }
+
+      status.textContent = (data && data.error === 'invalid_email')
+        ? 'Please use a valid work email.'
+        : 'Please check the form and try again.';
+    } catch (err) {
+      console.warn('[bay-employers] LOI submit failed', err);
+      status.textContent = 'Opening email draft as backup…';
+      openMailtoFallback(payload);
+      success.innerHTML = '<strong>Draft ready.</strong> Offline or network error — your mail client should open with a non-binding letter. Or email <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a>.';
+      success.classList.add('show');
+    } finally {
+      btn.disabled = false;
+    }
   });
 
   console.info('[bay-employers] resolved stops', DATA.nodes.map((n) => ({ key: n.key, bp: n.resolved_bp_id })));
