@@ -1,0 +1,79 @@
+{
+  "version": "2026-08-10",
+  "locked_numbers": {
+    "n30_seats": 8,
+    "n45_seats": 20,
+    "seat_price_band_usd_month": [800, 1200],
+    "corridor_launch_trigger_committed_seats": [60, 80],
+    "superseded": ["30-seat N45", "1,000-1,500 seat trigger", "$650 seat-month"]
+  },
+  "nodes": [
+    {"key": "larkspur", "label": "Larkspur", "candidate_bp_ids": ["bp-9ac1cd7b77"], "serves": "Marin residents — the classic super-commute origin"},
+    {"key": "ferry-building", "label": "SF Ferry Building", "candidate_bp_ids": ["bp-4e939f2346", "bp-b42a6feee3"], "serves": "Downtown SF / financial district offices"},
+    {"key": "mission-bay", "label": "Mission Bay (16th St / China Basin)", "candidate_bp_ids": ["bp-6f4ad8afd4"], "serves": "Mission Bay campus cluster — biotech, tech HQs, UCSF"},
+    {"key": "oyster-point", "label": "Oyster Point (South San Francisco)", "candidate_bp_ids": ["bp-e96f0d1393", "bp-28fc89a0d1", "bp-2341b244f5"], "serves": "South SF biotech corridor"},
+    {"key": "redwood-city", "label": "Redwood City", "candidate_bp_ids": ["bp-09dbb91b26", "bp-8331815f23"], "serves": "Mid-Peninsula offices"},
+    {"key": "alameda-jack-london", "label": "Alameda / Jack London Square", "candidate_bp_ids": ["bp-98bb5bad66", "bp-deaf6a288b", "bp-bb594ccb97", "bp-3f1c5e31c4"], "serves": "East Bay residents; Oakland waterfront offices"}
+  ],
+  "lines": [
+    {"id": "A", "name": "Line A — North Bay", "stops": ["larkspur", "ferry-building", "oyster-point"], "segments": [
+      {"from": "larkspur", "to": "ferry-building", "water_min": 25, "drive_min": [60, 90]},
+      {"from": "ferry-building", "to": "oyster-point", "water_min": 25, "drive_min": [30, 50]},
+      {"from": "larkspur", "to": "oyster-point", "water_min": 40, "drive_min": [75, 90], "note": "direct"}
+    ]},
+    {"id": "B", "name": "Line B — City & Peninsula", "stops": ["mission-bay", "oyster-point", "redwood-city"], "segments": [
+      {"from": "mission-bay", "to": "oyster-point", "water_min": 20, "drive_min": [35, 55]},
+      {"from": "oyster-point", "to": "redwood-city", "water_min": 30, "drive_min": [40, 60]},
+      {"from": "mission-bay", "to": "redwood-city", "water_min": 45, "drive_min": [60, 80], "note": "direct"}
+    ]},
+    {"id": "C", "name": "Line C — East Bay", "stops": ["alameda-jack-london", "mission-bay", "oyster-point"], "segments": [
+      {"from": "alameda-jack-london", "to": "mission-bay", "water_min": 18, "drive_min": [40, 70]},
+      {"from": "alameda-jack-london", "to": "oyster-point", "water_min": 28, "drive_min": [50, 75]}
+    ]},
+    {"schedules": null, "schedules_note": "No schedules exist. Do not invent timetables."}
+  ],
+  "roi_calculator": {
+    "inputs": {
+      "seats": {"default": 60, "label": "Committed seats"},
+      "days_per_month": {"default": 16, "label": "Commute days / employee / month"},
+      "price_seat_month": {"default": 1000, "min": 800, "max": 1200, "label": "Price per seat-month ($)"},
+      "subsidy_share": {"default": 0.8, "label": "Employer subsidy share"},
+      "pretax_benefit": {"default": 325, "label": "Pre-tax commuter benefit used / month ($)", "note": "2026 qualified transportation fringe est. — verify current IRS limit"},
+      "shuttle_cost": {"default": 550, "label": "Current shuttle / vanpool cost per seat-month ($)"},
+      "parking_cost": {"default": 350, "label": "Parking cost per stall-month ($)"},
+      "parking_share": {"default": 0.5, "label": "Share of riders who displace a parking stall"},
+      "car_min": {"default": 75, "label": "One-way car commute (min)"},
+      "water_min": {"default": 30, "label": "One-way water commute (min)"},
+      "car_miles": {"default": 20, "label": "One-way car distance (mi)"},
+      "co2_kg_per_mile": {"default": 0.35, "label": "CO2 per car-mile (kg)"},
+      "hour_cost": {"default": 90, "label": "Fully-loaded cost of an employee hour ($)"}
+    },
+    "formulas": {
+      "gross": "seats*price_seat_month",
+      "employee_contribution": "seats*min(pretax_benefit,(1-subsidy_share)*price_seat_month)",
+      "net_employer": "gross-employee_contribution",
+      "shuttle_offset": "seats*shuttle_cost",
+      "parking_offset": "seats*parking_share*parking_cost",
+      "net_incremental": "net_employer-shuttle_offset-parking_offset",
+      "hours_returned": "seats*days_per_month*2*(car_min-water_min)/60",
+      "productivity_value": "hours_returned*hour_cost",
+      "co2_tonnes": "seats*days_per_month*2*car_miles*co2_kg_per_mile/1000",
+      "net_cost_per_hour": "hours_returned==0 ? 0 : net_incremental/hours_returned"
+    },
+    "worked_example_at_defaults": {"net_incremental_month": 4500, "per_rider_month": 75},
+    "caveat": "Indicative planning tool, not a quote."
+  },
+  "copy": {
+    "hero_headline": "The Bay is the fastest lane your team isn't using.",
+    "hero_sub": "A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour.",
+    "stripe_lesson": "In 2024 we ran the first employer water commute on the Bay — daily service for Stripe employees, North Bay to Oyster Point. The ride delivered: smooth, quiet, four feet above the chop, a desk on the water. Two things didn't, and we're saying so plainly. First, we flew an eight-seat executive vessel on a mass-commute job — the economics of a commuter line need our twenty-seat vessel, built for exactly this. Second, we secured docks ahead of demand instead of demand ahead of docks — this time, employer letters of intent come first, and they are what unlock the berths. The ride worked. The structure is what we fixed.",
+    "loi_cta": "We are sequencing the first commuter lines now. A letter of intent is non-binding — it costs nothing and commits nothing. It tells us which line to light up first, and it gives us the demand evidence that unlocks terminal access. Option A: reserve seats for your team on a line. Option B: anchor a line — underwrite the vessel, brand the service, own the schedule.",
+    "price_anchor": "roughly a parking space — often less",
+    "footer_note": "Letters of intent are non-binding."
+  },
+  "references": {
+    "pitch_deck_slides_id": "1ZNH2_YFGw1XXLlC_0a7A2qxv-iefwtBh7PNJ9FFVnP8",
+    "drive_folder_id": "18U5DJ7gDRqOAw6x5Q0lhHAT6dSh7l_ys",
+    "asset_pack": "deck-studio/assets/weta/"
+  }
+}
