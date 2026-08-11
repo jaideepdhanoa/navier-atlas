@@ -28,6 +28,7 @@ import {
 } from './share-meta.mjs';
 import { auditClusterOrphans, collectRegionStats, uniqueCityCount } from './region-share.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
+import { buildEmployerHubs } from './build-employer-hubs.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
@@ -548,75 +549,19 @@ for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
     { type: 'region', id: slug }, regionMeta(brief, regionStats[slug] || {}));
 }
 
-// ---- Bay Area employer microsite (public sales surface) --------------------
+// ---- Employer hubs (Bay, NYC, …) — template + per-city hub.json ------------
 {
-  const baySrcDir = path.join(ROOT, 'bay-employers');
-  const bayDataSrc = path.join(ROOT, 'handoff/bay-employers/inputs/bay-employers-data.json');
-  const bayOut = path.join(DIST, 'bay-employers');
-  if (fs.existsSync(baySrcDir) && fs.existsSync(bayDataSrc)) {
-    fs.mkdirSync(bayOut, { recursive: true });
-    const data = readJson(bayDataSrc);
-    // Self-check: worked example must stay exact at defaults
-    const i = data.roi_calculator?.inputs || {};
-    const S = i.seats?.default ?? 60;
-    const P = i.price_seat_month?.default ?? 1000;
-    const sigma = i.subsidy_share?.default ?? 0.8;
-    const X = i.pretax_benefit?.default ?? 325;
-    const V = i.shuttle_cost?.default ?? 550;
-    const K = i.parking_cost?.default ?? 350;
-    const rho = i.parking_share?.default ?? 0.5;
-    const gross = S * P;
-    const emp = S * Math.min(X, (1 - sigma) * P);
-    const netInc = gross - emp - S * V - S * rho * K;
-    if (Math.round(netInc) !== 4500) {
-      console.error(`build-site: ABORT — bay-employers calculator defaults net_incremental=${netInc}, expected 4500`);
-      process.exit(1);
-    }
-    // Dock/berth dependency language must not ship on employer surface
-    const blob = JSON.stringify(data);
-    const bannedDock = /\b(unlock(?:s|ing)?\s+(?:the\s+)?(?:berths?|docks?)|docks?\s+ahead\s+of\s+demand|demand\s+ahead\s+of\s+docks?|terminal access)\b/i;
-    if (bannedDock.test(blob)) {
-      console.error('build-site: ABORT — bay-employers data contains dock/berth dependency language');
-      process.exit(1);
-    }
-    fs.writeFileSync(
-      path.join(bayOut, 'bay-employers-data.js'),
-      `/* GENERATED from handoff/bay-employers/inputs/bay-employers-data.json */\nwindow.BAY_EMPLOYERS_DATA = ${JSON.stringify(data)};\n`,
-    );
-    let html = fs.readFileSync(path.join(baySrcDir, 'index.html'), 'utf8');
-    // Absolute paths required: page is served at /bay-employers (no trailing slash), so
-    // relative "bay-employers-data.js" would resolve to /bay-employers-data.js (404).
-    html = html
-      .replace(/src=["']bay-employers-data\.js["']/g, 'src="/bay-employers/bay-employers-data.js"')
-      .replace(/url\(['"]?assets\/hero\.jpg['"]?\)/g, "url('/bay-employers/assets/hero.jpg')");
-    fs.writeFileSync(path.join(bayOut, 'index.html'), html);
-    const heroSrc = path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
-    if (fs.existsSync(heroSrc)) {
-      fs.mkdirSync(path.join(bayOut, 'assets'), { recursive: true });
-      fs.copyFileSync(heroSrc, path.join(bayOut, 'assets', 'hero.jpg'));
-    }
-    // Resolved BP receipt for QA
-    const bpReceipt = {
-      generated: new Date().toISOString(),
-      stops: (data.nodes || []).map((n) => ({
-        key: n.key,
-        label: n.label,
-        resolved_bp_id: n.resolved_bp_id,
-        lng: n.lng,
-        lat: n.lat,
-      })),
-      calculator_defaults_net_incremental: 4500,
-      calculator_defaults_per_rider: 75,
-    };
-    fs.writeFileSync(path.join(bayOut, 'BP-RESOLUTION-RECEIPT.json'), JSON.stringify(bpReceipt, null, 2) + '\n');
-    console.log(`bay-employers → _dist/bay-employers/  (${bpReceipt.stops.length} stops · calculator defaults OK)`);
-  } else {
-    console.warn('⚠ bay-employers source missing — skipping /bay-employers page');
+  try {
+    const built = buildEmployerHubs();
+    if (!built.length) console.warn('⚠ no employer hubs built');
+  } catch (e) {
+    console.error('build-site: ABORT — employer hubs failed:', e.message || e);
+    process.exit(1);
   }
 }
 
 if (failed) { console.error(`\nbuild-site: ${failed} page build(s) failed — see above.`); process.exit(1); }
 console.log(`\n_dist/ ready: 1 aggregate + ${pages} partner/market + ${sharePages} share pages${skipped?` (${skipped} market sub-page(s) skipped)`:''}.`);
 console.log(`Share URLs: ${SITE_URL}/region/<slug> · ${SITE_URL}/cluster/<id> · ${SITE_URL}/city/<id> · ${SITE_URL}/<partner>/<market>/city/<id>`);
-console.log(`Bay employers: ${SITE_URL}/bay-employers`);
+console.log(`Employer hubs: ${SITE_URL}/employers/<id> · aliases /bay-employers · /ny-employers`);
 console.log(`Short region URLs: ${SITE_URL}/southeast-asia · ${SITE_URL}/sea · ${SITE_URL}/mena · ${SITE_URL}/maghreb (→ /region/...)`);

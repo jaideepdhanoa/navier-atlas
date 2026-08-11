@@ -96,7 +96,8 @@ function normalize(raw) {
     perRider: str(raw.perRider, MAX_LEN.perRider),
     seats: str(raw.seats, MAX_LEN.seats),
     hp: str(raw.hp, 20), // honeypot
-    source: str(raw.source || 'bay-employers', 40),
+    source: str(raw.source || raw.hub_id || 'employer-hub', 40),
+    hub_id: str(raw.hub_id || raw.source || 'employer-hub', 40),
     submittedAt: new Date().toISOString(),
   };
   return d;
@@ -133,6 +134,7 @@ function textSummary(d) {
     d.seats || d.netIncremental
       ? `Planning est.: ${d.netIncremental || '—'} net/mo · ${d.perRider || '—'}/rider · ${d.seats || '—'} seats`
       : null,
+    `Hub: ${d.hub_id || d.source}`,
     `Source: ${d.source}`,
     `At: ${d.submittedAt}`,
   ]
@@ -144,15 +146,16 @@ async function sendSlack(d) {
   const url = process.env.LOI_SLACK_WEBHOOK_URL;
   if (!url) return { skip: true };
   const payload = {
-    text: `🌊 *Bay employer LOI* — *${d.company}* (${d.flavorLabel})`,
+    text: `🌊 *Employer LOI* (${d.hub_id || d.source}) — *${d.company}* (${d.flavorLabel})`,
     blocks: [
       {
         type: 'header',
-        text: { type: 'plain_text', text: `Bay employer LOI · ${d.company}`, emoji: true },
+        text: { type: 'plain_text', text: `Employer LOI · ${d.company}`, emoji: true },
       },
       {
         type: 'section',
         fields: [
+          { type: 'mrkdwn', text: `*Hub*\n${d.hub_id || d.source}` },
           { type: 'mrkdwn', text: `*Path*\n${d.flavorLabel}` },
           { type: 'mrkdwn', text: `*Employees*\n${d.employees}` },
           { type: 'mrkdwn', text: `*Name*\n${d.name}` },
@@ -193,6 +196,8 @@ async function sendSheets(d) {
   const payload = {
     secret: process.env.LOI_SHEETS_WEBHOOK_SECRET || undefined,
     timestamp: d.submittedAt,
+    hub: d.hub_id || d.source,
+    hub_id: d.hub_id || d.source,
     name: d.name,
     company: d.company,
     role: d.role,

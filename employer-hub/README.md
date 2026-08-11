@@ -1,0 +1,53 @@
+# Employer hubs (templated city microsites)
+
+Public sales surfaces for employer water networks. **One template**, many cities.
+
+## Decisions (2026-08-11)
+
+| Topic | Choice |
+|-------|--------|
+| Canonical URL | `/employers/<id>` e.g. `/employers/new-york`, `/employers/bay-area` |
+| Aliases | `/bay-employers`, `/ny-employers` (full copies for cleanUrls) |
+| Lines / EXEC | Same map treatment as Bay — every product line is a styled display line |
+| New water segments | Grok owns water-clean hand geometry |
+| LOI | One Google Sheet tab; rows include `hub` / `hub_id` |
+| Migration | Extract template from Bay first; NYC is hub #2 |
+
+## Layout
+
+```
+employer-hub/
+  registry.json              # which hubs to build
+  template/
+    index.html               # shell + brand mark
+    hub.css
+    hub.js                   # map, calculator profiles, LOI
+  hubs/
+    bay-area/hub.json        # hub #1 (live)
+    new-york/hub.json        # hub #2 (next)
+```
+
+## Calculator profiles
+
+- `bay_productivity` — net incremental + hours/CO₂ (Bay defaults → $4,500 / $75)
+- `nyc_parking_toll` — $/rider vs parking+toll benchmark (NY defaults → $600 vs $759, $18,900)
+
+## Build
+
+```bash
+node scripts/build-employer-hubs.mjs
+# or full site:
+node scripts/build-site.mjs
+```
+
+Emits `_dist/employers/<id>/` and each alias path with `index.html`, `hub.css`, `hub.js`, `hub-data.js`, `assets/hero.jpg`.
+
+## Add a city
+
+1. Create `hubs/<id>/hub.json` (copy Bay or NY shape).
+2. Register in `registry.json` with `canonical_path` + `aliases`.
+3. Resolve stop coords (sealed `bp_id`s) and line `water_path`s.
+4. Set `calculator.profile` + `worked_assert`.
+5. Build + deploy.
+
+Legacy one-off page: `bay-employers/index.html` is **deprecated** as source of truth (kept for reference until removed). Edits go in `employer-hub/`.

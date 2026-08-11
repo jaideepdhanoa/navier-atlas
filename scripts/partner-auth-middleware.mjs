@@ -1,5 +1,5 @@
 // Generates Vercel Edge middleware for per-partner HTTP Basic auth + /partners hub gate.
-// Public: /cluster/*, /city/*, /api/og, /api/loi, root atlas-data.js. Partner paths require password.
+// Public: /cluster/*, /city/*, /employers/*, /bay-employers, /ny-employers, /api/og, /api/loi, root atlas-data.js.
 export function generatePartnerAuthMiddleware(partnerSlugs) {
   const slugs = [...partnerSlugs].sort();
   // LB-258: listing every slug twice (/slug + /slug/:path*) blew the matcher table (~94 entries)
@@ -47,8 +47,10 @@ function isPublic(pathname) {
   if (pathname.startsWith('/cluster/')) return true;
   if (pathname.startsWith('/city/')) return true;
   if (pathname.startsWith('/region/')) return true;
-  // Employer sales microsite — public, not partner-auth gated
+  // Employer sales hubs — public, not partner-auth gated
   if (pathname === '/bay-employers' || pathname.startsWith('/bay-employers/')) return true;
+  if (pathname === '/ny-employers' || pathname.startsWith('/ny-employers/')) return true;
+  if (pathname === '/employers' || pathname.startsWith('/employers/')) return true;
   if (pathname.startsWith('/api/og') || pathname.startsWith('/api/loi')) return true;
   return false;
 }

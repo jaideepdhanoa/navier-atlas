@@ -20,7 +20,9 @@ Frontend falls back to `mailto:` if the API returns 5xx / is offline so interest
 1. Create a Google Sheet, e.g. **Bay employer LOIs**.
 2. Row 1 headers (exact order used below):
 
-   `timestamp | name | company | role | email | cc | stop | stopLabel | line | lineLabel | employees | flavor | flavorLabel | netIncremental | perRider | seats | source`
+   `timestamp | hub | name | company | role | email | cc | stop | stopLabel | line | lineLabel | employees | flavor | flavorLabel | netIncremental | perRider | seats | source`
+
+   One tab for all cities — `hub` is `bay-area`, `new-york`, etc.
 
 3. **Extensions → Apps Script**, paste:
 
@@ -39,6 +41,7 @@ function doPost(e) {
     const sh = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
     sh.appendRow([
       data.timestamp || new Date().toISOString(),
+      data.hub || data.hub_id || data.source || '',
       data.name || '',
       data.company || '',
       data.role || '',
