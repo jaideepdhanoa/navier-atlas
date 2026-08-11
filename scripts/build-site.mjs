@@ -584,6 +584,11 @@ for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
       `/* GENERATED from handoff/bay-employers/inputs/bay-employers-data.json */\nwindow.BAY_EMPLOYERS_DATA = ${JSON.stringify(data)};\n`,
     );
     let html = fs.readFileSync(path.join(baySrcDir, 'index.html'), 'utf8');
+    // Absolute paths required: page is served at /bay-employers (no trailing slash), so
+    // relative "bay-employers-data.js" would resolve to /bay-employers-data.js (404).
+    html = html
+      .replace(/src=["']bay-employers-data\.js["']/g, 'src="/bay-employers/bay-employers-data.js"')
+      .replace(/url\(['"]?assets\/hero\.jpg['"]?\)/g, "url('/bay-employers/assets/hero.jpg')");
     fs.writeFileSync(path.join(bayOut, 'index.html'), html);
     const heroSrc = path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
     if (fs.existsSync(heroSrc)) {
