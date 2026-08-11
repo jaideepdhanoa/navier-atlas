@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Navier · Bay Area Employer Network</title>
+<meta name="description" content="A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour." />
+<meta name="theme-color" content="#0a0a0a" />
+<meta property="og:title" content="Navier · Bay Area Employer Network" />
+<meta property="og:description" content="Reserve seats on a Bay Area employer water network. Non-binding letter of intent. ~$75 per rider at planning defaults." />
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-0:#0a0a0a; --bg-1:#171717; --bg-2:#202020; --bg-3:#2b2b2b;
+  --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.14);
+  --text-0:#f4f4f5; --text-1:#c7c7cc; --text-2:#959595;
+  --accent:#e0cb8f; --accent-dim:rgba(224,203,143,0.14);
+  --ok:#7dd3c0; --blue:#9bb7ff;
+  --max:1120px;
+  --radius:16px;
+  font-family:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg-0);color:var(--text-0);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.nav{
+  position:sticky;top:0;z-index:40;
+  backdrop-filter:blur(14px);
+  background:rgba(10,10,10,0.82);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:0.02em}
+.brand small{display:block;color:var(--text-2);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500}
+.nav-links{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.nav-links a{color:var(--text-1);font-size:13px;font-weight:500;text-decoration:none}
+.nav-links a:hover{color:var(--accent)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid transparent;border-radius:999px;padding:11px 18px;
+  font:600 13px Inter;cursor:pointer;transition:0.15s ease;
+}
+.btn-primary{background:var(--accent);color:#171717}
+.btn-primary:hover{filter:brightness(1.05);text-decoration:none}
+.btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--text-0)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.btn-sm{padding:8px 14px;font-size:12px}
+
+/* Hero */
+.hero{
+  position:relative;min-height:min(78vh,720px);
+  display:flex;align-items:flex-end;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.72) 55%,rgba(10,10,10,0.96) 100%),
+    url('assets/hero.jpg') center/cover no-repeat,
+    #171717;
+}
+.hero-inner{position:relative;z-index:1;padding:72px 0 48px;max-width:760px}
+.eyebrow{
+  font:600 11px Inter;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 14px;
+}
+.hero h1{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(32px,5.4vw,52px);line-height:1.12;margin:0 0 16px;font-weight:700;
+}
+.hero p.lead{font-size:clamp(15px,2vw,18px);color:var(--text-1);margin:0 0 28px;max-width:54ch}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.hero-note{font-size:13px;color:var(--text-2)}
+
+/* Sections */
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+section h2{
+  font-family:"Playfair Display",Georgia,serif;
+  font-size:clamp(26px,3.4vw,34px);margin:0 0 12px;line-height:1.2;
+}
+.section-lead{color:var(--text-1);max-width:62ch;margin:0 0 28px}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:780px){.chips{grid-template-columns:1fr}}
+.chip{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 18px;
+}
+.chip .v{
+  font-family:"Exo 2",Inter,sans-serif;font-weight:700;font-size:28px;
+  color:var(--accent);letter-spacing:-0.02em;margin-bottom:6px;
+}
+.chip .l{font-size:13px;color:var(--text-1)}
+
+/* Stripe lesson */
+.lesson{
+  display:grid;grid-template-columns:1.2fr 1fr;gap:18px;
+}
+@media (max-width:860px){.lesson{grid-template-columns:1fr}}
+.card{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;
+}
+.card h3{margin:0 0 10px;font-size:15px;letter-spacing:0.04em;text-transform:uppercase;color:var(--accent)}
+.card p{margin:0;color:var(--text-1);font-size:14.5px}
+.split-list{display:grid;gap:12px}
+.split-list .item{padding:14px 16px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line)}
+.split-list .item strong{display:block;color:var(--text-0);margin-bottom:4px;font-size:13px}
+.split-list .item span{color:var(--text-1);font-size:13.5px}
+
+/* Products */
+.products{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:780px){.products{grid-template-columns:1fr}}
+.product{position:relative;overflow:hidden}
+.product .tag{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;padding:4px 8px;border-radius:999px;margin-bottom:12px;
+}
+.tag-now{background:rgba(125,211,192,0.15);color:var(--ok)}
+.tag-line{background:var(--accent-dim);color:var(--accent)}
+.product h3{font-family:"Exo 2",Inter,sans-serif;font-size:22px;margin:0 0 8px}
+.product p{color:var(--text-1);font-size:14.5px;margin:0 0 14px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.meta{
+  font-size:12px;color:var(--text-1);border:1px solid var(--line);
+  border-radius:999px;padding:5px 10px;background:var(--bg-2);
+}
+.product .btn{width:100%}
+
+/* Map */
+.map-shell{
+  display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:16px;min-height:520px;
+}
+@media (max-width:900px){.map-shell{grid-template-columns:1fr}}
+.map-panel{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;display:flex;flex-direction:column;gap:12px;max-height:560px;overflow:auto;
+}
+.map-panel h3{margin:0;font-size:14px}
+.line-btn,.stop-btn{
+  width:100%;text-align:left;background:var(--bg-2);border:1px solid var(--line);
+  color:var(--text-0);border-radius:12px;padding:12px;cursor:pointer;font:500 13px Inter;
+}
+.line-btn:hover,.stop-btn:hover,.line-btn.active,.stop-btn.active{
+  border-color:var(--accent);background:rgba(224,203,143,0.08);
+}
+.line-btn .sub,.stop-btn .sub{display:block;color:var(--text-2);font-size:12px;margin-top:4px;font-weight:400}
+#map{
+  height:560px;border-radius:var(--radius);border:1px solid var(--line);
+  overflow:hidden;background:#0f1419;
+}
+@media (max-width:900px){#map{height:420px}}
+.detail{
+  margin-top:14px;padding:14px 16px;border-radius:12px;
+  background:var(--bg-2);border:1px solid var(--line);font-size:13.5px;color:var(--text-1);
+}
+.detail strong{color:var(--text-0)}
+.time-chip{
+  display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;
+  margin-top:8px;
+}
+.time-chip span{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:999px;
+  padding:4px 10px;font-size:12px;color:var(--text-1);
+}
+.time-chip span em{color:var(--accent);font-style:normal;font-weight:600}
+
+/* Calculator */
+.calc-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:18px}
+@media (max-width:900px){.calc-grid{grid-template-columns:1fr}}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.presets button{
+  background:var(--bg-2);border:1px solid var(--line);color:var(--text-1);
+  border-radius:999px;padding:7px 12px;font:500 12px Inter;cursor:pointer;
+}
+.presets button.active,.presets button:hover{border-color:var(--accent);color:var(--accent)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.fields{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-2);font-weight:600}
+.field input[type=number],.field input[type=range],.field select{
+  width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
+  color:var(--text-0);padding:10px 12px;font:500 14px Inter;
+}
+.field input[type=range]{padding:0;height:28px}
+.field .hint{font-size:11px;color:var(--text-2)}
+.headline-out{
+  background:linear-gradient(160deg,rgba(224,203,143,0.12),rgba(23,23,23,0.9));
+  border:1px solid rgba(224,203,143,0.35);border-radius:var(--radius);padding:22px;
+}
+.headline-out .big{
+  font-family:"Exo 2",Inter,sans-serif;font-size:clamp(28px,4vw,40px);
+  font-weight:700;color:var(--accent);letter-spacing:-0.02em;line-height:1.1;
+}
+.headline-out .sub{margin-top:6px;color:var(--text-0);font-size:16px;font-weight:600}
+.headline-out .anchor{margin-top:8px;color:var(--text-1);font-size:14px}
+.out-rows{margin-top:16px;display:grid;gap:8px}
+.out-row{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:10px 12px;background:var(--bg-2);border-radius:10px;border:1px solid var(--line);
+  font-size:13px;
+}
+.out-row span{color:var(--text-2)}
+.out-row strong{color:var(--text-0);font-variant-numeric:tabular-nums}
+.caveat{margin-top:12px;font-size:12px;color:var(--text-2)}
+.calc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+/* LOI */
+.loi-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px}
+@media (max-width:900px){.loi-grid{grid-template-columns:1fr}}
+.options{display:grid;gap:12px}
+.option{
+  border:1px solid var(--line);background:var(--bg-1);border-radius:var(--radius);
+  padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;
+}
+.option.active{border-color:var(--accent);background:rgba(224,203,143,0.08)}
+.option h4{margin:0 0 6px;font-size:15px}
+.option p{margin:0;color:var(--text-1);font-size:13.5px}
+form .fields{margin-top:4px}
+form .full{grid-column:1 / -1}
+.form-note{font-size:12px;color:var(--text-2);margin-top:10px}
+.success{
+  display:none;padding:18px;border-radius:var(--radius);
+  border:1px solid rgba(125,211,192,0.4);background:rgba(125,211,192,0.1);
+  color:var(--text-0);
+}
+.success.show{display:block}
+
+footer{padding:28px 0 48px;color:var(--text-2);font-size:12.5px}
+footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <span>NAVIER</span>
+      <small>Bay employer network</small>
+    </div>
+    <div class="nav-links">
+      <a href="#network">Network</a>
+      <a href="#calculator">Calculator</a>
+      <a href="#letter">Letter of intent</a>
+      <a class="btn btn-primary btn-sm" href="#letter">Reserve interest</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Bay Area · Employer water commute</p>
+    <h1 id="hero-headline">The Bay is the fastest lane your team isn't using.</h1>
+    <p class="lead" id="hero-sub">A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#network">See the network near me</a>
+      <a class="btn btn-ghost" href="#calculator">Estimate cost for my team</a>
+    </div>
+    <p class="hero-note">Non-binding letter of intent · no commitment · helps us sequence which line launches first</p>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <h2>The bridge is the bottleneck. The Bay is the spare lane.</h2>
+    <p class="section-lead">Your people already live and work on water-adjacent campuses. Rush-hour road time is the tax. Water cuts that tax — quietly, on a schedule you help form with seat interest.</p>
+    <div class="chips" id="problem-chips"></div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <h2>We already proved the ride.</h2>
+    <p class="section-lead">The Stripe pilot is public record. We keep the lesson as plain as the ride was smooth.</p>
+    <div class="lesson">
+      <div class="card">
+        <h3>What happened</h3>
+        <p id="stripe-lesson"></p>
+      </div>
+      <div class="split-list">
+        <div class="item">
+          <strong>What worked</strong>
+          <span>Smooth, quiet, four feet above the chop — a real desk on the water for a daily employer commute.</span>
+        </div>
+        <div class="item">
+          <strong>What we fixed</strong>
+          <span>Commuter service needs the twenty-seat vessel, not an eight-seat executive shuttle on a mass-commute job.</span>
+        </div>
+        <div class="item">
+          <strong>What we ask now</strong>
+          <span>Non-binding seat interest so we light the right line first — not a thousand-seat fantasy trigger.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <div class="wrap">
+    <h2>Two paths for employers</h2>
+    <p class="section-lead">Start with a small shuttle, or help form a full commuter line when seat demand is real.</p>
+    <div class="products">
+      <article class="card product">
+        <span class="tag tag-now">Available now</span>
+        <h3>N30 Executive Shuttle</h3>
+        <p>Eight seats. On-demand. Prove the water commute for leadership teams, hybrid pods, or a campus pilot — without waiting for a full line.</p>
+        <div class="meta-row">
+          <span class="meta">8 seats</span>
+          <span class="meta">On-demand</span>
+          <span class="meta">Pilot path</span>
+        </div>
+        <a class="btn btn-ghost" href="#letter" data-flavor="shuttle">Talk about a shuttle pilot</a>
+      </article>
+      <article class="card product">
+        <span class="tag tag-line">Forms on committed demand</span>
+        <h3>N45 Commuter Line</h3>
+        <p>Twenty seats. Scheduled corridor service when a line has enough committed seats. Built for campus-scale commute benefits — not a one-off charter.</p>
+        <div class="meta-row">
+          <span class="meta">20 seats / vessel</span>
+          <span class="meta">~60–80 seats to launch a line</span>
+          <span class="meta">$800–1,200 / seat-month</span>
+        </div>
+        <a class="btn btn-primary" href="#calculator" data-flavor="line">Model seats on a line</a>
+      </article>
+    </div>
+    <p class="caveat" id="launch-trigger" style="margin-top:16px"></p>
+  </div>
+</section>
+
+<section id="network">
+  <div class="wrap">
+    <h2>The network</h2>
+    <p class="section-lead">Six real terminals already on the Atlas map. Three employer lines. Tap a stop to see who it serves — and seed the calculator and letter of intent.</p>
+    <div class="map-shell">
+      <aside class="map-panel">
+        <h3>Lines</h3>
+        <div id="line-list"></div>
+        <h3 style="margin-top:8px">Stops</h3>
+        <div id="stop-list"></div>
+      </aside>
+      <div>
+        <div id="map" role="img" aria-label="San Francisco Bay employer water network map"></div>
+        <div class="detail" id="map-detail">Select a line or stop to see water vs drive times and who each terminal serves.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="wrap">
+    <h2>What it costs your team</h2>
+    <p class="section-lead">Planning defaults reproduce a worked example of <strong>$4,500/mo</strong> net incremental — about <strong>$75 per rider</strong>. Change the inputs; the math stays the same.</p>
+    <div class="presets" id="presets"></div>
+    <div class="calc-grid">
+      <div class="card">
+        <div class="fields" id="calc-fields"></div>
+      </div>
+      <div>
+        <div class="headline-out">
+          <div class="big" id="out-net">$4,500</div>
+          <div class="sub" id="out-per">$75 per rider / month</div>
+          <div class="anchor" id="price-anchor">roughly a parking space — often less</div>
+          <div class="out-rows" id="out-rows"></div>
+          <p class="caveat" id="calc-caveat">Indicative planning tool, not a quote.</p>
+          <div class="calc-actions">
+            <button type="button" class="btn btn-ghost btn-sm" id="copy-summary">Copy summary for Finance</button>
+            <a class="btn btn-primary btn-sm" href="#letter">Continue to letter of intent</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="letter">
+  <div class="wrap">
+    <h2>Letter of intent</h2>
+    <p class="section-lead" id="loi-cta"></p>
+    <div class="loi-grid">
+      <div class="options" id="flavor-options">
+        <button type="button" class="option active" data-flavor="A">
+          <h4>Option A — Reserve seats</h4>
+          <p>Signal interest in seats for your team on a line. Non-binding. Helps us sequence launch order.</p>
+        </button>
+        <button type="button" class="option" data-flavor="B">
+          <h4>Option B — Anchor a line</h4>
+          <p>Underwrite a vessel, brand the service, and help shape the service window for a full line.</p>
+        </button>
+      </div>
+      <div class="card">
+        <form id="loi-form">
+          <div class="fields">
+            <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" required autocomplete="name" /></div>
+            <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" required autocomplete="organization" /></div>
+            <div class="field"><label for="f-role">Role</label><input id="f-role" name="role" required placeholder="Workplace / Real estate / HR / Ops" /></div>
+            <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" required autocomplete="email" /></div>
+            <div class="field"><label for="f-stop">Nearest office terminal</label><select id="f-stop" name="stop" required></select></div>
+            <div class="field"><label for="f-line">Preferred line</label><select id="f-line" name="line"><option value="">Not sure yet</option></select></div>
+            <div class="field"><label for="f-seats">Est. interested employees</label><input id="f-seats" name="employees" type="number" min="1" step="1" placeholder="e.g. 40" /></div>
+            <div class="field"><label for="f-cc">Who else should see this? (optional)</label><input id="f-cc" name="cc" type="email" placeholder="colleague@company.com" /></div>
+            <input type="hidden" id="f-flavor" name="flavor" value="A" />
+          </div>
+          <p class="form-note">Letters of intent are non-binding. Submitting opens an email draft to Navier with your details — nothing is charged or reserved.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <button type="submit" class="btn btn-primary">Send non-binding letter of intent</button>
+          </div>
+        </form>
+        <div class="success" id="loi-success">
+          <strong>Draft ready.</strong> Your mail client should open with a non-binding letter of intent. If it doesn’t, email <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a> with your company, nearest terminal, and seat interest.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <div>
+      <strong style="color:var(--text-0)">NAVIER</strong>
+      <div id="footer-note">Letters of intent are non-binding.</div>
+    </div>
+    <div>
+      <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a>
+      · <a href="/">Atlas</a>
+    </div>
+  </div>
+</footer>
+
+<script src="bay-employers-data.js"></script>
+<script>
+(function () {
+  const DATA = window.BAY_EMPLOYERS_DATA;
+  if (!DATA) {
+    document.body.insertAdjacentHTML('afterbegin', '<p style="padding:24px;color:#e0cb8f">Missing bay-employers-data.js — rebuild the site.</p>');
+    return;
+  }
+
+  const nodesByKey = Object.fromEntries(DATA.nodes.map((n) => [n.key, n]));
+  const lines = DATA.lines.filter((l) => l.id);
+  let activeLineId = null;
+  let activeStopKey = null;
+  let map, popup;
+
+  // ---- copy ----
+  document.getElementById('hero-headline').textContent = DATA.copy.hero_headline;
+  document.getElementById('hero-sub').textContent = DATA.copy.hero_sub;
+  document.getElementById('stripe-lesson').textContent = DATA.copy.stripe_lesson;
+  document.getElementById('loi-cta').textContent = DATA.copy.loi_cta;
+  document.getElementById('price-anchor').textContent = DATA.copy.price_anchor;
+  document.getElementById('footer-note').textContent = DATA.copy.footer_note;
+  document.getElementById('calc-caveat').textContent = DATA.roi_calculator.caveat;
+  document.getElementById('launch-trigger').textContent = DATA.copy.launch_trigger || '';
+
+  const chips = document.getElementById('problem-chips');
+  (DATA.copy.problem_chips || []).forEach((c) => {
+    const el = document.createElement('div');
+    el.className = 'chip';
+    el.innerHTML = `<div class="v">${c.value}</div><div class="l">${c.label}</div>`;
+    chips.appendChild(el);
+  });
+
+  // ---- calculator ----
+  const inputsMeta = DATA.roi_calculator.inputs;
+  const state = {};
+  Object.keys(inputsMeta).forEach((k) => { state[k] = inputsMeta[k].default; });
+
+  const fieldsEl = document.getElementById('calc-fields');
+  const fieldOrder = [
+    'seats', 'days_per_month', 'price_seat_month', 'subsidy_share',
+    'pretax_benefit', 'shuttle_cost', 'parking_cost', 'parking_share',
+    'car_min', 'water_min', 'car_miles', 'co2_kg_per_mile', 'hour_cost',
+  ];
+
+  function renderFields() {
+    fieldsEl.innerHTML = '';
+    fieldOrder.forEach((key) => {
+      const meta = inputsMeta[key];
+      const wrap = document.createElement('div');
+      wrap.className = 'field';
+      const id = 'in-' + key;
+      let control;
+      if (key === 'price_seat_month' || key === 'subsidy_share' || key === 'parking_share') {
+        const min = meta.min != null ? meta.min : (key === 'subsidy_share' || key === 'parking_share' ? 0 : 800);
+        const max = meta.max != null ? meta.max : (key === 'subsidy_share' || key === 'parking_share' ? 1 : 1200);
+        const step = (key === 'subsidy_share' || key === 'parking_share') ? 0.05 : 25;
+        control = `<input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${state[key]}" />
+          <div class="hint"><span id="${id}-val">${formatInput(key, state[key])}</span></div>`;
+      } else {
+        control = `<input id="${id}" type="number" step="any" value="${state[key]}" />`;
+      }
+      wrap.innerHTML = `<label for="${id}">${meta.label}</label>${control}`;
+      fieldsEl.appendChild(wrap);
+      const input = wrap.querySelector('input');
+      input.addEventListener('input', () => {
+        state[key] = Number(input.value);
+        const valEl = document.getElementById(id + '-val');
+        if (valEl) valEl.textContent = formatInput(key, state[key]);
+        recompute();
+      });
+    });
+  }
+
+  function formatInput(key, v) {
+    if (key === 'subsidy_share' || key === 'parking_share') return Math.round(v * 100) + '%';
+    if (key === 'price_seat_month') return '$' + Math.round(v);
+    return String(v);
+  }
+
+  function money(n) {
+    const sign = n < 0 ? '-' : '';
+    const a = Math.abs(n);
+    if (a >= 1e6) return sign + '$' + (a / 1e6).toFixed(2) + 'M';
+    return sign + '$' + Math.round(a).toLocaleString('en-US');
+  }
+
+  function recompute() {
+    const S = state.seats;
+    const D = state.days_per_month;
+    const P = state.price_seat_month;
+    const sigma = state.subsidy_share;
+    const X = state.pretax_benefit;
+    const V = state.shuttle_cost;
+    const K = state.parking_cost;
+    const rho = state.parking_share;
+    const Tc = state.car_min;
+    const Tw = state.water_min;
+    const M = state.car_miles;
+    const E = state.co2_kg_per_mile;
+    const H = state.hour_cost;
+
+    const gross = S * P;
+    const employee_contribution = S * Math.min(X, (1 - sigma) * P);
+    const net_employer = gross - employee_contribution;
+    const shuttle_offset = S * V;
+    const parking_offset = S * rho * K;
+    const net_incremental = net_employer - shuttle_offset - parking_offset;
+    const hours_returned = S * D * 2 * (Tc - Tw) / 60;
+    const productivity_value = hours_returned * H;
+    const co2_tonnes = S * D * 2 * M * E / 1000;
+    const net_cost_per_hour = hours_returned === 0 ? 0 : net_incremental / hours_returned;
+    const per_rider = S === 0 ? 0 : net_incremental / S;
+
+    document.getElementById('out-net').textContent = money(net_incremental) + '/mo';
+    document.getElementById('out-per').textContent = money(per_rider) + ' per rider / month';
+
+    const rows = [
+      ['Gross program cost', money(gross) + '/mo'],
+      ['Employee pre-tax contribution', money(employee_contribution) + '/mo'],
+      ['Net employer cost', money(net_employer) + '/mo'],
+      ['Shuttle offset', money(shuttle_offset) + '/mo'],
+      ['Parking offset', money(parking_offset) + '/mo'],
+      ['Hours returned / month', Math.round(hours_returned).toLocaleString('en-US')],
+      ['Productivity value (framing only)', money(productivity_value) + '/mo'],
+      ['CO₂ avoided', co2_tonnes.toFixed(1) + ' t/mo'],
+      ['Net cost per employee-hour returned', money(net_cost_per_hour)],
+    ];
+    document.getElementById('out-rows').innerHTML = rows.map(([k, v]) =>
+      `<div class="out-row"><span>${k}</span><strong>${v}</strong></div>`
+    ).join('');
+
+    window.__BAY_CALC__ = { net_incremental, per_rider, hours_returned, S, P, sigma };
+    return { net_incremental, per_rider };
+  }
+
+  // presets
+  const presetsEl = document.getElementById('presets');
+  function addPreset(label, patch, id) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = label;
+    b.dataset.id = id;
+    b.addEventListener('click', () => {
+      Object.assign(state, patch);
+      renderFields();
+      recompute();
+      [...presetsEl.querySelectorAll('button')].forEach((x) => x.classList.toggle('active', x === b));
+    });
+    presetsEl.appendChild(b);
+    return b;
+  }
+  const defBtn = addPreset('Planning defaults', {
+    seats: 60, days_per_month: 16, price_seat_month: 1000, subsidy_share: 0.8,
+    pretax_benefit: 325, shuttle_cost: 550, parking_cost: 350, parking_share: 0.5,
+    car_min: 75, water_min: 30, car_miles: 20, co2_kg_per_mile: 0.35, hour_cost: 90,
+  }, 'defaults');
+  defBtn.classList.add('active');
+  lines.forEach((line) => {
+    if (!line.calculator_preset) return;
+    addPreset(line.calculator_preset.label || line.name, {
+      car_min: line.calculator_preset.car_min,
+      water_min: line.calculator_preset.water_min,
+      car_miles: line.calculator_preset.car_miles,
+    }, 'line-' + line.id);
+  });
+
+  renderFields();
+  const check = recompute();
+  // self-check worked example at defaults
+  if (Math.round(check.net_incremental) !== 4500 || Math.round(check.per_rider) !== 75) {
+    console.warn('[bay-employers] calculator defaults mismatch', check);
+  } else {
+    console.info('[bay-employers] calculator worked example OK: $4500 / $75');
+  }
+
+  document.getElementById('copy-summary').addEventListener('click', async () => {
+    const c = window.__BAY_CALC__ || {};
+    const text = [
+      `Navier Bay employer water network — planning estimate (not a quote).`,
+      `Net incremental employer cost: ${money(c.net_incremental)}/mo (~${money(c.per_rider)} per rider), at ${c.S} seats and $${c.P}/seat-month with ${(c.sigma * 100).toFixed(0)}% employer subsidy.`,
+      `Roughly a parking space — often less. Letter of intent is non-binding.`,
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copy-summary');
+      const prev = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = prev; }, 1500);
+    } catch {
+      prompt('Copy this summary:', text);
+    }
+  });
+
+  // ---- map ----
+  function initMap() {
+    map = new maplibregl.Map({
+      container: 'map',
+      style: {
+        version: 8,
+        sources: {
+          carto: {
+            type: 'raster',
+            tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+            tileSize: 256,
+            attribution: '© CARTO · © OpenStreetMap',
+          },
+        },
+        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
+      },
+      center: [-122.35, 37.72],
+      zoom: 9.4,
+      maxBounds: [[-123.1, 37.15], [-121.7, 38.35]],
+      attributionControl: true,
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+    popup = new maplibregl.Popup({ closeButton: false, offset: 12 });
+
+    map.on('load', () => {
+      const stopFeatures = DATA.nodes.map((n) => ({
+        type: 'Feature',
+        properties: { key: n.key, label: n.label, serves: n.serves, bp: n.resolved_bp_id },
+        geometry: { type: 'Point', coordinates: [n.lng, n.lat] },
+      }));
+      map.addSource('stops', { type: 'geojson', data: { type: 'FeatureCollection', features: stopFeatures } });
+
+      lines.forEach((line) => {
+        map.addSource('line-' + line.id, {
+          type: 'geojson',
+          data: {
+            type: 'Feature',
+            properties: { id: line.id, name: line.name },
+            geometry: { type: 'LineString', coordinates: line.water_path },
+          },
+        });
+        map.addLayer({
+          id: 'line-glow-' + line.id,
+          type: 'line',
+          source: 'line-' + line.id,
+          paint: {
+            'line-color': line.color || '#e0cb8f',
+            'line-width': 8,
+            'line-opacity': 0.22,
+            'line-blur': 2,
+          },
+        });
+        map.addLayer({
+          id: 'line-' + line.id,
+          type: 'line',
+          source: 'line-' + line.id,
+          paint: {
+            'line-color': line.color || '#e0cb8f',
+            'line-width': 2.5,
+            'line-opacity': 0.95,
+          },
+        });
+      });
+
+      map.addLayer({
+        id: 'stops-halo',
+        type: 'circle',
+        source: 'stops',
+        paint: {
+          'circle-radius': 10,
+          'circle-color': '#e0cb8f',
+          'circle-opacity': 0.18,
+        },
+      });
+      map.addLayer({
+        id: 'stops',
+        type: 'circle',
+        source: 'stops',
+        paint: {
+          'circle-radius': 5.5,
+          'circle-color': '#f4f4f5',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#e0cb8f',
+        },
+      });
+      map.addLayer({
+        id: 'stops-label',
+        type: 'symbol',
+        source: 'stops',
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-size': 11,
+          'text-offset': [0, 1.3],
+          'text-anchor': 'top',
+          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+        },
+        paint: {
+          'text-color': '#f4f4f5',
+          'text-halo-color': '#0a0a0a',
+          'text-halo-width': 1.2,
+        },
+      });
+
+      map.on('click', 'stops', (e) => {
+        const f = e.features[0];
+        selectStop(f.properties.key);
+      });
+      map.on('mouseenter', 'stops', () => { map.getCanvas().style.cursor = 'pointer'; });
+      map.on('mouseleave', 'stops', () => { map.getCanvas().style.cursor = ''; });
+    });
+  }
+
+  function setLineOpacity(focusId) {
+    if (!map || !map.getLayer('line-A')) return;
+    lines.forEach((line) => {
+      const on = !focusId || line.id === focusId;
+      map.setPaintProperty('line-' + line.id, 'line-opacity', on ? 0.95 : 0.18);
+      map.setPaintProperty('line-glow-' + line.id, 'line-opacity', on ? 0.28 : 0.06);
+    });
+  }
+
+  function selectLine(id) {
+    activeLineId = id;
+    activeStopKey = null;
+    setLineOpacity(id);
+    const line = lines.find((l) => l.id === id);
+    [...document.querySelectorAll('.line-btn')].forEach((b) => b.classList.toggle('active', b.dataset.id === id));
+    [...document.querySelectorAll('.stop-btn')].forEach((b) => b.classList.remove('active'));
+    if (!line) return;
+    const segs = (line.segments || []).map((s) => {
+      const a = nodesByKey[s.from]?.label || s.from;
+      const b = nodesByKey[s.to]?.label || s.to;
+      const d0 = s.drive_min[0], d1 = s.drive_min[1];
+      return `<div style="margin-top:8px"><strong>${a} → ${b}</strong>
+        <div class="time-chip"><span><em>~${s.water_min} min</em> on the water</span><span>${d0}–${d1} min driving</span></div></div>`;
+    }).join('');
+    document.getElementById('map-detail').innerHTML =
+      `<strong>${line.name}</strong><div style="margin-top:6px">Launch when about 60–80 seats are committed on the line. No public timetable yet — times below are one-way planning ranges.</div>${segs}
+       <div style="margin-top:12px"><button type="button" class="btn btn-primary btn-sm" id="use-line-preset">Use this line in the calculator</button></div>`;
+    document.getElementById('use-line-preset')?.addEventListener('click', () => {
+      if (line.calculator_preset) {
+        Object.assign(state, {
+          car_min: line.calculator_preset.car_min,
+          water_min: line.calculator_preset.water_min,
+          car_miles: line.calculator_preset.car_miles,
+        });
+        renderFields();
+        recompute();
+      }
+      document.getElementById('f-line').value = line.id;
+      document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('f-line').value = line.id;
+  }
+
+  function selectStop(key) {
+    activeStopKey = key;
+    const n = nodesByKey[key];
+    if (!n) return;
+    [...document.querySelectorAll('.stop-btn')].forEach((b) => b.classList.toggle('active', b.dataset.key === key));
+    const touch = lines.filter((l) => (l.stops || []).includes(key)).map((l) => l.name).join(' · ');
+    document.getElementById('map-detail').innerHTML =
+      `<strong>${n.label}</strong><div style="margin-top:6px">${n.serves}</div>
+       <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touch || '—'}</div>
+       <div style="margin-top:8px;color:var(--text-2);font-size:12px">Terminal id: ${n.resolved_bp_id}</div>
+       <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+         <button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>
+       </div>`;
+    document.getElementById('use-stop')?.addEventListener('click', () => {
+      document.getElementById('f-stop').value = key;
+      const line = lines.find((l) => (l.stops || []).includes(key));
+      if (line) {
+        document.getElementById('f-line').value = line.id;
+        if (line.calculator_preset) {
+          Object.assign(state, {
+            car_min: line.calculator_preset.car_min,
+            water_min: line.calculator_preset.water_min,
+            car_miles: line.calculator_preset.car_miles,
+          });
+          renderFields();
+          recompute();
+        }
+      }
+      document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+    });
+    if (map) {
+      map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10.2), duration: 800 });
+      popup.setLngLat([n.lng, n.lat]).setHTML(`<strong style="color:#171717">${n.label}</strong>`).addTo(map);
+    }
+  }
+
+  // side lists
+  const lineList = document.getElementById('line-list');
+  lines.forEach((line) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'line-btn';
+    b.dataset.id = line.id;
+    b.innerHTML = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${line.color};margin-right:8px"></span>${line.name}<span class="sub">${(line.stops || []).map((k) => nodesByKey[k]?.label || k).join(' · ')}</span>`;
+    b.addEventListener('click', () => selectLine(line.id));
+    lineList.appendChild(b);
+  });
+  const stopList = document.getElementById('stop-list');
+  DATA.nodes.forEach((n) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'stop-btn';
+    b.dataset.key = n.key;
+    b.innerHTML = `${n.label}<span class="sub">${n.serves}</span>`;
+    b.addEventListener('click', () => selectStop(n.key));
+    stopList.appendChild(b);
+  });
+
+  initMap();
+
+  // ---- LOI form ----
+  const stopSel = document.getElementById('f-stop');
+  DATA.nodes.forEach((n) => {
+    const o = document.createElement('option');
+    o.value = n.key;
+    o.textContent = n.label;
+    stopSel.appendChild(o);
+  });
+  const lineSel = document.getElementById('f-line');
+  lines.forEach((l) => {
+    const o = document.createElement('option');
+    o.value = l.id;
+    o.textContent = l.name;
+    lineSel.appendChild(o);
+  });
+
+  let flavor = 'A';
+  document.querySelectorAll('#flavor-options .option').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      flavor = btn.dataset.flavor;
+      document.getElementById('f-flavor').value = flavor;
+      document.querySelectorAll('#flavor-options .option').forEach((b) => b.classList.toggle('active', b === btn));
+    });
+  });
+  document.querySelectorAll('[data-flavor]').forEach((el) => {
+    if (el.classList.contains('option')) return;
+    el.addEventListener('click', () => {
+      const f = el.getAttribute('data-flavor');
+      if (f === 'shuttle') {
+        flavor = 'A';
+        document.getElementById('f-flavor').value = 'A';
+      }
+      if (f === 'line') {
+        flavor = 'A';
+        document.getElementById('f-flavor').value = 'A';
+      }
+    });
+  });
+
+  document.getElementById('loi-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const name = fd.get('name');
+    const company = fd.get('company');
+    const role = fd.get('role');
+    const email = fd.get('email');
+    const stop = fd.get('stop');
+    const line = fd.get('line');
+    const employees = fd.get('employees') || 'n/a';
+    const cc = fd.get('cc');
+    const flav = fd.get('flavor') === 'B' ? 'Option B — Anchor a line' : 'Option A — Reserve seats';
+    const stopLabel = nodesByKey[stop]?.label || stop;
+    const lineLabel = lines.find((l) => l.id === line)?.name || (line || 'Not sure yet');
+    const c = window.__BAY_CALC__ || {};
+    const subject = encodeURIComponent(`Bay employer letter of intent — ${company}`);
+    const body = encodeURIComponent(
+`Non-binding letter of intent — Bay Area employer water network
+
+I am submitting a non-binding letter of intent. This costs nothing and commits nothing.
+
+Name: ${name}
+Company: ${company}
+Role: ${role}
+Email: ${email}
+Nearest office terminal: ${stopLabel}
+Preferred line: ${lineLabel}
+Estimated interested employees: ${employees}
+Path: ${flav}
+
+Planning estimate (not a quote): net incremental ~${money(c.net_incremental || 0)}/mo (~${money(c.per_rider || 0)}/rider) at ${c.S || '—'} seats.
+
+Please follow up to discuss next steps.`
+    );
+    let mailto = `mailto:jaideep@navierboat.com?subject=${subject}&body=${body}`;
+    if (cc) mailto += `&cc=${encodeURIComponent(cc)}`;
+    window.location.href = mailto;
+    document.getElementById('loi-success').classList.add('show');
+  });
+
+  // resolved BP log for QA
+  console.info('[bay-employers] resolved stops', DATA.nodes.map((n) => ({ key: n.key, bp: n.resolved_bp_id, lng: n.lng, lat: n.lat })));
+})();
+</script>
+</body>
+</html>

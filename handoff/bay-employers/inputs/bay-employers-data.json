@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-10",
+  "version": "2026-08-11",
   "locked_numbers": {
     "n30_seats": 8,
     "n45_seats": 20,
@@ -8,30 +8,150 @@
     "superseded": ["30-seat N45", "1,000-1,500 seat trigger", "$650 seat-month"]
   },
   "nodes": [
-    {"key": "larkspur", "label": "Larkspur", "candidate_bp_ids": ["bp-9ac1cd7b77"], "serves": "Marin residents — the classic super-commute origin"},
-    {"key": "ferry-building", "label": "SF Ferry Building", "candidate_bp_ids": ["bp-4e939f2346", "bp-b42a6feee3"], "serves": "Downtown SF / financial district offices"},
-    {"key": "mission-bay", "label": "Mission Bay (16th St / China Basin)", "candidate_bp_ids": ["bp-6f4ad8afd4"], "serves": "Mission Bay campus cluster — biotech, tech HQs, UCSF"},
-    {"key": "oyster-point", "label": "Oyster Point (South San Francisco)", "candidate_bp_ids": ["bp-e96f0d1393", "bp-28fc89a0d1", "bp-2341b244f5"], "serves": "South SF biotech corridor"},
-    {"key": "redwood-city", "label": "Redwood City", "candidate_bp_ids": ["bp-09dbb91b26", "bp-8331815f23"], "serves": "Mid-Peninsula offices"},
-    {"key": "alameda-jack-london", "label": "Alameda / Jack London Square", "candidate_bp_ids": ["bp-98bb5bad66", "bp-deaf6a288b", "bp-bb594ccb97", "bp-3f1c5e31c4"], "serves": "East Bay residents; Oakland waterfront offices"}
+    {
+      "key": "larkspur",
+      "label": "Larkspur",
+      "candidate_bp_ids": ["bp-9ac1cd7b77"],
+      "resolved_bp_id": "bp-9ac1cd7b77",
+      "name": "Larkspur",
+      "lng": -122.50836,
+      "lat": 37.94471,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "Marin residents — the classic super-commute origin"
+    },
+    {
+      "key": "ferry-building",
+      "label": "SF Ferry Building",
+      "candidate_bp_ids": ["bp-4e939f2346", "bp-b42a6feee3"],
+      "resolved_bp_id": "bp-4e939f2346",
+      "name": "San Francisco Ferry Building",
+      "lng": -122.392185,
+      "lat": 37.794776,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "Downtown SF / financial district offices"
+    },
+    {
+      "key": "mission-bay",
+      "label": "Mission Bay (16th St / China Basin)",
+      "candidate_bp_ids": ["bp-6f4ad8afd4"],
+      "resolved_bp_id": "bp-6f4ad8afd4",
+      "name": "Mission Bay (16th St / China Basin)",
+      "lng": -122.387,
+      "lat": 37.77,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "Mission Bay campus cluster — biotech, tech HQs, UCSF"
+    },
+    {
+      "key": "oyster-point",
+      "label": "Oyster Point (South San Francisco)",
+      "candidate_bp_ids": ["bp-e96f0d1393", "bp-28fc89a0d1", "bp-2341b244f5"],
+      "resolved_bp_id": "bp-e96f0d1393",
+      "name": "Oyster Point Marina",
+      "lng": -122.382995,
+      "lat": 37.667352,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "South SF biotech corridor"
+    },
+    {
+      "key": "redwood-city",
+      "label": "Redwood City",
+      "candidate_bp_ids": ["bp-09dbb91b26", "bp-8331815f23"],
+      "resolved_bp_id": "bp-09dbb91b26",
+      "name": "Redwood City Marina",
+      "lng": -122.21271,
+      "lat": 37.503026,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "Mid-Peninsula offices"
+    },
+    {
+      "key": "alameda-jack-london",
+      "label": "Alameda / Jack London Square",
+      "candidate_bp_ids": ["bp-98bb5bad66", "bp-deaf6a288b", "bp-bb594ccb97", "bp-3f1c5e31c4"],
+      "resolved_bp_id": "bp-98bb5bad66",
+      "name": "Main Street Alameda Ferry Terminal",
+      "lng": -122.293984,
+      "lat": 37.790723,
+      "parent_city_id": "san-francisco-bay-area-usa",
+      "serves": "East Bay residents; Oakland waterfront offices"
+    }
   ],
   "lines": [
-    {"id": "A", "name": "Line A — North Bay", "stops": ["larkspur", "ferry-building", "oyster-point"], "segments": [
-      {"from": "larkspur", "to": "ferry-building", "water_min": 25, "drive_min": [60, 90]},
-      {"from": "ferry-building", "to": "oyster-point", "water_min": 25, "drive_min": [30, 50]},
-      {"from": "larkspur", "to": "oyster-point", "water_min": 40, "drive_min": [75, 90], "note": "direct"}
-    ]},
-    {"id": "B", "name": "Line B — City & Peninsula", "stops": ["mission-bay", "oyster-point", "redwood-city"], "segments": [
-      {"from": "mission-bay", "to": "oyster-point", "water_min": 20, "drive_min": [35, 55]},
-      {"from": "oyster-point", "to": "redwood-city", "water_min": 30, "drive_min": [40, 60]},
-      {"from": "mission-bay", "to": "redwood-city", "water_min": 45, "drive_min": [60, 80], "note": "direct"}
-    ]},
-    {"id": "C", "name": "Line C — East Bay", "stops": ["alameda-jack-london", "mission-bay", "oyster-point"], "segments": [
-      {"from": "alameda-jack-london", "to": "mission-bay", "water_min": 18, "drive_min": [40, 70]},
-      {"from": "alameda-jack-london", "to": "oyster-point", "water_min": 28, "drive_min": [50, 75]}
-    ]},
-    {"schedules": null, "schedules_note": "No schedules exist. Do not invent timetables."}
+    {
+      "id": "A",
+      "name": "Line A — North Bay",
+      "stops": ["larkspur", "ferry-building", "oyster-point"],
+      "color": "#e0cb8f",
+      "segments": [
+        {"from": "larkspur", "to": "ferry-building", "water_min": 25, "drive_min": [60, 90]},
+        {"from": "ferry-building", "to": "oyster-point", "water_min": 25, "drive_min": [30, 50]},
+        {"from": "larkspur", "to": "oyster-point", "water_min": 40, "drive_min": [75, 90], "note": "direct"}
+      ],
+      "water_path": [
+        [-122.50836, 37.94471],
+        [-122.48, 37.88],
+        [-122.43, 37.84],
+        [-122.392185, 37.794776],
+        [-122.385, 37.73],
+        [-122.382995, 37.667352]
+      ],
+      "calculator_preset": {
+        "car_min": 75,
+        "water_min": 30,
+        "car_miles": 22,
+        "label": "North Bay super-commute"
+      }
+    },
+    {
+      "id": "B",
+      "name": "Line B — City & Peninsula",
+      "stops": ["mission-bay", "oyster-point", "redwood-city"],
+      "color": "#7dd3c0",
+      "segments": [
+        {"from": "mission-bay", "to": "oyster-point", "water_min": 20, "drive_min": [35, 55]},
+        {"from": "oyster-point", "to": "redwood-city", "water_min": 30, "drive_min": [40, 60]},
+        {"from": "mission-bay", "to": "redwood-city", "water_min": 45, "drive_min": [60, 80], "note": "direct"}
+      ],
+      "water_path": [
+        [-122.387, 37.77],
+        [-122.375, 37.72],
+        [-122.382995, 37.667352],
+        [-122.32, 37.58],
+        [-122.25, 37.52],
+        [-122.21271, 37.503026]
+      ],
+      "calculator_preset": {
+        "car_min": 50,
+        "water_min": 28,
+        "car_miles": 16,
+        "label": "City & Peninsula"
+      }
+    },
+    {
+      "id": "C",
+      "name": "Line C — East Bay",
+      "stops": ["alameda-jack-london", "mission-bay", "oyster-point"],
+      "color": "#9bb7ff",
+      "segments": [
+        {"from": "alameda-jack-london", "to": "mission-bay", "water_min": 18, "drive_min": [40, 70]},
+        {"from": "alameda-jack-london", "to": "oyster-point", "water_min": 28, "drive_min": [50, 75]}
+      ],
+      "water_path": [
+        [-122.293984, 37.790723],
+        [-122.34, 37.78],
+        [-122.387, 37.77],
+        [-122.375, 37.72],
+        [-122.382995, 37.667352]
+      ],
+      "calculator_preset": {
+        "car_min": 55,
+        "water_min": 22,
+        "car_miles": 14,
+        "label": "East Bay to campus"
+      }
+    }
   ],
+  "schedules": null,
+  "schedules_note": "No schedules exist. Do not invent timetables.",
   "roi_calculator": {
     "inputs": {
       "seats": {"default": 60, "label": "Committed seats"},
@@ -66,14 +186,21 @@
   "copy": {
     "hero_headline": "The Bay is the fastest lane your team isn't using.",
     "hero_sub": "A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour.",
-    "stripe_lesson": "In 2024 we ran the first employer water commute on the Bay — daily service for Stripe employees, North Bay to Oyster Point. The ride delivered: smooth, quiet, four feet above the chop, a desk on the water. Two things didn't, and we're saying so plainly. First, we flew an eight-seat executive vessel on a mass-commute job — the economics of a commuter line need our twenty-seat vessel, built for exactly this. Second, we secured docks ahead of demand instead of demand ahead of docks — this time, employer letters of intent come first, and they are what unlock the berths. The ride worked. The structure is what we fixed.",
-    "loi_cta": "We are sequencing the first commuter lines now. A letter of intent is non-binding — it costs nothing and commits nothing. It tells us which line to light up first, and it gives us the demand evidence that unlocks terminal access. Option A: reserve seats for your team on a line. Option B: anchor a line — underwrite the vessel, brand the service, own the schedule.",
+    "stripe_lesson": "In 2024 we ran the first employer water commute on the Bay — daily service for Stripe employees, North Bay to Oyster Point. The ride delivered: smooth, quiet, four feet above the chop, a desk on the water. One structural lesson, stated plainly: we flew an eight-seat executive vessel on a mass-commute job. Commuter-line economics need our twenty-seat vessel, built for exactly this. The ride worked. The vessel class is what we fixed.",
+    "loi_cta": "We are sequencing the first commuter lines now. A letter of intent is non-binding — it costs nothing and commits nothing. It tells us which line to light up first and how many seats employers want on day one. Option A: reserve seats for your team on a line. Option B: anchor a line — underwrite the vessel, brand the service, shape the service window.",
     "price_anchor": "roughly a parking space — often less",
-    "footer_note": "Letters of intent are non-binding."
+    "footer_note": "Letters of intent are non-binding.",
+    "problem_chips": [
+      {"value": "75–90 min", "label": "Typical Marin → Peninsula rush-hour drive"},
+      {"value": "2×", "label": "Water is about twice conventional ferry speed"},
+      {"value": "4 ft", "label": "Foiling above chop — smooth enough to work"}
+    ],
+    "launch_trigger": "A line launches when about 60–80 seats are committed — enough for a real commuter service, not a thousand-seat fantasy."
   },
   "references": {
     "pitch_deck_slides_id": "1ZNH2_YFGw1XXLlC_0a7A2qxv-iefwtBh7PNJ9FFVnP8",
     "drive_folder_id": "18U5DJ7gDRqOAw6x5Q0lhHAT6dSh7l_ys",
-    "asset_pack": "deck-studio/assets/weta/"
+    "asset_pack": "deck-studio/assets/weta/",
+    "hero_image": "deck-studio/assets/weta/passengers-stern-bright.png"
   }
 }

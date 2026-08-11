@@ -47,6 +47,8 @@ function isPublic(pathname) {
   if (pathname.startsWith('/cluster/')) return true;
   if (pathname.startsWith('/city/')) return true;
   if (pathname.startsWith('/region/')) return true;
+  // Employer sales microsite — public, not partner-auth gated
+  if (pathname === '/bay-employers' || pathname.startsWith('/bay-employers/')) return true;
   if (pathname.startsWith('/api/og')) return true;
   return false;
 }

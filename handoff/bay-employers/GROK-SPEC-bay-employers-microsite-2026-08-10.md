@@ -11,11 +11,12 @@
 - Corridor **display lines** (A/B/C) connect existing sealed POIs. If line geometry must be drawn, it passes the standard water-crossing gates: 0 land crossings, no shore clipping.
 - **This page is Bay-only.** It must not alter the global map, partner views, ROUTES.json semantics, or any existing page.
 - **The stale corridor PDF is superseded.** Any prior source stating a 30-seat N45 or a 1,000–1,500-seat launch trigger is wrong. Locked numbers: **N45 = 20 seats · corridor launch trigger ≈ 60–80 committed seats · seat price band $800–1,200/seat-month.**
+- **No dock / berth dependency framing on the employer surface.** Do not say LOIs unlock docks, berths, or terminal access, or that docks are a blocker. Dock procurement is independent; LOIs sequence *which line* and *how many seats* — and may later support dock negotiations off-page, never as employer friction.
 
 ## 1 · Page structure (in order)
 1. **Hero** — full-bleed Bay imagery (reuse WETA asset pack, `deck-studio/assets/weta/`), headline: *"The Bay is the fastest lane your team isn't using."* Sub: *"A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour."* CTA button → §7 form.
 2. **Problem band** — three stat chips: `75–90 min` typical Marin→Peninsula rush-hour drive · `2×` water is ~twice conventional ferry speed (no knots anywhere) · `4 ft` foiling above chop — smooth enough to work.
-3. **Proof + honest lesson** — the Stripe pilot block. Copy verbatim from `inputs/bay-employers-data.json → copy.stripe_lesson`. This is the credibility section; do not soften or pad it.
+3. **Proof + honest lesson** — the Stripe pilot block. Copy from `inputs/bay-employers-data.json → copy.stripe_lesson` (ride worked; vessel class fixed — **no dock/berth dependency language**).
 4. **The two products** — cards: N30 Executive Shuttle (8 seats, on-demand, available now) · N45 Commuter Line (20 seats, scheduled corridor service, launches on committed demand). N45 card = spec card, **no vessel render exists — never fake one**.
 5. **The network map** — the centerpiece. Atlas map stack, locked to SF Bay viewport. Six node markers + Lines A/B/C as styled display corridors with water-vs-drive time chips (data in `corridors[]`). Clicking a node lists the employer clusters it serves (`nodes[].serves`).
 6. **Interactive ROI calculator** — §2. Mirrors the v2 workbook exactly.
