@@ -6,8 +6,12 @@
 <title>Navier · Bay Area Employer Network</title>
 <meta name="description" content="A commuter water network for Bay Area employers — electric hydrofoil vessels, terminal-to-terminal, faster than the bridge at rush hour." />
 <meta name="theme-color" content="#0a0a0a" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0a'/%3E%3Cpath fill='%23e0cb8f' d='M8 24 L14 8h3.2L11.5 24H8zm6.5 0L20.2 8H24l-5.7 16h-3.8z'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0a0a'/%3E%3Cpath fill='%23e0cb8f' d='M8 24 L14 8h3.2L11.5 24H8zm6.5 0L20.2 8H24l-5.7 16h-3.8z'/%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
 <meta property="og:title" content="Navier · Bay Area Employer Network" />
 <meta property="og:description" content="Reserve seats on a Bay Area employer water network. Non-binding letter of intent. ~$75 per rider at planning defaults." />
+<meta name="twitter:card" content="summary" />
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,243 +19,247 @@
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 <style>
 :root {
-  --bg-0:#0a0a0a; --bg-1:#171717; --bg-2:#202020; --bg-3:#2b2b2b;
-  --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.14);
-  --text-0:#f4f4f5; --text-1:#c7c7cc; --text-2:#959595;
-  --accent:#e0cb8f; --accent-dim:rgba(224,203,143,0.14);
+  --bg-0:#0a0a0a; --bg-1:#141414; --bg-2:#1c1c1c; --bg-3:#262626;
+  --line:rgba(255,255,255,0.08); --line-strong:rgba(255,255,255,0.16);
+  --text-0:#f7f7f8; --text-1:#c8c8ce; --text-2:#8f8f96;
+  --accent:#e0cb8f; --accent-bright:#f0e2b0; --accent-dim:rgba(224,203,143,0.14);
   --ok:#7dd3c0; --blue:#9bb7ff;
-  --max:1120px;
-  --radius:16px;
-  font-family:Inter,system-ui,sans-serif;
+  --max:1140px; --radius:18px;
+  --nav-h:60px;
+  font-family:Inter,system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg-0);color:var(--text-0);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
-.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+section[id]{scroll-margin-top:calc(var(--nav-h) + 16px)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Nav */
 .nav{
-  position:sticky;top:0;z-index:40;
-  backdrop-filter:blur(14px);
-  background:rgba(10,10,10,0.82);
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:saturate(140%) blur(16px);
+  background:rgba(10,10,10,0.88);
   border-bottom:1px solid var(--line);
 }
-.nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px;gap:12px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:0.02em}
-.brand small{display:block;color:var(--text-2);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500}
-.nav-links{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.nav-links a{color:var(--text-1);font-size:13px;font-weight:500;text-decoration:none}
-.nav-links a:hover{color:var(--accent)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:var(--nav-h);gap:16px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-mark{
+  width:28px;height:28px;border-radius:7px;background:#0a0a0a;
+  border:1px solid rgba(224,203,143,0.45);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.brand-mark svg{width:16px;height:16px}
+.brand-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.brand-text strong{font-size:13px;letter-spacing:0.12em;font-weight:700}
+.brand-text small{color:var(--text-2);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-links{display:flex;gap:4px 16px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.nav-links a:not(.btn){color:var(--text-1);font-size:13px;font-weight:500;text-decoration:none;padding:6px 2px}
+.nav-links a:not(.btn):hover{color:var(--accent)}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  border:1px solid transparent;border-radius:999px;padding:11px 18px;
-  font:600 13px Inter;cursor:pointer;transition:0.15s ease;
+  border:1px solid transparent;border-radius:999px;padding:12px 20px;
+  font:700 13px Inter;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .15s;
 }
-.btn-primary{
-  background:#e0cb8f;color:#0a0a0a;font-weight:700;
-  border:1px solid #f0e2b0;
-}
-.btn-primary:hover{background:#f0e2b0;color:#0a0a0a;filter:none;text-decoration:none}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent);color:#0a0a0a;border-color:var(--accent-bright)}
+.btn-primary:hover{background:var(--accent-bright);color:#0a0a0a;text-decoration:none}
 .btn-ghost{background:transparent;border-color:var(--line-strong);color:var(--text-0)}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
-.btn-sm{padding:8px 14px;font-size:12px}
-/* Nav CTA: max legibility on dark sticky header */
-.nav-links .btn-primary{
-  background:#f4f4f5;color:#0a0a0a;border:1px solid #f4f4f5;
-  font-size:13px;letter-spacing:0.02em;font-weight:700;
-}
-.nav-links .btn-primary:hover{background:#ffffff;color:#0a0a0a}
+.btn-sm{padding:9px 15px;font-size:12.5px}
+.nav-links .btn-primary{background:#f4f4f5;color:#0a0a0a;border-color:#f4f4f5}
+.nav-links .btn-primary:hover{background:#fff;color:#0a0a0a}
 
 /* Hero */
-.hero{
-  position:relative;min-height:min(78vh,720px);
-  display:flex;align-items:flex-end;
-  border-bottom:1px solid var(--line);
-  overflow:hidden;
-}
+.hero{position:relative;min-height:min(82vh,760px);display:flex;align-items:flex-end;overflow:hidden}
 .hero-bg{
   position:absolute;inset:0;
   background:
-    linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.72) 55%,rgba(10,10,10,0.96) 100%),
-    url('/bay-employers/assets/hero.jpg') center/cover no-repeat,
-    #171717;
+    linear-gradient(105deg,rgba(10,10,10,0.82) 0%,rgba(10,10,10,0.55) 42%,rgba(10,10,10,0.35) 100%),
+    linear-gradient(180deg,rgba(10,10,10,0.15) 0%,rgba(10,10,10,0.55) 50%,rgba(10,10,10,0.97) 100%),
+    url('/bay-employers/assets/hero.jpg') center/cover no-repeat,#171717;
 }
-.hero-inner{position:relative;z-index:1;padding:72px 0 48px;max-width:760px}
-.eyebrow{
-  font:600 11px Inter;letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--accent);margin:0 0 14px;
-}
+.hero-inner{position:relative;z-index:1;padding:88px 0 56px;max-width:720px}
+.eyebrow{font:600 11px Inter;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
 .hero h1{
   font-family:"Playfair Display",Georgia,serif;
-  font-size:clamp(32px,5.4vw,52px);line-height:1.12;margin:0 0 16px;font-weight:700;
+  font-size:clamp(34px,5.6vw,56px);line-height:1.08;margin:0 0 18px;font-weight:700;
+  letter-spacing:-0.01em;
 }
-.hero p.lead{font-size:clamp(15px,2vw,18px);color:var(--text-1);margin:0 0 28px;max-width:54ch}
-.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-.hero-note{font-size:13px;color:var(--text-2)}
+.hero p.lead{font-size:clamp(15px,2.1vw,18.5px);color:var(--text-1);margin:0 0 30px;max-width:48ch;line-height:1.55}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.hero-note{font-size:13px;color:var(--text-2);max-width:48ch}
 
 /* Sections */
-section{padding:64px 0;border-bottom:1px solid var(--line)}
+section{padding:72px 0;border-bottom:1px solid var(--line)}
 section h2{
   font-family:"Playfair Display",Georgia,serif;
-  font-size:clamp(26px,3.4vw,34px);margin:0 0 12px;line-height:1.2;
+  font-size:clamp(28px,3.5vw,36px);margin:0 0 12px;line-height:1.15;letter-spacing:-0.01em;
 }
-.section-lead{color:var(--text-1);max-width:62ch;margin:0 0 28px}
+.section-lead{color:var(--text-1);max-width:60ch;margin:0 0 32px;font-size:15.5px}
 .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 @media (max-width:780px){.chips{grid-template-columns:1fr}}
 .chip{
-  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
-  padding:20px 18px;
+  background:linear-gradient(180deg,var(--bg-2),var(--bg-1));
+  border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;
+  transition:border-color .15s;
 }
+.chip:hover{border-color:rgba(224,203,143,0.28)}
 .chip .v{
-  font-family:"Exo 2",Inter,sans-serif;font-weight:700;font-size:28px;
-  color:var(--accent);letter-spacing:-0.02em;margin-bottom:6px;
+  font-family:"Exo 2",Inter,sans-serif;font-weight:700;font-size:30px;
+  color:var(--accent);letter-spacing:-0.03em;margin-bottom:8px;
 }
-.chip .l{font-size:13px;color:var(--text-1)}
+.chip .l{font-size:13.5px;color:var(--text-1);line-height:1.45}
 
-/* Stripe lesson */
-.lesson{
-  display:grid;grid-template-columns:1.2fr 1fr;gap:18px;
-}
+.lesson{display:grid;grid-template-columns:1.15fr 1fr;gap:16px}
 @media (max-width:860px){.lesson{grid-template-columns:1fr}}
 .card{
-  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
-  padding:22px;
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:24px;
 }
-.card h3{margin:0 0 10px;font-size:15px;letter-spacing:0.04em;text-transform:uppercase;color:var(--accent)}
-.card p{margin:0;color:var(--text-1);font-size:14.5px}
+.card h3{margin:0 0 12px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.card p{margin:0;color:var(--text-1);font-size:14.5px;line-height:1.6}
 .split-list{display:grid;gap:12px}
-.split-list .item{padding:14px 16px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line)}
-.split-list .item strong{display:block;color:var(--text-0);margin-bottom:4px;font-size:13px}
-.split-list .item span{color:var(--text-1);font-size:13.5px}
+.split-list .item{padding:16px 18px;border-radius:14px;background:var(--bg-2);border:1px solid var(--line)}
+.split-list .item strong{display:block;color:var(--text-0);margin-bottom:5px;font-size:13px;letter-spacing:0.02em}
+.split-list .item span{color:var(--text-1);font-size:13.5px;line-height:1.5}
 
-/* Products */
 .products{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:780px){.products{grid-template-columns:1fr}}
-.product{position:relative;overflow:hidden}
 .product .tag{
-  display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.1em;
-  text-transform:uppercase;padding:4px 8px;border-radius:999px;margin-bottom:12px;
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;padding:5px 10px;border-radius:999px;margin-bottom:14px;
 }
-.tag-now{background:rgba(125,211,192,0.15);color:var(--ok)}
+.tag-now{background:rgba(125,211,192,0.14);color:var(--ok)}
 .tag-line{background:var(--accent-dim);color:var(--accent)}
-.product h3{font-family:"Exo 2",Inter,sans-serif;font-size:22px;margin:0 0 8px}
-.product p{color:var(--text-1);font-size:14.5px;margin:0 0 14px}
-.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.meta{
-  font-size:12px;color:var(--text-1);border:1px solid var(--line);
-  border-radius:999px;padding:5px 10px;background:var(--bg-2);
-}
+.product h3{font-family:"Exo 2",Inter,sans-serif;font-size:23px;margin:0 0 10px;letter-spacing:-0.02em}
+.product p{color:var(--text-1);font-size:14.5px;margin:0 0 16px;line-height:1.55}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.meta{font-size:12px;color:var(--text-1);border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:var(--bg-2)}
 .product .btn{width:100%}
 
 /* Map */
-.map-shell{
-  display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:16px;min-height:520px;
-}
-@media (max-width:900px){.map-shell{grid-template-columns:1fr}}
+.map-block{display:grid;gap:14px}
+.map-shell{display:grid;grid-template-columns:minmax(260px,300px) 1fr;gap:14px;align-items:stretch}
+@media (max-width:960px){.map-shell{grid-template-columns:1fr}}
 .map-panel{
   background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px;display:flex;flex-direction:column;gap:12px;max-height:560px;overflow:auto;
+  padding:16px;display:flex;flex-direction:column;gap:10px;max-height:620px;overflow:auto;
 }
-.map-panel h3{margin:0;font-size:14px}
+.map-panel h3{margin:4px 0 2px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-2);font-weight:700}
 .line-btn,.stop-btn{
   width:100%;text-align:left;background:var(--bg-2);border:1px solid var(--line);
-  color:var(--text-0);border-radius:12px;padding:12px;cursor:pointer;font:500 13px Inter;
+  color:var(--text-0);border-radius:14px;padding:12px 13px;cursor:pointer;font:500 13px Inter;
+  transition:border-color .15s,background .15s;
 }
 .line-btn:hover,.stop-btn:hover,.line-btn.active,.stop-btn.active{
-  border-color:var(--accent);background:rgba(224,203,143,0.08);
+  border-color:rgba(224,203,143,0.55);background:rgba(224,203,143,0.08);
 }
-.line-btn .sub,.stop-btn .sub{display:block;color:var(--text-2);font-size:12px;margin-top:4px;font-weight:400}
-#map{
-  height:560px;border-radius:var(--radius);border:1px solid var(--line);
-  overflow:hidden;background:#0f1419;
+.line-btn .sub,.stop-btn .sub{display:block;color:var(--text-2);font-size:12px;margin-top:5px;font-weight:400;line-height:1.4}
+.map-frame{position:relative;border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;background:#0d1218}
+#map{height:600px;width:100%}
+@media (max-width:960px){#map{height:440px}}
+.map-legend{
+  position:absolute;left:12px;bottom:12px;z-index:2;
+  display:flex;flex-wrap:wrap;gap:8px;
+  background:rgba(10,10,10,0.78);border:1px solid var(--line);border-radius:999px;padding:8px 12px;
+  backdrop-filter:blur(8px);
 }
-@media (max-width:900px){#map{height:420px}}
+.map-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-1);font-weight:600}
+.map-legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
 .detail{
-  margin-top:14px;padding:14px 16px;border-radius:12px;
-  background:var(--bg-2);border:1px solid var(--line);font-size:13.5px;color:var(--text-1);
+  padding:16px 18px;border-radius:var(--radius);
+  background:var(--bg-1);border:1px solid var(--line);font-size:13.5px;color:var(--text-1);line-height:1.5;
 }
 .detail strong{color:var(--text-0)}
-.time-chip{
-  display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;
-  margin-top:8px;
-}
+.time-chip{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
 .time-chip span{
-  background:var(--bg-1);border:1px solid var(--line);border-radius:999px;
-  padding:4px 10px;font-size:12px;color:var(--text-1);
+  background:var(--bg-2);border:1px solid var(--line);border-radius:999px;
+  padding:5px 11px;font-size:12px;color:var(--text-1);
 }
-.time-chip span em{color:var(--accent);font-style:normal;font-weight:600}
+.time-chip span em{color:var(--accent);font-style:normal;font-weight:700}
 
 /* Calculator */
-.calc-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:18px}
-@media (max-width:900px){.calc-grid{grid-template-columns:1fr}}
+.calc-grid{display:grid;grid-template-columns:1.08fr 0.92fr;gap:16px}
+@media (max-width:960px){.calc-grid{grid-template-columns:1fr}}
 .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .presets button{
   background:var(--bg-2);border:1px solid var(--line);color:var(--text-1);
-  border-radius:999px;padding:7px 12px;font:500 12px Inter;cursor:pointer;
+  border-radius:999px;padding:8px 13px;font:600 12px Inter;cursor:pointer;
 }
-.presets button.active,.presets button:hover{border-color:var(--accent);color:var(--accent)}
+.presets button.active,.presets button:hover{border-color:var(--accent);color:var(--accent);background:rgba(224,203,143,0.08)}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:560px){.fields{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-2);font-weight:600}
-.field input[type=number],.field input[type=range],.field select{
-  width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
-  color:var(--text-0);padding:10px 12px;font:500 14px Inter;
+.field label{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);font-weight:700}
+.field input[type=number],.field input[type=range],.field select,form input,form select{
+  width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:11px;
+  color:var(--text-0);padding:11px 12px;font:500 14px Inter;
 }
-.field input[type=range]{padding:0;height:28px}
+.field input[type=range]{padding:0;height:30px;accent-color:var(--accent)}
 .field .hint{font-size:11px;color:var(--text-2)}
 .headline-out{
-  background:linear-gradient(160deg,rgba(224,203,143,0.12),rgba(23,23,23,0.9));
-  border:1px solid rgba(224,203,143,0.35);border-radius:var(--radius);padding:22px;
+  background:linear-gradient(165deg,rgba(224,203,143,0.14),rgba(20,20,20,0.96) 55%);
+  border:1px solid rgba(224,203,143,0.38);border-radius:var(--radius);padding:24px;height:100%;
 }
+.headline-out .kicker{font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
 .headline-out .big{
-  font-family:"Exo 2",Inter,sans-serif;font-size:clamp(28px,4vw,40px);
-  font-weight:700;color:var(--accent);letter-spacing:-0.02em;line-height:1.1;
+  font-family:"Exo 2",Inter,sans-serif;font-size:clamp(30px,4.2vw,42px);
+  font-weight:700;color:var(--accent);letter-spacing:-0.03em;line-height:1.05;
 }
-.headline-out .sub{margin-top:6px;color:var(--text-0);font-size:16px;font-weight:600}
+.headline-out .sub{margin-top:8px;color:var(--text-0);font-size:16px;font-weight:600}
 .headline-out .anchor{margin-top:8px;color:var(--text-1);font-size:14px}
-.out-rows{margin-top:16px;display:grid;gap:8px}
+.out-rows{margin-top:18px;display:grid;gap:8px}
 .out-row{
-  display:flex;justify-content:space-between;gap:12px;
-  padding:10px 12px;background:var(--bg-2);border-radius:10px;border:1px solid var(--line);
-  font-size:13px;
+  display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+  padding:11px 13px;background:rgba(0,0,0,0.28);border-radius:11px;border:1px solid var(--line);font-size:13px;
 }
 .out-row span{color:var(--text-2)}
-.out-row strong{color:var(--text-0);font-variant-numeric:tabular-nums}
-.caveat{margin-top:12px;font-size:12px;color:var(--text-2)}
-.calc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.out-row strong{color:var(--text-0);font-variant-numeric:tabular-nums;font-weight:600}
+.caveat{margin-top:14px;font-size:12px;color:var(--text-2);line-height:1.45}
+.calc-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 
 /* LOI */
-.loi-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px}
-@media (max-width:900px){.loi-grid{grid-template-columns:1fr}}
+.loi-grid{display:grid;grid-template-columns:0.95fr 1.05fr;gap:16px}
+@media (max-width:960px){.loi-grid{grid-template-columns:1fr}}
 .options{display:grid;gap:12px}
 .option{
   border:1px solid var(--line);background:var(--bg-1);border-radius:var(--radius);
-  padding:16px;cursor:pointer;text-align:left;color:inherit;font:inherit;
+  padding:18px;cursor:pointer;text-align:left;color:inherit;font:inherit;transition:border-color .15s,background .15s;
 }
-.option.active{border-color:var(--accent);background:rgba(224,203,143,0.08)}
+.option.active{border-color:rgba(224,203,143,0.55);background:rgba(224,203,143,0.08)}
 .option h4{margin:0 0 6px;font-size:15px}
-.option p{margin:0;color:var(--text-1);font-size:13.5px}
-form .fields{margin-top:4px}
-form .full{grid-column:1 / -1}
-.form-note{font-size:12px;color:var(--text-2);margin-top:10px}
+.option p{margin:0;color:var(--text-1);font-size:13.5px;line-height:1.5}
+.form-note{font-size:12.5px;color:var(--text-2);margin-top:12px;line-height:1.45}
 .success{
-  display:none;padding:18px;border-radius:var(--radius);
-  border:1px solid rgba(125,211,192,0.4);background:rgba(125,211,192,0.1);
-  color:var(--text-0);
+  display:none;padding:18px;border-radius:var(--radius);margin-top:14px;
+  border:1px solid rgba(125,211,192,0.4);background:rgba(125,211,192,0.1);color:var(--text-0);font-size:14px;
 }
 .success.show{display:block}
 
-footer{padding:28px 0 48px;color:var(--text-2);font-size:12.5px}
-footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+footer{padding:32px 0 52px;color:var(--text-2);font-size:12.5px;border-top:1px solid var(--line)}
+footer .row{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
+
+@media (max-width:720px){
+  .nav-links a:not(.btn){display:none}
+  .hero-inner{padding:72px 0 40px}
+  section{padding:56px 0}
+}
 </style>
 </head>
 <body>
 <header class="nav">
   <div class="wrap nav-inner">
     <div class="brand">
-      <span>NAVIER</span>
-      <small>Bay employer network</small>
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 18L9.2 6h2.2L7.4 18H5zm5 0L14.5 6H17l-4.5 12h-2.5z" fill="#e0cb8f"/></svg>
+      </div>
+      <div class="brand-text">
+        <strong>NAVIER</strong>
+        <small>Bay employer network</small>
+      </div>
     </div>
     <div class="nav-links">
       <a href="#network">Network</a>
@@ -279,7 +287,7 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
 <section id="problem">
   <div class="wrap">
     <h2>The bridge is the bottleneck. The Bay is the spare lane.</h2>
-    <p class="section-lead">Your people already live and work on water-adjacent campuses. Rush-hour road time is the tax. Water cuts that tax — quietly, on a schedule you help form with seat interest.</p>
+    <p class="section-lead">Your people already live and work on water-adjacent campuses. Rush-hour road time is the tax. Water cuts that tax — quietly, on a service window you help form with seat interest.</p>
     <div class="chips" id="problem-chips"></div>
   </div>
 </section>
@@ -339,25 +347,28 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
         <a class="btn btn-primary" href="#calculator" data-flavor="line">Model seats on a line</a>
       </article>
     </div>
-    <p class="caveat" id="launch-trigger" style="margin-top:16px"></p>
+    <p class="caveat" id="launch-trigger"></p>
   </div>
 </section>
 
 <section id="network">
   <div class="wrap">
     <h2>The network</h2>
-    <p class="section-lead">Six real terminals already on the Atlas map. Three employer lines. Tap a stop to see who it serves — and seed the calculator and letter of intent.</p>
-    <div class="map-shell">
-      <aside class="map-panel">
-        <h3>Lines</h3>
-        <div id="line-list"></div>
-        <h3 style="margin-top:8px">Stops</h3>
-        <div id="stop-list"></div>
-      </aside>
-      <div>
-        <div id="map" role="img" aria-label="San Francisco Bay employer water network map"></div>
-        <div class="detail" id="map-detail">Select a line or stop to see water vs drive times and who each terminal serves.</div>
+    <p class="section-lead">Six real terminals already on the Atlas map. Three employer lines, drawn on the water. Tap a stop to see who it serves — and seed the calculator and letter of intent.</p>
+    <div class="map-block">
+      <div class="map-shell">
+        <aside class="map-panel">
+          <h3>Lines</h3>
+          <div id="line-list"></div>
+          <h3>Stops</h3>
+          <div id="stop-list"></div>
+        </aside>
+        <div class="map-frame">
+          <div id="map" role="img" aria-label="San Francisco Bay employer water network map"></div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
       </div>
+      <div class="detail" id="map-detail">Select a line or stop to see water vs drive times and who each terminal serves.</div>
     </div>
   </div>
 </section>
@@ -373,6 +384,7 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
       </div>
       <div>
         <div class="headline-out">
+          <div class="kicker">Net incremental employer cost</div>
           <div class="big" id="out-net">$4,500</div>
           <div class="sub" id="out-per">$75 per rider / month</div>
           <div class="anchor" id="price-anchor">roughly a parking space — often less</div>
@@ -417,7 +429,7 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
             <input type="hidden" id="f-flavor" name="flavor" value="A" />
           </div>
           <p class="form-note">Letters of intent are non-binding. Submitting opens an email draft to Navier with your details — nothing is charged or reserved.</p>
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
             <button type="submit" class="btn btn-primary">Send non-binding letter of intent</button>
           </div>
         </form>
@@ -432,8 +444,8 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
 <footer>
   <div class="wrap row">
     <div>
-      <strong style="color:var(--text-0)">NAVIER</strong>
-      <div id="footer-note">Letters of intent are non-binding.</div>
+      <strong>NAVIER</strong>
+      <div id="footer-note" style="margin-top:4px">Letters of intent are non-binding.</div>
     </div>
     <div>
       <a href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a>
@@ -444,6 +456,7 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
 
 <script src="/bay-employers/bay-employers-data.js"></script>
 <script>
+
 (function () {
   const DATA = window.BAY_EMPLOYERS_DATA;
   if (!DATA) {
@@ -454,11 +467,8 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
 
   const nodesByKey = Object.fromEntries(DATA.nodes.map((n) => [n.key, n]));
   const lines = DATA.lines.filter((l) => l.id);
-  let activeLineId = null;
-  let activeStopKey = null;
   let map, popup;
 
-  // ---- copy ----
   document.getElementById('hero-headline').textContent = DATA.copy.hero_headline;
   document.getElementById('hero-sub').textContent = DATA.copy.hero_sub;
   document.getElementById('stripe-lesson').textContent = DATA.copy.stripe_lesson;
@@ -476,17 +486,34 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     chips.appendChild(el);
   });
 
-  // ---- calculator ----
+  const legend = document.getElementById('map-legend');
+  lines.forEach((line) => {
+    const s = document.createElement('span');
+    s.innerHTML = `<i style="background:${line.color}"></i>${line.id}`;
+    legend.appendChild(s);
+  });
+
   const inputsMeta = DATA.roi_calculator.inputs;
   const state = {};
   Object.keys(inputsMeta).forEach((k) => { state[k] = inputsMeta[k].default; });
-
   const fieldsEl = document.getElementById('calc-fields');
   const fieldOrder = [
     'seats', 'days_per_month', 'price_seat_month', 'subsidy_share',
     'pretax_benefit', 'shuttle_cost', 'parking_cost', 'parking_share',
     'car_min', 'water_min', 'car_miles', 'co2_kg_per_mile', 'hour_cost',
   ];
+
+  function formatInput(key, v) {
+    if (key === 'subsidy_share' || key === 'parking_share') return Math.round(v * 100) + '%';
+    if (key === 'price_seat_month') return '$' + Math.round(v);
+    return String(v);
+  }
+  function money(n) {
+    const sign = n < 0 ? '-' : '';
+    const a = Math.abs(n);
+    if (a >= 1e6) return sign + '$' + (a / 1e6).toFixed(2) + 'M';
+    return sign + '$' + Math.round(a).toLocaleString('en-US');
+  }
 
   function renderFields() {
     fieldsEl.innerHTML = '';
@@ -517,34 +544,12 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     });
   }
 
-  function formatInput(key, v) {
-    if (key === 'subsidy_share' || key === 'parking_share') return Math.round(v * 100) + '%';
-    if (key === 'price_seat_month') return '$' + Math.round(v);
-    return String(v);
-  }
-
-  function money(n) {
-    const sign = n < 0 ? '-' : '';
-    const a = Math.abs(n);
-    if (a >= 1e6) return sign + '$' + (a / 1e6).toFixed(2) + 'M';
-    return sign + '$' + Math.round(a).toLocaleString('en-US');
-  }
-
   function recompute() {
-    const S = state.seats;
-    const D = state.days_per_month;
-    const P = state.price_seat_month;
-    const sigma = state.subsidy_share;
-    const X = state.pretax_benefit;
-    const V = state.shuttle_cost;
-    const K = state.parking_cost;
-    const rho = state.parking_share;
-    const Tc = state.car_min;
-    const Tw = state.water_min;
-    const M = state.car_miles;
-    const E = state.co2_kg_per_mile;
-    const H = state.hour_cost;
-
+    const S = state.seats, D = state.days_per_month, P = state.price_seat_month;
+    const sigma = state.subsidy_share, X = state.pretax_benefit, V = state.shuttle_cost;
+    const K = state.parking_cost, rho = state.parking_share;
+    const Tc = state.car_min, Tw = state.water_min, M = state.car_miles;
+    const E = state.co2_kg_per_mile, H = state.hour_cost;
     const gross = S * P;
     const employee_contribution = S * Math.min(X, (1 - sigma) * P);
     const net_employer = gross - employee_contribution;
@@ -556,10 +561,8 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     const co2_tonnes = S * D * 2 * M * E / 1000;
     const net_cost_per_hour = hours_returned === 0 ? 0 : net_incremental / hours_returned;
     const per_rider = S === 0 ? 0 : net_incremental / S;
-
     document.getElementById('out-net').textContent = money(net_incremental) + '/mo';
     document.getElementById('out-per').textContent = money(per_rider) + ' per rider / month';
-
     const rows = [
       ['Gross program cost', money(gross) + '/mo'],
       ['Employee pre-tax contribution', money(employee_contribution) + '/mo'],
@@ -574,26 +577,19 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     document.getElementById('out-rows').innerHTML = rows.map(([k, v]) =>
       `<div class="out-row"><span>${k}</span><strong>${v}</strong></div>`
     ).join('');
-
     window.__BAY_CALC__ = { net_incremental, per_rider, hours_returned, S, P, sigma };
     return { net_incremental, per_rider };
   }
 
-  // presets
   const presetsEl = document.getElementById('presets');
   function addPreset(label, patch, id) {
     const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = label;
-    b.dataset.id = id;
+    b.type = 'button'; b.textContent = label; b.dataset.id = id;
     b.addEventListener('click', () => {
-      Object.assign(state, patch);
-      renderFields();
-      recompute();
+      Object.assign(state, patch); renderFields(); recompute();
       [...presetsEl.querySelectorAll('button')].forEach((x) => x.classList.toggle('active', x === b));
     });
-    presetsEl.appendChild(b);
-    return b;
+    presetsEl.appendChild(b); return b;
   }
   const defBtn = addPreset('Planning defaults', {
     seats: 60, days_per_month: 16, price_seat_month: 1000, subsidy_share: 0.8,
@@ -609,14 +605,10 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
       car_miles: line.calculator_preset.car_miles,
     }, 'line-' + line.id);
   });
-
   renderFields();
   const check = recompute();
-  // self-check worked example at defaults
   if (Math.round(check.net_incremental) !== 4500 || Math.round(check.per_rider) !== 75) {
     console.warn('[bay-employers] calculator defaults mismatch', check);
-  } else {
-    console.info('[bay-employers] calculator worked example OK: $4500 / $75');
   }
 
   document.getElementById('copy-summary').addEventListener('click', async () => {
@@ -629,15 +621,11 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     try {
       await navigator.clipboard.writeText(text);
       const btn = document.getElementById('copy-summary');
-      const prev = btn.textContent;
-      btn.textContent = 'Copied';
+      const prev = btn.textContent; btn.textContent = 'Copied';
       setTimeout(() => { btn.textContent = prev; }, 1500);
-    } catch {
-      prompt('Copy this summary:', text);
-    }
+    } catch { prompt('Copy this summary:', text); }
   });
 
-  // ---- map ----
   function initMap() {
     map = new maplibregl.Map({
       container: 'map',
@@ -653,13 +641,13 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
         },
         layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
       },
-      center: [-122.35, 37.72],
-      zoom: 9.4,
-      maxBounds: [[-123.1, 37.15], [-121.7, 38.35]],
+      center: [-122.34, 37.72],
+      zoom: 9.35,
+      maxBounds: [[-123.05, 37.2], [-121.85, 38.15]],
       attributionControl: true,
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
-    popup = new maplibregl.Popup({ closeButton: false, offset: 12 });
+    popup = new maplibregl.Popup({ closeButton: false, offset: 14, className: 'bay-pop' });
 
     map.on('load', () => {
       const stopFeatures = DATA.nodes.map((n) => ({
@@ -669,81 +657,84 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
       }));
       map.addSource('stops', { type: 'geojson', data: { type: 'FeatureCollection', features: stopFeatures } });
 
+      const allCoords = [];
       lines.forEach((line) => {
+        const coords = line.water_path;
+        coords.forEach((c) => allCoords.push(c));
         map.addSource('line-' + line.id, {
           type: 'geojson',
           data: {
             type: 'Feature',
             properties: { id: line.id, name: line.name },
-            geometry: { type: 'LineString', coordinates: line.water_path },
+            geometry: { type: 'LineString', coordinates: coords },
           },
         });
         map.addLayer({
           id: 'line-glow-' + line.id,
           type: 'line',
           source: 'line-' + line.id,
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
           paint: {
             'line-color': line.color || '#e0cb8f',
-            'line-width': 8,
-            'line-opacity': 0.22,
-            'line-blur': 2,
+            'line-width': 10,
+            'line-opacity': 0.2,
+            'line-blur': 1.5,
           },
         });
         map.addLayer({
           id: 'line-' + line.id,
           type: 'line',
           source: 'line-' + line.id,
+          layout: { 'line-cap': 'round', 'line-join': 'round' },
           paint: {
             'line-color': line.color || '#e0cb8f',
-            'line-width': 2.5,
+            'line-width': 3,
             'line-opacity': 0.95,
           },
         });
       });
 
       map.addLayer({
-        id: 'stops-halo',
-        type: 'circle',
-        source: 'stops',
-        paint: {
-          'circle-radius': 10,
-          'circle-color': '#e0cb8f',
-          'circle-opacity': 0.18,
-        },
+        id: 'stops-halo', type: 'circle', source: 'stops',
+        paint: { 'circle-radius': 12, 'circle-color': '#e0cb8f', 'circle-opacity': 0.16 },
       });
       map.addLayer({
-        id: 'stops',
-        type: 'circle',
-        source: 'stops',
+        id: 'stops', type: 'circle', source: 'stops',
         paint: {
-          'circle-radius': 5.5,
-          'circle-color': '#f4f4f5',
-          'circle-stroke-width': 2,
+          'circle-radius': 6,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.5,
           'circle-stroke-color': '#e0cb8f',
         },
       });
       map.addLayer({
-        id: 'stops-label',
-        type: 'symbol',
-        source: 'stops',
+        id: 'stops-label', type: 'symbol', source: 'stops',
         layout: {
           'text-field': ['get', 'label'],
-          'text-size': 11,
-          'text-offset': [0, 1.3],
+          'text-size': 12,
+          'text-offset': [0, 1.35],
           'text-anchor': 'top',
-          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
+          'text-max-width': 10,
         },
         paint: {
-          'text-color': '#f4f4f5',
-          'text-halo-color': '#0a0a0a',
-          'text-halo-width': 1.2,
+          'text-color': '#f7f7f8',
+          'text-halo-color': 'rgba(10,10,10,0.9)',
+          'text-halo-width': 1.4,
         },
       });
 
-      map.on('click', 'stops', (e) => {
-        const f = e.features[0];
-        selectStop(f.properties.key);
-      });
+      // Fit to network with padding
+      if (allCoords.length) {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        allCoords.forEach(([x, y]) => {
+          minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+        });
+        map.fitBounds([[minX, minY], [maxX, maxY]], { padding: { top: 48, bottom: 48, left: 40, right: 40 }, duration: 0, maxZoom: 10.2 });
+      }
+
+      map.on('click', 'stops', (e) => selectStop(e.features[0].properties.key));
       map.on('mouseenter', 'stops', () => { map.getCanvas().style.cursor = 'pointer'; });
       map.on('mouseleave', 'stops', () => { map.getCanvas().style.cursor = ''; });
     });
@@ -753,14 +744,13 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     if (!map || !map.getLayer('line-A')) return;
     lines.forEach((line) => {
       const on = !focusId || line.id === focusId;
-      map.setPaintProperty('line-' + line.id, 'line-opacity', on ? 0.95 : 0.18);
-      map.setPaintProperty('line-glow-' + line.id, 'line-opacity', on ? 0.28 : 0.06);
+      map.setPaintProperty('line-' + line.id, 'line-opacity', on ? 0.98 : 0.18);
+      map.setPaintProperty('line-glow-' + line.id, 'line-opacity', on ? 0.28 : 0.05);
+      map.setPaintProperty('line-' + line.id, 'line-width', on ? 3.5 : 2);
     });
   }
 
   function selectLine(id) {
-    activeLineId = id;
-    activeStopKey = null;
     setLineOpacity(id);
     const line = lines.find((l) => l.id === id);
     [...document.querySelectorAll('.line-btn')].forEach((b) => b.classList.toggle('active', b.dataset.id === id));
@@ -769,13 +759,12 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     const segs = (line.segments || []).map((s) => {
       const a = nodesByKey[s.from]?.label || s.from;
       const b = nodesByKey[s.to]?.label || s.to;
-      const d0 = s.drive_min[0], d1 = s.drive_min[1];
-      return `<div style="margin-top:8px"><strong>${a} → ${b}</strong>
-        <div class="time-chip"><span><em>~${s.water_min} min</em> on the water</span><span>${d0}–${d1} min driving</span></div></div>`;
+      return `<div style="margin-top:10px"><strong>${a} → ${b}</strong>
+        <div class="time-chip"><span><em>~${s.water_min} min</em> on the water</span><span>${s.drive_min[0]}–${s.drive_min[1]} min driving</span></div></div>`;
     }).join('');
     document.getElementById('map-detail').innerHTML =
-      `<strong>${line.name}</strong><div style="margin-top:6px">Launch when about 60–80 seats are committed on the line. No public timetable yet — times below are one-way planning ranges.</div>${segs}
-       <div style="margin-top:12px"><button type="button" class="btn btn-primary btn-sm" id="use-line-preset">Use this line in the calculator</button></div>`;
+      `<strong>${line.name}</strong><div style="margin-top:6px">A line launches when about 60–80 seats are committed. No public timetable yet — times below are one-way planning ranges.</div>${segs}
+       <div style="margin-top:14px"><button type="button" class="btn btn-primary btn-sm" id="use-line-preset">Use this line in the calculator</button></div>`;
     document.getElementById('use-line-preset')?.addEventListener('click', () => {
       if (line.calculator_preset) {
         Object.assign(state, {
@@ -783,17 +772,23 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
           water_min: line.calculator_preset.water_min,
           car_miles: line.calculator_preset.car_miles,
         });
-        renderFields();
-        recompute();
+        renderFields(); recompute();
       }
       document.getElementById('f-line').value = line.id;
       document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
     });
     document.getElementById('f-line').value = line.id;
+    if (map && line.water_path?.length) {
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      line.water_path.forEach(([x, y]) => {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      });
+      map.fitBounds([[minX, minY], [maxX, maxY]], { padding: 60, duration: 700, maxZoom: 10.6 });
+    }
   }
 
   function selectStop(key) {
-    activeStopKey = key;
     const n = nodesByKey[key];
     if (!n) return;
     [...document.querySelectorAll('.stop-btn')].forEach((b) => b.classList.toggle('active', b.dataset.key === key));
@@ -801,8 +796,7 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
     document.getElementById('map-detail').innerHTML =
       `<strong>${n.label}</strong><div style="margin-top:6px">${n.serves}</div>
        <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touch || '—'}</div>
-       <div style="margin-top:8px;color:var(--text-2);font-size:12px">Terminal id: ${n.resolved_bp_id}</div>
-       <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+       <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
          <button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>
        </div>`;
     document.getElementById('use-stop')?.addEventListener('click', () => {
@@ -816,35 +810,29 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
             water_min: line.calculator_preset.water_min,
             car_miles: line.calculator_preset.car_miles,
           });
-          renderFields();
-          recompute();
+          renderFields(); recompute();
         }
       }
       document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
     });
     if (map) {
-      map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10.2), duration: 800 });
-      popup.setLngLat([n.lng, n.lat]).setHTML(`<strong style="color:#171717">${n.label}</strong>`).addTo(map);
+      map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10.4), duration: 800 });
+      popup.setLngLat([n.lng, n.lat]).setHTML(`<div style="color:#0a0a0a;font:600 12px Inter">${n.label}</div>`).addTo(map);
     }
   }
 
-  // side lists
   const lineList = document.getElementById('line-list');
   lines.forEach((line) => {
     const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'line-btn';
-    b.dataset.id = line.id;
-    b.innerHTML = `<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${line.color};margin-right:8px"></span>${line.name}<span class="sub">${(line.stops || []).map((k) => nodesByKey[k]?.label || k).join(' · ')}</span>`;
+    b.type = 'button'; b.className = 'line-btn'; b.dataset.id = line.id;
+    b.innerHTML = `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${line.color};margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,0.06)"></span>${line.name}<span class="sub">${(line.stops || []).map((k) => nodesByKey[k]?.label || k).join(' · ')}</span>`;
     b.addEventListener('click', () => selectLine(line.id));
     lineList.appendChild(b);
   });
   const stopList = document.getElementById('stop-list');
   DATA.nodes.forEach((n) => {
     const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'stop-btn';
-    b.dataset.key = n.key;
+    b.type = 'button'; b.className = 'stop-btn'; b.dataset.key = n.key;
     b.innerHTML = `${n.label}<span class="sub">${n.serves}</span>`;
     b.addEventListener('click', () => selectStop(n.key));
     stopList.appendChild(b);
@@ -852,20 +840,15 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
 
   initMap();
 
-  // ---- LOI form ----
   const stopSel = document.getElementById('f-stop');
   DATA.nodes.forEach((n) => {
     const o = document.createElement('option');
-    o.value = n.key;
-    o.textContent = n.label;
-    stopSel.appendChild(o);
+    o.value = n.key; o.textContent = n.label; stopSel.appendChild(o);
   });
   const lineSel = document.getElementById('f-line');
   lines.forEach((l) => {
     const o = document.createElement('option');
-    o.value = l.id;
-    o.textContent = l.name;
-    lineSel.appendChild(o);
+    o.value = l.id; o.textContent = l.name; lineSel.appendChild(o);
   });
 
   let flavor = 'A';
@@ -876,32 +859,13 @@ footer .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;a
       document.querySelectorAll('#flavor-options .option').forEach((b) => b.classList.toggle('active', b === btn));
     });
   });
-  document.querySelectorAll('[data-flavor]').forEach((el) => {
-    if (el.classList.contains('option')) return;
-    el.addEventListener('click', () => {
-      const f = el.getAttribute('data-flavor');
-      if (f === 'shuttle') {
-        flavor = 'A';
-        document.getElementById('f-flavor').value = 'A';
-      }
-      if (f === 'line') {
-        flavor = 'A';
-        document.getElementById('f-flavor').value = 'A';
-      }
-    });
-  });
 
   document.getElementById('loi-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const fd = new FormData(e.target);
-    const name = fd.get('name');
-    const company = fd.get('company');
-    const role = fd.get('role');
-    const email = fd.get('email');
-    const stop = fd.get('stop');
-    const line = fd.get('line');
-    const employees = fd.get('employees') || 'n/a';
-    const cc = fd.get('cc');
+    const name = fd.get('name'), company = fd.get('company'), role = fd.get('role');
+    const email = fd.get('email'), stop = fd.get('stop'), line = fd.get('line');
+    const employees = fd.get('employees') || 'n/a', cc = fd.get('cc');
     const flav = fd.get('flavor') === 'B' ? 'Option B — Anchor a line' : 'Option A — Reserve seats';
     const stopLabel = nodesByKey[stop]?.label || stop;
     const lineLabel = lines.find((l) => l.id === line)?.name || (line || 'Not sure yet');
@@ -931,9 +895,9 @@ Please follow up to discuss next steps.`
     document.getElementById('loi-success').classList.add('show');
   });
 
-  // resolved BP log for QA
-  console.info('[bay-employers] resolved stops', DATA.nodes.map((n) => ({ key: n.key, bp: n.resolved_bp_id, lng: n.lng, lat: n.lat })));
+  console.info('[bay-employers] resolved stops', DATA.nodes.map((n) => ({ key: n.key, bp: n.resolved_bp_id })));
 })();
+
 </script>
 </body>
 </html>
