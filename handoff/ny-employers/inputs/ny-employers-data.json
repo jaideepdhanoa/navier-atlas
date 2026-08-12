@@ -1,0 +1,130 @@
+{
+  "version": "2026-08-11",
+  "market": "new-york",
+  "cluster_city_id": "new-york-harbor-usa",
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_standard_usd_mo": 750,
+    "seat_price_no_ferry_alternative_usd_mo": 900,
+    "anchor_underwrite_indicative_usd_mo": 125000,
+    "launch_trigger_committed_seats": [60, 72],
+    "locked_by": "Jaideep 2026-08-11"
+  },
+  "stops": [
+    { "key": "pier11", "label": "Pier 11 / Wall Street", "bp_id": "bp-58a56df431", "note": "Canonical rn-family POI. Legacy duplicates bp-af432aaa7e / bp-3b4a633287 must NOT gain new geometry.", "serves": ["Financial District", "Water Street corridor", "Downtown Brooklyn via connection"] },
+    { "key": "e34", "label": "East 34th Street", "bp_id": "bp-5f0981ff77", "serves": ["Midtown East", "Murray Hill medical corridor", "United Nations area"] },
+    { "key": "e90", "label": "East 90th Street", "bp_id": "bp-2ffbe8863d", "serves": ["Upper East Side hospital corridor", "East Harlem south"] },
+    { "key": "bpc", "label": "Brookfield Place / Battery Park City", "bp_id": "bp-85a7ff2c42", "serves": ["Brookfield Place", "World Financial Center", "West FiDi"] },
+    { "key": "paulus", "label": "Paulus Hook (Jersey City)", "bp_id": "bp-ad58fb4656", "serves": ["Exchange Place", "Hudson Street towers", "Jersey City waterfront"] },
+    { "key": "hoboken", "label": "Hoboken Terminal", "bp_id": "bp-33cdeaee77", "serves": ["Hoboken", "NJ Transit / PATH interchange"] },
+    { "key": "lincoln", "label": "Weehawken / Lincoln Harbor", "bp_id": "bp-9bc4e66522", "serves": ["Weehawken", "Lincoln Harbor offices", "Port Imperial residential"] },
+    { "key": "pier79", "label": "Midtown West / Pier 79 (W 39th St)", "bp_id": "bp-336a4cb43d", "note": "Canonical for this page; duplicate bp-7f80742702 must NOT gain new geometry.", "serves": ["Hudson Yards", "Manhattan West", "Midtown West"] },
+    { "key": "navyyard", "label": "Brooklyn Navy Yard (Dock 72)", "bp_id": "bp-02dc23dc3d", "serves": ["Brooklyn Navy Yard campus", "Wallabout"] },
+    { "key": "dumbo", "label": "DUMBO / Fulton Ferry", "bp_id": "bp-685bc422d5", "serves": ["DUMBO tech cluster", "Brooklyn Bridge Park offices"] },
+    { "key": "lga", "label": "LGA Marine Air Terminal", "bp_id": "bp-lga-marine-air", "serves": ["LaGuardia Airport"] }
+  ],
+  "corridors": [
+    {
+      "id": "NY-1",
+      "label": "Upper East Side Medical Line",
+      "vessel": "N45",
+      "price_band": "no_ferry_alternative",
+      "segments": [
+        { "from": "e90", "to": "e34", "new": true, "existing_route_id": null, "distance_nm": null, "routing_note": "East River run west of Roosevelt Island; water-clean gate applies" }
+      ]
+    },
+    {
+      "id": "NY-2",
+      "label": "Hudson Gold Coast Line",
+      "vessel": "N45",
+      "price_band": "standard",
+      "segments": [
+        { "from": "lincoln", "to": "pier79", "new": true, "existing_route_id": null, "distance_nm": null, "routing_note": "Short Hudson crossing; respect pier lines" },
+        { "from": "hoboken", "to": "pier79", "new": false, "existing_route_id": "ics-25a683a51c", "distance_nm": 1.92 }
+      ]
+    },
+    {
+      "id": "NY-3",
+      "label": "Lower Hudson Crossing",
+      "vessel": "N45",
+      "price_band": "standard",
+      "segments": [
+        { "from": "paulus", "to": "bpc", "new": true, "existing_route_id": null, "distance_nm": null, "routing_note": "Short Hudson crossing; respect pier lines" },
+        { "from": "pier11", "to": "paulus", "new": false, "existing_route_id": "ics-bdacfbafa1", "distance_nm": 1.41 }
+      ]
+    },
+    {
+      "id": "NY-4",
+      "label": "Brooklyn Tech Line",
+      "vessel": "N45",
+      "price_band": "no_ferry_alternative",
+      "segments": [
+        { "from": "navyyard", "to": "pier11", "new": false, "existing_route_id": "rn-7d501d48d2f3", "distance_nm": 1.7 },
+        { "from": "dumbo", "to": "pier11", "new": false, "existing_route_id": "rn-c5916368a650", "distance_nm": 0.7 },
+        { "from": "pier11", "to": "e34", "new": false, "existing_route_id": "rn-b2490e3f6350", "distance_nm": 2.9, "optional": true, "routing_note": "Optional extension — render dashed" }
+      ]
+    },
+    {
+      "id": "EXEC-LGA",
+      "label": "LaGuardia Executive Shuttle",
+      "vessel": "N30",
+      "price_band": null,
+      "segments": [
+        { "from": "e34", "to": "lga", "new": false, "existing_route_id": "rn-0e2b916d3b8d", "distance_nm": 5.9 }
+      ]
+    }
+  ],
+  "roi_calculator": {
+    "source_sheet": "1Rig2ouN_yzAX3XrEmTAcwXYx4cX_ZL_-wUSJP2YMzBk",
+    "inputs": {
+      "S_committed_seats": 60,
+      "D_commute_days_per_month": 16,
+      "P_price_per_seat_month": { "default": 750, "slider_min": 750, "slider_max": 900, "ticks": { "750": "standard", "900": "no ferry alternative today" } },
+      "sigma_employer_subsidy_share": 0.8,
+      "X_pretax_benefit_cap_month": 340,
+      "V_current_shuttle_cost_seat_month": 0,
+      "K_parking_cost_stall_month": 570,
+      "rho_share_displacing_stall": 0.5,
+      "G_congestion_toll_weekday": 9,
+      "W_weekdays_per_month": 21
+    },
+    "formulas": {
+      "gross_program_cost": "S*P",
+      "employee_pretax_contribution": "S*min(X,(1-sigma)*P)",
+      "net_employer_cost": "S*P - S*min(X,(1-sigma)*P)",
+      "net_employer_cost_per_rider": "net_employer_cost/S",
+      "statusquo_benchmark_per_rider": "K + G*W",
+      "parking_offset": "S*rho*K",
+      "shuttle_offset": "S*V",
+      "net_incremental_after_offsets": "net_employer_cost - parking_offset - shuttle_offset"
+    },
+    "worked_example_at_defaults": {
+      "gross_program_cost": 45000,
+      "employee_pretax_contribution": 9000,
+      "net_employer_cost": 36000,
+      "net_employer_cost_per_rider": 600,
+      "statusquo_benchmark_per_rider": 759,
+      "parking_offset": 17100,
+      "shuttle_offset": 0,
+      "net_incremental_after_offsets": 18900,
+      "net_incremental_per_rider": 315
+    },
+    "caveat": "Indicative planning tool, not a quote. Pre-tax treatment and shuttle displacement require employer verification."
+  },
+  "copy": {
+    "hero_headline": "New York already commutes by water. We make it the best seat in the city.",
+    "hero_sub": "A commuter water network for New York employers — electric hydrofoil vessels, terminal-to-terminal, above the traffic and the toll.",
+    "problem_chips": [
+      { "stat": "$9/day", "label": "congestion toll into the Manhattan CBD" },
+      { "stat": "$570/mo", "label": "average Manhattan parking" },
+      { "stat": "$340/mo", "label": "IRS pre-tax commuter benefit your employees can apply" }
+    ],
+    "precedent": "New York institutions already fund employee transportation at scale — intercampus shuttles, guaranteed-ride programs, tenant buses. One of the city's largest hospital systems already runs an employee water shuttle. The behavior is proven. What's been missing is a vessel built for it.",
+    "stripe_lesson": "We ran the first employer water commute on San Francisco Bay. The ride worked; the vessel was the lesson — an 8-seat executive boat is not a commuter line. The 20-seat N45 is built for exactly this: a scheduled line your team can set a watch by, with a seat that works like a desk.",
+    "product_n30": "N30 Executive Shuttle — 8 seats, on-demand, available now. For leadership teams, airport runs, and client moves.",
+    "product_n45": "N45 Commuter Line — 20 seats, scheduled service on a fixed line. Launches when a line reaches roughly 60–72 committed seats.",
+    "loi_cta": "Two ways to bring a line to your people. Option A — sponsor a line: your institution underwrites a scheduled service, your name on the hull optional (indicative from ~$125K per month). Option B — commit seats: reserve seats at $750–900 per seat-month and we aggregate your line's launch. Both start with a non-binding letter of intent: it costs nothing, commits nothing, and tells us which line to build first.",
+    "footer_note": "Letters of intent are non-binding."
+  }
+}

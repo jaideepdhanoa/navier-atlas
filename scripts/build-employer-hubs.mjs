@@ -109,13 +109,20 @@ function emitHub(hub, registryEntry) {
     }
   }
 
-  const blob = JSON.stringify(hub);
-  if (hub.gates?.forbid_dock_unlock !== false && bannedDockScan(blob)) {
-    throw new Error(`${id}: dock/berth dependency language in hub data`);
+  // Scan customer-facing copy only (not gates.banned_terms list itself)
+  const copyBlob = JSON.stringify({
+    copy: hub.copy,
+    products: hub.products,
+    loi: hub.loi,
+    stops: (hub.stops || []).map((s) => ({ label: s.label, serves: s.serves })),
+    lines: (hub.lines || []).map((l) => ({ name: l.name })),
+  });
+  if (hub.gates?.forbid_dock_unlock !== false && bannedDockScan(copyBlob)) {
+    throw new Error(`${id}: dock/berth dependency language in hub copy`);
   }
   for (const term of hub.gates?.banned_terms || []) {
-    if (new RegExp(term, 'i').test(blob)) {
-      throw new Error(`${id}: banned term in hub data: ${term}`);
+    if (new RegExp(term, 'i').test(copyBlob)) {
+      throw new Error(`${id}: banned term in hub copy: ${term}`);
     }
   }
 

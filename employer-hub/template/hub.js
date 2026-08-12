@@ -57,7 +57,8 @@
   setText('hero-sub', copy.hero_sub);
   setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water commute`);
   setText('nav-tag', brand.nav_tag || market.tagline || 'Employer network');
-  setText('stripe-lesson', copy.stripe_lesson || copy.precedent);
+  // Proof card: prefer stripe_lesson; fall back to precedent (NYC anonymized block)
+  setText('stripe-lesson', copy.stripe_lesson || copy.precedent || '');
   setText('loi-cta', copy.loi_cta);
   setText('price-anchor', copy.price_anchor || '');
   setText('footer-note', copy.footer_note || 'Letters of intent are non-binding.');
@@ -487,16 +488,26 @@
       map.addSource('stops', { type: 'geojson', data: { type: 'FeatureCollection', features: stopFeatures } });
 
       const allCoords = [];
+      /** water_path: LineString [[lng,lat],...] or MultiLineString [[[lng,lat],...], ...] */
+      function lineGeometry(waterPath) {
+        if (!waterPath || !waterPath.length) return null;
+        const multi = Array.isArray(waterPath[0]) && Array.isArray(waterPath[0][0]);
+        if (multi) {
+          waterPath.forEach((part) => part.forEach((c) => allCoords.push(c)));
+          return { type: 'MultiLineString', coordinates: waterPath };
+        }
+        waterPath.forEach((c) => allCoords.push(c));
+        return { type: 'LineString', coordinates: waterPath };
+      }
       lines.forEach((line) => {
-        const coords = line.water_path;
-        if (!coords || !coords.length) return;
-        coords.forEach((c) => allCoords.push(c));
+        const geom = lineGeometry(line.water_path);
+        if (!geom) return;
         map.addSource('line-' + line.id, {
           type: 'geojson',
           data: {
             type: 'Feature',
             properties: { id: line.id, name: line.name },
-            geometry: { type: 'LineString', coordinates: coords },
+            geometry: geom,
           },
         });
         map.addLayer({
@@ -658,18 +669,22 @@
         minY = Infinity,
         maxX = -Infinity,
         maxY = -Infinity;
-      line.water_path.forEach(([x, y]) => {
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
-      });
+      const multi = Array.isArray(line.water_path[0]) && Array.isArray(line.water_path[0][0]);
+      const parts = multi ? line.water_path : [line.water_path];
+      parts.forEach((part) =>
+        part.forEach(([x, y]) => {
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        })
+      );
       map.fitBounds(
         [
           [minX, minY],
           [maxX, maxY],
         ],
-        { padding: 60, duration: 700, maxZoom: 10.6 }
+        { padding: 60, duration: 700, maxZoom: 12.5 }
       );
     }
   }
