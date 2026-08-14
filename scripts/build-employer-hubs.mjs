@@ -74,6 +74,30 @@ function bannedDockScan(blob) {
   );
 }
 
+
+function sanitizeClientHub(hub) {
+  // Strip internal fields that must never reach the browser
+  const stripKeys = new Set(['dock_track', 'note_internal', 'note', 'landing', 'geometry_receipt', 'stop_migrations']);
+  const clean = JSON.parse(JSON.stringify(hub));
+  for (const s of clean.stops || []) {
+    for (const k of [...Object.keys(s)]) {
+      if (stripKeys.has(k) || k.endsWith('_internal')) delete s[k];
+    }
+  }
+  for (const l of clean.lines || []) {
+    delete l.phase_notes;
+    delete l.geometry_receipt;
+  }
+  delete clean.geometry_receipt;
+  delete clean.stop_migrations;
+  // Internal QA ledgers stay on disk only — not in the browser bundle
+  delete clean.bp_gap;
+  if (clean.gates) {
+    delete clean.gates.banned_terms; // avoid shipping held place-names into client JS
+  }
+  return clean;
+}
+
 function emitHub(hub, registryEntry) {
   const id = hub.id;
   const calc = hub.calculator || {};
@@ -172,9 +196,10 @@ function emitHub(hub, registryEntry) {
     fs.writeFileSync(path.join(outDir, 'index.html'), html);
     fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
     fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
+    const clientHub = sanitizeClientHub(hub);
     fs.writeFileSync(
       path.join(outDir, 'hub-data.js'),
-      `/* GENERATED from employer-hub/hubs/${id}/hub.json */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(hub)};\n`
+      `/* GENERATED from employer-hub/hubs/${id}/hub.json */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
     );
 
     // Legacy Bay data global for any residual consumers
@@ -197,7 +222,7 @@ function emitHub(hub, registryEntry) {
       };
       fs.writeFileSync(
         path.join(outDir, 'bay-employers-data.js'),
-        `/* GENERATED compatibility shim */\nwindow.BAY_EMPLOYERS_DATA = ${JSON.stringify(legacy)};\nwindow.EMPLOYER_HUB_DATA = window.EMPLOYER_HUB_DATA || ${JSON.stringify(hub)};\n`
+        `/* GENERATED compatibility shim */\nwindow.BAY_EMPLOYERS_DATA = ${JSON.stringify(legacy)};\nwindow.EMPLOYER_HUB_DATA = window.EMPLOYER_HUB_DATA || ${JSON.stringify(clientHub)};\n`
       );
     }
 

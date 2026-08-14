@@ -23,7 +23,36 @@
   const calcMeta = DATA.calculator || DATA.roi_calculator || {};
   const profile = calcMeta.profile || 'bay_productivity';
   const contact = market.contact_email || 'jaideep@navierboat.com';
-  let map, popup, flavor;
+  const networkCfg = DATA.network || {};
+  const phaseLabels = networkCfg.phase_labels || ['At launch', '+ Phase 2', 'Full network'];
+  let activePhase = networkCfg.default_phase || 1;
+  let showSeasonal = !!networkCfg.show_seasonal_default;
+  let map, popup, flavor, highlightKeys = null;
+
+  function stopVisible(s) {
+    if (!s) return false;
+    if (s.exec_only) return showSeasonal || activePhase >= 99; // hidden unless we show exec with seasonal? keep off default
+    if (s.seasonal) return showSeasonal;
+    return (s.phase || 1) <= activePhase;
+  }
+  function lineVisible(l) {
+    if (!l) return false;
+    if (l.exec_only) return false; // demoted from default map — still in products
+    if (l.seasonal || l.type === 'seasonal') return showSeasonal;
+    return (l.phase || 1) <= activePhase;
+  }
+  function segmentVisible(seg, line) {
+    if (!seg) return false;
+    if (!lineVisible(line)) return false;
+    const ph = seg.phase != null ? seg.phase : (line.phase || 1);
+    return ph <= activePhase;
+  }
+  function visibleStops() { return stops.filter(stopVisible); }
+  function visibleLines() { return lines.filter(lineVisible); }
+  function typeBadge(t) {
+    const x = t || 'trunk';
+    return `<span class="type-badge type-${x}">${x}</span>`;
+  }
 
   function money(n) {
     const sign = n < 0 ? '-' : '';
@@ -146,16 +175,110 @@
     flavor = loi.default_flavor || 'A';
   }
 
+
+  // —— Phase + seasonal controls ——
+  const phaseEl = document.getElementById('phase-toggle');
+  if (phaseEl) {
+    phaseEl.innerHTML = '';
+    phaseLabels.forEach((label, i) => {
+      const ph = i + 1;
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label;
+      b.dataset.phase = String(ph);
+      if (ph === activePhase) b.classList.add('active');
+      b.addEventListener('click', () => {
+        activePhase = ph;
+        [...phaseEl.querySelectorAll('button')].forEach((x) => x.classList.toggle('active', Number(x.dataset.phase) === activePhase));
+        refreshNetworkUI();
+      });
+      phaseEl.appendChild(b);
+    });
+  }
+  const seasonWrap = document.getElementById('seasonal-toggle-wrap');
+  const seasonCb = document.getElementById('seasonal-toggle');
+  const hasSeasonal = lines.some((l) => l.seasonal || l.type === 'seasonal');
+  if (seasonWrap && seasonCb && hasSeasonal) {
+    seasonWrap.hidden = false;
+    seasonCb.checked = showSeasonal;
+    seasonCb.addEventListener('change', () => {
+      showSeasonal = seasonCb.checked;
+      refreshNetworkUI();
+    });
+  }
+
+  // Catchment panel
+  const catchGrid = document.getElementById('catchment-grid');
+  if (catchGrid) {
+    const rows = DATA.catchment || [];
+    if (!rows.length) {
+      const sec = document.getElementById('catchment');
+      if (sec) sec.hidden = true;
+    } else {
+      catchGrid.innerHTML = rows.map((c) => `
+        <button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
+          <h3>${c.anchor || c.anchor_stop || ''}</h3>
+          <div class="nums">${c.phase1_stations ?? '—'} <span>at launch</span> → ${c.full_network_stations ?? '—'} <span>full network</span></div>
+          <div class="hint">Tap to highlight reachable stations on the map</div>
+        </button>`).join('');
+      catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
+          card.classList.add('active');
+          const key = card.dataset.anchor;
+          highlightCatchment(key);
+        });
+      });
+    }
+  }
+
+  function highlightCatchment(anchorKey) {
+    // BFS on visible graph at full phase for highlight, show all connected at activePhase
+    const g = {};
+    visibleLines().forEach((ln) => {
+      (ln.segments || []).forEach((seg) => {
+        if (!segmentVisible(seg, ln)) return;
+        g[seg.from] = g[seg.from] || new Set();
+        g[seg.to] = g[seg.to] || new Set();
+        g[seg.from].add(seg.to);
+        g[seg.to].add(seg.from);
+      });
+    });
+    const seen = new Set([anchorKey]);
+    const q = [anchorKey];
+    while (q.length) {
+      const n = q.shift();
+      (g[n] || []).forEach((nb) => {
+        if (!seen.has(nb)) { seen.add(nb); q.push(nb); }
+      });
+    }
+    highlightKeys = seen;
+    refreshNetworkUI();
+    const n = nodesByKey[anchorKey];
+    if (n && map) map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10), duration: 600 });
+  }
+
+  function refreshNetworkUI() {
+    renderLineList();
+    renderStopList();
+    renderLegend();
+    rebuildMapLayers();
+  }
+
+
   // Map legend
   const legend = document.getElementById('map-legend');
-  if (legend) {
+  function renderLegend() {
+    if (!legend) return;
     legend.innerHTML = '';
-    lines.forEach((line) => {
+    visibleLines().forEach((line) => {
       const s = document.createElement('span');
-      s.innerHTML = `<i style="background:${line.color}"></i>${line.id}`;
+      const sun = (line.seasonal || line.type === 'seasonal') ? ' ☀' : '';
+      s.innerHTML = `<i style="background:${line.color}"></i>${line.id}${sun}`;
       legend.appendChild(s);
     });
   }
+  renderLegend();
 
   // —— Calculator ——
   const inputsMeta = calcMeta.inputs || {};
@@ -455,7 +578,141 @@
   });
 
   // —— Map ——
+
+  function dashForType(line) {
+    const t = line.type || 'trunk';
+    if (t === 'seasonal') return [1, 2];
+    if (t === 'express') return [2, 1.5];
+    if (t === 'feeder') return [1, 0];
+    return line.optional || line.dashed ? [2, 2] : [1, 0];
+  }
+  function widthForType(line, focus) {
+    const t = line.type || 'trunk';
+    const base = t === 'trunk' ? 3.2 : t === 'feeder' ? 2.2 : 2.6;
+    return focus ? base + 0.8 : base;
+  }
+  function rebuildMapLayers() {
+    if (!map || !map.isStyleLoaded()) return;
+    // remove prior line layers/sources
+    lines.forEach((line) => {
+      ['line-glow-' + line.id, 'line-' + line.id].forEach((id) => {
+        if (map.getLayer(id)) map.removeLayer(id);
+      });
+      if (map.getSource('line-' + line.id)) map.removeSource('line-' + line.id);
+    });
+    if (map.getLayer('stops-label')) map.removeLayer('stops-label');
+    if (map.getLayer('stops')) map.removeLayer('stops');
+    if (map.getLayer('stops-halo')) map.removeLayer('stops-halo');
+    if (map.getLayer('stops-hub')) map.removeLayer('stops-hub');
+    if (map.getSource('stops')) map.removeSource('stops');
+
+    const allCoords = [];
+    function lineGeometry(waterPath) {
+      if (!waterPath || !waterPath.length) return null;
+      const multi = Array.isArray(waterPath[0]) && Array.isArray(waterPath[0][0]);
+      if (multi) {
+        waterPath.forEach((part) => part.forEach((c) => allCoords.push(c)));
+        return { type: 'MultiLineString', coordinates: waterPath };
+      }
+      waterPath.forEach((c) => allCoords.push(c));
+      return { type: 'LineString', coordinates: waterPath };
+    }
+
+    visibleLines().forEach((line) => {
+      // Filter water_path parts by segment phase when multi
+      let wp = line.water_path;
+      const segs = line.segments || [];
+      const multi = wp && Array.isArray(wp[0]) && Array.isArray(wp[0][0]);
+      if (multi && segs.length === wp.length) {
+        wp = wp.filter((_, i) => segmentVisible(segs[i], line));
+        if (!wp.length) return;
+      }
+      const geom = lineGeometry(wp);
+      if (!geom) return;
+      map.addSource('line-' + line.id, {
+        type: 'geojson',
+        data: { type: 'Feature', properties: { id: line.id, name: line.name }, geometry: geom },
+      });
+      const dash = dashForType(line);
+      map.addLayer({
+        id: 'line-glow-' + line.id, type: 'line', source: 'line-' + line.id,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': line.color || '#e0cb8f', 'line-width': 10, 'line-opacity': 0.18, 'line-blur': 1.5 },
+      });
+      map.addLayer({
+        id: 'line-' + line.id, type: 'line', source: 'line-' + line.id,
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: {
+          'line-color': line.color || '#e0cb8f',
+          'line-width': widthForType(line, false),
+          'line-opacity': 0.95,
+          'line-dasharray': dash,
+        },
+      });
+    });
+
+    const vStops = visibleStops().filter((n) => !highlightKeys || highlightKeys.has(n.key));
+    const stopFeatures = (highlightKeys ? visibleStops() : visibleStops()).map((n) => ({
+      type: 'Feature',
+      properties: {
+        key: n.key, label: n.label, serves: servesText(n), bp: n.resolved_bp_id,
+        hub: (n.role || '').includes('interchange') ? 1 : 0,
+        hi: highlightKeys && highlightKeys.has(n.key) ? 1 : 0,
+        dim: highlightKeys && !highlightKeys.has(n.key) ? 1 : 0,
+      },
+      geometry: { type: 'Point', coordinates: [n.lng, n.lat] },
+    }));
+    map.addSource('stops', { type: 'geojson', data: { type: 'FeatureCollection', features: stopFeatures } });
+    map.addLayer({
+      id: 'stops-halo', type: 'circle', source: 'stops',
+      paint: {
+        'circle-radius': ['case', ['==', ['get', 'hub'], 1], 14, 11],
+        'circle-color': '#e0cb8f',
+        'circle-opacity': ['case', ['==', ['get', 'dim'], 1], 0.05, 0.16],
+      },
+    });
+    map.addLayer({
+      id: 'stops-hub', type: 'circle', source: 'stops',
+      filter: ['==', ['get', 'hub'], 1],
+      paint: {
+        'circle-radius': 9,
+        'circle-color': 'transparent',
+        'circle-stroke-width': 2.5,
+        'circle-stroke-color': '#e0cb8f',
+        'circle-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
+      },
+    });
+    map.addLayer({
+      id: 'stops', type: 'circle', source: 'stops',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#ffffff',
+        'circle-stroke-width': 2.5,
+        'circle-stroke-color': '#e0cb8f',
+        'circle-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
+      },
+    });
+    map.addLayer({
+      id: 'stops-label', type: 'symbol', source: 'stops',
+      layout: {
+        'text-field': ['get', 'label'],
+        'text-size': 11,
+        'text-offset': [0, 1.35],
+        'text-anchor': 'top',
+        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
+        'text-max-width': 10,
+      },
+      paint: {
+        'text-color': '#f7f7f8',
+        'text-halo-color': 'rgba(10,10,10,0.9)',
+        'text-halo-width': 1.4,
+        'text-opacity': ['case', ['==', ['get', 'dim'], 1], 0.3, 1],
+      },
+    });
+  }
+
   function initMap() {
+
     const mapCfg = market.map || {};
     map = new maplibregl.Map({
       container: 'map',
@@ -499,102 +756,8 @@
         waterPath.forEach((c) => allCoords.push(c));
         return { type: 'LineString', coordinates: waterPath };
       }
-      lines.forEach((line) => {
-        const geom = lineGeometry(line.water_path);
-        if (!geom) return;
-        map.addSource('line-' + line.id, {
-          type: 'geojson',
-          data: {
-            type: 'Feature',
-            properties: { id: line.id, name: line.name },
-            geometry: geom,
-          },
-        });
-        map.addLayer({
-          id: 'line-glow-' + line.id,
-          type: 'line',
-          source: 'line-' + line.id,
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
-          paint: {
-            'line-color': line.color || '#e0cb8f',
-            'line-width': 10,
-            'line-opacity': 0.2,
-            'line-blur': 1.5,
-          },
-        });
-        map.addLayer({
-          id: 'line-' + line.id,
-          type: 'line',
-          source: 'line-' + line.id,
-          layout: { 'line-cap': 'round', 'line-join': 'round' },
-          paint: {
-            'line-color': line.color || '#e0cb8f',
-            'line-width': 3,
-            'line-opacity': 0.95,
-            'line-dasharray': line.optional || line.dashed ? [2, 2] : [1, 0],
-          },
-        });
-      });
-
-      map.addLayer({
-        id: 'stops-halo',
-        type: 'circle',
-        source: 'stops',
-        paint: { 'circle-radius': 12, 'circle-color': '#e0cb8f', 'circle-opacity': 0.16 },
-      });
-      map.addLayer({
-        id: 'stops',
-        type: 'circle',
-        source: 'stops',
-        paint: {
-          'circle-radius': 6,
-          'circle-color': '#ffffff',
-          'circle-stroke-width': 2.5,
-          'circle-stroke-color': '#e0cb8f',
-        },
-      });
-      map.addLayer({
-        id: 'stops-label',
-        type: 'symbol',
-        source: 'stops',
-        layout: {
-          'text-field': ['get', 'label'],
-          'text-size': 12,
-          'text-offset': [0, 1.35],
-          'text-anchor': 'top',
-          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
-          'text-max-width': 10,
-        },
-        paint: {
-          'text-color': '#f7f7f8',
-          'text-halo-color': 'rgba(10,10,10,0.9)',
-          'text-halo-width': 1.4,
-        },
-      });
-
-      if (allCoords.length) {
-        let minX = Infinity,
-          minY = Infinity,
-          maxX = -Infinity,
-          maxY = -Infinity;
-        allCoords.forEach(([x, y]) => {
-          minX = Math.min(minX, x);
-          maxX = Math.max(maxX, x);
-          minY = Math.min(minY, y);
-          maxY = Math.max(maxY, y);
-        });
-        map.fitBounds(
-          [
-            [minX, minY],
-            [maxX, maxY],
-          ],
-          {
-            padding: { top: 48, bottom: 48, left: 40, right: 40 },
-            duration: 0,
-            maxZoom: mapCfg.fit_max_zoom || 10.2,
-          }
-        );
-      }
+      // layers built in rebuildMapLayers()
+      rebuildMapLayers();
 
       map.on('click', 'stops', (e) => selectStop(e.features[0].properties.key));
       map.on('mouseenter', 'stops', () => {
@@ -608,7 +771,7 @@
 
   function setLineOpacity(focusId) {
     if (!map) return;
-    lines.forEach((line) => {
+    visibleLines().forEach((line) => {
       if (!map.getLayer('line-' + line.id)) return;
       const on = !focusId || line.id === focusId;
       map.setPaintProperty('line-' + line.id, 'line-opacity', on ? 0.98 : 0.18);
@@ -729,32 +892,42 @@
     }
   }
 
-  const lineList = document.getElementById('line-list');
-  if (lineList) {
+  function renderLineList() {
+    const lineList = document.getElementById('line-list');
+    if (!lineList) return;
     lineList.innerHTML = '';
-    lines.forEach((line) => {
+    // Show all non-exec lines; dim those beyond phase
+    lines.filter((l) => !l.exec_only).forEach((line) => {
+      const vis = lineVisible(line);
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'line-btn';
+      b.className = 'line-btn' + (vis ? '' : ' dimmed') + (line.flagship ? ' flagship' : '');
       b.dataset.id = line.id;
-      b.innerHTML = `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${line.color};margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,0.06)"></span>${line.name}<span class="sub">${(line.stops || []).map((k) => nodesByKey[k]?.label || k).join(' · ')}</span>`;
+      const stopNames = (line.stops || []).filter((k) => nodesByKey[k] && ((nodesByKey[k].phase || 1) <= activePhase || nodesByKey[k].seasonal)).map((k) => nodesByKey[k]?.label || k).join(' · ');
+      b.innerHTML = `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${line.color};margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,0.06)"></span>${line.name}${typeBadge(line.type)}<span class="sub">${stopNames || 'Planned'}</span>`;
       b.addEventListener('click', () => selectLine(line.id));
       lineList.appendChild(b);
     });
   }
-  const stopList = document.getElementById('stop-list');
-  if (stopList) {
+  function renderStopList() {
+    const stopList = document.getElementById('stop-list');
+    if (!stopList) return;
     stopList.innerHTML = '';
-    stops.forEach((n) => {
+    stops.filter((n) => !n.exec_only).forEach((n) => {
+      const vis = stopVisible(n);
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'stop-btn';
+      b.className = 'stop-btn' + (vis ? '' : ' dimmed');
       b.dataset.key = n.key;
-      b.innerHTML = `${n.label}<span class="sub">${servesText(n)}</span>`;
+      const tag = n.tag ? `<span class="tag-pill">${n.tag}</span>` : '';
+      const role = (n.role || '').includes('interchange') ? ' · hub' : '';
+      b.innerHTML = `${n.label}${role}${tag}<span class="sub">${servesText(n)}</span>`;
       b.addEventListener('click', () => selectStop(n.key));
       stopList.appendChild(b);
     });
   }
+  renderLineList();
+  renderStopList();
 
   if (document.getElementById('map')) initMap();
 
@@ -762,7 +935,7 @@
   const stopSel = document.getElementById('f-stop');
   if (stopSel) {
     stopSel.innerHTML = '';
-    stops.forEach((n) => {
+    stops.filter((n) => !n.exec_only).forEach((n) => {
       const o = document.createElement('option');
       o.value = n.key;
       o.textContent = n.label;

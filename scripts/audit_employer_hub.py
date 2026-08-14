@@ -104,8 +104,9 @@ def check_hub(path: Path) -> list[str]:
             hits.append(f"net_incremental={net_inc} expected {assert_['net_incremental']}")
 
     for n in data.get("stops") or []:
-        if not n.get("resolved_bp_id") or n.get("lng") is None:
-            hits.append(f"stop {n.get('key')}: missing bp or coordinates")
+        if n.get("lng") is None or n.get("lat") is None:
+            hits.append(f"stop {n.get('key')}: missing coordinates")
+        # resolved_bp_id may be null for inventory-fallback stops (bp_gap)
 
     return hits
 

@@ -1,0 +1,41 @@
+{
+  "hub_id": "bay-area",
+  "version": 2,
+  "note": "Tasklet-authored v2 draft. Grok owns: BP gazetteer ID-match (resolved_bp_id), lng/lat, water-only water_path waypoints, segment water_min from sealed geometry. Landing names are exact and source-verified in inputs/BAY-NODE-INVENTORY.md. Do not invent landings.",
+  "stop_migrations": [
+    { "action": "split", "old_key": "alameda-jack-london", "into": ["oakland-jls", "alameda-main"], "reason": "v2 separates Oakland JLS (East Bay hub) from Alameda Main St" }
+  ],
+  "stops": [
+    { "key": "ferry-building", "landing": "Downtown San Francisco Ferry Terminal (Ferry Building)", "role": "interchange_primary", "phase": 1, "serves": "FiDi/Embarcadero employers; all trunks meet here" },
+    { "key": "mission-bay", "landing": "Mission Bay Ferry Landing (China Basin)", "role": "interchange", "phase": 1, "tag": "opens 2027", "serves": "UCSF, Chase Center, ~11,000 new housing units within half a mile", "note": "DAY-ONE HUB per Jaideep 2026-08-13: Port construction completes 2026/27; service launches end-2027. Solid hub styling with 'opens 2027' tag - NOT dashed/aspirational." },
+    { "key": "oyster-point", "landing": "Oyster Point Ferry Terminal / Oyster Point Marina", "role": "interchange", "phase": 1, "serves": "Genentech + SSF biotech campus - the anchor employer dock" },
+    { "key": "redwood-city", "landing": "Port of Redwood City Municipal Marina (451 Seaport Court)", "role": "station", "phase": 2, "dock_track": true, "serves": "Redwood City / southern Peninsula tech corridor" },
+    { "key": "larkspur", "landing": "Larkspur Ferry Terminal", "role": "station", "phase": 1, "serves": "Marin super-commuters (existing Line A origin)" },
+    { "key": "sausalito", "landing": "Sausalito Ferry Landing", "role": "station", "phase": 1, "serves": "Southern Marin waterfront residents" },
+    { "key": "tiburon", "landing": "Tiburon Ferry Terminal", "role": "station", "phase": 1, "serves": "Tiburon/Belvedere executive residential" },
+    { "key": "oakland-jls", "landing": "Jack London Square Ferry Terminal", "role": "interchange", "phase": 1, "serves": "Oakland/East Bay collector; BART+AC Transit connection" },
+    { "key": "alameda-main", "landing": "Main Street Alameda Ferry Terminal", "role": "station", "phase": 1, "serves": "Alameda island residents" },
+    { "key": "alameda-seaplane", "landing": "Seaplane Lagoon Ferry Terminal", "role": "station", "phase": 1, "serves": "Alameda Point / West Alameda" },
+    { "key": "alameda-harbor-bay", "landing": "Harbor Bay Ferry Terminal", "role": "station", "phase": 2, "serves": "Harbor Bay Isle / Bay Farm; airport-adjacent East Bay" },
+    { "key": "richmond", "landing": "Richmond Ferry Terminal (1453 Harbour Way South)", "role": "station", "phase": 2, "serves": "Richmond / northern East Bay" },
+    { "key": "vallejo", "landing": "Vallejo Ferry Terminal", "role": "station", "phase": 2, "serves": "Vallejo / Solano super-commuters" },
+    { "key": "mare-island", "landing": "Mare Island Ferry Terminal", "role": "station", "phase": 3, "serves": "Mare Island redevelopment" },
+    { "key": "treasure-island", "landing": "Treasure Island Ferry Landing", "role": "station", "phase": 2, "serves": "Treasure Island residents (private operator today - partner/replace)", "note_internal": "TIDC/Prop SF operate today" },
+    { "key": "berkeley", "landing": "Berkeley Marina guest docks (K-102/K-104)", "role": "station", "phase": 3, "dock_track": true, "serves": "Berkeley/Albany/El Cerrito" },
+    { "key": "emeryville", "landing": "Emery Cove Marina guest docking", "role": "station", "phase": 3, "dock_track": true, "serves": "Emeryville biotech/design cluster" }
+  ],
+  "lines": [
+    { "id": "BA-1", "name": "Peninsula Trunk", "type": "trunk", "phase": 1, "stops": ["ferry-building", "mission-bay", "oyster-point", "redwood-city"], "phase_notes": "FB-Mission Bay-Oyster Point at launch; Redwood City joins on dock (P2)" },
+    { "id": "BA-2", "name": "Marin Line", "type": "trunk", "phase": 1, "stops": ["larkspur", "sausalito", "tiburon", "ferry-building", "oyster-point"], "phase_notes": "Marin branches converge at FB; peak through-running to Oyster Point. Carries old Line A." },
+    { "id": "BA-3", "name": "East Bay Trunk", "type": "trunk", "phase": 1, "stops": ["oakland-jls", "alameda-seaplane", "alameda-main", "ferry-building"] },
+    { "id": "BA-4", "name": "Biotech Crosstown", "type": "trunk", "phase": 2, "flagship": true, "stops": ["alameda-harbor-bay", "alameda-seaplane", "oakland-jls", "oyster-point"], "phase_notes": "East Bay to SSF biotech direct - zero water option exists today; bypasses SF entirely" },
+    { "id": "BA-5", "name": "North Bay Express", "type": "express", "phase": 2, "stops": ["vallejo", "mare-island", "richmond", "ferry-building"], "phase_notes": "Premium express overlay; Mare Island P3" },
+    { "id": "BA-6", "name": "Inner East Bay Feeder", "type": "feeder", "phase": 2, "stops": ["berkeley", "emeryville", "treasure-island", "ferry-building"], "phase_notes": "TI P2; Berkeley/Emeryville P3 on dock track" }
+  ],
+  "catchment": [
+    { "anchor": "Oyster Point / SSF biotech", "anchor_stop": "oyster-point", "phase1_stations": 7, "full_network_stations": 15 },
+    { "anchor": "Mission Bay / UCSF", "anchor_stop": "mission-bay", "phase1_stations": 5, "full_network_stations": 14 },
+    { "anchor": "Financial District", "anchor_stop": "ferry-building", "phase1_stations": 9, "full_network_stations": 16 },
+    { "anchor": "Redwood City / Peninsula tech", "anchor_stop": "redwood-city", "phase1_stations": 0, "full_network_stations": 14, "note": "P2 - dock track" }
+  ]
+}
