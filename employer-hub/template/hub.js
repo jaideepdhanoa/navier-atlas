@@ -31,7 +31,7 @@
 
   function stopVisible(s) {
     if (!s) return false;
-    if (s.exec_only) return showSeasonal || activePhase >= 99; // hidden unless we show exec with seasonal? keep off default
+    if (s.exec_only) return false; // never on public employer map
     if (s.seasonal) return showSeasonal;
     return (s.phase || 1) <= activePhase;
   }
@@ -42,7 +42,10 @@
       if (!showSeasonal) return false;
     }
     const ph = seg.phase != null ? seg.phase : (line.phase || 1);
-    return ph <= activePhase;
+    if (ph > activePhase) return false;
+    // phase_max: hide short-turn / alternate segments once later build-out is live
+    if (seg.phase_max != null && activePhase > seg.phase_max) return false;
+    return true;
   }
   function lineVisible(l) {
     if (!l) return false;
