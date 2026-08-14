@@ -436,21 +436,50 @@
     if (fromKey === seg.to) return c.reverse();
     return c;
   }
-  /** Dijkstra on state (stop|lineId). lineId empty string = not yet boarded. */
+  /** Segments available on the full planned network (for trip routing — ignore map phase filter). */
+  function segmentInTripGraph(seg, line) {
+    if (!seg || !line || line.exec_only) return false;
+    if (line.seasonal || line.type === 'seasonal') {
+      if (!showSeasonal) return false;
+    }
+    // Exclude early short-turns that disappear once the full spine exists
+    if (seg.phase_max != null && seg.phase_max < 3) return false;
+    return true;
+  }
+  function stopPhaseLabel(stop) {
+    const ph = Math.min(3, Math.max(1, stop.phase || 1));
+    if (ph <= 1) return '';
+    // Customer-facing availability (same labels as map control, not "later phase")
+    const label = phaseLabels[ph - 1] || '';
+    return label ? ` · ${label}` : '';
+  }
+  function tripRequiredPhase(chain) {
+    let maxPh = 1;
+    chain.forEach((rec) => {
+      const seg = rec.edge.seg;
+      const line = rec.edge.line;
+      const ph = seg.phase != null ? seg.phase : (line.phase || 1);
+      if (ph > maxPh) maxPh = ph;
+    });
+    return maxPh;
+  }
+
+  /** Dijkstra on state (stop|lineId). Always routes on full planned network. */
   function findTrip(fromKey, toKey) {
     if (!fromKey || !toKey || fromKey === toKey) return null;
     const transferMin = tripCfg.transfer_min != null ? tripCfg.transfer_min : 8;
     const maxXfer = tripCfg.max_transfers != null ? tripCfg.max_transfers : 2;
 
-    // Build undirected water edges from visible segments
+    // Full network graph — employers pick any terminal pair; map phase is visual only
     const edgesByStop = {};
     const addE = (k, e) => {
       if (!edgesByStop[k]) edgesByStop[k] = [];
       edgesByStop[k].push(e);
     };
-    visibleLines().forEach((line) => {
+    lines.forEach((line) => {
+      if (line.exec_only) return;
       (line.segments || []).forEach((seg) => {
-        if (!segmentVisible(seg, line)) return;
+        if (!segmentInTripGraph(seg, line)) return;
         if (!nodesByKey[seg.from] || !nodesByKey[seg.to]) return;
         const w = waterMinutes(seg);
         addE(seg.from, {
@@ -572,6 +601,7 @@
       });
       i = j;
     }
+    const requiredPhase = tripRequiredPhase(chain);
     return {
       from: fromKey,
       to: toKey,
@@ -583,6 +613,8 @@
       transfers,
       totalNavier: waterTotal + transferTotal,
       pathCoords: allCoords,
+      requiredPhase,
+      requiredPhaseLabel: phaseLabels[requiredPhase - 1] || null,
     };
   }
 
@@ -688,6 +720,10 @@
       trip.transfers > 0
         ? `${trip.transfers} transfer${trip.transfers > 1 ? 's' : ''} · ${trip.transferTotal} min at hub${trip.transfers > 1 ? 's' : ''}`
         : 'Direct · no transfer';
+    const phaseNote =
+      trip.requiredPhase > 1 && trip.requiredPhaseLabel
+        ? `<div class="trip-phase-note">This ride uses corridors on the planned <strong>${trip.requiredPhaseLabel}</strong> network — times assume those terminals are live.</div>`
+        : '';
     const stepsHtml = trip.steps
       .map((s, idx) => {
         if (s.kind === 'transfer') {
@@ -712,6 +748,7 @@
     res.innerHTML = `
       <div class="trip-title">${trip.fromLabel} → ${trip.toLabel}</div>
       <p class="trip-sub">${xferNote}</p>
+      ${phaseNote}
       <div class="trip-compare">
         <div class="trip-stat">
           <div class="k">Navier</div>
@@ -762,10 +799,14 @@
       renderTripResult(trip, drive);
       const detail = document.getElementById('map-detail');
       if (detail) {
+        const phaseBit =
+          trip.requiredPhase > 1 && trip.requiredPhaseLabel
+            ? ` · ${trip.requiredPhaseLabel}`
+            : '';
         detail.innerHTML = `<strong>Your ride</strong>
           <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ~${Math.round(trip.totalNavier)} min on Navier${
             drive != null ? ` vs ~${drive} min drive` : ''
-          }</div>`;
+          }${phaseBit}</div>`;
       }
       // Prefill LOI office + calc from this trip
       const fStop = document.getElementById('f-stop');
@@ -778,45 +819,17 @@
       showStickyCta();
       return;
     }
-    // No path this phase — probe later phases
+    // No path on full planned network (disconnected stops)
     activeTrip = { from: fromKey, to: toKey, path: null };
     removeTripMapLayers();
-    const saved = activePhase;
-    let workPh = null;
-    let later = null;
-    for (let ph = saved + 1; ph <= 3; ph++) {
-      activePhase = ph;
-      later = findTrip(fromKey, toKey);
-      if (later) {
-        workPh = ph;
-        break;
-      }
-    }
-    activePhase = saved;
     const res = document.getElementById('trip-result');
     const clr = document.getElementById('trip-clear');
     if (res) {
       res.hidden = false;
-      if (later && workPh) {
-        const label = phaseLabels[workPh - 1] || `Phase ${workPh}`;
-        res.innerHTML = `<p class="trip-caveat">${tripCfg.no_path || 'No path at this phase.'}<br/><br/>
-          Available on <strong>${label}</strong> · ~${Math.round(later.totalNavier)} min water${
-            drive != null ? ` vs ~${drive} min drive` : ''
-          }.</p>
-          <div class="trip-actions"><button type="button" class="btn btn-primary btn-sm" id="trip-jump-phase">Show ${label}</button></div>`;
-        document.getElementById('trip-jump-phase')?.addEventListener('click', () => {
-          activePhase = workPh;
-          const phaseEl = document.getElementById('phase-toggle');
-          if (phaseEl) {
-            [...phaseEl.querySelectorAll('button')].forEach((x) =>
-              x.classList.toggle('active', Number(x.dataset.phase) === activePhase)
-            );
-          }
-          refreshNetworkUI();
-        });
-      } else {
-        res.innerHTML = `<p class="trip-caveat">${tripCfg.no_path || 'No connected water path on this network.'}</p>`;
-      }
+      res.innerHTML = `<p class="trip-caveat">${
+        tripCfg.no_path_full ||
+        'No water connection between these terminals on the planned network yet.'
+      }</p>`;
     }
     if (clr) clr.hidden = false;
   }
@@ -826,16 +839,26 @@
     if (!fromSel || !toSel) return;
     const prevFrom = fromSel.value;
     const prevTo = toSel.value;
+    // All public terminals; label with map-control availability (At launch / + Phase 2 / Full network)
     const opts = stops
       .filter((n) => !n.exec_only)
+      .filter((n) => {
+        if (n.seasonal) return showSeasonal;
+        return true;
+      })
       .slice()
-      .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
-    const fill = (sel, ph) => {
-      sel.innerHTML = `<option value="">${ph}</option>`;
+      .sort((a, b) => {
+        const pa = a.phase || 1;
+        const pb = b.phase || 1;
+        if (pa !== pb) return pa - pb;
+        return (a.label || '').localeCompare(b.label || '');
+      });
+    const fill = (sel, placeholder) => {
+      sel.innerHTML = `<option value="">${placeholder}</option>`;
       opts.forEach((n) => {
         const o = document.createElement('option');
         o.value = n.key;
-        o.textContent = n.label + (!stopVisible(n) ? ' (later phase)' : '');
+        o.textContent = (n.label || n.key) + stopPhaseLabel(n);
         sel.appendChild(o);
       });
     };
