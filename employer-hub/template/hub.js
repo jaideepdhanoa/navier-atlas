@@ -774,26 +774,8 @@
     popup = new maplibregl.Popup({ closeButton: false, offset: 14 });
 
     map.on('load', () => {
-      const stopFeatures = stops.map((n) => ({
-        type: 'Feature',
-        properties: { key: n.key, label: n.label, serves: servesText(n), bp: n.resolved_bp_id },
-        geometry: { type: 'Point', coordinates: [n.lng, n.lat] },
-      }));
-      map.addSource('stops', { type: 'geojson', data: { type: 'FeatureCollection', features: stopFeatures } });
-
-      const allCoords = [];
-      /** water_path: LineString [[lng,lat],...] or MultiLineString [[[lng,lat],...], ...] */
-      function lineGeometry(waterPath) {
-        if (!waterPath || !waterPath.length) return null;
-        const multi = Array.isArray(waterPath[0]) && Array.isArray(waterPath[0][0]);
-        if (multi) {
-          waterPath.forEach((part) => part.forEach((c) => allCoords.push(c)));
-          return { type: 'MultiLineString', coordinates: waterPath };
-        }
-        waterPath.forEach((c) => allCoords.push(c));
-        return { type: 'LineString', coordinates: waterPath };
-      }
-      // layers built in rebuildMapLayers()
+      // Ensure canvas matches container (full-bleed layout can resolve after first paint)
+      map.resize();
       rebuildMapLayers();
 
       map.on('click', 'stops', (e) => selectStop(e.features[0].properties.key));
@@ -802,6 +784,18 @@
       });
       map.on('mouseleave', 'stops', () => {
         map.getCanvas().style.cursor = '';
+      });
+    });
+    window.addEventListener('resize', () => {
+      if (map) map.resize();
+    });
+    // Second pass after layout settles (side panel + full-bleed grid)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (map) {
+          map.resize();
+          if (map.isStyleLoaded()) rebuildMapLayers();
+        }
       });
     });
   }

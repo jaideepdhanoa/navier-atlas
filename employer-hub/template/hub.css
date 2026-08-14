@@ -292,15 +292,23 @@ footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
 }
 #network.network-bleed .map-block{
   max-width:none;
+  width:100%;
 }
+/* width:100% is required: margin:auto on a grid item cancels stretch, which
+   collapsed the map column to ~0 (shell shrink-wrapped to the side panel). */
 #network.network-bleed .map-shell{
-  grid-template-columns:minmax(280px,320px) 1fr;
+  grid-template-columns:minmax(280px,320px) minmax(0,1fr);
+  width:100%;
   max-width:1600px;
   margin:0 auto;
+}
+#network.network-bleed .map-frame{
+  min-width:0;
 }
 #network.network-bleed #map{
   height:min(72vh,780px);
   min-height:520px;
+  width:100%;
 }
 @media (max-width:960px){
   #network.network-bleed .map-shell{grid-template-columns:1fr}
