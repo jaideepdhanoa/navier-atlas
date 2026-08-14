@@ -1,18 +1,22 @@
-# Employer hub architecture (locked 2026-08-11)
+# Employer hub architecture
 
-## Product decisions
+## Product decisions (2026-08-11, updated 2026-08-14)
 
 1. **Canonical URL:** `/employers/<id>` (e.g. `/employers/new-york`, `/employers/bay-area`)
 2. **Aliases:** `/ny-employers`, `/bay-employers` (full static copies so cleanUrls work)
-3. **Lines:** consistent with Bay — every product line (including LGA EXEC when present) is a map line
-4. **New water segments:** Grok draws water-clean display geometry
+3. **Lines:** sequential water spines + transfer hubs (not radial spokes). Geography-first names.
+4. **New water segments:** mid-channel hand geometry; no land chords
 5. **LOI:** one Google Sheet tab; each row includes `hub` / `hub_id`
-6. **Build order:** extract template from Bay first; NYC is hub #2 on the same rails
+6. **Page story:** network + From→To trip planner lead; calculator secondary; LOI capture
+7. **Seasonal:** opt-in per hub (`network.show_seasonal`) — NYC only today
+8. **No page forks:** template in `employer-hub/template/`; cities are `hub.json` only
 
 ## Tasklet packages
 
+- **Future cities playbook:** [`TASKLET-FUTURE-CITIES-HANDOFF.md`](./TASKLET-FUTURE-CITIES-HANDOFF.md) ← start here
 - Bay: `handoff/bay-employers/` (historical + LOI setup)
 - NYC: `handoff/ny-employers/` (PR #349) — content/math only; not a page fork
+- v2 network notes: `handoff/employer-hub-v2/` (historical)
 
 ## Render source of truth
 

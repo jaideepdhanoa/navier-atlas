@@ -46,8 +46,12 @@ Emits `_dist/employers/<id>/` and each alias path with `index.html`, `hub.css`, 
 
 1. Create `hubs/<id>/hub.json` (copy Bay or NY shape).
 2. Register in `registry.json` with `canonical_path` + `aliases`.
-3. Resolve stop coords (sealed `bp_id`s) and line `water_path`s.
-4. Set `calculator.profile` + `worked_assert`.
-5. Build + deploy.
+3. Resolve stop coords (sealed `bp_id`s) and line `water_path`s — **sequential spines**, mid-channel only.
+4. Set transfer hubs, `trip_planner`, catchment, network-first `copy`.
+5. Set `calculator.profile` + `worked_assert`.
+6. Build + deploy.
+
+**Full future-city playbook (Tasklet):**  
+[`handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md`](../handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md)
 
 Legacy one-off page: `bay-employers/index.html` is **deprecated** as source of truth (kept for reference until removed). Edits go in `employer-hub/`.
