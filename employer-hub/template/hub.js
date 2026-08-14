@@ -206,6 +206,7 @@
     });
   }
   // Seasonal control is opt-in per hub (e.g. NYC East End). Bay has none.
+  // Note: .seasonal-toggle { display:inline-flex } overrides bare [hidden] without !important.
   const seasonWrap = document.getElementById('seasonal-toggle-wrap');
   const seasonCb = document.getElementById('seasonal-toggle');
   const hasSeasonalLines = lines.some((l) => l.seasonal || l.type === 'seasonal');
@@ -214,6 +215,8 @@
   if (seasonWrap && seasonCb) {
     if (seasonalEnabled) {
       seasonWrap.hidden = false;
+      seasonWrap.classList.remove('is-hidden');
+      seasonWrap.style.display = '';
       const labelEl = seasonWrap.querySelector('span');
       if (labelEl && networkCfg.seasonal_label) labelEl.textContent = networkCfg.seasonal_label;
       seasonCb.checked = showSeasonal;
@@ -223,6 +226,8 @@
       });
     } else {
       seasonWrap.hidden = true;
+      seasonWrap.classList.add('is-hidden');
+      seasonWrap.style.display = 'none';
       showSeasonal = false;
     }
   }
