@@ -205,16 +205,26 @@
       phaseEl.appendChild(b);
     });
   }
+  // Seasonal control is opt-in per hub (e.g. NYC East End). Bay has none.
   const seasonWrap = document.getElementById('seasonal-toggle-wrap');
   const seasonCb = document.getElementById('seasonal-toggle');
-  const hasSeasonal = lines.some((l) => l.seasonal || l.type === 'seasonal');
-  if (seasonWrap && seasonCb && hasSeasonal) {
-    seasonWrap.hidden = false;
-    seasonCb.checked = showSeasonal;
-    seasonCb.addEventListener('change', () => {
-      showSeasonal = seasonCb.checked;
-      refreshNetworkUI();
-    });
+  const hasSeasonalLines = lines.some((l) => l.seasonal || l.type === 'seasonal');
+  const seasonalEnabled = networkCfg.show_seasonal === true ||
+    (networkCfg.show_seasonal !== false && hasSeasonalLines);
+  if (seasonWrap && seasonCb) {
+    if (seasonalEnabled) {
+      seasonWrap.hidden = false;
+      const labelEl = seasonWrap.querySelector('span');
+      if (labelEl && networkCfg.seasonal_label) labelEl.textContent = networkCfg.seasonal_label;
+      seasonCb.checked = showSeasonal;
+      seasonCb.addEventListener('change', () => {
+        showSeasonal = seasonCb.checked;
+        refreshNetworkUI();
+      });
+    } else {
+      seasonWrap.hidden = true;
+      showSeasonal = false;
+    }
   }
 
   // Catchment panel
