@@ -33,10 +33,10 @@
       </div>
     </div>
     <div class="nav-links">
-      <a href="#network">Network</a>
-      <a href="#catchment">Coverage</a>
-      <a href="#calculator">Calculator</a>
-      <a href="#letter">Letter of intent</a>
+      <a href="#network">Your ride</a>
+      <a href="#office">Your office</a>
+      <a href="#calculator">Cost</a>
+      <a href="#letter">Reserve</a>
       <a class="btn btn-primary btn-sm" href="#letter" id="nav-cta">Reserve interest</a>
     </div>
   </div>
@@ -48,61 +48,19 @@
     <p class="eyebrow" id="hero-eyebrow">Employer water commute</p>
     <h1 id="hero-headline"></h1>
     <p class="lead" id="hero-sub"></p>
+    <div class="hero-stats" id="hero-stats" hidden></div>
     <div class="hero-ctas">
-      <a class="btn btn-primary" href="#network" id="hero-cta-network">See the network near me</a>
-      <a class="btn btn-ghost" href="#calculator" id="hero-cta-calc">Estimate cost for my team</a>
+      <a class="btn btn-primary" href="#network" id="hero-cta-network">Find a route to my office</a>
+      <a class="btn btn-ghost" href="#letter" id="hero-cta-loi">Reserve interest</a>
     </div>
     <p class="hero-note" id="hero-note"></p>
   </div>
 </section>
 
-<section id="problem">
-  <div class="wrap">
-    <h2 id="problem-title"></h2>
-    <p class="section-lead" id="problem-lead"></p>
-    <div class="chips" id="problem-chips"></div>
-  </div>
-</section>
-
-<section id="proof">
-  <div class="wrap">
-    <h2 id="proof-title"></h2>
-    <p class="section-lead" id="proof-lead"></p>
-    <div class="lesson">
-      <div class="card">
-        <h3>What happened</h3>
-        <p id="stripe-lesson"></p>
-      </div>
-      <div class="split-list">
-        <div class="item">
-          <strong id="proof-worked-title">What worked</strong>
-          <span id="proof-worked-body"></span>
-        </div>
-        <div class="item">
-          <strong id="proof-fixed-title">What we fixed</strong>
-          <span id="proof-fixed-body"></span>
-        </div>
-        <div class="item">
-          <strong id="proof-ask-title">What we ask now</strong>
-          <span id="proof-ask-body"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="products">
-  <div class="wrap">
-    <h2 id="products-title">Two paths for employers</h2>
-    <p class="section-lead" id="products-lead"></p>
-    <div class="products" id="products-grid"></div>
-    <p class="caveat" id="launch-trigger"></p>
-  </div>
-</section>
-
+<!-- PRODUCT: network + trip planner first -->
 <section id="network">
   <div class="wrap">
-    <h2 id="network-title">The network</h2>
+    <h2 id="network-title">Your ride on the network</h2>
     <p class="section-lead" id="network-lead"></p>
     <div class="network-controls" id="network-controls">
       <div class="phase-toggle" id="phase-toggle" role="group" aria-label="Network phase"></div>
@@ -120,7 +78,7 @@
         </label>
         <button type="button" class="trip-swap" id="trip-swap" title="Swap from and to" aria-label="Swap from and to">⇄</button>
         <label class="trip-field">
-          <span>To</span>
+          <span>To (your office)</span>
           <select id="trip-to" aria-label="To terminal"></select>
         </label>
         <button type="button" class="btn btn-ghost btn-sm trip-clear" id="trip-clear" hidden>Clear</button>
@@ -140,23 +98,47 @@
           <div class="map-legend" id="map-legend"></div>
         </div>
       </div>
-      <div class="detail" id="map-detail">Select a line or stop.</div>
+      <div class="detail" id="map-detail">Pick two terminals above — or select a line or stop.</div>
     </div>
+    <p class="network-footnote" id="network-footnote"></p>
   </div>
 </section>
 
-<section id="catchment">
+<!-- Office as network node -->
+<section id="office">
   <div class="wrap">
-    <h2 id="catchment-title">Coverage for your campus</h2>
-    <p class="section-lead" id="catchment-lead">How many stations your workforce can reach at launch — and at full network. Tap a campus to highlight reachable stops on the map.</p>
+    <h2 id="office-title">One campus. Full network access.</h2>
+    <p class="section-lead" id="office-lead">You don’t need a stop on every line. Sit on a hub — or any stop that feeds one — and riders transfer to you. Tap a campus to set it as your office and see who can reach you.</p>
     <div class="catchment-grid" id="catchment-grid"></div>
+    <p class="office-insight" id="office-insight">Gold rings on the map are transfer hubs. One LOI at your terminal still serves people who board on other lines and change once.</p>
   </div>
 </section>
 
+<!-- Why water: 3 chips only -->
+<section id="why">
+  <div class="wrap">
+    <h2 id="why-title">Why water</h2>
+    <p class="section-lead" id="why-lead"></p>
+    <div class="chips" id="problem-chips"></div>
+  </div>
+</section>
+
+<!-- How employers buy -->
+<section id="products">
+  <div class="wrap">
+    <h2 id="products-title">How employers join</h2>
+    <p class="section-lead" id="products-lead"></p>
+    <div class="products" id="products-grid"></div>
+    <p class="caveat" id="launch-trigger"></p>
+  </div>
+</section>
+
+<!-- Cost: secondary, collapsible on small screens -->
 <section id="calculator">
   <div class="wrap">
-    <h2 id="calc-title">What it costs your team</h2>
+    <h2 id="calc-title">Rough cost for your team</h2>
     <p class="section-lead" id="calc-lead"></p>
+    <p class="calc-trip-hint" id="calc-trip-hint" hidden></p>
     <div class="presets" id="presets"></div>
     <div class="calc-grid">
       <div class="card">
@@ -180,9 +162,21 @@
   </div>
 </section>
 
+<!-- Proof: one compact card -->
+<section id="proof">
+  <div class="wrap">
+    <h2 id="proof-title"></h2>
+    <p class="section-lead" id="proof-lead"></p>
+    <div class="proof-card card">
+      <p id="stripe-lesson" class="proof-body"></p>
+      <div class="proof-meta" id="proof-meta"></div>
+    </div>
+  </div>
+</section>
+
 <section id="letter">
   <div class="wrap">
-    <h2 id="loi-title">Letter of intent</h2>
+    <h2 id="loi-title">Reserve interest for your campus</h2>
     <p class="section-lead" id="loi-cta"></p>
     <div class="loi-grid">
       <div class="options" id="flavor-options"></div>
@@ -193,8 +187,8 @@
             <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" required autocomplete="organization" /></div>
             <div class="field"><label for="f-role">Role</label><input id="f-role" name="role" required placeholder="Workplace / Real estate / HR / Ops" /></div>
             <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" required autocomplete="email" /></div>
-            <div class="field"><label for="f-stop">Nearest office terminal</label><select id="f-stop" name="stop" required></select></div>
-            <div class="field"><label for="f-line">Preferred line</label><select id="f-line" name="line"><option value="">Not sure yet</option></select></div>
+            <div class="field"><label for="f-stop">Office terminal</label><select id="f-stop" name="stop" required></select></div>
+            <div class="field"><label for="f-line">Preferred line</label><select id="f-line" name="line"><option value="">Network — not sure yet</option></select></div>
             <div class="field"><label for="f-seats">Est. interested employees</label><input id="f-seats" name="employees" type="number" min="1" step="1" placeholder="e.g. 40" /></div>
             <div class="field"><label for="f-cc">Who else should see this? (optional)</label><input id="f-cc" name="cc" type="email" placeholder="colleague@company.com" /></div>
             <input type="hidden" id="f-flavor" name="flavor" value="A" />
@@ -226,6 +220,11 @@
     </div>
   </div>
 </footer>
+
+<!-- Sticky mobile LOI CTA after engagement -->
+<div class="sticky-cta" id="sticky-cta" hidden>
+  <a class="btn btn-primary" href="#letter" id="sticky-cta-btn">Reserve interest</a>
+</div>
 
 <script src="__HUB_BASE__/hub-data.js"></script>
 <script src="__HUB_BASE__/hub.js"></script>

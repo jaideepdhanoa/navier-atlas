@@ -101,37 +101,65 @@
 
   setText('hero-headline', copy.hero_headline);
   setText('hero-sub', copy.hero_sub);
-  setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water commute`);
+  setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water network`);
   setText('nav-tag', brand.nav_tag || market.tagline || 'Employer network');
-  // Proof card: prefer stripe_lesson; fall back to precedent (NYC anonymized block)
   setText('stripe-lesson', copy.stripe_lesson || copy.precedent || '');
   setText('loi-cta', copy.loi_cta);
   setText('price-anchor', copy.price_anchor || '');
   setText('footer-note', copy.footer_note || 'Letters of intent are non-binding.');
   setText('calc-caveat', calcMeta.caveat || 'Indicative planning tool, not a quote.');
   setText('launch-trigger', copy.launch_trigger || '');
-  setText('problem-title', copy.problem_title || '');
-  setText('problem-lead', copy.problem_lead || '');
-  setText('proof-title', copy.proof_title || '');
+  setText('proof-title', copy.proof_title || 'We already proved the ride.');
   setText('proof-lead', copy.proof_lead || '');
-  setText('proof-worked-title', copy.proof_worked_title || 'What worked');
-  setText('proof-worked-body', copy.proof_worked_body || '');
-  setText('proof-fixed-title', copy.proof_fixed_title || 'What we fixed');
-  setText('proof-fixed-body', copy.proof_fixed_body || '');
-  setText('proof-ask-title', copy.proof_ask_title || 'What we ask now');
-  setText('proof-ask-body', copy.proof_ask_body || '');
-  setText('products-title', (DATA.products && DATA.products.section_title) || 'Two paths for employers');
-  setText('products-lead', (DATA.products && DATA.products.section_lead) || '');
-  setText('network-title', copy.network_title || 'The network');
+  setText('why-title', copy.why_title || 'Why water');
+  setText('why-lead', copy.why_lead || copy.problem_lead || '');
+  setText('office-title', copy.office_title || 'One campus. Full network access.');
+  setText('office-lead', copy.office_lead || '');
+  setText('office-insight', copy.office_insight || '');
+  setText('network-footnote', copy.network_footnote || '');
+  setText('products-title', (DATA.products && DATA.products.section_title) || copy.products_title || 'How employers join');
+  setText('products-lead', (DATA.products && DATA.products.section_lead) || copy.products_lead || '');
+  setText('network-title', copy.network_title || 'Your ride on the network');
   setText('network-lead', copy.network_lead || '');
-  setText('calc-title', copy.calc_title || 'What it costs your team');
+  setText('calc-title', copy.calc_title || 'Rough cost for your team');
   setHtml('calc-lead', copy.calc_lead_html || copy.calc_lead || '');
-  setText('loi-title', copy.loi_title || 'Letter of intent');
+  setText('loi-title', copy.loi_title || 'Reserve interest for your campus');
   setText('hero-note', copy.hero_note || 'Non-binding letter of intent · no commitment');
-  setText('map-detail', copy.map_detail_empty || 'Select a line or stop.');
-  setText('hero-cta-network', copy.hero_cta_network || 'See the network near me');
-  setText('hero-cta-calc', copy.hero_cta_calc || 'Estimate cost for my team');
+  setText('map-detail', copy.map_detail_empty || 'Pick two terminals above — or select a line or stop.');
+  setText('hero-cta-network', copy.hero_cta_network || 'Find a route to my office');
+  setText('hero-cta-loi', copy.hero_cta_loi || copy.nav_cta || 'Reserve interest');
   setText('nav-cta', copy.nav_cta || 'Reserve interest');
+  const stickyBtn = document.getElementById('sticky-cta-btn');
+  if (stickyBtn) stickyBtn.textContent = copy.nav_cta || 'Reserve interest';
+  const heroLoi = document.getElementById('hero-cta-loi');
+  if (heroLoi) heroLoi.textContent = copy.hero_cta_loi || copy.nav_cta || 'Reserve interest';
+
+  // Hero stats: terminals · lines · phase label
+  const heroStats = document.getElementById('hero-stats');
+  if (heroStats) {
+    const nStops = stops.filter((s) => !s.exec_only && !s.seasonal).length;
+    const nLines = lines.filter((l) => !l.exec_only && !(l.seasonal || l.type === 'seasonal')).length;
+    const stats = copy.hero_stats || [
+      { value: String(nStops), label: 'terminals' },
+      { value: String(nLines), label: 'lines' },
+      { value: '1 seat', label: 'plugs into the network' },
+    ];
+    heroStats.hidden = false;
+    heroStats.innerHTML = stats
+      .map((s) => `<div class="hero-stat"><div class="v">${s.value}</div><div class="l">${s.label}</div></div>`)
+      .join('');
+  }
+
+  // Compact proof meta (worked / fixed / ask as one line strip if present)
+  const proofMeta = document.getElementById('proof-meta');
+  if (proofMeta) {
+    const bits = [
+      copy.proof_worked_body && `<strong>${copy.proof_worked_title || 'Worked'}:</strong> ${copy.proof_worked_body}`,
+      copy.proof_fixed_body && `<strong>${copy.proof_fixed_title || 'Fixed'}:</strong> ${copy.proof_fixed_body}`,
+      copy.proof_ask_body && `<strong>${copy.proof_ask_title || 'Ask'}:</strong> ${copy.proof_ask_body}`,
+    ].filter(Boolean);
+    proofMeta.innerHTML = bits.map((b) => `<div class="proof-meta-item">${b}</div>`).join('');
+  }
 
   // Contact links
   document.querySelectorAll('[data-contact-email]').forEach((a) => {
@@ -239,33 +267,62 @@
     }
   }
 
-  // Catchment panel
+  // Office / catchment — sets trip "To", highlights reachable origins, prefills LOI
   const catchGrid = document.getElementById('catchment-grid');
   if (catchGrid) {
     const rows = DATA.catchment || [];
     if (!rows.length) {
-      const sec = document.getElementById('catchment');
+      const sec = document.getElementById('office');
       if (sec) sec.hidden = true;
     } else {
-      catchGrid.innerHTML = rows.map((c) => `
-        <button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
-          <h3>${c.anchor || c.anchor_stop || ''}</h3>
-          <div class="nums">${c.phase1_stations ?? '—'} <span>at launch</span> → ${c.full_network_stations ?? '—'} <span>full network</span></div>
-          <div class="hint">Tap to highlight reachable stations on the map</div>
-        </button>`).join('');
+      catchGrid.innerHTML = rows
+        .map((c) => {
+          const stop = nodesByKey[c.anchor_stop];
+          const label = c.anchor || stop?.label || c.anchor_stop || '';
+          return `<button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
+          <h3>${label}</h3>
+          <div class="nums">${c.phase1_stations ?? '—'} <span>origins at launch</span> → ${c.full_network_stations ?? '—'} <span>full network</span></div>
+          <div class="hint">Set as my office · show who can reach me</div>
+        </button>`;
+        })
+        .join('');
       catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
         card.addEventListener('click', () => {
           catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
           card.classList.add('active');
-          const key = card.dataset.anchor;
-          highlightCatchment(key);
+          setOfficeStop(card.dataset.anchor);
         });
       });
     }
   }
 
+  function setOfficeStop(anchorKey) {
+    if (!anchorKey || !nodesByKey[anchorKey]) return;
+    // Prefill LOI + trip To
+    const fStop = document.getElementById('f-stop');
+    if (fStop) fStop.value = anchorKey;
+    const toSel = document.getElementById('trip-to');
+    if (toSel) toSel.value = anchorKey;
+    highlightCatchment(anchorKey);
+    // If From already chosen, run trip; else scroll to trip finder with To set
+    const fromSel = document.getElementById('trip-from');
+    if (fromSel && fromSel.value && fromSel.value !== anchorKey) {
+      runTripPlanner(fromSel.value, anchorKey);
+    } else {
+      const detail = document.getElementById('map-detail');
+      const n = nodesByKey[anchorKey];
+      const reach = highlightKeys ? highlightKeys.size : 0;
+      if (detail && n) {
+        detail.innerHTML = `<strong>${n.label}</strong> <span class="tag-pill">Your office</span>
+          <div style="margin-top:6px">${reach} origin station${reach === 1 ? '' : 's'} can reach you on the current phase (including transfers).</div>
+          <div style="margin-top:8px;color:var(--text-2);font-size:12px">Pick a home terminal above to see your ride and time vs driving.</div>`;
+      }
+    }
+    document.getElementById('network')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showStickyCta();
+  }
+
   function highlightCatchment(anchorKey) {
-    // BFS on visible graph at full phase for highlight, show all connected at activePhase
     const g = {};
     visibleLines().forEach((ln) => {
       (ln.segments || []).forEach((seg) => {
@@ -281,13 +338,51 @@
     while (q.length) {
       const n = q.shift();
       (g[n] || []).forEach((nb) => {
-        if (!seen.has(nb)) { seen.add(nb); q.push(nb); }
+        if (!seen.has(nb)) {
+          seen.add(nb);
+          q.push(nb);
+        }
       });
     }
     highlightKeys = seen;
-    refreshNetworkUI();
+    // Don't wipe trip via full refresh — rebuild layers only
+    renderLineList();
+    renderStopList();
+    renderLegend();
+    rebuildMapLayers();
     const n = nodesByKey[anchorKey];
     if (n && map) map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10), duration: 600 });
+  }
+
+  function applyTripToCalculator(trip, driveMin) {
+    if (!trip) return;
+    const hint = document.getElementById('calc-trip-hint');
+    if (hint) {
+      hint.hidden = false;
+      hint.innerHTML = `Using your ride <strong>${trip.fromLabel} → ${trip.toLabel}</strong> (~${Math.round(trip.totalNavier)} min water${
+        driveMin != null ? ` · ~${driveMin} min drive` : ''
+      }). Adjust fields if needed.`;
+    }
+    // Prefill common calculator fields when present
+    if (state.water_min != null || inputsMeta.water_min) {
+      state.water_min = Math.round(trip.totalNavier);
+    }
+    if (driveMin != null && (state.car_min != null || inputsMeta.car_min)) {
+      state.car_min = driveMin;
+    }
+    if (typeof renderFields === 'function') {
+      try {
+        renderFields();
+        recompute();
+      } catch (_) {
+        /* calc may init later */
+      }
+    }
+  }
+
+  function showStickyCta() {
+    const el = document.getElementById('sticky-cta');
+    if (el) el.hidden = false;
   }
 
   function refreshNetworkUI() {
@@ -672,6 +767,15 @@
             drive != null ? ` vs ~${drive} min drive` : ''
           }</div>`;
       }
+      // Prefill LOI office + calc from this trip
+      const fStop = document.getElementById('f-stop');
+      if (fStop) fStop.value = toKey;
+      const lineStep = trip.steps.find((s) => s.kind === 'water');
+      if (lineStep && document.getElementById('f-line')) {
+        document.getElementById('f-line').value = lineStep.lineId || '';
+      }
+      applyTripToCalculator(trip, drive);
+      showStickyCta();
       return;
     }
     // No path this phase — probe later phases
@@ -771,15 +875,28 @@
       const detail = document.getElementById('map-detail');
       if (detail) detail.textContent = copy.map_detail_empty || 'Select a line or stop.';
     });
+    // Deep links: #trip=from,to  or  ?stop=officeKey  or  ?from=&to=
+    const params = new URLSearchParams(location.search || '');
     const hash = (location.hash || '').replace(/^#/, '');
+    let deepFrom = params.get('from');
+    let deepTo = params.get('to') || params.get('stop');
     if (hash.startsWith('trip=')) {
       const parts = hash.slice(5).split(',');
-      if (parts[0] && parts[1] && nodesByKey[parts[0]] && nodesByKey[parts[1]]) {
-        fromSel.value = parts[0];
-        toSel.value = parts[1];
-        // delay until map ready
-        setTimeout(() => runTripPlanner(parts[0], parts[1]), 600);
-      }
+      deepFrom = deepFrom || parts[0];
+      deepTo = deepTo || parts[1];
+    } else if (hash.startsWith('stop=')) {
+      deepTo = deepTo || hash.slice(5);
+    }
+    if (deepTo && nodesByKey[deepTo]) {
+      toSel.value = deepTo;
+      const fStop = document.getElementById('f-stop');
+      if (fStop) fStop.value = deepTo;
+    }
+    if (deepFrom && nodesByKey[deepFrom]) fromSel.value = deepFrom;
+    if (deepFrom && deepTo && nodesByKey[deepFrom] && nodesByKey[deepTo]) {
+      setTimeout(() => runTripPlanner(deepFrom, deepTo), 700);
+    } else if (deepTo && nodesByKey[deepTo] && !deepFrom) {
+      setTimeout(() => setOfficeStop(deepTo), 700);
     }
   }
 
