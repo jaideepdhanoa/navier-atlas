@@ -35,17 +35,23 @@
     if (s.seasonal) return showSeasonal;
     return (s.phase || 1) <= activePhase;
   }
-  function lineVisible(l) {
-    if (!l) return false;
-    if (l.exec_only) return false; // demoted from default map — still in products
-    if (l.seasonal || l.type === 'seasonal') return showSeasonal;
-    return (l.phase || 1) <= activePhase;
-  }
   function segmentVisible(seg, line) {
-    if (!seg) return false;
-    if (!lineVisible(line)) return false;
+    if (!seg || !line) return false;
+    if (line.exec_only) return false;
+    if (line.seasonal || line.type === 'seasonal') {
+      if (!showSeasonal) return false;
+    }
     const ph = seg.phase != null ? seg.phase : (line.phase || 1);
     return ph <= activePhase;
+  }
+  function lineVisible(l) {
+    if (!l) return false;
+    if (l.exec_only) return false;
+    if (l.seasonal || l.type === 'seasonal') return showSeasonal;
+    // Show line if it has any segment live at this phase (not only line.phase)
+    const segs = l.segments || [];
+    if (segs.length) return segs.some((seg) => segmentVisible(seg, l));
+    return (l.phase || 1) <= activePhase;
   }
   function visibleStops() { return stops.filter(stopVisible); }
   function visibleLines() { return lines.filter(lineVisible); }
@@ -82,6 +88,10 @@
   };
 
   document.title = brand.title || document.title;
+  // Full-bleed map section (content columns stay constrained elsewhere)
+  const netSec = document.getElementById('network');
+  if (netSec) netSec.classList.add('network-bleed');
+
   setText('hero-headline', copy.hero_headline);
   setText('hero-sub', copy.hero_sub);
   setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water commute`);
@@ -619,16 +629,20 @@
     }
 
     visibleLines().forEach((line) => {
-      // Filter water_path parts by segment phase when multi
-      let wp = line.water_path;
-      const segs = line.segments || [];
-      const multi = wp && Array.isArray(wp[0]) && Array.isArray(wp[0][0]);
-      if (multi && segs.length === wp.length) {
-        wp = wp.filter((_, i) => segmentVisible(segs[i], line));
-        if (!wp.length) return;
+      // Prefer per-segment water_path (authoritative); fall back to line.water_path
+      const segs = (line.segments || []).filter((seg) => segmentVisible(seg, line));
+      let parts = segs.map((seg) => seg.water_path).filter((p) => p && p.length);
+      if (!parts.length) {
+        let wp = line.water_path;
+        if (!wp || !wp.length) return;
+        const multi = Array.isArray(wp[0]) && Array.isArray(wp[0][0]);
+        parts = multi ? wp : [wp];
       }
-      const geom = lineGeometry(wp);
-      if (!geom) return;
+      if (!parts.length) return;
+      const geom = parts.length === 1
+        ? { type: 'LineString', coordinates: parts[0] }
+        : { type: 'MultiLineString', coordinates: parts };
+      parts.forEach((part) => part.forEach((c) => allCoords.push(c)));
       map.addSource('line-' + line.id, {
         type: 'geojson',
         data: { type: 'Feature', properties: { id: line.id, name: line.name }, geometry: geom },
@@ -652,11 +666,12 @@
     });
 
     const vStops = visibleStops().filter((n) => !highlightKeys || highlightKeys.has(n.key));
-    const stopFeatures = (highlightKeys ? visibleStops() : visibleStops()).map((n) => ({
+    const stopFeatures = visibleStops().map((n) => ({
       type: 'Feature',
       properties: {
         key: n.key, label: n.label, serves: servesText(n), bp: n.resolved_bp_id,
         hub: (n.role || '').includes('interchange') ? 1 : 0,
+        hubRank: n.hub_rank || ((n.role || '').includes('interchange_primary') ? 1 : (n.role || '').includes('interchange') ? 2 : 3),
         hi: highlightKeys && highlightKeys.has(n.key) ? 1 : 0,
         dim: highlightKeys && !highlightKeys.has(n.key) ? 1 : 0,
       },
@@ -673,11 +688,11 @@
     });
     map.addLayer({
       id: 'stops-hub', type: 'circle', source: 'stops',
-      filter: ['==', ['get', 'hub'], 1],
+      filter: ['<=', ['get', 'hubRank'], 2],
       paint: {
-        'circle-radius': 9,
+        'circle-radius': ['case', ['==', ['get', 'hubRank'], 1], 11, 9],
         'circle-color': 'transparent',
-        'circle-stroke-width': 2.5,
+        'circle-stroke-width': ['case', ['==', ['get', 'hubRank'], 1], 3, 2.2],
         'circle-stroke-color': '#e0cb8f',
         'circle-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
       },
@@ -694,21 +709,43 @@
     });
     map.addLayer({
       id: 'stops-label', type: 'symbol', source: 'stops',
+      // Hubs always labeled; other stops only when zoomed in
+      filter: ['any', ['<=', ['get', 'hubRank'], 2], ['>', ['zoom'], 11.5]],
       layout: {
         'text-field': ['get', 'label'],
-        'text-size': 11,
+        'text-size': ['case', ['==', ['get', 'hubRank'], 1], 13, 11],
         'text-offset': [0, 1.35],
         'text-anchor': 'top',
         'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
         'text-max-width': 10,
+        'text-allow-overlap': false,
       },
       paint: {
         'text-color': '#f7f7f8',
         'text-halo-color': 'rgba(10,10,10,0.9)',
         'text-halo-width': 1.4,
-        'text-opacity': ['case', ['==', ['get', 'dim'], 1], 0.3, 1],
+        'text-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
       },
     });
+
+    // Harbor-first fit on At Launch; wider on full network
+    if (allCoords.length) {
+      const lb = (market.map && market.map.launch_bounds) || null;
+      if (activePhase === 1 && lb && !showSeasonal) {
+        map.fitBounds(lb, { padding: 48, duration: 0, maxZoom: 12.2 });
+      } else {
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        allCoords.forEach(([x, y]) => {
+          minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+        });
+        map.fitBounds([[minX, minY], [maxX, maxY]], {
+          padding: { top: 48, bottom: 48, left: 40, right: 40 },
+          duration: 0,
+          maxZoom: market.map?.fit_max_zoom || 11.5,
+        });
+      }
+    }
   }
 
   function initMap() {
@@ -856,13 +893,15 @@
     const n = nodesByKey[key];
     if (!n) return;
     [...document.querySelectorAll('.stop-btn')].forEach((b) => b.classList.toggle('active', b.dataset.key === key));
-    const touch = lines
-      .filter((l) => (l.stops || []).includes(key))
-      .map((l) => l.name)
-      .join(' · ');
-    document.getElementById('map-detail').innerHTML = `<strong>${n.label}</strong>
+    const touchLines = lines.filter((l) => !l.exec_only && (l.stops || []).includes(key) && lineVisible(l));
+    const touch = touchLines.map((l) => l.id).join(' · ');
+    const touchNames = touchLines.map((l) => l.name).join(' · ');
+    const isHub = (n.role || '').includes('interchange');
+    const hubChip = isHub ? `<div class="transfer-chip">${n.role === 'interchange_primary' ? 'Primary transfer hub' : 'Transfer hub'} · ${touch || '—'}</div>` : '';
+    document.getElementById('map-detail').innerHTML = `<strong>${n.label}</strong>${n.tag ? ` <span class="tag-pill">${n.tag}</span>` : ''}
       <div style="margin-top:6px">${servesText(n)}</div>
-      <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touch || '—'}</div>
+      ${hubChip}
+      <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touchNames || '—'}</div>
       <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
         <button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>
       </div>`;
