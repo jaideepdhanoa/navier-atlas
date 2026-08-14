@@ -257,6 +257,78 @@ footer strong{color:var(--text-0);letter-spacing:0.1em;font-size:12px}
   display:none !important;
 }
 .seasonal-toggle input{accent-color:var(--accent)}
+
+/* Trip finder (from → to) */
+.trip-finder{
+  margin:0 0 18px;padding:16px 18px;border-radius:var(--radius);
+  background:var(--bg-1);border:1px solid var(--line);
+}
+.trip-finder[hidden]{display:none !important}
+.trip-finder-label{
+  font:700 11px Inter;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--text-2);margin:0 0 12px;
+}
+.trip-finder-row{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 12px;
+}
+.trip-field{display:flex;flex-direction:column;gap:6px;flex:1 1 180px;min-width:140px}
+.trip-field span{
+  font:600 11px Inter;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);
+}
+.trip-field select{
+  width:100%;background:var(--bg-2);border:1px solid var(--line);border-radius:11px;
+  color:var(--text-0);padding:11px 12px;font:500 13.5px Inter;cursor:pointer;
+}
+.trip-field select:focus{outline:2px solid var(--accent);outline-offset:2px}
+.trip-swap{
+  flex:0 0 auto;width:42px;height:42px;border-radius:12px;
+  border:1px solid var(--line-strong);background:var(--bg-2);color:var(--accent);
+  font-size:18px;cursor:pointer;margin-bottom:1px;
+}
+.trip-swap:hover{border-color:var(--accent);background:rgba(224,203,143,0.08)}
+.trip-clear{margin-bottom:1px}
+.trip-result{
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
+}
+.trip-result[hidden]{display:none !important}
+.trip-result .trip-title{
+  font:700 16px Inter;color:var(--text-0);margin:0 0 6px;letter-spacing:-0.01em;
+}
+.trip-result .trip-sub{font-size:13px;color:var(--text-1);margin:0 0 14px;line-height:1.45}
+.trip-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;
+}
+@media (max-width:560px){.trip-compare{grid-template-columns:1fr}}
+.trip-stat{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+}
+.trip-stat .k{font:600 11px Inter;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);margin-bottom:4px}
+.trip-stat .v{font:700 22px "Exo 2",Inter,sans-serif;color:var(--accent);letter-spacing:-0.02em}
+.trip-stat .v.drive{color:var(--text-1)}
+.trip-stat .hint{font-size:12px;color:var(--text-2);margin-top:4px;line-height:1.35}
+.trip-save{
+  display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:8px 12px;
+  border-radius:999px;background:rgba(125,211,192,0.12);border:1px solid rgba(125,211,192,0.35);
+  color:var(--ok);font:700 13px Inter;
+}
+.trip-steps{display:grid;gap:8px;margin:0 0 12px}
+.trip-step{
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;
+  padding:10px 12px;border-radius:12px;background:var(--bg-2);border:1px solid var(--line);
+  font-size:13px;color:var(--text-1);line-height:1.4;
+}
+.trip-step .n{
+  width:22px;height:22px;border-radius:50%;background:rgba(224,203,143,0.15);
+  color:var(--accent);font:700 11px Inter;display:flex;align-items:center;justify-content:center;
+}
+.trip-step strong{color:var(--text-0);font-weight:600}
+.trip-step .line-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle;
+}
+.trip-step .mins{font:700 12px Inter;color:var(--text-0);white-space:nowrap}
+.trip-step.transfer{border-color:rgba(224,203,143,0.35);background:rgba(224,203,143,0.06)}
+.trip-caveat{font-size:12px;color:var(--text-2);line-height:1.4;margin:0}
+.trip-result .trip-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .line-btn .type-badge,.stop-btn .tag-pill{
   display:inline-block;font-size:10px;font-weight:700;letter-spacing:0.08em;
   text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:6px;

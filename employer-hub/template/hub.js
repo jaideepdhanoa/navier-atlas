@@ -28,6 +28,10 @@
   let activePhase = networkCfg.default_phase || 1;
   let showSeasonal = !!networkCfg.show_seasonal_default;
   let map, popup, flavor, highlightKeys = null;
+  /** @type {null | { from: string, to: string, path: object }} */
+  let activeTrip = null;
+  const tripCfg = DATA.trip_planner || {};
+  const tripEnabled = tripCfg.enabled !== false;
 
   function stopVisible(s) {
     if (!s) return false;
@@ -291,8 +295,493 @@
     renderStopList();
     renderLegend();
     rebuildMapLayers();
+    populateTripSelects();
+    if (activeTrip && activeTrip.from && activeTrip.to) {
+      runTripPlanner(activeTrip.from, activeTrip.to);
+    }
   }
 
+  // —— Trip planner (from → to) ——
+  function isTransferHub(stop) {
+    if (!stop) return false;
+    if ((stop.hub_rank || 99) <= 2) return true;
+    return (stop.role || '').includes('interchange');
+  }
+  function waterMinutes(seg) {
+    if (seg.water_min != null) return Number(seg.water_min);
+    if (seg.distance_nm != null) return Math.max(4, Math.round((seg.distance_nm / 20) * 60));
+    return 10;
+  }
+  function driveMinutes(fromKey, toKey) {
+    const mat = tripCfg.drive_am_peak || {};
+    const k = fromKey + '|' + toKey;
+    if (mat[k] != null) return Number(mat[k]);
+    const a = nodesByKey[fromKey];
+    const b = nodesByKey[toKey];
+    if (!a || !b || a.lat == null || b.lat == null) return null;
+    const toRad = (d) => (d * Math.PI) / 180;
+    const R = 3958.8;
+    const dLat = toRad(b.lat - a.lat);
+    const dLon = toRad(b.lng - a.lng);
+    const x =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2;
+    const miles = 2 * R * Math.asin(Math.sqrt(x));
+    return Math.max(15, Math.round((miles / 18) * 60 + 15));
+  }
+  function orientedCoords(seg, fromKey) {
+    const c = (seg.water_path && seg.water_path.length) ? seg.water_path.slice() : null;
+    if (!c) {
+      const a = nodesByKey[fromKey];
+      const b = nodesByKey[fromKey === seg.from ? seg.to : seg.from];
+      if (a && b) return [[a.lng, a.lat], [b.lng, b.lat]];
+      return [];
+    }
+    // Ensure coords run from fromKey toward the other end
+    if (fromKey === seg.to) return c.reverse();
+    return c;
+  }
+  /** Dijkstra on state (stop|lineId). lineId empty string = not yet boarded. */
+  function findTrip(fromKey, toKey) {
+    if (!fromKey || !toKey || fromKey === toKey) return null;
+    const transferMin = tripCfg.transfer_min != null ? tripCfg.transfer_min : 8;
+    const maxXfer = tripCfg.max_transfers != null ? tripCfg.max_transfers : 2;
+
+    // Build undirected water edges from visible segments
+    const edgesByStop = {};
+    const addE = (k, e) => {
+      if (!edgesByStop[k]) edgesByStop[k] = [];
+      edgesByStop[k].push(e);
+    };
+    visibleLines().forEach((line) => {
+      (line.segments || []).forEach((seg) => {
+        if (!segmentVisible(seg, line)) return;
+        if (!nodesByKey[seg.from] || !nodesByKey[seg.to]) return;
+        const w = waterMinutes(seg);
+        addE(seg.from, {
+          to: seg.to, from: seg.from, waterMin: w, seg, line,
+        });
+        addE(seg.to, {
+          to: seg.from, from: seg.to, waterMin: w, seg, line,
+        });
+      });
+    });
+    if (!edgesByStop[fromKey]) return null;
+
+    // state: stop + '\t' + lineId
+    const start = fromKey + '\t';
+    const dist = new Map([[start, 0]]);
+    const parent = new Map(); // state -> { prevState, edge, didTransfer }
+    const pq = [[0, start]];
+    const pop = () => {
+      let bi = 0;
+      for (let i = 1; i < pq.length; i++) if (pq[i][0] < pq[bi][0]) bi = i;
+      return pq.splice(bi, 1)[0];
+    };
+    let endState = null;
+    while (pq.length) {
+      const [d, st] = pop();
+      if (d !== dist.get(st)) continue;
+      const tab = st.indexOf('\t');
+      const stop = st.slice(0, tab);
+      const lineId = st.slice(tab + 1);
+      if (stop === toKey) {
+        endState = st;
+        break;
+      }
+      const outs = edgesByStop[stop] || [];
+      for (const e of outs) {
+        let cost = e.waterMin;
+        let didTransfer = false;
+        if (lineId && lineId !== e.line.id) {
+          if (!isTransferHub(nodesByKey[stop])) continue;
+          // count transfers along path
+          let xfers = 0;
+          let walk = st;
+          while (parent.has(walk)) {
+            if (parent.get(walk).didTransfer) xfers++;
+            walk = parent.get(walk).prevState;
+          }
+          if (xfers >= maxXfer) continue;
+          cost += transferMin;
+          didTransfer = true;
+        }
+        const ns = e.to + '\t' + e.line.id;
+        const nd = d + cost;
+        if (nd < (dist.get(ns) ?? Infinity)) {
+          dist.set(ns, nd);
+          parent.set(ns, { prevState: st, edge: e, didTransfer, fromStop: stop });
+          pq.push([nd, ns]);
+        }
+      }
+    }
+    if (!endState) return null;
+
+    // Reconstruct edge list from start to end
+    const chain = [];
+    let cur = endState;
+    while (parent.has(cur)) {
+      chain.push(parent.get(cur));
+      cur = parent.get(cur).prevState;
+    }
+    chain.reverse();
+
+    const transferMinUse = transferMin;
+    const steps = [];
+    const allCoords = [];
+    let waterTotal = 0;
+    let transferTotal = 0;
+    let transfers = 0;
+    let i = 0;
+    while (i < chain.length) {
+      const rec = chain[i];
+      if (rec.didTransfer) {
+        transfers++;
+        transferTotal += transferMinUse;
+        steps.push({
+          kind: 'transfer',
+          stopKey: rec.fromStop,
+          label: nodesByKey[rec.fromStop]?.label || rec.fromStop,
+          mins: transferMinUse,
+          toLine: rec.edge.line.name,
+          toColor: rec.edge.line.color || '#e0cb8f',
+        });
+      }
+      const lid = rec.edge.line.id;
+      let j = i + 1;
+      while (j < chain.length && !chain[j].didTransfer && chain[j].edge.line.id === lid) j++;
+      let w = 0;
+      const coords = [];
+      for (let k = i; k < j; k++) {
+        w += chain[k].edge.waterMin;
+        const c = orientedCoords(chain[k].edge.seg, chain[k].fromStop);
+        if (!c.length) continue;
+        if (!coords.length) coords.push(...c);
+        else coords.push(...c.slice(1));
+      }
+      const fromFixed = chain[i].fromStop;
+      const toFixed = chain[j - 1].edge.to;
+      waterTotal += w;
+      if (coords.length) allCoords.push(...coords);
+      steps.push({
+        kind: 'water',
+        fromKey: fromFixed,
+        toKey: toFixed,
+        fromLabel: nodesByKey[fromFixed]?.label || fromFixed,
+        toLabel: nodesByKey[toFixed]?.label || toFixed,
+        lineId: lid,
+        lineName: rec.edge.line.name,
+        lineColor: rec.edge.line.color || '#e0cb8f',
+        mins: w,
+        pathCoords: coords,
+      });
+      i = j;
+    }
+    return {
+      from: fromKey,
+      to: toKey,
+      fromLabel: nodesByKey[fromKey]?.label || fromKey,
+      toLabel: nodesByKey[toKey]?.label || toKey,
+      steps,
+      waterTotal,
+      transferTotal,
+      transfers,
+      totalNavier: waterTotal + transferTotal,
+      pathCoords: allCoords,
+    };
+  }
+
+  function clearTripUI() {
+    activeTrip = null;
+    const res = document.getElementById('trip-result');
+    const clr = document.getElementById('trip-clear');
+    if (res) {
+      res.hidden = true;
+      res.innerHTML = '';
+    }
+    if (clr) clr.hidden = true;
+    removeTripMapLayers();
+    if (map && map.isStyleLoaded()) {
+      visibleLines().forEach((line) => {
+        if (!map.getLayer('line-' + line.id)) return;
+        map.setPaintProperty('line-' + line.id, 'line-opacity', 0.95);
+        map.setPaintProperty('line-glow-' + line.id, 'line-opacity', 0.18);
+      });
+    }
+  }
+  function removeTripMapLayers() {
+    if (!map) return;
+    ['trip-path-glow', 'trip-path', 'trip-endpoints'].forEach((id) => {
+      if (map.getLayer(id)) map.removeLayer(id);
+    });
+    ['trip-path', 'trip-endpoints'].forEach((id) => {
+      if (map.getSource(id)) map.removeSource(id);
+    });
+  }
+  function paintTripOnMap(trip) {
+    if (!map || !map.isStyleLoaded() || !trip) return;
+    removeTripMapLayers();
+    visibleLines().forEach((line) => {
+      if (!map.getLayer('line-' + line.id)) return;
+      map.setPaintProperty('line-' + line.id, 'line-opacity', 0.14);
+      map.setPaintProperty('line-glow-' + line.id, 'line-opacity', 0.05);
+    });
+    const coords = (trip.pathCoords || []).filter((c) => Array.isArray(c) && c.length >= 2);
+    if (coords.length >= 2) {
+      map.addSource('trip-path', {
+        type: 'geojson',
+        data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: coords } },
+      });
+      map.addLayer({
+        id: 'trip-path-glow', type: 'line', source: 'trip-path',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#e0cb8f', 'line-width': 12, 'line-opacity': 0.28, 'line-blur': 2 },
+      });
+      map.addLayer({
+        id: 'trip-path', type: 'line', source: 'trip-path',
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#f0e2b0', 'line-width': 4.5, 'line-opacity': 0.98 },
+      });
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      coords.forEach(([x, y]) => {
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+      });
+      map.fitBounds([[minX, minY], [maxX, maxY]], {
+        padding: { top: 70, bottom: 70, left: 56, right: 56 },
+        duration: 700, maxZoom: 12.2,
+      });
+    }
+    const feats = [];
+    const a = nodesByKey[trip.from];
+    const b = nodesByKey[trip.to];
+    if (a) feats.push({ type: 'Feature', properties: { role: 'from' }, geometry: { type: 'Point', coordinates: [a.lng, a.lat] } });
+    if (b) feats.push({ type: 'Feature', properties: { role: 'to' }, geometry: { type: 'Point', coordinates: [b.lng, b.lat] } });
+    trip.steps.filter((s) => s.kind === 'transfer').forEach((s) => {
+      const n = nodesByKey[s.stopKey];
+      if (n) feats.push({ type: 'Feature', properties: { role: 'xfer' }, geometry: { type: 'Point', coordinates: [n.lng, n.lat] } });
+    });
+    map.addSource('trip-endpoints', { type: 'geojson', data: { type: 'FeatureCollection', features: feats } });
+    map.addLayer({
+      id: 'trip-endpoints', type: 'circle', source: 'trip-endpoints',
+      paint: {
+        'circle-radius': ['match', ['get', 'role'], 'xfer', 9, 11],
+        'circle-color': ['match', ['get', 'role'], 'from', '#7dd3c0', 'to', '#e0cb8f', '#f0e2b0'],
+        'circle-stroke-width': 2.5,
+        'circle-stroke-color': '#0a0a0a',
+      },
+    });
+  }
+  function renderTripResult(trip, driveMin) {
+    const res = document.getElementById('trip-result');
+    const clr = document.getElementById('trip-clear');
+    if (!res) return;
+    if (!trip) {
+      res.hidden = false;
+      res.innerHTML = `<p class="trip-caveat">${tripCfg.no_path || 'No connected water path at this phase.'}</p>`;
+      if (clr) clr.hidden = false;
+      return;
+    }
+    const save = driveMin != null ? driveMin - trip.totalNavier : null;
+    const saveHtml =
+      save != null && save > 0
+        ? `<div class="trip-save">Save ~${Math.round(save)} min vs driving this trip</div>`
+        : save != null
+          ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Similar to peak drive time — still skips toll stress &amp; parking</div>`
+          : '';
+    const xferNote =
+      trip.transfers > 0
+        ? `${trip.transfers} transfer${trip.transfers > 1 ? 's' : ''} · ${trip.transferTotal} min at hub${trip.transfers > 1 ? 's' : ''}`
+        : 'Direct · no transfer';
+    const stepsHtml = trip.steps
+      .map((s, idx) => {
+        if (s.kind === 'transfer') {
+          return `<div class="trip-step transfer">
+            <span class="n">${idx + 1}</span>
+            <div><strong>Transfer at ${s.label}</strong>
+              <div style="margin-top:3px;font-size:12px;color:var(--text-2)">Change to <span class="line-dot" style="background:${s.toColor}"></span>${s.toLine}</div>
+            </div>
+            <span class="mins">~${s.mins} min</span>
+          </div>`;
+        }
+        return `<div class="trip-step">
+          <span class="n">${idx + 1}</span>
+          <div><strong>${s.fromLabel} → ${s.toLabel}</strong>
+            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}</div>
+          </div>
+          <span class="mins">~${s.mins} min</span>
+        </div>`;
+      })
+      .join('');
+    res.hidden = false;
+    res.innerHTML = `
+      <div class="trip-title">${trip.fromLabel} → ${trip.toLabel}</div>
+      <p class="trip-sub">${xferNote}</p>
+      <div class="trip-compare">
+        <div class="trip-stat">
+          <div class="k">Navier</div>
+          <div class="v">~${Math.round(trip.totalNavier)} min</div>
+          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>
+        </div>
+        <div class="trip-stat">
+          <div class="k">${tripCfg.drive_label || 'Drive (AM peak)'}</div>
+          <div class="v drive">${driveMin != null ? `~${driveMin} min` : '—'}</div>
+          <div class="hint">Typical weekday morning peak</div>
+        </div>
+      </div>
+      ${saveHtml}
+      <div class="trip-steps">${stepsHtml}</div>
+      <p class="trip-caveat">${tripCfg.caveat || 'Indicative planning times, not a published timetable.'}</p>
+      <div class="trip-actions">
+        <button type="button" class="btn btn-primary btn-sm" id="trip-use-to">Use destination in LOI</button>
+      </div>`;
+    if (clr) clr.hidden = false;
+    document.getElementById('trip-use-to')?.addEventListener('click', () => {
+      const sel = document.getElementById('f-stop');
+      if (sel) sel.value = trip.to;
+      const lineStep = trip.steps.find((s) => s.kind === 'water');
+      if (lineStep && document.getElementById('f-line')) document.getElementById('f-line').value = lineStep.lineId || '';
+      document.getElementById('letter')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+  function runTripPlanner(fromKey, toKey) {
+    if (!fromKey || !toKey) {
+      clearTripUI();
+      return;
+    }
+    if (fromKey === toKey) {
+      clearTripUI();
+      const res = document.getElementById('trip-result');
+      if (res) {
+        res.hidden = false;
+        res.innerHTML = '<p class="trip-caveat">Choose two different terminals.</p>';
+      }
+      document.getElementById('trip-clear') && (document.getElementById('trip-clear').hidden = false);
+      return;
+    }
+    const trip = findTrip(fromKey, toKey);
+    const drive = driveMinutes(fromKey, toKey);
+    if (trip) {
+      activeTrip = { from: fromKey, to: toKey, path: trip };
+      paintTripOnMap(trip);
+      renderTripResult(trip, drive);
+      const detail = document.getElementById('map-detail');
+      if (detail) {
+        detail.innerHTML = `<strong>Your ride</strong>
+          <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ~${Math.round(trip.totalNavier)} min on Navier${
+            drive != null ? ` vs ~${drive} min drive` : ''
+          }</div>`;
+      }
+      return;
+    }
+    // No path this phase — probe later phases
+    activeTrip = { from: fromKey, to: toKey, path: null };
+    removeTripMapLayers();
+    const saved = activePhase;
+    let workPh = null;
+    let later = null;
+    for (let ph = saved + 1; ph <= 3; ph++) {
+      activePhase = ph;
+      later = findTrip(fromKey, toKey);
+      if (later) {
+        workPh = ph;
+        break;
+      }
+    }
+    activePhase = saved;
+    const res = document.getElementById('trip-result');
+    const clr = document.getElementById('trip-clear');
+    if (res) {
+      res.hidden = false;
+      if (later && workPh) {
+        const label = phaseLabels[workPh - 1] || `Phase ${workPh}`;
+        res.innerHTML = `<p class="trip-caveat">${tripCfg.no_path || 'No path at this phase.'}<br/><br/>
+          Available on <strong>${label}</strong> · ~${Math.round(later.totalNavier)} min water${
+            drive != null ? ` vs ~${drive} min drive` : ''
+          }.</p>
+          <div class="trip-actions"><button type="button" class="btn btn-primary btn-sm" id="trip-jump-phase">Show ${label}</button></div>`;
+        document.getElementById('trip-jump-phase')?.addEventListener('click', () => {
+          activePhase = workPh;
+          const phaseEl = document.getElementById('phase-toggle');
+          if (phaseEl) {
+            [...phaseEl.querySelectorAll('button')].forEach((x) =>
+              x.classList.toggle('active', Number(x.dataset.phase) === activePhase)
+            );
+          }
+          refreshNetworkUI();
+        });
+      } else {
+        res.innerHTML = `<p class="trip-caveat">${tripCfg.no_path || 'No connected water path on this network.'}</p>`;
+      }
+    }
+    if (clr) clr.hidden = false;
+  }
+  function populateTripSelects() {
+    const fromSel = document.getElementById('trip-from');
+    const toSel = document.getElementById('trip-to');
+    if (!fromSel || !toSel) return;
+    const prevFrom = fromSel.value;
+    const prevTo = toSel.value;
+    const opts = stops
+      .filter((n) => !n.exec_only)
+      .slice()
+      .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+    const fill = (sel, ph) => {
+      sel.innerHTML = `<option value="">${ph}</option>`;
+      opts.forEach((n) => {
+        const o = document.createElement('option');
+        o.value = n.key;
+        o.textContent = n.label + (!stopVisible(n) ? ' (later phase)' : '');
+        sel.appendChild(o);
+      });
+    };
+    fill(fromSel, 'From terminal…');
+    fill(toSel, 'To terminal…');
+    if (prevFrom) fromSel.value = prevFrom;
+    if (prevTo) toSel.value = prevTo;
+  }
+  function initTripFinder() {
+    const wrap = document.getElementById('trip-finder');
+    if (!wrap || !tripEnabled) {
+      if (wrap) wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    populateTripSelects();
+    const fromSel = document.getElementById('trip-from');
+    const toSel = document.getElementById('trip-to');
+    const swap = document.getElementById('trip-swap');
+    const clear = document.getElementById('trip-clear');
+    const onChange = () => {
+      if (fromSel.value && toSel.value) runTripPlanner(fromSel.value, toSel.value);
+      else clearTripUI();
+    };
+    fromSel.addEventListener('change', onChange);
+    toSel.addEventListener('change', onChange);
+    swap?.addEventListener('click', () => {
+      const f = fromSel.value;
+      fromSel.value = toSel.value;
+      toSel.value = f;
+      onChange();
+    });
+    clear?.addEventListener('click', () => {
+      fromSel.value = '';
+      toSel.value = '';
+      clearTripUI();
+      const detail = document.getElementById('map-detail');
+      if (detail) detail.textContent = copy.map_detail_empty || 'Select a line or stop.';
+    });
+    const hash = (location.hash || '').replace(/^#/, '');
+    if (hash.startsWith('trip=')) {
+      const parts = hash.slice(5).split(',');
+      if (parts[0] && parts[1] && nodesByKey[parts[0]] && nodesByKey[parts[1]]) {
+        fromSel.value = parts[0];
+        toSel.value = parts[1];
+        // delay until map ready
+        setTimeout(() => runTripPlanner(parts[0], parts[1]), 600);
+      }
+    }
+  }
 
   // Map legend
   const legend = document.getElementById('map-legend');
@@ -746,8 +1235,8 @@
       },
     });
 
-    // Harbor-first fit on At Launch; wider on full network
-    if (allCoords.length) {
+    // Harbor-first fit on At Launch; wider on full network (skip if trip view is active)
+    if (allCoords.length && !activeTrip) {
       const lb = (market.map && market.map.launch_bounds) || null;
       if (activePhase === 1 && lb && !showSeasonal) {
         map.fitBounds(lb, { padding: 48, duration: 0, maxZoom: 12.2 });
@@ -763,6 +1252,10 @@
           maxZoom: market.map?.fit_max_zoom || 11.5,
         });
       }
+    }
+    // Re-paint active trip after layer rebuild
+    if (activeTrip && activeTrip.path) {
+      paintTripOnMap(activeTrip.path);
     }
   }
 
@@ -839,6 +1332,7 @@
   }
 
   function selectLine(id) {
+    if (activeTrip) clearTripUI();
     setLineOpacity(id);
     const line = lines.find((l) => l.id === id);
     [...document.querySelectorAll('.line-btn')].forEach((b) => b.classList.toggle('active', b.dataset.id === id));
@@ -916,6 +1410,8 @@
       <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touchNames || '—'}</div>
       <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
         <button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="trip-from-here">Route from here</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="trip-to-here">Route to here</button>
       </div>`;
     document.getElementById('use-stop')?.addEventListener('click', () => {
       document.getElementById('f-stop').value = key;
@@ -933,6 +1429,20 @@
         }
       }
       document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+    });
+    document.getElementById('trip-from-here')?.addEventListener('click', () => {
+      const fromSel = document.getElementById('trip-from');
+      const toSel = document.getElementById('trip-to');
+      if (fromSel) fromSel.value = key;
+      if (fromSel && toSel && toSel.value) runTripPlanner(fromSel.value, toSel.value);
+      document.getElementById('trip-finder')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    document.getElementById('trip-to-here')?.addEventListener('click', () => {
+      const fromSel = document.getElementById('trip-from');
+      const toSel = document.getElementById('trip-to');
+      if (toSel) toSel.value = key;
+      if (fromSel && toSel && fromSel.value) runTripPlanner(fromSel.value, toSel.value);
+      document.getElementById('trip-finder')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
     if (map) {
       map.flyTo({ center: [n.lng, n.lat], zoom: Math.max(map.getZoom(), 10.4), duration: 800 });
@@ -981,6 +1491,7 @@
   renderStopList();
 
   if (document.getElementById('map')) initMap();
+  initTripFinder();
 
   // Form selects
   const stopSel = document.getElementById('f-stop');
