@@ -7,7 +7,7 @@ Public sales surfaces for employer water networks. **One template**, many cities
 | Topic | Choice |
 |-------|--------|
 | Canonical URL | `/employers/<id>` e.g. `/employers/new-york`, `/employers/bay-area` |
-| Aliases | `/bay-employers`, `/ny-employers` (full copies for cleanUrls) |
+| Aliases | `/bay-employers`, `/ny-employers`, `/dc-employers` (full copies for cleanUrls) |
 | Lines / EXEC | Same map treatment as Bay — every product line is a styled display line |
 | New water segments | Grok owns water-clean hand geometry |
 | LOI | One Google Sheet tab; rows include `hub` / `hub_id` |
@@ -24,7 +24,8 @@ employer-hub/
     hub.js                   # map, calculator profiles, LOI
   hubs/
     bay-area/hub.json        # hub #1 (live)
-    new-york/hub.json        # hub #2 (next)
+    new-york/hub.json        # hub #2 (live)
+    washington-dc/hub.json   # hub #3 (live)
 ```
 
 ## Calculator profiles
