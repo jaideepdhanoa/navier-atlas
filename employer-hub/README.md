@@ -26,6 +26,8 @@ employer-hub/
     bay-area/hub.json        # hub #1 (live)
     new-york/hub.json        # hub #2 (live)
     washington-dc/hub.json   # hub #3 (live)
+    miami/hub.json           # hub #4 (live) — dual cluster Miami/FTL
+    boston/hub.json          # hub #5 (live)
 ```
 
 ## Calculator profiles

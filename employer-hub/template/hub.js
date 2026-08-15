@@ -27,6 +27,11 @@
   const phaseLabels = networkCfg.phase_labels || ['At launch', '+ Phase 2', 'Full network'];
   let activePhase = networkCfg.default_phase || 1;
   let showSeasonal = !!networkCfg.show_seasonal_default;
+  const clusterDefs = networkCfg.clusters || [];
+  let activeCluster =
+    networkCfg.default_cluster ||
+    (clusterDefs[0] && (clusterDefs[0].id || clusterDefs[0])) ||
+    null;
   let map, popup, flavor, highlightKeys = null;
   /** @type {null | { from: string, to: string, path: object }} */
   let activeTrip = null;
@@ -35,15 +40,31 @@
   const tripCfg = DATA.trip_planner || {};
   const tripEnabled = tripCfg.enabled !== false;
 
+  function inActiveCluster(obj) {
+    if (!activeCluster) return true;
+    if (!obj) return false;
+    const c = obj.cluster;
+    // Objects without cluster stay visible (single-network hubs)
+    if (c == null || c === '') return true;
+    return c === activeCluster;
+  }
   function stopVisible(s) {
     if (!s) return false;
     if (s.exec_only) return false; // never on public employer map
-    if (s.seasonal) return showSeasonal;
+    if (!inActiveCluster(s)) return false;
+    if (s.seasonal || (s.tag && /seasonal/i.test(String(s.tag)))) {
+      // Seasonal stops still require phase + seasonal toggle when line is seasonal
+      if (s.seasonal && !showSeasonal && (s.phase || 1) > 1) {
+        // fall through: phase gate may still show if phase allows and not line-seasonal-only
+      }
+    }
+    if (s.seasonal && !showSeasonal) return false;
     return (s.phase || 1) <= activePhase;
   }
   function segmentVisible(seg, line) {
     if (!seg || !line) return false;
     if (line.exec_only) return false;
+    if (!inActiveCluster(line)) return false;
     if (line.seasonal || line.type === 'seasonal') {
       if (!showSeasonal) return false;
     }
@@ -56,6 +77,7 @@
   function lineVisible(l) {
     if (!l) return false;
     if (l.exec_only) return false;
+    if (!inActiveCluster(l)) return false;
     if (l.seasonal || l.type === 'seasonal') return showSeasonal;
     // Show line if it has any segment live at this phase (not only line.phase)
     const segs = l.segments || [];
@@ -223,7 +245,60 @@
   }
 
 
-  // —— Phase + seasonal controls ——
+  // —— Cluster + phase + seasonal controls ——
+  const clusterEl = document.getElementById('cluster-toggle');
+  const clusterNote = document.getElementById('cluster-note');
+  if (clusterEl && clusterDefs.length > 1) {
+    clusterEl.hidden = false;
+    clusterEl.innerHTML = '';
+    clusterDefs.forEach((c) => {
+      const id = typeof c === 'string' ? c : c.id;
+      const label = typeof c === 'string' ? c : c.label || c.id;
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label;
+      b.dataset.cluster = id;
+      if (id === activeCluster) b.classList.add('active');
+      b.addEventListener('click', () => {
+        activeCluster = id;
+        [...clusterEl.querySelectorAll('button')].forEach((x) =>
+          x.classList.toggle('active', x.dataset.cluster === activeCluster)
+        );
+        if (clusterNote) {
+          const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+          const note = (def && def.note) || networkCfg.cluster_note || copy.two_networks || '';
+          if (note) {
+            clusterNote.hidden = false;
+            clusterNote.textContent = note;
+          }
+        }
+        if (activeTrip) clearTripUI();
+        // Refit map to cluster bounds when provided
+        const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+        if (map && def && def.map && def.map.center) {
+          map.easeTo({ center: def.map.center, zoom: def.map.zoom || map.getZoom(), duration: 600 });
+        }
+        refreshNetworkUI();
+      });
+      clusterEl.appendChild(b);
+    });
+    if (clusterNote) {
+      const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+      const note =
+        (def && def.note) ||
+        networkCfg.cluster_note ||
+        copy.two_networks ||
+        (copy.sections && copy.sections.two_networks) ||
+        '';
+      if (note) {
+        clusterNote.hidden = false;
+        clusterNote.textContent = note;
+      }
+    }
+  } else if (clusterEl) {
+    clusterEl.hidden = true;
+  }
+
   const phaseEl = document.getElementById('phase-toggle');
   if (phaseEl) {
     phaseEl.innerHTML = '';
@@ -271,32 +346,40 @@
 
   // Office / catchment — sets trip "To", highlights reachable origins, prefills LOI
   const catchGrid = document.getElementById('catchment-grid');
-  if (catchGrid) {
+  function renderCatchment() {
+    if (!catchGrid) return;
     const rows = DATA.catchment || [];
     if (!rows.length) {
       const sec = document.getElementById('office');
       if (sec) sec.hidden = true;
-    } else {
-      catchGrid.innerHTML = rows
-        .map((c) => {
-          const stop = nodesByKey[c.anchor_stop];
-          const label = c.anchor || stop?.label || c.anchor_stop || '';
-          return `<button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
+      return;
+    }
+    const filteredCatch = rows.filter((c) => {
+      if (!activeCluster) return true;
+      if (c.cluster) return c.cluster === activeCluster;
+      const stop = nodesByKey[c.anchor_stop];
+      return inActiveCluster(stop);
+    });
+    catchGrid.innerHTML = filteredCatch
+      .map((c) => {
+        const stop = nodesByKey[c.anchor_stop];
+        const label = c.anchor || stop?.label || c.anchor_stop || '';
+        return `<button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
           <h3>${label}</h3>
           <div class="nums">${c.phase1_stations ?? '—'} <span>origins at launch</span> → ${c.full_network_stations ?? '—'} <span>full network</span></div>
           <div class="hint">Set as my office · show who can reach me</div>
         </button>`;
-        })
-        .join('');
-      catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
-        card.addEventListener('click', () => {
-          catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
-          card.classList.add('active');
-          setOfficeStop(card.dataset.anchor);
-        });
+      })
+      .join('');
+    catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
+        card.classList.add('active');
+        setOfficeStop(card.dataset.anchor);
       });
-    }
+    });
   }
+  renderCatchment();
 
   function setOfficeStop(anchorKey) {
     if (!anchorKey || !nodesByKey[anchorKey]) return;
@@ -393,6 +476,7 @@
     renderLegend();
     rebuildMapLayers();
     populateTripSelects();
+    renderCatchment();
     if (activeTrip && activeTrip.from && activeTrip.to) {
       runTripPlanner(activeTrip.from, activeTrip.to);
     }
@@ -441,6 +525,7 @@
   /** Segments available on the full planned network (for trip routing — ignore map phase filter). */
   function segmentInTripGraph(seg, line) {
     if (!seg || !line || line.exec_only) return false;
+    if (!inActiveCluster(line)) return false;
     if (line.seasonal || line.type === 'seasonal') {
       if (!showSeasonal) return false;
     }
@@ -651,8 +736,11 @@
       return;
     }
     const drive = driveMin != null ? driveMin : driveMinutes(trip.from, trip.to);
+    const speedLbl =
+      (DATA.gates && DATA.gates.speed_constrained_label) ||
+      'indicative — subject to local speed zones';
     const navierPart = trip.speedConstrained
-      ? 'indicative water time (DC harbor speed rules)'
+      ? speedLbl
       : '~' + Math.round(trip.totalNavier) + ' min Navier';
     lastTripSnapshot = {
       tripFrom: trip.from,
@@ -746,8 +834,11 @@
       return;
     }
     const save = driveMin != null && !trip.speedConstrained ? driveMin - trip.totalNavier : null;
+    const speedLabel =
+      (DATA.gates && DATA.gates.speed_constrained_label) ||
+      'indicative — subject to local speed zones';
     const saveHtml = trip.speedConstrained
-      ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Water times are indicative — subject to DC harbor speed rules (no-wake / 6&nbsp;mph zones)</div>`
+      ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Water times are ${speedLabel}</div>`
       : save != null && save > 0
         ? `<div class="trip-save">Save ~${Math.round(save)} min vs driving this trip</div>`
         : save != null
@@ -786,7 +877,7 @@
       .join('');
     const navierTotal = trip.speedConstrained
       ? `<div class="v" style="font-size:18px">Indicative</div>
-          <div class="hint">Subject to DC harbor speed rules${trip.transferTotal ? ` · +${trip.transferTotal} min transfers` : ''}</div>`
+          <div class="hint">${speedLabel}${trip.transferTotal ? ` · +${trip.transferTotal} min transfers` : ''}</div>`
       : `<div class="v">~${Math.round(trip.totalNavier)} min</div>
           <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>`;
     res.hidden = false;
@@ -848,8 +939,11 @@
           trip.requiredPhase > 1 && trip.requiredPhaseLabel
             ? ` · ${trip.requiredPhaseLabel}`
             : '';
+        const speedLbl =
+          (DATA.gates && DATA.gates.speed_constrained_label) ||
+          'indicative — subject to local speed zones';
         const timeBit = trip.speedConstrained
-          ? 'indicative water time (DC harbor speed rules)'
+          ? speedLbl
           : `~${Math.round(trip.totalNavier)} min on Navier`;
         detail.innerHTML = `<strong>Your ride</strong>
           <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ${timeBit}${
@@ -1512,10 +1606,16 @@
   }
 
   function waterMinLabel(seg) {
-    // DC / harbor speed regimes: never bare minutes on constrained segments
+    // Harbor / manatee / no-wake regimes: never bare minutes on constrained segments
     if (seg.speed_constrained || seg.water_min_label) {
-      return seg.water_min_label || 'indicative — subject to DC harbor speed rules';
+      return (
+        seg.water_min_label ||
+        (DATA.gates && DATA.gates.speed_constrained_label) ||
+        'indicative — subject to local speed zones'
+      );
     }
+    // Optional whitelist claim range (e.g. foil-credible corridors)
+    if (seg.time_claim) return `${seg.time_claim} (indicative)`;
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
       const mins = Math.ceil(seg.distance_nm / 20 * 60 / 5) * 5;
