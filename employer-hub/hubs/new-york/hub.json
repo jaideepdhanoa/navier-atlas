@@ -1,6 +1,6 @@
 {
   "id": "new-york",
-  "version": "2026-08-15-marina",
+  "version": "2026-08-15-ny-nits",
   "aliases": [
     "ny-employers"
   ],
@@ -49,9 +49,20 @@
     "anchor_underwrite_indicative_usd_mo": 125000,
     "launch_trigger_committed_seats": [
       60,
-      72
+      80
     ],
-    "locked_by": "Jaideep 2026-08-11"
+    "locked_by": "Jaideep 2026-08-15",
+    "seat_price_band_with_ferry_usd_month": [
+      650,
+      750
+    ],
+    "seat_price_band_no_ferry_usd_month": [
+      750,
+      900
+    ],
+    "seat_price_with_ferry_usd_mo_low": 650,
+    "seat_price_with_ferry_usd_mo_high": 750,
+    "locked_note": "Launch trigger 60\u201380 seats. Seat-month: $650\u2013750 where a ferry alternative exists; $750\u2013900 where none does."
   },
   "brand": {
     "title": "Navier \u00b7 New York Employer Network",
@@ -132,14 +143,15 @@
     {
       "key": "pier79",
       "label": "Midtown West / Pier 79",
-      "landing": "Midtown West / Pier 79 (W 39th St)",
+      "landing": "Midtown West / Pier 79 (W 39th Street)",
       "resolved_bp_id": "bp-336a4cb43d",
       "lng": -74.0048,
       "lat": 40.7604,
       "role": "interchange",
       "phase": 1,
       "serves": [
-        "Hudson Yards / Midtown West"
+        "Hudson Yards / Midtown West",
+        "W 39th Street ferry landing"
       ],
       "tag": null,
       "seasonal": false,
@@ -987,6 +999,7 @@
         "edgewater",
         "port-imperial",
         "lincoln",
+        "pier79",
         "hoboken-14th",
         "hoboken",
         "newport-jc",
@@ -1233,22 +1246,71 @@
         },
         {
           "from": "lincoln",
-          "to": "hoboken-14th",
+          "to": "pier79",
           "phase": 1,
-          "distance_nm": 0.5,
-          "water_min": 4,
+          "distance_nm": 0.87,
+          "water_min": 5,
           "water_path": [
             [
               -74.0238,
               40.7612
             ],
             [
-              -74.026,
+              -74.02,
+              40.761
+            ],
+            [
+              -74.01599999999999,
+              40.76090000000001
+            ],
+            [
+              -74.012,
+              40.7608
+            ],
+            [
+              -74.0084,
+              40.7606
+            ],
+            [
+              -74.0048,
+              40.7604
+            ]
+          ]
+        },
+        {
+          "from": "pier79",
+          "to": "hoboken-14th",
+          "phase": 1,
+          "distance_nm": 1.16,
+          "water_min": 5,
+          "water_path": [
+            [
+              -74.0048,
+              40.7604
+            ],
+            [
+              -74.0082,
+              40.7596
+            ],
+            [
+              -74.0116,
+              40.7588
+            ],
+            [
+              -74.015,
               40.758
             ],
             [
-              -74.0275,
-              40.7555
+              -74.0185,
+              40.757000000000005
+            ],
+            [
+              -74.022,
+              40.756
+            ],
+            [
+              -74.0254,
+              40.7549
             ],
             [
               -74.0288,
@@ -1740,12 +1802,54 @@
             40.7612
           ],
           [
-            -74.026,
+            -74.02,
+            40.761
+          ],
+          [
+            -74.01599999999999,
+            40.76090000000001
+          ],
+          [
+            -74.012,
+            40.7608
+          ],
+          [
+            -74.0084,
+            40.7606
+          ],
+          [
+            -74.0048,
+            40.7604
+          ]
+        ],
+        [
+          [
+            -74.0048,
+            40.7604
+          ],
+          [
+            -74.0082,
+            40.7596
+          ],
+          [
+            -74.0116,
+            40.7588
+          ],
+          [
+            -74.015,
             40.758
           ],
           [
-            -74.0275,
-            40.7555
+            -74.0185,
+            40.757000000000005
+          ],
+          [
+            -74.022,
+            40.756
+          ],
+          [
+            -74.0254,
+            40.7549
           ],
           [
             -74.0288,
@@ -1960,7 +2064,7 @@
       "legacy_ids": [
         "NY-H"
       ],
-      "phase_notes": "Single Hudson spine. +Yonkers P2, +Liberty Landing P2, +Newport P3. No separate Hudson Express. Lincoln Harbor construction flag (ops).",
+      "phase_notes": "Hudson spine includes Midtown West / Pier 79 (W 39th) after Lincoln Harbor. +Yonkers P2, +Liberty Landing P2, +Newport P3. Lincoln Harbor construction flag (ops).",
       "seasonal": false
     },
     {
@@ -10984,9 +11088,9 @@
       "P_price_per_seat_month": {
         "default": 750,
         "label": "Price per seat-month ($)",
-        "min": 750,
+        "min": 650,
         "max": 900,
-        "note": "standard $750 \u00b7 no-ferry-alternative $900"
+        "note": "$650\u2013750 where a ferry alternative exists \u00b7 $750\u2013900 where none does"
       },
       "sigma_employer_subsidy_share": {
         "default": 0.8,
@@ -11094,11 +11198,11 @@
         "tag": "Forms on committed demand",
         "tag_class": "tag-line",
         "title": "N45 Commuter Line",
-        "body": "N45 Commuter Line \u2014 20 seats, scheduled service on a fixed line. Launches when a line reaches roughly 60\u201372 committed seats.",
+        "body": "N45 Commuter Line \u2014 20 seats, scheduled service on a fixed line. Launches when a line reaches roughly 60\u201380 committed seats.",
         "meta": [
           "20 seats / vessel",
-          "~60\u201372 seats to launch a line",
-          "$750\u2013900 / seat-month"
+          "~60\u201380 seats to launch a line",
+          "$650\u2013750 / seat-month (ferry alt) \u00b7 $750\u2013900 (none)"
         ],
         "cta_label": "Model seats on a line",
         "cta_href": "#calculator",
@@ -11148,8 +11252,8 @@
     "stripe_lesson": "New York institutions already fund employee transportation at scale. We ran the first employer water commute on San Francisco Bay \u2014 the ride worked; the vessel class was the lesson. A non-binding letter of intent sequences which harbor lines light first.",
     "loi_cta": "Non-binding. Helps us sequence harbor lines to real demand at your terminal \u2014 and every origin that can transfer to you.",
     "footer_note": "Letters of intent are non-binding.",
-    "price_anchor": "less than the parking space it replaces",
-    "launch_trigger": "A line advances when about 60\u201372 seats are committed on that corridor \u2014 enough for real commuter service.",
+    "price_anchor": "$650\u2013750 / seat-month where a ferry alternative exists \u00b7 $750\u2013900 where none does \u2014 often less than the parking + toll stack it replaces",
+    "launch_trigger": "A line advances when about 60\u201380 seats are committed on that corridor \u2014 enough for real commuter service.",
     "problem_title": "The congestion charge is the tax. The water is the spare lane.",
     "problem_lead": "Your people already live and work on the water. Roads and tolls take the rest. Electric hydrofoils cut that tax \u2014 terminal to terminal, above the traffic.",
     "proof_title": "New York already funds the water commute.",
@@ -11164,7 +11268,7 @@
     "network_lead": "Pick where your people live and where you work. We\u2019ll show the water path \u2014 including transfers \u2014 and compare it to a typical AM peak drive. Gold rings are transfer hubs (Pier 11, E 34th, and more).",
     "map_detail_empty": "Pick two terminals in Find my ride \u2014 or select a line or stop.",
     "calc_title": "Rough cost for your team",
-    "calc_lead_html": "Optional planning math. If you ran <strong>Find my ride</strong>, times can be prefilled from that route. Defaults target <strong>$600 per rider</strong> net employer cost vs a <strong>$759</strong> parking + toll benchmark.",
+    "calc_lead_html": "Optional planning math. If you ran <strong>Find my ride</strong>, times can be prefilled from that route. Seat pricing is locked at <strong>$650\u2013750 / month</strong> where a ferry alternative exists and <strong>$750\u2013900</strong> where none does. Defaults target <strong>$600 per rider</strong> net employer cost vs a <strong>$759</strong> parking + toll benchmark.",
     "loi_title": "Reserve interest for your campus",
     "hero_note": "Non-binding letter of intent \u00b7 no commitment \u00b7 helps us sequence which line launches first",
     "hero_cta_network": "Find a route to my office",
@@ -11173,7 +11277,7 @@
     "hero_cta_loi": "Reserve interest",
     "hero_stats": [
       {
-        "value": "34",
+        "value": "38",
         "label": "terminals"
       },
       {
