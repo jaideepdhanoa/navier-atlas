@@ -497,4 +497,38 @@ Then implement per §6.
 
 ---
 
+
+## 14. Line topology (MECE) — adopted 2026-08-15
+
+Source: `handoff/employer-hub/GROK-HANDOFF-mece-line-design-2026-08-15.md` (Grok, PR #356). Lines are a **product topology for humans**, not a dump of the routing graph. Author spines first; phase lives on stops/segments, not on parallel product names.
+
+### Target ratios (per independent cluster)
+| Terminals (public map) | Target lines | Hard ceiling |
+|---|---|---|
+| ≤ 8 | 2–3 | 4 |
+| 9–14 | 3–4 | 5 |
+| 15–22 | 4–5 | 6 |
+
+Smell test: if `lines > stops/2`, re-merge before handoff.
+
+### Every line must be one MECE pattern
+**Spine** (geographic order along one water body) · **Branch** (second water body joining a hub) · **Spur/link** (short job or no-wake circulator) · **Exclusive spoke** (multiple origins, same hub, different water, no shared intermediates) · **Isolated sub-network** (genuinely separate water system, e.g. Tacoma Narrows).
+
+Not MECE: two lines sharing ≥2 consecutive stops for marketing; a one-stop feeder that is really a phase-2 station on a spine; a long-haul express that exists only because the stop is far (put it on the spine as `phase: 3`). A lonely long-haul is correct **only** when the geography is a separate water system **and** shares no intermediate with the main spine. Event-only notions, incumbent head-to-head pairs, speed-stranded corridors, and orphan demand stay in `watchlist`/`decision_ledger`/`no_landing`/`note_internal` — never minted as map lines.
+
+### Tasklet pre-PR checklist
+1. Can each line be named in one geographic phrase?
+2. Does any segment appear on two lines? Merge.
+3. Is every `phase ≥ 2` stop an extension of a line, not a new product?
+4. `len(lines) ≤ ceil(len(stops)/2)` per cluster?
+5. Catchment counts match the post-merge graph?
+6. Hard gates (speed labels, incumbent copy, exclusions, dual-cluster rules) still hold?
+
+### Acceptance bullet for every per-city GROK-SPEC
+> Line count ≤ ceil(stops/2) per cluster; no orphan long-haul line; no duplicate multi-stop paths; merged lines carry `legacy_ids`.
+
+This section also governs **archetype views** (Public Partners, Fleet Investors): they render the same hub topology and inherit these rules unchanged.
+
+---
+
 *End of handoff. Update this file when a third city ships or calculator profiles expand.*
