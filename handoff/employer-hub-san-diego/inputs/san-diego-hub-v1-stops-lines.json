@@ -1,0 +1,387 @@
+{
+  "hub": "san-diego",
+  "label": "San Diego Bay",
+  "route": "/employers/san-diego",
+  "alias": "/san-diego-employers",
+  "version": "v1-draft",
+  "authored": "2026-08-15",
+  "authored_by": "Tasklet",
+  "status": "authored draft — Grok fills resolved_bp_id / lng / lat / water_path / water_min deterministically; no coordinates authored here by design",
+  "source_inventory": "/tasklet/drive/employer-networks/next-cities/san-diego/SAN-DIEGO-NODE-INVENTORY.md",
+
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_band_usd_month": [650, 1200],
+    "seat_price_band_note": "program band — San Diego-specific pricing TBD; do not render as a city quote",
+    "corridor_launch_trigger_committed_seats": [60, 80]
+  },
+
+  "stops": [
+    {
+      "key": "chula-vista",
+      "label": "Chula Vista (Bayfront)",
+      "landing": "Safe Harbor South Bay, 600 Marina Pkwy (the active Chula Vista ferry landing; the adjacent Safe Harbor Bayfront marina at 550 Marina Pkwy is the 552-slip berth alternate)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Gaylord Pacific Resort & Convention Center — walking distance from the landing (~800 hired at opening May 2025; ~4,000 permanent jobs projected as the bayfront district builds out)",
+        "Chula Vista residential — 85.7k households, median HH income $108,032; eastern Chula Vista (91914, $190,786) as a drive-to-dock market"
+      ],
+      "tag": null,
+      "note_internal": "Safe Harbor Marinas on Port of San Diego tidelands — berthing/embarkation terms conversation required with Safe Harbor + Port (port_single_landlord_internal). Flagship's Chula Vista↔Convention Center ferry (launched June 1, 2026: 6 round trips/day, 45 min, $15, 32-pax vessel, no restrooms, not wheelchair accessible) lands here — incumbent_respect_flagship governs all framing: complement/partner, guaranteed employer seats + frequency, never displacement copy. The first ~2–3 nm north of this landing is the posted South Bay 5 mph zone. '4,000 permanent jobs' is a developer projection (Mortenson); verified floor is ~800 opening hires (Fox5).",
+      "source_url": "https://www.flagshipsd.com/ferry-routes"
+    },
+    {
+      "key": "fifth-avenue-landing",
+      "label": "Convention Center (Fifth Avenue Landing)",
+      "landing": "Fifth Avenue Landing, 600 Convention Way — active ferry stop + 12-slip marina (transient berthing, vessels to 300 ft)",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "San Diego Convention Center at the dock",
+        "Hilton San Diego Bayfront (~254 employees) and Marriott Marquis San Diego Marina — walk-tier",
+        "Gaslamp Quarter hospitality cluster; Petco Park ~12 min (event demand)",
+        "Marina District / Gaslamp condos adjacent"
+      ],
+      "tag": null,
+      "note_internal": "Private operator (Fifth Avenue Landing LLC) on Port tidelands. Flagship lands BOTH its Coronado (every 30 min) and Chula Vista routes here — shared-berth conversation runs through the operator + Port; whether the Port would permit a second scheduled passenger operator here/at Broadway Pier is UNKNOWN and is the first dock-track question (port_single_landlord_internal). Alternate Convention Center gate if berth terms fail: Marriott Marquis Marina (see decision_ledger).",
+      "source_url": "https://fifthavenuelanding.com"
+    },
+    {
+      "key": "broadway-pier",
+      "label": "Downtown (Broadway Pier)",
+      "landing": "Broadway Pier (Port Pavilion), 990–1000 N Harbor Dr",
+      "role": "interchange_primary",
+      "phase": 1,
+      "serves": [
+        "Downtown / Little Italy — 37,000+ downtown residents; Little Italy average individual income $94,546",
+        "County Administration Center and the W Broadway office core (One America Plaza) — walk-tier",
+        "Manchester Grand Hyatt and the USS Midway Museum — walk-tier",
+        "Federal regional headquarters offices at 750 Pacific Hwy, directly across N Harbor Dr from the pier",
+        "IQHQ Research & Development District — 1.7M sq ft life-science campus at the pier (future capacity; leasing still ramping)"
+      ],
+      "tag": null,
+      "note_internal": "Port-controlled pier; secure-terminal (TWIC) rules apply on cruise-ship days — schedule around cruise calls. Flagship berths its Coronado ferries here, including the City-of-Coronado-subsidized FREE commuter runs 4:50–8:30 AM (since 1993, electric fleet announced fall 2026) — never compete head-to-head on Broadway↔Coronado (incumbent_respect_flagship; decision_ledger). '750 Pacific Hwy' = Navy Building One / Navy Region Southwest HQ (occupied Oct 2020) — named only here so the word 'navy' never enters the rendered DOM (navy_base_honesty). RaDD leasing has badly lagged (first life-science tenant signed May 2025) — render as future capacity, never as current headcount.",
+      "source_url": "https://www.portofsandiego.org/maritime/terminals"
+    },
+    {
+      "key": "shelter-island",
+      "label": "Shelter Island",
+      "landing": "Shelter Island Guest Docks, 1401 Shelter Island Dr (26 public slips, vessels to 65 ft)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Point Loma (92106) residential — median HH income $142,897, the highest verified catchment income in the market",
+        "Shelter Island marine-industry strip — boatyards, brokers, hotels at the dock",
+        "Liveaboard community in the basin (counts unknown)"
+      ],
+      "tag": "planned",
+      "note_internal": "Port-owned public guest docks (reservations via Harbor Police 619.686.6227) — whether scheduled commercial embarkation is permitted at the guest docks is UNVERIFIED (port_single_landlord_internal). Alternate berths in the same basin: Kona Kai (518 slips, 30–200 ft), Island Palms, Shelter Cove — all private operators on Port tidelands.",
+      "source_url": "https://www.portofsandiego.org/coming-and-going/boating-san-diego-bay/shelter-island-guest-docks"
+    },
+    {
+      "key": "americas-cup-harbor",
+      "label": "Point Loma (America's Cup Harbor)",
+      "landing": "Point Loma Marina / America's Cup Harbor sportfishing landings, 1403 Scott St (Fisherman's Landing, H&M Landing, Point Loma Sportfishing)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Sportfishing and marine-industry cluster — the West Coast's largest sportfishing fleet, with daily commercial passenger-vessel operations at these docks",
+        "Liberty Station arts district (100+ organizations) — ~1.2 mi: bike-tier, not walk-tier",
+        "Point Loma residential (shared 92106 catchment)"
+      ],
+      "tag": "planned",
+      "note_internal": "Established commercial passenger-vessel precedent (sportfishing fleet runs daily passenger ops from these exact docks) — the cleanest operational story in the market; berthing terms still require the private operators + Port (port_single_landlord_internal). NIWC Pacific (5,000+ staff — secondary source) sits up the Point Loma hill: shuttle-tier, NOT walkable, and never rendered (navy_base_honesty).",
+      "source_url": "https://pointlomamarina.com"
+    },
+    {
+      "key": "harbor-island",
+      "label": "Harbor Island",
+      "landing": "Harbor Island West Marina, 2040 Harbor Island Dr (620 slips, 21–100 ft, nightly guest slips; alternate gate: Safe Harbor Sunroad, 955 Harbor Island Dr)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Harbor Island hotels (Sheraton) and the marina/liveaboard community at the dock",
+        "Little Italy ~1.5 mi — infill between Point Loma and the downtown core"
+      ],
+      "tag": "planned",
+      "note_internal": "Private marinas on Port tidelands — commercial berthing negotiation required (redevelopment to 623 slips incl. superyacht berths underway at Harbor Island West). SAN airport terminals are across N Harbor Dr but ~1 mi+ from the marinas (map estimate) — shuttle-tier ONLY, and the airport's new entrance road (opened Aug 1, 2025) already diverted ~45,000 vehicles/day off N Harbor Dr: do NOT build or render any airport-access story for this stop.",
+      "source_url": "https://harborislandwest.com"
+    },
+    {
+      "key": "glorietta-bay",
+      "label": "Coronado (Glorietta Bay)",
+      "landing": "Glorietta Bay Marina & Public Dock, 1715/1825 Strand Way (100 slips, 20–110 ft; transient docking; adjacent Port boat launch)",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Coronado village and Coronado Shores residential — 18,031 pop., median HH income $134,534, already ferry-habituated",
+        "City of Coronado offices and Coronado Golf Course — walk-tier"
+      ],
+      "tag": "planned",
+      "note_internal": "The one non-Port landing in the network: City of Coronado-owned, managed by California Yacht Marina — city conversation, not Port. Deliberately chosen as the Coronado anchor INSTEAD of Coronado Ferry Landing, to complement (not clone) Flagship's subsidized service (incumbent_respect_flagship; decision_ledger; coronado_lease_internal). Glorietta Bay itself is a 5 mph pocket (SDUPD §4.35(c)(3)). NAB Coronado ~0.7 mi is a controlled installation — never render base service (navy_base_honesty).",
+      "source_url": "https://www.coronado.ca.us/214/Glorietta-Bay-Marina-Public-Dock"
+    }
+  ],
+
+  "lines": [
+    {
+      "id": "SD-1",
+      "name": "South Bay Line",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "stops": ["chula-vista", "fifth-avenue-landing", "broadway-pier"],
+      "segments": [
+        {
+          "from": "chula-vista",
+          "to": "fifth-avenue-landing",
+          "speed_constrained": true,
+          "constraint": "Posted 5 mph area in South San Diego Bay south of Loews Resort / Sweetwater Channel (pylon-marked wildlife-refuge water) caps the first ~2–3 nm out of Chula Vista",
+          "routing": "Exit Safe Harbor South Bay at marina speed and hold the marked channel north through the posted South Bay 5 mph zone (cement pylons; wildlife refuges, sea-turtle habitat and shoals outside the channel) until clear of Loews Resort / Sweetwater Channel; then full-speed main-channel water up the central bay — passing under the Coronado Bridge navigation span, standing clear of the Bay Bridge mooring/roadstead 5 mph area, the 33 CFR 165.1101 security-zone shore off 32nd St, and §334.880 naval anchorages — to the Fifth Avenue Landing approach."
+        },
+        {
+          "from": "fifth-avenue-landing",
+          "to": "broadway-pier",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Short main-channel hop along the downtown Embarcadero; no general speed limit in the main channel (SDUPD Port Code §4.35(c)(3)); mind cruise-ship movements at B Street Pier and harbor-tour traffic; marina/berth speeds at the pier faces only."
+        }
+      ],
+      "phase_notes": "Flagship corridor. ~30–40 min Chula Vista↔downtown indicative end-to-end INCLUDING the 5 mph South Bay tail, vs a 15–60 min I-5 drive. Anchored by Gaylord Pacific (walking distance from the Chula Vista landing) on the reverse commute + downtown/Convention Center employers on the forward run. The demand signal is brand new and proven — a public commuter ferry launched on this exact pair June 1, 2026 — and Navier's employer seat-block overlay adds guaranteed seats and frequency as a complement to it, never a displacement (incumbent_respect_flagship governs all copy)."
+    },
+    {
+      "id": "SD-2",
+      "name": "Point Loma Line",
+      "type": "trunk",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["shelter-island", "americas-cup-harbor", "harbor-island", "broadway-pier"],
+      "segments": [
+        {
+          "from": "shelter-island",
+          "to": "americas-cup-harbor",
+          "speed_constrained": true,
+          "constraint": "Short basin-to-basin hop dominated by Shelter Island / America's Cup Harbor basin and marina speed limits — no meaningful open-water segment",
+          "routing": "Round the Shelter Island mole between the guest docks and America's Cup Harbor at basin speeds; all inside-basin water."
+        },
+        {
+          "from": "americas-cup-harbor",
+          "to": "harbor-island",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Exit America's Cup Harbor and run the north-bay main channel east: full-speed water (no general main-channel limit, SDUPD §4.35(c)(3)); stay in/near the marked channel clear of the Point Loma naval-shore zones (33 CFR 165.1102; §334.870 degaussing-station most-direct-transit rule) and the §334.880 anchorage; enter the Harbor Island basin at marina speed."
+        },
+        {
+          "from": "harbor-island",
+          "to": "broadway-pier",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Short full-speed hop from the Harbor Island basin east along the main channel to the Broadway Pier face; marina-basin speeds on exit only."
+        }
+      ],
+      "phase_notes": "Phase 2 premium residential play: the highest verified catchment income in the market (Point Loma 92106, $142,897) into the downtown core, ~15–25 min indicative, essentially all full-speed water — and NO incumbent scheduled service exists on this pair. Harbor Island is the authored opportunistic infill stop; it carries no airport story (see its note_internal — the 2025 entrance road already solved most of that pain, and no landing serves the terminals)."
+    },
+    {
+      "id": "SD-3",
+      "name": "Bridge Line",
+      "type": "feeder",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["glorietta-bay", "fifth-avenue-landing"],
+      "segments": [
+        {
+          "from": "glorietta-bay",
+          "to": "fifth-avenue-landing",
+          "speed_constrained": true,
+          "constraint": "5 mph inside Glorietta Bay (SDUPD Port Code §4.35(c)(3)) plus the Bay Bridge mooring/roadstead 5 mph area on the crossing",
+          "routing": "Exit Glorietta Bay at 5 mph, pass through the Coronado Bridge navigation span, cross the main channel standing clear of the Bay Bridge mooring/roadstead 5 mph area, and approach Fifth Avenue Landing at berth speed."
+        }
+      ],
+      "phase_notes": "Coronado Bridge bypass feeder — Coronado residents into the Convention Center / Gaslamp core without the bridge. Deliberately anchored at Glorietta Bay — NOT at the incumbent ferry's Coronado landing — to complement (not clone) the existing subsidized Coronado ferry (see decision_ledger). The crossing is below the 20-min sweet spot and partly speed-constrained — bundle as a feeder with NO numeric time claim; a City of Coronado / incumbent-partner conversation gates this line."
+    }
+  ],
+
+  "catchment": [
+    {
+      "anchor": "Downtown core / Embarcadero",
+      "anchor_station": "broadway-pier",
+      "employers": [
+        "County Administration Center (walk-tier)",
+        "W Broadway office core — One America Plaza and the downtown towers (walk-tier)",
+        "Manchester Grand Hyatt and USS Midway Museum (walk-tier)",
+        "Federal regional headquarters offices at 750 Pacific Hwy (directly across from the pier)",
+        "IQHQ Research & Development District — 1.7M sq ft life-science campus (future capacity; leasing still ramping)"
+      ],
+      "stations_at_launch": 2,
+      "stations_full_network": 6,
+      "note": "Network primary interchange. 37,000+ downtown residents make this a bidirectional node. RaDD renders as future capacity only — never as current headcount."
+    },
+    {
+      "anchor": "Convention Center / Gaslamp hospitality",
+      "anchor_station": "fifth-avenue-landing",
+      "employers": [
+        "San Diego Convention Center (at the dock)",
+        "Hilton San Diego Bayfront (~254 employees)",
+        "Marriott Marquis San Diego Marina",
+        "Gaslamp Quarter hospitality cluster; Petco Park ~12 min (event demand)"
+      ],
+      "stations_at_launch": 2,
+      "stations_full_network": 6,
+      "note": "Interchange between the South Bay Line and the Phase-3 Bridge Line feeder."
+    },
+    {
+      "anchor": "Chula Vista Bayfront / Gaylord Pacific",
+      "anchor_station": "chula-vista",
+      "employers": [
+        "Gaylord Pacific Resort & Convention Center — ~800 hired at opening (May 2025); ~4,000 permanent jobs projected as the bayfront builds out (developer projection)"
+      ],
+      "stations_at_launch": 2,
+      "stations_full_network": 6,
+      "note": "The single best walk-tier waterfront anchor employer in the market — the marina is at walking distance from the resort. Render the 4,000 figure as a projection, never as current headcount."
+    },
+    {
+      "anchor": "Point Loma / Shelter Island marine cluster",
+      "anchor_station": "americas-cup-harbor",
+      "employers": [
+        "Sportfishing and marine-industry cluster — the West Coast's largest sportfishing fleet (walk-tier at the landings)",
+        "Shelter Island boatyards, brokers and hotels (via the Shelter Island station)",
+        "Liberty Station arts district (100+ organizations) — ~1.2 mi: bike-tier, not walk-tier"
+      ],
+      "stations_at_launch": 0,
+      "stations_full_network": 6,
+      "note": "Phase 2 stations — 0 at launch; render as planned. Liberty Station must never be described as walk-tier."
+    },
+    {
+      "anchor": "Coronado (Glorietta Bay)",
+      "anchor_station": "glorietta-bay",
+      "employers": [
+        "City of Coronado (walk-tier; headcount unverified)",
+        "Coronado Golf Course (walk-tier; headcount unverified)"
+      ],
+      "stations_at_launch": 0,
+      "stations_full_network": 6,
+      "note": "Phase 3 station — 0 at launch; render as planned. Coronado's premium residential catchment (median HH income $134,534) is the real story of this anchor."
+    }
+  ],
+  "catchment_counting_rule": "stations_at_launch / stations_full_network = count of OTHER stations reachable from the anchor's station via authored lines (transfers allowed at interchanges), at Phase 1 vs all phases. Phase 1 network = 3 connected stations (so 2 reachable from each); full network = 7 connected stations (so 6 reachable from each — the Point Loma Line joins at Broadway Pier, the Bridge Line joins at Fifth Avenue Landing). Anchors whose station is Phase 2/3 score 0 at launch.",
+
+  "watchlist": [
+    {
+      "landing": "Navy Pier (downtown, next to the USS Midway)",
+      "reason": "Today a parking lot; under construction as Freedom Park, opening 2028 (Port/Midway joint project). A future high-visibility downtown pier, but no small-craft float exists today. Do not render as a station.",
+      "source_url": "https://www.portofsandiego.org/projects/freedom-park-burnham-navy-pier"
+    },
+    {
+      "landing": "B Street Pier (B Street Cruise Ship Terminal, 1140 N Harbor Dr)",
+      "reason": "Cruise-secure terminal: berths sized for cruise ships, TWIC-secure during vessel operations, small-vessel ops unverified. Broadway Pier is the practical downtown landing. Do not render as a station.",
+      "source_url": "https://www.portofsandiego.org/maritime/terminals"
+    },
+    {
+      "landing": "Pepper Park boat launch + fishing pier, National City (end of Tidelands Ave)",
+      "reason": "Phase 1 improvements completed spring 2026 (new ramp, fishing pier, boardwalk) — but it is not a passenger float. Nearest public landing to the 32nd St gates and a candidate for a permitted passenger float in a Port conversation. Do not render as a station.",
+      "source_url": "https://www.portofsandiego.org/projects/national-city-bayfront"
+    },
+    {
+      "landing": "Cesar Chavez Park shipyard float (Barrio Logan) — does not exist yet",
+      "reason": "THE unlock for the shipyard shift-change market. Today Cesar Chavez Park has only a viewing pier (no berthing float; fishing banned since 2008), so the entire Harbor Drive shift-change demand pool is unaddressable by water. The Port is taking community input on the park's next improvement phase in 2026 — a new permitted passenger float here is the concrete dock-track ask. Not usable today; do not render.",
+      "source_url": "https://www.portofsandiego.org/experiences/where-go/barrio-logan-park"
+    }
+  ],
+
+  "no_landing": [
+    { "area": "Barrio Logan / NASSCO–BAE shipyards", "reason": "The bay's famous shift-change demand pool has no civilian landing — Cesar Chavez Park is a viewing pier only and Tenth Avenue Marine Terminal is TWIC-secure cargo; watchlist-gated on a new permitted float." },
+    { "area": "Naval Station San Diego (32nd St) shore", "reason": "Waters within the base are a prohibited federal security zone (33 CFR 165.1101); nearest public landing is Pier 32 Marina, ~1.5–2 mi from the gates (shuttle-tier, map estimate — see decision_ledger)." },
+    { "area": "NASNI / Naval Base Coronado docks", "reason": "Fleet landings are base-controlled with a north-shore security zone (33 CFR 165.1105); the base's commuters are reachable only via public Coronado landings plus base shuttle/bike — never dockside." },
+    { "area": "Liberty Station / NTC boat channel", "reason": "Kayak/paddleboard launch ramp only; no dock for a 30–45 ft vessel. Served at bike-tier via America's Cup Harbor." },
+    { "area": "San Diego International Airport (SAN)", "reason": "No landing serves the terminals; Harbor Island marinas are ~1 mi+ away (shuttle-tier), and the Aug 2025 signal-free entrance road already removed ~45,000 vehicles/day of the access pain. No airport story." },
+    { "area": "Embarcadero Marina Parks / Seaport Village", "reason": "Parks and a fishing pier — no transient passenger berthing; nearest usable landings are Fifth Avenue Landing and the Marriott Marquis Marina. Seaport San Diego redevelopment is planned, not existing." },
+    { "area": "Mission Bay", "reason": "Separate locked water system: ~7 nm of open Pacific around Point Loma between the two bay entrances, plus a City-regulated 5 mph/special-use patchwork inside Mission Bay itself. No credible commuter link — killed." },
+    { "area": "Oceanside Harbor", "reason": "Real municipal harbor, but ~30 nm of open ocean north of San Diego Bay (~1h15m+ even at foil cruise) — far outside the 20–45 min sweet spot. Future long-haul/seasonal idea only." }
+  ],
+
+  "decision_ledger": [
+    {
+      "topic": "Coronado Ferry Landing (1201 First St)",
+      "status": "real active ferry stop — NOT authored as a station; partner conversation first",
+      "reason": "Flagship's Coronado service is subsidized and free at commute hours (City-funded runs 4:50–8:30 AM since 1993) and goes electric fall 2026 — any Navier landing there reads head-to-head. The retail-center lease is also in flux (40-yr lease expired June 30, 2026; Port board voted a one-year renewal June 23, 2026; $20M revitalization on hold). Coronado is served instead via the Phase-3 Glorietta Bay feeder. Revisit ONLY inside an operating-partner conversation with Flagship / the Port / the City (coronado_lease_internal)."
+    },
+    {
+      "topic": "Broadway Pier ↔ Coronado head-to-head line",
+      "status": "excluded permanently",
+      "reason": "Inventory kills it: a subsidized incumbent that is free at commute hours and converting to electric ferries. Navier never renders, implies, or reserves this pair. Differentiation lives on employer seat blocks, foil speed, and unserved pairs."
+    },
+    {
+      "topic": "National City Line (Pier 32 Marina ↔ Fifth Avenue Landing / Broadway Pier)",
+      "status": "real marina, corridor held — inventoried, NOT routed",
+      "reason": "~4.5 nm of all-speed water, but walk-tier employment is weak at both ends (the 32nd St gates are shuttle-tier, ~1.5–2 mi from Pier 32) and National City catchment income is unverified. Hold until a base-shuttle partnership or a Barrio Logan float exists; then revisit as a feeder."
+    },
+    {
+      "topic": "Shipyard Shuttle (Barrio Logan shift-change market)",
+      "status": "dead until a dock exists",
+      "reason": "The demand story is real and sourced (the City's own feasibility study proposes a pedestrian bridge just to manage shift-change flows on Harbor Drive), but there is NO civilian landing in Barrio Logan. Requires a new permitted float at/near Cesar Chavez Park (watchlist; Port park-improvement process live in 2026). Never render."
+    },
+    {
+      "topic": "Convention Center gate choice",
+      "status": "decided — Fifth Avenue Landing",
+      "reason": "Fifth Avenue Landing is an active ferry stop with transient berthing and both incumbent routes landing there — the proven Convention Center gate. Marriott Marquis Marina (445 slips; 3 guest slips 30–65 ft) is the inventoried alternate gate if Fifth Avenue Landing berth terms fail."
+    },
+    {
+      "topic": "Coronado Cays / Loews Crown Isle marinas",
+      "status": "real marinas, not routed",
+      "reason": "Both sit at the edge of (or inside) the posted South Bay 5 mph zone with residential-only catchment (resident counts unknown) and a thin employer base (Loews resort only, headcount unknown). Watch as a possible future residential-feeder overlay on the South Bay Line; do not render."
+    }
+  ],
+
+  "bp_gap": [],
+
+  "gates": {
+    "incumbent_respect_flagship": {
+      "rule": "Flagship Cruises & Events (family-owned, operating since 1915) runs the Coronado ferry (20 departures/day incl. free City-subsidized commuter runs 4:50–8:30 AM since 1993), the Convention Center↔Coronado shuttle every 30 min, the NEW Chula Vista↔Convention Center commuter ferry (June 1, 2026), an on-call water taxi — and has announced an electric ferry fleet for fall 2026. Flagship is the proof that San Diego commutes by water and a potential operating partner — NEVER positioned as a competitor and never disparaged. NO Broadway↔Coronado line exists in any phase (decision_ledger). Copy may cite the commuter-ferry precedent as market proof; Navier's framing is always employer-guaranteed seat blocks, new station pairs, and added frequency as a COMPLEMENT to existing service. Zero displacement, head-to-head, 'faster than the ferry', or comparison-table framing anywhere in rendered copy.",
+      "no_head_to_head_pairs": [["broadway-pier", "coronado-ferry-landing"]],
+      "note": "The South Bay Line shares the Chula Vista↔Convention Center pair with Flagship's 6x/day service — the overlay story there is guaranteed employer seats + commuter frequency, positioned additively. Partner-conversation posture is internal only."
+    },
+    "south_bay_speed_honesty": {
+      "rule": "Segments flagged speed_constrained:true must render water_min as 'indicative — subject to San Diego Bay speed rules' — never a bare per-segment number. Whitelisted end-to-end indicative ranges (always with an 'indicative' qualifier): South Bay Line ~30–40 min Chula Vista↔downtown INCLUDING the 5 mph tail; Point Loma Line ~15–25 min. The Bridge Line renders NO numeric time claim (short + constrained feeder). Mid-bay honesty cuts both ways: the main channel and central bay have NO general speed limit for a passenger vessel (SDUPD Port Code §4.35(c)(3)) — never imply a bay-wide limit exists, and never hide the South Bay 5 mph tail from the time model.",
+      "constrained_zones": [
+        "Posted 5 mph area, South San Diego Bay south of Loews Resort / Sweetwater Channel (pylon-marked; wildlife refuges, sea-turtle habitat, shoals outside channels)",
+        "5 mph in Glorietta Bay (SDUPD Port Code §4.35(c)(3))",
+        "5 mph in the Bay Bridge mooring/roadstead area and designated anchorages (SDUPD Port Code §4.35(c)(3))",
+        "Marina-basin speeds at every berth; City 5 mph rules near swimmers/beaches at the edges"
+      ],
+      "segment_flag": "speed_constrained",
+      "note": "The South Bay 5 mph zone is wildlife-refuge water — assume full compliance; no hydrofoil exemption pathway is assumed or claimed. The cargo 12-knot VSR program is voluntary and cargo-only — irrelevant to Navier; do not cite it."
+    },
+    "navy_base_honesty": {
+      "rule": "No military base is served dockside, ever. Base docks are controlled (33 CFR 165.1101/165.1102/165.1103/165.1105; 33 CFR 334.870/334.880) and no civilian service can land on-base. NASNI-adjacent commuters are reachable only via public Coronado landings at bike/base-shuttle tier (mirroring how the existing free commuter ferry works); the 32nd St gates are shuttle-tier (~1.5–2 mi) from Pier 32 Marina, which is not routed. The shipyard shift-change market is unaddressable today and is watchlist-gated on a Cesar Chavez Park float. Rendered copy carries NO base names, NO installation headcounts, NO base-service claims, and NO security-zone material — only honest generic phrasing ('Coronado and South Bay employers'). All specifics live in note_internal / no_landing / decision_ledger, which never render.",
+      "dom_greps_must_be_zero": ["navy", "NASNI", "NBSD", "NASSCO", "165.1101", "security zone"]
+    },
+    "port_single_landlord_internal": {
+      "rule": "The Port of San Diego (SDUPD) controls tidelands across all five bay cities — one landlord relationship unlocks nearly every landing (exceptions: Glorietta Bay Marina is City of Coronado; private club docks). Charter/commercial passenger ops from any marina require operator permission + Port process (SDUPD Code §4.37), and whether the Port would permit a second scheduled passenger operator at Broadway Pier / Fifth Avenue Landing is UNKNOWN — the first dock-track question. ALL of this is internal dock-track context: ZERO external mention of the Port as landlord, tideland permitting, §4.37, or operator-permission questions anywhere in rendered copy."
+    },
+    "coronado_lease_internal": {
+      "rule": "The Coronado Ferry Landing lease situation is fluid (40-yr lease expired June 30, 2026; one-year renewal voted June 23, 2026; $20M revitalization on hold) and is one reason Coronado Ferry Landing is not authored as a station. Internal only: no lease, leaseholder, or renewal material renders anywhere. Recheck status before any microsite ships."
+    },
+    "internal_fields_stripped_from_dom": ["dock_track", "note_internal", "routing", "decision_ledger"],
+    "no_invented_landings": "Every stop maps to the exact named landing in SAN-DIEGO-NODE-INVENTORY.md. Any stop that cannot be ID-matched to a real BP goes to the bp_gap ledger with reason and renders only from inventory-named coordinates — never guess.",
+    "times_indicative": "ALL times marked indicative until Atlas geometry seals them; only the whitelisted end-to-end ranges in south_bay_speed_honesty render numbers, always with an 'indicative' qualifier; the Bridge Line renders no numbers.",
+    "phase_toggle_default": "At launch",
+    "loi_framing": "Non-binding letter of intent — a seat-block interest signal, not a purchase.",
+    "no_dock_negotiation_language": "No copy about dock deals, berthing negotiations, Port permits, city agreements, marina terms, or landing diligence — internal only.",
+    "launch_timing": "Service launch not before end-2027. All network rendering is coverage narrative, not a service promise; seat economics still gate corridor launch (60–80 committed seats)."
+  },
+
+  "copy": {
+    "hero": "Your dock becomes a station on a connected water network. Navier is building an employer water network for San Diego Bay — 20-seat electric hydrofoils linking Chula Vista's new bayfront, the Convention Center, and downtown's Broadway Pier at launch, growing to Shelter Island, Point Loma, Harbor Island, and Glorietta Bay. One protected bay, twelve miles of fast water, and a commute that skips the bridge and the freeway.",
+    "sections": {
+      "why_san_diego": "San Diego's bayfront commute funnels through two chokepoints: the Coronado Bridge — roughly 75,000 vehicles a day, where a physical barrier still gets moved twice daily to flip a lane with the commute — and the I-5 South corridor, where a 15-minute free-flow drive from Chula Vista routinely stretches far longer at rush hour. The bay itself is the alternative: twelve nautical miles of protected water running straight past every major bayfront job cluster, with fast, open water in the main channel. And San Diego already commutes by water — a commuter ferry has crossed to Coronado every weekday morning for three decades, and a new Chula Vista run launched in 2026. The water works. We add guaranteed seats and new stations.",
+      "how_it_works": "Employers commit seat blocks on a corridor. When a corridor reaches 60–80 committed seats, it launches. Seats are guaranteed, quiet, working commutes on zero-emission electric hydrofoils.",
+      "network": "At launch, one flagship corridor: the South Bay Line — Chula Vista Bayfront · Convention Center (Fifth Avenue Landing) · Broadway Pier — about 30–40 minutes end to end (indicative), anchored by the Gaylord Pacific resort at walking distance from the Chula Vista landing. Phase 2 adds the Point Loma Line — Shelter Island · America's Cup Harbor · Harbor Island · Broadway Pier, about 15–25 minutes (indicative) — the bay's highest-income catchment, with no scheduled water service on that pair today. Phase 3 adds the Bridge Line, a Glorietta Bay ↔ Convention Center feeder giving Coronado a bridge-free crossing. Phase 2 and 3 stations render as planned, not promised.",
+      "chula_vista_growth": "Chula Vista's bayfront is the fastest-growing employer story on the bay. The Gaylord Pacific Resort & Convention Center opened in May 2025 with 1,600 rooms and roughly 800 hires at opening — and thousands more jobs are projected as the bayfront district builds out — all at walking distance from the water. Employer seat blocks there fill the reverse commute; downtown, Convention Center, and Gaslamp employers fill the forward run.",
+      "working_with_the_ferry": "San Diego's ferry operator has served this bay for over a century, and its commuter runs prove the market every weekday. Navier's network is designed as a complement — guaranteed employer seat blocks, new station pairs like Point Loma and Glorietta Bay, and more frequency where today's schedule is light — never a replacement.",
+      "timing": "Targeting first service no earlier than end-2027. Every travel time shown is indicative until routes are finalized with harbor authorities, and South Bay times include the posted slow-speed zone near Chula Vista.",
+      "loi_ask": "Register interest with a non-binding letter of intent. It costs nothing and reserves nothing — it tells us which corridors to launch first."
+    }
+  }
+}
