@@ -1,0 +1,404 @@
+{
+  "hub": "washington-dc",
+  "route": "/employers/washington-dc",
+  "alias": "/dc-employers",
+  "version": "v1-draft",
+  "authored": "2026-08-15",
+  "authored_by": "Tasklet",
+  "status": "authored draft — Grok fills resolved_bp_id / lng / lat / water_path / water_min deterministically; no coordinates authored here by design",
+  "source_inventory": "/tasklet/drive/employer-networks/next-cities/dc/DC-NODE-INVENTORY.md",
+
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_band_usd_month": [650, 1200],
+    "seat_price_band_note": "program band — DC-specific pricing TBD; do not render as a DC quote",
+    "corridor_launch_trigger_committed_seats": [60, 80]
+  },
+
+  "stops": [
+    {
+      "key": "old-town-alexandria",
+      "label": "Old Town Alexandria",
+      "landing": "Alexandria City Marina, 0 Cameron St (behind Torpedo Factory)",
+      "role": "interchange_primary",
+      "phase": 1,
+      "serves": [
+        "Old Town / Waterfront — dense, affluent, walkable residential catchment (tract median HH income $157,573)",
+        "Alexandria City Hall, Torpedo Factory, Old Town professional offices at the dock",
+        "USPTO Carlyle campus — shuttle-tier (~1.2 mi)",
+        "Proven ferry-habituated market: 5,000 daily riders on the Old Town↔Wharf run during the 2019 Metro shutdown"
+      ],
+      "tag": null,
+      "note_internal": "City-owned marina; city explicitly docks commercial vessels — cleanest commercial landing terms in the network. Geographic center of the network; interchange hub. Security zones 33 CFR 165.508 apply river-wide (event-based enforcement) — internal only, never render.",
+      "source_url": "https://www.alexandriava.gov/Marina"
+    },
+    {
+      "key": "the-wharf",
+      "label": "The Wharf",
+      "landing": "Transit Pier, 950 Wharf St SW",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Williams & Connolly HQ (670–680 Maine Ave SW), American Psychiatric Association, Business Roundtable — all ≤5 min walk",
+        "L'Enfant Plaza federal cluster (HUD, DOE, FAA, USDA) at the edge of walk-tier",
+        "SW Waterfront / Wharf residential towers directly on the piers"
+      ],
+      "tag": null,
+      "note_internal": "Purpose-built water-taxi terminal, privately owned (Hoffman-Madison Waterfront); City Cruises operates daily service today. Washington Channel is strict no-wake — every approach leg is speed-constrained. Zone 2 (33 CFR 165.508) covers Washington Channel — internal only.",
+      "source_url": "https://www.wharfdc.com/getting-here/water-taxi/"
+    },
+    {
+      "key": "georgetown",
+      "label": "Georgetown",
+      "landing": "Georgetown water-taxi dock, 3100 K St NW (at Washington Harbour)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Foley & Lardner LLP and Washington Harbour Class-A office tenants — 1–3 min walk",
+        "Georgetown residential — one of DC's wealthiest neighborhoods, with famously poor Metro access"
+      ],
+      "tag": null,
+      "note_internal": "Dock is NOT wheelchair-accessible (City Cruises). Dock structure ownership unverified (Washington Harbour complex is private). Entire leg above Memorial Bridge is inside the permanent Memorial→Chain Bridge no-wake zone — displacement speed regardless of vessel; sell as premium last-mile, never on time.",
+      "source_url": "https://www.cityexperiences.com/washington-dc/city-cruises/water-taxi/washington-dc-water-taxi/"
+    },
+    {
+      "key": "national-harbor",
+      "label": "National Harbor",
+      "landing": "National Harbor Marina, 145 National Plaza, Oxon Hill MD",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Gaylord National Resort (1,001–5,000 employees) — ~5 min walk",
+        "MGM National Harbor (3,200+ employees) — edge/shuttle tier, ~15–20 min uphill",
+        "National Harbor condo/apartment stock on-site; Fort Washington affluent suburbs behind it"
+      ],
+      "tag": null,
+      "note_internal": "Private full-service marina (Peterson Cos. development), self-operated; active City Cruises stop today. Water route bypasses the Wilson Bridge / I-495 chokepoint (~195–200K vehicles/day on a 75K-design bridge).",
+      "source_url": "https://nationalharbormarinadc.com/"
+    },
+    {
+      "key": "navy-yard-teague",
+      "label": "Navy Yard (Diamond Teague)",
+      "landing": "Diamond Teague Park Piers, First St SE at Potomac Ave SE",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Washington Navy Yard — ~17,000 federal personnel incl. NAVSEA HQ (~15 min walk to main gate)",
+        "US DOT HQ — ~10 min walk",
+        "Nationals Park directly across the street; Capitol Riverfront high-growth residential"
+      ],
+      "tag": null,
+      "note_internal": "Public DC park piers (opened 2011); City Cruises Baseball Boat precedent from Old Town. Anacostia carries a 6 mph posted speed limit from the river entrance to Benning Rd — final ~1 mi approach is capped; a zero-wake hydrofoil gets NO automatic exemption (this is the #1 regulatory workstream). Navy Yard 17K headcount is a secondary source — confirm before external use. 33 CFR Part 334 naval restricted areas on the Anacostia not yet verified section-by-section.",
+      "source_url": "https://www.cityexperiences.com/el/washington-dc/city-cruises/water-taxi/diamond-teague/"
+    },
+    {
+      "key": "columbia-island",
+      "label": "Pentagon (Columbia Island)",
+      "landing": "Columbia Island Marina, Boundary Channel/Pentagon Lagoon, Arlington",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Pentagon — ~15–20 min walk via Boundary Channel Dr (jobs-side node; no residential)"
+      ],
+      "tag": "planned",
+      "note_internal": "NPS GW Memorial Parkway land, Guest Services concession — commercial passenger ops require an NPS concession/permit deal, not a normal lease. Pentagon pedestrian/security access path UNVERIFIED. Zone 5 (33 CFR 165.508) enforced Memorial Day, Sep 11, Nov 11 — at least 3 blackout days/yr; most security-exposed node in the network. Internal only, never render.",
+      "source_url": "https://www.waterwayguide.com/marina/columbia-island-marina"
+    },
+    {
+      "key": "daingerfield",
+      "label": "Daingerfield Island (National Landing shuttle)",
+      "landing": "Washington Sailing Marina, 1 Marina Dr, Alexandria (Daingerfield Island)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Amazon HQ2 / National Landing via branded ~10 min ground shuttle (8,000+ employees today, 14,000 planned) — shuttle connection, ~2.5 mi; there is no dock at National Landing",
+        "Boeing global HQ (Crystal City) via the same shuttle"
+      ],
+      "tag": "shuttle to HQ2",
+      "note_internal": "Closest existing real dock to Amazon HQ2, but shuttle-tier and stays that way until a new dock exists — copy must never imply a dock at or planned for National Landing. NPS GW Memorial Parkway land, Guest Services concession — NPS permit path required. 40 ft transient berthage advertised.",
+      "source_url": "https://capital.adventuresunbound.com/washington-sailing-marina/"
+    },
+    {
+      "key": "the-yards",
+      "label": "The Yards (Navy Yard East)",
+      "landing": "The Yards Marina, 1492 4th St SE, Anacostia River",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Washington Navy Yard east gates — closest berth to the 6th & M SE gate (~5–8 min walk)",
+        "The Yards office/retail and Capitol Riverfront residential"
+      ],
+      "tag": "planned",
+      "note_internal": "Private marina, 52 slips 30–60 ft, 120 ft alongside. 'Not accepting transients for 2025' per MTOA listing — commercial berthing terms unknown; needs direct negotiation before this stop is promoted. Same Anacostia 6 mph cap as Diamond Teague.",
+      "source_url": "https://www.yardsmarina.com/marina-information"
+    },
+    {
+      "key": "james-creek",
+      "label": "James Creek (Audi Field)",
+      "landing": "James Creek Marina, 200 V St SW",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Audi Field (DC United) — ~5 min walk; event-service node",
+        "Buzzard Point growth residential submarket"
+      ],
+      "tag": "event service",
+      "note_internal": "NPS land, Guest Services concession (NPS-selected operator) — open and operating; do NOT confuse with the CLOSED former Buzzard Point Marina next door. 2025/26 boat fire reported (FOX 5); facility still operating per operator pages. Anacostia-mouth approach subject to 6 mph limit.",
+      "source_url": "https://www.nps.gov/nace/learn/news/national-park-service-selects-operator-for-james-creek-marina.htm"
+    },
+    {
+      "key": "fort-washington",
+      "label": "Fort Washington",
+      "landing": "Fort Washington Marina, 13600 King Charles Terrace, Fort Washington MD (Piscataway Creek)",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Fort Washington / Tantallon — established affluent PG County waterfront suburbs; pure residential feeder"
+      ],
+      "tag": "planned",
+      "note_internal": "On NPS Piscataway Park land, Trident Marine Group managed — 200 slips, concrete floating docks to 50–60 ft. Long run (~11 st. mi to the Wharf, map estimate) — viable only as an express feeder if hydrofoil cruise speed is permitted below Wilson Bridge. Historical precedent: 1964 DC Transit commuter-ferry proposal used this exact origin.",
+      "source_url": "https://trident-marine.com/marina-management/ft-washington-marina/"
+    },
+    {
+      "key": "occoquan",
+      "label": "Woodbridge (Occoquan)",
+      "landing": "Occoquan Harbour Marina, 13180 Marina Way, Woodbridge (Occoquan River)",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "I-95 corridor commuter base — ~6,000 security-clearance holders live within 15 min of this marina (PRTC M-495 RFI)",
+        "Pure origin/feeder node — no employers at the dock"
+      ],
+      "tag": "planned",
+      "note_internal": "Private deep-water marina (9 ft MLW, floating docks). Shallow Occoquan River channel + no-wake zone documented as a major time penalty in the 2009 route-proving exercise. This market's #1 destination (JBAB/DHS St. Elizabeths) has NO civilian landing — long-haul only works if hydrofoil speed is permitted below Wilson Bridge and a downtown/Navy Yard landing pattern holds. Prior fast-ferry plans (PRTC M-495) named this exact terminal and never launched.",
+      "source_url": "https://www.marinaohm.com/"
+    }
+  ],
+
+  "lines": [
+    {
+      "id": "DC-1",
+      "name": "Monument Line",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "stops": ["national-harbor", "old-town-alexandria", "the-wharf", "georgetown"],
+      "segments": [
+        { "from": "national-harbor", "to": "old-town-alexandria", "speed_constrained": false, "constraint": null },
+        { "from": "old-town-alexandria", "to": "the-wharf", "speed_constrained": true, "constraint": "Washington Channel strict no-wake on the Wharf approach" },
+        { "from": "the-wharf", "to": "georgetown", "speed_constrained": true, "constraint": "Washington Channel no-wake + permanent Memorial Bridge→Chain Bridge no-wake zone (entire Georgetown waterfront)" }
+      ],
+      "phase_notes": "Every stop is an active City Cruises water-taxi landing today — zero new infrastructure at launch. Strongest Phase-1 corridor Navier has scanned in any US market: Old Town↔Wharf demonstrated ~5,000 riders/day under subsidy in 2019; the launch trigger (60–80 committed seats) is <2% of that demonstrated flow. Georgetown leg runs at displacement speed above Memorial Bridge — position as premium last-mile into a Metro-poor office district; NO crossing-time claims for Georgetown."
+    },
+    {
+      "id": "DC-2",
+      "name": "Capitol Line",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["old-town-alexandria", "navy-yard-teague", "the-yards"],
+      "segments": [
+        { "from": "old-town-alexandria", "to": "navy-yard-teague", "speed_constrained": true, "constraint": "Anacostia 6 mph posted limit caps the final ~1 mi approach from Hains Point" },
+        { "from": "navy-yard-teague", "to": "the-yards", "speed_constrained": true, "constraint": "Anacostia 6 mph posted limit (entire segment)" }
+      ],
+      "phase_notes": "Phase 1 runs Old Town ↔ Diamond Teague only — upgrades the existing proven Baseball Boat route to weekday-commuter frequency for ~17K Navy Yard federal workers + US DOT. The Yards stop is Phase 2 (renders dimmed until then; commercial berthing terms pending). NO crossing-time claims for Navy Yard legs until the 6 mph engagement resolves."
+    },
+    {
+      "id": "DC-3",
+      "name": "Pentagon Shuttle",
+      "type": "express",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["old-town-alexandria", "the-wharf", "columbia-island"],
+      "segments": [
+        { "from": "old-town-alexandria", "to": "the-wharf", "speed_constrained": true, "constraint": "Washington Channel strict no-wake on the Wharf approach" },
+        { "from": "the-wharf", "to": "columbia-island", "speed_constrained": true, "constraint": "Washington Channel no-wake exit + Boundary Channel/Pentagon Lagoon approach (near Memorial Bridge no-wake boundary)" }
+      ],
+      "phase_notes": "Requires an NPS concession/permit deal at Columbia Island and validation of the Pentagon pedestrian/security path. Expect at least 3 fixed blackout days/yr (internal — do not render the reason)."
+    },
+    {
+      "id": "DC-4",
+      "name": "National Landing Shuttle",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["the-wharf", "daingerfield", "old-town-alexandria"],
+      "segments": [
+        { "from": "the-wharf", "to": "daingerfield", "speed_constrained": true, "constraint": "Washington Channel strict no-wake on the Wharf approach" },
+        { "from": "daingerfield", "to": "old-town-alexandria", "speed_constrained": false, "constraint": null }
+      ],
+      "phase_notes": "Water leg lands at Washington Sailing Marina (Daingerfield Island); a branded ~10 min ground shuttle completes the trip to Met Park / National Landing. Copy MUST say 'shuttle connection to National Landing' — there is no dock at HQ2 and none is planned. Requires an NPS permit at Daingerfield."
+    },
+    {
+      "id": "DC-5",
+      "name": "Audi Field Event Shuttle",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["old-town-alexandria", "james-creek"],
+      "segments": [
+        { "from": "old-town-alexandria", "to": "james-creek", "speed_constrained": true, "constraint": "Anacostia-mouth 6 mph limit on the James Creek approach" }
+      ],
+      "phase_notes": "Event-day service for Audi Field (DC United), mirroring the proven Nationals Baseball Boat model. Not a daily commuter line."
+    },
+    {
+      "id": "DC-6",
+      "name": "South Feeder Express",
+      "type": "express",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["fort-washington", "national-harbor", "old-town-alexandria", "the-wharf"],
+      "segments": [
+        { "from": "fort-washington", "to": "national-harbor", "speed_constrained": false, "constraint": null },
+        { "from": "national-harbor", "to": "old-town-alexandria", "speed_constrained": false, "constraint": null },
+        { "from": "old-town-alexandria", "to": "the-wharf", "speed_constrained": true, "constraint": "Washington Channel strict no-wake on the Wharf approach" }
+      ],
+      "phase_notes": "Long express feeder (~11 st. mi Fort Washington→Wharf, map estimate). Viable only if hydrofoil cruise speed is permitted below Wilson Bridge — hold at Phase 3 until the speed-rule engagement resolves."
+    },
+    {
+      "id": "DC-7",
+      "name": "Woodbridge Express",
+      "type": "express",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["occoquan", "old-town-alexandria", "navy-yard-teague"],
+      "segments": [
+        { "from": "occoquan", "to": "old-town-alexandria", "speed_constrained": true, "constraint": "Shallow Occoquan River channel + no-wake zone on the marina approach (documented major time penalty)" },
+        { "from": "old-town-alexandria", "to": "navy-yard-teague", "speed_constrained": true, "constraint": "Anacostia 6 mph posted limit caps the final ~1 mi approach" }
+      ],
+      "phase_notes": "Long-haul I-95 relief line. Only works if hydrofoil speed is permitted below Wilson Bridge; the market's largest demand pool (JBAB/DHS) has no civilian landing, so Navy Yard is the working destination. Do not promote beyond Phase 3 planning until both conditions hold."
+    }
+  ],
+
+  "catchment": [
+    {
+      "anchor": "The Wharf / L'Enfant",
+      "anchor_station": "the-wharf",
+      "employers": ["Williams & Connolly LLP", "American Psychiatric Association", "Business Roundtable", "L'Enfant Plaza federal cluster (HUD, DOE, FAA, USDA — edge of walk-tier)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 10,
+      "note": "Walk 2–5 min from Transit Pier for Wharf tenants; L'Enfant cluster at walk-tier edge."
+    },
+    {
+      "anchor": "Navy Yard / Capitol Riverfront",
+      "anchor_station": "navy-yard-teague",
+      "employers": ["Washington Navy Yard / NAVSEA HQ (~17,000 federal personnel)", "US Department of Transportation HQ", "Nationals Park (event demand)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 10,
+      "note": "Diamond Teague at launch; The Yards Marina adds a closer east-gate berth at Phase 2."
+    },
+    {
+      "anchor": "Old Town Alexandria",
+      "anchor_station": "old-town-alexandria",
+      "employers": ["Alexandria City Hall / Torpedo Factory / Old Town professional offices", "USPTO Carlyle (shuttle-tier)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 10,
+      "note": "Network interchange hub and the strongest residential node on the river."
+    },
+    {
+      "anchor": "National Harbor",
+      "anchor_station": "national-harbor",
+      "employers": ["Gaylord National Resort (1,001–5,000 employees)", "MGM National Harbor (3,200+ employees, edge/shuttle-tier)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 10,
+      "note": "Water route bypasses the Wilson Bridge chokepoint."
+    },
+    {
+      "anchor": "Georgetown",
+      "anchor_station": "georgetown",
+      "employers": ["Foley & Lardner LLP", "Washington Harbour office tenants"],
+      "stations_at_launch": 4,
+      "stations_full_network": 10,
+      "note": "Premium last-mile into a Metro-poor office district. No crossing-time claims (permanent no-wake zone)."
+    },
+    {
+      "anchor": "Pentagon (Columbia Island)",
+      "anchor_station": "columbia-island",
+      "employers": ["The Pentagon (access-controlled; walk path under validation)"],
+      "stations_at_launch": 0,
+      "stations_full_network": 10,
+      "note": "Phase 2 station — 0 at launch; render as planned."
+    },
+    {
+      "anchor": "Amazon HQ2 / National Landing (via shuttle)",
+      "anchor_station": "daingerfield",
+      "employers": ["Amazon HQ2 (8,000+ today, 14,000 planned)", "Boeing global HQ (Crystal City)"],
+      "stations_at_launch": 0,
+      "stations_full_network": 10,
+      "note": "SHUTTLE-TIER: water leg to Washington Sailing Marina + ~10 min branded ground shuttle. Phase 2 station — 0 at launch. Never imply a dock at National Landing."
+    }
+  ],
+  "catchment_counting_rule": "stations_at_launch / stations_full_network = count of OTHER stations reachable from the anchor's station via authored lines (transfers allowed at interchanges), at Phase 1 vs all phases. Phase 1 network = 5 connected stations (so 4 reachable from each); full network = 11 connected stations (so 10 reachable from each). Anchors whose station is Phase 2 score 0 at launch.",
+
+  "watchlist": [
+    {
+      "landing": "Belle Haven Marina, GW Memorial Pkwy south of Old Town",
+      "reason": "Real NPS-concession sailing marina, but small and shallow with documented facility-condition complaints — suitability for a 30–45 ft commercial vessel at commuter frequency UNVERIFIED. Affluent Belle Haven/Fort Hunt catchment keeps it on the watchlist; do not render as a station.",
+      "source_url": "https://www.nps.gov/gwmp/learn/news/national-park-service-selects-operator-for-belle-haven-marina.htm"
+    },
+    {
+      "landing": "Mount Vernon Wharf (estate wharf)",
+      "reason": "Real wharf accepting commercial vessels, but it sits inside a ticketed attraction — commuter boarding model unverified/unlikely. Weekend/leisure premium candidate only; do not render as a station.",
+      "source_url": "https://www.mountvernon.org/plan-your-visit/tips-for-your-visit/guidelines/wharf-policy"
+    },
+    {
+      "landing": "Bladensburg Waterfront Park, 4601 Annapolis Rd (tidal Anacostia)",
+      "reason": "Real public park dock but fails the commuter-node test three ways: entire Anacostia is a 6 mph zone, upriver reach is shallow small-craft water, and the catchment does not fit the premium model. Exists but unsuitable — do not render as a station.",
+      "source_url": "https://www.pgparks.com/parks_trails/bladensburg-waterfront-park"
+    }
+  ],
+
+  "no_landing": [
+    { "area": "National Landing / Amazon HQ2 / Crystal City / Pentagon City", "reason": "No water landing exists anywhere at National Landing (CSX embankment + GW Pkwy separate it from the river); no planned dock could be sourced — Long Bridge and CC2DCA projects include no dock. Shuttle-tier from Daingerfield only." },
+    { "area": "Rosslyn / Key Bridge (RTX HQ)", "reason": "No landing on the Virginia side; Key Bridge Boathouse is a Georgetown-side NPS paddlecraft facility that fails the 30–45 ft vessel gate. Also inside the permanent Memorial→Chain Bridge no-wake zone." },
+    { "area": "Reagan National Airport (DCA)", "reason": "No public vessel dock at the airport and none in any funded plan; MWAA/NPS-controlled shoreline at the security Zone 1 boundary." },
+    { "area": "Buzzard Point Marina (former NPS marina, 1st & V St SW)", "reason": "CLOSED Dec 31, 2015 at concession expiry; boats removed. Do not confuse with James Creek Marina next door, which is open and is the authored stop." },
+    { "area": "Roaches Run / Gravelly Point", "reason": "NPS parkland; small-craft ramp and shallow lagoon only — no berthing structure at either." },
+    { "area": "JBAB / DHS St. Elizabeths / Poplar Point", "reason": "Largest documented demand pool on the river (3,522 daily AM trips) but JBAB is a controlled military installation and Poplar Point has no landing — growth-phase only, government-partnership-dependent." },
+    { "area": "Belmont Bay / North Woodbridge ferry terminal", "reason": "Proposed in county plans, never built; operator lease talks ran 7 years without agreement. Paper only." },
+    { "area": "Jones Point Park (Alexandria)", "reason": "Named in 2014 FTA-grant-era reporting as a commuter-ferry origin; never built. Paper only." }
+  ],
+
+  "bp_gap": [],
+
+  "gates": {
+    "speed_wake_honesty": {
+      "rule": "Segments flagged speed_constrained:true must render water_min as 'indicative — subject to DC harbor speed rules'. NO crossing-time claims for Georgetown or Navy Yard appear anywhere in copy until regulatory engagement resolves.",
+      "constrained_zones": [
+        "Permanent no-wake zone Memorial Bridge → Chain Bridge (all Georgetown legs)",
+        "Strict no-wake, Washington Channel (all Wharf approaches)",
+        "6 mph posted limit, Anacostia River entrance → Benning Rd (all Navy Yard / Yards / James Creek legs)"
+      ],
+      "no_time_claims_for_stops": ["georgetown", "navy-yard-teague", "the-yards", "james-creek"],
+      "segment_flag": "speed_constrained",
+      "note": "A zero-wake hydrofoil does NOT automatically get an exemption from posted speed limits — DC Harbor Patrol/DOEE/USCG engagement required. #1 regulatory workstream."
+    },
+    "hq2_shuttle_honesty": {
+      "rule": "Amazon HQ2 / National Landing is shuttle-tier from Washington Sailing Marina (~2.5 mi). Copy may say 'shuttle connection to National Landing' — NEVER imply a dock at HQ2 or a planned one."
+    },
+    "security_zones_internal_only": {
+      "rule": "33 CFR 165.508 security-zone material lives in note_internal only and is never rendered. No external copy mentions security zones, blackout days, or their reasons."
+    },
+    "internal_fields_stripped_from_dom": ["dock_track", "note_internal"],
+    "no_invented_landings": "Every stop maps to the exact named landing in DC-NODE-INVENTORY.md. Any stop that cannot be ID-matched to a real BP goes to the bp_gap ledger with reason and renders only from inventory-named coordinates — never guess.",
+    "times_indicative": "ALL times marked indicative until Atlas geometry seals them.",
+    "phase_toggle_default": "At launch",
+    "loi_framing": "Non-binding letter of intent — a seat-block interest signal, not a purchase.",
+    "no_dock_negotiation_language": "No copy about dock deals, berthing negotiations, NPS permits, or landing terms — internal only.",
+    "launch_timing": "Service launch not before end-2027. All network rendering is coverage narrative, not a service promise; seat economics still gate corridor launch (60–80 committed seats)."
+  },
+
+  "copy": {
+    "hero": "Your dock becomes a station on a connected water network. Navier is building an employer water network for the DC waterfront — 20-seat electric hydrofoils linking Old Town Alexandria, The Wharf, Georgetown, Navy Yard, and National Harbor, growing to the Pentagon, National Landing (by shuttle), and the Potomac suburbs.",
+    "sections": {
+      "why_dc": "DC has the worst traffic congestion of any US metro, a river running straight through its densest job clusters, and a proven precedent: when Metro shut down in 2019, a single Old Town↔Wharf boat carried 5,000 riders a day. Every launch station is an active water-taxi landing today — no new infrastructure needed on day one.",
+      "how_it_works": "Employers commit seat blocks on a corridor. When a corridor reaches 60–80 committed seats, it launches. Seats are guaranteed, quiet, working commutes on zero-emission electric hydrofoils.",
+      "network": "Two launch lines — the Monument Line (National Harbor · Old Town Alexandria · The Wharf · Georgetown) and the Capitol Line (Old Town · Navy Yard) — with Old Town Alexandria as the network interchange. Phase 2 and 3 stations render as planned, not promised.",
+      "georgetown_positioning": "Georgetown is the premium last-mile into a Metro-poor office district — a calm water arrival at Washington Harbour's front door. (No travel-time claims on this leg.)",
+      "national_landing": "National Landing riders connect via a short branded shuttle from our Daingerfield Island station — a door-to-dock-to-desk trip for the HQ2 and Crystal City workforce. (Shuttle connection; no dock at National Landing.)",
+      "timing": "Targeting first service no earlier than end-2027. Every travel time shown is indicative until routes are finalized with harbor authorities.",
+      "loi_ask": "Register interest with a non-binding letter of intent. It costs nothing and reserves nothing — it tells us which corridors to launch first."
+    }
+  }
+}

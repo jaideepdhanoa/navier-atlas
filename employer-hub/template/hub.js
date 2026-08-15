@@ -30,6 +30,8 @@
   let map, popup, flavor, highlightKeys = null;
   /** @type {null | { from: string, to: string, path: object }} */
   let activeTrip = null;
+  /** Last successful Find-my-ride snapshot for LOI sales context */
+  let lastTripSnapshot = null;
   const tripCfg = DATA.trip_planner || {};
   const tripEnabled = tripCfg.enabled !== false;
 
@@ -575,9 +577,11 @@
       let j = i + 1;
       while (j < chain.length && !chain[j].didTransfer && chain[j].edge.line.id === lid) j++;
       let w = 0;
+      let constrained = false;
       const coords = [];
       for (let k = i; k < j; k++) {
         w += chain[k].edge.waterMin;
+        if (chain[k].edge.seg && chain[k].edge.seg.speed_constrained) constrained = true;
         const c = orientedCoords(chain[k].edge.seg, chain[k].fromStop);
         if (!c.length) continue;
         if (!coords.length) coords.push(...c);
@@ -597,11 +601,13 @@
         lineName: rec.edge.line.name,
         lineColor: rec.edge.line.color || '#e0cb8f',
         mins: w,
+        speedConstrained: constrained,
         pathCoords: coords,
       });
       i = j;
     }
     const requiredPhase = tripRequiredPhase(chain);
+    const anyConstrained = steps.some((s) => s.kind === 'water' && s.speedConstrained);
     return {
       from: fromKey,
       to: toKey,
@@ -615,11 +621,13 @@
       pathCoords: allCoords,
       requiredPhase,
       requiredPhaseLabel: phaseLabels[requiredPhase - 1] || null,
+      speedConstrained: anyConstrained,
     };
   }
 
   function clearTripUI() {
     activeTrip = null;
+    lastTripSnapshot = null;
     const res = document.getElementById('trip-result');
     const clr = document.getElementById('trip-clear');
     if (res) {
@@ -635,6 +643,34 @@
         map.setPaintProperty('line-glow-' + line.id, 'line-opacity', 0.18);
       });
     }
+  }
+
+  function captureTripSnapshot(trip, driveMin) {
+    if (!trip) {
+      lastTripSnapshot = null;
+      return;
+    }
+    const drive = driveMin != null ? driveMin : driveMinutes(trip.from, trip.to);
+    const navierPart = trip.speedConstrained
+      ? 'indicative water time (DC harbor speed rules)'
+      : '~' + Math.round(trip.totalNavier) + ' min Navier';
+    lastTripSnapshot = {
+      tripFrom: trip.from,
+      tripFromLabel: trip.fromLabel,
+      tripTo: trip.to,
+      tripToLabel: trip.toLabel,
+      tripNavierMin: trip.speedConstrained ? '' : String(Math.round(trip.totalNavier)),
+      tripDriveMin: drive != null ? String(Math.round(drive)) : '',
+      tripTransfers: String(trip.transfers || 0),
+      tripSummary:
+        trip.fromLabel +
+        ' → ' +
+        trip.toLabel +
+        ' · ' +
+        navierPart +
+        (drive != null ? ' vs ~' + Math.round(drive) + ' min drive' : '') +
+        (trip.transfers ? ' · ' + trip.transfers + ' transfer(s)' : ' · direct'),
+    };
   }
   function removeTripMapLayers() {
     if (!map) return;
@@ -709,9 +745,10 @@
       if (clr) clr.hidden = false;
       return;
     }
-    const save = driveMin != null ? driveMin - trip.totalNavier : null;
-    const saveHtml =
-      save != null && save > 0
+    const save = driveMin != null && !trip.speedConstrained ? driveMin - trip.totalNavier : null;
+    const saveHtml = trip.speedConstrained
+      ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Water times are indicative — subject to DC harbor speed rules (no-wake / 6&nbsp;mph zones)</div>`
+      : save != null && save > 0
         ? `<div class="trip-save">Save ~${Math.round(save)} min vs driving this trip</div>`
         : save != null
           ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Similar to peak drive time — still skips toll stress &amp; parking</div>`
@@ -735,15 +772,23 @@
             <span class="mins">~${s.mins} min</span>
           </div>`;
         }
+        const stepMins = s.speedConstrained
+          ? 'indicative'
+          : `~${Math.round(s.mins)} min`;
         return `<div class="trip-step">
           <span class="n">${idx + 1}</span>
           <div><strong>${s.fromLabel} → ${s.toLabel}</strong>
-            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}</div>
+            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}${s.speedConstrained ? ' · harbor speed rules' : ''}</div>
           </div>
-          <span class="mins">~${s.mins} min</span>
+          <span class="mins">${stepMins}</span>
         </div>`;
       })
       .join('');
+    const navierTotal = trip.speedConstrained
+      ? `<div class="v" style="font-size:18px">Indicative</div>
+          <div class="hint">Subject to DC harbor speed rules${trip.transferTotal ? ` · +${trip.transferTotal} min transfers` : ''}</div>`
+      : `<div class="v">~${Math.round(trip.totalNavier)} min</div>
+          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>`;
     res.hidden = false;
     res.innerHTML = `
       <div class="trip-title">${trip.fromLabel} → ${trip.toLabel}</div>
@@ -752,8 +797,7 @@
       <div class="trip-compare">
         <div class="trip-stat">
           <div class="k">Navier</div>
-          <div class="v">~${Math.round(trip.totalNavier)} min</div>
-          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>
+          ${navierTotal}
         </div>
         <div class="trip-stat">
           <div class="k">${tripCfg.drive_label || 'Drive (AM peak)'}</div>
@@ -795,6 +839,7 @@
     const drive = driveMinutes(fromKey, toKey);
     if (trip) {
       activeTrip = { from: fromKey, to: toKey, path: trip };
+      captureTripSnapshot(trip, drive);
       paintTripOnMap(trip);
       renderTripResult(trip, drive);
       const detail = document.getElementById('map-detail');
@@ -803,8 +848,11 @@
           trip.requiredPhase > 1 && trip.requiredPhaseLabel
             ? ` · ${trip.requiredPhaseLabel}`
             : '';
+        const timeBit = trip.speedConstrained
+          ? 'indicative water time (DC harbor speed rules)'
+          : `~${Math.round(trip.totalNavier)} min on Navier`;
         detail.innerHTML = `<strong>Your ride</strong>
-          <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ~${Math.round(trip.totalNavier)} min on Navier${
+          <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ${timeBit}${
             drive != null ? ` vs ~${drive} min drive` : ''
           }${phaseBit}</div>`;
       }
@@ -821,6 +869,7 @@
     }
     // No path on full planned network (disconnected stops)
     activeTrip = { from: fromKey, to: toKey, path: null };
+    lastTripSnapshot = null;
     removeTripMapLayers();
     const res = document.getElementById('trip-result');
     const clr = document.getElementById('trip-clear');
@@ -1463,6 +1512,10 @@
   }
 
   function waterMinLabel(seg) {
+    // DC / harbor speed regimes: never bare minutes on constrained segments
+    if (seg.speed_constrained || seg.water_min_label) {
+      return seg.water_min_label || 'indicative — subject to DC harbor speed rules';
+    }
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
       const mins = Math.ceil(seg.distance_nm / 20 * 60 / 5) * 5;
@@ -1674,6 +1727,7 @@
     const stop = fd.get('stop');
     const line = fd.get('line');
     const c = window.__HUB_CALC__ || {};
+    const trip = lastTripSnapshot || {};
     return {
       name: fd.get('name'),
       company: fd.get('company'),
@@ -1690,6 +1744,15 @@
       netIncremental: money(c.net_incremental || 0),
       perRider: money(c.per_rider || c.net_employer_cost_per_rider || 0),
       seats: c.S != null ? String(c.S) : '',
+      // Find-my-ride context (empty if user never ran a trip)
+      tripFrom: trip.tripFrom || '',
+      tripFromLabel: trip.tripFromLabel || '',
+      tripTo: trip.tripTo || '',
+      tripToLabel: trip.tripToLabel || '',
+      tripNavierMin: trip.tripNavierMin || '',
+      tripDriveMin: trip.tripDriveMin || '',
+      tripTransfers: trip.tripTransfers || '',
+      tripSummary: trip.tripSummary || '',
       hp: fd.get('hp') || '',
       source: HUB_ID,
       hub_id: HUB_ID,
@@ -1702,6 +1765,9 @@
       `${loiCfg.mailto_subject_prefix || market.label + ' employer letter of intent'} — ${payload.company}`
     );
     const netLabel = loiCfg.mailto_network_label || `${market.label || HUB_ID} employer water network`;
+    const tripBlock = payload.tripSummary
+      ? `\nFind my ride: ${payload.tripSummary}\n`
+      : '';
     const body = encodeURIComponent(
       `Non-binding letter of intent — ${netLabel}
 
@@ -1716,7 +1782,7 @@ Nearest office terminal: ${payload.stopLabel}
 Preferred line: ${payload.lineLabel}
 Estimated interested employees: ${payload.employees}
 Path: ${payload.flavorLabel}
-
+${tripBlock}
 Planning estimate (not a quote): net incremental ~${payload.netIncremental}/mo (~${payload.perRider}/rider) at ${payload.seats || '—'} seats.
 
 Please follow up to discuss next steps.`
