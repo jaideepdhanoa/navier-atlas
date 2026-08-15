@@ -56,6 +56,19 @@ Emits `_dist/employers/<id>/` and each alias path with `index.html`, `hub.css`, 
 5. Set `calculator.profile` + `worked_assert`.
 6. Build + deploy.
 
+### Line topology (MECE — required)
+
+Lines are customer-facing corridors, not an OD inventory dump.
+
+- Target **≤ ceil(stops / 2)** lines per cluster (hard ceiling: 4 / 5 / 6 by size).
+- Prefer **one geographic spine** with `stop.phase` / `segment.phase_max` over many feeders that redraw the same water.
+- Long-haul edges (e.g. Woodbridge, Scituate) belong on the spine at Phase 2/3 — not orphan expresses.
+- Exclusive multi-spoke-to-hub (Miami Brickell) is fine; overlapping multi-stop paths are not.
+- Dual-cluster hubs: apply MECE **inside** each cluster; never invent a connector.
+
+**Tasklet handoff (2026-08-15):**  
+[`handoff/employer-hub/GROK-HANDOFF-mece-line-design-2026-08-15.md`](../handoff/employer-hub/GROK-HANDOFF-mece-line-design-2026-08-15.md)
+
 **Full future-city playbook (Tasklet):**  
 [`handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md`](../handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md)
 

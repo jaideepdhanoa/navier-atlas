@@ -1,6 +1,6 @@
 {
   "id": "seattle",
-  "version": "2026-08-15-seattle-v1",
+  "version": "2026-08-15-seattle-mece",
   "aliases": [
     "seattle-employers"
   ],
@@ -322,12 +322,11 @@
   "lines": [
     {
       "id": "LKW-1",
-      "name": "Bridge Bypass Line",
+      "name": "Cross-Lake Line",
       "type": "trunk",
       "phase": 1,
       "flagship": true,
       "color": "#e0cb8f",
-      "cluster": "lake",
       "stops": [
         "leschi",
         "meydenbauer"
@@ -392,23 +391,74 @@
       "legacy_ids": [
         "LKW-1"
       ],
-      "phase_notes": "Flagship \u2014 'the I-90/SR-520 bridge bypass.' ~12\u201315 min indicative including shore-buffer legs, vs a 51-min SR-520 planning time and the state's highest tolls. Both landings are real, existing public moorage \u2014 zero new infrastructure at launch. Candid: reverse flow Bellevue\u2192Leschi is thin; this line lives or dies on Bellevue-bound seat blocks (Amazon Bellevue is 15\u201320 min uphill \u2014 sell honestly as longer walk / shuttle-tier).",
-      "seasonal": false
+      "phase_notes": "Flagship bridge bypass Leschi \u2194 Bellevue. MECE cross-lake corridor.",
+      "seasonal": false,
+      "cluster": "lake"
     },
     {
       "id": "LKW-2",
-      "name": "Boeing Line",
+      "name": "Eastside Line",
       "type": "trunk",
       "phase": 1,
       "flagship": false,
       "color": "#7dd3c0",
-      "cluster": "lake",
       "stops": [
         "kirkland",
+        "carillon-point",
         "meydenbauer",
         "gene-coulon-southport"
       ],
       "segments": [
+        {
+          "from": "kirkland",
+          "to": "carillon-point",
+          "distance_nm": 1.27,
+          "water_min": 8,
+          "water_path": [
+            [
+              -122.2075,
+              47.676
+            ],
+            [
+              -122.21,
+              47.665
+            ],
+            [
+              -122.2085,
+              47.655
+            ]
+          ],
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to local shore buffers",
+          "routing": "Shore-adjacent Kirkland\u2192Carillon Point hop; buffers dominate.",
+          "phase": 2
+        },
+        {
+          "from": "carillon-point",
+          "to": "meydenbauer",
+          "distance_nm": 3.2,
+          "water_min": 11,
+          "water_path": [
+            [
+              -122.2085,
+              47.655
+            ],
+            [
+              -122.22,
+              47.64
+            ],
+            [
+              -122.23,
+              47.625
+            ],
+            [
+              -122.2105,
+              47.61
+            ]
+          ],
+          "speed_constrained": false,
+          "phase": 2
+        },
         {
           "from": "kirkland",
           "to": "meydenbauer",
@@ -442,7 +492,9 @@
           ],
           "speed_constrained": false,
           "time_claim": "~12 min",
-          "routing": "~3 nm south along the Eastside shore; cross the SR-520 floating bridge at its navigable elevated span (verify span location against chart); 100-yd shore buffers at each end; 7-kn/300-ft buffer inside Meydenbauer Bay."
+          "routing": "~3 nm south along the Eastside shore; cross the SR-520 floating bridge at its navigable elevated span (verify span location against chart); 100-yd shore buffers at each end; 7-kn/300-ft buffer inside Meydenbauer Bay.",
+          "phase": 1,
+          "phase_max": 1
         },
         {
           "from": "meydenbauer",
@@ -481,6 +533,38 @@
         }
       ],
       "water_path": [
+        [
+          [
+            -122.2075,
+            47.676
+          ],
+          [
+            -122.21,
+            47.665
+          ],
+          [
+            -122.2085,
+            47.655
+          ]
+        ],
+        [
+          [
+            -122.2085,
+            47.655
+          ],
+          [
+            -122.22,
+            47.64
+          ],
+          [
+            -122.23,
+            47.625
+          ],
+          [
+            -122.2105,
+            47.61
+          ]
+        ],
         [
           [
             -122.2075,
@@ -535,142 +619,20 @@
         ]
       ],
       "legacy_ids": [
-        "LKW-2"
-      ],
-      "phase_notes": "~25\u201330 min end-to-end indicative (Kirkland\u2194Meydenbauer ~12 min; Meydenbauer\u2194Coulon ~20\u201325 min), all including buffer legs. Anchor: Boeing Renton 737 plant + Southport Office Campus \u2014 genuinely walk-tier waterfront. Kirkland's codified commercial tour-boat berth (KMC 14.36.200) makes this the easiest permit in the lake cluster.",
-      "seasonal": false
-    },
-    {
-      "id": "LKW-3",
-      "name": "Kirkland Direct",
-      "type": "express",
-      "phase": 2,
-      "flagship": false,
-      "color": "#9bb7ff",
-      "cluster": "lake",
-      "stops": [
-        "kirkland",
-        "carillon-point",
-        "leschi"
-      ],
-      "segments": [
-        {
-          "from": "kirkland",
-          "to": "carillon-point",
-          "distance_nm": 1.27,
-          "water_min": 8,
-          "water_path": [
-            [
-              -122.2075,
-              47.676
-            ],
-            [
-              -122.21,
-              47.665
-            ],
-            [
-              -122.2085,
-              47.655
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to local shore buffers",
-          "routing": "Shore-adjacent Kirkland\u2192Carillon Point hop; buffers dominate.",
-          "phase": 2
-        },
-        {
-          "from": "carillon-point",
-          "to": "leschi",
-          "distance_nm": 5.68,
-          "water_min": 15,
-          "water_path": [
-            [
-              -122.2085,
-              47.655
-            ],
-            [
-              -122.25,
-              47.64
-            ],
-            [
-              -122.24,
-              47.64
-            ],
-            [
-              -122.245,
-              47.615
-            ],
-            [
-              -122.27,
-              47.605
-            ],
-            [
-              -122.2855,
-              47.6005
-            ]
-          ],
-          "speed_constrained": false,
-          "time_claim": "15\u201318 min",
-          "routing": "Open-lake diagonal (~4+ nm); cross the SR-520 floating bridge at its navigable elevated span (verify against chart); 100-yd buffers at each end.",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -122.2075,
-            47.676
-          ],
-          [
-            -122.21,
-            47.665
-          ],
-          [
-            -122.2085,
-            47.655
-          ]
-        ],
-        [
-          [
-            -122.2085,
-            47.655
-          ],
-          [
-            -122.25,
-            47.64
-          ],
-          [
-            -122.24,
-            47.64
-          ],
-          [
-            -122.245,
-            47.615
-          ],
-          [
-            -122.27,
-            47.605
-          ],
-          [
-            -122.2855,
-            47.6005
-          ]
-        ]
-      ],
-      "legacy_ids": [
+        "LKW-2",
         "LKW-3"
       ],
-      "phase_notes": "Phase 2 \u2014 launches once Phase 1 proves demand. Kirkland\u2194Leschi direct ~15\u201318 min indicative; Carillon Point is the inventory's infill stop and the Microsoft Redmond shuttle gate (ground shuttle, ~3.5 mi \u2014 never a water path, never implied as a Microsoft dock).",
-      "seasonal": false
+      "phase_notes": "MECE Eastside spine: Kirkland \u00b7 Carillon (Microsoft shuttle) \u00b7 Meydenbauer \u00b7 Renton/Boeing. Replaces separate Kirkland Direct.",
+      "seasonal": false,
+      "cluster": "lake"
     },
     {
       "id": "SND-1",
-      "name": "Expedia Shuttle",
+      "name": "Elliott Bay Line",
       "type": "trunk",
       "phase": 1,
       "flagship": false,
       "color": "#e8a87c",
-      "cluster": "sound",
       "stops": [
         "seacrest",
         "bell-harbor",
@@ -765,19 +727,23 @@
       "legacy_ids": [
         "SND-1"
       ],
-      "phase_notes": "Short hops, but this line serves two landings the public system doesn't (Pier 66, Smith Cove) and one true walk-tier waterfront anchor employer (Expedia \u2014 ~10\u201315 min via the Elliott Bay Trail, map estimate). No numeric time claims authored \u2014 render indicative until geometry seals. Posture: complement to KCWT/WSF/Kitsap, never displacement.",
-      "seasonal": false
+      "phase_notes": "West Seattle \u00b7 downtown \u00b7 Expedia marina. MECE local bay corridor. Indicative times only.",
+      "seasonal": false,
+      "cluster": "sound"
     },
     {
       "id": "SND-2",
-      "name": "Sound Gate",
+      "name": "Sound Line",
       "type": "express",
       "phase": 2,
       "flagship": false,
       "color": "#b39ddb",
-      "cluster": "sound",
       "stops": [
         "bainbridge",
+        "des-moines",
+        "edmonds",
+        "kingston",
+        "bell-harbor",
         "elliott-bay-marina"
       ],
       "segments": [
@@ -808,47 +774,7 @@
           "water_min_label": "indicative \u2014 subject to local shore buffers",
           "routing": "Eagle Harbor exit at harbor speed (local rules \u2014 ops verify), open Sound mid-crossing, then the 200-yd Elliott Bay buffer and 3-kn marina zone on the Smith Cove arrival. Keep clear of the WSF Bainbridge\u2013Colman crossing lanes.",
           "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -122.51,
-            47.62
-          ],
-          [
-            -122.45,
-            47.6
-          ],
-          [
-            -122.38,
-            47.62
-          ],
-          [
-            -122.395,
-            47.63
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "SND-2"
-      ],
-      "phase_notes": "Premium overlay: Bainbridge direct to Expedia with no downtown transfer \u2014 a landing pair no public service offers. No numeric time claim authored (do not borrow WSF's 35-min Colman figure for this different routing); render indicative. Bainbridge berth is a dock-track item \u2014 hold at 'planned' until resolved.",
-      "seasonal": false
-    },
-    {
-      "id": "SND-3",
-      "name": "Des Moines Line",
-      "type": "express",
-      "phase": 2,
-      "flagship": false,
-      "color": "#c9a86c",
-      "cluster": "sound",
-      "stops": [
-        "des-moines",
-        "bell-harbor"
-      ],
-      "segments": [
+        },
         {
           "from": "des-moines",
           "to": "bell-harbor",
@@ -880,52 +806,7 @@
           "water_min_label": "indicative \u2014 subject to local shore buffers",
           "routing": "Marina-breakwater speed on exit, open Sound north, 200-yd Elliott Bay buffers on the Pier 66 approach; stand clear of Colman/Pier 50 ferry traffic.",
           "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -122.325,
-            47.4
-          ],
-          [
-            -122.35,
-            47.48
-          ],
-          [
-            -122.36,
-            47.55
-          ],
-          [
-            -122.37,
-            47.605
-          ],
-          [
-            -122.348,
-            47.6105
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "SND-3"
-      ],
-      "phase_notes": "Revival of a proven pairing: the 2022 Des Moines\u2194Bell Harbor passenger-ferry pilot ran marina-to-marina between these exact landings. Copy may cite the pilot as precedent; no numeric time claim authored \u2014 render indicative.",
-      "seasonal": false
-    },
-    {
-      "id": "SND-4",
-      "name": "Kingston Line",
-      "type": "express",
-      "phase": 3,
-      "flagship": false,
-      "color": "#8fa8c8",
-      "cluster": "sound",
-      "stops": [
-        "kingston",
-        "edmonds",
-        "bell-harbor"
-      ],
-      "segments": [
+        },
         {
           "from": "kingston",
           "to": "edmonds",
@@ -986,6 +867,46 @@
       "water_path": [
         [
           [
+            -122.51,
+            47.62
+          ],
+          [
+            -122.45,
+            47.6
+          ],
+          [
+            -122.38,
+            47.62
+          ],
+          [
+            -122.395,
+            47.63
+          ]
+        ],
+        [
+          [
+            -122.325,
+            47.4
+          ],
+          [
+            -122.35,
+            47.48
+          ],
+          [
+            -122.36,
+            47.55
+          ],
+          [
+            -122.37,
+            47.605
+          ],
+          [
+            -122.348,
+            47.6105
+          ]
+        ],
+        [
+          [
             -122.5,
             47.795
           ],
@@ -1022,19 +943,21 @@
         ]
       ],
       "legacy_ids": [
+        "SND-2",
+        "SND-3",
         "SND-4"
       ],
-      "phase_notes": "Phase-3 exploratory overlay per inventory \u00a78, with Edmonds as the authored infill stop. Positioning is additive capacity for a proven North Kitsap water-commute market \u2014 complement to Kitsap Transit, never displacement, and nothing in copy may read as criticism of the public service. No time claims.",
-      "seasonal": false
+      "phase_notes": "MECE regional Sound approaches into Bell Harbor / EBM \u2014 Bainbridge, Des Moines, Edmonds, Kingston on one line family, not four orphan expresses. Indicative only.",
+      "seasonal": false,
+      "cluster": "sound"
     },
     {
-      "id": "SND-5",
-      "name": "Narrows Shuttle",
+      "id": "SND-3",
+      "name": "Narrows Line",
       "type": "feeder",
       "phase": 3,
       "flagship": false,
       "color": "#a8c5a0",
-      "cluster": "sound",
       "stops": [
         "gig-harbor",
         "tacoma-dock-street"
@@ -1092,8 +1015,9 @@
       "legacy_ids": [
         "SND-5"
       ],
-      "phase_notes": "Phase-3 exploratory two-stop sub-network: Gig Harbor peninsula residential across the Narrows to UW Tacoma / Museum District (walk-tier at Dock Street). Deliberately NOT connected to the Seattle group \u2014 Tacoma\u2194Seattle is excluded (\u224860 min, wrong vessel class; see decision_ledger). No time claims.",
-      "seasonal": false
+      "phase_notes": "Gig Harbor \u2194 Tacoma only. Correctly isolated from Seattle group \u2014 not an orphan, a separate sub-network.",
+      "seasonal": false,
+      "cluster": "sound"
     }
   ],
   "catchment": [
@@ -1369,12 +1293,12 @@
         "label": "terminals"
       },
       {
-        "value": "2",
-        "label": "independent networks"
+        "value": "5",
+        "label": "lines"
       },
       {
-        "value": "1 stop",
-        "label": "plugs into your network"
+        "value": "2",
+        "label": "independent networks"
       }
     ],
     "problem_title": "The bridges are the bottleneck. The lake is open water.",
@@ -1406,8 +1330,8 @@
     "proof_ask_title": "Ask",
     "proof_ask_body": "Non-binding LOI \u2014 seats or line anchor \u2014 so we sequence on real demand.",
     "network_title": "Your ride on the network",
-    "network_lead": "Two launch lines meet at Meydenbauer Bay: the Bridge Bypass Line (Leschi \u2194 Bellevue, 12\u201315 min indicative \u2014 the I-90/SR-520 bypass) and the Boeing Line (Kirkland \u2194 Meydenbauer Bay \u2194 Renton, ~25\u201330 min end-to-end, landing at the walk-tier waterfront doorstep of Boeing Renton and the Southport offices). Downtown Bellevue and Amazon's Bellevue towers are a 15\u201320 minute uphill walk or a short shuttle from the Meydenbauer dock. Phase 2 adds a Kirkland \u2194 Leschi direct (15\u201318 min indicative) with a Carillon Point stop and a shuttle connection toward Microsoft Redmond. The lake and the Sound operate as two independent networks. The only water between them runs through the Ballard Locks \u2014 a first-come lock queue, not a commuter connection \u2014 so we don't pretend there's a boat from Bellevue to Bainbridge. There isn't, and there won't be.",
-    "network_footnote": "The lake and the Sound operate as two independent networks. The only water between them runs through the Ballard Locks \u2014 a first-come lock queue, not a commuter connection \u2014 so we don't pretend there's a boat from Bellevue to Bainbridge. There isn't, and there won't be. On Elliott Bay, the Expedia Shuttle links West Seattle (Seacrest), the downtown waterfront at Bell Harbor Pier 66, and Elliott Bay Marina \u2014 a 10\u201315 minute waterfront walk from Expedia's 40-acre campus. Phase 2 adds a direct Bainbridge \u2194 Elliott Bay Marina overlay with no downtown transfer, and revives the Des Moines \u2194 Bell Harbor run that a 2022 passenger-ferry pilot already proved marina-to-marina. Later phases explore Kingston, Edmonds, and a Gig Harbor \u2194 Tacoma shuttle. We serve landings the public ferries don't \u2014 as a complement to the region's ferry system, never a replacement.",
+    "network_lead": "Two independent networks, five clear lines. Lake: Cross-Lake bridge bypass plus one Eastside spine (Kirkland \u00b7 Meydenbauer \u00b7 Renton) \u2014 not three overlapping lake products. Sound: Elliott Bay local, one regional Sound line (Bainbridge / Des Moines / Edmonds / Kingston), and the Narrows (Gig Harbor \u00b7 Tacoma) as its own sub-network. No Ship Canal connector.",
+    "network_footnote": "The lake and the Sound operate as two independent networks. The only water between them runs through the Ballard Locks \u2014 a first-come lock queue, not a commuter connection \u2014 so we don't pretend there's a boat from Bellevue to Bainbridge. There isn't, and there won't be. MECE: Cross-Lake \u00b7 Eastside | Elliott Bay \u00b7 Sound \u00b7 Narrows. Google Kirkland and Amazon Bellevue are shuttle/longer-walk tier. Shore buffers on every approach.",
     "two_networks": "The lake and the Sound operate as two independent networks. The only water between them runs through the Ballard Locks \u2014 a first-come lock queue, not a commuter connection \u2014 so we don't pretend there's a boat from Bellevue to Bainbridge. There isn't, and there won't be.",
     "map_detail_empty": "Pick a network (Lake Washington or Puget Sound), then two terminals in Find my ride.",
     "calc_title": "Rough cost for your team",
@@ -1530,5 +1454,5 @@
       "landing": "Dock Street Marina, 1817 Dock St, Thea Foss Waterway (alternate gate: Foss Waterway Seaport dock, 1,200 ft)"
     }
   ],
-  "schedules_note": "All times indicative and include shore-buffer legs. Lake whitelist ranges with indicative qualifier. Sound lines: no bare minutes. No Ship Canal geometry. No Lake\u2194Sound connector."
+  "schedules_note": "MECE lines. Lake whitelist ranges indicative. Sound lines: no bare minutes. No Ship Canal geometry. No Lake\u2194Sound connector. Program band pricing."
 }

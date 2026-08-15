@@ -1,6 +1,6 @@
 {
   "id": "boston",
-  "version": "2026-08-15-boston-v1",
+  "version": "2026-08-15-boston-mece",
   "aliases": [
     "boston-employers"
   ],
@@ -389,6 +389,7 @@
       "stops": [
         "beverly",
         "salem",
+        "lynn",
         "long-wharf",
         "fan-pier"
       ],
@@ -413,7 +414,8 @@
             ]
           ],
           "speed_constrained": false,
-          "routing": "Glover Wharf (Beverly Harbor) \u2192 Salem Sound \u2192 Salem Wharf (Blaney St). Short sheltered-sound hop; sea-state gate still applies to the sound entrance."
+          "routing": "Glover Wharf (Beverly Harbor) \u2192 Salem Sound \u2192 Salem Wharf (Blaney St). Short sheltered-sound hop; sea-state gate still applies to the sound entrance.",
+          "phase": 2
         },
         {
           "from": "salem",
@@ -457,7 +459,72 @@
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
           "constraint": "Inner-harbor no-wake zone from the NW corner of Logan \u2014 displacement speed on the entire downtown approach; foil-borne only Salem Sound \u2192 Broad Sound \u2192 President Roads",
-          "routing": "Salem Sound exit past Marblehead/Nahant \u2192 open Broad Sound (semi-open Atlantic; sea-state exposure) \u2192 President Roads \u2192 cross the no-wake boundary at Logan's NW corner \u2192 inner harbor main channel \u2192 Long Wharf. Keep clear of Logan runway-approach areas; do NOT place a Logan call (held corridor)."
+          "routing": "Salem Sound exit past Marblehead/Nahant \u2192 open Broad Sound (semi-open Atlantic; sea-state exposure) \u2192 President Roads \u2192 cross the no-wake boundary at Logan's NW corner \u2192 inner harbor main channel \u2192 Long Wharf. Keep clear of Logan runway-approach areas; do NOT place a Logan call (held corridor).",
+          "phase": 1,
+          "phase_max": 1
+        },
+        {
+          "from": "salem",
+          "to": "lynn",
+          "distance_nm": 13.2,
+          "water_min": 44,
+          "water_path": [
+            [
+              -70.8865,
+              42.5215
+            ],
+            [
+              -70.9,
+              42.49
+            ],
+            [
+              -70.92,
+              42.38
+            ],
+            [
+              -70.935,
+              42.455
+            ]
+          ],
+          "speed_constrained": false,
+          "phase": 2
+        },
+        {
+          "from": "lynn",
+          "to": "long-wharf",
+          "distance_nm": 12.35,
+          "water_min": 93,
+          "water_path": [
+            [
+              -70.935,
+              42.455
+            ],
+            [
+              -70.92,
+              42.38
+            ],
+            [
+              -70.98,
+              42.34
+            ],
+            [
+              -71.022,
+              42.372
+            ],
+            [
+              -71.04,
+              42.36
+            ],
+            [
+              -71.0505,
+              42.3601
+            ]
+          ],
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach; foil-borne only across Broad Sound",
+          "routing": "Blossom Street Pier \u2192 out of Lynn Harbor \u2192 Broad Sound off Nahant (open water; sea-state exposure) \u2192 President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 Long Wharf.",
+          "phase": 2
         },
         {
           "from": "long-wharf",
@@ -485,7 +552,8 @@
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
           "constraint": "Entire segment inside the inner-harbor no-wake zone",
-          "routing": "Long Wharf \u2192 across the inner harbor/Fort Point Channel mouth \u2192 Fan Pier dock. Displacement speed throughout; do not enter Fort Point Channel interior."
+          "routing": "Long Wharf \u2192 inner harbor \u2192 Fan Pier. Displacement speed.",
+          "phase": 3
         }
       ],
       "water_path": [
@@ -539,6 +607,50 @@
         ],
         [
           [
+            -70.8865,
+            42.5215
+          ],
+          [
+            -70.9,
+            42.49
+          ],
+          [
+            -70.92,
+            42.38
+          ],
+          [
+            -70.935,
+            42.455
+          ]
+        ],
+        [
+          [
+            -70.935,
+            42.455
+          ],
+          [
+            -70.92,
+            42.38
+          ],
+          [
+            -70.98,
+            42.34
+          ],
+          [
+            -71.022,
+            42.372
+          ],
+          [
+            -71.04,
+            42.36
+          ],
+          [
+            -71.0505,
+            42.3601
+          ]
+        ],
+        [
+          [
             -71.0505,
             42.3601
           ],
@@ -557,19 +669,22 @@
         ]
       ],
       "legacy_ids": [
-        "BOS-1"
+        "BOS-1",
+        "BOS-4"
       ],
-      "phase_notes": "Navier's flagship edge \u2014 the MBTA does not serve Salem; the seasonal Salem Ferry already sells commuter-rate rush-hour tickets, proving a private operator monetizes this commute. Phase 1 runs Salem \u2194 Long Wharf \u2194 Fan Pier; the Beverly extension is Phase 2 (renders dimmed until then \u2014 Glover Wharf municipal marina is ready today). Marblehead extension is HELD on the watchlist pending a negotiated recurring berth \u2014 do not render Marblehead. Foil-borne across Broad Sound, displacement inside the harbor: target ~35\u201345 min Salem\u2192Seaport is modeled, unverified \u2014 render only as indicative. Weather-cancellation policy applies; Salem and Beverly have commuter-rail fallback.",
+      "phase_notes": "MECE North Shore spine. Launch: Salem \u00b7 Long Wharf \u00b7 Fan Pier. Phase 2 adds Beverly and Lynn on the same line \u2014 not orphan feeders. Outer legs weather-sensitive; inner harbor no-wake.",
       "seasonal": false
     },
     {
       "id": "BOS-2",
-      "name": "South Shore Express",
+      "name": "South Shore Line",
       "type": "trunk",
       "phase": 1,
       "flagship": false,
       "color": "#7dd3c0",
       "stops": [
+        "scituate",
+        "weymouth",
         "hingham",
         "hull",
         "rowes-wharf",
@@ -577,6 +692,55 @@
         "commonwealth-pier"
       ],
       "segments": [
+        {
+          "from": "scituate",
+          "to": "weymouth",
+          "distance_nm": 10.33,
+          "water_min": 34,
+          "water_path": [
+            [
+              -70.725,
+              42.2
+            ],
+            [
+              -70.8,
+              42.23
+            ],
+            [
+              -70.89,
+              42.27
+            ],
+            [
+              -70.92,
+              42.248
+            ]
+          ],
+          "speed_constrained": false,
+          "phase": 3
+        },
+        {
+          "from": "weymouth",
+          "to": "hingham",
+          "distance_nm": 2.8,
+          "water_min": 9,
+          "water_path": [
+            [
+              -70.92,
+              42.248
+            ],
+            [
+              -70.89,
+              42.27
+            ],
+            [
+              -70.885,
+              42.255
+            ]
+          ],
+          "speed_constrained": false,
+          "routing": "Tern Harbor Marina (Back River) \u2192 Back River channel \u2192 Hingham Bay \u2192 Hewitts Cove. Back River local speed zones not sourced this pass \u2014 verify and flag in the geometry pass; fail closed to speed_constrained if zoned.",
+          "phase": 2
+        },
         {
           "from": "hingham",
           "to": "hull",
@@ -632,8 +796,9 @@
           ],
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan \u2014 displacement speed on the downtown approach; foil-borne only across Nantasket Roads / President Roads",
-          "routing": "Pemberton Point \u2192 Nantasket Roads \u2192 President Roads (foil-borne) \u2192 cross the no-wake boundary at Logan's NW corner \u2192 inner harbor main channel \u2192 Rowes Wharf."
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach",
+          "routing": "Pemberton Point \u2192 Nantasket Roads \u2192 President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 Rowes Wharf.",
+          "phase": 3
         },
         {
           "from": "rowes-wharf",
@@ -681,10 +846,43 @@
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
           "constraint": "Entire segment inside the inner-harbor no-wake zone (short Seaport hop)",
-          "routing": "Fan Pier \u2192 along the Seaport waterfront \u2192 Commonwealth Pier (200 Seaport Blvd). Displacement speed; very short hop \u2014 Phase 2 infill."
+          "routing": "Fan Pier \u2192 along the Seaport waterfront \u2192 Commonwealth Pier (200 Seaport Blvd). Displacement speed; very short hop \u2014 Phase 2 infill.",
+          "phase": 2
         }
       ],
       "water_path": [
+        [
+          [
+            -70.725,
+            42.2
+          ],
+          [
+            -70.8,
+            42.23
+          ],
+          [
+            -70.89,
+            42.27
+          ],
+          [
+            -70.92,
+            42.248
+          ]
+        ],
+        [
+          [
+            -70.92,
+            42.248
+          ],
+          [
+            -70.89,
+            42.27
+          ],
+          [
+            -70.885,
+            42.255
+          ]
+        ],
         [
           [
             -70.885,
@@ -755,9 +953,11 @@
         ]
       ],
       "legacy_ids": [
-        "BOS-2"
+        "BOS-2",
+        "BOS-7",
+        "BOS-8"
       ],
-      "phase_notes": "Premium guaranteed-seat overlay on the proven MBTA F1/F2H market (18 and 19 weekday round trips respectively) \u2014 the differentiation is the Seaport leg the MBTA lacks (its South Shore boats terminate downtown; Seaport workers today walk or transfer) plus seat guarantees at shoulder-peak. Explicit partner posture with the MBTA \u2014 never displacement. Commonwealth Pier infill stop is Phase 2 (renders dimmed until then).",
+      "phase_notes": "MECE South Shore spine. Launch: Hingham \u00b7 Hull \u00b7 Rowes \u00b7 Fan Pier. Phase 2 adds Weymouth and Commonwealth Pier; Phase 3 Scituate \u2014 same line, not a lonely express.",
       "seasonal": false
     },
     {
@@ -810,6 +1010,42 @@
           "routing": "Squantum Point / Marina Bay \u2192 Dorchester Bay \u2192 President Roads (foil-borne where outside the no-wake boundary) \u2192 inner harbor main channel \u2192 Central Wharf. Verify the exact no-wake boundary crossing point in the geometry pass."
         },
         {
+          "from": "marina-bay",
+          "to": "long-wharf",
+          "distance_nm": 7.65,
+          "water_min": 57,
+          "water_path": [
+            [
+              -71.025,
+              42.295
+            ],
+            [
+              -71.01,
+              42.32
+            ],
+            [
+              -70.98,
+              42.34
+            ],
+            [
+              -71.022,
+              42.372
+            ],
+            [
+              -71.04,
+              42.36
+            ],
+            [
+              -71.0505,
+              42.3601
+            ]
+          ],
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
+          "phase": 1,
+          "phase_max": 1
+        },
+        {
           "from": "central-wharf",
           "to": "long-wharf",
           "distance_nm": 0.07,
@@ -827,7 +1063,8 @@
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
           "constraint": "Entire segment inside the inner-harbor no-wake zone (adjacent wharves)",
-          "routing": "Central Wharf \u2192 Long Wharf \u2014 adjacent downtown wharves; displacement-speed micro-hop."
+          "routing": "Central Wharf \u2192 Long Wharf \u2014 adjacent downtown wharves; displacement-speed micro-hop.",
+          "phase": 2
         }
       ],
       "water_path": [
@@ -859,6 +1096,32 @@
         ],
         [
           [
+            -71.025,
+            42.295
+          ],
+          [
+            -71.01,
+            42.32
+          ],
+          [
+            -70.98,
+            42.34
+          ],
+          [
+            -71.022,
+            42.372
+          ],
+          [
+            -71.04,
+            42.36
+          ],
+          [
+            -71.0505,
+            42.3601
+          ]
+        ],
+        [
+          [
             -71.0508,
             42.359
           ],
@@ -871,42 +1134,63 @@
       "legacy_ids": [
         "BOS-3"
       ],
-      "phase_notes": "Year-round weekday service vs the MBTA F7's seasonal schedule \u2014 a marina-grade station the public system does not serve year-round, and the network's cleanest 'unserved node' story alongside Salem. Phase 1 runs Marina Bay \u2194 Long Wharf direct; the Central Wharf infill stop is Phase 2 (renders dimmed until then). Safe Harbor Marina Bay (686 slips) is co-located for O&M berthing.",
+      "phase_notes": "Dorchester Bay / Quincy cross to downtown. Central Wharf is Phase 2 infill on the same corridor.",
       "seasonal": false
     },
     {
       "id": "BOS-4",
-      "name": "Lynn Feeder",
+      "name": "Inner Harbor Line",
       "type": "feeder",
       "phase": 2,
       "flagship": false,
       "color": "#e8a87c",
       "stops": [
-        "lynn",
+        "winthrop",
+        "east-boston",
+        "charlestown",
         "long-wharf"
       ],
       "segments": [
         {
-          "from": "lynn",
-          "to": "long-wharf",
-          "distance_nm": 12.35,
-          "water_min": 93,
+          "from": "winthrop",
+          "to": "east-boston",
+          "distance_nm": 2.95,
+          "water_min": 22,
           "water_path": [
             [
-              -70.935,
-              42.455
-            ],
-            [
-              -70.92,
-              42.38
-            ],
-            [
               -70.98,
-              42.34
+              42.375
             ],
             [
-              -71.022,
-              42.372
+              -70.99,
+              42.365
+            ],
+            [
+              -71.02,
+              42.368
+            ],
+            [
+              -71.0395,
+              42.3685
+            ]
+          ],
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
+          "phase": 2
+        },
+        {
+          "from": "east-boston",
+          "to": "long-wharf",
+          "distance_nm": 1.02,
+          "water_min": 8,
+          "water_path": [
+            [
+              -71.0395,
+              42.3685
+            ],
+            [
+              -71.042,
+              42.365
             ],
             [
               -71.04,
@@ -919,190 +1203,10 @@
           ],
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach; foil-borne only across Broad Sound",
-          "routing": "Blossom Street Pier \u2192 out of Lynn Harbor \u2192 Broad Sound off Nahant (open water; sea-state exposure) \u2192 President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 Long Wharf.",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -70.935,
-            42.455
-          ],
-          [
-            -70.92,
-            42.38
-          ],
-          [
-            -70.98,
-            42.34
-          ],
-          [
-            -71.022,
-            42.372
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.0505,
-            42.3601
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "BOS-4"
-      ],
-      "phase_notes": "Joins the network if GE Aerospace or Logan-adjacent employers anchor seat blocks \u2014 the landing (Blossom Street Pier) is real today and the MBTA F5 seasonal service (~45 min) proves the run. GE River Works has no passenger dock (see no_landing); do not credit it as walk-tier.",
-      "seasonal": false
-    },
-    {
-      "id": "BOS-5",
-      "name": "Winthrop Feeder",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#b39ddb",
-      "stops": [
-        "winthrop",
-        "fan-pier",
-        "central-wharf"
-      ],
-      "segments": [
-        {
-          "from": "winthrop",
-          "to": "fan-pier",
-          "distance_nm": 6.46,
-          "water_min": 48,
-          "water_path": [
-            [
-              -70.98,
-              42.375
-            ],
-            [
-              -70.99,
-              42.36
-            ],
-            [
-              -70.98,
-              42.34
-            ],
-            [
-              -71.022,
-              42.372
-            ],
-            [
-              -71.038,
-              42.354
-            ],
-            [
-              -71.0425,
-              42.3535
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan \u2014 most of this segment runs at displacement speed",
-          "routing": "Winthrop Landing \u2192 around Logan's runway-approach areas via President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 inner harbor \u2192 Fan Pier. The MBTA F6 pattern calls at Logan; Navier does NOT \u2014 no Logan stop or marker (held corridor, see held corridor decision).",
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Long Wharf \u2192 inner harbor \u2192 Lewis Mall Wharf. Displacement crossing (MBTA F3 pattern).",
           "phase": 2
         },
-        {
-          "from": "fan-pier",
-          "to": "central-wharf",
-          "distance_nm": 1.06,
-          "water_min": 8,
-          "water_path": [
-            [
-              -71.0425,
-              42.3535
-            ],
-            [
-              -71.038,
-              42.354
-            ],
-            [
-              -71.04,
-              42.36
-            ],
-            [
-              -71.0508,
-              42.359
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Entire segment inside the inner-harbor no-wake zone",
-          "routing": "Fan Pier \u2192 across the inner harbor \u2192 Central Wharf. Displacement speed.",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -70.98,
-            42.375
-          ],
-          [
-            -70.99,
-            42.36
-          ],
-          [
-            -70.98,
-            42.34
-          ],
-          [
-            -71.022,
-            42.372
-          ],
-          [
-            -71.038,
-            42.354
-          ],
-          [
-            -71.0425,
-            42.3535
-          ]
-        ],
-        [
-          [
-            -71.0425,
-            42.3535
-          ],
-          [
-            -71.038,
-            42.354
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.0508,
-            42.359
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "BOS-5"
-      ],
-      "phase_notes": "Year-round weekday overlay on the seasonal MBTA F6 pattern, minus the Logan call (Boston\u2194Logan is a held corridor \u2014 internal decision_ledger). Winthrop has dense residential and no rapid transit; pure origin node.",
-      "seasonal": false
-    },
-    {
-      "id": "BOS-6",
-      "name": "Inner Harbor Shuttle",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#c9a86c",
-      "stops": [
-        "charlestown",
-        "long-wharf",
-        "east-boston"
-      ],
-      "segments": [
         {
           "from": "charlestown",
           "to": "long-wharf",
@@ -1127,38 +1231,45 @@
           "constraint": "Entire segment inside the inner-harbor no-wake zone",
           "routing": "Navy Yard Pier 4 \u2192 inner harbor \u2192 Long Wharf. 10-min displacement crossing (MBTA F4 pattern).",
           "phase": 2
-        },
-        {
-          "from": "long-wharf",
-          "to": "east-boston",
-          "distance_nm": 1.02,
-          "water_min": 8,
-          "water_path": [
-            [
-              -71.0505,
-              42.3601
-            ],
-            [
-              -71.04,
-              42.36
-            ],
-            [
-              -71.042,
-              42.365
-            ],
-            [
-              -71.0395,
-              42.3685
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Entire segment inside the inner-harbor no-wake zone",
-          "routing": "Long Wharf \u2192 inner harbor \u2192 Lewis Mall Wharf. Displacement crossing (MBTA F3 pattern).",
-          "phase": 2
         }
       ],
       "water_path": [
+        [
+          [
+            -70.98,
+            42.375
+          ],
+          [
+            -70.99,
+            42.365
+          ],
+          [
+            -71.02,
+            42.368
+          ],
+          [
+            -71.0395,
+            42.3685
+          ]
+        ],
+        [
+          [
+            -71.0395,
+            42.3685
+          ],
+          [
+            -71.042,
+            42.365
+          ],
+          [
+            -71.04,
+            42.36
+          ],
+          [
+            -71.0505,
+            42.3601
+          ]
+        ],
         [
           [
             -71.0525,
@@ -1172,295 +1283,18 @@
             -71.0505,
             42.3601
           ]
-        ],
-        [
-          [
-            -71.0505,
-            42.3601
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.042,
-            42.365
-          ],
-          [
-            -71.0395,
-            42.3685
-          ]
         ]
       ],
       "legacy_ids": [
+        "BOS-5",
         "BOS-6"
       ],
-      "phase_notes": "Premium infill on crossings the MBTA already proves at scale (F4 Charlestown: ~39 weekday trips on a 10-min crossing; F3 East Boston made permanent 2025). All-no-wake water \u2014 this line is sold on guaranteed seats and frequency, never on speed. East Boston promotes only with employer-sponsored seat blocks.",
+      "phase_notes": "All-no-wake inner harbor. No speed/time-advantage claims \u2014 seats, frequency, experience only. Winthrop folded in as east outer stop, not a solo feeder.",
       "seasonal": false
     },
     {
-      "id": "BOS-7",
-      "name": "Weymouth Feeder",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#8fa8c8",
-      "stops": [
-        "weymouth",
-        "hingham",
-        "rowes-wharf"
-      ],
-      "segments": [
-        {
-          "from": "weymouth",
-          "to": "hingham",
-          "distance_nm": 2.8,
-          "water_min": 9,
-          "water_path": [
-            [
-              -70.92,
-              42.248
-            ],
-            [
-              -70.89,
-              42.27
-            ],
-            [
-              -70.885,
-              42.255
-            ]
-          ],
-          "speed_constrained": false,
-          "routing": "Tern Harbor Marina (Back River) \u2192 Back River channel \u2192 Hingham Bay \u2192 Hewitts Cove. Back River local speed zones not sourced this pass \u2014 verify and flag in the geometry pass; fail closed to speed_constrained if zoned.",
-          "phase": 2
-        },
-        {
-          "from": "hingham",
-          "to": "rowes-wharf",
-          "distance_nm": 11.31,
-          "water_min": 85,
-          "water_path": [
-            [
-              -70.885,
-              42.255
-            ],
-            [
-              -70.89,
-              42.27
-            ],
-            [
-              -70.9,
-              42.3
-            ],
-            [
-              -70.98,
-              42.34
-            ],
-            [
-              -71.022,
-              42.372
-            ],
-            [
-              -71.04,
-              42.36
-            ],
-            [
-              -71.0502,
-              42.3568
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach; foil-borne only across Hingham Bay / Nantasket Roads / President Roads",
-          "routing": "Hewitts Cove \u2192 Hingham Bay \u2192 Nantasket Roads \u2192 President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 Rowes Wharf (MBTA F1 pattern).",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -70.92,
-            42.248
-          ],
-          [
-            -70.89,
-            42.27
-          ],
-          [
-            -70.885,
-            42.255
-          ]
-        ],
-        [
-          [
-            -70.885,
-            42.255
-          ],
-          [
-            -70.89,
-            42.27
-          ],
-          [
-            -70.9,
-            42.3
-          ],
-          [
-            -70.98,
-            42.34
-          ],
-          [
-            -71.022,
-            42.372
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.0502,
-            42.3568
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "BOS-7"
-      ],
-      "phase_notes": "Restores water access lost when the historic Fore River-area commuter boat ended in 2013 (MBTA consolidated Quincy service to Hingham) \u2014 a latent-demand signal, not a displacement play. Feeds the Hingham park-and-sail interchange and runs through to Rowes Wharf.",
-      "seasonal": false
-    },
-    {
-      "id": "BOS-8",
-      "name": "Scituate Express",
-      "type": "express",
-      "phase": 3,
-      "flagship": false,
-      "color": "#d4a574",
-      "stops": [
-        "scituate",
-        "hull",
-        "rowes-wharf"
-      ],
-      "segments": [
-        {
-          "from": "scituate",
-          "to": "hull",
-          "distance_nm": 10.73,
-          "water_min": 36,
-          "water_path": [
-            [
-              -70.725,
-              42.2
-            ],
-            [
-              -70.8,
-              42.24
-            ],
-            [
-              -70.9,
-              42.3
-            ],
-            [
-              -70.92,
-              42.302
-            ]
-          ],
-          "speed_constrained": false,
-          "routing": "Scituate Harbor \u2192 open Massachusetts Bay past Minot Ledge (outside-harbor run; significant sea-state exposure) \u2192 Pemberton Point. Sea-state gate applies to the entire outer leg.",
-          "phase": 3
-        },
-        {
-          "from": "hull",
-          "to": "rowes-wharf",
-          "distance_nm": 9.43,
-          "water_min": 71,
-          "water_path": [
-            [
-              -70.92,
-              42.302
-            ],
-            [
-              -70.9,
-              42.3
-            ],
-            [
-              -70.98,
-              42.34
-            ],
-            [
-              -71.022,
-              42.372
-            ],
-            [
-              -71.04,
-              42.36
-            ],
-            [
-              -71.0502,
-              42.3568
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach",
-          "routing": "Pemberton Point \u2192 Nantasket Roads \u2192 President Roads \u2192 no-wake boundary at Logan's NW corner \u2192 Rowes Wharf.",
-          "phase": 3
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -70.725,
-            42.2
-          ],
-          [
-            -70.8,
-            42.24
-          ],
-          [
-            -70.9,
-            42.3
-          ],
-          [
-            -70.92,
-            42.302
-          ]
-        ],
-        [
-          [
-            -70.92,
-            42.302
-          ],
-          [
-            -70.9,
-            42.3
-          ],
-          [
-            -70.98,
-            42.34
-          ],
-          [
-            -71.022,
-            42.372
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.0502,
-            42.3568
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "BOS-8"
-      ],
-      "phase_notes": "Held at Phase 3 by design: the first Scituate product is a ROAD FEED to the Hingham park-and-sail interchange (1,726-space lot); direct water service launches only if a corridor LOI block demands it. Open-water run \u2014 weather-cancellation policy applies (Greenbush commuter rail exists but is slow). Cohasset feeds by road to Hingham (7-ft rocky, tide-constrained harbor \u2014 watchlist, not a station).",
-      "seasonal": false
-    },
-    {
-      "id": "BOS-9",
-      "name": "Riverside Shuttle",
+      "id": "BOS-5",
+      "name": "Riverside Line",
       "type": "feeder",
       "phase": 3,
       "flagship": false,
@@ -1468,8 +1302,7 @@
       "stops": [
         "encore-everett",
         "lovejoy-wharf",
-        "long-wharf",
-        "fan-pier"
+        "long-wharf"
       ],
       "segments": [
         {
@@ -1529,35 +1362,6 @@
           "constraint": "Entire segment inside the inner-harbor no-wake zone",
           "routing": "Lovejoy Wharf \u2192 inner harbor \u2192 Long Wharf. Displacement speed.",
           "phase": 3
-        },
-        {
-          "from": "long-wharf",
-          "to": "fan-pier",
-          "distance_nm": 1.04,
-          "water_min": 8,
-          "water_path": [
-            [
-              -71.0505,
-              42.3601
-            ],
-            [
-              -71.04,
-              42.36
-            ],
-            [
-              -71.038,
-              42.354
-            ],
-            [
-              -71.0425,
-              42.3535
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to Boston Harbor speed rules",
-          "constraint": "Entire segment inside the inner-harbor no-wake zone",
-          "routing": "Long Wharf \u2192 inner harbor \u2192 Fan Pier. Displacement speed.",
-          "phase": 3
         }
       ],
       "water_path": [
@@ -1596,30 +1400,12 @@
             -71.0505,
             42.3601
           ]
-        ],
-        [
-          [
-            -71.0505,
-            42.3601
-          ],
-          [
-            -71.04,
-            42.36
-          ],
-          [
-            -71.038,
-            42.354
-          ],
-          [
-            -71.0425,
-            42.3535
-          ]
         ]
       ],
       "legacy_ids": [
         "BOS-9"
       ],
-      "phase_notes": "Coverage/branding line, displacement speed end-to-end \u2014 zero hydrofoil advantage by design (entirely no-wake water plus a drawbridge). NO speed or time-advantage claims for this line anywhere in copy. Runs only if Encore/Everett employers sponsor seat blocks. Lovejoy adds the North Station rail hub, Converse HQ on-site, and MGH at the ~12\u201315 min walk-tier boundary.",
+      "phase_notes": "Mystic reach all-no-wake (Encore \u00b7 Lovejoy \u00b7 Long Wharf). Zero foil-speed claims. Distinct geography from inner-harbor east\u2013west.",
       "seasonal": false
     }
   ],
@@ -1869,7 +1655,7 @@
         "label": "terminals"
       },
       {
-        "value": "9",
+        "value": "5",
         "label": "lines"
       },
       {
@@ -1906,8 +1692,8 @@
     "proof_ask_title": "Ask",
     "proof_ask_body": "Non-binding LOI \u2014 seats or line anchor \u2014 so we sequence on real demand.",
     "network_title": "Your ride on the network",
-    "network_lead": "Three launch lines \u2014 the North Shore Line (Salem \u00b7 Long Wharf \u00b7 Seaport/Fan Pier), the South Shore Express (Hingham \u00b7 Hull \u00b7 Rowes Wharf \u00b7 Fan Pier), and the year-round Quincy Line (Marina Bay \u00b7 Long Wharf) \u2014 with Long Wharf as the primary interchange and Fan Pier and Rowes Wharf as transfer points. Phase 2 and 3 stations render as planned, not promised. Inside the inner harbor, every vessel \u2014 including ours \u2014 observes no-wake speeds. Our hydrofoils earn their time on the open-water legs; every travel time shown is indicative until routes are finalized with harbor authorities. Salem and Beverly legs cross open water, so we publish a weather-cancellation policy up front \u2014 and on rough-sea days, commuter rail from Salem and Beverly is the fallback. We'd rather tell you that now than surprise you in November.",
-    "network_footnote": "Inside the inner harbor, every vessel \u2014 including ours \u2014 observes no-wake speeds. Our hydrofoils earn their time on the open-water legs; every travel time shown is indicative until routes are finalized with harbor authorities. Salem and Beverly legs cross open water, so we publish a weather-cancellation policy up front \u2014 and on rough-sea days, commuter rail from Salem and Beverly is the fallback. We'd rather tell you that now than surprise you in November. The MBTA and Massport run one of the best public ferry systems in America \u2014 we're building alongside it, not against it. Navier adds guaranteed employer seats where the public boats are full or don't go: a Seaport leg for South Shore riders, year-round service at Marina Bay, and a Salem station the network has never had.",
+    "network_lead": "Five clear corridors \u2014 not nine overlapping feeders. North Shore and South Shore spines into the downtown hubs; Quincy across Dorchester Bay; Inner Harbor (no-wake) for Charlestown / East Boston / Winthrop; Riverside for Encore / Lovejoy. Transfer at Long Wharf, Rowes Wharf, or Fan Pier. All water times are indicative; inner-harbor and Riverside legs are no-wake.",
+    "network_footnote": "Gold rings mark transfer hubs (Long Wharf, Rowes Wharf, Fan Pier). MECE lines: North Shore \u00b7 South Shore \u00b7 Quincy \u00b7 Inner Harbor \u00b7 Riverside. Lynn, Weymouth, and Scituate sit on the shore spines \u2014 not orphan expresses. Alongside the MBTA ferry \u2014 premium employer tier, not a replacement. No Logan stop.",
     "map_detail_empty": "Pick two terminals in Find my ride \u2014 or select a line or stop.",
     "calc_title": "Rough cost for your team",
     "calc_lead_html": "Optional planning math. Seat pricing uses the <strong>global program band</strong>, not a Boston quote. Inner-harbor times are no-wake / indicative.",
@@ -2038,5 +1824,5 @@
       "landing": "Encore Boston Harbor boat dock / Marina at Encore Boston Harbor"
     }
   ],
-  "schedules_note": "All water times indicative. Inner-harbor no-wake. BOS-6 and BOS-9: no speed/time-advantage language. North Shore/outer: weather-sensitive. No Logan stop. No line-level fare anchors in render."
+  "schedules_note": "Five MECE lines. Inner Harbor and Riverside: no speed/time-advantage language. North Shore outer legs weather-sensitive. No Logan stop. Program-band pricing only."
 }

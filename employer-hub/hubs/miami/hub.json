@@ -1,6 +1,6 @@
 {
   "id": "miami",
-  "version": "2026-08-15-miami-v1",
+  "version": "2026-08-15-miami-mece",
   "aliases": [
     "miami-employers"
   ],
@@ -375,7 +375,6 @@
       "phase": 1,
       "flagship": true,
       "color": "#e0cb8f",
-      "cluster": "miami",
       "stops": [
         "crandon-key-biscayne",
         "vice-city-marina"
@@ -456,8 +455,9 @@
       "legacy_ids": [
         "MIA-1"
       ],
-      "phase_notes": "Flagship \u2014 the strongest single corridor found in any city scanned to date. ~6 nm \u2248 20\u201325 min, foil-credible year-round, vs 80\u201390 min crisis-era Rickenbacker drives on the island's only road. Crandon is park-&-ride ($181.5K median HH income catchment); the entire Brickell finance cluster is within 12 min of the Vice City dock. Time claim (20\u201325 min) is whitelisted.",
-      "seasonal": false
+      "phase_notes": "Key Biscayne \u2192 Brickell. Foil-credible open bay. MECE spoke (exclusive origin).",
+      "seasonal": false,
+      "cluster": "miami"
     },
     {
       "id": "MIA-2",
@@ -466,7 +466,6 @@
       "phase": 1,
       "flagship": false,
       "color": "#7dd3c0",
-      "cluster": "miami",
       "stops": [
         "dinner-key-grove",
         "vice-city-marina",
@@ -578,8 +577,9 @@
       "legacy_ids": [
         "MIA-2"
       ],
-      "phase_notes": "Dinner Key \u2194 Brickell in 15\u201320 min (foil-credible year-round; time claim whitelisted for this leg only) with City Hall + Grove offices southbound as reverse-commute demand. The short EPIC extension is the second Brickell gate serving the Flagler St downtown edge \u2014 that hop is speed-constrained and gets NO time claim.",
-      "seasonal": false
+      "phase_notes": "Coconut Grove \u2192 Brickell \u2192 EPIC (bayside only, never Miami River). MECE spoke.",
+      "seasonal": false,
+      "cluster": "miami"
     },
     {
       "id": "MIA-3",
@@ -588,7 +588,6 @@
       "phase": 1,
       "flagship": false,
       "color": "#9bb7ff",
-      "cluster": "miami",
       "stops": [
         "miami-beach-marina",
         "vice-city-marina"
@@ -677,8 +676,9 @@
       "legacy_ids": [
         "MIA-3"
       ],
-      "phase_notes": "SoFi premium catchment to Brickell finance jobs, ~5.5 nm \u2248 20\u201325 min via Norris Cut (foil-credible with routing care; time claim whitelisted). Complements \u2014 does not fight \u2014 the city's free Sunset Harbour\u2194Venetian water taxi.",
-      "seasonal": false
+      "phase_notes": "South Beach \u2192 Brickell via Norris Cut only (never Fisherman's Channel). MECE spoke.",
+      "seasonal": false,
+      "cluster": "miami"
     },
     {
       "id": "MIA-4",
@@ -687,13 +687,69 @@
       "phase": 2,
       "flagship": false,
       "color": "#e8a87c",
-      "cluster": "miami",
       "stops": [
+        "aventura-loggerhead",
+        "bill-bird-haulover",
         "pelican-harbor",
         "venetian-marina",
-        "miamarina-bayside"
+        "miamarina-bayside",
+        "sunset-harbour"
       ],
       "segments": [
+        {
+          "from": "aventura-loggerhead",
+          "to": "bill-bird-haulover",
+          "distance_nm": 3.37,
+          "water_min": 25,
+          "water_path": [
+            [
+              -80.1285,
+              25.952
+            ],
+            [
+              -80.128,
+              25.945
+            ],
+            [
+              -80.125,
+              25.9
+            ],
+            [
+              -80.122,
+              25.903
+            ]
+          ],
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to local speed zones",
+          "constraint": "ICW channel through Sunny Isles/Dumbfoundling Bay is slow-speed Nov 15\u2013Apr 30 (30 mph only May 1\u2013Nov 14, 68C-22.025(1)(b)2) \u2014 service runs summer season ONLY",
+          "phase": 2
+        },
+        {
+          "from": "bill-bird-haulover",
+          "to": "pelican-harbor",
+          "distance_nm": 3.55,
+          "water_min": 12,
+          "water_path": [
+            [
+              -80.122,
+              25.903
+            ],
+            [
+              -80.13,
+              25.88
+            ],
+            [
+              -80.14,
+              25.86
+            ],
+            [
+              -80.146,
+              25.848
+            ]
+          ],
+          "speed_constrained": false,
+          "phase": 2
+        },
         {
           "from": "pelican-harbor",
           "to": "venetian-marina",
@@ -754,11 +810,74 @@
           ],
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "Downtown ICW channel is IDLE SPEED all year from 100 yd N of Venetian Cswy to the southern tip of Brickell Key \u2014 fixed slow tail into downtown",
+          "constraint": "Downtown ICW channel idle-speed all year (Venetian Cswy \u2192 Brickell Key) \u2014 fixed slow tail",
+          "phase": 2
+        },
+        {
+          "from": "sunset-harbour",
+          "to": "venetian-marina",
+          "distance_nm": 2.41,
+          "water_min": 7,
+          "water_path": [
+            [
+              -80.1415,
+              25.7925
+            ],
+            [
+              -80.155,
+              25.792
+            ],
+            [
+              -80.17,
+              25.791
+            ],
+            [
+              -80.186,
+              25.7905
+            ]
+          ],
+          "speed_constrained": false,
+          "routing": "Same crossing as the live city water taxi: designated 30/35-mph channels through the Venetian basin (slow-except-as-designated water).",
           "phase": 2
         }
       ],
       "water_path": [
+        [
+          [
+            -80.1285,
+            25.952
+          ],
+          [
+            -80.128,
+            25.945
+          ],
+          [
+            -80.125,
+            25.9
+          ],
+          [
+            -80.122,
+            25.903
+          ]
+        ],
+        [
+          [
+            -80.122,
+            25.903
+          ],
+          [
+            -80.13,
+            25.88
+          ],
+          [
+            -80.14,
+            25.86
+          ],
+          [
+            -80.146,
+            25.848
+          ]
+        ],
         [
           [
             -80.146,
@@ -802,186 +921,7 @@
             -80.1865,
             25.778
           ]
-        ]
-      ],
-      "legacy_ids": [
-        "MIA-4"
-      ],
-      "phase_notes": "Uses the 30/35-mph mid-bay water; accepts the idle tail into downtown. Pelican\u2194Venetian leg is time-claim eligible (30-mph ICW whitelist); the downtown tail renders indicative only.",
-      "seasonal": false
-    },
-    {
-      "id": "MIA-5",
-      "name": "Gold Coast Line",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#b39ddb",
-      "cluster": "miami",
-      "stops": [
-        "bill-bird-haulover",
-        "venetian-marina",
-        "miamarina-bayside"
-      ],
-      "segments": [
-        {
-          "from": "bill-bird-haulover",
-          "to": "venetian-marina",
-          "distance_nm": 7.74,
-          "water_min": 23,
-          "water_path": [
-            [
-              -80.122,
-              25.903
-            ],
-            [
-              -80.125,
-              25.9
-            ],
-            [
-              -80.145,
-              25.87
-            ],
-            [
-              -80.16,
-              25.83
-            ],
-            [
-              -80.18,
-              25.792
-            ],
-            [
-              -80.186,
-              25.7905
-            ]
-          ],
-          "speed_constrained": false,
-          "routing": "30-mph all-year ICW segments + unzoned mid-bay; several bridge idle pockets.",
-          "phase": 2
-        },
-        {
-          "from": "venetian-marina",
-          "to": "miamarina-bayside",
-          "distance_nm": 1.25,
-          "water_min": 9,
-          "water_path": [
-            [
-              -80.186,
-              25.7905
-            ],
-            [
-              -80.18,
-              25.792
-            ],
-            [
-              -80.185,
-              25.78
-            ],
-            [
-              -80.1865,
-              25.778
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "Downtown ICW channel idle-speed all year (Venetian Cswy \u2192 Brickell Key) \u2014 fixed slow tail",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -80.122,
-            25.903
-          ],
-          [
-            -80.125,
-            25.9
-          ],
-          [
-            -80.145,
-            25.87
-          ],
-          [
-            -80.16,
-            25.83
-          ],
-          [
-            -80.18,
-            25.792
-          ],
-          [
-            -80.186,
-            25.7905
-          ]
         ],
-        [
-          [
-            -80.186,
-            25.7905
-          ],
-          [
-            -80.18,
-            25.792
-          ],
-          [
-            -80.185,
-            25.78
-          ],
-          [
-            -80.1865,
-            25.778
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "MIA-5"
-      ],
-      "phase_notes": "Bal Harbour/Surfside/Sunny Isles condo corridor to Venetian/Downtown. Haulover leg time-claim eligible (30-mph ICW whitelist); downtown tail indicative only. Bill Bird construction status must be verified before this line is promoted (internal).",
-      "seasonal": false
-    },
-    {
-      "id": "MIA-6",
-      "name": "Bay Line",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#c9a86c",
-      "cluster": "miami",
-      "stops": [
-        "sunset-harbour",
-        "venetian-marina"
-      ],
-      "segments": [
-        {
-          "from": "sunset-harbour",
-          "to": "venetian-marina",
-          "distance_nm": 2.41,
-          "water_min": 7,
-          "water_path": [
-            [
-              -80.1415,
-              25.7925
-            ],
-            [
-              -80.155,
-              25.792
-            ],
-            [
-              -80.17,
-              25.791
-            ],
-            [
-              -80.186,
-              25.7905
-            ]
-          ],
-          "speed_constrained": false,
-          "routing": "Same crossing as the live city water taxi: designated 30/35-mph channels through the Venetian basin (slow-except-as-designated water).",
-          "phase": 2
-        }
-      ],
-      "water_path": [
         [
           [
             -80.1415,
@@ -1002,93 +942,89 @@
         ]
       ],
       "legacy_ids": [
-        "MIA-6"
+        "MIA-4",
+        "MIA-5",
+        "MIA-6",
+        "MIA-7"
       ],
-      "phase_notes": "Overlay/extension of the city's PROVEN 20-min crossing (free Miami Beach Water Taxi, live since Jan 2026, weekdays 7:00\u201319:30). Copy may cite the city service's 20-minute crossing as public proof; NO Navier time claim for this line until geometry seals (not on the foil-credible whitelist). Requires a City of Miami Beach dock agreement at Maurice Gibb (internal only).",
-      "seasonal": false
+      "phase_notes": "MECE north-bay spine replacing four overlapping feeders. Aventura is summer-season only (manatee rule Nov 15\u2013Apr 30). Downtown ICW tail is idle \u2014 indicative times only.",
+      "seasonal": false,
+      "cluster": "miami"
     },
     {
-      "id": "MIA-7",
-      "name": "Aventura Seasonal Extension",
-      "type": "seasonal",
-      "phase": 2,
-      "flagship": false,
-      "color": "#f0d080",
-      "cluster": "miami",
+      "id": "FTL-1",
+      "name": "Fort Lauderdale Line",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "color": "#7dd3c0",
       "stops": [
-        "aventura-loggerhead",
-        "bill-bird-haulover"
+        "pompano-alsdorf",
+        "bahia-mar",
+        "seventeenth-st",
+        "hollywood-margaritaville",
+        "ftl-riverwalk"
       ],
       "segments": [
         {
-          "from": "aventura-loggerhead",
-          "to": "bill-bird-haulover",
-          "distance_nm": 3.37,
-          "water_min": 25,
+          "from": "pompano-alsdorf",
+          "to": "bahia-mar",
+          "distance_nm": 7.41,
+          "water_min": 56,
           "water_path": [
             [
-              -80.1285,
-              25.952
+              -80.106,
+              26.232
             ],
             [
-              -80.128,
-              25.945
+              -80.105,
+              26.22
             ],
             [
-              -80.125,
-              25.9
+              -80.108,
+              26.16
             ],
             [
-              -80.122,
-              25.903
+              -80.11,
+              26.112
+            ],
+            [
+              -80.1065,
+              26.113
             ]
           ],
           "speed_constrained": true,
           "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "ICW channel through Sunny Isles/Dumbfoundling Bay is slow-speed Nov 15\u2013Apr 30 (30 mph only May 1\u2013Nov 14, 68C-22.025(1)(b)2) \u2014 service runs summer season ONLY",
+          "constraint": "Year-round slow-speed minimum-wake BRA in the ICW between Oakland Park Blvd and Sunrise Blvd bridges (FWC, Nov 2025) + bridge idle pockets; ICW otherwise 25 mph on weekdays (winter-weekday rule-text verification open)",
+          "routing": "ICW channel south.",
           "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -80.1285,
-            25.952
+        },
+        {
+          "from": "bahia-mar",
+          "to": "seventeenth-st",
+          "distance_nm": 1.29,
+          "water_min": 10,
+          "water_path": [
+            [
+              -80.1065,
+              26.113
+            ],
+            [
+              -80.11,
+              26.112
+            ],
+            [
+              -80.118,
+              26.105
+            ],
+            [
+              -80.126,
+              26.101
+            ]
           ],
-          [
-            -80.128,
-            25.945
-          ],
-          [
-            -80.125,
-            25.9
-          ],
-          [
-            -80.122,
-            25.903
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "MIA-7"
-      ],
-      "phase_notes": "Summer-season-only extension of the Gold Coast Line, and the label must say why: the ICW channel itself drops to slow speed Nov 15\u2013Apr 30, so foil service is not viable in winter. This is a regulatory season, NOT a resort/summer-premium product \u2014 do not copy Hamptons framing. Revisit if the pending Miami-Dade MPP update changes the winter rule.",
-      "seasonal": true
-    },
-    {
-      "id": "FTL-1",
-      "name": "Hollywood Commuter",
-      "type": "trunk",
-      "phase": 1,
-      "flagship": false,
-      "color": "#7dd3c0",
-      "cluster": "fort-lauderdale",
-      "stops": [
-        "hollywood-margaritaville",
-        "seventeenth-st",
-        "ftl-riverwalk"
-      ],
-      "segments": [
+          "speed_constrained": true,
+          "water_min_label": "indicative \u2014 subject to local speed zones"
+        },
         {
           "from": "hollywood-margaritaville",
           "to": "seventeenth-st",
@@ -1157,6 +1093,46 @@
       "water_path": [
         [
           [
+            -80.106,
+            26.232
+          ],
+          [
+            -80.105,
+            26.22
+          ],
+          [
+            -80.108,
+            26.16
+          ],
+          [
+            -80.11,
+            26.112
+          ],
+          [
+            -80.1065,
+            26.113
+          ]
+        ],
+        [
+          [
+            -80.1065,
+            26.113
+          ],
+          [
+            -80.11,
+            26.112
+          ],
+          [
+            -80.118,
+            26.105
+          ],
+          [
+            -80.126,
+            26.101
+          ]
+        ],
+        [
+          [
             -80.1155,
             26.012
           ],
@@ -1201,219 +1177,13 @@
         ]
       ],
       "legacy_ids": [
-        "FTL-1"
-      ],
-      "phase_notes": "Hollywood Beach \u2194 17th St \u2194 downtown Riverwalk, ~35\u201345 min end-to-end, competitive at peak \u2014 but every leg is speed-constrained, so ALL times render indicative. Existing docks at every stop. The commuter AM window (6:30\u20139:30) is genuinely unserved: the incumbent Water Taxi FTL runs leisure hours (10:00\u201322:00). Line name deliberately 'Hollywood Commuter' \u2014 'Hollywood Express' is the incumbent's brand.",
-      "seasonal": false
-    },
-    {
-      "id": "FTL-2",
-      "name": "Isles Shuttle",
-      "type": "feeder",
-      "phase": 1,
-      "flagship": false,
-      "color": "#e8a87c",
-      "cluster": "fort-lauderdale",
-      "stops": [
-        "bahia-mar",
-        "ftl-riverwalk"
-      ],
-      "segments": [
-        {
-          "from": "bahia-mar",
-          "to": "ftl-riverwalk",
-          "distance_nm": 1.92,
-          "water_min": 14,
-          "water_path": [
-            [
-              -80.1065,
-              26.113
-            ],
-            [
-              -80.11,
-              26.112
-            ],
-            [
-              -80.125,
-              26.11
-            ],
-            [
-              -80.135,
-              26.118
-            ],
-            [
-              -80.138,
-              26.1195
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "New River slow-speed all year on the downtown approach; short ICW hop otherwise",
-          "routing": "ICW south from Bahia Mar to the New River junction, then upriver to the Riverwalk city docks."
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -80.1065,
-            26.113
-          ],
-          [
-            -80.11,
-            26.112
-          ],
-          [
-            -80.125,
-            26.11
-          ],
-          [
-            -80.135,
-            26.118
-          ],
-          [
-            -80.138,
-            26.1195
-          ]
-        ]
-      ],
-      "legacy_ids": [
-        "FTL-2"
-      ],
-      "phase_notes": "Short, slow-water, schedule-certainty product: beach/isles residents to Las Olas offices. Sells on reliability and a guaranteed seat, NOT speed \u2014 no time claims. Positioning: commuter-hours complement to Water Taxi FTL, potentially using their docks under agreement (internal).",
-      "seasonal": false
-    },
-    {
-      "id": "FTL-3",
-      "name": "Pompano Line",
-      "type": "feeder",
-      "phase": 2,
-      "flagship": false,
-      "color": "#9bb7ff",
-      "cluster": "fort-lauderdale",
-      "stops": [
-        "pompano-alsdorf",
-        "bahia-mar",
-        "ftl-riverwalk"
-      ],
-      "segments": [
-        {
-          "from": "pompano-alsdorf",
-          "to": "bahia-mar",
-          "distance_nm": 7.41,
-          "water_min": 56,
-          "water_path": [
-            [
-              -80.106,
-              26.232
-            ],
-            [
-              -80.105,
-              26.22
-            ],
-            [
-              -80.108,
-              26.16
-            ],
-            [
-              -80.11,
-              26.112
-            ],
-            [
-              -80.1065,
-              26.113
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "Year-round slow-speed minimum-wake BRA in the ICW between Oakland Park Blvd and Sunrise Blvd bridges (FWC, Nov 2025) + bridge idle pockets; ICW otherwise 25 mph on weekdays (winter-weekday rule-text verification open)",
-          "routing": "ICW channel south.",
-          "phase": 2
-        },
-        {
-          "from": "bahia-mar",
-          "to": "ftl-riverwalk",
-          "distance_nm": 1.92,
-          "water_min": 14,
-          "water_path": [
-            [
-              -80.1065,
-              26.113
-            ],
-            [
-              -80.11,
-              26.112
-            ],
-            [
-              -80.125,
-              26.11
-            ],
-            [
-              -80.135,
-              26.118
-            ],
-            [
-              -80.138,
-              26.1195
-            ]
-          ],
-          "speed_constrained": true,
-          "water_min_label": "indicative \u2014 subject to local speed zones",
-          "constraint": "New River slow-speed all year on the downtown approach",
-          "routing": "ICW to New River junction, then upriver.",
-          "phase": 2
-        }
-      ],
-      "water_path": [
-        [
-          [
-            -80.106,
-            26.232
-          ],
-          [
-            -80.105,
-            26.22
-          ],
-          [
-            -80.108,
-            26.16
-          ],
-          [
-            -80.11,
-            26.112
-          ],
-          [
-            -80.1065,
-            26.113
-          ]
-        ],
-        [
-          [
-            -80.1065,
-            26.113
-          ],
-          [
-            -80.11,
-            26.112
-          ],
-          [
-            -80.125,
-            26.11
-          ],
-          [
-            -80.135,
-            26.118
-          ],
-          [
-            -80.138,
-            26.1195
-          ]
-        ]
-      ],
-      "legacy_ids": [
+        "FTL-1",
+        "FTL-2",
         "FTL-3"
       ],
-      "phase_notes": "Phase-2 growth feeder from the Pompano/Lighthouse Point residential catchment to downtown FTL jobs. Budget the Oakland Park\u2194Sunrise slow pinch on every run; resolve the Broward winter-weekday ICW rule conflict (68C-22.010 F.A.C.) before scheduling. No time claims.",
-      "seasonal": false
+      "phase_notes": "MECE single FTL corridor: Pompano \u00b7 Bahia Mar \u00b7 17th St \u00b7 Hollywood \u00b7 Riverwalk. Complements Water Taxi FTL leisure hours \u2014 never displacement. All legs speed-constrained (ICW / Port Everglades / New River).",
+      "seasonal": false,
+      "cluster": "fort-lauderdale"
     }
   ],
   "catchment": [
@@ -1697,12 +1467,12 @@
         "label": "terminals"
       },
       {
-        "value": "2",
-        "label": "independent networks"
+        "value": "5",
+        "label": "lines"
       },
       {
-        "value": "1 stop",
-        "label": "plugs into your network"
+        "value": "2",
+        "label": "independent networks"
       }
     ],
     "problem_title": "Jobs on the water. Commutes in traffic.",
@@ -1734,8 +1504,8 @@
     "proof_ask_title": "Ask",
     "proof_ask_body": "Non-binding LOI \u2014 seats or line anchor \u2014 so we sequence on real demand.",
     "network_title": "Your ride on the network",
-    "network_lead": "Three launch lines converge on Brickell: the Island Line (Key Biscayne \u2194 Brickell, 20\u201325 min), the Grove Line (Coconut Grove \u2194 Brickell, 15\u201320 min, continuing to the downtown river mouth), and the Beach Line (South Beach \u2194 Brickell, 20\u201325 min). Phase 2 adds a north-bay group \u2014 Sunset Harbour, Edgewater, Downtown/Bayside, the Upper Eastside, and Bal Harbour \u2014 rendered as planned, not promised. Miami and Fort Lauderdale operate as two independent networks. There is no boat between them \u2014 Brightline already does that trip in about 35 minutes, and we won't pretend water beats rail there.",
-    "network_footnote": "Miami and Fort Lauderdale operate as two independent networks. There is no boat between them \u2014 Brightline already does that trip in about 35 minutes, and we won't pretend water beats rail there. Aventura joins as a summer-season station (May\u2013mid-November): the Intracoastal channel there is a slow-speed manatee-protection zone from November 15 to April 30, so foil-speed service pauses each winter. We'd rather tell you that now than surprise you later. Fort Lauderdale is its own network: the Hollywood Commuter (Hollywood Beach \u2194 17th St \u2194 downtown Riverwalk) and the Isles Shuttle (Bahia Mar \u2194 Riverwalk) put the Las Olas office spine and the county government center a short walk from the dock. Fort Lauderdale's beloved Water Taxi runs 10 AM to 10 PM \u2014 we serve the commuter hours it doesn't, as a complement, not a competitor.",
+    "network_lead": "Two independent networks. Miami: three clear Brickell spokes (Island \u00b7 Grove \u00b7 Beach) plus one North Bay spine \u2014 not four overlapping feeders. Fort Lauderdale: one ICW corridor (Hollywood \u00b7 beach \u00b7 downtown). No boat between the cities \u2014 Brightline already does that. Times on FTL and constrained legs are indicative only.",
+    "network_footnote": "Miami and Fort Lauderdale operate as two independent networks. There is no boat between them \u2014 Brightline already does that trip in about 35 minutes, and we won't pretend water beats rail there. MECE: Miami spokes + North Bay spine; Fort Lauderdale single ICW line. Aventura is summer-season only (manatee rule). Complements the free city water taxi and Water Taxi FTL \u2014 not a replacement.",
     "two_networks": "Miami and Fort Lauderdale operate as two independent networks. There is no boat between them \u2014 Brightline already does that trip in about 35 minutes, and we won't pretend water beats rail there.",
     "map_detail_empty": "Pick a network (Miami or Fort Lauderdale), then two terminals in Find my ride.",
     "calc_title": "Rough cost for your team",
@@ -1844,5 +1614,5 @@
       "landing": "Water Taxi Pompano-route dock at Alsdorf Park, 2901 NE 14th St (northern alternate: Lighthouse Point Marina, 2841 Marina Circle)"
     }
   ],
-  "schedules_note": "Crossing-time claims only on foil-credible Biscayne Bay corridors. FTL legs and constrained zones: indicative \u2014 subject to local speed zones. No Miami\u2194FTL connector."
+  "schedules_note": "MECE lines: Island \u00b7 Grove \u00b7 Beach \u00b7 North Bay | Fort Lauderdale ICW. No Miami\u2194FTL connector. Sound-constrained and FTL legs: indicative only. Program band pricing."
 }
