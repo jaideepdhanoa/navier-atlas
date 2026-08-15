@@ -1,0 +1,573 @@
+{
+  "hub": "miami",
+  "label": "Miami & Fort Lauderdale",
+  "route": "/employers/miami",
+  "alias": "/miami-employers",
+  "version": "v1-draft",
+  "authored": "2026-08-15",
+  "authored_by": "Tasklet",
+  "status": "authored draft — Grok fills resolved_bp_id / lng / lat / water_path / water_min deterministically; no coordinates authored here by design",
+  "source_inventory": "/tasklet/drive/employer-networks/next-cities/miami/MIAMI-NODE-INVENTORY.md",
+
+  "clusters": [
+    { "id": "miami", "label": "Miami / Biscayne Bay" },
+    { "id": "fort-lauderdale", "label": "Fort Lauderdale / Broward" }
+  ],
+
+  "no_intercity_link": {
+    "rule": "ONE hub, TWO independent clusters. There is NO Miami↔Fort Lauderdale water link in ANY phase — do not render, imply, or reserve a connector line between the clusters.",
+    "reason": "Inventory verdict: ~25–30 nm either routing; inside (ICW) hits the winter-slow Sunny Isles/Dumbfoundling segment, bridge idle pockets, and the Port Everglades slow zone (90+ min winter); outside (ocean) hits the Government Cut slow RNA exit, ~20 nm open-Atlantic sea-state exposure (ops gate unverified), and the Port Everglades slow entry (~60–75 min best case). Brightline already serves the city-pair in ~30–40 min — the water product cannot beat it on time.",
+    "revisit_conditions": "Only if (a) an anchor employer pre-commits both ends, and (b) the vessel's offshore sea-state envelope is proven."
+  },
+
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_band_usd_month": [650, 1200],
+    "seat_price_band_note": "program band — Miami-specific pricing TBD; do not render as a city quote",
+    "corridor_launch_trigger_committed_seats": [60, 80]
+  },
+
+  "stops": [
+    {
+      "key": "vice-city-marina",
+      "label": "Brickell (Vice City Marina)",
+      "cluster": "miami",
+      "landing": "Vice City Marina, 801 Brickell Bay Dr",
+      "role": "interchange_primary",
+      "phase": 1,
+      "serves": [
+        "Citadel global HQ site, 1201 Brickell Bay Dr ($2.5B 54-story waterfront tower, construction start 2026) — ~2 min walk (map estimate)",
+        "830 Brickell tenants — Microsoft, Thoma Bravo, Sidley Austin, Kirkland & Ellis, Banco Santander, Marsh, CI Financial, A-CAP, Citadel current offices — ~8 min walk",
+        "Brickell City Centre — 2 blocks (marina's own claim)",
+        "Brickell Bay Dr / Brickell Ave condo towers directly at the dock"
+      ],
+      "tag": null,
+      "note_internal": "#1 diligence item in this market: commercial-passenger berthing terms, depths, and operator willingness at Vice City Marina are UNVERIFIED — needs a direct call before anything is promised. Marina is small (36 slips); Brickell landing capacity is the binding constraint for the whole Miami cluster. Plan: secure 2 dedicated berths here AND at EPIC Marina as overflow/second gate. Never render berthing-negotiation language.",
+      "source_url": "https://vicecitymarina.com/"
+    },
+    {
+      "key": "epic-marina",
+      "label": "Downtown River Mouth (EPIC Marina)",
+      "cluster": "miami",
+      "landing": "EPIC Marina, 250–270 Biscayne Blvd Way (at Kimpton EPIC Hotel, where the Miami River meets the bay)",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Flagler St downtown core — ~8 min walk",
+        "Brickell Ave offices — ~8–12 min walk via the Brickell Ave Bridge",
+        "Downtown river-mouth residential towers on-site"
+      ],
+      "tag": "second Brickell gate",
+      "note_internal": "Overflow/second gate for the Brickell hub (900 linear ft deep-water side-tie, daytime docking offered). Bayside face avoids the Miami River drawbridges — staying bayside means never waiting for the Brickell Ave Bridge curfew (33 CFR 117.305(d)). Approach sits in the river-mouth idle/slow zone and the slow-speed-all-year water around Brickell Key — short slow hop, price it in. Never render dock-deal language.",
+      "source_url": "http://www.epicmarina.com/"
+    },
+    {
+      "key": "crandon-key-biscayne",
+      "label": "Key Biscayne (Crandon Park)",
+      "cluster": "miami",
+      "landing": "Crandon Park Marina, 4000 Crandon Blvd",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Village of Key Biscayne — median household income ~$181.5K, single-road island with 80–90 min crisis-era commutes",
+        "Park-&-ride origin: large marina parking; village center is ~2 mi (drive/bike/shuttle, NOT walk-tier)"
+      ],
+      "tag": "park & ride",
+      "note_internal": "Miami-Dade County marina; commercial slips rented, charter fleet on-site. Pure residential origin — no employers at the node. Do not imply a village-center dock (none exists; Key Biscayne Yacht Club is private).",
+      "source_url": "https://www.miamidade.gov/global/recreation/park/crandon-park.page"
+    },
+    {
+      "key": "dinner-key-grove",
+      "label": "Coconut Grove (Dinner Key)",
+      "cluster": "miami",
+      "landing": "Dinner Key Marina, 3400 Pan American Dr",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Miami City Hall — on-site (Pan American Dr)",
+        "Grove office cluster — Terra Group HQ (Mary St), 2701 S Bayshore Dr, CocoWalk — ~12–18 min walk",
+        "Coconut Grove / Coral Gables affluent bayfront residential; Grove village walkable"
+      ],
+      "tag": null,
+      "note_internal": "City of Miami marina — Florida's largest wet-slip facility (582–587 slips), $22M restoration completed. Approach channel inside the slow-speed shore buffer for the last ~0.5 nm — acceptable, priced into the Grove Line time.",
+      "source_url": "https://www.miami.gov/Parks-Public-Places/Marinas/Dinner-Key-Marina-Mooring-Facility"
+    },
+    {
+      "key": "miami-beach-marina",
+      "label": "South Beach / SoFi (Miami Beach Marina)",
+      "cluster": "miami",
+      "landing": "Miami Beach Marina, 300 Alton Rd",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "South of Fifth (SoFi) — one of Miami Beach's wealthiest condo districts, directly at the dock",
+        "South Beach hospitality cluster (Joe's Stone Crab, SoFi hotels)"
+      ],
+      "tag": null,
+      "note_internal": "Suntex marina, 400 slips; 2022–24 Poseidon pilots used it. Marine-business landing agreements are established Miami Beach practice; city requires Certificate of Use + executed dockage/landing agreement — internal only. Marina fronts the Government Cut channel: the USCG slow-speed RNA applies immediately off the docks — exit slow, then route via Norris Cut to open bay; NEVER route via Fisherman's Channel.",
+      "source_url": "https://miamibeachmarina.com/"
+    },
+    {
+      "key": "sunset-harbour",
+      "label": "Sunset Harbour (Maurice Gibb Park)",
+      "cluster": "miami",
+      "landing": "Maurice Gibb Memorial Park dock, 18th St & Purdy Ave, Miami Beach",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Sunset Harbour / West Ave / Venetian & Sunset Islands / Belle Isle — ultra-prime island residential",
+        "Sunset Harbour retail/office cluster at the dock; Lincoln Road ~12 min walk",
+        "Miami Beach City Hall & Convention Center ~15–18 min (edge of walk-tier)"
+      ],
+      "tag": "planned",
+      "note_internal": "This is the City of Miami Beach's contracted water-taxi dock — the incumbent operator (Water Taxi of Miami Beach, LLC) holds the city contract (city ran an RFQ). Navier service here REQUIRES a City of Miami Beach agreement — internal only, never render. Backup berthing: Sunset Harbour Yacht Club adjacent (125 slips, 8 ft). Mount Sinai Medical Center (4,000+ employees, bayfront, NO dock) is shuttle-tier ~2.3 mi north — best dock-infill advocacy target in the market (FIND grant-eligible).",
+      "source_url": "https://www.miamibeachfl.gov/city-hall/transportation/water-taxi/"
+    },
+    {
+      "key": "venetian-marina",
+      "label": "Edgewater / Omni (Venetian Marina)",
+      "cluster": "miami",
+      "landing": "Venetian Marina & Yacht Club (former Sea Isle Marina), 1635 N Bayshore Dr",
+      "role": "interchange",
+      "phase": 2,
+      "serves": [
+        "Edgewater condo canyon at the dock; Venetian Islands via causeway; Omni/A&E District residential",
+        "Adrienne Arsht Center ~10 min walk; Omni Metromover station ~8 min (connects the whole CBD)",
+        "Downtown CBD via Metromover/Freebee (25–30 min walk — shuttle-tier on foot)"
+      ],
+      "tag": "planned",
+      "note_internal": "Active terminal of the free Miami Beach city water taxi (222 wet slips, Integra Marinas operated, FEC Realty site). Coordinate with — never collide with — the city service; it is a public proof point, not a competitor to displace. North-bay-network interchange hub.",
+      "source_url": "https://www.integramarinas.com/marinas/venetian-marina-and-yacht-club/"
+    },
+    {
+      "key": "miamarina-bayside",
+      "label": "Downtown / Bayside (Miamarina)",
+      "cluster": "miami",
+      "landing": "Miamarina at Bayside, 401 Biscayne Blvd",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Southeast Financial Center, Miami Tower, state & federal courts, Miami-Dade Government Center — ~8–15 min walk",
+        "Kaseya Center ~8 min; College/Bayside Metromover at the dock",
+        "Downtown CBD residential towers at the dock"
+      ],
+      "tag": "planned",
+      "note_internal": "Only City of Miami marina with a commercial-sightseeing rate class (125 slips, deep water). Slips reported 'currently full' with waitlist — commercial berth needs negotiation with City of Miami GSA Marinas — internal only. Sits at the west end of Government Cut inside slow water; the downtown ICW approach (Venetian Cswy → Brickell Key) is idle-speed all year — every approach leg is speed-constrained.",
+      "source_url": "https://www.miami.gov/Parks-Public-Places/Marinas/Miamarina-at-Bayside"
+    },
+    {
+      "key": "pelican-harbor",
+      "label": "Upper Eastside / 79th St (Pelican Harbor)",
+      "cluster": "miami",
+      "landing": "Pelican Harbor Marina, 1275 NE 79th St (79th St Causeway)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Upper Eastside / MiMo / Miami Shores bayfront residential",
+        "North Bay Village across the bridge (~15–20 min walk)"
+      ],
+      "tag": "planned",
+      "note_internal": "Miami-Dade County marina, 112 slips. Reported ~6 ft depths — foil-draft fit at low tide UNVERIFIED, check before commitment. Pure residential feeder — no employers at the node.",
+      "source_url": "https://www.miamidade.gov/global/recreation/park/pelican-harbor-marina.page"
+    },
+    {
+      "key": "bill-bird-haulover",
+      "label": "Bal Harbour / Haulover (Bill Bird Marina)",
+      "cluster": "miami",
+      "landing": "Bill Bird Marina, Haulover Park, 10800 Collins Ave",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Bal Harbour / Surfside / Sunny Isles affluent condo corridor — ~15–25 min walk or short shuttle",
+        "Park-&-ride origin: large Haulover Park parking; Bal Harbour Shops ~1.2 mi"
+      ],
+      "tag": "planned",
+      "note_internal": "Miami-Dade County marina, 8–8.5 ft depths, slip availability limited. Construction under way per boater reports 2025–26 — VERIFY completion status before committing or promoting this stop (inventory fail-closed flag). Internal only.",
+      "source_url": "https://www.miamidade.gov/global/recreation/park/haulover-park.page"
+    },
+    {
+      "key": "aventura-loggerhead",
+      "label": "Aventura (Loggerhead Marina)",
+      "cluster": "miami",
+      "landing": "Aventura Marina (Loggerhead), 3601 NE 207th St, The Waterways",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "The Waterways / Aventura waterfront condos at the dock; Golden Beach nearby",
+        "Aventura Hospital ~2 mi and Aventura Mall ~1.5 mi — shuttle-tier only, no walkable employer base"
+      ],
+      "tag": "seasonal — summer only (May 1–Nov 14)",
+      "note_internal": "Honest seasonal reason (renderable per gate): the ICW channel through Sunny Isles/Dumbfoundling Bay drops to slow speed Nov 15–Apr 30 (68C-22.025(1)(b)2) — foil-speed service is only possible May 1–Nov 14. The seasonal trap: peak snowbird demand season = peak restriction season. Revisit only if the pending Miami-Dade MPP update changes the winter channel rule. Do NOT dress this as a summer-premium/resort product — the reason is regulatory.",
+      "source_url": "https://loggerheadmarinas.com/marina/aventura-marina"
+    },
+    {
+      "key": "ftl-riverwalk",
+      "label": "Downtown Fort Lauderdale / Las Olas (Riverwalk)",
+      "cluster": "fort-lauderdale",
+      "landing": "New River / Downtown Docking — City of Fort Lauderdale Riverwalk city marina (alternate gate: Water Taxi stop F1, Riverside Hotel + Stranahan House, 335 SE 6th Ave)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "401 E Las Olas (Bank of America Plaza — BoA, Greenberg Traurig, Boies Schiller, Motorola Solutions, UBS, JLL) — ~5 min walk",
+        "Broward County Governmental Center, 115 S Andrews Ave (county government, 5,500–6,500 employees countywide) — ~10 min walk",
+        "AutoNation HQ, 200 SW 1st Ave — ~12 min walk; Broward County courthouse ~8 min; Brightline FTL station ~12 min",
+        "Downtown FTL towers and Las Olas Blvd condos"
+      ],
+      "tag": null,
+      "note_internal": "All downtown-FTL landings are on the New River — slow-speed all year with heavy megayacht/towboat traffic; the last ~2 nm is a fixed ~20–25 min crawl from the ICW junction — price into schedules, never claim times. 3rd Ave and Andrews Ave drawbridge opening rules not researched to CFR level — open schedule-risk item. Dock use of Water Taxi FTL's F1 stop possible under agreement — partner posture, internal only.",
+      "source_url": "https://www.parks.fortlauderdale.gov/programs/marinas/new-river-downtown-docking"
+    },
+    {
+      "key": "seventeenth-st",
+      "label": "17th St / Convention Center",
+      "cluster": "fort-lauderdale",
+      "landing": "Water Taxi stop F4/H2 — Hilton Fort Lauderdale Marina + Broward County Convention Center, 1881 SE 17th St",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Broward County Convention Center at the dock",
+        "Port Everglades cruise-line shoreside offices adjacent (port side is access-controlled)",
+        "17th St corridor hotels and marine industry; Harbor Beach / Rio Vista affluent waterfront nearby"
+      ],
+      "tag": null,
+      "note_internal": "Broward cluster interchange hub. Port Everglades is security-sensitive: slow-speed applies in ALL port waters year-round, plus a 6,000-ft idle zone in the ICW Nov 15–Mar 31 — every Hollywood↔FTL trip transits this slow segment (~1.5 nm). Existing Water Taxi FTL + Hollywood Express stop — coordinate dock use under agreement, internal only.",
+      "source_url": "https://watertaxi.com/route-map/"
+    },
+    {
+      "key": "bahia-mar",
+      "label": "Fort Lauderdale Beach (Bahia Mar)",
+      "cluster": "fort-lauderdale",
+      "landing": "Bahia Mar Yachting Center, 801 Seabreeze Blvd (Water Taxi stop F6 'Marina Village + Bahia Mar', 1001 Seabreeze Blvd)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "FTL beachfront condos; Harbour Isles",
+        "Las Olas Isles estate catchment nearby (marquee FTL waterfront residential)",
+        "Beach hospitality cluster"
+      ],
+      "tag": null,
+      "note_internal": "Resort marina, 250 slips, 3,000-ft parallel dock; Water Taxi FTL stop on-site — coordinate dock use under agreement, internal only.",
+      "source_url": "https://bahiamaryachtingcenter.com/"
+    },
+    {
+      "key": "hollywood-margaritaville",
+      "label": "Hollywood Beach (Margaritaville)",
+      "cluster": "fort-lauderdale",
+      "landing": "Water Taxi stop H1 — Margaritaville Hollywood Beach Resort, 1111 N Ocean Dr (ICW side)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Margaritaville Hollywood Beach Resort — on-site",
+        "Hollywood Lakes and Hollywood beach condo residential"
+      ],
+      "tag": null,
+      "note_internal": "Hollywood's actual CBD/hospital employers are 2–3 mi inland — this dock serves the beach and resort, not the inland job base; never imply otherwise. Incumbent's route brand is 'Hollywood Express' — our line name is 'Hollywood Commuter' to avoid collision. Hollywood/Hallandale ICW channel is 25 mph ALL YEAR — best fast water in Broward.",
+      "source_url": "https://watertaxi.com/hollywood-express/"
+    },
+    {
+      "key": "pompano-alsdorf",
+      "label": "Pompano Beach (Alsdorf Park)",
+      "cluster": "fort-lauderdale",
+      "landing": "Water Taxi Pompano-route dock at Alsdorf Park, 2901 NE 14th St (northern alternate: Lighthouse Point Marina, 2841 Marina Circle)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Pompano Beach / Lighthouse Point waterfront residential",
+        "Pure residential feeder — thin employer base at the node"
+      ],
+      "tag": "planned",
+      "note_internal": "City of Pompano Beach / Water Taxi FTL partnership docks. P6 Sands Harbor is 'temporarily closed' per operator (watchlist — do not use). Southbound runs hit the new year-round slow-speed minimum-wake BRA between Oakland Park Blvd and Sunrise Blvd bridges (FWC, Nov 2025) plus bridge idle pockets. Broward winter-weekday ICW rule text conflict (map legend vs FWC news release) unresolved — verify 68C-22.010 F.A.C. before scheduling.",
+      "source_url": "https://www.pompanobeachfl.gov/residents/water-taxi"
+    }
+  ],
+
+  "lines": [
+    {
+      "id": "MIA-1",
+      "name": "Island Line",
+      "cluster": "miami",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "stops": ["crandon-key-biscayne", "vice-city-marina"],
+      "segments": [
+        { "from": "crandon-key-biscayne", "to": "vice-city-marina", "speed_constrained": false, "constraint": null, "routing": "Open unzoned bay; slow only in Bear Cut shore buffers, the 100-yd Rickenbacker bridge pocket, and the last 0.5–1 nm at Brickell. Route AROUND the year-round no-entry zone west of Virginia Key — never cross it." }
+      ],
+      "phase_notes": "Flagship — the strongest single corridor found in any city scanned to date. ~6 nm ≈ 20–25 min, foil-credible year-round, vs 80–90 min crisis-era Rickenbacker drives on the island's only road. Crandon is park-&-ride ($181.5K median HH income catchment); the entire Brickell finance cluster is within 12 min of the Vice City dock. Time claim (20–25 min) is whitelisted."
+    },
+    {
+      "id": "MIA-2",
+      "name": "Grove Line",
+      "cluster": "miami",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["dinner-key-grove", "vice-city-marina", "epic-marina"],
+      "segments": [
+        { "from": "dinner-key-grove", "to": "vice-city-marina", "speed_constrained": false, "constraint": null, "routing": "Open bay with 1000-ft slow-speed shore buffers at each end; ~4.5–5 nm." },
+        { "from": "vice-city-marina", "to": "epic-marina", "speed_constrained": true, "constraint": "Slow-speed all year around Brickell Key + river-mouth idle/slow zone on the EPIC approach (short hop)", "routing": "Bayside only — EPIC's bay face; never enter the Miami River (idle all year + drawbridge curfews)." }
+      ],
+      "phase_notes": "Dinner Key ↔ Brickell in 15–20 min (foil-credible year-round; time claim whitelisted for this leg only) with City Hall + Grove offices southbound as reverse-commute demand. The short EPIC extension is the second Brickell gate serving the Flagler St downtown edge — that hop is speed-constrained and gets NO time claim."
+    },
+    {
+      "id": "MIA-3",
+      "name": "Beach Line",
+      "cluster": "miami",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["miami-beach-marina", "vice-city-marina"],
+      "segments": [
+        { "from": "miami-beach-marina", "to": "vice-city-marina", "speed_constrained": false, "constraint": null, "routing": "MANDATORY: exit Miami Beach Marina through the Government Cut RNA slow water (~0.5–1 nm), then via NORRIS CUT to open bay at speed. NEVER route via Fisherman's Channel (USCG slow RNA). No geometry through or over Fisher Island." }
+      ],
+      "phase_notes": "SoFi premium catchment to Brickell finance jobs, ~5.5 nm ≈ 20–25 min via Norris Cut (foil-credible with routing care; time claim whitelisted). Complements — does not fight — the city's free Sunset Harbour↔Venetian water taxi."
+    },
+    {
+      "id": "MIA-4",
+      "name": "North Bay Line",
+      "cluster": "miami",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["pelican-harbor", "venetian-marina", "miamarina-bayside"],
+      "segments": [
+        { "from": "pelican-harbor", "to": "venetian-marina", "speed_constrained": false, "constraint": null, "routing": "Designated 30/35-mph channels and unzoned mid-bay water; idle pockets at the 79th St bridge." },
+        { "from": "venetian-marina", "to": "miamarina-bayside", "speed_constrained": true, "constraint": "Downtown ICW channel is IDLE SPEED all year from 100 yd N of Venetian Cswy to the southern tip of Brickell Key — fixed slow tail into downtown", "routing": null }
+      ],
+      "phase_notes": "Uses the 30/35-mph mid-bay water; accepts the idle tail into downtown. Pelican↔Venetian leg is time-claim eligible (30-mph ICW whitelist); the downtown tail renders indicative only."
+    },
+    {
+      "id": "MIA-5",
+      "name": "Gold Coast Line",
+      "cluster": "miami",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["bill-bird-haulover", "venetian-marina", "miamarina-bayside"],
+      "segments": [
+        { "from": "bill-bird-haulover", "to": "venetian-marina", "speed_constrained": false, "constraint": null, "routing": "30-mph all-year ICW segments + unzoned mid-bay; several bridge idle pockets." },
+        { "from": "venetian-marina", "to": "miamarina-bayside", "speed_constrained": true, "constraint": "Downtown ICW channel idle-speed all year (Venetian Cswy → Brickell Key) — fixed slow tail", "routing": null }
+      ],
+      "phase_notes": "Bal Harbour/Surfside/Sunny Isles condo corridor to Venetian/Downtown. Haulover leg time-claim eligible (30-mph ICW whitelist); downtown tail indicative only. Bill Bird construction status must be verified before this line is promoted (internal)."
+    },
+    {
+      "id": "MIA-6",
+      "name": "Bay Line",
+      "cluster": "miami",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["sunset-harbour", "venetian-marina"],
+      "segments": [
+        { "from": "sunset-harbour", "to": "venetian-marina", "speed_constrained": false, "constraint": null, "routing": "Same crossing as the live city water taxi: designated 30/35-mph channels through the Venetian basin (slow-except-as-designated water)." }
+      ],
+      "phase_notes": "Overlay/extension of the city's PROVEN 20-min crossing (free Miami Beach Water Taxi, live since Jan 2026, weekdays 7:00–19:30). Copy may cite the city service's 20-minute crossing as public proof; NO Navier time claim for this line until geometry seals (not on the foil-credible whitelist). Requires a City of Miami Beach dock agreement at Maurice Gibb (internal only)."
+    },
+    {
+      "id": "MIA-7",
+      "name": "Aventura Seasonal Extension",
+      "cluster": "miami",
+      "type": "seasonal",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["aventura-loggerhead", "bill-bird-haulover"],
+      "segments": [
+        { "from": "aventura-loggerhead", "to": "bill-bird-haulover", "speed_constrained": true, "constraint": "ICW channel through Sunny Isles/Dumbfoundling Bay is slow-speed Nov 15–Apr 30 (30 mph only May 1–Nov 14, 68C-22.025(1)(b)2) — service runs summer season ONLY", "routing": null }
+      ],
+      "phase_notes": "Summer-season-only extension of the Gold Coast Line, and the label must say why: the ICW channel itself drops to slow speed Nov 15–Apr 30, so foil service is not viable in winter. This is a regulatory season, NOT a resort/summer-premium product — do not copy Hamptons framing. Revisit if the pending Miami-Dade MPP update changes the winter rule."
+    },
+    {
+      "id": "FTL-1",
+      "name": "Hollywood Commuter",
+      "cluster": "fort-lauderdale",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["hollywood-margaritaville", "seventeenth-st", "ftl-riverwalk"],
+      "segments": [
+        { "from": "hollywood-margaritaville", "to": "seventeenth-st", "speed_constrained": true, "constraint": "Port Everglades: slow-speed in ALL port waters year-round (~1.5 nm transit) + 6,000-ft ICW idle zone Nov 15–Mar 31; Hollywood ICW channel otherwise 25 mph all year", "routing": "ICW channel; transit the Port Everglades entrance channel at posted speed (security-sensitive port — internal)." },
+        { "from": "seventeenth-st", "to": "ftl-riverwalk", "speed_constrained": true, "constraint": "New River slow-speed all year — final ~2 nm into downtown is a fixed ~20–25 min crawl", "routing": "ICW to New River junction, then upriver past the 3rd Ave and Andrews Ave drawbridges (opening-rule schedule risk — internal open item)." }
+      ],
+      "phase_notes": "Hollywood Beach ↔ 17th St ↔ downtown Riverwalk, ~35–45 min end-to-end, competitive at peak — but every leg is speed-constrained, so ALL times render indicative. Existing docks at every stop. The commuter AM window (6:30–9:30) is genuinely unserved: the incumbent Water Taxi FTL runs leisure hours (10:00–22:00). Line name deliberately 'Hollywood Commuter' — 'Hollywood Express' is the incumbent's brand."
+    },
+    {
+      "id": "FTL-2",
+      "name": "Isles Shuttle",
+      "cluster": "fort-lauderdale",
+      "type": "feeder",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["bahia-mar", "ftl-riverwalk"],
+      "segments": [
+        { "from": "bahia-mar", "to": "ftl-riverwalk", "speed_constrained": true, "constraint": "New River slow-speed all year on the downtown approach; short ICW hop otherwise", "routing": "ICW south from Bahia Mar to the New River junction, then upriver to the Riverwalk city docks." }
+      ],
+      "phase_notes": "Short, slow-water, schedule-certainty product: beach/isles residents to Las Olas offices. Sells on reliability and a guaranteed seat, NOT speed — no time claims. Positioning: commuter-hours complement to Water Taxi FTL, potentially using their docks under agreement (internal)."
+    },
+    {
+      "id": "FTL-3",
+      "name": "Pompano Line",
+      "cluster": "fort-lauderdale",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["pompano-alsdorf", "bahia-mar", "ftl-riverwalk"],
+      "segments": [
+        { "from": "pompano-alsdorf", "to": "bahia-mar", "speed_constrained": true, "constraint": "Year-round slow-speed minimum-wake BRA in the ICW between Oakland Park Blvd and Sunrise Blvd bridges (FWC, Nov 2025) + bridge idle pockets; ICW otherwise 25 mph on weekdays (winter-weekday rule-text verification open)", "routing": "ICW channel south." },
+        { "from": "bahia-mar", "to": "ftl-riverwalk", "speed_constrained": true, "constraint": "New River slow-speed all year on the downtown approach", "routing": "ICW to New River junction, then upriver." }
+      ],
+      "phase_notes": "Phase-2 growth feeder from the Pompano/Lighthouse Point residential catchment to downtown FTL jobs. Budget the Oakland Park↔Sunrise slow pinch on every run; resolve the Broward winter-weekday ICW rule conflict (68C-22.010 F.A.C.) before scheduling. No time claims."
+    }
+  ],
+
+  "catchment": [
+    {
+      "anchor": "Brickell finance cluster",
+      "anchor_station": "vice-city-marina",
+      "employers": ["Citadel global HQ site, 1201 Brickell Bay Dr (~2 min walk, map est.)", "830 Brickell tenants — Microsoft, Thoma Bravo, Sidley Austin, Kirkland & Ellis, Banco Santander, Marsh, CI Financial, A-CAP (~8 min walk)", "Brickell City Centre (2 blocks)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 4,
+      "note": "All three launch lines terminate at this dock — a true finance cluster within 10 min of an existing marina (Grab/Careem-grade density). Full-network count stays 4 because the Phase-2 north-bay lines hub at Venetian/Bayside with no authored water link to Brickell."
+    },
+    {
+      "anchor": "Downtown Miami",
+      "anchor_station": "miamarina-bayside",
+      "employers": ["Miami-Dade County government + state & federal courts (8–15 min walk)", "Southeast Financial Center / Miami Tower tenants", "Kaseya Center (~8 min)"],
+      "stations_at_launch": 0,
+      "stations_full_network": 5,
+      "note": "Phase 2 station — 0 at launch; render as planned. At launch the downtown edge is already served via EPIC Marina on the Grove Line (Flagler St core ~8 min walk)."
+    },
+    {
+      "anchor": "Coconut Grove",
+      "anchor_station": "dinner-key-grove",
+      "employers": ["Miami City Hall (on-site)", "Terra Group HQ (Mary St)", "2701 S Bayshore Dr / CocoWalk office cluster (12–18 min)"],
+      "stations_at_launch": 4,
+      "stations_full_network": 4,
+      "note": "Grove Line to Brickell in 15–20 min; reverse-commute demand into City Hall and Grove offices."
+    },
+    {
+      "anchor": "Miami Beach (SoFi)",
+      "anchor_station": "miami-beach-marina",
+      "employers": ["SoFi hospitality cluster (Joe's Stone Crab, SoFi hotels)", "Brickell/downtown employers reachable via the Beach Line"],
+      "stations_at_launch": 4,
+      "stations_full_network": 4,
+      "note": "Primarily a premium residential origin. Sunset Harbour (Phase 2, north-bay group) later adds Lincoln Road / City Hall coverage on the Bay Line."
+    },
+    {
+      "anchor": "Downtown Fort Lauderdale / Las Olas",
+      "anchor_station": "ftl-riverwalk",
+      "employers": ["401 E Las Olas — Bank of America Plaza (BoA, Greenberg Traurig, Boies Schiller, Motorola Solutions, UBS, JLL)", "Broward County government, 115 S Andrews Ave (5,500–6,500 countywide)", "AutoNation HQ, 200 SW 1st Ave"],
+      "stations_at_launch": 3,
+      "stations_full_network": 4,
+      "note": "Real but mid-sized downtown cluster; the dock sits in permanently slow New River water, so this anchor sells on guaranteed seats and reliability, not crossing time."
+    },
+    {
+      "anchor": "Hollywood Beach",
+      "anchor_station": "hollywood-margaritaville",
+      "employers": ["Margaritaville Hollywood Beach Resort (on-site)"],
+      "stations_at_launch": 3,
+      "stations_full_network": 4,
+      "note": "Resort anchor + Hollywood Lakes residential origin. Hollywood's inland CBD/hospital employers are NOT served by this dock."
+    }
+  ],
+  "catchment_counting_rule": "stations_at_launch / stations_full_network = count of OTHER stations reachable from the anchor's station via authored lines (transfers allowed at interchanges), at Phase 1 vs all phases, WITHIN the anchor's cluster only — never across clusters (no intercity link exists). The Miami cluster contains two deliberately separate sub-networks with no authored water link between their hubs: the Brickell group (vice-city-marina, epic-marina, crandon-key-biscayne, dinner-key-grove, miami-beach-marina — 5 stations, all Phase 1, so 4 reachable at launch and at full network) and the north-bay group (venetian-marina, miamarina-bayside, sunset-harbour, pelican-harbor, bill-bird-haulover, aventura-loggerhead — 6 stations, all Phase 2, so 0 at launch and 5 at full network; aventura-loggerhead counts but is summer-season only). The Fort Lauderdale cluster is one connected network: 4 Phase-1 stations (3 reachable at launch) growing to 5 (4 reachable at full network).",
+
+  "watchlist": [
+    {
+      "landing": "Maurice A. Ferré Park Deepwater Slip No. 2 (baywalk berth behind PAMM/Frost Science), 1075 Biscayne Blvd",
+      "reason": "Real public deepwater berth (hosted Peru's tall ship BAP Unión, Aug 2026) but event/visiting-vessel use only — no scheduled-service precedent, slip depth vs foil draft unverified, and promotion requires the Bayfront Park Trust + DDA Class-I permit process. Inventory ranks it watchlist-grade; Phase-2 infill candidate for an A&E-District gate — do not render as a station.",
+      "source_url": "https://www.bayfrontparkmiami.com/maurice-a-ferre-park"
+    },
+    {
+      "landing": "Rickenbacker Marina, 3301 Rickenbacker Cswy (Virginia Key)",
+      "reason": "Real 680-slip marina but no residents on Virginia Key — a mid-causeway park-&-ride intercept at best, and the City of Miami is revisiting redevelopment of the Virginia Key marinas (2026), so tenure is uncertain. Do not render as a station.",
+      "source_url": "https://therealdeal.com/miami/2026/06/08/miami-to-revisit-redevelopment-of-virginia-key-marinas/"
+    },
+    {
+      "landing": "Yacht Haven Grande Miami at Island Gardens (Watson Island), MacArthur Causeway",
+      "reason": "Superyacht marina on city-owned land — real berthing, but no residents at the node and only a mid-causeway intercept role between downtown and South Beach; berth economics built for 550-ft yachts, not commuter frequency. Do not render as a station.",
+      "source_url": "https://www.igymarinas.com/marinas/yacht-haven-grande-miami-island-gardens-marina/"
+    },
+    {
+      "landing": "Sands Harbor (Water Taxi Pompano stop P6), Pompano Beach",
+      "reason": "Listed 'temporarily closed' by the incumbent operator — closure duration unknown. Alsdorf Park is the authored Pompano landing; keep P6 on watch only. Do not render as a station.",
+      "source_url": "https://watertaxi.com/route-map/"
+    }
+  ],
+
+  "no_landing": [
+    { "area": "Brickell Key (Claughton Island)", "reason": "Water-taxi site DESIGNATED by the city in 2017 and named in Swire's 2024 master plan, but no public landing has been sourced as built — designated/planned, not built. Do not render." },
+    { "area": "Mount Sinai Medical Center (4300 Alton Rd, Miami Beach)", "reason": "4,000+ employees on a literally bayfront campus but NO vessel landing exists — shuttle-tier from Sunset Harbour (~2.3 mi); the market's #1 dock-infill advocacy target (internal), not a stop." },
+    { "area": "Margaret Pace Park (Edgewater)", "reason": "Named in the Miami DDA waterborne vision and 2024 dockage-sites map, but no dock exists today — paper only; Venetian Marina 2 blocks north is the real node." },
+    { "area": "North Bay Village", "reason": "No public marina or dock — only private condo marinas and a closed restaurant dock; nearest public node is Pelican Harbor across the 79th St bridge." },
+    { "area": "Key Biscayne village center", "reason": "No public commuter dock; Key Biscayne Yacht Club is private; Crandon Marina (2 mi north) is the park-&-ride node." },
+    { "area": "Fisher Island", "reason": "Closed private community with its own 24-hr ferry from Terminal Island — structurally unavailable to a shared network; do not count its income base and route no geometry through it." },
+    { "area": "PortMiami / Royal Caribbean HQ (1050 Caribbean Way, Dodge Island)", "reason": "New ~1,500-workstation HQ sits inside the seaport's controlled perimeter beside the Fisherman's Channel slow RNA — a port-authority negotiation, growth-phase and partnership-dependent, not a node." },
+    { "area": "Aventura Mall / Aventura Hospital", "reason": "Both ~1.5–2 mi inland from any dock; Loggerhead Aventura Marina is the only real landing and is shuttle-tier to both." },
+    { "area": "Hollywood CBD / Memorial Regional / HEICO (3000 Taft St)", "reason": "Hollywood's actual employers are 2–3 mi inland from the ICW; the Margaritaville dock serves the beach, not the job base." },
+    { "area": "Government Cut / South Pointe Pier", "reason": "The fishing pier is not a vessel landing; Miami Beach Marina is the real node there." },
+    { "area": "Wynwood / Midtown / Design District", "reason": "Entirely inland — no water frontage on Biscayne Bay; nearest bay edge is Edgewater (~1.5–2 mi = shuttle-tier at best from Venetian Marina)." }
+  ],
+
+  "bp_gap": [],
+
+  "gates": {
+    "speed_zone_honesty": {
+      "rule": "Segments flagged speed_constrained:true must render water_min as 'indicative — subject to local speed zones'. Crossing-time claims appear ONLY on corridors the inventory marks foil-credible: Island Line (20–25 min), Grove Line Dinner Key↔Brickell leg (15–20 min), Beach Line via Norris Cut (20–25 min), and the north-bay 30-mph ICW legs (Pelican↔Venetian, Bill Bird↔Venetian). Everything else — all FTL legs, all downtown-idle tails, the EPIC hop, the Bay Line, Aventura — renders indicative with no bare numbers.",
+      "constrained_zones": [
+        "Miami River — IDLE speed all year, entire river (plus drawbridge curfews, 33 CFR 117.305) — never route service upriver",
+        "Downtown ICW channel — IDLE speed all year, 100 yd N of Venetian Cswy → southern tip of Brickell Key; slow-speed all year around Brickell Key",
+        "Government Cut & Fisherman's Channel — USCG Regulated Navigation Area, slow speed for vessels <50 m (effective Jan 29 2025)",
+        "Port Everglades — slow speed in ALL port waters year-round + 6,000-ft ICW idle zone Nov 15–Mar 31",
+        "New River — slow speed all year, both forks, through downtown Fort Lauderdale",
+        "Sunny Isles / Dumbfoundling Bay ICW — channel slow-speed Nov 15–Apr 30 (Aventura seasonal gate)",
+        "Year-round slow-speed BRA, ICW between Oakland Park Blvd and Sunrise Blvd bridges (FWC, Nov 2025)"
+      ],
+      "time_claim_whitelist": [
+        { "line": "MIA-1", "legs": "all", "claim": "20–25 min" },
+        { "line": "MIA-2", "legs": "dinner-key-grove ↔ vice-city-marina only", "claim": "15–20 min" },
+        { "line": "MIA-3", "legs": "all (via Norris Cut)", "claim": "20–25 min" },
+        { "line": "MIA-4", "legs": "pelican-harbor ↔ venetian-marina only", "claim": "indicative until sealed, claim-eligible" },
+        { "line": "MIA-5", "legs": "bill-bird-haulover ↔ venetian-marina only", "claim": "indicative until sealed, claim-eligible" }
+      ],
+      "segment_flag": "speed_constrained",
+      "note": "FWC manatee zones regulate speed/wake, not hull type — a zero-wake hydrofoil gets NO automatic exemption from posted zones. FWC + Miami-Dade DERM engagement is the #1 regulatory workstream; the Miami-Dade Manatee Protection Plan is being updated now. Do not soften this in copy."
+    },
+    "no_intercity_link": {
+      "rule": "NO Miami↔Fort Lauderdale water link in any phase — do not render, imply, or reserve a connector. The two clusters are independent networks (25–30 nm, hard slow segments both routings, Brightline wins on time). Zero cross-cluster segments in geometry."
+    },
+    "incumbent_respect": {
+      "rule": "Water Taxi FTL owns leisure hours (10:00–22:00) — Navier's FTL positioning is the unserved commuter blocks (6:30–9:30 / 16:30–19:00), as a complement, potentially using their docks under agreement. Never disparage or position as displacement. The free Miami Beach city water taxi (live since Jan 20 2026, Sunset Harbour ↔ Venetian, 20 min) is a PUBLIC PROOF POINT — copy may say 'Miami Beach already runs a commuter water taxi — we make it a network' and may cite its 20-min crossing. Never imply Navier replaces the free city service; the premium pitch is frequency, reach (Brickell/Key Biscayne/Grove), and guaranteed employer seats."
+    },
+    "maurice_gibb_agreement_internal_only": {
+      "rule": "The Maurice Gibb dock is the City of Miami Beach's contracted water-taxi dock (incumbent operator holds the contract via city RFQ); Navier service there requires a city agreement. This lives in note_internal only — never rendered."
+    },
+    "hurricane_season_internal_only": {
+      "rule": "Hurricane-season ops (Jun 1–Nov 30 exposure, haul-out/berthing contingencies, service-suspension protocol) and the winter manatee-season/peak-demand overlap are internal planning material — never rendered in copy."
+    },
+    "aventura_seasonal_honesty": {
+      "rule": "Aventura renders as a seasonal station with the honest regulatory reason visible: 'summer season only (May 1–Nov 14) — the Intracoastal channel here is a slow-speed manatee zone Nov 15–Apr 30'. Do NOT use resort/summer-premium framing; the season is set by rule, not by demand."
+    },
+    "internal_fields_stripped_from_dom": ["dock_track", "note_internal"],
+    "no_invented_landings": "Every stop maps to the exact named landing in MIAMI-NODE-INVENTORY.md. Any stop that cannot be ID-matched to a real BP goes to the bp_gap ledger with reason and renders only from inventory-named coordinates — never guess.",
+    "times_indicative": "ALL times marked indicative until Atlas geometry seals them; whitelisted claims render with the inventory's ranges and an 'indicative' qualifier.",
+    "phase_toggle_default": "At launch",
+    "loi_framing": "Non-binding letter of intent — a seat-block interest signal, not a purchase.",
+    "no_dock_negotiation_language": "No copy about dock deals, berthing negotiations, city agreements, marina terms, or landing diligence (incl. the Vice City berthing question) — internal only.",
+    "launch_timing": "Service launch not before end-2027. All network rendering is coverage narrative, not a service promise; seat economics still gate corridor launch (60–80 committed seats)."
+  },
+
+  "copy": {
+    "hero": "Key Biscayne to Brickell in 20–25 minutes — instead of an 80–90 minute causeway crawl. Navier is building an employer water network for South Florida: 20-seat electric hydrofoils linking Key Biscayne, Coconut Grove, and South Beach to a dock two minutes from Brickell's towers, plus a second network connecting Hollywood Beach and the Las Olas Isles to downtown Fort Lauderdale.",
+    "sections": {
+      "why_miami": "Miami's jobs sit on the water and its commutes sit in traffic. Brickell — the densest finance cluster in the Southeast — is a two-minute walk from an existing marina, and Key Biscayne's only road home has meant 80–90 minute drives. Miami Beach already runs a commuter water taxi — a free city service crossing the bay in a consistent 20 minutes since January 2026. We make it a network: more corridors, commuter frequency, and guaranteed employer seats.",
+      "how_it_works": "Employers commit seat blocks on a corridor. When a corridor reaches 60–80 committed seats, it launches. Seats are guaranteed, quiet, working commutes on zero-emission electric hydrofoils.",
+      "network_miami": "Three launch lines converge on Brickell: the Island Line (Key Biscayne ↔ Brickell, 20–25 min), the Grove Line (Coconut Grove ↔ Brickell, 15–20 min, continuing to the downtown river mouth), and the Beach Line (South Beach ↔ Brickell, 20–25 min). Phase 2 adds a north-bay group — Sunset Harbour, Edgewater, Downtown/Bayside, the Upper Eastside, and Bal Harbour — rendered as planned, not promised.",
+      "network_fort_lauderdale": "Fort Lauderdale is its own network: the Hollywood Commuter (Hollywood Beach ↔ 17th St ↔ downtown Riverwalk) and the Isles Shuttle (Bahia Mar ↔ Riverwalk) put the Las Olas office spine and the county government center a short walk from the dock. Fort Lauderdale's beloved Water Taxi runs 10 AM to 10 PM — we serve the commuter hours it doesn't, as a complement, not a competitor.",
+      "two_networks": "Miami and Fort Lauderdale operate as two independent networks. There is no boat between them — Brightline already does that trip in about 35 minutes, and we won't pretend water beats rail there.",
+      "aventura_note": "Aventura joins as a summer-season station (May–mid-November): the Intracoastal channel there is a slow-speed manatee-protection zone from November 15 to April 30, so foil-speed service pauses each winter. We'd rather tell you that now than surprise you later.",
+      "timing": "Targeting first service no earlier than end-2027. Every travel time shown is indicative until routes are finalized with harbor and wildlife authorities, and times only appear on corridors where full-speed water is verified.",
+      "loi_ask": "Register interest with a non-binding letter of intent. It costs nothing and reserves nothing — it tells us which corridors to launch first."
+    }
+  }
+}
