@@ -28,6 +28,7 @@ employer-hub/
     washington-dc/hub.json   # hub #3 (live)
     miami/hub.json           # hub #4 (live) — dual cluster Miami/FTL
     boston/hub.json          # hub #5 (live)
+    seattle/hub.json         # hub #6 (live) — dual cluster Lake/Sound
 ```
 
 ## Calculator profiles
