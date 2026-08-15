@@ -736,18 +736,14 @@
       return;
     }
     const drive = driveMin != null ? driveMin : driveMinutes(trip.from, trip.to);
-    const speedLbl =
-      (DATA.gates && DATA.gates.speed_constrained_label) ||
-      'indicative — subject to local speed zones';
-    const navierPart = trip.speedConstrained
-      ? speedLbl
-      : '~' + Math.round(trip.totalNavier) + ' min Navier';
+    // Always capture model minutes — drive times are also estimates; don't blank Navier in LOI.
+    const navierPart = '~' + Math.round(trip.totalNavier) + ' min Navier';
     lastTripSnapshot = {
       tripFrom: trip.from,
       tripFromLabel: trip.fromLabel,
       tripTo: trip.to,
       tripToLabel: trip.toLabel,
-      tripNavierMin: trip.speedConstrained ? '' : String(Math.round(trip.totalNavier)),
+      tripNavierMin: String(Math.round(trip.totalNavier)),
       tripDriveMin: drive != null ? String(Math.round(drive)) : '',
       tripTransfers: String(trip.transfers || 0),
       tripSummary:
@@ -833,13 +829,10 @@
       if (clr) clr.hidden = false;
       return;
     }
-    const save = driveMin != null && !trip.speedConstrained ? driveMin - trip.totalNavier : null;
-    const speedLabel =
-      (DATA.gates && DATA.gates.speed_constrained_label) ||
-      'indicative — subject to local speed zones';
-    const saveHtml = trip.speedConstrained
-      ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Water times are ${speedLabel}</div>`
-      : save != null && save > 0
+    // Drive times are also estimates — always show Navier model minutes so sales can compare.
+    const save = driveMin != null ? driveMin - trip.totalNavier : null;
+    const saveHtml =
+      save != null && save > 0
         ? `<div class="trip-save">Save ~${Math.round(save)} min vs driving this trip</div>`
         : save != null
           ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Similar to peak drive time — still skips toll stress &amp; parking</div>`
@@ -863,23 +856,17 @@
             <span class="mins">~${s.mins} min</span>
           </div>`;
         }
-        const stepMins = s.speedConstrained
-          ? 'indicative'
-          : `~${Math.round(s.mins)} min`;
         return `<div class="trip-step">
           <span class="n">${idx + 1}</span>
           <div><strong>${s.fromLabel} → ${s.toLabel}</strong>
-            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}${s.speedConstrained ? ' · harbor speed rules' : ''}</div>
+            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}</div>
           </div>
-          <span class="mins">${stepMins}</span>
+          <span class="mins">~${Math.round(s.mins)} min</span>
         </div>`;
       })
       .join('');
-    const navierTotal = trip.speedConstrained
-      ? `<div class="v" style="font-size:18px">Indicative</div>
-          <div class="hint">${speedLabel}${trip.transferTotal ? ` · +${trip.transferTotal} min transfers` : ''}</div>`
-      : `<div class="v">~${Math.round(trip.totalNavier)} min</div>
-          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>`;
+    const navierTotal = `<div class="v">~${Math.round(trip.totalNavier)} min</div>
+          <div class="hint">Water ~${Math.round(trip.waterTotal)} min${trip.transferTotal ? ` + transfer ~${trip.transferTotal} min` : ''}</div>`;
     res.hidden = false;
     res.innerHTML = `
       <div class="trip-title">${trip.fromLabel} → ${trip.toLabel}</div>
@@ -939,12 +926,7 @@
           trip.requiredPhase > 1 && trip.requiredPhaseLabel
             ? ` · ${trip.requiredPhaseLabel}`
             : '';
-        const speedLbl =
-          (DATA.gates && DATA.gates.speed_constrained_label) ||
-          'indicative — subject to local speed zones';
-        const timeBit = trip.speedConstrained
-          ? speedLbl
-          : `~${Math.round(trip.totalNavier)} min on Navier`;
+        const timeBit = `~${Math.round(trip.totalNavier)} min on Navier`;
         detail.innerHTML = `<strong>Your ride</strong>
           <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ${timeBit}${
             drive != null ? ` vs ~${drive} min drive` : ''
@@ -1606,24 +1588,20 @@
   }
 
   function waterMinLabel(seg) {
-    // Priority: authored label → constrained default → whitelist claim (always + indicative) → bare number.
-    // Never render a bare ~N min when water_min_label or speed_constrained is set (speed-honesty gates).
-    if (seg.water_min_label) return seg.water_min_label;
-    if (seg.speed_constrained) {
-      return (
-        (DATA.gates && DATA.gates.speed_constrained_label) ||
-        'indicative — subject to local speed zones'
-      );
-    }
+    // Always prefer a planning number when we have one (drive times are estimates too).
+    // Whitelist ranges (time_claim) first; else ~water_min; keep light honesty via the trip caveat, not blank times.
     if (seg.time_claim) {
       const t = String(seg.time_claim).trim();
-      return /indicative/i.test(t) ? t : `${t} (indicative)`;
+      // If claim already has a number range, show it; strip pure-disclaimer labels that hide the clock.
+      if (/\d/.test(t)) return /indicative/i.test(t) ? t : `${t} (indicative)`;
     }
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
       const mins = Math.ceil((seg.distance_nm / 20) * 60 / 5) * 5;
       return `${seg.distance_nm} nm · ~${mins} min on the water`;
     }
+    // Fallback only when no model minutes exist
+    if (seg.water_min_label && /\d/.test(seg.water_min_label)) return seg.water_min_label;
     return 'Water time indicative';
   }
 
