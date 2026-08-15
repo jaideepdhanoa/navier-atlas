@@ -1606,19 +1606,22 @@
   }
 
   function waterMinLabel(seg) {
-    // Harbor / manatee / no-wake regimes: never bare minutes on constrained segments
-    if (seg.speed_constrained || seg.water_min_label) {
+    // Priority: authored label → constrained default → whitelist claim (always + indicative) → bare number.
+    // Never render a bare ~N min when water_min_label or speed_constrained is set (speed-honesty gates).
+    if (seg.water_min_label) return seg.water_min_label;
+    if (seg.speed_constrained) {
       return (
-        seg.water_min_label ||
         (DATA.gates && DATA.gates.speed_constrained_label) ||
         'indicative — subject to local speed zones'
       );
     }
-    // Optional whitelist claim range (e.g. foil-credible corridors)
-    if (seg.time_claim) return `${seg.time_claim} (indicative)`;
+    if (seg.time_claim) {
+      const t = String(seg.time_claim).trim();
+      return /indicative/i.test(t) ? t : `${t} (indicative)`;
+    }
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
-      const mins = Math.ceil(seg.distance_nm / 20 * 60 / 5) * 5;
+      const mins = Math.ceil((seg.distance_nm / 20) * 60 / 5) * 5;
       return `${seg.distance_nm} nm · ~${mins} min on the water`;
     }
     return 'Water time indicative';
