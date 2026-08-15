@@ -14,9 +14,10 @@
 ## Tasklet packages
 
 - **Future cities playbook:** [`TASKLET-FUTURE-CITIES-HANDOFF.md`](./TASKLET-FUTURE-CITIES-HANDOFF.md) ← start here
+- **Marina-standard map corrections (PR #352 v2) completion:** [`../employer-hub-v2/GROK-COMPLETION-map-corrections-2026-08-15.md`](../employer-hub-v2/GROK-COMPLETION-map-corrections-2026-08-15.md)
 - Bay: `handoff/bay-employers/` (historical + LOI setup)
 - NYC: `handoff/ny-employers/` (PR #349) — content/math only; not a page fork
-- v2 network notes: `handoff/employer-hub-v2/` (historical)
+- v2 network notes: `handoff/employer-hub-v2/` (spec + audits + completion)
 
 ## Render source of truth
 
