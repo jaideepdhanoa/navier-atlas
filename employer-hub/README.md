@@ -7,7 +7,7 @@ Public sales surfaces for employer water networks. **One template**, many cities
 | Topic | Choice |
 |-------|--------|
 | Canonical URL | `/employers/<id>` e.g. `/employers/new-york`, `/employers/bay-area` |
-| Aliases | `/bay-employers`, `/ny-employers` (full copies for cleanUrls) |
+| Aliases | `/bay-employers`, `/ny-employers`, `/dc-employers` (full copies for cleanUrls) |
 | Lines / EXEC | Same map treatment as Bay — every product line is a styled display line |
 | New water segments | Grok owns water-clean hand geometry |
 | LOI | One Google Sheet tab; rows include `hub` / `hub_id` |
@@ -24,7 +24,12 @@ employer-hub/
     hub.js                   # map, calculator profiles, LOI
   hubs/
     bay-area/hub.json        # hub #1 (live)
-    new-york/hub.json        # hub #2 (next)
+    new-york/hub.json        # hub #2 (live)
+    washington-dc/hub.json   # hub #3 (live)
+    miami/hub.json           # hub #4 (live) — dual cluster Miami/FTL
+    boston/hub.json          # hub #5 (live)
+    seattle/hub.json         # hub #6 (live) — dual cluster Lake/Sound
+    san-diego/hub.json       # hub #7 (live) — San Diego Bay
 ```
 
 ## Calculator profiles
@@ -50,6 +55,19 @@ Emits `_dist/employers/<id>/` and each alias path with `index.html`, `hub.css`, 
 4. Set transfer hubs, `trip_planner`, catchment, network-first `copy`.
 5. Set `calculator.profile` + `worked_assert`.
 6. Build + deploy.
+
+### Line topology (MECE — required)
+
+Lines are customer-facing corridors, not an OD inventory dump.
+
+- Target **≤ ceil(stops / 2)** lines per cluster (hard ceiling: 4 / 5 / 6 by size).
+- Prefer **one geographic spine** with `stop.phase` / `segment.phase_max` over many feeders that redraw the same water.
+- Long-haul edges (e.g. Woodbridge, Scituate) belong on the spine at Phase 2/3 — not orphan expresses.
+- Exclusive multi-spoke-to-hub (Miami Brickell) is fine; overlapping multi-stop paths are not.
+- Dual-cluster hubs: apply MECE **inside** each cluster; never invent a connector.
+
+**Tasklet handoff (2026-08-15):**  
+[`handoff/employer-hub/GROK-HANDOFF-mece-line-design-2026-08-15.md`](../handoff/employer-hub/GROK-HANDOFF-mece-line-design-2026-08-15.md)
 
 **Full future-city playbook (Tasklet):**  
 [`handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md`](../handoff/employer-hub/TASKLET-FUTURE-CITIES-HANDOFF.md)

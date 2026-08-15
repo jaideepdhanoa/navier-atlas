@@ -1,7 +1,8 @@
 /**
- * POST /api/loi — Bay Area employer LOI intake.
+ * POST /api/loi — Multi-city employer hub LOI intake.
  *
- * Accepts JSON from /bay-employers form. Delivers to any configured sinks:
+ * Accepts JSON from /employers/<id> (and aliases e.g. /bay-employers, /ny-employers).
+ * Delivers to any configured sinks:
  *   LOI_SLACK_WEBHOOK_URL   Slack incoming webhook
  *   LOI_SHEETS_WEBHOOK_URL  Google Apps Script (or any) URL that appends a row
  *   RESEND_API_KEY          optional email via Resend
@@ -9,6 +10,7 @@
  *   LOI_FROM_EMAIL          from-address for Resend (must be verified domain)
  *
  * At least one sink must be set in Vercel project env (Production).
+ * One Google Sheet tab for all hubs; each row includes hub / hub_id.
  */
 
 const MAX_LEN = {
@@ -27,6 +29,14 @@ const MAX_LEN = {
   netIncremental: 40,
   perRider: 40,
   seats: 20,
+  tripFrom: 80,
+  tripFromLabel: 160,
+  tripTo: 80,
+  tripToLabel: 160,
+  tripNavierMin: 20,
+  tripDriveMin: 20,
+  tripTransfers: 10,
+  tripSummary: 300,
   hp: 0, // honeypot must be empty
 };
 
@@ -95,6 +105,14 @@ function normalize(raw) {
     netIncremental: str(raw.netIncremental, MAX_LEN.netIncremental),
     perRider: str(raw.perRider, MAX_LEN.perRider),
     seats: str(raw.seats, MAX_LEN.seats),
+    tripFrom: str(raw.tripFrom, MAX_LEN.tripFrom),
+    tripFromLabel: str(raw.tripFromLabel || raw.tripFrom, MAX_LEN.tripFromLabel),
+    tripTo: str(raw.tripTo, MAX_LEN.tripTo),
+    tripToLabel: str(raw.tripToLabel || raw.tripTo, MAX_LEN.tripToLabel),
+    tripNavierMin: str(raw.tripNavierMin, MAX_LEN.tripNavierMin),
+    tripDriveMin: str(raw.tripDriveMin, MAX_LEN.tripDriveMin),
+    tripTransfers: str(raw.tripTransfers, MAX_LEN.tripTransfers),
+    tripSummary: str(raw.tripSummary, MAX_LEN.tripSummary),
     hp: str(raw.hp, 20), // honeypot
     source: str(raw.source || raw.hub_id || 'employer-hub', 40),
     hub_id: str(raw.hub_id || raw.source || 'employer-hub', 40),
@@ -123,6 +141,7 @@ function sinksConfigured() {
 function textSummary(d) {
   return [
     `Non-binding LOI — ${d.company}`,
+    `Hub: ${d.hub_id || d.source}`,
     `Path: ${d.flavorLabel}`,
     `Name: ${d.name}`,
     `Role: ${d.role}`,
@@ -131,10 +150,14 @@ function textSummary(d) {
     `Nearest terminal: ${d.stopLabel}`,
     `Preferred line: ${d.lineLabel}`,
     `Est. employees: ${d.employees}`,
+    d.tripSummary
+      ? `Find my ride: ${d.tripSummary}`
+      : d.tripFrom || d.tripTo
+        ? `Find my ride: ${d.tripFromLabel || d.tripFrom || '—'} → ${d.tripToLabel || d.tripTo || '—'} · ~${d.tripNavierMin || '—'} min Navier vs ~${d.tripDriveMin || '—'} min drive`
+        : null,
     d.seats || d.netIncremental
       ? `Planning est.: ${d.netIncremental || '—'} net/mo · ${d.perRider || '—'}/rider · ${d.seats || '—'} seats`
       : null,
-    `Hub: ${d.hub_id || d.source}`,
     `Source: ${d.source}`,
     `At: ${d.submittedAt}`,
   ]
@@ -145,6 +168,11 @@ function textSummary(d) {
 async function sendSlack(d) {
   const url = process.env.LOI_SLACK_WEBHOOK_URL;
   if (!url) return { skip: true };
+  const tripField =
+    d.tripSummary ||
+    (d.tripFrom || d.tripTo
+      ? `${d.tripFromLabel || d.tripFrom || '—'} → ${d.tripToLabel || d.tripTo || '—'} (~${d.tripNavierMin || '—'} vs ~${d.tripDriveMin || '—'} drive)`
+      : '—');
   const payload = {
     text: `🌊 *Employer LOI* (${d.hub_id || d.source}) — *${d.company}* (${d.flavorLabel})`,
     blocks: [
@@ -163,6 +191,7 @@ async function sendSlack(d) {
           { type: 'mrkdwn', text: `*Email*\n${d.email}` },
           { type: 'mrkdwn', text: `*Terminal*\n${d.stopLabel}` },
           { type: 'mrkdwn', text: `*Line*\n${d.lineLabel}` },
+          { type: 'mrkdwn', text: `*Find my ride*\n${tripField}` },
           { type: 'mrkdwn', text: `*CC*\n${d.cc || '—'}` },
         ],
       },
@@ -213,6 +242,14 @@ async function sendSheets(d) {
     netIncremental: d.netIncremental,
     perRider: d.perRider,
     seats: d.seats,
+    tripFrom: d.tripFrom,
+    tripFromLabel: d.tripFromLabel,
+    tripTo: d.tripTo,
+    tripToLabel: d.tripToLabel,
+    tripNavierMin: d.tripNavierMin,
+    tripDriveMin: d.tripDriveMin,
+    tripTransfers: d.tripTransfers,
+    tripSummary: d.tripSummary,
     source: d.source,
   };
   const r = await fetch(url, {
@@ -232,11 +269,12 @@ async function sendResend(d) {
   if (!key) return { skip: true };
   const to = process.env.LOI_NOTIFY_EMAIL || 'jaideep@navierboat.com';
   const from = process.env.LOI_FROM_EMAIL || 'Navier Atlas <onboarding@resend.dev>';
+  const hub = d.hub_id || d.source || 'employer-hub';
   const body = {
     from,
     to: [to],
     reply_to: d.email,
-    subject: `Bay employer LOI — ${d.company}`,
+    subject: `Employer LOI (${hub}) — ${d.company}`,
     text: textSummary(d),
   };
   if (d.cc) body.cc = [d.cc];

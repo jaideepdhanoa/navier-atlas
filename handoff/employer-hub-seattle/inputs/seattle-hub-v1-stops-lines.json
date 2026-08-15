@@ -1,0 +1,588 @@
+{
+  "hub": "seattle",
+  "label": "Seattle, Lake Washington & Puget Sound",
+  "route": "/employers/seattle",
+  "alias": "/seattle-employers",
+  "version": "v1-draft",
+  "authored": "2026-08-15",
+  "authored_by": "Tasklet",
+  "status": "authored draft — Grok fills resolved_bp_id / lng / lat / water_path / water_min deterministically; no coordinates authored here by design",
+  "source_inventory": "/tasklet/drive/employer-networks/next-cities/seattle/SEATTLE-NODE-INVENTORY.md",
+
+  "clusters": [
+    { "id": "lake", "label": "Lake Washington" },
+    { "id": "sound", "label": "Puget Sound / Elliott Bay" }
+  ],
+
+  "no_intercluster_link": {
+    "rule": "ONE hub, TWO independent clusters. There is NO Lake Washington ↔ Puget Sound water link in ANY phase — do not render, imply, or reserve a connector line between the clusters, and route zero geometry through the Ballard Locks or the Ship Canal.",
+    "reason": "Inventory verdict: the only water connection is the Lake Washington Ship Canal — a blanket 7-knot zone end-to-end (SMC 16.20.130) — through the Ballard Locks, which are first-come queue-based with small-lock cycles of ~10–15 min best case and documented waits of 1–4 hours on busy days, plus 4-kn approach zones. Not commuter-schedulable. Treat Sound and Lake as two independent networks.",
+    "revisit_conditions": "None identified. The Ship Canal 7-kn rule has no exemption pathway in SMC 16.20.130 short of a code amendment, and the locks queue is structural. Do not soften."
+  },
+
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_band_usd_month": [650, 1200],
+    "seat_price_band_note": "program band — Seattle-specific pricing TBD; do not render as a city quote",
+    "corridor_launch_trigger_committed_seats": [60, 80]
+  },
+
+  "stops": [
+    {
+      "key": "meydenbauer",
+      "label": "Bellevue (Meydenbauer Bay)",
+      "cluster": "lake",
+      "landing": "Bellevue Marina at Meydenbauer Bay — city visitor-moorage docks (the new Meydenbauer Bay Park pier is pedestrian-only; the marina is the usable berth)",
+      "role": "interchange_primary",
+      "phase": 1,
+      "serves": [
+        "Downtown Bellevue CBD — ~0.7–1 mi uphill, 15–20 min: longer walk / shuttle-tier (NOT walk-tier)",
+        "Amazon Bellevue towers (7,500 in 2023 → ~15,000 cited 2025, target 25,000) — same 15–20 min uphill tier",
+        "Medina / Hunts Point / Clyde Hill extreme-income residential catchment adjacent (no public docks of their own)",
+        "Historic precedent: this exact site was the Seattle–Bellevue ferry landing from the 1890s to 1921 (Mosquito Fleet)"
+      ],
+      "tag": null,
+      "note_internal": "City of Bellevue Parks visitor moorage — commercial-embarkation terms UNVERIFIED; direct city conversation required (parks_dock_permission_internal gate). Bay itself is 7 kn within 300 ft of swim areas/docks/park shoreline — short, priced into times. Meydenbauer harbor line (WAC 332-28-010) and any DNR/shoreline permit pathway unscoped. Never render dock-negotiation language.",
+      "source_url": "https://bellevuewa.gov/city-government/departments/parks/rentals/bellevue-marina-meydenbauer-bay/visitor-moorage-meydenbauer-bay"
+    },
+    {
+      "key": "leschi",
+      "label": "Seattle Lakefront (Leschi)",
+      "cluster": "lake",
+      "landing": "Leschi Moorage, Seattle Parks (concession-operated; the only public moorage between SR-520 and Seward Park)",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Leschi / Madrona / Madison Valley lakefront professional residential — direct I-90 pain proxy",
+        "Reverse-commute origin: Seattle lakefront residents working in Bellevue (across the bridges today)",
+        "Employer-light at the dock — honest residential end of the Bridge Bypass Line"
+      ],
+      "tag": null,
+      "note_internal": "Seattle Parks concession (Marina Management LLC) — whether concession/permit allows scheduled commercial embarkation UNVERIFIED (parks_dock_permission_internal). Lakewood Moorage, same concession ~2 mi south near Seward Park, is the alternate/overflow berth — not authored as a station. 7-kn/100-yd shore buffer on every approach.",
+      "source_url": "https://www.leschiandlakewood.com/"
+    },
+    {
+      "key": "kirkland",
+      "label": "Kirkland (Marina Park)",
+      "cluster": "lake",
+      "landing": "Marina Park city dock & moorage, downtown Kirkland — includes the city's codified commercial tour-boat facility (KMC 14.36.200)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Downtown Kirkland offices and Kirkland Urban district — walkable from the dock",
+        "Kirkland / Juanita affluent Eastside residential",
+        "Google Kirkland (747 6th St S) — ~0.9 mi inland, 15–20 min: longer walk / shuttle-tier (NOT waterfront)"
+      ],
+      "tag": null,
+      "note_internal": "Kirkland operates a codified commercial tour-boat facility at this dock (KMC 14.36.200) — direct precedent for scheduled commercial passenger ops and the cleanest permit path in the lake cluster. Still requires a city agreement — internal only. No Kirkland-specific open-water speed ordinance located (inventory unknown; county/state defaults + shore buffers assumed).",
+      "source_url": "https://www.kirklandwa.gov/Government/Departments/Parks-and-Community-Services/Parks-Trails-and-Beaches/Marina-Park-Boat-Launch-and-Moorage"
+    },
+    {
+      "key": "gene-coulon-southport",
+      "label": "Renton (Coulon / Southport)",
+      "cluster": "lake",
+      "landing": "Gene Coulon Memorial Beach Park day-moorage docks, 1201 Lake Washington Blvd N (alternate gate: Southport private yacht dock at the Hyatt Regency Lake Washington)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Boeing Renton 737 plant — adjacent south shore, walk-tier",
+        "Southport Office Campus (730,000 sf) — on the shore next door, walk-tier",
+        "Renton highlands / south-lake suburb residential"
+      ],
+      "tag": null,
+      "note_internal": "Coulon is city day moorage (launch 8am–10pm, no overnight); whether day-moorage rules permit scheduled commercial embarkation UNKNOWN — city concession/permit conversation required (parks_dock_permission_internal). Southport dock is private (SECO Development) — a negotiable employer gate; internal only. Renton: 8 kn within 100 yd + no-wake within 100 yd of shoreline/bridges (RMC 9-3-7).",
+      "source_url": "https://www.waterwayguide.com/marina/gene-coupon-memorial-beach-park"
+    },
+    {
+      "key": "carillon-point",
+      "label": "Kirkland South (Carillon Point)",
+      "cluster": "lake",
+      "landing": "Carillon Point Marina (private; guest moorage, Dockwa-reservable)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Carillon Point office complex on-site (tenant roster unverified — keep copy generic)",
+        "Microsoft Redmond via ground shuttle (~3.5 mi to the nearest lake water) — shuttle-tier only; there is no dock at or near the Redmond campus",
+        "Kirkland gold-coast residential"
+      ],
+      "tag": "shuttle to Microsoft Redmond",
+      "note_internal": "Private marina (Carillon Properties) — commercial berthing terms unverified; direct negotiation required. The Microsoft leg is ground shuttle, never a water path, and copy must never imply a Microsoft dock. Infill stop on the Phase-2 Kirkland↔Leschi direct per inventory §8.",
+      "source_url": "https://dockwa.com/explore/destination/jnc9m8-carillon-point-marina"
+    },
+    {
+      "key": "bell-harbor",
+      "label": "Downtown Seattle (Bell Harbor / Pier 66)",
+      "cluster": "sound",
+      "landing": "Bell Harbor Marina, Bell Street Pier / Pier 66 (Port of Seattle; public guest moorage, reservations)",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Belltown / Pike Place / waterfront offices — walk-tier",
+        "North downtown CBD towers — walk-tier",
+        "Commuter-landing precedent: Pier 66 was the Seattle landing of the 2022 Des Moines passenger-ferry pilot"
+      ],
+      "tag": null,
+      "note_internal": "Port of Seattle facility — landing/berthing agreement with the Port required; internal only. Deliberate downtown gate choice: NOT Pier 50 (KCWT/Kitsap slips saturated — Kitsap is building Pier 46 for exactly this reason) and NOT Colman Dock (WSF's terminal). Elliott Bay: 7 kn within 200 yd of shoreline/piers, 3 kn inside marinas (SMC 16.20.130).",
+      "source_url": "https://www.portseattle.org/maritime/bell-harbor-marina"
+    },
+    {
+      "key": "seacrest",
+      "label": "West Seattle (Seacrest)",
+      "cluster": "sound",
+      "landing": "Seacrest Park dock — King County Water Taxi West Seattle terminal (Seattle Parks / King County Metro)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "West Seattle / Alki residential — a water-commute-habituated market (2.5-year bridge closure 2020–22; Water Taxi habit formed)",
+        "Employer-light at the dock — honest residential end"
+      ],
+      "tag": null,
+      "note_internal": "Active KCWT terminal — any Navier use requires a shared-use/berthing arrangement with Seattle Parks + King County Metro (parks_dock_permission_internal + incumbent_respect). Posture is complement to KCWT (different destinations: Bell Harbor + Elliott Bay Marina, not Pier 50), never displacement — internal only.",
+      "source_url": "https://kingcounty.gov/en/dept/metro/travel-options/water-taxi"
+    },
+    {
+      "key": "elliott-bay-marina",
+      "label": "Interbay / Expedia (Elliott Bay Marina)",
+      "cluster": "sound",
+      "landing": "Elliott Bay Marina, 2601 W Marina Pl, Smith Cove (private; 1,200 slips; 1,000-ft guest dock, transient moorage)",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Expedia Group HQ — 40-acre waterfront campus adjacent via the Elliott Bay Trail, ~10–15 min walk (map estimate, flagged): true walk-tier waterfront anchor",
+        "Magnolia affluent residential immediately uphill"
+      ],
+      "tag": null,
+      "note_internal": "Private marina (Elliott Bay Marina LLC) — commercial berthing negotiation required; internal only. Expedia walk time is a map estimate, not field-verified (inventory flag). 3 kn inside the marina — Elliott Bay Marina is named in SMC 16.20.130.",
+      "source_url": "https://www.elliottbaymarina.co/transient-dockage/"
+    },
+    {
+      "key": "bainbridge",
+      "label": "Bainbridge Island (Eagle Harbor)",
+      "cluster": "sound",
+      "landing": "Eagle Harbor / Bainbridge Island WSF terminal area, Winslow (per inventory; exact Navier berth within Eagle Harbor is a dock-track item)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Bainbridge Island — high-income, proven commuter island (the ~35-min WSF Bainbridge run is the regional workhorse)",
+        "Winslow town center at the harbor",
+        "Premium overlay value: direct to Elliott Bay Marina / Expedia with no downtown transfer"
+      ],
+      "tag": "planned",
+      "note_internal": "Inventory node is the WSF terminal; a Navier berth in Eagle Harbor (WSDOT slip, city dock, or marina) is UNVERIFIED — dock_track item, do not promote past 'planned' until resolved. Never render as competing with WSF (incumbent_respect): the overlay serves a landing pair WSF does not (Eagle Harbor ↔ Smith Cove).",
+      "source_url": "https://wsdot.com/ferries/schedule/scheduledetail.aspx?departingterm=7&arrivingterm=3&roundtrip=true"
+    },
+    {
+      "key": "des-moines",
+      "label": "Des Moines (Marina)",
+      "cluster": "sound",
+      "landing": "Des Moines Marina guest-moorage float (city-owned, 840 slips)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Des Moines / South King County shore-city residential",
+        "Proven precedent: this exact float homeported the 63-passenger vessel of the 2022 Des Moines ↔ Seattle passenger-ferry pilot (marina-to-marina commuter service)"
+      ],
+      "tag": "planned",
+      "note_internal": "City-owned marina; 2022 pilot ran from the guest float to Bell Harbor — the direct template for this line. Berthing terms conversation with the City of Des Moines required; internal only.",
+      "source_url": "https://www.desmoinesmarina.com/"
+    },
+    {
+      "key": "kingston",
+      "label": "Kingston (Port of Kingston)",
+      "cluster": "sound",
+      "landing": "Port of Kingston marina / Kingston dock",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Kingston / North Kitsap commuter base — a fast-ferry-proven water-commute market",
+        "Pure residential origin — employer-light at the dock"
+      ],
+      "tag": "planned",
+      "note_internal": "Kitsap's Kingston fast ferry currently runs with NO backup vessel (service fragility) — the employer seat-block overlay is a resilience story, but NEVER render anything that reads as criticism of Kitsap Transit (incumbent_respect). Port of Kingston berthing conversation required.",
+      "source_url": "https://www.kitsaptransit.com/service/fast-ferry/kingston-fast-ferry"
+    },
+    {
+      "key": "edmonds",
+      "label": "Edmonds (Port of Edmonds)",
+      "cluster": "sound",
+      "landing": "Port of Edmonds marina — reservable guest moorage inside the breakwater",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Edmonds / Shoreline affluent north-end residential",
+        "Downtown Edmonds small-professional cluster"
+      ],
+      "tag": "planned",
+      "note_internal": "Authored as the inventory's Phase-3 'Edmonds infill' — an infill stop on the Kingston line's run into Elliott Bay. Port of Edmonds berthing conversation required. Keep geometry clear of the Edmonds–Kingston WSF crossing lanes.",
+      "source_url": "https://portofedmonds.gov/marina/guest-moorage/"
+    },
+    {
+      "key": "gig-harbor",
+      "label": "Gig Harbor (Jerisich Dock)",
+      "cluster": "sound",
+      "landing": "Jerisich Dock — City of Gig Harbor public transient moorage, downtown",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Gig Harbor high-income peninsula residential",
+        "Downtown Gig Harbor small-professional cluster"
+      ],
+      "tag": "planned",
+      "note_internal": "City public dock — commercial embarkation terms unverified (parks_dock_permission_internal analog). Pairs with Tacoma across the Narrows as its own two-stop sub-network; NEVER render a Gig Harbor/Tacoma link to Seattle (Tacoma↔Seattle excluded — see decision_ledger).",
+      "source_url": "https://www.gigharborwa.gov/797/Jerisich-Dock"
+    },
+    {
+      "key": "tacoma-dock-street",
+      "label": "Tacoma (Dock Street / Thea Foss)",
+      "cluster": "sound",
+      "landing": "Dock Street Marina, 1817 Dock St, Thea Foss Waterway (alternate gate: Foss Waterway Seaport dock, 1,200 ft)",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "UW Tacoma and the Museum District — walk-tier from the dock",
+        "Tacoma North End / Stadium residential"
+      ],
+      "tag": "planned",
+      "note_internal": "Guest moorage year-round, slips to 250 ft. This stop exists ONLY as the Tacoma end of the Gig Harbor Narrows shuttle. Tacoma↔Seattle is excluded (≈60 min, larger vessel class — outside the 20–45 min sweet spot); never render or imply it. Thea Foss / Gig Harbor harbor-speed rules not researched to code level this pass — internal ops verify.",
+      "source_url": "https://www.dockstreetmarina.com/moorage"
+    }
+  ],
+
+  "lines": [
+    {
+      "id": "LKW-1",
+      "name": "Bridge Bypass Line",
+      "cluster": "lake",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "stops": ["leschi", "meydenbauer"],
+      "segments": [
+        {
+          "from": "leschi",
+          "to": "meydenbauer",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Open-lake crossing (~3.2 nm) between the SR-520 and I-90 bridges — no bridge crossing on this leg. 7-kn/100-yd Seattle shore buffer off Leschi (SMC 16.20.130); 8-mph/100-yd King County buffer (KCC 12.44.090) plus the 7-kn/300-ft swim/dock buffer inside Meydenbauer Bay on the Bellevue approach. Mid-lake is unrestricted."
+        }
+      ],
+      "phase_notes": "Flagship — 'the I-90/SR-520 bridge bypass.' ~12–15 min indicative including shore-buffer legs, vs a 51-min SR-520 planning time and the state's highest tolls. Both landings are real, existing public moorage — zero new infrastructure at launch. Candid: reverse flow Bellevue→Leschi is thin; this line lives or dies on Bellevue-bound seat blocks (Amazon Bellevue is 15–20 min uphill — sell honestly as longer walk / shuttle-tier)."
+    },
+    {
+      "id": "LKW-2",
+      "name": "Boeing Line",
+      "cluster": "lake",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["kirkland", "meydenbauer", "gene-coulon-southport"],
+      "segments": [
+        {
+          "from": "kirkland",
+          "to": "meydenbauer",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "~3 nm south along the Eastside shore; cross the SR-520 floating bridge at its navigable elevated span (verify span location against chart); 100-yd shore buffers at each end; 7-kn/300-ft buffer inside Meydenbauer Bay."
+        },
+        {
+          "from": "meydenbauer",
+          "to": "gene-coulon-southport",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "South via the East Channel between Mercer Island and the Bellevue/Newcastle shore; pass the fixed I-90 East Channel bridge through its navigation span (verify against chart); Mercer Island Marine Patrol speed buoys ~300 ft offshore (8 mph/no-wake inside them); Renton 8-kn/100-yd buffer + no-wake within 100 yd of shore/bridges (RMC 9-3-7) on the Coulon approach."
+        }
+      ],
+      "phase_notes": "~25–30 min end-to-end indicative (Kirkland↔Meydenbauer ~12 min; Meydenbauer↔Coulon ~20–25 min), all including buffer legs. Anchor: Boeing Renton 737 plant + Southport Office Campus — genuinely walk-tier waterfront. Kirkland's codified commercial tour-boat berth (KMC 14.36.200) makes this the easiest permit in the lake cluster."
+    },
+    {
+      "id": "LKW-3",
+      "name": "Kirkland Direct",
+      "cluster": "lake",
+      "type": "express",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["kirkland", "carillon-point", "leschi"],
+      "segments": [
+        {
+          "from": "kirkland",
+          "to": "carillon-point",
+          "speed_constrained": true,
+          "constraint": "Short shore-adjacent hop (~1 nm) dominated by the 100-yd shore-buffer speed limits — no meaningful fast open-water segment",
+          "routing": "Shore-adjacent Kirkland→Carillon Point hop; buffers dominate."
+        },
+        {
+          "from": "carillon-point",
+          "to": "leschi",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Open-lake diagonal (~4+ nm); cross the SR-520 floating bridge at its navigable elevated span (verify against chart); 100-yd buffers at each end."
+        }
+      ],
+      "phase_notes": "Phase 2 — launches once Phase 1 proves demand. Kirkland↔Leschi direct ~15–18 min indicative; Carillon Point is the inventory's infill stop and the Microsoft Redmond shuttle gate (ground shuttle, ~3.5 mi — never a water path, never implied as a Microsoft dock)."
+    },
+    {
+      "id": "SND-1",
+      "name": "Expedia Shuttle",
+      "cluster": "sound",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["seacrest", "bell-harbor", "elliott-bay-marina"],
+      "segments": [
+        {
+          "from": "seacrest",
+          "to": "bell-harbor",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Elliott Bay crossing; 7 kn within 200 yd of any shoreline/pier (SMC 16.20.130); stand clear of WSF/Kitsap/KCWT traffic at Colman Dock and Pier 50; open bay unrestricted."
+        },
+        {
+          "from": "bell-harbor",
+          "to": "elliott-bay-marina",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "North along the waterfront past Piers 66–91 to Smith Cove, standing off the 200-yd pier-line buffer; 3 kn inside Elliott Bay Marina (named in SMC 16.20.130)."
+        }
+      ],
+      "phase_notes": "Short hops, but this line serves two landings the public system doesn't (Pier 66, Smith Cove) and one true walk-tier waterfront anchor employer (Expedia — ~10–15 min via the Elliott Bay Trail, map estimate). No numeric time claims authored — render indicative until geometry seals. Posture: complement to KCWT/WSF/Kitsap, never displacement."
+    },
+    {
+      "id": "SND-2",
+      "name": "Sound Gate",
+      "cluster": "sound",
+      "type": "express",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["bainbridge", "elliott-bay-marina"],
+      "segments": [
+        {
+          "from": "bainbridge",
+          "to": "elliott-bay-marina",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Eagle Harbor exit at harbor speed (local rules — ops verify), open Sound mid-crossing, then the 200-yd Elliott Bay buffer and 3-kn marina zone on the Smith Cove arrival. Keep clear of the WSF Bainbridge–Colman crossing lanes."
+        }
+      ],
+      "phase_notes": "Premium overlay: Bainbridge direct to Expedia with no downtown transfer — a landing pair no public service offers. No numeric time claim authored (do not borrow WSF's 35-min Colman figure for this different routing); render indicative. Bainbridge berth is a dock-track item — hold at 'planned' until resolved."
+    },
+    {
+      "id": "SND-3",
+      "name": "Des Moines Line",
+      "cluster": "sound",
+      "type": "express",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["des-moines", "bell-harbor"],
+      "segments": [
+        {
+          "from": "des-moines",
+          "to": "bell-harbor",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Marina-breakwater speed on exit, open Sound north, 200-yd Elliott Bay buffers on the Pier 66 approach; stand clear of Colman/Pier 50 ferry traffic."
+        }
+      ],
+      "phase_notes": "Revival of a proven pairing: the 2022 Des Moines↔Bell Harbor passenger-ferry pilot ran marina-to-marina between these exact landings. Copy may cite the pilot as precedent; no numeric time claim authored — render indicative."
+    },
+    {
+      "id": "SND-4",
+      "name": "Kingston Line",
+      "cluster": "sound",
+      "type": "express",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["kingston", "edmonds", "bell-harbor"],
+      "segments": [
+        {
+          "from": "kingston",
+          "to": "edmonds",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Cross-Sound hop; harbor speeds inside the Port of Kingston and Port of Edmonds breakwaters; keep clear of the Edmonds–Kingston WSF crossing lanes."
+        },
+        {
+          "from": "edmonds",
+          "to": "bell-harbor",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "South along the east shore of the Sound to Elliott Bay; 200-yd Seattle buffers on approach."
+        }
+      ],
+      "phase_notes": "Phase-3 exploratory overlay per inventory §8, with Edmonds as the authored infill stop. Positioning is additive capacity for a proven North Kitsap water-commute market — complement to Kitsap Transit, never displacement, and nothing in copy may read as criticism of the public service. No time claims."
+    },
+    {
+      "id": "SND-5",
+      "name": "Narrows Shuttle",
+      "cluster": "sound",
+      "type": "feeder",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["gig-harbor", "tacoma-dock-street"],
+      "segments": [
+        {
+          "from": "gig-harbor",
+          "to": "tacoma-dock-street",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Gig Harbor entrance → Tacoma Narrows → Thea Foss Waterway. Harbor speeds at both ends (local rule text unverified this pass — internal ops item)."
+        }
+      ],
+      "phase_notes": "Phase-3 exploratory two-stop sub-network: Gig Harbor peninsula residential across the Narrows to UW Tacoma / Museum District (walk-tier at Dock Street). Deliberately NOT connected to the Seattle group — Tacoma↔Seattle is excluded (≈60 min, wrong vessel class; see decision_ledger). No time claims."
+    }
+  ],
+
+  "catchment": [
+    {
+      "anchor": "Expedia / Interbay waterfront",
+      "anchor_station": "elliott-bay-marina",
+      "employers": ["Expedia Group HQ — 40-acre waterfront campus, ~10–15 min walk via the Elliott Bay Trail (map estimate): true walk-tier"],
+      "stations_at_launch": 2,
+      "stations_full_network": 6,
+      "note": "The Sound cluster's anchor employer — genuinely walk-tier waterfront. Walk time is a map estimate flagged in the inventory; verify before field claims."
+    },
+    {
+      "anchor": "Downtown Seattle waterfront / north CBD",
+      "anchor_station": "bell-harbor",
+      "employers": ["Belltown / Pike Place / waterfront offices (walk-tier)", "North downtown CBD towers (walk-tier)"],
+      "stations_at_launch": 2,
+      "stations_full_network": 6,
+      "note": "Bell Harbor is the deliberate downtown gate — Pier 50 is saturated public-ferry infrastructure and Colman Dock is WSF's; neither renders as a Navier station."
+    },
+    {
+      "anchor": "Boeing Renton / Southport",
+      "anchor_station": "gene-coulon-southport",
+      "employers": ["Boeing Renton 737 plant — adjacent south shore, walk-tier", "Southport Office Campus (730,000 sf) — on the shore, walk-tier"],
+      "stations_at_launch": 3,
+      "stations_full_network": 4,
+      "note": "The lake cluster's strongest true-waterfront employer anchor."
+    },
+    {
+      "anchor": "Downtown Bellevue",
+      "anchor_station": "meydenbauer",
+      "employers": ["Amazon Bellevue towers (~15,000 cited 2025, target 25,000) — 15–20 min uphill: longer walk / shuttle-tier, NOT walk-tier", "Bellevue CBD offices — same longer-walk / shuttle tier"],
+      "stations_at_launch": 3,
+      "stations_full_network": 4,
+      "note": "Network interchange hub of the lake cluster. Tier honesty is mandatory: never render Bellevue employers as walk-tier."
+    },
+    {
+      "anchor": "Downtown Kirkland",
+      "anchor_station": "kirkland",
+      "employers": ["Downtown Kirkland offices / Kirkland Urban district — walkable from Marina Park", "Google Kirkland — ~0.9 mi inland: longer walk / shuttle-tier, NOT waterfront"],
+      "stations_at_launch": 3,
+      "stations_full_network": 4,
+      "note": "The dock is downtown Kirkland's front door; Google Kirkland must never be described as waterfront or walk-tier."
+    }
+  ],
+  "catchment_counting_rule": "stations_at_launch / stations_full_network = count of OTHER stations reachable from the anchor's station via authored lines (transfers allowed at shared stations/interchanges), at Phase 1 vs all phases, WITHIN the anchor's cluster only — never across clusters (no intercluster link exists). Lake cluster: 4 Phase-1 stations connected at Meydenbauer (3 reachable at launch), growing to 5 with Carillon Point (4 reachable at full network). Sound cluster contains two deliberately separate sub-networks: the Elliott Bay group (seacrest, bell-harbor, elliott-bay-marina at Phase 1 — 2 reachable at launch; + bainbridge, des-moines at Phase 2 and kingston, edmonds at Phase 3 = 7 stations, 6 reachable at full network) and the Narrows group (gig-harbor, tacoma-dock-street — Phase 3 only, 0 at launch, 1 reachable at full network, no authored link to the Elliott Bay group).",
+
+  "watchlist": [
+    {
+      "landing": "Harbour Village Marina, 6155 NE 175th St, Kenmore",
+      "reason": "Real marina but private condo-slip with limited service, employer-light catchment, and the PSRC study's #2 route (Kenmore–UW) dies on the missing UW landing anyway. Keep on watch; do not render as a station.",
+      "source_url": "https://harbourvillagemarina.net/"
+    },
+    {
+      "landing": "Port of Everett Marina (5,000+ lineal ft guest moorage)",
+      "reason": "Largest public marina on the West Coast, but Boeing Everett is ~5 mi inland (shuttle-tier at best) and the Everett↔Seattle run is outside the 20–45 min sweet spot. Watchlist node; do not render as a station.",
+      "source_url": "https://www.portofeverett.com/marina/guest_moorage.php"
+    },
+    {
+      "landing": "Luther Burbank Park docks, 2040 84th Ave SE, Mercer Island",
+      "reason": "Real public day-moorage docks (built 1974) but aging; the renovation draft plan targets new floating docks for boats ≤26 ft — berth capacity for a 30–45 ft commercial vessel post-renovation is UNKNOWN. Engage the city now; do not render as a station.",
+      "source_url": "https://www.mercerisland.gov/publicworks/project/luther-burbank-dock-repair-and-reconfiguration"
+    },
+    {
+      "landing": "Madison Park (new-dock play)",
+      "reason": "No dock exists today (swim/park pier only — see no_landing), but geometry and income are excellent: the top watchlist candidate for a new-dock play. DNR aquatic-lands lease + Seattle shoreline-permit pathway unscoped. Do not render as a station.",
+      "source_url": "https://m.yelp.com/search?find_desc=Marinas&find_loc=Madison+Park%2C+Seattle%2C+WA+98112"
+    }
+  ],
+
+  "no_landing": [
+    { "area": "UW / Union Bay", "reason": "No usable landing: the Waterfront Activities Center is canoe/kayak rental only with no transient moorage, and PSRC itself said the dock 'would need to be replaced' for service; Union Bay west of Webster Point is also blanket 7-kn Ship Canal water. Kills Kirkland↔UW and Kenmore↔UW today — but if UW/Sound Transit ever builds a dock, it instantly becomes the lake network's hub." },
+    { "area": "Madison Park (today)", "reason": "Park swim pier at the foot of Madison St only — no verified moorage (nearest is Leschi, 2.1 mi south). Served today via Leschi; tracked on the watchlist as a new-dock play." },
+    { "area": "Medina / Hunts Point / Yarrow Point", "reason": "Private docks only — no public landing; the gold-coast catchment is served via Meydenbauer and Kirkland." },
+    { "area": "Microsoft Redmond campus", "reason": "Inland — nearest lake water ~3.5 mi (Yarrow Bay/Kirkland). Shuttle-tier only, from Carillon Point or Meydenbauer; never a stop, never 'waterfront'." },
+    { "area": "Meta Bellevue (Spring District)", "reason": "~2.5 mi inland from Meydenbauer — shuttle-tier only; no stop." },
+    { "area": "T-Mobile Factoria / Costco Issaquah", "reason": "Inland, unservable by any lake landing — excluded entirely." },
+    { "area": "Boeing Everett", "reason": "~5 mi inland from the Port of Everett marina — shuttle-tier at best; excluded (Everett itself is a watchlist node)." }
+  ],
+
+  "decision_ledger": [
+    {
+      "topic": "South Lake Union landings (Lake Union Park / Historic Ships Wharf, Chandler's Cove / Lake Union Piers, AGC Marina)",
+      "status": "real docks, dead corridor — inventoried, NOT routed",
+      "reason": "Speed-stranded — reachable only through the blanket 7-kn Ship Canal system: ~4.3 nm ≈ 37 min slow transit from Webster Point before any open-lake leg (Kirkland↔SLU ≈ 50–55 min total, outside the 20–45 min sweet spot). Revisit ONLY if rule relief is ever obtained — SMC 16.20.130 has no exemption pathway short of a code amendment. Zero SLU stops in any phase; the SLU employer cluster (Amazon SLU, Google SLU, Fred Hutch, Gates Foundation) lives in internal notes only and is never rendered as a served anchor."
+    },
+    {
+      "topic": "Downtown Seattle gate choice",
+      "status": "decided — Bell Harbor (Pier 66)",
+      "reason": "Pier 50's two slips are saturated with KCWT + Kitsap service (Kitsap is building a new Pier 46 terminal for exactly this reason) and Colman Dock is WSF's terminal. Navier's downtown landing is Bell Harbor Marina; Pier 50 and Colman never render as Navier stations."
+    },
+    {
+      "topic": "Tacoma↔Seattle and Everett↔Seattle runs",
+      "status": "excluded",
+      "reason": "Distance/vessel class outside the 20–45 min sweet spot (Tacoma↔Seattle ≈ 60 min, needs a larger vessel per the PSRC record). Gig Harbor↔Tacoma is authored instead as its own Phase-3 Narrows sub-network with no Seattle link."
+    },
+    {
+      "topic": "Ballard Locks connector (Lake ↔ Sound)",
+      "status": "excluded — see no_intercluster_link",
+      "reason": "First-come queue-based lockage (~10–15 min cycles best case, 1–4 hr waits documented), 4-kn approach zones, and the blanket 7-kn Ship Canal on the lake side. Not commuter-schedulable; the two clusters are permanently independent networks."
+    }
+  ],
+
+  "bp_gap": [],
+
+  "gates": {
+    "shore_buffer_honesty": {
+      "rule": "Every lake and sound time includes the slow shore-buffer approach legs at each terminal (7-kn/100-yd Seattle, 8-mph/100-yd King County, 8-kn Renton, 300-ft Bellevue/Mercer Island buffers, 200-yd Elliott Bay, 3-kn marinas). ALL times render as indicative until Atlas geometry seals them. Authored indicative ranges (whitelist, always with an 'indicative' qualifier): Bridge Bypass Line 12–15 min; Boeing Line 25–30 min end-to-end (Kirkland↔Meydenbauer ~12, Meydenbauer↔Coulon 20–25); Kirkland Direct 15–18 min. NO numeric claims on any Sound-cluster line — render indicative without bare numbers.",
+      "constrained_zones": [
+        "7 kn within 100 yd of any shoreline/pier/restricted area, Seattle waters of Lake Washington (SMC 16.20.130)",
+        "8 mph within 100 yd, King County waters of Lake Washington and Lake Sammamish (KCC 12.44.090)",
+        "8 kn within 100 yd + no-wake within 100 yd of shoreline/bridges, Renton (RMC 9-3-7)",
+        "7 kn within 300 ft of swim areas/docks/park shoreline, Meydenbauer Bay (City of Bellevue)",
+        "8 mph / no-wake inside speed buoys ~300 ft offshore, Mercer Island Marine Patrol jurisdictions (Mercer Island, Hunts Point, Yarrow Point, Medina)",
+        "Elliott Bay / Puget Sound within Seattle: 7 kn within 200 yd of shoreline/piers; 3 kn inside marinas (SMC 16.20.130)"
+      ],
+      "segment_flag": "speed_constrained",
+      "note": "Mid-lake and open-Sound water is genuinely unrestricted — the buffers cost ~2–4 min per terminal, immaterial to a 25–30 kn foiler. State this honestly; never imply a lake-wide speed limit exists (it does not), and never hide the buffer legs from the time model."
+    },
+    "ship_canal_exclusion": {
+      "rule": "The Lake Washington Ship Canal system is FORBIDDEN geometry and forbidden copy: no line, water_path, or service claim may touch Union Bay west of Webster Point, the Montlake Cut, Portage Bay, Lake Union, Salmon Bay, the Ship Canal, or the Ballard Locks (blanket 7-kn zone, SMC 16.20.130; 4 kn at the Locks guide piers). NO South Lake Union or UW service claims appear anywhere in rendered copy — the SLU employer cluster is never named as served, and UW appears nowhere except (internally) the no_landing ledger.",
+      "forbidden_water": ["Union Bay west of Webster Point", "Montlake Cut", "Portage Bay", "Lake Union", "Salmon Bay", "Lake Washington Ship Canal", "Ballard Locks and approaches"]
+    },
+    "no_intercluster_link": {
+      "rule": "See top-level no_intercluster_link: NO Lake↔Sound water link in any phase; zero cross-cluster segments in geometry; the Ballard Locks never render as a route or planned route."
+    },
+    "orca_protocol_internal": {
+      "rule": "Southern Resident killer whale rules (RCW 77.15.740, in force Jan 1 2025: 1,000-yd standoff; ≤7 kn and move away inside 400–1,000 yd; disengage transmission if a SRKW surfaces within 400 yd; commercial passenger commuter vessels NOT exempt) are an encounter-avoidance protocol, not a route speed cap — WSF and Kitsap fast ferries operate daily under the same rule. Ops plan (Whale Report Alert System subscription, trained lookouts, slow/divert protocol, schedule padding on whale-presence days) is INTERNAL ONLY: no orca/whale-regulation material renders anywhere in the DOM or copy. Lake Washington is unaffected."
+    },
+    "incumbent_respect": {
+      "rule": "WSF, Kitsap Fast Ferries, and the King County Water Taxi are the proof that this region commutes by water (Kitsap 850K+ fast-ferry riders 2024; KCWT ~700K boardings; WSF Bainbridge ~35 min workhorse) and are potential partners — NEVER positioned as competitors and never disparaged. Navier serves landings and direct pairings the public system doesn't (Pier 66, Smith Cove, Eagle Harbor↔Smith Cove, marina-to-marina Des Moines). Colman Dock is WSF's and Pier 50 is KCWT/Kitsap's — neither ever renders as a Navier station. Copy may cite public ridership and the 2022 Des Moines pilot as market proof."
+    },
+    "parks_dock_permission_internal": {
+      "rule": "Whether scheduled commercial embarkation is permitted at parks/public docks — Gene Coulon (Renton), Leschi/Lakewood (Seattle Parks concession), Marina Park (Kirkland city agreement still required despite the codified KMC 14.36.200 commercial berth), Luther Burbank (Mercer Island), Seacrest (Seattle Parks / KC Metro), Jerisich Dock (Gig Harbor) — is UNVERIFIED and is an internal dock-track item. ZERO external mention: no permit, concession, or dock-permission language renders anywhere."
+    },
+    "internal_fields_stripped_from_dom": ["dock_track", "note_internal", "routing", "decision_ledger"],
+    "no_invented_landings": "Every stop maps to the exact named landing in SEATTLE-NODE-INVENTORY.md. Any stop that cannot be ID-matched to a real BP goes to the bp_gap ledger with reason and renders only from inventory-named coordinates — never guess.",
+    "times_indicative": "ALL times marked indicative until Atlas geometry seals them; whitelisted lake ranges render with the inventory's numbers and an 'indicative' qualifier; Sound lines render no bare numbers.",
+    "phase_toggle_default": "At launch",
+    "loi_framing": "Non-binding letter of intent — a seat-block interest signal, not a purchase.",
+    "no_dock_negotiation_language": "No copy about dock deals, berthing negotiations, port/city agreements, parks permits, marina terms, or landing diligence — internal only.",
+    "launch_timing": "Service launch not before end-2027. All network rendering is coverage narrative, not a service promise; seat economics still gate corridor launch (60–80 committed seats)."
+  },
+
+  "copy": {
+    "hero": "Two floating bridges. One lake. Zero water commute — until now. Navier is building an employer water network for Seattle: 20-seat electric hydrofoils crossing Lake Washington — Leschi to Bellevue in 12–15 minutes, Kirkland and Renton linked through Meydenbauer Bay — plus a second network on Elliott Bay connecting West Seattle, the downtown waterfront, and the Expedia campus, growing to Bainbridge Island and Des Moines.",
+    "sections": {
+      "why_seattle": "This region already commutes by water: Washington State Ferries' Bainbridge run is a daily 35-minute workhorse, Kitsap's fast ferries carried more than 850,000 riders in 2024, and the King County Water Taxi tops 700,000 boardings a year. Yet Lake Washington — ringed by jobs on both shores — has no scheduled water service at all. Its only crossings are two congested floating bridges, with peak SR-520 tolls of $4.90–$6.90 and a 51-minute planning time for a trip the water covers in about 15. The lake is open, legal, fast water; it just has no boats.",
+      "how_it_works": "Employers commit seat blocks on a corridor. When a corridor reaches 60–80 committed seats, it launches. Seats are guaranteed, quiet, working commutes on zero-emission electric hydrofoils.",
+      "network_lake": "Two launch lines meet at Meydenbauer Bay: the Bridge Bypass Line (Leschi ↔ Bellevue, 12–15 min indicative — the I-90/SR-520 bypass) and the Boeing Line (Kirkland ↔ Meydenbauer Bay ↔ Renton, ~25–30 min end-to-end, landing at the walk-tier waterfront doorstep of Boeing Renton and the Southport offices). Downtown Bellevue and Amazon's Bellevue towers are a 15–20 minute uphill walk or a short shuttle from the Meydenbauer dock. Phase 2 adds a Kirkland ↔ Leschi direct (15–18 min indicative) with a Carillon Point stop and a shuttle connection toward Microsoft Redmond.",
+      "network_sound": "On Elliott Bay, the Expedia Shuttle links West Seattle (Seacrest), the downtown waterfront at Bell Harbor Pier 66, and Elliott Bay Marina — a 10–15 minute waterfront walk from Expedia's 40-acre campus. Phase 2 adds a direct Bainbridge ↔ Elliott Bay Marina overlay with no downtown transfer, and revives the Des Moines ↔ Bell Harbor run that a 2022 passenger-ferry pilot already proved marina-to-marina. Later phases explore Kingston, Edmonds, and a Gig Harbor ↔ Tacoma shuttle. We serve landings the public ferries don't — as a complement to the region's ferry system, never a replacement.",
+      "two_networks": "The lake and the Sound operate as two independent networks. The only water between them runs through the Ballard Locks — a first-come lock queue, not a commuter connection — so we don't pretend there's a boat from Bellevue to Bainbridge. There isn't, and there won't be.",
+      "timing": "Targeting first service no earlier than end-2027. Every travel time shown is indicative until routes are finalized with harbor authorities, and lake times include the slow near-shore approach zones at each dock.",
+      "loi_ask": "Register interest with a non-binding letter of intent. It costs nothing and reserves nothing — it tells us which corridors to launch first."
+    }
+  }
+}

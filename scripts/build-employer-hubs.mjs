@@ -77,7 +77,21 @@ function bannedDockScan(blob) {
 
 function sanitizeClientHub(hub) {
   // Strip internal fields that must never reach the browser
-  const stripKeys = new Set(['dock_track', 'note_internal', 'note', 'landing', 'geometry_receipt', 'stop_migrations']);
+  const stripKeys = new Set([
+    'dock_track',
+    'note_internal',
+    'note',
+    'landing',
+    'geometry_receipt',
+    'stop_migrations',
+    'decision_ledger',
+    'watchlist',
+    'no_landing',
+    'no_intercity_link',
+    'source_inventory',
+    'authored_by',
+    'status',
+  ]);
   const clean = JSON.parse(JSON.stringify(hub));
   for (const s of clean.stops || []) {
     for (const k of [...Object.keys(s)]) {
@@ -87,13 +101,28 @@ function sanitizeClientHub(hub) {
   for (const l of clean.lines || []) {
     delete l.phase_notes;
     delete l.geometry_receipt;
+    for (const seg of l.segments || []) {
+      // routing directives are build-time only; can contain internal refs
+      delete seg.routing;
+      delete seg.constraint;
+      delete seg.note_internal;
+    }
   }
   delete clean.geometry_receipt;
   delete clean.stop_migrations;
   // Internal QA ledgers stay on disk only — not in the browser bundle
   delete clean.bp_gap;
+  delete clean.decision_ledger;
+  delete clean.watchlist;
+  delete clean.no_landing;
+  delete clean.no_intercity_link;
   if (clean.gates) {
     delete clean.gates.banned_terms; // avoid shipping held place-names into client JS
+    // Keep speed_constrained_label for client UI; drop long internal rule blobs
+    for (const k of Object.keys(clean.gates)) {
+      if (k === 'speed_constrained_label' || k === 'two_cluster_render' || k === 'no_intercity_link') continue;
+      if (typeof clean.gates[k] === 'object') delete clean.gates[k];
+    }
   }
   return clean;
 }

@@ -27,21 +27,44 @@
   const phaseLabels = networkCfg.phase_labels || ['At launch', '+ Phase 2', 'Full network'];
   let activePhase = networkCfg.default_phase || 1;
   let showSeasonal = !!networkCfg.show_seasonal_default;
+  const clusterDefs = networkCfg.clusters || [];
+  let activeCluster =
+    networkCfg.default_cluster ||
+    (clusterDefs[0] && (clusterDefs[0].id || clusterDefs[0])) ||
+    null;
   let map, popup, flavor, highlightKeys = null;
   /** @type {null | { from: string, to: string, path: object }} */
   let activeTrip = null;
+  /** Last successful Find-my-ride snapshot for LOI sales context */
+  let lastTripSnapshot = null;
   const tripCfg = DATA.trip_planner || {};
   const tripEnabled = tripCfg.enabled !== false;
 
+  function inActiveCluster(obj) {
+    if (!activeCluster) return true;
+    if (!obj) return false;
+    const c = obj.cluster;
+    // Objects without cluster stay visible (single-network hubs)
+    if (c == null || c === '') return true;
+    return c === activeCluster;
+  }
   function stopVisible(s) {
     if (!s) return false;
     if (s.exec_only) return false; // never on public employer map
-    if (s.seasonal) return showSeasonal;
+    if (!inActiveCluster(s)) return false;
+    if (s.seasonal || (s.tag && /seasonal/i.test(String(s.tag)))) {
+      // Seasonal stops still require phase + seasonal toggle when line is seasonal
+      if (s.seasonal && !showSeasonal && (s.phase || 1) > 1) {
+        // fall through: phase gate may still show if phase allows and not line-seasonal-only
+      }
+    }
+    if (s.seasonal && !showSeasonal) return false;
     return (s.phase || 1) <= activePhase;
   }
   function segmentVisible(seg, line) {
     if (!seg || !line) return false;
     if (line.exec_only) return false;
+    if (!inActiveCluster(line)) return false;
     if (line.seasonal || line.type === 'seasonal') {
       if (!showSeasonal) return false;
     }
@@ -54,6 +77,7 @@
   function lineVisible(l) {
     if (!l) return false;
     if (l.exec_only) return false;
+    if (!inActiveCluster(l)) return false;
     if (l.seasonal || l.type === 'seasonal') return showSeasonal;
     // Show line if it has any segment live at this phase (not only line.phase)
     const segs = l.segments || [];
@@ -221,7 +245,60 @@
   }
 
 
-  // —— Phase + seasonal controls ——
+  // —— Cluster + phase + seasonal controls ——
+  const clusterEl = document.getElementById('cluster-toggle');
+  const clusterNote = document.getElementById('cluster-note');
+  if (clusterEl && clusterDefs.length > 1) {
+    clusterEl.hidden = false;
+    clusterEl.innerHTML = '';
+    clusterDefs.forEach((c) => {
+      const id = typeof c === 'string' ? c : c.id;
+      const label = typeof c === 'string' ? c : c.label || c.id;
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label;
+      b.dataset.cluster = id;
+      if (id === activeCluster) b.classList.add('active');
+      b.addEventListener('click', () => {
+        activeCluster = id;
+        [...clusterEl.querySelectorAll('button')].forEach((x) =>
+          x.classList.toggle('active', x.dataset.cluster === activeCluster)
+        );
+        if (clusterNote) {
+          const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+          const note = (def && def.note) || networkCfg.cluster_note || copy.two_networks || '';
+          if (note) {
+            clusterNote.hidden = false;
+            clusterNote.textContent = note;
+          }
+        }
+        if (activeTrip) clearTripUI();
+        // Refit map to cluster bounds when provided
+        const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+        if (map && def && def.map && def.map.center) {
+          map.easeTo({ center: def.map.center, zoom: def.map.zoom || map.getZoom(), duration: 600 });
+        }
+        refreshNetworkUI();
+      });
+      clusterEl.appendChild(b);
+    });
+    if (clusterNote) {
+      const def = clusterDefs.find((x) => (x.id || x) === activeCluster);
+      const note =
+        (def && def.note) ||
+        networkCfg.cluster_note ||
+        copy.two_networks ||
+        (copy.sections && copy.sections.two_networks) ||
+        '';
+      if (note) {
+        clusterNote.hidden = false;
+        clusterNote.textContent = note;
+      }
+    }
+  } else if (clusterEl) {
+    clusterEl.hidden = true;
+  }
+
   const phaseEl = document.getElementById('phase-toggle');
   if (phaseEl) {
     phaseEl.innerHTML = '';
@@ -269,32 +346,40 @@
 
   // Office / catchment — sets trip "To", highlights reachable origins, prefills LOI
   const catchGrid = document.getElementById('catchment-grid');
-  if (catchGrid) {
+  function renderCatchment() {
+    if (!catchGrid) return;
     const rows = DATA.catchment || [];
     if (!rows.length) {
       const sec = document.getElementById('office');
       if (sec) sec.hidden = true;
-    } else {
-      catchGrid.innerHTML = rows
-        .map((c) => {
-          const stop = nodesByKey[c.anchor_stop];
-          const label = c.anchor || stop?.label || c.anchor_stop || '';
-          return `<button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
+      return;
+    }
+    const filteredCatch = rows.filter((c) => {
+      if (!activeCluster) return true;
+      if (c.cluster) return c.cluster === activeCluster;
+      const stop = nodesByKey[c.anchor_stop];
+      return inActiveCluster(stop);
+    });
+    catchGrid.innerHTML = filteredCatch
+      .map((c) => {
+        const stop = nodesByKey[c.anchor_stop];
+        const label = c.anchor || stop?.label || c.anchor_stop || '';
+        return `<button type="button" class="catchment-card" data-anchor="${c.anchor_stop || ''}">
           <h3>${label}</h3>
           <div class="nums">${c.phase1_stations ?? '—'} <span>origins at launch</span> → ${c.full_network_stations ?? '—'} <span>full network</span></div>
           <div class="hint">Set as my office · show who can reach me</div>
         </button>`;
-        })
-        .join('');
-      catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
-        card.addEventListener('click', () => {
-          catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
-          card.classList.add('active');
-          setOfficeStop(card.dataset.anchor);
-        });
+      })
+      .join('');
+    catchGrid.querySelectorAll('.catchment-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        catchGrid.querySelectorAll('.catchment-card').forEach((x) => x.classList.remove('active'));
+        card.classList.add('active');
+        setOfficeStop(card.dataset.anchor);
       });
-    }
+    });
   }
+  renderCatchment();
 
   function setOfficeStop(anchorKey) {
     if (!anchorKey || !nodesByKey[anchorKey]) return;
@@ -391,6 +476,7 @@
     renderLegend();
     rebuildMapLayers();
     populateTripSelects();
+    renderCatchment();
     if (activeTrip && activeTrip.from && activeTrip.to) {
       runTripPlanner(activeTrip.from, activeTrip.to);
     }
@@ -439,6 +525,7 @@
   /** Segments available on the full planned network (for trip routing — ignore map phase filter). */
   function segmentInTripGraph(seg, line) {
     if (!seg || !line || line.exec_only) return false;
+    if (!inActiveCluster(line)) return false;
     if (line.seasonal || line.type === 'seasonal') {
       if (!showSeasonal) return false;
     }
@@ -575,9 +662,11 @@
       let j = i + 1;
       while (j < chain.length && !chain[j].didTransfer && chain[j].edge.line.id === lid) j++;
       let w = 0;
+      let constrained = false;
       const coords = [];
       for (let k = i; k < j; k++) {
         w += chain[k].edge.waterMin;
+        if (chain[k].edge.seg && chain[k].edge.seg.speed_constrained) constrained = true;
         const c = orientedCoords(chain[k].edge.seg, chain[k].fromStop);
         if (!c.length) continue;
         if (!coords.length) coords.push(...c);
@@ -597,11 +686,13 @@
         lineName: rec.edge.line.name,
         lineColor: rec.edge.line.color || '#e0cb8f',
         mins: w,
+        speedConstrained: constrained,
         pathCoords: coords,
       });
       i = j;
     }
     const requiredPhase = tripRequiredPhase(chain);
+    const anyConstrained = steps.some((s) => s.kind === 'water' && s.speedConstrained);
     return {
       from: fromKey,
       to: toKey,
@@ -615,11 +706,13 @@
       pathCoords: allCoords,
       requiredPhase,
       requiredPhaseLabel: phaseLabels[requiredPhase - 1] || null,
+      speedConstrained: anyConstrained,
     };
   }
 
   function clearTripUI() {
     activeTrip = null;
+    lastTripSnapshot = null;
     const res = document.getElementById('trip-result');
     const clr = document.getElementById('trip-clear');
     if (res) {
@@ -635,6 +728,37 @@
         map.setPaintProperty('line-glow-' + line.id, 'line-opacity', 0.18);
       });
     }
+  }
+
+  function captureTripSnapshot(trip, driveMin) {
+    if (!trip) {
+      lastTripSnapshot = null;
+      return;
+    }
+    const drive = driveMin != null ? driveMin : driveMinutes(trip.from, trip.to);
+    const speedLbl =
+      (DATA.gates && DATA.gates.speed_constrained_label) ||
+      'indicative — subject to local speed zones';
+    const navierPart = trip.speedConstrained
+      ? speedLbl
+      : '~' + Math.round(trip.totalNavier) + ' min Navier';
+    lastTripSnapshot = {
+      tripFrom: trip.from,
+      tripFromLabel: trip.fromLabel,
+      tripTo: trip.to,
+      tripToLabel: trip.toLabel,
+      tripNavierMin: trip.speedConstrained ? '' : String(Math.round(trip.totalNavier)),
+      tripDriveMin: drive != null ? String(Math.round(drive)) : '',
+      tripTransfers: String(trip.transfers || 0),
+      tripSummary:
+        trip.fromLabel +
+        ' → ' +
+        trip.toLabel +
+        ' · ' +
+        navierPart +
+        (drive != null ? ' vs ~' + Math.round(drive) + ' min drive' : '') +
+        (trip.transfers ? ' · ' + trip.transfers + ' transfer(s)' : ' · direct'),
+    };
   }
   function removeTripMapLayers() {
     if (!map) return;
@@ -709,9 +833,13 @@
       if (clr) clr.hidden = false;
       return;
     }
-    const save = driveMin != null ? driveMin - trip.totalNavier : null;
-    const saveHtml =
-      save != null && save > 0
+    const save = driveMin != null && !trip.speedConstrained ? driveMin - trip.totalNavier : null;
+    const speedLabel =
+      (DATA.gates && DATA.gates.speed_constrained_label) ||
+      'indicative — subject to local speed zones';
+    const saveHtml = trip.speedConstrained
+      ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Water times are ${speedLabel}</div>`
+      : save != null && save > 0
         ? `<div class="trip-save">Save ~${Math.round(save)} min vs driving this trip</div>`
         : save != null
           ? `<div class="trip-save" style="color:var(--text-1);background:rgba(255,255,255,0.04);border-color:var(--line)">Similar to peak drive time — still skips toll stress &amp; parking</div>`
@@ -735,15 +863,23 @@
             <span class="mins">~${s.mins} min</span>
           </div>`;
         }
+        const stepMins = s.speedConstrained
+          ? 'indicative'
+          : `~${Math.round(s.mins)} min`;
         return `<div class="trip-step">
           <span class="n">${idx + 1}</span>
           <div><strong>${s.fromLabel} → ${s.toLabel}</strong>
-            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}</div>
+            <div style="margin-top:3px;font-size:12px;color:var(--text-2)"><span class="line-dot" style="background:${s.lineColor}"></span>${s.lineName}${s.speedConstrained ? ' · harbor speed rules' : ''}</div>
           </div>
-          <span class="mins">~${s.mins} min</span>
+          <span class="mins">${stepMins}</span>
         </div>`;
       })
       .join('');
+    const navierTotal = trip.speedConstrained
+      ? `<div class="v" style="font-size:18px">Indicative</div>
+          <div class="hint">${speedLabel}${trip.transferTotal ? ` · +${trip.transferTotal} min transfers` : ''}</div>`
+      : `<div class="v">~${Math.round(trip.totalNavier)} min</div>
+          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>`;
     res.hidden = false;
     res.innerHTML = `
       <div class="trip-title">${trip.fromLabel} → ${trip.toLabel}</div>
@@ -752,8 +888,7 @@
       <div class="trip-compare">
         <div class="trip-stat">
           <div class="k">Navier</div>
-          <div class="v">~${Math.round(trip.totalNavier)} min</div>
-          <div class="hint">Water ${trip.waterTotal} min${trip.transferTotal ? ` + transfer ${trip.transferTotal} min` : ''}</div>
+          ${navierTotal}
         </div>
         <div class="trip-stat">
           <div class="k">${tripCfg.drive_label || 'Drive (AM peak)'}</div>
@@ -795,6 +930,7 @@
     const drive = driveMinutes(fromKey, toKey);
     if (trip) {
       activeTrip = { from: fromKey, to: toKey, path: trip };
+      captureTripSnapshot(trip, drive);
       paintTripOnMap(trip);
       renderTripResult(trip, drive);
       const detail = document.getElementById('map-detail');
@@ -803,8 +939,14 @@
           trip.requiredPhase > 1 && trip.requiredPhaseLabel
             ? ` · ${trip.requiredPhaseLabel}`
             : '';
+        const speedLbl =
+          (DATA.gates && DATA.gates.speed_constrained_label) ||
+          'indicative — subject to local speed zones';
+        const timeBit = trip.speedConstrained
+          ? speedLbl
+          : `~${Math.round(trip.totalNavier)} min on Navier`;
         detail.innerHTML = `<strong>Your ride</strong>
-          <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ~${Math.round(trip.totalNavier)} min on Navier${
+          <div style="margin-top:6px">${trip.fromLabel} → ${trip.toLabel} · ${timeBit}${
             drive != null ? ` vs ~${drive} min drive` : ''
           }${phaseBit}</div>`;
       }
@@ -821,6 +963,7 @@
     }
     // No path on full planned network (disconnected stops)
     activeTrip = { from: fromKey, to: toKey, path: null };
+    lastTripSnapshot = null;
     removeTripMapLayers();
     const res = document.getElementById('trip-result');
     const clr = document.getElementById('trip-clear');
@@ -1463,9 +1606,22 @@
   }
 
   function waterMinLabel(seg) {
+    // Priority: authored label → constrained default → whitelist claim (always + indicative) → bare number.
+    // Never render a bare ~N min when water_min_label or speed_constrained is set (speed-honesty gates).
+    if (seg.water_min_label) return seg.water_min_label;
+    if (seg.speed_constrained) {
+      return (
+        (DATA.gates && DATA.gates.speed_constrained_label) ||
+        'indicative — subject to local speed zones'
+      );
+    }
+    if (seg.time_claim) {
+      const t = String(seg.time_claim).trim();
+      return /indicative/i.test(t) ? t : `${t} (indicative)`;
+    }
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
-      const mins = Math.ceil(seg.distance_nm / 20 * 60 / 5) * 5;
+      const mins = Math.ceil((seg.distance_nm / 20) * 60 / 5) * 5;
       return `${seg.distance_nm} nm · ~${mins} min on the water`;
     }
     return 'Water time indicative';
@@ -1674,6 +1830,7 @@
     const stop = fd.get('stop');
     const line = fd.get('line');
     const c = window.__HUB_CALC__ || {};
+    const trip = lastTripSnapshot || {};
     return {
       name: fd.get('name'),
       company: fd.get('company'),
@@ -1690,6 +1847,15 @@
       netIncremental: money(c.net_incremental || 0),
       perRider: money(c.per_rider || c.net_employer_cost_per_rider || 0),
       seats: c.S != null ? String(c.S) : '',
+      // Find-my-ride context (empty if user never ran a trip)
+      tripFrom: trip.tripFrom || '',
+      tripFromLabel: trip.tripFromLabel || '',
+      tripTo: trip.tripTo || '',
+      tripToLabel: trip.tripToLabel || '',
+      tripNavierMin: trip.tripNavierMin || '',
+      tripDriveMin: trip.tripDriveMin || '',
+      tripTransfers: trip.tripTransfers || '',
+      tripSummary: trip.tripSummary || '',
       hp: fd.get('hp') || '',
       source: HUB_ID,
       hub_id: HUB_ID,
@@ -1702,6 +1868,9 @@
       `${loiCfg.mailto_subject_prefix || market.label + ' employer letter of intent'} — ${payload.company}`
     );
     const netLabel = loiCfg.mailto_network_label || `${market.label || HUB_ID} employer water network`;
+    const tripBlock = payload.tripSummary
+      ? `\nFind my ride: ${payload.tripSummary}\n`
+      : '';
     const body = encodeURIComponent(
       `Non-binding letter of intent — ${netLabel}
 
@@ -1716,7 +1885,7 @@ Nearest office terminal: ${payload.stopLabel}
 Preferred line: ${payload.lineLabel}
 Estimated interested employees: ${payload.employees}
 Path: ${payload.flavorLabel}
-
+${tripBlock}
 Planning estimate (not a quote): net incremental ~${payload.netIncremental}/mo (~${payload.perRider}/rider) at ${payload.seats || '—'} seats.
 
 Please follow up to discuss next steps.`
