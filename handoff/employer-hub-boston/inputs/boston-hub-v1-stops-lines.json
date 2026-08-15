@@ -1,0 +1,705 @@
+{
+  "hub": "boston",
+  "label": "Boston Harbor",
+  "route": "/employers/boston",
+  "alias": "/boston-employers",
+  "version": "v1-draft",
+  "authored": "2026-08-15",
+  "authored_by": "Tasklet",
+  "status": "authored draft — Grok fills resolved_bp_id / lng / lat / water_path / water_min deterministically; no coordinates authored here by design",
+  "source_inventory": "/tasklet/drive/employer-networks/next-cities/boston/BOSTON-NODE-INVENTORY.md",
+
+  "locked_numbers": {
+    "n45_seats": 20,
+    "n30_seats": 8,
+    "seat_price_band_usd_month": [650, 1200],
+    "seat_price_band_note": "program band — Boston-specific pricing TBD; do not render as a city quote",
+    "corridor_launch_trigger_committed_seats": [60, 80]
+  },
+
+  "stops": [
+    {
+      "key": "long-wharf",
+      "label": "Long Wharf",
+      "landing": "Long Wharf North (Gate 5A) & South, downtown Boston",
+      "role": "interchange_primary",
+      "phase": 1,
+      "serves": [
+        "Financial District ≤10-min walk (State St, International Place; Fidelity investor center at 155 Congress St)",
+        "Faneuil Hall / Government Center",
+        "North End / Waterfront residential directly adjacent"
+      ],
+      "tag": null,
+      "note_internal": "City of Boston wharf; MBTA ferry docks operated by Hornblower/City Cruises. Busiest terminal in the harbor (MBTA F2H/F3/F4/F5 + Salem Ferry + Encore shuttle) — berth/dwell scheduling must be negotiated alongside incumbents; partner posture (WETA-style), never displacement. Internal only.",
+      "source_url": "https://www.mbta.com/schedules/ferry"
+    },
+    {
+      "key": "rowes-wharf",
+      "label": "Rowes Wharf",
+      "landing": "Rowes Wharf ferry dock (Boston Harbor Hotel)",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Financial District south edge — Atlantic Ave towers, International Place ≤8-min walk",
+        "Harbor Towers / waterfront condos",
+        "Boston Harbor Hotel (5-star anchor) at the dock"
+      ],
+      "tag": null,
+      "note_internal": "MBTA F1 (Hingham direct) terminal + private water-taxi dock (Rowes Wharf Water Transport) — hotel/private ownership; landing rights are a negotiation, not a public right. Internal only.",
+      "source_url": "https://www.roweswharfwatertransport.net/"
+    },
+    {
+      "key": "fan-pier",
+      "label": "Seaport (Fan Pier)",
+      "landing": "Fan Pier dock + Fan Pier Marina, Seaport",
+      "role": "interchange",
+      "phase": 1,
+      "serves": [
+        "Vertex Pharmaceuticals HQ — 1.1M sq ft campus directly on Fan Pier",
+        "MassMutual Boston campus, 10 Fan Pier Blvd (~1,000 employees)",
+        "Amazon Boston Tech Hub, 111 Harbor Way (~2,000 employees; second full-building lease ~2027) — ≤10-min walk",
+        "Foundation Medicine HQ, 400 Summer St",
+        "Seaport / Fort Point residential towers"
+      ],
+      "tag": null,
+      "note_internal": "Ferry dock served by Seaport TMA + MBTA F6/F7 today. Fan Pier Marina is private (100 slips, vessels to 400 ft, 4,000+ linear ft dockage) — strong O&M/overnight berthing candidate. Foundation Medicine subleased ~265k sq ft in 2025 — footprint shrinking, HQ remains; keep employer copy modest. Internal only.",
+      "source_url": "https://fanpiermarina.com/the-marina"
+    },
+    {
+      "key": "salem",
+      "label": "Salem",
+      "landing": "Salem Wharf, 10 Blaney St",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Salem residential + Marblehead/Beverly overflow catchment",
+        "Downtown Salem (tourism/services) at the wharf",
+        "Proven paid-commute precedent: the seasonal Salem Ferry already sells commuter-rate rush-hour tickets"
+      ],
+      "tag": null,
+      "note_internal": "City-built 250-ft wharf (Salem Harbor Port Authority) that also berths ~11 small commercial vessels with power/water — the most commercial-ready North Shore landing. Incumbent Salem Ferry (City Cruises) is seasonal mid-May–Oct; Navier's wedge is year-round premium WITH a published weather-cancellation policy (Salem has ~30-min/$8 commuter rail as fallback). Salem Hospital is ~2 mi inland — NOT walk-tier; never credit it to this stop. Internal only.",
+      "source_url": "https://www.salemma.gov/336/Ferry-Service"
+    },
+    {
+      "key": "hingham",
+      "label": "Hingham (Hewitts Cove)",
+      "landing": "Hewitts Cove ferry terminal + Hingham Shipyard Marinas",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Hingham (median HH income $166,785) + Cohasset/Norwell/Scituate drive-in via the 1,726-space lot",
+        "Hingham Shipyard retail/office village on-site"
+      ],
+      "tag": null,
+      "note_internal": "Proven ferry town — MBTA F1 runs 18 weekday direct trips to Rowes Wharf; Navier is a premium overlay (Seaport leg + shoulder-peak seat guarantees), explicitly not displacement. Hingham Shipyard Marinas (500 slips/100 moorings, commercial pier, deep water) is an O&M berthing candidate. Also the park-and-sail interchange for Cohasset/Scituate road feeders. Internal only.",
+      "source_url": "https://www.mbta.com/stops/Boat-Hingham"
+    },
+    {
+      "key": "hull",
+      "label": "Hull (Pemberton Point)",
+      "landing": "Pemberton Point ferry pier, 180 Main St",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Hull peninsula residential (median HH ~$115–124k) — no rail; the ferry is the town's spine"
+      ],
+      "tag": null,
+      "note_internal": "Town-owned pier; MBTA F2H runs 19 weekday round trips year-round. Highest ferry dependence in the market. Internal only.",
+      "source_url": "https://www.mbta.com/stops/Boat-Hull"
+    },
+    {
+      "key": "marina-bay",
+      "label": "Quincy (Marina Bay / Squantum)",
+      "landing": "MBTA dock at Squantum Point Park + Safe Harbor Marina Bay",
+      "role": "stop",
+      "phase": 1,
+      "serves": [
+        "Marina Bay towers — premium waterfront residential — plus Squantum and Quincy broadly",
+        "Marina Bay boardwalk restaurants/offices (origin-dominant node)"
+      ],
+      "tag": "year-round",
+      "note_internal": "Wedge: year-round weekday service vs MBTA F7 seasonal — a marina-grade station the public system does not serve year-round. Squantum Point Park dock is DCR-controlled (permit path). Safe Harbor Marina Bay: 686 slips, West Basin purpose-built for 70–150 ft vessels with 480V 3-phase — the strongest O&M/charging berth candidate in the network. Internal only.",
+      "source_url": "https://safeharbor.com/locations/safe-harbor-marina-bay/"
+    },
+    {
+      "key": "central-wharf",
+      "label": "Central Wharf (Aquarium)",
+      "landing": "Central Wharf (North & South), New England Aquarium",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Financial District east edge + Aquarium district offices",
+        "Waterfront / North End residential"
+      ],
+      "tag": "planned",
+      "note_internal": "MBTA-served dock (F6, F7, F10 loop). Infill only — adjacent to Long Wharf; add where dwell/berth slots allow, coordinate with incumbents. Internal only.",
+      "source_url": "https://www.mbta.com/winthropferry"
+    },
+    {
+      "key": "beverly",
+      "label": "Beverly",
+      "landing": "Glover Wharf Municipal Marina, 1 Water St",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Beverly / Beverly Farms / Prides Crossing residential catchment",
+        "Local downtown Beverly; Beverly commuter-rail station nearby (weather fallback)"
+      ],
+      "tag": "planned",
+      "note_internal": "Municipal marina ready today — 24 concrete slips, 30/50A power, restrooms; the cleanest Phase-2 extension in the network (North Shore Line). Cummings Center is inland and NOT walk-tier (distance unverified) — never credit it. Internal only.",
+      "source_url": "https://www.beverlyma.gov/686/Glover-Wharf---Beverlys-Municipal-Marina"
+    },
+    {
+      "key": "commonwealth-pier",
+      "label": "Commonwealth Pier / World Trade Center",
+      "landing": "Commonwealth Pier, 200 Seaport Blvd",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Fidelity Investments — relocating its HQ into redeveloped Commonwealth Pier itself: an employer literally at the dock",
+        "Seaport Blvd offices + Fish Pier seafood cluster",
+        "P&G Gillette new global HQ at 232 A St — 12–18 min walk (beyond strict walk-tier; flagged)"
+      ],
+      "tag": "planned",
+      "note_internal": "Massport-owned pier; Bay State Cruise Co. terminal on-site; MBTA F10 loop calls here — Massport relationship carries the same partner posture as Logan. Internal only.",
+      "source_url": "https://baystatecruisecompany.com/directions/"
+    },
+    {
+      "key": "charlestown",
+      "label": "Charlestown Navy Yard",
+      "landing": "Charlestown Navy Yard ferry dock (Pier 4)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Navy Yard institutional/lab cluster (MGH Institute of Health Professions area) + Hood Park nearby",
+        "Charlestown high-income brownstone/condo residential"
+      ],
+      "tag": "planned",
+      "note_internal": "MBTA F4 already runs ~39 weekday trips on the 10-min crossing — Navier here is a pure premium-overlay economics question; never displacement framing. Adjacent Charlestown Marina takes commercial vessels at +$100/ft (berthing option). Employer roster at name level unverified — keep copy generic. Internal only.",
+      "source_url": "https://www.mbta.com/charlestownferry"
+    },
+    {
+      "key": "east-boston",
+      "label": "East Boston (Lewis Mall)",
+      "landing": "Lewis Mall Wharf",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "East Boston / Jeffries Point — fast-appreciating waterfront residential; primarily an origin node",
+        "East Boston waterfront offices (thin)"
+      ],
+      "tag": "planned",
+      "note_internal": "MBTA F3 (permanent 2025) + Seaport Ferry already serve this wharf. Premium fit is weakest in the market here vs the Blue Line (price-sensitive catchment) — promote only on employer-sponsored seat blocks. Internal only.",
+      "source_url": "https://www.mbta.com/EastBostonFerry"
+    },
+    {
+      "key": "lynn",
+      "label": "Lynn",
+      "landing": "Blossom Street Pier, 379–398 Blossom St Ext",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Lynn — large workforce base; Swampscott/Nahant adjacent"
+      ],
+      "tag": "planned",
+      "note_internal": "MBTA F5 seasonal (~45 min to Long Wharf) proves the landing. GE Aerospace River Works (~2,500 jobs) is nearby on the Saugus River but has NO documented passenger dock (distance ~1 mi, unverified) — feeder joins if GE or Logan-adjacent employers anchor seats; never credit GE as walk-tier. Internal only.",
+      "source_url": "https://www.mbta.com/lynnferry"
+    },
+    {
+      "key": "winthrop",
+      "label": "Winthrop",
+      "landing": "Winthrop Landing / Town Pier, 707 Shirley St",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Winthrop peninsula — dense residential with no rapid transit; origin node"
+      ],
+      "tag": "planned",
+      "note_internal": "Town-owned Public Landing Pier Complex; MBTA F6 is seasonal — Navier overlay is year-round weekday. The natural route passes Logan's Harborside frontage: NO Logan stop (held corridor — see decision_ledger). Internal only.",
+      "source_url": "https://www.winthropma.gov/228/Town-Pier"
+    },
+    {
+      "key": "weymouth",
+      "label": "Weymouth (Tern Harbor)",
+      "landing": "Tern Harbor Marina, 275 River St (Back River, Hingham–Weymouth line)",
+      "role": "stop",
+      "phase": 2,
+      "serves": [
+        "Weymouth / North Weymouth residential; origin node (Union Point redevelopment is inland, not walk-tier)"
+      ],
+      "tag": "planned",
+      "note_internal": "Private marina — 150 deep-water slips + 14 moorings, protected. Historic Fore River-area commuter boat ended 2013 when MBTA consolidated Quincy service to Hingham — latent demand signal. Back River local speed zones not sourced this pass — verify in geometry work. Internal only.",
+      "source_url": "https://ternharbormarina.com/dockage/"
+    },
+    {
+      "key": "scituate",
+      "label": "Scituate",
+      "landing": "Scituate Harbor — Cole Parkway Marina (town) + town pier",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Scituate residential (median HH $139,580); harbor village; pure origin node"
+      ],
+      "tag": "planned",
+      "note_internal": "First product is a ROAD FEED to the Hingham park-and-sail interchange (1,726-space lot) — direct water service launches only if a corridor LOI block demands it. The Boston run is outside-harbor open Massachusetts Bay past Minot Ledge — sea-state policy applies. Town pier has power/water/hoists and takes commercial vessels. Cohasset ($199,306 median HH) also feeds here by road — its own harbor is 7-ft, rocky, tide-constrained (watchlist). Internal only.",
+      "source_url": "https://www.scituatema.gov/1323/Transient-Slip-and-Mooring-Information"
+    },
+    {
+      "key": "lovejoy-wharf",
+      "label": "North Station (Lovejoy Wharf)",
+      "landing": "Lovejoy Wharf (Beverly St & Harborwalk)",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "North Station rail hub interchange + TD Garden / Causeway St offices",
+        "Converse HQ on-site (Lovejoy Wharf building)",
+        "MGH (25,000+ employees) at ~12–15 min walk — walk-tier boundary, flagged",
+        "Charlestown / West End / North End residential"
+      ],
+      "tag": "planned",
+      "note_internal": "Harbor-side of the Charles River Dam — NEVER route into the Charles basin/locks (basin is off-network; see no_landing). Entire approach is inner-harbor no-wake water. MBTA F10 year-round loop + Seaport Ferry AM/PM already serve it. Internal only.",
+      "source_url": "https://seaportferry.com/schedule/"
+    },
+    {
+      "key": "encore-everett",
+      "label": "Everett (Encore)",
+      "landing": "Encore Boston Harbor boat dock / Marina at Encore Boston Harbor",
+      "role": "stop",
+      "phase": 3,
+      "serves": [
+        "Encore Boston Harbor casino resort — thousands of on-site jobs",
+        "Everett waterfront redevelopment"
+      ],
+      "tag": "planned",
+      "note_internal": "Wynn-owned private dock (touch-and-go permitted; first 6 hrs dockage free). Upstream of the Alford Street (Route 99) drawbridge — documented mechanical-failure closures — and the entire Mystic reach is no-wake: zero hydrofoil advantage by design. Run only if Encore/Everett employers sponsor seat blocks. Encore's own free Long Wharf shuttle (daily since 2019) proves passage for low-air-draft passenger vessels. Mystic upper-reach winter icing unknown. Internal only.",
+      "source_url": "https://www.encorebostonharbor.com/transportation/encore-premium-harbor-shuttle"
+    }
+  ],
+
+  "lines": [
+    {
+      "id": "BOS-1",
+      "name": "North Shore Line",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": true,
+      "stops": ["beverly", "salem", "long-wharf", "fan-pier"],
+      "segments": [
+        {
+          "from": "beverly",
+          "to": "salem",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Glover Wharf (Beverly Harbor) → Salem Sound → Salem Wharf (Blaney St). Short sheltered-sound hop; sea-state gate still applies to the sound entrance."
+        },
+        {
+          "from": "salem",
+          "to": "long-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan — displacement speed on the entire downtown approach; foil-borne only Salem Sound → Broad Sound → President Roads",
+          "routing": "Salem Sound exit past Marblehead/Nahant → open Broad Sound (semi-open Atlantic; sea-state exposure) → President Roads → cross the no-wake boundary at Logan's NW corner → inner harbor main channel → Long Wharf. Keep clear of Logan runway-approach areas; do NOT place a Logan call (held corridor)."
+        },
+        {
+          "from": "long-wharf",
+          "to": "fan-pier",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Long Wharf → across the inner harbor/Fort Point Channel mouth → Fan Pier dock. Displacement speed throughout; do not enter Fort Point Channel interior."
+        }
+      ],
+      "phase_notes": "Navier's flagship edge — the MBTA does not serve Salem; the seasonal Salem Ferry already sells commuter-rate rush-hour tickets, proving a private operator monetizes this commute. Phase 1 runs Salem ↔ Long Wharf ↔ Fan Pier; the Beverly extension is Phase 2 (renders dimmed until then — Glover Wharf municipal marina is ready today). Marblehead extension is HELD on the watchlist pending a negotiated recurring berth — do not render Marblehead. Foil-borne across Broad Sound, displacement inside the harbor: target ~35–45 min Salem→Seaport is modeled, unverified — render only as indicative. Weather-cancellation policy applies; Salem and Beverly have commuter-rail fallback.",
+      "note_internal": "Boston↔Salem $70 premium-substitute fare anchor exists in other Navier materials — internal economics only; NEVER render fares on the microsite."
+    },
+    {
+      "id": "BOS-2",
+      "name": "South Shore Express",
+      "type": "trunk",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["hingham", "hull", "rowes-wharf", "fan-pier", "commonwealth-pier"],
+      "segments": [
+        {
+          "from": "hingham",
+          "to": "hull",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Hewitts Cove → Hingham Bay → Nantasket Roads → Pemberton Point pier."
+        },
+        {
+          "from": "hull",
+          "to": "rowes-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan — displacement speed on the downtown approach; foil-borne only across Nantasket Roads / President Roads",
+          "routing": "Pemberton Point → Nantasket Roads → President Roads (foil-borne) → cross the no-wake boundary at Logan's NW corner → inner harbor main channel → Rowes Wharf."
+        },
+        {
+          "from": "rowes-wharf",
+          "to": "fan-pier",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Rowes Wharf → across the inner harbor → Fan Pier. Displacement speed throughout."
+        },
+        {
+          "from": "fan-pier",
+          "to": "commonwealth-pier",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone (short Seaport hop)",
+          "routing": "Fan Pier → along the Seaport waterfront → Commonwealth Pier (200 Seaport Blvd). Displacement speed; very short hop — Phase 2 infill."
+        }
+      ],
+      "phase_notes": "Premium guaranteed-seat overlay on the proven MBTA F1/F2H market (18 and 19 weekday round trips respectively) — the differentiation is the Seaport leg the MBTA lacks (its South Shore boats terminate downtown; Seaport workers today walk or transfer) plus seat guarantees at shoulder-peak. Explicit partner posture with the MBTA — never displacement. Commonwealth Pier infill stop is Phase 2 (renders dimmed until then).",
+      "note_internal": "Boston↔Hingham $65 premium-substitute fare anchor exists in other Navier materials — internal economics only; NEVER render fares on the microsite."
+    },
+    {
+      "id": "BOS-3",
+      "name": "Quincy Line",
+      "type": "express",
+      "phase": 1,
+      "flagship": false,
+      "stops": ["marina-bay", "central-wharf", "long-wharf"],
+      "segments": [
+        {
+          "from": "marina-bay",
+          "to": "central-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone on the downtown approach — displacement speed inside the boundary",
+          "routing": "Squantum Point / Marina Bay → Dorchester Bay → President Roads (foil-borne where outside the no-wake boundary) → inner harbor main channel → Central Wharf. Verify the exact no-wake boundary crossing point in the geometry pass."
+        },
+        {
+          "from": "central-wharf",
+          "to": "long-wharf",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone (adjacent wharves)",
+          "routing": "Central Wharf → Long Wharf — adjacent downtown wharves; displacement-speed micro-hop."
+        }
+      ],
+      "phase_notes": "Year-round weekday service vs the MBTA F7's seasonal schedule — a marina-grade station the public system does not serve year-round, and the network's cleanest 'unserved node' story alongside Salem. Phase 1 runs Marina Bay ↔ Long Wharf direct; the Central Wharf infill stop is Phase 2 (renders dimmed until then). Safe Harbor Marina Bay (686 slips) is co-located for O&M berthing."
+    },
+    {
+      "id": "BOS-4",
+      "name": "Lynn Feeder",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["lynn", "long-wharf"],
+      "segments": [
+        {
+          "from": "lynn",
+          "to": "long-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach; foil-borne only across Broad Sound",
+          "routing": "Blossom Street Pier → out of Lynn Harbor → Broad Sound off Nahant (open water; sea-state exposure) → President Roads → no-wake boundary at Logan's NW corner → Long Wharf."
+        }
+      ],
+      "phase_notes": "Joins the network if GE Aerospace or Logan-adjacent employers anchor seat blocks — the landing (Blossom Street Pier) is real today and the MBTA F5 seasonal service (~45 min) proves the run. GE River Works has no passenger dock (see no_landing); do not credit it as walk-tier."
+    },
+    {
+      "id": "BOS-5",
+      "name": "Winthrop Feeder",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["winthrop", "fan-pier", "central-wharf"],
+      "segments": [
+        {
+          "from": "winthrop",
+          "to": "fan-pier",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan — most of this segment runs at displacement speed",
+          "routing": "Winthrop Landing → around Logan's runway-approach areas via President Roads → no-wake boundary at Logan's NW corner → inner harbor → Fan Pier. The MBTA F6 pattern calls at Logan; Navier does NOT — no Logan stop or marker (held corridor, see decision_ledger)."
+        },
+        {
+          "from": "fan-pier",
+          "to": "central-wharf",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Fan Pier → across the inner harbor → Central Wharf. Displacement speed."
+        }
+      ],
+      "phase_notes": "Year-round weekday overlay on the seasonal MBTA F6 pattern, minus the Logan call (Boston↔Logan is a held corridor — internal decision_ledger). Winthrop has dense residential and no rapid transit; pure origin node."
+    },
+    {
+      "id": "BOS-6",
+      "name": "Inner Harbor Shuttle",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["charlestown", "long-wharf", "east-boston"],
+      "segments": [
+        {
+          "from": "charlestown",
+          "to": "long-wharf",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Navy Yard Pier 4 → inner harbor → Long Wharf. 10-min displacement crossing (MBTA F4 pattern)."
+        },
+        {
+          "from": "long-wharf",
+          "to": "east-boston",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Long Wharf → inner harbor → Lewis Mall Wharf. Displacement crossing (MBTA F3 pattern)."
+        }
+      ],
+      "phase_notes": "Premium infill on crossings the MBTA already proves at scale (F4 Charlestown: ~39 weekday trips on a 10-min crossing; F3 East Boston made permanent 2025). All-no-wake water — this line is sold on guaranteed seats and frequency, never on speed. East Boston promotes only with employer-sponsored seat blocks."
+    },
+    {
+      "id": "BOS-7",
+      "name": "Weymouth Feeder",
+      "type": "feeder",
+      "phase": 2,
+      "flagship": false,
+      "stops": ["weymouth", "hingham", "rowes-wharf"],
+      "segments": [
+        {
+          "from": "weymouth",
+          "to": "hingham",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Tern Harbor Marina (Back River) → Back River channel → Hingham Bay → Hewitts Cove. Back River local speed zones not sourced this pass — verify and flag in the geometry pass; fail closed to speed_constrained if zoned."
+        },
+        {
+          "from": "hingham",
+          "to": "rowes-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach; foil-borne only across Hingham Bay / Nantasket Roads / President Roads",
+          "routing": "Hewitts Cove → Hingham Bay → Nantasket Roads → President Roads → no-wake boundary at Logan's NW corner → Rowes Wharf (MBTA F1 pattern)."
+        }
+      ],
+      "phase_notes": "Restores water access lost when the historic Fore River-area commuter boat ended in 2013 (MBTA consolidated Quincy service to Hingham) — a latent-demand signal, not a displacement play. Feeds the Hingham park-and-sail interchange and runs through to Rowes Wharf."
+    },
+    {
+      "id": "BOS-8",
+      "name": "Scituate Express",
+      "type": "express",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["scituate", "hull", "rowes-wharf"],
+      "segments": [
+        {
+          "from": "scituate",
+          "to": "hull",
+          "speed_constrained": false,
+          "constraint": null,
+          "routing": "Scituate Harbor → open Massachusetts Bay past Minot Ledge (outside-harbor run; significant sea-state exposure) → Pemberton Point. Sea-state gate applies to the entire outer leg."
+        },
+        {
+          "from": "hull",
+          "to": "rowes-wharf",
+          "speed_constrained": true,
+          "constraint": "Inner-harbor no-wake zone from the NW corner of Logan on the downtown approach",
+          "routing": "Pemberton Point → Nantasket Roads → President Roads → no-wake boundary at Logan's NW corner → Rowes Wharf."
+        }
+      ],
+      "phase_notes": "Held at Phase 3 by design: the first Scituate product is a ROAD FEED to the Hingham park-and-sail interchange (1,726-space lot); direct water service launches only if a corridor LOI block demands it. Open-water run — weather-cancellation policy applies (Greenbush commuter rail exists but is slow). Cohasset feeds by road to Hingham (7-ft rocky, tide-constrained harbor — watchlist, not a station)."
+    },
+    {
+      "id": "BOS-9",
+      "name": "Riverside Shuttle",
+      "type": "feeder",
+      "phase": 3,
+      "flagship": false,
+      "stops": ["encore-everett", "lovejoy-wharf", "long-wharf", "fan-pier"],
+      "segments": [
+        {
+          "from": "encore-everett",
+          "to": "lovejoy-wharf",
+          "speed_constrained": true,
+          "constraint": "Entire Mystic reach inside the no-wake zone + Alford Street (Route 99) drawbridge transit (documented mechanical-failure closures)",
+          "routing": "Encore dock → lower Mystic River → Alford Street drawbridge (low-air-draft passage proven daily by the Encore shuttle since 2019) → Charlestown reach → Lovejoy Wharf. Lovejoy is HARBOR-side of the Charles River Dam — never route into the Charles basin or the Gridley Locks. Amelia Earhart Dam is upstream of Encore; do not route above Encore."
+        },
+        {
+          "from": "lovejoy-wharf",
+          "to": "long-wharf",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Lovejoy Wharf → inner harbor → Long Wharf. Displacement speed."
+        },
+        {
+          "from": "long-wharf",
+          "to": "fan-pier",
+          "speed_constrained": true,
+          "constraint": "Entire segment inside the inner-harbor no-wake zone",
+          "routing": "Long Wharf → inner harbor → Fan Pier. Displacement speed."
+        }
+      ],
+      "phase_notes": "Coverage/branding line, displacement speed end-to-end — zero hydrofoil advantage by design (entirely no-wake water plus a drawbridge). NO speed or time-advantage claims for this line anywhere in copy. Runs only if Encore/Everett employers sponsor seat blocks. Lovejoy adds the North Station rail hub, Converse HQ on-site, and MGH at the ~12–15 min walk-tier boundary."
+    }
+  ],
+
+  "catchment": [
+    {
+      "anchor": "Seaport",
+      "anchor_station": "fan-pier",
+      "employers": [
+        "Vertex Pharmaceuticals HQ (1.1M sq ft campus on Fan Pier)",
+        "Amazon Boston Tech Hub (111 Harbor Way, ~2,000 employees; second tower ~2027)",
+        "MassMutual Boston campus (10 Fan Pier Blvd, ~1,000 employees)",
+        "Foundation Medicine HQ (400 Summer St)",
+        "Fidelity Investments (relocating HQ into Commonwealth Pier — at the dock; station is Phase 2 infill)",
+        "P&G Gillette global HQ, 232 A St (12–18 min walk — beyond strict walk-tier, flagged)"
+      ],
+      "stations_at_launch": 6,
+      "stations_full_network": 17,
+      "note": "Fan Pier interchange at launch; Commonwealth Pier adds a dock-side berth for Fidelity at Phase 2. Gillette credited at extended walk-tier only."
+    },
+    {
+      "anchor": "Financial District / Downtown",
+      "anchor_station": "long-wharf",
+      "employers": [
+        "Financial District cluster ≤10-min walk (State St, International Place; Fidelity at 155 Congress St)",
+        "Faneuil Hall / Government Center",
+        "Atlantic Ave towers via Rowes Wharf (≤8-min walk)"
+      ],
+      "stations_at_launch": 6,
+      "stations_full_network": 17,
+      "note": "Boston's largest private-employer cluster; tenant-by-tenant roster not compiled beyond Fidelity (inventory honesty) — keep copy at cluster level."
+    },
+    {
+      "anchor": "Charlestown Navy Yard",
+      "anchor_station": "charlestown",
+      "employers": [
+        "Navy Yard institutional/lab cluster (MGH Institute of Health Professions area — named roster unverified)",
+        "Hood Park (nearby)"
+      ],
+      "stations_at_launch": 0,
+      "stations_full_network": 17,
+      "note": "Phase 2 station — 0 at launch; render as planned."
+    },
+    {
+      "anchor": "East Boston",
+      "anchor_station": "east-boston",
+      "employers": [
+        "East Boston waterfront offices (thin — primarily a residential origin node)"
+      ],
+      "stations_at_launch": 0,
+      "stations_full_network": 17,
+      "note": "Phase 2 station — 0 at launch; origin-dominant, employer-sponsored blocks only."
+    },
+    {
+      "anchor": "Salem / North Shore",
+      "anchor_station": "salem",
+      "employers": [
+        "Downtown Salem (tourism/services) at the wharf"
+      ],
+      "stations_at_launch": 6,
+      "stations_full_network": 17,
+      "note": "Reverse-commute honesty: GE Aerospace Lynn (~2,500) and Salem Hospital (1,000–5,000) both FAIL walk-tier today (see no_landing) — no strong walk-tier reverse-commute employer on the North Shore; this anchor monetizes inbound-to-Boston seats."
+    },
+    {
+      "anchor": "Quincy / South Shore",
+      "anchor_station": "marina-bay",
+      "employers": [
+        "Marina Bay boardwalk restaurants/offices (origin-dominant)",
+        "Hingham Shipyard retail/office village (via Hingham station)"
+      ],
+      "stations_at_launch": 6,
+      "stations_full_network": 17,
+      "note": "Origin-dominant anchor — premium residential towers at Marina Bay plus the Hingham/Hull drive-in catchment; monetizes inbound-to-Boston seats."
+    }
+  ],
+  "catchment_counting_rule": "stations_at_launch / stations_full_network = count of OTHER stations reachable from the anchor's station via authored lines (transfers allowed at interchanges), at Phase 1 vs all phases. Phase 1 network = 7 connected stations (so 6 reachable from each); full network = 18 connected stations (so 17 reachable from each). Anchors whose station is Phase 2 score 0 at launch.",
+
+  "decision_ledger": [
+    {
+      "item": "logan-airport",
+      "landing": "Boston Logan Water Transportation Dock, Harborside Dr (Massport)",
+      "status": "Verified PASS on landing-gate grounds — public Massport dock, multi-operator today (MBTA F2H/F6/F7/F10 + on-demand water taxis), free Route 66 shuttle to all terminals",
+      "rule": "Boston↔Logan is a HELD corridor in Navier partner/operator materials (public-value framing) — no Logan stop or line is authored in this employer hub",
+      "decision_owner": "Jaideep",
+      "decision": "Include Logan calls on employer lines (e.g., North Shore Line calling at Logan) vs keep Logan off the employer microsite entirely. Until decided: no Logan stop, line, or map marker renders anywhere; this ledger is internal-only and never renders.",
+      "source_url": "https://www.massport.com/logan-airport/getting-to-logan/water-transportation"
+    }
+  ],
+
+  "watchlist": [
+    {
+      "landing": "Marblehead — Tucker's Wharf & State Street (Philip Clark) Landing",
+      "reason": "Real town-owned landings in the flagship premium catchment (median HH ≈1.5× the metro's $115,863; no rail in town; deep-water harbor, 3,000+ moorings) — but the only standing right is a 30-min public tie-up, which is not a schedule-grade berth. North Shore Line extension held pending a negotiated recurring berth with the harbormaster; do not render as a station.",
+      "note_internal": "THE gating item for the flagship North Shore Line extension. Priority dock-track workstream: negotiated recurring commercial berth at Tucker's/State St. Never surface berth-negotiation status in rendered copy.",
+      "source_url": "https://marbleheadma.gov/harbormaster/"
+    },
+    {
+      "landing": "Swampscott — Albert J. Williams Town Pier / Fish House pier",
+      "reason": "Real town pier + float system, affluent catchment (median HH $134,386), but documented shoaling — harbor 'too shallow for many commercial boats at low tide'; tide-window operation or dredging required before any promotion. Do not render as a station.",
+      "source_url": "https://www.swampscottma.gov/1531/Swampscott-Fish-House"
+    },
+    {
+      "landing": "Cohasset Harbor — public docks + Cohasset Harbor Marina",
+      "reason": "Among the richest waterfront towns in MA (median HH $199,306), but the harbor has a 7-ft approach, a tight rocky entrance, and is tide-constrained for a 30–45 ft commercial vessel. Likely permanent answer: road-feed to the Hingham interchange. Do not render as a station.",
+      "source_url": "https://www.cohassetma.gov/1126/Cohasset-Harbor"
+    },
+    {
+      "landing": "Gloucester — Solomon Jacobs Public Pier + Cape Ann Marina",
+      "reason": "Real landings, but grant terms may restrict commercial use of Solomon Jacobs; Cape Ann Marina is up the Annisquam, not the inner harbor; and at ~28 nm from Boston the run falls outside the 20–45 min sweet spot. Growth-phase at best. Do not render as a station.",
+      "source_url": "https://www.gloucestertimes.com/news/grant-terms-may-limit-commercial-usage-of-solomon-jacobs-landing/article_e950965e-9128-11ed-9894-77dd0fd8ad6b.html"
+    },
+    {
+      "landing": "Chelsea — Marina at Admiral's Hill (Island End River)",
+      "reason": "The only real landing in Chelsea (private marina; seasonal slips + transient dockage), but Island End River channel depth/approach is unknown, and Chelsea's own public-dock study found no ferry-ready public dock in the city. Do not render as a station.",
+      "source_url": "https://www.mybostonmarina.com/"
+    }
+  ],
+
+  "no_landing": [
+    { "area": "Assembly Row (Somerville)", "reason": "No passenger dock exists; the only funded Mystic crossing here is a planned bicycle/pedestrian bridge to Everett (target ≈2029). Any Assembly Row landing is net-new Chapter 91 permitting work. Paper only." },
+    { "area": "Chelsea (public dock)", "reason": "Boston Harbor Now's dock report states there is no existing or proposed ferry-service dock in Chelsea; the Mary O'Malley State Park landing slip is documented as decayed. Only the private Admiral's Hill marina exists (watchlist)." },
+    { "area": "Kendall Square / Cambridge / entire Charles River basin", "reason": "The Charles is impounded behind the Charles River Dam at North Station — harbor access only via the Gridley Locks (~30,000 boat lockings/yr, each transit a full lock cycle) plus an MBTA commuter-rail drawbridge whose openings are restricted during peak rail hours (M–F ~6:15–9:10 AM). NOT reachable from the harbor at commuter frequency; the entire basin (Kendall, MIT, Esplanade, CambridgeSide) is off-network. A Charles in-basin electric ferry concept exists but is a proposal, not a service." },
+    { "area": "GE Aerospace River Works, Lynn", "reason": "~2,500-employee plant at the mouth of the Saugus River with NO documented passenger dock (site is rail-serviced). Nearest real landing is Blossom Street Pier (~1 mi, unverified). Reverse-commute anchor only if GE funds a shuttle link or a plant dock is built." },
+    { "area": "Salem Hospital (Mass General Brigham Salem)", "reason": "Major North Shore employer (1,001–5,000 employees) but at 81 Highland Ave, ~2 mi inland from Salem Wharf — not walk-tier; shuttle-dependent. Never credit it to the Salem station." },
+    { "area": "MGH / West End", "reason": "No dedicated landing; nearest is Lovejoy Wharf at ~12–15 min walk (walk-tier boundary; distance not precisely verified). MGH (25,000+ employees) is credited to the Lovejoy station with this caveat, not its own node." },
+    { "area": "Fort Point Channel interior (Gillette / 232 A St frontage)", "reason": "No usable scheduled-service landing inside the channel identified; channel bridge clearances and navigation limits not sourced (unverified). Gillette is credited to the Seaport docks at 12–18 min walk instead. Do not route into Fort Point Channel." }
+  ],
+
+  "bp_gap": [],
+
+  "gates": {
+    "incumbent_respect": {
+      "rule": "MBTA/Massport run a proven harbor ferry system — 1,498,200 riders in 2025 (~2,700/weekday), the highest on-time performance and farebox recovery of any MBTA mode, and a year-round F10 inner-harbor loop added in 2026. Navier renders ONLY as a premium employer-sponsored tier on top of that system plus marina-grade stations the MBTA does not serve (Salem, year-round Marina Bay, Beverly). NO displacement framing anywhere: copy never claims to replace, beat, out-compete, or fix the MBTA; incumbents are respected proof points and potential partners (WETA-style).",
+      "usable_public_proof_points": [
+        "MBTA ferry: 1,498,200 riders in 2025; highest OTP and farebox recovery of any MBTA mode",
+        "Year-round F10 inner-harbor loop added 2026",
+        "F1 Hingham direct: 18 weekday round trips; F2H: 19; F4 Charlestown: 39 trips on a 10-min crossing",
+        "Salem Ferry sells commuter-rate rush-hour tickets — a private operator already monetizes a North Shore commute"
+      ]
+    },
+    "inner_harbor_no_wake_honesty": {
+      "rule": "Boston Inner Harbor is a no-wake zone beginning at the NW corner of Logan Airport — a hydrofoil is foil-borne only OUTSIDE the inner harbor (President Roads / Nantasket Roads / Broad Sound); every inner-harbor leg runs at displacement speed like everyone else. Segments flagged speed_constrained:true must render water_min as 'indicative — subject to Boston Harbor speed rules' — never a bare number. ALL published trip times must model the displacement leg. NO 'foiling into downtown' or foil-speed-to-the-dock claims anywhere in copy. A zero-wake hydrofoil gets no automatic exemption; do not soften this in copy.",
+      "constrained_zones": [
+        "Inner-harbor no-wake zone from the NW corner of Logan Airport (minimum wake; secondary sources cite 5 kt within 300 ft of shore / 10 kt within 1,000 ft)",
+        "Entire Mystic/Chelsea reaches, including the full Encore corridor (plus the Alford Street Route 99 drawbridge)"
+      ],
+      "no_speed_advantage_claims_for_lines": ["BOS-6", "BOS-9"],
+      "segment_flag": "speed_constrained",
+      "note": "BOS-6 (Inner Harbor Shuttle) and BOS-9 (Riverside Shuttle) are all-no-wake lines with zero hydrofoil advantage — sell on guaranteed seats, frequency, and experience, never speed or time."
+    },
+    "sea_state_honesty": {
+      "rule": "North Shore and outer legs (Salem, Beverly, Lynn, Scituate) cross Broad Sound / open Massachusetts Bay — semi-open Atlantic. The incumbent Salem Ferry cancels for rough seas multiple days at a time (documented multi-day cancellations, Oct 2025). NO all-weather or every-day service claims for these legs. Copy states a published weather-cancellation policy and notes that commuter-rail fallback exists at Salem and Beverly.",
+      "note_internal": "Winter ops: year-round operation is proven — MBTA runs F1, F2H, F4, and F10 all winter; the harbor core does not ice-lock in normal winters; Mystic upper-reach icing unknown. Internal only — do not render winter/ice discussion."
+    },
+    "logan_held_decision": {
+      "rule": "The Logan Water Transportation Dock is verified PASS (public, Massport, multi-operator) but Boston↔Logan is a HELD corridor in Navier partner/operator materials — NO Logan stop, line, or map marker in this hub under any circumstances. The decision_ledger array is internal-only and never renders. Water paths may pass Logan's frontage geometrically; no marker or label appears there. Include-on-microsite is a Jaideep decision."
+    },
+    "internal_fields_stripped_from_dom": ["dock_track", "note_internal", "decision_ledger"],
+    "no_invented_landings": "Every stop maps to the exact named landing in BOSTON-NODE-INVENTORY.md. Any stop that cannot be ID-matched to a real BP goes to the bp_gap ledger with reason and renders only from inventory-named coordinates — never guess.",
+    "times_indicative": "ALL times marked indicative until Atlas geometry seals them; inner-harbor displacement legs must be modeled in every published time.",
+    "phase_toggle_default": "At launch",
+    "loi_framing": "Non-binding letter of intent — a seat-block interest signal, not a purchase.",
+    "no_dock_negotiation_language": "No copy about dock deals, berth negotiations, Chapter 91/DEP permitting, DCR/Massport terms, or landing agreements — internal only.",
+    "launch_timing": "Service launch not before end-2027. All network rendering is coverage narrative, not a service promise; seat economics still gate corridor launch (60–80 committed seats)."
+  },
+
+  "copy": {
+    "hero": "Your dock becomes a station on a connected water network. Boston already proves the harbor commute — the MBTA ferry carried nearly 1.5 million riders last year and now runs a year-round inner-harbor loop. Navier adds a premium employer-sponsored tier on top: 20-seat electric hydrofoils linking Salem, Hingham, Hull, Quincy Marina Bay, downtown, and the Seaport — including year-round marina-grade stations the public system doesn't serve today.",
+    "sections": {
+      "why_boston": "Boston has the 4th-worst traffic congestion in the US (~$1,400 lost per driver per year), and I-93 south of downtown is the 2nd-most-congested road in the country. Meanwhile the harbor commute is already proven: the MBTA ferry is the system's best-performing mode, Hingham and Hull commuters ride 18–19 round trips a day, and when the Sumner Tunnel closed, the state itself pointed the North Shore to the water. Every launch station is a working ferry landing or marina today — no new construction on day one.",
+      "how_it_works": "Employers commit seat blocks on a corridor. When a corridor reaches 60–80 committed seats, it launches. Seats are guaranteed, quiet, working commutes on zero-emission electric hydrofoils.",
+      "network": "Three launch lines — the North Shore Line (Salem · Long Wharf · Seaport/Fan Pier), the South Shore Express (Hingham · Hull · Rowes Wharf · Fan Pier), and the year-round Quincy Line (Marina Bay · Long Wharf) — with Long Wharf as the primary interchange and Fan Pier and Rowes Wharf as transfer points. Phase 2 and 3 stations render as planned, not promised.",
+      "alongside_the_mbta": "The MBTA and Massport run one of the best public ferry systems in America — we're building alongside it, not against it. Navier adds guaranteed employer seats where the public boats are full or don't go: a Seaport leg for South Shore riders, year-round service at Marina Bay, and a Salem station the network has never had.",
+      "north_shore_weather": "Salem and Beverly legs cross open water, so we publish a weather-cancellation policy up front — and on rough-sea days, commuter rail from Salem and Beverly is the fallback. We'd rather tell you that now than surprise you in November.",
+      "inner_harbor_speed": "Inside the inner harbor, every vessel — including ours — observes no-wake speeds. Our hydrofoils earn their time on the open-water legs; every travel time shown is indicative until routes are finalized with harbor authorities.",
+      "timing": "Targeting first service no earlier than end-2027. The map is a coverage plan, not a schedule.",
+      "loi_ask": "Register interest with a non-binding letter of intent. It costs nothing and reserves nothing — it tells us which corridors to launch first."
+    }
+  }
+}
