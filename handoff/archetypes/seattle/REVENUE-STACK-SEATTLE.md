@@ -96,3 +96,9 @@ Same doctrine as Boston (`../boston/CARGO-LAYER-BENCHMARKS.md`): harbor cargo ea
 
 ---
 *Every number above is sourced, derived (labeled), or canon (labeled). Base times respect posted limits per SPEED-RULES-SEATTLE.md. No invented demand; cargo and sponsorship fail closed out of the base case. Plain-English audience-safe copy is authored FROM this file; internal audit language never renders.*
+
+---
+
+## Scope amendment 2026-08-16 — Lake Washington cluster reopened
+
+Jaideep directive 2026-08-16: LKW-1/LKW-2 re-enter the rendered network (see SPEED-RULES-SEATTLE.md §7 + EASTSIDE-VERIFICATION-2026-08-16.md). **Economics in this file are unchanged** — every revenue layer remains anchored on the documented Puget Sound corridors and benchmarks. Lake corridors are additive network reach; no lake-corridor demand, fare, or utilization figure exists yet, so none enters the P&L. Fail closed: any future lake-corridor economics require their own sourced benchmarks pass.

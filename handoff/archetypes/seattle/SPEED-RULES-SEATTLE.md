@@ -87,3 +87,24 @@
 | RCW 77.15.740 parameters | Section identified; verbatim current text **not re-pulled** — verify before external use |
 | Bellevue/Kirkland/Mercer Island/Renton municipal rules | Not verified this pass (out of network scope) |
 | Tacoma/Gig Harbor harbor-speed ordinances | **Unverified — fail closed**, SND-3 stays indicative |
+
+---
+
+## 7 · SCOPE CHANGE — Lake Washington cluster REOPENED (Jaideep directive 2026-08-16)
+
+The lake-exclusion scope rule is lifted. Basis: §1's finding (no blanket lake-wide speed limit exists) plus the Eastside primary-verification pass in `EASTSIDE-VERIFICATION-2026-08-16.md`. LKW-1 Cross-Lake and LKW-2 Eastside re-enter the rendered network.
+
+**Eastside verification results (supersedes §1's "not verified this pass" flags and the ledger rows below):**
+
+| Jurisdiction | Rule | Status |
+|---|---|---|
+| Kirkland | **KMC 14.24.030** — 7 kn within 100 yd of shore/pier/shore installation | **VERIFIED** (primary) |
+| Renton | **RMC 9-3-7.A/.B** — **8 kn** within 100 yd (not 7 as previously assumed); no-wake extends to bridges within 100 yd (relevant near south-end I-405 crossing) | **VERIFIED** (primary) |
+| Bellevue | Posted 7 kn within 300 ft of shore/docks/swim areas (Meydenbauer Bay) | **PARTIALLY VERIFIED** — rule confirmed via official city source, but rests on uncodified 1962 Ord. 540; **no BCC section number may be cited externally** until legal follow-up |
+| Mercer Island | **No independent MICC vessel-speed ordinance found** (negative finding). Waters policed to KCC 12.44.090 (8 mph/100 yd) via shared Marine Patrol | UNVERIFIED as codified MICC cite; "Mercer Island buoy rules" = physical buoys marking the standard county buffer, not a distinct city regulation |
+
+**Corrections to prior internal notes:** "RMC 9-3-7" applies to Renton only — the prior conflation with Kirkland is wrong (Kirkland = KMC 14.24.030). Renton's buffer is 8 kn, not 7.
+
+**Mid-lake sanity check (re-confirmed):** no numeric cap on the open SR-520↔I-90 crossing outside 100-yd/300-ft shore buffers and outside the Seafair RNA window — state safe-speed conduct standard only. hub.json's LKW-1 "12–15 min" cross-lake claim is consistent with the verified rules.
+
+**Rendering rules for the lake cluster:** LKW-2 shore-adjacent legs stay `speed_constrained` with "indicative — subject to local shore buffers" labels (buffers dominate short Eastside hops). No Bellevue code section number in any rendered artifact. Seafair RNA is a seasonal operations note, not a corridor blocker.

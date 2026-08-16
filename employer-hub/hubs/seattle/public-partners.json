@@ -1,5 +1,5 @@
 {
-  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3 per GROK-SPEC-archetype-templates-2026-08-15.md + ADDENDUM v3, using the Boston v3 exemplar as structural ground truth. Sources: seattle/AUTHORITY-MAP-SEATTLE.md + seattle/SPEED-RULES-SEATTLE.md + seattle/hub.json (+ PUBLIC-PARTNERS-BRIEF.md patterns). CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields (_contract, _provenance, _internal, _guard) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Never render: held corridors, Gulf counterparties, authority contacts, internal dock-status fields. SCOPE LOCK: Puget Sound cluster only — see _internal.scope; the Lake Washington cluster and its verification history never render. Authorities with document-level-unverified posture are omitted (fail closed).",
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3 per GROK-SPEC-archetype-templates-2026-08-15.md + ADDENDUM v3, using the Boston v3 exemplar as structural ground truth. Sources: seattle/AUTHORITY-MAP-SEATTLE.md + seattle/SPEED-RULES-SEATTLE.md + seattle/hub.json (+ PUBLIC-PARTNERS-BRIEF.md patterns). CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields (_contract, _provenance, _internal, _guard) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Never render: held corridors, Gulf counterparties, authority contacts, internal dock-status fields. SCOPE REOPENED (Jaideep directive 2026-08-16): the full hub.json network including the Lake Washington cluster renders — see _internal.scope; the speed-rule verification history itself still never renders. Authorities with document-level-unverified posture are omitted (fail closed).",
   "contract_version": "v3",
   "city": "seattle",
   "archetype": "public-partners",
@@ -35,8 +35,10 @@
   },
   "geometry": {
     "data": {
-      "stops": 9,
+      "stops": 14,
       "lines": [
+        "LKW-1 Cross-Lake",
+        "LKW-2 Eastside",
         "SND-1 Elliott Bay",
         "SND-2 Sound",
         "SND-3 Narrows"
@@ -44,15 +46,16 @@
     },
     "_internal": {
       "source": "hubs/seattle/hub.json",
-      "inherit": "unchanged for the Sound cluster (Decision D3 — same corridors as the employer map, nothing added, nothing removed). Lake Washington cluster excluded per locked scope rule — see _internal.scope."
-    }
+      "inherit": "unchanged for the full network (Decision D3 — same corridors as the employer map, nothing added, nothing removed). Lake Washington cluster included per reopened scope (Jaideep directive 2026-08-16) — see _internal.scope."
+    },
+    "note": "The network spans Puget Sound and Lake Washington — cross-lake Seattle↔Bellevue in 12–15 minutes."
   },
   "hero": {
     "copy": {
       "headline": "Puget Sound already commutes by water.",
-      "subline": "A zero-emission, electric-foiling network on Elliott Bay and the Sound — built on existing piers and marinas, financed by private capital, complementing the nation's largest public ferry system.",
+      "subline": "A zero-emission, electric-foiling network on Elliott Bay, Puget Sound, and Lake Washington — built on existing piers and marinas, financed by private capital, complementing the nation's largest public ferry system.",
       "stat_chips": [
-        "9 stations",
+        "14 stations",
         "0 terminals to build",
         "0 subsidy ask",
         "19.1M WSF riders 2024"
@@ -63,7 +66,7 @@
     "data": {
       "image": "/employer-hub/hubs/seattle/assets/hero-public-seattle.jpg"
     },
-    "_provenance": "Ridership chip: WSF 19.1M riders in 2024 (+2.6%) per WSDOT news release (see public_value stats + fn2). Station count is Sound cluster only."
+    "_provenance": "Ridership chip: WSF 19.1M riders in 2024 (+2.6%) per WSDOT news release (see public_value stats + fn2). Station count is the full 14-station network (Lake Washington cluster included per reopened scope, Jaideep directive 2026-08-16)."
   },
   "gap": {
     "title": "Washington is already funding hydrofoils",
@@ -115,12 +118,12 @@
     "data": {
       "landings_verified": {
         "title": "Landings verified",
-        "value": "6 of 9 landings source-verified",
+        "value": "6 of 14 landings source-verified",
         "verified": 6,
-        "total": 9
+        "total": 14
       }
     },
-    "_internal": "Coverage tally per AUTHORITY-MAP-SEATTLE.md §3: 6 of 9 Sound stops verified at owner level; 3 partially verified (Bainbridge berth, Gig Harbor document level, Tacoma commercial terms). Per-stop verification status intentionally omitted from this page (fail closed)."
+    "_internal": "Coverage tally per AUTHORITY-MAP-SEATTLE.md §3: 6 of 9 Sound stops verified at owner level; 3 partially verified (Bainbridge berth, Gig Harbor document level, Tacoma commercial terms). The five Lake Washington landings (in scope per Jaideep directive 2026-08-16) are inventory-named city/park/private docks not yet owner-verified — counted in the total, never in the verified figure (fail closed). Per-stop verification status intentionally omitted from this page (fail closed)."
   },
   "posture": {
     "copy": {
@@ -359,7 +362,7 @@
         "title": "Authority landscape",
         "collapsed": true,
         "copy": {
-          "intro": "Puget Sound's water-transportation landscape spans state, county, port, and municipal bodies. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+          "intro": "The region's water-transportation landscape — Puget Sound and Lake Washington — spans state, county, port, and municipal bodies. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
         },
         "data": {
           "bodies": [
@@ -394,6 +397,31 @@
               "role": "Permitting and landing access in city waters; Seattle Parks controls the Seacrest dock; Harbor Patrol enforces the harbor code."
             },
             {
+              "body": "King County",
+              "classification": "enable",
+              "role": "The county authority on Lake Washington's waters — county boating rules set the shore-buffer standard across the lake; posted low-speed zones near shore apply, and the open lake crossing is unrestricted."
+            },
+            {
+              "body": "City of Bellevue",
+              "classification": "enable",
+              "role": "Owns the Bellevue Marina at Meydenbauer Bay — this network's Bellevue gate; a posted low-speed zone applies near shore and inside the bay."
+            },
+            {
+              "body": "City of Kirkland",
+              "classification": "enable",
+              "role": "Owns Marina Park's city dock and moorage in downtown Kirkland — this network's Kirkland station, with Carillon Point Marina to the south as the second Kirkland stop."
+            },
+            {
+              "body": "City of Renton",
+              "classification": "enable",
+              "role": "Owns Gene Coulon Memorial Beach Park and its day-moorage docks at the lake's south end — this network's Renton station, beside the Southport waterfront."
+            },
+            {
+              "body": "City of Mercer Island",
+              "classification": "enable",
+              "role": "No station on the island; its police marine patrol serves the lake waters of several shoreline cities, and mid-lake transit past the island runs on open water under county rules."
+            },
+            {
               "body": "City of Des Moines",
               "classification": "enable",
               "role": "Owns the 840-slip Des Moines Marina and ran its own Des Moines–Seattle passenger-ferry pilot in 2022 — on exactly the corridor this network serves."
@@ -406,12 +434,12 @@
             {
               "body": "USCG Sector Puget Sound",
               "classification": "permitting_gate",
-              "role": "Captain of the Port — navigation safety and federal oversight for all commercial passenger operations on the Sound."
+              "role": "Captain of the Port — navigation safety and federal oversight for all commercial passenger operations on the Sound and Lake Washington."
             }
           ]
         },
         "_internal": {
-          "omitted_note": "Omitted, fail closed (posture unverified at document level per AUTHORITY-MAP-SEATTLE.md): Port of Edmonds / City of Edmonds, City of Bainbridge Island, City of Gig Harbor, City of Tacoma, Pierce County, Sound Transit. Non-governmental orgs (Washington Maritime Blue, Commute Seattle) never render as authorities. No authority contacts render anywhere."
+          "omitted_note": "Omitted, fail closed (posture unverified at document level per AUTHORITY-MAP-SEATTLE.md): Port of Edmonds / City of Edmonds, City of Bainbridge Island, City of Gig Harbor, City of Tacoma, Pierce County, Sound Transit. Non-governmental orgs (Washington Maritime Blue, Commute Seattle) never render as authorities. No authority contacts render anywhere. Lake Washington shoreline cities (Bellevue, Kirkland, Renton, Mercer Island) and King County added 2026-08-16 per reopened scope — landing-owner and lake-jurisdiction roles only, plain English, no code citations in any renderable."
         }
       },
       "modal_integration": {
@@ -446,7 +474,7 @@
     "_provenance": "Authority landscape + Modal integration rendered as a collapsed reference block per Boston v3 pattern (TEMPLATE-V3-PLAN gap 5)."
   },
   "_internal": {
-    "scope": "LOCKED SCOPE: Puget Sound cluster only (parent directive 2026-08-16; REVENUE-STACK-SEATTLE.md scope lock). hub.json's Lake Washington cluster — lines LKW-1 Cross-Lake and LKW-2 Eastside; stops meydenbauer, leschi, kirkland, gene-coulon-southport, carillon-point — is EXCLUDED from every renderable field: geometry counts, line lists, copy, reference sections. The exclusion is internal only and is never rendered or explained on-page. The Lake Washington speed-limit verification history (SPEED-RULES-SEATTLE.md §1) never renders in any form. hub.json gates.banned_terms honored in all renderables.",
+    "scope": "REOPENED SCOPE (Jaideep directive 2026-08-16): the Lake Washington cluster — lines LKW-1 Cross-Lake and LKW-2 Eastside; stops meydenbauer, leschi, kirkland, gene-coulon-southport, carillon-point — renders in geometry counts, line lists, copy, and reference sections. Basis: SPEED-RULES-SEATTLE.md §7 + EASTSIDE-VERIFICATION-2026-08-16.md — no blanket lake-wide speed limit exists (100-yd/300-ft shore buffers plus the seasonal Seafair zone only; the open mid-lake crossing is unrestricted). Kirkland KMC 14.24.030 and Renton RMC 9-3-7 primary-verified; Bellevue's rule confirmed via official city source but UNCODIFIED — no BCC section number may appear in any renderable; Mercer Island has no independent ordinance — county code (KCC 12.44.090) applies via the shared Marine Patrol. Lake corridors are geometry/network reach only — economics remain Sound-anchored and this page makes no lake service or revenue claim. Code section numbers, Seafair, and the speed-limit verification history itself never render in any form. hub.json gates.banned_terms honored in all renderables.",
     "quote_debt": "WSF 2040 Long Range Plan and Seattle Transportation Plan water-transport language: NOT cited on this page (quote-verification debt, authority map §6 flag 7). Kitsap $5.2M/150-pax figures: RESOLVED — primary-verified at kitsaptransit.com/electric-fast-foil-ferry (2026-08-16).",
     "positioning_rules": "Never present the network as a WSF/KCWT/Kitsap replacement; never run subsidized-fare comparisons; all three operators are potential partners. Kingston overlap positioned as complementary premium overlay (different landing pair), per authority map §6 flag 6."
   }
