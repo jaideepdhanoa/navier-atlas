@@ -436,3 +436,449 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* —— Contract v2 polish (employer-page parity) —— */
+
+.archetype-page .hero-inner {
+  max-width: 920px;
+}
+
+.archetype-page .hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(34px, 5.2vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0 0 16px;
+}
+
+.archetype-page .hero .lead {
+  max-width: 52ch;
+  font-size: clamp(15px, 2vw, 18px);
+  margin: 0 0 22px;
+}
+
+.archetype-page .hero-chips {
+  margin: 0 0 18px;
+  max-width: 720px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 900px) {
+  .archetype-page .hero-chips {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.archetype-page .hero-chips .chip {
+  padding: 16px 14px;
+}
+
+.archetype-page .hero-chips .chip .v {
+  font-size: clamp(15px, 1.8vw, 22px);
+  margin-bottom: 4px;
+}
+
+.archetype-page .hero-chips .chip .l {
+  font-size: 12.5px;
+}
+
+.hero-small-print {
+  margin: 0 0 22px;
+  font-size: 12.5px;
+  color: var(--text-2);
+  max-width: 56ch;
+  line-height: 1.45;
+}
+
+.arch-section {
+  padding: 72px 0;
+}
+
+.arch-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+
+.arch-section .section-lead,
+.arch-section > .wrap > .lead {
+  color: var(--text-1);
+  max-width: 60ch;
+  margin: 0 0 24px;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.section-note {
+  margin: 14px 0 0;
+  color: var(--text-1);
+  font-size: 14.5px;
+  max-width: 60ch;
+  line-height: 1.5;
+}
+
+/* Role cards — The model */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1100px) {
+  .role-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .role-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.role-card {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 14px;
+  min-height: 120px;
+}
+
+.role-card h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.role-card p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-1);
+  line-height: 1.45;
+}
+
+.trigger-card {
+  margin-top: 18px;
+}
+
+.trigger-card .trigger-value {
+  font-family: 'Exo 2', Inter, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  margin: 4px 0 10px;
+}
+
+/* Speed-rule chips */
+.relief-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 14px;
+}
+
+.relief-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(224, 203, 143, 0.4);
+  background: rgba(224, 203, 143, 0.08);
+  color: var(--text-0);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ask-line {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: var(--text-0);
+  font-weight: 500;
+  max-width: 62ch;
+  line-height: 1.5;
+}
+
+.plan-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.plan-note {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  color: var(--text-1);
+  line-height: 1.45;
+}
+
+/* Status chips (P&L) */
+.status-chip {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-chip.status-market {
+  background: rgba(224, 203, 143, 0.16);
+  color: var(--accent);
+  border: 1px solid rgba(224, 203, 143, 0.4);
+}
+
+.status-chip.status-modeled {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-2);
+  border: 1px solid var(--line);
+}
+
+.status-chip.status-upside {
+  background: transparent;
+  color: var(--text-1);
+  border: 1px dashed rgba(224, 203, 143, 0.5);
+}
+
+/* Deck-style P&L table */
+.pnl-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-1);
+}
+
+.pnl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 640px;
+}
+
+.pnl-table th,
+.pnl-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.pnl-table th {
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 600;
+  background: var(--bg-2);
+}
+
+.pnl-table th.num,
+.pnl-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text-0);
+}
+
+.pnl-table td.line {
+  color: var(--text-0);
+  font-weight: 600;
+  min-width: 160px;
+}
+
+.pnl-table td.note {
+  color: var(--text-2);
+  font-size: 12.5px;
+  line-height: 1.4;
+  font-weight: 400;
+  max-width: 340px;
+}
+
+.pnl-table td.chip-cell {
+  text-align: right;
+  width: 110px;
+}
+
+.pnl-table tr.section-row td {
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding: 10px 14px;
+}
+
+.pnl-table tr.section-row.upside-section td {
+  color: var(--accent);
+  border-top: 1px dashed rgba(224, 203, 143, 0.35);
+}
+
+.pnl-table tr.subtotal-row td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pnl-table tr.net-row td,
+.pnl-table tr.payback-row td {
+  background: rgba(224, 203, 143, 0.06);
+  border-top: 1px solid rgba(224, 203, 143, 0.25);
+}
+
+.pnl-table tr.payback-row td.num,
+.pnl-table .gold,
+.scenario-hero .metric .v.gold {
+  color: var(--accent);
+}
+
+.pnl-table .mid {
+  color: var(--accent);
+}
+
+.pnl-table tr.upside-row td {
+  opacity: 0.95;
+  font-style: normal;
+}
+
+.pnl-table tr.upside-row td.line {
+  font-weight: 500;
+}
+
+.pnl-table tr.share-row td {
+  color: var(--text-1);
+}
+
+/* Fleet phasing stat pair */
+.stat-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+@media (max-width: 700px) {
+  .stat-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-pair-card {
+  background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+}
+
+.stat-pair-card .k {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stat-pair-card .v {
+  font-family: 'Exo 2', Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 2.4vw, 24px);
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.stat-pair-card .n {
+  font-size: 13px;
+  color: var(--text-1);
+  line-height: 1.4;
+}
+
+.cell-note {
+  font-size: 11.5px;
+  color: var(--text-2);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Footnotes */
+.fn-ref {
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+.fn-ref a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.fn-ref a:hover {
+  text-decoration: underline;
+}
+
+.arch-notes {
+  padding: 48px 0 40px;
+  border-top: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.arch-notes h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(20px, 2.5vw, 26px);
+  margin: 0 0 16px;
+}
+
+.fn-list {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  max-width: 72ch;
+  color: var(--text-1);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.fn-list li {
+  margin: 0 0 10px;
+  padding-left: 4px;
+}
+
+.fn-list li::marker {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.domain-chip {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--accent);
+  font-size: 11px;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.domain-chip:hover {
+  border-color: rgba(224, 203, 143, 0.45);
+}
+
+.arch-badge.permitting_gate,
+.arch-badge.permitting {
+  background: rgba(232, 168, 124, 0.14);
+  color: #e8a87c;
+}
+

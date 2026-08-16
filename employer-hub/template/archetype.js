@@ -1,7 +1,11 @@
 /**
- * Archetype page runtime (public-partners | fleet-investors).
+ * Archetype page runtime (public-partners | fleet-investors) — contract v2.
  * Expects window.ARCHETYPE_DATA + window.EMPLOYER_HUB_DATA (map/trip via hub.js MAP_ONLY).
- * Renders authored copy/data verbatim; omits empty modules (fail-closed).
+ *
+ * Render ONLY: title, figures/values, note (≤140), status chips, fn markers,
+ * stat_chips, small_print, expander, pricing, footnotes.
+ * NEVER render _-prefixed fields or naked source_url in body copy.
+ * Footnotes → single "Notes & assumptions" section above the contact form.
  */
 (function () {
   const A = window.ARCHETYPE_DATA;
@@ -17,6 +21,9 @@
   const isPartners = A.archetype === 'public-partners';
   const isInvest = A.archetype === 'fleet-investors';
   const contact = (HUB && HUB.market && HUB.market.contact_email) || 'jaideep@navierboat.com';
+  const FOOTNOTES = A.footnotes && typeof A.footnotes === 'object' ? A.footnotes : {};
+  /** @type {Set<string>} */
+  const usedFn = new Set();
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -41,14 +48,74 @@
     return money(arr[0]) + '–' + money(arr[1]);
   }
 
-  function section(id, title, innerHtml) {
+  function moneyRangeLoose(low, high) {
+    if (low == null && high == null) return null;
+    if (low == null) return money(high);
+    if (high == null) return money(low);
+    if (low === high) return money(low);
+    return money(low) + '–' + money(high);
+  }
+
+  /** Superscript footnote marker; records key for the notes section. */
+  function fnMark(key) {
+    if (!key || !FOOTNOTES[key]) return '';
+    usedFn.add(key);
+    const n = fnNumber(key);
+    return `<sup class="fn-ref"><a href="#fn-${esc(key)}" id="fnref-${esc(key)}">${n}</a></sup>`;
+  }
+
+  function fnNumber(key) {
+    const keys = Object.keys(FOOTNOTES);
+    const i = keys.indexOf(key);
+    return i >= 0 ? i + 1 : key.replace(/^fn/i, '');
+  }
+
+  function statusChip(status) {
+    if (!status) return '';
+    const s = String(status).toLowerCase();
+    let cls = 'status-modeled';
+    let label = String(status).replace(/_/g, ' ').toUpperCase();
+    if (s === 'market_priced' || s === 'market-priced') {
+      cls = 'status-market';
+      label = 'MARKET-PRICED';
+    } else if (s === 'upside') {
+      cls = 'status-upside';
+      label = 'UPSIDE';
+    } else if (s === 'modeled') {
+      cls = 'status-modeled';
+      label = 'MODELED';
+    }
+    return `<span class="status-chip ${cls}">${esc(label)}</span>`;
+  }
+
+  function domainChip(url) {
+    if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url)) return '';
+    try {
+      const host = new URL(url).hostname.replace(/^www\./, '');
+      return `<a class="domain-chip" href="${esc(url)}" target="_blank" rel="noopener">${esc(host)}</a>`;
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function section(id, title, innerHtml, opts) {
     if (!innerHtml) return '';
+    const lead = opts && opts.lead ? `<p class="section-lead">${opts.lead}</p>` : '';
+    const titleHtml = title
+      ? `<h2>${esc(title)}${opts && opts.fn ? fnMark(opts.fn) : ''}</h2>`
+      : '';
     return `<section class="arch-section" id="${esc(id)}">
       <div class="wrap">
-        ${title ? `<h2>${esc(title)}</h2>` : ''}
+        ${titleHtml}
+        ${lead}
         ${innerHtml}
       </div>
     </section>`;
+  }
+
+  function withText(fnKey, text) {
+    if (text == null || text === '') return '';
+    return `${esc(text)}${fnMark(fnKey)}`;
   }
 
   // —— Hero ——
@@ -57,7 +124,41 @@
   const headlineEl = document.getElementById('hero-headline');
   const subEl = document.getElementById('hero-sub');
   if (headlineEl) headlineEl.textContent = heroCopy.headline || '';
-  if (subEl) subEl.textContent = heroCopy.subline || '';
+  if (subEl) {
+    subEl.textContent = heroCopy.subline || '';
+  }
+  // Stat chips (employer-page pattern)
+  const chipsHost = document.getElementById('hero-chips');
+  if (chipsHost && Array.isArray(heroCopy.stat_chips) && heroCopy.stat_chips.length) {
+    chipsHost.hidden = false;
+    chipsHost.innerHTML = heroCopy.stat_chips
+      .map((c) => {
+        const raw = String(c).trim();
+        // Explicit "value · label"
+        const parts = raw.split(/\s[·•]\s/);
+        if (parts.length >= 2) {
+          return `<div class="chip"><div class="v">${esc(parts[0])}</div><div class="l">${esc(parts.slice(1).join(' · '))}</div></div>`;
+        }
+        // "$2.5M / vessel" · "~4.3 yr mid-case payback" · "60–80 seat launch trigger" · "18 stations"
+        const m = raw.match(
+          /^(\$?~?[\d.,]+(?:[–-][\d.,]+)?%?(?:\s*\/\s*\w+)?(?:\s*M)?(?:\s*yr)?)\s+(.+)$/i
+        );
+        if (m) {
+          return `<div class="chip"><div class="v">${esc(m[1])}</div><div class="l">${esc(m[2])}</div></div>`;
+        }
+        return `<div class="chip"><div class="v" style="font-size:17px;line-height:1.25">${esc(raw)}</div><div class="l"></div></div>`;
+      })
+      .join('');
+  }
+  const smallPrint = document.getElementById('hero-small-print');
+  if (smallPrint) {
+    if (heroCopy.small_print) {
+      smallPrint.hidden = false;
+      smallPrint.innerHTML = withText(heroCopy.fn, heroCopy.small_print);
+    } else {
+      smallPrint.hidden = true;
+    }
+  }
   const heroCta = document.getElementById('hero-cta-primary');
   if (heroCta) {
     heroCta.textContent = isInvest ? 'Request fleet memo' : 'Start a conversation';
@@ -72,27 +173,28 @@
 
     // Gap
     const gap = A.gap;
-    if (gap && gap.copy) {
-      let html = `<div class="arch-prose"><p class="lead">${esc(gap.copy.lead)}</p>`;
+    if (gap && gap.copy && (gap.copy.lead || gap.copy.support)) {
+      let html = `<div class="arch-prose">`;
+      if (gap.copy.lead) html += `<p class="lead">${withText(gap.copy.fn, gap.copy.lead)}</p>`;
       if (gap.copy.support) html += `<p>${esc(gap.copy.support)}</p>`;
-      if (gap.data && gap.data.source) {
-        html += `<p class="assump-label">Source: <a href="${esc(gap.data.source)}" target="_blank" rel="noopener">${esc(gap.data.source)}</a></p>`;
-      }
-      html += '</div>';
+      html += `</div>`;
       parts.push(section('story', 'The gap', html));
     }
 
     // Infrastructure-light
     const inf = A.infrastructure_light;
     if (inf && inf.copy) {
-      let html = `<div class="arch-prose"><p class="lead">${esc(inf.copy.headline || '')}</p><p>${esc(inf.copy.body || '')}</p>`;
+      let html = `<div class="arch-prose">`;
+      if (inf.copy.headline) html += `<p class="lead">${esc(inf.copy.headline)}</p>`;
+      if (inf.copy.body) html += `<p>${esc(inf.copy.body)}</p>`;
+      html += `</div>`;
       const lv = inf.data && inf.data.landings_verified;
-      if (lv && lv.stat_copy) {
-        html += `<div class="stat-band"><div class="stat-card"><div class="stat">${esc(lv.stat_copy)}</div>`;
-        if (lv.note) html += `<div class="src">${esc(lv.note)}</div>`;
-        html += `</div></div>`;
+      if (lv && (lv.value || lv.title)) {
+        html += `<div class="stat-band"><div class="stat-card">
+          <div class="stat">${esc(lv.value || lv.title)}</div>
+          ${lv.title && lv.value ? `<div class="src">${esc(lv.title)}</div>` : ''}
+        </div></div>`;
       }
-      html += '</div>';
       parts.push(section('infra', 'Infrastructure-light', html));
     }
 
@@ -104,12 +206,12 @@
       const enableCard = `<div class="arch-card ${enableFirst ? 'emphasis' : ''}">
         <span class="arch-badge enable">Enable</span>
         <h3>Enable the network</h3>
-        <p>${esc(posture.copy.enable_track)}</p>
+        <p>${esc(posture.copy.enable_track || '')}</p>
       </div>`;
       const operateCard = `<div class="arch-card ${!enableFirst ? 'emphasis' : ''}">
         <span class="arch-badge operate">Operate</span>
         <h3>Operate the service</h3>
-        <p>${esc(posture.copy.operate_track)}</p>
+        <p>${esc(posture.copy.operate_track || '')}</p>
         ${
           posture.data && posture.data.operate_proof_points && posture.data.operate_proof_points.length
             ? `<ul class="pair-list">${posture.data.operate_proof_points
@@ -135,13 +237,13 @@
       if (pv.data && pv.data.stats && pv.data.stats.length) {
         html += `<div class="stat-band">${pv.data.stats
           .map((s) => {
-            let src = '';
-            if (s.source) {
-              src = s.source.startsWith('http')
-                ? `<a href="${esc(s.source)}" target="_blank" rel="noopener">Source</a>`
-                : esc(s.source);
-            }
-            return `<div class="stat-card"><div class="stat">${esc(s.stat)}</div><div class="src">${src}${s.note ? ' · ' + esc(s.note) : ''}</div></div>`;
+            const mark = fnMark(s.fn);
+            const note = s.note
+              ? `<div class="src">${esc(s.note)}${mark}</div>`
+              : mark
+                ? `<div class="src">${mark}</div>`
+                : '';
+            return `<div class="stat-card"><div class="stat">${esc(s.stat || s.title || '')}</div>${note}</div>`;
           })
           .join('')}</div>`;
       }
@@ -151,24 +253,33 @@
       if (html) parts.push(section('value', 'Public value', html));
     }
 
-    // Speed-rule relief
+    // Speed-rule relief — headline + chips + ask + expander
     const srr = A.speed_rule_relief;
     if (srr && srr.copy) {
       let html = `<div class="arch-prose">
-        <p class="lead">${esc(srr.copy.headline || '')}</p>
-        <p>${esc(srr.copy.body || '')}</p>
-        <p>${esc(srr.copy.invitation || '')}</p>
-        <p>${esc(srr.copy.precedent || '')}</p>`;
-      if (srr.data && srr.data.base_times_policy) {
-        html += `<p class="assump-label">${esc(srr.data.base_times_policy)}</p>`;
+        <p class="lead">${withText(srr.copy.fn, srr.copy.headline || '')}</p>`;
+      if (srr.copy.framing) html += `<p>${esc(srr.copy.framing)}</p>`;
+      html += `</div>`;
+      if (Array.isArray(srr.copy.chips) && srr.copy.chips.length) {
+        html += `<div class="relief-chips">${srr.copy.chips
+          .map((c) => `<span class="relief-chip">${esc(c)}</span>`)
+          .join('')}</div>`;
       }
-      html += `<details class="relief-box"><summary>What speed-rule relief unlocks</summary>`;
-      if (srr.data && srr.data.relief_minutes != null) {
-        html += `<p>${esc(String(srr.data.relief_minutes))}</p>`;
-      } else {
-        html += `<p>${esc(srr.copy.invitation || 'Relief is conditional on measurement and authority action — not assumed in map times.')}</p>`;
+      if (srr.copy.ask) {
+        html += `<p class="ask-line">${esc(srr.copy.ask)}</p>`;
       }
-      html += `</details></div>`;
+      const exp = srr.expander;
+      if (exp && (exp.body || exp.title)) {
+        const bodyParas = Array.isArray(exp.body)
+          ? exp.body.map((p) => `<p>${esc(p)}</p>`).join('')
+          : exp.body
+            ? `<p>${esc(exp.body)}</p>`
+            : '';
+        html += `<details class="relief-box">
+          <summary>${esc(exp.title || 'Details')}${fnMark(exp.fn)}</summary>
+          ${bodyParas}
+        </details>`;
+      }
       parts.push(section('speed-relief', 'Speed-rule relief', html));
     }
 
@@ -180,12 +291,11 @@
           let q = '';
           if (p.quote) q += `<blockquote>“${esc(p.quote)}”</blockquote>`;
           if (p.quote2) q += `<blockquote>“${esc(p.quote2)}”</blockquote>`;
-          const src = p.source
-            ? p.source.startsWith('http')
-              ? `<a href="${esc(p.source)}" target="_blank" rel="noopener">${esc(p.plan || 'Source')}</a>`
-              : esc(p.source)
-            : esc(p.plan || '');
-          return `<div class="quote-card">${q}<div class="meta">${src}${p.alignment ? ' · ' + esc(p.alignment) : ''}</div></div>`;
+          const note = p.note ? `<p class="plan-note">${esc(p.note)}${fnMark(p.fn)}</p>` : '';
+          return `<div class="quote-card">
+            <div class="plan-name">${esc(p.plan || '')}${!p.note ? fnMark(p.fn) : ''}</div>
+            ${q}${note}
+          </div>`;
         })
         .join('');
       parts.push(section('plans', 'Plan alignment', html));
@@ -197,18 +307,15 @@
       let html = auth.copy && auth.copy.intro ? `<p class="lead">${esc(auth.copy.intro)}</p>` : '';
       html += `<div class="arch-grid-2">${auth.data.bodies
         .map((b) => {
-          const cls = (b.classification || '').toLowerCase();
+          const cls = (b.classification || '').toLowerCase().replace(/[^a-z_]/g, '');
           return `<div class="arch-card">
-            <span class="arch-badge ${esc(cls)}">${esc(b.classification || '')}</span>
+            <span class="arch-badge ${esc(cls)}">${esc((b.classification || '').replace(/_/g, ' '))}</span>
             <h3>${esc(b.body)}</h3>
             <p>${esc(b.role || '')}</p>
             ${b.engagement_window ? `<p class="assump-label">${esc(b.engagement_window)}</p>` : ''}
           </div>`;
         })
         .join('')}</div>`;
-      if (auth.data.omitted_note) {
-        html += `<p class="assump-label" style="margin-top:14px">${esc(auth.data.omitted_note)}</p>`;
-      }
       parts.push(section('authorities', 'Authority landscape', html));
     }
 
@@ -217,10 +324,7 @@
     if (modal && modal.data && modal.data.pairs && modal.data.pairs.length) {
       let html = modal.copy && modal.copy.lead ? `<p class="lead">${esc(modal.copy.lead)}</p>` : '';
       html += `<ul class="pair-list">${modal.data.pairs
-        .map(
-          (p) =>
-            `<li><strong>${esc(p.station)}</strong> → ${esc(p.connects || '')}${p.source ? ` <span class="assump-label">(${esc(p.source)})</span>` : ''}</li>`
-        )
+        .map((p) => `<li><strong>${esc(p.station)}</strong> → ${esc(p.connects || '')}</li>`)
         .join('')}</ul>`;
       parts.push(section('modal', 'Modal integration', html));
     }
@@ -256,17 +360,37 @@
   function renderInvestModules() {
     const parts = [];
 
-    // Model
+    // Model — five compact role cards
     const model = A.model;
     if (model && model.copy) {
       let html = '';
-      if (model.copy.roles && model.copy.roles.length) {
+      const cards = model.copy.cards || [];
+      if (cards.length) {
+        html += `<div class="role-grid">${cards
+          .map(
+            (c) => `<div class="role-card">
+            <h3>${esc(c.title || '')}</h3>
+            <p>${esc(c.body || '')}</p>
+          </div>`
+          )
+          .join('')}</div>`;
+      } else if (model.copy.roles && model.copy.roles.length) {
+        // Legacy fallback
         html += `<ul class="pillars">${model.copy.roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
       }
-      if (model.copy.trigger) {
-        html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
+      const trig = model.copy.trigger;
+      if (trig) {
+        if (typeof trig === 'string') {
+          html += `<div class="arch-card emphasis trigger-card"><h3>Launch trigger</h3><p>${esc(trig)}</p></div>`;
+        } else {
+          html += `<div class="arch-card emphasis trigger-card">
+            <h3>${esc(trig.title || 'Launch trigger')}</h3>
+            ${trig.value ? `<div class="trigger-value">${esc(trig.value)}</div>` : ''}
+            ${trig.note ? `<p>${esc(trig.note)}</p>` : ''}
+          </div>`;
+        }
       }
-      parts.push(section('story', 'The model', html));
+      parts.push(section('story', model.copy.title || 'The model', html));
     }
 
     // Asset
@@ -279,21 +403,22 @@
         <div class="metric"><div class="k">Seats</div><div class="v">${esc(d.seats)}</div></div>
         <div class="metric"><div class="k">Cruise</div><div class="v">${esc(d.cruise_speed_kn)} kn</div></div>
       </div>
-      <p class="assump-label">${esc(d.grade || '')}${d.powertrain ? ' · ' + esc(d.powertrain) : ''}${d.range_nm_approx ? ' · ~' + esc(d.range_nm_approx) + ' nm range' : ''}</p>`;
-      if (asset.copy && asset.copy.redeployability) {
-        html += `<div class="arch-card" style="margin-top:14px"><h3>Redeployability</h3><p>${esc(asset.copy.redeployability)}</p></div>`;
+      <p class="assump-label">${esc(d.grade || '')}${d.powertrain ? ' · ' + esc(d.powertrain) : ''}${d.range_nm_approx != null ? ' · ~' + esc(d.range_nm_approx) + ' nm range' : ''}</p>`;
+      if (asset.note) {
+        html += `<p class="section-note">${esc(asset.note)}</p>`;
       }
-      parts.push(section('asset', 'The asset', html));
+      parts.push(section('asset', asset.title || 'The asset', html));
     }
 
-    // Network note (map is separate section below)
+    // Network note
     const net = A.network;
-    if (net && net.copy && net.copy.trigger_explainer) {
+    if (net && (net.note || (net.copy && net.copy.trigger_explainer))) {
+      const note = net.note || (net.copy && net.copy.trigger_explainer);
       parts.push(
         section(
           'network-note',
-          'Demand-gated corridors',
-          `<p class="lead">${esc(net.copy.trigger_explainer)}</p>`
+          net.title || 'Demand-gated corridors',
+          `<p class="lead">${esc(note)}</p>`
         )
       );
     }
@@ -301,139 +426,177 @@
     // Demand pool
     const dp = A.demand_pool;
     if (dp && dp.data && dp.data.rows && dp.data.rows.length) {
-      let html = `<p class="standing-label">${esc(dp.standing_label || '')}</p>`;
-      if (dp.data.capture_assumption) {
-        html += `<p class="assump-label">Capture assumption: ${esc(dp.data.capture_assumption)}. Headcount: ${esc(dp.data.headcount_label || '')}</p>`;
-      }
-      html += `<div style="overflow-x:auto"><table class="data-table">
-        <thead><tr><th>Employer</th><th>Node</th><th>Line(s)</th><th>Headcount</th><th>Demand-pool seats</th></tr></thead>
+      let html = `<div style="overflow-x:auto"><table class="data-table">
+        <thead><tr><th>Employer</th><th>Node</th><th>Line(s)</th><th>Headcount</th><th>Seats</th></tr></thead>
         <tbody>${dp.data.rows
           .map(
             (r) => `<tr>
-            <td>${esc(r.employer || '')}</td>
+            <td>${esc(r.employer || '')}${r.note ? `<div class="cell-note">${esc(r.note)}</div>` : ''}</td>
             <td>${esc(r.node || '')}</td>
             <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
-            <td>${r.headcount != null ? esc(r.headcount) : '—'}</td>
-            <td>${r.seats != null ? esc(r.seats) : '—'}</td>
+            <td>${r.headcount != null ? Number(r.headcount).toLocaleString('en-US') : '—'}</td>
+            <td>${r.seats != null ? Number(r.seats).toLocaleString('en-US') : '—'}</td>
           </tr>`
           )
           .join('')}</tbody></table></div>`;
       if (dp.data.city_total_seats != null) {
-        html += `<p class="assump-label" style="margin-top:10px">City total (indicative): ${esc(dp.data.city_total_seats)} seats</p>`;
+        html += `<p class="assump-label" style="margin-top:10px">City total (indicative): ${Number(dp.data.city_total_seats).toLocaleString('en-US')} seats</p>`;
       }
-      if (dp.data.honesty_notes && dp.data.honesty_notes.length) {
-        html += `<ul class="pillars">${dp.data.honesty_notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>`;
-      }
-      parts.push(section('demand', 'Demand pool', html));
+      parts.push(section('demand', dp.title || 'Demand along the corridors', html, { fn: dp.fn }));
     }
 
-    // P&L utilization stack
+    // P&L — deck-style unit-econ table
     const pnl = A.pnl;
     if (pnl && pnl.data) {
+      const d = pnl.data;
       let html = '';
-      const layers = pnl.data.stack_layers;
-      if (layers) {
-        if (layers.frame) html += `<p class="lead">${esc(layers.frame)}</p>`;
-        if (layers.layers && layers.layers.length) {
-          html += `<div class="stack-layers">${layers.layers
-            .map((L) => {
-              const upside = String(L.id || '').startsWith('U');
-              return `<div class="stack-layer ${upside ? 'upside' : ''}">
-                <div class="id">${esc(L.id)}</div>
-                <h4>${esc(L.name)}</h4>
-                <p class="pricing">${esc(L.pricing || '')}</p>
-                <p class="status">${esc(L.status || '')}</p>
-              </div>`;
-            })
-            .join('')}</div>`;
-        }
+      if (pnl.copy && pnl.copy.body) {
+        html += `<p class="section-lead">${esc(pnl.copy.body)}${fnMark(pnl.fn)}</p>`;
+      } else if (pnl.fn) {
+        html += `<p class="section-lead">${fnMark(pnl.fn)}</p>`;
       }
 
-      // Scenarios
-      const sc = pnl.data.scenarios;
+      // Scenario toggle + headline metrics first
+      const sc = d.scenarios;
       if (sc && sc.table && sc.table.length) {
-        if (sc.label) html += `<p class="assump-label">${esc(sc.label)}</p>`;
+        if (sc.note) html += `<p class="assump-label">${esc(sc.note)}${fnMark(sc.fn)}</p>`;
         html += `<div class="scenario-tabs" id="scenario-tabs" role="tablist"></div>
           <div id="scenario-panel"></div>`;
-        if (sc.honesty_note) html += `<p class="assump-label" style="margin-top:12px">${esc(sc.honesty_note)}</p>`;
       }
 
-      // Opex
-      const opex = pnl.data.opex_monthly_per_vessel;
-      if (opex && opex.lines && opex.lines.length) {
-        html += `<h3 style="margin:28px 0 10px;font-size:16px">Monthly opex (per vessel)</h3>
-          <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Item</th><th>Range</th><th>Assumption</th></tr></thead><tbody>
-          ${opex.lines
-            .map(
-              (r) => `<tr>
-              <td>${esc(r.item)}</td>
-              <td>${moneyRange(r.range_usd)}</td>
-              <td class="assump-label">${esc(r.label || '')}</td>
-            </tr>`
-            )
-            .join('')}
-          ${
-            opex.total_range_usd
-              ? `<tr><td><strong>Total</strong></td><td><strong>${moneyRange(opex.total_range_usd)}</strong></td><td></td></tr>`
-              : ''
-          }
-          </tbody></table></div>`;
+      // Unit-econ table: revenue → gross → opex → net → payback; upside below
+      html += `<div class="pnl-wrap"><table class="pnl-table" aria-label="Unit economics">
+        <thead><tr><th>Line</th><th class="num">Pricing / range</th><th>Note</th><th></th></tr></thead>
+        <tbody>`;
+
+      function rowHtml(r, extraClass) {
+        let rangeHtml = '—';
+        if (r.pricing != null && r.pricing !== '') {
+          rangeHtml = esc(r.pricing);
+        } else {
+          const built = moneyRangeLoose(r.per_mo_low, r.per_mo_high);
+          if (built) rangeHtml = built;
+          else if (r.value != null) rangeHtml = esc(r.value);
+        }
+        const note = r.note ? esc(r.note) : '';
+        return `<tr class="${extraClass || ''}">
+          <td class="line">${esc(r.line || r.title || '')}${fnMark(r.fn)}</td>
+          <td class="num">${rangeHtml}</td>
+          <td class="note">${note}</td>
+          <td class="chip-cell">${statusChip(r.status)}</td>
+        </tr>`;
       }
 
-      if (pnl.data.network_share) {
-        html += `<div class="arch-card" style="margin-top:16px"><h3>Navier network share</h3>
-          <p>${esc(pnl.data.network_share.value || '')}</p>
-          <p class="assump-label">${esc(pnl.data.network_share.label || '')}</p></div>`;
+      if (d.revenue_rows && d.revenue_rows.length) {
+        html += `<tr class="section-row"><td colspan="4">Revenue layers</td></tr>`;
+        d.revenue_rows.forEach((r) => {
+          html += rowHtml(r, 'rev-row');
+        });
       }
 
-      if (pnl.data.payback_summary) {
-        const pb = pnl.data.payback_summary;
-        html += `<div class="scenario-hero" style="margin-top:16px">
-          <div class="metric"><div class="k">Conservative</div><div class="v" style="font-size:16px">${esc(pb.conservative || '')}</div></div>
-          <div class="metric"><div class="k">Mid (headline)</div><div class="v" style="font-size:16px">${esc(pb.mid || '')}</div></div>
-          <div class="metric"><div class="k">Upside</div><div class="v" style="font-size:16px">${esc(pb.upside || '')}</div></div>
-        </div>
-        <p class="assump-label">${esc(pb.label || '')}</p>`;
+      if (d.gross && d.gross.per_scenario) {
+        const g = d.gross.per_scenario;
+        html += `<tr class="subtotal-row">
+          <td class="line">${esc(d.gross.title || 'Gross revenue / month')}</td>
+          <td class="num">${money(g.conservative)} · <strong class="mid">${money(g.mid)}</strong> · ${money(g.upside)}</td>
+          <td class="note">Conservative · Mid · Upside</td>
+          <td></td>
+        </tr>`;
       }
 
-      const relief = pnl.data.speed_relief_upside_row;
-      if (relief) {
-        html += `<div class="relief-box" style="margin-top:16px">
-          <strong>${esc(relief.label || 'Speed-rule relief upside')}</strong>
-          ${relief.values != null ? `<p>${esc(String(relief.values))}</p>` : ''}
-          ${relief.note ? `<p class="assump-label">${esc(relief.note)}</p>` : ''}
-        </div>`;
+      if (d.opex_rows && d.opex_rows.length) {
+        html += `<tr class="section-row"><td colspan="4">Operating costs</td></tr>`;
+        d.opex_rows.forEach((r) => {
+          html += rowHtml(r, 'opex-row');
+        });
       }
 
-      parts.push(section('pnl', 'Economics — utilization stack', html));
+      if (d.opex_total) {
+        html += `<tr class="subtotal-row">
+          <td class="line">${esc(d.opex_total.title || 'Operating cost / month')}</td>
+          <td class="num">${moneyRangeLoose(d.opex_total.per_mo_low, d.opex_total.per_mo_high) || '—'}</td>
+          <td class="note"></td>
+          <td></td>
+        </tr>`;
+      }
+
+      if (d.network_share) {
+        html += `<tr class="share-row">
+          <td class="line">${esc(d.network_share.line || 'Navier network share')}</td>
+          <td class="num">${esc(d.network_share.value || '')}</td>
+          <td class="note"></td>
+          <td></td>
+        </tr>`;
+      }
+
+      if (d.net && d.net.per_scenario) {
+        const n = d.net.per_scenario;
+        html += `<tr class="net-row">
+          <td class="line">${esc(d.net.title || 'Net to investor / month')}</td>
+          <td class="num">${money(n.conservative)} · <strong class="mid">${money(n.mid)}</strong> · ${money(n.upside)}</td>
+          <td class="note">Conservative · Mid · Upside</td>
+          <td></td>
+        </tr>`;
+      }
+
+      if (d.payback && d.payback.per_scenario) {
+        const p = d.payback.per_scenario;
+        html += `<tr class="payback-row">
+          <td class="line">${esc(d.payback.title || 'Payback')}</td>
+          <td class="num gold">${esc(p.conservative)} · <strong class="mid">${esc(p.mid)}</strong> · ${esc(p.upside)}</td>
+          <td class="note">Conservative · Mid · Upside</td>
+          <td></td>
+        </tr>`;
+      }
+
+      if (d.upside_rows && d.upside_rows.length) {
+        html += `<tr class="section-row upside-section"><td colspan="4">Upside only — never summed into base</td></tr>`;
+        d.upside_rows.forEach((r) => {
+          html += rowHtml(r, 'upside-row');
+        });
+      }
+
+      html += `</tbody></table></div>`;
+      parts.push(section('pnl', (pnl.copy && pnl.copy.headline) || 'Economics', html));
     }
 
-    // Fleet phasing
-    const fp = A.fleet_phasing && A.fleet_phasing.data;
-    if (fp) {
+    // Fleet phasing — stat pair + table
+    const fp = A.fleet_phasing;
+    if (fp && fp.data) {
       let html = '';
-      if (fp.launch) {
-        html += `<div class="arch-card emphasis"><h3>Launch fleet</h3>
-          <p>${moneyRange(fp.launch.capital_usd_range)} capital · ${Array.isArray(fp.launch.vessels_range) ? fp.launch.vessels_range.join('–') : esc(fp.launch.vessels_range)} vessels</p>
-          <p class="assump-label">${esc(fp.launch.label || '')}</p></div>`;
-        if (fp.launch.per_line && fp.launch.per_line.length) {
-          html += `<div style="overflow-x:auto;margin-top:12px"><table class="data-table"><thead><tr><th>Line</th><th>Vessels</th><th>Capital</th></tr></thead><tbody>
-            ${fp.launch.per_line
-              .map(
-                (r) =>
-                  `<tr><td>${esc(r.line)}</td><td>${esc(r.launch_vessels)}</td><td>${moneyRange(r.launch_capital_usd_range)}</td></tr>`
-              )
-              .join('')}
-          </tbody></table></div>`;
-        }
+      const pair = fp.copy && fp.copy.stat_pair;
+      if (pair && pair.length) {
+        html += `<div class="stat-pair">${pair
+          .map(
+            (s) => `<div class="stat-pair-card">
+            <div class="k">${esc(s.title || '')}</div>
+            <div class="v">${esc(s.value || '')}</div>
+            ${s.note ? `<div class="n">${esc(s.note)}</div>` : ''}
+          </div>`
+          )
+          .join('')}</div>`;
       }
-      if (fp.full_build) {
-        html += `<div class="arch-card" style="margin-top:14px"><h3>Full build (illustrative)</h3>
-          <p>${money(fp.full_build.capital_usd)} · ${esc(fp.full_build.vessels)} vessels</p>
-          <p class="assump-label">${esc(fp.full_build.label || '')}</p></div>`;
+      if (fp.data.launch && fp.data.launch.per_line && fp.data.launch.per_line.length) {
+        html += `<div style="overflow-x:auto;margin-top:18px"><table class="data-table">
+          <thead><tr><th>Line</th><th>Launch vessels</th><th>Launch capital</th><th>Full-build vessels</th><th>Full-build capital</th></tr></thead>
+          <tbody>`;
+        const fullByLine = {};
+        (fp.data.full_build && fp.data.full_build.per_line || []).forEach((r) => {
+          fullByLine[r.line] = r;
+        });
+        fp.data.launch.per_line.forEach((r) => {
+          const full = fullByLine[r.line] || {};
+          html += `<tr>
+            <td>${esc(r.line)}</td>
+            <td>${esc(r.launch_vessels)}</td>
+            <td>${r.launch_capital_usd_range ? moneyRange(r.launch_capital_usd_range) : '—'}</td>
+            <td>${full.vessels != null ? esc(full.vessels) : '—'}</td>
+            <td>${full.capital_usd != null ? money(full.capital_usd) : '—'}</td>
+          </tr>`;
+        });
+        html += `</tbody></table></div>`;
       }
-      if (fp.spares_note) html += `<p class="assump-label" style="margin-top:10px">${esc(fp.spares_note)}</p>`;
-      parts.push(section('phasing', 'Fleet phasing', html));
+      parts.push(section('phasing', fp.title || 'Fleet phasing', html, { fn: fp.fn }));
     }
 
     // Protection stack
@@ -445,29 +608,15 @@
       parts.push(section('protection', 'Protection stack', html));
     }
 
-    // Flywheel (shared story)
-    const fw = A.flywheel && A.flywheel.copy;
-    // fleet file may not have flywheel - optional
-    if (fw) {
-      const html = `<div class="flywheel">
-        <div class="wheel"><div class="n">Employers</div><p>${esc(fw.employers || '')}</p></div>
-        <div class="wheel"><div class="n">Public partners</div><p>${esc(fw.public_partners || '')}</p></div>
-        <div class="wheel"><div class="n">Fleet investors</div><p>${esc(fw.fleet_investors || '')}</p></div>
-      </div>`;
-      parts.push(section('flywheel', 'How the pieces fit', html));
-    }
-
     return parts.join('');
   }
 
   const modulesEl = document.getElementById('archetype-modules');
   if (modulesEl) {
-    // Insert modules BEFORE network section in DOM order: story first, then map stays in HTML
-    // User wants map for all - keep network in page. Modules above network for narrative.
     modulesEl.innerHTML = isInvest ? renderInvestModules() : renderPartnersModules();
   }
 
-  // Scenario tabs (invest)
+  // Scenario tabs (invest) — after modules in DOM
   if (isInvest && A.pnl && A.pnl.data && A.pnl.data.scenarios && A.pnl.data.scenarios.table) {
     const table = A.pnl.data.scenarios.table;
     const tabs = document.getElementById('scenario-tabs');
@@ -485,7 +634,7 @@
           <div class="metric"><div class="k">Gross / mo</div><div class="v">${money(row.gross_monthly)}</div></div>
           <div class="metric"><div class="k">Net to investor / mo</div><div class="v">${money(row.net_to_investor_monthly)}</div></div>
           <div class="metric"><div class="k">Annual</div><div class="v">${money(row.annual)}</div></div>
-          <div class="metric"><div class="k">Payback</div><div class="v" style="font-size:16px">${esc(row.payback)}</div></div>
+          <div class="metric"><div class="k">Payback</div><div class="v gold" style="font-size:18px">${esc(row.payback)}</div></div>
         </div>
         ${row.upside_lines_included ? '<p class="assump-label">Includes labeled upside lines (sponsorship + overnight cargo).</p>' : '<p class="assump-label">Base utilization stack only — no sponsorship or cargo.</p>'}
         ${row.note ? `<p class="assump-label">${esc(row.note)}</p>` : ''}`;
@@ -500,13 +649,39 @@
     }
   }
 
+  // —— Footnotes (Notes & assumptions) — above CTA ——
+  const notesHost = document.getElementById('archetype-notes');
+  if (notesHost && Object.keys(FOOTNOTES).length) {
+    // Prefer footnotes that were referenced; if none wired, show all authored footnotes.
+    let keys = Object.keys(FOOTNOTES).filter((k) => usedFn.has(k));
+    if (!keys.length) keys = Object.keys(FOOTNOTES);
+    // Keep authored order
+    keys = Object.keys(FOOTNOTES).filter((k) => keys.includes(k));
+    notesHost.hidden = false;
+    notesHost.innerHTML = `<div class="wrap">
+      <h2>Notes &amp; assumptions</h2>
+      <ol class="fn-list">
+        ${keys
+          .map((k) => {
+            const f = FOOTNOTES[k] || {};
+            const text = typeof f === 'string' ? f : f.text || '';
+            const chip = typeof f === 'object' ? domainChip(f.source_url) : '';
+            return `<li id="fn-${esc(k)}"><span class="fn-text">${esc(text)}</span>${chip ? ' ' + chip : ''}</li>`;
+          })
+          .join('')}
+      </ol>
+    </div>`;
+  }
+
   // CTA
   const cta = A.cta || {};
   const ctaCopy = cta.copy || {};
   const ctaData = cta.data || {};
   const intake = ctaData.intake || {};
-  document.getElementById('cta-headline').textContent = ctaCopy.headline || 'Get in touch';
-  document.getElementById('cta-body').textContent = ctaCopy.body || '';
+  const ctaHeadline = document.getElementById('cta-headline');
+  const ctaBody = document.getElementById('cta-body');
+  if (ctaHeadline) ctaHeadline.textContent = ctaCopy.headline || 'Get in touch';
+  if (ctaBody) ctaBody.textContent = ctaCopy.body || '';
 
   const fields = intake.fields || [];
   const formFields = document.getElementById('form-fields');
@@ -515,7 +690,6 @@
     const [name, opts] = raw.split(':');
     return { name, opts: opts ? opts.split('|') : null };
   });
-  // Always collect work email for intake
   if (!fieldDefs.some((f) => f.name === 'email')) {
     fieldDefs.splice(Math.min(2, fieldDefs.length), 0, { name: 'email', opts: null });
   }
@@ -552,6 +726,9 @@
     const fd = new FormData(form);
     const tag = intake.tag || A.archetype || 'archetype';
     const email = String(fd.get('email') || '').trim();
+    const btn = document.getElementById('form-submit');
+    const status = document.getElementById('form-status');
+    const success = document.getElementById('form-success');
     if (!email) {
       status.hidden = false;
       status.textContent = 'Please enter a work email.';
@@ -576,9 +753,6 @@
       hp: '',
     };
 
-    const btn = document.getElementById('form-submit');
-    const status = document.getElementById('form-status');
-    const success = document.getElementById('form-success');
     btn.disabled = true;
     status.hidden = false;
     status.textContent = 'Sending…';
@@ -602,7 +776,6 @@
         form.reset();
         return;
       }
-      // mailto fallback
       const subj = encodeURIComponent(
         `${isInvest ? 'Fleet investor' : 'Public partner'} interest — ${A.city || 'Boston'}`
       );
@@ -629,23 +802,28 @@
     if (a.dataset.contactEmail === 'text') a.textContent = contact;
   });
 
-  // Network titles for map section
+  // Network titles for map section (override hub copy that may carry internal jargon)
+  const nt = document.getElementById('network-title');
+  const nl = document.getElementById('network-lead');
+  const nf = document.getElementById('network-footnote');
   if (isPartners) {
-    const nt = document.getElementById('network-title');
-    const nl = document.getElementById('network-lead');
     if (nt) nt.textContent = 'The network';
     if (nl)
       nl.textContent =
         'Same corridors as the employer network — coverage without new ferry terminals. Find a ride and compare to driving.';
+    if (nf)
+      nf.textContent =
+        'Gold rings mark transfer hubs. Five corridors: North Shore · South Shore · Quincy · Inner Harbor · Riverside. Alongside the MBTA ferry — premium tier, not a replacement.';
   }
   if (isInvest) {
-    const nt = document.getElementById('network-title');
-    const nl = document.getElementById('network-lead');
     if (nt) nt.textContent = 'Where the fleet works';
     if (nl)
       nl.textContent =
         'Same corridors employers will ride — utilization starts with real demand on real water. Find a ride and compare to driving.';
+    if (nf)
+      nf.textContent =
+        'Same five corridors as the employer network. Launch when 60–80 seats are committed on a corridor. Earliest service end of 2027.';
   }
 
-  console.info('[archetype]', A.archetype, A.city);
+  console.info('[archetype]', A.archetype, A.city, 'contract', A.contract_version || 'v1');
 })();
