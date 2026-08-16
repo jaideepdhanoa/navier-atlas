@@ -39,7 +39,7 @@ Flat $/seat-month is replaced by a three-layer yield structure. Every layer is b
 
 ## 5 · Worked per-vessel model (N45, Boston)
 
-Fixed inputs: $2.5M capex · 20 seats · energy 4.1 kWh/nm @ $0.30 (canon) · Navier network share 10% of gross (canon) · maintenance $82.5K/yr (midpoint of the unvalidated $65–100K range) · insurance+berth $7.7K/mo (placeholder) · crew $85/hr 2-crew fully loaded (placeholder) · 22 weekdays + up to 8 weekend days · commute = 8 legs/day × ~10 nm.
+Fixed inputs: $2.5M capex · 20 seats · energy 4.1 kWh/nm @ $0.30 (canon) · Navier network share 10% of gross (canon) · maintenance $82.5K/yr (midpoint of the unvalidated $65–100K range) · insurance+berth $7.7K/mo (placeholder) · crew $85/hr 2-crew fully loaded (VALIDATED 2026-08-15 vs BLS: Boston metro mean loaded = $77.16/hr (May 2023, OEWS 53-5021 + 53-5011 × 1.4294 ECEC burden); $85 = 2023 mean + ~3%/yr wage-drift assumption to 2026 (~$84–85), i.e. sourced mean with built-in buffer — see `CREW-COST-BENCHMARKS.md`) · 22 weekdays + up to 8 weekend days · commute = 8 legs/day × ~10 nm.
 
 | | Conservative | Mid | Upside |
 |---|---|---|---|
@@ -60,7 +60,7 @@ Fixed inputs: $2.5M capex · 20 seats · energy 4.1 kWh/nm @ $0.30 (canon) · Na
 - The stack turns the conservative case **cash-positive with zero anchor** (v1 was –$138K/yr) — but ~21 yr is not financeable. Conservative here is deliberately punitive: 10% spot fill, 10 experience sailings/month in a market where incumbents run multiples of that.
 - **Mid (~4.3 yr) is the honest financeable case** — it requires executing L3 at roughly half the cadence of Boston's incumbent experience operators, at prices below their dinner-cruise tier.
 - Upside (~2.1 yr, incl. sponsorship + cargo upside lines) matches canon partner-corridor economics (2.49 yr) — the model's credibility anchor, not a coincidence.
-- Crew is the swing cost ($142–225K/yr at full stacking) and has **no canon** — the walkthrough with engineering/ops should prioritize it.
+- Crew is the swing cost ($142–225K/yr at full stacking). **Now benchmark-validated** (2026-08-15): BLS Boston loaded LOW $67.27 / MID $77.16 (May 2023) → $85/hr model value ≈ 2026 wage-drifted mean. Residual walkthrough items: split-shift/2-crew structure for a 16-hr stacked day, overtime, seasonal premiums — structure, not rate.
 
 ## 6 · What changes where — APPROVED (Jaideep 2026-08-15, with cargo moved to upside alongside sponsorship)
 
@@ -82,7 +82,7 @@ Fixed inputs: $2.5M capex · 20 seats · energy 4.1 kWh/nm @ $0.30 (canon) · Na
 | Charter $550–600/hr, 2–2.5 hr | benchmark | Boston Charter Boat $550/hr (25 pax, 2-hr min); marketplace $500–600/hr | Sourced |
 | Sponsorship $150K/yr fleet | placeholder | Cleveland HealthLine $250K/yr; Barclays $200K/yr; scaled down for novelty/no-precedent | Weak — upside only |
 | Cargo $350/run × 16 nights/mo (upside only) | benchmark-anchored | Casco Bay 2026 published tariff $216–324 per ~2,000 kg run + medical/urgent per-job premium headroom (Dropoff 2026); contract-gated, not yet operated | Published-tariff-anchored, unproven by Navier |
-| Crew $85/hr × activity hours | placeholder | v1 basis, extended to stacked hours | Not validated — top priority |
+| Crew $85/hr × activity hours | benchmark-validated | BLS OEWS Boston metro means × ECEC 1.4294 burden = $77.16/hr (May 2023) + ~3%/yr drift to 2026 ≈ $85 | Validated at rate level (`CREW-COST-BENCHMARKS.md`); shift structure to ops walkthrough |
 | Weekend operating days 4/8/8 | scenario | experiences market is weekend-heavy | Placeholder |
 
 ---
