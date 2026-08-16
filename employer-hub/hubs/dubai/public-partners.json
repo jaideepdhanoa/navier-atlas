@@ -1,0 +1,449 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Seattle v3 public-partners structure per the international addendum (UAE run — Public Transport page, authority audience). Sources: dubai/AUTHORITY-MAP-DUBAI.md + SPEED-RULES-DUBAI.md + TOURISM-DEMAND-DUBAI.md + REVENUE-STACK-DUBAI.md + CREW-COST-DUBAI.md + GEOMETRY-DUBAI.json. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields (_contract, _internal, _guard and similar) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture per the international addendum: the authority already operates marine transit at scale, so the page leads with the authority's own published mandate and the ask is 'extend your marine network'. Emirate-internal corridors only — inter-emirate service is a later-phase roadmap item and is not rendered anywhere in this file. No counterparty identities, no program or fleet commitments, no launch dates.",
+  "contract_version": "v3",
+  "city": "dubai",
+  "archetype": "public-partners",
+  "route": "/dubai-partners",
+  "access": "public",
+  "footnotes": {
+    "fn1": {
+      "text": "Dubai's Marine Transport Master Plan 2030, as approved and published: marine ridership 14.7M to 22.2M trips a year (+51%), network length 55 to 158 km, stations 48 to 79, passenger lines 7 to 35, fleet 196 to 258 vessels.",
+      "source_url": "https://www.wam.ae/en/article/hszrhvr5-hamdan-bin-mohammed-approves-dubai-marine"
+    },
+    "fn2": {
+      "text": "Ridership figures from the Government of Dubai Media Office: marine transport carried 18.4 million riders in 2025 (+3%), within a Roads and Transport Authority network of 802.1 million riders (+7.4%).",
+      "source_url": "https://www.mediaoffice.ae/en/news/2026/february/15-02/rta-records-802-riders-in-dubai-2025"
+    },
+    "fn3": {
+      "text": "Visitor-economy figures from the Dubai Department of Economy and Tourism: 19.59 million international overnight visitors in 2025 — a third consecutive record year — and 154,264 hotel rooms across 827 establishments, with 80.6% occupancy in the first half of 2025.",
+      "source_url": "https://www.dubaidet.gov.ae/en/newsroom/press-releases/dubais-tourism-industry-achieves-third-successive-record-breaking-year"
+    },
+    "fn4": {
+      "text": "Vessel licensing, authorised routes and authorised speed limits in Dubai waters are set by the Dubai Maritime Authority, part of the Ports, Customs and Free Zone Corporation, under the emirate's vessel-licensing regulations (Executive Council Resolution No. 9 of 2020). A corridor-specific allowance is a licensing conversation with the regulator — no allowance is assumed anywhere on this page."
+    },
+    "fn5": {
+      "text": "All map and trip times respect Dubai's port, marina, creek and canal speed zones on a conservative planning basis; open-coast segments run at the vessel's service speed. Relief appears only as a separately labeled layer."
+    },
+    "fn6": {
+      "text": "Published RTA marine fares span AED 1–75 per person across the marine modes, with water-taxi routes from AED 7 per stop and heritage abra sightseeing at AED 25 per person per hour.",
+      "source_url": "https://www.rta.ae/wps/portal/rta/ae/public-transport/marine/about-marine"
+    },
+    "fn7": {
+      "text": "The World Islands are partially developed today: the first operating resort is reported closed and other clusters are reported opening in phases. Island stops render as network reach, with no demand modeled on them."
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 10,
+      "lines": [
+        "MAR-1 Marina–Canal",
+        "CRK-1 Creek Heritage",
+        "PLM-1 Palm & Harbour",
+        "ISL-1 World Islands",
+        "SIG-1 Palm–Mina Rashid"
+      ]
+    },
+    "_internal": {
+      "source": "GEOMETRY-DUBAI.json (35 verified intra-city routes; Dubai set is clean per the international addendum).",
+      "line_bindings": {
+        "MAR-1": ["rn-02b2927692e0", "rn-9d23e412de22"],
+        "CRK-1": ["rn-bfa9c0d8ba7b", "rn-2f0bb0572ec4"],
+        "PLM-1": ["rn-d3a88461a5ed", "rn-f314996e94b7", "rn-c6db0ce8b6a6"],
+        "ISL-1": ["rn-200157a4d545", "rn-f4c2f161324c"],
+        "SIG-1": ["rn-b7ac6238165d"]
+      },
+      "stops_bound": {
+        "bp-711cf44b60": "Bluewaters Ferry Station",
+        "bp-f3f4b807f2": "Dubai Canal Marine Transport Station 1",
+        "bp-42a15eb6e1": "Business Bay Marine Transport Station",
+        "bp-a27aa3915d": "Al Seef Marine Transport Station (Dubai Creek)",
+        "bp-00a6462e28": "Dubai Old Souq Marine Transport Station",
+        "bp-5c7aaead40": "Dubai Festival City Marina",
+        "bp-55aa98c7fb": "Atlantis The Palm Jetty",
+        "bp-1982dfd974": "Dubai Harbour Cruise Terminal",
+        "bp-5f767488d3": "Mina Rashid Cruise Terminal",
+        "bp-8c7fcc1977": "The World Islands (partial development — fn7)"
+      },
+      "signature_line_note": "SIG-1 binds the top-ranked marquee route (rn-b7ac6238165d, Atlantis–Mina Rashid, 12.9 nm). ISL-1 binds marquee ranks 2 and 4. Planned facilities in the geometry file (Dubai Islands Marina — Nakheel, planned; Marsa Al Arab Marina — Dubai Holding, planned) are NOT stops on this page; they appear only in the reference note as planned expansion landings with their planned status stated. Inter-emirate routes: none rendered (addendum domestic-first rule)."
+    },
+    "note": "Marina, Water Canal, Creek, Palm and Gulf shoreline — Marina to the Canal district in about 42 minutes.",
+    "fn": "fn5"
+  },
+  "hero": {
+    "copy": {
+      "headline": "Dubai already moves millions by water.",
+      "subline": "A fast, zero-emission foiling tier on the Marina, the Water Canal, the Creek and the Gulf shoreline — built on marine stations and marinas that already operate, financed by private capital, in service of the Marine Transport Master Plan 2030.",
+      "stat_chips": [
+        "18.4M marine riders 2025",
+        "10 stops, all existing landings",
+        "0 terminals to build",
+        "22.2M rider target by 2030"
+      ],
+      "small_print": "All trip times respect Dubai's speed zones on a conservative basis.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/dubai/assets/hero-public-dubai.jpg"
+    },
+    "_internal": "Ridership chip: 18.4M marine riders 2025 (+3%) per Dubai Media Office (fn2). 2030 target chip: Marine Transport Master Plan 2030 (fn1). Stop count = the 10-stop network bound in geometry._internal; 9 operating landings + The World Islands rendered as partial (fn7)."
+  },
+  "gap": {
+    "title": "Dubai has already published the plan",
+    "copy": {
+      "lead": "This city is not waiting to be convinced about water transport. Dubai's marine modes carried 18.4 million riders in 2025, and the Marine Transport Master Plan 2030 commits the emirate to 22.2 million marine trips a year, a 158-kilometre network, 79 stations and 35 lines by 2030.",
+      "support": "The plan's own fleet target adds 62 vessels, and it already includes a 20-passenger electric abra program — electrification is the plan's own signal. A zero-emission foiling tier is additive capacity toward targets the authority has already set.",
+      "fn": "fn1"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "Marine Transport Master Plan 2030",
+          "quote": null,
+          "note": "Riders 14.7M to 22.2M, network 55 to 158 km, stations 48 to 79, lines 7 to 35, fleet 196 to 258 — new lines need new vessel classes.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "Electric abra program (within the plan)",
+          "quote": null,
+          "note": "A 20-passenger electric abra and the region's largest marine maintenance centre are in the plan — electrification is already policy.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "RTA marine operations today",
+          "quote": null,
+          "note": "Abras, water taxis and ferries carried 18.4M riders in 2025 across 48 stations — demand on this water is proven, not projected.",
+          "fn": "fn2"
+        },
+        {
+          "plan": "An existing marine fare ladder",
+          "quote": null,
+          "note": "Published marine fares already run from AED 1 crossings to AED 75 ferry Gold class — a premium tier extends an existing ladder.",
+          "fn": "fn6"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "Master Plan 2030 figures primary-verified via WAM (full text via a reproduction, per AUTHORITY-MAP-DUBAI.md §1). Ridership via Dubai Media Office 2026 release. Fares via rta.ae. No quotes rendered because no verbatim plan language was captured as a quotable sentence this pass — plan figures render as figures instead.",
+      "merge_note": "gap + plan alignment merged into one section per the Seattle/Boston v3 pattern — the authority's own published plan does the selling."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing landing. No terminals to build.",
+      "body": "Zero terminal capital cost for the authority. Service can start at operating RTA marine stations, cruise terminals and marina berths — nine of the ten stops on this network are operating landings today, and the tenth renders with its partial status stated."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "9 of 10 landings operating today",
+        "verified": 9,
+        "total": 10
+      }
+    },
+    "_internal": "Operating landings: 5 RTA marine stations (Bluewaters Ferry Station, Canal MTS 1, Business Bay MTS, Al Seef MTS, Old Souq MTS — RTA network, primary), 2 cruise terminals (Mina Rashid, Dubai Harbour — operating per TOURISM-DEMAND-DUBAI.md §2), Dubai Festival City Marina and Atlantis The Palm Jetty (operating per TOURISM-DEMAND-DUBAI.md §2). The World Islands counted in the total, never in the verified figure (partial development, fn7). Planned facilities (Dubai Islands Marina, Marsa Al Arab Marina) are not stops and not counted."
+  },
+  "posture": {
+    "copy": {
+      "framing": "One conversation, not two. Dubai already operates one of the world's most-used urban water networks — the posture here is extension: a fast, zero-emission tier on the network the authority already runs and has published plans to grow.",
+      "enable_track": "License the vessels and grant landing access at existing marine stations and marina berths. Private capital finances the fleet; the ask is licensing and access, not money.",
+      "operate_track": "Procure or concession the foiling tier the way marine transit is procured today — new fast lines above the abra and ferry fleet, counted toward the plan's ridership, line and fleet targets, with fares slotted into the existing ladder."
+    },
+    "data": {
+      "weighting": "operate_dominant",
+      "operate_proof_points": [
+        {
+          "body": "Roads and Transport Authority — Marine Transport",
+          "proof": "Runs abras, water buses, water taxis and the Dubai Ferry across 48 marine stations — 18.4 million marine riders in 2025, up 3%, inside an 802-million-rider multimodal network."
+        },
+        {
+          "body": "Marine Transport Master Plan 2030",
+          "proof": "Commits the emirate to 22.2 million marine riders, 158 km of network, 79 stations, 35 lines and 258 vessels by 2030 — growth that needs vessel classes today's fleet doesn't have."
+        },
+        {
+          "body": "An existing premium fare ladder",
+          "proof": "Marine fares already tier from AED 1 abra crossings to AED 75 ferry Gold class — a foiling tier extends the ladder the authority already prices."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP-DUBAI.md: clearest OPERATE market in the pipeline; page posture is 'extend your marine network' per the international addendum. Enum operate_dominant affects order/emphasis only; both tracks render. Never framed as replacing abras, water buses or the heritage trade — additive-tier language throughout. The heritage abra trade is never positioned as a competitor."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling — in line with the electrification signal inside Dubai's own marine plan and the emirate's clean-fuel rules for vessels.",
+        "Minimal wake foilborne and near-silent at speed — the stated purposes of Dubai's port, marina and creek speed zones, served by design.",
+        "Visitor economy and quality of life: a record visitor year connected to the water, and commute time returned to residents on corridors the road network serves slowest."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "Marine transport carried 18.4 million riders in 2025, up 3% on a record 2024",
+          "note": "The city's own numbers: water transit demand at scale, already proven, planned to grow 51% by 2030.",
+          "fn": "fn2"
+        },
+        {
+          "stat": "RTA's full network carried 802.1 million riders in 2025 (+7.4%)",
+          "fn": "fn2"
+        },
+        {
+          "stat": "19.59 million international overnight visitors in 2025 — a third consecutive record year",
+          "note": "The visitor economy is the headline demand layer on the water: marquee attractions sit on these corridors.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "154,264 hotel rooms across 827 establishments, at 80.6% occupancy in H1 2025",
+          "note": "Hotel stock ahead of Bangkok, New York, Paris and Singapore — much of it on the shoreline this network serves.",
+          "fn": "fn3"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "https://www.mediaoffice.ae/en/news/2026/february/15-02/rta-records-802-riders-in-dubai-2025 (primary)",
+        "https://www.dubaidet.gov.ae/en/newsroom/press-releases/dubais-tourism-industry-achieves-third-successive-record-breaking-year (primary)",
+        "https://dmo.dof.gov.ae/en/news-and-publications/latest-press-releases/dubai-welcomes-988-million-international-visitors-in-the-first-half-of-2025/ (primary — H1 occupancy)"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). Hotel-stock ranking language is DET's own claim, attributed via fn3."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Dubai's speed zones were written for hulls that make wake.",
+      "framing": "The low-speed zones in ports, marinas, the Creek and the island passages exist to control wake, wash, noise and disturbance — outcomes a foiling, electric vessel satisfies inherently.",
+      "ask": "Our ask: measure us. Where independent wake and noise measurement shows a zone's purpose is served, set a corridor-specific foil-borne allowance — route by route, through the licensing process that already exists.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Routes ✓ set by the regulator"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null,
+      "dubai_instrument": null
+    },
+    "expander": {
+      "title": "What a foil-borne allowance unlocks",
+      "body": [
+        "Dubai's maritime rules already separate the number from the purpose: the penalty schedule addresses wake, disturbance and unsafe operation directly, and the maritime regulator explicitly determines authorised routes and speed limits for the marine transport network. A corridor allowance is a licensing conversation, not a rule change.",
+        "On the Marina–Canal spine, the low-speed zones cost about 15 minutes per leg against open-water speed at today's conservative planning basis. A licensed foil-borne canal allowance would return about 7.5 minutes of that — shown here as what relief unlocks, never in the base times."
+      ],
+      "fn": "fn4"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "Executive Council Resolution No. 9 of 2020, Art. 52",
+          "type": "regulator mandate",
+          "detail": "DMA (with concerned entities) determines authorised routes and authorised speed limits for the maritime transport network; manages anchorage/berthing; regulates harbours",
+          "source": "dlp.dubai.gov.ae full text (primary, per SPEED-RULES-DUBAI.md)"
+        },
+        {
+          "instrument": "Same resolution, Schedule 2 fine items 18-20, 24, 39",
+          "type": "purpose evidence",
+          "detail": "speeding fines banded by knots over the limit; prohibited-area and disturbance items show the regime's stated purposes: safety, wake/disturbance, environment",
+          "source": "same primary text"
+        },
+        {
+          "instrument": "Zone-by-zone numeric limits (5 kn ports/marinas, 7 kn Creek/narrow waterways/island passages)",
+          "type": "numeric limits",
+          "detail": "SECONDARY-VERIFIED only this pass — no DMA circular primary-loaded. Therefore NO numeric knot limits render anywhere on this page; they govern internal timing only, as conservative controlling limits",
+          "source": "SPEED-RULES-DUBAI.md"
+        }
+      ],
+      "relief_numbers_policy": "The only rendered relief quantity is the research-stated ~7.5 min/leg canal-allowance saving and the ~15 min/leg zone cost on the spine (REVENUE-STACK-DUBAI.md zone table). No other relief numbers exist in research, so none render. Base times never assume relief.",
+      "canal_basis": "Dubai Water Canal has no verified numeric limit; internal planning basis is a conservative 6-kn average (SPEED-RULES-DUBAI.md). Not rendered as a number here."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Committed riders anchor demand — monthly seat bundles priced from Dubai's own fares and road substitutes; a derived band, pending confirmation.",
+      "public_partners": "Public partners license and land the service — vessel licensing and berth access at stations and marinas that already operate.",
+      "fleet_investors": "Fleet investors finance the vessels — private capital behind the demand, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the Seattle v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because the UAE run has no employer page (international addendum). Demand pools on this run are sourced visitor/resident flows, labeled indicative on the fleet-investor page."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and low-risk: one corridor on existing landings, measured wake and noise, your rules respected — specified with the authority against its own 2030 targets."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Seattle/Boston v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Dubai's water-transport landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "Roads and Transport Authority (RTA)",
+              "classification": "operate",
+              "role": "Plans, operates and prices all public transport in Dubai, including the marine network — 48 marine stations, abras, water buses, water taxis and the Dubai Ferry, 18.4 million marine riders in 2025, and the published Marine Transport Master Plan 2030."
+            },
+            {
+              "body": "Dubai Maritime Authority (DMA)",
+              "classification": "permitting_gate",
+              "role": "Part of the Ports, Customs and Free Zone Corporation. Licenses and registers every vessel in Dubai waters, permits masters and crew, and determines authorised routes and speed limits for the marine transport network. Insurance from a UAE-licensed insurer is a licensing prerequisite."
+            },
+            {
+              "body": "Dubai Municipality",
+              "classification": "enable",
+              "role": "Manages Dubai's public beaches and coastline — beach-adjacent landings and any new public-realm water access points run through the Municipality."
+            },
+            {
+              "body": "Department of Economy and Tourism (DET)",
+              "classification": "enable",
+              "role": "Dubai's tourism and economy department — steward of a visitor economy of 19.59 million overnight guests and 154,264 hotel rooms, the demand side of the tourism-weighted corridors on this network."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "Municipality beach-expansion figures are secondary-only (per AUTHORITY-MAP-DUBAI.md §3) — role rendered qualitatively, no numbers. Water-taxi day pass (AED 25, low-confidence social capture) never renders. No authority contacts render anywhere. No inter-emirate bodies rendered (domestic-first rule)."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We extend the marine network, not compete with it — and the heritage abra trade is never touched."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Bluewaters Ferry Station",
+              "connects": "An operating RTA ferry station — this network's Marina-cluster gate"
+            },
+            {
+              "station": "Dubai Canal Marine Transport Station 1",
+              "connects": "An RTA marine station on the Water Canal — the Downtown and Canal-district gate"
+            },
+            {
+              "station": "Al Seef & Dubai Old Souq stations",
+              "connects": "RTA Creek stations in the heritage core, alongside the abra crossings this tier leaves untouched"
+            },
+            {
+              "station": "Mina Rashid & Dubai Harbour cruise terminals",
+              "connects": "Operating cruise terminals — arrival-day and turnaround visitor flows join the network dockside"
+            },
+            {
+              "station": "Planned expansion landings",
+              "connects": "Dubai Islands Marina (Nakheel) and Marsa Al Arab Marina (Dubai Holding) are planned developments in the geometry — future stops only once open"
+            }
+          ]
+        },
+        "_internal": "Pairs from GEOMETRY-DUBAI.json labels and AUTHORITY-MAP-DUBAI.md. The two planned facilities render exactly as planned-status items with their developers named as published — never as operating stops (addendum rule). Complement framing only; no fare comparison with subsidized modes."
+      }
+    },
+    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the Seattle v3 pattern."
+  },
+  "_internal": {
+    "scope": "Emirate-internal corridors only, bound to GEOMETRY-DUBAI.json verified intra-city routes (see geometry._internal.line_bindings). Inter-emirate service is a later-phase roadmap item per the international addendum and is not rendered anywhere. No launch dates render (pipeline timing convention honored — no dates contradicted, none stated). The World Islands render as network reach with partial status (fn7); no demand is modeled or implied on island stops.",
+    "verification_ledger": "PRIMARY-verified renderables: Master Plan 2030 figures (WAM), 18.4M/802.1M 2025 ridership (Dubai Media Office), DET visitor economy (19.59M / 154,264 rooms / 80.6% H1), DMA mandate (ECR 9/2020 full text), RTA fares AED 1-75 / AED 7 water-taxi / AED 25 abra (rta.ae). SECONDARY-only, therefore excluded from renderables: numeric knot limits (internal timing basis only), water-taxi day pass, water-taxi charter rate, Municipality beach-plan numbers, World Islands development claims (carried only as the fn7 partial-status honesty note), Ain Dubai operating status (never mentioned).",
+    "positioning_rules": "Never present the tier as replacing abras, water buses, water taxis or the ferry; never run a subsidized-fare comparison; the premium tier extends the authority's existing fare ladder. The heritage abra trade renders only as untouched."
+  }
+}
