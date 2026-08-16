@@ -293,27 +293,22 @@ function stripUnderscoreKeys(obj) {
 }
 
 /**
- * Emit public-partners and fleet-investors pages when data files exist.
- * Routes: /public-partners/{city}, /fleet-investors/{city}
- * Both public (indexable). No cross-links between archetype pages.
- * Shared map + trip planner via hub.js MAP_ONLY + hub.json.
+ * Emit archetype pages when data files exist.
+ * Primary path = authored `route` (e.g. /boston-invest, /bay-area-partners).
+ * Also emits legacy aliases /public-partners/{city} and /fleet-investors/{city}.
+ * Honors access.noindex for unlisted FI pages. Shared map via hub.js MAP_ONLY.
  */
 function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   const dataPath = path.join(HUB_ROOT, 'hubs', hubId, dataFileName);
   if (!fs.existsSync(dataPath)) return null;
 
   const archData = readJson(dataPath);
-  const rel = `${routePrefix}/${hubId}`.replace(/\/+/g, '/');
-  const outDir = path.join(DIST, rel);
-  ensureDir(outDir);
-  ensureDir(path.join(outDir, 'assets'));
-  const pageBase = '/' + rel.replace(/\/$/, '');
-
-  const tplHtml = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.html'), 'utf8');
-  const tplCss = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.css'), 'utf8');
-  const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
-  const tplJs = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.js'), 'utf8');
-  const archJs = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.js'), 'utf8');
+  const legacyRel = `${routePrefix}/${hubId}`.replace(/\/+/g, '/');
+  const authoredRel = String(archData.route || `/${legacyRel}`)
+    .replace(/^\//, '')
+    .replace(/\/$/, '');
+  // Dedupe primary + legacy paths
+  const emitRels = [...new Set([authoredRel, legacyRel].filter(Boolean))];
 
   const label =
     archetypeId === 'fleet-investors'
@@ -324,76 +319,101 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   const headline = archData.hero?.copy?.headline || `${hub.market?.label || hubId} · ${label}`;
   const subline = archData.hero?.copy?.subline || hub.brand?.description || '';
 
-  let html = tplHtml
-    .replaceAll('__PAGE_BASE__', pageBase)
-    .replaceAll('__PAGE_TITLE__', `Navier · ${headline}`.slice(0, 120))
-    .replaceAll('__PAGE_DESCRIPTION__', subline.slice(0, 300))
-    .replaceAll('__ARCHETYPE_ID__', archetypeId)
-    .replaceAll('__ARCHETYPE_LABEL__', label);
-
-  if (hub.market?.map?.aria_label) {
-    html = html.replace(
-      'aria-label="Water network map"',
-      `aria-label="${hub.market.map.aria_label}"`
-    );
-  }
-
-  fs.writeFileSync(path.join(outDir, 'index.html'), html);
-  fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
-  fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
-  fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
-  fs.writeFileSync(path.join(outDir, 'archetype.js'), archJs);
-
-  const clientHub = sanitizeClientHub(hub);
-  fs.writeFileSync(
-    path.join(outDir, 'hub-data.js'),
-    `/* GENERATED hub geometry for archetype */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
-  );
-
-  const clientArch = stripUnderscoreKeys(archData);
-  // Never ship private access flags that contradict product decision (all public)
-  if (clientArch.access && typeof clientArch.access === 'object') {
-    clientArch.access = {
+  // Normalize access (preserve authored unlisted; string "public" → object)
+  let access = archData.access;
+  if (access == null || access === 'public') {
+    access = {
       mode: 'public',
       noindex: false,
       in_sitemap: true,
       in_nav: false,
       inbound_links_allowed: false,
     };
+  } else if (typeof access === 'object') {
+    access = {
+      mode: access.mode || 'public',
+      noindex: !!access.noindex,
+      in_sitemap: access.in_sitemap !== false && !access.noindex,
+      in_nav: !!access.in_nav,
+      inbound_links_allowed: !!access.inbound_links_allowed,
+    };
   }
-  clientArch.route = `/${routePrefix}/${hubId}`;
-  fs.writeFileSync(
-    path.join(outDir, 'archetype-data.js'),
-    `/* GENERATED from hubs/${hubId}/${dataFileName} */\nwindow.ARCHETYPE_DATA = ${JSON.stringify(clientArch)};\n`
-  );
+  const noindexMeta = access.noindex
+    ? '<meta name="robots" content="noindex, nofollow" />\n'
+    : '';
 
-  // Page-local fallback hero (employer brand asset)
+  const tplHtml = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.html'), 'utf8');
+  const tplCss = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.css'), 'utf8');
+  const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
+  const tplJs = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.js'), 'utf8');
+  const archJs = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.js'), 'utf8');
+
+  const clientHub = sanitizeClientHub(hub);
+  const clientArch = stripUnderscoreKeys(archData);
+  clientArch.access = access;
+  // Keep authored route; also record aliases for debugging
+  clientArch.route = '/' + authoredRel;
+  clientArch.route_aliases = emitRels.map((r) => '/' + r);
+
   const heroSrc = hub.brand?.hero_asset
     ? path.join(ROOT, hub.brand.hero_asset)
     : path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
-  if (fs.existsSync(heroSrc)) {
-    fs.copyFileSync(heroSrc, path.join(outDir, 'assets', 'hero.jpg'));
-  }
-
-  // Prefer archetype-authored hero composite when present (contract v3 image paths)
   const heroImage = archData.hero?.data?.image;
-  if (heroImage && typeof heroImage === 'string') {
-    const localHero = resolveHubAsset(heroImage);
-    if (localHero && fs.existsSync(localHero)) {
-      fs.copyFileSync(localHero, path.join(outDir, 'assets', 'hero.jpg'));
-      // Also rewrite CSS variable to page-local asset (always present)
-      const htmlPath = path.join(outDir, 'index.html');
-      let htmlOut = fs.readFileSync(htmlPath, 'utf8');
-      htmlOut = htmlOut.replace(
-        /--hub-hero-image:\s*url\([^)]+\)/,
-        `--hub-hero-image: url('${pageBase}/assets/hero.jpg')`
-      );
-      fs.writeFileSync(htmlPath, htmlOut);
-    }
-  }
+  const heroLocal = heroImage ? resolveHubAsset(heroImage) : null;
 
-  console.log(`archetype → ${pageBase}/  (${archetypeId} · ${hubId})`);
-  return pageBase;
+  const emitted = [];
+  for (const rel of emitRels) {
+    const outDir = path.join(DIST, rel);
+    ensureDir(outDir);
+    ensureDir(path.join(outDir, 'assets'));
+    const pageBase = '/' + rel;
+
+    let html = tplHtml
+      .replaceAll('__PAGE_BASE__', pageBase)
+      .replaceAll('__PAGE_TITLE__', `Navier · ${headline}`.slice(0, 120))
+      .replaceAll('__PAGE_DESCRIPTION__', subline.slice(0, 300))
+      .replaceAll('__ARCHETYPE_ID__', archetypeId)
+      .replaceAll('__ARCHETYPE_LABEL__', label)
+      .replace('__NOINDEX_META__', noindexMeta);
+
+    if (hub.market?.map?.aria_label) {
+      html = html.replace(
+        'aria-label="Water network map"',
+        `aria-label="${hub.market.map.aria_label}"`
+      );
+    }
+
+    // Prefer composite hero; always write page-local CSS url
+    if (heroLocal && fs.existsSync(heroLocal)) {
+      fs.copyFileSync(heroLocal, path.join(outDir, 'assets', 'hero.jpg'));
+    } else if (fs.existsSync(heroSrc)) {
+      fs.copyFileSync(heroSrc, path.join(outDir, 'assets', 'hero.jpg'));
+    }
+    html = html.replace(
+      /--hub-hero-image:\s*url\([^)]+\)/,
+      `--hub-hero-image: url('${pageBase}/assets/hero.jpg')`
+    );
+
+    fs.writeFileSync(path.join(outDir, 'index.html'), html);
+    fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
+    fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
+    fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
+    fs.writeFileSync(path.join(outDir, 'archetype.js'), archJs);
+    fs.writeFileSync(
+      path.join(outDir, 'hub-data.js'),
+      `/* GENERATED hub geometry for archetype */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
+    );
+    fs.writeFileSync(
+      path.join(outDir, 'archetype-data.js'),
+      `/* GENERATED from hubs/${hubId}/${dataFileName} */\nwindow.ARCHETYPE_DATA = ${JSON.stringify(clientArch)};\n`
+    );
+
+    console.log(
+      `archetype → ${pageBase}/  (${archetypeId} · ${hubId}${access.noindex ? ' · noindex' : ''})`
+    );
+    emitted.push(pageBase);
+  }
+  return emitted;
 }
 
 /** Map absolute site paths like /employer-hub/... to repo files under employer-hub/ */
@@ -462,11 +482,11 @@ export function buildEmployerHubs() {
     emitHub(hub, entry);
     built.push(hub.id);
 
-    // Archetype pages when data files exist (Boston pilot first)
+    // Archetype pages when data files exist
     const pp = emitArchetypePage(hub.id, hub, 'public-partners', 'public-partners.json', 'public-partners');
     const fi = emitArchetypePage(hub.id, hub, 'fleet-investors', 'fleet-investors.json', 'fleet-investors');
-    if (pp) archetypes.push(pp);
-    if (fi) archetypes.push(fi);
+    if (pp) archetypes.push(...pp);
+    if (fi) archetypes.push(...fi);
   }
   if (archetypes.length) {
     copyArchetypeStaticAssets();

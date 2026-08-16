@@ -37,7 +37,26 @@
     if (n == null || n === '') return '—';
     const x = Number(n);
     if (Number.isNaN(x)) return esc(n);
-    return '$' + Math.round(x).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    const sign = x < 0 ? '−' : '';
+    return sign + '$' + Math.round(Math.abs(x)).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  }
+
+  /** Miami-style: manatee / no-exemption speed doctrine — no "relief" chrome. */
+  function isComplianceOnlySpeed(srr) {
+    if (!srr || !srr.copy) return false;
+    // Explicit positive relief claims → never compliance-only
+    const chips = Array.isArray(srr.copy.chips) ? srr.copy.chips.join(' ') : '';
+    const expTitle = (srr.expander && srr.expander.title) || '';
+    if (/relief\s*✓|what speed-rule relief unlocks|precedent\s*✓\s*stockholm/i.test(chips + ' ' + expTitle)) {
+      return false;
+    }
+    const blob = [srr.copy.headline, srr.copy.framing, srr.copy.ask, chips, expTitle]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+    return /none sought|no exemption|manatee|respected as-is|exemptions\s*[—–-]\s*none|claim no exemption/.test(
+      blob
+    );
   }
 
   function moneyRangeLoose(low, high) {
@@ -475,7 +494,65 @@
       });
     }
     html += `</tbody></table></div>`;
+    // Append sensitivities immediately under P&L when present (NY lever cards, etc.)
+    const sensHtml = buildSensitivitiesInner();
+    if (sensHtml) html += sensHtml;
     return sectionShell('pnl', (pnl.copy && pnl.copy.headline) || 'Economics', html);
+  }
+
+  function buildSensitivitiesInner() {
+    const sens = A.pnl && A.pnl.data && A.pnl.data.sensitivities;
+    if (!sens) return '';
+    let title = 'Sensitivities';
+    let note = '';
+    let fn = null;
+    let items = [];
+    if (Array.isArray(sens)) {
+      items = sens.map((c) => ({
+        title: c.title || c.line,
+        value: c.value,
+        note: c.note || c.body,
+        status: c.status,
+        fn: c.fn,
+      }));
+    } else if (typeof sens === 'object') {
+      title = sens.title || title;
+      note = sens.note || '';
+      fn = sens.fn || null;
+      if (Array.isArray(sens.rows)) {
+        items = sens.rows.map((r) => ({
+          title: r.line || r.title,
+          value: r.value,
+          note: r.note,
+          status: r.status,
+          fn: r.fn,
+        }));
+      } else if (Array.isArray(sens.cards)) {
+        items = sens.cards.map((c) => ({
+          title: c.title,
+          value: c.value,
+          note: c.note || c.body,
+          status: c.status,
+          fn: c.fn,
+        }));
+      }
+    }
+    if (!items.length) return '';
+    let html = `<div class="sens-block"><h3 class="sens-heading">${esc(title)}${fnMark(fn)}</h3>`;
+    if (note) html += `<p class="assump-label">${esc(note)}</p>`;
+    html += `<div class="sens-grid">${items
+      .map(
+        (it) => `<div class="sens-card">
+        <div class="sens-top">
+          <h4>${esc(it.title || '')}${fnMark(it.fn)}</h4>
+          ${statusChip(it.status)}
+        </div>
+        ${it.value ? `<div class="sens-value">${esc(it.value)}</div>` : ''}
+        ${it.note ? `<p>${esc(it.note)}</p>` : ''}
+      </div>`
+      )
+      .join('')}</div></div>`;
+    return html;
   }
 
   function buildAsset() {
@@ -660,13 +737,15 @@
   function buildSpeedRelief() {
     const srr = A.speed_rule_relief;
     if (!srr || !srr.copy) return '';
+    const complianceOnly = isComplianceOnlySpeed(srr);
     let html = `<div class="arch-prose">
       <p class="lead">${withText(srr.copy.fn, srr.copy.headline || '')}</p>`;
     if (srr.copy.framing) html += `<p>${esc(srr.copy.framing)}</p>`;
     html += `</div>`;
     if (Array.isArray(srr.copy.chips) && srr.copy.chips.length) {
+      const chipCls = complianceOnly ? 'relief-chip compliance' : 'relief-chip';
       html += `<div class="relief-chips">${srr.copy.chips
-        .map((c) => `<span class="relief-chip">${esc(c)}</span>`)
+        .map((c) => `<span class="${chipCls}">${esc(c)}</span>`)
         .join('')}</div>`;
     }
     if (srr.copy.ask) html += `<p class="ask-line">${esc(srr.copy.ask)}</p>`;
@@ -677,12 +756,15 @@
         : exp.body
           ? `<p>${esc(exp.body)}</p>`
           : '';
-      html += `<details class="relief-box">
+      // Compliance-only: plain expander, not gold "what relief unlocks" chrome
+      const boxCls = complianceOnly ? 'ref-expander' : 'relief-box';
+      html += `<details class="${boxCls}">
         <summary>${esc(exp.title || 'Details')}${fnMark(exp.fn)}</summary>
-        ${bodyParas}
+        <div class="${complianceOnly ? 'ref-body' : ''}">${bodyParas}</div>
       </details>`;
     }
-    return sectionShell('speed_rule_relief', 'Speed-rule relief', html);
+    const title = complianceOnly ? 'Speed zones' : 'Speed-rule relief';
+    return sectionShell('speed_rule_relief', title, html);
   }
 
   function buildFlywheel() {
