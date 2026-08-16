@@ -390,6 +390,23 @@ if (profile === 'public') {
 fs.writeFileSync(path.join(DIST, 'index.html'), aggregateHtml);
 emitDataJs(path.join(DIST, 'atlas-data.js'), aggregateData);
 
+// Site-root Navier favicon (absolute /favicon.svg links from every page)
+{
+  const brandAssets = [
+    ['favicon.svg', 'favicon.svg'],
+    ['favicon-32.png', 'favicon-32.png'],
+    ['apple-touch-icon.png', 'apple-touch-icon.png'],
+  ];
+  for (const [srcName, destName] of brandAssets) {
+    const src = path.join(ROOT, 'assets', srcName);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, path.join(DIST, destName));
+    } else {
+      console.warn(`⚠ missing brand asset assets/${srcName}`);
+    }
+  }
+}
+
 // Vercel OG image API + install hook for @vercel/og
 const apiSrc = path.join(ROOT, 'api');
 const apiDst = path.join(DIST, 'api');
