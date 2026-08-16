@@ -310,11 +310,21 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   // Dedupe primary + legacy paths
   const emitRels = [...new Set([authoredRel, legacyRel].filter(Boolean))];
 
+  // International variant uses Public Transport branding when nav/hero says so
+  const navTag =
+    (archData.hero && archData.hero.copy && archData.hero.copy.eyebrow) ||
+    (archData.brand && archData.brand.nav_tag) ||
+    null;
   const label =
     archetypeId === 'fleet-investors'
       ? 'Fleet Investors'
       : archetypeId === 'public-partners'
-        ? 'Public Partners'
+        ? (navTag && /public transport/i.test(String(navTag))
+            ? 'Public Transport'
+            : archData.city &&
+                ['dubai', 'abu-dhabi', 'ras-al-khaimah'].includes(String(archData.city))
+              ? 'Public Transport'
+              : 'Public Partners')
         : archetypeId;
   const headline = archData.hero?.copy?.headline || `${hub.market?.label || hubId} · ${label}`;
   const subline = archData.hero?.copy?.subline || hub.brand?.description || '';
