@@ -1,0 +1,60 @@
+# San Diego Bay speed & wake rules — corridor-level controlling rules
+
+**Date:** 2026-08-16 · **Status:** source-verified desk pass (primary instruments retrieved where available) · **Scope:** the corridors in `hub.json` (SD-1 South Bay Line, SD-2 Point Loma Line, SD-3 Bridge Line). Base schedule math ALWAYS respects posted limits; anything a rule change could unlock is labeled **"what relief unlocks"** only. Fail closed: secondary claims are labeled; no rule is asserted without an instrument or an explicit unverified flag.
+
+## 1 · The rule inventory (who sets what)
+
+| Rule | Instrument (primary source) | What it says | Set / enforced by | Stated or evident purpose |
+|---|---|---|---|---|
+| Harbor-wide baseline | SDUPD Port Code **§4.04** (enacted Apr 5, 1966, Ord. 215) — https://pantheonstorage.blob.core.windows.net/administration/Port-Code-Section-404.pdf | Unlawful to operate "at a speed that is greater than reasonable or prudent" or that endangers persons/property. **No general numeric limit in the main channel.** | Board of Port Commissioners; San Diego Harbor Police | Safety (outcome-based, not numeric) |
+| South Bay 5 mph | SDUPD Port Code **§4.30(c)3** (Ord. 1200, 1987; amended Ord. 1435, 1991) — https://pantheonstorage.blob.core.windows.net/administration/Port-Code-Section-430.pdf | 5 mph in South San Diego Bay (south of the Sweetwater Wharf–Crown Cove line), **"except while transiting the Chula Vista Harbor Channel seaward of daymarks 11 and 12,"** where §4.04 prudent speed governs. Misdemeanor penalty. | Board of Port Commissioners; Harbor Police | §4.30(a) states it plainly: South Bay is naturally shallow (1–6 ft at low tide outside marked channels), poorly flushed, and littered with wrecks/obstructions. Wildlife-refuge water adjoins (see USFWS row) |
+| South Bay posted area (operational description) | Port of San Diego mariner guidance — https://www.portofsandiego.org/maritime/mariner-resources/general-bay-information | "South San Diego Bay, south of Loew's Resort and Sweetwater Channel, is a posted 5 mph area. Several cement pylons mark the area." Numerous wrecks, shoals, wildlife refuges; sea turtles and bird species | Port (guidance page) | Navigation hazard + wildlife |
+| Central Bay 5 mph pockets | SDUPD Port Code **§4.35(c)3** — https://pantheonstorage.blob.core.windows.net/administration/Port-Code-Section-435.pdf | 5 mph for vessels under way in **Glorietta Bay**, the **Bay Bridge Mooring Area**, and the **Central San Diego Bay Anchorage** | Board of Port Commissioners; Harbor Police | Mooring-field / anchorage wake and safety |
+| Statewide default | California Harbors & Navigation Code **§655.2** — https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HNC&sectionNum=655.2 | 5 mph within 100 ft of a bather and within 200 ft of a swimming beach, float, diving platform, lifeline, or **a landing float used for embarkation/discharge of passengers**, "not otherwise regulated by local rules" | State law; local enforcement | Swimmer and dock-face safety — governs every berth approach |
+| City oceanfront (context only) | City of San Diego boating regulations — https://www.sandiego.gov/lifeguards/safety/boatreg | 5 mph within 1,000 ft of the City's **ocean** coastline | City lifeguards | Surf-zone safety; does not touch bay corridors |
+| Naval Station security zone | **33 CFR 165.1101** — https://www.law.cornell.edu/cfr/text/33/165.1101 | Entry prohibited unless authorized (COTP San Diego 619-683-6495 / VHF 16, or Navy commanders); USCG may be assisted by the Navy | USCG COTP / Navy | Security (SD-1 routing stands clear per hub) |
+| Naval Base Point Loma security zone | **33 CFR 165.1102** — https://www.law.cornell.edu/cfr/text/33/165.1102 | Entry/remaining prohibited unless authorized (COTP 619-278-7033 / Navy dispatch 619-556-1433, VHF 16/12) | USCG COTP / Navy | Security (SD-2 routing stands clear per hub) |
+| Naval Vessel Protection Zone | **33 CFR 165.2030** (Pacific Area) — https://www.law.cornell.edu/cfr/text/33/165.2030 | Within 500 yd of a large (>100 ft) U.S. naval vessel: **minimum speed necessary to maintain a safe course**; no approach within 100 yd without authorization; channel-transit passes permitted "with minimal delay consistent with security" | USCG / senior naval officer / official patrol | Security — a dynamic, moving constraint on any bay schedule |
+| Bravo Pier / degaussing / Ballast Pt–Zuniga Pt restricted areas | **33 CFR 334.870** — https://www.law.cornell.edu/cfr/text/33/334.870 | No transit within 100 ft of Bravo Pier; degaussing-station area: transit by **most direct route without delay or loitering**; Ballast Pt–Zuniga Pt: no anchoring/dragging | USACE-promulgated, Navy-administered | Ordnance safety / instrument protection |
+| Point Loma naval anchorage | **33 CFR 334.880** — https://www.law.cornell.edu/cfr/text/33/334.880 | Reserved for U.S. Government anchorage; **other craft may navigate and operate through the area**; temporary mooring ≤24 h permitted | Navy / USACE | Anchorage priority (transit is lawful — relevant to SD-2) |
+| San Diego Bay & approaches RNA | **33 CFR 165.1122** — https://www.law.cornell.edu/cfr/text/33/165.1122 | Regulated navigation area covering all SD Bay/Mission Bay waters — **applies only to vessels ≥100 GT** (AIS-equipped vessels exempt from request requirements) | USCG COTP | Traffic management for large vessels; an N45 is under the tonnage threshold |
+| Voluntary VSR (context) | Port Vessel Speed Reduction Program — https://modelclimatelaws.org/resources/port-of-san-diego-vessel-speed-reduction-program/ (secondary) | Voluntary 12-kn ask for **cargo vessels** entering/leaving the bay | Port (voluntary) | Emissions/whales; not applicable to an N45, listed for completeness |
+| Shelter Island Yacht Basin / basin speeds | **Unverified at instrument level.** Secondary sources state Glorietta Bay and Shelter Island Yacht Basin are 5 mph zones (https://www.ballastpointyachts.com/boating-in-san-diego/) — Glorietta Bay is confirmed by §4.35(c)3, but no primary Port Code section for a Shelter Island basin limit was located this pass | — | **Fail closed:** treat Shelter Island / America's Cup Harbor as 5-mph basins in all schedule math (hub already does), but do not cite a specific instrument until located |
+
+## 2 · Corridor-by-corridor application (hub.json geometry only)
+
+### SD-1 South Bay Line (Chula Vista → Fifth Avenue Landing → Broadway Pier, 6.53 nm)
+- **Chula Vista tail:** the first ~2–3 nm sit inside §4.30's South Bay 5 mph area (pylon-marked). **Verified nuance:** §4.30(c)3 exempts transit of the **marked Chula Vista Harbor Channel seaward of daymarks 11 and 12** from the numeric cap — prudent speed (§4.04) governs there instead. Hub base times conservatively price the whole tail at 5 mph; the channel-exemption reading is a schedule-refinement question for Harbor Police, not a rendered claim.
+- **Main channel run:** no general numeric limit (§4.04 prudent standard); route stands clear of the Bay Bridge Mooring Area 5 mph pocket (§4.35(c)3), the 32nd St security zone (165.1101), naval anchorages (334.880-type), and any NVPZ around moving naval vessels (165.2030).
+- **Berth approaches:** HNC §655.2 (5 mph within 200 ft of passenger landing floats) at all three stops.
+- Hub base time: ~30–40 min end-to-end including the 5 mph tail — consistent with the rules above.
+
+### SD-2 Point Loma Line (Shelter Island → America's Cup Harbor → Harbor Island → Broadway Pier, ~3.8 nm)
+- **Basins:** Shelter Island / America's Cup Harbor / Harbor Island marina basins at basin speeds (instrument for Shelter Island basin unverified — fail-closed 5 mph assumed; HNC §655.2 applies at all floats regardless).
+- **Open water:** north-bay main channel has no general numeric limit (§4.04). Routing must respect 165.1102 (Point Loma security zone), 334.870(b) (degaussing area: most-direct-route rule), and 165.2030 NVPZs.
+- Hub base time ~15–25 min: essentially all prudent-speed water once clear of basins — the corridor least exposed to numeric caps.
+
+### SD-3 Bridge Line (Glorietta Bay → Fifth Avenue Landing, 2.44 nm)
+- **Glorietta Bay: 5 mph while under way (§4.35(c)3), verified primary.** The crossing must also stand clear of the Bay Bridge Mooring Area 5 mph pocket; Coronado Bridge navigation span transit is unrestricted for this vessel class.
+- Hub renders this line with **no numeric time claim** — correct posture; the corridor is majority speed-constrained.
+
+## 3 · Who grants relief, and through what mechanism
+
+1. **Port ordinances (§4.30, §4.35) are numeric caps set by the Board of Port Commissioners.** Relief = ordinance amendment or a Board/Harbor Police-sanctioned operating permission. The Port Code itself contains precedents for differentiated treatment: the Chula Vista Harbor Channel exemption (§4.30(c)3), and work-vessel exemptions for activities "permitted by competent local, State or Federal authority" (§4.30(c)2, §4.35(c)5 — written against the anchoring/activity restrictions; do not overclaim them as speed exemptions).
+2. **HNC §655.2 defers to local rules** ("not otherwise regulated by local rules and regulations") — the Port's code is the operative layer on the bay, so the Port conversation is the whole conversation.
+3. **Federal security instruments (165.1101/.1102/.2030, 334.870/.880) are not speed-relief candidates.** They are routing/authorization constraints; the only "relief" is COTP authorization to transit where required, which hub routing avoids needing.
+
+## 4 · "What relief unlocks" (labeled upside only — never base)
+
+- **The honest split on purposes:** Glorietta Bay's and the anchorage pockets' 5 mph rules protect moored vessels from **wake** — a purpose a foiling N45 serves inherently (minimal wake at foilborne speed). The South Bay 5 mph area is different: §4.30(a) grounds it in **shallow water, wrecks, and poor flushing**, and USFWS documents **Pacific green sea turtles, eelgrass, and nesting terns/plovers** in the adjacent refuge unit (https://www.fws.gov/refuge/san-diego-bay/about-us). Low wake does not answer a turtle-strike or shallow-draft rationale — so the South Bay relief case is honest only **inside the marked channel**, where the code already switches to prudent speed and where depth and marked navigation answer the rule's own purpose.
+- **SD-1 upside quantified (labeled, not base):** hub prices the ~2–3 nm tail at 5 mph (~24–36 min of the 43-min Chula Vista–Convention Center leg). If Harbor Police confirm foilborne transit of the marked Chula Vista Harbor Channel at prudent speed above 5 mph (per §4.30(c)3's own text), the tail compresses toward main-channel pace — worth roughly 15–25 minutes per leg at the extreme. Show only as "what relief unlocks," pending a written Harbor Police/Port reading.
+- **SD-3 upside:** a wake-measurement case to the Port for Glorietta Bay (wake-purpose rule, foiling serves the purpose) could give the Bridge Line a viable time story; until then the line carries no minutes (hub already complies).
+- **Precedent to cite in any Port conversation:** Stockholm Route 89 Candela P-12 exemption (~22 kn in a ~12 kn zone, Länsstyrelsen; formal instrument unverified) — see `../SPEED-RULE-RELIEF-PRECEDENTS.md` for the sourced, caveated version.
+- **Pitch posture (doctrine §4b):** invite the Port/Harbor Police to measure wake and noise, then grant relief where their rules' own purposes are served — channel-marked, route-specific, monitored.
+
+## 5 · Fail-closed register
+
+- Shelter Island basin 5 mph: **no primary instrument located** — assumed conservatively (secondary: Ballast Point Yachts guide).
+- Chula Vista Harbor Channel exemption: primary text verified, but **operational interpretation (foiling at >5 mph in the channel) not confirmed with Harbor Police** — schedule math keeps the 5 mph tail.
+- Voluntary VSR program: secondary source; voluntary; cargo-vessel scope — context only.
+- No claim is made about Navy/USCG tolerance for scheduled service frequency near security zones — flagged for a COTP briefing in AUTHORITY-MAP §7.
