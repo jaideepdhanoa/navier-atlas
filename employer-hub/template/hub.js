@@ -1497,26 +1497,33 @@
         'circle-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
       },
     });
-    map.addLayer({
-      id: 'stops-label', type: 'symbol', source: 'stops',
-      // Hubs always labeled; other stops only when zoomed in
-      filter: ['any', ['<=', ['get', 'hubRank'], 2], ['>', ['zoom'], 11.5]],
-      layout: {
-        'text-field': ['get', 'label'],
-        'text-size': ['case', ['==', ['get', 'hubRank'], 1], 13, 11],
-        'text-offset': [0, 1.35],
-        'text-anchor': 'top',
-        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
-        'text-max-width': 10,
-        'text-allow-overlap': false,
-      },
-      paint: {
-        'text-color': '#f7f7f8',
-        'text-halo-color': 'rgba(10,10,10,0.9)',
-        'text-halo-width': 1.4,
-        'text-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
-      },
-    });
+    // Label layer needs style.glyphs (set in initMap). Fonts must exist on that glyph server.
+    try {
+      map.addLayer({
+        id: 'stops-label', type: 'symbol', source: 'stops',
+        // Hubs always labeled; other stops only when zoomed in
+        filter: ['any', ['<=', ['get', 'hubRank'], 2], ['>', ['zoom'], 11.5]],
+        layout: {
+          'text-field': ['get', 'label'],
+          'text-size': ['case', ['==', ['get', 'hubRank'], 1], 13, 11],
+          'text-offset': [0, 1.35],
+          'text-anchor': 'top',
+          // demotiles serves single-font stacks only (comma-joined stacks 404)
+          'text-font': ['Noto Sans Bold'],
+          'text-max-width': 10,
+          'text-allow-overlap': false,
+          'text-optional': true,
+        },
+        paint: {
+          'text-color': '#f7f7f8',
+          'text-halo-color': 'rgba(10,10,10,0.9)',
+          'text-halo-width': 1.4,
+          'text-opacity': ['case', ['==', ['get', 'dim'], 1], 0.25, 1],
+        },
+      });
+    } catch (err) {
+      console.warn('[employer-hub] stops-label layer skipped', err);
+    }
 
     // Harbor-first fit on At Launch; wider on full network (skip if trip view is active)
     if (allCoords.length && !activeTrip) {
@@ -1549,6 +1556,8 @@
       container: 'map',
       style: {
         version: 8,
+        // Required for symbol layers (stop labels). Same glyph CDN as root Atlas.
+        glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
         sources: {
           carto: {
             type: 'raster',

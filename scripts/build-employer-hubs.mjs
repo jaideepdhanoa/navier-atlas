@@ -367,6 +367,7 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     `/* GENERATED from hubs/${hubId}/${dataFileName} */\nwindow.ARCHETYPE_DATA = ${JSON.stringify(clientArch)};\n`
   );
 
+  // Page-local fallback hero (employer brand asset)
   const heroSrc = hub.brand?.hero_asset
     ? path.join(ROOT, hub.brand.hero_asset)
     : path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
@@ -374,8 +375,68 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     fs.copyFileSync(heroSrc, path.join(outDir, 'assets', 'hero.jpg'));
   }
 
+  // Prefer archetype-authored hero composite when present (contract v3 image paths)
+  const heroImage = archData.hero?.data?.image;
+  if (heroImage && typeof heroImage === 'string') {
+    const localHero = resolveHubAsset(heroImage);
+    if (localHero && fs.existsSync(localHero)) {
+      fs.copyFileSync(localHero, path.join(outDir, 'assets', 'hero.jpg'));
+      // Also rewrite CSS variable to page-local asset (always present)
+      const htmlPath = path.join(outDir, 'index.html');
+      let htmlOut = fs.readFileSync(htmlPath, 'utf8');
+      htmlOut = htmlOut.replace(
+        /--hub-hero-image:\s*url\([^)]+\)/,
+        `--hub-hero-image: url('${pageBase}/assets/hero.jpg')`
+      );
+      fs.writeFileSync(htmlPath, htmlOut);
+    }
+  }
+
   console.log(`archetype → ${pageBase}/  (${archetypeId} · ${hubId})`);
   return pageBase;
+}
+
+/** Map absolute site paths like /employer-hub/... to repo files under employer-hub/ */
+function resolveHubAsset(sitePath) {
+  if (!sitePath || typeof sitePath !== 'string') return null;
+  const cleaned = sitePath.replace(/^\/+/, '');
+  if (cleaned.startsWith('employer-hub/')) {
+    return path.join(ROOT, cleaned);
+  }
+  return path.join(ROOT, cleaned);
+}
+
+/** Copy shared vessel plates + per-city composites so /employer-hub/... URLs resolve in _dist. */
+function copyArchetypeStaticAssets() {
+  const pairs = [
+    // shared vessel beauty plates
+    ['employer-hub/assets/vessels', 'employer-hub/assets/vessels'],
+  ];
+  // per-hub asset folders
+  const hubsDir = path.join(HUB_ROOT, 'hubs');
+  if (fs.existsSync(hubsDir)) {
+    for (const id of fs.readdirSync(hubsDir)) {
+      const assetsDir = path.join(hubsDir, id, 'assets');
+      if (fs.existsSync(assetsDir) && fs.statSync(assetsDir).isDirectory()) {
+        pairs.push([
+          path.join('employer-hub/hubs', id, 'assets'),
+          path.join('employer-hub/hubs', id, 'assets'),
+        ]);
+      }
+    }
+  }
+  for (const [srcRel, destRel] of pairs) {
+    const src = path.join(ROOT, srcRel);
+    const dest = path.join(DIST, destRel);
+    if (!fs.existsSync(src)) continue;
+    ensureDir(dest);
+    for (const fn of fs.readdirSync(src)) {
+      const s = path.join(src, fn);
+      if (fs.statSync(s).isFile()) {
+        fs.copyFileSync(s, path.join(dest, fn));
+      }
+    }
+  }
 }
 
 export function buildEmployerHubs() {
@@ -408,6 +469,7 @@ export function buildEmployerHubs() {
     if (fi) archetypes.push(fi);
   }
   if (archetypes.length) {
+    copyArchetypeStaticAssets();
     console.log(`archetypes built: ${archetypes.join(', ')}`);
   }
   return built;
