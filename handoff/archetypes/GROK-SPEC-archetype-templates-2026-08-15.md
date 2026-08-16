@@ -153,3 +153,27 @@ Requirements:
 | Merge | Jaideep merges (neither Tasklet nor Grok) | |
 
 Scale-out (Bay → NY → DC → Miami → Seattle → San Diego) happens only after Boston pilot passes §7 in full; those handoffs are data-only.
+
+---
+
+# ADDENDUM v3 — 2026-08-15 (narrative, visuals, math bridge, navigation)
+
+Data contract is now **v3**. Full rationale: `handoff/archetypes/TEMPLATE-V3-PLAN-2026-08-15.md`. Both Boston JSONs (`employer-hub/hubs/boston/*.json`) are rewritten to v3 in this PR. Binding template changes:
+
+**G1 — Sticky anchor nav.** Render `nav_anchors` as a slim sticky nav on both archetype pages (anchor scroll, active-section highlight).
+
+**G2 — Image slots + video.** Render `image` fields where present: page hero (full-bleed behind hero copy, dark scrim for legibility), vessel plates in `navier_intro`, service-day images. Assets ship in this PR (`employer-hub/hubs/boston/assets/`, `employer-hub/assets/vessels/`). Render a responsive YouTube embed where `video_url` is present (lazy-load, no autoplay).
+
+**G3 — `navier_intro` section.** New section type: image/video left, copy right; three technology proof chips (energy · wake · noise); two vessel cards with plate images + spec chips.
+
+**G4 — `service_day` timeline.** Horizontal 0600–2300 day strip; one block per window, layer-labeled; `upside: true` windows rendered dashed/muted and visually separate.
+
+**G5 — `revenue_build` table.** Renders ABOVE the P&L, same scenario toggle: rows `quantity × price = $/mo`, a visible sum row equal to P&L gross. Footnote refs render as superscripts.
+
+**G6 — Kill-list execution.** All copy comes from JSON; delete the demand-gated-launch callout component and any hardcoded trigger/launch strings in the FI template.
+
+**G7 — Public Partners reorder.** Render strictly in `section_order`. `reference.collapsed: true` sections render as closed expanders (Authority landscape, Modal integration).
+
+**G8 — Keep all v2 wins.** Footnote system, deck-style P&L, status chips, role cards, speed-rule expander — unchanged.
+
+**G9 — QA before hand-back.** Side-by-side vs `/employers/boston`; run the §7 kill-scan (now also: "trigger", "not yet operate", "has not yet operated", "none committed", "anchor" on FI renderables); screenshot both pages full-length. **No city replication until Boston passes.**
