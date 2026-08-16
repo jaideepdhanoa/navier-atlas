@@ -79,19 +79,19 @@ Tone: civic, sober, plan-literate (brief §4). Grok must not paraphrase copy fie
 
 ## 4 · Fleet Investors page template (`fleet-investors`)
 
-Page spine per FLEET-INVESTORS-BRIEF.md §3 with **D6 LOCKED: anchor-plus-fill is the lead economic frame** — anchor-tenant contracted revenue leads; seat-band fill is upside on top; standalone per-seat yield is NEVER the headline.
+Page spine per FLEET-INVESTORS-BRIEF.md §3 with **D6′ LOCKED (2026-08-15, supersedes D6): the utilization stack is the lead economic frame** — yield-priced commute (committed bundles + spot) plus experiences/charters form the base case; sponsorship and overnight cargo are labeled upside lines; no anchor subsidy appears in any scenario. Employer block commitments at market seat prices accelerate the launch trigger only.
 
-1. **Hero** — "Own the fleet behind {City}'s water commuter network" + anchor-first subline from copy.
+1. **Hero** — "Own the fleet behind {City}'s water commuter network" + utilization-stack subline from copy (one asset, four demand layers).
 2. **The model** — franchise structure panel (fleet investor / operator / Navier / employers / public partners) + launch trigger as the core protection.
 3. **The asset** — N45: $2.5M, 20 passengers, electric foiling, workboat-grade. Redeployability panel (7-city network = residual-value story).
 4. **The network** — corridor map inherited unchanged (D3) + launch-trigger explanation.
 5. **Demand-pool module (new component).** Named employers + headcounts render ONLY with the standing label, verbatim, visually attached to the table:
    > "Indicative of demand potential along these corridors — not commitments or commercial relationships."
    Columns: employer · node · line(s) · on-site headcount (with its verification label) · demand-pool seats (with capture assumption). Rows render only from data; blank cells stay blank. No logo walls.
-6. **Summary P&L module (new component) — anchor-first structure (D6):** anchor contract line → fill upside band → opex lines → Navier network share → indicative payback range. Rules:
+6. **Summary P&L module (new component) — utilization-stack structure (D6′):** stack layers (L1 committed bundles → L2 spot → L3 experiences & charters) → upside lines (U1 sponsorship, U2 overnight cargo — always labeled upside, never in base) → opex lines → Navier network share → scenario table (conservative / mid headline / upside) → payback. Render from `pnl.data.stack_layers` + `pnl.data.scenarios`. Rules:
    - Ranges only, never point estimates; conservative default posture.
    - **Every line renders its assumption label from data** (e.g. "placeholder, not validated", "program band — not a city quote"). A line without a label in data must not render.
-   - Seat-band scenarios appear as the fill/upside band beneath the anchor line, never as the headline economics.
+   - Mid case is the headline; conservative always shown; upside lines carry their status labels verbatim ("market-priced (operators cited); not yet operated by Navier" / published-tariff citations). Cargo and sponsorship NEVER render inside base-case totals.
    - **Speed-rule relief appears only as a clearly labeled upside row** ("with authority speed-rule relief — precedent: Stockholm Candela P-12 exemption"), never blended into base or mid cases. If unquantified in data, render the label row without numbers.
 7. **Protection stack** — four cards from data: demand-gated launch (60–80 committed-seat trigger) · redeployable network asset · Navier platform continuity · phased fleet growth.
 8. **Fleet phasing module (new component)** — vessels at launch vs full build per line + capital, all with assumption labels from data (headway ceilings are illustrative, not timetables).
@@ -103,7 +103,7 @@ Unlisted mechanics per §2.3. Tone: investment-grade sobriety; numbers carry the
 
 **Reused unchanged from employer templates:** hub.json loader, corridor map + stations/lines/interchanges, phase toggle, trip planner, design system (type, color, spacing), responsive frame, intake-form infra (new archetype tags only).
 
-**New components (this PR):** dual-posture panel · public-value stat band · speed-rule-relief pillar (+ labeled relief layer) · plan-alignment panel · authority-landscape module · modal-integration layer · flywheel module (shared by both new templates) · demand-pool table (+ standing-label frame) · summary P&L (anchor-first, range+assumption rendering) · protection-stack cards · fleet-phasing table · vessels panel · unlisted-access mechanics · two intake variants.
+**New components (this PR):** dual-posture panel · public-value stat band · speed-rule-relief pillar (+ labeled relief layer) · plan-alignment panel · authority-landscape module · modal-integration layer · flywheel module (shared by both new templates) · demand-pool table (+ standing-label frame) · summary P&L (utilization-stack, range+assumption rendering) · protection-stack cards · fleet-phasing table · vessels panel · unlisted-access mechanics · two intake variants.
 
 **Dependency — `water_min_label` fix (PR #356):** the shared `waterMinLabel()` currently ignores `water_min_label`, so speed-honesty qualifiers don't render. **Both archetype templates depend on this fix**; speed-constrained segment labels must render correctly before the pilot ships. Do not merge this PR ahead of that fix.
 
@@ -131,7 +131,7 @@ Requirements:
 - [ ] **Geometry parity:** stops/lines/segments on both new pages identical to employer page; MECE topology untouched; segment-phase invariant holds (`segment.phase === max(stop phases), omit when 1`).
 - [ ] **Base-time compliance:** every rendered time uses posted-limit base values; no relief-adjusted number outside the labeled relief layer; `water_min_label` qualifiers render (dependency fixed).
 - [ ] **Standing indicative label** present verbatim wherever employer names appear on `/boston-invest`: "Indicative of demand potential along these corridors — not commitments or commercial relationships."
-- [ ] **Every P&L line** shows a range + its assumption label; no point estimates; anchor line leads; seat-band scenarios positioned as fill/upside.
+- [ ] **Every P&L line** shows a range + its assumption label; no point estimates; stack layers lead; sponsorship + cargo render only in the labeled upside scenario; each unproven layer carries its status label verbatim.
 - [ ] **Unlisted verified:** noindex meta present on `/boston-invest`; absent from sitemap.xml; zero inbound links site-wide (crawl check); employer + partners pages contain no invest link.
 - [ ] **No held corridors:** grep rendered output for `Logan`, `Provincetown` → zero hits on all archetype pages.
 - [ ] **Banned-terms scan (rendered DOM + all renderable copy/data values; underscore-prefixed guard fields exempt), zero hits:** `Dubai RTA` · `Abu Dhabi ITC` · `RAKTA` · `Series B` · `valuation` · `fundraise` · `secured` (dock/landing context) · `dock unlock` · `logan_held` · `note_internal` · `decision_ledger` · `revolutionary` · `disruptive`/`disruption` as startup rhetoric (verbatim quotes of an authority's own published plan language, e.g. MassDOT's "disruptions to subway or Commuter Rail service", are exempt) · P0/P1/P2 priority codes.
