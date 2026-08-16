@@ -1,6 +1,6 @@
 # REVENUE-STACK-RAS-AL-KHAIMAH — one N45, tourism-weighted utilization stack (internal audit file — never renders)
 
-**As of:** 2026-08-16 · Structure per boston/REVENUE-STACK-BOSTON.md + INTERNATIONAL-ADDENDUM (12-month year, summer-heat midday shape) · grammar per abu-dhabi/REVENUE-STACK-ABU-DHABI.md. One N45: $2.5M capex, 20 seats (canon), 16-hr day. Peg 3.6725 AED/USD. All scenario lines sum EXACTLY to gross (script-verified 2026-08-16, /tmp/rak_verify.py — sealed RAK geometry unusable, so all corridor math is coordinate-derived; script rerun required on any input change).
+**As of:** 2026-08-16 · Structure per boston/REVENUE-STACK-BOSTON.md + INTERNATIONAL-ADDENDUM (12-month year, summer-heat midday shape) · grammar per abu-dhabi/REVENUE-STACK-ABU-DHABI.md. One N45: $2.5M capex, 20 seats (canon), 16-hr day. Peg 3.6725 AED/USD. All scenario lines sum EXACTLY to gross (script-verified 2026-08-16, /tmp/rak_verify.py — sealed RAK geometry unusable, so all corridor math is coordinate-derived; script rerun required on any input change). **Re-tiered 2026-08-16: §9 (Wynn-open planning basis) is the current basis for all renderables; §6–§7 preserved as derivation history.**
 
 ## 1 · Corridors (journey spine — **NO route_ids**; sealed RAK set contaminated, fail-closed)
 
@@ -55,7 +55,7 @@ Fixed (berth + insurance + maintenance) = **$11,569/mo**.
 
 **Season shape (stated assumption per addendum):** 12-month year; Jun–Sep midday dip, volume shifted to early-morning/evening blocks (evening legs at the 20 kn night planning basis, ≈65-min spine); winter Oct–Apr (events season) runs above the monthly averages shown. No winter discount applied.
 
-## 6 · Scenarios (monthly, USD) — lines sum EXACTLY to gross (script-verified, /tmp/rak_verify.py)
+## 6 · Scenarios (monthly, USD) — lines sum EXACTLY to gross (script-verified, /tmp/rak_verify.py) — **SUPERSEDED for renderables by §9 (2026-08-16 re-tier); preserved as derivation history**
 
 Commute capacity: 8 legs/day × 20 seats × 22 weekdays = 3,520 leg-seats/mo; each committed seat consumes 44.
 
@@ -108,7 +108,7 @@ Commute capacity: 8 legs/day × 20 seats × 22 weekdays = 3,520 leg-seats/mo; ea
 | **Net** | | **59,612** |
 | **Simple payback** | 2,500,000 ÷ (59,612 × 12) | **3.5 yr** |
 
-## 7 · Honest reads (NOT massaged — reported per instruction)
+## 7 · Honest reads (NOT massaged — reported per instruction) — **pre-re-tier reads; §9 carries the current reads**
 
 - **Mid-case payback is 11.7 yr — above the 10-yr financeable line.** Inputs were not adjusted to fix this. RAK today (1.35M visitors, ~50% domestic, ~8–9K keys, uncongested roads, water slower than road on every corridor) is the weakest single-N45 market of the three UAE cities on current demand. The stack only clears financeable territory in the Wynn-open environment (Upside 3.5 yr — same physics as the 2.49-yr canon benchmark, reached on a 1,530-key integrated resort + 12,000-key Marjan Beach pipeline).
 - **Conservative is cash-negative (−$1.9K/mo)**: fixed costs ($11.6K/mo) exceed what a punitive pre-Wynn month earns. Stated plainly; single-vessel RAK deployment before 2027 is a strategic (authority-partnership) decision, not a standalone yield case.
@@ -135,3 +135,54 @@ Commute capacity: 8 legs/day × 20 seats × 22 weekdays = 3,520 leg-seats/mo; ea
 | Cargo $250/run × 12 (upside) | placeholder | courier-linehaul logic; no RAK waterborne tariff | Weak — upside only |
 | Summer midday dip | qualitative | addendum-mandated | Stated assumption |
 | Dubai↔RAK express (~45 nm) | **excluded from economics** | inter-emirate = later-phase roadmap only per addendum; requires Dubai-side landing rights | Excluded |
+
+## 9 · Re-tier 2026-08-16 — Wynn-open planning basis (CURRENT — supersedes §6 tiers for all renderables)
+
+**Directive (Jaideep, 2026-08-16):** the Wynn-open demand environment is the planning basis for **all three scenarios**. The renderable statement of the assumption appears ONCE, in the microsite's notes block (fn14): *"Economics assume Wynn Al Marjan Island (opening 2027) is open."* No other timing language renders anywhere — no dates for Navier operations in renderables or `_internal`. The former base-destination tiering (§6) no longer renders; it is preserved above and in fleet-investors.json `_internal.superseded_2026_08_16`.
+
+**Wynn-open pool anchors (all previously sourced — TOURISM-DEMAND §1–2; nothing new introduced):** 1,530 rooms × 71.2% FY2024 occupancy ≈ 1,089 occupied rooms ≈ ~2,180 on-island overnight guests/day at the published opening scale · 9,000+ jobs · 22 F&B venues · atop the 1.35M-visitor base and seven operating Al Marjan hotels. Every quantity below traces to the §3–§4 price bands, the §6 builds, the §8 tier comparisons (AD ceilings), or a conservative fraction of the sourced figures above. Prices unchanged — all inside the derived/sourced bands (the $400 seat floor is now unused).
+
+### Conservative — floor: capture held at the former working case
+Deliberately thin: the open resort cluster is assumed to add **nothing** to captured demand — quantities and prices are the former §6 Mid build, unchanged.
+| Layer | Quantity × price | $/mo |
+|---|---|---|
+| L1 committed seat bundles | 24 seats × $500 | 12,000 |
+| L2 spot seats | 2,464 residual leg-seats × 15% fill = 370 × $20 | 7,400 |
+| L3 shared experiences | 30 sailings × 12 pax × $45 | 16,200 |
+| L3 private charters | 12 hrs × $475 | 5,700 |
+| **Gross** | | **41,300** |
+Hours 209 · 2,977 nm · crew 6,270 · energy 1,501 · fixed 11,569 → opex **19,340** · network share 4,130 → **Net 17,830** · **Payback 2.5M ÷ 213,960 = 11.684 → ~11.7 yr.** Above the 10-yr financeable line — rendered plainly as the floor; inputs NOT adjusted to fix it.
+
+### Mid — working case: former §6 Upside base layers (upside lines excluded)
+| Layer | Quantity × price | $/mo |
+|---|---|---|
+| L1 committed seat bundles | 32 seats × $650 | 20,800 |
+| L2 spot seats | 2,112 residual leg-seats × 25% fill = 528 × $25 | 13,200 |
+| L3 shared experiences | 48 sailings × 14 pax × $55 | 36,960 |
+| L3 private charters | 22 hrs × $550 | 12,100 |
+| **Gross** | | **83,060** |
+Hours (132 + 48×1.25 + 22) × 1.15 = 246.1 → **246** · crew 7,380. Energy nm (2,376 + 336 + 220) × 1.1 = 3,225.2 → **3,225** · 3,225 × 4.1 × $0.12294 = **1,626**. Opex 7,380 + 1,626 + 11,569 = **20,575** · network share 8,306 → **Net 74,754 − 20,575 = 54,179** · **Payback 2.5M ÷ 650,148 = 3.845 → ~3.8 yr.**
+
+### Upside — higher capture at documented ceilings (+ the two upside-only lines)
+| Layer | Quantity × price | $/mo | Anchor |
+|---|---|---|---|
+| L1 committed seat bundles | 36 seats × $650 | 23,400 | 36 = AD upside tier (§8 comparison row); the former reason for sitting below AD (thin commuter base) is directly addressed by the published 9,000 jobs + 1,530 keys. Flag: unproven |
+| L2 spot seats | residual 3,520 − 1,584 = 1,936 × 30% = 580.8 → 580 × $25 | 14,500 | 30% = AD upside fill (§8 comparison row). Flag: unproven |
+| L3 shared experiences | 60 sailings × 14 pax × $55 | 46,200 | 2/day = 840 pax/mo ≈ 1.3% of Wynn occupied-room guests alone (~2,180/day × 30), excluding the rest of the 1.35M base and the seven existing hotels — conservative fraction |
+| L3 private charters | 22 hrs × $550 | 12,100 | held at the Mid quantity — weakest-anchored price in the file, deliberately not pushed |
+| U1 sponsorship (upside only) | $150K/yr ÷ 4 vessels ÷ 12 | 3,125 | placeholder canon per Boston |
+| U2 cargo (upside only) | 12 runs × $250 | 3,000 | courier-linehaul logic; no RAK waterborne tariff — upside-only |
+| **Gross** | | **102,325** | |
+Hours (132 + 60×1.25 + 22) × 1.15 = 263.35 → **263** · crew 7,890. Energy nm (2,376 + 420 + 220 + 144) × 1.1 = **3,476** · × 4.1 × $0.12294 = **1,752**. Opex **21,211** · network share 10,232.50 → **Net 92,092.50 − 21,211 = 70,881.50 (renders 70,882)** · **Payback 2.5M ÷ 850,578 = 2.939 → ~2.9 yr.** Annual rounding from unrounded nets: 213,960 → 214,000 · 650,148 → 650,000 · 850,578 → 851,000.
+
+### Register deltas vs §8 (re-tier)
+Committed seats **24/32/36** (was 16/24/32) · spot fill **15/25/30%** (was 8/15/25) · experience sailings **30/48/60** at **12/14/14** pax (was 18/30/48 at 10/12/14) · charter hrs **12/22/22** (was 6/12/22) · prices unchanged within the §3–§4 bands. Cost structure unchanged: crew hours and energy nm scale with activity exactly per §5 formulas; fixed lines flat; network share 10% of gross scales with revenue.
+
+### Honest reads (current)
+- Conservative ~11.7 yr is above the 10-yr financeable line — rendered plainly as the floor, not adjusted.
+- Upside L1/L2 sit exactly at the AD tier ceilings and L3 runs 2/day — all flagged unproven for Jaideep; charter $/hr remains the weakest anchor (quantity held).
+- fn10 sensitivity recomputed on the new Mid: at $0.30/kWh, energy 13,222.5 kWh × 0.30 = 3,966.75 → net 51,838 → payback 4.019 → ~4.0 yr (formerly ~13.3 yr on the old tiering).
+- No time-play claims anywhere; the only timing language in renderables is the single fn14 assumption sentence.
+- L3 share of gross: 53% / 59% / 57% (Con/Mid/Up) — the experience layer remains the headline layer.
+
+**Script-verified 2026-08-16 (re-tier, /tmp/rak_qa.py):** every layer line sums exactly to gross; nets, paybacks and annuals recomputed to $0 diff; kill-scan clean on both JSONs; all footnote refs resolve.
