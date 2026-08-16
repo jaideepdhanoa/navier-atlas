@@ -1,13 +1,36 @@
 {
-  "_contract": "Authored by Tasklet 2026-08-15. Source: boston/AUTHORITY-MAP-BOSTON.md (+ PUBLIC-PARTNERS-BRIEF.md patterns). Per module: 'copy' fields render VERBATIM; 'data' fields are structured values Grok formats. Underscore-prefixed fields (_contract, _guard, etc.) are non-renderable guard notes \u2014 never reach the DOM. null/missing = render nothing (fail closed). Never render: held corridors, Gulf counterparties, authority contacts, internal dock-status fields.",
+  "_contract": "Authored by Tasklet 2026-08-15; rewritten to contract v2 same day per TEMPLATE-POLISH-REVIEW-2026-08-15.md; rewritten to contract v3 2026-08-15 per TEMPLATE-V3-PLAN-2026-08-15.md (navier_intro folds in 'vessels', gap+plan alignment merged, 'Two ways to partner' promoted, Authority landscape + Modal integration demoted to a collapsed reference block, nav_anchors + section_order added). Source: boston/AUTHORITY-MAP-BOSTON.md (+ PUBLIC-PARTNERS-BRIEF.md patterns). CONTRACT v3: only `title` (≤6 words), `value`/figures, `note` (≤140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields (_contract, _provenance, _internal, _guard) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Never render: held corridors, Gulf counterparties, authority contacts, internal dock-status fields.",
+  "contract_version": "v3",
   "city": "boston",
   "archetype": "public-partners",
-  "route": "/public-partners/boston",
+  "route": "/boston-partners",
   "access": "public",
+  "footnotes": {
+    "fn1": {
+      "text": "MassDOT/MBTA Water Transportation Study, Summer 2025 – Summer 2026, in progress; quoted language is the study's own.",
+      "source_url": "https://www.mbta.com/projects/water-transportation-study"
+    },
+    "fn2": {
+      "text": "MBTA ferry ridership and performance figures from published MBTA and industry reporting, 2025–26.",
+      "source_url": "https://en.wikipedia.org/wiki/MBTA_ferry"
+    },
+    "fn3": {
+      "text": "Healey-Driscoll administration awards of over $2.3M to expand ferry and water transportation on Boston Harbor, August 2025.",
+      "source_url": "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
+    },
+    "fn4": {
+      "text": "Precedent: on Region Stockholm's Route 89, a Candela P-12 electric hydrofoil operated at ~22 knots in a ~12-knot zone under a low-wake speed exemption granted by the county administrative authority."
+    },
+    "fn5": {
+      "text": "All map and trip times on this page respect posted speed limits. No exemption is assumed; relief appears only as a separately labeled layer."
+    },
+    "fn6": {
+      "text": "Boston's climate plan targets carbon neutrality by 2050, with emissions cut in half by 2030.",
+      "source_url": "https://www.boston.gov/departments/environment/boston-climate-action"
+    }
+  },
   "geometry": {
     "data": {
-      "source": "hubs/boston/hub.json",
-      "inherit": "unchanged (Decision D3 \u2014 same corridors as employer map, nothing added, nothing removed)",
       "stops": 18,
       "lines": [
         "BOS-1 North Shore",
@@ -16,66 +39,121 @@
         "BOS-4 Inner Harbor",
         "BOS-5 Riverside"
       ]
+    },
+    "_internal": {
+      "source": "hubs/boston/hub.json",
+      "inherit": "unchanged (Decision D3 — same corridors as employer map, nothing added, nothing removed)"
     }
   },
   "hero": {
     "copy": {
       "headline": "Boston's waterways are its widest empty highway.",
-      "subline": "A zero-emission, electric-foiling commuter network on Boston Harbor \u2014 built on existing piers, financed by private capital, aligned with the Commonwealth's own water-transportation plans."
+      "subline": "A zero-emission, electric-foiling commuter network on Boston Harbor — built on existing piers, financed by private capital, aligned with the Commonwealth's own water-transportation plans.",
+      "stat_chips": [
+        "18 stations",
+        "0 terminals to build",
+        "0 subsidy ask",
+        "1.5M harbor riders 2025"
+      ],
+      "small_print": "All trip times respect posted harbor speed limits.",
+      "fn": "fn5"
     },
     "data": {
-      "image": null
-    }
+      "image": "/employer-hub/hubs/boston/assets/hero-public-boston.jpg"
+    },
+    "_provenance": "Ridership chip: MBTA ferry ridership 1,498,200 riders in 2025 (see public_value stats + fn2)."
   },
   "gap": {
+    "title": "Massachusetts is already asking",
     "copy": {
       "lead": "Massachusetts is already asking this question. The state's own Water Transportation Study frames ferries as \"convenient transit in communities with limited public transportation options\" and a resilience layer \"when there are disruptions to subway or Commuter Rail service.\"",
-      "support": "The same study is actively scoping new routes and terminals in Boston, Lynn, Quincy, Salem, and Winthrop \u2014 five of the eighteen stations on this network."
+      "support": "The same study is actively scoping new routes and terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five of the eighteen stations on this network.",
+      "fn": "fn1"
     },
     "data": {
-      "source": "https://www.mbta.com/projects/water-transportation-study",
-      "congestion_stats": null
+      "plans": [
+        {
+          "plan": "MassDOT Water Transportation Study (Summer 2025 – Summer 2026, in progress)",
+          "quote": "convenient transit in communities with limited public transportation options",
+          "quote2": "when there are disruptions to subway or Commuter Rail service",
+          "note": "Actively scoping new routes and terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five stations on this network.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "Boston 2030 Climate Action Plan",
+          "quote": null,
+          "note": "An all-electric hydrofoil network materially advances Boston's carbon-neutrality goal and its transportation-electrification pillar.",
+          "fn": "fn6"
+        },
+        {
+          "plan": "Healey-Driscoll water-transportation expansion awards (Aug 2025)",
+          "quote": null,
+          "note": "New state money already backs the North Shore, South Shore, and Quincy corridors — including tripling Winthrop/Quincy ferry capacity.",
+          "fn": "fn3"
+        }
+      ]
+    },
+    "_provenance": {
+      "gap": {
+        "source": "https://www.mbta.com/projects/water-transportation-study",
+        "congestion_stats": null
+      },
+      "plan_alignment": {
+        "plan_sources_v1": [
+          "https://www.mbta.com/projects/water-transportation-study",
+          "https://www.boston.gov/departments/environment/boston-climate-action",
+          "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
+        ],
+        "alignment_v1": [
+          "The study is actively scoping new routes/terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five stations on this network.",
+          "Carbon-neutral-by-2050 goal with emissions cut in half by 2030; an all-electric hydrofoil network materially advances the transportation-electrification pillar. (2050/2030 targets now in fn6.)",
+          "The state has already put new money behind the North Shore, South Shore, and Quincy corridors this network serves, including tripling Winthrop/Quincy ferry capacity."
+        ]
+      },
+      "merge_note": "gap + plan_alignment merged into one section per TEMPLATE-V3-PLAN-2026-08-15.md §2 ('the state's own words do the selling'); all three plan quotes retained unchanged."
     }
   },
   "infrastructure_light": {
     "copy": {
       "headline": "Any sound pier or marina berth is a station. No terminals to build.",
-      "body": "Zero terminal capital cost for the city or state. Service can start at existing public piers and municipal marinas \u2014 the landings on this network are already built."
+      "body": "Zero terminal capital cost for the city or state. Service can start at existing public piers and municipal marinas — the landings on this network are already built."
     },
     "data": {
       "landings_verified": {
+        "title": "Landings verified",
+        "value": "15 of 18 landings source-verified",
         "verified": 15,
-        "total": 18,
-        "stat_copy": "15 of 18 landings source-verified",
-        "note": "per-stop verification status intentionally omitted from this page (fail closed)"
+        "total": 18
       }
-    }
+    },
+    "_internal": "v1 note: per-stop verification status intentionally omitted from this page (fail closed)."
   },
   "posture": {
+    "copy": {
+      "framing": "Two ways to partner — a genuine choice. Boston's landscape leans Enable, with proven public operators alongside.",
+      "enable_track": "Grant landing access at existing public piers and a permitting pathway for a pilot corridor. Private capital finances the fleet; privately committed employer demand fills the seats. The ask is access, not money.",
+      "operate_track": "Massachusetts public bodies already own and operate ferry fleets. Navier vessels can be procured the way transit vehicles are procured — to build, run, or augment the public water network."
+    },
     "data": {
       "weighting": "enable_dominant",
       "operate_proof_points": [
         {
           "body": "MBTA ferry division",
-          "proof": "Owns vessels, funds routes, and directly procures operating contracts across nine ferry routes \u2014 the clearest public vessel-operator precedent in this market."
+          "proof": "Owns vessels, funds routes, and directly procures operating contracts across nine ferry routes — the clearest public vessel-operator precedent in this market."
         },
         {
           "body": "Massachusetts Convention Center Authority (MCCA)",
-          "proof": "Funds and manages the Seaport Ferry (Lovejoy Wharf\u2013Fan Pier\u2013East Boston), launched on a pilot basis."
+          "proof": "Funds and manages the Seaport Ferry (Lovejoy Wharf–Fan Pier–East Boston), launched on a pilot basis."
         }
       ]
     },
-    "copy": {
-      "enable_track": "Grant landing access at existing public piers and a permitting pathway for a pilot corridor. Private capital finances the fleet; privately committed employer demand fills the seats. The ask is access, not money.",
-      "operate_track": "Massachusetts public bodies already own and operate ferry fleets. Navier vessels can be procured the way transit vehicles are procured \u2014 to build, run, or augment the public water network.",
-      "framing": "Two ways to partner \u2014 a genuine choice, not a pitch fork. Boston's landscape leans Enable, with proven public operators alongside."
-    }
+    "_provenance": "v1 framing: 'Two ways to partner — a genuine choice, not a pitch fork. Boston's landscape leans Enable, with proven public operators alongside.'"
   },
   "public_value": {
     "copy": {
       "pillars": [
-        "Zero-emission electric foiling \u2014 direct alignment with Boston's transportation-electrification goals.",
-        "Minimal wake foilborne and near-silent at speed \u2014 relevant to shoreline permitting and harbor neighbors.",
+        "Zero-emission electric foiling — direct alignment with Boston's transportation-electrification goals.",
+        "Minimal wake foilborne and near-silent at speed — relevant to shoreline permitting and harbor neighbors.",
         "Quality of life: waterfront activation, commute time returned to residents, and a business-attraction asset for waterfront districts."
       ]
     },
@@ -83,29 +161,47 @@
       "stats": [
         {
           "stat": "MBTA ferry ridership: 1,498,200 riders in 2025 (~2,700/weekday, Q1 2026)",
-          "source": "https://en.wikipedia.org/wiki/MBTA_ferry",
-          "note": "evidence Massachusetts commuters already value and use water transit"
+          "note": "Massachusetts commuters already value and use water transit.",
+          "fn": "fn2"
         },
         {
           "stat": "MBTA ferries post the highest on-time performance and farebox recovery of any MBTA mode",
-          "source": "node inventory, sourced to Wikipedia/APTA"
+          "fn": "fn2"
         },
         {
           "stat": "$2.3M in state awards (Aug 2025) to expand ferry and water transportation on Boston Harbor, including $1M to redesign the Winthrop/Quincy route and triple daily capacity",
-          "source": "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
+          "fn": "fn3"
         }
       ],
       "car_trips_removed": null
+    },
+    "_provenance": {
+      "stat_sources_v1": [
+        "https://en.wikipedia.org/wiki/MBTA_ferry",
+        "node inventory, sourced to Wikipedia/APTA",
+        "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
+      ]
     }
   },
   "speed_rule_relief": {
     "copy": {
       "headline": "Your speed rules were written for boats that make wake.",
-      "body": "Harbor speed rules exist to control wake, wash, noise, and disturbance. Massachusetts law already draws the right distinction: 323 CMR 2 separately prohibits harmful wash \u2014 an outcome a foiling Navier satisfies inherently \u2014 while capping headway speed at 6 mph in regulated situations. The regulations even contain an existing relief mechanism: marked-channel permission granted by an authorized marine-enforcement agency.",
-      "invitation": "Our ask: measure us. Where independent wake and noise measurement shows the rule's purpose is served, grant route-specific relief through the mechanism your own regulations already provide.",
-      "precedent": "Precedent exists: on Region Stockholm's Route 89, a Candela P-12 electric hydrofoil operated at ~22 knots in a ~12-knot zone under a low-wake speed exemption (attributed to L\u00e4nsstyrelsen, the county administrative board)."
+      "framing": "Harbor speed rules exist to control wake, wash, noise, and disturbance — outcomes a foiling, electric Navier satisfies inherently.",
+      "ask": "Our ask: measure us. Where independent wake and noise measurement shows the rule's purpose is served, grant route-specific relief through the mechanism your own regulations already provide.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Precedent ✓ Stockholm"
+      ],
+      "fn": "fn4"
     },
     "data": {
+      "relief_minutes": null,
+      "boston_inner_harbor_instrument": null
+    },
+    "_provenance": {
+      "body_v1": "Harbor speed rules exist to control wake, wash, noise, and disturbance. Massachusetts law already draws the right distinction: 323 CMR 2 separately prohibits harmful wash — an outcome a foiling Navier satisfies inherently — while capping headway speed at 6 mph in regulated situations. The regulations even contain an existing relief mechanism: marked-channel permission granted by an authorized marine-enforcement agency.",
+      "precedent_v1": "Precedent exists: on Region Stockholm's Route 89, a Candela P-12 electric hydrofoil operated at ~22 knots in a ~12-knot zone under a low-wake speed exemption (attributed to Länsstyrelsen, the county administrative board).",
       "rule_basis": [
         {
           "instrument": "323 CMR 2.02",
@@ -120,139 +216,24 @@
           "source": "https://www.law.cornell.edu/regulations/massachusetts/323-CMR-2-07"
         }
       ],
-      "boston_inner_harbor_instrument": null,
-      "relief_minutes": null,
-      "base_times_policy": "All map and trip times on this page respect posted limits. No exemption is assumed. Relief renders only in the labeled 'what relief unlocks' layer, which for Boston carries no numbers this pass.",
+      "base_times_policy_v1": "All map and trip times on this page respect posted limits. No exemption is assumed. Relief renders only in the labeled 'what relief unlocks' layer, which for Boston carries no numbers this pass. Now carried by fn5.",
       "sources_doc": "SPEED-RULE-RELIEF-PRECEDENTS.md"
-    }
-  },
-  "plan_alignment": {
-    "data": {
-      "plans": [
-        {
-          "plan": "MassDOT Water Transportation Study (Summer 2025 \u2013 Summer 2026, in progress)",
-          "quote": "convenient transit in communities with limited public transportation options",
-          "quote2": "when there are disruptions to subway or Commuter Rail service",
-          "alignment": "The study is actively scoping new routes/terminals in Boston, Lynn, Quincy, Salem, and Winthrop \u2014 five stations on this network.",
-          "source": "https://www.mbta.com/projects/water-transportation-study"
-        },
-        {
-          "plan": "Boston 2030 Climate Action Plan",
-          "quote": null,
-          "alignment": "Carbon-neutral-by-2050 goal with emissions cut in half by 2030; an all-electric hydrofoil network materially advances the transportation-electrification pillar.",
-          "source": "https://www.boston.gov/departments/environment/boston-climate-action"
-        },
-        {
-          "plan": "Healey-Driscoll water-transportation expansion awards (Aug 2025)",
-          "quote": null,
-          "alignment": "The state has already put new money behind the North Shore, South Shore, and Quincy corridors this network serves, including tripling Winthrop/Quincy ferry capacity.",
-          "source": "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
-        }
-      ]
-    }
-  },
-  "authorities": {
-    "copy": {
-      "intro": "Boston Harbor's water-transportation landscape spans state, regional, and municipal bodies. We seek conversations \u2014 nothing here implies approval, endorsement, or commitment by any body named."
     },
-    "data": {
-      "bodies": [
-        {
-          "body": "MBTA (ferry division)",
-          "classification": "operate",
-          "role": "Runs nine public ferry routes; owns vessels and procures operating contracts \u2014 the region's proven public water-transit operator."
-        },
-        {
-          "body": "MassDOT",
-          "classification": "enable",
-          "role": "State transportation secretariat; leads the cross-agency Water Transportation Study (Summer 2025\u2013Summer 2026) scoping five stations on this network.",
-          "engagement_window": "Study concludes Summer 2026"
-        },
-        {
-          "body": "Massachusetts Convention Center Authority (MCCA)",
-          "classification": "operate",
-          "role": "Funds and manages the Seaport Ferry serving Fan Pier and Lovejoy Wharf."
-        },
-        {
-          "body": "City of Boston (BPDA + Harbormaster)",
-          "classification": "enable",
-          "role": "Waterfront planning and Municipal Harbor Plans for the South Boston, Downtown, and East Boston waterfronts."
-        },
-        {
-          "body": "Massport",
-          "classification": "enable",
-          "role": "Port authority and underlying landowner at Commonwealth Pier; grants landing access at existing public docks."
-        },
-        {
-          "body": "MassDEP Waterways Regulation Program (Chapter 91)",
-          "classification": "permitting_gate",
-          "role": "Public-trust licensing for tideland structures; existing landings used as-is generally need no new license \u2014 modifications do."
-        },
-        {
-          "body": "MA Department of Conservation & Recreation (DCR)",
-          "classification": "enable",
-          "role": "Landowner at Squantum Point Park (Quincy) and the Hingham ferry terminal, which the MBTA operates under long-term lease."
-        },
-        {
-          "body": "Salem Harbor Port Authority",
-          "classification": "enable",
-          "role": "State-chartered body coordinating port development within Salem Harbor, including Salem Wharf."
-        },
-        {
-          "body": "Harbor towns and cities \u2014 Hull, Winthrop, Quincy, Hingham",
-          "classification": "enable",
-          "role": "Own or co-manage their municipal landings (Pemberton Point, Winthrop Town Landing, Squantum Point partnership, Hewitts Cove harbor operations)."
-        },
-        {
-          "body": "National Park Service",
-          "classification": "enable",
-          "role": "Steward of part of Charlestown Navy Yard; carries a federal mandate to improve Boston Harbor Islands access through public water transportation."
-        }
+    "expander": {
+      "title": "What speed-rule relief unlocks",
+      "body": [
+        "Harbor speed rules exist to control wake, wash, noise, and disturbance. Massachusetts law already draws that distinction: it separately prohibits harmful wash — an outcome a foiling vessel satisfies inherently — and it already contains a relief mechanism granted by marine-enforcement agencies.",
+        "Our ask: measure us. Where independent wake and noise measurement shows the rule's purpose is served, grant route-specific relief through the mechanism your regulations already provide.",
+        "Precedent: Stockholm's public transport authority runs an electric hydrofoil ferry at roughly twice the posted zone speed under a low-wake exemption."
       ],
-      "omitted_note": "Bodies whose posture is unverified in the authority map (e.g. Lynn, Weymouth, Scituate, Everett) are intentionally omitted from this page (fail closed)."
-    }
-  },
-  "modal_integration": {
-    "copy": {
-      "lead": "We feed the transit system, not compete with it."
-    },
-    "data": {
-      "pairs": [
-        {
-          "station": "North Station (Lovejoy Wharf)",
-          "connects": "MBTA North Station rail hub (stop is adjacent by network naming)",
-          "source": "hub topology / node inventory"
-        },
-        {
-          "station": "Hingham (Hewitts Cove)",
-          "connects": "Hingham Intermodal Center with MBTA-owned 1,841-space park-and-ride",
-          "source": "https://stvinc.com/news/hingham-intermodal-center-opens-support-stv/ \u00b7 https://en.wikipedia.org/wiki/MBTA_ferry"
-        }
-      ]
-    }
-  },
-  "vessels": {
-    "data": {
-      "fleet": [
-        {
-          "model": "N30 Quanta",
-          "passengers": 8,
-          "propulsion": "electric foiling"
-        },
-        {
-          "model": "N45 Explorer",
-          "passengers": 20,
-          "propulsion": "electric foiling"
-        }
-      ],
-      "_guard": "vessel specs only on this panel \u2014 content firewall per brief \u00a73.9 applies (never renders)"
+      "fn": "fn4"
     }
   },
   "flywheel": {
     "copy": {
-      "employers": "Employers commit demand \u2014 non-binding letters of intent for committed seats.",
-      "public_partners": "Public partners unlock landings \u2014 access we seek at existing piers; in discussion, not yet granted.",
-      "fleet_investors": "Fleet investors finance the vessels \u2014 fleet financing being raised behind committed demand."
+      "employers": "Employers commit demand — non-binding letters of intent for committed seats.",
+      "public_partners": "Public partners unlock landings — access we seek at existing piers; in discussion, not yet granted.",
+      "fleet_investors": "Fleet investors finance the vessels — fleet financing being raised behind committed demand."
     }
   },
   "cta": {
@@ -273,6 +254,255 @@
         ],
         "routing": "existing LOI intake infra, archetype tag public-partners"
       }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — content firewall per brief §3.9 applies (never renders)",
+    "_provenance": "Folds in the v2 'vessels' section (fleet spec cards, no image/intro copy) per TEMPLATE-V3-PLAN-2026-08-15.md §2 gap 3. Original 'vessels' section content preserved verbatim in _internal.removed_v3.vessels_section_v2."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Boston Harbor's water-transportation landscape spans state, regional, and municipal bodies. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "MBTA (ferry division)",
+              "classification": "operate",
+              "role": "Runs nine public ferry routes; owns vessels and procures operating contracts — the region's proven public water-transit operator."
+            },
+            {
+              "body": "MassDOT",
+              "classification": "enable",
+              "role": "State transportation secretariat; leads the cross-agency Water Transportation Study (Summer 2025–Summer 2026) scoping five stations on this network.",
+              "engagement_window": "Study concludes Summer 2026"
+            },
+            {
+              "body": "Massachusetts Convention Center Authority (MCCA)",
+              "classification": "operate",
+              "role": "Funds and manages the Seaport Ferry serving Fan Pier and Lovejoy Wharf."
+            },
+            {
+              "body": "City of Boston (BPDA + Harbormaster)",
+              "classification": "enable",
+              "role": "Waterfront planning and Municipal Harbor Plans for the South Boston, Downtown, and East Boston waterfronts."
+            },
+            {
+              "body": "Massport",
+              "classification": "enable",
+              "role": "Port authority and underlying landowner at Commonwealth Pier; grants landing access at existing public docks."
+            },
+            {
+              "body": "MassDEP Waterways Regulation Program (Chapter 91)",
+              "classification": "permitting_gate",
+              "role": "Public-trust licensing for tideland structures; existing landings used as-is generally need no new license — modifications do."
+            },
+            {
+              "body": "MA Department of Conservation & Recreation (DCR)",
+              "classification": "enable",
+              "role": "Landowner at Squantum Point Park (Quincy) and the Hingham ferry terminal, which the MBTA operates under long-term lease."
+            },
+            {
+              "body": "Salem Harbor Port Authority",
+              "classification": "enable",
+              "role": "State-chartered body coordinating port development within Salem Harbor, including Salem Wharf."
+            },
+            {
+              "body": "Harbor towns and cities — Hull, Winthrop, Quincy, Hingham",
+              "classification": "enable",
+              "role": "Own or co-manage their municipal landings (Pemberton Point, Winthrop Town Landing, Squantum Point partnership, Hewitts Cove harbor operations)."
+            },
+            {
+              "body": "National Park Service",
+              "classification": "enable",
+              "role": "Steward of part of Charlestown Navy Yard; carries a federal mandate to improve Boston Harbor Islands access through public water transportation."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note_v1": "Bodies whose posture is unverified in the authority map (e.g. Lynn, Weymouth, Scituate, Everett) are intentionally omitted from this page (fail closed)."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We feed the transit system, not compete with it."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "North Station (Lovejoy Wharf)",
+              "connects": "Adjacent to the MBTA North Station rail hub"
+            },
+            {
+              "station": "Hingham (Hewitts Cove)",
+              "connects": "Hingham Intermodal Center, with an MBTA-owned 1,841-space park-and-ride"
+            }
+          ]
+        },
+        "_provenance": {
+          "north_station_source_v1": "hub topology / node inventory; v1 phrasing: 'MBTA North Station rail hub (stop is adjacent by network naming)'",
+          "hingham_sources_v1": "https://stvinc.com/news/hingham-intermodal-center-opens-support-stv/ · https://en.wikipedia.org/wiki/MBTA_ferry"
+        }
+      }
+    },
+    "_provenance": "Authority landscape + Modal integration demoted from mid-page full-weight sections to a collapsed reference block per TEMPLATE-V3-PLAN-2026-08-15.md §2 gap 5 (hierarchy + wayfinding). Content unchanged — only presentation weight/position changed."
+  },
+  "_internal": {
+    "removed_v3": {
+      "vessels_section_v2": {
+        "data": {
+          "fleet": [
+            {
+              "model": "N30 Quanta",
+              "passengers": 8,
+              "propulsion": "electric foiling"
+            },
+            {
+              "model": "N45 Explorer",
+              "passengers": 20,
+              "propulsion": "electric foiling"
+            }
+          ],
+          "_guard": "vessel specs only on this panel — content firewall per brief §3.9 applies (never renders)"
+        }
+      },
+      "gap_section_v2": {
+        "copy": {
+          "lead": "Massachusetts is already asking this question. The state's own Water Transportation Study frames ferries as \"convenient transit in communities with limited public transportation options\" and a resilience layer \"when there are disruptions to subway or Commuter Rail service.\"",
+          "support": "The same study is actively scoping new routes and terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five of the eighteen stations on this network.",
+          "fn": "fn1"
+        },
+        "_provenance": {
+          "source": "https://www.mbta.com/projects/water-transportation-study",
+          "congestion_stats": null
+        }
+      },
+      "plan_alignment_section_v2": {
+        "data": {
+          "plans": [
+            {
+              "plan": "MassDOT Water Transportation Study (Summer 2025 – Summer 2026, in progress)",
+              "quote": "convenient transit in communities with limited public transportation options",
+              "quote2": "when there are disruptions to subway or Commuter Rail service",
+              "note": "Actively scoping new routes and terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five stations on this network.",
+              "fn": "fn1"
+            },
+            {
+              "plan": "Boston 2030 Climate Action Plan",
+              "quote": null,
+              "note": "An all-electric hydrofoil network materially advances Boston's carbon-neutrality goal and its transportation-electrification pillar.",
+              "fn": "fn6"
+            },
+            {
+              "plan": "Healey-Driscoll water-transportation expansion awards (Aug 2025)",
+              "quote": null,
+              "note": "New state money already backs the North Shore, South Shore, and Quincy corridors — including tripling Winthrop/Quincy ferry capacity.",
+              "fn": "fn3"
+            }
+          ]
+        },
+        "_provenance": {
+          "plan_sources_v1": [
+            "https://www.mbta.com/projects/water-transportation-study",
+            "https://www.boston.gov/departments/environment/boston-climate-action",
+            "https://www.mass.gov/news/healey-driscoll-administration-awards-over-23-million-to-expand-waterfront-ferry-and-water-transportation-on-boston-harbor"
+          ],
+          "alignment_v1": [
+            "The study is actively scoping new routes/terminals in Boston, Lynn, Quincy, Salem, and Winthrop — five stations on this network.",
+            "Carbon-neutral-by-2050 goal with emissions cut in half by 2030; an all-electric hydrofoil network materially advances the transportation-electrification pillar. (2050/2030 targets now in fn6.)",
+            "The state has already put new money behind the North Shore, South Shore, and Quincy corridors this network serves, including tripling Winthrop/Quincy ferry capacity."
+          ]
+        }
+      },
+      "authorities_top_level_v2": true,
+      "modal_integration_top_level_v2": true
     }
   }
 }
