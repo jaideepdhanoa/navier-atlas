@@ -1,0 +1,179 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-15. Sources: boston/FLEET-ECONOMICS-BOSTON.md + boston/TRACKER-SNAPSHOT-2026-08-15.md. Per module: 'copy' renders VERBATIM; 'data' is structured values Grok formats. Underscore-prefixed fields are non-renderable guard notes — never reach the DOM. null/missing = render nothing (fail closed). This is fleet financing only — the equity/fundraise/defense/Gulf content firewalls in FLEET-INVESTORS-BRIEF.md §5 apply in full. Every economic figure renders WITH its assumption label; ranges only, no point estimates. D6 LOCKED: anchor-plus-fill leads; seat-band fill is upside, never headline.",
+  "city": "boston",
+  "archetype": "fleet-investors",
+  "route": "/boston-invest",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "hero": {
+    "copy": {
+      "headline": "Own the fleet behind Boston's water commuter network.",
+      "subline": "Anchor revenue is contracted before capital deploys. Seat-band fill is upside on top — never the base case."
+    },
+    "data": { "image": null }
+  },
+  "model": {
+    "copy": {
+      "roles": [
+        "Fleet Investor — owns/finances the Boston fleet (workboat-grade N45s; N30 where corridor-appropriate).",
+        "Operator — runs the service (crewing, operations); existing Boston operators are natural candidates. No operator is committed.",
+        "Navier — supplies vessels, software, and the network platform.",
+        "Employers — contract committed seats, the revenue backbone.",
+        "Public Partners — grant landings at existing piers and marina berths; no terminal construction."
+      ],
+      "trigger": "Corridors launch only at 60–80 committed seats. Capital deploys behind committed demand, not ahead of it."
+    }
+  },
+  "asset": {
+    "data": {
+      "vessel": "N45 Explorer",
+      "capex_usd": 2500000,
+      "seats": 20,
+      "cruise_speed_kn": 20,
+      "range_nm_approx": 70,
+      "powertrain": "hybrid day 1",
+      "grade": "workboat-grade, electric foiling",
+      "basis": "canon"
+    },
+    "copy": {
+      "redeployability": "A vessel is a network asset, not stranded in one market: the 7-city network is the residual-value story."
+    }
+  },
+  "network": {
+    "data": {
+      "source": "hubs/boston/hub.json",
+      "inherit": "unchanged (Decision D3 — same corridor map as the employer site)",
+      "stops": 18,
+      "lines": ["BOS-1 North Shore", "BOS-2 South Shore", "BOS-3 Quincy", "BOS-4 Inner Harbor", "BOS-5 Riverside"],
+      "launch_phase_lines": ["BOS-1", "BOS-2", "BOS-3"]
+    },
+    "copy": {
+      "trigger_explainer": "Each corridor activates only when 60–80 seats are committed. Launch timing honesty: end-2027 earliest."
+    }
+  },
+  "demand_pool": {
+    "standing_label": "Indicative of demand potential along these corridors — not commitments or commercial relationships.",
+    "data": {
+      "capture_assumption": "3.0% of on-site headcount (tracker's own stated input)",
+      "headcount_label": "planning estimate — verify before quoting",
+      "rows": [
+        { "node": "Seaport (Fan Pier)", "lines": ["BOS-1", "BOS-2"], "employer": "Vertex Pharmaceuticals HQ", "headcount": 4000, "seats": 120 },
+        { "node": "Seaport (Fan Pier)", "lines": ["BOS-1", "BOS-2"], "employer": "Amazon Boston Tech Hub", "headcount": 2000, "seats": 60 },
+        { "node": "Seaport (Fan Pier)", "lines": ["BOS-1", "BOS-2"], "employer": "MassMutual (Boston campus)", "headcount": 1000, "seats": 30 },
+        { "node": "Seaport (Fan Pier)", "lines": ["BOS-1", "BOS-2"], "employer": "Foundation Medicine HQ", "headcount": 1000, "seats": 30 },
+        { "node": "Commonwealth Pier / WTC", "lines": ["BOS-2"], "employer": "Fidelity Investments", "headcount": 5800, "seats": 174 },
+        { "node": "Commonwealth Pier / WTC", "lines": ["BOS-2"], "employer": "P&G Gillette (global HQ)", "headcount": 800, "seats": 24, "note": "12–18 min walk — beyond strict walk-tier" },
+        { "node": "North Station (Lovejoy)", "lines": ["BOS-5"], "employer": "Converse HQ", "headcount": 600, "seats": 18 },
+        { "node": "North Station (Lovejoy)", "lines": ["BOS-5"], "employer": "Mass General Hospital", "headcount": 25000, "seats": 750, "note": "walk-tier boundary case, ~12–15 min walk" },
+        { "node": "Everett (Encore)", "lines": ["BOS-5"], "employer": "Encore Boston Harbor", "headcount": 4800, "seats": 144 }
+      ],
+      "city_total_seats": 1350,
+      "honesty_notes": [
+        "5 of 10 tracked nodes have zero sourced headcount — pools understate.",
+        "BOS-5 carries the largest sourced pool (North Station + Encore) but is a phase-3 line with zero launch-phase vessels — that demand is not actionable at launch under current phasing."
+      ]
+    },
+    "copy": {
+      "rules": "Named employers appear only as indicative demand potential under the standing label — never as customers, partners, or LOI signatories. Blank tracker cells stay blank."
+    }
+  },
+  "pnl": {
+    "structure": "anchor_first (D6 LOCKED): anchor contract line → fill upside band → opex → network share → indicative payback range",
+    "data": {
+      "anchor_line": {
+        "monthly_revenue_usd_range": [100000, 125000],
+        "label": "Anchor-tenant block, indicative (program canon reference). No Boston anchor commitment is sourced or confirmed.",
+        "worked_mid": { "gross_monthly": 112500, "net_of_network_share": 101250, "net_after_mid_opex_monthly": 73550, "annualized": 882600 },
+        "indicative_payback": "~2.8–3 years on a $2.5M N45"
+      },
+      "fill_upside_band": {
+        "label": "Seat-band fill, shown as upside only — program band $650–1,200/seat-month; Boston-specific pricing TBD; not a city quote.",
+        "scenarios": [
+          { "case": "conservative (default posture)", "seats": 15, "price_per_seat_month": 650, "monthly_revenue": 9750 },
+          { "case": "mid", "seats": 18, "price_per_seat_month": 900, "monthly_revenue": 16200 },
+          { "case": "upside (full utilization, band ceiling)", "seats": 20, "price_per_seat_month": 1200, "monthly_revenue": 24000 }
+        ],
+        "honesty_note": "Standalone per-seat vessel economics do not pencil under conservative-to-mid assumptions (net negative monthly; upside case ~80-year payback). Shown for transparency, never as headline economics. Combined anchor-plus-fill was not modeled this pass — fill is qualitative upside on top of the anchor block."
+      },
+      "opex_monthly_per_vessel": {
+        "lines": [
+          { "item": "Energy", "range_usd": [700, 3100], "label": "Canon 4.1 kWh/nm @ $0.30/kWh × route distance × 1–2 round trips/day × 22 days/month. Electric-operation assumption; hybrid day-1 vessels may run higher." },
+          { "item": "Maintenance", "range_usd": [5400, 8300], "label": "N45 NOT validated — N30 canon ($65K/yr) floor, $100K/yr stated ceiling assumption, ÷12." },
+          { "item": "Crew", "range_usd": [8250, 14600], "label": "Placeholder benchmark, not canon, not validated — 2-crew workboat norm, $75–95/hr combined, 5–7 op hrs/day, 22 days/month." },
+          { "item": "Insurance & landing/berth fees", "range_usd": [4600, 10750], "label": "Placeholder, weak basis — hull/liability ~1.5–3%/yr of insured value + illustrative berth fee loosely anchored to one documented commercial rate; not a Navier-specific quote." }
+        ],
+        "total_range_usd": [19000, 36750]
+      },
+      "network_share": { "value": "10% of gross revenue, off the top", "label": "canon" },
+      "payback_summary": {
+        "anchor_case": "~2.8–3 years (mid anchor, mid opex)",
+        "seat_conservative": "not cash-flow positive at single-vessel scale",
+        "seat_mid": "not cash-flow positive at single-vessel scale",
+        "seat_upside": "~80 years — not an attractive standalone payback",
+        "label": "Indicative ranges only, conservative default. Upside comes from more corridors activating, not from inflating per-corridor assumptions."
+      },
+      "speed_relief_upside_row": {
+        "label": "With authority speed-rule relief (precedent: Stockholm Candela P-12 exemption)",
+        "values": null,
+        "note": "Not quantified for Boston this pass — renders as a labeled upside row without numbers. Never blended into base or mid cases; base economics respect posted limits."
+      }
+    }
+  },
+  "fleet_phasing": {
+    "data": {
+      "launch": {
+        "vessels_range": [3, 6],
+        "capital_usd_range": [7500000, 15000000],
+        "label": "Minimum viable launch fleet — 1–2 vessels per phase-1 line, sized to trigger-scale AM/PM peak sailings, not continuous headway. Derived, not published. No spares margin included.",
+        "per_line": [
+          { "line": "BOS-1 North Shore", "launch_vessels": "1–2", "launch_capital_usd_range": [2500000, 5000000] },
+          { "line": "BOS-2 South Shore", "launch_vessels": "1–2", "launch_capital_usd_range": [2500000, 5000000] },
+          { "line": "BOS-3 Quincy", "launch_vessels": "1–2", "launch_capital_usd_range": [2500000, 5000000] },
+          { "line": "BOS-4 Inner Harbor", "launch_vessels": "0 (phase-2 line)", "launch_capital_usd_range": null },
+          { "line": "BOS-5 Riverside", "launch_vessels": "0 (phase-3 line)", "launch_capital_usd_range": null }
+        ]
+      },
+      "full_build": {
+        "vessels": 19,
+        "capital_usd": 47500000,
+        "label": "60-minute continuous-headway ceiling — an illustrative capacity-ceiling planning tool, not a timetable or day-1 requirement. Dwell/turnaround/headway are illustrative assumptions.",
+        "per_line": [
+          { "line": "BOS-1 North Shore", "vessels": 6, "capital_usd": 15000000 },
+          { "line": "BOS-2 South Shore", "vessels": 6, "capital_usd": 15000000 },
+          { "line": "BOS-3 Quincy", "vessels": 3, "capital_usd": 7500000 },
+          { "line": "BOS-4 Inner Harbor", "vessels": 2, "capital_usd": 5000000 },
+          { "line": "BOS-5 Riverside", "vessels": 2, "capital_usd": 5000000 }
+        ]
+      },
+      "spares_note": "No maintenance-reserve/spare vessel included in any count; a real fleet plan typically adds ~10–15% spares capacity (not computed this pass)."
+    }
+  },
+  "protection_stack": {
+    "copy": {
+      "cards": [
+        { "title": "Demand-gated launch", "body": "Corridors launch only at 60–80 committed seats — capital deploys behind committed demand, not ahead of it." },
+        { "title": "Redeployable network asset", "body": "Workboat-grade N45s redeploy across the 7-city network; a vessel is not stranded in one market." },
+        { "title": "Navier platform continuity", "body": "Vessels, software, demand generation, and the network platform stay with Navier across operators and cities." },
+        { "title": "Phased fleet growth", "body": "Fleet scales with corridor activation — launch fleet first, growth tranches only as corridors hit trigger." }
+      ]
+    }
+  },
+  "cta": {
+    "copy": {
+      "headline": "Request the Boston fleet memo.",
+      "body": "Summary economics with every assumption stated, conservative default, ranges not points — and a conversation."
+    },
+    "data": {
+      "intake": {
+        "tag": "fleet-investor",
+        "fields": ["name", "entity", "capital_type:family_office|fund|individual|operator_with_capital", "cities_of_interest", "indicative_fleet_interest:1-2|3-5|5+", "message"],
+        "routing": "existing intake infra, archetype tag fleet-investor"
+      }
+    }
+  }
+}
