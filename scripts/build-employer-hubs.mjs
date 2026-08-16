@@ -281,6 +281,103 @@ function emitHub(hub, registryEntry) {
   }
 }
 
+function stripUnderscoreKeys(obj) {
+  if (obj == null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(stripUnderscoreKeys);
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (k.startsWith('_')) continue;
+    out[k] = stripUnderscoreKeys(v);
+  }
+  return out;
+}
+
+/**
+ * Emit public-partners and fleet-investors pages when data files exist.
+ * Routes: /public-partners/{city}, /fleet-investors/{city}
+ * Both public (indexable). No cross-links between archetype pages.
+ * Shared map + trip planner via hub.js MAP_ONLY + hub.json.
+ */
+function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
+  const dataPath = path.join(HUB_ROOT, 'hubs', hubId, dataFileName);
+  if (!fs.existsSync(dataPath)) return null;
+
+  const archData = readJson(dataPath);
+  const rel = `${routePrefix}/${hubId}`.replace(/\/+/g, '/');
+  const outDir = path.join(DIST, rel);
+  ensureDir(outDir);
+  ensureDir(path.join(outDir, 'assets'));
+  const pageBase = '/' + rel.replace(/\/$/, '');
+
+  const tplHtml = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.html'), 'utf8');
+  const tplCss = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.css'), 'utf8');
+  const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
+  const tplJs = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.js'), 'utf8');
+  const archJs = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.js'), 'utf8');
+
+  const label =
+    archetypeId === 'fleet-investors'
+      ? 'Fleet Investors'
+      : archetypeId === 'public-partners'
+        ? 'Public Partners'
+        : archetypeId;
+  const headline = archData.hero?.copy?.headline || `${hub.market?.label || hubId} · ${label}`;
+  const subline = archData.hero?.copy?.subline || hub.brand?.description || '';
+
+  let html = tplHtml
+    .replaceAll('__PAGE_BASE__', pageBase)
+    .replaceAll('__PAGE_TITLE__', `Navier · ${headline}`.slice(0, 120))
+    .replaceAll('__PAGE_DESCRIPTION__', subline.slice(0, 300))
+    .replaceAll('__ARCHETYPE_ID__', archetypeId)
+    .replaceAll('__ARCHETYPE_LABEL__', label);
+
+  if (hub.market?.map?.aria_label) {
+    html = html.replace(
+      'aria-label="Water network map"',
+      `aria-label="${hub.market.map.aria_label}"`
+    );
+  }
+
+  fs.writeFileSync(path.join(outDir, 'index.html'), html);
+  fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
+  fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
+  fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
+  fs.writeFileSync(path.join(outDir, 'archetype.js'), archJs);
+
+  const clientHub = sanitizeClientHub(hub);
+  fs.writeFileSync(
+    path.join(outDir, 'hub-data.js'),
+    `/* GENERATED hub geometry for archetype */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
+  );
+
+  const clientArch = stripUnderscoreKeys(archData);
+  // Never ship private access flags that contradict product decision (all public)
+  if (clientArch.access && typeof clientArch.access === 'object') {
+    clientArch.access = {
+      mode: 'public',
+      noindex: false,
+      in_sitemap: true,
+      in_nav: false,
+      inbound_links_allowed: false,
+    };
+  }
+  clientArch.route = `/${routePrefix}/${hubId}`;
+  fs.writeFileSync(
+    path.join(outDir, 'archetype-data.js'),
+    `/* GENERATED from hubs/${hubId}/${dataFileName} */\nwindow.ARCHETYPE_DATA = ${JSON.stringify(clientArch)};\n`
+  );
+
+  const heroSrc = hub.brand?.hero_asset
+    ? path.join(ROOT, hub.brand.hero_asset)
+    : path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
+  if (fs.existsSync(heroSrc)) {
+    fs.copyFileSync(heroSrc, path.join(outDir, 'assets', 'hero.jpg'));
+  }
+
+  console.log(`archetype → ${pageBase}/  (${archetypeId} · ${hubId})`);
+  return pageBase;
+}
+
 export function buildEmployerHubs() {
   const registryPath = path.join(HUB_ROOT, 'registry.json');
   if (!fs.existsSync(registryPath)) {
@@ -289,6 +386,7 @@ export function buildEmployerHubs() {
   }
   const registry = readJson(registryPath);
   const built = [];
+  const archetypes = [];
   for (const entry of registry.hubs || []) {
     if (entry.enabled === false) continue;
     const hubPath = path.join(HUB_ROOT, entry.path || `hubs/${entry.id}/hub.json`);
@@ -302,6 +400,15 @@ export function buildEmployerHubs() {
     }
     emitHub(hub, entry);
     built.push(hub.id);
+
+    // Archetype pages when data files exist (Boston pilot first)
+    const pp = emitArchetypePage(hub.id, hub, 'public-partners', 'public-partners.json', 'public-partners');
+    const fi = emitArchetypePage(hub.id, hub, 'fleet-investors', 'fleet-investors.json', 'fleet-investors');
+    if (pp) archetypes.push(pp);
+    if (fi) archetypes.push(fi);
+  }
+  if (archetypes.length) {
+    console.log(`archetypes built: ${archetypes.join(', ')}`);
   }
   return built;
 }
@@ -316,3 +423,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exit(1);
   }
 }
+

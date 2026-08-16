@@ -47,6 +47,19 @@ node scripts/build-site.mjs
 
 Emits `_dist/employers/<id>/` and each alias path with `index.html`, `hub.css`, `hub.js`, `hub-data.js`, `assets/hero.jpg`.
 
+### Archetype pages (when data files exist)
+
+| Archetype | Route | Access | Data file |
+|-----------|-------|--------|-----------|
+| Employers | `/employers/<id>` | public | `hub.json` |
+| Public Partners | `/public-partners/<id>` | public | `public-partners.json` |
+| Fleet Investors | `/fleet-investors/<id>` | public | `fleet-investors.json` |
+
+- No mode switcher and **no links between** the three pages (independent audiences).
+- Partners + invest reuse the **same map + trip planner** as employers (`hub.js` `MAP_ONLY` mode).
+- Fail-closed: no data file → no page.
+- Registry: `employer-hub/archetypes.json`. Spec: `handoff/archetypes/GROK-SPEC-archetype-templates-2026-08-15.md`.
+
 ## Add a city
 
 1. Create `hubs/<id>/hub.json` (copy Bay or NY shape).

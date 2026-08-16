@@ -14,6 +14,8 @@
   }
 
   const HUB_ID = DATA.id || 'unknown';
+  /** When true (public-partners / fleet-investors pages): map + trip planner only; skip employer LOI/calc chrome. */
+  const MAP_ONLY = !!window.EMPLOYER_HUB_MAP_ONLY;
   const stops = DATA.stops || DATA.nodes || [];
   const lines = (DATA.lines || []).filter((l) => l.id);
   const nodesByKey = Object.fromEntries(stops.map((n) => [n.key, n]));
@@ -118,97 +120,101 @@
     if (el && v != null) el.innerHTML = v;
   };
 
-  document.title = brand.title || document.title;
   // Full-bleed map section (content columns stay constrained elsewhere)
   const netSec = document.getElementById('network');
   if (netSec) netSec.classList.add('network-bleed');
 
-  setText('hero-headline', copy.hero_headline);
-  setText('hero-sub', copy.hero_sub);
-  setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water network`);
-  setText('nav-tag', brand.nav_tag || market.tagline || 'Employer network');
-  setText('stripe-lesson', copy.stripe_lesson || copy.precedent || '');
-  setText('loi-cta', copy.loi_cta);
-  setText('price-anchor', copy.price_anchor || '');
-  setText('footer-note', copy.footer_note || 'Letters of intent are non-binding.');
-  setText('calc-caveat', calcMeta.caveat || 'Indicative planning tool, not a quote.');
-  setText('launch-trigger', copy.launch_trigger || '');
-  setText('proof-title', copy.proof_title || 'We already proved the ride.');
-  setText('proof-lead', copy.proof_lead || '');
-  setText('why-title', copy.why_title || 'Why water');
-  setText('why-lead', copy.why_lead || copy.problem_lead || '');
-  setText('office-title', copy.office_title || 'One campus. Full network access.');
-  setText('office-lead', copy.office_lead || '');
-  setText('office-insight', copy.office_insight || '');
-  setText('network-footnote', copy.network_footnote || '');
-  setText('products-title', (DATA.products && DATA.products.section_title) || copy.products_title || 'How employers join');
-  setText('products-lead', (DATA.products && DATA.products.section_lead) || copy.products_lead || '');
-  setText('network-title', copy.network_title || 'Your ride on the network');
-  setText('network-lead', copy.network_lead || '');
-  setText('calc-title', copy.calc_title || 'Rough cost for your team');
-  setHtml('calc-lead', copy.calc_lead_html || copy.calc_lead || '');
-  setText('loi-title', copy.loi_title || 'Reserve interest for your campus');
-  setText('hero-note', copy.hero_note || 'Non-binding letter of intent · no commitment');
-  setText('map-detail', copy.map_detail_empty || 'Pick two terminals above — or select a line or stop.');
-  setText('hero-cta-network', copy.hero_cta_network || 'Find a route to my office');
-  setText('hero-cta-loi', copy.hero_cta_loi || copy.nav_cta || 'Reserve interest');
-  setText('nav-cta', copy.nav_cta || 'Reserve interest');
-  const stickyBtn = document.getElementById('sticky-cta-btn');
-  if (stickyBtn) stickyBtn.textContent = copy.nav_cta || 'Reserve interest';
-  const heroLoi = document.getElementById('hero-cta-loi');
-  if (heroLoi) heroLoi.textContent = copy.hero_cta_loi || copy.nav_cta || 'Reserve interest';
+  if (!MAP_ONLY) {
+    document.title = brand.title || document.title;
+    setText('hero-headline', copy.hero_headline);
+    setText('hero-sub', copy.hero_sub);
+    setText('hero-eyebrow', market.eyebrow || `${market.label || ''} · Employer water network`);
+    setText('nav-tag', brand.nav_tag || market.tagline || 'Employer network');
+    setText('stripe-lesson', copy.stripe_lesson || copy.precedent || '');
+    setText('loi-cta', copy.loi_cta);
+    setText('price-anchor', copy.price_anchor || '');
+    setText('footer-note', copy.footer_note || 'Letters of intent are non-binding.');
+    setText('calc-caveat', calcMeta.caveat || 'Indicative planning tool, not a quote.');
+    setText('launch-trigger', copy.launch_trigger || '');
+    setText('proof-title', copy.proof_title || 'We already proved the ride.');
+    setText('proof-lead', copy.proof_lead || '');
+    setText('why-title', copy.why_title || 'Why water');
+    setText('why-lead', copy.why_lead || copy.problem_lead || '');
+    setText('office-title', copy.office_title || 'One campus. Full network access.');
+    setText('office-lead', copy.office_lead || '');
+    setText('office-insight', copy.office_insight || '');
+    setText('network-footnote', copy.network_footnote || '');
+    setText(
+      'products-title',
+      (DATA.products && DATA.products.section_title) || copy.products_title || 'How employers join'
+    );
+    setText(
+      'products-lead',
+      (DATA.products && DATA.products.section_lead) || copy.products_lead || ''
+    );
+    setText('network-title', copy.network_title || 'Your ride on the network');
+    setText('network-lead', copy.network_lead || '');
+    setText('calc-title', copy.calc_title || 'Rough cost for your team');
+    setHtml('calc-lead', copy.calc_lead_html || copy.calc_lead || '');
+    setText('loi-title', copy.loi_title || 'Reserve interest for your campus');
+    setText('hero-note', copy.hero_note || 'Non-binding letter of intent · no commitment');
+    setText('map-detail', copy.map_detail_empty || 'Pick two terminals above — or select a line or stop.');
+    setText('hero-cta-network', copy.hero_cta_network || 'Find a route to my office');
+    setText('hero-cta-loi', copy.hero_cta_loi || copy.nav_cta || 'Reserve interest');
+    setText('nav-cta', copy.nav_cta || 'Reserve interest');
+    const stickyBtn = document.getElementById('sticky-cta-btn');
+    if (stickyBtn) stickyBtn.textContent = copy.nav_cta || 'Reserve interest';
+    const heroLoi = document.getElementById('hero-cta-loi');
+    if (heroLoi) heroLoi.textContent = copy.hero_cta_loi || copy.nav_cta || 'Reserve interest';
 
-  // Hero stats: terminals · lines · phase label
-  const heroStats = document.getElementById('hero-stats');
-  if (heroStats) {
-    const nStops = stops.filter((s) => !s.exec_only && !s.seasonal).length;
-    const nLines = lines.filter((l) => !l.exec_only && !(l.seasonal || l.type === 'seasonal')).length;
-    const stats = copy.hero_stats || [
-      { value: String(nStops), label: 'terminals' },
-      { value: String(nLines), label: 'lines' },
-      { value: '1 seat', label: 'plugs into the network' },
-    ];
-    heroStats.hidden = false;
-    heroStats.innerHTML = stats
-      .map((s) => `<div class="hero-stat"><div class="v">${s.value}</div><div class="l">${s.label}</div></div>`)
-      .join('');
-  }
+    const heroStats = document.getElementById('hero-stats');
+    if (heroStats) {
+      const nStops = stops.filter((s) => !s.exec_only && !s.seasonal).length;
+      const nLines = lines.filter((l) => !l.exec_only && !(l.seasonal || l.type === 'seasonal')).length;
+      const stats = copy.hero_stats || [
+        { value: String(nStops), label: 'terminals' },
+        { value: String(nLines), label: 'lines' },
+        { value: '1 seat', label: 'plugs into the network' },
+      ];
+      heroStats.hidden = false;
+      heroStats.innerHTML = stats
+        .map((s) => `<div class="hero-stat"><div class="v">${s.value}</div><div class="l">${s.label}</div></div>`)
+        .join('');
+    }
 
-  // Compact proof meta (worked / fixed / ask as one line strip if present)
-  const proofMeta = document.getElementById('proof-meta');
-  if (proofMeta) {
-    const bits = [
-      copy.proof_worked_body && `<strong>${copy.proof_worked_title || 'Worked'}:</strong> ${copy.proof_worked_body}`,
-      copy.proof_fixed_body && `<strong>${copy.proof_fixed_title || 'Fixed'}:</strong> ${copy.proof_fixed_body}`,
-      copy.proof_ask_body && `<strong>${copy.proof_ask_title || 'Ask'}:</strong> ${copy.proof_ask_body}`,
-    ].filter(Boolean);
-    proofMeta.innerHTML = bits.map((b) => `<div class="proof-meta-item">${b}</div>`).join('');
-  }
+    const proofMeta = document.getElementById('proof-meta');
+    if (proofMeta) {
+      const bits = [
+        copy.proof_worked_body &&
+          `<strong>${copy.proof_worked_title || 'Worked'}:</strong> ${copy.proof_worked_body}`,
+        copy.proof_fixed_body &&
+          `<strong>${copy.proof_fixed_title || 'Fixed'}:</strong> ${copy.proof_fixed_body}`,
+        copy.proof_ask_body && `<strong>${copy.proof_ask_title || 'Ask'}:</strong> ${copy.proof_ask_body}`,
+      ].filter(Boolean);
+      proofMeta.innerHTML = bits.map((b) => `<div class="proof-meta-item">${b}</div>`).join('');
+    }
 
-  // Contact links
-  document.querySelectorAll('[data-contact-email]').forEach((a) => {
-    a.href = 'mailto:' + contact;
-    if (a.dataset.contactEmail === 'text') a.textContent = contact;
-  });
-
-  // Problem chips
-  const chips = document.getElementById('problem-chips');
-  if (chips) {
-    chips.innerHTML = '';
-    (copy.problem_chips || []).forEach((c) => {
-      const el = document.createElement('div');
-      el.className = 'chip';
-      el.innerHTML = `<div class="v">${chipValue(c)}</div><div class="l">${c.label}</div>`;
-      chips.appendChild(el);
+    document.querySelectorAll('[data-contact-email]').forEach((a) => {
+      a.href = 'mailto:' + contact;
+      if (a.dataset.contactEmail === 'text') a.textContent = contact;
     });
-  }
 
-  // Products
-  const productsEl = document.getElementById('products-grid');
-  if (productsEl && DATA.products && DATA.products.items) {
-    productsEl.innerHTML = DATA.products.items
-      .map(
-        (p) => `
+    const chips = document.getElementById('problem-chips');
+    if (chips) {
+      chips.innerHTML = '';
+      (copy.problem_chips || []).forEach((c) => {
+        const el = document.createElement('div');
+        el.className = 'chip';
+        el.innerHTML = `<div class="v">${chipValue(c)}</div><div class="l">${c.label}</div>`;
+        chips.appendChild(el);
+      });
+    }
+
+    const productsEl = document.getElementById('products-grid');
+    if (productsEl && DATA.products && DATA.products.items) {
+      productsEl.innerHTML = DATA.products.items
+        .map(
+          (p) => `
       <article class="card product">
         <span class="tag ${p.tag_class || 'tag-line'}">${p.tag || ''}</span>
         <h3>${p.title}</h3>
@@ -216,32 +222,39 @@
         <div class="meta-row">${(p.meta || []).map((m) => `<span class="meta">${m}</span>`).join('')}</div>
         <a class="btn ${p.cta_class || 'btn-ghost'}" href="${p.cta_href || '#letter'}">${p.cta_label || 'Learn more'}</a>
       </article>`
-      )
-      .join('');
-  }
+        )
+        .join('');
+    }
 
-  // LOI flavors
-  const loi = DATA.loi || {};
-  const flavors = loi.flavors || {};
-  const flavorOrder = loi.flavor_order || Object.keys(flavors);
-  const flavorOpts = document.getElementById('flavor-options');
-  if (flavorOpts && flavorOrder.length) {
-    flavorOpts.innerHTML = flavorOrder
-      .map((key, i) => {
-        const f = flavors[key];
-        if (!f) return '';
-        const active = i === 0 ? ' active' : '';
-        return `<button type="button" class="option${active}" data-flavor="${f.id}" data-flavor-key="${key}">
+    const loi = DATA.loi || {};
+    const flavors = loi.flavors || {};
+    const flavorOrder = loi.flavor_order || Object.keys(flavors);
+    const flavorOpts = document.getElementById('flavor-options');
+    if (flavorOpts && flavorOrder.length) {
+      flavorOpts.innerHTML = flavorOrder
+        .map((key, i) => {
+          const f = flavors[key];
+          if (!f) return '';
+          const active = i === 0 ? ' active' : '';
+          return `<button type="button" class="option${active}" data-flavor="${f.id}" data-flavor-key="${key}">
           <h4>${f.title}</h4>
           <p>${f.body || ''}</p>
         </button>`;
-      })
-      .join('');
-    flavor = flavors[flavorOrder[0]]?.id || loi.default_flavor || 'A';
-    const hid = document.getElementById('f-flavor');
-    if (hid) hid.value = flavor;
+        })
+        .join('');
+      flavor = flavors[flavorOrder[0]]?.id || loi.default_flavor || 'A';
+      const hid = document.getElementById('f-flavor');
+      if (hid) hid.value = flavor;
+    } else {
+      flavor = loi.default_flavor || 'A';
+    }
   } else {
-    flavor = loi.default_flavor || 'A';
+    // Map-only: still show network section titles if present
+    setText('network-title', copy.network_title || 'The network');
+    setText('network-lead', copy.network_lead || '');
+    setText('map-detail', copy.map_detail_empty || 'Pick two terminals above — or select a line or stop.');
+    setText('network-footnote', copy.network_footnote || DATA.schedules_note || '');
+    flavor = 'A';
   }
 
 
@@ -1068,7 +1081,7 @@
   Object.keys(inputsMeta).forEach((k) => {
     state[k] = inputsMeta[k].default;
   });
-  const fieldsEl = document.getElementById('calc-fields');
+  const fieldsEl = MAP_ONLY ? null : document.getElementById('calc-fields');
   const fieldOrder =
     calcMeta.field_order ||
     Object.keys(inputsMeta);
@@ -1141,6 +1154,7 @@
   }
 
   function recomputeBay() {
+    if (MAP_ONLY || !document.getElementById('out-net')) return null;
     const S = state.seats,
       D = state.days_per_month,
       P = state.price_seat_month;
@@ -1200,6 +1214,7 @@
   }
 
   function recomputeNyc() {
+    if (MAP_ONLY || !document.getElementById('out-net')) return null;
     // Keys from NY package (with fallbacks to short names)
     const S = state.S_committed_seats ?? state.seats ?? 60;
     const P = state.P_price_per_seat_month ?? state.price_seat_month ?? 750;
@@ -1627,23 +1642,29 @@
     const trigger = (DATA.locked_numbers && DATA.locked_numbers.launch_trigger_committed_seats) ||
       (DATA.locked_numbers && DATA.locked_numbers.corridor_launch_trigger_committed_seats) || [60, 80];
     const tLabel = Array.isArray(trigger) ? `${trigger[0]}–${trigger[1]}` : String(trigger);
+    const calcBtn = MAP_ONLY
+      ? ''
+      : `<div style="margin-top:14px"><button type="button" class="btn btn-primary btn-sm" id="use-line-preset">Use this line in the calculator</button></div>`;
     document.getElementById('map-detail').innerHTML = `<strong>${line.name}</strong>
-      <div style="margin-top:6px">A line launches when about ${tLabel} seats are committed. No public timetable yet — times below are one-way planning ranges.</div>${segs}
-      <div style="margin-top:14px"><button type="button" class="btn btn-primary btn-sm" id="use-line-preset">Use this line in the calculator</button></div>`;
-    document.getElementById('use-line-preset')?.addEventListener('click', () => {
-      if (line.calculator_preset) {
-        Object.assign(state, {
-          car_min: line.calculator_preset.car_min ?? state.car_min,
-          water_min: line.calculator_preset.water_min ?? state.water_min,
-          car_miles: line.calculator_preset.car_miles ?? state.car_miles,
-        });
-        renderFields();
-        recompute();
-      }
-      document.getElementById('f-line').value = line.id;
-      document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
-    });
-    document.getElementById('f-line').value = line.id;
+      <div style="margin-top:6px">A line launches when about ${tLabel} seats are committed. No public timetable yet — times below are one-way planning ranges.</div>${segs}${calcBtn}`;
+    if (!MAP_ONLY) {
+      document.getElementById('use-line-preset')?.addEventListener('click', () => {
+        if (line.calculator_preset) {
+          Object.assign(state, {
+            car_min: line.calculator_preset.car_min ?? state.car_min,
+            water_min: line.calculator_preset.water_min ?? state.water_min,
+            car_miles: line.calculator_preset.car_miles ?? state.car_miles,
+          });
+          renderFields();
+          recompute();
+        }
+        const fl = document.getElementById('f-line');
+        if (fl) fl.value = line.id;
+        document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' });
+      });
+      const fl2 = document.getElementById('f-line');
+      if (fl2) fl2.value = line.id;
+    }
     if (map && line.water_path?.length) {
       let minX = Infinity,
         minY = Infinity,
@@ -1678,21 +1699,26 @@
     const touchNames = touchLines.map((l) => l.name).join(' · ');
     const isHub = (n.role || '').includes('interchange');
     const hubChip = isHub ? `<div class="transfer-chip">${n.role === 'interchange_primary' ? 'Primary transfer hub' : 'Transfer hub'} · ${touch || '—'}</div>` : '';
+    const officeBtn = MAP_ONLY
+      ? ''
+      : `<button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>`;
     document.getElementById('map-detail').innerHTML = `<strong>${n.label}</strong>${n.tag ? ` <span class="tag-pill">${n.tag}</span>` : ''}
       <div style="margin-top:6px">${servesText(n)}</div>
       ${hubChip}
       <div style="margin-top:8px;color:var(--text-2);font-size:12px">Lines: ${touchNames || '—'}</div>
       <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-        <button type="button" class="btn btn-primary btn-sm" id="use-stop">Use as my office terminal</button>
+        ${officeBtn}
         <button type="button" class="btn btn-ghost btn-sm" id="trip-from-here">Route from here</button>
         <button type="button" class="btn btn-ghost btn-sm" id="trip-to-here">Route to here</button>
       </div>`;
     document.getElementById('use-stop')?.addEventListener('click', () => {
-      document.getElementById('f-stop').value = key;
+      const fs = document.getElementById('f-stop');
+      if (fs) fs.value = key;
       const line = lines.find((l) => (l.stops || []).includes(key));
       if (line) {
-        document.getElementById('f-line').value = line.id;
-        if (line.calculator_preset) {
+        const fl = document.getElementById('f-line');
+        if (fl) fl.value = line.id;
+        if (line.calculator_preset && !MAP_ONLY) {
           Object.assign(state, {
             car_min: line.calculator_preset.car_min ?? state.car_min,
             water_min: line.calculator_preset.water_min ?? state.water_min,
@@ -1702,7 +1728,7 @@
           recompute();
         }
       }
-      document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('letter')?.scrollIntoView({ behavior: 'smooth' });
     });
     document.getElementById('trip-from-here')?.addEventListener('click', () => {
       const fromSel = document.getElementById('trip-from');
@@ -1789,14 +1815,18 @@
     });
   }
 
-  document.querySelectorAll('#flavor-options .option').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      flavor = btn.dataset.flavor;
-      document.getElementById('f-flavor').value = flavor;
-      document.querySelectorAll('#flavor-options .option').forEach((b) => b.classList.toggle('active', b === btn));
+  if (!MAP_ONLY) {
+    document.querySelectorAll('#flavor-options .option').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        flavor = btn.dataset.flavor;
+        const ff = document.getElementById('f-flavor');
+        if (ff) ff.value = flavor;
+        document.querySelectorAll('#flavor-options .option').forEach((b) => b.classList.toggle('active', b === btn));
+      });
     });
-  });
+  }
 
+  const flavors = (DATA.loi && DATA.loi.flavors) || {};
   function flavorLabel(id) {
     for (const key of Object.keys(flavors)) {
       if (flavors[key].id === id) return flavors[key].title;

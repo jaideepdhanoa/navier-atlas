@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>__PAGE_TITLE__</title>
+<meta name="description" content="__PAGE_DESCRIPTION__" />
+<meta name="theme-color" content="#0a0a0a" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20180%20180%27%3E%3Crect%20width%3D%27180%27%20height%3D%27180%27%20rx%3D%2740%27%20fill%3D%27%230a0a0a%27%2F%3E%3Cg%20fill%3D%27%23ffffff%27%3E%3Cpath%20d%3D%27M130.16%20117.84%20L120.18%20135.12%20A0.39%200.39%200%200%201%20119.50%20135.11%20L68.16%2044.06%20A0.39%200.39%200%200%201%2068.50%2043.48%20L88.22%2043.48%20A0.39%200.39%200%200%201%2088.56%2043.68%20L130.16%20117.46%20A0.39%200.39%200%200%201%20130.16%20117.84%20Z%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="__PAGE_TITLE__" />
+<meta property="og:description" content="__PAGE_DESCRIPTION__" />
+<meta name="twitter:card" content="summary" />
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="__PAGE_BASE__/hub.css" />
+<link rel="stylesheet" href="__PAGE_BASE__/archetype.css" />
+<style>
+  :root { --hub-hero-image: url('__PAGE_BASE__/assets/hero.jpg'); }
+</style>
+</head>
+<body class="archetype-page archetype-__ARCHETYPE_ID__">
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="brand-mark"><svg class="brand-monogram" viewBox="9.5 9.5 160 160" fill="currentColor" role="img" aria-label="Navier"><path d="M130.16 117.84 L120.18 135.12 A0.39 0.39 0 0 1 119.50 135.11 L68.16 44.06 A0.39 0.39 0 0 1 68.50 43.48 L88.22 43.48 A0.39 0.39 0 0 1 88.56 43.68 L130.16 117.46 A0.39 0.39 0 0 1 130.16 117.84 Z"/><path d="M132.68 111.67 L122.61 93.82 A0.55 0.55 0 0 1 122.62 93.28 L150.95 44.21 A0.55 0.55 0 0 1 151.90 44.21 L161.97 62.07 A0.55 0.55 0 0 1 161.96 62.61 L133.63 111.68 A0.55 0.55 0 0 1 132.68 111.67 Z"/><path d="M110.65 135.52 L90.76 135.52 A0.33 0.33 0 0 1 90.48 135.35 L48.97 61.75 A0.33 0.33 0 0 1 48.97 61.43 L59.03 44.00 A0.33 0.33 0 0 1 59.60 44.00 L110.93 135.03 A0.33 0.33 0 0 1 110.65 135.52 Z"/><path d="M26.53 134.96 L17.16 118.32 A0.67 0.67 0 0 1 17.16 117.66 L45.57 68.46 A0.67 0.67 0 0 1 46.74 68.46 L56.11 85.09 A0.67 0.67 0 0 1 56.11 85.75 L27.70 134.96 A0.67 0.67 0 0 1 26.53 134.96 Z"/></svg></div>
+      <div class="brand-text">
+        <span class="name">Navier</span>
+        <span class="tag" id="nav-tag">__ARCHETYPE_LABEL__</span>
+      </div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="#network">Network</a>
+      <a href="#story">Overview</a>
+      <a class="btn btn-primary btn-sm" href="#cta" id="nav-cta">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow" id="hero-eyebrow">__ARCHETYPE_LABEL__</p>
+    <h1 id="hero-headline"></h1>
+    <p class="lead" id="hero-sub"></p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#network">Explore the network</a>
+      <a class="btn btn-ghost" href="#cta" id="hero-cta-primary">Continue</a>
+    </div>
+  </div>
+</section>
+
+<div id="archetype-modules"></div>
+
+<!-- Shared corridor map + trip planner (same as employer hub) -->
+<section id="network">
+  <div class="wrap">
+    <h2 id="network-title">The network</h2>
+    <p class="section-lead" id="network-lead">Same corridors employers will use — find a ride and compare to driving.</p>
+    <div class="network-controls" id="network-controls">
+      <div class="phase-toggle" id="cluster-toggle" role="group" aria-label="Network cluster" hidden></div>
+      <div class="phase-toggle" id="phase-toggle" role="group" aria-label="Network phase"></div>
+      <label class="seasonal-toggle" id="seasonal-toggle-wrap" hidden>
+        <input type="checkbox" id="seasonal-toggle" />
+        <span>Seasonal</span>
+      </label>
+    </div>
+    <p class="cluster-note" id="cluster-note" hidden></p>
+    <div class="trip-finder" id="trip-finder" hidden>
+      <div class="trip-finder-label">Find my ride</div>
+      <div class="trip-finder-row">
+        <label class="trip-field">
+          <span>From</span>
+          <select id="trip-from" aria-label="From terminal"></select>
+        </label>
+        <button type="button" class="trip-swap" id="trip-swap" title="Swap from and to" aria-label="Swap from and to">⇄</button>
+        <label class="trip-field">
+          <span>To</span>
+          <select id="trip-to" aria-label="To terminal"></select>
+        </label>
+        <button type="button" class="btn btn-ghost btn-sm trip-clear" id="trip-clear" hidden>Clear</button>
+      </div>
+      <div class="trip-result" id="trip-result" hidden></div>
+    </div>
+    <div class="map-block">
+      <div class="map-shell">
+        <aside class="map-panel">
+          <h3>Lines</h3>
+          <div id="line-list"></div>
+          <h3>Stops</h3>
+          <div id="stop-list"></div>
+        </aside>
+        <div class="map-frame">
+          <div id="map" role="img" aria-label="Water network map"></div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+      </div>
+      <div class="detail" id="map-detail">Pick two terminals above — or select a line or stop.</div>
+    </div>
+    <p class="network-footnote" id="network-footnote"></p>
+  </div>
+</section>
+
+<section id="cta" class="cta-section">
+  <div class="wrap">
+    <h2 id="cta-headline"></h2>
+    <p class="section-lead" id="cta-body"></p>
+    <form id="archetype-form" class="archetype-form" novalidate>
+      <div class="form-grid" id="form-fields"></div>
+      <p class="form-status" id="form-status" hidden></p>
+      <button type="submit" class="btn btn-primary" id="form-submit">Send</button>
+      <div class="success" id="form-success"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap row">
+    <strong>NAVIER</strong>
+    <span id="footer-note">Planning tool · not a commitment</span>
+    <a data-contact-email="text" href="mailto:jaideep@navierboat.com">jaideep@navierboat.com</a>
+  </div>
+</footer>
+
+<script>window.EMPLOYER_HUB_MAP_ONLY = true;</script>
+<script src="__PAGE_BASE__/hub-data.js"></script>
+<script src="__PAGE_BASE__/archetype-data.js"></script>
+<script src="__PAGE_BASE__/hub.js"></script>
+<script src="__PAGE_BASE__/archetype.js"></script>
+</body>
+</html>
