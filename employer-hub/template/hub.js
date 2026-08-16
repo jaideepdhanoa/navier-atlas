@@ -1331,17 +1331,20 @@
   renderFields();
   const check = recompute();
   const assert = calcMeta.worked_assert || {};
-  if (assert.net_incremental != null && Math.round(check.net_incremental) !== assert.net_incremental) {
-    console.warn('[employer-hub] calculator net_incremental mismatch', check, assert);
-  }
-  if (assert.per_rider != null && Math.round(check.per_rider) !== assert.per_rider) {
-    console.warn('[employer-hub] calculator per_rider mismatch', check, assert);
-  }
-  if (
-    assert.net_employer_cost_per_rider != null &&
-    Math.round(check.net_employer_cost_per_rider) !== assert.net_employer_cost_per_rider
-  ) {
-    console.warn('[employer-hub] net_employer_cost_per_rider mismatch', check, assert);
+  // MAP_ONLY pages skip calculator DOM — recompute() returns null; do not throw before initMap()
+  if (check) {
+    if (assert.net_incremental != null && Math.round(check.net_incremental) !== assert.net_incremental) {
+      console.warn('[employer-hub] calculator net_incremental mismatch', check, assert);
+    }
+    if (assert.per_rider != null && Math.round(check.per_rider) !== assert.per_rider) {
+      console.warn('[employer-hub] calculator per_rider mismatch', check, assert);
+    }
+    if (
+      assert.net_employer_cost_per_rider != null &&
+      Math.round(check.net_employer_cost_per_rider) !== assert.net_employer_cost_per_rider
+    ) {
+      console.warn('[employer-hub] net_employer_cost_per_rider mismatch', check, assert);
+    }
   }
 
   document.getElementById('copy-summary')?.addEventListener('click', async () => {
