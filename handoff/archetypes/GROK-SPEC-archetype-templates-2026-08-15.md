@@ -153,3 +153,18 @@ Requirements:
 | Merge | Jaideep merges (neither Tasklet nor Grok) | |
 
 Scale-out (Bay → NY → DC → Miami → Seattle → San Diego) happens only after Boston pilot passes §7 in full; those handoffs are data-only.
+
+---
+
+# ADDENDUM v2 (2026-08-15, post-pilot review) — SUPERSEDES §5 render contract
+
+Pilot review verdict: pages must match the employer page bar. Full analysis: `handoff/archetypes/TEMPLATE-POLISH-REVIEW-2026-08-15.md` (section B = template change list B1–B10, binding).
+
+**Contract v2 (replaces "labels render verbatim"):**
+- Render ONLY: `title`, figures/values, `note` (≤140 chars), `status` (enum → small chip: gold MARKET-PRICED / gray MODELED / outlined UPSIDE), `fn` (superscript marker), `stat_chips`, `small_print`, `expander` (collapsible), `pricing` (revenue rows), `footnotes`.
+- NEVER render `_`-prefixed fields or `source_url` inline — footnote section may show a domain chip.
+- Footnotes = `{text, source_url?}` objects; render as one numbered "Notes & assumptions" section above the contact form. Both Boston JSONs now ship this shape.
+- P&L: deck-style unit-econ table. Revenue rows render their `pricing` strings (per-layer monthly $ intentionally omitted — fail closed); scenario table carries gross/net/payback. `upside_rows` visually below net, never summed into base.
+- Speed-rule section: headline + chips + ask + `expander` for detail.
+- QA gate (add to §7): walk all non-`_` string values, grep kill-list {canon, tracker, MECE, fail closed, L1–L3, U1–U2, BLS, OEWS, ECEC, ".md", placeholder, not validated, verify before quoting, raw URLs} — zero hits. Then side-by-side vs employer page: hero chips, section rhythm (headline + ≤2 lines + visual object), no section with >3 consecutive paragraphs.
+- No city replication until Boston passes this bar.

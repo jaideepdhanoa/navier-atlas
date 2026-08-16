@@ -1,37 +1,89 @@
 {
-  "_contract": "Authored by Tasklet 2026-08-15. Sources: boston/FLEET-ECONOMICS-BOSTON.md + boston/TRACKER-SNAPSHOT-2026-08-15.md. Per module: 'copy' renders VERBATIM; 'data' is structured values Grok formats. Underscore-prefixed fields are non-renderable guard notes \u2014 never reach the DOM. null/missing = render nothing (fail closed). This is fleet financing only \u2014 the equity/fundraise/defense/Gulf content firewalls in FLEET-INVESTORS-BRIEF.md \u00a75 apply in full. Every economic figure renders WITH its assumption label; ranges only, no point estimates. D6 LOCKED: anchor-plus-fill leads; seat-band fill is upside, never headline.",
+  "_contract": "Authored by Tasklet 2026-08-15; rewritten to contract v2 same day per TEMPLATE-POLISH-REVIEW-2026-08-15.md. Sources: boston/FLEET-ECONOMICS-BOSTON.md + boston/TRACKER-SNAPSHOT-2026-08-15.md. CONTRACT v2: only `title` (≤6 words), `value`/figures, `note` (≤140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/body/chips/cards). Underscore-prefixed fields (_contract, _provenance, _internal, _guard) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form. This is fleet financing only — the equity/fundraise/defense/Gulf content firewalls in FLEET-INVESTORS-BRIEF.md §5 apply in full. D6 LOCKED: anchor-plus-fill leads; seat-band fill is upside, never headline. Upside rows are never summed into base totals.",
+  "contract_version": "v2",
   "city": "boston",
   "archetype": "fleet-investors",
-  "route": "/fleet-investors/boston",
+  "route": "/boston-invest",
   "access": {
-    "mode": "public",
-    "noindex": false,
-    "in_sitemap": true,
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
     "in_nav": false,
     "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "Pricing and experience rates are benchmarked to Boston operators' published 2025–26 fares. Navier has not yet operated these services in Boston."
+    },
+    "fn2": {
+      "text": "Demand pool figures are indicative of demand potential along these corridors — not commitments or commercial relationships. Seat estimates assume 3.0% capture of on-site headcount, a planning estimate."
+    },
+    "fn3": {
+      "text": "Economics are indicative ranges with conservative defaults. Upside lines — sponsorship and overnight cargo — are never included in base totals."
+    },
+    "fn4": {
+      "text": "All trip times respect posted harbor speed limits. Speed-rule relief appears only as a separately labeled upside, never in base cases. Precedent: an electric hydrofoil exemption on Stockholm's Route 89."
+    },
+    "fn5": {
+      "text": "Fleet counts are planning figures, not a timetable. A working fleet plan typically adds ~10–15% spare capacity, not yet included here."
+    },
+    "fn6": {
+      "text": "Crew costs are benchmarked to published Boston-area wage data with a buffer for wage growth to 2026; shift structure to be confirmed in an operations walkthrough."
+    }
   },
   "hero": {
     "copy": {
       "headline": "Own the fleet behind Boston's water commuter network.",
-      "subline": "Anchor revenue is contracted before capital deploys. Seat-band fill is upside on top \u2014 never the base case."
+      "subline": "Employer-committed seat bundles anchor each corridor before capital deploys — then the same vessels earn across the whole day.",
+      "stat_chips": [
+        "$2.5M / vessel",
+        "~4.3 yr mid-case payback",
+        "60–80 seat launch trigger",
+        "5 corridors"
+      ],
+      "small_print": "Indicative economics — ranges with conservative defaults. Navier does not yet operate in Boston.",
+      "fn": "fn3"
     },
     "data": {
       "image": null
-    }
+    },
+    "_provenance": "v1 subline led with disclaimers ('Anchor revenue is contracted before capital deploys. Seat-band fill is upside on top — never the base case.'). Qualification now carried once by small_print + fn3. No scenario depends on an above-market anchor subsidy (stated in scenarios note)."
   },
   "model": {
     "copy": {
-      "roles": [
-        "Fleet Investor \u2014 owns/finances the Boston fleet (workboat-grade N45s; N30 where corridor-appropriate).",
-        "Operator \u2014 runs the service (crewing, operations); existing Boston operators are natural candidates. No operator is committed.",
-        "Navier \u2014 supplies vessels, software, and the network platform.",
-        "Employers \u2014 contract committed seat bundles at market per-seat prices \u2014 the schedule spine and largest single revenue layer. Employer block commitments accelerate the launch trigger; no scenario depends on an above-market anchor subsidy.",
-        "Public Partners \u2014 grant landings at existing piers and marina berths; no terminal construction."
+      "title": "The model",
+      "cards": [
+        {
+          "title": "Fleet investor",
+          "body": "Owns and finances the Boston fleet — workboat-grade N45s, with N30s where corridors suit."
+        },
+        {
+          "title": "Operator",
+          "body": "Runs the service — crewing and daily operations. Existing Boston operators are natural candidates; none committed yet."
+        },
+        {
+          "title": "Navier",
+          "body": "Supplies the vessels, the software, and the network platform."
+        },
+        {
+          "title": "Employers",
+          "body": "Contract committed seat bundles at market per-seat prices — the schedule spine and largest revenue layer."
+        },
+        {
+          "title": "Public partners",
+          "body": "Grant landings at existing piers and marina berths. No terminal construction."
+        }
       ],
-      "trigger": "Corridors launch only at 60\u201380 committed seats. Capital deploys behind committed demand, not ahead of it."
-    }
+      "trigger": {
+        "title": "Demand-gated launch",
+        "value": "60–80 committed seats",
+        "note": "Corridors launch only at 60–80 committed seats. Capital deploys behind committed demand, not ahead of it."
+      }
+    },
+    "_provenance": "v1 employer card also stated: 'Employer block commitments accelerate the launch trigger; no scenario depends on an above-market anchor subsidy.' That qualifier now renders once in the scenarios note, not in the role card."
   },
   "asset": {
+    "title": "The asset",
     "data": {
       "vessel": "N45 Explorer",
       "capex_usd": 2500000,
@@ -39,17 +91,14 @@
       "cruise_speed_kn": 20,
       "range_nm_approx": 70,
       "powertrain": "hybrid day 1",
-      "grade": "workboat-grade, electric foiling",
-      "basis": "canon"
+      "grade": "workboat-grade, electric foiling"
     },
-    "copy": {
-      "redeployability": "A vessel is a network asset, not stranded in one market: the 7-city network is the residual-value story."
-    }
+    "note": "A vessel is a network asset, not stranded in one market — the 7-city network is the residual-value story.",
+    "_provenance": "Spec basis: canon."
   },
   "network": {
+    "title": "The network",
     "data": {
-      "source": "hubs/boston/hub.json",
-      "inherit": "unchanged (Decision D3 \u2014 same corridor map as the employer site)",
       "stops": 18,
       "lines": [
         "BOS-1 North Shore",
@@ -59,26 +108,24 @@
         "BOS-5 Riverside"
       ],
       "launch_phase_lines": [
-        "BOS-1",
-        "BOS-2",
-        "BOS-3"
+        "BOS-1 North Shore",
+        "BOS-2 South Shore",
+        "BOS-3 Quincy"
       ]
     },
-    "copy": {
-      "trigger_explainer": "Each corridor activates only when 60\u201380 seats are committed. Launch timing honesty: end-2027 earliest."
-    }
+    "note": "Each corridor activates only when 60–80 seats are committed. Earliest launch: end of 2027.",
+    "_provenance": "Geometry source: hubs/boston/hub.json; inherited unchanged (Decision D3 — same corridor map as the employer site). v1 phrasing: 'Launch timing honesty: end-2027 earliest.'"
   },
   "demand_pool": {
-    "standing_label": "Indicative of demand potential along these corridors \u2014 not commitments or commercial relationships.",
+    "title": "Demand along the corridors",
+    "fn": "fn2",
     "data": {
-      "capture_assumption": "3.0% of on-site headcount (tracker's own stated input)",
-      "headcount_label": "planning estimate \u2014 verify before quoting",
       "rows": [
         {
           "node": "Seaport (Fan Pier)",
           "lines": [
-            "BOS-1",
-            "BOS-2"
+            "North Shore Line",
+            "South Shore Line"
           ],
           "employer": "Vertex Pharmaceuticals HQ",
           "headcount": 4000,
@@ -87,8 +134,8 @@
         {
           "node": "Seaport (Fan Pier)",
           "lines": [
-            "BOS-1",
-            "BOS-2"
+            "North Shore Line",
+            "South Shore Line"
           ],
           "employer": "Amazon Boston Tech Hub",
           "headcount": 2000,
@@ -97,8 +144,8 @@
         {
           "node": "Seaport (Fan Pier)",
           "lines": [
-            "BOS-1",
-            "BOS-2"
+            "North Shore Line",
+            "South Shore Line"
           ],
           "employer": "MassMutual (Boston campus)",
           "headcount": 1000,
@@ -107,8 +154,8 @@
         {
           "node": "Seaport (Fan Pier)",
           "lines": [
-            "BOS-1",
-            "BOS-2"
+            "North Shore Line",
+            "South Shore Line"
           ],
           "employer": "Foundation Medicine HQ",
           "headcount": 1000,
@@ -117,7 +164,7 @@
         {
           "node": "Commonwealth Pier / WTC",
           "lines": [
-            "BOS-2"
+            "South Shore Line"
           ],
           "employer": "Fidelity Investments",
           "headcount": 5800,
@@ -126,17 +173,17 @@
         {
           "node": "Commonwealth Pier / WTC",
           "lines": [
-            "BOS-2"
+            "South Shore Line"
           ],
           "employer": "P&G Gillette (global HQ)",
           "headcount": 800,
           "seats": 24,
-          "note": "12\u201318 min walk \u2014 beyond strict walk-tier"
+          "note": "12–18 min walk to the pier"
         },
         {
           "node": "North Station (Lovejoy)",
           "lines": [
-            "BOS-5"
+            "Riverside Line"
           ],
           "employer": "Converse HQ",
           "headcount": 600,
@@ -145,160 +192,253 @@
         {
           "node": "North Station (Lovejoy)",
           "lines": [
-            "BOS-5"
+            "Riverside Line"
           ],
           "employer": "Mass General Hospital",
           "headcount": 25000,
           "seats": 750,
-          "note": "walk-tier boundary case, ~12\u201315 min walk"
+          "note": "~12–15 min walk to the pier"
         },
         {
           "node": "Everett (Encore)",
           "lines": [
-            "BOS-5"
+            "Riverside Line"
           ],
           "employer": "Encore Boston Harbor",
           "headcount": 4800,
           "seats": 144
         }
       ],
-      "city_total_seats": 1350,
-      "honesty_notes": [
-        "5 of 10 tracked nodes have zero sourced headcount \u2014 pools understate.",
-        "BOS-5 carries the largest sourced pool (North Station + Encore) but is a phase-3 line with zero launch-phase vessels \u2014 that demand is not actionable at launch under current phasing."
-      ]
+      "city_total_seats": 1350
     },
-    "copy": {
-      "rules": "Named employers appear only as indicative demand potential under the standing label \u2014 never as customers, partners, or LOI signatories. Blank tracker cells stay blank."
+    "_internal": {
+      "standing_label_v1": "Indicative of demand potential along these corridors — not commitments or commercial relationships. (Now carried by fn2.)",
+      "capture_assumption": "3.0% of on-site headcount (tracker's own stated input)",
+      "headcount_label": "planning estimate — verify before quoting (now softened into fn2 as 'a planning estimate')",
+      "line_id_map": {
+        "BOS-1": "North Shore Line",
+        "BOS-2": "South Shore Line",
+        "BOS-3": "Quincy Line",
+        "BOS-4": "Inner Harbor Line",
+        "BOS-5": "Riverside Line"
+      },
+      "row_notes_v1": {
+        "P&G Gillette (global HQ)": "12–18 min walk — beyond strict walk-tier",
+        "Mass General Hospital": "walk-tier boundary case, ~12–15 min walk"
+      },
+      "qa_notes": [
+        "5 of 10 tracked nodes have zero sourced headcount — pools understate.",
+        "BOS-5 carries the largest sourced pool (North Station + Encore) but is a phase-3 line with zero launch-phase vessels — that demand is not actionable at launch under current phasing."
+      ],
+      "rules": "Named employers appear only as indicative demand potential under the standing label — never as customers, partners, or LOI signatories. Blank tracker cells stay blank."
     }
   },
   "pnl": {
-    "structure": "utilization_stack (D6\u2032 LOCKED 2026-08-15, supersedes anchor-first): committed bundles \u2192 spot seats \u2192 experiences & charters \u2192 upside lines (sponsorship, overnight cargo) \u2192 opex \u2192 network share \u2192 scenario payback",
+    "copy": {
+      "headline": "One asset. One day. Four demand layers.",
+      "body": "A commuter-only vessel earns in ~15% of its available hours — this network monetizes the whole day. Commuter bundles are the schedule spine; experiences, charters, spot seats and overnight lines buy down payback."
+    },
+    "fn": "fn3",
     "data": {
-      "opex_monthly_per_vessel": {
-        "lines": [
-          {
-            "item": "Energy",
-            "range_usd": [
-              1500,
-              5200
-            ],
-            "label": "Canon 4.1 kWh/nm @ $0.30/kWh \u00d7 stacked daily activity (commute legs + midday/evening/weekend sailings). Electric-operation assumption."
-          },
-          {
-            "item": "Maintenance",
-            "range_usd": [
-              5400,
-              8300
-            ],
-            "label": "N45 NOT validated \u2014 N30 canon ($65K/yr) floor, $100K/yr stated ceiling assumption, \u00f712."
-          },
-          {
-            "item": "Crew",
-            "range_usd": [
-              11800,
-              18800
-            ],
-            "label": "Benchmark-validated 2026-08-15 \u2014 2-crew (captain + deckhand), $85/hr combined loaded, extended to stacked hours. Basis: BLS OEWS Boston metro means (May 2023) x 1.4294 ECEC burden = $77.16/hr; $85 = ~3%/yr wage drift to 2026 (assumption, labeled). Shift structure (split shifts for 16-hr stacked day) to ops walkthrough. Source: handoff/archetypes/CREW-COST-BENCHMARKS.md"
-          },
-          {
-            "item": "Insurance & landing/berth fees",
-            "range_usd": [
-              4600,
-              10750
-            ],
-            "label": "Placeholder, weak basis \u2014 hull/liability ~1.5\u20133%/yr of insured value + illustrative berth fee loosely anchored to one documented commercial rate; not a Navier-specific quote."
-          }
-        ],
-        "total_range_usd": [
-          28800,
-          36400
-        ]
+      "revenue_rows": [
+        {
+          "line": "Committed commuter bundles",
+          "pricing": "$950–1,275 / seat-month",
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "A discounted monthly pass — 3–4× an MBTA monthly, ~50–60% below a door-to-door ride-hail substitute.",
+          "status": "market_priced",
+          "fn": "fn1"
+        },
+        {
+          "line": "Spot seats",
+          "pricing": "$40–65 / leg",
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "Yield-managed seats on spare commute capacity and shoulder sailings; fill assumed thin at 10–30%.",
+          "status": "market_priced",
+          "fn": "fn1"
+        },
+        {
+          "line": "Experiences & private charters",
+          "pricing": "$59–79 / person · charters $550–600 / hr",
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "Midday, evening and weekend sailings, priced within Boston's operating market for harbor experiences.",
+          "status": "market_priced",
+          "fn": "fn1"
+        }
+      ],
+      "gross": {
+        "title": "Gross revenue / month",
+        "per_scenario": {
+          "conservative": 43100,
+          "mid": 91000,
+          "upside": 149200
+        }
+      },
+      "opex_rows": [
+        {
+          "line": "Energy",
+          "per_mo_low": 1500,
+          "per_mo_high": 5200,
+          "note": "Electric operation across commute, midday, evening and weekend sailings.",
+          "status": "modeled"
+        },
+        {
+          "line": "Maintenance",
+          "per_mo_low": 5400,
+          "per_mo_high": 8300,
+          "note": "Range spans smaller-vessel service history up to a $100K/yr ceiling for the N45.",
+          "status": "modeled"
+        },
+        {
+          "line": "Crew",
+          "per_mo_low": 11800,
+          "per_mo_high": 18800,
+          "note": "Two crew (captain + deckhand) at $85/hr combined, loaded, across a full service day.",
+          "status": "market_priced",
+          "fn": "fn6"
+        },
+        {
+          "line": "Insurance & landing/berth fees",
+          "per_mo_low": 4600,
+          "per_mo_high": 10750,
+          "note": "Early estimate pending Navier-specific quotes.",
+          "status": "modeled"
+        }
+      ],
+      "opex_total": {
+        "title": "Operating cost / month",
+        "per_mo_low": 28800,
+        "per_mo_high": 36400
       },
       "network_share": {
-        "value": "10% of gross revenue, off the top",
-        "label": "canon"
+        "line": "Navier network share",
+        "value": "10% of gross revenue, off the top"
       },
-      "payback_summary": {
-        "conservative": "~21 yr (cash-positive, not financeable)",
-        "mid": "~4.3 yr \u2014 headline",
-        "upside": "~2.1 yr (incl. sponsorship + cargo upside lines)",
-        "label": "Indicative ranges only, conservative default. Upside comes from utilization layers with cited market prices and from more corridors activating \u2014 never from inflating per-layer assumptions."
+      "net": {
+        "title": "Net to investor / month",
+        "per_scenario": {
+          "conservative": 10000,
+          "mid": 48800,
+          "upside": 97900
+        }
       },
-      "speed_relief_upside_row": {
-        "label": "With authority speed-rule relief (precedent: Stockholm Candela P-12 exemption)",
-        "values": null,
-        "note": "Not quantified for Boston this pass \u2014 renders as a labeled upside row without numbers. Never blended into base or mid cases; base economics respect posted limits."
+      "payback": {
+        "title": "Payback",
+        "per_scenario": {
+          "conservative": "~21 yr",
+          "mid": "~4.3 yr",
+          "upside": "~2.1 yr"
+        }
       },
-      "stack_layers": {
-        "frame": "One asset, one day, four demand layers. A commuter-only vessel monetizes ~15% of available hours; the stack monetizes the day. Commute is the strategic backbone and schedule spine; experiences, charters, spot and overnight lines buy down payback. Sources: REVENUE-LEVER-BENCHMARKS.md + CARGO-LAYER-BENCHMARKS.md (operator, year, URL, confidence per rate).",
-        "layers": [
-          {
-            "id": "L1",
-            "name": "Committed commuter bundles",
-            "pricing": "$950\u20131,275/seat-month \u2014 priced as a discounted pass vs premium spot (industry pass discounts 26\u201351%: MBTA ~26%, Seastreak 40-trip ~35%, NYC Ferry ~36%, Blade ~44\u201351%); 3\u20134\u00d7 MBTA monthly ($319); ~50\u201360% below door-to-door substitute (Uber Salem\u2192Boston ~$56/trip \u2248 $2,460/mo)",
-            "status": "Benchmark-anchored; canon-consistent; no Boston operations yet"
-          },
-          {
-            "id": "L2",
-            "name": "Spot seats (residual commute capacity + shoulder sailings)",
-            "pricing": "$40\u201365/leg, yield-managed \u2014 bounded by Seastreak $30 and Uber door-to-door ~$55\u201356; matches approved corridor fare (Boston\u2194Hingham $65)",
-            "status": "Benchmark-anchored; fill rates unproven, modeled thin (10\u201330%)"
-          },
-          {
-            "id": "L3",
-            "name": "Experiences & private charters (midday/evening/weekend)",
-            "pricing": "Experiences $59\u201379/pp (Boston market: BHCC sunset $49 \u2192 Odyssey dinner $77\u201398, whale watch $75); charters $550\u2013600/hr (Boston Charter Boat $550/hr, 25-pax, 2-hr min)",
-            "status": "Market-priced (Boston operators cited); not yet operated by Navier; conservative case \u2248 \u2153 of one incumbent daily sailing"
-          },
-          {
-            "id": "U1",
-            "name": "Sponsorship (upside only)",
-            "pricing": "$150K/yr fleet-level placeholder \u2014 precedents: Citi Bike ~$7\u20138M/yr system, Santander Cycles \u00a36.25M/yr, Cleveland HealthLine line-naming $250K/yr, Barclays station $200K/yr",
-            "status": "Precedent-priced; no marine-transit precedent; never per-vessel headline"
-          },
-          {
-            "id": "U2",
-            "name": "Overnight cargo runs (upside only)",
-            "pricing": "~$350/run contract, 16 nights/mo \u2014 anchored to published waterborne tariffs (Casco Bay Lines 2026: $0.108\u20130.162/kg generic freight \u21d2 $216\u2013324 per ~2,000 kg run) + medical-courier premiums (Dropoff 2026: $30\u2013100/job, refrigerated $3.50\u20135.25/mi)",
-            "status": "Published-tariff-anchored; not yet operated by Navier; harbor cargo earns courier-linehaul rates, NOT island air-substitute rates ($0.75\u20131.50/kg canon does not apply where roads exist). First cargo classes: medical/lab specimens, batch parcels, catering/event \u2014 clean, high-value, night-moving. Seafood REJECTED as first class (odor/leakage/sanitation in premium cabin; commodity-priced $2.50\u20133.75/box)"
-          }
-        ]
-      },
+      "upside_rows": [
+        {
+          "line": "Sponsorship",
+          "pricing": "$150K / yr, fleet-level",
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "Naming and station sponsorship, priced from transit-sponsorship precedents. Never summed into base totals.",
+          "status": "upside",
+          "fn": "fn3"
+        },
+        {
+          "line": "Overnight cargo runs",
+          "pricing": "~$350 / run · 16 nights / mo",
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "Medical samples, batch parcels and catering moved at night, priced to published waterborne and courier rates.",
+          "status": "upside",
+          "fn": "fn3"
+        },
+        {
+          "line": "Speed-rule relief",
+          "pricing": null,
+          "per_mo_low": null,
+          "per_mo_high": null,
+          "note": "Route-specific relief where wake and noise are independently measured. Not quantified for Boston.",
+          "status": "upside",
+          "fn": "fn4"
+        }
+      ],
       "scenarios": {
-        "label": "Per-vessel N45 ($2.5M capex), no anchor subsidy in any case. Ranges + assumptions, conservative default. Every unproven layer enters base case only at deliberately thin utilization.",
+        "title": "Three scenarios",
+        "note": "Per-vessel N45 ($2.5M), no anchor subsidy in any case. Conservative shown always; upside labeled.",
+        "fn": "fn3",
         "table": [
           {
-            "case": "conservative",
+            "case": "Conservative",
             "gross_monthly": 43100,
             "net_to_investor_monthly": 10000,
             "annual": 120000,
-            "payback": "~21 yr \u2014 cash-positive but not financeable; deliberately punitive fills",
+            "payback": "~21 yr",
+            "note": "Cash-positive but not financeable — deliberately punitive fill assumptions.",
             "upside_lines_included": false
           },
           {
-            "case": "mid (headline)",
+            "case": "Mid",
             "gross_monthly": 91000,
             "net_to_investor_monthly": 48800,
             "annual": 586000,
             "payback": "~4.3 yr",
+            "note": "The financeable headline case — experience sailings at roughly half the cadence of Boston's incumbents, priced below their dinner tier.",
             "upside_lines_included": false
           },
           {
-            "case": "upside",
+            "case": "Upside",
             "gross_monthly": 149200,
             "net_to_investor_monthly": 97900,
             "annual": 1175000,
             "payback": "~2.1 yr",
-            "upside_lines_included": true,
-            "note": "Includes sponsorship ($3.1K/mo per vessel, fleet-level \u00f74) + overnight cargo ($5.6K/mo). Converges with canon partner-corridor payback (Boston\u2194Hingham 2.49 yr) \u2014 same physics: all-day premium utilization."
+            "note": "Adds sponsorship ($3.1K/mo per vessel) and overnight cargo ($5.6K/mo) on top of the mid case.",
+            "upside_lines_included": true
           }
-        ],
-        "honesty_note": "Mid case is the financeable headline \u2014 requires L3 execution at roughly half the sailing cadence of Boston's incumbent experience operators, at prices below their dinner tier. Conservative shown always. Upside labeled. Crew rate benchmark-validated vs BLS Boston (loaded mean $77.16/hr May 2023; model uses $85 with wage-drift buffer); shift structure pending ops walkthrough."
+        ]
       }
+    },
+    "_provenance": {
+      "structure_v1": "utilization_stack (D6′ LOCKED 2026-08-15, supersedes anchor-first): committed bundles → spot seats → experiences & charters → upside lines (sponsorship, overnight cargo) → opex → network share → scenario payback",
+      "sources": "REVENUE-LEVER-BENCHMARKS.md + CARGO-LAYER-BENCHMARKS.md (operator, year, URL, confidence per rate). Crew: handoff/archetypes/CREW-COST-BENCHMARKS.md",
+      "opex_labels_v1": {
+        "energy": "Canon 4.1 kWh/nm @ $0.30/kWh × stacked daily activity (commute legs + midday/evening/weekend sailings). Electric-operation assumption.",
+        "maintenance": "N45 NOT validated — N30 canon ($65K/yr) floor, $100K/yr stated ceiling assumption, ÷12.",
+        "crew": "Benchmark-validated 2026-08-15 — 2-crew (captain + deckhand), $85/hr combined loaded, extended to stacked hours. Basis: BLS OEWS Boston metro means (May 2023) x 1.4294 ECEC burden = $77.16/hr; $85 = ~3%/yr wage drift to 2026 (assumption, labeled). Shift structure (split shifts for 16-hr stacked day) to ops walkthrough.",
+        "insurance": "Placeholder, weak basis — hull/liability ~1.5–3%/yr of insured value + illustrative berth fee loosely anchored to one documented commercial rate; not a Navier-specific quote."
+      },
+      "network_share_basis": "canon",
+      "layer_pricing_basis_v1": {
+        "committed_bundles_L1": "$950–1,275/seat-month — priced as a discounted pass vs premium spot (industry pass discounts 26–51%: MBTA ~26%, Seastreak 40-trip ~35%, NYC Ferry ~36%, Blade ~44–51%); 3–4× MBTA monthly ($319); ~50–60% below door-to-door substitute (Uber Salem→Boston ~$56/trip ≈ $2,460/mo). Status v1: Benchmark-anchored; canon-consistent; no Boston operations yet.",
+        "spot_seats_L2": "$40–65/leg, yield-managed — bounded by Seastreak $30 and Uber door-to-door ~$55–56; matches approved corridor fare (Boston↔Hingham $65). Status v1: Benchmark-anchored; fill rates unproven, modeled thin (10–30%).",
+        "experiences_charters_L3": "Experiences $59–79/pp (Boston market: BHCC sunset $49 → Odyssey dinner $77–98, whale watch $75); charters $550–600/hr (Boston Charter Boat $550/hr, 25-pax, 2-hr min). Status v1: Market-priced (Boston operators cited); not yet operated by Navier; conservative case ≈ ⅓ of one incumbent daily sailing.",
+        "sponsorship_U1": "$150K/yr fleet-level placeholder — precedents: Citi Bike ~$7–8M/yr system, Santander Cycles £6.25M/yr, Cleveland HealthLine line-naming $250K/yr, Barclays station $200K/yr. Status v1: Precedent-priced; no marine-transit precedent; never per-vessel headline.",
+        "overnight_cargo_U2": "~$350/run contract, 16 nights/mo — anchored to published waterborne tariffs (Casco Bay Lines 2026: $0.108–0.162/kg generic freight ⇒ $216–324 per ~2,000 kg run) + medical-courier premiums (Dropoff 2026: $30–100/job, refrigerated $3.50–5.25/mi). Status v1: Published-tariff-anchored; not yet operated by Navier; harbor cargo earns courier-linehaul rates, NOT island air-substitute rates ($0.75–1.50/kg canon does not apply where roads exist). First cargo classes: medical/lab specimens, batch parcels, catering/event — clean, high-value, night-moving. Seafood REJECTED as first class (odor/leakage/sanitation in premium cabin; commodity-priced $2.50–3.75/box)."
+      },
+      "stack_frame_v1": "One asset, one day, four demand layers. A commuter-only vessel monetizes ~15% of available hours; the stack monetizes the day. Commute is the strategic backbone and schedule spine; experiences, charters, spot and overnight lines buy down payback.",
+      "payback_summary_v1": "conservative ~21 yr (cash-positive, not financeable); mid ~4.3 yr — headline; upside ~2.1 yr (incl. sponsorship + cargo upside lines). Indicative ranges only, conservative default. Upside comes from utilization layers with cited market prices and from more corridors activating — never from inflating per-layer assumptions.",
+      "speed_relief_row_v1": "With authority speed-rule relief (precedent: Stockholm Candela P-12 exemption). Not quantified for Boston this pass — renders as a labeled upside row without numbers. Never blended into base or mid cases; base economics respect posted limits.",
+      "scenarios_label_v1": "Per-vessel N45 ($2.5M capex), no anchor subsidy in any case. Ranges + assumptions, conservative default. Every unproven layer enters base case only at deliberately thin utilization.",
+      "upside_scenario_detail_v1": "Includes sponsorship ($3.1K/mo per vessel, fleet-level ÷4) + overnight cargo ($5.6K/mo). Converges with canon partner-corridor payback (Boston↔Hingham 2.49 yr) — same physics: all-day premium utilization.",
+      "scenario_qa_v1": "Mid case is the financeable headline — requires L3 execution at roughly half the sailing cadence of Boston's incumbent experience operators, at prices below their dinner tier. Conservative shown always. Upside labeled. Crew rate benchmark-validated vs BLS Boston (loaded mean $77.16/hr May 2023; model uses $85 with wage-drift buffer); shift structure pending ops walkthrough."
     }
   },
   "fleet_phasing": {
+    "title": "Fleet phasing",
+    "fn": "fn5",
+    "copy": {
+      "stat_pair": [
+        {
+          "title": "Launch fleet",
+          "value": "3–6 vessels · $7.5–15M",
+          "note": "1–2 vessels per launch line, sized for peak AM/PM sailings."
+        },
+        {
+          "title": "Full network",
+          "value": "19 vessels · $47.5M",
+          "note": "The 60-minute continuous-headway ceiling — a capacity ceiling, not a day-one requirement."
+        }
+      ]
+    },
     "data": {
       "launch": {
         "vessels_range": [
@@ -309,11 +449,10 @@
           7500000,
           15000000
         ],
-        "label": "Minimum viable launch fleet \u2014 1\u20132 vessels per phase-1 line, sized to trigger-scale AM/PM peak sailings, not continuous headway. Derived, not published. No spares margin included.",
         "per_line": [
           {
             "line": "BOS-1 North Shore",
-            "launch_vessels": "1\u20132",
+            "launch_vessels": "1–2",
             "launch_capital_usd_range": [
               2500000,
               5000000
@@ -321,7 +460,7 @@
           },
           {
             "line": "BOS-2 South Shore",
-            "launch_vessels": "1\u20132",
+            "launch_vessels": "1–2",
             "launch_capital_usd_range": [
               2500000,
               5000000
@@ -329,7 +468,7 @@
           },
           {
             "line": "BOS-3 Quincy",
-            "launch_vessels": "1\u20132",
+            "launch_vessels": "1–2",
             "launch_capital_usd_range": [
               2500000,
               5000000
@@ -337,12 +476,12 @@
           },
           {
             "line": "BOS-4 Inner Harbor",
-            "launch_vessels": "0 (phase-2 line)",
+            "launch_vessels": "0 at launch (second-phase line)",
             "launch_capital_usd_range": null
           },
           {
             "line": "BOS-5 Riverside",
-            "launch_vessels": "0 (phase-3 line)",
+            "launch_vessels": "0 at launch (third-phase line)",
             "launch_capital_usd_range": null
           }
         ]
@@ -350,7 +489,6 @@
       "full_build": {
         "vessels": 19,
         "capital_usd": 47500000,
-        "label": "60-minute continuous-headway ceiling \u2014 an illustrative capacity-ceiling planning tool, not a timetable or day-1 requirement. Dwell/turnaround/headway are illustrative assumptions.",
         "per_line": [
           {
             "line": "BOS-1 North Shore",
@@ -378,8 +516,12 @@
             "capital_usd": 5000000
           }
         ]
-      },
-      "spares_note": "No maintenance-reserve/spare vessel included in any count; a real fleet plan typically adds ~10\u201315% spares capacity (not computed this pass)."
+      }
+    },
+    "_provenance": {
+      "launch_label_v1": "Minimum viable launch fleet — 1–2 vessels per phase-1 line, sized to trigger-scale AM/PM peak sailings, not continuous headway. Derived, not published. No spares margin included.",
+      "full_build_label_v1": "60-minute continuous-headway ceiling — an illustrative capacity-ceiling planning tool, not a timetable or day-1 requirement. Dwell/turnaround/headway are illustrative assumptions.",
+      "spares_note_v1": "No maintenance-reserve/spare vessel included in any count; a real fleet plan typically adds ~10–15% spares capacity (not computed this pass). Now carried by fn5."
     }
   },
   "protection_stack": {
@@ -387,7 +529,7 @@
       "cards": [
         {
           "title": "Demand-gated launch",
-          "body": "Corridors launch only at 60\u201380 committed seats \u2014 capital deploys behind committed demand, not ahead of it."
+          "body": "Corridors launch only at 60–80 committed seats — capital deploys behind committed demand, not ahead of it."
         },
         {
           "title": "Redeployable network asset",
@@ -399,7 +541,7 @@
         },
         {
           "title": "Phased fleet growth",
-          "body": "Fleet scales with corridor activation \u2014 launch fleet first, growth tranches only as corridors hit trigger."
+          "body": "Fleet scales with corridor activation — launch fleet first, growth tranches only as corridors hit trigger."
         }
       ]
     }
@@ -407,7 +549,7 @@
   "cta": {
     "copy": {
       "headline": "Request the Boston fleet memo.",
-      "body": "Summary economics with every assumption stated, conservative default, ranges not points \u2014 and a conversation."
+      "body": "Summary economics with every assumption stated, conservative default, ranges not points — and a conversation."
     },
     "data": {
       "intake": {
