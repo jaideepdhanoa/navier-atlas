@@ -99,6 +99,71 @@ Same doctrine as Boston (`../boston/CARGO-LAYER-BENCHMARKS.md`): harbor cargo ea
 
 ---
 
-## Scope amendment 2026-08-16 — Lake Washington cluster reopened
+## 7 · Scope amendment 2026-08-16 — Lake Washington cluster reopened
 
-Jaideep directive 2026-08-16: LKW-1/LKW-2 re-enter the rendered network (see SPEED-RULES-SEATTLE.md §7 + EASTSIDE-VERIFICATION-2026-08-16.md). **Economics in this file are unchanged** — every revenue layer remains anchored on the documented Puget Sound corridors and benchmarks. Lake corridors are additive network reach; no lake-corridor demand, fare, or utilization figure exists yet, so none enters the P&L. Fail closed: any future lake-corridor economics require their own sourced benchmarks pass.
+Jaideep directive 2026-08-16: LKW-1/LKW-2 re-enter the rendered network (see SPEED-RULES-SEATTLE.md §7 + EASTSIDE-VERIFICATION-2026-08-16.md). **Economics in §1–§6 are unchanged** — every revenue layer there remains anchored on the documented Puget Sound corridors and benchmarks. Lake corridors were initially additive network reach only.
+
+**Superseded in part, same day (Jaideep-approved second pass):** the sourced-benchmarks condition below has now been met — `EASTSIDE-DEMAND-BENCHMARKS.md` (2026-08-16) is that pass — so §8 adds a **separate, dedicated lake-corridor vessel stack**. The Sound-anchored per-vessel N45 model in §4 is untouched; no lake figure is blended into it. Fail-closed doctrine carries forward: the lake stack uses only sourced or labeled-derived inputs.
+
+---
+
+## 8 · Lake-corridor vessel stack (added 2026-08-16 · rebuilt same day on the N45)
+
+**Vessel class — corrected 2026-08-16:** this stack runs on the **N45 in 20-seat commuter configuration**, the program standard for commuter corridors. The launch gate itself — 60–80 committed seats per corridor — is N45-scale demand by definition, so an 8-seat hull was the wrong class for the corridors it gates. The initial same-day N30 draft is **superseded**; the only lines carried over unchanged are the L3 experience/charter quantities (sized off sourced Seattle benchmarks, vessel-class-independent at these fill levels) and the crew activity-hour bands they drive.
+
+**What this is:** the parallel utilization stack for **one N45 (20 seats) dedicated to the Lake Washington cluster** — LKW-1 Cross-Lake (Leschi ↔ Meydenbauer, 3.38 nm) + LKW-2 Eastside (Kirkland ↔ Carillon ↔ Meydenbauer ↔ Renton/Coulon, 6.14 / 10.34 nm legs). Same D6′ architecture as §1: L1 committed bundles + L2 spot + L3 experiences/charters in base; no U1/U2 for the lake vessel (omitted — no lake-specific sponsorship or cargo benchmark exists; fail closed).
+
+**Why a separate stack (structural, not stylistic):** Lake Washington connects to Puget Sound only through the Ballard Locks — a first-come lock queue with a blanket 7-kn Ship Canal transit (see hub.json decision ledger). A lake vessel cannot flex onto Sound corridors intraday or even same-week without an hours-long, unschedulable transit. **A lake vessel is a dedicated asset**, so its economics must stand alone. Nothing here sums with §4.
+
+**Demand gate unchanged:** a lake corridor advances only at **60–80 committed seats on that corridor** (program canon, hub.json locked_numbers). The fills below stay deliberately punitive: conservative 40 sits at the bottom of the combined conservative corridor ranges (LKW-1 20–32 + LKW-2 20–28 = 40–60, EASTSIDE-DEMAND-BENCHMARKS §4); mid 56 sits inside them; **upside 72 exceeds them and assumes at least one corridor at gate scale (60–80)** — say so wherever it renders.
+
+### 8.1 · Assumption register (each row sourced or derived)
+
+| Assumption | Value | Basis / source | Confidence |
+|---|---|---|---|
+| Vessel | **N45, 20 seats** | program-standard commuter class — same vessel and configuration as §4 (N30 draft superseded; commuter corridors run 20-seat vessels) | Canon |
+| Capex | **$2.5M** | N45 program canon, same as §4 | Canon |
+| L1 seat price $750/900/1,050 | DERIVED band | §3 derivation (3.6–5.0× Kitsap $210 pass; 55–70% below door-to-door). Lake check: Uber Bellevue→Seattle ~$48 × 44 legs ≈ $2,100/mo, Kirkland ~$57 ≈ $2,500/mo (EASTSIDE-DEMAND-BENCHMARKS §3 [27][33]) — $900 mid ≈ 57–64% below | Derived — same sign-off flag as §3 |
+| L1 committed seats 40/56/72 | scenario | EASTSIDE-DEMAND-BENCHMARKS §4 combined conservative corridor ranges 40–60: cons 40 = bottom (2.0 vessel loads), mid 56 inside (2.8), upside 72 above — assumes ≥1 corridor at the 60–80 gate (3.6 loads); one N45's rider ceiling ≈ 120 distinct riders (6 peak-direction sailings × 20 seats) | Derived |
+| L2 spot fare $25/30/35 per leg | DERIVED | Undercuts/matches solo substitutes: Uber Bellevue→Seattle avg $48 (Electric $35), Kirkland→Seattle $57 (EASTSIDE §3 [33][27]); floor context: no public lake service exists at all (last ferry 1950, EASTSIDE §3 [31][32]) | Derived |
+| L2 spot fill 10/20/30% of residual | scenario | residual = 5,280 − committed × 44; no precedent; same fill doctrine as §4 | Placeholder |
+| L3 experiences 6/12/20 sailings × 6/7/8 pax × $55/65/75 | benchmark-bounded | §2 band (Argosy from $45.70 → Waterways $89); Waterways and Argosy both operate lake cruises; unchanged from first pass — small-group sailings well under the 20-seat cabin | Benchmark-bounded |
+| L3 charters 2/4/6 × 2.0/2.0/2.5 hr × $400/450/500/hr | DERIVED | unchanged from first pass: premium foiler priced well under SWT $725–838/hr (42-pax displacement, §2), above Boatsetter floor $107+/hr | Derived |
+| Commute schedule 12 legs/day × ~4.5 nm avg, 22 days | stated assumption | hub.json geometry: LKW-1 legs 3.38 nm (12–15 min) mixed with LKW-2 spine runs 6.14/10.34 nm; capacity 20 × 12 × 22 = **5,280 seat-legs/mo**; committed riders ≈ 2 legs/day (44/mo) | Derived from hub.json |
+| Crew $120/hr 2-person loaded, 146/160/180 hr/mo | benchmark-validated | CREW-COST-SEATTLE.md (BLS OEWS Seattle metro; LOW≈MID); same activity-hour rules as §4 (132 commute + 1.5 hr/experience + charter hrs + 0.5 hr wrap per charter); bands unchanged from the N30 draft because the L3 day is unchanged. A 20-passenger COI is a two-crew operation like §4 — the N30-era single-captain case is dropped | Validated at rate level |
+| Energy 4.1 kWh/nm × $0.30/kWh | canon (N45 rate) | program canon; experience sailings ~8 nm, charters ~5 nm/hr (stated) | Canon |
+| Maintenance $82.5K/yr = $6,875/mo | benchmark-anchored | same Seattle N45 figure as §4 — midpoint of the unvalidated $65–100K range | Derived |
+| Insurance + berth $7,900/mo | Sound convention reused | berth ~$3.4K = Bell Harbor published $2.50/ft/day × 45 ft (no lake-marina commercial rate sourced — Kirkland/Carillon/Bellevue terms TBD); insurance $4.5K placeholder, same as §4 — estimated | Weak — placeholder |
+| Navier network share 10% of gross | canon | program canon | Canon |
+| Launch gate 60–80 committed seats/corridor | canon | hub.json locked_numbers | Canon |
+
+### 8.2 · Worked per-vessel model (N45, lake corridors)
+
+Total commute seat-legs/mo = 20 seats × 12 legs × 22 days = 5,280. Residual = 5,280 − committed × 44 legs/mo.
+
+| | Conservative | Mid | Upside |
+|---|---|---|---|
+| L1 committed seats × price (DERIVED band) | 40 × $750 = $30,000 | 56 × $900 = $50,400 | 72 × $1,050 = $75,600 |
+| L2 spot fill × residual seat-legs × fare (DERIVED fare) | 10% × 3,520 × $25 = $8,800 | 20% × 2,816 × $30 = $16,896 | 30% × 2,112 × $35 = $22,176 |
+| L3 experiences (sailings × pax × price) | 6 × 6 × $55 = $1,980 | 12 × 7 × $65 = $5,460 | 20 × 8 × $75 = $12,000 |
+| L3 charters (per mo × hrs × rate) | 2 × 2.0 × $400 = $1,600 | 4 × 2.0 × $450 = $3,600 | 6 × 2.5 × $500 = $7,500 |
+| **Gross revenue /mo** | **$42,380** | **$76,356** | **$117,276** |
+| Opex — crew (hrs × $120) | 146 hr = $17,520 | 160 hr = $19,200 | 180 hr = $21,600 |
+| Opex — energy (nm × 4.1 kWh × $0.30) | 1,256 nm = $1,545 | 1,324 nm = $1,629 | 1,423 nm = $1,750 |
+| Opex — maintenance | $6,875 | $6,875 | $6,875 |
+| Opex — insurance + berth | $7,900 | $7,900 | $7,900 |
+| **Opex total /mo** | **$33,840** | **$35,604** | **$38,125** |
+| **Net to investor /mo** (gross × 0.90 − opex) | **+$4,302** | **+$33,116** | **+$67,423** |
+| **Annual** | **+$51.6K** | **+$397.4K** | **+$809.1K** |
+| **Payback on $2.5M** | **~48 yr** | **~6.3 yr** | **~3.1 yr** |
+
+(Line items sum exactly to gross: 30,000+8,800+1,980+1,600 = 42,380 · 50,400+16,896+5,460+3,600 = 76,356 · 75,600+22,176+12,000+7,500 = 117,276. Energy nm: commute 1,188 + experiences 48/96/160 + charters 20/40/75. Nets rounded to the dollar from unrounded gross×0.90: 38,142.00−33,840 = 4,302 · 68,720.40−35,604 = 33,116.40 → 33,116 · 105,548.40−38,125 = 67,423.40 → 67,423. Annual from unrounded nets: 51,624 / 397,396.8 / 809,080.8. Payback: 2.5M ÷ annual = 48.4 / 6.29 / 3.09 yr.)
+
+**Honest reads:**
+- **Twenty seats absorb the Seattle crew day.** The lake vessel pays the same 2-person $120/hr crew over the same 146/160/180 activity hours as the N30 draft did — but 20 seats of L1/L2 capacity now sit on top of it. That flips every scenario cash-positive, including the deliberately punitive conservative case (+$4.3K/mo vs the N30 draft's −$11.3K/mo). Class choice, not optimism: the fills stay bottom-of-range.
+- **Conservative (~48-yr payback) is a floor statement, not a financing case.** It renders with its payback because it is cash-positive, but 40 committed seats at the bottom of the derived band is the punitive doctrine case, same as §4's cash-negative conservative.
+- **Mid (~6.3 yr) lands beside the Sound vessel's ~6.9 yr** — the lake case is no longer structurally worse than the Sound case. Same levers as §4 apply, led by proving the upper seat band ($1,000+) with Eastside LOIs; the door-to-door math ($2,100–2,500/mo Uber-equivalent) supports it.
+- **Upside (~3.1 yr) is honest only with its demand condition attached:** 72 committed seats exceeds the combined conservative corridor ranges (40–60) and assumes **at least one corridor at the 60–80 gate**. It sits near the canon convergence zone (Sound upside ~2.8, Boston ~2.1, partner-corridor 2.49).
+- **The single-captain sensitivity is dropped.** It was an N30 lever; a 20-passenger service runs captain + deckhand like the Sound vessel, so no captain-only case is modeled or rendered.
+- Demand inputs are corridor-level potential from EASTSIDE-DEMAND-BENCHMARKS (Boeing Renton walk-tier ~12,000 [2019 figure]; Google Kirkland 5,076; Amazon Bellevue 17,500→25K and downtown Bellevue >60K shuttle-tier; Microsoft >52K shuttle-only via Carillon) — **indicative, never fill rates**. The 2 Line (open 2026-03-28) directly serves Seattle↔downtown Bellevue; the water case does its structural work on **Kirkland and Renton, which have no rail**.
+- No lake revenue, cost, or payback figure here blends into §4, the Sound fleet case, or any cross-vessel total. Renders only as a separately labeled dedicated-vessel case.
