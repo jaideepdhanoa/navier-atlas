@@ -322,6 +322,7 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     'bahrain',
     'saudi-eastern-province',
     'jeddah',
+    'istanbul',
   ]);
   const intlDestinationMobility = new Set(['red-sea-global']);
   const label =
