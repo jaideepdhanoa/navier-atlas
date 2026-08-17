@@ -315,16 +315,28 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     (archData.hero && archData.hero.copy && archData.hero.copy.eyebrow) ||
     (archData.brand && archData.brand.nav_tag) ||
     null;
+  const intlPublicTransport = new Set([
+    'dubai',
+    'abu-dhabi',
+    'ras-al-khaimah',
+    'bahrain',
+    'saudi-eastern-province',
+    'jeddah',
+  ]);
+  const intlDestinationMobility = new Set(['red-sea-global']);
   const label =
     archetypeId === 'fleet-investors'
       ? 'Fleet Investors'
       : archetypeId === 'public-partners'
-        ? (navTag && /public transport/i.test(String(navTag))
-            ? 'Public Transport'
-            : archData.city &&
-                ['dubai', 'abu-dhabi', 'ras-al-khaimah'].includes(String(archData.city))
-              ? 'Public Transport'
-              : 'Public Partners')
+        ? navTag && /public transport/i.test(String(navTag))
+          ? 'Public Transport'
+          : navTag && /destination mobility/i.test(String(navTag))
+            ? 'Destination Mobility'
+            : archData.city && intlDestinationMobility.has(String(archData.city))
+              ? 'Destination Mobility'
+              : archData.city && intlPublicTransport.has(String(archData.city))
+                ? 'Public Transport'
+                : 'Public Partners'
         : archetypeId;
   const headline = archData.hero?.copy?.headline || `${hub.market?.label || hubId} · ${label}`;
   const subline = archData.hero?.copy?.subline || hub.brand?.description || '';
