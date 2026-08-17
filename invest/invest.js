@@ -1,4 +1,4 @@
-/* Series B /invest v5 — container gate · Tasklet NS canvas · native charts */
+/* Series B /invest v6 — slide-stage doctrine · new canon plates */
 (function () {
   'use strict';
 
@@ -60,7 +60,11 @@
   }
   function homeCap(id) {
     const h = home(id);
-    return (h && h.caption) || '';
+    if (!h || h.caption == null || h.caption === '') return '';
+    const c = String(h.caption);
+    // Never render manifest/usage metadata as captions (v6 §C.10)
+    if (/manifest|full-bleed with|treatment|opener full|only home|pending/i.test(c)) return '';
+    return c;
   }
 
   function cinema(src, opts = {}) {
@@ -308,9 +312,12 @@
         })
         .join('');
       return `
-        <div class="section-block arc-section" data-reveal data-pills data-now="${s.now_marker_on || 0}">
-          ${s.headline ? `<h2 class="h2 shell-prose">${esc(s.headline)}</h2>` : ''}
-          <div class="arc-spine shell-stage">${pills}</div>
+        <div class="section-block stage-section arc-section" data-reveal data-pills data-now="${s.now_marker_on || 0}">
+          <div class="section-inner">
+            <p class="stage-kicker">01 · THE CLAIM</p>
+            ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
+            <div class="arc-rail media-inner" style="max-width:none;padding:0">${pills}</div>
+          </div>
         </div>`;
     },
 
@@ -451,26 +458,31 @@
 
     'hotspot-diagram'(s) {
       const filmPoster = homeSrc('product.control.film') || mediaPath('assets/posters/S7WB91FvSFI.jpg');
+      const wire = homeSrc('product.control.diagram') || mediaPath('assets/deck/control-wireframe-clean.png');
       const hs = (s.hotspots || [])
         .map(
-          (h) => `
-        <div class="hotspot-item"><strong>${esc(h.label)}</strong>
-          ${h.detail ? `<div class="muted">${esc(h.detail)}</div>` : ''}</div>`,
+          (h, i) =>
+            `<div class="callout-item" data-callout="${i}"><strong>${esc(h.label)}</strong>${h.detail ? esc(h.detail) : ''}</div>`,
         )
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal data-home="product.control.film">
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.body ? `<p class="body-text shell-prose">${nl(s.body)}</p>` : ''}
-          <div class="media-duo">
-            ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
-            <div class="hotspot-list">${hs}</div>
+        <div class="section-block stage-section" data-reveal data-home="product.control.diagram">
+          <div class="section-inner">
+            ${s.title ? `<p class="stage-kicker">03 · THE PRODUCT</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
+            <div class="stage-grid">
+              <div class="sg-media">
+                ${wire ? plate(wire, { home: 'product.control.diagram', className: 'wire-plate contain' }) : ''}
+                ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
+              </div>
+              <div class="sg-title"><div class="callout-list">${hs}</div></div>
+            </div>
           </div>
         </div>`;
     },
 
     'platform-intro'(s) {
-      const wire = homeSrc('product.gmvp.diagram');
+      const wire = homeSrc('product.gmvp.diagram') || mediaPath('assets/deck/fleet-wireframe.png');
       const foundry = homeSrc('product.foundry.plate');
       const fCap = homeCap('product.foundry.plate');
       const layers = (s.layers || [])
@@ -601,27 +613,31 @@
                 <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
                 )
                 .join('')}</div>
-              ${filmP ? filmCard({ youtube_id: 'htUWE3AJUbc', embed_url: 'https://www.youtube-nocookie.com/embed/htUWE3AJUbc' }, filmP, 'gtm.maldives', '') : ''}
+              <!-- Four Seasons film stays in Proof demo grid only (v6) -->
             </div>
           </div>
         </div>`;
     },
 
     'program-panel'(s) {
+      const gulf = homeSrc('gtm.gulf.plate') || mediaPath('assets/deck/gulf-hero.png');
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          ${goldStats(s.stats)}
-          <div class="proof-chips">${(s.proof_chips || [])
-            .map(
-              (c) => `
-            <div class="proof-chip"><div class="label">${esc(c.label)}</div><div class="detail">${esc(c.detail)}</div></div>`,
-            )
-            .join('')}</div>
-          ${s.program_line ? `<p class="eyebrow">${esc(s.program_line)}</p>` : ''}
-          <div class="buyers">${(s.buyers || []).map((b) => `<span>${esc(b)}</span>`).join('')}</div>
-          ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+        <div class="section-block stage-section" data-reveal data-home="gtm.gulf.plate">
+          ${gulf ? cinema(gulf, { home: 'gtm.gulf.plate', vh: '55vh' }) : ''}
+          <div class="section-inner">
+            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${goldStats(s.stats)}
+            <div class="proof-chips">${(s.proof_chips || [])
+              .map(
+                (c) => `
+              <div class="proof-chip"><div class="label">${esc(c.label)}</div><div class="detail">${esc(c.detail)}</div></div>`,
+              )
+              .join('')}</div>
+            ${s.program_line ? `<p class="eyebrow">${esc(s.program_line)}</p>` : ''}
+            <div class="buyers">${(s.buyers || []).map((b) => `<span>${esc(b)}</span>`).join('')}</div>
+            ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+          </div>
         </div>`;
     },
 
@@ -643,48 +659,47 @@
     },
 
     'four-role-diagram'(s) {
-      const roles = (s.roles || s.cards || [])
-        .map((r, i) => {
-          const title = r.title || r.name || r.role;
-          const does = r.does || r.body || r.detail || '';
-          return `
-          <div class="flow-role">
-            ${i ? '<div class="flow-arrow" aria-hidden="true">→</div>' : ''}
-            <div class="role">
-              ${r.tag ? `<div class="eyebrow" style="margin:0 0 6px">${esc(r.tag)}</div>` : ''}
-              <div class="title">${esc(title)}</div>
-              <div class="muted">${esc(does)}</div>
-              ${r.earns ? `<div class="muted" style="margin-top:8px;color:var(--accent)">${esc(r.earns)}</div>` : ''}
-            </div>
+      const logos = homeAssets('gtm.coastal.logos') || {};
+      const order = [
+        { key: 'navier', role: 'Platform & vessels' },
+        { key: 'jih', role: 'Capital' },
+        { key: 'harim', role: 'Hotels & resorts' },
+        { key: 'visit_maldives', role: 'Demand' },
+      ];
+      // Prefer contract roles for captions when present
+      const roles = s.roles || s.cards || [];
+      const logoCards = order
+        .map((o, i) => {
+          const src = logos[o.key] ? mediaPath(logos[o.key]) : '';
+          const r = roles[i] || {};
+          const title = r.title || r.name || r.role || o.key.replace(/_/g, ' ');
+          const does = r.does || r.body || r.detail || o.role;
+          return `<div class="player-logo">
+            ${src ? `<img src="${esc(src)}" alt="${esc(title)}" loading="lazy" />` : ''}
+            <div class="title" style="font-weight:700;margin-bottom:4px">${esc(title)}</div>
+            <div class="role">${esc(does)}</div>
           </div>`;
         })
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.subhead || s.intro ? `<p class="lead">${esc(s.subhead || s.intro)}</p>` : ''}
-          <div class="flow-roles">${roles}</div>
-          ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+        <div class="section-block stage-section" data-reveal data-home="gtm.coastal.logos">
+          <div class="section-inner">
+            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead || s.intro ? `<p class="lead">${esc(s.subhead || s.intro)}</p>` : ''}
+            <div class="player-logos">${logoCards}</div>
+            ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+          </div>
         </div>`;
     },
 
     'drawing-chart'(s) {
-      const cargo = homeAssets('gtm.cargo') || {};
-      const opener = cargo.opener ? mediaPath(cargo.opener) : '';
-      const play = cargo.play ? mediaPath(cargo.play) : '';
-      const night = cargo.night_pair || [];
-      let openHtml = opener
-        ? cinema(opener, {
-            home: 'gtm.cargo',
-            caption: (home('gtm.cargo') && home('gtm.cargo').treatment) || '',
-            vh: '58vh',
-          })
-        : '';
-      // caption from assets if present
-      const cargoHome = home('gtm.cargo');
-      // use a sensible caption from chart if needed - assets don't have caption on cargo in v3 except treatment
-      // Air freight caption from remediation: use island or chart
-
+      const ca = homeAssets('gtm.cargo') || {};
+      const opener = ca.opener ? mediaPath(ca.opener) : mediaPath('assets/deck/air-vs-ocean-cargo.png');
+      const playPlate = mediaPath(ca.play || 'assets/deck/cargo-play-skyline.png');
+      const shipH = mediaPath(ca.shipscale || 'assets/deck/shipscale-hero.png');
+      const shipG = mediaPath(ca.shipscale_grid || 'assets/deck/shipscale-variants-grid.png');
+      const wedgeP = mediaPath(ca.wedge || 'assets/deck/wedge-day-night.png');
+      const night = ca.night_pair || [];
       let chartHtml = '';
       if (s.chart) {
         const c = s.chart;
@@ -701,20 +716,19 @@
           })
           .join('');
         chartHtml = `
-          <div class="shell-stage">
-            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+          <div class="section-inner">
+            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             <div class="chips-3">${cards}</div>
             ${c.navier_band ? `<div class="formula">${esc(c.navier_band)}</div>` : ''}
           </div>`;
       }
-      // island_band as structured object (G3 fix)
       let islandHtml = '';
       const ib = s.island_band;
       if (ib && typeof ib === 'object') {
         islandHtml = `
-          <div class="island-band shell-stage" data-reveal>
-            ${ib.title ? `<h3 class="h3">${esc(ib.title)}</h3>` : ''}
+          <div class="section-inner island-band" data-reveal>
+            ${ib.title ? `<p class="stage-kicker">ISLANDS</p><h2 class="h2">${esc(ib.title)}</h2>` : ''}
             <div class="gold-stat-band cols-${Math.min((ib.stats || []).length, 3)}">
               ${(ib.stats || [])
                 .map(
@@ -722,30 +736,46 @@
                 <div class="gold-stat">
                   <div class="value">${esc(st.value)}</div>
                   <div class="label">${esc(st.label)}</div>
-                  ${st.source ? `<div class="muted tiny">${esc(st.source)}</div>` : ''}
                 </div>`,
                 )
                 .join('')}
             </div>
             ${ib.footnote ? `<p class="muted">${esc(ib.footnote)}</p>` : ''}
           </div>`;
-      } else if (typeof ib === 'string') {
-        islandHtml = `<p class="kicker shell-prose">${esc(ib)}</p>`;
       }
-
       return `
         <div class="section-block" data-reveal data-home="gtm.cargo">
-          ${openHtml}
+          <div class="cinema-block" data-reveal>
+            <div class="cinema"><div class="cinema-media" style="height:min(80vh,720px);display:flex;align-items:center;justify-content:center;background:#0a0a0c">
+              <img src="${esc(opener)}" alt="" loading="lazy" style="object-fit:contain;max-height:80vh;width:auto;max-width:100%" />
+            </div></div>
+          </div>
           ${chartHtml}
           ${islandHtml}
-          ${play ? plate(play, { home: 'gtm.cargo', className: 'shell-stage' }) : ''}
           ${
             night.length
-              ? `<div class="foundry-pair shell-stage">
-                  ${night.map((n) => plate(mediaPath(n), { home: 'gtm.cargo' })).join('')}
-                </div>`
+              ? `<div class="media-inner foundry-pair">${night.map((n) => plate(mediaPath(n), { home: 'gtm.cargo' })).join('')}</div>`
               : ''
           }
+          <div class="section-block stage-section" data-reveal>
+            <div class="section-inner">
+              <p class="stage-kicker">THE PLAY</p>
+              ${plate(playPlate, { className: 'contain' })}
+            </div>
+          </div>
+          <div class="section-block stage-section" data-reveal>
+            <div class="section-inner">
+              <p class="stage-kicker">SHIP SCALE</p>
+              ${plate(shipH, { className: 'contain' })}
+              ${plate(shipG, { className: 'contain' })}
+            </div>
+          </div>
+          <div class="section-block stage-section" data-reveal>
+            <div class="section-inner">
+              <p class="stage-kicker">THE WEDGE</p>
+              ${plate(wedgeP, { className: 'contain' })}
+            </div>
+          </div>
         </div>`;
     },
 
@@ -1060,27 +1090,25 @@
   function ladderImg(hull) {
     if (!hull) return { src: '', photo: false, dev: false };
     const la = homeAssets('product.ladder') || {};
-    const key = String(hull.id).replace(/-/g, '_');
-    // Canon: N30 may use pioneer photo; N45/N80/N180 wireframe only; Quanta = quanta render (30ft class real)
     const id = hull.id || '';
-    if (id === 'n30-pioneer' && la.n30_pioneer) {
-      return { src: mediaPath(la.n30_pioneer), photo: true, dev: false };
+    // v6: N30 + Quanta = pioneer photo; N45 mobility render; N80 wireframe (render pending approval); N180 shipscale
+    if (id === 'n30-pioneer' || id === 'quanta-lr') {
+      const src = la.n30_pioneer || la.quanta_lr;
+      return { src: src ? mediaPath(src) : '', photo: true, dev: false };
     }
-    if (id === 'quanta-lr' && la.quanta_lr) {
-      return { src: mediaPath(la.quanta_lr), photo: true, dev: false };
+    if (id === 'n45-explorer' && la.n45_explorer) {
+      return { src: mediaPath(la.n45_explorer), photo: true, dev: false };
     }
-    // Prefer per-class wireframe
+    if (id === 'n80-valkyrie') {
+      // n80-render-v1 pending approval — wireframe until cleared
+      const src = la.n80_valkyrie || 'assets/deck/fleet-wireframe-n80.png';
+      return { src: mediaPath(src), photo: false, dev: true };
+    }
+    if (id === 'n180-morpheus' && la.n180_morpheus) {
+      return { src: mediaPath(la.n180_morpheus), photo: true, dev: false };
+    }
+    const key = String(id).replace(/-/g, '_');
     if (la[key]) return { src: mediaPath(la[key]), photo: false, dev: true };
-    // Map to fleet-wireframe-* keys
-    const wfMap = {
-      'n30-pioneer': 'n30_wireframe',
-      'n45-explorer': 'n45_explorer',
-      'n80-valkyrie': 'n80_valkyrie',
-      'n180-morpheus': 'n180_morpheus',
-    };
-    const wf = la[wfMap[id]];
-    if (wf) return { src: mediaPath(wf), photo: false, dev: id !== 'n30-pioneer' };
-    if (la.base) return { src: mediaPath(la.base), photo: false, dev: true };
     return { src: '', photo: false, dev: false };
   }
 
@@ -1549,6 +1577,9 @@
             if (fill) requestAnimationFrame(() => (fill.style.width = pct + '%'));
           });
         }
+        en.target.querySelectorAll('.callout-item').forEach((c, i) => {
+          setTimeout(() => c.classList.add('in'), i * 120);
+        });
         // also bars nested
         en.target.querySelectorAll('.bar-row').forEach((row) => {
           const pct = row.dataset.barPct || 50;
@@ -1559,7 +1590,11 @@
     },
     { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
   );
-  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+  document.querySelectorAll('[data-reveal]').forEach((el) => {
+    // optional enhance only if user hasn't reduced motion
+    if (!reduceMotion) el.classList.add('reveal-pending');
+    io.observe(el);
+  });
   // observe bar sections
   document.querySelectorAll('[data-bars]').forEach((el) => io.observe(el));
 
@@ -1569,6 +1604,6 @@
     if (text.includes('{"') || text.includes('{"label"')) {
       console.warn('[invest] G3 possible JSON leak in rendered text');
     }
-    console.info('[invest] v5 mount ok, homes', homes.size);
+    console.info('[invest] v6 mount ok, homes', homes.size);
   } catch (_) {}
 })();
