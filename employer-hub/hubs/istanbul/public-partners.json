@@ -1,0 +1,492 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Dubai v3 public-partners gold master per the international addendum (Istanbul run — Public Transport page, authority audience: İBB + Şehir Hatları). Sources: istanbul/AUTHORITY-MAP-ISTANBUL.md + SPEED-RULES-ISTANBUL.md + DEMAND-POOLS-ISTANBUL.md + FARE-BENCHMARKS-ISTANBUL.md + NODES-ISTANBUL.md + REVENUE-INPUTS-ISTANBUL.md. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture per the framing rule in AUTHORITY-MAP-ISTANBUL.md: Istanbul runs one of the world's great ferry systems — Navier NEVER frames itself as introducing water transit; the page leads with the city's own operations and published climate plan, and the ask is a fast, low-wake, zero-emission EXPRESS tier that grows the water's share of cross-strait trips. Operate-first dual posture (İBB both operates and licenses). Speed honesty is the defining constraint and renders plainly: 10 kn over-ground inside the strait, network anchored south of it; the cross-strait shuttle is a comfort tier with no time claim; Golden Horn excluded. No counterparty identities, no program or fleet commitments, no partnership claims (Şehir Hatları/İDO/Dentur/Turyol are landscape facts only), no launch dates, no service-start years.",
+  "contract_version": "v3",
+  "city": "istanbul",
+  "archetype": "public-partners",
+  "route": "/istanbul-partners",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "Şehir Hatları, the city's own ferry operator, in its own words: 53 piers, 30 vessels, about 903 sailings a day, and around 40 million passengers a year.",
+      "source_url": "https://sehirhatlari.istanbul/tr/kurumsal/hakkimizda-215"
+    },
+    "fn2": {
+      "text": "The İstanbul Climate Change Action Plan, as published by the metropolitan municipality: carbon-neutral by 2050, with interim absolute-reduction targets of −52% by 2030 and −89% by 2040.",
+      "source_url": "https://cevre.ibb.istanbul/iklim-degisikligi-sube-mudurlugu/2050de-karbon-notr-ve-direncli-bir-istanbul-icin-yol-haritamiz-hazir/"
+    },
+    "fn3": {
+      "text": "Cross-strait shares from municipal figures as reported for 2025: the rail tunnel line averaged about 607,000 riders a day and the bus rapid transit line about 748,000, while the city ferries carry about 40 million riders a year — roughly 110,000 a day. Water today carries a low-single-digit share of cross-strait trips."
+    },
+    "fn4": {
+      "text": "Speed limits in these waters are set by the Turkish Straits traffic regulation (Presidential Decree No. 1426) and the Istanbul Harbor Master's local marine traffic guide: 10 knots over the ground for all vessels inside the strait, with fast craft expressly held to that limit north of the harbor line, and a 4-knot rule in defined zones. South of the harbor line, on the open Marmara, no blanket cap applies. All times on this page respect every limit on a conservative planning basis — no speed allowance is assumed anywhere."
+    },
+    "fn5": {
+      "text": "In December 2024 the Istanbul Harbor Master documented, in an official letter, serious wake damage to moored vessels caused by fast craft in the Golden Horn, directing that masters be continuously warned. Local traffic rules also cap vessel noise at 85 decibels. A foilborne electric vessel produces minimal wake at speed and runs near-silent — the letter's concern, answered by design. The Golden Horn is not part of this network."
+    },
+    "fn6": {
+      "text": "The city's published fare ladder, per the February 2026 tariff update as reported: a 42-lira base transit fare, cross-strait ferry fares of about 53–65 lira ($1.1–1.4), Islands fares up to about 206 lira ($4.3), and the city's own on-demand sea taxi priced above them under a published tariff. Lira fares are revised several times a year; lira figures convert at 47.76 lira per dollar, the central bank's indicative rate at preparation, and are indicative only."
+    },
+    "fn7": {
+      "text": "Tourism figures for 2025: Türkiye received 63.9 million visitors and $65.2 billion in tourism revenue per the national statistics office; İstanbul led the country with about 17.5 million foreign visitors, and the city's ports handled more than 625,000 cruise passengers, per ministry year-end data as reported."
+    },
+    "fn8": {
+      "text": "İstanbul's registered population is 15,655,924 (national address-based registry, 2024)."
+    },
+    "fn9": {
+      "text": "Navier times are computed from route distance at each segment's legal speed, with conservative approach and dwell allowances at every call. Road and existing-schedule comparisons are traffic- and season-dependent indications, not measurements."
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 12,
+      "lines": [
+        "IST-1 Marmara Trunk Express",
+        "IST-2 Islands Express",
+        "IST-3 Cross-strait Comfort Shuttle",
+        "IST-4 Upper-Bosphorus Leisure — roadmap"
+      ]
+    },
+    "_internal": {
+      "source": "NODES-ISTANBUL.md — 12 active nodes, 4 lines, 2 interchanges (Kadıköy = A, Kabataş = B), 3 roadmap nodes (İstinye, Anadolu Kavağı, Maltepe/Kartal — berth suitability unverified, roadmap only). ZERO Atlas bindings: no sealed route_ids exist for these lines; all legs coordinate-derived (haversine × 1.12 coastal factor; 25 kn open Marmara, 10 kn over-ground inside strait limits, 4-kn zones respected, +2 min approach per call, +3 min dwell per stop). Atlas cluster istanbul-turkey exists for later corridor inheritance; this geometry is new-authored for the Grok seal — no invented IDs.",
+      "stops_list": {
+        "Bakırköy": "40.9738, 28.8710 — public pier, IST-1 west anchor",
+        "Ataköy Marina": "40.9700, 28.8770 — licensed marina, IST-1 alt/charter base",
+        "Yenikapı": "41.0005, 28.9530 — ferry terminal + rail superhub, IST-1",
+        "Karaköy / Galataport": "41.0242, 28.9838 — public pier + cruise port, IST-3",
+        "Kabataş": "41.0311, 28.9932 — interchange B, IST-2 variant + IST-4",
+        "Eminönü": "41.0175, 28.9722 — historic pier cluster, IST-3 alt",
+        "Üsküdar": "41.0262, 29.0158 — reserve, no line seeded",
+        "Kadıköy": "40.9930, 29.0233 — interchange A, IST-1×IST-2×IST-3",
+        "Bostancı": "40.9525, 29.0937 — IST-1 east anchor + IST-2 feeder",
+        "Kalamış / Fenerbahçe Marina": "40.9765, 29.0369 — charter base only, NOT a line stop",
+        "Büyükada": "40.8767, 29.1289 — IST-2",
+        "Heybeliada": "40.8778, 29.0999 — IST-2 tail"
+      },
+      "exclusions": "Golden Horn excluded from service design (10-kn cap, bridge-crossing rules, documented wake damage to moored craft, shallow, sensitive). Üsküdar–Beşiktaş–Eminönü ferry triangle deliberately not overlaid — the city's ferries serve it superbly. Node coordinates DERIVED from map imagery — verify against pier operators at bind time."
+    },
+    "note": "Marmara shore and the Islands at full service speed — Bakırköy to Bostancı in about 45 minutes, Kadıköy to Büyükada in about 26.",
+    "fn": "fn9"
+  },
+  "hero": {
+    "copy": {
+      "headline": "Istanbul already runs one of the world's great ferry systems.",
+      "subline": "A fast, zero-emission, low-wake express tier south of the strait — the Marmara shore and the car-free Islands at full service speed, on piers that already operate, financed by private capital, in service of the city's carbon-neutral 2050 plan.",
+      "stat_chips": [
+        "53 piers, ~40M riders / yr today",
+        "12 stops, all existing piers",
+        "0 piers to build",
+        "Carbon-neutral 2050 — the city's plan"
+      ],
+      "small_print": "All times respect the strait's 10-knot limit and every harbor rule — no allowances assumed.",
+      "fn": "fn4"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/istanbul/assets/hero-public-istanbul.jpg"
+    },
+    "_internal": "Posture: the city's own scale leads (fn1), never an introducing-water-transit frame. Stop count = the 12 active nodes in geometry._internal; all are operating piers/marinas per NODES (suitability terms for new services are the open item, held internal). Climate chip per fn2."
+  },
+  "gap": {
+    "title": "Istanbul has already published the plan",
+    "copy": {
+      "lead": "This city is not waiting to be convinced about water transport — it runs one of the world's great ferry systems: 53 piers, about 903 sailings a day, around 40 million riders a year, and its own on-demand sea taxi above the ferry fares. What the water is missing is speed on the axes the road serves worst.",
+      "support": "Water today carries a low-single-digit share of cross-strait trips — the rail tunnel alone moves about 607,000 riders a day. A fast, low-wake, zero-emission express tier grows the water's share on trips the ferries serve slowly or not at all — the Marmara shore axis and the car-free Islands — in service of the city's own carbon-neutral 2050 plan.",
+      "fn": "fn3"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "İstanbul Climate Change Action Plan",
+          "quote": null,
+          "note": "Carbon-neutral by 2050, with published interim cuts of −52% by 2030 and −89% by 2040 — zero-emission transport is the city's own target.",
+          "fn": "fn2"
+        },
+        {
+          "plan": "Şehir Hatları operations today",
+          "quote": null,
+          "note": "53 piers, 30 vessels and about 903 sailings a day, carrying around 40 million riders a year — the pier inventory already exists.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "The city's own premium water tier",
+          "quote": null,
+          "note": "An on-demand sea taxi with a published tariff already runs — the city itself has priced premium water mobility above the ferry fare.",
+          "fn": "fn6"
+        },
+        {
+          "plan": "The open axis",
+          "quote": null,
+          "note": "Water carries a low-single-digit share of cross-strait trips while the rail tunnel alone moves ~607,000 a day — the growth is on the water.",
+          "fn": "fn3"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "Şehir Hatları scale from their own hakkımızda page (PRIMARY). Climate plan from cevre.ibb.istanbul (PRIMARY). Ridership shares İBB-reported 2025 daily averages via press (SECONDARY — hedged 'as reported' in fn3). Sea-taxi existence rendered qualitatively only; its numeric tariff is not rendered (verify at deniztaksi.istanbul first). No quotes rendered because no verbatim plan language was captured as a quotable sentence this pass — plan figures render as figures instead.",
+      "merge_note": "gap + plan alignment merged into one section per the Dubai/Seattle v3 pattern — the city's own operations and published plan do the selling."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing pier. No terminals to build.",
+      "body": "Zero terminal capital cost for the city. Service can start at public piers, licensed marinas and the cruise port that already operate — every one of the twelve stops on this network is an operating landing today."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "12 of 12 landings operating today",
+        "verified": 12,
+        "total": 12
+      }
+    },
+    "_internal": "All 12 active nodes are existing, operating piers/marinas per NODES-ISTANBUL.md §1 (Şehir Hatları pier list, legacy seabus terminals, licensed marinas — no planned facilities used). Open items held internal: berth terms and suitability for new fast services (incl. Bakırköy) to be verified at bind time; the three roadmap nodes (İstinye, Anadolu Kavağı, Maltepe/Kartal) are NOT counted and render only as roadmap items in the reference block."
+  },
+  "posture": {
+    "copy": {
+      "framing": "One conversation, not two. Istanbul already operates one of the world's most-used urban water networks and licenses private operators beside it — the posture here is extension: a fast, zero-emission express tier above the ferry system the city already runs, and toward the climate targets the city has already published.",
+      "enable_track": "License the tier: line permission, tariff terms and pier access sit with the city's own transport authority. Private capital finances the vessels — the ask is licensing and landings, not money.",
+      "operate_track": "Bring the vessels inside the city's family — a premium express product above the ferry network, run the way the city already runs its sea taxi, counted toward its own climate and ridership goals."
+    },
+    "data": {
+      "weighting": "operate_dominant",
+      "operate_proof_points": [
+        {
+          "body": "İstanbul Metropolitan Municipality",
+          "proof": "Plans and coordinates all city transport, owns the ferry operator and the on-demand sea taxi, and decides routes, tariffs and line permissions for scheduled water transport through its own transport authority."
+        },
+        {
+          "body": "Şehir Hatları",
+          "proof": "53 piers, 30 vessels, about 903 sailings a day and around 40 million riders a year — one of the world's great ferry operations, and the pier inventory these waters already have."
+        },
+        {
+          "body": "İstanbul Climate Change Action Plan",
+          "proof": "Carbon-neutral by 2050 with −52% by 2030 — a zero-emission express tier is additive capacity toward targets the city has already set."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP-ISTANBUL.md §6: dual, İBB-led → OPERATE-first with ENABLE fallback. Enum operate_dominant affects order/emphasis only; both tracks render. Licensing renders calmly as 'the city's own transport authority' — the coordination body's acronym and decision-record citations never render (kill rule); regulation names live in footnotes only. Never framed as replacing the ferries; the ferry triangle the city serves superbly is deliberately not overlaid. Private-operator precedent (İDO/Dentur/Turyol) supports the Enable track as landscape fact — no partnership claims."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling — measurable progress toward the city's carbon-neutral 2050 plan, on the water where the city already leads.",
+        "Minimal wake and near-silent at speed — the stated purposes of the strait's speed and noise rules, served by design.",
+        "Time returned on the axes the road serves worst — the Marmara shore and the car-free Islands — and a visitor economy joined to the water."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "About 40 million riders a year already ride the city's own ferries, across 53 piers",
+          "note": "Water transit at scale is proven here. An express tier grows the water's share — it does not replace the ferries.",
+          "fn": "fn1"
+        },
+        {
+          "stat": "The rail tunnel alone averaged ~607,000 riders a day in 2025 — water's cross-strait share is low-single-digit",
+          "note": "The gap is not demand; it is speed. The fast axes are south of the strait, where full service speed is legal.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "15,655,924 residents on two continents, one strait",
+          "note": "The east–west commute economy crosses the Bosphorus or rides the Marmara shore — the axis this network serves.",
+          "fn": "fn8"
+        },
+        {
+          "stat": "17.5 million foreign visitors in 2025, and more than 625,000 cruise passengers at the city's ports",
+          "note": "Türkiye's most-visited city — cruise flows join the network dockside at Karaköy.",
+          "fn": "fn7"
+        },
+        {
+          "stat": "The Princes' Islands are car-free — every trip there is a water trip",
+          "note": "Summer weekends multiply Islands traffic; a 26-minute express cuts typical crossing times by half or more.",
+          "fn": "fn9"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "sehirhatlari.istanbul hakkımızda (PRIMARY — 53 piers / 30 vessels / ~903 sailings / ~40M pax)",
+        "İBB-reported 2025 daily averages via press (SECONDARY — Marmaray 607K/day, Metrobüs 748K/day; hedged 'as reported')",
+        "TÜİK ADNKS 2024 (PRIMARY — 15,655,924)",
+        "TÜİK Tourism Statistics Q4-2025 (PRIMARY — 63.9M visitors, $65.2B) + Ministry year-end via press (SECONDARY — İstanbul 17.5M, cruise 625K+; hedged 'as reported')"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). Islands seasonal surge carried as the fifth stat with the honest qualitative form (annual visitation number UNSOURCED — never rendered)."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "The strait's rules are the design brief.",
+      "framing": "Inside the Bosphorus, every vessel is held to 10 knots over the ground — so this network puts its speed where the rules allow it: the open Marmara and the Islands. The purposes behind the strait's rules — wake, noise, safety — are what a foiling electric vessel is built to serve.",
+      "ask": "No speed allowance is assumed anywhere on this page. Cross-strait legs run at the limit, hull-borne, sold as comfort and zero emissions — never as a time claim. Where the city wishes to measure wake and noise, we welcome the measurement.",
+      "chips": [
+        "Wake ✓ minimal by design",
+        "Noise ✓ within the 85 dB rule",
+        "10 kn ✓ respected in the strait"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null,
+      "dubai_instrument": null
+    },
+    "expander": {
+      "title": "Why the network lives south of the strait",
+      "body": [
+        "The strait regulations cap all traffic at 10 knots over the ground inside the Bosphorus, and fast craft are expressly held to that limit north of the harbor line. South of it, on the open Marmara, no blanket cap applies — so the trunk line and the Islands express run at full service speed, where the hydrofoil's advantage is decisive, and the cross-strait shuttle stays an honest comfort tier at the same speed as today's ferries.",
+        "The Harbor Master's own December 2024 letter documents serious wake damage to moored vessels from fast craft in the Golden Horn. A foilborne electric vessel produces minimal wake at speed and runs near-silent — the concern in that letter, answered by design. The Golden Horn itself is not part of this network: its harbor rules and the protection of moored vessels make it unsuitable for fast service, and we honor that."
+      ],
+      "fn": "fn5"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "Türk Boğazları Deniz Trafik Düzeni Yönetmeliği (Presidential Decree No. 1426), Art. 14(1)",
+          "type": "numeric limit",
+          "detail": "10 kn over-ground transit speed through the Istanbul and Çanakkale Straits",
+          "source": "mevzuat.gov.tr text (PRIMARY per SPEED-RULES-ISTANBUL.md)"
+        },
+        {
+          "instrument": "İstanbul Liman Başkanlığı, Yerel Deniz Trafiği Rehberi",
+          "type": "local blanket cap + HSC clause + purpose evidence",
+          "detail": "10 kn over-ground for all vessels inside strait limits; high-speed craft held to 10 kn north of the İnci Burnu–Ahırkapı line; wash-reduction duty outside strait limits; 85 dB noise rule; 4-kn zones at Kalamış/Moda",
+          "source": "Harbor Master guide PDF (PRIMARY)"
+        },
+        {
+          "instrument": "İstanbul Liman Başkanlığı letter 02.12.2024, No. 2285999",
+          "type": "wake-damage documentation",
+          "detail": "serious damage to moored vessels from fast-craft wake in the Golden Horn; masters to be continuously warned",
+          "source": "DTO circular republishing the letter (PRIMARY)"
+        }
+      ],
+      "relief_numbers_policy": "NO relief quantity renders anywhere: no lawful foiling allowance exists inside the strait today (SPEED-RULES headline determination — never model it), and the network is designed not to need one. The 'measure us' line is a wake/noise measurement invitation, not a speed-relief ask. Letter number and decree article numbers never render — regulation names in footnotes only.",
+      "south_boundary_basis": "'South of the harbor line' = the İnci Burnu–Ahırkapı line per the HSC clause; boundary interpretation DERIVED, corroborated by decades of seabus operation on the Marmara."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Committed riders anchor the schedule — monthly seats on the Marmara trunk, priced from the city's own fare ladder; a derived band, pending confirmation.",
+      "public_partners": "Public partners license and land the service — line permission, tariff terms and pier access through the city's own transport authority.",
+      "fleet_investors": "Fleet investors finance the vessels — private capital behind the tier, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because this run has no employer page (international addendum)."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and low-risk: one corridor on existing piers, measured wake and noise, the strait's rules respected in full — specified with the city against its own climate targets."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Dubai/Seattle v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Istanbul's water-transport landscape is deep and clearly governed. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "İstanbul Metropolitan Municipality (İBB)",
+              "classification": "operate",
+              "role": "Plans and coordinates public transport city-wide; owns the ferry operator and the on-demand sea taxi; routes, tariffs and line permissions for scheduled city water transport are decided through its own transport authority. Steward of the carbon-neutral 2050 plan."
+            },
+            {
+              "body": "Şehir Hatları",
+              "classification": "operate",
+              "role": "The city's ferry operator: 53 piers, 30 vessels, about 903 sailings a day and around 40 million riders a year across the strait, the Islands and the tour lines — the pier inventory of these waters."
+            },
+            {
+              "body": "Ministry of Transport and Infrastructure",
+              "classification": "permitting_gate",
+              "role": "The national maritime layer: vessel registration and flag, survey and certification, and crew licensing. Its Istanbul Harbor Master administers the port area, publishes the local marine traffic guide, and holds the strait's speed and noise rules."
+            },
+            {
+              "body": "Directorate General of Coastal Safety",
+              "classification": "enable",
+              "role": "Operates the strait's vessel traffic services and pilotage and announces current and closure conditions — the operational safety layer every schedule on this page respects."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "The coordination body's acronym and decision-record citations never render (kill rule) — rendered as 'its own transport authority'. Sea-taxi numeric tariff not rendered (verify at source). End-to-end licensing sequence is DERIVED in research — never rendered as claims; only the calm 'route terms sit with the city's own transport authority' form renders. No authority contacts render anywhere. No inter-city bodies rendered."
+        }
+      },
+      "operating_landscape": {
+        "title": "Operating landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Private and mixed operation is long-established on these waters — facts only; no commercial relationship is implied with any operator named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "İDO",
+              "role": "Runs fast ferries and car ferries, today primarily on inter-city Marmara crossings."
+            },
+            {
+              "body": "Dentur Avrasya",
+              "role": "A private operator of cross-strait crossings and tours — reported at around 40 vessels and some 50,000 riders a day."
+            },
+            {
+              "body": "Turyol",
+              "role": "A cooperative-origin private operator running cross-strait and Islands services and tours."
+            },
+            {
+              "body": "Mavi Marmara",
+              "role": "A licensed private operator of local passenger lines."
+            }
+          ]
+        },
+        "_internal": "Landscape facts only, per AUTHORITY-MAP-ISTANBUL.md §5 — they evidence that licensed private operation is normal here (Enable-track precedent). İDO privatization detail not rendered (exact current ownership unverified). Dentur figures from the development-agency study (SECONDARY) — hedged 'reported'. This subsection is an Istanbul addition to the Dubai reference pattern: the operator landscape is itself the Enable-track evidence."
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We extend the water network, not compete with it — the city's ferries keep doing what they do superbly, and their busiest crossings are deliberately left untouched."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Yenikapı",
+              "connects": "Ferry terminal fused to the cross-strait rail tunnel and two metro lines — the trunk's rail superhub"
+            },
+            {
+              "station": "Kadıköy",
+              "connects": "The Asian side's biggest interchange — metro, rail and dense ferry lines; this network's first interchange"
+            },
+            {
+              "station": "Kabataş",
+              "connects": "Tram and funicular below Taksim — the European premium gate and the second interchange"
+            },
+            {
+              "station": "Karaköy / Galataport",
+              "connects": "The cruise port and historic pier — arrival-day visitor flows join the network dockside"
+            },
+            {
+              "station": "Levent & Maslak (inland business districts)",
+              "connects": "Not on the water — reached by rail from the Kabataş and Kadıköy interchanges; this network never claims door-to-door service there"
+            },
+            {
+              "station": "Roadmap landings",
+              "connects": "İstinye and Anadolu Kavağı on the upper Bosphorus, and the Maltepe–Kartal shore — future stops only once berth terms are verified"
+            }
+          ]
+        },
+        "_internal": "Pairs from NODES-ISTANBUL.md and DEMAND-POOLS-ISTANBUL.md §5. The inland-CBD honesty pair is deliberate (never claim door-to-door CBD service). Roadmap landings render exactly as roadmap with verification status stated — no dates. Complement framing only; no fare comparison with subsidized modes."
+      }
+    },
+    "_internal": "Authority landscape + Operating landscape + Modal integration rendered as a collapsed reference block per the Dubai v3 pattern (Operating landscape is an Istanbul-specific third subsection — flagged as a deviation)."
+  },
+  "_internal": {
+    "scope": "City-internal corridors only, all south-of-strait full-speed or in-strait at the legal cap; zero Atlas bindings (see geometry._internal — cluster istanbul-turkey exists for later corridor inheritance; geometry new-authored for the Grok seal). Inter-city service never renders. No launch dates, no service-start years. The cross-strait shuttle renders only as a comfort tier with no time claim; the Golden Horn renders only as excluded; the ferry triangle renders only as deliberately untouched. FX: 47.76 TRY/USD, TCMB indicative mid, retrieved 2026-08-16 — date lives here only.",
+    "verification_ledger": "PRIMARY-verified renderables: Şehir Hatları scale (their own site), climate plan targets (cevre.ibb.istanbul), 10-kn strait regime + HSC clause + 85 dB + 4-kn zones (decree text + Harbor Master guide), wake letter (DTO circular of the 02.12.2024 letter), population 15,655,924 (TÜİK ADNKS 2024), Türkiye tourism totals (TÜİK), charter listings (vendor-published). SECONDARY, rendered WITH 'as reported' hedge: Marmaray 607K/day + Metrobüs 748K/day (İBB via press), fare ladder figures (Feb-2026 tariff via press — re-verify at sehirhatlari.istanbul before any regeneration), İstanbul 17.5M visitors + 625K+ cruise (ministry year-end via press), Dentur ~40 vessels/~50K day (development-agency study). SECONDARY/UNSOURCED, therefore NEVER rendered: sea-taxi numeric tariff, İDO ownership detail, Adalar annual visitation, bridge vehicle counts, marina capacities, electric-ferry program status, end-to-end licensing sequence, any quantified yalı-damage claim (the Harbor Master letter is the citable fact), road peak times as fact (hedged fn9).",
+    "positioning_rules": "Never present the tier as introducing water transit or replacing the ferries; never run a subsidized-fare comparison; the premium tier extends the fare ladder the city already prices (base fare → ferries → Islands fares → sea taxi). The ferry triangle the city serves superbly is deliberately not overlaid, and that renders as respect, not gap."
+  }
+}
