@@ -188,6 +188,7 @@
 
   /* ── Network Shift interactive 4a ──────────────────── */
   function renderNetworkShift(s) {
+    // open_network_line = quiet line under the interactive (contract-locked)
     return `
       <div class="section-block network-shift ns-section" data-reveal data-home="claim.network_shift">
         <div class="section-inner">
@@ -199,11 +200,10 @@
             <div id="ns-mount" class="ns-mount"></div>
           </div>
         </div>
-        ${
-          s.closing_line
-            ? `<div class="section-inner"><p class="ns-kicker">${nl(s.closing_line)}</p></div>`
-            : ''
-        }
+        <div class="section-inner ns-after">
+          ${s.open_network_line ? `<p class="ns-open-line">${esc(s.open_network_line)}</p>` : ''}
+          ${s.closing_line ? `<p class="ns-kicker">${nl(s.closing_line)}</p>` : ''}
+        </div>
       </div>`;
   }
 
@@ -275,19 +275,33 @@
   /* ── Section renderers ─────────────────────────────── */
   const R = {
     'text-block'(s) {
-      // About Navier — manifesto under fleet plate
-      const body = s.body || '';
-      const goldPhrase = '5× less energy';
-      let htmlBody = nl(body);
-      if (body.includes(goldPhrase)) {
-        htmlBody = esc(body)
-          .replace(/\n/g, '<br/>')
-          .replace(goldPhrase, `<span class="gold-em">${goldPhrase}</span>`);
-      }
+      // Legacy fallback — About is now thesis-strands (contract-locked)
       return `
         <div class="section-block manifesto" data-reveal>
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          <p class="manifesto-body">${htmlBody}</p>
+          ${s.body ? `<p class="manifesto-body">${nl(s.body)}</p>` : ''}
+        </div>`;
+    },
+
+    'thesis-strands'(s) {
+      // About Navier v2 — identity · thesis · four labeled strands. Copy contract-locked.
+      const strands = (s.strands || [])
+        .map(
+          (st) => `
+          <div class="strand">
+            <div class="strand-label">${esc(st.label || '')}</div>
+            <div class="strand-body">${esc(st.body || '')}</div>
+          </div>`,
+        )
+        .join('');
+      return `
+        <div class="section-block stage-section about-stage" data-reveal data-home="claim.about">
+          <div class="section-inner about-stage-inner">
+            ${s.title ? `<p class="stage-kicker">${esc(s.title)}</p>` : ''}
+            ${s.identity ? `<p class="about-identity">${esc(s.identity)}</p>` : ''}
+            ${s.thesis ? `<h2 class="about-thesis h2">${esc(s.thesis)}</h2>` : ''}
+            <div class="strands-grid media-inner" style="max-width:none;padding:0">${strands}</div>
+          </div>
         </div>`;
     },
 
@@ -680,6 +694,7 @@
     },
 
     'stacked-cards'(s) {
+      // Revenue-lines: flywheel_line sits ABOVE cards (contract-locked verbatim)
       const cards = (s.cards || [])
         .map(
           (c) => `
@@ -688,9 +703,10 @@
         )
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal>
+        <div class="section-block shell-stage revenue-lines-stage" data-reveal>
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
+          ${s.flywheel_line ? `<p class="flywheel-line">${esc(s.flywheel_line)}</p>` : ''}
           <div class="stack-cards">${cards}</div>
           ${s.formula_line ? `<div class="formula">${esc(s.formula_line)}</div>` : ''}
         </div>`;
@@ -877,6 +893,7 @@
     },
 
     'defense-panel'(s) {
+      // Dual-use: intro primary; sub_line secondary (contract-locked)
       const da = homeAssets('gtm.defense') || {};
       const plateSrc = da.plate ? mediaPath(da.plate) : '';
       const inset = da.inset ? mediaPath(da.inset) : '';
@@ -893,10 +910,13 @@
         )
         .join('');
       return `
-        <div class="section-block" data-reveal data-home="gtm.defense">
-          ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
-          ${s.subhead ? `<p class="lead shell-prose">${esc(s.subhead)}</p>` : ''}
-          ${s.intro ? `<p class="body-text shell-prose">${esc(s.intro)}</p>` : ''}
+        <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
+          <div class="section-inner">
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${s.intro ? `<p class="dual-use-intro">${esc(s.intro)}</p>` : ''}
+            ${s.sub_line ? `<p class="dual-use-sub">${esc(s.sub_line)}</p>` : ''}
+          </div>
           ${
             plateSrc
               ? `<div class="cinema defense-cinema" data-home="gtm.defense">
@@ -909,7 +929,7 @@
           }
           <div class="shell-stage">
             ${inset ? plate(inset, { home: 'gtm.defense' }) : ''}
-            ${blocks}
+            <div class="dual-use-blocks">${blocks}</div>
             ${s.deployment_line ? `<p class="closing-line">${esc(s.deployment_line)}</p>` : ''}
             ${s.fine_print ? `<p class="muted">${esc(s.fine_print)}</p>` : ''}
           </div>

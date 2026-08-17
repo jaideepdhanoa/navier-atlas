@@ -256,6 +256,112 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   line-height: 1.55; color: var(--text-0); max-width: 22em;
 }
 
+/* About Navier v2 — thesis + four strands (contract-locked) */
+.about-stage {
+  min-height: min(100vh, 920px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.about-stage-inner { width: 100%; }
+.about-identity {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  margin: 0 0 18px;
+}
+.about-thesis {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(28px, 3.4vw, 48px) !important;
+  font-weight: 600;
+  line-height: 1.2 !important;
+  max-width: 22ch;
+  margin: 0 0 clamp(32px, 5vw, 56px) !important;
+  color: var(--text-0);
+}
+.strands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+  width: 100%;
+}
+.strand {
+  padding: 22px 18px 20px;
+  border-radius: 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-top: 2px solid rgba(185, 154, 95, 0.55);
+  min-height: 160px;
+}
+.strand-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  margin-bottom: 12px;
+}
+.strand-body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-1);
+}
+@media (max-width: 960px) {
+  .strands-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .strands-grid { grid-template-columns: 1fr; }
+}
+
+/* Network Shift — quiet open-network line under interactive */
+.ns-after { margin-top: 8px; }
+.ns-open-line {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 48ch;
+  margin: 0 0 16px;
+  font-weight: 400;
+}
+
+/* Revenue flywheel line above cards */
+.flywheel-line {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-1);
+  max-width: 62ch;
+  margin: 8px 0 20px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(185, 154, 95, 0.45);
+}
+
+/* Dual-use intro primary / sub secondary */
+.dual-use-intro {
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.55;
+  color: var(--text-0);
+  max-width: 52ch;
+  margin: 8px 0 12px;
+  font-weight: 500;
+}
+.dual-use-sub {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-2);
+  max-width: 48ch;
+  margin: 0 0 20px;
+}
+.dual-use-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+@media (max-width: 720px) {
+  .dual-use-blocks { grid-template-columns: 1fr; }
+}
+
 /* Gold stats */
 .gold-stat-band {
   display: grid; gap: 28px 24px;
