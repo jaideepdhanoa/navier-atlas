@@ -137,12 +137,12 @@ export function buildInvest() {
     }
   }
 
-  // Template CSS/JS (+ Network Shift reference engine)
-  for (const f of ['invest.css', 'invest.js', 'network-shift.js']) {
+  // Template CSS/JS (+ Network Shift reference engine + pipeline geo)
+  for (const f of ['invest.css', 'invest.js', 'network-shift.js', 'pipeline-geo.js']) {
     const p = path.join(TEMPLATE, f);
     if (!fs.existsSync(p)) {
-      if (f === 'network-shift.js') {
-        console.warn('build-invest: network-shift.js missing');
+      if (f === 'network-shift.js' || f === 'pipeline-geo.js') {
+        console.warn(`build-invest: ${f} missing`);
         continue;
       }
       console.error(`FATAL: missing template ${p}`);

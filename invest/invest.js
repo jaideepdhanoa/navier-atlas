@@ -326,40 +326,78 @@
     },
 
     'flip-cards'(s) {
-      // Three costs — 3-up with gold numerals, heritage divider before is injected by claim chapter
-      const cards = (s.pairs || [])
+      // v1-blocking: two-stage scroll morph — costs pillars → lever columns (deck 435/436)
+      const pairs = s.pairs || [];
+      const costRail = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
+          const title = pair.cost.title || '';
+          const lead = title.split(/\s*[—–-]\s*/)[0] || title;
+          const rest = title.slice(lead.length).replace(/^\s*[—–-]\s*/, '');
           return `
-          <div class="cost-card" data-flip="${i}">
-            <div class="cost-num">${n}</div>
-            <div class="cost-front">
-              <div class="t">${esc(pair.cost.title)}</div>
-              <div class="b">${esc(pair.cost.body)}</div>
-            </div>
-            <div class="cost-lever">
-              <div class="t">${esc(pair.lever.title)}</div>
-              <div class="mech">${esc(pair.lever.mechanism)}</div>
-              <div class="b">${esc(pair.lever.proof)}</div>
+          <div class="cm-cost-row" data-i="${i}">
+            <span class="cm-num">${n}</span>
+            <div>
+              <div class="cm-cost-lead">${esc(lead)}</div>
+              ${rest ? `<div class="cm-cost-sub">${esc(rest)}</div>` : ''}
+              <div class="cm-cost-body">${esc(pair.cost.body || '')}</div>
             </div>
           </div>`;
         })
         .join('');
+      const leverCols = pairs
+        .map((pair, i) => {
+          const n = String(i + 1).padStart(2, '0');
+          return `
+          <div class="cm-lever-col" data-i="${i}">
+            <div class="cm-num">${n}</div>
+            <div class="cm-lever-title">${esc(pair.lever.title || '')}</div>
+            <div class="cm-lever-mech">${esc(pair.lever.mechanism || '')}</div>
+            <div class="cm-lever-proof">${esc(pair.lever.proof || '')}</div>
+          </div>`;
+        })
+        .join('');
       const why = s.why_now
-        ? `<div class="why-now shell-stage">
+        ? `<div class="why-now">
             <h3 class="h3">${esc(s.why_now.title)}</h3>
             <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
             ${s.why_now.closing_line ? `<p class="closing-line">${esc(s.why_now.closing_line)}</p>` : ''}
           </div>`
         : '';
       return `
-        <div class="section-block" data-reveal data-home="claim.three_costs">
-          ${s.headline ? `<h2 class="h2 shell-prose">${esc(s.headline)}</h2>` : ''}
-          ${s.subhead ? `<p class="lead shell-prose">${esc(s.subhead)}</p>` : ''}
-          ${s.costs_kicker ? `<p class="kicker shell-prose">${esc(s.costs_kicker)}</p>` : ''}
-          ${s.flip_headline ? `<p class="eyebrow shell-prose" style="margin-top:28px">${esc(s.flip_headline)}</p>` : ''}
-          <div class="cost-grid shell-stage">${cards}</div>
-          ${why}
+        <div class="section-block costs-morph-section" data-reveal data-home="claim.three_costs">
+          <div class="section-inner">
+            ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+          </div>
+          <div class="costs-morph" id="costs-morph">
+            <div class="costs-morph-sticky">
+              <div class="cm-stage cm-stage-costs" data-stage="costs">
+                <div class="cm-grid">
+                  <div class="cm-rail">
+                    <p class="stage-kicker">THREE COSTS</p>
+                    ${costRail}
+                  </div>
+                  <div class="cm-photo-stack">
+                    <p class="cm-kicker">${esc(s.costs_kicker || 'Different missions. Same constraints.')}</p>
+                    <div class="cm-stack-card" aria-hidden="true"></div>
+                    <div class="cm-stack-card" aria-hidden="true"></div>
+                    <div class="cm-stack-card" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="cm-stage cm-stage-levers" data-stage="levers">
+                <div class="cm-levers-head">
+                  <p class="stage-kicker">THREE LEVERS</p>
+                  ${s.flip_headline ? `<h3 class="cm-flip-h">${esc(s.flip_headline)}</h3>` : ''}
+                </div>
+                <div class="cm-levers-grid">${leverCols}</div>
+              </div>
+            </div>
+          </div>
+          <div class="section-inner">${why}
+            ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+          </div>
         </div>`;
     },
 
@@ -920,69 +958,40 @@
         </div>`;
     },
 
-    'stat-band'(s) {
-      // v5 P1-4: native charts only — chart PNGs banned
-      const stats = s.stats || [];
-      function parseNum(v) {
-        if (v == null) return null;
-        const m = String(v).replace(/,/g, '').match(/-?[\d.]+/);
-        return m ? parseFloat(m[0]) : null;
-      }
-      const items = stats.map(function (st, i) {
-        var pct = 35 + i * 14;
-        var n = parseNum(st.value);
-        if (n != null) {
-          if (String(st.value).indexOf('%') >= 0) pct = Math.min(100, Math.max(8, n));
-          else if (n >= 100) pct = Math.min(96, 25 + Math.log10(n + 1) * 22);
-          else pct = Math.min(100, Math.max(8, n));
-        }
-        return { label: st.label || '', value: st.value || '', pct: pct };
-      });
-      const gm = stats.filter(function (x) { return /margin|gross/i.test(x.label || ''); })[0];
-      const marginPct = gm ? parseNum(gm.value) : 80;
-      const chartH = 24 + items.length * 52;
-      const bars = items
-        .map(function (it, i) {
-          var y = 18 + i * 52;
-          return (
-            '<text x="0" y="' + y + '" fill="#8f8f96" font-size="11" font-family="Inter,sans-serif">' +
-            esc(it.label).slice(0, 48) +
-            '</text>' +
-            '<text x="400" y="' + y + '" text-anchor="end" fill="#e0cb8f" font-size="15" font-family="Playfair Display,Georgia,serif">' +
-            esc(it.value) +
-            '</text>' +
-            '<rect x="0" y="' + (y + 10) + '" width="400" height="12" rx="4" fill="#1e1e22"/>' +
-            '<rect class="nbar-fill" x="0" y="' + (y + 10) + '" width="0" height="12" rx="4" fill="#d4af5f" data-w="' +
-            it.pct +
-            '" data-max="400"/>'
-          );
+    'native-line-charts'(s) {
+      // Money v2 lead: FY26E–FY30E ramp — exact contract series, native SVG only
+      // Series data stays in INVEST_DATA.money; draw pass reads it after mount
+      const charts = (s.charts || [])
+        .map(function (ch) {
+          return `
+          <div class="native-chart ramp-chart" data-reveal data-ramp="${esc(ch.id || '')}">
+            <p class="chart-title">${esc(ch.title || '')}</p>
+            <div class="ramp-svg-host" data-chart-id="${esc(ch.id || '')}"></div>
+            <div class="ramp-legend" data-legend="${esc(ch.id || '')}"></div>
+          </div>`;
         })
         .join('');
       return `
-        <div class="section-block" data-reveal data-home="money.charts" data-bars>
-          <div class="section-inner">
-            ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
-            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-            ${goldStats(s.stats)}
-            ${s.footnote ? `<p class="muted">${esc(s.footnote)}</p>` : ''}
-            <div class="native-charts">
-              <div class="native-chart" data-reveal>
-                <p class="chart-title">Operating plan metrics</p>
-                <p class="chart-sub">FY30E · money contract (conservative case)</p>
-                <svg viewBox="0 0 400 ${chartH}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Operating plan metrics">${bars}</svg>
-              </div>
-              <div class="native-chart" data-reveal>
-                <p class="chart-title">${esc((gm && gm.label) || 'Gross margin on recurring revenue')}</p>
-                <p class="chart-sub">Native SVG — no PNG upscale</p>
-                <svg viewBox="0 0 320 130" role="img" aria-label="Margin">
-                  <rect x="20" y="36" width="280" height="18" rx="9" fill="#1e1e22"/>
-                  <rect class="nbar-fill" x="20" y="36" width="0" height="18" rx="9" fill="#7dd3c0" data-w="${Math.min(100, marginPct || 80)}" data-max="280"/>
-                  <text x="160" y="90" text-anchor="middle" fill="#e0cb8f" font-size="32" font-family="Playfair Display,Georgia,serif">${esc((gm && gm.value) || '~80%')}</text>
-                </svg>
-                ${s.footnote ? `<p class="basis">${esc(s.footnote)}</p>` : ''}
-              </div>
-            </div>
-          </div>
+        <div class="section-block shell-stage" data-reveal data-home="money.charts" data-ramp-root>
+          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+          <div class="native-charts ramp-charts">${charts}</div>
+          ${s.note ? `<p class="muted">${esc(s.note)}</p>` : ''}
+        </div>`;
+    },
+
+    'stat-band'(s) {
+      // FY30 chips — secondary to ramp charts (money v2)
+      const foot =
+        s.footnote && !/^[a-z0-9-]+$/i.test(String(s.footnote).trim())
+          ? s.footnote
+          : '';
+      return `
+        <div class="section-block shell-stage" data-reveal data-home="money.charts">
+          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+          ${goldStats(s.stats)}
+          ${foot ? `<p class="muted">${esc(foot)}</p>` : ''}
         </div>`;
     },
 
@@ -1100,9 +1109,9 @@
       return { src: mediaPath(la.n45_explorer), photo: true, dev: false };
     }
     if (id === 'n80-valkyrie') {
-      // n80-render-v1 pending approval — wireframe until cleared
-      const src = la.n80_valkyrie || 'assets/deck/fleet-wireframe-n80.png';
-      return { src: mediaPath(src), photo: false, dev: true };
+      // n80-render-v1 APPROVED 2026-08-17 — photoreal + render chip
+      const src = la.n80_valkyrie || 'assets/deck/n80-render-v1.png';
+      return { src: mediaPath(src), photo: true, dev: true };
     }
     if (id === 'n180-morpheus' && la.n180_morpheus) {
       return { src: mediaPath(la.n180_morpheus), photo: true, dev: false };
@@ -1160,30 +1169,73 @@
       </div>`;
   }
 
+  function pipeNodeFor(party, status) {
+    // Map anonymized pipeline rows → public geographic anchors (no partner resolution)
+    const s = String(party || '');
+    const st = String(status || '');
+    const signed = /SIGNED/i.test(st);
+    const advanced = /ADVANCED|CLOSING/i.test(st);
+    const weight = signed ? 'signed' : advanced ? 'advanced' : /defense|navy|police|prime/i.test(s + st) ? 'defense' : 'pipeline';
+    // Prefer Atlas city ids when present; else public geo fallbacks only for named places in the row
+    if (/maldives/i.test(s)) return { ids: ['maldives'], coords: [[73.509, 4.175]], label: 'Maldives', weight };
+    if (/gulf nation/i.test(s)) return { ids: ['sharjah-uae', 'ras-al-khaimah-uae', 'fujairah-uae', 'neom-sindalah-ksa'], coords: [[55.38, 25.36]], label: 'Gulf', weight };
+    if (/turkish/i.test(s)) return { ids: ['antalya-turkey', 'bodrum-turkey', 'cesme-izmir-turkey'], coords: [[28.98, 41.01]], label: 'Türkiye', weight };
+    if (/gulf super-app/i.test(s)) return { ids: ['sharjah-uae', 'manama-bahrain'], coords: [[55.27, 25.2]], label: 'Gulf', weight };
+    if (/korean/i.test(s)) return { ids: ['seoul-incheon-korea', 'busan-geoje-korea'], coords: [[126.98, 37.56]], label: 'Korea', weight };
+    if (/u\.?s\.?\s*public ferry/i.test(s)) return { ids: ['boston-new-england-usa', 'new-york-harbor-usa', 'tampa-bay-sarasota-florida-usa'], coords: [[-71.05, 42.36]], label: 'U.S. coasts', weight };
+    if (/u\.?s\.?\s*navy/i.test(s)) return { ids: ['new-york-harbor-usa', 'boston-new-england-usa'], coords: [[-74.0, 40.7]], label: 'U.S. Navy', weight };
+    if (/u\.?s\.?\s*defense/i.test(s)) return { ids: ['new-york-harbor-usa', 'boston-new-england-usa'], coords: [[-77.04, 38.91]], label: 'U.S. defense', weight };
+    if (/gulf defense/i.test(s)) return { ids: ['al-wakrah-qatar', 'sharjah-uae', 'neom-sindalah-ksa'], coords: [[51.53, 25.3]], label: 'Gulf defense', weight };
+    if (/gulf police/i.test(s)) return { ids: ['manama-bahrain', 'sharjah-uae'], coords: [[50.59, 26.23]], label: 'Gulf police', weight };
+    if (/coastal & archipelago/i.test(s)) return { ids: ['ha-long-bay-vietnam', 'palawan-philippines', 'phu-quoc-vietnam'], coords: [[103.85, 1.29]], label: 'Archipelagos', weight };
+    if (/global ridehail/i.test(s)) return { ids: ['seoul-incheon-korea', 'new-york-harbor-usa', 'manama-bahrain'], coords: [[103.85, 1.29]], label: 'Ridehail markets', weight };
+    return { ids: [], coords: [], label: '', weight: 'pipeline' };
+  }
+
   function renderPipeline() {
     const p = D['pipeline-map'];
     if (!p) return '';
-    const mapSrc = homeSrc('gtm.pipeline.map');
+    const homePipe = home('gtm.pipeline.map') || {};
+    const fallbackSrc = mediaPath(homePipe.fallback || homePipe.asset || 'assets/deck/world-pipeline-map.png');
     const stats = goldStats(p.gold_stats || []);
+    let rowIdx = 0;
     const tiers = (p.tiers || [])
       .map((t) => {
         const rows = (t.rows || [])
-          .map(
-            (r) => `
-          <div class="pipe-row"><div class="party">${esc(r.party)}</div><div class="status">${esc(r.status)}</div></div>`,
-          )
+          .map((r) => {
+            const i = rowIdx++;
+            const node = pipeNodeFor(r.party, r.status);
+            const weight = node.weight;
+            return `
+          <button type="button" class="pipe-row weight-${esc(weight)}" data-pipe-row="${i}" data-weight="${esc(weight)}" data-coords="${esc(JSON.stringify(node.coords))}" data-ids="${esc((node.ids || []).join(','))}">
+            <span class="party">${esc(r.party)}</span>
+            <span class="status">${esc(r.status)}</span>
+          </button>`;
+          })
           .join('');
         return `<div class="pipe-tier"><h3>${esc(t.name)}</h3>${rows}</div>`;
       })
       .join('');
     return `
-      <div class="section-block" data-reveal data-home="gtm.pipeline.map">
-        ${p.eyebrow ? `<p class="eyebrow shell-prose">${esc(p.eyebrow)}</p>` : ''}
-        ${p.title ? `<h2 class="h2 shell-prose">${esc(p.title)}</h2>` : ''}
-        <div class="shell-stage">${stats}</div>
-        ${mapSrc ? cinema(mapSrc, { home: 'gtm.pipeline.map', vh: '75vh' }) : ''}
-        <div class="pipe-tiers shell-stage">${tiers}</div>
-        <div class="pipe-foot shell-prose">
+      <div class="section-block" data-reveal data-home="gtm.pipeline.map" id="pipeline-section">
+        <div class="section-inner">
+          ${p.eyebrow ? `<p class="eyebrow">${esc(p.eyebrow)}</p>` : ''}
+          ${p.title ? `<h2 class="h2">${esc(p.title)}</h2>` : ''}
+          ${stats}
+        </div>
+        <div class="pipe-layout media-inner">
+          <div class="pipe-map-host" id="pipe-map-host">
+            <div id="pipe-map" class="pipe-map" role="img" aria-label="Live pipeline map"></div>
+            <noscript>
+              ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" class="pipe-fallback-img" />` : ''}
+            </noscript>
+            <div class="pipe-map-fallback" id="pipe-map-fallback" hidden>
+              ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" loading="lazy" />` : ''}
+            </div>
+          </div>
+          <div class="pipe-tiers">${tiers}</div>
+        </div>
+        <div class="pipe-foot section-inner">
           ${p.coverage_line ? `<div>${esc(p.coverage_line)}</div>` : ''}
           ${p.capital_efficiency_line ? `<div class="accent-line">${esc(p.capital_efficiency_line)}</div>` : ''}
         </div>
@@ -1322,8 +1374,10 @@
   /* v5 P0-1 wrap */
   document.querySelectorAll('.section-block').forEach(function (block) {
     if (block.classList.contains('network-shift')) return;
+    if (block.classList.contains('costs-morph-section')) return;
+    if (block.id === 'pipeline-section') return;
     if (block.querySelector(':scope > .section-inner')) return;
-    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin')) return;
+    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin, :scope > .costs-morph')) return;
     var kids = [];
     while (block.firstChild) kids.push(block.removeChild(block.firstChild));
     if (!kids.length) return;
@@ -1332,8 +1386,8 @@
     kids.forEach(function (k) { inner.appendChild(k); });
     block.appendChild(inner);
   });
-  document.querySelectorAll('.video-grid, .ladder, .table-wrap, .media-duo, .native-charts, .roadmap, .thesis-board, .round, .pipe-tiers, .cost-grid, .team-layout, .demo-anchor, .unitecon, .flow-roles, .chips-3, .stack-cards').forEach(function (el) {
-    if (el.closest('.media-inner, .section-inner')) return;
+  document.querySelectorAll('.video-grid, .ladder, .table-wrap, .media-duo, .native-charts, .roadmap, .thesis-board, .round, .team-layout, .demo-anchor, .unitecon, .flow-roles, .chips-3, .stack-cards').forEach(function (el) {
+    if (el.closest('.media-inner, .section-inner, .pipe-layout')) return;
     var wrap = document.createElement('div');
     wrap.className = 'media-inner';
     el.parentNode.insertBefore(wrap, el);
@@ -1396,6 +1450,580 @@
     }, { threshold: 0.15 });
     io2.observe(el);
   });
+
+  /* ── Money ramp charts (native SVG, contract series only) ── */
+  (function drawRampCharts() {
+    var money = D.money;
+    if (!money) return;
+    var sec = (money.sections || []).filter(function (x) {
+      return x.type === 'native-line-charts' || x.id === 'ramp-charts';
+    })[0];
+    if (!sec) return;
+    var years = sec.years || [];
+    var W = 400;
+    var H = 200;
+    var pad = { t: 16, r: 16, b: 32, l: 44 };
+
+    function niceFmt(v) {
+      // Preserve authored contract precision (e.g. 512.1, 10.5, -11.8)
+      if (!isFinite(v)) return '';
+      if (Math.abs(v - Math.round(v)) < 1e-9) return String(Math.round(v));
+      return String(Math.round(v * 10) / 10);
+    }
+
+    function drawChart(ch) {
+      var host = document.querySelector('.ramp-svg-host[data-chart-id="' + ch.id + '"]');
+      var legend = document.querySelector('.ramp-legend[data-legend="' + ch.id + '"]');
+      if (!host) return;
+      var series = ch.series || [];
+      var allVals = [];
+      series.forEach(function (s) {
+        (s.values || []).forEach(function (v) {
+          allVals.push(+v);
+        });
+      });
+      if (!allVals.length || !years.length) return;
+      var minV = Math.min.apply(null, allVals.concat(ch.zero_line ? [0] : []));
+      var maxV = Math.max.apply(null, allVals.concat(ch.zero_line ? [0] : []));
+      if (minV === maxV) {
+        minV -= 1;
+        maxV += 1;
+      }
+      var span = maxV - minV;
+      minV -= span * 0.08;
+      maxV += span * 0.12;
+      var iw = W - pad.l - pad.r;
+      var ih = H - pad.t - pad.b;
+      function xAt(i) {
+        return pad.l + (years.length <= 1 ? iw / 2 : (i / (years.length - 1)) * iw);
+      }
+      function yAt(v) {
+        return pad.t + ih - ((v - minV) / (maxV - minV)) * ih;
+      }
+      var parts = [];
+      // grid
+      for (var g = 0; g < 4; g++) {
+        var gy = pad.t + (ih * g) / 3;
+        var gv = maxV - ((maxV - minV) * g) / 3;
+        parts.push(
+          '<line x1="' +
+            pad.l +
+            '" y1="' +
+            gy +
+            '" x2="' +
+            (W - pad.r) +
+            '" y2="' +
+            gy +
+            '" stroke="#2a2a30" stroke-width="1"/>',
+        );
+        parts.push(
+          '<text x="' +
+            (pad.l - 8) +
+            '" y="' +
+            (gy + 4) +
+            '" text-anchor="end" fill="#8f8f96" font-size="10" font-family="Inter,sans-serif">' +
+            niceFmt(gv) +
+            '</text>',
+        );
+      }
+      if (ch.zero_line && minV < 0 && maxV > 0) {
+        var zy = yAt(0);
+        parts.push(
+          '<line x1="' +
+            pad.l +
+            '" y1="' +
+            zy +
+            '" x2="' +
+            (W - pad.r) +
+            '" y2="' +
+            zy +
+            '" stroke="#5a5a62" stroke-width="1" stroke-dasharray="4 3"/>',
+        );
+      }
+      years.forEach(function (yr, i) {
+        parts.push(
+          '<text x="' +
+            xAt(i) +
+            '" y="' +
+            (H - 8) +
+            '" text-anchor="middle" fill="#8f8f96" font-size="10" font-family="Inter,sans-serif">' +
+            esc(yr) +
+            '</text>',
+        );
+      });
+      var colors = { primary: '#d4af5f', secondary: '#7dd3c0' };
+      series.forEach(function (ser, si) {
+        var vals = ser.values || [];
+        var col = colors[ser.style] || (si === 0 ? colors.primary : colors.secondary);
+        var pts = vals
+          .map(function (v, i) {
+            return xAt(i) + ',' + yAt(+v);
+          })
+          .join(' ');
+        var d = vals
+          .map(function (v, i) {
+            return (i === 0 ? 'M' : 'L') + xAt(i) + ' ' + yAt(+v);
+          })
+          .join(' ');
+        // area for primary
+        if (ser.style === 'primary' || si === 0) {
+          var baseY = yAt(Math.max(0, minV) === 0 || minV > 0 ? minV : 0);
+          if (ch.zero_line) baseY = yAt(0);
+          else baseY = pad.t + ih;
+          var area =
+            d +
+            ' L' +
+            xAt(vals.length - 1) +
+            ' ' +
+            baseY +
+            ' L' +
+            xAt(0) +
+            ' ' +
+            baseY +
+            ' Z';
+          parts.push(
+            '<path class="ramp-area" d="' +
+              area +
+              '" fill="' +
+              col +
+              '" fill-opacity="0.12"/>',
+          );
+        }
+        parts.push(
+          '<path class="ramp-line" d="' +
+            d +
+            '" fill="none" stroke="' +
+            col +
+            '" stroke-width="' +
+            (ser.style === 'secondary' ? 1.75 : 2.5) +
+            '" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>',
+        );
+        vals.forEach(function (v, i) {
+          parts.push(
+            '<circle class="ramp-dot" cx="' +
+              xAt(i) +
+              '" cy="' +
+              yAt(+v) +
+              '" r="3.5" fill="' +
+              col +
+              '"/>',
+          );
+          if (ser.style === 'primary' || series.length === 1) {
+            parts.push(
+              '<text x="' +
+                xAt(i) +
+                '" y="' +
+                (yAt(+v) - 10) +
+                '" text-anchor="middle" fill="#e0cb8f" font-size="11" font-family="Playfair Display,Georgia,serif">' +
+                niceFmt(+v) +
+                '</text>',
+            );
+          }
+        });
+      });
+      host.innerHTML =
+        '<svg viewBox="0 0 ' +
+        W +
+        ' ' +
+        H +
+        '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' +
+        esc(ch.title || '') +
+        '">' +
+        parts.join('') +
+        '</svg>';
+      if (legend) {
+        legend.innerHTML = series
+          .map(function (ser, si) {
+            var col = colors[ser.style] || (si === 0 ? colors.primary : colors.secondary);
+            return (
+              '<span class="ramp-leg-item"><i style="background:' +
+              col +
+              '"></i>' +
+              esc(ser.name || '') +
+              '</span>'
+            );
+          })
+          .join('');
+      }
+    }
+
+    (sec.charts || []).forEach(drawChart);
+
+    // draw-on-enter stroke animation
+    var ioRamp = new IntersectionObserver(
+      function (ents) {
+        ents.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.querySelectorAll('.ramp-line').forEach(function (line) {
+            line.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.2,.7,.2,1)';
+            line.style.strokeDashoffset = '0';
+          });
+          ioRamp.unobserve(en.target);
+        });
+      },
+      { threshold: 0.25 },
+    );
+    document.querySelectorAll('.ramp-chart').forEach(function (el) {
+      ioRamp.observe(el);
+    });
+  })();
+
+  /* ── Three-costs two-stage scroll morph ─────────────── */
+  (function initCostsMorph() {
+    var root = document.getElementById('costs-morph');
+    if (!root) return;
+    var costs = root.querySelector('.cm-stage-costs');
+    var levers = root.querySelector('.cm-stage-levers');
+    if (!costs || !levers) return;
+    if (reduceMotion) {
+      root.classList.add('is-static');
+      costs.style.opacity = '1';
+      levers.style.opacity = '1';
+      levers.style.position = 'relative';
+      return;
+    }
+    function onScrollCosts() {
+      var rect = root.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+      var total = Math.max(1, root.offsetHeight - vh * 0.5);
+      var p = -rect.top / total;
+      if (p < 0) p = 0;
+      if (p > 1) p = 1;
+      // hold costs 0–0.35, morph 0.35–0.7, hold levers 0.7–1
+      var t = 0;
+      if (p < 0.35) t = 0;
+      else if (p > 0.7) t = 1;
+      else t = (p - 0.35) / 0.35;
+      costs.style.opacity = String(1 - t);
+      costs.style.transform = 'translateY(' + t * -24 + 'px)';
+      levers.style.opacity = String(t);
+      levers.style.transform = 'translateY(' + (1 - t) * 28 + 'px)';
+      root.classList.toggle('on-levers', t > 0.55);
+    }
+    window.addEventListener('scroll', onScrollCosts, { passive: true });
+    onScrollCosts();
+  })();
+
+  /* ── Live Atlas pipeline map (MapLibre + city registry) ── */
+  (function initPipelineMap() {
+    var host = document.getElementById('pipe-map');
+    var fallback = document.getElementById('pipe-map-fallback');
+    if (!host) return;
+
+    function showFallback() {
+      if (fallback) fallback.hidden = false;
+      host.setAttribute('data-failed', '1');
+    }
+
+    if (reduceMotion) {
+      showFallback();
+      return;
+    }
+
+    var map = null;
+    var activeRow = null;
+
+    function weightColor(w) {
+      if (w === 'signed') return '#d4af5f';
+      if (w === 'advanced') return '#e0cb8f';
+      if (w === 'defense') return '#7dd3c0';
+      return '#8f8f96';
+    }
+
+    function loadScript(src) {
+      return new Promise(function (resolve, reject) {
+        if (document.querySelector('script[src="' + src + '"]')) {
+          resolve();
+          return;
+        }
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = function () {
+          resolve();
+        };
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    function loadCss(href) {
+      if (document.querySelector('link[href="' + href + '"]')) return;
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = href;
+      document.head.appendChild(l);
+    }
+
+    function cityIndex() {
+      var geo = window.INVEST_PIPELINE_GEO;
+      if (!geo || !geo.cities) return { byId: new Map(), all: [] };
+      var byId = new Map();
+      var all = geo.cities.map(function (c) {
+        var feat = {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [c[0], c[1]] },
+          properties: { id: c[2], name: c[3] },
+        };
+        byId.set(c[2], feat);
+        return feat;
+      });
+      return { byId: byId, all: all };
+    }
+
+    function highlightNodes(coords, weight) {
+      if (!map || !map.getSource('pipe-hi')) return;
+      var feats = (coords || []).map(function (c, i) {
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: c },
+          properties: { i: i, weight: weight || 'pipeline' },
+        };
+      });
+      map.getSource('pipe-hi').setData({ type: 'FeatureCollection', features: feats });
+      if (feats.length) {
+        var c0 = feats[0].geometry.coordinates;
+        map.easeTo({ center: c0, zoom: Math.max(map.getZoom(), 3.2), duration: 700 });
+      }
+    }
+
+    function clearHighlight() {
+      if (!map || !map.getSource('pipe-hi')) return;
+      map.getSource('pipe-hi').setData({ type: 'FeatureCollection', features: [] });
+    }
+
+    function bindRows() {
+      document.querySelectorAll('[data-pipe-row]').forEach(function (btn) {
+        function activate() {
+          document.querySelectorAll('[data-pipe-row]').forEach(function (b) {
+            b.classList.toggle('is-active', b === btn);
+          });
+          activeRow = btn;
+          var coords = [];
+          try {
+            coords = JSON.parse(btn.getAttribute('data-coords') || '[]');
+          } catch (_) {}
+          var weight = btn.getAttribute('data-weight') || 'pipeline';
+          // Prefer Atlas city coords when ids resolve
+          var idx = cityIndex();
+          var ids = (btn.getAttribute('data-ids') || '').split(',').filter(Boolean);
+          var resolved = [];
+          ids.forEach(function (id) {
+            var f = idx.byId.get(id);
+            if (f) resolved.push(f.geometry.coordinates);
+          });
+          highlightNodes(resolved.length ? resolved : coords, weight);
+        }
+        btn.addEventListener('mouseenter', activate);
+        btn.addEventListener('focus', activate);
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          activate();
+        });
+      });
+    }
+
+    function bootMap() {
+      if (typeof maplibregl === 'undefined') {
+        showFallback();
+        return;
+      }
+      var idx = cityIndex();
+      try {
+        map = new maplibregl.Map({
+          container: host,
+          style: {
+            version: 8,
+            sources: {
+              basemap: {
+                type: 'raster',
+                tiles: [
+                  'https://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}@2x.png',
+                ],
+                tileSize: 256,
+                attribution: '© CARTO · © OSM',
+              },
+            },
+            layers: [
+              {
+                id: 'basemap',
+                type: 'raster',
+                source: 'basemap',
+              },
+            ],
+          },
+          center: [40, 20],
+          zoom: 1.35,
+          attributionControl: false,
+          interactive: true,
+        });
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+        map.on('load', function () {
+          map.addSource('cities', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: idx.all },
+          });
+          map.addLayer({
+            id: 'cities-dot',
+            type: 'circle',
+            source: 'cities',
+            paint: {
+              'circle-radius': 2.2,
+              'circle-color': '#5a6570',
+              'circle-opacity': 0.55,
+            },
+          });
+          // default pipeline nodes (all rows)
+          var allNodes = [];
+          document.querySelectorAll('[data-pipe-row]').forEach(function (btn) {
+            var weight = btn.getAttribute('data-weight') || 'pipeline';
+            var coords = [];
+            try {
+              coords = JSON.parse(btn.getAttribute('data-coords') || '[]');
+            } catch (_) {}
+            var ids = (btn.getAttribute('data-ids') || '').split(',').filter(Boolean);
+            var resolved = [];
+            ids.forEach(function (id) {
+              var f = idx.byId.get(id);
+              if (f) resolved.push(f.geometry.coordinates);
+            });
+            (resolved.length ? resolved : coords).forEach(function (c) {
+              allNodes.push({
+                type: 'Feature',
+                geometry: { type: 'Point', coordinates: c },
+                properties: { weight: weight },
+              });
+            });
+          });
+          map.addSource('pipe-nodes', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: allNodes },
+          });
+          map.addLayer({
+            id: 'pipe-nodes-glow',
+            type: 'circle',
+            source: 'pipe-nodes',
+            paint: {
+              'circle-radius': 10,
+              'circle-color': [
+                'match',
+                ['get', 'weight'],
+                'signed',
+                '#d4af5f',
+                'advanced',
+                '#e0cb8f',
+                'defense',
+                '#7dd3c0',
+                '#8f8f96',
+              ],
+              'circle-opacity': 0.22,
+            },
+          });
+          map.addLayer({
+            id: 'pipe-nodes-core',
+            type: 'circle',
+            source: 'pipe-nodes',
+            paint: {
+              'circle-radius': [
+                'match',
+                ['get', 'weight'],
+                'signed',
+                6,
+                'advanced',
+                5,
+                4,
+              ],
+              'circle-color': [
+                'match',
+                ['get', 'weight'],
+                'signed',
+                '#d4af5f',
+                'advanced',
+                '#e0cb8f',
+                'defense',
+                '#7dd3c0',
+                '#a0a0a8',
+              ],
+              'circle-stroke-width': [
+                'match',
+                ['get', 'weight'],
+                'signed',
+                0,
+                1.5,
+              ],
+              'circle-stroke-color': '#d4af5f',
+            },
+          });
+          map.addSource('pipe-hi', {
+            type: 'geojson',
+            data: { type: 'FeatureCollection', features: [] },
+          });
+          map.addLayer({
+            id: 'pipe-hi-ring',
+            type: 'circle',
+            source: 'pipe-hi',
+            paint: {
+              'circle-radius': 14,
+              'circle-color': '#d4af5f',
+              'circle-opacity': 0.18,
+            },
+          });
+          map.addLayer({
+            id: 'pipe-hi-core',
+            type: 'circle',
+            source: 'pipe-hi',
+            paint: {
+              'circle-radius': 7,
+              'circle-color': '#f0d78c',
+              'circle-stroke-width': 2,
+              'circle-stroke-color': '#fff8e0',
+            },
+          });
+          bindRows();
+          // flash signed Maldives as default money moment
+          var signed = document.querySelector('[data-pipe-row].weight-signed');
+          if (signed) signed.dispatchEvent(new Event('mouseenter'));
+        });
+      } catch (err) {
+        console.warn('[invest] pipeline map failed', err);
+        showFallback();
+      }
+    }
+
+    // Lazy-init when section nears viewport
+    var section = document.getElementById('pipeline-section');
+    var started = false;
+    function start() {
+      if (started) return;
+      started = true;
+      loadCss('https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css');
+      Promise.all([
+        loadScript('https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'),
+        loadScript('/invest/pipeline-geo.js'),
+      ])
+        .then(bootMap)
+        .catch(function (e) {
+          console.warn('[invest] pipeline deps', e);
+          showFallback();
+        });
+    }
+    if (!section) {
+      start();
+      return;
+    }
+    var ioPipe = new IntersectionObserver(
+      function (ents) {
+        ents.forEach(function (en) {
+          if (en.isIntersecting) {
+            start();
+            ioPipe.disconnect();
+          }
+        });
+      },
+      { rootMargin: '200px', threshold: 0.01 },
+    );
+    ioPipe.observe(section);
+  })();
 
   /* ── Lightbox ──────────────────────────────────────── */
   function openYt(embedUrl, youtubeId) {

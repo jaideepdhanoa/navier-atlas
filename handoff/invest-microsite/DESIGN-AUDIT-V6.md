@@ -122,3 +122,11 @@ its deck slide's composition as the skeleton, then exceeds it with web-native de
 5. Per-section screenshot pairs (site vs deck slide 435/436/437/438/439/440/443/442/445)
    posted at 1440 and 2560.
 6. N80 tab ships only after Jaideep approves `n80-render-v1.png`.
+
+
+---
+## Status addendum — 2026-08-17 10:52 PT (Jaideep)
+- §C-2 three-costs two-stage morph: **v1-BLOCKING** (deferral reversed by Jaideep).
+- §C-14 live Atlas pipeline embed: **v1-BLOCKING** (plate allowed only as motion-reduced/JS-off fallback).
+- N80 render n80-render-v1: **APPROVED** — photoreal on ladder tab.
+- Money contract v2 (`39a9400`): FY26–FY30 ramp series authored; native charts unblocked.
