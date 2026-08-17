@@ -275,7 +275,7 @@
   /* ── Section renderers ─────────────────────────────── */
   const R = {
     'text-block'(s) {
-      // Legacy fallback — About is now thesis-strands (contract-locked)
+      // Legacy fallback
       return `
         <div class="section-block manifesto" data-reveal>
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
@@ -283,8 +283,26 @@
         </div>`;
     },
 
+    'prose-stage'(s) {
+      // About Navier — deck prose VERBATIM (87989f2 / 94f92d5). Full-viewport stage.
+      const paras = (s.paragraphs || [])
+        .map(
+          (p, i) =>
+            `<p class="about-para ${i === 0 ? 'lead-para' : 'body-para'}" data-reveal>${esc(p)}</p>`,
+        )
+        .join('');
+      return `
+        <div class="section-block stage-section about-stage" data-reveal data-home="claim.about">
+          <div class="section-inner about-stage-inner">
+            ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+            ${s.title ? `<h2 class="h2 about-title">${esc(s.title)}</h2>` : ''}
+            <div class="about-prose">${paras}</div>
+          </div>
+        </div>`;
+    },
+
     'thesis-strands'(s) {
-      // About Navier v2 — identity · thesis · four labeled strands. Copy contract-locked.
+      // Kept for older contracts; prefer prose-stage
       const strands = (s.strands || [])
         .map(
           (st) => `
@@ -371,8 +389,23 @@
           </div>`;
         })
         .join('');
+      // A2: three mission photos — different missions, same constraints (deck 435/436)
+      const costStack = homeAssets('claim.three_costs.stack') || {};
+      const costPhotos = [
+        costStack[0] || costStack.build || 'assets/deck/n30-pioneer-at-sea.png',
+        costStack[1] || costStack.move || 'assets/deck/cargo-n80-profile.png',
+        costStack[2] || costStack.operate || 'assets/deck/shipscale-hero.png',
+      ].map(function (p) {
+        return mediaPath(p);
+      });
+      const photoStack = costPhotos
+        .map(
+          (src, i) =>
+            `<div class="cm-stack-card has-img" aria-hidden="true"><img src="${esc(src)}" alt="" loading="lazy" /></div>`,
+        )
+        .join('');
       const why = s.why_now
-        ? `<div class="why-now">
+        ? `<div class="why-now why-now-stage">
             <h3 class="h3">${esc(s.why_now.title)}</h3>
             <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
             ${s.why_now.closing_line ? `<p class="closing-line">${esc(s.why_now.closing_line)}</p>` : ''}
@@ -394,9 +427,7 @@
                   </div>
                   <div class="cm-photo-stack">
                     <p class="cm-kicker">${esc(s.costs_kicker || 'Different missions. Same constraints.')}</p>
-                    <div class="cm-stack-card" aria-hidden="true"></div>
-                    <div class="cm-stack-card" aria-hidden="true"></div>
-                    <div class="cm-stack-card" aria-hidden="true"></div>
+                    ${photoStack}
                   </div>
                 </div>
               </div>
@@ -509,26 +540,53 @@
     },
 
     'hotspot-diagram'(s) {
+      // MANDATORY annotated diagram: callouts + hairline leaders on wireframe (Cut s11)
       const filmPoster = homeSrc('product.control.film') || mediaPath('assets/posters/S7WB91FvSFI.jpg');
       const wire = homeSrc('product.control.diagram') || mediaPath('assets/deck/control-wireframe-clean.png');
-      const hs = (s.hotspots || [])
+      const hotspots = s.hotspots || [];
+      const callouts = hotspots
+        .map(function (h, i) {
+          const a = h.anchor_pct || {};
+          const x = a.x != null ? a.x : 50;
+          const y = a.y != null ? a.y : 20 + i * 10;
+          const side = a.side === 'left' ? 'left' : 'right';
+          const labelX = side === 'left' ? Math.max(2, x - 28) : Math.min(72, x + 6);
+          return `
+            <div class="ctrl-callout side-${side}" data-callout="${i}"
+              style="left:${labelX}%;top:${Math.max(2, y - 4)}%">
+              <div class="ctrl-label">${esc(h.label || '')}</div>
+              ${h.detail ? `<div class="ctrl-detail">${esc(h.detail)}</div>` : ''}
+            </div>
+            <div class="ctrl-anchor" data-anchor="${i}" style="left:${x}%;top:${y}%"></div>`;
+        })
+        .join('');
+      // SVG leaders drawn after mount from anchors → callouts; fallback static list always visible
+      const fallbackList = hotspots
         .map(
           (h, i) =>
-            `<div class="callout-item" data-callout="${i}"><strong>${esc(h.label)}</strong>${h.detail ? esc(h.detail) : ''}</div>`,
+            `<div class="callout-item" data-callout-fb="${i}"><strong>${esc(h.label || '')}</strong>${
+              h.detail ? ' — ' + esc(h.detail) : ''
+            }</div>`,
         )
         .join('');
       return `
-        <div class="section-block stage-section" data-reveal data-home="product.control.diagram">
+        <div class="section-block stage-section control-stage" data-reveal data-home="product.control.diagram" data-control-diagram>
           <div class="section-inner">
             ${s.title ? `<p class="stage-kicker">03 · THE PRODUCT</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
-            <div class="stage-grid">
-              <div class="sg-media">
-                ${wire ? plate(wire, { home: 'product.control.diagram', className: 'wire-plate contain' }) : ''}
-                ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
+            <div class="control-diagram-wrap media-inner" style="max-width:none;padding:0">
+              <div class="control-diagram" id="control-diagram">
+                ${
+                  wire
+                    ? `<img class="control-wire" src="${esc(wire)}" alt="" loading="lazy" />`
+                    : ''
+                }
+                <svg class="control-leaders" id="control-leaders" aria-hidden="true"></svg>
+                <div class="control-overlay">${callouts}</div>
               </div>
-              <div class="sg-title"><div class="callout-list">${hs}</div></div>
+              ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
             </div>
+            <div class="callout-list control-fallback" aria-hidden="false">${fallbackList}</div>
           </div>
         </div>`;
     },
@@ -1117,28 +1175,30 @@
 
   /* ── Interactives ──────────────────────────────────── */
   function ladderImg(hull) {
-    if (!hull) return { src: '', photo: false, dev: false };
+    if (!hull) return { src: '', photo: false, dev: false, id: '' };
     const la = homeAssets('product.ladder') || {};
     const id = hull.id || '';
-    // v6: N30 + Quanta = pioneer photo; N45 mobility render; N80 wireframe (render pending approval); N180 shipscale
-    if (id === 'n30-pioneer' || id === 'quanta-lr') {
-      const src = la.n30_pioneer || la.quanta_lr;
-      return { src: src ? mediaPath(src) : '', photo: true, dev: false };
+    // 4-tab ladder: n30 (Pioneer & Quanta merged) · n45 · n80 approved render · n180
+    if (id === 'n30' || id === 'n30-pioneer' || id === 'quanta-lr') {
+      const src = la.n30_pioneer || la.quanta_lr || 'assets/deck/n30-pioneer-at-sea.png';
+      return { src: mediaPath(src), photo: true, dev: false, id: id };
     }
-    if (id === 'n45-explorer' && la.n45_explorer) {
-      return { src: mediaPath(la.n45_explorer), photo: true, dev: false };
+    if (id === 'n45-explorer') {
+      const src = la.n45_explorer || 'assets/deck/n45-mobility-render.png';
+      return { src: mediaPath(src), photo: true, dev: false, id: id };
     }
     if (id === 'n80-valkyrie') {
-      // n80-render-v1 APPROVED 2026-08-17 — photoreal + render chip
+      // A1 fix: always bind approved n80-render-v1 — never N30 pioneer
       const src = la.n80_valkyrie || 'assets/deck/n80-render-v1.png';
-      return { src: mediaPath(src), photo: true, dev: true };
+      return { src: mediaPath(src), photo: true, dev: true, id: id };
     }
-    if (id === 'n180-morpheus' && la.n180_morpheus) {
-      return { src: mediaPath(la.n180_morpheus), photo: true, dev: false };
+    if (id === 'n180-morpheus') {
+      const src = la.n180_morpheus || 'assets/deck/shipscale-hero.png';
+      return { src: mediaPath(src), photo: true, dev: false, id: id };
     }
     const key = String(id).replace(/-/g, '_');
-    if (la[key]) return { src: mediaPath(la[key]), photo: false, dev: true };
-    return { src: '', photo: false, dev: false };
+    if (la[key]) return { src: mediaPath(la[key]), photo: true, dev: false, id: id };
+    return { src: '', photo: false, dev: false, id: id };
   }
 
   function renderLadder(s) {
@@ -1792,6 +1852,7 @@
     }
 
     function highlightNodes(coords, weight) {
+      // DISCLOSURE-CRITICAL: fixed camera — NEVER pan/zoom/flyTo on row focus
       if (!map || !map.getSource('pipe-hi')) return;
       var feats = (coords || []).map(function (c, i) {
         return {
@@ -1801,10 +1862,6 @@
         };
       });
       map.getSource('pipe-hi').setData({ type: 'FeatureCollection', features: feats });
-      if (feats.length) {
-        var c0 = feats[0].geometry.coordinates;
-        map.easeTo({ center: c0, zoom: Math.max(map.getZoom(), 3.2), duration: 700 });
-      }
     }
 
     function clearHighlight() {
@@ -1850,6 +1907,7 @@
       }
       var idx = cityIndex();
       try {
+        // Fixed global framing — no nav control, no drag/scroll zoom (disclosure rule)
         map = new maplibregl.Map({
           container: host,
           style: {
@@ -1872,12 +1930,19 @@
               },
             ],
           },
-          center: [40, 20],
-          zoom: 1.35,
+          center: [20, 18],
+          zoom: 1.15,
+          minZoom: 1.15,
+          maxZoom: 1.15,
           attributionControl: false,
-          interactive: true,
+          interactive: false,
+          dragPan: false,
+          scrollZoom: false,
+          boxZoom: false,
+          doubleClickZoom: false,
+          touchZoomRotate: false,
+          keyboard: false,
         });
-        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
         map.on('load', function () {
           map.addSource('cities', {
             type: 'geojson',
@@ -2077,7 +2142,58 @@
     }
   });
 
-  /* ── Network shift toggle + scroll ─────────────────── */
+  /* ── Control diagram: hairline leaders (mandatory annotations) ── */
+  (function initControlLeaders() {
+    var root = document.getElementById('control-diagram');
+    var svg = document.getElementById('control-leaders');
+    if (!root || !svg) return;
+    // Percentage viewBox — independent of layout timing
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    var lines = [];
+    root.querySelectorAll('.ctrl-anchor').forEach(function (anchor) {
+      var i = anchor.getAttribute('data-anchor');
+      var callout = root.querySelector('.ctrl-callout[data-callout="' + i + '"]');
+      if (!callout) return;
+      var x1 = parseFloat(anchor.style.left) || 50;
+      var y1 = parseFloat(anchor.style.top) || 50;
+      var side = callout.classList.contains('side-left') ? 'left' : 'right';
+      var lx = parseFloat(callout.style.left) || x1;
+      var ly = parseFloat(callout.style.top) || y1;
+      // Connect anchor to near edge of label box
+      var x2 = side === 'left' ? lx + 18 : lx;
+      var y2 = ly;
+      lines.push(
+        '<line class="ctrl-leader" x1="' +
+          x1 +
+          '" y1="' +
+          y1 +
+          '" x2="' +
+          x2 +
+          '" y2="' +
+          y2 +
+          '" vector-effect="non-scaling-stroke" />',
+      );
+      lines.push(
+        '<circle class="ctrl-dot" cx="' +
+          x1 +
+          '" cy="' +
+          y1 +
+          '" r="0.7" />',
+      );
+    });
+    svg.innerHTML = lines.join('');
+    root.classList.add('is-lit');
+    var io = new IntersectionObserver(
+      function (ents) {
+        ents.forEach(function (en) {
+          if (en.isIntersecting) root.classList.add('is-lit');
+        });
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(root);
+  })();
 
   /* ── Ladder ────────────────────────────────────────── */
   const hulls = (D.ladder && D.ladder.hulls) || [];
@@ -2088,24 +2204,37 @@
     const img = $('#ladder-img');
     const plate = $('#ladder-plate');
     const info = ladderImg(h);
-    if (plate) plate.classList.toggle('photo', !!info.photo);
+    if (plate) {
+      plate.classList.toggle('photo', !!info.photo);
+      plate.setAttribute('data-hull-id', info.id || h.id || '');
+    }
+    // A1: set src immediately — delayed swap left N80 showing prior N30 frame
     if (img && info.src) {
-      img.style.opacity = '0';
-      setTimeout(() => {
+      if (img.getAttribute('src') !== info.src) {
+        img.style.opacity = '0.35';
+        img.onload = function () {
+          img.style.opacity = '1';
+        };
         img.src = info.src;
+        img.setAttribute('data-hull-id', info.id || h.id || '');
+        img.alt = h.name || '';
+      } else {
         img.style.opacity = '1';
-      }, 140);
+      }
     }
     const meta = $('#ladder-meta');
     if (meta) {
       const dev = info.dev
         ? `<div class="render-chip">RENDER — IN DEVELOPMENT</div>`
         : '';
+      const chips = [h.status_chip, h.status_chip_2].filter(Boolean)
+        .map((c) => `<div class="status">${esc(c)}</div>`)
+        .join('');
       meta.innerHTML = `
         <div class="name">${esc(h.name)}</div>
         <div class="class">${esc(h.length_class || '')}</div>
         <div class="mission">${esc(h.mission || '')}</div>
-        ${h.status_chip ? `<div class="status">${esc(h.status_chip)}</div>` : ''}
+        ${chips}
         ${dev}
         ${h.detail ? `<div class="detail">${esc(h.detail)}</div>` : ''}`;
     }
