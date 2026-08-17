@@ -1,0 +1,481 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Dubai v3 public-partners gold master per the international addendum (Bahrain run — Public Transport page, authority audience: Ministry of Transportation & Telecommunications + BTEA). Sources: bahrain/AUTHORITY-MAP-BAHRAIN.md + SPEED-RULES-BAHRAIN.md + NODES-BAHRAIN.md + DEMAND-POOLS-BAHRAIN.md + FARE-BENCHMARKS-BAHRAIN.md + REVENUE-INPUTS-BAHRAIN.md + CREW-COST-BENCHMARKS-BAHRAIN.md. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture per AUTHORITY-MAP-BAHRAIN.md: Enable-led dual — the ministry regulates and licenses, operators run; the Kingdom has already put a six-station water-taxi service and an international ferry gateway in service, so the page leads with Bahrain's own momentum and the ask is 'extend the mode you already chose'. Domestic corridors only — cross-border Eastern Province/Qatar links appear as one roadmap line with no economics. No counterparty identities, no program or fleet commitments, no launch dates, no service-start years for any Navier service. The existing operator is described generically as 'Bahrain's water-taxi service' per the disclosure rails — no operator brand renders.",
+  "contract_version": "v3",
+  "city": "bahrain",
+  "archetype": "public-partners",
+  "route": "/bahrain-partners",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "Bahrain's water-taxi service operates six stations on the Manama–Muharraq shore, with published fares of BHD 0.8 standard and BHD 1.5 VIP per station and day passes at BHD 2.5–5, on an air-conditioned 28-seat vessel.",
+      "source_url": "https://www.bahrain.com/en/experience-bahrain-by-water-taxi"
+    },
+    "fn2": {
+      "text": "Visitor figures from Bahrain's official open-data portal: 15.18 million inbound visitors in 2025, and arrivals by sea of 205,000 in 2024 — roughly three times the 69,000 of 2023.",
+      "source_url": "https://www.data.gov.bh/explore/dataset/04-inbound-tourism-flows-by-mode-of-transport/"
+    },
+    "fn3": {
+      "text": "King Fahd Causeway traffic per Saudi Arabia's official road-transport statistics for 2024, as reported: roughly 32.9 million passengers in the year — about half of all Saudi land-border traffic."
+    },
+    "fn4": {
+      "text": "Ports, harbours, piers and private jetties are regulated by the Ministry of Transportation and Telecommunications under the Kingdom's ports and marine navigation law; vessels under 150 gross tonnes register under the small-ship law, with master and navigation licences issued by the ministry. Navigation conduct is set through licence conditions and Coast Guard notices — no allowance beyond that framework is assumed anywhere on this page."
+    },
+    "fn5": {
+      "text": "All trip times use conservative speed assumptions in marinas, channels and harbours, with open-water segments at the vessel's service speed. Service hours are modeled 06:00–18:00; evening extension is subject to Coast Guard authorization."
+    },
+    "fn6": {
+      "text": "Race-weekend attendance as published by the circuit: about 105,000 across the 2025 Formula 1 weekend, with 55% international visitors."
+    },
+    "fn7": {
+      "text": "A scheduled international passenger ferry operates between Qatar and Sa'ada Marina, about 70–80 minutes each way, per consistent public reporting."
+    },
+    "fn8": {
+      "text": "The Kingdom's net-zero 2060 target, with an interim reduction of about 30% by 2035, as announced at COP26 and filed with the UNFCCC.",
+      "source_url": "https://unfccc.int/sites/default/files/resource/BAHRAIN_cop26cmp16cma3_HLS_EN.pdf"
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 14,
+      "lines": [
+        "BH-1 North Corniche",
+        "BH-2 Amwaj Express",
+        "BH-3 South Leisure",
+        "BH-4 Hawar Express",
+        "BH-5 West Coast (roadmap)"
+      ]
+    },
+    "note": "Manama's north shore, Muharraq, Amwaj and the southern islands — Amwaj to the Financial Harbour in about 30 minutes, direct pattern.",
+    "fn": "fn5",
+    "_internal": {
+      "source": "NODES-BAHRAIN.md (14 verified landings, 4 lines + 1 roadmap; distances coordinate-derived, DERIVED). No GEOMETRY-BAHRAIN.json exists; NODES-BAHRAIN.md is the geometry file of record this pass.",
+      "line_bindings": {
+        "BH-2": {
+          "clean": {
+            "leg": "Amwaj Marina↔Galali Marina",
+            "route_id": "rn-9b7189cdb48f",
+            "basis": "label match, spine 1.4 nm vs derived 1.0 nm + harbor approach"
+          },
+          "other_legs": "unbound — coordinate-derived nm only"
+        },
+        "BH-4": {
+          "clean": {
+            "leg": "Durrat Pavilion↔Hawar Resort jetty",
+            "route_id": "rn-fb0e040b36a7",
+            "basis": "label match, spine 15.0 nm vs derived 14.6 nm (within 3%)"
+          }
+        },
+        "BH-1": "all legs unbound — no station-to-station corridors among these labels in the spine",
+        "BH-3": "all legs unbound — rn-063a88bc18d1 contaminated (mis-located Ad-Dur BP, see NODES §4); city-centroid overlays (rn-3762d8227b6d) are approximate only, not bound",
+        "policy": "Only the two clean corridor_ids are bound. All other legs carry coordinate-derived nm distances labeled DERIVED. No route_ids invented. Full Atlas binding awaits Grok locale cleanup #119 (~20 corridors tagged bahrain_domestic are KSA/Qatar locales; never re-tagged in the microsite pass)."
+      },
+      "stops_list": [
+        "N1 Water Garden City Station (live water-taxi station)",
+        "N2 Reef Island Marina (existing marina)",
+        "N3 Bahrain Financial Harbour / Harbour House (live station — HUB)",
+        "N4 The Avenues waterfront (live station)",
+        "N5 Four Seasons Bahrain Bay Jetty (live station)",
+        "N6 Manama East Coast Corniche Station (live station)",
+        "N7 Sa'ada Marina, Muharraq (live station + international ferry berth)",
+        "N8 Galali Marina (existing marina)",
+        "N9 Amwaj Marina (operating marina)",
+        "N10 Marassi Beach Jetty, Diyar Al Muharraq (existing jetty)",
+        "N11 Bahrain Yacht Club, Sitra (established club marina)",
+        "N12 Al Dar Island Jetty (operating day-resort jetty)",
+        "N13 Durrat Al Bahrain Pavilion Berth (existing berth — south HUB)",
+        "N14 Hawar Resort Jetty (operating resort jetty)"
+      ],
+      "roadmap_note": "BH-5 West Coast (Zallaq–Bilaj Al Jazayer–Durrat) renders as roadmap only — Sofitel jetty unverified, Bilaj landing not delivered. Cross-border Khobar/Dammam and the Qatar ferry corridor: roadmap only, no stops, no economics (Eastern Province market is next in sequence). Excluded landings per fail-closed rule: Jarada sandbank (no fixed landing — charter destination only), Marina West (stalled), Sofitel Zallaq (unverified), Bilaj Al Jazayer (under construction), Ad Dur (mis-located spine BP)."
+    }
+  },
+  "hero": {
+    "copy": {
+      "headline": "Bahrain has already chosen the water.",
+      "subline": "A fast, zero-emission foiling tier across Manama, Muharraq, Amwaj and the southern islands — built on stations, marinas and jetties that already exist, financed by private capital, extending the water-taxi network the Kingdom already runs.",
+      "stat_chips": [
+        "205K sea arrivals 2024 — 3× in a year",
+        "14 stops, all existing landings",
+        "0 terminals to build",
+        "15.18M visitors 2025"
+      ],
+      "small_print": "All trip times use conservative speed assumptions in marinas, channels and harbours.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/bahrain/assets/hero-public-bahrain.jpg"
+    },
+    "_internal": "Sea-arrivals and visitor chips: data.gov.bh official open data (fn2). Stop count = the 14 verified landings in NODES-BAHRAIN.md — all existing (live water-taxi stations, operating marinas, resort jetties). Chips lead with the Kingdom's own momentum, not projections."
+  },
+  "gap": {
+    "title": "Bahrain has already started",
+    "copy": {
+      "lead": "This Kingdom is not waiting to be convinced about water transport. A six-station water-taxi service is running on the Manama–Muharraq shore, a scheduled international passenger ferry now calls at Sa'ada Marina, and arrivals by sea tripled in a single year.",
+      "support": "A zero-emission foiling tier is additive reach, speed and range for a mode Bahrain has already chosen — on landings that already exist, at zero terminal cost to the Kingdom.",
+      "fn": "fn2"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "A live water-taxi service",
+          "quote": null,
+          "note": "Six stations across the Manama–Muharraq shore with published fares — the Kingdom has already put the mode in service.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "An international marine gateway",
+          "quote": null,
+          "note": "A scheduled passenger ferry now links Sa'ada Marina with Qatar — marine passenger operations at gateway scale are licensed here.",
+          "fn": "fn7"
+        },
+        {
+          "plan": "Sea arrivals tripling",
+          "quote": null,
+          "note": "Arrivals by sea went from 69,000 to 205,000 in a year, on official data — the water mode is growing before any new capacity.",
+          "fn": "fn2"
+        },
+        {
+          "plan": "Net-zero 2060",
+          "quote": null,
+          "note": "The Kingdom's net-zero 2060 target and ~30% cut by 2035 are stated policy — a zero-emission tier maps directly onto them.",
+          "fn": "fn8"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "Water-taxi facts via bahrain.com (official tourism portal, PRIMARY). Sea arrivals/visitors via data.gov.bh (PRIMARY, API-summed 2026-08-16). Ferry via consistent secondary reporting (fn9 wording hedged accordingly). Net-zero via crownprince.bh + UNFCCC filing (PRIMARY). No quotes rendered because no verbatim plan language was captured as a quotable sentence this pass — figures render as figures.",
+      "merge_note": "gap + plan alignment merged into one section per the Dubai/Seattle v3 pattern — the Kingdom's own momentum does the selling. Operator never named in renderables (disclosure rail): 'Bahrain's water-taxi service' throughout. '4K+ trips operated' (operator marketing) deliberately not rendered."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing landing. No terminals to build.",
+      "body": "Zero terminal capital cost for the Kingdom. Service can start at live water-taxi stations, operating marinas and resort jetties — all fourteen stops on this network are existing landings today."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "14 of 14 landings exist today",
+        "verified": 14,
+        "total": 14
+      }
+    },
+    "_internal": "Six live water-taxi stations (PRIMARY, operator site + bahrain.com), Reef Island/Galali/Amwaj/BYC marinas (existing/operating), Marassi Beach Jetty (existing — commercial-use terms to verify, flagged internally, still an existing landing), Durrat pavilion berth (PRIMARY via resort + hotel-group pages), Al Dar and Hawar Resort jetties (operating, PRIMARY-operator). Excluded from the count entirely: Jarada (no fixed landing), Marina West, Sofitel Zallaq, Bilaj Al Jazayer, Ad Dur — per the fail-closed geometry rule."
+  },
+  "posture": {
+    "copy": {
+      "framing": "One conversation, not two. Bahrain regulates and licenses marine transport through one ministry, and the Kingdom has already shown its model on this water: government enables, operators run. The posture here is extension — more reach, more speed, more range for the mode Bahrain has already chosen.",
+      "enable_track": "License the routes, vessels and landings under the existing small-vessel and port framework. Private capital finances the vessels; the ask is licensing and access, not money.",
+      "operate_track": "Where the Kingdom prefers procurement, the foiling tier can be concessioned the way today's water-taxi service runs — a franchise on the ministry's terms, with fares slotted above the existing public water-taxi ladder."
+    },
+    "data": {
+      "weighting": "enable_dominant",
+      "operate_proof_points": [
+        {
+          "body": "Ministry of Transportation & Telecommunications — Ports & Maritime Affairs",
+          "proof": "Regulates every port, harbour, pier and private jetty in the Kingdom, licenses operators, registers vessels under 150 gross tonnes, and issues master and navigation licences — one ministry, one licensing conversation."
+        },
+        {
+          "body": "Bahrain's water-taxi service",
+          "proof": "Six live stations, published fares and an air-conditioned passenger vessel — the enable-and-operate model is already working on exactly this water."
+        },
+        {
+          "body": "An international ferry gateway",
+          "proof": "Sa'ada Marina hosts a scheduled international passenger ferry to Qatar — marine passenger operations at gateway scale are already licensed and running."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP-BAHRAIN.md §2: Dual, Enable-led. Every regulatory instrument found (registration, master licence, navigation licence, port/jetty licensing) is an MTT instrument; no evidence MTT operates vessels itself — hence enum enable_dominant (affects order/emphasis only; both tracks render). Never framed as replacing the water-taxi service, the ferry, or any existing operator — additive-tier language throughout."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling — in line with the Kingdom's net-zero 2060 target and its interim 2035 reduction, stated at COP26.",
+        "Minimal wake foilborne and near-silent at speed — marina, harbour and protected-island purposes served by design, measurable on request.",
+        "Visitor economy and quality of life: fifteen million visitors connected to the water, and commute time returned on island corridors the road network serves the long way around."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "15.18 million inbound visitors in 2025, on official open data",
+          "note": "The visitor economy at national scale — and its marquee leisure sits on or reaches the water.",
+          "fn": "fn2"
+        },
+        {
+          "stat": "Arrivals by sea tripled in a year — 69,000 in 2023 to 205,000 in 2024",
+          "note": "The water mode is already growing before any new capacity is added.",
+          "fn": "fn2"
+        },
+        {
+          "stat": "About 32.9 million passengers crossed the King Fahd Causeway in 2024",
+          "note": "The demand backdrop: the Kingdom's busiest gateway runs at weekend peaks where time-certain travel is scarce.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "About 105,000 attended the 2025 Formula 1 race weekend — 55% international",
+          "note": "Event weekends concentrate premium visitor demand into days; water capacity surges without roadworks.",
+          "fn": "fn6"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "https://www.data.gov.bh/explore/dataset/05-inbound-visitors-by-countryregion-of-residence/ (PRIMARY)",
+        "https://www.data.gov.bh/explore/dataset/04-inbound-tourism-flows-by-mode-of-transport/ (PRIMARY)",
+        "GASTAT 2024 road-transport statistics via saudigazette.com.sa/article/656341 (SECONDARY-of-official — fn3 says 'as reported'; pull GASTAT PDF before any deck use)",
+        "bahraingp.com / BIC press (PRIMARY-circuit)"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot (no new sections). Causeway queue times deliberately unquantified (UNSOURCED per DEMAND-POOLS §1.1) — rendered qualitatively only. F1 demand expresses as hotel/waterfront surge, not a route (circuit is inland) — copy reflects that."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Bahrain writes its water rules through licences, not posted limits.",
+      "framing": "Navigation conduct in the Kingdom's waters is set through ministry licence conditions and Coast Guard notices, purposed for safety and security. A foiling, electric vessel serves the purposes marina and harbour rules exist for — wake, wash, noise — by design.",
+      "ask": "Our ask: measure us. Set each corridor's operating conditions through the licensing process that already exists — and let independently measured wake and noise define the envelope, route by route.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Routes ✓ licensed by the ministry"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null,
+      "dubai_instrument": null
+    },
+    "expander": {
+      "title": "What licence conditions unlock",
+      "body": [
+        "The ports and marine navigation law places every port, harbour, pier and private jetty under one ministry, which licenses operators and sets the conditions they sail under. A corridor's operating envelope is therefore a licensing conversation, not a rule change.",
+        "Planning on this page is deliberately conservative: displacement speeds in marinas, channels and harbour limits, service speed only on open water, and a 06:00–18:00 modeled service day. Anything better than that basis is treated as upside — never assumed in a rendered time."
+      ],
+      "fn": "fn5"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "Legislative Decree No. 61 of 2006 (Ports and Marine Navigation Affairs Law)",
+          "type": "regulator mandate",
+          "detail": "all ports, docks, harbours, piers, wharves incl. private jetties, fairways under MTT; Minister issues implementing regulations; PMA licence required to operate/manage/provide services at any port",
+          "source": "bahrainbusinesslaws.com reproduction — PRIMARY-TEXT per SPEED-RULES-BAHRAIN.md"
+        },
+        {
+          "instrument": "Decree No. 32 of 2020 (small-ship registration <150 GT)",
+          "type": "licensing regime",
+          "detail": "registration, safety inspection, master licence, navigation licence for commercial/passenger vessels",
+          "source": "mtt.gov.bh/small-ship-registration — PRIMARY. Rendered as 'the small-ship law' (no decree-style naming in copy per kill rules)."
+        },
+        {
+          "instrument": "MOI Coast Guard notices",
+          "type": "operational constraint",
+          "detail": "night maritime movement restrictions announced 2025, status unresolved at research date; temporary 3-kn work zones via notices. Consequence: 06:00–18:00 modeled day everywhere, rendered as one calm assumption line (fn5). No 'ban' language renders.",
+          "source": "policemc.gov.bh (PRIMARY URL, unreachable at scrape) + news reposts (SECONDARY) — re-verify before schedule work"
+        },
+        {
+          "instrument": "Numeric zone limits",
+          "type": "not codified",
+          "detail": "No publicly codified numeric speed/no-wake limits for small passenger craft found (SPEED-RULES §2). Therefore NO numeric knot limits render anywhere on this page; internal timing uses the DERIVED conservative zones (≤5 kn marinas/ports, 10–15 kn inner channel, 25 kn open water, low-wake Hawar approaches).",
+          "source": "SPEED-RULES-BAHRAIN.md"
+        }
+      ],
+      "relief_numbers_policy": "No sourced relief minutes exist for Bahrain, so none render (relief_minutes null). The Dubai-style minutes-returned claim has no Bahrain analog in research. Base times never assume relief or evening hours."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Committed riders anchor demand — monthly seat bundles priced from Bahrain's own fares and road substitutes; a derived band, pending confirmation.",
+      "public_partners": "Public partners license and land the service — route, vessel and landing licences at stations and marinas that already exist.",
+      "fleet_investors": "Investors finance the vessels — private capital behind the demand, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the Dubai/Seattle v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because the international run has no employer page. The fleet_investors key is a machine key, not rendered copy — its visible text avoids the word it contains."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and low-risk: one corridor on existing landings, measured wake and noise, your rules respected — specified with the ministry inside the licensing framework it already runs."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbour rules and harbour neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Dubai/Seattle v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent). fleet_cards is a contract key name, not rendered copy."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Bahrain's water-transport landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "Ministry of Transportation & Telecommunications (MTT)",
+              "classification": "enable",
+              "role": "The anchor authority. Its Ports and Maritime Affairs arm regulates every port, harbour, pier and private jetty, licenses operators, registers vessels under 150 gross tonnes, and issues master and navigation licences — the single licensing home for routes, vessels and landings."
+            },
+            {
+              "body": "Bahrain Tourism & Exhibitions Authority (BTEA)",
+              "classification": "enable",
+              "role": "Licenses and regulates tourism businesses and runs destination promotion — the licensing home for the experience layer, and steward of a fifteen-million-visitor economy."
+            },
+            {
+              "body": "Coast Guard (Ministry of Interior)",
+              "classification": "permitting_gate",
+              "role": "Controls maritime movement notices, equipment approvals and security restrictions in territorial waters. Schedule design absorbs its notices — including the evening-hours authorization this page's modeled service day respects."
+            },
+            {
+              "body": "Supreme Council for Environment (SCE)",
+              "classification": "enable",
+              "role": "Steward of the Kingdom's net-zero 2060 commitment and of protected areas — the environmental reference point for operations near the Hawar Islands."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "KFCA (bilateral causeway authority) held to _internal: relevant as the congestion backdrop and the later-phase cross-border corridor, not a domestic licensing body. KBSP/Mina Salman port operators are constraint zones (VTMS, customs, security), not partners — routing avoids their fairways at displacement speed. No authority contacts render anywhere. Operator brand never renders (disclosure rail)."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We extend Bahrain's marine network, not compete with it — the existing water-taxi service and its fares are never positioned against."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Six live water-taxi stations",
+              "connects": "The northern spine's backbone — this tier runs the same shore faster and farther, and leaves the existing service untouched"
+            },
+            {
+              "station": "Sa'ada Marina",
+              "connects": "The international gateway — ferry passengers interchange with the domestic network dockside"
+            },
+            {
+              "station": "Amwaj & Galali marinas",
+              "connects": "Operating island marinas — the express line joins residents to the financial district without the road loop around Muharraq"
+            },
+            {
+              "station": "Durrat Al Bahrain pavilion berth",
+              "connects": "Today's departure point for the Hawar crossing — the southern interchange of the leisure and resort lines"
+            },
+            {
+              "station": "Roadmap landings",
+              "connects": "West-coast stops (Zallaq, Bilaj Al Jazayer) and a cross-border Eastern Province link are later-phase roadmap items — no economics attach to them"
+            }
+          ]
+        },
+        "_internal": "Pairs from NODES-BAHRAIN.md and AUTHORITY-MAP-BAHRAIN.md §3. Complement framing only; no fare comparison with the public water-taxi service (its BHD 0.8–1.5 fares appear once, as landscape fact in fn1). Cross-border line renders exactly once, as roadmap, no economics — per instruction."
+      }
+    },
+    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the Dubai v3 pattern."
+  },
+  "_internal": {
+    "scope": "Domestic corridors only, per the international addendum: the 14-node / 4-line network from NODES-BAHRAIN.md, with BH-5 and cross-border links rendered as roadmap lines with no economics. Only two spine corridor_ids bind cleanly (see geometry._internal.line_bindings); everything else is coordinate-derived and labeled so. No launch dates render; no service-start years attach to any Navier service; historical years appear only on statistics.",
+    "verification_ledger": "PRIMARY-verified renderables: water-taxi stations/fares (bahrain.com + operator site), 15.18M visitors 2025 + 205K/69K sea arrivals (data.gov.bh, API-summed), MTT/PMA mandate (Law 61/2006 text; mtt.gov.bh), small-ship regime (mtt.gov.bh), net-zero 2060 (UNFCCC filing), F1 attendance (circuit), Hawar Resort boat-only access (operator + hotel group). SECONDARY, rendered with hedges: Qatar ferry ('per consistent public reporting', fn9), causeway 32.9M ('as reported', fn3 — pull GASTAT PDF before deck use). SECONDARY/UNSOURCED, therefore NOT rendered: numeric knot limits, causeway queue times, operator trip counts (4K+), BFH employment headcount, water-taxi day-pass details beyond fn1, Marina West status, Hawar protected-area instrument (carried qualitatively in fn8 only), MOI restriction specifics (carried only as the calm fn5 assumption).",
+    "positioning_rules": "Never present the tier as replacing the water-taxi service or the ferry; never run a subsidized-fare comparison; the premium tier sits above the existing public fare ladder. The existing operator is 'Bahrain's water-taxi service' — no brand, no partner claim. No royal or government counterparty claims beyond published mandates."
+  }
+}
