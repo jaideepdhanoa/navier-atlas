@@ -1,0 +1,456 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Dubai v3 public-partners gold master per the international addendum (RSG run — destination-mobility page; the audience is Red Sea Global, the master developer that is the authority-equivalent inside its own destinations; SRSA is the licensing layer). Sources: red-sea-global/AUTHORITY-MAP + SPEED-RULES + DEMAND-POOLS + NODES + FARE-BENCHMARKS + REVENUE-INPUTS + CREW-COST-BENCHMARKS (all -RED-SEA-GLOBAL.md). CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture: destination-mobility partner — the lead story is that RSG's own peer-reviewed Al Wajh lagoon Marine Spatial Plan commits to electric-only marine vehicles, and Navier is the vessel class that fulfils that published commitment. Rendered respectfully — 'the commitment is published; the vessel now exists' — never as criticism; RSG's existing 13-vessel marine fleet renders only as their neutral published fact. Destination-internal corridors only; the 79-nm inter-destination leg and all unverified landings are roadmap items. No counterparty identities beyond published PIF/RSG facts, no program or fleet commitments, no launch dates, no NEOM/Sindalah (different developer — excluded entirely), no partnership claims with RSG or any resort brand. Access: unlisted/noindex per instruction (deviation from the Dubai gold master's public access — this is a named-counterparty destination page).",
+  "contract_version": "v3",
+  "city": "red-sea-global",
+  "archetype": "public-partners",
+  "route": "/red-sea-global-partners",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "The peer-reviewed Marine Spatial Plan for the 2,081 km² Al Wajh lagoon conserves 58% of the marine area outright, holds development to a 5% footprint, and lists 'the use of electric-only marine and land vehicles to avoid pollution and noise' among its committed conservation measures.",
+      "source_url": "https://redseaglobal.com/en/media-center/"
+    },
+    "fn2": {
+      "text": "The destination's published SIIG Model is a roadmap to a 30% net conservation gain by 2040, with priority zones covering corals, mangroves, seagrass, sea turtles, marine mammals and island birds.",
+      "source_url": "https://redseaglobal.com/en/responsible-development/planet/the-siig-model/"
+    },
+    "fn3": {
+      "text": "The Red Sea spans 28,000 km² and more than 90 islands, with under 1% of the area developed, visitor numbers capped at 1 million a year to protect biodiversity, and the destination powered entirely by off-grid renewable energy — 760,000 solar panels and one of the world's largest battery storage systems.",
+      "source_url": "https://www.redseaglobal.com/en/portfolio/the-red-sea/"
+    },
+    "fn4": {
+      "text": "Hotel counts are derived from the developer's published statements: eleven properties open today, five of them on Shura Island. The water-served outer islands hold 226 villas — St. Regis Red Sea (90), Nujuma, a Ritz-Carlton Reserve (63) and Shebara (73) — with counts as published by the brands and trade press."
+    },
+    "fn5": {
+      "text": "No numeric speed limits are published for these waters. All trip times assume 25 knots in open lagoon water on marked transfer routes and 8 knots within half a nautical mile of every landing and across flagged conservation areas — a stated conservative planning assumption, not a claim about the rules. Distances are coordinate-derived."
+    },
+    "fn6": {
+      "text": "AMAALA opened its first wave at Triple Bay: six resorts of roughly 650 keys, Marina Village, and a yacht club whose 10-hectare marina berths yachts up to 130 metres and hosts The Ocean Race Grand Finale 2027.",
+      "source_url": "https://www.pif.gov.sa/en/news-and-insights/newswire/2025/red-sea-global-announces-the-opening-of-amaala/"
+    },
+    "fn7": {
+      "text": "Red Sea International Airport handled roughly 130,000 passengers in 2025. Vessel-borne guests transfer about 20 km by road from the airport to the Turtle Bay jetty; the airport itself operates a seaplane terminal, not a marina."
+    },
+    "fn8": {
+      "text": "Red Sea Global's mobility subsidiary, Coastal Transportation Services Company, runs guest and staff mobility across the destinations — a published marine fleet of 13 vessels, 145 electric vehicles and 170 charging stations — alongside Fly Red Sea, the Kingdom's first seaplane company.",
+      "source_url": "https://redseaglobal.com/en/subsidiaries/"
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 6,
+      "lines": [
+        "RSG-1 Lagoon North",
+        "RSG-2 Lagoon South",
+        "RSG-3 Triple Bay Loop"
+      ]
+    },
+    "_internal": {
+      "source": "NODES-RED-SEA-GLOBAL.md. ZERO Atlas corridor bindings — partner census confirms n_sourced = 0 for this geography; no sealed set used (fail-closed per the international addendum). No route_ids or bp-ids invented; RSG-1/2/3 are working labels only.",
+      "line_bindings": {
+        "RSG-1": "NEW GEOMETRY — Turtle Bay Jetty ↔ Shura Island Marina (~3.0 nm routed, ~13 min) ↔ Ummahat jetties (~12.9 nm routed, ~37 min); through ~44 min vs ~90 min door-to-door today. Coordinate-derived (haversine × 1.15, ±15%).",
+        "RSG-2": "NEW GEOMETRY — Shura ↔ Shebara jetty (~10.3 nm routed, ~31 min); operating variant Turtle Bay ↔ Shebara (~11.6 nm, ~34 min) is today's transfer corridor.",
+        "RSG-3": "NEW GEOMETRY — Triple Bay Marina local loop, 1–2 nm hops anchored at the marina ONLY (resort frontage jetties unverified — fail closed)."
+      },
+      "stops_bound": {
+        "A2": "Turtle Bay Jetty (mainland gateway; coords PRIMARY product / SECONDARY pin)",
+        "A1": "Shura Island Marina (HUB; marina position on island DERIVED)",
+        "A3a": "St. Regis Red Sea jetty, Ummahat (coords LOW precision — map-derived)",
+        "A3b": "Nujuma jetty, Ummahat (coords LOW precision — map-derived)",
+        "A4": "Shebara jetty, Sheybarah Island",
+        "B1": "Triple Bay Marina / AMAALA Yacht Club (HUB; Four Seasons published pin)"
+      },
+      "roadmap_not_rendered_as_active": "Laheq Island marina (announced); RSG-T Thuwal (KAUST North Marina ↔ retreat, ~25–37 min foiling; island coords unsourced); Al Wajh / Umluj gateway towns (no verified tourist landings); Triple Bay ↔ Shura inter-destination 79.3 nm direct (~91 routed) — beyond the electric envelope, long-range platform class, roadmap only.",
+      "grok_seal_note": "This geometry is NEW for any future Grok seal: a coordinate-pinning pass to jetty precision is required first (A3 LOW precision, A1 marina position derived, A6/C2 unsourced). Mis-geocode inheritance risk: none — no sealed set touched."
+    },
+    "note": "The Al Wajh lagoon and Triple Bay — Turtle Bay to the Ummahat islands in about 44 minutes, vs about 90 minutes door-to-door today.",
+    "fn": "fn5"
+  },
+  "hero": {
+    "copy": {
+      "headline": "The Red Sea committed to electric on the water.",
+      "subline": "A fast, zero-emission foiling tier for the Al Wajh lagoon and Triple Bay — the vessel class that delivers the electric-only marine mobility the destination's own plan calls for, on marinas and jetties that already operate.",
+      "stat_chips": [
+        "1M visitor/yr environmental cap",
+        "11 hotels open today",
+        "6 stops, all operating landings",
+        "100% off-grid renewable destination"
+      ],
+      "small_print": "All trip times use a stated conservative speed assumption — no published limits are claimed.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/red-sea-global/assets/hero-public-red-sea-global.jpg"
+    },
+    "_internal": "Cap + renewables chips: RSG portfolio page (fn3, PRIMARY). Hotel count: 11 open, DERIVED from RSG's own statements (fn4). Stop count = the 6 operating landings bound in geometry._internal — Laheq/Thuwal/gateways excluded as roadmap. Headline is the respectful commitment-fulfilment frame: their plan, our vessel class."
+  },
+  "gap": {
+    "title": "The commitment is already published",
+    "copy": {
+      "lead": "This destination is not waiting to be convinced about electric water mobility. Red Sea Global's peer-reviewed Marine Spatial Plan for the Al Wajh lagoon lists electric-only marine and land vehicles among its committed conservation measures, caps visitors at one million a year, and conserves 58% of the lagoon's marine area outright.",
+      "support": "The vessel class that fulfils that commitment now exists. An electric hydrofoil lifts clear of the water — near-silent, zero-emission, minimal wake over coral and seagrass — and makes the archipelago feel small: Turtle Bay to the Ummahat islands in about 44 minutes.",
+      "fn": "fn1"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "Marine Spatial Plan — Al Wajh lagoon",
+          "quote": "the use of electric-only marine and land vehicles to avoid pollution and noise",
+          "note": "A peer-reviewed plan conserving 58% of the lagoon's marine area, with a 10:1 conservation-to-development ratio.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "The SIIG Model",
+          "quote": null,
+          "note": "A published roadmap to 30% net conservation gain by 2040 — corals, mangroves, seagrass, turtles, marine mammals, island birds.",
+          "fn": "fn2"
+        },
+        {
+          "plan": "100% off-grid renewable destination",
+          "quote": null,
+          "note": "760,000 solar panels and one of the world's largest battery systems power the destination entirely on renewables.",
+          "fn": "fn3"
+        },
+        {
+          "plan": "Marine mobility today",
+          "quote": null,
+          "note": "The destination's own subsidiary runs guest and staff transfers across the islands — a published 13-vessel marine fleet.",
+          "fn": "fn8"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "MSP measure quote is verbatim from RSG's own MSP paper release (PRIMARY — the one captured quotable sentence, unlike the Dubai pass). SIIG Model PRIMARY (RSG media center, report page). Renewables PRIMARY (RSG) + SECONDARY corroboration (Huawei/energy-storage.news, held internal). 13-vessel fleet fact PRIMARY (RSG subsidiaries page) — renders neutrally as their published operating fact, never as a shortfall; the fulfilment framing lives in copy about Navier, not about their fleet.",
+      "merge_note": "gap + plan alignment merged per the gold-master pattern — the destination's own published commitments do the selling. Section key 'gap' is contract infrastructure and never renders; no renderable copy uses the word."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing landing. No jetties to build.",
+      "body": "Zero landing capital for the destination. Service can start at the marinas and resort jetties that already operate — the Shura Island marina, the Turtle Bay jetty, the Ummahat and Sheybarah resort jetties, and the Triple Bay marina at AMAALA. All six stops on this network are operating landings today."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "6 of 6 landings operating today",
+        "verified": 6,
+        "total": 6
+      }
+    },
+    "_internal": "Operating landings: Turtle Bay Jetty (PRIMARY product — today's transfer origin), Shura Island Marina (PRIMARY facility, 115–118 berths → rendered as '115+'), St. Regis + Nujuma jetties (PRIMARY landings, coords LOW precision), Shebara jetty (PRIMARY), Triple Bay Marina / AMAALA Yacht Club (PRIMARY). Excluded from the count: Laheq (announced), Thuwal pair (roadmap line), Al Wajh/Umluj (no verified tourist landings), B2 resort frontages (jetties unverified — loop anchors at the marina), RSI airport (land interchange — no marina; fn7 renders the 20 km land link plainly)."
+  },
+  "posture": {
+    "copy": {
+      "framing": "One counterparty, one conversation. Red Sea Global is master developer and operator in its own destinations — it owns the landings, runs guest mobility, and publishes the conservation rules. The posture here is extension: a zero-emission foiling tier inside the mobility network the destination already operates.",
+      "enable_track": "License and land the vessels — every stop is an existing destination marina or resort jetty. Private capital finances the vessels; the ask is landing access and licensing, not money.",
+      "operate_track": "Contract the foiling tier the way guest transfers run today — per-guest transfer pricing inside the existing resort fee structure, scheduled alongside the destination's own mobility operation and counted toward its published conservation commitments."
+    },
+    "data": {
+      "weighting": "operate_dominant",
+      "operate_proof_points": [
+        {
+          "body": "Coastal Transportation Services Company",
+          "proof": "The destination's own mobility subsidiary runs integrated land, air and marine guest and staff transfers — a published marine fleet of 13 vessels, 145 electric vehicles and 170 charging stations, plus marina operations at both destinations."
+        },
+        {
+          "body": "Fly Red Sea",
+          "proof": "The Kingdom's first seaplane company, built in-house for scheduled island transfers from the destination's own airports — this developer already creates new mobility modes when the destination needs them."
+        },
+        {
+          "body": "Published environmental commitments",
+          "proof": "Electric-only marine vehicles are a committed conservation measure in the lagoon's Marine Spatial Plan, and the SIIG Model targets a 30% net conservation gain by 2040 — the standards a foiling electric tier is built to meet."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP: operate-posture, single counterparty — RSG is both authority-equivalent and operator inside its destinations; SRSA is the licensing layer above. Enum operate_dominant affects order/emphasis only; both tracks render. Never framed as replacing the destination's own marine operation or seaplanes — additive-tier language throughout. No partnership with RSG or any resort brand is claimed anywhere."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling — the only vessel class consistent with the destination's published electric-only marine vehicles measure and its 100% renewable energy base.",
+        "Minimal wake and near-silent foilborne — over coral, seagrass and turtle habitat, exactly the disturbances the conservation zones exist to prevent.",
+        "Guest experience worthy of the wallet: seaplane-class speed at water level, in silence — the archipelago feels small without adding noise, wake or emissions."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "Visitor numbers are capped at 1 million a year to protect biodiversity",
+          "note": "The environmental cap is the plan — a premium, low-volume water network is the mobility mode that matches it.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "11 hotels open today — five on Shura Island",
+          "note": "Derived from the developer's published statements; the outer islands, the hub island and the mainland gateway all operate.",
+          "fn": "fn4"
+        },
+        {
+          "stat": "226 water-served villas on the outer islands",
+          "note": "St. Regis Red Sea, Nujuma and Shebara — resorts whose guests already arrive and leave by water.",
+          "fn": "fn4"
+        },
+        {
+          "stat": "AMAALA open at Triple Bay: six resorts, ~650 keys",
+          "note": "With a yacht club marina for 130 m yachts — host of The Ocean Race Grand Finale 2027.",
+          "fn": "fn6"
+        },
+        {
+          "stat": "About 130,000 passengers through Red Sea International in 2025",
+          "note": "The destination's own gateway airport — vessel-borne guests transfer 20 km by road to the Turtle Bay jetty.",
+          "fn": "fn7"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "https://www.redseaglobal.com/en/portfolio/the-red-sea/ (PRIMARY — cap, renewables, scale)",
+        "RSG homepage + Shura release (PRIMARY — 11 open / 5 on Shura, DERIVED count per DEMAND §2)",
+        "Johansens / Marriott press / hoteliermiddleeast (SECONDARY + PRIMARY-brand — 90/63/73 keys; labeled in fn4)",
+        "RSG/PIF AMAALA opening release (PRIMARY — 6 resorts, ~650 keys, Yacht Club, Ocean Race 2027)",
+        "redseaglobal.com + Skift airport-CEO interview (PRIMARY + SECONDARY — RSI ~130K pax 2025)"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot (no new sections). Excluded as SECONDARY-only: >50K tourists 2025 (secondary citing gov), AMAALA ~500K target (flagged re-verify), 82% Eid occupancy signal, Umluj/Al Wajh populations, RSG's ambiguous '350,000+ visitors per year' key fact."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Conservation zones are the rules here.",
+      "framing": "The controlling rules in these waters are conservation zones, not posted speed limits — written for wake, wash, noise, pollution and wildlife disturbance. A foiling, electric vessel satisfies those purposes inherently.",
+      "ask": "Our ask: measure us. Where independent wake and noise measurement shows a zone's purpose is served, set corridor speeds zone by zone — at the destination's discretion, inside the licensing pathway that already exists.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Zones ✓ set by the destination"
+      ],
+      "fn": "fn5"
+    },
+    "data": {
+      "relief_minutes": null,
+      "instrument": null
+    },
+    "expander": {
+      "title": "What zone-by-zone measurement unlocks",
+      "body": [
+        "No numeric speed limits are published for these waters, so every time on this page assumes 25 knots in open lagoon water on marked transfer routes and 8 knots near every landing and across flagged conservation areas — a stated conservative assumption, not a claim about the rules. Inside its destinations the developer sets vessel operating practice; on the wider coast the Saudi Red Sea Authority licenses coastal tourism and navigation, and its published guide series defines the licensing pathway.",
+        "Where operating practice holds vessels slow to protect reef frontages, seagrass and turtle habitat from wake and noise, a foiling hull that produces almost neither may justify higher transit speeds — always at the destination's discretion, shown here only as what measurement could unlock, never in base times."
+      ],
+      "fn": "fn5"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "RSG Marine Spatial Plan (Al Wajh lagoon) + SIIG Model",
+          "type": "purpose evidence",
+          "detail": "Conservation zoning is the binding constraint: 58% conserved, priority zones over corals/mangroves/seagrass/turtles; stated purposes are pollution, noise, anchoring damage, wildlife disturbance",
+          "source": "RSG media center (PRIMARY, per SPEED-RULES-RED-SEA-GLOBAL.md)"
+        },
+        {
+          "instrument": "SRSA coastal tourism licensing (Introductory Guide series)",
+          "type": "licensing layer",
+          "detail": "SRSA licenses marine tourism operators and yachting on the whole Saudi Red Sea coast; yacht rules require compliance with authority-set speed limits — i.e., limits are authority-set, none published numerically for these waters",
+          "source": "SPA https://www.spa.gov.sa/N2478966 (PRIMARY)"
+        },
+        {
+          "instrument": "Operating-speed planning basis",
+          "type": "stated assumption",
+          "detail": "25 kn open lagoon on marked routes (matches today's transfer practice ~17–20 kn implied) + 8 kn first/last 0.5 nm and across flagged zones — DERIVED, renders only as a stated assumption (fn5), never as a rule",
+          "source": "SPEED-RULES-RED-SEA-GLOBAL.md"
+        }
+      ],
+      "relief_numbers_policy": "No relief minutes exist in research for these waters — relief_minutes renders null. Relief renders qualitatively only, at the destination's discretion, never in base times. The Dubai gold master's 'dubai_instrument' key is generalized to 'instrument' (null either way — renders nothing).",
+      "foil_impact_note": "The 'less pressure wave and turbidity over seagrass/coral' argument is DERIVED with no third-party reef-impact study — never rendered as a measured claim; the rendered ask is measurement itself."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Guests anchor demand — contracted arrival and inter-island transfers priced inside the destination's existing transfer-fee structure; a derived band, pending confirmation.",
+      "public_partners": "The destination partner licenses and lands the service — vessel licensing and berth access at marinas and jetties that already operate.",
+      "fleet_investors": "Investors finance the vessels — private capital behind the demand, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the gold-master contract for renderer compatibility; the 'employers' slot carries guest-transfer demand copy because this run has no employer page and no commuter market (resort-transfer re-keying)."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and zone-respecting: one lagoon corridor on existing landings, measured wake and noise, your conservation rules respected — specified against the destination's own published commitments."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter over coral, seagrass and resort frontages are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Dubai/Seattle v3 public-partners navier_intro (vessel facts are program copy, city-independent); subline localized to reef/frontage traits."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Inside these destinations the master developer is the authority-equivalent; the licensing layer sits above. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "Red Sea Global (RSG)",
+              "classification": "operate",
+              "role": "Master developer and operator of The Red Sea, AMAALA and Thuwal Private Retreat, wholly owned by the Public Investment Fund. Owns the landings and runs destination mobility through its own subsidiaries — Coastal Transportation Services (marine, land), Fly Red Sea (seaplanes), Red Sea International Airport, and a sports and entertainment arm for diving and watersports."
+            },
+            {
+              "body": "Saudi Red Sea Authority (SRSA)",
+              "classification": "permitting_gate",
+              "role": "Regulator of coastal tourism, navigation and marine tourism activity on the Saudi Red Sea coast — operator licensing, yacht chartering and marina activity. Its published guide series defines the end-to-end licensing pathway; its own mandate is growing coastal tourism."
+            },
+            {
+              "body": "Transport General Authority (TGA)",
+              "classification": "permitting_gate",
+              "role": "National maritime and passenger-transport licensing — the vessel and operator certification pathway that runs alongside SRSA's coastal-tourism licensing."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "Border Guard (sea-border clearances) held internal as an ops-planning layer (SECONDARY method carry-over). PIF renders only as the published ownership fact inside the RSG row. No special-zone carve-out from SRSA rules was found — SRSA treated as fully applying (UNSOURCED carve-out, fail-closed). No authority contacts render. NEOM/Sindalah: different developer, excluded entirely from this page and this market."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We extend the destination's mobility network, not compete with it — transfers, seaplanes and marinas all keep their roles."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Turtle Bay Jetty",
+              "connects": "Today's transfer origin, 20 km by road from Red Sea International — the airport is a land interchange with a seaplane terminal, no marina"
+            },
+            {
+              "station": "Fly Red Sea seaplanes",
+              "connects": "The destination's own seaplane transfers keep flying — dual-mode arrivals are the published product; a foiling tier extends the water mode"
+            },
+            {
+              "station": "Shura Island Marina",
+              "connects": "The hub island's 115+ berth marina, designed by Foster + Partners — arrival by water or the island crossing, five resorts operating"
+            },
+            {
+              "station": "AMAALA Yacht Club & Triple Bay Marina",
+              "connects": "A 10-hectare marina for yachts to 130 m, host of The Ocean Race Grand Finale 2027 — the Triple Bay loop anchors here"
+            },
+            {
+              "station": "Roadmap reach",
+              "connects": "Laheq's announced marina, the Thuwal retreat run from KAUST North Marina, the Al Wajh and Umluj gateways, and the long-range Triple Bay–Shura link"
+            }
+          ]
+        },
+        "_internal": "Pairs from NODES-RED-SEA-GLOBAL.md + AUTHORITY-MAP. Roadmap row carries announced/roadmap items with status stated, no years: Laheq (announced marina — the developer's published announcement names an opening year; never rendered), Thuwal (RSG-T, ~25–37 min foiling vs 45 min published yacht transfer), Al Wajh/Umluj (gateway towns, no verified tourist landings), inter-destination 79 nm (long-range platform class — beyond the N45/N30 electric envelope, never faked on a 70-nm vessel)."
+      }
+    },
+    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the gold-master pattern."
+  },
+  "_internal": {
+    "scope": "RSG destinations only — The Red Sea (Al Wajh lagoon), AMAALA (Triple Bay), with Thuwal as roadmap. Destination-internal corridors only, all geometry NEW (zero Atlas bindings; census n_sourced = 0; fail-closed, no sealed set used). The 79-nm inter-destination leg renders only as roadmap reach for a long-range platform class. No launch dates render. NEOM/Sindalah excluded entirely (different developer).",
+    "verification_ledger": "PRIMARY-verified renderables: MSP measures + verbatim electric-only quote (RSG media center), SIIG Model 30%/2040 (RSG), 1M visitor cap + <1% development + 28,000 km²/90+ islands + 100% off-grid renewables (RSG portfolio), AMAALA first wave 6 resorts/~650 keys/130 m yacht marina/Ocean Race 2027 (RSG-PIF release + visitredsea), Coastal Transportation Services 13 vessels/145 EVs/170 chargers (RSG subsidiaries), Fly Red Sea (RSG + own site), Shura marina + bridge arrival (RSG Shura release), Turtle Bay transfer product + 20 km land link (rsiairport.sa), Thuwal 45-min yacht transfer (RSG). DERIVED-but-rendered with labeling: 11 hotels open / 5 on Shura (from PRIMARY statements, fn4), 226 outer-island villas (90 SECONDARY + 63 PRIMARY-brand + 73 SECONDARY, fn4 states 'as published by brands and trade press'), RSI ~130K pax 2025 (PRIMARY+SECONDARY, fn7), all trip times (coordinate-derived, fn5). SECONDARY-only, excluded from renderables: >50K tourists 2025, AMAALA ~500K target, 82% Eid occupancy, Umluj/Al Wajh populations, Shura berth-count discrepancy (115 vs 118 → rendered '115+'), World-Islands-style development claims N/A. Ambiguous, never rendered: RSG '350,000+ visitors per year'.",
+    "positioning_rules": "Never criticism of RSG: the 13-vessel marine fleet renders only as their neutral published fact; the fulfilment frame ('the commitment is published; the vessel now exists') attaches to Navier, not to any shortfall language. Never present the tier as replacing the destination's marine operation, seaplanes or transfer products. No partnership claims with RSG or any resort brand — resort names are published landscape facts and indicative demand pools. No fare comparison with subsidized modes (none exist here). No Saudization content. USD primary; SAR cited at the 3.75 peg where local benchmarks render.",
+    "access_deviation": "Dubai public-partners gold master is access:'public'; this page is unlisted/noindex per explicit instruction (named-counterparty destination page)."
+  }
+}
