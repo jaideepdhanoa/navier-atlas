@@ -111,6 +111,27 @@
     return `<div class="gold-stat-band cols-${n}" data-reveal>${cells}</div>`;
   }
 
+  /** One authored kicker per section — never hardcode chapter labels twice (v8 render_rules.kickers) */
+  function kicker(s, fallback) {
+    const t = (s && (s.kicker || s.eyebrow)) || fallback || '';
+    if (!t) return '';
+    return `<p class="eyebrow stage-kicker">${esc(t)}</p>`;
+  }
+
+  /** Title Case for headlines that arrive as all-caps (v8 headline_case) */
+  function titleCaseHeadline(str) {
+    if (!str) return '';
+    const s = String(str);
+    // Only rewrite if mostly uppercase
+    const letters = s.replace(/[^A-Za-z]/g, '');
+    if (!letters || letters !== letters.toUpperCase()) return s;
+    return s
+      .toLowerCase()
+      .replace(/(^|[\s—–\-/:])([a-z])/g, function (_, p, c) {
+        return p + c.toUpperCase();
+      });
+  }
+
   function brandMark() {
     return `<div class="inv-brand-mark" aria-hidden="true"><svg viewBox="9.5 9.5 160 160" fill="currentColor"><path d="M130.16 117.84 L120.18 135.12 A0.39 0.39 0 0 1 119.50 135.11 L68.16 44.06 A0.39 0.39 0 0 1 68.50 43.48 L88.22 43.48 A0.39 0.39 0 0 1 88.56 43.68 L130.16 117.46 A0.39 0.39 0 0 1 130.16 117.84 Z"/><path d="M132.68 111.67 L122.61 93.82 A0.55 0.55 0 0 1 122.62 93.28 L150.95 44.21 A0.55 0.55 0 0 1 151.90 44.21 L161.97 62.07 A0.55 0.55 0 0 1 161.96 62.61 L133.63 111.68 A0.55 0.55 0 0 1 132.68 111.67 Z"/><path d="M110.65 135.52 L90.76 135.52 A0.33 0.33 0 0 1 90.48 135.35 L48.97 61.75 A0.33 0.33 0 0 1 48.97 61.43 L59.03 44.00 A0.33 0.33 0 0 1 59.60 44.00 L110.93 135.03 A0.33 0.33 0 0 1 110.65 135.52 Z"/><path d="M26.53 134.96 L17.16 118.32 A0.67 0.67 0 0 1 17.16 117.66 L45.57 68.46 A0.67 0.67 0 0 1 46.74 68.46 L56.11 85.09 A0.67 0.67 0 0 1 56.11 85.75 L27.70 134.96 A0.67 0.67 0 0 1 26.53 134.96 Z"/></svg></div>`;
   }
@@ -328,13 +349,16 @@
     },
 
     'pill-sequence'(s) {
+      // NOW badge pinned ON phase node (v8 #1) — never floating between 3–4
       const pills = (s.pills || [])
         .map((p, i) => {
           const isNow = s.now_marker_on != null && i + 1 === s.now_marker_on;
           return `
-          <div class="arc-phase" data-pill="${i}">
-            ${isNow ? `<span class="now-badge">${esc(s.now_label || 'NOW')}</span>` : ''}
-            <div class="arc-num">${esc(p.number)}</div>
+          <div class="arc-phase ${isNow ? 'is-now' : ''}" data-pill="${i}">
+            <div class="arc-node">
+              ${isNow ? `<span class="now-badge">${esc(s.now_label || 'NOW')}</span>` : ''}
+              <div class="arc-num">${esc(p.number)}</div>
+            </div>
             <div class="arc-body">
               <div class="title">${esc(p.title)}</div>
               <div class="detail">${esc(p.detail)}</div>
@@ -346,7 +370,7 @@
       return `
         <div class="section-block stage-section arc-section" data-reveal data-pills data-now="${s.now_marker_on || 0}">
           <div class="section-inner">
-            <p class="stage-kicker">01 · THE CLAIM</p>
+            ${kicker(s, '01 · THESIS')}
             ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
             <div class="arc-rail media-inner" style="max-width:none;padding:0">${pills}</div>
           </div>
@@ -358,89 +382,71 @@
     },
 
     'flip-cards'(s) {
-      // v1-blocking: two-stage scroll morph — costs pillars → lever columns (deck 435/436)
+      // v8 #2: 1:1 in-place card morph (01→01) — no whole-stage crossfade, no ghosting
+      // Costs stage = dark field + cards only (no Navier vessel triptych on PAST stage)
       const pairs = s.pairs || [];
-      const costRail = pairs
+      const cards = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
           const title = pair.cost.title || '';
           const lead = title.split(/\s*[—–-]\s*/)[0] || title;
           const rest = title.slice(lead.length).replace(/^\s*[—–-]\s*/, '');
           return `
-          <div class="cm-cost-row" data-i="${i}">
-            <span class="cm-num">${n}</span>
-            <div>
-              <div class="cm-cost-lead">${esc(lead)}</div>
-              ${rest ? `<div class="cm-cost-sub">${esc(rest)}</div>` : ''}
-              <div class="cm-cost-body">${esc(pair.cost.body || '')}</div>
+          <div class="flip-slot" data-i="${i}">
+            <div class="flip-card" data-flip-card="${i}">
+              <div class="flip-face flip-cost">
+                <div class="cm-num">${n}</div>
+                <div class="cm-cost-lead">${esc(lead)}</div>
+                ${rest ? `<div class="cm-cost-sub">${esc(rest)}</div>` : ''}
+                <div class="cm-cost-body">${esc(pair.cost.body || '')}</div>
+              </div>
+              <div class="flip-face flip-lever">
+                <div class="cm-num">${n}</div>
+                <div class="cm-lever-title">${esc(pair.lever.title || '')}</div>
+                <div class="cm-lever-mech">${esc(pair.lever.mechanism || '')}</div>
+                <div class="cm-lever-proof">${esc(pair.lever.proof || '')}</div>
+              </div>
             </div>
           </div>`;
         })
         .join('');
-      const leverCols = pairs
+      // Reduced-motion: two labeled rows, both fully opaque
+      const staticCosts = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
-          return `
-          <div class="cm-lever-col" data-i="${i}">
-            <div class="cm-num">${n}</div>
-            <div class="cm-lever-title">${esc(pair.lever.title || '')}</div>
-            <div class="cm-lever-mech">${esc(pair.lever.mechanism || '')}</div>
-            <div class="cm-lever-proof">${esc(pair.lever.proof || '')}</div>
-          </div>`;
+          return `<div class="static-pair-card cost"><div class="cm-num">${n}</div><div class="t">${esc(pair.cost.title || '')}</div><div class="b">${esc(pair.cost.body || '')}</div></div>`;
         })
         .join('');
-      // A2: three mission photos — different missions, same constraints (deck 435/436)
-      const costStack = homeAssets('claim.three_costs.stack') || {};
-      const costPhotos = [
-        costStack[0] || costStack.build || 'assets/deck/n30-pioneer-at-sea.png',
-        costStack[1] || costStack.move || 'assets/deck/cargo-n80-profile.png',
-        costStack[2] || costStack.operate || 'assets/deck/shipscale-hero.png',
-      ].map(function (p) {
-        return mediaPath(p);
-      });
-      const photoStack = costPhotos
-        .map(
-          (src, i) =>
-            `<div class="cm-stack-card has-img" aria-hidden="true"><img src="${esc(src)}" alt="" loading="lazy" /></div>`,
-        )
+      const staticLevers = pairs
+        .map((pair, i) => {
+          const n = String(i + 1).padStart(2, '0');
+          return `<div class="static-pair-card lever"><div class="cm-num">${n}</div><div class="t">${esc(pair.lever.title || '')}</div><div class="mech">${esc(pair.lever.mechanism || '')}</div><div class="b">${esc(pair.lever.proof || '')}</div></div>`;
+        })
         .join('');
       const why = s.why_now
         ? `<div class="why-now why-now-stage">
             <h3 class="h3">${esc(s.why_now.title)}</h3>
             <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
-            ${s.why_now.closing_line ? `<p class="closing-line">${esc(s.why_now.closing_line)}</p>` : ''}
           </div>`
         : '';
       return `
         <div class="section-block costs-morph-section" data-reveal data-home="claim.three_costs">
-          <div class="section-inner">
-            ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
-            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          </div>
-          <div class="costs-morph" id="costs-morph">
-            <div class="costs-morph-sticky">
-              <div class="cm-stage cm-stage-costs" data-stage="costs">
-                <div class="cm-grid">
-                  <div class="cm-rail">
-                    <p class="stage-kicker">THREE COSTS</p>
-                    ${costRail}
-                  </div>
-                  <div class="cm-photo-stack">
-                    <p class="cm-kicker">${esc(s.costs_kicker || 'Different missions. Same constraints.')}</p>
-                    ${photoStack}
-                  </div>
-                </div>
-              </div>
-              <div class="cm-stage cm-stage-levers" data-stage="levers">
-                <div class="cm-levers-head">
-                  <p class="stage-kicker">THREE LEVERS</p>
-                  ${s.flip_headline ? `<h3 class="cm-flip-h">${esc(s.flip_headline)}</h3>` : ''}
-                </div>
-                <div class="cm-levers-grid">${leverCols}</div>
+          <div class="section-inner costs-compose">
+            <div class="costs-head">
+              ${s.headline ? `<h2 class="h2" id="costs-headline">${esc(s.headline)}</h2>` : ''}
+              ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+              ${s.costs_kicker ? `<p class="cm-kicker" id="costs-kicker-line">${esc(s.costs_kicker)}</p>` : ''}
+            </div>
+            <div class="costs-morph" id="costs-morph" data-flip-headline="${esc(s.flip_headline || '')}" data-cost-headline="${esc(s.headline || '')}">
+              <div class="flip-grid" id="flip-grid">${cards}</div>
+              <div class="flip-static" hidden>
+                <p class="eyebrow">THREE COSTS</p>
+                <div class="static-row">${staticCosts}</div>
+                <p class="eyebrow" style="margin-top:28px">THREE LEVERS</p>
+                <div class="static-row">${staticLevers}</div>
               </div>
             </div>
-          </div>
-          <div class="section-inner">${why}
+            ${why}
             ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
           </div>
         </div>`;
@@ -449,7 +455,7 @@
     'stat-counters'(s) {
       return `
         <div class="section-block shell-stage" data-reveal>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
           ${goldStats(s.stats)}
@@ -471,6 +477,8 @@
       const anchorSrc = mediaPath(
         demos.anchor_full_width_native_loop || (anchor && anchor.asset) || 'assets/stabilization-juxtaposition.mp4',
       );
+      // v8 #3: stability context line ABOVE the video as lede
+      const lede = s.lede || (anchor && (anchor.caption || anchor.title)) || '';
 
       const cards = rest
         .map((c) => {
@@ -497,16 +505,19 @@
 
       return `
         <div class="section-block" data-reveal data-home="proof.demo_grid">
-          ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${lede ? `<p class="demo-lede">${esc(lede)}</p>` : ''}
+          </div>
           ${
             anchorSrc
-              ? `<div class="demo-anchor shell-stage">
+              ? `<div class="demo-anchor media-inner">
                   <video src="${esc(anchorSrc)}" muted playsinline loop preload="none" data-lazy-video></video>
-                  <p class="vcard-cap">${esc((anchor && (anchor.caption || anchor.title)) || '')}</p>
                 </div>`
               : ''
           }
-          <div class="video-grid shell-stage">${cards}</div>
+          <div class="video-grid media-inner">${cards}</div>
         </div>`;
     },
 
@@ -540,7 +551,7 @@
     },
 
     'hotspot-diagram'(s) {
-      // MANDATORY annotated diagram: callouts + hairline leaders on wireframe (Cut s11)
+      // v8 #4: schematic + CTO video SIDE BY SIDE; no repeated fact list; bow-left; no clip
       const filmPoster = homeSrc('product.control.film') || mediaPath('assets/posters/S7WB91FvSFI.jpg');
       const wire = homeSrc('product.control.diagram') || mediaPath('assets/deck/control-wireframe-clean.png');
       const hotspots = s.hotspots || [];
@@ -550,17 +561,19 @@
           const x = a.x != null ? a.x : 50;
           const y = a.y != null ? a.y : 20 + i * 10;
           const side = a.side === 'left' ? 'left' : 'right';
-          const labelX = side === 'left' ? Math.max(2, x - 28) : Math.min(72, x + 6);
+          // Keep labels inside stage (min 4% margin) — no left-edge clip
+          const labelX =
+            side === 'left' ? Math.max(4, Math.min(x - 22, 42)) : Math.min(74, Math.max(x + 4, 52));
           return `
             <div class="ctrl-callout side-${side}" data-callout="${i}"
-              style="left:${labelX}%;top:${Math.max(2, y - 4)}%">
+              style="left:${labelX}%;top:${Math.max(6, Math.min(y, 90))}%">
               <div class="ctrl-label">${esc(h.label || '')}</div>
               ${h.detail ? `<div class="ctrl-detail">${esc(h.detail)}</div>` : ''}
             </div>
             <div class="ctrl-anchor" data-anchor="${i}" style="left:${x}%;top:${y}%"></div>`;
         })
         .join('');
-      // SVG leaders drawn after mount from anchors → callouts; fallback static list always visible
+      // Mobile-only fallback list (desktop: callouts ARE the facts — no duplicate)
       const fallbackList = hotspots
         .map(
           (h, i) =>
@@ -572,44 +585,58 @@
       return `
         <div class="section-block stage-section control-stage" data-reveal data-home="product.control.diagram" data-control-diagram>
           <div class="section-inner">
-            ${s.title ? `<p class="stage-kicker">03 · THE PRODUCT</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
-            <div class="control-diagram-wrap media-inner" style="max-width:none;padding:0">
+            <div class="control-sbs">
               <div class="control-diagram" id="control-diagram">
                 ${
                   wire
-                    ? `<img class="control-wire" src="${esc(wire)}" alt="" loading="lazy" />`
+                    ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="lazy" />`
                     : ''
                 }
                 <svg class="control-leaders" id="control-leaders" aria-hidden="true"></svg>
                 <div class="control-overlay">${callouts}</div>
               </div>
-              ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
+              <div class="control-video">
+                ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
+              </div>
             </div>
-            <div class="callout-list control-fallback" aria-hidden="false">${fallbackList}</div>
+            <div class="callout-list control-fallback" hidden>${fallbackList}</div>
           </div>
         </div>`;
     },
 
     'platform-intro'(s) {
+      // v8 #5–6: connected 3-layer diagram + wireframe; NO foundry/hangar here
       const wire = homeSrc('product.gmvp.diagram') || mediaPath('assets/deck/fleet-wireframe.png');
-      const foundry = homeSrc('product.foundry.plate');
-      const fCap = homeCap('product.foundry.plate');
       const layers = (s.layers || [])
-        .map(
-          (l) => `
-        <div class="layer"><div class="name">${esc(l.name)}</div>
-          ${l.detail ? `<div class="detail">${esc(l.detail)}</div>` : ''}</div>`,
-        )
+        .map((l, i) => {
+          const parts = String(l.name || '').split(/\s*\|\s*/);
+          const name = parts[0] || l.name || '';
+          const role = parts[1] || '';
+          return `
+          <div class="gmvp-layer" data-layer="${i}">
+            <div class="gmvp-layer-name">${esc(name)}</div>
+            ${role ? `<div class="gmvp-layer-role">${esc(role)}</div>` : ''}
+            ${l.detail ? `<div class="gmvp-layer-detail">${esc(l.detail)}</div>` : ''}
+          </div>`;
+        })
         .join('');
       return `
-        <div class="section-block" data-reveal data-home="product.gmvp.diagram">
-          ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
-          ${s.body ? `<p class="body-text shell-prose">${nl(s.body)}</p>` : ''}
-          <div class="shell-stage">${wire ? plate(wire, { home: 'product.gmvp.diagram', className: 'wire-plate' }) : ''}
-          <div class="layers">${layers}</div></div>
-          ${s.tagline ? `<p class="closing-line shell-prose">${esc(s.tagline)}</p>` : ''}
-          ${foundry ? cinema(foundry, { home: 'product.foundry.plate', caption: fCap, vh: '62vh' }) : ''}
+        <div class="section-block shell-stage gmvp-stage" data-reveal data-home="product.gmvp.diagram">
+          ${kicker(s)}
+          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+          ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
+          <div class="gmvp-compose">
+            <div class="gmvp-wire">
+              ${wire ? `<img src="${esc(wire)}" alt="" loading="lazy" class="gmvp-wire-img" />` : ''}
+            </div>
+            <div class="gmvp-layers">
+              <p class="eyebrow">THREE LAYERS</p>
+              ${layers}
+            </div>
+          </div>
         </div>`;
     },
 
@@ -621,28 +648,37 @@
     },
 
     'chapter-break'(s) {
-      // Quanta interstitial — film + defense (v3: quanta home)
+      // v8 #7: ONE title moment — Title Case headline, founder video FIRST ≥70% width, no camo here
       const qa = homeAssets('product.quanta') || {};
-      const filmP = qa.film ? mediaPath(qa.film) : homeSrc('product.quanta') ;
-      const defense = qa.defense_plate ? mediaPath(qa.defense_plate) : '';
+      const filmP = qa.film ? mediaPath(qa.film) : mediaPath('assets/posters/QhiaYVgXMf0.jpg');
+      const headline = titleCaseHeadline(s.headline || '');
       return `
-        <div class="section-block chapter-break shell-stage" data-reveal data-home="product.quanta">
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
-          ${s.headline ? `<p class="break-headline">${esc(s.headline)}</p>` : ''}
-          <div class="media-duo">
-            ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || '') : ''}
-            ${defense ? plate(defense, { home: 'product.quanta', className: '' }) : ''}
+        <div class="section-block chapter-break quanta-moment" data-reveal data-home="product.quanta">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${headline ? `<h2 class="h2 quanta-headline">${esc(headline)}</h2>` : ''}
+            <div class="quanta-video-lead">
+              ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || 'Sampriti Bhattacharyya · CEO Navier') : ''}
+            </div>
           </div>
         </div>`;
     },
 
     'stat-chips'(s) {
+      // Quanta stats: camo plate + title + chips composed (v8 #7)
+      const qa = homeAssets('product.quanta') || {};
+      const camo = qa.defense_plate ? mediaPath(qa.defense_plate) : '';
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          ${goldStats(s.stats)}
+        <div class="section-block shell-stage quanta-stats-stage" data-reveal data-home="product.quanta">
+          ${kicker(s)}
+          <div class="quanta-stats-compose ${camo ? 'has-plate' : ''}">
+            <div class="quanta-stats-copy">
+              ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+              ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+              ${goldStats(s.stats)}
+            </div>
+            ${camo ? `<div class="quanta-stats-plate"><img src="${esc(camo)}" alt="" loading="lazy" /></div>` : ''}
+          </div>
         </div>`;
     },
 
@@ -657,7 +693,7 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           <div class="media-duo">
             <div>
@@ -676,10 +712,10 @@
     },
 
     'comparison-table'(s) {
-      // No photo plate (v3 §13)
       const cols = s.columns || [];
       const labels = s.row_labels || [];
-      const head = `<tr><th></th>${cols
+      const rowHead = s.vessel_type_label || 'CAPABILITY';
+      const head = `<tr><th class="row-label-th">${esc(rowHead)}</th>${cols
         .map(
           (c) =>
             `<th class="${c.highlight ? 'hi' : ''}">${esc(c.name)}${
@@ -697,33 +733,36 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal data-home="gtm.competitive">
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           <div class="table-wrap"><table class="cmp"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
         </div>`;
     },
 
     'signed-contract-hero'(s) {
+      // v8 #8: match Gulf structure — hero → kicker → title → sub → chips
       const ga = homeAssets('gtm.maldives') || {};
-      // opener is chapter divider; inset here
+      const hero = ga.opener ? mediaPath(ga.opener) : '';
       const inset = ga.inset ? mediaPath(ga.inset) : '';
-      const filmP = ga.film_card ? mediaPath(ga.film_card) : '';
       return `
-        <div class="section-block shell-stage" data-reveal data-home="gtm.maldives">
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          ${goldStats(s.stats)}
-          <div class="media-duo">
-            ${inset ? plate(inset, { home: 'gtm.maldives', className: '' }) : ''}
-            <div>
-              ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
-              <div class="press">${(s.press || [])
-                .map(
-                  (p) => `
-                <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
-                )
-                .join('')}</div>
-              <!-- Four Seasons film stays in Proof demo grid only (v6) -->
+        <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.maldives">
+          ${hero ? cinema(hero, { home: 'gtm.maldives', vh: '55vh' }) : ''}
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${goldStats(s.stats)}
+            <div class="media-duo">
+              ${inset ? plate(inset, { home: 'gtm.maldives', className: '' }) : ''}
+              <div>
+                ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
+                <div class="press">${(s.press || [])
+                  .map(
+                    (p) => `
+                  <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
+                  )
+                  .join('')}</div>
+              </div>
             </div>
           </div>
         </div>`;
@@ -732,10 +771,11 @@
     'program-panel'(s) {
       const gulf = homeSrc('gtm.gulf.plate') || mediaPath('assets/deck/gulf-hero.png');
       return `
-        <div class="section-block stage-section" data-reveal data-home="gtm.gulf.plate">
+        <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.gulf.plate">
           ${gulf ? cinema(gulf, { home: 'gtm.gulf.plate', vh: '55vh' }) : ''}
           <div class="section-inner">
-            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${goldStats(s.stats)}
             <div class="proof-chips">${(s.proof_chips || [])
@@ -752,7 +792,6 @@
     },
 
     'stacked-cards'(s) {
-      // Revenue-lines: flywheel_line sits ABOVE cards (contract-locked verbatim)
       const cards = (s.cards || [])
         .map(
           (c) => `
@@ -762,6 +801,7 @@
         .join('');
       return `
         <div class="section-block shell-stage revenue-lines-stage" data-reveal>
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
           ${s.flywheel_line ? `<p class="flywheel-line">${esc(s.flywheel_line)}</p>` : ''}
@@ -778,7 +818,6 @@
         { key: 'harim', role: 'Hotels & resorts' },
         { key: 'visit_maldives', role: 'Demand' },
       ];
-      // Prefer contract roles for captions when present
       const roles = s.roles || s.cards || [];
       const logoCards = order
         .map((o, i) => {
@@ -796,7 +835,8 @@
       return `
         <div class="section-block stage-section" data-reveal data-home="gtm.coastal.logos">
           <div class="section-inner">
-            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead || s.intro ? `<p class="lead">${esc(s.subhead || s.intro)}</p>` : ''}
             <div class="player-logos">${logoCards}</div>
             ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
@@ -805,17 +845,13 @@
     },
 
     'drawing-chart'(s) {
+      // v8 #9: cargo gap only — play/shipscale/wedge are their own composed sections
       const ca = homeAssets('gtm.cargo') || {};
       const opener = ca.opener ? mediaPath(ca.opener) : mediaPath('assets/deck/air-vs-ocean-cargo.png');
-      const playPlate = mediaPath(ca.play || 'assets/deck/cargo-play-skyline.png');
-      const shipH = mediaPath(ca.shipscale || 'assets/deck/shipscale-hero.png');
-      const shipG = mediaPath(ca.shipscale_grid || 'assets/deck/shipscale-variants-grid.png');
-      const wedgeP = mediaPath(ca.wedge || 'assets/deck/wedge-day-night.png');
-      const night = ca.night_pair || [];
-      let chartHtml = '';
+      let chartCards = '';
       if (s.chart) {
         const c = s.chart;
-        const cards = ['air', 'ocean', 'gap']
+        chartCards = ['air', 'ocean', 'gap']
           .filter((k) => c[k])
           .map((k) => {
             const x = c[k];
@@ -827,20 +863,14 @@
             </div>`;
           })
           .join('');
-        chartHtml = `
-          <div class="section-inner">
-            ${s.title ? `<p class="stage-kicker">04 · GO-TO-MARKET</p><h2 class="h2">${esc(s.title)}</h2>` : ''}
-            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-            <div class="chips-3">${cards}</div>
-            ${c.navier_band ? `<div class="formula">${esc(c.navier_band)}</div>` : ''}
-          </div>`;
       }
-      let islandHtml = '';
       const ib = s.island_band;
-      if (ib && typeof ib === 'object') {
-        islandHtml = `
-          <div class="section-inner island-band" data-reveal>
-            ${ib.title ? `<p class="stage-kicker">ISLANDS</p><h2 class="h2">${esc(ib.title)}</h2>` : ''}
+      const islandHtml =
+        ib && typeof ib === 'object'
+          ? `
+          <div class="island-band" data-reveal>
+            <p class="sublabel">ISLANDS</p>
+            ${ib.title ? `<h3 class="h3">${esc(ib.title)}</h3>` : ''}
             <div class="gold-stat-band cols-${Math.min((ib.stats || []).length, 3)}">
               ${(ib.stats || [])
                 .map(
@@ -853,45 +883,32 @@
                 .join('')}
             </div>
             ${ib.footnote ? `<p class="muted">${esc(ib.footnote)}</p>` : ''}
-          </div>`;
-      }
+          </div>`
+          : '';
       return `
-        <div class="section-block" data-reveal data-home="gtm.cargo">
-          <div class="cinema-block" data-reveal>
-            <div class="cinema"><div class="cinema-media" style="height:min(80vh,720px);display:flex;align-items:center;justify-content:center;background:#0a0a0c">
-              <img src="${esc(opener)}" alt="" loading="lazy" style="object-fit:contain;max-height:80vh;width:auto;max-width:100%" />
-            </div></div>
-          </div>
-          ${chartHtml}
-          ${islandHtml}
-          ${
-            night.length
-              ? `<div class="media-inner foundry-pair">${night.map((n) => plate(mediaPath(n), { home: 'gtm.cargo' })).join('')}</div>`
-              : ''
-          }
-          <div class="section-block stage-section" data-reveal>
-            <div class="section-inner">
-              <p class="stage-kicker">THE PLAY</p>
-              ${plate(playPlate, { className: 'contain' })}
+        <div class="section-block cargo-compose" data-reveal data-home="gtm.cargo">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            <div class="cargo-stage">
+              <div class="cargo-stage-media contain-media">
+                <img src="${esc(opener)}" alt="" loading="lazy" />
+              </div>
+              <div class="cargo-stage-copy">
+                ${chartCards ? `<div class="chips-3">${chartCards}</div>` : ''}
+                ${s.chart && s.chart.navier_band ? `<div class="formula">${esc(s.chart.navier_band)}</div>` : ''}
+              </div>
             </div>
-          </div>
-          <div class="section-block stage-section" data-reveal>
-            <div class="section-inner">
-              <p class="stage-kicker">SHIP SCALE</p>
-              ${plate(shipH, { className: 'contain' })}
-              ${plate(shipG, { className: 'contain' })}
-            </div>
-          </div>
-          <div class="section-block stage-section" data-reveal>
-            <div class="section-inner">
-              <p class="stage-kicker">THE WEDGE</p>
-              ${plate(wedgeP, { className: 'contain' })}
-            </div>
+            ${islandHtml}
           </div>
         </div>`;
     },
 
     'three-chips'(s) {
+      // Cargo play — image composed with copy (v8 #9)
+      const ca = homeAssets('gtm.cargo') || {};
+      const img = mediaPath(ca.play || 'assets/deck/cargo-play-skyline.png');
       const chips = (s.chips || s.cards || [])
         .map(
           (c) => `
@@ -899,24 +916,51 @@
         )
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
-          <div class="chips-3">${chips}</div>
+        <div class="section-block cargo-compose" data-reveal data-home="gtm.cargo">
+          <div class="section-inner">
+            ${kicker(s)}
+            <p class="sublabel">THE PLAY</p>
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
+            <div class="cargo-stage">
+              <div class="cargo-stage-media"><img src="${esc(img)}" alt="" loading="lazy" /></div>
+              <div class="cargo-stage-copy"><div class="chips-3">${chips}</div></div>
+            </div>
+          </div>
         </div>`;
     },
 
     'stat-panel'(s) {
+      const ca = homeAssets('gtm.cargo') || {};
+      const img = mediaPath(ca.shipscale || 'assets/deck/shipscale-hero.png');
+      const grid = mediaPath(ca.shipscale_grid || 'assets/deck/shipscale-variants-grid.png');
+      const isCargo = /ship scale|sealift|cargo/i.test((s.title || '') + (s.kicker || ''));
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
-          ${goldStats(s.stats)}
-          ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+        <div class="section-block cargo-compose" data-reveal>
+          <div class="section-inner">
+            ${kicker(s)}
+            ${isCargo ? `<p class="sublabel">SHIP SCALE</p>` : ''}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
+            ${
+              isCargo
+                ? `<div class="cargo-stage">
+              <div class="cargo-stage-media">
+                <img src="${esc(img)}" alt="" loading="lazy" />
+                <img src="${esc(grid)}" alt="" loading="lazy" class="ship-grid" />
+              </div>
+              <div class="cargo-stage-copy">${goldStats(s.stats)}</div>
+            </div>`
+                : goldStats(s.stats)
+            }
+            ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+          </div>
         </div>`;
     },
 
     'day-night-flip'(s) {
+      const ca = homeAssets('gtm.cargo') || {};
+      const img = mediaPath(ca.wedge || 'assets/deck/wedge-day-night.png');
       const chips = (s.chips || [])
         .map(
           (c) => `
@@ -924,10 +968,17 @@
         )
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
-          <div class="chips-3">${chips}</div>
+        <div class="section-block cargo-compose" data-reveal data-home="gtm.cargo">
+          <div class="section-inner">
+            ${kicker(s)}
+            <p class="sublabel">THE WEDGE</p>
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
+            <div class="cargo-stage">
+              <div class="cargo-stage-media"><img src="${esc(img)}" alt="" loading="lazy" /></div>
+              <div class="cargo-stage-copy"><div class="chips-3">${chips}</div></div>
+            </div>
+          </div>
         </div>`;
     },
 
@@ -941,6 +992,7 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal data-home="gtm.service.plate">
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
           <div class="media-duo">
@@ -951,12 +1003,12 @@
     },
 
     'defense-panel'(s) {
-      // Dual-use: intro primary; sub_line secondary (contract-locked)
+      // v8 #11: camo + Navy 50/50 side by side
       const da = homeAssets('gtm.defense') || {};
       const plateSrc = da.plate ? mediaPath(da.plate) : '';
       const inset = da.inset ? mediaPath(da.inset) : '';
       const quote = s.pull_quote
-        ? `<blockquote class="defense-quote">
+        ? `<blockquote class="defense-quote-inline">
             <p>${esc(s.pull_quote.quote || '')}</p>
             <cite>${esc(s.pull_quote.attribution || '')}</cite>
           </blockquote>`
@@ -970,23 +1022,16 @@
       return `
         <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
           <div class="section-inner">
+            ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${s.intro ? `<p class="dual-use-intro">${esc(s.intro)}</p>` : ''}
             ${s.sub_line ? `<p class="dual-use-sub">${esc(s.sub_line)}</p>` : ''}
-          </div>
-          ${
-            plateSrc
-              ? `<div class="cinema defense-cinema" data-home="gtm.defense">
-                  <div class="cinema-media" style="height:62vh">
-                    <img src="${esc(plateSrc)}" alt="" loading="lazy" />
-                    ${quote}
-                  </div>
-                </div>`
-              : quote
-          }
-          <div class="shell-stage">
-            ${inset ? plate(inset, { home: 'gtm.defense' }) : ''}
+            <div class="defense-sbs">
+              ${inset ? `<div class="defense-sbs-img"><img src="${esc(inset)}" alt="" loading="lazy" /></div>` : ''}
+              ${plateSrc ? `<div class="defense-sbs-img"><img src="${esc(plateSrc)}" alt="" loading="lazy" /></div>` : ''}
+            </div>
+            ${quote}
             <div class="dual-use-blocks">${blocks}</div>
             ${s.deployment_line ? `<p class="closing-line">${esc(s.deployment_line)}</p>` : ''}
             ${s.fine_print ? `<p class="muted">${esc(s.fine_print)}</p>` : ''}
@@ -995,22 +1040,30 @@
     },
 
     'horizontal-bars'(s) {
-      // G3: totals as structured gold floor band
+      // v8 #12: explicit column labels
       const segs = s.segments || [];
+      const cl = s.column_labels || {};
       const max = Math.max(...segs.map((b) => (b.bar_value_range && b.bar_value_range[1]) || 1), 1);
+      const header = `
+        <div class="tam-head">
+          <span class="tam-h-name"></span>
+          <span>${esc(cl.demand_pool || 'DEMAND POOL')}</span>
+          <span>${esc(cl.vessels_floor || 'VESSELS · 10-YR FLOOR')}</span>
+          <span>${esc(cl.dollars_floor || 'HULL $ · 10-YR FLOOR')}</span>
+        </div>`;
       const bars = segs
         .map((b) => {
           const hi = (b.bar_value_range && b.bar_value_range[1]) || 1;
           const pct = Math.round((hi / max) * 100);
           return `
-          <div class="bar-row" data-bar-pct="${pct}">
-            <div class="meta">
-              <span><strong>${esc(b.name || b.label || '')}</strong></span>
-              <span>${esc(b.dollars_floor || b.value || '')}</span>
+          <div class="bar-row tam-row" data-bar-pct="${pct}">
+            <div class="tam-grid">
+              <div class="tam-name"><strong>${esc(b.name || b.label || '')}</strong></div>
+              <div class="tam-demand muted tiny">${esc(b.demand_pool || '')}</div>
+              <div class="tam-vessels">${esc(b.vessels_floor || '')}</div>
+              <div class="tam-dollars">${esc(b.dollars_floor || b.value || '')}</div>
             </div>
-            ${b.demand_pool ? `<div class="muted tiny">${esc(b.demand_pool)}</div>` : ''}
             <div class="bar-track"><div class="bar-fill"></div></div>
-            ${b.vessels_floor ? `<div class="muted tiny mt-xs">${esc(b.vessels_floor)} vessels</div>` : ''}
           </div>`;
         })
         .join('');
@@ -1028,17 +1081,16 @@
       }
       return `
         <div class="section-block shell-stage" data-reveal data-bars>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          <div class="chart-block">${bars}</div>
+          <div class="chart-block tam-chart">${header}${bars}</div>
           ${floor}
           ${s.source_line ? `<p class="muted">${esc(s.source_line)}</p>` : ''}
         </div>`;
     },
 
     'native-line-charts'(s) {
-      // Money v2 lead: FY26E–FY30E ramp — exact contract series, native SVG only
-      // Series data stays in INVEST_DATA.money; draw pass reads it after mount
+      // Charts below KPIs — no second OPERATING PLAN kicker (v8 C2)
       const charts = (s.charts || [])
         .map(function (ch) {
           return `
@@ -1051,7 +1103,6 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal data-home="money.charts" data-ramp-root>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           <div class="native-charts ramp-charts">${charts}</div>
           ${s.note ? `<p class="muted">${esc(s.note)}</p>` : ''}
@@ -1059,14 +1110,14 @@
     },
 
     'stat-band'(s) {
-      // FY30 chips — secondary to ramp charts (money v2)
+      // v8 #13: KPI strip FIRST
       const foot =
         s.footnote && !/^[a-z0-9-]+$/i.test(String(s.footnote).trim())
           ? s.footnote
           : '';
       return `
         <div class="section-block shell-stage" data-reveal data-home="money.charts">
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
           ${goldStats(s.stats)}
           ${foot ? `<p class="muted">${esc(foot)}</p>` : ''}
@@ -1086,7 +1137,7 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           <div class="roadmap">${cols}</div>
           ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
@@ -1094,13 +1145,13 @@
     },
 
     'status-rows'(s) {
-      // Five markets thesis board with thumbs
+      // v8 #15: expand-on-hover/focus
       const thumbs = (home('money.thesis_board.thumbs') && home('money.thesis_board.thumbs').assets) || [];
       const rows = (s.rows || [])
         .map((r, i) => {
           const thumb = thumbs[i] ? mediaPath(thumbs[i]) : '';
           return `
-          <div class="thesis-row">
+          <div class="thesis-row" tabindex="0">
             ${thumb ? `<div class="thesis-thumb"><img src="${esc(thumb)}" alt="" loading="lazy" /></div>` : ''}
             <div class="label">${esc(r.label)}</div>
             <div class="status">${esc(r.status)}</div>
@@ -1109,6 +1160,7 @@
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal data-home="money.thesis_board.thumbs">
+          ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
           <div class="thesis-board">${rows}</div>
@@ -1184,17 +1236,17 @@
       return { src: mediaPath(src), photo: true, dev: false, id: id };
     }
     if (id === 'n45-explorer') {
+      // C4: RENDER chip on every render-image tab
       const src = la.n45_explorer || 'assets/deck/n45-mobility-render.png';
-      return { src: mediaPath(src), photo: true, dev: false, id: id };
+      return { src: mediaPath(src), photo: true, dev: true, id: id };
     }
     if (id === 'n80-valkyrie') {
-      // A1 fix: always bind approved n80-render-v1 — never N30 pioneer
       const src = la.n80_valkyrie || 'assets/deck/n80-render-v1.png';
       return { src: mediaPath(src), photo: true, dev: true, id: id };
     }
     if (id === 'n180-morpheus') {
       const src = la.n180_morpheus || 'assets/deck/shipscale-hero.png';
-      return { src: mediaPath(src), photo: true, dev: false, id: id };
+      return { src: mediaPath(src), photo: true, dev: true, id: id };
     }
     const key = String(id).replace(/-/g, '_');
     if (la[key]) return { src: mediaPath(la[key]), photo: true, dev: false, id: id };
@@ -1213,8 +1265,13 @@
       )
       .join('');
     const first = ladderImg(hulls[0]);
+    // v8 #6: tagline becomes ladder lead-in
+    const gmvp = ((D.product && D.product.sections) || []).find((x) => x.id === 'gmvp');
+    const leadIn = (gmvp && gmvp.tagline) || 'Single Platform. Multiple Use Cases.';
     return `
       <div class="section-block shell-stage" data-reveal data-home="product.ladder">
+        ${kicker(s)}
+        <p class="ladder-leadin">${esc(leadIn)}</p>
         ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
         <div class="ladder" id="ladder">
           <div class="ladder-tabs">${tabs}</div>
@@ -1229,7 +1286,7 @@
       </div>`;
   }
 
-  function renderUnitEcon() {
+  function renderUnitEcon(s) {
     const u = D.unitecon;
     if (!u) return '';
     const tabs = (u.panels || [])
@@ -1240,7 +1297,8 @@
       .join('');
     return `
       <div class="section-block shell-stage" data-reveal>
-        ${u.eyebrow ? `<p class="eyebrow">${esc(u.eyebrow)}</p>` : ''}
+        ${kicker(s || u)}
+        ${u.eyebrow && !(s && (s.kicker || s.eyebrow)) ? `<p class="eyebrow">${esc(u.eyebrow)}</p>` : ''}
         ${u.title ? `<h2 class="h2">${esc(u.title)}</h2>` : ''}
         <div class="unitecon" id="unitecon">
           <div class="ue-tabs">${tabs}</div>
@@ -1272,7 +1330,7 @@
     return { ids: [], coords: [], label: '', weight: 'pipeline' };
   }
 
-  function renderPipeline() {
+  function renderPipeline(sec) {
     const p = D['pipeline-map'];
     if (!p) return '';
     const homePipe = home('gtm.pipeline.map') || {};
@@ -1299,7 +1357,8 @@
     return `
       <div class="section-block" data-reveal data-home="gtm.pipeline.map" id="pipeline-section">
         <div class="section-inner">
-          ${p.eyebrow ? `<p class="eyebrow">${esc(p.eyebrow)}</p>` : ''}
+          ${kicker(sec || p)}
+          ${!(sec && (sec.kicker || sec.eyebrow)) && p.eyebrow ? `<p class="eyebrow">${esc(p.eyebrow)}</p>` : ''}
           ${p.title ? `<h2 class="h2">${esc(p.title)}</h2>` : ''}
           ${stats}
         </div>
@@ -1383,21 +1442,9 @@
   function gtmChapter() {
     const data = D.gtm;
     if (!data) return '';
-    const maldives = (homeAssets('gtm.maldives') || {}).opener
-      ? mediaPath(homeAssets('gtm.maldives').opener)
-      : '';
+    // Maldives hero is owned by signed-contract-hero — do not double-render
     const parts = [];
-    if (maldives) {
-      parts.push(
-        cinema(maldives, {
-          home: 'gtm.maldives',
-          caption: 'Maldives — $100M signed, 100 vessels.',
-          vh: '70vh',
-        }),
-      );
-    }
     for (const sec of data.sections || []) {
-      // cargo-gap handles its own air-vs-ocean opener
       const fn = R[sec.type];
       if (fn) parts.push(fn(sec));
     }
@@ -1748,37 +1795,52 @@
     });
   })();
 
-  /* ── Three-costs two-stage scroll morph ─────────────── */
+  /* ── Three-costs 1:1 in-place card flip (v8 #2 — no ghosting) ── */
   (function initCostsMorph() {
     var root = document.getElementById('costs-morph');
     if (!root) return;
-    var costs = root.querySelector('.cm-stage-costs');
-    var levers = root.querySelector('.cm-stage-levers');
-    if (!costs || !levers) return;
+    var cards = root.querySelectorAll('[data-flip-card]');
+    var headline = document.getElementById('costs-headline');
+    var kickerLine = document.getElementById('costs-kicker-line');
+    var flipH = root.getAttribute('data-flip-headline') || '';
+    var costH = root.getAttribute('data-cost-headline') || '';
+    var staticEl = root.querySelector('.flip-static');
+
     if (reduceMotion) {
       root.classList.add('is-static');
-      costs.style.opacity = '1';
-      levers.style.opacity = '1';
-      levers.style.position = 'relative';
+      if (staticEl) staticEl.hidden = false;
+      var grid = document.getElementById('flip-grid');
+      if (grid) grid.hidden = true;
       return;
     }
+
+    var lastOn = false;
+    function setState(onLevers) {
+      cards.forEach(function (card, i) {
+        // Stagger ~120ms — each card fully one state or mid-flip, never 50% ghost
+        var delay = i * 120;
+        setTimeout(function () {
+          card.classList.toggle('is-flipped', onLevers);
+        }, delay);
+      });
+      if (headline && flipH && costH) {
+        // Hard cut headline swap — no double-exposure
+        headline.textContent = onLevers ? flipH : costH;
+      }
+      if (kickerLine) {
+        kickerLine.style.opacity = onLevers ? '0' : '1';
+      }
+      root.classList.toggle('on-levers', onLevers);
+      lastOn = onLevers;
+    }
+
     function onScrollCosts() {
       var rect = root.getBoundingClientRect();
       var vh = window.innerHeight || 1;
-      var total = Math.max(1, root.offsetHeight - vh * 0.5);
-      var p = -rect.top / total;
-      if (p < 0) p = 0;
-      if (p > 1) p = 1;
-      // hold costs 0–0.35, morph 0.35–0.7, hold levers 0.7–1
-      var t = 0;
-      if (p < 0.35) t = 0;
-      else if (p > 0.7) t = 1;
-      else t = (p - 0.35) / 0.35;
-      costs.style.opacity = String(1 - t);
-      costs.style.transform = 'translateY(' + t * -24 + 'px)';
-      levers.style.opacity = String(t);
-      levers.style.transform = 'translateY(' + (1 - t) * 28 + 'px)';
-      root.classList.toggle('on-levers', t > 0.55);
+      // Compact stage — flip when mid-section crosses viewport center
+      var mid = rect.top + rect.height * 0.35;
+      var on = mid < vh * 0.55 && rect.bottom > vh * 0.25;
+      if (on !== lastOn) setState(on);
     }
     window.addEventListener('scroll', onScrollCosts, { passive: true });
     onScrollCosts();

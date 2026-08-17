@@ -1,7 +1,7 @@
 {
  "_internal": {
   "contract": "product",
-  "version": "v1",
+  "version": "v4",
   "source_slides": [
    11,
    12,
@@ -31,8 +31,8 @@
      "id": "sensors",
      "label": "Autonomy sensor stack",
      "anchor_pct": {
-      "x": 62,
-      "y": 8,
+      "x": 52,
+      "y": 14,
       "side": "right"
      }
     },
@@ -41,8 +41,8 @@
      "label": "NavierOS \u2014 The Brain",
      "detail": "Flight stabilization & autonomy",
      "anchor_pct": {
-      "x": 45,
-      "y": 32,
+      "x": 48,
+      "y": 42,
       "side": "left"
      }
     },
@@ -50,8 +50,8 @@
      "id": "foils",
      "label": "Fully retractable Foils",
      "anchor_pct": {
-      "x": 82,
-      "y": 42,
+      "x": 60,
+      "y": 60,
       "side": "right"
      }
     },
@@ -59,8 +59,8 @@
      "id": "ride-height",
      "label": "Ride height sensors",
      "anchor_pct": {
-      "x": 18,
-      "y": 68,
+      "x": 32,
+      "y": 62,
       "side": "left"
      }
     },
@@ -68,8 +68,8 @@
      "id": "hull",
      "label": "Carbon Fiber Hull and Body",
      "anchor_pct": {
-      "x": 40,
-      "y": 58,
+      "x": 44,
+      "y": 48,
       "side": "left"
      }
     },
@@ -78,8 +78,8 @@
      "label": "Electric or Hybrid Powertrain",
      "detail": "20 \u2013 30% greater efficiency",
      "anchor_pct": {
-      "x": 78,
-      "y": 82,
+      "x": 72,
+      "y": 78,
       "side": "right"
      }
     },
@@ -88,8 +88,8 @@
      "label": "Computer-Controlled Active Foil",
      "detail": "60 \u2013 70% Greater Efficiency",
      "anchor_pct": {
-      "x": 22,
-      "y": 85,
+      "x": 30,
+      "y": 82,
       "side": "left"
      }
     }
@@ -103,7 +103,7 @@
     "play_mode": "lightbox"
    },
    "video_label": "The 3-minute version, from our CTO",
-   "render_notes": "MANDATORY: annotated diagram matching Cut slide 11 \u2014 every hotspot renders as a visible callout label connected to its anchor point on the wireframe by a hairline dashed leader line (gold labels, white detail line beneath). Callouts draw in sequentially on scroll; JS-off/reduced-motion fallback shows ALL callouts visible. A bare wireframe with no annotations is a FAIL. anchor_pct = approximate x/y as % of image box; side = label placement."
+   "render_notes": "REBUILD (Jaideep round 4). LAYOUT: schematic-with-callouts and the CTO video render SIDE BY SIDE at desktop (schematic left ~60%, video right ~40%), stacked only on mobile. DELETE the plain text list repeating the seven facts below the video \u2014 the callouts ARE the fact base; rendering it twice is a FAIL. Video sized to its column, not full-bleed. ORIENTATION: the vessel image renders with BOW FACING LEFT exactly as the source asset \u2014 NEVER apply any mirror/scaleX(-1)/flip. anchor_pct values assume bow-left orientation per the deck slide. Every leader line must terminate ON the named part; a callout pointing into empty water is a FAIL. CLIPPING: no label may clip at any container edge \u2014 same left-edge clipping bug also affects the Quanta founder-video caption; fix at the component level (label min-margins inside the stage, no overflow:hidden on label boxes). Callouts draw in sequentially on scroll; JS-off shows all."
   },
   {
    "id": "gmvp",
@@ -129,7 +129,8 @@
      "detail": "Hull \u00b7 foils \u00b7 powertrain"
     }
    ],
-   "tagline": "Single Platform. Multiple Use Cases."
+   "tagline": "Single Platform. Multiple Use Cases.",
+   "render_notes": "REBUILD (Jaideep round 4). The three layers must read as THREE STACKED LAYERS OF ONE SYSTEM, visually tied to the vessel wireframe \u2014 not three disconnected full-width boxes below it. Render as a layer diagram beside/over the wireframe: MISSION LAYER (top \u00b7 the superstructure) / SOFTWARE (middle \u00b7 NavierOS \u2014 flight control & autonomy) / HARDWARE (bottom \u00b7 the skateboard: hull \u00b7 foils \u00b7 powertrain), with hairline connectors from each layer band to the corresponding zone of the wireframe, under a small \u201cTHREE LAYERS\u201d label. Keep it adjacent to the title \u2014 no dead band between. REMOVE the hangar/Foundry hero from this section entirely \u2014 standing rule: hangar imagery lives in Traction ONLY. \u201cSingle Platform. Multiple Use Cases.\u201d must not float: it becomes the lead-in line directly above the vessel-ladder component."
   },
   {
    "id": "vessel-ladder",
@@ -142,7 +143,8 @@
    },
    "component": "vessel-ladder-explorer",
    "headline": "GMVP: One core, every vessel.",
-   "data": "ladder.json"
+   "data": "ladder.json",
+   "render_notes": "Lead-in: render \u201cSingle Platform. Multiple Use Cases.\u201d directly above this component (moved from its floating position in GMVP). Ladder itself is working well \u2014 keep. Ensure the \u201cRENDER \u2014 IN DEVELOPMENT\u201d chip appears on EVERY tab whose image is a render (N45, N80, N180) \u2014 not only N80."
   },
   {
    "id": "quanta-interstitial",
@@ -163,7 +165,8 @@
     "duration": "5:09",
     "play_mode": "lightbox"
    },
-   "video_label": "Our founder on Quanta and American maritime resilience"
+   "video_label": "Our founder on Quanta and American maritime resilience",
+   "render_notes": "REBUILD (Jaideep round 4). ONE title moment, not two. Order: kicker \u201cNEXT PRODUCT: QUANTA\u201d \u2192 headline in the SAME Title Case serif style as sibling headlines (never all-caps \u2014 current build breaks the type system) \u2192 the founder video FIRST at large width (\u226570% of stage) with its caption fully visible (\u201cSampriti Bhattacharyya \u00b7 CEO Navier\u201d \u2014 currently left-clipped, same clipping bug as control section) \u2192 THEN the camo Quanta photo moves DOWN to pair with the \u201cTHE BREAKTHROUGH \u2014 IN SEA TRIALS / Introducing the N30 Quanta\u201d block and its stat chips. The interstitial itself carries NO second image."
   },
   {
    "id": "quanta-stats",
@@ -194,7 +197,8 @@
      "value": "Trans-ocean",
      "label": "unmanned ocean crossing targeted late 2026"
     }
-   ]
+   ],
+   "render_notes": "Receives the camo Quanta hull photo (moved from the interstitial) beside the title \u201cIntroducing the N30 Quanta\u201d and the four stat chips \u2014 image and stats in one composed stage."
   },
   {
    "id": "quanta-unlocks",
