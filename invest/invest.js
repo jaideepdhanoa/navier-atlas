@@ -10,6 +10,8 @@
   }
 
   const $ = (sel, el = document) => el.querySelector(sel);
+  // Absolute asset base — relative paths break when URL is /invest (no trailing slash)
+  const ASSET = '/invest/assets/';
   const esc = (s) =>
     String(s == null ? '' : s)
       .replace(/&/g, '&amp;')
@@ -17,6 +19,7 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   const nl = (s) => esc(s).replace(/\n/g, '<br/>');
+  const assetUrl = (name) => ASSET + String(name).replace(/^.*\//, '');
 
   /* ── shell ─────────────────────────────────────────── */
   function brandMark() {
@@ -52,11 +55,11 @@
     const poster = h.video && h.video.poster;
     const bg = poster
       ? `url(${esc(poster)})`
-      : `url(./assets/hero-n30-sunset.png)`;
+      : `url(${assetUrl('hero-n30-sunset.png')})`;
     return `
     <header class="hero" id="hero">
       <div class="hero-media" style="background-image:${bg}">
-        <img src="./assets/hero-n30-sunset.png" alt="" width="1600" height="900" fetchpriority="high" />
+        <img src="${assetUrl('hero-n30-sunset.png')}" alt="" width="1600" height="900" fetchpriority="high" />
       </div>
       <div class="hero-scrim" aria-hidden="true"></div>
       <div class="hero-content wrap">
@@ -214,7 +217,7 @@
           ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          <div class="media-plate"><img src="./assets/hero-n30-sunset.png" alt="" loading="lazy" /></div>
+          <div class="media-plate"><img src="${assetUrl('hero-n30-sunset.png')}" alt="" loading="lazy" /></div>
           <div class="stat-grid">${stats}</div>
         </div>`;
     },
@@ -223,13 +226,7 @@
       const clips = (s.clips || [])
         .map((c) => {
           const isLoop = c.play_mode === 'loop' && c.asset;
-          const src = isLoop
-            ? `./${esc(c.asset.replace(/^assets\//, 'assets/'))}`
-            : null;
-          // asset path may be assets/foo.mp4 relative to handoff — we ship as assets/
-          const assetPath = c.asset
-            ? './assets/' + c.asset.split('/').pop()
-            : null;
+          const assetPath = c.asset ? assetUrl(c.asset) : null;
           return `
           <div class="vcard ${isLoop ? 'looping' : ''}"
                data-yt="${esc(c.youtube_id || '')}"
@@ -316,7 +313,7 @@
           ${s.body ? `<p class="body-text">${nl(s.body)}</p>` : ''}
           <div class="hotspot-layout">
             <div>
-              <div class="media-plate"><img src="./assets/s14-four-vessel-lineup.png" alt="" loading="lazy" /></div>
+              <div class="media-plate"><img src="${assetUrl('s14-four-vessel-lineup.png')}" alt="" loading="lazy" /></div>
               ${vid}
             </div>
             <div class="hotspot-list">${hs}</div>
