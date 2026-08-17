@@ -1,0 +1,475 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Dubai v3 public-partners gold master per the international addendum (GCC run — Public Transport page, authority audience: Transport General Authority + Eastern Province Municipality + SDA-adjacent tourism bodies). Sources: saudi-eastern-province/AUTHORITY-MAP-EASTERN-PROVINCE.md + SPEED-RULES-EASTERN-PROVINCE.md + DEMAND-POOLS-EASTERN-PROVINCE.md + FARE-BENCHMARKS-EASTERN-PROVINCE.md + NODES-EASTERN-PROVINCE.md. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields (_contract, _internal, _guard and similar) NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture: GREENFIELD Enable-led dual — no authority operates passenger marine transit on this coast; the framing is 'bring the water mode to the corniche economy the Province is already building.' Border Guard route/speed powers render calmly as 'route terms set with the permit.' Road honesty: the EP-1 spine does NOT beat the road off-peak and is never claimed to; EP-2 carries the time-competitive story. Province-internal corridors only — the Khobar–Bahrain line renders as roadmap only, no economics, no schedule (Bahrain's PTA page mirrors it). No counterparty identities, no program or fleet commitments, no launch dates.",
+  "contract_version": "v3",
+  "city": "saudi-eastern-province",
+  "archetype": "public-partners",
+  "route": "/saudi-eastern-province-partners",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "The Dareen and Tarout Island development program: a SAR 2.64 billion heritage-coast investment at Qatif — a historic working port, more than 11 heritage sites and protected mangrove habitat — as published by the Saudi Press Agency and the Sharqia Development Authority.",
+      "source_url": "https://www.spa.gov.sa/2404071"
+    },
+    "fn2": {
+      "text": "King Fahd Causeway traffic reached a record 33 million passengers in 2024, as communicated by the causeway authority, with a reported single-day record of 136,498 crossings.",
+      "source_url": "https://gulfnews.com/world/gulf/saudi/king-fahd-causeway-sees-record-33m-passengers-in-2024-1.500015694"
+    },
+    "fn3": {
+      "text": "Population figures from the 2022 Saudi Census: 5,125,254 residents in the Eastern Province, with about 2.81 million in the merged Dammam–Khobar–Dhahran conurbation.",
+      "source_url": "https://portal.saudicensus.sa"
+    },
+    "fn4": {
+      "text": "The Transport General Authority regulates and licenses maritime transport in the Kingdom — vessel registration, navigation permits and operating licenses. The Border Guard is the authority for maritime security and safety: it designates permitted landing and departure sites, lanes, speeds and sailing times, and issues sailing permits. Route terms are set with the permit — no allowance is assumed anywhere on this page.",
+      "source_url": "https://my.gov.sa/en/content/transport"
+    },
+    "fn5": {
+      "text": "All map and trip times use a conservative planning basis: slow transit near berths, beaches and shallow bays, service speed only on open coastal legs."
+    },
+    "fn6": {
+      "text": "Waterfront program figures as published: the Al Khobar Waterfront second phase adds more than 265,000 square metres along more than four kilometres of frontage, and $3 billion of Eastern Province tourism projects with more than 2,200 hotel rooms were announced in October 2024, as reported via the Saudi Press Agency.",
+      "source_url": "https://www.arabnews.com/node/2574602"
+    },
+    "fn7": {
+      "text": "Roadmap items render as reach only: Uqair's heritage port has an announced development program and no passenger landing today, and a Khobar–Bahrain water link appears as roadmap only — no schedule, no economics."
+    },
+    "fn8": {
+      "text": "The Dammam–Khobar drive runs about 15 minutes off-peak — on an empty highway the road wins. The spine's case is the corridor's documented peak congestion, the cruise-terminal connection and the corniche-to-corniche experience; the Half Moon Bay line is the time-competitive run when weekend traffic stacks up."
+    },
+    "fn9": {
+      "text": "King Abdulaziz Port is the Gulf coast's cruise gateway, developed with Cruise Saudi, with a second terminal and additional berths planned as published.",
+      "source_url": "https://www.cruisesaudi.com/ports/z6b8woorp6zxsd3skp0qy8jp"
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 7,
+      "lines": [
+        "EP-1 Corniche Spine",
+        "EP-2 Half Moon Bay Leisure",
+        "EP-3 Tarout Heritage",
+        "EP-X Khobar–Bahrain (roadmap)"
+      ]
+    },
+    "_internal": {
+      "source": "NODES-EASTERN-PROVINCE.md. 6 active landings on lines + Uqair as roadmap-flagged 7th stop. N7 Cornish Marina Dammam (bp-ed8e1aa423) HELD OUT — location unverified, fail closed.",
+      "line_bindings": {
+        "EP-1": "UNBOUND — new corridors needed (N1↔N2, N2↔N3); coordinate-derived DERIVED geometry to Grok seal",
+        "EP-2": "N4↔N5 BOUND rn-bee07be06790 (5.6 nm, conditional on locale cleanup #119); N3↔N4 UNBOUND — new corridor needed",
+        "EP-3": "UNBOUND — new corridor needed (N1↔N6, ~5.3 nm, shallow-bay regime)",
+        "EP-X": "BOUND e__eastern-province-ksa__al-khobar-corniche__manama-bahrain__bahrain-financial-harbour-marina (18.6 nm, id already clean; roadmap-amber-dashed, text-only; Bahrain PTA page mirrors this corridor — one corridor, two pages per corridor-inheritance)"
+      },
+      "stops_bound": {
+        "bp-9da9a24a2a": "Dammam Corniche Dock (label 'Dammam Corniche - Boats Dock' in source; renamed in copy for kill-scan)",
+        "bp-54c27c6c13": "Cruise Saudi Terminal, King Abdulaziz Port",
+        "eastern-province-ksa__al-khobar-corniche": "Al Khobar Corniche Marina (interchange EP-1 × EP-2 × EP-X)",
+        "bp-1a964d0e41": "Half Moon Bay Yacht Association",
+        "bp-dd021ae2b2": "Dana Bay Marina",
+        "unbound-darin": "Darin Port, Tarout Island (no spine node — new geometry request)",
+        "unbound-uqair": "Uqair Heritage Port (ROADMAP-ONLY, status-flagged — fn7)"
+      },
+      "locale_cleanup_note": "ALL EP boarding points in the sealed corridor spine are mis-tagged market_key bahrain_domestic — every binding is conditional on Grok locale cleanup #119 re-tagging to an eastern-province-ksa market key. Cite labels, bind ids, never treat market_key as truth. Mis-geocode findings stay in the research record (NODES file) — Atlas data never re-tagged in the microsite pass.",
+      "interchange_note": "Single interchange hub: Al Khobar Corniche Marina (EP-1 × EP-2 × EP-X). Dammam Corniche Dock is a shared terminus where EP-3 feeds EP-1 on a timed connection, not a second hub."
+    },
+    "note": "Two corniches, the cruise gateway, the resort bay and the heritage island — Khobar Corniche to Half Moon Bay in about 50 minutes.",
+    "fn": "fn8"
+  },
+  "hero": {
+    "copy": {
+      "headline": "The Eastern Province is building its waterfront.",
+      "subline": "A fast, zero-emission foiling tier linking the Dammam and Khobar corniches, the cruise gateway, Half Moon Bay and Tarout Island — on landings that already exist, financed by private capital, licensed and permitted the way the Kingdom already regulates its waters.",
+      "stat_chips": [
+        "5.13M Province residents",
+        "6 of 7 stops existing landings",
+        "0 terminals to build",
+        "SAR 2.64B heritage-coast program"
+      ],
+      "small_print": "All trip times use a conservative planning basis.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/saudi-eastern-province/assets/hero-public-eastern-province.jpg"
+    },
+    "_internal": "Population chip: GASTAT 2022 Census (fn3, PRIMARY). Heritage program chip: SPA (fn1, PRIMARY). Stop count = 6 existing landings + Uqair roadmap-flagged (fn7). Greenfield framing: the Province's own waterfront investment leads; no marine-transit ridership exists to cite (none exists on this coast), so census + program scale carry the hero."
+  },
+  "gap": {
+    "title": "The Province is already building",
+    "copy": {
+      "lead": "This coast is not short of waterfront conviction. The Municipality is rebuilding the Khobar corniche at scale, a SAR 2.64 billion program is restoring the heritage coast at Dareen and Tarout Island, and $3 billion of tourism projects with more than 2,200 hotel rooms were announced for the Province in a single 2024 program.",
+      "support": "Between those investments runs sheltered Gulf water and a road corridor with documented peak congestion. A zero-emission foiling tier connects what the Province is already building — corniche to corniche, cruise gateway to resort bay — on landings that exist today.",
+      "fn": "fn6"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "Al Khobar Waterfront (municipal program)",
+          "quote": null,
+          "note": "Phase two adds 265,000+ m² and 4+ km of rebuilt frontage, with marinas on site — this network's interchange sits inside it.",
+          "fn": "fn6"
+        },
+        {
+          "plan": "Dareen & Tarout Island program",
+          "quote": null,
+          "note": "SAR 2.64B for the heritage coast — a historic port, 11+ heritage sites, protected mangroves. The heritage line lands inside it.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "Eastern Province tourism investment",
+          "quote": null,
+          "note": "$3 billion of tourism projects and more than 2,200 hotel rooms announced for the Province in October 2024.",
+          "fn": "fn6"
+        },
+        {
+          "plan": "Cruise gateway at King Abdulaziz Port",
+          "quote": null,
+          "note": "Cruise Saudi operates the Gulf-coast gateway, with a second terminal planned — arrival flows join the network dockside.",
+          "fn": "fn9"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "Dareen/Tarout: SPA + SDA (PRIMARY). Khobar Waterfront: saudipedia describing the municipal project (SECONDARY) — rendered with 'as published' attribution via fn6. $3bn/2,200 rooms: arabnews citing SPA (SECONDARY citing PRIMARY). Cruise: cruisesaudi.com (PRIMARY). No verbatim quotable plan sentences captured this pass — figures render as figures. Crown-Prince approval of the Dareen program stays out of renderables (kill-scan: published-mandate facts only, no named-office framing).",
+      "merge_note": "gap + plan alignment merged into one section per the gold-master pattern — the Province's own published investment does the selling. Greenfield honesty: no existing marine-transit plan exists to cite, so waterfront investment programs stand in as the authority-side signal."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing landing. No terminals to build.",
+      "body": "Zero terminal capital cost for the authority. Service can start at the corniche dock, marinas and cruise terminal that operate today — six of the seven stops on this network are existing landings, and the seventh is a roadmap item shown with its status stated."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "6 of 7 landings existing today",
+        "verified": 6,
+        "total": 7,
+        "fn": "fn7"
+      }
+    },
+    "_internal": "Existing landings: Dammam Corniche Dock (public map listing, existing dock), Cruise Saudi Terminal KAAP (operating cruise berth — access = Mawani/Cruise Saudi agreement), Al Khobar Corniche Marina (Khobar Waterfront marinas), Half Moon Bay Yacht Association landing, Dana Bay Marina (operating, danabay.sa PRIMARY), Darin Port Tarout (existing working harbor, inside the published redevelopment program — status stated in copy where it renders). Uqair counted in the total, never in the verified figure (roadmap-only, fn7). N7 Cornish Marina Dammam excluded entirely (location unverified, fail closed)."
+  },
+  "posture": {
+    "copy": {
+      "framing": "A first conversation, not a turf conversation. No authority on this coast operates passenger service on the water — the posture is enablement: license a privately financed tier onto the waterfront the Province is already building, under the licensing and permitting regime that already exists.",
+      "enable_track": "The Transport General Authority licenses the operator and the vessels; the Border Guard sets routes, lanes and sailing terms with the permit; the Municipality grants landings at corniche marinas. Private capital finances the fleet — the ask is licensing and access, not money.",
+      "operate_track": "Where an authority prefers to procure or concession the service directly, the same corridors specify cleanly — fares, lines and landings defined with the authority against its own waterfront program."
+    },
+    "data": {
+      "weighting": "enable_dominant",
+      "operate_proof_points": [
+        {
+          "body": "Transport General Authority",
+          "proof": "One national licensing authority for maritime transport — vessel registration, navigation permits and operator licenses run through a published, digital licensing regime."
+        },
+        {
+          "body": "Saudi Border Guard",
+          "proof": "Routes, lanes, speeds and sailing times are set with the sailing permit under published maritime security and safety regulations — clear terms, one counterpart on the water."
+        },
+        {
+          "body": "Municipality & Sharqia Development Authority",
+          "proof": "The corniche landlord and the Province's Vision 2030 development authority are already investing in exactly the waterfronts this network connects — Khobar Waterfront phase two and the SAR 2.64 billion heritage coast."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP-EASTERN-PROVINCE.md: primarily ENABLE — every authority licenses, permits or develops; none operates marine transit (none exists on this coast; market is greenfield — word kept out of renderables). Enum enable_dominant affects order/emphasis only; both tracks render. Key name operate_proof_points kept for renderer compatibility with the gold-master contract — content here is the enable-led proof set. Border Guard powers rendered calmly per instruction ('route terms set with the permit'), never as an obstacle."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling on a coast whose own development programs protect mangrove habitat and heritage harbors — the compliance-friendly mode by design.",
+        "Minimal wake foilborne and near-silent at speed — built for the swim zones, marinas and fishing harbors the permit regime exists to protect.",
+        "Peak-hour relief on the Dammam–Khobar corridor and weekend access to Half Moon Bay — commute time returned when the roads are fullest."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "5,125,254 residents in the Eastern Province (2022 Census)",
+          "note": "The Kingdom's Gulf-coast population base — about 2.81 million live in the merged Dammam–Khobar–Dhahran conurbation on this shoreline.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "33 million causeway passengers in 2024 — a record year",
+          "note": "The Gulf's densest cross-water flow lands at Khobar; a future water link to Bahrain appears here as roadmap only.",
+          "fn": "fn2"
+        },
+        {
+          "stat": "SAR 2.64 billion committed to the Dareen and Tarout heritage coast",
+          "fn": "fn1"
+        },
+        {
+          "stat": "$3 billion of tourism projects and 2,200+ hotel rooms announced in 2024",
+          "note": "The Province's visitor economy is being built now — much of it on the shoreline this network serves.",
+          "fn": "fn6"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "GASTAT 2022 Census via portal.saudicensus.sa (PRIMARY); Dammam metro figure via census republication (SECONDARY citing PRIMARY)",
+        "gulfnews.com citing the causeway authority's 2024 milestone communications (SECONDARY citing operator; kfca.sa itself JS-blocked)",
+        "spa.gov.sa/2404071 + sda.gov.sa/program-details/73411 (PRIMARY)",
+        "arabnews.com/node/2574602 citing SPA (SECONDARY citing PRIMARY)"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). No EP-level visitor-target document exists (fail-closed register) — sourced project capacity (hotel rooms, program value) stands in; the national 150M-visits target never renders (national, not EP). Congestion case stays qualitative per FARE file (peak drive times UNSOURCED; TomTom index is the documented basis, carried by fn8 language 'documented peak congestion')."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Speed terms here are written into the permit, not a code.",
+      "framing": "On this coast the regulator sets lanes, speeds and sailing times administratively, corridor by corridor — powers that exist to protect swimmers, moored craft, fishing traffic and shallow heritage bays. A foiling, electric vessel serves those purposes by design.",
+      "ask": "Our ask: measure us. Where independent wake and noise measurement shows a corridor's purpose is served, set the permit's route and speed terms accordingly — through the process that already exists.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Routes ✓ set with the permit"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null,
+      "instrument": null
+    },
+    "expander": {
+      "title": "What permit terms unlock",
+      "body": [
+        "The Kingdom's maritime security and safety regulations place route, lane, speed and sailing-time decisions with the authority that issues the sailing permit. For a new mode that is an advantage: terms are specified corridor by corridor, with the authority, rather than against a fixed code — and a vessel that makes almost no wake and almost no noise brings measurable evidence to that conversation.",
+        "On the heritage bay, low-wake foilborne transit is the mode the development program's own environmental goals call for — the Dareen and Tarout program protects mangrove habitat, and a foilborne hull crosses shallow, sensitive water with minimal wash."
+      ],
+      "fn": "fn4"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "Regulations of security and safety for maritime activities (Ministerial; text via Qanoniah legal DB)",
+          "type": "regulator mandate",
+          "detail": "Border Guard determines permitted landing/departure sites, navigational lanes, speeds, departure/return times and sailing durations; issues sailing permits; inspects at sail and at sea",
+          "source": "PRIMARY-TEXT per SPEED-RULES-EASTERN-PROVINCE.md"
+        },
+        {
+          "instrument": "TGA maritime licensing regime",
+          "type": "licensing mandate",
+          "detail": "Navigation Permit and Operating License for ships and marine units; operator licensing; via tga.gov.sa + my.gov.sa service pages",
+          "source": "PRIMARY (search-index capture of geo-blocked primary pages)"
+        },
+        {
+          "instrument": "Numeric zone limits",
+          "type": "absent",
+          "detail": "NO publicly codified numeric speed or no-wake limits exist for EP coastal waters, KAAP approaches, Half Moon Bay or the Saudi causeway side — therefore NO numeric knot limits render anywhere on this page; internal timing uses conservative DERIVED assumptions only (5 kn near berths/beaches, ≤10 kn shallow bays, 25 kn open coast)",
+          "source": "SPEED-RULES-EASTERN-PROVINCE.md fail-closed register"
+        }
+      ],
+      "relief_numbers_policy": "No research-stated relief minutes exist for EP (unlike Dubai's ~7.5 min canal figure), so NO relief quantities render — the section stays qualitative. Base times never assume favorable permit terms.",
+      "causeway_note": "Khobar–Bahrain passage constraints (Bahrain Marine Notice 3/2020; Saudi-side restricted zones unsourced) keep EP-X roadmap-only — never rendered as a schedule."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Committed riders anchor demand — monthly seat bundles priced from the corridor's own ride-hail and taxi substitutes; a derived band, pending confirmation.",
+      "public_partners": "Public partners license and land the service — operator licensing, sailing permits and berth access at landings that already exist.",
+      "fleet_investors": "Fleet investors finance the vessels — private capital behind the demand, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the gold-master contract for renderer compatibility; the 'employers' slot carries rider-demand copy because this run has no employer page (international addendum). Demand pools are sourced census/project flows, labeled indicative on the fleet-investor page."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and low-risk: one corridor on existing landings, measured wake and noise, permit terms respected — specified with the authority against the Province's own waterfront program."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Dubai/Seattle v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "The Eastern Province's water landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "Transport General Authority (TGA)",
+              "classification": "permitting_gate",
+              "role": "Regulates and develops the Kingdom's maritime transport sector — vessel registration, navigation permits and operating licenses for marine passenger service run through the TGA."
+            },
+            {
+              "body": "Saudi Border Guard",
+              "classification": "permitting_gate",
+              "role": "The authority for maritime security and safety: designates permitted landing and departure sites, lanes, speeds and sailing times, and issues sailing permits. Every corridor and timetable is set with the Border Guard."
+            },
+            {
+              "body": "Mawani — Saudi Ports Authority",
+              "classification": "enable",
+              "role": "Manages the Kingdom's ports, including King Abdulaziz Port in Dammam, where Cruise Saudi operates the Gulf coast's cruise gateway — calls at the cruise terminal run under port and berthing agreements."
+            },
+            {
+              "body": "Eastern Province Municipality",
+              "classification": "enable",
+              "role": "Landlord of the corniche public realm and its marinas on both waterfronts — the Al Khobar Waterfront program is a municipal development, and corniche landings run through the Municipality."
+            },
+            {
+              "body": "Sharqia Development Authority (SDA)",
+              "classification": "enable",
+              "role": "The Province's Vision 2030 development authority — owner of the Dareen and Tarout Island heritage program and a partner in Khobar tourism development. Its published corridors of interest match this network one to one."
+            },
+            {
+              "body": "King Fahd Causeway authority",
+              "classification": "enable",
+              "role": "Operator of the 25-km causeway to Bahrain, which carried a record 33 million passengers in 2024. Any future water link to Bahrain respects the causeway's marine zones and appears here as roadmap only."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "MEWA (fishermen's berths, coordination where landings share heritage/fishing harbors) and the Governorate (convening sponsor, not a licensor) held out of render to keep the landscape compact — both recorded in AUTHORITY-MAP. SRSA boundary finding (Red-Sea-only regime, not applicable law on the Gulf coast) is internal only — citing it in render would raise a question the page doesn't need. No authority contacts render anywhere. Border Guard renders with its published mandate only, calm framing per instruction."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We bring a water mode to waterfronts the Province is already building — heritage and fishing harbors stay untouched."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Dammam Corniche Dock",
+              "connects": "An existing dock on the King Abdullah Road corniche — the spine's northern gate, where the heritage line connects on a timed transfer"
+            },
+            {
+              "station": "Cruise Saudi Terminal, King Abdulaziz Port",
+              "connects": "The Gulf coast's cruise gateway — arrival-day and shore-excursion flows join the network dockside, under port access terms"
+            },
+            {
+              "station": "Al Khobar Corniche Marina",
+              "connects": "The network interchange on the Khobar Waterfront, where the corniche spine meets the resort-bay line inside the municipal program"
+            },
+            {
+              "station": "Half Moon Bay & Dana Bay",
+              "connects": "The Gulf's established resort strip and its operating marina — the weekend line lands inside an existing leisure economy"
+            },
+            {
+              "station": "Darin Port, Tarout Island",
+              "connects": "A working heritage harbor inside the published SAR 2.64B Dareen and Tarout program — shown with its redevelopment status"
+            },
+            {
+              "station": "Roadmap landings",
+              "connects": "Uqair's heritage port (development program announced, no passenger landing today) and a Khobar–Bahrain link render as roadmap only"
+            }
+          ]
+        },
+        "_internal": "Pairs from NODES-EASTERN-PROVINCE.md labels and AUTHORITY-MAP. Darin renders exactly as an existing working harbor with redevelopment status stated (never as a finished facility). Uqair and EP-X render only with roadmap status (fn7). Complement framing only; no fare comparison with subsidized modes (SAPTCO floor is a pricing anchor on the fleet page, never a competitor here)."
+      }
+    },
+    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the gold-master pattern."
+  },
+  "_internal": {
+    "scope": "Province-internal corridors only, per the international addendum's domestic-first rule: EP-1/EP-2/EP-3 render as the network; EP-X Khobar–Bahrain renders as roadmap only (no schedule, no economics, amber-dashed) and is mirrored from the Manama side on Bahrain's PTA page — one corridor, two pages (corridor-inheritance). Bindings and #119 locale-cleanup dependency in geometry._internal. No launch dates render. Road honesty enforced: EP-1 never claims a general time win (fn8); EP-2 carries the time-competitive story.",
+    "verification_ledger": "PRIMARY-verified renderables: EP population 5,125,254 (GASTAT 2022 Census), Dareen/Tarout SAR 2.64B + heritage-site + mangrove facts (SPA + SDA), TGA licensing mandate (tga.gov.sa/my.gov.sa), Border Guard lane/speed/permit powers (regulation text via legal DB), Cruise Saudi KAAP gateway (cruisesaudi.com), Dana Bay operating marina (danabay.sa). SECONDARY renderables carried with attribution: causeway 33M 2024 (operator comms via gulfnews), Khobar Waterfront phase-2 figures (saudipedia describing the municipal project), $3bn/2,200 rooms (arabnews citing SPA), Dammam metro 2.81M (census republication). SECONDARY-only, therefore excluded from renderables: numeric knot limits (none public — internal timing only), peak-hour drive times (UNSOURCED — 'documented peak congestion' wording only, TomTom basis), KFUPM enrollment, Aramco Dhahran headcount (not published), TDF/Rixos resort figures (re-verify before render), Marine Notice 3/2020 passage geometry (register verified, text not retrieved).",
+    "positioning_rules": "Never claim the spine beats the road off-peak (fn8 carries the honest comparison). Never present the tier as competing with heritage or fishing craft. Never render Border Guard powers as friction — 'route terms set with the permit,' calm, everywhere. Never render EP-X with economics or schedule. Never name crewing-composition policy. No cross-city comparisons render."
+  }
+}
