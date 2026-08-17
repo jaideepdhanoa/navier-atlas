@@ -64,12 +64,17 @@ export function buildInvest() {
     'ladder',
     'pipeline-map',
     'unitecon',
+    'assets', // media manifest — binding visual slots (v2)
   ];
 
   const bundle = {};
   for (const name of contracts) {
     const p = path.join(SRC, 'contracts', `${name}.json`);
     if (!fs.existsSync(p)) {
+      if (name === 'assets') {
+        console.warn('build-invest: assets.json missing — visual slots unavailable');
+        continue;
+      }
       console.error(`FATAL: missing ${p}`);
       process.exit(1);
     }
@@ -87,11 +92,46 @@ export function buildInvest() {
     `window.INVEST_DATA = ${JSON.stringify(bundle)};\n`,
   );
 
-  // Assets from handoff + invest/
+  // Assets from handoff (deck plates, loops, posters) + invest/ template extras
+  // Preserve nested structure: assets/deck/*, assets/posters/*
   const assetSrc = path.join(SRC, 'assets');
   if (fs.existsSync(assetSrc)) copyDir(assetSrc, path.join(DIST, 'assets'));
   const localAssets = path.join(TEMPLATE, 'assets');
   if (fs.existsSync(localAssets)) copyDir(localAssets, path.join(DIST, 'assets'));
+
+  // Verify every assets.json file path exists on disk
+  if (bundle.assets) {
+    const missing = [];
+    const checkPath = (rel) => {
+      if (!rel || typeof rel !== 'string') return;
+      const disk = path.join(SRC, rel.startsWith('assets/') ? rel : path.join('assets', rel));
+      // also accept paths already under assets/
+      const candidates = [
+        path.join(SRC, rel),
+        path.join(SRC, 'assets', rel.replace(/^assets\//, '')),
+        path.join(DIST, 'assets', rel.replace(/^assets\//, '')),
+      ];
+      if (!candidates.some((c) => fs.existsSync(c))) missing.push(rel);
+    };
+    const hero = bundle.assets.hero || {};
+    checkPath(hero.background_video);
+    checkPath(hero.poster);
+    const divs = bundle.assets.chapter_dividers || {};
+    for (const v of Object.values(divs)) {
+      if (v && typeof v === 'object') {
+        checkPath(v.asset);
+        checkPath(v.video);
+      }
+    }
+    for (const s of bundle.assets.slots || []) {
+      checkPath(s.asset);
+      if (s.map) Object.values(s.map).forEach(checkPath);
+    }
+    if (missing.length) {
+      console.error('FATAL invest assets missing on disk:\n  ' + missing.join('\n  '));
+      process.exit(1);
+    }
+  }
 
   // Template CSS/JS
   for (const f of ['invest.css', 'invest.js']) {
