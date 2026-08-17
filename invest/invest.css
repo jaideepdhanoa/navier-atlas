@@ -37,18 +37,26 @@ img, video { max-width: 100%; display: block }
 button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit }
 :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px }
 
-/* S1 — never flush to viewport edge */
-.page-pad { padding-inline: var(--pad) }
-.shell-prose {
-  max-width: var(--prose);
+/* v5 P0-1 — shared containers (Tasklet DESIGN-AUDIT-V5)
+   Text boxes themselves must have left ≥ 24px — wrap content, don't only pad text nodes. */
+.section-inner {
+  max-width: 1200px;
   margin-inline: auto;
-  padding-inline: var(--pad);
+  padding-inline: clamp(24px, 5vw, 64px);
+  width: 100%;
+  box-sizing: border-box;
 }
-.shell-stage {
-  max-width: var(--stage);
+.media-inner {
+  max-width: 1440px;
   margin-inline: auto;
-  padding-inline: var(--pad);
+  padding-inline: clamp(24px, 4vw, 48px);
+  width: 100%;
+  box-sizing: border-box;
 }
+/* legacy aliases → same primitives */
+.shell-prose, .page-pad { max-width: 1200px; margin-inline: auto; padding-inline: clamp(24px, 5vw, 64px); width: 100%; box-sizing: border-box; }
+.shell-stage { max-width: 1440px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 48px); width: 100%; box-sizing: border-box; }
+
 .cinema {
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -66,11 +74,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   width: 100%; height: 100%;
   object-fit: cover;
 }
-/* Caption ALWAYS inside padded shell — never on cinema edge */
+/* Caption lives in .media-inner BELOW the full-bleed plate */
 .cinema-cap {
-  max-width: var(--stage);
-  margin: 12px auto 0;
-  padding-inline: var(--pad);
+  margin: 12px 0 0;
   font-size: 13px; color: var(--text-2);
   font-style: italic;
 }
@@ -327,62 +333,57 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .foundry-pair .plate { margin: 0 }
 @media (max-width: 720px) { .foundry-pair { grid-template-columns: 1fr } }
 
-/* ═══ Network Shift v4 ═══ */
-.ns-wrap { margin: 32px 0 48px }
-.ns-stage {
+/* ═══ Network Shift v5 — Tasklet reference canvas ═══ */
+.ns-section { margin: 32px 0 48px; }
+.ns-root {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+.ns-canvas-stage {
   position: relative;
   width: 100%;
-  border-radius: 0;
-  overflow: hidden;
-  background: #0a0a0a;
+  height: clamp(480px, 85vh, 780px);
+  background: #05070a;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  min-height: min(85vh, 720px);
-  height: clamp(480px, 85vh, 780px);
+  overflow: hidden;
 }
-.ns-svg { width: 100%; height: 100%; display: block }
-.ns-chip-row {
-  display: flex; flex-wrap: wrap; gap: 12px;
-  justify-content: space-between; align-items: flex-end;
-  max-width: var(--stage); margin: 0 auto; padding: 20px var(--pad);
+.ns-canvas-stage canvas { display: block; width: 100%; height: 100%; }
+.ns-hud {
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 16px 24px;
+  max-width: 1440px; margin: 0 auto;
+  padding: 20px clamp(24px, 4vw, 48px) 8px;
 }
 .ns-chip {
-  max-width: 360px; padding: 16px 18px; border-radius: 10px;
-  background: var(--bg-1); border: 1px solid var(--line-strong);
+  background: rgba(10,13,18,.9); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 14px 18px; max-width: 360px;
+  backdrop-filter: blur(6px);
 }
-.ns-chip-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--accent-bright); margin-bottom: 8px;
+.ns-chip .k {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700;
 }
-.ns-chip-line { font-weight: 600; margin-bottom: 6px; font-size: 15px }
-.ns-chip-stats { font-size: 13px; color: var(--text-2) }
-.ns-toggle {
-  display: flex; gap: 6px; flex-shrink: 0;
+.ns-chip.today .k { color: #8b95a3; }
+.ns-chip.network .k { color: #d4af5f; }
+.ns-chip .h { color: var(--text-0); font-size: 16px; font-weight: 600; margin: 6px 0 4px; }
+.ns-chip .s { color: var(--text-2); font-size: 12.5px; }
+.ns-toggles { display: flex; gap: 10px; flex-shrink: 0; }
+.ns-toggles button {
+  cursor: pointer; border-radius: 999px; padding: 10px 16px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+  border: 1px solid rgba(255,255,255,.14); background: rgba(16,20,26,.9); color: #8b95a3;
+  transition: all .25s;
 }
-.ns-btn {
-  padding: 10px 14px; border-radius: 999px; font-size: 11px; font-weight: 700;
-  border: 1px solid var(--line-strong); color: var(--text-2); background: var(--bg-2);
-  letter-spacing: 0.04em;
-}
-.ns-btn.active {
-  background: var(--accent-bright); color: var(--bg-0); border-color: var(--accent-bright);
-}
+.ns-toggles button.on-a { background: #aeb6c2; color: #0a0d12; border-color: #aeb6c2; }
+.ns-toggles button.on-b { background: #d4af5f; color: #0a0d12; border-color: #d4af5f; }
 .ns-kicker {
-  margin: 28px auto 0; text-align: center;
+  margin: 24px auto 0; text-align: center;
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.35rem, 2.4vw, 1.9rem); color: var(--accent-bright);
   max-width: 22em; line-height: 1.35;
-  padding-inline: var(--pad);
 }
-/* NS states via class on stage */
-.ns-stage .ns-layer-a { opacity: 1; transition: opacity .7s var(--ease) }
-.ns-stage .ns-layer-b { opacity: 0; transition: opacity .7s var(--ease) }
-.ns-stage.state-b .ns-layer-a { opacity: 0.12 }
-.ns-stage.state-b .ns-layer-b { opacity: 1 }
-.ns-dot-fast { opacity: 0 }
-.ns-stage.state-b .ns-dot-fast { opacity: 1 }
-.ns-arc { stroke-dasharray: 4 8; opacity: 0 }
-.ns-stage.state-b .ns-arc { opacity: 0.55 }
 
 /* Arc spine */
 .arc-spine {
@@ -959,4 +960,52 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   .hero { min-height: 88svh }
   .cinema-media { height: clamp(220px, 48vh, 400px) }
   .ns-stage { height: clamp(360px, 70vh, 520px) }
+}
+
+/* Backed-by typographic pedigree row (v5 P0-3) */
+.backers-type {
+  margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line);
+}
+.backers-type .bl {
+  font-size: 11px; letter-spacing: 0.16em; font-weight: 700;
+  text-transform: uppercase; color: var(--text-2); margin-bottom: 12px;
+}
+.backers-type .names {
+  display: flex; flex-wrap: wrap; gap: 8px 0; align-items: center;
+  font-size: 13px; color: var(--text-1); line-height: 1.6;
+}
+.backers-type .names span { white-space: nowrap; }
+.backers-type .sep {
+  display: inline-block; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent-bright); margin: 0 10px; opacity: 0.7; vertical-align: middle;
+}
+
+/* Native money charts (v5 P1-4 — PNG banned) */
+.native-charts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0;
+}
+@media (max-width: 900px) { .native-charts { grid-template-columns: 1fr } }
+.native-chart {
+  border: 1px solid var(--line); border-radius: 10px; background: var(--bg-1);
+  padding: 20px 18px 16px;
+}
+.native-chart .chart-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent-bright); margin: 0 0 6px;
+}
+.native-chart .chart-sub {
+  font-size: 12px; color: var(--text-2); margin: 0 0 16px;
+}
+.native-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.native-chart .basis {
+  margin-top: 12px; font-size: 11px; color: var(--text-2);
+}
+
+.ns-pin {
+  position: relative;
+  min-height: 160vh;
+}
+.ns-pin-sticky {
+  position: sticky; top: var(--nav-h);
+  z-index: 1;
 }

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Network Shift — reference implementation</title>
+<style>
+  :root { --gold:#d4af5f; --gold-dim:rgba(212,175,95,.28); --ink:#e8e6e1; }
+  html,body { margin:0; background:#05070a; height:100%; overflow:hidden;
+    font-family:'Poppins','Inter',system-ui,sans-serif; }
+  #stage { position:fixed; inset:0; }
+  canvas { display:block; width:100%; height:100%; }
+  .hud { position:fixed; left:0; right:0; bottom:0; padding:28px 5vw 34px;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
+    pointer-events:none; }
+  .chip { background:rgba(10,13,18,.82); border:1px solid rgba(255,255,255,.08);
+    border-radius:10px; padding:16px 20px; max-width:420px; backdrop-filter:blur(6px); }
+  .chip .k { font-size:11px; letter-spacing:.18em; text-transform:uppercase; }
+  .chip .h { color:var(--ink); font-size:19px; font-weight:600; margin:6px 0 4px; }
+  .chip .s { color:#98a0ac; font-size:12.5px; }
+  .chip.today .k { color:#8b95a3; }
+  .chip.network .k { color:var(--gold); }
+  .toggles { display:flex; gap:10px; pointer-events:auto; }
+  .toggles button { cursor:pointer; border-radius:999px; padding:10px 18px;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+    border:1px solid rgba(255,255,255,.14); background:rgba(16,20,26,.9); color:#8b95a3;
+    transition:all .25s; }
+  .toggles button.on-a { background:#aeb6c2; color:#0a0d12; border-color:#aeb6c2; }
+  .toggles button.on-b { background:var(--gold); color:#0a0d12; border-color:var(--gold); }
+  .headline { position:fixed; top:7vh; left:0; right:0; text-align:center; pointer-events:none; }
+  .headline h2 { color:var(--ink); font-size:clamp(22px,3vw,40px); font-weight:600;
+    margin:0 0 10px; font-family:'Playfair Display',Georgia,serif; }
+  .headline p { color:#9aa3af; font-size:clamp(13px,1.2vw,16px); margin:0; }
+  .headline p em { color:var(--gold); font-style:normal; }
+  /* Scrub slider — demo only; on the site this is driven by scroll progress */
+  .scrub { position:fixed; top:16px; right:16px; pointer-events:auto; opacity:.6; }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="c"></canvas></div>
+<div class="headline">
+  <h2>From a few giant slow ships to thousands of fast electric vessels</h2>
+  <p>The internet did this to information. <em>We are doing it to payloads.</em></p>
+</div>
+<div class="hud">
+  <div class="chip today" id="chipA">
+    <div class="k">Shipping today</div>
+    <div class="h">A handful of mega-ports.</div>
+    <div class="s">20 knots · infrequent departures · fixed terminals</div>
+  </div>
+  <div class="toggles">
+    <button id="btnA" class="on-a">Shipping today</button>
+    <button id="btnB">The Navier network</button>
+  </div>
+  <div class="chip network" id="chipB" style="opacity:.25">
+    <div class="k">The Navier network</div>
+    <div class="h">Every harbor and marina becomes a hub.</div>
+    <div class="s">35 knots · departures all day · direct routes</div>
+  </div>
+</div>
+<input class="scrub" id="scrub" type="range" min="0" max="1000" value="0">
+<script>
+'use strict';
+/* ============================================================
+   NETWORK SHIFT — reference implementation
+   State A: 2 mega-ports, one trunk lane, 3 giant slow ships.
+   State B: ~30 gold harbors on a real coastline, 55 fast
+            vessels on point-to-point sea arcs with trails.
+   Blend driven by mix m ∈ [0,1]  →  window.setNetworkMix(m)
+   (bind this to section scroll progress on the site).
+   ============================================================ */
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let W=0, H=0, DPR=1;
+function resize(){ DPR=Math.min(devicePixelRatio||1,2);
+  W=innerWidth; H=innerHeight; cv.width=W*DPR; cv.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0); buildWorld(); }
+addEventListener('resize', resize);
+
+/* deterministic RNG so the scene is stable frame to frame */
+let seed=7; function rnd(){ seed=(seed*16807)%2147483647; return (seed-1)/2147483646; }
+
+/* ---------- WORLD GEOMETRY ---------- */
+/* Coastline: mainland along the top (land above, sea below),
+   drawn as a smooth multi-bay curve; islands in the open sea. */
+let coastPts=[], islands=[], harbors=[], megaports=[], trunk=[], arcs=[], vessels=[], ships=[];
+function smooth(pts,n){ // Catmull-Rom resample
+  const out=[]; for(let i=0;i<n;i++){ const t=i/(n-1)*(pts.length-1);
+    const k=Math.min(Math.floor(t),pts.length-2), f=t-k;
+    const p0=pts[Math.max(k-1,0)], p1=pts[k], p2=pts[k+1], p3=pts[Math.min(k+2,pts.length-1)];
+    out.push([0.5*((2*p1[0])+(-p0[0]+p2[0])*f+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*f*f+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*f*f*f),
+              0.5*((2*p1[1])+(-p0[1]+p2[1])*f+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*f*f+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*f*f*f)]); }
+  return out; }
+
+function buildWorld(){
+  seed=7; harbors=[]; islands=[]; arcs=[]; vessels=[]; ships=[];
+  const y=(f)=>H*f, x=(f)=>W*f;
+  /* mainland coast: bays and headlands across full width */
+  const ctrl=[[x(-0.05),y(0.20)],[x(0.07),y(0.26)],[x(0.16),y(0.22)],[x(0.28),y(0.30)],
+              [x(0.36),y(0.21)],[x(0.50),y(0.27)],[x(0.58),y(0.33)],[x(0.70),y(0.24)],
+              [x(0.83),y(0.29)],[x(0.93),y(0.22)],[x(1.05),y(0.27)]];
+  coastPts=smooth(ctrl,240);
+  /* islands: [cx,cy,rx,ry,rot] */
+  islands=[[x(0.17),y(0.58),W*0.042,H*0.032,0.3],[x(0.42),y(0.68),W*0.055,H*0.042,-0.2],
+           [x(0.57),y(0.52),W*0.028,H*0.024,0.6],[x(0.72),y(0.63),W*0.034,H*0.028,0.8],
+           [x(0.88),y(0.55),W*0.046,H*0.036,0.1]];
+  /* mega-ports for state A sit on the coast */
+  megaports=[coastPts[36], coastPts[196]];
+  trunk=[megaports[0], [x(0.30),y(0.40)], [x(0.48),y(0.46)], [x(0.66),y(0.44)], megaports[1]];
+  /* harbors: sampled along coast + island rims (hubs bigger) */
+  const coastIdx=[8,22,36,52,66,80,95,110,124,138,152,166,180,196,210,224,234];
+  coastIdx.forEach((i,k)=>{ const p=coastPts[i];
+    harbors.push({x:p[0]+ (rnd()-0.5)*8, y:p[1]+6+rnd()*10, r: (k%5===2)?5.2:(2.6+rnd()*1.6),
+                  th:0.12+ (k/coastIdx.length)*0.55 + rnd()*0.15}); });
+  islands.forEach((s,k)=>{ const n= k===1?3:2;
+    for(let j=0;j<n;j++){ const a=rnd()*Math.PI*2;
+      harbors.push({x:s[0]+Math.cos(a)*s[2]*1.05, y:s[1]+Math.sin(a)*s[3]*1.05,
+                    r:2.4+rnd()*2.2, th:0.3+rnd()*0.5}); }});
+  /* arcs: connect harbors 10–30% of screen apart, ALWAYS bulging seaward (down),
+     and never crossing the landmass */
+  const coastY=(px)=>{ // coast y at given x by lookup
+    const i=clamp(Math.round((px+20)/(W+40)*(coastPts.length-1)),0,coastPts.length-1);
+    return coastPts[i][1]; };
+  for(let i=0;i<harbors.length;i++) for(let j=i+1;j<harbors.length;j++){
+    const a=harbors[i], b=harbors[j], d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d>W*0.08 && d<W*0.30 && rnd()<0.42){
+      const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+      const bow = d*(0.10+rnd()*0.14);
+      let cy = Math.max(my+bow*0.7, coastY(mx)+H*0.045); // stay in open sea…
+      cy = Math.min(cy, my + d*0.42);                    // …but never plunge
+      arcs.push({a,b,cx:mx+(rnd()-0.5)*d*0.2, cy, th:Math.min(a.th,b.th)});
+    }}
+  /* vessels: fast gold dots with trails, each on an arc */
+  for(let v=0; v<58; v++){ const arc=arcs[Math.floor(rnd()*arcs.length)];
+    vessels.push({arc, t:rnd(), sp:(0.0016+rnd()*0.0022)*(rnd()<0.5?1:-1), trail:[]}); }
+  /* state A ships: giant slow hulls on the trunk */
+  ships=[{t:0.15,sp:0.00022},{t:0.48,sp:0.00019},{t:0.80,sp:0.00024}];
+}
+function qbez(a,c,b,t){ const u=1-t;
+  return [u*u*a.x+2*u*t*c[0]+t*t*b.x, u*u*a.y+2*u*t*c[1]+t*t*b.y]; }
+function trunkPt(t){ // piecewise linear along trunk polyline
+  const segs=trunk.length-1, s=Math.min(Math.floor(t*segs),segs-1), f=t*segs-s;
+  const p=trunk[s], q=trunk[s+1]; return [p[0]+(q[0]-p[0])*f, p[1]+(q[1]-p[1])*f]; }
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const smoothstep=(e0,e1,v)=>{ const t=clamp((v-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
+
+/* ---------- RENDER ---------- */
+let mix=0, target=0;
+function draw(now){
+  mix += (target-mix)*0.06;
+  ctx.clearRect(0,0,W,H);
+  /* sea gradient */
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#070a0f'); g.addColorStop(1,'#04060a');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  /* land mass above the coast */
+  ctx.beginPath(); ctx.moveTo(-20,-20);
+  ctx.lineTo(-20,coastPts[0][1]);
+  coastPts.forEach(p=>ctx.lineTo(p[0],p[1]));
+  ctx.lineTo(W+20,-20); ctx.closePath();
+  ctx.fillStyle='#121926'; ctx.fill();
+  /* coastline stroke + shore glow */
+  ctx.beginPath(); coastPts.forEach((p,i)=> i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
+  ctx.strokeStyle='rgba(170,185,205,0.45)'; ctx.lineWidth=1.6; ctx.stroke();
+  ctx.strokeStyle='rgba(120,140,165,0.12)'; ctx.lineWidth=7; ctx.stroke();
+  /* islands */
+  islands.forEach(s=>{ ctx.save(); ctx.translate(s[0],s[1]); ctx.rotate(s[4]);
+    ctx.beginPath(); ctx.ellipse(0,0,s[2],s[3],0,0,Math.PI*2);
+    ctx.fillStyle='#121926'; ctx.fill();
+    ctx.strokeStyle='rgba(170,185,205,0.38)'; ctx.lineWidth=1.3; ctx.stroke(); ctx.restore(); });
+
+  const A=1-mix, B=mix;
+  /* ---------- STATE A : trunk + mega-ports + giant slow ships ---------- */
+  if(A>0.01){
+    ctx.globalAlpha=A*0.55; ctx.beginPath();
+    for(let i=0;i<=60;i++){ const p=trunkPt(i/60); i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]); }
+    ctx.strokeStyle='#5b6572'; ctx.lineWidth=3; ctx.stroke();
+    megaports.forEach(mp=>{ ctx.globalAlpha=A;
+      for(let r=0;r<3;r++){ ctx.beginPath(); ctx.arc(mp[0],mp[1],7+r*7,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(139,149,163,${0.5-r*0.15})`; ctx.lineWidth=1.4; ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(mp[0],mp[1],5,0,Math.PI*2); ctx.fillStyle='#aeb6c2'; ctx.fill(); });
+    ships.forEach(s=>{ s.t=(s.t+s.sp)%1; const p=trunkPt(s.t), q=trunkPt(Math.min(s.t+0.01,1));
+      const ang=Math.atan2(q[1]-p[1],q[0]-p[0]);
+      ctx.save(); ctx.translate(p[0],p[1]); ctx.rotate(ang);
+      ctx.globalAlpha=A*0.35; /* long slow wake behind the hull */
+      const wk=ctx.createLinearGradient(-150,0,-46,0);
+      wk.addColorStop(0,'rgba(139,149,163,0)'); wk.addColorStop(1,'rgba(139,149,163,0.5)');
+      ctx.strokeStyle=wk; ctx.lineWidth=3; ctx.beginPath();
+      ctx.moveTo(-150,0); ctx.lineTo(-46,0); ctx.stroke();
+      ctx.globalAlpha=A*0.95;
+      ctx.beginPath(); /* elongated hull silhouette, BIG */
+      ctx.moveTo(-46,-9); ctx.lineTo(34,-9); ctx.lineTo(52,0); ctx.lineTo(34,9); ctx.lineTo(-46,9);
+      ctx.closePath(); ctx.fillStyle='#69737f'; ctx.fill();
+      ctx.fillStyle='#535d69'; ctx.fillRect(-30,-15,26,7); /* containers */
+      ctx.restore(); });
+  }
+  /* ---------- STATE B : harbors bloom + arcs + fast vessels ---------- */
+  if(B>0.01){
+    arcs.forEach(arc=>{ const on=smoothstep(arc.th,arc.th+0.18,B); if(on<=0)return;
+      ctx.globalAlpha=on*0.16; ctx.beginPath(); ctx.moveTo(arc.a.x,arc.a.y);
+      ctx.quadraticCurveTo(arc.cx,arc.cy,arc.b.x,arc.b.y);
+      ctx.strokeStyle='#d4af5f'; ctx.lineWidth=0.8; ctx.stroke(); });
+    harbors.forEach(h=>{ const on=smoothstep(h.th,h.th+0.15,B); if(on<=0)return;
+      const pulse=1+0.18*Math.sin(now*0.002+h.x);
+      ctx.globalAlpha=on*0.9;
+      ctx.beginPath(); ctx.arc(h.x,h.y,h.r*pulse,0,Math.PI*2); ctx.fillStyle='#d4af5f'; ctx.fill();
+      ctx.globalAlpha=on*0.25;
+      ctx.beginPath(); ctx.arc(h.x,h.y,h.r*2.6*pulse,0,Math.PI*2); ctx.fillStyle='#d4af5f'; ctx.fill(); });
+    vessels.forEach(v=>{ const on=smoothstep(v.arc.th,v.arc.th+0.2,B); if(on<=0)return;
+      v.t+=v.sp; if(v.t>1||v.t<0){ v.arc=arcs[Math.floor(Math.random()*arcs.length)];
+        v.t=v.sp>0?0:1; v.trail=[]; }
+      const p=qbez(v.arc.a,[v.arc.cx,v.arc.cy],v.arc.b,clamp(v.t,0,1));
+      v.trail.push(p); if(v.trail.length>9)v.trail.shift();
+      v.trail.forEach((tp,i)=>{ ctx.globalAlpha=on*(i/v.trail.length)*0.5;
+        ctx.beginPath(); ctx.arc(tp[0],tp[1],1.1,0,Math.PI*2); ctx.fillStyle='#e9cf8f'; ctx.fill(); });
+      ctx.globalAlpha=on; ctx.beginPath(); ctx.arc(p[0],p[1],1.8,0,Math.PI*2);
+      ctx.fillStyle='#f4e3b2'; ctx.fill(); });
+  }
+  ctx.globalAlpha=1;
+  /* hud state */
+  chipA.style.opacity=(0.25+A*0.75).toFixed(2); chipB.style.opacity=(0.25+B*0.75).toFixed(2);
+  btnA.className = A>0.5?'on-a':''; btnB.className = B>=0.5?'on-b':'';
+  requestAnimationFrame(draw);
+}
+/* ---------- CONTROLS ---------- */
+const chipA=document.getElementById('chipA'), chipB=document.getElementById('chipB');
+const btnA=document.getElementById('btnA'), btnB=document.getElementById('btnB');
+btnA.onclick=()=>{ target=0; scrub.value=0; };
+btnB.onclick=()=>{ target=1; scrub.value=1000; };
+scrub.oninput=e=>{ target=e.target.value/1000; };
+window.setNetworkMix=(m)=>{ target=clamp(m,0,1); };   /* ← bind to scroll on the site */
+resize(); requestAnimationFrame(draw);
+/* demo: auto-play once so a static screenshot still shows the shift */
+setTimeout(()=>{ if(target===0) target=1; }, 2200);
+</script>
+</body>
+</html>

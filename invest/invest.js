@@ -1,4 +1,4 @@
-/* Series B /invest v4 — S1 safe-area · vessel canon · Network Shift respec */
+/* Series B /invest v5 — container gate · Tasklet NS canvas · native charts */
 (function () {
   'use strict';
 
@@ -21,6 +21,19 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   const nl = (s) => esc(s).replace(/\n/g, '<br/>');
+  function formatBackers(line) {
+    if (!line) return '';
+    return String(line)
+      .split(/[·•\n]/)
+      .map(function (n) { return n.trim(); })
+      .filter(Boolean)
+      .map(function (n, i, arr) {
+        return '<span>' + esc(n) + '</span>' +
+          (i < arr.length - 1 ? '<i class="sep" aria-hidden="true"></i>' : '');
+      })
+      .join('');
+  }
+
 
   function mediaPath(p) {
     if (!p) return '';
@@ -54,17 +67,19 @@
     if (!src) return '';
     const cap = opts.caption;
     return `
-      <div class="cinema" data-home="${esc(opts.home || '')}" data-reveal>
-        <div class="cinema-media" style="${opts.vh ? `height:${opts.vh}` : ''}">
-          ${
-            opts.video
-              ? `<video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="none" data-lazy-video poster="${esc(opts.poster || '')}">
-                   <source src="${esc(src)}" type="video/mp4" />
-                 </video>`
-              : `<img src="${esc(src)}" alt="${esc(opts.alt || '')}" loading="${opts.eager ? 'eager' : 'lazy'}" ${opts.eager ? 'fetchpriority="high"' : ''} />`
-          }
+      <div class="cinema-block" data-home="${esc(opts.home || '')}" data-reveal>
+        <div class="cinema">
+          <div class="cinema-media" style="${opts.vh ? `height:${opts.vh}` : ''}">
+            ${
+              opts.video
+                ? `<video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="none" data-lazy-video poster="${esc(opts.poster || '')}">
+                     <source src="${esc(src)}" type="video/mp4" />
+                   </video>`
+                : `<img src="${esc(src)}" alt="${esc(opts.alt || '')}" loading="${opts.eager ? 'eager' : 'lazy'}" ${opts.eager ? 'fetchpriority="high"' : ''} />`
+            }
+          </div>
         </div>
-        ${cap ? `<p class="cinema-cap">${esc(cap)}</p>` : ''}
+        ${cap ? `<div class="media-inner"><p class="cinema-cap">${esc(cap)}</p></div>` : ''}
       </div>`;
   }
 
@@ -169,97 +184,22 @@
 
   /* ── Network Shift interactive 4a ──────────────────── */
   function renderNetworkShift(s) {
-    /* DESIGN-AUDIT-V4 §C — stylized coastline, State A sparse trunk, State B gold mesh */
-    const nodesB = [];
-    const coasts = [
-      // left landmass harbors
-      [80, 200], [110, 240], [140, 280], [100, 320], [160, 360], [90, 400],
-      [180, 220], [200, 300], [220, 380], [150, 250], [130, 340],
-      // right landmass
-      [1000, 210], [1040, 250], [1080, 290], [1020, 330], [1060, 370], [1100, 410],
-      [980, 280], [1120, 320], [990, 360], [1050, 200], [1090, 240],
-      // island chain center
-      [520, 180], [560, 200], [600, 190], [640, 210], [580, 240], [620, 260],
-      [540, 280], [660, 230], [700, 250], [480, 220],
-    ];
-    coasts.forEach(([x, y], i) => {
-      nodesB.push(`<circle class="ns-node-b" cx="${x}" cy="${y}" r="${i % 5 === 0 ? 5 : 3.5}" fill="#b99a5f" style="transition-delay:${i * 30}ms"/>`);
-    });
-    // arcs between random pairs (great-circle-ish curves)
-    const arcs = [];
-    const pts = coasts;
-    for (let i = 0; i < 40; i++) {
-      const a = pts[i % pts.length];
-      const b = pts[(i * 7 + 3) % pts.length];
-      if (a === b) continue;
-      const mx = (a[0] + b[0]) / 2;
-      const my = (a[1] + b[1]) / 2 - 30 - (i % 5) * 8;
-      arcs.push(
-        `<path class="ns-arc" d="M${a[0]} ${a[1]} Q${mx} ${my} ${b[0]} ${b[1]}" fill="none" stroke="#b99a5f" stroke-width="1" />`,
-      );
-    }
-    // fast dots along mesh
-    const dots = [];
-    for (let i = 0; i < 50; i++) {
-      const p = pts[i % pts.length];
-      const q = pts[(i * 5 + 2) % pts.length];
-      const t = (i % 10) / 10;
-      const x = p[0] + (q[0] - p[0]) * t;
-      const y = p[1] + (q[1] - p[1]) * t - 10;
-      dots.push(`<circle class="ns-dot-fast" cx="${x}" cy="${y}" r="2.2" fill="#e0cb8f"/>`);
-    }
-
     return `
-      <div class="section-block network-shift" data-reveal data-home="claim.network_shift">
-        ${s.eyebrow ? `<p class="eyebrow shell-prose">${esc(s.eyebrow)}</p>` : ''}
-        ${s.headline ? `<h2 class="h2 shell-prose">${esc(s.headline)}</h2>` : ''}
-        <div class="ns-wrap">
-          <div class="ns-stage cinema" id="ns-stage" data-state="0">
-            <svg class="ns-svg" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <defs>
-                <linearGradient id="nsSea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0a0a0a"/>
-                  <stop offset="100%" stop-color="#050505"/>
-                </linearGradient>
-              </defs>
-              <rect width="1200" height="560" fill="url(#nsSea)"/>
-              <!-- landmasses -->
-              <path d="M0 120 C80 100 140 160 120 260 C100 360 40 420 0 480 Z" fill="#111318"/>
-              <path d="M1200 100 C1100 90 1040 150 1060 250 C1080 360 1140 420 1200 500 Z" fill="#111318"/>
-              <path d="M480 160 C520 140 620 145 680 175 C720 200 700 260 640 280 C560 300 500 250 480 160 Z" fill="#12151a"/>
-              <!-- STATE A: trunk + mega ports + slow ships -->
-              <g class="ns-layer-a">
-                <path d="M140 300 C400 280 700 300 1060 290" fill="none" stroke="#6b7280" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
-                <circle cx="160" cy="298" r="12" fill="#6b7280"/>
-                <circle cx="1040" cy="292" r="12" fill="#6b7280"/>
-                <g fill="#6b7280">
-                  <rect x="320" y="286" width="70" height="16" rx="4"/>
-                  <rect x="520" y="296" width="80" height="18" rx="4"/>
-                  <rect x="740" y="284" width="74" height="16" rx="4"/>
-                  <rect x="900" y="300" width="60" height="14" rx="3"/>
-                </g>
-              </g>
-              <!-- STATE B: mesh + harbors + fast dots -->
-              <g class="ns-layer-b">
-                ${arcs.join('')}
-                ${nodesB.join('')}
-                ${dots.join('')}
-              </g>
-            </svg>
-          </div>
-          <div class="ns-chip-row">
-            <div class="ns-chip" id="ns-chip">
-              <div class="ns-chip-label" id="ns-chip-label">${esc(s.panel_before.label)}</div>
-              <div class="ns-chip-line" id="ns-chip-line">${esc(s.panel_before.line)}</div>
-              <div class="ns-chip-stats" id="ns-chip-stats">${esc(s.panel_before.stats_line)}</div>
-            </div>
-            <div class="ns-toggle" role="group" aria-label="Network state">
-              <button type="button" class="ns-btn active" data-ns="0">${esc(s.panel_before.label)}</button>
-              <button type="button" class="ns-btn" data-ns="1">${esc(s.panel_after.label)}</button>
-            </div>
+      <div class="section-block network-shift ns-section" data-reveal data-home="claim.network_shift">
+        <div class="section-inner">
+          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
+        </div>
+        <div class="ns-pin">
+          <div class="ns-pin-sticky">
+            <div id="ns-mount" class="ns-mount"></div>
           </div>
         </div>
-        ${s.closing_line ? `<p class="ns-kicker">${nl(s.closing_line)}</p>` : ''}
+        ${
+          s.closing_line
+            ? `<div class="section-inner"><p class="ns-kicker">${nl(s.closing_line)}</p></div>`
+            : ''
+        }
       </div>`;
   }
 
@@ -322,7 +262,7 @@
         ${logoStrip ? `<div class="logo-strip shell-stage" aria-label="Pedigree">${logoStrip}</div>` : ''}
         ${
           s.backers_line
-            ? `<div class="backers shell-prose"><div class="bl">${esc(s.backers_label || 'BACKED BY')}</div><div class="line">${nl(s.backers_line)}</div></div>`
+            ? `<div class="backers-type"><div class="bl">${esc(s.backers_label || 'BACKED BY')}</div><div class="names">${formatBackers(s.backers_line)}</div></div>`
             : ''
         }
       </div>`;
@@ -951,35 +891,67 @@
     },
 
     'stat-band'(s) {
-      // Money open — stats + native-ish charts from PNGs at contain + simple SVG from stats
-      const rev = mediaPath('assets/deck/chart-revenue-by-segment.png');
-      const ebitda = mediaPath('assets/deck/chart-ebitda-margin.png');
+      // v5 P1-4: native charts only — chart PNGs banned
+      const stats = s.stats || [];
+      function parseNum(v) {
+        if (v == null) return null;
+        const m = String(v).replace(/,/g, '').match(/-?[\d.]+/);
+        return m ? parseFloat(m[0]) : null;
+      }
+      const items = stats.map(function (st, i) {
+        var pct = 35 + i * 14;
+        var n = parseNum(st.value);
+        if (n != null) {
+          if (String(st.value).indexOf('%') >= 0) pct = Math.min(100, Math.max(8, n));
+          else if (n >= 100) pct = Math.min(96, 25 + Math.log10(n + 1) * 22);
+          else pct = Math.min(100, Math.max(8, n));
+        }
+        return { label: st.label || '', value: st.value || '', pct: pct };
+      });
+      const gm = stats.filter(function (x) { return /margin|gross/i.test(x.label || ''); })[0];
+      const marginPct = gm ? parseNum(gm.value) : 80;
+      const chartH = 24 + items.length * 52;
+      const bars = items
+        .map(function (it, i) {
+          var y = 18 + i * 52;
+          return (
+            '<text x="0" y="' + y + '" fill="#8f8f96" font-size="11" font-family="Inter,sans-serif">' +
+            esc(it.label).slice(0, 48) +
+            '</text>' +
+            '<text x="400" y="' + y + '" text-anchor="end" fill="#e0cb8f" font-size="15" font-family="Playfair Display,Georgia,serif">' +
+            esc(it.value) +
+            '</text>' +
+            '<rect x="0" y="' + (y + 10) + '" width="400" height="12" rx="4" fill="#1e1e22"/>' +
+            '<rect class="nbar-fill" x="0" y="' + (y + 10) + '" width="0" height="12" rx="4" fill="#d4af5f" data-w="' +
+            it.pct +
+            '" data-max="400"/>'
+          );
+        })
+        .join('');
       return `
-        <div class="section-block shell-stage" data-reveal data-home="money.charts">
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
-          ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-          ${goldStats(s.stats)}
-          ${s.footnote ? `<p class="muted">${esc(s.footnote)}</p>` : ''}
-          <div class="money-charts">
-            <figure class="chart-native" data-reveal>
-              <figcaption class="eyebrow">Revenue by segment (conservative case)</figcaption>
-              <img src="${esc(rev)}" alt="Revenue by segment chart" loading="lazy" />
-            </figure>
-            <figure class="chart-native" data-reveal>
-              <figcaption class="eyebrow">EBITDA margin</figcaption>
-              <img src="${esc(ebitda)}" alt="EBITDA margin chart" loading="lazy" />
-            </figure>
-          </div>
-          <div class="native-stat-bars" data-bars data-reveal>
-            ${(s.stats || [])
-              .map((st, i) => {
-                const pct = [85, 25, 95, 70][i] || 50;
-                return `<div class="bar-row" data-bar-pct="${pct}">
-                  <div class="meta"><span>${esc(st.label)}</span><span class="accent">${esc(st.value)}</span></div>
-                  <div class="bar-track"><div class="bar-fill"></div></div>
-                </div>`;
-              })
-              .join('')}
+        <div class="section-block" data-reveal data-home="money.charts" data-bars>
+          <div class="section-inner">
+            ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${goldStats(s.stats)}
+            ${s.footnote ? `<p class="muted">${esc(s.footnote)}</p>` : ''}
+            <div class="native-charts">
+              <div class="native-chart" data-reveal>
+                <p class="chart-title">Operating plan metrics</p>
+                <p class="chart-sub">FY30E · money contract (conservative case)</p>
+                <svg viewBox="0 0 400 ${chartH}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Operating plan metrics">${bars}</svg>
+              </div>
+              <div class="native-chart" data-reveal>
+                <p class="chart-title">${esc((gm && gm.label) || 'Gross margin on recurring revenue')}</p>
+                <p class="chart-sub">Native SVG — no PNG upscale</p>
+                <svg viewBox="0 0 320 130" role="img" aria-label="Margin">
+                  <rect x="20" y="36" width="280" height="18" rx="9" fill="#1e1e22"/>
+                  <rect class="nbar-fill" x="20" y="36" width="0" height="18" rx="9" fill="#7dd3c0" data-w="${Math.min(100, marginPct || 80)}" data-max="280"/>
+                  <text x="160" y="90" text-anchor="middle" fill="#e0cb8f" font-size="32" font-family="Playfair Display,Georgia,serif">${esc((gm && gm.value) || '~80%')}</text>
+                </svg>
+                ${s.footnote ? `<p class="basis">${esc(s.footnote)}</p>` : ''}
+              </div>
+            </div>
           </div>
         </div>`;
     },
@@ -1209,7 +1181,7 @@
     }
     return `
       <section class="chapter" id="claim">
-        <div class="shell-prose"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${parts.join('')}
       </section>`;
   }
@@ -1226,7 +1198,7 @@
     }
     return `
       <section class="chapter" id="proof">
-        <div class="shell-prose"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${parts.join('')}
       </section>`;
   }
@@ -1243,7 +1215,7 @@
     }
     return `
       <section class="chapter" id="product">
-        <div class="shell-prose"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${parts.join('')}
       </section>`;
   }
@@ -1271,7 +1243,7 @@
     }
     return `
       <section class="chapter" id="gtm">
-        <div class="shell-prose"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${parts.join('')}
       </section>`;
   }
@@ -1290,7 +1262,7 @@
       .join('');
     return `
       <section class="chapter" id="money">
-        <div class="shell-prose"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${mainHtml}
         ${finale ? R['finale-plate'](finale) : ''}
         ${foot ? R.footer(foot) : ''}
@@ -1317,6 +1289,85 @@
       </div>
     </div>
   `;
+
+
+  /* v5 P0-1 wrap */
+  document.querySelectorAll('.section-block').forEach(function (block) {
+    if (block.classList.contains('network-shift')) return;
+    if (block.querySelector(':scope > .section-inner')) return;
+    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin')) return;
+    var kids = [];
+    while (block.firstChild) kids.push(block.removeChild(block.firstChild));
+    if (!kids.length) return;
+    var inner = document.createElement('div');
+    inner.className = 'section-inner';
+    kids.forEach(function (k) { inner.appendChild(k); });
+    block.appendChild(inner);
+  });
+  document.querySelectorAll('.video-grid, .ladder, .table-wrap, .media-duo, .native-charts, .roadmap, .thesis-board, .round, .pipe-tiers, .cost-grid, .team-layout, .demo-anchor, .unitecon, .flow-roles, .chips-3, .stack-cards').forEach(function (el) {
+    if (el.closest('.media-inner, .section-inner')) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'media-inner';
+    el.parentNode.insertBefore(wrap, el);
+    wrap.appendChild(el);
+  });
+
+  /* v5 P0-2 Tasklet Network Shift */
+  (function () {
+    var mount = document.getElementById('ns-mount');
+    if (!mount || typeof window.initNetworkShift !== 'function') {
+      console.warn('[invest] Network Shift engine missing');
+      return;
+    }
+    var nsSec = ((D.claim && D.claim.sections) || []).filter(function (x) {
+      return x.id === 'network-shift' || x.type === 'two-panel-transition';
+    })[0];
+    window.initNetworkShift(mount, {
+      chips: {
+        aLabel: (nsSec && nsSec.panel_before && nsSec.panel_before.label) || 'SHIPPING TODAY',
+        aLine: (nsSec && nsSec.panel_before && nsSec.panel_before.line) || '',
+        aStats: (nsSec && nsSec.panel_before && nsSec.panel_before.stats_line) || '',
+        bLabel: (nsSec && nsSec.panel_after && nsSec.panel_after.label) || 'THE NAVIER NETWORK',
+        bLine: (nsSec && nsSec.panel_after && nsSec.panel_after.line) || '',
+        bStats: (nsSec && nsSec.panel_after && nsSec.panel_after.stats_line) || '',
+      },
+    });
+    var pin = document.querySelector('.ns-pin');
+    if (!pin) return;
+    function onScrollNS() {
+      var rect = pin.getBoundingClientRect();
+      var vh = window.innerHeight || 1;
+      var total = Math.max(1, pin.offsetHeight - vh * 0.35);
+      var m = -rect.top / total;
+      if (m < 0) m = 0;
+      if (m > 1) m = 1;
+      m = Math.min(1, m / 0.7);
+      if (typeof window.setNetworkMix === 'function') window.setNetworkMix(m);
+    }
+    window.addEventListener('scroll', onScrollNS, { passive: true });
+    onScrollNS();
+  })();
+
+  document.querySelectorAll('.nbar-fill[data-w]').forEach(function (el) {
+    var run = function () {
+      var pct = parseFloat(el.getAttribute('data-w') || '0');
+      var max = parseFloat(el.getAttribute('data-max') || '100');
+      if (el.namespaceURI === 'http://www.w3.org/2000/svg') {
+        el.setAttribute('width', String((pct / 100) * max));
+      } else {
+        el.style.width = pct + '%';
+      }
+    };
+    var io2 = new IntersectionObserver(function (ents) {
+      ents.forEach(function (en) {
+        if (en.isIntersecting) {
+          requestAnimationFrame(run);
+          io2.unobserve(el);
+        }
+      });
+    }, { threshold: 0.15 });
+    io2.observe(el);
+  });
 
   /* ── Lightbox ──────────────────────────────────────── */
   function openYt(embedUrl, youtubeId) {
@@ -1351,43 +1402,6 @@
   });
 
   /* ── Network shift toggle + scroll ─────────────────── */
-  function setNs(state) {
-    const stage = $('#ns-stage');
-    if (!stage) return;
-    stage.dataset.state = state;
-    stage.classList.toggle('state-b', state === 1);
-    const nsSec = (D.claim && D.claim.sections || []).find((x) => x.id === 'network-shift' || x.type === 'two-panel-transition');
-    const panel = nsSec && (state === 1 ? nsSec.panel_after : nsSec.panel_before);
-    if (panel) {
-      const lab = $('#ns-chip-label');
-      const line = $('#ns-chip-line');
-      const stats = $('#ns-chip-stats');
-      if (lab) lab.textContent = panel.label || '';
-      if (line) line.textContent = panel.line || '';
-      if (stats) stats.textContent = panel.stats_line || '';
-    }
-    document.querySelectorAll('.ns-btn').forEach((btn) => {
-      btn.classList.toggle('active', +btn.dataset.ns === state);
-    });
-  }
-  document.querySelectorAll('.ns-btn').forEach((btn) => {
-    btn.addEventListener('click', () => setNs(+btn.dataset.ns));
-  });
-  // scroll-linked on ns-stage
-  const nsStage = $('#ns-stage');
-  if (nsStage && !reduceMotion) {
-    const nsIo = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          const r = en.intersectionRatio;
-          setNs(r > 0.55 ? 1 : 0);
-        });
-      },
-      { threshold: [0.25, 0.45, 0.55, 0.7, 0.9] },
-    );
-    nsIo.observe(nsStage);
-  }
 
   /* ── Ladder ────────────────────────────────────────── */
   const hulls = (D.ladder && D.ladder.hulls) || [];
@@ -1555,6 +1569,6 @@
     if (text.includes('{"') || text.includes('{"label"')) {
       console.warn('[invest] G3 possible JSON leak in rendered text');
     }
-    console.info('[invest] v4 mount ok, homes', homes.size);
+    console.info('[invest] v5 mount ok, homes', homes.size);
   } catch (_) {}
 })();
