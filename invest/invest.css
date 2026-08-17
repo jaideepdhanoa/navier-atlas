@@ -904,7 +904,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   font-size: 12px; color: var(--text-2);
 }
 
-/* lightbox */
+/* lightbox — #lb-frame must fill the 16:9 box or iframe % height collapses */
 .lightbox {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(0,0,0,0.88);
@@ -913,13 +913,27 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .lightbox.open { display: flex }
 .lightbox-inner {
-  position: relative; width: min(960px, 100%);
-  aspect-ratio: 16 / 9; background: #000;
+  position: relative;
+  width: min(1100px, calc(100vw - 48px));
+  max-height: calc(100vh - 80px);
+  aspect-ratio: 16 / 9;
+  background: #000;
 }
-.lightbox-inner iframe { width: 100%; height: 100%; border: 0 }
+#lb-frame {
+  position: absolute;
+  inset: 0;
+}
+#lb-frame iframe,
+.lightbox-inner iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
 .lightbox-close {
   position: absolute; top: -40px; right: 0;
   font-size: 28px; color: #fff; line-height: 1; padding: 4px 8px;
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

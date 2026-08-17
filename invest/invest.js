@@ -1345,7 +1345,7 @@
     const lb = $('#lightbox');
     $('#lb-frame').innerHTML = `<iframe src="${esc(
       src,
-    )}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Video"></iframe>`;
+    )}" width="100%" height="100%" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="Video"></iframe>`;
     lb.classList.add('open');
   }
   function closeLb() {
