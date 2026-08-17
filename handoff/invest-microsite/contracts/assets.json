@@ -1,60 +1,62 @@
 {
   "_meta": {
-    "version": "v2",
+    "version": "v3",
     "date": "2026-08-17",
-    "purpose": "Binding media manifest for /invest. Every visual slot on the site is defined here. Grok renders these assets in these slots — no substitutions, no generated imagery, no reuse of one asset across multiple slots unless listed. Paths are repo-relative to handoff/invest-microsite/.",
-    "provenance": "All deck/* images extracted 1:1 from the Series B Presentation Cut (slides 1–36). posters/* are official YouTube thumbnails. hero-loop.mp4 and closing-loop.mp4 are the Cut's own animated cover plates converted to 720p mp4 loops (14.6 s).",
-    "resolution_note": "Deck plates are 960×540-class. Render at max 1200 px wide; never upscale beyond container. Hi-res originals may be swapped in later at identical paths."
+    "purpose": "Binding media manifest for /invest. One asset = one home (exceptions listed inline). Placement authority is DESIGN-AUDIT-V3.md — if this file and the audit disagree, the audit wins. Paths repo-relative to handoff/invest-microsite/.",
+    "provenance": "deck/* extracted 1:1 from the Series B Cut (slides 1–36) including team slide 6 headshots/logos verified against slide geometry. posters/* are official YouTube maxres thumbnails. hero/closing loops converted from the Cut's animated plates.",
+    "resolution_note": "Deck plates are 960×540-class: full-bleed use is permitted (they hold at 100vw with cover-fit + slight dark overlay), but never scale a sub-600px-wide source beyond 1.4×. Team headshots and logos are hi-res (up to 2048px)."
   },
   "hero": {
     "background_video": "assets/hero-loop.mp4",
     "poster": "assets/hero-poster.jpg",
-    "behavior": "autoplay muted loop playsinline; single full-bleed layer; dark gradient scrim from bottom (rgba(0,0,0,.75) → transparent at 55% height); headline + sub + one CTA bottom-left on the scrim; NOTHING else composited. No second image. No text from any other layer may intersect the hero.",
+    "behavior": "100vw × 100svh autoplay muted loop playsinline; bottom-45% gradient scrim; headline bottom-left at H1 scale; sub + single CTA. CTA 'Watch the film' opens lightbox playing youtube aavaIZPkDyk (its only home). SCROLL cue bottom-center. Nothing else composited.",
     "alt": "Navier N30 foiling across San Francisco Bay, city skyline behind"
   },
-  "chapter_dividers": {
-    "_rule": "Each chapter opens with a full-bleed solo image plate (100vw, 55–70vh, object-fit cover), optional one-line caption chip BELOW the plate on the dark field. Text never on the plate.",
-    "claim": { "asset": "assets/deck/fleet-family-lineup.png", "caption": "One platform. Every mission." },
-    "proof": { "asset": "assets/deck/n30-pioneer-at-sea.png", "caption": "N30 Pioneer — delivered, in service." },
-    "product": { "asset": "assets/deck/quanta-dark-seascape.png", "caption": null },
-    "gtm": { "asset": "assets/deck/maldives-overwater.png", "caption": "Maldives — $100M signed, 100 vessels." },
-    "money": null,
-    "close": { "video": "assets/closing-loop.mp4", "behavior": "same treatment as hero; closing line on scrim" }
-  },
-  "slots": [
-    { "slot": "claim.network_shift.side_plate", "asset": "assets/deck/world-pipeline-map.png", "alt": "Global corridor map" },
-    { "slot": "proof.demo_grid.posters", "map": {
+  "sections": [
+    { "home": "claim.opener", "asset": "assets/deck/fleet-family-lineup.png", "treatment": "full-bleed 75vh", "caption": "One platform. Every mission." },
+    { "home": "claim.team", "assets": {
+      "featured": "assets/deck/team-sampriti-bhattacharyya.png",
+      "cards": {
+        "Kenneth Jensen — CTO": "assets/deck/team-kenneth-jensen.png",
+        "Dan Dorsch — Head of Product": "assets/deck/team-dan-dorsch.png",
+        "Dotan Feldman — VP Operations": "assets/deck/team-dotan-feldman.png",
+        "Paul Bieker — Lead Naval Architect": "assets/deck/team-paul-bieker.png",
+        "Jaideep Dhanoa — Head of Mobility": "assets/deck/team-jaideep-dhanoa.png"
+      },
+      "logo_strip": ["assets/deck/team-logo-01.png","assets/deck/team-logo-02.png","assets/deck/team-logo-03.png","assets/deck/team-logo-04.png","assets/deck/team-logo-05.png","assets/deck/team-logo-06.png","assets/deck/team-logo-07.png","assets/deck/team-logo-08.png","assets/deck/team-logo-09.png","assets/deck/team-logo-10.png","assets/deck/team-logo-11.png"],
+      "note": "Name↔photo mapping verified against slide geometry — DO NOT swap. Logos uniform ~28px height, white/grayscale, subtle opacity."
+    } },
+    { "home": "claim.network_shift", "asset": null, "treatment": "INTERACTIVE — scroll-driven two-state canvas/SVG per DESIGN-AUDIT-V3.md §4. No photo, no map image. Copy verbatim from claim.json." },
+    { "home": "claim.three_costs.divider", "asset": "assets/deck/shipyard-heritage-bw.png", "treatment": "full-bleed", "caption": "Fifty years, fundamentally unchanged." },
+    { "home": "proof.divider", "asset": "assets/deck/n30-pioneer-at-sea.png", "treatment": "full-bleed", "caption": "N30 Pioneer — delivered, in service.", "exception": "also appears as ladder N30 tab image" },
+    { "home": "proof.demo_grid", "assets": {
+      "anchor_full_width_native_loop": "assets/stabilization-juxtaposition.mp4",
       "no_wake": "assets/posters/Hlp9oynUQNE.jpg",
       "flat_turn": "assets/posters/93MCRJYsD_8.jpg",
-      "stabilization_native_loop": "assets/stabilization-juxtaposition.mp4",
       "rough_seas": "assets/posters/7HETK4rsByc.jpg",
       "foiling_18s": "assets/posters/htUWE3AJUbc.jpg"
-    } },
-    { "slot": "proof.hero_film.poster", "asset": "assets/posters/aavaIZPkDyk.jpg" },
-    { "slot": "proof.vance_film.poster", "asset": "assets/posters/ZNgh39DM_Jg.jpg" },
-    { "slot": "product.cto_film.poster", "asset": "assets/posters/S7WB91FvSFI.jpg" },
-    { "slot": "product.gmvp.diagram", "asset": "assets/deck/gmvp-wireframe-family.png", "note": "The wireframe appears HERE ONLY — nowhere else on the site." },
-    { "slot": "product.ladder.n30_pioneer", "asset": "assets/deck/n30-pioneer-at-sea.png" },
-    { "slot": "product.ladder.quanta_lr", "asset": "assets/deck/quanta-lr-render.png" },
-    { "slot": "product.ladder.n45_explorer", "asset": "assets/deck/n45-city-skyline.png" },
-    { "slot": "product.ladder.n80_valkyrie", "asset": "assets/deck/cargo-foiler-miami.png" },
-    { "slot": "product.ladder.n180_morpheus", "asset": "assets/deck/n180-morpheus-hero.png" },
-    { "slot": "product.quanta.film_poster", "asset": "assets/posters/QhiaYVgXMf0.jpg" },
-    { "slot": "product.quanta.defense_plate", "asset": "assets/deck/quanta-defense-camo.png", "alt": "Quanta in defense configuration, foilborne" },
-    { "slot": "product.quanta.atlantic_map", "asset": "assets/deck/atlantic-run-map.png" },
-    { "slot": "product.foundry.interior", "asset": "assets/deck/foundry-interior-flag.png" },
-    { "slot": "product.foundry.heritage", "asset": "assets/deck/shipyard-heritage-bw.png", "caption": "Shipbuilding at scale is not new — it is remembered." },
-    { "slot": "gtm.mobility.plate", "asset": "assets/deck/n45-lagoon-dusk.png" },
-    { "slot": "gtm.defense.plate", "asset": "assets/deck/navy-foiler-night.png" },
-    { "slot": "gtm.defense.plate_2", "asset": "assets/deck/quanta-defense-camo-2.png" },
-    { "slot": "gtm.cargo.divider", "asset": "assets/deck/air-vs-ocean-cargo.png", "caption": "Air freight moves 35% of trade value in under 1% of its tonnage. The gap in between is the market." },
-    { "slot": "gtm.cargo.plate_island", "asset": "assets/deck/cargo-foiler-island-pier.png" },
-    { "slot": "gtm.cargo.plate_night", "asset": "assets/deck/night-pier-containers.png" },
-    { "slot": "gtm.cargo.plate_ops", "asset": "assets/deck/night-dock-ops.png" },
-    { "slot": "gtm.service.plate", "asset": "assets/deck/offshore-ctv-hero-v3.png", "alt": "Workboat-grade hull approaching offshore platform" },
-    { "slot": "gtm.pipeline_map.static_fallback", "asset": "assets/deck/world-pipeline-map.png" },
-    { "slot": "money.chart_revenue", "asset": "assets/deck/chart-revenue-by-segment.png", "note": "Ship as plate v1; rebuild native (same data, conservative case) allowed later." },
-    { "slot": "money.chart_ebitda", "asset": "assets/deck/chart-ebitda-margin.png" }
+    }, "treatment": "anchor = full-width autoplay muted loop; others 2-up ≥660px, lightbox on click" },
+    { "home": "proof.traction.plate", "asset": "assets/deck/quanta-dark-seascape.png", "treatment": "full-bleed" },
+    { "home": "product.control.film", "asset": "assets/posters/S7WB91FvSFI.jpg", "treatment": "≥720px card, lightbox" },
+    { "home": "product.gmvp.diagram", "asset": "assets/deck/gmvp-wireframe-family.png", "note": "only home" },
+    { "home": "product.foundry.plate", "asset": "assets/deck/foundry-interior-flag.png", "treatment": "full-bleed, closes product intro", "caption": "Built in America — the Foundry." },
+    { "home": "product.ladder", "assets": {
+      "n30_pioneer": "assets/deck/n30-pioneer-at-sea.png",
+      "quanta_lr": "assets/deck/quanta-lr-render.png",
+      "n45_explorer": "assets/deck/n45-city-skyline.png",
+      "n80_valkyrie": "assets/deck/cargo-foiler-miami.png",
+      "n180_morpheus": "assets/deck/n180-morpheus-hero.png"
+    }, "treatment": "stage ~1200×560" },
+    { "home": "product.quanta", "assets": { "atlantic_map": "assets/deck/atlantic-run-map.png", "film": "assets/posters/QhiaYVgXMf0.jpg", "defense_plate": "assets/deck/quanta-defense-camo.png" }, "note": "film poster file = assets/posters/QhiaYVgXMf0.jpg — Sampriti's Quanta film MOVES here from GMVP section. Map ≥720px." },
+    { "home": "gtm.competitive", "asset": null, "treatment": "clean dark-field table — NO photo plate" },
+    { "home": "gtm.maldives", "assets": { "opener": "assets/deck/maldives-overwater.png", "inset": "assets/deck/n45-lagoon-dusk.png", "film_card": "assets/posters/htUWE3AJUbc.jpg" }, "treatment": "opener full-bleed + stat chips ($100M · 100 vessels · 10-yr) below" },
+    { "home": "gtm.cargo", "assets": { "opener": "assets/deck/air-vs-ocean-cargo.png", "play": "assets/deck/cargo-foiler-island-pier.png", "night_pair": ["assets/deck/night-pier-containers.png", "assets/deck/night-dock-ops.png"] }, "treatment": "opener full-bleed with manifest caption" },
+    { "home": "gtm.service.plate", "asset": "assets/deck/offshore-ctv-hero-v3.png", "treatment": "≥720px 2-col" },
+    { "home": "gtm.defense", "assets": { "plate": "assets/deck/navy-foiler-night.png", "inset": "assets/deck/quanta-defense-camo-2.png" }, "treatment": "plate full-bleed; Leidos quote overlay on dark sky area permitted (sole text-on-photo exception)" },
+    { "home": "gtm.pipeline.map", "asset": "assets/deck/world-pipeline-map.png", "treatment": "full-bleed ~85vh — ONLY home (removed from network_shift)" },
+    { "home": "money.charts", "asset": null, "treatment": "NATIVE coded charts from contracts/money.json (conservative case): revenue-by-segment stacked bars + EBITDA line, gold-on-dark, draw on enter. PNG fallbacks: assets/deck/chart-revenue-by-segment.png, assets/deck/chart-ebitda-margin.png" },
+    { "home": "money.thesis_board.thumbs", "assets": ["assets/deck/n30-pioneer-at-sea.png", "assets/deck/maldives-overwater.png", "assets/deck/quanta-lr-render.png", "assets/deck/cargo-n80-profile.png", "assets/deck/navy-foiler-night.png"], "treatment": "96px row thumbs (crops permitted), one per market row", "exception": "thumb-scale reuse permitted" },
+    { "home": "close", "assets": { "video": "assets/closing-loop.mp4", "go_deeper_film": "assets/posters/ZNgh39DM_Jg.jpg" }, "treatment": "full-viewport video, centered closing line on scrim; Go deeper centered band, film card ~860px" }
   ],
-  "unused_available": ["assets/deck/cargo-n80-profile.png", "assets/deck/cargo-vessel-grid.png", "assets/deck/offshore-ctv-rig.png", "assets/deck/night-dock-ops.png"]
+  "unused_available": ["assets/deck/cargo-vessel-grid.png", "assets/deck/offshore-ctv-rig.png"]
 }

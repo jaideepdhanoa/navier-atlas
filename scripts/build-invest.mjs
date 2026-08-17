@@ -64,7 +64,7 @@ export function buildInvest() {
     'ladder',
     'pipeline-map',
     'unitecon',
-    'assets', // media manifest — binding visual slots (v2)
+    'assets', // media manifest v3 — one-home sections
   ];
 
   const bundle = {};
@@ -92,20 +92,17 @@ export function buildInvest() {
     `window.INVEST_DATA = ${JSON.stringify(bundle)};\n`,
   );
 
-  // Assets from handoff (deck plates, loops, posters) + invest/ template extras
-  // Preserve nested structure: assets/deck/*, assets/posters/*
+  // Assets from handoff (deck plates, loops, posters, team) + invest/ extras
   const assetSrc = path.join(SRC, 'assets');
   if (fs.existsSync(assetSrc)) copyDir(assetSrc, path.join(DIST, 'assets'));
   const localAssets = path.join(TEMPLATE, 'assets');
   if (fs.existsSync(localAssets)) copyDir(localAssets, path.join(DIST, 'assets'));
 
-  // Verify every assets.json file path exists on disk
+  // Verify every assets.json path exists (v3 sections[] + legacy slots)
   if (bundle.assets) {
     const missing = [];
     const checkPath = (rel) => {
       if (!rel || typeof rel !== 'string') return;
-      const disk = path.join(SRC, rel.startsWith('assets/') ? rel : path.join('assets', rel));
-      // also accept paths already under assets/
       const candidates = [
         path.join(SRC, rel),
         path.join(SRC, 'assets', rel.replace(/^assets\//, '')),
@@ -113,20 +110,27 @@ export function buildInvest() {
       ];
       if (!candidates.some((c) => fs.existsSync(c))) missing.push(rel);
     };
-    const hero = bundle.assets.hero || {};
-    checkPath(hero.background_video);
-    checkPath(hero.poster);
-    const divs = bundle.assets.chapter_dividers || {};
-    for (const v of Object.values(divs)) {
-      if (v && typeof v === 'object') {
-        checkPath(v.asset);
-        checkPath(v.video);
+    const walk = (v, key = '') => {
+      if (!v) return;
+      // Only treat strings that look like asset paths — not free-text notes/treatments
+      if (typeof v === 'string') {
+        if (/^assets\//.test(v) || /\.(png|jpe?g|gif|webp|mp4|webm|svg)$/i.test(v)) {
+          checkPath(v);
+        }
+        return;
       }
-    }
-    for (const s of bundle.assets.slots || []) {
-      checkPath(s.asset);
-      if (s.map) Object.values(s.map).forEach(checkPath);
-    }
+      if (Array.isArray(v)) v.forEach((x) => walk(x, key));
+      else if (typeof v === 'object') {
+        for (const [k, x] of Object.entries(v)) {
+          if (k === 'note' || k === 'treatment' || k === 'behavior' || k === 'exception' || k === 'alt' || k === 'caption' || k === 'purpose' || k === 'provenance' || k === 'resolution_note') continue;
+          walk(x, k);
+        }
+      }
+    };
+    walk(bundle.assets.hero);
+    walk(bundle.assets.sections);
+    walk(bundle.assets.slots);
+    walk(bundle.assets.chapter_dividers);
     if (missing.length) {
       console.error('FATAL invest assets missing on disk:\n  ' + missing.join('\n  '));
       process.exit(1);
