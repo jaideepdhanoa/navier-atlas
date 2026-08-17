@@ -1,4 +1,4 @@
-/* Series B /invest v3 — authored contracts + assets.json one-home map */
+/* Series B /invest v4 — S1 safe-area · vessel canon · Network Shift respec */
 (function () {
   'use strict';
 
@@ -29,7 +29,7 @@
     return ASSET + s.replace(/^assets\//, '').replace(/^\.\//, '');
   }
 
-  /* ── v3 homes index ─────────────────────────────────── */
+  /* ── v4 homes index ─────────────────────────────────── */
   const homes = new Map();
   for (const s of A.sections || []) {
     if (s && s.home) homes.set(s.home, s);
@@ -64,7 +64,7 @@
               : `<img src="${esc(src)}" alt="${esc(opts.alt || '')}" loading="${opts.eager ? 'eager' : 'lazy'}" ${opts.eager ? 'fetchpriority="high"' : ''} />`
           }
         </div>
-        ${cap ? `<div class="shell"><p class="cinema-cap">${esc(cap)}</p></div>` : ''}
+        ${cap ? `<p class="cinema-cap">${esc(cap)}</p>` : ''}
       </div>`;
   }
 
@@ -169,61 +169,89 @@
 
   /* ── Network Shift interactive 4a ──────────────────── */
   function renderNetworkShift(s) {
+    /* DESIGN-AUDIT-V4 §C — stylized coastline, State A sparse trunk, State B gold mesh */
+    const nodesB = [];
+    const coasts = [
+      // left landmass harbors
+      [80, 200], [110, 240], [140, 280], [100, 320], [160, 360], [90, 400],
+      [180, 220], [200, 300], [220, 380], [150, 250], [130, 340],
+      // right landmass
+      [1000, 210], [1040, 250], [1080, 290], [1020, 330], [1060, 370], [1100, 410],
+      [980, 280], [1120, 320], [990, 360], [1050, 200], [1090, 240],
+      // island chain center
+      [520, 180], [560, 200], [600, 190], [640, 210], [580, 240], [620, 260],
+      [540, 280], [660, 230], [700, 250], [480, 220],
+    ];
+    coasts.forEach(([x, y], i) => {
+      nodesB.push(`<circle class="ns-node-b" cx="${x}" cy="${y}" r="${i % 5 === 0 ? 5 : 3.5}" fill="#b99a5f" style="transition-delay:${i * 30}ms"/>`);
+    });
+    // arcs between random pairs (great-circle-ish curves)
+    const arcs = [];
+    const pts = coasts;
+    for (let i = 0; i < 40; i++) {
+      const a = pts[i % pts.length];
+      const b = pts[(i * 7 + 3) % pts.length];
+      if (a === b) continue;
+      const mx = (a[0] + b[0]) / 2;
+      const my = (a[1] + b[1]) / 2 - 30 - (i % 5) * 8;
+      arcs.push(
+        `<path class="ns-arc" d="M${a[0]} ${a[1]} Q${mx} ${my} ${b[0]} ${b[1]}" fill="none" stroke="#b99a5f" stroke-width="1" />`,
+      );
+    }
+    // fast dots along mesh
+    const dots = [];
+    for (let i = 0; i < 50; i++) {
+      const p = pts[i % pts.length];
+      const q = pts[(i * 5 + 2) % pts.length];
+      const t = (i % 10) / 10;
+      const x = p[0] + (q[0] - p[0]) * t;
+      const y = p[1] + (q[1] - p[1]) * t - 10;
+      dots.push(`<circle class="ns-dot-fast" cx="${x}" cy="${y}" r="2.2" fill="#e0cb8f"/>`);
+    }
+
     return `
       <div class="section-block network-shift" data-reveal data-home="claim.network_shift">
         ${s.eyebrow ? `<p class="eyebrow shell-prose">${esc(s.eyebrow)}</p>` : ''}
         ${s.headline ? `<h2 class="h2 shell-prose">${esc(s.headline)}</h2>` : ''}
-        <div class="ns-stage cinema-inner" id="ns-stage">
-          <div class="ns-field" id="ns-field" data-state="0">
-            <svg class="ns-svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <div class="ns-wrap">
+          <div class="ns-stage cinema" id="ns-stage" data-state="0">
+            <svg class="ns-svg" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
               <defs>
                 <linearGradient id="nsSea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0a1520"/>
-                  <stop offset="100%" stop-color="#05080c"/>
+                  <stop offset="0%" stop-color="#0a0a0a"/>
+                  <stop offset="100%" stop-color="#050505"/>
                 </linearGradient>
               </defs>
-              <rect width="1200" height="520" fill="url(#nsSea)"/>
-              <!-- coast line -->
-              <path d="M0 280 Q200 240 400 300 T800 260 T1200 320 L1200 520 L0 520 Z" fill="#0c1218" opacity="0.9"/>
-              <path class="ns-lane" d="M80 300 Q400 280 700 310 T1150 290" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2" stroke-dasharray="8 10"/>
-              <!-- mega ports (state A strong) -->
-              <g class="ns-ports-a">
-                <circle cx="180" cy="295" r="10" fill="#e0cb8f"/>
-                <circle cx="920" cy="285" r="10" fill="#e0cb8f"/>
+              <rect width="1200" height="560" fill="url(#nsSea)"/>
+              <!-- landmasses -->
+              <path d="M0 120 C80 100 140 160 120 260 C100 360 40 420 0 480 Z" fill="#111318"/>
+              <path d="M1200 100 C1100 90 1040 150 1060 250 C1080 360 1140 420 1200 500 Z" fill="#111318"/>
+              <path d="M480 160 C520 140 620 145 680 175 C720 200 700 260 640 280 C560 300 500 250 480 160 Z" fill="#12151a"/>
+              <!-- STATE A: trunk + mega ports + slow ships -->
+              <g class="ns-layer-a">
+                <path d="M140 300 C400 280 700 300 1060 290" fill="none" stroke="#6b7280" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+                <circle cx="160" cy="298" r="12" fill="#6b7280"/>
+                <circle cx="1040" cy="292" r="12" fill="#6b7280"/>
+                <g fill="#6b7280">
+                  <rect x="320" y="286" width="70" height="16" rx="4"/>
+                  <rect x="520" y="296" width="80" height="18" rx="4"/>
+                  <rect x="740" y="284" width="74" height="16" rx="4"/>
+                  <rect x="900" y="300" width="60" height="14" rx="3"/>
+                </g>
               </g>
-              <!-- many ports (state B) -->
-              <g class="ns-ports-b" opacity="0">
-                ${[120, 200, 280, 360, 450, 540, 630, 720, 810, 900, 980, 1060, 160, 340, 520, 700, 880, 1040, 240, 480, 760, 1000, 400, 640, 860, 150, 550, 950]
-                  .map(
-                    (x, i) =>
-                      `<circle cx="${x}" cy="${260 + (i % 5) * 18}" r="${i < 2 ? 7 : 4}" fill="#e0cb8f" opacity="${0.5 + (i % 3) * 0.15}"/>`,
-                  )
-                  .join('')}
-              </g>
-              <!-- slow ships A -->
-              <g class="ns-ships-a">
-                <rect x="300" y="288" width="48" height="12" rx="3" fill="#6a7280"/>
-                <rect x="520" y="298" width="56" height="14" rx="3" fill="#6a7280"/>
-                <rect x="740" y="285" width="50" height="12" rx="3" fill="#6a7280"/>
-              </g>
-              <!-- fast dots B -->
-              <g class="ns-ships-b" opacity="0">
-                ${Array.from({ length: 28 }, (_, i) => {
-                  const x = 100 + (i * 37) % 1000;
-                  const y = 250 + (i * 17) % 90;
-                  return `<circle cx="${x}" cy="${y}" r="3" fill="#f0e2b0"/>`;
-                }).join('')}
+              <!-- STATE B: mesh + harbors + fast dots -->
+              <g class="ns-layer-b">
+                ${arcs.join('')}
+                ${nodesB.join('')}
+                ${dots.join('')}
               </g>
             </svg>
-            <div class="ns-chip" id="ns-chip-a">
-              <div class="ns-chip-label">${esc(s.panel_before.label)}</div>
-              <div class="ns-chip-line">${esc(s.panel_before.line)}</div>
-              <div class="ns-chip-stats">${esc(s.panel_before.stats_line)}</div>
-            </div>
-            <div class="ns-chip ns-chip-b" id="ns-chip-b" hidden>
-              <div class="ns-chip-label">${esc(s.panel_after.label)}</div>
-              <div class="ns-chip-line">${esc(s.panel_after.line)}</div>
-              <div class="ns-chip-stats">${esc(s.panel_after.stats_line)}</div>
+          </div>
+          <div class="ns-chip-row">
+            <div class="ns-chip" id="ns-chip">
+              <div class="ns-chip-label" id="ns-chip-label">${esc(s.panel_before.label)}</div>
+              <div class="ns-chip-line" id="ns-chip-line">${esc(s.panel_before.line)}</div>
+              <div class="ns-chip-stats" id="ns-chip-stats">${esc(s.panel_before.stats_line)}</div>
             </div>
             <div class="ns-toggle" role="group" aria-label="Network state">
               <button type="button" class="ns-btn active" data-ns="0">${esc(s.panel_before.label)}</button>
@@ -231,7 +259,7 @@
             </div>
           </div>
         </div>
-        ${s.closing_line ? `<p class="ns-kicker shell-prose">${nl(s.closing_line)}</p>` : ''}
+        ${s.closing_line ? `<p class="ns-kicker">${nl(s.closing_line)}</p>` : ''}
       </div>`;
   }
 
@@ -240,7 +268,7 @@
     const ta = homeAssets('claim.team') || {};
     const featured = ta.featured ? mediaPath(ta.featured) : '';
     const cards = ta.cards || {};
-    const logos = ta.logo_strip || [];
+    const logos = []; /* v4: logo strip disabled — illegible; BACKED BY text only */
     // Map people: Sampriti featured, others from cards by name match
     const people = s.people || [];
     const sam = people.find((p) => /sampriti/i.test(p.name));
@@ -494,7 +522,7 @@
         <div class="section-block shell-stage" data-reveal data-home="product.control.film">
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.body ? `<p class="body-text shell-prose">${nl(s.body)}</p>` : ''}
-          <div class="split-58">
+          <div class="media-duo">
             ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
             <div class="hotspot-list">${hs}</div>
           </div>
@@ -516,8 +544,8 @@
         <div class="section-block" data-reveal data-home="product.gmvp.diagram">
           ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
           ${s.body ? `<p class="body-text shell-prose">${nl(s.body)}</p>` : ''}
-          ${wire ? plate(wire, { home: 'product.gmvp.diagram', className: 'wire-plate shell-stage' }) : ''}
-          <div class="layers shell-stage">${layers}</div>
+          <div class="shell-stage">${wire ? plate(wire, { home: 'product.gmvp.diagram', className: 'wire-plate' }) : ''}
+          <div class="layers">${layers}</div></div>
           ${s.tagline ? `<p class="closing-line shell-prose">${esc(s.tagline)}</p>` : ''}
           ${foundry ? cinema(foundry, { home: 'product.foundry.plate', caption: fCap, vh: '62vh' }) : ''}
         </div>`;
@@ -539,9 +567,9 @@
         <div class="section-block chapter-break shell-stage" data-reveal data-home="product.quanta">
           ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
           ${s.headline ? `<p class="break-headline">${esc(s.headline)}</p>` : ''}
-          <div class="split-58">
+          <div class="media-duo">
             ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || '') : ''}
-            ${defense ? plate(defense, { home: 'product.quanta', className: 'split-plate' }) : ''}
+            ${defense ? plate(defense, { home: 'product.quanta', className: '' }) : ''}
           </div>
         </div>`;
     },
@@ -569,7 +597,7 @@
         <div class="section-block shell-stage" data-reveal>
           ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          <div class="split-58">
+          <div class="media-duo">
             <div>
               <div class="doors">${doors}</div>
               ${
@@ -580,7 +608,7 @@
               ${s.atlantic_run ? `<div class="atlantic">${esc(s.atlantic_run.line || s.atlantic_run)}</div>` : ''}
               ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
             </div>
-            ${atlantic ? plate(atlantic, { home: 'product.quanta', className: 'split-plate' }) : ''}
+            ${atlantic ? plate(atlantic, { home: 'product.quanta', className: '' }) : ''}
           </div>
         </div>`;
     },
@@ -623,8 +651,8 @@
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
           ${goldStats(s.stats)}
-          <div class="split-58">
-            ${inset ? plate(inset, { home: 'gtm.maldives', className: 'split-plate' }) : ''}
+          <div class="media-duo">
+            ${inset ? plate(inset, { home: 'gtm.maldives', className: '' }) : ''}
             <div>
               ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
               <div class="press">${(s.press || [])
@@ -833,9 +861,9 @@
         <div class="section-block shell-stage" data-reveal data-home="gtm.service.plate">
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
-          <div class="split-58">
+          <div class="media-duo">
             <div class="card-row">${cards}</div>
-            ${ctv ? plate(ctv, { home: 'gtm.service.plate', className: 'split-plate' }) : ''}
+            ${ctv ? plate(ctv, { home: 'gtm.service.plate', className: '' }) : ''}
           </div>
         </div>`;
     },
@@ -1058,10 +1086,30 @@
 
   /* ── Interactives ──────────────────────────────────── */
   function ladderImg(hull) {
-    if (!hull) return '';
+    if (!hull) return { src: '', photo: false, dev: false };
     const la = homeAssets('product.ladder') || {};
     const key = String(hull.id).replace(/-/g, '_');
-    return la[key] ? mediaPath(la[key]) : '';
+    // Canon: N30 may use pioneer photo; N45/N80/N180 wireframe only; Quanta = quanta render (30ft class real)
+    const id = hull.id || '';
+    if (id === 'n30-pioneer' && la.n30_pioneer) {
+      return { src: mediaPath(la.n30_pioneer), photo: true, dev: false };
+    }
+    if (id === 'quanta-lr' && la.quanta_lr) {
+      return { src: mediaPath(la.quanta_lr), photo: true, dev: false };
+    }
+    // Prefer per-class wireframe
+    if (la[key]) return { src: mediaPath(la[key]), photo: false, dev: true };
+    // Map to fleet-wireframe-* keys
+    const wfMap = {
+      'n30-pioneer': 'n30_wireframe',
+      'n45-explorer': 'n45_explorer',
+      'n80-valkyrie': 'n80_valkyrie',
+      'n180-morpheus': 'n180_morpheus',
+    };
+    const wf = la[wfMap[id]];
+    if (wf) return { src: mediaPath(wf), photo: false, dev: id !== 'n30-pioneer' };
+    if (la.base) return { src: mediaPath(la.base), photo: false, dev: true };
+    return { src: '', photo: false, dev: false };
   }
 
   function renderLadder(s) {
@@ -1082,8 +1130,8 @@
         <div class="ladder" id="ladder">
           <div class="ladder-tabs">${tabs}</div>
           <div class="ladder-body">
-            <div class="ladder-plate" id="ladder-plate">
-              ${first ? `<img src="${esc(first)}" alt="" id="ladder-img" />` : ''}
+            <div class="ladder-plate ${first.photo ? 'photo' : ''}" id="ladder-plate">
+              ${first.src ? `<img src="${esc(first.src)}" alt="" id="ladder-img" />` : ''}
             </div>
             <div class="ladder-meta" id="ladder-meta"></div>
           </div>
@@ -1304,14 +1352,20 @@
 
   /* ── Network shift toggle + scroll ─────────────────── */
   function setNs(state) {
-    const field = $('#ns-field');
-    if (!field) return;
-    field.dataset.state = state;
-    field.classList.toggle('state-b', state === 1);
-    const a = $('#ns-chip-a');
-    const b = $('#ns-chip-b');
-    if (a) a.hidden = state === 1;
-    if (b) b.hidden = state !== 1;
+    const stage = $('#ns-stage');
+    if (!stage) return;
+    stage.dataset.state = state;
+    stage.classList.toggle('state-b', state === 1);
+    const nsSec = (D.claim && D.claim.sections || []).find((x) => x.id === 'network-shift' || x.type === 'two-panel-transition');
+    const panel = nsSec && (state === 1 ? nsSec.panel_after : nsSec.panel_before);
+    if (panel) {
+      const lab = $('#ns-chip-label');
+      const line = $('#ns-chip-line');
+      const stats = $('#ns-chip-stats');
+      if (lab) lab.textContent = panel.label || '';
+      if (line) line.textContent = panel.line || '';
+      if (stats) stats.textContent = panel.stats_line || '';
+    }
     document.querySelectorAll('.ns-btn').forEach((btn) => {
       btn.classList.toggle('active', +btn.dataset.ns === state);
     });
@@ -1342,21 +1396,27 @@
     if (!h) return;
     document.querySelectorAll('.ladder-tab').forEach((el, j) => el.classList.toggle('active', j === i));
     const img = $('#ladder-img');
-    const src = ladderImg(h);
-    if (img && src) {
+    const plate = $('#ladder-plate');
+    const info = ladderImg(h);
+    if (plate) plate.classList.toggle('photo', !!info.photo);
+    if (img && info.src) {
       img.style.opacity = '0';
       setTimeout(() => {
-        img.src = src;
+        img.src = info.src;
         img.style.opacity = '1';
       }, 140);
     }
     const meta = $('#ladder-meta');
     if (meta) {
+      const dev = info.dev
+        ? `<div class="render-chip">RENDER — IN DEVELOPMENT</div>`
+        : '';
       meta.innerHTML = `
         <div class="name">${esc(h.name)}</div>
         <div class="class">${esc(h.length_class || '')}</div>
         <div class="mission">${esc(h.mission || '')}</div>
         ${h.status_chip ? `<div class="status">${esc(h.status_chip)}</div>` : ''}
+        ${dev}
         ${h.detail ? `<div class="detail">${esc(h.detail)}</div>` : ''}`;
     }
     const scale = $('#ladder-scale');
@@ -1495,6 +1555,6 @@
     if (text.includes('{"') || text.includes('{"label"')) {
       console.warn('[invest] G3 possible JSON leak in rendered text');
     }
-    console.info('[invest] v3 mount ok, homes', homes.size);
+    console.info('[invest] v4 mount ok, homes', homes.size);
   } catch (_) {}
 })();
