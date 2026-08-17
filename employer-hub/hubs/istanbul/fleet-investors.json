@@ -34,7 +34,7 @@
       "text": "Spot-seat lines are computed as fill rate × residual commute seat-legs × fare, with seats sold rounded down to whole seats; the stated seat count × fare is the exact revenue line."
     },
     "fn8": {
-      "text": "The conservative case runs below breakeven on deliberately thin fills. It is disclosed as the floor of the range — it is not presented as a financing case."
+      "text": "A conservative thin-fill case — 18 committed seats and 15–45% spot fills — runs modestly below breakeven, about −$2,000 per month. It is disclosed here as the floor of the range; it is not a financing case and is not shown as one."
     },
     "fn9": {
       "text": "A 12-month operating year with a stated 5% weather-cancellation allowance for southwest-gale days, absorbed in the deliberately thin fills. During Ramadan, midday demand softens and shifts to post-sunset evenings, and the holiday weekend brings an Islands surge — a schedule-shape effect, not an annual-volume one."
@@ -239,7 +239,7 @@
           "pricing": "$246–314 / seat-month, blended",
           "per_mo_low": null,
           "per_mo_high": null,
-          "note": "Blended monthly seats across the trunk and Islands corridors, anchored on the city's own premium tariffs; pending confirmation.",
+          "note": "Blended monthly seats across the trunk and Islands corridors, anchored on the city's own premium tariffs.",
           "status": "modeled",
           "fn": "fn5"
         },
@@ -274,7 +274,6 @@
       "gross": {
         "title": "Gross revenue / month",
         "per_scenario": {
-          "conservative": 20224,
           "mid": 52408,
           "upside": 98208
         }
@@ -326,7 +325,6 @@
       "net": {
         "title": "Net to investor / month",
         "per_scenario": {
-          "conservative": -2005,
           "mid": 26496,
           "upside": 67216
         }
@@ -335,7 +333,6 @@
         "title": "Payback",
         "fn": "fn8",
         "per_scenario": {
-          "conservative": "—",
           "mid": "~7.9 yr",
           "upside": "~3.1 yr"
         }
@@ -387,20 +384,10 @@
         }
       ],
       "scenarios": {
-        "title": "Three scenarios",
-        "note": "Per-vessel N45 ($2.5M), 12-month year, weather allowance and Ramadan shape absorbed. Conservative shown always; the floor is disclosed.",
+        "title": "Two scenarios",
+        "note": "Per-vessel N45 ($2.5M), 12-month year, weather allowance and Ramadan shape absorbed. The conservative thin-fill floor is stated in the notes.",
         "fn": "fn9",
         "table": [
-          {
-            "case": "Conservative",
-            "gross_monthly": 20224,
-            "net_to_investor_monthly": -2005,
-            "annual": -24000,
-            "payback": "—",
-            "note": "Runs modestly below breakeven on thin fills and a deliberately trimmed premium commuter pool — the disclosed floor, not a financing case.",
-            "upside_lines_included": false,
-            "fn": "fn8"
-          },
           {
             "case": "Mid",
             "gross_monthly": 52408,
@@ -620,56 +607,6 @@
     "fn": "fn3",
     "data": {
       "scenarios": {
-        "conservative": {
-          "rows": [
-            {
-              "line": "Committed commuter bundles",
-              "quantity": "18 seats/mo",
-              "price": "$246/seat-month (blended)",
-              "subtotal_usd": 4428,
-              "status": "modeled",
-              "fn": "fn5",
-              "note": "Guaranteed monthly seats across the trunk and Islands corridors — a thinner pool assumed at premium price points."
-            },
-            {
-              "line": "Spot seats — Marmara trunk",
-              "quantity": "15% of 2,800 residual seat-legs (420 seats)",
-              "price": "$9.00/leg (blended)",
-              "subtotal_usd": 3780,
-              "status": "modeled",
-              "fn": "fn7",
-              "note": "Yield-managed seats sold on spare commute capacity at a blended premium fare."
-            },
-            {
-              "line": "Islands express seats",
-              "quantity": "60 legs/mo × 8 seats",
-              "price": "$9.40/seat-leg",
-              "subtotal_usd": 4512,
-              "status": "modeled",
-              "fn": "fn13",
-              "note": "Off-season Islands rotations at the bottom of the premium band."
-            },
-            {
-              "line": "Shared experiences",
-              "quantity": "20 sailings/mo × 12 seats",
-              "price": "$25/person",
-              "subtotal_usd": 6000,
-              "status": "modeled",
-              "fn": "fn1",
-              "note": "Sunset and shoreline sailings, priced between mass tours and private charters."
-            },
-            {
-              "line": "Private charters",
-              "quantity": "8 charter hrs/mo",
-              "price": "$188/hr",
-              "subtotal_usd": 1504,
-              "status": "modeled",
-              "fn": "fn1",
-              "note": "Private group bookings by the hour, positioned against the operating charter market."
-            }
-          ],
-          "gross_monthly_usd": 20224
-        },
         "mid": {
           "rows": [
             {
@@ -801,6 +738,76 @@
       "Energy nm assumptions unchanged (4 trunk RTs/day, 15 nm/sailing, 10 nm/charter-hr); 5% weather allowance stated (fn9), absorbed in thin fills.",
       "Open-Marmara schedule basis is 25-kn service speed (NODES/SPEED files); navier_intro program copy quotes ~20-kn foilborne cruise — reconcile before quoting the 45-min trunk time externally.",
       "FX 47.76 TRY/USD dated 2026-08-16; TRY tariffs reprice 2–4×/yr — re-verify FX and tariff tables within ~90 days or before any regeneration. Sea-taxi tariff now renders numerically in fn5 (verified via operator FAQ; deniztaksi.istanbul unreachable this pass — re-check)."
+    ],
+    "removed_2026_08_16_conservative_suppress": {
+      "per_scenario_gross_conservative": 20224,
+      "per_scenario_net_conservative": -2005,
+      "per_scenario_payback_conservative": "—",
+      "scenarios_table_conservative": {
+        "case": "Conservative",
+        "gross_monthly": 20224,
+        "net_to_investor_monthly": -2005,
+        "annual": -24000,
+        "payback": "—",
+        "note": "Runs modestly below breakeven on thin fills and a deliberately trimmed premium commuter pool — the disclosed floor, not a financing case.",
+        "upside_lines_included": false,
+        "fn": "fn8"
+      },
+      "revenue_build_conservative": {
+        "rows": [
+          {
+            "line": "Committed commuter bundles",
+            "quantity": "18 seats/mo",
+            "price": "$246/seat-month (blended)",
+            "subtotal_usd": 4428,
+            "status": "modeled",
+            "fn": "fn5",
+            "note": "Guaranteed monthly seats across the trunk and Islands corridors — a thinner pool assumed at premium price points."
+          },
+          {
+            "line": "Spot seats — Marmara trunk",
+            "quantity": "15% of 2,800 residual seat-legs (420 seats)",
+            "price": "$9.00/leg (blended)",
+            "subtotal_usd": 3780,
+            "status": "modeled",
+            "fn": "fn7",
+            "note": "Yield-managed seats sold on spare commute capacity at a blended premium fare."
+          },
+          {
+            "line": "Islands express seats",
+            "quantity": "60 legs/mo × 8 seats",
+            "price": "$9.40/seat-leg",
+            "subtotal_usd": 4512,
+            "status": "modeled",
+            "fn": "fn13",
+            "note": "Off-season Islands rotations at the bottom of the premium band."
+          },
+          {
+            "line": "Shared experiences",
+            "quantity": "20 sailings/mo × 12 seats",
+            "price": "$25/person",
+            "subtotal_usd": 6000,
+            "status": "modeled",
+            "fn": "fn1",
+            "note": "Sunset and shoreline sailings, priced between mass tours and private charters."
+          },
+          {
+            "line": "Private charters",
+            "quantity": "8 charter hrs/mo",
+            "price": "$188/hr",
+            "subtotal_usd": 1504,
+            "status": "modeled",
+            "fn": "fn1",
+            "note": "Private group bookings by the hour, positioned against the operating charter market."
+          }
+        ],
+        "gross_monthly_usd": 20224
+      }
+    },
+    "decisions_2026_08_16": [
+      "Jaideep confirmed blended committed-seat band $246–314/seat-month on 25/50/25 short/long/Islands mix (PR #385 thread).",
+      "Jaideep: suppress conservative scenario to a footnote — removed from P&L per_scenario blocks, scenarios table, and revenue build; preserved here. fn8 carries the floor.",
+      "Jaideep: accept the retail-vs-wholesale spread on experiences ($25–45/person retail vs $188–314/hr whole-vessel charter) — no change."
     ]
   }
 }
