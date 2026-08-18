@@ -103,85 +103,109 @@
     "play_mode": "lightbox"
    },
    "video_label": "The 3-minute version, from our CTO",
-   "render_notes": "REBUILD (Jaideep round 4). LAYOUT: schematic-with-callouts and the CTO video render SIDE BY SIDE at desktop (schematic left ~60%, video right ~40%), stacked only on mobile. DELETE the plain text list repeating the seven facts below the video — the callouts ARE the fact base; rendering it twice is a FAIL. Video sized to its column, not full-bleed. ORIENTATION: the vessel image renders with BOW FACING LEFT exactly as the source asset — NEVER apply any mirror/scaleX(-1)/flip. anchor_pct values assume bow-left orientation per the deck slide. Every leader line must terminate ON the named part; a callout pointing into empty water is a FAIL. CLIPPING: no label may clip at any container edge — same left-edge clipping bug also affects the Quanta founder-video caption; fix at the component level (label min-margins inside the stage, no overflow:hidden on label boxes). Callouts draw in sequentially on scroll; JS-off shows all. || ROUND 5 (Jaideep #6): the schematic block is REPLACED by the authored 'schematic' object above — coordinates are measured, not guessed. This is the wow-IP moment of the page; it must read precise and confident.",
+   "render_notes": "REBUILD (Jaideep 2026-08-18): schematic callouts use DECK-VERBATIM hotspot labels (Autonomy sensor stack, NavierOS — The Brain, Fully retractable Foils, Ride height sensors, Carbon Fiber Hull and Body, Computer-Controlled Active Foil, Electric or Hybrid Powertrain). Asset is bow-RIGHT — never mirror. Deck slide reference is mirrored; anchors measured on control-wireframe-clean.png so each leader terminates on the named part. LAYOUT: schematic + CTO video side-by-side at desktop. No duplicate fact list below. HARD FAIL: leader into empty water, clipped labels, mirrored asset.",
    "schematic": {
     "asset": "assets/deck/control-wireframe-clean.png",
     "asset_px": [
      2048,
      983
     ],
-    "orientation": "bow-RIGHT (this is the asset's native orientation — do NOT mirror it; all anchors below assume bow right)",
+    "orientation": "bow-RIGHT (asset native — do NOT mirror). Reference deck slide is a horizontal mirror; anchors below are measured on this bow-right PNG.",
     "min_render_width_px": 900,
     "callouts": [
      {
-      "id": "sensor-stack",
-      "label": "Sensor stack",
-      "detail": "GPS, IMU, radar — the vessel's eyes",
+      "id": "sensors",
+      "label": "Autonomy sensor stack",
       "anchor": [
-       0.455,
-       0.12
+       0.46,
+       0.14
       ],
-      "label_side": "right"
+      "label_side": "left",
+      "label_pct": [
+       0.2,
+       0.08
+      ]
      },
      {
       "id": "navieros",
-      "label": "NavierOS flight computer",
-      "detail": "Flight control, telemetry, diagnostics — 100×/sec",
+      "label": "NavierOS — The Brain",
+      "detail": "Flight stabilization & autonomy",
       "anchor": [
-       0.485,
+       0.44,
        0.36
       ],
-      "label_side": "right"
+      "label_side": "right",
+      "label_pct": [
+       0.6,
+       0.26
+      ]
+     },
+     {
+      "id": "foils",
+      "label": "Fully retractable Foils",
+      "anchor": [
+       0.74,
+       0.46
+      ],
+      "label_side": "right",
+      "label_pct": [
+       0.82,
+       0.38
+      ]
      },
      {
       "id": "ride-height",
-      "label": "Ride-height sensors",
-      "detail": "Measure the water surface ahead",
+      "label": "Ride height sensors",
       "anchor": [
-       0.865,
-       0.44
+       0.86,
+       0.52
       ],
-      "label_side": "right"
-     },
-     {
-      "id": "retract",
-      "label": "Retractable foil mechanism",
-      "detail": "Foils retract for docking and shallow water",
-      "anchor": [
-       0.78,
-       0.47
-      ],
-      "label_side": "right"
+      "label_side": "right",
+      "label_pct": [
+       0.88,
+       0.58
+      ]
      },
      {
       "id": "hull",
-      "label": "Carbon-fiber hull",
-      "detail": "Light, stiff, built for flight loads",
+      "label": "Carbon Fiber Hull and Body",
       "anchor": [
-       0.56,
-       0.61
+       0.52,
+       0.56
       ],
-      "label_side": "left"
+      "label_side": "left",
+      "label_pct": [
+       0.18,
+       0.52
+      ]
      },
      {
       "id": "active-foil",
-      "label": "Computer-controlled active foil",
-      "detail": "60–70% of the efficiency gain",
+      "label": "Computer-Controlled Active Foil",
+      "detail": "60 – 70% Greater Efficiency",
       "anchor": [
-       0.775,
-       0.81
+       0.76,
+       0.86
       ],
-      "label_side": "right"
+      "label_side": "right",
+      "label_pct": [
+       0.8,
+       0.9
+      ]
      },
      {
       "id": "powertrain",
-      "label": "Electric pod drive",
-      "detail": "20–30% of the efficiency gain",
+      "label": "Electric or Hybrid Powertrain",
+      "detail": "20 – 30% greater efficiency",
       "anchor": [
-       0.21,
-       0.86
+       0.14,
+       0.78
       ],
-      "label_side": "left"
+      "label_side": "left",
+      "label_pct": [
+       0.12,
+       0.66
+      ]
      }
     ],
     "render_spec": "Render as an interactive subsystem map: a gold dot ON each anchor point (dots sit on the actual part — coordinates are normalized [x,y] measured on this exact asset), hairline gold leader from each dot to its label in a left or right label column per label_side. All callouts visible by default; leaders draw in on scroll (staggered). Hover/focus a label: its dot pulses and leader brightens, others dim to 40%. Layout: schematic ≥900px wide beside the CTO video per v8 (side-by-side stands); labels must never overlap each other or the drawing — if a side's column is full, stack with 8px min gap. HARD FAIL: any leader ending in empty space, any label clipped by viewport or card at 1280/1440/2560, any mirroring of the asset."

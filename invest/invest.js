@@ -601,11 +601,20 @@
           const ax = (h.anchor && h.anchor[0] != null ? h.anchor[0] : 0.5) * 100;
           const ay = (h.anchor && h.anchor[1] != null ? h.anchor[1] : 0.2 + i * 0.1) * 100;
           const side = h.label_side === 'left' ? 'left' : 'right';
-          const labelX =
-            side === 'left' ? Math.max(3, Math.min(ax - 20, 40)) : Math.min(78, Math.max(ax + 3, 55));
+          // Prefer authored label_pct (deck-aligned); else fall back beside the anchor
+          var labelX;
+          var labelY;
+          if (h.label_pct && h.label_pct[0] != null && h.label_pct[1] != null) {
+            labelX = h.label_pct[0] * 100;
+            labelY = h.label_pct[1] * 100;
+          } else {
+            labelX =
+              side === 'left' ? Math.max(2, Math.min(ax - 22, 38)) : Math.min(78, Math.max(ax + 4, 58));
+            labelY = Math.max(5, Math.min(ay, 92));
+          }
           return `
             <button type="button" class="ctrl-callout side-${side}" data-callout="${i}"
-              style="left:${labelX}%;top:${Math.max(5, Math.min(ay, 92))}%">
+              style="left:${labelX}%;top:${labelY}%">
               <div class="ctrl-label">${esc(h.label || '')}</div>
               ${h.detail ? `<div class="ctrl-detail">${esc(h.detail)}</div>` : ''}
             </button>
@@ -626,16 +635,20 @@
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
-            <div class="control-sbs">
-              <div class="control-diagram bow-right" id="control-diagram">
-                ${wire ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="lazy" />` : ''}
+          </div>
+          <div class="control-sbs media-inner">
+            <div class="control-diagram bow-right" id="control-diagram">
+              <div class="control-figure">
+                ${wire ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="eager" fetchpriority="high" />` : ''}
                 <svg class="control-leaders" id="control-leaders" aria-hidden="true"></svg>
                 <div class="control-overlay">${callouts}</div>
               </div>
-              <div class="control-video">
-                ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
-              </div>
             </div>
+            <div class="control-video">
+              ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
+            </div>
+          </div>
+          <div class="section-inner">
             <div class="callout-list control-fallback" hidden>${fallbackList}</div>
           </div>
         </div>`;
@@ -2380,43 +2393,46 @@
     var root = document.getElementById('control-diagram');
     var svg = document.getElementById('control-leaders');
     if (!root || !svg) return;
-    // Percentage viewBox — independent of layout timing
+    var img = root.querySelector('.control-wire');
+    // Percentage viewBox — coords match the figure box (tight to the PNG)
     svg.setAttribute('viewBox', '0 0 100 100');
     svg.setAttribute('preserveAspectRatio', 'none');
-    var lines = [];
-    root.querySelectorAll('.ctrl-anchor').forEach(function (anchor) {
-      var i = anchor.getAttribute('data-anchor');
-      var callout = root.querySelector('.ctrl-callout[data-callout="' + i + '"]');
-      if (!callout) return;
-      var x1 = parseFloat(anchor.style.left) || 50;
-      var y1 = parseFloat(anchor.style.top) || 50;
-      var side = callout.classList.contains('side-left') ? 'left' : 'right';
-      var lx = parseFloat(callout.style.left) || x1;
-      var ly = parseFloat(callout.style.top) || y1;
-      // Connect anchor to near edge of label box
-      var x2 = side === 'left' ? lx + 18 : lx;
-      var y2 = ly;
-      lines.push(
-        '<line class="ctrl-leader" x1="' +
-          x1 +
-          '" y1="' +
-          y1 +
-          '" x2="' +
-          x2 +
-          '" y2="' +
-          y2 +
-          '" vector-effect="non-scaling-stroke" />',
-      );
-      lines.push(
-        '<circle class="ctrl-dot" cx="' +
-          x1 +
-          '" cy="' +
-          y1 +
-          '" r="0.7" />',
-      );
-    });
-    svg.innerHTML = lines.join('');
-    root.classList.add('is-lit');
+    function drawLeaders() {
+      var lines = [];
+      root.querySelectorAll('.ctrl-anchor').forEach(function (anchor) {
+        var i = anchor.getAttribute('data-anchor');
+        var callout = root.querySelector('.ctrl-callout[data-callout="' + i + '"]');
+        if (!callout) return;
+        var x1 = parseFloat(anchor.style.left) || 50;
+        var y1 = parseFloat(anchor.style.top) || 50;
+        var lx = parseFloat(callout.style.left) || x1;
+        var ly = parseFloat(callout.style.top) || y1;
+        // left/top on the callout is already the near-edge (toward the boat)
+        lines.push(
+          '<line class="ctrl-leader" x1="' +
+            x1 +
+            '" y1="' +
+            y1 +
+            '" x2="' +
+            lx +
+            '" y2="' +
+            ly +
+            '" vector-effect="non-scaling-stroke" />',
+        );
+        lines.push(
+          '<circle class="ctrl-dot" cx="' +
+            x1 +
+            '" cy="' +
+            y1 +
+            '" r="0.85" />',
+        );
+      });
+      svg.innerHTML = lines.join('');
+      root.classList.add('is-lit');
+    }
+    drawLeaders();
+    if (img && !img.complete) img.addEventListener('load', drawLeaders);
+    window.addEventListener('resize', drawLeaders);
 
     // Hover/focus: highlight one callout, dim others
     function focusCallout(idx) {
