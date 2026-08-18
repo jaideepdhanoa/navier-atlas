@@ -382,8 +382,11 @@
     },
 
     'flip-cards'(s) {
-      // v9 #2: no-reflow flip + causal bridges + delayed Why-Now
+      // v9.4: two-tone flip title · exclusive states · ≤2-line wrap · no reflow
       const pairs = s.pairs || [];
+      const parts = s.flip_headline_parts || {};
+      const flipWhite = parts.white || 'Three Costs Kept Maritime Stuck.';
+      const flipGold = parts.gold || 'Three Levers Collapse Them.';
       const cards = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
@@ -422,18 +425,24 @@
           return `<div class="static-pair-card lever"><div class="cm-num">${n}</div><div class="t">${esc(pair.lever.title || '')}</div><div class="mech">${esc(pair.lever.mechanism || '')}</div><div class="b">${esc(pair.lever.proof || '')}</div>${pair.lever.bridge ? `<div class="cm-lever-bridge">${esc(pair.lever.bridge)}</div>` : ''}</div>`;
         })
         .join('');
+      // State A = costs headline + $1T subhead + kicker
+      // State B = two-tone flip title ONLY (no subhead/kicker — exclusive)
+      // Spacer (state A, invisible) keeps width+height in normal flow — no reflow, no width collapse
+      const stateA = `
+                ${s.headline ? `<h2 class="h2 costs-title" data-fit-title>${esc(s.headline)}</h2>` : ''}
+                ${s.subhead ? `<p class="lead costs-subhead">${esc(s.subhead)}</p>` : ''}
+                ${s.costs_kicker ? `<p class="cm-kicker">${esc(s.costs_kicker)}</p>` : ''}`;
       return `
         <div class="section-block costs-morph-section" data-reveal data-home="claim.three_costs">
           <div class="section-inner costs-compose">
             <div class="costs-head costs-head-fixed" id="costs-head">
-              <div class="costs-head-layer is-cost" data-head="cost">
-                ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
-                ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-                ${s.costs_kicker ? `<p class="cm-kicker">${esc(s.costs_kicker)}</p>` : ''}
-              </div>
+              <div class="costs-head-spacer" aria-hidden="true">${stateA}</div>
+              <div class="costs-head-layer is-cost is-visible" data-head="cost">${stateA}</div>
               <div class="costs-head-layer is-lever" data-head="lever" aria-hidden="true">
-                ${s.flip_headline ? `<h2 class="h2">${esc(s.flip_headline)}</h2>` : ''}
-                ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+                <h2 class="h2 costs-title costs-flip-title" data-fit-title>
+                  <span class="flip-title-white">${esc(flipWhite)}</span>
+                  <span class="flip-title-gold">${esc(flipGold)}</span>
+                </h2>
               </div>
             </div>
             <div class="costs-morph" id="costs-morph">
@@ -443,6 +452,10 @@
                 <div class="static-row">${staticCosts}</div>
                 <p class="eyebrow" style="margin-top:28px">THREE LEVERS</p>
                 <div class="static-row">${staticLevers}</div>
+                <h2 class="h2 costs-flip-title" style="margin-top:20px">
+                  <span class="flip-title-white">${esc(flipWhite)}</span>
+                  <span class="flip-title-gold">${esc(flipGold)}</span>
+                </h2>
               </div>
             </div>
             <div class="costs-after" id="costs-after" hidden>
@@ -1861,29 +1874,92 @@
     });
   })();
 
-  /* ── Three-costs flip: no-reflow head + delayed Why-Now (v9 #2) ── */
+  /* ── Three-costs flip: exclusive states + no-reflow + ≤2-line titles (v9.4) ── */
   (function initCostsMorph() {
     var root = document.getElementById('costs-morph');
     var section = document.querySelector('.costs-morph-section');
-    if (!root) return;
+    var head = document.getElementById('costs-head');
+    if (!root || !head) return;
     var cards = root.querySelectorAll('[data-flip-card]');
-    var headCost = document.querySelector('.costs-head-layer.is-cost');
-    var headLever = document.querySelector('.costs-head-layer.is-lever');
+    var headCost = head.querySelector('.costs-head-layer.is-cost');
+    var headLever = head.querySelector('.costs-head-layer.is-lever');
     var after = document.getElementById('costs-after');
     var staticEl = root.querySelector('.flip-static');
     var afterTimer = null;
+    var titles = head.querySelectorAll('[data-fit-title]');
+
+    function fitTitlesToTwoLines() {
+      // Full-width titles; both states same size; step down until ≤2 lines
+      var w = Math.max(head.clientWidth || 0, (document.querySelector('.costs-compose') || {}).clientWidth || 0, 800);
+      var base = Math.max(28, Math.min(52, (3.0 / 100) * w));
+      var sizes = [base, 48, 44, 40, 36, 32, 28, 24];
+      var seen = {};
+      sizes = sizes.filter(function (v) {
+        var n = Math.round(v);
+        if (seen[n]) return false;
+        seen[n] = true;
+        return true;
+      });
+      var chosen = 24;
+      for (var si = 0; si < sizes.length; si++) {
+        var px = sizes[si];
+        var ok = true;
+        titles.forEach(function (el) {
+          el.style.fontSize = px + 'px';
+          el.style.lineHeight = '1.2';
+          el.style.maxWidth = '100%';
+          el.style.width = '100%';
+          var lh = px * 1.2;
+          if (el.scrollHeight > lh * 2.2 + 2) ok = false;
+        });
+        if (ok) {
+          chosen = px;
+          break;
+        }
+      }
+      titles.forEach(function (el) {
+        el.style.fontSize = chosen + 'px';
+        el.style.lineHeight = '1.2';
+      });
+      // Keep spacer titles matched so reserved height stays correct
+      head.querySelectorAll('.costs-head-spacer .costs-title').forEach(function (el) {
+        el.style.fontSize = chosen + 'px';
+        el.style.lineHeight = '1.2';
+      });
+    }
+
+    fitTitlesToTwoLines();
+    window.addEventListener('resize', function () {
+      fitTitlesToTwoLines();
+    });
 
     if (reduceMotion) {
       root.classList.add('is-static');
       if (staticEl) staticEl.hidden = false;
       var grid = document.getElementById('flip-grid');
       if (grid) grid.hidden = true;
-      if (after) after.hidden = false;
+      if (after) {
+        after.hidden = false;
+        after.classList.add('is-in');
+      }
+      if (headCost) headCost.classList.add('is-visible');
       if (headLever) headLever.classList.add('is-visible');
       return;
     }
 
     var lastOn = false;
+    function setExclusive(onLevers) {
+      // Exactly one state painted — opacity 0 + visibility hidden + pointer-events none
+      if (headCost) {
+        headCost.classList.toggle('is-visible', !onLevers);
+        headCost.setAttribute('aria-hidden', onLevers ? 'true' : 'false');
+      }
+      if (headLever) {
+        headLever.classList.toggle('is-visible', onLevers);
+        headLever.setAttribute('aria-hidden', onLevers ? 'false' : 'true');
+      }
+    }
+
     function setState(onLevers) {
       cards.forEach(function (card, i) {
         var delay = i * 120;
@@ -1891,12 +1967,7 @@
           card.classList.toggle('is-flipped', onLevers);
         }, delay);
       });
-      // Crossfade text inside fixed-height head box — zero document reflow
-      if (headCost) headCost.classList.toggle('is-visible', !onLevers);
-      if (headLever) {
-        headLever.classList.toggle('is-visible', onLevers);
-        headLever.setAttribute('aria-hidden', onLevers ? 'false' : 'true');
-      }
+      setExclusive(onLevers);
       if (after) {
         clearTimeout(afterTimer);
         if (onLevers) {
@@ -1920,8 +1991,7 @@
       var on = mid < vh * 0.55 && rect.bottom > vh * 0.2;
       if (on !== lastOn) setState(on);
     }
-    // Default: cost head visible
-    if (headCost) headCost.classList.add('is-visible');
+    setExclusive(false);
     window.addEventListener('scroll', onScrollCosts, { passive: true });
     onScrollCosts();
   })();

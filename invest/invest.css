@@ -1686,27 +1686,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 .film-cap, .vcard-cap { overflow: visible; text-overflow: unset; white-space: normal; }
 
-/* ── v9 round-5 ─────────────────────────────────────── */
-.costs-head-fixed {
-  position: relative;
-  min-height: 160px; /* reserve taller state — no reflow */
-  margin-bottom: 24px;
-}
-.costs-head-layer {
-  position: absolute; inset: 0;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-.costs-head-layer.is-visible {
-  opacity: 1; pointer-events: auto;
-  position: relative;
-}
-.costs-head-fixed .costs-head-layer.is-visible ~ .costs-head-layer.is-visible {
-  position: absolute;
-}
-.costs-head-layer.is-lever { position: absolute; inset: 0; }
-.costs-head-layer.is-lever.is-visible { position: absolute; }
-.costs-head-fixed:has(.is-lever.is-visible) .is-cost { position: absolute; }
+/* ── v9 round-5 (head rules moved to v9.4 block) ── */
 .cm-lever-bridge {
   margin-top: 12px; padding-top: 10px;
   border-top: 1px solid rgba(185,154,95,0.2);
@@ -1817,3 +1797,83 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .arc-rail .arc-phase.is-revealed,
 .arc-rail .arc-phase.lit,
 .arc-rail .arc-phase.is-now { opacity: 1; transform: none; }
+
+
+/* v9.4 costs head — grid-stacked exclusive states (auto max-height, full width) */
+.costs-compose {
+  max-width: none !important;
+  width: 100%;
+  padding-inline: clamp(24px, 4vw, 64px);
+  box-sizing: border-box;
+}
+.costs-head-fixed {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin-bottom: 28px;
+}
+.costs-head-spacer {
+  width: 100%;
+  visibility: hidden;
+  pointer-events: none;
+  /* in-flow: defines width + height of the box (state A) */
+}
+/* Children must not resurrect spacer paint via visibility:visible */
+.costs-head-spacer,
+.costs-head-spacer * {
+  visibility: hidden !important;
+}
+.costs-head-layer {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.costs-head-layer.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+.costs-title.h2,
+.costs-title {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 0 12px !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+.costs-flip-title { display: block; }
+.flip-title-white {
+  color: var(--text-0);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+}
+.flip-title-gold {
+  color: var(--accent-bright);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  margin-left: 0.35ch;
+}
+.costs-subhead {
+  max-width: 62ch;
+  margin: 0 0 8px;
+}
+.costs-morph-section.on-levers .costs-head-layer.is-cost {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: 0;
+}
+.costs-morph-section.on-levers .costs-head-layer.is-lever {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 1;
+}
