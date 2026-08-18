@@ -2424,7 +2424,9 @@
             x1 +
             '" cy="' +
             y1 +
-            '" r="0.85" />',
+            '" r="1.15" data-dot="' +
+            i +
+            '" />',
         );
       });
       svg.innerHTML = lines.join('');
@@ -2441,14 +2443,19 @@
         el.classList.toggle('is-focus', String(i) === String(idx));
         el.classList.toggle('is-dim', String(i) !== String(idx));
       });
-      root.querySelectorAll('.ctrl-leader').forEach(function (line, li) {
-        // leaders are paired with dots; approximate by index order
-        line.classList.toggle('is-dim', true);
+      // leaders and dots alternate in SVG (line, circle, line, circle, …)
+      var kids = svg.querySelectorAll('.ctrl-leader, .ctrl-dot');
+      kids.forEach(function (el, li) {
+        var pair = Math.floor(li / 2);
+        el.classList.toggle('is-dim', String(pair) !== String(idx));
       });
     }
     function clearFocus() {
       root.querySelectorAll('.is-focus, .is-dim').forEach(function (el) {
         el.classList.remove('is-focus', 'is-dim');
+      });
+      svg.querySelectorAll('.is-dim').forEach(function (el) {
+        el.classList.remove('is-dim');
       });
     }
     root.querySelectorAll('.ctrl-callout, .ctrl-anchor').forEach(function (el) {

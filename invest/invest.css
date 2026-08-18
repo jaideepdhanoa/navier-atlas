@@ -362,12 +362,18 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   z-index: 2;
 }
 .ctrl-leader {
-  stroke: rgba(212, 175, 95, 0.55);
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
+  stroke: rgba(232, 208, 150, 0.95);
+  stroke-width: 2.25; /* screen px via non-scaling-stroke — was 1px and nearly invisible */
+  stroke-dasharray: 5 4;
   fill: none;
 }
-.ctrl-dot { fill: #d4af5f; }
+.ctrl-leader.is-dim { stroke-opacity: 0.25; }
+.ctrl-dot {
+  fill: #e8d096;
+  stroke: rgba(10, 12, 16, 0.85);
+  stroke-width: 1.25;
+}
+.ctrl-dot.is-dim { fill-opacity: 0.35; }
 .control-overlay {
   position: absolute;
   inset: 0;
@@ -376,17 +382,18 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .ctrl-anchor {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
   border-radius: 50%;
-  background: #d4af5f;
-  box-shadow: 0 0 0 3px rgba(212, 175, 95, 0.25);
-  opacity: 0.95;
+  background: #e8d096;
+  box-shadow: 0 0 0 4px rgba(232, 208, 150, 0.28);
+  opacity: 1;
   pointer-events: auto;
   border: 0;
   padding: 0;
   cursor: pointer;
+  z-index: 4;
 }
 .ctrl-callout {
   position: absolute;
