@@ -426,24 +426,25 @@
         })
         .join('');
       // State A = costs headline + $1T subhead + kicker
-      // State B = two-tone flip title ONLY (no subhead/kicker — exclusive)
+      // State B = two-tone flip title + closing line in the reserved subhead slot (exclusive)
       // Spacer (state A, invisible) keeps width+height in normal flow — no reflow, no width collapse
       const stateA = `
                 ${s.headline ? `<h2 class="h2 costs-title" data-fit-title>${esc(s.headline)}</h2>` : ''}
                 ${s.subhead ? `<p class="lead costs-subhead">${esc(s.subhead)}</p>` : ''}
                 ${s.costs_kicker ? `<p class="cm-kicker">${esc(s.costs_kicker)}</p>` : ''}`;
+      const stateB = `
+                <h2 class="h2 costs-title costs-flip-title" data-fit-title>
+                  <span class="flip-title-white">${esc(flipWhite)}</span>
+                  <span class="flip-title-gold">${esc(flipGold)}</span>
+                </h2>
+                ${s.closing_line ? `<p class="costs-flip-closing">${esc(s.closing_line)}</p>` : ''}`;
       return `
         <div class="section-block costs-morph-section" data-reveal data-home="claim.three_costs">
           <div class="section-inner costs-compose">
             <div class="costs-head costs-head-fixed" id="costs-head">
               <div class="costs-head-spacer" aria-hidden="true">${stateA}</div>
               <div class="costs-head-layer is-cost is-visible" data-head="cost">${stateA}</div>
-              <div class="costs-head-layer is-lever" data-head="lever" aria-hidden="true">
-                <h2 class="h2 costs-title costs-flip-title" data-fit-title>
-                  <span class="flip-title-white">${esc(flipWhite)}</span>
-                  <span class="flip-title-gold">${esc(flipGold)}</span>
-                </h2>
-              </div>
+              <div class="costs-head-layer is-lever" data-head="lever" aria-hidden="true">${stateB}</div>
             </div>
             <div class="costs-morph" id="costs-morph">
               <div class="flip-grid" id="flip-grid">${cards}</div>
@@ -456,18 +457,18 @@
                   <span class="flip-title-white">${esc(flipWhite)}</span>
                   <span class="flip-title-gold">${esc(flipGold)}</span>
                 </h2>
+                ${s.closing_line ? `<p class="costs-flip-closing">${esc(s.closing_line)}</p>` : ''}
               </div>
             </div>
             <div class="costs-after" id="costs-after" hidden>
               ${
                 s.why_now
-                  ? `<div class="why-now why-now-stage">
+                  ? `<div class="why-now why-now-stage costs-why-now">
                 <h3 class="h3">${esc(s.why_now.title)}</h3>
-                <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
+                <p class="why-now-body">${nl(s.why_now.body || s.why_now.line || '')}</p>
               </div>`
                   : ''
               }
-              ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
             </div>
           </div>
         </div>`;
