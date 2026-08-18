@@ -382,8 +382,7 @@
     },
 
     'flip-cards'(s) {
-      // v8 #2: 1:1 in-place card morph (01→01) — no whole-stage crossfade, no ghosting
-      // Costs stage = dark field + cards only (no Navier vessel triptych on PAST stage)
+      // v9 #2: no-reflow flip + causal bridges + delayed Why-Now
       const pairs = s.pairs || [];
       const cards = pairs
         .map((pair, i) => {
@@ -405,12 +404,12 @@
                 <div class="cm-lever-title">${esc(pair.lever.title || '')}</div>
                 <div class="cm-lever-mech">${esc(pair.lever.mechanism || '')}</div>
                 <div class="cm-lever-proof">${esc(pair.lever.proof || '')}</div>
+                ${pair.lever.bridge ? `<div class="cm-lever-bridge">${esc(pair.lever.bridge)}</div>` : ''}
               </div>
             </div>
           </div>`;
         })
         .join('');
-      // Reduced-motion: two labeled rows, both fully opaque
       const staticCosts = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
@@ -420,24 +419,24 @@
       const staticLevers = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
-          return `<div class="static-pair-card lever"><div class="cm-num">${n}</div><div class="t">${esc(pair.lever.title || '')}</div><div class="mech">${esc(pair.lever.mechanism || '')}</div><div class="b">${esc(pair.lever.proof || '')}</div></div>`;
+          return `<div class="static-pair-card lever"><div class="cm-num">${n}</div><div class="t">${esc(pair.lever.title || '')}</div><div class="mech">${esc(pair.lever.mechanism || '')}</div><div class="b">${esc(pair.lever.proof || '')}</div>${pair.lever.bridge ? `<div class="cm-lever-bridge">${esc(pair.lever.bridge)}</div>` : ''}</div>`;
         })
         .join('');
-      const why = s.why_now
-        ? `<div class="why-now why-now-stage">
-            <h3 class="h3">${esc(s.why_now.title)}</h3>
-            <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
-          </div>`
-        : '';
       return `
         <div class="section-block costs-morph-section" data-reveal data-home="claim.three_costs">
           <div class="section-inner costs-compose">
-            <div class="costs-head">
-              ${s.headline ? `<h2 class="h2" id="costs-headline">${esc(s.headline)}</h2>` : ''}
-              ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
-              ${s.costs_kicker ? `<p class="cm-kicker" id="costs-kicker-line">${esc(s.costs_kicker)}</p>` : ''}
+            <div class="costs-head costs-head-fixed" id="costs-head">
+              <div class="costs-head-layer is-cost" data-head="cost">
+                ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
+                ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+                ${s.costs_kicker ? `<p class="cm-kicker">${esc(s.costs_kicker)}</p>` : ''}
+              </div>
+              <div class="costs-head-layer is-lever" data-head="lever" aria-hidden="true">
+                ${s.flip_headline ? `<h2 class="h2">${esc(s.flip_headline)}</h2>` : ''}
+                ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+              </div>
             </div>
-            <div class="costs-morph" id="costs-morph" data-flip-headline="${esc(s.flip_headline || '')}" data-cost-headline="${esc(s.headline || '')}">
+            <div class="costs-morph" id="costs-morph">
               <div class="flip-grid" id="flip-grid">${cards}</div>
               <div class="flip-static" hidden>
                 <p class="eyebrow">THREE COSTS</p>
@@ -446,23 +445,44 @@
                 <div class="static-row">${staticLevers}</div>
               </div>
             </div>
-            ${why}
-            ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+            <div class="costs-after" id="costs-after" hidden>
+              ${
+                s.why_now
+                  ? `<div class="why-now why-now-stage">
+                <h3 class="h3">${esc(s.why_now.title)}</h3>
+                <p class="body-text">${nl(s.why_now.body || s.why_now.line || '')}</p>
+              </div>`
+                  : ''
+              }
+              ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+            </div>
           </div>
         </div>`;
     },
 
     'stat-counters'(s) {
+      // v9 #3: Pioneer hero video (poster fallback until mp4 lands)
+      const hv = s.hero_video || {};
+      const poster = mediaPath(hv.poster_asset || 'assets/deck/n30-pioneer-at-sea.png');
+      const vsrc = hv.asset ? mediaPath(hv.asset) : '';
       return `
-        <div class="section-block shell-stage" data-reveal>
+        <div class="section-block shell-stage pioneer-hero-section" data-reveal data-home="proof.n30.hero">
           ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+          <div class="pioneer-hero">
+            <video class="pioneer-hero-video" muted playsinline loop preload="metadata"
+              poster="${esc(poster)}" ${reduceMotion ? '' : 'autoplay'} data-lazy-video>
+              ${vsrc ? `<source src="${esc(vsrc)}" type="video/mp4" />` : ''}
+            </video>
+            <img class="pioneer-hero-fallback" src="${esc(poster)}" alt="" loading="lazy" />
+          </div>
           ${goldStats(s.stats)}
         </div>`;
     },
 
     'video-grid'(s) {
+      // v9 #4: equal-weight grid; posters + click-to-play; no parallel autoplay lead
       const demos = homeAssets('proof.demo_grid') || {};
       const idMap = {
         'no-wake': 'no_wake',
@@ -472,15 +492,7 @@
         stabilization: 'anchor',
       };
       const clips = s.clips || [];
-      const anchor = clips.find((c) => c.play_mode === 'loop' || c.id === 'stabilization');
-      const rest = clips.filter((c) => c !== anchor);
-      const anchorSrc = mediaPath(
-        demos.anchor_full_width_native_loop || (anchor && anchor.asset) || 'assets/stabilization-juxtaposition.mp4',
-      );
-      // v8 #3: stability context line ABOVE the video as lede
-      const lede = s.lede || (anchor && (anchor.caption || anchor.title)) || '';
-
-      const cards = rest
+      const cards = clips
         .map((c) => {
           const key = idMap[c.id] || c.id;
           const poster = demos[key]
@@ -489,7 +501,25 @@
               ? mediaPath(c.poster)
               : c.youtube_id
                 ? `https://i.ytimg.com/vi/${c.youtube_id}/hqdefault.jpg`
-                : '';
+                : c.asset
+                  ? mediaPath('assets/deck/n30-pioneer-at-sea.png')
+                  : '';
+          const sub = c.subcaption || '';
+          const isLoop = c.play_mode === 'loop' && c.asset;
+          if (isLoop) {
+            return `
+            <div class="vcard vcard-loop" data-loop-src="${esc(mediaPath(c.asset))}">
+              <span class="vcard-media">
+                <video muted playsinline loop preload="none" poster="${esc(poster)}" data-lazy-video>
+                  <source src="${esc(mediaPath(c.asset))}" type="video/mp4" />
+                </video>
+                <span class="play"><span>▶</span></span>
+                ${c.duration ? `<span class="dur">${esc(c.duration)}</span>` : ''}
+              </span>
+              <span class="vcard-cap">${esc(c.caption || c.title || '')}</span>
+              ${sub ? `<span class="vcard-sub">${esc(sub)}</span>` : ''}
+            </div>`;
+          }
           return `
           <button type="button" class="vcard"
             data-yt="${esc(c.youtube_id || '')}" data-embed="${esc(c.embed_url || '')}">
@@ -499,6 +529,7 @@
               ${c.duration ? `<span class="dur">${esc(c.duration)}</span>` : ''}
             </span>
             <span class="vcard-cap">${esc(c.caption || c.title || '')}</span>
+            ${sub ? `<span class="vcard-sub">${esc(sub)}</span>` : ''}
           </button>`;
         })
         .join('');
@@ -508,16 +539,9 @@
           <div class="section-inner">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-            ${lede ? `<p class="demo-lede">${esc(lede)}</p>` : ''}
+            ${s.lede ? `<p class="demo-lede">${esc(s.lede)}</p>` : ''}
           </div>
-          ${
-            anchorSrc
-              ? `<div class="demo-anchor media-inner">
-                  <video src="${esc(anchorSrc)}" muted playsinline loop preload="none" data-lazy-video></video>
-                </div>`
-              : ''
-          }
-          <div class="video-grid media-inner">${cards}</div>
+          <div class="video-grid equal-grid media-inner">${cards}</div>
         </div>`;
     },
 
@@ -541,40 +565,40 @@
       const plate = homeSrc('proof.traction.plate');
       return `
         <div class="section-block" data-reveal data-home="proof.traction.plate">
-          ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
-          ${sticky ? `<div class="sticky-chips shell-stage">${sticky}</div>` : ''}
-          ${s.kicker ? `<p class="kicker shell-prose">${esc(s.kicker)}</p>` : ''}
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
+          </div>
           ${plate ? cinema(plate, { home: 'proof.traction.plate', vh: '50vh' }) : ''}
-          <div class="timeline shell-stage">${items}</div>
-          ${s.closing_line ? `<p class="closing-line shell-prose">${esc(s.closing_line)}</p>` : ''}
+          <div class="timeline media-inner">${items}</div>
+          ${s.closing_line ? `<p class="closing-line section-inner">${esc(s.closing_line)}</p>` : ''}
         </div>`;
     },
 
     'hotspot-diagram'(s) {
-      // v8 #4: schematic + CTO video SIDE BY SIDE; no repeated fact list; bow-left; no clip
+      // v9 #6: measured schematic anchors (bow-RIGHT, never mirror); interactive dots + leaders
       const filmPoster = homeSrc('product.control.film') || mediaPath('assets/posters/S7WB91FvSFI.jpg');
-      const wire = homeSrc('product.control.diagram') || mediaPath('assets/deck/control-wireframe-clean.png');
-      const hotspots = s.hotspots || [];
-      const callouts = hotspots
+      const schem = s.schematic || {};
+      const wire = mediaPath(schem.asset || homeSrc('product.control.diagram') || 'assets/deck/control-wireframe-clean.png');
+      const calloutsSrc = schem.callouts || [];
+      const callouts = calloutsSrc
         .map(function (h, i) {
-          const a = h.anchor_pct || {};
-          const x = a.x != null ? a.x : 50;
-          const y = a.y != null ? a.y : 20 + i * 10;
-          const side = a.side === 'left' ? 'left' : 'right';
-          // Keep labels inside stage (min 4% margin) — no left-edge clip
+          const ax = (h.anchor && h.anchor[0] != null ? h.anchor[0] : 0.5) * 100;
+          const ay = (h.anchor && h.anchor[1] != null ? h.anchor[1] : 0.2 + i * 0.1) * 100;
+          const side = h.label_side === 'left' ? 'left' : 'right';
           const labelX =
-            side === 'left' ? Math.max(4, Math.min(x - 22, 42)) : Math.min(74, Math.max(x + 4, 52));
+            side === 'left' ? Math.max(3, Math.min(ax - 20, 40)) : Math.min(78, Math.max(ax + 3, 55));
           return `
-            <div class="ctrl-callout side-${side}" data-callout="${i}"
-              style="left:${labelX}%;top:${Math.max(6, Math.min(y, 90))}%">
+            <button type="button" class="ctrl-callout side-${side}" data-callout="${i}"
+              style="left:${labelX}%;top:${Math.max(5, Math.min(ay, 92))}%">
               <div class="ctrl-label">${esc(h.label || '')}</div>
               ${h.detail ? `<div class="ctrl-detail">${esc(h.detail)}</div>` : ''}
-            </div>
-            <div class="ctrl-anchor" data-anchor="${i}" style="left:${x}%;top:${y}%"></div>`;
+            </button>
+            <button type="button" class="ctrl-anchor" data-anchor="${i}" style="left:${ax}%;top:${ay}%" aria-label="${esc(h.label || '')}"></button>`;
         })
         .join('');
-      // Mobile-only fallback list (desktop: callouts ARE the facts — no duplicate)
-      const fallbackList = hotspots
+      const fallbackList = calloutsSrc
         .map(
           (h, i) =>
             `<div class="callout-item" data-callout-fb="${i}"><strong>${esc(h.label || '')}</strong>${
@@ -589,12 +613,8 @@
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
             <div class="control-sbs">
-              <div class="control-diagram" id="control-diagram">
-                ${
-                  wire
-                    ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="lazy" />`
-                    : ''
-                }
+              <div class="control-diagram bow-right" id="control-diagram">
+                ${wire ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="lazy" />` : ''}
                 <svg class="control-leaders" id="control-leaders" aria-hidden="true"></svg>
                 <div class="control-overlay">${callouts}</div>
               </div>
@@ -665,19 +685,19 @@
     },
 
     'stat-chips'(s) {
-      // Quanta stats: camo plate + title + chips composed (v8 #7)
+      // v9 #8: image ≥60% width, chips ≥260px, minimal dead air
       const qa = homeAssets('product.quanta') || {};
       const camo = qa.defense_plate ? mediaPath(qa.defense_plate) : '';
       return `
         <div class="section-block shell-stage quanta-stats-stage" data-reveal data-home="product.quanta">
           ${kicker(s)}
           <div class="quanta-stats-compose ${camo ? 'has-plate' : ''}">
+            ${camo ? `<div class="quanta-stats-plate"><img src="${esc(camo)}" alt="" loading="lazy" /></div>` : ''}
             <div class="quanta-stats-copy">
               ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
               ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
               ${goldStats(s.stats)}
             </div>
-            ${camo ? `<div class="quanta-stats-plate"><img src="${esc(camo)}" alt="" loading="lazy" /></div>` : ''}
           </div>
         </div>`;
     },
@@ -712,38 +732,87 @@
     },
 
     'comparison-table'(s) {
+      // v9 #9: full S17 10-row table + vessel-type band + takeaway/explainer/source
       const cols = s.columns || [];
-      const labels = s.row_labels || [];
-      const rowHead = s.vessel_type_label || 'CAPABILITY';
-      const head = `<tr><th class="row-label-th">${esc(rowHead)}</th>${cols
-        .map(
-          (c) =>
-            `<th class="${c.highlight ? 'hi' : ''}">${esc(c.name)}${
-              c.vessel_type ? `<div class="th-sub">${esc(c.vessel_type)}</div>` : ''
-            }</th>`,
-        )
-        .join('')}</tr>`;
-      const rows = labels
-        .map((lab, ri) => {
-          const cells = cols
-            .map((c) => `<td class="${c.highlight ? 'hi' : ''}">${esc((c.values && c.values[ri]) || '')}</td>`)
-            .join('');
-          return `<tr><td class="row-label">${esc(lab)}</td>${cells}</tr>`;
+      // New shape: columns may be string[], rows may be string[][]
+      const colNames = cols.map(function (c) {
+        return typeof c === 'string' ? c : c.name || '';
+      });
+      const useRows = Array.isArray(s.rows) && s.rows.length;
+      const head = `<tr>${colNames
+        .map(function (name, i) {
+          const hi = /navier|quanta/i.test(name);
+          return `<th class="${hi ? 'hi' : ''}${i === 0 ? ' row-label-th' : ''}">${esc(name || (s.vessel_type_label || ''))}</th>`;
         })
-        .join('');
+        .join('')}</tr>`;
+      let body = '';
+      if (s.vessel_type_row && s.vessel_type_row.length) {
+        body += `<tr class="vessel-type-row">${s.vessel_type_row
+          .map(function (cell, i) {
+            const hi = i === 1;
+            return `<td class="${hi ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+          })
+          .join('')}</tr>`;
+      }
+      if (useRows) {
+        body += s.rows
+          .map(function (row) {
+            return `<tr>${(row || [])
+              .map(function (cell, i) {
+                const hi = i === 1;
+                return `<td class="${hi ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+              })
+              .join('')}</tr>`;
+          })
+          .join('');
+      } else {
+        // Legacy object-columns shape
+        const labels = s.row_labels || [];
+        const objCols = cols.filter(function (c) {
+          return typeof c === 'object';
+        });
+        body += labels
+          .map(function (lab, ri) {
+            const cells = objCols
+              .map(function (c) {
+                return `<td class="${c.highlight ? 'hi' : ''}">${esc((c.values && c.values[ri]) || '')}</td>`;
+              })
+              .join('');
+            return `<tr><td class="row-label">${esc(lab)}</td>${cells}</tr>`;
+          })
+          .join('');
+      }
+      const takeaway = s.takeaway || s.closing_line || '';
       return `
         <div class="section-block shell-stage" data-reveal data-home="gtm.competitive">
           ${kicker(s)}
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          <div class="table-wrap"><table class="cmp"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+          ${s.headline || s.title ? `<h2 class="h2">${esc(s.headline || s.title)}</h2>` : ''}
+          <div class="table-wrap"><table class="cmp cmp-s17"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+          ${takeaway ? `<p class="closing-line takeaway-line">${esc(takeaway)}</p>` : ''}
+          ${s.explainer ? `<p class="explainer">${esc(s.explainer)}</p>` : ''}
+          ${s.source_note ? `<p class="muted source-note">${esc(s.source_note)}</p>` : ''}
         </div>`;
     },
 
     'signed-contract-hero'(s) {
-      // v8 #8: match Gulf structure — hero → kicker → title → sub → chips
+      // v9 #10: no redundant lagoon; player logos under tracker; press at full exposure
       const ga = homeAssets('gtm.maldives') || {};
+      const logos = homeAssets('gtm.coastal.logos') || {};
       const hero = ga.opener ? mediaPath(ga.opener) : '';
-      const inset = ga.inset ? mediaPath(ga.inset) : '';
+      const logoOrder = [
+        { key: 'navier', label: 'Navier' },
+        { key: 'jih', label: 'JIH' },
+        { key: 'harim', label: 'HARIM' },
+        { key: 'visit_maldives', label: 'Visit Maldives' },
+      ];
+      const logoStrip = logoOrder
+        .map(function (o) {
+          const src = logos[o.key] ? mediaPath(logos[o.key]) : '';
+          return src
+            ? `<div class="player-logo compact"><img src="${esc(src)}" alt="${esc(o.label)}" loading="lazy" /><div class="title">${esc(o.label)}</div></div>`
+            : '';
+        })
+        .join('');
       return `
         <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.maldives">
           ${hero ? cinema(hero, { home: 'gtm.maldives', vh: '55vh' }) : ''}
@@ -752,17 +821,15 @@
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${goldStats(s.stats)}
-            <div class="media-duo">
-              ${inset ? plate(inset, { home: 'gtm.maldives', className: '' }) : ''}
-              <div>
-                ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
-                <div class="press">${(s.press || [])
-                  .map(
-                    (p) => `
-                  <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
-                  )
-                  .join('')}</div>
-              </div>
+            ${logoStrip ? `<div class="player-logos maldives-logos">${logoStrip}</div>` : ''}
+            <div class="press-block">
+              ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
+              <div class="press">${(s.press || [])
+                .map(
+                  (p) => `
+                <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
+                )
+                .join('')}</div>
             </div>
           </div>
         </div>`;
@@ -811,34 +878,25 @@
     },
 
     'four-role-diagram'(s) {
-      const logos = homeAssets('gtm.coastal.logos') || {};
-      const order = [
-        { key: 'navier', role: 'Platform & vessels' },
-        { key: 'jih', role: 'Capital' },
-        { key: 'harim', role: 'Hotels & resorts' },
-        { key: 'visit_maldives', role: 'Demand' },
-      ];
+      // v9 #10: logos moved to Maldives — keep model roles as text cards only
       const roles = s.roles || s.cards || [];
-      const logoCards = order
-        .map((o, i) => {
-          const src = logos[o.key] ? mediaPath(logos[o.key]) : '';
-          const r = roles[i] || {};
-          const title = r.title || r.name || r.role || o.key.replace(/_/g, ' ');
-          const does = r.does || r.body || r.detail || o.role;
-          return `<div class="player-logo">
-            ${src ? `<img src="${esc(src)}" alt="${esc(title)}" loading="lazy" />` : ''}
-            <div class="title" style="font-weight:700;margin-bottom:4px">${esc(title)}</div>
+      const roleCards = roles
+        .map(function (r) {
+          const title = r.title || r.name || r.role || '';
+          const does = r.does || r.body || r.detail || '';
+          return `<div class="role-card">
+            <div class="title">${esc(title)}</div>
             <div class="role">${esc(does)}</div>
           </div>`;
         })
         .join('');
       return `
-        <div class="section-block stage-section" data-reveal data-home="gtm.coastal.logos">
+        <div class="section-block stage-section" data-reveal>
           <div class="section-inner">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead || s.intro ? `<p class="lead">${esc(s.subhead || s.intro)}</p>` : ''}
-            <div class="player-logos">${logoCards}</div>
+            <div class="role-cards">${roleCards}</div>
             ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
           </div>
         </div>`;
@@ -1090,7 +1148,7 @@
     },
 
     'native-line-charts'(s) {
-      // Charts below KPIs — no second OPERATING PLAN kicker (v8 C2)
+      // v9 #13: "The Ramp…" is section heading under OPERATING PLAN; labeled series
       const charts = (s.charts || [])
         .map(function (ch) {
           return `
@@ -1110,17 +1168,12 @@
     },
 
     'stat-band'(s) {
-      // v8 #13: KPI strip FIRST
-      const foot =
-        s.footnote && !/^[a-z0-9-]+$/i.test(String(s.footnote).trim())
-          ? s.footnote
-          : '';
+      // KPI strip — never print mobility/defense footnote (v9 #13 deleted)
       return `
         <div class="section-block shell-stage" data-reveal data-home="money.charts">
           ${kicker(s)}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
           ${goldStats(s.stats)}
-          ${foot ? `<p class="muted">${esc(foot)}</p>` : ''}
         </div>`;
     },
 
@@ -1169,18 +1222,31 @@
     },
 
     'two-column-round'(s) {
+      // v9 P3: Title Case headings + timing eyebrows (NOW / 18–24 MONTHS)
       const cols = (s.columns || [])
-        .map(
-          (c) => `
+        .map(function (c) {
+          const raw = c.title || '';
+          let eyebrow = '';
+          let heading = raw;
+          if (/NOW/i.test(raw)) {
+            eyebrow = 'NOW';
+            heading = raw.replace(/\s*[—–-]\s*NOW/i, '').replace(/NOW\s*[—–-]?\s*/i, '');
+          } else if (/18\s*[–-]?\s*24/i.test(raw)) {
+            eyebrow = '18–24 MONTHS';
+            heading = raw.replace(/SERIES B PROGRAM\s*\([^)]+\)/i, 'Series B Program');
+          }
+          heading = titleCaseHeadline(heading.replace(/\$10M SERIES B-1/i, '$10M Series B-1'));
+          return `
         <div class="round-col">
-          <h3>${esc(c.title)}</h3>
+          ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
+          <h3>${esc(heading || raw)}</h3>
           <ul>${(c.items || []).map((it) => `<li>${esc(it)}</li>`).join('')}</ul>
-        </div>`,
-        )
+        </div>`;
+        })
         .join('');
       return `
         <div class="section-block shell-stage" data-reveal>
-          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          ${kicker(s)}
           ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
           <div class="round">${cols}</div>
           ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
@@ -1795,53 +1861,67 @@
     });
   })();
 
-  /* ── Three-costs 1:1 in-place card flip (v8 #2 — no ghosting) ── */
+  /* ── Three-costs flip: no-reflow head + delayed Why-Now (v9 #2) ── */
   (function initCostsMorph() {
     var root = document.getElementById('costs-morph');
+    var section = document.querySelector('.costs-morph-section');
     if (!root) return;
     var cards = root.querySelectorAll('[data-flip-card]');
-    var headline = document.getElementById('costs-headline');
-    var kickerLine = document.getElementById('costs-kicker-line');
-    var flipH = root.getAttribute('data-flip-headline') || '';
-    var costH = root.getAttribute('data-cost-headline') || '';
+    var headCost = document.querySelector('.costs-head-layer.is-cost');
+    var headLever = document.querySelector('.costs-head-layer.is-lever');
+    var after = document.getElementById('costs-after');
     var staticEl = root.querySelector('.flip-static');
+    var afterTimer = null;
 
     if (reduceMotion) {
       root.classList.add('is-static');
       if (staticEl) staticEl.hidden = false;
       var grid = document.getElementById('flip-grid');
       if (grid) grid.hidden = true;
+      if (after) after.hidden = false;
+      if (headLever) headLever.classList.add('is-visible');
       return;
     }
 
     var lastOn = false;
     function setState(onLevers) {
       cards.forEach(function (card, i) {
-        // Stagger ~120ms — each card fully one state or mid-flip, never 50% ghost
         var delay = i * 120;
         setTimeout(function () {
           card.classList.toggle('is-flipped', onLevers);
         }, delay);
       });
-      if (headline && flipH && costH) {
-        // Hard cut headline swap — no double-exposure
-        headline.textContent = onLevers ? flipH : costH;
+      // Crossfade text inside fixed-height head box — zero document reflow
+      if (headCost) headCost.classList.toggle('is-visible', !onLevers);
+      if (headLever) {
+        headLever.classList.toggle('is-visible', onLevers);
+        headLever.setAttribute('aria-hidden', onLevers ? 'false' : 'true');
       }
-      if (kickerLine) {
-        kickerLine.style.opacity = onLevers ? '0' : '1';
+      if (after) {
+        clearTimeout(afterTimer);
+        if (onLevers) {
+          afterTimer = setTimeout(function () {
+            after.hidden = false;
+            after.classList.add('is-in');
+          }, cards.length * 120 + 300);
+        } else {
+          after.hidden = true;
+          after.classList.remove('is-in');
+        }
       }
-      root.classList.toggle('on-levers', onLevers);
+      if (section) section.classList.toggle('on-levers', onLevers);
       lastOn = onLevers;
     }
 
     function onScrollCosts() {
       var rect = root.getBoundingClientRect();
       var vh = window.innerHeight || 1;
-      // Compact stage — flip when mid-section crosses viewport center
-      var mid = rect.top + rect.height * 0.35;
-      var on = mid < vh * 0.55 && rect.bottom > vh * 0.25;
+      var mid = rect.top + rect.height * 0.4;
+      var on = mid < vh * 0.55 && rect.bottom > vh * 0.2;
       if (on !== lastOn) setState(on);
     }
+    // Default: cost head visible
+    if (headCost) headCost.classList.add('is-visible');
     window.addEventListener('scroll', onScrollCosts, { passive: true });
     onScrollCosts();
   })();
@@ -2246,6 +2326,36 @@
     });
     svg.innerHTML = lines.join('');
     root.classList.add('is-lit');
+
+    // Hover/focus: highlight one callout, dim others
+    function focusCallout(idx) {
+      root.querySelectorAll('.ctrl-callout, .ctrl-anchor').forEach(function (el) {
+        var i = el.getAttribute('data-callout') || el.getAttribute('data-anchor');
+        el.classList.toggle('is-focus', String(i) === String(idx));
+        el.classList.toggle('is-dim', String(i) !== String(idx));
+      });
+      root.querySelectorAll('.ctrl-leader').forEach(function (line, li) {
+        // leaders are paired with dots; approximate by index order
+        line.classList.toggle('is-dim', true);
+      });
+    }
+    function clearFocus() {
+      root.querySelectorAll('.is-focus, .is-dim').forEach(function (el) {
+        el.classList.remove('is-focus', 'is-dim');
+      });
+    }
+    root.querySelectorAll('.ctrl-callout, .ctrl-anchor').forEach(function (el) {
+      var idx = el.getAttribute('data-callout') || el.getAttribute('data-anchor');
+      el.addEventListener('mouseenter', function () {
+        focusCallout(idx);
+      });
+      el.addEventListener('focus', function () {
+        focusCallout(idx);
+      });
+      el.addEventListener('mouseleave', clearFocus);
+      el.addEventListener('blur', clearFocus);
+    });
+
     var io = new IntersectionObserver(
       function (ents) {
         ents.forEach(function (en) {
@@ -2255,6 +2365,47 @@
       { threshold: 0.15 },
     );
     io.observe(root);
+  })();
+
+  /* Pioneer hero: hide poster fallback when video plays */
+  (function () {
+    document.querySelectorAll('.pioneer-hero-video').forEach(function (v) {
+      var wrap = v.closest('.pioneer-hero');
+      function ok() {
+        if (wrap) wrap.classList.add('has-video');
+      }
+      function bad() {
+        if (wrap) wrap.classList.remove('has-video');
+      }
+      v.addEventListener('loadeddata', ok);
+      v.addEventListener('playing', ok);
+      v.addEventListener('error', bad);
+      // If source 404s, keep poster
+      var src = v.querySelector('source');
+      if (src && src.getAttribute('src')) {
+        fetch(src.getAttribute('src'), { method: 'HEAD' }).then(function (r) {
+          if (!r.ok) bad();
+        }).catch(bad);
+      }
+    });
+  })();
+
+  /* ── Arc sequential reveal (v9 #1) ───────────────────── */
+  (function initArcReveal() {
+    var rail = document.querySelector('.arc-rail');
+    if (!rail) return;
+    var phases = rail.querySelectorAll('.arc-phase');
+    if (!phases.length) return;
+    var io = new IntersectionObserver(function (ents) {
+      ents.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        phases.forEach(function (p, i) {
+          setTimeout(function () { p.classList.add('is-revealed'); }, i * 150);
+        });
+        io.disconnect();
+      });
+    }, { threshold: 0.25 });
+    io.observe(rail);
   })();
 
   /* ── Ladder ────────────────────────────────────────── */

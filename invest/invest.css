@@ -1685,3 +1685,135 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 .film-cap, .vcard-cap { overflow: visible; text-overflow: unset; white-space: normal; }
+
+/* ── v9 round-5 ─────────────────────────────────────── */
+.costs-head-fixed {
+  position: relative;
+  min-height: 160px; /* reserve taller state — no reflow */
+  margin-bottom: 24px;
+}
+.costs-head-layer {
+  position: absolute; inset: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.costs-head-layer.is-visible {
+  opacity: 1; pointer-events: auto;
+  position: relative;
+}
+.costs-head-fixed .costs-head-layer.is-visible ~ .costs-head-layer.is-visible {
+  position: absolute;
+}
+.costs-head-layer.is-lever { position: absolute; inset: 0; }
+.costs-head-layer.is-lever.is-visible { position: absolute; }
+.costs-head-fixed:has(.is-lever.is-visible) .is-cost { position: absolute; }
+.cm-lever-bridge {
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid rgba(185,154,95,0.2);
+  font-size: 12.5px; line-height: 1.45; color: var(--text-1);
+}
+.costs-after {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  margin-top: 8px; min-height: 120px; /* reserve so reveal doesn't jump */
+}
+.costs-after.is-in { opacity: 1; transform: none; }
+.costs-after[hidden] { display: block; visibility: hidden; height: 0; min-height: 0; margin: 0; overflow: hidden; opacity: 0; }
+
+.pioneer-hero {
+  position: relative; margin: 20px 0 28px;
+  border-radius: 12px; overflow: hidden; border: 1px solid var(--line);
+  background: #000; aspect-ratio: 16/9; max-height: 62vh;
+}
+.pioneer-hero-video, .pioneer-hero-fallback {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.pioneer-hero-video { opacity: 0; }
+.pioneer-hero.has-video .pioneer-hero-video { opacity: 1; }
+.pioneer-hero.has-video .pioneer-hero-fallback { opacity: 0; }
+
+.video-grid.equal-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.vcard-sub {
+  display: block; font-size: 11px; color: var(--text-2);
+  line-height: 1.4; padding: 0 4px 8px; margin-top: -4px;
+}
+.vcard-loop .vcard-media video { width: 100%; height: 100%; object-fit: cover; }
+
+.ctrl-callout, .ctrl-anchor {
+  cursor: pointer; border: 0; background: transparent; font: inherit; color: inherit;
+  text-align: inherit;
+}
+.ctrl-callout.is-dim, .ctrl-anchor.is-dim { opacity: 0.28; }
+.ctrl-callout.is-focus, .ctrl-anchor.is-focus { opacity: 1; z-index: 5; }
+.ctrl-leader.is-dim { opacity: 0.2; }
+.control-diagram.bow-right .control-wire { transform: none !important; }
+
+.quanta-stats-compose.has-plate {
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
+  gap: 24px; align-items: stretch;
+}
+.quanta-stats-plate img { width: 100%; height: 100%; max-height: none; min-height: 320px; object-fit: cover; }
+.quanta-stats-copy .gold-stat-band {
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+}
+@media (max-width: 900px) {
+  .quanta-stats-compose.has-plate { grid-template-columns: 1fr; }
+  .quanta-stats-copy .gold-stat-band { grid-template-columns: 1fr; }
+}
+
+.cmp-s17 th.hi, .cmp-s17 td.hi {
+  box-shadow: inset 0 0 0 1px rgba(212,175,95,0.45);
+  background: rgba(185,154,95,0.06);
+}
+.vessel-type-row td { font-size: 12px; color: var(--text-2); font-style: italic; }
+.takeaway-line { font-size: clamp(1.15rem, 2vw, 1.45rem); margin-top: 24px; }
+.explainer { font-size: 14px; color: var(--text-1); max-width: 62ch; line-height: 1.55; margin-top: 10px; }
+.source-note { margin-top: 12px; }
+
+.maldives-logos { margin: 20px 0 28px; }
+.player-logo.compact img { height: 28px; width: auto; }
+.role-cards {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0;
+}
+.role-card {
+  padding: 16px; border-radius: 10px; background: var(--bg-1); border: 1px solid var(--line);
+}
+.role-card .title { font-weight: 700; margin-bottom: 6px; }
+.role-card .role { font-size: 13px; color: var(--text-1); }
+@media (max-width: 800px) { .role-cards { grid-template-columns: 1fr 1fr; } }
+
+.pipe-tiers { max-height: none !important; overflow: visible !important; }
+
+.gold-stat .value, .gold-stat .label, .chip {
+  white-space: nowrap;
+}
+.gold-stat .label { white-space: normal; }
+
+/* Five-markets: expand without text overlap */
+.thesis-board { display: flex; flex-direction: column; gap: 8px; }
+.thesis-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px 18px;
+  align-items: center;
+}
+.thesis-row:hover, .thesis-row:focus-visible, .thesis-row:focus-within {
+  grid-template-columns: auto 1fr;
+}
+.thesis-row:hover .status,
+.thesis-row:focus-visible .status,
+.thesis-row:focus-within .status {
+  grid-column: 2; text-align: left;
+}
+.thesis-row .label { min-width: 0; overflow-wrap: anywhere; }
+
+.arc-rail .arc-phase {
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.arc-rail .arc-phase.is-revealed,
+.arc-rail .arc-phase.lit,
+.arc-rail .arc-phase.is-now { opacity: 1; transform: none; }

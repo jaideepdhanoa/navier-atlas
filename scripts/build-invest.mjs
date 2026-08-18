@@ -122,7 +122,7 @@ export function buildInvest() {
       if (Array.isArray(v)) v.forEach((x) => walk(x, key));
       else if (typeof v === 'object') {
         for (const [k, x] of Object.entries(v)) {
-          if (k === 'note' || k === 'treatment' || k === 'behavior' || k === 'exception' || k === 'alt' || k === 'caption' || k === 'purpose' || k === 'provenance' || k === 'resolution_note') continue;
+          if (k === 'note' || k === 'treatment' || k === 'behavior' || k === 'exception' || k === 'alt' || k === 'caption' || k === 'purpose' || k === 'provenance' || k === 'resolution_note' || k === 'pending' || k === 'status') continue;
           walk(x, k);
         }
       }
