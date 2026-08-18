@@ -305,7 +305,7 @@
     },
 
     'prose-stage'(s) {
-      // About Navier — deck prose VERBATIM (87989f2 / 94f92d5). Full-viewport stage.
+      // Core Thesis (v9.1) — deck prose VERBATIM. Full-viewport stage; para 1 = lead weight.
       const paras = (s.paragraphs || [])
         .map(
           (p, i) =>
