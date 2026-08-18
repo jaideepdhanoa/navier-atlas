@@ -1742,15 +1742,47 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .pioneer-hero.has-video .pioneer-hero-video { opacity: 1; }
 .pioneer-hero.has-video .pioneer-hero-fallback { opacity: 0; }
 
+/* Equal-weight demo grid — fixed 2/3 cols (auto-fit+min-height was collapsing to a stack) */
 .video-grid.equal-grid {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 1100px) {
+  .video-grid.equal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .video-grid.equal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.video-grid.equal-grid .vcard,
+.video-grid.equal-grid .film-card {
+  min-width: 0;
+  width: 100%;
+}
+.video-grid.equal-grid .vcard-media,
+.video-grid.equal-grid .film-media {
+  min-height: 0; /* aspect-ratio alone — prevents single full-bleed tile */
+  aspect-ratio: 16 / 9;
 }
 .vcard-sub {
   display: block; font-size: 11px; color: var(--text-2);
   line-height: 1.4; padding: 0 4px 8px; margin-top: -4px;
 }
-.vcard-loop .vcard-media video { width: 100%; height: 100%; object-fit: cover; }
+.vcard-loop .vcard-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcard-loop { cursor: pointer; }
+.vcard-loop.is-audible .play { opacity: 0; pointer-events: none; transition: opacity .2s; }
+.demo-lede {
+  max-width: 62ch;
+  color: var(--text-1);
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
 
 .ctrl-callout, .ctrl-anchor {
   cursor: pointer; border: 0; background: transparent; font: inherit; color: inherit;

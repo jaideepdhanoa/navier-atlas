@@ -496,7 +496,7 @@
     },
 
     'video-grid'(s) {
-      // v9 #4: equal-weight grid; posters + click-to-play; no parallel autoplay lead
+      // Equal-weight 2/3-col grid; prefer self-hosted mp4 loops when asset is present
       const demos = homeAssets('proof.demo_grid') || {};
       const idMap = {
         'no-wake': 'no_wake',
@@ -519,12 +519,12 @@
                   ? mediaPath('assets/deck/n30-pioneer-at-sea.png')
                   : '';
           const sub = c.subcaption || '';
-          const isLoop = c.play_mode === 'loop' && c.asset;
-          if (isLoop) {
+          // Self-hosted asset wins (YouTube kept as provenance only)
+          if (c.asset) {
             return `
-            <div class="vcard vcard-loop" data-loop-src="${esc(mediaPath(c.asset))}">
+            <div class="vcard vcard-loop" data-loop-src="${esc(mediaPath(c.asset))}" data-clip="${esc(c.id || '')}">
               <span class="vcard-media">
-                <video muted playsinline loop preload="none" poster="${esc(poster)}" data-lazy-video>
+                <video muted playsinline loop preload="metadata" poster="${esc(poster)}" data-lazy-video>
                   <source src="${esc(mediaPath(c.asset))}" type="video/mp4" />
                 </video>
                 <span class="play"><span>▶</span></span>
@@ -2345,6 +2345,26 @@
     if (e.key === 'Escape') closeLb();
   });
   document.body.addEventListener('click', (e) => {
+    const loopCard = e.target.closest('.vcard-loop');
+    if (loopCard) {
+      const v = loopCard.querySelector('video');
+      const play = loopCard.querySelector('.play');
+      if (v) {
+        e.preventDefault();
+        // First click: unmute + ensure playing. Second: mute again.
+        if (v.muted) {
+          v.muted = false;
+          v.play().catch(function () {});
+          loopCard.classList.add('is-audible');
+          if (play) play.style.opacity = '0';
+        } else {
+          v.muted = true;
+          loopCard.classList.remove('is-audible');
+          if (play) play.style.opacity = '';
+        }
+      }
+      return;
+    }
     const t = e.target.closest('[data-yt]');
     if (!t || t.classList.contains('looping')) return;
     const yt = t.getAttribute('data-yt');
