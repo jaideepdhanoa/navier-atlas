@@ -591,65 +591,38 @@
     },
 
     'hotspot-diagram'(s) {
-      // v9 #6: measured schematic anchors (bow-RIGHT, never mirror); interactive dots + leaders
+      // Pre-labeled schematic plate (no HTML callouts/leaders — labels are baked into the PNG)
       const filmPoster = homeSrc('product.control.film') || mediaPath('assets/posters/S7WB91FvSFI.jpg');
       const schem = s.schematic || {};
-      const wire = mediaPath(schem.asset || homeSrc('product.control.diagram') || 'assets/deck/control-wireframe-clean.png');
-      const calloutsSrc = schem.callouts || [];
-      const callouts = calloutsSrc
-        .map(function (h, i) {
-          const ax = (h.anchor && h.anchor[0] != null ? h.anchor[0] : 0.5) * 100;
-          const ay = (h.anchor && h.anchor[1] != null ? h.anchor[1] : 0.2 + i * 0.1) * 100;
-          const side = h.label_side === 'left' ? 'left' : 'right';
-          // Prefer authored label_pct (deck-aligned); else fall back beside the anchor
-          var labelX;
-          var labelY;
-          if (h.label_pct && h.label_pct[0] != null && h.label_pct[1] != null) {
-            labelX = h.label_pct[0] * 100;
-            labelY = h.label_pct[1] * 100;
-          } else {
-            labelX =
-              side === 'left' ? Math.max(2, Math.min(ax - 22, 38)) : Math.min(78, Math.max(ax + 4, 58));
-            labelY = Math.max(5, Math.min(ay, 92));
-          }
-          return `
-            <button type="button" class="ctrl-callout side-${side}" data-callout="${i}"
-              style="left:${labelX}%;top:${labelY}%">
-              <div class="ctrl-label">${esc(h.label || '')}</div>
-              ${h.detail ? `<div class="ctrl-detail">${esc(h.detail)}</div>` : ''}
-            </button>
-            <button type="button" class="ctrl-anchor" data-anchor="${i}" style="left:${ax}%;top:${ay}%" aria-label="${esc(h.label || '')}"></button>`;
+      const wire = mediaPath(
+        schem.asset || homeSrc('product.control.diagram') || 'assets/deck/schematic-controls.png',
+      );
+      const altBits = (schem.callouts || [])
+        .map(function (h) {
+          return h.label + (h.detail ? ' — ' + h.detail : '');
         })
-        .join('');
-      const fallbackList = calloutsSrc
-        .map(
-          (h, i) =>
-            `<div class="callout-item" data-callout-fb="${i}"><strong>${esc(h.label || '')}</strong>${
-              h.detail ? ' — ' + esc(h.detail) : ''
-            }</div>`,
-        )
-        .join('');
+        .filter(Boolean);
+      const alt =
+        'Navier control schematic showing ' +
+        (altBits.length ? altBits.join('; ') : 'sensors, NavierOS, foils, hull, and powertrain');
       return `
-        <div class="section-block stage-section control-stage" data-reveal data-home="product.control.diagram" data-control-diagram>
+        <div class="section-block stage-section control-stage" data-reveal data-home="product.control.diagram">
           <div class="section-inner">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.body ? `<p class="lead">${nl(s.body)}</p>` : ''}
           </div>
           <div class="control-sbs media-inner">
-            <div class="control-diagram bow-right" id="control-diagram">
-              <div class="control-figure">
-                ${wire ? `<img class="control-wire" src="${esc(wire)}" alt="Navier control schematic" loading="eager" fetchpriority="high" />` : ''}
-                <svg class="control-leaders" id="control-leaders" aria-hidden="true"></svg>
-                <div class="control-overlay">${callouts}</div>
-              </div>
+            <div class="control-diagram control-diagram-plate" id="control-diagram">
+              ${
+                wire
+                  ? `<img class="control-wire control-plate-img" src="${esc(wire)}" alt="${esc(alt)}" loading="eager" fetchpriority="high" />`
+                  : ''
+              }
             </div>
             <div class="control-video">
               ${s.video ? filmCard(s.video, filmPoster, 'product.control.film', s.video_label || '') : ''}
             </div>
-          </div>
-          <div class="section-inner">
-            <div class="callout-list control-fallback" hidden>${fallbackList}</div>
           </div>
         </div>`;
     },

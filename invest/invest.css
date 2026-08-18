@@ -1590,30 +1590,21 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 /* Control side-by-side */
 .control-sbs {
   display: grid; grid-template-columns: 1.75fr 0.95fr; gap: 28px;
-  align-items: start; margin-top: 20px;
+  align-items: center; margin-top: 20px;
 }
 .control-diagram {
-  position: relative; border-radius: 12px; overflow: visible;
-  border: 1px solid var(--line); background: #0a0c10; padding: 14px 10px 18px;
+  position: relative; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line); background: #0a0c10; padding: 0;
   min-height: 0;
 }
-/* Figure tightly wraps the PNG so anchor % map to boat parts, not letterbox padding */
-.control-figure {
-  position: relative;
-  width: 100%;
-  line-height: 0;
+.control-diagram-plate {
+  background: #07080a;
 }
-.control-wire {
-  display: block; width: 100%; height: auto; max-height: min(70vh, 640px);
+.control-wire,
+.control-plate-img {
+  display: block; width: 100%; height: auto; max-height: min(72vh, 680px);
   object-fit: contain; margin: 0 auto;
-  transform: none !important; /* bow-RIGHT asset — never mirror */
-}
-.control-figure .control-leaders,
-.control-figure .control-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  transform: none !important;
 }
 .control-video .film-card, .control-video .vcard { width: 100%; }
 .control-fallback { display: none; margin-top: 16px; }
