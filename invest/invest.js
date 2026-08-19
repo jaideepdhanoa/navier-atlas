@@ -1559,12 +1559,13 @@
         return fn ? fn(sec) : '';
       })
       .join('');
+    // Go Deeper before Own the Edge finale so the film/contact isn't buried after the close
     return `
       <section class="chapter" id="money">
         <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
         ${mainHtml}
-        ${finale ? R['finale-plate'](finale) : ''}
         ${foot ? R.footer(foot) : ''}
+        ${finale ? R['finale-plate'](finale) : ''}
       </section>`;
   }
 
