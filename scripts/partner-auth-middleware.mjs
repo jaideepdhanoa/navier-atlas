@@ -6,6 +6,8 @@ export function generatePartnerAuthMiddleware(partnerSlugs) {
   // and Vercel's "Deploying outputs…" step failed. One path-to-regexp alternation covers all partners.
   const slugAlt = slugs.map((s) => s.replace(/-/g, '\\-')).join('|');
   const matcher = [
+    '/invest',
+    '/invest/:path*',
     '/partners',
     '/partners/:path*',
     `/:partner(${slugAlt})`,
@@ -17,6 +19,8 @@ import { next } from '@vercel/functions';
 
 const PARTNER_SLUGS = new Set(${JSON.stringify(slugs)});
 const HUB_SESSION_SLUG = '__partners_hub__';
+const INVEST_SESSION_SLUG = '__invest__';
+const INVEST_DEFAULT_PASSWORD = 'morpheus';
 
 function envKey(slug) {
   return 'PARTNER_AUTH_' + slug.toUpperCase().replace(/-/g, '_');
@@ -42,6 +46,11 @@ function hubPassword() {
   return process.env.PARTNERS_HUB_PASSWORD || authJson().__hub__ || null;
 }
 
+function investPassword() {
+  // Prefer Vercel env INVEST_PASSWORD; fall back to authored default so /invest is gated even before env is set.
+  return process.env.INVEST_PASSWORD || authJson().__invest__ || INVEST_DEFAULT_PASSWORD;
+}
+
 function isPublic(pathname) {
   if (pathname === '/' || pathname === '/atlas-data.js' || pathname === '/index.html') return true;
   if (pathname.startsWith('/cluster/')) return true;
@@ -57,6 +66,10 @@ function isPublic(pathname) {
 
 function isPartnersHub(pathname) {
   return pathname === '/partners' || pathname.startsWith('/partners/');
+}
+
+function isInvest(pathname) {
+  return pathname === '/invest' || pathname.startsWith('/invest/');
 }
 
 function partnerFromPath(pathname) {
@@ -86,13 +99,15 @@ async function sessionToken(slug, password) {
 }
 
 function sessionCookieName(slug) {
-  return slug === HUB_SESSION_SLUG
-    ? 'navier_partners_hub'
-    : 'navier_partner_' + slug.replace(/-/g, '_');
+  if (slug === HUB_SESSION_SLUG) return 'navier_partners_hub';
+  if (slug === INVEST_SESSION_SLUG) return 'navier_invest';
+  return 'navier_partner_' + slug.replace(/-/g, '_');
 }
 
 function sessionCookiePath(slug) {
-  return slug === HUB_SESSION_SLUG ? '/partners' : '/' + slug;
+  if (slug === HUB_SESSION_SLUG) return '/partners';
+  if (slug === INVEST_SESSION_SLUG) return '/invest';
+  return '/' + slug;
 }
 
 function getCookie(request, name) {
@@ -143,6 +158,10 @@ async function gate(request, slug, password, realm) {
 export default async function middleware(request) {
   const { pathname } = new URL(request.url);
   if (isPublic(pathname)) return next();
+
+  if (isInvest(pathname)) {
+    return gate(request, INVEST_SESSION_SLUG, investPassword(), 'Navier Series B');
+  }
 
   if (isPartnersHub(pathname)) {
     return gate(request, HUB_SESSION_SLUG, hubPassword(), 'Navier partners');
