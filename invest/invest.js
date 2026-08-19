@@ -21,15 +21,25 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   const nl = (s) => esc(s).replace(/\n/g, '<br/>');
-  function formatBackers(line) {
-    if (!line) return '';
-    return String(line)
-      .split(/[·•\n]/)
-      .map(function (n) { return n.trim(); })
-      .filter(Boolean)
-      .map(function (n, i, arr) {
-        return '<span>' + esc(n) + '</span>' +
-          (i < arr.length - 1 ? '<i class="sep" aria-hidden="true"></i>' : '');
+  function formatBackers(line, backers) {
+    var items = [];
+    if (backers && backers.length) {
+      items = backers.map(function (b) {
+        return { name: b.name || b.label || '', url: b.url || b.href || '' };
+      }).filter(function (b) { return b.name; });
+    } else if (line) {
+      items = String(line)
+        .split(/[·•\n;]+/)
+        .map(function (n) { return n.trim(); })
+        .filter(Boolean)
+        .map(function (n) { return { name: n, url: '' }; });
+    }
+    return items
+      .map(function (b, i, arr) {
+        var inner = b.url
+          ? '<a class="backer-link" href="' + esc(b.url) + '" target="_blank" rel="noopener noreferrer">' + esc(b.name) + '</a>'
+          : '<span>' + esc(b.name) + '</span>';
+        return inner + (i < arr.length - 1 ? '<i class="sep" aria-hidden="true"></i>' : '');
       })
       .join('');
   }
@@ -266,10 +276,18 @@
         const slug = p.name.toLowerCase().replace(/\s+/g, '-');
         src = mediaPath(`assets/deck/team-${slug}.png`);
       }
+      const nameEl = p.url
+        ? `<a class="team-name team-link" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>`
+        : `<div class="team-name">${esc(p.name)}</div>`;
+      const photoInner = src
+        ? p.url
+          ? `<a class="team-photo-link" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" /></a>`
+          : `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" />`
+        : '';
       return `
         <div class="team-card">
-          <div class="team-photo">${src ? `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" />` : ''}</div>
-          <div class="team-name">${esc(p.name)}</div>
+          <div class="team-photo">${photoInner}</div>
+          ${nameEl}
           <div class="team-role">${esc(p.role)}</div>
           <div class="team-creds">${esc(p.credentials)}</div>
         </div>`;
@@ -279,6 +297,17 @@
       .map((l) => `<img src="${esc(mediaPath(l))}" alt="" loading="lazy" />`)
       .join('');
 
+    const samName = sam
+      ? sam.url
+        ? `<a class="team-name team-link" href="${esc(sam.url)}" target="_blank" rel="noopener noreferrer">${esc(sam.name)}</a>`
+        : `<div class="team-name">${esc(sam.name)}</div>`
+      : '';
+    const samPhoto = sam && featured
+      ? sam.url
+        ? `<a class="team-photo-link" href="${esc(sam.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" /></a>`
+        : `<img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" />`
+      : '';
+
     return `
       <div class="section-block team-section" data-reveal data-home="claim.team">
         ${s.title ? `<h2 class="h2 shell-prose">${esc(s.title)}</h2>` : ''}
@@ -287,8 +316,8 @@
           ${
             sam
               ? `<div class="team-featured">
-                  <div class="team-photo lg">${featured ? `<img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" />` : ''}</div>
-                  <div class="team-name">${esc(sam.name)}</div>
+                  <div class="team-photo lg">${samPhoto}</div>
+                  ${samName}
                   <div class="team-role">${esc(sam.role)}</div>
                   <div class="team-creds">${esc(sam.credentials)}</div>
                 </div>`
@@ -298,8 +327,8 @@
         </div>
         ${logoStrip ? `<div class="logo-strip shell-stage" aria-label="Pedigree">${logoStrip}</div>` : ''}
         ${
-          s.backers_line
-            ? `<div class="backers-type"><div class="bl">${esc(s.backers_label || 'BACKED BY')}</div><div class="names">${formatBackers(s.backers_line)}</div></div>`
+          s.backers || s.backers_line
+            ? `<div class="backers-type shell-prose"><div class="bl">${esc(s.backers_label || 'BACKED BY')}</div><div class="names">${formatBackers(s.backers_line, s.backers)}</div></div>`
             : ''
         }
       </div>`;

@@ -785,6 +785,19 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .team-photo { aspect-ratio: 1; background: var(--bg-2); overflow: hidden }
 .team-photo img { width: 100%; height: 100%; object-fit: cover }
 .team-name { font-weight: 700; padding: 12px 12px 2px; font-size: 14px }
+a.team-name.team-link,
+a.team-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+a.team-name.team-link:hover,
+a.team-link:hover {
+  color: var(--accent-bright);
+  text-decoration: underline;
+}
+.team-photo-link { display: block; width: 100%; height: 100%; }
+.team-photo-link img { width: 100%; height: 100%; object-fit: cover; }
 .team-role {
   padding: 0 12px; font-size: 11px; font-weight: 700;
   color: var(--accent-bright); letter-spacing: 0.04em;
@@ -1559,7 +1572,19 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   display: flex; flex-wrap: wrap; gap: 8px 0; align-items: center;
   font-size: 13px; color: var(--text-1); line-height: 1.6;
 }
-.backers-type .names span { white-space: nowrap; }
+.backers-type .names span,
+.backers-type .names a.backer-link { white-space: nowrap; }
+.backers-type .names a.backer-link {
+  color: var(--text-1);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.backers-type .names a.backer-link:hover {
+  color: var(--accent-bright);
+  border-bottom-color: rgba(224, 203, 143, 0.55);
+  text-decoration: none;
+}
 .backers-type .sep {
   display: inline-block; width: 4px; height: 4px; border-radius: 50%;
   background: var(--accent-bright); margin: 0 10px; opacity: 0.7; vertical-align: middle;
