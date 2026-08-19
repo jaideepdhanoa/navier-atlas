@@ -795,41 +795,49 @@
     },
 
     'signed-contract-hero'(s) {
-      // v9 #10: no redundant lagoon; player logos under tracker; press at full exposure
+      // Players with roles/activities + linked press quotes
       const ga = homeAssets('gtm.maldives') || {};
       const logos = homeAssets('gtm.coastal.logos') || {};
       const hero = ga.opener ? mediaPath(ga.opener) : '';
-      const logoOrder = [
-        { key: 'navier', label: 'Navier' },
-        { key: 'jih', label: 'JIH' },
-        { key: 'harim', label: 'HARIM' },
-        { key: 'visit_maldives', label: 'Visit Maldives' },
-      ];
-      const logoStrip = logoOrder
-        .map(function (o) {
-          const src = logos[o.key] ? mediaPath(logos[o.key]) : '';
-          return src
-            ? `<div class="player-logo compact"><img src="${esc(src)}" alt="${esc(o.label)}" loading="lazy" /><div class="title">${esc(o.label)}</div></div>`
-            : '';
+      const players = s.players || [];
+      const playersBlock = players.length
+        ? `<div class="maldives-players">
+            ${s.players_label ? `<p class="eyebrow">${esc(s.players_label)}</p>` : ''}
+            <div class="player-logos maldives-logos cols-${Math.min(players.length, 4)}">${players
+              .map(function (pl) {
+                const key = pl.id || '';
+                const src = logos[key] ? mediaPath(logos[key]) : '';
+                return `<div class="player-logo player-card">
+                  ${src ? `<img src="${esc(src)}" alt="${esc(pl.name || '')}" loading="lazy" />` : ''}
+                  <div class="title">${esc(pl.name || '')}</div>
+                  ${pl.role ? `<div class="player-role">${esc(pl.role)}</div>` : ''}
+                  ${pl.does ? `<div class="player-does">${esc(pl.does)}</div>` : ''}
+                </div>`;
+              })
+              .join('')}</div>
+          </div>`
+        : '';
+      const pressItems = (s.press || [])
+        .map(function (p) {
+          const body = `<div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div>`;
+          if (p.url) {
+            return `<a class="press-item press-link" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${body}</a>`;
+          }
+          return `<div class="press-item">${body}</div>`;
         })
         .join('');
       return `
         <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.maldives">
           ${hero ? cinema(hero, { home: 'gtm.maldives', vh: '55vh' }) : ''}
-          <div class="section-inner">
+          <div class="section-inner gtm-hero-copy">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${goldStats(s.stats)}
-            ${logoStrip ? `<div class="player-logos maldives-logos">${logoStrip}</div>` : ''}
+            ${playersBlock}
             <div class="press-block">
               ${s.press_label ? `<p class="eyebrow">${esc(s.press_label)}</p>` : ''}
-              <div class="press">${(s.press || [])
-                .map(
-                  (p) => `
-                <div class="press-item"><div class="outlet">${esc(p.outlet)}</div><div class="quote">${esc(p.quote)}</div></div>`,
-                )
-                .join('')}</div>
+              <div class="press">${pressItems}</div>
             </div>
           </div>
         </div>`;
@@ -840,7 +848,7 @@
       return `
         <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.gulf.plate">
           ${gulf ? cinema(gulf, { home: 'gtm.gulf.plate', vh: '55vh' }) : ''}
-          <div class="section-inner">
+          <div class="section-inner gtm-hero-copy">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
