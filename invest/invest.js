@@ -1174,7 +1174,7 @@
     },
 
     'native-line-charts'(s) {
-      // v9 #13: "The Ramp…" is section heading under OPERATING PLAN; labeled series
+      // Charts only — section title “The Ramp…” renders on the KPI strip above
       const charts = (s.charts || [])
         .map(function (ch) {
           return `
@@ -1186,18 +1186,18 @@
         })
         .join('');
       return `
-        <div class="section-block shell-stage" data-reveal data-home="money.charts" data-ramp-root>
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+        <div class="section-block shell-stage money-ramp-charts" data-reveal data-home="money.charts" data-ramp-root>
           <div class="native-charts ramp-charts">${charts}</div>
           ${s.note ? `<p class="muted">${esc(s.note)}</p>` : ''}
         </div>`;
     },
 
     'stat-band'(s) {
-      // KPI strip — never print mobility/defense footnote (v9 #13 deleted)
+      // Money opener: eyebrow → title → subhead → KPIs (title above the strip)
       return `
-        <div class="section-block shell-stage" data-reveal data-home="money.charts">
+        <div class="section-block shell-stage money-opener" data-reveal data-home="money.charts">
           ${kicker(s)}
+          ${s.title ? `<h2 class="h2 money-ramp-title">${esc(s.title)}</h2>` : ''}
           ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
           ${goldStats(s.stats)}
         </div>`;
