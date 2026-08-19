@@ -1,4 +1,4 @@
-/* Series B /invest v4 — S1 safe-area · prose/stage/cinema · vessel canon */
+/* Series B /invest — spacing tokens · responsive ladder · vessel canon */
 :root {
   --bg-0: #070708;
   --bg-1: #0e0e10;
@@ -16,13 +16,45 @@
   --grey-a: #6b7280;
   --prose: 1200px;
   --stage: 1440px;
-  --pad: clamp(24px, 5vw, 64px);
-  --nav-h: 56px;
+
+  /* Spacing scale */
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+
+  /* Vertical rhythm */
+  --section-y: clamp(40px, 5vw, 72px);
+  --section-y-tight: clamp(28px, 3.5vw, 48px);
+  --chapter-y: clamp(56px, 7vw, 112px);
+  --stack-title: var(--space-3);
+  --stack-lead: var(--space-4);
+  --stack-body: var(--space-5);
+
+  /* Horizontal */
+  --pad: clamp(20px, 4.5vw, 56px);
+  --pad-inline: var(--pad);
+  --pad-inline-stage: clamp(20px, 4vw, 48px);
+
+  /* Chrome + cinema */
+  --nav-h-base: 56px;
+  --nav-h: calc(var(--nav-h-base) + env(safe-area-inset-top, 0px));
+  --cinema-h-hero: min(72svh, 720px);
+  --cinema-h-chapter: min(48svh, 480px);
+  --cinema-h-gtm: min(42svh, 420px);
+  --cinema-h-divider: min(52svh, 560px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 * { box-sizing: border-box }
-html { scroll-behavior: smooth }
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
 body {
   margin: 0;
   background: var(--bg-0);
@@ -30,6 +62,7 @@ body {
   line-height: 1.65;
   font-size: 1.0625rem;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 a { color: var(--accent-bright); text-decoration: none }
 a:hover { text-decoration: underline }
@@ -37,38 +70,56 @@ img, video { max-width: 100%; display: block }
 button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit }
 :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px }
 
-/* v5 P0-1 — shared containers (Tasklet DESIGN-AUDIT-V5)
-   Text boxes themselves must have left ≥ 24px — wrap content, don't only pad text nodes. */
+/* Shared containers — one horizontal inset owner per section */
 .section-inner {
   max-width: 1200px;
   margin-inline: auto;
-  padding-inline: clamp(24px, 5vw, 64px);
+  padding-inline: var(--pad-inline);
   width: 100%;
   box-sizing: border-box;
 }
 .media-inner {
   max-width: 1440px;
   margin-inline: auto;
-  padding-inline: clamp(24px, 4vw, 48px);
+  padding-inline: var(--pad-inline-stage);
   width: 100%;
   box-sizing: border-box;
 }
-/* legacy aliases → same primitives */
-.shell-prose, .page-pad { max-width: 1200px; margin-inline: auto; padding-inline: clamp(24px, 5vw, 64px); width: 100%; box-sizing: border-box; }
-.shell-stage { max-width: 1440px; margin-inline: auto; padding-inline: clamp(24px, 4vw, 48px); width: 100%; box-sizing: border-box; }
+.shell-prose, .page-pad {
+  max-width: 1200px; margin-inline: auto;
+  padding-inline: var(--pad-inline); width: 100%; box-sizing: border-box;
+}
+.shell-stage {
+  max-width: 1440px; margin-inline: auto;
+  padding-inline: var(--pad-inline-stage); width: 100%; box-sizing: border-box;
+}
+/* Avoid double horizontal pad when mount wraps shell-stage in section-inner */
+.section-block.shell-stage:has(> .section-inner),
+.section-block.shell-stage:has(> .media-inner) {
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+  width: 100%;
+}
 
+/* Full-bleed plate — body overflow-x:clip guards against 100vw gutter bugs */
 .cinema {
   width: 100vw;
+  max-width: 100%;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 }
 .cinema-media {
   width: 100%;
-  height: clamp(320px, 70vh, 820px);
+  height: var(--cinema-h-chapter);
   overflow: hidden;
   background: #0a0a0c;
   position: relative;
 }
+.cinema-media--hero { height: var(--cinema-h-hero); }
+.cinema-media--chapter { height: var(--cinema-h-chapter); }
+.cinema-media--gtm { height: var(--cinema-h-gtm); }
+.cinema-media--divider { height: var(--cinema-h-divider); }
 .cinema-media img,
 .cinema-media video {
   width: 100%; height: 100%;
@@ -97,6 +148,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .inv-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--nav-h);
+  padding-top: env(safe-area-inset-top, 0px);
   display: flex; align-items: center;
   background: rgba(7, 7, 8, 0.88);
   backdrop-filter: blur(16px) saturate(140%);
@@ -104,7 +156,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .inv-nav-inner {
   width: 100%; max-width: var(--stage); margin: 0 auto;
-  padding: 0 var(--pad);
+  padding: 0 var(--pad-inline);
+  min-height: var(--nav-h-base);
   display: flex; align-items: center; gap: 16px; justify-content: space-between;
 }
 .inv-brand { display: flex; align-items: center; gap: 10px }
@@ -133,9 +186,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* Hero */
 .hero {
-  position: relative; width: 100vw; min-height: 100svh;
+  position: relative; width: 100%; min-height: 100svh;
   display: flex; align-items: flex-end;
-  padding: calc(var(--nav-h) + 32px) 0 80px;
+  padding: calc(var(--nav-h) + var(--space-5)) 0 var(--space-7);
   overflow: hidden;
 }
 .hero-media { position: absolute; inset: 0; background: #0a0a0c }
@@ -160,7 +213,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .hero-headline {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
   font-weight: 600; letter-spacing: 0.02em;
   line-height: 1.02; margin: 0 0 18px;
   max-width: 11ch;
@@ -192,19 +245,19 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* Chapters */
 .chapter {
-  padding: clamp(96px, 12vh, 160px) 0 48px;
+  padding: var(--chapter-y) 0 var(--space-5);
   scroll-margin-top: var(--nav-h);
 }
 .chapter-label {
   font-size: 12px; font-weight: 700;
   letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--accent-bright); margin: 0 0 16px;
+  color: var(--accent-bright); margin: 0 0 var(--stack-title);
 }
 .h2 {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(28px, 3.2vw, 56px);
   font-weight: 600; line-height: 1.18;
-  margin: 0 0 16px;
+  margin: 0 0 var(--stack-lead);
   max-width: min(22ch, 100%);
   /* render_rules.headlines: NEVER truncate / ellipsis / line-clamp */
   overflow: visible;
@@ -219,27 +272,27 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .eyebrow {
   font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--accent-bright); margin: 0 0 12px;
+  text-transform: uppercase; color: var(--accent-bright); margin: 0 0 var(--stack-title);
 }
 .lead {
-  font-size: 1.125rem; color: var(--text-1); margin: 0 0 28px;
+  font-size: 1.125rem; color: var(--text-1); margin: 0 0 var(--stack-body);
   max-width: 42em; line-height: 1.7;
 }
 .body-text {
-  font-size: 1.125rem; color: var(--text-1); margin: 0 0 20px;
+  font-size: 1.125rem; color: var(--text-1); margin: 0 0 var(--space-4);
   max-width: 42em; line-height: 1.75;
 }
 .kicker { font-size: 1.1rem; color: var(--text-0); margin: 20px 0; max-width: 40em }
 .closing-line {
-  margin: 32px 0 0; font-size: 1.2rem; color: var(--accent-bright);
+  margin: var(--space-5) 0 0; font-size: 1.2rem; color: var(--accent-bright);
   font-family: "Playfair Display", Georgia, serif; max-width: 28ch;
 }
 .break-headline {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0 0 28px; max-width: 22ch;
+  font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0 0 var(--stack-body); max-width: 22ch;
 }
 .section-block {
-  padding: clamp(32px, 4vh, 56px) 0;
+  padding: var(--section-y) 0;
   /* v6: reveal defaults VISIBLE — JS only enhances */
   opacity: 1; transform: none;
   transition: opacity .4s var(--ease), transform .4s var(--ease);
@@ -259,10 +312,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* About Navier — prose-stage (deck verbatim, full-viewport) */
 .about-stage {
-  min-height: min(100vh, 920px);
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   background: var(--bg-0);
 }
 .about-stage-inner { width: 100%; max-width: 80ch; }
@@ -637,12 +690,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 @media (max-width: 720px) { .foundry-pair { grid-template-columns: 1fr } }
 
 /* ═══ Network Shift v5 — Tasklet reference canvas ═══ */
-.ns-section { margin: 32px 0 48px; }
+.ns-section { margin: 0; }
 .ns-root {
   position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
 }
 .ns-canvas-stage {
   position: relative;
@@ -772,7 +823,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 @media (max-width: 520px) { .team-grid { grid-template-columns: 1fr } }
 
 /* Costs — 1:1 in-place card flip (v8 #2 — no ghosting) */
-.costs-compose { padding-block: clamp(32px, 4vw, 56px); }
+
 .costs-head { margin-bottom: 28px; }
 .costs-morph {
   position: relative;
@@ -1352,8 +1403,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .finale {
   position: relative; min-height: 85svh;
   display: flex; align-items: flex-end;
-  margin-top: 48px; overflow: hidden;
-  width: 100vw; margin-left: calc(50% - 50vw);
+  margin-top: var(--section-y); overflow: hidden;
+  width: 100%;
 }
 .finale-media { position: absolute; inset: 0; background: #0a0a0c }
 .finale-media video { width: 100%; height: 100%; object-fit: cover }
@@ -1376,7 +1427,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   margin: 0 auto 28px; color: var(--text-0);
 }
 
-.go-deeper { padding: 80px 0; border-top: 1px solid var(--line) }
+.go-deeper { padding: var(--section-y) 0; border-top: 1px solid var(--line) }
 .go-deeper-inner { text-align: center }
 .go-deeper-grid {
   display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px;
@@ -1424,10 +1475,79 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 
 @media (max-width: 720px) {
-  .inv-chapters { display: none }
-  .hero { min-height: 88svh }
-  .cinema-media { height: clamp(220px, 48vh, 400px) }
-  .ns-stage { height: clamp(360px, 70vh, 520px) }
+  :root {
+    --section-y: 36px;
+    --chapter-y: 48px;
+    --stack-lead: 16px;
+    --stack-body: 20px;
+    --cinema-h-hero: min(62svh, 560px);
+    --cinema-h-chapter: min(38svh, 320px);
+    --cinema-h-gtm: min(36svh, 300px);
+    --cinema-h-divider: min(40svh, 360px);
+  }
+  /* Mobile chapter chips — scrollable, never hidden */
+  .inv-nav-inner {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .inv-chapters {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 4px;
+    order: 3;
+  }
+  .inv-chapters::-webkit-scrollbar { display: none }
+  .inv-chapters a {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    font-size: 10px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .hero {
+    min-height: 88svh;
+    padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
+  }
+  .hero-headline { font-size: clamp(2.35rem, 11vw, 3.5rem); }
+  .cinema-media,
+  .cinema-media--hero,
+  .cinema-media--chapter,
+  .cinema-media--gtm,
+  .cinema-media--divider {
+    height: var(--cinema-h-chapter);
+  }
+  .cinema-media--hero { height: var(--cinema-h-hero); }
+  .cinema-media--gtm { height: var(--cinema-h-gtm); }
+  .cinema-media--divider { height: var(--cinema-h-divider); }
+  .ns-canvas-stage, #ns-stage {
+    height: clamp(300px, 58svh, 480px);
+  }
+  .ns-pin { min-height: 110svh; }
+  .about-stage { min-height: 0 !important; }
+  .gold-stat .value, .chip { white-space: normal; }
+  .gold-stat .value { font-size: clamp(1.35rem, 6vw, 2rem); }
+  .shipscale-kpis { flex-direction: column; }
+  .shipscale-kpi {
+    flex: none;
+    border-right: 0;
+    border-bottom: 1px solid rgba(185, 154, 95, 0.28);
+  }
+  .shipscale-kpi:last-child { border-bottom: 0; }
+  .quanta-stats-plate img { min-height: 200px; }
+  .player-logos.cols-4 { grid-template-columns: 1fr; }
+  .lightbox-close {
+    top: max(8px, env(safe-area-inset-top, 0px));
+    right: 8px;
+    min-width: 44px; min-height: 44px;
+  }
 }
 
 /* Backed-by typographic pedigree row (v5 P0-3) */
@@ -1494,20 +1614,28 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   z-index: 1;
 }
 
-/* v6 slide-stage doctrine */
+/* Stage sections — viewport min-height is desktop-only (see ≥1100px) */
 .stage-section {
-  min-height: min(100vh, 920px);
-  padding-block: clamp(48px, 6vw, 96px);
-  display: flex; flex-direction: column; justify-content: center;
+  min-height: 0;
+  padding-block: 0; /* section-block owns vertical rhythm */
+  display: flex; flex-direction: column; justify-content: flex-start;
   border-top: 1px solid var(--line);
+}
+@media (min-width: 1100px) {
+  .stage-section.stage-section--viewport,
+  .stage-section.about-stage {
+    min-height: min(100vh, 920px);
+    justify-content: center;
+    padding-block: var(--section-y-tight);
+  }
 }
 .stage-kicker {
   font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--accent-bright); margin: 0 0 10px;
+  text-transform: uppercase; color: var(--accent-bright); margin: 0 0 var(--stack-title);
 }
 .stage-kicker::after {
   content: ""; display: block; width: 48px; height: 1px;
-  background: var(--accent-bright); margin-top: 12px; opacity: 0.7;
+  background: var(--accent-bright); margin-top: var(--space-2); opacity: 0.7;
 }
 .stage-grid {
   display: grid;
@@ -1945,7 +2073,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
 /* Space between full-bleed GTM hero and section kicker (Maldives / Gulf) */
 .gtm-hero-section > .gtm-hero-copy {
-  padding-top: clamp(48px, 6vw, 88px);
+  padding-top: var(--space-6);
 }
 .maldives-logos { margin: 12px 0 8px; }
 .maldives-players { margin: 28px 0 32px; }
@@ -2034,7 +2162,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .costs-compose {
   max-width: none !important;
   width: 100%;
-  padding-inline: clamp(24px, 4vw, 64px);
+  padding-inline: var(--pad-inline-stage);
   box-sizing: border-box;
 }
 .costs-head-fixed {

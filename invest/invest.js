@@ -70,10 +70,22 @@
   function cinema(src, opts = {}) {
     if (!src) return '';
     const cap = opts.caption;
+    // Size via CSS vars/classes — never inline vh (defeats mobile clamps)
+    let sizeClass = 'cinema-media--chapter';
+    if (opts.size === 'hero') sizeClass = 'cinema-media--hero';
+    else if (opts.size === 'gtm') sizeClass = 'cinema-media--gtm';
+    else if (opts.size === 'divider') sizeClass = 'cinema-media--divider';
+    else if (opts.vh) {
+      const n = parseInt(String(opts.vh), 10);
+      if (n >= 68) sizeClass = 'cinema-media--hero';
+      else if (n >= 54) sizeClass = 'cinema-media--gtm';
+      else if (n >= 50) sizeClass = 'cinema-media--divider';
+      else sizeClass = 'cinema-media--chapter';
+    }
     return `
       <div class="cinema-block" data-home="${esc(opts.home || '')}" data-reveal>
         <div class="cinema">
-          <div class="cinema-media" style="${opts.vh ? `height:${opts.vh}` : ''}">
+          <div class="cinema-media ${sizeClass}">
             ${
               opts.video
                 ? `<video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="none" data-lazy-video poster="${esc(opts.poster || '')}">
@@ -828,7 +840,7 @@
         .join('');
       return `
         <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.maldives">
-          ${hero ? cinema(hero, { home: 'gtm.maldives', vh: '55vh' }) : ''}
+          ${hero ? cinema(hero, { home: 'gtm.maldives', size: 'gtm' }) : ''}
           <div class="section-inner gtm-hero-copy">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
@@ -847,7 +859,7 @@
       const gulf = homeSrc('gtm.gulf.plate') || mediaPath('assets/deck/gulf-hero.png');
       return `
         <div class="section-block stage-section gtm-hero-section" data-reveal data-home="gtm.gulf.plate">
-          ${gulf ? cinema(gulf, { home: 'gtm.gulf.plate', vh: '55vh' }) : ''}
+          ${gulf ? cinema(gulf, { home: 'gtm.gulf.plate', size: 'gtm' }) : ''}
           <div class="section-inner gtm-hero-copy">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
