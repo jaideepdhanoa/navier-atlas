@@ -1816,16 +1816,38 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .control-diagram.bow-right .control-wire { transform: none !important; }
 
 .quanta-stats-compose.has-plate {
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
-  gap: 24px; align-items: stretch;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.95fr);
+  gap: 28px; align-items: stretch;
 }
-.quanta-stats-plate img { width: 100%; height: 100%; max-height: none; min-height: 320px; object-fit: cover; }
+.quanta-stats-plate img { width: 100%; height: 100%; max-height: none; min-height: 320px; object-fit: cover; border-radius: 12px; }
 .quanta-stats-copy .gold-stat-band {
-  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  /* minmax(0,1fr) — never force 260px tracks that overflow a narrow copy column */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 16px;
+  margin: 20px 0 0;
+  padding-top: 18px;
+}
+.quanta-stats-copy .gold-stat {
+  min-width: 0;
+}
+.quanta-stats-copy .gold-stat .value {
+  /* Word stats ("Hybrid Electric", "Trans-ocean") must fit a half-column —
+     keep all four values the same size for visual consistency */
+  font-size: clamp(1.05rem, 1.55vw, 1.45rem);
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: manual;
+}
+.quanta-stats-copy .gold-stat .label {
+  margin-top: 8px;
+  font-size: 10px;
+  line-height: 1.35;
 }
 @media (max-width: 900px) {
   .quanta-stats-compose.has-plate { grid-template-columns: 1fr; }
-  .quanta-stats-copy .gold-stat-band { grid-template-columns: 1fr; }
+  .quanta-stats-copy .gold-stat-band { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .quanta-stats-copy .gold-stat .value { font-size: clamp(1.15rem, 4vw, 1.5rem); }
 }
 
 .cmp-s17 th.hi, .cmp-s17 td.hi {
