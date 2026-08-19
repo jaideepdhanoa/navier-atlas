@@ -1673,6 +1673,77 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .cargo-stage-media .ship-grid { margin-top: 10px; max-height: 200px; object-fit: contain; }
 @media (max-width: 860px) { .cargo-stage { grid-template-columns: 1fr; } }
 
+/* Ship scale — 3 columns: hero | variants grid | KPIs */
+.shipscale-triptych {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(200px, 0.85fr);
+  gap: 16px;
+  align-items: stretch;
+  margin: 22px 0 8px;
+}
+.shipscale-col {
+  min-width: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #0a0a0c;
+}
+.shipscale-col img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+.shipscale-grid img {
+  object-fit: contain;
+  background: #0a0a0c;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.shipscale-kpis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: 8px 0;
+  background: var(--bg-1);
+  overflow: visible;
+}
+.shipscale-kpi {
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(185, 154, 95, 0.28);
+}
+.shipscale-kpi:last-child { border-bottom: 0; }
+.shipscale-kpi .value {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-weight: 600;
+  color: var(--accent-bright);
+  line-height: 1.15;
+  margin: 0 0 8px;
+}
+.shipscale-kpi .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  line-height: 1.4;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .shipscale-triptych { grid-template-columns: 1fr; }
+  .shipscale-col img { min-height: 200px; max-height: 360px; }
+  .shipscale-kpis { flex-direction: row; flex-wrap: wrap; }
+  .shipscale-kpi {
+    flex: 1 1 40%;
+    border-bottom: 0;
+    border-right: 1px solid rgba(185, 154, 95, 0.28);
+  }
+  .shipscale-kpi:last-child { border-right: 0; }
+}
+
 /* Defense 50/50 */
 .defense-sbs {
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;

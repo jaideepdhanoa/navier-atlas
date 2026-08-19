@@ -1000,22 +1000,32 @@
       const ca = homeAssets('gtm.cargo') || {};
       const img = mediaPath(ca.shipscale || 'assets/deck/shipscale-hero.png');
       const grid = mediaPath(ca.shipscale_grid || 'assets/deck/shipscale-variants-grid.png');
-      const isCargo = /ship scale|sealift|cargo/i.test((s.title || '') + (s.kicker || ''));
+      const isShipScale = /ship scale|sealift/i.test((s.title || '') + (s.id || '') + (s.kicker || ''));
+      const kpiStack = (s.stats || [])
+        .map(function (st) {
+          return `<div class="shipscale-kpi">
+            <div class="value">${esc(st.value)}</div>
+            <div class="label">${esc(st.label)}</div>
+          </div>`;
+        })
+        .join('');
       return `
-        <div class="section-block cargo-compose" data-reveal>
+        <div class="section-block cargo-compose" data-reveal data-home="gtm.cargo">
           <div class="section-inner">
             ${kicker(s)}
-            ${isCargo ? `<p class="sublabel">SHIP SCALE</p>` : ''}
+            ${isShipScale ? `<p class="sublabel">SHIP SCALE</p>` : ''}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
             ${
-              isCargo
-                ? `<div class="cargo-stage">
-              <div class="cargo-stage-media">
-                <img src="${esc(img)}" alt="" loading="lazy" />
-                <img src="${esc(grid)}" alt="" loading="lazy" class="ship-grid" />
+              isShipScale
+                ? `<div class="shipscale-triptych">
+              <div class="shipscale-col shipscale-hero">
+                <img src="${esc(img)}" alt="Ship-scale sealift landing craft" loading="lazy" />
               </div>
-              <div class="cargo-stage-copy">${goldStats(s.stats)}</div>
+              <div class="shipscale-col shipscale-grid">
+                <img src="${esc(grid)}" alt="Ship-scale variants" loading="lazy" />
+              </div>
+              <div class="shipscale-col shipscale-kpis">${kpiStack}</div>
             </div>`
                 : goldStats(s.stats)
             }
