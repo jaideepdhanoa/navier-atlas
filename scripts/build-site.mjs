@@ -29,6 +29,7 @@ import {
 import { auditClusterOrphans, collectRegionStats, uniqueCityCount } from './region-share.mjs';
 import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildEmployerHubs } from './build-employer-hubs.mjs';
+import { buildInvest } from './build-invest.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
@@ -556,6 +557,13 @@ for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
     if (!built.length) console.warn('⚠ no employer hubs built');
   } catch (e) {
     console.error('build-site: ABORT — employer hubs failed:', e.message || e);
+    process.exit(1);
+  }
+
+  try {
+    buildInvest();
+  } catch (e) {
+    console.error('build-site: ABORT — invest microsite failed:', e.message || e);
     process.exit(1);
   }
 }

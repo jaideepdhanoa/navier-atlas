@@ -11,12 +11,14 @@
 # Optional env (if the project isn't linked via .vercel/):
 #   VERCEL_ORG_ID, VERCEL_PROJECT_ID   target the existing navier-atlas project non-interactively
 #
-# Partner auth (set in Vercel project env — not in git):
-#   AUTH_SECRET                        session-cookie signing key
+# Partner / invest auth (set in Vercel project env — not in git):
+#   AUTH_SECRET                        session-cookie signing key (keeps you logged in 14d)
+#   INVEST_PASSWORD                    password for /invest Series B site (default in middleware: morpheus)
+#   TEASER_PASSWORD                    password for /teaser streamlined site (default in middleware: pioneer)
 #   PARTNERS_HUB_PASSWORD              password for /partners internal directory
 #   PARTNER_AUTH_GRAB, PARTNER_AUTH_UBER, …   per-slug passwords (hyphens → underscores)
-#   PARTNER_AUTH_JSON                  optional {"grab":"…","__hub__":"…"} bulk map
-#   /cluster/* and /city/* stay public; /partners + /<partner>/* gated by _dist/middleware.js
+#   PARTNER_AUTH_JSON                  optional {"grab":"…","__hub__":"…","__invest__":"…"} bulk map
+#   /cluster/* and /city/* stay public; /invest + /partners + /<partner>/* gated by _dist/middleware.js
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
