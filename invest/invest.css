@@ -1148,7 +1148,20 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .chip-card .b { font-size: 13px; color: var(--text-1); line-height: 1.45 }
 .chip-num {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.5rem; color: var(--accent-bright); margin: 8px 0;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  color: var(--accent-bright);
+  margin: 4px 0 8px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.chip-num .chip-amt { display: inline; }
+.chip-num .chip-unit {
+  display: inline;
+  font-size: 0.55em;
+  margin-left: 0.15ch;
+  letter-spacing: 0.02em;
+  vertical-align: 0.05em;
+  opacity: 0.92;
 }
 .chip-num.ok { color: var(--ok) }
 @media (max-width: 800px) { .chips-3 { grid-template-columns: 1fr } }

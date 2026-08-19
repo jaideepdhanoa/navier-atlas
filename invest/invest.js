@@ -914,6 +914,14 @@
       // v8 #9: cargo gap only — play/shipscale/wedge are their own composed sections
       const ca = homeAssets('gtm.cargo') || {};
       const opener = ca.opener ? mediaPath(ca.opener) : mediaPath('assets/deck/air-vs-ocean-cargo.png');
+      // Keep "$0.25" and "/kg" on one tight line (never a disconnected wrap)
+      const priceHtml = function (price) {
+        const m = String(price || '').match(/^(.*?)(\s*\/\s*kg)\s*$/i);
+        if (m) {
+          return `<span class="chip-amt">${esc(m[1].trim())}</span><span class="chip-unit">/kg</span>`;
+        }
+        return esc(price);
+      };
       let chartCards = '';
       if (s.chart) {
         const c = s.chart;
@@ -923,7 +931,7 @@
             const x = c[k];
             return `<div class="chip-card">
               <div class="t">${esc(x.label || k)}</div>
-              ${x.price ? `<div class="chip-num">${esc(x.price)}</div>` : ''}
+              ${x.price ? `<div class="chip-num">${priceHtml(x.price)}</div>` : ''}
               ${x.value ? `<div class="chip-num ok">${esc(x.value)}</div>` : ''}
               <div class="b">${esc(x.time || x.detail || x.line || '')}</div>
             </div>`;
