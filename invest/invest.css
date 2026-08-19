@@ -1899,6 +1899,91 @@ a.team-link:hover {
 .cargo-stage-media .ship-grid { margin-top: 10px; max-height: 200px; object-fit: contain; }
 @media (max-width: 720px) { .cargo-stage { grid-template-columns: 1fr; } }
 
+/* Teaser discrete pipeline — full-width KPIs, then takeaways | Morpheus 180 */
+.discrete-pipeline .gold-stat-band {
+  /* Full stage width — never squeeze 4 KPIs into the takeaway column */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin: var(--space-4) 0 var(--space-5);
+  align-items: start;
+}
+.discrete-pipeline .gold-stat .value {
+  font-size: clamp(1.55rem, 2.6vw, 2.55rem);
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.discrete-pipeline .gold-stat .label {
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: manual;
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  line-height: 1.4;
+}
+.discrete-pipeline-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--space-5, 28px);
+  align-items: center;
+  margin: 0 0 var(--space-3, 12px);
+}
+.discrete-takeaways {
+  display: grid;
+  gap: 12px;
+}
+.discrete-takeaway .t {
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  margin-bottom: 6px;
+}
+.discrete-takeaway .b {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-1);
+}
+.discrete-takeaway--emphasis .discrete-takeaway-value {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  color: var(--accent-bright);
+  line-height: 1.15;
+  margin-top: 4px;
+}
+.discrete-pipeline-art {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  /* Slight lift behind the dark Morpheus CGI so the hull silhouette reads */
+  background:
+    radial-gradient(120% 80% at 50% 60%, rgba(40, 48, 62, 0.55) 0%, rgba(7, 8, 10, 0.96) 62%, #05060a 100%);
+  padding: 8px;
+}
+.discrete-pipeline-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(70vh, 560px);
+  object-fit: contain;
+  filter: brightness(1.08) contrast(1.05);
+}
+@media (max-width: 1099px) {
+  .discrete-pipeline .gold-stat-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .discrete-pipeline-stage { grid-template-columns: 1fr; }
+  .discrete-pipeline-art { order: -1; }
+  .discrete-pipeline-art img { max-height: min(52vh, 420px); }
+}
+@media (max-width: 720px) {
+  .discrete-pipeline .gold-stat .value {
+    font-size: clamp(1.35rem, 6vw, 1.85rem);
+  }
+  .discrete-pipeline .gold-stat .label { max-width: none; }
+}
+
 /* Ship scale — equal-height image pair + KPI band below */
 .shipscale-layout {
   display: flex;
@@ -1976,14 +2061,91 @@ a.team-link:hover {
   .shipscale-kpi:last-child { border-bottom: 0; }
 }
 
-/* Defense 50/50 */
+/* Round-7 defense panel — rail + quotes | lead loop + photo pair + click videos */
+.defense-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+  gap: var(--space-5, 28px);
+  align-items: start;
+  margin-top: var(--space-4, 20px);
+}
+.defense-thesis {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  line-height: 1.35;
+  color: var(--text-0);
+  margin: 0 0 var(--space-4, 20px);
+}
+.defense-rail {
+  display: grid;
+  gap: 18px;
+  margin: 0 0 var(--space-5, 28px);
+}
+.defense-rail-row { min-width: 0; }
+.defense-rail-term {
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  line-height: 1.15;
+}
+.defense-rail-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.defense-press-quote {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border-left: 2px solid rgba(212, 175, 95, 0.55);
+  background: rgba(185, 154, 95, 0.05);
+}
+.defense-press-quote p {
+  margin: 0;
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  line-height: 1.45;
+  color: var(--text-0);
+}
+.defense-press-quote cite {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  font-style: normal;
+}
+.defense-press-quote cite a { color: var(--accent-bright); text-decoration: none; }
+.defense-press-quote cite a:hover { text-decoration: underline; }
+.defense-media { display: grid; gap: 14px; }
+.defense-lead-video video,
+.defense-click-video video,
+.defense-photo img {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+  background: #0a0a0c;
+}
+.defense-lead-video video { max-height: min(52vh, 480px); object-fit: cover; }
 .defense-sbs {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
-.defense-sbs-img img {
-  width: 100%; height: 100%; min-height: 220px; max-height: 360px;
-  object-fit: cover; border-radius: 10px; display: block;
+.defense-photo figcaption,
+.defense-lead-video figcaption,
+.defense-click-video figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.35;
 }
+.defense-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.defense-click-video video { max-height: 220px; object-fit: cover; }
 .defense-quote-inline {
   margin: 16px 0; padding: 20px 22px; border-radius: 10px;
   border-left: 3px solid var(--accent-bright);
@@ -1995,7 +2157,13 @@ a.team-link:hover {
   display: block; margin-top: 10px; font-style: normal;
   font-family: Inter, sans-serif; font-size: 12px; color: var(--text-2);
 }
-@media (max-width: 720px) { .defense-sbs { grid-template-columns: 1fr; } }
+@media (max-width: 1099px) {
+  .defense-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .defense-sbs,
+  .defense-secondary { grid-template-columns: 1fr; }
+}
 
 /* TAM column labels */
 .tam-head, .tam-grid {

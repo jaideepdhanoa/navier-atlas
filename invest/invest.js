@@ -10,7 +10,9 @@
   }
 
   const $ = (sel, el = document) => el.querySelector(sel);
-  const ASSET = '/invest/assets/';
+  // base_path is /invest or /teaser — set by build-invest.mjs so the shared template works for both
+  const BASE = (D.site && D.site.base_path) || '/invest';
+  const ASSET = BASE + '/assets/';
   const A = D.assets || {};
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -170,7 +172,7 @@
           ${brandMark()}
           <div class="inv-brand-text">
             <span class="name">NAVIER</span>
-            <span class="tag">Series B</span>
+            <span class="tag">${esc(/teaser/i.test(BASE) ? 'Teaser' : 'Series B')}</span>
           </div>
         </div>
         <div class="inv-chapters">${links}</div>
@@ -1050,6 +1052,49 @@
         </div>`;
     },
 
+    /** Teaser-only: pipeline KPIs + takeaways + Morpheus 180 (no live map / partner rows) */
+    'discrete-pipeline'(s) {
+      const art = (s.art && s.art.asset) || 'assets/deck/n180-morpheus-hero.png';
+      const img = mediaPath(art);
+      const alt = (s.art && s.art.alt) || 'Morpheus 180';
+      const takes = (s.takeaways || [])
+        .map(function (t) {
+          const title = t.title || t.label || '';
+          const body = t.body || t.detail || '';
+          const em = t.emphasis ? ' discrete-takeaway--emphasis' : '';
+          // Title-only floor rows (gold label + big body) vs plain body lines
+          if (title && body) {
+            return `
+        <div class="chip-card discrete-takeaway${em}">
+          <div class="t">${esc(title)}</div>
+          <div class="b discrete-takeaway-value">${esc(body)}</div>
+        </div>`;
+          }
+          return `
+        <div class="chip-card discrete-takeaway${em}">
+          <div class="b">${esc(body || title)}</div>
+        </div>`;
+        })
+        .join('');
+      return `
+        <div class="section-block discrete-pipeline" data-reveal data-home="gtm.discrete-pipeline" id="discrete-pipeline">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
+            ${goldStats(s.gold_stats || s.stats || [])}
+            <div class="discrete-pipeline-stage">
+              <div class="discrete-pipeline-copy">
+                ${takes ? `<div class="discrete-takeaways">${takes}</div>` : ''}
+              </div>
+              <div class="discrete-pipeline-art contain-media">
+                <img src="${esc(img)}" alt="${esc(alt)}" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>`;
+    },
+
     'stat-panel'(s) {
       const ca = homeAssets('gtm.cargo') || {};
       const img = mediaPath(ca.shipscale || 'assets/deck/shipscale-hero.png');
@@ -1135,21 +1180,66 @@
     },
 
     'defense-panel'(s) {
-      // v8 #11: camo + Navy 50/50 side by side
+      // Round-7: capabilities rail + thesis + quotes | lead loop + photo pair + click-to-play secondaries
       const da = homeAssets('gtm.defense') || {};
-      const plateSrc = da.plate ? mediaPath(da.plate) : '';
-      const inset = da.inset ? mediaPath(da.inset) : '';
-      const quote = s.pull_quote
+      const media = s.media || {};
+      const lead = media.lead_video || {};
+      const leadSrc = mediaPath(lead.src || da.lead_video || '');
+      const photos = (media.photos && media.photos.length
+        ? media.photos
+        : (da.pair || []).map(function (src) { return { src: src, caption: '' }; })
+      ).slice(0, 2);
+      const secondary = media.secondary_videos || [];
+      const rail = ((s.capability_rail && s.capability_rail.rows) || [])
+        .map(function (r) {
+          return `<div class="defense-rail-row">
+            <div class="defense-rail-term">${esc(r.term || '')}</div>
+            <div class="defense-rail-desc">${esc(r.desc || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const blocks = (s.blocks || [])
+        .map(function (b) {
+          return `<div class="chip-card"><div class="t">${esc(b.title || '')}</div><div class="b">${nl(b.body || b.detail || '')}</div></div>`;
+        })
+        .join('');
+      const usmi = s.pull_quote
         ? `<blockquote class="defense-quote-inline">
             <p>${esc(s.pull_quote.quote || '')}</p>
             <cite>${esc(s.pull_quote.attribution || '')}</cite>
           </blockquote>`
         : '';
-      const blocks = (s.blocks || [])
-        .map(
-          (b) => `
-        <div class="chip-card"><div class="t">${esc(b.title || '')}</div><div class="b">${nl(b.body || b.detail || '')}</div></div>`,
-        )
+      const press = s.press_quote
+        ? `<blockquote class="defense-press-quote">
+            <p>${esc(s.press_quote.quote || '')}</p>
+            <cite>${
+              s.press_quote.url
+                ? `<a href="${esc(s.press_quote.url)}" target="_blank" rel="noopener noreferrer">${esc(s.press_quote.attribution || '')}</a>`
+                : esc(s.press_quote.attribution || '')
+            }</cite>
+          </blockquote>`
+        : '';
+      const photoHtml = photos
+        .map(function (ph) {
+          const src = mediaPath(ph.src || ph);
+          if (!src) return '';
+          return `<figure class="defense-photo">
+            <img src="${esc(src)}" alt="${esc(ph.caption || '')}" loading="lazy" />
+            ${ph.caption ? `<figcaption>${esc(ph.caption)}</figcaption>` : ''}
+          </figure>`;
+        })
+        .join('');
+      const secondaryHtml = secondary
+        .map(function (v) {
+          const src = mediaPath(v.src);
+          if (!src) return '';
+          return `<figure class="defense-click-video">
+            <video playsinline controls preload="metadata" data-defense-click>
+              <source src="${esc(src)}" type="video/mp4" />
+            </video>
+            ${v.caption ? `<figcaption>${esc(v.caption)}</figcaption>` : ''}
+          </figure>`;
+        })
         .join('');
       return `
         <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
@@ -1159,14 +1249,31 @@
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${s.intro ? `<p class="dual-use-intro">${esc(s.intro)}</p>` : ''}
             ${s.sub_line ? `<p class="dual-use-sub">${esc(s.sub_line)}</p>` : ''}
-            <div class="defense-sbs">
-              ${inset ? `<div class="defense-sbs-img"><img src="${esc(inset)}" alt="" loading="lazy" /></div>` : ''}
-              ${plateSrc ? `<div class="defense-sbs-img"><img src="${esc(plateSrc)}" alt="" loading="lazy" /></div>` : ''}
+            <div class="defense-layout">
+              <div class="defense-copy">
+                ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+                ${rail ? `<div class="defense-rail">${rail}</div>` : ''}
+                ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
+                ${usmi}
+                ${press}
+                ${s.deployment_line ? `<p class="closing-line">${esc(s.deployment_line)}</p>` : ''}
+                ${s.fine_print ? `<p class="muted">${esc(s.fine_print)}</p>` : ''}
+              </div>
+              <div class="defense-media">
+                ${
+                  leadSrc
+                    ? `<figure class="defense-lead-video">
+                  <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" data-lazy-video>
+                    <source src="${esc(leadSrc)}" type="video/mp4" />
+                  </video>
+                  ${lead.caption ? `<figcaption>${esc(lead.caption)}</figcaption>` : ''}
+                </figure>`
+                    : ''
+                }
+                ${photoHtml ? `<div class="defense-sbs">${photoHtml}</div>` : ''}
+                ${secondaryHtml ? `<div class="defense-secondary">${secondaryHtml}</div>` : ''}
+              </div>
             </div>
-            ${quote}
-            <div class="dual-use-blocks">${blocks}</div>
-            ${s.deployment_line ? `<p class="closing-line">${esc(s.deployment_line)}</p>` : ''}
-            ${s.fine_print ? `<p class="muted">${esc(s.fine_print)}</p>` : ''}
           </div>
         </div>`;
     },
@@ -1525,12 +1632,10 @@
   function claimChapter() {
     const data = D.claim;
     if (!data) return '';
-    const fleet = homeSrc('claim.opener');
     const heritage = homeSrc('claim.three_costs.divider');
     const secs = data.sections || [];
     const parts = [];
-    // cinema opener
-    if (fleet) parts.push(cinema(fleet, { home: 'claim.opener', caption: homeCap('claim.opener'), vh: '72vh', eager: true }));
+    // No fleet-family cinema after hero — jump straight into Core Thesis
     for (const sec of secs) {
       if (sec.id === 'costs-levers' && heritage) {
         parts.push(cinema(heritage, { home: 'claim.three_costs.divider', caption: homeCap('claim.three_costs.divider'), vh: '58vh' }));
@@ -1608,9 +1713,12 @@
       })
       .join('');
     // Go Deeper before Own the Edge finale so the film/contact isn't buried after the close
+    const moneyLabel = data.chapter_label
+      ? `<div class="section-inner"><p class="chapter-label">${esc(data.chapter_label)}</p></div>`
+      : '';
     return `
       <section class="chapter" id="money">
-        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        ${moneyLabel}
         ${mainHtml}
         ${foot ? R.footer(foot) : ''}
         ${finale ? R['finale-plate'](finale) : ''}
@@ -2358,7 +2466,7 @@
       loadCss('https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css');
       Promise.all([
         loadScript('https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'),
-        loadScript('/invest/pipeline-geo.js'),
+        loadScript(BASE + '/pipeline-geo.js'),
       ])
         .then(bootMap)
         .catch(function (e) {

@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 /**
- * build-invest.mjs — emit Series B investor microsite to _dist/invest/
+ * build-invest.mjs — emit Series B investor microsite (+ teaser) to _dist/
  *
  * Source of truth: handoff/invest-microsite/contracts/*.json
  * Rule: render authored data only; strip underscore fields.
+ *
+ *   _dist/invest/  — full Series B site
+ *   _dist/teaser/  — streamlined teaser (filtered sections + discrete pipeline)
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,7 +15,30 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'handoff', 'invest-microsite');
 const TEMPLATE = path.join(ROOT, 'invest');
-const DIST = path.join(ROOT, '_dist', 'invest');
+
+/** Sections dropped from /teaser (keep Maldives + Gulf + discrete pipeline + Go Deeper + finale). */
+const TEASER_EXCLUDE = {
+  product: new Set(['quanta-unlocks', 'competitive']),
+  gtm: new Set([
+    'revenue-lines',
+    'unit-econ',
+    'cargo-gap',
+    'cargo-play',
+    'sealift',
+    'day-night-wedge',
+    'offshore',
+    'dual-use',
+    'market-floor',
+    'pipeline',
+  ]),
+  money: new Set([
+    'operating-plan',
+    'ramp-charts',
+    'roadmap',
+    'five-markets',
+    'the-round',
+  ]),
+};
 
 function stripUnderscore(obj) {
   if (obj == null || typeof obj !== 'object') return obj;
@@ -43,62 +69,111 @@ function copyDir(src, dest) {
   }
 }
 
-export function buildInvest() {
-  if (!fs.existsSync(path.join(SRC, 'contracts', 'site.json'))) {
-    console.warn('build-invest: contracts missing — skip');
-    return false;
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function discretePipelineSection(pipelineMap) {
+  const p = pipelineMap || {};
+  return {
+    id: 'discrete-pipeline',
+    type: 'discrete-pipeline',
+    kicker: '04 · GTM — THE PIPELINE',
+    eyebrow: p.eyebrow || 'THE PIPELINE',
+    // Teaser discrete plate — market thesis title + pipeline KPIs (not the live map)
+    title: 'From One Nation to a Global Network',
+    gold_stats: p.gold_stats || [],
+    takeaways: [
+      {
+        body: '100+ prospects across 672 corridors · 385 cities · 79 countries.',
+      },
+      {
+        body: 'Strategic acquisitions under review as catalyst for capability expansion',
+      },
+      {
+        title: 'THE TEN-YEAR FLOOR — REPLACEMENT ONLY',
+        body: '≈ 13,000 vessels',
+        emphasis: true,
+      },
+    ],
+    art: {
+      asset: 'assets/deck/n180-morpheus-hero.png',
+      alt: 'Morpheus 180 — ship-scale foiling landing craft',
+    },
+  };
+}
+
+function applyTeaserFilter(bundle) {
+  const out = structuredClone(bundle);
+
+  out.site = {
+    ...out.site,
+    title: 'Navier — Teaser · OWN THE EDGE',
+    route: '/teaser',
+    base_path: '/teaser',
+    og: {
+      ...(out.site.og || {}),
+      title: 'Navier — Teaser',
+      description: 'OWN THE EDGE',
+    },
+  };
+
+  // Drop Money chapter from sticky nav when it only holds Go Deeper + finale
+  if (out.site.nav && Array.isArray(out.site.nav.chapters)) {
+    out.site.nav.chapters = out.site.nav.chapters.filter((c) => c.id !== 'money');
   }
 
+  for (const [chapter, drop] of Object.entries(TEASER_EXCLUDE)) {
+    if (!out[chapter] || !Array.isArray(out[chapter].sections)) continue;
+    out[chapter].sections = out[chapter].sections.filter((s) => !drop.has(s.id));
+  }
+
+  // Insert discrete pipeline after Gulf (Maldives → Gulf → Discrete Pipeline → …)
+  if (out.gtm && Array.isArray(out.gtm.sections)) {
+    const sections = out.gtm.sections.filter((s) => s.id !== 'discrete-pipeline');
+    const gulfIdx = sections.findIndex((s) => s.id === 'gulf');
+    const insertAt = gulfIdx >= 0 ? gulfIdx + 1 : sections.length;
+    sections.splice(insertAt, 0, discretePipelineSection(out['pipeline-map']));
+    out.gtm.sections = sections;
+  }
+
+  // Soften money chapter label — only Go Deeper + Own the Edge remain
+  if (out.money) {
+    out.money.chapter_label = '';
+  }
+
+  return out;
+}
+
+function emitSite({ basePath, distRel, bundle, label }) {
+  const DIST = path.join(ROOT, '_dist', distRel);
   ensureDir(DIST);
   ensureDir(path.join(DIST, 'data'));
   ensureDir(path.join(DIST, 'assets'));
 
-  const contracts = [
-    'site',
-    'hero',
-    'claim',
-    'proof',
-    'product',
-    'gtm',
-    'money',
-    'ladder',
-    'pipeline-map',
-    'unitecon',
-    'assets', // media manifest v3 — one-home sections
-  ];
-
-  const bundle = {};
-  for (const name of contracts) {
-    const p = path.join(SRC, 'contracts', `${name}.json`);
-    if (!fs.existsSync(p)) {
-      if (name === 'assets') {
-        console.warn('build-invest: assets.json missing — visual slots unavailable');
-        continue;
-      }
-      console.error(`FATAL: missing ${p}`);
-      process.exit(1);
-    }
-    const stripped = stripUnderscore(readJson(p));
-    bundle[name] = stripped;
+  // Per-contract JSON + single blob
+  for (const [name, data] of Object.entries(bundle)) {
     fs.writeFileSync(
       path.join(DIST, 'data', `${name}.json`),
-      JSON.stringify(stripped),
+      JSON.stringify(data),
     );
   }
-
-  // Single data blob for zero-fetch first paint
   fs.writeFileSync(
     path.join(DIST, 'data', 'invest-data.js'),
     `window.INVEST_DATA = ${JSON.stringify(bundle)};\n`,
   );
 
-  // Assets from handoff (deck plates, loops, posters, team) + invest/ extras
+  // Assets from handoff + invest/ extras
   const assetSrc = path.join(SRC, 'assets');
   if (fs.existsSync(assetSrc)) copyDir(assetSrc, path.join(DIST, 'assets'));
   const localAssets = path.join(TEMPLATE, 'assets');
   if (fs.existsSync(localAssets)) copyDir(localAssets, path.join(DIST, 'assets'));
 
-  // Verify every assets.json path exists (v3 sections[] + legacy slots)
+  // Verify every assets.json path exists
   if (bundle.assets) {
     const missing = [];
     const checkPath = (rel) => {
@@ -110,20 +185,33 @@ export function buildInvest() {
       ];
       if (!candidates.some((c) => fs.existsSync(c))) missing.push(rel);
     };
-    const walk = (v, key = '') => {
+    const walk = (v) => {
       if (!v) return;
-      // Only treat strings that look like asset paths — not free-text notes/treatments
       if (typeof v === 'string') {
         if (/^assets\//.test(v) || /\.(png|jpe?g|gif|webp|mp4|webm|svg)$/i.test(v)) {
           checkPath(v);
         }
         return;
       }
-      if (Array.isArray(v)) v.forEach((x) => walk(x, key));
+      if (Array.isArray(v)) v.forEach((x) => walk(x));
       else if (typeof v === 'object') {
         for (const [k, x] of Object.entries(v)) {
-          if (k === 'note' || k === 'treatment' || k === 'behavior' || k === 'exception' || k === 'alt' || k === 'caption' || k === 'purpose' || k === 'provenance' || k === 'resolution_note' || k === 'pending' || k === 'status') continue;
-          walk(x, k);
+          if (
+            k === 'note' ||
+            k === 'treatment' ||
+            k === 'behavior' ||
+            k === 'exception' ||
+            k === 'alt' ||
+            k === 'caption' ||
+            k === 'purpose' ||
+            k === 'provenance' ||
+            k === 'resolution_note' ||
+            k === 'pending' ||
+            k === 'status'
+          ) {
+            continue;
+          }
+          walk(x);
         }
       }
     };
@@ -131,8 +219,14 @@ export function buildInvest() {
     walk(bundle.assets.sections);
     walk(bundle.assets.slots);
     walk(bundle.assets.chapter_dividers);
+    // Teaser also needs discrete-pipeline art
+    if (bundle.gtm) {
+      for (const sec of bundle.gtm.sections || []) {
+        if (sec.art && sec.art.asset) checkPath(sec.art.asset);
+      }
+    }
     if (missing.length) {
-      console.error('FATAL invest assets missing on disk:\n  ' + missing.join('\n  '));
+      console.error(`FATAL ${label} assets missing on disk:\n  ` + missing.join('\n  '));
       process.exit(1);
     }
   }
@@ -152,8 +246,7 @@ export function buildInvest() {
   }
 
   const site = bundle.site;
-  // Absolute /invest/* asset paths — required with cleanUrls + trailingSlash:false
-  // (relative ./foo from /invest resolves to /foo, not /invest/foo).
+  // Absolute ${basePath}/* asset paths — required with cleanUrls + trailingSlash:false
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -169,20 +262,19 @@ export function buildInvest() {
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/invest/invest.css" />
+<link rel="stylesheet" href="${basePath}/invest.css" />
 </head>
 <body>
 <div id="app"></div>
-<script src="/invest/data/invest-data.js"></script>
-<script src="/invest/network-shift.js"></script>
-<script src="/invest/invest.js"></script>
+<script src="${basePath}/data/invest-data.js"></script>
+<script src="${basePath}/network-shift.js"></script>
+<script src="${basePath}/invest.js"></script>
 </body>
 </html>
 `;
   fs.writeFileSync(path.join(DIST, 'index.html'), html);
 
   // Kill-scan on emitted data blob
-  // Word-boundary aware — avoid matching "evaluation" as "valuation"
   const banned = [
     /\$600\s*B/i,
     /2,?400\s*NMi/i,
@@ -197,21 +289,74 @@ export function buildInvest() {
   const blob = JSON.stringify(bundle);
   for (const re of banned) {
     if (re.test(blob)) {
-      console.error(`FATAL invest kill-scan hit: ${re}`);
+      console.error(`FATAL ${label} kill-scan hit: ${re}`);
       process.exit(1);
     }
   }
 
-  console.log(`invest → _dist/invest/  (${contracts.length} contracts · noindex)`);
+  const nContracts = Object.keys(bundle).length;
+  console.log(`${label} → _dist/${distRel}/  (${nContracts} contracts · noindex · base ${basePath})`);
   return true;
 }
 
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+function loadBundle() {
+  if (!fs.existsSync(path.join(SRC, 'contracts', 'site.json'))) {
+    console.warn('build-invest: contracts missing — skip');
+    return null;
+  }
+
+  const contracts = [
+    'site',
+    'hero',
+    'claim',
+    'proof',
+    'product',
+    'gtm',
+    'money',
+    'ladder',
+    'pipeline-map',
+    'unitecon',
+    'assets',
+  ];
+
+  const bundle = {};
+  for (const name of contracts) {
+    const p = path.join(SRC, 'contracts', `${name}.json`);
+    if (!fs.existsSync(p)) {
+      if (name === 'assets') {
+        console.warn('build-invest: assets.json missing — visual slots unavailable');
+        continue;
+      }
+      console.error(`FATAL: missing ${p}`);
+      process.exit(1);
+    }
+    bundle[name] = stripUnderscore(readJson(p));
+  }
+
+  // Full invest site always carries base_path for the shared JS template
+  bundle.site = { ...bundle.site, base_path: '/invest' };
+  return bundle;
+}
+
+export function buildInvest() {
+  const bundle = loadBundle();
+  if (!bundle) return false;
+
+  emitSite({
+    basePath: '/invest',
+    distRel: 'invest',
+    bundle,
+    label: 'invest',
+  });
+
+  emitSite({
+    basePath: '/teaser',
+    distRel: 'teaser',
+    bundle: applyTeaserFilter(bundle),
+    label: 'teaser',
+  });
+
+  return true;
 }
 
 const isMain =
