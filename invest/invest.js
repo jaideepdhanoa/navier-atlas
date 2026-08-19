@@ -1072,14 +1072,16 @@
             ${s.intro || s.subhead ? `<p class="lead">${esc(s.intro || s.subhead)}</p>` : ''}
             ${
               isShipScale
-                ? `<div class="shipscale-triptych">
-              <div class="shipscale-col shipscale-hero">
-                <img src="${esc(img)}" alt="Ship-scale sealift landing craft" loading="lazy" />
+                ? `<div class="shipscale-layout">
+              <div class="shipscale-images">
+                <div class="shipscale-col shipscale-hero">
+                  <img src="${esc(img)}" alt="Ship-scale sealift landing craft" loading="lazy" />
+                </div>
+                <div class="shipscale-col shipscale-grid">
+                  <img src="${esc(grid)}" alt="Ship-scale variants" loading="lazy" />
+                </div>
               </div>
-              <div class="shipscale-col shipscale-grid">
-                <img src="${esc(grid)}" alt="Ship-scale variants" loading="lazy" />
-              </div>
-              <div class="shipscale-col shipscale-kpis">${kpiStack}</div>
+              <div class="shipscale-kpis">${kpiStack}</div>
             </div>`
                 : goldStats(s.stats)
             }

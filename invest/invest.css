@@ -1540,17 +1540,6 @@ a.team-link:hover {
   .about-stage { min-height: 0 !important; }
   .gold-stat .value, .chip { white-space: normal; }
   .gold-stat .value { font-size: clamp(1.35rem, 6vw, 2rem); }
-  .shipscale-triptych { grid-template-columns: 1fr; }
-  .shipscale-kpis {
-    grid-column: auto;
-    flex-direction: column;
-  }
-  .shipscale-kpi {
-    flex: none;
-    border-right: 0;
-    border-bottom: 1px solid rgba(185, 154, 95, 0.28);
-  }
-  .shipscale-kpi:last-child { border-bottom: 0; }
   .quanta-stats-plate img { min-height: 200px; }
   .player-logos.cols-4 { grid-template-columns: 1fr; }
   .lightbox-close {
@@ -1910,13 +1899,18 @@ a.team-link:hover {
 .cargo-stage-media .ship-grid { margin-top: 10px; max-height: 200px; object-fit: contain; }
 @media (max-width: 720px) { .cargo-stage { grid-template-columns: 1fr; } }
 
-/* Ship scale — 3 columns: hero | variants grid | KPIs */
-.shipscale-triptych {
+/* Ship scale — equal-height image pair + KPI band below */
+.shipscale-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 var(--space-3);
+}
+.shipscale-images {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(200px, 0.85fr);
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
   align-items: stretch;
-  margin: 22px 0 8px;
 }
 .shipscale-col {
   min-width: 0;
@@ -1924,34 +1918,36 @@ a.team-link:hover {
   overflow: hidden;
   border: 1px solid var(--line);
   background: #0a0a0c;
+  /* Shared height for both images */
+  aspect-ratio: 16 / 10;
 }
 .shipscale-col img {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 220px;
   object-fit: cover;
 }
 .shipscale-grid img {
   object-fit: contain;
-  background: #0a0a0c;
-  padding: 8px;
+  padding: 10px;
   box-sizing: border-box;
+  background: #0a0a0c;
 }
 .shipscale-kpis {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   background: var(--bg-1);
-  overflow: visible;
+  overflow: hidden;
 }
 .shipscale-kpi {
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(185, 154, 95, 0.28);
+  padding: 20px 22px;
+  border-right: 1px solid rgba(185, 154, 95, 0.28);
+  min-width: 0;
 }
-.shipscale-kpi:last-child { border-bottom: 0; }
+.shipscale-kpi:last-child { border-right: 0; }
 .shipscale-kpi .value {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.35rem, 2vw, 1.85rem);
@@ -1969,32 +1965,11 @@ a.team-link:hover {
   line-height: 1.4;
   margin: 0;
 }
-/* Tablet: hero | grid on top row, KPIs full-width underneath */
-@media (max-width: 1099px) {
-  .shipscale-triptych {
-    grid-template-columns: 1fr 1fr;
-  }
-  .shipscale-kpis {
-    grid-column: 1 / -1;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  .shipscale-kpi {
-    flex: 1 1 30%;
-    border-bottom: 0;
-    border-right: 1px solid rgba(185, 154, 95, 0.28);
-  }
-  .shipscale-kpi:last-child { border-right: 0; }
-}
-/* Phone: single column (must follow tablet rule for cascade) */
 @media (max-width: 720px) {
-  .shipscale-triptych { grid-template-columns: 1fr; }
-  .shipscale-kpis {
-    grid-column: auto;
-    flex-direction: column;
-  }
+  .shipscale-images { grid-template-columns: 1fr; }
+  .shipscale-col { aspect-ratio: 16 / 9; }
+  .shipscale-kpis { grid-template-columns: 1fr; }
   .shipscale-kpi {
-    flex: none;
     border-right: 0;
     border-bottom: 1px solid rgba(185, 154, 95, 0.28);
   }
@@ -2207,6 +2182,19 @@ a.team-link:hover {
 /* Space between full-bleed GTM hero and section kicker (Maldives / Gulf) */
 .gtm-hero-section > .gtm-hero-copy {
   padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+.gtm-hero-section .press-block {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+}
+/* Clear air before the next GTM hero (Maldives → Gulf) */
+.gtm-hero-section + .gtm-hero-section {
+  margin-top: var(--space-6);
+}
+.gtm-hero-section + .gtm-hero-section > .cinema-block {
+  margin-top: var(--space-4);
 }
 .maldives-logos { margin: 12px 0 8px; }
 .maldives-players { margin: 28px 0 32px; }
@@ -2259,10 +2247,35 @@ a.team-link:hover {
 
 .pipe-tiers { max-height: none !important; overflow: visible !important; }
 
-.gold-stat .value, .gold-stat .label, .chip {
-  white-space: nowrap;
+/* Values may wrap — nowrap was causing pioneer/GTM KPI overlap */
+.gold-stat .value {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 .gold-stat .label { white-space: normal; }
+.chip { white-space: nowrap; }
+
+/* Pioneer KPI band — roomy 4-up that never overlaps */
+.pioneer-hero-section .gold-stat-band {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-4);
+  align-items: start;
+}
+.pioneer-hero-section .gold-stat .value {
+  font-size: clamp(1.45rem, 2.4vw, 2.4rem);
+  white-space: nowrap;
+}
+@media (max-width: 1099px) {
+  .pioneer-hero-section .gold-stat-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .pioneer-hero-section .gold-stat .value {
+    white-space: normal;
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+  }
+}
 
 /* Five-markets: expand without text overlap */
 .thesis-board { display: flex; flex-direction: column; gap: 8px; }
