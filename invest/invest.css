@@ -750,41 +750,15 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   display: flex; flex-direction: column; gap: 0;
   border-left: 2px solid var(--line); margin-top: 28px;
 }
-.arc-phase {
+/* Legacy vertical arc-spine styles kept for non-rail fallbacks only */
+.arc-spine .arc-phase {
   position: relative; display: grid; grid-template-columns: 72px 1fr;
   gap: 16px; padding: 22px 0 22px 28px;
   opacity: 0.4; transition: opacity .4s;
   border-bottom: 1px solid var(--line);
 }
-.arc-phase::before {
-  content: ""; position: absolute; left: -6px; top: 30px;
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--bg-3); border: 2px solid var(--line-strong);
-}
-.arc-phase.lit { opacity: 0.75 }
-.arc-phase.now { opacity: 1 }
-.arc-phase.now::before {
-  background: var(--accent-bright); border-color: var(--accent-bright);
-  box-shadow: 0 0 0 4px rgba(185,154,95,0.25);
-}
-.arc-num {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.75rem; color: var(--accent-bright);
-}
-.arc-phase .title { font-weight: 700; margin-bottom: 4px }
-.arc-phase .detail { font-size: 14px; color: var(--text-1); margin-bottom: 6px }
-.arc-phase .meta {
-  display: inline-block; font-size: 10px; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--text-0); border: 1px solid rgba(185,154,95,0.45);
-  padding: 4px 8px; border-radius: 999px; background: rgba(185,154,95,0.08);
-}
-.now-badge {
-  position: absolute; top: 18px; right: 0;
-  font-size: 9px; font-weight: 800; letter-spacing: 0.12em;
-  color: var(--bg-0); background: var(--accent-bright);
-  padding: 3px 8px; border-radius: 999px;
-}
+.arc-spine .arc-phase.lit { opacity: 0.75 }
+.arc-spine .arc-phase.now { opacity: 1 }
 
 /* Team — no logo strip */
 .team-lede { white-space: pre-line }
@@ -1696,34 +1670,115 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .player-logo .role { font-size: 12px; color: var(--text-2); line-height: 1.4; }
 @media (max-width: 720px) { .player-logos { grid-template-columns: 1fr 1fr; } }
 
-/* Arc as connected rail */
-.arc-rail {
-  display: flex; gap: 0; align-items: stretch; margin: 28px 0;
-  overflow-x: auto; padding-bottom: 8px;
+/* Arc scroll sequence — sticky pin on desktop, stack on phone */
+.arc-section { padding-block: 0; }
+.arc-pin {
   position: relative;
+  min-height: 220vh; /* scroll runway for progressive reveal */
+}
+.arc-pin-sticky {
+  position: sticky;
+  top: var(--nav-h);
+  padding: var(--section-y) 0;
+  z-index: 1;
+  background: var(--bg-0);
+}
+.arc-rail {
+  display: flex; gap: 0; align-items: stretch; margin: var(--space-5) 0 0;
+  overflow: visible; padding: 28px 0 8px;
+  position: relative;
+  max-width: none;
 }
 .arc-rail::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 28px;
+  content: ""; position: absolute; left: 0; right: 0; top: 34px;
   height: 2px; background: linear-gradient(90deg, var(--accent-bright), transparent 95%);
-  opacity: 0.45; z-index: 0;
+  opacity: 0.55; z-index: 0;
+  transform: scaleX(var(--arc-progress, 0.16));
+  transform-origin: left center;
+  transition: transform 0.25s linear;
 }
 .arc-rail .arc-phase {
-  flex: 1 0 140px; min-width: 140px; border: 0; border-bottom: 0;
-  padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px;
-  position: relative; z-index: 1; opacity: 0.45;
+  flex: 1 1 0; min-width: 0; border: 0; border-bottom: 0;
+  padding: 0 10px 12px; display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
+  opacity: 0 !important;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.98);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
+  pointer-events: none;
+}
+.arc-rail .arc-phase.is-revealed,
+.arc-rail .arc-phase.is-revealed.lit,
+.arc-rail .arc-phase.is-revealed.is-now {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  pointer-events: auto !important;
 }
 .arc-rail .arc-phase::before {
-  left: 50%; transform: translateX(-50%); top: 22px;
+  content: "";
+  position: absolute;
+  left: 50%; transform: translateX(-50%); top: 6px;
   width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
 }
-.arc-rail .arc-num { text-align: center; margin-top: 40px; }
+.arc-rail .arc-phase.is-revealed::before { opacity: 1; }
+.arc-rail .arc-num {
+  text-align: center; margin-top: 28px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--accent-bright);
+}
 .arc-rail .arc-body { text-align: center; }
-.arc-rail .arc-phase.lit { opacity: 0.8; }
-.arc-rail .arc-phase.now { opacity: 1; }
+.arc-rail .arc-phase .title { font-weight: 700; margin-bottom: 4px; font-size: 14px; }
+.arc-rail .arc-phase .detail { font-size: 13px; color: var(--text-1); margin-bottom: 6px; line-height: 1.4; }
+.arc-rail .arc-phase .meta {
+  font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2);
+}
+.arc-node { position: relative; display: flex; flex-direction: column; align-items: center; min-height: 28px; }
+.arc-rail .now-badge {
+  position: absolute; top: -10px; left: 50%; transform: translate(-50%, -100%);
+  white-space: nowrap; z-index: 3;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+  padding: 4px 10px; border-radius: 999px;
+  background: var(--accent-bright); color: #0a0a0c;
+  opacity: 0; transition: opacity 0.35s var(--ease);
+}
+.arc-rail .arc-phase.is-revealed.is-now .now-badge,
+.arc-rail .arc-phase.is-revealed .now-badge { opacity: 1; }
 @media (max-width: 720px) {
-  .arc-rail { flex-direction: column; }
+  .arc-pin { min-height: 0; }
+  .arc-pin-sticky { position: relative; top: auto; padding: var(--section-y) 0; }
+  .arc-rail { flex-direction: column; gap: 0; padding-top: 0; }
   .arc-rail::before { display: none; }
-  .arc-rail .arc-phase { flex: none; min-width: 0; border-left: 2px solid var(--line); padding-left: 20px; }
+  .arc-rail .arc-phase {
+    flex: none; min-width: 0;
+    border-left: 2px solid rgba(185,154,95,0.35);
+    padding: 0 0 20px 20px;
+    text-align: left;
+  }
+  .arc-rail .arc-phase::before {
+    left: -7px; transform: none; top: 6px;
+  }
+  .arc-rail .arc-num { text-align: left; margin-top: 0; }
+  .arc-rail .arc-body { text-align: left; }
+  .arc-node { align-items: flex-start; min-height: 0; }
+  .arc-rail .now-badge {
+    position: static; transform: none; margin: 0 0 8px;
+    display: inline-block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .arc-pin { min-height: 0; }
+  .arc-pin-sticky { position: relative; }
+  .arc-rail .arc-phase {
+    opacity: 1 !important; transform: none !important; pointer-events: auto;
+  }
+  .arc-rail .arc-phase::before,
+  .arc-rail .now-badge { opacity: 1 !important; }
 }
 
 .callout-list { display: grid; gap: 8px; margin-top: 16px; }
@@ -1740,15 +1795,6 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .sublabel {
   font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
   text-transform: uppercase; color: var(--text-2); margin: 0 0 8px;
-}
-.arc-node { position: relative; display: flex; flex-direction: column; align-items: center; }
-.arc-rail .arc-phase.is-now { opacity: 1; }
-.arc-rail .now-badge {
-  position: absolute; top: -6px; left: 50%; transform: translate(-50%, -100%);
-  white-space: nowrap; z-index: 2;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
-  padding: 3px 8px; border-radius: 999px;
-  background: var(--accent-bright); color: #0a0a0c;
 }
 .demo-lede {
   font-size: clamp(16px, 1.4vw, 19px); line-height: 1.5;
@@ -2211,13 +2257,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .thesis-row .label { min-width: 0; overflow-wrap: anywhere; }
 
-.arc-rail .arc-phase {
-  opacity: 0; transform: translateY(10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-.arc-rail .arc-phase.is-revealed,
-.arc-rail .arc-phase.lit,
-.arc-rail .arc-phase.is-now { opacity: 1; transform: none; }
+
 
 
 /* v9.4 costs head — grid-stacked exclusive states (auto max-height, full width) */

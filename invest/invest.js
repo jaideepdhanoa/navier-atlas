@@ -361,12 +361,13 @@
     },
 
     'pill-sequence'(s) {
-      // NOW badge pinned ON phase node (v8 #1) — never floating between 3–4
+      // Scroll-driven sequence: phases accumulate 1→6; NOW badge on phase 3
+      const nowOn = s.now_marker_on != null ? +s.now_marker_on : 3;
       const pills = (s.pills || [])
         .map((p, i) => {
-          const isNow = s.now_marker_on != null && i + 1 === s.now_marker_on;
+          const isNow = i + 1 === nowOn;
           return `
-          <div class="arc-phase ${isNow ? 'is-now' : ''}" data-pill="${i}">
+          <div class="arc-phase ${isNow ? 'is-now' : ''}" data-pill="${i}" data-step="${i + 1}">
             <div class="arc-node">
               ${isNow ? `<span class="now-badge">${esc(s.now_label || 'NOW')}</span>` : ''}
               <div class="arc-num">${esc(p.number)}</div>
@@ -380,11 +381,15 @@
         })
         .join('');
       return `
-        <div class="section-block stage-section arc-section" data-reveal data-pills data-now="${s.now_marker_on || 0}">
-          <div class="section-inner">
-            ${kicker(s, '01 · THESIS')}
-            ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
-            <div class="arc-rail media-inner" style="max-width:none;padding:0">${pills}</div>
+        <div class="section-block arc-section" data-reveal data-pills data-now="${nowOn}" data-arc-steps="${(s.pills || []).length}">
+          <div class="arc-pin" id="arc-pin">
+            <div class="arc-pin-sticky">
+              <div class="section-inner">
+                ${kicker(s, '01 · THESIS')}
+                ${s.headline ? `<h2 class="h2">${esc(s.headline)}</h2>` : ''}
+              </div>
+              <div class="arc-rail media-inner" id="arc-rail">${pills}</div>
+            </div>
           </div>
         </div>`;
     },
@@ -1609,7 +1614,7 @@
     if (block.classList.contains('costs-morph-section')) return;
     if (block.id === 'pipeline-section') return;
     if (block.querySelector(':scope > .section-inner')) return;
-    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin, :scope > .costs-morph')) return;
+    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin, :scope > .costs-morph, :scope > .arc-pin')) return;
     var kids = [];
     while (block.firstChild) kids.push(block.removeChild(block.firstChild));
     if (!kids.length) return;
@@ -2532,22 +2537,71 @@
     });
   })();
 
-  /* ── Arc sequential reveal (v9 #1) ───────────────────── */
+  /* ── Arc scroll-driven sequence (accumulate 1→N) ───── */
   (function initArcReveal() {
-    var rail = document.querySelector('.arc-rail');
-    if (!rail) return;
-    var phases = rail.querySelectorAll('.arc-phase');
+    var pin = document.getElementById('arc-pin');
+    var rail = document.getElementById('arc-rail') || document.querySelector('.arc-rail');
+    if (!pin || !rail) return;
+    var phases = Array.prototype.slice.call(rail.querySelectorAll('.arc-phase'));
     if (!phases.length) return;
-    var io = new IntersectionObserver(function (ents) {
-      ents.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        phases.forEach(function (p, i) {
-          setTimeout(function () { p.classList.add('is-revealed'); }, i * 150);
-        });
-        io.disconnect();
+    var section = pin.closest('[data-pills]') || pin;
+    var total = phases.length;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mobile = window.matchMedia('(max-width: 720px)').matches;
+
+    function setVisible(count) {
+      var n = Math.max(1, Math.min(total, count));
+      phases.forEach(function (p, i) {
+        var on = i < n;
+        p.classList.toggle('is-revealed', on);
+        p.classList.toggle('lit', on);
+        p.setAttribute('aria-hidden', on ? 'false' : 'true');
       });
-    }, { threshold: 0.25 });
-    io.observe(rail);
+      pin.setAttribute('data-arc-visible', String(n));
+      rail.style.setProperty('--arc-progress', String(n / total));
+    }
+
+    if (reduce) {
+      setVisible(total);
+      return;
+    }
+
+    // Mobile: reveal each phase as it enters the viewport (column stack)
+    if (mobile) {
+      setVisible(1);
+      var io = new IntersectionObserver(
+        function (ents) {
+          ents.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var step = +en.target.getAttribute('data-step') || 1;
+            var cur = +pin.getAttribute('data-arc-visible') || 1;
+            if (step > cur) setVisible(step);
+          });
+        },
+        { threshold: 0.35, rootMargin: '0px 0px -10% 0px' },
+      );
+      phases.forEach(function (p) { io.observe(p); });
+      return;
+    }
+
+    // Desktop: sticky pin — scroll progress maps to how many phases are visible
+    function onScroll() {
+      var rect = pin.getBoundingClientRect();
+      var pinH = pin.offsetHeight;
+      var viewH = window.innerHeight || 1;
+      // progress 0 when sticky starts, 1 when pin bottom hits viewport bottom
+      var scrollable = Math.max(1, pinH - viewH);
+      var scrolled = Math.min(scrollable, Math.max(0, -rect.top));
+      var progress = scrolled / scrollable;
+      // Map progress across phases: start with 1, end with all 6
+      var count = 1 + Math.floor(progress * (total - 0.0001));
+      setVisible(count);
+    }
+
+    setVisible(1);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
   })();
 
   /* ── Ladder ────────────────────────────────────────── */
@@ -2692,15 +2746,7 @@
       entries.forEach((en) => {
         if (!en.isIntersecting) return;
         en.target.classList.add('in');
-        if (en.target.dataset.pills != null) {
-          const now = +(en.target.dataset.now || 0);
-          en.target.querySelectorAll('.arc-phase').forEach((p, i) => {
-            setTimeout(() => {
-              p.classList.add('lit');
-              if (i + 1 === now) p.classList.add('now');
-            }, i * 140);
-          });
-        }
+        // Arc phases are scroll-driven in initArcReveal — do not stagger-lit here
         if (en.target.dataset.bars != null || en.target.querySelector('[data-bar-pct]')) {
           const root = en.target.dataset.bars != null ? en.target : en.target;
           root.querySelectorAll('.bar-row').forEach((row) => {
