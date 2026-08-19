@@ -1242,7 +1242,7 @@
         .map((r, i) => {
           const thumb = thumbs[i] ? mediaPath(thumbs[i]) : '';
           return `
-          <div class="thesis-row" tabindex="0">
+          <div class="thesis-row" tabindex="0" role="button" aria-expanded="false">
             ${thumb ? `<div class="thesis-thumb"><img src="${esc(thumb)}" alt="" loading="lazy" /></div>` : ''}
             <div class="label">${esc(r.label)}</div>
             <div class="status">${esc(r.status)}</div>
@@ -2513,6 +2513,22 @@
           if (!r.ok) bad();
         }).catch(bad);
       }
+    });
+  })();
+
+  /* Thesis board — tap to expand on touch (no hover) */
+  (function initThesisTap() {
+    document.querySelectorAll('.thesis-row').forEach(function (row) {
+      row.addEventListener('click', function () {
+        var open = row.classList.toggle('is-open');
+        row.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      row.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          row.click();
+        }
+      });
     });
   })();
 

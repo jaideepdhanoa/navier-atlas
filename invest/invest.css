@@ -1091,6 +1091,19 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
 }
 .ue-cols > * { padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 13px }
+@media (max-width: 720px) {
+  .unitecon .ue-cols,
+  .ue-cols {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ue-cols {
+    display: grid;
+    grid-template-columns: minmax(140px, 1.4fr) minmax(110px, 1fr) minmax(110px, 1fr);
+    min-width: 360px;
+  }
+}
 .ue-cols .head {
   background: var(--bg-2); font-weight: 700; font-size: 11px;
   letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2);
@@ -1613,6 +1626,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   position: sticky; top: var(--nav-h);
   z-index: 1;
 }
+@media (max-width: 720px) {
+  .ns-pin { min-height: 0; }
+  .ns-pin-sticky { position: relative; top: auto; }
+}
 
 /* Stage sections — viewport min-height is desktop-only (see ≥1100px) */
 .stage-section {
@@ -1943,8 +1960,25 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .thesis-row:hover .thesis-thumb,
 .thesis-row:focus-visible .thesis-thumb,
-.thesis-row:focus-within .thesis-thumb {
+.thesis-row:focus-within .thesis-thumb,
+.thesis-row.is-open .thesis-thumb {
   width: 180px; height: 115px;
+}
+.thesis-row.is-open {
+  background: rgba(185,154,95,0.08);
+  border-color: rgba(185,154,95,0.55);
+}
+@media (max-width: 720px) {
+  .thesis-row { cursor: pointer; }
+  .thesis-row.is-open {
+    grid-template-columns: 1fr;
+  }
+  .thesis-row.is-open .thesis-thumb {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    aspect-ratio: 16/9;
+  }
 }
 
 .film-cap, .vcard-cap { overflow: visible; text-overflow: unset; white-space: normal; }
