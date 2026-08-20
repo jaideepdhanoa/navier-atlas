@@ -1162,8 +1162,8 @@ a.team-link:hover {
 }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
-/* Timeline — full-width media-inner + scroll accumulate (arc rhythm) */
-.sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 24px }
+/* Timeline — sticky hangar + years (Master Plan arc rhythm) */
+.sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px }
 .chip {
   font-size: 13px; padding: 8px 14px; border-radius: 999px;
   border: 1px solid var(--line-strong); color: var(--text-1); background: var(--bg-1);
@@ -1174,14 +1174,37 @@ a.team-link:hover {
 }
 .tl-pin {
   position: relative;
-  min-height: 180vh; /* scroll runway — years accumulate 2022→N */
+  /* Runway for 2022→N while hangar+copy stay sticky — sized so sticky fills the
+     viewport (no empty black band under a lone year row). */
+  min-height: 200vh;
 }
 .tl-pin-sticky {
   position: sticky;
   top: var(--chrome-h);
-  padding: var(--space-5) 0 var(--space-4);
+  padding: var(--space-4) 0 var(--space-3);
   z-index: 1;
   background: var(--bg-0);
+}
+/* Compact hangar inside the sticky pin so title + plate + years fit one viewport */
+.traction-timeline-section .tl-pin-sticky > .cinema-block {
+  margin: 0 0 var(--space-3);
+}
+.traction-timeline-section .tl-pin-sticky .cinema-media {
+  height: min(28svh, 300px);
+}
+.traction-timeline-section .tl-pin-sticky .section-inner {
+  padding-bottom: 0;
+}
+.traction-timeline-section .tl-pin-sticky .h2 {
+  margin-bottom: 8px;
+}
+.traction-timeline-section .tl-pin-sticky .cinema-cap {
+  margin-top: 6px;
+  font-size: 12px;
+}
+.traction-timeline-section .tl-pin-sticky .timeline {
+  padding-top: 18px;
+  padding-bottom: 0;
 }
 .timeline {
   display: flex;
@@ -1279,6 +1302,9 @@ a.team-link:hover {
 @media (max-width: 720px) {
   .tl-pin { min-height: 0; }
   .tl-pin-sticky { position: relative; top: auto; padding: var(--space-4) 0; }
+  .traction-timeline-section .tl-pin-sticky .cinema-media {
+    height: min(38svh, 280px);
+  }
   .timeline {
     flex-direction: column;
     padding-top: 0;

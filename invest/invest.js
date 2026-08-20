@@ -726,16 +726,27 @@
         )
         .join('');
       const plate = homeSrc('proof.traction.plate');
+      // Mirror Master Plan arc: title + hangar + years live inside the sticky pin so
+      // the hangar stays put on large screens while years accumulate — no empty black runway.
       return `
         <div class="section-block traction-timeline-section" data-reveal data-home="proof.traction.plate" data-tl-steps="${milestones.length}">
-          <div class="section-inner">
-            ${kicker(s)}
-            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-            ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
-          </div>
-          ${plate ? cinema(plate, { home: 'proof.traction.plate', vh: '50vh' }) : ''}
           <div class="tl-pin" id="tl-pin">
             <div class="tl-pin-sticky">
+              <div class="section-inner">
+                ${kicker(s)}
+                ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+                ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
+              </div>
+              ${
+                plate
+                  ? cinema(plate, {
+                      home: 'proof.traction.plate',
+                      caption: homeCap('proof.traction.plate'),
+                      size: 'gtm',
+                      alt: homeCap('proof.traction.plate') || '',
+                    })
+                  : ''
+              }
               <div class="timeline media-inner" id="tl-rail">${items}</div>
             </div>
           </div>
@@ -2968,8 +2979,11 @@
       var pinH = pin.offsetHeight;
       var viewH = window.innerHeight || 1;
       var scrollable = Math.max(1, pinH - viewH);
-      var scrolled = Math.min(scrollable, Math.max(0, -rect.top));
-      var progress = scrolled / scrollable;
+      // Lead ≈ viewport: years start accumulating as soon as the sticky block
+      // (hangar + 2022) fills the screen — not only after pin top docks under chrome.
+      var lead = Math.min(viewH * 0.9, scrollable * 0.85);
+      var scrolled = Math.min(scrollable + lead, Math.max(0, lead - rect.top));
+      var progress = scrolled / (scrollable + lead);
       var count = 1 + Math.floor(progress * (total - 0.0001));
       setVisible(count);
     }
