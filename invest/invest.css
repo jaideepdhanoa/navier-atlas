@@ -1203,7 +1203,6 @@ a.team-link:hover {
   object-position: center 20%;
 }
 .traction-timeline-section .tl-pin-sticky .timeline {
-  padding-top: 12px;
   padding-bottom: 0;
 }
 @media (max-width: 720px) {
@@ -1212,19 +1211,23 @@ a.team-link:hover {
   }
 }
 .timeline {
+  --track-dot: 12px;
+  --track-pad: 16px;
   display: flex;
   gap: 0;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 28px 0 8px;
+  padding: var(--track-pad) 0 8px;
   position: relative;
   overflow: visible;
 }
 .timeline::before {
   content: "";
   position: absolute;
-  left: 0; right: 0; top: 34px;
+  left: 0; right: 0;
+  /* Center the 2px rail on the dot centers */
+  top: calc(var(--track-pad) + (var(--track-dot) / 2) - 1px);
   height: 2px;
   background: linear-gradient(90deg, var(--accent-bright), transparent 95%);
   opacity: 0.55;
@@ -1262,16 +1265,16 @@ a.team-link:hover {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  min-height: 28px;
+  min-height: var(--track-dot, 12px);
 }
 .tl-node::before {
   content: "";
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 6px;
-  width: 12px;
-  height: 12px;
+  top: 0; /* sits on the rail (rail centered on dot midline) */
+  width: var(--track-dot, 12px);
+  height: var(--track-dot, 12px);
   border-radius: 50%;
   background: var(--accent-bright);
   box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
@@ -1283,7 +1286,7 @@ a.team-link:hover {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.15rem, 1.6vw, 1.45rem);
   color: var(--accent-bright);
-  margin: 28px 0 14px;
+  margin: 22px 0 14px;
   text-align: center;
   width: 100%;
   line-height: 1.15;
@@ -2143,13 +2146,16 @@ a.team-link:hover {
   background: var(--bg-0);
 }
 .arc-rail {
+  --track-dot: 12px;
+  --track-pad: 16px;
   display: flex; gap: 0; align-items: stretch; margin: var(--space-5) 0 0;
-  overflow: visible; padding: 28px 0 8px;
+  overflow: visible; padding: var(--track-pad) 0 8px;
   position: relative;
   max-width: none;
 }
 .arc-rail::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 34px;
+  content: ""; position: absolute; left: 0; right: 0;
+  top: calc(var(--track-pad) + (var(--track-dot) / 2) - 1px);
   height: 2px; background: linear-gradient(90deg, var(--accent-bright), transparent 95%);
   opacity: 0.55; z-index: 0;
   transform: scaleX(var(--arc-progress, 0.16));
@@ -2177,8 +2183,9 @@ a.team-link:hover {
 .arc-rail .arc-phase::before {
   content: "";
   position: absolute;
-  left: 50%; transform: translateX(-50%); top: 6px;
-  width: 12px; height: 12px;
+  left: 50%; transform: translateX(-50%);
+  top: 0; /* sits on the rail (rail centered on dot midline) */
+  width: var(--track-dot, 12px); height: var(--track-dot, 12px);
   border-radius: 50%;
   background: var(--accent-bright);
   box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
@@ -2187,7 +2194,7 @@ a.team-link:hover {
 }
 .arc-rail .arc-phase.is-revealed::before { opacity: 1; }
 .arc-rail .arc-num {
-  text-align: center; margin-top: 28px;
+  text-align: center; margin-top: 22px;
   font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
   color: var(--accent-bright);
 }
@@ -2197,9 +2204,9 @@ a.team-link:hover {
 .arc-rail .arc-phase .meta {
   font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-2);
 }
-.arc-node { position: relative; display: flex; flex-direction: column; align-items: center; min-height: 28px; }
+.arc-node { position: relative; display: flex; flex-direction: column; align-items: center; min-height: var(--track-dot, 12px); }
 .arc-rail .now-badge {
-  position: absolute; top: -10px; left: 50%; transform: translate(-50%, -100%);
+  position: absolute; top: -4px; left: 50%; transform: translate(-50%, -100%);
   white-space: nowrap; z-index: 3;
   font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
   padding: 4px 10px; border-radius: 999px;
