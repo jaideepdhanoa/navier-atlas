@@ -1577,16 +1577,28 @@
     footer(s) {
       const close = homeAssets('close') || {};
       const vance = close.go_deeper_film ? mediaPath(close.go_deeper_film) : '';
+      const ci = s.closing_image || {};
+      const plateSrc =
+        homeSrc('money.go_deeper.closing_image') || mediaPath(ci.image || '');
+      const plate = plateSrc
+        ? `<figure class="go-deeper-plate" data-home="money.go_deeper.closing_image">
+            <div class="go-deeper-plate-frame">
+              <img src="${esc(plateSrc)}" alt="${esc(ci.alt || '')}" loading="lazy" />
+            </div>
+            ${ci.caption ? `<figcaption class="go-deeper-plate-cap">${esc(ci.caption)}</figcaption>` : ''}
+          </figure>`
+        : '';
       return `
         <section class="go-deeper" id="go-deeper">
           <div class="shell-stage go-deeper-inner">
             <p class="chapter-label">${esc(s.title || 'Go deeper')}</p>
-            <div class="go-deeper-grid">
+            <div class="go-deeper-media">
               ${s.video ? filmCard(s.video, vance, 'close', s.video_label || (s.video && s.video.title) || '') : ''}
-              <div class="go-deeper-cta">
-                ${s.contact ? `<a class="btn btn-primary" href="${esc(s.contact.href)}">${esc(s.contact.label)}</a>` : ''}
-                <p class="muted foot-legal">Privileged &amp; Confidential · Distribution without consent is strictly prohibited · © 2026 Navier</p>
-              </div>
+              ${plate}
+            </div>
+            <div class="go-deeper-cta">
+              ${s.contact ? `<a class="btn btn-primary" href="${esc(s.contact.href)}">${esc(s.contact.label)}</a>` : ''}
+              <p class="muted foot-legal">Privileged &amp; Confidential · Distribution without consent is strictly prohibited · © 2026 Navier</p>
             </div>
           </div>
         </section>`;
@@ -1858,26 +1870,14 @@
       ? `<div class="section-inner"><p class="chapter-label">${esc(data.chapter_label)}</p></div>`
       : '';
     const finaleHtml = finale ? stampSectionHtml(R['finale-plate'](finale), 'money', finale) : '';
+    // Goldenhour bow now pairs beside the Ashlee Vance film inside footer() — not a solo plate
     const footHtml = foot ? stampSectionHtml(R.footer(foot), 'money', foot) : '';
-    // Round-6g: goldenhour bow — last visual above confidentiality footer
-    const closeImg = (foot && foot.closing_image) || {};
-    const closeSrc =
-      homeSrc('money.go_deeper.closing_image') || mediaPath(closeImg.image || '');
-    const closePlate = closeSrc
-      ? cinema(closeSrc, {
-          home: 'money.go_deeper.closing_image',
-          caption: closeImg.caption || homeCap('money.go_deeper.closing_image'),
-          alt: closeImg.alt || '',
-          size: 'photo',
-        })
-      : '';
     return `
       <section class="chapter" id="money">
         ${moneyLabel}
         ${mainHtml}
         ${footHtml}
         ${finaleHtml}
-        ${closePlate}
       </section>`;
   }
 
