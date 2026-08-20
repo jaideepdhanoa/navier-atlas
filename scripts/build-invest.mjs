@@ -22,12 +22,11 @@ const TEASER_EXCLUDE = {
   gtm: new Set([
     'revenue-lines',
     'unit-econ',
-    'cargo-gap',
+    // Round-6h: keep cargo-gap + dual-use on /teaser
     'cargo-play',
     'sealift',
     'day-night-wedge',
     'offshore',
-    'dual-use',
     'market-floor',
     'pipeline',
   ]),

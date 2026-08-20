@@ -1596,7 +1596,9 @@
     const id = hull.id || '';
     // 4-tab ladder: n30 (Pioneer & Quanta merged) · n45 · n80 approved render · n180
     if (id === 'n30' || id === 'n30-pioneer' || id === 'quanta-lr') {
-      const src = la.n30_pioneer || la.quanta_lr || 'assets/deck/n30-pioneer-at-sea.png';
+      // Round-6h: hull.image (Golden Gate) preferred over shared pioneer hero duplicate
+      const src =
+        hull.image || la.n30_pioneer || la.quanta_lr || 'assets/deck/n30-pioneer-at-sea.png';
       return { src: mediaPath(src), photo: true, dev: false, id: id };
     }
     if (id === 'n45-explorer') {
