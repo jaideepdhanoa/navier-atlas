@@ -253,63 +253,89 @@
     return parts.join('');
   }
 
-  function renderInvestModules() {
-    const parts = [];
+  function statusChip(status) {
+    if (!status) return '';
+    const s = String(status);
+    return `<span class="status-chip status-${esc(s)}">${esc(s.replace(/_/g, ' '))}</span>`;
+  }
 
-    // Model
-    const model = A.model;
-    if (model && model.copy) {
-      let html = '';
-      if (model.copy.roles && model.copy.roles.length) {
-        html += `<ul class="pillars">${model.copy.roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
-      }
-      if (model.copy.trigger) {
-        html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
-      }
-      parts.push(section('story', 'The model', html));
+  function renderNavierIntro() {
+    const ni = A.navier_intro;
+    if (!ni || !ni.copy) return '';
+    const c = ni.copy;
+    let html = `<div class="navier-intro">
+      <div class="navier-intro-copy">
+        <p class="lead">${esc(c.headline || '')}</p>
+        <p>${esc(c.body || '')}</p>`;
+    if (c.tech_chips && c.tech_chips.length) {
+      html += `<div class="tech-chips">${c.tech_chips
+        .map((t) => {
+          if (typeof t === 'string') return `<span class="tech-chip">${esc(t)}</span>`;
+          return `<span class="tech-chip"><strong>${esc(t.label || t.title || '')}</strong> ${esc(t.value || t.body || '')}</span>`;
+        })
+        .join('')}</div>`;
     }
-
-    // Asset
-    const asset = A.asset;
-    if (asset && asset.data) {
-      const d = asset.data;
-      let html = `<div class="scenario-hero">
-        <div class="metric"><div class="k">Vessel</div><div class="v" style="font-size:18px">${esc(d.vessel || 'N45')}</div></div>
-        <div class="metric"><div class="k">Capex</div><div class="v">${money(d.capex_usd)}</div></div>
-        <div class="metric"><div class="k">Seats</div><div class="v">${esc(d.seats)}</div></div>
-        <div class="metric"><div class="k">Cruise</div><div class="v">${esc(d.cruise_speed_kn)} kn</div></div>
-      </div>
-      <p class="assump-label">${esc(d.grade || '')}${d.powertrain ? ' · ' + esc(d.powertrain) : ''}${d.range_nm_approx ? ' · ~' + esc(d.range_nm_approx) + ' nm range' : ''}</p>`;
-      if (asset.copy && asset.copy.redeployability) {
-        html += `<div class="arch-card" style="margin-top:14px"><h3>Redeployability</h3><p>${esc(asset.copy.redeployability)}</p></div>`;
-      }
-      parts.push(section('asset', 'The asset', html));
+    if (c.note) html += `<p class="assump-label">${esc(c.note)}</p>`;
+    html += `</div>`;
+    if (c.fleet_cards && c.fleet_cards.length) {
+      html += `<div class="vessel-row">${c.fleet_cards
+        .map((v) => {
+          const title = v.model || v.title || v.name || '';
+          const specs = v.specs || v.chips || [];
+          return `<div class="arch-card">
+            <h3>${esc(title)}</h3>
+            ${v.body || v.blurb ? `<p>${esc(v.body || v.blurb)}</p>` : ''}
+            ${
+              Array.isArray(specs) && specs.length
+                ? `<div class="tech-chips">${specs.map((s) => `<span class="tech-chip">${esc(typeof s === 'string' ? s : s.label || s.value || '')}</span>`).join('')}</div>`
+                : ''
+            }
+          </div>`;
+        })
+        .join('')}</div>`;
     }
+    html += `</div>`;
+    return section('navier_intro', ni.title || 'The vessels', html);
+  }
 
-    // Network note (map is separate section below)
-    const net = A.network;
-    if (net && net.copy && net.copy.trigger_explainer) {
-      parts.push(
-        section(
-          'network-note',
-          'Demand-gated corridors',
-          `<p class="lead">${esc(net.copy.trigger_explainer)}</p>`
+  function renderServiceDay() {
+    const sd = A.service_day;
+    const windows = sd && sd.data && sd.data.windows;
+    if (!windows || !windows.length) return '';
+    const html = `<div class="service-day" role="list">
+      ${windows
+        .map(
+          (w) => `<div class="service-window ${w.upside ? 'is-upside' : ''}" role="listitem">
+          <div class="sw-time">${esc(w.time_range || '')}</div>
+          <div class="sw-label">${esc(w.label || '')}</div>
+          <div class="sw-layer">${esc(w.layer || '')}</div>
+          ${w.note ? `<p class="assump-label">${esc(w.note)}</p>` : ''}
+        </div>`
         )
-      );
-    }
+        .join('')}
+    </div>`;
+    return section('service_day', sd.title || 'How one vessel earns across the day', html);
+  }
 
-    // Demand pool
+  function renderDemandPool() {
     const dp = A.demand_pool;
-    if (dp && dp.data && dp.data.rows && dp.data.rows.length) {
-      let html = `<p class="standing-label">${esc(dp.standing_label || '')}</p>`;
+    if (!dp) return '';
+    const standing =
+      dp.standing_label ||
+      (dp._internal && dp._internal.standing_label) ||
+      'Indicative of demand potential along these corridors — not commitments or commercial relationships.';
+    let html = `<p class="standing-label">${esc(standing)}</p>`;
+
+    // Named employer table (Boston / RAK)
+    if (dp.data && dp.data.rows && dp.data.rows.length) {
       if (dp.data.capture_assumption) {
         html += `<p class="assump-label">Capture assumption: ${esc(dp.data.capture_assumption)}. Headcount: ${esc(dp.data.headcount_label || '')}</p>`;
       }
-      html += `<div style="overflow-x:auto"><table class="data-table">
+      html += `<div style="overflow-x:auto"><table class="data-table demand-table">
         <thead><tr><th>Employer</th><th>Node</th><th>Line(s)</th><th>Headcount</th><th>Demand-pool seats</th></tr></thead>
         <tbody>${dp.data.rows
           .map(
-            (r) => `<tr>
+            (r) => `<tr data-node="${esc(r.node || '')}">
             <td>${esc(r.employer || '')}</td>
             <td>${esc(r.node || '')}</td>
             <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
@@ -321,184 +347,327 @@
       if (dp.data.city_total_seats != null) {
         html += `<p class="assump-label" style="margin-top:10px">City total (indicative): ${esc(dp.data.city_total_seats)} seats</p>`;
       }
-      if (dp.data.honesty_notes && dp.data.honesty_notes.length) {
-        html += `<ul class="pillars">${dp.data.honesty_notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>`;
-      }
-      parts.push(section('demand', 'Demand pool', html));
     }
 
-    // P&L utilization stack
+    // Corridor / cluster cards (Bay Area fail-closed style)
+    const cards = dp.copy && dp.copy.cards;
+    if (cards && cards.length) {
+      html += `<div class="demand-cards arch-grid-2">${cards
+        .map(
+          (c) => `<div class="arch-card demand-card">
+          <h3>${esc(c.title || '')}</h3>
+          <p>${esc(c.body || '')}</p>
+        </div>`
+        )
+        .join('')}</div>`;
+    }
+
+    if (!cards && !(dp.data && dp.data.rows && dp.data.rows.length)) return '';
+    html += `<p class="assump-label" style="margin-top:14px">Use the trip planner on the network map below to compare water vs drive times on these corridors.</p>`;
+    return section('demand', dp.title || 'Demand pool', html);
+  }
+
+  function renderPnlStudioShell() {
     const pnl = A.pnl;
-    if (pnl && pnl.data) {
-      let html = '';
-      const layers = pnl.data.stack_layers;
-      if (layers) {
-        if (layers.frame) html += `<p class="lead">${esc(layers.frame)}</p>`;
-        if (layers.layers && layers.layers.length) {
-          html += `<div class="stack-layers">${layers.layers
-            .map((L) => {
-              const upside = String(L.id || '').startsWith('U');
-              return `<div class="stack-layer ${upside ? 'upside' : ''}">
-                <div class="id">${esc(L.id)}</div>
-                <h4>${esc(L.name)}</h4>
-                <p class="pricing">${esc(L.pricing || '')}</p>
-                <p class="status">${esc(L.status || '')}</p>
-              </div>`;
-            })
-            .join('')}</div>`;
+    if (!pnl || !pnl.data) return '';
+    const headline = (pnl.copy && (pnl.copy.headline || pnl.copy.body)) || '';
+    let html = '';
+    if (pnl.copy && pnl.copy.headline) html += `<p class="lead">${esc(pnl.copy.headline)}</p>`;
+    if (pnl.copy && pnl.copy.body) html += `<p>${esc(pnl.copy.body)}</p>`;
+    html += `<div class="pnl-studio" id="pnl-studio">
+      <div class="pnl-sticky" id="pnl-sticky">
+        <div class="pnl-metric"><div class="k">Payback</div><div class="v" id="pnl-m-payback">—</div></div>
+        <div class="pnl-metric"><div class="k">Net / month</div><div class="v" id="pnl-m-net">—</div></div>
+        <div class="pnl-metric"><div class="k">Gross / month</div><div class="v" id="pnl-m-gross">—</div></div>
+        <div class="pnl-presets" id="pnl-presets" role="tablist" aria-label="Scenario presets"></div>
+      </div>
+      <div class="pnl-layout">
+        <aside class="pnl-levers" id="pnl-levers" aria-label="P&L levers"></aside>
+        <div class="pnl-statement-wrap">
+          <div class="pnl-statement" id="pnl-statement" aria-live="polite"></div>
+          <p class="assump-label" id="pnl-honesty">Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.</p>
+        </div>
+      </div>
+    </div>`;
+    return section('pnl', (pnl.copy && pnl.copy.title) || 'Economics — utilization stack', html);
+  }
+
+  function renderInvestModules() {
+    const builders = {
+      navier_intro: renderNavierIntro,
+      model: function () {
+        const model = A.model;
+        if (!model || !model.copy) return '';
+        let html = '';
+        if (model.copy.roles && model.copy.roles.length) {
+          html += `<ul class="pillars">${model.copy.roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
+        } else if (model.copy.headline || model.copy.body) {
+          html += `<div class="arch-prose"><p class="lead">${esc(model.copy.headline || '')}</p><p>${esc(model.copy.body || '')}</p></div>`;
         }
-      }
+        if (model.copy.trigger) {
+          html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
+        }
+        return section('story', 'The model', html);
+      },
+      asset: function () {
+        const asset = A.asset;
+        if (!asset || !asset.data) return '';
+        const d = asset.data;
+        let html = `<div class="scenario-hero">
+          <div class="metric"><div class="k">Vessel</div><div class="v" style="font-size:18px">${esc(d.vessel || 'N45')}</div></div>
+          <div class="metric"><div class="k">Capex</div><div class="v">${money(d.capex_usd)}</div></div>
+          <div class="metric"><div class="k">Seats</div><div class="v">${esc(d.seats)}</div></div>
+          <div class="metric"><div class="k">Cruise</div><div class="v">${esc(d.cruise_speed_kn)} kn</div></div>
+        </div>
+        <p class="assump-label">${esc(d.grade || '')}${d.powertrain ? ' · ' + esc(d.powertrain) : ''}${d.range_nm_approx ? ' · ~' + esc(d.range_nm_approx) + ' nm range' : ''}</p>`;
+        if (asset.copy && asset.copy.redeployability) {
+          html += `<div class="arch-card" style="margin-top:14px"><h3>Redeployability</h3><p>${esc(asset.copy.redeployability)}</p></div>`;
+        }
+        return section('asset', asset.title || 'The asset', html);
+      },
+      service_day: renderServiceDay,
+      revenue_build: function () {
+        // Shell only — live rows painted by initInvestPnl from the same model
+        if (!(A.revenue_build && A.revenue_build.data && A.revenue_build.data.scenarios)) return '';
+        return section(
+          'revenue_build',
+          A.revenue_build.title || 'The revenue build',
+          `<p class="assump-label">${esc(A.revenue_build.note || 'Quantity × price for the active scenario. Sum equals gross on the P&L.')}</p>
+           <div class="revenue-build" id="revenue-build-live"></div>`
+        );
+      },
+      pnl: renderPnlStudioShell,
+      demand_pool: renderDemandPool,
+      fleet_phasing: function () {
+        const fp = A.fleet_phasing && A.fleet_phasing.data;
+        if (!fp) return '';
+        let html = '';
+        if (fp.launch) {
+          html += `<div class="arch-card emphasis"><h3>Launch fleet</h3>
+            <p>${moneyRange(fp.launch.capital_usd_range)} capital · ${Array.isArray(fp.launch.vessels_range) ? fp.launch.vessels_range.join('–') : esc(fp.launch.vessels_range)} vessels</p>
+            <p class="assump-label">${esc(fp.launch.label || '')}</p></div>`;
+        }
+        if (fp.full_build) {
+          html += `<div class="arch-card" style="margin-top:14px"><h3>Full build (illustrative)</h3>
+            <p>${money(fp.full_build.capital_usd)} · ${esc(fp.full_build.vessels)} vessels</p>
+            <p class="assump-label">${esc(fp.full_build.label || '')}</p></div>`;
+        }
+        if (fp.spares_note) html += `<p class="assump-label" style="margin-top:10px">${esc(fp.spares_note)}</p>`;
+        return section('phasing', 'Fleet phasing', html);
+      },
+      protection_stack: function () {
+        const prot = A.protection_stack && A.protection_stack.copy && A.protection_stack.copy.cards;
+        if (!prot || !prot.length) return '';
+        const html = `<div class="arch-grid-2">${prot
+          .map((c) => `<div class="arch-card"><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p></div>`)
+          .join('')}</div>`;
+        return section('protection', 'Protection stack', html);
+      },
+    };
 
-      // Scenarios
-      const sc = pnl.data.scenarios;
-      if (sc && sc.table && sc.table.length) {
-        if (sc.label) html += `<p class="assump-label">${esc(sc.label)}</p>`;
-        html += `<div class="scenario-tabs" id="scenario-tabs" role="tablist"></div>
-          <div id="scenario-panel"></div>`;
-        if (sc.honesty_note) html += `<p class="assump-label" style="margin-top:12px">${esc(sc.honesty_note)}</p>`;
-      }
+    const skip = { hero: 1, network: 1, cta: 1, footnotes: 1 };
+    const order = (A.section_order && A.section_order.length
+      ? A.section_order
+      : ['navier_intro', 'model', 'asset', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'fleet_phasing', 'protection_stack']
+    ).filter((id) => !skip[id]);
 
-      // Opex
-      const opex = pnl.data.opex_monthly_per_vessel;
-      if (opex && opex.lines && opex.lines.length) {
-        html += `<h3 style="margin:28px 0 10px;font-size:16px">Monthly opex (per vessel)</h3>
-          <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Item</th><th>Range</th><th>Assumption</th></tr></thead><tbody>
-          ${opex.lines
+    const parts = [];
+    const seen = {};
+    order.forEach(function (id) {
+      if (seen[id]) return;
+      seen[id] = true;
+      const fn = builders[id];
+      if (fn) {
+        const html = fn();
+        if (html) parts.push(html);
+      }
+    });
+    // Ensure critical modules still appear if omitted from section_order
+    ['service_day', 'revenue_build', 'pnl', 'demand_pool', 'protection_stack'].forEach(function (id) {
+      if (seen[id]) return;
+      const fn = builders[id];
+      if (fn) {
+        const html = fn();
+        if (html) parts.push(html);
+      }
+    });
+    return parts.join('');
+  }
+
+  function initInvestPnl() {
+    const studio = document.getElementById('pnl-studio');
+    if (!studio || !window.FI_PNL_MODEL) return;
+    const M = window.FI_PNL_MODEL;
+    const model = M.buildModel(A);
+    if (!model.hasRevenueBuild) return;
+    let state = M.applyPreset(model, 'mid');
+
+    const presetsEl = document.getElementById('pnl-presets');
+    const leversEl = document.getElementById('pnl-levers');
+    const statementEl = document.getElementById('pnl-statement');
+    const rbLive = document.getElementById('revenue-build-live');
+
+    function paintPresets() {
+      if (!presetsEl) return;
+      const items = [
+        { id: 'conservative', label: 'Conservative' },
+        { id: 'mid', label: 'Mid' },
+        { id: 'upside', label: 'Upside' },
+        { id: 'custom', label: 'Custom' },
+      ];
+      presetsEl.innerHTML = items
+        .map(
+          (p) =>
+            `<button type="button" class="pnl-preset ${state.preset === p.id ? 'active' : ''}" data-preset="${p.id}" ${p.id === 'custom' && state.preset !== 'custom' ? 'disabled' : ''}>${esc(p.label)}</button>`
+        )
+        .join('');
+      presetsEl.querySelectorAll('button[data-preset]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const id = btn.getAttribute('data-preset');
+          if (id === 'custom') return;
+          state = M.applyPreset(model, id);
+          paint();
+        });
+      });
+    }
+
+    function paintLevers() {
+      if (!leversEl) return;
+      let html = `<h3 class="pnl-levers-title">Key levers</h3>`;
+      model.lineMetas.forEach(function (lm) {
+        const t = state.lineT[lm.key] != null ? state.lineT[lm.key] : 0.5;
+        const pct = Math.round(t * 100);
+        html += `<label class="pnl-lever">
+          <span class="pnl-lever-label">${esc(lm.label)}</span>
+          <input type="range" min="0" max="100" step="1" value="${pct}" data-line="${esc(lm.key)}" aria-valuetext="${pct} percent along authored band" />
+          <span class="pnl-lever-ends"><span>Conservative</span><span>Upside</span></span>
+        </label>`;
+      });
+      html += `<label class="pnl-lever">
+        <span class="pnl-lever-label">Operating cost band</span>
+        <input type="range" min="0" max="100" step="1" value="${Math.round((state.opexT || 0.5) * 100)}" data-opex="1" />
+        <span class="pnl-lever-ends"><span>Low</span><span>High</span></span>
+      </label>`;
+      if (model.upside && model.upside.length) {
+        html += `<div class="pnl-upside-toggles"><div class="pnl-lever-label">Upside layers</div>`;
+        model.upside.forEach(function (u) {
+          const on = !!(state.upsideOn && state.upsideOn[u.key]);
+          html += `<label class="pnl-toggle"><input type="checkbox" data-upside="${esc(u.key)}" ${on ? 'checked' : ''}/> ${esc(u.label)}</label>`;
+        });
+        html += `</div>`;
+      }
+      leversEl.innerHTML = html;
+      leversEl.querySelectorAll('input[type="range"][data-line]').forEach(function (input) {
+        input.addEventListener('input', function () {
+          const key = input.getAttribute('data-line');
+          state = M.markCustom(state);
+          state.lineT[key] = Number(input.value) / 100;
+          paint(true);
+        });
+      });
+      const opexInput = leversEl.querySelector('input[data-opex]');
+      if (opexInput) {
+        opexInput.addEventListener('input', function () {
+          state = M.markCustom(state);
+          state.opexT = Number(opexInput.value) / 100;
+          paint(true);
+        });
+      }
+      leversEl.querySelectorAll('input[data-upside]').forEach(function (input) {
+        input.addEventListener('change', function () {
+          state = M.markCustom(state);
+          state.upsideOn[input.getAttribute('data-upside')] = input.checked;
+          paint(true);
+        });
+      });
+    }
+
+    function paintStatement(result, skipLevers) {
+      const mPay = document.getElementById('pnl-m-payback');
+      const mNet = document.getElementById('pnl-m-net');
+      const mGross = document.getElementById('pnl-m-gross');
+      if (mPay) mPay.textContent = result.paybackLabel;
+      if (mNet) mNet.textContent = money(result.net);
+      if (mGross) mGross.textContent = money(result.gross);
+
+      if (rbLive) {
+        rbLive.innerHTML = `<table class="data-table ue-table"><thead><tr><th>Line</th><th>Quantity</th><th>Price</th><th>$/mo</th></tr></thead><tbody>
+          ${result.revenueLines
             .map(
-              (r) => `<tr>
-              <td>${esc(r.item)}</td>
-              <td>${moneyRange(r.range_usd)}</td>
-              <td class="assump-label">${esc(r.label || '')}</td>
-            </tr>`
+              (r) =>
+                `<tr><td>${esc(r.line)}</td><td>${esc(r.quantity || '')}</td><td>${esc(r.price || '')}</td><td class="num">${money(r.subtotal_usd)}</td></tr>`
             )
             .join('')}
-          ${
-            opex.total_range_usd
-              ? `<tr><td><strong>Total</strong></td><td><strong>${moneyRange(opex.total_range_usd)}</strong></td><td></td></tr>`
-              : ''
-          }
-          </tbody></table></div>`;
+          ${result.upsideLines
+            .filter((r) => r.enabled)
+            .map(
+              (r) =>
+                `<tr class="upside"><td>${esc(r.line)} <span class="status-chip status-upside">upside</span></td><td>${esc(r.quantity || '')}</td><td>${esc(r.price || '')}</td><td class="num">${money(r.subtotal_usd)}</td></tr>`
+            )
+            .join('')}
+          <tr class="total"><td colspan="3"><strong>Gross revenue / month</strong></td><td class="num"><strong>${money(result.gross)}</strong></td></tr>
+        </tbody></table>`;
       }
 
-      if (pnl.data.network_share) {
-        html += `<div class="arch-card" style="margin-top:16px"><h3>Navier network share</h3>
-          <p>${esc(pnl.data.network_share.value || '')}</p>
-          <p class="assump-label">${esc(pnl.data.network_share.label || '')}</p></div>`;
+      if (statementEl) {
+        statementEl.innerHTML = `
+          <table class="data-table ue-table pnl-table">
+            <thead><tr><th>P&amp;L (per vessel / month)</th><th class="num">Amount</th></tr></thead>
+            <tbody>
+              <tr class="section-row"><td colspan="2">Revenue</td></tr>
+              ${result.revenueLines
+                .map(
+                  (r) =>
+                    `<tr><td><div class="line-main">${esc(r.line)} ${statusChip(r.status)}</div>${r.note ? `<div class="assump-label">${esc(r.note)}</div>` : ''}<div class="assump-label">${esc(r.quantity || '')} · ${esc(r.price || '')}</div></td><td class="num">${money(r.subtotal_usd)}</td></tr>`
+                )
+                .join('')}
+              <tr class="total"><td><strong>Gross revenue / month</strong></td><td class="num"><strong>${money(result.gross)}</strong></td></tr>
+              <tr class="section-row"><td colspan="2">Operating cost</td></tr>
+              ${result.opexLines
+                .map(
+                  (r) =>
+                    `<tr><td><div class="line-main">${esc(r.line)} ${statusChip(r.status)}</div>${r.note ? `<div class="assump-label">${esc(r.note)}</div>` : ''}</td><td class="num">${money(r.amount)}</td></tr>`
+                )
+                .join('')}
+              <tr class="total"><td><strong>Operating cost / month</strong></td><td class="num"><strong>${money(result.opex)}</strong></td></tr>
+              <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')}</div></td><td class="num">(${money(result.networkShareAmt)})</td></tr>
+              <tr class="emphasis"><td><strong>Net to investor / month</strong></td><td class="num"><strong>${money(result.net)}</strong></td></tr>
+              <tr class="emphasis"><td><strong>Payback @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
+              ${
+                result.upsideLines.length
+                  ? `<tr class="section-row upside"><td colspan="2">Upside (labeled — not in base)</td></tr>` +
+                    result.upsideLines
+                      .map(
+                        (r) =>
+                          `<tr class="upside ${r.enabled ? 'on' : 'off'}"><td><div class="line-main">${esc(r.line)} ${statusChip('upside')}</div><div class="assump-label">${esc(r.quantity || '')} · ${esc(r.price || '')}${r.enabled ? '' : ' · off'}</div></td><td class="num">${r.enabled ? money(r.subtotal_usd) : '—'}</td></tr>`
+                      )
+                      .join('')
+                  : ''
+              }
+            </tbody>
+          </table>`;
       }
-
-      if (pnl.data.payback_summary) {
-        const pb = pnl.data.payback_summary;
-        html += `<div class="scenario-hero" style="margin-top:16px">
-          <div class="metric"><div class="k">Conservative</div><div class="v" style="font-size:16px">${esc(pb.conservative || '')}</div></div>
-          <div class="metric"><div class="k">Mid (headline)</div><div class="v" style="font-size:16px">${esc(pb.mid || '')}</div></div>
-          <div class="metric"><div class="k">Upside</div><div class="v" style="font-size:16px">${esc(pb.upside || '')}</div></div>
-        </div>
-        <p class="assump-label">${esc(pb.label || '')}</p>`;
+      if (!skipLevers) {
+        paintPresets();
+        paintLevers();
+      } else {
+        paintPresets();
       }
-
-      const relief = pnl.data.speed_relief_upside_row;
-      if (relief) {
-        html += `<div class="relief-box" style="margin-top:16px">
-          <strong>${esc(relief.label || 'Speed-rule relief upside')}</strong>
-          ${relief.values != null ? `<p>${esc(String(relief.values))}</p>` : ''}
-          ${relief.note ? `<p class="assump-label">${esc(relief.note)}</p>` : ''}
-        </div>`;
-      }
-
-      parts.push(section('pnl', 'Economics — utilization stack', html));
     }
 
-    // Fleet phasing
-    const fp = A.fleet_phasing && A.fleet_phasing.data;
-    if (fp) {
-      let html = '';
-      if (fp.launch) {
-        html += `<div class="arch-card emphasis"><h3>Launch fleet</h3>
-          <p>${moneyRange(fp.launch.capital_usd_range)} capital · ${Array.isArray(fp.launch.vessels_range) ? fp.launch.vessels_range.join('–') : esc(fp.launch.vessels_range)} vessels</p>
-          <p class="assump-label">${esc(fp.launch.label || '')}</p></div>`;
-        if (fp.launch.per_line && fp.launch.per_line.length) {
-          html += `<div style="overflow-x:auto;margin-top:12px"><table class="data-table"><thead><tr><th>Line</th><th>Vessels</th><th>Capital</th></tr></thead><tbody>
-            ${fp.launch.per_line
-              .map(
-                (r) =>
-                  `<tr><td>${esc(r.line)}</td><td>${esc(r.launch_vessels)}</td><td>${moneyRange(r.launch_capital_usd_range)}</td></tr>`
-              )
-              .join('')}
-          </tbody></table></div>`;
-        }
-      }
-      if (fp.full_build) {
-        html += `<div class="arch-card" style="margin-top:14px"><h3>Full build (illustrative)</h3>
-          <p>${money(fp.full_build.capital_usd)} · ${esc(fp.full_build.vessels)} vessels</p>
-          <p class="assump-label">${esc(fp.full_build.label || '')}</p></div>`;
-      }
-      if (fp.spares_note) html += `<p class="assump-label" style="margin-top:10px">${esc(fp.spares_note)}</p>`;
-      parts.push(section('phasing', 'Fleet phasing', html));
+    function paint(fromLever) {
+      const result = M.evaluate(model, state);
+      paintStatement(result, !!fromLever);
     }
 
-    // Protection stack
-    const prot = A.protection_stack && A.protection_stack.copy && A.protection_stack.copy.cards;
-    if (prot && prot.length) {
-      const html = `<div class="arch-grid-2">${prot
-        .map((c) => `<div class="arch-card"><h3>${esc(c.title)}</h3><p>${esc(c.body)}</p></div>`)
-        .join('')}</div>`;
-      parts.push(section('protection', 'Protection stack', html));
-    }
-
-    // Flywheel (shared story)
-    const fw = A.flywheel && A.flywheel.copy;
-    // fleet file may not have flywheel - optional
-    if (fw) {
-      const html = `<div class="flywheel">
-        <div class="wheel"><div class="n">Employers</div><p>${esc(fw.employers || '')}</p></div>
-        <div class="wheel"><div class="n">Public partners</div><p>${esc(fw.public_partners || '')}</p></div>
-        <div class="wheel"><div class="n">Fleet investors</div><p>${esc(fw.fleet_investors || '')}</p></div>
-      </div>`;
-      parts.push(section('flywheel', 'How the pieces fit', html));
-    }
-
-    return parts.join('');
+    paint(false);
   }
 
   const modulesEl = document.getElementById('archetype-modules');
   if (modulesEl) {
-    // Insert modules BEFORE network section in DOM order: story first, then map stays in HTML
-    // User wants map for all - keep network in page. Modules above network for narrative.
     modulesEl.innerHTML = isInvest ? renderInvestModules() : renderPartnersModules();
   }
-
-  // Scenario tabs (invest)
-  if (isInvest && A.pnl && A.pnl.data && A.pnl.data.scenarios && A.pnl.data.scenarios.table) {
-    const table = A.pnl.data.scenarios.table;
-    const tabs = document.getElementById('scenario-tabs');
-    const panel = document.getElementById('scenario-panel');
-    if (tabs && panel) {
-      const midIdx = Math.max(
-        0,
-        table.findIndex((t) => /mid/i.test(t.case))
-      );
-      function paint(i) {
-        const row = table[i];
-        if (!row) return;
-        [...tabs.querySelectorAll('button')].forEach((b, j) => b.classList.toggle('active', j === i));
-        panel.innerHTML = `<div class="scenario-hero">
-          <div class="metric"><div class="k">Gross / mo</div><div class="v">${money(row.gross_monthly)}</div></div>
-          <div class="metric"><div class="k">Net to investor / mo</div><div class="v">${money(row.net_to_investor_monthly)}</div></div>
-          <div class="metric"><div class="k">Annual</div><div class="v">${money(row.annual)}</div></div>
-          <div class="metric"><div class="k">Payback</div><div class="v" style="font-size:16px">${esc(row.payback)}</div></div>
-        </div>
-        ${row.upside_lines_included ? '<p class="assump-label">Includes labeled upside lines (sponsorship + overnight cargo).</p>' : '<p class="assump-label">Base utilization stack only — no sponsorship or cargo.</p>'}
-        ${row.note ? `<p class="assump-label">${esc(row.note)}</p>` : ''}`;
-      }
-      tabs.innerHTML = table
-        .map((t, i) => `<button type="button" data-i="${i}">${esc(t.case)}</button>`)
-        .join('');
-      tabs.querySelectorAll('button').forEach((b) => {
-        b.addEventListener('click', () => paint(Number(b.dataset.i)));
-      });
-      paint(midIdx);
-    }
-  }
+  if (isInvest) initInvestPnl();
 
   // CTA
   const cta = A.cta || {};

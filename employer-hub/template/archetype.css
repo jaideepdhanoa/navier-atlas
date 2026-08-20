@@ -436,3 +436,276 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* —— Fleet investors: service day, demand cards, interactive P&L —— */
+.tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.tech-chip {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  color: var(--text-1);
+}
+.tech-chip strong {
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+.service-day {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+.service-window {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 12px 10px;
+  background: var(--bg-1);
+  min-width: 0;
+}
+.service-window.is-upside {
+  border-style: dashed;
+  opacity: 0.78;
+}
+.sw-time {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.sw-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-0);
+  margin-bottom: 4px;
+}
+.sw-layer {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.35;
+}
+
+.demand-cards {
+  margin-top: 16px;
+}
+.standing-label {
+  font-size: 13px;
+  color: var(--text-2);
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  margin: 0 0 14px;
+  line-height: 1.45;
+}
+
+.status-chip {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-2);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.status-chip.status-upside,
+.status-chip.status-modeled {
+  border-color: rgba(224, 203, 143, 0.45);
+  color: var(--accent);
+}
+.status-chip.status-market_priced {
+  border-color: rgba(120, 180, 140, 0.5);
+  color: #9dcea8;
+}
+
+.pnl-studio {
+  margin-top: 12px;
+}
+.pnl-sticky {
+  position: sticky;
+  top: 64px;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 10px;
+  align-items: stretch;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(12, 12, 14, 0.92);
+  backdrop-filter: blur(8px);
+}
+.pnl-metric {
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--bg-1);
+}
+.pnl-metric .k {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 4px;
+}
+.pnl-metric .v {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  color: var(--accent);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.pnl-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.pnl-preset {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text-1);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pnl-preset.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(224, 203, 143, 0.08);
+}
+.pnl-preset:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pnl-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.pnl-levers {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  background: var(--bg-1);
+  position: sticky;
+  top: 150px;
+}
+.pnl-levers-title {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 0 0 12px;
+}
+.pnl-lever {
+  display: block;
+  margin: 0 0 14px;
+}
+.pnl-lever-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-0);
+  margin-bottom: 6px;
+}
+.pnl-lever input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.pnl-lever-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+.pnl-upside-toggles {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+.pnl-toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-1);
+  margin: 8px 0;
+}
+
+.pnl-statement-wrap {
+  min-width: 0;
+}
+.ue-table td.num,
+.ue-table th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pnl-table .section-row td {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding-top: 16px;
+}
+.pnl-table tr.total td {
+  border-top: 1px solid var(--line-strong, var(--line));
+}
+.pnl-table tr.emphasis td {
+  color: var(--accent);
+  font-size: 15px;
+}
+.pnl-table tr.upside.off {
+  opacity: 0.45;
+}
+.pnl-table .line-main {
+  color: var(--text-0);
+  font-weight: 500;
+}
+.revenue-build {
+  margin-top: 8px;
+}
+
+@media (max-width: 960px) {
+  .service-day {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pnl-layout {
+    grid-template-columns: 1fr;
+  }
+  .pnl-levers {
+    position: relative;
+    top: auto;
+  }
+  .pnl-sticky {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    top: 56px;
+  }
+  .pnl-presets {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 720px) {
+  .service-day {
+    grid-template-columns: 1fr;
+  }
+}

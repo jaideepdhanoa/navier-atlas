@@ -314,6 +314,7 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
   const tplJs = fs.readFileSync(path.join(HUB_ROOT, 'template/hub.js'), 'utf8');
   const archJs = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.js'), 'utf8');
+  const pnlModelJs = fs.readFileSync(path.join(HUB_ROOT, 'template/pnl-model.js'), 'utf8');
 
   const label =
     archetypeId === 'fleet-investors'
@@ -343,6 +344,7 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
   fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
   fs.writeFileSync(path.join(outDir, 'archetype.js'), archJs);
+  fs.writeFileSync(path.join(outDir, 'pnl-model.js'), pnlModelJs);
 
   const clientHub = sanitizeClientHub(hub);
   fs.writeFileSync(
