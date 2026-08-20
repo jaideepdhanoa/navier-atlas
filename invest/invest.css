@@ -250,9 +250,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   position: absolute; bottom: 0; left: 0; height: 2px; width: 0;
   background: linear-gradient(90deg, rgba(212,175,95,0.35), var(--accent-bright));
 }
+/* Same section-inner as chapter-label — share one left edge */
+.gtm-chapter-head .chapter-label {
+  margin-bottom: 18px;
+}
 .chapter-toc {
   margin: 0 0 var(--space-5, 28px);
-  padding-bottom: 16px;
+  padding: 0 0 16px;
   border-bottom: 1px solid var(--line);
 }
 .chapter-toc-label {
@@ -267,8 +271,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 4px;
+  gap: 6px 2px;
   font-size: 14px;
+  margin-left: -6px; /* cancel first link horizontal padding so “Mobility” shares label edge */
 }
 .chapter-toc-links a {
   color: var(--text-1);
@@ -1157,7 +1162,7 @@ a.team-link:hover {
 }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
-/* Timeline — full-width equal columns; years centered on a rail (arc-rail rhythm) */
+/* Timeline — equal columns; year centered on rail node (arc-rail rhythm) */
 .sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 24px }
 .chip {
   font-size: 13px; padding: 8px 14px; border-radius: 999px;
@@ -1188,15 +1193,24 @@ a.team-link:hover {
 .tl-item {
   flex: 1 1 0;
   min-width: 0;
-  padding: 0 10px 12px;
+  padding: 0 8px 12px;
   border: 0;
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
-.tl-item::before {
+.tl-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 28px;
+}
+.tl-node::before {
   content: "";
   position: absolute;
   left: 50%;
@@ -1217,19 +1231,21 @@ a.team-link:hover {
   width: 100%;
   line-height: 1.15;
 }
-.tl-item ul {
+.tl-list {
   margin: 0;
   padding: 0;
   list-style: none;
   color: var(--text-1);
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.45;
   width: 100%;
   text-align: center;
 }
-.tl-item li { margin-bottom: 6px }
-.tl-item li::before {
-  content: none;
+.tl-list li {
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
 }
 @media (max-width: 720px) {
   .timeline {
@@ -1240,11 +1256,13 @@ a.team-link:hover {
   .timeline::before { display: none; }
   .tl-item {
     align-items: flex-start;
+    text-align: left;
     border-left: 2px solid rgba(185, 154, 95, 0.35);
     padding: 0 0 20px 20px;
   }
-  .tl-item::before {
-    left: -7px;
+  .tl-node { align-items: flex-start; min-height: 0; }
+  .tl-node::before {
+    left: -27px;
     transform: none;
     top: 6px;
   }
@@ -1252,7 +1270,8 @@ a.team-link:hover {
     text-align: left;
     margin: 0 0 10px;
   }
-  .tl-item ul { text-align: left; }
+  .tl-list,
+  .tl-list li { text-align: left; }
 }
 
 .hotspot-list { display: flex; flex-direction: column; gap: 10px }

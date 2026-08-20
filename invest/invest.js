@@ -717,8 +717,10 @@
         .map(
           (m) => `
         <div class="tl-item">
-          <div class="tl-year">${esc(m.year)}</div>
-          <ul>${(m.items || []).map((it) => `<li>${esc(it)}</li>`).join('')}</ul>
+          <div class="tl-node">
+            <div class="tl-year">${esc(m.year)}</div>
+          </div>
+          <ul class="tl-list">${(m.items || []).map((it) => `<li>${esc(it)}</li>`).join('')}</ul>
         </div>`,
         )
         .join('');
@@ -731,7 +733,9 @@
             ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
           </div>
           ${plate ? cinema(plate, { home: 'proof.traction.plate', vh: '50vh' }) : ''}
-          <div class="timeline media-inner">${items}</div>
+          <div class="section-inner">
+            <div class="timeline">${items}</div>
+          </div>
           ${s.closing_line ? `<p class="closing-line section-inner">${esc(s.closing_line)}</p>` : ''}
         </div>`;
     },
@@ -1818,7 +1822,7 @@
     const gtmClusters = chapterClusters().gtm || [];
     const toc =
       gtmClusters.length > 1
-        ? `<div class="section-inner chapter-toc" data-chapter-toc="gtm">
+        ? `<div class="chapter-toc" data-chapter-toc="gtm">
             <p class="chapter-toc-label">In this chapter</p>
             <div class="chapter-toc-links">${gtmClusters
               .map(function (cl) {
@@ -1829,8 +1833,10 @@
         : '';
     return `
       <section class="chapter" id="gtm">
-        <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
-        ${toc}
+        <div class="section-inner gtm-chapter-head">
+          <p class="chapter-label">${esc(data.chapter_label || '')}</p>
+          ${toc}
+        </div>
         ${parts.join('')}
       </section>`;
   }
