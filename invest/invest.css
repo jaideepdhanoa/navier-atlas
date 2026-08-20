@@ -319,6 +319,40 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   background: var(--bg-0);
 }
 .about-stage-inner { width: 100%; max-width: 80ch; }
+.about-stage--split .about-stage-inner {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--space-5, 28px) var(--space-6, 40px);
+  align-items: center;
+}
+.about-copy { min-width: 0; max-width: 68ch; }
+.about-plate { margin: 0; min-width: 0; }
+.about-plate-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #07080a;
+  aspect-ratio: 4 / 3;
+}
+.about-plate-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.about-plate figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.35;
+}
+@media (max-width: 1099px) {
+  .about-stage--split .about-stage-inner { grid-template-columns: 1fr; }
+  .about-plate { order: 2; }
+  .about-copy { max-width: none; }
+}
 .about-kicker {
   font-size: 12px;
   font-weight: 700;

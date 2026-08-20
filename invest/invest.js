@@ -348,19 +348,32 @@
     },
 
     'prose-stage'(s) {
-      // Core Thesis (v9.1) — deck prose VERBATIM. Full-viewport stage; para 1 = lead weight.
+      // Core Thesis — verbatim prose; optional right-plate media (hangar) on desktop
       const paras = (s.paragraphs || [])
         .map(
           (p, i) =>
             `<p class="about-para ${i === 0 ? 'lead-para' : 'body-para'}" data-reveal>${esc(p)}</p>`,
         )
         .join('');
+      const media = s.media || {};
+      const imgSrc = mediaPath(media.image || homeSrc('claim.about') || '');
+      const plate = imgSrc
+        ? `<figure class="about-plate" data-reveal>
+            <div class="about-plate-frame">
+              <img src="${esc(imgSrc)}" alt="${esc(media.alt || homeCap('claim.about') || '')}" loading="lazy" />
+            </div>
+            ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
+          </figure>`
+        : '';
       return `
-        <div class="section-block stage-section about-stage" data-reveal data-home="claim.about">
+        <div class="section-block stage-section about-stage ${plate ? 'about-stage--split' : ''}" data-reveal data-home="claim.about">
           <div class="section-inner about-stage-inner">
-            ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
-            ${s.title ? `<h2 class="h2 about-title">${esc(s.title)}</h2>` : ''}
-            <div class="about-prose">${paras}</div>
+            <div class="about-copy">
+              ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+              ${s.title ? `<h2 class="h2 about-title">${esc(s.title)}</h2>` : ''}
+              <div class="about-prose">${paras}</div>
+            </div>
+            ${plate}
           </div>
         </div>`;
     },
