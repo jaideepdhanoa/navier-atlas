@@ -856,11 +856,17 @@
     },
 
     'two-door'(s) {
-      // Doors/third first; map + Atlantic run callout as one band; closing last
-      // (mobile was stacking closing between the map and the Atlantic line)
+      // Three equal door cards (defense / commercial / persistence); map + Atlantic callout; closing
       const qa = homeAssets('product.quanta') || {};
       const atlantic = qa.atlantic_map ? mediaPath(qa.atlantic_map) : '';
-      const doors = (s.doors || [])
+      const doorList = (s.doors || []).slice();
+      if (s.third_point && s.third_point.title) {
+        doorList.push({
+          title: s.third_point.title,
+          detail: s.third_point.detail || '',
+        });
+      }
+      const doors = doorList
         .map(
           (d) => `
         <div class="door"><div class="title">${esc(d.title)}</div><div class="detail">${esc(d.detail)}</div></div>`,
@@ -874,12 +880,7 @@
           <div class="section-inner">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-            <div class="doors">${doors}</div>
-            ${
-              s.third_point
-                ? `<div class="third-point"><strong>${esc(s.third_point.title)}</strong> — ${esc(s.third_point.detail)}</div>`
-                : ''
-            }
+            <div class="doors doors-${doorList.length}">${doors}</div>
             <div class="atlantic-band">
               ${atlantic ? plate(atlantic, { home: 'product.quanta', className: 'atlantic-map-plate' }) : ''}
               ${atlanticLine}
@@ -965,9 +966,11 @@
               .map(function (pl) {
                 const key = pl.id || '';
                 const src = logos[key] ? mediaPath(logos[key]) : '';
-                return `<div class="player-logo player-card">
-                  ${src ? `<img src="${esc(src)}" alt="${esc(pl.name || '')}" loading="lazy" />` : ''}
-                  <div class="title">${esc(pl.name || '')}</div>
+                const logoClass =
+                  key === 'visit_maldives' ? 'player-logo player-card player-logo--maldives' : 'player-logo player-card';
+                // Logos carry the names — do not repeat Navier / JIH / HARIM / Visit Maldives as text
+                return `<div class="${logoClass}">
+                  ${src ? `<img src="${esc(src)}" alt="${esc(pl.name || '')}" loading="lazy" />` : `<div class="title">${esc(pl.name || '')}</div>`}
                   ${pl.role ? `<div class="player-role">${esc(pl.role)}</div>` : ''}
                   ${pl.does ? `<div class="player-does">${esc(pl.does)}</div>` : ''}
                 </div>`;

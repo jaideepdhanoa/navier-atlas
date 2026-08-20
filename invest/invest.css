@@ -1427,12 +1427,13 @@ a.team-link:hover {
 .ue-notes { margin: 12px 0 0; padding-left: 18px; color: var(--text-2); font-size: 12px }
 
 .doors { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 }
+.doors.doors-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .door {
   padding: 18px; border-radius: 8px; background: var(--bg-1); border: 1px solid var(--line);
+  min-width: 0;
 }
 .door .title { font-weight: 700; margin-bottom: 8px; color: var(--accent-bright) }
 .door .detail { font-size: 14px; color: var(--text-1) }
-.third-point { margin: 16px 0; color: var(--text-1); font-size: 14px }
 /* Map + Atlantic run callout — one unit so mobile never inserts closing between them */
 .atlantic-band {
   display: grid;
@@ -1473,7 +1474,13 @@ a.team-link:hover {
   .atlantic-band .atlantic { order: 2; }
   .atlantic-band .atlantic-map-plate { order: 1; }
 }
-@media (max-width: 720px) { .doors { grid-template-columns: 1fr } }
+@media (max-width: 1099px) {
+  .doors.doors-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .doors,
+  .doors.doors-3 { grid-template-columns: 1fr; }
+}
 
 .table-wrap {
   overflow-x: auto; margin: 16px 0;
@@ -2850,12 +2857,17 @@ a.team-link:hover {
 .player-logos.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .player-logo.compact img,
 .player-logo.player-card img {
-  height: 36px; width: auto; max-width: 100%; object-fit: contain;
-  margin: 0 auto 12px; display: block; filter: brightness(0) invert(1); opacity: 0.92;
+  height: 40px; width: auto; max-width: 100%; object-fit: contain;
+  margin: 0 auto 14px; display: block; filter: brightness(0) invert(1); opacity: 0.92;
+}
+/* Visit Maldives wordmark needs more height to stay legible when inverted */
+.player-logo.player-card.player-logo--maldives img {
+  height: 58px;
+  max-width: min(100%, 200px);
 }
 .player-logo.player-card {
   text-align: center;
-  padding: 18px 14px 16px;
+  padding: 20px 14px 16px;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--bg-1);
