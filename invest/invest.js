@@ -79,6 +79,57 @@
     return c;
   }
 
+  function chapterClusters() {
+    const nav = (D.site && D.site.nav) || {};
+    const raw = nav.chapter_clusters || {};
+    const out = {};
+    Object.keys(raw).forEach(function (k) {
+      if (k.charAt(0) === '_') return;
+      out[k] = raw[k];
+    });
+    return out;
+  }
+
+  function clusterIdFor(chapterId, sectionId) {
+    const list = chapterClusters()[chapterId] || [];
+    for (let i = 0; i < list.length; i++) {
+      if ((list[i].sections || []).indexOf(sectionId) >= 0) return list[i].id || '';
+    }
+    return '';
+  }
+
+  function clusterJumpId(chapterId, cluster) {
+    if (cluster.anchor) return cluster.anchor;
+    const first = (cluster.sections || [])[0];
+    return first ? chapterId + '-' + first : chapterId;
+  }
+
+  /** Stamp stable #id + data-* on the first root element of a section render. */
+  function stampSectionHtml(html, chapterId, sec) {
+    if (!html || !sec || !sec.id) return html || '';
+    const sid = sec.id;
+    const wantId = chapterId + '-' + sid;
+    const cluster = clusterIdFor(chapterId, sid);
+    const extra =
+      ' data-chapter="' +
+      esc(chapterId) +
+      '" data-section="' +
+      esc(sid) +
+      '" data-cluster="' +
+      esc(cluster) +
+      '"';
+    let stamped = false;
+    return String(html).replace(/<([a-z][a-z0-9]*)(\s[^>]*)?>/i, function (match, tag, attrs) {
+      if (stamped) return match;
+      stamped = true;
+      attrs = attrs || '';
+      if (/\sid\s*=/.test(attrs)) {
+        return '<' + tag + attrs + extra + '>';
+      }
+      return '<' + tag + ' id="' + esc(wantId) + '"' + attrs + extra + '>';
+    });
+  }
+
   function cinema(src, opts = {}) {
     if (!src) return '';
     const cap = opts.caption;
@@ -165,6 +216,19 @@
     const links = chapters
       .map((c) => `<a href="#${esc(c.id)}" data-nav="${esc(c.id)}">${esc(c.label)}</a>`)
       .join('');
+    // Pre-render all cluster rows; JS toggles visibility by active chapter
+    const clusters = chapterClusters();
+    const subRows = Object.keys(clusters)
+      .map(function (chapterId) {
+        const chips = (clusters[chapterId] || [])
+          .map(function (cl) {
+            const href = clusterJumpId(chapterId, cl);
+            return `<a href="#${esc(href)}" data-cluster-nav="${esc(cl.id)}" data-cluster-chapter="${esc(chapterId)}">${esc(cl.label)}</a>`;
+          })
+          .join('');
+        return `<div class="inv-subnav-row" data-subnav-for="${esc(chapterId)}" hidden>${chips}</div>`;
+      })
+      .join('');
     return `
     <nav class="inv-nav" aria-label="Chapters">
       <div class="inv-nav-inner">
@@ -176,8 +240,14 @@
           </div>
         </div>
         <div class="inv-chapters">${links}</div>
+        <div class="inv-progress" id="inv-progress"></div>
       </div>
-      <div class="inv-progress" id="inv-progress"></div>
+      <div class="inv-subnav" id="inv-subnav" hidden>
+        <div class="inv-subnav-inner">
+          ${subRows}
+        </div>
+        <div class="inv-subnav-progress" id="inv-subnav-progress"></div>
+      </div>
     </nav>`;
   }
 
@@ -1670,7 +1740,7 @@
         parts.push(cinema(heritage, { home: 'claim.three_costs.divider', caption: homeCap('claim.three_costs.divider'), vh: '58vh' }));
       }
       const fn = R[sec.type];
-      if (fn) parts.push(fn(sec));
+      if (fn) parts.push(stampSectionHtml(fn(sec), 'claim', sec));
       // Golden-hour bow payoff after costs↔levers morph (Tasklet closing plate)
       if (sec.id === 'costs-levers') {
         const cp = sec.closing_plate || {};
@@ -1704,7 +1774,7 @@
     if (div) parts.push(cinema(div, { home: 'proof.divider', caption: homeCap('proof.divider'), vh: '68vh' }));
     for (const sec of data.sections || []) {
       const fn = R[sec.type];
-      if (fn) parts.push(fn(sec));
+      if (fn) parts.push(stampSectionHtml(fn(sec), 'proof', sec));
     }
     return `
       <section class="chapter" id="proof">
@@ -1721,7 +1791,7 @@
     for (const sec of data.sections || []) {
       // competitive table has no plate
       const fn = R[sec.type];
-      if (fn) parts.push(fn(sec));
+      if (fn) parts.push(stampSectionHtml(fn(sec), 'product', sec));
     }
     return `
       <section class="chapter" id="product">
@@ -1737,11 +1807,24 @@
     const parts = [];
     for (const sec of data.sections || []) {
       const fn = R[sec.type];
-      if (fn) parts.push(fn(sec));
+      if (fn) parts.push(stampSectionHtml(fn(sec), 'gtm', sec));
     }
+    const gtmClusters = chapterClusters().gtm || [];
+    const toc =
+      gtmClusters.length > 1
+        ? `<div class="section-inner chapter-toc" data-chapter-toc="gtm">
+            <p class="chapter-toc-label">In this chapter</p>
+            <div class="chapter-toc-links">${gtmClusters
+              .map(function (cl) {
+                return `<a href="#${esc(clusterJumpId('gtm', cl))}">${esc(cl.label)}</a>`;
+              })
+              .join('<span class="chapter-toc-sep" aria-hidden="true">·</span>')}</div>
+          </div>`
+        : '';
     return `
       <section class="chapter" id="gtm">
         <div class="section-inner"><p class="chapter-label">${esc(data.chapter_label || '')}</p></div>
+        ${toc}
         ${parts.join('')}
       </section>`;
   }
@@ -1755,19 +1838,21 @@
     const mainHtml = main
       .map((sec) => {
         const fn = R[sec.type];
-        return fn ? fn(sec) : '';
+        return fn ? stampSectionHtml(fn(sec), 'money', sec) : '';
       })
       .join('');
     // Go Deeper before Own the Edge finale so the film/contact isn't buried after the close
     const moneyLabel = data.chapter_label
       ? `<div class="section-inner"><p class="chapter-label">${esc(data.chapter_label)}</p></div>`
       : '';
+    const finaleHtml = finale ? stampSectionHtml(R['finale-plate'](finale), 'money', finale) : '';
+    const footHtml = foot ? stampSectionHtml(R.footer(foot), 'money', foot) : '';
     return `
       <section class="chapter" id="money">
         ${moneyLabel}
         ${mainHtml}
-        ${foot ? R.footer(foot) : ''}
-        ${finale ? R['finale-plate'](finale) : ''}
+        ${footHtml}
+        ${finaleHtml}
       </section>`;
   }
 
@@ -2900,9 +2985,55 @@
 
   /* ── Scroll / motion ───────────────────────────────── */
   const progress = $('#inv-progress');
+  const subProgress = $('#inv-subnav-progress');
   const scrollCue = $('#scroll-cue');
   const navLinks = [...document.querySelectorAll('[data-nav]')];
+  const subnav = $('#inv-subnav');
   const chapterIds = ((D.site.nav && D.site.nav.chapters) || []).map((c) => c.id);
+  const clusterMap = chapterClusters();
+  const SUBNAV_CHAPTERS = Object.keys(clusterMap);
+
+  function filterSubnavRows() {
+    // Hide cluster chips whose jump targets are missing (teaser / trimmed builds)
+    document.querySelectorAll('.inv-subnav-row').forEach(function (row) {
+      const chapterId = row.getAttribute('data-subnav-for');
+      let visible = 0;
+      row.querySelectorAll('a[data-cluster-nav]').forEach(function (a) {
+        const href = (a.getAttribute('href') || '').replace(/^#/, '');
+        const target = href && document.getElementById(href);
+        if (!target) {
+          a.hidden = true;
+        } else {
+          a.hidden = false;
+          visible++;
+        }
+      });
+      row.dataset.clusterCount = String(visible);
+      if (!visible) row.dataset.empty = '1';
+    });
+  }
+  filterSubnavRows();
+
+  function setSubnavChapter(chapterId) {
+    const show = SUBNAV_CHAPTERS.indexOf(chapterId) >= 0;
+    if (!subnav) return;
+    const row = show
+      ? document.querySelector('.inv-subnav-row[data-subnav-for="' + chapterId + '"]')
+      : null;
+    const hasChips = row && row.dataset.empty !== '1' && +row.dataset.clusterCount > 0;
+    subnav.hidden = !hasChips;
+    document.documentElement.classList.toggle('has-subnav', !!hasChips);
+    document.querySelectorAll('.inv-subnav-row').forEach(function (r) {
+      r.hidden = !hasChips || r.getAttribute('data-subnav-for') !== chapterId;
+    });
+  }
+
+  function navThreshold() {
+    const subH = document.documentElement.classList.contains('has-subnav')
+      ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--subnav-h')) || 44
+      : 0;
+    return 100 + subH;
+  }
 
   function onScroll() {
     const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -2915,15 +3046,80 @@
         hv.pause();
       } catch (_) {}
     }
+    const thresh = navThreshold();
     let active = chapterIds[0];
     for (const id of chapterIds) {
       const el = document.getElementById(id);
-      if (el && el.getBoundingClientRect().top <= 120) active = id;
+      if (el && el.getBoundingClientRect().top <= thresh) active = id;
     }
     navLinks.forEach((a) => a.classList.toggle('active', a.dataset.nav === active));
+    setSubnavChapter(active);
+
+    // Cluster scrollspy within active chapter
+    let activeCluster = '';
+    if (SUBNAV_CHAPTERS.indexOf(active) >= 0) {
+      const nodes = document.querySelectorAll(
+        '[data-chapter="' + active + '"][data-cluster]',
+      );
+      nodes.forEach(function (el) {
+        if (el.getBoundingClientRect().top <= thresh + 8) {
+          activeCluster = el.getAttribute('data-cluster') || '';
+        }
+      });
+      document.querySelectorAll('.inv-subnav-row:not([hidden]) [data-cluster-nav]').forEach(function (a) {
+        const on = a.getAttribute('data-cluster-nav') === activeCluster;
+        a.classList.toggle('active', on);
+        if (on) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+
+      // Chapter-local progress
+      const chap = document.getElementById(active);
+      if (subProgress && chap) {
+        const rect = chap.getBoundingClientRect();
+        const chapTop = window.scrollY + rect.top;
+        const chapH = Math.max(rect.height - window.innerHeight, 1);
+        const pct = Math.max(0, Math.min(100, ((window.scrollY - chapTop) / chapH) * 100));
+        subProgress.style.width = pct + '%';
+      }
+    } else if (subProgress) {
+      subProgress.style.width = '0%';
+    }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  function jumpToId(id, updateHash) {
+    const el = id && document.getElementById(id);
+    if (!el) return false;
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    el.scrollIntoView();
+    root.style.scrollBehavior = prev;
+    if (updateHash && history.replaceState) {
+      history.replaceState(null, '', '#' + id);
+    }
+    onScroll();
+    return true;
+  }
+
+  // Cluster + in-chapter TOC jumps — instant (smooth CSS scroll lands mid-chapter on long pages)
+  document.querySelectorAll('a[data-cluster-nav], .chapter-toc-links a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      const href = (a.getAttribute('href') || '').replace(/^#/, '');
+      if (!href) return;
+      e.preventDefault();
+      jumpToId(href, true);
+    });
+  });
+
+  // Deep-link on load
+  if (location.hash) {
+    requestAnimationFrame(function () {
+      jumpToId(location.hash.slice(1), false);
+    });
+  }
 
   const videoIo = new IntersectionObserver(
     (entries) => {

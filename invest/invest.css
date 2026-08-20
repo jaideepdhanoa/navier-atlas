@@ -43,6 +43,8 @@
   /* Chrome + cinema */
   --nav-h-base: 56px;
   --nav-h: calc(var(--nav-h-base) + env(safe-area-inset-top, 0px));
+  --subnav-h: 0px;
+  --chrome-h: calc(var(--nav-h) + var(--subnav-h));
   --cinema-h-hero: min(72svh, 720px);
   --cinema-h-chapter: min(48svh, 480px);
   --cinema-h-gtm: min(42svh, 420px);
@@ -54,6 +56,9 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+}
+html.has-subnav {
+  --subnav-h: 44px;
 }
 body {
   margin: 0;
@@ -144,17 +149,19 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   border: 1px solid var(--line-strong); padding: 4px 8px; border-radius: 4px;
 }
 
-/* Nav */
+/* Nav + secondary cluster bar */
 .inv-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: var(--nav-h);
+  height: auto;
+  min-height: var(--nav-h);
   padding-top: env(safe-area-inset-top, 0px);
-  display: flex; align-items: center;
-  background: rgba(7, 7, 8, 0.88);
+  display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
+  background: rgba(7, 7, 8, 0.92);
   backdrop-filter: blur(16px) saturate(140%);
   border-bottom: 1px solid var(--line);
 }
 .inv-nav-inner {
+  position: relative;
   width: 100%; max-width: var(--stage); margin: 0 auto;
   padding: 0 var(--pad-inline);
   min-height: var(--nav-h-base);
@@ -182,6 +189,80 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .inv-progress {
   position: absolute; bottom: 0; left: 0; height: 2px; width: 0;
   background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  z-index: 2;
+}
+.inv-subnav {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(7, 7, 8, 0.96);
+  position: relative;
+}
+.inv-subnav[hidden] { display: none !important; }
+.inv-subnav-inner {
+  width: 100%; max-width: var(--stage); margin: 0 auto;
+  padding: 0 var(--pad-inline);
+  min-height: var(--subnav-h);
+  display: flex; align-items: center;
+}
+.inv-subnav-row {
+  display: flex; gap: 4px; flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 6px 0;
+}
+.inv-subnav-row::-webkit-scrollbar { display: none; }
+.inv-subnav-row[hidden] { display: none !important; }
+.inv-subnav a {
+  flex: 0 0 auto;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.inv-subnav a:hover { color: var(--text-0); text-decoration: none; background: rgba(255,255,255,0.04); }
+.inv-subnav a.active {
+  color: var(--bg-0);
+  background: var(--accent-bright);
+}
+.inv-subnav-progress {
+  position: absolute; bottom: 0; left: 0; height: 2px; width: 0;
+  background: linear-gradient(90deg, rgba(212,175,95,0.35), var(--accent-bright));
+}
+.chapter-toc {
+  margin: 0 0 var(--space-5, 28px);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.chapter-toc-label {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+}
+.chapter-toc-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 4px;
+  font-size: 14px;
+}
+.chapter-toc-links a {
+  color: var(--text-1);
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.chapter-toc-links a:hover { color: var(--accent-bright); background: rgba(185,154,95,0.08); }
+.chapter-toc-sep { color: var(--text-2); opacity: 0.5; padding: 0 2px; }
+[data-section] {
+  scroll-margin-top: calc(var(--chrome-h) + 12px);
 }
 
 /* Hero */
@@ -246,7 +327,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 /* Chapters */
 .chapter {
   padding: var(--chapter-y) 0 var(--space-5);
-  scroll-margin-top: var(--nav-h);
+  scroll-margin-top: var(--chrome-h);
 }
 .chapter-label {
   font-size: 12px; font-weight: 700;
@@ -1728,7 +1809,7 @@ a.team-link:hover {
   min-height: 160vh;
 }
 .ns-pin-sticky {
-  position: sticky; top: var(--nav-h);
+  position: sticky; top: var(--chrome-h);
   z-index: 1;
 }
 @media (max-width: 720px) {
@@ -1799,7 +1880,7 @@ a.team-link:hover {
 }
 .arc-pin-sticky {
   position: sticky;
-  top: var(--nav-h);
+  top: var(--chrome-h);
   padding: var(--section-y) 0;
   z-index: 1;
   background: var(--bg-0);
