@@ -741,9 +741,9 @@
                 plate
                   ? cinema(plate, {
                       home: 'proof.traction.plate',
-                      caption: homeCap('proof.traction.plate'),
-                      size: 'gtm',
-                      alt: homeCap('proof.traction.plate') || '',
+                      // Native-aspect photo — never cover-crop (US flag must stay in frame)
+                      size: 'photo',
+                      alt: 'Hulls in production at Navier’s waterfront hangar',
                     })
                   : ''
               }
