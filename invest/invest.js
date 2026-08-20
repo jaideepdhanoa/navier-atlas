@@ -1193,7 +1193,7 @@
     },
 
     'defense-panel'(s) {
-      // Media-first → proof: lead loop + equal photo strip, then rail/quotes/deployment, then hull cards + more footage
+      // Proof (media + quotes) → Platform (specs + hulls) → Dual-use why (sub_line + budgets)
       const da = homeAssets('gtm.defense') || {};
       const media = s.media || {};
       const lead = media.lead_video || {};
@@ -1205,9 +1205,9 @@
       const secondary = media.secondary_videos || [];
       const rail = ((s.capability_rail && s.capability_rail.rows) || [])
         .map(function (r) {
-          return `<div class="defense-rail-row">
-            <div class="defense-rail-term">${esc(r.term || '')}</div>
-            <div class="defense-rail-desc">${esc(r.desc || '')}</div>
+          return `<div class="defense-spec">
+            <div class="defense-spec-term">${esc(r.term || '')}</div>
+            <div class="defense-spec-desc">${esc(r.desc || '')}</div>
           </div>`;
         })
         .join('');
@@ -1216,27 +1216,25 @@
           return `<div class="chip-card"><div class="t">${esc(b.title || '')}</div><div class="b">${nl(b.body || b.detail || '')}</div></div>`;
         })
         .join('');
-      const usmi = s.pull_quote
-        ? `<blockquote class="defense-quote">
-            <p>${esc(s.pull_quote.quote || '')}</p>
-            <cite>${esc(s.pull_quote.attribution || '')}</cite>
-          </blockquote>`
-        : '';
-      const press = s.press_quote
-        ? `<blockquote class="defense-quote defense-quote--press">
-            <p>${esc(s.press_quote.quote || '')}</p>
-            <cite>${
-              s.press_quote.url
-                ? `<a href="${esc(s.press_quote.url)}" target="_blank" rel="noopener noreferrer">${esc(s.press_quote.attribution || '')}</a>`
-                : esc(s.press_quote.attribution || '')
-            }</cite>
-          </blockquote>`
-        : '';
+      const quoteBlock = function (q, extraClass) {
+        if (!q) return '';
+        const cite = q.url
+          ? `<a href="${esc(q.url)}" target="_blank" rel="noopener noreferrer">${esc(q.attribution || '')}</a>`
+          : esc(q.attribution || '');
+        return `<blockquote class="defense-quote${extraClass ? ' ' + extraClass : ''}">
+            <p>${esc(q.quote || '')}</p>
+            <cite>${cite}</cite>
+          </blockquote>`;
+      };
+      const press = quoteBlock(s.press_quote, 'defense-quote--press');
+      const usmi = quoteBlock(s.pull_quote, '');
       const photoHtml = photos
         .map(function (ph) {
-          const src = mediaPath(ph.src || ph);
+          const raw = ph.src || ph;
+          const src = mediaPath(raw);
           if (!src) return '';
-          return `<figure class="defense-photo">
+          const isSof = /sofweek/i.test(String(raw)) || /sof week/i.test(ph.caption || '');
+          return `<figure class="defense-photo${isSof ? ' defense-photo--sof' : ''}">
             <div class="defense-photo-frame"><img src="${esc(src)}" alt="${esc(ph.caption || '')}" loading="lazy" /></div>
             ${ph.caption ? `<figcaption>${esc(ph.caption)}</figcaption>` : ''}
           </figure>`;
@@ -1256,6 +1254,8 @@
           </figure>`;
         })
         .join('');
+      const quietProof = [press, usmi].filter(Boolean).join('')
+        + (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
       return `
         <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
           <div class="section-inner">
@@ -1264,41 +1264,40 @@
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${s.intro ? `<p class="dual-use-intro">${esc(s.intro)}</p>` : ''}
 
-            <div class="defense-media-band">
-              ${
-                leadSrc
-                  ? `<figure class="defense-lead-video">
-                <div class="defense-video-frame defense-video-frame--lead">
-                  <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" data-lazy-video>
-                    <source src="${esc(leadSrc)}" type="video/mp4" />
-                  </video>
-                </div>
-                ${lead.caption ? `<figcaption>${esc(lead.caption)}</figcaption>` : ''}
-              </figure>`
-                  : ''
-              }
-              ${photoHtml ? `<div class="defense-sbs">${photoHtml}</div>` : ''}
+            <div class="defense-beat defense-beat--proof">
+              <p class="sublabel">PROOF</p>
+              <div class="defense-media-band">
+                ${
+                  leadSrc
+                    ? `<figure class="defense-lead-video">
+                  <div class="defense-video-frame defense-video-frame--lead">
+                    <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" data-lazy-video>
+                      <source src="${esc(leadSrc)}" type="video/mp4" />
+                    </video>
+                  </div>
+                  ${lead.caption ? `<figcaption>${esc(lead.caption)}</figcaption>` : ''}
+                </figure>`
+                    : ''
+                }
+                ${photoHtml ? `<div class="defense-sbs">${photoHtml}</div>` : ''}
+                ${secondaryHtml ? `<div class="defense-secondary">${secondaryHtml}</div>` : ''}
+              </div>
+              ${quietProof ? `<div class="defense-quiet">${quietProof}</div>` : ''}
             </div>
 
-            <div class="defense-proof">
-              <div class="defense-proof-rail">
-                ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
-                ${rail ? `<div class="defense-rail">${rail}</div>` : ''}
-              </div>
-              <div class="defense-proof-quotes">
-                ${press}
-                ${usmi}
-                ${s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : ''}
-                ${s.fine_print ? `<p class="defense-budgets muted">${esc(s.fine_print)}</p>` : ''}
-              </div>
+            <div class="defense-beat defense-beat--platform">
+              <p class="sublabel">PLATFORM</p>
+              ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+              ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
+              ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
             </div>
 
-            ${blocks ? `<div class="defense-hulls"><p class="sublabel">PLATFORM</p><div class="dual-use-blocks">${blocks}</div></div>` : ''}
             ${
-              secondaryHtml
-                ? `<div class="defense-more">
-              <p class="sublabel">MORE FOOTAGE</p>
-              <div class="defense-secondary">${secondaryHtml}</div>
+              s.sub_line || s.fine_print
+                ? `<div class="defense-beat defense-beat--why">
+              <p class="sublabel">DUAL-USE</p>
+              ${s.sub_line ? `<p class="defense-why-lead">${esc(s.sub_line)}</p>` : ''}
+              ${s.fine_print ? `<p class="defense-budgets muted">${esc(s.fine_print)}</p>` : ''}
             </div>`
                 : ''
             }
@@ -1637,17 +1636,19 @@
           ${p.title ? `<h2 class="h2">${esc(p.title)}</h2>` : ''}
           ${stats}
         </div>
-        <div class="pipe-layout media-inner">
-          <div class="pipe-map-host" id="pipe-map-host">
-            <div id="pipe-map" class="pipe-map" role="img" aria-label="Live pipeline map"></div>
-            <noscript>
-              ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" class="pipe-fallback-img" />` : ''}
-            </noscript>
-            <div class="pipe-map-fallback" id="pipe-map-fallback" hidden>
-              ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" loading="lazy" />` : ''}
+        <div class="section-inner">
+          <div class="pipe-layout">
+            <div class="pipe-map-host" id="pipe-map-host">
+              <div id="pipe-map" class="pipe-map" role="img" aria-label="Live pipeline map"></div>
+              <noscript>
+                ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" class="pipe-fallback-img" />` : ''}
+              </noscript>
+              <div class="pipe-map-fallback" id="pipe-map-fallback" hidden>
+                ${fallbackSrc ? `<img src="${esc(fallbackSrc)}" alt="" loading="lazy" />` : ''}
+              </div>
             </div>
+            <div class="pipe-tiers">${tiers}</div>
           </div>
-          <div class="pipe-tiers">${tiers}</div>
         </div>
         <div class="pipe-foot section-inner">
           ${p.coverage_line ? `<div>${esc(p.coverage_line)}</div>` : ''}
@@ -1670,6 +1671,23 @@
       }
       const fn = R[sec.type];
       if (fn) parts.push(fn(sec));
+      // Golden-hour bow payoff after costs↔levers morph (Tasklet closing plate)
+      if (sec.id === 'costs-levers') {
+        const cp = sec.closing_plate || {};
+        const plateSrc =
+          homeSrc('claim.costs_levers.closing_plate') ||
+          mediaPath(cp.image || '');
+        if (plateSrc) {
+          parts.push(
+            cinema(plateSrc, {
+              home: 'claim.costs_levers.closing_plate',
+              caption: cp.caption || homeCap('claim.costs_levers.closing_plate'),
+              alt: cp.alt || '',
+              vh: '58vh',
+            }),
+          );
+        }
+      }
     }
     return `
       <section class="chapter" id="claim">
@@ -2340,10 +2358,12 @@
               },
             ],
           },
-          center: [20, 18],
-          zoom: 1.15,
-          minZoom: 1.15,
-          maxZoom: 1.15,
+          // Fixed global framing — center/zoom tuned so Americas→Asia fill a wide panel
+          // (old [20,18] @ 1.15 left a dead ocean band on the right at ~1200px measure)
+          center: [12, 14],
+          zoom: 1.05,
+          minZoom: 1.05,
+          maxZoom: 1.05,
           attributionControl: false,
           interactive: false,
           dragPan: false,
@@ -2354,6 +2374,8 @@
           keyboard: false,
         });
         map.on('load', function () {
+          // Host may have settled size after grid layout — force canvas to match
+          map.resize();
           map.addSource('cities', {
             type: 'geojson',
             data: { type: 'FeatureCollection', features: idx.all },
@@ -2478,6 +2500,9 @@
           // flash signed Maldives as default money moment
           var signed = document.querySelector('[data-pipe-row].weight-signed');
           if (signed) signed.dispatchEvent(new Event('mouseenter'));
+          requestAnimationFrame(function () {
+            if (map) map.resize();
+          });
         });
       } catch (err) {
         console.warn('[invest] pipeline map failed', err);
@@ -2502,6 +2527,9 @@
           showFallback();
         });
     }
+    window.addEventListener('resize', function () {
+      if (map) map.resize();
+    });
     if (!section) {
       start();
       return;
@@ -2511,6 +2539,10 @@
         ents.forEach(function (en) {
           if (en.isIntersecting) {
             start();
+            // Second resize after paint — grid host often 0-height at first boot
+            setTimeout(function () {
+              if (map) map.resize();
+            }, 120);
             ioPipe.disconnect();
           }
         });

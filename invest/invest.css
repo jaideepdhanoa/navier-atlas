@@ -339,7 +339,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* Asset is pre-framed 4:3 — never cover-crop (US flag QA gate) */
+  object-fit: contain;
   object-position: center;
 }
 .about-plate figcaption {
@@ -609,27 +610,20 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   border-left: 2px solid rgba(185, 154, 95, 0.45);
 }
 
-/* Dual-use intro primary / sub secondary */
+/* Dual-use intro */
 .dual-use-intro {
   font-size: clamp(16px, 1.5vw, 18px);
   line-height: 1.55;
   color: var(--text-0);
-  max-width: 52ch;
-  margin: 8px 0 12px;
+  max-width: 68ch;
+  margin: 8px 0 var(--space-5, 28px);
   font-weight: 500;
-}
-.dual-use-sub {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-2);
-  max-width: 48ch;
-  margin: 0 0 20px;
 }
 .dual-use-blocks {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin: 16px 0;
+  margin: 16px 0 0;
 }
 @media (max-width: 720px) {
   .dual-use-blocks { grid-template-columns: 1fr; }
@@ -1012,7 +1006,7 @@ a.team-link:hover {
 }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
-/* Timeline */
+/* Timeline — full-width equal columns; years centered on a rail (arc-rail rhythm) */
 .sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 24px }
 .chip {
   font-size: 13px; padding: 8px 14px; border-radius: 999px;
@@ -1023,18 +1017,92 @@ a.team-link:hover {
   font-size: 1.1rem; font-weight: 600;
 }
 .timeline {
-  display: flex; gap: 0; overflow-x: auto; margin: 20px 0; padding-bottom: 8px;
+  display: flex;
+  gap: 0;
+  width: 100%;
+  margin: 28px 0 12px;
+  padding: 28px 0 8px;
+  position: relative;
+  overflow: visible;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 34px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-bright), transparent 95%);
+  opacity: 0.55;
+  z-index: 0;
 }
 .tl-item {
-  flex: 1; min-width: 150px; padding: 0 16px;
-  border-left: 2px solid var(--line);
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 10px 12px;
+  border: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
 }
 .tl-year {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.4rem; color: var(--accent-bright); margin-bottom: 12px;
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  color: var(--accent-bright);
+  margin: 28px 0 14px;
+  text-align: center;
+  width: 100%;
+  line-height: 1.15;
 }
-.tl-item ul { margin: 0; padding-left: 16px; color: var(--text-1); font-size: 13px }
+.tl-item ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-1);
+  font-size: 13px;
+  line-height: 1.4;
+  width: 100%;
+  text-align: center;
+}
 .tl-item li { margin-bottom: 6px }
+.tl-item li::before {
+  content: none;
+}
+@media (max-width: 720px) {
+  .timeline {
+    flex-direction: column;
+    padding-top: 0;
+    gap: 0;
+  }
+  .timeline::before { display: none; }
+  .tl-item {
+    align-items: flex-start;
+    border-left: 2px solid rgba(185, 154, 95, 0.35);
+    padding: 0 0 20px 20px;
+  }
+  .tl-item::before {
+    left: -7px;
+    transform: none;
+    top: 6px;
+  }
+  .tl-year {
+    text-align: left;
+    margin: 0 0 10px;
+  }
+  .tl-item ul { text-align: left; }
+}
 
 .hotspot-list { display: flex; flex-direction: column; gap: 10px }
 .hotspot-item {
@@ -1306,17 +1374,17 @@ a.team-link:hover {
 }
 .floor-line { color: var(--text-1); font-size: 15px; line-height: 1.55 }
 
-/* Live Atlas pipeline */
+/* Live Atlas pipeline — same measure as title/stats; map canvas fills host */
 .pipe-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  gap: 20px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+  gap: 24px;
   margin: 20px 0 8px;
   align-items: stretch;
 }
 .pipe-map-host {
   position: relative;
-  min-height: min(68vh, 560px);
+  min-height: min(62vh, 520px);
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -1327,6 +1395,11 @@ a.team-link:hover {
   inset: 0;
   width: 100%;
   height: 100%;
+}
+.pipe-map .maplibregl-canvas,
+.pipe-map .maplibregl-canvas-container {
+  width: 100% !important;
+  height: 100% !important;
 }
 .pipe-map .maplibregl-ctrl-group {
   background: rgba(17, 22, 30, 0.9) !important;
@@ -2093,15 +2166,18 @@ a.team-link:hover {
   .shipscale-kpi:last-child { border-bottom: 0; }
 }
 
-/* Defense — media-first band, then proof, then hulls / more footage */
-.dual-use-stage .dual-use-intro {
-  max-width: 68ch;
-  margin: 0 0 var(--space-5, 28px);
+/* Defense — Proof → Platform → Dual-use why */
+.defense-beat {
+  margin: 0 0 var(--space-6, 48px);
+  padding-top: var(--space-5, 28px);
+  border-top: 1px solid var(--line);
 }
+.defense-beat:last-child { margin-bottom: 0; }
+.defense-beat .sublabel { margin-bottom: 14px; }
+
 .defense-media-band {
   display: grid;
   gap: var(--space-4, 20px);
-  margin: 0 0 var(--space-6, 48px);
 }
 .defense-video-frame,
 .defense-photo-frame {
@@ -2119,7 +2195,7 @@ a.team-link:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
 }
 .defense-lead-video figcaption,
 .defense-photo figcaption,
@@ -2129,55 +2205,43 @@ a.team-link:hover {
   color: var(--text-2);
   line-height: 1.35;
 }
-/* Equal-height photo pair — crop portrait SOF Week tile to match landscape officers */
+
+/* Equal-height photo pair — crop portrait SOF Week to match SAS 3:2 */
 .defense-sbs {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3, 16px);
-  align-items: stretch;
+  align-items: start;
 }
 .defense-photo { min-width: 0; margin: 0; }
 .defense-photo-frame {
   aspect-ratio: 3 / 2;
 }
-.defense-proof {
+.defense-photo--sof .defense-photo-frame img {
+  /* Portrait source — bias to mid hull/effector, not sky/pier crown */
+  object-position: center 52%;
+}
+
+.defense-secondary {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: var(--space-5, 28px) var(--space-6, 40px);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3, 16px);
+}
+.defense-click-video { margin: 0; min-width: 0; }
+.defense-click-video .defense-video-frame {
+  aspect-ratio: 16 / 9;
+}
+
+/* Quiet proof — quotes + deployment under media */
+.defense-quiet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px var(--space-5, 28px);
+  margin-top: var(--space-5, 28px);
   align-items: start;
-  margin: 0 0 var(--space-6, 48px);
-  padding-top: var(--space-5, 28px);
-  border-top: 1px solid var(--line);
 }
-.defense-thesis {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
-  line-height: 1.35;
-  color: var(--text-0);
-  margin: 0 0 var(--space-4, 20px);
-}
-.defense-rail {
-  display: grid;
-  gap: 16px;
-}
-.defense-rail-row { min-width: 0; }
-.defense-rail-term {
-  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--accent-bright);
-  line-height: 1.15;
-}
-.defense-rail-desc {
-  margin-top: 4px;
-  font-size: 13px;
-  color: var(--text-2);
-  line-height: 1.4;
-}
-.defense-proof-quotes {
-  display: grid;
-  gap: 14px;
+.defense-quiet .defense-deploy {
+  grid-column: 1 / -1;
 }
 .defense-quote {
   margin: 0;
@@ -2215,34 +2279,65 @@ a.team-link:hover {
   color: var(--text-0);
   line-height: 1.45;
 }
+
+/* Platform — thesis bridge + horizontal specs + hull cards */
+.defense-thesis {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
+  line-height: 1.35;
+  color: var(--text-0);
+  margin: 0 0 var(--space-4, 20px);
+  max-width: 36ch;
+}
+.defense-specs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 0 0 var(--space-4, 20px);
+  padding: 16px 0;
+  border-top: 1px solid rgba(185, 154, 95, 0.22);
+  border-bottom: 1px solid rgba(185, 154, 95, 0.22);
+}
+.defense-spec { min-width: 0; }
+.defense-spec-term {
+  font-size: clamp(0.92rem, 1.25vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+  line-height: 1.2;
+}
+.defense-spec-desc {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.35;
+}
+
+/* Dual-use why */
+.defense-why-lead {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  line-height: 1.4;
+  color: var(--text-0);
+  margin: 0 0 14px;
+  max-width: 42ch;
+}
 .defense-budgets {
   margin: 0;
   font-size: 12px;
   line-height: 1.45;
+  max-width: 68ch;
 }
-.defense-hulls,
-.defense-more {
-  margin: 0 0 var(--space-5, 28px);
-}
-.defense-hulls .dual-use-blocks {
-  margin-top: 12px;
-}
-.defense-secondary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-3, 16px);
-  margin-top: 12px;
-}
-.defense-click-video { margin: 0; min-width: 0; }
-.defense-click-video .defense-video-frame {
-  aspect-ratio: 16 / 9;
-}
+
 @media (max-width: 1099px) {
-  .defense-proof { grid-template-columns: 1fr; }
+  .defense-specs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .defense-quiet { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .defense-sbs,
   .defense-secondary { grid-template-columns: 1fr; }
+  .defense-specs { grid-template-columns: 1fr 1fr; }
 }
 
 /* TAM column labels */
