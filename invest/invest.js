@@ -713,10 +713,11 @@
           return `<span class="chip"><strong data-counter="${esc(c.value || '')}">${esc(c.value || c.label || '')}</strong>${c.detail ? ` · ${esc(c.detail)}` : ''}</span>`;
         })
         .join('');
-      const items = (s.milestones || [])
+      const milestones = s.milestones || [];
+      const items = milestones
         .map(
-          (m) => `
-        <div class="tl-item">
+          (m, i) => `
+        <div class="tl-item" data-tl-step="${i + 1}" aria-hidden="true">
           <div class="tl-node">
             <div class="tl-year">${esc(m.year)}</div>
           </div>
@@ -726,15 +727,17 @@
         .join('');
       const plate = homeSrc('proof.traction.plate');
       return `
-        <div class="section-block" data-reveal data-home="proof.traction.plate">
+        <div class="section-block traction-timeline-section" data-reveal data-home="proof.traction.plate" data-tl-steps="${milestones.length}">
           <div class="section-inner">
             ${kicker(s)}
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
           </div>
           ${plate ? cinema(plate, { home: 'proof.traction.plate', vh: '50vh' }) : ''}
-          <div class="section-inner">
-            <div class="timeline">${items}</div>
+          <div class="tl-pin" id="tl-pin">
+            <div class="tl-pin-sticky">
+              <div class="timeline media-inner" id="tl-rail">${items}</div>
+            </div>
           </div>
           ${s.closing_line ? `<p class="closing-line section-inner">${esc(s.closing_line)}</p>` : ''}
         </div>`;
@@ -1909,7 +1912,7 @@
     if (block.classList.contains('costs-morph-section')) return;
     if (block.id === 'pipeline-section') return;
     if (block.querySelector(':scope > .section-inner')) return;
-    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin, :scope > .costs-morph, :scope > .arc-pin')) return;
+    if (block.querySelector(':scope > .cinema-block, :scope > .ns-pin, :scope > .tl-pin, :scope > .costs-morph, :scope > .arc-pin')) return;
     var kids = [];
     while (block.firstChild) kids.push(block.removeChild(block.firstChild));
     if (!kids.length) return;
@@ -2903,6 +2906,67 @@
       var scrolled = Math.min(scrollable, Math.max(0, -rect.top));
       var progress = scrolled / scrollable;
       // Map progress across phases: start with 1, end with all 6
+      var count = 1 + Math.floor(progress * (total - 0.0001));
+      setVisible(count);
+    }
+
+    setVisible(1);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  })();
+
+  /* ── Traction timeline scroll reveal (accumulate 2022→N) ─ */
+  (function initTimelineReveal() {
+    var pin = document.getElementById('tl-pin');
+    var rail = document.getElementById('tl-rail') || document.querySelector('.timeline');
+    if (!pin || !rail) return;
+    var phases = Array.prototype.slice.call(rail.querySelectorAll('.tl-item'));
+    if (!phases.length) return;
+    var total = phases.length;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mobile = window.matchMedia('(max-width: 720px)').matches;
+
+    function setVisible(count) {
+      var n = Math.max(1, Math.min(total, count));
+      phases.forEach(function (p, i) {
+        var on = i < n;
+        p.classList.toggle('is-revealed', on);
+        p.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+      pin.setAttribute('data-tl-visible', String(n));
+      rail.style.setProperty('--tl-progress', String(n / total));
+    }
+
+    if (reduce) {
+      setVisible(total);
+      return;
+    }
+
+    if (mobile) {
+      setVisible(1);
+      var io = new IntersectionObserver(
+        function (ents) {
+          ents.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var step = +en.target.getAttribute('data-tl-step') || 1;
+            var cur = +pin.getAttribute('data-tl-visible') || 1;
+            if (step > cur) setVisible(step);
+          });
+        },
+        { threshold: 0.35, rootMargin: '0px 0px -10% 0px' },
+      );
+      phases.forEach(function (p) { io.observe(p); });
+      return;
+    }
+
+    function onScroll() {
+      var rect = pin.getBoundingClientRect();
+      var pinH = pin.offsetHeight;
+      var viewH = window.innerHeight || 1;
+      var scrollable = Math.max(1, pinH - viewH);
+      var scrolled = Math.min(scrollable, Math.max(0, -rect.top));
+      var progress = scrolled / scrollable;
       var count = 1 + Math.floor(progress * (total - 0.0001));
       setVisible(count);
     }

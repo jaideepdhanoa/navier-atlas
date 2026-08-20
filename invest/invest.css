@@ -1162,7 +1162,7 @@ a.team-link:hover {
 }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
-/* Timeline — equal columns; year centered on rail node (arc-rail rhythm) */
+/* Timeline — full-width media-inner + scroll accumulate (arc rhythm) */
 .sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 24px }
 .chip {
   font-size: 13px; padding: 8px 14px; border-radius: 999px;
@@ -1172,11 +1172,23 @@ a.team-link:hover {
   color: var(--accent-bright); font-family: "Playfair Display", Georgia, serif;
   font-size: 1.1rem; font-weight: 600;
 }
+.tl-pin {
+  position: relative;
+  min-height: 180vh; /* scroll runway — years accumulate 2022→N */
+}
+.tl-pin-sticky {
+  position: sticky;
+  top: var(--chrome-h);
+  padding: var(--space-5) 0 var(--space-4);
+  z-index: 1;
+  background: var(--bg-0);
+}
 .timeline {
   display: flex;
   gap: 0;
   width: 100%;
-  margin: 28px 0 12px;
+  max-width: none;
+  margin: 0;
   padding: 28px 0 8px;
   position: relative;
   overflow: visible;
@@ -1189,6 +1201,9 @@ a.team-link:hover {
   background: linear-gradient(90deg, var(--accent-bright), transparent 95%);
   opacity: 0.55;
   z-index: 0;
+  transform: scaleX(var(--tl-progress, 0.2));
+  transform-origin: left center;
+  transition: transform 0.25s linear;
 }
 .tl-item {
   flex: 1 1 0;
@@ -1201,6 +1216,17 @@ a.team-link:hover {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  opacity: 0 !important;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.98);
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), visibility 0.4s;
+  pointer-events: none;
+}
+.tl-item.is-revealed {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  pointer-events: auto !important;
 }
 .tl-node {
   position: relative;
@@ -1221,7 +1247,10 @@ a.team-link:hover {
   border-radius: 50%;
   background: var(--accent-bright);
   box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
 }
+.tl-item.is-revealed .tl-node::before { opacity: 1; }
 .tl-year {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.15rem, 1.6vw, 1.45rem);
@@ -1248,6 +1277,8 @@ a.team-link:hover {
   text-align: center;
 }
 @media (max-width: 720px) {
+  .tl-pin { min-height: 0; }
+  .tl-pin-sticky { position: relative; top: auto; padding: var(--space-4) 0; }
   .timeline {
     flex-direction: column;
     padding-top: 0;
@@ -1259,6 +1290,7 @@ a.team-link:hover {
     text-align: left;
     border-left: 2px solid rgba(185, 154, 95, 0.35);
     padding: 0 0 20px 20px;
+    flex: none;
   }
   .tl-node { align-items: flex-start; min-height: 0; }
   .tl-node::before {
@@ -1272,6 +1304,17 @@ a.team-link:hover {
   }
   .tl-list,
   .tl-list li { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl-pin { min-height: 0; }
+  .tl-pin-sticky { position: relative; }
+  .tl-item {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+  .tl-item .tl-node::before { opacity: 1 !important; }
 }
 
 .hotspot-list { display: flex; flex-direction: column; gap: 10px }
