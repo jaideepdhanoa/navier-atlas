@@ -835,6 +835,8 @@
     },
 
     'two-door'(s) {
+      // Doors/third first; map + Atlantic run callout as one band; closing last
+      // (mobile was stacking closing between the map and the Atlantic line)
       const qa = homeAssets('product.quanta') || {};
       const atlantic = qa.atlantic_map ? mediaPath(qa.atlantic_map) : '';
       const doors = (s.doors || [])
@@ -843,22 +845,25 @@
         <div class="door"><div class="title">${esc(d.title)}</div><div class="detail">${esc(d.detail)}</div></div>`,
         )
         .join('');
+      const atlanticLine = s.atlantic_run
+        ? `<div class="atlantic">${esc(s.atlantic_run.line || s.atlantic_run)}</div>`
+        : '';
       return `
-        <div class="section-block shell-stage" data-reveal>
-          ${kicker(s)}
-          ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-          <div class="media-duo">
-            <div>
-              <div class="doors">${doors}</div>
-              ${
-                s.third_point
-                  ? `<div class="third-point"><strong>${esc(s.third_point.title)}</strong> — ${esc(s.third_point.detail)}</div>`
-                  : ''
-              }
-              ${s.atlantic_run ? `<div class="atlantic">${esc(s.atlantic_run.line || s.atlantic_run)}</div>` : ''}
-              ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+        <div class="section-block shell-stage quanta-unlocks-stage" data-reveal>
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            <div class="doors">${doors}</div>
+            ${
+              s.third_point
+                ? `<div class="third-point"><strong>${esc(s.third_point.title)}</strong> — ${esc(s.third_point.detail)}</div>`
+                : ''
+            }
+            <div class="atlantic-band">
+              ${atlantic ? plate(atlantic, { home: 'product.quanta', className: 'atlantic-map-plate' }) : ''}
+              ${atlanticLine}
             </div>
-            ${atlantic ? plate(atlantic, { home: 'product.quanta', className: '' }) : ''}
+            ${s.closing_line ? `<p class="closing-line quanta-unlock-closing">${esc(s.closing_line)}</p>` : ''}
           </div>
         </div>`;
     },

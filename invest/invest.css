@@ -1318,9 +1318,45 @@ a.team-link:hover {
 .door .title { font-weight: 700; margin-bottom: 8px; color: var(--accent-bright) }
 .door .detail { font-size: 14px; color: var(--text-1) }
 .third-point { margin: 16px 0; color: var(--text-1); font-size: 14px }
+/* Map + Atlantic run callout — one unit so mobile never inserts closing between them */
+.atlantic-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: center;
+  margin: 20px 0 8px;
+}
+.atlantic-band .atlantic-map-plate {
+  margin: 0;
+}
+.atlantic-band .atlantic-map-plate img {
+  width: 100%;
+  height: auto;
+  max-height: min(56vh, 480px);
+  object-fit: contain;
+  background: #0a0a0c;
+}
 .atlantic {
-  margin-top: 14px; padding: 14px 16px; border-radius: 8px;
-  border-left: 3px solid var(--accent-bright); background: var(--accent-dim); font-size: 14px;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-bright);
+  background: var(--accent-dim);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.quanta-unlock-closing {
+  margin-top: var(--space-4, 20px);
+  max-width: 36ch;
+}
+@media (max-width: 1099px) {
+  .atlantic-band {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  /* Keep callout directly under the map */
+  .atlantic-band .atlantic { order: 2; }
+  .atlantic-band .atlantic-map-plate { order: 1; }
 }
 @media (max-width: 720px) { .doors { grid-template-columns: 1fr } }
 
