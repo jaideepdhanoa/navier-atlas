@@ -1320,9 +1320,9 @@
         .map(function (v) {
           const src = mediaPath(v.src);
           if (!src) return '';
-          return `<figure class="defense-click-video">
+          return `<figure class="defense-loop-video">
             <div class="defense-video-frame">
-              <video playsinline controls preload="metadata" data-defense-click>
+              <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" data-lazy-video>
                 <source src="${esc(src)}" type="video/mp4" />
               </video>
             </div>
