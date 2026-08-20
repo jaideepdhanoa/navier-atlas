@@ -332,6 +332,13 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     .replaceAll('__ARCHETYPE_ID__', archetypeId)
     .replaceAll('__ARCHETYPE_LABEL__', label);
 
+  if (archetypeId === 'fleet-investors' && !/name="robots"/i.test(html)) {
+    html = html.replace(
+      '</head>',
+      '<meta name="robots" content="noindex, nofollow" />\n</head>'
+    );
+  }
+
   if (hub.market?.map?.aria_label) {
     html = html.replace(
       'aria-label="Water network map"',
@@ -353,15 +360,43 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   );
 
   const clientArch = stripUnderscoreKeys(archData);
-  // Never ship private access flags that contradict product decision (all public)
+  // Shared city-agnostic narrative defaults (FI); city JSON may override
+  if (archetypeId === 'fleet-investors') {
+    const sharedBm = path.join(HUB_ROOT, 'shared/business-model.json');
+    const sharedFee = path.join(HUB_ROOT, 'shared/network-fee.json');
+    if (!clientArch.business_model && fs.existsSync(sharedBm)) {
+      clientArch.business_model = stripUnderscoreKeys(readJson(sharedBm));
+    }
+    if (!clientArch.network_fee && fs.existsSync(sharedFee)) {
+      clientArch.network_fee = stripUnderscoreKeys(readJson(sharedFee));
+    }
+    // Enrich navier_intro media defaults when city file omits heroes
+    clientArch.navier_intro = clientArch.navier_intro || {};
+    clientArch.navier_intro.data = clientArch.navier_intro.data || {};
+    clientArch.navier_intro.data.images = Object.assign(
+      {
+        hero: '/employer-hub/assets/vessels/n30-hero.jpg',
+        vessel_n30_plate: '/employer-hub/assets/vessels/n30-plate.jpg',
+        vessel_n45_plate: '/employer-hub/assets/vessels/n45-plate.jpg',
+      },
+      clientArch.navier_intro.data.images || {}
+    );
+    if (!clientArch.navier_intro.data.video_url) {
+      clientArch.navier_intro.data.video_url = 'https://www.youtube.com/embed/S7WB91FvSFI';
+    }
+  }
+  // FI pages stay unlisted; PP pages are public/indexable
+  const isFi = archetypeId === 'fleet-investors';
   if (clientArch.access && typeof clientArch.access === 'object') {
     clientArch.access = {
       mode: 'public',
-      noindex: false,
-      in_sitemap: true,
+      noindex: isFi,
+      in_sitemap: !isFi,
       in_nav: false,
       inbound_links_allowed: false,
     };
+  } else if (isFi) {
+    clientArch.access = { mode: 'public', noindex: true, in_sitemap: false, in_nav: false, inbound_links_allowed: false };
   }
   clientArch.route = `/${routePrefix}/${hubId}`;
   fs.writeFileSync(
@@ -388,6 +423,25 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   return pageBase;
 }
 
+function copySharedVesselAssets() {
+  const srcDir = path.join(HUB_ROOT, 'assets/vessels');
+  const dstDir = path.join(DIST, 'employer-hub/assets/vessels');
+  if (!fs.existsSync(srcDir)) return;
+  ensureDir(dstDir);
+  for (const name of fs.readdirSync(srcDir)) {
+    const src = path.join(srcDir, name);
+    if (!fs.statSync(src).isFile()) continue;
+    fs.copyFileSync(src, path.join(dstDir, name));
+  }
+}
+
+function emitArchetypesForHubId(hubId, hub, archetypes) {
+  const pp = emitArchetypePage(hubId, hub, 'public-partners', 'public-partners.json', 'public-partners');
+  const fi = emitArchetypePage(hubId, hub, 'fleet-investors', 'fleet-investors.json', 'fleet-investors');
+  if (pp) archetypes.push(pp);
+  if (fi) archetypes.push(fi);
+}
+
 export function buildEmployerHubs() {
   const registryPath = path.join(HUB_ROOT, 'registry.json');
   if (!fs.existsSync(registryPath)) {
@@ -397,6 +451,10 @@ export function buildEmployerHubs() {
   const registry = readJson(registryPath);
   const built = [];
   const archetypes = [];
+  const registryIds = new Set();
+
+  copySharedVesselAssets();
+
   for (const entry of registry.hubs || []) {
     if (entry.enabled === false) continue;
     const hubPath = path.join(HUB_ROOT, entry.path || `hubs/${entry.id}/hub.json`);
@@ -410,13 +468,25 @@ export function buildEmployerHubs() {
     }
     emitHub(hub, entry);
     built.push(hub.id);
-
-    // Archetype pages when data files exist (Boston pilot first)
-    const pp = emitArchetypePage(hub.id, hub, 'public-partners', 'public-partners.json', 'public-partners');
-    const fi = emitArchetypePage(hub.id, hub, 'fleet-investors', 'fleet-investors.json', 'fleet-investors');
-    if (pp) archetypes.push(pp);
-    if (fi) archetypes.push(fi);
+    registryIds.add(hub.id);
+    emitArchetypesForHubId(hub.id, hub, archetypes);
   }
+
+  // Archetype-only cities: have hub.json + PP/FI but are not employer microsites
+  const hubsDir = path.join(HUB_ROOT, 'hubs');
+  if (fs.existsSync(hubsDir)) {
+    for (const hubId of fs.readdirSync(hubsDir)) {
+      if (registryIds.has(hubId)) continue;
+      const hubPath = path.join(hubsDir, hubId, 'hub.json');
+      const hasPp = fs.existsSync(path.join(hubsDir, hubId, 'public-partners.json'));
+      const hasFi = fs.existsSync(path.join(hubsDir, hubId, 'fleet-investors.json'));
+      if (!fs.existsSync(hubPath) || (!hasPp && !hasFi)) continue;
+      const hub = readJson(hubPath);
+      console.log(`archetype-only city → ${hubId} (no employer microsite)`);
+      emitArchetypesForHubId(hubId, hub, archetypes);
+    }
+  }
+
   if (archetypes.length) {
     console.log(`archetypes built: ${archetypes.join(', ')}`);
   }

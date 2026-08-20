@@ -259,43 +259,144 @@
     return `<span class="status-chip status-${esc(s)}">${esc(s.replace(/_/g, ' '))}</span>`;
   }
 
+  function mediaUrl(path) {
+    if (!path) return '';
+    const p = String(path);
+    if (/^https?:\/\//i.test(p) || p.startsWith('//')) return p;
+    // Shared vessel assets ship at /employer-hub/assets/... and also copied beside each page
+    if (p.startsWith('/employer-hub/')) return p;
+    if (p.startsWith('/')) return p;
+    return p;
+  }
+
   function renderNavierIntro() {
     const ni = A.navier_intro;
     if (!ni || !ni.copy) return '';
     const c = ni.copy;
-    let html = `<div class="navier-intro">
-      <div class="navier-intro-copy">
-        <p class="lead">${esc(c.headline || '')}</p>
-        <p>${esc(c.body || '')}</p>`;
+    const data = ni.data || {};
+    const images = data.images || {};
+    const heroStill =
+      images.hero ||
+      images.vessel_n30_hero ||
+      '/employer-hub/assets/vessels/n30-hero.jpg';
+    const n30plate = images.vessel_n30_plate || '/employer-hub/assets/vessels/n30-plate.jpg';
+    const n45plate = images.vessel_n45_plate || '/employer-hub/assets/vessels/n45-plate.jpg';
+    const video = data.video_url || '';
+
+    let media = `<div class="navier-intro-media">
+      <figure class="navier-hero-still"><img src="${esc(mediaUrl(heroStill))}" alt="Navier electric hydrofoil underway" loading="lazy" /></figure>`;
+    if (video) {
+      const embed = /youtube\.com\/embed\//.test(video)
+        ? video
+        : video.replace('watch?v=', 'embed/').replace('youtu.be/', 'www.youtube.com/embed/');
+      media += `<div class="navier-video"><iframe src="${esc(embed)}" title="Navier vessel" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
+    }
+    media += `</div>`;
+
+    let copy = `<div class="navier-intro-copy">
+      <p class="eyebrow">Who is Navier</p>
+      <p class="lead">${esc(c.headline || '')}</p>
+      <p>${esc(c.body || '')}</p>`;
     if (c.tech_chips && c.tech_chips.length) {
-      html += `<div class="tech-chips">${c.tech_chips
+      copy += `<div class="tech-chips">${c.tech_chips
         .map((t) => {
           if (typeof t === 'string') return `<span class="tech-chip">${esc(t)}</span>`;
           return `<span class="tech-chip"><strong>${esc(t.label || t.title || '')}</strong> ${esc(t.value || t.body || '')}</span>`;
         })
         .join('')}</div>`;
     }
-    if (c.note) html += `<p class="assump-label">${esc(c.note)}</p>`;
-    html += `</div>`;
+    if (c.note) copy += `<p class="assump-label">${esc(c.note)}</p>`;
+    copy += `</div>`;
+
+    let vessels = '';
     if (c.fleet_cards && c.fleet_cards.length) {
-      html += `<div class="vessel-row">${c.fleet_cards
+      vessels = `<div class="vessel-row navier-vessel-cards">${c.fleet_cards
         .map((v) => {
           const title = v.model || v.title || v.name || '';
-          const specs = v.specs || v.chips || [];
-          return `<div class="arch-card">
+          const isN45 = /n45|explorer/i.test(title);
+          const plate = isN45 ? n45plate : n30plate;
+          const bits = [];
+          if (v.passengers != null) bits.push(v.passengers + ' passengers');
+          if (v.propulsion) bits.push(v.propulsion);
+          if (v.cruise_speed_kn) bits.push('~' + v.cruise_speed_kn + ' kn cruise');
+          if (v.capex_usd) bits.push(money(v.capex_usd));
+          if (v.range_nm_approx) bits.push('~' + v.range_nm_approx + ' nm');
+          if (v.grade) bits.push(v.grade);
+          return `<div class="arch-card vessel-card">
+            <div class="vessel-card-media"><img src="${esc(mediaUrl(plate))}" alt="${esc(title)}" loading="lazy" /></div>
             <h3>${esc(title)}</h3>
+            ${bits.length ? `<p class="assump-label">${esc(bits.join(' · '))}</p>` : ''}
             ${v.body || v.blurb ? `<p>${esc(v.body || v.blurb)}</p>` : ''}
-            ${
-              Array.isArray(specs) && specs.length
-                ? `<div class="tech-chips">${specs.map((s) => `<span class="tech-chip">${esc(typeof s === 'string' ? s : s.label || s.value || '')}</span>`).join('')}</div>`
-                : ''
-            }
           </div>`;
         })
         .join('')}</div>`;
     }
-    html += `</div>`;
-    return section('navier_intro', ni.title || 'The vessels', html);
+
+    return section(
+      'navier_intro',
+      ni.title || 'Meet Navier',
+      `<div class="navier-intro">${media}${copy}</div>${vessels}`
+    );
+  }
+
+  function renderBusinessModel() {
+    const bm = A.business_model || A.shared_business_model;
+    const layers = bm && bm.copy && bm.copy.layers;
+    const model = A.model;
+    let html = '';
+
+    if (layers && layers.length) {
+      html += `<p class="lead">${esc(bm.copy.headline || '')}</p>`;
+      if (bm.copy.body) html += `<p>${esc(bm.copy.body)}</p>`;
+      html += `<div class="biz-layers">${layers
+        .map(
+          (L) => `<div class="arch-card biz-layer">
+          <div class="biz-id">${esc(L.id || '')}</div>
+          <h3>${esc(L.title || '')}</h3>
+          <p>${esc(L.body || '')}</p>
+          ${L.feeds ? `<div class="tech-chip">Feeds P&amp;L · ${esc(L.feeds)}</div>` : ''}
+        </div>`
+        )
+        .join('')}</div>`;
+      if (bm.copy.bridge) html += `<p class="assump-label" style="margin-top:12px">${esc(bm.copy.bridge)}</p>`;
+    }
+
+    // Franchise roles — cards or roles
+    const cards = model && model.copy && (model.copy.cards || null);
+    const roles = model && model.copy && model.copy.roles;
+    if (cards && cards.length) {
+      html += `<h3 class="subhead" style="margin-top:28px">Who does what</h3>
+        <div class="arch-grid-2 role-cards">${cards
+          .map((c) => `<div class="arch-card"><h3>${esc(c.title || '')}</h3><p>${esc(c.body || '')}</p></div>`)
+          .join('')}</div>`;
+    } else if (roles && roles.length) {
+      html += `<ul class="pillars" style="margin-top:20px">${roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
+    } else if (model && model.copy && model.copy.trigger) {
+      html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
+    }
+
+    if (!html) return '';
+    return section('business_model', (bm && bm.title) || (model && model.copy && model.copy.title) || 'How the fleet earns', html);
+  }
+
+  function renderNetworkFee() {
+    const nf = A.network_fee || A.shared_network_fee;
+    if (!nf || !nf.copy) return '';
+    const c = nf.copy;
+    const items = c.items || [];
+    let html = `<p class="lead">${esc(c.headline || '')}</p>`;
+    if (c.body) html += `<p>${esc(c.body)}</p>`;
+    html += `<div class="network-fee-layout">
+      <ul class="fee-list">${items
+        .map((it) => `<li><strong>${esc(it.title || '')}</strong><span>${esc(it.body || '')}</span></li>`)
+        .join('')}</ul>
+      <aside class="fee-callout arch-card emphasis">
+        <div class="fee-pct">10%</div>
+        <p>${esc(c.callout || 'of gross revenue, off the top — the network operating system.')}</p>
+        <a class="text-link" href="#pnl">See it on the P&amp;L ↓</a>
+      </aside>
+    </div>`;
+    return section('network_fee', nf.title || 'What the network fee buys', html);
   }
 
   function renderServiceDay() {
@@ -395,20 +496,9 @@
   function renderInvestModules() {
     const builders = {
       navier_intro: renderNavierIntro,
-      model: function () {
-        const model = A.model;
-        if (!model || !model.copy) return '';
-        let html = '';
-        if (model.copy.roles && model.copy.roles.length) {
-          html += `<ul class="pillars">${model.copy.roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
-        } else if (model.copy.headline || model.copy.body) {
-          html += `<div class="arch-prose"><p class="lead">${esc(model.copy.headline || '')}</p><p>${esc(model.copy.body || '')}</p></div>`;
-        }
-        if (model.copy.trigger) {
-          html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
-        }
-        return section('story', 'The model', html);
-      },
+      business_model: renderBusinessModel,
+      model: renderBusinessModel,
+      network_fee: renderNetworkFee,
       asset: function () {
         const asset = A.asset;
         if (!asset || !asset.data) return '';
@@ -466,10 +556,30 @@
     };
 
     const skip = { hero: 1, network: 1, cta: 1, footnotes: 1 };
-    const order = (A.section_order && A.section_order.length
-      ? A.section_order
-      : ['navier_intro', 'model', 'asset', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'fleet_phasing', 'protection_stack']
+    // Prefer authored order, but inject narrative modules early if missing
+    let order = (A.section_order && A.section_order.length
+      ? A.section_order.slice()
+      : ['navier_intro', 'business_model', 'network_fee', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'fleet_phasing', 'protection_stack']
     ).filter((id) => !skip[id]);
+
+    // Map legacy "model" slot → keep; ensure business_model + network_fee appear after navier_intro
+    function ensureAfter(list, afterId, insertId) {
+      if (list.indexOf(insertId) >= 0) return list;
+      const i = list.indexOf(afterId);
+      if (i >= 0) {
+        list.splice(i + 1, 0, insertId);
+      } else {
+        list.unshift(insertId);
+      }
+      return list;
+    }
+    if (order.indexOf('navier_intro') < 0) order.unshift('navier_intro');
+    order = ensureAfter(order, 'navier_intro', 'business_model');
+    // Avoid double-rendering model + business_model
+    if (order.indexOf('business_model') >= 0 && order.indexOf('model') >= 0) {
+      order = order.filter((id) => id !== 'model');
+    }
+    order = ensureAfter(order, 'business_model', 'network_fee');
 
     const parts = [];
     const seen = {};
@@ -483,7 +593,7 @@
       }
     });
     // Ensure critical modules still appear if omitted from section_order
-    ['service_day', 'revenue_build', 'pnl', 'demand_pool', 'protection_stack'].forEach(function (id) {
+    ['navier_intro', 'business_model', 'network_fee', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'protection_stack'].forEach(function (id) {
       if (seen[id]) return;
       const fn = builders[id];
       if (fn) {
@@ -630,7 +740,7 @@
                 )
                 .join('')}
               <tr class="total"><td><strong>Operating cost / month</strong></td><td class="num"><strong>${money(result.opex)}</strong></td></tr>
-              <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')}</div></td><td class="num">(${money(result.networkShareAmt)})</td></tr>
+              <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')} · <a class="text-link" href="#network_fee">What this buys ↑</a></div></td><td class="num">(${money(result.networkShareAmt)})</td></tr>
               <tr class="emphasis"><td><strong>Net to investor / month</strong></td><td class="num"><strong>${money(result.net)}</strong></td></tr>
               <tr class="emphasis"><td><strong>Payback @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
               ${

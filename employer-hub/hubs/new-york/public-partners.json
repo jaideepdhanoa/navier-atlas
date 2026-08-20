@@ -1,0 +1,467 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 directly to contract v3 (Boston pilot JSONs are structural ground truth; GROK-SPEC-archetype-templates-2026-08-15.md + ADDENDUM v3 define the contract). Sources: new-york/AUTHORITY-MAP-NEW-YORK.md + new-york/SPEED-RULES-NEW-YORK.md + new-york/hub.json (geometry, gates) + PUBLIC-PARTNERS-BRIEF.md patterns. CONTRACT v3: only `title` (≤6 words), `value`/figures, `note` (≤140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Never render: held corridors, Gulf counterparties, authority contacts, internal dock-status fields. NY NOTES: posture is DUAL (Operate-weighted in NYC proper via NYCEDC/NYC DOT; Enable across the NJ/Westchester/LI/CT ring) — data.weighting = balanced with framing copy carrying the split. Speed-rule section is deliberately narrow: NY's binding rules are near-dock bands; the historic East River 10-kn rule was superseded in 2024 and the page makes no claim either way about East River speed law. Bodies with unverified posture (Weehawken, West New York, CT DOT, East End villages) are omitted. hub.json gates honored: forbid_employer_names, banned term 'Williamsburg', ny_c_honesty (no raw-speed claims vs Metro-North).",
+  "contract_version": "v3",
+  "city": "new-york",
+  "archetype": "public-partners",
+  "route": "/new-york-partners",
+  "access": "public",
+  "footnotes": {
+    "fn1": {
+      "text": "NYC Comprehensive Waterfront Plan (2021), the city's 10-year waterfront vision; quoted language is the plan's own.",
+      "source_url": "https://www.waterfrontplan.nyc/"
+    },
+    "fn2": {
+      "text": "NYC Ferry ridership and system figures from NYCEDC's own published releases, 2025.",
+      "source_url": "https://edc.nyc/press-release/mayor-nycedc-announce-record-breaking-nyc-ferry-ridership-numbers-summer-2025"
+    },
+    "fn3": {
+      "text": "NJ Transit and the Port Authority of NY & NJ committed ~$125M to restore Hoboken Terminal's historic ferry slips, expressly to allow expansion of ferry service.",
+      "source_url": "https://www.njtransit.com/press-releases/port-authority-nj-transit-sign-agreement-restore-historic-hoboken-terminal-ferry"
+    },
+    "fn4": {
+      "text": "Precedent: on Region Stockholm's Route 89, a Candela P-12 electric hydrofoil operated at ~22 knots in a ~12-knot zone under a low-wake speed exemption granted by the county administrative authority."
+    },
+    "fn5": {
+      "text": "All map and trip times on this page respect posted and local speed rules. No exemption is assumed; relief appears only as a separately labeled layer."
+    },
+    "fn6": {
+      "text": "Congestion Relief Zone tolling: a $9/day passenger-vehicle toll south of 60th Street in Manhattan, in effect since 2025.",
+      "source_url": "https://www.mta.info/fares-tolls/tolls/congestion-relief-zone/about"
+    },
+    "fn7": {
+      "text": "Glen Cove's city-owned ferry terminal at Garvies Point was federally funded and built in 2015; the state completed an $18.7M waterfront connector serving it.",
+      "source_url": "https://esd.ny.gov/esd-media-center/press-releases/esd-announces-completion-18-million-garvies-point-road-waterfront-connector-glen-cove"
+    },
+    "fn8": {
+      "text": "NYC Blue Highways: the city's waterborne-freight program, with a live microfreight pilot moving parcels by ferry between Atlantic Basin and Pier 79 — both stations on this network.",
+      "source_url": "https://www.nyc.gov/html/dot/html/pr2025/nyc-blue-highways-freight-pilot.shtml"
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 38,
+      "lines": [
+        "NY-M East River",
+        "NY-H Hudson",
+        "NY-B Brooklyn",
+        "NY-Q East River Feeder",
+        "NY-C Connecticut Express",
+        "NY-G Long Island Sound",
+        "NY-X Bronx",
+        "NY-SI Staten Island",
+        "NY-S East End Seasonal"
+      ]
+    },
+    "_internal": {
+      "source": "hubs/new-york/hub.json",
+      "inherit": "unchanged (Decision D3 — same corridors as employer map, nothing added, nothing removed). NY-S renders under the employer map's seasonal toggle, off by default."
+    }
+  },
+  "hero": {
+    "copy": {
+      "headline": "The congestion charge is the tax. The harbor is the spare lane.",
+      "subline": "A zero-emission, electric-foiling commuter network across New York Harbor and Long Island Sound — built on existing landings, financed by private capital, aligned with the city's own waterfront plans.",
+      "stat_chips": [
+        "38 stations",
+        "0 terminals to build",
+        "0 subsidy ask",
+        "7M+ ferry riders a year"
+      ],
+      "small_print": "All trip times respect posted and local harbor speed rules.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/new-york/assets/hero-public-new-york.jpg"
+    },
+    "_provenance": "Headline is the NY employer hub's own authored line (hub.json copy.problem_title) — reused verbatim, not invented. Ridership chip: NYC Ferry 7M+ riders/yr, record summer 2025 (fn2)."
+  },
+  "gap": {
+    "title": "New York is already asking",
+    "copy": {
+      "lead": "New York is already asking this question. The city's own Comprehensive Waterfront Plan calls for \"an equitable, resilient and healthy waterfront for all New Yorkers\" — and the city already owns and runs the largest public commuter-ferry system in the country.",
+      "support": "Since 2025, every car trip into the Manhattan core pays a $9 congestion toll. The city's own policy prices the road; the water is the relief it left open.",
+      "fn": "fn1"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "NYC Comprehensive Waterfront Plan (2021)",
+          "quote": "an equitable, resilient and healthy waterfront for all New Yorkers",
+          "note": "The city's 10-year waterfront vision, including its waterborne-transportation strategies.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "Congestion Relief Zone tolling (2025– )",
+          "quote": null,
+          "note": "A $9/day toll south of 60th Street — every water commute that replaces a car trip is relief the city's own policy created.",
+          "fn": "fn6"
+        },
+        {
+          "plan": "NYCEDC Blue Highways program",
+          "quote": null,
+          "note": "The city is actively moving freight to the water, with a live parcel pilot linking two stations on this network.",
+          "fn": "fn8"
+        }
+      ]
+    },
+    "_provenance": {
+      "plan_sources": [
+        "https://www.waterfrontplan.nyc/ (quote verbatim from AUTHORITY-MAP-NEW-YORK.md §5)",
+        "https://www.mta.info/fares-tolls/tolls/congestion-relief-zone/about",
+        "https://edc.nyc/blue-highways · https://www.nyc.gov/html/dot/html/pr2025/nyc-blue-highways-freight-pilot.shtml"
+      ],
+      "merge_note": "gap + plan_alignment merged per v3 pattern ('the city's own words do the selling'), mirroring the Boston exemplar."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Any sound pier or marina berth is a station. No terminals to build.",
+      "body": "Zero terminal capital cost for the city or state. Service can start at existing public landings, municipal marinas, and restored ferry slips — the landings on this network are already built."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "17 of 38 landings source-verified",
+        "verified": 17,
+        "total": 38,
+        "note": "Verification continues; most remaining landings are existing city-ferry stops whose public counterpart is already known."
+      }
+    },
+    "_internal": "Coverage tally from AUTHORITY-MAP-NEW-YORK.md §3: 17 V · 9 P · 12 U. Per-stop verification status intentionally omitted from this page (fail closed). Unverified cluster = outer-borough NYC Ferry landings (NYCEDC relationship likely governs) + seasonal East End."
+  },
+  "posture": {
+    "copy": {
+      "framing": "Two ways to partner — a genuine choice. New York is both at once: the strongest public-operator water-transit market in the country inside the city, and a ring of ready municipal landings around it.",
+      "enable_track": "Grant landing access at existing public landings, piers, and marinas, and a permitting pathway for a pilot corridor. Private capital finances the fleet; privately committed demand fills the seats. The ask is access, not money.",
+      "operate_track": "New York's public bodies already own and operate ferry fleets at national scale. Navier vessels can be procured the way transit vehicles are procured — to augment the public water network, or to add a premium tier on corridors it doesn't serve."
+    },
+    "data": {
+      "weighting": "balanced",
+      "operate_proof_points": [
+        {
+          "body": "NYC Economic Development Corporation (NYCEDC)",
+          "proof": "Owns the 38-vessel NYC Ferry system, run day to day by a contracted private operator — the largest public-ferry precedent in the country, and structurally the exact frame the Operate track proposes."
+        },
+        {
+          "body": "NYC Department of Transportation",
+          "proof": "Operates the free, 24/7 Staten Island Ferry directly — public vessel operation at scale, in-house."
+        }
+      ]
+    },
+    "_provenance": "AUTHORITY-MAP-NEW-YORK.md §6: DUAL — Operate-weighted in NYC proper, Enable across the ring. Template weighting enum has one city-level value; 'balanced' chosen, with the split carried in framing copy and the §6 page-weighting guidance noted for panel ordering: NYC-proper panels lead Operate, NJ/Westchester/LI/CT panels lead Enable. Complementarity rule (map §7 flag 1): premium tier on corridors NYC Ferry doesn't serve — framed as complement, never competitor."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling — direct alignment with the city's waterfront and electrification goals.",
+        "Minimal wake foilborne and near-silent at speed — relevant to shoreline permitting and harbor neighbors.",
+        "Quality of life: waterfront activation, commute time returned to residents, and congestion relief the city's own tolling policy set out to create."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "NYC Ferry set ridership records in summer 2025 — a system carrying 7M+ riders a year",
+          "note": "New Yorkers already value and use water transit at national scale.",
+          "fn": "fn2"
+        },
+        {
+          "stat": "~$125M committed by NJ Transit and the Port Authority to restore Hoboken Terminal's ferry slips — expressly to expand ferry service",
+          "note": "Public capital is already flowing into ferry infrastructure at a station on this network.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "Glen Cove's city-owned ferry terminal — federally funded, built 2015 — stands ready with an $18.7M state waterfront connector complete",
+          "note": "A built, publicly funded landing on this network is still waiting for its first regular service.",
+          "fn": "fn7"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_provenance": {
+      "stat_sources": [
+        "https://edc.nyc/press-release/mayor-nycedc-announce-record-breaking-nyc-ferry-ridership-numbers-summer-2025",
+        "https://www.njtransit.com/press-releases/port-authority-nj-transit-sign-agreement-restore-historic-hoboken-terminal-ferry",
+        "https://glencoveny.gov/glen-cove-ferry · https://esd.ny.gov/esd-media-center/press-releases/esd-announces-completion-18-million-garvies-point-road-waterfront-connector-glen-cove"
+      ],
+      "glen_cove_note": "AUTHORITY-MAP §7 flag 6: Glen Cove is the ripest Enable story in the network, but its failed-ferry history cuts both ways — demand-led sequencing is the answer to the subsidy-trap fear; no service promises rendered."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Your speed rules were written for boats that make wake.",
+      "framing": "New York's binding water rules sit at the dock, not on the open water: 5 mph within 100 feet of any New York shore or dock, slow-no-wake within 200 feet of any New Jersey marina or pier, and per-harbor zones in Connecticut. Open water runs on the federal safe-speed duty — a judgment standard these rules exist to serve: controlling wake, wash, noise, and disturbance. A foiling, electric Navier satisfies those outcomes inherently.",
+      "ask": "Our ask is modest here, and mostly Connecticut-shaped: measure us. Where independent wake and noise measurement shows a rule's purpose is served, grant route-specific relief through the mechanisms your own rules already provide.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Precedent ✓ Stockholm"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null
+    },
+    "expander": {
+      "title": "What speed-rule relief unlocks",
+      "body": [
+        "In New York, honestly: not much on most corridors. The near-dock slow zones are short, and every schedule respects them anyway — we do not ask for relief there.",
+        "The exception is Connecticut. In harbors with long no-wake channels, measured-wake relief could recover a few minutes per call — worth pursuing corridor by corridor, only after each harbor's own rules are confirmed.",
+        "One point of historical honesty: an older East River speed rule was superseded in 2024 by an unrelated provision. We make no claim either way about East River speed law — this page simply publishes schedule times that respect posted and local limits everywhere.",
+        "Precedent: Stockholm's public transport authority runs an electric hydrofoil ferry at roughly twice the posted zone speed under a low-wake exemption."
+      ],
+      "fn": "fn4"
+    },
+    "_provenance": {
+      "rule_basis": [
+        {
+          "instrument": "NY Navigation Law § 45",
+          "type": "speed-based",
+          "detail": "5 mph within 100 ft of shore, dock, pier, raft, float, or anchored/moored vessel",
+          "source": "https://www.nysenate.gov/legislation/laws/NAV/45"
+        },
+        {
+          "instrument": "N.J.A.C. 13:82-1.7",
+          "type": "wake-based",
+          "detail": "slow speed / no wake within 200 ft of any marina, pier, dock, wharf, or abutment — explicitly wake-framed; cleanest fit for the foiling low-wake argument",
+          "source": "https://www.law.cornell.edu/regulations/new-jersey/N-J-A-C-13-82-1-7"
+        },
+        {
+          "instrument": "CGS Chapter 263 + per-harbor zones",
+          "type": "per-harbor",
+          "detail": "state-appointed harbormasters set speed/no-wake zones in Stamford, Norwalk, Bridgeport etc.; per-harbor ordinances not primary-verified this pass — verify before publishing CT segment times",
+          "source": "https://www.cga.ct.gov/2023/pub/chap_263.htm"
+        },
+        {
+          "instrument": "Inland Rule 6 (safe speed) + 33 CFR 161/165",
+          "type": "federal",
+          "detail": "open-water conduct is safe-speed judgment; N45 (20 pax) falls below VTS NY participation thresholds; episodic COTP zones only",
+          "source": "https://www.navcen.uscg.gov/navigation-rules-amalgamated · https://www.law.cornell.edu/cfr/text/33/161.16"
+        },
+        {
+          "instrument": "Former East River RNA (33 CFR § 165.166, 2002 ed.)",
+          "type": "historical",
+          "detail": "no-wake / ≤10 kn East River rule — SUPERSEDED: the section number now holds a 2024 drone-display safety-zone rule. Per SPEED-RULES-NEW-YORK.md §4: never claim the East River is speed-capped, never claim it is affirmatively uncapped; verify with USCG Sector New York before any in-page claim",
+          "source": "https://www.govinfo.gov/content/pkg/CFR-2002-title33-vol2/pdf/CFR-2002-title33-vol2-sec165-166.pdf · https://www.law.cornell.edu/cfr/text/33/165.166"
+        }
+      ],
+      "ct_relief_estimate": "SPEED-RULES §4: measured-wake relief on long CT no-wake channels could recover 2–5 min per CT call; deliberately rendered qualitatively ('a few minutes per call') pending primary verification of each harbor's ordinance.",
+      "base_times_policy": "All map and trip times respect posted/assumed local limits (fn5); no relief assumed anywhere; relief renders only in this labeled layer, with no numbers.",
+      "sources_doc": "SPEED-RULES-NEW-YORK.md"
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Employers commit demand — non-binding letters of intent for committed seats.",
+      "public_partners": "Public partners unlock landings — access we seek at existing piers; in discussion, not yet granted.",
+      "fleet_investors": "Fleet investors finance the vessels — fleet financing being raised behind committed demand."
+    }
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible, and low-risk: one corridor, existing landings, measured wake and noise, your rules respected."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing LOI intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — content firewall per brief §3.9 applies (never renders)",
+    "_provenance": "Copy identical to the approved Boston v3 navier_intro (vessel traits are network-wide, not city data)."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "New York Harbor's water-transportation landscape spans city, bi-state, state, and municipal bodies across four states' worth of shoreline. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "NYC Economic Development Corporation (NYCEDC)",
+              "classification": "operate",
+              "role": "Owns the 38-vessel NYC Ferry system, run by a contracted private operator; also operates the Atlantic Basin landing and the Blue Highways waterborne-freight program."
+            },
+            {
+              "body": "NYC Department of Transportation",
+              "classification": "operate",
+              "role": "Operates the Staten Island Ferry and owns the public ferry landings at Pier 11/Wall St, East 34th Street, and Pier 79 — the Manhattan ends of every line on this network."
+            },
+            {
+              "body": "NYC Department of City Planning",
+              "classification": "enable",
+              "role": "Authors the Comprehensive Waterfront Plan — the city's 10-year waterfront vision and its waterborne-transportation strategies."
+            },
+            {
+              "body": "Hudson River Park Trust",
+              "classification": "enable",
+              "role": "State-city partnership controlling the Hudson-bank park piers from the Battery to W 59th; landing only at designated locations, confirmed parcel by parcel."
+            },
+            {
+              "body": "Port Authority of New York & New Jersey",
+              "classification": "enable",
+              "role": "Bi-state port district; underlying owner at Atlantic Basin (transfer to the city announced 2024) and co-funder of the Hoboken ferry-slip restoration."
+            },
+            {
+              "body": "NJ Transit",
+              "classification": "enable",
+              "role": "Owns Hoboken Terminal, whose historic ferry slips were restored (~$125M with the Port Authority) expressly to allow expansion of ferry service."
+            },
+            {
+              "body": "Brooklyn Bridge Park Corp · Brooklyn Navy Yard Development Corp · Roosevelt Island Operating Corp",
+              "classification": "enable",
+              "role": "Park, campus, and island corporations controlling the BBP Pier 6, Dock 72, and Roosevelt Island landings."
+            },
+            {
+              "body": "City of Glen Cove",
+              "classification": "enable",
+              "role": "Owns a federally funded ferry terminal at Garvies Point, built in 2015 and still without regular service — a ready landing seeking a network."
+            },
+            {
+              "body": "Harbor cities and towns — Edgewater, Yonkers, New Rochelle, North Hempstead (Port Washington), Greenwich, Milford",
+              "classification": "enable",
+              "role": "Own their municipal landings; none operates commuter vessels. Yonkers' pier is being rebuilt; Greenwich already runs seasonal town ferries."
+            },
+            {
+              "body": "Connecticut harbormasters & Bridgeport Port Authority",
+              "classification": "permitting_gate",
+              "role": "State-appointed harbormasters govern vessel speed and harbor use in Stamford, Norwalk, and Bridgeport; several Connecticut landings are private marinas reached by commercial agreement."
+            },
+            {
+              "body": "US Coast Guard Sector New York · US Army Corps of Engineers",
+              "classification": "permitting_gate",
+              "role": "Navigation and channel stewardship — vessel traffic service, federal channels, episodic safety zones. Permitting context, not landing grantors."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "Bodies whose posture is unverified in the authority map are intentionally omitted from this page (fail closed): Weehawken, West New York, CT DOT, Village of Sag Harbor, Town of Shelter Island, Village of Greenport, Montauk/East Hampton Town. Private operators (Hornblower, NY Waterway, SeaStreak) are never rendered as authorities or partners — market precedent only, and none is named as a partner anywhere on this page. Atlantic Basin counterparty in transition (PANYNJ→City, announced 2024) — confirm before Red Hook outreach (map §7 flag 4). BPC/Brookfield terminal ownership unresolved (map §7 flag 3) — body not listed."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We feed the transit system, not compete with it."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Hoboken Terminal",
+              "connects": "NJ Transit's Hoboken rail hub — its historic ferry slips restored expressly to expand ferry service"
+            },
+            {
+              "station": "St. George",
+              "connects": "The Staten Island Ferry terminal complex — the city's free, 24/7 ferry hub"
+            }
+          ]
+        },
+        "_provenance": {
+          "hoboken_source": "https://www.njtransit.com/press-releases/port-authority-nj-transit-sign-agreement-restore-historic-hoboken-terminal-ferry",
+          "st_george_source": "https://www.nyc.gov/html/dot/html/ferrybus/siferryschedule.shtml · AUTHORITY-MAP-NEW-YORK.md §3 row 26",
+          "omitted": "No other modal pairs are source-verified in the NY authority map this pass; Metro-North catchments (NY-C/NY-G) deliberately not rendered as modal pairs — ny_c_honesty gate: no raw-speed or competitive claims vs Metro-North."
+        }
+      }
+    },
+    "_provenance": "Authority landscape + Modal integration rendered as a collapsed reference block per the v3 template (Boston exemplar pattern). Bodies and roles from AUTHORITY-MAP-NEW-YORK.md §§1–3; classifications from its posture calls; only verified-posture bodies render."
+  },
+  "_internal": {
+    "gates_check": "hub.json gates honored: 'Williamsburg' absent from all fields; no employer names; no dock-unlock vocabulary; ny_c_honesty — CT corridors framed on comfort/direct-to-waterfront and coverage only, Metro-North never compared on speed (and not named in any renderable).",
+    "weighting_note": "If the template ever grows per-panel weighting, apply AUTHORITY-MAP §6: NYC-proper panels lead Operate ('augment the public network'), NJ/Westchester/LI/CT panels lead Enable ('your dock is ready; private capital and committed demand do the rest')."
+  }
+}

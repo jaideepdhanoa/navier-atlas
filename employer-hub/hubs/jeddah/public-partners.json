@@ -1,0 +1,485 @@
+{
+  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Dubai v3 public-partners structure per the international addendum (Saudi run — Public Transport page, authority audience: SRSA + Jeddah Municipality/Jeddah Transport Company + JCDC). Sources: jeddah/AUTHORITY-MAP-JEDDAH.md + SPEED-RULES-JEDDAH.md + NODES-JEDDAH.md + DEMAND-POOLS-JEDDAH.md + FARE-BENCHMARKS-JEDDAH.md + REVENUE-INPUTS-JEDDAH.md + CREW-COST-BENCHMARKS-JEDDAH.md. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture: Operate-led — the city already runs a municipal water taxi with a published 20-station ambition, so the page leads with the city's own operating service and the ask is 'extend your marine network'. Jeddah-internal corridors only; the KAEC express renders as roadmap only. No counterparty identities, no program or fleet commitments, no launch dates, no project-completion dates as commitments. Page is unlisted/noindex per run instruction (differs from the Dubai gold master's public access).",
+  "contract_version": "v3",
+  "city": "jeddah",
+  "archetype": "public-partners",
+  "route": "/jeddah-partners",
+  "access": {
+    "mode": "unlisted",
+    "noindex": true,
+    "in_sitemap": false,
+    "in_nav": false,
+    "inbound_links_allowed": false
+  },
+  "footnotes": {
+    "fn1": {
+      "text": "Jeddah's water taxi is a live municipal service: inaugurated March 2025 under the city's transport company, connecting the Yacht Club, Historic Jeddah via the port, and Obhur — two air-conditioned vessels, app booking, fares of SAR 25–50 per trip, children five and under free. The Mayoralty has announced an ambition of up to 20 stations.",
+      "source_url": "https://www.arabnews.com/node/2592678"
+    },
+    "fn2": {
+      "text": "The Saudi Red Sea Authority is the Kingdom's enabler and regulator of marine and coastal tourism on the Red Sea. Seven regulations published in 2023 cover marinas, marine tourism operators and watercraft classification, and the first tourist-marina operator licenses were issued in 2024 — two of them to Jeddah marinas.",
+      "source_url": "https://www.trade.gov/market-intelligence/saudi-arabia-tourism-red-sea-authority-new-regulations-maritime-tourist"
+    },
+    "fn3": {
+      "text": "Jeddah Season 2022 drew 6 million visitors in 60 days, including more than a million international guests from 129 countries — official figures.",
+      "source_url": "https://my.gov.sa/en/news/9442"
+    },
+    "fn4": {
+      "text": "Route terms in Saudi waters are set with the sailing permit: the Border Guard determines navigational lanes, their speeds and sailing hours, and the Saudi Red Sea Authority identifies routes and navigation maps for marine tourism in coordination with relevant entities. No faster allowance is assumed anywhere on this page."
+    },
+    "fn5": {
+      "text": "All map and trip times are planned on a conservative basis: open-coast segments at the vessel's service speed, reduced speed inside Obhur Creek, port waters and every landing approach. Relief appears only as a separately labeled layer."
+    },
+    "fn6": {
+      "text": "King Abdulaziz International Airport handled 53.4 million passengers in 2025. Gateway context only: pilgrim flows are inland-bound toward the holy cities and are not counted as water-transit demand anywhere on this page.",
+      "source_url": "https://www.kaia.sa/News-and-Media/Press-releases-and-news/53-Million-Passenger"
+    },
+    "fn7": {
+      "text": "Jeddah Central is a published SAR 75 billion, 5.7 million m² central waterfront program with 9.5 km of waterfront including a marina and pier. It renders here as a planned demand trajectory only — nothing on this page relies on its completion, and no completion dates are stated.",
+      "source_url": "https://www.jeddahcentral.com/en/about-us"
+    },
+    "fn8": {
+      "text": "Population 3,751,722 in the 2022 Saudi Census — the Kingdom's second-largest city, set along a roughly 30-kilometre coastal waterfront."
+    },
+    "fn9": {
+      "text": "Rush-hour congestion costs Jeddah drivers about 43 hours a year, with average city driving speeds near 40 km/h — TomTom Traffic Index, 2025 edition.",
+      "source_url": "https://www.tomtom.com/traffic-index/ranking"
+    }
+  },
+  "geometry": {
+    "data": {
+      "stops": 6,
+      "lines": [
+        "JED-1 Corniche Spine",
+        "JED-2 Obhur Creek Feeder",
+        "JED-3 North Leisure"
+      ]
+    },
+    "_internal": {
+      "source": "NODES-JEDDAH.md — ALL geometry is NEW, authored this pass. NO Atlas corridor set exists for Jeddah; ZERO route-id bindings anywhere in this file (none invented, per rule). Coordinates verified where a primary source exists, else DERIVED from map evidence with flags carried in NODES-JEDDAH.md. Awaits Grok seal.",
+      "line_composition": {
+        "JED-1": "N2 Al-Balad/Port-side station → N1 Jeddah Yacht Club (hub) → N3 Sharm Obhur mouth; 13.5 nm direct, ~40 min end-to-end incl. dwell + harbour regime; N2↔N1 express ~28 min. Roadmap infill: N8 Jeddah Central (planned), N6 Al-Nawras (development-stage).",
+        "JED-2": "N3 Sharm Obhur mouth → N4 Red Sea Marina → N5 Al Ahlam Marina; 2.8 nm, ~24 min at low-wake creek regime.",
+        "JED-3": "N1 JYC → N3 Sharm Obhur mouth → N7 Durrat Al-Arus; 19.4 nm, ~50 min.",
+        "JED-X": "ROADMAP ONLY — JYC → Bay La Sun Marina, KAEC (42.1 nm, ~101 min derived). Never renders as base network; no economics."
+      },
+      "interchanges": "N1 Jeddah Yacht Club (hub) + N3 Sharm Obhur mouth.",
+      "stops_status": {
+        "N1 Jeddah Yacht Club & Marina": "VERIFIED-ACTIVE (live water-taxi station; coordinates PRIMARY)",
+        "N2 Al-Balad / Port-side station": "VERIFIED-ACTIVE (operating water-taxi station; coords approx — verify at seal)",
+        "N3 Sharm Obhur mouth station": "ANNOUNCED by the city (status-flagged; renders as the announced sixth stop)",
+        "N4 Red Sea Marina, North Obhur": "VERIFIED-ACTIVE (300 wet berths, operator primary)",
+        "N5 Al Ahlam Marina, Obhur Creek": "VERIFIED-ACTIVE (coords approx — verify at seal)",
+        "N7 Durrat Al-Arus Marina": "VERIFIED-ACTIVE (resort marina)"
+      },
+      "roadmap_nodes": "N6 Al-Nawras Island marina (development-stage), N8 Jeddah Central marina/pier (planned), N9 Bay La Sun KAEC (roadmap express) — rendered only as roadmap items in the reference section, never as base stops.",
+      "seal_note": "All Jeddah geometry is new and awaits Grok seal; berth-exact coordinates for N2, N3, N5 to be fixed at seal. The Atlas-side partner-file route rn-05bf6ff26cb5 ('Jeddah Corniche — North Public Pier ↔ Jeddah Yacht Club & Marina') carries a 'North Public Pier' label that was NOT verifiable as an existing landing this pass — flagged for Grok locale cleanup (#119); it is not in this network."
+    },
+    "note": "Historic Jeddah, the corniche, Obhur Creek and the north resort coast — the full spine in about 40 minutes, on the water taxi's alignment.",
+    "fn": "fn5"
+  },
+  "hero": {
+    "copy": {
+      "headline": "Jeddah already runs water transit.",
+      "subline": "A fast, zero-emission foiling tier that extends the city's own water-taxi network — longer reach, faster crossings, the same water — financed by private capital, on marinas and stations that already operate.",
+      "stat_chips": [
+        "The city's water taxi is live",
+        "3 stations today, 20 in the city's ambition",
+        "6 stops, 5 operating landings",
+        "0 terminals to build"
+      ],
+      "small_print": "All trip times are planned on a conservative basis.",
+      "fn": "fn5"
+    },
+    "data": {
+      "image": "/employer-hub/hubs/jeddah/assets/hero-public-jeddah.jpg"
+    },
+    "_internal": "Water-taxi chips per Arab News primary-quality report (fn1). Stop count = 6-stop base network from NODES-JEDDAH.md: 5 operating landings + the city's own announced Sharm Obhur station rendered with announced status. No ridership figure exists for the water taxi (fail-closed register) — the live service itself is the demand proof chip."
+  },
+  "gap": {
+    "title": "Jeddah has already started",
+    "copy": {
+      "lead": "This city is not waiting to be convinced about water transport. Jeddah inaugurated a municipal water taxi in March 2025 — the Yacht Club to Historic Jeddah to Obhur, SAR 25–50 a trip — and the Mayoralty has announced an ambition of up to 20 stations.",
+      "support": "The Red Sea regulator's framework is live too: seven marine-tourism regulations in force, with the first tourist-marina licenses issued to two Jeddah marinas. A zero-emission foiling tier is additive speed and reach on the network the city has already started building.",
+      "fn": "fn1"
+    },
+    "data": {
+      "plans": [
+        {
+          "plan": "The city's water taxi — in service",
+          "quote": null,
+          "note": "Two vessels, three stations, SAR 25–50 fares, app-booked — the alignment this network extends is already carrying riders.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "A 20-station ambition",
+          "quote": null,
+          "note": "The Mayoralty has announced plans for up to 20 water-taxi stations — this network fills the map the city has drawn.",
+          "fn": "fn1"
+        },
+        {
+          "plan": "Red Sea Authority licensing — live",
+          "quote": null,
+          "note": "Seven marine-tourism regulations in force; the first tourist-marina licenses went to two Jeddah marinas. The front door is open.",
+          "fn": "fn2"
+        },
+        {
+          "plan": "Jeddah Central waterfront program",
+          "quote": null,
+          "note": "A published SAR 75B program with a marina and pier on the central corniche — the demand trajectory this network grows into.",
+          "fn": "fn7"
+        }
+      ]
+    },
+    "_internal": {
+      "sources": "Water taxi + 20-station ambition per AUTHORITY-MAP-JEDDAH.md headline finding (Arab News primary-quality report; 20 stations SECONDARY citing the Mayoralty — attributed in fn1 text, no separate URL rendered). SRSA per trade.gov (PRIMARY US-gov summary). JCDC per jeddahcentral.com (PRIMARY). No verbatim plan language captured as quotable sentences this pass — figures render as figures.",
+      "merge_note": "gap + plan alignment merged into one section per the Dubai/Seattle v3 pattern — the city's own operating service does the selling. No completion dates render for Jeddah Central (run rule)."
+    }
+  },
+  "infrastructure_light": {
+    "copy": {
+      "headline": "Every stop is an existing landing. No terminals to build.",
+      "body": "Zero terminal capital cost for the city. Service can start at the marinas and water-taxi stations operating today — five of the six stops on this network are operating landings, and the sixth is the creek-mouth station the city has already announced."
+    },
+    "data": {
+      "landings_verified": {
+        "title": "Landings verified",
+        "value": "5 of 6 landings operating today",
+        "verified": 5,
+        "total": 6
+      }
+    },
+    "_internal": "Operating landings: Jeddah Yacht Club & Marina (live water-taxi station), Al-Balad/Port-side station (operating water-taxi station), Red Sea Marina (300 wet berths, operator primary), Al Ahlam Marina (active, SRSA-licensed), Durrat Al-Arus Marina (operating resort marina). Sharm Obhur mouth station counted in the total, never in the verified figure (announced by the city, fn1). Roadmap nodes (Al-Nawras, Jeddah Central, KAEC) are not stops and not counted."
+  },
+  "posture": {
+    "copy": {
+      "framing": "One conversation, not two. Jeddah already operates water transit and has published its ambition to grow it — the posture here is extension: a faster, zero-emission tier on the network the city already runs, reaching further along the water it already serves.",
+      "enable_track": "License the vessels and grant landing access at operating marinas and water-taxi stations. Private capital finances the fleet; the ask is licensing and access, not money.",
+      "operate_track": "Extend the city's water-taxi network with a fast tier — express lines above the existing service, fares slotted above the SAR 25–50 ladder, counted toward the 20-station ambition the city has already announced."
+    },
+    "data": {
+      "weighting": "operate_dominant",
+      "operate_proof_points": [
+        {
+          "body": "Jeddah Transport Company — the city's water taxi",
+          "proof": "Runs a live three-station service — the Yacht Club, Historic Jeddah via the port, and Obhur — with app booking, two air-conditioned vessels and SAR 25–50 fares."
+        },
+        {
+          "body": "Jeddah Mayoralty — a published ambition",
+          "proof": "Up to 20 water-taxi stations announced — growth across a roughly 30-kilometre waterfront that a faster vessel class knits together."
+        },
+        {
+          "body": "Saudi Red Sea Authority — licensing is live",
+          "proof": "Seven marine-tourism regulations published and the first tourist-marina operator licenses already issued in Jeddah — a regime built to enable coastal-tourism service."
+        }
+      ]
+    },
+    "_internal": "Classification per AUTHORITY-MAP-JEDDAH.md: DUAL, Operate-led — Municipality/JTC operate a live service with a stated 3→20-station pipeline; SRSA (tourism licensing/routes), TGA (passenger transport), Mawani (port waters) and Border Guard (lanes/permits) form the Enable stack. Enum operate_dominant affects order/emphasis only; both tracks render. Never framed as replacing the water taxi — additive-tier language throughout; the water taxi renders only as extended, never as competed with. MACNA (trial operator) is never named — banned; 'the city's water taxi' is the required naming."
+  },
+  "public_value": {
+    "copy": {
+      "pillars": [
+        "Zero-emission electric foiling on a reef coast — in line with the Red Sea regulator's environmental mandate for marine tourism.",
+        "Minimal wake foilborne and near-silent at speed — suited by design to a creek of moored craft and a corniche of swimmers.",
+        "Time returned: the water runs beside the city's most event-loaded coastal corridor, twelve months a year."
+      ]
+    },
+    "data": {
+      "stats": [
+        {
+          "stat": "The city's water taxi is live: three stations, two vessels, SAR 25–50 fares",
+          "note": "Water transit in Jeddah is a fact in service, not a projection — this tier extends what the city already runs.",
+          "fn": "fn1"
+        },
+        {
+          "stat": "3.75 million residents — the Kingdom's second-largest city, on a ~30 km waterfront",
+          "fn": "fn8"
+        },
+        {
+          "stat": "Rush-hour drivers lose about 43 hours a year to congestion",
+          "note": "The corniche boulevard is also the city's event artery — the water beside it is uncongested.",
+          "fn": "fn9"
+        },
+        {
+          "stat": "6 million visitors in 60 days at Jeddah Season 2022 — official",
+          "note": "Season event zones line the waterfront, Historic Jeddah and Obhur — the visitor economy lands on these exact corridors.",
+          "fn": "fn3"
+        },
+        {
+          "stat": "53.4 million airport passengers in 2025",
+          "note": "Gateway context only — pilgrim flows run inland to the holy cities and are not counted as water demand.",
+          "fn": "fn6"
+        }
+      ],
+      "car_trips_removed": null
+    },
+    "_internal": {
+      "stat_sources": [
+        "https://www.arabnews.com/node/2592678 (primary-quality report — water taxi)",
+        "https://saudipedia.com/en/jeddah-city (secondary citing 2022 Saudi Census — population)",
+        "https://www.tomtom.com/traffic-index/ranking (primary via snippet — congestion)",
+        "https://my.gov.sa/en/news/9442 (primary — Jeddah Season)",
+        "https://www.kaia.sa/News-and-Media/Press-releases-and-news/53-Million-Passenger (primary — KAIA)"
+      ],
+      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). KAIA renders ONLY with the gateway-context disclaimer — pilgrim flows are never claimed as water demand (kill-scan rule). Corniche visitation counts, water-taxi ridership, cruise pax and F1 attendance are absent from primary sources and render nowhere (fail-closed register)."
+    }
+  },
+  "speed_rule_relief": {
+    "copy": {
+      "headline": "Route terms are set with the permit.",
+      "framing": "Saudi waters run on administrative speed control: the Border Guard sets lanes, speeds and sailing hours in the permit, and the Red Sea regulator maps tourism routes. The purposes are safety, swimmer protection, wake and the reef — outcomes a foiling, electric vessel satisfies inherently.",
+      "ask": "Our ask: measure us. Where independent wake and noise measurement shows a rule's purpose is served, set the route's permit terms accordingly — lane by lane, through the process that already exists.",
+      "chips": [
+        "Wake ✓ measured",
+        "Noise ✓ electric",
+        "Routes ✓ set with the permit"
+      ],
+      "fn": "fn4"
+    },
+    "data": {
+      "relief_minutes": null,
+      "instrument": null
+    },
+    "expander": {
+      "title": "What permit terms unlock",
+      "body": [
+        "Saudi speed control separates the number from the purpose: no numeric limit is published for these waters — lanes, speeds and sailing hours are set per route in the sailing permit, and the Red Sea regulator's published mandate is to identify routes and navigation maps for marine tourism. A fast tier is a permit conversation, not a rule change.",
+        "Base times on this page assume reduced speed through Obhur Creek, port waters and every landing approach, with foilborne transit only on open coast. Where measurement shows a rule's purposes served, permit terms can shorten creek and near-shore legs — shown here as what terms unlock, never in the base times."
+      ],
+      "fn": "fn4"
+    },
+    "_internal": {
+      "rule_basis": [
+        {
+          "instrument": "Regulations of Security & Safety for Maritime Activities (Border Guard)",
+          "type": "regulator mandate",
+          "detail": "Border Guard determines navigational lanes for small craft, their speeds, departure/return times and sailing durations; issues sailing permits",
+          "source": "Qanoniah legal DB full text (PRIMARY-TEXT, national scope) per SPEED-RULES-JEDDAH.md"
+        },
+        {
+          "instrument": "SRSA mandate + 2023 regulations",
+          "type": "route authority (tourism layer)",
+          "detail": "SRSA identifies areas, routes and navigational maps for marine tourism; produced the first Red Sea navigation map with 19 entities incl. GEOSA; watercraft classification + tour operator regulations are the licensing wrapper",
+          "source": "trade.gov summary (PRIMARY) + archived regulation texts, per AUTHORITY-MAP-JEDDAH.md"
+        },
+        {
+          "instrument": "No published numeric limits",
+          "type": "numeric limits",
+          "detail": "NO codified numeric speed or no-wake limits found for Jeddah coastal waters, Obhur Creek or JIP approaches — therefore NO numeric knot limits render anywhere on this page; internal planning values only (25 kn open coast / 8 kn creek / 8–10 kn port waters, all DERIVED)",
+          "source": "SPEED-RULES-JEDDAH.md"
+        }
+      ],
+      "relief_numbers_policy": "No sourced relief minutes exist for Jeddah (unlike Dubai's canal figure), so relief_minutes renders null and the expander stays qualitative. Base times never assume relief.",
+      "port_constraint": "JIP fairway is the southern constraint: harbour-speed regime inside port limits, perpendicular fairway crossing at designated points per harbourmaster instruction. Rendered as one plain operating note in the reference section (Mawani row) — precedent: the city's water taxi already runs through port waters."
+    }
+  },
+  "flywheel": {
+    "copy": {
+      "employers": "Committed riders anchor demand — monthly seat bundles priced from the city's own water-taxi fares and road substitutes; a derived band, pending confirmation.",
+      "public_partners": "Public partners license and land the service — sailing permits, tourism licensing and berth access at marinas and stations that already operate.",
+      "fleet_investors": "Fleet investors finance the vessels — private capital behind the demand, no subsidy ask."
+    },
+    "_internal": "Key names kept identical to the Dubai/Seattle v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because the international run has no employer page. Demand pools are sourced visitor/resident flows, labeled indicative on the fleet-investor page."
+  },
+  "cta": {
+    "copy": {
+      "headline": "Start with one corridor.",
+      "body": "A pilot is small, reversible and low-risk: one corridor on existing landings, measured wake and noise, permit terms respected — specified with the city against its own 20-station ambition."
+    },
+    "data": {
+      "intake": {
+        "tag": "public-partners",
+        "fields": [
+          "authority_name",
+          "agency_type",
+          "role",
+          "corridors_of_interest",
+          "posture_interest:enable|operate|both|exploring",
+          "message"
+        ],
+        "routing": "existing intake infra, archetype tag public-partners"
+      }
+    }
+  },
+  "nav_anchors": [
+    {
+      "label": "Vessel",
+      "id": "navier_intro"
+    },
+    {
+      "label": "Partnership",
+      "id": "posture"
+    },
+    {
+      "label": "Value",
+      "id": "public_value"
+    },
+    {
+      "label": "Network",
+      "id": "geometry"
+    },
+    {
+      "label": "Reference",
+      "id": "reference"
+    },
+    {
+      "label": "Contact",
+      "id": "cta"
+    }
+  ],
+  "section_order": [
+    "hero",
+    "navier_intro",
+    "gap",
+    "posture",
+    "infrastructure_light",
+    "public_value",
+    "speed_rule_relief",
+    "geometry",
+    "flywheel",
+    "reference",
+    "footnotes",
+    "cta"
+  ],
+  "navier_intro": {
+    "title": "Meet the vessel",
+    "copy": {
+      "headline": "Zero-emission. Near-silent. Almost no wake.",
+      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+      "body": "The N45 Explorer carries 20 passengers at a foilborne cruise speed of about 20 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+      "tech_chips": [
+        {
+          "label": "Energy",
+          "value": "up to ~90% less than a planing hull"
+        },
+        {
+          "label": "Wake",
+          "value": "near-zero, foilborne"
+        },
+        {
+          "label": "Noise",
+          "value": "near-silent, all-electric"
+        }
+      ],
+      "fleet_cards": [
+        {
+          "model": "N30 Quanta",
+          "passengers": 8,
+          "propulsion": "electric foiling"
+        },
+        {
+          "model": "N45 Explorer",
+          "passengers": 20,
+          "propulsion": "electric foiling"
+        }
+      ]
+    },
+    "data": {
+      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+      "images": {
+        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+      }
+    },
+    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+    "_internal": "Mirrors the Dubai/Seattle v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
+  },
+  "reference": {
+    "title": "Reference",
+    "collapsed": true,
+    "sections": {
+      "authorities": {
+        "title": "Authority landscape",
+        "collapsed": true,
+        "copy": {
+          "intro": "Jeddah's water-transport landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+        },
+        "data": {
+          "bodies": [
+            {
+              "body": "Jeddah Transport Company (JTC)",
+              "classification": "operate",
+              "role": "The city's transport arm — owns and operates the live water taxi connecting the Yacht Club, Historic Jeddah and Obhur, with an announced ambition of up to 20 stations."
+            },
+            {
+              "body": "Jeddah Municipality (Amanah)",
+              "classification": "operate",
+              "role": "Develops and controls the corniche and waterfront — recreational zones, waterfront stages and new public water-access points run through the Municipality."
+            },
+            {
+              "body": "Saudi Red Sea Authority (SRSA)",
+              "classification": "enable",
+              "role": "The Kingdom's enabler and regulator of marine and coastal tourism on the Red Sea — licenses marinas, operators and watercraft, and identifies routes and navigation maps for marine tourism."
+            },
+            {
+              "body": "Transport General Authority (TGA)",
+              "classification": "permitting_gate",
+              "role": "The national regulator of passenger transport, including maritime — licenses scheduled marine passenger service and the vessels that run it."
+            },
+            {
+              "body": "Border Guard",
+              "classification": "permitting_gate",
+              "role": "Issues sailing permits and sets navigational lanes, speeds and sailing hours for small craft — route terms are agreed here, permit by permit."
+            },
+            {
+              "body": "Mawani — Jeddah Islamic Port",
+              "classification": "enable",
+              "role": "Port landlord at the southern end of the network and a Red Sea cruise homeport. Port waters run under harbourmaster coordination, with the fairway crossed at designated points — the city's water taxi already operates through them today."
+            },
+            {
+              "body": "Jeddah Central Development Company (JCDC)",
+              "classification": "enable",
+              "role": "Steward of the published SAR 75B central waterfront program, including a marina and pier — a natural mid-corridor landing partner as the program opens."
+            },
+            {
+              "body": "Ministry of Tourism / Visit Saudi",
+              "classification": "enable",
+              "role": "Promotes Jeddah's leisure waterfront — Obhur marinas, resort-day trips north and corniche experiences — the demand side of these corridors."
+            }
+          ]
+        },
+        "_internal": {
+          "omitted_note": "GEA and the motorsport authorities matter for event exclusion zones and event-transport windows — held to _internal (no partnership implication rendered). Water-taxi ridership, cruise pax counts and F1 attendance are absent from primary sources and render nowhere. No authority contacts render anywhere. MACNA (trial operator) is never named. The Mawani row carries the JIP fairway constraint as one plain operating note per run instruction."
+        }
+      },
+      "modal_integration": {
+        "title": "Modal integration",
+        "collapsed": true,
+        "copy": {
+          "lead": "We extend the city's marine network, not compete with it — the water taxi keeps its stations, and this tier adds speed and reach above it."
+        },
+        "data": {
+          "pairs": [
+            {
+              "station": "Jeddah Yacht Club & Marina",
+              "connects": "The network hub — a live water-taxi station at Jeddah's superyacht marina"
+            },
+            {
+              "station": "Al-Balad / Port-side station",
+              "connects": "The city's water-taxi landing for Historic Jeddah, reached through port waters with a golf-cart last mile"
+            },
+            {
+              "station": "Red Sea Marina & Al Ahlam Marina",
+              "connects": "Licensed tourist marinas on Obhur Creek — the creek feeder lands at their existing jetties"
+            },
+            {
+              "station": "Durrat Al-Arus Marina",
+              "connects": "An operating resort-town marina on the north coast — the weekend leisure line's terminus"
+            },
+            {
+              "station": "Roadmap landings",
+              "connects": "Sharm Obhur mouth station (announced by the city), Al-Nawras Island marina and Jeddah Central's marina and pier (planned), and a longer-range express to King Abdullah Economic City — roadmap only"
+            }
+          ]
+        },
+        "_internal": "Pairs from NODES-JEDDAH.md and AUTHORITY-MAP-JEDDAH.md. Sharm Obhur mouth renders as announced; Al-Nawras and Jeddah Central render exactly as planned-status items; the KAEC express (JED-X, 42.1 nm derived) renders as roadmap only with no economics. Complement framing only; no fare comparison with the municipal service."
+      }
+    },
+    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the Dubai/Seattle v3 pattern."
+  },
+  "_internal": {
+    "scope": "Jeddah-internal corridors only. ALL geometry is new (NODES-JEDDAH.md) — no Atlas corridor set exists for Jeddah, zero route-id bindings, nothing invented; awaits Grok seal (see geometry._internal.seal_note incl. the rn-05bf6ff26cb5 'North Public Pier' flag for locale cleanup #119). The KAEC express renders as roadmap only. No launch dates render; no project-completion dates render as commitments (Jeddah Central dates omitted entirely). Audience: SRSA + Jeddah Municipality/JTC + JCDC.",
+    "verification_ledger": "PRIMARY or PRIMARY-quality renderables: water taxi service facts + fares SAR 25–50 + golf-cart last mile (Arab News contemporaneous report), SRSA regulations + first marina licenses (trade.gov), Jeddah Season 6M/60 days (my.gov.sa), KAIA 53.4M 2025 (kaia.sa), Jeddah Central program figures (jeddahcentral.com + vision2030.gov.sa), Red Sea Marina 300 berths (operator), TomTom congestion (primary via snippet), population (census via Saudipedia). SECONDARY-only, therefore excluded from renderables: 20-station ambition carries Mayoralty attribution inside fn1 text (Saudi Gazette secondary — no URL chip); JYC berth counts and superyacht numerics; F1 attendance/capacity; cruise pax counts; corniche visitation; numeric knot limits (internal planning only); water-taxi ridership (absent).",
+    "positioning_rules": "Never present the tier as replacing the city's water taxi; never run a fare comparison against the municipal service; the fast tier prices above the SAR 25–50 ladder and renders only as extension. Pilgrim flows are gateway context only, never water demand. No royal or counterparty identities; no program fleet counts, costs or timelines; the sovereign partner file is background only and none of its content renders."
+  }
+}
