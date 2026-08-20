@@ -138,6 +138,7 @@
     if (opts.size === 'hero') sizeClass = 'cinema-media--hero';
     else if (opts.size === 'gtm') sizeClass = 'cinema-media--gtm';
     else if (opts.size === 'divider') sizeClass = 'cinema-media--divider';
+    else if (opts.size === 'photo' || opts.fit === 'contain') sizeClass = 'cinema-media--photo';
     else if (opts.vh) {
       const n = parseInt(String(opts.vh), 10);
       if (n >= 68) sizeClass = 'cinema-media--hero';
@@ -1753,7 +1754,8 @@
               home: 'claim.costs_levers.closing_plate',
               caption: cp.caption || homeCap('claim.costs_levers.closing_plate'),
               alt: cp.alt || '',
-              vh: '58vh',
+              // Full frame — never cover-crop (3:2 goldenhour bow)
+              size: 'photo',
             }),
           );
         }

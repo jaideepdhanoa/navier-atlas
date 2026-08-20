@@ -125,10 +125,27 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .cinema-media--chapter { height: var(--cinema-h-chapter); }
 .cinema-media--gtm { height: var(--cinema-h-gtm); }
 .cinema-media--divider { height: var(--cinema-h-divider); }
+/* Full-bleed photo plates — native aspect, never cover-crop top/bottom */
+.cinema-media--photo {
+  height: auto;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0c;
+}
 .cinema-media img,
 .cinema-media video {
   width: 100%; height: 100%;
   object-fit: cover;
+}
+.cinema-media--photo img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(85svh, 1000px);
+  object-fit: contain;
+  object-position: center;
 }
 /* Caption lives in .media-inner BELOW the full-bleed plate */
 .cinema-cap {
@@ -1711,7 +1728,6 @@ a.team-link:hover {
     padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
   }
   .hero-headline { font-size: clamp(2.35rem, 11vw, 3.5rem); }
-  .cinema-media,
   .cinema-media--hero,
   .cinema-media--chapter,
   .cinema-media--gtm,
@@ -1721,6 +1737,9 @@ a.team-link:hover {
   .cinema-media--hero { height: var(--cinema-h-hero); }
   .cinema-media--gtm { height: var(--cinema-h-gtm); }
   .cinema-media--divider { height: var(--cinema-h-divider); }
+  .cinema-media--photo img {
+    max-height: min(70svh, 560px);
+  }
   .ns-canvas-stage, #ns-stage {
     height: clamp(300px, 58svh, 480px);
   }
