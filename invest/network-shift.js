@@ -71,7 +71,11 @@
 
     function buildWorld() {
       seed = 7; harbors = []; islands = []; arcs = []; vessels = []; ships = [];
-      const y = (f) => H * f, x = (f) => W * f;
+      // Vertical framing crop: original layout occupied ~0.20–0.72 of H with a large
+      // empty ocean band under the islands. Remap so the same relative geometry fills
+      // most of the stage (crop dead space, keep coast/island relationships).
+      const y = (f) => Math.min(H * 0.96, H * (0.03 + f * 1.28));
+      const x = (f) => W * f;
       const ctrl = [
         [x(-0.05), y(0.2)], [x(0.07), y(0.26)], [x(0.16), y(0.22)], [x(0.28), y(0.3)],
         [x(0.36), y(0.21)], [x(0.5), y(0.27)], [x(0.58), y(0.33)], [x(0.7), y(0.24)],
