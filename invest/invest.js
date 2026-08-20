@@ -726,23 +726,22 @@
         )
         .join('');
       const plate = homeSrc('proof.traction.plate');
-      // Mirror Master Plan arc: title + hangar + years live inside the sticky pin so
-      // the hangar stays put on large screens while years accumulate — no empty black runway.
+      // Title scrolls away; sticky pin holds full-bleed hangar + timeline so years
+      // stay visible under the hero while they accumulate (Master Plan rhythm).
       return `
         <div class="section-block traction-timeline-section" data-reveal data-home="proof.traction.plate" data-tl-steps="${milestones.length}">
+          <div class="section-inner traction-timeline-head">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
+          </div>
           <div class="tl-pin" id="tl-pin">
             <div class="tl-pin-sticky">
-              <div class="section-inner">
-                ${kicker(s)}
-                ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
-                ${sticky ? `<div class="sticky-chips">${sticky}</div>` : ''}
-              </div>
               ${
                 plate
                   ? cinema(plate, {
                       home: 'proof.traction.plate',
-                      // Native-aspect photo — never cover-crop (US flag must stay in frame)
-                      size: 'photo',
+                      size: 'gtm',
                       alt: 'Hulls in production at Navier’s waterfront hangar',
                     })
                   : ''

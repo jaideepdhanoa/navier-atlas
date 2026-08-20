@@ -1162,7 +1162,7 @@ a.team-link:hover {
 }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
-/* Timeline — sticky hangar + years (Master Plan arc rhythm) */
+/* Timeline — sticky full-bleed hangar + years (title scrolls away) */
 .sticky-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px }
 .chip {
   font-size: 13px; padding: 8px 14px; border-radius: 999px;
@@ -1172,53 +1172,43 @@ a.team-link:hover {
   color: var(--accent-bright); font-family: "Playfair Display", Georgia, serif;
   font-size: 1.1rem; font-weight: 600;
 }
+.traction-timeline-head {
+  padding-bottom: var(--space-3);
+}
 .tl-pin {
   position: relative;
-  /* Runway for 2022→N while hangar+copy stay sticky — sized so sticky fills the
-     viewport (no empty black band under a lone year row). */
+  /* Runway for 2022→N while hangar + timeline stay sticky */
   min-height: 200vh;
 }
 .tl-pin-sticky {
   position: sticky;
   top: var(--chrome-h);
-  padding: var(--space-4) 0 var(--space-3);
+  padding: 0 0 var(--space-3);
   z-index: 1;
   background: var(--bg-0);
 }
-/* Hangar hero inside sticky pin — full panoramic frame (never cover-crop), no caption */
+/* Full-bleed hero band: crop a little from the bottom so the plate reads wider */
 .traction-timeline-section .tl-pin-sticky > .cinema-block {
   margin: 0 0 var(--space-3);
 }
-.traction-timeline-section .tl-pin-sticky .cinema-media--photo {
-  height: auto;
-  max-height: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0a0a0c;
+.traction-timeline-section .tl-pin-sticky .cinema-media {
+  height: min(40svh, 400px);
+  width: 100%;
 }
-.traction-timeline-section .tl-pin-sticky .cinema-media--photo img {
-  /* Native aspect — width/height auto so max-height never side-crops the flag/door */
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: min(48svh, 520px);
-  object-fit: contain;
-  object-position: center center;
-}
-.traction-timeline-section .tl-pin-sticky .section-inner {
-  padding-bottom: 0;
-}
-.traction-timeline-section .tl-pin-sticky .h2 {
-  margin-bottom: 8px;
+.traction-timeline-section .tl-pin-sticky .cinema-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Bias up — keep open-door / upper hangar; crop bottom hulls */
+  object-position: center 20%;
 }
 .traction-timeline-section .tl-pin-sticky .timeline {
-  padding-top: 18px;
+  padding-top: 12px;
   padding-bottom: 0;
 }
 @media (max-width: 720px) {
-  .traction-timeline-section .tl-pin-sticky .cinema-media--photo img {
-    max-height: min(42svh, 340px);
+  .traction-timeline-section .tl-pin-sticky .cinema-media {
+    height: min(36svh, 280px);
   }
 }
 .timeline {
