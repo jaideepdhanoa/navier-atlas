@@ -956,6 +956,10 @@ a.team-link:hover {
   perspective: 1200px;
 }
 .flip-slot { min-height: 240px; }
+.flip-slot.has-lever-media {
+  /* Reserve taller face: media strip + lever copy — no document reflow on flip */
+  min-height: clamp(360px, 42vh, 440px);
+}
 .flip-card {
   position: relative;
   width: 100%;
@@ -963,6 +967,9 @@ a.team-link:hover {
   min-height: 240px;
   transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(.2,.7,.2,1);
+}
+.flip-slot.has-lever-media .flip-card {
+  min-height: clamp(360px, 42vh, 440px);
 }
 .flip-card.is-flipped { transform: rotateY(180deg); }
 .flip-face {
@@ -980,6 +987,41 @@ a.team-link:hover {
   transform: rotateY(180deg);
   background: linear-gradient(165deg, rgba(185,154,95,0.12), var(--bg-1));
   border-color: rgba(185,154,95,0.28);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.lever-media {
+  flex: 0 1 auto;
+  height: clamp(120px, 11vw, 160px);
+  min-height: 120px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(185,154,95,0.22);
+  background: #0a0a0c;
+}
+.lever-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.lever-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 18px 20px 20px;
+  overflow: hidden;
+}
+@media (max-width: 1280px) {
+  /* Shrink strips before text if viewport is tight */
+  .flip-slot.has-lever-media,
+  .flip-slot.has-lever-media .flip-card {
+    min-height: clamp(340px, 48vh, 420px);
+  }
+  .lever-media,
+  .static-pair-card.lever .lever-media {
+    height: clamp(120px, 10vw, 140px);
+  }
 }
 .flip-static .static-row {
   display: grid;
@@ -992,8 +1034,18 @@ a.team-link:hover {
   background: var(--bg-1); border: 1px solid var(--line);
 }
 .static-pair-card.lever {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   border-color: rgba(185,154,95,0.28);
   background: linear-gradient(165deg, rgba(185,154,95,0.1), var(--bg-1));
+}
+.static-pair-card.lever .lever-media {
+  height: clamp(120px, 11vw, 160px);
+}
+.static-pair-card.lever .lever-body {
+  padding: 18px 20px 20px;
 }
 .static-pair-card .t { font-weight: 700; margin: 8px 0; }
 .static-pair-card .mech { color: var(--accent-bright); font-size: 13px; margin-bottom: 6px; }

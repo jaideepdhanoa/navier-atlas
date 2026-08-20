@@ -525,8 +525,14 @@
           const title = pair.cost.title || '';
           const lead = title.split(/\s*[—–-]\s*/)[0] || title;
           const rest = title.slice(lead.length).replace(/^\s*[—–-]\s*/, '');
+          const lev = pair.lever || {};
+          const levMedia = lev.media || {};
+          const levImg = mediaPath(levMedia.image || '');
+          const levStrip = levImg
+            ? `<div class="lever-media"><img src="${esc(levImg)}" alt="${esc(levMedia.alt || '')}" loading="lazy" /></div>`
+            : '';
           return `
-          <div class="flip-slot" data-i="${i}">
+          <div class="flip-slot ${levImg ? 'has-lever-media' : ''}" data-i="${i}">
             <div class="flip-card" data-flip-card="${i}">
               <div class="flip-face flip-cost">
                 <div class="cm-num">${n}</div>
@@ -535,11 +541,14 @@
                 <div class="cm-cost-body">${esc(pair.cost.body || '')}</div>
               </div>
               <div class="flip-face flip-lever">
-                <div class="cm-num">${n}</div>
-                <div class="cm-lever-title">${esc(pair.lever.title || '')}</div>
-                <div class="cm-lever-mech">${esc(pair.lever.mechanism || '')}</div>
-                <div class="cm-lever-proof">${esc(pair.lever.proof || '')}</div>
-                ${pair.lever.bridge ? `<div class="cm-lever-bridge">${esc(pair.lever.bridge)}</div>` : ''}
+                ${levStrip}
+                <div class="lever-body">
+                  <div class="cm-num">${n}</div>
+                  <div class="cm-lever-title">${esc(lev.title || '')}</div>
+                  <div class="cm-lever-mech">${esc(lev.mechanism || '')}</div>
+                  <div class="cm-lever-proof">${esc(lev.proof || '')}</div>
+                  ${lev.bridge ? `<div class="cm-lever-bridge">${esc(lev.bridge)}</div>` : ''}
+                </div>
               </div>
             </div>
           </div>`;
@@ -554,7 +563,12 @@
       const staticLevers = pairs
         .map((pair, i) => {
           const n = String(i + 1).padStart(2, '0');
-          return `<div class="static-pair-card lever"><div class="cm-num">${n}</div><div class="t">${esc(pair.lever.title || '')}</div><div class="mech">${esc(pair.lever.mechanism || '')}</div><div class="b">${esc(pair.lever.proof || '')}</div>${pair.lever.bridge ? `<div class="cm-lever-bridge">${esc(pair.lever.bridge)}</div>` : ''}</div>`;
+          const lev = pair.lever || {};
+          const levImg = mediaPath((lev.media && lev.media.image) || '');
+          const strip = levImg
+            ? `<div class="lever-media"><img src="${esc(levImg)}" alt="${esc((lev.media && lev.media.alt) || '')}" loading="lazy" /></div>`
+            : '';
+          return `<div class="static-pair-card lever">${strip}<div class="lever-body"><div class="cm-num">${n}</div><div class="t">${esc(lev.title || '')}</div><div class="mech">${esc(lev.mechanism || '')}</div><div class="b">${esc(lev.proof || '')}</div>${lev.bridge ? `<div class="cm-lever-bridge">${esc(lev.bridge)}</div>` : ''}</div></div>`;
         })
         .join('');
       // State A = costs headline + $1T subhead + kicker
@@ -1747,24 +1761,7 @@
       }
       const fn = R[sec.type];
       if (fn) parts.push(stampSectionHtml(fn(sec), 'claim', sec));
-      // Golden-hour bow payoff after costs↔levers morph (Tasklet closing plate)
-      if (sec.id === 'costs-levers') {
-        const cp = sec.closing_plate || {};
-        const plateSrc =
-          homeSrc('claim.costs_levers.closing_plate') ||
-          mediaPath(cp.image || '');
-        if (plateSrc) {
-          parts.push(
-            cinema(plateSrc, {
-              home: 'claim.costs_levers.closing_plate',
-              caption: cp.caption || homeCap('claim.costs_levers.closing_plate'),
-              alt: cp.alt || '',
-              // Full frame — never cover-crop (3:2 goldenhour bow)
-              size: 'photo',
-            }),
-          );
-        }
-      }
+      // Round-6g: goldenhour bow removed from post-morph — now closes the page under Go-deeper
     }
     return `
       <section class="chapter" id="claim">
@@ -1854,12 +1851,25 @@
       : '';
     const finaleHtml = finale ? stampSectionHtml(R['finale-plate'](finale), 'money', finale) : '';
     const footHtml = foot ? stampSectionHtml(R.footer(foot), 'money', foot) : '';
+    // Round-6g: goldenhour bow — last visual above confidentiality footer
+    const closeImg = (foot && foot.closing_image) || {};
+    const closeSrc =
+      homeSrc('money.go_deeper.closing_image') || mediaPath(closeImg.image || '');
+    const closePlate = closeSrc
+      ? cinema(closeSrc, {
+          home: 'money.go_deeper.closing_image',
+          caption: closeImg.caption || homeCap('money.go_deeper.closing_image'),
+          alt: closeImg.alt || '',
+          size: 'photo',
+        })
+      : '';
     return `
       <section class="chapter" id="money">
         ${moneyLabel}
         ${mainHtml}
         ${footHtml}
         ${finaleHtml}
+        ${closePlate}
       </section>`;
   }
 
