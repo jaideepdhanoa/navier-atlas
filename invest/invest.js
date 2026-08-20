@@ -1180,7 +1180,7 @@
     },
 
     'defense-panel'(s) {
-      // Round-7: capabilities rail + thesis + quotes | lead loop + photo pair + click-to-play secondaries
+      // Media-first → proof: lead loop + equal photo strip, then rail/quotes/deployment, then hull cards + more footage
       const da = homeAssets('gtm.defense') || {};
       const media = s.media || {};
       const lead = media.lead_video || {};
@@ -1204,13 +1204,13 @@
         })
         .join('');
       const usmi = s.pull_quote
-        ? `<blockquote class="defense-quote-inline">
+        ? `<blockquote class="defense-quote">
             <p>${esc(s.pull_quote.quote || '')}</p>
             <cite>${esc(s.pull_quote.attribution || '')}</cite>
           </blockquote>`
         : '';
       const press = s.press_quote
-        ? `<blockquote class="defense-press-quote">
+        ? `<blockquote class="defense-quote defense-quote--press">
             <p>${esc(s.press_quote.quote || '')}</p>
             <cite>${
               s.press_quote.url
@@ -1224,7 +1224,7 @@
           const src = mediaPath(ph.src || ph);
           if (!src) return '';
           return `<figure class="defense-photo">
-            <img src="${esc(src)}" alt="${esc(ph.caption || '')}" loading="lazy" />
+            <div class="defense-photo-frame"><img src="${esc(src)}" alt="${esc(ph.caption || '')}" loading="lazy" /></div>
             ${ph.caption ? `<figcaption>${esc(ph.caption)}</figcaption>` : ''}
           </figure>`;
         })
@@ -1234,9 +1234,11 @@
           const src = mediaPath(v.src);
           if (!src) return '';
           return `<figure class="defense-click-video">
-            <video playsinline controls preload="metadata" data-defense-click>
-              <source src="${esc(src)}" type="video/mp4" />
-            </video>
+            <div class="defense-video-frame">
+              <video playsinline controls preload="metadata" data-defense-click>
+                <source src="${esc(src)}" type="video/mp4" />
+              </video>
+            </div>
             ${v.caption ? `<figcaption>${esc(v.caption)}</figcaption>` : ''}
           </figure>`;
         })
@@ -1248,32 +1250,45 @@
             ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
             ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
             ${s.intro ? `<p class="dual-use-intro">${esc(s.intro)}</p>` : ''}
-            ${s.sub_line ? `<p class="dual-use-sub">${esc(s.sub_line)}</p>` : ''}
-            <div class="defense-layout">
-              <div class="defense-copy">
-                ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
-                ${rail ? `<div class="defense-rail">${rail}</div>` : ''}
-                ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
-                ${usmi}
-                ${press}
-                ${s.deployment_line ? `<p class="closing-line">${esc(s.deployment_line)}</p>` : ''}
-                ${s.fine_print ? `<p class="muted">${esc(s.fine_print)}</p>` : ''}
-              </div>
-              <div class="defense-media">
-                ${
-                  leadSrc
-                    ? `<figure class="defense-lead-video">
+
+            <div class="defense-media-band">
+              ${
+                leadSrc
+                  ? `<figure class="defense-lead-video">
+                <div class="defense-video-frame defense-video-frame--lead">
                   <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" data-lazy-video>
                     <source src="${esc(leadSrc)}" type="video/mp4" />
                   </video>
-                  ${lead.caption ? `<figcaption>${esc(lead.caption)}</figcaption>` : ''}
-                </figure>`
-                    : ''
-                }
-                ${photoHtml ? `<div class="defense-sbs">${photoHtml}</div>` : ''}
-                ${secondaryHtml ? `<div class="defense-secondary">${secondaryHtml}</div>` : ''}
+                </div>
+                ${lead.caption ? `<figcaption>${esc(lead.caption)}</figcaption>` : ''}
+              </figure>`
+                  : ''
+              }
+              ${photoHtml ? `<div class="defense-sbs">${photoHtml}</div>` : ''}
+            </div>
+
+            <div class="defense-proof">
+              <div class="defense-proof-rail">
+                ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+                ${rail ? `<div class="defense-rail">${rail}</div>` : ''}
+              </div>
+              <div class="defense-proof-quotes">
+                ${press}
+                ${usmi}
+                ${s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : ''}
+                ${s.fine_print ? `<p class="defense-budgets muted">${esc(s.fine_print)}</p>` : ''}
               </div>
             </div>
+
+            ${blocks ? `<div class="defense-hulls"><p class="sublabel">PLATFORM</p><div class="dual-use-blocks">${blocks}</div></div>` : ''}
+            ${
+              secondaryHtml
+                ? `<div class="defense-more">
+              <p class="sublabel">MORE FOOTAGE</p>
+              <div class="defense-secondary">${secondaryHtml}</div>
+            </div>`
+                : ''
+            }
           </div>
         </div>`;
     },

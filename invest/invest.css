@@ -2059,29 +2059,76 @@ a.team-link:hover {
   .shipscale-kpi:last-child { border-bottom: 0; }
 }
 
-/* Round-7 defense panel — rail + quotes | lead loop + photo pair + click videos */
-.defense-layout {
+/* Defense — media-first band, then proof, then hulls / more footage */
+.dual-use-stage .dual-use-intro {
+  max-width: 68ch;
+  margin: 0 0 var(--space-5, 28px);
+}
+.defense-media-band {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
-  gap: var(--space-5, 28px);
+  gap: var(--space-4, 20px);
+  margin: 0 0 var(--space-6, 48px);
+}
+.defense-video-frame,
+.defense-photo-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #07080a;
+}
+.defense-video-frame--lead {
+  aspect-ratio: 16 / 9;
+}
+.defense-video-frame video,
+.defense-photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.defense-lead-video figcaption,
+.defense-photo figcaption,
+.defense-click-video figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.35;
+}
+/* Equal-height photo pair — crop portrait SOF Week tile to match landscape officers */
+.defense-sbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3, 16px);
+  align-items: stretch;
+}
+.defense-photo { min-width: 0; margin: 0; }
+.defense-photo-frame {
+  aspect-ratio: 3 / 2;
+}
+.defense-proof {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: var(--space-5, 28px) var(--space-6, 40px);
   align-items: start;
-  margin-top: var(--space-4, 20px);
+  margin: 0 0 var(--space-6, 48px);
+  padding-top: var(--space-5, 28px);
+  border-top: 1px solid var(--line);
 }
 .defense-thesis {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
   line-height: 1.35;
   color: var(--text-0);
   margin: 0 0 var(--space-4, 20px);
 }
 .defense-rail {
   display: grid;
-  gap: 18px;
-  margin: 0 0 var(--space-5, 28px);
+  gap: 16px;
 }
 .defense-rail-row { min-width: 0; }
 .defense-rail-term {
-  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -2094,69 +2141,70 @@ a.team-link:hover {
   color: var(--text-2);
   line-height: 1.4;
 }
-.defense-press-quote {
-  margin: 18px 0;
-  padding: 16px 18px;
-  border-left: 2px solid rgba(212, 175, 95, 0.55);
-  background: rgba(185, 154, 95, 0.05);
+.defense-proof-quotes {
+  display: grid;
+  gap: 14px;
 }
-.defense-press-quote p {
+.defense-quote {
   margin: 0;
-  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  padding: 18px 20px;
+  border-radius: 10px;
+  border-left: 3px solid var(--accent-bright);
+  background: rgba(185, 154, 95, 0.07);
+}
+.defense-quote p {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1rem, 1.45vw, 1.2rem);
+  font-style: italic;
   line-height: 1.45;
   color: var(--text-0);
 }
-.defense-press-quote cite {
+.defense-quote cite {
   display: block;
-  margin-top: 8px;
+  margin-top: 10px;
+  font-family: Inter, sans-serif;
   font-size: 12px;
-  color: var(--text-2);
   font-style: normal;
-}
-.defense-press-quote cite a { color: var(--accent-bright); text-decoration: none; }
-.defense-press-quote cite a:hover { text-decoration: underline; }
-.defense-media { display: grid; gap: 14px; }
-.defense-lead-video video,
-.defense-click-video video,
-.defense-photo img {
-  display: block;
-  width: 100%;
-  border-radius: 10px;
-  background: #0a0a0c;
-}
-.defense-lead-video video { max-height: min(52vh, 480px); object-fit: cover; }
-.defense-sbs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.defense-photo figcaption,
-.defense-lead-video figcaption,
-.defense-click-video figcaption {
-  margin-top: 8px;
-  font-size: 12px;
   color: var(--text-2);
-  line-height: 1.35;
+}
+.defense-quote cite a { color: var(--accent-bright); text-decoration: none; }
+.defense-quote cite a:hover { text-decoration: underline; }
+.defense-quote--press {
+  background: rgba(255, 255, 255, 0.03);
+  border-left-color: rgba(212, 175, 95, 0.45);
+}
+.defense-deploy {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-0);
+  line-height: 1.45;
+}
+.defense-budgets {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.defense-hulls,
+.defense-more {
+  margin: 0 0 var(--space-5, 28px);
+}
+.defense-hulls .dual-use-blocks {
+  margin-top: 12px;
 }
 .defense-secondary {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--space-3, 16px);
+  margin-top: 12px;
 }
-.defense-click-video video { max-height: 220px; object-fit: cover; }
-.defense-quote-inline {
-  margin: 16px 0; padding: 20px 22px; border-radius: 10px;
-  border-left: 3px solid var(--accent-bright);
-  background: rgba(185,154,95,0.08);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1rem, 1.6vw, 1.25rem); font-style: italic; color: var(--text-0);
-}
-.defense-quote-inline cite {
-  display: block; margin-top: 10px; font-style: normal;
-  font-family: Inter, sans-serif; font-size: 12px; color: var(--text-2);
+.defense-click-video { margin: 0; min-width: 0; }
+.defense-click-video .defense-video-frame {
+  aspect-ratio: 16 / 9;
 }
 @media (max-width: 1099px) {
-  .defense-layout { grid-template-columns: 1fr; }
+  .defense-proof { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .defense-sbs,
