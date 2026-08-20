@@ -2002,21 +2002,19 @@ a.team-link:hover {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #0a0a0c;
-  /* Shared height for both images */
-  aspect-ratio: 16 / 10;
+  background: #07080a;
+  /* Match variants-grid aspect (~1408×768) so both tiles share one height */
+  aspect-ratio: 11 / 6;
+  position: relative;
 }
 .shipscale-col img {
   display: block;
   width: 100%;
   height: 100%;
+  /* Cover crops top/bottom on the taller hero so it matches the grid tile */
   object-fit: cover;
-}
-.shipscale-grid img {
-  object-fit: contain;
-  padding: 10px;
-  box-sizing: border-box;
-  background: #0a0a0c;
+  object-position: center;
+  border-radius: 0; /* corners come from the shared .shipscale-col clip */
 }
 .shipscale-kpis {
   display: grid;
