@@ -367,10 +367,18 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     `/* GENERATED from hubs/${hubId}/${dataFileName} */\nwindow.ARCHETYPE_DATA = ${JSON.stringify(clientArch)};\n`
   );
 
-  const heroSrc = hub.brand?.hero_asset
-    ? path.join(ROOT, hub.brand.hero_asset)
-    : path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png');
-  if (fs.existsSync(heroSrc)) {
+  // Prefer archetype-authored hero (e.g. hubs/<id>/assets/hero-public-*.jpg), then hub brand, then fallback
+  const archHeroRel = (archData.hero && archData.hero.data && archData.hero.data.image) || '';
+  const archHeroPath = archHeroRel
+    ? path.join(ROOT, String(archHeroRel).replace(/^\//, ''))
+    : '';
+  const heroCandidates = [
+    archHeroPath,
+    hub.brand?.hero_asset ? path.join(ROOT, hub.brand.hero_asset) : '',
+    path.join(ROOT, 'deck-studio/assets/weta/passengers-stern-bright.png'),
+  ].filter(Boolean);
+  const heroSrc = heroCandidates.find((p) => fs.existsSync(p));
+  if (heroSrc) {
     fs.copyFileSync(heroSrc, path.join(outDir, 'assets', 'hero.jpg'));
   }
 
