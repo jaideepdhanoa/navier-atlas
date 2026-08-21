@@ -124,7 +124,16 @@ function sanitizeClientHub(hub) {
       if (typeof clean.gates[k] === 'object') delete clean.gates[k];
     }
   }
-  return clean;
+  // External-copy kill terms that sometimes appear inside serves[] strings
+  const scrub = (v) => {
+    if (typeof v === 'string') return v.replace(/\bcatchment\b/gi, 'area');
+    if (Array.isArray(v)) return v.map(scrub);
+    if (v && typeof v === 'object') {
+      for (const k of Object.keys(v)) v[k] = scrub(v[k]);
+    }
+    return v;
+  };
+  return scrub(clean);
 }
 
 function emitHub(hub, registryEntry) {

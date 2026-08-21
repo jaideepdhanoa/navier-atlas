@@ -385,41 +385,99 @@
     return section('service_day', sd.title || 'How one vessel earns across the day', html);
   }
 
+  function demandValueCell(r) {
+    if (r.value != null && String(r.value).trim() !== '') return esc(String(r.value));
+    if (r.headcount != null && r.headcount !== '') {
+      const n = Number(r.headcount);
+      return Number.isFinite(n) ? '~' + n.toLocaleString('en-US') : esc(String(r.headcount));
+    }
+    return '';
+  }
+
+  function fnSup(fn) {
+    if (!fn) return '';
+    const key = String(fn);
+    const num = key.replace(/^fn/i, '');
+    return ` <sup class="fn-ref"><a href="#fn-${esc(num)}">${esc(num)}</a></sup>`;
+  }
+
   function renderDemandPool() {
     const dp = A.demand_pool;
     if (!dp) return '';
+    // standing_label must be top-level — _internal is stripped at build
     const standing =
       dp.standing_label ||
-      (dp._internal && dp._internal.standing_label) ||
       'Indicative of demand potential along these corridors — not commitments or commercial relationships.';
-    let html = `<p class="standing-label">${esc(standing)}</p>`;
+    let html = `<p class="standing-label">${esc(standing)}${fnSup(dp.fn)}</p>`;
 
-    // Named employer table (Boston / RAK)
-    if (dp.data && dp.data.rows && dp.data.rows.length) {
-      if (dp.data.capture_assumption) {
-        html += `<p class="assump-label">Capture assumption: ${esc(dp.data.capture_assumption)}. Headcount: ${esc(dp.data.headcount_label || '')}</p>`;
+    const data = dp.data || {};
+    const variant = data.table_variant === 'stop' ? 'stop' : 'employer';
+    const rows = (data.rows || []).filter(function (r) {
+      const hasValue = r.value != null && String(r.value).trim() !== '';
+      const hasHead = r.headcount != null && r.headcount !== '';
+      const hasNote = r.note != null && String(r.note).trim() !== '';
+      return hasValue || hasHead || hasNote; // fail closed on empty rows
+    });
+
+    if (rows.length) {
+      if (data.capture_assumption || data.headcount_label) {
+        html += `<p class="assump-label">${
+          data.capture_assumption ? esc('Capture assumption: ' + data.capture_assumption) : ''
+        }${data.capture_assumption && data.headcount_label ? ' · ' : ''}${
+          data.headcount_label ? esc(data.headcount_label) : ''
+        }</p>`;
       }
-      html += `<div style="overflow-x:auto"><table class="data-table demand-table">
-        <thead><tr><th>Employer</th><th>Node</th><th>Line(s)</th><th>Headcount</th><th>Demand-pool seats</th></tr></thead>
-        <tbody>${dp.data.rows
-          .map(
-            (r) => `<tr data-node="${esc(r.node || '')}">
-            <td>${esc(r.employer || '')}</td>
-            <td>${esc(r.node || '')}</td>
-            <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
-            <td>${r.headcount != null ? esc(r.headcount) : '—'}</td>
-            <td>${r.seats != null ? esc(r.seats) : '—'}</td>
-          </tr>`
-          )
-          .join('')}</tbody></table></div>`;
-      if (dp.data.city_total_seats != null) {
-        html += `<p class="assump-label" style="margin-top:10px">City total (indicative): ${esc(dp.data.city_total_seats)} seats</p>`;
+
+      if (variant === 'stop') {
+        html += `<div style="overflow-x:auto"><table class="data-table demand-table">
+          <thead><tr><th>Stop</th><th>Line(s)</th><th>Demand pool</th><th>Note</th></tr></thead>
+          <tbody>${rows
+            .map(function (r) {
+              const demand = demandValueCell(r);
+              const note = r.note ? esc(r.note) : '';
+              return `<tr data-stop="${esc(r.node || '')}">
+                <td>${esc(r.node || '')}${fnSup(r.fn)}</td>
+                <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
+                <td>${demand || '—'}</td>
+                <td class="assump-label">${note}</td>
+              </tr>`;
+            })
+            .join('')}</tbody></table></div>`;
+      } else {
+        html += `<div style="overflow-x:auto"><table class="data-table demand-table">
+          <thead><tr><th>Employer</th><th>Stop</th><th>Line(s)</th><th>Demand pool</th></tr></thead>
+          <tbody>${rows
+            .map(function (r) {
+              const demand = demandValueCell(r);
+              const note = r.note
+                ? `<div class="assump-label demand-note">${esc(r.note)}</div>`
+                : '';
+              const employer = r.employer || r.cluster || '';
+              return `<tr data-stop="${esc(r.node || '')}">
+                <td><div class="line-main">${esc(employer)}${fnSup(r.fn)}</div>${note}</td>
+                <td>${esc(r.node || '')}</td>
+                <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
+                <td>${demand || '—'}</td>
+              </tr>`;
+            })
+            .join('')}</tbody></table></div>`;
+      }
+
+      if (data.city_total_seats != null) {
+        html += `<p class="assump-label" style="margin-top:10px">City total (indicative): <strong>${esc(
+          String(data.city_total_seats)
+        )}</strong> seats${
+          data.capture_assumption ? ' · ' + esc(data.capture_assumption) : ''
+        }</p>`;
+      }
+      if (data.honesty_notes && data.honesty_notes.length) {
+        html += `<ul class="pillars">${data.honesty_notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>`;
       }
     }
 
-    // Corridor / cluster cards (Bay Area fail-closed style)
+    // Optional corridor cards only when no table rows
     const cards = dp.copy && dp.copy.cards;
-    if (cards && cards.length) {
+    if ((!rows || !rows.length) && cards && cards.length) {
       html += `<div class="demand-cards arch-grid-2">${cards
         .map(
           (c) => `<div class="arch-card demand-card">
@@ -430,9 +488,28 @@
         .join('')}</div>`;
     }
 
-    if (!cards && !(dp.data && dp.data.rows && dp.data.rows.length)) return '';
-    html += `<p class="assump-label" style="margin-top:14px">Use the trip planner on the network map below to compare water vs drive times on these corridors.</p>`;
-    return section('demand', dp.title || 'Demand pool', html);
+    if ((!rows || !rows.length) && !(cards && cards.length)) return '';
+    return section('demand', dp.title || 'Who rides these corridors', html);
+  }
+
+  function renderFootnotes() {
+    const fn = A.footnotes;
+    if (!fn || typeof fn !== 'object') return '';
+    const keys = Object.keys(fn).sort(function (a, b) {
+      return String(a).localeCompare(String(b), undefined, { numeric: true });
+    });
+    if (!keys.length) return '';
+    const html = `<ol class="footnote-list">${keys
+      .map(function (k) {
+        const item = fn[k];
+        const text = typeof item === 'string' ? item : (item && item.text) || '';
+        if (!text) return '';
+        const num = String(k).replace(/^fn/i, '');
+        return `<li id="fn-${esc(num)}"><span class="fn-key">${esc(num)}.</span> ${esc(text)}</li>`;
+      })
+      .filter(Boolean)
+      .join('')}</ol>`;
+    return section('footnotes', 'Notes & assumptions', html);
   }
 
   function renderPnlStudioShell() {
@@ -467,6 +544,7 @@
       navier_intro: renderAboutNavier, // legacy slot → About
       business_model: renderBusinessModel,
       model: renderBusinessModel, // earning layers only (no roles)
+      footnotes: renderFootnotes,
       asset: function () {
         const asset = A.asset;
         if (!asset || !asset.data) return '';
@@ -519,7 +597,7 @@
       },
     };
 
-    const skip = { hero: 1, network: 1, cta: 1, footnotes: 1 };
+    const skip = { hero: 1, network: 1, cta: 1 };
     // Brochure: About → Vessels → (network moved here in DOM) → Demand → Earn → Service day → P&L → Protection
     const brochureOrder = [
       'about_navier',
@@ -530,6 +608,7 @@
       'pnl',
       'fleet_phasing',
       'protection_stack',
+      'footnotes',
     ];
     // Drop demoted / redundant modules from authored order
     const drop = {
