@@ -333,10 +333,16 @@
     html += `<div class="biz-layers">${layers
       .map(
         (L) => `<div class="arch-card biz-layer">
-        <div class="biz-id">${esc(L.id || '')}</div>
+        <div class="biz-layer-top">
+          <div class="biz-id">${esc(L.id || '')}</div>
+          ${L.when ? `<div class="biz-when">${esc(L.when)}</div>` : ''}
+        </div>
         <h3>${esc(L.title || '')}</h3>
         <p>${esc(L.body || '')}</p>
-        ${L.feeds ? `<div class="tech-chip">P&amp;L · ${esc(L.feeds)}</div>` : ''}
+        <div class="biz-meta">
+          ${L.yield ? `<span class="tech-chip">${esc(L.yield)}</span>` : ''}
+          ${L.feeds ? `<span class="tech-chip">P&amp;L · ${esc(L.feeds)}</span>` : ''}
+        </div>
       </div>`
       )
       .join('')}</div>`;
@@ -361,14 +367,17 @@
     const sd = A.service_day;
     const windows = sd && sd.data && sd.data.windows;
     if (!windows || !windows.length) return '';
-    const html = `<div class="service-day" role="list">
+    const html = `<div class="service-timeline" role="list" aria-label="Service-day timeline">
+      <div class="service-timeline-track" aria-hidden="true"></div>
       ${windows
         .map(
-          (w) => `<div class="service-window ${w.upside ? 'is-upside' : ''}" role="listitem">
+          (w, i) => `<div class="service-window ${w.upside ? 'is-upside' : ''}" role="listitem" style="--i:${i}">
+          <div class="sw-dot" aria-hidden="true"></div>
           <div class="sw-time">${esc(w.time_range || '')}</div>
           <div class="sw-label">${esc(w.label || '')}</div>
           <div class="sw-layer">${esc(w.layer || '')}</div>
           ${w.note ? `<p class="assump-label">${esc(w.note)}</p>` : ''}
+          ${w.upside ? `<span class="status-chip status-upside">upside</span>` : ''}
         </div>`
         )
         .join('')}
@@ -435,7 +444,7 @@
     if (pnl.copy && pnl.copy.body) html += `<p>${esc(pnl.copy.body)}</p>`;
     html += `<div class="pnl-studio" id="pnl-studio">
       <div class="pnl-sticky" id="pnl-sticky">
-        <div class="pnl-metric"><div class="k">Payback</div><div class="v" id="pnl-m-payback">—</div></div>
+        <div class="pnl-metric"><div class="k">Payback · N45 Explorer</div><div class="v" id="pnl-m-payback">—</div></div>
         <div class="pnl-metric"><div class="k">Net / month</div><div class="v" id="pnl-m-net">—</div></div>
         <div class="pnl-metric"><div class="k">Gross / month</div><div class="v" id="pnl-m-gross">—</div></div>
         <div class="pnl-presets" id="pnl-presets" role="tablist" aria-label="Scenario presets"></div>
@@ -444,7 +453,7 @@
         <aside class="pnl-levers" id="pnl-levers" aria-label="P&L levers"></aside>
         <div class="pnl-statement-wrap">
           <div class="pnl-statement" id="pnl-statement" aria-live="polite"></div>
-          <p class="assump-label" id="pnl-honesty">Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.</p>
+          <p class="assump-label" id="pnl-honesty">Payback is for a single <strong>N45 Explorer (~$2.5M)</strong>. Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.</p>
         </div>
       </div>
     </div>`;
@@ -511,14 +520,14 @@
     };
 
     const skip = { hero: 1, network: 1, cta: 1, footnotes: 1 };
-    // Brochure order: About → Vessels → Earn → Service day → P&L → Demand → Protection
+    // Brochure: About → Vessels → (network moved here in DOM) → Demand → Earn → Service day → P&L → Protection
     const brochureOrder = [
       'about_navier',
       'vessels',
+      'demand_pool',
       'business_model',
       'service_day',
       'pnl',
-      'demand_pool',
       'fleet_phasing',
       'protection_stack',
     ];
@@ -679,7 +688,7 @@
               <tr class="total"><td><strong>Operating cost / month</strong></td><td class="num"><strong>${money(result.opex)}</strong></td></tr>
               <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')}</div>${networkFeeAccordionHtml()}</td><td class="num">(${money(result.networkShareAmt)})</td></tr>
               <tr class="emphasis"><td><strong>Net to investor / month</strong></td><td class="num"><strong>${money(result.net)}</strong></td></tr>
-              <tr class="emphasis"><td><strong>Payback @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
+              <tr class="emphasis"><td><strong>Payback · N45 Explorer @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
               ${
                 result.upsideLines.length
                   ? `<tr class="section-row upside"><td colspan="2">Upside (labeled — not in base)</td></tr>` +
@@ -743,7 +752,15 @@
   if (modulesEl) {
     modulesEl.innerHTML = isInvest ? renderInvestModules() : renderPartnersModules();
   }
-  if (isInvest) initInvestPnl();
+  if (isInvest) {
+    // Place network map after vessels / before demand for brochure flow
+    const networkEl = document.getElementById('network');
+    const vesselsEl = document.getElementById('vessels');
+    if (networkEl && vesselsEl && vesselsEl.parentNode) {
+      vesselsEl.after(networkEl);
+    }
+    initInvestPnl();
+  }
 
   // CTA
   const cta = A.cta || {};

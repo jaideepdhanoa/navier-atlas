@@ -501,18 +501,86 @@
 .biz-layers {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 14px;
+  gap: 14px;
+  margin-top: 16px;
+}
+.biz-layer {
+  position: relative;
+  padding-top: 16px;
+  border-top: 2px solid rgba(224, 203, 143, 0.35);
+}
+.biz-layer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 8px;
 }
 .biz-layer .biz-id {
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 6px;
 }
-.role-cards {
+.biz-when {
+  font-size: 11px;
+  color: var(--text-2);
+  text-align: right;
+}
+.biz-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   margin-top: 12px;
+}
+
+/* Service-day horizontal timeline */
+.service-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+}
+.service-timeline-track {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 26px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent 96%);
+  opacity: 0.55;
+  z-index: 0;
+}
+.service-window {
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 12px 12px;
+  background: var(--bg-1);
+  min-width: 0;
+}
+.service-window .sw-dot {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(224, 203, 143, 0.25);
+}
+.service-window.is-upside {
+  border-style: dashed;
+  opacity: 0.85;
+}
+.service-window.is-upside .sw-dot {
+  background: transparent;
+  border: 2px solid var(--accent);
+  box-shadow: none;
 }
 .fee-accordion {
   margin-top: 8px;
@@ -573,6 +641,18 @@
   color: var(--text-2);
   font-weight: 600;
 }
+@media (max-width: 1100px) {
+  .service-timeline {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+  }
+  .service-timeline-track {
+    display: none;
+  }
+  .service-window .sw-dot {
+    display: none;
+  }
+}
 @media (max-width: 960px) {
   .fi-demo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -606,23 +686,6 @@
   margin-right: 4px;
 }
 
-.service-day {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 8px;
-}
-.service-window {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px 12px 10px;
-  background: var(--bg-1);
-  min-width: 0;
-}
-.service-window.is-upside {
-  border-style: dashed;
-  opacity: 0.78;
-}
 .sw-time {
   font-size: 11px;
   letter-spacing: 0.06em;
