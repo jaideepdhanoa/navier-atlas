@@ -10,6 +10,8 @@ export function generatePartnerAuthMiddleware(partnerSlugs) {
     '/invest/:path*',
     '/teaser',
     '/teaser/:path*',
+    '/defense',
+    '/defense/:path*',
     '/partners',
     '/partners/:path*',
     `/:partner(${slugAlt})`,
@@ -23,8 +25,10 @@ const PARTNER_SLUGS = new Set(${JSON.stringify(slugs)});
 const HUB_SESSION_SLUG = '__partners_hub__';
 const INVEST_SESSION_SLUG = '__invest__';
 const TEASER_SESSION_SLUG = '__teaser__';
+const DEFENSE_SESSION_SLUG = '__defense__';
 const INVEST_DEFAULT_PASSWORD = 'morpheus';
 const TEASER_DEFAULT_PASSWORD = 'pioneer';
+const DEFENSE_DEFAULT_PASSWORD = 'quanta';
 
 function envKey(slug) {
   return 'PARTNER_AUTH_' + slug.toUpperCase().replace(/-/g, '_');
@@ -60,6 +64,10 @@ function teaserPassword() {
   return process.env.TEASER_PASSWORD || authJson().__teaser__ || TEASER_DEFAULT_PASSWORD;
 }
 
+function defensePassword() {
+  return process.env.DEFENSE_PASSWORD || authJson().__defense__ || DEFENSE_DEFAULT_PASSWORD;
+}
+
 function isPublic(pathname) {
   if (pathname === '/' || pathname === '/atlas-data.js' || pathname === '/index.html') return true;
   if (pathname.startsWith('/cluster/')) return true;
@@ -83,6 +91,10 @@ function isInvest(pathname) {
 
 function isTeaser(pathname) {
   return pathname === '/teaser' || pathname.startsWith('/teaser/');
+}
+
+function isDefense(pathname) {
+  return pathname === '/defense' || pathname.startsWith('/defense/');
 }
 
 function partnerFromPath(pathname) {
@@ -115,6 +127,7 @@ function sessionCookieName(slug) {
   if (slug === HUB_SESSION_SLUG) return 'navier_partners_hub';
   if (slug === INVEST_SESSION_SLUG) return 'navier_invest';
   if (slug === TEASER_SESSION_SLUG) return 'navier_teaser';
+  if (slug === DEFENSE_SESSION_SLUG) return 'navier_defense';
   return 'navier_partner_' + slug.replace(/-/g, '_');
 }
 
@@ -122,6 +135,7 @@ function sessionCookiePath(slug) {
   if (slug === HUB_SESSION_SLUG) return '/partners';
   if (slug === INVEST_SESSION_SLUG) return '/invest';
   if (slug === TEASER_SESSION_SLUG) return '/teaser';
+  if (slug === DEFENSE_SESSION_SLUG) return '/defense';
   return '/' + slug;
 }
 
@@ -180,6 +194,10 @@ export default async function middleware(request) {
 
   if (isTeaser(pathname)) {
     return gate(request, TEASER_SESSION_SLUG, teaserPassword(), 'Navier Teaser');
+  }
+
+  if (isDefense(pathname)) {
+    return gate(request, DEFENSE_SESSION_SLUG, defensePassword(), 'Navier Defense');
   }
 
   if (isPartnersHub(pathname)) {
