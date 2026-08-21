@@ -364,25 +364,19 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   if (archetypeId === 'fleet-investors') {
     const sharedBm = path.join(HUB_ROOT, 'shared/business-model.json');
     const sharedFee = path.join(HUB_ROOT, 'shared/network-fee.json');
+    const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
+    const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
     if (!clientArch.business_model && fs.existsSync(sharedBm)) {
       clientArch.business_model = stripUnderscoreKeys(readJson(sharedBm));
     }
     if (!clientArch.network_fee && fs.existsSync(sharedFee)) {
       clientArch.network_fee = stripUnderscoreKeys(readJson(sharedFee));
     }
-    // Enrich navier_intro media defaults when city file omits heroes
-    clientArch.navier_intro = clientArch.navier_intro || {};
-    clientArch.navier_intro.data = clientArch.navier_intro.data || {};
-    clientArch.navier_intro.data.images = Object.assign(
-      {
-        hero: '/employer-hub/assets/vessels/n30-hero.jpg',
-        vessel_n30_plate: '/employer-hub/assets/vessels/n30-plate.jpg',
-        vessel_n45_plate: '/employer-hub/assets/vessels/n45-plate.jpg',
-      },
-      clientArch.navier_intro.data.images || {}
-    );
-    if (!clientArch.navier_intro.data.video_url) {
-      clientArch.navier_intro.data.video_url = 'https://www.youtube.com/embed/S7WB91FvSFI';
+    if (fs.existsSync(sharedAbout)) {
+      clientArch.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
+    }
+    if (fs.existsSync(sharedVessels)) {
+      clientArch.vessels = stripUnderscoreKeys(readJson(sharedVessels));
     }
   }
   // FI pages stay unlisted; PP pages are public/indexable
@@ -423,9 +417,9 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   return pageBase;
 }
 
-function copySharedVesselAssets() {
-  const srcDir = path.join(HUB_ROOT, 'assets/vessels');
-  const dstDir = path.join(DIST, 'employer-hub/assets/vessels');
+function copySharedDir(rel) {
+  const srcDir = path.join(HUB_ROOT, rel);
+  const dstDir = path.join(DIST, 'employer-hub', rel);
   if (!fs.existsSync(srcDir)) return;
   ensureDir(dstDir);
   for (const name of fs.readdirSync(srcDir)) {
@@ -433,6 +427,12 @@ function copySharedVesselAssets() {
     if (!fs.statSync(src).isFile()) continue;
     fs.copyFileSync(src, path.join(dstDir, name));
   }
+}
+
+function copySharedVesselAssets() {
+  copySharedDir('assets/vessels');
+  copySharedDir('assets/demos');
+  copySharedDir('assets/posters');
 }
 
 function emitArchetypesForHubId(hubId, hub, archetypes) {

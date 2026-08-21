@@ -269,134 +269,92 @@
     return p;
   }
 
-  function renderNavierIntro() {
-    const ni = A.navier_intro;
-    if (!ni || !ni.copy) return '';
-    const c = ni.copy;
-    const data = ni.data || {};
-    const images = data.images || {};
-    const heroStill =
-      images.hero ||
-      images.vessel_n30_hero ||
-      '/employer-hub/assets/vessels/n30-hero.jpg';
-    const n30plate = images.vessel_n30_plate || '/employer-hub/assets/vessels/n30-plate.jpg';
-    const n45plate = images.vessel_n45_plate || '/employer-hub/assets/vessels/n45-plate.jpg';
-    const video = data.video_url || '';
-
-    let media = `<div class="navier-intro-media">
-      <figure class="navier-hero-still"><img src="${esc(mediaUrl(heroStill))}" alt="Navier electric hydrofoil underway" loading="lazy" /></figure>`;
-    if (video) {
-      const embed = /youtube\.com\/embed\//.test(video)
-        ? video
-        : video.replace('watch?v=', 'embed/').replace('youtu.be/', 'www.youtube.com/embed/');
-      media += `<div class="navier-video"><iframe src="${esc(embed)}" title="Navier vessel" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`;
-    }
-    media += `</div>`;
-
-    let copy = `<div class="navier-intro-copy">
-      <p class="eyebrow">Who is Navier</p>
-      <p class="lead">${esc(c.headline || '')}</p>
-      <p>${esc(c.body || '')}</p>`;
-    if (c.tech_chips && c.tech_chips.length) {
-      copy += `<div class="tech-chips">${c.tech_chips
-        .map((t) => {
-          if (typeof t === 'string') return `<span class="tech-chip">${esc(t)}</span>`;
-          return `<span class="tech-chip"><strong>${esc(t.label || t.title || '')}</strong> ${esc(t.value || t.body || '')}</span>`;
-        })
+  function renderAboutNavier() {
+    const about = A.about_navier;
+    if (!about || !about.copy) return '';
+    const demos = about.demos || [];
+    let html = `<p class="lead about-lead">${esc(about.copy.body || '')}</p>`;
+    if (demos.length) {
+      html += `<div class="fi-demo-grid" data-fi-demos>${demos
+        .map(
+          (d) => `<figure class="fi-demo-tile">
+          <video muted playsinline loop preload="metadata" poster="${esc(mediaUrl(d.poster || ''))}" data-autoplay-demo>
+            <source src="${esc(mediaUrl(d.video || ''))}" type="video/mp4" />
+          </video>
+          <figcaption>${esc(d.label || '')}</figcaption>
+        </figure>`
+        )
         .join('')}</div>`;
     }
-    if (c.note) copy += `<p class="assump-label">${esc(c.note)}</p>`;
-    copy += `</div>`;
+    return section('about_navier', about.title || 'About Navier', html);
+  }
 
-    let vessels = '';
-    if (c.fleet_cards && c.fleet_cards.length) {
-      vessels = `<div class="vessel-row navier-vessel-cards">${c.fleet_cards
-        .map((v) => {
-          const title = v.model || v.title || v.name || '';
-          const isN45 = /n45|explorer/i.test(title);
-          const plate = isN45 ? n45plate : n30plate;
+  function renderVessels() {
+    const v = A.vessels;
+    if (!v) return '';
+    const loop = v.loop || {};
+    const cards = v.cards || [];
+    let html = '';
+    if (v.copy && v.copy.headline) html += `<p class="lead">${esc(v.copy.headline)}</p>`;
+    if (v.copy && v.copy.body) html += `<p>${esc(v.copy.body)}</p>`;
+    if (loop.video) {
+      html += `<div class="vessel-loop">
+        <video class="vessel-loop-video" muted playsinline loop autoplay preload="metadata" poster="${esc(mediaUrl(loop.poster || ''))}">
+          <source src="${esc(mediaUrl(loop.video))}" type="video/mp4" />
+        </video>
+      </div>`;
+    }
+    if (cards.length) {
+      html += `<div class="vessel-row navier-vessel-cards">${cards
+        .map((card) => {
           const bits = [];
-          if (v.passengers != null) bits.push(v.passengers + ' passengers');
-          if (v.propulsion) bits.push(v.propulsion);
-          if (v.cruise_speed_kn) bits.push('~' + v.cruise_speed_kn + ' kn cruise');
-          if (v.capex_usd) bits.push(money(v.capex_usd));
-          if (v.range_nm_approx) bits.push('~' + v.range_nm_approx + ' nm');
-          if (v.grade) bits.push(v.grade);
+          if (card.passengers != null) bits.push(card.passengers + ' passengers');
+          if (card.propulsion) bits.push(card.propulsion);
+          if (card.cruise_speed_kn) bits.push('~' + card.cruise_speed_kn + ' kn');
+          if (card.capex_usd) bits.push(money(card.capex_usd));
           return `<div class="arch-card vessel-card">
-            <div class="vessel-card-media"><img src="${esc(mediaUrl(plate))}" alt="${esc(title)}" loading="lazy" /></div>
-            <h3>${esc(title)}</h3>
+            <div class="vessel-card-media"><img src="${esc(mediaUrl(card.image || ''))}" alt="${esc(card.model || '')}" loading="lazy" /></div>
+            <h3>${esc(card.model || '')}</h3>
             ${bits.length ? `<p class="assump-label">${esc(bits.join(' · '))}</p>` : ''}
-            ${v.body || v.blurb ? `<p>${esc(v.body || v.blurb)}</p>` : ''}
+            ${card.blurb ? `<p>${esc(card.blurb)}</p>` : ''}
           </div>`;
         })
         .join('')}</div>`;
     }
-
-    return section(
-      'navier_intro',
-      ni.title || 'Meet Navier',
-      `<div class="navier-intro">${media}${copy}</div>${vessels}`
-    );
+    return section('vessels', v.title || 'Meet the vessels', html);
   }
 
   function renderBusinessModel() {
     const bm = A.business_model || A.shared_business_model;
     const layers = bm && bm.copy && bm.copy.layers;
-    const model = A.model;
-    let html = '';
-
-    if (layers && layers.length) {
-      html += `<p class="lead">${esc(bm.copy.headline || '')}</p>`;
-      if (bm.copy.body) html += `<p>${esc(bm.copy.body)}</p>`;
-      html += `<div class="biz-layers">${layers
-        .map(
-          (L) => `<div class="arch-card biz-layer">
-          <div class="biz-id">${esc(L.id || '')}</div>
-          <h3>${esc(L.title || '')}</h3>
-          <p>${esc(L.body || '')}</p>
-          ${L.feeds ? `<div class="tech-chip">Feeds P&amp;L · ${esc(L.feeds)}</div>` : ''}
-        </div>`
-        )
-        .join('')}</div>`;
-      if (bm.copy.bridge) html += `<p class="assump-label" style="margin-top:12px">${esc(bm.copy.bridge)}</p>`;
-    }
-
-    // Franchise roles — cards or roles
-    const cards = model && model.copy && (model.copy.cards || null);
-    const roles = model && model.copy && model.copy.roles;
-    if (cards && cards.length) {
-      html += `<h3 class="subhead" style="margin-top:28px">Who does what</h3>
-        <div class="arch-grid-2 role-cards">${cards
-          .map((c) => `<div class="arch-card"><h3>${esc(c.title || '')}</h3><p>${esc(c.body || '')}</p></div>`)
-          .join('')}</div>`;
-    } else if (roles && roles.length) {
-      html += `<ul class="pillars" style="margin-top:20px">${roles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
-    } else if (model && model.copy && model.copy.trigger) {
-      html += `<div class="arch-card emphasis" style="margin-top:16px"><h3>Launch trigger</h3><p>${esc(model.copy.trigger)}</p></div>`;
-    }
-
-    if (!html) return '';
-    return section('business_model', (bm && bm.title) || (model && model.copy && model.copy.title) || 'How the fleet earns', html);
+    if (!layers || !layers.length) return '';
+    let html = `<p class="lead">${esc(bm.copy.headline || '')}</p>`;
+    if (bm.copy.body) html += `<p>${esc(bm.copy.body)}</p>`;
+    html += `<div class="biz-layers">${layers
+      .map(
+        (L) => `<div class="arch-card biz-layer">
+        <div class="biz-id">${esc(L.id || '')}</div>
+        <h3>${esc(L.title || '')}</h3>
+        <p>${esc(L.body || '')}</p>
+        ${L.feeds ? `<div class="tech-chip">P&amp;L · ${esc(L.feeds)}</div>` : ''}
+      </div>`
+      )
+      .join('')}</div>`;
+    if (bm.copy.bridge) html += `<p class="assump-label" style="margin-top:12px">${esc(bm.copy.bridge)}</p>`;
+    return section('business_model', bm.title || 'How one hull earns', html);
   }
 
-  function renderNetworkFee() {
+  function networkFeeAccordionHtml() {
     const nf = A.network_fee || A.shared_network_fee;
-    if (!nf || !nf.copy) return '';
-    const c = nf.copy;
-    const items = c.items || [];
-    let html = `<p class="lead">${esc(c.headline || '')}</p>`;
-    if (c.body) html += `<p>${esc(c.body)}</p>`;
-    html += `<div class="network-fee-layout">
-      <ul class="fee-list">${items
+    if (!nf || !nf.copy || !nf.copy.items) return '';
+    const items = nf.copy.items || [];
+    return `<details class="fee-accordion">
+      <summary>What the 10% network fee buys</summary>
+      <p class="assump-label">${esc(nf.copy.callout || nf.copy.headline || '')}</p>
+      <ul class="fee-list compact">${items
         .map((it) => `<li><strong>${esc(it.title || '')}</strong><span>${esc(it.body || '')}</span></li>`)
         .join('')}</ul>
-      <aside class="fee-callout arch-card emphasis">
-        <div class="fee-pct">10%</div>
-        <p>${esc(c.callout || 'of gross revenue, off the top — the network operating system.')}</p>
-        <a class="text-link" href="#pnl">See it on the P&amp;L ↓</a>
-      </aside>
-    </div>`;
-    return section('network_fee', nf.title || 'What the network fee buys', html);
+    </details>`;
   }
 
   function renderServiceDay() {
@@ -495,10 +453,11 @@
 
   function renderInvestModules() {
     const builders = {
-      navier_intro: renderNavierIntro,
+      about_navier: renderAboutNavier,
+      vessels: renderVessels,
+      navier_intro: renderAboutNavier, // legacy slot → About
       business_model: renderBusinessModel,
-      model: renderBusinessModel,
-      network_fee: renderNetworkFee,
+      model: renderBusinessModel, // earning layers only (no roles)
       asset: function () {
         const asset = A.asset;
         if (!asset || !asset.data) return '';
@@ -517,14 +476,10 @@
       },
       service_day: renderServiceDay,
       revenue_build: function () {
-        // Shell only — live rows painted by initInvestPnl from the same model
-        if (!(A.revenue_build && A.revenue_build.data && A.revenue_build.data.scenarios)) return '';
-        return section(
-          'revenue_build',
-          A.revenue_build.title || 'The revenue build',
-          `<p class="assump-label">${esc(A.revenue_build.note || 'Quantity × price for the active scenario. Sum equals gross on the P&L.')}</p>
-           <div class="revenue-build" id="revenue-build-live"></div>`
-        );
+        return ''; // redundant with P&L qty × price lines
+      },
+      network_fee: function () {
+        return ''; // demoted into P&L accordion
       },
       pnl: renderPnlStudioShell,
       demand_pool: renderDemandPool,
@@ -556,45 +511,37 @@
     };
 
     const skip = { hero: 1, network: 1, cta: 1, footnotes: 1 };
-    // Prefer authored order, but inject narrative modules early if missing
-    let order = (A.section_order && A.section_order.length
-      ? A.section_order.slice()
-      : ['navier_intro', 'business_model', 'network_fee', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'fleet_phasing', 'protection_stack']
-    ).filter((id) => !skip[id]);
-
-    // Map legacy "model" slot → keep; ensure business_model + network_fee appear after navier_intro
-    function ensureAfter(list, afterId, insertId) {
-      if (list.indexOf(insertId) >= 0) return list;
-      const i = list.indexOf(afterId);
-      if (i >= 0) {
-        list.splice(i + 1, 0, insertId);
-      } else {
-        list.unshift(insertId);
-      }
-      return list;
-    }
-    if (order.indexOf('navier_intro') < 0) order.unshift('navier_intro');
-    order = ensureAfter(order, 'navier_intro', 'business_model');
-    // Avoid double-rendering model + business_model
-    if (order.indexOf('business_model') >= 0 && order.indexOf('model') >= 0) {
-      order = order.filter((id) => id !== 'model');
-    }
-    order = ensureAfter(order, 'business_model', 'network_fee');
+    // Brochure order: About → Vessels → Earn → Service day → P&L → Demand → Protection
+    const brochureOrder = [
+      'about_navier',
+      'vessels',
+      'business_model',
+      'service_day',
+      'pnl',
+      'demand_pool',
+      'fleet_phasing',
+      'protection_stack',
+    ];
+    // Drop demoted / redundant modules from authored order
+    const drop = {
+      revenue_build: 1,
+      network_fee: 1,
+      navier_intro: 1, // replaced by about_navier + vessels
+      model: 1, // replaced by business_model
+      asset: 1,
+    };
+    let order = brochureOrder.slice();
+    // Append any remaining authored sections that still have builders (except dropped)
+    (A.section_order || []).forEach(function (id) {
+      if (skip[id] || drop[id] || order.indexOf(id) >= 0) return;
+      if (builders[id]) order.push(id);
+    });
 
     const parts = [];
     const seen = {};
     order.forEach(function (id) {
-      if (seen[id]) return;
+      if (seen[id] || skip[id] || drop[id]) return;
       seen[id] = true;
-      const fn = builders[id];
-      if (fn) {
-        const html = fn();
-        if (html) parts.push(html);
-      }
-    });
-    // Ensure critical modules still appear if omitted from section_order
-    ['navier_intro', 'business_model', 'network_fee', 'service_day', 'revenue_build', 'pnl', 'demand_pool', 'protection_stack'].forEach(function (id) {
-      if (seen[id]) return;
       const fn = builders[id];
       if (fn) {
         const html = fn();
@@ -643,26 +590,33 @@
 
     function paintLevers() {
       if (!leversEl) return;
-      let html = `<h3 class="pnl-levers-title">Key levers</h3>`;
+      let html = `<h3 class="pnl-levers-title">Key levers</h3>
+        <p class="assump-label">Drag to change the inputs in the P&amp;L math — seats, prices, fill, and opex stay inside authored bands.</p>`;
       model.lineMetas.forEach(function (lm) {
         const t = state.lineT[lm.key] != null ? state.lineT[lm.key] : 0.5;
         const pct = Math.round(t * 100);
+        const disp = M.leverDisplay(model, state, lm.key);
         html += `<label class="pnl-lever">
           <span class="pnl-lever-label">${esc(lm.label)}</span>
-          <input type="range" min="0" max="100" step="1" value="${pct}" data-line="${esc(lm.key)}" aria-valuetext="${pct} percent along authored band" />
-          <span class="pnl-lever-ends"><span>Conservative</span><span>Upside</span></span>
+          <span class="pnl-lever-live" data-live-line="${esc(lm.key)}">${esc(disp.live)}</span>
+          <input type="range" min="0" max="100" step="1" value="${pct}" data-line="${esc(lm.key)}" aria-valuetext="${esc(disp.live)}" />
+          <span class="pnl-lever-ends"><span>${esc(disp.endLo)}</span><span>${esc(disp.endHi)}</span></span>
         </label>`;
       });
+      const ox = M.opexDisplay(model, state);
       html += `<label class="pnl-lever">
-        <span class="pnl-lever-label">Operating cost band</span>
-        <input type="range" min="0" max="100" step="1" value="${Math.round((state.opexT || 0.5) * 100)}" data-opex="1" />
-        <span class="pnl-lever-ends"><span>Low</span><span>High</span></span>
+        <span class="pnl-lever-label">Operating cost</span>
+        <span class="pnl-lever-live" data-live-opex="1">${esc(ox.live)}</span>
+        <input type="range" min="0" max="100" step="1" value="${Math.round((state.opexT || 0.5) * 100)}" data-opex="1" aria-valuetext="${esc(ox.live)}" />
+        <span class="pnl-lever-ends"><span>${esc(ox.endLo)}</span><span>${esc(ox.endHi)}</span></span>
       </label>`;
       if (model.upside && model.upside.length) {
         html += `<div class="pnl-upside-toggles"><div class="pnl-lever-label">Upside layers</div>`;
         model.upside.forEach(function (u) {
           const on = !!(state.upsideOn && state.upsideOn[u.key]);
-          html += `<label class="pnl-toggle"><input type="checkbox" data-upside="${esc(u.key)}" ${on ? 'checked' : ''}/> ${esc(u.label)}</label>`;
+          const row = (u.byScenario && (u.byScenario.upside || u.byScenario.mid)) || {};
+          const amt = row.subtotal_usd != null ? money(row.subtotal_usd) + '/mo' : '';
+          html += `<label class="pnl-toggle"><input type="checkbox" data-upside="${esc(u.key)}" ${on ? 'checked' : ''}/> ${esc(u.label)}${amt ? ' · ' + amt : ''}</label>`;
         });
         html += `</div>`;
       }
@@ -700,24 +654,7 @@
       if (mNet) mNet.textContent = money(result.net);
       if (mGross) mGross.textContent = money(result.gross);
 
-      if (rbLive) {
-        rbLive.innerHTML = `<table class="data-table ue-table"><thead><tr><th>Line</th><th>Quantity</th><th>Price</th><th>$/mo</th></tr></thead><tbody>
-          ${result.revenueLines
-            .map(
-              (r) =>
-                `<tr><td>${esc(r.line)}</td><td>${esc(r.quantity || '')}</td><td>${esc(r.price || '')}</td><td class="num">${money(r.subtotal_usd)}</td></tr>`
-            )
-            .join('')}
-          ${result.upsideLines
-            .filter((r) => r.enabled)
-            .map(
-              (r) =>
-                `<tr class="upside"><td>${esc(r.line)} <span class="status-chip status-upside">upside</span></td><td>${esc(r.quantity || '')}</td><td>${esc(r.price || '')}</td><td class="num">${money(r.subtotal_usd)}</td></tr>`
-            )
-            .join('')}
-          <tr class="total"><td colspan="3"><strong>Gross revenue / month</strong></td><td class="num"><strong>${money(result.gross)}</strong></td></tr>
-        </tbody></table>`;
-      }
+      if (rbLive) rbLive.innerHTML = '';
 
       if (statementEl) {
         statementEl.innerHTML = `
@@ -740,7 +677,7 @@
                 )
                 .join('')}
               <tr class="total"><td><strong>Operating cost / month</strong></td><td class="num"><strong>${money(result.opex)}</strong></td></tr>
-              <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')} · <a class="text-link" href="#network_fee">What this buys ↑</a></div></td><td class="num">(${money(result.networkShareAmt)})</td></tr>
+              <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')}</div>${networkFeeAccordionHtml()}</td><td class="num">(${money(result.networkShareAmt)})</td></tr>
               <tr class="emphasis"><td><strong>Net to investor / month</strong></td><td class="num"><strong>${money(result.net)}</strong></td></tr>
               <tr class="emphasis"><td><strong>Payback @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
               ${
@@ -762,6 +699,13 @@
         paintLevers();
       } else {
         paintPresets();
+        // Update live parameter readouts without rebuilding inputs (keeps focus)
+        model.lineMetas.forEach(function (lm) {
+          const el = leversEl && leversEl.querySelector('[data-live-line="' + lm.key + '"]');
+          if (el) el.textContent = M.leverDisplay(model, state, lm.key).live;
+        });
+        const oxEl = leversEl && leversEl.querySelector('[data-live-opex]');
+        if (oxEl) oxEl.textContent = M.opexDisplay(model, state).live;
       }
     }
 
@@ -771,6 +715,28 @@
     }
 
     paint(false);
+
+    // Autoplay demo tiles when in view
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) {
+            const v = en.target;
+            if (!(v instanceof HTMLVideoElement)) return;
+            if (en.isIntersecting) {
+              const p = v.play();
+              if (p && p.catch) p.catch(function () {});
+            } else {
+              v.pause();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      document.querySelectorAll('video[data-autoplay-demo], video.vessel-loop-video').forEach(function (v) {
+        io.observe(v);
+      });
+    }
   }
 
   const modulesEl = document.getElementById('archetype-modules');

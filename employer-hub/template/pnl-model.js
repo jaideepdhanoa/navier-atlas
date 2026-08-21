@@ -271,6 +271,36 @@
     return Object.assign({}, state, { preset: 'custom' });
   }
 
+  /** Labels for lever chrome: live qty/price/$ and authored endcaps */
+  function leverDisplay(model, state, lineKeyName) {
+    const anchors = model.lines[lineKeyName] || {};
+    const t = state.lineT[lineKeyName] != null ? state.lineT[lineKeyName] : 0.5;
+    const cur = rowAt(anchors, t) || {};
+    const lo = anchors.conservative || anchors.mid || {};
+    const hi = anchors.upside || anchors.mid || {};
+    return {
+      live:
+        [cur.quantity, cur.price, cur.subtotal_usd != null ? '$' + Math.round(cur.subtotal_usd).toLocaleString('en-US') : null]
+          .filter(Boolean)
+          .join(' · '),
+      endLo: [lo.quantity, lo.price].filter(Boolean).join(' · ') || 'Low',
+      endHi: [hi.quantity, hi.price].filter(Boolean).join(' · ') || 'High',
+      quantity: cur.quantity || '',
+      price: cur.price || '',
+      subtotal: cur.subtotal_usd,
+    };
+  }
+
+  function opexDisplay(model, state) {
+    const t = state.opexT != null ? state.opexT : 0.5;
+    const amt = Math.round(lerp(model.opexLo, model.opexHi, t));
+    return {
+      live: '$' + amt.toLocaleString('en-US') + '/mo',
+      endLo: '$' + Math.round(model.opexLo).toLocaleString('en-US'),
+      endHi: '$' + Math.round(model.opexHi).toLocaleString('en-US'),
+    };
+  }
+
   global.FI_PNL_MODEL = {
     CAPEX_DEFAULT: CAPEX_DEFAULT,
     buildModel: buildModel,
@@ -278,6 +308,8 @@
     applyPreset: applyPreset,
     evaluate: evaluate,
     markCustom: markCustom,
+    leverDisplay: leverDisplay,
+    opexDisplay: opexDisplay,
     parseMoney: parseMoney,
     lineKey: lineKey,
   };
