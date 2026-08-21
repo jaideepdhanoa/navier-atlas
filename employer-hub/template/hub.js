@@ -110,6 +110,13 @@
     return c.value != null ? c.value : c.stat;
   }
 
+  function mediaUrl(path) {
+    if (!path) return '';
+    const p = String(path);
+    if (/^https?:\/\//i.test(p) || p.startsWith('//') || p.startsWith('/')) return p;
+    return p;
+  }
+
   // —— Static copy ——
   const setText = (id, v) => {
     const el = document.getElementById(id);
@@ -119,6 +126,90 @@
     const el = document.getElementById(id);
     if (el && v != null) el.innerHTML = v;
   };
+
+  function renderAboutAndVessels() {
+    const about = DATA.about_navier;
+    const aboutSec = document.getElementById('about_navier');
+    const aboutBody = document.getElementById('about-body');
+    if (about && about.copy && aboutSec && aboutBody) {
+      setText('about-title', about.title || 'About Navier');
+      const demos = about.demos || [];
+      let html = `<p class="lead about-lead">${about.copy.body || ''}</p>`;
+      if (demos.length) {
+        html += `<div class="fi-demo-grid" data-fi-demos>${demos
+          .map(
+            (d) => `<figure class="fi-demo-tile">
+            <video muted playsinline loop preload="metadata" poster="${mediaUrl(d.poster || '')}" data-autoplay-demo>
+              <source src="${mediaUrl(d.video || '')}" type="video/mp4" />
+            </video>
+            <figcaption>${d.label || ''}</figcaption>
+          </figure>`
+          )
+          .join('')}</div>`;
+      }
+      aboutBody.innerHTML = html;
+      aboutSec.hidden = false;
+    }
+
+    const vessels = DATA.vessels;
+    const vesselsSec = document.getElementById('vessels');
+    const vesselsBody = document.getElementById('vessels-body');
+    if (vessels && vesselsSec && vesselsBody) {
+      setText('vessels-title', vessels.title || 'Meet the vessels');
+      const loop = vessels.loop || {};
+      const cards = vessels.cards || [];
+      let html = '';
+      if (vessels.copy && vessels.copy.headline) html += `<p class="lead">${vessels.copy.headline}</p>`;
+      if (vessels.copy && vessels.copy.body) html += `<p>${vessels.copy.body}</p>`;
+      if (loop.video) {
+        html += `<div class="vessel-loop">
+          <video class="vessel-loop-video" muted playsinline loop autoplay preload="metadata" poster="${mediaUrl(loop.poster || '')}">
+            <source src="${mediaUrl(loop.video)}" type="video/mp4" />
+          </video>
+        </div>`;
+      }
+      if (cards.length) {
+        html += `<div class="vessel-row navier-vessel-cards">${cards
+          .map((card) => {
+            const bits = [];
+            if (card.passengers != null) bits.push(card.passengers + ' passengers');
+            if (card.propulsion) bits.push(card.propulsion);
+            if (card.cruise_speed_kn) bits.push('~' + card.cruise_speed_kn + ' kn');
+            if (card.capex_usd) bits.push(money(card.capex_usd));
+            return `<div class="arch-card vessel-card">
+              <div class="vessel-card-media"><img src="${mediaUrl(card.image || '')}" alt="${card.model || ''}" loading="lazy" /></div>
+              <h3>${card.model || ''}</h3>
+              ${bits.length ? `<p class="assump-label">${bits.join(' · ')}</p>` : ''}
+              ${card.blurb ? `<p>${card.blurb}</p>` : ''}
+            </div>`;
+          })
+          .join('')}</div>`;
+      }
+      vesselsBody.innerHTML = html;
+      vesselsSec.hidden = false;
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (en) {
+            const v = en.target;
+            if (!(v instanceof HTMLVideoElement)) return;
+            if (en.isIntersecting) {
+              const p = v.play();
+              if (p && p.catch) p.catch(function () {});
+            } else {
+              v.pause();
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      document.querySelectorAll('video[data-autoplay-demo], video.vessel-loop-video').forEach(function (v) {
+        io.observe(v);
+      });
+    }
+  }
 
   // Full-bleed map section (content columns stay constrained elsewhere)
   const netSec = document.getElementById('network');
@@ -225,6 +316,8 @@
         )
         .join('');
     }
+
+    renderAboutAndVessels();
 
     const loi = DATA.loi || {};
     const flavors = loi.flavors || {};

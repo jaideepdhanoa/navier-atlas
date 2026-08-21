@@ -239,7 +239,18 @@ function emitHub(hub, registryEntry) {
     fs.writeFileSync(path.join(outDir, 'index.html'), html);
     fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
     fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
+    // Shared About + Vessels styles/media used by employer brochure sections
+    const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
+    fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
     const clientHub = sanitizeClientHub(hub);
+    const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
+    const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
+    if (fs.existsSync(sharedAbout)) {
+      clientHub.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
+    }
+    if (fs.existsSync(sharedVessels)) {
+      clientHub.vessels = stripUnderscoreKeys(readJson(sharedVessels));
+    }
     fs.writeFileSync(
       path.join(outDir, 'hub-data.js'),
       `/* GENERATED from employer-hub/hubs/${id}/hub.json */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
@@ -374,23 +385,24 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   );
 
   const clientArch = stripUnderscoreKeys(archData);
-  // Shared city-agnostic narrative defaults (FI); city JSON may override
+  // Shared city-agnostic About + Vessels media for FI and PP
+  const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
+  const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
+  if (fs.existsSync(sharedAbout)) {
+    clientArch.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
+  }
+  if (fs.existsSync(sharedVessels)) {
+    clientArch.vessels = stripUnderscoreKeys(readJson(sharedVessels));
+  }
+  // FI-only shared economics defaults; city JSON may override
   if (archetypeId === 'fleet-investors') {
     const sharedBm = path.join(HUB_ROOT, 'shared/business-model.json');
     const sharedFee = path.join(HUB_ROOT, 'shared/network-fee.json');
-    const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
-    const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
     if (!clientArch.business_model && fs.existsSync(sharedBm)) {
       clientArch.business_model = stripUnderscoreKeys(readJson(sharedBm));
     }
     if (!clientArch.network_fee && fs.existsSync(sharedFee)) {
       clientArch.network_fee = stripUnderscoreKeys(readJson(sharedFee));
-    }
-    if (fs.existsSync(sharedAbout)) {
-      clientArch.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
-    }
-    if (fs.existsSync(sharedVessels)) {
-      clientArch.vessels = stripUnderscoreKeys(readJson(sharedVessels));
     }
   }
   // FI pages stay unlisted; PP pages are public/indexable

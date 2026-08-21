@@ -70,6 +70,12 @@
   function renderPartnersModules() {
     const parts = [];
 
+    // Shared About + Vessels (same media pack as fleet-investors)
+    const aboutHtml = renderAboutNavier();
+    if (aboutHtml) parts.push(aboutHtml);
+    const vesselsHtml = renderVessels();
+    if (vesselsHtml) parts.push(vesselsHtml);
+
     // Gap
     const gap = A.gap;
     if (gap && gap.copy) {
@@ -223,20 +229,6 @@
         )
         .join('')}</ul>`;
       parts.push(section('modal', 'Modal integration', html));
-    }
-
-    // Vessels
-    const vessels = A.vessels && A.vessels.data && A.vessels.data.fleet;
-    if (vessels && vessels.length) {
-      const html = `<div class="vessel-row">${vessels
-        .map(
-          (v) => `<div class="arch-card">
-          <h3>${esc(v.model || '')}</h3>
-          <p>${v.passengers != null ? esc(v.passengers) + ' passengers' : ''}${v.propulsion ? ' · ' + esc(v.propulsion) : ''}</p>
-        </div>`
-        )
-        .join('')}</div>`;
-      parts.push(section('vessels', 'The vessels', html));
     }
 
     // Flywheel
@@ -822,28 +814,29 @@
     }
 
     paint(false);
+    initDemoVideos();
+  }
 
-    // Autoplay demo tiles when in view
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (en) {
-            const v = en.target;
-            if (!(v instanceof HTMLVideoElement)) return;
-            if (en.isIntersecting) {
-              const p = v.play();
-              if (p && p.catch) p.catch(function () {});
-            } else {
-              v.pause();
-            }
-          });
-        },
-        { threshold: 0.35 }
-      );
-      document.querySelectorAll('video[data-autoplay-demo], video.vessel-loop-video').forEach(function (v) {
-        io.observe(v);
-      });
-    }
+  function initDemoVideos() {
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (en) {
+          const v = en.target;
+          if (!(v instanceof HTMLVideoElement)) return;
+          if (en.isIntersecting) {
+            const p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            v.pause();
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    document.querySelectorAll('video[data-autoplay-demo], video.vessel-loop-video').forEach(function (v) {
+      io.observe(v);
+    });
   }
 
   function initDemandCollapse() {
@@ -863,14 +856,16 @@
     modulesEl.innerHTML = isInvest ? renderInvestModules() : renderPartnersModules();
   }
   initDemandCollapse();
+  // Place network map after vessels so About → Vessels → Network leads
+  const networkEl = document.getElementById('network');
+  const vesselsEl = document.getElementById('vessels');
+  if (networkEl && vesselsEl && vesselsEl.parentNode) {
+    vesselsEl.after(networkEl);
+  }
   if (isInvest) {
-    // Place network map after vessels / before demand for brochure flow
-    const networkEl = document.getElementById('network');
-    const vesselsEl = document.getElementById('vessels');
-    if (networkEl && vesselsEl && vesselsEl.parentNode) {
-      vesselsEl.after(networkEl);
-    }
     initInvestPnl();
+  } else {
+    initDemoVideos();
   }
 
   // CTA
