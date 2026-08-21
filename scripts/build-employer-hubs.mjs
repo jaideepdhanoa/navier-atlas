@@ -249,7 +249,7 @@ function emitHub(hub, registryEntry) {
       clientHub.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
     }
     if (fs.existsSync(sharedVessels)) {
-      clientHub.vessels = stripUnderscoreKeys(readJson(sharedVessels));
+      clientHub.vessels = resolveVesselsForAudience(readJson(sharedVessels), 'employers');
     }
     fs.writeFileSync(
       path.join(outDir, 'hub-data.js'),
@@ -315,6 +315,24 @@ function stripUnderscoreKeys(obj) {
     out[k] = stripUnderscoreKeys(v);
   }
   return out;
+}
+
+/** Soft-split vessel card copy by audience; shared media stays identical. */
+function resolveVesselsForAudience(raw, audience) {
+  const vessels = stripUnderscoreKeys(raw);
+  if (!vessels || !Array.isArray(vessels.cards)) return vessels;
+  const isFi = audience === 'fleet-investors';
+  vessels.cards = vessels.cards.map((card) => {
+    const out = { ...card };
+    if (isFi && out.blurb_fleet_investors) {
+      out.blurb = out.blurb_fleet_investors;
+    }
+    delete out.blurb_fleet_investors;
+    delete out.blurb_public_partners;
+    delete out.blurb_employers;
+    return out;
+  });
+  return vessels;
 }
 
 /**
@@ -385,14 +403,14 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
   );
 
   const clientArch = stripUnderscoreKeys(archData);
-  // Shared city-agnostic About + Vessels media for FI and PP
+  // Shared city-agnostic About + Vessels media for FI and PP (copy soft-split by audience)
   const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
   const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
   if (fs.existsSync(sharedAbout)) {
     clientArch.about_navier = stripUnderscoreKeys(readJson(sharedAbout));
   }
   if (fs.existsSync(sharedVessels)) {
-    clientArch.vessels = stripUnderscoreKeys(readJson(sharedVessels));
+    clientArch.vessels = resolveVesselsForAudience(readJson(sharedVessels), archetypeId);
   }
   // FI-only shared economics defaults; city JSON may override
   if (archetypeId === 'fleet-investors') {
