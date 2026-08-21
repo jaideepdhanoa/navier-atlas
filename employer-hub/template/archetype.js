@@ -367,17 +367,14 @@
     const sd = A.service_day;
     const windows = sd && sd.data && sd.data.windows;
     if (!windows || !windows.length) return '';
-    const html = `<div class="service-timeline" role="list" aria-label="Service-day timeline">
-      <div class="service-timeline-track" aria-hidden="true"></div>
+    const html = `<div class="service-day" role="list">
       ${windows
         .map(
-          (w, i) => `<div class="service-window ${w.upside ? 'is-upside' : ''}" role="listitem" style="--i:${i}">
-          <div class="sw-dot" aria-hidden="true"></div>
+          (w) => `<div class="service-window ${w.upside ? 'is-upside' : ''}" role="listitem">
           <div class="sw-time">${esc(w.time_range || '')}</div>
           <div class="sw-label">${esc(w.label || '')}</div>
           <div class="sw-layer">${esc(w.layer || '')}</div>
           ${w.note ? `<p class="assump-label">${esc(w.note)}</p>` : ''}
-          ${w.upside ? `<span class="status-chip status-upside">upside</span>` : ''}
         </div>`
         )
         .join('')}
@@ -405,9 +402,8 @@
     const dp = A.demand_pool;
     if (!dp) return '';
     // standing_label must be top-level — _internal is stripped at build
-    const standing =
-      dp.standing_label ||
-      'Indicative of demand potential along these corridors — not commitments or commercial relationships.';
+    // Keep this short and muted; legal weight lives in footnotes.
+    const standing = dp.standing_label || 'Indicative corridor demand — not commitments.';
     let html = `<p class="standing-label">${esc(standing)}${fnSup(dp.fn)}</p>`;
 
     const data = dp.data || {};
@@ -418,6 +414,8 @@
       const hasNote = r.note != null && String(r.note).trim() !== '';
       return hasValue || hasHead || hasNote; // fail closed on empty rows
     });
+    const COLLAPSE_AT = 5;
+    const collapse = rows.length > COLLAPSE_AT;
 
     if (rows.length) {
       if (data.capture_assumption || data.headcount_label) {
@@ -428,40 +426,61 @@
         }</p>`;
       }
 
+      function rowClass(i) {
+        return collapse && i >= COLLAPSE_AT ? ' class="demand-row-more"' : '';
+      }
+
+      let tableHtml = '';
       if (variant === 'stop') {
-        html += `<div style="overflow-x:auto"><table class="data-table demand-table">
+        tableHtml = `<table class="data-table demand-table">
           <thead><tr><th>Stop</th><th>Line(s)</th><th>Demand pool</th><th>Note</th></tr></thead>
           <tbody>${rows
-            .map(function (r) {
+            .map(function (r, i) {
               const demand = demandValueCell(r);
               const note = r.note ? esc(r.note) : '';
-              return `<tr data-stop="${esc(r.node || '')}">
+              return `<tr data-stop="${esc(r.node || '')}"${rowClass(i)}>
                 <td>${esc(r.node || '')}${fnSup(r.fn)}</td>
                 <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
                 <td>${demand || '—'}</td>
                 <td class="assump-label">${note}</td>
               </tr>`;
             })
-            .join('')}</tbody></table></div>`;
+            .join('')}</tbody></table>`;
       } else {
-        html += `<div style="overflow-x:auto"><table class="data-table demand-table">
+        tableHtml = `<table class="data-table demand-table">
           <thead><tr><th>Employer</th><th>Stop</th><th>Line(s)</th><th>Demand pool</th></tr></thead>
           <tbody>${rows
-            .map(function (r) {
+            .map(function (r, i) {
               const demand = demandValueCell(r);
               const note = r.note
                 ? `<div class="assump-label demand-note">${esc(r.note)}</div>`
                 : '';
               const employer = r.employer || r.cluster || '';
-              return `<tr data-stop="${esc(r.node || '')}">
+              return `<tr data-stop="${esc(r.node || '')}"${rowClass(i)}>
                 <td><div class="line-main">${esc(employer)}${fnSup(r.fn)}</div>${note}</td>
                 <td>${esc(r.node || '')}</td>
                 <td>${esc(Array.isArray(r.lines) ? r.lines.join(', ') : r.lines || '')}</td>
                 <td>${demand || '—'}</td>
               </tr>`;
             })
-            .join('')}</tbody></table></div>`;
+            .join('')}</tbody></table>`;
       }
+
+      const noun = variant === 'stop' ? 'stops' : 'employers';
+      const moreCount = rows.length - COLLAPSE_AT;
+      html += `<div class="demand-table-wrap${collapse ? ' is-collapsed' : ''}"${
+        collapse ? ' data-demand-collapse' : ''
+      }>
+        <div style="overflow-x:auto">${tableHtml}</div>
+        ${
+          collapse
+            ? `<button type="button" class="demand-expand-btn" aria-expanded="false">
+            <span class="demand-expand-more">Show all ${rows.length} ${noun} (+${moreCount})</span>
+            <span class="demand-expand-less">Show fewer</span>
+          </button>`
+            : ''
+        }
+      </div>`;
 
       if (data.city_total_seats != null) {
         html += `<p class="assump-label" style="margin-top:10px">City total (indicative): <strong>${esc(
@@ -827,10 +846,23 @@
     }
   }
 
+  function initDemandCollapse() {
+    document.querySelectorAll('[data-demand-collapse]').forEach(function (wrap) {
+      const btn = wrap.querySelector('.demand-expand-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        const expanded = wrap.classList.toggle('is-collapsed') === false;
+        // toggle returns whether class is now present; collapsed=false means expanded
+        btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      });
+    });
+  }
+
   const modulesEl = document.getElementById('archetype-modules');
   if (modulesEl) {
     modulesEl.innerHTML = isInvest ? renderInvestModules() : renderPartnersModules();
   }
+  initDemandCollapse();
   if (isInvest) {
     // Place network map after vessels / before demand for brochure flow
     const networkEl = document.getElementById('network');
