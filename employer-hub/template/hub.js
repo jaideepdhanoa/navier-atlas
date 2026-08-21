@@ -596,7 +596,7 @@
   }
   function waterMinutes(seg) {
     if (seg.water_min != null) return Number(seg.water_min);
-    if (seg.distance_nm != null) return Math.max(4, Math.round((seg.distance_nm / 20) * 60));
+    if (seg.distance_nm != null) return Math.max(4, Math.round((seg.distance_nm / 30) * 60));
     return 10;
   }
   function driveMinutes(fromKey, toKey) {
@@ -1708,7 +1708,7 @@
     }
     if (seg.water_min != null) return `~${seg.water_min} min on the water`;
     if (seg.distance_nm != null) {
-      const mins = Math.ceil((seg.distance_nm / 20) * 60 / 5) * 5;
+      const mins = Math.ceil((seg.distance_nm / 30) * 60 / 5) * 5;
       return `${seg.distance_nm} nm · ~${mins} min on the water`;
     }
     // Fallback only when no model minutes exist

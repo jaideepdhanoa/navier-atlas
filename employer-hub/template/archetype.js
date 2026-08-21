@@ -541,7 +541,7 @@
         <aside class="pnl-levers" id="pnl-levers" aria-label="P&L levers"></aside>
         <div class="pnl-statement-wrap">
           <div class="pnl-statement" id="pnl-statement" aria-live="polite"></div>
-          <p class="assump-label" id="pnl-honesty">Payback is for a single <strong>N45 Explorer (~$2.5M)</strong>. Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.</p>
+          <p class="assump-label" id="pnl-honesty">Payback is for a single <strong>N45 Explorer (~$3M)</strong>. Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.</p>
         </div>
       </div>
     </div>`;

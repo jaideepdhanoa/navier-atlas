@@ -4,7 +4,7 @@
  * Attaches to window.FI_PNL_MODEL (no bundler).
  */
 (function (global) {
-  const CAPEX_DEFAULT = 2500000;
+  const CAPEX_DEFAULT = 3000000;
 
   function parseMoney(str) {
     if (str == null) return null;
