@@ -94,9 +94,9 @@ if (boatFail === 0) passes.push(`(b2) All ${boatCount} boat/fleet occurrences ar
 
 const allRenderText = norm(renderables.map(r => r.value).join(" | "));
 const spots = [
-  "10,000+", "$100M", "$512M", "567", "~2,000 NMi", "5× less energy", "800× denser",
+  "10,000+", "$100M", "$571M", "515", "~2,000 NMi", "5× less energy", "800× denser",
   "~14×", "$16–31B", "$1.1T", "672 corridors", "385 cities", "79 countries",
-  "$10M Series B-1", "$100-150M+", "7× less energy", "13× less energy",
+  "$20M Series B-1", "$120M", "7× less energy", "13× less energy",
   "90% less energy", "70 NM at 20 kn", "$392M", "$5,563/TEU", "44–50%", "$33M",
 ];
 let cFail = 0;

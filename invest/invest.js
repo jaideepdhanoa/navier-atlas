@@ -205,7 +205,9 @@
       .toLowerCase()
       .replace(/(^|[\s—–\-/:])([a-z])/g, function (_, p, c) {
         return p + c.toUpperCase();
-      });
+      })
+      // Preserve currency mega shorthand: $20m → $20M
+      .replace(/\$(\d+(?:\.\d+)?)m\b/gi, '$$$1M');
   }
 
   function brandMark() {
@@ -1540,20 +1542,37 @@
     },
 
     'two-column-round'(s) {
-      // v9 P3: Title Case headings + timing eyebrows (NOW / 18–24 MONTHS)
+      // Prefer authored eyebrow + title (round-6i). Fallback: parse legacy NOW / 18–24 / CLOSING|TARGETING.
       const cols = (s.columns || [])
         .map(function (c) {
-          const raw = c.title || '';
-          let eyebrow = '';
-          let heading = raw;
-          if (/NOW/i.test(raw)) {
-            eyebrow = 'NOW';
-            heading = raw.replace(/\s*[—–-]\s*NOW/i, '').replace(/NOW\s*[—–-]?\s*/i, '');
-          } else if (/18\s*[–-]?\s*24/i.test(raw)) {
-            eyebrow = '18–24 MONTHS';
-            heading = raw.replace(/SERIES B PROGRAM\s*\([^)]+\)/i, 'Series B Program');
+          let eyebrow = (c.eyebrow || '').trim();
+          let heading = c.title || '';
+          const raw = heading;
+          if (!eyebrow) {
+            if (/NOW/i.test(raw)) {
+              eyebrow = 'NOW';
+              heading = raw.replace(/\s*[—–-]\s*NOW/i, '').replace(/NOW\s*[—–-]?\s*/i, '');
+            } else if (/18\s*[–-]?\s*24/i.test(raw)) {
+              eyebrow = '18–24 MONTHS';
+              heading = raw.replace(/SERIES B PROGRAM\s*\([^)]+\)/i, 'Series B Program');
+            } else {
+              const closing = raw.match(/\s*[—–-]\s*CLOSING\s+(.+)$/i);
+              const targeting = raw.match(/\s*[—–-]\s*TARGETING\s+(.+)$/i);
+              if (closing) {
+                eyebrow = closing[1].trim();
+                heading = raw.slice(0, closing.index).trim();
+              } else if (targeting) {
+                eyebrow = targeting[1].trim();
+                heading = raw.slice(0, targeting.index).trim();
+              }
+            }
           }
-          heading = titleCaseHeadline(heading.replace(/\$10M SERIES B-1/i, '$10M Series B-1'));
+          // Preserve $NNM casing through title-case
+          heading = titleCaseHeadline(
+            heading
+              .replace(/\$(\d+(?:\.\d+)?)M\s+SERIES B-1/i, '$$$1M Series B-1')
+              .replace(/\$(\d+(?:\.\d+)?)M\s+SERIES B-2/i, '$$$1M Series B-2')
+          );
           return `
         <div class="round-col">
           ${eyebrow ? `<p class="eyebrow">${esc(eyebrow)}</p>` : ''}
