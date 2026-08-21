@@ -124,12 +124,17 @@ function sanitizeClientHub(hub) {
       if (typeof clean.gates[k] === 'object') delete clean.gates[k];
     }
   }
-  // External-copy kill terms that sometimes appear inside serves[] strings
+  // External-copy kill terms: rename/drop `catchment` keys and scrub the word from strings
   const scrub = (v) => {
-    if (typeof v === 'string') return v.replace(/\bcatchment\b/gi, 'area');
+    if (typeof v === 'string') return v.replace(/catchment/gi, 'area');
     if (Array.isArray(v)) return v.map(scrub);
     if (v && typeof v === 'object') {
-      for (const k of Object.keys(v)) v[k] = scrub(v[k]);
+      for (const k of Object.keys(v)) {
+        const nk = k === 'catchment' ? 'service_area' : k;
+        const val = scrub(v[k]);
+        if (nk !== k) delete v[k];
+        v[nk] = val;
+      }
     }
     return v;
   };
