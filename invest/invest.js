@@ -351,20 +351,22 @@
         const slug = p.name.toLowerCase().replace(/\s+/g, '-');
         src = mediaPath(`assets/deck/team-${slug}.png`);
       }
-      const nameEl = p.url
-        ? `<a class="team-name team-link" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>`
+      const href = p.url || p.bio_url || '';
+      const nameEl = href
+        ? `<a class="team-name team-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>`
         : `<div class="team-name">${esc(p.name)}</div>`;
       const photoInner = src
-        ? p.url
-          ? `<a class="team-photo-link" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" /></a>`
+        ? href
+          ? `<a class="team-photo-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" /></a>`
           : `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" />`
         : '';
+      const creds = p.credentials ? `<div class="team-creds">${esc(p.credentials)}</div>` : '';
       return `
         <div class="team-card">
           <div class="team-photo">${photoInner}</div>
           ${nameEl}
           <div class="team-role">${esc(p.role)}</div>
-          <div class="team-creds">${esc(p.credentials)}</div>
+          ${creds}
         </div>`;
     }
 
@@ -372,14 +374,15 @@
       .map((l) => `<img src="${esc(mediaPath(l))}" alt="" loading="lazy" />`)
       .join('');
 
+    const samHref = sam ? (sam.url || sam.bio_url || "") : "";
     const samName = sam
-      ? sam.url
-        ? `<a class="team-name team-link" href="${esc(sam.url)}" target="_blank" rel="noopener noreferrer">${esc(sam.name)}</a>`
+      ? samHref
+        ? `<a class="team-name team-link" href="${esc(samHref)}" target="_blank" rel="noopener noreferrer">${esc(sam.name)}</a>`
         : `<div class="team-name">${esc(sam.name)}</div>`
       : '';
     const samPhoto = sam && featured
-      ? sam.url
-        ? `<a class="team-photo-link" href="${esc(sam.url)}" target="_blank" rel="noopener noreferrer"><img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" /></a>`
+      ? samHref
+        ? `<a class="team-photo-link" href="${esc(samHref)}" target="_blank" rel="noopener noreferrer"><img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" /></a>`
         : `<img src="${esc(featured)}" alt="${esc(sam.name)}" loading="lazy" />`
       : '';
 
@@ -394,7 +397,7 @@
                   <div class="team-photo lg">${samPhoto}</div>
                   ${samName}
                   <div class="team-role">${esc(sam.role)}</div>
-                  <div class="team-creds">${esc(sam.credentials)}</div>
+                  ${sam.credentials ? `<div class="team-creds">${esc(sam.credentials)}</div>` : ''}
                 </div>`
               : ''
           }
