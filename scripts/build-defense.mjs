@@ -59,8 +59,8 @@ function collectRenderableStrings(obj, out, skipKeys = new Set(['render_notes', 
   if (typeof obj === 'object') {
     for (const [k, v] of Object.entries(obj)) {
       if (k.startsWith('_') || skipKeys.has(k)) continue;
-      // skip media src paths for leak content (filenames)
-      if ((k === 'src' || k === 'image') && typeof v === 'string' && v.includes('/')) continue;
+      // skip media paths for leak content (filenames may contain YouTube ids)
+      if ((k === 'src' || k === 'image' || k === 'poster') && typeof v === 'string' && v.includes('/')) continue;
       collectRenderableStrings(v, out, skipKeys);
     }
   }
@@ -101,8 +101,16 @@ function gatherAssetRels(obj, out = new Set()) {
     return out;
   }
   for (const [k, v] of Object.entries(obj)) {
-    if ((k === 'src' || k === 'image') && typeof v === 'string' && !/^https?:/i.test(v)) out.add(v);
-    else if (v && typeof v === 'object') gatherAssetRels(v, out);
+    if (
+      (k === 'src' || k === 'image' || k === 'poster') &&
+      typeof v === 'string' &&
+      !/^https?:/i.test(v) &&
+      !v.startsWith('//')
+    ) {
+      out.add(v);
+    } else if (v && typeof v === 'object') {
+      gatherAssetRels(v, out);
+    }
   }
   return out;
 }
@@ -178,9 +186,21 @@ export function buildDefense() {
       `window.DEFENSE_TEAM_ASSETS = ${JSON.stringify(teamAssets)};\n`
   );
 
-  // Copy referenced assets + launch film + plainview + goldenhour
+  // Copy referenced assets + closing plate + invest control/thesis/poster canon
   const rels = gatherAssetRels(raw);
-  rels.add('assets/deck/goldenhour-bow.jpg');
+  for (const must of [
+    'assets/deck/goldenhour-bow.jpg',
+    'assets/deck/schematic-controls.png',
+    'assets/deck/thesis-hangar-crane.jpg',
+    'assets/deck/navier-launch-film-poster.jpg',
+    'assets/posters/S7WB91FvSFI.jpg',
+    'assets/posters/Hlp9oynUQNE.jpg',
+    'assets/posters/7HETK4rsByc.jpg',
+    'assets/posters/93MCRJYsD_8.jpg',
+    'assets/posters/QhiaYVgXMf0.jpg',
+  ]) {
+    rels.add(must);
+  }
   for (const rel of rels) {
     const src = resolveAsset(rel);
     if (!src) throw new Error(`defense missing asset: ${rel}`);

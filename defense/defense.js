@@ -49,13 +49,26 @@
     opts = opts || {};
     const poster = mediaPath(v.poster || '');
     const behavior = String(v.behavior || '');
-    const withSound = /with sound/i.test(behavior) || opts.withSound;
+    const withSound = /with sound/i.test(behavior) || !!opts.withSound;
+    // Muted autoplay wins over a generic opts.click (section helpers must not kill loops)
     const autoplay = /autoplay/i.test(behavior) && !withSound && !reduceMotion;
-    const click = /click-to-play/i.test(behavior) || withSound || opts.click;
+    const click =
+      !autoplay && (/click-to-play/i.test(behavior) || withSound || !!opts.click);
 
     if (v.embed_url) {
       const thumb = poster || '';
-      // Click-to-play YouTube: show poster + play, then swap to iframe
+      const label = [v.title, v.duration].filter(Boolean).join(' · ');
+      // Invest-style film card when requested (control-sbs companion)
+      if (opts.filmCard) {
+        return `<button type="button" class="film-card" data-yt-embed="${esc(v.embed_url)}" aria-label="Play ${esc(v.title || 'video')}">
+          <span class="film-media">
+            ${thumb ? `<img src="${esc(thumb)}" alt="" loading="lazy" />` : ''}
+            <span class="play" aria-hidden="true"><span>▶</span></span>
+            ${v.duration ? `<span class="dur">${esc(v.duration)}</span>` : ''}
+          </span>
+          ${label ? `<span class="film-cap">${esc(label)}</span>` : ''}
+        </button>`;
+      }
       return `<figure class="def-video-tile" data-yt-embed="${esc(v.embed_url)}">
         <div class="def-video-frame">
           ${thumb ? `<img class="def-video-poster" src="${esc(thumb)}" alt="${esc(v.title || '')}" loading="lazy" />` : '<div class="def-video-poster def-video-poster--empty"></div>'}
@@ -69,22 +82,22 @@
     if (!v.src) return '';
     const attrs = [
       'playsinline',
-      'preload="metadata"',
+      autoplay ? 'preload="auto"' : 'preload="metadata"',
       poster ? `poster="${esc(poster)}"` : '',
       autoplay ? 'muted loop autoplay data-lazy-video' : '',
-      click && !autoplay ? 'data-click-play' : '',
+      click ? 'data-click-play' : '',
       withSound ? 'data-click-sound-film' : '',
     ]
       .filter(Boolean)
       .join(' ');
 
     return `<figure class="def-video-tile${opts.wide ? ' def-video-tile--wide' : ''}">
-      <div class="def-video-frame${withSound || (click && !autoplay) ? ' has-play' : ''}">
+      <div class="def-video-frame${click || withSound ? ' has-play' : ''}">
         <video ${attrs}>
           <source src="${esc(mediaPath(v.src))}" type="video/mp4" />
         </video>
         ${
-          withSound || (click && !autoplay)
+          click || withSound
             ? `<button type="button" class="film-play" aria-label="Play ${esc(v.title || 'video')}"><span class="film-play-btn" aria-hidden="true">▶</span></button>`
             : ''
         }
@@ -138,21 +151,39 @@
       </section>`;
     },
     'def-navier'(s) {
-      const thesis = (s.thesis_paragraphs || [])
-        .map((p, i) => `<p class="${i === 0 ? 'lead' : ''}">${esc(p)}</p>`)
+      // Invest prose-stage split — Core Thesis + hangar plate
+      const paras = (s.thesis_paragraphs || [])
+        .map(
+          (p, i) =>
+            `<p class="about-para ${i === 0 ? 'lead-para' : 'body-para'}">${esc(p)}</p>`
+        )
         .join('');
-      const bridge = s.body ? `<p class="def-closer">${esc(s.body)}</p>` : '';
+      const media = s.media || {};
+      const imgSrc = mediaPath(media.src || media.image || '');
+      const hangar = imgSrc
+        ? `<figure class="about-plate" data-reveal>
+            <div class="about-plate-frame">
+              <img src="${esc(imgSrc)}" alt="${esc(media.alt || '')}" loading="lazy" />
+            </div>
+            ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
+          </figure>`
+        : '';
+      const bridge = s.body ? `<p class="def-closer section-inner">${esc(s.body)}</p>` : '';
       const film = s.film || {};
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        <div class="arch-prose">${thesis}</div>
+      return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner about-stage-inner">
+          <div class="about-copy">
+            ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+            <h2 class="h2 about-title">${esc(s.title || 'Core Thesis')}</h2>
+            <div class="about-prose">${paras}</div>
+          </div>
+          ${hangar}
+        </div>
         ${bridge}
-        ${s.media ? plate(s.media.src, s.media.alt) : ''}
         ${
           film.src
-            ? `<div class="def-film-wrap" data-def-film>
-          ${videoTile(Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }), { wide: true, withSound: true, click: true })}
+            ? `<div class="def-film-wrap media-inner" data-def-film>
+          ${videoTile(Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }), { wide: true, withSound: true })}
         </div>`
             : ''
         }
@@ -171,23 +202,64 @@
       </section>`;
     },
     'def-platform'(s) {
-      const pair = (s.media_pair || [])
-        .map(function (m) {
-          if (m.type === 'video' || (m.src && String(m.src).endsWith('.mp4'))) return videoTile(m, { click: true });
-          return plate(m.src, m.alt);
-        })
-        .join('');
-      const extras = (s.videos || []).map((v) => videoTile(v)).join('');
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        <p>${esc(s.body || '')}</p>
-        <div class="def-pair">${pair}</div>
-        ${extras ? `<div class="def-video-row">${extras}</div>` : ''}
+      // Invest control-sbs: callout schematic + CTO film; one muted stabilization loop
+      const schem =
+        (s.media_pair || []).find(function (m) {
+          return m && m.src && !String(m.src).endsWith('.mp4');
+        }) || (s.media_pair || [])[0];
+      const vids = s.videos || [];
+      const film =
+        vids.find(function (v) {
+          return v.role === 'control-film' || v.embed_url;
+        }) || null;
+      const loops = vids.filter(function (v) {
+        return v !== film && v.src && /autoplay/i.test(v.behavior || '');
+      });
+      const other = vids.filter(function (v) {
+        return v !== film && loops.indexOf(v) === -1;
+      });
+      const wire = schem && schem.src ? mediaPath(schem.src) : '';
+      return `<section class="section-block stage-section control-stage" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
+        </div>
+        <div class="control-sbs media-inner">
+          <div class="control-diagram control-diagram-plate" id="control-diagram">
+            ${
+              wire
+                ? `<img class="control-wire control-plate-img" src="${esc(wire)}" alt="${esc(schem.alt || 'Navier control schematic')}" loading="eager" fetchpriority="high" />`
+                : ''
+            }
+          </div>
+          <div class="control-video">
+            ${film ? videoTile(film, { filmCard: true }) : ''}
+          </div>
+        </div>
+        ${
+          loops.length
+            ? `<div class="def-video-row media-inner">${loops.map(function (v) {
+                return videoTile(v);
+              }).join('')}</div>`
+            : ''
+        }
+        ${
+          other.length
+            ? `<div class="def-video-row media-inner">${other.map(function (v) {
+                return videoTile(v);
+              }).join('')}</div>`
+            : ''
+        }
       </section>`;
     },
     'def-flight'(s) {
-      const wall = `<div class="def-video-wall">${(s.videos || []).map((v) => videoTile(v, { click: true, withSound: true })).join('')}</div>`;
+      // Click-to-play with sound (YouTube) — local posters from contract
+      const wall = `<div class="def-video-wall">${(s.videos || [])
+        .map(function (v) {
+          return videoTile(v, { withSound: true });
+        })
+        .join('')}</div>`;
       return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
         ${kicker(s)}
         <h2 class="h2">${esc(s.title || '')}</h2>
@@ -254,13 +326,28 @@
     },
     'def-plainview'(s) {
       const m = s.media || {};
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${plate(m.src, m.alt, m.caption)}
-        ${blocksHtml(s.blocks)}
-        ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
-        ${s.source_line ? `<p class="def-fine">${esc(s.source_line)}</p>` : ''}
+      const src = m.src ? mediaPath(m.src) : '';
+      const cinema = src
+        ? `<div class="cinema-block" data-reveal>
+            <div class="cinema">
+              <div class="cinema-media cinema-media--photo">
+                <img src="${esc(src)}" alt="${esc(m.alt || '')}" loading="lazy" />
+              </div>
+            </div>
+            ${m.caption ? `<div class="media-inner"><p class="cinema-cap">${esc(m.caption)}</p></div>` : ''}
+          </div>`
+        : '';
+      return `<section class="section-block" id="${esc(s.id)}" data-reveal>
+        <div class="shell-stage">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+        </div>
+        ${cinema}
+        <div class="shell-stage">
+          ${blocksHtml(s.blocks)}
+          ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
+          ${s.source_line ? `<p class="def-fine">${esc(s.source_line)}</p>` : ''}
+        </div>
       </section>`;
     },
     'def-atlantic'(s) {
@@ -362,16 +449,32 @@
   // Local click-to-play films
   document.querySelectorAll('.def-video-tile, [data-def-film]').forEach(bindPlay);
 
-  // YouTube click-to-play: swap poster for iframe
-  document.querySelectorAll('[data-yt-embed]').forEach(function (fig) {
-    const btn = fig.querySelector('.film-play');
-    const url = fig.getAttribute('data-yt-embed');
-    if (!btn || !url) return;
-    btn.addEventListener('click', function () {
-      const frame = fig.querySelector('.def-video-frame');
+  // YouTube click-to-play: swap poster for iframe (figure tiles + invest film-card)
+  document.querySelectorAll('[data-yt-embed]').forEach(function (el) {
+    const url = el.getAttribute('data-yt-embed');
+    if (!url) return;
+
+    function playYt(e) {
+      if (e) e.preventDefault();
+      if (el.classList.contains('film-card')) {
+        const media = el.querySelector('.film-media') || el;
+        media.innerHTML = `<iframe src="${esc(url)}?autoplay=1&rel=0" title="video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>`;
+        media.style.position = 'relative';
+        media.style.aspectRatio = '16 / 9';
+        el.classList.add('is-playing');
+        return;
+      }
+      const frame = el.querySelector('.def-video-frame');
       if (!frame) return;
       frame.innerHTML = `<iframe src="${esc(url)}?autoplay=1&rel=0" title="video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-    });
+    }
+
+    if (el.classList.contains('film-card')) {
+      el.addEventListener('click', playYt);
+    } else {
+      const btn = el.querySelector('.film-play');
+      if (btn) btn.addEventListener('click', playYt);
+    }
   });
 
   document.querySelectorAll('video[data-click-play]').forEach(function (v) {
