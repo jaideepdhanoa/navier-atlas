@@ -3357,7 +3357,7 @@ The software & maintenance lines are Navier’s recurring revenue — flight con
 ```
 
 ```
-Energy priced in-market: electricity $0.30/kWh (mid of STELCO Maldives commercial band $0.21–$0.43) · diesel $1.50/L (STO Maldives). N30 at 1.6 kWh/nm (114 kWh / 70 nm); N45 modelled at 4.1 kWh/nm — the same energy intensity scaled to the 20-seat hull. Targa 32 at 2.4 L/nm (dealer sea trial, 25 kn); Princess 55 at ~10.9 L/nm (measured burn).
+Energy priced in-market: electricity $0.30/kWh (mid of STELCO Maldives commercial band $0.21–$0.43) · diesel $1.50/L (STO Maldives). N30 at 1.6 kWh/nm (114 kWh / 70 nm); N45 modelled at 4.1 kWh/nm — the same energy intensity scaled to the 30-seat hull. Targa 32 at 2.4 L/nm (dealer sea trial, 25 kn); Princess 55 at ~10.9 L/nm (measured burn).
 ```
 
 ```
