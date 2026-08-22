@@ -274,10 +274,15 @@
             </div>
           </figure>`
         : '';
-      const bridge = s.body ? `<p class="def-closer section-inner">${esc(s.body)}</p>` : '';
+      const bridge = s.body
+        ? `<div class="thesis-bridge section-inner">
+            <p class="thesis-bridge-label">ONE CORE</p>
+            <p class="thesis-bridge-body">${esc(s.body)}</p>
+          </div>`
+        : '';
       const film = s.film || {};
       const filmHtml = film.src
-        ? `<div class="def-film-wrap media-inner" data-def-film style="max-width:1280px;margin:28px auto 0">
+        ? `<div class="def-film-wrap media-inner" data-def-film>
             ${videoTile(
               Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }),
               { wide: true, withSound: true }
@@ -555,17 +560,47 @@
       </section>`;
     },
     'def-field'(s) {
-      const t = s.table || {};
-      const cols = t.columns || [];
-      const rows = t.rows || [];
-      const thead = `<tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
-      const tbody = rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join('')}</tr>`).join('');
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${s.sub ? `<p class="lead">${esc(s.sub)}</p>` : ''}
-        <div class="def-table-wrap"><table class="def-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
-        ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
+      // Invest comparison-table port
+      const cols = s.columns || (s.table && s.table.columns) || [];
+      const rows = s.rows || (s.table && s.table.rows) || [];
+      const colNames = cols.map(function (c) {
+        return typeof c === 'string' ? c : c.name || '';
+      });
+      const head = `<tr>${colNames
+        .map(function (name, i) {
+          const hi = /navier|quanta/i.test(name);
+          return `<th class="${hi ? 'hi' : ''}${i === 0 ? ' row-label-th' : ''}">${esc(name || s.vessel_type_label || '')}</th>`;
+        })
+        .join('')}</tr>`;
+      let body = '';
+      if (s.vessel_type_row && s.vessel_type_row.length) {
+        body += `<tr class="vessel-type-row">${s.vessel_type_row
+          .map(function (cell, i) {
+            return `<td class="${i === 1 ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+          })
+          .join('')}</tr>`;
+      }
+      body += rows
+        .map(function (row) {
+          return `<tr>${(row || [])
+            .map(function (cell, i) {
+              return `<td class="${i === 1 ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+            })
+            .join('')}</tr>`;
+        })
+        .join('');
+      const takeaway = s.takeaway || s.closing_line || s.closer || '';
+      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal data-home="gtm.competitive">
+        <div class="section-inner">
+          ${kicker(s)}
+          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.sub ? `<p class="lead">${esc(s.sub)}</p>` : ''}
+          <div class="table-wrap"><table class="cmp cmp-s17"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+          ${takeaway ? `<p class="closing-line takeaway-line">${esc(takeaway)}</p>` : ''}
+          ${s.explainer ? `<p class="explainer">${esc(s.explainer)}</p>` : ''}
+          ${s.source_note ? `<p class="muted source-note">${esc(s.source_note)}</p>` : ''}
+        </div>
       </section>`;
     },
     'def-family'(s) {
@@ -581,7 +616,7 @@
         })
         .join('');
       const gmvp = g.title
-        ? `<div class="gmvp-compose media-inner" style="margin:18px 0 28px">
+        ? `<div class="gmvp-compose" style="margin:18px 0 28px">
             <div class="gmvp-wire">${wire ? `<img src="${esc(wire)}" alt="" loading="lazy" class="gmvp-wire-img" />` : ''}</div>
             <div class="gmvp-layers">
               <p class="eyebrow">THREE LAYERS</p>
@@ -604,12 +639,14 @@
         })
         .join('')}</div>`;
       return `<section class="section-block shell-stage gmvp-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
-        ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
-        ${gmvp}
-        ${ladder}
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
+          ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
+          ${gmvp}
+          ${ladder}
+        </div>
       </section>`;
     },
     'def-team'(s) {

@@ -195,6 +195,7 @@ export function buildDefense() {
     'assets/closing-loop.mp4',
     'assets/navier-launch-film-1080p.mp4',
     'assets/deck/navier-launch-film-poster.jpg',
+    'assets/deck/tied-to-the-ocean-poster.jpg',
     'assets/deck/goldenhour-bow.jpg',
     'assets/deck/schematic-controls.png',
     'assets/deck/thesis-hangar-crane.jpg',
