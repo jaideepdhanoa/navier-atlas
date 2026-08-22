@@ -74,7 +74,7 @@ while :; do
   (
     cd "$DIST" && npx --yes "vercel@${CLI_VER}" deploy \
       --prod --yes \
-      "${ARCHIVE_ARGS[@]}" \
+      ${ARCHIVE_ARGS[@]+"${ARCHIVE_ARGS[@]}"} \
       --token "$VERCEL_TOKEN"
   ) >"$LOG" 2>&1
   status=$?
