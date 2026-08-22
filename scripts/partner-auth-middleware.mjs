@@ -28,7 +28,7 @@ const TEASER_SESSION_SLUG = '__teaser__';
 const DEFENSE_SESSION_SLUG = '__defense__';
 const INVEST_DEFAULT_PASSWORD = 'morpheus';
 const TEASER_DEFAULT_PASSWORD = 'pioneer';
-const DEFENSE_DEFAULT_PASSWORD = 'quanta';
+const DEFENSE_DEFAULT_PASSWORD = 'plainview';
 
 function envKey(slug) {
   return 'PARTNER_AUTH_' + slug.toUpperCase().replace(/-/g, '_');

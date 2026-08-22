@@ -85,6 +85,7 @@ function leakScan(contract) {
 function resolveAsset(rel) {
   const candidates = [
     path.join(SRC, rel),
+    path.join(ROOT, 'handoff', 'defense-microsite', rel),
     path.join(INVEST_ASSETS, rel),
     path.join(ROOT, rel),
   ];
@@ -191,11 +192,14 @@ export function buildDefense() {
   for (const must of [
     'assets/hero-loop.mp4',
     'assets/hero-poster.jpg',
-    'assets/navier-launch-film-540p.mp4',
+    'assets/closing-loop.mp4',
+    'assets/navier-launch-film-1080p.mp4',
     'assets/deck/navier-launch-film-poster.jpg',
     'assets/deck/goldenhour-bow.jpg',
     'assets/deck/schematic-controls.png',
     'assets/deck/thesis-hangar-crane.jpg',
+    'assets/deck/gmvp-wireframe-family.png',
+    'assets/deck/defense-sofweek-armed.jpg',
     'assets/demos/no-wake.mp4',
     'assets/demos/rough-seas.mp4',
     'assets/demos/flat-turning.mp4',
@@ -208,8 +212,14 @@ export function buildDefense() {
     'assets/posters/7HETK4rsByc.jpg',
     'assets/posters/93MCRJYsD_8.jpg',
     'assets/posters/QhiaYVgXMf0.jpg',
+    'assets/posters/ZNgh39DM_Jg.jpg',
   ]) {
     rels.add(must);
+  }
+  // Team headshots (fail if missing — live alt-text tiles)
+  if (teamAssets.featured) rels.add(teamAssets.featured);
+  for (const rel of Object.values(teamAssets.cards || {})) {
+    if (typeof rel === 'string' && rel) rels.add(rel);
   }
   for (const rel of rels) {
     const src = resolveAsset(rel);

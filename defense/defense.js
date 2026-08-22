@@ -144,11 +144,12 @@
 
   function teamCard(p) {
     let src = '';
+    const name = p.name || '';
     for (const [k, v] of Object.entries(TEAM_ASSETS)) {
       if (
-        p.name &&
-        (k.toLowerCase().includes((p.name.toLowerCase().split(' ').pop() || '')) ||
-          p.name
+        name &&
+        (k.toLowerCase().includes(name.toLowerCase().split(' ')[0].toLowerCase()) ||
+          name
             .toLowerCase()
             .split(' ')
             .some((w) => w.length > 3 && k.toLowerCase().includes(w.toLowerCase())))
@@ -157,15 +158,38 @@
         break;
       }
     }
-    if (!src && /sampriti/i.test(p.name || '') && TEAM_FEATURED) src = mediaPath(TEAM_FEATURED);
+    if (!src && /sampriti/i.test(name) && TEAM_FEATURED) src = mediaPath(TEAM_FEATURED);
+    // Invest-style filename fallback (team-firstname-lastname.png)
+    if (!src && name) {
+      const slug = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+      // try common short slugs for advisors
+      const tries = [
+        `assets/deck/team-${slug}.png`,
+        /leclair/i.test(name) ? 'assets/deck/team-ted-leclair.png' : '',
+        /cederholm/i.test(name) ? 'assets/deck/team-michael-cederholm.png' : '',
+        /sampriti/i.test(name) ? 'assets/deck/team-sampriti-bhattacharyya.png' : '',
+      ].filter(Boolean);
+      src = mediaPath(tries[0] || '');
+      if (/leclair/i.test(name)) src = mediaPath('assets/deck/team-ted-leclair.png');
+      if (/cederholm/i.test(name)) src = mediaPath('assets/deck/team-michael-cederholm.png');
+      if (/sampriti/i.test(name)) src = mediaPath('assets/deck/team-sampriti-bhattacharyya.png');
+      if (/kenneth|jensen/i.test(name)) src = mediaPath('assets/deck/team-kenneth-jensen.png');
+      if (/dan dorsch|dorsch/i.test(name)) src = mediaPath('assets/deck/team-dan-dorsch.png');
+      if (/dotan|feldman/i.test(name)) src = mediaPath('assets/deck/team-dotan-feldman.png');
+      if (/bieker/i.test(name)) src = mediaPath('assets/deck/team-paul-bieker.png');
+      if (/jaideep|dhanoa/i.test(name)) src = mediaPath('assets/deck/team-jaideep-dhanoa.png');
+    }
     const href = p.url || p.bio_url || '';
     const nameEl = href
-      ? `<a class="team-name team-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>`
-      : `<div class="team-name">${esc(p.name)}</div>`;
+      ? `<a class="team-name team-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`
+      : `<div class="team-name">${esc(name)}</div>`;
     const photo = src
       ? href
-        ? `<a class="team-photo-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" /></a>`
-        : `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" />`
+        ? `<a class="team-photo-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(name)}" loading="lazy" /></a>`
+        : `<img src="${esc(src)}" alt="${esc(name)}" loading="lazy" />`
       : '';
     const creds = p.credentials ? `<div class="team-creds">${esc(p.credentials)}</div>` : '';
     return `<div class="team-card"><div class="team-photo">${photo}</div>${nameEl}<div class="team-role">${esc(p.role || '')}</div>${creds}</div>`;
@@ -173,12 +197,14 @@
 
   const NAV_LINKS = [
     { href: '#def-navier', label: 'Thesis' },
-    { href: '#def-problem', label: 'Problem' },
+    { href: '#def-plainview', label: 'Why now' },
     { href: '#def-platform', label: 'Control' },
     { href: '#def-flight', label: 'Flight' },
     { href: '#def-quanta-moment', label: 'Quanta' },
     { href: '#def-dual-use', label: 'Defense' },
+    { href: '#def-family', label: 'Family' },
     { href: '#def-team', label: 'Team' },
+    { href: '#def-close', label: 'Close' },
   ];
 
   function renderNav() {
@@ -249,24 +275,26 @@
           </figure>`
         : '';
       const bridge = s.body ? `<p class="def-closer section-inner">${esc(s.body)}</p>` : '';
+      const film = s.film || {};
+      const filmHtml = film.src
+        ? `<div class="def-film-wrap media-inner" data-def-film style="max-width:1280px;margin:28px auto 0">
+            ${videoTile(
+              Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }),
+              { wide: true, withSound: true }
+            )}
+          </div>`
+        : '';
       return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
         <div class="section-inner about-stage-inner">
           <div class="about-copy">
             ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
-            <h2 class="h2 about-title">${esc(s.title || 'Core Thesis')}</h2>
+            <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
             <div class="about-prose">${paras}</div>
           </div>
           ${hangar}
         </div>
         ${bridge}
-      </section>`;
-    },
-    'def-problem'(s) {
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${blocksHtml(s.blocks)}
-        ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
+        ${filmHtml}
       </section>`;
     },
     'def-plainview'(s) {
@@ -295,8 +323,12 @@
         (s.media_pair || []).find(function (m) {
           return m && m.src && !String(m.src).endsWith('.mp4');
         }) || (s.media_pair || [])[0];
-      const film = (s.videos || []).find(function (v) {
+      const vids = s.videos || [];
+      const film = vids.find(function (v) {
         return v.role === 'control-film' || v.embed_url;
+      });
+      const loops = vids.filter(function (v) {
+        return v !== film && v.src && /autoplay/i.test(v.behavior || '');
       });
       const wire = schem && schem.src ? mediaPath(schem.src) : '';
       return `<section class="section-block stage-section control-stage" id="${esc(s.id)}" data-reveal>
@@ -317,13 +349,28 @@
             ${film ? filmCard(film, film.poster, [film.title, film.duration].filter(Boolean).join(' · ')) : ''}
           </div>
         </div>
+        ${
+          loops.length
+            ? `<div class="def-video-row media-inner" style="grid-template-columns:1fr;max-width:960px;margin:20px auto 0">${loops
+                .map(function (v) {
+                  return videoTile(v);
+                })
+                .join('')}</div>`
+            : ''
+        }
       </section>`;
     },
     'def-flight'(s) {
-      const cards = (s.clips || [])
+      // Exactly three equal tiles — no fourth floating video
+      const clips = (s.clips || s.videos || []).slice(0, 3);
+      const cards = clips
         .map(function (c) {
           const poster = mediaPath(c.poster || '');
           const src = mediaPath(c.asset || c.src || '');
+          if (!src && c.embed_url) {
+            // fallback click tile if no local asset
+            return videoTile(c, { withSound: true });
+          }
           if (!src) return '';
           return `<div class="vcard vcard-loop" data-loop-src="${esc(src)}" data-clip="${esc(c.id || '')}">
             <span class="vcard-media">
@@ -337,26 +384,13 @@
           </div>`;
         })
         .join('');
-      const stab = s.stabilization || {};
-      const stabSrc = stab.src ? mediaPath(stab.src) : '';
-      const stabHtml = stabSrc
-        ? `<figure class="defense-loop-video media-inner" style="margin-top:20px">
-            <div class="defense-video-frame defense-video-frame--lead">
-              <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="auto" data-lazy-video>
-                <source src="${esc(stabSrc)}" type="video/mp4" />
-              </video>
-            </div>
-            ${stab.caption ? `<figcaption>${esc(stab.caption)}</figcaption>` : ''}
-          </figure>`
-        : '';
       return `<section class="section-block" id="${esc(s.id)}" data-reveal data-home="proof.demo_grid">
         <div class="section-inner">
           ${kicker(s)}
           <h2 class="h2">${esc(s.title || '')}</h2>
           ${s.sub ? `<p class="demo-lede lead">${esc(s.sub)}</p>` : ''}
         </div>
-        <div class="video-grid equal-grid media-inner">${cards}</div>
-        ${stabHtml}
+        <div class="video-grid equal-grid media-inner" style="max-width:1100px;margin-left:auto;margin-right:auto">${cards}</div>
         ${s.closer ? `<p class="def-closer section-inner">${esc(s.closer)}</p>` : ''}
       </section>`;
     },
@@ -535,6 +569,27 @@
       </section>`;
     },
     'def-family'(s) {
+      const g = s.gmvp_intro || {};
+      const wire = g.wireframe_image ? mediaPath(g.wireframe_image) : '';
+      const layers = (g.layers || [])
+        .map(function (l, i) {
+          return `<div class="gmvp-layer" data-layer="${i}">
+            <div class="gmvp-layer-name">${esc(l.label || l.name || '')}</div>
+            ${l.name && l.label ? `<div class="gmvp-layer-role">${esc(l.name)}</div>` : ''}
+            ${l.note ? `<div class="gmvp-layer-detail">${esc(l.note)}</div>` : ''}
+          </div>`;
+        })
+        .join('');
+      const gmvp = g.title
+        ? `<div class="gmvp-compose media-inner" style="margin:18px 0 28px">
+            <div class="gmvp-wire">${wire ? `<img src="${esc(wire)}" alt="" loading="lazy" class="gmvp-wire-img" />` : ''}</div>
+            <div class="gmvp-layers">
+              <p class="eyebrow">THREE LAYERS</p>
+              ${g.body ? `<p class="lead" style="margin-bottom:12px">${esc(g.body)}</p>` : ''}
+              ${layers}
+            </div>
+          </div>`
+        : '';
       const ladder = `<div class="def-ladder">${(s.ladder || [])
         .map((item) => {
           const name = item.name || item.vessel || '';
@@ -548,19 +603,19 @@
         </div>`;
         })
         .join('')}</div>`;
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
+      return `<section class="section-block shell-stage gmvp-stage" id="${esc(s.id)}" data-reveal>
         ${kicker(s)}
         <h2 class="h2">${esc(s.title || '')}</h2>
-        ${s.body ? `<p>${esc(s.body)}</p>` : ''}
+        ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
+        ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
+        ${gmvp}
         ${ladder}
-        ${s.media_extra ? plate(s.media_extra.src, s.media_extra.alt) : ''}
       </section>`;
     },
     'def-team'(s) {
       const people = TEAM.slice();
       const sam = people.find((p) => /sampriti/i.test(p.name || ''));
       const others = people.filter((p) => p !== sam);
-      const cta = s.cta || {};
       return `<section class="section-block team-section shell-stage" id="${esc(s.id)}" data-reveal>
         ${kicker(s)}
         <h2 class="h2">${esc(s.title || '')}</h2>
@@ -568,11 +623,61 @@
           ${sam ? `<div class="team-featured">${teamCard(sam)}</div>` : ''}
           <div class="team-grid">${others.map(teamCard).join('')}</div>
         </div>
-        <div class="def-cta">
-          <p>${esc(cta.line || '')}</p>
-          ${cta.email ? `<p><a href="mailto:${esc(cta.email)}">${esc(cta.email)}</a></p>` : ''}
-        </div>
-        ${plate('assets/deck/goldenhour-bow.jpg', 'Navier vessel bow at golden hour')}
+      </section>`;
+    },
+    'def-close'(s) {
+      const h = s.hero || {};
+      const vsrc = mediaPath(h.background_video || 'assets/closing-loop.mp4');
+      const poster = mediaPath(h.poster || 'assets/hero-poster.jpg');
+      const cta = h.cta || {};
+      const gd = s.go_deeper || {};
+      const items = (gd.items || [])
+        .map(function (it) {
+          if (it.type === 'video' || it.embed_url) {
+            return filmCard(
+              {
+                embed_url: it.embed_url,
+                youtube_id: it.youtube_id,
+                poster: it.poster,
+                title: it.caption,
+              },
+              it.poster || (it.youtube_id ? `assets/posters/${it.youtube_id}.jpg` : ''),
+              it.caption || ''
+            );
+          }
+          if (it.src) {
+            return `<figure class="go-deeper-plate">
+              <div class="go-deeper-plate-frame"><img src="${esc(mediaPath(it.src))}" alt="" loading="lazy" /></div>
+              ${it.caption ? `<figcaption class="go-deeper-plate-cap">${esc(it.caption)}</figcaption>` : ''}
+            </figure>`;
+          }
+          return '';
+        })
+        .join('');
+      return `<section class="section-block" id="${esc(s.id)}" data-reveal>
+        <section class="finale" id="finale">
+          <div class="finale-media">
+            <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" poster="${esc(poster)}" data-lazy-video>
+              <source src="${esc(vsrc)}" type="video/mp4" />
+            </video>
+          </div>
+          <div class="finale-scrim" aria-hidden="true"></div>
+          <div class="finale-inner">
+            ${h.line ? `<p class="h">${esc(h.line)}</p>` : ''}
+            <p class="mark">${esc(h.title || 'OWN THE LITTORAL')}</p>
+            ${
+              cta.href
+                ? `<a class="btn btn-primary" href="${esc(cta.href)}">${esc(cta.label || 'Arrange a briefing')}</a>`
+                : ''
+            }
+          </div>
+        </section>
+        <section class="go-deeper" id="go-deeper">
+          <div class="shell-stage go-deeper-inner">
+            <p class="chapter-label">${esc(gd.kicker || 'Go deeper')}</p>
+            <div class="go-deeper-media">${items}</div>
+          </div>
+        </section>
       </section>`;
     },
   };
