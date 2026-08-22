@@ -189,9 +189,20 @@ export function buildDefense() {
   // Copy referenced assets + closing plate + invest control/thesis/poster canon
   const rels = gatherAssetRels(raw);
   for (const must of [
+    'assets/hero-loop.mp4',
+    'assets/hero-poster.jpg',
+    'assets/navier-launch-film-540p.mp4',
+    'assets/deck/navier-launch-film-poster.jpg',
     'assets/deck/goldenhour-bow.jpg',
     'assets/deck/schematic-controls.png',
     'assets/deck/thesis-hangar-crane.jpg',
+    'assets/demos/no-wake.mp4',
+    'assets/demos/rough-seas.mp4',
+    'assets/demos/flat-turning.mp4',
+    'assets/stabilization-juxtaposition.mp4',
+    'assets/defense-sofweek-loop.mp4',
+    'assets/defense-sofweek-cockpit.mp4',
+    'assets/defense-sofweek-approach.mp4',
     'assets/posters/S7WB91FvSFI.jpg',
     'assets/posters/Hlp9oynUQNE.jpg',
     'assets/posters/7HETK4rsByc.jpg',
