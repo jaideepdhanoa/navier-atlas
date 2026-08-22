@@ -192,7 +192,6 @@ export function buildDefense() {
     'assets/deck/goldenhour-bow.jpg',
     'assets/deck/schematic-controls.png',
     'assets/deck/thesis-hangar-crane.jpg',
-    'assets/deck/navier-launch-film-poster.jpg',
     'assets/posters/S7WB91FvSFI.jpg',
     'assets/posters/Hlp9oynUQNE.jpg',
     'assets/posters/7HETK4rsByc.jpg',

@@ -168,8 +168,9 @@
             ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
           </figure>`
         : '';
+      // Invest parity: prose + hangar plate only. No launch film under thesis
+      // (hangar = American dynamism once; aava film stays /invest hero-lightbox).
       const bridge = s.body ? `<p class="def-closer section-inner">${esc(s.body)}</p>` : '';
-      const film = s.film || {};
       return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
         <div class="section-inner about-stage-inner">
           <div class="about-copy">
@@ -180,13 +181,6 @@
           ${hangar}
         </div>
         ${bridge}
-        ${
-          film.src
-            ? `<div class="def-film-wrap media-inner" data-def-film>
-          ${videoTile(Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }), { wide: true, withSound: true })}
-        </div>`
-            : ''
-        }
       </section>`;
     },
     'def-about'(s) {
