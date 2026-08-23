@@ -904,18 +904,43 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .arc-spine .arc-phase.lit { opacity: 0.75 }
 .arc-spine .arc-phase.now { opacity: 1 }
 
-/* Team — no logo strip */
+/* Team — no logo strip; keep inside section-inner like other chapters */
 .team-lede { white-space: pre-line }
+.team-section .section-inner {
+  max-width: 1200px;
+}
 .team-layout {
-  display: grid; grid-template-columns: 0.85fr 1.45fr; gap: 28px; margin: 28px 0;
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 24px 28px;
+  margin: 22px 0 8px;
+  align-items: start;
 }
-.team-featured .team-photo.lg {
-  aspect-ratio: 4/5; border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--line); background: var(--bg-1); margin-bottom: 14px;
+.team-featured {
+  max-width: 280px;
+  width: 100%;
 }
-.team-featured .team-photo.lg img { width: 100%; height: 100%; object-fit: cover }
+.team-featured .team-photo.lg,
+.team-featured-inner .team-photo.lg {
+  aspect-ratio: 4/5;
+  max-width: 280px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  margin-bottom: 12px;
+}
+.team-featured .team-photo.lg img,
+.team-featured-inner .team-photo.lg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .team-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
   align-content: start;
 }
 .team-card {
@@ -954,10 +979,26 @@ a.team-link:hover {
 }
 .backers .line { color: var(--text-1); font-size: 14px; line-height: 1.55 }
 @media (max-width: 1099px) {
-  .team-layout { grid-template-columns: 1fr }
-  .team-grid { grid-template-columns: 1fr 1fr }
+  .team-layout {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 240px;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 720px) { .team-grid { grid-template-columns: 1fr } }
+@media (max-width: 720px) {
+  .team-layout { grid-template-columns: 1fr; }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 220px;
+    margin-inline: auto;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+}
 
 /* Costs — 1:1 in-place card flip (v8 #2 — no ghosting) */
 
@@ -3237,7 +3278,7 @@ a.team-link:hover {
 .def-ladder-plate img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
 }

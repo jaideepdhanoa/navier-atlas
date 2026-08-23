@@ -219,6 +219,7 @@ export function buildDefense() {
     'assets/deck/gmvp-wireframe-family.png',
     'assets/deck/defense-sofweek-armed.jpg',
     'assets/deck/n45-defense-container-v1.png',
+    'assets/deck/n30-defense-ladder-landscape.jpg',
     'assets/demos/no-wake.mp4',
     'assets/demos/rough-seas.mp4',
     'assets/demos/flat-turning.mp4',

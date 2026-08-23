@@ -142,7 +142,7 @@
     </figure>`;
   }
 
-  function teamCard(p) {
+  function teamCard(p, featured) {
     let src = '';
     const name = p.name || '';
     for (const [k, v] of Object.entries(TEAM_ASSETS)) {
@@ -161,26 +161,21 @@
     if (!src && /sampriti/i.test(name) && TEAM_FEATURED) src = mediaPath(TEAM_FEATURED);
     // Invest-style filename fallback (team-firstname-lastname.png)
     if (!src && name) {
-      const slug = name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '');
-      // try common short slugs for advisors
-      const tries = [
-        `assets/deck/team-${slug}.png`,
-        /leclair/i.test(name) ? 'assets/deck/team-ted-leclair.png' : '',
-        /cederholm/i.test(name) ? 'assets/deck/team-michael-cederholm.png' : '',
-        /sampriti/i.test(name) ? 'assets/deck/team-sampriti-bhattacharyya.png' : '',
-      ].filter(Boolean);
-      src = mediaPath(tries[0] || '');
       if (/leclair/i.test(name)) src = mediaPath('assets/deck/team-ted-leclair.png');
-      if (/cederholm/i.test(name)) src = mediaPath('assets/deck/team-michael-cederholm.png');
-      if (/sampriti/i.test(name)) src = mediaPath('assets/deck/team-sampriti-bhattacharyya.png');
-      if (/kenneth|jensen/i.test(name)) src = mediaPath('assets/deck/team-kenneth-jensen.png');
-      if (/dan dorsch|dorsch/i.test(name)) src = mediaPath('assets/deck/team-dan-dorsch.png');
-      if (/dotan|feldman/i.test(name)) src = mediaPath('assets/deck/team-dotan-feldman.png');
-      if (/bieker/i.test(name)) src = mediaPath('assets/deck/team-paul-bieker.png');
-      if (/jaideep|dhanoa/i.test(name)) src = mediaPath('assets/deck/team-jaideep-dhanoa.png');
+      else if (/cederholm/i.test(name)) src = mediaPath('assets/deck/team-michael-cederholm.png');
+      else if (/sampriti/i.test(name)) src = mediaPath('assets/deck/team-sampriti-bhattacharyya.png');
+      else if (/kenneth|jensen/i.test(name)) src = mediaPath('assets/deck/team-kenneth-jensen.png');
+      else if (/dan dorsch|dorsch/i.test(name)) src = mediaPath('assets/deck/team-dan-dorsch.png');
+      else if (/dotan|feldman/i.test(name)) src = mediaPath('assets/deck/team-dotan-feldman.png');
+      else if (/bieker/i.test(name)) src = mediaPath('assets/deck/team-paul-bieker.png');
+      else if (/jaideep|dhanoa/i.test(name)) src = mediaPath('assets/deck/team-jaideep-dhanoa.png');
+      else {
+        const slug = name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+        src = mediaPath(`assets/deck/team-${slug}.png`);
+      }
     }
     const href = p.url || p.bio_url || '';
     const nameEl = href
@@ -192,6 +187,14 @@
         : `<img src="${esc(src)}" alt="${esc(name)}" loading="lazy" />`
       : '';
     const creds = p.credentials ? `<div class="team-creds">${esc(p.credentials)}</div>` : '';
+    if (featured) {
+      return `<div class="team-featured-inner">
+        <div class="team-photo lg">${photo}</div>
+        ${nameEl}
+        <div class="team-role">${esc(p.role || '')}</div>
+        ${creds}
+      </div>`;
+    }
     return `<div class="team-card"><div class="team-photo">${photo}</div>${nameEl}<div class="team-role">${esc(p.role || '')}</div>${creds}</div>`;
   }
 
@@ -718,12 +721,15 @@
       const people = TEAM.slice();
       const sam = people.find((p) => /sampriti/i.test(p.name || ''));
       const others = people.filter((p) => p !== sam);
-      return `<section class="section-block team-section shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        <div class="team-layout">
-          ${sam ? `<div class="team-featured">${teamCard(sam)}</div>` : ''}
-          <div class="team-grid">${others.map(teamCard).join('')}</div>
+      // Match other chapters: section-inner width (not full-bleed shell-stage)
+      return `<section class="section-block team-section" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          <div class="team-layout">
+            ${sam ? `<div class="team-featured">${teamCard(sam, true)}</div>` : ''}
+            <div class="team-grid">${others.map(function (p) { return teamCard(p, false); }).join('')}</div>
+          </div>
         </div>
       </section>`;
     },
