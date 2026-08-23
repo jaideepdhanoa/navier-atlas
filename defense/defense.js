@@ -195,21 +195,23 @@
     return `<div class="team-card"><div class="team-photo">${photo}</div>${nameEl}<div class="team-role">${esc(p.role || '')}</div>${creds}</div>`;
   }
 
+  // Scroll-spy chapters (invest-style progress + active chip)
   const NAV_LINKS = [
-    { href: '#def-navier', label: 'Thesis' },
-    { href: '#def-plainview', label: 'Why now' },
-    { href: '#def-platform', label: 'Control' },
-    { href: '#def-flight', label: 'Flight' },
-    { href: '#def-quanta-moment', label: 'Quanta' },
-    { href: '#def-dual-use', label: 'Defense' },
-    { href: '#def-family', label: 'Family' },
-    { href: '#def-team', label: 'Team' },
-    { href: '#def-close', label: 'Close' },
+    { id: 'def-navier', label: 'Thesis' },
+    { id: 'def-plainview', label: 'Why now' },
+    { id: 'def-platform', label: 'Control' },
+    { id: 'def-flight', label: 'Flight' },
+    { id: 'def-quanta-moment', label: 'Quanta' },
+    { id: 'def-dual-use', label: 'Proof' },
+    { id: 'def-family', label: 'Fleet' },
+    { id: 'def-team', label: 'Team' },
+    { id: 'def-close', label: 'Close' },
   ];
 
   function renderNav() {
     const links = NAV_LINKS.map(
-      (l) => `<a class="inv-chapter" href="${esc(l.href)}">${esc(l.label)}</a>`
+      (l) =>
+        `<a class="inv-chapter" href="#${esc(l.id)}" data-nav="${esc(l.id)}">${esc(l.label)}</a>`
     ).join('');
     return `<nav class="inv-nav" aria-label="Chapters">
       <div class="inv-nav-inner">
@@ -275,7 +277,7 @@
           </figure>`
         : '';
       const bridge = s.body
-        ? `<div class="thesis-bridge section-inner">
+        ? `<div class="thesis-bridge">
             <p class="thesis-bridge-label">ONE CORE</p>
             <p class="thesis-bridge-body">${esc(s.body)}</p>
           </div>`
@@ -295,10 +297,10 @@
             ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
             <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
             <div class="about-prose">${paras}</div>
+            ${bridge}
           </div>
           ${hangar}
         </div>
-        ${bridge}
         ${filmHtml}
       </section>`;
     },
@@ -314,7 +316,7 @@
           </div>`
         : '';
       return `<section class="section-block" id="${esc(s.id)}" data-reveal>
-        <div class="shell-stage">${kicker(s)}<h2 class="h2">${esc(s.title || '')}</h2></div>
+        <div class="shell-stage">${kicker(s)}<h2 class="h2 plainview-title">${esc(s.title || '')}</h2></div>
         ${cinema}
         <div class="shell-stage">
           ${blocksHtml(s.blocks)}
@@ -839,15 +841,65 @@
     });
   }
 
-  /* Scroll cue */
+  /* Scroll cue + invest-style chapter spy / progress bar */
   const cue = $('#scroll-cue');
-  if (cue) {
-    window.addEventListener(
-      'scroll',
-      function () {
-        if (window.scrollY > 40) cue.style.opacity = '0';
-      },
-      { passive: true }
-    );
+  const progress = $('#inv-progress');
+  const navLinks = [...document.querySelectorAll('[data-nav]')];
+  const chapterIds = NAV_LINKS.map(function (l) {
+    return l.id;
+  });
+
+  function jumpToId(id, updateHash) {
+    const el = id && document.getElementById(id);
+    if (!el) return false;
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    el.scrollIntoView();
+    root.style.scrollBehavior = prev;
+    if (updateHash && history.replaceState) history.replaceState(null, '', '#' + id);
+    onScrollNav();
+    return true;
+  }
+
+  function onScrollNav() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    if (cue && window.scrollY > 80) cue.style.opacity = '0';
+    const hv = document.querySelector('.hero-video');
+    if (hv && window.scrollY > window.innerHeight * 0.85) {
+      try {
+        hv.pause();
+      } catch (_) {}
+    }
+    const thresh = 100;
+    let active = chapterIds[0];
+    for (let i = 0; i < chapterIds.length; i++) {
+      const el = document.getElementById(chapterIds[i]);
+      if (el && el.getBoundingClientRect().top <= thresh) active = chapterIds[i];
+    }
+    navLinks.forEach(function (a) {
+      const on = a.getAttribute('data-nav') === active;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  navLinks.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      const id = (a.getAttribute('href') || '').replace(/^#/, '');
+      if (!id) return;
+      e.preventDefault();
+      jumpToId(id, true);
+    });
+  });
+
+  window.addEventListener('scroll', onScrollNav, { passive: true });
+  onScrollNav();
+  if (location.hash) {
+    requestAnimationFrame(function () {
+      jumpToId(location.hash.slice(1), false);
+    });
   }
 })();
