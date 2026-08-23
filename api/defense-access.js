@@ -143,20 +143,27 @@ export default async function handler(req, res) {
 
   const webhook = process.env.DEFENSE_ACCESS_LOG_WEBHOOK;
   if (webhook) {
-    // Apps Script runs doPost on the first POST, then returns 302.
-    // Use redirect:'manual' so fetch does not downgrade the follow-up to GET (405).
-    fetch(webhook, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      redirect: 'manual',
-      body: JSON.stringify({
-        timestamp_utc: new Date().toISOString(),
-        email,
-        code,
-        recipient_label: entry.label || '',
-        user_agent: req.headers['user-agent'] || '',
-      }),
-    }).catch(() => {});
+    // Await briefly: fire-and-forget fetch is often killed when the serverless
+    // function returns. Apps Script runs doPost on the first POST then 302s —
+    // redirect:'manual' avoids fetch downgrading the follow-up to GET (405).
+    // Logging failure must never deny access.
+    try {
+      await fetch(webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        redirect: 'manual',
+        signal: AbortSignal.timeout(4000),
+        body: JSON.stringify({
+          timestamp_utc: new Date().toISOString(),
+          email,
+          code,
+          recipient_label: entry.label || '',
+          user_agent: req.headers['user-agent'] || '',
+        }),
+      });
+    } catch {
+      /* ignore */
+    }
   }
 
   const token = await sessionToken();
