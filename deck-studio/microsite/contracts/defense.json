@@ -1,11 +1,44 @@
 {
-  "version": 3,
+  "version": 4,
   "route": "/defense",
   "gate": {
-    "mode": "password",
-    "password": "plainview",
+    "mode": "email+code",
     "noindex": true,
-    "unlisted": true
+    "unlisted": true,
+    "replaces": "v3 shared password 'plainview'. When DEFENSE_ACCESS_CODES is set in Vercel, email+code replaces Basic auth. If that env is unset, middleware falls back to shared password plainview so the route stays usable during rollout.",
+    "form_fields": [
+      {
+        "name": "email",
+        "label": "Work email",
+        "required": true,
+        "validation": "standard email pattern, trimmed"
+      },
+      {
+        "name": "code",
+        "label": "Access code",
+        "required": true,
+        "validation": "case-insensitive, trimmed"
+      }
+    ],
+    "api_route": "/api/defense-access",
+    "codes_env": "DEFENSE_ACCESS_CODES",
+    "codes_format": "JSON map code -> { label, active } — lives ONLY in Vercel env vars. NEVER commit codes to the repo.",
+    "logging": {
+      "destination": "google-sheet",
+      "sheet_id": "1OoBqPbW2ihtwgXmHZhf2uFdpIRj6Fo3cDVhNEk1RLOk",
+      "webhook_env": "DEFENSE_ACCESS_LOG_WEBHOOK",
+      "payload_fields": [
+        "timestamp_utc",
+        "email",
+        "code",
+        "recipient_label",
+        "user_agent"
+      ],
+      "rules": "Log successful entries only. Fire-and-forget POST — a logging failure must never block or delay access. Codes list must never reach the client; validation is server-side only."
+    },
+    "revocation": "Set active:false for that code in DEFENSE_ACCESS_CODES and redeploy — other recipients unaffected.",
+    "denied_copy": "That code isn't active. Contact sampriti@navierboat.com.",
+    "session": "Successful entry sets a session cookie scoped to /defense — no re-prompt within the session."
   },
   "contact_email": "sampriti@navierboat.com",
   "footer": "Distribution limited. Not an offer of securities. © 2026 Navier — Private & Confidential.",
@@ -51,7 +84,7 @@
       "id": "def-hero",
       "kicker": "NAVIER · DEFENSE",
       "headline": "OWN THE EDGE",
-      "subline": "The world moves at the speed and cost at which people and goods move. Make a dent in that, and you change how the world works.",
+      "subline": "A standardized, stable, ultra-long-range, low-signature platform — C-UAS, ISR, contested logistics, optionally manned or unmanned.",
       "play_button_label": "Watch the film",
       "scroll_cue": {
         "label": "Scroll"
@@ -65,24 +98,19 @@
         "duration": "1:34",
         "behavior": "lightbox click-to-play with sound"
       },
-      "render_notes": "Invest hero end-to-end: hero-loop + scrim + OWN THE EDGE overlaid. SOF Week loop is NOT the opener — it lives in def-dual-use PROOF beat."
+      "render_notes": "Invest hero end-to-end: hero-loop + scrim + OWN THE EDGE overlaid. SOF Week loop is NOT the opener — it lives in def-dual-use PROOF beat. V4: subline replaced per founder review 2026-08-23 — defense audiences jump straight to defense; the world-moves line is retired on this route."
     },
     {
       "id": "def-navier",
       "kicker": "01 · WHO WE ARE",
       "title": "An American Maritime Company.",
-      "body": "One core — foils, powertrain, autonomy, fleet software — configured across commercial and defense missions from day one.",
+      "body": "Navier builds the physical and digital infrastructure of the maritime economy — vessels, maritime nodes, and the software that runs them. For defense, that standardization is the breakthrough.",
       "media": {
         "type": "image",
         "src": "assets/deck/thesis-hangar-crane.jpg",
         "alt": "Navier production hangar — vessels under construction"
       },
-      "render_notes": "Invest thesis stage: hangar plate + Core Thesis paragraphs + short bridge. Launch film 1080p click-to-play with sound under thesis (full content width). Never claim built/manufactured in the United States.",
-      "thesis_paragraphs": [
-        "Navier builds the vessels and operating infrastructure for high-speed, high-throughput, energy-efficient maritime transportation. Our vessels open new routes; distributed manufacturing scales the fleets; our strategic maritime nodes power and service them — and the network is open to compatible vessels from any manufacturer, all on one standard.",
-        "Navier earns recurring revenue on every journey, and every vessel and node added makes the network more valuable. One standardized platform compounding over passenger transport, cargo logistics and defense."
-      ],
-      "thesis_note": "VERBATIM-LOCKED — identical prose to /invest Core Thesis. Para 1 at lead weight.",
+      "render_notes": "V4 defense-first opener per founder review 2026-08-23: VERBATIM-LOCK to /invest thesis REMOVED for this route (founder explicit). Structure: title + two-line body (lead weight) -> three beats as stat-led blocks (gold heads, grey body — same treatment as capability rail) -> doctrine chip -> hangar plate -> launch film 1080p click-to-play with sound, full content width. Never claim built/manufactured in the United States.",
       "film": {
         "src": "assets/navier-launch-film-1080p.mp4",
         "title": "Tied to the Ocean",
@@ -90,6 +118,26 @@
         "behavior": "Click-to-play WITH SOUND",
         "poster": "assets/deck/tied-to-the-ocean-poster.jpg",
         "caption": "Narrated meditation on the sea — click for sound."
+      },
+      "beats": [
+        {
+          "head": "ONE PLATFORM, ANY MISSION",
+          "body": "The Generalized Marine Vessel Platform is one standardized core — hull, foils, powertrain, NavierOS — with a mission layer configured per use case. Foilborne-stable through Sea State 4. Hybrid-electric: ultra-long range under diesel-electric, switching to electric for low-signature operation."
+        },
+        {
+          "head": "ASYMMETRIC BY DESIGN",
+          "body": "We do not build defense-specific vessels. We build standardized platforms for cargo, passengers, and defense on one base — the low cost structure our adversaries already enjoy, working for the United States and its allies."
+        },
+        {
+          "head": "THE INDUSTRIAL GAP",
+          "body": "China produces over 1,700 ocean-going commercial vessels a year — more than half the global market. The United States produces fewer than five, holding 0.1% of global commercial shipbuilding capacity. A symmetrical contest of steel is unwinnable. Out-innovate, don't outnumber."
+        }
+      ],
+      "beats_source_line": "Figures and framing from the Navier Doctrine — navierboat.com/doctrine.",
+      "doctrine_link": {
+        "label": "Read the Navier Doctrine →",
+        "url": "https://www.navierboat.com/doctrine",
+        "behavior": "new tab · public page · render as gold link chip under the beats"
       }
     },
     {
@@ -181,7 +229,7 @@
           "id": "flat-turning",
           "asset": "assets/demos/flat-turning.mp4",
           "poster": "assets/posters/93MCRJYsD_8.jpg",
-          "title": "Different by design, faster by physics",
+          "title": "Coordinated turns at high speed",
           "duration": "0:16",
           "caption": "Smoother, quieter, more efficient than a traditional hull — by physics, not padding.",
           "youtube_id": "93MCRJYsD_8"
@@ -285,7 +333,7 @@
       "fine_print": "Budgets already moving: US DoD Replicator ≈$1B · Australia A$176M · US Navy FY26 $203M USV R&D. Sourced Aug 2026.",
       "sub_line": "Commercial deployments make Navier the standing infrastructure of strategic waterways.",
       "kicker": "06 · DEFENSE",
-      "render_notes": "Three-beat spine (2026-08-19): PROOF → PLATFORM → DUAL-USE. PROOF = all five media (lead loop hero → equal-height 3:2 SAS/SOF stills with SOF object-position crop → secondary muted autoplay loops) + press_quote + USMI pull_quote + deployment_line. PLATFORM = thesis_line bridge + horizontal capability specs + Quanta/N80–N180 hull cards. DUAL-USE = sub_line (standing infrastructure) + fine_print budgets. lead_video = defense-sofweek-loop.mp4 muted autoplay loop. Photos: officers-looking + sofweek-armed (tent photo RETIRED — do not use defense-sas-officers.png). press_quote is third-party (Defence Blog) so 'admirals' is permitted in this quote only; Navier-voiced copy says 'officers'. Do NOT name the effector/payload partner anywhere incl. alt text. Captions exactly as authored.",
+      "render_notes": "Three-beat spine (2026-08-19): PROOF → PLATFORM → DUAL-USE. PROOF = all five media (lead loop hero → equal-height 3:2 SAS/SOF stills with SOF object-position crop → secondary muted autoplay loops) + press_quote + USMI pull_quote + deployment_line. PLATFORM = thesis_line bridge + horizontal capability specs + Quanta/N80–N180 hull cards. DUAL-USE = sub_line (standing infrastructure) + fine_print budgets. lead_video = defense-sofweek-loop.mp4 muted autoplay loop. Photos: officers-looking + sofweek-armed (tent photo RETIRED — do not use defense-sas-officers.png). press_quote is third-party (Defence Blog) so 'admirals' is permitted in this quote only; Navier-voiced copy says 'officers'. Do NOT name the effector/payload partner anywhere incl. alt text. Captions exactly as authored. V4: resilience_thesis added per founder review 2026-08-23 — render as its own titled block opening the DUAL-USE beat; support_line in smaller grey below body.",
       "thesis_line": "A standardized foiling platform changes how navies move.",
       "press_quote": {
         "quote": "Stopped senior U.S. Navy admirals and captains in their tracks … drawing repeated assessments of 'game changer.'",
@@ -347,6 +395,13 @@
           }
         ],
         "source": "Navier Quanta-D published spec sheet, SAS/SOF Week 2026"
+      },
+      "resilience_thesis": {
+        "kicker": "THE DEFENSE THESIS",
+        "title": "Global Resilience.",
+        "body": "A standardized, energy-efficient platform for moving people and goods — built with allied nations through distributed manufacturing. In time of need, America has a maritime presence through vessels already operating around the world — deployable anywhere.",
+        "support_line": "Commercial fleets are a strategic reserve: vessels built on this architecture are effectively pre-certified hardware. In times of conflict, capacity surges without waiting years for new keels to be laid.",
+        "placement": "Opens the DUAL-USE beat — before sub_line and fine_print."
       }
     },
     {
@@ -464,9 +519,10 @@
         {
           "name": "N45 Explorer",
           "length_class": "45 ft",
-          "image": "assets/deck/n45-mockup-v2.png",
+          "image": "assets/deck/n45-defense-container-v1.png",
           "status": "First hull target — H2 2027",
-          "defense_lens": "Higher sea states, more payload: crew transfer, patrol, higher-capacity unmanned logistics."
+          "defense_lens": "Contested logistics — a single containerized load aft. The same foilborne stability that lets weapons and sensors hold lock keeps crew and cargo steady at speed, in higher sea states.",
+          "image_note": "Single aft ISO container — contested-logistics configuration."
         },
         {
           "name": "N80 Valkyrie",
@@ -483,7 +539,7 @@
           "defense_lens": "Ocean-range logistics at ship scale — the endpoint of the same software and foil lineage."
         }
       ],
-      "render_notes": "GMVP intro opens chapter (invest platform-intro). Ladder N30 = military Quanta-D. No trailing hero image.",
+      "render_notes": "GMVP intro opens chapter (invest platform-intro). Ladder N30 = military Quanta-D. No trailing hero image. V4 CROP RULE (bug fix, founder screenshot 2026-08-23): family-card images must NEVER crop the vessel at any viewport width — the N30 card cropped the vessel out entirely at phone widths. Use aspect-preserving object-fit contain on a fixed plate, or authored per-breakpoint crops with the vessel fully visible. Verify every ladder card at 390 / 768 / 1280 / 1440 / 2560 px.",
       "gmvp_intro": {
         "title": "The Generalized Marine Vessel Platform (GMVP)",
         "body": "The N30 proved the core over 10,000 hours of real operations. The GMVP scales that core across four classes — 30, 45, 80, 180 ft — cutting engineering time and schedule risk.",
@@ -555,5 +611,6 @@
   ],
   "leak_scan_notes": "Scan applies to RENDERED PAGE TEXT (not contract render_notes/meta), case-insensitive, WORD-BOUNDED (\\b) — 'Australia', 'evaluation', 'Tampa' must not trip 'Alia'/'valuation'/'TAM'.",
   "_v2_notes": "Jaideep 2026-08-21: v1 lacked Navier intro/thesis, was video-poor, sequence incoherent. V2: thesis verbatim from claim.json; 10 videos bound; Plainview resequenced as setup for control chapter; new video-wall chapter; ladder enriched with defense lens. Four Seasons video deliberately excluded (luxury co-brand, wrong audience). Narrative: who we are -> mission problem -> why now (1969+control) -> the platform -> proof in flight -> ready now -> endurance -> validation -> field -> family -> industrial base -> team.",
-  "_v3_notes": "2026-08-22 founder review: remove Mission Problem; thesis+1080p film; flight exactly 3; family GMVP+military N30; team asset copy; OWN THE LITTORAL close; password plainview."
+  "_v3_notes": "2026-08-22 founder review: remove Mission Problem; thesis+1080p film; flight exactly 3; family GMVP+military N30; team asset copy; OWN THE LITTORAL close; password plainview.",
+  "_v4_notes": "2026-08-23 founder review (Sampriti voice notes) + Jaideep approvals: (1) hero subline defense-specific; (2) 01 rebuilt as defense-first opener — two-line implication, GMVP-as-breakthrough, asymmetric-cost logic, doctrine stats + chip (verbatim-lock to /invest removed, founder explicit); (3) global-resilience defense thesis added to dual-use; (4) N45 ladder card = single aft container render + stability-explicit lens; (5) family-card crop rule; (6) sharp-turning video retitled 'Coordinated turns at high speed'; (7) gate v2 — email + per-recipient revocable codes, Google Sheet logging only. Doctrine figures verified against navierboat.com/doctrine 2026-08-23."
 }

@@ -137,10 +137,27 @@ export function buildDefense() {
 
   // Client data (strip underscore)
   const client = stripUnderscore(raw);
-  // Drop gate password from client bundle — middleware owns auth
+  // Drop gate secrets from client bundle — middleware /api owns auth
   if (client.gate) {
     delete client.gate.password;
+    delete client.gate.codes_env;
+    delete client.gate.codes_format;
+    delete client.gate.logging;
+    delete client.gate.api_route;
+    delete client.gate.revocation;
+    delete client.gate.replaces;
+    // Keep mode + denied_copy + form field labels for potential client UX; never codes.
   }
+  // Strip authoring notes from client payload
+  const stripNotes = (obj) => {
+    if (!obj || typeof obj !== 'object') return;
+    if (Array.isArray(obj)) return obj.forEach(stripNotes);
+    delete obj.render_notes;
+    delete obj.leak_scan_notes;
+    delete obj.global_render_rules;
+    Object.values(obj).forEach(stripNotes);
+  };
+  stripNotes(client);
   fs.writeFileSync(
     path.join(OUT, 'data', 'defense-data.js'),
     `/* GENERATED defense contract */\nwindow.DEFENSE_DATA = ${JSON.stringify(client)};\n`
@@ -201,6 +218,7 @@ export function buildDefense() {
     'assets/deck/thesis-hangar-crane.jpg',
     'assets/deck/gmvp-wireframe-family.png',
     'assets/deck/defense-sofweek-armed.jpg',
+    'assets/deck/n45-defense-container-v1.png',
     'assets/demos/no-wake.mp4',
     'assets/demos/rough-seas.mp4',
     'assets/demos/flat-turning.mp4',
@@ -253,7 +271,7 @@ export function buildDefense() {
 `;
   fs.writeFileSync(path.join(OUT, 'index.html'), html);
 
-  console.log(`defense → /defense/  (${(raw.sections || []).length} sections · noindex · gate password from contract/middleware)`);
+  console.log(`defense → /defense/  (${(raw.sections || []).length} sections · noindex · gate ${raw.gate?.mode || 'password'} via middleware/api)`);
   return { out: OUT, sections: (raw.sections || []).length };
 }
 

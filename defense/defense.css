@@ -1169,9 +1169,13 @@ a.team-link:hover {
   font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 999px;
   background: rgba(0,0,0,0.65); color: var(--text-0);
 }
-.vcard-cap, .film-cap {
-  display: block; margin-top: 10px; font-size: 13px; color: var(--text-1); line-height: 1.4;
+.vcard-title {
+  display: block; margin-top: 10px; font-size: 14px; font-weight: 600; color: #e0cb8f; line-height: 1.35;
 }
+.vcard-cap, .film-cap {
+  display: block; margin-top: 6px; font-size: 13px; color: var(--text-1); line-height: 1.4;
+}
+.vcard-title + .vcard-cap { margin-top: 4px; }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
 /* Timeline — sticky full-bleed hangar + years (title scrolls away) */
@@ -3217,9 +3221,26 @@ a.team-link:hover {
 .def-deploy { margin: 14px 0; font-size: 14px; color: rgba(255,255,255,.78); letter-spacing: .02em; }
 .def-fine { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 16px; line-height: 1.4; }
 .def-ladder { display: grid; gap: 12px; margin-top: 18px; }
-.def-ladder-item { display: grid; grid-template-columns: 160px 1fr; gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
+.def-ladder-item { display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
 @media (max-width: 720px) { .def-ladder-item { grid-template-columns: 1fr; } }
-.def-ladder-item img { width: 100%; height: 100px; object-fit: cover; display: block; }
+/* v4 crop rule: never crop the vessel out — contain on a fixed plate */
+.def-ladder-plate {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #07080a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.def-ladder-item img,
+.def-ladder-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
 .def-ladder-item .meta { padding: 12px 14px; }
 .def-ladder-item .v { color: #e0cb8f; font-size: 12px; letter-spacing: .08em; font-weight: 700; }
 .def-ladder-item .l { color: rgba(255,255,255,.72); font-size: 14px; margin-top: 6px; line-height: 1.4; }
@@ -3462,8 +3483,14 @@ a.team-link:hover {
   .def-ladder-item {
     grid-template-columns: 1fr !important;
   }
-  .def-ladder-item img {
-    height: 168px;
+  .def-ladder-plate {
+    aspect-ratio: 16 / 9;
+    min-height: 168px;
+  }
+  .def-ladder-item img,
+  .def-ladder-plate img {
+    height: 100%;
+    object-fit: contain;
   }
 
   /* Team */
@@ -3515,4 +3542,78 @@ a.team-link:hover {
     padding: 7px 10px;
     font-size: 9.5px;
   }
+}
+
+/* ── v4 defense-first opener + resilience thesis ───────────────── */
+.def-opener-body {
+  margin: 0 0 22px;
+  max-width: 62ch;
+}
+.def-opener-beats {
+  display: grid;
+  gap: 18px;
+  margin: 8px 0 16px;
+  grid-template-columns: 1fr;
+}
+.def-opener-beat .defense-spec-term {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+.def-opener-beat .defense-spec-desc {
+  max-width: 58ch;
+  line-height: 1.5;
+}
+.def-beats-source {
+  margin: 4px 0 14px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+.def-doctrine-chip {
+  display: inline-flex;
+  align-items: center;
+  margin: 8px 0 4px;
+  padding: 10px 16px;
+  border: 1px solid rgba(224, 203, 143, 0.45);
+  border-radius: 999px;
+  color: #e0cb8f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.def-doctrine-chip:hover {
+  background: rgba(224, 203, 143, 0.1);
+  border-color: rgba(224, 203, 143, 0.75);
+}
+.def-resilience {
+  margin: 0 0 22px;
+  max-width: 64ch;
+}
+.def-resilience-kicker {
+  margin: 0 0 8px;
+  color: #e0cb8f;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.def-resilience-title {
+  margin: 0 0 12px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  color: #f3efe4;
+  font-weight: 600;
+}
+.def-resilience-body {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+}
+.def-resilience-support {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
 }
