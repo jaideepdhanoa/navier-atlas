@@ -1522,25 +1522,62 @@
 
     'status-rows'(s) {
       // v8 #15: expand-on-hover/focus
+      // v10.2: optional bands (IN MOTION / IN THE PIPELINE) — flatten thumbs across bands
       const thumbs = (home('money.thesis_board.thumbs') && home('money.thesis_board.thumbs').assets) || [];
-      const rows = (s.rows || [])
-        .map((r, i) => {
-          const thumb = thumbs[i] ? mediaPath(thumbs[i]) : '';
-          return `
-          <div class="thesis-row" tabindex="0" role="button" aria-expanded="false">
+      function rowHtml(r, i, muted) {
+        const thumb = thumbs[i] ? mediaPath(thumbs[i]) : '';
+        return `
+          <div class="thesis-row${muted ? ' thesis-row--pipeline' : ''}" tabindex="0" role="button" aria-expanded="false">
             ${thumb ? `<div class="thesis-thumb"><img src="${esc(thumb)}" alt="" loading="lazy" /></div>` : ''}
             <div class="label">${esc(r.label)}</div>
             <div class="status">${esc(r.status)}</div>
           </div>`;
-        })
-        .join('');
+      }
+      let thumbIdx = 0;
+      let board = '';
+      if (s.bands && s.bands.length) {
+        board = s.bands
+          .map(function (band) {
+            const muted = /pipeline/i.test(band.label || '');
+            const rows = (band.rows || [])
+              .map(function (r) {
+                const html = rowHtml(r, thumbIdx, muted);
+                thumbIdx += 1;
+                return html;
+              })
+              .join('');
+            return `<div class="thesis-band${muted ? ' thesis-band--pipeline' : ''}">
+              ${band.label ? `<p class="thesis-band-label">${esc(band.label)}</p>` : ''}
+              <div class="thesis-board">${rows}</div>
+            </div>`;
+          })
+          .join('');
+      } else {
+        board = `<div class="thesis-board">${(s.rows || [])
+          .map(function (r, i) {
+            return rowHtml(r, i, false);
+          })
+          .join('')}</div>`;
+      }
       return `
         <div class="section-block shell-stage" data-reveal data-home="money.thesis_board.thumbs">
           ${kicker(s)}
           ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
           ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
-          <div class="thesis-board">${rows}</div>
+          ${board}
           ${s.closing_line ? `<p class="closing-line">${esc(s.closing_line)}</p>` : ''}
+        </div>`;
+    },
+
+    'section-divider'(s) {
+      // v10.2 Future Products quiet divider — full-bleed dark field, no media
+      return `
+        <div class="section-block section-divider-stage" data-reveal id="${esc(s.id || 'future-divider')}">
+          <div class="section-inner section-divider-inner">
+            ${s.kicker ? `<p class="eyebrow stage-kicker">${esc(s.kicker)}</p>` : ''}
+            ${s.title ? `<h2 class="h2 section-divider-title">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="section-divider-sub">${esc(s.subhead)}</p>` : ''}
+          </div>
         </div>`;
     },
 
