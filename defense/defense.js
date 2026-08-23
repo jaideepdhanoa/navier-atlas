@@ -197,7 +197,7 @@
 
   // Scroll-spy chapters (invest-style progress + active chip)
   const NAV_LINKS = [
-    { id: 'def-navier', label: 'Thesis' },
+    { id: 'def-navier', label: 'Who we are' },
     { id: 'def-plainview', label: 'Why now' },
     { id: 'def-platform', label: 'Control' },
     { id: 'def-flight', label: 'Flight' },
@@ -261,12 +261,31 @@
       return renderHero(s);
     },
     'def-navier'(s) {
+      // v4 defense-first opener: body + beats + doctrine (invest thesis paragraphs retired on this route)
       const paras = (s.thesis_paragraphs || [])
         .map(
           (p, i) =>
             `<p class="about-para ${i === 0 ? 'lead-para' : 'body-para'}">${esc(p)}</p>`
         )
         .join('');
+      const bodyLead = s.body
+        ? `<p class="about-para lead-para def-opener-body">${esc(s.body)}</p>`
+        : '';
+      const beats = (s.beats || [])
+        .map(
+          (b) => `<div class="defense-spec def-opener-beat">
+            <div class="defense-spec-term">${esc(b.head || b.term || '')}</div>
+            <div class="defense-spec-desc">${esc(b.body || b.desc || '')}</div>
+          </div>`
+        )
+        .join('');
+      const beatsBlock = beats
+        ? `<div class="defense-specs def-opener-beats">${beats}</div>
+           ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}`
+        : '';
+      const doctrine = s.doctrine_link && s.doctrine_link.url
+        ? `<a class="def-doctrine-chip" href="${esc(s.doctrine_link.url)}" target="_blank" rel="noopener noreferrer">${esc(s.doctrine_link.label || 'Read the Navier Doctrine →')}</a>`
+        : '';
       const media = s.media || {};
       const imgSrc = mediaPath(media.src || media.image || '');
       const hangar = imgSrc
@@ -276,14 +295,14 @@
             </div>
           </figure>`
         : '';
-      // Bridge is a sibling of copy/plate (not nested after prose) so it cannot
-      // paint over the title on small screens. Grid areas: copy|plate, then bridge.
-      const bridge = s.body
-        ? `<div class="thesis-bridge">
+      // Legacy ONE CORE bridge only when beats are absent (pre-v4 contracts)
+      const bridge =
+        !beats && s.body && paras
+          ? `<div class="thesis-bridge">
             <p class="thesis-bridge-label">ONE CORE</p>
             <p class="thesis-bridge-body">${esc(s.body)}</p>
           </div>`
-        : '';
+          : '';
       const film = s.film || {};
       const filmHtml = film.src
         ? `<div class="def-film-wrap media-inner" data-def-film>
@@ -293,12 +312,13 @@
             )}
           </div>`
         : '';
+      const prose = beats ? `${bodyLead}${beatsBlock}${doctrine}` : `${paras}${doctrine}`;
       return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
         <div class="section-inner about-stage-inner">
           <div class="about-copy">
             ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
             <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
-            <div class="about-prose">${paras}</div>
+            <div class="about-prose">${prose}</div>
           </div>
           ${hangar}
           ${bridge}
@@ -389,7 +409,8 @@
               <span class="play"><span>▶</span></span>
               ${c.duration ? `<span class="dur">${esc(c.duration)}</span>` : ''}
             </span>
-            <span class="vcard-cap">${esc(c.caption || c.title || '')}</span>
+            ${c.title ? `<span class="vcard-title">${esc(c.title)}</span>` : ''}
+            <span class="vcard-cap">${esc(c.caption || '')}</span>
           </div>`;
         })
         .join('');
@@ -552,9 +573,19 @@
           </div>
 
           ${
-            s.sub_line || s.fine_print
+            s.resilience_thesis || s.sub_line || s.fine_print
               ? `<div class="defense-beat defense-beat--why">
             <p class="sublabel">DUAL-USE</p>
+            ${
+              s.resilience_thesis
+                ? `<div class="def-resilience">
+              ${s.resilience_thesis.kicker ? `<p class="def-resilience-kicker">${esc(s.resilience_thesis.kicker)}</p>` : ''}
+              ${s.resilience_thesis.title ? `<h3 class="def-resilience-title">${esc(s.resilience_thesis.title)}</h3>` : ''}
+              ${s.resilience_thesis.body ? `<p class="def-resilience-body">${esc(s.resilience_thesis.body)}</p>` : ''}
+              ${s.resilience_thesis.support_line ? `<p class="def-resilience-support">${esc(s.resilience_thesis.support_line)}</p>` : ''}
+            </div>`
+                : ''
+            }
             ${s.sub_line ? `<p class="defense-why-lead">${esc(s.sub_line)}</p>` : ''}
             ${s.fine_print ? `<p class="defense-budgets muted">${esc(s.fine_print)}</p>` : ''}
           </div>`
@@ -632,8 +663,11 @@
       const ladder = `<div class="def-ladder">${(s.ladder || [])
         .map((item) => {
           const name = item.name || item.vessel || '';
+          // Crop rule: plate + object-fit contain — vessel must stay fully visible at all widths
           return `<div class="def-ladder-item">
-          <img src="${esc(mediaPath(item.image))}" alt="${esc(name)}" loading="lazy" />
+          <div class="def-ladder-plate">
+            <img src="${esc(mediaPath(item.image))}" alt="${esc(name)}" loading="lazy" />
+          </div>
           <div class="meta">
             <div class="v">${esc(name)}${item.length_class ? ' · ' + esc(item.length_class) : ''}</div>
             ${item.status ? `<div class="status">${esc(item.status)}</div>` : ''}
