@@ -143,9 +143,12 @@ export default async function handler(req, res) {
 
   const webhook = process.env.DEFENSE_ACCESS_LOG_WEBHOOK;
   if (webhook) {
+    // Apps Script runs doPost on the first POST, then returns 302.
+    // Use redirect:'manual' so fetch does not downgrade the follow-up to GET (405).
     fetch(webhook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      redirect: 'manual',
       body: JSON.stringify({
         timestamp_utc: new Date().toISOString(),
         email,
