@@ -70,6 +70,7 @@ function loadCodes() {
 async function sessionToken() {
   const secret = process.env.AUTH_SECRET;
   if (!secret) return null;
+  // Match middleware HMAC (Web Crypto) — Node 18+ provides global crypto.subtle.
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
     'raw',
@@ -79,7 +80,10 @@ async function sessionToken() {
     ['sign']
   );
   const sig = await crypto.subtle.sign('HMAC', key, enc.encode(SESSION_SLUG + ':granted'));
-  return btoa(String.fromCharCode(...new Uint8Array(sig)));
+  const bytes = new Uint8Array(sig);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return Buffer.from(bin, 'binary').toString('base64');
 }
 
 function cookieHeader(token) {
@@ -92,7 +96,7 @@ function cookieHeader(token) {
   );
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   cors(res, req.headers.origin);
   if (req.method === 'OPTIONS') {
     res.status(204).end();
