@@ -426,9 +426,15 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   max-width: none;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-areas:
+    "copy plate"
+    "bridge plate";
   gap: var(--space-5, 28px) var(--space-6, 40px);
-  align-items: center;
+  align-items: start;
 }
+.about-stage--split .about-copy { grid-area: copy; }
+.about-stage--split .about-plate { grid-area: plate; }
+.about-stage--split .thesis-bridge { grid-area: bridge; }
 .about-copy { min-width: 0; max-width: 68ch; }
 .about-plate { margin: 0; min-width: 0; }
 .about-plate-frame {
@@ -453,8 +459,14 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   line-height: 1.35;
 }
 @media (max-width: 1099px) {
-  .about-stage--split .about-stage-inner { grid-template-columns: 1fr; }
-  .about-plate { order: 2; }
+  .about-stage--split .about-stage-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "plate"
+      "bridge";
+    align-items: stretch;
+  }
   .about-copy { max-width: none; }
 }
 .about-kicker {
@@ -3086,13 +3098,16 @@ a.team-link:hover {
 }
 
 /* ── /defense capability brief extras ───────────────── */
-/* Left-aligned under Who We Are prose (not page-centered) */
-.about-copy .thesis-bridge {
-  max-width: none;
-  margin: 22px 0 0;
-  padding: 16px 0 0 14px;
+/* ONE CORE coda — normal flow under Who We Are (never absolute / never over title) */
+.thesis-bridge {
+  position: static;
+  z-index: auto;
+  max-width: 68ch;
+  margin: 0;
+  padding: 4px 0 0 14px;
   border-left: 2px solid rgba(224, 203, 143, 0.55);
   text-align: left;
+  align-self: start;
 }
 .thesis-bridge-label {
   margin: 0 0 8px;
@@ -3276,14 +3291,27 @@ a.team-link:hover {
 
 /* ── Defense mobile-first refinements (match /invest phone UX) ─ */
 @media (max-width: 720px) {
-  /* Thesis: copy above hangar plate (order can fail if grid track collapses oddly) */
+  /* Thesis: copy → hangar → ONE CORE (grid areas; no overlap with title) */
   .about-stage--split .about-stage-inner {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "plate"
+      "bridge";
     gap: 20px;
+    align-items: stretch;
   }
-  .about-stage--split .about-copy { order: 1; width: 100%; max-width: none; }
-  .about-stage--split .about-plate { order: 2; width: 100%; }
+  .about-stage--split .about-copy,
+  .about-stage--split .about-plate,
+  .about-stage--split .thesis-bridge {
+    width: 100%;
+    max-width: none;
+  }
+  .about-stage--split .thesis-bridge {
+    margin-top: 4px;
+    padding-top: 8px;
+  }
 
   /* Headlines: default 22ch forces awkward wraps on phone */
   .defense-page .h2,

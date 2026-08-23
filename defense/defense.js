@@ -276,6 +276,8 @@
             </div>
           </figure>`
         : '';
+      // Bridge is a sibling of copy/plate (not nested after prose) so it cannot
+      // paint over the title on small screens. Grid areas: copy|plate, then bridge.
       const bridge = s.body
         ? `<div class="thesis-bridge">
             <p class="thesis-bridge-label">ONE CORE</p>
@@ -297,9 +299,9 @@
             ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
             <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
             <div class="about-prose">${paras}</div>
-            ${bridge}
           </div>
           ${hangar}
+          ${bridge}
         </div>
         ${filmHtml}
       </section>`;
