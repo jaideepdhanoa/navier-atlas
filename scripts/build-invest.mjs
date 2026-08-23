@@ -23,6 +23,9 @@ const TEASER_EXCLUDE = {
     'revenue-lines',
     'unit-econ',
     // Round-6h: keep cargo-gap + dual-use on /teaser
+    // v10.2: Future Products divider + trailing cargo/offshore stay invest-only
+    'future-divider',
+    'cargo-gap',
     'cargo-play',
     'sealift',
     'day-night-wedge',
