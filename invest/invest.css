@@ -1618,7 +1618,8 @@ a.team-link:hover {
 .island-band { margin: 28px 0 }
 
 .defense-cinema .cinema-media { position: relative }
-.defense-quote {
+/* Cinema overlay quote ONLY — must not apply to dual-use / quiet-proof cards */
+.defense-cinema .defense-quote {
   position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
   padding: 64px var(--pad) 40px;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.88));
@@ -1626,7 +1627,7 @@ a.team-link:hover {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.4;
 }
-.defense-quote cite {
+.defense-cinema .defense-quote cite {
   display: block; margin-top: 12px; font-style: normal;
   font-family: Inter, sans-serif; font-size: 12px; color: var(--text-2);
 }
@@ -2591,12 +2592,18 @@ a.team-link:hover {
 .defense-quiet .defense-deploy {
   grid-column: 1 / -1;
 }
+.defense-quiet .defense-quote,
 .defense-quote {
+  position: static; /* override legacy cinema absolute */
+  left: auto;
+  right: auto;
+  bottom: auto;
   margin: 0;
   padding: 18px 20px;
   border-radius: 10px;
   border-left: 3px solid var(--accent-bright);
   background: rgba(185, 154, 95, 0.07);
+  background-image: none;
 }
 .defense-quote p {
   margin: 0;

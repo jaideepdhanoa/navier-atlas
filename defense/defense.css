@@ -426,9 +426,15 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   max-width: none;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-areas:
+    "copy plate"
+    "bridge plate";
   gap: var(--space-5, 28px) var(--space-6, 40px);
-  align-items: center;
+  align-items: start;
 }
+.about-stage--split .about-copy { grid-area: copy; }
+.about-stage--split .about-plate { grid-area: plate; }
+.about-stage--split .thesis-bridge { grid-area: bridge; }
 .about-copy { min-width: 0; max-width: 68ch; }
 .about-plate { margin: 0; min-width: 0; }
 .about-plate-frame {
@@ -453,8 +459,14 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   line-height: 1.35;
 }
 @media (max-width: 1099px) {
-  .about-stage--split .about-stage-inner { grid-template-columns: 1fr; }
-  .about-plate { order: 2; }
+  .about-stage--split .about-stage-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "plate"
+      "bridge";
+    align-items: stretch;
+  }
   .about-copy { max-width: none; }
 }
 .about-kicker {
@@ -892,18 +904,43 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .arc-spine .arc-phase.lit { opacity: 0.75 }
 .arc-spine .arc-phase.now { opacity: 1 }
 
-/* Team — no logo strip */
+/* Team — no logo strip; keep inside section-inner like other chapters */
 .team-lede { white-space: pre-line }
+.team-section .section-inner {
+  max-width: 1200px;
+}
 .team-layout {
-  display: grid; grid-template-columns: 0.85fr 1.45fr; gap: 28px; margin: 28px 0;
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 24px 28px;
+  margin: 22px 0 8px;
+  align-items: start;
 }
-.team-featured .team-photo.lg {
-  aspect-ratio: 4/5; border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--line); background: var(--bg-1); margin-bottom: 14px;
+.team-featured {
+  max-width: 280px;
+  width: 100%;
 }
-.team-featured .team-photo.lg img { width: 100%; height: 100%; object-fit: cover }
+.team-featured .team-photo.lg,
+.team-featured-inner .team-photo.lg {
+  aspect-ratio: 4/5;
+  max-width: 280px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  margin-bottom: 12px;
+}
+.team-featured .team-photo.lg img,
+.team-featured-inner .team-photo.lg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .team-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
   align-content: start;
 }
 .team-card {
@@ -942,10 +979,26 @@ a.team-link:hover {
 }
 .backers .line { color: var(--text-1); font-size: 14px; line-height: 1.55 }
 @media (max-width: 1099px) {
-  .team-layout { grid-template-columns: 1fr }
-  .team-grid { grid-template-columns: 1fr 1fr }
+  .team-layout {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 240px;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 720px) { .team-grid { grid-template-columns: 1fr } }
+@media (max-width: 720px) {
+  .team-layout { grid-template-columns: 1fr; }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 220px;
+    margin-inline: auto;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+}
 
 /* Costs — 1:1 in-place card flip (v8 #2 — no ghosting) */
 
@@ -1157,9 +1210,13 @@ a.team-link:hover {
   font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 999px;
   background: rgba(0,0,0,0.65); color: var(--text-0);
 }
-.vcard-cap, .film-cap {
-  display: block; margin-top: 10px; font-size: 13px; color: var(--text-1); line-height: 1.4;
+.vcard-title {
+  display: block; margin-top: 10px; font-size: 14px; font-weight: 600; color: #e0cb8f; line-height: 1.35;
 }
+.vcard-cap, .film-cap {
+  display: block; margin-top: 6px; font-size: 13px; color: var(--text-1); line-height: 1.4;
+}
+.vcard-title + .vcard-cap { margin-top: 4px; }
 @media (max-width: 720px) { .video-grid { grid-template-columns: 1fr } }
 
 /* Timeline — sticky full-bleed hangar + years (title scrolls away) */
@@ -1618,7 +1675,8 @@ a.team-link:hover {
 .island-band { margin: 28px 0 }
 
 .defense-cinema .cinema-media { position: relative }
-.defense-quote {
+/* Cinema overlay quote ONLY — must not apply to dual-use / quiet-proof cards */
+.defense-cinema .defense-quote {
   position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
   padding: 64px var(--pad) 40px;
   background: linear-gradient(180deg, transparent, rgba(0,0,0,0.88));
@@ -1626,7 +1684,7 @@ a.team-link:hover {
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.4;
 }
-.defense-quote cite {
+.defense-cinema .defense-quote cite {
   display: block; margin-top: 12px; font-style: normal;
   font-family: Inter, sans-serif; font-size: 12px; color: var(--text-2);
 }
@@ -2591,12 +2649,18 @@ a.team-link:hover {
 .defense-quiet .defense-deploy {
   grid-column: 1 / -1;
 }
+.defense-quiet .defense-quote,
 .defense-quote {
+  position: static; /* override legacy cinema absolute */
+  left: auto;
+  right: auto;
+  bottom: auto;
   margin: 0;
   padding: 18px 20px;
   border-radius: 10px;
   border-left: 3px solid var(--accent-bright);
   background: rgba(185, 154, 95, 0.07);
+  background-image: none;
 }
 .defense-quote p {
   margin: 0;
@@ -3086,16 +3150,90 @@ a.team-link:hover {
 }
 
 /* ── /defense capability brief extras ───────────────── */
-.def-film-wrap { max-width: 960px; margin: 24px auto 0; }
-.def-film-wrap video { width: 100%; max-width: 960px; display: block; border-radius: 8px; background: #000; }
-.def-film-wrap .film-play {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,.35); cursor: pointer; border: 0; color: #fff; font: inherit;
+/* ONE CORE coda — normal flow under Who We Are (never absolute / never over title) */
+.thesis-bridge {
+  position: static;
+  z-index: auto;
+  max-width: 68ch;
+  margin: 0;
+  padding: 4px 0 0 14px;
+  border-left: 2px solid rgba(224, 203, 143, 0.55);
+  text-align: left;
+  align-self: start;
 }
-.def-film-wrap { position: relative; }
+.thesis-bridge-label {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e0cb8f;
+}
+.thesis-bridge-body {
+  margin: 0;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* Plainview title: default .h2 is 22ch (3+ lines); widen to land on ~2 lines */
+#def-plainview .plainview-title,
+.h2.plainview-title {
+  max-width: min(34ch, 100%);
+}
+
+.def-film-wrap {
+  position: relative;
+  max-width: 1280px;
+  margin: 28px auto 0;
+}
+.def-film-wrap .def-video-tile,
+.def-film-wrap .def-video-frame {
+  position: relative;
+  width: 100%;
+}
+.def-film-wrap video {
+  width: 100%;
+  max-width: 1280px;
+  display: block;
+  border-radius: 8px;
+  background: #000;
+}
+.def-film-wrap .def-video-frame.has-play .film-play,
+.def-film-wrap .film-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  border: 0;
+  color: #fff;
+  font: inherit;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
 .def-film-wrap .film-play-btn {
-  width: 72px; height: 72px; border-radius: 999px; border: 2px solid rgba(224,203,143,.85);
-  background: rgba(10,10,10,.55); color: #e0cb8f; font-size: 22px; cursor: pointer;
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  border: 2px solid rgba(224, 203, 143, 0.85);
+  background: rgba(10, 10, 10, 0.55);
+  color: #e0cb8f;
+  font-size: 22px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.def-film-wrap .def-video-title {
+  text-align: center;
+  margin-top: 12px;
+}
+.def-film-wrap figcaption {
+  text-align: center;
 }
 .def-spec-row {
   display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; margin: 20px 0;
@@ -3124,9 +3262,26 @@ a.team-link:hover {
 .def-deploy { margin: 14px 0; font-size: 14px; color: rgba(255,255,255,.78); letter-spacing: .02em; }
 .def-fine { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 16px; line-height: 1.4; }
 .def-ladder { display: grid; gap: 12px; margin-top: 18px; }
-.def-ladder-item { display: grid; grid-template-columns: 160px 1fr; gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
+.def-ladder-item { display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
 @media (max-width: 720px) { .def-ladder-item { grid-template-columns: 1fr; } }
-.def-ladder-item img { width: 100%; height: 100px; object-fit: cover; display: block; }
+/* v4 crop rule: never crop the vessel out — contain on a fixed plate */
+.def-ladder-plate {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background: #07080a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.def-ladder-item img,
+.def-ladder-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
 .def-ladder-item .meta { padding: 12px 14px; }
 .def-ladder-item .v { color: #e0cb8f; font-size: 12px; letter-spacing: .08em; font-weight: 700; }
 .def-ladder-item .l { color: rgba(255,255,255,.72); font-size: 14px; margin-top: 6px; line-height: 1.4; }
@@ -3201,4 +3356,401 @@ a.team-link:hover {
   font-size: 12px;
   color: rgba(255,255,255,.5);
   margin-top: 4px;
+}
+
+/* ── Defense mobile-first refinements (match /invest phone UX) ─ */
+@media (max-width: 720px) {
+  /* Thesis: copy → hangar → ONE CORE (grid areas; no overlap with title) */
+  .about-stage--split .about-stage-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "plate"
+      "bridge";
+    gap: 20px;
+    align-items: stretch;
+  }
+  .about-stage--split .about-copy,
+  .about-stage--split .about-plate,
+  .about-stage--split .thesis-bridge {
+    width: 100%;
+    max-width: none;
+  }
+  .about-stage--split .thesis-bridge {
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  /* Headlines: default 22ch forces awkward wraps on phone */
+  .defense-page .h2,
+  .defense-page .about-title,
+  .defense-page .plainview-title,
+  .defense-page .quanta-headline,
+  body.defense-page .h2 {
+    max-width: none;
+    font-size: clamp(1.65rem, 7.2vw, 2.15rem);
+    line-height: 1.2;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+  .plainview-title { max-width: none !important; }
+
+  /* Safe inline padding */
+  .shell-stage,
+  .section-inner,
+  .about-stage-inner,
+  .media-inner {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* Film under thesis */
+  .def-film-wrap {
+    max-width: 100%;
+    margin: 20px 0 0;
+    padding: 0 max(16px, env(safe-area-inset-left, 0px));
+  }
+  .def-film-wrap .film-play-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+  }
+  .def-film-wrap .def-video-title,
+  .def-film-wrap figcaption {
+    padding: 0 4px;
+  }
+
+  /* Competitive table: swipeable with sticky row labels */
+  #def-field .table-wrap,
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    margin-left: max(-4px, calc(-1 * env(safe-area-inset-left, 0px)));
+    margin-right: max(-4px, calc(-1 * env(safe-area-inset-right, 0px)));
+    border-radius: 8px;
+  }
+  #def-field .table-wrap::after {
+    content: "Swipe for full table →";
+    display: block;
+    padding: 8px 12px 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-2, rgba(255,255,255,0.45));
+  }
+  .cmp,
+  .cmp-s17 {
+    font-size: 11.5px;
+    min-width: 560px;
+  }
+  .cmp th,
+  .cmp td,
+  .cmp-s17 th,
+  .cmp-s17 td {
+    padding: 10px 12px;
+  }
+  .cmp .row-label,
+  .cmp-s17 td.row-label,
+  .cmp-s17 th.row-label-th {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #121214;
+    box-shadow: 6px 0 10px rgba(0, 0, 0, 0.35);
+  }
+  .cmp thead th.row-label-th,
+  .cmp-s17 thead th.row-label-th {
+    background: #1a1a1e;
+    z-index: 3;
+  }
+  .takeaway-line {
+    font-size: clamp(1.05rem, 4.8vw, 1.25rem);
+    line-height: 1.35;
+  }
+  .explainer {
+    font-size: 13.5px;
+    max-width: none;
+  }
+
+  /* Dual-use / defense panel stacks */
+  .defense-sbs,
+  .defense-secondary {
+    grid-template-columns: 1fr !important;
+  }
+  .defense-quiet {
+    grid-template-columns: 1fr !important;
+  }
+  .defense-specs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dual-use-blocks {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Quanta */
+  .quanta-stats-compose,
+  .quanta-stats-compose.has-plate {
+    grid-template-columns: 1fr !important;
+  }
+  .quanta-stats-copy .gold-stat-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .doors,
+  .doors.doors-3,
+  .doors.doors-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .atlantic-band {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Control / GMVP already stack via invest rules; tighten gaps */
+  .control-sbs,
+  .gmvp-compose {
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  /* Flight demos */
+  .video-grid.equal-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* Ladder cards */
+  .def-ladder-item {
+    grid-template-columns: 1fr !important;
+  }
+  .def-ladder-plate {
+    aspect-ratio: 16 / 9;
+    min-height: 168px;
+  }
+  .def-ladder-item img,
+  .def-ladder-plate img {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Team */
+  .team-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .team-featured .team-photo.lg,
+  .team-featured .team-photo {
+    max-width: 100%;
+  }
+
+  /* Close / Go Deeper */
+  .finale {
+    min-height: 78svh;
+  }
+  .finale-inner {
+    padding: 28px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+  .finale .mark {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+  }
+  .finale .h {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .go-deeper-media {
+    grid-template-columns: 1fr !important;
+  }
+  .go-deeper-inner {
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Spec / mission leftovers */
+  .def-mission {
+    grid-template-columns: 1fr !important;
+  }
+  .def-spec-row {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .defense-specs,
+  .def-spec-row,
+  .quanta-stats-copy .gold-stat-band {
+    grid-template-columns: 1fr !important;
+  }
+  .inv-chapters a {
+    padding: 7px 10px;
+    font-size: 9.5px;
+  }
+}
+
+/* ── v4 defense-first opener + resilience thesis ───────────────── */
+.about-stage--opener {
+  min-height: 0 !important;
+  justify-content: flex-start !important;
+  padding-block: clamp(36px, 6vw, 64px) !important;
+}
+.about-opener {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.about-opener-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 28px 36px;
+  align-items: start;
+}
+.about-opener-intro .about-title {
+  margin-bottom: 14px;
+}
+.about-opener-hangar .about-plate {
+  margin: 0;
+}
+.about-opener-hangar .about-plate-frame {
+  aspect-ratio: 4 / 3;
+  max-height: 320px;
+}
+.about-opener-hangar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.about-opener-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 24px 32px;
+  align-items: start;
+}
+.about-opener-beats-col {
+  min-width: 0;
+}
+.def-opener-body {
+  margin: 0;
+  max-width: 62ch;
+}
+.defense-specs.def-opener-beats,
+.def-opener-beats {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  grid-template-columns: 1fr !important;
+}
+.def-opener-beat .defense-spec-term {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+.def-opener-beat .defense-spec-desc {
+  max-width: 58ch;
+  line-height: 1.5;
+}
+.def-beats-source {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.45);
+}
+.def-doctrine-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+.def-doctrine-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 10px 16px;
+  border: 1px solid rgba(224, 203, 143, 0.45);
+  border-radius: 999px;
+  color: #e0cb8f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.def-doctrine-chip:hover {
+  background: rgba(224, 203, 143, 0.1);
+  border-color: rgba(224, 203, 143, 0.75);
+}
+.def-film-wrap--beside {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+}
+.def-film-wrap--beside .def-video-tile,
+.def-film-wrap--beside .def-video-frame {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.def-film-wrap--beside video,
+.def-film-wrap--beside .def-video-poster {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.def-film-wrap--beside .def-video-title {
+  text-align: left;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.def-film-wrap--beside figcaption {
+  text-align: left;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+@media (max-width: 960px) {
+  .about-opener-top,
+  .about-opener-split {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .about-opener-hangar .about-plate-frame {
+    max-height: none;
+  }
+  .def-doctrine-wrap {
+    justify-content: flex-start;
+  }
+}
+.def-resilience {
+  margin: 0 0 22px;
+  max-width: 64ch;
+}
+.def-resilience-kicker {
+  margin: 0 0 8px;
+  color: #e0cb8f;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.def-resilience-title {
+  margin: 0 0 12px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  color: #f3efe4;
+  font-weight: 600;
+}
+.def-resilience-body {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.86);
+}
+.def-resilience-support {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
 }

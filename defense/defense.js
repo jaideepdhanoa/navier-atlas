@@ -142,13 +142,14 @@
     </figure>`;
   }
 
-  function teamCard(p) {
+  function teamCard(p, featured) {
     let src = '';
+    const name = p.name || '';
     for (const [k, v] of Object.entries(TEAM_ASSETS)) {
       if (
-        p.name &&
-        (k.toLowerCase().includes((p.name.toLowerCase().split(' ').pop() || '')) ||
-          p.name
+        name &&
+        (k.toLowerCase().includes(name.toLowerCase().split(' ')[0].toLowerCase()) ||
+          name
             .toLowerCase()
             .split(' ')
             .some((w) => w.length > 3 && k.toLowerCase().includes(w.toLowerCase())))
@@ -157,33 +158,63 @@
         break;
       }
     }
-    if (!src && /sampriti/i.test(p.name || '') && TEAM_FEATURED) src = mediaPath(TEAM_FEATURED);
+    if (!src && /sampriti/i.test(name) && TEAM_FEATURED) src = mediaPath(TEAM_FEATURED);
+    // Invest-style filename fallback (team-firstname-lastname.png)
+    if (!src && name) {
+      if (/leclair/i.test(name)) src = mediaPath('assets/deck/team-ted-leclair.png');
+      else if (/cederholm/i.test(name)) src = mediaPath('assets/deck/team-michael-cederholm.png');
+      else if (/sampriti/i.test(name)) src = mediaPath('assets/deck/team-sampriti-bhattacharyya.png');
+      else if (/kenneth|jensen/i.test(name)) src = mediaPath('assets/deck/team-kenneth-jensen.png');
+      else if (/dan dorsch|dorsch/i.test(name)) src = mediaPath('assets/deck/team-dan-dorsch.png');
+      else if (/dotan|feldman/i.test(name)) src = mediaPath('assets/deck/team-dotan-feldman.png');
+      else if (/bieker/i.test(name)) src = mediaPath('assets/deck/team-paul-bieker.png');
+      else if (/jaideep|dhanoa/i.test(name)) src = mediaPath('assets/deck/team-jaideep-dhanoa.png');
+      else {
+        const slug = name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+        src = mediaPath(`assets/deck/team-${slug}.png`);
+      }
+    }
     const href = p.url || p.bio_url || '';
     const nameEl = href
-      ? `<a class="team-name team-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(p.name)}</a>`
-      : `<div class="team-name">${esc(p.name)}</div>`;
+      ? `<a class="team-name team-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(name)}</a>`
+      : `<div class="team-name">${esc(name)}</div>`;
     const photo = src
       ? href
-        ? `<a class="team-photo-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" /></a>`
-        : `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy" />`
+        ? `<a class="team-photo-link" href="${esc(href)}" target="_blank" rel="noopener noreferrer"><img src="${esc(src)}" alt="${esc(name)}" loading="lazy" /></a>`
+        : `<img src="${esc(src)}" alt="${esc(name)}" loading="lazy" />`
       : '';
     const creds = p.credentials ? `<div class="team-creds">${esc(p.credentials)}</div>` : '';
+    if (featured) {
+      return `<div class="team-featured-inner">
+        <div class="team-photo lg">${photo}</div>
+        ${nameEl}
+        <div class="team-role">${esc(p.role || '')}</div>
+        ${creds}
+      </div>`;
+    }
     return `<div class="team-card"><div class="team-photo">${photo}</div>${nameEl}<div class="team-role">${esc(p.role || '')}</div>${creds}</div>`;
   }
 
+  // Scroll-spy chapters (invest-style progress + active chip)
   const NAV_LINKS = [
-    { href: '#def-navier', label: 'Thesis' },
-    { href: '#def-problem', label: 'Problem' },
-    { href: '#def-platform', label: 'Control' },
-    { href: '#def-flight', label: 'Flight' },
-    { href: '#def-quanta-moment', label: 'Quanta' },
-    { href: '#def-dual-use', label: 'Defense' },
-    { href: '#def-team', label: 'Team' },
+    { id: 'def-navier', label: 'Who we are' },
+    { id: 'def-plainview', label: 'Why now' },
+    { id: 'def-platform', label: 'Control' },
+    { id: 'def-flight', label: 'Flight' },
+    { id: 'def-quanta-moment', label: 'Quanta' },
+    { id: 'def-dual-use', label: 'Proof' },
+    { id: 'def-family', label: 'Fleet' },
+    { id: 'def-team', label: 'Team' },
+    { id: 'def-close', label: 'Close' },
   ];
 
   function renderNav() {
     const links = NAV_LINKS.map(
-      (l) => `<a class="inv-chapter" href="${esc(l.href)}">${esc(l.label)}</a>`
+      (l) =>
+        `<a class="inv-chapter" href="#${esc(l.id)}" data-nav="${esc(l.id)}">${esc(l.label)}</a>`
     ).join('');
     return `<nav class="inv-nav" aria-label="Chapters">
       <div class="inv-nav-inner">
@@ -233,12 +264,27 @@
       return renderHero(s);
     },
     'def-navier'(s) {
+      // v4 defense-first opener: body + beats + doctrine (invest thesis paragraphs retired on this route)
       const paras = (s.thesis_paragraphs || [])
         .map(
           (p, i) =>
             `<p class="about-para ${i === 0 ? 'lead-para' : 'body-para'}">${esc(p)}</p>`
         )
         .join('');
+      const bodyLead = s.body
+        ? `<p class="about-para lead-para def-opener-body">${esc(s.body)}</p>`
+        : '';
+      const beats = (s.beats || [])
+        .map(
+          (b) => `<div class="defense-spec def-opener-beat">
+            <div class="defense-spec-term">${esc(b.head || b.term || '')}</div>
+            <div class="defense-spec-desc">${esc(b.body || b.desc || '')}</div>
+          </div>`
+        )
+        .join('');
+      const doctrine = s.doctrine_link && s.doctrine_link.url
+        ? `<a class="def-doctrine-chip" href="${esc(s.doctrine_link.url)}" target="_blank" rel="noopener noreferrer">${esc(s.doctrine_link.label || 'Read the Navier Doctrine →')}</a>`
+        : '';
       const media = s.media || {};
       const imgSrc = mediaPath(media.src || media.image || '');
       const hangar = imgSrc
@@ -248,25 +294,66 @@
             </div>
           </figure>`
         : '';
-      const bridge = s.body ? `<p class="def-closer section-inner">${esc(s.body)}</p>` : '';
+      // Legacy ONE CORE bridge only when beats are absent (pre-v4 contracts)
+      const bridge =
+        !beats && s.body && paras
+          ? `<div class="thesis-bridge">
+            <p class="thesis-bridge-label">ONE CORE</p>
+            <p class="thesis-bridge-body">${esc(s.body)}</p>
+          </div>`
+          : '';
+      const film = s.film || {};
+      const filmInner = film.src
+        ? videoTile(
+            Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }),
+            { wide: false, withSound: true }
+          )
+        : '';
+      // v4: intro|hangar, then beats|film (film no longer hangs alone below with empty stage)
+      if (beats && filmInner) {
+        return `<section class="section-block stage-section about-stage about-stage--opener" id="${esc(s.id)}" data-reveal>
+          <div class="section-inner about-opener">
+            <div class="about-opener-top">
+              <div class="about-opener-intro">
+                ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+                <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
+                ${bodyLead}
+              </div>
+              ${hangar ? `<div class="about-opener-hangar">${hangar}</div>` : ''}
+            </div>
+            <div class="about-opener-split">
+              <div class="about-opener-beats-col">
+                <div class="defense-specs def-opener-beats">${beats}</div>
+                ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}
+                ${doctrine ? `<div class="def-doctrine-wrap">${doctrine}</div>` : ''}
+              </div>
+              <div class="about-opener-film def-film-wrap def-film-wrap--beside" data-def-film>
+                ${filmInner}
+              </div>
+            </div>
+          </div>
+        </section>`;
+      }
+      const beatsBlock = beats
+        ? `<div class="defense-specs def-opener-beats">${beats}</div>
+           ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}
+           ${doctrine ? `<div class="def-doctrine-wrap">${doctrine}</div>` : ''}`
+        : '';
+      const filmHtml = filmInner
+        ? `<div class="def-film-wrap media-inner" data-def-film>${filmInner}</div>`
+        : '';
+      const prose = beats ? `${bodyLead}${beatsBlock}` : `${paras}${doctrine}`;
       return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
         <div class="section-inner about-stage-inner">
           <div class="about-copy">
             ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
-            <h2 class="h2 about-title">${esc(s.title || 'Core Thesis')}</h2>
-            <div class="about-prose">${paras}</div>
+            <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
+            <div class="about-prose">${prose}</div>
           </div>
           ${hangar}
+          ${bridge}
         </div>
-        ${bridge}
-      </section>`;
-    },
-    'def-problem'(s) {
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${blocksHtml(s.blocks)}
-        ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
+        ${filmHtml}
       </section>`;
     },
     'def-plainview'(s) {
@@ -281,7 +368,7 @@
           </div>`
         : '';
       return `<section class="section-block" id="${esc(s.id)}" data-reveal>
-        <div class="shell-stage">${kicker(s)}<h2 class="h2">${esc(s.title || '')}</h2></div>
+        <div class="shell-stage">${kicker(s)}<h2 class="h2 plainview-title">${esc(s.title || '')}</h2></div>
         ${cinema}
         <div class="shell-stage">
           ${blocksHtml(s.blocks)}
@@ -295,8 +382,12 @@
         (s.media_pair || []).find(function (m) {
           return m && m.src && !String(m.src).endsWith('.mp4');
         }) || (s.media_pair || [])[0];
-      const film = (s.videos || []).find(function (v) {
+      const vids = s.videos || [];
+      const film = vids.find(function (v) {
         return v.role === 'control-film' || v.embed_url;
+      });
+      const loops = vids.filter(function (v) {
+        return v !== film && v.src && /autoplay/i.test(v.behavior || '');
       });
       const wire = schem && schem.src ? mediaPath(schem.src) : '';
       return `<section class="section-block stage-section control-stage" id="${esc(s.id)}" data-reveal>
@@ -317,13 +408,28 @@
             ${film ? filmCard(film, film.poster, [film.title, film.duration].filter(Boolean).join(' · ')) : ''}
           </div>
         </div>
+        ${
+          loops.length
+            ? `<div class="def-video-row media-inner" style="grid-template-columns:1fr;max-width:960px;margin:20px auto 0">${loops
+                .map(function (v) {
+                  return videoTile(v);
+                })
+                .join('')}</div>`
+            : ''
+        }
       </section>`;
     },
     'def-flight'(s) {
-      const cards = (s.clips || [])
+      // Exactly three equal tiles — no fourth floating video
+      const clips = (s.clips || s.videos || []).slice(0, 3);
+      const cards = clips
         .map(function (c) {
           const poster = mediaPath(c.poster || '');
           const src = mediaPath(c.asset || c.src || '');
+          if (!src && c.embed_url) {
+            // fallback click tile if no local asset
+            return videoTile(c, { withSound: true });
+          }
           if (!src) return '';
           return `<div class="vcard vcard-loop" data-loop-src="${esc(src)}" data-clip="${esc(c.id || '')}">
             <span class="vcard-media">
@@ -333,30 +439,18 @@
               <span class="play"><span>▶</span></span>
               ${c.duration ? `<span class="dur">${esc(c.duration)}</span>` : ''}
             </span>
-            <span class="vcard-cap">${esc(c.caption || c.title || '')}</span>
+            ${c.title ? `<span class="vcard-title">${esc(c.title)}</span>` : ''}
+            <span class="vcard-cap">${esc(c.caption || '')}</span>
           </div>`;
         })
         .join('');
-      const stab = s.stabilization || {};
-      const stabSrc = stab.src ? mediaPath(stab.src) : '';
-      const stabHtml = stabSrc
-        ? `<figure class="defense-loop-video media-inner" style="margin-top:20px">
-            <div class="defense-video-frame defense-video-frame--lead">
-              <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="auto" data-lazy-video>
-                <source src="${esc(stabSrc)}" type="video/mp4" />
-              </video>
-            </div>
-            ${stab.caption ? `<figcaption>${esc(stab.caption)}</figcaption>` : ''}
-          </figure>`
-        : '';
       return `<section class="section-block" id="${esc(s.id)}" data-reveal data-home="proof.demo_grid">
         <div class="section-inner">
           ${kicker(s)}
           <h2 class="h2">${esc(s.title || '')}</h2>
           ${s.sub ? `<p class="demo-lede lead">${esc(s.sub)}</p>` : ''}
         </div>
-        <div class="video-grid equal-grid media-inner">${cards}</div>
-        ${stabHtml}
+        <div class="video-grid equal-grid media-inner" style="max-width:1100px;margin-left:auto;margin-right:auto">${cards}</div>
         ${s.closer ? `<p class="def-closer section-inner">${esc(s.closer)}</p>` : ''}
       </section>`;
     },
@@ -509,9 +603,19 @@
           </div>
 
           ${
-            s.sub_line || s.fine_print
+            s.resilience_thesis || s.sub_line || s.fine_print
               ? `<div class="defense-beat defense-beat--why">
             <p class="sublabel">DUAL-USE</p>
+            ${
+              s.resilience_thesis
+                ? `<div class="def-resilience">
+              ${s.resilience_thesis.kicker ? `<p class="def-resilience-kicker">${esc(s.resilience_thesis.kicker)}</p>` : ''}
+              ${s.resilience_thesis.title ? `<h3 class="def-resilience-title">${esc(s.resilience_thesis.title)}</h3>` : ''}
+              ${s.resilience_thesis.body ? `<p class="def-resilience-body">${esc(s.resilience_thesis.body)}</p>` : ''}
+              ${s.resilience_thesis.support_line ? `<p class="def-resilience-support">${esc(s.resilience_thesis.support_line)}</p>` : ''}
+            </div>`
+                : ''
+            }
             ${s.sub_line ? `<p class="defense-why-lead">${esc(s.sub_line)}</p>` : ''}
             ${s.fine_print ? `<p class="defense-budgets muted">${esc(s.fine_print)}</p>` : ''}
           </div>`
@@ -521,25 +625,79 @@
       </section>`;
     },
     'def-field'(s) {
-      const t = s.table || {};
-      const cols = t.columns || [];
-      const rows = t.rows || [];
-      const thead = `<tr>${cols.map((c) => `<th>${esc(c)}</th>`).join('')}</tr>`;
-      const tbody = rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join('')}</tr>`).join('');
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${s.sub ? `<p class="lead">${esc(s.sub)}</p>` : ''}
-        <div class="def-table-wrap"><table class="def-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>
-        ${s.closer ? `<p class="def-closer">${esc(s.closer)}</p>` : ''}
+      // Invest comparison-table port
+      const cols = s.columns || (s.table && s.table.columns) || [];
+      const rows = s.rows || (s.table && s.table.rows) || [];
+      const colNames = cols.map(function (c) {
+        return typeof c === 'string' ? c : c.name || '';
+      });
+      const head = `<tr>${colNames
+        .map(function (name, i) {
+          const hi = /navier|quanta/i.test(name);
+          return `<th class="${hi ? 'hi' : ''}${i === 0 ? ' row-label-th' : ''}">${esc(name || s.vessel_type_label || '')}</th>`;
+        })
+        .join('')}</tr>`;
+      let body = '';
+      if (s.vessel_type_row && s.vessel_type_row.length) {
+        body += `<tr class="vessel-type-row">${s.vessel_type_row
+          .map(function (cell, i) {
+            return `<td class="${i === 1 ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+          })
+          .join('')}</tr>`;
+      }
+      body += rows
+        .map(function (row) {
+          return `<tr>${(row || [])
+            .map(function (cell, i) {
+              return `<td class="${i === 1 ? 'hi' : ''}${i === 0 ? ' row-label' : ''}">${esc(cell)}</td>`;
+            })
+            .join('')}</tr>`;
+        })
+        .join('');
+      const takeaway = s.takeaway || s.closing_line || s.closer || '';
+      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal data-home="gtm.competitive">
+        <div class="section-inner">
+          ${kicker(s)}
+          ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.sub ? `<p class="lead">${esc(s.sub)}</p>` : ''}
+          <div class="table-wrap"><table class="cmp cmp-s17"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+          ${takeaway ? `<p class="closing-line takeaway-line">${esc(takeaway)}</p>` : ''}
+          ${s.explainer ? `<p class="explainer">${esc(s.explainer)}</p>` : ''}
+          ${s.source_note ? `<p class="muted source-note">${esc(s.source_note)}</p>` : ''}
+        </div>
       </section>`;
     },
     'def-family'(s) {
+      const g = s.gmvp_intro || {};
+      const wire = g.wireframe_image ? mediaPath(g.wireframe_image) : '';
+      const layers = (g.layers || [])
+        .map(function (l, i) {
+          return `<div class="gmvp-layer" data-layer="${i}">
+            <div class="gmvp-layer-name">${esc(l.label || l.name || '')}</div>
+            ${l.name && l.label ? `<div class="gmvp-layer-role">${esc(l.name)}</div>` : ''}
+            ${l.note ? `<div class="gmvp-layer-detail">${esc(l.note)}</div>` : ''}
+          </div>`;
+        })
+        .join('');
+      const gmvp = g.title
+        ? `<div class="gmvp-compose" style="margin:18px 0 28px">
+            <div class="gmvp-wire">${wire ? `<img src="${esc(wire)}" alt="" loading="lazy" class="gmvp-wire-img" />` : ''}</div>
+            <div class="gmvp-layers">
+              <p class="eyebrow">THREE LAYERS</p>
+              ${g.body ? `<p class="lead" style="margin-bottom:12px">${esc(g.body)}</p>` : ''}
+              ${layers}
+            </div>
+          </div>`
+        : '';
       const ladder = `<div class="def-ladder">${(s.ladder || [])
         .map((item) => {
           const name = item.name || item.vessel || '';
+          // Crop rule: plate + object-fit contain — vessel must stay fully visible at all widths
           return `<div class="def-ladder-item">
-          <img src="${esc(mediaPath(item.image))}" alt="${esc(name)}" loading="lazy" />
+          <div class="def-ladder-plate">
+            <img src="${esc(mediaPath(item.image))}" alt="${esc(name)}" loading="lazy" />
+          </div>
           <div class="meta">
             <div class="v">${esc(name)}${item.length_class ? ' · ' + esc(item.length_class) : ''}</div>
             ${item.status ? `<div class="status">${esc(item.status)}</div>` : ''}
@@ -548,31 +706,86 @@
         </div>`;
         })
         .join('')}</div>`;
-      return `<section class="section-block shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        ${s.body ? `<p>${esc(s.body)}</p>` : ''}
-        ${ladder}
-        ${s.media_extra ? plate(s.media_extra.src, s.media_extra.alt) : ''}
+      return `<section class="section-block shell-stage gmvp-stage" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          ${s.body ? `<p class="lead">${esc(s.body)}</p>` : ''}
+          ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
+          ${gmvp}
+          ${ladder}
+        </div>
       </section>`;
     },
     'def-team'(s) {
       const people = TEAM.slice();
       const sam = people.find((p) => /sampriti/i.test(p.name || ''));
       const others = people.filter((p) => p !== sam);
-      const cta = s.cta || {};
-      return `<section class="section-block team-section shell-stage" id="${esc(s.id)}" data-reveal>
-        ${kicker(s)}
-        <h2 class="h2">${esc(s.title || '')}</h2>
-        <div class="team-layout">
-          ${sam ? `<div class="team-featured">${teamCard(sam)}</div>` : ''}
-          <div class="team-grid">${others.map(teamCard).join('')}</div>
+      // Match other chapters: section-inner width (not full-bleed shell-stage)
+      return `<section class="section-block team-section" id="${esc(s.id)}" data-reveal>
+        <div class="section-inner">
+          ${kicker(s)}
+          <h2 class="h2">${esc(s.title || '')}</h2>
+          <div class="team-layout">
+            ${sam ? `<div class="team-featured">${teamCard(sam, true)}</div>` : ''}
+            <div class="team-grid">${others.map(function (p) { return teamCard(p, false); }).join('')}</div>
+          </div>
         </div>
-        <div class="def-cta">
-          <p>${esc(cta.line || '')}</p>
-          ${cta.email ? `<p><a href="mailto:${esc(cta.email)}">${esc(cta.email)}</a></p>` : ''}
-        </div>
-        ${plate('assets/deck/goldenhour-bow.jpg', 'Navier vessel bow at golden hour')}
+      </section>`;
+    },
+    'def-close'(s) {
+      const h = s.hero || {};
+      const vsrc = mediaPath(h.background_video || 'assets/closing-loop.mp4');
+      const poster = mediaPath(h.poster || 'assets/hero-poster.jpg');
+      const cta = h.cta || {};
+      const gd = s.go_deeper || {};
+      const items = (gd.items || [])
+        .map(function (it) {
+          if (it.type === 'video' || it.embed_url) {
+            return filmCard(
+              {
+                embed_url: it.embed_url,
+                youtube_id: it.youtube_id,
+                poster: it.poster,
+                title: it.caption,
+              },
+              it.poster || (it.youtube_id ? `assets/posters/${it.youtube_id}.jpg` : ''),
+              it.caption || ''
+            );
+          }
+          if (it.src) {
+            return `<figure class="go-deeper-plate">
+              <div class="go-deeper-plate-frame"><img src="${esc(mediaPath(it.src))}" alt="" loading="lazy" /></div>
+              ${it.caption ? `<figcaption class="go-deeper-plate-cap">${esc(it.caption)}</figcaption>` : ''}
+            </figure>`;
+          }
+          return '';
+        })
+        .join('');
+      return `<section class="section-block" id="${esc(s.id)}" data-reveal>
+        <section class="finale" id="finale">
+          <div class="finale-media">
+            <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="metadata" poster="${esc(poster)}" data-lazy-video>
+              <source src="${esc(vsrc)}" type="video/mp4" />
+            </video>
+          </div>
+          <div class="finale-scrim" aria-hidden="true"></div>
+          <div class="finale-inner">
+            ${h.line ? `<p class="h">${esc(h.line)}</p>` : ''}
+            <p class="mark">${esc(h.title || 'OWN THE LITTORAL')}</p>
+            ${
+              cta.href
+                ? `<a class="btn btn-primary" href="${esc(cta.href)}">${esc(cta.label || 'Arrange a briefing')}</a>`
+                : ''
+            }
+          </div>
+        </section>
+        <section class="go-deeper" id="go-deeper">
+          <div class="shell-stage go-deeper-inner">
+            <p class="chapter-label">${esc(gd.kicker || 'Go deeper')}</p>
+            <div class="go-deeper-media">${items}</div>
+          </div>
+        </section>
       </section>`;
     },
   };
@@ -697,15 +910,65 @@
     });
   }
 
-  /* Scroll cue */
+  /* Scroll cue + invest-style chapter spy / progress bar */
   const cue = $('#scroll-cue');
-  if (cue) {
-    window.addEventListener(
-      'scroll',
-      function () {
-        if (window.scrollY > 40) cue.style.opacity = '0';
-      },
-      { passive: true }
-    );
+  const progress = $('#inv-progress');
+  const navLinks = [...document.querySelectorAll('[data-nav]')];
+  const chapterIds = NAV_LINKS.map(function (l) {
+    return l.id;
+  });
+
+  function jumpToId(id, updateHash) {
+    const el = id && document.getElementById(id);
+    if (!el) return false;
+    const root = document.documentElement;
+    const prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    el.scrollIntoView();
+    root.style.scrollBehavior = prev;
+    if (updateHash && history.replaceState) history.replaceState(null, '', '#' + id);
+    onScrollNav();
+    return true;
+  }
+
+  function onScrollNav() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    if (cue && window.scrollY > 80) cue.style.opacity = '0';
+    const hv = document.querySelector('.hero-video');
+    if (hv && window.scrollY > window.innerHeight * 0.85) {
+      try {
+        hv.pause();
+      } catch (_) {}
+    }
+    const thresh = 100;
+    let active = chapterIds[0];
+    for (let i = 0; i < chapterIds.length; i++) {
+      const el = document.getElementById(chapterIds[i]);
+      if (el && el.getBoundingClientRect().top <= thresh) active = chapterIds[i];
+    }
+    navLinks.forEach(function (a) {
+      const on = a.getAttribute('data-nav') === active;
+      a.classList.toggle('active', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  navLinks.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      const id = (a.getAttribute('href') || '').replace(/^#/, '');
+      if (!id) return;
+      e.preventDefault();
+      jumpToId(id, true);
+    });
+  });
+
+  window.addEventListener('scroll', onScrollNav, { passive: true });
+  onScrollNav();
+  if (location.hash) {
+    requestAnimationFrame(function () {
+      jumpToId(location.hash.slice(1), false);
+    });
   }
 })();
