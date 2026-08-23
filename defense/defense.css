@@ -3273,3 +3273,211 @@ a.team-link:hover {
   color: rgba(255,255,255,.5);
   margin-top: 4px;
 }
+
+/* ── Defense mobile-first refinements (match /invest phone UX) ─ */
+@media (max-width: 720px) {
+  /* Thesis: copy above hangar plate (order can fail if grid track collapses oddly) */
+  .about-stage--split .about-stage-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .about-stage--split .about-copy { order: 1; width: 100%; max-width: none; }
+  .about-stage--split .about-plate { order: 2; width: 100%; }
+
+  /* Headlines: default 22ch forces awkward wraps on phone */
+  .defense-page .h2,
+  .defense-page .about-title,
+  .defense-page .plainview-title,
+  .defense-page .quanta-headline,
+  body.defense-page .h2 {
+    max-width: none;
+    font-size: clamp(1.65rem, 7.2vw, 2.15rem);
+    line-height: 1.2;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+  }
+  .plainview-title { max-width: none !important; }
+
+  /* Safe inline padding */
+  .shell-stage,
+  .section-inner,
+  .about-stage-inner,
+  .media-inner {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* Film under thesis */
+  .def-film-wrap {
+    max-width: 100%;
+    margin: 20px 0 0;
+    padding: 0 max(16px, env(safe-area-inset-left, 0px));
+  }
+  .def-film-wrap .film-play-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+  }
+  .def-film-wrap .def-video-title,
+  .def-film-wrap figcaption {
+    padding: 0 4px;
+  }
+
+  /* Competitive table: swipeable with sticky row labels */
+  #def-field .table-wrap,
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    margin-left: max(-4px, calc(-1 * env(safe-area-inset-left, 0px)));
+    margin-right: max(-4px, calc(-1 * env(safe-area-inset-right, 0px)));
+    border-radius: 8px;
+  }
+  #def-field .table-wrap::after {
+    content: "Swipe for full table →";
+    display: block;
+    padding: 8px 12px 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-2, rgba(255,255,255,0.45));
+  }
+  .cmp,
+  .cmp-s17 {
+    font-size: 11.5px;
+    min-width: 560px;
+  }
+  .cmp th,
+  .cmp td,
+  .cmp-s17 th,
+  .cmp-s17 td {
+    padding: 10px 12px;
+  }
+  .cmp .row-label,
+  .cmp-s17 td.row-label,
+  .cmp-s17 th.row-label-th {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #121214;
+    box-shadow: 6px 0 10px rgba(0, 0, 0, 0.35);
+  }
+  .cmp thead th.row-label-th,
+  .cmp-s17 thead th.row-label-th {
+    background: #1a1a1e;
+    z-index: 3;
+  }
+  .takeaway-line {
+    font-size: clamp(1.05rem, 4.8vw, 1.25rem);
+    line-height: 1.35;
+  }
+  .explainer {
+    font-size: 13.5px;
+    max-width: none;
+  }
+
+  /* Dual-use / defense panel stacks */
+  .defense-sbs,
+  .defense-secondary {
+    grid-template-columns: 1fr !important;
+  }
+  .defense-quiet {
+    grid-template-columns: 1fr !important;
+  }
+  .defense-specs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dual-use-blocks {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Quanta */
+  .quanta-stats-compose,
+  .quanta-stats-compose.has-plate {
+    grid-template-columns: 1fr !important;
+  }
+  .quanta-stats-copy .gold-stat-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .doors,
+  .doors.doors-3,
+  .doors.doors-2 {
+    grid-template-columns: 1fr !important;
+  }
+  .atlantic-band {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Control / GMVP already stack via invest rules; tighten gaps */
+  .control-sbs,
+  .gmvp-compose {
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  /* Flight demos */
+  .video-grid.equal-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* Ladder cards */
+  .def-ladder-item {
+    grid-template-columns: 1fr !important;
+  }
+  .def-ladder-item img {
+    height: 168px;
+  }
+
+  /* Team */
+  .team-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .team-featured .team-photo.lg,
+  .team-featured .team-photo {
+    max-width: 100%;
+  }
+
+  /* Close / Go Deeper */
+  .finale {
+    min-height: 78svh;
+  }
+  .finale-inner {
+    padding: 28px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+  .finale .mark {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+  }
+  .finale .h {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .go-deeper-media {
+    grid-template-columns: 1fr !important;
+  }
+  .go-deeper-inner {
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Spec / mission leftovers */
+  .def-mission {
+    grid-template-columns: 1fr !important;
+  }
+  .def-spec-row {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .defense-specs,
+  .def-spec-row,
+  .quanta-stats-copy .gold-stat-band {
+    grid-template-columns: 1fr !important;
+  }
+  .inv-chapters a {
+    padding: 7px 10px;
+    font-size: 9.5px;
+  }
+}
