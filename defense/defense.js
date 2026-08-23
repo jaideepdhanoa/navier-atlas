@@ -279,10 +279,6 @@
           </div>`
         )
         .join('');
-      const beatsBlock = beats
-        ? `<div class="defense-specs def-opener-beats">${beats}</div>
-           ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}`
-        : '';
       const doctrine = s.doctrine_link && s.doctrine_link.url
         ? `<a class="def-doctrine-chip" href="${esc(s.doctrine_link.url)}" target="_blank" rel="noopener noreferrer">${esc(s.doctrine_link.label || 'Read the Navier Doctrine →')}</a>`
         : '';
@@ -304,15 +300,46 @@
           </div>`
           : '';
       const film = s.film || {};
-      const filmHtml = film.src
-        ? `<div class="def-film-wrap media-inner" data-def-film>
-            ${videoTile(
-              Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }),
-              { wide: true, withSound: true }
-            )}
-          </div>`
+      const filmInner = film.src
+        ? videoTile(
+            Object.assign({}, film, { behavior: film.behavior || 'click-to-play with sound' }),
+            { wide: false, withSound: true }
+          )
         : '';
-      const prose = beats ? `${bodyLead}${beatsBlock}${doctrine}` : `${paras}${doctrine}`;
+      // v4: intro|hangar, then beats|film (film no longer hangs alone below with empty stage)
+      if (beats && filmInner) {
+        return `<section class="section-block stage-section about-stage about-stage--opener" id="${esc(s.id)}" data-reveal>
+          <div class="section-inner about-opener">
+            <div class="about-opener-top">
+              <div class="about-opener-intro">
+                ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
+                <h2 class="h2 about-title">${esc(s.title || 'An American Maritime Company.')}</h2>
+                ${bodyLead}
+              </div>
+              ${hangar ? `<div class="about-opener-hangar">${hangar}</div>` : ''}
+            </div>
+            <div class="about-opener-split">
+              <div class="about-opener-beats-col">
+                <div class="defense-specs def-opener-beats">${beats}</div>
+                ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}
+                ${doctrine ? `<div class="def-doctrine-wrap">${doctrine}</div>` : ''}
+              </div>
+              <div class="about-opener-film def-film-wrap def-film-wrap--beside" data-def-film>
+                ${filmInner}
+              </div>
+            </div>
+          </div>
+        </section>`;
+      }
+      const beatsBlock = beats
+        ? `<div class="defense-specs def-opener-beats">${beats}</div>
+           ${s.beats_source_line ? `<p class="def-fine def-beats-source">${esc(s.beats_source_line)}</p>` : ''}
+           ${doctrine ? `<div class="def-doctrine-wrap">${doctrine}</div>` : ''}`
+        : '';
+      const filmHtml = filmInner
+        ? `<div class="def-film-wrap media-inner" data-def-film>${filmInner}</div>`
+        : '';
+      const prose = beats ? `${bodyLead}${beatsBlock}` : `${paras}${doctrine}`;
       return `<section class="section-block stage-section about-stage ${hangar ? 'about-stage--split' : ''}" id="${esc(s.id)}" data-reveal>
         <div class="section-inner about-stage-inner">
           <div class="about-copy">
