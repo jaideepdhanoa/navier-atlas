@@ -11176,22 +11176,27 @@
   },
   "products": {
     "section_title": "How employers join",
-    "section_lead": "Buy capacity into the network from your stop — or help anchor a line that sequences past your waterfront.",
+    "section_lead": "N30 for private executive pods. N45 for premium network commuting when seat demand is real.",
     "items": [
       {
         "id": "n30",
         "tag": "Available now",
         "tag_class": "tag-now",
         "title": "N30 Executive Shuttle",
-        "body": "N30 Executive Shuttle — 8 seats, on-demand, available now. For leadership teams, airport runs, and client moves.",
+        "body": "Your team’s boat — point to point, no waiting for other companies. Fixed AM/PM slots with a wait buffer for executives, Wi‑Fi and tables so people can work, coffee and light F&B included. One captain runs the vessel and hospitality on this small craft.",
         "meta": [
-          "8 seats",
-          "On-demand",
-          "Pilot path"
+          "8 seats · dedicated",
+          "No multi-company wait",
+          "Wi‑Fi + tables + F&B all-in",
+          "~$850–1,100 / trip",
+          "From ~$34–42k / mo reserved AM+PM"
         ],
-        "cta_label": "Talk about a shuttle pilot",
-        "cta_href": "#letter",
-        "cta_class": "btn-ghost"
+        "cta_label": "Model an executive program",
+        "cta_href": "#calculator",
+        "cta_class": "btn-primary",
+        "vessel_mode": "n30",
+        "flavor_key": "executive",
+        "flavor": "shuttle"
       },
       {
         "id": "n45",
@@ -11206,14 +11211,17 @@
         ],
         "cta_label": "Model seats on a line",
         "cta_href": "#calculator",
-        "cta_class": "btn-primary"
+        "cta_class": "btn-ghost",
+        "vessel_mode": "n45",
+        "flavor_key": "seats"
       }
     ]
   },
   "loi": {
     "flavor_order": [
       "anchor",
-      "seats"
+      "seats",
+      "executive"
     ],
     "flavors": {
       "anchor": {
@@ -11225,6 +11233,11 @@
         "id": "B",
         "title": "Option B — Commit seats",
         "body": "Reserve seats at $750–900 per seat-month and we aggregate launch demand for your line. Non-binding."
+      },
+      "executive": {
+        "id": "C",
+        "title": "Option C — N30 executive program",
+        "body": "Reserve fixed AM/PM dedicated slots for your team only — all-in trip price with Wi‑Fi cabin and F&B. Non-binding interest."
       }
     },
     "default_flavor": "A",
@@ -12510,6 +12523,50 @@
       "new-rochelle|glen-cove": 50,
       "port-washington|new-rochelle": 50,
       "new-rochelle|port-washington": 50
+    }
+  },
+  "executive_shuttle": {
+    "title": "Executive program estimator",
+    "lead": "Indicative all-in pricing — whole boat, F&B included, one captain. Fixed slots with a wait buffer so executives are not on-demand roulette. Backed out to keep the asset profitable; ranges, not quotes.",
+    "trip_price_usd_band": [
+      850,
+      1100
+    ],
+    "trip_price_usd_mid": 950,
+    "program_month_usd_band": [
+      34000,
+      42000
+    ],
+    "program_month_usd_mid": 38000,
+    "default_trips_per_week": 10,
+    "assumptions": [
+      "Weekday AM + PM dedicated one-ways (≈40 trips/mo at mid case)",
+      "Block includes water time plus a wait buffer at pickup",
+      "Premium cabin: Wi‑Fi, tables, coffee / light F&B all-in",
+      "Single captain (vessel + hospitality on an 8-seat craft)",
+      "Indicative — corridor and ops walkthrough refine the number"
+    ],
+    "fn": "fn_exec_shuttle",
+    "_internal": {
+      "worked_mid": {
+        "capex_usd": 1000000,
+        "trips_mo": 40,
+        "block_hr": 1.25,
+        "captain_usd_hr_loaded": 100,
+        "fb_usd_per_trip": 200,
+        "opex_usd_mo": 20000,
+        "trip_price_usd": 950,
+        "gross_program_usd_mo": 38000,
+        "shoulder_charter_hrs": 8,
+        "shoulder_charter_usd_hr": 850,
+        "payback_years_with_shoulders": 3.4,
+        "note": "Program-only mid ≈5y payback; with midday/evening charters+experiences ≈3.4y on $1M."
+      }
+    }
+  },
+  "footnotes": {
+    "fn_exec_shuttle": {
+      "text": "Executive shuttle bands are indicative, backed out from N30 ~$1M capex, single-captain loaded wages, energy/maintenance/berth scaled from fleet planning, and all-in F&B. Fixed AM/PM slots assumed. Not a quote."
     }
   }
 }

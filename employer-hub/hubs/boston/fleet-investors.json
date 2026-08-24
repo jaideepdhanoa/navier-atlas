@@ -32,6 +32,9 @@
     },
     "fn7": {
       "text": "Spot-seat volumes are backed into each scenario's monthly total from the stated fill rate (10–30%) and fare band ($45–$65/leg); not separately itemized in the source model. Figures rounded to the nearest seat-leg."
+    },
+    "fn_n30_exec": {
+      "text": "N30 executive economics are indicative platform figures (all-in cabin + F&B on a ~$1M vessel, one captain, fixed AM/PM slots plus wait buffer). Shoulder charters/experiences are additive. Not a quote — ops walkthrough required."
     }
   },
   "hero": {
@@ -875,6 +878,510 @@
       "protection_card1_v2": {
         "title": "Demand-gated launch",
         "body": "Corridors launch only at 60–80 committed seats — capital deploys behind committed demand, not ahead of it."
+      }
+    }
+  },
+  "pnl_models": {
+    "n45": {
+      "label": "N45 Explorer",
+      "capex_usd": 3000000,
+      "payback_label": "N45 Explorer",
+      "honesty": "Payback is for a single N45 Explorer (~$3M). Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.",
+      "revenue_build": {
+        "title": "The revenue build",
+        "fn": "fn3",
+        "data": {
+          "scenarios": {
+            "conservative": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "36 seats/mo",
+                  "price": "$950/seat-month",
+                  "subtotal_usd": 34200,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Guaranteed monthly seats for the AM/PM commute."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "~370 legs/mo (derived, 10% fill)",
+                  "price": "$45/leg",
+                  "subtotal_usd": 16650,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Experiences",
+                  "quantity": "10 sailings/mo × 15 seats",
+                  "price": "$59/person",
+                  "subtotal_usd": 8850,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Midday and weekend harbor sailings."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "3 charters/mo × 2.0 hrs",
+                  "price": "$550/hr",
+                  "subtotal_usd": 3300,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour."
+                }
+              ],
+              "gross_monthly_usd": 43100
+            },
+            "mid": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "48 seats/mo",
+                  "price": "$1,100/seat-month",
+                  "subtotal_usd": 52800,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Guaranteed monthly seats for the AM/PM commute."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "~634 legs/mo (derived, 20% fill)",
+                  "price": "$55/leg",
+                  "subtotal_usd": 34888,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Experiences",
+                  "quantity": "28 sailings/mo × 20 seats",
+                  "price": "$69/person",
+                  "subtotal_usd": 38640,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Midday and weekend harbor sailings."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "6 charters/mo × 2.25 hrs",
+                  "price": "$550/hr",
+                  "subtotal_usd": 7425,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour."
+                }
+              ],
+              "gross_monthly_usd": 91000
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "54 seats/mo",
+                  "price": "$1,200/seat-month",
+                  "subtotal_usd": 64800,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Guaranteed monthly seats for the AM/PM commute."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "~873 legs/mo (derived, 30% fill)",
+                  "price": "$60/leg",
+                  "subtotal_usd": 52350,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Experiences",
+                  "quantity": "40 sailings/mo × 22 seats",
+                  "price": "$79/person",
+                  "subtotal_usd": 69520,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Midday and weekend harbor sailings."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "10 charters/mo × 2.5 hrs",
+                  "price": "$600/hr",
+                  "subtotal_usd": 15000,
+                  "status": "market_priced",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour."
+                },
+                {
+                  "line": "Sponsorship (upside)",
+                  "quantity": "fleet-level $150K/yr ÷ 4 vessels",
+                  "price": "$3,100/mo",
+                  "subtotal_usd": 3100,
+                  "status": "upside",
+                  "fn": "fn3",
+                  "note": "Naming/sponsorship revenue — upside only, never in base totals."
+                },
+                {
+                  "line": "Overnight cargo (upside)",
+                  "quantity": "16 runs/mo",
+                  "price": "$350/run",
+                  "subtotal_usd": 5600,
+                  "status": "upside",
+                  "fn": "fn3",
+                  "note": "Overnight cargo runs — upside only, never in base totals."
+                }
+              ],
+              "gross_monthly_usd": 149200
+            }
+          }
+        },
+        "note": "Every quantity comes from the approved revenue-stack model — these rows expose what the P&L totals already include.",
+        "_provenance": "Rows are the worked per-vessel model in REVENUE-STACK-BOSTON.md §5, verbatim, except 'Spot seats' whose leg-count is backed into the gross total by subtraction (gross minus the other three/five stated lines) because the source doc states only the fill rate and fare band, not a total residual-capacity leg count. See fn7. Sponsorship $/mo shown as $3,100 (doc's stated rounded figure) rather than the unrounded $3,125 (=$150,000/12/4) so upside rows sum exactly to the P&L's $149,200 gross."
+      },
+      "pnl": {
+        "copy": {
+          "headline": "One asset. One day. Four demand layers.",
+          "body": "A commuter-only vessel earns in ~15% of its available hours — this network monetizes the whole day. Commuter bundles are the schedule spine; experiences, charters, spot seats and overnight lines buy down payback."
+        },
+        "fn": "fn3",
+        "data": {
+          "revenue_rows": [
+            {
+              "line": "Committed commuter bundles",
+              "pricing": "$950–1,275 / seat-month",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "A discounted monthly pass — 3–4× an MBTA monthly, ~50–60% below a door-to-door ride-hail substitute.",
+              "status": "market_priced",
+              "fn": "fn1"
+            },
+            {
+              "line": "Spot seats",
+              "pricing": "$40–65 / leg",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Yield-managed seats on spare commute capacity and shoulder sailings; fill assumed thin at 10–30%.",
+              "status": "market_priced",
+              "fn": "fn1"
+            },
+            {
+              "line": "Experiences & private charters",
+              "pricing": "$59–79 / person · charters $550–600 / hr",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Midday, evening and weekend sailings, priced within Boston's operating market for harbor experiences.",
+              "status": "market_priced",
+              "fn": "fn1"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 63000,
+              "mid": 133753,
+              "upside": 210370
+            }
+          },
+          "opex_rows": [
+            {
+              "line": "Energy",
+              "per_mo_low": 1500,
+              "per_mo_high": 5200,
+              "note": "Electric operation across commute, midday, evening and weekend sailings.",
+              "status": "modeled"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 5400,
+              "per_mo_high": 8300,
+              "note": "Range spans smaller-vessel service history up to a $100K/yr ceiling for the N45.",
+              "status": "modeled"
+            },
+            {
+              "line": "Crew",
+              "per_mo_low": 11800,
+              "per_mo_high": 18800,
+              "note": "Two crew (captain + deckhand) at $85/hr combined, loaded, across a full service day.",
+              "status": "market_priced",
+              "fn": "fn6"
+            },
+            {
+              "line": "Insurance & landing/berth fees",
+              "per_mo_low": 4600,
+              "per_mo_high": 10750,
+              "note": "Early estimate pending Navier-specific quotes.",
+              "status": "modeled"
+            }
+          ],
+          "opex_total": {
+            "title": "Operating cost / month",
+            "per_mo_low": 28800,
+            "per_mo_high": 36400
+          },
+          "network_share": {
+            "line": "Navier network share",
+            "value": "10% of gross revenue, off the top"
+          },
+          "net": {
+            "title": "Net to investor / month",
+            "per_scenario": {
+              "conservative": 33400,
+              "mid": 87203,
+              "upside": 146283
+            }
+          },
+          "payback": {
+            "title": "Payback",
+            "per_scenario": {
+              "conservative": "~7.5 yr",
+              "mid": "~2.9 yr",
+              "upside": "~1.7 yr"
+            }
+          },
+          "upside_rows": [
+            {
+              "line": "Sponsorship",
+              "pricing": "$150K / yr, fleet-level",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Naming and station sponsorship, priced from transit-sponsorship precedents. Never summed into base totals.",
+              "status": "upside",
+              "fn": "fn3"
+            },
+            {
+              "line": "Overnight cargo runs",
+              "pricing": "~$350 / run · 16 nights / mo",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Medical samples, batch parcels and catering moved at night, priced to published waterborne and courier rates.",
+              "status": "upside",
+              "fn": "fn3"
+            },
+            {
+              "line": "Speed-rule relief",
+              "pricing": null,
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Route-specific relief where wake and noise are independently measured. Not quantified for Boston.",
+              "status": "upside",
+              "fn": "fn4"
+            }
+          ],
+          "scenarios": {
+            "title": "Three scenarios",
+            "note": "Per-vessel N45 ($3M); no subsidized flat-rate seat pricing in any case. Conservative shown always; upside labeled.",
+            "fn": "fn3",
+            "table": [
+              {
+                "case": "Conservative",
+                "gross_monthly": 63000,
+                "net_to_investor_monthly": 33400,
+                "annual": 400800,
+                "payback": "~7.5 yr",
+                "note": "Cash-positive but not financeable — deliberately punitive fill assumptions.",
+                "upside_lines_included": false
+              },
+              {
+                "case": "Mid",
+                "gross_monthly": 133753,
+                "net_to_investor_monthly": 87203,
+                "annual": 1046436,
+                "payback": "~2.9 yr",
+                "note": "The financeable headline case — experience sailings at roughly half the cadence of Boston's incumbents, priced below their dinner tier.",
+                "upside_lines_included": false
+              },
+              {
+                "case": "Upside",
+                "gross_monthly": 210370,
+                "net_to_investor_monthly": 146283,
+                "annual": 1755396,
+                "payback": "~1.7 yr",
+                "note": "Adds sponsorship ($3.1K/mo per vessel) and overnight cargo ($5.6K/mo) on top of the mid case.",
+                "upside_lines_included": true
+              }
+            ]
+          }
+        },
+        "_provenance": {
+          "structure_v1": "utilization_stack (D6′ LOCKED 2026-08-15, supersedes anchor-first): committed bundles → spot seats → experiences & charters → upside lines (sponsorship, overnight cargo) → opex → network share → scenario payback",
+          "sources": "REVENUE-LEVER-BENCHMARKS.md + CARGO-LAYER-BENCHMARKS.md (operator, year, URL, confidence per rate). Crew: handoff/archetypes/CREW-COST-BENCHMARKS.md",
+          "opex_labels_v1": {
+            "energy": "Canon 4.1 kWh/nm @ $0.30/kWh × stacked daily activity (commute legs + midday/evening/weekend sailings). Electric-operation assumption.",
+            "maintenance": "N45 NOT validated — N30 canon ($65K/yr) floor, $100K/yr stated ceiling assumption, ÷12.",
+            "crew": "Benchmark-validated 2026-08-15 — 2-crew (captain + deckhand), $85/hr combined loaded, extended to stacked hours. Basis: BLS OEWS Boston metro means (May 2023) x 1.4294 ECEC burden = $77.16/hr; $85 = ~3%/yr wage drift to 2026 (assumption, labeled). Shift structure (split shifts for 16-hr stacked day) to ops walkthrough.",
+            "insurance": "Placeholder, weak basis — hull/liability ~1.5–3%/yr of insured value + illustrative berth fee loosely anchored to one documented commercial rate; not a Navier-specific quote."
+          },
+          "network_share_basis": "canon",
+          "layer_pricing_basis_v1": {
+            "committed_bundles_L1": "$950–1,275/seat-month — priced as a discounted pass vs premium spot (industry pass discounts 26–51%: MBTA ~26%, Seastreak 40-trip ~35%, NYC Ferry ~36%, Blade ~44–51%); 3–4× MBTA monthly ($319); ~50–60% below door-to-door substitute (Uber Salem→Boston ~$56/trip ≈ $2,460/mo). Status v1: Benchmark-anchored; canon-consistent; no Boston operations yet.",
+            "spot_seats_L2": "$40–65/leg, yield-managed — bounded by Seastreak $30 and Uber door-to-door ~$55–56; matches approved corridor fare (Boston↔Hingham $65). Status v1: Benchmark-anchored; fill rates unproven, modeled thin (10–30%).",
+            "experiences_charters_L3": "Experiences $59–79/pp (Boston market: BHCC sunset $49 → Odyssey dinner $77–98, whale watch $75); charters $550–600/hr (Boston Charter Boat $550/hr, 25-pax, 2-hr min). Status v1: Market-priced (Boston operators cited); not yet operated by Navier; conservative case ≈ ⅓ of one incumbent daily sailing.",
+            "sponsorship_U1": "$150K/yr fleet-level placeholder — precedents: Citi Bike ~$7–8M/yr system, Santander Cycles £6.25M/yr, Cleveland HealthLine line-naming $250K/yr, Barclays station $200K/yr. Status v1: Precedent-priced; no marine-transit precedent; never per-vessel headline.",
+            "overnight_cargo_U2": "~$350/run contract, 16 nights/mo — anchored to published waterborne tariffs (Casco Bay Lines 2026: $0.108–0.162/kg generic freight ⇒ $216–324 per ~2,000 kg run) + medical-courier premiums (Dropoff 2026: $30–100/job, refrigerated $3.50–5.25/mi). Status v1: Published-tariff-anchored; not yet operated by Navier; harbor cargo earns courier-linehaul rates, NOT island air-substitute rates ($0.75–1.50/kg canon does not apply where roads exist). First cargo classes: medical/lab specimens, batch parcels, catering/event — clean, high-value, night-moving. Seafood REJECTED as first class (odor/leakage/sanitation in premium cabin; commodity-priced $2.50–3.75/box)."
+          },
+          "stack_frame_v1": "One asset, one day, four demand layers. A commuter-only vessel monetizes ~15% of available hours; the stack monetizes the day. Commute is the strategic backbone and schedule spine; experiences, charters, spot and overnight lines buy down payback.",
+          "payback_summary_v1": "conservative ~21 yr (cash-positive, not financeable); mid ~4.3 yr — headline; upside ~2.1 yr (incl. sponsorship + cargo upside lines). Indicative ranges only, conservative default. Upside comes from utilization layers with cited market prices and from more corridors activating — never from inflating per-layer assumptions.",
+          "speed_relief_row_v1": "With authority speed-rule relief (precedent: Stockholm Candela P-12 exemption). Not quantified for Boston this pass — renders as a labeled upside row without numbers. Never blended into base or mid cases; base economics respect posted limits.",
+          "scenarios_label_v1": "Per-vessel N45 ($3M capex), no anchor subsidy in any case. Ranges + assumptions, conservative default. Every unproven layer enters base case only at deliberately thin utilization.",
+          "upside_scenario_detail_v1": "Includes sponsorship ($3.1K/mo per vessel, fleet-level ÷4) + overnight cargo ($5.6K/mo). Converges with canon partner-corridor payback (Boston↔Hingham 2.49 yr) — same physics: all-day premium utilization.",
+          "scenario_qa_v1": "Mid case is the financeable headline — requires L3 execution at roughly half the sailing cadence of Boston's incumbent experience operators, at prices below their dinner tier. Conservative shown always. Upside labeled. Crew rate benchmark-validated vs BLS Boston (loaded mean $77.16/hr May 2023; model uses $85 with wage-drift buffer); shift structure pending ops walkthrough."
+        }
+      }
+    },
+    "n30": {
+      "label": "N30 Executive",
+      "capex_usd": 1000000,
+      "payback_label": "N30 Executive",
+      "honesty": "Payback is for a single N30 Executive (~$1M). All-in F&B, one captain, fixed AM/PM slots with wait buffer. Shoulder charters/experiences are additive. Indicative platform economics — not yet calibrated to this market.",
+      "revenue_build": {
+        "title": "N30 executive revenue build",
+        "fn": "fn_n30_exec",
+        "data": {
+          "scenarios": {
+            "conservative": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "32 trips/mo",
+                  "price": "$850/trip all-in",
+                  "subtotal_usd": 27200,
+                  "note": "Weekday program with thinner slot take-up.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "4 hrs/mo",
+                  "price": "$750/hr",
+                  "subtotal_usd": 3000,
+                  "note": "Shoulder corporate / VIP.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "2 × 4 pax",
+                  "price": "$79/person",
+                  "subtotal_usd": 632,
+                  "note": "Light midday fill.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "mid": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "40 trips/mo (AM+PM × 20 days)",
+                  "price": "$950/trip all-in",
+                  "subtotal_usd": 38000,
+                  "note": "Fixed slots + wait buffer; F&B included.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "8 hrs/mo",
+                  "price": "$850/hr",
+                  "subtotal_usd": 6800,
+                  "note": "Midday / evening executive amenity rate.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "6 × 6 pax",
+                  "price": "$95/person",
+                  "subtotal_usd": 3420,
+                  "note": "Short premium sails.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "44 trips/mo",
+                  "price": "$1,100/trip all-in",
+                  "subtotal_usd": 48400,
+                  "note": "Full weekday slots + premium corridor.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "12 hrs/mo",
+                  "price": "$950/hr",
+                  "subtotal_usd": 11400,
+                  "note": "Strong shoulder demand.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "10 × 6 pax",
+                  "price": "$110/person",
+                  "subtotal_usd": 6600,
+                  "note": "Evening / weekend premium.",
+                  "status": "modeled"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "pnl": {
+        "copy": {
+          "headline": "Dedicated executive slots — then fill the rest of the day.",
+          "body": "Employers are asking for Uber-shuttle privacy: fixed AM/PM departures for their people only, with a wait buffer, Wi‑Fi tables, and F&B all-in. One captain runs the boat and hospitality. Midday and evening charters still monetize the shoulder. Payback is on the ~$1M N30 — not the N45 workhorse.",
+          "payback_basis": "N30 Executive (~$1M) per vessel",
+          "cards": []
+        },
+        "fn": "fn_n30_exec",
+        "data": {
+          "opex_rows": [
+            {
+              "line": "Captain (loaded)",
+              "per_mo_low": 3800,
+              "per_mo_high": 6200,
+              "note": "Hours track reserved blocks + shoulder charters; single crew.",
+              "status": "market_priced",
+              "fn": "fn5"
+            },
+            {
+              "line": "Energy",
+              "per_mo_low": 800,
+              "per_mo_high": 1200,
+              "note": "Electric foiling on short Bay legs.",
+              "status": "modeled"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 2200,
+              "per_mo_high": 2800,
+              "note": "Scaled vs N45 planning midpoint.",
+              "status": "modeled"
+            },
+            {
+              "line": "Insurance & berth",
+              "per_mo_low": 3000,
+              "per_mo_high": 4000,
+              "note": "Early Bay estimate pending quotes.",
+              "status": "modeled"
+            },
+            {
+              "line": "F&B (all-in)",
+              "per_mo_low": 5600,
+              "per_mo_high": 9900,
+              "note": "Coffee / light meal included in trip price — not passthrough.",
+              "status": "modeled"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 30832,
+              "mid": 48220,
+              "upside": 66400
+            }
+          },
+          "vessel_capex_usd": 1000000
+        }
       }
     }
   }

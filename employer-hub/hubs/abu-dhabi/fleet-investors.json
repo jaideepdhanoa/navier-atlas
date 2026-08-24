@@ -50,6 +50,9 @@
     },
     "fn13": {
       "text": "Lulu Island has no verified public facility today. It renders as an experience anchor only — a scenic loop marker with no landing assumed and no demand modeled on it."
+    },
+    "fn_n30_exec": {
+      "text": "N30 executive economics are indicative platform figures (all-in cabin + F&B on a ~$1M vessel, one captain, fixed AM/PM slots plus wait buffer). Shoulder charters/experiences are additive. Not a quote — ops walkthrough required."
     }
   },
   "hero": {
@@ -779,5 +782,545 @@
       "U2 cargo rate $300/run uses courier-linehaul logic; no AD waterborne freight tariff found — upside only.",
       "Eastern Mangroves corridor never renders on this page (no bindable clean route); mangrove-channel numeric zone tier is unverified — conservative 8-kn planning basis flagged in SPEED-RULES-ABU-DHABI.md."
     ]
+  },
+  "pnl_models": {
+    "n45": {
+      "label": "N45 Explorer",
+      "capex_usd": 3000000,
+      "payback_label": "N45 Explorer",
+      "honesty": "Payback is for a single N45 Explorer (~$3M). Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.",
+      "revenue_build": {
+        "title": "The revenue build",
+        "fn": "fn3",
+        "data": {
+          "scenarios": {
+            "conservative": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "36 seats/mo",
+                  "price": "$500/seat-month",
+                  "subtotal_usd": 18000,
+                  "status": "modeled",
+                  "fn": "fn5",
+                  "note": "Guaranteed monthly seats for the AM/PM commute, at the bottom of the derived band."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "10% of 2,464 residual seat-legs (246 seats)",
+                  "price": "$20/leg",
+                  "subtotal_usd": 4920,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Shared experiences",
+                  "quantity": "20 sailings/mo × 18 seats",
+                  "price": "$40/person",
+                  "subtotal_usd": 14400,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Lulu, Saadiyat and Yas loops, priced at the bottom of the sourced sightseeing band."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "8 charter hrs/mo",
+                  "price": "$450/hr",
+                  "subtotal_usd": 3600,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour on the marquee and feeder corridors."
+                }
+              ],
+              "gross_monthly_usd": 30120
+            },
+            "mid": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "48 seats/mo",
+                  "price": "$650/seat-month",
+                  "subtotal_usd": 31200,
+                  "status": "modeled",
+                  "fn": "fn5",
+                  "note": "Guaranteed monthly seats for the AM/PM commute, at the middle of the derived band."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "20% of 2,112 residual seat-legs (422 seats)",
+                  "price": "$25/leg",
+                  "subtotal_usd": 10550,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Shared experiences",
+                  "quantity": "36 sailings/mo × 21 seats",
+                  "price": "$50/person",
+                  "subtotal_usd": 37800,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Lulu, Saadiyat and Yas loops — the headline layer of the Abu Dhabi day."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "14 charter hrs/mo",
+                  "price": "$525/hr",
+                  "subtotal_usd": 7350,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour on the marquee and feeder corridors."
+                }
+              ],
+              "gross_monthly_usd": 63900
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "54 seats/mo",
+                  "price": "$775/seat-month",
+                  "subtotal_usd": 41850,
+                  "status": "modeled",
+                  "fn": "fn5",
+                  "note": "Guaranteed monthly seats for the AM/PM commute, at the top of the derived band."
+                },
+                {
+                  "line": "Spot seats",
+                  "quantity": "30% of 1,936 residual seat-legs (581 seats)",
+                  "price": "$30/leg",
+                  "subtotal_usd": 17430,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity."
+                },
+                {
+                  "line": "Shared experiences",
+                  "quantity": "56 sailings/mo × 22 seats",
+                  "price": "$60/person",
+                  "subtotal_usd": 73920,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "A full experience day across the Lulu, Saadiyat and Yas loops."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "26 charter hrs/mo",
+                  "price": "$600/hr",
+                  "subtotal_usd": 15600,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour on the marquee and feeder corridors."
+                },
+                {
+                  "line": "Sponsorship (upside)",
+                  "quantity": "fleet-level $150K/yr ÷ 4 vessels",
+                  "price": "$3,125/mo",
+                  "subtotal_usd": 3125,
+                  "status": "upside",
+                  "fn": "fn3",
+                  "note": "Naming/sponsorship revenue — upside only, never in base totals."
+                },
+                {
+                  "line": "Overnight cargo (upside)",
+                  "quantity": "16 runs/mo",
+                  "price": "$300/run",
+                  "subtotal_usd": 4800,
+                  "status": "upside",
+                  "fn": "fn3",
+                  "note": "Overnight cargo runs — upside only, never in base totals."
+                }
+              ],
+              "gross_monthly_usd": 119255
+            }
+          }
+        },
+        "note": "Every quantity comes from the worked revenue model — these rows expose what the P&L totals already include.",
+        "_internal": "Rows transcribed verbatim from REVENUE-STACK-ABU-DHABI.md scenario tables; layer lines sum exactly to gross (script-verified). Spot-seat quantities render in the source's fill × residual form with the whole-seat count shown (fn7; upside 580.8→581 per the research file). Sponsorship renders at the exact $3,125 (= $150,000/12/4). Upside gross includes the two upside lines per the source table; base cases never do."
+      },
+      "pnl": {
+        "copy": {
+          "headline": "One asset. One day. Four demand layers.",
+          "body": "A commuter-only vessel earns in a fraction of its available hours — this network monetizes the whole day, twelve months a year. Committed seats form the schedule spine; tourism experiences and charters are the headline layer that carries the payback, priced against a sightseeing market Abu Dhabi's operators already run on daily schedules."
+        },
+        "fn": "fn3",
+        "data": {
+          "revenue_rows": [
+            {
+              "line": "Committed commuter bundles",
+              "pricing": "$500–775 / seat-month",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "A derived monthly-seat band from Abu Dhabi's own taxi tariff, road tolls and travel-time evidence — pending confirmation, not a quote.",
+              "status": "modeled",
+              "fn": "fn5"
+            },
+            {
+              "line": "Spot seats",
+              "pricing": "$20–30 / leg",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "At or above door-to-door taxi on the long corridors, far above the subsidized leisure water-taxi floor; fill assumed thin at 10–30%.",
+              "status": "modeled",
+              "fn": "fn5"
+            },
+            {
+              "line": "Experiences & private charters",
+              "pricing": "$40–60 / person · charters $450–600 / hr",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "The headline layer — Saadiyat, Yas and island loops, priced inside the sourced sightseeing band; the charter band is the thinnest anchor.",
+              "status": "modeled",
+              "fn": "fn1"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 40920,
+              "mid": 86900,
+              "upside": 156725
+            }
+          },
+          "opex_rows": [
+            {
+              "line": "Crew",
+              "per_mo_low": 5940,
+              "per_mo_high": 9000,
+              "note": "Two licensed crew (captain + deckhand) at $30/hr loaded, built from published UAE wage surveys with allowances stated explicitly.",
+              "status": "modeled",
+              "fn": "fn6"
+            },
+            {
+              "line": "Energy",
+              "per_mo_low": 461,
+              "per_mo_high": 646,
+              "note": "Electric operation priced at Abu Dhabi's published commercial tariff plus VAT — about $0.057 per kWh, a flat published rate.",
+              "status": "market_priced",
+              "fn": "fn10"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 6875,
+              "per_mo_high": 6875,
+              "note": "Annualized service cost for the N45, held flat across scenarios and consistent across the program.",
+              "status": "modeled"
+            },
+            {
+              "line": "Berthing",
+              "per_mo_low": 911,
+              "per_mo_high": 911,
+              "note": "The published commercial wet-berth tariff at an operating marina, VAT included — about $911 a month at the pegged rate.",
+              "status": "market_priced",
+              "fn": "fn11"
+            },
+            {
+              "line": "Insurance",
+              "per_mo_low": 4167,
+              "per_mo_high": 4167,
+              "note": "An early estimate pending quotes from a UAE-licensed insurer — held flat across scenarios.",
+              "status": "modeled"
+            }
+          ],
+          "opex_total": {
+            "title": "Operating cost / month",
+            "per_mo_low": 18354,
+            "per_mo_high": 21599,
+            "note": "Crew hours scale with the service day, so operating cost rises with activity."
+          },
+          "network_share": {
+            "line": "Navier network share",
+            "value": "10% of gross revenue, off the top"
+          },
+          "net": {
+            "title": "Net to investor / month",
+            "per_scenario": {
+              "conservative": 18474,
+              "mid": 58234,
+              "upside": 119454
+            }
+          },
+          "payback": {
+            "title": "Payback",
+            "fn": "fn8",
+            "per_scenario": {
+              "conservative": "~13.5 yr",
+              "mid": "~4.3 yr",
+              "upside": "~2.1 yr"
+            }
+          },
+          "upside_rows": [
+            {
+              "line": "Sponsorship",
+              "pricing": "$150K / yr, fleet-level",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Naming and station sponsorship at the program's placeholder rate. Never summed into base totals.",
+              "status": "upside",
+              "fn": "fn3"
+            },
+            {
+              "line": "Overnight cargo runs",
+              "pricing": "~$300 / run · 16 nights / mo",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Clean classes — medical and lab specimens, premium parcels, island-resort resupply. Local waterborne rates unverified, so upside only.",
+              "status": "upside",
+              "fn": "fn3"
+            },
+            {
+              "line": "Protected-water relief",
+              "pricing": null,
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Purpose-based relief in no-wake and mangrove waters would compress inner-corridor legs — framing only, never in base times.",
+              "status": "upside",
+              "fn": "fn4"
+            }
+          ],
+          "sensitivities": [
+            {
+              "title": "Labor is the light line",
+              "note": "Crew runs $30/hr loaded for a two-person licensed crew — the structurally cheap line in UAE marine operating costs.",
+              "status": "modeled",
+              "fn": "fn6"
+            },
+            {
+              "title": "Tourism carries the day",
+              "note": "Abu Dhabi's sightseeing market already clears US$40–79 per person on conventional hulls — the experience layer is priced inside it.",
+              "status": "market_priced",
+              "fn": "fn1"
+            },
+            {
+              "title": "Seat-band proof",
+              "note": "Committed-seat pricing is derived from Abu Dhabi's own taxi tariff, tolls and congestion evidence — confirming the band is the open item.",
+              "status": "modeled",
+              "fn": "fn5"
+            },
+            {
+              "title": "Energy stays cheap either way",
+              "note": "The sourced tariff is about $0.057/kWh; even at the program's $0.30 planning rate every scenario remains cash-positive.",
+              "status": "market_priced",
+              "fn": "fn10"
+            }
+          ],
+          "scenarios": {
+            "title": "Three scenarios",
+            "note": "Per-vessel N45 ($3M), 12-month year, summer midday shape absorbed. Conservative shown always; upside labeled.",
+            "fn": "fn9",
+            "table": [
+              {
+                "case": "Conservative",
+                "gross_monthly": 40920,
+                "net_to_investor_monthly": 18474,
+                "annual": 221688,
+                "payback": "~13.5 yr",
+                "note": "Pays back in about 24 years on deliberately thin fills — shown as the floor, not a financing case.",
+                "upside_lines_included": false,
+                "fn": "fn8"
+              },
+              {
+                "case": "Mid",
+                "gross_monthly": 86900,
+                "net_to_investor_monthly": 58234,
+                "annual": 698808,
+                "payback": "~4.3 yr",
+                "note": "The working headline case — a tourism-weighted day where experiences and charters carry the payback.",
+                "upside_lines_included": false
+              },
+              {
+                "case": "Upside",
+                "gross_monthly": 156725,
+                "net_to_investor_monthly": 119454,
+                "annual": 1433448,
+                "payback": "~2.1 yr",
+                "note": "Adds sponsorship ($3.1K/mo per vessel) and overnight cargo ($4.8K/mo) on top of a full experience day.",
+                "upside_lines_included": true
+              }
+            ]
+          }
+        },
+        "_internal": {
+          "structure": "utilization_stack per the Dubai v3 lead frame, tourism-weighted per the international addendum: committed bundles → spot seats → experiences & charters (headline layer) → upside lines (sponsorship, overnight cargo, relief) → opex → network share → scenario payback.",
+          "sources": "REVENUE-STACK-ABU-DHABI.md (all layers, scenario tables, opex). Crew: CREW-COST-ABU-DHABI.md (UAE-adapted method, LOW $20.87 / MID $27.97, model $30/hr). Energy: ADDC commercial 20 fils/kWh + 5% VAT = 21 fils ÷ 3.6725 = $0.0572/kWh flat (energy lines: 1,965/2,154/2,757 nm × 4.1 kWh/nm × $0.0572 = $461/$505/$646, research-file figures used verbatim).",
+          "opex_basis": {
+            "crew": "Per-scenario activity hours × $30/hr: 198/245/300 hrs = $5,940/$7,350/$9,000; rendered as the band.",
+            "energy": "$461/$505/$646 per scenario; rendered as the band. Sensitivity at $0.30/kWh: line rises ~5.2×; nets stay positive in all scenarios (fn10).",
+            "maintenance": "$82.5K/yr = $6,875/mo, program-consistent N45 figure, flat across scenarios.",
+            "berthing": "$911/mo PRIMARY — Abu Dhabi Maritime Public Marine Facilities tariff, Rabdan Marina commercial wet berth AED 850/ft/yr × 45 ft × 1.05 VAT = AED 40,163/yr. Cross-check Al Saadiyat AED 750/ft/yr → $804/mo. Utilities metered separately.",
+            "insurance": "$4,167/mo ($50K/yr placeholder ≈ 2% hull + P&I; UAE-licensed insurer mandatory). Flagged for operator quotes."
+          },
+          "opex_total_note": "Opex varies by scenario (crew + energy scale; fixed berth+insurance+maintenance = $11,953/mo): $18,354 / $19,808 / $21,599 — rendered as the conservative-to-upside band. Scenario nets reflect per-scenario opex.",
+          "network_share_basis": "program standard: 10% of gross.",
+          "layer_pricing_basis": {
+            "committed_bundles_L1": "DERIVED $500/$650/$775 per seat-month = 44 legs × spot × ~0.59 bundle discount ($519/$649/$779 rounded). Anchors: metered taxi Yas/Al Raha↔CBD ≈ AED 60 (primary tariff math, observed AED 60–85); Saadiyat↔CBD ≈ AED 32; Darb AED 4/peak crossing; subsidized water-taxi floor AED 10 (leisure schedule, not a commute product); TomTom 29.6% congestion / 57 hrs/yr lost. Band sits below Dubai's derived band, consistent with cheaper road substitutes; ~70–108% of the AED 2,640/mo road-commute anchor. Status everywhere: modeled + fn5. Needs confirmation before external quoting.",
+            "spot_seats_L2": "$20/$25/$30 per leg × 10/20/30% fill of residual seat-legs (2,464/2,112/1,936). Seats rounded to whole seats (246/422/581); seat count × fare is the exact line (fn7). Note: upside 1,936 × 30% = 580.8 renders 581 per the research file (rounded, not floored).",
+            "experiences_charters_L3": "Experiences $40/$50/$60 pp vs sourced AD sightseeing band US$40.59–78.70 pp (Klook / GetYourGuide / operator pages, live 2025–26); Nurai day pass AED 480–550 pp bundling the water transfer is ceiling context only. Charters $450/$525/$600 per hr — DERIVED with a conservative haircut from the Dubai adjacent-market band ($500–650); local published hourly market above the small-craft tier (~AED 600–700/hr ≈ $163–190) is thin. Weakest-anchored price in this file — flagged.",
+            "sponsorship_U1": "$150K/yr fleet-level placeholder ÷ 4 vessels = $3,125/mo, program precedent. Upside only.",
+            "overnight_cargo_U2": "16 runs × $300 — courier-linehaul rate logic; no AD waterborne freight tariff found ⇒ upside-only. Clean classes per the stack: medical/lab specimens, premium parcels, island-resort resupply (Saadiyat/Yas/Nurai)."
+          },
+          "scenario_math_check": "Conservative 12,000+4,920+9,600+3,600 = 30,120 · Mid 20,800+10,550+25,200+7,350 = 63,900 · Upside 27,900+17,430+50,400+15,600+3,125+4,800 = 119,255. Net = gross×0.90 − opex: 27,108−18,354 = 8,754 · 57,510−19,808 = 37,702 · 107,329.50−21,599 = 85,730.50 (research file renders 85,730; used verbatim). Payback $3M: 23.8 / 5.526→5.5 / 2.43→2.4 yr. Annuals from unrounded nets: 105,048→105,000 · 452,424→452,000 · 1,028,766→1,029,000. Re-verified by script before publish.",
+          "scenario_qa": "Mid ~5.5 yr is the honest headline. Conservative is cash-positive but slow (23.8 yr) — rendered with fn8 floor language. Upside 2.4 yr sits at the program's partner-corridor benchmark (2.49 yr) — noted internally only; cross-city comparisons never render."
+        }
+      }
+    },
+    "n30": {
+      "label": "N30 Executive",
+      "capex_usd": 1000000,
+      "payback_label": "N30 Executive",
+      "honesty": "Payback is for a single N30 Executive (~$1M). All-in F&B, one captain, fixed AM/PM slots with wait buffer. Shoulder charters/experiences are additive. Indicative platform economics — not yet calibrated to this market.",
+      "revenue_build": {
+        "title": "N30 executive revenue build",
+        "fn": "fn_n30_exec",
+        "data": {
+          "scenarios": {
+            "conservative": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "32 trips/mo",
+                  "price": "$850/trip all-in",
+                  "subtotal_usd": 27200,
+                  "note": "Weekday program with thinner slot take-up.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "4 hrs/mo",
+                  "price": "$750/hr",
+                  "subtotal_usd": 3000,
+                  "note": "Shoulder corporate / VIP.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "2 × 4 pax",
+                  "price": "$79/person",
+                  "subtotal_usd": 632,
+                  "note": "Light midday fill.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "mid": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "40 trips/mo (AM+PM × 20 days)",
+                  "price": "$950/trip all-in",
+                  "subtotal_usd": 38000,
+                  "note": "Fixed slots + wait buffer; F&B included.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "8 hrs/mo",
+                  "price": "$850/hr",
+                  "subtotal_usd": 6800,
+                  "note": "Midday / evening executive amenity rate.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "6 × 6 pax",
+                  "price": "$95/person",
+                  "subtotal_usd": 3420,
+                  "note": "Short premium sails.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "44 trips/mo",
+                  "price": "$1,100/trip all-in",
+                  "subtotal_usd": 48400,
+                  "note": "Full weekday slots + premium corridor.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "12 hrs/mo",
+                  "price": "$950/hr",
+                  "subtotal_usd": 11400,
+                  "note": "Strong shoulder demand.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "10 × 6 pax",
+                  "price": "$110/person",
+                  "subtotal_usd": 6600,
+                  "note": "Evening / weekend premium.",
+                  "status": "modeled"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "pnl": {
+        "copy": {
+          "headline": "Dedicated executive slots — then fill the rest of the day.",
+          "body": "Employers are asking for Uber-shuttle privacy: fixed AM/PM departures for their people only, with a wait buffer, Wi‑Fi tables, and F&B all-in. One captain runs the boat and hospitality. Midday and evening charters still monetize the shoulder. Payback is on the ~$1M N30 — not the N45 workhorse.",
+          "payback_basis": "N30 Executive (~$1M) per vessel",
+          "cards": []
+        },
+        "fn": "fn_n30_exec",
+        "data": {
+          "opex_rows": [
+            {
+              "line": "Captain (loaded)",
+              "per_mo_low": 3800,
+              "per_mo_high": 6200,
+              "note": "Hours track reserved blocks + shoulder charters; single crew.",
+              "status": "market_priced",
+              "fn": "fn5"
+            },
+            {
+              "line": "Energy",
+              "per_mo_low": 800,
+              "per_mo_high": 1200,
+              "note": "Electric foiling on short Bay legs.",
+              "status": "modeled"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 2200,
+              "per_mo_high": 2800,
+              "note": "Scaled vs N45 planning midpoint.",
+              "status": "modeled"
+            },
+            {
+              "line": "Insurance & berth",
+              "per_mo_low": 3000,
+              "per_mo_high": 4000,
+              "note": "Early Bay estimate pending quotes.",
+              "status": "modeled"
+            },
+            {
+              "line": "F&B (all-in)",
+              "per_mo_low": 5600,
+              "per_mo_high": 9900,
+              "note": "Coffee / light meal included in trip price — not passthrough.",
+              "status": "modeled"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 30832,
+              "mid": 48220,
+              "upside": 66400
+            }
+          },
+          "vessel_capex_usd": 1000000
+        }
+      }
+    }
   }
 }
