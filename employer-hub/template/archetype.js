@@ -524,15 +524,21 @@
   }
 
   function renderPnlStudioShell() {
-    const pnl = A.pnl;
+    const hasPacks = !!(A.pnl_models && (A.pnl_models.n45 || A.pnl_models.n30));
+    const pnl = A.pnl || (A.pnl_models && A.pnl_models.n45 && A.pnl_models.n45.pnl);
     if (!pnl || !pnl.data) return '';
-    const headline = (pnl.copy && (pnl.copy.headline || pnl.copy.body)) || '';
     let html = '';
-    if (pnl.copy && pnl.copy.headline) html += `<p class="lead">${esc(pnl.copy.headline)}</p>`;
-    if (pnl.copy && pnl.copy.body) html += `<p>${esc(pnl.copy.body)}</p>`;
+    html += `<p class="lead" id="pnl-lead">${esc((pnl.copy && pnl.copy.headline) || 'Economics — utilization stack')}</p>`;
+    html += `<p id="pnl-body">${esc((pnl.copy && pnl.copy.body) || '')}</p>`;
+    if (hasPacks) {
+      html += `<div class="vessel-toggle" id="pnl-vessel-toggle" role="tablist" aria-label="Vessel economics">
+        <button type="button" class="vessel-toggle-btn" data-pnl-vessel="n30" role="tab" aria-selected="false">N30 Executive</button>
+        <button type="button" class="vessel-toggle-btn active" data-pnl-vessel="n45" role="tab" aria-selected="true">N45 Explorer</button>
+      </div>`;
+    }
     html += `<div class="pnl-studio" id="pnl-studio">
       <div class="pnl-sticky" id="pnl-sticky">
-        <div class="pnl-metric"><div class="k">Payback · N45 Explorer</div><div class="v" id="pnl-m-payback">—</div></div>
+        <div class="pnl-metric"><div class="k" id="pnl-m-payback-label">Payback · N45 Explorer</div><div class="v" id="pnl-m-payback">—</div></div>
         <div class="pnl-metric"><div class="k">Net / month</div><div class="v" id="pnl-m-net">—</div></div>
         <div class="pnl-metric"><div class="k">Gross / month</div><div class="v" id="pnl-m-gross">—</div></div>
         <div class="pnl-presets" id="pnl-presets" role="tablist" aria-label="Scenario presets"></div>
@@ -606,78 +612,6 @@
           .join('')}</div>`;
         return section('protection', 'Protection stack', html);
       },
-      n30_executive: function () {
-        const block = A.n30_executive;
-        if (!block || !block.data) return '';
-        const d = block.data;
-        const copy = block.copy || {};
-        const scenarios = d.scenarios || {};
-        const order = ['conservative', 'mid', 'upside'];
-        const chips = (copy.chips || [])
-          .map(function (c) {
-            return `<span class="chip">${esc(c)}</span>`;
-          })
-          .join('');
-        const windows = (block.service_windows || [])
-          .map(function (w) {
-            return `<div class="arch-card">
-              <p class="assump-label">${esc(w.time_range || '')}</p>
-              <h3>${esc(w.label || '')}</h3>
-              <p>${esc(w.note || '')}</p>
-              <p class="assump-label">${esc(w.layer || '')}</p>
-            </div>`;
-          })
-          .join('');
-        const scenarioCards = order
-          .map(function (key) {
-            const s = scenarios[key];
-            if (!s) return '';
-            const rows = (s.rows || [])
-              .map(function (r) {
-                return `<tr>
-                  <td>${esc(r.line || '')}<div class="assump-label">${esc(r.quantity || '')} · ${esc(r.price || '')}</div></td>
-                  <td class="num">${money(r.subtotal_usd)}</td>
-                </tr>`;
-              })
-              .join('');
-            return `<div class="arch-card${key === 'mid' ? ' emphasis' : ''}">
-              <h3>${esc(s.label || key)} · payback ~${esc(String(s.payback_years))} yr</h3>
-              <table class="pnl-table">
-                <tbody>
-                  ${rows}
-                  <tr class="total"><td><strong>Gross / month</strong></td><td class="num"><strong>${money(s.gross_usd)}</strong></td></tr>
-                  <tr><td>Operating cost / month</td><td class="num">${money(s.opex_usd)}</td></tr>
-                  <tr class="emphasis"><td><strong>Contribution / month</strong></td><td class="num"><strong>${money(s.contrib_usd)}</strong></td></tr>
-                </tbody>
-              </table>
-            </div>`;
-          })
-          .join('');
-        const opex = (d.opex_rows || [])
-          .map(function (r) {
-            return `<tr>
-              <td>${esc(r.line || '')}<div class="assump-label">${esc(r.note || '')}</div></td>
-              <td class="num">${money(r.per_mo_low)}–${money(r.per_mo_high)}</td>
-            </tr>`;
-          })
-          .join('');
-        let html = '';
-        if (copy.body) html += `<p class="lead">${esc(copy.body)}</p>`;
-        if (chips) html += `<div class="chip-row" style="margin:12px 0 18px">${chips}</div>`;
-        html += `<div class="scenario-hero">
-          <div class="metric"><div class="k">Vessel</div><div class="v" style="font-size:18px">${esc(d.vessel || 'N30')}</div></div>
-          <div class="metric"><div class="k">Capex</div><div class="v">${money(d.capex_usd)}</div></div>
-          <div class="metric"><div class="k">Seats</div><div class="v">${esc(d.seats)}</div></div>
-          <div class="metric"><div class="k">Crew</div><div class="v" style="font-size:15px">${esc(d.crew || '1 captain')}</div></div>
-        </div>`;
-        if (windows) html += `<div class="arch-grid-2" style="margin:18px 0">${windows}</div>`;
-        html += `<h3 style="margin:22px 0 12px">Scenarios (reserved slots + shoulder revenue)</h3>
-          <div class="arch-grid-3">${scenarioCards}</div>`;
-        html += `<h3 style="margin:22px 0 12px">Operating cost bands</h3>
-          <table class="pnl-table"><tbody>${opex}</tbody></table>`;
-        html += `<p class="assump-label" style="margin-top:12px">Trip prices are all-in (cabin + F&amp;B) and backed out for profitability on fixed AM/PM executive slots with a pickup wait buffer — not open boarding waits.</p>`;
-        return section('n30_executive', copy.headline || block.title || 'N30 executive economics', html);
-      },
     };
 
     const skip = { hero: 1, network: 1, cta: 1 };
@@ -689,7 +623,6 @@
       'business_model',
       'service_day',
       'pnl',
-      'n30_executive',
       'fleet_phasing',
       'protection_stack',
       'footnotes',
@@ -701,6 +634,7 @@
       navier_intro: 1, // replaced by about_navier + vessels
       model: 1, // replaced by business_model
       asset: 1,
+      n30_executive: 1, // folded into pnl vessel toggle
     };
     let order = brochureOrder.slice();
     // Append any remaining authored sections that still have builders (except dropped)
@@ -727,7 +661,25 @@
     const studio = document.getElementById('pnl-studio');
     if (!studio || !window.FI_PNL_MODEL) return;
     const M = window.FI_PNL_MODEL;
-    const model = M.buildModel(A);
+    let pnlVessel = 'n45';
+    function archForVessel() {
+      const packs = A.pnl_models || {};
+      const pack = packs[pnlVessel];
+      if (!pack) return A;
+      return Object.assign({}, A, {
+        revenue_build: pack.revenue_build || A.revenue_build,
+        pnl: pack.pnl || A.pnl,
+        asset: {
+          data: {
+            vessel: pack.label || pnlVessel,
+            capex_usd: pack.capex_usd,
+            seats: pnlVessel === 'n30' ? 8 : 30,
+          },
+        },
+        _pnlPack: pack,
+      });
+    }
+    let model = M.buildModel(archForVessel());
     if (!model.hasRevenueBuild) return;
     let state = M.applyPreset(model, 'mid');
 
@@ -735,6 +687,37 @@
     const leversEl = document.getElementById('pnl-levers');
     const statementEl = document.getElementById('pnl-statement');
     const rbLive = document.getElementById('revenue-build-live');
+
+    function syncVesselChrome() {
+      const pack = (A.pnl_models && A.pnl_models[pnlVessel]) || {};
+      const label = pack.payback_label || pack.label || (pnlVessel === 'n30' ? 'N30 Executive' : 'N45 Explorer');
+      const payLabel = document.getElementById('pnl-m-payback-label');
+      if (payLabel) payLabel.textContent = 'Payback · ' + label;
+      const honesty = document.getElementById('pnl-honesty');
+      if (honesty && pack.honesty) honesty.innerHTML = esc(pack.honesty);
+      const lead = document.getElementById('pnl-lead');
+      if (lead && pack.pnl && pack.pnl.copy && pack.pnl.copy.headline) lead.textContent = pack.pnl.copy.headline;
+      const body = document.getElementById('pnl-body');
+      if (body && pack.pnl && pack.pnl.copy && pack.pnl.copy.body) body.textContent = pack.pnl.copy.body;
+      document.querySelectorAll('#pnl-vessel-toggle .vessel-toggle-btn').forEach(function (btn) {
+        const on = btn.getAttribute('data-pnl-vessel') === pnlVessel;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    document.querySelectorAll('#pnl-vessel-toggle .vessel-toggle-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const next = btn.getAttribute('data-pnl-vessel');
+        if (!next || next === pnlVessel) return;
+        pnlVessel = next;
+        model = M.buildModel(archForVessel());
+        state = M.applyPreset(model, 'mid');
+        syncVesselChrome();
+        paint();
+      });
+    });
+    syncVesselChrome();
 
     function paintPresets() {
       if (!presetsEl) return;
@@ -851,7 +834,7 @@
               <tr class="total"><td><strong>Operating cost / month</strong></td><td class="num"><strong>${money(result.opex)}</strong></td></tr>
               <tr><td><div class="line-main">${esc((result.networkShare && result.networkShare.line) || 'Navier network share')}</div><div class="assump-label">${esc((result.networkShare && result.networkShare.value) || Math.round(result.sharePct * 100) + '% of gross')}</div>${networkFeeAccordionHtml()}</td><td class="num">(${money(result.networkShareAmt)})</td></tr>
               <tr class="emphasis"><td><strong>Net to investor / month</strong></td><td class="num"><strong>${money(result.net)}</strong></td></tr>
-              <tr class="emphasis"><td><strong>Payback · N45 Explorer @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
+              <tr class="emphasis"><td><strong>Payback · ${(A.pnl_models && A.pnl_models[pnlVessel] && A.pnl_models[pnlVessel].payback_label) || (pnlVessel === 'n30' ? 'N30 Executive' : 'N45 Explorer')} @ ${money(result.capex)}</strong></td><td class="num"><strong>${esc(result.paybackLabel)}</strong></td></tr>
               ${
                 result.upsideLines.length
                   ? `<tr class="section-row upside"><td colspan="2">Upside (labeled — not in base)</td></tr>` +
