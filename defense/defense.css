@@ -904,18 +904,43 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 .arc-spine .arc-phase.lit { opacity: 0.75 }
 .arc-spine .arc-phase.now { opacity: 1 }
 
-/* Team — no logo strip */
+/* Team — no logo strip; keep inside section-inner like other chapters */
 .team-lede { white-space: pre-line }
+.team-section .section-inner {
+  max-width: 1200px;
+}
 .team-layout {
-  display: grid; grid-template-columns: 0.85fr 1.45fr; gap: 28px; margin: 28px 0;
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 24px 28px;
+  margin: 22px 0 8px;
+  align-items: start;
 }
-.team-featured .team-photo.lg {
-  aspect-ratio: 4/5; border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--line); background: var(--bg-1); margin-bottom: 14px;
+.team-featured {
+  max-width: 280px;
+  width: 100%;
 }
-.team-featured .team-photo.lg img { width: 100%; height: 100%; object-fit: cover }
+.team-featured .team-photo.lg,
+.team-featured-inner .team-photo.lg {
+  aspect-ratio: 4/5;
+  max-width: 280px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-1);
+  margin-bottom: 12px;
+}
+.team-featured .team-photo.lg img,
+.team-featured-inner .team-photo.lg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .team-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
   align-content: start;
 }
 .team-card {
@@ -954,10 +979,26 @@ a.team-link:hover {
 }
 .backers .line { color: var(--text-1); font-size: 14px; line-height: 1.55 }
 @media (max-width: 1099px) {
-  .team-layout { grid-template-columns: 1fr }
-  .team-grid { grid-template-columns: 1fr 1fr }
+  .team-layout {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 240px;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 720px) { .team-grid { grid-template-columns: 1fr } }
+@media (max-width: 720px) {
+  .team-layout { grid-template-columns: 1fr; }
+  .team-featured,
+  .team-featured .team-photo.lg,
+  .team-featured-inner .team-photo.lg {
+    max-width: 220px;
+    margin-inline: auto;
+  }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+}
 
 /* Costs — 1:1 in-place card flip (v8 #2 — no ghosting) */
 
@@ -3237,7 +3278,7 @@ a.team-link:hover {
 .def-ladder-plate img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
 }
@@ -3545,15 +3586,62 @@ a.team-link:hover {
 }
 
 /* ── v4 defense-first opener + resilience thesis ───────────────── */
+.about-stage--opener {
+  min-height: 0 !important;
+  justify-content: flex-start !important;
+  padding-block: clamp(36px, 6vw, 64px) !important;
+}
+.about-opener {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.about-opener-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 28px 36px;
+  align-items: start;
+}
+.about-opener-intro .about-title {
+  margin-bottom: 14px;
+}
+.about-opener-hangar .about-plate {
+  margin: 0;
+}
+.about-opener-hangar .about-plate-frame {
+  aspect-ratio: 4 / 3;
+  max-height: 320px;
+}
+.about-opener-hangar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.about-opener-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 24px 32px;
+  align-items: start;
+}
+.about-opener-beats-col {
+  min-width: 0;
+}
 .def-opener-body {
-  margin: 0 0 22px;
+  margin: 0;
   max-width: 62ch;
 }
+.defense-specs.def-opener-beats,
 .def-opener-beats {
   display: grid;
-  gap: 18px;
-  margin: 8px 0 16px;
-  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  grid-template-columns: 1fr !important;
 }
 .def-opener-beat .defense-spec-term {
   font-size: 0.95rem;
@@ -3564,14 +3652,21 @@ a.team-link:hover {
   line-height: 1.5;
 }
 .def-beats-source {
-  margin: 4px 0 14px;
+  margin: 10px 0 0;
   font-size: 12px;
+  line-height: 1.4;
   color: rgba(255, 255, 255, 0.45);
+}
+.def-doctrine-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
 }
 .def-doctrine-chip {
   display: inline-flex;
   align-items: center;
-  margin: 8px 0 4px;
+  justify-content: center;
+  margin: 0;
   padding: 10px 16px;
   border: 1px solid rgba(224, 203, 143, 0.45);
   border-radius: 999px;
@@ -3580,11 +3675,53 @@ a.team-link:hover {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.04em;
+  text-align: center;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .def-doctrine-chip:hover {
   background: rgba(224, 203, 143, 0.1);
   border-color: rgba(224, 203, 143, 0.75);
+}
+.def-film-wrap--beside {
+  max-width: none;
+  margin: 0;
+  width: 100%;
+}
+.def-film-wrap--beside .def-video-tile,
+.def-film-wrap--beside .def-video-frame {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.def-film-wrap--beside video,
+.def-film-wrap--beside .def-video-poster {
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.def-film-wrap--beside .def-video-title {
+  text-align: left;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.def-film-wrap--beside figcaption {
+  text-align: left;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+@media (max-width: 960px) {
+  .about-opener-top,
+  .about-opener-split {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .about-opener-hangar .about-plate-frame {
+    max-height: none;
+  }
+  .def-doctrine-wrap {
+    justify-content: flex-start;
+  }
 }
 .def-resilience {
   margin: 0 0 22px;
@@ -3615,5 +3752,66 @@ a.team-link:hover {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+.def-belief-line {
+  margin: 18px auto 0;
+  max-width: 52ch;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(243, 239, 228, 0.82);
+}
+.def-integrator-line {
+  margin: 0 0 18px;
+  max-width: 62ch;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+.def-mission-rail {
+  margin-top: 28px;
+}
+.def-mission-note {
+  margin: -4px 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(224, 203, 143, 0.65);
+}
+.def-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 1100px) {
+  .def-mission-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .def-mission-grid { grid-template-columns: 1fr; }
+}
+.def-mission-card {
+  margin: 0;
+  min-width: 0;
+}
+.def-mission-frame {
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #07080a;
+}
+.def-mission-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.def-mission-card figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
   color: rgba(255, 255, 255, 0.55);
 }

@@ -70,6 +70,7 @@ function loadCodes() {
 async function sessionToken() {
   const secret = process.env.AUTH_SECRET;
   if (!secret) return null;
+  // Match middleware HMAC (Web Crypto) — Node 18+ provides global crypto.subtle.
   const enc = new TextEncoder();
   const key = await crypto.subtle.importKey(
     'raw',
@@ -79,7 +80,10 @@ async function sessionToken() {
     ['sign']
   );
   const sig = await crypto.subtle.sign('HMAC', key, enc.encode(SESSION_SLUG + ':granted'));
-  return btoa(String.fromCharCode(...new Uint8Array(sig)));
+  const bytes = new Uint8Array(sig);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return Buffer.from(bin, 'binary').toString('base64');
 }
 
 function cookieHeader(token) {
@@ -92,7 +96,7 @@ function cookieHeader(token) {
   );
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   cors(res, req.headers.origin);
   if (req.method === 'OPTIONS') {
     res.status(204).end();
@@ -139,17 +143,27 @@ module.exports = async function handler(req, res) {
 
   const webhook = process.env.DEFENSE_ACCESS_LOG_WEBHOOK;
   if (webhook) {
-    fetch(webhook, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        timestamp_utc: new Date().toISOString(),
-        email,
-        code,
-        recipient_label: entry.label || '',
-        user_agent: req.headers['user-agent'] || '',
-      }),
-    }).catch(() => {});
+    // Await briefly: fire-and-forget fetch is often killed when the serverless
+    // function returns. Apps Script runs doPost on the first POST then 302s —
+    // redirect:'manual' avoids fetch downgrading the follow-up to GET (405).
+    // Logging failure must never deny access.
+    try {
+      await fetch(webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        redirect: 'manual',
+        signal: AbortSignal.timeout(4000),
+        body: JSON.stringify({
+          timestamp_utc: new Date().toISOString(),
+          email,
+          code,
+          recipient_label: entry.label || '',
+          user_agent: req.headers['user-agent'] || '',
+        }),
+      });
+    } catch {
+      /* ignore */
+    }
   }
 
   const token = await sessionToken();
