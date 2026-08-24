@@ -506,16 +506,32 @@
   function renderFootnotes() {
     const fn = A.footnotes;
     if (!fn || typeof fn !== 'object') return '';
+    // Numeric keys (fn1…) first in number order, then named keys (fn_n30_exec) at the end.
     const keys = Object.keys(fn).sort(function (a, b) {
-      return String(a).localeCompare(String(b), undefined, { numeric: true });
+      const ma = String(a).match(/^fn(\d+)$/i);
+      const mb = String(b).match(/^fn(\d+)$/i);
+      if (ma && mb) return Number(ma[1]) - Number(mb[1]);
+      if (ma) return -1;
+      if (mb) return 1;
+      return String(a).localeCompare(String(b));
     });
     if (!keys.length) return '';
+    let maxNumeric = 0;
+    keys.forEach(function (k) {
+      const m = String(k).match(/^fn(\d+)$/i);
+      if (m) maxNumeric = Math.max(maxNumeric, Number(m[1]));
+    });
+    let namedSeq = maxNumeric;
     const html = `<ol class="footnote-list">${keys
       .map(function (k) {
         const item = fn[k];
         const text = typeof item === 'string' ? item : (item && item.text) || '';
         if (!text) return '';
-        const num = String(k).replace(/^fn/i, '');
+        // Authored fn1 → display/id "1" (stable for in-body <sup> anchors).
+        // Named keys like fn_n30_exec get the next free integer — never "_n30_exec".
+        const m = String(k).match(/^fn(\d+)$/i);
+        const num = m ? m[1] : String(++namedSeq);
+        // Single visible number via .fn-key; CSS suppresses native <ol> markers.
         return `<li id="fn-${esc(num)}"><span class="fn-key">${esc(num)}.</span> ${esc(text)}</li>`;
       })
       .filter(Boolean)
