@@ -100,6 +100,47 @@
     return sign + '$' + Math.round(a).toLocaleString('en-US');
   }
 
+  function renderExecutiveEstimator() {
+    const cfg = DATA.executive_shuttle;
+    const el = document.getElementById('exec-estimator');
+    if (!cfg || !el) return;
+    el.hidden = false;
+    setText('exec-estimator-title', cfg.title || 'Executive program estimator');
+    setText('exec-estimator-lead', cfg.lead || '');
+    const assumptions = document.getElementById('exec-assumptions');
+    if (assumptions) {
+      assumptions.innerHTML = (cfg.assumptions || [])
+        .map(function (a) {
+          return '<li>' + a + '</li>';
+        })
+        .join('');
+    }
+    const midTrip = Number(cfg.trip_price_usd_mid) || 950;
+    const band = cfg.trip_price_usd_band || [850, 1100];
+    const tripsInput = document.getElementById('exec-trips-week');
+    const tripsLabel = document.getElementById('exec-trips-week-label');
+    function recomputeExec() {
+      const perWeek = Number((tripsInput && tripsInput.value) || cfg.default_trips_per_week || 10);
+      const tripsMo = Math.round(perWeek * (52 / 12));
+      if (tripsLabel) tripsLabel.textContent = perWeek + ' / week';
+      setText('exec-trip-price', money(midTrip) + ' · band ' + money(band[0]) + '–' + money(band[1]));
+      setText('exec-month-price', money(midTrip * tripsMo));
+      setText('exec-trips-mo', String(tripsMo));
+    }
+    if (tripsInput) {
+      tripsInput.value = String(cfg.default_trips_per_week || 10);
+      tripsInput.addEventListener('input', recomputeExec);
+    }
+    const cta = document.getElementById('exec-estimator-cta');
+    if (cta) {
+      cta.addEventListener('click', function () {
+        const btn = document.querySelector('#flavor-options .option[data-flavor-key="executive"]');
+        if (btn) btn.click();
+      });
+    }
+    recomputeExec();
+  }
+
   function servesText(n) {
     if (!n) return '';
     if (Array.isArray(n.serves)) return n.serves.join(' · ');
@@ -306,16 +347,34 @@
       productsEl.innerHTML = DATA.products.items
         .map(
           (p) => `
-      <article class="card product">
+      <article class="card product" data-product-id="${p.id || ''}">
         <span class="tag ${p.tag_class || 'tag-line'}">${p.tag || ''}</span>
         <h3>${p.title}</h3>
+        ${
+          p.image
+            ? `<div class="product-media"><img src="${p.image}" alt="${p.title || ''}" loading="lazy" /></div>`
+            : ''
+        }
         <p>${p.body || ''}</p>
         <div class="meta-row">${(p.meta || []).map((m) => `<span class="meta">${m}</span>`).join('')}</div>
-        <a class="btn ${p.cta_class || 'btn-ghost'}" href="${p.cta_href || '#letter'}">${p.cta_label || 'Learn more'}</a>
+        <a class="btn ${p.cta_class || 'btn-ghost'}" href="${p.cta_href || '#letter'}" data-flavor="${p.flavor || ''}" data-flavor-key="${p.flavor_key || ''}">${p.cta_label || 'Learn more'}</a>
       </article>`
         )
         .join('');
+      productsEl.querySelectorAll('a[data-flavor-key]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          const key = a.getAttribute('data-flavor-key');
+          const id = a.getAttribute('data-flavor');
+          if (!key && !id) return;
+          const btn = document.querySelector(
+            '#flavor-options .option[data-flavor-key="' + key + '"], #flavor-options .option[data-flavor="' + id + '"]'
+          );
+          if (btn) btn.click();
+        });
+      });
     }
+
+    renderExecutiveEstimator();
 
     renderAboutAndVessels();
 

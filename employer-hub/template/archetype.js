@@ -606,6 +606,78 @@
           .join('')}</div>`;
         return section('protection', 'Protection stack', html);
       },
+      n30_executive: function () {
+        const block = A.n30_executive;
+        if (!block || !block.data) return '';
+        const d = block.data;
+        const copy = block.copy || {};
+        const scenarios = d.scenarios || {};
+        const order = ['conservative', 'mid', 'upside'];
+        const chips = (copy.chips || [])
+          .map(function (c) {
+            return `<span class="chip">${esc(c)}</span>`;
+          })
+          .join('');
+        const windows = (block.service_windows || [])
+          .map(function (w) {
+            return `<div class="arch-card">
+              <p class="assump-label">${esc(w.time_range || '')}</p>
+              <h3>${esc(w.label || '')}</h3>
+              <p>${esc(w.note || '')}</p>
+              <p class="assump-label">${esc(w.layer || '')}</p>
+            </div>`;
+          })
+          .join('');
+        const scenarioCards = order
+          .map(function (key) {
+            const s = scenarios[key];
+            if (!s) return '';
+            const rows = (s.rows || [])
+              .map(function (r) {
+                return `<tr>
+                  <td>${esc(r.line || '')}<div class="assump-label">${esc(r.quantity || '')} · ${esc(r.price || '')}</div></td>
+                  <td class="num">${money(r.subtotal_usd)}</td>
+                </tr>`;
+              })
+              .join('');
+            return `<div class="arch-card${key === 'mid' ? ' emphasis' : ''}">
+              <h3>${esc(s.label || key)} · payback ~${esc(String(s.payback_years))} yr</h3>
+              <table class="pnl-table">
+                <tbody>
+                  ${rows}
+                  <tr class="total"><td><strong>Gross / month</strong></td><td class="num"><strong>${money(s.gross_usd)}</strong></td></tr>
+                  <tr><td>Operating cost / month</td><td class="num">${money(s.opex_usd)}</td></tr>
+                  <tr class="emphasis"><td><strong>Contribution / month</strong></td><td class="num"><strong>${money(s.contrib_usd)}</strong></td></tr>
+                </tbody>
+              </table>
+            </div>`;
+          })
+          .join('');
+        const opex = (d.opex_rows || [])
+          .map(function (r) {
+            return `<tr>
+              <td>${esc(r.line || '')}<div class="assump-label">${esc(r.note || '')}</div></td>
+              <td class="num">${money(r.per_mo_low)}–${money(r.per_mo_high)}</td>
+            </tr>`;
+          })
+          .join('');
+        let html = '';
+        if (copy.body) html += `<p class="lead">${esc(copy.body)}</p>`;
+        if (chips) html += `<div class="chip-row" style="margin:12px 0 18px">${chips}</div>`;
+        html += `<div class="scenario-hero">
+          <div class="metric"><div class="k">Vessel</div><div class="v" style="font-size:18px">${esc(d.vessel || 'N30')}</div></div>
+          <div class="metric"><div class="k">Capex</div><div class="v">${money(d.capex_usd)}</div></div>
+          <div class="metric"><div class="k">Seats</div><div class="v">${esc(d.seats)}</div></div>
+          <div class="metric"><div class="k">Crew</div><div class="v" style="font-size:15px">${esc(d.crew || '1 captain')}</div></div>
+        </div>`;
+        if (windows) html += `<div class="arch-grid-2" style="margin:18px 0">${windows}</div>`;
+        html += `<h3 style="margin:22px 0 12px">Scenarios (reserved slots + shoulder revenue)</h3>
+          <div class="arch-grid-3">${scenarioCards}</div>`;
+        html += `<h3 style="margin:22px 0 12px">Operating cost bands</h3>
+          <table class="pnl-table"><tbody>${opex}</tbody></table>`;
+        html += `<p class="assump-label" style="margin-top:12px">Trip prices are all-in (cabin + F&amp;B) and backed out for profitability on fixed AM/PM executive slots with a pickup wait buffer — not open boarding waits.</p>`;
+        return section('n30_executive', copy.headline || block.title || 'N30 executive economics', html);
+      },
     };
 
     const skip = { hero: 1, network: 1, cta: 1 };
@@ -617,6 +689,7 @@
       'business_model',
       'service_day',
       'pnl',
+      'n30_executive',
       'fleet_phasing',
       'protection_stack',
       'footnotes',
