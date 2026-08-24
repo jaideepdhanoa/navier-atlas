@@ -455,8 +455,15 @@
       </section>`;
     },
     'def-quanta-moment'(s) {
-      // Keep founder headline casing as authored (v4.1 sea-trials / 2,400 NMi claim)
+      // Short capability headline; belief_line as founder pull-quote (not an orphan italic)
       const headline = s.headline || '';
+      const beliefCite = s.belief_attribution || s.video_label || '';
+      const beliefQuote = s.belief_line
+        ? `<blockquote class="defense-quote def-belief-quote">
+            <p>${esc(s.belief_line)}</p>
+            ${beliefCite ? `<cite>${esc(beliefCite)}</cite>` : ''}
+          </blockquote>`
+        : '';
       return `<section class="section-block chapter-break quanta-moment" id="${esc(s.id)}" data-reveal>
         <div class="section-inner">
           ${kicker(s)}
@@ -465,7 +472,7 @@
           <div class="quanta-video-lead">
             ${filmCard(s.video, (s.video && s.video.poster) || 'assets/posters/QhiaYVgXMf0.jpg', s.video_label || '')}
           </div>
-          ${s.belief_line ? `<p class="def-belief-line">${esc(s.belief_line)}</p>` : ''}
+          ${beliefQuote}
         </div>
       </section>`;
     },
