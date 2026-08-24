@@ -455,7 +455,8 @@
       </section>`;
     },
     'def-quanta-moment'(s) {
-      const headline = titleCaseHeadline(s.headline || '');
+      // Keep founder headline casing as authored (v4.1 sea-trials / 2,400 NMi claim)
+      const headline = s.headline || '';
       return `<section class="section-block chapter-break quanta-moment" id="${esc(s.id)}" data-reveal>
         <div class="section-inner">
           ${kicker(s)}
@@ -464,6 +465,7 @@
           <div class="quanta-video-lead">
             ${filmCard(s.video, (s.video && s.video.poster) || 'assets/posters/QhiaYVgXMf0.jpg', s.video_label || '')}
           </div>
+          ${s.belief_line ? `<p class="def-belief-line">${esc(s.belief_line)}</p>` : ''}
         </div>
       </section>`;
     },
@@ -564,6 +566,27 @@
           </figure>`;
         })
         .join('');
+      // Concept renders — PLATFORM only, never mixed into PROOF photography
+      const mr = s.mission_renders || {};
+      const missionItems = (mr.items || [])
+        .map(function (it) {
+          const src = mediaPath(it.src);
+          if (!src) return '';
+          let cap = it.caption || '';
+          if (cap && !/concept render/i.test(cap)) cap = cap + ' · CONCEPT RENDER';
+          return `<figure class="def-mission-card">
+            <div class="def-mission-frame"><img src="${esc(src)}" alt="${esc(it.alt || cap)}" loading="lazy" /></div>
+            ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}
+          </figure>`;
+        })
+        .join('');
+      const missionHtml = missionItems
+        ? `<div class="def-mission-rail" data-reveal>
+            <p class="sublabel">${esc(mr.kicker || 'MISSION CONFIGURATIONS')}</p>
+            <p class="def-mission-note">Concept renders</p>
+            <div class="def-mission-grid">${missionItems}</div>
+          </div>`
+        : '';
       const quietProof =
         [press, usmi].filter(Boolean).join('') +
         (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
@@ -598,8 +621,10 @@
           <div class="defense-beat defense-beat--platform">
             <p class="sublabel">PLATFORM</p>
             ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+            ${s.integrator_line ? `<p class="def-integrator-line">${esc(s.integrator_line)}</p>` : ''}
             ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
             ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
+            ${missionHtml}
           </div>
 
           ${
