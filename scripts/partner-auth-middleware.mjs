@@ -179,6 +179,11 @@ function isPublic(pathname) {
   if (pathname === '/bay-employers' || pathname.startsWith('/bay-employers/')) return true;
   if (pathname === '/ny-employers' || pathname.startsWith('/ny-employers/')) return true;
   if (pathname === '/employers' || pathname.startsWith('/employers/')) return true;
+  // /story — public-record outreach proof reel (no password; forwardable by design)
+  if (pathname === '/story' || pathname.startsWith('/story/')) return true;
+  // Archetype pages + doctrine — public
+  if (pathname.startsWith('/public-partners/') || pathname.startsWith('/fleet-investors/')) return true;
+  if (pathname === '/doctrine' || pathname.startsWith('/doctrine/')) return true;
   if (pathname.startsWith('/api/og') || pathname.startsWith('/api/loi') || pathname.startsWith('/api/defense-access')) return true;
   return false;
 }
