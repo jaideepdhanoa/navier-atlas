@@ -304,14 +304,24 @@
           if (card.propulsion) bits.push(card.propulsion);
           if (card.cruise_speed_kn) bits.push('~' + card.cruise_speed_kn + ' kn');
           if (card.capex_usd) bits.push(money(card.capex_usd));
-          return `<div class="arch-card vessel-card">
+          const interior = card.interior_image
+            ? `<figure class="vessel-card-interior">
+                <div class="vessel-card-media vessel-card-media--interior"><img src="${esc(mediaUrl(card.interior_image))}" alt="${esc(card.model || '')} interior" loading="lazy" /></div>
+                ${card.interior_caption ? `<figcaption>${esc(card.interior_caption)}</figcaption>` : ''}
+              </figure>`
+            : '';
+          return `<div class="arch-card vessel-card${interior ? ' vessel-card--with-interior' : ''}">
             <div class="vessel-card-media"><img src="${esc(mediaUrl(card.image || ''))}" alt="${esc(card.model || '')}" loading="lazy" /></div>
+            ${interior}
             <h3>${esc(card.model || '')}</h3>
             ${bits.length ? `<p class="assump-label">${esc(bits.join(' · '))}</p>` : ''}
             ${card.blurb ? `<p>${esc(card.blurb)}</p>` : ''}
           </div>`;
         })
         .join('')}</div>`;
+    }
+    if (v.interior_footnote) {
+      html += `<p class="assump-label vessel-interior-footnote">${esc(v.interior_footnote)}</p>`;
     }
     return section('vessels', v.title || 'Meet the vessels', html);
   }

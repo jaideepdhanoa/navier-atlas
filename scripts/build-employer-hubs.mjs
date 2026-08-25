@@ -317,19 +317,45 @@ function stripUnderscoreKeys(obj) {
   return out;
 }
 
-/** Soft-split vessel card copy by audience; shared media stays identical. */
+/** Soft-split vessel card copy by audience; shared media stays identical.
+ *  ADDENDUM v4: interiors sell productivity (employers) / pricing power (FI).
+ *  Public Partner pages get ZERO interior/executive-comfort content (G11).
+ */
 function resolveVesselsForAudience(raw, audience) {
   const vessels = stripUnderscoreKeys(raw);
   if (!vessels || !Array.isArray(vessels.cards)) return vessels;
   const isFi = audience === 'fleet-investors';
+  const isPp = audience === 'public-partners';
+  if (isPp) {
+    delete vessels.interior_footnote;
+    if (vessels.copy && vessels.copy.body_public_partners) {
+      vessels.copy.body = vessels.copy.body_public_partners;
+    } else if (vessels.copy && vessels.copy.body) {
+      // Fail closed: strip cabin/productivity pitch on PP
+      vessels.copy.body = String(vessels.copy.body)
+        .replace(/\s*Cabins are built for the working crossing[^.]*\./gi, '')
+        .replace(/\s*— quiet enough to take a call/gi, '')
+        .trim();
+    }
+  }
+  if (vessels.copy) delete vessels.copy.body_public_partners;
   vessels.cards = vessels.cards.map((card) => {
     const out = { ...card };
     if (isFi && out.blurb_fleet_investors) {
       out.blurb = out.blurb_fleet_investors;
     }
+    if (isFi && out.interior_caption_fleet_investors) {
+      out.interior_caption = out.interior_caption_fleet_investors;
+    }
+    if (isPp) {
+      delete out.interior_image;
+      delete out.interior_caption;
+      delete out.interior_caption_fleet_investors;
+    }
     delete out.blurb_fleet_investors;
     delete out.blurb_public_partners;
     delete out.blurb_employers;
+    delete out.interior_caption_fleet_investors;
     return out;
   });
   return vessels;

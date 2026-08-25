@@ -176,14 +176,24 @@
             if (card.propulsion) bits.push(card.propulsion);
             if (card.cruise_speed_kn) bits.push('~' + card.cruise_speed_kn + ' kn');
             if (card.capex_usd) bits.push(money(card.capex_usd));
-            return `<div class="arch-card vessel-card">
+            const interior = card.interior_image
+              ? `<figure class="vessel-card-interior">
+                  <div class="vessel-card-media vessel-card-media--interior"><img src="${mediaUrl(card.interior_image)}" alt="${card.model || ''} interior" loading="lazy" /></div>
+                  ${card.interior_caption ? `<figcaption>${card.interior_caption}</figcaption>` : ''}
+                </figure>`
+              : '';
+            return `<div class="arch-card vessel-card${interior ? ' vessel-card--with-interior' : ''}">
               <div class="vessel-card-media"><img src="${mediaUrl(card.image || '')}" alt="${card.model || ''}" loading="lazy" /></div>
+              ${interior}
               <h3>${card.model || ''}</h3>
               ${bits.length ? `<p class="assump-label">${bits.join(' · ')}</p>` : ''}
               ${card.blurb ? `<p>${card.blurb}</p>` : ''}
             </div>`;
           })
           .join('')}</div>`;
+      }
+      if (vessels.interior_footnote) {
+        html += `<p class="caveat vessel-interior-footnote">${vessels.interior_footnote}</p>`;
       }
       vesselsBody.innerHTML = html;
       vesselsSec.hidden = false;
