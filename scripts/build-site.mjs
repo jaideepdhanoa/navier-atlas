@@ -31,6 +31,7 @@ import { generatePartnerAuthMiddleware } from './partner-auth-middleware.mjs';
 import { buildEmployerHubs } from './build-employer-hubs.mjs';
 import { buildInvest } from './build-invest.mjs';
 import { buildDefense } from './build-defense.mjs';
+import { buildStory } from './build-story.mjs';
 import { buildPartnersHub } from './build-partners-hub.mjs';
 import { parseProfile, applyProfile, normalizeRouteBlob } from './build-profile.mjs';
 import { applyRouteDisplay } from './route-display.mjs';
@@ -582,8 +583,9 @@ for (const [slug, brief] of Object.entries(data.REGION_BRIEFS || {})) {
   try {
     buildInvest();
     buildDefense();
+    buildStory();
   } catch (e) {
-    console.error('build-site: ABORT — invest microsite failed:', e.message || e);
+    console.error('build-site: ABORT — invest/defense/story microsite failed:', e.message || e);
     process.exit(1);
   }
 }
