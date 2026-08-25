@@ -1562,6 +1562,7 @@
               <p class="sublabel">PLATFORM</p>
               ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
               ${s.integrator_line ? `<p class="def-integrator-line">${esc(s.integrator_line)}</p>` : ''}
+              ${s.control_stats_line ? `<p class="inv-control-stats">${esc(s.control_stats_line)}</p>` : ''}
               ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
               ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
               ${missionHtml}
