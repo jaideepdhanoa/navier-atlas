@@ -34,27 +34,17 @@
   margin: 0 0 12px;
 }
 
-.arch-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+.vessel-toggle{
+  display:inline-flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;
 }
-@media (max-width: 960px) {
-  .arch-grid-3 { grid-template-columns: 1fr; }
+.vessel-toggle-btn{
+  appearance:none;cursor:pointer;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);
+  color:inherit;border-radius:999px;padding:8px 14px;
+  font:600 13px Inter,system-ui,sans-serif;
 }
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.chip-row .chip {
-  display: inline-flex;
-  padding: 7px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(224, 203, 143, 0.35);
-  color: #e0cb8f;
-  font-size: 12px;
-  font-weight: 600;
+.vessel-toggle-btn.active{
+  border-color:rgba(224,203,143,.55);background:rgba(224,203,143,.12);color:#e0cb8f;
 }
 .arch-grid-2 {
   display: grid;
@@ -728,13 +718,15 @@
 }
 .footnote-list {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 0;
+  list-style: none; /* number comes only from .fn-key — avoid "1. 1. …" */
   color: var(--text-2);
   font-size: 13px;
   line-height: 1.45;
 }
 .footnote-list li {
   margin: 0 0 8px;
+  padding-left: 0;
 }
 .footnote-list .fn-key {
   color: var(--accent);

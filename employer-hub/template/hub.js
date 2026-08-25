@@ -100,47 +100,6 @@
     return sign + '$' + Math.round(a).toLocaleString('en-US');
   }
 
-  function renderExecutiveEstimator() {
-    const cfg = DATA.executive_shuttle;
-    const el = document.getElementById('exec-estimator');
-    if (!cfg || !el) return;
-    el.hidden = false;
-    setText('exec-estimator-title', cfg.title || 'Executive program estimator');
-    setText('exec-estimator-lead', cfg.lead || '');
-    const assumptions = document.getElementById('exec-assumptions');
-    if (assumptions) {
-      assumptions.innerHTML = (cfg.assumptions || [])
-        .map(function (a) {
-          return '<li>' + a + '</li>';
-        })
-        .join('');
-    }
-    const midTrip = Number(cfg.trip_price_usd_mid) || 950;
-    const band = cfg.trip_price_usd_band || [850, 1100];
-    const tripsInput = document.getElementById('exec-trips-week');
-    const tripsLabel = document.getElementById('exec-trips-week-label');
-    function recomputeExec() {
-      const perWeek = Number((tripsInput && tripsInput.value) || cfg.default_trips_per_week || 10);
-      const tripsMo = Math.round(perWeek * (52 / 12));
-      if (tripsLabel) tripsLabel.textContent = perWeek + ' / week';
-      setText('exec-trip-price', money(midTrip) + ' · band ' + money(band[0]) + '–' + money(band[1]));
-      setText('exec-month-price', money(midTrip * tripsMo));
-      setText('exec-trips-mo', String(tripsMo));
-    }
-    if (tripsInput) {
-      tripsInput.value = String(cfg.default_trips_per_week || 10);
-      tripsInput.addEventListener('input', recomputeExec);
-    }
-    const cta = document.getElementById('exec-estimator-cta');
-    if (cta) {
-      cta.addEventListener('click', function () {
-        const btn = document.querySelector('#flavor-options .option[data-flavor-key="executive"]');
-        if (btn) btn.click();
-      });
-    }
-    recomputeExec();
-  }
-
   function servesText(n) {
     if (!n) return '';
     if (Array.isArray(n.serves)) return n.serves.join(' · ');
@@ -357,24 +316,30 @@
         }
         <p>${p.body || ''}</p>
         <div class="meta-row">${(p.meta || []).map((m) => `<span class="meta">${m}</span>`).join('')}</div>
-        <a class="btn ${p.cta_class || 'btn-ghost'}" href="${p.cta_href || '#letter'}" data-flavor="${p.flavor || ''}" data-flavor-key="${p.flavor_key || ''}">${p.cta_label || 'Learn more'}</a>
+        <a class="btn ${p.cta_class || 'btn-ghost'}" href="${p.cta_href || '#letter'}" data-vessel-mode="${p.vessel_mode || ''}" data-flavor="${p.flavor || ''}" data-flavor-key="${p.flavor_key || ''}">${p.cta_label || 'Learn more'}</a>
       </article>`
         )
         .join('');
-      productsEl.querySelectorAll('a[data-flavor-key]').forEach(function (a) {
-        a.addEventListener('click', function () {
+      productsEl.querySelectorAll('a[data-vessel-mode], a[data-flavor-key]').forEach(function (a) {
+        a.addEventListener('click', function (ev) {
+          const mode = a.getAttribute('data-vessel-mode');
           const key = a.getAttribute('data-flavor-key');
-          const id = a.getAttribute('data-flavor');
-          if (!key && !id) return;
-          const btn = document.querySelector(
-            '#flavor-options .option[data-flavor-key="' + key + '"], #flavor-options .option[data-flavor="' + id + '"]'
-          );
-          if (btn) btn.click();
+          const href = a.getAttribute('href') || '';
+          // Calculator-bound CTAs switch vessel mode; do not also force LOI flavor yet
+          // (Continue-to-LOI from the calculator sets the matching flavor).
+          if ((mode === 'n30' || mode === 'n45') && href.indexOf('#calculator') === 0) {
+            ev.preventDefault();
+            setCalcVessel(mode);
+            document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' });
+            return;
+          }
+          if (key) {
+            const btn = document.querySelector('#flavor-options .option[data-flavor-key="' + key + '"]');
+            if (btn) btn.click();
+          }
         });
       });
     }
-
-    renderExecutiveEstimator();
 
     renderAboutAndVessels();
 
@@ -1233,10 +1198,45 @@
   Object.keys(inputsMeta).forEach((k) => {
     state[k] = inputsMeta[k].default;
   });
+  const execCfg = DATA.executive_shuttle || {};
+  const execState = {
+    trips_per_week: Number(execCfg.default_trips_per_week) || 10,
+    trip_price: Number(execCfg.trip_price_usd_mid) || 950,
+  };
+  let calcVessel = 'n45';
   const fieldsEl = MAP_ONLY ? null : document.getElementById('calc-fields');
   const fieldOrder =
     calcMeta.field_order ||
     Object.keys(inputsMeta);
+
+  function setCalcVessel(mode) {
+    if (mode !== 'n30' && mode !== 'n45') return;
+    // N30 mode only exists when this hub authored executive_shuttle economics
+    if (mode === 'n30' && !execCfg.trip_price_usd_mid && !execCfg.default_trips_per_week) return;
+    calcVessel = mode;
+    const toggle = document.getElementById('calc-vessel-toggle');
+    if (toggle) {
+      toggle.querySelectorAll('.vessel-toggle-btn').forEach(function (btn) {
+        const on = btn.getAttribute('data-vessel') === calcVessel;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+    const presets = document.getElementById('presets');
+    if (presets) presets.hidden = calcVessel === 'n30';
+    const lead = document.getElementById('calc-lead');
+    if (lead) {
+      if (calcVessel === 'n30') {
+        lead.textContent =
+          execCfg.lead ||
+          'Indicative all-in pricing for a dedicated N30 executive program — fixed slots, wait buffer, F&B included.';
+      } else {
+        lead.innerHTML = calcMeta.lead_html || copy.calc_lead_html || copy.calc_lead || '';
+      }
+    }
+    renderFields();
+    recompute();
+  }
 
   function formatInput(key, v) {
     if (key === 'subsidy_share' || key === 'parking_share' || key === 'sigma_employer_subsidy_share' || key === 'rho_share_displacing_stall')
@@ -1265,6 +1265,45 @@
   function renderFields() {
     if (!fieldsEl) return;
     fieldsEl.innerHTML = '';
+    if (calcVessel === 'n30') {
+      const band = execCfg.trip_price_usd_band || [850, 1100];
+      const mk = function (key, label, min, max, step, value, formatFn) {
+        const wrap = document.createElement('div');
+        wrap.className = 'field';
+        const id = 'in-exec-' + key;
+        wrap.innerHTML =
+          `<label for="${id}">${label}</label>` +
+          `<input id="${id}" type="range" min="${min}" max="${max}" step="${step}" value="${value}" />` +
+          `<div class="hint"><span id="${id}-val">${formatFn(value)}</span></div>`;
+        fieldsEl.appendChild(wrap);
+        const input = wrap.querySelector('input');
+        input.addEventListener('input', function () {
+          execState[key] = Number(input.value);
+          const valEl = document.getElementById(id + '-val');
+          if (valEl) valEl.textContent = formatFn(execState[key]);
+          recompute();
+        });
+      };
+      mk('trips_per_week', 'Dedicated one-ways / week', 4, 14, 2, execState.trips_per_week, function (v) {
+        return v + ' / week (≈' + Math.round(v * 4) + ' / mo)';
+      });
+      mk('trip_price', 'All-in trip price ($)', band[0], band[1], 25, execState.trip_price, function (v) {
+        return '$' + Math.round(v);
+      });
+      const note = document.createElement('div');
+      note.className = 'field';
+      note.innerHTML =
+        '<div class="hint">' +
+        (execCfg.assumptions || [])
+          .slice(0, 4)
+          .map(function (a) {
+            return '· ' + a;
+          })
+          .join('<br/>') +
+        '</div>';
+      fieldsEl.appendChild(note);
+      return;
+    }
     fieldOrder.forEach((key) => {
       const meta = inputsMeta[key];
       if (!meta) return;
@@ -1436,7 +1475,45 @@
     };
   }
 
+  function recomputeN30() {
+    if (MAP_ONLY || !document.getElementById('out-net')) return null;
+    const perWeek = execState.trips_per_week;
+    const tripPrice = execState.trip_price;
+    // Planning month ≈ 4 service weeks (AM+PM × 5 days × 4 ≈ 40 at mid), not 52/12 calendar weeks
+    const tripsMo = Math.round(perWeek * 4);
+    const programMo = tripsMo * tripPrice;
+    const band = execCfg.trip_price_usd_band || [850, 1100];
+    document.getElementById('out-net').textContent = money(programMo) + '/mo';
+    document.getElementById('out-per').textContent = money(tripPrice) + ' all-in per dedicated trip';
+    const kicker = document.querySelector('.headline-out .kicker');
+    if (kicker) kicker.textContent = 'Indicative executive program cost';
+    const anchor = document.getElementById('price-anchor');
+    if (anchor) {
+      anchor.textContent = 'Whole boat · F&B included · band ' + money(band[0]) + '–' + money(band[1]) + ' / trip';
+    }
+    const rows = [
+      ['Dedicated one-ways / week', String(perWeek)],
+      ['Trips / month (indicative)', String(tripsMo)],
+      ['All-in trip price', money(tripPrice)],
+      ['Program cost / month', money(programMo)],
+      ['Crew model', '1 captain (vessel + hospitality)'],
+      ['Product', 'Fixed AM/PM slots · wait buffer · no multi-company boarding'],
+    ];
+    document.getElementById('out-rows').innerHTML = rows
+      .map(([k, v]) => `<div class="out-row"><span>${k}</span><strong>${v}</strong></div>`)
+      .join('');
+    window.__HUB_CALC__ = {
+      profile: 'n30_executive',
+      vessel: 'n30',
+      program_month: programMo,
+      trip_price: tripPrice,
+      trips_mo: tripsMo,
+    };
+    return { program_month: programMo, trip_price: tripPrice };
+  }
+
   function recompute() {
+    if (calcVessel === 'n30') return recomputeN30();
     if (profile === 'nyc_parking_toll') return recomputeNyc();
     return recomputeBay();
   }
@@ -1480,8 +1557,29 @@
     });
   }
 
-  renderFields();
-  const check = recompute();
+  const hasExecShuttle = !!(execCfg.trip_price_usd_mid || execCfg.default_trips_per_week);
+  const calcToggle = document.getElementById('calc-vessel-toggle');
+  if (calcToggle) {
+    calcToggle.hidden = !hasExecShuttle;
+    if (!hasExecShuttle) calcVessel = 'n45';
+  }
+  document.querySelectorAll('#calc-vessel-toggle .vessel-toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setCalcVessel(btn.getAttribute('data-vessel'));
+    });
+  });
+  document.getElementById('calc-loi-cta')?.addEventListener('click', function () {
+    const key = calcVessel === 'n30' ? 'executive' : 'seats';
+    const btn = document.querySelector('#flavor-options .option[data-flavor-key="' + key + '"]');
+    if (btn) btn.click();
+  });
+  // Honor ?vessel=n30 deep link from product CTAs / shares
+  try {
+    const q = new URLSearchParams(location.search).get('vessel');
+    if (hasExecShuttle && (q === 'n30' || q === 'n45')) calcVessel = q;
+  } catch (e) {}
+  setCalcVessel(calcVessel);
+  const check = calcVessel === 'n45' ? recompute() : null;
   const assert = calcMeta.worked_assert || {};
   // MAP_ONLY pages skip calculator DOM — recompute() returns null; do not throw before initMap()
   if (check) {
