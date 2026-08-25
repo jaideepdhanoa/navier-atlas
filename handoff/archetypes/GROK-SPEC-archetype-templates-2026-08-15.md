@@ -177,3 +177,37 @@ Data contract is now **v3**. Full rationale: `handoff/archetypes/TEMPLATE-V3-PLA
 **G8 — Keep all v2 wins.** Footnote system, deck-style P&L, status chips, role cards, speed-rule expander — unchanged.
 
 **G9 — QA before hand-back.** Side-by-side vs `/employers/boston`; run the §7 kill-scan (now also: "trigger", "not yet operate", "has not yet operated", "none committed", "anchor" on FI renderables); screenshot both pages full-length. **No city replication until Boston passes.**
+
+
+---
+
+# ADDENDUM v4 — 2026-08-25 (interior plates: comfort + productivity)
+
+The employer value proposition extends from time saved to **time recovered**: the crossing is a
+guaranteed, comfortable, connected working seat. Interiors make it visual. Applies to every city
+generated from this template; Boston exemplar updated in this PR as the worked example.
+
+**G10 — Interior plate pair on vessel cards.** Each vessel card in `navier_intro` (Fleet Investors)
+and the employer-hub vessels panel (`shared/vessels.json`) renders an exterior + interior plate pair
+(interior second; stacked on mobile, side-by-side or tabbed on desktop). Assets ship in this PR:
+`employer-hub/assets/vessels/n45-interior-commuter.jpg` · `n30-interior-executive.jpg` (web-weight,
+never upscale). Data keys: `interior_image`, `interior_caption` (+ `interior_caption_fleet_investors`
+where the FI angle differs), `data.images.vessel_*_interior` + `data.interior_captions` on archetype pages.
+
+**G11 — Copy angle per audience.** Employer surfaces sell comfort + productivity: individual seats,
+fold-out work tables, Starlink Wi-Fi, quiet enough to take a call — "the crossing is working time,
+not lost time." Fleet Investor surfaces sell pricing power: the premium cabin is what defends premium
+seat rates. **Public Partner pages are EXCLUDED** — no interior plates and no executive-comfort copy
+there; PP sells public value (wake, noise, access), and executive interiors cut against it.
+
+**G12 — Honesty footnote.** One footnote per page carrying the load once, rendered in the Notes &
+assumptions block with a small marker near the interior plates: "Interior images are design
+renderings; final cabin configurations may vary." (Boston: `fn_interiors`; employer hub:
+`interior_footnote` in `shared/vessels.json`.)
+
+**G13 — Noise chip upgrade.** The `navier_intro` Noise tech chip reads: "near-silent, all-electric —
+quiet enough to take a call." Same fact, second job: environmental stat becomes productivity proof.
+
+**QA for this addendum:** interior plates render at natural aspect (no crop of seats/tables), captions
+verbatim from data, footnote present on every page showing an interior, zero interior content on any
+`/public-partners/` URL.
