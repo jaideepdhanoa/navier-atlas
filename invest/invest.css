@@ -2326,7 +2326,8 @@ a.team-link:hover {
 }
 
 /* Quanta moment */
-.quanta-headline { max-width: 28ch !important; }
+/* ~2 lines at desktop for Quanta moment headline (synced w/ /defense) */
+.quanta-headline { max-width: 42ch !important; }
 .quanta-video-lead { width: min(100%, 920px); margin-top: 20px; }
 .quanta-video-lead .film-card, .quanta-video-lead .vcard { width: 100%; }
 .quanta-video-lead .film-cap, .quanta-video-lead .vcard-cap {
@@ -3158,4 +3159,93 @@ a.team-link:hover {
   .thesis-row--pipeline .thesis-thumb {
     transform: none;
   }
+}
+
+/* ── v10.3 sea-grid (claim) ─────────────────────────── */
+.sea-grid-cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 22px;
+}
+@media (max-width: 900px) {
+  .sea-grid-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.sea-grid-col {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,.02);
+}
+.sea-grid-col-label {
+  color: var(--accent-bright, #e0cb8f);
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.sea-grid-col-line {
+  margin-top: 8px;
+  color: rgba(255,255,255,.78);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.sea-grid-model { display: grid; gap: 12px; margin: 8px 0 20px; }
+.sea-grid-model-lead { color: #f3efe4; font-weight: 600; font-size: 15px; }
+.sea-grid-model-line { color: rgba(255,255,255,.62); font-size: 14px; margin-top: 4px; line-height: 1.45; }
+.sea-grid-demand { margin: 18px 0; }
+.sea-grid-demand-rows { display: grid; gap: 10px; }
+.sea-grid-demand-lead { color: var(--accent-bright, #e0cb8f); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; font-weight: 650; }
+.sea-grid-demand-line { color: rgba(255,255,255,.7); font-size: 14px; margin-top: 3px; }
+.sea-grid-rights {
+  margin: 14px 0 0;
+  font-style: italic;
+  color: rgba(255,255,255,.55);
+  font-size: 14px;
+  max-width: 62ch;
+}
+
+/* ── v10.3 energy-compute (gtm future products) ─────── */
+.energy-compute-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: 22px;
+  align-items: start;
+  margin-top: 16px;
+}
+@media (max-width: 960px) {
+  .energy-compute-layout { grid-template-columns: 1fr; }
+}
+.energy-platform-body { color: rgba(255,255,255,.8); line-height: 1.5; max-width: 58ch; }
+.energy-points { display: grid; gap: 12px; margin: 16px 0 20px; }
+.energy-point-lead { color: #f3efe4; font-weight: 650; font-size: 15px; }
+.energy-point-line { color: rgba(255,255,255,.62); font-size: 14px; margin-top: 3px; }
+.energy-win-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 700px) { .energy-win-chips { grid-template-columns: 1fr; } }
+.energy-compute-media { margin: 0; position: relative; }
+.energy-compute-frame {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.1); background: #07080a;
+}
+.energy-compute-frame img { width: 100%; display: block; height: auto; }
+.energy-badge {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: #0a0a0c; background: rgba(224,203,143,.92);
+  padding: 5px 8px; border-radius: 999px; font-weight: 700;
+}
+.energy-compute-media figcaption {
+  margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.5); line-height: 1.4;
+}
+.status-chip {
+  display: inline-block;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(224,203,143,.35);
+  color: var(--accent-bright, #e0cb8f);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 700;
 }

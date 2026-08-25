@@ -50,6 +50,9 @@
     },
     "fn13": {
       "text": "Road and existing-schedule comparisons are traffic- and season-dependent indications, not measurements. Navier times are computed from route distance at each segment's legal speed with conservative approach and dwell allowances."
+    },
+    "fn_n30_exec": {
+      "text": "N30 executive economics are indicative platform figures (all-in cabin + F&B on a ~$1M vessel, one captain, fixed AM/PM slots plus wait buffer). Shoulder charters/experiences are additive. Not a quote — ops walkthrough required."
     }
   },
   "hero": {
@@ -822,5 +825,497 @@
       "Jaideep: suppress conservative scenario to a footnote — removed from P&L per_scenario blocks, scenarios table, and revenue build; preserved here. fn8 carries the floor.",
       "Jaideep: accept the retail-vs-wholesale spread on experiences ($25–45/person retail vs $188–314/hr whole-vessel charter) — no change."
     ]
+  },
+  "pnl_models": {
+    "n45": {
+      "label": "N45 Explorer",
+      "capex_usd": 3000000,
+      "payback_label": "N45 Explorer",
+      "honesty": "Payback is for a single N45 Explorer (~$3M). Levers stay inside authored scenario bands. Upside lines never enter base totals unless toggled.",
+      "revenue_build": {
+        "title": "The revenue build",
+        "fn": "fn3",
+        "data": {
+          "scenarios": {
+            "mid": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "48 seats/mo",
+                  "price": "$280/seat-month (blended)",
+                  "subtotal_usd": 13440,
+                  "status": "modeled",
+                  "fn": "fn5",
+                  "note": "Guaranteed monthly seats across the trunk and Islands corridors, at the middle of the blended band."
+                },
+                {
+                  "line": "Spot seats — Marmara trunk",
+                  "quantity": "30% of 2,240 residual seat-legs (672 seats)",
+                  "price": "$9.00/leg (blended)",
+                  "subtotal_usd": 6048,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity at a blended premium fare."
+                },
+                {
+                  "line": "Islands express seats",
+                  "quantity": "150 legs/mo × 12 seats",
+                  "price": "$11.50/seat-leg",
+                  "subtotal_usd": 20700,
+                  "status": "modeled",
+                  "fn": "fn13",
+                  "note": "Year-round Islands rotations — the flagship time-win layer of the Istanbul day."
+                },
+                {
+                  "line": "Shared experiences",
+                  "quantity": "40 sailings/mo × 21 seats",
+                  "price": "$35/person",
+                  "subtotal_usd": 29400,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Sunset and shoreline sailings — the headline experience layer."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "16 charter hrs/mo",
+                  "price": "$250/hr",
+                  "subtotal_usd": 4000,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour, positioned against the operating charter market."
+                }
+              ],
+              "gross_monthly_usd": 52408
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Committed commuter bundles",
+                  "quantity": "54 seats/mo",
+                  "price": "$314/seat-month (blended)",
+                  "subtotal_usd": 16956,
+                  "status": "modeled",
+                  "fn": "fn5",
+                  "note": "Guaranteed monthly seats across the trunk and Islands corridors, at the top of the blended band."
+                },
+                {
+                  "line": "Spot seats — Marmara trunk",
+                  "quantity": "45% of 2,080 residual seat-legs (936 seats)",
+                  "price": "$9.00/leg (blended)",
+                  "subtotal_usd": 8424,
+                  "status": "modeled",
+                  "fn": "fn7",
+                  "note": "Yield-managed seats sold on spare commute capacity at a blended premium fare."
+                },
+                {
+                  "line": "Islands express seats",
+                  "quantity": "210 legs/mo × 15 seats",
+                  "price": "$13.60/seat-leg",
+                  "subtotal_usd": 42840,
+                  "status": "modeled",
+                  "fn": "fn13",
+                  "note": "Dense summer rotations at the top of the premium band."
+                },
+                {
+                  "line": "Shared experiences",
+                  "quantity": "60 sailings/mo × 22 seats",
+                  "price": "$45/person",
+                  "subtotal_usd": 59400,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "A full experience day across the strait shoreline and the Marmara."
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "30 charter hrs/mo",
+                  "price": "$314/hr",
+                  "subtotal_usd": 9420,
+                  "status": "modeled",
+                  "fn": "fn1",
+                  "note": "Private group bookings by the hour, positioned against the operating charter market."
+                }
+              ],
+              "gross_monthly_usd": 98208
+            }
+          }
+        },
+        "note": "Every quantity comes from the worked revenue model — these rows expose what the P&L totals already include.",
+        "_internal": "Rows sum exactly to gross (script-verified, qa-istanbul-premium.ts). PREMIUM re-anchor per Jaideep 2026-08-16: committed seats 18/32/36 at blended $246/$280/$314 (mix 25% short / 50% long / 25% Islands — conservative trimmed from 24 for a thinner premium pool); spot fills 15/30/45% at a flat blended $9.00 (residual = 3,520 − committed×40); Islands 60/100/140 legs × 8/12/15 seats × $9.40/$11.50/$13.60; experiences 20/40/60 sailings × $25/$35/$45; charters 8/16/30 hrs × $188/$250/$314. Volumes remain authored (no sourced Istanbul volume plan exists) and were NOT inflated for the re-anchor — only prices moved to the premium bands and the conservative committed pool was trimmed. Every quantity remains flagged for Jaideep. No upside rows render in the upside scenario (sponsorship/cargo unpriced, fn3)."
+      },
+      "pnl": {
+        "copy": {
+          "headline": "One vessel. One day. Four demand layers.",
+          "body": "This tier prices against Istanbul's existing premium water and road options — the city's own sea taxi, black taxis and VIP transfers — not against the subsidized ferry card. Committed seats form the schedule spine on the full-speed trunk and Islands lines; Islands expresses, experiences and charters carry the rest of the day, priced inside a premium market the city already pays for daily."
+        },
+        "fn": "fn3",
+        "data": {
+          "revenue_rows": [
+            {
+              "line": "Committed commuter bundles",
+              "pricing": "$246–314 / seat-month, blended",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Blended monthly seats across the trunk and Islands corridors, anchored on the city's own premium tariffs.",
+              "status": "modeled",
+              "fn": "fn5"
+            },
+            {
+              "line": "Spot seats — Marmara trunk",
+              "pricing": "$5.20–15.70 / leg",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "A blended $9.00 across short and long trunk legs, held flat — volume, not price, is the lever; fills assumed thin at 15–45%.",
+              "status": "modeled",
+              "fn": "fn7"
+            },
+            {
+              "line": "Islands express seats",
+              "pricing": "$9.40–13.60 / leg",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Half the crossing time of today's schedules, at or below the city sea taxi's own per-seat equivalent; summer peaks yield to $16.70.",
+              "status": "modeled",
+              "fn": "fn13"
+            },
+            {
+              "line": "Experiences & private charters",
+              "pricing": "$25–45 / person · charters $188–314 / hr",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Sunset and shoreline sailings plus whole-vessel charters, priced inside the premium water market Istanbul operates daily.",
+              "status": "modeled",
+              "fn": "fn1"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 0,
+              "mid": 73588,
+              "upside": 137040
+            }
+          },
+          "opex_rows": [
+            {
+              "line": "Crew",
+              "per_mo_low": 11400,
+              "per_mo_high": 11400,
+              "note": "Two licensed crew at $23.40/hr loaded, 2.5 rosters for a 16-hour day — built from published wage data, held flat in every scenario.",
+              "status": "modeled",
+              "fn": "fn6"
+            },
+            {
+              "line": "Energy",
+              "per_mo_low": 1932,
+              "per_mo_high": 2896,
+              "note": "Electric operation at the published commercial tariff — about $0.149 per kWh, $0.61 per nautical mile.",
+              "status": "market_priced",
+              "fn": "fn10"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 6875,
+              "per_mo_high": 6875,
+              "note": "Annualized service cost for the N45, held flat across scenarios and consistent across the program.",
+              "status": "modeled"
+            },
+            {
+              "line": "Berthing & insurance",
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Being quoted in Istanbul — excluded from totals and disclosed rather than guessed; confirmed quotes will reduce the stated nets.",
+              "status": "modeled",
+              "fn": "fn12"
+            }
+          ],
+          "opex_total": {
+            "title": "Operating cost / month",
+            "per_mo_low": 20207,
+            "per_mo_high": 21171,
+            "note": "Energy scales with activity; crew is held flat. Totals exclude pier access and insurance, which are disclosed open items.",
+            "fn": "fn12"
+          },
+          "network_share": {
+            "line": "Navier network share",
+            "value": "10% of gross revenue, off the top"
+          },
+          "net": {
+            "title": "Net to investor / month",
+            "per_scenario": {
+              "conservative": -20207,
+              "mid": 45540,
+              "upside": 102165
+            }
+          },
+          "payback": {
+            "title": "Payback",
+            "fn": "fn8",
+            "per_scenario": {
+              "conservative": "—",
+              "mid": "~5.5 yr",
+              "upside": "~2.4 yr"
+            }
+          },
+          "upside_rows": [
+            {
+              "line": "Sponsorship",
+              "pricing": null,
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "Pier, line and product sponsorship interest exists in this market — unpriced until local rates are sourced; never in base totals.",
+              "status": "upside",
+              "fn": "fn3"
+            },
+            {
+              "line": "Overnight cargo runs",
+              "pricing": null,
+              "per_mo_low": null,
+              "per_mo_high": null,
+              "note": "The car-free Islands are a genuine clean-logistics niche — waterborne rates unverified, so unpriced; never in base totals.",
+              "status": "upside",
+              "fn": "fn3"
+            }
+          ],
+          "sensitivities": [
+            {
+              "title": "Priced to the premium ladder",
+              "note": "Fares sit at the sea taxi's own per-seat equivalent and a fraction of the black-taxi trips they replace — scenarios move on fills.",
+              "status": "modeled",
+              "fn": "fn5"
+            },
+            {
+              "title": "Tourism carries the payback",
+              "note": "Islands expresses, sailings and charters carry the day — priced inside a premium water market the city already pays for daily.",
+              "status": "market_priced",
+              "fn": "fn1"
+            },
+            {
+              "title": "Crew and energy are light lines",
+              "note": "A two-person crew runs $23.40/hr loaded and energy $0.61 per nautical mile — the structurally cheap lines of this operation.",
+              "status": "modeled",
+              "fn": "fn6"
+            },
+            {
+              "title": "Two costs still to land",
+              "note": "Pier access and insurance are excluded from totals until quoted — disclosed open items that will reduce the stated nets.",
+              "status": "modeled",
+              "fn": "fn12"
+            }
+          ],
+          "scenarios": {
+            "title": "Two scenarios",
+            "note": "Per-vessel N45 ($3M), 12-month year, weather allowance and Ramadan shape absorbed. The conservative thin-fill floor is stated in the notes.",
+            "fn": "fn9",
+            "table": [
+              {
+                "case": "Conservative",
+                "gross_monthly": 0,
+                "net_to_investor_monthly": -20207,
+                "annual": -242484,
+                "payback": "—",
+                "upside_lines_included": false
+              },
+              {
+                "case": "Mid",
+                "gross_monthly": 73588,
+                "net_to_investor_monthly": 45540,
+                "annual": 546480,
+                "payback": "~5.5 yr",
+                "note": "The working case — premium seats, Islands expresses and experience sailings at prices Istanbul's premium riders already pay.",
+                "upside_lines_included": false,
+                "fn": "fn11"
+              },
+              {
+                "case": "Upside",
+                "gross_monthly": 137040,
+                "net_to_investor_monthly": 102165,
+                "annual": 1225980,
+                "payback": "~2.4 yr",
+                "note": "A full tourism day — dense Islands rotations, sunset sailings and charters. No unpriced upside lines are added.",
+                "upside_lines_included": true
+              }
+            ]
+          }
+        },
+        "_internal": {
+          "structure": "utilization_stack per the Dubai/Seattle v3 lead frame, tourism-weighted per the international addendum: committed bundles (blended IST-1 trunk + IST-2 Islands seats — full-speed lines only, never IST-3) → trunk spot seats → Islands express seats (IST-2, flagship layer) → experiences & charters → unpriced upside lines (sponsorship, cargo) → opex (berthing/insurance excluded+disclosed) → network share → scenario payback. No relief upside row: no lawful foiling allowance exists inside the strait (SPEED-RULES headline determination) and the trunk does not need one — deliberately omitted, unlike other markets.",
+          "sources": "FARE-BENCHMARKS-PREMIUM-ISTANBUL.md (authoritative fare source per Jaideep override 2026-08-16 — supersedes FARE-BENCHMARKS-ISTANBUL.md §2–3/§5 derivation), REVENUE-INPUTS-ISTANBUL.md (envelope), CREW-COST-BENCHMARKS-ISTANBUL.md (crew $23.4/hr MID loaded, $11.4K/vessel-mo; LOW $8.2K; energy EPDK 5.93 TL/kWh ex-tax -> $0.149/kWh incl. tax uplift -> $0.61/nm), NODES-ISTANBUL.md (distances/times).",
+          "opex_basis": {
+            "crew": "MID flat $11,400/mo in ALL scenarios (2.5 rostered 2-person crews × 195 hr @ $23.40/hr loaded, 16-hr day) per instruction; LOW $8,200 carried as fn6 sensitivity. No per-scenario hour scaling — conservative simplification, flagged.",
+            "energy": "nm/mo per scenario × $0.61/nm: commute 4 full IST-1 round trips/day × 25.2 nm × 22 days = 2,217.6 nm (all scenarios) + Islands legs × 9.5 nm (570/950/1,330) + experiences × 15 nm/sailing (300/600/900, DERIVED) + charters × 10 nm/hr (80/160/300, DERIVED) = 3,167.6 / 3,927.6 / 4,747.6 nm → $1,932 / $2,396 / $2,896 (rounded to whole dollars). Sensitivity at $0.30/kWh ($1.23/nm): line roughly doubles (fn10); mid/upside nets stay positive.",
+            "maintenance": "$82.5K/yr = $6,875/mo, program-consistent N45 figure, flat across scenarios.",
+            "berthing_insurance": "UNSOURCED this pass (REVENUE-INPUTS fail-closed register #1) → EXCLUDED from opex totals, null row + fn12 disclosure. Ataköy/Kalamış marina tariffs are publicly available — pull next pass; Turkish hull/P&I quote needed."
+          },
+          "opex_total_note": "Opex varies by scenario on energy only: $20,207 / $20,671 / $21,171 — rendered as the conservative-to-upside band. Scenario nets reflect per-scenario opex. EXCLUDES berthing & insurance (fn12).",
+          "network_share_basis": "program standard: 10% of gross.",
+          "layer_pricing_basis": {
+            "committed_bundles_L1": "PREMIUM re-anchor: blended $246/$280/$314 per seat-month from stated corridor mix 25% short-leg trunk ($147/$167.5/$188) + 50% long-leg trunk ($293/$335/$377) + 25% Islands ($251/$282.5/$314) — bands per FARE-BENCHMARKS-PREMIUM §6 bundles (7,000–9,000 / 14,000–18,000 / 12,000–15,000 TL/mo @47.76, ~40 legs/mo, ~35% off mid-spot). Blend arithmetic exact at low/mid/high. Seats 18/32/36 — conservative trimmed from 24 to reflect a thinner premium pool (stated in renderable note). Full-speed lines IST-1/IST-2 only; never IST-3. Status modeled + fn5; pending Jaideep confirmation.",
+            "spot_seats_L2a": "Blended trunk spot fare $9.00/leg held flat (authored 50/50 short/long mix of band mids $6.25/$13.10 = $9.68 blend; $9.00 held below the blend, conservative; corridor bands $5.2–7.3 short, $10.5–15.7 long per FARE-PREMIUM §6). Residual = 3,520 − committed×40 legs/mo = 2,800/2,240/2,080; fills 15/30/45% -> 420/672/936 seats exact (fn7); seat count × fare exact: $3,780/$6,048/$8,424. Subtracting Islands-share committed legs from trunk residual is conservative (understates sellable trunk seats).",
+            "islands_L2b": "IST-2 only: 60/100/140 one-way legs/mo × 8/12/15 seats × $9.40/$11.50/$13.60 (FARE-PREMIUM §6 band 450–650 TL Kadıköy / 300–450 TL Bostancı -> $9.4–13.6; peak 800 TL = $16.7 noted, never modeled) = $4,512/$13,800/$28,560. Capacity check incl. Islands committed seats (25% of pool × 40 legs): cons 660/1,200 · mid 1,520/2,000 · up 2,460/4200 seat-legs — all feasible.",
+            "experiences_charters_L3": "Experiences 20/40/60 sailings × 12/14/15 seats × $25/$35/$45 pp — per-seat retail variant retained (REVENUE-INPUTS L3); per-seat sums can exceed the whole-vessel hourly (retail vs wholesale) — flagged. Charters 8/16/30 hrs × $188/$250/$314 per FARE-PREMIUM §6 (9,000–15,000 TL/hr = $188–314; above the 2,700–8,400 TL/hr conventional motoryacht market, ~10% of helicopter) = $1,504/$4,000/$9,420 — LOWERED from the prior $300–450/hr authored band to sit inside the sourced premium band.",
+            "sponsorship_U1": "UNPRICED — unchanged; never in totals.",
+            "overnight_cargo_U2": "UNPRICED — unchanged; never in totals."
+          },
+          "scenario_math_check": "Conservative 4,428+3,780+4,512+6,000+1,504 = 20,224 · Mid 8,960+6,048+13,800+19,600+4,000 = 52,408 · Upside 11,304+8,424+28,560+40,500+9,420 = 98,208. Net = gross×0.90 − opex(20,207/20,671/21,171): 18,201.60−20,207 = −2,005.40 (rendered −2,005) · 47,167.20−20,671 = 26,496.20 (rendered 26,496) · 88,387.20−21,171 = 67,216.20 (rendered 67,216). Annuals from unrounded: −24,064.80 -> −24,000 · 317,954.40 -> 318,000 · 806,594.40 -> 807,000. Payback $3M ÷ unrounded annual: — (negative) / 7.863 -> ~7.9 yr / 3.099 -> ~3.1 yr. Re-verified by script before publish (qa-istanbul-premium.ts).",
+          "scenario_qa": "Conservative remains NEGATIVE after the premium re-anchor (−$2,005/mo vs −$6,480 before) — rendered honestly as the disclosed floor (fn8, payback dash), with the trimmed premium pool stated in the renderable note. Mid ~7.9 yr (was ~13.1 yr at parity fares); upside ~3.1 yr (was ~4.1). No payback headline in hero (confirm whether to add now that mid is credible). Cross-city comparisons never render. IST-3 carries no commuter economics and no time claim anywhere."
+        }
+      }
+    },
+    "n30": {
+      "label": "N30 Executive",
+      "capex_usd": 1000000,
+      "payback_label": "N30 Executive",
+      "honesty": "Payback is for a single N30 Executive (~$1M). All-in F&B, one captain, fixed AM/PM slots with wait buffer. Shoulder charters/experiences are additive. Indicative platform economics — not yet calibrated to this market.",
+      "revenue_build": {
+        "title": "N30 executive revenue build",
+        "fn": "fn_n30_exec",
+        "data": {
+          "scenarios": {
+            "conservative": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "32 trips/mo",
+                  "price": "$850/trip all-in",
+                  "subtotal_usd": 27200,
+                  "note": "Weekday program with thinner slot take-up.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "4 hrs/mo",
+                  "price": "$750/hr",
+                  "subtotal_usd": 3000,
+                  "note": "Shoulder corporate / VIP.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "2 × 4 pax",
+                  "price": "$79/person",
+                  "subtotal_usd": 632,
+                  "note": "Light midday fill.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "mid": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "40 trips/mo (AM+PM × 20 days)",
+                  "price": "$950/trip all-in",
+                  "subtotal_usd": 38000,
+                  "note": "Fixed slots + wait buffer; F&B included.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "8 hrs/mo",
+                  "price": "$850/hr",
+                  "subtotal_usd": 6800,
+                  "note": "Midday / evening executive amenity rate.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "6 × 6 pax",
+                  "price": "$95/person",
+                  "subtotal_usd": 3420,
+                  "note": "Short premium sails.",
+                  "status": "modeled"
+                }
+              ]
+            },
+            "upside": {
+              "rows": [
+                {
+                  "line": "Reserved executive trips",
+                  "quantity": "44 trips/mo",
+                  "price": "$1,100/trip all-in",
+                  "subtotal_usd": 48400,
+                  "note": "Full weekday slots + premium corridor.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Private charters",
+                  "quantity": "12 hrs/mo",
+                  "price": "$950/hr",
+                  "subtotal_usd": 11400,
+                  "note": "Strong shoulder demand.",
+                  "status": "modeled"
+                },
+                {
+                  "line": "Premium experiences",
+                  "quantity": "10 × 6 pax",
+                  "price": "$110/person",
+                  "subtotal_usd": 6600,
+                  "note": "Evening / weekend premium.",
+                  "status": "modeled"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "pnl": {
+        "copy": {
+          "headline": "Dedicated executive slots — then fill the rest of the day.",
+          "body": "Employers are asking for Uber-shuttle privacy: fixed AM/PM departures for their people only, with a wait buffer, Wi‑Fi tables, and F&B all-in. One captain runs the boat and hospitality. Midday and evening charters still monetize the shoulder. Payback is on the ~$1M N30 — not the N45 workhorse.",
+          "payback_basis": "N30 Executive (~$1M) per vessel",
+          "cards": []
+        },
+        "fn": "fn_n30_exec",
+        "data": {
+          "opex_rows": [
+            {
+              "line": "Captain (loaded)",
+              "per_mo_low": 3800,
+              "per_mo_high": 6200,
+              "note": "Hours track reserved blocks + shoulder charters; single crew.",
+              "status": "market_priced",
+              "fn": "fn5"
+            },
+            {
+              "line": "Energy",
+              "per_mo_low": 800,
+              "per_mo_high": 1200,
+              "note": "Electric foiling on short Bay legs.",
+              "status": "modeled"
+            },
+            {
+              "line": "Maintenance",
+              "per_mo_low": 2200,
+              "per_mo_high": 2800,
+              "note": "Scaled vs N45 planning midpoint.",
+              "status": "modeled"
+            },
+            {
+              "line": "Insurance & berth",
+              "per_mo_low": 3000,
+              "per_mo_high": 4000,
+              "note": "Early Bay estimate pending quotes.",
+              "status": "modeled"
+            },
+            {
+              "line": "F&B (all-in)",
+              "per_mo_low": 5600,
+              "per_mo_high": 9900,
+              "note": "Coffee / light meal included in trip price — not passthrough.",
+              "status": "modeled"
+            }
+          ],
+          "gross": {
+            "title": "Gross revenue / month",
+            "per_scenario": {
+              "conservative": 30832,
+              "mid": 48220,
+              "upside": 66400
+            }
+          },
+          "vessel_capex_usd": 1000000
+        }
+      }
+    }
   }
 }

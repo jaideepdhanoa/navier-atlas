@@ -1307,6 +1307,112 @@
         </div>`;
     },
 
+    /** claim sea-grid — four infrastructure columns + model rows + demand rail (v10.3) */
+    'infrastructure-map'(s) {
+      const cols = (s.columns || [])
+        .map(function (c) {
+          return `<div class="sea-grid-col">
+            <div class="sea-grid-col-label">${esc(c.label || '')}</div>
+            <div class="sea-grid-col-line">${esc(c.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const model = (s.model_rows || [])
+        .map(function (r) {
+          return `<div class="sea-grid-model-row">
+            <div class="sea-grid-model-lead">${esc(r.lead || '')}</div>
+            <div class="sea-grid-model-line">${esc(r.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const demand = s.demand || {};
+      const demandRows = (demand.rows || [])
+        .map(function (r) {
+          return `<div class="sea-grid-demand-row">
+            <div class="sea-grid-demand-lead">${esc(r.lead || '')}</div>
+            <div class="sea-grid-demand-line">${esc(r.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      return `
+        <div class="section-block shell-stage sea-grid-stage" data-reveal data-home="claim.sea-grid" id="${esc(s.id || 'sea-grid')}">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${cols ? `<div class="sea-grid-cols">${cols}</div>` : ''}
+            ${model ? `<div class="sea-grid-model">${model}</div>` : ''}
+            ${
+              demandRows
+                ? `<div class="sea-grid-demand">
+              <p class="sublabel">${esc(demand.label || 'THE DEMAND')}</p>
+              <div class="sea-grid-demand-rows">${demandRows}</div>
+            </div>`
+                : ''
+            }
+            ${s.node_rights_line ? `<p class="sea-grid-rights">${esc(s.node_rights_line)}</p>` : ''}
+            ${s.footline ? `<p class="closing-line">${esc(s.footline)}</p>` : ''}
+          </div>
+        </div>`;
+    },
+
+    /** gtm energy-compute — floating power + ocean data centers (v10.3) */
+    'future-product'(s) {
+      const media = s.media || {};
+      const img = mediaPath(media.asset || 'assets/deck/energy-node-render-v9.png');
+      const plat = s.platform || {};
+      const points = (plat.points || [])
+        .map(function (p) {
+          return `<div class="energy-point">
+            <div class="energy-point-lead">${esc(p.lead || '')}</div>
+            <div class="energy-point-line">${esc(p.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const wins = s.sea_wins || {};
+      const chips = (wins.chips || [])
+        .map(function (c) {
+          return `<div class="chip-card energy-win">
+            <div class="t">${esc(c.label || '')}</div>
+            <div class="b">${esc(c.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      return `
+        <div class="section-block shell-stage energy-compute-stage" data-reveal data-home="gtm.energy" id="${esc(s.id || 'energy-compute')}">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.status_chip ? `<p class="status-chip">${esc(s.status_chip)}</p>` : ''}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
+            <div class="energy-compute-layout">
+              <div class="energy-compute-copy">
+                ${plat.label ? `<p class="sublabel">${esc(plat.label)}</p>` : ''}
+                ${plat.body ? `<p class="energy-platform-body">${esc(plat.body)}</p>` : ''}
+                ${points ? `<div class="energy-points">${points}</div>` : ''}
+                ${
+                  chips
+                    ? `<div class="energy-wins">
+                  <p class="sublabel">${esc(wins.label || 'WHY THE SEA WINS')}</p>
+                  <div class="chips-3 energy-win-chips">${chips}</div>
+                </div>`
+                    : ''
+                }
+              </div>
+              ${
+                img
+                  ? `<figure class="energy-compute-media">
+                <div class="energy-compute-frame"><img src="${esc(img)}" alt="" loading="lazy" /></div>
+                ${media.badge ? `<span class="energy-badge">${esc(media.badge)}</span>` : ''}
+                ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
+              </figure>`
+                  : ''
+              }
+            </div>
+          </div>
+        </div>`;
+    },
+
     'defense-panel'(s) {
       // Proof (media + quotes) → Platform (specs + hulls) → Dual-use why (sub_line + budgets)
       const da = homeAssets('gtm.defense') || {};

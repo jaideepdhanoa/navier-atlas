@@ -455,15 +455,24 @@
       </section>`;
     },
     'def-quanta-moment'(s) {
-      const headline = titleCaseHeadline(s.headline || '');
+      // Short capability headline; belief_line as founder pull-quote (not an orphan italic)
+      const headline = s.headline || '';
+      const beliefCite = s.belief_attribution || s.video_label || '';
+      const beliefQuote = s.belief_line
+        ? `<blockquote class="defense-quote def-belief-quote">
+            <p>${esc(s.belief_line)}</p>
+            ${beliefCite ? `<cite>${esc(beliefCite)}</cite>` : ''}
+          </blockquote>`
+        : '';
       return `<section class="section-block chapter-break quanta-moment" id="${esc(s.id)}" data-reveal>
         <div class="section-inner">
           ${kicker(s)}
           ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
           ${headline ? `<h2 class="h2 quanta-headline">${esc(headline)}</h2>` : ''}
           <div class="quanta-video-lead">
-            ${filmCard(s.video, (s.video && s.video.poster) || 'assets/posters/QhiaYVgXMf0.jpg', s.video_label || '')}
+            ${filmCard(s.video, (s.video && s.video.poster) || 'assets/posters/QhiaYVgXMf0.jpg', '')}
           </div>
+          ${beliefQuote}
         </div>
       </section>`;
     },
@@ -511,20 +520,6 @@
       const leadSrc = mediaPath(lead.src || '');
       const photos = (media.photos || []).slice(0, 2);
       const secondary = media.secondary_videos || [];
-      const rail = ((s.capability_rail && s.capability_rail.rows) || [])
-        .map(
-          (r) => `<div class="defense-spec">
-            <div class="defense-spec-term">${esc(r.term || '')}</div>
-            <div class="defense-spec-desc">${esc(r.desc || '')}</div>
-          </div>`
-        )
-        .join('');
-      const blocks = (s.blocks || [])
-        .map(
-          (b) =>
-            `<div class="chip-card"><div class="t">${esc(b.title || '')}</div><div class="b">${nl(b.body || '')}</div></div>`
-        )
-        .join('');
       function quoteBlock(q, extraClass) {
         if (!q) return '';
         const text = q.quote || q.text || '';
@@ -564,6 +559,7 @@
           </figure>`;
         })
         .join('');
+      // PLATFORM beat (thesis / blocks / mission renders) now lives under def-family
       const quietProof =
         [press, usmi].filter(Boolean).join('') +
         (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
@@ -593,13 +589,6 @@
               ${secondaryHtml ? `<div class="defense-secondary">${secondaryHtml}</div>` : ''}
             </div>
             ${quietProof ? `<div class="defense-quiet">${quietProof}</div>` : ''}
-          </div>
-
-          <div class="defense-beat defense-beat--platform">
-            <p class="sublabel">PLATFORM</p>
-            ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
-            ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
-            ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
           </div>
 
           ${
@@ -706,6 +695,43 @@
         </div>`;
         })
         .join('')}</div>`;
+      // PLATFORM beat lives under Family (moved from dual-use)
+      const blocks = (s.blocks || [])
+        .map(
+          (b) =>
+            `<div class="chip-card"><div class="t">${esc(b.title || '')}</div><div class="b">${nl(b.body || '')}</div></div>`
+        )
+        .join('');
+      const mr = s.mission_renders || {};
+      const missionItems = (mr.items || [])
+        .map(function (it) {
+          const src = mediaPath(it.src);
+          if (!src) return '';
+          let cap = it.caption || '';
+          if (cap && !/concept render/i.test(cap)) cap = cap + ' · CONCEPT RENDER';
+          return `<figure class="def-mission-card">
+            <div class="def-mission-frame"><img src="${esc(src)}" alt="${esc(it.alt || cap)}" loading="lazy" /></div>
+            ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}
+          </figure>`;
+        })
+        .join('');
+      const missionHtml = missionItems
+        ? `<div class="def-mission-rail" data-reveal>
+            <p class="sublabel">${esc(mr.kicker || 'MISSION CONFIGURATIONS')}</p>
+            <p class="def-mission-note">Concept renders</p>
+            <div class="def-mission-grid">${missionItems}</div>
+          </div>`
+        : '';
+      const platformBeat =
+        s.thesis_line || s.integrator_line || blocks || missionHtml
+          ? `<div class="defense-beat defense-beat--platform" style="margin-top:28px">
+            <p class="sublabel">PLATFORM</p>
+            ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+            ${s.integrator_line ? `<p class="def-integrator-line">${esc(s.integrator_line)}</p>` : ''}
+            ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
+            ${missionHtml}
+          </div>`
+          : '';
       return `<section class="section-block shell-stage gmvp-stage" id="${esc(s.id)}" data-reveal>
         <div class="section-inner">
           ${kicker(s)}
@@ -714,6 +740,7 @@
           ${g.title ? `<h3 class="h3" style="margin-top:8px">${esc(g.title)}</h3>` : ''}
           ${gmvp}
           ${ladder}
+          ${platformBeat}
         </div>
       </section>`;
     },

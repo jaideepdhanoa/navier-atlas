@@ -2383,7 +2383,8 @@ a.team-link:hover {
 }
 
 /* Quanta moment */
-.quanta-headline { max-width: 28ch !important; }
+/* ~2 lines at desktop for Quanta moment headline */
+.quanta-headline { max-width: 42ch !important; }
 .quanta-video-lead { width: min(100%, 920px); margin-top: 20px; }
 .quanta-video-lead .film-card, .quanta-video-lead .vcard { width: 100%; }
 .quanta-video-lead .film-cap, .quanta-video-lead .vcard-cap {
@@ -3264,7 +3265,7 @@ a.team-link:hover {
 .def-ladder { display: grid; gap: 12px; margin-top: 18px; }
 .def-ladder-item { display: grid; grid-template-columns: 200px 1fr; gap: 14px; align-items: center; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; overflow: hidden; background: rgba(255,255,255,.02); }
 @media (max-width: 720px) { .def-ladder-item { grid-template-columns: 1fr; } }
-/* v4 crop rule: never crop the vessel out — contain on a fixed plate */
+/* Crop rule: never crop the vessel out — contain on a fixed plate (all breakpoints) */
 .def-ladder-plate {
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -3278,8 +3279,8 @@ a.team-link:hover {
 .def-ladder-plate img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  object-fit: contain;
+  object-position: center top;
   display: block;
 }
 .def-ladder-item .meta { padding: 12px 14px; }
@@ -3752,5 +3753,78 @@ a.team-link:hover {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+.def-belief-line {
+  margin: 18px auto 0;
+  max-width: 52ch;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: rgba(243, 239, 228, 0.82);
+}
+.quanta-moment .def-belief-quote {
+  margin: 22px auto 0;
+  max-width: 54ch;
+  text-align: left;
+}
+.quanta-moment .def-belief-quote p {
+  margin: 0;
+}
+.quanta-moment .def-belief-quote cite {
+  display: block;
+  margin-top: 10px;
+}
+.def-integrator-line {
+  margin: 0 0 18px;
+  max-width: 62ch;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+}
+.def-mission-rail {
+  margin-top: 28px;
+}
+.def-mission-note {
+  margin: -4px 0 14px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(224, 203, 143, 0.65);
+}
+.def-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+@media (max-width: 1100px) {
+  .def-mission-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .def-mission-grid { grid-template-columns: 1fr; }
+}
+.def-mission-card {
+  margin: 0;
+  min-width: 0;
+}
+.def-mission-frame {
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #07080a;
+}
+.def-mission-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.def-mission-card figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
   color: rgba(255, 255, 255, 0.55);
 }

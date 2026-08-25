@@ -46,7 +46,7 @@ function copyDir(src, dest) {
   }
 }
 
-function collectRenderableStrings(obj, out, skipKeys = new Set(['render_notes', 'leak_scan_notes', 'global_render_rules', 'leak_scan_terms_must_be_zero', 'behavior', 'render', 'advisors_note', 'core_note', 'alt'])) {
+function collectRenderableStrings(obj, out, skipKeys = new Set(['render_notes', 'leak_scan_notes', 'global_render_rules', 'leak_scan_terms_must_be_zero', 'behavior', 'render', 'advisors_note', 'core_note', 'alt', '_v41_notes', '_staged_assets_te263'])) {
   if (obj == null) return;
   if (typeof obj === 'string') {
     out.push(obj);
@@ -148,6 +148,9 @@ export function buildDefense() {
     delete client.gate.replaces;
     // Keep mode + denied_copy + form field labels for potential client UX; never codes.
   }
+  // Never ship the leak-term list to the browser (it contains banned strings by design)
+  delete client.leak_scan_terms_must_be_zero;
+  delete client.leak_scan_terms;
   // Strip authoring notes from client payload
   const stripNotes = (obj) => {
     if (!obj || typeof obj !== 'object') return;
@@ -227,6 +230,11 @@ export function buildDefense() {
     'assets/defense-sofweek-loop.mp4',
     'assets/defense-sofweek-cockpit.mp4',
     'assets/defense-sofweek-approach.mp4',
+    'assets/defense-te263-autonomy-grid.mp4',
+    'assets/deck/renders/defense-render-usv-hero-v1.png',
+    'assets/deck/renders/defense-render-isr-v1.png',
+    'assets/deck/renders/defense-render-patrol-v1.png',
+    'assets/deck/renders/defense-render-medevac-v1.png',
     'assets/posters/S7WB91FvSFI.jpg',
     'assets/posters/Hlp9oynUQNE.jpg',
     'assets/posters/7HETK4rsByc.jpg',

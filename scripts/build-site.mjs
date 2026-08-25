@@ -406,34 +406,52 @@ fs.writeFileSync(path.join(DIST, 'package.json'), JSON.stringify({
 }, null, 2) + '\n');
 // No legacy `builds`/`routes` — they bypass Edge middleware on partner paths.
 // Vercel auto-serves api/og.js as a function, static files from the tree, middleware.js on the edge.
+// Merge root vercel.json redirects (city invest/partners aliases) so CLI deploys from _dist/
+// don't drop /boston-invest, /nyc-invest, /fleet-investors/nyc, etc.
+const rootVercelPath = path.join(ROOT, 'vercel.json');
+const rootVercel = fs.existsSync(rootVercelPath)
+  ? JSON.parse(fs.readFileSync(rootVercelPath, 'utf8'))
+  : {};
+const distRedirectBySource = new Map();
+const baseDistRedirects = [
+  { source: '/southeast-asia', destination: '/region/southeast-asia', permanent: false },
+  { source: '/sea', destination: '/region/southeast-asia', permanent: false },
+  { source: '/mena', destination: '/region/mena', permanent: false },
+  { source: '/maghreb', destination: '/region/maghreb', permanent: false },
+  { source: '/europe', destination: '/region/europe', permanent: false },
+  { source: '/south-asia', destination: '/region/south-asia', permanent: false },
+  { source: '/east-asia', destination: '/region/east-asia', permanent: false },
+  { source: '/latin-america', destination: '/region/latin-america', permanent: false },
+  { source: '/north-america', destination: '/region/north-america', permanent: false },
+  { source: '/oceania', destination: '/region/oceania', permanent: false },
+  { source: '/uber-india-derivative', destination: '/uber-india', permanent: true },
+  { source: '/uber-india-derivative/:path*', destination: '/uber-india/:path*', permanent: true },
+  { source: '/grab-thailand-derivative', destination: '/grab-thailand', permanent: true },
+  { source: '/grab-thailand-derivative/:path*', destination: '/grab-thailand/:path*', permanent: true },
+  { source: '/minor', destination: '/minor-hotels', permanent: true },
+  { source: '/minor/:path*', destination: '/minor-hotels/:path*', permanent: true },
+];
+for (const r of baseDistRedirects) distRedirectBySource.set(r.source, r);
+for (const r of rootVercel.redirects || []) {
+  if (r && r.source && r.destination) distRedirectBySource.set(r.source, r);
+}
 fs.writeFileSync(path.join(DIST, 'vercel.json'), JSON.stringify({
   version: 2,
   cleanUrls: true,
   trailingSlash: false,
-  redirects: [
-    { source: '/southeast-asia', destination: '/region/southeast-asia', permanent: false },
-    { source: '/sea', destination: '/region/southeast-asia', permanent: false },
-    { source: '/mena', destination: '/region/mena', permanent: false },
-    { source: '/maghreb', destination: '/region/maghreb', permanent: false },
-    { source: '/europe', destination: '/region/europe', permanent: false },
-
-    { source: '/south-asia', destination: '/region/south-asia', permanent: false },
-    { source: '/east-asia', destination: '/region/east-asia', permanent: false },
-    { source: '/latin-america', destination: '/region/latin-america', permanent: false },
-    { source: '/north-america', destination: '/region/north-america', permanent: false },
-    { source: '/oceania', destination: '/region/oceania', permanent: false },
-    { source: '/uber-india-derivative', destination: '/uber-india', permanent: true },
-    { source: '/uber-india-derivative/:path*', destination: '/uber-india/:path*', permanent: true },
-    { source: '/grab-thailand-derivative', destination: '/grab-thailand', permanent: true },
-    { source: '/grab-thailand-derivative/:path*', destination: '/grab-thailand/:path*', permanent: true },
-    { source: '/minor', destination: '/minor-hotels', permanent: true },
-    { source: '/minor/:path*', destination: '/minor-hotels/:path*', permanent: true },
+  redirects: [...distRedirectBySource.values()],
+  headers: rootVercel.headers || [
+    {
+      source: '/index.html',
+      headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
+    },
   ],
   installCommand: 'npm install --omit=dev',
   // LB-258: Edge middleware deploys globally by default; a single broken region kills the whole
   // "Deploying outputs…" phase. Pin to iad1 (matches build region) until Vercel stabilizes global edge.
   regions: ['iad1'],
 }, null, 2) + '\n');
+console.log(`vercel.json → _dist/  (${distRedirectBySource.size} redirects; merged from root)`);
 const partnerSlugs = Object.keys(data.PARTNERS).sort();
 fs.writeFileSync(path.join(DIST, 'middleware.js'), generatePartnerAuthMiddleware(partnerSlugs));
 console.log(`aggregate → _dist/  profile:${profile} · ${Object.keys(aggregateData.CITY_BRIEFS).length} briefs · ${partnerSlugs.length} partner pages · ${aggregateData.ROUTES.length} routes)`);
