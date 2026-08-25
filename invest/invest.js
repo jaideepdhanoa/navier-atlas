@@ -441,6 +441,17 @@
             ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
           </figure>`
         : '';
+      const doctrineBeats = (s.doctrine_beats || [])
+        .map(function (b) {
+          return `<div class="inv-doctrine-beat">
+            <div class="inv-doctrine-beat-head">${esc(b.head || '')}</div>
+            <div class="inv-doctrine-beat-body">${esc(b.body || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const doctrineLink = s.doctrine_link
+        ? `<a class="inv-doctrine-link" href="${esc(s.doctrine_link.url || 'https://www.navierboat.com/doctrine')}" target="_blank" rel="noopener noreferrer">${esc(s.doctrine_link.label || 'Read the Navier Doctrine →')}</a>`
+        : '';
       return `
         <div class="section-block stage-section about-stage ${plate ? 'about-stage--split' : ''}" data-reveal data-home="claim.about">
           <div class="section-inner about-stage-inner">
@@ -448,6 +459,17 @@
               ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
               ${s.title ? `<h2 class="h2 about-title">${esc(s.title)}</h2>` : ''}
               <div class="about-prose">${paras}</div>
+              ${
+                doctrineBeats
+                  ? `<div class="inv-doctrine-beats" data-reveal>
+                ${doctrineBeats}
+                ${s.beats_source_line ? `<p class="inv-doctrine-source">${esc(s.beats_source_line)}</p>` : ''}
+                ${doctrineLink}
+              </div>`
+                  : doctrineLink
+                    ? `<div class="inv-doctrine-beats">${doctrineLink}</div>`
+                    : ''
+              }
             </div>
             ${plate}
           </div>
@@ -840,14 +862,22 @@
       const qa = homeAssets('product.quanta') || {};
       const filmP = qa.film ? mediaPath(qa.film) : mediaPath('assets/posters/QhiaYVgXMf0.jpg');
       const headline = titleCaseHeadline(s.headline || '');
+      const beliefCite = s.belief_attribution || '';
+      const beliefQuote = s.belief_line
+        ? `<blockquote class="defense-quote inv-belief-quote">
+            <p>${esc(s.belief_line)}</p>
+            ${beliefCite ? `<cite>${esc(beliefCite)}</cite>` : ''}
+          </blockquote>`
+        : '';
       return `
         <div class="section-block chapter-break quanta-moment" data-reveal data-home="product.quanta">
           <div class="section-inner">
             ${kicker(s)}
             ${headline ? `<h2 class="h2 quanta-headline">${esc(headline)}</h2>` : ''}
             <div class="quanta-video-lead">
-              ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || 'Sampriti Bhattacharyya · CEO Navier') : ''}
+              ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || '') : ''}
             </div>
+            ${beliefQuote}
           </div>
         </div>`;
     },
@@ -862,9 +892,11 @@
           <div class="quanta-stats-compose ${camo ? 'has-plate' : ''}">
             ${camo ? `<div class="quanta-stats-plate"><img src="${esc(camo)}" alt="" loading="lazy" /></div>` : ''}
             <div class="quanta-stats-copy">
+              ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
               ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
               ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
               ${goldStats(s.stats)}
+              ${s.platform_note ? `<p class="quanta-platform-note">${esc(s.platform_note)}</p>` : ''}
             </div>
           </div>
         </div>`;
@@ -1307,6 +1339,112 @@
         </div>`;
     },
 
+    /** claim sea-grid — four infrastructure columns + model rows + demand rail (v10.3) */
+    'infrastructure-map'(s) {
+      const cols = (s.columns || [])
+        .map(function (c) {
+          return `<div class="sea-grid-col">
+            <div class="sea-grid-col-label">${esc(c.label || '')}</div>
+            <div class="sea-grid-col-line">${esc(c.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const model = (s.model_rows || [])
+        .map(function (r) {
+          return `<div class="sea-grid-model-row">
+            <div class="sea-grid-model-lead">${esc(r.lead || '')}</div>
+            <div class="sea-grid-model-line">${esc(r.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const demand = s.demand || {};
+      const demandRows = (demand.rows || [])
+        .map(function (r) {
+          return `<div class="sea-grid-demand-row">
+            <div class="sea-grid-demand-lead">${esc(r.lead || '')}</div>
+            <div class="sea-grid-demand-line">${esc(r.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      return `
+        <div class="section-block shell-stage sea-grid-stage" data-reveal data-home="claim.sea-grid" id="${esc(s.id || 'sea-grid')}">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
+            ${cols ? `<div class="sea-grid-cols">${cols}</div>` : ''}
+            ${model ? `<div class="sea-grid-model">${model}</div>` : ''}
+            ${
+              demandRows
+                ? `<div class="sea-grid-demand">
+              <p class="sublabel">${esc(demand.label || 'THE DEMAND')}</p>
+              <div class="sea-grid-demand-rows">${demandRows}</div>
+            </div>`
+                : ''
+            }
+            ${s.node_rights_line ? `<p class="sea-grid-rights">${esc(s.node_rights_line)}</p>` : ''}
+            ${s.footline ? `<p class="closing-line">${esc(s.footline)}</p>` : ''}
+          </div>
+        </div>`;
+    },
+
+    /** gtm energy-compute — floating power + ocean data centers (v10.3) */
+    'future-product'(s) {
+      const media = s.media || {};
+      const img = mediaPath(media.asset || 'assets/deck/energy-node-render-v9.png');
+      const plat = s.platform || {};
+      const points = (plat.points || [])
+        .map(function (p) {
+          return `<div class="energy-point">
+            <div class="energy-point-lead">${esc(p.lead || '')}</div>
+            <div class="energy-point-line">${esc(p.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const wins = s.sea_wins || {};
+      const chips = (wins.chips || [])
+        .map(function (c) {
+          return `<div class="chip-card energy-win">
+            <div class="t">${esc(c.label || '')}</div>
+            <div class="b">${esc(c.line || '')}</div>
+          </div>`;
+        })
+        .join('');
+      return `
+        <div class="section-block shell-stage energy-compute-stage" data-reveal data-home="gtm.energy" id="${esc(s.id || 'energy-compute')}">
+          <div class="section-inner">
+            ${kicker(s)}
+            ${s.status_chip ? `<p class="status-chip">${esc(s.status_chip)}</p>` : ''}
+            ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
+            ${s.intro ? `<p class="lead">${esc(s.intro)}</p>` : ''}
+            <div class="energy-compute-layout">
+              <div class="energy-compute-copy">
+                ${plat.label ? `<p class="sublabel">${esc(plat.label)}</p>` : ''}
+                ${plat.body ? `<p class="energy-platform-body">${esc(plat.body)}</p>` : ''}
+                ${points ? `<div class="energy-points">${points}</div>` : ''}
+                ${
+                  chips
+                    ? `<div class="energy-wins">
+                  <p class="sublabel">${esc(wins.label || 'WHY THE SEA WINS')}</p>
+                  <div class="chips-3 energy-win-chips">${chips}</div>
+                </div>`
+                    : ''
+                }
+              </div>
+              ${
+                img
+                  ? `<figure class="energy-compute-media">
+                <div class="energy-compute-frame"><img src="${esc(img)}" alt="" loading="lazy" /></div>
+                ${media.badge ? `<span class="energy-badge">${esc(media.badge)}</span>` : ''}
+                ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
+              </figure>`
+                  : ''
+              }
+            </div>
+          </div>
+        </div>`;
+    },
+
     'defense-panel'(s) {
       // Proof (media + quotes) → Platform (specs + hulls) → Dual-use why (sub_line + budgets)
       const da = homeAssets('gtm.defense') || {};
@@ -1371,6 +1509,26 @@
         .join('');
       const quietProof = [press, usmi].filter(Boolean).join('')
         + (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
+      const mr = s.mission_renders || {};
+      const missionItems = (mr.items || [])
+        .map(function (it) {
+          const src = mediaPath(it.src);
+          if (!src) return '';
+          let cap = it.caption || '';
+          if (cap && !/concept render/i.test(cap)) cap = cap + ' · CONCEPT RENDER';
+          return `<figure class="inv-mission-card">
+            <div class="inv-mission-frame"><img src="${esc(src)}" alt="${esc(it.alt || cap)}" loading="lazy" /></div>
+            ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}
+          </figure>`;
+        })
+        .join('');
+      const missionHtml = missionItems
+        ? `<div class="inv-mission-rail">
+            <p class="sublabel">${esc(mr.kicker || 'MISSION CONFIGURATIONS')}</p>
+            <p class="inv-mission-note">Concept renders</p>
+            <div class="inv-mission-grid">${missionItems}</div>
+          </div>`
+        : '';
       return `
         <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
           <div class="section-inner">
@@ -1403,8 +1561,10 @@
             <div class="defense-beat defense-beat--platform">
               <p class="sublabel">PLATFORM</p>
               ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+              ${s.integrator_line ? `<p class="def-integrator-line">${esc(s.integrator_line)}</p>` : ''}
               ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
               ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
+              ${missionHtml}
             </div>
 
             ${
