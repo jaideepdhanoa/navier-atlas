@@ -545,17 +545,24 @@
           </figure>`;
         })
         .join('');
+      const post = s.public_post || {};
+      const postLink =
+        post.url && post.label
+          ? `<p class="defense-public-post"><a href="${esc(post.url)}" target="_blank" rel="noopener noreferrer">${esc(post.label)}</a></p>`
+          : '';
       const secondaryHtml = secondary
         .map(function (v) {
           const src = mediaPath(v.src);
           if (!src) return '';
-          return `<figure class="defense-loop-video">
+          const isTe = /te263|te-263|te 26-3/i.test(String(v.src) + (v.caption || ''));
+          return `<figure class="defense-loop-video${isTe ? ' defense-loop-video--te' : ''}">
             <div class="defense-video-frame">
               <video muted playsinline loop ${reduceMotion ? '' : 'autoplay'} preload="auto" data-lazy-video>
                 <source src="${esc(src)}" type="video/mp4" />
               </video>
             </div>
             ${v.caption ? `<figcaption>${esc(v.caption)}</figcaption>` : ''}
+            ${isTe ? postLink : ''}
           </figure>`;
         })
         .join('');
