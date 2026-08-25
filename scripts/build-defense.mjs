@@ -103,7 +103,7 @@ function gatherAssetRels(obj, out = new Set()) {
   }
   for (const [k, v] of Object.entries(obj)) {
     if (
-      (k === 'src' || k === 'image' || k === 'poster') &&
+      (k === 'src' || k === 'image' || k === 'poster' || k === 'plate') &&
       typeof v === 'string' &&
       !/^https?:/i.test(v) &&
       !v.startsWith('//')

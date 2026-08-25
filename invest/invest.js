@@ -441,6 +441,17 @@
             ${media.caption ? `<figcaption>${esc(media.caption)}</figcaption>` : ''}
           </figure>`
         : '';
+      const doctrineBeats = (s.doctrine_beats || [])
+        .map(function (b) {
+          return `<div class="inv-doctrine-beat">
+            <div class="inv-doctrine-beat-head">${esc(b.head || '')}</div>
+            <div class="inv-doctrine-beat-body">${esc(b.body || '')}</div>
+          </div>`;
+        })
+        .join('');
+      const doctrineLink = s.doctrine_link
+        ? `<a class="inv-doctrine-link" href="${esc(s.doctrine_link.url || 'https://www.navierboat.com/doctrine')}" target="_blank" rel="noopener noreferrer">${esc(s.doctrine_link.label || 'Read the Navier Doctrine →')}</a>`
+        : '';
       return `
         <div class="section-block stage-section about-stage ${plate ? 'about-stage--split' : ''}" data-reveal data-home="claim.about">
           <div class="section-inner about-stage-inner">
@@ -448,6 +459,17 @@
               ${s.kicker ? `<p class="about-kicker">${esc(s.kicker)}</p>` : ''}
               ${s.title ? `<h2 class="h2 about-title">${esc(s.title)}</h2>` : ''}
               <div class="about-prose">${paras}</div>
+              ${
+                doctrineBeats
+                  ? `<div class="inv-doctrine-beats" data-reveal>
+                ${doctrineBeats}
+                ${s.beats_source_line ? `<p class="inv-doctrine-source">${esc(s.beats_source_line)}</p>` : ''}
+                ${doctrineLink}
+              </div>`
+                  : doctrineLink
+                    ? `<div class="inv-doctrine-beats">${doctrineLink}</div>`
+                    : ''
+              }
             </div>
             ${plate}
           </div>
@@ -840,14 +862,22 @@
       const qa = homeAssets('product.quanta') || {};
       const filmP = qa.film ? mediaPath(qa.film) : mediaPath('assets/posters/QhiaYVgXMf0.jpg');
       const headline = titleCaseHeadline(s.headline || '');
+      const beliefCite = s.belief_attribution || '';
+      const beliefQuote = s.belief_line
+        ? `<blockquote class="defense-quote inv-belief-quote">
+            <p>${esc(s.belief_line)}</p>
+            ${beliefCite ? `<cite>${esc(beliefCite)}</cite>` : ''}
+          </blockquote>`
+        : '';
       return `
         <div class="section-block chapter-break quanta-moment" data-reveal data-home="product.quanta">
           <div class="section-inner">
             ${kicker(s)}
             ${headline ? `<h2 class="h2 quanta-headline">${esc(headline)}</h2>` : ''}
             <div class="quanta-video-lead">
-              ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || 'Sampriti Bhattacharyya · CEO Navier') : ''}
+              ${s.video ? filmCard(s.video, filmP, 'product.quanta', s.video_label || '') : ''}
             </div>
+            ${beliefQuote}
           </div>
         </div>`;
     },
@@ -862,9 +892,11 @@
           <div class="quanta-stats-compose ${camo ? 'has-plate' : ''}">
             ${camo ? `<div class="quanta-stats-plate"><img src="${esc(camo)}" alt="" loading="lazy" /></div>` : ''}
             <div class="quanta-stats-copy">
+              ${s.eyebrow ? `<p class="eyebrow">${esc(s.eyebrow)}</p>` : ''}
               ${s.title ? `<h2 class="h2">${esc(s.title)}</h2>` : ''}
               ${s.subhead ? `<p class="lead">${esc(s.subhead)}</p>` : ''}
               ${goldStats(s.stats)}
+              ${s.platform_note ? `<p class="quanta-platform-note">${esc(s.platform_note)}</p>` : ''}
             </div>
           </div>
         </div>`;
@@ -1477,6 +1509,26 @@
         .join('');
       const quietProof = [press, usmi].filter(Boolean).join('')
         + (s.deployment_line ? `<p class="defense-deploy">${esc(s.deployment_line)}</p>` : '');
+      const mr = s.mission_renders || {};
+      const missionItems = (mr.items || [])
+        .map(function (it) {
+          const src = mediaPath(it.src);
+          if (!src) return '';
+          let cap = it.caption || '';
+          if (cap && !/concept render/i.test(cap)) cap = cap + ' · CONCEPT RENDER';
+          return `<figure class="inv-mission-card">
+            <div class="inv-mission-frame"><img src="${esc(src)}" alt="${esc(it.alt || cap)}" loading="lazy" /></div>
+            ${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}
+          </figure>`;
+        })
+        .join('');
+      const missionHtml = missionItems
+        ? `<div class="inv-mission-rail">
+            <p class="sublabel">${esc(mr.kicker || 'MISSION CONFIGURATIONS')}</p>
+            <p class="inv-mission-note">Concept renders</p>
+            <div class="inv-mission-grid">${missionItems}</div>
+          </div>`
+        : '';
       return `
         <div class="section-block dual-use-stage" data-reveal data-home="gtm.defense">
           <div class="section-inner">
@@ -1509,8 +1561,11 @@
             <div class="defense-beat defense-beat--platform">
               <p class="sublabel">PLATFORM</p>
               ${s.thesis_line ? `<p class="defense-thesis">${esc(s.thesis_line)}</p>` : ''}
+              ${s.integrator_line ? `<p class="def-integrator-line">${esc(s.integrator_line)}</p>` : ''}
+              ${s.control_stats_line ? `<p class="inv-control-stats">${esc(s.control_stats_line)}</p>` : ''}
               ${rail ? `<div class="defense-specs">${rail}</div>` : ''}
               ${blocks ? `<div class="dual-use-blocks">${blocks}</div>` : ''}
+              ${missionHtml}
             </div>
 
             ${

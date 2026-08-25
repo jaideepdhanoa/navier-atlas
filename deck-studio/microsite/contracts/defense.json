@@ -1,634 +1,644 @@
 {
-  "version": 4,
-  "route": "/defense",
-  "gate": {
-    "mode": "email+code",
-    "noindex": true,
-    "unlisted": true,
-    "replaces": "v3 shared password 'plainview'. When DEFENSE_ACCESS_CODES is set in Vercel, email+code replaces Basic auth. If that env is unset, middleware falls back to shared password plainview so the route stays usable during rollout.",
-    "form_fields": [
-      {
-        "name": "email",
-        "label": "Work email",
-        "required": true,
-        "validation": "standard email pattern, trimmed"
-      },
-      {
-        "name": "code",
-        "label": "Access code",
-        "required": true,
-        "validation": "case-insensitive, trimmed"
-      }
-    ],
-    "api_route": "/api/defense-access",
-    "codes_env": "DEFENSE_ACCESS_CODES",
-    "codes_format": "JSON map code -> { label, active } — lives ONLY in Vercel env vars. NEVER commit codes to the repo.",
-    "logging": {
-      "destination": "google-sheet",
-      "sheet_id": "1OoBqPbW2ihtwgXmHZhf2uFdpIRj6Fo3cDVhNEk1RLOk",
-      "webhook_env": "DEFENSE_ACCESS_LOG_WEBHOOK",
-      "payload_fields": [
-        "timestamp_utc",
-        "email",
-        "code",
-        "recipient_label",
-        "user_agent"
-      ],
-      "rules": "Log successful entries only. Fire-and-forget POST — a logging failure must never block or delay access. Codes list must never reach the client; validation is server-side only."
-    },
-    "revocation": "Set active:false for that code in DEFENSE_ACCESS_CODES and redeploy — other recipients unaffected.",
-    "denied_copy": "That code isn't active. Contact sampriti@navierboat.com.",
-    "session": "Successful entry sets a session cookie scoped to /defense — no re-prompt within the session."
+ "version": 4,
+ "route": "/defense",
+ "gate": {
+  "mode": "email+code",
+  "noindex": true,
+  "unlisted": true,
+  "replaces": "v3 shared password 'plainview'. When DEFENSE_ACCESS_CODES is set in Vercel, email+code replaces Basic auth. If that env is unset, middleware falls back to shared password plainview so the route stays usable during rollout.",
+  "form_fields": [
+   {
+    "name": "email",
+    "label": "Work email",
+    "required": true,
+    "validation": "standard email pattern, trimmed"
+   },
+   {
+    "name": "code",
+    "label": "Access code",
+    "required": true,
+    "validation": "case-insensitive, trimmed"
+   }
+  ],
+  "api_route": "/api/defense-access",
+  "codes_env": "DEFENSE_ACCESS_CODES",
+  "codes_format": "JSON map code -> { label, active } — lives ONLY in Vercel env vars. NEVER commit codes to the repo.",
+  "logging": {
+   "destination": "google-sheet",
+   "sheet_id": "1OoBqPbW2ihtwgXmHZhf2uFdpIRj6Fo3cDVhNEk1RLOk",
+   "webhook_env": "DEFENSE_ACCESS_LOG_WEBHOOK",
+   "payload_fields": [
+    "timestamp_utc",
+    "email",
+    "code",
+    "recipient_label",
+    "user_agent"
+   ],
+   "rules": "Log successful entries only. Fire-and-forget POST — a logging failure must never block or delay access. Codes list must never reach the client; validation is server-side only."
   },
-  "contact_email": "sampriti@navierboat.com",
-  "footer": "Distribution limited. Not an offer of securities. © 2026 Navier — Private & Confidential.",
-  "global_render_rules": "Reuse /invest components and visual system wholesale: dark field, Playfair titles, gold kickers, all-caps kickers only, no text on photos ever, photos on dedicated plates or full-bleed solo, no reflow, no nested scroll, no clipping/ellipsis at 1280/1440/2560. Kicker taxonomy: 'NAVIER · DEFENSE — {SECTION}'. This is a capability brief, not a pitch: no fundraising language, no dollar market sizing, no pricing, anywhere.",
-  "leak_scan_terms_must_be_zero": [
-    "LC-180",
-    "Quanta-D",
-    "N30D",
-    "PROWL-ER",
-    "CCA-H",
-    "HERMES",
-    "CRADA",
-    "LC180",
-    "Anduril",
-    "royal",
-    "Sheikha",
-    "H.H.",
-    "Alia",
-    "Tilaus",
-    "AD Ports",
-    "ADSB",
-    "EDGE Group",
-    "valuation",
-    "Series B",
-    "raise",
-    "SAFE",
-    "B-1",
-    "B-2",
-    "$120M",
-    "$20M",
-    "$100M",
-    "$8B",
-    "$22",
-    "$38B",
-    "TAM",
-    "pipeline",
-    "T1",
-    "T2",
-    "T3",
-    "FOCI",
-    "UMAA",
-    "ASP",
-    "built in America",
-    "manufactured in America",
-    "Brin"
-  ],
-  "sections": [
+  "revocation": "Set active:false for that code in DEFENSE_ACCESS_CODES and redeploy — other recipients unaffected.",
+  "denied_copy": "That code isn't active. Contact sampriti@navierboat.com.",
+  "session": "Successful entry sets a session cookie scoped to /defense — no re-prompt within the session."
+ },
+ "contact_email": "sampriti@navierboat.com",
+ "footer": "Distribution limited. Not an offer of securities. © 2026 Navier — Private & Confidential.",
+ "global_render_rules": "Reuse /invest components and visual system wholesale: dark field, Playfair titles, gold kickers, all-caps kickers only, no text on photos ever, photos on dedicated plates or full-bleed solo, no reflow, no nested scroll, no clipping/ellipsis at 1280/1440/2560. Kicker taxonomy: 'NAVIER · DEFENSE — {SECTION}'. This is a capability brief, not a pitch: no fundraising language, no dollar market sizing, no pricing, anywhere.",
+ "leak_scan_terms_must_be_zero": [
+  "LC-180",
+  "N30D",
+  "PROWL-ER",
+  "CCA-H",
+  "HERMES",
+  "CRADA",
+  "LC180",
+  "Anduril",
+  "royal",
+  "Sheikha",
+  "H.H.",
+  "Alia",
+  "Tilaus",
+  "AD Ports",
+  "ADSB",
+  "EDGE Group",
+  "valuation",
+  "Series B",
+  "raise",
+  "SAFE",
+  "B-1",
+  "B-2",
+  "$120M",
+  "$20M",
+  "$100M",
+  "$8B",
+  "$22",
+  "$38B",
+  "TAM",
+  "pipeline",
+  "T1",
+  "T2",
+  "T3",
+  "FOCI",
+  "UMAA",
+  "ASP",
+  "built in America",
+  "manufactured in America",
+  "Brin"
+ ],
+ "sections": [
+  {
+   "id": "def-hero",
+   "kicker": "NAVIER · DEFENSE",
+   "headline": "OWN THE EDGE",
+   "subline": "A standardized, stable, ultra-long-range, low-signature platform — C-UAS, ISR, contested logistics, optionally manned or unmanned.",
+   "play_button_label": "Watch the film",
+   "scroll_cue": {
+    "label": "Scroll"
+   },
+   "background_video": "assets/hero-loop.mp4",
+   "poster": "assets/hero-poster.jpg",
+   "film": {
+    "src": "assets/navier-launch-film-540p.mp4",
+    "poster": "assets/deck/navier-launch-film-poster.jpg",
+    "title": "Navier company film",
+    "duration": "1:34",
+    "behavior": "lightbox click-to-play with sound"
+   },
+   "render_notes": "Invest hero end-to-end: hero-loop + scrim + OWN THE EDGE overlaid. SOF Week loop is NOT the opener — it lives in def-dual-use PROOF beat. V4: subline replaced per founder review 2026-08-23 — defense audiences jump straight to defense; the world-moves line is retired on this route."
+  },
+  {
+   "id": "def-navier",
+   "kicker": "01 · WHO WE ARE",
+   "title": "An American Maritime Company.",
+   "body": "Navier builds the physical and digital infrastructure of the maritime economy — vessels, maritime nodes, and the software that runs them.",
+   "media": {
+    "type": "image",
+    "src": "assets/deck/thesis-hangar-crane.jpg",
+    "alt": "Navier production hangar — vessels under construction"
+   },
+   "render_notes": "V4 defense-first opener per founder review 2026-08-23: VERBATIM-LOCK to /invest thesis REMOVED for this route (founder explicit). Structure: title + two-line body (lead weight) -> three beats as stat-led blocks (gold heads, grey body — same treatment as capability rail) -> doctrine chip -> hangar plate -> launch film 1080p click-to-play with sound, full content width. Never claim built/manufactured in the United States.",
+   "film": {
+    "src": "assets/navier-launch-film-1080p.mp4",
+    "title": "Tied to the Ocean",
+    "duration": "1:34",
+    "behavior": "Click-to-play WITH SOUND",
+    "poster": "assets/deck/tied-to-the-ocean-poster.jpg",
+    "caption": "Narrated meditation on the sea — click for sound."
+   },
+   "beats": [
     {
-      "id": "def-hero",
-      "kicker": "NAVIER · DEFENSE",
-      "headline": "OWN THE EDGE",
-      "subline": "A standardized, stable, ultra-long-range, low-signature platform — C-UAS, ISR, contested logistics, optionally manned or unmanned.",
-      "play_button_label": "Watch the film",
-      "scroll_cue": {
-        "label": "Scroll"
-      },
-      "background_video": "assets/hero-loop.mp4",
-      "poster": "assets/hero-poster.jpg",
-      "film": {
-        "src": "assets/navier-launch-film-540p.mp4",
-        "poster": "assets/deck/navier-launch-film-poster.jpg",
-        "title": "Navier company film",
-        "duration": "1:34",
-        "behavior": "lightbox click-to-play with sound"
-      },
-      "render_notes": "Invest hero end-to-end: hero-loop + scrim + OWN THE EDGE overlaid. SOF Week loop is NOT the opener — it lives in def-dual-use PROOF beat. V4: subline replaced per founder review 2026-08-23 — defense audiences jump straight to defense; the world-moves line is retired on this route."
+     "head": "ONE PLATFORM, ANY MISSION",
+     "body": "The Generalized Marine Vessel Platform is one standardized core — hull, foils, powertrain, NavierOS — with a mission layer configured per use case. Foilborne-stable through Sea State 4. Hybrid-electric: ultra-long range under diesel-electric, switching to electric for low-signature operation."
     },
     {
-      "id": "def-navier",
-      "kicker": "01 · WHO WE ARE",
-      "title": "An American Maritime Company.",
-      "body": "Navier builds the physical and digital infrastructure of the maritime economy — vessels, maritime nodes, and the software that runs them.",
-      "media": {
-        "type": "image",
-        "src": "assets/deck/thesis-hangar-crane.jpg",
-        "alt": "Navier production hangar — vessels under construction"
-      },
-      "render_notes": "V4 defense-first opener per founder review 2026-08-23: VERBATIM-LOCK to /invest thesis REMOVED for this route (founder explicit). Structure: title + two-line body (lead weight) -> three beats as stat-led blocks (gold heads, grey body — same treatment as capability rail) -> doctrine chip -> hangar plate -> launch film 1080p click-to-play with sound, full content width. Never claim built/manufactured in the United States.",
-      "film": {
-        "src": "assets/navier-launch-film-1080p.mp4",
-        "title": "Tied to the Ocean",
-        "duration": "1:34",
-        "behavior": "Click-to-play WITH SOUND",
-        "poster": "assets/deck/tied-to-the-ocean-poster.jpg",
-        "caption": "Narrated meditation on the sea — click for sound."
-      },
-      "beats": [
-        {
-          "head": "ONE PLATFORM, ANY MISSION",
-          "body": "The Generalized Marine Vessel Platform is one standardized core — hull, foils, powertrain, NavierOS — with a mission layer configured per use case. Foilborne-stable through Sea State 4. Hybrid-electric: ultra-long range under diesel-electric, switching to electric for low-signature operation."
-        },
-        {
-          "head": "ASYMMETRIC BY DESIGN",
-          "body": "We do not build defense-specific vessels. We build standardized platforms for cargo, passengers, and defense on one base — the low cost structure our adversaries already enjoy, working for the United States and its allies."
-        },
-        {
-          "head": "THE INDUSTRIAL GAP",
-          "body": "China produces over 1,700 ocean-going commercial vessels a year — more than half the global market. The United States produces fewer than five, holding 0.1% of global commercial shipbuilding capacity. A symmetrical contest of steel is unwinnable. Out-innovate, don't outnumber."
-        },
-        {
-          "head": "GLOBAL RESILIENCE",
-          "body": "A standardized, energy-efficient platform for moving people and goods — built with allied nations through distributed manufacturing. In time of need, America has a maritime presence through vessels already operating around the world — deployable anywhere."
-        },
-        {
-          "head": "STRATEGIC RESERVE",
-          "body": "Commercial fleets built on this architecture are effectively pre-certified hardware. In times of conflict, capacity surges without waiting years for new keels to be laid."
-        }
-      ],
-      "beats_source_line": "Figures and framing from the Navier Doctrine — navierboat.com/doctrine.",
-      "doctrine_link": {
-        "label": "Read the Navier Doctrine →",
-        "url": "https://www.navierboat.com/doctrine",
-        "behavior": "new tab · public page · render as gold link chip under the beats"
-      }
+     "head": "ASYMMETRIC BY DESIGN",
+     "body": "We do not build defense-specific vessels. We build standardized platforms for cargo, passengers, and defense on one base — the low cost structure our adversaries already enjoy, working for the United States and its allies."
     },
     {
-      "id": "def-plainview",
-      "kicker": "02 · WHY NOW",
-      "title": "The Physics Was Proven in 1969. What Was Missing Was Control.",
-      "media": {
-        "type": "image",
-        "src": "assets/deck/plainview-foilborne-1969.jpg",
-        "alt": "USS Plainview (AGEH-1) foilborne — U.S. Navy experimental hydrofoil, commissioned 1969. U.S. Navy photo.",
-        "caption": "USS PLAINVIEW (AGEH-1) FOILBORNE — U.S. NAVY EXPERIMENTAL HYDROFOIL, COMMISSIONED 1969. U.S. NAVY PHOTO."
-      },
-      "blocks": [
-        {
-          "head": "FLEW IN 1969",
-          "body": "212 ft · 310 tons · 40 knots foilborne — the world's largest hydrofoil"
-        },
-        {
-          "head": "WHY IT RETIRED",
-          "body": "Analog control and one-off construction — 268 foilborne hours in its lifetime, never produced at rate"
-        },
-        {
-          "head": "WHAT CHANGED",
-          "body": "Software flight control, electric drivetrains, and a production base funded by commercial demand"
-        }
-      ],
-      "closer": "The physics was proven in 1969. What was missing was control. Control is software now — and software is what Navier builds.",
-      "source_line": "Source: U.S. Navy records · International Hydrofoil Society · sourced Aug 2026.",
-      "render_notes": "Archival photo full-width on its own plate (public domain, U.S. Navy — the foilborne shot with hull clear of the water; historical spray/smoke is period-accurate and exempt from the wake rule). Copy verbatim from P4 p4_plainview. RESEQUENCED v2: Plainview now precedes the platform chapter as its historical setup. Closer line is the hinge into def-platform — render it prominently."
+     "head": "THE INDUSTRIAL GAP",
+     "body": "China produces over 1,700 ocean-going commercial vessels a year — more than half the global market. The United States produces fewer than five, holding 0.1% of global commercial shipbuilding capacity. A symmetrical contest of steel is unwinnable. Out-innovate, don't outnumber."
     },
     {
-      "id": "def-platform",
-      "kicker": "03 · THE PLATFORM",
-      "title": "Control Is Software Now.",
-      "body": "NavierOS — flight control and autonomy — flies the foils hundreds of times per second. The result is a vessel that is foilborne-stable through Sea State 4, electric-quiet on station, and software-defined: the same control platform runs every hull in the family.",
-      "media_pair": [
-        {
-          "type": "image",
-          "src": "assets/deck/schematic-controls.png",
-          "alt": "Navier control system — bow-left schematic with seven gold callouts",
-          "render": "bow-left, seven gold callouts — /invest control-sbs; bare wireframe = FAIL"
-        }
-      ],
-      "render_notes": "Schematic+CTO control-sbs; stabilization muted loop below (not in flight wall).",
-      "videos": [
-        {
-          "embed_url": "https://www.youtube-nocookie.com/embed/S7WB91FvSFI",
-          "title": "Navier's hydrofoil boats have wings",
-          "duration": "2:13",
-          "caption": "CTO Kenny Jensen: underwater wings, redundant flight computers and powertrains, software-driven control.",
-          "behavior": "click-to-play with sound",
-          "poster": "assets/posters/S7WB91FvSFI.jpg",
-          "role": "control-film"
-        },
-        {
-          "src": "assets/stabilization-juxtaposition.mp4",
-          "title": "Stabilization, side by side",
-          "caption": "Foilborne stabilization versus a conventional hull in the same water.",
-          "behavior": "autoplay muted loop",
-          "role": "stabilization-loop"
-        }
-      ]
+     "head": "GLOBAL RESILIENCE",
+     "body": "A standardized, energy-efficient platform for moving people and goods — built with allied nations through distributed manufacturing. In time of need, America has a maritime presence through vessels already operating around the world — deployable anywhere."
     },
     {
-      "id": "def-flight",
-      "kicker": "04 · PROOF IN FLIGHT",
-      "title": "No Wake. No Slam. Low Signature.",
-      "sub": "Foilborne performance is a signature profile conventional small craft cannot match — and a stability platform weapons and sensors can trust.",
-      "clips": [
-        {
-          "id": "no-wake",
-          "asset": "assets/demos/no-wake.mp4",
-          "poster": "assets/posters/Hlp9oynUQNE.jpg",
-          "title": "No wakes, just glide",
-          "duration": "0:12",
-          "caption": "Foilborne vessels leave only faint ripple — a signature profile conventional hulls cannot match.",
-          "youtube_id": "Hlp9oynUQNE"
-        },
-        {
-          "id": "rough-seas",
-          "asset": "assets/demos/rough-seas.mp4",
-          "poster": "assets/posters/7HETK4rsByc.jpg",
-          "title": "Gliding over rough seas",
-          "duration": "0:55",
-          "caption": "Flight above the waves: stable ride in conditions that stop conventional small craft.",
-          "youtube_id": "7HETK4rsByc"
-        },
-        {
-          "id": "flat-turning",
-          "asset": "assets/demos/flat-turning.mp4",
-          "poster": "assets/posters/93MCRJYsD_8.jpg",
-          "title": "Coordinated turns at high speed",
-          "duration": "0:16",
-          "caption": "Smoother, quieter, more efficient than a traditional hull — by physics, not padding.",
-          "youtube_id": "93MCRJYsD_8"
-        }
-      ],
-      "closer": "Stability is a weapons-platform property. Signature is a survivability property. Both come from the same control software.",
-      "render_notes": "Exactly three equal demo tiles in one centered row. No fourth video. Stabilization lives in platform."
-    },
-    {
-      "id": "def-quanta-moment",
-      "kicker": "05 · QUANTA",
-      "eyebrow": "NEXT PRODUCT: QUANTA",
-      "headline": "The breakthrough that will fundamentally change what we can do at sea.",
-      "belief_line": "We believe Quanta and our long-range platforms will fundamentally change warfare at sea — and put America ahead of our adversaries.",
-      "video": {
-        "embed_url": "https://www.youtube-nocookie.com/embed/QhiaYVgXMf0",
-        "poster": "assets/posters/QhiaYVgXMf0.jpg",
-        "title": "Inside Navier N30 — the longest-range electric boat ever built",
-        "duration": "5:09"
-      },
-      "video_label": "",
-      "render_notes": "Invest chapter-break / quanta-moment: founder film lead ≥70% width. Headline is short capability conviction — no sea-trials/range append. belief_line renders as a founder pull-quote (.defense-quote) with belief_attribution cite.",
-      "belief_attribution": "Sampriti Bhattacharyya · CEO, Navier"
-    },
-    {
-      "id": "def-quanta-stats",
-      "kicker": "05 · QUANTA",
-      "eyebrow": "THE BREAKTHROUGH",
-      "title": "Quanta.",
-      "subhead": "Demonstrated live at the Navy's two flagship expositions — Sea-Air-Space 2026 and SOF Week 2026 — and at SOCOM Technical Experimentation 26-3, in contested electromagnetic-spectrum operations (August 2026).",
-      "stats": [
-        {
-          "value": "SEA STATE 4",
-          "label": "Foilborne-stable — no slamming"
-        },
-        {
-          "value": "2,000+ NMI",
-          "label": "Range at 20 kts · 35 kts top speed"
-        },
-        {
-          "value": "2,200 LBS",
-          "label": "Modular payload — ship to shore"
-        },
-        {
-          "value": "C-UAS · ISR · EW",
-          "label": "Plus contested logistics"
-        },
-        {
-          "value": "LOW SIGNATURE",
-          "label": "Diesel-electric · software-defined"
-        }
-      ],
-      "plate": "assets/deck/quanta-camo-plate.png",
-      "render_notes": "Invest quanta-stats-compose: camo plate + gold stats. Title is Quanta capability — not an N30 demonstrator sales frame. Specs from audited demonstrator row."
-    },
-    {
-      "id": "def-quanta-unlocks",
-      "kicker": "05 · QUANTA",
-      "eyebrow": "WHAT IT OPENS",
-      "title": "What Quanta Unlocks",
-      "doors": [
-        {
-          "title": "Unmanned",
-          "detail": "Patrol · surveillance (ISR) · interceptor"
-        },
-        {
-          "title": "Manned",
-          "detail": "Combatant craft · special-ops · medevac"
-        },
-        {
-          "title": "Persistence and dash",
-          "detail": "Sails itself to next station"
-        }
-      ],
-      "atlantic_run": {
-        "line": "THE ATLANTIC RUN — Unmanned crossing targeted for late 2026 · Newfoundland → Lisbon."
-      },
-      "atlantic_map": "assets/deck/atlantic-run-map.png",
-      "closing_line": "Commercial fleets fund the platform that delivers it — demonstrated where the standards are highest.",
-      "render_notes": "Invest two-door + Atlantic band; absorbs former def-atlantic."
-    },
-    {
-      "id": "def-dual-use",
-      "type": "defense-panel",
-      "title": "We Are a Dual-Use Platform Company.",
-      "subhead": "Commercial Infrastructure First. Defense on Top.",
-      "intro": "Through standardization, volume, and interchangeability, one maritime ecosystem serves commercial transportation and defense logistics.",
-      "pull_quote": {
-        "quote": "“Your team has met all deliverables and provided a product and service that has exceeded all expectations.”",
-        "attribution": "— Letter from USMI, Navier’s first DOD work"
-      },
-      "deployment_line": "Deployed with the US Navy · running in Leidos operations · SOCOM Technical Experimentation 26-3, August 2026",
-      "fine_print": "Budgets already moving: US DoD Replicator ≈$1B · Australia A$176M · US Navy FY26 $203M USV R&D. Sourced Aug 2026.",
-      "sub_line": "Commercial deployments make Navier the standing infrastructure of strategic waterways.",
-      "kicker": "06 · PROOF",
-      "render_notes": "Three-beat spine: PROOF → PLATFORM → DUAL-USE close. PROOF = media + quotes + deployment. PLATFORM = thesis/integrator + hull cards. Doctrine/resilience lives in def-navier beats (not here). No duplicate capability_rail — specs live on def-quanta-stats. V4 crop rule still applies to mission_renders. PLATFORM beat (thesis/blocks/mission_renders) moved to def-family.",
-      "press_quote": {
-        "quote": "Stopped senior U.S. Navy admirals and captains in their tracks … drawing repeated assessments of 'game changer.'",
-        "attribution": "— Defence Blog, May 2026",
-        "url": "https://defence-blog.com/san-francisco-startups-hydrofoil-boat-wows-u-s-navy-brass/"
-      },
-      "media": {
-        "lead_video": {
-          "src": "assets/defense-sofweek-loop.mp4",
-          "behavior": "muted autoplay loop",
-          "caption": "SOF Week 2026, Tampa — effector-equipped N30 demonstrator, foilborne"
-        },
-        "photos": [
-          {
-            "src": "assets/deck/defense-sas-officers-looking.jpg",
-            "caption": "Sea-Air-Space 2026 — U.S. Navy officers at the Navier vessel"
-          },
-          {
-            "src": "assets/deck/defense-sofweek-armed.jpg",
-            "caption": "SOF Week 2026, Tampa — effector-equipped N30 demonstrator"
-          }
-        ],
-        "secondary_videos": [
-          {
-            "src": "assets/defense-sofweek-cockpit.mp4",
-            "behavior": "muted autoplay loop",
-            "caption": "Two-vessel demonstration — from the helm"
-          },
-          {
-            "src": "assets/defense-sofweek-approach.mp4",
-            "behavior": "muted autoplay loop",
-            "caption": "Live approach and turn, foilborne"
-          },
-          {
-            "src": "assets/defense-te263-autonomy-grid.mp4",
-            "behavior": "muted autoplay loop",
-            "caption": "SOCOM TE 26-3, Bayview, Idaho — onboard autonomy feed, contested EM-spectrum operations (August 2026)"
-          }
-        ],
-        "rules": "All defense videos muted autoplay loop (lead + secondary), paused off-screen via IntersectionObserver. Photos side-by-side 50/50. Captions exactly as authored."
-      }
-    },
-    {
-      "id": "def-field",
-      "kicker": "07 · THE FIELD",
-      "title": "The Field Trades Off. Quanta Doesn't.",
-      "sub": "Competitive Landscape — 16–40 ft Autonomous Segment",
-      "render_notes": "Port invest comparison-table verbatim: full rows + vessel-type band + takeaway + explainer.",
-      "eyebrow": "COMPETITIVE LANDSCAPE — 16–40 FT AUTONOMOUS SEGMENT",
-      "columns": [
-        "",
-        "NAVIER QUANTA",
-        "SARONIC CORSAIR",
-        "SAILDRONE VOYAGER",
-        "BLACKSEA GARC"
-      ],
-      "rows": [
-        [
-          "Range",
-          "2,000 NMi at cruise",
-          "1,000 NMi (low speed)",
-          "Undisclosed",
-          "680 NMi (low speed)"
-        ],
-        [
-          "Cruising speed",
-          "20 kts",
-          "~12 kts",
-          "5+ kts",
-          "17 kts"
-        ],
-        [
-          "Payload",
-          "1,500 lbs",
-          "1,000 lbs",
-          "~500 lbs",
-          "1,000 lbs"
-        ],
-        [
-          "Propulsion",
-          "Hybrid diesel-electric",
-          "Diesel",
-          "Electric / wind",
-          "Diesel"
-        ],
-        [
-          "Hull type",
-          "Carbon-fiber hydrofoil",
-          "Planing hull",
-          "Planing hull",
-          "Aluminum planing"
-        ],
-        [
-          "Sea state",
-          "Up to SS4",
-          "SS3",
-          "SS3–4",
-          "SS3"
-        ],
-        [
-          "Fuel efficiency",
-          "4× vs planing hulls",
-          "1× (baseline)",
-          "Undisclosed",
-          "1× (baseline)"
-        ],
-        [
-          "Ride stability",
-          "Foilborne — no slamming",
-          "Slams in waves",
-          "Wave-following",
-          "Slams in waves"
-        ],
-        [
-          "Acoustic signature",
-          "Low — electric-quiet",
-          "High — diesel planing",
-          "Low — but ~5 kts",
-          "High — diesel planing"
-        ],
-        [
-          "Status",
-          "Flight control system deployed · sea trials underway",
-          "$392M contract",
-          "Deployed",
-          "USVRON deployed"
-        ]
-      ],
-      "vessel_type_row": [
-        "Vessel type",
-        "One platform — defense · mobility · logistics",
-        "Defense-only design",
-        "Surveillance only (ISR)",
-        "Defense-only design"
-      ],
-      "vessel_type_label": "VESSEL TYPE",
-      "takeaway": "Speed, range, efficiency — pick two, until now.",
-      "explainer": "And when a planing hull slams, optics lose lock and payloads take the shock. Quanta flies above the waves: stable tracking & vision, quiet approach, one platform — we work with key integrators on systems and integration.",
-      "source_note": "Public sources, August 2026."
-    },
-    {
-      "id": "def-family",
-      "kicker": "08 · THE FAMILY",
-      "title": "One Core, Every Vessel.",
-      "body": "One control core scales from a 30-foot unmanned craft to a 180-foot ocean vessel. Every hour the commercial fleet flies hardens the same software the defense fleet runs.",
-      "ladder": [
-        {
-          "name": "N30 — Pioneer & Quanta",
-          "length_class": "30 ft",
-          "image": "assets/deck/n30-defense-ladder-landscape.jpg",
-          "status": "Proven today — 10,000+ ops hours · exhibited at Sea-Air-Space and SOF Week 2026",
-          "defense_lens": "Unmanned and manned missions today: ISR, C-UAS picket, EW payloads, contested resupply at small-craft scale.",
-          "image_note": "Landscape military N30 / Quanta lineage — full vessel in frame (ladder thumb)."
-        },
-        {
-          "name": "N45 Explorer",
-          "length_class": "45 ft",
-          "image": "assets/deck/n45-defense-container-v1.png",
-          "status": "First hull target — H2 2027",
-          "defense_lens": "Contested logistics — a single containerized load aft. The same foilborne stability that lets weapons and sensors hold lock keeps crew and cargo steady at speed, in higher sea states.",
-          "image_note": "Single aft ISO container — contested-logistics configuration."
-        },
-        {
-          "name": "N80 Valkyrie",
-          "length_class": "80 ft",
-          "image": "assets/deck/n80-render-v1.png",
-          "status": "Demand validation — 2028",
-          "defense_lens": "Multi-container logistics and force sustainment on the same control core."
-        },
-        {
-          "name": "N180 Morpheus",
-          "length_class": "180 ft",
-          "image": "assets/deck/shipscale-hero.png",
-          "status": "Concept — ocean class",
-          "defense_lens": "Ocean-range logistics at ship scale — the endpoint of the same software and foil lineage."
-        }
-      ],
-      "render_notes": "GMVP intro opens chapter (invest platform-intro). Ladder N30 = the military variant (variant name withheld externally — leak-list term). No trailing hero image. V4 CROP RULE (bug fix, founder screenshot 2026-08-23): family-card images must NEVER crop the vessel at any viewport width — the N30 card cropped the vessel out entirely at phone widths. Use aspect-preserving object-fit contain on a fixed plate, or authored per-breakpoint crops with the vessel fully visible. Verify every ladder card at 390 / 768 / 1280 / 1440 / 2560 px. Appends PLATFORM beat after ladder (moved from dual-use).",
-      "gmvp_intro": {
-        "title": "The Generalized Marine Vessel Platform (GMVP)",
-        "body": "The N30 proved the core over 10,000 hours of real operations. The GMVP scales that core across four classes — 30, 45, 80, 180 ft — cutting engineering time and schedule risk.",
-        "wireframe_image": "assets/deck/gmvp-wireframe-family.png",
-        "layers": [
-          {
-            "label": "MISSION LAYER",
-            "name": "The Superstructure",
-            "note": "Cabin, deck and payload fit — passenger, cargo, or mission systems"
-          },
-          {
-            "label": "SOFTWARE",
-            "name": "The Brain",
-            "note": "NavierOS including flight control and autonomy"
-          },
-          {
-            "label": "HARDWARE",
-            "name": "The Skateboard",
-            "note": "Hull · foils · powertrain"
-          }
-        ]
-      },
-      "thesis_line": "A standardized foiling platform changes how navies move.",
-      "integrator_line": "We are the platform — we work with key integrators on systems and integration. Partners bring payloads and effectors; Navier brings the vessel, the autonomy, and the network.",
-      "blocks": [
-        {
-          "title": "QUANTA — READY NOW",
-          "body": "Unmanned — patrol · surveillance (ISR) · interceptor\nManned — combatant craft · special-ops · medevac"
-        },
-        {
-          "title": "N80 VALKYRIE · N180 MORPHEUS — LARGE HULLS",
-          "body": "Contested logistics — any-shore resupply · more completed missions per vessel-day"
-        }
-      ],
-      "mission_renders": {
-        "kicker": "MISSION CONFIGURATIONS",
-        "items": [
-          {
-            "src": "assets/deck/renders/defense-render-usv-hero-v1.png",
-            "caption": "Unmanned — patrol · interceptor",
-            "alt": "Autonomous N30-class hydrofoil USV foilborne at golden hour, sensor mast, minimal wake"
-          },
-          {
-            "src": "assets/deck/renders/defense-render-isr-v1.png",
-            "caption": "Surveillance (ISR) — EO/IR and radar at speed",
-            "alt": "Tactical grey manned hydrofoil with FLIR ball and radar dome, foilborne in daylight"
-          },
-          {
-            "src": "assets/deck/renders/defense-render-patrol-v1.png",
-            "caption": "Manned — combatant craft · special-ops",
-            "alt": "Navy grey manned hydrofoil flying cleanly in open water, retractable foil struts"
-          },
-          {
-            "src": "assets/deck/renders/defense-render-medevac-v1.png",
-            "caption": "Medevac — casualty evacuation at foil speed",
-            "alt": "White MEDEVAC hydrofoil with red cross livery foilborne over turquoise water"
-          }
-        ],
-        "render_notes": "CONCEPT RENDERS — label the rail 'concept renders' on-page; never place in the PROOF beat and never intermix with real photography (SOF Week loop, officers stills, USMI quote stay real-only). All four QA-passed: foilborne stance, faint strut wake only, bright daylight/golden hour, vessel fidelity. Equal-height rail, aspect-preserving crops, vessel never cropped out at any viewport (v4 crop rule applies)."
-      }
-    },
-    {
-      "id": "def-team",
-      "kicker": "09 · THE TEAM",
-      "title": "The Team.",
-      "core_note": "Reuse the /invest team grid (6 headshots) verbatim from claim.json.",
-      "advisors_note": "Advisors render with linked names (new tab, subtle hover): Rear Admiral Theodore 'Ted' P.S. LeClair (navy.mil bio) and Marine Corps Lt. General Michael S. Cederholm (Wikipedia) — bio_url fields already in claim.json team section.",
-      "cta": {
-        "line": "",
-        "email": ""
-      },
-      "render_notes": "Advisors placed prominently — for this audience they close the site. CTA is a plain contact line, no form, no calendar link. Golden-hour bow image (assets/deck/goldenhour-bow.jpg) below the CTA, above the footer — same closing treatment as /invest."
-    },
-    {
-      "id": "def-close",
-      "kicker": "10 · THE CLOSE",
-      "type": "close-hero",
-      "hero": {
-        "background_video": "assets/closing-loop.mp4",
-        "poster": "assets/hero-poster.jpg",
-        "line": "The commercial network builds the industrial base. The defense fleet rides on top.",
-        "title": "OWN THE LITTORAL",
-        "cta": {
-          "label": "Arrange a briefing",
-          "href": "mailto:sampriti@navierboat.com"
-        }
-      },
-      "go_deeper": {
-        "kicker": "GO DEEPER",
-        "items": [
-          {
-            "type": "video",
-            "embed_url": "https://www.youtube-nocookie.com/embed/ZNgh39DM_Jg",
-            "youtube_id": "ZNgh39DM_Jg",
-            "poster": "assets/posters/ZNgh39DM_Jg.jpg",
-            "caption": "A long-form company visit with Ashlee Vance — 9:49"
-          },
-          {
-            "type": "image",
-            "src": "assets/deck/goldenhour-bow.jpg",
-            "caption": "Foilborne, at speed, almost no wake — real photograph, not a render."
-          }
-        ]
-      },
-      "render_notes": "Port invest finale-plate + go-deeper strip. OWN THE LITTORAL."
+     "head": "STRATEGIC RESERVE",
+     "body": "Commercial fleets built on this architecture are effectively pre-certified hardware. In times of conflict, capacity surges without waiting years for new keels to be laid."
     }
-  ],
-  "leak_scan_notes": "Scan applies to RENDERED PAGE TEXT (not contract render_notes/meta), case-insensitive, WORD-BOUNDED (\\b) — 'Australia', 'evaluation', 'Tampa' must not trip 'Alia'/'valuation'/'TAM'.",
-  "_v2_notes": "Jaideep 2026-08-21: v1 lacked Navier intro/thesis, was video-poor, sequence incoherent. V2: thesis verbatim from claim.json; 10 videos bound; Plainview resequenced as setup for control chapter; new video-wall chapter; ladder enriched with defense lens. Four Seasons video deliberately excluded (luxury co-brand, wrong audience). Narrative: who we are -> mission problem -> why now (1969+control) -> the platform -> proof in flight -> ready now -> endurance -> validation -> field -> family -> industrial base -> team.",
-  "_v3_notes": "2026-08-22 founder review: remove Mission Problem; thesis+1080p film; flight exactly 3; family GMVP+military N30; team asset copy; OWN THE LITTORAL close; password plainview.",
-  "_staged_assets_te263": "assets/defense-te263-autonomy-grid.mp4 — onboard 4-camera autonomy/segmentation feed from SOCOM TE 26-3 (Bayview, Idaho, Aug 2026). CLEARED by Jaideep 2026-08-24 — WIRED into def-dual-use secondary_videos. Caption as authored: 'SOCOM TE 26-3, Bayview, Idaho — onboard autonomy feed, contested EM-spectrum operations (August 2026)'.",
-  "_v41_notes": "2026-08-23 v4.1 (founder voice notes round 2): (1) demo attribution corrected everywhere — the exhibited craft is the effector-equipped N30 demonstrator, NOT Quanta; Quanta-D retired from rendered text (added to leak scan). (2) Quanta moment reframed: breakthrough + in sea trials + tested 2,400 NMi + belief_line. (3) integrator_line added (platform posture). (4) TE 26-3 added to subhead + deployment_line. (5) dual-use company title retired on this route — mission-first title. | 2026-08-24: mission_renders rail added to def-dual-use (4 concept renders under assets/deck/renders/); medevac-coastal reserved for decks.",
-  "_v4_notes": "2026-08-23 founder review (Sampriti voice notes) + Jaideep approvals: (1) hero subline defense-specific; (2) 01 rebuilt as defense-first opener — two-line implication, GMVP-as-breakthrough, asymmetric-cost logic, doctrine stats + chip (verbatim-lock to /invest removed, founder explicit); (3) global-resilience defense thesis added to dual-use; (4) N45 ladder card = single aft container render + stability-explicit lens; (5) family-card crop rule; (6) sharp-turning video retitled 'Coordinated turns at high speed'; (7) gate v2 — email + per-recipient revocable codes, Google Sheet logging only. Doctrine figures verified against navierboat.com/doctrine 2026-08-23.",
-  "_v41_restore_notes": "2026-08-24 restore after founder critique: Quanta kickers/title; short moment headline; belief as quote; resilience moved to Who We Are; dual-use retitled + proof kicker; dropped duplicate capability_rail; ladder contain CSS in defense.css."
+   ],
+   "beats_source_line": "Figures and framing from the Navier Doctrine — navierboat.com/doctrine.",
+   "doctrine_link": {
+    "label": "Read the Navier Doctrine →",
+    "url": "https://www.navierboat.com/doctrine",
+    "behavior": "new tab · public page · render as gold link chip under the beats"
+   }
+  },
+  {
+   "id": "def-plainview",
+   "kicker": "02 · WHY NOW",
+   "title": "The Physics Was Proven in 1969. What Was Missing Was Control.",
+   "media": {
+    "type": "image",
+    "src": "assets/deck/plainview-foilborne-1969.jpg",
+    "alt": "USS Plainview (AGEH-1) foilborne — U.S. Navy experimental hydrofoil, commissioned 1969. U.S. Navy photo.",
+    "caption": "USS PLAINVIEW (AGEH-1) FOILBORNE — U.S. NAVY EXPERIMENTAL HYDROFOIL, COMMISSIONED 1969. U.S. NAVY PHOTO."
+   },
+   "blocks": [
+    {
+     "head": "FLEW IN 1969",
+     "body": "212 ft · 310 tons · 40 knots foilborne — the world's largest hydrofoil"
+    },
+    {
+     "head": "WHY IT RETIRED",
+     "body": "Analog control and one-off construction — 268 foilborne hours in its lifetime, never produced at rate"
+    },
+    {
+     "head": "WHAT CHANGED",
+     "body": "Software flight control, electric drivetrains, and a production base funded by commercial demand"
+    }
+   ],
+   "closer": "The physics was proven in 1969. What was missing was control. Control is software now — and software is what Navier builds.",
+   "source_line": "Source: U.S. Navy records · International Hydrofoil Society · sourced Aug 2026.",
+   "render_notes": "Archival photo full-width on its own plate (public domain, U.S. Navy — the foilborne shot with hull clear of the water; historical spray/smoke is period-accurate and exempt from the wake rule). Copy verbatim from P4 p4_plainview. RESEQUENCED v2: Plainview now precedes the platform chapter as its historical setup. Closer line is the hinge into def-platform — render it prominently."
+  },
+  {
+   "id": "def-platform",
+   "kicker": "03 · THE PLATFORM",
+   "title": "Control Is Software Now.",
+   "body": "NavierOS — flight control and autonomy — flies the foils hundreds of times per second. The result is a vessel that is foilborne-stable through Sea State 4 — pitch and roll held to under 1°, flight height held to ±2 cm, electric-quiet on station, and software-defined: the same control platform runs every hull in the family.",
+   "media_pair": [
+    {
+     "type": "image",
+     "src": "assets/deck/schematic-controls.png",
+     "alt": "Navier control system — bow-left schematic with seven gold callouts",
+     "render": "bow-left, seven gold callouts — /invest control-sbs; bare wireframe = FAIL"
+    }
+   ],
+   "render_notes": "Schematic+CTO control-sbs; stabilization muted loop below (not in flight wall).",
+   "videos": [
+    {
+     "embed_url": "https://www.youtube-nocookie.com/embed/S7WB91FvSFI",
+     "title": "Navier's hydrofoil boats have wings",
+     "duration": "2:13",
+     "caption": "CTO Kenny Jensen: underwater wings, redundant flight computers and powertrains, software-driven control.",
+     "behavior": "click-to-play with sound",
+     "poster": "assets/posters/S7WB91FvSFI.jpg",
+     "role": "control-film"
+    },
+    {
+     "src": "assets/stabilization-juxtaposition.mp4",
+     "title": "Stabilization, side by side",
+     "caption": "Foilborne stabilization versus a conventional hull in the same water.",
+     "behavior": "autoplay muted loop",
+     "role": "stabilization-loop"
+    }
+   ]
+  },
+  {
+   "id": "def-flight",
+   "kicker": "04 · PROOF IN FLIGHT",
+   "title": "No Wake. No Slam. Low Signature.",
+   "sub": "Foilborne performance is a signature profile conventional small craft cannot match — and a stability platform weapons and sensors can trust.",
+   "clips": [
+    {
+     "id": "no-wake",
+     "asset": "assets/demos/no-wake.mp4",
+     "poster": "assets/posters/Hlp9oynUQNE.jpg",
+     "title": "No wakes, just glide",
+     "duration": "0:12",
+     "caption": "Foilborne vessels leave only faint ripple — a signature profile conventional hulls cannot match.",
+     "youtube_id": "Hlp9oynUQNE"
+    },
+    {
+     "id": "rough-seas",
+     "asset": "assets/demos/rough-seas.mp4",
+     "poster": "assets/posters/7HETK4rsByc.jpg",
+     "title": "Gliding over rough seas",
+     "duration": "0:55",
+     "caption": "Flight above the waves: stable ride in conditions that stop conventional small craft.",
+     "youtube_id": "7HETK4rsByc"
+    },
+    {
+     "id": "flat-turning",
+     "asset": "assets/demos/flat-turning.mp4",
+     "poster": "assets/posters/93MCRJYsD_8.jpg",
+     "title": "Coordinated turns at high speed",
+     "duration": "0:16",
+     "caption": "Smoother, quieter, more efficient than a traditional hull — by physics, not padding.",
+     "youtube_id": "93MCRJYsD_8"
+    }
+   ],
+   "closer": "Stability is a weapons-platform property. Signature is a survivability property. Both come from the same control software.",
+   "render_notes": "Exactly three equal demo tiles in one centered row. No fourth video. Stabilization lives in platform."
+  },
+  {
+   "id": "def-quanta-moment",
+   "kicker": "05 · QUANTA",
+   "eyebrow": "NEXT PRODUCT: QUANTA",
+   "headline": "The breakthrough that will fundamentally change what we can do at sea.",
+   "belief_line": "We believe Quanta and our long-range platforms will fundamentally change warfare at sea — and put America ahead of our adversaries.",
+   "video": {
+    "embed_url": "https://www.youtube-nocookie.com/embed/QhiaYVgXMf0",
+    "poster": "assets/posters/QhiaYVgXMf0.jpg",
+    "title": "Inside Navier N30 — the longest-range electric boat ever built",
+    "duration": "5:09"
+   },
+   "video_label": "",
+   "render_notes": "Invest chapter-break / quanta-moment: founder film lead ≥70% width. Headline is short capability conviction — no sea-trials/range append. belief_line renders as a founder pull-quote (.defense-quote) with belief_attribution cite.",
+   "belief_attribution": "Sampriti Bhattacharyya · CEO, Navier"
+  },
+  {
+   "id": "def-quanta-stats",
+   "kicker": "05 · QUANTA",
+   "eyebrow": "THE BREAKTHROUGH",
+   "title": "Quanta.",
+   "subhead": "Demonstrated live as the Quanta-D — the effector-equipped N30 demonstrator — at the Navy's two flagship expositions, Sea-Air-Space 2026 and SOF Week 2026, and at SOCOM Technical Experimentation 26-3 in contested electromagnetic-spectrum operations (August 2026).",
+   "stats": [
+    {
+     "value": "SEA STATE 4",
+     "label": "Foilborne-stable — no slamming"
+    },
+    {
+     "value": "2,000+ NMI",
+     "label": "Range at 20 kts · 35 kts top speed"
+    },
+    {
+     "value": "2,200 LBS",
+     "label": "Modular payload — ship to shore"
+    },
+    {
+     "value": "C-UAS · ISR · EW",
+     "label": "Plus contested logistics"
+    },
+    {
+     "value": "LOW SIGNATURE",
+     "label": "Diesel-electric · software-defined"
+    },
+    {
+     "value": "400V · 100 KW",
+     "label": "Peak power for directed-energy payloads"
+    }
+   ],
+   "plate": "assets/deck/quanta-camo-plate.png",
+   "render_notes": "Invest quanta-stats-compose: camo plate + gold stats. Title is Quanta capability — not an N30 demonstrator sales frame. Specs from audited demonstrator row. V4.2: six stats (3×2 grid). Sixth chip (400V/100kW DE) + Quanta-D naming sourced from public company LinkedIn post, 2026-08-25."
+  },
+  {
+   "id": "def-quanta-unlocks",
+   "kicker": "05 · QUANTA",
+   "eyebrow": "WHAT IT OPENS",
+   "title": "What Quanta Unlocks",
+   "doors": [
+    {
+     "title": "Unmanned",
+     "detail": "Patrol · surveillance (ISR) · interceptor"
+    },
+    {
+     "title": "Manned",
+     "detail": "Combatant craft · special-ops · medevac"
+    },
+    {
+     "title": "Persistence and dash",
+     "detail": "Sails itself to next station"
+    }
+   ],
+   "atlantic_run": {
+    "line": "THE ATLANTIC RUN — Unmanned crossing targeted for late 2026 · Newfoundland → Lisbon."
+   },
+   "atlantic_map": "assets/deck/atlantic-run-map.png",
+   "closing_line": "Commercial fleets fund the platform that delivers it — demonstrated where the standards are highest.",
+   "render_notes": "Invest two-door + Atlantic band; absorbs former def-atlantic."
+  },
+  {
+   "id": "def-dual-use",
+   "type": "defense-panel",
+   "title": "We Are a Dual-Use Platform Company.",
+   "subhead": "Commercial Infrastructure First. Defense on Top.",
+   "intro": "Through standardization, volume, and interchangeability, one maritime ecosystem serves commercial transportation and defense logistics.",
+   "pull_quote": {
+    "quote": "“Your team has met all deliverables and provided a product and service that has exceeded all expectations.”",
+    "attribution": "— Letter from USMI, Navier’s first DOD work"
+   },
+   "deployment_line": "Deployed with the US Navy · running in Leidos operations · SOCOM Technical Experimentation 26-3, August 2026",
+   "fine_print": "Budgets already moving: US DoD Replicator ≈$1B · Australia A$176M · US Navy FY26 $203M USV R&D. Sourced Aug 2026.",
+   "sub_line": "Commercial deployments make Navier the standing infrastructure of strategic waterways.",
+   "kicker": "06 · PROOF",
+   "render_notes": "Three-beat spine: PROOF → PLATFORM → DUAL-USE close. PROOF = media + quotes + deployment. PLATFORM = thesis/integrator + hull cards. Doctrine/resilience lives in def-navier beats (not here). No duplicate capability_rail — specs live on def-quanta-stats. V4 crop rule still applies to mission_renders. PLATFORM beat (thesis/blocks/mission_renders) moved to def-family.",
+   "press_quote": {
+    "quote": "Stopped senior U.S. Navy admirals and captains in their tracks … drawing repeated assessments of 'game changer.'",
+    "attribution": "— Defence Blog, May 2026",
+    "url": "https://defence-blog.com/san-francisco-startups-hydrofoil-boat-wows-u-s-navy-brass/"
+   },
+   "public_post": {
+    "label": "Read the company announcement on LinkedIn →",
+    "url": "https://www.linkedin.com/posts/usv-hydrofoil-defensetech-ugcPost-7498038376135176192-SYY9/",
+    "render": "Small text link directly beneath the SOCOM TE 26-3 proof block. Opens in new tab. First-party public proof of TE 26-3 completion and Quanta-D naming."
+   },
+   "media": {
+    "lead_video": {
+     "src": "assets/defense-sofweek-loop.mp4",
+     "behavior": "muted autoplay loop",
+     "caption": "SOF Week 2026, Tampa — the Quanta-D, our effector-equipped N30 demonstrator, foilborne"
+    },
+    "photos": [
+     {
+      "src": "assets/deck/defense-sas-officers-looking.jpg",
+      "caption": "Sea-Air-Space 2026 — U.S. Navy officers at the Navier vessel"
+     },
+     {
+      "src": "assets/deck/defense-sofweek-armed.jpg",
+      "caption": "SOF Week 2026, Tampa — Quanta-D, effector-equipped"
+     }
+    ],
+    "secondary_videos": [
+     {
+      "src": "assets/defense-sofweek-cockpit.mp4",
+      "behavior": "muted autoplay loop",
+      "caption": "Two-vessel demonstration — from the helm"
+     },
+     {
+      "src": "assets/defense-sofweek-approach.mp4",
+      "behavior": "muted autoplay loop",
+      "caption": "Live approach and turn, foilborne"
+     },
+     {
+      "src": "assets/defense-te263-montage.mp4",
+      "behavior": "muted autoplay loop",
+      "caption": "SOCOM TE 26-3, Bayview, Idaho — live telemetry and the onboard autonomy stack: raw sensing → segmentation → world model (August 2026)",
+      "render": "Native 826×720 — the multi-feed montage is cut near-square by design (4-cam grid + telemetry feeds). Render at native aspect, centered on dark letterbox, never upscale. H.264, silent, 9s loop-safe."
+     }
+    ],
+    "rules": "All defense videos muted autoplay loop (lead + secondary), paused off-screen via IntersectionObserver. Photos side-by-side 50/50. Captions exactly as authored."
+   }
+  },
+  {
+   "id": "def-field",
+   "kicker": "07 · THE FIELD",
+   "title": "The Field Trades Off. Quanta Doesn't.",
+   "sub": "Competitive Landscape — 16–40 ft Autonomous Segment",
+   "render_notes": "Port invest comparison-table verbatim: full rows + vessel-type band + takeaway + explainer.",
+   "eyebrow": "COMPETITIVE LANDSCAPE — 16–40 FT AUTONOMOUS SEGMENT",
+   "columns": [
+    "",
+    "NAVIER QUANTA",
+    "SARONIC CORSAIR",
+    "SAILDRONE VOYAGER",
+    "BLACKSEA GARC"
+   ],
+   "rows": [
+    [
+     "Range",
+     "2,000 NMi at cruise",
+     "1,000 NMi (low speed)",
+     "Undisclosed",
+     "680 NMi (low speed)"
+    ],
+    [
+     "Cruising speed",
+     "20 kts",
+     "~12 kts",
+     "5+ kts",
+     "17 kts"
+    ],
+    [
+     "Payload",
+     "1,500 lbs",
+     "1,000 lbs",
+     "~500 lbs",
+     "1,000 lbs"
+    ],
+    [
+     "Propulsion",
+     "Hybrid diesel-electric",
+     "Diesel",
+     "Electric / wind",
+     "Diesel"
+    ],
+    [
+     "Hull type",
+     "Carbon-fiber hydrofoil",
+     "Planing hull",
+     "Planing hull",
+     "Aluminum planing"
+    ],
+    [
+     "Sea state",
+     "Up to SS4",
+     "SS3",
+     "SS3–4",
+     "SS3"
+    ],
+    [
+     "Fuel efficiency",
+     "4× vs planing hulls",
+     "1× (baseline)",
+     "Undisclosed",
+     "1× (baseline)"
+    ],
+    [
+     "Ride stability",
+     "Foilborne — no slamming",
+     "Slams in waves",
+     "Wave-following",
+     "Slams in waves"
+    ],
+    [
+     "Acoustic signature",
+     "Low — electric-quiet",
+     "High — diesel planing",
+     "Low — but ~5 kts",
+     "High — diesel planing"
+    ],
+    [
+     "Status",
+     "Flight control system deployed · sea trials underway",
+     "$392M contract",
+     "Deployed",
+     "USVRON deployed"
+    ]
+   ],
+   "vessel_type_row": [
+    "Vessel type",
+    "One platform — defense · mobility · logistics",
+    "Defense-only design",
+    "Surveillance only (ISR)",
+    "Defense-only design"
+   ],
+   "vessel_type_label": "VESSEL TYPE",
+   "takeaway": "Speed, range, efficiency — pick two, until now.",
+   "explainer": "And when a planing hull slams, optics lose lock and payloads take the shock. Quanta flies above the waves: stable tracking & vision, quiet approach, one platform — we work with key integrators on systems and integration.",
+   "source_note": "Public sources, August 2026."
+  },
+  {
+   "id": "def-family",
+   "kicker": "08 · THE FAMILY",
+   "title": "One Core, Every Vessel.",
+   "body": "One control core scales from a 30-foot unmanned craft to a 180-foot ocean vessel. Every hour the commercial fleet flies hardens the same software the defense fleet runs.",
+   "ladder": [
+    {
+     "name": "N30 — Pioneer & Quanta",
+     "length_class": "30 ft",
+     "image": "assets/deck/n30-defense-ladder-landscape.jpg",
+     "status": "Proven today — 10,000+ ops hours · exhibited at Sea-Air-Space and SOF Week 2026",
+     "defense_lens": "Unmanned and manned missions today: ISR, C-UAS picket, EW payloads, contested resupply at small-craft scale.",
+     "image_note": "Landscape military N30 / Quanta lineage — full vessel in frame (ladder thumb)."
+    },
+    {
+     "name": "N45 Explorer",
+     "length_class": "45 ft",
+     "image": "assets/deck/n45-defense-container-v1.png",
+     "status": "First hull target — H2 2027",
+     "defense_lens": "Contested logistics — a single containerized load aft. The same foilborne stability that lets weapons and sensors hold lock keeps crew and cargo steady at speed, in higher sea states.",
+     "image_note": "Single aft ISO container — contested-logistics configuration."
+    },
+    {
+     "name": "N80 Valkyrie",
+     "length_class": "80 ft",
+     "image": "assets/deck/n80-render-v1.png",
+     "status": "Demand validation — 2028",
+     "defense_lens": "Multi-container logistics and force sustainment on the same control core."
+    },
+    {
+     "name": "N180 Morpheus",
+     "length_class": "180 ft",
+     "image": "assets/deck/shipscale-hero.png",
+     "status": "Concept — ocean class",
+     "defense_lens": "Ocean-range logistics at ship scale — the endpoint of the same software and foil lineage."
+    }
+   ],
+   "render_notes": "GMVP intro opens chapter (invest platform-intro). Ladder N30 = the military variant (variant name withheld externally — leak-list term). No trailing hero image. V4 CROP RULE (bug fix, founder screenshot 2026-08-23): family-card images must NEVER crop the vessel at any viewport width — the N30 card cropped the vessel out entirely at phone widths. Use aspect-preserving object-fit contain on a fixed plate, or authored per-breakpoint crops with the vessel fully visible. Verify every ladder card at 390 / 768 / 1280 / 1440 / 2560 px. Appends PLATFORM beat after ladder (moved from dual-use).",
+   "gmvp_intro": {
+    "title": "The Generalized Marine Vessel Platform (GMVP)",
+    "body": "The N30 proved the core over 10,000 hours of real operations. The GMVP scales that core across four classes — 30, 45, 80, 180 ft — cutting engineering time and schedule risk.",
+    "wireframe_image": "assets/deck/gmvp-wireframe-family.png",
+    "layers": [
+     {
+      "label": "MISSION LAYER",
+      "name": "The Superstructure",
+      "note": "Cabin, deck and payload fit — passenger, cargo, or mission systems"
+     },
+     {
+      "label": "SOFTWARE",
+      "name": "The Brain",
+      "note": "NavierOS including flight control and autonomy"
+     },
+     {
+      "label": "HARDWARE",
+      "name": "The Skateboard",
+      "note": "Hull · foils · powertrain"
+     }
+    ]
+   },
+   "thesis_line": "A standardized foiling platform changes how navies move.",
+   "integrator_line": "We are the platform — we work with key integrators on systems and integration. Partners bring payloads and effectors; Navier brings the vessel, the autonomy, and the network.",
+   "blocks": [
+    {
+     "title": "QUANTA — READY NOW",
+     "body": "Unmanned — patrol · surveillance (ISR) · interceptor\nManned — combatant craft · special-ops · medevac"
+    },
+    {
+     "title": "N80 VALKYRIE · N180 MORPHEUS — LARGE HULLS",
+     "body": "Contested logistics — any-shore resupply · more completed missions per vessel-day"
+    }
+   ],
+   "mission_renders": {
+    "kicker": "MISSION CONFIGURATIONS",
+    "items": [
+     {
+      "src": "assets/deck/renders/defense-render-usv-hero-v1.png",
+      "caption": "Unmanned — patrol · interceptor",
+      "alt": "Autonomous N30-class hydrofoil USV foilborne at golden hour, sensor mast, minimal wake"
+     },
+     {
+      "src": "assets/deck/renders/defense-render-isr-v1.png",
+      "caption": "Surveillance (ISR) — EO/IR and radar at speed",
+      "alt": "Tactical grey manned hydrofoil with FLIR ball and radar dome, foilborne in daylight"
+     },
+     {
+      "src": "assets/deck/renders/defense-render-patrol-v1.png",
+      "caption": "Manned — combatant craft · special-ops",
+      "alt": "Navy grey manned hydrofoil flying cleanly in open water, retractable foil struts"
+     },
+     {
+      "src": "assets/deck/renders/defense-render-medevac-v1.png",
+      "caption": "Medevac — casualty evacuation at foil speed",
+      "alt": "White MEDEVAC hydrofoil with red cross livery foilborne over turquoise water"
+     }
+    ],
+    "render_notes": "CONCEPT RENDERS — label the rail 'concept renders' on-page; never place in the PROOF beat and never intermix with real photography (SOF Week loop, officers stills, USMI quote stay real-only). All four QA-passed: foilborne stance, faint strut wake only, bright daylight/golden hour, vessel fidelity. Equal-height rail, aspect-preserving crops, vessel never cropped out at any viewport (v4 crop rule applies)."
+   }
+  },
+  {
+   "id": "def-team",
+   "kicker": "09 · THE TEAM",
+   "title": "The Team.",
+   "core_note": "Reuse the /invest team grid (6 headshots) verbatim from claim.json.",
+   "advisors_note": "Advisors render with linked names (new tab, subtle hover): Rear Admiral Theodore 'Ted' P.S. LeClair (navy.mil bio) and Marine Corps Lt. General Michael S. Cederholm (Wikipedia) — bio_url fields already in claim.json team section.",
+   "cta": {
+    "line": "",
+    "email": ""
+   },
+   "render_notes": "Advisors placed prominently — for this audience they close the site. CTA is a plain contact line, no form, no calendar link. Golden-hour bow image (assets/deck/goldenhour-bow.jpg) below the CTA, above the footer — same closing treatment as /invest."
+  },
+  {
+   "id": "def-close",
+   "kicker": "10 · THE CLOSE",
+   "type": "close-hero",
+   "hero": {
+    "background_video": "assets/closing-loop.mp4",
+    "poster": "assets/hero-poster.jpg",
+    "line": "The commercial network builds the industrial base. The defense fleet rides on top.",
+    "title": "OWN THE LITTORAL",
+    "cta": {
+     "label": "Arrange a briefing",
+     "href": "mailto:sampriti@navierboat.com"
+    }
+   },
+   "go_deeper": {
+    "kicker": "GO DEEPER",
+    "items": [
+     {
+      "type": "video",
+      "embed_url": "https://www.youtube-nocookie.com/embed/ZNgh39DM_Jg",
+      "youtube_id": "ZNgh39DM_Jg",
+      "poster": "assets/posters/ZNgh39DM_Jg.jpg",
+      "caption": "A long-form company visit with Ashlee Vance — 9:49"
+     },
+     {
+      "type": "image",
+      "src": "assets/deck/goldenhour-bow.jpg",
+      "caption": "Foilborne, at speed, almost no wake — real photograph, not a render."
+     }
+    ]
+   },
+   "render_notes": "Port invest finale-plate + go-deeper strip. OWN THE LITTORAL."
+  }
+ ],
+ "leak_scan_notes": "Scan applies to RENDERED PAGE TEXT (not contract render_notes/meta), case-insensitive, WORD-BOUNDED (\\b) — 'Australia', 'evaluation', 'Tampa' must not trip 'Alia'/'valuation'/'TAM'. | v4.2 (2026-08-25): 'Quanta-D' REMOVED from kill list — name publicly disclosed in company LinkedIn post announcing TE 26-3 completion (Sampriti, 2026-08-25). 'N30D' remains internal-only and stays on the list. Commercial Quanta range breakthrough remains teaser-framed.",
+ "_v2_notes": "Jaideep 2026-08-21: v1 lacked Navier intro/thesis, was video-poor, sequence incoherent. V2: thesis verbatim from claim.json; 10 videos bound; Plainview resequenced as setup for control chapter; new video-wall chapter; ladder enriched with defense lens. Four Seasons video deliberately excluded (luxury co-brand, wrong audience). Narrative: who we are -> mission problem -> why now (1969+control) -> the platform -> proof in flight -> ready now -> endurance -> validation -> field -> family -> industrial base -> team.",
+ "_v3_notes": "2026-08-22 founder review: remove Mission Problem; thesis+1080p film; flight exactly 3; family GMVP+military N30; team asset copy; OWN THE LITTORAL close; password plainview.",
+ "_staged_assets_te263": "assets/defense-te263-autonomy-grid.mp4 — onboard 4-camera autonomy/segmentation feed from SOCOM TE 26-3 (Bayview, Idaho, Aug 2026). CLEARED by Jaideep 2026-08-24 — WIRED into def-dual-use secondary_videos. Caption as authored: 'SOCOM TE 26-3, Bayview, Idaho — onboard autonomy feed, contested EM-spectrum operations (August 2026)'.",
+ "_v41_notes": "2026-08-23 v4.1 (founder voice notes round 2): (1) demo attribution corrected everywhere — the exhibited craft is the effector-equipped N30 demonstrator, NOT Quanta; Quanta-D retired from rendered text (added to leak scan). (2) Quanta moment reframed: breakthrough + in sea trials + tested 2,400 NMi + belief_line. (3) integrator_line added (platform posture). (4) TE 26-3 added to subhead + deployment_line. (5) dual-use company title retired on this route — mission-first title. | 2026-08-24: mission_renders rail added to def-dual-use (4 concept renders under assets/deck/renders/); medevac-coastal reserved for decks.",
+ "_v4_notes": "2026-08-23 founder review (Sampriti voice notes) + Jaideep approvals: (1) hero subline defense-specific; (2) 01 rebuilt as defense-first opener — two-line implication, GMVP-as-breakthrough, asymmetric-cost logic, doctrine stats + chip (verbatim-lock to /invest removed, founder explicit); (3) global-resilience defense thesis added to dual-use; (4) N45 ladder card = single aft container render + stability-explicit lens; (5) family-card crop rule; (6) sharp-turning video retitled 'Coordinated turns at high speed'; (7) gate v2 — email + per-recipient revocable codes, Google Sheet logging only. Doctrine figures verified against navierboat.com/doctrine 2026-08-23.",
+ "_v41_restore_notes": "2026-08-24 restore after founder critique: Quanta kickers/title; short moment headline; belief as quote; resilience moved to Who We Are; dual-use retitled + proof kicker; dropped duplicate capability_rail; ladder contain CSS in defense.css.",
+ "_v42_notes": "2026-08-25 — Quanta-D publicly named in company LinkedIn post (TE 26-3 completion). Contract updates: (1) naming bridge at first rendered mention (def-quanta-stats subhead), 'Quanta-D' thereafter; (2) public specs added — <1° pitch/roll SS4 + ±2cm flight height (def-platform body), 400V/100kW DE chip (def-quanta-stats); (3) TE 26-3 secondary video swapped to multi-feed montage (defense-te263-montage.mp4 — source master from founder, H.264 web encode, audio stripped); (4) 'Quanta-D' removed from leak kill list; N30D still banned. (5) public_post link added beneath the TE 26-3 proof block in def-dual-use (URL supplied 2026-08-25)."
 }
