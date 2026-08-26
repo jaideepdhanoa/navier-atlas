@@ -33,11 +33,15 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
 2. **Ride** — `/invest` Traction demo grid, equal-weight tiles, muted loop,
    click for sound. Title `Don't take our word for it` + lede + five clip
    captions from `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
-3. **Films** — three large plates (CTO `S7WB91FvSFI`, Sampriti `QhiaYVgXMf0`,
-   Vance `ZNgh39DM_Jg`). Verified titles + durations. Click → lightbox with sound.
+3. **Films** — three large plates, on-page titles from `/invest` (not YouTube
+   titles): Sampriti first (`QhiaYVgXMf0`, headline *The breakthrough that will
+   fundamentally change what we can do at sea.*), then CTO (`S7WB91FvSFI`,
+   *The 3-minute version, from our CTO*), then Vance (`ZNgh39DM_Jg`, *A long-form
+   company visit with Ashlee Vance — 9:49*). Click → lightbox with sound.
    Launch film is the hero CTA only — do not duplicate here.
-4. **Field** — public-record row only: TE 26-3 montage (native 826×720 letterbox)
-   + SAS officers still. No dual-use body copy, no SOF Week armed plate, no 400V.
+4. **Field** — `/invest` dual-use footage, captions verbatim: SOF Week loop,
+   cockpit, approach, TE 26-3 montage (native 826×720 letterbox), SAS
+   officers-looking still. No dual-use essay, no tent photo, no 400V.
 5. **Press** — WSJ, National Interest, TechCrunch, Axios (verbatim headlines) +
    Doctrine link. Robb Report never named.
 6. **Talk** — Reply to Sampriti · investors@ copy · request materials.

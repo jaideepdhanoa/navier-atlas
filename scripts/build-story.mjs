@@ -175,9 +175,24 @@ function assertCanonicalHeadlines(story) {
     checks.push([`ride.clips[${i}].duration`, got.duration, c.duration]);
   });
   const films = byId.films?.films || [];
-  checks.push(['films[0].title', films[0]?.title, cto.video?.title]);
-  checks.push(['films[1].title', films[1]?.title, sam.video?.title]);
-  checks.push(['films[2].title', films[2]?.title, vance.video?.title]);
+  checks.push(['films[0].youtube_id', films[0]?.youtube_id, 'QhiaYVgXMf0']);
+  checks.push(['films[0].title', films[0]?.title, sam.headline]);
+  checks.push(['films[1].youtube_id', films[1]?.youtube_id, 'S7WB91FvSFI']);
+  checks.push(['films[1].title', films[1]?.title, cto.video_label]);
+  checks.push(['films[2].youtube_id', films[2]?.youtube_id, 'ZNgh39DM_Jg']);
+  checks.push(['films[2].title', films[2]?.title, vance.video_label]);
+  const dual = (readJson(path.join(invest, 'gtm.json')).sections || []).find(
+    (s) => s.id === 'dual-use' || /dual-use/i.test(s.id || '') || /Dual-Use/i.test(s.title || '')
+  ) || {};
+  const fieldCaps = (byId.field?.media || []).map((m) => m.caption);
+  const wantCaps = [
+    dual.media?.lead_video?.caption,
+    ...(dual.media?.secondary_videos || []).map((v) => v.caption),
+    (dual.media?.photos || [])[0]?.caption,
+  ].filter(Boolean);
+  wantCaps.forEach((cap, i) => {
+    checks.push([`field.media[${i}].caption`, fieldCaps[i], cap]);
+  });
   const mismatches = checks.filter(([, got, want]) => got !== want);
   if (mismatches.length) {
     const detail = mismatches
