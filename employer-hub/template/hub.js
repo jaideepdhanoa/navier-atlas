@@ -611,6 +611,7 @@
   }
 
   function refreshNetworkUI() {
+    applyCameraForPhase({ skipFit: true });
     renderLineList();
     renderStopList();
     renderLegend();
@@ -1641,15 +1642,63 @@
 
   function dashForType(line) {
     const t = line.type || 'trunk';
+    if (t === 'roadmap' || line.dashed) return [2, 2];
     if (t === 'seasonal') return [1, 2];
     if (t === 'express') return [2, 1.5];
     if (t === 'feeder') return [1, 0];
-    return line.optional || line.dashed ? [2, 2] : [1, 0];
+    return line.optional ? [2, 2] : [1, 0];
   }
   function widthForType(line, focus) {
     const t = line.type || 'trunk';
-    const base = t === 'trunk' ? 3.2 : t === 'feeder' ? 2.2 : 2.6;
-    return focus ? base + 0.8 : base;
+    // Zoom-aware width so Phase 4/5 gateway trunks stay visible when zoomed out
+    const base =
+      t === 'trunk'
+        ? ['interpolate', ['linear'], ['zoom'], 5, 2.2, 8, 3.4, 12, 4.2]
+        : t === 'roadmap'
+          ? ['interpolate', ['linear'], ['zoom'], 5, 1.8, 8, 2.6, 12, 3.2]
+          : t === 'feeder'
+            ? 2.2
+            : 2.6;
+    if (focus && typeof base === 'number') return base + 0.8;
+    return base;
+  }
+
+  function resolveMapStyle() {
+    const key = typeof window !== 'undefined' && window.CARTO_BASEMAP_KEY;
+    if (key) {
+      return (
+        'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json?key=' +
+        encodeURIComponent(String(key))
+      );
+    }
+    // Key-free dark basemap (CARTO raster now watermarks without a key)
+    return 'https://tiles.openfreemap.org/styles/dark';
+  }
+
+  function boundsForPhase(phase) {
+    const mapCfg = market.map || {};
+    const by = mapCfg.max_bounds_by_phase || {};
+    return by[String(phase)] || by[phase] || mapCfg.max_bounds || null;
+  }
+
+  function minZoomForPhase(phase) {
+    const mapCfg = market.map || {};
+    const by = mapCfg.min_zoom_by_phase || {};
+    if (by[String(phase)] != null) return Number(by[String(phase)]);
+    if (mapCfg.min_zoom != null) return Number(mapCfg.min_zoom);
+    return null;
+  }
+
+  function applyCameraForPhase(opts) {
+    if (!map) return;
+    opts = opts || {};
+    const b = boundsForPhase(activePhase);
+    const mz = minZoomForPhase(activePhase);
+    try {
+      if (b) map.setMaxBounds(b);
+      if (mz != null && !Number.isNaN(mz)) map.setMinZoom(mz);
+    } catch (_) {}
+    if (opts.skipFit) return;
   }
   function rebuildMapLayers() {
     if (!map || !map.isStyleLoaded()) return;
@@ -1766,7 +1815,8 @@
         'text-size': ['case', ['==', ['get', 'hubRank'], 1], 13, 11],
         'text-offset': [0, 1.35],
         'text-anchor': 'top',
-        'text-font': ['Open Sans Semibold', 'Arial Unicode MS Regular'],
+        // Fonts must exist in the active basemap style (CARTO / OpenFreeMap)
+        'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
         'text-max-width': 10,
         'text-allow-overlap': false,
       },
@@ -1781,6 +1831,10 @@
     // Harbor-first fit on At Launch; wider on full network (skip if trip view is active)
     if (allCoords.length && !activeTrip) {
       const lb = (market.map && market.map.launch_bounds) || null;
+      const fitMax =
+        activePhase >= 4
+          ? market.map?.fit_max_zoom_gateway || 9.5
+          : market.map?.fit_max_zoom || 11.5;
       if (activePhase === 1 && lb && !showSeasonal) {
         map.fitBounds(lb, { padding: 48, duration: 0, maxZoom: 12.2 });
       } else {
@@ -1790,9 +1844,9 @@
           minY = Math.min(minY, y); maxY = Math.max(maxY, y);
         });
         map.fitBounds([[minX, minY], [maxX, maxY]], {
-          padding: { top: 48, bottom: 48, left: 40, right: 40 },
-          duration: 0,
-          maxZoom: market.map?.fit_max_zoom || 11.5,
+          padding: { top: 56, bottom: 56, left: 48, right: 48 },
+          duration: activePhase >= 4 ? 600 : 0,
+          maxZoom: fitMax,
         });
       }
     }
@@ -1805,32 +1859,33 @@
   function initMap() {
 
     const mapCfg = market.map || {};
+    const initialBounds = boundsForPhase(activePhase) || mapCfg.max_bounds;
+    const initialMinZoom = minZoomForPhase(activePhase);
     map = new maplibregl.Map({
       container: 'map',
-      style: {
-        version: 8,
-        sources: {
-          carto: {
-            type: 'raster',
-            tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
-            tileSize: 256,
-            attribution: '© CARTO · © OpenStreetMap',
-          },
-        },
-        layers: [{ id: 'carto', type: 'raster', source: 'carto' }],
-      },
+      style: resolveMapStyle(),
       center: mapCfg.center || [-122.34, 37.72],
       zoom: mapCfg.zoom || 9.35,
-      maxBounds: mapCfg.max_bounds || undefined,
+      minZoom: initialMinZoom != null ? initialMinZoom : undefined,
+      maxBounds: initialBounds || undefined,
       attributionControl: true,
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     popup = new maplibregl.Popup({ closeButton: false, offset: 14 });
+    // Test/debug hook — not used by product UI
+    try {
+      window.__HUB_MAP = map;
+    } catch (_) {}
 
     map.on('load', () => {
       // Ensure canvas matches container (full-bleed layout can resolve after first paint)
       map.resize();
-      rebuildMapLayers();
+      applyCameraForPhase({ skipFit: true });
+      try {
+        rebuildMapLayers();
+      } catch (err) {
+        console.error('[hub] rebuildMapLayers failed', err);
+      }
 
       map.on('click', 'stops', (e) => selectStop(e.features[0].properties.key));
       map.on('mouseenter', 'stops', () => {
@@ -1839,6 +1894,14 @@
       map.on('mouseleave', 'stops', () => {
         map.getCanvas().style.cursor = '';
       });
+    });
+    // Vector styles finish loading glyphs/sprites after 'load' — repaint once idle
+    map.once('idle', () => {
+      try {
+        rebuildMapLayers();
+      } catch (err) {
+        console.error('[hub] rebuildMapLayers idle failed', err);
+      }
     });
     window.addEventListener('resize', () => {
       if (map) map.resize();

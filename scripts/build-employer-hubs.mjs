@@ -45,6 +45,174 @@ function ensureDir(p) {
   fs.mkdirSync(p, { recursive: true });
 }
 
+/** Inject CARTO basemap key at build/deploy time only — never commit the secret. */
+function cartoKeyBootstrapScript() {
+  const key = process.env.CARTO_BASEMAP_KEY || '';
+  if (!key) return '';
+  const safe = String(key).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+  return `<script>window.CARTO_BASEMAP_KEY="${safe}";</script>\n`;
+}
+
+function injectCartoKey(html) {
+  const boot = cartoKeyBootstrapScript();
+  if (!boot) return html;
+  if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, `${boot}</head>`);
+  return boot + html;
+}
+
+/**
+ * Attach Phase 4/5 gateway lines + terminal stops from corridor_table +
+ * employer-hub/hubs/<id>/gateway-geometries.json (ROUTES proxies / hand paths).
+ */
+function attachGatewayOverlays(hub) {
+  const hubId = hub.id;
+  const geoPath = path.join(HUB_ROOT, 'hubs', hubId, 'gateway-geometries.json');
+  if (!fs.existsSync(geoPath)) return hub;
+  const table = hub.corridor_table && hub.corridor_table.corridors;
+  if (!Array.isArray(table) || !table.length) return hub;
+
+  const geoFile = readJson(geoPath);
+  const geoms = geoFile.geometries || {};
+  const out = structuredClone(hub);
+  out.stops = Array.isArray(out.stops) ? out.stops.slice() : [];
+  out.lines = Array.isArray(out.lines) ? out.lines.slice() : [];
+
+  const stopKeys = new Set(out.stops.map((s) => s.key));
+  function ensureStop(key, label, lng, lat, phase, tag) {
+    if (stopKeys.has(key)) return;
+    out.stops.push({
+      key,
+      label,
+      resolved_bp_id: null,
+      lng,
+      lat,
+      role: 'station',
+      phase,
+      serves: [],
+      tag: tag || null,
+      seasonal: false,
+      hub_rank: 4,
+    });
+    stopKeys.add(key);
+  }
+
+  const gtwSegs = [];
+  const gtwOrder = ['GTW-1a', 'GTW-1b', 'GTW-1c'];
+  // Chain UAE Gateway toward RAK: AD→Dubai, Dubai←Sharjah (reverse), Sharjah→Marjan
+  const gtwMeta = {
+    'GTW-1a': { from: 'abu-dhabi-gateway', to: 'dubai-gateway', reverse: false },
+    'GTW-1b': { from: 'dubai-gateway', to: 'sharjah-gateway', reverse: true },
+    'GTW-1c': { from: 'sharjah-gateway', to: 'al-marjan', reverse: false },
+  };
+  const gtwLabels = {
+    'abu-dhabi-gateway': 'Abu Dhabi (gateway)',
+    'dubai-gateway': 'Dubai Harbour (gateway)',
+    'sharjah-gateway': 'Sharjah (gateway)',
+  };
+
+  for (const cid of gtwOrder) {
+    const row = table.find((r) => r.id === cid);
+    const g = geoms[cid];
+    if (!row || !row.render_on_map || !g || !g.coordinates || g.coordinates.length < 2) continue;
+    let coords = g.coordinates.map((c) => [c[0], c[1]]);
+    const meta = gtwMeta[cid];
+    if (meta.reverse) coords = coords.slice().reverse();
+    const a = coords[0];
+    const b = coords[coords.length - 1];
+    if (meta.from !== 'al-marjan') {
+      ensureStop(meta.from, gtwLabels[meta.from] || meta.from, a[0], a[1], 4, 'Phase 4 gateway terminal');
+    }
+    if (meta.to !== 'al-marjan') {
+      ensureStop(meta.to, gtwLabels[meta.to] || meta.to, b[0], b[1], 4, 'Phase 4 gateway terminal');
+    }
+    gtwSegs.push({
+      from: meta.from,
+      to: meta.to,
+      distance_nm: row.path_nm,
+      water_min: row.min_day_30kn,
+      water_path: coords,
+      phase: 4,
+      speed_constrained: false,
+    });
+  }
+  if (gtwSegs.length) {
+    out.lines = out.lines.filter((l) => l.id !== 'GTW-1');
+    out.lines.push({
+      id: 'GTW-1',
+      name: 'UAE Gateway Line',
+      color: '#e0cb8f',
+      type: 'trunk',
+      phase: 4,
+      flagship: false,
+      stops: ['abu-dhabi-gateway', 'dubai-gateway', 'sharjah-gateway', 'al-marjan'],
+      segments: gtwSegs,
+    });
+  }
+
+  const gulfDefs = [
+    {
+      id: 'GLF-2',
+      lineId: 'GLF-doha',
+      name: 'Gulf Gateway — Doha',
+      from: 'al-marjan',
+      to: 'doha-gateway',
+      toLabel: 'Doha',
+    },
+    {
+      id: 'GLF-3',
+      lineId: 'GLF-manama',
+      name: 'Gulf Gateway — Manama',
+      from: 'al-marjan',
+      to: 'manama-gateway',
+      toLabel: 'Manama',
+    },
+    {
+      id: 'GLF-1',
+      lineId: 'GLF-khasab',
+      name: 'Gulf Gateway — Khasab',
+      from: 'qawasim-1',
+      to: 'khasab-gateway',
+      toLabel: "Khasab / Musandam",
+    },
+  ];
+  for (const def of gulfDefs) {
+    const row = table.find((r) => r.id === def.id);
+    const g = geoms[def.id];
+    if (!row || !row.render_on_map || !g || !g.coordinates || g.coordinates.length < 2) continue;
+    let coords = g.coordinates.map((c) => [c[0], c[1]]);
+    // Orient toward foreign terminal: if path starts near RAK, keep; else reverse
+    const rakLng = 55.85;
+    const d0 = Math.abs(coords[0][0] - rakLng);
+    const d1 = Math.abs(coords[coords.length - 1][0] - rakLng);
+    if (d1 < d0) coords = coords.slice().reverse();
+    const end = coords[coords.length - 1];
+    ensureStop(def.to, def.toLabel, end[0], end[1], 5, 'Phase 5 roadmap terminal');
+    out.lines = out.lines.filter((l) => l.id !== def.lineId);
+    out.lines.push({
+      id: def.lineId,
+      name: def.name,
+      color: '#9bb7ff',
+      type: 'roadmap',
+      phase: 5,
+      dashed: true,
+      stops: [def.from, def.to],
+      segments: [
+        {
+          from: def.from,
+          to: def.to,
+          distance_nm: row.path_nm,
+          water_min: row.min_day_30kn,
+          water_path: coords,
+          phase: 5,
+          speed_constrained: false,
+        },
+      ],
+    });
+  }
+
+  return out;
+}
+
 function copyFile(src, dst) {
   ensureDir(path.dirname(dst));
   fs.copyFileSync(src, dst);
@@ -257,13 +425,13 @@ function emitHub(hub, registryEntry) {
       );
     }
 
-    fs.writeFileSync(path.join(outDir, 'index.html'), html);
+    fs.writeFileSync(path.join(outDir, 'index.html'), injectCartoKey(html));
     fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
     fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
     // Shared About + Vessels styles/media used by employer brochure sections
     const archCss = fs.readFileSync(path.join(HUB_ROOT, 'template/archetype.css'), 'utf8');
     fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
-    const clientHub = sanitizeClientHub(hub);
+    const clientHub = sanitizeClientHub(attachGatewayOverlays(hub));
     const sharedAbout = path.join(HUB_ROOT, 'shared/about-navier.json');
     const sharedVessels = path.join(HUB_ROOT, 'shared/vessels.json');
     if (fs.existsSync(sharedAbout)) {
@@ -436,14 +604,14 @@ function emitArchetypePage(hubId, hub, archetypeId, dataFileName, routePrefix) {
     );
   }
 
-  fs.writeFileSync(path.join(outDir, 'index.html'), html);
+  fs.writeFileSync(path.join(outDir, 'index.html'), injectCartoKey(html));
   fs.writeFileSync(path.join(outDir, 'hub.css'), tplCss);
   fs.writeFileSync(path.join(outDir, 'archetype.css'), archCss);
   fs.writeFileSync(path.join(outDir, 'hub.js'), tplJs);
   fs.writeFileSync(path.join(outDir, 'archetype.js'), archJs);
   fs.writeFileSync(path.join(outDir, 'pnl-model.js'), pnlModelJs);
 
-  const clientHub = sanitizeClientHub(hub);
+  const clientHub = sanitizeClientHub(attachGatewayOverlays(hub));
   fs.writeFileSync(
     path.join(outDir, 'hub-data.js'),
     `/* GENERATED hub geometry for archetype */\nwindow.EMPLOYER_HUB_DATA = ${JSON.stringify(clientHub)};\n`
