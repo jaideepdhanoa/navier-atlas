@@ -101,13 +101,13 @@ function attachGatewayOverlays(hub) {
   // Chain UAE Gateway toward RAK: AD→Dubai, Dubai←Sharjah (reverse), Sharjah→Marjan
   const gtwMeta = {
     'GTW-1a': { from: 'abu-dhabi-gateway', to: 'dubai-gateway', reverse: false },
-    'GTW-1b': { from: 'dubai-gateway', to: 'sharjah-gateway', reverse: true },
+    'GTW-1b': { from: 'dubai-gateway', to: 'sharjah-gateway', reverse: false },
     'GTW-1c': { from: 'sharjah-gateway', to: 'al-marjan', reverse: false },
   };
   const gtwLabels = {
-    'abu-dhabi-gateway': 'Abu Dhabi (gateway)',
-    'dubai-gateway': 'Dubai Harbour (gateway)',
-    'sharjah-gateway': 'Sharjah (gateway)',
+    'abu-dhabi-gateway': 'Yas Marina — Abu Dhabi',
+    'dubai-gateway': 'Dubai Harbour',
+    'sharjah-gateway': 'Sharjah — Al Khan Lagoon',
   };
 
   for (const cid of gtwOrder) {
@@ -140,7 +140,7 @@ function attachGatewayOverlays(hub) {
     out.lines.push({
       id: 'GTW-1',
       name: 'UAE Gateway Line',
-      color: '#e0cb8f',
+      color: '#7fd8b8',
       type: 'trunk',
       phase: 4,
       flagship: false,
@@ -172,7 +172,23 @@ function attachGatewayOverlays(hub) {
       name: 'Gulf Gateway — Khasab',
       from: 'qawasim-1',
       to: 'khasab-gateway',
-      toLabel: "Khasab / Musandam",
+      toLabel: 'Khasab Port & Old Harbour',
+    },
+    {
+      id: 'GLF-4',
+      lineId: 'GLF-dammam',
+      name: 'Gulf Gateway — Dammam',
+      from: 'al-marjan',
+      to: 'dammam-gateway',
+      toLabel: 'Dammam (KSA Eastern Province)',
+    },
+    {
+      id: 'GLF-5',
+      lineId: 'GLF-muscat',
+      name: 'Gulf Gateway — Muscat',
+      from: 'al-marjan',
+      to: 'muscat-gateway',
+      toLabel: 'Muscat — Muttrah Corniche',
     },
   ];
   for (const def of gulfDefs) {
