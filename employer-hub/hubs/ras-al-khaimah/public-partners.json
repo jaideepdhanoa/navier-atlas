@@ -1,451 +1,513 @@
 {
-  "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Abu Dhabi v3 public-partners structure per the international addendum (UAE run — Public Transport page, authority audience: RAKTA). Sources: ras-al-khaimah/AUTHORITY-MAP-RAS-AL-KHAIMAH.md + SPEED-RULES-RAS-AL-KHAIMAH.md + TOURISM-DEMAND-RAS-AL-KHAIMAH.md + REVENUE-STACK-RAS-AL-KHAIMAH.md + CREW-COST-RAS-AL-KHAIMAH.md. GEOMETRY-RAS-AL-KHAIMAH.json is NOT a content source — the sealed RAK set is contaminated (mis-geocoded Dubai/AD POIs) and is cited only as the contamination finding for Grok locale cleanup (#119). NO route_ids render or bind anywhere; the network is the four journey-spine corridors with DERIVED-approximate distances. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture per AUTHORITY-MAP: ENABLE+BUILD — unlike Dubai/Abu Dhabi the authority is building marine transit, not operating it at scale (heritage abra line today, three corniche stations); the page posture is 'build the marine spine with the authority', with Navier as the fast zero-emission tier RAKTA's own Marine Transport Project scales into, resort corridors first. Emirate-internal corridors only — inter-emirate service is a later-phase roadmap item and is not rendered anywhere in this file. Disclosure rails: 'RAK Ports' is fine to name (the firewalled name is the Abu Dhabi three-letter ports group only); no royal-office references; Wynn Al Marjan is citable as a published development with sources. No counterparty identities, no program or fleet commitments, no launch dates (pipeline timing convention honored — RAKTA 2029 neither stated nor contradicted), no ridership claims (none primary-sourced).",
-  "contract_version": "v3",
-  "city": "ras-al-khaimah",
-  "archetype": "public-partners",
-  "route": "/rak-partners",
-  "access": "public",
-  "footnotes": {
-    "fn1": {
-      "text": "Law No. 13 of 2023 on the licensing and operation of maritime means in Ras Al Khaimah designates the Ras Al Khaimah Transport Authority as the emirate's competent body for licensing, registering and operating marine vessels. Its Executive Regulation, announced 20 May 2026, governs vessel categories and operational controls, visiting-vessel licensing, the organization of marinas and berthing facilities, maritime training centers and events, safety, technical and environmental specifications, fees and penalties.",
-      "source_url": "https://www.rakta.gov.ae/news/mohammed-bin-saud-issues-the-executive-regulation-of-the-law-on-licensing-and-operating-marine-vessels-in-ras-al-khaimah/"
-    },
-    "fn2": {
-      "text": "The authority's Marine Transport Project runs a scheduled heritage water line on the RAK Creek and Al Qawasim Corniche — stations at Qawasim Corniche 1, Qawasim Corniche 2 and Hilton Garden Inn — at AED 10 per station, with craft rental at AED 150 per 30 minutes and AED 300 per hour.",
-      "source_url": "https://www.rakta.gov.ae/marine-transport-services/"
-    },
-    "fn3": {
-      "text": "Visitor-economy figures from the Ras Al Khaimah Tourism Development Authority: a record 1.35 million overnight visitors in 2025 (+6%), tourism revenues up 12%, and published 2030 targets to exceed 3.5 million visitors a year and double the emirate's hotel keys.",
-      "source_url": "https://raktda.com/press-release-ras-al-khaimah-delivers-record-tourism-performance-in-2025-with-1-35m-overnight-visitors/"
-    },
-    "fn4": {
-      "text": "FY2024 baseline per the tourism authority's published infographic: 1.284 million visitor arrivals (+5.1%), 71.2% hotel occupancy, an average daily rate of AED 592.5 (+14%), and an average stay of 3.52 days.",
-      "source_url": "https://raktda.com/wp-content/uploads/2025/02/FY-2024-INFOGRAPHIC-2.pdf"
-    },
-    "fn5": {
-      "text": "Ras Al Khaimah publishes no numeric waterway speed limits today. Every time on this page uses a conservative planning basis — slow near berths, in the creek and in the lagoons, 25 knots on the open coast, 20 knots after dark — and corridor distances are approximate, computed from real coordinates with over-water routing factors and rounded up. Final schedules are set with the authority under the 2026 Executive Regulation."
-    },
-    "fn6": {
-      "text": "Wynn Al Marjan Island as published: a US$5.1 billion integrated resort of 1,530 rooms and suites with 22 dining and lounge venues, a theatre and a marina — the emirate's tallest structure, topped out at 283 metres in November 2025, opening 2027.",
-      "source_url": "https://investors.wynnresorts.com/news-releases/news-release-details/financing-wynn-al-marjan-island-completed"
-    },
-    "fn7": {
-      "text": "Landing status, stated plainly: Al Marjan Island has no public marine facility verified today and renders on interim-landing status until the published 2027 marina; Mina Al Arab's marina is developer-published. The foiling network uses four stops — Al Marjan, Al Hamra Royal Yacht Club, Mina Al Arab, and one Al Qawasim Corniche interchange. The authority's three Corniche abra stations remain as local heritage feeders to that interchange, not separate foiling terminals."
-    },
-    "fn8": {
-      "text": "An authority modernizing every mode, per its own news pages: an agreement with Uber for smart taxi and limousine booking (April 2026), the emirate's first electric bus and a relaunched city route (June 2026), and a real-time passenger information system (2026).",
-      "source_url": "https://www.rakta.gov.ae/news/"
-    }
+ "_contract": "Authored by Tasklet 2026-08-16 natively to contract v3, mirroring the Abu Dhabi v3 public-partners structure per the international addendum (UAE run — Public Transport page, authority audience: RAKTA). Sources: ras-al-khaimah/AUTHORITY-MAP-RAS-AL-KHAIMAH.md + SPEED-RULES-RAS-AL-KHAIMAH.md + TOURISM-DEMAND-RAS-AL-KHAIMAH.md + REVENUE-STACK-RAS-AL-KHAIMAH.md + CREW-COST-RAS-AL-KHAIMAH.md. GEOMETRY-RAS-AL-KHAIMAH.json is NOT a content source — the sealed RAK set is contaminated (mis-geocoded Dubai/AD POIs) and is cited only as the contamination finding for Grok locale cleanup (#119). NO route_ids render or bind anywhere; the network is the four journey-spine corridors with DERIVED-approximate distances. CONTRACT v3: only `title` (<=6 words), `value`/figures, `note` (<=140 chars, partner-clean plain English), `status` (enum: market_priced | modeled | upside), and `fn` (footnote key) render — plus verbatim copy fields (headline/subline/lead/body/chips/cards). Underscore-prefixed fields NEVER reach the DOM. null/missing = render nothing. Footnotes render ONCE in a single 'Notes & assumptions' section above the contact form; a footnote's source_url may render as a small domain chip, never as a naked URL in body copy. Posture per AUTHORITY-MAP: ENABLE+BUILD — unlike Dubai/Abu Dhabi the authority is building marine transit, not operating it at scale (heritage abra line today, three corniche stations); the page posture is 'build the marine spine with the authority', with Navier as the fast zero-emission tier RAKTA's own Marine Transport Project scales into, resort corridors first. Emirate-internal corridors only — inter-emirate service is a later-phase roadmap item and is not rendered anywhere in this file. Disclosure rails: 'RAK Ports' is fine to name (the firewalled name is the Abu Dhabi three-letter ports group only); no royal-office references; Wynn Al Marjan is citable as a published development with sources. No counterparty identities, no program or fleet commitments, no launch dates (pipeline timing convention honored — RAKTA 2029 neither stated nor contradicted), no ridership claims (none primary-sourced).",
+ "contract_version": "v3",
+ "city": "ras-al-khaimah",
+ "archetype": "public-partners",
+ "route": "/rak-partners",
+ "access": "public",
+ "footnotes": {
+  "fn1": {
+   "text": "Law No. 13 of 2023 on the licensing and operation of maritime means in Ras Al Khaimah designates the Ras Al Khaimah Transport Authority as the emirate's competent body for licensing, registering and operating marine vessels. Its Executive Regulation, announced 20 May 2026, governs vessel categories and operational controls, visiting-vessel licensing, the organization of marinas and berthing facilities, maritime training centers and events, safety, technical and environmental specifications, fees and penalties.",
+   "source_url": "https://www.rakta.gov.ae/news/mohammed-bin-saud-issues-the-executive-regulation-of-the-law-on-licensing-and-operating-marine-vessels-in-ras-al-khaimah/"
   },
-  "geometry": {
-    "data": {
-      "stops": 4,
-      "lines": [
-        "SPN-1 Coastal Spine"
-      ]
-    },
-    "_internal": {
-      "source": "NO route_ids — sealed RAK corridor set contaminated (mis-geocoded Dubai/AD POIs). v1 network is ONE Coastal Spine with hand waterways; pure-WKB land QA. Existing RAKTA Corniche abra stations (Qawasim 1/2, Hilton) remain local heritage feeders — not separate foiling stops.",
-      "corridors": {
-        "SPN-1": "Al Marjan → Al Hamra RYC → Mina Al Arab → Al Qawasim Corniche — ≈27 nm over-water path, ≈82 min day / ≈95 min after dark (20-kn night planning basis)"
-      },
-      "stops_status": {
-        "Royal Yacht Club of Ras Al Khaimah": "VERIFIED operating — 220+ wet berths, published rates (alhamrawaterfront.alhamra.ae)",
-        "Al Qawasim Corniche": "Single foiling interchange — snapped to Corniche water berth; RAKTA abra stations (Qawasim 1/2, Hilton) are local heritage feeders along the same waterfront, not separate foiling stops",
-        "Mina Al Arab — Lagoon Marina": "Lagoon Marina (RAK Properties, 88 berths) verified operating 2026-08-25; berth-level pin — status flag retired (fn7); Anantara operating on the lagoon",
-        "Al Marjan Island": "NO public marine facility verified today — interim landing via yacht-club-coordinated moorings; Wynn marina published, opening 2027 — status flag (fn7)"
-      },
-      "signature_line_note": "SPN-1 is the only v1 product — one gold trunk on the coast. Heritage spur / Creek–Jazirat deferred. Inter-emirate routes not rendered."
-    },
-    "note": "One coastal spine: Al Marjan → Al Hamra → Mina Al Arab → Corniche — about 82 minutes end to end, planned conservatively.",
-    "fn": "fn5"
+  "fn2": {
+   "text": "The authority's Marine Transport Project runs a scheduled heritage water line on the RAK Creek and Al Qawasim Corniche — stations at Qawasim Corniche 1, Qawasim Corniche 2 and Hilton Garden Inn — at AED 10 per station, with craft rental at AED 150 per 30 minutes and AED 300 per hour.",
+   "source_url": "https://www.rakta.gov.ae/marine-transport-services/"
   },
-  "hero": {
-    "copy": {
-      "headline": "Build Ras Al Khaimah's marine spine clean from the start.",
-      "subline": "A fast, zero-emission foiling tier for the new RAK coast — one spine from Al Marjan through Al Hamra and Mina Al Arab to the city corniche — built with the transport authority under its new marine framework, financed by private capital, timed to the destination's published growth.",
-      "stat_chips": [
-        "Heritage water line in service today",
-        "Marine licensing framework live (2026)",
-        "1.35M visitors 2025 → 3.5M 2030 target",
-        "$5.1B Wynn Al Marjan opens 2027"
-      ],
-      "small_print": "All trip times use a conservative planning basis — Ras Al Khaimah publishes no numeric waterway limits today.",
-      "fn": "fn5"
-    },
-    "data": {
-      "image": "/employer-hub/hubs/ras-al-khaimah/assets/hero-public-ras-al-khaimah.jpg"
-    },
-    "_internal": "Build-proof chips: the operating heritage abra line (rakta.gov.ae primary, fn2) and the May 2026 Executive Regulation (fn1). Growth chips: RAKTDA 2025/2030 primaries (fn3) and Wynn as a published development (fn6). No stop-count chip in the hero — 4 of 7 is carried honestly in infrastructure_light instead (weaker than AD's 6 of 9; the build posture owns it there with status language). No ridership chip — no passenger-count series exists in research (NOT FOUND)."
+  "fn3": {
+   "text": "Visitor-economy figures from the Ras Al Khaimah Tourism Development Authority: a record 1.35 million overnight visitors in 2025 (+6%), tourism revenues up 12%, and published 2030 targets to exceed 3.5 million visitors a year and double the emirate's hotel keys.",
+   "source_url": "https://raktda.com/press-release-ras-al-khaimah-delivers-record-tourism-performance-in-2025-with-1-35m-overnight-visitors/"
   },
-  "gap": {
-    "title": "The authority is already on the water",
-    "copy": {
-      "lead": "Ras Al Khaimah is not starting from zero. The transport authority runs a scheduled heritage water line on the creek today, and in 2026 the emirate issued a complete marine licensing framework — expressly written to support investment, tourism and the growth of water transport on its waterways.",
-      "support": "The direction is written down: a single transport authority named the emirate's marine licensing body by law, a regulation that covers marinas and berthing facilities alongside safety and environmental specifications, and a destination strategy targeting more than 3.5 million visitors by 2030. A fast, zero-emission foiling spine is the network that framework was written for — built with the authority from the start, resort corridors first.",
-      "fn": "fn1"
-    },
-    "data": {
-      "plans": [
-        {
-          "plan": "Heritage water line in service",
-          "quote": null,
-          "note": "A scheduled water line runs on the RAK Creek today — three corniche stations, published fares, the authority's own marine operation.",
-          "fn": "fn2"
-        },
-        {
-          "plan": "Marine licensing law (2023)",
-          "quote": null,
-          "note": "Law No. 13 of 2023 names the transport authority as the emirate's competent body for licensing and operating marine vessels.",
-          "fn": "fn1"
-        },
-        {
-          "plan": "Executive Regulation (May 2026)",
-          "quote": "…supports the investment environment in the maritime sector by providing a clear and stable regulatory framework that boosts investor confidence and supports the growth of maritime transport, tourism, and water sports activities.",
-          "note": "The authority's own frame for its new marine rules — investment-facing, tourism-facing, and written for operators.",
-          "fn": "fn1"
-        },
-        {
-          "plan": "Every land mode modernizing",
-          "quote": null,
-          "note": "An Uber agreement, the emirate's first electric bus and real-time passenger information — all in 2026. Marine is the natural next step.",
-          "fn": "fn8"
-        },
-        {
-          "plan": "The destination is scaling",
-          "quote": null,
-          "note": "1.35M visitors in 2025 and published targets of 3.5M+ by 2030 with double the hotel keys — the coast this spine serves.",
-          "fn": "fn3"
-        }
-      ]
-    },
-    "_internal": {
-      "sources": "Abra service + stations + fares: rakta.gov.ae primary. Law 13/2023 + Executive Regulation: RAKTA announcement primary; the quote is the Al Blooshi sentence captured verbatim in AUTHORITY-MAP-RAS-AL-KHAIMAH.md §2 (H.E. Eng. Ismail Hassan Al Blooshi, Director General, RAKTA). Modernization: RAKTA news pages primary. Targets: RAKTDA primary.",
-      "merge_note": "gap + plan alignment merged into one section per the Dubai/AD v3 pattern — the authority's own legal framework and operating start do the selling. 'RAKTA Transport Master Plan 2030' (named in the partner deck) was NOT VERIFIED as a published document — never cited. Classic Taxi is a ROAD product — never rendered as water transport. Abra ridership series: NOT FOUND — never asserted."
-    }
+  "fn4": {
+   "text": "FY2024 baseline per the tourism authority's published infographic: 1.284 million visitor arrivals (+5.1%), 71.2% hotel occupancy, an average daily rate of AED 592.5 (+14%), and an average stay of 3.52 days.",
+   "source_url": "https://raktda.com/wp-content/uploads/2025/02/FY-2024-INFOGRAPHIC-2.pdf"
   },
-  "infrastructure_light": {
-    "copy": {
-      "headline": "Start at landings that operate today. Grow with the coast.",
-      "body": "No terminal capital ask. Service can start at the operating yacht-club marina and a single Corniche foiling interchange — fed by the authority's existing abra stations along the same waterfront — while Al Marjan and Mina Al Arab render with their status stated until published facilities open."
-    },
-    "fn": "fn7",
-    "data": {
-      "landings_verified": {
-        "title": "Landings verified",
-        "value": "2 of 4 foiling stops operating today",
-        "verified": 2,
-        "total": 4
-      }
-    },
-    "_internal": "Foiling network v1: 4 stops, 1 line (SPN-1). Verified operating foiling landings (2): Royal Yacht Club; Al Qawasim Corniche interchange (abra trio = local heritage feeders, not separate foiling rings). Status-flagged (2): Mina Al Arab (developer-published), Al Marjan (interim until Wynn marina 2027)."
+  "fn5": {
+   "text": "Ras Al Khaimah publishes no numeric waterway speed limits today. Every time on this page uses a conservative planning basis — slow near berths, in the creek and in the lagoons, 25 knots on the open coast, 20 knots after dark — and corridor distances are approximate, computed from real coordinates with over-water routing factors and rounded up. Final schedules are set with the authority under the 2026 Executive Regulation."
   },
-  "posture": {
-    "copy": {
-      "framing": "Build, not retrofit. Ras Al Khaimah's marine framework is new and its public water network is at its start — the posture here is co-development: stand up the fast, zero-emission spine with the authority from day one, resort corridors first, clean from the start.",
-      "enable_track": "License the vessels and grant landing access — at the operating marina, a single Corniche foiling interchange (fed by existing abra stations), and the developing waterfronts as they open. Private capital finances the fleet; the ask is licensing and access, not money.",
-      "operate_track": "Or build the spine as the authority's own service — a fast tier above the heritage water line, procured or concessioned, integrated with the network, with fares set with the authority."
-    },
-    "data": {
-      "weighting": "enable_build",
-      "operate_proof_points": [
-        {
-          "body": "Ras Al Khaimah Transport Authority",
-          "proof": "The emirate's sole transport authority across roads, public transport and marine — it runs the heritage water line today and now holds a complete, freshly issued marine licensing toolkit."
-        },
-        {
-          "body": "A framework written for operators",
-          "proof": "The 2026 Executive Regulation covers vessel categories, marinas and berthing facilities, training, environmental specifications, fees and penalties — a clear, stable rulebook for a new marine tier."
-        },
-        {
-          "body": "A destination building toward the water",
-          "proof": "A US$5.1 billion integrated resort with a marina opens in 2027, the lagoon communities are growing, and the tourism authority targets 3.5 million visitors by 2030."
-        }
-      ]
-    },
-    "_internal": "Classification per AUTHORITY-MAP-RAS-AL-KHAIMAH.md: ENABLE+BUILD — the authority is building marine transit, not operating it at scale; page posture is 'build the marine spine with the authority'. Enum enable_build affects order/emphasis only; both tracks render. Never framed as replacing the heritage abra — the spine is a fast tier above it, additive language throughout. Alignment language: the Al Blooshi investment-environment sentence (gap quote). Pipeline timing convention honored — no launch dates anywhere; RAKTA 2029 neither stated nor contradicted."
+  "fn6": {
+   "text": "Wynn Al Marjan Island as published: a US$5.1 billion integrated resort of 1,530 rooms and suites with 22 dining and lounge venues, a theatre and a marina — the emirate's tallest structure, topped out at 283 metres in November 2025, opening 2027.",
+   "source_url": "https://investors.wynnresorts.com/news-releases/news-release-details/financing-wynn-al-marjan-island-completed"
   },
-  "public_value": {
-    "copy": {
-      "pillars": [
-        "Zero-emission electric foiling — a clean spine from day one, for a marine framework that writes environmental specifications into licensing.",
-        "Minimal wake foilborne and near-silent at speed — fit for reclaimed-island breakwaters, shallow lagoons and the heritage creek by design.",
-        "Visitor economy: the destination's published growth — 1.35 million visitors today toward 3.5 million by 2030 — connected to the water it is building on."
-      ]
-    },
-    "data": {
-      "stats": [
-        {
-          "stat": "1.35 million overnight visitors in 2025 — a record year, with tourism revenues up 12%",
-          "note": "The demand side of the resort coast: Al Marjan, the lagoons and the corniche sit on these corridors.",
-          "fn": "fn3"
-        },
-        {
-          "stat": "Published 2030 targets: exceed 3.5 million visitors a year and double the emirate's hotel keys",
-          "fn": "fn3"
-        },
-        {
-          "stat": "71.2% hotel occupancy and an average daily rate of AED 592.5 in FY2024",
-          "note": "A high-yield resort base for the experience layers of the network.",
-          "fn": "fn4"
-        },
-        {
-          "stat": "A US$5.1 billion integrated resort — 1,530 rooms and a marina — opens on Al Marjan in 2027",
-          "note": "The step-change this spine is timed to, as published by the tourism authority and the developer.",
-          "fn": "fn6"
-        }
-      ],
-      "car_trips_removed": null
-    },
-    "_internal": {
-      "stat_sources": [
-        "https://raktda.com/press-release-ras-al-khaimah-delivers-record-tourism-performance-in-2025-with-1-35m-overnight-visitors/ (primary — visitors, revenues, 2030 targets)",
-        "https://raktda.com/wp-content/uploads/2025/02/FY-2024-INFOGRAPHIC-2.pdf (primary — FY2024 occupancy, ADR, arrivals)",
-        "https://investors.wynnresorts.com/news-releases/news-release-details/financing-wynn-al-marjan-island-completed (Wynn published facts)"
-      ],
-      "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). NO congestion stat renders — no TomTom row exists for RAK and roads are free-flowing; the page never claims a time win (honest-read rule from REVENUE-STACK §7). Hotel key count (~8–9K) is secondary-only — not rendered; the primary 'double hotel keys' target carries it. FY2025 occupancy/ADR not primary-verified — FY2024 primaries used. The brief's '1.22M arrivals FY2024' was the 2023 figure — corrected to the 1.284M primary (carried in fn4)."
-    }
+  "fn7": {
+   "text": "Landing status, stated plainly: Al Marjan Island has no public marine facility verified today and renders on interim-landing status until the published 2027 marina; Mina Al Arab's marina is developer-published. The foiling network uses four stops — Al Marjan, Al Hamra Royal Yacht Club, Mina Al Arab, and one Al Qawasim Corniche interchange. The authority's three Corniche abra stations remain as local heritage feeders to that interchange, not separate foiling terminals."
   },
-  "speed_rule_relief": {
-    "copy": {
-      "headline": "No published limits yet. We plan conservatively.",
-      "framing": "Ras Al Khaimah publishes no numeric waterway speed limits today — its marine framework is new, and implementing rules may follow. Every time on this page uses a conservative planning basis: slow near berths and marine facilities, slower still in the creek shared with the heritage water line, careful in the lagoons, 25 knots only on the open coast, and 20 knots everywhere after dark. Final schedules are set with the authority.",
-      "ask": "In lagoon, creek and shoreline waters, the purpose of caution rules — wake, noise, disturbance — is served by a foiling electric vessel by design. What we offer the regulator is measurable: near-zero wake at speed, near-silent electric drive, and software-geofenced no-foil zones at every lagoon entrance and berth. Shown here only as what it offers — no allowance is assumed anywhere on this page.",
-      "chips": [
-        "Wake ✓ measured",
-        "Noise ✓ electric",
-        "Limits — set with the authority"
-      ],
-      "fn": "fn5"
-    },
-    "data": {
-      "relief_minutes": null,
-      "dubai_instrument": null
-    },
-    "expander": {
-      "title": "What conservative planning means here",
-      "body": [
-        "The emirate's marine framework assigns speed and safety rule-making to the transport authority, and its 2026 Executive Regulation writes safety, technical and environmental specifications into licensing — but no numeric knot limits are published for RAK waters today. Rather than assume favorable numbers, every base time on this page is planned conservatively: berth collars and the heritage creek are treated as slow water, the lagoons as careful water, and after-dark running is capped, so evening times are shown longer, honestly.",
-        "When the authority writes its implementing rules, a foiling electric vessel serves the purpose behind wake and noise limits better than displacement hulls at the same speed — near-zero wake foilborne, near-silent drive, geofenced no-foil zones at lagoon entrances and berths. That is offered as evidence for the rule-making conversation, never as a schedule assumption: no relief is priced or timed anywhere on this page."
-      ],
-      "fn": "fn5"
-    },
-    "_internal": {
-      "rule_basis": [
-        {
-          "instrument": "SPEED-RULES-RAS-AL-KHAIMAH.md conservative planning basis",
-          "type": "ASSUMPTION — labeled everywhere",
-          "detail": "5 kn within 50 m of shore/facilities · 8 kn full RAK Creek (stricter than the AD channel tier on purpose — shared with abras and moored dhows) · 12 kn lagoon/breakwater approaches · 25 kn open coast (N45 service speed, vessel-capability bound) · 20 kn night. Mirrors Abu Dhabi Maritime's codified tiers as the nearest UAE analog; NOT presented as RAK rules anywhere — the renderable copy says 'planning basis' and names no foreign instrument.",
-          "source": "SPEED-RULES-RAS-AL-KHAIMAH.md §2"
-        },
-        {
-          "instrument": "Law 13/2023 + Executive Regulation (May 2026)",
-          "type": "regulator mandate + purpose evidence",
-          "detail": "RAKTA designated competent body; regulation covers maritime safety requirements, technical and environmental specifications; rak.ae legislation text includes an operator duty 'not to exceed speed limits in maritime routes' (numeric values not published in the English text located)",
-          "source": "RAKTA announcement (primary, per AUTHORITY-MAP §2); rak.ae legislation search"
-        },
-        {
-          "instrument": "RAK Ports Act No. 9 of 2008",
-          "type": "port-waters layer",
-          "detail": "harbor-master direction, 'fair speed' inside port limits, speeding penalty schedule; corridors run outside port limits — coordination applies only if a port is ever called",
-          "source": "rakports.ae regulation PDF (primary)"
-        }
-      ],
-      "relief_numbers_policy": "No sourced relief-minutes quantity exists for RAK corridors, so none renders (relief_minutes null; lagoon framing qualitative per SPEED-RULES §4). Base times never assume relief. Night-basis re-timing rendered honestly: spine ≈38 min day / ≈57 min after dark (19.0 nm repaired coastal geometry, 30 kn day / 20 kn night basis). Numeric planning tiers stay in _internal and in the fleet page's footnote — the public-page copy keeps the basis qualitative except the 25-kn open-coast and 20-kn night figures, which are our own service parameters, not claimed rules."
-    }
+  "fn8": {
+   "text": "An authority modernizing every mode, per its own news pages: an agreement with Uber for smart taxi and limousine booking (April 2026), the emirate's first electric bus and a relaunched city route (June 2026), and a real-time passenger information system (2026).",
+   "source_url": "https://www.rakta.gov.ae/news/"
   },
-  "flywheel": {
-    "copy": {
-      "employers": "Committed riders anchor the city lines — monthly seat bundles priced from the emirate's own taxi tariff and road-commute costs; a derived band, pending confirmation.",
-      "public_partners": "Public partners license and land the service — vessel licensing under the 2026 marine framework and berth access at the marina and corniche stations.",
-      "fleet_investors": "Fleet investors finance the vessels — private capital timed to the destination's published growth, no subsidy ask."
-    },
-    "_internal": "Key names kept identical to the Dubai/AD v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because the UAE run has no employer page (international addendum). Demand pools on this run are sourced visitor/development flows, labeled indicative on the fleet-investor page."
+  "fn9": {
+   "label": "Source",
+   "text": "RAKTA, Marine Transport Strategy 2025–2027: Phase 1 (2025) southern coastal launch on existing facilities (Marjan Island, Mina Al Arab, Al Hamra) with a pilot ferry project; Phase 2 (2026) Rams, Sha'am, Al Ghalilah, Corniche Al Qawasim; Phase 3 (2027) full citywide integration. Phase 1 execution includes: “secure operator for circular ferry route with small-to-mid vessels” and smart ticketing via the RAKTA / RAK Tourism app."
   },
-  "cta": {
-    "copy": {
-      "headline": "Start with one corridor.",
-      "body": "A pilot is small, reversible and low-risk: one resort corridor on landings that operate today, measured wake and noise, conservative schedules, your rules — specified with the authority under its own marine framework, as the spine it is already building toward."
-    },
-    "data": {
-      "intake": {
-        "tag": "public-partners",
-        "fields": [
-          "authority_name",
-          "agency_type",
-          "role",
-          "corridors_of_interest",
-          "posture_interest:enable|operate|both|exploring",
-          "message"
-        ],
-        "routing": "existing intake infra, archetype tag public-partners"
-      }
-    }
-  },
-  "nav_anchors": [
-    {
-      "label": "Vessel",
-      "id": "navier_intro"
-    },
-    {
-      "label": "Partnership",
-      "id": "posture"
-    },
-    {
-      "label": "Value",
-      "id": "public_value"
-    },
-    {
-      "label": "Network",
-      "id": "geometry"
-    },
-    {
-      "label": "Reference",
-      "id": "reference"
-    },
-    {
-      "label": "Contact",
-      "id": "cta"
-    }
-  ],
-  "section_order": [
-    "hero",
-    "navier_intro",
-    "gap",
-    "posture",
-    "infrastructure_light",
-    "public_value",
-    "speed_rule_relief",
-    "geometry",
-    "flywheel",
-    "reference",
-    "footnotes",
-    "cta"
-  ],
-  "navier_intro": {
-    "title": "Meet the vessel",
-    "copy": {
-      "headline": "Zero-emission. Near-silent. Almost no wake.",
-      "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
-      "body": "The N45 Explorer carries 30 passengers at a foilborne cruise speed of about 30 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
-      "tech_chips": [
-        {
-          "label": "Energy",
-          "value": "up to ~90% less than a planing hull"
-        },
-        {
-          "label": "Wake",
-          "value": "near-zero, foilborne"
-        },
-        {
-          "label": "Noise",
-          "value": "near-silent, all-electric"
-        }
-      ],
-      "fleet_cards": [
-        {
-          "model": "N30 Quanta",
-          "passengers": 8,
-          "propulsion": "electric foiling"
-        },
-        {
-          "model": "N45 Explorer",
-          "passengers": 30,
-          "propulsion": "electric foiling"
-        }
-      ]
-    },
-    "data": {
-      "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
-      "images": {
-        "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
-        "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
-      }
-    },
-    "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
-    "_internal": "Mirrors the Dubai/Abu Dhabi v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
-  },
-  "reference": {
-    "title": "Reference",
-    "collapsed": true,
-    "sections": {
-      "authorities": {
-        "title": "Authority landscape",
-        "collapsed": true,
-        "copy": {
-          "intro": "Ras Al Khaimah's water-transport landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
-        },
-        "data": {
-          "bodies": [
-            {
-              "body": "Ras Al Khaimah Transport Authority (RAKTA)",
-              "classification": "operate",
-              "role": "The emirate's sole transport authority — roads, public transport and marine. Named the competent body for marine licensing and operation by Law 13 of 2023, it runs the heritage water line today and organizes marinas and berthing under the 2026 Executive Regulation. The primary counterpart for the marine spine."
-            },
-            {
-              "body": "RAK Ports",
-              "classification": "permitting_gate",
-              "role": "The emirate's commercial ports group, with the harbor-master function inside port limits under Act No. 9 of 2008 — pilotage, conduct and speed in port waters. The network's corridors run outside port limits; coordination applies only if a corridor ever calls at a port."
-            },
-            {
-              "body": "RAK Municipality",
-              "classification": "enable",
-              "role": "Municipal land, beaches and the waterfront public realm — landing-side approvals for shoreline structures outside port and marina estates."
-            },
-            {
-              "body": "RAK Tourism Development Authority (RAKTDA)",
-              "classification": "enable",
-              "role": "Destination strategy and data — a record 1.35 million visitors in 2025 and published targets to exceed 3.5 million and double hotel keys by 2030. The demand-side sponsor of the tourism-weighted corridors on this network."
-            },
-            {
-              "body": "Marjan (master developer)",
-              "classification": "enable",
-              "role": "Government-owned master developer of Al Marjan Island and the Marjan Beach masterplan — the gatekeeper for island landings until the published 2027 marina opens."
-            }
-          ]
-        },
-        "_internal": {
-          "omitted_note": "Disclosure rails: 'RAK Ports' is fine to name (the firewalled ports-group name is the Abu Dhabi three-letter group only — never appears). No royal-office references anywhere. Abra and rental fares render in fn2 (published public tariff, primary) but are never used as a fare comparison against the foiling tier. Abra ridership: NOT FOUND — never asserted. No authority contacts render anywhere. No inter-emirate bodies rendered (domestic-first rule). Federal maritime layer (national registration/navigation rules) noted in research; not rendered — no RAK-specific instrument located."
-        }
-      },
-      "modal_integration": {
-        "title": "Modal integration",
-        "collapsed": true,
-        "copy": {
-          "lead": "We extend what the authority has started — a fast tier above the heritage water line, never replacing it."
-        },
-        "data": {
-          "pairs": [
-            {
-              "station": "Qawasim Corniche 1 & 2 and Hilton Garden Inn stations",
-              "connects": "The authority's three operating water stations on the heritage creek line — the city gates of the network"
-            },
-            {
-              "station": "Royal Yacht Club of Ras Al Khaimah",
-              "connects": "An operating marina with 220+ wet berths and published rates on the Al Hamra waterfront — the verified western gate of the resort coast"
-            },
-            {
-              "station": "Mina Al Arab — Lagoon Marina",
-              "connects": "The lagoon community's Lagoon Marina (88 berths) is operating today, with the Anantara on the lagoon — berth-verified"
-            },
-            {
-              "station": "Al Marjan Island",
-              "connects": "No public marine facility verified today — an interim landing until the published 2027 marina, status stated"
-            },
-            {
-              "station": "Jazirat Al Hamra waterfront",
-              "connects": "The heritage pearling village shore — a heritage landing with status stated"
-            }
-          ]
-        },
-        "_internal": "Pairs from the research-verified landing list (REVENUE-STACK §1) + AUTHORITY-MAP §3. NO route_ids bound anywhere. Complement framing only; no fare comparison with the subsidized abra (AED 10 floor is internal-anchor only, never rendered as a comparison)."
-      }
-    },
-    "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the Dubai/AD v3 pattern."
+  "fn10": {
+   "label": "Basis",
+   "text": "Intercity distances come from the shared regional corridor network and are approximate; they are re-measured when corridors are sealed to the live map. Phase 4 and Phase 5 are planning corridors — no service dates are stated or implied. International lines are subject to bilateral and port-state frameworks. Long-range sailings assume a long-range hybrid class now in sea trials."
+  }
+ },
+ "geometry": {
+  "data": {
+   "stops": 4,
+   "lines": [
+    "SPN-1 Coastal Spine"
+   ]
   },
   "_internal": {
-    "scope": "Emirate-internal only — v1 is ONE Coastal Spine (4 stops, hand waterways, pure-WKB land QA). No route_ids (sealed RAK set contaminated). Inter-emirate service deferred. Al Marjan and Mina Al Arab render with status stated (fn7). Corniche abra trio = heritage feeders to one foiling interchange.",
-    "verification_ledger": "PRIMARY-verified renderables: Law 13/2023 + Executive Regulation and the Al Blooshi quote (RAKTA announcement), heritage abra service/stations/fares (rakta.gov.ae marine transport services), modernization signals — Uber agreement, electric bus, RTPI (RAKTA news), RAKTDA visitor economy (1.35M/+6%/+12% and 2030 targets; FY2024 1.284M/71.2%/AED 592.5), Wynn Al Marjan facts ($5.1B, 1,530 rooms, marina, 283 m topped out Nov 2025, opening 2027 — RAKTDA + Wynn investor release), Royal Yacht Club berth facts (operator-published rates page), RAK Ports Act 9/2008 (rakports.ae PDF). SECONDARY-only, therefore excluded from renderables: hotel key counts (~8–9K), 2025 occupancy/ADR claims, the Manar Mall fourth abra station, Jazirat sunset-ride pricing, Dubai↔RAK feeder fares, Wynn 1,542-room variant (1,530 RAKTDA figure used), 'RAKTA Transport Master Plan 2030' (NOT VERIFIED as a published document — never cited), WAM law article (scrape blocked — law cited via rak.ae legislation index + RAKTA announcement). Abra ridership series: NOT FOUND — no ridership asserted anywhere. Numeric RAK speed limits: NOT FOUND — conservative planning basis stated everywhere (fn5).",
-    "positioning_rules": "Never present the tier as replacing the heritage abra; never run a subsidized-fare comparison; fares are set with the authority. Never claim a time win — RAK roads are free-flowing and the water line is slower than the road on every corridor (honest read, REVENUE-STACK §7); the page sells clean growth, arrival experience and network-building, not speed vs road. Classic Taxi is a ROAD product — never rendered as marine. No royal-office, program, or counterparty content anywhere; 'Royal Yacht Club of Ras Al Khaimah' is a facility name and the only permitted use of that word in renderables."
+   "source": "NO route_ids — sealed RAK corridor set contaminated (mis-geocoded Dubai/AD POIs). v1 network is ONE Coastal Spine with hand waterways; pure-WKB land QA. Existing RAKTA Corniche abra stations (Qawasim 1/2, Hilton) remain local heritage feeders — not separate foiling stops.",
+   "corridors": {
+    "SPN-1": "Al Marjan → Al Hamra RYC → Mina Al Arab → Al Qawasim Corniche — ≈19 nm over-water path, ≈38 min day / ≈57 min after dark (20-kn night planning basis)"
+   },
+   "stops_status": {
+    "Royal Yacht Club of Ras Al Khaimah": "VERIFIED operating — 220+ wet berths, published rates (alhamrawaterfront.alhamra.ae)",
+    "Al Qawasim Corniche": "Single foiling interchange — snapped to Corniche water berth; RAKTA abra stations (Qawasim 1/2, Hilton) are local heritage feeders along the same waterfront, not separate foiling stops",
+    "Mina Al Arab — Lagoon Marina": "Lagoon Marina (RAK Properties, 88 berths) verified operating 2026-08-25; berth-level pin — status flag retired (fn7); Anantara operating on the lagoon",
+    "Al Marjan Island": "NO public marine facility verified today — interim landing via yacht-club-coordinated moorings; Wynn marina published, opening 2027 — status flag (fn7)"
+   },
+   "signature_line_note": "SPN-1 is the only v1 product — one gold trunk on the coast. Heritage spur / Creek–Jazirat deferred. Inter-emirate routes not rendered."
+  },
+  "note": "Coastal Spine: Al Marjan → Al Hamra → Mina Al Arab → Corniche — about 38 minutes end to end by day, about 57 after dark. Phase 2 adds the Northern Arc: Corniche → Rams → Al Ghalilah → Sha'am, mirroring the authority's own strategy.",
+  "fn": "fn5"
+ },
+ "hero": {
+  "copy": {
+   "headline": "Build Ras Al Khaimah's marine spine clean from the start.",
+   "subline": "A fast, zero-emission foiling tier for the new RAK coast — one spine from Al Marjan through Al Hamra and Mina Al Arab to the city corniche — built with the transport authority under its new marine framework, financed by private capital, timed to the destination's published growth.",
+   "stat_chips": [
+    "Heritage water line in service today",
+    "Marine licensing framework live (2026)",
+    "1.35M visitors 2025 → 3.5M 2030 target",
+    "$5.1B Wynn Al Marjan opens 2027"
+   ],
+   "small_print": "All trip times use a conservative planning basis — Ras Al Khaimah publishes no numeric waterway limits today.",
+   "fn": "fn5"
+  },
+  "data": {
+   "image": "/employer-hub/hubs/ras-al-khaimah/assets/hero-public-ras-al-khaimah.jpg"
+  },
+  "_internal": "Build-proof chips: the operating heritage abra line (rakta.gov.ae primary, fn2) and the May 2026 Executive Regulation (fn1). Growth chips: RAKTDA 2025/2030 primaries (fn3) and Wynn as a published development (fn6). No stop-count chip in the hero — 4 of 7 is carried honestly in infrastructure_light instead (weaker than AD's 6 of 9; the build posture owns it there with status language). No ridership chip — no passenger-count series exists in research (NOT FOUND)."
+ },
+ "gap": {
+  "title": "The authority is already on the water",
+  "copy": {
+   "lead": "Ras Al Khaimah is not starting from zero. The transport authority runs a scheduled heritage water line on the creek today, and in 2026 the emirate issued a complete marine licensing framework — expressly written to support investment, tourism and the growth of water transport on its waterways.",
+   "support": "The direction is written down: a single transport authority named the emirate's marine licensing body by law, a regulation that covers marinas and berthing facilities alongside safety and environmental specifications, and a destination strategy targeting more than 3.5 million visitors by 2030. A fast, zero-emission foiling spine is the network that framework was written for — built with the authority from the start, resort corridors first.",
+   "fn": "fn1"
+  },
+  "data": {
+   "plans": [
+    {
+     "plan": "Heritage water line in service",
+     "quote": null,
+     "note": "A scheduled water line runs on the RAK Creek today — three corniche stations, published fares, the authority's own marine operation.",
+     "fn": "fn2"
+    },
+    {
+     "plan": "Marine licensing law (2023)",
+     "quote": null,
+     "note": "Law No. 13 of 2023 names the transport authority as the emirate's competent body for licensing and operating marine vessels.",
+     "fn": "fn1"
+    },
+    {
+     "plan": "Executive Regulation (May 2026)",
+     "quote": "…supports the investment environment in the maritime sector by providing a clear and stable regulatory framework that boosts investor confidence and supports the growth of maritime transport, tourism, and water sports activities.",
+     "note": "The authority's own frame for its new marine rules — investment-facing, tourism-facing, and written for operators.",
+     "fn": "fn1"
+    },
+    {
+     "plan": "Every land mode modernizing",
+     "quote": null,
+     "note": "An Uber agreement, the emirate's first electric bus and real-time passenger information — all in 2026. Marine is the natural next step.",
+     "fn": "fn8"
+    },
+    {
+     "plan": "The destination is scaling",
+     "quote": null,
+     "note": "1.35M visitors in 2025 and published targets of 3.5M+ by 2030 with double the hotel keys — the coast this spine serves.",
+     "fn": "fn3"
+    }
+   ]
+  },
+  "_internal": {
+   "sources": "Abra service + stations + fares: rakta.gov.ae primary. Law 13/2023 + Executive Regulation: RAKTA announcement primary; the quote is the Al Blooshi sentence captured verbatim in AUTHORITY-MAP-RAS-AL-KHAIMAH.md §2 (H.E. Eng. Ismail Hassan Al Blooshi, Director General, RAKTA). Modernization: RAKTA news pages primary. Targets: RAKTDA primary.",
+   "merge_note": "gap + plan alignment merged into one section per the Dubai/AD v3 pattern — the authority's own legal framework and operating start do the selling. 'RAKTA Transport Master Plan 2030' (named in the partner deck) was NOT VERIFIED as a published document — never cited. Classic Taxi is a ROAD product — never rendered as water transport. Abra ridership series: NOT FOUND — never asserted."
   }
+ },
+ "infrastructure_light": {
+  "copy": {
+   "headline": "Start at landings that operate today. Grow with the coast.",
+   "body": "No terminal capital ask. Service can start at the operating yacht-club marina and a single Corniche foiling interchange — fed by the authority's existing abra stations along the same waterfront — while Al Marjan and Mina Al Arab render with their status stated until published facilities open."
+  },
+  "fn": "fn7",
+  "data": {
+   "landings_verified": {
+    "title": "Landings verified",
+    "value": "2 of 4 foiling stops operating today",
+    "verified": 2,
+    "total": 4
+   }
+  },
+  "_internal": "Foiling network v1: 7 stops, 2 lines (SPN-1 + NTH-1; northern berths TBC with authority). Verified operating foiling landings (2): Royal Yacht Club; Al Qawasim Corniche interchange (abra trio = local heritage feeders, not separate foiling rings). Status-flagged (2): Mina Al Arab (developer-published), Al Marjan (interim until Wynn marina 2027)."
+ },
+ "posture": {
+  "copy": {
+   "framing": "Build, not retrofit. Ras Al Khaimah's marine framework is new and its public water network is at its start — the posture here is co-development: stand up the fast, zero-emission spine with the authority from day one, resort corridors first, clean from the start.",
+   "enable_track": "License the vessels and grant landing access — at the operating marina, a single Corniche foiling interchange (fed by existing abra stations), and the developing waterfronts as they open. Private capital finances the fleet; the ask is licensing and access, not money.",
+   "operate_track": "Or build the spine as the authority's own service — a fast tier above the heritage water line, procured or concessioned, integrated with the network, with fares set with the authority."
+  },
+  "data": {
+   "weighting": "enable_build",
+   "operate_proof_points": [
+    {
+     "body": "Ras Al Khaimah Transport Authority",
+     "proof": "The emirate's sole transport authority across roads, public transport and marine — it runs the heritage water line today and now holds a complete, freshly issued marine licensing toolkit."
+    },
+    {
+     "body": "A framework written for operators",
+     "proof": "The 2026 Executive Regulation covers vessel categories, marinas and berthing facilities, training, environmental specifications, fees and penalties — a clear, stable rulebook for a new marine tier."
+    },
+    {
+     "body": "A destination building toward the water",
+     "proof": "A US$5.1 billion integrated resort with a marina opens in 2027, the lagoon communities are growing, and the tourism authority targets 3.5 million visitors by 2030."
+    }
+   ]
+  },
+  "_internal": "Classification per AUTHORITY-MAP-RAS-AL-KHAIMAH.md: ENABLE+BUILD — the authority is building marine transit, not operating it at scale; page posture is 'build the marine spine with the authority'. Enum enable_build affects order/emphasis only; both tracks render. Never framed as replacing the heritage abra — the spine is a fast tier above it, additive language throughout. Alignment language: the Al Blooshi investment-environment sentence (gap quote). Pipeline timing convention honored — no launch dates anywhere; RAKTA 2029 neither stated nor contradicted."
+ },
+ "public_value": {
+  "copy": {
+   "pillars": [
+    "Zero-emission electric foiling — a clean spine from day one, for a marine framework that writes environmental specifications into licensing.",
+    "Minimal wake foilborne and near-silent at speed — fit for reclaimed-island breakwaters, shallow lagoons and the heritage creek by design.",
+    "Visitor economy: the destination's published growth — 1.35 million visitors today toward 3.5 million by 2030 — connected to the water it is building on."
+   ]
+  },
+  "data": {
+   "stats": [
+    {
+     "stat": "1.35 million overnight visitors in 2025 — a record year, with tourism revenues up 12%",
+     "note": "The demand side of the resort coast: Al Marjan, the lagoons and the corniche sit on these corridors.",
+     "fn": "fn3"
+    },
+    {
+     "stat": "Published 2030 targets: exceed 3.5 million visitors a year and double the emirate's hotel keys",
+     "fn": "fn3"
+    },
+    {
+     "stat": "71.2% hotel occupancy and an average daily rate of AED 592.5 in FY2024",
+     "note": "A high-yield resort base for the experience layers of the network.",
+     "fn": "fn4"
+    },
+    {
+     "stat": "A US$5.1 billion integrated resort — 1,530 rooms and a marina — opens on Al Marjan in 2027",
+     "note": "The step-change this spine is timed to, as published by the tourism authority and the developer.",
+     "fn": "fn6"
+    }
+   ],
+   "car_trips_removed": null
+  },
+  "_internal": {
+   "stat_sources": [
+    "https://raktda.com/press-release-ras-al-khaimah-delivers-record-tourism-performance-in-2025-with-1-35m-overnight-visitors/ (primary — visitors, revenues, 2030 targets)",
+    "https://raktda.com/wp-content/uploads/2025/02/FY-2024-INFOGRAPHIC-2.pdf (primary — FY2024 occupancy, ADR, arrivals)",
+    "https://investors.wynnresorts.com/news-releases/news-release-details/financing-wynn-al-marjan-island-completed (Wynn published facts)"
+   ],
+   "visitor_economy_note": "This stats block doubles as the addendum-required visitor-economy section, held in the existing public_value slot per the structure rule (no new sections). NO congestion stat renders — no TomTom row exists for RAK and roads are free-flowing; the page never claims a time win (honest-read rule from REVENUE-STACK §7). Hotel key count (~8–9K) is secondary-only — not rendered; the primary 'double hotel keys' target carries it. FY2025 occupancy/ADR not primary-verified — FY2024 primaries used. The brief's '1.22M arrivals FY2024' was the 2023 figure — corrected to the 1.284M primary (carried in fn4)."
+  }
+ },
+ "speed_rule_relief": {
+  "copy": {
+   "headline": "No published limits yet. We plan conservatively.",
+   "framing": "Ras Al Khaimah publishes no numeric waterway speed limits today — its marine framework is new, and implementing rules may follow. Every time on this page uses a conservative planning basis: slow near berths and marine facilities, slower still in the creek shared with the heritage water line, careful in the lagoons, 25 knots only on the open coast, and 20 knots everywhere after dark. Final schedules are set with the authority.",
+   "ask": "In lagoon, creek and shoreline waters, the purpose of caution rules — wake, noise, disturbance — is served by a foiling electric vessel by design. What we offer the regulator is measurable: near-zero wake at speed, near-silent electric drive, and software-geofenced no-foil zones at every lagoon entrance and berth. Shown here only as what it offers — no allowance is assumed anywhere on this page.",
+   "chips": [
+    "Wake ✓ measured",
+    "Noise ✓ electric",
+    "Limits — set with the authority"
+   ],
+   "fn": "fn5"
+  },
+  "data": {
+   "relief_minutes": null,
+   "dubai_instrument": null
+  },
+  "expander": {
+   "title": "What conservative planning means here",
+   "body": [
+    "The emirate's marine framework assigns speed and safety rule-making to the transport authority, and its 2026 Executive Regulation writes safety, technical and environmental specifications into licensing — but no numeric knot limits are published for RAK waters today. Rather than assume favorable numbers, every base time on this page is planned conservatively: berth collars and the heritage creek are treated as slow water, the lagoons as careful water, and after-dark running is capped, so evening times are shown longer, honestly.",
+    "When the authority writes its implementing rules, a foiling electric vessel serves the purpose behind wake and noise limits better than displacement hulls at the same speed — near-zero wake foilborne, near-silent drive, geofenced no-foil zones at lagoon entrances and berths. That is offered as evidence for the rule-making conversation, never as a schedule assumption: no relief is priced or timed anywhere on this page."
+   ],
+   "fn": "fn5"
+  },
+  "_internal": {
+   "rule_basis": [
+    {
+     "instrument": "SPEED-RULES-RAS-AL-KHAIMAH.md conservative planning basis",
+     "type": "ASSUMPTION — labeled everywhere",
+     "detail": "5 kn within 50 m of shore/facilities · 8 kn full RAK Creek (stricter than the AD channel tier on purpose — shared with abras and moored dhows) · 12 kn lagoon/breakwater approaches · 25 kn open coast (N45 service speed, vessel-capability bound) · 20 kn night. Mirrors Abu Dhabi Maritime's codified tiers as the nearest UAE analog; NOT presented as RAK rules anywhere — the renderable copy says 'planning basis' and names no foreign instrument.",
+     "source": "SPEED-RULES-RAS-AL-KHAIMAH.md §2"
+    },
+    {
+     "instrument": "Law 13/2023 + Executive Regulation (May 2026)",
+     "type": "regulator mandate + purpose evidence",
+     "detail": "RAKTA designated competent body; regulation covers maritime safety requirements, technical and environmental specifications; rak.ae legislation text includes an operator duty 'not to exceed speed limits in maritime routes' (numeric values not published in the English text located)",
+     "source": "RAKTA announcement (primary, per AUTHORITY-MAP §2); rak.ae legislation search"
+    },
+    {
+     "instrument": "RAK Ports Act No. 9 of 2008",
+     "type": "port-waters layer",
+     "detail": "harbor-master direction, 'fair speed' inside port limits, speeding penalty schedule; corridors run outside port limits — coordination applies only if a port is ever called",
+     "source": "rakports.ae regulation PDF (primary)"
+    }
+   ],
+   "relief_numbers_policy": "No sourced relief-minutes quantity exists for RAK corridors, so none renders (relief_minutes null; lagoon framing qualitative per SPEED-RULES §4). Base times never assume relief. Night-basis re-timing rendered honestly: spine ≈38 min day / ≈57 min after dark (19.0 nm repaired coastal geometry, 30 kn day / 20 kn night basis). Numeric planning tiers stay in _internal and in the fleet page's footnote — the public-page copy keeps the basis qualitative except the 25-kn open-coast and 20-kn night figures, which are our own service parameters, not claimed rules."
+  }
+ },
+ "flywheel": {
+  "copy": {
+   "employers": "Committed riders anchor the city lines — monthly seat bundles priced from the emirate's own taxi tariff and road-commute costs; a derived band, pending confirmation.",
+   "public_partners": "Public partners license and land the service — vessel licensing under the 2026 marine framework and berth access at the marina and corniche stations.",
+   "fleet_investors": "Fleet investors finance the vessels — private capital timed to the destination's published growth, no subsidy ask."
+  },
+  "_internal": "Key names kept identical to the Dubai/AD v3 contract for renderer compatibility; the 'employers' slot carries rider-demand copy because the UAE run has no employer page (international addendum). Demand pools on this run are sourced visitor/development flows, labeled indicative on the fleet-investor page."
+ },
+ "cta": {
+  "copy": {
+   "headline": "Start with one corridor.",
+   "body": "A pilot is small, reversible and low-risk: one resort corridor on landings that operate today, measured wake and noise, conservative schedules, your rules — specified with the authority under its own marine framework, as the spine it is already building toward."
+  },
+  "data": {
+   "intake": {
+    "tag": "public-partners",
+    "fields": [
+     "authority_name",
+     "agency_type",
+     "role",
+     "corridors_of_interest",
+     "posture_interest:enable|operate|both|exploring",
+     "message"
+    ],
+    "routing": "existing intake infra, archetype tag public-partners"
+   }
+  }
+ },
+ "nav_anchors": [
+  {
+   "label": "Vessel",
+   "id": "navier_intro"
+  },
+  {
+   "label": "Partnership",
+   "id": "posture"
+  },
+  {
+   "label": "Value",
+   "id": "public_value"
+  },
+  {
+   "label": "Network",
+   "id": "geometry"
+  },
+  {
+   "label": "Reference",
+   "id": "reference"
+  },
+  {
+   "label": "Contact",
+   "id": "cta"
+  },
+  {
+   "id": "strategy_alignment",
+   "label": "Strategy"
+  },
+  {
+   "id": "intercity",
+   "label": "Gateway"
+  }
+ ],
+ "section_order": [
+  "hero",
+  "navier_intro",
+  "gap",
+  "strategy_alignment",
+  "posture",
+  "infrastructure_light",
+  "public_value",
+  "speed_rule_relief",
+  "geometry",
+  "intercity",
+  "flywheel",
+  "reference",
+  "footnotes",
+  "cta"
+ ],
+ "navier_intro": {
+  "title": "Meet the vessel",
+  "copy": {
+   "headline": "Zero-emission. Near-silent. Almost no wake.",
+   "subline": "Navier is a U.S. builder of electric hydrofoil vessels — the traits that matter for harbor rules and harbor neighbors are built into the hull, not bolted on.",
+   "body": "The N45 Explorer carries 30 passengers at a foilborne cruise speed of about 30 knots, lifted clear of the water for a smooth, wake-free ride. The smaller N30 Quanta carries 8. Foiling cuts energy use by up to ~90% versus a conventional planing hull, and both vessels run near-silent on electric power.",
+   "tech_chips": [
+    {
+     "label": "Energy",
+     "value": "up to ~90% less than a planing hull"
+    },
+    {
+     "label": "Wake",
+     "value": "near-zero, foilborne"
+    },
+    {
+     "label": "Noise",
+     "value": "near-silent, all-electric"
+    }
+   ],
+   "fleet_cards": [
+    {
+     "model": "N30 Quanta",
+     "passengers": 8,
+     "propulsion": "electric foiling"
+    },
+    {
+     "model": "N45 Explorer",
+     "passengers": 30,
+     "propulsion": "electric foiling"
+    }
+   ]
+  },
+  "data": {
+   "video_url": "https://www.youtube.com/embed/S7WB91FvSFI",
+   "images": {
+    "vessel_n45_plate": "/employer-hub/assets/vessels/n45-plate.jpg",
+    "vessel_n30_plate": "/employer-hub/assets/vessels/n30-plate.jpg"
+   }
+  },
+  "_guard": "vessel specs only on this panel — the content firewall applies (never renders)",
+  "_internal": "Mirrors the Dubai/Abu Dhabi v3 public-partners navier_intro verbatim (vessel facts are program copy, city-independent)."
+ },
+ "reference": {
+  "title": "Reference",
+  "collapsed": true,
+  "sections": {
+   "authorities": {
+    "title": "Authority landscape",
+    "collapsed": true,
+    "copy": {
+     "intro": "Ras Al Khaimah's water-transport landscape is compact and clearly mandated. We seek conversations — nothing here implies approval, endorsement, or commitment by any body named."
+    },
+    "data": {
+     "bodies": [
+      {
+       "body": "Ras Al Khaimah Transport Authority (RAKTA)",
+       "classification": "operate",
+       "role": "The emirate's sole transport authority — roads, public transport and marine. Named the competent body for marine licensing and operation by Law 13 of 2023, it runs the heritage water line today and organizes marinas and berthing under the 2026 Executive Regulation. The primary counterpart for the marine spine."
+      },
+      {
+       "body": "RAK Ports",
+       "classification": "permitting_gate",
+       "role": "The emirate's commercial ports group, with the harbor-master function inside port limits under Act No. 9 of 2008 — pilotage, conduct and speed in port waters. The network's corridors run outside port limits; coordination applies only if a corridor ever calls at a port."
+      },
+      {
+       "body": "RAK Municipality",
+       "classification": "enable",
+       "role": "Municipal land, beaches and the waterfront public realm — landing-side approvals for shoreline structures outside port and marina estates."
+      },
+      {
+       "body": "RAK Tourism Development Authority (RAKTDA)",
+       "classification": "enable",
+       "role": "Destination strategy and data — a record 1.35 million visitors in 2025 and published targets to exceed 3.5 million and double hotel keys by 2030. The demand-side sponsor of the tourism-weighted corridors on this network."
+      },
+      {
+       "body": "Marjan (master developer)",
+       "classification": "enable",
+       "role": "Government-owned master developer of Al Marjan Island and the Marjan Beach masterplan — the gatekeeper for island landings until the published 2027 marina opens."
+      }
+     ]
+    },
+    "_internal": {
+     "omitted_note": "Disclosure rails: 'RAK Ports' is fine to name (the firewalled ports-group name is the Abu Dhabi three-letter group only — never appears). No royal-office references anywhere. Abra and rental fares render in fn2 (published public tariff, primary) but are never used as a fare comparison against the foiling tier. Abra ridership: NOT FOUND — never asserted. No authority contacts render anywhere. No inter-emirate bodies rendered (domestic-first rule). Federal maritime layer (national registration/navigation rules) noted in research; not rendered — no RAK-specific instrument located."
+    }
+   },
+   "modal_integration": {
+    "title": "Modal integration",
+    "collapsed": true,
+    "copy": {
+     "lead": "We extend what the authority has started — a fast tier above the heritage water line, never replacing it."
+    },
+    "data": {
+     "pairs": [
+      {
+       "station": "Qawasim Corniche 1 & 2 and Hilton Garden Inn stations",
+       "connects": "The authority's three operating water stations on the heritage creek line — the city gates of the network"
+      },
+      {
+       "station": "Royal Yacht Club of Ras Al Khaimah",
+       "connects": "An operating marina with 220+ wet berths and published rates on the Al Hamra waterfront — the verified western gate of the resort coast"
+      },
+      {
+       "station": "Mina Al Arab — Lagoon Marina",
+       "connects": "The lagoon community's Lagoon Marina (88 berths) is operating today, with the Anantara on the lagoon — berth-verified"
+      },
+      {
+       "station": "Al Marjan Island",
+       "connects": "No public marine facility verified today — an interim landing until the published 2027 marina, status stated"
+      },
+      {
+       "station": "Jazirat Al Hamra waterfront",
+       "connects": "The heritage pearling village shore — a heritage landing with status stated"
+      }
+     ]
+    },
+    "_internal": "Pairs from the research-verified landing list (REVENUE-STACK §1) + AUTHORITY-MAP §3. NO route_ids bound anywhere. Complement framing only; no fare comparison with the subsidized abra (AED 10 floor is internal-anchor only, never rendered as a comparison)."
+   }
+  },
+  "_internal": "Authority landscape + Modal integration rendered as a collapsed reference block per the Dubai/AD v3 pattern."
+ },
+ "_internal": {
+  "scope": "v2: Coastal Spine (Phase 1) + Northern Arc (Phase 2, RAKTA-mirrored, berth sites TBC) rendered on-map; Phase 4/5 gateway corridors render as copy sections only (no map lines on this hub map — camera stays emirate-framed). corridor_table in hub.json is the single corridor source; validate with scripts/validate_hub_page_consistency.py.",
+  "verification_ledger": "PRIMARY-verified renderables: Law 13/2023 + Executive Regulation and the Al Blooshi quote (RAKTA announcement), heritage abra service/stations/fares (rakta.gov.ae marine transport services), modernization signals — Uber agreement, electric bus, RTPI (RAKTA news), RAKTDA visitor economy (1.35M/+6%/+12% and 2030 targets; FY2024 1.284M/71.2%/AED 592.5), Wynn Al Marjan facts ($5.1B, 1,530 rooms, marina, 283 m topped out Nov 2025, opening 2027 — RAKTDA + Wynn investor release), Royal Yacht Club berth facts (operator-published rates page), RAK Ports Act 9/2008 (rakports.ae PDF). SECONDARY-only, therefore excluded from renderables: hotel key counts (~8–9K), 2025 occupancy/ADR claims, the Manar Mall fourth abra station, Jazirat sunset-ride pricing, Dubai↔RAK feeder fares, Wynn 1,542-room variant (1,530 RAKTDA figure used), 'RAKTA Transport Master Plan 2030' (NOT VERIFIED as a published document — never cited), WAM law article (scrape blocked — law cited via rak.ae legislation index + RAKTA announcement). Abra ridership series: NOT FOUND — no ridership asserted anywhere. Numeric RAK speed limits: NOT FOUND — conservative planning basis stated everywhere (fn5).",
+  "positioning_rules": "Never present the tier as replacing the heritage abra; never run a subsidized-fare comparison; fares are set with the authority. Never claim a time win — RAK roads are free-flowing and the water line is slower than the road on every corridor (honest read, REVENUE-STACK §7); the page sells clean growth, arrival experience and network-building, not speed vs road. Classic Taxi is a ROAD product — never rendered as marine. No royal-office, program, or counterparty content anywhere; 'Royal Yacht Club of Ras Al Khaimah' is a facility name and the only permitted use of that word in renderables."
+ },
+ "strategy_alignment": {
+  "title": "Aligned with the authority's own marine strategy",
+  "fn": "fn9",
+  "copy": {
+   "headline": "RAKTA has already written the plan. Navier is the operator it calls for.",
+   "body": "RAKTA's Marine Transport Strategy 2025–2027 phases marine transport in three steps — a southern coastal launch on existing facilities, a northern arc, then full citywide integration. The network on this page mirrors those phases one for one: our Phase 1 spine is the strategy's Phase 1 map, and our Phase 2 arc adds the strategy's own northern stations — Rams, Al Ghalilah and Sha'am.",
+   "cards": [
+    {
+     "title": "The operator mandate",
+     "body": "Phase 1 of the strategy contracts an operator for a circular ferry route with small-to-mid vessels on existing marinas and piers. That is the service Navier operates: quiet electric vessels, existing infrastructure, no new terminals required."
+    },
+    {
+     "title": "Ticketing in your app",
+     "body": "The strategy calls for smart ticketing through the RAKTA / RAK Tourism app. Navier's fare system plugs in behind the authority's own front end — riders book in your app; we run the vessels."
+    },
+    {
+     "title": "Modular piers, answered",
+     "body": "Phase 2 flags the need for modular piers or pontoons at the northern stations. Navier landings are infrastructure-light by design — a usable pontoon is enough to open a station, and Al Ghalilah is planned exactly that way."
+    }
+   ]
+  },
+  "_internal": "Decision (Jaideep 2026-08-25): cite the RAKTA strategy explicitly. Phase labels in hub.json network.phase_labels mirror the authority's 1/2/3. Northern station pins are approximate town-waterfront points snapped to water — berth sites flagged TBC with authority in each stop tag; Al Ghalilah locked as 'modular pontoon — site TBC with authority'."
+ },
+ "intercity": {
+  "title": "The gateway network — Phase 4 & 5",
+  "fn": "fn10",
+  "copy": {
+   "headline": "Every gateway sailing lands at Al Marjan.",
+   "body": "Beyond the emirate, the same network scales in two further phases. Phase 4 is domestic: one UAE Gateway Line — Abu Dhabi → Dubai → Sharjah → Ras Al Khaimah (Al Marjan) — so visitors ride to RAK over water instead of the E311. Phase 5 is the Gulf Gateway: direct international sailings to Ras Al Khaimah, on the roadmap as long-range vessels enter service. Every line terminates at Al Marjan — the doorstep of the emirate's published $5.1B resort build-out — and at the Corniche interchange, where the heritage abra network takes riders onward.",
+   "cards": [
+    {
+     "title": "Phase 4 — UAE Gateway Line",
+     "body": "One line, four stops: Abu Dhabi → Dubai (≈51 nm) → Sharjah (≈19 nm) → Al Marjan (≈42 nm). Every leg sits comfortably inside the N45's range on a hybrid fleet, with charging at each stop.",
+     "status": "modeled"
+    },
+    {
+     "title": "Phase 5 — Gulf Gateway",
+     "body": "International sailings on the roadmap: Khasab / Musandam (≈50 nm) · Doha (≈241 nm) · Manama (≈290 nm) · KSA Eastern Province (≈310 nm). Long-range hybrid class, now in sea trials; subject to bilateral and port-state frameworks.",
+     "status": "upside"
+    }
+   ]
+  },
+  "_internal": "Derived from hub.json corridor_table (single corridor source). Phase 4 legs reference global corridors rn-2b0f2b92bc4a (51.4 nm) / rn-12245df07550 (19.4) / rn-46bf5bf09b13 (42.0); Dubai↔RAK direct rn-b9da9d38e29f (49.8) exists as context. Phase 5 refs: edge-0773 Doha 240.7 · edge-0774 Manama 289.7 · Khasab rn-4231b9e22408 (quarantined — re-verify at seal). KSA Eastern Province↔RAK is NOT in the global network — mint once at next Grok seal (rak_cross_border_roadmap); 310 nm is a research approximation. Decisions (Jaideep 2026-08-25): one Gateway Line, N45 hybrid throughout Phase 4; intercity lives on /rak-partners as Phase 4/5; no standalone 112 nm AD line on the page. NO vessel program names beyond N-series on this public surface."
+ }
 }
