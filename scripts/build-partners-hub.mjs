@@ -112,11 +112,67 @@ export function buildPartnersManifest({ partners, economicsUrlMap, root }) {
     .sort((a, b) => a.display.localeCompare(b.display));
 }
 
-export function renderPartnersHubHtml(manifest) {
+const CITY_REGION_ORDER = [
+  'United States',
+  'UAE',
+  'Saudi Arabia',
+  'Bahrain',
+  'Türkiye',
+  'Other',
+];
+
+function cityRegion(id, eyebrow) {
+  const us = new Set(['bay-area', 'new-york', 'washington-dc', 'miami', 'boston', 'seattle', 'san-diego']);
+  const uae = new Set(['dubai', 'abu-dhabi', 'ras-al-khaimah']);
+  const ksa = new Set(['jeddah', 'red-sea-global', 'saudi-eastern-province']);
+  if (us.has(id)) return 'United States';
+  if (uae.has(id)) return 'UAE';
+  if (ksa.has(id)) return 'Saudi Arabia';
+  if (id === 'bahrain') return 'Bahrain';
+  if (id === 'istanbul') return 'Türkiye';
+  if (typeof eyebrow === 'string' && eyebrow.includes('·')) return eyebrow.split('·')[0].trim();
+  return 'Other';
+}
+
+export function collectCityMicrosites(root) {
+  const hubsDir = path.join(root, 'employer-hub', 'hubs');
+  if (!fs.existsSync(hubsDir)) return [];
+  const cities = [];
+  for (const id of fs.readdirSync(hubsDir).sort()) {
+    const dir = path.join(hubsDir, id);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    const hubPath = path.join(dir, 'hub.json');
+    if (!fs.existsSync(hubPath)) continue;
+    let hub = {};
+    try {
+      hub = JSON.parse(fs.readFileSync(hubPath, 'utf8'));
+    } catch {
+      continue;
+    }
+    const hasPp = fs.existsSync(path.join(dir, 'public-partners.json'));
+    const hasFi = fs.existsSync(path.join(dir, 'fleet-investors.json'));
+    const display = hub.market?.label || hub.brand?.nav_tag || id;
+    const eyebrow = hub.market?.eyebrow || '';
+    cities.push({
+      id,
+      display,
+      region: cityRegion(id, eyebrow),
+      eyebrow,
+      employer: `/employers/${id}`,
+      public_partners: hasPp ? `/public-partners/${id}` : null,
+      fleet_investors: hasFi ? `/fleet-investors/${id}` : null,
+    });
+  }
+  return cities.sort((a, b) => a.display.localeCompare(b.display));
+}
+
+export function renderPartnersHubHtml(manifest, cities = []) {
   const payload = JSON.stringify({
     partners: manifest,
+    cities,
     catLabels: CAT_LABELS,
     catOrder: CAT_ORDER,
+    cityRegionOrder: CITY_REGION_ORDER,
   });
   return `<!DOCTYPE html>
 <html lang="en">
@@ -206,10 +262,10 @@ export function renderPartnersHubHtml(manifest) {
           </div>
           <div>
             <h1>Partner directory</h1>
-            <div class="tag">Internal · proposals · models · decks</div>
+            <div class="tag">Internal · proposals · models · decks · city microsites</div>
           </div>
         </div>
-        <p class="intro" style="margin-top:14px">Browse the full partner roster like the Atlas <b>Browse</b> dialog — grouped, filterable, with quick links to each proposal page, unit-economics sheet, and live Google Slides deck where published.</p>
+        <p class="intro" style="margin-top:14px">Browse the partner roster and every city microsite from one place. Proposals, unit-economics, and decks sit under <b>By category</b> / <b>By region</b>. <b>By city</b> groups the public-partners, employer, and fleet-investor pages.</p>
       </div>
       <div class="stats" id="stats"></div>
     </div>
@@ -218,15 +274,16 @@ export function renderPartnersHubHtml(manifest) {
         <div class="browse-tabs">
           <button type="button" class="browse-tab active" data-view="category">By category</button>
           <button type="button" class="browse-tab" data-view="region">By region</button>
+          <button type="button" class="browse-tab" data-view="city">By city</button>
         </div>
-        <input type="search" id="q" placeholder="Filter partners…" autocomplete="off" aria-label="Filter partners">
+        <input type="search" id="q" placeholder="Filter partners or cities…" autocomplete="off" aria-label="Filter partners or cities">
       </div>
       <div class="panel-body" id="body"></div>
     </div>
   </div>
   <script id="payload" type="application/json">${payload.replace(/</g, '\\u003c')}</script>
   <script>
-    const { partners: MANIFEST, catLabels: CAT_LABELS, catOrder: CAT_ORDER } =
+    const { partners: MANIFEST, cities: CITIES = [], catLabels: CAT_LABELS, catOrder: CAT_ORDER, cityRegionOrder: CITY_REGION_ORDER = [] } =
       JSON.parse(document.getElementById('payload').textContent);
     let view = 'category';
     const q = document.getElementById('q');
@@ -242,6 +299,7 @@ export function renderPartnersHubHtml(manifest) {
       const deckWip = MANIFEST.filter(p => p.deck_status === 'in_progress' && !p.deck_url).length;
       document.getElementById('stats').innerHTML =
         '<div class="stat"><div class="v">' + MANIFEST.length + '</div><div class="k">Partners</div></div>' +
+        '<div class="stat"><div class="v">' + CITIES.length + '</div><div class="k">Cities</div></div>' +
         '<div class="stat"><div class="v">' + econ + '</div><div class="k">Models</div></div>' +
         '<div class="stat"><div class="v">' + deckReady + '</div><div class="k">Decks live</div></div>' +
         (deckWip ? '<div class="stat"><div class="v">' + deckWip + '</div><div class="k">Decks WIP</div></div>' : '');
@@ -251,6 +309,29 @@ export function renderPartnersHubHtml(manifest) {
       if (!term) return true;
       const hay = [p.display, p.slug, p.region, p.category_label, p.archetype_label, p.blurb].join(' ').toLowerCase();
       return hay.includes(term);
+    }
+
+    function matchesCity(c, term) {
+      if (!term) return true;
+      const hay = [c.display, c.id, c.region, c.eyebrow].join(' ').toLowerCase();
+      return hay.includes(term);
+    }
+
+    function cityCardHtml(c) {
+      const pp = c.public_partners
+        ? '<a class="btn primary" href="' + esc(c.public_partners) + '">Public partners</a>'
+        : '<span class="btn disabled">Public partners</span>';
+      const emp = c.employer
+        ? '<a class="btn" href="' + esc(c.employer) + '">Employers</a>'
+        : '<span class="btn disabled">Employers</span>';
+      const fi = c.fleet_investors
+        ? '<a class="btn" href="' + esc(c.fleet_investors) + '">Fleet investors</a>'
+        : '<span class="btn disabled">Fleet investors</span>';
+      const rg = c.region ? '<span class="pidx-badge region">' + esc(c.region) + '</span>' : '';
+      return '<article class="card">' +
+        '<h2 class="t">' + esc(c.display) + rg + '</h2>' +
+        '<p class="s"><span class="slug">' + esc(c.id) + '</span></p>' +
+        '<div class="card-actions">' + pp + emp + fi + '</div></article>';
     }
 
     function cardHtml(p) {
@@ -298,7 +379,24 @@ export function renderPartnersHubHtml(manifest) {
       const term = q.value.trim().toLowerCase();
       let content = '', shown = 0;
 
-      if (view === 'region') {
+      if (view === 'city') {
+        const groups = {};
+        for (const c of CITIES) {
+          const r = c.region || 'Other';
+          (groups[r] = groups[r] || []).push(c);
+        }
+        const order = CITY_REGION_ORDER.filter(k => groups[k]).concat(
+          Object.keys(groups).filter(k => !CITY_REGION_ORDER.includes(k)).sort());
+        let html = '', n = 0;
+        for (const key of order) {
+          const items = (groups[key] || []).filter(c => matchesCity(c, term)).sort((a,b) => a.display.localeCompare(b.display));
+          if (!items.length) continue;
+          n += items.length;
+          html += '<div class="pidx-group"><div class="pidx-cat">' + esc(key) + '</div><div class="pidx-cards">' +
+            items.map(cityCardHtml).join('') + '</div></div>';
+        }
+        content = html; shown = n;
+      } else if (view === 'region') {
         const groups = {};
         for (const p of MANIFEST) {
           const r = p.region || 'Other';
@@ -319,10 +417,12 @@ export function renderPartnersHubHtml(manifest) {
         content = out.html; shown = out.n;
       }
 
-      const countLine = '<div class="count-line">Showing ' + shown + ' of ' + MANIFEST.length + ' partners</div>';
+      const total = view === 'city' ? CITIES.length : MANIFEST.length;
+      const noun = view === 'city' ? 'cities' : 'partners';
+      const countLine = '<div class="count-line">Showing ' + shown + ' of ' + total + ' ' + noun + '</div>';
       body.innerHTML = countLine + (shown
         ? content
-        : '<div class="empty">No partners match your filters.</div>');
+        : '<div class="empty">No ' + noun + ' match your filters.</div>');
     }
 
     document.querySelectorAll('.browse-tab').forEach(btn => {
@@ -342,9 +442,10 @@ export function renderPartnersHubHtml(manifest) {
 
 export function buildPartnersHub({ root, dist, partners, economicsUrlMap }) {
   const manifest = buildPartnersManifest({ partners, economicsUrlMap, root });
+  const cities = collectCityMicrosites(root);
   const outDir = path.join(dist, 'partners');
   fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(path.join(outDir, 'index.html'), renderPartnersHubHtml(manifest));
-  fs.writeFileSync(path.join(outDir, 'manifest.json'), JSON.stringify({ _doc: 'Internal partner directory manifest', partners: manifest }, null, 2) + '\n');
+  fs.writeFileSync(path.join(outDir, 'index.html'), renderPartnersHubHtml(manifest, cities));
+  fs.writeFileSync(path.join(outDir, 'manifest.json'), JSON.stringify({ _doc: 'Internal partner directory manifest', partners: manifest, cities }, null, 2) + '\n');
   return manifest.length;
 }

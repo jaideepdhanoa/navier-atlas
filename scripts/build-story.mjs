@@ -137,6 +137,51 @@ function gatherAssetKeys(story) {
   return keys;
 }
 
+function normalizeAssetDefs(rawAssets) {
+  const raw = rawAssets.assets || {};
+  if (Array.isArray(raw)) {
+    const out = {};
+    for (const a of raw) {
+      if (a && a.id) out[a.id] = a;
+    }
+    return out;
+  }
+  return raw;
+}
+
+function assertCanonicalHeadlines(story) {
+  const invest = path.join(ROOT, 'handoff', 'invest-microsite', 'contracts');
+  const hero = readJson(path.join(invest, 'hero.json'));
+  const claim = readJson(path.join(invest, 'claim.json'));
+  const proof = readJson(path.join(invest, 'proof.json'));
+  const product = readJson(path.join(invest, 'product.json'));
+  const gtm = readJson(path.join(invest, 'gtm.json'));
+  const money = readJson(path.join(invest, 'money.json'));
+  const byId = Object.fromEntries((story.sections || []).map((s) => [s.id, s]));
+  const costs = (claim.sections || []).find((s) => s.id === 'costs-levers') || {};
+  const shift = (claim.sections || []).find((s) => s.headline && /few giant slow ships/i.test(s.headline)) || {};
+  const demo = (proof.sections || []).find((s) => s.id === 'demo-grid') || {};
+  const ladder = (product.sections || []).find((s) => s.headline && /GMVP/i.test(s.headline)) || {};
+  const dual = (gtm.sections || []).find((s) => /Dual-Use Platform Company/i.test(s.title || '')) || {};
+  const finale = (money.sections || []).find((s) => s.id === 'finale') || {};
+  const checks = [
+    ['hero.headline', byId.hero?.headline, hero.subline],
+    ['problem.headline', byId.problem?.headline, costs.headline],
+    ['problem.headline_2', byId.problem?.headline_2, shift.headline],
+    ['proof.headline', byId.proof?.headline, demo.title],
+    ['product.headline', byId.product?.headline, ladder.headline],
+    ['dual-use.headline', byId['dual-use']?.headline, dual.title],
+    ['network.headline', byId.network?.headline, finale.headline],
+  ];
+  const mismatches = checks.filter(([, got, want]) => got !== want);
+  if (mismatches.length) {
+    const detail = mismatches
+      .map(([k, got, want]) => `  ${k}\n    got:  ${JSON.stringify(got)}\n    want: ${JSON.stringify(want)}`)
+      .join('\n');
+    throw new Error(`story headline byte-diff FAILED — sourced headlines must match /invest contracts:\n${detail}`);
+  }
+}
+
 export function buildStory() {
   const sitePath = path.join(SRC, 'contracts', 'site.json');
   const storyPath = path.join(SRC, 'contracts', 'story.json');
@@ -165,6 +210,7 @@ export function buildStory() {
   const site = stripUnderscore(rawSite);
   const story = stripUnderscore(rawStory);
   const assetsManifest = stripUnderscore(rawAssets);
+  assertCanonicalHeadlines(rawStory);
 
   ensureDir(OUT);
   ensureDir(path.join(OUT, 'assets'));
@@ -176,9 +222,12 @@ export function buildStory() {
   const missing = [];
   const keys = gatherAssetKeys(rawStory);
   // Always include hero poster for ambient poster-first
-  const assetDefs = (rawAssets.assets || {});
+  const assetDefs = normalizeAssetDefs(rawAssets);
   for (const key of keys) {
     const def = assetDefs[key];
+    if (def && (def.class === 'map-component' || def.path == null)) {
+      continue; // atlas globe is a live map, not a file
+    }
     if (!def || !def.path) {
       missing.push(`${key} (no path in assets.json)`);
       continue;
@@ -213,7 +262,7 @@ export function buildStory() {
   // YouTube posters used by film cards
   const ytIds = new Set();
   for (const sec of rawStory.sections || []) {
-    for (const fc of sec.film_cards || []) {
+    for (const fc of [...(sec.film_cards || []), ...(sec.films || [])]) {
       if (fc.youtube_id) ytIds.add(fc.youtube_id);
     }
   }
@@ -270,8 +319,8 @@ export function buildStory() {
   fs.copyFileSync(path.join(TEMPLATE, 'story.css'), path.join(OUT, 'story.css'));
   fs.copyFileSync(path.join(TEMPLATE, 'story.js'), path.join(OUT, 'story.js'));
 
-  const title = site.title || 'Navier — See It Fly';
-  const desc = (site.og && site.og.description) || 'Watch, don\'t read.';
+  const title = site.title || 'Navier';
+  const desc = (site.og && site.og.description) || 'An American maritime company.';
   const ogImage = assetMap.photo_goldengate || assetMap.hero_poster || '';
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -290,8 +339,10 @@ ${ogImage ? `<meta property="og:image" content="${escapeHtml(ogImage)}" />` : ''
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
 <link rel="stylesheet" href="/story/story.css" />
 <script defer src="/_vercel/insights/script.js"></script>
+<script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 </head>
 <body class="story-page">
 <div id="app"></div>

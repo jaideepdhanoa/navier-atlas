@@ -1,64 +1,52 @@
-# GROK SPEC — /story · The One-Link Outreach Proof Reel
+# /story microsite — SPEC v2 (2026-08-26)
 
-**Date:** 2026-08-25 · **Owner:** Tasklet (content) / Grok (build) · **Approver:** Jaideep
-**Contracts:** `handoff/story-microsite/contracts/{site.json, story.json, assets.json}`
+**Supersedes GROK-STORY-SPEC.md (v1) in full.** v1 is retired: its headlines were authored fresh for
+/story and its section order had no narrative arc. v2 fixes both by construction.
 
-## 1 · What this is
+## The two v2 laws
 
-A third microsite tier below /teaser and /invest: the single link that replaces the
-16-link list in investor outreach emails. **No password. Forwardable by design.**
+1. **No new slogans.** Every headline is copied VERBATIM from an existing approved surface. Each
+   section in `story.json` carries a `source` citation (file + field) or a `headline_source` binding
+   ("copy verbatim from X"). If a headline cannot be sourced, the section ships without one — never
+   write copy. Functional labels (Contact / Watch / Read) exempt but plain.
+2. **The /invest arc, public-safe.** Chapter order mirrors /invest: **hero (thesis) → 01 problem →
+   02 proof → 03 product → 04 dual-use → 05 network vision → films/press → contact.** /story is the
+   public top of the ladder (/story → /teaser → /invest).
 
-**Disclosure rule (governs every string):** public record only. If a journalist or the
-company has not already published it, it is not on this page. The defense boundary is
-the company LinkedIn post of 2026-08-25 (linked in story.json) — nothing beyond it.
+## Section order (binding)
+`hero` → `problem` → `proof` → `product` → `dual-use` → `network` → `deeper` → `talk`
+— exactly as in `contracts/story.json` v2. Do not add, remove, or reorder sections.
 
-**Design center:** a proof reel, not an editorial scroll. Every section = one claim +
-the footage that proves it. Text is captions, not paragraphs. An investor who watches
-two loops and reads two press cards has seen the differentiation in under 60 seconds.
+## Visual system (visual-first is the point of /story)
+- Every chapter anchored by real photography or film; copy blocks are short and never stand alone.
+- **FILMED/RENDER badge on every visual** (map component exempt — data viz, not imagery).
+- Ambient loops: muted autoplay, ≤15s, native aspect, never upscale (te263 montage is 826×720 with
+  dark letterbox — keep native).
+- Films: click-to-play with strong poster frames; never autoplay with sound.
+- **Text never sits on a photo background** (scrim per brand system on hero only).
+- **Press cards:** outlet wordmark + verbatim article headline + external link, opening in new tab.
+  Article headlines render exactly as authored in `story.json` — never re-titled.
+- No text under 24px at 1280/1440/2560. No ellipsis/truncation on any headline.
 
-## 2 · Build rules
+## Kill-list (fail the build on any hit — 31-term scan unchanged from v1, plus)
+- Robb Report: never linked or named anywhere on /story.
+- 400V / 100 kW chip: defense-only, never on /story.
+- No round, valuations, TAM, pipeline entity names, "royal office", Gulf counterparties, energy /
+  sea-grid / floating power / ocean data center content, N30D, no launch-trigger or demand-gated
+  mechanics language.
+- No LC-180. No unit economics. No fare/seat pricing.
+- Run `scripts/` leak scan with the v1 31-term list + the above before any deploy.
 
-1. **Reuse the /invest template system** (section renderer, typography, dark plate).
-   New section kinds: `hero-loop`, `claim-proof`, `vessel-row`, `film-shelf`, `cta`.
-2. **Two video classes, strict:**
-   - `ambient` — autoplay, muted, loop, no controls, ≤15s, play only in viewport
-     (IntersectionObserver), pause off-screen. Poster-first on mobile / save-data.
-   - `film` — click-to-play with poster (YouTube: `maxresdefault` thumb; self-hosted:
-     extracted frame). Sound allowed. Never autoplay.
-3. **Captions in clear bands — never text over footage.**
-4. **FILMED / RENDER badge** on every visual, small corner chip, verbatim from
-   assets.json. This is a feature, not a disclaimer.
-5. **Page-weight budget:** lazy-load everything below the fold; hero loop ≤4 MB;
-   total initial payload ≤8 MB. A proof reel that stutters proves the opposite.
-6. **TE 26-3 montage:** native 826×720, dark letterbox, never upscale, never crop.
-7. **No text under 24px at 1280/1440/2560. No ellipsis/truncation.**
-8. **Renderer renders authored strings only** — no generated copy, no summaries.
-9. `noindex,nofollow`, unlisted, no nav links from other sites to /story.
-10. **Analytics:** Vercel + custom events (`section_view`, `video_play`,
-    `video_complete`, `outbound_click`, `cta_click`), UTM passthrough. Per-section
-    play data is the pre-call interest profile — it must actually fire.
+## QA gate (before URL is shippable)
+1. Screenshots at 1280/1440/2560, every section.
+2. Leak scan (above) = 0 hits.
+3. Badge check: every visual carries FILMED or RENDER.
+4. Headline diff: every rendered headline byte-equal to its cited source field.
+5. All press links resolve (200) and open externally.
+6. Analytics events per v1 spec unchanged.
 
-## 3 · Leak scan (fail the build)
-
-Scan the built HTML for every term in `story.json._leak_scan.terms` (31 terms:
-energy/grid/node/data-center vocabulary, round terms, Gulf, program names, 2,400,
-N30D, etc.). Any hit anywhere in rendered output = build fails.
-Also: zero dollar figures other than $10M revenue and $100M Maldives.
-
-## 4 · QA gate (before hand-back)
-
-- Screenshots ≥10: every section at 1280/1440/2560 + mobile hero + mobile film shelf.
-- Verify `loop_takeoff` actually shows displacement→foilborne takeoff (flagged
-  `_verify` in assets.json); fallback is `hero-loop.mp4`.
-- Interior plates depend on PR #400 (`employer-hub/assets/vessels/`); if unmerged,
-  pull from branch `feat/employer-interiors`.
-- All six press-wall links resolve; LinkedIn post link opens in new tab.
-- Badges render on every visual; footnote `fn_directional` renders once.
-- Video events visible in analytics debug.
-
-## 5 · Explicit exclusions (decided, do not add)
-
-- Energy / sea-grid / floating power / data centers — held even from /teaser.
-- Quanta range figure — the superlative line (CEO-approved, verbatim) carries it.
-- /defense link, defense program names, pipeline entities, round terms, valuations.
-- Per-recipient codes — campaign UTMs only.
+## Contracts
+- `contracts/story.json` — v2 (this PR). Renderer renders authored strings only.
+- `contracts/assets.json` — v2 (this PR). All paths repo-verified 2026-08-26; two interior plates
+  land with PR #400 (soft dependency, note in assets file).
+- `contracts/site.json` — unchanged from v1 (route `/story`, no gate).

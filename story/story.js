@@ -1,4 +1,4 @@
-/* /story — public outreach proof reel */
+/* /story — public outreach proof reel (v2: /invest arc, sourced headlines) */
 (function () {
   'use strict';
   const D = window.STORY_DATA;
@@ -32,7 +32,6 @@
     return `<span class="story-brand-mark" aria-hidden="true"><svg viewBox="9.5 9.5 160 160" fill="currentColor"><path d="M130.16 117.84 L120.18 135.12 A0.39 0.39 0 0 1 119.50 135.11 L68.16 44.06 A0.39 0.39 0 0 1 68.50 43.48 L88.22 43.48 A0.39 0.39 0 0 1 88.56 43.68 L130.16 117.46 A0.39 0.39 0 0 1 130.16 117.84 Z"/><path d="M132.68 111.67 L122.61 93.82 A0.55 0.55 0 0 1 122.62 93.28 L150.95 44.21 A0.55 0.55 0 0 1 151.90 44.21 L161.97 62.07 A0.55 0.55 0 0 1 161.96 62.61 L133.63 111.68 A0.55 0.55 0 0 1 132.68 111.67 Z"/><path d="M110.65 135.52 L90.76 135.52 A0.33 0.33 0 0 1 90.48 135.35 L48.97 61.75 A0.33 0.33 0 0 1 48.97 61.43 L59.03 44.00 A0.33 0.33 0 0 1 59.60 44.00 L110.93 135.03 A0.33 0.33 0 0 1 110.65 135.52 Z"/><path d="M26.53 134.96 L17.16 118.32 A0.67 0.67 0 0 1 17.16 117.66 L45.57 68.46 A0.67 0.67 0 0 1 46.74 68.46 L56.11 85.09 A0.67 0.67 0 0 1 56.11 85.75 L27.70 134.96 A0.67 0.67 0 0 1 26.53 134.96 Z"/></svg></span>`;
   }
 
-  /* —— Analytics (Vercel + dataLayer fallback) —— */
   function track(event, payload) {
     const props = Object.assign({}, payload || {}, readUtms());
     try {
@@ -79,8 +78,24 @@
     return assets[key] || '';
   }
 
+  function firstMedia(sec) {
+    if (!sec) return null;
+    if (Array.isArray(sec.media)) return sec.media[0] || null;
+    if (sec.media && typeof sec.media === 'object') return sec.media;
+    return null;
+  }
+
+  function mediaList(sec) {
+    if (!sec) return [];
+    if (Array.isArray(sec.media)) return sec.media;
+    if (sec.media && typeof sec.media === 'object') return [sec.media];
+    return [];
+  }
+
   function badgeFor(key, override) {
+    if (override === null || override === '') return '';
     const b = override || badges[key] || 'FILMED';
+    if (!b) return '';
     const cls = /render/i.test(b) ? ' media-badge--render' : '';
     return `<span class="media-badge${cls}">${esc(b)}</span>`;
   }
@@ -98,20 +113,24 @@
   function chipsHtml(chips) {
     if (!chips || !chips.length) return '';
     return `<div class="chip-row">${chips
-      .map(
-        function (c) {
-          return `<div class="chip"><span class="chip-value">${esc(c.value)}</span><span class="chip-label">${esc(c.label)}</span></div>`;
-        }
-      )
+      .map(function (c) {
+        return `<div class="chip"><span class="chip-value">${esc(c.value)}</span><span class="chip-label">${esc(c.label)}</span></div>`;
+      })
       .join('')}</div>`;
+  }
+
+  function chapterKicker(sec) {
+    if (!sec || !sec.chapter) return '';
+    return `<p class="chapter-index">${esc(sec.chapter)}</p>`;
   }
 
   function stillFrame(item, opts) {
     opts = opts || {};
+    if (isMapComponent(item)) return atlasFrame(item);
     const src = assetUrl(item.asset);
     if (!src) return '';
     const letterbox = opts.letterbox ? ' media-frame--letterbox' : '';
-    return `<figure class="proof-card${opts.te ? ' proof-card--te' : ''}">
+    return `<figure class="proof-card${opts.te ? ' proof-card--te' : ''}${opts.wide ? ' proof-card--wide' : ''}">
       <div class="media-frame${letterbox}">
         ${badgeFor(item.asset, item.badge)}
         <img src="${esc(src)}" alt="" loading="${opts.eager ? 'eager' : 'lazy'}" ${opts.eager ? 'fetchpriority="high"' : ''} />
@@ -127,7 +146,6 @@
     const poster = assets.hero_poster || '';
     const letterbox = opts.letterbox || item.asset === 'loop_te263_montage';
     const frameCls = letterbox ? ' media-frame--letterbox' : '';
-    // Poster-first on mobile / save-data / reduced motion
     if ((saveData || reduceMotion) && poster && opts.allowPosterOnly) {
       return `<figure class="proof-card">
         <div class="media-frame${frameCls}">
@@ -148,8 +166,20 @@
     </figure>`;
   }
 
+  function isMapComponent(item) {
+    return item && (item.class === 'map-component' || item.asset === 'plate_atlas_global');
+  }
+
+  function atlasFrame(item) {
+    return `<figure class="proof-card proof-card--atlas">
+      <div class="atlas-static" id="atlas-static" role="img" aria-label="${esc((item && item.caption) || 'Global marine corridors')}"></div>
+      ${captionHtml(item)}
+    </figure>`;
+  }
+
   function mediaItem(item, opts) {
     if (!item) return '';
+    if (isMapComponent(item)) return atlasFrame(item);
     if (item.class === 'ambient') return ambientFrame(item, opts);
     return stillFrame(item, opts);
   }
@@ -182,7 +212,7 @@
         }
         return `<button type="button" class="film-card" ${playAttr} data-section="${esc(sectionId || '')}" data-film-title="${esc(c.title || '')}" aria-label="Play ${esc(c.title || 'film')}">
           <span class="film-media">
-            ${badgeFor(c.asset || ('yt_' + c.youtube_id), 'FILMED')}
+            ${badgeFor(c.asset || ('yt_' + c.youtube_id), c.badge || 'FILMED')}
             ${poster ? `<img src="${esc(poster)}" alt="" loading="lazy" />` : ''}
             <span class="film-play" aria-hidden="true"><span>▶</span></span>
           </span>
@@ -192,8 +222,35 @@
       .join('')}</div>`;
   }
 
+  function outboundLinks(links) {
+    if (!links || !links.length) return '';
+    return `<div class="link-row">${links
+      .map(function (l) {
+        return `<a class="doctrine-link" href="${esc(withUtms(l.url))}" ${l.external === false ? '' : 'target="_blank" rel="noopener noreferrer"'} data-outbound data-label="${esc(l.label)}">${esc(l.label)}</a>`;
+      })
+      .join('')}</div>`;
+  }
+
+  function proofGrid(media, sectionId) {
+    const n = media.length;
+    let gridCls = 'proof-grid--2';
+    if (n === 3) gridCls = 'proof-grid--3';
+    else if (n === 4) gridCls = 'proof-grid--4';
+    else if (n >= 5) gridCls = 'proof-grid--mixed';
+    return `<div class="proof-grid ${gridCls}">
+      ${media
+        .map(function (m) {
+          return mediaItem(m, {
+            sectionId: sectionId,
+            letterbox: m.asset === 'loop_te263_montage',
+          });
+        })
+        .join('')}
+    </div>`;
+  }
+
   function renderHero(sec) {
-    const media = sec.media || {};
+    const media = firstMedia(sec) || {};
     const src = assetUrl(media.asset);
     const poster = assets.hero_poster || '';
     return `<section class="story-section story-section--hero" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
@@ -211,52 +268,84 @@
         <div class="hero-overlay">
           <div class="section-inner" style="padding-inline:0;max-width:1100px">
             ${sec.eyebrow ? `<p class="eyebrow">${esc(sec.eyebrow)}</p>` : ''}
-            <h1 class="headline">${esc(sec.headline)}</h1>
+            <h1 class="headline headline--thesis">${esc(sec.headline)}</h1>
             ${sec.subline ? `<p class="subline">${esc(sec.subline)}</p>` : ''}
-            ${chipsHtml(sec.chips)}
+            ${chipsHtml(sec.chips || sec.stats)}
           </div>
         </div>
       </div>
     </section>`;
   }
 
-  function renderClaimProof(sec) {
-    const media = sec.media || [];
-    const n = media.length;
-    let gridCls = 'proof-grid--2';
-    if (n === 1) gridCls = 'proof-grid--2';
-    else if (n === 3) gridCls = 'proof-grid--3';
-    else if (n >= 4) gridCls = 'proof-grid--mixed';
+  function renderClaimChapter(sec) {
+    const media = mediaList(sec);
+    const levers = media.filter(function (m) {
+      return String(m.asset || '').indexOf('lever_') === 0;
+    });
+    const rest = media.filter(function (m) {
+      return String(m.asset || '').indexOf('lever_') !== 0;
+    });
+    const costs = sec.costs || [];
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
+        ${chapterKicker(sec)}
         <h2 class="headline">${esc(sec.headline)}</h2>
+        ${sec.headline_2 ? `<p class="headline-2">${esc(sec.headline_2)}</p>` : ''}
         ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${chipsHtml(sec.chips)}
-        <div class="proof-grid ${gridCls}">
-          ${media.map(function (m) { return mediaItem(m, { sectionId: sec.id, letterbox: m.asset === 'loop_te263_montage' }); }).join('')}
-        </div>
-        ${filmCards(sec.film_cards, sec.id)}
-        ${pressCards(sec.press_cards)}
         ${
-          sec.link
-            ? `<a class="section-link" href="${esc(withUtms(sec.link.url))}" ${sec.link.external ? 'target="_blank" rel="noopener noreferrer"' : ''} data-outbound data-label="${esc(sec.link.label)}">${esc(sec.link.label)}</a>`
+          costs.length
+            ? `<div class="cost-grid">${costs
+                .map(function (c) {
+                  return `<article class="cost-card">
+                    <p class="cost-kicker">${esc(c.cost_title)}</p>
+                    <p class="cost-body">${esc(c.cost_body)}</p>
+                    <p class="lever-title">${esc(c.lever_title)}</p>
+                    <p class="lever-body">${esc(c.lever_body)}</p>
+                  </article>`;
+                })
+                .join('')}</div>`
             : ''
         }
+        ${levers.length ? `<div class="proof-grid proof-grid--3">${levers.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}</div>` : ''}
+        ${rest.map(function (m) { return `<div class="plainview-plate">${mediaItem(m, { sectionId: sec.id, wide: true })}</div>`; }).join('')}
+        ${
+          sec.why_now
+            ? `<div class="why-now"><p class="why-now-title">${esc(sec.why_now.title)}</p><p class="why-now-body">${esc(sec.why_now.body)}</p></div>`
+            : ''
+        }
+        ${sec.closing_line ? `<p class="closing-line">${esc(sec.closing_line)}</p>` : ''}
       </div>
     </section>`;
   }
 
-  function renderVesselRow(sec) {
-    const plate = (sec.media || [])[0];
+  function renderProofChapter(sec) {
+    const media = mediaList(sec);
+    const press = sec.press || sec.press_cards || [];
+    const films = sec.films || sec.film_cards || [];
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
+        ${chapterKicker(sec)}
         <h2 class="headline">${esc(sec.headline)}</h2>
         ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${
-          plate
-            ? `<div class="fleet-plate">${stillFrame(plate)}</div>`
-            : ''
-        }
+        ${chipsHtml(sec.chips || sec.stats)}
+        ${proofGrid(media, sec.id)}
+        ${filmCards(films, sec.id)}
+        ${pressCards(press)}
+      </div>
+    </section>`;
+  }
+
+  function renderProductChapter(sec) {
+    const media = mediaList(sec);
+    const plate = media[0];
+    const rest = media.slice(1);
+    const films = sec.films || sec.film_cards || [];
+    return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
+      <div class="section-inner">
+        ${chapterKicker(sec)}
+        <h2 class="headline">${esc(sec.headline)}</h2>
+        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
+        ${plate ? `<div class="fleet-plate">${stillFrame(plate)}</div>` : ''}
         <div class="vessel-row">
           ${(sec.vessels || [])
             .map(function (v) {
@@ -264,27 +353,71 @@
             })
             .join('')}
         </div>
+        ${rest.length ? `<div class="proof-grid proof-grid--3">${rest.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}</div>` : ''}
+        ${sec.ride_note ? `<p class="ride-note">${esc(sec.ride_note)}</p>` : ''}
+        ${filmCards(films, sec.id)}
+      </div>
+    </section>`;
+  }
+
+  function renderDualUseChapter(sec) {
+    const media = mediaList(sec);
+    const press = sec.press || sec.press_cards || [];
+    const films = sec.films || sec.film_cards || [];
+    const close = sec.quanta_close || {};
+    const closeMedia = close.media || [];
+    return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
+      <div class="section-inner">
+        ${chapterKicker(sec)}
+        <h2 class="headline">${esc(sec.headline)}</h2>
+        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
+        ${chipsHtml(sec.chips || sec.stats)}
+        ${proofGrid(media, sec.id)}
+        ${
+          close.body
+            ? `<div class="quanta-close">
+                <p class="body">${esc(close.body)}</p>
+                ${closeMedia.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}
+              </div>`
+            : ''
+        }
+        ${filmCards(films, sec.id)}
+        ${pressCards(press)}
+        ${outboundLinks(sec.links)}
+      </div>
+    </section>`;
+  }
+
+  function renderVisionClose(sec) {
+    const media = mediaList(sec);
+    return `<section class="story-section story-section--vision" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
+      <div class="section-inner">
+        ${chapterKicker(sec)}
+        <h2 class="headline">${esc(sec.headline)}</h2>
+        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
+        ${media.map(function (m) { return mediaItem(m, { sectionId: sec.id, wide: true }); }).join('')}
       </div>
     </section>`;
   }
 
   function renderFilmShelf(sec) {
+    const films = sec.films || sec.film_cards || [];
+    const wall = sec.press_wall || [];
+    const links = sec.links || (sec.doctrine_link ? [sec.doctrine_link] : []);
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
         <h2 class="headline">${esc(sec.headline)}</h2>
-        ${filmCards(sec.film_cards, sec.id)}
-        <div class="press-wall">
-          ${(sec.press_wall || [])
-            .map(function (p) {
-              return `<a href="${esc(withUtms(p.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(p.outlet)}">${esc(p.outlet)}</a>`;
-            })
-            .join('')}
-        </div>
+        ${filmCards(films, sec.id)}
         ${
-          sec.doctrine_link
-            ? `<a class="doctrine-link" href="${esc(withUtms(sec.doctrine_link.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="doctrine">${esc(sec.doctrine_link.label)}</a>`
+          wall.length
+            ? `<div class="press-wall">${wall
+                .map(function (p) {
+                  return `<a href="${esc(withUtms(p.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(p.outlet)}">${esc(p.outlet)}</a>`;
+                })
+                .join('')}</div>`
             : ''
         }
+        ${outboundLinks(links)}
       </div>
     </section>`;
   }
@@ -322,10 +455,18 @@
     switch (sec.kind) {
       case 'hero-loop':
         return renderHero(sec);
+      case 'claim-chapter':
+        return renderClaimChapter(sec);
+      case 'proof-chapter':
       case 'claim-proof':
-        return renderClaimProof(sec);
+        return renderProofChapter(sec);
+      case 'product-chapter':
       case 'vessel-row':
-        return renderVesselRow(sec);
+        return renderProductChapter(sec);
+      case 'dual-use-chapter':
+        return renderDualUseChapter(sec);
+      case 'vision-close':
+        return renderVisionClose(sec);
       case 'film-shelf':
         return renderFilmShelf(sec);
       case 'cta':
@@ -367,14 +508,11 @@
     </div>`;
   }
 
-  /* —— Mount —— */
   const app = document.getElementById('app');
   const sections = story.sections || [];
-  // First pass: render (collects footnote refs)
   let body = sections.map(renderSection).join('');
   app.innerHTML = renderNav() + body + renderFootnotes() + lightboxHtml();
 
-  /* —— Interactions —— */
   function openLb(html) {
     const box = document.getElementById('lightbox');
     const frame = document.getElementById('lb-frame');
@@ -469,7 +607,6 @@
     });
   });
 
-  /* Ambient: play in viewport only */
   const playedAmbient = new WeakSet();
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
@@ -496,9 +633,6 @@
     );
     document.querySelectorAll('video[data-ambient]').forEach(function (v) {
       io.observe(v);
-      v.addEventListener('ended', function () {
-        /* loops — treat ~80% as complete pulse once */
-      });
       let completed = false;
       v.addEventListener('timeupdate', function () {
         if (completed || !v.duration) return;
@@ -514,7 +648,6 @@
     });
   }
 
-  /* Section view */
   if ('IntersectionObserver' in window) {
     const seen = new Set();
     const sio = new IntersectionObserver(
@@ -534,7 +667,6 @@
     });
   }
 
-  /* Nav spy + progress */
   const progress = document.getElementById('story-progress');
   const navLinks = [...document.querySelectorAll('[data-nav]')];
   const chapterIds = navLinks.map(function (a) {
@@ -580,6 +712,47 @@
     requestAnimationFrame(function () {
       jumpToId(location.hash.slice(1), false);
     });
+  }
+
+  function mountAtlas() {
+    const el = document.getElementById('atlas-static');
+    if (!el || typeof maplibregl === 'undefined') return;
+    try {
+      const map = new maplibregl.Map({
+        container: el,
+        style: 'https://tiles.openfreemap.org/styles/dark',
+        center: [12, 18],
+        zoom: 1.35,
+        minZoom: 1.2,
+        maxZoom: 1.8,
+        interactive: false,
+        attributionControl: true,
+        fadeDuration: 0,
+      });
+      map.scrollZoom.disable();
+      map.dragPan.disable();
+      map.dragRotate.disable();
+      map.touchZoomRotate.disable();
+      map.keyboard.disable();
+      map.doubleClickZoom.disable();
+      map.boxZoom.disable();
+    } catch (err) {
+      console.warn('[story] atlas map failed', err);
+    }
+  }
+  if (document.getElementById('atlas-static')) {
+    if (typeof maplibregl !== 'undefined') mountAtlas();
+    else {
+      const wait = setInterval(function () {
+        if (typeof maplibregl !== 'undefined') {
+          clearInterval(wait);
+          mountAtlas();
+        }
+      }, 80);
+      setTimeout(function () {
+        clearInterval(wait);
+      }, 4000);
+    }
   }
 
   console.info('[story] mount ok · sections', sections.length);
