@@ -200,7 +200,6 @@
               const poster =
                 assets['yt_' + f.youtube_id] ||
                 (f.youtube_id ? `https://img.youtube.com/vi/${f.youtube_id}/maxresdefault.jpg` : '');
-              const meta = [f.duration, f.label].filter(Boolean).join(' · ');
               return `<button type="button" class="film-plate" data-yt="${esc(f.youtube_id || '')}" data-section="${esc(sec.id)}" data-film-title="${esc(f.title || '')}" aria-label="Play ${esc(f.title || 'film')}">
                 <span class="vcard-media">
                   ${badgeFor('yt_' + f.youtube_id, 'FILMED')}
@@ -209,7 +208,6 @@
                   ${f.duration ? `<span class="dur">${esc(f.duration)}</span>` : ''}
                 </span>
                 <span class="film-plate-title">${esc(f.title || '')}</span>
-                ${meta ? `<span class="film-plate-meta">${esc(meta)}</span>` : ''}
               </button>`;
             })
             .join('')}
@@ -224,7 +222,7 @@
       <div class="section-inner">
         ${sec.kicker ? `<p class="kicker">${esc(sec.kicker)}</p>` : ''}
         ${sec.headline ? `<h2 class="headline">${esc(sec.headline)}</h2>` : ''}
-        <div class="field-row">
+        <div class="video-grid">
           ${media
             .map(function (m) {
               if (m.class === 'ambient') return loopCard(m, { sectionId: sec.id, letterbox: m.asset === 'loop_te263_montage' });
