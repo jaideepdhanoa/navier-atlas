@@ -51,7 +51,7 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
 - Port `/invest` demo-grid (`.video-grid.equal-grid`, `.vcard-loop`, duration chip,
   gold play, caption under). Click toggles mute/unmute — same as `/invest`.
 - Feature films are large plates (≥70% width), not a thumbnail shelf.
-- FILMED/RENDER badge on every visual (field TE loop + SAS still included).
+- No FILMED/RENDER badges on videos or images.
 - Text never sits on a photo background except the hero scrim.
 - No text under 24px on headlines at 1280/1440/2560. No ellipsis on headlines.
 
