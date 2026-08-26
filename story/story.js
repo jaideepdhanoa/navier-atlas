@@ -10,7 +10,6 @@
   const site = D.site || {};
   const story = D.story;
   const assets = D.assets || {};
-  const badges = D.badges || {};
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData =
     (navigator.connection && navigator.connection.saveData) ||
@@ -73,14 +72,6 @@
     return assets[key] || '';
   }
 
-  function badgeFor(key, override) {
-    if (override === null || override === '') return '';
-    const b = override || badges[key] || 'FILMED';
-    if (!b) return '';
-    const cls = /render/i.test(b) ? ' media-badge--render' : '';
-    return `<span class="media-badge${cls}">${esc(b)}</span>`;
-  }
-
   function chipsHtml(chips) {
     if (!chips || !chips.length) return '';
     return `<div class="chip-row">${chips
@@ -121,7 +112,6 @@
     const posterOnly = (saveData || reduceMotion) && poster && opts.allowPosterOnly;
     return `<div class="vcard vcard-loop" data-clip="${esc(clip.id || clip.asset)}" data-section="${esc(opts.sectionId || '')}" data-asset="${esc(clip.asset)}">
       <span class="vcard-media${mediaCls}">
-        ${badgeFor(clip.asset, clip.badge)}
         ${
           posterOnly
             ? `<img src="${esc(poster)}" alt="" loading="lazy" />`
@@ -141,7 +131,6 @@
     if (!src) return '';
     return `<figure class="vcard">
       <span class="vcard-media">
-        ${badgeFor(item.asset, item.badge)}
         <img src="${esc(src)}" alt="" loading="lazy" />
       </span>
       ${item.caption ? `<span class="vcard-cap">${esc(item.caption)}</span>` : ''}
@@ -202,7 +191,6 @@
                 (f.youtube_id ? `https://img.youtube.com/vi/${f.youtube_id}/maxresdefault.jpg` : '');
               return `<button type="button" class="film-plate" data-yt="${esc(f.youtube_id || '')}" data-section="${esc(sec.id)}" data-film-title="${esc(f.title || '')}" aria-label="Play ${esc(f.title || 'film')}">
                 <span class="vcard-media">
-                  ${badgeFor('yt_' + f.youtube_id, 'FILMED')}
                   ${poster ? `<img src="${esc(poster)}" alt="" loading="lazy" />` : ''}
                   <span class="play" aria-hidden="true"><span>▶</span></span>
                   ${f.duration ? `<span class="dur">${esc(f.duration)}</span>` : ''}
