@@ -52,6 +52,15 @@ for f in POIS:
 
 R_EARTH_KM = 6371.0088
 LAND_THRESH_KM = 0.05
+
+# Max path-length / great-circle detour ratio. Offshore arcs never fail land QA,
+# so this is the gate that catches seaward bulges (RAK 2026-08-25 incident: 2.77x).
+DETOUR_MAX_RATIO = 1.35
+# (from, to): reason — genuine hazard/channel approaches allowed to exceed the gate.
+DETOUR_EXCEPTIONS = {
+    ("mina-al-arab", "qawasim-1"): "RAK creek needle + city peninsula rounding — no shorter water path exists",
+    ("al-marjan", "royal-yacht-club"): "Al Marjan reclaimed fronds absent from WKB mask — northern rounding required (ratio 1.40)",
+}
 END_SNAP_NM = 0.55  # ~1 km max endpoint error for sealed binds
 APRON_KM = 0.30
 
@@ -406,39 +415,46 @@ HAND_PATHS: dict[tuple[str, str], list[list[float]]] = {
     # RAK Coastal Spine only (v1): Al Marjan → Al Hamra RYC → Mina Al Arab → Corniche.
     # Paths stay on the Gulf shelf — north around Al Marjan breakwaters; seaward of lagoons.
     ("al-marjan", "royal-yacht-club"): [
+        # Tight rounding of Al Marjan north fronds (reclaimed — absent from WKB mask;
+        # do not straighten below 25.702 without satellite re-check). 2.99 nm, ratio 1.40.
         [55.7392, 25.6915],
-        [55.735, 25.705],
-        [55.745, 25.712],
-        [55.760, 25.712],
-        [55.772, 25.705],
+        [55.7370, 25.6985],
+        [55.7440, 25.7045],
+        [55.7560, 25.7058],
+        [55.7690, 25.7025],
         [55.778509, 25.695935],
     ],
     ("royal-yacht-club", "mina-al-arab"): [
+        # Exit Al Hamra channel NW, run ~0.5 nm offshore of lagoon barrier (reclaimed,
+        # absent from WKB mask), enter Mina Al Arab lagoon mouth. 4.56 nm, ratio 1.22.
         [55.778509, 25.695935],
-        [55.770, 25.710],
-        [55.780, 25.725],
-        [55.800, 25.740],
-        [55.825, 25.745],
-        [55.8475, 25.732],
+        [55.7760, 25.7040],
+        [55.7880, 25.7130],
+        [55.8040, 25.7210],
+        [55.8210, 25.7270],
+        [55.8330, 25.7290],
+        [55.84097, 25.72270],
     ],
     ("mina-al-arab", "qawasim-1"): [
-        # Exit Mina NW into Gulf shelf, run east in open water, drop south to Corniche berth
-        [55.8475, 25.732],
-        [55.835, 25.750],
-        [55.820, 25.770],
-        [55.815, 25.800],
-        [55.830, 25.825],
-        [55.860, 25.845],
-        [55.900, 25.850],
-        [55.920, 25.845],
-        [55.944, 25.845],
-        [55.956, 25.845],
-        [55.960, 25.835],
-        [55.960, 25.823],
-        [55.956, 25.815],
-        [55.952, 25.807],
-        [55.950, 25.797],
-        [55.944, 25.788],
+        # Coast-parallel run ~0.5-1 nm offshore, round RAK city peninsula/shoal at ~25.826
+        # (WKB-blocked up to ~25.820 between lon 55.943-55.961), thread creek needle at
+        # lon ~55.956 down to Corniche berth. 11.48 nm (was 17.17), pure-WKB clean.
+        # Detour vs direct 1.69 = genuine creek approach — listed in DETOUR_EXCEPTIONS.
+        [55.84097, 25.72270],
+        [55.8520, 25.7290],
+        [55.8690, 25.7420],
+        [55.8840, 25.7540],
+        [55.8980, 25.7700],
+        [55.9110, 25.7860],
+        [55.9250, 25.8020],
+        [55.9340, 25.8140],
+        [55.9440, 25.8220],
+        [55.9540, 25.8260],
+        [55.9600, 25.8230],
+        [55.9560, 25.8150],
+        [55.9520, 25.8070],
+        [55.9500, 25.7970],
+        [55.9440, 25.7880],
     ],
 }
 
@@ -861,8 +877,9 @@ RAK_HAND_COORDS = {
     "royal-yacht-club": (55.778509, 25.695935, "bp-6ec9d9d298"),
     # Al Marjan Island west shore (public island centroid-ish landing)
     "al-marjan": (55.7392, 25.6915, None),
-    # Mina Al Arab lagoon mouth (developer marina basin — research approx)
-    "mina-al-arab": (55.8475, 25.7320, None),
+    # Mina Al Arab — Lagoon Marina (RAK Properties, 88 berths; operational).
+    # Berth-verified 2026-08-25; prior pin (55.8475, 25.7320) sat in open water.
+    "mina-al-arab": (55.84097, 25.72270, None),
     # Single Corniche foiling hub (collapse of Qawasim 1/2 + Hilton abra stops).
     # Snapped ~75 m seaward of the research pier coord so the berth sits in WKB water.
     "qawasim-1": (55.9440, 25.7880, None),
@@ -1099,7 +1116,7 @@ def build_rak(receipt: dict) -> dict:
     labels = {
         "royal-yacht-club": "Royal Yacht Club of Ras Al Khaimah",
         "al-marjan": "Al Marjan Island",
-        "mina-al-arab": "Mina Al Arab / Hayat Island",
+        "mina-al-arab": "Mina Al Arab — Lagoon Marina",
         "qawasim-1": "Al Qawasim Corniche",
     }
     for key, (lng, lat, bp) in RAK_HAND_COORDS.items():
@@ -1134,13 +1151,13 @@ def build_rak(receipt: dict) -> dict:
             "#e0cb8f",
             ["al-marjan", "royal-yacht-club", "mina-al-arab", "qawasim-1"],
             [
-                seg("al-marjan", "royal-yacht-club", 15),
-                seg("royal-yacht-club", "mina-al-arab", 25),
+                seg("al-marjan", "royal-yacht-club", 6),  # 2.99 nm @ 30 kn (recut basis, 4937e9e)
+                seg("royal-yacht-club", "mina-al-arab", 9),  # 4.56 nm @ 30 kn
                 seg(
                     "mina-al-arab",
                     "qawasim-1",
-                    55,
-                    "≈55 min day · ≈65 min after dark (20 kn night planning basis)",
+                    23,  # 11.48 nm @ 30 kn
+                    "≈23 min day · ≈34 min after dark (20 kn night planning basis)",
                 ),
             ],
             flagship=True,
@@ -1184,7 +1201,7 @@ def base_hub(hub_id, label, title, eyebrow, stops, lines, center, zoom, max_boun
             "contact_email": contact,
         },
         "locked_numbers": {
-            "n45_seats": 20,
+            "n45_seats": 30,
             "n30_seats": 8,
             "seat_price_band_usd_month": [400, 900],
             "seat_price_band_note": "Market-derived band — not a local quote",
@@ -1266,6 +1283,25 @@ def main() -> int:
                     "pure_wkb_land_km": ev.get("pure_wkb_land_km"),
                     "mask": ev.get("mask"),
                 }
+                # Detour gate — land QA alone cannot catch offshore bulges
+                a = [seg["from"]["lng"], seg["from"]["lat"]] if isinstance(seg["from"], dict) else seg["water_path"][0]
+                b = [seg["to"]["lng"], seg["to"]["lat"]] if isinstance(seg["to"], dict) else seg["water_path"][-1]
+                direct = nm_between(seg["water_path"][0], seg["water_path"][-1])
+                plen = path_nm(seg["water_path"])
+                ratio = round(plen / direct, 3) if direct > 0.05 else 1.0
+                fk = seg.get("from_key") or (seg["from"].get("key") if isinstance(seg["from"], dict) else seg["from"])
+                tk = seg.get("to_key") or (seg["to"].get("key") if isinstance(seg["to"], dict) else seg["to"])
+                exc = DETOUR_EXCEPTIONS.get((fk, tk)) or DETOUR_EXCEPTIONS.get((tk, fk))
+                seg["routing"]["detour"] = {
+                    "path_nm": round(plen, 2),
+                    "direct_nm": round(direct, 2),
+                    "ratio": ratio,
+                    "max_ratio": DETOUR_MAX_RATIO,
+                    "gate_pass": bool(ratio <= DETOUR_MAX_RATIO or exc),
+                    **({"exception": exc} if exc else {}),
+                }
+                if not seg["routing"]["detour"]["gate_pass"]:
+                    fails.append((city, {"from": fk, "to": tk, "status": "FAIL_DETOUR", "ratio": ratio}))
                 if not ev.get("qa_pass") or (ev.get("interior_land_km") or 0) > LAND_THRESH_KM:
                     fails.append(
                         (
