@@ -255,6 +255,12 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   font-size: clamp(2.6rem, 7vw, 5rem);
   margin-bottom: 12px;
 }
+.hero-overlay .headline--thesis {
+  font-size: clamp(1.45rem, 2.8vw, 2.35rem);
+  line-height: 1.28;
+  max-width: 46rem;
+  font-weight: 500;
+}
 .hero-overlay .subline {
   color: rgba(247,247,248,0.88);
   max-width: 36rem;
@@ -273,6 +279,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 }
 .proof-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)) }
 .proof-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.proof-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)) }
 .proof-grid--mixed {
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
@@ -485,4 +492,107 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   .headline { font-size: clamp(1.85rem, 8vw, 2.4rem) }
   .subline, .body { font-size: 1.125rem }
   .chip { min-width: calc(50% - 6px) }
+  .cost-grid, .proof-grid--4 { grid-template-columns: 1fr }
+}
+
+/* —— v2 chapter system —— */
+.chapter-index {
+  margin: 0 0 12px;
+  color: var(--accent-bright);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.headline-2 {
+  margin: -4px 0 28px;
+  color: var(--text-1);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.3;
+  max-width: 40rem;
+}
+.cost-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 8px 0 32px;
+}
+.cost-card {
+  padding: 20px 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+}
+.cost-kicker {
+  margin: 0 0 8px;
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cost-body { margin: 0 0 16px; color: var(--text-1); font-size: 15px; line-height: 1.45 }
+.lever-title {
+  margin: 0 0 6px;
+  color: var(--accent-bright);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.lever-body { margin: 0; color: var(--text-0); font-size: 16px; line-height: 1.45 }
+.plainview-plate { margin-top: 20px }
+.plainview-plate .media-frame { aspect-ratio: 16 / 9 }
+.why-now {
+  margin-top: 32px;
+  padding: 22px 24px;
+  border-left: 2px solid var(--accent);
+  background: rgba(224, 203, 143, 0.05);
+}
+.why-now-title {
+  margin: 0 0 6px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+.why-now-body { margin: 0; color: var(--text-1) }
+.closing-line {
+  margin: 28px 0 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  font-weight: 500;
+  color: var(--accent-bright);
+}
+.ride-note {
+  margin: 28px 0 0;
+  color: var(--text-1);
+  font-size: 1.15rem;
+  max-width: 40rem;
+}
+.quanta-close {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.quanta-close .proof-card,
+.quanta-close .media-frame { max-width: 720px }
+.atlas-static {
+  width: 100%;
+  height: min(62vh, 640px);
+  min-height: 360px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b1016;
+  border: 1px solid var(--line);
+}
+.proof-card--atlas { margin-top: 8px }
+.proof-card--atlas .media-frame { aspect-ratio: auto }
+.link-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px }
+.story-section--vision .headline { max-width: 22ch }
+
+@media (max-width: 900px) {
+  .cost-grid { grid-template-columns: 1fr }
+  .proof-grid--4 { grid-template-columns: 1fr }
 }
