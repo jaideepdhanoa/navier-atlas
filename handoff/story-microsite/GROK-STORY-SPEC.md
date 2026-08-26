@@ -1,52 +1,66 @@
-# /story microsite — SPEC v2 (2026-08-26)
+# /story microsite — SPEC v3 (watch reel)
 
-**Supersedes GROK-STORY-SPEC.md (v1) in full.** v1 is retired: its headlines were authored fresh for
-/story and its section order had no narrative arc. v2 fixes both by construction.
+**Supersedes GROK-STORY-SPEC.md v2 in full.** v2 cloned the `/invest` argument
+(thesis → costs → GMVP → dual-use essay → Atlas). That is a pitch. `/story` is
+the one URL an investor opens to **watch the films and read the articles**.
 
-## The two v2 laws
+## The v3 law
 
-1. **No new slogans.** Every headline is copied VERBATIM from an existing approved surface. Each
-   section in `story.json` carries a `source` citation (file + field) or a `headline_source` binding
-   ("copy verbatim from X"). If a headline cannot be sourced, the section ships without one — never
-   write copy. Functional labels (Contact / Watch / Read) exempt but plain.
-2. **The /invest arc, public-safe.** Chapter order mirrors /invest: **hero (thesis) → 01 problem →
-   02 proof → 03 product → 04 dual-use → 05 network vision → films/press → contact.** /story is the
-   public top of the ladder (/story → /teaser → /invest).
+**Watch + read. One URL. No homework.**
+
+- Public, noindex, no password. Forwardable.
+- Every film plays on the page (self-hosted mp4 or YouTube lightbox). Never
+  “open this YouTube link” as the primary action.
+- Every article is an on-page press card (outlet + verbatim published headline).
+- No new slogans. Section labels are functional: Watch, Ride, Films, Press, Contact.
+- Captions, film titles, press headlines, and the demo-grid title/lede are copied
+  VERBATIM from `/invest` contracts or `VIDEO-INVENTORY.md`.
+- Leak-scan + Robb Report + 400V/100kW kill-list unchanged from v2.
+- `/story` stays strictly thinner than `/teaser` / `/invest` / `/defense`.
 
 ## Section order (binding)
-`hero` → `problem` → `proof` → `product` → `dual-use` → `network` → `deeper` → `talk`
-— exactly as in `contracts/story.json` v2. Do not add, remove, or reorder sections.
 
-## Visual system (visual-first is the point of /story)
-- Every chapter anchored by real photography or film; copy blocks are short and never stand alone.
-- **FILMED/RENDER badge on every visual** (map component exempt — data viz, not imagery).
-- Ambient loops: muted autoplay, ≤15s, native aspect, never upscale (te263 montage is 826×720 with
-  dark letterbox — keep native).
-- Films: click-to-play with strong poster frames; never autoplay with sound.
-- **Text never sits on a photo background** (scrim per brand system on hero only).
-- **Press cards:** outlet wordmark + verbatim article headline + external link, opening in new tab.
-  Article headlines render exactly as authored in `story.json` — never re-titled.
-- No text under 24px at 1280/1440/2560. No ellipsis/truncation on any headline.
+`hero` → `ride` → `films` → `field` → `press` → `talk`
 
-## Kill-list (fail the build on any hit — 31-term scan unchanged from v1, plus)
-- Robb Report: never linked or named anywhere on /story.
-- 400V / 100 kW chip: defense-only, never on /story.
-- No round, valuations, TAM, pipeline entity names, "royal office", Gulf counterparties, energy /
-  sea-grid / floating power / ocean data center content, N30D, no launch-trigger or demand-gated
-  mechanics language.
-- No LC-180. No unit economics. No fare/seat pricing.
-- Run `scripts/` leak scan with the v1 31-term list + the above before any deploy.
+Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
 
-## QA gate (before URL is shippable)
-1. Screenshots at 1280/1440/2560, every section.
-2. Leak scan (above) = 0 hits.
-3. Badge check: every visual carries FILMED or RENDER.
-4. Headline diff: every rendered headline byte-equal to its cited source field.
-5. All press links resolve (200) and open externally.
-6. Analytics events per v1 spec unchanged.
+## Beats
 
-## Contracts
-- `contracts/story.json` — v2 (this PR). Renderer renders authored strings only.
-- `contracts/assets.json` — v2 (this PR). All paths repo-verified 2026-08-26; two interior plates
-  land with PR #400 (soft dependency, note in assets file).
-- `contracts/site.json` — unchanged from v1 (route `/story`, no gate).
+1. **Hero** — cinema loop (`hero-loop.mp4`) + **Watch the film** (label from
+   `hero.json`) opening the self-hosted launch film 1080p in a lightbox with
+   sound. Eyebrow only: `NAVIER — AN AMERICAN MARITIME COMPANY`. No thesis as H1.
+   Public-record chips sit **below** the cinema, not on the film.
+2. **Ride** — `/invest` Traction demo grid, equal-weight tiles, muted loop,
+   click for sound. Title `Don't take our word for it` + lede + five clip
+   captions from `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
+3. **Films** — three large plates (CTO `S7WB91FvSFI`, Sampriti `QhiaYVgXMf0`,
+   Vance `ZNgh39DM_Jg`). Verified titles + durations. Click → lightbox with sound.
+   Launch film is the hero CTA only — do not duplicate here.
+4. **Field** — public-record row only: TE 26-3 montage (native 826×720 letterbox)
+   + SAS officers still. No dual-use body copy, no SOF Week armed plate, no 400V.
+5. **Press** — WSJ, National Interest, TechCrunch, Axios (verbatim headlines) +
+   Doctrine link. Robb Report never named.
+6. **Talk** — Reply to Sampriti · investors@ copy · request materials.
+
+## Visual system
+
+- Port `/invest` demo-grid (`.video-grid.equal-grid`, `.vcard-loop`, duration chip,
+  gold play, caption under). Click toggles mute/unmute — same as `/invest`.
+- Feature films are large plates (≥70% width), not a thumbnail shelf.
+- FILMED/RENDER badge on every visual (field TE loop + SAS still included).
+- Text never sits on a photo background except the hero scrim.
+- No text under 24px on headlines at 1280/1440/2560. No ellipsis on headlines.
+
+## Kill-list
+
+Unchanged from v2: 31-term scan + Robb Report + 400V / 100 kW / LC-180.
+No round, valuations, TAM, pipeline names, sea-grid, unit economics, N30D.
+
+## QA
+
+1. Leak scan = 0 hits.
+2. Demo-grid title, lede, and five captions byte-equal to `proof.json` `demo-grid`.
+3. Film titles byte-equal to `/invest` `product.json` / `money.json` / `hero.json`.
+4. Press headlines byte-equal to authored cards.
+5. Analytics events unchanged: section_view, video_play, video_complete,
+   outbound_click, cta_click.

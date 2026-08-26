@@ -1,14 +1,23 @@
 {
-  "_version": "v2 (2026-08-26)",
-  "_rule_no_new_slogans": "EVERY headline on /story is copied VERBATIM from an existing approved surface — the /invest contracts, the Doctrine, or an approved external framing. The `source` field on each section is the binding citation. Grok must never author, improve, or vary a headline. Functional labels (nav, buttons) are exempt but must stay plain (Contact, Watch, Read).",
-  "_rule_arc": "Chapter arc mirrors /invest: thesis -> proof -> product -> dual-use -> network vision -> films/press -> contact. /story is the public top of the ladder (/story -> /teaser -> /invest): no round, no valuations, no pipeline entity names, no energy/sea-grid content, no unit economics. Forwarded-to-a-competitor test governs every line.",
-  "_rule_visual": "Visual-first: every chapter is anchored by real photography or film. FILMED/RENDER badge on every visual. Ambient loops muted autoplay <=15s; films click-to-play with poster frames. Text never sits on photo background. Article links render as press cards (outlet wordmark + verbatim headline + external link).",
+  "_version": "v3 (2026-08-26) — watch reel",
+  "_rule": "Watch + read. One URL. No homework. No new slogans. Captions/titles/press copied verbatim from /invest.",
   "sections": [
     {
       "id": "hero",
-      "kind": "hero-loop",
+      "kind": "hero-film",
       "eyebrow": "NAVIER — AN AMERICAN MARITIME COMPANY",
-      "headline": "The world moves at the speed and cost at which people and goods move. Make a dent in that, and you change how the world works.",
+      "play_button_label": "Watch the film",
+      "film": {
+        "asset": "film_launch_1080",
+        "title": "Navier Makes History: Launches World's Longest Range Marine Vessels",
+        "duration": "1:34",
+        "badge": "FILMED"
+      },
+      "media": {
+        "asset": "loop_takeoff",
+        "class": "ambient",
+        "badge": "FILMED"
+      },
       "stats": [
         {
           "value": "$10M",
@@ -27,124 +36,132 @@
           "label": "Maldives network contract"
         }
       ],
-      "media": [
-        {
-          "asset": "loop_takeoff",
-          "class": "ambient",
-          "badge": "FILMED",
-          "caption": ""
-        }
-      ],
-      "_source": "handoff/invest-microsite/contracts/hero.json — thesis line, verbatim"
+      "_source": "hero.json play_button_label + video.title/duration; loop = hero-loop.mp4"
     },
     {
-      "id": "problem",
-      "kind": "claim-chapter",
-      "chapter": "01",
-      "headline": "Three Costs Have Kept Maritime Stuck for Fifty Years",
-      "headline_2": "From a few giant slow ships to thousands of fast ones.",
-      "media": [
-        {
-          "asset": "lever_build",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "Build — the foundry floor."
-        },
-        {
-          "asset": "lever_move",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "Move — people and goods, foilborne."
-        },
-        {
-          "asset": "lever_operate",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "Operate — one software stack across the fleet."
-        },
-        {
-          "asset": "photo_plainview",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "USS Plainview, 1969 — physics proven; what was missing was control."
-        }
-      ],
-      "costs": [
-        {
-          "cost_title": "EXPENSIVE TO BUILD — NO SHARED PLATFORM",
-          "cost_body": "Each new requirement restarts the design. Nothing compounds.",
-          "lever_title": "CHEAP TO BUILD",
-          "lever_body": "Same core in every hull — design cost amortizes across the line, and unit cost falls with every boat built.",
-          "_source": "claim.json costs-levers pairs[0] — verbatim; dollar proofs omitted"
-        },
-        {
-          "cost_title": "EXPENSIVE TO MOVE — THE SPEED PENALTY",
-          "cost_body": "Water is 800× denser than air. Speed or cost: pick one.",
-          "lever_title": "CHEAP TO MOVE",
-          "lever_body": "Hydrofoils lift the hull out of the water — the drag behind the speed penalty is gone, and energy per mile drops 7–13× vs diesel.",
-          "_source": "claim.json costs-levers pairs[1] — verbatim; dollar proofs omitted"
-        },
-        {
-          "cost_title": "EXPENSIVE TO OPERATE — CREW-HEAVY BY DESIGN",
-          "cost_body": "A full crew on every vessel, hands-on maintenance, low utilization.",
-          "lever_title": "CHEAP TO OPERATE",
-          "lever_body": "The software flies the boat — one operator oversees many vessels.",
-          "_source": "claim.json costs-levers pairs[2] — public-safe trim (dollar crew-rate omitted)"
-        }
-      ],
-      "why_now": {
-        "title": "Why now — the window is open.",
-        "body": "Idle waterways · coastal security back on the agenda · U.S. shipbuilding constrained · diesel fleets aging out.",
-        "_source": "claim.json costs-levers why_now — verbatim"
-      },
-      "closing_line": "Speed & cost — no longer a trade-off.",
-      "_source": "handoff/invest-microsite/contracts/claim.json — both verbatim",
-      "_body_source": "claim.json body copy, verbatim; trim to the public-safe subset (no market sizing, no dollar TAM figures)"
-    },
-    {
-      "id": "proof",
-      "kind": "proof-chapter",
-      "chapter": "02",
+      "id": "ride",
+      "kind": "demo-grid",
       "headline": "Don't take our word for it",
-      "body": "A $100M contract to build and operate a hydrofoil network across the Maldives. Ten vessels delivered. More than ten thousand operational hours across US and international waters.",
-      "media": [
+      "lede": "Filmed from a conventional hull heaving in the same seas — the Navier flies level above the water that is throwing the camera around.",
+      "clips": [
         {
-          "asset": "photo_goldengate",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "N30 under the Golden Gate — San Francisco Bay."
-        },
-        {
-          "asset": "loop_stabilization",
-          "class": "ambient",
-          "badge": "FILMED",
-          "caption": "Same water, stabilization on vs. off."
-        },
-        {
+          "id": "no-wake",
           "asset": "loop_nowake",
           "class": "ambient",
           "badge": "FILMED",
-          "caption": "No wake at speed."
+          "title": "No Wakes, Just Glide: The Navier Advantage",
+          "duration": "0:12",
+          "caption": "Foilborne, the hull leaves almost no wake — the submerged wings displace far less water than a planing hull.",
+          "youtube_id": "Hlp9oynUQNE",
+          "play_mode": "loop"
         },
         {
+          "id": "flat-turning",
+          "asset": "loop_flatturn",
+          "class": "ambient",
+          "badge": "FILMED",
+          "title": "N30 Pioneer || Different by Design. Faster by Physics.",
+          "duration": "0:16",
+          "caption": "Active foil control holds the hull level through a turn — the computer adjusts the wings, not the passengers.",
+          "youtube_id": "93MCRJYsD_8",
+          "play_mode": "loop"
+        },
+        {
+          "id": "stabilization",
+          "asset": "loop_stabilization",
+          "class": "ambient",
+          "badge": "FILMED",
+          "title": "Stabilized vs. the sea — side by side",
+          "duration": "0:19",
+          "caption": "Filmed from a conventional hull heaving in the same seas — the Navier flies stabilized above the water that is throwing the camera around.",
+          "youtube_id": null,
+          "play_mode": "loop"
+        },
+        {
+          "id": "rough-seas",
           "asset": "loop_roughseas",
           "class": "ambient",
           "badge": "FILMED",
-          "caption": "Rough water, level flight."
+          "title": "See how Navier glides over rough seas",
+          "duration": "0:55",
+          "caption": "In rough water the foils keep the hull above the waves, so it flies over them instead of pounding through them.",
+          "youtube_id": "7HETK4rsByc",
+          "play_mode": "loop"
         },
         {
-          "asset": "photo_hangar_wide",
-          "class": "still",
+          "id": "takeoff",
+          "asset": "loop_takeoff_fs",
+          "class": "ambient",
           "badge": "FILMED",
-          "caption": "The production floor."
-        },
-        {
-          "asset": "photo_goldenhour",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "On the water at golden hour."
+          "title": "Navier x Four Seasons",
+          "duration": "1:00",
+          "caption": "From standstill, lift builds with speed until the hull rises clear of the water and the ride goes flat.",
+          "youtube_id": "htUWE3AJUbc",
+          "play_mode": "loop"
         }
       ],
+      "_source": "handoff/invest-microsite/contracts/proof.json demo-grid — title, lede, clip titles/captions/durations verbatim"
+    },
+    {
+      "id": "films",
+      "kind": "film-plate",
+      "headline": "Films",
+      "films": [
+        {
+          "youtube_id": "S7WB91FvSFI",
+          "title": "Navier's hydrofoil boats have wings",
+          "duration": "2:13",
+          "label": "The 3-minute version, from our CTO",
+          "class": "film"
+        },
+        {
+          "youtube_id": "QhiaYVgXMf0",
+          "title": "Inside Navier N30 — The Longest-Range Electric Boat Ever Built!",
+          "duration": "5:09",
+          "label": "",
+          "class": "film"
+        },
+        {
+          "youtube_id": "ZNgh39DM_Jg",
+          "title": "Navier & Ashlee Vance",
+          "duration": "9:49",
+          "label": "A long-form company visit with Ashlee Vance — 9:49",
+          "class": "film"
+        }
+      ],
+      "_source": "product.json control + quanta-interstitial video titles; money.json go-deeper video"
+    },
+    {
+      "id": "field",
+      "kind": "field-row",
+      "kicker": "In the field",
+      "media": [
+        {
+          "asset": "loop_te263_montage",
+          "class": "ambient",
+          "badge": "FILMED",
+          "caption": "SOCOM TE 26-3, Bayview, Idaho — onboard autonomy: raw sensing → semantic segmentation → live world model (August 2026)."
+        },
+        {
+          "asset": "photo_sas_officers",
+          "class": "still",
+          "badge": "FILMED",
+          "caption": "U.S. Navy officers at the Navier exhibit — Sea-Air-Space 2026, National Harbor."
+        }
+      ],
+      "links": [
+        {
+          "label": "Read the company announcement →",
+          "url": "https://www.linkedin.com/posts/usv-hydrofoil-defensetech-ugcPost-7498038376135176192-SYY9/",
+          "external": true
+        }
+      ],
+      "_source": "public-record TE 26-3 montage + SAS still; LinkedIn announcement already on v2"
+    },
+    {
+      "id": "press",
+      "kind": "press-wall",
+      "headline": "Press",
       "press": [
         {
           "outlet": "The Wall Street Journal",
@@ -160,171 +177,11 @@
           "outlet": "TechCrunch",
           "headline": "Navier's Hydrofoiling Electric Boat Cruises West Coast Waterways",
           "url": "https://techcrunch.com/2023/05/08/naviers-hydrofoiling-electric-cruises-west-coast-waterways-to-line-up-first-pilot-programs/"
-        }
-      ],
-      "_source": "handoff/invest-microsite/contracts/proof.json sections[1].title — verbatim (alternative if Jaideep prefers: 'Traction: Speed & Capital Efficiency', sections[2].title)"
-    },
-    {
-      "id": "product",
-      "kind": "product-chapter",
-      "chapter": "03",
-      "headline": "GMVP: One core, every vessel.",
-      "body": "The same foils, control software, and energy systems scale from an 8-passenger flagship to a 180-seat ferry.",
-      "vessels": [
-        {
-          "name": "N30 Quanta",
-          "line": "8 passengers — in production and on the water today."
         },
-        {
-          "name": "N45 Explorer",
-          "line": "30 passengers — the commuter and resort workhorse."
-        },
-        {
-          "name": "N80 Valkyrie",
-          "line": "Fast coastal cargo and crew transfer."
-        },
-        {
-          "name": "N180 Morpheus",
-          "line": "The 180-seat foiling ferry."
-        }
-      ],
-      "media": [
-        {
-          "asset": "plate_fleet_lineup",
-          "class": "still",
-          "badge": "RENDER",
-          "caption": "The Navier vessel family."
-        },
-        {
-          "asset": "plate_n45_interior",
-          "class": "still",
-          "badge": "RENDER",
-          "caption": "N45 cabin — individual seats, fold-out work tables, Starlink Wi-Fi underway."
-        },
-        {
-          "asset": "plate_n30_interior",
-          "class": "still",
-          "badge": "RENDER",
-          "caption": "N30 executive cabin."
-        },
-        {
-          "asset": "photo_control_wireframe",
-          "class": "still",
-          "badge": "RENDER",
-          "caption": "Flight control — the software is the vessel."
-        }
-      ],
-      "ride_note": "Foilborne, the hull never slams. No wake at speed. Near-silent, all-electric.",
-      "films": [
-        {
-          "title": "Our CTO on software-defined vessels",
-          "youtube_id": "S7WB91FvSFI",
-          "class": "film"
-        }
-      ],
-      "_source": "handoff/invest-microsite/contracts/product.json — verbatim"
-    },
-    {
-      "id": "dual-use",
-      "kind": "dual-use-chapter",
-      "chapter": "04",
-      "headline": "We Are a Dual-Use Platform Company.",
-      "body": "The Quanta-D — our effector-equipped N30 demonstrator — ran real mission profiles in front of U.S. special operations evaluators at USSOCOM's Technical Experimentation 26-3, following demonstrations at Sea-Air-Space and SOF Week.",
-      "stats": [
-        {
-          "value": "<1°",
-          "label": "pitch & roll through Sea State 4"
-        },
-        {
-          "value": "±2 cm",
-          "label": "flight height, foilborne"
-        }
-      ],
-      "_stat_note": "400V/100kW chip is defense-only — NEVER on /story.",
-      "media": [
-        {
-          "asset": "loop_te263_montage",
-          "class": "ambient",
-          "badge": "FILMED",
-          "caption": "SOCOM TE 26-3, Bayview, Idaho — onboard autonomy: raw sensing → semantic segmentation → live world model (August 2026)."
-        },
-        {
-          "asset": "photo_sofweek_armed",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "SOF Week — effector-equipped N30 demonstrator."
-        },
-        {
-          "asset": "photo_sas_officers",
-          "class": "still",
-          "badge": "FILMED",
-          "caption": "U.S. Navy officers at the Navier exhibit — Sea-Air-Space 2026, National Harbor."
-        }
-      ],
-      "quanta_close": {
-        "body": "Quietly, we have achieved an engineering breakthrough — the world's longest-range hybrid-electric vessel — which we will be announcing publicly very soon.",
-        "media": [
-          {
-            "asset": "plate_quanta_camo",
-            "class": "still",
-            "badge": "RENDER",
-            "caption": "Quanta — in sea trials now."
-          }
-        ],
-        "_source": "Sampriti approved external framing, 2026-08-23 — verbatim, no additions"
-      },
-      "links": [
-        {
-          "label": "Read the company announcement →",
-          "url": "https://www.linkedin.com/posts/usv-hydrofoil-defensetech-ugcPost-7498038376135176192-SYY9/",
-          "external": true
-        }
-      ],
-      "press": [
         {
           "outlet": "Axios",
           "headline": "Exclusive: Navier Touts New Boats Amid Push to “Out-Innovate” U.S. Rivals",
           "url": "https://www.axios.com/2025/10/29/navier-quanta-shipbuilding-usv-bhattacharyya"
-        }
-      ],
-      "_source": "handoff/invest-microsite/contracts/gtm.json dual-use.title — verbatim"
-    },
-    {
-      "id": "network",
-      "kind": "vision-close",
-      "chapter": "05",
-      "headline": "Every coastline a network — every marina a Navier hub.",
-      "media": [
-        {
-          "asset": "plate_atlas_global",
-          "class": "still",
-          "badge": "RENDER",
-          "caption": "The Atlas — real corridors, real cities."
-        }
-      ],
-      "_map_rule": "Static Atlas full-extent still only. No pipeline rows, no entity names, no counts, no flyTo.",
-      "_source": "handoff/invest-microsite/contracts/money.json finale — verbatim (the only public-safe line of that chapter; nothing else from money.json may appear)"
-    },
-    {
-      "id": "deeper",
-      "kind": "film-shelf",
-      "headline": "Go deeper.",
-      "films": [
-        {
-          "title": "The Navier launch film",
-          "asset": "film_launch_1080",
-          "class": "film",
-          "badge": "FILMED"
-        },
-        {
-          "title": "Long-form feature by Ashlee Vance",
-          "youtube_id": "ZNgh39DM_Jg",
-          "class": "film"
-        },
-        {
-          "title": "Sampriti on Quanta and American shipbuilding",
-          "youtube_id": "QhiaYVgXMf0",
-          "class": "film"
         }
       ],
       "links": [
@@ -334,7 +191,7 @@
           "external": true
         }
       ],
-      "_source": "carried from v1 — functional shelf label (Jaideep may veto)"
+      "_source": "published article headlines; Doctrine is a link not a fake article"
     },
     {
       "id": "talk",
@@ -358,14 +215,11 @@
           "value": "sampriti@navierboat.com?subject=Navier%20investor%20materials"
         }
       ],
-      "_source": "carried from v1 — functional CTA (Jaideep may veto)"
+      "_source": "functional CTA carried from v1"
     }
   ],
-  "footnotes": {
-    "fn_directional": "Interior and vessel-family images marked RENDER are directional design renders; production interiors are configured per operator."
-  },
   "_leak_scan": {
-    "notes": "INTERNAL. Fail the build if any term below renders anywhere on /story. Public-record tier: strictly less than /teaser. v2 adds Robb Report + 400V/100kW kill-list.",
+    "notes": "INTERNAL. Fail the build if any term below renders anywhere on /story.",
     "terms": [
       "sea grid",
       "new grid",
