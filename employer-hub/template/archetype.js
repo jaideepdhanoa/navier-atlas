@@ -88,6 +88,24 @@
       parts.push(section('story', 'The gap', html));
     }
 
+    // Strategy alignment (RAKTA / authority marine strategy — authored cards)
+    const sa = A.strategy_alignment;
+    if (sa && sa.copy) {
+      let html = `<div class="arch-prose"><p class="lead">${esc(sa.copy.headline || '')}</p>`;
+      if (sa.copy.body) html += `<p>${esc(sa.copy.body)}</p>`;
+      html += '</div>';
+      const cards = sa.copy.cards || [];
+      if (cards.length) {
+        html += `<div class="arch-grid-2">${cards
+          .map(
+            (c) =>
+              `<div class="arch-card"><h3>${esc(c.title || '')}</h3><p>${esc(c.body || '')}</p></div>`
+          )
+          .join('')}</div>`;
+      }
+      parts.push(section('strategy_alignment', sa.title || 'Strategy alignment', html));
+    }
+
     // Infrastructure-light
     const inf = A.infrastructure_light;
     if (inf && inf.copy) {
@@ -229,6 +247,24 @@
         )
         .join('')}</ul>`;
       parts.push(section('modal', 'Modal integration', html));
+    }
+
+    // Intercity / gateway network (Phase 4–5 copy — map stays emirate-framed)
+    const ic = A.intercity;
+    if (ic && ic.copy) {
+      let html = `<div class="arch-prose"><p class="lead">${esc(ic.copy.headline || '')}</p>`;
+      if (ic.copy.body) html += `<p>${esc(ic.copy.body)}</p>`;
+      html += '</div>';
+      const cards = ic.copy.cards || [];
+      if (cards.length) {
+        html += `<div class="arch-grid-2">${cards
+          .map((c) => {
+            const chip = c.status ? statusChip(c.status) : '';
+            return `<div class="arch-card"><h3>${esc(c.title || '')} ${chip}</h3><p>${esc(c.body || '')}</p></div>`;
+          })
+          .join('')}</div>`;
+      }
+      parts.push(section('intercity', ic.title || 'Gateway network', html));
     }
 
     // Flywheel
