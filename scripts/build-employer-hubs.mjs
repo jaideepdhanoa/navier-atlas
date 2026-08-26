@@ -140,7 +140,7 @@ function attachGatewayOverlays(hub) {
     out.lines.push({
       id: 'GTW-1',
       name: 'UAE Gateway Line',
-      color: '#7fd8b8',
+      color: '#1fb8a8',
       type: 'trunk',
       phase: 4,
       flagship: false,
