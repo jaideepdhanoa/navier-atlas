@@ -170,7 +170,7 @@ function attachGatewayOverlays(hub) {
       id: 'GLF-1',
       lineId: 'GLF-khasab',
       name: 'Gulf Gateway — Khasab',
-      from: 'qawasim-1',
+      from: 'al-marjan',
       to: 'khasab-gateway',
       toLabel: 'Khasab Port & Old Harbour',
     },
