@@ -10,7 +10,7 @@ from shapely import wkb
 from shapely.geometry import LineString, Point, Polygon, MultiPolygon, box, shape
 from shapely.ops import unary_union
 
-ROOT = Path('/tmp/na')
+ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'grok-routing-output'
 v2 = wkb.loads((OUT / 'uae_gulf_land_v2.wkb').read_bytes())
 print('v2 bounds:', [round(x,2) for x in v2.bounds])
@@ -18,9 +18,15 @@ print('v2 bounds:', [round(x,2) for x in v2.bounds])
 WEST = box(48.4, 23.4, 51.05, 28.3)   # KSA coast, Bahrain, Qatar west
 EAST = box(57.45, 22.4, 60.2, 27.3)   # Oman east coast to Muscat+
 
+# Natural Earth 10m shapefiles: NE_ROOT env, else ./data-clean/ne_10m, else /tmp/ne
+import os
+NE_ROOT = Path(os.environ.get('NE_ROOT') or ROOT / 'data-clean' / 'ne_10m')
+if not (NE_ROOT / 'ne_10m_land' / 'ne_10m_land.shp').exists():
+    NE_ROOT = Path('/tmp/ne')
+
 polys = []
 for shp in ('ne_10m_land', 'ne_10m_minor_islands'):
-    r = shapefile.Reader(f'/tmp/ne/{shp}/{shp}.shp')
+    r = shapefile.Reader(str(NE_ROOT / shp / f'{shp}.shp'))
     for sr in r.iterShapeRecords(bbox=(48.4, 22.4, 60.2, 28.3)):
         g = shape(sr.shape.__geo_interface__)
         if not g.is_valid:

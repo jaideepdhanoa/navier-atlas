@@ -8,7 +8,7 @@ from pathlib import Path
 from shapely import wkb
 from shapely.geometry import LineString, Point
 
-ROOT = Path('/tmp/na')
+ROOT = Path(__file__).resolve().parents[1]
 v3 = wkb.loads((ROOT/'grok-routing-output/uae_gulf_land_v3.wkb').read_bytes())
 
 def dist_nm(coords):
