@@ -10,11 +10,32 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { spawnSync } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, '_dist');
 const HUB_ROOT = path.join(ROOT, 'employer-hub');
+
+/** Fail the build when hub.json corridor_table drifts from archetype page figures. */
+function validateHubPageConsistency(hubId) {
+  const hubDir = path.join(HUB_ROOT, 'hubs', hubId);
+  const hubPath = path.join(hubDir, 'hub.json');
+  if (!fs.existsSync(hubPath)) return;
+  const hub = readJson(hubPath);
+  if (!hub.corridor_table || !hub.corridor_table.corridors) return;
+  const script = path.join(ROOT, 'scripts', 'validate_hub_page_consistency.py');
+  if (!fs.existsSync(script)) {
+    throw new Error(`corridor_table present on ${hubId} but ${script} missing`);
+  }
+  const r = spawnSync('python3', [script, hubDir], { encoding: 'utf8' });
+  if (r.status !== 0) {
+    throw new Error(
+      `corridor drift gate FAILED for ${hubId}:\n${(r.stdout || '') + (r.stderr || '')}`
+    );
+  }
+  console.log(`corridor drift gate → ${hubId} PASS`);
+}
 
 function readJson(p) {
   return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -536,6 +557,7 @@ export function buildEmployerHubs() {
     if (hub.id !== entry.id) {
       console.warn(`⚠ hub id mismatch file=${hub.id} registry=${entry.id} — using file id`);
     }
+    validateHubPageConsistency(hub.id);
     emitHub(hub, entry);
     built.push(hub.id);
     registryIds.add(hub.id);
@@ -553,6 +575,7 @@ export function buildEmployerHubs() {
       if (!fs.existsSync(hubPath) || (!hasPp && !hasFi)) continue;
       const hub = readJson(hubPath);
       console.log(`archetype-only city → ${hubId} (no employer microsite)`);
+      validateHubPageConsistency(hubId);
       emitArchetypesForHubId(hubId, hub, archetypes);
     }
   }
