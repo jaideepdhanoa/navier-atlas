@@ -152,33 +152,38 @@ function normalizeAssetDefs(rawAssets) {
 function assertCanonicalHeadlines(story) {
   const invest = path.join(ROOT, 'handoff', 'invest-microsite', 'contracts');
   const hero = readJson(path.join(invest, 'hero.json'));
-  const claim = readJson(path.join(invest, 'claim.json'));
   const proof = readJson(path.join(invest, 'proof.json'));
   const product = readJson(path.join(invest, 'product.json'));
-  const gtm = readJson(path.join(invest, 'gtm.json'));
   const money = readJson(path.join(invest, 'money.json'));
   const byId = Object.fromEntries((story.sections || []).map((s) => [s.id, s]));
-  const costs = (claim.sections || []).find((s) => s.id === 'costs-levers') || {};
-  const shift = (claim.sections || []).find((s) => s.headline && /few giant slow ships/i.test(s.headline)) || {};
   const demo = (proof.sections || []).find((s) => s.id === 'demo-grid') || {};
-  const ladder = (product.sections || []).find((s) => s.headline && /GMVP/i.test(s.headline)) || {};
-  const dual = (gtm.sections || []).find((s) => /Dual-Use Platform Company/i.test(s.title || '')) || {};
-  const finale = (money.sections || []).find((s) => s.id === 'finale') || {};
+  const cto = (product.sections || []).find((s) => s.video && s.video.youtube_id === 'S7WB91FvSFI') || {};
+  const sam = (product.sections || []).find((s) => s.video && s.video.youtube_id === 'QhiaYVgXMf0') || {};
+  const vance = (money.sections || []).find((s) => s.id === 'go-deeper') || {};
   const checks = [
-    ['hero.headline', byId.hero?.headline, hero.subline],
-    ['problem.headline', byId.problem?.headline, costs.headline],
-    ['problem.headline_2', byId.problem?.headline_2, shift.headline],
-    ['proof.headline', byId.proof?.headline, demo.title],
-    ['product.headline', byId.product?.headline, ladder.headline],
-    ['dual-use.headline', byId['dual-use']?.headline, dual.title],
-    ['network.headline', byId.network?.headline, finale.headline],
+    ['hero.play_button_label', byId.hero?.play_button_label, hero.play_button_label],
+    ['hero.film.title', byId.hero?.film?.title, hero.video?.title],
+    ['ride.headline', byId.ride?.headline, demo.title],
+    ['ride.lede', byId.ride?.lede, demo.lede],
   ];
+  const storyClips = byId.ride?.clips || [];
+  const srcClips = demo.clips || [];
+  srcClips.forEach((c, i) => {
+    const got = storyClips[i] || {};
+    checks.push([`ride.clips[${i}].title`, got.title, c.title]);
+    checks.push([`ride.clips[${i}].caption`, got.caption, c.caption]);
+    checks.push([`ride.clips[${i}].duration`, got.duration, c.duration]);
+  });
+  const films = byId.films?.films || [];
+  checks.push(['films[0].title', films[0]?.title, cto.video?.title]);
+  checks.push(['films[1].title', films[1]?.title, sam.video?.title]);
+  checks.push(['films[2].title', films[2]?.title, vance.video?.title]);
   const mismatches = checks.filter(([, got, want]) => got !== want);
   if (mismatches.length) {
     const detail = mismatches
       .map(([k, got, want]) => `  ${k}\n    got:  ${JSON.stringify(got)}\n    want: ${JSON.stringify(want)}`)
       .join('\n');
-    throw new Error(`story headline byte-diff FAILED — sourced headlines must match /invest contracts:\n${detail}`);
+    throw new Error(`story headline byte-diff FAILED — sourced titles must match /invest contracts:\n${detail}`);
   }
 }
 
@@ -320,7 +325,7 @@ export function buildStory() {
   fs.copyFileSync(path.join(TEMPLATE, 'story.js'), path.join(OUT, 'story.js'));
 
   const title = site.title || 'Navier';
-  const desc = (site.og && site.og.description) || 'An American maritime company.';
+  const desc = (site.og && site.og.description) || 'Watch the films. Read the coverage.';
   const ogImage = assetMap.photo_goldengate || assetMap.hero_poster || '';
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -339,10 +344,8 @@ ${ogImage ? `<meta property="og:image" content="${escapeHtml(ogImage)}" />` : ''
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
 <link rel="stylesheet" href="/story/story.css" />
 <script defer src="/_vercel/insights/script.js"></script>
-<script defer src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 </head>
 <body class="story-page">
 <div id="app"></div>

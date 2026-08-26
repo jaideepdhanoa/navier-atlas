@@ -1,4 +1,4 @@
-/* /story — public outreach proof reel (v2: /invest arc, sourced headlines) */
+/* /story v3 — watch reel */
 (function () {
   'use strict';
   const D = window.STORY_DATA;
@@ -11,13 +11,11 @@
   const story = D.story;
   const assets = D.assets || {};
   const badges = D.badges || {};
-  const footnotes = story.footnotes || {};
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData =
     (navigator.connection && navigator.connection.saveData) ||
     /iPhone|iPad|Android/i.test(navigator.userAgent);
 
-  const usedFns = new Set();
   const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
   function esc(s) {
@@ -43,9 +41,6 @@
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push(Object.assign({ event: event }, props));
     } catch (_) {}
-    if (/[?&]debug_analytics=1/.test(location.search)) {
-      console.info('[story analytics]', event, props);
-    }
   }
 
   function readUtms() {
@@ -78,36 +73,12 @@
     return assets[key] || '';
   }
 
-  function firstMedia(sec) {
-    if (!sec) return null;
-    if (Array.isArray(sec.media)) return sec.media[0] || null;
-    if (sec.media && typeof sec.media === 'object') return sec.media;
-    return null;
-  }
-
-  function mediaList(sec) {
-    if (!sec) return [];
-    if (Array.isArray(sec.media)) return sec.media;
-    if (sec.media && typeof sec.media === 'object') return [sec.media];
-    return [];
-  }
-
   function badgeFor(key, override) {
     if (override === null || override === '') return '';
     const b = override || badges[key] || 'FILMED';
     if (!b) return '';
     const cls = /render/i.test(b) ? ' media-badge--render' : '';
     return `<span class="media-badge${cls}">${esc(b)}</span>`;
-  }
-
-  function captionHtml(item) {
-    if (!item || !item.caption) return '';
-    let ref = '';
-    if (item.footnote_ref && footnotes[item.footnote_ref]) {
-      usedFns.add(item.footnote_ref);
-      ref = ` <sup class="fn-ref">*</sup>`;
-    }
-    return `<p class="caption-band">${esc(item.caption)}${ref}</p>`;
   }
 
   function chipsHtml(chips) {
@@ -119,105 +90,14 @@
       .join('')}</div>`;
   }
 
-  function chapterKicker(sec) {
-    if (!sec || !sec.chapter) return '';
-    return `<p class="chapter-index">${esc(sec.chapter)}</p>`;
-  }
-
-  function stillFrame(item, opts) {
-    opts = opts || {};
-    if (isMapComponent(item)) return atlasFrame(item);
-    const src = assetUrl(item.asset);
-    if (!src) return '';
-    const letterbox = opts.letterbox ? ' media-frame--letterbox' : '';
-    return `<figure class="proof-card${opts.te ? ' proof-card--te' : ''}${opts.wide ? ' proof-card--wide' : ''}">
-      <div class="media-frame${letterbox}">
-        ${badgeFor(item.asset, item.badge)}
-        <img src="${esc(src)}" alt="" loading="${opts.eager ? 'eager' : 'lazy'}" ${opts.eager ? 'fetchpriority="high"' : ''} />
-      </div>
-      ${captionHtml(item)}
-    </figure>`;
-  }
-
-  function ambientFrame(item, opts) {
-    opts = opts || {};
-    const src = assetUrl(item.asset);
-    if (!src) return '';
-    const poster = assets.hero_poster || '';
-    const letterbox = opts.letterbox || item.asset === 'loop_te263_montage';
-    const frameCls = letterbox ? ' media-frame--letterbox' : '';
-    if ((saveData || reduceMotion) && poster && opts.allowPosterOnly) {
-      return `<figure class="proof-card">
-        <div class="media-frame${frameCls}">
-          ${badgeFor(item.asset, item.badge)}
-          <img src="${esc(poster)}" alt="" loading="lazy" />
-        </div>
-        ${captionHtml(item)}
-      </figure>`;
-    }
-    return `<figure class="proof-card${letterbox ? ' proof-card--te' : ''}">
-      <div class="media-frame${frameCls}">
-        ${badgeFor(item.asset, item.badge)}
-        <video muted playsinline loop preload="metadata" ${poster ? `poster="${esc(poster)}"` : ''} data-ambient data-section="${esc(opts.sectionId || '')}" data-asset="${esc(item.asset)}">
-          <source src="${esc(src)}" type="video/mp4" />
-        </video>
-      </div>
-      ${captionHtml(item)}
-    </figure>`;
-  }
-
-  function isMapComponent(item) {
-    return item && (item.class === 'map-component' || item.asset === 'plate_atlas_global');
-  }
-
-  function atlasFrame(item) {
-    return `<figure class="proof-card proof-card--atlas">
-      <div class="atlas-static" id="atlas-static" role="img" aria-label="${esc((item && item.caption) || 'Global marine corridors')}"></div>
-      ${captionHtml(item)}
-    </figure>`;
-  }
-
-  function mediaItem(item, opts) {
-    if (!item) return '';
-    if (isMapComponent(item)) return atlasFrame(item);
-    if (item.class === 'ambient') return ambientFrame(item, opts);
-    return stillFrame(item, opts);
-  }
-
   function pressCards(cards) {
     if (!cards || !cards.length) return '';
     return `<div class="press-row">${cards
       .map(function (c) {
-        const href = withUtms(c.url);
-        return `<a class="press-card" href="${esc(href)}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(c.outlet)}">
+        return `<a class="press-card" href="${esc(withUtms(c.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(c.outlet)}">
           <span class="press-outlet">${esc(c.outlet)}</span>
           <span class="press-headline">${esc(c.headline)}</span>
         </a>`;
-      })
-      .join('')}</div>`;
-  }
-
-  function filmCards(cards, sectionId) {
-    if (!cards || !cards.length) return '';
-    return `<div class="film-row">${cards
-      .map(function (c) {
-        let poster = '';
-        let playAttr = '';
-        if (c.youtube_id) {
-          poster = assets['yt_' + c.youtube_id] || `https://img.youtube.com/vi/${c.youtube_id}/maxresdefault.jpg`;
-          playAttr = `data-yt="${esc(c.youtube_id)}"`;
-        } else if (c.asset) {
-          poster = assets[c.asset + '_poster'] || assets.hero_poster || '';
-          playAttr = `data-film="${esc(assetUrl(c.asset))}"`;
-        }
-        return `<button type="button" class="film-card" ${playAttr} data-section="${esc(sectionId || '')}" data-film-title="${esc(c.title || '')}" aria-label="Play ${esc(c.title || 'film')}">
-          <span class="film-media">
-            ${badgeFor(c.asset || ('yt_' + c.youtube_id), c.badge || 'FILMED')}
-            ${poster ? `<img src="${esc(poster)}" alt="" loading="lazy" />` : ''}
-            <span class="film-play" aria-hidden="true"><span>▶</span></span>
-          </span>
-          <span class="film-cap">${esc(c.title || '')}</span>
-        </button>`;
       })
       .join('')}</div>`;
   }
@@ -226,198 +106,143 @@
     if (!links || !links.length) return '';
     return `<div class="link-row">${links
       .map(function (l) {
-        return `<a class="doctrine-link" href="${esc(withUtms(l.url))}" ${l.external === false ? '' : 'target="_blank" rel="noopener noreferrer"'} data-outbound data-label="${esc(l.label)}">${esc(l.label)}</a>`;
+        return `<a class="doctrine-link" href="${esc(withUtms(l.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(l.label)}">${esc(l.label)}</a>`;
       })
       .join('')}</div>`;
   }
 
-  function proofGrid(media, sectionId) {
-    const n = media.length;
-    let gridCls = 'proof-grid--2';
-    if (n === 3) gridCls = 'proof-grid--3';
-    else if (n === 4) gridCls = 'proof-grid--4';
-    else if (n >= 5) gridCls = 'proof-grid--mixed';
-    return `<div class="proof-grid ${gridCls}">
-      ${media
-        .map(function (m) {
-          return mediaItem(m, {
-            sectionId: sectionId,
-            letterbox: m.asset === 'loop_te263_montage',
-          });
-        })
-        .join('')}
+  function loopCard(clip, opts) {
+    opts = opts || {};
+    const src = assetUrl(clip.asset);
+    if (!src) return '';
+    const poster = assets.hero_poster || '';
+    const letterbox = clip.asset === 'loop_te263_montage' || opts.letterbox;
+    const mediaCls = letterbox ? ' vcard-media--letterbox' : '';
+    const posterOnly = (saveData || reduceMotion) && poster && opts.allowPosterOnly;
+    return `<div class="vcard vcard-loop" data-clip="${esc(clip.id || clip.asset)}" data-section="${esc(opts.sectionId || '')}" data-asset="${esc(clip.asset)}">
+      <span class="vcard-media${mediaCls}">
+        ${badgeFor(clip.asset, clip.badge)}
+        ${
+          posterOnly
+            ? `<img src="${esc(poster)}" alt="" loading="lazy" />`
+            : `<video muted playsinline loop preload="metadata" ${poster ? `poster="${esc(poster)}"` : ''} data-ambient data-section="${esc(opts.sectionId || '')}" data-asset="${esc(clip.asset)}">
+                <source src="${esc(src)}" type="video/mp4" />
+              </video>`
+        }
+        <span class="play" aria-hidden="true"><span>▶</span></span>
+        ${clip.duration ? `<span class="dur">${esc(clip.duration)}</span>` : ''}
+      </span>
+      ${clip.caption ? `<span class="vcard-cap">${esc(clip.caption)}</span>` : ''}
     </div>`;
   }
 
+  function stillCard(item) {
+    const src = assetUrl(item.asset);
+    if (!src) return '';
+    return `<figure class="vcard">
+      <span class="vcard-media">
+        ${badgeFor(item.asset, item.badge)}
+        <img src="${esc(src)}" alt="" loading="lazy" />
+      </span>
+      ${item.caption ? `<span class="vcard-cap">${esc(item.caption)}</span>` : ''}
+    </figure>`;
+  }
+
   function renderHero(sec) {
-    const media = firstMedia(sec) || {};
-    const src = assetUrl(media.asset);
+    const loop = sec.media || {};
+    const src = assetUrl(loop.asset);
     const poster = assets.hero_poster || '';
+    const film = sec.film || {};
+    const filmSrc = assetUrl(film.asset);
     return `<section class="story-section story-section--hero" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="hero-cinema">
-        <div class="media-frame">
-          ${badgeFor(media.asset, media.badge)}
-          ${
-            reduceMotion || (saveData && poster)
-              ? `<img class="hero-poster" src="${esc(poster || src)}" alt="" fetchpriority="high" />`
-              : `<video class="hero-video" muted playsinline loop preload="auto" ${poster ? `poster="${esc(poster)}"` : ''} data-ambient data-section="${esc(sec.id)}" data-asset="${esc(media.asset || '')}">
-                  <source src="${esc(src)}" type="video/mp4" />
-                </video>`
-          }
-        </div>
+        ${
+          reduceMotion || (saveData && poster)
+            ? `<img class="hero-poster" src="${esc(poster || src)}" alt="" fetchpriority="high" />`
+            : `<video class="hero-video" muted playsinline loop preload="auto" ${poster ? `poster="${esc(poster)}"` : ''} data-ambient data-section="${esc(sec.id)}" data-asset="${esc(loop.asset || '')}">
+                <source src="${esc(src)}" type="video/mp4" />
+              </video>`
+        }
         <div class="hero-overlay">
           <div class="section-inner" style="padding-inline:0;max-width:1100px">
-            ${sec.eyebrow ? `<p class="eyebrow">${esc(sec.eyebrow)}</p>` : ''}
-            <h1 class="headline headline--thesis">${esc(sec.headline)}</h1>
-            ${sec.subline ? `<p class="subline">${esc(sec.subline)}</p>` : ''}
-            ${chipsHtml(sec.chips || sec.stats)}
+            ${sec.eyebrow ? `<h1 class="eyebrow">${esc(sec.eyebrow)}</h1>` : ''}
+            ${
+              filmSrc
+                ? `<button type="button" class="btn-watch" data-film="${esc(filmSrc)}" data-film-title="${esc(film.title || '')}" data-section="${esc(sec.id)}" data-cta="${esc(sec.play_button_label || 'Watch the film')}">${esc(sec.play_button_label || 'Watch the film')}</button>`
+                : ''
+            }
           </div>
         </div>
       </div>
+      ${chipsHtml(sec.stats || sec.chips)}
     </section>`;
   }
 
-  function renderClaimChapter(sec) {
-    const media = mediaList(sec);
-    const levers = media.filter(function (m) {
-      return String(m.asset || '').indexOf('lever_') === 0;
-    });
-    const rest = media.filter(function (m) {
-      return String(m.asset || '').indexOf('lever_') !== 0;
-    });
-    const costs = sec.costs || [];
+  function renderDemoGrid(sec) {
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
-        ${chapterKicker(sec)}
         <h2 class="headline">${esc(sec.headline)}</h2>
-        ${sec.headline_2 ? `<p class="headline-2">${esc(sec.headline_2)}</p>` : ''}
-        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${
-          costs.length
-            ? `<div class="cost-grid">${costs
-                .map(function (c) {
-                  return `<article class="cost-card">
-                    <p class="cost-kicker">${esc(c.cost_title)}</p>
-                    <p class="cost-body">${esc(c.cost_body)}</p>
-                    <p class="lever-title">${esc(c.lever_title)}</p>
-                    <p class="lever-body">${esc(c.lever_body)}</p>
-                  </article>`;
-                })
-                .join('')}</div>`
-            : ''
-        }
-        ${levers.length ? `<div class="proof-grid proof-grid--3">${levers.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}</div>` : ''}
-        ${rest.map(function (m) { return `<div class="plainview-plate">${mediaItem(m, { sectionId: sec.id, wide: true })}</div>`; }).join('')}
-        ${
-          sec.why_now
-            ? `<div class="why-now"><p class="why-now-title">${esc(sec.why_now.title)}</p><p class="why-now-body">${esc(sec.why_now.body)}</p></div>`
-            : ''
-        }
-        ${sec.closing_line ? `<p class="closing-line">${esc(sec.closing_line)}</p>` : ''}
+        ${sec.lede ? `<p class="lede">${esc(sec.lede)}</p>` : ''}
+        <div class="video-grid">
+          ${(sec.clips || []).map(function (c) { return loopCard(c, { sectionId: sec.id }); }).join('')}
+        </div>
       </div>
     </section>`;
   }
 
-  function renderProofChapter(sec) {
-    const media = mediaList(sec);
-    const press = sec.press || sec.press_cards || [];
-    const films = sec.films || sec.film_cards || [];
+  function renderFilmPlates(sec) {
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
-        ${chapterKicker(sec)}
         <h2 class="headline">${esc(sec.headline)}</h2>
-        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${chipsHtml(sec.chips || sec.stats)}
-        ${proofGrid(media, sec.id)}
-        ${filmCards(films, sec.id)}
-        ${pressCards(press)}
-      </div>
-    </section>`;
-  }
-
-  function renderProductChapter(sec) {
-    const media = mediaList(sec);
-    const plate = media[0];
-    const rest = media.slice(1);
-    const films = sec.films || sec.film_cards || [];
-    return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
-      <div class="section-inner">
-        ${chapterKicker(sec)}
-        <h2 class="headline">${esc(sec.headline)}</h2>
-        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${plate ? `<div class="fleet-plate">${stillFrame(plate)}</div>` : ''}
-        <div class="vessel-row">
-          ${(sec.vessels || [])
-            .map(function (v) {
-              return `<div class="vessel-card"><h3 class="vessel-name">${esc(v.name)}</h3><p class="vessel-line">${esc(v.line)}</p></div>`;
+        <div class="film-plates">
+          ${(sec.films || [])
+            .map(function (f) {
+              const poster =
+                assets['yt_' + f.youtube_id] ||
+                (f.youtube_id ? `https://img.youtube.com/vi/${f.youtube_id}/maxresdefault.jpg` : '');
+              const meta = [f.duration, f.label].filter(Boolean).join(' · ');
+              return `<button type="button" class="film-plate" data-yt="${esc(f.youtube_id || '')}" data-section="${esc(sec.id)}" data-film-title="${esc(f.title || '')}" aria-label="Play ${esc(f.title || 'film')}">
+                <span class="vcard-media">
+                  ${badgeFor('yt_' + f.youtube_id, 'FILMED')}
+                  ${poster ? `<img src="${esc(poster)}" alt="" loading="lazy" />` : ''}
+                  <span class="play" aria-hidden="true"><span>▶</span></span>
+                  ${f.duration ? `<span class="dur">${esc(f.duration)}</span>` : ''}
+                </span>
+                <span class="film-plate-title">${esc(f.title || '')}</span>
+                ${meta ? `<span class="film-plate-meta">${esc(meta)}</span>` : ''}
+              </button>`;
             })
             .join('')}
         </div>
-        ${rest.length ? `<div class="proof-grid proof-grid--3">${rest.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}</div>` : ''}
-        ${sec.ride_note ? `<p class="ride-note">${esc(sec.ride_note)}</p>` : ''}
-        ${filmCards(films, sec.id)}
       </div>
     </section>`;
   }
 
-  function renderDualUseChapter(sec) {
-    const media = mediaList(sec);
-    const press = sec.press || sec.press_cards || [];
-    const films = sec.films || sec.film_cards || [];
-    const close = sec.quanta_close || {};
-    const closeMedia = close.media || [];
+  function renderField(sec) {
+    const media = sec.media || [];
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
-        ${chapterKicker(sec)}
-        <h2 class="headline">${esc(sec.headline)}</h2>
-        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${chipsHtml(sec.chips || sec.stats)}
-        ${proofGrid(media, sec.id)}
-        ${
-          close.body
-            ? `<div class="quanta-close">
-                <p class="body">${esc(close.body)}</p>
-                ${closeMedia.map(function (m) { return mediaItem(m, { sectionId: sec.id }); }).join('')}
-              </div>`
-            : ''
-        }
-        ${filmCards(films, sec.id)}
-        ${pressCards(press)}
+        ${sec.kicker ? `<p class="kicker">${esc(sec.kicker)}</p>` : ''}
+        ${sec.headline ? `<h2 class="headline">${esc(sec.headline)}</h2>` : ''}
+        <div class="field-row">
+          ${media
+            .map(function (m) {
+              if (m.class === 'ambient') return loopCard(m, { sectionId: sec.id, letterbox: m.asset === 'loop_te263_montage' });
+              return stillCard(m);
+            })
+            .join('')}
+        </div>
         ${outboundLinks(sec.links)}
       </div>
     </section>`;
   }
 
-  function renderVisionClose(sec) {
-    const media = mediaList(sec);
-    return `<section class="story-section story-section--vision" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
-      <div class="section-inner">
-        ${chapterKicker(sec)}
-        <h2 class="headline">${esc(sec.headline)}</h2>
-        ${sec.body ? `<p class="body">${esc(sec.body)}</p>` : ''}
-        ${media.map(function (m) { return mediaItem(m, { sectionId: sec.id, wide: true }); }).join('')}
-      </div>
-    </section>`;
-  }
-
-  function renderFilmShelf(sec) {
-    const films = sec.films || sec.film_cards || [];
-    const wall = sec.press_wall || [];
-    const links = sec.links || (sec.doctrine_link ? [sec.doctrine_link] : []);
+  function renderPress(sec) {
     return `<section class="story-section" id="${esc(sec.id)}" data-section="${esc(sec.id)}">
       <div class="section-inner">
         <h2 class="headline">${esc(sec.headline)}</h2>
-        ${filmCards(films, sec.id)}
-        ${
-          wall.length
-            ? `<div class="press-wall">${wall
-                .map(function (p) {
-                  return `<a href="${esc(withUtms(p.url))}" target="_blank" rel="noopener noreferrer" data-outbound data-label="${esc(p.outlet)}">${esc(p.outlet)}</a>`;
-                })
-                .join('')}</div>`
-            : ''
-        }
-        ${outboundLinks(links)}
+        ${pressCards(sec.press)}
+        ${outboundLinks(sec.links)}
       </div>
     </section>`;
   }
@@ -431,17 +256,13 @@
           ${(sec.ctas || [])
             .map(function (c, i) {
               if (c.kind === 'mailto') {
-                const href = 'mailto:' + c.value;
-                return `<a class="cta-btn${i === 0 ? ' cta-btn--primary' : ''}" href="${esc(href)}" data-cta="${esc(c.label)}">${esc(c.label)}</a>`;
+                return `<a class="cta-btn${i === 0 ? ' cta-btn--primary' : ''}" href="mailto:${esc(c.value)}" data-cta="${esc(c.label)}">${esc(c.label)}</a>`;
               }
               if (c.kind === 'email-display') {
                 return `<button type="button" class="cta-btn cta-btn--email" data-copy-email="${esc(c.value)}" data-cta="${esc(c.label)}" title="Copy email">
                   ${esc(c.value)}
                   <span class="cta-copied" hidden>Copied</span>
                 </button>`;
-              }
-              if (c.kind === 'url' && c.value && !/\[.*\]/.test(c.value)) {
-                return `<a class="cta-btn" href="${esc(withUtms(c.value))}" target="_blank" rel="noopener noreferrer" data-cta="${esc(c.label)}">${esc(c.label)}</a>`;
               }
               return '';
             })
@@ -453,22 +274,16 @@
 
   function renderSection(sec) {
     switch (sec.kind) {
-      case 'hero-loop':
+      case 'hero-film':
         return renderHero(sec);
-      case 'claim-chapter':
-        return renderClaimChapter(sec);
-      case 'proof-chapter':
-      case 'claim-proof':
-        return renderProofChapter(sec);
-      case 'product-chapter':
-      case 'vessel-row':
-        return renderProductChapter(sec);
-      case 'dual-use-chapter':
-        return renderDualUseChapter(sec);
-      case 'vision-close':
-        return renderVisionClose(sec);
-      case 'film-shelf':
-        return renderFilmShelf(sec);
+      case 'demo-grid':
+        return renderDemoGrid(sec);
+      case 'film-plate':
+        return renderFilmPlates(sec);
+      case 'field-row':
+        return renderField(sec);
+      case 'press-wall':
+        return renderPress(sec);
       case 'cta':
         return renderCta(sec);
       default:
@@ -491,16 +306,6 @@
     </nav>`;
   }
 
-  function renderFootnotes() {
-    if (!usedFns.size) return '';
-    const items = [...usedFns]
-      .map(function (k) {
-        return `<li id="fn-${esc(k)}">${esc(footnotes[k])}</li>`;
-      })
-      .join('');
-    return `<footer class="story-footnotes"><ol>${items}</ol></footer>`;
-  }
-
   function lightboxHtml() {
     return `<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Video">
       <button type="button" class="lightbox-close" id="lb-close" aria-label="Close">×</button>
@@ -510,8 +315,7 @@
 
   const app = document.getElementById('app');
   const sections = story.sections || [];
-  let body = sections.map(renderSection).join('');
-  app.innerHTML = renderNav() + body + renderFootnotes() + lightboxHtml();
+  app.innerHTML = renderNav() + sections.map(renderSection).join('') + lightboxHtml();
 
   function openLb(html) {
     const box = document.getElementById('lightbox');
@@ -541,6 +345,7 @@
   document.querySelectorAll('[data-yt]').forEach(function (el) {
     el.addEventListener('click', function () {
       const id = el.getAttribute('data-yt');
+      if (!id) return;
       const section = el.getAttribute('data-section') || '';
       const title = el.getAttribute('data-film-title') || id;
       track('video_play', { section_id: section, asset: 'yt:' + id, title: title, class: 'film' });
@@ -557,8 +362,9 @@
       const title = el.getAttribute('data-film-title') || 'film';
       if (!src) return;
       track('video_play', { section_id: section, asset: src, title: title, class: 'film' });
+      track('cta_click', { label: el.getAttribute('data-cta') || title });
       openLb(
-        `<video controls autoplay playsinline style="width:100%;height:100%;background:#000" data-complete-track><source src="${esc(src)}" type="video/mp4" /></video>`
+        `<video controls autoplay playsinline style="width:100%;height:100%;background:#000"><source src="${esc(src)}" type="video/mp4" /></video>`
       );
       const v = document.querySelector('#lb-frame video');
       if (v) {
@@ -573,6 +379,29 @@
     });
   });
 
+  /* Demo-grid: click toggles mute, matching /invest */
+  document.querySelectorAll('.vcard-loop').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      const v = card.querySelector('video');
+      if (!v) return;
+      e.preventDefault();
+      if (v.muted) {
+        v.muted = false;
+        v.play().catch(function () {});
+        card.classList.add('is-audible');
+        track('video_play', {
+          section_id: card.getAttribute('data-section') || '',
+          asset: card.getAttribute('data-asset') || '',
+          class: 'ambient',
+          audible: true,
+        });
+      } else {
+        v.muted = true;
+        card.classList.remove('is-audible');
+      }
+    });
+  });
+
   document.querySelectorAll('[data-outbound]').forEach(function (el) {
     el.addEventListener('click', function () {
       track('outbound_click', {
@@ -583,6 +412,7 @@
   });
 
   document.querySelectorAll('[data-cta]').forEach(function (el) {
+    if (el.hasAttribute('data-film')) return;
     el.addEventListener('click', function () {
       track('cta_click', { label: el.getAttribute('data-cta') || '' });
     });
@@ -646,9 +476,7 @@
         }
       });
     });
-  }
 
-  if ('IntersectionObserver' in window) {
     const seen = new Set();
     const sio = new IntersectionObserver(
       function (entries) {
@@ -684,11 +512,10 @@
   function onScrollNav() {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     if (progress) progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
-    const thresh = 120;
     let active = chapterIds[0];
     for (let i = 0; i < chapterIds.length; i++) {
       const el = document.getElementById(chapterIds[i]);
-      if (el && el.getBoundingClientRect().top <= thresh) active = chapterIds[i];
+      if (el && el.getBoundingClientRect().top <= 120) active = chapterIds[i];
     }
     navLinks.forEach(function (a) {
       const on = a.getAttribute('data-nav') === active;
@@ -714,46 +541,5 @@
     });
   }
 
-  function mountAtlas() {
-    const el = document.getElementById('atlas-static');
-    if (!el || typeof maplibregl === 'undefined') return;
-    try {
-      const map = new maplibregl.Map({
-        container: el,
-        style: 'https://tiles.openfreemap.org/styles/dark',
-        center: [12, 18],
-        zoom: 1.35,
-        minZoom: 1.2,
-        maxZoom: 1.8,
-        interactive: false,
-        attributionControl: true,
-        fadeDuration: 0,
-      });
-      map.scrollZoom.disable();
-      map.dragPan.disable();
-      map.dragRotate.disable();
-      map.touchZoomRotate.disable();
-      map.keyboard.disable();
-      map.doubleClickZoom.disable();
-      map.boxZoom.disable();
-    } catch (err) {
-      console.warn('[story] atlas map failed', err);
-    }
-  }
-  if (document.getElementById('atlas-static')) {
-    if (typeof maplibregl !== 'undefined') mountAtlas();
-    else {
-      const wait = setInterval(function () {
-        if (typeof maplibregl !== 'undefined') {
-          clearInterval(wait);
-          mountAtlas();
-        }
-      }, 80);
-      setTimeout(function () {
-        clearInterval(wait);
-      }, 4000);
-    }
-  }
-
-  console.info('[story] mount ok · sections', sections.length);
+  console.info('[story] v3 watch reel · sections', sections.length);
 })();
