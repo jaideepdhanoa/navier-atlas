@@ -1121,7 +1121,9 @@ def build_rak(receipt: dict) -> dict:
     }
     for key, (lng, lat, bp) in RAK_HAND_COORDS.items():
         stops[key] = resolve_stop(key, labels[key], lng, lat, bp)
-        if key in ("al-marjan", "mina-al-arab"):
+        # Mina Al Arab — Lagoon Marina berth-verified 2026-08-25 (status flag retired).
+        # Al Marjan still interim (no public marine facility until Wynn marina 2027).
+        if key == "al-marjan":
             stops[key]["tag"] = "status: verify facility"
 
     stops["royal-yacht-club"]["role"] = "interchange_primary"
