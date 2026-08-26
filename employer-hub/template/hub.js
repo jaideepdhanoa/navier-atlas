@@ -1650,9 +1650,12 @@
   }
   function widthForType(line, focus) {
     const t = line.type || 'trunk';
-    // Zoom-aware width so Phase 4/5 gateway trunks stay visible when zoomed out
-    const base =
-      t === 'trunk'
+    const gateway = line.id === 'GTW-1';
+    // Zoom-aware width so Phase 4/5 trunks stay visible when zoomed out.
+    // UAE Gateway is slightly heavier than Coastal Spine so gold vs teal separates.
+    const base = gateway
+      ? ['interpolate', ['linear'], ['zoom'], 5, 2.8, 8, 4.0, 12, 5.0]
+      : t === 'trunk'
         ? ['interpolate', ['linear'], ['zoom'], 5, 2.2, 8, 3.4, 12, 4.2]
         : t === 'roadmap'
           ? ['interpolate', ['linear'], ['zoom'], 5, 1.8, 8, 2.6, 12, 3.2]
