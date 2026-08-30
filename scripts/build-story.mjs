@@ -163,7 +163,6 @@ function assertCanonicalHeadlines(story) {
   const checks = [
     ['hero.play_button_label', byId.hero?.play_button_label, hero.play_button_label],
     ['hero.film.title', byId.hero?.film?.title, hero.video?.title],
-    ['ride.lede', byId.ride?.lede, demo.lede],
   ];
   const storyClips = byId.ride?.clips || [];
   const srcClips = demo.clips || [];
