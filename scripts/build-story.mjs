@@ -8,6 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SITE_URL } from './share-meta.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'handoff', 'story-microsite');
@@ -337,9 +338,26 @@ export function buildStory() {
   fs.copyFileSync(path.join(TEMPLATE, 'story.css'), path.join(OUT, 'story.css'));
   fs.copyFileSync(path.join(TEMPLATE, 'story.js'), path.join(OUT, 'story.js'));
 
-  const title = site.title || 'Navier';
-  const desc = (site.og && site.og.description) || 'Watch. Read the coverage.';
-  const ogImage = assetMap.photo_goldengate || assetMap.hero_poster || '';
+  const faviconSrc = path.join(TEMPLATE, 'favicon.svg');
+  if (fs.existsSync(faviconSrc)) {
+    copyFile(faviconSrc, path.join(OUT, 'favicon.svg'));
+    copyFile(faviconSrc, path.join(ROOT, '_dist', 'favicon.svg'));
+  }
+
+  const ogSrc =
+    resolveRepoPath((rawSite.og && rawSite.og.image) || '') ||
+    resolveRepoPath('handoff/invest-microsite/assets/deck/gmvp-n30-goldengate.jpg');
+  let ogImageAbs = '';
+  if (ogSrc) {
+    const rel = 'assets/og.jpg';
+    copyFile(ogSrc, path.join(OUT, rel));
+    ogImageAbs = `${SITE_URL}/story/${rel}`;
+  }
+
+  const title = site.title || 'Navier — An American Maritime Company';
+  const desc = (site.og && site.og.description) || 'Watch the footage. Read the coverage.';
+  const ogTitle = (site.og && site.og.title) || title;
+  const canonical = `${SITE_URL}/story`;
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -348,12 +366,24 @@ export function buildStory() {
 <title>${escapeHtml(title)}</title>
 <meta name="robots" content="${escapeHtml(site.robots_meta || 'noindex,nofollow')}" />
 <meta name="description" content="${escapeHtml(desc)}" />
-<meta property="og:title" content="${escapeHtml((site.og && site.og.title) || title)}" />
-<meta property="og:description" content="${escapeHtml(desc)}" />
-<meta property="og:type" content="website" />
-${ogImage ? `<meta property="og:image" content="${escapeHtml(ogImage)}" />` : ''}
 <meta name="theme-color" content="#070708" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta property="og:site_name" content="Navier" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="${escapeHtml(canonical)}" />
+<meta property="og:title" content="${escapeHtml(ogTitle)}" />
+<meta property="og:description" content="${escapeHtml(desc)}" />
+${ogImageAbs ? `<meta property="og:image" content="${escapeHtml(ogImageAbs)}" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1996" />
+<meta property="og:image:height" content="1110" />
+<meta property="og:image:alt" content="Navier N30 foilborne under the Golden Gate" />` : ''}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${escapeHtml(ogTitle)}" />
+<meta name="twitter:description" content="${escapeHtml(desc)}" />
+${ogImageAbs ? `<meta name="twitter:image" content="${escapeHtml(ogImageAbs)}" />` : ''}
+<link rel="canonical" href="${escapeHtml(canonical)}" />
+<link rel="icon" href="/story/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/story/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
