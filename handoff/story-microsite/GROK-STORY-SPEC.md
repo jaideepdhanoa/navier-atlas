@@ -29,11 +29,12 @@ Do not add a thesis chapter, three-costs, GMVP ladder, Atlas, or dual-use essay.
 1. **Hero** — cinema loop (`hero-loop.mp4`) + **Watch the film** (label from
    `hero.json`) opening the self-hosted launch film 1080p in a lightbox with
    sound. Eyebrow only: `NAVIER — AN AMERICAN MARITIME COMPANY`. No thesis as H1.
-   Public-record chips sit **below** the cinema, not on the film.
+   No KPI chips.
 2. **Ride** — `/invest` Traction demo grid, equal-weight tiles, muted loop,
-   click for sound. Title `Don't take our word for it` + lede + five clip
+   click for sound. Functional headline `On the water` (the invest title
+   "Don't take our word for it" has no claim above it here). Lede + five clip
    captions from `proof.json` `demo-grid`, verbatim. Includes `flat-turning.mp4`.
-3. **Films** — three large plates, on-page titles from `/invest` (not YouTube
+3. **Deep dives** — three large plates, on-page titles from `/invest` (not YouTube
    titles): Sampriti first (`QhiaYVgXMf0`, headline *The breakthrough that will
    fundamentally change what we can do at sea.*), then CTO (`S7WB91FvSFI`,
    *The 3-minute version, from our CTO*), then Vance (`ZNgh39DM_Jg`, *A long-form
